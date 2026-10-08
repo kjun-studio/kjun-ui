@@ -1,0 +1,312 @@
+@import "./visual-guides.css";
+@import "./design-comparisons.css";
+@import 'tailwindcss';
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--card);
+  --color-popover-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--secondary);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--secondary);
+  --color-accent-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-input: var(--border);
+  --color-ring: var(--primary);
+  --color-destructive: var(--destructive);
+  --color-sidebar: var(--background);
+  --color-sidebar-foreground: var(--foreground);
+  --color-sidebar-border: var(--border);
+  --color-sidebar-accent: var(--secondary);
+  --color-sidebar-accent-foreground: var(--foreground);
+  --color-sidebar-ring: var(--primary);
+  --font-sans: var(--docs-font);
+  --font-mono: var(--docs-font-mono);
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+}
+:root {
+  --background: #fff;
+  --foreground: #111;
+  --card: #fff;
+  --primary: #000;
+  --primary-foreground: #fff;
+  --secondary: #f4f4f4;
+  --muted-foreground: #707070;
+  --border: #e7e7e7;
+  --destructive: #c52f3b;
+  --foreground-secondary: #404040;
+  --radius: 8px;
+  color-scheme: light dark;
+  /* One font source for the shell, KJUN components (--kjun-font), diagrams and code. */
+  --docs-font: Inter, Pretendard, system-ui, sans-serif;
+  --docs-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Docs-only surfaces: canvas is the page, subtle frames tools, muted fills panels. */
+  --surface-canvas: var(--background);
+  --surface-subtle: #fafafa;
+  --surface-muted: var(--secondary);
+  /* Light captures and diagrams sit on a fixed light plate; dark mode dims plate and image together. */
+  --surface-plate: #fff;
+  --plate-filter: none;
+  /* Diagram strokes stay neutral and dark because diagrams always sit on the light plate. */
+  --diagram-ink: #111;
+  --diagram-line: #404040;
+  --diagram-bound: #707070;
+  /* Docs type scale. Component text comes from the packages. */
+  --docs-type-caption: 12px;
+  --docs-type-small: 14px;
+  --docs-type-body: 16px;
+  --docs-type-lead: 18px;
+  --docs-type-heading: 24px;
+  --docs-type-display-s: 32px;
+  --docs-type-title: 44px;
+  --docs-type-display: 56px;
+  /* Every page shares one left edge; wide pages extend to the right only. */
+  --docs-content-width: 960px;
+  --docs-wide-width: 1288px;
+  --docs-measure: 45rem;
+}
+@layer base {
+  * {
+    box-sizing: border-box;
+    border-color: var(--border);
+  }
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+body {
+  margin: 0;
+  font-family: var(--docs-font);
+  background: var(--background);
+  color: var(--foreground);
+  font-size: var(--docs-type-body);
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+p, li, dd {
+  text-wrap: pretty;
+}
+h1, h2, h3 {
+  text-wrap: balance;
+}
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1 {
+  font-size: var(--docs-type-title);
+  line-height: 1.18;
+  letter-spacing: -0.055em;
+  font-weight: 600;
+}
+h2 {
+  font-size: var(--docs-type-heading);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+h3 {
+  font-size: var(--docs-type-body);
+  font-weight: 600;
+}
+.wordmark {
+  display: flex;
+  gap: 9px;
+  align-items: baseline;
+  font-size: 25px;
+  letter-spacing: -1px;
+  font-weight: 700;
+  padding: 25px 20px;
+}
+.wordmark span {
+  font-size: 20px;
+  font-weight: 400;
+}
+.doc-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 24px;
+  gap: 4px;
+}
+.doc-nav small {
+  font-size: var(--docs-type-caption);
+  letter-spacing: 0.09em;
+  color: var(--muted-foreground);
+  margin: 26px 12px 10px;
+}
+.doc-nav a {
+  padding: 8px 12px;
+  font-size: var(--docs-type-small);
+  border-radius: 8px;
+}
+.doc-nav a:hover,
+.doc-nav a[aria-current='page'] {
+  background: var(--secondary);
+  font-weight: 600;
+}
+.version {
+  font-size: var(--docs-type-caption);
+  color: var(--muted-foreground);
+}
+.docs-sidebar .docs-sidebar-footer {
+  padding: 24px 36px;
+}
+.doc-body {
+  flex: 1;
+  min-width: 0;
+}
+.topbar {
+  height: 72px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 40px;
+  font-size: var(--docs-type-small);
+  position: sticky;
+  top: 0;
+  background: var(--background);
+  z-index: 20;
+}
+.topbar-note {
+  margin-left: auto;
+  font-size: var(--docs-type-caption);
+  color: var(--muted-foreground);
+}
+.doc-main {
+  max-width: 1060px;
+  padding: 60px 64px 80px;
+  margin: auto;
+}
+.eyebrow {
+  font-size: var(--docs-type-caption);
+  letter-spacing: 0.12em;
+  color: var(--muted-foreground);
+  margin-bottom: 25px;
+}
+.lead {
+  color: var(--muted-foreground);
+  margin-top: 24px;
+  font-size: var(--docs-type-lead);
+  line-height: 1.85;
+}
+.doc-main section:where(:not(.kjun-table-card-section)) {
+  margin-top: 48px;
+}
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.preview-slice {
+  min-height: 210px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--surface-subtle);
+}
+.preview-slice output {
+  width: 100%;
+  text-align: center;
+  font-size: var(--docs-type-small);
+  color: var(--muted-foreground);
+  margin-top: -45px;
+}
+@media (max-width: 767px) {
+  .doc-main {
+    padding: 36px 24px;
+  }
+  .topbar {
+    padding: 0 24px;
+    height: 60px;
+  }
+  .topbar-note {
+    display: none;
+  }
+  .preview-slice {
+    padding: 25px;
+  }
+  .preview-slice output {
+    margin-top: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Contract tables scroll within their container at narrow widths. */
+.api-reference { min-width: 0; }
+.api-reference-table { max-width: 100%; margin: 16px 0 28px; }
+.api-reference-table table { min-width: 660px; table-layout: fixed; }
+.api-reference-table th:first-child { width: 17%; }
+.api-reference-table th:nth-child(2) { width: 28%; }
+.api-reference-table th:nth-child(3):not(:last-child) { width: 8%; }
+.api-reference-table th:nth-child(4) { width: 13%; }
+.api-reference-table td { white-space: normal; vertical-align: top; overflow-wrap: anywhere; line-height: 1.7; }
+.api-reference-table td code { white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--docs-type-caption); }
+.api-reference-table td p { margin: 0; }
+.api-reference-table tbody { border-bottom: 1px solid var(--border); }
+.api-detail-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.api-member-details { padding: 12px 16px; background: var(--secondary); border-radius: 8px; }
+.api-member-details dl { margin: 0 0 12px; display: grid; gap: 12px; }
+.api-member-details dt { font-weight: 600; margin-bottom: 3px; }
+.api-member-details dd { margin: 0; }
+.api-member-details a { text-decoration: underline; text-underline-offset: 3px; }
+.api-ownership { border-left: 3px solid var(--border); padding: 1px 0 1px 16px; margin: 24px 0; }
+.api-ownership ul { margin: 12px 0; padding-left: 18px; display: grid; gap: 8px; font-size: var(--docs-type-small); line-height: 1.8; }
+/* Dark palette follows the system setting. Diagrams and preview canvases keep their light plates. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f0f0f;
+    --foreground: #ededed;
+    --foreground-secondary: #c4c4c4;
+    --card: #161616;
+    --primary: #fafafa;
+    --primary-foreground: #0f0f0f;
+    --secondary: #1f1f1f;
+    --muted-foreground: #9a9a9a;
+    --border: #2a2a2a;
+    --destructive: #f0616d;
+    --surface-subtle: #161616;
+    --plate-filter: brightness(0.86);
+  }
+  .symbol-space img,
+  .brand-spec img {
+    filter: invert(1);
+  }
+}

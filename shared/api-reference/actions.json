@@ -1,0 +1,52 @@
+{
+  "DsButton": {
+    "vue2": ["formatters", "variant", "size", "htmlType", "disabled", "loading", "block", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading"],
+    "react": ["variant", "size", "loading", "block", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading", "disabled", "name", "type", "autoFocus", "className", "id", "style", "children", "onChange", "onKeyDown", "onClick"],
+    "native": ["children", "variant", "size", "loading", "block", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading", "style", "id", "onPress", "disabled"]
+  },
+  "DsButtonGroup": {
+    "vue2": ["formatters", "value", "options", "size", "variant", "disabled", "fullWidth", "ariaLabel"],
+    "react": ["value", "options", "size", "variant", "disabled", "fullWidth", "ariaLabel", "onValueChange", "onChange"],
+    "native": ["value", "options", "size", "variant", "disabled", "fullWidth", "ariaLabel", "onValueChange", "onChange"]
+  },
+  "DsCopyButton": {
+    "vue2": ["formatters", "ariaLabel", "copyText", "value", "text", "successText", "inline", "size", "disabled"],
+    "react": ["value", "ariaLabel", "text", "successText", "inline", "size", "disabled", "copyText", "onCopied", "onCopyError"],
+    "native": ["value", "ariaLabel", "text", "successText", "inline", "size", "disabled", "copyText", "onCopied", "onCopyError"]
+  },
+  "DsDropdown": {
+    "vue2": ["formatters", "disabled", "menuId", "triggerId", "menuClass", "placement"],
+    "react": ["disabled", "placement", "menuId", "triggerId", "menuClass", "trigger", "children", "onOpen", "onClose"],
+    "native": ["disabled", "placement", "menuId", "triggerId", "trigger", "children", "onOpen", "onClose"]
+  },
+  "DsDropdownDivider": {
+    "vue2": ["formatters"],
+    "react": [],
+    "native": []
+  },
+  "DsDropdownItem": {
+    "vue2": ["formatters", "variant", "icon", "disabled", "selected"],
+    "react": ["id", "variant", "icon", "disabled", "selected", "textValue", "children", "onClick"],
+    "native": ["id", "variant", "icon", "disabled", "selected", "children", "onPress"]
+  },
+  "DsFormActions": {
+    "vue2": ["formatters", "confirmText", "cancelText", "size", "loading", "confirmDisabled", "cancelDisabled", "showConfirm", "showCancel", "variant", "cancelVariant"],
+    "react": ["size", "cancelText", "confirmText", "showCancel", "showConfirm", "cancelDisabled", "confirmDisabled", "loading", "variant", "cancelVariant", "onCancel", "onConfirm"],
+    "native": ["size", "cancelText", "confirmText", "showCancel", "showConfirm", "cancelDisabled", "confirmDisabled", "loading", "variant", "cancelVariant", "onCancel", "onConfirm"]
+  },
+  "DsIconToggle": {
+    "vue2": ["formatters", "active", "activeIcon", "inactiveIcon", "activeColorClass", "inactiveColorClass", "size", "disabled", "loading", "ariaLabel", "tooltip", "tooltipPlacement", "tooltipDelay"],
+    "react": ["active", "activeIcon", "inactiveIcon", "activeColorClass", "inactiveColorClass", "activeColor", "inactiveColor", "size", "disabled", "loading", "ariaLabel", "tooltip", "tooltipPlacement", "tooltipDelay", "onToggle"],
+    "native": ["active", "activeIcon", "inactiveIcon", "activeColor", "inactiveColor", "size", "disabled", "loading", "ariaLabel", "tooltip", "tooltipPlacement", "tooltipDelay", "onToggle"]
+  },
+  "DsMenuButton": {
+    "vue2": ["formatters", "label", "size", "variant", "compact", "disabled", "loading", "tooltip", "tooltipPlacement", "tooltipDelay", "ariaLabel", "placement"],
+    "react": ["label", "size", "variant", "compact", "loading", "tooltip", "tooltipPlacement", "tooltipDelay", "ariaLabel", "disabled", "children", "placement", "menuId", "triggerId", "menuClass", "onOpen", "onClose"],
+    "native": ["label", "size", "variant", "compact", "loading", "tooltip", "tooltipPlacement", "tooltipDelay", "ariaLabel", "children", "disabled", "placement", "menuId", "triggerId", "onOpen", "onClose"]
+  },
+  "DsRefreshButton": {
+    "vue2": ["formatters", "targetName", "mode", "text", "loading", "disabled", "block", "size", "variant", "spinOnLoading", "ariaLabel", "tooltip", "tooltipPlacement", "tooltipDelay"],
+    "react": ["targetName", "mode", "text", "tooltip", "tooltipPlacement", "tooltipDelay", "onRefresh", "size", "disabled", "name", "type", "autoFocus", "className", "id", "style", "onChange", "onKeyDown", "variant", "loading", "block", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading"],
+    "native": ["targetName", "mode", "text", "tooltip", "tooltipPlacement", "tooltipDelay", "onRefresh", "style", "id", "disabled", "size", "prefixIcon", "suffixIcon", "ariaLabel", "variant", "loading", "block", "prefixIconFilled", "suffixIconFilled", "spinOnLoading"]
+  }
+}

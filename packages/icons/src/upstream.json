@@ -1,0 +1,11 @@
+{
+  "version": "3.48.0",
+  "integrity": "sha512-lQk06gVHNVBnJp0UOgtth54mcZBJM7rdYKsAxKOProj1bbSAx+/xiuOWfHlyvgdL3M+Y+I0HINrjHa3ygp8eXQ==",
+  "hashes": {
+    "package.json": "623f8d86633fb450eac9b7be686ef2b386d45cfc0d9c61e9903bbd80f844d403",
+    "tabler-nodes-outline.json": "263cda2dee40293c6f4e0fbf9b2d58b0a2fcd3818fc04ee794e5af2be351fcee",
+    "tabler-nodes-filled.json": "6607853f781e3adff69ece02ebee8b7d6ca0cc9a41114fad7c0e24849be18b72",
+    "icons.json": "097e72995add3a849f5b1c25afbe10c17c37421acdb56c4f4ef67776b73e06d4",
+    "LICENSE": "b740a1d46122672da62833e97f7e7c8a13fa85cbc7445b584b297cc00dde93db"
+  }
+}

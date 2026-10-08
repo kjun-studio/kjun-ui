@@ -1,0 +1,1131 @@
+{
+  "DsAnimatedNumber": [
+    {
+      "from": "frontend/src/components/design-system/data-display/AnimatedNumber.vue",
+      "request": "@/utils/animation",
+      "target": "frontend/src/utils/animation.js"
+    }
+  ],
+  "DsChartSkeleton": [],
+  "DsCollectionMark": [
+    {
+      "from": "frontend/src/components/design-system/data-display/CollectionMark.vue",
+      "request": "../primitives/collectionState",
+      "target": "frontend/src/components/design-system/primitives/collectionState.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/CollectionMark.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsDeviation": [],
+  "DsEmpty": [],
+  "DsExecutionStatusBadge": [
+    {
+      "from": "frontend/src/components/design-system/data-display/ExecutionStatusBadge.vue",
+      "request": "./executionStatus",
+      "target": "frontend/src/components/design-system/data-display/executionStatus.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/ExecutionStatusBadge.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsFormSkeleton": [],
+  "DsFreshness": [],
+  "DsHeatmapCell": [
+    {
+      "from": "frontend/src/components/design-system/data-display/HeatmapCell.vue",
+      "request": "@/utils/chartColors",
+      "target": "frontend/src/utils/chartColors.js"
+    }
+  ],
+  "DsKpiHero": [
+    {
+      "from": "frontend/src/components/design-system/data-display/KpiHero.vue",
+      "request": "./_kpiFormat",
+      "target": "frontend/src/components/design-system/data-display/_kpiFormat.js"
+    }
+  ],
+  "DsKpiRow": [
+    {
+      "from": "frontend/src/components/design-system/data-display/KpiRow.vue",
+      "request": "./_kpiFormat",
+      "target": "frontend/src/components/design-system/data-display/_kpiFormat.js"
+    }
+  ],
+  "DsListSkeleton": [],
+  "DsMarketCards": [
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketCards.vue",
+      "request": "@/components/common/AssetIdentity.vue",
+      "target": "frontend/src/components/common/AssetIdentity.vue"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketCards.vue",
+      "request": "@/mixins/queryDisplayMixin",
+      "target": "frontend/src/mixins/queryDisplayMixin.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketCards.vue",
+      "request": "./Sparkline.vue",
+      "target": "frontend/src/components/design-system/data-display/Sparkline.vue"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketCards.vue",
+      "request": "./_marketFormat",
+      "target": "frontend/src/components/design-system/data-display/_marketFormat.js"
+    }
+  ],
+  "DsMarketSimpleList": [
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketSimpleList.vue",
+      "request": "@/components/common/AssetIdentity.vue",
+      "target": "frontend/src/components/common/AssetIdentity.vue"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketSimpleList.vue",
+      "request": "@/mixins/queryDisplayMixin",
+      "target": "frontend/src/mixins/queryDisplayMixin.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketSimpleList.vue",
+      "request": "./AnimatedNumber.vue",
+      "target": "frontend/src/components/design-system/data-display/AnimatedNumber.vue"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketSimpleList.vue",
+      "request": "./signedValue",
+      "target": "frontend/src/components/design-system/data-display/signedValue.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketSimpleList.vue",
+      "request": "./_marketFormat",
+      "target": "frontend/src/components/design-system/data-display/_marketFormat.js"
+    }
+  ],
+  "DsMarketTable": [
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketTable.vue",
+      "request": "@/mixins/queryDisplayMixin",
+      "target": "frontend/src/mixins/queryDisplayMixin.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketTable.vue",
+      "request": "./Sparkline.vue",
+      "target": "frontend/src/components/design-system/data-display/Sparkline.vue"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketTable.vue",
+      "request": "./signedValue",
+      "target": "frontend/src/components/design-system/data-display/signedValue.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/MarketTable.vue",
+      "request": "./_marketFormat",
+      "target": "frontend/src/components/design-system/data-display/_marketFormat.js"
+    }
+  ],
+  "DsMarketTableSkeleton": [],
+  "DsPopover": [
+    {
+      "from": "frontend/src/components/design-system/data-display/Popover.vue",
+      "request": "../utils/position",
+      "target": "frontend/src/components/design-system/utils/position.js"
+    }
+  ],
+  "DsPriceCell": [
+    {
+      "from": "frontend/src/components/design-system/data-display/PriceCell.vue",
+      "request": "./Skeleton.vue",
+      "target": "frontend/src/components/design-system/data-display/Skeleton.vue"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/PriceCell.vue",
+      "request": "./AnimatedNumber.vue",
+      "target": "frontend/src/components/design-system/data-display/AnimatedNumber.vue"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/PriceCell.vue",
+      "request": "./Freshness.vue",
+      "target": "frontend/src/components/design-system/data-display/Freshness.vue"
+    }
+  ],
+  "DsProgressCell": [],
+  "DsSignedValue": [
+    {
+      "from": "frontend/src/components/design-system/data-display/SignedValue.vue",
+      "request": "./signedValue",
+      "target": "frontend/src/components/design-system/data-display/signedValue.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/SignedValue.vue",
+      "request": "@/utils/formatters",
+      "target": "frontend/src/utils/formatters.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/SignedValue.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsSkeleton": [],
+  "DsSparkline": [],
+  "DsTable": [
+    {
+      "from": "frontend/src/components/design-system/data-display/Table.vue",
+      "request": "@/mixins/queryDisplayMixin",
+      "target": "frontend/src/mixins/queryDisplayMixin.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/Table.vue",
+      "request": "./table/TableCards.vue",
+      "target": "frontend/src/components/design-system/data-display/table/TableCards.vue"
+    },
+    {
+      "from": "frontend/src/components/design-system/data-display/Table.vue",
+      "request": "./_tableSelection",
+      "target": "frontend/src/components/design-system/data-display/_tableSelection.js"
+    }
+  ],
+  "DsTooltip": [
+    {
+      "from": "frontend/src/components/design-system/data-display/Tooltip.vue",
+      "request": "../utils/position",
+      "target": "frontend/src/components/design-system/utils/position.js"
+    }
+  ],
+  "DsTableCards": [],
+  "DsAlert": [
+    {
+      "from": "frontend/src/components/design-system/feedback/Alert.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsConfirmModal": [
+    {
+      "from": "frontend/src/components/design-system/feedback/ConfirmModal.vue",
+      "request": "@/utils/logger",
+      "target": "frontend/src/utils/logger.js"
+    }
+  ],
+  "DsDataState": [
+    {
+      "from": "frontend/src/components/design-system/feedback/DataState.vue",
+      "request": "@/mixins/queryDisplayMixin",
+      "target": "frontend/src/mixins/queryDisplayMixin.js"
+    }
+  ],
+  "DsErrorBoundary": [
+    {
+      "from": "frontend/src/components/design-system/feedback/ErrorBoundary.vue",
+      "request": "@/utils/logger",
+      "target": "frontend/src/utils/logger.js"
+    }
+  ],
+  "DsProgress": [
+    {
+      "from": "frontend/src/components/design-system/feedback/Progress.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsPromptModal": [],
+  "DsSpinner": [
+    {
+      "from": "frontend/src/components/design-system/feedback/Spinner.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsToast": [
+    {
+      "from": "frontend/src/components/design-system/feedback/Toast.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsToastContainer": [
+    {
+      "from": "frontend/src/components/design-system/feedback/ToastContainer.vue",
+      "request": "./Toast.vue",
+      "target": "frontend/src/components/design-system/feedback/Toast.vue"
+    }
+  ],
+  "DsSearchInput": [
+    {
+      "from": "frontend/src/components/design-system/form/BaseSearchInput.vue",
+      "request": "@/store/api/client",
+      "target": "frontend/src/store/api/client.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/form/BaseSearchInput.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/form/BaseSearchInput.vue",
+      "request": "./fieldMixin",
+      "target": "frontend/src/components/design-system/form/fieldMixin.js"
+    }
+  ],
+  "DsCheckbox": [
+    {
+      "from": "frontend/src/components/design-system/form/Checkbox.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsCombobox": [
+    {
+      "from": "frontend/src/components/design-system/form/Combobox.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/form/Combobox.vue",
+      "request": "./fieldMixin",
+      "target": "frontend/src/components/design-system/form/fieldMixin.js"
+    }
+  ],
+  "DsDatePicker": [
+    {
+      "from": "frontend/src/components/design-system/form/DatePicker.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/form/DatePicker.vue",
+      "request": "./fieldMixin",
+      "target": "frontend/src/components/design-system/form/fieldMixin.js"
+    }
+  ],
+  "DsFormActions": [
+    {
+      "from": "frontend/src/components/design-system/form/FormActions.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsFormGroup": [],
+  "DsRadio": [],
+  "DsRadioGroup": [
+    {
+      "from": "frontend/src/components/design-system/form/RadioGroup.vue",
+      "request": "./Radio.vue",
+      "target": "frontend/src/components/design-system/form/Radio.vue"
+    }
+  ],
+  "DsSelect": [
+    {
+      "from": "frontend/src/components/design-system/form/Select.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/form/Select.vue",
+      "request": "./fieldMixin",
+      "target": "frontend/src/components/design-system/form/fieldMixin.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/form/Select.vue",
+      "request": "../utils/position",
+      "target": "frontend/src/components/design-system/utils/position.js"
+    }
+  ],
+  "DsSwitch": [
+    {
+      "from": "frontend/src/components/design-system/form/Switch.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsTextarea": [
+    {
+      "from": "frontend/src/components/design-system/form/Textarea.vue",
+      "request": "./fieldMixin",
+      "target": "frontend/src/components/design-system/form/fieldMixin.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/form/Textarea.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsAccordion": [],
+  "DsAccordionItem": [],
+  "DsCard": [],
+  "DsDrawer": [
+    {
+      "from": "frontend/src/components/design-system/layout/Drawer.vue",
+      "request": "@/utils/focusTrap",
+      "target": "frontend/src/utils/focusTrap.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/layout/Drawer.vue",
+      "request": "@/utils/bodyScrollLock",
+      "target": "frontend/src/utils/bodyScrollLock.js"
+    }
+  ],
+  "DsDropdown": [],
+  "DsDropdownDivider": [],
+  "DsDropdownItem": [],
+  "DsMarketListPanel": [],
+  "DsModal": [
+    {
+      "from": "frontend/src/components/design-system/layout/Modal.vue",
+      "request": "@/utils/focusTrap",
+      "target": "frontend/src/utils/focusTrap.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/layout/Modal.vue",
+      "request": "@/utils/bodyScrollLock",
+      "target": "frontend/src/utils/bodyScrollLock.js"
+    }
+  ],
+  "DsTabPane": [],
+  "DsTabs": [
+    {
+      "from": "frontend/src/components/design-system/layout/Tabs.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsBreadcrumb": [],
+  "DsPagination": [],
+  "DsBadge": [
+    {
+      "from": "frontend/src/components/design-system/primitives/Badge.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsButton": [
+    {
+      "from": "frontend/src/components/design-system/primitives/Button.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsButtonGroup": [
+    {
+      "from": "frontend/src/components/design-system/primitives/ButtonGroup.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/primitives/ButtonGroup.vue",
+      "request": "./_groupKeyboardNav",
+      "target": "frontend/src/components/design-system/primitives/_groupKeyboardNav.js"
+    }
+  ],
+  "DsCopyButton": [
+    {
+      "from": "frontend/src/components/design-system/primitives/CopyButton.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsExternalLink": [
+    {
+      "from": "frontend/src/components/design-system/primitives/ExternalLink.vue",
+      "request": "./externalUrl",
+      "target": "frontend/src/components/design-system/primitives/externalUrl.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/primitives/ExternalLink.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsFilterGroup": [
+    {
+      "from": "frontend/src/components/design-system/primitives/FilterGroup.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/primitives/FilterGroup.vue",
+      "request": "./_groupKeyboardNav",
+      "target": "frontend/src/components/design-system/primitives/_groupKeyboardNav.js"
+    }
+  ],
+  "DsIcon": [
+    {
+      "from": "frontend/src/components/design-system/primitives/Icon.vue",
+      "request": "@/utils/logger",
+      "target": "frontend/src/utils/logger.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/primitives/Icon.vue",
+      "request": "@/icons/registry",
+      "target": "frontend/src/icons/registry.js"
+    }
+  ],
+  "DsIconToggle": [
+    {
+      "from": "frontend/src/components/design-system/primitives/IconToggle.vue",
+      "request": "./Icon.vue",
+      "target": "frontend/src/components/design-system/primitives/Icon.vue"
+    },
+    {
+      "from": "frontend/src/components/design-system/primitives/IconToggle.vue",
+      "request": "../feedback/Spinner.vue",
+      "target": "frontend/src/components/design-system/feedback/Spinner.vue"
+    },
+    {
+      "from": "frontend/src/components/design-system/primitives/IconToggle.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsInput": [
+    {
+      "from": "frontend/src/components/design-system/primitives/Input.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    },
+    {
+      "from": "frontend/src/components/design-system/primitives/Input.vue",
+      "request": "../form/fieldMixin",
+      "target": "frontend/src/components/design-system/form/fieldMixin.js"
+    }
+  ],
+  "DsMenuButton": [
+    {
+      "from": "frontend/src/components/design-system/primitives/MenuButton.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsRefreshButton": [
+    {
+      "from": "frontend/src/components/design-system/primitives/RefreshButton.vue",
+      "request": "../tokens",
+      "target": "frontend/src/components/design-system/tokens.js"
+    }
+  ],
+  "DsScrollFade": [],
+  "DsListRow": [
+    {
+      "from": "packages/react/src/list.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "./a11y",
+      "target": "packages/native/src/a11y.tsx"
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "./internal",
+      "target": "packages/native/src/internal.tsx"
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "./provider",
+      "target": "packages/native/src/provider.tsx"
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    }
+  ],
+  "DsListSection": [
+    {
+      "from": "packages/react/src/list.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "./a11y",
+      "target": "packages/native/src/a11y.tsx"
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "./internal",
+      "target": "packages/native/src/internal.tsx"
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "./provider",
+      "target": "packages/native/src/provider.tsx"
+    },
+    {
+      "from": "packages/native/src/list.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    }
+  ],
+  "DsTopNavigation": [
+    {
+      "from": "packages/react/src/app-navigation.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/app-navigation.tsx",
+      "request": "./button",
+      "target": "packages/react/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./a11y",
+      "target": "packages/native/src/a11y.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./button",
+      "target": "packages/native/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./internal",
+      "target": "packages/native/src/internal.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./provider",
+      "target": "packages/native/src/provider.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    }
+  ],
+  "DsBottomNavigation": [
+    {
+      "from": "packages/vue2/src/components/BottomNavigation.vue",
+      "request": "../icon.js",
+      "target": "packages/vue2/src/icon.js"
+    },
+    {
+      "from": "packages/react/src/app-navigation.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/app-navigation.tsx",
+      "request": "./button",
+      "target": "packages/react/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./a11y",
+      "target": "packages/native/src/a11y.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./button",
+      "target": "packages/native/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./internal",
+      "target": "packages/native/src/internal.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./provider",
+      "target": "packages/native/src/provider.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    }
+  ],
+  "DsBottomActionBar": [
+    {
+      "from": "packages/react/src/app-navigation.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/app-navigation.tsx",
+      "request": "./button",
+      "target": "packages/react/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./a11y",
+      "target": "packages/native/src/a11y.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./button",
+      "target": "packages/native/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./internal",
+      "target": "packages/native/src/internal.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "./provider",
+      "target": "packages/native/src/provider.tsx"
+    },
+    {
+      "from": "packages/native/src/app-navigation.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    }
+  ],
+  "DsImage": [
+    {
+      "from": "packages/vue2/src/components/Image.vue",
+      "request": "../icon.js",
+      "target": "packages/vue2/src/icon.js"
+    },
+    {
+      "from": "packages/react/src/media.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/media.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/media.tsx",
+      "request": "./button",
+      "target": "packages/react/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "./button",
+      "target": "packages/native/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "./internal",
+      "target": "packages/native/src/internal.tsx"
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "./provider",
+      "target": "packages/native/src/provider.tsx"
+    }
+  ],
+  "DsAvatar": [
+    {
+      "from": "packages/vue2/src/components/Avatar.vue",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/vue2/src/components/Avatar.vue",
+      "request": "./Image.vue",
+      "target": "packages/vue2/src/components/Image.vue"
+    },
+    {
+      "from": "packages/vue2/src/components/Avatar.vue",
+      "request": "../icon.js",
+      "target": "packages/vue2/src/icon.js"
+    },
+    {
+      "from": "packages/react/src/media.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/media.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/media.tsx",
+      "request": "./button",
+      "target": "packages/react/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "./button",
+      "target": "packages/native/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "./internal",
+      "target": "packages/native/src/internal.tsx"
+    },
+    {
+      "from": "packages/native/src/media.tsx",
+      "request": "./provider",
+      "target": "packages/native/src/provider.tsx"
+    }
+  ],
+  "DsChip": [
+    {
+      "from": "packages/vue2/src/components/Chip.vue",
+      "request": "../icon.js",
+      "target": "packages/vue2/src/icon.js"
+    },
+    {
+      "from": "packages/react/src/chip.tsx",
+      "request": "./button",
+      "target": "packages/react/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/chip.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/chip.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/chip.tsx",
+      "request": "./a11y",
+      "target": "packages/native/src/a11y.tsx"
+    },
+    {
+      "from": "packages/native/src/chip.tsx",
+      "request": "./button",
+      "target": "packages/native/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/chip.tsx",
+      "request": "./internal",
+      "target": "packages/native/src/internal.tsx"
+    },
+    {
+      "from": "packages/native/src/chip.tsx",
+      "request": "./provider",
+      "target": "packages/native/src/provider.tsx"
+    }
+  ],
+  "DsSlider": [
+    {
+      "from": "packages/vue2/src/components/Slider.vue",
+      "request": "./slider.js",
+      "target": "packages/vue2/src/components/slider.js"
+    },
+    {
+      "from": "packages/vue2/src/components/slider.js",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/range-input.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/range-input.tsx",
+      "request": "react-aria-components",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/range-input.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "./a11y",
+      "target": "packages/native/src/a11y.tsx"
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "./internal",
+      "target": "packages/native/src/internal.tsx"
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "./provider",
+      "target": "packages/native/src/provider.tsx"
+    }
+  ],
+  "DsRangeSlider": [
+    {
+      "from": "packages/vue2/src/components/RangeSlider.vue",
+      "request": "./slider.js",
+      "target": "packages/vue2/src/components/slider.js"
+    },
+    {
+      "from": "packages/vue2/src/components/slider.js",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/range-input.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/range-input.tsx",
+      "request": "react-aria-components",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/range-input.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "./a11y",
+      "target": "packages/native/src/a11y.tsx"
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "./internal",
+      "target": "packages/native/src/internal.tsx"
+    },
+    {
+      "from": "packages/native/src/range-input.tsx",
+      "request": "./provider",
+      "target": "packages/native/src/provider.tsx"
+    }
+  ],
+  "DsTimePicker": [
+    {
+      "from": "packages/vue2/src/components/TimePicker.vue",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/vue2/src/components/TimePicker.vue",
+      "request": "../source/form/Select.vue",
+      "target": "packages/vue2/src/source/form/Select.vue"
+    },
+    {
+      "from": "packages/vue2/src/components/TimePicker.vue",
+      "request": "../source/primitives/Button.vue",
+      "target": "packages/vue2/src/source/primitives/Button.vue"
+    },
+    {
+      "from": "packages/react/src/time-picker.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/time-picker.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/time-picker.tsx",
+      "request": "./select",
+      "target": "packages/react/src/select.tsx"
+    },
+    {
+      "from": "packages/react/src/time-picker.tsx",
+      "request": "./button",
+      "target": "packages/react/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/time-picker.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/time-picker.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/time-picker.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/time-picker.tsx",
+      "request": "./select",
+      "target": "packages/native/src/select.tsx"
+    },
+    {
+      "from": "packages/native/src/time-picker.tsx",
+      "request": "./button",
+      "target": "packages/native/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/time-picker.tsx",
+      "request": "./internal",
+      "target": "packages/native/src/internal.tsx"
+    }
+  ],
+  "DsQuantityStepper": [
+    {
+      "from": "packages/vue2/src/components/QuantityStepper.vue",
+      "request": "../source/primitives/Button.vue",
+      "target": "packages/vue2/src/source/primitives/Button.vue"
+    },
+    {
+      "from": "packages/vue2/src/components/QuantityStepper.vue",
+      "request": "./quantity.js",
+      "target": "packages/vue2/src/components/quantity.js"
+    },
+    {
+      "from": "packages/vue2/src/components/quantity.js",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/quantity-stepper.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/quantity-stepper.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/react/src/quantity-stepper.tsx",
+      "request": "./button",
+      "target": "packages/react/src/button.tsx"
+    },
+    {
+      "from": "packages/react/src/quantity-stepper.tsx",
+      "request": "./input",
+      "target": "packages/react/src/input.tsx"
+    },
+    {
+      "from": "packages/native/src/quantity-stepper.tsx",
+      "request": "react",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/quantity-stepper.tsx",
+      "request": "react-native",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/quantity-stepper.tsx",
+      "request": "@kjun/tokens",
+      "target": null
+    },
+    {
+      "from": "packages/native/src/quantity-stepper.tsx",
+      "request": "./button",
+      "target": "packages/native/src/button.tsx"
+    },
+    {
+      "from": "packages/native/src/quantity-stepper.tsx",
+      "request": "./provider",
+      "target": "packages/native/src/provider.tsx"
+    }
+  ]
+}

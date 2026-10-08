@@ -1,0 +1,10 @@
+{
+  "pageMax": 1200,
+  "readingMax": 720,
+  "mediumFrom": 768,
+  "wideFrom": 1200,
+  "columnsFrom": 1024,
+  "gutters": { "compact": 16, "medium": 24, "wide": 32 },
+  "gaps": { "compact": 16, "regular": 24 },
+  "dockGap": 16
+}

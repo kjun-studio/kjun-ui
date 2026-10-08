@@ -1,0 +1,49 @@
+.icon-search { display: grid; gap: 10px; margin: 24px 0 12px; }
+.icon-search > label { grid-column: 1 / -1; font-weight: 600; }
+.icon-search-input:not(:focus):not([aria-invalid="true"]) { border-color: var(--kjun-border); }
+.icon-catalog-hint { color: var(--kjun-text-secondary); font-size: var(--docs-type-small); line-height: 1.6; margin: 0 0 20px; }
+.icon-catalog-layout { min-width: 0; }
+.icon-results, .icon-detail { min-width: 0; }
+.icon-detail { grid-column: 1 / -1; padding: 20px; margin-block: 4px 12px; border: 1px solid var(--kjun-border); border-radius: 12px; background: var(--kjun-surface); overflow-wrap: anywhere; }
+.icon-detail > h3 { font-size: var(--docs-type-body); font-weight: 600; margin: 0 0 16px; }
+.icon-detail-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.icon-detail-settings { min-width: 0; }
+.icon-results-heading { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+.icon-results-heading h3 { font-size: var(--docs-type-small); margin: 0; }
+.icon-detail p { margin: 12px 0; line-height: 1.7; }
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 128px), 1fr)); gap: 8px; margin: 16px 0; }
+.icon-tile { min-width: 0; display: flex; flex-direction: column; gap: 6px; text-align: center; overflow-wrap: anywhere; font-size: var(--docs-type-small); line-height: 1.5; }
+.icon-card[aria-pressed="true"] { border-color: var(--kjun-brand); box-shadow: inset 0 0 0 1px var(--kjun-brand); }
+.icon-official { font-weight: 600; }
+.icon-support { color: var(--kjun-text-secondary); font-size: var(--docs-type-caption); }
+.icon-pagination { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.icon-pagination [aria-disabled="true"] { opacity: .5; }
+.icon-options { display: flex; gap: 16px; flex-wrap: wrap; align-items: start; }
+.icon-name pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+/* Both detail columns start on the same line. */
+.icon-name > .code-block { margin-top: 0; }
+.icon-detail-link a { text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 4px; }
+.icon-detail-link a:hover { text-decoration-color: currentColor; }
+.icon-selection-hint { color: var(--kjun-text-secondary); }
+.icon-principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 20px; margin: 24px 0; }
+.icon-principles article { min-width: 0; padding: 20px; border: 1px solid var(--kjun-border); border-radius: 12px; }
+.icon-principles h3 { font-size: var(--docs-type-body); line-height: 1.5; font-weight: 600; margin: 0 0 10px; }
+.icon-principles p { font-size: var(--docs-type-body); line-height: 1.75; margin: 0; overflow-wrap: anywhere; }
+.icon-principles a, .icon-guide-details a { text-decoration: underline; text-underline-offset: 3px; }
+.icon-rule-example { display: flex; align-items: center; gap: 10px; padding: 16px 0; font-size: var(--docs-type-body); line-height: 1.5; }
+.icon-rule-example svg { flex-shrink: 0; }
+.icon-principles .icon-rule-caption { color: var(--kjun-text-secondary); font-size: var(--docs-type-small); }
+.icon-meaning-pairs { display: flex; flex-wrap: wrap; gap: 12px 20px; margin-top: 16px; font-size: var(--docs-type-small); }
+.icon-meaning-pairs span { display: inline-flex; gap: 6px; align-items: center; }
+.icon-guide-details { border-top: 1px solid var(--kjun-border); margin: 16px 0; }
+.icon-guide-details summary { padding: 16px 0; cursor: pointer; font-size: var(--docs-type-body); line-height: 1.6; font-weight: 600; }
+.icon-guide-details summary:focus-visible { outline: 2px solid var(--kjun-focus-ring); outline-offset: 2px; }
+.icon-guide-details > div { padding-bottom: 12px; }
+.icon-guide-details p { font-size: var(--docs-type-body); line-height: 1.75; margin: 12px 0; }
+.icon-guide-details th, .icon-guide-details td { font-size: var(--docs-type-small); }
+@media (max-width: 700px) { .icon-detail-content { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+@media (max-width: 480px) { .icon-search { grid-template-columns: minmax(0, 1fr); } .icon-detail { padding: 12px; } }
+
+.icon-registration-code { margin-top: 16px; min-width: 0; }
+.icon-registration-code summary { cursor: pointer; font-weight: 600; line-height: 1.6; }
+.icon-registration-code pre { max-height: 320px; overflow: auto; }

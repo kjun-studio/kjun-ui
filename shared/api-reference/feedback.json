@@ -1,0 +1,292 @@
+{
+  "DsAlert": {
+    "vue2": [
+      "formatters",
+      "type",
+      "variant",
+      "size",
+      "title",
+      "closable"
+    ],
+    "react": [
+      "type",
+      "variant",
+      "size",
+      "title",
+      "closable",
+      "children",
+      "actions",
+      "onClose"
+    ],
+    "native": [
+      "type",
+      "variant",
+      "size",
+      "title",
+      "closable",
+      "children",
+      "actions",
+      "onClose"
+    ]
+  },
+  "DsChartSkeleton": {
+    "vue2": [
+      "loadingText",
+      "formatters",
+      "kind",
+      "height"
+    ],
+    "react": [
+      "loadingText",
+      "kind",
+      "height"
+    ],
+    "native": [
+      "loadingText",
+      "kind",
+      "height"
+    ]
+  },
+  "DsDataState": {
+    "vue2": [
+      "queryKey",
+      "resultKey",
+      "loading",
+      "error",
+      "hasLoadedOnce",
+      "formatters",
+      "preserveContent",
+      "refreshing",
+      "refreshError",
+      "refreshingText",
+      "loadingPadding",
+      "empty",
+      "emptyText",
+      "emptyIcon",
+      "emptyActionText",
+      "loadingText",
+      "retryText",
+      "size",
+      "skeleton",
+      "skeletonType",
+      "skeletonCount"
+    ],
+    "react": [
+      "preserveContent",
+      "refreshing",
+      "refreshError",
+      "refreshingText",
+      "loadingPadding",
+      "empty",
+      "emptyText",
+      "emptyIcon",
+      "emptyActionText",
+      "loadingText",
+      "retryText",
+      "size",
+      "skeleton",
+      "skeletonType",
+      "skeletonCount",
+      "children",
+      "loadingContent",
+      "emptyContent",
+      "errorContent",
+      "onRetry",
+      "onEmptyAction",
+      "queryKey",
+      "resultKey",
+      "loading",
+      "error",
+      "hasLoadedOnce"
+    ],
+    "native": [
+      "preserveContent",
+      "refreshing",
+      "refreshError",
+      "refreshingText",
+      "loadingPadding",
+      "empty",
+      "emptyText",
+      "emptyIcon",
+      "emptyActionText",
+      "loadingText",
+      "retryText",
+      "size",
+      "skeleton",
+      "skeletonType",
+      "skeletonCount",
+      "children",
+      "loadingContent",
+      "emptyContent",
+      "errorContent",
+      "onRetry",
+      "onEmptyAction",
+      "queryKey",
+      "resultKey",
+      "loading",
+      "error",
+      "hasLoadedOnce"
+    ]
+  },
+  "DsErrorBoundary": {
+    "vue2": [
+      "formatters",
+      "fallbackMessage"
+    ],
+    "react": [
+      "children",
+      "fallbackMessage",
+      "fallback",
+      "onError",
+      "onReset"
+    ],
+    "native": [
+      "children",
+      "fallbackMessage",
+      "fallback",
+      "onError",
+      "onReset"
+    ]
+  },
+  "DsFormSkeleton": {
+    "vue2": [
+      "formatters",
+      "fields",
+      "columns",
+      "multiline",
+      "size"
+    ],
+    "react": [
+      "fields",
+      "columns",
+      "multiline",
+      "size"
+    ],
+    "native": [
+      "fields",
+      "columns",
+      "multiline",
+      "size"
+    ]
+  },
+  "DsListSkeleton": {
+    "vue2": [
+      "formatters",
+      "rows",
+      "variant",
+      "avatar",
+      "avatarSize",
+      "quote"
+    ],
+    "react": [
+      "rows",
+      "variant",
+      "avatar",
+      "avatarSize",
+      "quote"
+    ],
+    "native": [
+      "rows",
+      "variant",
+      "avatar",
+      "avatarSize",
+      "quote"
+    ]
+  },
+  "DsProgress": {
+    "vue2": [
+      "formatters",
+      "value",
+      "max",
+      "size",
+      "variant",
+      "showLabel",
+      "label"
+    ],
+    "react": [
+      "value",
+      "max",
+      "size",
+      "variant",
+      "showLabel",
+      "label",
+      "subLabel"
+    ],
+    "native": [
+      "value",
+      "max",
+      "size",
+      "variant",
+      "showLabel",
+      "label",
+      "subLabel"
+    ]
+  },
+  "DsSkeleton": {
+    "vue2": [
+      "formatters",
+      "type",
+      "rows",
+      "columns",
+      "height",
+      "width",
+      "animated",
+      "rounded"
+    ],
+    "react": [
+      "type",
+      "rows",
+      "columns",
+      "height",
+      "width",
+      "animated",
+      "rounded"
+    ],
+    "native": [
+      "type",
+      "rows",
+      "columns",
+      "height",
+      "width",
+      "animated",
+      "rounded"
+    ]
+  },
+  "DsSpinner": {
+    "vue2": [
+      "formatters",
+      "size",
+      "text"
+    ],
+    "react": [
+      "size",
+      "text"
+    ],
+    "native": [
+      "size",
+      "text"
+    ]
+  },
+  "DsTooltip": {
+    "vue2": [
+      "formatters",
+      "content",
+      "placement",
+      "delay"
+    ],
+    "react": [
+      "content",
+      "placement",
+      "delay",
+      "children"
+    ],
+    "native": [
+      "content",
+      "placement",
+      "delay",
+      "children",
+      "onPress",
+      "disabled"
+    ]
+  }
+}

@@ -1,0 +1,1608 @@
+[
+  {
+    "role": "brand",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-brand",
+    "upstreamAliases": [
+      "--brand"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/extensions.css",
+      "packages/tokens/src/market.css",
+      "packages/tokens/src/motion.css",
+      "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
+      "packages/tokens/src/toast.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/MarketCards.vue",
+      "packages/vue2/src/source/data-display/ProgressCell.vue",
+      "packages/vue2/src/styles/forms.css",
+      "packages/react/src/actions.tsx",
+      "packages/native/src/actions.tsx",
+      "packages/native/src/app-navigation.tsx",
+      "packages/native/src/button.tsx",
+      "packages/native/src/choice-controls.tsx",
+      "packages/native/src/date-picker.tsx",
+      "packages/native/src/display-primitives.tsx",
+      "packages/native/src/dropdown.tsx",
+      "packages/native/src/market-cards.tsx",
+      "packages/native/src/market-table.tsx",
+      "packages/native/src/range-input.tsx",
+      "packages/native/src/select-options.tsx",
+      "packages/native/src/table-toolbar.tsx",
+      "packages/native/src/tabs.tsx",
+      "packages/native/src/toast.tsx"
+    ]
+  },
+  {
+    "role": "brandHover",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-brand-hover",
+    "upstreamAliases": [
+      "--brand-hover"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/extensions.css",
+      "packages/tokens/src/toast.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/button.tsx",
+      "packages/native/src/choice-controls.tsx",
+      "packages/native/src/display-primitives.tsx",
+      "packages/native/src/range-input.tsx"
+    ]
+  },
+  {
+    "role": "brandActive",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-brand-active",
+    "upstreamAliases": [
+      "--brand-active"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/extensions.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/button.tsx",
+      "packages/native/src/choice-controls.tsx",
+      "packages/native/src/range-input.tsx"
+    ]
+  },
+  {
+    "role": "background",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-background",
+    "upstreamAliases": [
+      "--bg-primary",
+      "--surface-background"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/table.css",
+      "packages/vue2/src/source/data-display/Skeleton.vue",
+      "packages/vue2/src/source/data-display/table/table.css",
+      "packages/native/src/skeleton-base.tsx",
+      "packages/native/src/table-cards.tsx"
+    ]
+  },
+  {
+    "role": "surface",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-surface",
+    "upstreamAliases": [
+      "--card-bg"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/data-state.css",
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/extensions.css",
+      "packages/tokens/src/kpi-hero.css",
+      "packages/tokens/src/kpi-row.css",
+      "packages/tokens/src/market.css",
+      "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
+      "packages/tokens/src/toast.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/KpiHero.vue",
+      "packages/vue2/src/source/data-display/KpiRow.vue",
+      "packages/vue2/src/source/data-display/table/table.css",
+      "packages/vue2/src/source/layout/Drawer.vue",
+      "packages/vue2/src/source/layout/Modal.vue",
+      "packages/vue2/src/source/primitives/ButtonGroup.vue",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/app-navigation.tsx",
+      "packages/native/src/button.tsx",
+      "packages/native/src/choice-controls.tsx",
+      "packages/native/src/data-state.tsx",
+      "packages/native/src/drawer.tsx",
+      "packages/native/src/floating-panel.tsx",
+      "packages/native/src/kpi-hero.tsx",
+      "packages/native/src/kpi-row.tsx",
+      "packages/native/src/list.tsx",
+      "packages/native/src/market-table.tsx",
+      "packages/native/src/modal.tsx",
+      "packages/native/src/navigation.tsx",
+      "packages/native/src/range-input.tsx",
+      "packages/native/src/selection-groups.tsx",
+      "packages/native/src/skeletons.tsx",
+      "packages/native/src/table-grid.tsx",
+      "packages/native/src/table-toolbar.tsx",
+      "packages/native/src/toast.tsx"
+    ]
+  },
+  {
+    "role": "secondary",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-secondary",
+    "upstreamAliases": [
+      "--bg-secondary"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/extensions.css",
+      "packages/tokens/src/market.css",
+      "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
+      "packages/tokens/src/toast.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/Deviation.vue",
+      "packages/vue2/src/source/data-display/HeatmapCell.vue",
+      "packages/vue2/src/source/data-display/MarketCards.vue",
+      "packages/vue2/src/source/data-display/Skeleton.vue",
+      "packages/vue2/src/source/layout/Modal.vue",
+      "packages/vue2/src/source/primitives/ButtonGroup.vue",
+      "packages/vue2/src/source/primitives/FilterGroup.vue",
+      "packages/react/src/financial-display.tsx",
+      "packages/native/src/chip.tsx",
+      "packages/native/src/display-primitives.tsx",
+      "packages/native/src/financial-display.tsx",
+      "packages/native/src/market-cards.tsx",
+      "packages/native/src/media.tsx",
+      "packages/native/src/navigation.tsx",
+      "packages/native/src/selection-groups.tsx",
+      "packages/native/src/skeleton-base.tsx",
+      "packages/native/src/table-grid.tsx",
+      "packages/native/src/table-toolbar.tsx"
+    ]
+  },
+  {
+    "role": "hover",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-hover",
+    "upstreamAliases": [
+      "--bg-hover"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/compound-controls.css",
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/extensions.css",
+      "packages/tokens/src/kpi-row.css",
+      "packages/tokens/src/market.css",
+      "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/KpiRow.vue",
+      "packages/vue2/src/source/data-display/table/table.css",
+      "packages/vue2/src/source/primitives/ButtonGroup.vue",
+      "packages/vue2/src/source/primitives/FilterGroup.vue",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/actions.tsx",
+      "packages/native/src/button.tsx",
+      "packages/native/src/display-primitives.tsx",
+      "packages/native/src/dropdown.tsx",
+      "packages/native/src/field-clear.tsx",
+      "packages/native/src/field-surface.ts",
+      "packages/native/src/list.tsx",
+      "packages/native/src/market-cards.tsx",
+      "packages/native/src/market-list.tsx",
+      "packages/native/src/market-table.tsx",
+      "packages/native/src/navigation.tsx",
+      "packages/native/src/quantity-stepper.tsx",
+      "packages/native/src/select-control.tsx",
+      "packages/native/src/select-options.tsx",
+      "packages/native/src/selection-groups.tsx",
+      "packages/native/src/table-cards.tsx",
+      "packages/native/src/tabs.tsx"
+    ]
+  },
+  {
+    "role": "active",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-active",
+    "upstreamAliases": [
+      "--bg-active"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/motion.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/button.tsx",
+      "packages/native/src/choice-controls.tsx",
+      "packages/native/src/display-primitives.tsx",
+      "packages/native/src/field-clear.tsx",
+      "packages/native/src/tabs.tsx"
+    ]
+  },
+  {
+    "role": "buttonSecondary",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-button-secondary",
+    "upstreamAliases": [],
+    "implementationFiles": [
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "buttonSecondaryHover",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-button-secondary-hover",
+    "upstreamAliases": [],
+    "implementationFiles": [
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "buttonSecondaryActive",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-button-secondary-active",
+    "upstreamAliases": [],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "text",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-text",
+    "upstreamAliases": [
+      "--text-primary"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/compound-controls.css",
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/data-state.css",
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/extensions.css",
+      "packages/tokens/src/kpi-hero.css",
+      "packages/tokens/src/kpi-row.css",
+      "packages/tokens/src/market.css",
+      "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
+      "packages/tokens/src/toast.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/HeatmapCell.vue",
+      "packages/vue2/src/source/data-display/KpiHero.vue",
+      "packages/vue2/src/source/data-display/KpiRow.vue",
+      "packages/vue2/src/source/data-display/table/table.css",
+      "packages/vue2/src/source/layout/Drawer.vue",
+      "packages/vue2/src/source/layout/Modal.vue",
+      "packages/vue2/src/source/primitives/ButtonGroup.vue",
+      "packages/vue2/src/source/primitives/FilterGroup.vue",
+      "packages/vue2/src/styles/forms.css",
+      "packages/react/src/date-picker.tsx",
+      "packages/native/src/actions.tsx",
+      "packages/native/src/button-group-motion.tsx",
+      "packages/native/src/button.tsx",
+      "packages/native/src/date-picker.tsx",
+      "packages/native/src/display-primitives.tsx",
+      "packages/native/src/dropdown.tsx",
+      "packages/native/src/field-surface.ts",
+      "packages/native/src/input.tsx",
+      "packages/native/src/internal.tsx",
+      "packages/native/src/kpi-hero.tsx",
+      "packages/native/src/kpi-row.tsx",
+      "packages/native/src/market-cards.tsx",
+      "packages/native/src/modal.tsx",
+      "packages/native/src/navigation.tsx",
+      "packages/native/src/number-display.tsx",
+      "packages/native/src/range-input.tsx",
+      "packages/native/src/select-control.tsx",
+      "packages/native/src/selection-groups.tsx",
+      "packages/native/src/skeletons.tsx",
+      "packages/native/src/table-grid.tsx",
+      "packages/native/src/table-view.tsx",
+      "packages/native/src/tabs.tsx"
+    ]
+  },
+  {
+    "role": "textSecondary",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-text-secondary",
+    "upstreamAliases": [
+      "--text-secondary"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/compound-controls.css",
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/data-state.css",
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/extensions.css",
+      "packages/tokens/src/financial.css",
+      "packages/tokens/src/kpi-hero.css",
+      "packages/tokens/src/kpi-row.css",
+      "packages/tokens/src/market.css",
+      "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
+      "packages/tokens/src/toast.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/Deviation.vue",
+      "packages/vue2/src/source/data-display/KpiHero.vue",
+      "packages/vue2/src/source/data-display/KpiRow.vue",
+      "packages/vue2/src/source/data-display/MarketCards.vue",
+      "packages/vue2/src/source/data-display/ProgressCell.vue",
+      "packages/vue2/src/source/data-display/table/table.css",
+      "packages/vue2/src/source/form/FormGroup.vue",
+      "packages/vue2/src/source/layout/Drawer.vue",
+      "packages/vue2/src/source/layout/Modal.vue",
+      "packages/vue2/src/source/primitives/FilterGroup.vue",
+      "packages/vue2/src/styles/forms.css",
+      "packages/react/src/date-picker.tsx",
+      "packages/native/src/actions.tsx",
+      "packages/native/src/app-navigation.tsx",
+      "packages/native/src/button-group-motion.tsx",
+      "packages/native/src/button.tsx",
+      "packages/native/src/data-state.tsx",
+      "packages/native/src/display-primitives.tsx",
+      "packages/native/src/dropdown.tsx",
+      "packages/native/src/field-clear.tsx",
+      "packages/native/src/field-surface.ts",
+      "packages/native/src/financial-display.tsx",
+      "packages/native/src/input.tsx",
+      "packages/native/src/kpi-hero.tsx",
+      "packages/native/src/kpi-row.tsx",
+      "packages/native/src/list.tsx",
+      "packages/native/src/market-cards.tsx",
+      "packages/native/src/media.tsx",
+      "packages/native/src/navigation.tsx",
+      "packages/native/src/number-display.tsx",
+      "packages/native/src/selection-groups.tsx",
+      "packages/native/src/skeletons.tsx",
+      "packages/native/src/table-grid.tsx",
+      "packages/native/src/table-view.tsx",
+      "packages/native/src/tabs.tsx",
+      "packages/native/src/time-picker.tsx",
+      "packages/native/src/toast.tsx"
+    ]
+  },
+  {
+    "role": "textTertiary",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-text-tertiary",
+    "upstreamAliases": [
+      "--text-tertiary"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/data-state.css",
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/kpi-hero.css",
+      "packages/tokens/src/kpi-row.css",
+      "packages/tokens/src/market.css",
+      "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
+      "packages/tokens/src/toast.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/KpiHero.vue",
+      "packages/vue2/src/source/data-display/KpiRow.vue",
+      "packages/vue2/src/source/data-display/Sparkline.vue",
+      "packages/vue2/src/source/data-display/table/table.css",
+      "packages/vue2/src/styles/forms.css",
+      "packages/react/src/actions.tsx",
+      "packages/react/src/financial-display.tsx",
+      "packages/react/src/kpi.tsx",
+      "packages/react/src/number-display.tsx",
+      "packages/react/src/select-control.tsx",
+      "packages/native/src/actions.tsx",
+      "packages/native/src/combobox.tsx",
+      "packages/native/src/data-state.tsx",
+      "packages/native/src/date-picker.tsx",
+      "packages/native/src/display-primitives.tsx",
+      "packages/native/src/field-surface.ts",
+      "packages/native/src/financial-display.tsx",
+      "packages/native/src/kpi-hero.tsx",
+      "packages/native/src/kpi-row.tsx",
+      "packages/native/src/market-cards.tsx",
+      "packages/native/src/market-list.tsx",
+      "packages/native/src/market-parts.tsx",
+      "packages/native/src/market-skeleton.tsx",
+      "packages/native/src/market-table.tsx",
+      "packages/native/src/navigation.tsx",
+      "packages/native/src/number-display.tsx",
+      "packages/native/src/select-control.tsx",
+      "packages/native/src/table-cards.tsx",
+      "packages/native/src/toast.tsx"
+    ]
+  },
+  {
+    "role": "textDisabled",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-text-disabled",
+    "upstreamAliases": [
+      "--text-disabled"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/compound-controls.css",
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/styles/forms.css",
+      "packages/react/src/date-picker.tsx",
+      "packages/react/src/financial-display.tsx",
+      "packages/react/src/select-control.tsx",
+      "packages/native/src/button.tsx",
+      "packages/native/src/date-picker.tsx",
+      "packages/native/src/field-clear.tsx",
+      "packages/native/src/field-surface.ts",
+      "packages/native/src/financial-display.tsx",
+      "packages/native/src/input.tsx",
+      "packages/native/src/select-control.tsx",
+      "packages/native/src/textarea.tsx",
+      "packages/native/src/time-picker.tsx"
+    ]
+  },
+  {
+    "role": "inverse",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-inverse",
+    "upstreamAliases": [
+      "--text-inverse"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/vue2/src/source/primitives/FilterGroup.vue",
+      "packages/native/src/button.tsx",
+      "packages/native/src/selection-groups.tsx"
+    ]
+  },
+  {
+    "role": "border",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-border",
+    "upstreamAliases": [
+      "--border-primary",
+      "--border"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/data-state.css",
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/extensions.css",
+      "packages/tokens/src/kpi-hero.css",
+      "packages/tokens/src/kpi-row.css",
+      "packages/tokens/src/market.css",
+      "packages/tokens/src/navigation.css",
+      "packages/tokens/src/reset.css",
+      "packages/tokens/src/table.css",
+      "packages/tokens/src/toast.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/ChartSkeleton.vue",
+      "packages/vue2/src/source/data-display/KpiHero.vue",
+      "packages/vue2/src/source/data-display/KpiRow.vue",
+      "packages/vue2/src/source/data-display/ListSkeleton.vue",
+      "packages/vue2/src/source/data-display/Skeleton.vue",
+      "packages/vue2/src/source/data-display/table/table.css",
+      "packages/vue2/src/source/layout/Modal.vue",
+      "packages/vue2/src/styles/forms.css",
+      "packages/react/src/market-panel.tsx",
+      "packages/react/src/skeletons.tsx",
+      "packages/native/src/combobox.tsx",
+      "packages/native/src/drawer.tsx",
+      "packages/native/src/dropdown.tsx",
+      "packages/native/src/floating-panel.tsx",
+      "packages/native/src/kpi-hero.tsx",
+      "packages/native/src/kpi-row.tsx",
+      "packages/native/src/market-cards.tsx",
+      "packages/native/src/market-list.tsx",
+      "packages/native/src/market-panel.tsx",
+      "packages/native/src/market-skeleton.tsx",
+      "packages/native/src/market-table.tsx",
+      "packages/native/src/modal.tsx",
+      "packages/native/src/navigation.tsx",
+      "packages/native/src/range-input.tsx",
+      "packages/native/src/select-control.tsx",
+      "packages/native/src/skeleton-base.tsx",
+      "packages/native/src/skeletons.tsx",
+      "packages/native/src/table-cards.tsx",
+      "packages/native/src/table-grid.tsx",
+      "packages/native/src/table-toolbar.tsx",
+      "packages/native/src/toast.tsx"
+    ]
+  },
+  {
+    "role": "borderSecondary",
+    "contract": "common",
+    "required": false,
+    "fallback": "border",
+    "variable": "--kjun-border-secondary",
+    "upstreamAliases": [
+      "--border-secondary"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/table.css",
+      "packages/vue2/src/source/layout/Modal.vue",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/choice-controls.tsx"
+    ]
+  },
+  {
+    "role": "danger",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-danger",
+    "upstreamAliases": [
+      "--danger"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/compound-controls.css",
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/ProgressCell.vue",
+      "packages/vue2/src/source/data-display/Sparkline.vue",
+      "packages/vue2/src/source/form/FormGroup.vue",
+      "packages/vue2/src/styles/forms.css",
+      "packages/react/src/input.tsx",
+      "packages/native/src/button.tsx",
+      "packages/native/src/combobox.tsx",
+      "packages/native/src/dropdown.tsx",
+      "packages/native/src/field-surface.ts",
+      "packages/native/src/financial-display.tsx",
+      "packages/native/src/input.tsx",
+      "packages/native/src/quantity-stepper.tsx",
+      "packages/native/src/time-picker.tsx"
+    ]
+  },
+  {
+    "role": "dangerDark",
+    "contract": "common",
+    "required": false,
+    "fallback": "danger",
+    "variable": "--kjun-danger-dark",
+    "upstreamAliases": [
+      "--danger-dark"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "dangerActive",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-danger-active",
+    "upstreamAliases": [],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "dangerBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-danger-bg",
+    "upstreamAliases": [
+      "--danger-bg"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/button.tsx",
+      "packages/native/src/dropdown.tsx"
+    ]
+  },
+  {
+    "role": "success",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-success",
+    "upstreamAliases": [
+      "--success"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/ProgressCell.vue",
+      "packages/vue2/src/source/data-display/Sparkline.vue",
+      "packages/react/src/actions.tsx",
+      "packages/native/src/actions.tsx",
+      "packages/native/src/button.tsx",
+      "packages/native/src/financial-display.tsx"
+    ]
+  },
+  {
+    "role": "successDark",
+    "contract": "common",
+    "required": false,
+    "fallback": "success",
+    "variable": "--kjun-success-dark",
+    "upstreamAliases": [
+      "--success-dark"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "successActive",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-success-active",
+    "upstreamAliases": [],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "warning",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-warning",
+    "upstreamAliases": [
+      "--warning"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/financial.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/ProgressCell.vue",
+      "packages/react/src/financial-display.tsx",
+      "packages/native/src/button.tsx",
+      "packages/native/src/financial-display.tsx"
+    ]
+  },
+  {
+    "role": "warningDark",
+    "contract": "common",
+    "required": false,
+    "fallback": "warning",
+    "variable": "--kjun-warning-dark",
+    "upstreamAliases": [
+      "--warning-dark"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "warningActive",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-warning-active",
+    "upstreamAliases": [],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "overlay",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-overlay",
+    "upstreamAliases": [
+      "--overlay"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/layout/Drawer.vue",
+      "packages/vue2/src/source/layout/Modal.vue",
+      "packages/native/src/drawer.tsx",
+      "packages/native/src/modal.tsx"
+    ]
+  },
+  {
+    "role": "shadow",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-shadow",
+    "upstreamAliases": [],
+    "implementationFiles": []
+  },
+  {
+    "role": "shadowSubtle",
+    "contract": "common",
+    "required": false,
+    "fallback": "shadow",
+    "variable": "--kjun-shadow-subtle",
+    "upstreamAliases": [],
+    "implementationFiles": []
+  },
+  {
+    "role": "tertiary",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-tertiary",
+    "upstreamAliases": [
+      "--bg-tertiary"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/financial.css",
+      "packages/vue2/src/source/data-display/ProgressCell.vue",
+      "packages/native/src/financial-display.tsx"
+    ]
+  },
+  {
+    "role": "borderStrong",
+    "contract": "common",
+    "required": false,
+    "fallback": "border",
+    "variable": "--kjun-border-strong",
+    "upstreamAliases": [
+      "--border-strong"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/table.css",
+      "packages/vue2/src/source/layout/Modal.vue",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/choice-controls.tsx"
+    ]
+  },
+  {
+    "role": "inputBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-input-bg",
+    "upstreamAliases": [
+      "--input-bg"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/compound-controls.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/field-surface.ts",
+      "packages/native/src/quantity-stepper.tsx",
+      "packages/native/src/time-picker.tsx"
+    ]
+  },
+  {
+    "role": "inputPlaceholder",
+    "contract": "common",
+    "required": false,
+    "fallback": "textTertiary",
+    "variable": "--kjun-input-placeholder",
+    "upstreamAliases": [
+      "--input-placeholder"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/styles/forms.css",
+      "packages/react/src/date-picker.tsx",
+      "packages/native/src/date-picker.tsx",
+      "packages/native/src/input.tsx",
+      "packages/native/src/select-control.tsx",
+      "packages/native/src/textarea.tsx"
+    ]
+  },
+  {
+    "role": "inputBorderFocus",
+    "contract": "common",
+    "required": false,
+    "fallback": "focusRing",
+    "variable": "--kjun-input-border-focus",
+    "upstreamAliases": [
+      "--input-border-focus"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/field-surface.ts"
+    ]
+  },
+  {
+    "role": "successAccent",
+    "contract": "common",
+    "required": false,
+    "fallback": "success",
+    "variable": "--kjun-success-accent",
+    "upstreamAliases": [
+      "--success-accent"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "successLight",
+    "contract": "common",
+    "required": false,
+    "fallback": "successBg",
+    "variable": "--kjun-success-light",
+    "upstreamAliases": [
+      "--success-light"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "successBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-success-bg",
+    "upstreamAliases": [
+      "--success-bg"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "dangerAccent",
+    "contract": "common",
+    "required": false,
+    "fallback": "danger",
+    "variable": "--kjun-danger-accent",
+    "upstreamAliases": [
+      "--danger-accent"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "dangerLight",
+    "contract": "common",
+    "required": false,
+    "fallback": "dangerBg",
+    "variable": "--kjun-danger-light",
+    "upstreamAliases": [
+      "--danger-light"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "warningAccent",
+    "contract": "common",
+    "required": false,
+    "fallback": "warning",
+    "variable": "--kjun-warning-accent",
+    "upstreamAliases": [
+      "--warning-accent"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "warningLight",
+    "contract": "common",
+    "required": false,
+    "fallback": "warningBg",
+    "variable": "--kjun-warning-light",
+    "upstreamAliases": [
+      "--warning-light"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "warningBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-warning-bg",
+    "upstreamAliases": [
+      "--warning-bg"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "info",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-info",
+    "upstreamAliases": [
+      "--info"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "infoAccent",
+    "contract": "common",
+    "required": false,
+    "fallback": "info",
+    "variable": "--kjun-info-accent",
+    "upstreamAliases": [
+      "--info-accent"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "infoLight",
+    "contract": "common",
+    "required": false,
+    "fallback": "infoBg",
+    "variable": "--kjun-info-light",
+    "upstreamAliases": [
+      "--info-light"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "infoDark",
+    "contract": "common",
+    "required": false,
+    "fallback": "info",
+    "variable": "--kjun-info-dark",
+    "upstreamAliases": [
+      "--info-dark"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "infoBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-info-bg",
+    "upstreamAliases": [
+      "--info-bg"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "focusRing",
+    "contract": "common",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-focus-ring",
+    "upstreamAliases": [
+      "--focus-ring"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/compound-controls.css",
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/extensions.css",
+      "packages/tokens/src/financial.css",
+      "packages/tokens/src/kpi-row.css",
+      "packages/tokens/src/market.css",
+      "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
+      "packages/tokens/src/toast.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/KpiRow.vue",
+      "packages/vue2/src/source/data-display/MarketCards.vue",
+      "packages/vue2/src/source/primitives/ButtonGroup.vue",
+      "packages/vue2/src/source/primitives/FilterGroup.vue",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/a11y.tsx",
+      "packages/native/src/button.tsx",
+      "packages/native/src/choice-controls.tsx",
+      "packages/native/src/field-surface.ts",
+      "packages/native/src/quantity-stepper.tsx",
+      "packages/native/src/range-input.tsx",
+      "packages/native/src/time-picker.tsx"
+    ]
+  },
+  {
+    "role": "cardBorder",
+    "contract": "common",
+    "required": false,
+    "fallback": "border",
+    "variable": "--kjun-card-border",
+    "upstreamAliases": [
+      "--card-border"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "cardBgHover",
+    "contract": "common",
+    "required": false,
+    "fallback": "hover",
+    "variable": "--kjun-card-bg-hover",
+    "upstreamAliases": [
+      "--card-bg-hover"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "inputBorder",
+    "contract": "common",
+    "required": false,
+    "fallback": "border",
+    "variable": "--kjun-input-border",
+    "upstreamAliases": [
+      "--input-border"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "tableHeaderBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-table-header-bg",
+    "upstreamAliases": [
+      "--table-header-bg"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/table.css",
+      "packages/vue2/src/source/data-display/table/table.css",
+      "packages/native/src/table-grid.tsx"
+    ]
+  },
+  {
+    "role": "tableRowHover",
+    "contract": "common",
+    "required": false,
+    "fallback": "hover",
+    "variable": "--kjun-table-row-hover",
+    "upstreamAliases": [
+      "--table-row-hover"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/table.css",
+      "packages/native/src/table-grid.tsx"
+    ]
+  },
+  {
+    "role": "tableBorder",
+    "contract": "common",
+    "required": false,
+    "fallback": "border",
+    "variable": "--kjun-table-border",
+    "upstreamAliases": [
+      "--table-border"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "skeleton",
+    "contract": "common",
+    "required": false,
+    "fallback": "active",
+    "variable": "--kjun-skeleton",
+    "upstreamAliases": [
+      "--skeleton"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/data-state.css",
+      "packages/tokens/src/display.css",
+      "packages/vue2/src/source/data-display/ChartSkeleton.vue",
+      "packages/vue2/src/source/data-display/Skeleton.vue",
+      "packages/react/src/skeletons.tsx",
+      "packages/native/src/skeleton-base.tsx",
+      "packages/native/src/skeletons.tsx"
+    ]
+  },
+  {
+    "role": "skeletonShine",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-skeleton-shine",
+    "upstreamAliases": [
+      "--skeleton-shine"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/display.css",
+      "packages/vue2/src/source/data-display/Skeleton.vue",
+      "packages/native/src/skeleton-base.tsx"
+    ]
+  },
+  {
+    "role": "divider",
+    "contract": "common",
+    "required": false,
+    "fallback": "border",
+    "variable": "--kjun-divider",
+    "upstreamAliases": [
+      "--divider"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/extensions.css",
+      "packages/native/src/list.tsx"
+    ]
+  },
+  {
+    "role": "overlayLight",
+    "contract": "common",
+    "required": false,
+    "fallback": "overlay",
+    "variable": "--kjun-overlay-light",
+    "upstreamAliases": [
+      "--overlay-light"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "chartGrid",
+    "contract": "common",
+    "required": false,
+    "fallback": "border",
+    "variable": "--kjun-chart-grid",
+    "upstreamAliases": [
+      "--chart-grid"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "chartAxis",
+    "contract": "common",
+    "required": false,
+    "fallback": "textTertiary",
+    "variable": "--kjun-chart-axis",
+    "upstreamAliases": [
+      "--chart-axis"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "chartTooltipBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "text",
+    "variable": "--kjun-chart-tooltip-bg",
+    "upstreamAliases": [
+      "--chart-tooltip-bg"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/native/src/floating-panel.tsx",
+      "packages/native/src/popover.tsx"
+    ]
+  },
+  {
+    "role": "chartTooltipText",
+    "contract": "common",
+    "required": false,
+    "fallback": "surface",
+    "variable": "--kjun-chart-tooltip-text",
+    "upstreamAliases": [
+      "--chart-tooltip-text"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/native/src/popover.tsx"
+    ]
+  },
+  {
+    "role": "cardAccentStart",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-card-accent-start",
+    "upstreamAliases": [
+      "--card-accent-start"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "cardAccentEnd",
+    "contract": "common",
+    "required": false,
+    "fallback": "surface",
+    "variable": "--kjun-card-accent-end",
+    "upstreamAliases": [
+      "--card-accent-end"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "cardSubtleStart",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-card-subtle-start",
+    "upstreamAliases": [
+      "--card-subtle-start"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "cardSubtleEnd",
+    "contract": "common",
+    "required": false,
+    "fallback": "surface",
+    "variable": "--kjun-card-subtle-end",
+    "upstreamAliases": [
+      "--card-subtle-end"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "cardSubtleBorder",
+    "contract": "common",
+    "required": false,
+    "fallback": "border",
+    "variable": "--kjun-card-subtle-border",
+    "upstreamAliases": [
+      "--card-subtle-border"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "successLightEnd",
+    "contract": "common",
+    "required": false,
+    "fallback": "successLight",
+    "variable": "--kjun-success-light-end",
+    "upstreamAliases": [
+      "--success-light-end"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "warningLightEnd",
+    "contract": "common",
+    "required": false,
+    "fallback": "warningLight",
+    "variable": "--kjun-warning-light-end",
+    "upstreamAliases": [
+      "--warning-light-end"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "dangerLightEnd",
+    "contract": "common",
+    "required": false,
+    "fallback": "dangerLight",
+    "variable": "--kjun-danger-light-end",
+    "upstreamAliases": [
+      "--danger-light-end"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "glassBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "surface",
+    "variable": "--kjun-glass-bg",
+    "upstreamAliases": [
+      "--glass-bg"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "glassBorder",
+    "contract": "common",
+    "required": false,
+    "fallback": "border",
+    "variable": "--kjun-glass-border",
+    "upstreamAliases": [
+      "--glass-border"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "brandSubtleBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-brand-subtle-bg",
+    "upstreamAliases": [
+      "--brand-subtle-bg"
+    ],
+    "implementationFiles": [
+      "packages/native/src/display-primitives.tsx"
+    ]
+  },
+  {
+    "role": "brandLight",
+    "contract": "common",
+    "required": false,
+    "fallback": "border",
+    "variable": "--kjun-brand-light",
+    "upstreamAliases": [
+      "--brand-light"
+    ],
+    "implementationFiles": [
+      "packages/native/src/display-primitives.tsx"
+    ]
+  },
+  {
+    "role": "selectedBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "active",
+    "variable": "--kjun-selected-bg",
+    "upstreamAliases": [
+      "--selected-bg"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/tokens/src/table.css",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/dropdown.tsx",
+      "packages/native/src/select-options.tsx",
+      "packages/native/src/table-toolbar.tsx"
+    ]
+  },
+  {
+    "role": "onBrand",
+    "contract": "common",
+    "required": false,
+    "fallback": "inverse",
+    "variable": "--kjun-on-brand",
+    "upstreamAliases": [
+      "--on-brand"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/extensions.css",
+      "packages/tokens/src/market.css",
+      "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
+      "packages/tokens/src/web.css",
+      "packages/vue2/src/source/data-display/MarketCards.vue",
+      "packages/vue2/src/styles/forms.css",
+      "packages/native/src/app-navigation.tsx",
+      "packages/native/src/button.tsx",
+      "packages/native/src/choice-controls.tsx",
+      "packages/native/src/date-picker.tsx",
+      "packages/native/src/market-cards.tsx"
+    ]
+  },
+  {
+    "role": "onDanger",
+    "contract": "common",
+    "required": false,
+    "fallback": "inverse",
+    "variable": "--kjun-on-danger",
+    "upstreamAliases": [
+      "--on-danger"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "onSuccess",
+    "contract": "common",
+    "required": false,
+    "fallback": "inverse",
+    "variable": "--kjun-on-success",
+    "upstreamAliases": [
+      "--on-success"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "onWarning",
+    "contract": "common",
+    "required": false,
+    "fallback": "inverse",
+    "variable": "--kjun-on-warning",
+    "upstreamAliases": [
+      "--on-warning"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/web.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "priceUp",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-price-up",
+    "upstreamAliases": [
+      "--price-up"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/price-motion.css",
+      "packages/tokens/src/table.css",
+      "packages/vue2/src/source/data-display/Deviation.vue",
+      "packages/vue2/src/source/data-display/Sparkline.vue",
+      "packages/vue2/src/source/data-display/table/table.css"
+    ]
+  },
+  {
+    "role": "priceUpLight",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-price-up-light",
+    "upstreamAliases": [
+      "--price-up-light"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "priceUpBg",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-price-up-bg",
+    "upstreamAliases": [
+      "--price-up-bg"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/price-motion.css",
+      "packages/tokens/src/table.css",
+      "packages/vue2/src/source/data-display/table/table.css"
+    ]
+  },
+  {
+    "role": "priceUpBgStrong",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-price-up-bg-strong",
+    "upstreamAliases": [
+      "--price-up-bg-strong"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/price-motion.css"
+    ]
+  },
+  {
+    "role": "priceDown",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-price-down",
+    "upstreamAliases": [
+      "--price-down"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/price-motion.css",
+      "packages/tokens/src/table.css",
+      "packages/vue2/src/source/data-display/Deviation.vue",
+      "packages/vue2/src/source/data-display/Sparkline.vue",
+      "packages/vue2/src/source/data-display/table/table.css"
+    ]
+  },
+  {
+    "role": "priceDownLight",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-price-down-light",
+    "upstreamAliases": [
+      "--price-down-light"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "priceDownBg",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-price-down-bg",
+    "upstreamAliases": [
+      "--price-down-bg"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/price-motion.css",
+      "packages/tokens/src/table.css",
+      "packages/vue2/src/source/data-display/table/table.css"
+    ]
+  },
+  {
+    "role": "priceDownBgStrong",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-price-down-bg-strong",
+    "upstreamAliases": [
+      "--price-down-bg-strong"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/price-motion.css"
+    ]
+  },
+  {
+    "role": "priceNeutral",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-price-neutral",
+    "upstreamAliases": [
+      "--price-neutral"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "priceNeutralBg",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-price-neutral-bg",
+    "upstreamAliases": [
+      "--price-neutral-bg"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "favorite",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-favorite",
+    "upstreamAliases": [
+      "--favorite"
+    ],
+    "implementationFiles": [
+      "packages/react/src/market-table.tsx"
+    ]
+  },
+  {
+    "role": "favoriteHover",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-favorite-hover",
+    "upstreamAliases": [
+      "--favorite-hover"
+    ],
+    "implementationFiles": []
+  },
+  {
+    "role": "interest",
+    "contract": "domain",
+    "required": true,
+    "fallback": null,
+    "variable": "--kjun-interest",
+    "upstreamAliases": [
+      "--interest"
+    ],
+    "implementationFiles": [
+      "packages/react/src/market-table.tsx"
+    ]
+  }
+]

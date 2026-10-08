@@ -1,0 +1,134 @@
+.kjun-animated-number,
+.ds-signed-value,
+.ds-deviation,
+.ds-deviation-badge .ds-badge,
+.ds-heatmap-cell,
+.ds-progress-cell-label,
+.kjun-signed-value,
+.kjun-deviation,
+.kjun-deviation-badge .kjun-badge,
+.kjun-heat-cell,
+.kjun-progress-cell {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-numeric);
+}
+/* The side is explicit: a lone unit (the delta percent) is both first and last child and would take both gaps. */
+.kjun-number-affix[data-side="prefix"] {
+  margin-right: var(--extension-financial-affix-gap);
+}
+.kjun-number-affix[data-side="suffix"] {
+  margin-left: var(--extension-financial-affix-gap);
+}
+.kjun-signed-value[data-tone="pill"] {
+  display: inline-block;
+  padding: var(--extension-financial-pill-padding-y) var(--extension-financial-pill-padding-x);
+  border-radius: var(--extension-financial-pill-radius);
+  font-size: var(--_kjun-type-control-small-size);
+  line-height: var(--_kjun-type-control-small-line);
+  font-weight: var(--_kjun-type-control-small-weight);
+  letter-spacing: var(--_kjun-type-control-small-tracking);
+}
+.kjun-signed-value .kjun-badge {
+  margin-left: var(--extension-financial-affix-gap);
+}
+.kjun-deviation,
+.kjun-heat-cell {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  border-radius: var(--extension-financial-cell-radius);
+  isolation: isolate;
+}
+.kjun-deviation[data-variant="pill"],
+.kjun-heat-cell {
+  padding: var(--extension-financial-pill-padding-y) var(--extension-financial-pill-padding-x);
+}
+.kjun-deviation {
+  font-size: var(--_kjun-type-body-size);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-deviation-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--extension-financial-badge-gap);
+}
+/* The signal icon is a 24px focusable tooltip target; negative margins keep the 12px icon's layout. */
+.kjun-deviation-signal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--extension-financial-warning-target-size);
+  height: var(--extension-financial-warning-target-size);
+  margin: calc((var(--extension-financial-warning-icon-size) - var(--extension-financial-warning-target-size)) / 2);
+  border-radius: var(--_kjun-geometry-radius-radius4);
+  color: var(--_kjun-color-warning);
+  outline: none;
+}
+/* Vue's tooltip wrapper is inline-block; as a flex box it centres the target instead of seating it on the baseline. */
+.ds-deviation-badge > .ds-tooltip-wrapper {
+  display: flex;
+}
+/* Freshness badges are tooltip targets: focusable, with the system ring around the badge. */
+.kjun-freshness {
+  display: inline-flex;
+  border-radius: var(--extension-badge-radius);
+  outline: none;
+}
+.kjun-freshness:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-offset);
+}
+.kjun-deviation-signal-slot {
+  width: var(--extension-financial-warning-icon-size);
+  flex-shrink: 0;
+}
+.kjun-deviation-signal:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-inset-offset);
+}
+.kjun-heat-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+.kjun-progress-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--extension-financial-progress-gap);
+  min-width: var(--extension-financial-progress-minimum-width);
+}
+.kjun-progress-cell > div {
+  flex: 1;
+  background: var(--_kjun-color-tertiary);
+  border-radius: var(--extension-financial-progress-radius);
+  overflow: hidden;
+}
+.kjun-progress-cell > div > span {
+  display: block;
+  height: 100%;
+  border-radius: var(--extension-financial-progress-radius);
+  transition: width var(--motion-progress) var(--ease-out);
+}
+.kjun-progress-cell > span {
+  font-size: var(--_kjun-type-caption-size);
+  color: var(--_kjun-color-text-secondary);
+  min-width: var(--extension-financial-progress-label-width);
+  text-align: right;
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+.kjun-sparkline {
+  display: inline-block;
+  vertical-align: middle;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kjun-progress-cell > div > span {
+    transition: none;
+  }
+}

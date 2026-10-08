@@ -1,0 +1,214 @@
+.kjun-list-section,.kjun-top-navigation,.kjun-bottom-navigation,.kjun-bottom-action-bar{min-width:0;max-width:100%;color:var(--_kjun-color-text);background:var(--_kjun-color-surface)}
+.kjun-list-heading{display:flex;align-items:center;justify-content:space-between;gap:var(--extension-list-gap);padding:var(--extension-list-padding)}.kjun-list-heading h3{font-size:var(--_kjun-type-card-title-size);margin:0;line-height:var(--_kjun-type-card-title-line);font-weight:var(--_kjun-type-card-title-weight);letter-spacing:var(--_kjun-type-card-title-tracking)}.kjun-list-heading p{margin:var(--_kjun-geometry-dimension-value4) 0 0;font-size:var(--_kjun-type-caption-size);color:var(--_kjun-color-text-secondary);overflow-wrap:anywhere;line-height:var(--_kjun-type-caption-line);font-weight:var(--_kjun-type-caption-weight);letter-spacing:var(--_kjun-type-caption-tracking)}
+.kjun-list{list-style:none;padding:0;margin:0}.kjun-list-row{display:flex;align-items:center;gap:var(--extension-list-gap);border-bottom:var(--_kjun-border-default-width) solid var(--_kjun-color-divider);min-width:0}.kjun-list-row:last-child{border-bottom:0}.kjun-list-main{display:flex;align-items:center;gap:var(--extension-list-gap);flex:1;min-width:0;min-height:var(--extension-list-minimum-height);padding:var(--extension-list-padding);text-align:start;color:inherit;text-decoration:none;background:transparent;border:0;font:inherit}.kjun-list-main:is(button,a):hover{background:var(--_kjun-color-hover)}.kjun-list-body{flex:1;min-width:0}.kjun-list-title,.kjun-list-description{display:block;overflow-wrap:anywhere;line-height:1.5}.kjun-list-title{font-size:var(--_kjun-type-label-size);line-height:var(--_kjun-type-label-line);font-weight:var(--_kjun-type-label-weight);letter-spacing:var(--_kjun-type-label-tracking)}.kjun-list-description{font-size:var(--_kjun-type-caption-size);color:var(--_kjun-color-text-secondary);line-height:var(--_kjun-type-caption-line);font-weight:var(--_kjun-type-caption-weight);letter-spacing:var(--_kjun-type-caption-tracking)}.kjun-list-leading{flex-shrink:0}.kjun-list-trailing{overflow-wrap:anywhere;max-width:35%}.kjun-list-actions{display:flex;flex-wrap:wrap;gap:var(--extension-list-actions-gap);padding-inline-end:var(--extension-list-actions-padding);max-width:45%}
+/* A disabled row disables its actions too, so the row never reads as partly available. */
+.kjun-list-actions[data-disabled]{opacity:var(--_kjun-state-opacity-disabled)}
+.kjun-navigation-actions{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:var(--extension-navigation-actions-gap);min-width:0}
+.kjun-image{position:relative;display:block;width:100%;overflow:hidden;background:var(--_kjun-color-secondary)}.kjun-image img{display:block;width:100%;height:100%;position:absolute;inset:0}.kjun-image-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--_kjun-color-text-secondary);font-weight: var(--_kjun-type-control-weight)}.kjun-avatar{display:inline-block;flex-shrink:0;border-radius:50%;overflow:hidden}
+/* Initials scale with the avatar (about 40% of its side) and show Latin initials in capitals. */
+.kjun-avatar .kjun-image-fallback{text-transform:uppercase;font-size:var(--_kjun-type-input-size);line-height:var(--_kjun-type-input-line)}
+.kjun-avatar[data-size=sm] .kjun-image-fallback{font-size:var(--_kjun-type-control-size);line-height:var(--_kjun-type-control-line)}
+.kjun-avatar[data-size=lg] .kjun-image-fallback{font-size:var(--_kjun-type-section-title-size);line-height:var(--_kjun-type-section-title-line)}.kjun-avatar[data-shape=square]{border-radius:var(--_kjun-geometry-radius-radius8)}
+.kjun-chip{--_kjun-chip-remove-icon:var(--extension-chip-remove-icon-sizes-md);display:inline-flex;max-width:100%;align-items:center;gap:var(--extension-chip-gap);min-height:var(--extension-chip-md);padding:var(--extension-chip-padding-y) var(--extension-chip-padding-x);border-radius:var(--extension-chip-radius);background:var(--_kjun-color-secondary);font-size:var(--extension-chip-typography-md-font-size-px);line-height:var(--extension-chip-typography-md-line-height-px);font-weight:var(--extension-chip-typography-md-font-weight);letter-spacing:var(--extension-chip-typography-md-letter-spacing-em)}
+.kjun-chip>span{overflow-wrap:anywhere;min-width:0}
+.kjun-chip[data-size=sm]{--_kjun-chip-remove-icon:var(--extension-chip-remove-icon-sizes-sm);min-height:var(--extension-chip-sm);font-size:var(--extension-chip-typography-sm-font-size-px);line-height:var(--extension-chip-typography-sm-line-height-px);font-weight:var(--extension-chip-typography-sm-font-weight);letter-spacing:var(--extension-chip-typography-sm-letter-spacing-em)}
+.kjun-chip[data-size=lg]{--_kjun-chip-remove-icon:var(--extension-chip-remove-icon-sizes-lg);min-height:var(--extension-chip-lg);font-size:var(--extension-chip-typography-lg-font-size-px);line-height:var(--extension-chip-typography-lg-line-height-px);font-weight:var(--extension-chip-typography-lg-font-weight);letter-spacing:var(--extension-chip-typography-lg-letter-spacing-em)}
+.kjun-chip button{display:flex;align-items:center;justify-content:center;min-width:var(--extension-chip-remove-size);min-height:var(--extension-chip-remove-size);border:0;border-radius:50%;padding:0;background:transparent;color:inherit;flex-shrink:0;margin-block:calc(var(--extension-chip-padding-y) * -1)}
+/* The removal target keeps its Web minimum but may overlap the chip padding, so sm stays at its own height.
+   Removable chips trim the trailing padding until the x glyph's outer inset matches the leading padding. */
+.kjun-chip[data-removable=true]{padding-right:calc(var(--extension-chip-padding-x) - (var(--extension-chip-remove-size) - var(--_kjun-chip-remove-icon)) / 2)}
+.kjun-chip button:hover{background:var(--_kjun-color-hover)}
+.kjun-chip[data-disabled=true]{opacity:var(--_kjun-state-opacity-disabled)}
+/* Links and page buttons use the system ring instead of the browser default; Vue Breadcrumb and Pagination use their own ds- classes. */
+.kjun-scope :is(.kjun-list-main,.kjun-bottom-navigation a,.kjun-chip button,.kjun-breadcrumb a,.ds-breadcrumb-link,.kjun-external-link,.ds-pagination-button):focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
+/* Kept out of the :is() above: its :not() would raise that whole rule over the inset overrides below. */
+.kjun-scope .kjun-pagination button:not(.kjun-select-trigger):focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
+/* Inline text links round the ring so it does not box the glyphs. */
+.kjun-scope :is(.kjun-breadcrumb a,.ds-breadcrumb-link,.kjun-external-link):focus-visible{border-radius:var(--_kjun-geometry-radius-radius4)}
+/* Draw the removal ring inside its circle so it stays within the chip outline and clear of the label. */
+.kjun-scope .kjun-chip button:focus-visible{outline-offset:var(--_kjun-state-focus-inset-offset)}
+/* Bottom bars meet the screen edges, so their items draw the ring inside, like tabs. */
+.kjun-scope .kjun-bottom-navigation a:focus-visible{outline-offset:var(--_kjun-state-focus-inset-offset)}
+.kjun-scope :is(.kjun-list-main[aria-disabled=true],.kjun-bottom-navigation a[aria-disabled=true],.kjun-list-main:disabled){opacity:var(--_kjun-state-opacity-disabled);cursor:default}
+.kjun-slider {
+  width:100%; min-width:var(--extension-slider-minimum-width); display:grid; gap:var(--_kjun-geometry-dimension-value4);
+}
+.kjun-slider-caption {
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:var(--_kjun-geometry-dimension-value12); min-width:0;
+}
+/* Same color as .kjun-form-label so slider labels match the other fields in a form; the value keeps the heavier weight. */
+.kjun-slider-label {
+  min-width:0; overflow-wrap:anywhere; color:var(--_kjun-color-text);
+  font-size:var(--_kjun-type-label-size); line-height:var(--_kjun-type-label-line);
+  font-weight:var(--_kjun-type-label-weight); letter-spacing:var(--_kjun-type-label-tracking);
+}
+.kjun-slider-value {
+  flex-shrink:0; margin-inline-start:auto; white-space:nowrap; color:var(--_kjun-color-text);
+  font-family:var(--font-numeric); font-variant-numeric:tabular-nums;
+  font-size:var(--_kjun-type-control-size); line-height:var(--_kjun-type-control-line);
+  font-weight:var(--_kjun-type-control-weight); letter-spacing:var(--_kjun-type-control-tracking);
+}
+.kjun-slider-track {
+  height:var(--_kjun-geometry-native-minimum-touch-target); position:relative; margin-inline:calc(var(--extension-slider-thumb) / 2);
+}
+.kjun-slider-rail, .kjun-slider-fill {
+  position:absolute; top:calc(50% - var(--extension-slider-track) / 2);
+  height:var(--extension-slider-track); border-radius:var(--_kjun-geometry-radius-radius9999);
+  left:0; right:0; background:var(--_kjun-color-border);
+}
+.kjun-slider-fill { background:var(--_kjun-color-brand); right:auto; }
+.kjun-slider-thumb {
+  top:50%; width:var(--extension-slider-thumb); height:var(--extension-slider-thumb);
+  border-radius:50%; border:var(--_kjun-border-control-width) solid var(--_kjun-color-brand);
+  background:var(--_kjun-color-surface); touch-action:none; cursor:grab;
+}
+.kjun-slider:not([data-disabled=true]) .kjun-slider-thumb:hover { border-color:var(--_kjun-color-brand-hover); }
+.kjun-slider:not([data-disabled=true]) .kjun-slider-thumb[data-dragging] { border-color:var(--_kjun-color-brand-active); cursor:grabbing; }
+.kjun-slider-thumb[data-focus-visible] { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-choice-offset); z-index:1; }
+.kjun-slider[data-disabled=true] { opacity:var(--_kjun-state-opacity-disabled); }
+.kjun-slider[data-disabled=true] .kjun-slider-thumb { cursor:default; }
+/* Native range inputs travel one thumb width less than their box. Extend the
+   input half a thumb past each rail end so both centers use the same geometry. */
+.kjun-vue-range input[type=range] {
+  position:absolute; top:0; left:calc(0px - var(--extension-slider-thumb) / 2);
+  width:calc(100% + var(--extension-slider-thumb)); height:100%; margin:0; padding:0;
+  border:0; appearance:none; background:transparent; pointer-events:none;
+}
+.kjun-vue-range input.kjun-vue-single { pointer-events:auto; cursor:pointer; }
+.kjun-vue-range input:focus-visible { outline:none; z-index:1; }
+.kjun-vue-range input::-webkit-slider-runnable-track { background:transparent; height:var(--extension-slider-track); }
+.kjun-vue-range input::-webkit-slider-thumb {
+  appearance:none; pointer-events:auto; box-sizing:border-box;
+  width:var(--extension-slider-thumb); height:var(--extension-slider-thumb);
+  margin-top:calc((var(--extension-slider-track) - var(--extension-slider-thumb)) / 2);
+  border:var(--_kjun-border-control-width) solid var(--_kjun-color-brand); border-radius:50%; background:var(--_kjun-color-surface); cursor:grab;
+}
+.kjun-vue-range input::-moz-range-track { background:transparent; height:var(--extension-slider-track); }
+.kjun-vue-range input::-moz-range-progress { background:transparent; }
+.kjun-vue-range input::-moz-range-thumb {
+  pointer-events:auto; box-sizing:border-box; width:var(--extension-slider-thumb); height:var(--extension-slider-thumb);
+  border:var(--_kjun-border-control-width) solid var(--_kjun-color-brand); border-radius:50%; background:var(--_kjun-color-surface); cursor:grab;
+}
+.kjun-vue-range input:not(:disabled):hover::-webkit-slider-thumb { border-color:var(--_kjun-color-brand-hover); }
+.kjun-vue-range input:not(:disabled):hover::-moz-range-thumb { border-color:var(--_kjun-color-brand-hover); }
+.kjun-vue-range input:not(:disabled):active::-webkit-slider-thumb { border-color:var(--_kjun-color-brand-active); cursor:grabbing; }
+.kjun-vue-range input:not(:disabled):active::-moz-range-thumb { border-color:var(--_kjun-color-brand-active); cursor:grabbing; }
+.kjun-vue-range input:focus-visible::-webkit-slider-thumb { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-choice-offset); }
+.kjun-vue-range input:focus-visible::-moz-range-thumb { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-choice-offset); }
+.kjun-vue-range input:disabled, .kjun-vue-range input:disabled::-webkit-slider-thumb { cursor:default; }
+.kjun-vue-range input:disabled::-moz-range-thumb { cursor:default; }
+
+.kjun-top-navigation { flex-shrink:0; }
+.kjun-navigation-content {
+  min-height:var(--extension-top-navigation-minimum-height); display:flex; flex-wrap:wrap; align-items:flex-start;
+  gap:var(--extension-top-navigation-gap);
+  padding:var(--extension-top-navigation-padding-y) var(--extension-top-navigation-padding-x);
+}
+.kjun-navigation-leading {
+  display:flex; flex-shrink:1; align-items:center; min-width:0; max-width:40%;
+  min-height:var(--extension-top-navigation-control-size);
+}
+.kjun-navigation-title {
+  flex:1 1 var(--extension-top-navigation-title-minimum-width); min-width:0; word-break:keep-all; overflow-wrap:anywhere;
+  padding-block:max(0px, calc((var(--extension-top-navigation-control-size) - var(--_kjun-type-section-title-line)) / 2));
+}
+.kjun-navigation-title strong {
+  display:block; font-size:var(--_kjun-type-section-title-size); line-height:var(--_kjun-type-section-title-line);
+  font-weight:var(--_kjun-type-control-weight); letter-spacing:var(--_kjun-type-section-title-tracking);
+}
+.kjun-navigation-title p {
+  margin:var(--extension-top-navigation-description-gap) 0 0; color:var(--_kjun-color-text-secondary);
+  font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line);
+  font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking);
+}
+.kjun-top-navigation .kjun-navigation-actions {
+  min-height:var(--extension-top-navigation-control-size); max-width:100%; flex-shrink:1; margin-inline-start:auto;
+  gap:var(--extension-top-navigation-actions-gap);
+}
+.kjun-navigation-leading > *, .kjun-top-navigation .kjun-navigation-actions > * { min-width:0; max-width:100%; }
+/* Icon-only controls at either end align their glyph, not their 44px target, with the content gutter;
+   the target extends into the padding. Text buttons keep their own padding. */
+.kjun-top-navigation {
+  --_kjun-navigation-edge-inset:calc((var(--extension-top-navigation-icon-size) - var(--extension-top-navigation-control-size)) / 2);
+}
+/* The slot containers move, not the controls: buttons cap themselves at max-width:100% of their container.
+   An end control is icon-only when its button label is empty or it is an IconToggle (Vue adds wrappers);
+   :has() cannot nest, so the label test is a descendant match. */
+.kjun-top-navigation .kjun-navigation-leading:has(> :first-child .kjun-button-label:empty, > .kjun-icon-toggle:first-child, > :first-child .kjun-icon-toggle) {
+  margin-inline-start:var(--_kjun-navigation-edge-inset);
+}
+.kjun-top-navigation .kjun-navigation-actions:has(> :last-child .kjun-button-label:empty, > .kjun-icon-toggle:last-child, > :last-child .kjun-icon-toggle) {
+  margin-inline-end:var(--_kjun-navigation-edge-inset);
+}
+.kjun-top-navigation .kjun-button { white-space:normal; overflow-wrap:anywhere; }
+.kjun-top-navigation .kjun-button-label { min-width:0; }
+.kjun-navigation-leading .kjun-button-label { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.kjun-bottom-navigation { display:flex; flex-shrink:0; }
+.kjun-bottom-navigation > a {
+  position:relative;
+  display:flex; flex:1; min-width:0; min-height:var(--extension-bottom-navigation-minimum-height);
+  flex-direction:column; align-items:center; justify-content:center;
+  gap:var(--extension-bottom-navigation-item-gap);
+  padding:var(--extension-bottom-navigation-item-padding-y) var(--extension-bottom-navigation-item-padding-x);
+  color:var(--_kjun-color-text-secondary); text-decoration:none; text-align:center;
+  font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line);
+  font-weight:var(--_kjun-type-label-weight); letter-spacing:var(--_kjun-type-caption-tracking);
+}
+.kjun-bottom-navigation[data-icons] > a { justify-content:flex-start; }
+.kjun-bottom-navigation > a[aria-current] { color:var(--_kjun-color-brand); font-weight:var(--_kjun-type-control-weight); }
+/* The indicator hangs under the label, so a neighbour's wrapped label does not pull it away. */
+.kjun-bottom-navigation > a[aria-current] .kjun-navigation-label::after {
+  content:""; position:absolute; top:calc(100% + var(--extension-bottom-navigation-indicator-offset));
+  left:50%; transform:translateX(-50%); width:var(--extension-bottom-navigation-indicator-width);
+  height:var(--extension-bottom-navigation-indicator-height); border-radius:var(--_kjun-geometry-radius-radius9999);
+  background:currentColor; pointer-events:none;
+}
+.kjun-navigation-icon {
+  position:relative; display:block; flex-shrink:0;
+  width:var(--extension-bottom-navigation-icon-size); height:var(--extension-bottom-navigation-icon-size);
+}
+.kjun-navigation-label { position:relative; max-width:100%; overflow-wrap:anywhere; }
+.kjun-navigation-badge {
+  position:absolute; top:calc(0px - var(--extension-bottom-navigation-badge-offset));
+  left:calc(100% - var(--extension-bottom-navigation-badge-overlap));
+  display:flex; align-items:center; justify-content:center; pointer-events:none; white-space:nowrap;
+  min-width:var(--extension-bottom-navigation-badge-minimum-size); min-height:var(--extension-bottom-navigation-badge-minimum-size);
+  padding:0 var(--extension-bottom-navigation-badge-padding-x); border-radius:var(--extension-bottom-navigation-badge-radius);
+  /* A filled count reads against the bar; the surface ring cuts it out of the icon strokes it overlaps. */
+  background:var(--_kjun-color-brand); color:var(--_kjun-color-on-brand);
+  box-shadow:0 0 0 var(--_kjun-border-control-width) var(--_kjun-color-surface);
+  font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-control-weight);
+}
+.kjun-navigation-label > .kjun-navigation-badge { left:100%; margin-left:var(--extension-bottom-navigation-badge-offset); }
+/* The query measures content width; outer insets are excluded. */
+.kjun-bottom-action-bar {
+  container:kjun-bottom-action / inline-size; flex-shrink:0;
+  padding:var(--extension-navigation-padding);
+}
+.kjun-bottom-action-content {
+  display:flex; flex-direction:column; gap:var(--extension-navigation-action-gap); min-width:0;
+}
+.kjun-bottom-action-content > p {
+  margin:0; min-width:0; color:var(--_kjun-color-text-secondary);
+  font-size:var(--_kjun-type-body-size); line-height:var(--_kjun-type-body-line);
+  font-weight:var(--_kjun-type-body-weight); letter-spacing:var(--_kjun-type-body-tracking);
+  word-break:keep-all; overflow-wrap:anywhere;
+}
+.kjun-bottom-action-content > .kjun-navigation-actions { max-width:100%; }
+@container kjun-bottom-action (width < token(responsive.bottomAction)) {
+  .kjun-bottom-action-content > .kjun-navigation-actions > .kjun-form-actions { width:100%; }
+  .kjun-bottom-action-content > .kjun-navigation-actions > .kjun-button:has(.kjun-button-label:not(:empty)):is([data-variant=primary],[data-variant=danger],[data-variant=success],[data-variant=warning]),
+  .kjun-bottom-action-content > .kjun-navigation-actions > .kjun-form-actions > .kjun-button:is([data-variant=primary],[data-variant=danger],[data-variant=success]) { flex-grow:1; }
+}
+@container kjun-bottom-action (width >= token(responsive.bottomAction)) {
+  .kjun-bottom-action-content { flex-direction:row; align-items:center; justify-content:space-between; }
+  .kjun-bottom-action-content > p { flex:1; }
+  .kjun-bottom-action-content > .kjun-navigation-actions { flex:0 1 auto; }
+}
+
+.kjun-list-heading p { margin-top:var(--extension-list-description-gap); }
+.kjun-list-description { margin-top:var(--extension-list-description-gap); }
+
+.kjun-list-heading > div { flex:1; min-width:0; overflow-wrap:anywhere; }

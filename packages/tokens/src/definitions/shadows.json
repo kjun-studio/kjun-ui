@@ -1,0 +1,78 @@
+{
+  "shadowScale": {
+    "none": [],
+    "contact": [
+      {
+        "offsetX": 0,
+        "offsetY": 1,
+        "blurRadius": 2,
+        "spreadDistance": 0,
+        "inset": false,
+        "colorRole": "shadowSubtle"
+      }
+    ],
+    "ambient": [
+      {
+        "offsetX": 0,
+        "offsetY": 2,
+        "blurRadius": 8,
+        "spreadDistance": 0,
+        "inset": false,
+        "colorRole": "shadowSubtle"
+      }
+    ]
+  },
+  "elevation": {
+    "flat": {
+      "$ref": "shadowScale.none"
+    },
+    "raised": {
+      "$ref": "shadowScale.contact"
+    },
+    "floating": {
+      "$ref": "shadowScale.ambient"
+    }
+  },
+  "card": {
+    "elevation": {
+      "flat": {
+        "$ref": "elevation.flat"
+      },
+      "raised": {
+        "$ref": "elevation.raised"
+      }
+    }
+  },
+  "modal": {
+    "elevation": {
+      "$ref": "elevation.floating"
+    }
+  },
+  "extensions": {
+    "menu": {
+      "elevation": {
+        "$ref": "elevation.floating"
+      }
+    },
+    "popover": {
+      "elevation": {
+        "$ref": "elevation.floating"
+      }
+    },
+    "drawer": {
+      "elevation": {
+        "$ref": "elevation.floating"
+      }
+    },
+    "toast": {
+      "elevation": {
+        "$ref": "elevation.flat"
+      }
+    },
+    "tooltip": {
+      "elevation": {
+        "$ref": "elevation.flat"
+      }
+    }
+  }
+}

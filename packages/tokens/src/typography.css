@@ -1,0 +1,89 @@
+/* Generated from definitions/typography.json. */
+.kjun-scope {
+  --_kjun-type-caption-size: 0.75rem;
+  --_kjun-type-caption-line: 1rem;
+  --_kjun-type-caption-weight: 400;
+  --_kjun-type-caption-tracking: 0em;
+  --_kjun-type-meta-size: 0.75rem;
+  --_kjun-type-meta-line: 1rem;
+  --_kjun-type-meta-weight: 500;
+  --_kjun-type-meta-tracking: 0em;
+  --_kjun-type-control-small-size: 0.75rem;
+  --_kjun-type-control-small-line: 1rem;
+  --_kjun-type-control-small-weight: 600;
+  --_kjun-type-control-small-tracking: 0em;
+  --_kjun-type-body-size: 0.875rem;
+  --_kjun-type-body-line: 1.25rem;
+  --_kjun-type-body-weight: 400;
+  --_kjun-type-body-tracking: 0em;
+  --_kjun-type-label-size: 0.875rem;
+  --_kjun-type-label-line: 1.25rem;
+  --_kjun-type-label-weight: 500;
+  --_kjun-type-label-tracking: 0em;
+  --_kjun-type-control-size: 0.875rem;
+  --_kjun-type-control-line: 1.25rem;
+  --_kjun-type-control-weight: 600;
+  --_kjun-type-control-tracking: 0em;
+  --_kjun-type-input-size: 1rem;
+  --_kjun-type-input-line: 1.5rem;
+  --_kjun-type-input-weight: 400;
+  --_kjun-type-input-tracking: 0em;
+  --_kjun-type-card-title-size: 1rem;
+  --_kjun-type-card-title-line: 1.5rem;
+  --_kjun-type-card-title-weight: 600;
+  --_kjun-type-card-title-tracking: 0em;
+  --_kjun-type-control-large-size: 1rem;
+  --_kjun-type-control-large-line: 1.5rem;
+  --_kjun-type-control-large-weight: 600;
+  --_kjun-type-control-large-tracking: 0em;
+  --_kjun-type-section-title-size: 1.25rem;
+  --_kjun-type-section-title-line: 1.75rem;
+  --_kjun-type-section-title-weight: 700;
+  --_kjun-type-section-title-tracking: -0.01em;
+  --_kjun-type-page-title-size: 1.5rem;
+  --_kjun-type-page-title-line: 2rem;
+  --_kjun-type-page-title-weight: 700;
+  --_kjun-type-page-title-tracking: -0.01em;
+  --_kjun-type-number-sm-size: 0.875rem;
+  --_kjun-type-number-sm-line: 1.25rem;
+  --_kjun-type-number-sm-weight: 500;
+  --_kjun-type-number-sm-tracking: 0em;
+  --_kjun-type-number-md-size: 1rem;
+  --_kjun-type-number-md-line: 1.5rem;
+  --_kjun-type-number-md-weight: 600;
+  --_kjun-type-number-md-tracking: 0em;
+  --_kjun-type-number-lg-size: 1.25rem;
+  --_kjun-type-number-lg-line: 1.75rem;
+  --_kjun-type-number-lg-weight: 700;
+  --_kjun-type-number-lg-tracking: 0em;
+  --_kjun-type-display-sm-size: 1.5rem;
+  --_kjun-type-display-sm-line: 2rem;
+  --_kjun-type-display-sm-weight: 700;
+  --_kjun-type-display-sm-tracking: -0.02em;
+  --_kjun-type-display-md-size: 2rem;
+  --_kjun-type-display-md-line: 2.5rem;
+  --_kjun-type-display-md-weight: 700;
+  --_kjun-type-display-md-tracking: -0.02em;
+  --_kjun-type-display-lg-size: 2.5rem;
+  --_kjun-type-display-lg-line: 3rem;
+  --_kjun-type-display-lg-weight: 700;
+  --_kjun-type-display-lg-tracking: -0.02em;
+  font-size: var(--_kjun-type-body-size); line-height: var(--_kjun-type-body-line); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-scope .kjun-type-caption { font-size: var(--_kjun-type-caption-size); line-height: var(--_kjun-type-caption-line); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-type-meta { font-size: var(--_kjun-type-meta-size); line-height: var(--_kjun-type-meta-line); font-weight: var(--_kjun-type-meta-weight); letter-spacing: var(--_kjun-type-meta-tracking); }
+.kjun-scope .kjun-type-control-small { font-size: var(--_kjun-type-control-small-size); line-height: var(--_kjun-type-control-small-line); font-weight: var(--_kjun-type-control-small-weight); letter-spacing: var(--_kjun-type-control-small-tracking); }
+.kjun-scope .kjun-type-body { font-size: var(--_kjun-type-body-size); line-height: var(--_kjun-type-body-line); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking); }
+.kjun-scope .kjun-type-label { font-size: var(--_kjun-type-label-size); line-height: var(--_kjun-type-label-line); font-weight: var(--_kjun-type-label-weight); letter-spacing: var(--_kjun-type-label-tracking); }
+.kjun-scope .kjun-type-control { font-size: var(--_kjun-type-control-size); line-height: var(--_kjun-type-control-line); font-weight: var(--_kjun-type-control-weight); letter-spacing: var(--_kjun-type-control-tracking); }
+.kjun-scope .kjun-type-input { font-size: var(--_kjun-type-input-size); line-height: var(--_kjun-type-input-line); font-weight: var(--_kjun-type-input-weight); letter-spacing: var(--_kjun-type-input-tracking); }
+.kjun-scope .kjun-type-card-title { font-size: var(--_kjun-type-card-title-size); line-height: var(--_kjun-type-card-title-line); font-weight: var(--_kjun-type-card-title-weight); letter-spacing: var(--_kjun-type-card-title-tracking); }
+.kjun-scope .kjun-type-control-large { font-size: var(--_kjun-type-control-large-size); line-height: var(--_kjun-type-control-large-line); font-weight: var(--_kjun-type-control-large-weight); letter-spacing: var(--_kjun-type-control-large-tracking); }
+.kjun-scope .kjun-type-section-title { font-size: var(--_kjun-type-section-title-size); line-height: var(--_kjun-type-section-title-line); font-weight: var(--_kjun-type-section-title-weight); letter-spacing: var(--_kjun-type-section-title-tracking); }
+.kjun-scope .kjun-type-page-title { font-size: var(--_kjun-type-page-title-size); line-height: var(--_kjun-type-page-title-line); font-weight: var(--_kjun-type-page-title-weight); letter-spacing: var(--_kjun-type-page-title-tracking); }
+.kjun-scope .kjun-type-number-sm { font-size: var(--_kjun-type-number-sm-size); line-height: var(--_kjun-type-number-sm-line); font-weight: var(--_kjun-type-number-sm-weight); letter-spacing: var(--_kjun-type-number-sm-tracking); font-family: var(--font-numeric); font-variant-numeric: tabular-nums; }
+.kjun-scope .kjun-type-number-md { font-size: var(--_kjun-type-number-md-size); line-height: var(--_kjun-type-number-md-line); font-weight: var(--_kjun-type-number-md-weight); letter-spacing: var(--_kjun-type-number-md-tracking); font-family: var(--font-numeric); font-variant-numeric: tabular-nums; }
+.kjun-scope .kjun-type-number-lg { font-size: var(--_kjun-type-number-lg-size); line-height: var(--_kjun-type-number-lg-line); font-weight: var(--_kjun-type-number-lg-weight); letter-spacing: var(--_kjun-type-number-lg-tracking); font-family: var(--font-numeric); font-variant-numeric: tabular-nums; }
+.kjun-scope .kjun-type-display-sm { font-size: var(--_kjun-type-display-sm-size); line-height: var(--_kjun-type-display-sm-line); font-weight: var(--_kjun-type-display-sm-weight); letter-spacing: var(--_kjun-type-display-sm-tracking); font-family: var(--font-numeric); font-variant-numeric: tabular-nums; }
+.kjun-scope .kjun-type-display-md { font-size: var(--_kjun-type-display-md-size); line-height: var(--_kjun-type-display-md-line); font-weight: var(--_kjun-type-display-md-weight); letter-spacing: var(--_kjun-type-display-md-tracking); font-family: var(--font-numeric); font-variant-numeric: tabular-nums; }
+.kjun-scope .kjun-type-display-lg { font-size: var(--_kjun-type-display-lg-size); line-height: var(--_kjun-type-display-lg-line); font-weight: var(--_kjun-type-display-lg-weight); letter-spacing: var(--_kjun-type-display-lg-tracking); font-family: var(--font-numeric); font-variant-numeric: tabular-nums; }

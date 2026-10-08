@@ -1,0 +1,29 @@
+import { tokens as foundationTokens } from "@kjun/tokens";
+// Application recipe defaults in logical units, not public package tokens.
+const foundationRules = __KJUN_FOUNDATION_RULES__;
+function FoundationLayout({ reading, children }) {
+  const [width, setWidth] = useState(0), rules = foundationRules;
+  const { colors, fontFamily } = K.useKjunStyles();
+  const gutter = width < rules.mediumFrom ? rules.gutters.compact : width < rules.wideFrom ? rules.gutters.medium : rules.gutters.wide;
+  const gap = width < rules.mediumFrom ? rules.gaps.compact : rules.gaps.regular;
+  const two = !reading && width >= rules.columnsFrom;
+  return <View testID="foundation-area" onLayout={event => setWidth(event.nativeEvent.layout.width)} style={{ width: "100%", minWidth: 0 }}>
+    <View testID="foundation-container" style={{ width: "100%", maxWidth: reading ? rules.readingMax : rules.pageMax, alignSelf: "center", padding: gutter }}>
+      <Text style={{ marginBottom: 16, color: colors.text, fontFamily }}>가용 폭 {Math.round(width)}px · {two ? "2열" : "1열"} · 좌우 {gutter}px</Text>
+      <View style={{ flexDirection: two ? "row" : "column", gap }}>
+        {children.map((child, index) => <View key={index} testID={index ? "foundation-aside" : "foundation-main"} style={{ minWidth: 0, ...(two ? { flexGrow: index ? 1 : 2, flexShrink: 1, flexBasis: 0 } : {}) }}>{child}</View>)}
+      </View>
+    </View>
+  </View>;
+}
+function FoundationScreen({ overlay, height, header, dock, children }) {
+  const [dockHeight, setDockHeight] = useState(0);
+  const { colors } = K.useKjunStyles();
+  return <View testID="foundation-screen" style={{ position: "relative", height, overflow: "hidden", backgroundColor: colors.surface }}>
+    <View style={{ flexShrink: 0 }}>{header}</View>
+    <ScrollView testID="foundation-scroll" accessibilityLabel="화면 본문" style={{ flex: 1, minHeight: 0 }} contentContainerStyle={{ paddingVertical: 16, paddingBottom: overlay ? dockHeight + foundationRules.dockGap : 16 }} keyboardShouldPersistTaps="handled">
+      {children}
+    </ScrollView>
+    <View testID="foundation-dock" onLayout={event => setDockHeight(event.nativeEvent.layout.height)} style={{ flexShrink: 0, ...(overlay ? { position: "absolute", bottom: 0, left: 0, right: 0, zIndex: foundationTokens.layers.page.sticky } : {}), backgroundColor: colors.surface }}>{dock}</View>
+  </View>;
+}

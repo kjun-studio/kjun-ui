@@ -1,0 +1,70 @@
+@keyframes price-flash-up {
+  0%, 20% {
+    color: var(--price-up);
+  }
+  100% {
+    color: inherit;
+  }
+}
+
+@keyframes price-flash-down {
+  0%, 20% {
+    color: var(--price-down);
+  }
+  100% {
+    color: inherit;
+  }
+}
+
+.kjun-scope .price-flash-up {
+  animation: price-flash-up var(--motion-price-flash) var(--ease-out);
+}
+
+.kjun-scope .price-flash-down {
+  animation: price-flash-down var(--motion-price-flash) var(--ease-out);
+}
+
+
+@keyframes price-flash-up-bg {
+  0% { background-color: var(--price-up-bg); }
+  100% { background-color: transparent; }
+}
+@keyframes price-flash-down-bg {
+  0% { background-color: var(--price-down-bg); }
+  100% { background-color: transparent; }
+}
+.kjun-scope .price-flash-up-bg { animation: price-flash-up-bg var(--motion-price-background) var(--ease-out); }
+.kjun-scope .price-flash-down-bg { animation: price-flash-down-bg var(--motion-price-background) var(--ease-out); }
+
+
+@keyframes price-flash-up-bg-strong {
+  0% { background-color: var(--price-up-bg-strong); }
+  100% { background-color: var(--price-up-bg); }
+}
+@keyframes price-flash-down-bg-strong {
+  0% { background-color: var(--price-down-bg-strong); }
+  100% { background-color: var(--price-down-bg); }
+}
+.kjun-scope .price-flash-up-bg-strong { animation: price-flash-up-bg-strong var(--motion-price-background) var(--ease-out); }
+.kjun-scope .price-flash-down-bg-strong { animation: price-flash-down-bg-strong var(--motion-price-background) var(--ease-out); }
+
+
+@keyframes price-flash-up-bg-pop {
+  0% { background-color: var(--price-up-bg-strong); }
+  100% { background-color: transparent; }
+}
+@keyframes price-flash-down-bg-pop {
+  0% { background-color: var(--price-down-bg-strong); }
+  100% { background-color: transparent; }
+}
+.kjun-scope .price-flash-up-bg-pop { animation: price-flash-up-bg-pop var(--motion-price-background) var(--ease-out); }
+.kjun-scope .price-flash-down-bg-pop { animation: price-flash-down-bg-pop var(--motion-price-background) var(--ease-out); }
+
+
+.kjun-scope .ds-price-cell, .kjun-scope .kjun-price-cell {
+  display: inline-block;
+  padding: var(--_kjun-geometry-dimension-value2) var(--_kjun-geometry-dimension-value8);
+  border-radius: var(--_kjun-geometry-radius-radius9999);
+}
+
+@media (prefers-reduced-motion: reduce) { .kjun-scope [class*="price-flash-"] { animation: none; } }

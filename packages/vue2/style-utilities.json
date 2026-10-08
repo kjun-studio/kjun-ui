@@ -1,0 +1,226 @@
+{
+  "colors": {
+    "bg": {
+      "primary": "var(--bg-primary)",
+      "secondary": "var(--bg-secondary)",
+      "tertiary": "var(--bg-tertiary)",
+      "hover": "var(--bg-hover)",
+      "active": "var(--bg-active)"
+    },
+    "text": {
+      "primary": "var(--text-primary)",
+      "secondary": "var(--text-secondary)",
+      "tertiary": "var(--text-tertiary)",
+      "disabled": "var(--text-disabled)",
+      "inverse": "var(--text-inverse)"
+    },
+    "border": {
+      "DEFAULT": "var(--border-primary)",
+      "primary": "var(--border-primary)",
+      "secondary": "var(--border-secondary)",
+      "strong": "var(--border-strong)"
+    },
+    "brand": {
+      "DEFAULT": "var(--brand)",
+      "hover": "var(--brand-hover)",
+      "active": "var(--brand-active)",
+      "subtle-bg": "var(--brand-subtle-bg)"
+    },
+    "primary": {
+      "DEFAULT": "var(--brand)",
+      "hover": "var(--brand-hover)",
+      "active": "var(--brand-active)",
+      "subtle-bg": "var(--brand-subtle-bg)"
+    },
+    "favorite": {
+      "DEFAULT": "var(--favorite)",
+      "hover": "var(--favorite-hover)"
+    },
+    "interest": "var(--interest)",
+    "price": {
+      "up": "var(--price-up)",
+      "up-light": "var(--price-up-light)",
+      "up-bg": "var(--price-up-bg)",
+      "up-bg-strong": "var(--price-up-bg-strong)",
+      "down": "var(--price-down)",
+      "down-light": "var(--price-down-light)",
+      "down-bg": "var(--price-down-bg)",
+      "down-bg-strong": "var(--price-down-bg-strong)",
+      "neutral": "var(--price-neutral)",
+      "neutral-bg": "var(--price-neutral-bg)"
+    },
+    "success": {
+      "DEFAULT": "var(--success)",
+      "accent": "var(--success-accent)",
+      "light": "var(--success-light)",
+      "dark": "var(--success-dark)",
+      "bg": "var(--success-bg)"
+    },
+    "warning": {
+      "DEFAULT": "var(--warning)",
+      "accent": "var(--warning-accent)",
+      "light": "var(--warning-light)",
+      "dark": "var(--warning-dark)",
+      "bg": "var(--warning-bg)"
+    },
+    "danger": {
+      "DEFAULT": "var(--danger)",
+      "accent": "var(--danger-accent)",
+      "light": "var(--danger-light)",
+      "dark": "var(--danger-dark)",
+      "bg": "var(--danger-bg)"
+    },
+    "info": {
+      "DEFAULT": "var(--info)",
+      "accent": "var(--info-accent)",
+      "light": "var(--info-light)",
+      "dark": "var(--info-dark)",
+      "bg": "var(--info-bg)"
+    },
+    "card": {
+      "bg": "var(--card-bg)",
+      "bg-hover": "var(--card-bg-hover)",
+      "border": "var(--card-border)"
+    },
+    "input": {
+      "bg": "var(--input-bg)",
+      "border": "var(--input-border)",
+      "border-focus": "var(--input-border-focus)",
+      "placeholder": "var(--input-placeholder)"
+    },
+    "btn": {
+      "primary-bg": "var(--btn-primary-bg)",
+      "primary-hover": "var(--btn-primary-hover)",
+      "primary-active": "var(--btn-primary-active)",
+      "secondary-bg": "var(--btn-secondary-bg)",
+      "secondary-hover": "var(--btn-secondary-hover)",
+      "buy-bg": "var(--btn-buy-bg)",
+      "buy-hover": "var(--btn-buy-hover)",
+      "sell-bg": "var(--btn-sell-bg)",
+      "sell-hover": "var(--btn-sell-hover)"
+    },
+    "table": {
+      "header-bg": "var(--table-header-bg)",
+      "row-hover": "var(--table-row-hover)",
+      "border": "var(--table-border)"
+    },
+    "sidebar": {
+      "bg": "var(--sidebar-bg)",
+      "item-hover": "var(--sidebar-item-hover)",
+      "item-active": "var(--sidebar-item-active)",
+      "item-active-border": "var(--sidebar-item-active-border)"
+    },
+    "header": {
+      "bg": "var(--header-bg)",
+      "border": "var(--header-border)"
+    },
+    "overlay": {
+      "DEFAULT": "var(--overlay)",
+      "light": "var(--overlay-light)"
+    },
+    "divider": "var(--divider)",
+    "skeleton": {
+      "DEFAULT": "var(--skeleton)",
+      "shine": "var(--skeleton-shine)"
+    },
+    "chart": {
+      "grid": "var(--chart-grid)",
+      "axis": "var(--chart-axis)",
+      "tooltip-bg": "var(--chart-tooltip-bg)",
+      "tooltip-text": "var(--chart-tooltip-text)"
+    },
+    "surface": {
+      "card": "var(--card-bg)",
+      "background": "var(--surface-background)",
+      "dark": "var(--bg-tertiary)",
+      "dark-bg": "var(--bg-primary)"
+    },
+    "selected-bg": "var(--selected-bg)",
+    "focus-ring": "var(--focus-ring)",
+    "on-brand": "var(--on-brand)",
+    "on-danger": "var(--on-danger)",
+    "on-success": "var(--on-success)",
+    "on-warning": "var(--on-warning)"
+  },
+  "keyframes": {
+    "fade-in": {
+      "0%": {
+        "opacity": "0"
+      },
+      "100%": {
+        "opacity": "1"
+      }
+    },
+    "fade-out": {
+      "0%": {
+        "opacity": "1"
+      },
+      "100%": {
+        "opacity": "0"
+      }
+    },
+    "slide-up": {
+      "0%": {
+        "transform": "translateY(8px)",
+        "opacity": "0"
+      },
+      "100%": {
+        "transform": "translateY(0)",
+        "opacity": "1"
+      }
+    },
+    "slide-down": {
+      "0%": {
+        "transform": "translateY(-8px)",
+        "opacity": "0"
+      },
+      "100%": {
+        "transform": "translateY(0)",
+        "opacity": "1"
+      }
+    },
+    "pulse-soft": {
+      "0%, 100%": {
+        "opacity": "1"
+      },
+      "50%": {
+        "opacity": "0.6"
+      }
+    },
+    "skeleton": {
+      "0%": {
+        "backgroundPosition": "200% 0"
+      },
+      "100%": {
+        "backgroundPosition": "-200% 0"
+      }
+    },
+    "spin": {
+      "0%": {
+        "transform": "rotate(0deg)"
+      },
+      "100%": {
+        "transform": "rotate(360deg)"
+      }
+    }
+  },
+  "animation": {
+    "fade-in": "fade-in 200ms ease-out",
+    "fade-out": "fade-out 150ms ease-in",
+    "slide-up": "slide-up 200ms cubic-bezier(0.16, 1, 0.3, 1)",
+    "slide-down": "slide-down 200ms cubic-bezier(0.16, 1, 0.3, 1)",
+    "pulse-soft": "pulse-soft 2s ease-in-out infinite",
+    "skeleton": "skeleton 1.5s ease-in-out infinite",
+    "spin": "spin 1s linear infinite"
+  },
+  "minHeight": {
+    "screen": "100vh"
+  },
+  "maxWidth": {
+    "screen-sm": "640px",
+    "screen-md": "768px",
+    "screen-lg": "1024px",
+    "screen-xl": "1280px",
+    "screen-2xl": "1536px"
+  }
+}

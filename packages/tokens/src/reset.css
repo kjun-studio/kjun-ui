@@ -1,0 +1,42 @@
+/* Scoped baseline required by the component utilities. No app-wide reset. */
+.kjun-scope,
+.kjun-scope *,
+.kjun-scope::before,
+.kjun-scope::after,
+.kjun-scope *::before,
+.kjun-scope *::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: var(--_kjun-color-border);
+}
+.kjun-scope :where(h1, h2, h3, h4, h5, h6, p, blockquote, dl, dd, figure, pre) {
+  margin: 0;
+}
+.kjun-scope :where(h1, h2, h3, h4, h5, h6) {
+  font-size: inherit;
+  font-weight: inherit;
+}
+.kjun-scope :where(button, input, optgroup, select, textarea) {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+}
+.kjun-scope :where(button, select) { text-transform: none; }
+.kjun-scope :where(button, [type="button"], [type="reset"], [type="submit"]) {
+  -webkit-appearance: button;
+  background-color: transparent;
+  background-image: none;
+}
+.kjun-scope :where(button, [role="button"]) { cursor: pointer; }
+.kjun-scope :where(:disabled) { cursor: default; }
+.kjun-scope :where(a) { color: inherit; text-decoration: inherit; }
+.kjun-scope :where(ol, ul, menu) { list-style: none; margin: 0; padding: 0; }
+.kjun-scope :where(table) { text-indent: 0; border-color: inherit; border-collapse: collapse; }
+.kjun-scope :where(fieldset, legend) { margin: 0; padding: 0; }
+.kjun-scope :where(textarea) { resize: vertical; }
+.kjun-scope :where(input, textarea)::placeholder { opacity: 1; }
+.kjun-scope :where(img, video) { max-width: 100%; height: auto; }
+.kjun-scope :where([hidden]:not([hidden="until-found"])) { display: none; }

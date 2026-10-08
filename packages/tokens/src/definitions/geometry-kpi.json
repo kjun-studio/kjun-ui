@@ -1,0 +1,234 @@
+{
+  "extensions": {
+    "kpiHero": {
+      "radius": {
+        "$ref": "card.radii.md"
+      },
+      "layoutGap": {
+        "$ref": "dimension.value24"
+      },
+      "prefixGap": {
+        "$ref": "dimension.value2"
+      },
+      "suffixGap": {
+        "$ref": "dimension.value4"
+      },
+      "secondaryAffixGap": {
+        "$ref": "dimension.value2"
+      },
+      "itemPadding": {
+        "$ref": "dimension.value10"
+      },
+      "md": {
+        "paddingX": {
+          "$ref": "dimension.value28"
+        },
+        "paddingY": {
+          "$ref": "dimension.value24"
+        },
+        "labelGap": {
+          "$ref": "dimension.value8"
+        },
+        "deltaGap": {
+          "$ref": "dimension.value10"
+        },
+        "deltaMargin": {
+          "$ref": "dimension.value12"
+        },
+        "secondaryGap": {
+          "$ref": "dimension.value56"
+        },
+        "secondaryMargin": {
+          "$ref": "dimension.value24"
+        },
+        "secondaryPadding": {
+          "$ref": "dimension.value16"
+        },
+        "secondaryLabelGap": {
+          "$ref": "dimension.value6"
+        },
+        "descriptionGap": {
+          "$ref": "dimension.value4"
+        }
+      },
+      "sm": {
+        "paddingX": {
+          "$ref": "dimension.value16"
+        },
+        "paddingY": {
+          "$ref": "dimension.value16"
+        },
+        "labelGap": {
+          "$ref": "dimension.value4"
+        },
+        "deltaGap": {
+          "$ref": "dimension.value8"
+        },
+        "deltaMargin": {
+          "$ref": "dimension.value6"
+        },
+        "secondaryGap": {
+          "$ref": "dimension.value24"
+        },
+        "secondaryMargin": {
+          "$ref": "dimension.value14"
+        },
+        "secondaryPadding": {
+          "$ref": "dimension.value12"
+        },
+        "secondaryLabelGap": {
+          "$ref": "dimension.value4"
+        },
+        "descriptionGap": {
+          "$ref": "dimension.value2"
+        }
+      },
+      "mobile": {
+        "paddingX": {
+          "$ref": "dimension.value16"
+        },
+        "paddingY": {
+          "$ref": "dimension.value16"
+        },
+        "labelGap": {
+          "$ref": "dimension.value4"
+        },
+        "deltaGap": {
+          "$ref": "dimension.value6"
+        },
+        "deltaMargin": {
+          "$ref": "dimension.value6"
+        },
+        "secondaryGap": 0,
+        "secondaryMargin": {
+          "$ref": "dimension.value12"
+        },
+        "secondaryPadding": {
+          "$ref": "dimension.value12"
+        },
+        "secondaryLabelGap": {
+          "$ref": "dimension.value4"
+        }
+      },
+      "smallMobileGap": {
+        "$ref": "dimension.value16"
+      }
+    },
+    "kpiRow": {
+      "radius": {
+        "$ref": "card.radii.md"
+      },
+      "itemRadius": {
+        "$ref": "radius.radius8"
+      },
+      "valueGap": {
+        "$ref": "dimension.value8"
+      },
+      "segmentGap": {
+        "$ref": "dimension.value4"
+      },
+      "separatorGap": {
+        "$ref": "dimension.value6"
+      },
+      "badgeRadius": {
+        "$ref": "extensions.badge.radius"
+      },
+      "badgeGap": {
+        "$ref": "extensions.badge.gap"
+      },
+      "badgePadding": {
+        "$ref": "extensions.badge.padding.xs"
+      },
+      "md": {
+        "paddingX": {
+          "$ref": "dimension.value8"
+        },
+        "paddingY": {
+          "$ref": "dimension.value20"
+        },
+        "itemPaddingX": {
+          "$ref": "dimension.value20"
+        },
+        "itemPaddingY": 0,
+        "labelGap": {
+          "$ref": "dimension.value8"
+        },
+        "labelMargin": {
+          "$ref": "dimension.value8"
+        },
+        "descriptionGap": {
+          "$ref": "dimension.value4"
+        }
+      },
+      "sm": {
+        "paddingX": {
+          "$ref": "dimension.value4"
+        },
+        "paddingY": {
+          "$ref": "dimension.value12"
+        },
+        "itemPaddingX": {
+          "$ref": "dimension.value12"
+        },
+        "itemPaddingY": 0,
+        "labelGap": {
+          "$ref": "dimension.value6"
+        },
+        "labelMargin": {
+          "$ref": "dimension.value4"
+        },
+        "descriptionGap": {
+          "$ref": "dimension.value2"
+        }
+      },
+      "mobile": {
+        "paddingX": {
+          "$ref": "dimension.value8"
+        },
+        "paddingY": {
+          "$ref": "dimension.value8"
+        },
+        "itemPaddingX": {
+          "$ref": "dimension.value12"
+        },
+        "itemPaddingY": {
+          "$ref": "dimension.value10"
+        },
+        "labelGap": {
+          "$ref": "dimension.value6"
+        },
+        "labelMargin": {
+          "$ref": "dimension.value4"
+        },
+        "descriptionGap": {
+          "$ref": "dimension.value2"
+        }
+      },
+      "smallMobile": {
+        "itemPaddingX": {
+          "$ref": "dimension.value10"
+        },
+        "itemPaddingY": {
+          "$ref": "dimension.value8"
+        }
+      },
+      "summary": {
+        "paddingX": {
+          "$ref": "dimension.value20"
+        },
+        "paddingY": {
+          "$ref": "dimension.value12"
+        },
+        "gapX": {
+          "$ref": "dimension.value16"
+        },
+        "gapY": {
+          "$ref": "dimension.value12"
+        },
+        "secondaryGap": {
+          "$ref": "dimension.value4"
+        }
+      }
+    }
+  }
+}

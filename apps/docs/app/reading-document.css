@@ -1,0 +1,41 @@
+/* Long-form document pages: one reading measure, one section gap, one body line height. */
+.reading-document :is(.body-copy, .code-block, .docs-table, .kjun-alert, .step-summary, .principle-list, .brand-spec, .principles-note) { max-width: var(--docs-measure); }
+.reading-document > section:where(:not(.kjun-table-card-section)) + section { margin-top: 64px; }
+.reading-document .body-copy { margin: 16px 0 0; line-height: 28px; color: var(--foreground-secondary); }
+.reading-document :is(.brand-spec, .docs-table, .code-block, .kjun-alert, .download-row) { margin-top: 24px; }
+.reading-document .code-block + .code-block { margin-top: 16px; }
+.reading-document .text-link { display: flex; width: fit-content; margin-top: 16px; }
+
+/* Inline code inside prose reads as a token, not as a size jump. */
+:where(.body-copy, .principles-note, .docs-table--prose, .kjun-alert-description, .step-summary) code {
+  padding: 1px 4px; border-radius: 4px; background: var(--secondary); color: var(--foreground);
+  font-family: var(--docs-font-mono); font-size: .875em; overflow-wrap: anywhere;
+}
+
+/* Code previews fade out at the cut and expand in place. */
+.code-block pre.is-collapsed { overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent); mask-image: linear-gradient(to bottom, #000 60%, transparent); }
+.code-expand { display: flex; justify-content: center; padding: 0 12px 12px; }
+
+/* Getting started */
+.step-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 8px 0 0; padding: 24px 0 0; list-style: none; border-top: 1px solid var(--border); }
+.step-summary strong { display: block; font-size: var(--docs-type-body); line-height: 24px; font-weight: 600; }
+.step-summary p { margin-top: 4px; font-size: var(--docs-type-small); line-height: 22px; color: var(--muted-foreground); word-break: keep-all; }
+.step-summary .section-number { margin-bottom: 8px; }
+.install-platform { margin-top: 24px; }
+.getting-started #project th:first-child { width: 32%; }
+.reading-document .download-row { gap: 8px; margin-top: 16px; }
+.getting-started #extras > section { max-width: var(--docs-measure); margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
+.getting-started #extras > section > h3 { font-size: var(--docs-type-lead); line-height: 28px; font-weight: 600; letter-spacing: -.02em; }
+.getting-started #extras > section > h3 + .body-copy { margin-top: 8px; }
+
+@media (max-width: 767px) {
+  .reading-document > section:where(:not(.kjun-table-card-section)) + section { margin-top: 48px; }
+  .step-summary { grid-template-columns: 1fr; gap: 16px; }
+  .reading-document .download-row { flex-direction: column; }
+  .reading-document .download-row > a { width: 100%; justify-content: flex-start; }
+  .reading-document .download-row > a > span { margin-left: auto; }
+  /* The comparison keeps the feature column and the selected platform only. */
+  .compatibility-table[data-platform="vue2"] :is(th, td):is(:nth-child(3), :nth-child(4)),
+  .compatibility-table[data-platform="react"] :is(th, td):is(:nth-child(2), :nth-child(4)),
+  .compatibility-table[data-platform="native"] :is(th, td):is(:nth-child(2), :nth-child(3)) { display: none; }
+}

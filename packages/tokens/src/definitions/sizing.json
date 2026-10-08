@@ -1,0 +1,293 @@
+{
+  "iconSizes": {
+    "compact": 12,
+    "small": 14,
+    "default": 16,
+    "medium": 18,
+    "large": 20,
+    "feature": 24
+  },
+  "modal": {
+    "closeSize": 32,
+    "closeIconSize": {
+      "$ref": "iconSizes.medium"
+    }
+  },
+  "table": {
+    "selectionSize": 16,
+    "sortIconSize": {
+      "$ref": "iconSizes.compact"
+    },
+    "searchWidth": 200
+  },
+  "extensions": {
+    "spinner": {
+      "sizes": {
+        "xs": 12,
+        "sm": 16,
+        "md": 24,
+        "lg": 32,
+        "xl": 48
+      },
+      "strokeWidths": {
+        "xs": 2,
+        "sm": 2,
+        "md": 3,
+        "lg": 4,
+        "xl": 4
+      }
+    },
+    "progress": {
+      "heights": {
+        "sm": 4,
+        "md": 8,
+        "lg": 12
+      }
+    },
+    "iconToggle": {
+      "compactSize": {
+        "$ref": "button.heights.xs"
+      },
+      "sizes": {
+        "xs": { "$ref": "extensions.iconToggle.compactSize" },
+        "sm": { "$ref": "button.heights.xs" },
+        "md": { "$ref": "button.heights.sm" },
+        "lg": { "$ref": "button.heights.md" },
+        "xl": { "$ref": "button.heights.lg" }
+      },
+      "radii": {
+        "xs": { "$ref": "button.radii.xs" },
+        "sm": { "$ref": "button.radii.xs" },
+        "md": { "$ref": "button.radii.sm" },
+        "lg": { "$ref": "button.radii.md" },
+        "xl": { "$ref": "button.radii.lg" }
+      }
+    },
+    "selection": {
+      "iconSize": {
+        "$ref": "iconSizes.default"
+      },
+      "dotSize": 8,
+      "minimumHeight": 36
+    },
+    "chip": {
+      "iconSizes": {
+        "sm": { "$ref": "iconSizes.small" },
+        "md": { "$ref": "iconSizes.default" },
+        "lg": { "$ref": "iconSizes.medium" }
+      },
+      "removeIconSizes": {
+        "sm": { "$ref": "iconSizes.compact" },
+        "md": { "$ref": "iconSizes.small" },
+        "lg": { "$ref": "iconSizes.default" }
+      }
+    },
+    "image": {
+      "fallbackIconSize": {
+        "$ref": "iconSizes.feature"
+      }
+    },
+    "avatar": {
+      "fallbackIconSizes": {
+        "sm": { "$ref": "iconSizes.small" },
+        "md": { "$ref": "iconSizes.medium" },
+        "lg": { "$ref": "iconSizes.feature" }
+      },
+      "fallbackIconSize": {
+        "$ref": "extensions.avatar.fallbackIconSizes.md"
+      }
+    },
+    "form": {
+      "messageIconSize": {
+        "$ref": "iconSizes.default"
+      }
+    },
+    "alert": {
+      "iconSizes": {
+        "sm": {
+          "$ref": "iconSizes.small"
+        },
+        "md": {
+          "$ref": "iconSizes.default"
+        }
+      },
+      "closeIconSize": {
+        "$ref": "iconSizes.small"
+      }
+    },
+    "breadcrumb": {
+      "iconSize": {
+        "$ref": "iconSizes.small"
+      },
+      "separatorSize": {
+        "$ref": "iconSizes.compact"
+      }
+    },
+    "pagination": {
+      "iconSize": {
+        "$ref": "iconSizes.default"
+      }
+    },
+    "menu": {
+      "minimumWidth": 160,
+      "listMaxHeight": 240,
+      "iconSize": {
+        "$ref": "iconSizes.default"
+      },
+      "dividerHeight": {
+        "$ref": "border.defaultWidth"
+      }
+    },
+    "floating": {
+      "maxHeight": 480,
+      "viewportInset": {
+        "$ref": "dimension.value8"
+      },
+      "anchorGap": {
+        "$ref": "dimension.value8"
+      },
+      "fieldGap": {
+        "$ref": "dimension.value4"
+      }
+    },
+    "tooltip": {
+      "maxWidth": 256,
+      "arrowSize": 8
+    },
+    "drawer": {
+      "width": 400,
+      "closeSize": {
+        "$ref": "modal.closeSize"
+      },
+      "closeIconSize": {
+        "$ref": "iconSizes.default"
+      }
+    },
+    "scrollbar": {
+      "width": 6
+    },
+    "scrollFade": {
+      "width": 24
+    },
+    "slider": {
+      "minimumWidth": 100
+    },
+    "calendar": {
+      "minimumWidth": 326
+    },
+    "financial": {
+      "warningIconSize": {
+        "$ref": "iconSizes.compact"
+      },
+      "warningTargetSize": {
+        "$ref": "dimension.value24"
+      },
+      "markSizes": {
+        "sm": {
+          "$ref": "iconSizes.compact"
+        },
+        "md": {
+          "$ref": "iconSizes.small"
+        },
+        "lg": {
+          "$ref": "iconSizes.default"
+        }
+      },
+      "heartMarkSizes": {
+        "sm": {
+          "$ref": "iconSizes.small"
+        },
+        "md": {
+          "$ref": "iconSizes.default"
+        },
+        "lg": {
+          "$ref": "iconSizes.medium"
+        }
+      },
+      "progressHeight": 6,
+      "progressMinimumWidth": 60,
+      "progressLabelWidth": 32,
+      "sparklineWidth": 80,
+      "sparklineHeight": 24,
+      "priceSkeletonWidth": 64,
+      "priceSkeletonHeight": 16,
+      "signedSkeletonWidth": 48,
+      "signedSkeletonHeight": { "$ref": "typography.numberSm.lineHeightPx" }
+    },
+    "marketTable": {
+      "sortIconSize": {
+        "$ref": "iconSizes.small"
+      },
+      "sparklineWidth": 72,
+      "sparklineHeight": 22,
+      "valueSkeletonWidth": 56,
+      "valueSkeletonHeight": 16,
+      "actionSkeletonWidth": 32,
+      "headerSkeletonHeight": 14
+    },
+    "marketList": {
+      "minimumHeight": 72,
+      "mobileQuoteMinimumWidth": 102,
+      "changeSkeletonWidth": 56,
+      "changeSkeletonHeight": 14
+    },
+    "skeleton": {
+      "lineHeights": {
+        "sm": 12,
+        "md": 16,
+        "lg": 24
+      },
+      "avatarSize": 48,
+      "cardAvatarSize": 40,
+      "tableLineHeight": 14,
+      "chartHeight": 200,
+      "chartBarMaxWidth": 40,
+      "chartAxisHeight": 2,
+      "statWidth": 80,
+      "statHeight": 40,
+      "blockHeight": 100,
+      "listHeights": {
+        "market": {
+          "$ref": "extensions.marketList.minimumHeight"
+        },
+        "compact": 56,
+        "notification": 64
+      },
+      "quoteWidth": 88,
+      "quoteHeight": 18,
+      "detailWidth": 56,
+      "formLabelWidth": 96,
+      "formLabelHeight": 14,
+      "identityWidth": 128,
+      "identityHeight": 20,
+      "listAvatarSize": 36
+    },
+    "chartSkeleton": {
+      "height": 240,
+      "donutThickness": 22,
+      "donutLabelWidth": 76,
+      "donutLabelHeight": 14
+    },
+    "tableCard": {
+      "titleSkeletonWidth": 96,
+      "titleSkeletonHeight": 20,
+      "badgeSkeletonWidth": 64,
+      "fieldSkeletonHeight": 18,
+      "actionSkeletonWidth": 72,
+      "actionSkeletonHeight": 24
+    },
+    "kpiHero": {
+      "deltaSkeletonWidth": 220,
+      "secondarySkeletonWidth": 55,
+      "descriptionSkeletonWidth": 58
+    },
+    "kpiRow": {
+      "dotSize": 4,
+      "labelSkeletonWidth": 80,
+      "labelSkeletonHeight": 13,
+      "valueSkeletonWidth": 80,
+      "segmentSkeletonWidth": 48,
+      "descriptionSkeletonWidth": 90
+    }
+  }
+}

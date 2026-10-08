@@ -1,0 +1,399 @@
+/* KJUN 공통 구조. 색상과 서체는 프로젝트가 제공한 CSS 변수를 사용한다. */
+.kjun-scope {
+  box-sizing: border-box;
+  line-height: var(--_kjun-type-body-line);
+}
+.kjun-scope *,
+.kjun-scope *::before,
+.kjun-scope *::after {
+  box-sizing: border-box;
+}
+.kjun-scope button,
+.kjun-scope input {
+  font-family: inherit;
+}
+.kjun-button {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-weight: var(--_kjun-type-control-weight);
+  border: 0;
+  border-radius: var(--_kjun-geometry-radius-radius10);
+  cursor: pointer;
+  line-height: var(--_kjun-type-control-line);
+  transition: background-color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out);
+  text-decoration: none;
+  vertical-align: middle;
+}
+.kjun-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.kjun-button:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-offset);
+}
+.kjun-button[data-variant="primary"] {
+  background: var(--_kjun-color-brand);
+  color: var(--_kjun-color-on-brand);
+}
+.kjun-button[data-variant="primary"]:hover:not(:disabled) {
+  background: var(--_kjun-color-brand-hover);
+}
+.kjun-button[data-variant="primary"]:active:not(:disabled) {
+  background: var(--_kjun-color-brand-active);
+}
+.kjun-button[data-variant="secondary"] {
+  background: var(--_kjun-color-button-secondary);
+  color: var(--_kjun-color-text);
+}
+.kjun-button[data-variant="secondary"]:hover:not(:disabled) {
+  background: var(--_kjun-color-button-secondary-hover);
+}
+.kjun-button[data-variant="secondary"]:active:not(:disabled) {
+  background: var(--_kjun-color-button-secondary-active);
+}
+.kjun-button[data-variant="ghost"],
+.kjun-button[data-variant="danger-ghost"] {
+  background: transparent;
+  color: var(--_kjun-color-text-secondary);
+}
+.kjun-button[data-variant="ghost"]:hover:not(:disabled) {
+  background: var(--_kjun-color-hover);
+  color: var(--_kjun-color-text);
+}
+.kjun-button[data-variant="danger-ghost"] {
+  color: var(--_kjun-color-danger);
+}
+.kjun-button[data-variant="danger-ghost"]:hover:not(:disabled) {
+  color: var(--_kjun-color-danger);
+  background: var(--_kjun-color-danger-bg);
+}
+.kjun-button[data-variant="danger"] {
+  background: var(--_kjun-color-danger);
+  color: var(--_kjun-color-on-danger);
+}
+.kjun-button[data-variant="danger"]:hover:not(:disabled) {
+  background: var(--_kjun-color-danger-dark);
+}
+.kjun-button[data-variant="success"] {
+  background: var(--_kjun-color-success);
+  color: var(--_kjun-color-on-success);
+}
+.kjun-button[data-variant="success"]:hover:not(:disabled) {
+  background: var(--_kjun-color-success-dark);
+}
+.kjun-button[data-variant="warning"] {
+  background: var(--_kjun-color-warning);
+  color: var(--_kjun-color-on-warning);
+}
+.kjun-button[data-variant="warning"]:hover:not(:disabled) {
+  background: var(--_kjun-color-warning-dark);
+}
+.kjun-button:disabled {
+  cursor: not-allowed;
+}
+/* Disabled actions share one neutral paint so no variant reads as a paler tone of itself. */
+.kjun-button[data-disabled="true"] {
+  background: var(--_kjun-color-button-secondary);
+  color: var(--_kjun-color-text-disabled);
+}
+.kjun-button[data-disabled="true"]:is([data-variant="ghost"], [data-variant="danger-ghost"]) {
+  background: transparent;
+}
+.kjun-button-label { display: inline-flex; align-items: center; }
+.kjun-button-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.kjun-button[data-variant="ghost"]:active:not(:disabled) { background: var(--_kjun-color-active); }
+.kjun-button[data-variant="danger-ghost"]:active:not(:disabled) { background: var(--_kjun-color-danger-bg); color: var(--_kjun-color-danger-dark); }
+.kjun-button[data-variant="danger"]:active:not(:disabled) { background: var(--_kjun-color-danger-active); }
+.kjun-button[data-variant="success"]:active:not(:disabled) { background: var(--_kjun-color-success-active); }
+.kjun-button[data-variant="warning"]:active:not(:disabled) { background: var(--_kjun-color-warning-active); }
+.kjun-icon {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.kjun-spin,
+.ds-icon-spin {
+  animation: kjun-spin var(--motion-spin) linear infinite;
+}
+@keyframes kjun-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.kjun-form-group {
+  min-width: 0;
+  margin-bottom: var(--extension-form-item-gap);
+}
+:where(
+    .flex,
+    .inline-flex,
+    .grid,
+    .inline-grid,
+    .ds-form-layout,
+    .kjun-form-layout
+  )
+  > .kjun-form-group {
+  margin-bottom: 0;
+}
+.kjun-form-group:last-child {
+  margin-bottom: 0;
+}
+.kjun-form-label {
+  display: block;
+  font-size: var(--_kjun-type-label-size);
+  color: var(--_kjun-color-text);
+  margin-bottom: var(--extension-form-label-gap);
+  line-height: var(--_kjun-type-label-line);
+  font-weight: var(--_kjun-type-label-weight);
+  letter-spacing: var(--_kjun-type-label-tracking);
+}
+.kjun-form-hint,
+.kjun-form-error {
+  font-size: var(--_kjun-type-caption-size);
+  margin: var(--extension-form-message-gap) 0 0;
+  color: var(--_kjun-color-text-secondary);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+.kjun-form-error {
+  color: var(--_kjun-color-danger);
+  display: flex;
+  align-items: center;
+  gap: var(--extension-form-message-gap);
+}
+.kjun-input-wrap {
+  position: relative;
+  min-width: 0;
+}
+.kjun-input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  border: var(--_kjun-border-control-width) solid transparent;
+  background: var(--_kjun-color-input-bg);
+  color: var(--_kjun-color-text);
+  outline: none;
+  line-height: var(--_kjun-type-input-line);
+  font-weight: var(--_kjun-type-input-weight);
+  letter-spacing: var(--_kjun-type-input-tracking);
+  transition: background-color var(--motion-control) var(--ease-out), border-color var(--motion-control) var(--ease-out);
+}
+.kjun-input::placeholder {
+  color: var(--_kjun-color-input-placeholder);
+  font-size: var(--placeholder-size);
+  opacity: 1;
+}
+.kjun-input:hover:not(:disabled):not(:focus):not([readonly]):not([aria-expanded="true"]):not([aria-invalid="true"]) {
+  background: var(--_kjun-color-hover);
+}
+.kjun-input:focus,
+.kjun-input[aria-expanded="true"],
+.kjun-input[aria-invalid="true"] {
+  background: var(--_kjun-color-input-bg);
+  border-color: var(--_kjun-color-input-border-focus);
+}
+.kjun-input[aria-invalid="true"],
+.kjun-input[aria-invalid="true"]:focus,
+.kjun-input[aria-invalid="true"][aria-expanded="true"] {
+  border-color: var(--_kjun-color-danger);
+}
+.kjun-input[readonly] { color: var(--_kjun-color-text-secondary); }
+/* The ring covers the control border so keyboard focus reads as one outline. */
+.kjun-input:focus-visible:not(:disabled) {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-inset-offset);
+}
+.kjun-input[aria-invalid="true"]:focus-visible:not(:disabled) {
+  outline-offset: var(--_kjun-state-focus-offset);
+}
+.kjun-input-wrap[data-disabled="true"] .kjun-input-affix { color: var(--_kjun-color-text-disabled); }
+.kjun-input-wrap[data-disabled="true"] .kjun-button,
+.kjun-select-shell .kjun-select-clear:disabled { color: var(--_kjun-color-text-disabled); opacity: 1; }
+.kjun-input:disabled {
+  background: var(--_kjun-color-input-bg);
+  color: var(--_kjun-color-text-disabled);
+  cursor: not-allowed;
+}
+.kjun-input:disabled::placeholder {
+  color: var(--_kjun-color-text-disabled);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kjun-input { transition: none; }
+}
+.kjun-input-affix {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--extension-form-affix-item-gap);
+  color: var(--_kjun-color-text-tertiary);
+}
+.kjun-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--_kjun-color-overlay);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--_kjun-geometry-modal-mobile-inset);
+}
+.kjun-modal {
+  display: flex;
+  flex-direction: column;
+  background: var(--_kjun-color-surface);
+  border-radius: var(--_kjun-geometry-modal-radius);
+  box-shadow: var(--_kjun-modal-elevation);
+  max-height: calc(100dvh - 2 * var(--_kjun-geometry-modal-mobile-inset));
+  max-width: 100%;
+  overflow: hidden;
+  outline: none;
+}
+.kjun-modal-dialog {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: inherit;
+  height: inherit;
+  outline: none;
+}
+.kjun-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--_kjun-geometry-modal-header-padding-y) var(--_kjun-geometry-modal-padding);
+  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  flex-shrink: 0;
+}
+.kjun-modal-title {
+  flex: 1;
+  min-width: 0;
+  padding-right: var(--_kjun-geometry-modal-title-action-gap);
+  overflow-wrap: anywhere;
+  font-size: var(--_kjun-geometry-modal-title-size);
+  margin: 0;
+  line-height: var(--_kjun-geometry-modal-title-line-height);
+  font-weight: var(--_kjun-geometry-modal-title-weight);
+  letter-spacing: var(--_kjun-type-section-title-tracking);
+}
+.kjun-modal-close {
+  width: var(--_kjun-geometry-modal-close-size);
+  height: var(--_kjun-geometry-modal-close-size);
+  border-radius: var(--_kjun-geometry-modal-close-radius);
+  background: transparent;
+  border: 0;
+  color: var(--_kjun-color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.kjun-modal-close:hover {
+  background: var(--_kjun-color-secondary);
+}
+.kjun-modal-body {
+  padding: var(--_kjun-geometry-modal-padding);
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  color: var(--_kjun-color-text);
+}
+.kjun-modal-footer {
+  padding: var(--_kjun-geometry-modal-header-padding-y) var(--_kjun-geometry-modal-padding);
+  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--_kjun-geometry-modal-footer-gap);
+  flex-shrink: 0;
+}
+.kjun-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--_kjun-geometry-modal-actions-gap);
+}
+.kjun-form-actions > .kjun-button {
+  --_kjun-action-height: var(--_kjun-geometry-button-heights-lg);
+  height: auto !important;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  padding-block: max(0px, calc((var(--_kjun-action-height) - 1lh) / 2)) !important;
+}
+.kjun-form-actions > .kjun-button[data-size="sm"] { --_kjun-action-height: var(--_kjun-geometry-button-heights-sm); }
+.kjun-form-actions > .kjun-button[data-size="md"] { --_kjun-action-height: var(--_kjun-geometry-button-heights-md); }
+.kjun-form-actions > .kjun-button > .kjun-button-label { min-width: 0; }
+/* Full-width rows keep the group's intrinsic row width when its parent grows. */
+.kjun-form-actions[data-stacked] { align-items: stretch; }
+.kjun-form-actions[data-stacked] > .kjun-button { width: 100%; }
+@media (width <= token(responsive.modal)) {
+  .kjun-modal:not([data-size="full"]) {
+    width: calc(100vw - 2 * var(--_kjun-geometry-modal-mobile-inset)) !important;
+    max-height: 85dvh;
+  }
+  .kjun-modal:not([data-fixed="true"]):not([data-size="full"]) {
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .kjun-modal:not([data-fixed="true"]):not([data-size="full"])
+    .kjun-modal-body {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  .kjun-button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .kjun-button[data-variant="primary"]:hover:not(:disabled):not(:active) {
+    background: var(--_kjun-color-brand);
+  }
+  .kjun-button[data-variant="secondary"]:hover:not(:disabled):not(:active) {
+    background: var(--_kjun-color-button-secondary);
+  }
+  .kjun-button[data-variant="ghost"]:hover:not(:disabled):not(:active),
+  .kjun-button[data-variant="danger-ghost"]:hover:not(:disabled):not(:active) {
+    background: transparent;
+  }
+  .kjun-button[data-variant="danger"]:hover:not(:disabled):not(:active) {
+    background: var(--_kjun-color-danger);
+  }
+  .kjun-button[data-variant="success"]:hover:not(:disabled):not(:active) {
+    background: var(--_kjun-color-success);
+  }
+  .kjun-button[data-variant="warning"]:hover:not(:disabled):not(:active) {
+    background: var(--_kjun-color-warning);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kjun-scope *,
+  .kjun-scope *::before,
+  .kjun-scope *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .kjun-scope .kjun-input,
+  .kjun-scope .ds-field { transition: none !important; }
+}

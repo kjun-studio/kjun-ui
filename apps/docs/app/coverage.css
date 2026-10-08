@@ -1,0 +1,110 @@
+.coverage-page { container: coverage / inline-size; min-width: 0; }
+.coverage-page h3 { font-size: var(--docs-type-body); font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.coverage-page p { line-height: 1.7; }
+/* Links read as links inside prose; dense lists underline on interaction only. */
+.coverage-page p a, .coverage-exceptions a, .coverage-service a, .coverage-record a { text-decoration: underline; text-underline-offset: 4px; }
+.coverage-component-link { font-weight: 600; text-decoration: none; }
+.coverage-component-link:hover, .coverage-component-link:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Summary: one verdict, per-platform composition, then exceptions. */
+.coverage-verdict { margin-top: 12px; font-size: var(--docs-type-lead, 1.125rem); font-weight: 600; line-height: 1.6; letter-spacing: -.01em; }
+.coverage-platforms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 24px; border-block: 1px solid var(--border); }
+.coverage-platform { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 20px 20px 20px 0; }
+.coverage-platform + .coverage-platform { padding-left: 20px; border-left: 1px solid var(--border); }
+.coverage-platform-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.coverage-platform-head h3 { margin: 0; }
+.coverage-provided { color: var(--muted-foreground); font-size: var(--docs-type-small); font-variant-numeric: tabular-nums; }
+.coverage-meter { display: flex; gap: 2px; height: 6px; border-radius: 999px; overflow: hidden; background: var(--secondary); }
+.coverage-meter > span { min-width: 4px; }
+.coverage-meter > [data-status="supported"] { background: var(--kjun-success, var(--foreground)); }
+.coverage-meter > [data-status="preview"] { background: var(--kjun-info, var(--muted-foreground)); }
+.coverage-meter > [data-status="review"] { background: var(--kjun-warning, var(--muted-foreground)); }
+.coverage-meter > [data-status="unsupported"] { background: var(--border); }
+.coverage-platform-counts { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: var(--docs-type-small); font-variant-numeric: tabular-nums; }
+.coverage-summary-state { display: inline-flex; align-items: center; gap: 6px; }
+.coverage-runtime { color: var(--muted-foreground); font-size: var(--docs-type-small); }
+.coverage-device-notice { margin: 0; color: var(--muted-foreground); font-size: var(--docs-type-small); line-height: 1.6; }
+.coverage-device-notice strong { color: var(--foreground); font-weight: 600; }
+.coverage-exceptions { display: flex; align-items: baseline; gap: 8px 16px; flex-wrap: wrap; margin-top: 20px; font-size: var(--docs-type-small); }
+.coverage-exceptions h3 { margin: 0; font-size: var(--docs-type-small); }
+.coverage-exceptions p { color: var(--muted-foreground); }
+.coverage-exceptions ul { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0; padding: 0; list-style: none; }
+.coverage-basis { margin-top: 12px; color: var(--muted-foreground); font-size: var(--docs-type-small); }
+
+/* List controls */
+.coverage-search { margin-top: 24px; }
+.coverage-search > div { position: relative; }
+.coverage-search .kjun-input { background: var(--secondary); }
+.coverage-filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 16px; }
+.coverage-filters .kjun-button-label > span { opacity: .7; font-variant-numeric: tabular-nums; }
+.coverage-results { display: flex; align-items: center; gap: 8px 16px; flex-wrap: wrap; min-height: 40px; margin-bottom: 8px; font-size: var(--docs-type-small); }
+.coverage-results > p { font-weight: 500; }
+.coverage-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 0 auto; color: var(--muted-foreground); }
+.coverage-legend > div { display: inline-flex; align-items: center; gap: 6px; }
+.coverage-legend dt { flex-shrink: 0; }
+.coverage-legend dd { line-height: 1.5; }
+.coverage-status { white-space: nowrap; }
+
+/* Comparison table: DsTable renders .kjun-table. */
+.coverage-table-view { display: block; }
+.coverage-table-view .kjun-table { table-layout: fixed; }
+.coverage-table-view .kjun-table thead th { background: var(--background); border-bottom: 1px solid var(--border); padding: 10px 12px; font-size: var(--docs-type-caption, .75rem); }
+.coverage-table-view .kjun-table tbody td { padding: 12px; vertical-align: top; border-bottom: 1px solid var(--border); font-size: var(--docs-type-small); line-height: 1.5; }
+.coverage-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.coverage-category { color: var(--muted-foreground); font-size: var(--docs-type-caption, .75rem); font-weight: 400; }
+.coverage-difference { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: var(--docs-type-small); }
+.coverage-difference[data-state="open"], .coverage-difference:has(> .docs-disclosure-content:not([hidden])) { flex-wrap: wrap; }
+.coverage-excerpt { flex: 1; min-width: 0; margin: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted-foreground); }
+.coverage-difference > button { flex-shrink: 0; margin-left: auto; }
+.coverage-difference .docs-disclosure-content { order: -1; flex-basis: 100%; line-height: 1.7; overflow-wrap: anywhere; }
+.coverage-difference .docs-disclosure-content[hidden] { display: none; }
+.coverage-difference .docs-disclosure-content > p { margin: 0; }
+.coverage-detail-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 8px; }
+.coverage-detail-links a { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Narrow list */
+.coverage-card-view { display: none; gap: 8px; }
+.coverage-card-list { display: grid; gap: 12px; }
+.coverage-group-tools { display: flex; justify-content: flex-end; }
+.coverage-group { border-bottom: 1px solid var(--border); }
+.coverage-group-trigger { justify-content: space-between; height: auto; min-height: 52px; padding-inline: 4px; }
+.coverage-group-trigger .kjun-button-label { flex: 1; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; min-width: 0; }
+.coverage-group-title { font-weight: 600; }
+.coverage-group-meta { color: var(--muted-foreground); font-size: var(--docs-type-small); font-weight: 400; font-variant-numeric: tabular-nums; }
+.coverage-group .docs-disclosure-content { padding-bottom: 12px; }
+.coverage-group .coverage-category { display: none; }
+.coverage-component-card .coverage-name { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 8px; margin: 0; }
+.coverage-component-card .coverage-platform-list { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 12px; }
+.coverage-component-card .coverage-platform-list > div { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.coverage-component-card .coverage-platform-list dt { color: var(--muted-foreground); font-weight: 400; }
+.coverage-component-card .coverage-difference { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.coverage-platform-list { display: grid; gap: 10px; font-size: var(--docs-type-small); }
+.coverage-platform-list > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; }
+.coverage-platform-list dt { font-weight: 500; }
+
+/* Services and records */
+.coverage-services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+.coverage-service > .kjun-card-body, .coverage-service { display: flex; flex-direction: column; }
+.coverage-service h3 { word-break: normal; }
+.coverage-service p { color: var(--muted-foreground); overflow-wrap: anywhere; }
+.coverage-service .coverage-platform-list { margin: auto 0 8px; padding-top: 12px; }
+.coverage-records { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+.coverage-record { scroll-margin-top: var(--document-offset, 80px); }
+.coverage-empty { padding: 40px 20px; border: 1px dashed var(--border); border-radius: 12px; text-align: center; }
+.coverage-empty p { margin: 12px 0 20px; }
+
+@container coverage (width < 720px) {
+  .coverage-table-view { display: none; }
+  .coverage-card-view { display: grid; }
+  .coverage-services { grid-template-columns: minmax(0, 1fr); }
+  .coverage-platforms { grid-template-columns: minmax(0, 1fr); }
+  .coverage-platform, .coverage-platform + .coverage-platform { padding: 16px 0; border-left: 0; }
+  .coverage-platform + .coverage-platform { border-top: 1px solid var(--border); }
+  .coverage-legend { margin-left: 0; }
+}
+@container coverage (width < 540px) {
+  .coverage-records { grid-template-columns: minmax(0, 1fr); }
+  /* One scrollable row keeps the list close to the controls on phones. */
+  .coverage-filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -4px; padding: 2px 4px; }
+  .coverage-filters > * { flex-shrink: 0; }
+}

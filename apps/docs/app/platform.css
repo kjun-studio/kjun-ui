@@ -1,0 +1,15 @@
+.docs-platform-select { flex-shrink: 0; margin-left: auto; }
+.topbar .docs-search-trigger { margin-left: 0; }
+.topbar .breadcrumbs { flex: 1; }
+.platform-loading { padding: 24px 0; color: var(--muted-foreground); font-size: var(--docs-type-small); }
+.preview-platform, .api-platform { font-size: var(--docs-type-small); color: var(--muted-foreground); }
+.api-platform { margin: 16px 0; }
+@media (max-width: 767px) {
+  /* One compact row: menu, current page, platform, search. */
+  .topbar { gap: 8px; }
+  .topbar .breadcrumbs { min-width: 0; flex-wrap: nowrap; }
+  .topbar .breadcrumbs > :not(:last-child) { display: none; }
+  .topbar .breadcrumbs > span:last-child { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 600; }
+  .docs-platform-select { width: 136px; }
+  .doc-main section[id] { scroll-margin-top: 80px; }
+}

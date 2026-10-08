@@ -1,0 +1,146 @@
+.kjun-toast-stack {
+  position: fixed;
+  top: var(--extension-toast-inset);
+  right: var(--extension-toast-inset);
+  display: flex;
+  flex-direction: column;
+  gap: var(--extension-toast-stack-gap);
+  max-height: calc(100dvh - 2 * var(--extension-toast-inset));
+  overflow: hidden;
+  pointer-events: none;
+}
+.kjun-toast {
+  box-shadow: var(--_kjun-toast-elevation);
+  display: flex;
+  align-items: center;
+  gap: var(--extension-toast-gap);
+  padding: var(--extension-toast-padding);
+  background: var(--_kjun-color-surface);
+  border-radius: var(--extension-toast-radius);
+  border: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  min-width: var(--extension-toast-min-width);
+  max-width: var(--extension-toast-max-width);
+  position: relative;
+  overflow: hidden;
+  pointer-events: auto;
+}
+.kjun-toast[data-title="true"] {
+  align-items: flex-start;
+}
+.kjun-toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: var(--_kjun-type-input-size);
+  line-height: var(--_kjun-type-input-line);
+  font-weight: var(--_kjun-type-input-weight);
+  letter-spacing: var(--_kjun-type-input-tracking);
+}
+.kjun-toast-content {
+  flex: 1;
+  min-width: 0;
+}
+.kjun-toast strong {
+  display: block;
+  font-size: var(--_kjun-type-control-size);
+  color: var(--_kjun-color-text);
+  margin-bottom: var(--extension-toast-title-gap);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+  letter-spacing: var(--_kjun-type-control-tracking);
+}
+.kjun-toast-message {
+  font-size: var(--_kjun-type-body-size);
+  color: var(--_kjun-color-text-secondary);
+  overflow-wrap: anywhere;
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-toast-action {
+  display: block;
+  margin-top: var(--extension-toast-action-gap);
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: var(--_kjun-type-label-size);
+  color: var(--_kjun-color-brand);
+  cursor: pointer;
+  transition: color var(--motion-control) var(--ease-out);
+  line-height: var(--_kjun-type-label-line);
+  font-weight: var(--_kjun-type-label-weight);
+  letter-spacing: var(--_kjun-type-label-tracking);
+}
+.kjun-toast-action:hover {
+  color: var(--_kjun-color-brand-hover);
+  text-decoration: underline;
+}
+.kjun-toast-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--extension-toast-close-size);
+  height: var(--extension-toast-close-size);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--extension-toast-close-radius);
+  cursor: pointer;
+  color: var(--_kjun-color-text-tertiary);
+  transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out);
+  flex-shrink: 0;
+}
+.kjun-toast-close:hover {
+  background: var(--_kjun-color-secondary);
+  color: var(--_kjun-color-text);
+}
+.kjun-toast-action:focus-visible,
+.kjun-toast-close:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-offset);
+}
+.kjun-toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: var(--extension-toast-progress-height);
+  border-radius: 0 0 var(--extension-toast-radius) var(--extension-toast-radius);
+  animation: kjun-toast-progress linear forwards;
+}
+@keyframes kjun-toast-progress {
+  from {
+    width: var(--toast-start);
+  }
+  to {
+    width: 0;
+  }
+}
+@media (width <= token(responsive.toast)) {
+  .kjun-toast-stack {
+    left: var(--extension-toast-inset);
+    right: var(--extension-toast-inset);
+  }
+  .kjun-toast {
+  box-shadow: var(--_kjun-toast-elevation);
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .kjun-toast-close {
+    min-width: var(--_kjun-geometry-native-minimum-touch-target);
+    min-height: var(--_kjun-geometry-native-minimum-touch-target);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kjun-toast-action,
+  .kjun-toast-close {
+    transition: none;
+  }
+  .kjun-toast-progress {
+    animation: none;
+    width: 100%;
+  }
+}

@@ -1,0 +1,16 @@
+export default [
+  ['DsAnimatedNumber', 'text', 'value suffix', '금액과 원 단위의 텍스트', { text: '원' }],
+  ['DsBadge', 'text', 'variant', '배지의 상태 텍스트', { text: 'success' }],
+  ['DsEmpty', 'action', 'text description', '빈 결과 설명과 공급한 추가 버튼', { button: '추가', event: 'message', children: true }],
+  ['DsHeatmapCell', 'text', 'value', '색과 함께 표시하는 히트맵 수치', { text: '-0.5' }],
+  ['DsIcon', 'decorative', 'name', '장식용 아이콘: 의미는 부모 컨트롤의 이름으로 제공', {}],
+  ['DsKpiHero', 'text', 'label value', '총 평가 금액의 라벨과 값', { text: '총 평가 금액' }],
+  ['DsKpiRow', 'text', 'items', '기본 비대화형 지표 행의 라벨과 값', { text: '평가 금액' }],
+  ['DsProgressCell', 'text', 'value max showLabel', '비대화형 진행률 셀의 백분율 텍스트', { text: '42%' }],
+  ['DsSparkline', 'chart', 'data', '추세 그래프의 대체 이름', {}],
+  ['DsTable', 'table', 'ariaLabel selectable expandable sortable', '표의 검색·행 선택·행 확장·정렬 컨트롤', {}],
+  ['DsListRow', 'action', 'title disabled', '프로필 행과 별도 공유 버튼의 이름과 실행', { button: '공유', event: 'message', separateAction: true }],
+  ['DsListSection', 'action', 'title ariaLabel', '섹션 안에 공급한 프로필 행·공유 버튼', { button: '공유', event: 'message', children: true }],
+  ['DsImage', 'image', 'alt decorative', '프로젝트 표지의 대체 텍스트와 장식 모드', { text: '산과 하늘을 표현한 프로젝트 표지' }],
+  ['DsAvatar', 'image', 'name alt decorative', '김하늘 아바타의 대체 이름과 장식 모드', { text: '김하늘' }],
+];

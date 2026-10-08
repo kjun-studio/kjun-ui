@@ -1,0 +1,10 @@
+import index from './generated/discovery.json';
+import type { DiscoveryIndex } from '../../../shared/docs-search.mjs';
+export type { DiscoveryDocument, DiscoveryCategory } from '../../../shared/docs-search.mjs';
+export { searchDocuments } from '../../../shared/docs-search.mjs';
+const discovery = index as DiscoveryIndex;
+export const categories = discovery.categories;
+export const documents = discovery.documents;
+export const navigationDocuments = documents.filter(document => document.navigation !== false);
+export const components = documents.filter(document => document.component);
+export const categoryFor = (id?: string) => categories.find(category => category.id === id);

@@ -1,0 +1,7 @@
+{
+  "states": {
+    "opacity": { "disabled": 0.5, "disabledStrong": 0.4, "pressed": 0.8, "pending": 0.55, "heatMinimum": 0.08, "heatMaximum": 0.4 },
+    "focus": { "width": 2, "offset": 2, "choiceOffset": 3, "insetOffset": -2, "ringWidth": 3 }
+  },
+  "border": { "hairlineWidth": 0.5, "defaultWidth": 1, "controlWidth": 2 }
+}

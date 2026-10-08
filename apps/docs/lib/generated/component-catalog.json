@@ -1,0 +1,3047 @@
+[
+  {
+    "name": "DsAnimatedNumber",
+    "source": "frontend/src/components/design-system/data-display/AnimatedNumber.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsAnimatedNumber",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/animated-number",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/AnimatedNumber.vue",
+      "react": "packages/react/src/number-display.tsx",
+      "native": "packages/native/src/number-display.tsx"
+    }
+  },
+  {
+    "name": "DsChartSkeleton",
+    "source": "frontend/src/components/design-system/data-display/ChartSkeleton.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsChartSkeleton",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/chart-skeleton",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/ChartSkeleton.vue",
+      "react": "packages/react/src/skeletons.tsx",
+      "native": "packages/native/src/skeletons.tsx"
+    }
+  },
+  {
+    "name": "DsCollectionMark",
+    "source": "frontend/src/components/design-system/data-display/CollectionMark.vue",
+    "category": "data-display",
+    "kind": "domain",
+    "owner": "DsCollectionMark",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/collection-mark",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/CollectionMark.vue",
+      "react": "packages/react/src/financial-display.tsx",
+      "native": "packages/native/src/financial-display.tsx"
+    }
+  },
+  {
+    "name": "DsDeviation",
+    "source": "frontend/src/components/design-system/data-display/Deviation.vue",
+    "category": "data-display",
+    "kind": "domain",
+    "owner": "DsDeviation",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/deviation",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/Deviation.vue",
+      "react": "packages/react/src/financial-display.tsx",
+      "native": "packages/native/src/financial-display.tsx"
+    }
+  },
+  {
+    "name": "DsEmpty",
+    "source": "frontend/src/components/design-system/data-display/Empty.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsEmpty",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/empty",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/Empty.vue",
+      "react": "packages/react/src/display.tsx",
+      "native": "packages/native/src/display-primitives.tsx"
+    }
+  },
+  {
+    "name": "DsExecutionStatusBadge",
+    "source": "frontend/src/components/design-system/data-display/ExecutionStatusBadge.vue",
+    "category": "data-display",
+    "kind": "domain",
+    "owner": "DsExecutionStatusBadge",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/execution-status-badge",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/ExecutionStatusBadge.vue",
+      "react": "packages/react/src/financial-display.tsx",
+      "native": "packages/native/src/financial-display.tsx"
+    }
+  },
+  {
+    "name": "DsFormSkeleton",
+    "source": "frontend/src/components/design-system/data-display/FormSkeleton.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsFormSkeleton",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/form-skeleton",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/FormSkeleton.vue",
+      "react": "packages/react/src/skeletons.tsx",
+      "native": "packages/native/src/skeletons.tsx"
+    }
+  },
+  {
+    "name": "DsFreshness",
+    "source": "frontend/src/components/design-system/data-display/Freshness.vue",
+    "category": "data-display",
+    "kind": "domain",
+    "owner": "DsFreshness",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/freshness",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/Freshness.vue",
+      "react": "packages/react/src/number-display.tsx",
+      "native": "packages/native/src/number-display.tsx"
+    }
+  },
+  {
+    "name": "DsHeatmapCell",
+    "source": "frontend/src/components/design-system/data-display/HeatmapCell.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsHeatmapCell",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/heatmap-cell",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/HeatmapCell.vue",
+      "react": "packages/react/src/financial-display.tsx",
+      "native": "packages/native/src/financial-display.tsx"
+    }
+  },
+  {
+    "name": "DsKpiHero",
+    "source": "frontend/src/components/design-system/data-display/KpiHero.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsKpiHero",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/kpi-hero",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/KpiHero.vue",
+      "react": "packages/react/src/kpi.tsx",
+      "native": "packages/native/src/kpi-hero.tsx"
+    }
+  },
+  {
+    "name": "DsKpiRow",
+    "source": "frontend/src/components/design-system/data-display/KpiRow.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsKpiRow",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/kpi-row",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/KpiRow.vue",
+      "react": "packages/react/src/kpi.tsx",
+      "native": "packages/native/src/kpi-row.tsx"
+    }
+  },
+  {
+    "name": "DsListSkeleton",
+    "source": "frontend/src/components/design-system/data-display/ListSkeleton.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsListSkeleton",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/list-skeleton",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/ListSkeleton.vue",
+      "react": "packages/react/src/skeletons.tsx",
+      "native": "packages/native/src/skeletons.tsx"
+    }
+  },
+  {
+    "name": "DsMarketCards",
+    "source": "frontend/src/components/design-system/data-display/MarketCards.vue",
+    "category": "data-display",
+    "kind": "domain",
+    "owner": "DsMarketCards",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/market-cards",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/MarketCards.vue",
+      "react": "packages/react/src/market-cards.tsx",
+      "native": "packages/native/src/market-cards.tsx"
+    }
+  },
+  {
+    "name": "DsMarketSimpleList",
+    "source": "frontend/src/components/design-system/data-display/MarketSimpleList.vue",
+    "category": "data-display",
+    "kind": "domain",
+    "owner": "DsMarketSimpleList",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/market-simple-list",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/MarketSimpleList.vue",
+      "react": "packages/react/src/market-list.tsx",
+      "native": "packages/native/src/market-list.tsx"
+    }
+  },
+  {
+    "name": "DsMarketTable",
+    "source": "frontend/src/components/design-system/data-display/MarketTable.vue",
+    "category": "data-display",
+    "kind": "domain",
+    "owner": "DsMarketTable",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/market-table",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/MarketTable.vue",
+      "react": "packages/react/src/market-table.tsx",
+      "native": "packages/native/src/market-table.tsx"
+    }
+  },
+  {
+    "name": "DsMarketTableSkeleton",
+    "source": "frontend/src/components/design-system/data-display/MarketTableSkeleton.vue",
+    "category": "data-display",
+    "kind": "domain",
+    "owner": "DsMarketTableSkeleton",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/market-table-skeleton",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/MarketTableSkeleton.vue",
+      "react": "packages/react/src/market-skeleton.tsx",
+      "native": "packages/native/src/market-skeleton.tsx"
+    }
+  },
+  {
+    "name": "DsPopover",
+    "source": "frontend/src/components/design-system/data-display/Popover.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsPopover",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/popover",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/Popover.vue",
+      "react": "packages/react/src/layers.tsx",
+      "native": "packages/native/src/popover.tsx"
+    }
+  },
+  {
+    "name": "DsPriceCell",
+    "source": "frontend/src/components/design-system/data-display/PriceCell.vue",
+    "category": "data-display",
+    "kind": "domain",
+    "owner": "DsPriceCell",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/price-cell",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/PriceCell.vue",
+      "react": "packages/react/src/number-display.tsx",
+      "native": "packages/native/src/number-display.tsx"
+    }
+  },
+  {
+    "name": "DsProgressCell",
+    "source": "frontend/src/components/design-system/data-display/ProgressCell.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsProgressCell",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/progress-cell",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/ProgressCell.vue",
+      "react": "packages/react/src/financial-display.tsx",
+      "native": "packages/native/src/financial-display.tsx"
+    }
+  },
+  {
+    "name": "DsSignedValue",
+    "source": "frontend/src/components/design-system/data-display/SignedValue.vue",
+    "category": "data-display",
+    "kind": "domain",
+    "owner": "DsSignedValue",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/signed-value",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/SignedValue.vue",
+      "react": "packages/react/src/number-display.tsx",
+      "native": "packages/native/src/number-display.tsx"
+    }
+  },
+  {
+    "name": "DsSkeleton",
+    "source": "frontend/src/components/design-system/data-display/Skeleton.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsSkeleton",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/skeleton",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/Skeleton.vue",
+      "react": "packages/react/src/display.tsx",
+      "native": "packages/native/src/skeleton-base.tsx"
+    }
+  },
+  {
+    "name": "DsSparkline",
+    "source": "frontend/src/components/design-system/data-display/Sparkline.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsSparkline",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/sparkline",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/Sparkline.vue",
+      "react": "packages/react/src/financial-display.tsx",
+      "native": "packages/native/src/financial-display.tsx"
+    }
+  },
+  {
+    "name": "DsTable",
+    "source": "frontend/src/components/design-system/data-display/Table.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsTable",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/table",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/Table.vue",
+      "react": "packages/react/src/table-view.tsx",
+      "native": "packages/native/src/table-view.tsx"
+    }
+  },
+  {
+    "name": "DsTooltip",
+    "source": "frontend/src/components/design-system/data-display/Tooltip.vue",
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsTooltip",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/tooltip",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/Tooltip.vue",
+      "react": "packages/react/src/layers.tsx",
+      "native": "packages/native/src/popover.tsx"
+    }
+  },
+  {
+    "name": "DsTableCards",
+    "source": "frontend/src/components/design-system/data-display/table/TableCards.vue",
+    "category": "data-display",
+    "kind": "internal",
+    "owner": "DsTable",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/table",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/data-display/table/TableCards.vue",
+      "react": "packages/react/src/table-view.tsx",
+      "native": "packages/native/src/table-view.tsx"
+    }
+  },
+  {
+    "name": "DsAlert",
+    "source": "frontend/src/components/design-system/feedback/Alert.vue",
+    "category": "feedback",
+    "kind": "component",
+    "owner": "DsAlert",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/alert",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/feedback/Alert.vue",
+      "react": "packages/react/src/display.tsx",
+      "native": "packages/native/src/display-primitives.tsx"
+    }
+  },
+  {
+    "name": "DsConfirmModal",
+    "source": "frontend/src/components/design-system/feedback/ConfirmModal.vue",
+    "category": "feedback",
+    "kind": "internal",
+    "owner": "KjunFeedbackProvider",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/feedback",
+    "tests": [
+      "tests/feedback.test.mjs",
+      "tests/browser/expanded.spec.ts"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/feedback/ConfirmModal.vue",
+      "react": "packages/react/src/feedback.tsx",
+      "native": "packages/native/src/feedback.tsx"
+    }
+  },
+  {
+    "name": "DsDataState",
+    "source": "frontend/src/components/design-system/feedback/DataState.vue",
+    "category": "feedback",
+    "kind": "component",
+    "owner": "DsDataState",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/data-state",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/feedback/DataState.vue",
+      "react": "packages/react/src/data-state.tsx",
+      "native": "packages/native/src/data-state.tsx"
+    }
+  },
+  {
+    "name": "DsErrorBoundary",
+    "source": "frontend/src/components/design-system/feedback/ErrorBoundary.vue",
+    "category": "feedback",
+    "kind": "component",
+    "owner": "DsErrorBoundary",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/error-boundary",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/feedback/ErrorBoundary.vue",
+      "react": "packages/react/src/feedback.tsx",
+      "native": "packages/native/src/feedback.tsx"
+    }
+  },
+  {
+    "name": "DsProgress",
+    "source": "frontend/src/components/design-system/feedback/Progress.vue",
+    "category": "feedback",
+    "kind": "component",
+    "owner": "DsProgress",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/progress",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/feedback/Progress.vue",
+      "react": "packages/react/src/display.tsx",
+      "native": "packages/native/src/display-primitives.tsx"
+    }
+  },
+  {
+    "name": "DsPromptModal",
+    "source": "frontend/src/components/design-system/feedback/PromptModal.vue",
+    "category": "feedback",
+    "kind": "internal",
+    "owner": "KjunFeedbackProvider",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/feedback",
+    "tests": [
+      "tests/feedback.test.mjs",
+      "tests/browser/expanded.spec.ts"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/feedback/PromptModal.vue",
+      "react": "packages/react/src/feedback.tsx",
+      "native": "packages/native/src/feedback.tsx"
+    }
+  },
+  {
+    "name": "DsSpinner",
+    "source": "frontend/src/components/design-system/feedback/Spinner.vue",
+    "category": "feedback",
+    "kind": "component",
+    "owner": "DsSpinner",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/spinner",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/feedback/Spinner.vue",
+      "react": "packages/react/src/display.tsx",
+      "native": "packages/native/src/display-primitives.tsx"
+    }
+  },
+  {
+    "name": "DsToast",
+    "source": "frontend/src/components/design-system/feedback/Toast.vue",
+    "category": "feedback",
+    "kind": "internal",
+    "owner": "KjunFeedbackProvider",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/feedback",
+    "tests": [
+      "tests/feedback.test.mjs",
+      "tests/browser/expanded.spec.ts"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/feedback.js",
+      "react": "packages/react/src/feedback.tsx",
+      "native": "packages/native/src/feedback.tsx"
+    }
+  },
+  {
+    "name": "DsToastContainer",
+    "source": "frontend/src/components/design-system/feedback/ToastContainer.vue",
+    "category": "feedback",
+    "kind": "internal",
+    "owner": "KjunFeedbackProvider",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/feedback",
+    "tests": [
+      "tests/feedback.test.mjs",
+      "tests/browser/expanded.spec.ts"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/feedback.js",
+      "react": "packages/react/src/feedback.tsx",
+      "native": "packages/native/src/feedback.tsx"
+    }
+  },
+  {
+    "name": "DsSearchInput",
+    "source": "frontend/src/components/design-system/form/BaseSearchInput.vue",
+    "category": "form",
+    "kind": "component",
+    "owner": "DsSearchInput",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/search-input",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/form/BaseSearchInput.vue",
+      "react": "packages/react/src/search-input.tsx",
+      "native": "packages/native/src/search-input.tsx"
+    }
+  },
+  {
+    "name": "DsCheckbox",
+    "source": "frontend/src/components/design-system/form/Checkbox.vue",
+    "category": "form",
+    "kind": "component",
+    "owner": "DsCheckbox",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/checkbox",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/form/Checkbox.vue",
+      "react": "packages/react/src/controls.tsx",
+      "native": "packages/native/src/choice-controls.tsx"
+    }
+  },
+  {
+    "name": "DsCombobox",
+    "source": "frontend/src/components/design-system/form/Combobox.vue",
+    "category": "form",
+    "kind": "component",
+    "owner": "DsCombobox",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/combobox",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/form/Combobox.vue",
+      "react": "packages/react/src/combobox.tsx",
+      "native": "packages/native/src/combobox.tsx"
+    }
+  },
+  {
+    "name": "DsDatePicker",
+    "source": "frontend/src/components/design-system/form/DatePicker.vue",
+    "category": "form",
+    "kind": "component",
+    "owner": "DsDatePicker",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/date-picker",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/form/DatePicker.vue",
+      "react": "packages/react/src/date-picker.tsx",
+      "native": "packages/native/src/date-picker.tsx"
+    }
+  },
+  {
+    "name": "DsFormActions",
+    "source": "frontend/src/components/design-system/form/FormActions.vue",
+    "category": "form",
+    "kind": "component",
+    "owner": "DsFormActions",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/form-actions",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/form/FormActions.vue",
+      "react": "packages/react/src/modal.tsx",
+      "native": "packages/native/src/modal.tsx"
+    }
+  },
+  {
+    "name": "DsFormGroup",
+    "source": "frontend/src/components/design-system/form/FormGroup.vue",
+    "category": "form",
+    "kind": "component",
+    "owner": "DsFormGroup",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/form-group",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/form/FormGroup.vue",
+      "react": "packages/react/src/input.tsx",
+      "native": "packages/native/src/input.tsx"
+    }
+  },
+  {
+    "name": "DsRadio",
+    "source": "frontend/src/components/design-system/form/Radio.vue",
+    "category": "form",
+    "kind": "component",
+    "owner": "DsRadio",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/radio",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/form/Radio.vue",
+      "react": "packages/react/src/controls.tsx",
+      "native": "packages/native/src/choice-controls.tsx"
+    }
+  },
+  {
+    "name": "DsRadioGroup",
+    "source": "frontend/src/components/design-system/form/RadioGroup.vue",
+    "category": "form",
+    "kind": "component",
+    "owner": "DsRadioGroup",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/radio-group",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/form/RadioGroup.vue",
+      "react": "packages/react/src/controls.tsx",
+      "native": "packages/native/src/choice-controls.tsx"
+    }
+  },
+  {
+    "name": "DsSelect",
+    "source": "frontend/src/components/design-system/form/Select.vue",
+    "category": "form",
+    "kind": "component",
+    "owner": "DsSelect",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/select",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/form/Select.vue",
+      "react": "packages/react/src/select-control.tsx",
+      "native": "packages/native/src/select-control.tsx"
+    }
+  },
+  {
+    "name": "DsSwitch",
+    "source": "frontend/src/components/design-system/form/Switch.vue",
+    "category": "form",
+    "kind": "component",
+    "owner": "DsSwitch",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/switch",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/form/Switch.vue",
+      "react": "packages/react/src/controls.tsx",
+      "native": "packages/native/src/choice-controls.tsx"
+    }
+  },
+  {
+    "name": "DsTextarea",
+    "source": "frontend/src/components/design-system/form/Textarea.vue",
+    "category": "form",
+    "kind": "component",
+    "owner": "DsTextarea",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/textarea",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/form/Textarea.vue",
+      "react": "packages/react/src/controls.tsx",
+      "native": "packages/native/src/textarea.tsx"
+    }
+  },
+  {
+    "name": "DsAccordion",
+    "source": "frontend/src/components/design-system/layout/Accordion.vue",
+    "category": "layout",
+    "kind": "component",
+    "owner": "DsAccordion",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/accordion",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/layout/Accordion.vue",
+      "react": "packages/react/src/navigation.tsx",
+      "native": "packages/native/src/navigation.tsx"
+    }
+  },
+  {
+    "name": "DsAccordionItem",
+    "source": "frontend/src/components/design-system/layout/AccordionItem.vue",
+    "category": "layout",
+    "kind": "component",
+    "owner": "DsAccordionItem",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/accordion-item",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/layout/AccordionItem.vue",
+      "react": "packages/react/src/navigation.tsx",
+      "native": "packages/native/src/navigation.tsx"
+    }
+  },
+  {
+    "name": "DsCard",
+    "source": "frontend/src/components/design-system/layout/Card.vue",
+    "category": "layout",
+    "kind": "component",
+    "owner": "DsCard",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/card",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/layout/Card.vue",
+      "react": "packages/react/src/card.tsx",
+      "native": "packages/native/src/card.tsx"
+    }
+  },
+  {
+    "name": "DsDrawer",
+    "source": "frontend/src/components/design-system/layout/Drawer.vue",
+    "category": "layout",
+    "kind": "component",
+    "owner": "DsDrawer",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/drawer",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/layout/Drawer.vue",
+      "react": "packages/react/src/layers.tsx",
+      "native": "packages/native/src/drawer.tsx"
+    }
+  },
+  {
+    "name": "DsDropdown",
+    "source": "frontend/src/components/design-system/layout/Dropdown.vue",
+    "category": "layout",
+    "kind": "component",
+    "owner": "DsDropdown",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/dropdown",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/layout/Dropdown.vue",
+      "react": "packages/react/src/layers.tsx",
+      "native": "packages/native/src/dropdown.tsx"
+    }
+  },
+  {
+    "name": "DsDropdownDivider",
+    "source": "frontend/src/components/design-system/layout/DropdownDivider.vue",
+    "category": "layout",
+    "kind": "component",
+    "owner": "DsDropdownDivider",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/dropdown-divider",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/layout/DropdownDivider.vue",
+      "react": "packages/react/src/feedback.tsx",
+      "native": "packages/native/src/feedback.tsx"
+    }
+  },
+  {
+    "name": "DsDropdownItem",
+    "source": "frontend/src/components/design-system/layout/DropdownItem.vue",
+    "category": "layout",
+    "kind": "component",
+    "owner": "DsDropdownItem",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/dropdown-item",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/layout/DropdownItem.vue",
+      "react": "packages/react/src/layers.tsx",
+      "native": "packages/native/src/dropdown.tsx"
+    }
+  },
+  {
+    "name": "DsMarketListPanel",
+    "source": "frontend/src/components/design-system/layout/MarketListPanel.vue",
+    "category": "layout",
+    "kind": "domain",
+    "owner": "DsMarketListPanel",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/market-list-panel",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/layout/MarketListPanel.vue",
+      "react": "packages/react/src/market-panel.tsx",
+      "native": "packages/native/src/market-panel.tsx"
+    }
+  },
+  {
+    "name": "DsModal",
+    "source": "frontend/src/components/design-system/layout/Modal.vue",
+    "category": "layout",
+    "kind": "component",
+    "owner": "DsModal",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/modal",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/layout/Modal.vue",
+      "react": "packages/react/src/modal.tsx",
+      "native": "packages/native/src/modal.tsx"
+    }
+  },
+  {
+    "name": "DsTabPane",
+    "source": "frontend/src/components/design-system/layout/TabPane.vue",
+    "category": "layout",
+    "kind": "component",
+    "owner": "DsTabPane",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/tab-pane",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/layout/TabPane.vue",
+      "react": "packages/react/src/navigation.tsx",
+      "native": "packages/native/src/navigation.tsx"
+    }
+  },
+  {
+    "name": "DsTabs",
+    "source": "frontend/src/components/design-system/layout/Tabs.vue",
+    "category": "layout",
+    "kind": "component",
+    "owner": "DsTabs",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/tabs",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/layout/Tabs.vue",
+      "react": "packages/react/src/navigation.tsx",
+      "native": "packages/native/src/navigation.tsx"
+    }
+  },
+  {
+    "name": "DsBreadcrumb",
+    "source": "frontend/src/components/design-system/navigation/Breadcrumb.vue",
+    "category": "navigation",
+    "kind": "component",
+    "owner": "DsBreadcrumb",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/breadcrumb",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/navigation/Breadcrumb.vue",
+      "react": "packages/react/src/navigation.tsx",
+      "native": "packages/native/src/navigation.tsx"
+    }
+  },
+  {
+    "name": "DsPagination",
+    "source": "frontend/src/components/design-system/navigation/Pagination.vue",
+    "category": "navigation",
+    "kind": "component",
+    "owner": "DsPagination",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/pagination",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/navigation/Pagination.vue",
+      "react": "packages/react/src/navigation.tsx",
+      "native": "packages/native/src/navigation.tsx"
+    }
+  },
+  {
+    "name": "DsBadge",
+    "source": "frontend/src/components/design-system/primitives/Badge.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsBadge",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/badge",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/primitives/Badge.vue",
+      "react": "packages/react/src/display.tsx",
+      "native": "packages/native/src/display-primitives.tsx"
+    }
+  },
+  {
+    "name": "DsButton",
+    "source": "frontend/src/components/design-system/primitives/Button.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsButton",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/button",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/primitives/Button.vue",
+      "react": "packages/react/src/button.tsx",
+      "native": "packages/native/src/button.tsx"
+    }
+  },
+  {
+    "name": "DsButtonGroup",
+    "source": "frontend/src/components/design-system/primitives/ButtonGroup.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsButtonGroup",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/button-group",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/primitives/ButtonGroup.vue",
+      "react": "packages/react/src/controls.tsx",
+      "native": "packages/native/src/selection-groups.tsx"
+    }
+  },
+  {
+    "name": "DsCopyButton",
+    "source": "frontend/src/components/design-system/primitives/CopyButton.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsCopyButton",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/copy-button",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/primitives/CopyButton.vue",
+      "react": "packages/react/src/actions.tsx",
+      "native": "packages/native/src/actions.tsx"
+    }
+  },
+  {
+    "name": "DsExternalLink",
+    "source": "frontend/src/components/design-system/primitives/ExternalLink.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsExternalLink",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/external-link",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/primitives/ExternalLink.vue",
+      "react": "packages/react/src/actions.tsx",
+      "native": "packages/native/src/actions.tsx"
+    }
+  },
+  {
+    "name": "DsFilterGroup",
+    "source": "frontend/src/components/design-system/primitives/FilterGroup.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsFilterGroup",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/filter-group",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/primitives/FilterGroup.vue",
+      "react": "packages/react/src/controls.tsx",
+      "native": "packages/native/src/selection-groups.tsx"
+    }
+  },
+  {
+    "name": "DsIcon",
+    "source": "frontend/src/components/design-system/primitives/Icon.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsIcon",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/icon",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/icon.js",
+      "react": "packages/react/src/button.tsx",
+      "native": "packages/native/src/button.tsx"
+    }
+  },
+  {
+    "name": "DsIconToggle",
+    "source": "frontend/src/components/design-system/primitives/IconToggle.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsIconToggle",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/icon-toggle",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/primitives/IconToggle.vue",
+      "react": "packages/react/src/actions.tsx",
+      "native": "packages/native/src/actions.tsx"
+    }
+  },
+  {
+    "name": "DsInput",
+    "source": "frontend/src/components/design-system/primitives/Input.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsInput",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/input",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/primitives/Input.vue",
+      "react": "packages/react/src/input.tsx",
+      "native": "packages/native/src/input.tsx"
+    }
+  },
+  {
+    "name": "DsMenuButton",
+    "source": "frontend/src/components/design-system/primitives/MenuButton.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsMenuButton",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/menu-button",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/primitives/MenuButton.vue",
+      "react": "packages/react/src/layers.tsx",
+      "native": "packages/native/src/dropdown.tsx"
+    }
+  },
+  {
+    "name": "DsRefreshButton",
+    "source": "frontend/src/components/design-system/primitives/RefreshButton.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsRefreshButton",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/refresh-button",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/primitives/RefreshButton.vue",
+      "react": "packages/react/src/actions.tsx",
+      "native": "packages/native/src/actions.tsx"
+    }
+  },
+  {
+    "name": "DsScrollFade",
+    "source": "frontend/src/components/design-system/primitives/ScrollFade.vue",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "DsScrollFade",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/scroll-fade",
+    "tests": [
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue2": "packages/vue2/src/source/primitives/ScrollFade.vue",
+      "react": "packages/react/src/actions.tsx",
+      "native": "packages/native/src/actions.tsx"
+    }
+  },
+  {
+    "name": "DsListRow",
+    "source": "packages/vue2/src/components/ListRow.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/ListRow.vue",
+      "react": "packages/react/src/list.tsx",
+      "native": "packages/native/src/list.tsx"
+    },
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsListRow",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/list-row",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "DsListSection",
+    "source": "packages/vue2/src/components/ListSection.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/ListSection.vue",
+      "react": "packages/react/src/list.tsx",
+      "native": "packages/native/src/list.tsx"
+    },
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsListSection",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/list-section",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "DsTopNavigation",
+    "source": "packages/vue2/src/components/TopNavigation.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/TopNavigation.vue",
+      "react": "packages/react/src/app-navigation.tsx",
+      "native": "packages/native/src/app-navigation.tsx"
+    },
+    "category": "navigation",
+    "kind": "component",
+    "owner": "DsTopNavigation",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/top-navigation",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "DsBottomNavigation",
+    "source": "packages/vue2/src/components/BottomNavigation.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/BottomNavigation.vue",
+      "react": "packages/react/src/app-navigation.tsx",
+      "native": "packages/native/src/app-navigation.tsx"
+    },
+    "category": "navigation",
+    "kind": "component",
+    "owner": "DsBottomNavigation",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/bottom-navigation",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "DsBottomActionBar",
+    "source": "packages/vue2/src/components/BottomActionBar.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/BottomActionBar.vue",
+      "react": "packages/react/src/app-navigation.tsx",
+      "native": "packages/native/src/app-navigation.tsx"
+    },
+    "category": "layout",
+    "kind": "component",
+    "owner": "DsBottomActionBar",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/bottom-action-bar",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "DsImage",
+    "source": "packages/vue2/src/components/Image.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/Image.vue",
+      "react": "packages/react/src/media.tsx",
+      "native": "packages/native/src/media.tsx"
+    },
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsImage",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/image",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "DsAvatar",
+    "source": "packages/vue2/src/components/Avatar.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/Avatar.vue",
+      "react": "packages/react/src/media.tsx",
+      "native": "packages/native/src/media.tsx"
+    },
+    "category": "data-display",
+    "kind": "component",
+    "owner": "DsAvatar",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/avatar",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "DsChip",
+    "source": "packages/vue2/src/components/Chip.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/Chip.vue",
+      "react": "packages/react/src/chip.tsx",
+      "native": "packages/native/src/chip.tsx"
+    },
+    "category": "actions",
+    "kind": "component",
+    "owner": "DsChip",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/chip",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "DsSlider",
+    "source": "packages/vue2/src/components/Slider.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/Slider.vue",
+      "react": "packages/react/src/range-input.tsx",
+      "native": "packages/native/src/range-input.tsx"
+    },
+    "category": "inputs",
+    "kind": "component",
+    "owner": "DsSlider",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/slider",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "DsRangeSlider",
+    "source": "packages/vue2/src/components/RangeSlider.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/RangeSlider.vue",
+      "react": "packages/react/src/range-input.tsx",
+      "native": "packages/native/src/range-input.tsx"
+    },
+    "category": "inputs",
+    "kind": "component",
+    "owner": "DsRangeSlider",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/range-slider",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "DsTimePicker",
+    "source": "packages/vue2/src/components/TimePicker.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/TimePicker.vue",
+      "react": "packages/react/src/time-picker.tsx",
+      "native": "packages/native/src/time-picker.tsx"
+    },
+    "category": "inputs",
+    "kind": "component",
+    "owner": "DsTimePicker",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/time-picker",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "DsQuantityStepper",
+    "source": "packages/vue2/src/components/QuantityStepper.vue",
+    "sources": {
+      "vue2": "packages/vue2/src/components/QuantityStepper.vue",
+      "react": "packages/react/src/quantity-stepper.tsx",
+      "native": "packages/native/src/quantity-stepper.tsx"
+    },
+    "category": "inputs",
+    "kind": "component",
+    "owner": "DsQuantityStepper",
+    "platforms": {
+      "vue2": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/quantity-stepper",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/docs/extensions.spec.ts",
+      "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  }
+]

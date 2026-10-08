@@ -1,0 +1,940 @@
+{
+  "categories": [
+    {
+      "id": "actions",
+      "label": "Actions",
+      "description": "실행과 작업",
+      "aliases": [
+        "동작",
+        "액션",
+        "버튼"
+      ]
+    },
+    {
+      "id": "inputs",
+      "label": "Inputs",
+      "description": "입력과 선택",
+      "aliases": [
+        "입력",
+        "폼",
+        "선택"
+      ]
+    },
+    {
+      "id": "navigation",
+      "label": "Navigation",
+      "description": "이동과 탐색",
+      "aliases": [
+        "이동",
+        "탐색",
+        "내비게이션"
+      ]
+    },
+    {
+      "id": "layout",
+      "label": "Layout",
+      "description": "화면과 영역 구성",
+      "aliases": [
+        "화면",
+        "배치",
+        "레이아웃"
+      ]
+    },
+    {
+      "id": "feedback",
+      "label": "Feedback",
+      "description": "상태와 안내",
+      "aliases": [
+        "알림",
+        "피드백",
+        "상태"
+      ]
+    },
+    {
+      "id": "data-display",
+      "label": "Data Display",
+      "description": "데이터 표현",
+      "aliases": [
+        "데이터",
+        "표시",
+        "시각화"
+      ]
+    },
+    {
+      "id": "finance",
+      "label": "Finance",
+      "description": "금융 데이터 표현",
+      "aliases": [
+        "금융",
+        "자산",
+        "시세"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "name": "DsButton",
+      "category": "actions",
+      "aliases": [
+        "버튼",
+        "실행",
+        "버튼 실행"
+      ],
+      "useCases": [
+        "저장 폼",
+        "삭제 확인"
+      ]
+    },
+    {
+      "name": "DsButtonGroup",
+      "category": "actions",
+      "aliases": [
+        "버튼 그룹",
+        "선택 버튼",
+        "SegmentedControl",
+        "분할 선택"
+      ],
+      "useCases": [
+        "분할 선택 레시피"
+      ]
+    },
+    {
+      "name": "DsCopyButton",
+      "category": "actions",
+      "aliases": [
+        "복사",
+        "클립보드"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsDropdown",
+      "category": "actions",
+      "aliases": [
+        "드롭다운",
+        "작업 메뉴"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsDropdownDivider",
+      "category": "actions",
+      "aliases": [
+        "메뉴 구분선"
+      ],
+      "useCases": [],
+      "parent": "DsDropdown"
+    },
+    {
+      "name": "DsDropdownItem",
+      "category": "actions",
+      "aliases": [
+        "메뉴 항목"
+      ],
+      "useCases": [],
+      "parent": "DsDropdown"
+    },
+    {
+      "name": "DsFormActions",
+      "category": "actions",
+      "aliases": [
+        "폼 버튼",
+        "저장 취소"
+      ],
+      "useCases": [
+        "저장 폼"
+      ]
+    },
+    {
+      "name": "DsIconToggle",
+      "category": "actions",
+      "aliases": [
+        "아이콘 토글",
+        "좋아요",
+        "즐겨찾기",
+        "관심",
+        "별 토글",
+        "하트 토글"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsMenuButton",
+      "category": "actions",
+      "aliases": [
+        "메뉴 버튼"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsRefreshButton",
+      "category": "actions",
+      "aliases": [
+        "새로고침",
+        "갱신"
+      ],
+      "useCases": [
+        "조회 실패",
+        "데이터 갱신"
+      ]
+    },
+    {
+      "name": "DsCheckbox",
+      "category": "inputs",
+      "aliases": [
+        "체크박스",
+        "다중 선택",
+        "체크"
+      ],
+      "useCases": [
+        "저장 폼",
+        "설정 화면"
+      ]
+    },
+    {
+      "name": "DsCombobox",
+      "category": "inputs",
+      "aliases": [
+        "검색",
+        "자동완성",
+        "콤보박스"
+      ],
+      "useCases": [
+        "검색 필터"
+      ]
+    },
+    {
+      "name": "DsDatePicker",
+      "category": "inputs",
+      "aliases": [
+        "날짜",
+        "달력",
+        "날짜 선택"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsFilterGroup",
+      "category": "inputs",
+      "aliases": [
+        "필터",
+        "검색 필터"
+      ],
+      "useCases": [
+        "검색 필터"
+      ]
+    },
+    {
+      "name": "DsFormGroup",
+      "category": "inputs",
+      "aliases": [
+        "폼 그룹",
+        "라벨",
+        "입력 설명"
+      ],
+      "useCases": [
+        "저장 폼"
+      ]
+    },
+    {
+      "name": "DsInput",
+      "category": "inputs",
+      "aliases": [
+        "입력",
+        "입력창",
+        "텍스트 필드"
+      ],
+      "useCases": [
+        "저장 폼"
+      ]
+    },
+    {
+      "name": "DsRadio",
+      "category": "inputs",
+      "aliases": [
+        "라디오",
+        "단일 선택"
+      ],
+      "useCases": [
+        "설정 화면"
+      ]
+    },
+    {
+      "name": "DsRadioGroup",
+      "category": "inputs",
+      "aliases": [
+        "라디오 그룹",
+        "선택지"
+      ],
+      "useCases": [
+        "설정 화면"
+      ]
+    },
+    {
+      "name": "DsSearchInput",
+      "category": "inputs",
+      "aliases": [
+        "검색",
+        "검색창",
+        "원격 검색"
+      ],
+      "useCases": [
+        "검색 필터"
+      ]
+    },
+    {
+      "name": "DsSelect",
+      "category": "inputs",
+      "aliases": [
+        "선택",
+        "셀렉트",
+        "선택 상자"
+      ],
+      "useCases": [
+        "저장 폼",
+        "검색 필터"
+      ]
+    },
+    {
+      "name": "DsSwitch",
+      "category": "inputs",
+      "aliases": [
+        "스위치",
+        "켜기 끄기"
+      ],
+      "useCases": [
+        "설정 화면"
+      ]
+    },
+    {
+      "name": "DsTextarea",
+      "category": "inputs",
+      "aliases": [
+        "여러 줄 입력",
+        "텍스트 영역",
+        "메모"
+      ],
+      "useCases": [
+        "저장 폼"
+      ]
+    },
+    {
+      "name": "DsBreadcrumb",
+      "category": "navigation",
+      "aliases": [
+        "경로",
+        "브레드크럼"
+      ],
+      "useCases": [
+        "화면 이동"
+      ]
+    },
+    {
+      "name": "DsExternalLink",
+      "category": "navigation",
+      "aliases": [
+        "외부 링크",
+        "새 창"
+      ],
+      "useCases": [
+        "화면 이동"
+      ]
+    },
+    {
+      "name": "DsPagination",
+      "category": "navigation",
+      "aliases": [
+        "페이지 이동",
+        "페이지네이션"
+      ],
+      "useCases": [
+        "검색 필터",
+        "화면 이동"
+      ]
+    },
+    {
+      "name": "DsTabs",
+      "category": "navigation",
+      "aliases": [
+        "탭",
+        "탭 전환"
+      ],
+      "useCases": [
+        "화면 이동"
+      ]
+    },
+    {
+      "name": "DsTabPane",
+      "category": "navigation",
+      "aliases": [
+        "탭 패널",
+        "탭 내용"
+      ],
+      "useCases": [
+        "화면 이동"
+      ],
+      "parent": "DsTabs"
+    },
+    {
+      "name": "DsAccordion",
+      "category": "layout",
+      "aliases": [
+        "아코디언",
+        "접기 펼치기"
+      ],
+      "useCases": [
+        "설정 화면"
+      ]
+    },
+    {
+      "name": "DsAccordionItem",
+      "category": "layout",
+      "aliases": [
+        "아코디언 항목"
+      ],
+      "useCases": [],
+      "parent": "DsAccordion"
+    },
+    {
+      "name": "DsCard",
+      "category": "layout",
+      "aliases": [
+        "카드",
+        "컨테이너"
+      ],
+      "useCases": [
+        "설정 화면"
+      ]
+    },
+    {
+      "name": "DsDrawer",
+      "category": "layout",
+      "aliases": [
+        "드로어",
+        "사이드 패널",
+        "하단 패널",
+        "BottomSheet",
+        "바텀시트"
+      ],
+      "useCases": [
+        "하단 Drawer 레시피"
+      ]
+    },
+    {
+      "name": "DsModal",
+      "category": "layout",
+      "aliases": [
+        "모달",
+        "대화상자",
+        "다이얼로그"
+      ],
+      "useCases": [
+        "저장 폼",
+        "삭제 확인"
+      ]
+    },
+    {
+      "name": "DsPopover",
+      "category": "layout",
+      "aliases": [
+        "팝오버",
+        "추가 정보"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsScrollFade",
+      "category": "layout",
+      "aliases": [
+        "스크롤 페이드",
+        "스크롤 힌트"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsAlert",
+      "category": "feedback",
+      "aliases": [
+        "알림",
+        "안내",
+        "경고"
+      ],
+      "useCases": [
+        "조회 실패",
+        "삭제 확인"
+      ]
+    },
+    {
+      "name": "DsChartSkeleton",
+      "category": "feedback",
+      "aliases": [
+        "차트 로딩"
+      ],
+      "useCases": [
+        "로딩 표시"
+      ]
+    },
+    {
+      "name": "DsDataState",
+      "category": "feedback",
+      "aliases": [
+        "데이터 상태",
+        "조회 실패",
+        "재시도"
+      ],
+      "useCases": [
+        "검색 필터",
+        "조회 실패",
+        "데이터 갱신",
+        "로딩 표시"
+      ]
+    },
+    {
+      "name": "DsErrorBoundary",
+      "category": "feedback",
+      "aliases": [
+        "오류 경계",
+        "렌더 오류"
+      ],
+      "useCases": [
+        "조회 실패"
+      ]
+    },
+    {
+      "name": "DsFormSkeleton",
+      "category": "feedback",
+      "aliases": [
+        "폼 로딩"
+      ],
+      "useCases": [
+        "로딩 표시"
+      ]
+    },
+    {
+      "name": "DsListSkeleton",
+      "category": "feedback",
+      "aliases": [
+        "목록 로딩"
+      ],
+      "useCases": [
+        "로딩 표시"
+      ]
+    },
+    {
+      "name": "DsProgress",
+      "category": "feedback",
+      "aliases": [
+        "진행률",
+        "프로그레스"
+      ],
+      "useCases": [
+        "데이터 갱신",
+        "로딩 표시"
+      ]
+    },
+    {
+      "name": "DsSkeleton",
+      "category": "feedback",
+      "aliases": [
+        "스켈레톤",
+        "로딩 자리표시자"
+      ],
+      "useCases": [
+        "데이터 갱신",
+        "로딩 표시"
+      ]
+    },
+    {
+      "name": "DsSpinner",
+      "category": "feedback",
+      "aliases": [
+        "스피너",
+        "로딩"
+      ],
+      "useCases": [
+        "데이터 갱신",
+        "로딩 표시"
+      ]
+    },
+    {
+      "name": "DsTooltip",
+      "category": "feedback",
+      "aliases": [
+        "툴팁",
+        "도움말"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsAnimatedNumber",
+      "category": "data-display",
+      "aliases": [
+        "숫자 애니메이션"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsBadge",
+      "category": "data-display",
+      "aliases": [
+        "배지",
+        "뱃지",
+        "상태 표시"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsEmpty",
+      "category": "data-display",
+      "aliases": [
+        "빈 상태",
+        "빈 결과",
+        "데이터 없음"
+      ],
+      "useCases": [
+        "검색 필터",
+        "조회 실패"
+      ]
+    },
+    {
+      "name": "DsHeatmapCell",
+      "category": "data-display",
+      "aliases": [
+        "히트맵",
+        "열지도"
+      ],
+      "useCases": [
+        "자산 목록"
+      ]
+    },
+    {
+      "name": "DsIcon",
+      "category": "data-display",
+      "aliases": [
+        "아이콘"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsKpiHero",
+      "category": "data-display",
+      "aliases": [
+        "대표 지표",
+        "핵심 수치"
+      ],
+      "useCases": [
+        "반응형 데이터 화면"
+      ]
+    },
+    {
+      "name": "DsKpiRow",
+      "category": "data-display",
+      "aliases": [
+        "지표 행",
+        "지표 요약"
+      ],
+      "useCases": [
+        "반응형 데이터 화면"
+      ]
+    },
+    {
+      "name": "DsProgressCell",
+      "category": "data-display",
+      "aliases": [
+        "진행률 셀"
+      ],
+      "useCases": []
+    },
+    {
+      "name": "DsSparkline",
+      "category": "data-display",
+      "aliases": [
+        "스파크라인",
+        "작은 차트"
+      ],
+      "useCases": [
+        "반응형 데이터 화면"
+      ]
+    },
+    {
+      "name": "DsTable",
+      "category": "data-display",
+      "aliases": [
+        "표",
+        "테이블"
+      ],
+      "useCases": [
+        "검색 필터",
+        "반응형 데이터 화면"
+      ]
+    },
+    {
+      "name": "DsCollectionMark",
+      "category": "finance",
+      "aliases": [
+        "컬렉션 표시"
+      ],
+      "useCases": [
+        "자산 목록"
+      ]
+    },
+    {
+      "name": "DsDeviation",
+      "category": "finance",
+      "aliases": [
+        "편차",
+        "차이"
+      ],
+      "useCases": [
+        "자산 목록"
+      ]
+    },
+    {
+      "name": "DsExecutionStatusBadge",
+      "category": "finance",
+      "aliases": [
+        "체결 상태",
+        "실행 상태"
+      ],
+      "useCases": [
+        "자산 목록"
+      ]
+    },
+    {
+      "name": "DsFreshness",
+      "category": "finance",
+      "aliases": [
+        "최신 상태",
+        "데이터 신선도"
+      ],
+      "useCases": [
+        "데이터 갱신"
+      ]
+    },
+    {
+      "name": "DsMarketCards",
+      "category": "finance",
+      "aliases": [
+        "시세 카드",
+        "자산 카드"
+      ],
+      "useCases": [
+        "반응형 데이터 화면",
+        "자산 목록"
+      ]
+    },
+    {
+      "name": "DsMarketListPanel",
+      "category": "finance",
+      "aliases": [
+        "시세 목록 패널"
+      ],
+      "useCases": [
+        "자산 목록"
+      ]
+    },
+    {
+      "name": "DsMarketSimpleList",
+      "category": "finance",
+      "aliases": [
+        "간단 시세 목록"
+      ],
+      "useCases": [
+        "자산 목록"
+      ]
+    },
+    {
+      "name": "DsMarketTable",
+      "category": "finance",
+      "aliases": [
+        "시세 표",
+        "자산 표"
+      ],
+      "useCases": [
+        "반응형 데이터 화면",
+        "자산 목록"
+      ]
+    },
+    {
+      "name": "DsMarketTableSkeleton",
+      "category": "finance",
+      "aliases": [
+        "시세 표 로딩"
+      ],
+      "useCases": [
+        "로딩 표시"
+      ]
+    },
+    {
+      "name": "DsPriceCell",
+      "category": "finance",
+      "aliases": [
+        "가격",
+        "가격 셀"
+      ],
+      "useCases": [
+        "자산 목록"
+      ]
+    },
+    {
+      "name": "DsSignedValue",
+      "category": "finance",
+      "aliases": [
+        "부호 수치",
+        "등락",
+        "손익"
+      ],
+      "useCases": [
+        "자산 목록"
+      ]
+    },
+    {
+      "name": "DsListRow",
+      "category": "data-display",
+      "aliases": [
+        "목록 행",
+        "설정 항목",
+        "활동 내역",
+        "범용 행",
+        "List Item"
+      ],
+      "useCases": [
+        "범용 목록"
+      ]
+    },
+    {
+      "name": "DsListSection",
+      "category": "data-display",
+      "aliases": [
+        "목록 섹션",
+        "목록 그룹"
+      ],
+      "useCases": [
+        "범용 목록"
+      ]
+    },
+    {
+      "name": "DsTopNavigation",
+      "category": "navigation",
+      "aliases": [
+        "상단 탐색",
+        "헤더",
+        "상단바"
+      ],
+      "useCases": [
+        "모바일 화면 구성"
+      ]
+    },
+    {
+      "name": "DsBottomNavigation",
+      "category": "navigation",
+      "aliases": [
+        "하단 탐색",
+        "하단 내비게이션",
+        "하단 탭바"
+      ],
+      "useCases": [
+        "모바일 화면 구성"
+      ]
+    },
+    {
+      "name": "DsBottomActionBar",
+      "category": "layout",
+      "aliases": [
+        "하단 CTA",
+        "하단 행동",
+        "저장 영역"
+      ],
+      "useCases": [
+        "모바일 화면 구성"
+      ]
+    },
+    {
+      "name": "DsImage",
+      "category": "data-display",
+      "aliases": [
+        "이미지",
+        "사진",
+        "썸네일",
+        "Thumbnail"
+      ],
+      "useCases": [
+        "범용 목록"
+      ]
+    },
+    {
+      "name": "DsAvatar",
+      "category": "data-display",
+      "aliases": [
+        "아바타",
+        "프로필",
+        "사용자 이미지"
+      ],
+      "useCases": [
+        "범용 목록"
+      ]
+    },
+    {
+      "name": "DsChip",
+      "category": "actions",
+      "aliases": [
+        "칩",
+        "태그",
+        "Tag",
+        "삭제 태그"
+      ],
+      "useCases": [
+        "범용 목록"
+      ]
+    },
+    {
+      "name": "DsSlider",
+      "category": "inputs",
+      "aliases": [
+        "슬라이더",
+        "값 조절",
+        "연속 값"
+      ],
+      "useCases": [
+        "설정 폼"
+      ]
+    },
+    {
+      "name": "DsRangeSlider",
+      "category": "inputs",
+      "aliases": [
+        "범위 슬라이더",
+        "구간 선택",
+        "최소 최대"
+      ],
+      "useCases": [
+        "설정 폼"
+      ]
+    },
+    {
+      "name": "DsTimePicker",
+      "category": "inputs",
+      "aliases": [
+        "시간 선택",
+        "시분초",
+        "초 단위"
+      ],
+      "useCases": [
+        "설정 폼"
+      ]
+    },
+    {
+      "name": "DsQuantityStepper",
+      "category": "inputs",
+      "aliases": [
+        "수량",
+        "스테퍼",
+        "소수 입력",
+        "증감"
+      ],
+      "useCases": [
+        "설정 폼"
+      ]
+    }
+  ]
+}

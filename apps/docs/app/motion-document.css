@@ -1,0 +1,113 @@
+/* Motion documentation only; packed controls and tables keep their geometry. */
+.motion-document > :is(.page-intro, .document-shortcuts, section, .page-navigation) { width: 100%; max-width: 720px; }
+.motion-document > section > h2 { font-size: var(--docs-type-heading); line-height: 32px; font-weight: 600; }
+.motion-document > section > h3 { margin: 32px 0 12px; font-size: var(--docs-type-lead); line-height: 26px; font-weight: 600; }
+.motion-document .body-copy { margin: 16px 0 24px; color: var(--foreground); font-size: var(--docs-type-body); line-height: 28px; }
+.motion-document .motion-principles { list-style: disc; padding-left: 20px; }
+.motion-principles li + li { margin-top: 12px; }
+.motion-document .motion-caption { margin-top: 12px; font-size: var(--docs-type-caption); line-height: 20px; color: var(--muted-foreground); overflow-wrap: anywhere; }
+.motion-document a { text-underline-offset: 4px; }
+.motion-document section a { text-decoration: underline; text-decoration-color: var(--border); }
+.motion-document section a:hover { text-decoration-color: currentColor; }
+.motion-document .motion-preference { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; width: fit-content; max-width: 100%; margin: 24px 0 0; padding: 6px 16px; border: 1px solid var(--border); border-radius: 999px; font-size: var(--docs-type-small); line-height: 20px; }
+.motion-preference-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--foreground); }
+.motion-preference[data-motion-preference="reduce"] .motion-preference-dot { background: transparent; box-shadow: inset 0 0 0 1px var(--foreground); }
+.motion-preference-note { color: var(--muted-foreground); }
+/* A single preview keeps its place when the selected example changes. */
+.motion-playground { margin: 24px 0; min-width: 0; }
+.motion-preview { min-width: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 12px; }
+.motion-preview-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 8px 12px; padding: 20px; }
+.motion-preview-title { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; min-width: 0; }
+.motion-preview-title h3 { margin: 0; font-size: var(--docs-type-body); line-height: 24px; font-weight: 600; }
+.motion-preview-title > span { font-size: var(--docs-type-caption); line-height: 20px; color: var(--muted-foreground); }
+.motion-preview-heading > p { grid-column: 1 / -1; min-height: 44px; margin: 0; font-size: var(--docs-type-small); line-height: 22px; overflow-wrap: anywhere; }
+.motion-preview-meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.motion-preview-tokens { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.motion-preview-tokens code { display: inline-block; padding: 2px 8px; border-radius: 6px; background: var(--secondary); font-size: var(--docs-type-caption); line-height: 20px; white-space: nowrap; }
+.motion-preview-stage { position: relative; height: 400px; background: var(--secondary); border-block: 1px solid var(--border); }
+/* Wider screens give layers room to show where they enter from; the size never changes between examples. */
+@media (min-width: 768px) { .motion-preview-stage { height: 480px; } }
+.motion-preview-stage iframe { display: block; width: 100%; height: 100%; border: 0; }
+.motion-preview-stage[data-ready="false"] iframe { visibility: hidden; opacity: 0; }
+.motion-preview-stage[data-ready="true"] iframe { opacity: 1; transition: opacity var(--motion-fast) var(--ease-out); }
+/* Fast loads show nothing; the status appears only when preparing takes noticeably long. */
+.motion-preview-status[data-failed="false"] { animation: motion-status-in 1ms 320ms both; }
+@keyframes motion-status-in { from { opacity: 0; } to { opacity: 1; } }
+.motion-preview-status, .motion-playground-loading { min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; text-align: center; font-size: var(--docs-type-small); line-height: 22px; }
+.motion-preview-status { position: absolute; inset: 0; }
+.motion-preview-footer { display: flex; justify-content: flex-end; padding: 16px 20px; font-size: var(--docs-type-small); line-height: 24px; }
+.motion-preview-footer > a { display: inline-flex; align-items: center; gap: 4px; }
+.motion-table { margin: 24px 0 12px; }
+.motion-document .motion-table :is(th, td, .kjun-table-card-title, .kjun-table-card-label, .kjun-table-card-value) { font-size: var(--docs-type-small); line-height: 20px; font-family: inherit; white-space: normal; overflow-wrap: anywhere; }
+.motion-document .motion-table th { color: var(--foreground); font-weight: 600; }
+.motion-document .motion-table td:first-child { min-width: 90px; }
+.motion-number { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.motion-related { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; margin-top: 24px; font-size: var(--docs-type-small); line-height: 24px; }
+.motion-related > span { color: var(--muted-foreground); font-size: var(--docs-type-caption); }
+.motion-details { margin: 20px 0; padding: 16px 0; border-block: 1px solid var(--border); }
+.motion-details > summary { cursor: pointer; font-size: var(--docs-type-small); line-height: 24px; font-weight: 500; }
+.motion-details > p { margin-top: 12px; font-size: var(--docs-type-small); line-height: 24px; overflow-wrap: anywhere; }
+.motion-document .motion-details code { font-size: var(--docs-type-caption); }
+.motion-reduced-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin: 24px 0; border-block: 1px solid var(--border); padding-block: 20px; }
+.motion-reduced-comparison dt { font-size: var(--docs-type-body); line-height: 24px; font-weight: 600; }
+.motion-reduced-comparison dd { margin: 8px 0 0; font-size: var(--docs-type-small); line-height: 24px; }
+.motion-demo-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.motion-speed { display: inline-flex; align-items: center; gap: 8px; color: var(--muted-foreground); font-size: var(--docs-type-caption); }
+/* One playback control for every demo: it floats at the bottom edge while the page scrolls. */
+.motion-speed-dock { position: sticky; bottom: 16px; z-index: 2; display: flex; justify-content: flex-end; max-width: 720px; margin-top: 32px; pointer-events: none; }
+.motion-speed-dock > .motion-speed { pointer-events: auto; padding: 4px 4px 4px 16px; border: 1px solid var(--border); border-radius: 999px; background: var(--background); box-shadow: 0 2px 8px rgb(0 0 0 / 0.08); }
+.motion-speed-dock > .motion-speed { transition: opacity var(--motion-control) var(--ease-out), visibility 0s linear; }
+.motion-speed-dock[data-visible="false"]:not(:focus-within) > .motion-speed { visibility: hidden; opacity: 0; transition: opacity var(--motion-control) var(--ease-out), visibility 0s linear var(--motion-control); }
+/* Wide layouts leave a gutter beside the 720px column; the control moves there instead of covering content. */
+@media (min-width: 1280px) { .motion-speed-dock { max-width: none; } }
+/* Curve comparison: one overlaid plot, then full-width tracks sharing a 90% column. */
+.motion-demo-plot { display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr); align-items: end; gap: 16px 24px; margin-top: 24px; }
+.motion-demo-plot > p { color: var(--muted-foreground); font-size: var(--docs-type-caption); line-height: 20px; }
+.motion-demo-graph { display: block; width: 100%; max-width: 320px; height: auto; overflow: visible; }
+.motion-demo-graph rect { fill: var(--background); stroke: var(--border); }
+.motion-demo-graph-guide { stroke: var(--border); stroke-dasharray: 2 3; }
+.motion-demo-graph text { fill: var(--muted-foreground); font-size: 10px; }
+.motion-demo-graph path, .motion-demo-swatch line { fill: none; stroke: var(--foreground); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+/* Curves differ by line style, not hue: the docs palette is monochrome. */
+:is(.motion-demo-graph path, .motion-demo-swatch line)[data-curve="easeLinear"] { stroke: var(--muted-foreground); stroke-width: 1; stroke-dasharray: 3 3; }
+:is(.motion-demo-graph path, .motion-demo-swatch line)[data-curve="easeEmphasized"] { stroke-width: 3; }
+:is(.motion-demo-graph path, .motion-demo-swatch line)[data-curve="easeIn"] { stroke: var(--foreground-secondary); stroke-dasharray: 1 3; stroke-width: 2; }
+.motion-demo-graph circle { fill: var(--foreground); stroke: var(--background); stroke-width: 1.5; }
+.motion-demo-graph circle[data-curve="easeLinear"] { fill: var(--muted-foreground); }
+.motion-demo-swatch { flex: none; width: 24px; height: 8px; }
+.motion-demo-rows { margin-top: 24px; }
+.motion-demo-row { display: grid; gap: 8px; padding: 16px 0; border-top: 1px solid var(--border); }
+.motion-demo-label { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: var(--docs-type-small); line-height: 20px; }
+.motion-demo-label code { font-size: var(--docs-type-caption); }
+.motion-demo-label span { flex-basis: 100%; color: var(--muted-foreground); font-size: var(--docs-type-caption); }
+.motion-demo-track { position: relative; height: 40px; }
+.motion-demo-track::before { content: ''; position: absolute; bottom: 7px; left: 8px; right: 8px; border-top: 1px dashed var(--muted-foreground); }
+/* The dot centre travels from 8px to width - 8px, so 90% sits at the same place on every row. */
+.motion-demo-tick { position: absolute; bottom: 0; left: calc(8px + (100% - 16px) * 0.9); height: 16px; border-left: 1px solid var(--muted-foreground); }
+.motion-demo-tick > span { position: absolute; bottom: 20px; right: -1px; white-space: nowrap; color: var(--muted-foreground); font-size: var(--docs-type-caption); line-height: 16px; font-variant-numeric: tabular-nums; }
+/* Demo samples move only through script animations; the global reduced-motion duration must not turn style updates into transitions. */
+.motion-demo-dot, .motion-interrupt-marker { transition-property: none; }
+.motion-demo-dot { position: absolute; bottom: 0; left: 0; width: 16px; height: 16px; border-radius: 50%; background: var(--foreground); }
+.motion-demo-row[data-curve="easeLinear"] .motion-demo-dot { background: var(--muted-foreground); }
+.motion-demo-endpoints { display: flex; justify-content: space-between; padding-bottom: 8px; color: var(--muted-foreground); font-size: var(--docs-type-caption); line-height: 20px; font-variant-numeric: tabular-nums; }
+.motion-demo-result { display: inline-block; padding: 4px 12px; border: 1px dashed var(--muted-foreground); border-radius: 6px; color: var(--muted-foreground); font-size: var(--docs-type-caption); line-height: 20px; }
+.motion-demo-result[data-state="end"] { border-style: solid; border-color: var(--foreground); color: var(--foreground); }
+.motion-interrupt-track { position: relative; height: 32px; max-width: 232px; margin-top: 20px; border-radius: 999px; background: var(--background); box-shadow: inset 0 0 0 1px var(--border); }
+.motion-interrupt-marker { position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: var(--foreground); }
+.motion-token-names { display: flex; flex-wrap: wrap; gap: 4px; }
+.motion-token-names code { font-size: var(--docs-type-caption); white-space: nowrap; }
+@media (max-width: 767px) {
+  .motion-reduced-comparison { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-preview-stage[data-ready="true"] iframe { transition: none; }
+}
+@media (max-width: 480px) {
+  .motion-preview-heading { padding: 16px; }
+  .motion-preview-heading > p { min-height: 66px; }
+  /* Token chips wrap to two rows on narrow screens; reserve both so the stage never shifts between examples. */
+  .motion-preview-meta { min-height: 54px; }
+  .motion-preview-title { display: grid; }
+  .motion-preview-footer { padding-inline: 16px; }
+  .motion-demo-plot { grid-template-columns: minmax(0, 1fr); }
+}

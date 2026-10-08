@@ -1,0 +1,49 @@
+.motion-figure {
+  min-width: 0;
+  margin: 24px 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-subtle);
+}
+.motion-figure > figcaption { display: grid; gap: 4px; margin-bottom: 16px; }
+.motion-figure > figcaption strong { font-size: var(--docs-type-small); font-weight: 600; }
+.motion-figure > figcaption span, .motion-figure-note { color: var(--muted-foreground); font-size: var(--docs-type-caption); line-height: 1.65; }
+.motion-figure-note { margin-top: 12px; }
+.motion-distance-card > p { margin-top: 8px; color: var(--muted-foreground); font-size: var(--docs-type-caption); line-height: 1.65; }
+
+/* Distance samples: equal-time onion frames show where each curve slows down. */
+.motion-distance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; margin-top: 16px; }
+.motion-distance-card { min-width: 0; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--background); }
+.motion-distance-card h3 { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; font-size: var(--docs-type-small); }
+.motion-distance-card h3 code { color: var(--muted-foreground); font-size: var(--docs-type-caption); font-weight: 500; }
+.motion-distance-stage { position: relative; height: 152px; margin-top: 8px; overflow: hidden; border-radius: 6px; background: var(--secondary); }
+.motion-distance-space { position: absolute; inset: 0; display: grid; place-items: center; }
+.motion-distance-ghost, .motion-distance-target { grid-area: 1 / 1; width: 62%; height: 40px; border-radius: 6px; }
+.motion-distance-target { transition-property: none; }
+.motion-distance-ghost { border: 1px solid var(--foreground); background: var(--secondary); }
+.motion-distance-target { position: relative; display: grid; place-items: center; border: 1px solid var(--foreground); color: var(--foreground); background: var(--background); font-size: var(--docs-type-caption); font-weight: 500; }
+.motion-distance-stage--popup .motion-distance-ghost, .motion-distance-stage--popup .motion-distance-target { width: 76px; height: 36px; }
+.motion-distance-stage--drawer .motion-distance-space { inset: 12px; place-items: stretch end; overflow: hidden; border: 1px solid var(--border); border-radius: 5px; background: var(--background); }
+.motion-distance-stage--drawer .motion-distance-ghost, .motion-distance-stage--drawer .motion-distance-target { width: 42%; height: auto; border-radius: 0; border-width: 0 0 0 1px; }
+/* Drawer frames share the panel's area, so each ghost is its leading edge drawn above the panel. */
+.motion-distance-stage--drawer .motion-distance-ghost { position: relative; z-index: 1; border-left-width: 2px; background: transparent; pointer-events: none; }
+.motion-distance-scale { position: absolute; top: 8px; right: 8px; color: var(--muted-foreground); font-size: var(--docs-type-caption); font-variant-numeric: tabular-nums; }
+.motion-distance-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+.motion-distance-real { display: inline-flex; align-items: center; gap: 8px; color: var(--muted-foreground); font-size: var(--docs-type-caption); font-variant-numeric: tabular-nums; }
+.motion-distance-real > i { display: inline-block; height: 8px; border-inline: 1px solid var(--foreground); background: linear-gradient(var(--foreground), var(--foreground)) center / 100% 1px no-repeat; }
+.motion-distance-timing { white-space: nowrap; }
+
+.motion-measured-note { display: grid; gap: 8px; margin-top: 16px; padding: 12px; border-top: 1px solid var(--border); color: var(--muted-foreground); font-size: var(--docs-type-caption); }
+.motion-measured-note > strong { color: var(--foreground); font-size: var(--docs-type-small); }
+.motion-measured-note > div { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.motion-measured-note > div > span { display: inline-flex; align-items: center; gap: 8px; }
+.motion-measured-indicator { width: 20px; height: 5px; border-radius: 999px; background: var(--primary); }
+.motion-measured-height { width: 12px; height: 14px; border: 1px solid var(--muted-foreground); border-top: 0; }
+.motion-measured-reflow { width: 13px; height: 13px; border: 1px dashed var(--muted-foreground); border-radius: 3px; box-shadow: 4px -4px 0 -1px var(--background), 4px -4px 0 0 var(--muted-foreground); }
+.motion-measured-note p { line-height: 1.6; }
+
+@media (max-width: 639px) {
+  .motion-figure { padding: 12px; }
+  .motion-distance-grid { grid-template-columns: minmax(0, 1fr); }
+}

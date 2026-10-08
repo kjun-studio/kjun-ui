@@ -1,0 +1,81 @@
+/* Shared financial typography. Geometry remains in the component styles. */
+.kjun-scope .kjun-kpi-hero__label,
+.kjun-scope .ds-kpi-hero__label { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-kpi-hero__sec-label,
+.kjun-scope .ds-kpi-hero__sec-label { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-kpi-hero__sec-desc,
+.kjun-scope .ds-kpi-hero__sec-desc { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-kpi-hero__delta-desc,
+.kjun-scope .ds-kpi-hero__delta-desc { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-kpi-hero__value,
+.kjun-scope .ds-kpi-hero__value { font-size:var(--_kjun-type-display-lg-size); line-height:var(--_kjun-type-display-lg-line); font-weight:var(--_kjun-type-display-lg-weight); letter-spacing:var(--_kjun-type-display-lg-tracking); }
+.kjun-scope .kjun-kpi-hero__affix,
+.kjun-scope .ds-kpi-hero__affix { font-size:var(--_kjun-type-number-lg-size); line-height:var(--_kjun-type-number-lg-line); font-weight:var(--_kjun-type-number-lg-weight); letter-spacing:var(--_kjun-type-number-lg-tracking); }
+.kjun-scope .kjun-kpi-hero__sec-value,
+.kjun-scope .ds-kpi-hero__sec-value { font-size:var(--_kjun-type-number-md-size); line-height:var(--_kjun-type-number-md-line); font-weight:var(--_kjun-type-number-md-weight); letter-spacing:var(--_kjun-type-number-md-tracking); }
+.kjun-scope .kjun-kpi-hero__delta-abs,
+.kjun-scope .ds-kpi-hero__delta-abs { font-size:var(--_kjun-type-number-md-size); line-height:var(--_kjun-type-number-md-line); font-weight:var(--_kjun-type-number-md-weight); letter-spacing:var(--_kjun-type-number-md-tracking); }
+.kjun-scope .kjun-kpi-hero__sec-value .kjun-number-affix,
+.kjun-scope .ds-kpi-hero__sec-value .kjun-number-affix { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-kpi-hero__delta-pct,
+.kjun-scope .ds-kpi-hero__delta-pct { font-size:var(--_kjun-type-number-md-size); line-height:var(--_kjun-type-number-md-line); font-weight:var(--_kjun-type-number-md-weight); letter-spacing:var(--_kjun-type-number-md-tracking); }
+.kjun-scope .kjun-kpi-row__label,
+.kjun-scope .ds-kpi-row__label { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-kpi-row__desc,
+.kjun-scope .ds-kpi-row__desc { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-kpi-row__segment-label,
+.kjun-scope .ds-kpi-row__segment-label { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-kpi-row__badge,
+.kjun-scope .ds-kpi-row__badge { font-size:var(--_kjun-type-control-small-size); line-height:var(--_kjun-type-control-small-line); font-weight:var(--_kjun-type-control-small-weight); letter-spacing:var(--_kjun-type-control-small-tracking); }
+.kjun-scope .kjun-kpi-row__value,
+.kjun-scope .ds-kpi-row__value { font-size:var(--_kjun-type-display-sm-size); line-height:var(--_kjun-type-display-sm-line); font-weight:var(--_kjun-type-display-sm-weight); letter-spacing:var(--_kjun-type-display-sm-tracking); }
+.kjun-scope .kjun-kpi-row__affix,
+.kjun-scope .ds-kpi-row__affix { font-size:var(--_kjun-type-number-sm-size); line-height:var(--_kjun-type-number-sm-line); font-weight:var(--_kjun-type-number-sm-weight); letter-spacing:var(--_kjun-type-number-sm-tracking); }
+@media (width <= token(responsive.kpiRow)) {
+.kjun-scope .kjun-kpi-row__value,
+.kjun-scope .ds-kpi-row__value { font-size:var(--_kjun-type-number-lg-size); line-height:var(--_kjun-type-number-lg-line); font-weight:var(--_kjun-type-number-lg-weight); letter-spacing:var(--_kjun-type-number-lg-tracking); }
+.kjun-scope .kjun-kpi-row__affix,
+.kjun-scope .ds-kpi-row__affix { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-kpi-row--mobile-summary .kjun-kpi-row__value,
+.kjun-scope .ds-kpi-row--mobile-summary .ds-kpi-row__value { font-size:var(--_kjun-type-display-sm-size); line-height:var(--_kjun-type-display-sm-line); font-weight:var(--_kjun-type-display-sm-weight); letter-spacing:var(--_kjun-type-display-sm-tracking); }
+.kjun-scope .kjun-kpi-row--mobile-summary .kjun-kpi-row__affix,
+.kjun-scope .ds-kpi-row--mobile-summary .ds-kpi-row__affix { font-size:var(--_kjun-type-number-sm-size); line-height:var(--_kjun-type-number-sm-line); font-weight:var(--_kjun-type-number-sm-weight); letter-spacing:var(--_kjun-type-number-sm-tracking); }
+.kjun-scope .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__affix,
+.kjun-scope .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary .ds-kpi-row__affix { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__value,
+.kjun-scope .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary .ds-kpi-row__value { font-size:var(--_kjun-type-number-sm-size); line-height:var(--_kjun-type-number-sm-line); font-weight:var(--_kjun-type-number-sm-weight); letter-spacing:var(--_kjun-type-number-sm-tracking); }
+}
+@media (width <= token(responsive.kpiHero)) {
+.kjun-scope .kjun-kpi-hero__value,
+.kjun-scope .ds-kpi-hero__value { font-size:var(--_kjun-type-display-md-size); line-height:var(--_kjun-type-display-md-line); font-weight:var(--_kjun-type-display-md-weight); letter-spacing:var(--_kjun-type-display-md-tracking); }
+.kjun-scope .kjun-kpi-hero__affix,
+.kjun-scope .ds-kpi-hero__affix { font-size:var(--_kjun-type-number-md-size); line-height:var(--_kjun-type-number-md-line); font-weight:var(--_kjun-type-number-md-weight); letter-spacing:var(--_kjun-type-number-md-tracking); }
+}
+.kjun-scope .kjun-kpi-hero--sm .kjun-kpi-hero__value,
+.kjun-scope .ds-kpi-hero--sm .ds-kpi-hero__value { font-size:var(--_kjun-type-display-sm-size); line-height:var(--_kjun-type-display-sm-line); font-weight:var(--_kjun-type-display-sm-weight); letter-spacing:var(--_kjun-type-display-sm-tracking); }
+.kjun-scope .kjun-kpi-hero--sm .kjun-kpi-hero__affix,
+.kjun-scope .ds-kpi-hero--sm .ds-kpi-hero__affix { font-size:var(--_kjun-type-number-sm-size); line-height:var(--_kjun-type-number-sm-line); font-weight:var(--_kjun-type-number-sm-weight); letter-spacing:var(--_kjun-type-number-sm-tracking); }
+.kjun-scope .kjun-kpi-row--sm .kjun-kpi-row__value,
+.kjun-scope .ds-kpi-row--sm .ds-kpi-row__value { font-size:var(--_kjun-type-number-lg-size); line-height:var(--_kjun-type-number-lg-line); font-weight:var(--_kjun-type-number-lg-weight); letter-spacing:var(--_kjun-type-number-lg-tracking); }
+.kjun-scope .kjun-kpi-row--sm .kjun-kpi-row__affix,
+.kjun-scope .ds-kpi-row--sm .ds-kpi-row__affix { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope .kjun-kpi-row .kjun-kpi-row__item .kjun-kpi-row__value--text,
+.kjun-scope .ds-kpi-row .ds-kpi-row__item .ds-kpi-row__value--text { font-size:var(--_kjun-type-body-size); line-height:var(--_kjun-type-body-line); font-weight:var(--_kjun-type-body-weight); letter-spacing:var(--_kjun-type-body-tracking); }
+.kjun-scope :is(.kjun-kpi-row__badge,.ds-kpi-row__badge,.kjun-kpi-hero__sec-label,.ds-kpi-hero__sec-label) { white-space:normal; overflow-wrap:anywhere; }
+
+.kjun-scope :is(.kjun-kpi-hero__sec-affix,.ds-kpi-hero__sec-affix,.kjun-number-affix,.ds-animated-number__affix) { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); }
+
+.kjun-scope :is(.kjun-kpi-hero,.ds-kpi-hero,.kjun-kpi-row,.ds-kpi-row) { min-width:0; overflow-wrap:anywhere; }
+.kjun-scope :is(.kjun-kpi-hero__value,.ds-kpi-hero__value,.kjun-kpi-hero__sec-value,.ds-kpi-hero__sec-value,.kjun-kpi-row__value,.ds-kpi-row__value) { min-width:0; overflow-wrap:anywhere; }
+.kjun-scope :is(.kjun-kpi-hero__secondary,.ds-kpi-hero__secondary) { min-width:0; }
+.kjun-scope :is(.kjun-badge,.ds-badge) { max-width:100%; min-width:0; overflow-wrap:anywhere; }
+
+.kjun-scope .kjun-kpi-hero__delta-line .kjun-number-affix,
+.kjun-scope .ds-kpi-hero__delta-line .kjun-number-affix { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+
+.kjun-scope .kjun-kpi-row .kjun-kpi-row__value--text .kjun-kpi-row__affix,
+.kjun-scope .ds-kpi-row .ds-kpi-row__value--text .ds-kpi-row__affix { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking); }
+.kjun-scope :is(.kjun-kpi-row__value--text, .ds-kpi-row__value--text) :is(.kjun-animated-number, .ds-animated-number) {
+  font-family: var(--kjun-font);
+  font-variant-numeric: normal;
+}

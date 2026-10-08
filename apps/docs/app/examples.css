@@ -1,0 +1,41 @@
+@import './example-runner.css';
+.catalog-playground .example-controls { padding: 0 20px 16px; background: var(--surface-subtle); }
+.catalog-playground .example-controls:empty { display: none; }
+.example-field { width: min(100%, 240px); }
+.example-field input { width: 100%; background: var(--card); }
+.example-view-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 12px 20px; border-block: 1px solid var(--border); }
+.example-view-toolbar .preview-caption { margin-left: auto; }
+.catalog-playground .preview-window { overflow: hidden; background: var(--surface-subtle); }
+.catalog-playground .preview-window iframe, .example-wide .preview-window iframe { max-width: 100%; margin: auto; background: #fff; }
+.preview-window[data-narrow='true'] iframe { width: 375px; }
+.preview-loading { z-index: 1; flex-direction: column; gap: 12px; }
+.usage-code-status { padding: 14px 20px; }
+.usage-source .kjun-button { max-width: 100%; }
+.usage-setup-links { padding: 0 20px 12px; font-size: var(--docs-type-small); line-height: 1.6; overflow-wrap: anywhere; }
+.usage-setup-links p { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; }
+.usage-setup-links p + p { margin-top: 4px; }
+.usage-setup-links span { color: var(--muted-foreground); }
+.example-events { padding: 14px 20px; }
+.example-events summary { cursor: pointer; font-size: var(--docs-type-small); font-weight: 600; }
+.example-events > p { font-size: var(--docs-type-small); color: var(--muted-foreground); }
+.example-events { border-top: 1px solid var(--border); }
+.example-events ol { max-height: 320px; overflow: auto; padding-left: 0; list-style: none; font-size: var(--docs-type-caption); }
+.example-events li { padding: 8px 0; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+.example-events pre { white-space: pre-wrap; margin: 4px 0; }
+.example-wide .preview-window { min-width: 0; }
+.example-wide .preview-window iframe { width: 100%; }
+.example-wide .preview-window[data-narrow='true'] iframe { width: 375px; }
+.layout-primary-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; padding: 12px 20px; }
+.layout-primary-controls > button { margin-left: auto; }
+.layout-preview-hint { padding: 16px 20px; background: var(--secondary); font-size: var(--docs-type-small); line-height: 1.7; overflow-wrap: anywhere; }
+.layout-preview-hint p { margin-top: 4px; color: var(--muted-foreground); }
+@media (max-width: 600px) {
+  .layout-primary-controls, .layout-preview-hint { padding: 12px; }
+}
+@media (max-width: 600px) { .example-view-toolbar .preview-caption { margin-left: 0; width: 100%; } .example-field { width: 100%; } .catalog-playground .playground-settings { padding: 12px; } .catalog-playground .example-controls { padding: 0 12px 12px; } }
+
+/* Dedicated implementation text is independent of the live preview. */
+.usage-source { min-width: 0; }
+.usage-source .code-block { margin: 16px 0; }
+.usage-source .code-block pre { max-height: 380px; overflow: auto; }
+.implementation-usage { margin: 32px 0; min-width: 0; }

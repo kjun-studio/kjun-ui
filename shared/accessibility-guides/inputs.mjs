@@ -1,0 +1,18 @@
+export default [
+  ['DsCheckbox', 'checked', 'label disabled value', '알림 받기의 체크 상태', { role: 'checkbox' }],
+  ['DsCombobox', 'select', 'ariaLabel options disabled', '과일 검색의 입력·옵션 선택·팝업 닫기', { role: 'combobox' }],
+  ['DsDatePicker', 'date', 'ariaLabel min max disabled error', '날짜 입력과 달력의 범위 제한', {}],
+  ['DsFilterGroup', 'choice', 'options disabled', '과일 필터의 복수 선택과 비활성 옵션', {}],
+  ['DsFormGroup', 'field', 'label hint error required', 'DsInput과 조합한 자동 라벨·도움말·오류 연결 및 두 인스턴스 ID', { field: 'DsInput', parent: 'DsFormGroup' }],
+  ['DsInput', 'field', 'ariaLabel error errorMessage disabled', '문자 입력과 FormGroup의 라벨·도움말·오류 전환', { field: 'DsInput' }],
+  ['DsRadio', 'radio', 'label disabled val', 'DsRadioGroup 안에서 첫 선택과 다음 선택', { parent: 'DsRadioGroup' }],
+  ['DsRadioGroup', 'radio', 'options ariaLabel', '과일 라디오의 단일 선택과 비활성 옵션 건너뛰기', {}],
+  ['DsSearchInput', 'search', 'ariaLabel loadOptions error disabled', '자산 검색의 활성 옵션·원격 결과·Escape 닫기', {}],
+  ['DsSelect', 'select', 'ariaLabel options error disabled', '과일 선택 팝업의 활성 옵션·선택·복귀', {}],
+  ['DsSwitch', 'checked', 'label ariaLabel disabled', '자동 갱신의 켜짐 상태', { role: 'switch' }],
+  ['DsTextarea', 'field', 'ariaLabel error disabled', '여러 줄 편집과 FormGroup 라벨·오류 연결', { field: 'DsTextarea' }],
+  ['DsSlider', 'slider', 'label ariaLabel min max step disabled', '알림 음량 값의 방향키 증감과 범위', {}],
+  ['DsRangeSlider', 'slider', 'label thumbLabels min max disabled', '시작 값·끝 값의 개별 이름과 방향키 증감', {}],
+  ['DsTimePicker', 'time', 'ariaLabel precision disabled error', '시·분 선택 컨트롤과 시각 팝업', {}],
+  ['DsQuantityStepper', 'stepper', 'ariaLabel min max disabled error', '주문 수량의 키보드 편집과 증감 버튼', {}],
+];

@@ -1,0 +1,258 @@
+/* KJUN-owned field geometry and interaction styles. */
+/* 입력의 표면·상태는 한 곳에서 관리한다. 모든 크기는 같은 size의 버튼 높이와 정렬한다. */
+.ds-field--sm {
+  --field-height: var(--_kjun-geometry-input-sm-height);
+  --field-font-size: var(--_kjun-geometry-input-sm-font-size);
+  --field-placeholder-size: var(--_kjun-geometry-input-sm-placeholder-size);
+  --field-line-height: var(--_kjun-geometry-input-sm-line-height);
+  --field-affix-gap: var(--_kjun-geometry-input-sm-affix-gap);
+  --field-radius: var(--_kjun-geometry-input-sm-radius);
+  --field-padding: var(--_kjun-geometry-input-sm-padding);
+  --field-icon-size: var(--_kjun-geometry-input-sm-icon-size);
+  --field-clear-size: var(--_kjun-geometry-input-sm-clear-size);
+  --field-textarea-padding-y: var(--_kjun-geometry-input-sm-textarea-padding-y);
+}
+
+.ds-field--md {
+  --field-height: var(--_kjun-geometry-input-md-height);
+  --field-font-size: var(--_kjun-geometry-input-md-font-size);
+  --field-placeholder-size: var(--_kjun-geometry-input-md-placeholder-size);
+  --field-line-height: var(--_kjun-geometry-input-md-line-height);
+  --field-affix-gap: var(--_kjun-geometry-input-md-affix-gap);
+  --field-radius: var(--_kjun-geometry-input-md-radius);
+  --field-padding: var(--_kjun-geometry-input-md-padding);
+  --field-icon-size: var(--_kjun-geometry-input-md-icon-size);
+  --field-clear-size: var(--_kjun-geometry-input-md-clear-size);
+  --field-textarea-padding-y: var(--_kjun-geometry-input-md-textarea-padding-y);
+}
+
+.ds-field--lg {
+  --field-height: var(--_kjun-geometry-input-lg-height);
+  --field-font-size: var(--_kjun-geometry-input-lg-font-size);
+  --field-placeholder-size: var(--_kjun-geometry-input-lg-placeholder-size);
+  --field-line-height: var(--_kjun-geometry-input-lg-line-height);
+  --field-affix-gap: var(--_kjun-geometry-input-lg-affix-gap);
+  --field-radius: var(--_kjun-geometry-input-lg-radius);
+  --field-padding: var(--_kjun-geometry-input-lg-padding);
+  --field-icon-size: var(--_kjun-geometry-input-lg-icon-size);
+  --field-clear-size: var(--_kjun-geometry-input-lg-clear-size);
+  --field-textarea-padding-y: var(--_kjun-geometry-input-lg-textarea-padding-y);
+}
+
+.ds-field {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: var(--field-height);
+  padding: 0 calc(var(--field-padding) - var(--_kjun-border-control-width));
+  border: var(--_kjun-border-control-width) solid transparent;
+  border-radius: var(--field-radius);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: var(--field-font-size);
+  line-height: var(--field-line-height);
+  font-weight: var(--_kjun-type-input-weight);
+  letter-spacing: var(--_kjun-type-input-tracking);
+  transition: background-color var(--motion-control) var(--ease-out), border-color var(--motion-control) var(--ease-out);
+}
+
+.ds-field::placeholder { color: var(--input-placeholder); font-size: var(--field-placeholder-size); opacity: 1; }
+.ds-field-placeholder { color: var(--input-placeholder); font-size: var(--field-placeholder-size); }
+.ds-field:hover:not(:disabled):not(:focus):not([readonly]):not([aria-expanded="true"]):not(.ds-field--open):not(.ds-field--error) { background: var(--bg-hover); }
+.ds-field:focus, .ds-field--open, .ds-field[aria-expanded="true"] {
+  outline: none;
+  border-color: var(--input-border-focus);
+  background: var(--input-bg);
+}
+.ds-field--error, .ds-field--error:focus, .ds-field--error.ds-field--open, .ds-field--error[aria-expanded="true"] {
+  border-color: var(--danger);
+  background: var(--input-bg);
+}
+.ds-field[readonly] { color: var(--text-secondary); }
+/* The ring covers the control border so keyboard focus reads as one outline. */
+.ds-field:focus-visible:not(:disabled) {
+  outline: var(--_kjun-state-focus-width) solid var(--focus-ring);
+  outline-offset: var(--_kjun-state-focus-inset-offset);
+}
+.ds-field--error:focus-visible:not(:disabled),
+.ds-field[aria-invalid="true"]:focus-visible:not(:disabled) {
+  outline-offset: var(--_kjun-state-focus-offset);
+}
+.ds-field-shell[data-disabled="true"] :is(.ds-field-prefix, .ds-field-suffix),
+.ds-field-shell:has(> :disabled) :is(.ds-field-prefix, .ds-field-suffix, .ds-select-indicator) { color: var(--text-disabled); }
+.ds-field-shell[data-disabled="true"] .ds-field-suffix .ds-icon,
+.ds-field-shell .ds-field-clear:disabled { color: var(--text-disabled); }
+.ds-field-shell .ds-field-clear:disabled { opacity: 1; }
+.ds-field:disabled .ds-field-placeholder { color: var(--text-disabled); }
+.ds-field:disabled {
+  cursor: not-allowed;
+  color: var(--text-disabled);
+  background: var(--input-bg);
+}
+.ds-field:disabled::placeholder { color: var(--text-disabled); }
+.ds-field--prefix { padding-left: calc(var(--field-padding) + var(--field-icon-size) + var(--field-affix-gap) - var(--_kjun-border-control-width)); }
+.ds-field--suffix { padding-right: calc(var(--field-padding) + var(--field-clear-size) + var(--field-affix-gap) - var(--_kjun-border-control-width)); }
+.ds-input-native.ds-field--prefix { padding-left: calc(var(--field-padding) + var(--input-prefix-width) + var(--field-affix-gap) - var(--_kjun-border-control-width)); }
+.ds-input-native.ds-field--suffix { padding-right: calc(var(--field-padding) + var(--input-suffix-width) + var(--field-affix-gap) - var(--_kjun-border-control-width)); }
+.ds-field--clearable > .truncate { padding-right: calc(var(--field-clear-size) + var(--field-affix-gap)); }
+.ds-field--select { display: flex; align-items: center; justify-content: space-between; text-align: left; gap: var(--_kjun-geometry-dimension-value8); }
+.ds-field--textarea { height: auto; padding-top: var(--field-textarea-padding-y); padding-bottom: var(--field-textarea-padding-y); }
+.ds-field-shell { position: relative; min-width: 0; --input-prefix-width: 0px; --input-suffix-width: 0px; }
+.ds-field-prefix, .ds-field-suffix {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--extension-form-affix-item-gap);
+  color: var(--text-tertiary);
+  font-size: var(--field-icon-size);
+}
+.ds-field-prefix { left: var(--field-padding); pointer-events: none; }
+.ds-field-suffix { right: var(--field-padding); }
+/* Override the shared Button's inline geometry only inside a field. */
+.ds-field-shell .ds-field-clear { padding: 0 !important; width: var(--field-clear-size) !important; height: var(--field-clear-size) !important; min-height: var(--field-clear-size) !important; border-radius: 50% !important; flex-shrink: 0; }
+.ds-field-clear .ds-icon, .ds-select-indicator { width: var(--field-icon-size); height: var(--field-icon-size); }
+.ds-field-error { margin-top: var(--extension-form-message-gap); font-size: var(--_kjun-type-caption-size); color: var(--danger); line-height: var(--_kjun-type-caption-line); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking); }
+.ds-form-group { margin-bottom: var(--extension-form-item-gap); min-width: 0; }
+.ds-form-group:last-child { margin-bottom: 0; }
+/* 그리드·툴바는 부모 gap을 사용하고, 일반 문서 흐름의 기존 폼만 기본 간격을 유지한다. */
+:where(.flex, .inline-flex, .grid, .inline-grid, .ds-form-layout) > .ds-form-group { margin-bottom: 0; }
+.ds-field-menu {
+  padding: var(--extension-menu-padding);
+  border: var(--_kjun-border-default-width) solid var(--border-primary);
+  border-radius: var(--_kjun-geometry-radius-radius12);
+  background: var(--card-bg);
+  box-shadow: var(--_kjun-menu-elevation);
+}
+.ds-field-menu[role="menu"] { border-radius: var(--extension-menu-radius); }
+.ds-field-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_kjun-geometry-dimension-value8);
+  min-height: var(--extension-menu-option-height);
+  padding: var(--extension-menu-option-padding-y) var(--extension-menu-option-padding-x);
+  border-radius: var(--_kjun-geometry-radius-radius8);
+  font-size: var(--extension-menu-option-font-size); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
+  line-height: var(--extension-menu-option-line-height);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.ds-field-option:hover:not([aria-disabled="true"]), .ds-field-option--highlighted:not([aria-disabled="true"]) { background: var(--bg-hover); }
+.ds-field-option[aria-selected="true"] { background: var(--selected-bg); }
+.ds-field-option:focus-visible { outline: var(--_kjun-state-focus-width) solid var(--focus-ring); outline-offset: var(--_kjun-state-focus-inset-offset); }
+.ds-field-option[aria-disabled="true"] { opacity: var(--_kjun-state-opacity-disabled); cursor: not-allowed; }
+.ds-dropdown-item {
+  gap: var(--_kjun-geometry-dimension-value8);
+  min-height: var(--extension-menu-option-height);
+  padding: var(--extension-menu-option-padding-y) var(--extension-menu-option-padding-x);
+  border-radius: var(--extension-menu-option-radius);
+  font-size: var(--extension-menu-option-font-size);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+  line-height: var(--extension-menu-option-line-height);
+}
+.ds-dropdown-label { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+/* Same border role and inset as the React and Native menu dividers. */
+.ds-dropdown-divider { height: var(--extension-menu-divider-height); margin: var(--_kjun-geometry-dimension-value4) 0; background: var(--border-primary); }
+/* Pointer hover moves focus (DropdownItem), so only the focused item paints as current. */
+.ds-dropdown-item:focus:not(:disabled):not([aria-checked="true"]) { background: var(--bg-hover); }
+.ds-dropdown-item[data-variant="danger"]:focus:not(:disabled):not([aria-checked="true"]) { background: var(--danger-bg); }
+.ds-dropdown-item[aria-checked="true"] { background: var(--selected-bg); }
+.ds-dropdown-item:not([data-variant="danger"]) .ds-dropdown-icon { color: var(--text-secondary); }
+[role="menu"]:has(.ds-dropdown-icon) .ds-dropdown-item:not(:has(.ds-dropdown-icon)) {
+  padding-left: calc(var(--extension-menu-option-padding-x) + var(--extension-menu-icon-size) + var(--_kjun-geometry-dimension-value8));
+}
+.ds-dropdown-item:focus-visible:not(:disabled) {
+  outline: var(--_kjun-state-focus-width) solid var(--focus-ring);
+  outline-offset: var(--_kjun-state-focus-inset-offset);
+}
+
+.ds-choice { position: relative; display: inline-flex; align-items: center; min-height: var(--extension-choice-minimum-height); cursor: pointer; vertical-align: middle; }
+.ds-choice--disabled { opacity: var(--_kjun-state-opacity-disabled); cursor: not-allowed; }
+.ds-choice-label { margin-left: var(--extension-checkbox-label-gap); font-size: var(--_kjun-type-label-size); color: var(--text-primary); line-height: var(--_kjun-type-label-line); font-weight: var(--_kjun-type-label-weight); letter-spacing: var(--_kjun-type-label-tracking); }
+.ds-choice-control {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--extension-checkbox-sizes-md);
+  height: var(--extension-checkbox-sizes-md);
+  /* Control boundaries use the strong border role, like Radio; disabled drops to secondary. */
+  border: var(--_kjun-border-control-width) solid var(--border-strong);
+  background: var(--card-bg);
+  transition: border-color var(--motion-control) var(--ease-out), background-color var(--motion-control) var(--ease-out);
+}
+.ds-checkbox { border-radius: var(--extension-checkbox-radii-md); }
+.ds-checkbox--sm { width: var(--extension-checkbox-sizes-sm); height: var(--extension-checkbox-sizes-sm); border-radius: var(--extension-checkbox-radii-sm); }
+.ds-checkbox--lg { width: var(--extension-checkbox-sizes-lg); height: var(--extension-checkbox-sizes-lg); border-radius: var(--extension-checkbox-radii-lg); }
+.ds-checkbox--checked { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.ds-radio {
+  width: var(--extension-radio-size);
+  height: var(--extension-radio-size);
+  border-width: var(--extension-radio-border-width);
+  border-radius: 50%;
+  border-color: var(--border-strong);
+}
+.ds-radio--checked { border-color: var(--brand); }
+.ds-radio-dot { width: var(--extension-radio-dot); height: var(--extension-radio-dot); border-radius: 50%; background: var(--brand); }
+.ds-radio + .ds-choice-label { margin-left: var(--extension-radio-label-gap); }
+.ds-choice--disabled :is(.ds-radio:not(.ds-radio--checked), .ds-checkbox:not(.ds-checkbox--checked)) { border-color: var(--border-secondary); }
+.ds-choice--disabled .ds-switch:not(.ds-switch--on) { box-shadow: inset 0 0 0 var(--_kjun-border-control-width) var(--border-secondary); }
+.ds-choice--disabled .ds-switch:not(.ds-switch--on) .ds-switch-thumb { background: var(--border-secondary); }
+.ds-choice input:focus-visible + .ds-choice-control, .ds-switch:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--focus-ring);
+  outline-offset: var(--_kjun-state-focus-choice-offset);
+}
+.ds-choice:not(.ds-choice--disabled):hover .ds-choice-control { border-color: var(--brand); }
+.ds-choice:not(.ds-choice--disabled):hover .ds-radio { border-color: var(--brand-hover); }
+.ds-choice:not(.ds-choice--disabled):hover .ds-switch:not(.ds-switch--on) { box-shadow: inset 0 0 0 var(--_kjun-border-control-width) var(--brand); }
+.ds-choice:not(.ds-choice--disabled):active .ds-radio,
+.ds-choice:not(.ds-choice--disabled) input:active + .ds-radio { border-color: var(--brand-active); }
+.ds-switch + .ds-choice-label { margin-left: var(--extension-switch-label-gap); }
+.ds-switch {
+  position: relative;
+  flex-shrink: 0;
+  --_kjun-switch-width: var(--extension-switch-widths-md);
+  --_kjun-switch-height: var(--extension-switch-heights-md);
+  width: var(--_kjun-switch-width);
+  height: var(--_kjun-switch-height);
+  padding: var(--extension-switch-padding);
+  border-radius: var(--extension-switch-radius);
+  background: var(--bg-active);
+  /* Off state draws its boundary with the strong border role, like Checkbox and Radio; inset so geometry stays put. */
+  box-shadow: inset 0 0 0 var(--_kjun-border-control-width) var(--border-strong);
+  transition: background-color var(--motion-control) var(--ease-out), box-shadow var(--motion-control) var(--ease-out);
+}
+.ds-switch--sm { --_kjun-switch-width: var(--extension-switch-widths-sm); --_kjun-switch-height: var(--extension-switch-heights-sm); }
+.ds-switch--lg { --_kjun-switch-width: var(--extension-switch-widths-lg); --_kjun-switch-height: var(--extension-switch-heights-lg); }
+.ds-switch--on { background: var(--brand); box-shadow: none; }
+/* The off boundary sits inside the padding, so the off thumb also clears the border width:
+   both states keep the same gap between thumb and edge, and the thumb grows as it turns on. */
+.ds-switch-thumb {
+  --_kjun-switch-thumb-inset: calc(var(--extension-switch-padding) + var(--_kjun-border-control-width));
+  display: block;
+  width: calc(var(--_kjun-switch-height) - 2 * var(--_kjun-switch-thumb-inset));
+  height: calc(var(--_kjun-switch-height) - 2 * var(--_kjun-switch-thumb-inset));
+  margin: var(--_kjun-border-control-width);
+  border-radius: 50%;
+  background: var(--border-strong);
+  transform: translateX(0);
+  transition: transform var(--motion-control) var(--ease-out), background-color var(--motion-control) var(--ease-out),
+    width var(--motion-control) var(--ease-out), height var(--motion-control) var(--ease-out), margin var(--motion-control) var(--ease-out);
+}
+.ds-switch--on .ds-switch-thumb {
+  --_kjun-switch-thumb-inset: var(--extension-switch-padding);
+  margin: 0;
+  background: var(--on-brand);
+  transform: translateX(calc(var(--_kjun-switch-width) - var(--_kjun-switch-height)));
+}
+
+@media (pointer: coarse) {
+  .ds-choice { min-height: var(--_kjun-geometry-native-minimum-touch-target); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-field { transition: none; }
+}

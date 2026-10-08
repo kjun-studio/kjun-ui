@@ -1,0 +1,104 @@
+{
+  "caption": {
+    "fontSizePx": 12,
+    "lineHeightPx": 16,
+    "fontWeight": 400,
+    "letterSpacingEm": 0
+  },
+  "meta": {
+    "fontSizePx": 12,
+    "lineHeightPx": 16,
+    "fontWeight": 500,
+    "letterSpacingEm": 0
+  },
+  "controlSmall": {
+    "fontSizePx": 12,
+    "lineHeightPx": 16,
+    "fontWeight": 600,
+    "letterSpacingEm": 0
+  },
+  "body": {
+    "fontSizePx": 14,
+    "lineHeightPx": 20,
+    "fontWeight": 400,
+    "letterSpacingEm": 0
+  },
+  "label": {
+    "fontSizePx": 14,
+    "lineHeightPx": 20,
+    "fontWeight": 500,
+    "letterSpacingEm": 0
+  },
+  "control": {
+    "fontSizePx": 14,
+    "lineHeightPx": 20,
+    "fontWeight": 600,
+    "letterSpacingEm": 0
+  },
+  "input": {
+    "fontSizePx": 16,
+    "lineHeightPx": 24,
+    "fontWeight": 400,
+    "letterSpacingEm": 0
+  },
+  "cardTitle": {
+    "fontSizePx": 16,
+    "lineHeightPx": 24,
+    "fontWeight": 600,
+    "letterSpacingEm": 0
+  },
+  "controlLarge": {
+    "fontSizePx": 16,
+    "lineHeightPx": 24,
+    "fontWeight": 600,
+    "letterSpacingEm": 0
+  },
+  "sectionTitle": {
+    "fontSizePx": 20,
+    "lineHeightPx": 28,
+    "fontWeight": 700,
+    "letterSpacingEm": -0.01
+  },
+  "pageTitle": {
+    "fontSizePx": 24,
+    "lineHeightPx": 32,
+    "fontWeight": 700,
+    "letterSpacingEm": -0.01
+  },
+  "numberSm": {
+    "fontSizePx": 14,
+    "lineHeightPx": 20,
+    "fontWeight": 500,
+    "letterSpacingEm": 0
+  },
+  "numberMd": {
+    "fontSizePx": 16,
+    "lineHeightPx": 24,
+    "fontWeight": 600,
+    "letterSpacingEm": 0
+  },
+  "numberLg": {
+    "fontSizePx": 20,
+    "lineHeightPx": 28,
+    "fontWeight": 700,
+    "letterSpacingEm": 0
+  },
+  "displaySm": {
+    "fontSizePx": 24,
+    "lineHeightPx": 32,
+    "fontWeight": 700,
+    "letterSpacingEm": -0.02
+  },
+  "displayMd": {
+    "fontSizePx": 32,
+    "lineHeightPx": 40,
+    "fontWeight": 700,
+    "letterSpacingEm": -0.02
+  },
+  "displayLg": {
+    "fontSizePx": 40,
+    "lineHeightPx": 48,
+    "fontWeight": 700,
+    "letterSpacingEm": -0.02
+  }
+}

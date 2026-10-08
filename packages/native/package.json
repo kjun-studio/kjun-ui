@@ -1,0 +1,52 @@
+{
+  "name": "@kjun/native",
+  "version": "0.3.0",
+  "license": "MIT",
+  "description": "KJUN UI components for React Native with shared geometry and interaction contracts.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "browser": "./dist/index.web.js",
+  "react-native": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "react-native": "./dist/index.js",
+        "browser": "./dist/index.web.js",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "react-native": "./dist/index.cjs",
+        "browser": "./dist/index.web.cjs",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@kjun/tokens": "0.3.0",
+    "@kjun/icons": "0.3.0"
+  },
+  "peerDependencies": {
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-native": "^0.86.3",
+    "react-native-svg": "^15.15.5"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    }
+  }
+}

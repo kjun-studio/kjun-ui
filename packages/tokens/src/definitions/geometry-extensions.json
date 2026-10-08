@@ -1,0 +1,264 @@
+{
+  "extensions": {
+    "compound": {
+      "sm": { "$ref": "input.sm.height" },
+      "md": { "$ref": "input.md.height" },
+      "lg": { "$ref": "input.lg.height" },
+      "radius": { "$ref": "input.md.radius" },
+      "valueWidth": 80
+    },
+    "timePicker": {
+      "segmentMinimumWidth": { "$ref": "native.minimumTouchTarget" },
+      "separatorWidth": { "$ref": "dimension.value12" },
+      "segmentPadding": { "$ref": "dimension.value4" },
+      "iconSize": 12
+    },
+    "popover": {
+      "width": 240,
+      "radius": { "$ref": "radius.radius12" },
+      "padding": { "$ref": "dimension.value16" },
+      "gap": { "$ref": "dimension.value12" }
+    },
+    "state": {
+      "titleSize": { "$ref": "typography.sectionTitle.fontSizePx" },
+      "descriptionSize": { "$ref": "typography.caption.fontSizePx" }
+    },
+    "list": {
+      "padding": { "$ref": "dimension.value16" },
+      "gap": { "$ref": "dimension.value12" },
+      "minimumHeight": 56,
+      "descriptionGap": { "$ref": "dimension.value4" },
+      "actionsGap": { "$ref": "dimension.value8" },
+      "actionsPadding": { "$ref": "extensions.list.padding" }
+    },
+    "navigation": {
+      "minimumHeight": { "$ref": "extensions.topNavigation.minimumHeight" },
+      "padding": { "$ref": "dimension.value16" },
+      "gap": { "$ref": "extensions.topNavigation.gap" },
+      "paddingY": { "$ref": "extensions.topNavigation.paddingY" },
+      "descriptionGap": { "$ref": "extensions.topNavigation.descriptionGap" },
+      "actionsGap": { "$ref": "dimension.value8" },
+      "itemGap": { "$ref": "extensions.bottomNavigation.itemGap" },
+      "itemPaddingX": { "$ref": "extensions.bottomNavigation.itemPaddingX" },
+      "itemPaddingY": { "$ref": "extensions.bottomNavigation.itemPaddingY" },
+      "badgePaddingX": { "$ref": "extensions.bottomNavigation.badgePaddingX" },
+      "badgeRadius": { "$ref": "extensions.bottomNavigation.badgeRadius" },
+      "actionGap": { "$ref": "dimension.value12" }
+    },
+    "accordion": {
+      "minimumHeight": { "$ref": "dimension.value48" },
+      "paddingX": { "$ref": "dimension.value16" },
+      "headerPaddingY": { "$ref": "dimension.value14" },
+      "headerGap": { "$ref": "dimension.value12" },
+      "contentPaddingBottom": { "$ref": "dimension.value20" },
+      "radius": { "$ref": "radius.radius12" },
+      "iconSize": 16
+    },
+    "tabs": {
+      "height": 44,
+      "compactHeight": 32,
+      "paddingX": { "$ref": "dimension.value16" },
+      "compactPaddingX": { "$ref": "dimension.value14" },
+      "pillsPaddingX": { "$ref": "dimension.value12" },
+      "gap": { "$ref": "dimension.value4" },
+      "pillsGap": { "$ref": "dimension.value6" },
+      "pillsPaddingY": { "$ref": "dimension.value2" },
+      "itemGap": { "$ref": "dimension.value8" },
+      "contentGap": { "$ref": "dimension.value16" },
+      "radius": { "$ref": "radius.radius6" },
+      "indicatorHeight": 2,
+      "iconSize": 16
+    },
+    "topNavigation": {
+      "minimumHeight": { "$ref": "dimension.value56" },
+      "titleMinimumWidth": 120,
+      "paddingX": { "$ref": "dimension.value16" },
+      "paddingY": { "$ref": "dimension.value6" },
+      "gap": { "$ref": "dimension.value12" },
+      "controlSize": { "$ref": "native.minimumTouchTarget" },
+      "iconSize": 24,
+      "descriptionGap": { "$ref": "dimension.value4" },
+      "actionsGap": { "$ref": "dimension.value8" }
+    },
+    "bottomNavigation": {
+      "indicatorWidth": 20,
+      "indicatorHeight": 3,
+      "indicatorOffset": { "$ref": "dimension.value4" },
+      "minimumHeight": { "$ref": "dimension.value64" },
+      "iconSize": 24,
+      "itemGap": { "$ref": "dimension.value4" },
+      "itemPaddingX": { "$ref": "dimension.value4" },
+      "itemPaddingY": { "$ref": "dimension.value10" },
+      "badgeMinimumSize": 16,
+      "badgePaddingX": { "$ref": "dimension.value4" },
+      "badgeOffset": { "$ref": "dimension.value4" },
+      "badgeOverlap": { "$ref": "dimension.value8" },
+      "badgeRadius": { "$ref": "radius.radius9999" }
+    },
+    "avatar": {
+      "sm": 32,
+      "md": 40,
+      "lg": 56
+    },
+    "chip": {
+      "sm": 28,
+      "md": 32,
+      "lg": 40,
+      "typography": {
+        "sm": { "$ref": "typography.caption" },
+        "md": { "$ref": "typography.body" },
+        "lg": { "$ref": "typography.input" }
+      },
+      "radius": { "$ref": "radius.radius9999" },
+      "paddingX": { "$ref": "dimension.value10" },
+      "paddingY": { "$ref": "dimension.value4" },
+      "gap": { "$ref": "dimension.value6" },
+      "removeSize": 24,
+      "nativeRemoveSize": { "$ref": "native.minimumTouchTarget" }
+    },
+    "slider": {
+      "track": 6,
+      "thumb": 20
+    },
+    "radio": {
+      "size": 20,
+      "dot": 8,
+      "borderWidth": 2,
+      "labelGap": { "$ref": "dimension.value8" }
+    },
+    "marketTable": {
+      "headerHeight": 44,
+      "rowHeight": 70,
+      "identityWidth": 240,
+      "columnWidth": 160,
+      "actionsWidth": 96
+    },
+    "menu": {
+      "radius": { "$ref": "radius.radius12" },
+      "optionRadius": { "$ref": "radius.radius8" },
+      "padding": { "$ref": "dimension.value4" },
+      "optionHeight": 44,
+      "optionFontSize": { "$ref": "typography.body.fontSizePx" },
+      "optionLineHeight": { "$ref": "typography.body.lineHeightPx" },
+      "optionPaddingY": { "$ref": "dimension.value8" },
+      "optionPaddingX": { "$ref": "dimension.value12" }
+    },
+    "empty": {
+      "titleSize": { "$ref": "typography.cardTitle.fontSizePx" },
+      "titleLineHeight": { "$ref": "typography.cardTitle.lineHeightPx" },
+      "descriptionSize": { "$ref": "typography.caption.fontSizePx" },
+      "descriptionLineHeight": { "$ref": "typography.caption.lineHeightPx" },
+      "iconSize": 32,
+      "iconGap": { "$ref": "dimension.value12" },
+      "descriptionGap": { "$ref": "dimension.value8" },
+      "actionGap": { "$ref": "dimension.value16" },
+      "textMaxWidth": 360
+    },
+    "pagination": {
+      "selectorMinimumWidth": 104
+    },
+    "badge": {
+      "radius": { "$ref": "radius.radius6" },
+      "gap": { "$ref": "dimension.value4" },
+      "dotSize": 6,
+      "padding": {
+        "xs": {
+          "x": { "$ref": "dimension.value4" },
+          "y": 0
+        },
+        "sm": {
+          "x": { "$ref": "dimension.value6" },
+          "y": { "$ref": "dimension.value2" }
+        },
+        "md": {
+          "x": { "$ref": "dimension.value8" },
+          "y": { "$ref": "dimension.value4" }
+        },
+        "lg": {
+          "x": { "$ref": "dimension.value10" },
+          "y": { "$ref": "dimension.value4" }
+        },
+        "xl": {
+          "x": { "$ref": "dimension.value12" },
+          "y": { "$ref": "dimension.value6" }
+        }
+      }
+    },
+    "drawer": {
+      "paddingX": { "$ref": "dimension.value20" },
+      "paddingY": { "$ref": "dimension.value16" },
+      "bodyPadding": { "$ref": "dimension.value20" },
+      "bottomRadius": { "$ref": "radius.radius16" },
+      "radius": { "$ref": "radius.radius0" },
+      "closeRadius": { "$ref": "radius.radius8" }
+    },
+    "toast": {
+      "minWidth": 320,
+      "maxWidth": 420,
+      "closeSize": 24,
+      "progressHeight": 3,
+      "padding": { "$ref": "dimension.value16" },
+      "gap": { "$ref": "dimension.value12" },
+      "inset": { "$ref": "dimension.value16" },
+      "stackGap": { "$ref": "dimension.value16" },
+      "titleGap": { "$ref": "dimension.value4" },
+      "actionGap": { "$ref": "dimension.value8" },
+      "radius": { "$ref": "radius.radius12" },
+      "closeRadius": { "$ref": "radius.radius6" }
+    },
+    "alert": {
+      "radius": { "$ref": "card.radii.md" },
+      "descriptionGap": { "$ref": "dimension.value4" },
+      "closeSize": { "$ref": "input.md.clearSize" },
+      "closeRadius": { "$ref": "button.radii.xs" },
+      "actionsGap": { "$ref": "dimension.value8" },
+      "sm": {
+        "paddingX": { "$ref": "dimension.value12" },
+        "paddingY": { "$ref": "dimension.value8" },
+        "gap": { "$ref": "dimension.value8" },
+        "closeSize": { "$ref": "input.sm.clearSize" },
+        "actionGap": { "$ref": "dimension.value8" }
+      },
+      "md": {
+        "paddingX": { "$ref": "dimension.value14" },
+        "paddingY": { "$ref": "dimension.value10" },
+        "gap": { "$ref": "dimension.value10" },
+        "actionGap": { "$ref": "dimension.value12" }
+      }
+    },
+    "tableCard": {
+      "padding": { "$ref": "card.padding.sm" },
+      "radius": { "$ref": "card.radii.md" },
+      "gap": { "$ref": "dimension.value8" },
+      "listPadding": { "$ref": "dimension.value8" },
+      "fieldGap": { "$ref": "dimension.value4" },
+      "metricGap": { "$ref": "dimension.value6" },
+      "valueGap": { "$ref": "dimension.value2" },
+      "emptyPadding": { "$ref": "dimension.value32" }
+    },
+    "skeleton": {
+      "padding": { "$ref": "card.padding.md" },
+      "radius": { "$ref": "card.radii.md" },
+      "lineRadius": { "$ref": "radius.radius4" },
+      "blockRadius": { "$ref": "radius.radius8" },
+      "gap": { "$ref": "dimension.value12" },
+      "detailGap": { "$ref": "dimension.value6" },
+      "formGap": { "$ref": "dimension.value20" },
+      "fieldGap": { "$ref": "dimension.value8" },
+      "list": {
+        "market": {
+          "paddingY": { "$ref": "dimension.value14" },
+          "paddingX": { "$ref": "dimension.value16" }
+        },
+        "compact": {
+          "paddingY": { "$ref": "dimension.value10" },
+          "paddingX": { "$ref": "dimension.value16" }
+        },
+        "notification": {
+          "paddingY": { "$ref": "dimension.value12" },
+          "paddingX": { "$ref": "dimension.value12" }
+        }
+      }
+    }
+  }
+}

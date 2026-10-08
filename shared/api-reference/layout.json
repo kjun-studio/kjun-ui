@@ -1,0 +1,273 @@
+{
+  "DsAccordion": {
+    "vue2": [
+      "formatters",
+      "multiple",
+      "tone"
+    ],
+    "react": [
+      "multiple",
+      "tone",
+      "children"
+    ],
+    "native": [
+      "multiple",
+      "tone",
+      "children"
+    ]
+  },
+  "DsAccordionItem": {
+    "vue2": [
+      "formatters",
+      "title",
+      "defaultOpen",
+      "disabled"
+    ],
+    "react": [
+      "title",
+      "defaultOpen",
+      "disabled",
+      "header",
+      "children"
+    ],
+    "native": [
+      "title",
+      "defaultOpen",
+      "disabled",
+      "header",
+      "children"
+    ]
+  },
+  "DsCard": {
+    "vue2": [
+      "dividers",
+      "formatters",
+      "title",
+      "subtitle",
+      "elevation",
+      "border",
+      "padding",
+      "bodyPadding",
+      "radius",
+      "surface"
+    ],
+    "react": [
+      "dividers",
+      "title",
+      "subtitle",
+      "header",
+      "headerActions",
+      "footer",
+      "elevation",
+      "border",
+      "autoFocus",
+      "className",
+      "id",
+      "style",
+      "children",
+      "onChange",
+      "onKeyDown",
+      "onClick",
+      "padding",
+      "bodyPadding",
+      "radius",
+      "surface",
+      "media"
+    ],
+    "native": [
+      "dividers",
+      "title",
+      "subtitle",
+      "header",
+      "headerActions",
+      "footer",
+      "elevation",
+      "border",
+      "children",
+      "style",
+      "padding",
+      "bodyPadding",
+      "radius",
+      "surface",
+      "media"
+    ]
+  },
+  "DsDrawer": {
+    "vue2": [
+      "formatters",
+      "value",
+      "title",
+      "position",
+      "width",
+      "closable",
+      "closeOnOverlay",
+      "closeOnEsc",
+      "noPadding"
+    ],
+    "react": [
+      "open",
+      "onOpenChange",
+      "title",
+      "position",
+      "width",
+      "closable",
+      "closeOnOverlay",
+      "closeOnEsc",
+      "noPadding",
+      "header",
+      "footer",
+      "children",
+      "onClose",
+      "ariaLabel"
+    ],
+    "native": [
+      "open",
+      "onOpenChange",
+      "title",
+      "position",
+      "width",
+      "closable",
+      "closeOnOverlay",
+      "closeOnEsc",
+      "noPadding",
+      "header",
+      "footer",
+      "children",
+      "onClose",
+      "ariaLabel"
+    ]
+  },
+  "DsModal": {
+    "vue2": [
+      "formatters",
+      "footerSize",
+      "value",
+      "title",
+      "ariaLabel",
+      "size",
+      "closable",
+      "closeOnOverlay",
+      "closeOnEsc",
+      "showHeader",
+      "showFooter",
+      "showConfirmButton",
+      "showCancelButton",
+      "confirmText",
+      "cancelText",
+      "confirmDisabled",
+      "loading",
+      "noPadding",
+      "height",
+      "confirmVariant"
+    ],
+    "react": [
+      "open",
+      "onOpenChange",
+      "onClose",
+      "onCancel",
+      "onConfirm",
+      "title",
+      "size",
+      "closable",
+      "closeOnOverlay",
+      "closeOnEsc",
+      "showHeader",
+      "showFooter",
+      "showConfirmButton",
+      "showCancelButton",
+      "confirmText",
+      "cancelText",
+      "confirmDisabled",
+      "loading",
+      "noPadding",
+      "height",
+      "confirmVariant",
+      "footerSize",
+      "header",
+      "footer",
+      "children",
+      "ariaLabel"
+    ],
+    "native": [
+      "open",
+      "onOpenChange",
+      "onClose",
+      "onCancel",
+      "onConfirm",
+      "title",
+      "size",
+      "closable",
+      "closeOnOverlay",
+      "closeOnEsc",
+      "showHeader",
+      "showFooter",
+      "showConfirmButton",
+      "showCancelButton",
+      "confirmText",
+      "cancelText",
+      "confirmDisabled",
+      "loading",
+      "noPadding",
+      "height",
+      "confirmVariant",
+      "footerSize",
+      "header",
+      "footer",
+      "children",
+      "ariaLabel"
+    ]
+  },
+  "DsPopover": {
+    "vue2": [
+      "noPadding",
+      "formatters",
+      "value",
+      "manualTrigger",
+      "matchTriggerWidth",
+      "maxHeight",
+      "flip",
+      "focusOnOpen",
+      "ariaLabel",
+      "placement"
+    ],
+    "react": [
+      "noPadding",
+      "open",
+      "onOpenChange",
+      "manualTrigger",
+      "matchTriggerWidth",
+      "maxHeight",
+      "flip",
+      "focusOnOpen",
+      "ariaLabel",
+      "placement",
+      "trigger",
+      "children"
+    ],
+    "native": [
+      "noPadding",
+      "open",
+      "onOpenChange",
+      "manualTrigger",
+      "matchTriggerWidth",
+      "maxHeight",
+      "flip",
+      "focusOnOpen",
+      "ariaLabel",
+      "placement",
+      "trigger",
+      "children"
+    ]
+  },
+  "DsScrollFade": {
+    "vue2": [
+      "formatters"
+    ],
+    "react": [
+      "children"
+    ],
+    "native": [
+      "children"
+    ]
+  }
+}

@@ -1,0 +1,96 @@
+/* Document presentation only. Packed table geometry and card breakpoints stay intact. */
+.tokens-document > :is(.page-intro, .document-shortcuts, .tokens-content, .page-navigation) {
+  width: 100%;
+  max-width: 720px;
+}
+.tokens-content { color: var(--foreground); }
+.tokens-content > section > h2 { font-size: var(--docs-type-heading); line-height: 32px; font-weight: 600; letter-spacing: -.03em; }
+.tokens-content .body-copy { margin: 16px 0 24px; font-size: var(--docs-type-body); line-height: 28px; color: var(--foreground); }
+.tokens-content h3 { margin: 28px 0 12px; font-size: var(--docs-type-body); line-height: 24px; font-weight: 600; }
+.tokens-content code { font-size: .875em; overflow-wrap: anywhere; }
+.tokens-content .code-block pre, .tokens-content .code-block code { font-size: var(--docs-type-small); line-height: 22px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.tokens-content .token-caption { font-size: 12px; line-height: 20px; color: var(--muted-foreground); margin: 12px 0; overflow-wrap: anywhere; }
+.tokens-content .token-caption code { font-size: inherit; }
+.token-table { margin: 24px 0 12px; max-width: 100%; }
+.tokens-content .token-table :is(th, td, .kjun-table-card-title, .kjun-table-card-label, .kjun-table-card-value) {
+  font-size: 14px;
+  line-height: 20px;
+  font-family: inherit;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.tokens-content .token-table code { font-size: 14px; line-height: 20px; }
+.tokens-content .token-table th { color: var(--foreground); font-weight: 600; }
+.token-number { display: block; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tokens-content .kjun-table-card-value .token-number { text-align: left; }
+.token-details { margin: 24px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 16px 0; }
+.token-details summary { font-size: 14px; line-height: 24px; font-weight: 500; cursor: pointer; }
+.token-spacing-samples, .token-radius-samples { list-style: none; display: grid; padding: 0; margin: 24px 0; gap: 24px 12px; }
+.token-spacing-samples { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); }
+.token-radius-samples { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); }
+.token-spacing-samples li, .token-radius-samples li { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+.token-spacing-samples strong, .token-radius-samples strong { font-size: 14px; line-height: 20px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.token-spacing-samples code, .token-radius-samples code { font-size: 12px; line-height: 20px; color: var(--muted-foreground); white-space: nowrap; }
+/* The tinted strip between two framed blocks is the measured gap. */
+.token-gap-sample { display: flex; align-items: stretch; height: 40px; background: color-mix(in srgb, var(--kjun-info) 22%, transparent); }
+.token-gap-sample i { display: block; width: 20px; background: var(--background); border: 1px solid var(--border); border-radius: 4px; }
+.token-radius-shape { width: 40px; height: 40px; border: 1px solid var(--border); background: var(--secondary); margin-bottom: 6px; }
+.token-radius-roles { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 24px 32px; margin: 24px 0; }
+.token-radius-roles figure { display: flex; flex-direction: column; gap: 10px; margin: 0; }
+.token-radius-roles figcaption { display: flex; flex-direction: column; font-size: 12px; line-height: 18px; color: var(--muted-foreground); }
+.token-radius-roles figcaption strong { color: var(--foreground); font-size: 14px; line-height: 20px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.token-radius-control { display: inline-flex; align-items: center; justify-content: center; width: 96px; background: var(--secondary); border: 1px solid var(--border); font-size: 12px; color: var(--muted-foreground); }
+.token-radius-card { display: block; width: 136px; height: 88px; background: var(--card); border: 1px solid var(--border); }
+.token-radius-pill { display: block; width: 64px; height: 28px; background: var(--secondary); border: 1px solid var(--border); }
+.token-round-forms { display: flex; flex-wrap: wrap; gap: 24px 40px; border-top: 1px solid var(--border); padding-top: 24px; margin-top: 28px; }
+.token-round-forms > div { display: flex; align-items: center; gap: 16px; font-size: 14px; }
+.token-round-forms .token-caption { display: block; margin: 4px 0 0; }
+.token-circle, .token-pill { display: block; flex-shrink: 0; height: 40px; border: 1px solid var(--foreground); background: var(--secondary); }
+.token-circle { width: 40px; }
+.token-pill { width: 80px; }
+.token-touch-example { display: flex; align-items: center; gap: 20px; margin-top: 28px; }
+.token-touch-area { flex-shrink: 0; display: grid; place-items: center; border: 1px dashed var(--foreground); }
+.token-touch-area span { display: block; background: var(--foreground); border-radius: 4px; }
+.token-touch-example p { margin: 0; font-size: 14px; line-height: 24px; }
+.token-touch-example .token-caption { display: block; margin: 4px 0 0; }
+.token-type-samples { margin: 24px 0; border-top: 1px solid var(--border); }
+.token-type-samples > div { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+.token-type-samples dt { font-size: 14px; line-height: 20px; color: var(--muted-foreground); }
+.token-type-samples dd { min-width: 0; margin: 0; }
+.token-type-samples dd p { margin: 0; overflow-wrap: anywhere; }
+.token-type-samples dd .token-caption { margin-top: 8px; }
+.tokens-content a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.token-related { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; margin-top: 24px; font-size: 14px; line-height: 24px; }
+.token-related > span { font-size: 12px; color: var(--muted-foreground); }
+.token-related > div { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.token-related a { text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 4px; }
+/* Size specification keeps its columns on phones; the unit lives in the caption. */
+.token-spec .kjun-table { table-layout: fixed; }
+.token-spec th:first-child, .token-spec td:first-child { width: 34%; }
+.token-spec th:last-child, .token-spec td:last-child { width: 18%; }
+#typography .token-spec th:nth-child(2) { width: auto; }
+#sizes .token-spec th:last-child, #sizes .token-spec td:last-child { width: auto; }
+#spacing .token-spec :is(th, td):first-child { width: 20%; }
+#spacing .token-spec :is(th, td):last-child, #responsive .token-spec :is(th, td):last-child { width: auto; }
+#responsive .token-spec :is(th, td):nth-child(2) { width: 18%; }
+.token-type-role { display: flex; flex-direction: column; }
+.token-type-role > span { color: var(--muted-foreground); font-size: 12px; line-height: 18px; }
+.token-type-sample { display: block; color: var(--foreground); overflow-wrap: anywhere; }
+.token-motion-scale { list-style: none; display: grid; gap: 14px; margin: 24px 0; padding: 0; }
+.token-motion-scale li { display: grid; grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1.2fr); align-items: center; gap: 4px 16px; font-size: 14px; line-height: 20px; }
+.token-motion-bar { display: block; height: 8px; border-radius: 999px; background: var(--foreground); }
+.token-motion-scale strong { font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; }
+.token-motion-scale code { grid-column: 3; font-size: 12px; color: var(--muted-foreground); }
+.token-index { margin: 0 0 40px; }
+.token-index ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); margin: 0; padding: 0; list-style: none; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+/* Cell rules are drawn per item so an unfilled last row stays blank. */
+.token-index li { display: flex; flex-direction: column; gap: 2px; margin: 0 -1px -1px 0; padding: 12px 14px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); font-size: 14px; line-height: 20px; }
+.token-index a { font-weight: 500; }
+.token-index span { color: var(--muted-foreground); font-size: 12px; line-height: 18px; }
+@media (max-width: 767px) {
+  .token-spec :is(th, td) { padding-inline: 6px; }
+  .token-motion-scale li { grid-template-columns: minmax(0, 1fr) 56px; }
+  .token-motion-scale li > span:not(.token-motion-bar), .token-motion-scale code { grid-column: 1 / -1; }
+  .token-type-samples > div { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .token-spacing-samples { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

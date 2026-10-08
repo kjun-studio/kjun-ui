@@ -1,0 +1,292 @@
+.kjun-market-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--_kjun-geometry-dimension-value16);
+  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  color: var(--_kjun-color-text);
+}
+.kjun-market-row[role="button"] {
+  cursor: pointer;
+}
+.kjun-market-row:hover {
+  background: var(--_kjun-color-hover);
+}
+.kjun-market-row-compact {
+  padding: var(--_kjun-geometry-dimension-value10) var(--_kjun-geometry-dimension-value16);
+}
+.kjun-market-identity {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+}
+.kjun-market-identity-text {
+  min-width: 0;
+  flex: 1;
+}
+.kjun-market-name {
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-geometry-dimension-value4);
+  font-size: var(--_kjun-type-label-size);
+  min-width: 0;
+  line-height: var(--_kjun-type-label-line);
+  font-weight: var(--_kjun-type-label-weight);
+  letter-spacing: var(--_kjun-type-label-tracking);
+}
+.kjun-market-name > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kjun-market-meta {
+  color: var(--_kjun-color-text-tertiary);
+  font-size: var(--_kjun-type-caption-size);
+  margin-top: var(--_kjun-geometry-dimension-value2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+.kjun-market-quote {
+  flex-shrink: 0;
+  margin-left: var(--_kjun-geometry-dimension-value12);
+  text-align: right;
+}
+/* List and table prices drop the flash pill inset so every value ends on its header's edge, like Vue. */
+.kjun-scope :is(.kjun-market-simple-list, .kjun-market-table-grid) .kjun-price-cell { padding: 0; border-radius: 0; }
+/* Vue rows draw the same divider as .kjun-market-row. */
+.mobile-simple-list .mobile-simple-list__row { border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border); }
+.kjun-market-price {
+  font-size: var(--_kjun-type-control-size);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+  letter-spacing: var(--_kjun-type-control-tracking);
+}
+.kjun-market-change {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--_kjun-geometry-dimension-value6);
+  margin-top: var(--_kjun-geometry-dimension-value2);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+.kjun-market-change .kjun-signed-value {
+  font-size: inherit;
+  font-weight: var(--_kjun-type-label-weight);
+}
+.kjun-market-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_kjun-geometry-dimension-value8);
+  padding: var(--_kjun-geometry-dimension-value12) var(--_kjun-geometry-dimension-value16);
+  color: var(--_kjun-color-text-tertiary);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+.kjun-market-table {
+  background: var(--_kjun-color-surface);
+  border-radius: var(--_kjun-geometry-radius-radius12);
+}
+.kjun-market-table[data-embedded="true"] {
+  background: transparent;
+  border-radius: 0;
+}
+.kjun-market-table-grid {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.kjun-market-table-grid th {
+  box-sizing: border-box;
+  height: var(--extension-market-table-header-height);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: var(--_kjun-geometry-dimension-value12);
+  background: var(--_kjun-color-surface);
+  font-size: var(--_kjun-type-meta-size);
+  color: var(--_kjun-color-text-tertiary);
+  white-space: nowrap;
+  text-align: left;
+  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  line-height: var(--_kjun-type-meta-line);
+  font-weight: var(--_kjun-type-meta-weight);
+  letter-spacing: var(--_kjun-type-meta-tracking);
+}
+.kjun-market-table-grid th button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--_kjun-geometry-dimension-value4);
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.kjun-market-table-grid td {
+  box-sizing: border-box;
+  height: var(--extension-market-table-row-height);
+  vertical-align: middle;
+  padding: var(--_kjun-geometry-dimension-value14) var(--_kjun-geometry-dimension-value12);
+  font-size: var(--_kjun-type-body-size);
+  color: var(--_kjun-color-text);
+  white-space: nowrap;
+  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-market-table-grid tr:hover {
+  background: var(--_kjun-color-hover);
+}
+.kjun-market-table-grid .kjun-market-actions {
+  width: var(--extension-market-table-actions-width);
+  padding: var(--_kjun-geometry-dimension-value12) var(--_kjun-geometry-dimension-value4);
+  text-align: center;
+}
+.kjun-market-actions svg {
+  vertical-align: middle;
+}
+/* Header marks occupy the same square as the row toggles below them. */
+.kjun-market-actions-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--extension-icon-toggle-sizes-xs);
+  vertical-align: middle;
+}
+.kjun-metric-pills {
+  display: flex;
+  gap: var(--_kjun-geometry-dimension-value8);
+  overflow-x: auto;
+  padding: var(--_kjun-geometry-dimension-value10) var(--_kjun-geometry-dimension-value16);
+  scrollbar-width: none;
+}
+.kjun-metric-pills button {
+  flex: 0 0 auto;
+  padding: var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-dimension-value16);
+  border: 0;
+  border-radius: var(--_kjun-geometry-radius-radius9999);
+  background: var(--_kjun-color-secondary);
+  color: var(--_kjun-color-text-secondary);
+  font-size: var(--_kjun-type-label-size);
+  white-space: nowrap;
+  cursor: pointer;
+  line-height: var(--_kjun-type-label-line);
+  font-weight: var(--_kjun-type-label-weight);
+  letter-spacing: var(--_kjun-type-label-tracking);
+}
+.kjun-metric-pills button[aria-pressed="true"] {
+  background: var(--_kjun-color-brand);
+  color: var(--_kjun-color-on-brand);
+  font-weight: var(--_kjun-type-number-lg-weight);
+}
+.kjun-metric-pills button:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+}
+.kjun-metric-pills button > span {
+  margin-left: var(--_kjun-geometry-dimension-value4);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+.kjun-market-metric {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--_kjun-geometry-dimension-value4);
+  font-size: var(--_kjun-type-control-size);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+  letter-spacing: var(--_kjun-type-control-tracking);
+}
+.kjun-market-metric-label {
+  font-size: var(--_kjun-type-caption-size);
+  color: var(--_kjun-color-text-tertiary);
+  margin-top: var(--_kjun-geometry-dimension-value2);
+  text-transform: uppercase;
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+@media (width < token(responsive.market)) {
+  .kjun-market-simple-list .kjun-market-row, .mobile-simple-list .mobile-simple-list__row {
+    min-height: var(--extension-market-list-minimum-height);
+    padding: var(--_kjun-geometry-dimension-value14) var(--_kjun-geometry-dimension-value20);
+  }
+  /* Vue renders the same list with mobile-simple-list classes; both get the same mobile type. */
+  :is(.kjun-market-simple-list .kjun-market-name, .mobile-simple-list .mobile-simple-list__name) {
+    font-size: var(--_kjun-type-input-size);
+    line-height: var(--_kjun-type-input-line);
+    font-weight: var(--_kjun-type-input-weight);
+    letter-spacing: var(--_kjun-type-input-tracking);
+  }
+  :is(.kjun-market-simple-list .kjun-market-name > span, .mobile-simple-list .mobile-simple-list__label) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+  .kjun-market-simple-list .kjun-market-quote, .mobile-simple-list .mobile-simple-list__quote {
+    min-width: var(--extension-market-list-mobile-quote-minimum-width);
+    max-width: 50%;
+  }
+  :is(.kjun-market-simple-list .kjun-market-price, .mobile-simple-list .mobile-simple-list__price) {
+    font-size: var(--_kjun-type-input-size);
+    overflow-wrap: anywhere;
+    line-height: var(--_kjun-type-input-line);
+    font-weight: var(--_kjun-type-input-weight);
+    letter-spacing: var(--_kjun-type-input-tracking);
+  }
+  .kjun-market-simple-list .kjun-market-meta,
+  .kjun-market-simple-list .kjun-market-change,
+  .mobile-simple-list .mobile-simple-list__meta,
+  .mobile-simple-list .mobile-simple-list__change {
+    font-size: var(--_kjun-type-body-size);
+    line-height: var(--_kjun-type-body-line);
+    font-weight: var(--_kjun-type-body-weight);
+    letter-spacing: var(--_kjun-type-body-tracking);
+  }
+  /* Vue's signed value carries text-xs; inherit the change line like Web .kjun-market-change .kjun-signed-value. */
+  .mobile-simple-list .mobile-simple-list__change .ds-signed-value {
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: var(--_kjun-type-label-weight);
+  }
+  .kjun-market-simple-list .kjun-market-footer {
+    padding-inline: var(--_kjun-geometry-dimension-value20);
+  }
+}
+
+.kjun-market-column-label { padding:var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-dimension-value16); text-align:right; font-size:var(--_kjun-type-caption-size); color:var(--_kjun-color-text-secondary); overflow-wrap:anywhere; line-height: var(--_kjun-type-caption-line); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking); }
+
+.kjun-market-table-grid .kjun-market-name {
+  font-size: var(--_kjun-type-body-size);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-market-skeleton-identity { display: grid; grid-template-rows: var(--_kjun-type-body-line) var(--_kjun-type-caption-line); gap: var(--_kjun-geometry-dimension-value2); align-items: center; }
+.kjun-market-skeleton-value { display: inline-block; max-width: 100%; vertical-align: middle; }
+
+/* Market tables fade their trailing edge while columns still overflow it, like the Native grid. */
+.kjun-table-scroll[data-fade-end] {
+  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
+  mask-image: linear-gradient(to right, currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
+}

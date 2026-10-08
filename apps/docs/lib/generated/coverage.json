@@ -1,0 +1,2479 @@
+{
+  "total": 77,
+  "summary": [
+    {
+      "platform": "vue2",
+      "provided": 77,
+      "counts": {
+        "supported": 77,
+        "preview": 0,
+        "review": 0,
+        "unsupported": 0
+      },
+      "runtimes": [
+        "chromium"
+      ],
+      "devicesNotRun": false
+    },
+    {
+      "platform": "react",
+      "provided": 77,
+      "counts": {
+        "supported": 77,
+        "preview": 0,
+        "review": 0,
+        "unsupported": 0
+      },
+      "runtimes": [
+        "chromium"
+      ],
+      "devicesNotRun": false
+    },
+    {
+      "platform": "native",
+      "provided": 77,
+      "counts": {
+        "supported": 0,
+        "preview": 77,
+        "review": 0,
+        "unsupported": 0
+      },
+      "runtimes": [
+        "react-native-web"
+      ],
+      "devicesNotRun": true
+    }
+  ],
+  "components": [
+    {
+      "name": "DsAccordion",
+      "title": "Accordion",
+      "docs": "/components/accordion",
+      "category": "layout",
+      "differences": "Vue provide/inject와 React·Native Context가 부모 규칙을 전달합니다. Native도 헤더 누름으로 열고 닫으며 웹의 DOM 키보드 처리는 별도입니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsAccordionItem",
+      "title": "AccordionItem",
+      "docs": "/components/accordion-item",
+      "category": "layout",
+      "differences": "Vue header 슬롯과 React·Native header prop으로 제목 영역을 바꿉니다. disabled는 이 항목의 토글을 막고 부모 multiple 규칙은 유지합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsAlert",
+      "title": "Alert",
+      "docs": "/components/alert",
+      "category": "feedback",
+      "differences": "Vue close 이벤트와 React·Native onClose로 내부 숨김 이후를 통지합니다. 다시 표시하려면 새 알림 인스턴스를 구성하세요. 외부 visible 제어 prop은 없습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsAnimatedNumber",
+      "title": "AnimatedNumber",
+      "docs": "/components/animated-number",
+      "category": "data-display",
+      "differences": "Vue는 formatters 주입도 사용할 수 있습니다. React는 className, Native는 style로 바깥 표시를 꾸밉니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsAvatar",
+      "title": "Avatar",
+      "docs": "/components/avatar",
+      "category": "data-display",
+      "differences": "Native는 source로 로컬 리소스도 받습니다. 접근성 이름은 전체 이름을 유지합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsBadge",
+      "title": "Badge",
+      "docs": "/components/badge",
+      "category": "data-display",
+      "differences": "Vue default 슬롯, React·Native children으로 문구를 전달합니다. React HTML 속성과 Native style은 각 기본 요소에 적용됩니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsBottomActionBar",
+      "title": "BottomActionBar",
+      "docs": "/components/bottom-action-bar",
+      "category": "layout",
+      "differences": "세 플랫폼 모두 일반 배치 흐름을 사용하며 키보드 위치 보정은 앱 화면이 담당합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsBottomNavigation",
+      "title": "BottomNavigation",
+      "docs": "/components/bottom-navigation",
+      "category": "navigation",
+      "differences": "웹의 href는 실제 링크입니다. Native는 이동 요청 콜백을 사용하며 Native Web에서는 href도 연결합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsBreadcrumb",
+      "title": "Breadcrumb",
+      "docs": "/components/breadcrumb",
+      "category": "navigation",
+      "differences": "Vue to는 URL 문자열이며 navigate 이벤트를 제공합니다. React는 renderLink, Native는 renderLink·onNavigate로 라우팅을 주입합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsButton",
+      "title": "Button",
+      "docs": "/components/button",
+      "category": "actions",
+      "differences": "Vue htmlType·click, React type·onClick, Native onPress를 사용합니다. Native에는 HTML 폼 제출 동작이 없습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsButtonGroup",
+      "title": "ButtonGroup",
+      "docs": "/components/button-group",
+      "category": "actions",
+      "differences": "Vue는 그룹 disabled만 적용하고 options의 disabled를 소비하지 않습니다. React·Native는 그룹과 옵션별 disabled를 모두 적용합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsCard",
+      "title": "Card",
+      "docs": "/components/card",
+      "category": "layout",
+      "differences": "Vue의 header·header-actions·footer 슬롯은 React·Native의 해당 콘텐츠 prop으로 구성합니다. 웹 CSS 길이와 Native style의 값 형식을 구분합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsChartSkeleton",
+      "title": "ChartSkeleton",
+      "docs": "/components/chart-skeleton",
+      "category": "feedback",
+      "differences": "세 플랫폼의 공개 조절기는 kind·height입니다. animated나 행 수를 직접 조절하는 prop은 없습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsCheckbox",
+      "title": "Checkbox",
+      "docs": "/components/checkbox",
+      "category": "inputs",
+      "differences": "Vue input·change, React·Native onValueChange·onChange로 다음 값을 받습니다. 중간 선택을 지정하는 공개 prop은 없습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsChip",
+      "title": "Chip",
+      "docs": "/components/chip",
+      "category": "actions",
+      "differences": "Native 삭제 버튼은 최소 44px 터치 영역을 확보합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsCollectionMark",
+      "title": "CollectionMark",
+      "docs": "/components/collection-mark",
+      "category": "finance",
+      "differences": "세 플랫폼 모두 kind·active·size를 받습니다. Vue 공통 formatters는 이 아이콘 표시에 직접 사용하지 않습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsCombobox",
+      "title": "Combobox",
+      "docs": "/components/combobox",
+      "category": "inputs",
+      "differences": "Vue input·change·search와 React·Native의 해당 콜백을 연결합니다. Native에서는 팝업 내부 입력으로 검색을 이어갑니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsCopyButton",
+      "title": "CopyButton",
+      "docs": "/components/copy-button",
+      "category": "actions",
+      "differences": "웹은 기본 클립보드 경로가 있으며 Native는 copyText 함수를 필수로 제공합니다. 복사 결과는 Vue 이벤트와 React·Native 콜백으로 받습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsDataState",
+      "title": "DataState",
+      "docs": "/components/data-state",
+      "category": "feedback",
+      "differences": "세 플랫폼 모두 생략한 resultKey와 명시적 null을 구분합니다. Vue error 슬롯은 error·retry를 받으며 React·Native errorContent는 인자를 받는 함수가 아닌 요소입니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsDatePicker",
+      "title": "DatePicker",
+      "docs": "/components/date-picker",
+      "category": "inputs",
+      "differences": "웹은 날짜 input의 브라우저 선택기를 사용합니다. 평소에는 YYYY. MM. DD. 형식으로 표시하지만, 키보드로 편집하는 동안에는 브라우저 언어의 날짜 형식(예: 영어 브라우저의 MM/DD/YYYY)이 보입니다. Native는 달력 팝업에서 선택하며 React의 HTML type은 구현에서 date로 고정됩니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsDeviation",
+      "title": "Deviation",
+      "docs": "/components/deviation",
+      "category": "finance",
+      "differences": "React·Native는 formatter 함수를 직접 받을 수 있고 Vue는 주입된 formatters와 기본 포맷을 사용합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsDrawer",
+      "title": "Drawer",
+      "docs": "/components/drawer",
+      "category": "layout",
+      "differences": "Vue value·input과 React·Native open·onOpenChange를 사용합니다. 웹은 레이어 포커스·스크롤을, Native는 Modal과 뒤로 가기 경로를 처리합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsDropdown",
+      "title": "Dropdown",
+      "docs": "/components/dropdown",
+      "category": "actions",
+      "differences": "Vue trigger 슬롯과 React·Native trigger prop을 사용합니다. 웹은 방향키·문자 탐색을 제공하고 Native는 Modal 메뉴를 사용합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsDropdownDivider",
+      "title": "DropdownDivider",
+      "docs": "/components/dropdown-divider",
+      "category": "actions",
+      "differences": "React·Native의 공개 전용 prop은 없습니다. Vue의 공통 formatters도 이 장식선에 직접 사용하지 않습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsDropdownItem",
+      "title": "DropdownItem",
+      "docs": "/components/dropdown-item",
+      "category": "actions",
+      "differences": "Vue click, React onClick, Native onPress를 사용합니다. React textValue는 텍스트 탐색에 사용하며 Native에는 이 prop이 없습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsEmpty",
+      "title": "Empty",
+      "docs": "/components/empty",
+      "category": "data-display",
+      "differences": "Vue는 슬롯, React·Native는 children으로 행동 영역을 구성합니다. Empty 자체에는 재시도 콜백이 없습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsErrorBoundary",
+      "title": "ErrorBoundary",
+      "docs": "/components/error-boundary",
+      "category": "feedback",
+      "differences": "Vue errorCaptured와 React·Native 오류 경계의 포착 범위는 각 프레임워크를 따릅니다. React·Native는 fallback·onError·onReset으로 대체 화면과 보고를 연결합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsExecutionStatusBadge",
+      "title": "ExecutionStatusBadge",
+      "docs": "/components/execution-status-badge",
+      "category": "finance",
+      "differences": "세 플랫폼에서 status·label·size로 표시를 구성합니다. 상태를 변경하는 이벤트는 없습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsExternalLink",
+      "title": "ExternalLink",
+      "docs": "/components/external-link",
+      "category": "navigation",
+      "differences": "웹은 안전한 HTTP(S) 링크를 열고 Native는 주입한 openUrl을 사용합니다. Native 연동 없이 실제 기기 URL 열림을 보장하지 않습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsFilterGroup",
+      "title": "FilterGroup",
+      "docs": "/components/filter-group",
+      "category": "inputs",
+      "differences": "Vue input·change와 React·Native onValueChange·onChange를 사용합니다. scroll은 필터의 가로 배치이며 데이터 요청과 무관합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsFormActions",
+      "title": "FormActions",
+      "docs": "/components/form-actions",
+      "category": "actions",
+      "differences": "Vue confirm·cancel 이벤트와 React·Native onConfirm·onCancel을 연결합니다. loading은 확인 버튼에 적용하고 취소 비활성은 cancelDisabled로 별도 설정합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsFormGroup",
+      "title": "FormGroup",
+      "docs": "/components/form-group",
+      "category": "inputs",
+      "differences": "Vue는 명시적 id로 label의 for를 연결합니다. React는 생략한 id를 생성하고 Native는 필드 맥락을 접근성 이름·설명에 사용합니다. 자세한 연결 규칙은 API에서 확인하세요.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsFormSkeleton",
+      "title": "FormSkeleton",
+      "docs": "/components/form-skeleton",
+      "category": "feedback",
+      "differences": "세 플랫폼 모두 같은 필드 구성 prop을 사용합니다. 자체 animated 조절기는 없으며 기본 Skeleton 표현을 사용합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsFreshness",
+      "title": "Freshness",
+      "docs": "/components/freshness",
+      "category": "finance",
+      "differences": "Vue는 주입된 시각 포맷을 사용하고 React·Native는 formatter를 받을 수 있습니다. 웹 title과 Native 접근성 설명의 표시 방식은 다릅니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsHeatmapCell",
+      "title": "HeatmapCell",
+      "docs": "/components/heatmap-cell",
+      "category": "data-display",
+      "differences": "Vue 슬롯과 React·Native children으로 셀 내용을 바꿉니다. Native color는 Native 색상 값 형식을 따릅니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsIcon",
+      "title": "Icon",
+      "docs": "/components/icon",
+      "category": "data-display",
+      "differences": "Vue size는 문자열, React size는 웹 길이, Native size는 숫자입니다. Native는 color 값을, 웹은 기본 SVG 스타일·현재 색상을 사용합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsIconToggle",
+      "title": "IconToggle",
+      "docs": "/components/icon-toggle",
+      "category": "actions",
+      "differences": "웹 activeColorClass·inactiveColorClass는 Native에 없습니다. Native는 activeColor·inactiveColor 값을 사용하며 누름 동작으로 토글을 요청합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsImage",
+      "title": "Image",
+      "docs": "/components/image",
+      "category": "data-display",
+      "differences": "웹은 lazy 로딩을 지원합니다. Native는 source로 로컬 이미지 리소스를 받을 수 있습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsInput",
+      "title": "Input",
+      "docs": "/components/input",
+      "category": "inputs",
+      "differences": "Vue input·readonly·html 입력 속성, React onValueChange·readOnly, Native onChangeText·TextInput 속성을 구분합니다. Native의 키보드 종류만으로 값 검증을 보장하지 않습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsKpiHero",
+      "title": "KpiHero",
+      "docs": "/components/kpi-hero",
+      "category": "data-display",
+      "differences": "Vue의 aside·secondary 슬롯은 React·Native의 aside·renderSecondary로 구성합니다. 숫자와 증감 포맷터는 별도로 연결합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsKpiRow",
+      "title": "KpiRow",
+      "docs": "/components/kpi-row",
+      "category": "data-display",
+      "differences": "Vue 슬롯·item-click 이벤트에 대응해 React·Native는 renderValue·onItemClick을 제공합니다. 모바일 요약은 mobileSummary로 선택합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsListRow",
+      "title": "ListRow",
+      "docs": "/components/list-row",
+      "category": "data-display",
+      "differences": "웹은 li와 링크·버튼, Native는 접근성 목록 항목과 Pressable을 사용합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsListSection",
+      "title": "ListSection",
+      "docs": "/components/list-section",
+      "category": "data-display",
+      "differences": "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsListSkeleton",
+      "title": "ListSkeleton",
+      "docs": "/components/list-skeleton",
+      "category": "feedback",
+      "differences": "세 플랫폼에서 목록 구성은 같은 prop을 사용합니다. 별도 animated prop은 없으므로 이를 로딩 on/off 조절기로 사용하지 마세요.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsMarketCards",
+      "title": "MarketCards",
+      "docs": "/components/market-cards",
+      "category": "finance",
+      "differences": "Vue는 슬롯과 이벤트로, React·Native는 renderList·formatMetric·onSort 등으로 주입합니다. React·Native에는 storage 연동 prop도 있습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsMarketListPanel",
+      "title": "MarketListPanel",
+      "docs": "/components/market-list-panel",
+      "category": "finance",
+      "differences": "Vue controls·default 슬롯과 React·Native controls·children으로 두 영역을 구성합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsMarketSimpleList",
+      "title": "MarketSimpleList",
+      "docs": "/components/market-simple-list",
+      "category": "finance",
+      "differences": "Vue 슬롯·이벤트에 대응해 React·Native는 행 렌더 함수와 onRowClick·onPageChange를 제공합니다. 통화·날짜 포맷은 소비자가 정합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsMarketTable",
+      "title": "MarketTable",
+      "docs": "/components/market-table",
+      "category": "finance",
+      "differences": "Vue의 셀 슬롯·이벤트와 React·Native의 renderCell·onToggleInterest·onToggleFavorite를 구분합니다. Native의 셀 스타일은 Native 요소를 사용합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsMarketTableSkeleton",
+      "title": "MarketTableSkeleton",
+      "docs": "/components/market-table-skeleton",
+      "category": "finance",
+      "differences": "웹의 alignClass·widthClass는 Native에 없습니다. Native는 columns 구성과 자체 크기 규칙으로 배치합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsMenuButton",
+      "title": "MenuButton",
+      "docs": "/components/menu-button",
+      "category": "actions",
+      "differences": "Vue default 슬롯과 React·Native children에 메뉴 항목을 넣습니다. Native 팝업은 Modal 기반이며 웹 도움말 배치와 기기 동작은 별도입니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsModal",
+      "title": "Modal",
+      "docs": "/components/modal",
+      "category": "layout",
+      "differences": "Vue value·input과 React·Native open·onOpenChange를 사용합니다. 웹은 포커스 제한·복귀, Native는 Modal·뒤로 가기를 처리하며 HTML 폼 제출은 별도로 연결합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsPagination",
+      "title": "Pagination",
+      "docs": "/components/pagination",
+      "category": "navigation",
+      "differences": "Vue 이벤트에 대응해 React·Native는 onPageChange·onChange·onPageSizeChange를 제공합니다. 정보 문구는 React·Native formatter 또는 Vue 포맷 설정을 사용합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsPopover",
+      "title": "Popover",
+      "docs": "/components/popover",
+      "category": "layout",
+      "differences": "Vue는 value·input으로, React·Native는 open·onOpenChange로 연결합니다. Native 팝업은 Modal 기반이며 웹 배치 속성의 동작 범위는 API 타입을 따릅니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsPriceCell",
+      "title": "PriceCell",
+      "docs": "/components/price-cell",
+      "category": "finance",
+      "differences": "웹 flashClass는 전달된 강조 클래스를 적용하며 자체 가격 변화 감지기가 아닙니다. Native에는 flashClass prop이 없습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsProgress",
+      "title": "Progress",
+      "docs": "/components/progress",
+      "category": "feedback",
+      "differences": "Vue는 showLabel이 켜져야 label도 표시합니다. React·Native는 label만으로도 제목을 표시할 수 있습니다. Vue sublabel 슬롯은 React·Native subLabel에 대응합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsProgressCell",
+      "title": "ProgressCell",
+      "docs": "/components/progress-cell",
+      "category": "data-display",
+      "differences": "세 플랫폼에서 color·customColor로 막대 색상을 선택합니다. Native의 customColor는 Native 색상 타입을 따릅니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsQuantityStepper",
+      "title": "QuantityStepper",
+      "docs": "/components/quantity-stepper",
+      "category": "inputs",
+      "differences": "웹 한글 입력 조합 중에는 확정하지 않습니다. Native 키보드와 입력 방식은 실제 기기에서 별도 검증해야 합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsRadio",
+      "title": "Radio",
+      "docs": "/components/radio",
+      "category": "inputs",
+      "differences": "Vue input·change, React·Native onValueChange·onChange로 선택값을 전달합니다. 웹 name과 Native 접근성 선택 상태의 연결은 플랫폼 구현을 따릅니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsRadioGroup",
+      "title": "RadioGroup",
+      "docs": "/components/radio-group",
+      "category": "inputs",
+      "differences": "그룹 disabled는 Vue에서만 제공합니다. React·Native는 options의 disabled 또는 자식 Radio의 disabled를 지정하세요.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsRangeSlider",
+      "title": "RangeSlider",
+      "docs": "/components/range-slider",
+      "category": "inputs",
+      "differences": "각 손잡이는 별도의 접근성 이름과 일정한 Tab 순서를 유지합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsRefreshButton",
+      "title": "RefreshButton",
+      "docs": "/components/refresh-button",
+      "category": "actions",
+      "differences": "Vue refresh 이벤트와 React·Native onRefresh를 사용합니다. 웹 button과 Native Pressable의 이벤트 객체를 같은 것으로 가정하지 마세요.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsScrollFade",
+      "title": "ScrollFade",
+      "docs": "/components/scroll-fade",
+      "category": "layout",
+      "differences": "웹은 가장자리 페이드를 계산하고 Native는 가로 ScrollView·스크롤 표시기를 사용합니다. 웹의 페이드와 같은 그림을 Native에 보장하지 않습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsSearchInput",
+      "title": "SearchInput",
+      "docs": "/components/search-input",
+      "category": "inputs",
+      "differences": "자동 완성 지연은 세 플랫폼 모두 300ms이며 debounce는 일반 입력 모드의 통지 지연입니다. Vue item 슬롯은 React·Native renderOption에 대응하며 itemKey는 Vue만 소비합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsSelect",
+      "title": "Select",
+      "docs": "/components/select",
+      "category": "inputs",
+      "differences": "Vue는 내부 열림과 open 입력을 동기화합니다. React·Native는 open을 주면 제어형이며 생략하면 내부 상태입니다. 선택 옵션 슬롯과 렌더 함수의 인자는 API에 설명합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsSignedValue",
+      "title": "SignedValue",
+      "docs": "/components/signed-value",
+      "category": "finance",
+      "differences": "세 플랫폼에서 format·isRaw·decimals의 단위 계약을 공유합니다. Vue 공통 formatters와 React·Native의 직접 formatter를 구분하세요.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsSkeleton",
+      "title": "Skeleton",
+      "docs": "/components/skeleton",
+      "category": "feedback",
+      "differences": "웹의 width·height는 CSS 길이, Native는 Native 크기 타입을 따릅니다. 크기를 지정할 때 선택 플랫폼의 API를 확인하세요.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsSlider",
+      "title": "Slider",
+      "docs": "/components/slider",
+      "category": "inputs",
+      "differences": "웹 키보드와 포인터, Native responder 및 접근성 증감 액션을 지원합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsSparkline",
+      "title": "Sparkline",
+      "docs": "/components/sparkline",
+      "category": "data-display",
+      "differences": "React·Native는 ariaLabel로 설명을 제공할 수 있습니다. Vue에서는 바깥 설명이나 접근성 속성을 함께 구성하세요. Native는 SVG 기반으로 표시합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsSpinner",
+      "title": "Spinner",
+      "docs": "/components/spinner",
+      "category": "feedback",
+      "differences": "세 플랫폼 모두 size·text를 사용합니다. 웹과 Native의 회전 구현은 다르며 동작 줄이기 환경을 따릅니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsSwitch",
+      "title": "Switch",
+      "docs": "/components/switch",
+      "category": "inputs",
+      "differences": "Vue input·change와 React·Native onValueChange·onChange를 사용합니다. 웹 체크 동작과 Native 누름 동작은 동일한 boolean 값을 전달합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsTable",
+      "title": "Table",
+      "docs": "/components/table",
+      "category": "data-display",
+      "differences": "Vue expandedRows=[]는 내부 확장 상태를 사용합니다. React·Native의 []는 모두 닫힌 제어 상태입니다. 동적 셀 슬롯과 렌더 함수의 데이터는 API에서 확인하세요.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsTabPane",
+      "title": "TabPane",
+      "docs": "/components/tab-pane",
+      "category": "navigation",
+      "differences": "Vue는 부모가 자식 메타데이터를 읽고 React·Native는 자식 props를 사용합니다. React·Native에는 badgeVariant가 추가로 있습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsTabs",
+      "title": "Tabs",
+      "docs": "/components/tabs",
+      "category": "navigation",
+      "differences": "Vue 슬롯·이벤트에 대응해 React·Native는 actions·children·onTabMenu를 제공합니다. 웹 키보드 이동과 Native 누름 조작을 구분합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsTextarea",
+      "title": "Textarea",
+      "docs": "/components/textarea",
+      "category": "inputs",
+      "differences": "Vue input·readonly, React onValueChange·readOnly, Native onChangeText·readOnly를 구분하세요. resize는 웹에서만 사용하고 Native rows는 초기 표시 높이에 반영합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsTimePicker",
+      "title": "TimePicker",
+      "docs": "/components/time-picker",
+      "category": "inputs",
+      "differences": "기존 Select를 조합합니다. 플랫폼별 Select 레이어 동작을 유지하며 시스템 시간 선택기는 사용하지 않습니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsTooltip",
+      "title": "Tooltip",
+      "docs": "/components/tooltip",
+      "category": "feedback",
+      "differences": "웹은 hover·focus, Native는 누름·포커스 경로로 표시합니다. Native에는 onPress·disabled가 있으며 기기 동작 검증은 별도입니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "DsTopNavigation",
+      "title": "TopNavigation",
+      "docs": "/components/top-navigation",
+      "category": "navigation",
+      "differences": "웹 header와 Native View는 모두 일반 배치 흐름에 공간을 차지합니다.",
+      "platforms": {
+        "vue2": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue2": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    }
+  ],
+  "services": [
+    {
+      "name": "KjunProvider",
+      "description": "색상·서체 적용 영역",
+      "docs": "/styling",
+      "linkLabel": "색상·서체 연결",
+      "platforms": [
+        "vue2",
+        "react",
+        "native"
+      ]
+    },
+    {
+      "name": "KjunFeedbackProvider",
+      "description": "Toast·Confirm·Prompt",
+      "docs": "/feedback",
+      "linkLabel": "피드백 서비스",
+      "platforms": [
+        "vue2",
+        "react",
+        "native"
+      ]
+    },
+    {
+      "name": "DsFormLayout",
+      "description": "FormGroup을 복수로 배치할 때 자식의 기본 margin 대신 gap을 적용하는 Native 레이아웃입니다.",
+      "docs": "/components/form-group",
+      "linkLabel": "FormGroup 사용 안내",
+      "platforms": [
+        "native"
+      ]
+    }
+  ],
+  "records": [
+    {
+      "id": "verification-v0.3.0",
+      "title": "v0.3.0 검증 기록",
+      "date": "2026-10-08",
+      "source": "docs/verification-v0.3.0.md",
+      "download": "/downloads/verification/verification-v0.3.0.md",
+      "componentCount": 77
+    }
+  ]
+}

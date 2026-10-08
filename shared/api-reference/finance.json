@@ -1,0 +1,57 @@
+{
+  "DsCollectionMark": {
+    "vue2": ["formatters", "kind", "active", "size"],
+    "react": ["kind", "active", "size"],
+    "native": ["kind", "active", "size"]
+  },
+  "DsDeviation": {
+    "vue2": ["formatters", "value", "variant", "signalThreshold", "decimals"],
+    "react": ["value", "variant", "signalThreshold", "decimals", "formatter"],
+    "native": ["value", "variant", "signalThreshold", "decimals", "formatter"]
+  },
+  "DsExecutionStatusBadge": {
+    "vue2": ["formatters", "status", "label", "size"],
+    "react": ["status", "label", "size"],
+    "native": ["status", "label", "size"]
+  },
+  "DsFreshness": {
+    "vue2": ["formatters", "stale", "source", "fetchedAt"],
+    "react": ["stale", "source", "fetchedAt", "formatter"],
+    "native": ["stale", "source", "fetchedAt", "formatter"]
+  },
+  "DsMarketCards": {
+    "vue2": ["queryKey", "resultKey", "loading", "error", "hasLoadedOnce", "formatters", "rows", "columns", "rowKey", "metricConfig", "excludeKeys", "storageNamespace", "interestKeys", "favoriteKeys", "sortKey", "sortOrder", "emitSortOnMount", "pagination", "currency", "primaryLabel", "subMeta", "changeMetricKey", "priceMetricKeys", "metricLoading", "emptyMessage", "emptySubMessage", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel"],
+    "react": ["columns", "metricConfig", "excludeKeys", "storageNamespace", "storage", "sortKey", "sortOrder", "emitSortOnMount", "currency", "changeMetricKey", "priceMetricKeys", "metricLoading", "formatMetric", "renderMetricPrefix", "renderList", "onSort", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"],
+    "native": ["columns", "metricConfig", "excludeKeys", "storageNamespace", "storage", "sortKey", "sortOrder", "emitSortOnMount", "currency", "changeMetricKey", "priceMetricKeys", "metricLoading", "formatMetric", "renderMetricPrefix", "renderList", "onSort", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"]
+  },
+  "DsMarketListPanel": {
+    "vue2": ["formatters"],
+    "react": ["controls", "children"],
+    "native": ["controls", "children"]
+  },
+  "DsMarketSimpleList": {
+    "vue2": ["queryKey", "resultKey", "loading", "error", "hasLoadedOnce", "formatters", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "priceValue", "changeValue", "changeLoading", "priceFormatter", "closingPrice", "emptyMessage", "emptySubMessage", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel"],
+    "react": ["priceValue", "changeValue", "changeLoading", "priceFormatter", "closingPrice", "renderPricePrefix", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"],
+    "native": ["priceValue", "changeValue", "changeLoading", "priceFormatter", "closingPrice", "renderPricePrefix", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"]
+  },
+  "DsMarketTable": {
+    "vue2": ["queryKey", "resultKey", "loading", "error", "hasLoadedOnce", "formatters", "rows", "columns", "rowKey", "cellLoading", "showActions", "interestKeys", "favoriteKeys", "togglingInterest", "togglingFavorite", "sortKey", "sortOrder", "pagination", "priceFormatter", "currency", "embedded", "emptyMessage", "emptySubMessage", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel"],
+    "react": ["columns", "cellLoading", "showActions", "togglingInterest", "togglingFavorite", "sortKey", "sortOrder", "priceFormatter", "currency", "embedded", "formatMetric", "renderCell", "onSort", "onToggleInterest", "onToggleFavorite", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"],
+    "native": ["columns", "cellLoading", "showActions", "togglingInterest", "togglingFavorite", "sortKey", "sortOrder", "priceFormatter", "currency", "embedded", "formatMetric", "renderCell", "onSort", "onToggleInterest", "onToggleFavorite", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"]
+  },
+  "DsMarketTableSkeleton": {
+    "vue2": ["formatters", "columns", "rows", "showActions", "alignClass", "widthClass"],
+    "react": ["columns", "rows", "showActions", "alignClass", "widthClass"],
+    "native": ["columns", "rows", "showActions"]
+  },
+  "DsPriceCell": {
+    "vue2": ["formatters", "value", "formatter", "stale", "showFreshness", "source", "fetchedAt", "flashClass", "fromPrevious"],
+    "react": ["value", "formatter", "flashClass", "fromPrevious", "showFreshness", "stale", "source", "fetchedAt"],
+    "native": ["value", "formatter", "fromPrevious", "showFreshness", "stale", "source", "fetchedAt"]
+  },
+  "DsSignedValue": {
+    "vue2": ["formatters", "value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "showFreshness", "formatter"],
+    "react": ["value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "showFreshness", "formatter"],
+    "native": ["value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "showFreshness", "formatter"]
+  }
+}

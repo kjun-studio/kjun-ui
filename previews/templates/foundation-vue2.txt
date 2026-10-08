@@ -1,0 +1,43 @@
+import { tokens as foundationTokens } from "@kjun/tokens";
+// Application recipe defaults, not public package tokens.
+const foundationRules = __KJUN_FOUNDATION_RULES__;
+const FoundationLayout = {
+  props: ["reading"],
+  data: () => ({ width: 0 }),
+  mounted() {
+    const measure = () => { this.width = this.$el.getBoundingClientRect().width; };
+    this._foundationObserver = new ResizeObserver(measure);
+    measure(); this._foundationObserver.observe(this.$el);
+  },
+  beforeDestroy() { this._foundationObserver.disconnect(); },
+  render(h) {
+    const rules = foundationRules, width = this.width;
+    const gutter = width < rules.mediumFrom ? rules.gutters.compact : width < rules.wideFrom ? rules.gutters.medium : rules.gutters.wide;
+    const gap = width < rules.mediumFrom ? rules.gaps.compact : rules.gaps.regular;
+    const two = !this.reading && width >= rules.columnsFrom;
+    return h("div", { attrs: { "data-testid": "foundation-area" }, style: { width: "100%", minWidth: 0 } }, [
+      h("div", { attrs: { "data-testid": "foundation-container" }, style: { boxSizing: "border-box", width: "100%", maxWidth: (this.reading ? rules.readingMax : rules.pageMax) + "px", margin: "0 auto", padding: gutter + "px" } }, [
+        h("p", { style: { margin: "0 0 16px", overflowWrap: "anywhere" } }, `가용 폭 ${Math.round(width)}px · ${two ? "2열" : "1열"} · 좌우 ${gutter}px`),
+        h("div", { style: { display: "flex", flexDirection: two ? "row" : "column", gap: gap + "px" } }, (this.$slots.default || []).map((child, index) =>
+          h("div", { key: index, attrs: { "data-testid": index ? "foundation-aside" : "foundation-main" }, style: { minWidth: 0, flex: two ? `${index ? 1 : 2} 1 0px` : undefined } }, [child]))),
+      ]),
+    ]);
+  },
+};
+const FoundationScreen = {
+  props: ["overlay", "height"],
+  data: () => ({ dockHeight: 0 }),
+  mounted() {
+    const measure = () => { this.dockHeight = this.$refs.dock.getBoundingClientRect().height; };
+    this._foundationObserver = new ResizeObserver(measure);
+    measure(); this._foundationObserver.observe(this.$refs.dock);
+  },
+  beforeDestroy() { this._foundationObserver.disconnect(); },
+  render(h) {
+    return h("div", { attrs: { "data-testid": "foundation-screen" }, style: { position: "relative", height: this.height + "px", display: "flex", flexDirection: "column", overflow: "hidden", background: "var(--kjun-surface)", outline: "1px solid var(--kjun-divider)" } }, [
+      h("div", { style: { flexShrink: 0 } }, this.$slots.header),
+      h("div", { attrs: { "data-testid": "foundation-scroll", tabindex: 0, role: "region", "aria-label": "화면 본문" }, style: { flex: 1, minHeight: 0, overflow: "auto", overscrollBehavior: "contain", padding: "16px 0", paddingBottom: (this.overlay ? this.dockHeight + foundationRules.dockGap : 16) + "px" } }, this.$slots.default),
+      h("div", { ref: "dock", attrs: { "data-testid": "foundation-dock" }, style: { flexShrink: 0, ...(this.overlay ? { position: "absolute", bottom: 0, left: 0, right: 0, zIndex: foundationTokens.layers.page.sticky } : {}), background: "var(--kjun-surface)" } }, this.$slots.dock),
+    ]);
+  },
+};

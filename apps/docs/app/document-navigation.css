@@ -1,0 +1,75 @@
+/* One measured offset for native anchors, delayed figures, and the sticky row. */
+html { scroll-padding-top: 0; }
+.doc-body { --document-header-height: 64px; --document-offset: 80px; }
+.document-shortcuts {
+  position: sticky;
+  top: var(--document-header-height);
+  z-index: 19;
+  margin-top: 28px;
+  padding: 6px 0;
+  background: var(--background);
+}
+.document-shortcuts-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  gap: 0 20px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.document-shortcuts a {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 36px;
+  height: auto;
+  padding: 8px 0;
+  font-size: var(--docs-type-small);
+  white-space: nowrap;
+  text-align: center;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--muted-foreground);
+  transition-property: color, border-color;
+}
+.document-shortcuts a:hover:not([aria-current]) {
+  color: var(--foreground);
+}
+.document-shortcuts a[aria-current] {
+  color: var(--foreground);
+  border-bottom-color: currentColor;
+  font-weight: 600;
+}
+.doc-body .doc-main .document-anchor,
+.doc-body .doc-main .design-execution { scroll-margin-top: var(--document-offset); }
+.document-anchor:focus { outline: none; }
+.document-anchor:focus-visible { outline: 2px solid var(--foreground); outline-offset: 6px; }
+.guide-topic-index { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.guide-topic-index section { border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-top: 24px; }
+.guide-topic-index h2 a { text-decoration: underline; text-underline-offset: 5px; }
+.guide-topic-index p { margin-top: 12px; color: var(--muted-foreground); }
+.guide-topic-index ul { padding-left: 20px; margin: 20px 0 0; display: grid; gap: 8px; font-size: var(--docs-type-small); }
+.guide-topic-index li a:hover { text-decoration: underline; }
+.guide-foundations { margin-top: 28px; }
+@media (prefers-reduced-motion: reduce) {
+  .document-shortcuts a { transition: none; }
+}
+@media (max-width: 767px), (pointer: coarse) {
+  .document-shortcuts a { min-height: 44px; }
+}
+@media (max-width: 767px) {
+  .doc-body { --document-header-height: 100px; --document-offset: 116px; }
+  .guide-topic-index { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .document-shortcuts { margin-top: 24px; }
+  .document-shortcuts-list {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scroll-padding-inline: 4px;
+    padding-inline: 4px;
+  }
+  .document-shortcuts a { flex: 0 0 auto; }
+  .document-shortcuts a:focus-visible { outline-offset: -2px; }
+  .breadcrumbs { flex-wrap: wrap; gap: 6px; min-width: 0; }
+}

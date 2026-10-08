@@ -1,0 +1,62 @@
+{
+  "DsCheckbox": {
+    "vue2": ["formatters", "value", "val", "label", "disabled", "size"],
+    "react": ["value", "val", "label", "ariaLabel", "disabled", "size", "children", "onValueChange", "onChange"],
+    "native": ["value", "val", "label", "ariaLabel", "disabled", "size", "children", "onValueChange", "onChange"]
+  },
+  "DsCombobox": {
+    "vue2": ["error", "ariaLabel", "formatters", "value", "options", "placeholder", "labelKey", "valueKey", "filterFn", "size", "disabled", "clearable", "emptyText"],
+    "react": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "filterFn", "size", "disabled", "error", "clearable", "emptyText", "renderOption", "onValueChange", "onChange", "onSearch", "onClear"],
+    "native": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "filterFn", "size", "disabled", "error", "clearable", "emptyText", "renderOption", "onValueChange", "onChange", "onSearch", "onClear"]
+  },
+  "DsDatePicker": {
+    "vue2": ["error", "ariaLabel", "formatters", "value", "placeholder", "min", "max", "size", "disabled"],
+    "react": ["value", "size", "ariaLabel", "error", "onValueChange", "disabled", "name", "type", "autoFocus", "className", "id", "style", "children", "onChange", "onKeyDown", "onClick", "max", "min", "placeholder", "readOnly", "required"],
+    "native": ["value", "min", "max", "placeholder", "size", "disabled", "ariaLabel", "error", "onValueChange", "onChange"]
+  },
+  "DsFilterGroup": {
+    "vue2": ["formatters", "value", "options", "multiple", "size", "disabled", "scroll", "ariaLabel"],
+    "react": ["value", "multiple", "scroll", "onValueChange", "onChange", "size", "disabled", "ariaLabel", "options"],
+    "native": ["value", "multiple", "scroll", "onValueChange", "onChange", "disabled", "size", "ariaLabel", "options"]
+  },
+  "DsFormGroup": {
+    "vue2": ["formatters", "label", "id", "required", "error", "hint"],
+    "react": ["label", "id", "required", "error", "hint", "children"],
+    "native": ["label", "id", "required", "error", "hint", "children", "style"]
+  },
+  "DsInput": {
+    "vue2": ["error", "ariaLabel", "formatters", "value", "type", "placeholder", "size", "disabled", "readonly", "required", "errorMessage", "clearable", "prefixIcon", "suffixIcon", "min", "max", "step", "inputmode", "autocomplete"],
+    "react": ["size", "value", "error", "errorMessage", "clearable", "prefixIcon", "suffixIcon", "prefix", "suffix", "ariaLabel", "onClear", "onValueChange", "onEnter", "disabled", "name", "type", "autoFocus", "className", "id", "style", "children", "onChange", "onKeyDown", "onClick", "max", "min", "placeholder", "readOnly", "required"],
+    "native": ["value", "size", "error", "errorMessage", "disabled", "clearable", "prefixIcon", "suffixIcon", "prefix", "suffix", "ariaLabel", "onClear", "containerStyle", "children", "style", "id", "onPress", "autoFocus", "onChangeText", "placeholder", "readOnly"]
+  },
+  "DsRadio": {
+    "vue2": ["formatters", "value", "val", "label", "disabled", "name"],
+    "react": ["value", "val", "label", "disabled", "name", "ariaLabel", "children", "onValueChange", "onChange"],
+    "native": ["value", "val", "label", "disabled", "name", "ariaLabel", "children", "onValueChange", "onChange"]
+  },
+  "DsRadioGroup": {
+    "vue2": ["formatters", "disabled", "ariaLabel", "value", "options", "direction"],
+    "react": ["value", "options", "direction", "ariaLabel", "children", "onValueChange", "onChange"],
+    "native": ["value", "options", "direction", "ariaLabel", "children", "onValueChange", "onChange"]
+  },
+  "DsSearchInput": {
+    "vue2": ["error", "ariaLabel", "formatters", "value", "placeholder", "disabled", "clearable", "debounce", "size", "loadOptions", "itemKey", "labelField", "minChars", "emptyText", "errorText"],
+    "react": ["value", "placeholder", "ariaLabel", "disabled", "error", "clearable", "debounce", "size", "loadOptions", "itemKey", "labelField", "minChars", "emptyText", "errorText", "renderOption", "onValueChange", "onSelect", "onSearchError", "onEnter", "onClear"],
+    "native": ["value", "placeholder", "ariaLabel", "disabled", "error", "clearable", "debounce", "size", "loadOptions", "itemKey", "labelField", "minChars", "emptyText", "errorText", "renderOption", "onValueChange", "onSelect", "onSearchError", "onEnter", "onClear"]
+  },
+  "DsSelect": {
+    "vue2": ["error", "ariaLabel", "formatters", "value", "options", "placeholder", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple"],
+    "react": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "menuHeader", "renderOption", "renderSelected", "onValueChange", "onChange", "onOpenChange", "onSearch", "onClear"],
+    "native": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "menuHeader", "renderOption", "renderSelected", "onValueChange", "onChange", "onOpenChange", "onSearch", "onClear"]
+  },
+  "DsSwitch": {
+    "vue2": ["formatters", "value", "label", "disabled", "size", "ariaLabel"],
+    "react": ["value", "label", "ariaLabel", "disabled", "size", "children", "onValueChange", "onChange"],
+    "native": ["value", "label", "ariaLabel", "disabled", "size", "children", "onValueChange", "onChange"]
+  },
+  "DsTextarea": {
+    "vue2": ["error", "ariaLabel", "formatters", "size", "value", "placeholder", "rows", "disabled", "readonly", "resize"],
+    "react": ["value", "size", "error", "resize", "ariaLabel", "onValueChange", "disabled", "name", "autoFocus", "className", "id", "style", "children", "onChange", "onKeyDown", "onClick", "placeholder", "readOnly", "required", "rows"],
+    "native": ["size", "value", "error", "rows", "disabled", "readonly", "ariaLabel", "autoFocus", "onChange", "onChangeText", "onPress", "placeholder", "readOnly", "style", "children", "id"]
+  }
+}

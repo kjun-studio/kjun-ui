@@ -1,0 +1,63 @@
+/* Document headings are authored by the docs app, outside package internals. */
+.doc-main > .page-intro h1 { font-weight: 600; }
+.doc-main section > h2,
+.overview-section-heading > h2 {
+  font-size: var(--docs-type-heading);
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -.025em;
+  margin-bottom: 16px;
+}
+.doc-main > section > h3,
+.doc-main > .foundation-document > section > h3,
+.doc-main .api-reference > div > h3,
+.doc-main .api-ownership > h3,
+.doc-main .anatomy-figure > figcaption > h3,
+.doc-main > .related-design-guides > h3 {
+  font-size: var(--docs-type-lead);
+  line-height: 28px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.doc-main .api-reference > div > h4,
+.doc-main .api-reference > div > div > h4,
+.doc-main .accessibility-item-heading > h3 {
+  font-size: var(--docs-type-body);
+  line-height: 24px;
+  font-weight: 600;
+}
+.doc-main .visual-usage-advice .usage-guides h3 { font-weight: 600; }
+.example-settings { border-top: 1px solid var(--border); }
+.example-settings > .example-settings-trigger {
+  width: 100%;
+  justify-content: space-between;
+  padding-inline: 20px;
+  border-radius: 0;
+  min-height: 48px;
+}
+.usage-source .preview-caption {
+  padding: 12px 20px;
+  font-size: var(--docs-type-small);
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+.usage-source .code-header { justify-content: space-between; }
+.detail-comparisons { gap: 24px; margin-block: 20px 32px; }
+.detail-comparisons[data-layout='wide'] { grid-template-columns: minmax(0, 1fr); }
+.detail-comparisons[data-layout='compact'] { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+.guide-example[data-mode='comparison'] .guide-example-content > header { padding: 0 0 8px; border: 0; }
+.guide-example[data-mode='comparison'] h4 { font-size: var(--docs-type-small); line-height: 22px; font-weight: 600; }
+.guide-example[data-mode='comparison'] .guide-running > button { margin-top: 8px; }
+.guide-example[data-mode='comparison'] .guide-example-placeholder { min-height: 80px; justify-content: flex-start; padding-inline: 0; }
+.doc-main #states > .guide-note { border: 0; padding: 0; margin: 12px 0 24px; }
+.doc-main #anatomy .anatomy-figure { padding: 0; margin: 20px 0 28px; border: 0; border-radius: 0; }
+.doc-main #anatomy .anatomy-graphic { max-width: min(100%, 420px); margin: 12px 0; }
+.doc-main #anatomy .guide-case-actions { padding: 8px 0; }
+.doc-main #anatomy .anatomy-parts { margin-top: 16px; }
+.related-design-guides { margin-top: 32px; }
+.related-design-guides .design-detail { margin-top: 0; padding: 10px 0; }
+.related-design-guides .design-detail a { font-size: var(--docs-type-small); line-height: 24px; text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 600px) {
+  .example-settings > .example-settings-trigger { padding-inline: 12px; }
+  .detail-comparisons { gap: 20px; }
+}

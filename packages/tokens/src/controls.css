@@ -1,0 +1,500 @@
+.kjun-scope textarea,
+.kjun-scope select {
+  font-family: inherit;
+}
+.kjun-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  /* Cancel the hidden 1px box; this is positioning, not layout spacing. */
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.kjun-scope .ds-choice[data-focus-visible] .ds-choice-control,
+.kjun-scope .ds-choice[data-focus-visible] .ds-switch {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-choice-offset);
+}
+.kjun-scope .ds-switch {
+  border: 0;
+}
+.kjun-textarea {
+  line-height: var(--_kjun-type-input-line);
+
+}
+.kjun-button-group {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  padding: var(--_kjun-geometry-button-group-padding-md);
+  min-width: 0;
+  max-width: 100%;
+  border-radius: var(--_kjun-geometry-button-group-radii-md);
+  background: var(--_kjun-color-secondary);
+  overflow-x: auto;
+}
+.kjun-button-group button {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_kjun-geometry-dimension-value6);
+  flex-shrink: 0;
+  border: 0;
+  border-radius: var(--_kjun-geometry-button-group-item-radii-md);
+  background: transparent;
+  color: var(--_kjun-color-text-secondary);
+  font-weight: var(--_kjun-type-label-weight);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--motion-indicator) var(--ease-out);
+}
+.kjun-button-group button[aria-pressed="true"] {
+  background: var(--_kjun-color-surface);
+  color: var(--_kjun-color-text);
+  font-weight: var(--_kjun-type-control-weight);
+}
+.kjun-button-group[data-indicator] button[aria-pressed="true"] { background: transparent; }
+.kjun-button-group-indicator {
+  position: absolute;
+  left: 0;
+  pointer-events: none;
+  border-radius: var(--_kjun-geometry-button-group-item-radii-md);
+  background: var(--_kjun-color-surface);
+}
+.kjun-button-group-indicator[data-animate="true"] {
+  transition: transform var(--motion-indicator) var(--ease-out), width var(--motion-indicator) var(--ease-out);
+}
+.kjun-button-group-label { display: inline-grid; }
+.kjun-button-group-label > span { grid-area: 1 / 1; }
+.kjun-button-group-label > span:first-child { visibility: hidden; font-weight: var(--_kjun-type-control-weight); }
+@media (prefers-reduced-motion: reduce) {
+  .kjun-button-group-indicator[data-animate="true"], .kjun-button-group button { transition: none; }
+}
+.kjun-button-group button:hover:not(:disabled):not([aria-pressed="true"]) {
+  background: var(--_kjun-color-hover);
+}
+.kjun-button-group button:disabled {
+  opacity: var(--_kjun-state-opacity-disabled);
+  cursor: not-allowed;
+}
+/* Narrow groups scroll; the clipped edge fades so a cut option reads as more content. Vue keeps its ds- root class. */
+:is(.kjun-button-group, .ds-button-group) { scrollbar-width: none; }
+:is(.kjun-button-group, .ds-button-group)[data-overflow="end"] {
+  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
+  mask-image: linear-gradient(to right, currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
+}
+:is(.kjun-button-group, .ds-button-group)[data-overflow="start"] {
+  -webkit-mask-image: linear-gradient(to right, transparent, currentColor var(--extension-scroll-fade-width));
+  mask-image: linear-gradient(to right, transparent, currentColor var(--extension-scroll-fade-width));
+}
+:is(.kjun-button-group, .ds-button-group)[data-overflow="both"] {
+  -webkit-mask-image: linear-gradient(to right, transparent, currentColor var(--extension-scroll-fade-width), currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
+  mask-image: linear-gradient(to right, transparent, currentColor var(--extension-scroll-fade-width), currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
+}
+.kjun-filter-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--_kjun-geometry-dimension-value8);
+  min-width: 0;
+  max-width: 100%;
+}
+.kjun-filter-group[data-scroll="true"] {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.kjun-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--_kjun-geometry-button-radii-md);
+  background: transparent;
+  cursor: pointer;
+}
+.kjun-filter-chip > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_kjun-geometry-dimension-value4);
+  width: 100%;
+  border-radius: inherit;
+  background: var(--_kjun-color-secondary);
+  color: var(--_kjun-color-text-secondary);
+  font-weight: var(--_kjun-type-label-weight);
+  white-space: nowrap;
+}
+.kjun-filter-chip[aria-pressed="true"] > span {
+  background: var(--_kjun-color-text);
+  color: var(--_kjun-color-inverse);
+  font-weight: var(--_kjun-type-control-weight);
+}
+.kjun-filter-chip:disabled {
+  opacity: var(--_kjun-state-opacity-disabled-strong);
+  cursor: not-allowed;
+}
+.kjun-filter-chip:hover:not(:disabled):not([aria-pressed="true"]) > span {
+  background: var(--_kjun-color-hover);
+}
+.kjun-filter-chip i {
+  width: var(--extension-selection-dot-size);
+  height: var(--extension-selection-dot-size);
+  border-radius: 50%;
+}
+.kjun-filter-label {
+  display: inline-grid;
+}
+.kjun-filter-label > span {
+  grid-area: 1/1;
+}
+.kjun-filter-label > span:first-child {
+  visibility: hidden;
+  font-weight: var(--_kjun-type-control-weight);
+}
+.kjun-button-group button:focus-visible,
+.kjun-filter-chip:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-inset-offset);
+}
+@media (width < token(responsive.selection)), (pointer: coarse) {
+  .kjun-button-group button {
+    min-width: var(--_kjun-geometry-native-minimum-touch-target);
+  }
+  .kjun-filter-chip {
+    min-height: var(--_kjun-geometry-native-minimum-touch-target);
+  }
+  .kjun-filter-chip > span {
+    min-height: var(--extension-selection-minimum-height);
+  }
+}
+.kjun-layer-trigger {
+  display: inline-block;
+  max-width: 100%;
+}
+/* An open action menu keeps its active paint after hover/focus leaves the trigger. */
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="secondary"]:not(:disabled) {
+  background: var(--_kjun-color-button-secondary-active);
+}
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="ghost"]:not(:disabled) {
+  background: var(--_kjun-color-active);
+  color: var(--_kjun-color-text);
+}
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="primary"]:not(:disabled) { background: var(--_kjun-color-brand-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="danger"]:not(:disabled) { background: var(--_kjun-color-danger-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="success"]:not(:disabled) { background: var(--_kjun-color-success-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="warning"]:not(:disabled) { background: var(--_kjun-color-warning-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="danger-ghost"]:not(:disabled) {
+  background: var(--_kjun-color-danger-bg);
+  color: var(--_kjun-color-danger-dark);
+}
+.kjun-floating {
+  max-width: calc(100vw - 2 * var(--extension-floating-viewport-inset));
+  overflow: auto;
+  border: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  border-radius: var(--extension-menu-radius);
+  background: var(--_kjun-color-surface);
+  color: var(--_kjun-color-text);
+  box-shadow: var(--_kjun-menu-elevation);
+  outline: none;
+}
+.kjun-content-popover {
+  width:var(--extension-popover-width); border:0; border-radius:var(--extension-popover-radius);
+  background:var(--_kjun-color-surface); color:var(--_kjun-color-text); box-shadow:var(--_kjun-popover-elevation);
+  font-size:var(--_kjun-type-body-size); line-height:var(--_kjun-type-body-line);
+  font-weight:var(--_kjun-type-body-weight); letter-spacing:var(--_kjun-type-body-tracking);
+}
+.kjun-popover-dialog { outline:none; }
+.kjun-popover-content { display:flex; flex-direction:column; gap:var(--extension-popover-gap); padding:var(--extension-popover-padding); min-width:0; word-break:keep-all; overflow-wrap:anywhere; }
+.kjun-popover-content[data-no-padding="true"] { padding:0; gap:0; }
+.kjun-tooltip {
+  box-shadow: var(--_kjun-tooltip-elevation);
+  max-width: var(--extension-tooltip-max-width);
+  padding: var(--extension-tooltip-padding-y) var(--extension-tooltip-padding-x);
+  border-radius: var(--_kjun-geometry-radius-radius6);
+  font-size: var(--_kjun-type-caption-size);
+  background: var(--_kjun-color-chart-tooltip-bg);
+  color: var(--_kjun-color-chart-tooltip-text);
+  overflow-wrap: anywhere;
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+.kjun-tooltip svg {
+  display: block;
+  color: var(--_kjun-color-chart-tooltip-bg);
+}
+.kjun-tooltip[data-placement="bottom"] svg {
+  transform: rotate(180deg);
+}
+.kjun-tooltip[data-placement="left"] svg {
+  transform: rotate(-90deg);
+}
+.kjun-tooltip[data-placement="right"] svg {
+  transform: rotate(90deg);
+}
+.kjun-dropdown {
+  min-width: var(--extension-menu-minimum-width);
+}
+.kjun-menu {
+  padding: var(--extension-menu-padding);
+  outline: none;
+}
+.kjun-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-geometry-dimension-value8);
+  min-height: var(--extension-menu-option-height);
+  padding: var(--extension-menu-option-padding-y) var(--extension-menu-option-padding-x);
+  border-radius: var(--extension-menu-option-radius);
+  font-size: var(--extension-menu-option-font-size); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
+  line-height: var(--extension-menu-option-line-height);
+  cursor: pointer;
+  outline: none;
+  color: var(--_kjun-color-text);
+}
+.kjun-menu-item > span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+/* Only the focused item is current; pointer hover moves focus, so a stale hover never paints a second item. */
+.kjun-menu-item[data-focused]:not([data-disabled]):not([data-kjun-selected]) {
+  background: var(--_kjun-color-hover);
+}
+.kjun-menu-item[data-variant="danger"][data-focused]:not([data-disabled]):not([data-kjun-selected]) {
+  background: var(--_kjun-color-danger-bg);
+}
+.kjun-menu-item[data-kjun-selected] {
+  background: var(--_kjun-color-selected-bg);
+}
+.kjun-menu-item[data-focus-visible]:not([data-disabled]) {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-inset-offset);
+}
+.kjun-menu-check { color: var(--_kjun-color-brand); }
+/* Leading icons sit a step below the regular-weight label; danger items keep their role color. */
+.kjun-menu-item:not([data-variant="danger"]) .kjun-menu-icon { color: var(--_kjun-color-text-secondary); }
+/* Once any item has a leading icon, icon-less labels start on the same line. */
+.kjun-menu:has(.kjun-menu-icon) .kjun-menu-item:not(:has(.kjun-menu-icon)) {
+  padding-left: calc(var(--extension-menu-option-padding-x) + var(--extension-menu-icon-size) + var(--_kjun-geometry-dimension-value8));
+}
+.kjun-menu-item[data-disabled] {
+  opacity: var(--_kjun-state-opacity-disabled);
+  cursor: not-allowed;
+}
+.kjun-menu-item[data-variant="danger"] {
+  color: var(--_kjun-color-danger);
+}
+.kjun-menu-divider {
+  height: var(--extension-menu-divider-height);
+  margin: var(--_kjun-geometry-dimension-value4) 0;
+  background: var(--_kjun-color-border);
+}
+.kjun-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+}
+/* The scrim fades on its own layer so the panel stays opaque while it travels. */
+.kjun-drawer-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--_kjun-color-overlay);
+}
+.kjun-drawer-overlay[data-position="right"] {
+  justify-content: flex-end;
+}
+.kjun-drawer-overlay[data-position="bottom"] {
+  align-items: flex-end;
+}
+.kjun-drawer {
+  position: relative;
+  max-width: 100%;
+  max-height: 100dvh;
+  background: var(--_kjun-color-surface);
+  color: var(--_kjun-color-text);
+  box-shadow: var(--_kjun-drawer-elevation-right);
+  border-radius: var(--extension-drawer-radius);
+}
+.kjun-drawer-overlay:is([data-position="right"], [data-position="left"])
+  .kjun-drawer {
+  height: 100dvh;
+}
+.kjun-drawer-dialog {
+  height: 100%;
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  outline: none;
+}
+.kjun-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--extension-drawer-padding-y) var(--extension-drawer-padding-x);
+  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+}
+.kjun-drawer-header h2 {
+  margin: 0;
+  font-size: var(--_kjun-type-section-title-size);
+  line-height: var(--_kjun-type-section-title-line);
+  font-weight: var(--_kjun-type-section-title-weight);
+  letter-spacing: var(--_kjun-type-section-title-tracking);
+}
+.kjun-drawer-body {
+  min-height: 0;
+  overflow: auto;
+  flex: 1;
+}
+.kjun-drawer-footer {
+  padding: var(--extension-drawer-padding-y) var(--extension-drawer-padding-x);
+  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+}
+.kjun-select-shell {
+  position: relative;
+  min-width: 0;
+}
+.kjun-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_kjun-geometry-dimension-value8);
+  text-align: left;
+  cursor: pointer;
+}
+.kjun-select-trigger > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kjun-select-clear {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 !important;
+}
+.kjun-placeholder {
+  color: var(--_kjun-color-input-placeholder);
+}
+.kjun-select-trigger:disabled .kjun-placeholder { color: var(--_kjun-color-text-disabled); }
+.kjun-select-panel {
+  border-radius: var(--_kjun-geometry-radius-radius12);
+  min-width: var(--extension-menu-minimum-width);
+  padding: var(--extension-menu-padding);
+}
+.kjun-select-search {
+  padding: var(--_kjun-geometry-dimension-value8);
+  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+}
+.kjun-listbox {
+  /* Options measure their offset from the list, so keyboard focus scrolls within it. */
+  position: relative;
+  max-height: var(--extension-menu-list-max-height);
+  overflow-y: auto;
+  outline: none;
+}
+/* Select reserves room for its header and actions; only options scroll. */
+.kjun-select-options-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.kjun-select-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.kjun-select-content > :not(.kjun-listbox) {
+  flex-shrink: 0;
+}
+.kjun-select-content > .kjun-listbox {
+  min-height: 0;
+  max-height: none;
+}
+.kjun-option {
+  border-radius: var(--_kjun-geometry-radius-radius8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_kjun-geometry-dimension-value8);
+  min-height: var(--extension-menu-option-height);
+  padding: var(--extension-menu-option-padding-y) var(--extension-menu-option-padding-x);
+  font-size: var(--extension-menu-option-font-size); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
+  line-height: var(--extension-menu-option-line-height);
+  cursor: pointer;
+  outline: none;
+  color: var(--_kjun-color-text);
+}
+.kjun-option[data-focused]:not([aria-disabled="true"]):not([aria-selected="true"]),
+.kjun-option:hover:not([aria-disabled="true"]):not([aria-selected="true"]) {
+  background: var(--_kjun-color-hover);
+}
+.kjun-option[aria-selected="true"] {
+  background: var(--_kjun-color-selected-bg);
+}
+.kjun-option[data-focus-visible] {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-inset-offset);
+}
+.kjun-option[aria-disabled="true"] {
+  opacity: var(--_kjun-state-opacity-disabled);
+  cursor: not-allowed;
+}
+.kjun-select-empty {
+  padding: var(--_kjun-geometry-dimension-value12);
+  text-align: center;
+  font-size: var(--_kjun-type-body-size);
+  color: var(--_kjun-color-text-tertiary);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+/* Like Vue, the indicator turns over while the list is open. */
+.kjun-select-indicator { transition: transform var(--motion-control) var(--ease-out); }
+.kjun-select-indicator[data-open] { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) { .kjun-select-indicator { transition: none; } }
+/* A failed search reads as an error, never as an empty result. */
+.kjun-select-empty[role="alert"] { color: var(--_kjun-color-danger); }
+.kjun-input.kjun-date-masked {
+  color: transparent;
+}
+/* Web draws the same calendar icon as Native; the browser indicator stays as a transparent hit area over it. */
+.kjun-date-picker .kjun-input-affix { pointer-events: none; }
+.kjun-date-picker input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: var(--_kjun-date-icon-inset);
+  width: var(--_kjun-date-icon-size);
+  height: auto;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.kjun-date-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: var(--_kjun-geometry-input-md-height);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.kjun-drawer-overlay[data-position="left"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-left); }
+.kjun-drawer-overlay[data-position="top"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-top); }
+.kjun-drawer-overlay[data-position="bottom"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-bottom); }
+.kjun-drawer-overlay[data-position="bottom"] .kjun-drawer { border-top-left-radius:var(--extension-drawer-bottom-radius); border-top-right-radius:var(--extension-drawer-bottom-radius); }

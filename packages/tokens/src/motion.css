@@ -1,0 +1,47 @@
+.kjun-tabs-track { position: relative; overflow-x: auto; min-width: 0; scrollbar-width: none; }
+.kjun-tabs-track .kjun-tabs-list { overflow: visible; width: max-content; }
+.kjun-vue-tabs .ds-tabs-scroller { position: relative; }
+.kjun-motion-label { display: inline-grid; }
+.kjun-motion-label::after { content: attr(data-label); font-weight: var(--_kjun-type-control-weight); letter-spacing: var(--_kjun-type-control-tracking); visibility: hidden; grid-area: 1 / 1; }
+.kjun-motion-label > span { grid-area: 1 / 1; }
+.kjun-tab-indicator { position: absolute; left: 0; pointer-events: none; border-radius: var(--extension-tabs-radius); background: var(--_kjun-color-active); }
+.kjun-tab-indicator[hidden] { display: none; }
+.kjun-tab-indicator[data-animate="true"] { transition: transform var(--motion-indicator) var(--ease-out), width var(--motion-indicator) var(--ease-out); }
+[data-variant="underline"] .kjun-tab-indicator { background: var(--_kjun-color-brand); border-radius: calc(var(--extension-tabs-indicator-height) / 2); }
+.kjun-tabs-track .kjun-tab, .kjun-vue-tabs .ds-tab { z-index: 1; background: transparent !important; }
+.kjun-tabs-track .kjun-tab::after, .kjun-vue-tabs .ds-tab::after { display: none; }
+.kjun-accordion-trigger svg { transition: transform var(--motion-collapse) var(--ease-out); }
+.kjun-motion-collapse { overflow: hidden; }
+.kjun-scope[data-motion] { animation: none; }
+/* At rest, none keeps descendant fixed-position feedback anchored to the viewport.
+   Opacity fades linearly and finishes before the panel so exits never stall and then cut. */
+.kjun-scope[data-motion="modal"], .kjun-scope[data-motion="drawer"]::before { opacity: 0; transition: opacity var(--motion-backdrop-exit) var(--ease-linear); }
+.kjun-scope[data-motion="modal"][data-motion-open="true"], .kjun-scope[data-motion="drawer"][data-motion-open="true"]::before { opacity: 1; transition: opacity var(--motion-backdrop) var(--ease-out); }
+.kjun-scope[data-motion="modal"] .kjun-modal { animation: none !important; transform: translateY(var(--_kjun-motion-distance-modal-exit)); transition: transform var(--motion-layer-exit) var(--ease-in); }
+.kjun-scope[data-motion="modal"][data-entering] .kjun-modal { transform: translateY(var(--_kjun-motion-distance-modal-enter)); }
+.kjun-scope[data-motion="modal"][data-motion-open="true"] .kjun-modal { transform: none; transition: transform var(--motion-layer-enter) var(--ease-out); }
+.kjun-scope[data-motion="drawer"] .kjun-drawer { transition: transform var(--motion-layer-exit) var(--ease-in); }
+.kjun-scope[data-motion="drawer"][data-position="left"] .kjun-drawer { transform: translateX(-100%); }
+.kjun-scope[data-motion="drawer"][data-position="right"] .kjun-drawer { transform: translateX(100%); }
+.kjun-scope[data-motion="drawer"][data-position="top"] .kjun-drawer { transform: translateY(-100%); }
+.kjun-scope[data-motion="drawer"][data-position="bottom"] .kjun-drawer { transform: translateY(100%); }
+/* Edge panels travel their full size, so they use the emphasized curve. Only the scrim fades; the panel stays opaque. */
+.kjun-scope[data-motion="drawer"][data-motion-open="true"] .kjun-drawer { transform: none; transition: transform var(--motion-layer-enter) var(--ease-emphasized); }
+.kjun-scope[data-motion="popup"] { --popup-x: 0px; --popup-y: calc(-1 * var(--_kjun-motion-distance-popup)); opacity: 0; translate: var(--popup-x) var(--popup-y); transition: opacity var(--motion-fade-exit) var(--ease-linear), translate var(--motion-popup-exit) var(--ease-in); }
+.kjun-scope[data-motion="popup"][data-placement="top"] { --popup-y: var(--_kjun-motion-distance-popup); }
+.kjun-scope[data-motion="popup"][data-placement="left"] { --popup-x: var(--_kjun-motion-distance-popup); --popup-y: 0px; }
+.kjun-scope[data-motion="popup"][data-placement="right"] { --popup-x: calc(-1 * var(--_kjun-motion-distance-popup)); --popup-y: 0px; }
+.kjun-scope[data-motion="popup"][data-motion-open="true"] { opacity: 1; translate: none; transition: opacity var(--motion-popup-enter) var(--ease-out), translate var(--motion-popup-enter) var(--ease-out); }
+.kjun-tooltip[data-entering] { animation: kjun-tooltip-in var(--motion-tooltip-enter) var(--ease-out); }
+.kjun-tooltip[data-exiting] { animation: kjun-tooltip-out var(--motion-tooltip-exit) var(--ease-linear); }
+@keyframes kjun-tooltip-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes kjun-tooltip-out { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .kjun-tab-indicator[data-animate="true"], .kjun-accordion-trigger svg { transition: none; }
+  .kjun-scope[data-motion], .kjun-scope[data-motion]::before, .kjun-scope[data-motion] .kjun-modal, .kjun-scope[data-motion] .kjun-drawer { transition: none !important; }
+  .kjun-tooltip[data-entering], .kjun-tooltip[data-exiting] { animation-duration: 0s; }
+}
+
+.kjun-toast-slot { flex-shrink: 0; }
+.kjun-toast-move { transition: transform var(--motion-toast-move) var(--ease-out); }
+@media (prefers-reduced-motion: reduce) { .kjun-toast-move { transition: none; } }

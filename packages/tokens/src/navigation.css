@@ -1,0 +1,271 @@
+.kjun-tabs {
+  --_kjun-tab-height:var(--extension-tabs-height);
+  --_kjun-tab-padding-x:var(--extension-tabs-padding-x);
+  min-width:0;
+}
+.kjun-tabs[data-density="compact"] {
+  --_kjun-tab-height:var(--extension-tabs-compact-height);
+  --_kjun-tab-padding-x:var(--extension-tabs-compact-padding-x);
+}
+.kjun-tabs[data-variant="pills"] { --_kjun-tab-padding-x:var(--extension-tabs-pills-padding-x); }
+.kjun-tabs-header { display:flex; align-items:center; min-width:0; }
+.kjun-tabs-list {
+  display:flex; align-items:center; gap:var(--extension-tabs-gap);
+  overflow-x:auto; scrollbar-width:none; min-width:0;
+}
+.kjun-tab {
+  position:relative; display:inline-flex; align-items:center; flex-shrink:0;
+  gap:var(--extension-tabs-item-gap); height:var(--_kjun-tab-height);
+  padding:0 var(--_kjun-tab-padding-x); border:0; border-radius:var(--extension-tabs-radius);
+  background:transparent; color:var(--_kjun-color-text-secondary);
+  font-size:var(--_kjun-type-control-size); line-height:var(--_kjun-type-control-line);
+  font-weight:var(--_kjun-type-label-weight); letter-spacing:var(--_kjun-type-control-tracking);
+  white-space:nowrap; cursor:pointer; outline:none; -webkit-tap-highlight-color:transparent;
+}
+.kjun-tabs[data-variant="underline"] .kjun-tab:first-child { padding-inline-start:0; }
+.kjun-tabs[data-variant="pills"] .kjun-tabs-list {
+  gap:var(--extension-tabs-pills-gap); padding-block:var(--extension-tabs-pills-padding-y);
+}
+.kjun-tab[aria-selected="true"] { color:var(--_kjun-color-text); font-weight:var(--_kjun-type-control-weight); }
+.kjun-tab[aria-disabled="true"], .kjun-tab:disabled { opacity:var(--_kjun-state-opacity-disabled); cursor:not-allowed; }
+.kjun-tab[data-focus-visible], .kjun-tab:focus-visible {
+  outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-inset-offset);
+}
+/* Underline tabs ring outside their label and indicator (the first tab has no start padding to clip into).
+   Their scroller (React track, Vue list) keeps room for the ring so overflow does not cut it. */
+.kjun-tabs[data-variant="underline"] :is(.kjun-tabs-track, .ds-tabs-scroller) {
+  --_kjun-tab-ring-room:calc(var(--_kjun-state-focus-width) + var(--_kjun-state-focus-offset));
+  padding:var(--_kjun-tab-ring-room); margin:calc(-1 * var(--_kjun-tab-ring-room));
+  scroll-padding-inline:var(--_kjun-tab-ring-room);
+}
+.kjun-tabs[data-variant="underline"] .kjun-tab:is([data-focus-visible], :focus-visible) { outline-offset:var(--_kjun-state-focus-offset); }
+.kjun-tab:hover:not([aria-disabled="true"]):not(:disabled) { color:var(--_kjun-color-text); }
+/* Pills answer hover with the hover surface, like ButtonGroup; motion.css keeps tab backgrounds transparent otherwise. */
+.kjun-tabs[data-variant="pills"] :is(.kjun-tabs-track, .ds-tabs-scroller) .kjun-tab:hover:not([aria-selected="true"]):not([aria-disabled="true"]):not(:disabled) {
+  background:var(--_kjun-color-hover) !important;
+}
+.kjun-tab-badge {
+  font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line);
+  font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking);
+  font-variant-numeric:tabular-nums; font-family:var(--font-numeric);
+}
+.kjun-tab-content { margin-top:var(--extension-tabs-content-gap); }
+.kjun-tab-panel { outline:none; }
+.kjun-accordion {
+  min-width:0; border-radius:var(--extension-accordion-radius); overflow:hidden;
+  background:var(--_kjun-color-surface);
+}
+.kjun-accordion[data-tone="muted"] { background:var(--_kjun-color-secondary); }
+.kjun-accordion-trigger {
+  width:100%; min-height:var(--extension-accordion-minimum-height);
+  display:flex; align-items:center; justify-content:space-between; gap:var(--extension-accordion-header-gap);
+  padding:var(--extension-accordion-header-padding-y) var(--extension-accordion-padding-x);
+  border:0; background:transparent; color:var(--_kjun-color-text); text-align:left;
+  font-size:var(--_kjun-type-control-size); line-height:var(--_kjun-type-control-line);
+  font-weight:var(--_kjun-type-control-weight); letter-spacing:var(--_kjun-type-control-tracking);
+  cursor:pointer;
+}
+.kjun-accordion-heading { flex:1; min-width:0; word-break:keep-all; overflow-wrap:anywhere; }
+.kjun-accordion-chevron { flex-shrink:0; color:var(--_kjun-color-text-secondary); }
+.kjun-accordion-trigger:disabled { opacity:var(--_kjun-state-opacity-disabled); cursor:not-allowed; }
+.kjun-accordion-trigger:hover:not(:disabled) { background:var(--_kjun-color-hover); }
+/* The accordion clips items to its rounded corners; while focused the trigger takes the same radius so the inset ring stays whole. */
+.kjun-accordion-trigger:focus-visible { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-inset-offset); border-radius:var(--extension-accordion-radius); }
+.kjun-accordion-panel {
+  padding:0 var(--extension-accordion-padding-x) var(--extension-accordion-content-padding-bottom);
+  color:var(--_kjun-color-text-secondary); word-break:keep-all; overflow-wrap:anywhere;
+  font-size:var(--_kjun-type-body-size); line-height:var(--_kjun-type-body-line);
+  font-weight:var(--_kjun-type-body-weight); letter-spacing:var(--_kjun-type-body-tracking);
+}
+.kjun-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--_kjun-geometry-dimension-value8);
+  font-size: var(--_kjun-type-body-size);
+  color: var(--_kjun-color-text-secondary);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-breadcrumb > svg {
+  color: var(--_kjun-color-text-tertiary);
+}
+.kjun-breadcrumb a {
+  color: inherit;
+  text-decoration: none;
+}
+/* Underlined as well as recolored: with a near-text brand color, hover would otherwise look like the current page. */
+.kjun-breadcrumb a:hover,
+.ds-breadcrumb-link:hover {
+  color: var(--_kjun-color-brand);
+  text-decoration: underline;
+  text-underline-offset: var(--_kjun-geometry-dimension-value2);
+}
+.kjun-breadcrumb [aria-current] {
+  color: var(--_kjun-color-text);
+  font-weight: var(--_kjun-type-label-weight);
+}
+.kjun-pagination {
+  display: flex;
+  flex-direction: column;
+  gap: var(--extension-pagination-gap);
+  padding: var(--extension-pagination-padding);
+  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  font-size: var(--_kjun-type-body-size);
+  color: var(--_kjun-color-text-secondary);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-pagination > div,
+.kjun-pagination-desktop,
+.kjun-pagination-mobile {
+  display: flex;
+  align-items: center;
+  gap: var(--extension-pagination-item-gap);
+}
+.kjun-pagination-desktop {
+  display: none;
+}
+.kjun-pagination button:not(.kjun-select-trigger) {
+  width: var(--extension-pagination-item-size);
+  height: var(--extension-pagination-item-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--extension-pagination-radius);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.kjun-pagination button:not(.kjun-select-trigger):hover:not(:disabled) {
+  background: var(--_kjun-color-hover);
+}
+.kjun-pagination button:not(.kjun-select-trigger):disabled {
+  opacity: var(--_kjun-state-opacity-disabled);
+  cursor: not-allowed;
+}
+.kjun-pagination button:not(.kjun-select-trigger)[aria-current] {
+  background: var(--_kjun-color-brand);
+  color: var(--_kjun-color-on-brand);
+}
+.kjun-pagination-controls { display:flex; align-items:center; flex-wrap:wrap; gap:var(--extension-pagination-item-gap); }
+.kjun-pagination-size { min-width:var(--extension-pagination-selector-minimum-width); flex-shrink:0; }
+.kjun-pagination-mobile { margin-inline-start:auto; flex-shrink:0; }
+.kjun-pagination-mobile > span {
+  padding: 0 var(--extension-pagination-label-padding-x);
+  white-space: nowrap;
+  color:var(--_kjun-color-text);
+  font-variant-numeric:tabular-nums;
+}
+.kjun-pagination-mobile strong { font-weight:var(--_kjun-type-control-weight); }
+@media (width >= token(responsive.pagination)) {
+  .kjun-pagination {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .kjun-pagination-mobile {
+    display: none;
+  }
+  .kjun-pagination-desktop {
+    display: flex;
+  }
+}
+/* Square icon controls follow the button scale one step down. */
+.kjun-icon-toggle {
+  --_kjun-icon-toggle-size: var(--extension-icon-toggle-sizes-md);
+  --_kjun-icon-toggle-radius: var(--extension-icon-toggle-radii-md);
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--_kjun-icon-toggle-size);
+  height: var(--_kjun-icon-toggle-size);
+  padding: 0;
+  border: 0;
+  border-radius: var(--_kjun-icon-toggle-radius);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color var(--motion-control) var(--ease-out);
+}
+.kjun-icon-toggle[data-size="xs"] { --_kjun-icon-toggle-size: var(--extension-icon-toggle-compact-size); --_kjun-icon-toggle-radius: var(--extension-icon-toggle-radii-xs); }
+.kjun-icon-toggle[data-size="sm"] { --_kjun-icon-toggle-size: var(--extension-icon-toggle-sizes-sm); --_kjun-icon-toggle-radius: var(--extension-icon-toggle-radii-sm); }
+.kjun-icon-toggle[data-size="lg"] { --_kjun-icon-toggle-size: var(--extension-icon-toggle-sizes-lg); --_kjun-icon-toggle-radius: var(--extension-icon-toggle-radii-lg); }
+.kjun-icon-toggle[data-size="xl"] { --_kjun-icon-toggle-size: var(--extension-icon-toggle-sizes-xl); --_kjun-icon-toggle-radius: var(--extension-icon-toggle-radii-xl); }
+.kjun-icon-toggle:hover:not(:disabled) {
+  background: var(--_kjun-color-hover);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kjun-icon-toggle { transition: none; }
+}
+/* Loading blocks presses through disabled but stays legible; only disabled dims. */
+.kjun-icon-toggle:disabled:not([aria-busy="true"]) {
+  opacity: var(--_kjun-state-opacity-disabled);
+  cursor: not-allowed;
+}
+.kjun-icon-toggle svg {
+  color: var(--_kjun-icon-toggle-color, currentColor);
+  transition: color var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out);
+}
+/* Like RefreshButton, an inactive icon darkens on hover; the selected color stays as set. */
+.kjun-icon-toggle[aria-pressed="false"]:hover:not(:disabled) svg {
+  color: var(--_kjun-color-text-secondary);
+}
+.kjun-icon-toggle:hover:not(:disabled) svg {
+  transform: scale(1.12);
+}
+.kjun-icon-toggle:active:not(:disabled) svg {
+  transform: scale(0.94);
+}
+.kjun-icon-toggle:focus-visible,
+.kjun-copy-button:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-offset);
+}
+.kjun-copy-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--_kjun-geometry-dimension-value6);
+  border: 0;
+  border-radius: var(--_kjun-geometry-radius-radius6);
+  background: transparent;
+  color: var(--_kjun-color-text-secondary);
+  cursor: pointer;
+}
+.kjun-copy-button:hover {
+  color: var(--_kjun-color-text);
+}
+.kjun-copy-button:hover:not([data-inline="true"]) {
+  background: var(--_kjun-color-hover);
+}
+.kjun-copy-button:disabled {
+  opacity: var(--_kjun-state-opacity-disabled);
+  cursor: not-allowed;
+}
+.kjun-external-link {
+  color: inherit;
+  text-decoration: none;
+}
+/* Text links show the new-window cue that the screen reader text announces, and underline on hover. */
+.kjun-external-link:hover {
+  text-decoration: underline;
+  text-underline-offset: var(--_kjun-geometry-dimension-value2);
+}
+.kjun-external-link-icon {
+  margin-inline-start: var(--_kjun-geometry-dimension-value4);
+  vertical-align: middle;
+}
+.kjun-scroll-fade {
+  overflow-x: auto;
+  min-width: 0;
+  max-width: 100%;
+  scrollbar-width: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kjun-icon-toggle svg {
+    transition: none;
+  }
+}

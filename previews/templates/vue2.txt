@@ -1,0 +1,68 @@
+import * as K from "@kjun/vue2";
+import "@kjun/vue2/styles.css";
+import "./kjun.css";
+/* MODULE */
+const Example = {
+  inject: ["kjunFeedback"],
+  /* VUE_PROPS */
+  data() { return { values: __KJUN_VALUES__ }; },
+  /* VUE_OBSERVE */
+  render(create) {
+    const settings = __KJUN_SETTINGS__;
+    const values = this.values;
+    const set = (key, value) => this.$set(this.values, key, value);
+    const feedback = this.kjunFeedback;
+    const rawH = (name, props = {}, children, slots = {}) => {
+      if (name === "ExampleFailure") return create({ name: "ExampleFailure", render(h) {
+        if (props.failed) throw new Error("예제에서 의도적으로 발생시킨 렌더링 오류입니다.");
+        return h(K.DsAlert, { props: { type: "success" } }, "정상 콘텐츠를 표시합니다.");
+      } });
+      if (name === "ScrollItems") return create("div", { style: { display: "flex", flexWrap: "nowrap", gap: "12px", width: "max-content" } }, children);
+      if (name === "Status") return create("p", { attrs: { role: "status", "aria-live": "polite", "aria-atomic": "true", tabindex: -1 }, style: { margin: 0 }, hook: { insert: vnode => props.ref?.(vnode.elm), postpatch: (_old, vnode) => props.ref?.(vnode.elm), destroy: () => props.ref?.(null) } }, children);
+    // Documentation-only layout: package components keep their own geometry.
+      if (name === "CaseScreen") return create("div", { attrs: { "data-testid": "design-screen" }, style: { height: "520px", position: "relative", display: "flex", flexDirection: "column", overflow: "hidden", border: "1px solid var(--kjun-divider)" } }, Array.isArray(children) ? children : [children]);
+      if (name === "CaseViewport") return create("div", { style: { position: "relative", display: "flex", flexDirection: "column", flex: 1, minHeight: 0, marginBottom: (props.inset || 0) + "px" } }, children);
+      if (name === "CaseScroll") return create("div", { attrs: { "data-testid": "design-scroll" }, hook: { insert: vnode => { vnode.elm.scrollTop = vnode.elm.scrollHeight; } }, style: { flex: 1, minHeight: 0, overflow: "auto", padding: "16px" } }, children);
+      if (name === "CaseFooter") return create("div", { attrs: { "data-testid": "design-footer" }, style: { background: "var(--kjun-surface)", flexShrink: 0, ...(props.overlay ? { position: "absolute", left: 0, right: 0, bottom: 0 } : {}) } }, Array.isArray(children) ? children : [children]);
+      if (name === "CaseKeyboard") return create("div", { attrs: { "data-testid": "design-keyboard" }, style: { position: "absolute", left: 0, right: 0, bottom: 0, height: "220px", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--kjun-secondary)", borderTop: "1px solid var(--kjun-divider)", zIndex: 1 } }, Array.isArray(children) ? children : [children]);
+      if (name === "CaseColumns") return create("div", { style: { display: "grid", gridTemplateColumns: `repeat(${props.columns}, minmax(0, 1fr))`, gap: "16px" } }, children);
+      if (name === "CaseCell" || name === "CasePart") return create("div", { attrs: { "data-testid": props.id ? "design-" + props.id : undefined }, style: { minWidth: 0, ...(props.inline ? { display: "inline-flex" } : {}), ...(props.scroll ? { overflowX: "auto" } : {}) } }, Array.isArray(children) ? children : [children]);
+      if (name === "FieldStack") return create("div", { class: "ds-form-layout", style: { display: "flex", flexDirection: "column", gap: "20px" } }, children);
+    // Scroll bodies keep lists full-bleed; Inset aligns other content with list text.
+    if (name === "Inset") return create("div", { style: { paddingInline: "16px" } }, Array.isArray(children) ? children : [children]);
+    if (["Screen", "Scroll", "Box"].includes(name)) return create("div", { style: name === "Screen" ? { height: (props.height || 520) + "px", display: "flex", flexDirection: "column", overflow: "hidden", border: "1px solid var(--kjun-divider)" } : name === "Scroll" ? { flex: 1, minHeight: 0, overflow: "auto", padding: "16px 0", display: "flex", flexDirection: "column", gap: "16px" } : { width: props.width + "px", maxWidth: "100%" } }, Array.isArray(children) ? children : [children]);
+    if (["Group", "Stack", "Text"].includes(name)) return create(name === "Text" ? "span" : "div", { class: "catalog-" + name.toLowerCase(), style: props.style }, children);
+      const events = { onChangeCommit: "change", onValueChange: "input", onOpenChange: name === "DsSelect" ? "update:open" : "input", onSelectionChange: "selection-change", onExpandedRowsChange: "update:expandedRows" };
+      if (name === "DsPagination") Object.assign(events, { onPageChange: "update:currentPage", onPageSizeChange: "update:page-size" });
+      const mapped = { ...props }, on = {};
+      for (const [key, value] of Object.entries(props)) if (/^on[A-Z]/.test(key)) {
+        on[events[key] || key.slice(2).replace(/^[A-Z]/, c => c.toLowerCase()).replace(/[A-Z]/g, c => "-" + c.toLowerCase())] = value;
+        delete mapped[key];
+      }
+      if (["DsModal", "DsDrawer", "DsPopover"].includes(name)) { mapped.value = mapped.open; delete mapped.open; }
+      if (name === "DsInput" && "readOnly" in mapped) { mapped.readonly = mapped.readOnly; delete mapped.readOnly; }
+      if (name === "DsIcon" && mapped.size != null) mapped.size = String(mapped.size);
+      const scopedSlots = {}, named = [];
+      for (const [key, value] of Object.entries(slots)) {
+        const slot = key.replace(/[A-Z]/g, c => "-" + c.toLowerCase());
+        if (typeof value === "function") scopedSlots[slot] = value;
+        else named.push(create("template", { slot }, Array.isArray(value) ? value : [value]));
+      }
+      return create(K[name], { key: props.key, props: mapped, on, scopedSlots }, [...(Array.isArray(children) ? children : children == null ? [] : [children]), ...named]);
+    };
+    const visual = JSON.parse(settings.visual || "{}");
+    const visualH = (name, props = {}, children, slots = {}) => {
+      const spec = visual[name];
+      return rawH(name, { ...props, ...spec?.props }, spec?.text ?? children, slots);
+    };
+    const h = visualH;
+    return create("section", { class: "catalog-example", attrs: { "data-component": "__KJUN_NAME__" } }, [
+      create("div", { class: "catalog-render" }, [renderExample(h, values, set, feedback, settings)]),
+      create("output", { attrs: { role: "status" } }, values.message || ""),
+    ]);
+  },
+};
+export default {
+  /* VUE_PROPS */
+  render(h) { return h(K.KjunProvider, [h(K.KjunFeedbackProvider, [h(Example, /* VUE_EXAMPLE_PROPS */)])]); },
+};

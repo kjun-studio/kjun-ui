@@ -1,0 +1,376 @@
+{
+  "DsListRow": {
+    "vue2": [
+      "title",
+      "description",
+      "href",
+      "disabled"
+    ],
+    "react": [
+      "title",
+      "description",
+      "leading",
+      "trailing",
+      "actions",
+      "href",
+      "disabled",
+      "onClick"
+    ],
+    "native": [
+      "title",
+      "description",
+      "leading",
+      "trailing",
+      "actions",
+      "href",
+      "disabled",
+      "onPress"
+    ]
+  },
+  "DsListSection": {
+    "vue2": [
+      "title",
+      "description",
+      "ariaLabel"
+    ],
+    "react": [
+      "title",
+      "description",
+      "actions",
+      "children",
+      "ariaLabel"
+    ],
+    "native": [
+      "title",
+      "description",
+      "actions",
+      "children",
+      "ariaLabel"
+    ]
+  },
+  "DsTopNavigation": {
+    "vue2": [
+      "title",
+      "description",
+      "safeAreaTop"
+    ],
+    "react": [
+      "title",
+      "description",
+      "leading",
+      "actions",
+      "safeAreaTop"
+    ],
+    "native": [
+      "title",
+      "description",
+      "leading",
+      "actions",
+      "safeAreaTop"
+    ]
+  },
+  "DsBottomNavigation": {
+    "vue2": [
+      "items",
+      "value",
+      "ariaLabel",
+      "safeAreaBottom",
+      "keyboardVisible",
+      "hideOnKeyboard"
+    ],
+    "react": [
+      "items",
+      "value",
+      "ariaLabel",
+      "safeAreaBottom",
+      "keyboardVisible",
+      "hideOnKeyboard",
+      "onNavigate"
+    ],
+    "native": [
+      "items",
+      "value",
+      "ariaLabel",
+      "safeAreaBottom",
+      "keyboardVisible",
+      "hideOnKeyboard",
+      "onNavigate"
+    ]
+  },
+  "DsBottomActionBar": {
+    "vue2": [
+      "description",
+      "safeAreaBottom",
+      "keyboardVisible",
+      "hideOnKeyboard"
+    ],
+    "react": [
+      "description",
+      "children",
+      "safeAreaBottom",
+      "keyboardVisible",
+      "hideOnKeyboard"
+    ],
+    "native": [
+      "description",
+      "children",
+      "safeAreaBottom",
+      "keyboardVisible",
+      "hideOnKeyboard"
+    ]
+  },
+  "DsImage": {
+    "vue2": [
+      "src",
+      "alt",
+      "decorative",
+      "aspectRatio",
+      "fit",
+      "lazy"
+    ],
+    "react": [
+      "src",
+      "alt",
+      "decorative",
+      "aspectRatio",
+      "fit",
+      "fallback",
+      "lazy",
+      "onLoad",
+      "onError"
+    ],
+    "native": [
+      "src",
+      "source",
+      "alt",
+      "decorative",
+      "aspectRatio",
+      "fit",
+      "fallback",
+      "onLoad",
+      "onError"
+    ]
+  },
+  "DsAvatar": {
+    "vue2": [
+      "src",
+      "name",
+      "alt",
+      "decorative",
+      "size",
+      "shape"
+    ],
+    "react": [
+      "src",
+      "name",
+      "alt",
+      "decorative",
+      "size",
+      "shape",
+      "fallback",
+      "onLoad",
+      "onError"
+    ],
+    "native": [
+      "src",
+      "source",
+      "name",
+      "alt",
+      "decorative",
+      "size",
+      "shape",
+      "fallback",
+      "onLoad",
+      "onError"
+    ]
+  },
+  "DsChip": {
+    "vue2": [
+      "label",
+      "icon",
+      "removable",
+      "disabled",
+      "size",
+      "removeLabel"
+    ],
+    "react": [
+      "label",
+      "icon",
+      "removable",
+      "disabled",
+      "size",
+      "removeLabel",
+      "onRemove"
+    ],
+    "native": [
+      "label",
+      "icon",
+      "removable",
+      "disabled",
+      "size",
+      "removeLabel",
+      "onRemove"
+    ]
+  },
+  "DsSlider": {
+    "vue2": [
+      "min",
+      "max",
+      "step",
+      "disabled",
+      "label",
+      "ariaLabel",
+      "value"
+    ],
+    "react": [
+      "value",
+      "min",
+      "max",
+      "step",
+      "disabled",
+      "label",
+      "ariaLabel",
+      "onValueChange",
+      "onChangeCommit"
+    ],
+    "native": [
+      "value",
+      "min",
+      "max",
+      "step",
+      "disabled",
+      "label",
+      "ariaLabel",
+      "onValueChange",
+      "onChangeCommit"
+    ]
+  },
+  "DsRangeSlider": {
+    "vue2": [
+      "min",
+      "max",
+      "step",
+      "disabled",
+      "label",
+      "ariaLabel",
+      "value",
+      "thumbLabels"
+    ],
+    "react": [
+      "value",
+      "thumbLabels",
+      "onValueChange",
+      "onChangeCommit",
+      "disabled",
+      "ariaLabel",
+      "max",
+      "min",
+      "step",
+      "label"
+    ],
+    "native": [
+      "value",
+      "thumbLabels",
+      "onValueChange",
+      "onChangeCommit",
+      "disabled",
+      "ariaLabel",
+      "min",
+      "max",
+      "step",
+      "label"
+    ]
+  },
+  "DsTimePicker": {
+    "vue2": [
+      "value",
+      "precision",
+      "min",
+      "max",
+      "minuteStep",
+      "secondStep",
+      "disabled",
+      "error",
+      "clearable",
+      "size",
+      "ariaLabel"
+    ],
+    "react": [
+      "value",
+      "precision",
+      "min",
+      "max",
+      "minuteStep",
+      "secondStep",
+      "disabled",
+      "error",
+      "clearable",
+      "size",
+      "ariaLabel",
+      "onValueChange",
+      "onChangeCommit"
+    ],
+    "native": [
+      "value",
+      "precision",
+      "min",
+      "max",
+      "minuteStep",
+      "secondStep",
+      "disabled",
+      "error",
+      "clearable",
+      "size",
+      "ariaLabel",
+      "onValueChange",
+      "onChangeCommit"
+    ]
+  },
+  "DsQuantityStepper": {
+    "vue2": [
+      "block",
+      "value",
+      "min",
+      "max",
+      "step",
+      "precision",
+      "disabled",
+      "error",
+      "size",
+      "id",
+      "ariaLabel"
+    ],
+    "react": [
+      "block",
+      "value",
+      "min",
+      "max",
+      "step",
+      "precision",
+      "disabled",
+      "error",
+      "size",
+      "id",
+      "ariaLabel",
+      "onValueChange",
+      "onChangeCommit",
+      "onInvalidInput"
+    ],
+    "native": [
+      "block",
+      "value",
+      "min",
+      "max",
+      "step",
+      "precision",
+      "disabled",
+      "error",
+      "size",
+      "id",
+      "ariaLabel",
+      "onValueChange",
+      "onChangeCommit",
+      "onInvalidInput"
+    ]
+  }
+}

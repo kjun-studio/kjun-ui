@@ -1,0 +1,400 @@
+.kjun-skeleton {
+  width: 100%;
+  /* 방어선: block 타입 내부 요소는 height prop 미지정 시 인라인 100px로 렌더된다.
+     호출부가 클래스(h-4 등)로만 래퍼 높이를 제한한 경우 내부가 행 밖으로 흘러넘쳐
+     이웃 행을 덮는 사고가 재발했으므로, 래퍼 밖으로는 절대 넘치지 않게 클립한다. */
+  overflow: hidden;
+}
+
+/* Base line */
+.kjun-skeleton-line {
+  height: var(--extension-skeleton-line-heights-md);
+  background: var(--skeleton);
+  border-radius: var(--extension-skeleton-line-radius);
+  margin-bottom: var(--extension-skeleton-gap);
+}
+
+.kjun-skeleton-line:last-child {
+  margin-bottom: 0;
+}
+
+.kjun-skeleton-line-sm {
+  height: var(--extension-skeleton-line-heights-sm);
+}
+
+.kjun-skeleton-line-lg {
+  height: var(--extension-skeleton-line-heights-lg);
+}
+
+/* Avatar */
+.kjun-skeleton-avatar {
+  background: var(--skeleton);
+  flex-shrink: 0;
+}
+
+.kjun-skeleton-avatar-sm {
+  width: var(--extension-skeleton-card-avatar-size);
+  height: var(--extension-skeleton-card-avatar-size);
+  border-radius: 50%;
+}
+
+/* Card */
+.kjun-skeleton-card {
+  padding: var(--extension-skeleton-padding);
+  border: var(--_kjun-border-default-width) solid var(--border-primary);
+  border-radius: var(--extension-skeleton-radius);
+  background: var(--bg-primary);
+}
+
+.kjun-skeleton-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--extension-skeleton-gap);
+  margin-bottom: var(--extension-skeleton-form-gap);
+}
+
+.kjun-skeleton-card-header-text {
+  flex: 1;
+}
+
+.kjun-skeleton-card-header-text .kjun-skeleton-line {
+  margin-bottom: var(--extension-skeleton-field-gap);
+}
+
+.kjun-skeleton-card-body .kjun-skeleton-line {
+  margin-bottom: var(--_kjun-geometry-dimension-value10);
+}
+
+/* Table */
+.kjun-skeleton-table {
+  border: var(--_kjun-border-default-width) solid var(--border-primary);
+  border-radius: var(--extension-skeleton-block-radius);
+  overflow: hidden;
+}
+
+.kjun-skeleton-table-header {
+  display: flex;
+  background: var(--bg-secondary);
+  border-bottom: var(--_kjun-border-default-width) solid var(--border-primary);
+}
+
+.kjun-skeleton-table-row {
+  display: flex;
+  border-bottom: var(--_kjun-border-default-width) solid var(--border-primary);
+}
+
+.kjun-skeleton-table-row:last-child {
+  border-bottom: none;
+}
+
+.kjun-skeleton-table-cell {
+  flex: 1;
+  padding: var(--_kjun-geometry-dimension-value12) var(--_kjun-geometry-dimension-value16);
+}
+
+.kjun-skeleton-table-cell .kjun-skeleton-line {
+  margin-bottom: 0;
+  height: var(--extension-skeleton-table-line-height);
+}
+
+/* Chart */
+.kjun-skeleton-chart {
+  display: flex;
+  flex-direction: column;
+  padding: var(--extension-skeleton-padding);
+  border: var(--_kjun-border-default-width) solid var(--border-primary);
+  border-radius: var(--extension-skeleton-radius);
+  background: var(--bg-primary);
+}
+
+.kjun-skeleton-chart-bars {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: var(--extension-skeleton-gap);
+  /* Bars stand on the axis line, like ChartSkeleton. */
+}
+
+.kjun-skeleton-chart-bar {
+  flex: 1;
+  max-width: var(--extension-skeleton-chart-bar-max-width);
+  background: var(--skeleton);
+  border-radius: var(--extension-skeleton-line-radius) var(--_kjun-geometry-radius-radius4) 0 0;
+}
+
+.kjun-skeleton-chart-axis {
+  height: var(--extension-skeleton-chart-axis-height);
+  background: var(--border-primary);
+}
+
+/* Stat Card */
+.kjun-skeleton-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--extension-skeleton-padding);
+  border: var(--_kjun-border-default-width) solid var(--border-primary);
+  border-radius: var(--extension-skeleton-radius);
+  background: var(--bg-primary);
+}
+
+.kjun-skeleton-stat-content {
+  flex: 1;
+}
+
+.kjun-skeleton-stat-content .kjun-skeleton-line {
+  margin-bottom: var(--extension-skeleton-field-gap);
+}
+
+.kjun-skeleton-stat-chart {
+  width: var(--extension-skeleton-stat-width);
+  height: var(--extension-skeleton-stat-height);
+}
+
+.kjun-skeleton-sparkline {
+  width: 100%;
+  height: 100%;
+  background: var(--skeleton);
+  border-radius: var(--extension-skeleton-line-radius);
+}
+
+/* Block */
+.kjun-skeleton-block {
+  background: var(--skeleton);
+  border-radius: var(--extension-skeleton-block-radius);
+}
+
+/* Animation */
+.kjun-skeleton-animated .kjun-skeleton-line,
+.kjun-skeleton-animated .kjun-skeleton-avatar,
+.kjun-skeleton-animated .kjun-skeleton-chart-bar,
+.kjun-skeleton-animated .kjun-skeleton-sparkline,
+.kjun-skeleton-animated .kjun-skeleton-block {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton) 25%,
+    var(--skeleton-shine) 50%,
+    var(--skeleton) 75%
+  );
+  background-size: 200% 100%;
+  animation: kjun-skeleton-shimmer var(--motion-shimmer) ease-in-out infinite;
+}
+
+@keyframes kjun-skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kjun-skeleton-animated * {
+    animation: none !important;
+  }
+}
+.kjun-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--extension-badge-gap);
+  border-radius: var(--extension-badge-radius);
+  font-weight: var(--_kjun-type-label-weight);
+  line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+/* The dot centres on the first line, so a wrapped label still starts beside it. */
+.kjun-badge-dot {
+  width: var(--extension-badge-dot-size);
+  height: var(--extension-badge-dot-size);
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: calc((1lh - var(--extension-badge-dot-size)) / 2);
+  border-radius: 50%;
+  background: currentColor;
+}
+.kjun-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--_kjun-geometry-dimension-value32) 0;
+  text-align: center;
+  color: var(--_kjun-color-text-secondary);
+  font-size: var(--_kjun-type-body-size);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-empty p {
+  margin: 0;
+  font-size: var(--extension-empty-title-size); font-weight: var(--_kjun-type-card-title-weight); letter-spacing: var(--_kjun-type-card-title-tracking);
+  line-height: var(--extension-empty-title-line-height);
+  color: var(--_kjun-color-text);
+}
+.kjun-empty > svg {
+  margin-bottom: var(--extension-empty-icon-gap);
+  color: var(--_kjun-color-text-secondary);
+}
+.kjun-empty small {
+  font-size: var(--extension-empty-description-size); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking);
+  line-height: var(--extension-empty-description-line-height);
+  color: var(--_kjun-color-text-secondary);
+  margin-top: var(--extension-empty-description-gap);
+}
+/* Centred copy keeps a readable line length in wide containers. */
+.kjun-empty p,
+.kjun-empty small {
+  max-width: var(--extension-empty-text-max-width);
+}
+.kjun-empty > div {
+  margin-top: var(--extension-empty-action-gap);
+}
+.kjun-spinner {
+  display: inline-flex;
+  align-items: center;
+  color: var(--_kjun-color-brand);
+}
+.kjun-spinner > span {
+  margin-left: var(--_kjun-geometry-dimension-value8);
+  font-size: var(--_kjun-type-body-size);
+  color: var(--_kjun-color-text-secondary);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--extension-alert-md-gap);
+  border: var(--_kjun-border-default-width) solid;
+  border-radius: var(--extension-alert-radius);
+  padding: var(--extension-alert-md-padding-y) var(--extension-alert-md-padding-x);
+  --_kjun-alert-line: var(--_kjun-type-control-line);
+  --_kjun-alert-close: var(--extension-alert-close-size);
+  --_kjun-alert-action-gap: var(--extension-alert-md-action-gap);
+}
+.kjun-alert[data-size="sm"] {
+  --_kjun-alert-line: var(--_kjun-type-control-small-line);
+  --_kjun-alert-close: var(--extension-alert-sm-close-size);
+  --_kjun-alert-action-gap: var(--extension-alert-sm-action-gap);
+  gap: var(--extension-alert-sm-gap);
+  padding: var(--extension-alert-sm-padding-y) var(--extension-alert-sm-padding-x);
+}
+.kjun-alert-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: var(--_kjun-alert-line);
+}
+.kjun-alert-content {
+  min-height: var(--_kjun-alert-line);
+  overflow-wrap: anywhere;
+  flex: 1;
+  min-width: 0;
+}
+.kjun-alert-title {
+  margin: 0;
+  font-size: var(--_kjun-type-control-size);
+  color: var(--_kjun-color-text);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+  letter-spacing: var(--_kjun-type-control-tracking);
+}
+.kjun-alert-description {
+  font-size: var(--_kjun-type-body-size);
+  color: var(--_kjun-color-text-secondary);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-alert-title + .kjun-alert-description { margin-top: var(--extension-alert-description-gap); }
+.kjun-alert[data-size="sm"] .kjun-alert-title {
+  font-size: var(--_kjun-type-control-small-size);
+  line-height: var(--_kjun-type-control-small-line);
+  font-weight: var(--_kjun-type-control-small-weight);
+  letter-spacing: var(--_kjun-type-control-small-tracking);
+}
+.kjun-alert[data-size="sm"] .kjun-alert-description {
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+.kjun-alert-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--_kjun-alert-close);
+  height: var(--_kjun-alert-close);
+  /* Center on the first line and pull the glyph onto the padding edge. */
+  margin-block: calc((var(--_kjun-alert-line) - var(--_kjun-alert-close)) / 2);
+  margin-inline-end: calc((var(--extension-alert-close-icon-size) - var(--_kjun-alert-close)) / 2);
+  border-radius: var(--extension-alert-close-radius);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--_kjun-color-text-tertiary);
+  cursor: pointer;
+}
+.kjun-alert-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--extension-alert-actions-gap);
+  margin-top: var(--_kjun-alert-action-gap);
+}
+/* Secondary actions sit on the surface role so they stay clean on tinted alerts. */
+.kjun-alert-actions .kjun-button[data-variant="secondary"] { background: var(--_kjun-color-surface); }
+.kjun-alert-actions .kjun-button[data-variant="secondary"]:hover:not(:disabled) { background: var(--_kjun-color-hover); }
+.kjun-alert-actions .kjun-button[data-variant="secondary"]:active:not(:disabled) { background: var(--_kjun-color-active); }
+@media (hover: none), (pointer: coarse) {
+  .kjun-alert-actions .kjun-button[data-variant="secondary"]:hover:not(:disabled):not(:active) { background: var(--_kjun-color-surface); }
+}
+.kjun-alert-close:hover { background: var(--_kjun-color-hover); color: var(--_kjun-color-text); }
+.kjun-alert-close:active { background: var(--_kjun-color-active); color: var(--_kjun-color-text); }
+.kjun-alert-close:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-offset);
+}
+.kjun-progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--_kjun-geometry-dimension-value8);
+  font-size: var(--_kjun-type-caption-size);
+  color: var(--_kjun-color-text-secondary);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+.kjun-progress-track {
+  background: var(--_kjun-color-secondary);
+  border-radius: var(--_kjun-geometry-radius-radius9999);
+  overflow: hidden;
+}
+.kjun-progress-track > div {
+  height: 100%;
+  border-radius: inherit;
+  transition: width var(--motion-progress) var(--ease-out);
+}
+.kjun-progress-sub {
+  font-size: var(--_kjun-type-caption-size);
+  margin-top: var(--_kjun-geometry-dimension-value4);
+  color: var(--_kjun-color-text-tertiary);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kjun-progress-track > div,
+  .kjun-card {
+    transition: none;
+  }
+}
+
+
+.kjun-form-skeleton > div > .kjun-skeleton:last-child .kjun-skeleton-block,
+.kjun-form-skeleton > div > .ds-skeleton:last-child .ds-skeleton-block { border-radius: var(--form-skeleton-radius); }

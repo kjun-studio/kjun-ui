@@ -1,0 +1,16 @@
+/* Numbered principle list, shared by the overview (grid) and the principles page (stack). */
+.principle-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border); }
+.principle-list > li { min-width: 0; }
+.principle-list .section-number { margin-bottom: 8px; }
+.principle-list h3 { font-size: var(--docs-type-lead); line-height: 28px; font-weight: 600; letter-spacing: -.02em; }
+.principle-list p { max-width: var(--docs-measure); margin-top: 8px; font-size: var(--docs-type-body); line-height: 28px; color: var(--foreground-secondary); word-break: keep-all; overflow-wrap: anywhere; }
+.principle-list--grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; padding-top: 24px; }
+.principle-list--stack > li { padding: 28px 0; border-bottom: 1px solid var(--border); }
+.principle-list--stack h3 { font-size: var(--docs-type-heading); line-height: 32px; letter-spacing: -.025em; }
+
+.principles-note { margin-top: 16px; font-size: var(--docs-type-small); line-height: 22px; color: var(--muted-foreground); word-break: keep-all; overflow-wrap: anywhere; }
+
+@media (max-width: 767px) {
+  .principle-list--grid { grid-template-columns: 1fr; gap: 24px; }
+  .principle-list--stack > li { padding: 24px 0; }
+}

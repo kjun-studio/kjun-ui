@@ -1,0 +1,69 @@
+/* Compound fields share input geometry; buttons retain their own size contract. */
+.kjun-quantity,.kjun-time-picker {
+  --_kjun-compound-height: var(--_kjun-geometry-input-md-height);
+  --_kjun-compound-font-size:var(--_kjun-geometry-input-md-font-size);
+  --_kjun-compound-line-height:var(--_kjun-geometry-input-md-line-height);
+  --_kjun-compound-radius: var(--_kjun-geometry-input-md-radius);
+  --_kjun-compound-padding: var(--_kjun-geometry-input-md-padding);
+  position:relative; max-width:100%; min-width:0;
+}
+:is(.kjun-quantity,.kjun-time-picker)[data-size="sm"] {
+  --_kjun-compound-height:var(--_kjun-geometry-input-sm-height);
+  --_kjun-compound-font-size:var(--_kjun-geometry-input-sm-font-size);
+  --_kjun-compound-line-height:var(--_kjun-geometry-input-sm-line-height);
+  --_kjun-compound-radius:var(--_kjun-geometry-input-sm-radius);
+  --_kjun-compound-padding:var(--_kjun-geometry-input-sm-padding);
+}
+:is(.kjun-quantity,.kjun-time-picker)[data-size="lg"] {
+  --_kjun-compound-height:var(--_kjun-geometry-input-lg-height);
+  --_kjun-compound-font-size:var(--_kjun-geometry-input-lg-font-size);
+  --_kjun-compound-line-height:var(--_kjun-geometry-input-lg-line-height);
+  --_kjun-compound-radius:var(--_kjun-geometry-input-lg-radius);
+  --_kjun-compound-padding:var(--_kjun-geometry-input-lg-padding);
+}
+.kjun-quantity { display:inline-flex; align-items:center; width:max-content; border-radius:var(--_kjun-compound-radius); background:var(--_kjun-color-input-bg); }
+/* One ring at a time: the whole field while typing in the value, the button's own ring when a button has focus. */
+.kjun-quantity:has(input:focus-visible) { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-offset); }
+:is(.kjun-quantity,.kjun-time-picker)[data-error="true"]::after {
+  content:""; position:absolute; inset:0; border-radius:inherit;
+  border:var(--_kjun-border-control-width) solid var(--_kjun-color-danger);
+  pointer-events:none; z-index:1;
+}
+.kjun-quantity > .kjun-button { flex-shrink:0; }
+/* Segments share one surface: inner edges stay square and only the outer corners follow the field radius,
+   so button and value hovers read as cells of the same control. Buttons set their radius inline. */
+.kjun-quantity > .kjun-button:first-child { border-radius:var(--_kjun-compound-radius) 0 0 var(--_kjun-compound-radius) !important; }
+.kjun-quantity > .kjun-button:last-child { border-radius:0 var(--_kjun-compound-radius) var(--_kjun-compound-radius) 0 !important; }
+.kjun-quantity[data-block="true"] { display:flex; width:100%; }
+.kjun-quantity input {
+  font:inherit; font-size:var(--_kjun-compound-font-size); color:var(--_kjun-color-text);
+  border-radius:0; min-width:0; width:var(--extension-compound-value-width); background:transparent;
+  border-color:transparent;
+  height:var(--_kjun-compound-height); padding:0 calc(var(--_kjun-compound-padding) - var(--_kjun-border-control-width)); text-align:center; font-variant-numeric:tabular-nums; line-height: var(--_kjun-compound-line-height); font-weight: var(--_kjun-type-input-weight); letter-spacing: var(--_kjun-type-input-tracking);
+}
+.kjun-quantity[data-block="true"] input { flex:1; }
+/* Outranks the shared .kjun-input:focus-visible:not(:disabled) ring; the field ring above replaces it. */
+.kjun-quantity .kjun-input:is(:focus,:focus-visible,[aria-invalid="true"]):not(:disabled) { outline:none; box-shadow:none; border-color:transparent; }
+.kjun-quantity input:is(:hover,:focus):not(:disabled) { background:var(--_kjun-color-hover); }
+
+.kjun-time-picker { display:flex; align-items:center; border-radius:var(--_kjun-compound-radius); background:var(--_kjun-color-input-bg); }
+.kjun-time-picker:focus-within,.kjun-time-picker:has([aria-expanded="true"]) { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-offset); }
+.kjun-time-segments { display:flex; align-items:center; flex:1; min-width:0; }
+/* Segments hug their values so "09 : 30" stays together; leftover width collects before the clear button. */
+.kjun-time-segment { flex:0 0 auto; min-width:var(--extension-time-picker-segment-minimum-width); }
+/* Same type as the segment values so "09 : 30" reads as one time. */
+.kjun-time-separator { flex:0 0 var(--extension-time-picker-separator-width); text-align:center; font-size:var(--_kjun-type-input-size); line-height:var(--_kjun-type-input-line); color:var(--_kjun-color-text-secondary); }
+/* Disabled separators fade with the values instead of outranking them. */
+.kjun-time-picker[data-disabled="true"] .kjun-time-separator { color:var(--_kjun-color-text-disabled); }
+.kjun-time-picker [data-time-segment] { background:transparent; border-color:transparent; text-align:center; font-variant-numeric:tabular-nums; gap:var(--extension-time-picker-segment-padding); padding-inline:var(--extension-time-picker-segment-padding); }
+/* The first value starts on the field text line, like Input and DatePicker values. */
+.kjun-time-segment:first-child [data-time-segment] { padding-inline-start:calc(var(--_kjun-compound-padding) - var(--_kjun-border-control-width)); }
+/* Two digits wide, so the placeholder and the value occupy the same slot. */
+.kjun-time-picker [data-time-segment] > span { flex:0 0 auto; min-width:2ch; text-align:center; }
+.kjun-time-picker [data-time-segment]:is(:hover,:focus-visible,[aria-expanded="true"]):not(:disabled) { background:var(--_kjun-color-hover); }
+/* Scoped like the Vue field ring it replaces (.kjun-scope .ds-field:focus-visible); the group ring above is the only outline. */
+.kjun-scope .kjun-time-picker [data-time-segment]:is(:focus,:focus-visible,[aria-invalid="true"]) { outline:none; border-color:transparent; box-shadow:none; }
+.kjun-time-clear { flex:0 0 var(--_kjun-geometry-native-minimum-touch-target); width:var(--_kjun-geometry-native-minimum-touch-target); padding:0; }
+@media (pointer:coarse) {
+  .kjun-time-picker [data-time-segment],.kjun-time-picker .kjun-time-clear { min-height:var(--_kjun-geometry-native-minimum-touch-target); }
+}

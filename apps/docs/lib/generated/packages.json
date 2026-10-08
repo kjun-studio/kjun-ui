@@ -1,0 +1,37 @@
+[
+  {
+    "name": "@kjun/icons",
+    "version": "0.3.0",
+    "file": "kjun-icons-0.3.0.tgz",
+    "bytes": 1456970,
+    "integrity": "sha512-uFVgyIL7Sb7ceV/4hEhDfCI9nRDepk+i7OLagNsxgrEWfieJamGebYxsCteF+dSiKmt1O/a+Zm8seQPo9at9XQ=="
+  },
+  {
+    "name": "@kjun/tokens",
+    "version": "0.3.0",
+    "file": "kjun-tokens-0.3.0.tgz",
+    "bytes": 95918,
+    "integrity": "sha512-2pUNjbXFbJIulSKiMhlL1egz2zwQ8LmP+fdNve2PJ1XulMfsZijooqqzFJXkUJ1eZjaZExkPoTGHEra+YM75rQ=="
+  },
+  {
+    "name": "@kjun/vue2",
+    "version": "0.3.0",
+    "file": "kjun-vue2-0.3.0.tgz",
+    "bytes": 251081,
+    "integrity": "sha512-k7xr33wfAeCMLy/Y+b2saOp2er2PdrTgDpqosw3Yjr2VPUHF4iR3AoZ31yYfh81HVnlZCjKkwjsPWyB/sQeXlw=="
+  },
+  {
+    "name": "@kjun/react",
+    "version": "0.3.0",
+    "file": "kjun-react-0.3.0.tgz",
+    "bytes": 213289,
+    "integrity": "sha512-IvVMiIkNuWlzYLdXxM1C8JnAEXHdGog7glm82sC34Cb9skROSMYkR+Av7teEv352Ck5rcTINt1ZsgHN6CnmpdQ=="
+  },
+  {
+    "name": "@kjun/native",
+    "version": "0.3.0",
+    "file": "kjun-native-0.3.0.tgz",
+    "bytes": 434461,
+    "integrity": "sha512-EgmtMmSVYdV1mZ+jw4Gl1x+SvHzA8Pb3H8WQjjTGEv32MGgxwqpTRB6HRJbmLFfcdmz0XM7s8DsvRxIBR24zSw=="
+  }
+]

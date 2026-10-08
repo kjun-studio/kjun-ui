@@ -1,0 +1,42 @@
+import { useLayoutEffect, useRef } from "react";
+import { tokens as foundationTokens } from "@kjun/tokens";
+// Application recipe defaults, not public package tokens.
+const foundationRules = __KJUN_FOUNDATION_RULES__;
+function useFoundationMeasure() {
+  const ref = useRef(null), [size, setSize] = useState({ width: 0, height: 0 });
+  useLayoutEffect(() => {
+    const node = ref.current;
+    const measure = () => {
+      const { width, height } = node.getBoundingClientRect();
+      setSize(previous => previous.width === width && previous.height === height ? previous : { width, height });
+    };
+    const observer = new ResizeObserver(measure);
+    measure(); observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+  return [ref, size];
+}
+function FoundationLayout({ reading, children }) {
+  const [ref, { width }] = useFoundationMeasure(), rules = foundationRules;
+  const gutter = width < rules.mediumFrom ? rules.gutters.compact : width < rules.wideFrom ? rules.gutters.medium : rules.gutters.wide;
+  const gap = width < rules.mediumFrom ? rules.gaps.compact : rules.gaps.regular;
+  const two = !reading && width >= rules.columnsFrom;
+  return <div ref={ref} data-testid="foundation-area" style={{ width: "100%", minWidth: 0 }}>
+    <div data-testid="foundation-container" style={{ boxSizing: "border-box", width: "100%", maxWidth: reading ? rules.readingMax : rules.pageMax, margin: "0 auto", padding: gutter }}>
+      <p style={{ margin: "0 0 16px", overflowWrap: "anywhere" }}>가용 폭 {Math.round(width)}px · {two ? "2열" : "1열"} · 좌우 {gutter}px</p>
+      <div style={{ display: "flex", flexDirection: two ? "row" : "column", gap }}>
+        {children.map((child, index) => <div key={index} data-testid={index ? "foundation-aside" : "foundation-main"} style={{ minWidth: 0, flex: two ? `${index ? 1 : 2} 1 0px` : undefined }}>{child}</div>)}
+      </div>
+    </div>
+  </div>;
+}
+function FoundationScreen({ overlay, height, header, dock, children }) {
+  const [dockRef, size] = useFoundationMeasure();
+  return <div data-testid="foundation-screen" style={{ position: "relative", height, display: "flex", flexDirection: "column", overflow: "hidden", background: "var(--kjun-surface)", outline: "1px solid var(--kjun-divider)" }}>
+    <div style={{ flexShrink: 0 }}>{header}</div>
+    <div data-testid="foundation-scroll" tabIndex={0} role="region" aria-label="화면 본문" style={{ flex: 1, minHeight: 0, overflow: "auto", overscrollBehavior: "contain", padding: "16px 0", paddingBottom: overlay ? size.height + foundationRules.dockGap : 16 }}>
+      {children}
+    </div>
+    <div ref={dockRef} data-testid="foundation-dock" style={{ flexShrink: 0, ...(overlay ? { position: "absolute", bottom: 0, left: 0, right: 0, zIndex: foundationTokens.layers.page.sticky } : {}), background: "var(--kjun-surface)" }}>{dock}</div>
+  </div>;
+}

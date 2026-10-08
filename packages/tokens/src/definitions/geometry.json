@@ -1,0 +1,275 @@
+{
+  "version": "0.3.0",
+  "basis": "KJUN",
+  "space": {
+    "inline": { "xs": { "$ref": "dimension.value4" }, "sm": { "$ref": "dimension.value8" }, "md": { "$ref": "dimension.value12" }, "lg": { "$ref": "dimension.value16" } },
+    "stack": { "sm": { "$ref": "dimension.value8" }, "md": { "$ref": "dimension.value16" }, "lg": { "$ref": "dimension.value24" } },
+    "inset": { "sm": { "$ref": "dimension.value12" }, "md": { "$ref": "dimension.value16" }, "lg": { "$ref": "dimension.value24" } },
+    "section": { "sm": { "$ref": "dimension.value32" }, "md": { "$ref": "dimension.value48" }, "lg": { "$ref": "dimension.value64" } }
+  },
+  "shape": {
+    "control": { "sm": { "$ref": "input.sm.radius" }, "md": { "$ref": "input.md.radius" }, "lg": { "$ref": "input.lg.radius" } },
+    "container": { "$ref": "card.radii.lg" },
+    "subtle": { "$ref": "radius.radius4" },
+    "pill": { "$ref": "radius.radius9999" }
+  },
+  "button": {
+    "heights": {
+      "xs": 24,
+      "sm": 32,
+      "md": 40,
+      "lg": 48,
+      "xl": 56
+    },
+    "fontSizes": {
+      "xs": { "$ref": "button.typography.xs.fontSizePx" },
+      "sm": { "$ref": "button.typography.sm.fontSizePx" },
+      "md": { "$ref": "button.typography.md.fontSizePx" },
+      "lg": { "$ref": "button.typography.lg.fontSizePx" },
+      "xl": { "$ref": "button.typography.xl.fontSizePx" }
+    },
+    "iconSizes": {
+      "xs": 14,
+      "sm": 16,
+      "md": 16,
+      "lg": 18,
+      "xl": 20
+    },
+    "paddingX": {
+      "xs": { "$ref": "dimension.value8" },
+      "sm": { "$ref": "dimension.value12" },
+      "md": { "$ref": "dimension.value16" },
+      "lg": { "$ref": "dimension.value20" },
+      "xl": { "$ref": "dimension.value24" }
+    },
+    "radius": { "$ref": "button.radii.md" },
+    "radii": {
+      "xs": { "$ref": "radius.radius8" },
+      "sm": { "$ref": "radius.radius10" },
+      "md": { "$ref": "radius.radius12" },
+      "lg": { "$ref": "radius.radius14" },
+      "xl": { "$ref": "radius.radius16" }
+    },
+    "formActionRadius": { "$ref": "button.radii.sm" },
+    "weight": { "$ref": "typography.control.fontWeight" },
+    "variants": [
+      "primary",
+      "secondary",
+      "ghost",
+      "danger",
+      "danger-ghost",
+      "success",
+      "warning"
+    ],
+    "defaultSize": "md",
+    "loadingMinimum": 400,
+    "typography": {
+      "xs": { "$ref": "typography.controlSmall" },
+      "sm": { "$ref": "typography.control" },
+      "md": { "$ref": "typography.control" },
+      "lg": { "$ref": "typography.controlLarge" },
+      "xl": { "$ref": "typography.controlLarge" }
+    }
+  },
+  "buttonGroup": {
+    "heights": { "$ref": "button.heights" },
+    "padding": {
+      "xs": { "$ref": "dimension.value2" },
+      "sm": { "$ref": "dimension.value3" },
+      "md": { "$ref": "dimension.value4" },
+      "lg": { "$ref": "dimension.value4" },
+      "xl": { "$ref": "dimension.value4" }
+    },
+    "radii": {
+      "xs": { "$ref": "radius.radius6" },
+      "sm": { "$ref": "radius.radius8" },
+      "md": { "$ref": "radius.radius10" },
+      "lg": { "$ref": "radius.radius12" },
+      "xl": { "$ref": "radius.radius14" }
+    },
+    "itemPaddingX": {
+      "xs": { "$ref": "dimension.value8" },
+      "sm": { "$ref": "dimension.value10" },
+      "md": { "$ref": "dimension.value12" },
+      "lg": { "$ref": "dimension.value16" },
+      "xl": { "$ref": "dimension.value20" }
+    }
+  },
+  "input": {
+    "sm": {
+      "height": { "$ref": "button.heights.sm" },
+      "fontSize": { "$ref": "typography.input.fontSizePx" },
+      "placeholderSize": { "$ref": "input.sm.fontSize" },
+      "radius": { "$ref": "button.radii.sm" },
+      "padding": { "$ref": "dimension.value12" },
+      "iconSize": 16,
+      "lineHeight": { "$ref": "typography.input.lineHeightPx" },
+      "clearSize": 24,
+      "textareaPaddingY": { "$ref": "dimension.value8" },
+      "affixGap": { "$ref": "dimension.value8" }
+    },
+    "md": {
+      "height": { "$ref": "button.heights.md" },
+      "fontSize": { "$ref": "typography.input.fontSizePx" },
+      "placeholderSize": { "$ref": "input.md.fontSize" },
+      "radius": { "$ref": "button.radii.md" },
+      "padding": { "$ref": "dimension.value16" },
+      "iconSize": 16,
+      "lineHeight": { "$ref": "typography.input.lineHeightPx" },
+      "clearSize": 28,
+      "textareaPaddingY": { "$ref": "dimension.value12" },
+      "affixGap": { "$ref": "dimension.value8" }
+    },
+    "lg": {
+      "height": { "$ref": "button.heights.lg" },
+      "fontSize": { "$ref": "typography.input.fontSizePx" },
+      "placeholderSize": { "$ref": "input.lg.fontSize" },
+      "radius": { "$ref": "button.radii.lg" },
+      "padding": { "$ref": "dimension.value20" },
+      "iconSize": 18,
+      "lineHeight": { "$ref": "typography.input.lineHeightPx" },
+      "clearSize": 32,
+      "textareaPaddingY": { "$ref": "dimension.value16" },
+      "affixGap": { "$ref": "dimension.value8" }
+    }
+  },
+  "table": {
+    "mobileBreakpoint": { "$ref": "breakpoints.medium" },
+    "headerPadding": {
+      "x": { "$ref": "dimension.value16" },
+      "y": { "$ref": "dimension.value10" }
+    },
+    "cellPadding": {
+      "regular": {
+        "x": { "$ref": "dimension.value16" },
+        "y": { "$ref": "dimension.value10" }
+      },
+      "compact": {
+        "x": { "$ref": "dimension.value16" },
+        "y": { "$ref": "dimension.value6" }
+      }
+    },
+    "emptyPadding": {
+      "x": { "$ref": "dimension.value16" },
+      "y": { "$ref": "dimension.value32" }
+    },
+    "expandedPadding": {
+      "x": { "$ref": "dimension.value16" },
+      "y": { "$ref": "dimension.value12" }
+    },
+    "actionColumnWidth": 48,
+    "columnWidth": 160,
+    "skeletonHeight": 20
+  },
+  "modal": {
+    "widths": {
+      "sm": 400,
+      "md": 560,
+      "lg": 720,
+      "xl": 900
+    },
+    "radius": { "$ref": "radius.radius12" },
+    "padding": { "$ref": "dimension.value20" },
+    "headerPaddingY": { "$ref": "dimension.value16" },
+    "footerGap": { "$ref": "dimension.value12" },
+    "titleSize": { "$ref": "typography.sectionTitle.fontSizePx" },
+    "titleWeight": { "$ref": "typography.sectionTitle.fontWeight" },
+    "titleLineHeight": { "$ref": "typography.sectionTitle.lineHeightPx" },
+    "mobileInset": { "$ref": "dimension.value16" },
+    "actionsGap": { "$ref": "dimension.value8" },
+    "closeRadius": { "$ref": "radius.radius8" },
+    "titleActionGap": { "$ref": "dimension.value12" }
+  },
+  "dimension": {
+    "value2": 2,
+    "value4": 4,
+    "value6": 6,
+    "value8": 8,
+    "value10": 10,
+    "value12": 12,
+    "value14": 14,
+    "value16": 16,
+    "value20": 20,
+    "value24": 24,
+    "value28": 28,
+    "value32": 32,
+    "value40": 40,
+    "value48": 48,
+    "value56": 56,
+    "value64": 64,
+    "value3": 3,
+    "value80": 80,
+    "value96": 96
+  },
+  "motion": {
+    "instant": 100,
+    "quick": 150,
+    "fast": 200,
+    "normal": 300,
+    "easeOut": "cubic-bezier(0.2, 0, 0, 1)",
+    "easeIn": "cubic-bezier(0.3, 0, 1, 1)",
+    "easeEmphasized": "cubic-bezier(0.32, 0.72, 0, 1)",
+    "easeLinear": "cubic-bezier(0, 0, 1, 1)",
+    "layerEnter": { "$ref": "motion.normal" },
+    "layerExit": { "$ref": "motion.fast" },
+    "backdrop": { "$ref": "motion.fast" },
+    "backdropExit": { "$ref": "motion.quick" },
+    "popupEnter": { "$ref": "motion.fast" },
+    "popupExit": { "$ref": "motion.quick" },
+    "fadeExit": { "$ref": "motion.instant" },
+    "tooltipEnter": { "$ref": "motion.instant" },
+    "tooltipExit": { "$ref": "motion.instant" },
+    "toastEnter": { "$ref": "motion.fast" },
+    "toastExit": { "$ref": "motion.quick" },
+    "collapse": { "$ref": "motion.fast" },
+    "indicator": { "$ref": "motion.fast" },
+    "toastMove": { "$ref": "motion.fast" },
+    "number": 600,
+    "spin": 1000,
+    "shimmer": 1500,
+    "priceFlash": 800,
+    "priceBackground": 1000,
+    "control": { "$ref": "motion.fast" },
+    "progress": { "$ref": "motion.normal" }
+  },
+  "native": {
+    "minimumTouchTarget": 44
+  },
+  "layers": {
+    "page": {
+      "content": 0,
+      "sticky": 10,
+      "navigation": 20
+    }
+  },
+  "card": {
+    "borderWidth": { "$ref": "border.hairlineWidth" },
+    "padding": {
+      "none": 0,
+      "sm": { "$ref": "dimension.value12" },
+      "md": { "$ref": "dimension.value16" },
+      "lg": { "$ref": "dimension.value24" }
+    },
+    "radii": {
+      "none": { "$ref": "radius.radius0" },
+      "sm": { "$ref": "radius.radius8" },
+      "md": { "$ref": "radius.radius12" },
+      "lg": { "$ref": "radius.radius16" }
+    },
+    "subtitleGap": { "$ref": "dimension.value4" },
+    "titleGap": { "$ref": "dimension.value8" },
+    "glassBlur": { "$ref": "effects.glassBlur" }
+  },
+  "radius": {
+    "radius0": 0,
+    "radius4": 4,
+    "radius6": 6,
+    "radius8": 8,
+    "radius10": 10,
+    "radius12": 12,
+    "radius16": 16,
+    "radius9999": 9999,
+    "radius14": 14,
+    "radius20": 20
+  }
+}

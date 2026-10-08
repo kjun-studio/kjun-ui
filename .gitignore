@@ -1,0 +1,24 @@
+node_modules/
+**/dist/
+**/.vinext/
+**/.wrangler/
+**/.vite/
+**/*.tsbuildinfo
+artifacts/
+apps/docs/public/previews/
+apps/docs/public/downloads/
+apps/docs/public/fonts/
+test-results*/
+playwright-report/
+playwright-report-browser-*/
+.env
+.DS_Store
+
+# Internal work records stay local; they are not published with the repository.
+AGENTS.md
+CLAUDE.md
+docs/audits/
+docs/*-verification.md
+docs/vue2-audit-*.md
+docs/execution-code-separation.md
+docs/migration-0.3.md

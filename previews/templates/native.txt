@@ -1,0 +1,66 @@
+import { createElement, useState } from "react";
+import { AccessibilityInfo, Platform, View, Text, ScrollView } from "react-native";
+import * as K from "@kjun/native";
+import { appColors, appDomainColors, appFont } from "./kjun";
+/* MODULE */
+function Example(/* PARAMS */) {
+  const settings = __KJUN_SETTINGS__;
+  const [values, setValues] = useState(__KJUN_VALUES__);
+  const set = (key, value) => setValues(previous => ({ ...previous, [key]: value }));
+  const feedback = K.useKjunFeedback();
+  const { colors, domainColors, fontFamily } = K.useKjunStyles();
+  /* OBSERVE */
+  const rawH = (name, props = {}, children, slots = {}) => {
+    if (name === "ExampleFailure") return createElement(function ExampleFailure() {
+      if (props.failed) throw new Error("예제에서 의도적으로 발생시킨 렌더링 오류입니다.");
+      return createElement(K.DsAlert, { type: "success" }, "정상 콘텐츠를 표시합니다.");
+    });
+    if (name === "ScrollItems") return <View style={{ flexDirection: "row", flexWrap: "nowrap", gap: 12 }}>{children}</View>;
+    if (name === "Status") {
+      const style = { color: colors.text, fontFamily, fontSize: 14 };
+      if (Platform.OS === "web") return createElement("p", { ref: props.ref, role: "status", "aria-live": "polite", "aria-atomic": true, tabIndex: -1, style: { margin: 0, ...style } }, children);
+      return <Text ref={node => props.ref?.(node ? {
+        announce: message => { if (Platform.OS === "ios") AccessibilityInfo.announceForAccessibility(message); },
+      } : null)} accessible accessibilityLiveRegion="polite" style={style}>{children}</Text>;
+    }
+    // Documentation-only layout: package components keep their own geometry.
+    if (name === "CaseScreen") return <View testID="design-screen" style={{ height: 520, overflow: "hidden", borderWidth: 1, borderColor: colors.divider }}>{children}</View>;
+    if (name === "CaseViewport") return <View style={{ flex: 1, minHeight: 0, marginBottom: props.inset || 0 }}>{children}</View>;
+    if (name === "CaseScroll") {
+      let scroller;
+      return <ScrollView testID="design-scroll" ref={node => { scroller = node; }} onContentSizeChange={() => { if (scroller && !scroller.__designPositioned) { scroller.scrollToEnd({ animated: false }); scroller.__designPositioned = true; } }} style={{ flex: 1, minHeight: 0 }} contentContainerStyle={{ padding: 16 }} keyboardShouldPersistTaps="handled">{children}</ScrollView>;
+    }
+    if (name === "CaseFooter") return <View testID="design-footer" style={{ backgroundColor: colors.surface, flexShrink: 0, ...(props.overlay ? { position: "absolute", left: 0, right: 0, bottom: 0 } : {}) }}>{children}</View>;
+    if (name === "CaseKeyboard") return <View testID="design-keyboard" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 220, alignItems: "center", justifyContent: "center", backgroundColor: colors.secondary, borderTopWidth: 1, borderTopColor: colors.divider, zIndex: 1 }}>{children}</View>;
+    if (name === "CaseColumns") return <View style={{ flexDirection: props.columns === 2 ? "row" : "column", gap: 16 }}>{children}</View>;
+    if (name === "CaseCell") return <View style={{ flex: 1, minWidth: 0 }}>{children}</View>;
+    if (name === "CasePart") return props.scroll ? <ScrollView horizontal testID={"design-" + props.id} style={{ minWidth: 0 }} contentContainerStyle={{ alignItems: "flex-start" }}>{children}</ScrollView> : <View testID={"design-" + props.id} style={{ minWidth: 0, ...(props.inline ? { alignSelf: "flex-start" } : {}) }}>{children}</View>;
+    if (name === "Screen") return <View style={{ height: props.height || 520, overflow: "hidden", borderWidth: 1, borderColor: colors.divider }}>{children}</View>;
+    // Scroll bodies keep lists full-bleed; Inset aligns other content with list text.
+    if (name === "Inset") return <View style={{ paddingHorizontal: 16 }}>{children}</View>;
+    if (name === "Scroll") return <ScrollView style={{ flex: 1, minHeight: 0 }} contentContainerStyle={{ paddingVertical: 16, gap: 16 }} keyboardShouldPersistTaps="handled">{children}</ScrollView>;
+    if (name === "FieldStack") return <K.DsFormLayout gap={20}>{children}</K.DsFormLayout>;
+    if (name === "Box") return <View style={{ width: props.width, maxWidth: "100%" }}>{children}</View>;
+    if (name === "Text") return <Text style={{ color: colors[props.colorRole || "text"], fontFamily, fontSize: 14, ...props.style }}>{children}</Text>;
+    if (name === "IconAlignmentRow") return <View style={{ flexDirection: "row", gap: 12, ...props.style }}>{children}</View>;
+    if (name === "Group" || name === "Stack") return <View style={{ gap: 12, ...(name === "Group" ? { flexDirection: "row", flexWrap: "wrap", alignItems: "center" } : {}), ...props.style }}>{children}</View>;
+    if (["DsInput", "DsTextarea"].includes(name) && props.onValueChange) {
+      props = { ...props, onChangeText: props.onValueChange };
+      delete props.onValueChange;
+    }
+    return createElement(K[name], { ...props, ...Object.fromEntries(Object.entries(slots).filter(([key]) => key !== "expand")) }, children);
+  };
+  const visual = JSON.parse(settings.visual || "{}");
+    const visualH = (name, props = {}, children, slots = {}) => {
+      const spec = visual[name];
+      return rawH(name, { ...props, ...spec?.props }, spec?.text ?? children, slots);
+    };
+    const h = visualH;
+  return <View testID="__KJUN_NAME__" style={{ gap: 12 }}>
+    {renderExample(h, values, set, feedback, settings, domainColors)}
+    {!!values.message && <Text style={{ color: colors.text, fontFamily }}>{values.message}</Text>}
+  </View>;
+}
+export default function ExamplePage(/* PAGE_PARAMS */) {
+  return <K.KjunProvider colors={appColors} domainColors={appDomainColors} fontFamily={appFont}><K.KjunFeedbackProvider><Example /* EXAMPLE_PROPS */ /></K.KjunFeedbackProvider></K.KjunProvider>;
+}

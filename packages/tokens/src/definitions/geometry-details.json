@@ -1,0 +1,76 @@
+{
+  "effects": { "glassBlur": 10 },
+  "button": {
+    "minWidths": {
+      "xs": { "$ref": "dimension.value40" },
+      "sm": { "$ref": "dimension.value56" },
+      "md": { "$ref": "dimension.value64" },
+      "lg": { "$ref": "dimension.value80" },
+      "xl": { "$ref": "dimension.value96" }
+    },
+    "iconSidePaddingX": {
+      "xs": { "$ref": "dimension.value6" },
+      "sm": { "$ref": "dimension.value8" },
+      "md": { "$ref": "dimension.value12" },
+      "lg": { "$ref": "dimension.value16" },
+      "xl": { "$ref": "dimension.value20" }
+    },
+    "contentGaps": {
+      "xs": { "$ref": "dimension.value4" },
+      "sm": { "$ref": "dimension.value4" },
+      "md": { "$ref": "dimension.value4" },
+      "lg": { "$ref": "dimension.value6" },
+      "xl": { "$ref": "dimension.value6" }
+    },
+    "contentGap": { "$ref": "button.contentGaps.md" }
+  },
+  "extensions": {
+    "choice": { "minimumHeight": 32 },
+    "state": { "padding": { "sm": { "$ref": "dimension.value24" }, "md": { "$ref": "dimension.value48" }, "lg": { "$ref": "dimension.value80" } } },
+    "form": {
+      "itemGap": { "$ref": "dimension.value20" },
+      "labelGap": { "$ref": "dimension.value8" },
+      "messageGap": { "$ref": "dimension.value6" },
+      "affixItemGap": { "$ref": "dimension.value4" }
+    },
+    "checkbox": {
+      "sizes": { "sm": 20, "md": 24, "lg": 28 },
+      "iconSizes": { "sm": 14, "md": 16, "lg": 18 },
+      "radii": {
+        "sm": { "$ref": "radius.radius6" },
+        "md": { "$ref": "radius.radius6" },
+        "lg": { "$ref": "radius.radius8" }
+      },
+      "labelGap": { "$ref": "dimension.value8" }
+    },
+    "switch": {
+      "widths": { "sm": 40, "md": 48, "lg": 56 },
+      "heights": { "sm": 24, "md": 28, "lg": 32 },
+      "padding": { "$ref": "dimension.value3" },
+      "radius": { "$ref": "radius.radius9999" },
+      "labelGap": { "$ref": "dimension.value8" }
+    },
+    "pagination": {
+      "gap": { "$ref": "dimension.value12" },
+      "padding": { "$ref": "dimension.value16" },
+      "itemGap": { "$ref": "dimension.value4" },
+      "labelPaddingX": { "$ref": "dimension.value12" },
+      "radius": { "$ref": "radius.radius6" },
+      "itemSize": 32
+    },
+    "tooltip": {
+      "paddingX": { "$ref": "dimension.value8" },
+      "paddingY": { "$ref": "dimension.value4" }
+    },
+    "financial": {
+      "affixGap": { "$ref": "dimension.value4" },
+      "badgeGap": { "$ref": "dimension.value6" },
+      "pillPaddingX": { "$ref": "dimension.value8" },
+      "pillPaddingY": { "$ref": "dimension.value2" },
+      "pillRadius": { "$ref": "radius.radius6" },
+      "cellRadius": { "$ref": "radius.radius4" },
+      "progressGap": { "$ref": "dimension.value8" },
+      "progressRadius": { "$ref": "radius.radius9999" }
+    }
+  }
+}
