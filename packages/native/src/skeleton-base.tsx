@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { useEffect,useRef } from "react";
 import {
 Animated,

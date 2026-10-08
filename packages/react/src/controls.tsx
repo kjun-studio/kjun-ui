@@ -1,5 +1,5 @@
 import { typeStyle, selectionTypeStyle } from "./typography";
-import { tokens,type ButtonSize,type InputSize } from "@kjun/tokens";
+import { tokens,type ButtonSize,type InputSize } from "@kjun-ui/tokens";
 import {
 createContext,
 forwardRef,

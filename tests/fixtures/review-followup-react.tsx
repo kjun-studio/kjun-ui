@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { KjunProvider, DsSearchInput, DsPagination } from "@kjun/react";
+import { KjunProvider, DsSearchInput, DsPagination } from "@kjun-ui/react";
 import { setRootValues } from "./style-values";
 import { SearchCase, PaginationCase } from "./review-followup-cases";
 setRootValues();

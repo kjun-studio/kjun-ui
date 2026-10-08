@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, KjunFeedbackProvider, useKjunFeedback, DsFormGroup, DsCombobox, DsSearchInput, DsModal, DsButton } from "@kjun/native";
+import { KjunProvider, KjunFeedbackProvider, useKjunFeedback, DsFormGroup, DsCombobox, DsSearchInput, DsModal, DsButton } from "@kjun-ui/native";
 import { scopedColors } from "./style-values";
 
 const options = [{ value: "a", label: "Alpha", name: "Alpha" }];

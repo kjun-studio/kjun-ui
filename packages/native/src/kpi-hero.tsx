@@ -1,5 +1,5 @@
 import { KpiNumberLine } from "./kpi-number-line";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { type ReactNode } from "react";
 import {

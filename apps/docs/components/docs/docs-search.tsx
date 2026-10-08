@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { DsButton, DsInput, DsModal } from '@kjun/react';
+import { DsButton, DsInput, DsModal } from '@kjun-ui/react';
 import { documents, categoryFor, searchDocuments } from '@/lib/discovery';
 import { useDocsPlatform } from './docs-platform';
 

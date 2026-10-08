@@ -3,7 +3,7 @@ import { shadowLayers } from "../../../shared/package-runtime/elevation";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { Animated } from "react-native";
 import { useNativePresence } from "./motion";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import {
 cloneElement,
 isValidElement,

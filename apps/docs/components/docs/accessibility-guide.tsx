@@ -1,7 +1,7 @@
 'use client';
 import Link from './doc-link';
-import { DsBadge as Badge } from '@kjun/react';
-import { DsCard as Card } from '@kjun/react';
+import { DsBadge as Badge } from '@kjun-ui/react';
+import { DsCard as Card } from '@kjun-ui/react';
 import { PlatformLoading, useDocsPlatform } from './docs-platform';
 import { AccessibilityLoading, useAccessibilityData } from './accessibility-data';
 import guides from '../../../../shared/component-guides.json';

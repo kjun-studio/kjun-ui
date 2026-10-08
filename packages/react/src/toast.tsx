@@ -1,4 +1,4 @@
-import { createFeedbackController,type ToastItem } from "@kjun/tokens";
+import { createFeedbackController,type ToastItem } from "@kjun-ui/tokens";
 import { useEffect,useRef,type CSSProperties } from "react";
 import { DsIcon } from "./button";
 export function ToastView({

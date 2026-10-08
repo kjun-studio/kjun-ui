@@ -1,6 +1,6 @@
 import { usePopupFocusGuard } from "../../../shared/package-runtime/use-layer";
 import { useComboboxModel } from "../../../shared/package-runtime/combobox";
-import { tokens, type InputSize } from "@kjun/tokens";
+import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useId,useRef,type ReactNode } from "react";
 import { Platform, View } from "react-native";
 import { DsSpinner } from "./display";

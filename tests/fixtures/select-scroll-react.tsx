@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { DsCombobox, DsSelect, KjunProvider } from '@kjun/react';
+import { DsCombobox, DsSelect, KjunProvider } from '@kjun-ui/react';
 import { applyDemoColors } from '../../shared/demo-colors';
 
 const query = new URLSearchParams(location.search);

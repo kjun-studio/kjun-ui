@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import { useDocsPlatform, PlatformLoading } from './docs-platform';
-import { DsButton as Button, DsCard as Card } from '@kjun/react';
+import { DsButton as Button, DsCard as Card } from '@kjun-ui/react';
 import { CatalogSettings, LayoutPreviewHint } from './catalog-settings';
 import { ExampleRunner } from './example-runner';
 import { useCatalog } from './use-catalog';
@@ -59,7 +59,7 @@ function ResolvedCatalogPreview({ name, platform, detail = false, initialPalette
   return <Card className="playground catalog-playground" padding="none" surface="muted" data-ready={model.ready} data-example={name}>
     <div className="playground-top">
       <span className="preview-platform">{platformNames[model.platform]}</span>
-      <span className="package-label">@kjun/{model.platform}</span>
+      <span className="package-label">@kjun-ui/{model.platform}</span>
     </div>
     {settings}
     {!model.wide && preview}

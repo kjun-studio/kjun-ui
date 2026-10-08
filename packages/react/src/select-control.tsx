@@ -1,7 +1,7 @@
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { selectOptions } from "../../../shared/package-runtime/options";
-import { tokens,type InputSize } from "@kjun/tokens";
+import { tokens,type InputSize } from "@kjun-ui/tokens";
 import {
 useId,
 useContext,

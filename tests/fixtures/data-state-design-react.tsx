@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import * as K from '@kjun/react';
+import * as K from '@kjun-ui/react';
 import { applyDemoColors } from '../../shared/demo-colors';
 import { DataStateCases } from './data-state-design-cases';
 applyDemoColors(location.search.includes('dark') ? 'dark' : 'default');

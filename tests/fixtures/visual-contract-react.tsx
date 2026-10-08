@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import * as K from '@kjun/react';
+import * as K from '@kjun-ui/react';
 import { applyDemoColors } from '../../shared/demo-colors';
 import { VisualCases } from './visual-contract-react-common';
 applyDemoColors('default');

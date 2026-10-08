@@ -1,4 +1,4 @@
-# @kjun/tokens
+# @kjun-ui/tokens
 
 Shared KJUN UI geometry, state and interaction contracts. Your app supplies colors and fonts.
 
@@ -8,7 +8,7 @@ Exports `tokens`, `colorRoles`, `coreColorRoles`, `colorRoleFallbacks`, `ColorRo
 
 `tokens.typography[role]` provides `fontSizePx`, `lineHeightPx`, `fontWeight`, and `letterSpacingEm`. Web apps can apply role classes such as `kjun-type-body` within `KjunProvider`.
 
-Project color and font setup: http://127.0.0.1:4173/styling.
+Project color and font setup: https://ui.kjun.dev/styling.
 
 Pre-release local packages; not published to a registry.
 
@@ -50,6 +50,6 @@ Generation rejects empty control dimensions, button/input content that cannot fi
 
 `scripts/size-token-audit.mjs` scans all authored package/runtime files for absolute dimensions in styles, JSX/Vue props, defaults, aliases, skeleton helpers and Vue utilities. Size roles must be positive; ButtonGroup content must fit inside its insets. Packed size tests and the token mutation experiment verify generated CSS utilities and rendered values.
 
-`@kjun/tokens/icons` is a compatibility re-export of `icons` and `filledIcons` from
-`@kjun/icons/defaults`, plus the shared `IconNode` type. Icon data is maintained in
-`@kjun/icons`, pinned to Tabler 3.48.0. Install its local tarball alongside tokens.
+`@kjun-ui/tokens/icons` is a compatibility re-export of `icons` and `filledIcons` from
+`@kjun-ui/icons/defaults`, plus the shared `IconNode` type. Icon data is maintained in
+`@kjun-ui/icons`, pinned to Tabler 3.48.0. Install its local tarball alongside tokens.

@@ -16,7 +16,7 @@ for (const name of names) {
       [
         "pack",
         "--workspace",
-        "@kjun/" + name,
+        "@kjun-ui/" + name,
         "--pack-destination",
         resolve("artifacts"),
         "--json",
@@ -29,7 +29,7 @@ for (const name of names) {
     "apps/docs/public/downloads/" + result.filename
   );
   artifacts.push({
-    name: "@kjun/" + name,
+    name: "@kjun-ui/" + name,
     version: result.version,
     file: result.filename,
     bytes: result.size,

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Kjun, { KjunProvider, DsButton, DsInput, DsCard, DsAnimatedNumber, DsKpiHero, DsKpiRow, DsBadge, DsPagination, DsMarketCards, DsModal, DsDrawer, DsSelect, DsCombobox, DsTextarea, DsSearchInput, DsDatePicker, DsQuantityStepper, DsTimePicker } from '@kjun/vue2';
+import Kjun, { KjunProvider, DsButton, DsInput, DsCard, DsAnimatedNumber, DsKpiHero, DsKpiRow, DsBadge, DsPagination, DsMarketCards, DsModal, DsDrawer, DsSelect, DsCombobox, DsTextarea, DsSearchInput, DsDatePicker, DsQuantityStepper, DsTimePicker } from '@kjun-ui/vue2';
 import { cssPalette, summaryItems, marketProps } from './typography-values';
 cssPalette(); Vue.use(Kjun);
 new Vue({

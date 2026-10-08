@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import DsSkeleton from "./Skeleton.vue";
 import { componentMixins } from "../../component-mixins.js";
 const BAR_HEIGHTS = [60, 100, 85, 140, 110, 165, 180]

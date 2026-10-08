@@ -15,12 +15,12 @@ export async function verifyConsumerTypes(root, directory) {
     source += '\n' + ['R', 'N', 'V'].map(namespace => 'void [' + publicNames.map(name => namespace + '.' + name).join(', ') + '];').join('\n');
     if (format === 'cjs') source = source
       .replace(/import \* as (\w+) from ('[^']+');/g, 'import $1 = require($2);')
-      .replace("import { tokens, type KjunColors, type InputSize } from '@kjun/tokens';", "import T = require('@kjun/tokens'); const { tokens } = T; type KjunColors = T.KjunColors; type InputSize = T.InputSize;")
-      .replace("import { icons, type IconNode } from '@kjun/tokens/icons';", "import I = require('@kjun/tokens/icons'); const { icons } = I; type IconNode = I.IconNode;");
+      .replace("import { tokens, type KjunColors, type InputSize } from '@kjun-ui/tokens';", "import T = require('@kjun-ui/tokens'); const { tokens } = T; type KjunColors = T.KjunColors; type InputSize = T.InputSize;")
+      .replace("import { icons, type IconNode } from '@kjun-ui/tokens/icons';", "import I = require('@kjun-ui/tokens/icons'); const { icons } = I; type IconNode = I.IconNode;");
     await writeFile(target + '/consumer.' + (format === 'esm' ? 'mts' : 'cts'), source);
     await writeFile(target + '/plugin.' + (format === 'esm' ? 'mts' : 'cts'), format === 'esm'
-      ? `import plugin from '@kjun/vue2/plugin';\nimport { type VueConstructor } from 'vue';\ndeclare const Vue: VueConstructor;\nplugin.install(Vue);\n// @ts-expect-error plugin is a typed install object.\nplugin.missing();\n`
-      : `import plugin = require('@kjun/vue2/plugin');\nimport { type VueConstructor } from 'vue';\ndeclare const Vue: VueConstructor;\nplugin.install(Vue);\n// @ts-expect-error CommonJS exports the install object itself.\nplugin.default.install(Vue);\n// @ts-expect-error plugin is not any.\nplugin.missing();\n`);
+      ? `import plugin from '@kjun-ui/vue2/plugin';\nimport { type VueConstructor } from 'vue';\ndeclare const Vue: VueConstructor;\nplugin.install(Vue);\n// @ts-expect-error plugin is a typed install object.\nplugin.missing();\n`
+      : `import plugin = require('@kjun-ui/vue2/plugin');\nimport { type VueConstructor } from 'vue';\ndeclare const Vue: VueConstructor;\nplugin.install(Vue);\n// @ts-expect-error CommonJS exports the install object itself.\nplugin.default.install(Vue);\n// @ts-expect-error plugin is not any.\nplugin.missing();\n`);
     for (const resolution of ['Bundler', 'Node16', 'NodeNext']) {
       execFileSync(tsc, ['consumer.' + (format === 'esm' ? 'mts' : 'cts'), 'plugin.' + (format === 'esm' ? 'mts' : 'cts'), ...common,
         '--moduleResolution', resolution, '--module', resolution === 'Bundler' ? 'Preserve' : resolution],

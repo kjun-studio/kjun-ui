@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { forwardRef, useCallback, useRef, useState } from "react";
 import { useChoiceSpace } from "./choice-accessibility";
 import { useKjunStyles } from "./provider";

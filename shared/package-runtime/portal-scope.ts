@@ -1,4 +1,4 @@
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 
 const properties = [...tokens.colorRoles, ...tokens.domainColorRoles, 'font', 'fontNumeric']
   .map(role => '--kjun-' + role.replace(/[A-Z]/g, letter => '-' + letter.toLowerCase()));

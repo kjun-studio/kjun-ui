@@ -3,7 +3,7 @@
   <DsIcon :name="state.icon" :filled="active" :size="iconSize" :style="{ margin: (boxSize - Number(iconSize)) / 2 + 'px' }" :class="[sizeClass, active ? state.color : 'text-text-tertiary']" />
 </template>
 <script>
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import DsIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { domainColorMixin } from "../../domain-colors.js";

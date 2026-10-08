@@ -1,5 +1,5 @@
 'use client';
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 import Link from './doc-link';
 import { CodeBlock } from './code-block';
 import {
@@ -103,7 +103,7 @@ export function Tokens() {
     <section id="usage">
       <h2>토큰 사용</h2>
       <p className="body-copy">직접 구성하는 화면에는 역할 토큰(<code>space</code>·<code>shape</code>)과 타이포그래피 역할을 사용합니다. 숫자 스케일(<code>dimension</code>·<code>radius</code>)은 역할로 표현되지 않는 미세 조정에만 씁니다. KJUN 컴포넌트의 크기와 모서리는 각 컴포넌트의 속성으로 선택하세요.</p>
-      <CodeBlock label="역할 토큰 선택" code={'import { tokens } from "@kjun/tokens";\n\nconst gap = tokens.space.stack.md;      // 16\nconst radius = tokens.shape.container; // 16\nconst body = tokens.typography.body;'} />
+      <CodeBlock label="역할 토큰 선택" code={'import { tokens } from "@kjun-ui/tokens";\n\nconst gap = tokens.space.stack.md;      // 16\nconst radius = tokens.shape.container; // 16\nconst body = tokens.typography.body;'} />
       <p className="body-copy">같은 의미의 요소에는 같은 토큰을 반복해 사용합니다. 색상과 서체는 프로젝트에서 연결하고, 상태·포커스·조작 규칙은 KJUN의 공통 동작을 따릅니다.</p>
       <Related><Link href="/styling">색상·서체 연결</Link><Link href="/interaction">상태·포커스·상호작용</Link></Related>
     </section>

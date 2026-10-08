@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import DsIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { SEMANTIC_VARIANTS, SIZES_CORE, oneOf } from '../tokens';

@@ -48,7 +48,7 @@ async function legacy(options, name, owner = options.root) {
     JSON.stringify({
       name: "kjun-packed-consumer",
       private: true,
-      dependencies: { "@kjun/react": "file:" + resolve(owner, "artifacts/kjun-react.tgz") },
+      dependencies: { "@kjun-ui/react": "file:" + resolve(owner, "artifacts/kjun-react.tgz") },
     }),
   );
   return directory;
@@ -58,7 +58,7 @@ async function current(options, directory) {
   const record = {
     directory,
     source: "old",
-    manifest: [{ name: "@kjun/react", integrity: "old" }],
+    manifest: [{ name: "@kjun-ui/react", integrity: "old" }],
   };
   await writeFile(options.recordPath, JSON.stringify(record));
   return record;

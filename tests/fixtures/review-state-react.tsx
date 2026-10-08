@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import * as K from "@kjun/react";
+import * as K from "@kjun-ui/react";
 import { StateCases } from "./review-state-cases";
 import { setRootValues } from "./style-values";
 setRootValues();

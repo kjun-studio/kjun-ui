@@ -21,7 +21,7 @@ import {
   DsProgress,
   DsSkeleton,
   DsTooltip,
-} from "@kjun/native";
+} from "@kjun-ui/native";
 import {
   cssValues,
   scopedColors,

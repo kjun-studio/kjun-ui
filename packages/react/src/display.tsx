@@ -1,5 +1,5 @@
 import { hasContent } from "../../../shared/package-runtime/content-presence";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import { typeStyle } from "./typography";
 import {

@@ -1,4 +1,4 @@
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 
 const ext = tokens.extensions;
 const scale = (values: Record<string, number>) => Object.entries(values).map(([name, value]) => `${name} ${value}px`).join(' · ');

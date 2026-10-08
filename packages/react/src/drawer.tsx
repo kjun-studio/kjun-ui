@@ -1,5 +1,5 @@
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { usePresence } from "../../../shared/package-runtime/use-presence";
 import { useReducedMotion } from "./use-reduced-motion";
 import type { ReactNode } from "react";

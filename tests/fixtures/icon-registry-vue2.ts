@@ -1,8 +1,8 @@
 import Vue from 'vue';
-import * as K from '@kjun/vue2';
-import accessible from '@kjun/icons/icons/accessible';
-import alien from '@kjun/icons/icons/alien';
-import rocket from '@kjun/icons/icons/rocket';
+import * as K from '@kjun-ui/vue2';
+import accessible from '@kjun-ui/icons/icons/accessible';
+import alien from '@kjun-ui/icons/icons/alien';
+import rocket from '@kjun-ui/icons/icons/rocket';
 import { setup } from './icon-toggle-values';
 setup();
 const Feedback = { inject: ['kjunFeedback'], render(this: any, h: any) {

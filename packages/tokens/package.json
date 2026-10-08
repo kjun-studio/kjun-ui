@@ -1,7 +1,19 @@
 {
-  "name": "@kjun/tokens",
+  "name": "@kjun-ui/tokens",
   "version": "0.3.0",
   "license": "MIT",
+  "homepage": "https://ui.kjun.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kjun-studio/kjun-ui.git",
+    "directory": "packages/tokens"
+  },
+  "bugs": {
+    "url": "https://github.com/kjun-studio/kjun-ui/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Shared KJUN UI geometry, interaction types and color-role contracts.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -40,6 +52,6 @@
     }
   },
   "dependencies": {
-    "@kjun/icons": "0.3.0"
+    "@kjun-ui/icons": "0.3.0"
   }
 }

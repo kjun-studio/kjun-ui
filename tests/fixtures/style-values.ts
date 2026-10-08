@@ -1,4 +1,4 @@
-import { colorRoles, type KjunColors } from "@kjun/tokens";
+import { colorRoles, type KjunColors } from "@kjun-ui/tokens";
 
 // An arbitrary consuming app, independent of the documentation's palettes.
 export const appColors = {

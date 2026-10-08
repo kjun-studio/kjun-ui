@@ -6,7 +6,7 @@ import { assertCurrentPacked, verifyInstalledPackages } from './package-state.mj
 const root = resolve(import.meta.dirname, '..');
 const directory = resolve(root, 'apps/docs');
 const state = await assertCurrentPacked(root);
-const docsState = { ...state, manifest: state.manifest.filter(pkg => ['@kjun/react', '@kjun/tokens', '@kjun/icons'].includes(pkg.name)) };
+const docsState = { ...state, manifest: state.manifest.filter(pkg => ['@kjun-ui/react', '@kjun-ui/tokens', '@kjun-ui/icons'].includes(pkg.name)) };
 const manifestPath = resolve(directory, 'package.json');
 const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
 if (!process.argv.includes('--check')) {
@@ -30,4 +30,4 @@ for (const pkg of docsState.manifest) {
     throw Error('Docs package references changed. Run npm run docs:install.');
 }
 await verifyInstalledPackages(directory, docsState);
-console.log('Docs consumes verified packed @kjun/react, @kjun/tokens and @kjun/icons.');
+console.log('Docs consumes verified packed @kjun-ui/react, @kjun-ui/tokens and @kjun-ui/icons.');

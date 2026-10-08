@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import { watchTrailingOverflow } from "../../../shared/package-runtime/trailing-overflow";
 import { useEffect, useRef, useState } from "react";

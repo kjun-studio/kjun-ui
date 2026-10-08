@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import DsCollectionMark from "./CollectionMark.vue";
 import DsDataState from "../feedback/DataState.vue";
 import DsEmpty from "./Empty.vue";

@@ -308,7 +308,7 @@ test("WebMCP uses live state and rejects invalid input", async ({ page }) => {
   expect(result.config.palette).toBe("violet");
   await expect(page.getByRole("button", { name: "문서 플랫폼", exact: true })).toContainText("React");
   await expect(page).toHaveURL(url => url.searchParams.get('platform') === 'react');
-  await expect(page.locator('#api .api-platform')).toContainText('@kjun/react');
+  await expect(page.locator('#api .api-platform')).toContainText('@kjun-ui/react');
   const button = page
     .frameLocator(".playground iframe")
     .getByRole("button", { name: "계속하기", exact: true });

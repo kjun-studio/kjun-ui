@@ -64,7 +64,7 @@ async function workspaceManager({ root = ROOT, tempRoot = tmpdir(), report = con
     // 이전 형식은 이름만 믿지 않고 설치 대상 tarball이 이 checkout 소속인지 확인한다.
     const pkg = await jsonIfPresent(resolve(directory, "package.json"));
     const packages = Object.entries(pkg?.dependencies || {}).filter(([name]) =>
-      name.startsWith("@kjun/"),
+      name.startsWith("@kjun-ui/"),
     );
     return (
       pkg?.name === "kjun-packed-consumer" &&

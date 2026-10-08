@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, KjunFeedbackProvider, useKjunFeedback, DsButton, DsCombobox, DsFormGroup, DsInput, DsSelect, DsTimePicker } from "@kjun/react";
+import { KjunProvider, KjunFeedbackProvider, useKjunFeedback, DsButton, DsCombobox, DsFormGroup, DsInput, DsSelect, DsTimePicker } from "@kjun-ui/react";
 import { setRootValues } from "./style-values";
 import { ComboboxCase } from "./review-combobox";
 setRootValues();

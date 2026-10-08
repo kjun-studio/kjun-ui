@@ -2,7 +2,7 @@
 import { useDocsPlatform, PlatformLoading } from "./docs-platform";
 import packages from "@/lib/generated/packages.json";
 import Link from "@/components/docs/doc-link";
-import { DsAlert, DsButtonGroup, DsIcon as Icon } from "@kjun/react";
+import { DsAlert, DsButtonGroup, DsIcon as Icon } from "@kjun-ui/react";
 import { platformNames } from "../../../../shared/demo-config";
 import { isPlatform } from "../../../../shared/docs-platform";
 import { ActionLink } from "./action-link";
@@ -20,7 +20,7 @@ export function GettingStarted() {
   const { platform, selectPlatform } = useDocsPlatform();
   if (!platform) return <PlatformLoading />;
   const selected = packages.filter(
-    (item) => item.name === "@kjun/icons" || item.name === "@kjun/tokens" || item.name === "@kjun/" + platform
+    (item) => item.name === "@kjun-ui/icons" || item.name === "@kjun-ui/tokens" || item.name === "@kjun-ui/" + platform
   );
   const command = ["npm install", ...selected.map((item) => "  ./" + item.file)].join(" \\\n");
   return (
@@ -37,8 +37,8 @@ export function GettingStarted() {
       <section id="install">
         <h2>1. 패키지 설치</h2>
         <p className="body-copy">
-          사용하는 플랫폼의 패키지와 공통 토큰인 <code>@kjun/tokens</code>, 아이콘 데이터인{" "}
-          <code>@kjun/icons</code>를 함께 설치합니다.
+          사용하는 플랫폼의 패키지와 공통 토큰인 <code>@kjun-ui/tokens</code>, 아이콘 데이터인{" "}
+          <code>@kjun-ui/icons</code>를 함께 설치합니다.
         </p>
         <div className="install-platform">
           <DsButtonGroup

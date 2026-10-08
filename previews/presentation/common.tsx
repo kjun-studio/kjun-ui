@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { DsFormGroup, DsInput, DsListSection, DsListRow, DsAvatar, DsBadge, DsSwitch, DsSelect, DsFormActions, DsTable, DsPriceCell, DsSignedValue, type TableColumn } from '@kjun/react';
+import { DsFormGroup, DsInput, DsListSection, DsListRow, DsAvatar, DsBadge, DsSwitch, DsSelect, DsFormActions, DsTable, DsPriceCell, DsSignedValue, type TableColumn } from '@kjun-ui/react';
 export const noop = () => {};
 export const row = (children: ReactNode) => <div className="presentation-row">{children}</div>;
 export const stack = (children: ReactNode) => <div className="presentation-stack">{children}</div>;

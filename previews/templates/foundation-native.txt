@@ -1,4 +1,4 @@
-import { tokens as foundationTokens } from "@kjun/tokens";
+import { tokens as foundationTokens } from "@kjun-ui/tokens";
 // Application recipe defaults in logical units, not public package tokens.
 const foundationRules = __KJUN_FOUNDATION_RULES__;
 function FoundationLayout({ reading, children }) {

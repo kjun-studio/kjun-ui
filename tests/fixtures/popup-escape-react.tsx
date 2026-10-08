@@ -1,6 +1,6 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { DsButton, DsDropdown, DsDropdownItem, DsModal, DsSelect, KjunProvider } from '@kjun/react';
+import { DsButton, DsDropdown, DsDropdownItem, DsModal, DsSelect, KjunProvider } from '@kjun-ui/react';
 import { setRootValues } from './style-values';
 
 function App() {

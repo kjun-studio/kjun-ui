@@ -1,4 +1,4 @@
-import { isComposingKey } from '@kjun/tokens';
+import { isComposingKey } from '@kjun-ui/tokens';
 import type { LayerEntry, LayerState } from './layer-state';
 
 /** Editors consume Escape first; only the layer present at keydown may dismiss. */

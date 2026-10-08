@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { tokens, type InputSize } from "@kjun/tokens";
+import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { AccessiblePressable } from "./a11y";
 import { DsIcon } from "./button";
 import { useKjunStyles } from "./provider";

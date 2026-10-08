@@ -1,7 +1,7 @@
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { usePresence } from "../../../shared/package-runtime/use-presence";
 import { useReducedMotion } from "./use-reduced-motion";
-import { tokens,type ButtonVariant,type InputSize } from "@kjun/tokens";
+import { tokens,type ButtonVariant,type InputSize } from "@kjun-ui/tokens";
 import { useId,useLayoutEffect,useRef,type ReactNode } from "react";
 import { observeFormActions } from "../../../shared/package-runtime/form-actions";
 import { Dialog,Heading,Modal,ModalOverlay } from "react-aria-components";

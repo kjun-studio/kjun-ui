@@ -1,5 +1,5 @@
 import { useRef, useState, type ReactNode } from "react";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { DsIcon } from "./button";
 export interface DsImageProps { src?: string; alt: string; decorative?: boolean; aspectRatio?: number; fit?: "cover" | "contain"; fallback?: ReactNode; lazy?: boolean; onLoad?: () => void; onError?: () => void }
 export function DsImage({ src, alt, decorative = false, aspectRatio = 1, fit = "cover", fallback, lazy = true, onLoad, onError }: DsImageProps) {

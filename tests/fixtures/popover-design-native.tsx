@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import * as K from '@kjun/native';
+import * as K from '@kjun-ui/native';
 import { PopoverDesignCases } from './popover-design-cases';
 import { setupPopoverColors, popoverColors } from './popover-design-data';
 setupPopoverColors();

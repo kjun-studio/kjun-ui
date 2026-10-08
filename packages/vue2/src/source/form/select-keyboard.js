@@ -1,4 +1,4 @@
-import { isComposingKey } from "@kjun/tokens";
+import { isComposingKey } from "@kjun-ui/tokens";
 
 export default {
   methods: {

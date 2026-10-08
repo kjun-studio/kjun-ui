@@ -1,4 +1,4 @@
-import { type QueryDisplayProps } from "@kjun/tokens";
+import { type QueryDisplayProps } from "@kjun-ui/tokens";
 import { type ReactNode } from "react";
 import { useMarketCardsModel, type MarketCardsModelProps, type MarketMetric } from "../../../shared/package-runtime/market-cards";
 export type { MarketMetric } from "../../../shared/package-runtime/market-cards";

@@ -14,7 +14,7 @@ test('every current component role has a source connection or an explicit platfo
 
 test('token inventory follows scoped aliases, dynamic sizes, destructuring and imported geometry', () => {
   const reads = tokenReads(`
-    import { tokens } from '@kjun/tokens';
+    import { tokens } from '@kjun-ui/tokens';
     import { marketGeometry } from './market';
     const spec = tokens.input[size];
     const { x, y } = tokens.extensions.badge.padding[size];

@@ -2,7 +2,7 @@ import { LayerBackdrop } from "./layer-backdrop";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { directionalShadow } from "../../../shared/package-runtime/elevation";
 import { typeStyle } from "./typography";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { useState } from "react";
 import { Animated } from "react-native";
 import { useNativePresence, motionEmphasized } from "./motion";

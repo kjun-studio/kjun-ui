@@ -1,4 +1,4 @@
-import * as K from '@kjun/react';
+import * as K from '@kjun-ui/react';
 import { row, stack, field, input, ActivityList, noop } from './common';
 function Menu({ name }: { name: string }) {
   const items = <><K.DsDropdownItem icon="pencil" selected={name === 'DsDropdownItem'}>이름 변경</K.DsDropdownItem><K.DsDropdownItem icon="copy">복제</K.DsDropdownItem><K.DsDropdownDivider /><K.DsDropdownItem variant="danger" icon="trash">삭제</K.DsDropdownItem></>;

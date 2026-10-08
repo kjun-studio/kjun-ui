@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import * as K from '@kjun/vue2';
+import * as K from '@kjun-ui/vue2';
 import { topNavigationConfig, setupTopNavigationColors } from './top-navigation-design-data';
 setupTopNavigationColors();
 const vm = new Vue({

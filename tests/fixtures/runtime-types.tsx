@@ -1,6 +1,6 @@
-import * as V from '@kjun/vue2';
-import * as R from '@kjun/react';
-import * as N from '@kjun/native';
+import * as V from '@kjun-ui/vue2';
+import * as R from '@kjun-ui/react';
+import * as N from '@kjun-ui/native';
 
 const vueSearch: V.DsSearchInputProps[] = [{}, { loadOptions: null }, { loadOptions: async query => [{ name: query }] }];
 const vueIdentity: V.KjunProviderProps[] = [{}, { renderIdentity: null }, { renderIdentity: () => null }, { renderIdentity: () => undefined }];

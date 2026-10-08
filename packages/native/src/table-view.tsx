@@ -2,7 +2,7 @@ import { typeStyle } from "./typography";
 import { tablePresentation, tableCellValue } from "../../../shared/package-runtime/table-presentation";
 import { TableToolbar } from "./table-toolbar";
 import { TableGrid } from "./table-grid";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import {
 View,
 useWindowDimensions

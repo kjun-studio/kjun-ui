@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { Fragment, useId, useState } from "react";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";

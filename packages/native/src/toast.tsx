@@ -1,7 +1,7 @@
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
-import { createFeedbackController,type ToastItem } from "@kjun/tokens";
+import { createFeedbackController,type ToastItem } from "@kjun-ui/tokens";
 import { useEffect,useRef } from "react";
 import { Animated,View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";

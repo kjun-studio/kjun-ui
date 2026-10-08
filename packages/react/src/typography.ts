@@ -1,4 +1,4 @@
-import { tokens, type ButtonSize, type InputSize, type TypographyRole, type TypographyToken } from '@kjun/tokens';
+import { tokens, type ButtonSize, type InputSize, type TypographyRole, type TypographyToken } from '@kjun-ui/tokens';
 
 export function typeStyle(role: TypographyRole | TypographyToken) {
   const t = typeof role === "string" ? tokens.typography[role] : role;

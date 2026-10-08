@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsButtonGroup } from '@kjun/vue2';
+import { KjunProvider, DsButtonGroup } from '@kjun-ui/vue2';
 import { setRootValues } from './style-values';
 setRootValues();
 const vm = new Vue({

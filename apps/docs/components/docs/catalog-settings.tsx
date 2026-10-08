@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState, type ReactNode, type RefObject } from 'react';
-import { DsButton, DsInput, DsModal, DsSwitch } from '@kjun/react';
+import { DsButton, DsInput, DsModal, DsSwitch } from '@kjun-ui/react';
 import { Choice } from './choice';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './disclosure';
 import type { useCatalog } from './use-catalog';

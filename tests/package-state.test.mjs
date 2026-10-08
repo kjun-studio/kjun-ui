@@ -16,7 +16,7 @@ async function setup(t) {
   };
   for (const input of buildInputs) await write((input.endsWith('/src') || input === 'shared/package-runtime') ? input + '/index.ts' : input, input);
   for (const name of packageNames) {
-    await write(`packages/${name}/package.json`, { name: '@kjun/' + name, version: '0.2.0' });
+    await write(`packages/${name}/package.json`, { name: '@kjun-ui/' + name, version: '0.2.0' });
     await write(`packages/${name}/dist/index.js`, 'export const value = 1;');
   }
   await finishPackageBuild(await beginPackageBuild(base), base);
@@ -24,14 +24,14 @@ async function setup(t) {
   for (const name of packageNames) {
     const bytes = 'test archive: ' + name, file = name + '.tgz';
     await write('artifacts/' + file, bytes);
-    manifest.push({ name: '@kjun/' + name, version: '0.2.0', file,
+    manifest.push({ name: '@kjun-ui/' + name, version: '0.2.0', file,
       integrity: 'sha512-' + createHash('sha512').update(bytes).digest('base64') });
   }
   await write('artifacts/manifest.json', manifest); await recordPackedState(base);
   const packed = await assertCurrentPacked(base), directory = resolve(base, 'consumer');
   for (const name of packageNames) {
     for (const file of ['dist', 'README.md', 'package.json']) {
-      const target = resolve(directory, 'node_modules/@kjun', name, file);
+      const target = resolve(directory, 'node_modules/@kjun-ui', name, file);
       await mkdir(dirname(target), { recursive: true });
       await cp(resolve(base, 'packages', name, file), target, { recursive: true });
     }
@@ -50,7 +50,7 @@ test('current consumer requires matching source, build, tarballs, lock and insta
     ['scripts/vue-prop-type.mjs', /stale package build/],
     ['packages/react/dist/index.js', /output changed/],
     ['artifacts/react.tgz', /tarball integrity mismatch/],
-    ['consumer/node_modules/@kjun/react/dist/index.js', /installed files differ/],
+    ['consumer/node_modules/@kjun-ui/react/dist/index.js', /installed files differ/],
   ]) {
     const original = await readFile(resolve(base, file), 'utf8');
     await write(file, original + '\nchanged');
@@ -59,7 +59,7 @@ test('current consumer requires matching source, build, tarballs, lock and insta
     await assertCurrentConsumer(base);
   }
   const lock = JSON.parse(await readFile(resolve(base, 'consumer/package-lock.json'), 'utf8'));
-  lock.packages['node_modules/@kjun/react'].integrity = 'old'; await write('consumer/package-lock.json', lock);
+  lock.packages['node_modules/@kjun-ui/react'].integrity = 'old'; await write('consumer/package-lock.json', lock);
   await assert.rejects(assertCurrentConsumer(base), /installed integrity mismatch/);
 });
 test('an old consumer or interrupted build cannot be certified by existing artifacts', async t => {

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { componentMixins } from "../../component-mixins.js";
 const AUTO_THRESHOLDS = {
   LOW: 30,

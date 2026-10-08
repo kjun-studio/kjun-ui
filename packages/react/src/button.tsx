@@ -1,7 +1,7 @@
 import { typeStyle } from "./typography";
 import { TopNavigationContext } from "./top-navigation-context";
 import { useActionSize } from "../../../shared/package-runtime/action-size";
-import { tokens,type ButtonSize,type ButtonVariant } from "@kjun/tokens";
+import { tokens,type ButtonSize,type ButtonVariant } from "@kjun-ui/tokens";
 import { useIcon } from "../../../shared/package-runtime/icon-context";
 import {
 createElement,

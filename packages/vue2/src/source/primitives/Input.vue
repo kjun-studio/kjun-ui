@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { isComposingKey } from "@kjun/tokens";
+import { isComposingKey } from "@kjun-ui/tokens";
 import DsButton from "./Button.vue";
 import DsIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";

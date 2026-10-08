@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import * as api from '@kjun/vue2';
+import * as api from '@kjun-ui/vue2';
 import { setRootValues } from './style-values';
 import { motionConfig } from './motion-cases';
 setRootValues(); document.documentElement.style.setProperty('--kjun-font', 'Arial');

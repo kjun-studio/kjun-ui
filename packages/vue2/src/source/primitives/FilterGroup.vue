@@ -30,7 +30,7 @@
 import DsIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { selectionTypeStyle } from '../../typography'
-import { tokens } from '@kjun/tokens'
+import { tokens } from '@kjun-ui/tokens'
 import { SIZES_EXTENDED, CONTROL_HEIGHTS, oneOf } from '../tokens'
 import groupKeyboardNav from './_groupKeyboardNav'
 

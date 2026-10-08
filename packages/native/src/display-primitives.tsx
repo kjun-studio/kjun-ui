@@ -1,6 +1,6 @@
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { typeStyle } from "./typography";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
 import { DataStateContentContext } from "./data-state-context";
 import {

@@ -1,6 +1,6 @@
 import { demoPalettes } from '../../shared/demo-colors';
 import Vue from 'vue';
-import * as K from '@kjun/vue2';
+import * as K from '@kjun-ui/vue2';
 import { cssPalette } from './typography-values';
   cssPalette();
   const colors = new URLSearchParams(location.search).get('palette') === 'dark' ? demoPalettes.dark : demoPalettes.default;

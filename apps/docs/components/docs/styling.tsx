@@ -15,7 +15,7 @@ const webMapping =
   "\n  --kjun-font: var(--app-font);\n}";
 const nativeMapping =
   "/* design-system/kjun.ts — 적용 프로젝트에서 관리 */\n" +
-  'import type { KjunColors } from "@kjun/tokens";\n' +
+  'import type { KjunColors } from "@kjun-ui/tokens";\n' +
   'import type { ColorValue } from "react-native";\n' +
   'import { colors, fonts } from "./tokens";\n\n' +
   "export const appColors = {\n" +
@@ -51,7 +51,7 @@ export function Styling() {
         <CodeBlock code={webMapping} label="Vue 2 · React 공통 연결" />
         <CodeBlock
           code={
-            'import "@kjun/react/styles.css";\nimport "./design-system/kjun.css";\n\n<KjunProvider>\n  <DsButton variant="primary">저장</DsButton>\n</KjunProvider>'
+            'import "@kjun-ui/react/styles.css";\nimport "./design-system/kjun.css";\n\n<KjunProvider>\n  <DsButton variant="primary">저장</DsButton>\n</KjunProvider>'
           }
           label="웹 Provider에는 색상 속성이 없습니다"
         />

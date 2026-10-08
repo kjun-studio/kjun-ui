@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { KjunProvider, DsButton, DsInput, DsCard, DsAnimatedNumber, DsKpiHero, DsKpiRow, DsBadge, DsPagination, DsMarketCards, DsModal, DsDrawer, DsSelect, DsCombobox, DsTextarea, DsSearchInput, DsDatePicker, DsQuantityStepper, DsTimePicker } from '@kjun/react';
+import { KjunProvider, DsButton, DsInput, DsCard, DsAnimatedNumber, DsKpiHero, DsKpiRow, DsBadge, DsPagination, DsMarketCards, DsModal, DsDrawer, DsSelect, DsCombobox, DsTextarea, DsSearchInput, DsDatePicker, DsQuantityStepper, DsTimePicker } from '@kjun-ui/react';
 import { palette, cssPalette, demoDomainColors, demoFont, summaryItems, marketProps } from './typography-values';
 cssPalette();
 function App() {

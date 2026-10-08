@@ -20,7 +20,7 @@
 <script>
 import DsIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
-import { tokens } from '@kjun/tokens'
+import { tokens } from '@kjun-ui/tokens'
 import { selectionTypeStyle } from '../../typography'
 import { SIZES_EXTENDED, oneOf } from '../tokens'
 import groupKeyboardNav from './_groupKeyboardNav'

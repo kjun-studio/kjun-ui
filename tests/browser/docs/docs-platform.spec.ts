@@ -35,14 +35,14 @@ for (const platform of Object.keys(labels) as Platform[]) test(`${platform}: URL
   await ready(page, platform);
   expect(frames.length).toBeGreaterThan(0);
   expect(frames.every(url => url.includes(`catalog-${platform}.html`))).toBe(true);
-  await expect(page.locator('#api .api-platform')).toHaveText(`${labels[platform]} · @kjun/${platform}`);
+  await expect(page.locator('#api .api-platform')).toHaveText(`${labels[platform]} · @kjun-ui/${platform}`);
   await expect(page.locator('#api')).toBeInViewport();
   await expect(page.locator('#api').getByRole('heading', { name: '이벤트 · 슬롯' })).toHaveCount(platform === 'vue2' ? 1 : 0);
   if (platform === 'vue2') await expect(page.locator('#api')).toContainText('update:open');
   else await expect(page.locator('#api').getByRole('cell', { name: 'onOpenChange', exact: true })).toBeVisible();
   await expect(page.getByRole('tab')).toHaveCount(0);
   await page.locator('#usage .code-block').getByRole('button', { name: '기본 코드 복사' }).click();
-  await expect.poll(() => page.evaluate(() => (window as any).__copied[0])).toContain(`@kjun/${platform}`);
+  await expect.poll(() => page.evaluate(() => (window as any).__copied[0])).toContain(`@kjun-ui/${platform}`);
   if (platform === 'native') await expect(page.locator('.platform-notice')).toContainText('iOS·Android 기기 검증은 수행하지 않았습니다.');
   expect(errors).toEqual([]);
 });
@@ -83,15 +83,15 @@ test('gallery filters, document links, search anchors, feedback and installation
   const search = page.getByRole('dialog', { name: '문서 검색', exact: true }).getByRole('combobox');
   await search.fill('queryKey'); await search.press('Enter');
   await expect(page).toHaveURL(url => url.pathname === '/components/data-state' && url.hash === '#api' && url.searchParams.get('platform') === 'react');
-  await expect(page.locator('#api .api-platform')).toContainText('@kjun/react');
+  await expect(page.locator('#api .api-platform')).toContainText('@kjun-ui/react');
   await page.goto('/feedback'); await ready(page, 'react');
   await expect(page.locator('#api .code-block')).toHaveCount(1);
-  await expect(page.locator('#api .code-header')).toHaveText('React · @kjun/react');
+  await expect(page.locator('#api .code-header')).toHaveText('React · @kjun-ui/react');
   await choose(page, '문서 플랫폼', 'Vue 2'); await ready(page, 'vue2');
   await expect(page.locator('#api .code-block')).toContainText('inject:');
   await page.goto('/getting-started'); await selected(page, 'vue2');
   await choose(page, '문서 플랫폼', 'React Native'); await selected(page, 'native');
-  await expect(page.locator('.download-row')).toContainText('@kjun/native');
+  await expect(page.locator('.download-row')).toContainText('@kjun-ui/native');
   await expect(page.locator('#connect')).toContainText('colors={appColors}');
   await expect(page.locator('#connect')).toContainText('Example.jsx');
   for (const href of await page.locator('.download-row a').evaluateAll(links => links.map(link => link.getAttribute('href')))) expect(href).not.toContain('?');
@@ -128,7 +128,7 @@ test('platform switches reset the selected preset, preserve palette while basic 
   await expect(page.locator('.playground')).toHaveAttribute('data-ready', 'true');
   await page.frameLocator('.playground iframe').getByRole('textbox', { name: '내용', exact: true }).fill('전환 전 입력');
   await page.locator('#usage .code-block').getByRole('button', { name: '기본 코드 복사' }).click();
-  expect(await page.evaluate(() => (window as any).__copied[0])).toContain('@kjun/vue2');
+  expect(await page.evaluate(() => (window as any).__copied[0])).toContain('@kjun-ui/vue2');
   await choose(page, '문서 플랫폼', 'React'); await ready(page, 'react');
   await expect(page.getByRole('button', { name: '프리셋', exact: true })).toContainText('검증 오류');
   await expect(page.getByRole('button', { name: '색상 예제', exact: true })).toContainText('보라색 예제');
@@ -137,7 +137,7 @@ test('platform switches reset the selected preset, preserve palette while basic 
   await expect(page.locator('#usage .code-block')).not.toContainText('전환 전 입력');
   await page.evaluate(() => { (window as any).__copied = []; });
   await page.locator('#usage .code-block').getByRole('button', { name: '기본 코드 복사' }).click();
-  await expect.poll(() => page.evaluate(() => (window as any).__copied[0])).toContain('@kjun/react');
+  await expect.poll(() => page.evaluate(() => (window as any).__copied[0])).toContain('@kjun-ui/react');
 });
 
 test('rapid changes ignore an old delayed frame and keep basic code usable while the new frame loads', async ({ page }) => {
@@ -148,12 +148,12 @@ test('rapid changes ignore an old delayed frame and keep basic code usable while
   await choose(page, '문서 플랫폼', 'React');
   await selected(page, 'react');
   await expect(page.locator('.playground')).toHaveAttribute('data-ready', 'false');
-  await expect(page.locator('#api .api-platform')).toContainText('@kjun/react');
+  await expect(page.locator('#api .api-platform')).toContainText('@kjun-ui/react');
   await expect(page.locator('#usage .code-block').getByRole('button', { name: '기본 코드 복사' })).toBeEnabled();
   await choose(page, '문서 플랫폼', 'React Native');
   release(); await ready(page, 'native');
-  await expect(page.locator('#api .api-platform')).toContainText('@kjun/native');
-  await expect(page.locator('#usage .code-block')).toContainText('@kjun/native');
+  await expect(page.locator('#api .api-platform')).toContainText('@kjun-ui/native');
+  await expect(page.locator('#usage .code-block')).toContainText('@kjun-ui/native');
 });
 
 for (const width of [320, 390]) test(`${width}px header platform selection supports keyboard, search and mobile navigation`, async ({ page }) => {

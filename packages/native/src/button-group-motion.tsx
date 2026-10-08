@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Animated, Easing, View, type LayoutChangeEvent, type LayoutRectangle } from 'react-native';
-import { tokens, type ButtonSize } from '@kjun/tokens';
+import { tokens, type ButtonSize } from '@kjun-ui/tokens';
 import { selectionTypeStyle } from './typography';
 import type { ChoiceOption, ChoiceValue } from './choice-controls';
 import { KText, useReducedMotion } from './internal';

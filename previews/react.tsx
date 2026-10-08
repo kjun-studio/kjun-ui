@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun/react";
-import { type ButtonSize, type InputSize } from "@kjun/tokens";
+import { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun-ui/react";
+import { type ButtonSize, type InputSize } from "@kjun-ui/tokens";
 import { componentProps, labelFor, type DemoConfig } from "../shared/demo-config";
 import { connectDemo } from "./bridge";
 function Demo({ config: c }: { config: DemoConfig }) {

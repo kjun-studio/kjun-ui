@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { KjunProvider, DsButton, DsModal, DsInput } from "@kjun/vue2";
+import { KjunProvider, DsButton, DsModal, DsInput } from "@kjun-ui/vue2";
 import {
   scopedColors,
   scopedFont,

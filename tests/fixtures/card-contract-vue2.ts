@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsCard, DsButton, DsImage } from '@kjun/vue2';
+import { KjunProvider, DsCard, DsButton, DsImage } from '@kjun-ui/vue2';
 import { applyDemoColors } from '../../shared/demo-colors';
 import { cardMediaSource } from '../../previews/catalog/example-tools';
 applyDemoColors('default');

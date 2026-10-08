@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { type ReactNode } from "react";
 import { View } from "react-native";
 import { DsCard } from "./display";

@@ -1,4 +1,4 @@
-import { coreColorRoles, type KjunColors, type KjunCoreColors } from "@kjun/tokens";
+import { coreColorRoles, type KjunColors, type KjunCoreColors } from "@kjun-ui/tokens";
 import { appColors, cssValues } from "./style-values";
 export const core = (changed = false): KjunCoreColors => ({
   ...Object.fromEntries(coreColorRoles.map(role => [role, appColors[role]])) as KjunCoreColors,

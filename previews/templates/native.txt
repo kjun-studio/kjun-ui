@@ -1,6 +1,6 @@
 import { createElement, useState } from "react";
 import { AccessibilityInfo, Platform, View, Text, ScrollView } from "react-native";
-import * as K from "@kjun/native";
+import * as K from "@kjun-ui/native";
 import { appColors, appDomainColors, appFont } from "./kjun";
 /* MODULE */
 function Example(/* PARAMS */) {

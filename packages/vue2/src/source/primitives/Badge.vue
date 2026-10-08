@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { componentMixins } from "../../component-mixins.js";
 import { domainColorMixin } from "../../domain-colors.js";
 import { SIZES_EXTENDED, SEMANTIC_VARIANTS, oneOf } from '../tokens'

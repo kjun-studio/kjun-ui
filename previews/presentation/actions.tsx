@@ -1,4 +1,4 @@
-import * as K from '@kjun/react';
+import * as K from '@kjun-ui/react';
 import { row, stack } from './common';
 const choices = [{ value: 'day', label: '일간' }, { value: 'week', label: '주간' }, { value: 'month', label: '월간' }];
 export function actions(name: string) {

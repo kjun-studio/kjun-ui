@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import type { MouseEvent, ReactNode } from "react";
 import { DsIcon } from "./button";
 import { TopNavigationContext } from "./top-navigation-context";

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import * as K from '@kjun/vue2';
+import * as K from '@kjun-ui/vue2';
 import { applyDemoColors } from '../../shared/demo-colors';
 import { dataStateConfig, relatedProps } from './data-state-design-cases';
 applyDemoColors(location.search.includes('dark') ? 'dark' : 'default');

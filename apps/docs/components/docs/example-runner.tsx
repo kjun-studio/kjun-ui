@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState, type ReactNode } from 'react';
-import { DsButton, DsCard, DsIcon, DsInput, DsModal, DsSwitch } from '@kjun/react';
+import { DsButton, DsCard, DsIcon, DsInput, DsModal, DsSwitch } from '@kjun-ui/react';
 import { Choice } from './choice';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './disclosure';
 import type { useCatalog } from './use-catalog';
@@ -94,7 +94,7 @@ export function ExampleRunner({ name, model, preview }: { name: string; model: M
   </div>;
   return <DsCard className="playground catalog-playground example-runner" padding="none" surface="muted" data-ready={model.ready} data-example={name}>
     <div className="playground-top runner-heading">
-      <div className="runner-title"><span className="runner-status-dot" data-ready={model.ready} data-failed={model.failed} aria-hidden="true" /><strong>미리보기</strong><span className="runner-platform" title={`@kjun/${model.platform}`}>{platformNames[model.platform]}</span></div>
+      <div className="runner-title"><span className="runner-status-dot" data-ready={model.ready} data-failed={model.failed} aria-hidden="true" /><strong>미리보기</strong><span className="runner-platform" title={`@kjun-ui/${model.platform}`}>{platformNames[model.platform]}</span></div>
     </div>
     {toolbar()}
     {!model.wide && stage}

@@ -132,7 +132,7 @@ export class UsageBuilder {
     const imports = [...this.imports].join(', '), declarations = this.declarations.join('\n\n');
     let code: string;
     if (this.vue) {
-      code = `<template>\n${indent(content)}\n</template>\n\n<script>\nimport { ${imports} } from "@kjun/vue2";\n`;
+      code = `<template>\n${indent(content)}\n</template>\n\n<script>\nimport { ${imports} } from "@kjun-ui/vue2";\n`;
       if (declarations) code += '\n' + declarations + '\n';
       code += `\nexport default {\n  components: { ${imports} },\n`;
       if (this.feedback) code += '  inject: ["kjunFeedback"],\n';
@@ -140,7 +140,7 @@ export class UsageBuilder {
       if (this.methods.length) code += `  methods: {\n${indent(this.methods.join(',\n'), 4)}\n  },\n`;
       code += '};\n</script>\n';
     } else {
-      code = `${Object.keys(this.initial).length ? 'import { useState } from "react";\n' : ''}import { ${imports}${this.feedback ? ', useKjunFeedback' : ''} } from "@kjun/${this.input.platform}";\n`;
+      code = `${Object.keys(this.initial).length ? 'import { useState } from "react";\n' : ''}import { ${imports}${this.feedback ? ', useKjunFeedback' : ''} } from "@kjun-ui/${this.input.platform}";\n`;
       if (this.nativeImports.size) code += `import { ${[...this.nativeImports].join(', ')} } from "react-native";\n`;
       if (declarations) code += '\n' + declarations + '\n';
       code += '\nexport default function Example() {\n';

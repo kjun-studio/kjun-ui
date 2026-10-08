@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { componentMixins } from "../../component-mixins.js";
 // 가로 스크롤 + 양끝 페이드 힌트 래퍼.
 // 세그먼트 컨트롤/칩 그룹이 좁은 뷰포트에서 잘릴 때, 잘린 채 보이는 대신

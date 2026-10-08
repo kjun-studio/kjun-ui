@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, KjunFeedbackProvider, DsChip } from '@kjun/vue2';
+import { KjunProvider, KjunFeedbackProvider, DsChip } from '@kjun-ui/vue2';
 import { cssPalette } from './typography-values';
 import { chipSizes, toastMessage } from './chip-toast-tokens-common';
 cssPalette();

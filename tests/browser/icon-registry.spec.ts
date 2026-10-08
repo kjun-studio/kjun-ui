@@ -2,8 +2,8 @@ import { test, expect, type Locator } from '@playwright/test';
 import { createRequire } from 'node:module';
 import { openFixture } from './packed-fixture';
 const require = createRequire(import.meta.url);
-const alien = require('@kjun/icons/icons/alien'), rocket = require('@kjun/icons/icons/rocket');
-const { defaultIcons } = require('@kjun/icons/defaults');
+const alien = require('@kjun-ui/icons/icons/alien'), rocket = require('@kjun-ui/icons/icons/rocket');
+const { defaultIcons } = require('@kjun-ui/icons/defaults');
 const paths = (nodes: [string, Record<string, string>][]) => nodes.map(([, attrs]) => attrs.d);
 const rendered = (locator: Locator) => locator.locator('svg path').evaluateAll(nodes => nodes.map(node => node.getAttribute('d')));
 for (const platform of ['react', 'vue2', 'native']) {

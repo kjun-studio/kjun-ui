@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import type { createFeedbackController, ConfirmOptions, FeedbackRequest, PromptOptions } from "@kjun/tokens";
+import type { createFeedbackController, ConfirmOptions, FeedbackRequest, PromptOptions } from "@kjun-ui/tokens";
 
 // Providers key the dialog by request ID. Presentation can outlive settlement.
 export function useFeedbackDialog(controller: ReturnType<typeof createFeedbackController>, request: FeedbackRequest) {

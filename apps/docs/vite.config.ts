@@ -50,7 +50,7 @@ export default defineConfig(async () => {
     define: { __KJUN_PREVIEW_READY_MS__: JSON.stringify(Number(process.env.KJUN_PREVIEW_READY_MS) || 15000) },
     // Shared documentation definitions resolve through this app's packed dependencies.
     resolve: {
-      dedupe: ['@kjun/react', '@kjun/tokens', '@kjun/icons'],
+      dedupe: ['@kjun-ui/react', '@kjun-ui/tokens', '@kjun-ui/icons'],
       // JSON imports here use explicit extensions and Vite's JSON loader. Keep
       // large retained records out of the CommonJS plugin's recursive scanner.
       extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx'],

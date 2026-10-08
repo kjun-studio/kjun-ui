@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import plugin, * as K from '@kjun/vue2';
+import plugin, * as K from '@kjun-ui/vue2';
 import { setRootValues } from './style-values';
 Vue.use(plugin); setRootValues();
 const w = window as any; w.contractEvents = [];

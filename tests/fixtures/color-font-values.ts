@@ -1,4 +1,4 @@
-import { domainColorRoles } from '@kjun/tokens';
+import { domainColorRoles } from '@kjun-ui/tokens';
 import { demoPalettes, demoDomainPalettes, cssColorName } from '../../shared/demo-colors';
 
 export const query = new URLSearchParams(location.search);

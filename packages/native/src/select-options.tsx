@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { type ReactNode } from "react";
 import { View, type PressableProps } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";

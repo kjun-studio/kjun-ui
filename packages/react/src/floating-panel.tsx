@@ -1,5 +1,5 @@
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
-import { isComposingKey, tokens } from "@kjun/tokens";
+import { isComposingKey, tokens } from "@kjun-ui/tokens";
 import { usePresence } from "../../../shared/package-runtime/use-presence";
 import { useReducedMotion } from "./use-reduced-motion";
 import { useEffect, useRef, type CSSProperties, type ReactNode, type RefObject } from "react";

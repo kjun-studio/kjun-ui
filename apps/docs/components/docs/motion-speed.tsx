@@ -1,6 +1,6 @@
 'use client';
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
-import { DsButtonGroup } from '@kjun/react';
+import { DsButtonGroup } from '@kjun-ui/react';
 
 // One playback rate for every demo on the page, so a slowed comparison stays comparable.
 type Speed = { rate: number; setRate: (rate: number) => void };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, KjunFeedbackProvider, useKjunFeedback, DsCombobox, DsSearchInput, DsModal } from "@kjun/react";
+import { KjunProvider, KjunFeedbackProvider, useKjunFeedback, DsCombobox, DsSearchInput, DsModal } from "@kjun-ui/react";
 import { setRootValues } from "./style-values";
 
 setRootValues();

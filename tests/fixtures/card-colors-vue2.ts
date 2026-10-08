@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Kjun, { KjunProvider, DsButton, DsCard, type DsCardProps } from "@kjun/vue2";
+import Kjun, { KjunProvider, DsButton, DsCard, type DsCardProps } from "@kjun-ui/vue2";
 import { cardColors, cssValues } from "./card-colors-values";
 
 Vue.use(Kjun);

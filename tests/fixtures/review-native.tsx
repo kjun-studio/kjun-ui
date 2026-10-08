@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, DsCombobox, DsFormGroup, DsTimePicker } from "@kjun/native";
+import { KjunProvider, DsCombobox, DsFormGroup, DsTimePicker } from "@kjun-ui/native";
 import { scopedColors } from "./style-values";
 import { ComboboxCase } from "./review-combobox";
 function TimeCase() {

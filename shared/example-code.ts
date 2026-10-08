@@ -11,7 +11,7 @@ export function exampleSource(template: string, platform: PlatformName, settings
   const literal = (value: unknown) => JSON.stringify(value, null, 2).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
   const iconName = String(settings.name || 'heart');
   if (template.includes('/* ICON_IMPORTS */') && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(iconName)) throw Error('Invalid icon import');
-  const code = template.replace('/* ICON_IMPORTS */', () => `import selectedIcon from '@kjun/icons/icons/${iconName}';\nconst projectIcons = { ${JSON.stringify(iconName)}: selectedIcon };`)
+  const code = template.replace('/* ICON_IMPORTS */', () => `import selectedIcon from '@kjun-ui/icons/icons/${iconName}';\nconst projectIcons = { ${JSON.stringify(iconName)}: selectedIcon };`)
     .replace('/* ICON_PROVIDER */', platform === 'vue2' ? 'props: { icons: projectIcons }' : 'icons={projectIcons}').replace('__KJUN_SETTINGS__', () => literal(settings)).replace('__KJUN_VALUES__', () => literal(copiedValues(values)))
     .replace(/\/\* (?:PARAMS|PAGE_PARAMS|EXAMPLE_PROPS|OBSERVE|VUE_PROPS|VUE_OBSERVE) \*\//g, '')
     .replace('/* VUE_EXAMPLE_PROPS */', '{}');

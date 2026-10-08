@@ -1,4 +1,4 @@
-import { tokens, type ButtonSize, type InputSize, type TypographyRole, type TypographyToken } from '@kjun/tokens';
+import { tokens, type ButtonSize, type InputSize, type TypographyRole, type TypographyToken } from '@kjun-ui/tokens';
 
 /** CSS em tracking is converted to the logical units consumed by Native Text. */
 export function typeStyle(role: TypographyRole | TypographyToken) {

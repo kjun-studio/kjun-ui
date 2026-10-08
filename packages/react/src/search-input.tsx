@@ -1,4 +1,4 @@
-import { type InputSize } from "@kjun/tokens";
+import { type InputSize } from "@kjun-ui/tokens";
 import { useState, type ReactNode } from "react";
 import { useSearchInputModel, type SearchInputModelProps } from "../../../shared/package-runtime/search-input";
 import { SearchField } from "./combobox";

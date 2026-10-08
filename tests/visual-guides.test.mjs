@@ -64,7 +64,7 @@ test("unknown public references and duplicate figures fail generation", () => {
 });
 test("anatomy manifest proves installed package rendering and every image has valid annotation coordinates", async () => {
   const manifest = await read("apps/docs/public/previews/guide-figures/manifest.json");
-  assert.deepEqual(manifest.renderers, ["@kjun/vue2", "@kjun/react", "@kjun/native"]);
+  assert.deepEqual(manifest.renderers, ["@kjun-ui/vue2", "@kjun-ui/react", "@kjun-ui/native"]);
   const expected = Object.values(guides).flatMap((g) =>
     Object.entries(g.platforms).flatMap(([p, data]) =>
       data.figures.map((f) => [`${p}/${g.name}/${f.id}`, f]),

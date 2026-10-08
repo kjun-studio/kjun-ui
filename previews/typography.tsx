@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { useState } from 'react';
-import { KjunProvider, DsButton, DsInput, DsKpiHero, DsKpiRow } from '@kjun/react';
-import { tokens, type InputSize } from '@kjun/tokens';
+import { KjunProvider, DsButton, DsInput, DsKpiHero, DsKpiRow } from '@kjun-ui/react';
+import { tokens, type InputSize } from '@kjun-ui/tokens';
 import { applyDemoColors } from '../shared/demo-colors';
 
 applyDemoColors('default');

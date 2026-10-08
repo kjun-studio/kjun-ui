@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import type { ButtonSize } from '@kjun/tokens';
+import type { ButtonSize } from '@kjun-ui/tokens';
 
 /** Alert actions stay one button step below the alert's own control line. */
 export const alertActionSizes = { sm: 'xs', md: 'sm' } as const satisfies Record<'sm' | 'md', ButtonSize>;

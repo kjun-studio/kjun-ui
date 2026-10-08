@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsTabs, DsTabPane, DsButton, DsInput } from '@kjun/vue2';
+import { KjunProvider, DsTabs, DsTabPane, DsButton, DsInput } from '@kjun-ui/vue2';
 import { applyDemoColors } from '../../shared/demo-colors';
 applyDemoColors('default');
 const lifecycle = { mounts: 0, unmounts: 0 };

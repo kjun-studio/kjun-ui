@@ -1,6 +1,6 @@
 import { FieldPressable, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
-import { tokens,type InputSize } from "@kjun/tokens";
+import { tokens,type InputSize } from "@kjun-ui/tokens";
 import { useRef,useState } from "react";
 import { Platform, View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";

@@ -1,4 +1,4 @@
-import * as K from '@kjun/react';
+import * as K from '@kjun-ui/react';
 import { row, stack, field, input, options, noop } from './common';
 export function inputs(name: string) {
   switch (name) {

@@ -1,7 +1,7 @@
 'use client';
 import { useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { DsButton as Button, DsIcon as Icon, DsInput as Input, DsSelect, DsRadioGroup, KjunProvider } from '@kjun/react';
-import { tokens } from '@kjun/tokens';
+import { DsButton as Button, DsIcon as Icon, DsInput as Input, DsSelect, DsRadioGroup, KjunProvider } from '@kjun-ui/react';
+import { tokens } from '@kjun-ui/tokens';
 import { useIconCatalogData, useIconPage } from './use-icon-data';
 import { iconPageSize, searchIcons, selectIcon, type IconEntry, type IconSelection } from '../../../../shared/icon-catalog';
 import { iconSelectionScenario } from '../../../../shared/icon-examples';

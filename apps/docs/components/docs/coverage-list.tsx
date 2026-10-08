@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
 import Link from './doc-link';
-import { DsButton as Button } from '@kjun/react';
-import { DsCard as Card } from '@kjun/react';
-import { DsBadge as Badge } from '@kjun/react';
+import { DsButton as Button } from '@kjun-ui/react';
+import { DsCard as Card } from '@kjun-ui/react';
+import { DsBadge as Badge } from '@kjun-ui/react';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from './disclosure';
-import { DsTable } from '@kjun/react';
+import { DsTable } from '@kjun-ui/react';
 import coverage from '@/lib/generated/coverage.json';
 import { verificationHref } from '../../../../shared/accessibility-guides/selection';
 import { categories, categoryFor } from '@/lib/discovery';

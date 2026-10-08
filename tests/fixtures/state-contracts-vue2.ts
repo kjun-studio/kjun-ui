@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Kjun, { KjunProvider, DsTable, DsSearchInput } from "@kjun/vue2";
+import Kjun, { KjunProvider, DsTable, DsSearchInput } from "@kjun-ui/vue2";
 import { setRootValues } from "./style-values";
 Vue.use(Kjun); setRootValues();
 const rows = [{ id: 2, name: "Two" }, { id: 0, name: "Zero" }, { id: 1, name: "One" }];

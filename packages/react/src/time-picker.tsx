@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useId, useMemo, useRef } from "react";
-import { createTimeDomain, type TimePrecision, type InputSize } from "@kjun/tokens";
+import { createTimeDomain, type TimePrecision, type InputSize } from "@kjun-ui/tokens";
 import { CompoundControlContext } from "./compound-control";
 import { DsSelect } from "./select";
 import { DsButton } from "./button";

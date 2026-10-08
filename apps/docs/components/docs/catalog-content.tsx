@@ -60,12 +60,12 @@ export function FeedbackGuide() {
       <section id="api">
         <h2>서비스 계약</h2>
         {!platform ? <PlatformLoading /> : platform !== "vue2" ? <CodeBlock
-          label={`${platformNames[platform]} · @kjun/${platform}`}
+          label={`${platformNames[platform]} · @kjun-ui/${platform}`}
           code={
             'const feedback = useKjunFeedback();\nfeedback.toast.success("저장했습니다", { duration: 4000 });\nconst confirmed: boolean = await feedback.confirm({ title: "저장할까요?" });\nconst name: string | null = await feedback.prompt({\n  title: "이름 입력",\n  validator: value => value.trim().length > 1 || "두 글자 이상 입력하세요."\n});'
           }
         /> : <CodeBlock
-          label="Vue 2 · @kjun/vue2"
+          label="Vue 2 · @kjun-ui/vue2"
           code={
             'export default {\n  inject: ["kjunFeedback"],\n  methods: {\n    async save() {\n      const confirmed = await this.kjunFeedback.confirm({ title: "저장할까요?" });\n      if (confirmed) this.kjunFeedback.toast.success("저장했습니다");\n    }\n  }\n};'
           }

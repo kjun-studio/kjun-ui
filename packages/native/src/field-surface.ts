@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Animated, Platform, TextInput, type ViewStyle } from "react-native";
-import { tokens, type InputSize } from "@kjun/tokens";
+import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
 import { AccessiblePressable } from "./a11y";

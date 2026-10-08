@@ -18,7 +18,7 @@ type PressableProps
 import { AccessiblePressable as Pressable } from "./a11y";
 import { FloatingPanel,LayerTrigger } from "./floating-panel";
 import { KText,content } from "./internal";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { useKjunStyles } from "./provider";
 export interface DsPopoverProps {
   noPadding?: boolean;

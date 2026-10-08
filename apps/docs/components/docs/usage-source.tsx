@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { DsButton as Button } from '@kjun/react';
+import { DsButton as Button } from '@kjun-ui/react';
 import { CodeBlock } from './code-block';
 import Link from './doc-link';
 import { useDocsPlatform, PlatformLoading } from './docs-platform';

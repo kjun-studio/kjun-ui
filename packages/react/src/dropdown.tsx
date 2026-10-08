@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { cloneElement, createContext, isValidElement, useCallback, useContext, useEffect, useId, useRef, useState, type ReactNode, type ReactElement } from "react";
 import { Menu, MenuItem, Separator } from "react-aria-components";
 import { DsButton, DsIcon, type DsButtonProps } from "./button";

@@ -12,7 +12,7 @@ for (const platform of ['vue2', 'react', 'native']) {
       const implementations = page.locator('[data-implementation]');
       for (const section of await implementations.all()) {
         found.push((await section.getAttribute('data-implementation'))!);
-        await expect(section.locator('pre')).toContainText('@kjun/' + platform);
+        await expect(section.locator('pre')).toContainText('@kjun-ui/' + platform);
         await expect(section.getByRole('button', { name: '구현 코드 복사', exact: true })).toBeEnabled();
         await expect(section.getByRole('link', { name: '공통 설정: 시작하기' })).toHaveAttribute('href', `/getting-started?platform=${platform}#connect`);
       }

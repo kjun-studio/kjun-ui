@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import * as ui from '@kjun/vue2';
+import * as ui from '@kjun-ui/vue2';
 import { bindings, domain, fonts, samples, diagnosticCases, scenario, query } from './color-font-values';
 
 Vue.config.errorHandler = error => (window as any).colorFontErrors.push(error.message);

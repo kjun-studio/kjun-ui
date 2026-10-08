@@ -1,6 +1,6 @@
 "use client";
 import type { ReactNode } from "react";
-import { DsTable } from '@kjun/react';
+import { DsTable } from '@kjun-ui/react';
 export function DataTable({ headings, rows, presentation = 'default', numericColumns = [] }: {
   headings: string[];
   rows: readonly (readonly ReactNode[])[];

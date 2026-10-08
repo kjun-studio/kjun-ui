@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsButton } from '@kjun/vue2';
+import { KjunProvider, DsButton } from '@kjun-ui/vue2';
 import { buttonItems, setButtonColors } from './button-design-cases';
 setButtonColors();
 const vm = new Vue({

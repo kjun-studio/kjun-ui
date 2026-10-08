@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import type { KjunIconRegistry } from '@kjun/icons';
+import type { KjunIconRegistry } from '@kjun-ui/icons';
 import examples from '../../artifacts/examples/vue2';
 import { exampleNames, presetConfig } from '../../shared/example-registry';
 import { applyDemoColors } from '../../shared/demo-colors';

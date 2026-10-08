@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import * as K from '@kjun/native';
+import * as K from '@kjun-ui/native';
 import { BottomActionBarDesignCases } from './bottom-action-bar-design-cases';
 import { setupActionBarColors, actionBarColors } from './bottom-action-bar-design-data';
 setupActionBarColors();

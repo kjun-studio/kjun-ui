@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { KjunProvider, DsCombobox, DsSelect, DsSearchInput } from "@kjun/native";
+import { KjunProvider, DsCombobox, DsSelect, DsSearchInput } from "@kjun-ui/native";
 import { scopedColors } from "./style-values";
 import { InputContracts } from "./review-input-contracts";
 createRoot(document.getElementById("root")!).render(<KjunProvider colors={scopedColors(false)}>

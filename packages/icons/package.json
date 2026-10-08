@@ -1,7 +1,19 @@
 {
-  "name": "@kjun/icons",
+  "name": "@kjun-ui/icons",
   "version": "0.3.0",
   "license": "MIT",
+  "homepage": "https://ui.kjun.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kjun-studio/kjun-ui.git",
+    "directory": "packages/icons"
+  },
+  "bugs": {
+    "url": "https://github.com/kjun-studio/kjun-ui/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Complete Tabler icon data with selective imports for KJUN UI.",
   "type": "module",
   "main": "./dist/index.cjs",

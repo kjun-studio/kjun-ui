@@ -13,7 +13,7 @@ const exports = Object.keys(ui)
   .filter((name) => /^(Ds|Kjun)/.test(name))
   .sort();
 const overrides = {
-  "DsTable.sort": "import('@kjun/tokens').TableSort | null",
+  "DsTable.sort": "import('@kjun-ui/tokens').TableSort | null",
   "DsRangeSlider.value": "[number, number]",
   "DsRangeSlider.thumbLabels": "[string, string]",
   "DsTimePicker.value": "string | null",
@@ -24,7 +24,7 @@ const overrides = {
     "Record<string, (value: unknown, row: Record<string, unknown>) => string>",
   "KjunProvider.renderIdentity":
     "(h: CreateElement, props: Record<string, unknown>, slots: Record<string, VNode[] | undefined>) => VNode | null | undefined",
-  "KjunProvider.icons": "import('@kjun/icons').KjunIconRegistry",
+  "KjunProvider.icons": "import('@kjun-ui/icons').KjunIconRegistry",
   "KjunProvider.formatters": "Record<string, (...values: any[]) => string>",
 };
 function propsOf(component) {
@@ -63,7 +63,7 @@ const api = {};
 let declaration =
   "// Generated from the compiled Vue component contracts by scripts/api.mjs.\n";
 declaration +=
-  'export type { KjunIconDefinition, KjunIconRegistry } from "@kjun/icons";\nimport type { VueConstructor, CreateElement, VNode } from "vue";\nexport type { ShadowLayer, ElevationRole, CardElevation, TableSort, KjunColors, KjunDomainColors, ColorRole, DomainColorRole, ButtonSize, InputSize, ButtonVariant, KjunFeedback, ConfirmOptions, PromptOptions, ToastOptions } from "@kjun/tokens";\n';
+  'export type { KjunIconDefinition, KjunIconRegistry } from "@kjun-ui/icons";\nimport type { VueConstructor, CreateElement, VNode } from "vue";\nexport type { ShadowLayer, ElevationRole, CardElevation, TableSort, KjunColors, KjunDomainColors, ColorRole, DomainColorRole, ButtonSize, InputSize, ButtonVariant, KjunFeedback, ConfirmOptions, PromptOptions, ToastOptions } from "@kjun-ui/tokens";\n';
 for (const name of exports) {
   const props = propsOf(ui[name]);
   const rows = Object.entries(props).map(([key, p]) => {

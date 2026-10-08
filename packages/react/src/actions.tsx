@@ -1,5 +1,5 @@
 import { typeStyle } from "./typography";
-import { tokens,type ButtonSize } from "@kjun/tokens";
+import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import {
 useContext,
 useEffect,

@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun/vue2";
+import { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun-ui/vue2";
 import { defaultConfig, componentProps, labelFor } from "../shared/demo-config";
 import { connectDemo } from "./bridge";
 import {applyDemoColors} from "../shared/demo-colors";

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsTable } from '@kjun/vue2';
+import { KjunProvider, DsTable } from '@kjun-ui/vue2';
 import { setRootValues } from './style-values';
 setRootValues();
 const row = { id: 0, name: 'Zero', code: 'Z', badge: 'Badge', amount: 10, blank: '', control: true };

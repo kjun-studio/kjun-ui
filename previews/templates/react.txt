@@ -1,6 +1,6 @@
 import { createElement, useState } from "react";
-import * as K from "@kjun/react";
-import "@kjun/react/styles.css";
+import * as K from "@kjun-ui/react";
+import "@kjun-ui/react/styles.css";
 import "./kjun.css";
 /* MODULE */
 function Example(/* PARAMS */) {

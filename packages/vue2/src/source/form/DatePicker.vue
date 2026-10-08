@@ -33,7 +33,7 @@
 <script>
 import { componentMixins } from "../../component-mixins.js";
 import DsIcon from "../../icon.js";
-import { tokens } from '@kjun/tokens'
+import { tokens } from '@kjun-ui/tokens'
 import { SIZES_CORE, oneOf } from '../tokens'
 import fieldMixin from './fieldMixin'
 

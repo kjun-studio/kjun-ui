@@ -11,7 +11,7 @@ export function applySetupAdditions(platform: PlatformName, base: SetupFile[], a
     app.code = app.code.replace(from, to);
   };
   if (flags.feedback) {
-    const imported = `import { KjunProvider } from "@kjun/${platform}";`;
+    const imported = `import { KjunProvider } from "@kjun-ui/${platform}";`;
     replace(imported, imported + '\n' + additions.feedback.imports);
     if (platform === 'vue2') replace('components: { KjunProvider, Example }', `components: { KjunProvider, ${additions.feedback.registration} Example }`);
     const indent = ' '.repeat(platform === 'vue2' ? 4 : 6);

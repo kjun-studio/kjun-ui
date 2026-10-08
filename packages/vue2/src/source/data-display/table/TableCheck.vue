@@ -15,7 +15,7 @@
 
 <script>
 // A native checkbox (role, indeterminate, row click isolation) drawn like DsCheckbox sm.
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import DsIcon from "../../../icon.js";
 import { defaultIcons, withFallbackIcons } from "../../../../../../shared/package-runtime/icon-registry";
 import { componentIcons } from "../../../../../../shared/package-runtime/component-icons";

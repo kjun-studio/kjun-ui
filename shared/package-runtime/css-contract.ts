@@ -1,4 +1,4 @@
-import { coreColorRoles, domainColorRoles } from '@kjun/tokens';
+import { coreColorRoles, domainColorRoles } from '@kjun-ui/tokens';
 
 const variable = (role: string) => '--kjun-' + role.replace(/[A-Z]/g, letter => '-' + letter.toLowerCase());
 

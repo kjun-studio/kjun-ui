@@ -1,6 +1,6 @@
 import { usePopupFocusGuard } from "../../../shared/package-runtime/use-layer";
 import { useComboboxModel } from "../../../shared/package-runtime/combobox";
-import { type InputSize } from "@kjun/tokens";
+import { type InputSize } from "@kjun-ui/tokens";
 import {
 useEffect,
 useId,

@@ -1,4 +1,4 @@
-import type { CardElevation, CardPadding, CardRadius, CardSurface } from "@kjun/tokens";
+import type { CardElevation, CardPadding, CardRadius, CardSurface } from "@kjun-ui/tokens";
 import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 import { hasContent as present } from "../../../shared/package-runtime/content-presence";
 

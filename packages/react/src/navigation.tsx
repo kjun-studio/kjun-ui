@@ -1,4 +1,4 @@
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 import { Collapse } from "./collapse";
 import { useInitialTab, useAccordionState } from "../../../shared/package-runtime/navigation";
 import { useSelectionIndicator } from "./use-selection-indicator";

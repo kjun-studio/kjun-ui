@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { createLayerState } from '../../../shared/package-runtime/layer-state.ts';
 import { createPortalScope } from '../../../shared/package-runtime/portal-scope';
 import { installLayerKeyboard } from '../../../shared/package-runtime/layer-keyboard';

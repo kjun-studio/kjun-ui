@@ -1,6 +1,6 @@
 import { useRef, useState, type ReactNode } from "react";
 import { Image, View, type ImageSourcePropType } from "react-native";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { DsIcon } from "./button";
 import { KText, content } from "./internal";
 import { typeStyle } from "./typography";

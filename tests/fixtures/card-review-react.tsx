@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { KjunProvider, DsCard, DsButton, DsAlert, DsIconToggle, DsCopyButton } from '@kjun/react';
+import { KjunProvider, DsCard, DsButton, DsAlert, DsIconToggle, DsCopyButton } from '@kjun-ui/react';
 import { demoDomainColors, demoFont } from './typography-values';
 import { applyCardPalette, cardPalette, longCardTitle, type CardPaletteMode } from './card-review-values';
 applyCardPalette();

@@ -1,4 +1,4 @@
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 
 export type CurveName = 'easeLinear' | 'easeOut' | 'easeEmphasized' | 'easeIn';
 export const curveInfo: Record<CurveName, { label: string; use: string }> = {

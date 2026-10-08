@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { KjunProvider, DsCard, DsButton, DsImage, type DsCardProps } from '@kjun/react';
+import { KjunProvider, DsCard, DsButton, DsImage, type DsCardProps } from '@kjun-ui/react';
 import { applyDemoColors, demoPalettes, demoFont } from '../../shared/demo-colors';
 import { cardMediaSource } from '../../previews/catalog/example-tools';
 applyDemoColors('default');

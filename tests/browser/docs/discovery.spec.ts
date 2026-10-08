@@ -54,7 +54,7 @@ test('gallery covers all public components with packed thumbnails and a shared s
   await expect(page.locator('.gallery-card .platform-status, .gallery-card .device-status')).toHaveCount(0);
   await expect(page.locator('[data-component-card="DsTabPane"]')).toContainText('Tabs의 구성 요소');
   const manifest = await (await request.get('/previews/thumbnails/manifest.json')).json();
-  expect(manifest.renderer).toBe('@kjun/react');
+  expect(manifest.renderer).toBe('@kjun-ui/react');
   expect(Object.keys(manifest.images)).toHaveLength(components.length);
   expect(errors).toEqual([]);
 });

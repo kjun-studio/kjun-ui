@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { useState } from "react";
 import { type LayoutChangeEvent, type ViewStyle } from "react-native";
 import { type LayoutColumn, marketGeometry, nativeMarketLayout } from "../../../shared/package-runtime/market-layout";

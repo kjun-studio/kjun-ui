@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { DsIcon } from "./button";
 export interface DsChipProps { label: string; icon?: string; removable?: boolean; disabled?: boolean; size?: "sm" | "md" | "lg"; removeLabel?: string; onRemove?: () => void }
 export function DsChip({ label, icon, removable = false, disabled = false, size = "md", removeLabel, onRemove }: DsChipProps) {

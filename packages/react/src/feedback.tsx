@@ -6,7 +6,7 @@ import {
 createFeedbackController,
 type FeedbackRequest,
 type KjunFeedback,
-} from "@kjun/tokens";
+} from "@kjun-ui/tokens";
 import {
 useCallback,
 useEffect,
@@ -117,4 +117,4 @@ export function KjunFeedbackProvider({ children }: { children: ReactNode }) {
 }
 export type {
 ConfirmOptions,KjunFeedback,PromptOptions,ToastOptions
-} from "@kjun/tokens";
+} from "@kjun-ui/tokens";

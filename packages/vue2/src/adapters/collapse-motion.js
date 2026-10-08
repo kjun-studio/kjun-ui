@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 const motions = new WeakMap();
 export function stopCollapse(el) {
   const motion = motions.get(el);

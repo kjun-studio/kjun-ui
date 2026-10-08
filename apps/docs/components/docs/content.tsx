@@ -21,7 +21,7 @@ import componentContracts from "../../../../shared/component-guides.json";
 import packages from "@/lib/generated/packages.json";
 import entries from "@/lib/generated/component-catalog.json";
 import Link from "@/components/docs/doc-link";
-import { DsIcon as Icon } from "@kjun/react";
+import { DsIcon as Icon } from "@kjun-ui/react";
 import { Tokens } from "./tokens";
 import { componentGuides, componentNameFor, type PageId } from "@/lib/catalog";
 import { Playground } from "./playground";

@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { createRoot } from 'react-dom/client';
-import * as K from '@kjun/native';
+import * as K from '@kjun-ui/native';
 import { scopedColors } from './style-values';
 
 const options = [{ value: 'a', label: '사과' }, { value: 'b', label: '배', disabled: true }, { value: 'c', label: '체리' }, { value: 'd', label: '대추' }];

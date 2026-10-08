@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PanResponder, Platform, Pressable, View, type ViewStyle } from "react-native";
-import { tokens, createSliderDomain, sliderKey } from "@kjun/tokens";
+import { tokens, createSliderDomain, sliderKey } from "@kjun-ui/tokens";
 import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";

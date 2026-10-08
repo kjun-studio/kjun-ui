@@ -1,4 +1,4 @@
-import { createNumberDomain, quantityKeyAction, tokens } from "@kjun/tokens";
+import { createNumberDomain, quantityKeyAction, tokens } from "@kjun-ui/tokens";
 import fieldMixin from "../source/form/fieldMixin.js";
 export default {
   mixins: [fieldMixin],

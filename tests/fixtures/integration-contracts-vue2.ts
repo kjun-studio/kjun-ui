@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { KjunProvider, KjunFeedbackProvider, DsTable } from "@kjun/vue2";
+import { KjunProvider, KjunFeedbackProvider, DsTable } from "@kjun-ui/vue2";
 import { setRootValues } from "./style-values";
 
 setRootValues();

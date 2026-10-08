@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { componentMixins } from "../../component-mixins.js";
 import { SIZES_EXTENDED, oneOf } from '../tokens'
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, DsButton, DsInput, DsModal } from "@kjun/native";
+import { KjunProvider, DsButton, DsInput, DsModal } from "@kjun-ui/native";
 import { core, scoped } from "./color-contract-values";
 function App() {
   const [state, setState] = useState({ changed: false, override: false, open: false });

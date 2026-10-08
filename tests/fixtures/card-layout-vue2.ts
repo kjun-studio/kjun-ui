@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsCard, DsButton, DsBadge } from '@kjun/vue2';
+import { KjunProvider, DsCard, DsButton, DsBadge } from '@kjun-ui/vue2';
 import { applyDemoColors } from '../../shared/demo-colors';
 applyDemoColors('default');
 new Vue({

@@ -1,4 +1,4 @@
-import { createSliderDomain, sliderKey } from "@kjun/tokens";
+import { createSliderDomain, sliderKey } from "@kjun-ui/tokens";
 export default {
   props: { min: { type: Number, default: 0 }, max: { type: Number, default: 100 }, step: { type: Number, default: 1 }, disabled: { type: Boolean, default: false }, label: String, ariaLabel: String },
   data() { return { accepted: Array.isArray(this.value) ? [...this.value] : [this.value], dirty: false }; },

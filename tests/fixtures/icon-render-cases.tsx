@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { allIcons } from '@kjun/icons/all';
+import { allIcons } from '@kjun-ui/icons/all';
 import { appColors } from './style-values';
 export const iconRenderCases = Object.entries(allIcons).flatMap(([name, icon]) => [{ name, filled: false }, ...(icon.filled ? [{ name, filled: true }] : [])]);
 export function IconRenderCases({ K, native = false }: { K: any; native?: boolean }) {

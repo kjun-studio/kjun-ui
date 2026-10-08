@@ -1,5 +1,5 @@
 // These are consuming-project examples, bundled only after installing the .tgz files.
-import type { KjunFeedback } from "@kjun/tokens";
+import type { KjunFeedback } from "@kjun-ui/tokens";
 export type ExampleRenderer = (
   name: string,
   props?: Record<string, any>,

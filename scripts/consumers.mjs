@@ -49,22 +49,22 @@ async function verifyConsumer(dir) {
   });
   await writeFile(
     dir + "/consumer.tsx",
-    `import React from 'react';import Vue from 'vue';import VueUI from '@kjun/vue2';import {DsButton,DsInput,DsModal,KjunProvider} from '@kjun/react';import {DsButton as NativeButton,DsInput as NativeInput,DsModal as NativeModal,KjunProvider as NativeProvider} from '@kjun/native';import {tokens, type KjunColors} from '@kjun/tokens';
+    `import React from 'react';import Vue from 'vue';import VueUI from '@kjun-ui/vue2';import {DsButton,DsInput,DsModal,KjunProvider} from '@kjun-ui/react';import {DsButton as NativeButton,DsInput as NativeInput,DsModal as NativeModal,KjunProvider as NativeProvider} from '@kjun-ui/native';import {tokens, type KjunColors} from '@kjun-ui/tokens';
 Vue.use(VueUI);
 const sharedLength: 48 = tokens.dimension.value48;
 // @ts-expect-error Pre-release spacing names were removed without aliases.
 const retiredSpacing = tokens.spacing;
-import VuePlugin from '@kjun/vue2/plugin';
+import VuePlugin from '@kjun-ui/vue2/plugin';
 Vue.use(VuePlugin);
-import * as VueComponents from '@kjun/vue2';
+import * as VueComponents from '@kjun-ui/vue2';
 const vueButtonProps: VueComponents.DsButtonProps={size:'xl',variant:'danger-ghost'};
 const vueInputProps: VueComponents.DsInputProps={size:'md',value:'',errorMessage:null};
 // @ts-expect-error Vue's declared sizes must follow its runtime validator.
 const invalidVueSize: VueComponents.DsButtonProps={size:'xxl'};
 // @ts-expect-error Input has the three-step source size contract.
 const invalidVueInput: VueComponents.DsInputProps={size:'xl'};
-import * as ReactComponents from '@kjun/react';
-import * as NativeComponents from '@kjun/native';
+import * as ReactComponents from '@kjun-ui/react';
+import * as NativeComponents from '@kjun-ui/native';
 ${["VueComponents", "ReactComponents", "NativeComponents"]
   .map(
     (namespace) =>
@@ -82,9 +82,9 @@ const missingClipboard=<NativeComponents.DsCopyButton value="copy"/>;
 const oldNative=<NativeComponents.KjunProvider theme="product" colors={appColors}>Body</NativeComponents.KjunProvider>;
 const web=<KjunProvider><DsButton size="xl" variant="danger-ghost">Delete</DsButton><DsInput value="value" onChange={()=>{}}/><DsModal open={false} onOpenChange={()=>{}}>Body</DsModal></KjunProvider>;
 declare const appColors: KjunColors;
-declare const coreColors: import('@kjun/tokens').KjunCoreColors<import('react-native').ColorValue>;
+declare const coreColors: import('@kjun-ui/tokens').KjunCoreColors<import('react-native').ColorValue>;
 const minimalNative=<NativeProvider colors={coreColors}><NativeButton>Core colors</NativeButton></NativeProvider>;
-import {resolveKjunColors, type ResolvedKjunColors} from '@kjun/tokens';
+import {resolveKjunColors, type ResolvedKjunColors} from '@kjun-ui/tokens';
 const resolvedColors: ResolvedKjunColors=resolveKjunColors(appColors);
 const optionalRoleAfterResolution: string=resolvedColors.inputBorderFocus;
 ${["VueComponents", "ReactComponents", "NativeComponents"]
@@ -104,7 +104,7 @@ ${["cardBlueStart", "cardBlueEnd", "cardIndigoStart", "cardIndigoEnd", "cardIndi
   .map(
     (role) => `
 // @ts-expect-error Retired color names must not remain in the public role contract.
-const retired${role}: import('@kjun/tokens').ColorRole='${role}';
+const retired${role}: import('@kjun-ui/tokens').ColorRole='${role}';
 `,
   )
   .join("\n")}
@@ -158,7 +158,7 @@ if(tokens.button.heights.md!==40)throw new Error('Invalid token output');
     [
       "--input-type=module",
       "-e",
-      "import Vue from 'vue';import ui,{DsButton} from '@kjun/vue2';import plugin from '@kjun/vue2/plugin';import {tokens} from '@kjun/tokens';Vue.use(ui);if(plugin!==ui||Vue.version!=='2.6.14'||DsButton.props.size.default!=='md'||tokens.button.heights.md!==40)throw Error('consumer failed');",
+      "import Vue from 'vue';import ui,{DsButton} from '@kjun-ui/vue2';import plugin from '@kjun-ui/vue2/plugin';import {tokens} from '@kjun-ui/tokens';Vue.use(ui);if(plugin!==ui||Vue.version!=='2.6.14'||DsButton.props.size.default!=='md'||tokens.button.heights.md!==40)throw Error('consumer failed');",
     ],
     { cwd: dir, stdio: "inherit" },
   );
@@ -167,7 +167,7 @@ if(tokens.button.heights.md!==40)throw new Error('Invalid token output');
     [
       "--input-type=commonjs",
       "-e",
-      "const ui=require('@kjun/vue2');const plugin=require('@kjun/vue2/plugin');const {icons}=require('@kjun/tokens/icons');if(plugin!==ui.default||typeof plugin.install!=='function'||plugin.default!==undefined||!icons.check)throw Error('CommonJS subpath consumer failed');",
+      "const ui=require('@kjun-ui/vue2');const plugin=require('@kjun-ui/vue2/plugin');const {icons}=require('@kjun-ui/tokens/icons');if(plugin!==ui.default||typeof plugin.install!=='function'||plugin.default!==undefined||!icons.check)throw Error('CommonJS subpath consumer failed');",
     ],
     { cwd: dir, stdio: "inherit" },
   );

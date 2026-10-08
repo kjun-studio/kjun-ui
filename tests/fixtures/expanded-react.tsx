@@ -21,7 +21,7 @@ import {
   DsProgress,
   DsSkeleton,
   DsTooltip,
-} from "@kjun/react";
+} from "@kjun-ui/react";
 import {
   cssValues,
   scopedColors,

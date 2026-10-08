@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import * as K from '@kjun/react';
+import * as K from '@kjun-ui/react';
 import { applyDemoColors } from '../../shared/demo-colors';
 import { palette, auditColors } from './visual-reaudit-cases';
 import { AuditCases } from './visual-reaudit-common';

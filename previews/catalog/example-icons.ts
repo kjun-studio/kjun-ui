@@ -1,5 +1,5 @@
-import { tokens } from '@kjun/tokens';
-import { filledIcons } from '@kjun/tokens/icons';
+import { tokens } from '@kjun-ui/tokens';
+import { filledIcons } from '@kjun-ui/tokens/icons';
 import type { ExampleTools } from './example-tools';
 export function renderIconExample(name: string, tools: ExampleTools): any {
   const { h, settings, platform, get, set, action } = tools;

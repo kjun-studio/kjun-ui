@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import * as api from '@kjun/react';
+import * as api from '@kjun-ui/react';
 import { setRootValues } from './style-values';
 import { MotionCases } from './motion-cases';
 setRootValues(); document.documentElement.style.setProperty('--kjun-font', 'Arial');

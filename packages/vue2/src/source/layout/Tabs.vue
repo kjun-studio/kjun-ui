@@ -48,7 +48,7 @@ import { selectionIndicator } from "../../adapters/selection-indicator.js";
 import DsIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { oneOf } from '../tokens'
-import { tokens } from '@kjun/tokens'
+import { tokens } from '@kjun-ui/tokens'
 
 // tab-menu(컨텍스트 메뉴) long-press 발동 시간(ms)과 스크롤로 간주할 이동 허용치(px)
 const TAB_LONG_PRESS_MS = 500

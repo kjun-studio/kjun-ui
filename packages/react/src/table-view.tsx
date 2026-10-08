@@ -3,7 +3,7 @@ import { TableToolbar } from "./table-toolbar";
 import { TableGrid } from "./table-grid";
 import { TableCards } from "./table-cards";
 import { useEffect, useState, type KeyboardEvent } from "react";
-import { isComposingKey, tokens } from "@kjun/tokens";
+import { isComposingKey, tokens } from "@kjun-ui/tokens";
 import { DsButton } from "./button";
 import { TableCheck } from "./table-check";
 import { DsDataState,useQueryDisplay } from "./data-state";

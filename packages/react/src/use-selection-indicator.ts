@@ -1,4 +1,4 @@
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 import { useLayoutEffect, useRef } from 'react';
 
 // The controlled value remains the source of truth. Only the decorative background moves.

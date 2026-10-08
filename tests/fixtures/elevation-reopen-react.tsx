@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { DsButton, DsDrawer, DsModal, KjunFeedbackProvider, KjunProvider, useKjunFeedback } from '@kjun/react';
+import { DsButton, DsDrawer, DsModal, KjunFeedbackProvider, KjunProvider, useKjunFeedback } from '@kjun-ui/react';
 import { cssPalette } from './typography-values';
 
 cssPalette();

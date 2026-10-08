@@ -1,7 +1,7 @@
 import { typeStyle } from "./typography";
 import { Animated } from "react-native";
 import { useMotionValue } from "./motion";
-import { tokens, type InputSize } from "@kjun/tokens";
+import { tokens, type InputSize } from "@kjun-ui/tokens";
 import {
 createContext,
 useContext,

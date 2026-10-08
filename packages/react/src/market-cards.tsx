@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { DsDataState } from "./data-state";
 import { DsEmpty,DsSkeleton } from "./display";
 import {

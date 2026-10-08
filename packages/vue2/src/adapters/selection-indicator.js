@@ -1,4 +1,4 @@
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 // Vue owns its lifecycle; the observer only measures the existing button layout.
 export function selectionIndicator(root, marker, tabs = false) {
   let selected = null, bounds = '', disposed = false;

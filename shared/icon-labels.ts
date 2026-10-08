@@ -1,4 +1,4 @@
-// Preserved default-icon language. Shapes and supported names come from packed @kjun/icons.
+// Preserved default-icon language. Shapes and supported names come from packed @kjun-ui/icons.
 export const iconLabels: [string, string, ...string[]][] = [
   ['adjustments', '세로 조절', '설정', '필터'],
   ['adjustments-horizontal', '가로 조절', '설정', '필터'],

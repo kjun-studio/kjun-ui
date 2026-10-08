@@ -1,5 +1,5 @@
 import { loadIcon } from '../../shared/icon-data';
-import type { KjunIconRegistry } from '@kjun/icons';
+import type { KjunIconRegistry } from '@kjun-ui/icons';
 import type { PaletteName } from "../../shared/demo-config";
 import {
   exampleDefinition,

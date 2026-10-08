@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { isMarketIdentity, normalizeMarketColumns } from "../../../shared/package-runtime/market-layout";
 import { DsSkeleton } from "./display";
 import { MarketColumns, webMarketLayout } from "./market-layout";

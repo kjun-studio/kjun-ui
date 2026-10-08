@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 
 // Keep the unformatted displayed value: a target is never an animation's origin.
 export function createNumberMotion(apply: (value: number | string) => void) {

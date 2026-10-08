@@ -1,6 +1,6 @@
 import { createContext, type ReactNode, type RefObject } from "react";
 import { View } from "react-native";
-import { tokens, type InputSize } from "@kjun/tokens";
+import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { finePointer } from "./internal";
 
 export const CompoundControlContext = createContext<{

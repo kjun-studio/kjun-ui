@@ -1,5 +1,5 @@
 import { typeStyle } from "./typography";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { Children, Fragment, isValidElement, useState, type ReactNode } from "react";
 import { View, Platform, type TextStyle, type GestureResponderEvent, type LayoutChangeEvent } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";

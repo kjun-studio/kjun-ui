@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from './doc-link';
 import { useDocsPlatform, PlatformLoading } from './docs-platform';
 import { useCatalog } from './use-catalog';
-import { DsButton as Button, DsCard as Card } from '@kjun/react';
+import { DsButton as Button, DsCard as Card } from '@kjun-ui/react';
 import type { GuideCase } from '../../../../shared/visual-guides/types';
 import type { PaletteName, PlatformName } from '../../../../shared/demo-config';
 const repeatedDescriptions = new Set([

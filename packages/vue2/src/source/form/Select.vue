@@ -105,7 +105,7 @@ import { computeFieldMenuPosition } from '../utils/position'
 // 모바일 가상 키보드 상승 구간 동안 viewport resize/scroll에 의한 자동 닫힘을 보류하는 시간
 const VIEWPORT_KEYBOARD_GRACE_MS = 400
 
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 
 export default {
   components: { DsButton, DsIcon, DsSpinner },

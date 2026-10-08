@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import * as K from '@kjun/native';
+import * as K from '@kjun-ui/native';
 import { applyDemoColors, demoFont, demoPalettes } from '../../shared/demo-colors';
 import { RefreshButtonCases } from './refresh-button-cases';
 applyDemoColors(location.search.includes('dark') ? 'dark' : 'default');

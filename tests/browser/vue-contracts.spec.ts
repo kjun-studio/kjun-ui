@@ -1,4 +1,4 @@
-import { icons } from '@kjun/icons/defaults';
+import { icons } from '@kjun-ui/icons/defaults';
 import { exampleNames } from "../../shared/example-registry";
 import { test, expect } from "@playwright/test";
 import { openFixture } from "./packed-fixture";

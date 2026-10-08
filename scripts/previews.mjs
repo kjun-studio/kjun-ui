@@ -50,7 +50,7 @@ await writeFile(
   '@import url("./inter/index.css");\n@import url("./42dot-sans/index.css");\n@font-face{font-family:Pretendard;font-style:normal;font-weight:100 900;font-display:swap;src:url("./PretendardVariable.woff2") format("woff2-variations")}'
 );
 await copyFile(
-  modules + "/@kjun/tokens/dist/styles.css",
+  modules + "/@kjun-ui/tokens/dist/styles.css",
   out + "/components.css"
 );
 await writeFile(
@@ -68,13 +68,13 @@ const aliases = {
     modules + "/react-native-svg/lib/module/ReactNativeSVG.web.js",
 };
 for (const name of ["icons", "tokens", "vue2", "react", "native"])
-  aliases["@kjun/" + name] = modules + "/@kjun/" + name;
-aliases["@kjun/icons/defaults"] = modules + "/@kjun/icons/dist/defaults.js";
-aliases["@kjun/icons/metadata"] = modules + "/@kjun/icons/dist/metadata.js";
-aliases["@kjun/icons/all"] = modules + "/@kjun/icons/dist/all.js";
-aliases["@kjun/icons/icons"] = modules + "/@kjun/icons/dist/icons";
-for (const name of ["vue2", "react", "native"]) aliases["@kjun/" + name + "/styles.css"] = modules + "/@kjun/" + name + "/dist/styles.css";
-aliases["@kjun/tokens/icons"] = modules + "/@kjun/tokens/dist/icons.js";
+  aliases["@kjun-ui/" + name] = modules + "/@kjun-ui/" + name;
+aliases["@kjun-ui/icons/defaults"] = modules + "/@kjun-ui/icons/dist/defaults.js";
+aliases["@kjun-ui/icons/metadata"] = modules + "/@kjun-ui/icons/dist/metadata.js";
+aliases["@kjun-ui/icons/all"] = modules + "/@kjun-ui/icons/dist/all.js";
+aliases["@kjun-ui/icons/icons"] = modules + "/@kjun-ui/icons/dist/icons";
+for (const name of ["vue2", "react", "native"]) aliases["@kjun-ui/" + name + "/styles.css"] = modules + "/@kjun-ui/" + name + "/dist/styles.css";
+aliases["@kjun-ui/tokens/icons"] = modules + "/@kjun-ui/tokens/dist/icons.js";
 for (const entry of [
   "vue2",
   "react",

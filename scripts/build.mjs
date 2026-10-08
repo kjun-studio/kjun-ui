@@ -123,9 +123,9 @@ for (const name of ["tokens", "vue2", "react", "native"]) {
     banner: format === 'esm' ? { js: '"use client";' } : undefined,
   });
   if (name === "tokens") {
-    await writeFile(dir + '/dist/icons.js', "export { icons, filledIcons } from '@kjun/icons/defaults';\n");
-    await writeFile(dir + '/dist/icons.cjs', "const { icons, filledIcons } = require('@kjun/icons/defaults'); exports.icons = icons; exports.filledIcons = filledIcons;\n");
-    await writeFile(dir + '/dist/icons.d.ts', "export type { IconNode } from '@kjun/icons';\nexport { icons, filledIcons } from '@kjun/icons/defaults';\n");
+    await writeFile(dir + '/dist/icons.js', "export { icons, filledIcons } from '@kjun-ui/icons/defaults';\n");
+    await writeFile(dir + '/dist/icons.cjs', "const { icons, filledIcons } = require('@kjun-ui/icons/defaults'); exports.icons = icons; exports.filledIcons = filledIcons;\n");
+    await writeFile(dir + '/dist/icons.d.ts', "export type { IconNode } from '@kjun-ui/icons';\nexport { icons, filledIcons } from '@kjun-ui/icons/defaults';\n");
     await copyFile(dir + "/src/tokens.json", dir + "/dist/tokens.json");
   }
   if (name === "vue2") {

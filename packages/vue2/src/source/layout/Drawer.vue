@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { layerMotion } from "../../adapters/layer-motion.js";
 import DsIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";

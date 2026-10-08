@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 import { openFixture } from './packed-fixture';
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureMotion(next), next);
 const start = (page: Page, platform: string, scenario: string) => openFixture(page, platform, '?scenario=' + scenario, 'motion');

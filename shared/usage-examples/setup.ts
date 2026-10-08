@@ -7,7 +7,7 @@ export function usageSetupAdditions(platform: PlatformName, palette: PaletteName
   const native = platform === 'native';
   return {
     feedback: {
-      imports: `import { KjunFeedbackProvider } from "@kjun/${platform}";`,
+      imports: `import { KjunFeedbackProvider } from "@kjun-ui/${platform}";`,
       registration: platform === 'vue2' ? 'KjunFeedbackProvider,' : '',
       content: '<KjunFeedbackProvider>\n  <Example />\n</KjunFeedbackProvider>',
     },
@@ -29,14 +29,14 @@ export function usageSetup(platform: PlatformName, palette: PaletteName, usage: 
   const content = usage.feedback ? additions.feedback.content : '<Example />';
   const domainCode = usage.domainColors ? '\n' + additions.domainColors.file.code : '';
   if (platform === 'vue2') return [
-    { name: 'App.vue', code: `<template>\n  <KjunProvider>\n${indent(content, 4)}\n  </KjunProvider>\n</template>\n\n<script>\nimport { KjunProvider } from "@kjun/vue2";\n${feedbackImport}import Example from "./Example.vue";\nimport "@kjun/vue2/styles.css";\nimport "./kjun.css";\n\nexport default {\n  components: { KjunProvider, ${usage.feedback ? additions.feedback.registration + ' ' : ''}Example },\n};\n</script>\n` },
+    { name: 'App.vue', code: `<template>\n  <KjunProvider>\n${indent(content, 4)}\n  </KjunProvider>\n</template>\n\n<script>\nimport { KjunProvider } from "@kjun-ui/vue2";\n${feedbackImport}import Example from "./Example.vue";\nimport "@kjun-ui/vue2/styles.css";\nimport "./kjun.css";\n\nexport default {\n  components: { KjunProvider, ${usage.feedback ? additions.feedback.registration + ' ' : ''}Example },\n};\n</script>\n` },
     { name: 'kjun.css', code: css(palette) + domainCode },
   ];
   const native = platform === 'native';
   const domainImport = native && usage.domainColors ? additions.domainColors.imports + '\n' : '';
   const domainProp = native && usage.domainColors ? ' ' + additions.domainColors.prop : '';
   return [
-    { name: 'App.jsx', code: `import { KjunProvider } from "@kjun/${platform}";\n${feedbackImport}import Example from "./Example.jsx";\n${native ? 'import { appColors, appFont } from "./kjun";' : 'import "@kjun/react/styles.css";\nimport "./kjun.css";'}\n${domainImport}\nexport default function App() {\n  return (\n    <KjunProvider${native ? ' colors={appColors} fontFamily={appFont}' + domainProp : ''}>\n${indent(content, 6)}\n    </KjunProvider>\n  );\n}\n` },
+    { name: 'App.jsx', code: `import { KjunProvider } from "@kjun-ui/${platform}";\n${feedbackImport}import Example from "./Example.jsx";\n${native ? 'import { appColors, appFont } from "./kjun";' : 'import "@kjun-ui/react/styles.css";\nimport "./kjun.css";'}\n${domainImport}\nexport default function App() {\n  return (\n    <KjunProvider${native ? ' colors={appColors} fontFamily={appFont}' + domainProp : ''}>\n${indent(content, 6)}\n    </KjunProvider>\n  );\n}\n` },
     { name: native ? 'kjun.js' : 'kjun.css', code: (native ? `// 적용 프로젝트가 정하는 색상·서체 값입니다.\nexport const appColors = ${literal(demoPalettes[palette])};\n// 시스템 글꼴을 사용합니다. 사용자 정의 폰트는 로드한 이름으로 지정합니다.\nexport const appFont = undefined;\n` : css(palette)) + domainCode },
   ];
 }

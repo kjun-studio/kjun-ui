@@ -3,7 +3,7 @@ advanceQueryDisplay,
 initialQueryDisplay,
 queryDisplayStatus,
 type QueryDisplayProps,
-} from "@kjun/tokens";
+} from "@kjun-ui/tokens";
 import { Component,useState,type ErrorInfo,type ReactNode } from "react";
 import { DsButton } from "./button";
 import {

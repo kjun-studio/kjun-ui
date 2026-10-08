@@ -1,4 +1,4 @@
-# @kjun/native
+# @kjun-ui/native
 
 Shared KJUN UI geometry, state and interaction contracts. Your app supplies colors and fonts.
 
@@ -8,7 +8,7 @@ No CSS import is needed. Native Web is a preview; iOS/Android device verificatio
 
 Browser bundlers use the `browser` export and require React DOM matching React. This preview keeps Modal·Drawer content mounted during interrupted exits while their browser windows are reordered. The device entry has no React DOM dependency and retains the platform Modal host; browser results do not certify device window behavior.
 
-Project color and font setup: http://127.0.0.1:4173/styling.
+Project color and font setup: https://ui.kjun.dev/styling.
 
 Pre-release local packages; not published to a registry.
 
@@ -24,14 +24,14 @@ Disabled tabs block selection and auxiliary menu callbacks. Disabling or removin
 
 ## Icons
 
-Install the local `@kjun/icons` tarball together with this package and `@kjun/tokens`.
+Install the local `@kjun-ui/icons` tarball together with this package and `@kjun-ui/tokens`.
 Tabler 3.48.0 includes 5,166 outline and 1,054 filled icons. The existing 153 outline
 names and heart/star filled shapes remain available by default. Additional icons
 require an explicit import and Provider registration; `DsIcon`, `prefixIcon` and
 `suffixIcon` use the same registry.
 
 ```tsx
-import rocket from '@kjun/icons/icons/rocket';
+import rocket from '@kjun-ui/icons/icons/rocket';
 const projectIcons = { rocket };
 <KjunProvider colors={appColors} icons={projectIcons}>
   <DsIcon name="rocket" />
@@ -42,4 +42,4 @@ const projectIcons = { rocket };
 Registries merge by name and shape: defaults, parent Provider, then current Provider.
 Prop changes update descendants, including layers, without global registration.
 A missing filled shape uses the registered outline; unknown names use `help-circle`.
-Import `@kjun/icons/all` only when intentionally registering the complete set.
+Import `@kjun-ui/icons/all` only when intentionally registering the complete set.

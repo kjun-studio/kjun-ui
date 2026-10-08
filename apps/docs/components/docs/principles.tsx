@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { DsIcon as Icon } from "@kjun/react";
+import { DsIcon as Icon } from "@kjun-ui/react";
 import { DataTable } from "./data-table";
 
 type Principle = readonly [title: string, body: string];

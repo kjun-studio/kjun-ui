@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { DocsPlatformProvider } from '@/components/docs/docs-platform';
 import { DocsKjunProvider } from '@/components/docs/kjun-provider';
 import './globals.css';
-import '@kjun/react/styles.css';
+import '@kjun-ui/react/styles.css';
 import './kjun.css';
 import './docs.css';
 import './docs-content.css';

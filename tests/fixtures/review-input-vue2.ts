@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { KjunProvider, DsCombobox, DsSelect, DsSearchInput } from "@kjun/vue2";
+import { KjunProvider, DsCombobox, DsSelect, DsSearchInput } from "@kjun-ui/vue2";
 import { setRootValues } from "./style-values";
 setRootValues();
 const params = new URLSearchParams(location.search), kind = params.get("control") || "combo", zero = params.has("zero");

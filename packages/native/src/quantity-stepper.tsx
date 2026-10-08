@@ -2,7 +2,7 @@ import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { useEffect, useRef, useState } from "react";
 import { Platform, TextInput, View } from "react-native";
-import { createNumberDomain, quantityKeyAction, tokens, type InputSize, type InputKeyEvent } from "@kjun/tokens";
+import { createNumberDomain, quantityKeyAction, tokens, type InputSize, type InputKeyEvent } from "@kjun-ui/tokens";
 import { DsButton } from "./button";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
 import { IconFallbacks } from "../../../shared/package-runtime/icon-context";

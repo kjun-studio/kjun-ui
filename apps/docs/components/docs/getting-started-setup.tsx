@@ -68,7 +68,7 @@ export function GettingStartedExtras({ platform }: { platform: PlatformName }) {
     <section id="icon-setup" className="setup-extra">
       <h3>추가 아이콘 등록</h3>
       <p className="body-copy">세 플랫폼 모두 기본 선형 153개와 heart·star 채움형을 바로 사용할 수 있습니다. 추가 아이콘은 필요한 이름만 import한 뒤 KjunProvider의 <code>icons</code>에 등록합니다. <Link href="/icons">전체 아이콘 목록</Link>에서 선택한 플랫폼의 등록 예제를 복사하세요.</p>
-      <CodeBlock label="개별 아이콘 import" code={"import rocket from '@kjun/icons/icons/rocket';\nconst projectIcons = { rocket };"} />
+      <CodeBlock label="개별 아이콘 import" code={"import rocket from '@kjun-ui/icons/icons/rocket';\nconst projectIcons = { rocket };"} />
       <CodeBlock label="Provider 등록" code={platform === 'vue2'
         ? '<KjunProvider :icons="projectIcons">\n  <DsButton prefix-icon="rocket">시작</DsButton>\n</KjunProvider>'
         : `<KjunProvider ${platform === 'native' ? 'colors={appColors} ' : ''}icons={projectIcons}>\n  <DsButton prefixIcon="rocket">시작</DsButton>\n</KjunProvider>`} />

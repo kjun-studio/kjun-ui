@@ -1,5 +1,5 @@
 import { setRootValues } from './style-values';
-import { domainColorRoles, type KjunDomainColors } from '@kjun/tokens';
+import { domainColorRoles, type KjunDomainColors } from '@kjun-ui/tokens';
 export const domainColors = {
   ...Object.fromEntries(domainColorRoles.map(role => [role, '#445566'])),
   favorite: '#D08812', interest: '#B03368',

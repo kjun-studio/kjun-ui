@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { DsButton as Button } from '@kjun/react';
+import { DsButton as Button } from '@kjun-ui/react';
 import type { DesignCase, DesignSide } from '../../../../shared/visual-guides/design-cases';
 
 interface Asset {

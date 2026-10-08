@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { icons, filledIcons } from '@kjun/tokens/icons';
-import { tokens } from '@kjun/tokens';
+import { icons, filledIcons } from '@kjun-ui/tokens/icons';
+import { tokens } from '@kjun-ui/tokens';
 import { setIconFilled, setIconSize, iconCard, iconExample, chooseIcon, launchIcon } from './icons-docs-helpers';
 import { changePlatform, clipboard } from './motion-docs-helpers';
 import { iconPageSize } from './docs-data';

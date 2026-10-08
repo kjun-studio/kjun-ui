@@ -1,4 +1,4 @@
-export type { KjunIconDefinition, KjunIconRegistry } from "@kjun/icons";
+export type { KjunIconDefinition, KjunIconRegistry } from "@kjun-ui/icons";
 export { KjunProvider } from "./provider";
 export type { KjunProviderProps } from "./provider";
 export { DsButton, DsIcon } from "./button";
@@ -15,7 +15,7 @@ export type {
   ButtonSize,
   InputSize,
   ButtonVariant,
-} from "@kjun/tokens";
+} from "@kjun-ui/tokens";
 
 export * from "./display";
 
@@ -139,4 +139,4 @@ export * from "./range-input";
 export * from "./quantity-stepper";
 export * from "./time-picker";
 
-export type { ShadowLayer, ElevationRole, CardElevation } from "@kjun/tokens";
+export type { ShadowLayer, ElevationRole, CardElevation } from "@kjun-ui/tokens";

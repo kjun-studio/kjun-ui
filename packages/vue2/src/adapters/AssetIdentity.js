@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import DsSkeleton from "../source/data-display/Skeleton.vue";
 
 export default {

@@ -1,4 +1,4 @@
-import type { KjunColors } from "@kjun/tokens";
+import type { KjunColors } from "@kjun-ui/tokens";
 import { core } from "./color-contract-values";
 export { cssValues } from "./style-values";
 

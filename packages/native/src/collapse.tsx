@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { Animated, View } from 'react-native';
 import { useReducedMotion } from './internal';

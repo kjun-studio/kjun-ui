@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { DsCard as Card } from '@kjun/react';
+import { DsCard as Card } from '@kjun-ui/react';
 import coverage from '@/lib/generated/coverage.json';
 import type { Platform, RunSummary } from '../../../../shared/accessibility-guides/model';
 export function executionTime(value: string) {

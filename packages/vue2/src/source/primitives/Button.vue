@@ -25,7 +25,7 @@
 <script>
 import DsIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 import { SIZES_EXTENDED, oneOf } from '../tokens'
 
 export default {

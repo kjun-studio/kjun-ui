@@ -15755,7 +15755,7 @@
       },
       {
         "name": "sort",
-        "type": "import('@kjun/tokens').TableSort | null",
+        "type": "import('@kjun-ui/tokens').TableSort | null",
         "required": false,
         "default": "—",
         "description": ""
@@ -17685,7 +17685,7 @@
     "vue2": [
       {
         "name": "icons",
-        "type": "import('@kjun/icons').KjunIconRegistry | null",
+        "type": "import('@kjun-ui/icons').KjunIconRegistry | null",
         "required": false,
         "default": "null",
         "description": ""

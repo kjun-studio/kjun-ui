@@ -1,3 +1,3 @@
-import * as api from '@kjun/native';
+import * as api from '@kjun-ui/native';
 import { mountTokenFollowup } from './token-followup-common';
 mountTokenFollowup(api, true);

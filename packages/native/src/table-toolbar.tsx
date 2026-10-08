@@ -1,5 +1,5 @@
 import { typeStyle } from "./typography";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import type { TableToolbarProps } from "../../../shared/package-runtime/table-presentation";
 import { DsButton } from "./button";
 import { DsInput } from "./input";

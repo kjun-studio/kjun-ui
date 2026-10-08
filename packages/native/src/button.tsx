@@ -6,7 +6,7 @@ import { CardActionsContext } from "./card-actions-context";
 import { AlertActionsContext } from "./alert-actions-context";
 import { useActionSize } from "../../../shared/package-runtime/action-size";
 import { DataStateContentContext } from "./data-state-context";
-import { tokens,type ButtonSize,type ButtonVariant } from "@kjun/tokens";
+import { tokens,type ButtonSize,type ButtonVariant } from "@kjun-ui/tokens";
 import { useIcon } from "../../../shared/package-runtime/icon-context";
 import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
 import {

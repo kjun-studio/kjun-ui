@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { KjunProvider, DsTable, DsButton, DsInput } from '@kjun/native';
+import { KjunProvider, DsTable, DsButton, DsInput } from '@kjun-ui/native';
 import { applyDemoColors, demoPalettes } from '../../shared/demo-colors';
 applyDemoColors('default');
 const columns = [{ key: 'name', label: '이름' }], data = [{ id: 1, name: '문서' }];

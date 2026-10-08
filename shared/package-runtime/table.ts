@@ -1,5 +1,5 @@
-import { nextTableSort, type TableSort, type QueryDisplayProps } from "@kjun/tokens";
-export type { TableSort } from "@kjun/tokens";
+import { nextTableSort, type TableSort, type QueryDisplayProps } from "@kjun-ui/tokens";
+export type { TableSort } from "@kjun-ui/tokens";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 export interface TableColumn<Row extends object = Record<string, unknown>> {

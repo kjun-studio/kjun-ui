@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Slider, SliderTrack, SliderThumb, Label, SliderOutput } from "react-aria-components";
-import { createSliderDomain } from "@kjun/tokens";
+import { createSliderDomain } from "@kjun-ui/tokens";
 export interface DsSliderProps {
   value: number;
   min?: number;

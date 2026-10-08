@@ -2,9 +2,9 @@
 import Link from '@/components/docs/doc-link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { DsInput as Input } from '@kjun/react';
-import { DsButton as Button } from '@kjun/react';
-import { DsCard as Card } from '@kjun/react';
+import { DsInput as Input } from '@kjun-ui/react';
+import { DsButton as Button } from '@kjun-ui/react';
+import { DsCard as Card } from '@kjun-ui/react';
 import { categories, components, categoryFor, searchDocuments, type DiscoveryDocument } from '@/lib/discovery';
 
 function GalleryCard({ document }: { document: DiscoveryDocument }) {

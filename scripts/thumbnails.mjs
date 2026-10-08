@@ -16,7 +16,7 @@ const documents = index.documents.filter(document => document.component);
 if (presentations.length !== documents.length || new Set(presentations.map(s => s.name)).size !== documents.length || documents.some(d => !presentations.some(s => s.name === d.component))) throw Error('Presentation definitions must cover each public component exactly once.');
 if (new Set(documents.map(d => d.thumbnail)).size !== documents.length) throw Error('Each component must have its own thumbnail URL.');
 const consumer = await assertCurrentConsumer();
-const packages = consumer.manifest.filter(pkg => ['@kjun/react', '@kjun/tokens'].includes(pkg.name));
+const packages = consumer.manifest.filter(pkg => ['@kjun-ui/react', '@kjun-ui/tokens'].includes(pkg.name));
 const built = await presentationFiles(root, consumer);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const fingerprint = createHash('sha256');
@@ -75,7 +75,7 @@ if (await validCache()) {
   let browser;
   try {
     browser = await chromium.launch({ headless: true });
-    const manifest = { fingerprint: digest, renderer: '@kjun/react', packages, capture, captureProfiles, dimensions, images: {}, overviewImages: {}, scenes: {} };
+    const manifest = { fingerprint: digest, renderer: '@kjun-ui/react', packages, capture, captureProfiles, dimensions, images: {}, overviewImages: {}, scenes: {} };
     for (const scene of scenes) {
       const capture = captureFor(scene);
       const context = await browser.newContext({ viewport: { width: capture.width, height: capture.height }, deviceScaleFactor: capture.deviceScaleFactor, reducedMotion: 'reduce', locale: 'ko-KR', timezoneId: 'Asia/Seoul' });

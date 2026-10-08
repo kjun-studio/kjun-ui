@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { createNumberDomain, quantityKeyAction, tokens, type InputSize } from "@kjun/tokens";
+import { createNumberDomain, quantityKeyAction, tokens, type InputSize } from "@kjun-ui/tokens";
 import { DsButton } from "./button";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
 import { IconFallbacks } from "../../../shared/package-runtime/icon-context";

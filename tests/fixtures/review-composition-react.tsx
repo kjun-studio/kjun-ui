@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { KjunProvider, DsButton, DsInput, DsPopover, DsMarketSimpleList, DsMarketCards, DsSearchInput } from '@kjun/react';
+import { KjunProvider, DsButton, DsInput, DsPopover, DsMarketSimpleList, DsMarketCards, DsSearchInput } from '@kjun-ui/react';
 import { setRootValues } from './style-values';
 import { SearchContracts } from './review-composition-search';
 setRootValues();

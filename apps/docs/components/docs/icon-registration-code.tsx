@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { DsButton } from '@kjun/react';
+import { DsButton } from '@kjun-ui/react';
 import { exampleSource, type ExampleSources } from '../../../../shared/example-code';
 import type { IconSelection } from '../../../../shared/icon-catalog';
 import type { PlatformName } from '../../../../shared/demo-config';

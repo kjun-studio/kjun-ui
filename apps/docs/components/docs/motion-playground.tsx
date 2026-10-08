@@ -1,12 +1,12 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { DsButton as Button, DsIcon as Icon, DsTabs, DsTabPane } from '@kjun/react';
+import { DsButton as Button, DsIcon as Icon, DsTabs, DsTabPane } from '@kjun-ui/react';
 import Link from './doc-link';
 import { useDocsPlatform, PlatformLoading } from './docs-platform';
 import { useCatalog } from './use-catalog';
 import { styleMotionPreview, setPreviewClock } from './motion-preview-layout';
 import { useMotionSpeed } from './motion-speed';
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 import { motionScenarios } from '../../../../shared/motion-examples';
 import type { PlatformName } from '../../../../shared/demo-config';
 

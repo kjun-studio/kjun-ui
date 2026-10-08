@@ -2,9 +2,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from './doc-link';
-import { DsInput as Input } from '@kjun/react';
-import { DsButton as Button } from '@kjun/react';
-import { DsCard as Card } from '@kjun/react';
+import { DsInput as Input } from '@kjun-ui/react';
+import { DsButton as Button } from '@kjun-ui/react';
+import { DsCard as Card } from '@kjun-ui/react';
 import { categories, components, searchDocuments } from '@/lib/discovery';
 import coverage from '@/lib/generated/coverage.json';
 import { Availability, CoverageList, platforms, platformLabels } from './coverage-list';

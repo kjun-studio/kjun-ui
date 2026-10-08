@@ -8,7 +8,7 @@ import { iconValidationSelections, iconScenarios } from '../shared/icon-examples
 import { validateSettings, exampleDefinition } from '../shared/example-registry.ts';
 import { searchDocuments } from '../shared/docs-search.mjs';
 const packed = createRequire(new URL('../apps/docs/package.json', import.meta.url));
-const { icons, filledIcons } = packed('@kjun/tokens/icons'), { tokens } = packed('@kjun/tokens');
+const { icons, filledIcons } = packed('@kjun-ui/tokens/icons'), { tokens } = packed('@kjun-ui/tokens');
 const catalog = createIconCatalog(icons, filledIcons);
 const { documents } = JSON.parse(readFileSync('apps/docs/lib/generated/discovery.json'));
 test('icon labels exactly cover packed names; shared aliases are valid', () => {

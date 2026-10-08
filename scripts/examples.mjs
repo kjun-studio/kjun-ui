@@ -88,7 +88,7 @@ function renderExample(h, values, set, feedback, settings, domainColors = {}) {
 }`;
 }
 export function previewSource(template, platform) {
-  let source = template.replace('/* ICON_IMPORTS */', '').replace('/* ICON_PROVIDER */', platform === 'vue2' ? 'props: { icons: this.icons }' : 'icons={props.icons}').replace(/import "@kjun\/(?:vue2|react)\/styles\.css";/g, '').replace('const settings = __KJUN_SETTINGS__;', platform === 'vue2' ? 'const settings = this.settings;' : '')
+  let source = template.replace('/* ICON_IMPORTS */', '').replace('/* ICON_PROVIDER */', platform === 'vue2' ? 'props: { icons: this.icons }' : 'icons={props.icons}').replace(/import "@kjun-ui\/(?:vue2|react)\/styles\.css";/g, '').replace('const settings = __KJUN_SETTINGS__;', platform === 'vue2' ? 'const settings = this.settings;' : '')
     .replaceAll('__KJUN_VALUES__', platform === 'vue2' ? 'this.initialValues || {}' : 'initialValues || {}')
     .replace('/* PARAMS */', '{ settings, initialValues, observer }')
     .replace('/* PAGE_PARAMS */', 'props')
@@ -121,7 +121,7 @@ export async function generateExamples() {
       const foundation = foundationNames.includes(name)
         ? (await read('previews/templates/foundation-' + platform + '.txt')).replace('__KJUN_FOUNDATION_RULES__', (await read('shared/foundation-layout.json')).trim()) + '\n'
         : '';
-      const iconImports = name.startsWith('GuideIcon') ? 'import { tokens } from "@kjun/tokens";\nimport { filledIcons } from "@kjun/tokens/icons";\n' : '';
+      const iconImports = name.startsWith('GuideIcon') ? 'import { tokens } from "@kjun-ui/tokens";\nimport { filledIcons } from "@kjun-ui/tokens/icons";\n' : '';
       let source = template.replace('/* MODULE */', iconImports + foundation + recipe).replaceAll('__KJUN_NAME__', name);
       if (name === 'GuideIconSelection') {
         source = '/* ICON_IMPORTS */\n' + source;

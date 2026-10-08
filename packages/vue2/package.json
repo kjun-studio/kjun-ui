@@ -1,7 +1,19 @@
 {
-  "name": "@kjun/vue2",
+  "name": "@kjun-ui/vue2",
   "version": "0.3.0",
   "license": "MIT",
+  "homepage": "https://ui.kjun.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kjun-studio/kjun-ui.git",
+    "directory": "packages/vue2"
+  },
+  "bugs": {
+    "url": "https://github.com/kjun-studio/kjun-ui/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "KJUN UI components for Vue 2 with shared geometry and interaction contracts.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -39,8 +51,8 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@kjun/tokens": "0.3.0",
-    "@kjun/icons": "0.3.0"
+    "@kjun-ui/tokens": "0.3.0",
+    "@kjun-ui/icons": "0.3.0"
   },
   "peerDependencies": {
     "vue": "^2.6.14"

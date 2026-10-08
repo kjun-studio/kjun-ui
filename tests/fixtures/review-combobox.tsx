@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { DsCombobox } from "@kjun/react";
+import type { DsCombobox } from "@kjun-ui/react";
 
 export function ComboboxCase({ Control }: { Control: typeof DsCombobox }) {
   const dynamic = location.search.includes("dynamic");

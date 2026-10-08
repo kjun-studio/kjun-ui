@@ -52,7 +52,7 @@ export async function sourceFingerprint(base = root) {
 }
 async function packageFiles(base) {
   return Object.fromEntries(await Promise.all(packageNames.map(async name => [
-    '@kjun/' + name, await files(resolve(base, 'packages', name), ['dist', 'package.json', 'README.md']),
+    '@kjun-ui/' + name, await files(resolve(base, 'packages', name), ['dist', 'package.json', 'README.md']),
   ])));
 }
 export async function beginPackageBuild(base = root) {
@@ -73,7 +73,7 @@ async function verifyTarballs(base, manifest) {
   if (manifest.length !== packageNames.length || new Set(manifest.map(p => p.name)).size !== packageNames.length)
     fail('incomplete package manifest');
   for (const name of packageNames) {
-    const item = manifest.find(p => p.name === '@kjun/' + name);
+    const item = manifest.find(p => p.name === '@kjun-ui/' + name);
     if (!item) fail('missing package: ' + name);
     const bytes = await readFile(resolve(base, 'artifacts', item.file));
     const integrity = 'sha512-' + createHash('sha512').update(bytes).digest('base64');

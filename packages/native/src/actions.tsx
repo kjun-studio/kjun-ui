@@ -1,5 +1,5 @@
 import { typeStyle } from "./typography";
-import { tokens,type ButtonSize } from "@kjun/tokens";
+import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
 import { Platform,ScrollView,View,type ColorValue } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";

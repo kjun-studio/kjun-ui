@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import type { KjunIconRegistry } from '@kjun/icons';
+import type { KjunIconRegistry } from '@kjun-ui/icons';
 import { loadIcon, loadIconCatalog } from '../../../../shared/icon-data';
 import type { IconEntry } from '../../../../shared/icon-catalog';
 export function useIconCatalogData() {

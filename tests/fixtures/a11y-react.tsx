@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import * as ui from '@kjun/react';
+import * as ui from '@kjun-ui/react';
 import { setRootValues } from './style-values';
 import { AccessibilityCase } from './a11y-cases';
 setRootValues();

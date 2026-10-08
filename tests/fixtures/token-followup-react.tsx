@@ -1,3 +1,3 @@
-import * as api from '@kjun/react';
+import * as api from '@kjun-ui/react';
 import { mountTokenFollowup } from './token-followup-common';
 mountTokenFollowup(api, false);

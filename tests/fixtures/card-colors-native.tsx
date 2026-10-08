@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, DsCard, DsButton, type DsCardProps } from "@kjun/native";
+import { KjunProvider, DsCard, DsButton, type DsCardProps } from "@kjun-ui/native";
 import { cardColors } from "./card-colors-values";
 
 function App() {

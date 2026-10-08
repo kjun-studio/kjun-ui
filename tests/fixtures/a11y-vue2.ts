@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import * as ui from '@kjun/vue2';
+import * as ui from '@kjun-ui/vue2';
 import { setRootValues } from './style-values';
 setRootValues();
 const target = new URLSearchParams(location.search).get('component') || 'DsInput';

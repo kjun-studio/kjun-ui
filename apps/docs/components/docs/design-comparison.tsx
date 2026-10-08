@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState } from 'react';
-import { DsTabs, DsTabPane } from '@kjun/react';
+import { DsTabs, DsTabPane } from '@kjun-ui/react';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from './disclosure';
 import { designCases, designSections, designScenario, designWidths, type DesignCase } from '../../../../shared/visual-guides/design-cases';
 import { usageGuideHref } from '../../../../shared/document-navigation';

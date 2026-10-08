@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 /**
  * 플로팅 요소(툴팁·팝오버) 위치 계산 — fixed 좌표계 기준.
  *

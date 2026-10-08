@@ -56,7 +56,7 @@ export async function compileEntries(platform, entries) {
     mainFields: ['browser', 'module', 'main'], resolveExtensions: ['.web.js', '.web.tsx', '.tsx', '.ts', '.js', '.jsx', '.json'],
     define: { 'process.env.NODE_ENV': '"production"', __DEV__: 'false', global: 'globalThis' },
   });
-  if (!Object.keys(result.metafile.inputs).some(path => path.includes('kjun-consumer-') && path.includes('@kjun/' + platform))) throw Error('Export checks did not consume installed packages.');
+  if (!Object.keys(result.metafile.inputs).some(path => path.includes('kjun-consumer-') && path.includes('@kjun-ui/' + platform))) throw Error('Export checks did not consume installed packages.');
   for (const id of Object.keys(entries)) await writeFile(resolve(directory, id + '.html'), `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/fonts/fonts.css">${platform === 'native' ? '' : `<link rel="stylesheet" href="./${id}.css">`}<style>body{margin:24px}</style></head><body><div id="root"></div><script type="module" src="./${id}.js"></script></body></html>`);
 }
 export async function verifyExampleConsumers(mode = 'full') {

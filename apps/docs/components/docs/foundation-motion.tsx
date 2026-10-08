@@ -1,6 +1,6 @@
 'use client';
 import type { ReactNode } from 'react';
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 import Link from './doc-link';
 import { DataTable } from './data-table';
 import { MotionPlayground } from './motion-playground';

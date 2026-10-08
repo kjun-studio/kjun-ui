@@ -1,6 +1,6 @@
 'use client';
 import { createContext, useContext, useId, useState, type HTMLAttributes } from 'react';
-import { DsButton, type DsButtonProps } from '@kjun/react';
+import { DsButton, type DsButtonProps } from '@kjun-ui/react';
 
 const Context = createContext<{ open: boolean; change(open: boolean): void; id: string } | null>(null);
 function useDisclosure() {

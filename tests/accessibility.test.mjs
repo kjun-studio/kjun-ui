@@ -27,7 +27,7 @@ test('documentation rejects missing platforms/items, invented API/check IDs and 
 function record() {
   const date = '2026-09-14T03:00:00.000Z';
   return { schemaVersion: 1, id: 'a11y-20260914T030000000Z-12345678', startedAt: date, finishedAt: date, definitionHash: 'hash',
-    environment: { node: 'v24', os: 'test fixture only', playwright: 'test fixture only' }, packages: [{ name: '@kjun/react', version: '0.2.0', integrity: 'hash' }],
+    environment: { node: 'v24', os: 'test fixture only', playwright: 'test fixture only' }, packages: [{ name: '@kjun-ui/react', version: '0.2.0', integrity: 'hash' }],
     devices: { ios: 'not-run', android: 'not-run' }, screenReader: 'not-run',
     results: defs.map(def => ({ ...resultFor(def), startedAt: def.applicable ? date : null, finishedAt: def.applicable ? date : null })) };
 }

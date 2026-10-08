@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { DsButton as Button } from '@kjun/react';
+import { DsButton as Button } from '@kjun-ui/react';
 import { defaultFigureDescription, type FigureSpec } from '../../../../shared/visual-guides/types';
 interface FigureAsset {
   src: string;

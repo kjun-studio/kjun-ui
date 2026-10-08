@@ -1,6 +1,6 @@
 'use client';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { DsButton, DsDrawer } from '@kjun/react';
+import { DsButton, DsDrawer } from '@kjun-ui/react';
 
 const Context = createContext<{
   mobile: boolean; open: boolean; openMobile: boolean;

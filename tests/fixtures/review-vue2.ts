@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Kjun, { KjunProvider, DsFormGroup, DsTimePicker, DsModal, DsButton } from "@kjun/vue2";
+import Kjun, { KjunProvider, DsFormGroup, DsTimePicker, DsModal, DsButton } from "@kjun-ui/vue2";
 import { setRootValues } from "./style-values";
 setRootValues();
 Vue.use(Kjun);

@@ -1,5 +1,5 @@
-import { tokens } from '@kjun/tokens';
-import { icons, filledIcons } from '@kjun/tokens/icons';
+import { tokens } from '@kjun-ui/tokens';
+import { icons, filledIcons } from '@kjun-ui/tokens/icons';
 import type { ExampleControl } from './example-registry';
 import type { GuideCase } from './visual-guides/types';
 import type { IconSelection } from './icon-catalog';

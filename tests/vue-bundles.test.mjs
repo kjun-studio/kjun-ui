@@ -16,17 +16,17 @@ test("a packed Vue named import excludes unrelated UI, while either plugin entry
     return result.outputFiles[0];
   };
   const [button, all, plugin] = await Promise.all([
-    bundle("import {DsButton} from '@kjun/vue2'; console.log(DsButton);"),
-    bundle("import * as ui from '@kjun/vue2'; console.log(ui);"),
-    bundle("import plugin from '@kjun/vue2/plugin'; console.log(plugin);"),
+    bundle("import {DsButton} from '@kjun-ui/vue2'; console.log(DsButton);"),
+    bundle("import * as ui from '@kjun-ui/vue2'; console.log(ui);"),
+    bundle("import plugin from '@kjun-ui/vue2/plugin'; console.log(plugin);"),
   ]);
   assert.doesNotMatch(button.text, /ds-table-query-state|kjun-toast-stack|ds-modal-overlay/);
   assert.ok(button.contents.length < all.contents.length * .45, "Button must not pull in most of the UI library");
   assert.ok(gzipSync(button.contents).length < gzipSync(all.contents).length * .45);
   assert.match(plugin.text, /ds-table-query-state/);
   const require = createRequire(directory + "/package.json");
-  const ui = require("@kjun/vue2");
-  assert.equal(require("@kjun/vue2/plugin"), ui.default, "CJS entries share component identities");
+  const ui = require("@kjun-ui/vue2");
+  assert.equal(require("@kjun-ui/vue2/plugin"), ui.default, "CJS entries share component identities");
   const registered = new Map();
   ui.default.install({ component: (name, component) => registered.set(name, component) });
   const publicNames = Object.keys(ui).filter(name => /^(Ds|Kjun)/.test(name));

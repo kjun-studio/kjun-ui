@@ -35,7 +35,7 @@ test("design cases resolve recipes separately from public component destinations
 
 test("every before/after image has packed provenance and in-bounds annotations at its declared width", async () => {
   const manifest = await read("apps/docs/public/previews/design-figures/manifest.json");
-  assert.deepEqual(manifest.renderers, ["@kjun/vue2", "@kjun/react", "@kjun/native"]);
+  assert.deepEqual(manifest.renderers, ["@kjun-ui/vue2", "@kjun-ui/react", "@kjun-ui/native"]);
   assert.equal(Object.keys(manifest.figures).length, 120);
   assert.match(manifest.fingerprint, /^[a-f0-9]{64}$/);
   for (const platform of ["vue2", "react", "native"]) for (const item of designCases) for (const width of designWidths) for (const side of ["before", "after"]) {

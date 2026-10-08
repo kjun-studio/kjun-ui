@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { KjunProvider } from '@kjun/react';
+import { KjunProvider } from '@kjun-ui/react';
 import { applyDemoColors } from '../../shared/demo-colors';
 import { actions } from './actions';
 import { inputs } from './inputs';

@@ -1,7 +1,7 @@
 import { FieldClear } from "./field-clear";
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
-import { tokens,type InputSize } from "@kjun/tokens";
+import { tokens,type InputSize } from "@kjun-ui/tokens";
 import {
 Children,
 cloneElement,

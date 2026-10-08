@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 
 const labels = ['사용 원칙', '속도 곡선·이동 거리', '전환 시간', '실제 동작 예제', '연속 조작', '동작 줄이기'];
 for (const width of [390, 1280, 1440]) {

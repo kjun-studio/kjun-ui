@@ -12,7 +12,7 @@ const hash = data => createHash("sha256").update(data).digest("hex");
 const platforms = ["vue2", "react", "native"], sides = ["before", "after"];
 const packages = await read("artifacts/manifest.json"), consumer = await assertCurrentConsumer();
 for (const platform of platforms) {
-  const name = "@kjun/" + platform;
+  const name = "@kjun-ui/" + platform;
   const installed = await read(resolve(consumer.directory, "node_modules", name, "package.json"));
   if (installed.name !== name || !consumer.packages[name]?.startsWith("file:") || !packages.some(p => p.name === name && p.version === installed.version))
     throw Error("Design figures require installed tarballs: " + name);
@@ -81,7 +81,7 @@ else {
       if ((index + 1) % 12 === 0) console.log(`Design capture ${index + 1}/${expected.length}`);
     }
     if (errors.length) throw Error(errors.join("\n"));
-    await writeFile(directory + "/manifest.json", JSON.stringify({ fingerprint: digest, renderers: platforms.map(p => "@kjun/" + p), packages, figures }, null, 2) + "\n");
+    await writeFile(directory + "/manifest.json", JSON.stringify({ fingerprint: digest, renderers: platforms.map(p => "@kjun-ui/" + p), packages, figures }, null, 2) + "\n");
     console.log(`Generated ${expected.length} design figures from installed packed packages.`);
   } finally {
     await browser.close(); await server.close();

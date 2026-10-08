@@ -1,4 +1,4 @@
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 
 export function typeStyle(role) {
   const t = typeof role === 'string' ? tokens.typography[role] : role;

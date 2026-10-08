@@ -1,5 +1,5 @@
 import { IconProvider } from "../../../shared/package-runtime/icon-context";
-import type { KjunIconRegistry } from "@kjun/icons";
+import type { KjunIconRegistry } from "@kjun-ui/icons";
 import { LayerProvider } from "../../../shared/package-runtime/use-layer";
 import {
 resolveKjunColors,
@@ -7,7 +7,7 @@ domainColorRoles,
 type KjunColors,
 type ResolvedKjunColors,
 type KjunDomainColors,
-} from "@kjun/tokens";
+} from "@kjun-ui/tokens";
 import { createContext,useContext,type ReactNode } from "react";
 import {
 View,

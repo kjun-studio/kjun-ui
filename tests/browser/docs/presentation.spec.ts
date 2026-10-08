@@ -7,7 +7,7 @@ const noOverflow = async (page: import('@playwright/test').Page) => expect(await
 
 test('80 packed presentation images share dimensions, definitions and unclipped capture evidence', async ({ request }) => {
   const manifest = await (await request.get('/previews/thumbnails/manifest.json')).json();
-  expect(manifest.renderer).toBe('@kjun/react'); expect(manifest.capture).toEqual(capture);
+  expect(manifest.renderer).toBe('@kjun-ui/react'); expect(manifest.capture).toEqual(capture);
   expect(manifest.captureProfiles).toEqual(captureProfiles);
   expect(Object.keys(manifest.images)).toHaveLength(77); expect(Object.keys(manifest.overviewImages)).toHaveLength(3);
   expect(new Set(Object.values(manifest.images)).size).toBe(77);

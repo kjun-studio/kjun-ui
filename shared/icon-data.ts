@@ -1,4 +1,4 @@
-import { tablerVersion, type KjunIconDefinition } from '@kjun/icons';
+import { tablerVersion, type KjunIconDefinition } from '@kjun-ui/icons';
 import type { IconEntry } from './icon-catalog';
 const base = `/previews/icons/${tablerVersion}/`;
 const pending = new Map<string, Promise<KjunIconDefinition>>();

@@ -5,7 +5,7 @@ advanceQueryDisplay,
 initialQueryDisplay,
 queryDisplayStatus,
 type QueryDisplayProps,
-} from "@kjun/tokens";
+} from "@kjun-ui/tokens";
 import { Component,useState,type ErrorInfo,type ReactNode } from "react";
 import { Platform,View,type ViewStyle } from "react-native";
 import { DataStateContentContext } from "./data-state-context";

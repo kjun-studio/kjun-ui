@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { useState, type ReactNode } from "react";
 import {

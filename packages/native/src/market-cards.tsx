@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { ScrollView,View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";

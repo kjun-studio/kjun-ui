@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import DsButton from "../primitives/Button.vue";
 import DsIcon from "../../icon.js";
 import DsModal from "../layout/Modal.vue";

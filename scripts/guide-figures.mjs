@@ -10,7 +10,7 @@ const guides = await read("apps/docs/lib/generated/visual-guides.json");
 const consumer = await assertCurrentConsumer(),
   packages = await read("artifacts/manifest.json");
 for (const platform of ["vue2", "react", "native"]) {
-  const name = "@kjun/" + platform,
+  const name = "@kjun-ui/" + platform,
     installed = await read(resolve(consumer.directory, "node_modules", name, "package.json"));
   if (
     installed.name !== name ||
@@ -176,7 +176,7 @@ else {
       JSON.stringify(
         {
           fingerprint: digest,
-          renderers: ["@kjun/vue2", "@kjun/react", "@kjun/native"],
+          renderers: ["@kjun-ui/vue2", "@kjun-ui/react", "@kjun-ui/native"],
           packages,
           figures,
         },

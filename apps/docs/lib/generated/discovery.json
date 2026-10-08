@@ -14241,7 +14241,7 @@
       "title": "Icon",
       "group": "Components",
       "component": "DsIcon",
-      "description": "Tabler 3.48.0의 선형 5,166개·채움형 1,054개를 공통 @kjun/icons 패키지로 제공합니다. 추가 아이콘은 개별 import 후 KjunProvider.icons에 등록합니다.",
+      "description": "Tabler 3.48.0의 선형 5,166개·채움형 1,054개를 공통 @kjun-ui/icons 패키지로 제공합니다. 추가 아이콘은 개별 import 후 KjunProvider.icons에 등록합니다.",
       "category": "data-display",
       "aliases": [
         "아이콘"

@@ -1,5 +1,5 @@
 import { typeStyle } from "./typography";
-import { tokens, type InputSize } from "@kjun/tokens";
+import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { Fragment,useEffect,useRef,type ReactNode } from "react";
 import { Animated,View,useWindowDimensions,type DimensionValue } from "react-native";
 import Svg,{ G,Path,Rect } from "react-native-svg";

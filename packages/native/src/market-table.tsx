@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { useMarketLayout, marketGeometry, marketHeaderStyle, marketRowStyle } from "./market-layout";
 import { useId, useState } from "react";

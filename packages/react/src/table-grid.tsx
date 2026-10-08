@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { Fragment, type CSSProperties, type KeyboardEvent } from "react";
 import type { TableGridProps } from "../../../shared/package-runtime/table-presentation";
 import { DsIcon } from "./button";

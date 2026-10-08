@@ -1,6 +1,6 @@
 import { inputTypeStyle } from "./typography";
 import { FieldTextInput, useFieldSurface } from "./field-surface";
-import { tokens,type InputSize } from "@kjun/tokens";
+import { tokens,type InputSize } from "@kjun-ui/tokens";
 import {
 forwardRef
 } from "react";

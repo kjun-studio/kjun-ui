@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { DsSelect } from '@kjun/react';
+import { DsSelect } from '@kjun-ui/react';
 import { platformNames, type PlatformName } from '../../../../shared/demo-config';
 import { isPlatform, platformHref, platformStorageKey, resolvePlatform } from '../../../../shared/docs-platform';
 

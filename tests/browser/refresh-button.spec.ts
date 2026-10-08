@@ -1,4 +1,4 @@
-import { icons } from '@kjun/icons/defaults';
+import { icons } from '@kjun-ui/icons/defaults';
 import { expect, test, type Page } from '@playwright/test';
 import { tokens } from '../../packages/tokens/dist/index.js';
 import { openFixture } from './packed-fixture';

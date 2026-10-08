@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Animated, Easing, Platform, type EasingFunction } from 'react-native';
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 import { useReducedMotion } from './internal';
 
 const bezier = (value: string) => Easing.bezier(...value.match(/-?\d*\.?\d+/g)!.map(Number) as [number, number, number, number]);

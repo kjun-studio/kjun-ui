@@ -2,7 +2,7 @@
 import Link from "@/components/docs/doc-link";
 import packages from "@/lib/generated/packages.json";
 
-import { DsIcon as Icon } from "@kjun/react";
+import { DsIcon as Icon } from "@kjun-ui/react";
 import {
   SidebarProvider,
   SidebarTrigger,

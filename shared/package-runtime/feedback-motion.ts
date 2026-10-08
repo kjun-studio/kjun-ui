@@ -1,6 +1,6 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { useLayoutEffect, useRef, useState } from 'react';
-import type { FeedbackRequest, ToastItem } from '@kjun/tokens';
+import type { FeedbackRequest, ToastItem } from '@kjun-ui/tokens';
 
 export interface PresentedToast { toast: ToastItem; exiting: boolean; born: number }
 export function usePresentedToasts(toasts: ToastItem[], reduced: boolean) {

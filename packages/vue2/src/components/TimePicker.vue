@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import { createTimeDomain } from "@kjun/tokens";
+import { createTimeDomain } from "@kjun-ui/tokens";
 import DsSelect from "../source/form/Select.vue";
 import DsButton from "../source/primitives/Button.vue";
 import fieldMixin from "../source/form/fieldMixin";

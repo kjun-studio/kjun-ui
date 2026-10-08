@@ -1,4 +1,4 @@
-import { tokens, type ButtonSize } from "@kjun/tokens";
+import { tokens, type ButtonSize } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { Collapse } from "./collapse";
 import { useAccordionState } from "../../../shared/package-runtime/navigation";

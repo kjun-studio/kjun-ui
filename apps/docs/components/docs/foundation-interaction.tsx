@@ -1,5 +1,5 @@
 'use client';
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 import Link from './doc-link';
 import { DataTable } from './data-table';
 import { GuideExample } from './guide-example';

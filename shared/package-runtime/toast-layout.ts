@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 // FLIP only the outer slot; entry/exit belongs to the inner toast surface.
 export function createToastLayout() {
   let root: HTMLElement | null = null;

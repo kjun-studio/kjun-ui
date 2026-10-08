@@ -1,8 +1,8 @@
-import * as R from '@kjun/react';
-import * as N from '@kjun/native';
-import * as V from '@kjun/vue2';
-import { tokens, type KjunColors, type InputSize } from '@kjun/tokens';
-import { icons, type IconNode } from '@kjun/tokens/icons';
+import * as R from '@kjun-ui/react';
+import * as N from '@kjun-ui/native';
+import * as V from '@kjun-ui/vue2';
+import { tokens, type KjunColors, type InputSize } from '@kjun-ui/tokens';
+import { icons, type IconNode } from '@kjun-ui/tokens/icons';
 
 const size: InputSize = 'md';
 const icon: IconNode[] = icons.check;
@@ -62,11 +62,11 @@ const oldNativeCard: N.DsCardProps = { hover: true };
 // @ts-expect-error Removed Vue shadow prop has no compatibility alias.
 const oldVueCard: V.DsCardProps = { shadow: 'sm' };
 
-import rocket from '@kjun/icons/icons/rocket';
-import { tablerVersion, type KjunIconRegistry } from '@kjun/icons';
-import { defaultIcons } from '@kjun/icons/defaults';
-import { iconMetadata } from '@kjun/icons/metadata';
-import { allIcons } from '@kjun/icons/all';
+import rocket from '@kjun-ui/icons/icons/rocket';
+import { tablerVersion, type KjunIconRegistry } from '@kjun-ui/icons';
+import { defaultIcons } from '@kjun-ui/icons/defaults';
+import { iconMetadata } from '@kjun-ui/icons/metadata';
+import { allIcons } from '@kjun-ui/icons/all';
 const projectIcons: KjunIconRegistry = { rocket };
 const iconsReact: R.KjunProviderProps = { icons: projectIcons, children: null };
 const iconsNative: N.KjunProviderProps = { icons: projectIcons, colors, children: null };
@@ -76,4 +76,4 @@ const invalidIcon: KjunIconRegistry = { rocket: [] };
 const pinnedTabler: '3.48.0' = tablerVersion;
 
 // @ts-expect-error Unknown official paths must fail during type checking too.
-import nonexistentIcon from '@kjun/icons/icons/not-a-tabler-icon';
+import nonexistentIcon from '@kjun-ui/icons/icons/not-a-tabler-icon';

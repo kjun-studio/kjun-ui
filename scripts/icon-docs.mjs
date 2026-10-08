@@ -5,9 +5,9 @@ import { koreanCatalog } from '../shared/icon-language/catalog.mjs';
 const root = resolve(import.meta.dirname, '..');
 // Documentation assets come only from the installed tarball consumer.
 const packed = createRequire(resolve(root, 'apps/docs/package.json'));
-const { iconMetadata } = packed('@kjun/icons/metadata');
-const { allIcons } = packed('@kjun/icons/all');
-const { tablerVersion } = packed('@kjun/icons');
+const { iconMetadata } = packed('@kjun-ui/icons/metadata');
+const { allIcons } = packed('@kjun-ui/icons/all');
+const { tablerVersion } = packed('@kjun-ui/icons');
 const catalog = koreanCatalog(iconMetadata);
 const directory = resolve(root, 'apps/docs/public/previews/icons', tablerVersion);
 const check = process.argv.includes('--check');

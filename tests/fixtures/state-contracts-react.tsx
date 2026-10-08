@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { forwardRef, useState, type ButtonHTMLAttributes } from "react";
-import { KjunProvider, DsModal, DsTable, DsButton, DsDropdown, DsDropdownItem, DsMenuButton, DsTooltip } from "@kjun/react";
+import { KjunProvider, DsModal, DsTable, DsButton, DsDropdown, DsDropdownItem, DsMenuButton, DsTooltip } from "@kjun-ui/react";
 import { setRootValues } from "./style-values";
 import { TableCase } from "./state-contracts-table";
 setRootValues();

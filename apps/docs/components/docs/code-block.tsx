@@ -1,7 +1,7 @@
 /* oxlint-disable jsx-a11y/no-noninteractive-tabindex -- 가로 스크롤 코드에 키보드 접근을 제공한다. */
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { DsButton as Button, DsCard as Card } from "@kjun/react";
+import { DsButton as Button, DsCard as Card } from "@kjun-ui/react";
 import { copyCode } from "./copy-code";
 export function CodeBlock({
   code,

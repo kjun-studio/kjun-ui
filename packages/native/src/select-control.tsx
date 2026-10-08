@@ -3,7 +3,7 @@ import { FieldClear } from "./field-clear";
 import { FieldPressable, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { selectOptions } from "../../../shared/package-runtime/options";
-import { tokens,type InputSize } from "@kjun/tokens";
+import { tokens,type InputSize } from "@kjun-ui/tokens";
 import { useContext, useEffect, useRef,type ReactNode } from "react";
 import { CompoundControlContext } from "./compound-control";
 import { useSelectState } from "../../../shared/package-runtime/select";

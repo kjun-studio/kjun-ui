@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, type ReactNode } from 'react';
-import type { KjunIconRegistry } from '@kjun/icons';
+import type { KjunIconRegistry } from '@kjun-ui/icons';
 import { defaultIcons, mergeIcons, resolveIcon, withFallbackIcons } from './icon-registry';
 
 const IconContext = createContext<KjunIconRegistry>(defaultIcons);

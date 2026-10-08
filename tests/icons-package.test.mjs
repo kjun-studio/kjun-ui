@@ -9,15 +9,15 @@ import { searchIcons } from '../shared/icon-catalog.ts';
 import { mergeIcons, resolveIcon } from '../shared/package-runtime/icon-registry.ts';
 const require = createRequire(import.meta.url);
 const source = await iconSource();
-const { allIcons } = await import('@kjun/icons/all');
-const { icons, filledIcons, defaultIcons } = await import('@kjun/icons/defaults');
-const { iconMetadata } = await import('@kjun/icons/metadata');
+const { allIcons } = await import('@kjun-ui/icons/all');
+const { icons, filledIcons, defaultIcons } = await import('@kjun-ui/icons/defaults');
+const { iconMetadata } = await import('@kjun-ui/icons/metadata');
 
 test('every pinned official node, name and variant is identical in ESM and CommonJS', async () => {
   assert.deepEqual(Object.keys(allIcons), source.names);
   assert.equal(source.names.length, 5166);
   assert.equal(Object.values(allIcons).filter(icon => icon.filled).length, 1054);
-  const commonjs = require('@kjun/icons/all').allIcons;
+  const commonjs = require('@kjun-ui/icons/all').allIcons;
   const officialMetadata = JSON.parse(await readFile('node_modules/@tabler/icons/icons.json', 'utf8'));
   assert.deepEqual(Object.keys(officialMetadata).sort(), source.names);
   for (const name of source.names) {
@@ -29,13 +29,13 @@ test('every pinned official node, name and variant is identical in ESM and Commo
   }
   assert.deepEqual(iconMetadata, source.metadata);
   assert.ok(iconMetadata.every(entry => !('outline' in entry) && typeof entry.filled === 'boolean'));
-  assert.deepEqual(Object.keys(await import('@kjun/icons')), ['tablerVersion']);
+  assert.deepEqual(Object.keys(await import('@kjun-ui/icons')), ['tablerVersion']);
   assert.equal(await readFile('packages/icons/dist/Tabler-LICENSE', 'utf8'), source.license);
 });
 test('legacy names and exports are preserved with pinned Tabler geometry', async () => {
   assert.equal(Object.keys(icons).length, 153);
   assert.deepEqual(Object.keys(filledIcons), ['heart', 'star']);
-  const compatibility = await import('@kjun/tokens/icons');
+  const compatibility = await import('@kjun-ui/tokens/icons');
   assert.strictEqual(compatibility.icons, icons);
   assert.strictEqual(compatibility.filledIcons, filledIcons);
   for (const [name, nodes] of Object.entries(icons)) assert.deepEqual(nodes, source.outline[name]);

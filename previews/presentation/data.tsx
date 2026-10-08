@@ -1,5 +1,5 @@
 import { metricFormat } from "../catalog/example-tools";
-import * as K from '@kjun/react';
+import * as K from '@kjun-ui/react';
 import { row, stack, rows, price, DataTable, noop } from './common';
 const market = { rows, rowKey: 'id', primaryLabel: (r: typeof rows[number]) => r.name, subMeta: (r: typeof rows[number]) => r.symbol, hasLoadedOnce: true, showFooter: false };
 const marketColumns: K.MarketColumn[] = [{ key: 'name', label: '자산' }, { key: 'price', label: '현재가', type: 'price', align: 'right' }, { key: 'change', label: '등락률', type: 'percent', align: 'right' }];

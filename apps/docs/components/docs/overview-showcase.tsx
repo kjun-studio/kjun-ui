@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { DsIcon as Icon } from '@kjun/react';
+import { DsIcon as Icon } from '@kjun-ui/react';
 import Link from './doc-link';
 import { overviewScenes } from '../../../../previews/presentation/registry.mjs';
 

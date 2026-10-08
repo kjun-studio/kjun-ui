@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { setWindowLayerOpen } from '../layer-host.js';
 const { easeOut: out, easeIn: into, easeEmphasized: emphasized, easeLinear: linear } = tokens.motion;
 

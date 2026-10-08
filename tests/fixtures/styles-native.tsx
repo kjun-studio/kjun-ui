@@ -1,6 +1,6 @@
 import { Component, useState, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, DsButton, DsModal, DsInput, DsSignedValue } from "@kjun/native";
+import { KjunProvider, DsButton, DsModal, DsInput, DsSignedValue } from "@kjun-ui/native";
 import { appColors, scopedColors, scopedFont } from "./style-values";
 
 class Boundary extends Component<{ children: ReactNode }, { error: string }> {

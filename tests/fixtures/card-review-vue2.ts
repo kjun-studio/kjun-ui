@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsCard, DsButton, DsAlert, DsIconToggle, DsCopyButton } from '@kjun/vue2';
+import { KjunProvider, DsCard, DsButton, DsAlert, DsIconToggle, DsCopyButton } from '@kjun-ui/vue2';
 import { applyCardPalette, longCardTitle, type CardPaletteMode } from './card-review-values';
 applyCardPalette();
 new Vue({

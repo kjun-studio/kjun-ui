@@ -1,4 +1,4 @@
-import { nextTableSort } from '@kjun/tokens'
+import { nextTableSort } from '@kjun-ui/tokens'
 
 export default {
   props: {

@@ -88,6 +88,6 @@ test('delayed downloads and rapid platform changes never display or copy stale c
     await expect(usage.getByRole('button', { name: '기본 코드 복사' })).toHaveCount(0);
   }
   release();
-  await expect(usage.locator('pre')).toContainText('@kjun/native');
-  expect(await copy(page)).toContain('@kjun/native');
+  await expect(usage.locator('pre')).toContainText('@kjun-ui/native');
+  expect(await copy(page)).toContain('@kjun-ui/native');
 });

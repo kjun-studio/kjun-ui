@@ -7,9 +7,9 @@ import { clipboard } from './motion-docs-helpers';
 import { prepareExample, compileEntries } from '../../../scripts/example-consumers.mjs';
 import { iconPageSize } from './docs-data';
 const require = createRequire(import.meta.url);
-const alien = require('@kjun/icons/icons/alien'), rocket = require('@kjun/icons/icons/rocket');
-const abacus = require('@kjun/icons/icons/abacus');
-const { iconMetadata } = require('@kjun/icons/metadata');
+const alien = require('@kjun-ui/icons/icons/alien'), rocket = require('@kjun-ui/icons/icons/rocket');
+const abacus = require('@kjun-ui/icons/icons/abacus');
+const { iconMetadata } = require('@kjun-ui/icons/metadata');
 test.describe.configure({ timeout: 180000 });
 test('catalog and shape failures have separate retries and only visible shapes are requested', async ({ page }) => {
   let catalogFails = true, shapeFails = true;
@@ -79,7 +79,7 @@ for (const platform of ['react', 'vue2', 'native']) test(`${platform}: additiona
   await page.getByText('import·Provider 등록 예제', { exact: true }).click();
   await page.getByRole('button', { name: '등록 예제 복사', exact: true }).click();
   const code = await page.evaluate(() => (window as any).__motionCopies.at(-1));
-  expect(code).toContain("import selectedIcon from '@kjun/icons/icons/alien'");
+  expect(code).toContain("import selectedIcon from '@kjun-ui/icons/icons/alien'");
   expect(code).toContain('projectIcons');
   expect(code).not.toMatch(/loadIcon|\/previews\/|fetch\(/);
   const id = 'GuideIconSelection-full-icons-' + platform;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, DsButton, DsInput, DsModal } from "@kjun/react";
+import { KjunProvider, DsButton, DsInput, DsModal } from "@kjun-ui/react";
 import { scoped, rootValues, cssValues } from "./color-contract-values";
 rootValues();
 function App() {

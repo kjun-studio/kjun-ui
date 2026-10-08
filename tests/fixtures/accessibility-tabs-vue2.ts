@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsTabs, DsTabPane, DsButton } from '@kjun/vue2';
+import { KjunProvider, DsTabs, DsTabPane, DsButton } from '@kjun-ui/vue2';
 import { applyDemoColors } from '../../shared/demo-colors';
 applyDemoColors('default');
 new Vue({

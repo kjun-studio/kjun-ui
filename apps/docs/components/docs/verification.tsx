@@ -2,8 +2,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from './doc-link';
-import { DsCard as Card } from '@kjun/react';
-import { DsSelect } from '@kjun/react';
+import { DsCard as Card } from '@kjun-ui/react';
+import { DsSelect } from '@kjun-ui/react';
 import { PlatformLoading, useDocsPlatform } from './docs-platform';
 import coverage from '@/lib/generated/coverage.json';
 import { AccessibilityDescription, ResultBadge } from './accessibility-guide';

@@ -1,7 +1,7 @@
 'use client';
 import Link from './doc-link';
 import { PlatformLoading, useDocsPlatform } from './docs-platform';
-import { DsTable } from '@kjun/react';
+import { DsTable } from '@kjun-ui/react';
 import {
   Collapsible,
   CollapsibleContent,
@@ -114,7 +114,7 @@ export function ApiContract({ name }: { name: string }) {
             타입 선언을 참고하세요.
           </p>
           <p className="api-platform">
-            {platformNames[platform]} · @kjun/{platform}
+            {platformNames[platform]} · @kjun-ui/{platform}
           </p>
           <Ownership items={contract.ownership} />
           <ContractTable members={contract.props} label="속성" props anchor={{ platform, group: 'props' }} />

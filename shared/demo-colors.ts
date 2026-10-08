@@ -1,5 +1,5 @@
 // Documentation-owned values. None of these palettes or fonts ship in a KJUN package.
-import { resolveKjunColors, type KjunColors, type ResolvedKjunColors, type KjunDomainColors } from "@kjun/tokens";
+import { resolveKjunColors, type KjunColors, type ResolvedKjunColors, type KjunDomainColors } from "@kjun-ui/tokens";
 import type { PaletteName } from "./demo-config";
 const base: KjunColors = {
   brand: "#000000",

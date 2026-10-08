@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { KjunFeedback } from "@kjun/tokens";
+import type { KjunFeedback } from "@kjun-ui/tokens";
 
 export const KjunFeedbackContext = createContext<KjunFeedback | null>(null);
 

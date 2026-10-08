@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import accessible from '@kjun/icons/icons/accessible';
-import alien from '@kjun/icons/icons/alien';
-import rocket from '@kjun/icons/icons/rocket';
+import accessible from '@kjun-ui/icons/icons/accessible';
+import alien from '@kjun-ui/icons/icons/alien';
+import rocket from '@kjun-ui/icons/icons/rocket';
 import { appColors } from './style-values';
 export function RegistryCases({ K, native = false }: { K: any; native?: boolean }) {
   const [changed, setChanged] = useState(false), [removed, setRemoved] = useState(false);

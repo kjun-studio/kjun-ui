@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import * as K from '@kjun/native';
+import * as K from '@kjun-ui/native';
 import { NavigationDesignCases } from './bottom-navigation-design-cases';
 import { setupNavigationColors, navigationColors } from './bottom-navigation-design-data';
 setupNavigationColors();

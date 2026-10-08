@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useId, useMemo, useRef, useState } from "react";
 import { View } from "react-native";
-import { createTimeDomain, tokens, type TimePrecision, type InputSize } from "@kjun/tokens";
+import { createTimeDomain, tokens, type TimePrecision, type InputSize } from "@kjun-ui/tokens";
 import { CompoundControlContext } from "./compound-control";
 import { DsSelect } from "./select";
 import { FieldClear } from "./field-clear";

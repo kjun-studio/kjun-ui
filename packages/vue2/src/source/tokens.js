@@ -1,4 +1,4 @@
-import { tokens } from '@kjun/tokens'
+import { tokens } from '@kjun-ui/tokens'
 
 /**
  * 디자인 시스템 공통 어휘 (단일 출처)

@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
-import { tokens as foundationTokens } from "@kjun/tokens";
+import { tokens as foundationTokens } from "@kjun-ui/tokens";
 // Application recipe defaults, not public package tokens.
 const foundationRules = __KJUN_FOUNDATION_RULES__;
 function useFoundationMeasure() {

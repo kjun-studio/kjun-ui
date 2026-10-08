@@ -11,7 +11,7 @@ import { assertCurrentConsumer } from '../scripts/package-state.mjs';
 test('every packed relative declaration import resolves inside its own package', async () => {
   const { directory } = await assertCurrentConsumer();
   for (const name of ['icons', 'tokens', 'vue2', 'react', 'native']) {
-    const root = resolve(directory, 'node_modules/@kjun', name);
+    const root = resolve(directory, 'node_modules/@kjun-ui', name);
     async function visit(dir) {
       for (const entry of await readdir(dir, { withFileTypes: true })) {
         const path = resolve(dir, entry.name);
@@ -42,8 +42,8 @@ test('installed ESM and CJS entries bundle and execute without workspace source'
   for (const format of ['esm', 'cjs']) {
     const outfile = resolve(output, format === 'esm' ? 'entry.mjs' : 'entry.cjs');
     const imports = ['icons', 'tokens', 'vue2', 'react', 'native'].map(name => format === 'esm'
-      ? `import * as ${name} from '@kjun/${name}';`
-      : `const ${name} = require('@kjun/${name}');`).join('\n');
+      ? `import * as ${name} from '@kjun-ui/${name}';`
+      : `const ${name} = require('@kjun-ui/${name}');`).join('\n');
     await build({
       stdin: { contents: imports + `\nif(tokens.tokens.table.mobileBreakpoint!==768)throw Error('token');
         for(const ui of [vue2,react,native])for(const name of ['DsTable','DsMarketCards','DsSearchInput'])if(!ui[name])throw Error(name);`, resolveDir: directory },
@@ -65,20 +65,20 @@ test('Native Web resolves its browser host while the device entry remains free o
   for (const format of ['esm', 'cjs']) for (const browser of [false, true]) for (const alias of [false, true]) {
     const result = await build({
       stdin: { contents: format === 'esm'
-        ? "import {DsModal} from '@kjun/native'; console.log(DsModal);"
-        : "console.log(require('@kjun/native').DsModal);", resolveDir: directory },
+        ? "import {DsModal} from '@kjun-ui/native'; console.log(DsModal);"
+        : "console.log(require('@kjun-ui/native').DsModal);", resolveDir: directory },
       bundle: true, write: false, metafile: true, format,
       platform: browser ? 'browser' : 'neutral',
       conditions: browser ? ['browser'] : ['react-native'],
       // Packed previews alias package directories; Metro prefers react-native over browser.
-      ...(alias ? { alias: { '@kjun/native': resolve(directory, 'node_modules/@kjun/native') },
+      ...(alias ? { alias: { '@kjun-ui/native': resolve(directory, 'node_modules/@kjun-ui/native') },
         mainFields: browser ? ['browser', 'module', 'main'] : ['react-native', 'main'] } : {}),
-      external: ['react', 'react/*', 'react-dom', 'react-native', 'react-native-svg', '@kjun/tokens'],
+      external: ['react', 'react/*', 'react-dom', 'react-native', 'react-native-svg', '@kjun-ui/tokens'],
       logLevel: 'silent',
     });
     const inputs = Object.keys(result.metafile.inputs);
     const suffix = alias || format === 'esm' ? 'js' : 'cjs';
-    assert.ok(inputs.some(path => path.endsWith(`/@kjun/native/dist/index${browser ? '.web' : ''}.${suffix}`)));
+    assert.ok(inputs.some(path => path.endsWith(`/@kjun-ui/native/dist/index${browser ? '.web' : ''}.${suffix}`)));
     const imports = Object.values(result.metafile.outputs).flatMap(output => output.imports.map(item => item.path));
     assert.equal(imports.includes('react-dom'), browser);
   }

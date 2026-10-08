@@ -1,4 +1,4 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { useLayoutEffect, useRef, useState } from 'react';
 
 // Only presentation is delayed. The caller's value and event timing stay synchronous.

@@ -10,13 +10,13 @@ const original = await assertCurrentConsumer(root);
 const directory = await mkdtemp(resolve(tmpdir(), 'kjun-token-mutation-'));
 const skip = new Set(['node_modules','.git','artifacts','dist','test-results','playwright-report','.next','.vite','.vinext']);
 await cp(root, directory, { recursive:true, filter: path => !path.startsWith(root + '/apps/docs/public') && !path.slice(root.length).split('/').some(part => skip.has(part) || part.startsWith('test-results')) });
-await mkdir(directory + '/node_modules/@kjun', {recursive:true});
+await mkdir(directory + '/node_modules/@kjun-ui', {recursive:true});
 for(const entry of await readdir(root + '/node_modules')) {
-  if(entry === '@kjun') continue;
+  if(entry === '@kjun-ui') continue;
   await symlink(root + '/node_modules/' + entry, directory + '/node_modules/' + entry);
 }
 for(const name of ['tokens','react','vue2','native'])
-  await symlink(directory + '/packages/' + name, directory + '/node_modules/@kjun/' + name);
+  await symlink(directory + '/packages/' + name, directory + '/node_modules/@kjun-ui/' + name);
 const change = async (file, edit) => {
   const path = directory + '/packages/tokens/src/definitions/' + file + '.json';
   const data = JSON.parse(await readFile(path,'utf8')); edit(data);

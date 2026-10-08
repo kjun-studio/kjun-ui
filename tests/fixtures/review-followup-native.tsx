@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
-import { KjunProvider, DsSearchInput, DsSelect, DsDatePicker, DsFormGroup, DsPagination } from "@kjun/native";
+import { KjunProvider, DsSearchInput, DsSelect, DsDatePicker, DsFormGroup, DsPagination } from "@kjun-ui/native";
 import { scopedColors } from "./style-values";
 import { SearchCase, PaginationCase } from "./review-followup-cases";
 function FieldsCase() {

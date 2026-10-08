@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsButton, DsModal, DsSearchInput } from '@kjun/vue2';
+import { KjunProvider, DsButton, DsModal, DsSearchInput } from '@kjun-ui/vue2';
 import { setRootValues } from './style-values';
 setRootValues();
 const params = new URLSearchParams(location.search);

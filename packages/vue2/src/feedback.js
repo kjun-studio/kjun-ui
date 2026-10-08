@@ -1,6 +1,6 @@
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { ToastStack } from "./toast-stack.js";
-import { createFeedbackController } from "@kjun/tokens";
+import { createFeedbackController } from "@kjun-ui/tokens";
 import DsModal from "./source/layout/Modal.vue";
 import DsInput from "./source/primitives/Input.vue";
 export const KjunFeedbackProvider = {

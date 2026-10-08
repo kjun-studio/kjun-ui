@@ -1,7 +1,7 @@
 import { useLayerState } from "../../../shared/package-runtime/use-layer";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { useLayoutEffect, useRef } from 'react';
-import type { createFeedbackController } from '@kjun/tokens';
+import type { createFeedbackController } from '@kjun-ui/tokens';
 import { type PresentedToast } from '../../../shared/package-runtime/feedback-motion';
 import { createToastLayout } from '../../../shared/package-runtime/toast-layout';
 import { ToastView } from './toast';

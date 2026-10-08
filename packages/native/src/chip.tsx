@@ -1,6 +1,6 @@
 import { typeStyle } from "./typography";
 import { View } from "react-native";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { DsIcon } from "./button";
 import { KText } from "./internal";

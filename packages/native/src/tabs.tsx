@@ -1,4 +1,4 @@
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 import { typeStyle, selectionTypeStyle } from "./typography";
 import { Children, createContext, isValidElement, useContext, useCallback, useLayoutEffect, useRef, useId, useState, type ReactElement, type ReactNode } from "react";
 import { useInitialTab } from "../../../shared/package-runtime/navigation";

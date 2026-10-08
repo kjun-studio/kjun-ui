@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import * as K from '@kjun/react';
+import * as K from '@kjun-ui/react';
 import { ToggleCases } from './icon-toggle-cases';
 import { setup } from './icon-toggle-values';
 setup();

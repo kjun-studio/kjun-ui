@@ -1,4 +1,4 @@
-import type { ShadowLayer } from '@kjun/tokens';
+import type { ShadowLayer } from '@kjun-ui/tokens';
 export function directionalShadow(layers: readonly ShadowLayer[], direction: 'left' | 'right' | 'top' | 'bottom'): ShadowLayer[] {
   return layers.map(layer => ({ ...layer,
     offsetX: direction === 'left' ? layer.offsetY : direction === 'right' ? -layer.offsetY : layer.offsetX,

@@ -218,7 +218,7 @@
 </template>
 
 <script>
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { marketGeometry, webMarketLayout, legacyMarketWidthClass, isMarketIdentity } from "../../../../../shared/package-runtime/market-layout";
 import { watchTrailingOverflow } from "../../../../../shared/package-runtime/trailing-overflow";
 import DsEmpty from "./Empty.vue";

@@ -11,7 +11,7 @@
 </template>
 <script>
 import DsIcon from "../icon.js";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 export default {
   name: "DsBottomNavigation", components: { DsIcon },
   props: { items: { type: Array, required: true }, value: { type: String, required: true }, ariaLabel: { type: String, default: "주요 탐색" }, safeAreaBottom: { type: Number, default: 0 }, keyboardVisible: { type: Boolean, default: false }, hideOnKeyboard: { type: Boolean, default: true } },

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { View, Text } from "react-native";
-import { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun/native";
-import { type ButtonSize, type InputSize } from "@kjun/tokens";
+import { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun-ui/native";
+import { type ButtonSize, type InputSize } from "@kjun-ui/tokens";
 import { componentProps, labelFor, type DemoConfig } from "../shared/demo-config";
 import { demoPalettes, demoFont } from "../shared/demo-colors";
 import { connectDemo } from "./bridge";

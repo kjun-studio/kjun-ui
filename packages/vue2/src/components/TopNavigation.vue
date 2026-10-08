@@ -8,7 +8,7 @@
   </header>
 </template>
 <script>
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 export default {
   name: "DsTopNavigation",
   provide() { return { kjunTopNavigation: tokens.extensions.topNavigation }; },

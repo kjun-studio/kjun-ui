@@ -1,7 +1,7 @@
 import { useLayerState } from "../../../shared/package-runtime/use-layer";
 import { useLayoutEffect, useRef } from 'react';
 import { Animated, Platform, View, type LayoutRectangle } from 'react-native';
-import { tokens, type createFeedbackController } from '@kjun/tokens';
+import { tokens, type createFeedbackController } from '@kjun-ui/tokens';
 import type { PresentedToast } from '../../../shared/package-runtime/feedback-motion';
 import { useNativePresence, motionOut, nativeDriver } from './motion';
 import { ToastView } from './toast';

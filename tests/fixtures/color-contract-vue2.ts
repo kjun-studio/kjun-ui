@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Kjun, { KjunProvider, DsButton, DsInput, DsModal } from "@kjun/vue2";
+import Kjun, { KjunProvider, DsButton, DsInput, DsModal } from "@kjun-ui/vue2";
 import { scoped, rootValues, cssValues } from "./color-contract-values";
 rootValues(); Vue.use(Kjun);
 const vm = new Vue({

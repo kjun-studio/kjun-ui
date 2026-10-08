@@ -542,7 +542,7 @@
     },
     {
       "from": "packages/native/src/list.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     }
   ],
@@ -579,7 +579,7 @@
     },
     {
       "from": "packages/native/src/list.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     }
   ],
@@ -626,7 +626,7 @@
     },
     {
       "from": "packages/native/src/app-navigation.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     }
   ],
@@ -678,7 +678,7 @@
     },
     {
       "from": "packages/native/src/app-navigation.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     }
   ],
@@ -725,7 +725,7 @@
     },
     {
       "from": "packages/native/src/app-navigation.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     }
   ],
@@ -742,7 +742,7 @@
     },
     {
       "from": "packages/react/src/media.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -762,7 +762,7 @@
     },
     {
       "from": "packages/native/src/media.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -784,7 +784,7 @@
   "DsAvatar": [
     {
       "from": "packages/vue2/src/components/Avatar.vue",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -804,7 +804,7 @@
     },
     {
       "from": "packages/react/src/media.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -824,7 +824,7 @@
     },
     {
       "from": "packages/native/src/media.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -861,7 +861,7 @@
     },
     {
       "from": "packages/native/src/chip.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -893,7 +893,7 @@
     },
     {
       "from": "packages/vue2/src/components/slider.js",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -908,7 +908,7 @@
     },
     {
       "from": "packages/react/src/range-input.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -923,7 +923,7 @@
     },
     {
       "from": "packages/native/src/range-input.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -950,7 +950,7 @@
     },
     {
       "from": "packages/vue2/src/components/slider.js",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -965,7 +965,7 @@
     },
     {
       "from": "packages/react/src/range-input.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -980,7 +980,7 @@
     },
     {
       "from": "packages/native/src/range-input.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -1002,7 +1002,7 @@
   "DsTimePicker": [
     {
       "from": "packages/vue2/src/components/TimePicker.vue",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -1022,7 +1022,7 @@
     },
     {
       "from": "packages/react/src/time-picker.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -1047,7 +1047,7 @@
     },
     {
       "from": "packages/native/src/time-picker.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -1079,7 +1079,7 @@
     },
     {
       "from": "packages/vue2/src/components/quantity.js",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -1089,7 +1089,7 @@
     },
     {
       "from": "packages/react/src/quantity-stepper.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {
@@ -1114,7 +1114,7 @@
     },
     {
       "from": "packages/native/src/quantity-stepper.tsx",
-      "request": "@kjun/tokens",
+      "request": "@kjun-ui/tokens",
       "target": null
     },
     {

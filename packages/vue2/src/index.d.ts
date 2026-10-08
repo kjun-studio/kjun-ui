@@ -1,7 +1,7 @@
 // Generated from the compiled Vue component contracts by scripts/api.mjs.
-export type { KjunIconDefinition, KjunIconRegistry } from "@kjun/icons";
+export type { KjunIconDefinition, KjunIconRegistry } from "@kjun-ui/icons";
 import type { VueConstructor, CreateElement, VNode } from "vue";
-export type { ShadowLayer, ElevationRole, CardElevation, TableSort, KjunColors, KjunDomainColors, ColorRole, DomainColorRole, ButtonSize, InputSize, ButtonVariant, KjunFeedback, ConfirmOptions, PromptOptions, ToastOptions } from "@kjun/tokens";
+export type { ShadowLayer, ElevationRole, CardElevation, TableSort, KjunColors, KjunDomainColors, ColorRole, DomainColorRole, ButtonSize, InputSize, ButtonVariant, KjunFeedback, ConfirmOptions, PromptOptions, ToastOptions } from "@kjun-ui/tokens";
 export interface DsAccordionProps {
   "formatters"?: Record<string, any>;
   "multiple"?: boolean;
@@ -832,7 +832,7 @@ export const DsTabPane: VueConstructor;
 export interface DsTableProps {
   "selectable"?: boolean;
   "selected"?: any[];
-  "sort"?: import('@kjun/tokens').TableSort | null;
+  "sort"?: import('@kjun-ui/tokens').TableSort | null;
   "sortMode"?: "client" | "server";
   "queryKey"?: string | number | null;
   "resultKey"?: string | number;
@@ -920,7 +920,7 @@ export interface KjunFeedbackProviderProps {
 }
 export const KjunFeedbackProvider: VueConstructor;
 export interface KjunProviderProps {
-  "icons"?: import('@kjun/icons').KjunIconRegistry | null;
+  "icons"?: import('@kjun-ui/icons').KjunIconRegistry | null;
   "formatters"?: Record<string, (...values: any[]) => string>;
   "renderIdentity"?: ((h: CreateElement, props: Record<string, unknown>, slots: Record<string, VNode[] | undefined>) => VNode | null | undefined) | null;
 }

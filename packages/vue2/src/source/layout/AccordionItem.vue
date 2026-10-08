@@ -50,7 +50,7 @@
 <script>
 import { prepareCollapse, stopCollapse, moveCollapse } from "../../adapters/collapse-motion.js";
 import DsIcon from "../../icon.js";
-import { tokens } from "@kjun/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { componentMixins } from "../../component-mixins.js";
 let accordionItemUid = 0
 

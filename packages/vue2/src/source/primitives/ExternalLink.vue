@@ -11,7 +11,7 @@
 <script>
 import DsIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
-import { tokens } from '@kjun/tokens'
+import { tokens } from '@kjun-ui/tokens'
 import { safeExternalUrl } from './externalUrl'
 import { oneOf, ACTION_LABEL_MODES } from '../tokens'
 export default {

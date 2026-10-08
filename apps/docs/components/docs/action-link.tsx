@@ -1,6 +1,6 @@
 'use client';
 import type { ComponentProps } from 'react';
-import { tokens } from '@kjun/tokens';
+import { tokens } from '@kjun-ui/tokens';
 import Link from './doc-link';
 
 // Preserve native navigation (copy URL / open in a new tab) with shared geometry.

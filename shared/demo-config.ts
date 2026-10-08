@@ -112,7 +112,7 @@ export function exampleCode(platform: PlatformName, c: DemoConfig) {
     return (
       '<template>\n  <KjunProvider>\n    ' +
       body +
-      '\n  </KjunProvider>\n</template>\n<script>\nimport { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun/vue2";\nimport "@kjun/vue2/styles.css";\nimport "./design-system/kjun.css";\nexport default {\n  components: { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup },\n  data: () => ({ value: "", open: false }),\n  methods: { onAction() {}, save() { this.open = false; } }\n};\n</script>'
+      '\n  </KjunProvider>\n</template>\n<script>\nimport { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun-ui/vue2";\nimport "@kjun-ui/vue2/styles.css";\nimport "./design-system/kjun.css";\nexport default {\n  components: { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup },\n  data: () => ({ value: "", open: false }),\n  methods: { onAction() {}, save() { this.open = false; } }\n};\n</script>'
     );
   }
   const native = platform === "native";
@@ -143,10 +143,10 @@ export function exampleCode(platform: PlatformName, c: DemoConfig) {
   return (
     'import { useState } from "react";\n' +
     (native ? 'import { Text } from "react-native";\n' : "") +
-    'import { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun/' +
+    'import { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun-ui/' +
     platform +
     '";\n' +
-    (native ? 'import { appColors, appFont } from "./design-system/kjun";\n' : 'import "@kjun/react/styles.css";\nimport "./design-system/kjun.css";\n') +
+    (native ? 'import { appColors, appFont } from "./design-system/kjun";\n' : 'import "@kjun-ui/react/styles.css";\nimport "./design-system/kjun.css";\n') +
     '\nexport function Example() {\n  const [count, setCount] = useState(0);\n  const [value, setValue] = useState("");\n  const [open, setOpen] = useState(false);\n  return <KjunProvider' +
     (native ? ' colors={appColors} fontFamily={appFont}' : '') +
     '>\n    ' +

@@ -1,4 +1,4 @@
-import { tokens, type InputSize } from "@kjun/tokens";
+import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { Fragment,type CSSProperties } from "react";
 import { DsSkeleton } from "./display";
 export interface DsListSkeletonProps {

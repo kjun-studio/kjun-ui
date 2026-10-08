@@ -27,14 +27,14 @@ export async function openFixture(
       "react-native": modules + "/react-native-web/dist/index.js",
       "react-native-svg":
         modules + "/react-native-svg/lib/module/ReactNativeSVG.web.js",
-      "@kjun/tokens/icons": modules + "/@kjun/tokens/dist/icons.js",
+      "@kjun-ui/tokens/icons": modules + "/@kjun-ui/tokens/dist/icons.js",
     };
     for (const name of ["icons", "tokens", "react", "vue2", "native"])
-      alias["@kjun/" + name] = modules + "/@kjun/" + name;
-    alias["@kjun/icons/defaults"] = modules + "/@kjun/icons/dist/defaults.js";
-    alias["@kjun/icons/metadata"] = modules + "/@kjun/icons/dist/metadata.js";
-    alias["@kjun/icons/all"] = modules + "/@kjun/icons/dist/all.js";
-    alias["@kjun/icons/icons"] = modules + "/@kjun/icons/dist/icons";
+      alias["@kjun-ui/" + name] = modules + "/@kjun-ui/" + name;
+    alias["@kjun-ui/icons/defaults"] = modules + "/@kjun-ui/icons/dist/defaults.js";
+    alias["@kjun-ui/icons/metadata"] = modules + "/@kjun-ui/icons/dist/metadata.js";
+    alias["@kjun-ui/icons/all"] = modules + "/@kjun-ui/icons/dist/all.js";
+    alias["@kjun-ui/icons/icons"] = modules + "/@kjun-ui/icons/dist/icons";
     const result = await build({
       entryPoints: [
         resolve(
@@ -66,7 +66,7 @@ export async function openFixture(
     });
     fixture = {
       script: result.outputFiles[0].text,
-      css: (await readFile(modules + "/@kjun/tokens/dist/styles.css", "utf8")) +
+      css: (await readFile(modules + "/@kjun-ui/tokens/dist/styles.css", "utf8")) +
         (family === "catalog" ? standalone
           ? '.catalog-root{padding:24px}.catalog-stack{display:flex;flex-direction:column;gap:16px}.catalog-group{display:flex;gap:12px;flex-wrap:wrap}'
           : await readFile("apps/docs/public/previews/demo.css", "utf8") : ""),

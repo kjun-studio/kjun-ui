@@ -1,5 +1,5 @@
 import { typeStyle, inputTypeStyle } from "./typography";
-import { tokens,type InputSize } from "@kjun/tokens";
+import { tokens,type InputSize } from "@kjun-ui/tokens";
 import {
 useState,
 type InputHTMLAttributes

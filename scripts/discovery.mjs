@@ -9,7 +9,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 const root = resolve(import.meta.dirname, '..');
 const packed = createRequire(resolve(root, 'apps/docs/package.json'));
-const { icons, filledIcons } = packed('@kjun/tokens/icons');
+const { icons, filledIcons } = packed('@kjun-ui/tokens/icons');
 createIconCatalog(icons, filledIcons); // Fail docs generation/check on missing, unknown or duplicate names.
 const json = async file => JSON.parse(await readFile(resolve(root, file), 'utf8'));
 const [catalog, guides, api, navigation, pages, visuals] = await Promise.all([

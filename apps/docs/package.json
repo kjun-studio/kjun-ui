@@ -14,13 +14,13 @@
     "predev": "node ../../scripts/docs-dependencies.mjs --check"
   },
   "dependencies": {
-    "@kjun/react": "file:../../artifacts/kjun-react-0.3.0.tgz",
-    "@kjun/tokens": "file:../../artifacts/kjun-tokens-0.3.0.tgz",
+    "@kjun-ui/react": "file:../../artifacts/kjun-ui-react-0.3.0.tgz",
+    "@kjun-ui/tokens": "file:../../artifacts/kjun-ui-tokens-0.3.0.tgz",
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "react-server-dom-webpack": "19.2.6",
     "vinext": "1.0.0-beta.5",
-    "@kjun/icons": "file:../../artifacts/kjun-icons-0.3.0.tgz"
+    "@kjun-ui/icons": "file:../../artifacts/kjun-ui-icons-0.3.0.tgz"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.37.1",

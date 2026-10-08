@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { KjunProvider, DsModal, DsDrawer, DsFormGroup, DsQuantityStepper, DsTable, DsButton } from "@kjun/vue2";
+import { KjunProvider, DsModal, DsDrawer, DsFormGroup, DsQuantityStepper, DsTable, DsButton } from "@kjun-ui/vue2";
 import { setRootValues } from "./style-values";
 setRootValues();
 const rows = [{ id: 3, name: "Three", amount: 30 }, { id: 1, name: "One", amount: 10 }, { id: 2, name: "Two", amount: 20 }];

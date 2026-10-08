@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import * as api from '@kjun/vue2';
+import * as api from '@kjun-ui/vue2';
 import { cssPalette } from './typography-values';
 cssPalette();
 const Cases = Vue.extend({

@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import * as K from '@kjun/vue2';
-import { allIcons } from '@kjun/icons/all';
+import * as K from '@kjun-ui/vue2';
+import { allIcons } from '@kjun-ui/icons/all';
 import { setup } from './icon-toggle-values';
 setup();
 const cases = Object.entries(allIcons).flatMap(([name, icon]) => [{ name, filled: false }, ...(icon.filled ? [{ name, filled: true }] : [])]);

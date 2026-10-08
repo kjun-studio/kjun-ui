@@ -1,5 +1,5 @@
-import { defaultIcons } from '@kjun/icons/defaults';
-import type { KjunIconRegistry } from '@kjun/icons';
+import { defaultIcons } from '@kjun-ui/icons/defaults';
+import type { KjunIconRegistry } from '@kjun-ui/icons';
 
 export { defaultIcons };
 export function mergeIcons(parent: KjunIconRegistry, own?: KjunIconRegistry): KjunIconRegistry {

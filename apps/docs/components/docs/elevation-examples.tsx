@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { DsButton, DsCard, DsPopover, DsModal, DsDrawer, DsTooltip, KjunProvider, KjunFeedbackProvider, useKjunFeedback } from '@kjun/react';
+import { DsButton, DsCard, DsPopover, DsModal, DsDrawer, DsTooltip, KjunProvider, KjunFeedbackProvider, useKjunFeedback } from '@kjun-ui/react';
 import tokens from '@/lib/generated/tokens.json';
 
 // floating is not a Card role, so the static sample borrows the ambient shadow from the token data.
