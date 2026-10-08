@@ -10,6 +10,9 @@ const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
 const { d1, r2 } = hostingConfig;
 
 const localBindingConfig = {
+  // Cloudflare Workers deployment: `wrangler deploy --config dist/server/wrangler.json`.
+  name: 'kjun-ui-docs',
+  routes: [{ pattern: 'ui.kjun.dev', custom_domain: true }],
   main: 'vinext/server/fetch-handler',
   compatibility_flags: ['nodejs_compat'],
   d1_databases: d1
