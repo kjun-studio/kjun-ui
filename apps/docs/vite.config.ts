@@ -57,6 +57,8 @@ export default defineConfig(async () => {
       host: '0.0.0.0',
       port: 4173,
       strictPort: true,
+      // Tailnet devices reach the dev server by MagicDNS name (*.ts.net), which Vite blocks by default.
+      allowedHosts: ['.ts.net'],
       // Avoid continuous file polling across the Docker bind mount. Restart after source changes.
       watch: null,
       hmr: false,
