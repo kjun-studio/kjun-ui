@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, rm } from 'node:fs/promises';
 import { resolve, basename } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -88,6 +88,13 @@ async function generate() {
     ['apps/docs/lib/generated/coverage.json', Buffer.from(JSON.stringify(data, null, 2) + '\n')],
     ...originals.map(({ bytes, metadata }) => ['apps/docs/public' + metadata.download, bytes]),
   ];
+  // Published records come only from tracked sources; leftovers from earlier builds must not ship.
+  const downloads = resolve(root, 'apps/docs/public/downloads/verification');
+  const expected = originals.map(({ metadata }) => basename(metadata.download)).sort();
+  if (process.argv.includes('--check')) {
+    const actual = (await readdir(downloads).catch(() => [])).sort();
+    if (actual.join() !== expected.join()) fail('unexpected verification downloads: ' + actual.filter(file => !expected.includes(file)).join(', ') + '; run docs:generate');
+  } else await rm(downloads, { recursive: true, force: true });
   for (const [path, bytes] of outputs) {
     const destination = resolve(root, path);
     if (process.argv.includes('--check')) {

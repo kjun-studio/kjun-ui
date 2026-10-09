@@ -4,13 +4,13 @@ Shared KJUN UI geometry, state and interaction contracts. Your app supplies colo
 
 Button corner radii for xs/sm/md/lg/xl are 8/10/12/14/16px (`button.radii`); `button.radius` aliases the md radius. Button Group keeps its separate 6/8/10/12/14px track radii, and Filter Group keeps 12px corners.
 
-Exports `tokens`, `colorRoles`, `coreColorRoles`, `colorRoleFallbacks`, `ColorRole`, `KjunCoreColors`, `KjunColors<Color = string>`, `ResolvedKjunColors` and size/variant types. `KjunColors` requires 21 core roles and accepts optional component roles. `resolveKjunColors` resolves omitted roles using only app-supplied values, preserving native color objects. No product names, palettes, or font defaults are shipped. CSS uses `--kjun-*`; `styles.css` contains component styles and scoped aliases only.
+Exports `tokens`, `colorRoles`, `coreColorRoles`, `colorRoleFallbacks`, `ColorRole`, `KjunCoreColors`, `KjunColors<Color = string>`, `ResolvedKjunColors` and size/variant types. `KjunColors` requires 27 core roles and accepts optional component roles. `resolveKjunColors` resolves omitted roles using only app-supplied values, preserving native color objects. No product names, palettes, or font defaults are shipped. CSS uses `--kjun-*`; `styles.css` contains component styles and scoped aliases only.
 
 `tokens.typography[role]` provides `fontSizePx`, `lineHeightPx`, `fontWeight`, and `letterSpacingEm`. Web apps can apply role classes such as `kjun-type-body` within `KjunProvider`.
 
 Project color and font setup: https://ui.kjun.dev/styling.
 
-Pre-release local packages; not published to a registry.
+Install: `npm install @kjun-ui/tokens @kjun-ui/icons`
 
 Input fields use sm/md/lg heights of 32/40/48px and Button radii of 10/12/14px. Input text is 16px with a 24px line height. The default size is `md` (40px); use `lg` for a 48px form. Filled surfaces stay filled on focus and error. `input[size].clearSize`, `textareaPaddingY`, and `affixGap` are per-size geometry roles.
 

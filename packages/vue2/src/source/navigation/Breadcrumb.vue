@@ -11,7 +11,7 @@
       <a
         v-if="item.to && idx < items.length - 1"
         :key="`link-${idx}`"
-        :href="item.to" @click="$emit('navigate', item, $event)"
+        :href="safeHref(item.to)" @click="$emit('navigate', item, $event)"
         class="ds-breadcrumb-link text-text-secondary hover:text-brand transition-colors"
       >
         <DsIcon v-if="item.icon" :name="item.icon" size="var(--extension-breadcrumb-icon-size)" class="mr-1" />
@@ -33,6 +33,7 @@
 <script>
 import DsIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
+import { safeLinkHref } from "../primitives/externalUrl";
 export default {
   mixins: componentMixins,
   components: { DsIcon },
@@ -43,6 +44,7 @@ export default {
       required: true
       // [{ label: 'Home', to: '/', icon: 'home' }, { label: 'Current' }]
     }
-  }
+  },
+  methods: { safeHref: safeLinkHref }
 }
 </script>

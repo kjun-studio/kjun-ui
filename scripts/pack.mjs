@@ -1,4 +1,4 @@
-import { mkdir, copyFile, writeFile } from "node:fs/promises";
+import { mkdir, copyFile, writeFile, readdir, rm } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
 import { assertCurrentBuild, recordPackedState, packageNames } from "./package-state.mjs";
@@ -7,6 +7,9 @@ process.chdir(root);
 await assertCurrentBuild();
 await mkdir("artifacts", { recursive: true });
 await mkdir("apps/docs/public/downloads", { recursive: true });
+// Only the tarballs packed below are published; drop ones left by earlier versions or names.
+for (const file of await readdir("apps/docs/public/downloads"))
+  if (file.endsWith(".tgz")) await rm("apps/docs/public/downloads/" + file);
 const names = packageNames;
 const artifacts = [];
 for (const name of names) {

@@ -1,0 +1,16 @@
+# Cache content-hashed assets immutably (vinext writes this rule only when no _headers exists)
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Static files share the Worker's security headers (worker.ts)
+/*
+  Content-Security-Policy: frame-ancestors 'self'
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+/downloads/*.tgz
+  Content-Type: application/gzip
+  Content-Disposition: attachment

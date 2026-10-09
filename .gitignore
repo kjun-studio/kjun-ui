@@ -22,3 +22,9 @@ docs/*-verification.md
 docs/vue2-audit-*.md
 docs/execution-code-separation.md
 docs/migration-0.3.md
+
+# Local secrets and Cloudflare dev variables
+.env.*
+!.env.example
+.dev.vars*
+*.pem

@@ -111,7 +111,7 @@ export const appFont = fonts.body;
 
 웹은 기존 `--kjun-*` 변수 이름을 그대로 사용합니다. 명시적으로 제공한 선택 역할은 상속한 값도 포함하여 항상 우선합니다. Native의 `resolveKjunColors(colors)`와 Provider는 같은 역할 연결을 적용하며, `useKjunStyles().colors`는 전체 역할이 있는 `ResolvedKjunColors<ColorValue>`를 반환합니다. 모드 변경 시 생략한 역할도 새 프로젝트 값을 따라갑니다.
 
-`colorRoles`에 정의된 현재 역할 이름으로 작성한 전체 매핑도 사용할 수 있습니다. 차트·카드·그라데이션 등 특정 표현이 필요할 때만 해당 선택 역할을 추가하세요. 정확한 목록과 연결 대상은 [색상·서체 가이드](http://127.0.0.1:4173/styling#optional-colors)와 tokens.json에서 확인할 수 있습니다. 문서 실행 예제의 설정에는 미리보기 색상을 재현하기 위한 선택 역할도 포함됩니다.
+`colorRoles`에 정의된 현재 역할 이름으로 작성한 전체 매핑도 사용할 수 있습니다. 차트·카드·그라데이션 등 특정 표현이 필요할 때만 해당 선택 역할을 추가하세요. 정확한 목록과 연결 대상은 [색상·서체 가이드](https://ui.kjun.dev/styling#optional-colors)와 tokens.json에서 확인할 수 있습니다. 문서 실행 예제의 설정에는 미리보기 색상을 재현하기 위한 선택 역할도 포함됩니다.
 
 ## 카드 표면과 색상 역할
 

@@ -1,5 +1,5 @@
 {
-  "name": "sites-project",
+  "name": "kjun-ui-docs",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -14,18 +14,17 @@
     "predev": "node ../../scripts/docs-dependencies.mjs --check"
   },
   "dependencies": {
-    "@kjun-ui/react": "file:../../artifacts/kjun-ui-react-0.3.0.tgz",
-    "@kjun-ui/tokens": "file:../../artifacts/kjun-ui-tokens-0.3.0.tgz",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
-    "react-server-dom-webpack": "19.2.6",
+    "@kjun-ui/react": "file:../../artifacts/kjun-ui-react-0.3.1.tgz",
+    "@kjun-ui/tokens": "file:../../artifacts/kjun-ui-tokens-0.3.1.tgz",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-server-dom-webpack": "19.2.8",
     "vinext": "1.0.0-beta.5",
-    "@kjun-ui/icons": "file:../../artifacts/kjun-ui-icons-0.3.0.tgz"
+    "@kjun-ui/icons": "file:../../artifacts/kjun-ui-icons-0.3.1.tgz"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.37.1",
     "@cloudflare/workers-types": "4.20260515.1",
-    "@openai/sites-vite-plugin": "0.2.0",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",

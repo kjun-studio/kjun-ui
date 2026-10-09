@@ -20,7 +20,7 @@ import { tokens } from "@kjun-ui/tokens";
 import DsIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { SEMANTIC_VARIANTS, SIZES_CORE, oneOf } from '../tokens';
-import { alertActionSizes } from "../../../../../shared/package-runtime/action-size";
+import { alertActionSizes } from "../../../../../shared/package-runtime/alert-action-size";
 
 // Scopes the action size to the actions slot, not to buttons inside the message.
 const AlertActions = {

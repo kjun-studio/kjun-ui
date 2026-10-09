@@ -87,7 +87,7 @@ Playwright의 기본 조건 대기는 30초, 일반 테스트 제한은 90초다
 
 ## 패키지와 공개 범위
 
-현재 로컬 버전은 v0.3.0이다. `pack:local`은 다섯 패키지의 `.tgz`를 생성하고 `artifacts/manifest.json`에 파일명·버전·무결성을 기록한다. 문서 다운로드와 소비 검증은 이 manifest를 사용한다. `verify:consumers`는 별도 임시 프로젝트에 설치하여 워크스페이스 소스 없이 소비할 수 있는지 확인한다.
+현재 배포 버전은 npm `@kjun-ui/*` v0.3.1이다. `pack:local`은 다섯 패키지의 `.tgz`를 생성하고 `artifacts/manifest.json`에 파일명·버전·무결성을 기록한다. 문서 다운로드와 소비 검증은 이 manifest를 사용한다. `verify:consumers`는 별도 임시 프로젝트에 설치하여 워크스페이스 소스 없이 소비할 수 있는지 확인한다.
 
 소비 검증 폴더는 후속 `verify:current`·예제 검사에서도 사용하므로 현재 성공 폴더 하나를 보존한다. 새 검증이 성공하면 `consumer.json`을 원자적으로 교체한 뒤 이전 폴더를 삭제한다. 실패하면 새 폴더만 삭제하고, 강제 종료 잔여물은 다음 소비 검증 시작 시 정리한다. 모든 정리는 공통 workflow 잠금 안에서 Linux `rm`을 낮은 CPU 우선순위로 실행해 폴더별로 순차 처리한다. 이전 형식 폴더도 삭제 전에 checkout별 이름으로 옮겨 중간에 종료돼도 소유권을 식별할 수 있게 한다. 현재 기록이 손상됐으면 정리를 중단하고, 다른 checkout·일반 임시 폴더·심볼릭 링크는 정리 대상으로 삼지 않는다. 삭제 실패는 경고를 남기고 다음 실행에서 재시도한다.
 
@@ -160,7 +160,7 @@ Vue 유틸리티 설정은 `packages/vue2/style-utilities.json`과 `style-theme.
 
 작성 원본은 `packages/tokens/src/definitions`의 JSON이다. 타이포그래피와 색상·기하 규격·그림자·상태 표현을 분리하고 `$ref`로 공통 규격을 참조한다. `tokens:generate`가 공개 JSON, TypeScript, CSS와 문서 데이터를 생성하며 `tokens:check`는 생성 결과와 참조·단위를 검사한다.
 
-외부 배포 전 사용자 문서와 패키지 README는 현재 규격과 사용법을 설명한다. 내부 버전 간 이관표와 개발 중 변경 내역은 사용자 안내에 포함하지 않는다.
+사용자 문서와 패키지 README는 배포된 현재 규격과 사용법을 설명한다. 내부 버전 간 이관표와 개발 중 변경 내역은 사용자 안내에 포함하지 않는다.
 
 `node scripts/token-mutation.mjs`는 임시 사본에서 본문·버튼·Card 반경·패딩·그림자를 바꾸고 패키지 재생성부터 세 플랫폼 렌더링까지 검사한다. 원래 작업 트리와 역사적 스냅샷은 수정하지 않는다. 성공 기록은 `artifacts/token-mutation.json`이다. Native Web만 실행한 경우 실제 기기 검증으로 기록하지 않는다.
 

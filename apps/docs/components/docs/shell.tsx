@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import Link from "@/components/docs/doc-link";
 import packages from "@/lib/generated/packages.json";
 
@@ -17,6 +18,8 @@ import { categoryFor, navigationDocuments } from "@/lib/discovery";
 import { useDocumentAnchor } from "./use-document-anchor";
 import { useDocumentNavigation } from './use-document-navigation';
 import { DocumentShortcuts } from './document-navigation';
+// Client navigation keeps the shell, so move focus to the new document like a page load would.
+let shownId: PageId | null = null;
 export function DocsShell({ id }: { id: PageId }) {
   const page = findPage(id);
   const index = navigationDocuments.findIndex((r) => r.id === id);
@@ -24,6 +27,12 @@ export function DocsShell({ id }: { id: PageId }) {
   const parent = page.parentPageId ? findPage(page.parentPageId) : null;
   const active = useDocumentNavigation(page);
   useDocumentAnchor(id);
+  useEffect(() => {
+    const previous = shownId;
+    shownId = id;
+    if (previous === null || previous === id || location.hash) return;
+    document.getElementById("main-content")?.focus({ preventScroll: true });
+  }, [id]);
   return (
     <SidebarProvider>
       <a href="#main-content" className="skip-link">

@@ -1,4 +1,4 @@
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { loadCurrent, root, validateRun, isStale } from './a11y/records.mjs';
@@ -18,6 +18,13 @@ export async function generateAccessibility(check = false) {
   if (new Set(runs.map(run => run.id)).size !== runs.length) throw Error('Duplicate accessibility record');
   runs.sort((a, b) => b.startedAt.localeCompare(a.startedAt));
   outputs.push(['apps/docs/lib/generated/accessibility.json', Buffer.from(JSON.stringify({ ...current, runs }, null, 2) + '\n')]);
+  // Published records come only from docs/accessibility-runs; leftovers from earlier builds must not ship.
+  const downloads = resolve(root, 'apps/docs/public/downloads/accessibility');
+  const expected = runs.map(run => run.id + '.json').sort();
+  if (check) {
+    const actual = (await readdir(downloads).catch(() => [])).sort();
+    if (actual.join() !== expected.join()) throw Error('Unexpected accessibility downloads; run docs:generate');
+  } else await rm(downloads, { recursive: true, force: true });
   for (const [path, bytes] of outputs) {
     const destination = resolve(root, path);
     if (check) {

@@ -2,7 +2,7 @@
 
 Shared KJUN UI geometry, state and interaction contracts. Your app supplies colors and fonts.
 
-Import `@kjun-ui/react/styles.css` and your project color mapping stylesheet. Define the 21 `coreColorRoles` as `--kjun-*` variables and `--kjun-font` from existing app tokens at `:root` or on `<KjunProvider>`. Optional roles listed in `colorRoleFallbacks` fall back to app-supplied roles. The Provider supplies a `.kjun-scope` styling boundary; it has no `theme` prop or palette.
+Import `@kjun-ui/react/styles.css` and your project color mapping stylesheet. Define the 27 `coreColorRoles` as `--kjun-*` variables and `--kjun-font` from existing app tokens at `:root` or on `<KjunProvider>`. Optional roles listed in `colorRoleFallbacks` fall back to app-supplied roles. The Provider supplies a `.kjun-scope` styling boundary; it has no `theme` prop or palette.
 
 Missing core colors or `--kjun-font` fail at mount/update. Components using financial colors also check all 13 domain roles in their rendered scope. Font loading and color contrast remain the app's responsibility. Numeric displays, including Deviation badges, consume `--kjun-font-numeric` (falling back to the scope font); KpiRow text values consume the body font.
 
@@ -10,7 +10,7 @@ Nested Providers share window ordering and Escape handling. Their overlays rende
 
 Project color and font setup: https://ui.kjun.dev/styling.
 
-Pre-release local packages; not published to a registry.
+Install: `npm install @kjun-ui/react @kjun-ui/tokens @kjun-ui/icons`
 
 ## Card composition
 

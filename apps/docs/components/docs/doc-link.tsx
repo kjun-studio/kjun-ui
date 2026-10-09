@@ -9,9 +9,12 @@ import { useDocsPlatform } from './docs-platform';
 export default function DocLink({ onClick, ...props }: ComponentProps<'a'>) {
   const { href } = useDocsPlatform();
   const router = useRouter();
-  // Hash, external and download links keep native anchor behaviour.
-  if (!props.href?.startsWith('/') || props.href.startsWith('//') || props.download) return <a {...props} onClick={onClick} />;
-  const target = href(props.href);
+  // Hash, external, download and static-file links (e.g. /downloads/x.tgz) keep native anchor behaviour.
+  const path = props.href ?? '';
+  const native = !path.startsWith('/') || path.startsWith('//') || (props.download != null && props.download !== false)
+    || /\.[a-z0-9]+$/i.test(path.split(/[?#]/)[0]);
+  if (native) return <a {...props} onClick={onClick} />;
+  const target = href(path);
   const follow = (event: MouseEvent<HTMLAnchorElement>) => {
     onClick?.(event);
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

@@ -35,3 +35,14 @@ test("a packed Vue named import excludes unrelated UI, while either plugin entry
   assert.equal(ui.DsButton.components.DsIcon, ui.DsIcon);
   assert.equal(ui.DsButton.components.DsTable, undefined);
 });
+
+test("the packed Vue package never loads React, so Vue-only apps need no React install", async () => {
+  const { readFile, readdir } = await import("node:fs/promises");
+  const dist = "packages/vue2/dist";
+  const files = (await readdir(dist, { recursive: true })).filter(file => /\.(c?js|d\.c?ts)$/.test(file));
+  assert.ok(files.length > 0);
+  for (const file of files) {
+    const text = await readFile(dist + "/" + file, "utf8");
+    assert.doesNotMatch(text, /from\s*["']react(?:-dom)?(?:\/[^"']*)?["']|require\(\s*["']react(?:-dom)?(?:\/[^"']*)?["']\s*\)/, file + " imports React");
+  }
+});

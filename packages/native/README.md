@@ -2,7 +2,7 @@
 
 Shared KJUN UI geometry, state and interaction contracts. Your app supplies colors and fonts.
 
-Wrap the app in `<KjunProvider colors={appColors} fontFamily={appFont}>`. `colors` must supply the 21 core roles in `KjunColors<ColorValue>`; Component roles are optional and fall back to app-supplied roles. The app maps its existing tokens and owns mode changes. Missing Provider/colors produce an error. `useKjunStyles()` reads the nearest values. Nested Providers inherit the parent font unless overridden; the root uses the system font when omitted. Load custom fonts in the app.
+Wrap the app in `<KjunProvider colors={appColors} fontFamily={appFont}>`. `colors` must supply the 27 core roles in `KjunColors<ColorValue>`; Component roles are optional and fall back to app-supplied roles. The app maps its existing tokens and owns mode changes. Missing Provider/colors produce an error. `useKjunStyles()` reads the nearest values. Nested Providers inherit the parent font unless overridden; the root uses the system font when omitted. Load custom fonts in the app.
 
 No CSS import is needed. Native Web is a preview; iOS/Android device verification has not been performed.
 
@@ -10,7 +10,7 @@ Browser bundlers use the `browser` export and require React DOM matching React. 
 
 Project color and font setup: https://ui.kjun.dev/styling.
 
-Pre-release local packages; not published to a registry.
+Install: `npm install @kjun-ui/native @kjun-ui/tokens @kjun-ui/icons`
 
 ## Card composition
 

@@ -1,6 +1,6 @@
 {
   "name": "@kjun-ui/native",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "homepage": "https://ui.kjun.dev",
   "repository": {
@@ -47,13 +47,13 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@kjun-ui/tokens": "0.3.0",
-    "@kjun-ui/icons": "0.3.0"
+    "@kjun-ui/tokens": "0.3.1",
+    "@kjun-ui/icons": "0.3.1"
   },
   "peerDependencies": {
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-native": "^0.86.3",
+    "react-native": ">=0.86.3",
     "react-native-svg": "^15.15.5"
   },
   "peerDependenciesMeta": {
