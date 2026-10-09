@@ -2,7 +2,7 @@
 import { useDocsPlatform, PlatformLoading } from "./docs-platform";
 import packages from "@/lib/generated/packages.json";
 import Link from "@/components/docs/doc-link";
-import { DsAlert, DsButtonGroup, DsIcon as Icon } from "@kjun-ui/react";
+import { DsButtonGroup, DsIcon as Icon } from "@kjun-ui/react";
 import { platformNames } from "../../../../shared/demo-config";
 import { isPlatform } from "../../../../shared/docs-platform";
 import { ActionLink } from "./action-link";
@@ -22,7 +22,7 @@ export function GettingStarted() {
   const selected = packages.filter(
     (item) => item.name === "@kjun-ui/icons" || item.name === "@kjun-ui/tokens" || item.name === "@kjun-ui/" + platform
   );
-  const command = ["npm install", ...selected.map((item) => "  ./" + item.file)].join(" \\\n");
+  const command = ["npm install", ...selected.map((item) => item.name)].join(" ");
   return (
     <div className="reading-document getting-started">
       <ol className="step-summary" aria-label="시작 단계">
@@ -48,9 +48,8 @@ export function GettingStarted() {
             onValueChange={(value) => { if (isPlatform(value)) selectPlatform(value); }}
           />
         </div>
-        <DsAlert type="info" size="sm">
-          아직 배포 전입니다. 아래 파일은 로컬 설치·검증용입니다.
-        </DsAlert>
+        <CodeBlock code={command} label="npm으로 패키지 설치" />
+        <p className="body-copy">네트워크 없이 설치해야 하면 같은 버전의 패키지 파일을 내려받아 사용할 수 있습니다.</p>
         <div className="download-row">
           {selected.map((item) => (
             <ActionLink key={item.name} variant="secondary" size="md" href={"/downloads/" + item.file} download>
@@ -60,8 +59,6 @@ export function GettingStarted() {
             </ActionLink>
           ))}
         </div>
-        <p className="body-copy">내려받은 파일을 프로젝트 루트에 두고 설치합니다.</p>
-        <CodeBlock code={command} label="프로젝트에 로컬 패키지 설치" />
       </section>
       <GettingStartedSetup platform={platform} />
       <section id="project">
