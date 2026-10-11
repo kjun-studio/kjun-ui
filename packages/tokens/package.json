@@ -1,6 +1,6 @@
 {
   "name": "@kjun-ui/tokens",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "license": "MIT",
   "homepage": "https://ui.kjun.dev",
   "repository": {
@@ -52,6 +52,6 @@
     }
   },
   "dependencies": {
-    "@kjun-ui/icons": "0.3.2"
+    "@kjun-ui/icons": "0.4.0"
   }
 }

@@ -29,7 +29,7 @@
 - [레이어·Elevation](https://ui.kjun.dev/elevation): 그림자와 Modal·Toast·하단 CTA의 겹침
 - [피드백 서비스](https://ui.kjun.dev/feedback): Toast·Confirm·Prompt
 
-KjunProvider로 스타일 적용 영역을 만들고 KjunFeedbackProvider로 영역별 피드백을 제공합니다. Native의 DsFormLayout은 여러 FormGroup의 간격을 연결합니다. `@kjun-ui/icons`는 Tabler 3.48.0 선형 5,166개와 채움형 1,054개를 제공합니다. 기본 제공 범위는 선형 153개와 heart·star 채움형 2개이며, 추가 아이콘은 개별 import 후 KjunProvider의 icons에 등록합니다.
+KjunProvider로 색상·서체 변수와 레이어 영역을 만들고 KjunFeedbackProvider로 영역별 피드백을 제공합니다. Provider로 앱 전체를 감싸도 앱 마크업의 스타일은 바뀌지 않습니다. Native의 DsFormLayout은 여러 FormGroup의 간격을 연결합니다. `@kjun-ui/icons`는 Tabler 3.48.0 선형 5,166개와 채움형 1,054개를 제공합니다. 기본 제공 범위는 선형 153개와 heart·star 채움형 2개이며, 추가 아이콘은 개별 import 후 KjunProvider의 icons에 등록합니다.
 
 ## 프로젝트에 연결하기
 
