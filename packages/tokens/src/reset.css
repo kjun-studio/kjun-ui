@@ -58,8 +58,9 @@
 .kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where([hidden]:not([hidden="until-found"])),
 .kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where([hidden]:not([hidden="until-found"])) { display: none; }
 /* Last so it wins over the element resets above (e.g. font: inherit on a root <button>).
-   The outermost kjun element takes the scope's text style; nested kjun elements inherit it. */
-.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):not(:where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *) {
+   The outermost kjun element takes the scope's text style; nested kjun elements inherit it.
+   Icons (svg) are excluded: they follow the surrounding text's colour and size (currentColor, 1em). */
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(:not(svg)):not(:where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *) {
   font-family: var(--kjun-font);
   color: var(--kjun-text);
   font-size: var(--_kjun-type-body-size);

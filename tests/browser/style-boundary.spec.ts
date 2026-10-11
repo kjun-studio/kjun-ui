@@ -67,3 +67,12 @@ test('vue2: rendered kjun markup carries no unprefixed utility classes', async (
   });
   expect(bare).toEqual([]);
 });
+
+for (const platform of ['react', 'vue2']) {
+  test(`${platform}: an icon placed in app text keeps the app's colour and font size`, async ({ page }) => {
+    await openFixture(page, platform, '?noapp', 'style-boundary');
+    const icon = page.getByTestId('icon-host').locator('svg');
+    await expect(icon).toHaveCSS('color', 'rgb(1, 2, 3)');
+    await expect(icon).toHaveCSS('font-size', '30px');
+  });
+}

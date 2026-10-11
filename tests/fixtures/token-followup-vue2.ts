@@ -23,7 +23,7 @@ const Cases = Vue.extend({
         box(`switch-${size}`, h(api.DsSwitch, { props: { size, value: value(`switch-${size}`, false), label: `설정 ${size}` }, on: { input: change(`switch-${size}`) } })),
       ]),
       box('input', h(api.DsInput, { props: { value: value('input', ''), ariaLabel: '터치 입력' }, on: { input: change('input') } })),
-      box('utilities', [h('span', { class: 'font-medium' }, '중간 굵기'), h('span', { class: 'font-semibold' }, '강조 굵기')]),
+      box('utilities', [h('span', { class: 'kj-font-medium' }, '중간 굵기'), h('span', { class: 'kj-font-semibold' }, '강조 굵기')]),
     ]);
   },
 });

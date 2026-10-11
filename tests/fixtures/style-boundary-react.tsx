@@ -9,6 +9,7 @@ createRoot(document.getElementById('root')!).render(<>
   <div data-testid="outside"><App /></div>
   <K.KjunProvider>
     <div data-testid="inside"><App /></div>
+    <span data-testid="icon-host" style={{ color: 'rgb(1, 2, 3)', fontSize: 30 }}><K.DsIcon name="star" /></span>
     <div data-testid="kjun" style={{ display: 'grid', gap: 16, width: 360 }}>
       <K.DsButton variant="primary">저장</K.DsButton>
       <K.DsInput value="값" onValueChange={() => {}} ariaLabel="입력" />
