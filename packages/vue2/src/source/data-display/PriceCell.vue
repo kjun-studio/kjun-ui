@@ -33,12 +33,12 @@ export default {
     if (props.value == null) {
       // block 타입은 height prop 미지정 시 기본 100px 인라인 스타일이 래퍼 클래스(크기 유틸리티)를 무시하고
       // 행 밖으로 넘치므로, 높이는 반드시 prop으로 지정한다.
-      return h(DsSkeleton, { props: { type: 'block', height: tokens.extensions.financial.priceSkeletonHeight + 'px', width: tokens.extensions.financial.priceSkeletonWidth + 'px' }, class: 'inline-block' })
+      return h(DsSkeleton, { props: { type: 'block', height: tokens.extensions.financial.priceSkeletonHeight + 'px', width: tokens.extensions.financial.priceSkeletonWidth + 'px' }, class: 'kj-inline-block' })
     }
     return [
       h(
         'span',
-        { class: ['ds-price-cell', props.flashClass, props.stale ? 'text-text-tertiary' : ''],
+        { class: ['ds-price-cell', props.flashClass, props.stale ? 'kj-text-text-tertiary' : ''],
           hook: domainColorHooks(/\bprice-flash-(up|down)/.test(props.flashClass)) },
         [
           h(DsAnimatedNumber, {

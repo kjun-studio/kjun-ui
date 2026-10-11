@@ -1,12 +1,12 @@
 <template>
-  <div class="inline-block" ref="wrapper" v-click-outside="close">
+  <div class="kj-inline-block" ref="wrapper" v-click-outside="close">
     <div ref="trigger" draggable="false" @click.capture="toggle" @keydown="onTriggerKeydown" :aria-haspopup="triggerId ? undefined : 'menu'" :aria-expanded="triggerId ? undefined : String(isOpen)">
       <slot name="trigger"></slot>
     </div>
 
     <transition name="ds-dropdown" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
       @enter-cancelled="motionCancel" @leave-cancelled="motionCancel">
-      <div v-kjun-layer="'popup'" v-if="isOpen" :id="menuId || undefined" ref="menu" draggable="false" :style="menuStyle" :class="menuClass" class="fixed z-50 min-w-menu-minimum-width max-w-[calc(100vw-2*var(--extension-floating-viewport-inset))] overflow-y-auto ds-field-menu select-none" role="menu" :aria-labelledby="triggerId || undefined" @keydown="onMenuKeydown">
+      <div v-kjun-layer="'popup'" v-if="isOpen" :id="menuId || undefined" ref="menu" draggable="false" :style="menuStyle" :class="menuClass" class="kj-fixed kj-z-50 kj-min-w-menu-minimum-width kj-max-w-[calc(100vw-2*var(--extension-floating-viewport-inset))] kj-overflow-y-auto ds-field-menu kj-select-none" role="menu" :aria-labelledby="triggerId || undefined" @keydown="onMenuKeydown">
         <slot></slot>
       </div>
     </transition>

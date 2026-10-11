@@ -22826,7 +22826,7 @@
             "name": "activeColorClass",
             "type": "string",
             "required": false,
-            "default": "\"text-brand\"",
+            "default": "\"kj-text-brand\"",
             "description": "",
             "summary": "활성 아이콘에 추가할 웹 CSS 클래스입니다.",
             "source": "packages/vue2/src/source/primitives/IconToggle.vue"
@@ -22835,7 +22835,7 @@
             "name": "inactiveColorClass",
             "type": "string",
             "required": false,
-            "default": "\"text-text-tertiary\"",
+            "default": "\"kj-text-text-tertiary\"",
             "description": "",
             "summary": "비활성 아이콘에 추가할 웹 CSS 클래스입니다.",
             "source": "packages/vue2/src/source/primitives/IconToggle.vue"

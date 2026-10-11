@@ -45,25 +45,25 @@
 
       <!-- Like React and Native: the column label sits above the rows, outside their dividers. -->
       <div v-if="selectedPill" class="kjun-market-column-label">{{ selectedPill.label }}</div>
-      <div class="divide-y divide-border">
+      <div class="kj-divide-y kj-divide-border">
         <div
           v-for="row in rows"
           :key="row[rowKey]"
-          class="market-card flex items-center justify-between px-4 py-2.5 cursor-pointer hover:bg-bg-hover transition-colors"
+          class="market-card kj-flex kj-items-center kj-justify-between kj-px-4 kj-py-2.5 kj-cursor-pointer hover:kj-bg-bg-hover kj-transition-colors"
           @click.stop="$emit('row-click', row)"
         >
           <!-- 종목 식별 로고 등 선행 표식 주입 seam (없으면 렌더 없음) -->
-          <AssetIdentity class="card-left min-w-0 flex-1" :title="primaryLabel(row)" :gap="0"><template #leading><slot name="name-prefix" :row="row" /></template><template #title><div class="card-name text-sm font-medium text-text-primary">
-              <span class="truncate inline-block max-w-full align-middle" :title="primaryLabel(row)">{{ primaryLabel(row) }}</span>
-              <DsCollectionMark v-if="isInterest(row)" class="ml-1" aria-label="관심" kind="interest" size="sm" active />
-              <DsCollectionMark v-if="isFavorite(row)" class="ml-1" aria-label="즐겨찾기" kind="favorite" size="sm" active />
+          <AssetIdentity class="card-left kj-min-w-0 kj-flex-1" :title="primaryLabel(row)" :gap="0"><template #leading><slot name="name-prefix" :row="row" /></template><template #title><div class="card-name kj-text-sm kj-font-medium kj-text-text-primary">
+              <span class="kj-truncate kj-inline-block kj-max-w-full kj-align-middle" :title="primaryLabel(row)">{{ primaryLabel(row) }}</span>
+              <DsCollectionMark v-if="isInterest(row)" class="kj-ml-1" aria-label="관심" kind="interest" size="sm" active />
+              <DsCollectionMark v-if="isFavorite(row)" class="kj-ml-1" aria-label="즐겨찾기" kind="favorite" size="sm" active />
               <!-- 도메인 종목명 표식(예: 위험 상태 뱃지) 주입 seam -->
               <slot name="name-suffix" :row="row" />
-            </div></template><template #subtitle><div v-if="subMeta(row)" class="card-subline text-xs text-text-tertiary truncate" :title="subMeta(row)">
+            </div></template><template #subtitle><div v-if="subMeta(row)" class="card-subline kj-text-xs kj-text-text-tertiary kj-truncate" :title="subMeta(row)">
               {{ subMeta(row) }}
             </div></template></AssetIdentity>
 
-          <div class="card-right flex-shrink-0 ml-3 text-right">
+          <div class="card-right kj-flex-shrink-0 kj-ml-3 kj-text-right">
             <template v-if="selectedPill && selectedPill.format === 'sparkline'">
               <DsSparkline :data="row[selectedKey] || []" :width="sparklineSize.width" :height="sparklineSize.height" />
             </template>
@@ -73,7 +73,7 @@
                 type="block"
                 height="var(--extension-market-table-value-skeleton-height)"
                 width="var(--extension-market-table-value-skeleton-width)"
-                class="inline-block"
+                class="kj-inline-block"
               />
               <!-- 등락률은 데스크탑 표와 동일하게 pill로 표시 (값이 있을 때만) -->
               <DsSignedValue
@@ -82,18 +82,18 @@
                 :formatter="() => metricDisplay(row)"
                 :stale="!!row.stale"
                 tone="pill"
-                class="rounded-full"
+                class="kj-rounded-full"
               />
               <DsSkeleton
                 v-else-if="isPriceMetric && row[selectedKey] == null"
                 type="block"
                 height="var(--extension-financial-price-skeleton-height)"
                 width="var(--extension-financial-price-skeleton-width)"
-                class="inline-block"
+                class="kj-inline-block"
               />
               <div
                 v-else
-                :class="['metric-value text-sm font-semibold tabular-nums inline-flex items-center justify-end gap-1', metricValueClass(row), (isPriceMetric && row.stale) ? 'text-text-tertiary' : '']"
+                :class="['metric-value kj-text-sm kj-font-semibold kj-tabular-nums kj-inline-flex kj-items-center kj-justify-end kj-gap-1', metricValueClass(row), (isPriceMetric && row.stale) ? 'kj-text-text-tertiary' : '']"
               >
                 <!-- 도메인 표식(예: NXT) 주입 seam -->
                 <slot name="metric-prefix" :row="row" :metric-key="selectedKey" :is-price="isPriceMetric" />
@@ -119,7 +119,7 @@
 
     <div
       v-if="showFooter && !initialLoading && rows.length > 0"
-      class="ds-market-cards__footer px-4 py-3 border-t border-border flex items-center justify-between text-xs text-text-tertiary"
+      class="ds-market-cards__footer kj-px-4 kj-py-3 kj-border-t kj-border-border kj-flex kj-items-center kj-justify-between kj-text-xs kj-text-text-tertiary"
     >
       <span v-if="calculatedAt">마지막 업데이트: {{ $formatDate(calculatedAt, { format: 'datetime' }) }}</span>
       <span v-else-if="footerNote">{{ footerNote }}</span>
@@ -299,8 +299,8 @@ export default {
       const format = this.selectedPill.format
       if (format === 'percent' && this.isChangeMetric) {
         const num = Number(row[this.selectedKey])
-        if (num > 0) return 'text-price-up'
-        if (num < 0) return 'text-price-down'
+        if (num > 0) return 'kj-text-price-up'
+        if (num < 0) return 'kj-text-price-down'
         return ''
       }
       if (format === 'investor' || format === 'net_amount' || format === 'net_volume') {

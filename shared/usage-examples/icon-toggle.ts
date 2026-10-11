@@ -12,7 +12,7 @@ export function iconToggleExample(input: UsageInput) {
   b.domainColors = true;
   b.state('pending', false);
   const label = kind === 'favorite' ? '즐겨찾기' : '관심';
-  const color = b.vue ? { activeColorClass: 'text-' + kind }
+  const color = b.vue ? { activeColorClass: 'kj-text-' + kind }
     : { activeColor: b.native
       ? (b.declare('appDomainColors', 'import { appDomainColors } from "./kjun";'), expr('appDomainColors.' + kind))
       : `var(--kjun-${kind})` };

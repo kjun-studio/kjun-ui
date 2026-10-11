@@ -13,7 +13,7 @@
       <span :class="surfaceClasses" :style="selectionStyle(isSelected(option.value))">
         <span
           v-if="option.dot"
-          class="inline-block w-selection-dot-size h-selection-dot-size rounded-full shrink-0"
+          class="kj-inline-block kj-w-selection-dot-size kj-h-selection-dot-size kj-rounded-full kj-shrink-0"
           :style="{ backgroundColor: option.dot }"
         ></span>
         <DsIcon v-if="option.icon" :name="option.icon" size="var(--extension-selection-icon-size)" />
@@ -81,16 +81,16 @@ export default {
     containerClasses() {
       return ['ds-filter-group', this.scroll
         // flex-nowrap + overflow-x-auto로 한 줄 유지. 스크롤바는 숨기고 넘치는 칩의 부분 노출로 스크롤 여지를 알린다.
-        ? 'ds-filter-group--scroll flex flex-nowrap gap-2 overflow-x-auto'
-        : 'inline-flex flex-wrap gap-2']
+        ? 'ds-filter-group--scroll kj-flex kj-flex-nowrap kj-gap-2 kj-overflow-x-auto'
+        : 'kj-inline-flex kj-flex-wrap kj-gap-2']
     },
     surfaceClasses() {
       const sizes = {
-        xs: 'px-2 text-xs',
-        sm: 'px-3',
-        md: 'px-3 text-sm',
-        lg: 'px-3.5 text-sm',
-        xl: 'px-4 text-base'
+        xs: 'kj-px-2 kj-text-xs',
+        sm: 'kj-px-3',
+        md: 'kj-px-3 kj-text-sm',
+        lg: 'kj-px-3.5 kj-text-sm',
+        xl: 'kj-px-4 kj-text-base'
       }
       return ['ds-filter-chip__surface', CONTROL_HEIGHTS[this.size], sizes[this.size]]
     }

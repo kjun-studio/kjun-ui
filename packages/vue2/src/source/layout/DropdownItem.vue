@@ -11,10 +11,10 @@
     @click="handleClick"
     @mousemove="handlePointer"
   >
-    <DsIcon v-if="icon" :name="icon" class="ds-dropdown-icon w-menu-icon-size h-menu-icon-size flex-shrink-0" />
+    <DsIcon v-if="icon" :name="icon" class="ds-dropdown-icon kj-w-menu-icon-size kj-h-menu-icon-size kj-flex-shrink-0" />
     <span class="ds-dropdown-label"><slot></slot></span>
-    <span v-if="selected !== null" class="flex-shrink-0 inline-flex" aria-hidden="true">
-      <DsIcon name="check" class="w-menu-icon-size h-menu-icon-size text-brand" :class="{ invisible: !selected }" />
+    <span v-if="selected !== null" class="kj-flex-shrink-0 kj-inline-flex" aria-hidden="true">
+      <DsIcon name="check" class="kj-w-menu-icon-size kj-h-menu-icon-size kj-text-brand" :class="{ invisible: !selected }" />
     </span>
   </button>
 </template>
@@ -49,14 +49,14 @@ export default {
   },
   computed: {
     itemClasses() {
-      const base = 'ds-dropdown-item w-full flex items-center text-left transition-colors'
+      const base = 'ds-dropdown-item kj-w-full kj-flex kj-items-center kj-text-left kj-transition-colors'
 
       const variants = {
-        default: 'text-text-primary',
-        danger: 'text-danger'
+        default: 'kj-text-text-primary',
+        danger: 'kj-text-danger'
       }
 
-      const disabled = this.disabled ? 'opacity-disabled cursor-not-allowed' : ''
+      const disabled = this.disabled ? 'kj-opacity-disabled kj-cursor-not-allowed' : ''
 
       return [base, variants[this.variant], disabled].filter(Boolean).join(' ')
     }

@@ -29,7 +29,7 @@ function setupExample(platform: PlatformName, feedback: boolean, domainColors: b
     `${builder.vue ? 'this.kjunFeedback' : 'feedback'}.toast.info("피드백 설정됨", { duration: 0 });`)));
   if (domainColors) children.push(builder.node('DsIconToggle', {
     active: builder.state('favorite', false), activeIcon: 'star', ariaLabel: '설정 항목 즐겨찾기',
-    ...(builder.vue ? { activeColorClass: 'text-favorite' } : { activeColor: builder.native
+    ...(builder.vue ? { activeColorClass: 'kj-text-favorite' } : { activeColor: builder.native
       ? (builder.declare('appDomainColors', 'import { appDomainColors } from \"./kjun\";'), expr('appDomainColors.favorite'))
       : 'var(--kjun-favorite)' }),
     onToggle: builder.handler('toggle', '', builder.set('favorite', '!' + builder.read('favorite'))),

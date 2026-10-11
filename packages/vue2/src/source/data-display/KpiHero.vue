@@ -34,7 +34,7 @@
           ><span class="ds-kpi-hero__sec-num">{{ formatSecondary(item) }}</span
           ><span v-if="item.suffix" class="ds-kpi-hero__sec-affix">{{ item.suffix }}</span
         ></template></div>
-        <div v-if="item.desc" :class="item.descClass || 'text-text-tertiary'" class="ds-kpi-hero__sec-desc"><DsSkeleton v-if="loading" type="block" width="7ch" height="1lh" /><template v-else>{{ item.desc }}</template></div>
+        <div v-if="item.desc" :class="item.descClass || 'kj-text-text-tertiary'" class="ds-kpi-hero__sec-desc"><DsSkeleton v-if="loading" type="block" width="7ch" height="1lh" /><template v-else>{{ item.desc }}</template></div>
       </div>
     </div>
   </div>

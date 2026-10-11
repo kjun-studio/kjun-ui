@@ -9,7 +9,7 @@
     <!-- 첫 로딩: skeleton 모드 (재조회 시에는 hasLoadedOnce로 이전 콘텐츠 유지) -->
     <div v-if="isInitialLoading && skeleton" :class="loadingClasses" role="status" :aria-label="loadingText">
       <slot name="loading">
-        <div class="space-y-3">
+        <div class="kj-space-y-3">
           <ds-skeleton
             v-for="i in skeletonCount"
             :key="i"
@@ -177,9 +177,9 @@ export default {
     loadingClasses() { return this.loadingPadding === 'none' ? '' : this.containerClasses },
     containerClasses() {
       const sizes = {
-        sm: 'py-state-padding-sm',
-        md: 'py-state-padding-md',
-        lg: 'py-state-padding-lg'
+        sm: 'kj-py-state-padding-sm',
+        md: 'kj-py-state-padding-md',
+        lg: 'kj-py-state-padding-lg'
       }
       return sizes[this.size]
     },

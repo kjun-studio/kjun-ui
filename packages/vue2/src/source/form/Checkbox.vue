@@ -5,7 +5,7 @@
       :checked="isChecked"
       :disabled="disabled"
       :value="val"
-      class="sr-only"
+      class="kj-sr-only"
       @change="handleChange"
     />
     <span :class="checkboxClasses">

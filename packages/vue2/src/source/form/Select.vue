@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-w-0" v-click-outside="close">
+  <div class="kj-relative kj-min-w-0" v-click-outside="close">
     <div class="ds-field-shell" :class="fieldSizeClass">
       <!-- Trigger -->
       <button
@@ -25,11 +25,11 @@
         @keydown.escape="handleEscape"
       >
         <slot name="selected" :option="selectedOption" :label="selectedLabel">
-          <span v-if="selectedLabel" class="truncate">{{ selectedLabel }}</span>
-          <span v-else class="ds-field-placeholder truncate">{{ placeholder }}</span>
+          <span v-if="selectedLabel" class="kj-truncate">{{ selectedLabel }}</span>
+          <span v-else class="ds-field-placeholder kj-truncate">{{ placeholder }}</span>
         </slot>
 
-        <DsIcon name="chevron-down" :style="kjunCompoundControl ? { width: 'var(--extension-time-picker-icon-size)', height: 'var(--extension-time-picker-icon-size)' } : undefined" :class="['ds-select-indicator shrink-0 text-text-tertiary transition-transform', isOpen && !kjunLayerBlocked ? 'rotate-180' : '']" />
+        <DsIcon name="chevron-down" :style="kjunCompoundControl ? { width: 'var(--extension-time-picker-icon-size)', height: 'var(--extension-time-picker-icon-size)' } : undefined" :class="['ds-select-indicator kj-shrink-0 kj-text-text-tertiary kj-transition-transform', isOpen && !kjunLayerBlocked ? 'kj-rotate-180' : '']" />
       </button>
       <div v-if="clearable && hasValue" class="ds-field-suffix ds-select-clear">
         <DsButton variant="ghost" size="sm" class="ds-field-clear" prefix-icon="x" aria-label="선택 지우기" title="선택 지우기" :disabled="disabled" @click.stop="clear" />
@@ -38,10 +38,10 @@
 
     <transition name="ds-select-dropdown" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
       @enter-cancelled="motionCancel" @leave-cancelled="motionCancel">
-      <div v-kjun-layer="'popup'" v-if="isOpen" ref="dropdown" :style="dropdownStyle" class="fixed z-50 ds-field-menu flex flex-col overflow-hidden">
-        <div v-if="$slots['menu-header'] || $scopedSlots['menu-header']" ref="menuHeader" class="shrink-0"><slot name="menu-header" /></div>
+      <div v-kjun-layer="'popup'" v-if="isOpen" ref="dropdown" :style="dropdownStyle" class="kj-fixed kj-z-50 ds-field-menu kj-flex kj-flex-col kj-overflow-hidden">
+        <div v-if="$slots['menu-header'] || $scopedSlots['menu-header']" ref="menuHeader" class="kj-shrink-0"><slot name="menu-header" /></div>
         <!-- Search -->
-        <div v-if="searchable" ref="searchPanel" class="p-2 border-b border-border-primary shrink-0">
+        <div v-if="searchable" ref="searchPanel" class="kj-p-2 kj-border-b kj-border-border-primary kj-shrink-0">
           <div class="ds-field-shell ds-field--md">
             <DsIcon name="search" class="ds-field-prefix" />
             <input
@@ -59,8 +59,8 @@
         </div>
 
         <!-- Options -->
-        <div ref="options" :id="`select-options-${_uid}`" class="min-h-0 max-h-menu-list-max-height overflow-y-auto" role="listbox" :aria-multiselectable="multiple ? 'true' : undefined" @keydown.down.prevent="focusNextOption" @keydown.up.prevent="focusPrevOption" @keydown.home.prevent="openAndFocusFirst" @keydown.end.prevent="openAndFocusLast" @keydown.enter.prevent="selectFocusedOption" @keydown.space.prevent="selectFocusedOption" @keydown.escape="handleEscape">
-          <div v-if="loading" class="flex items-center justify-center gap-2 px-3 py-3 text-sm text-text-secondary" role="status"><DsSpinner size="sm" />검색 중...</div>
+        <div ref="options" :id="`select-options-${_uid}`" class="kj-min-h-0 kj-max-h-menu-list-max-height kj-overflow-y-auto" role="listbox" :aria-multiselectable="multiple ? 'true' : undefined" @keydown.down.prevent="focusNextOption" @keydown.up.prevent="focusPrevOption" @keydown.home.prevent="openAndFocusFirst" @keydown.end.prevent="openAndFocusLast" @keydown.enter.prevent="selectFocusedOption" @keydown.space.prevent="selectFocusedOption" @keydown.escape="handleEscape">
+          <div v-if="loading" class="kj-flex kj-items-center kj-justify-center kj-gap-2 kj-px-3 kj-py-3 kj-text-sm kj-text-text-secondary" role="status"><DsSpinner size="sm" />검색 중...</div>
           <div
             v-for="(entry, index) in visibleEntries"
             :key="entry.key"
@@ -73,13 +73,13 @@
             @click="select(entry.option)"
           >
             <slot name="option" :option="entry.option" :selected="isSelected(entry.option)">
-              <span class="truncate">{{ getOptionLabel(entry.option) }}</span>
+              <span class="kj-truncate">{{ getOptionLabel(entry.option) }}</span>
             </slot>
-            <DsIcon v-if="isSelected(entry.option)" name="check" size="var(--extension-menu-icon-size)" class="text-brand flex-shrink-0" />
+            <DsIcon v-if="isSelected(entry.option)" name="check" size="var(--extension-menu-icon-size)" class="kj-text-brand kj-flex-shrink-0" />
           </div>
 
           <DsButton v-if="hasMoreOptions" variant="ghost" size="sm" block @click.stop="showMoreOptions" @keydown.native.stop>더 보기</DsButton>
-          <div v-if="!loading && filteredOptions.length === 0" class="px-3 py-2 text-sm text-text-tertiary text-center">
+          <div v-if="!loading && filteredOptions.length === 0" class="kj-px-3 kj-py-2 kj-text-sm kj-text-text-tertiary kj-text-center">
             결과가 없습니다
           </div>
         </div>

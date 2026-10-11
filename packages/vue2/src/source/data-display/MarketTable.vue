@@ -1,5 +1,5 @@
 <template>
-  <div class="market-table" :class="embedded ? '' : 'bg-surface-card rounded-card'">
+  <div class="market-table" :class="embedded ? '' : 'kj-bg-surface-card kj-rounded-card'">
     <DsDataState
       :query-key="queryKey"
     :result-key="resultKey"
@@ -27,7 +27,7 @@
             <col v-for="(column, index) in layout.columns" :key="index" :class="column.className" :style="column.style" />
           </colgroup>
           <!-- Header -->
-          <thead class="bg-surface-card sticky top-0 z-10">
+          <thead class="kj-bg-surface-card kj-sticky kj-top-0 kj-z-10">
             <tr>
               <!-- 관심/즐겨찾기 액션 컬럼 -->
               <th v-if="showActions" class="kjun-market-actions">
@@ -40,13 +40,13 @@
                 :key="col.key"
                 :style="{ textAlign: col.align }"
                 :class="[
-                  'px-3 py-3 text-xs font-medium text-text-tertiary whitespace-nowrap',
+                  'kj-px-3 kj-py-3 kj-text-xs kj-font-medium kj-text-text-tertiary kj-whitespace-nowrap',
                   alignClass(col.align),
-                  col.sortable ? 'cursor-pointer hover:text-text-primary select-none' : ''
+                  col.sortable ? 'kj-cursor-pointer hover:kj-text-text-primary kj-select-none' : ''
                 ]"
                 @click="col.sortable ? $emit('sort', col.key) : null"
               >
-                <span class="inline-flex items-center gap-1">
+                <span class="kj-inline-flex kj-items-center kj-gap-1">
                   {{ col.label }}
                   <!-- Like React and Native: one sort icon size, in the header text colour. -->
                   <DsIcon
@@ -65,22 +65,22 @@
           </thead>
 
           <!-- Body -->
-          <tbody class="bg-surface-card divide-y divide-border">
+          <tbody class="kj-bg-surface-card kj-divide-y kj-divide-border">
             <tr
               v-for="row in rows"
               :key="row[rowKey]"
-              class="group cursor-pointer transition-colors hover:bg-bg-hover"
+              class="kj-group kj-cursor-pointer kj-transition-colors hover:kj-bg-bg-hover"
               @click="$emit('row-click', row)"
             >
               <!-- 관심/즐겨찾기 토글 -->
               <td v-if="showActions" class="kjun-market-actions">
-                <div class="flex items-center justify-center">
+                <div class="kj-flex kj-items-center kj-justify-center">
                   <DsIconToggle
                     size="xs"
                     :active="isInterest(row)"
                     @toggle="$emit('toggle-interest', row)"
                     active-icon="heart"
-                    active-color-class="text-interest"
+                    active-color-class="kj-text-interest"
                     :aria-label="[rowActionLabel(row), '관심', isInterest(row) ? '해제' : '등록'].filter(Boolean).join(' ')"
                     :loading="togglingInterest === row[rowKey]"
                   />
@@ -89,7 +89,7 @@
                     :active="isFavorite(row)"
                     @toggle="$emit('toggle-favorite', row)"
                     active-icon="star"
-                    active-color-class="text-favorite"
+                    active-color-class="kj-text-favorite"
                     :aria-label="[rowActionLabel(row), '즐겨찾기', isFavorite(row) ? '해제' : '등록'].filter(Boolean).join(' ')"
                     :loading="togglingFavorite === row[rowKey]"
                   />
@@ -101,7 +101,7 @@
                 :key="col.key"
                 :style="{ textAlign: col.align }"
                 :class="[
-                  'px-3 py-3.5 text-sm whitespace-nowrap',
+                  'kj-px-3 kj-py-3.5 kj-text-sm kj-whitespace-nowrap',
                   alignClass(col.align),
                   isNumeric(col) ? 'num' : '',
                   weightClass(col)
@@ -112,7 +112,7 @@
                   type="block"
                   height="var(--extension-market-table-value-skeleton-height)"
                   width="var(--extension-market-table-value-skeleton-width)"
-                  class="inline-block"
+                  class="kj-inline-block"
                 />
                 <!-- 도메인 셀 슬롯 우선 (#cell-{key}). flashClass를 함께 넘겨 슬롯이 그린 셀도 동일 펄스 -->
                 <slot
@@ -139,7 +139,7 @@
                 />
 
                 <template v-else-if="col.type === 'price'">
-                  <span class="inline-flex items-center justify-end gap-1">
+                  <span class="kj-inline-flex kj-items-center kj-justify-end kj-gap-1">
                     <DsPriceCell
                       :value="row[col.key]"
                       :formatter="priceFormatter"
@@ -156,18 +156,18 @@
                   <DsSignedValue
                     v-if="row[col.key] != null"
                     :value="row[col.key]"
-                    class="inline-flex"
+                    class="kj-inline-flex"
                     :stale="!!row.stale"
                     :show-freshness="false"
                     :class="[flashCellClass(row, col)]"
                     format="percent"
                     is-raw
                   />
-                  <span v-else class="text-text-tertiary">-</span>
+                  <span v-else class="kj-text-text-tertiary">-</span>
                 </template>
 
                 <template v-else-if="col.type === 'investor'">
-                  <span v-if="row[col.key] == null" class="text-text-tertiary">—</span>
+                  <span v-if="row[col.key] == null" class="kj-text-text-tertiary">—</span>
                   <span v-else :class="getInvestorClass(row[col.key])">
                     {{ row[col.key] >= 0 ? '+' : '' }}{{ $formatBigKRW(row[col.key]) }}
                   </span>
@@ -184,7 +184,7 @@
                   :stale="!!row.stale"
                   :source="row.source"
                   :fetched-at="row.fetched_at"
-                  class="ml-1"
+                  class="kj-ml-1"
                 />
               </td>
             </tr>
@@ -207,7 +207,7 @@
     <!-- 푸터는 실제 목록이 있을 때만 (로딩/빈 상태에서 '총 0개' 잡음 방지) -->
     <div
       v-if="showFooter && !initialLoading && rows.length > 0"
-      class="px-4 py-3 border-t border-border flex items-center justify-between text-xs text-text-tertiary"
+      class="kj-px-4 kj-py-3 kj-border-t kj-border-border kj-flex kj-items-center kj-justify-between kj-text-xs kj-text-text-tertiary"
     >
       <span v-if="calculatedAt">마지막 업데이트: {{ $formatDate(calculatedAt, { format: 'datetime' }) }}</span>
       <span v-else-if="footerNote">{{ footerNote }}</span>
@@ -327,9 +327,9 @@ export default {
       return (available.find(column => column.type === 'price') || available[0])?.key ?? null
     },
     alignClass(align) {
-      if (align === 'center') return 'text-center'
-      if (align === 'right') return 'text-right'
-      return 'text-left'
+      if (align === 'center') return 'kj-text-center'
+      if (align === 'right') return 'kj-text-right'
+      return 'kj-text-left'
     },
     isNumeric(col) {
       // 명시 numeric 우선, 없으면 내장 숫자 타입으로 판정
@@ -337,8 +337,8 @@ export default {
     },
     widthClass: legacyMarketWidthClass,
     weightClass(col) {
-      if (col.weight === 'semibold') return 'font-semibold'
-      if (col.weight === 'medium') return 'font-medium'
+      if (col.weight === 'semibold') return 'kj-font-semibold'
+      if (col.weight === 'medium') return 'kj-font-medium'
       if (col.weight === 'none') return ''
       // Like React and Native: without an explicit weight, numbers keep the body weight of the row.
       return ''

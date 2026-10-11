@@ -1,7 +1,7 @@
 <template>
   <div class="ds-list-skeleton" aria-hidden="true">
     <div v-for="row in rows" :key="row" :class="['ds-list-skeleton__row', variant === 'market' ? 'mobile-simple-list__row' : '', `ds-list-skeleton__row--${variant}`]">
-      <DsSkeleton v-if="avatar" type="avatar" :width="avatarSize" :height="avatarSize" class="shrink-0" />
+      <DsSkeleton v-if="avatar" type="avatar" :width="avatarSize" :height="avatarSize" class="kj-shrink-0" />
       <div class="ds-list-skeleton__label">
         <DsSkeleton type="block" height="var(--extension-skeleton-line-heights-md)" :width="row % 2 ? '65%' : '80%'" />
         <DsSkeleton type="block" height="var(--extension-skeleton-line-heights-sm)" width="50%" />

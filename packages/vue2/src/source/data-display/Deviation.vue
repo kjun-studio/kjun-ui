@@ -1,5 +1,5 @@
 <template>
-  <span v-if="value === null || value === undefined" class="text-text-disabled">-</span>
+  <span v-if="value === null || value === undefined" class="kj-text-text-disabled">-</span>
 
   <!-- badge variant: 신호 임계 초과 시 배지 + 경고 아이콘, 그 외 색상 텍스트 -->
   <span v-else-if="variant === 'badge'" class="ds-deviation-badge">
@@ -57,8 +57,8 @@ export default {
       return `괴리율 ${this.signalThreshold}% 초과 — 차익거래 기회 가능`
     },
     textColorClass() {
-      if (this.isNeutral) return 'text-text-secondary'
-      return this.value > 0 ? 'text-price-up' : 'text-price-down'
+      if (this.isNeutral) return 'kj-text-text-secondary'
+      return this.value > 0 ? 'kj-text-price-up' : 'kj-text-price-down'
     },
     pillClass() {
       const abs = Math.abs(this.value)

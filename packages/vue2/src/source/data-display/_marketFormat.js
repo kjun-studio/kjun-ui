@@ -18,12 +18,12 @@ export function getInvestorClass(value) {
 // 상세 카드의 지표 pill은 배경을 유지한다.
 export function getChangeRatePillClass(rate) {
   return getSignedPillClass(rate, {
-    base: 'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold num',
+    base: 'kj-inline-flex kj-items-center kj-px-2 kj-py-0.5 kj-rounded-full kj-text-xs kj-font-semibold num',
   })
 }
 
 export function getChangeRateTextClass(rate, stale = false) {
-  return `inline-flex items-center text-xs font-medium num ${stale ? 'text-text-tertiary' : getSignedNumberClass(rate)}`
+  return `kj-inline-flex kj-items-center kj-text-xs kj-font-medium num ${stale ? 'kj-text-text-tertiary' : getSignedNumberClass(rate)}`
 }
 
 // --- pill 목록 (모바일 카드 지표 로테이션) ---

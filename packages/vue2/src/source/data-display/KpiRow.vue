@@ -152,13 +152,13 @@ export default {
       // success/danger는 상태 시맨틱(정상=초록/이상=빨강, DsBadge와 동일 계약).
       // 시세 방향 배지(변동률·상승/하락 카운트)는 price-up/price-down을 사용한다 — 혼용 금지
       const map = {
-        warning: 'bg-warning-bg text-warning',
-        success: 'bg-success-bg text-success',
-        danger: 'bg-danger-bg text-danger',
-        'price-up': 'bg-price-up-bg text-price-up',
-        'price-down': 'bg-price-down-bg text-price-down',
-        info: 'bg-info-bg text-info',
-        neutral: 'bg-bg-secondary text-text-secondary',
+        warning: 'kj-bg-warning-bg kj-text-warning',
+        success: 'kj-bg-success-bg kj-text-success',
+        danger: 'kj-bg-danger-bg kj-text-danger',
+        'price-up': 'kj-bg-price-up-bg kj-text-price-up',
+        'price-down': 'kj-bg-price-down-bg kj-text-price-down',
+        info: 'kj-bg-info-bg kj-text-info',
+        neutral: 'kj-bg-bg-secondary kj-text-text-secondary',
       }
       return map[variant] || map.neutral
     },
@@ -167,21 +167,21 @@ export default {
     },
     badgeDotClass(variant) {
       const map = {
-        warning: 'bg-warning',
-        success: 'bg-success',
-        danger: 'bg-danger',
-        'price-up': 'bg-price-up',
-        'price-down': 'bg-price-down',
+        warning: 'kj-bg-warning',
+        success: 'kj-bg-success',
+        danger: 'kj-bg-danger',
+        'price-up': 'kj-bg-price-up',
+        'price-down': 'kj-bg-price-down',
       }
       return map[variant] || ''
     },
     descColorClass(item) {
       // desc는 value와 다른 의미(예: 금리 수준 value + 변동 bp desc)일 수 있어 명시 색을 우선한다
       if (item.descClass) return item.descClass
-      if (item.semantic !== 'price') return 'text-text-secondary'
-      if (item.value > 0) return 'text-price-up'
-      if (item.value < 0) return 'text-price-down'
-      return 'text-text-secondary'
+      if (item.semantic !== 'price') return 'kj-text-text-secondary'
+      if (item.value > 0) return 'kj-text-price-up'
+      if (item.value < 0) return 'kj-text-price-down'
+      return 'kj-text-text-secondary'
     },
   },
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="ds-popover-wrapper relative inline-block" ref="wrapper" v-click-outside="close" @focusout="onFocusOut">
+  <div class="ds-popover-wrapper kj-relative kj-inline-block" ref="wrapper" v-click-outside="close" @focusout="onFocusOut">
     <div
       ref="trigger"
       @click.capture="onTriggerClick"
@@ -20,7 +20,7 @@
         :aria-label="ariaLabel || undefined"
         tabindex="-1"
         :style="floatingStyle"
-        class="ds-popover-panel kjun-content-popover fixed z-50"
+        class="ds-popover-panel kjun-content-popover kj-fixed kj-z-50"
         @keydown="onPanelKeydown"
       >
         <div class="kjun-popover-content" :data-no-padding="String(noPadding)"><slot :close="closeAndFocus"></slot></div>

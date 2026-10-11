@@ -1,5 +1,5 @@
 <template>
-  <div class="min-w-0">
+  <div class="kj-min-w-0">
     <div class="ds-field-shell" :class="fieldSizeClass" :style="affixStyle" :data-disabled="disabled || undefined">
       <div v-if="$slots.prefix || prefixIcon" ref="prefix" class="ds-field-prefix">
         <slot name="prefix">
@@ -50,7 +50,7 @@
           @click.stop="handleClear"
         />
         <slot name="suffix">
-          <ds-icon v-if="suffixIcon" :name="suffixIcon" class="text-text-tertiary" />
+          <ds-icon v-if="suffixIcon" :name="suffixIcon" class="kj-text-text-tertiary" />
         </slot>
       </div>
     </div>

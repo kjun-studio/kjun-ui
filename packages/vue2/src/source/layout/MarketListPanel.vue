@@ -3,7 +3,7 @@
     <div class="ds-market-list-panel__controls">
       <slot name="controls" />
     </div>
-    <div class="ds-market-list-panel__results mobile-list-surface border-t border-border mt-4">
+    <div class="ds-market-list-panel__results mobile-list-surface kj-border-t kj-border-border kj-mt-4">
       <slot />
     </div>
   </DsCard>

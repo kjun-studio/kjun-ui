@@ -34,11 +34,11 @@ export const SEMANTIC_VARIANTS = ['success', 'warning', 'danger', 'info']
  * xs 24px / sm 32px / md 40px / lg 48px / xl 56px
  */
 export const CONTROL_HEIGHTS = {
-  xs: 'h-button-heights-xs',
-  sm: 'h-button-heights-sm',
-  md: 'h-button-heights-md',
-  lg: 'h-button-heights-lg',
-  xl: 'h-button-heights-xl',
+  xs: 'kj-h-button-heights-xs',
+  sm: 'kj-h-button-heights-sm',
+  md: 'kj-h-button-heights-md',
+  lg: 'kj-h-button-heights-lg',
+  xl: 'kj-h-button-heights-xl',
 }
 
 /**

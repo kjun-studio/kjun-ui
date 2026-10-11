@@ -8,17 +8,17 @@
     @close="handleCancel"
   >
     <template #header>
-      <div class="flex items-center gap-2.5">
+      <div class="kj-flex kj-items-center kj-gap-2.5">
         <!-- data-icon: DsIcon이 $attrs를 SVG에 펼치므로 컴포넌트 수정 없이
              아이콘 이름이 DOM에 드러난다. e2e가 trash → alert-circle 회귀를
              감시하는 데 쓴다. -->
         <!-- 헤더 슬롯에서도 기본 아이콘 크기를 명시해 글자 크기 상속과 분리한다. -->
         <DsIcon :name="iconName" :data-icon="iconName" :class="iconColorClass" :size="iconSize" />
-        <h3 class="text-lg font-semibold text-text-primary">{{ title }}</h3>
+        <h3 class="kj-text-lg kj-font-semibold kj-text-text-primary">{{ title }}</h3>
       </div>
     </template>
 
-    <p class="text-sm leading-relaxed text-text-secondary">{{ message }}</p>
+    <p class="kj-text-sm kj-leading-relaxed kj-text-text-secondary">{{ message }}</p>
 
     <template #footer>
       <DsButton variant="ghost" :disabled="loading" @click.stop="handleCancel">
@@ -45,9 +45,9 @@ const logger = createLogger('components.design-system.feedback.ConfirmModal')
 // danger에 trash를 쓰지 않는 이유: 제목이 이미 "삭제"라고 말하므로 아이콘이
 // 같은 말을 반복한다. alert-triangle은 warning 전용으로 남긴다.
 const TYPE_MAP = {
-  warning: { icon: 'alert-triangle', color: 'text-warning-accent', variant: 'primary' },
-  danger: { icon: 'alert-circle', color: 'text-danger-accent', variant: 'danger' },
-  info: { icon: 'info-circle', color: 'text-info-accent', variant: 'primary' }
+  warning: { icon: 'alert-triangle', color: 'kj-text-warning-accent', variant: 'primary' },
+  danger: { icon: 'alert-circle', color: 'kj-text-danger-accent', variant: 'danger' },
+  info: { icon: 'info-circle', color: 'kj-text-info-accent', variant: 'primary' }
 }
 
 export default {

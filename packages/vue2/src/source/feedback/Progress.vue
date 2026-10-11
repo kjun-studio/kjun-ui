@@ -3,7 +3,7 @@
     <!-- Shared .kjun-progress-label gives the caption type and 8px gap React and Native use. -->
     <div v-if="showLabel" class="kjun-progress-label">
       <span v-if="label">{{ label }}</span>
-      <span class="tabular-nums">{{ percentage }}%</span>
+      <span class="kj-tabular-nums">{{ percentage }}%</span>
     </div>
     <div
       :class="trackClasses"
@@ -62,21 +62,21 @@ export default {
     },
     trackClasses() {
       const sizes = {
-        sm: 'h-progress-heights-sm',
-        md: 'h-progress-heights-md',
-        lg: 'h-progress-heights-lg'
+        sm: 'kj-h-progress-heights-sm',
+        md: 'kj-h-progress-heights-md',
+        lg: 'kj-h-progress-heights-lg'
       }
-      return ['w-full bg-bg-secondary rounded-full overflow-hidden', sizes[this.size]].join(' ')
+      return ['kj-w-full kj-bg-bg-secondary kj-rounded-full kj-overflow-hidden', sizes[this.size]].join(' ')
     },
     barClasses() {
       const variants = {
-        primary: 'bg-brand',
-        success: 'bg-success',
-        warning: 'bg-warning',
-        danger: 'bg-danger',
-        info: 'bg-info'
+        primary: 'kj-bg-brand',
+        success: 'kj-bg-success',
+        warning: 'kj-bg-warning',
+        danger: 'kj-bg-danger',
+        info: 'kj-bg-info'
       }
-      return ['h-full rounded-full', variants[this.variant]].join(' ')
+      return ['kj-h-full kj-rounded-full', variants[this.variant]].join(' ')
     }
   }
 }

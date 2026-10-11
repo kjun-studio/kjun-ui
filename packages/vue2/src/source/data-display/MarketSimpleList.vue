@@ -22,30 +22,30 @@
         <div
           v-for="row in rows"
           :key="row[rowKey]"
-          class="market-simple-card mobile-simple-list__row flex items-center justify-between px-4 py-4 cursor-pointer hover:bg-bg-hover transition-colors"
+          class="market-simple-card mobile-simple-list__row kj-flex kj-items-center kj-justify-between kj-px-4 kj-py-4 kj-cursor-pointer hover:kj-bg-bg-hover kj-transition-colors"
           @click.stop="$emit('row-click', row)"
         >
           <!-- 종목 식별 로고 등 선행 표식 주입 seam (없으면 렌더 없음) -->
-          <AssetIdentity class="card-left min-w-0 flex-1" :title="primaryLabel(row)" :gap="0"><template #leading><slot name="name-prefix" :row="row" /></template><template #title><div class="card-name mobile-simple-list__name text-sm font-medium text-text-primary flex items-center gap-1 min-w-0">
-              <span class="mobile-simple-list__label truncate" :title="primaryLabel(row)">{{ primaryLabel(row) }}</span>
-              <DsCollectionMark v-if="isInterest(row)" class="flex-shrink-0" aria-label="관심" kind="interest" size="sm" active />
-              <DsCollectionMark v-if="isFavorite(row)" class="flex-shrink-0" aria-label="즐겨찾기" kind="favorite" size="sm" active />
+          <AssetIdentity class="card-left kj-min-w-0 kj-flex-1" :title="primaryLabel(row)" :gap="0"><template #leading><slot name="name-prefix" :row="row" /></template><template #title><div class="card-name mobile-simple-list__name kj-text-sm kj-font-medium kj-text-text-primary kj-flex kj-items-center kj-gap-1 kj-min-w-0">
+              <span class="mobile-simple-list__label kj-truncate" :title="primaryLabel(row)">{{ primaryLabel(row) }}</span>
+              <DsCollectionMark v-if="isInterest(row)" class="kj-flex-shrink-0" aria-label="관심" kind="interest" size="sm" active />
+              <DsCollectionMark v-if="isFavorite(row)" class="kj-flex-shrink-0" aria-label="즐겨찾기" kind="favorite" size="sm" active />
               <!-- 도메인 종목명 표식(예: 위험 상태 뱃지) 주입 seam -->
               <slot name="name-suffix" :row="row" />
-            </div></template><template #subtitle><div v-if="subMeta(row) || $scopedSlots['sub-meta']" class="card-sub1 mobile-simple-list__meta text-xs text-text-tertiary mt-0.5 truncate" :title="subMeta(row)">
+            </div></template><template #subtitle><div v-if="subMeta(row) || $scopedSlots['sub-meta']" class="card-sub1 mobile-simple-list__meta kj-text-xs kj-text-text-tertiary kj-mt-0.5 kj-truncate" :title="subMeta(row)">
               <slot name="sub-meta" :row="row">{{ subMeta(row) }}</slot>
             </div></template></AssetIdentity>
 
-          <div class="card-right mobile-simple-list__quote flex-shrink-0 ml-3 text-right">
-            <div class="mobile-simple-list__price text-sm font-semibold text-text-primary tabular-nums">
-              <DsSkeleton v-if="priceValue(row) == null" type="block" height="var(--extension-financial-price-skeleton-height)" width="var(--extension-financial-price-skeleton-width)" class="inline-block" />
-              <span v-else class="mobile-simple-list__price-line inline-flex items-center justify-end gap-1">
-                <span :class="['ds-price-cell', priceFlashClass(row), row.stale ? 'text-text-tertiary' : '']">
+          <div class="card-right mobile-simple-list__quote kj-flex-shrink-0 kj-ml-3 kj-text-right">
+            <div class="mobile-simple-list__price kj-text-sm kj-font-semibold kj-text-text-primary kj-tabular-nums">
+              <DsSkeleton v-if="priceValue(row) == null" type="block" height="var(--extension-financial-price-skeleton-height)" width="var(--extension-financial-price-skeleton-width)" class="kj-inline-block" />
+              <span v-else class="mobile-simple-list__price-line kj-inline-flex kj-items-center kj-justify-end kj-gap-1">
+                <span :class="['ds-price-cell', priceFlashClass(row), row.stale ? 'kj-text-text-tertiary' : '']">
                   <DsAnimatedNumber from-previous :value="priceValue(row)" :formatter="priceFormatter" />
                 </span>
               </span>
             </div>
-            <div class="mobile-simple-list__change flex flex-wrap items-center justify-end gap-1.5 mt-0.5">
+            <div class="mobile-simple-list__change kj-flex kj-flex-wrap kj-items-center kj-justify-end kj-gap-1.5 kj-mt-0.5">
               <!-- 가격 관련 표식은 와치리스트와 같이 보조 줄에 두어 현재가 정렬을 유지한다. -->
               <slot v-if="priceValue(row) != null" name="price-prefix" :row="row" />
               <template v-if="hasQuoteValue(row)">
@@ -62,19 +62,19 @@
                 type="block"
                 height="var(--extension-market-list-change-skeleton-height)"
                 width="var(--extension-market-list-change-skeleton-width)"
-                class="inline-block"
+                class="kj-inline-block"
               />
               <DsSignedValue
                 v-else-if="changeValue(row) != null"
                 :value="changeValue(row)"
-                class="inline-flex text-xs font-medium"
+                class="kj-inline-flex kj-text-xs kj-font-medium"
                 :stale="!!row.stale"
                 :show-freshness="false"
                 :class="[changeFlashClass(row)]"
                 format="percent"
                 is-raw
               />
-              <span v-else class="text-xs text-text-tertiary">-</span>
+              <span v-else class="kj-text-xs kj-text-text-tertiary">-</span>
             </div>
           </div>
         </div>
@@ -94,7 +94,7 @@
 
     <div
       v-if="showFooter && !initialLoading && rows.length > 0"
-      class="mobile-simple-list__inset px-4 py-3 flex flex-wrap gap-2 items-center justify-between text-xs text-text-tertiary"
+      class="mobile-simple-list__inset kj-px-4 kj-py-3 kj-flex kj-flex-wrap kj-gap-2 kj-items-center kj-justify-between kj-text-xs kj-text-text-tertiary"
     >
       <span v-if="calculatedAt">마지막 업데이트: {{ $formatDate(calculatedAt, { format: 'datetime' }) }}</span>
       <span v-else-if="footerNote">{{ footerNote }}</span>

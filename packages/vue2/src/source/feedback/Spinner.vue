@@ -33,20 +33,20 @@ export default {
   computed: {
     stroke() { return (tokens.extensions.spinner.strokeWidths[this.size] * 24) / tokens.extensions.spinner.sizes[this.size] },
     wrapperClasses() {
-      return 'inline-flex items-center'
+      return 'kj-inline-flex kj-items-center'
     },
     spinnerClasses() {
       const sizes = {
-        xs: 'w-spinner-sizes-xs h-spinner-sizes-xs',
-        sm: 'w-spinner-sizes-sm h-spinner-sizes-sm',
-        md: 'w-spinner-sizes-md h-spinner-sizes-md',
-        lg: 'w-spinner-sizes-lg h-spinner-sizes-lg',
-        xl: 'w-spinner-sizes-xl h-spinner-sizes-xl'
+        xs: 'kj-w-spinner-sizes-xs kj-h-spinner-sizes-xs',
+        sm: 'kj-w-spinner-sizes-sm kj-h-spinner-sizes-sm',
+        md: 'kj-w-spinner-sizes-md kj-h-spinner-sizes-md',
+        lg: 'kj-w-spinner-sizes-lg kj-h-spinner-sizes-lg',
+        xl: 'kj-w-spinner-sizes-xl kj-h-spinner-sizes-xl'
       }
-      return ['animate-spin text-brand', sizes[this.size]].join(' ')
+      return ['kj-animate-spin kj-text-brand', sizes[this.size]].join(' ')
     },
     textClasses() {
-      return 'ml-2 text-sm text-text-secondary'
+      return 'kj-ml-2 kj-text-sm kj-text-text-secondary'
     }
   }
 }

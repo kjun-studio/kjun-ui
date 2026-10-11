@@ -68,10 +68,10 @@ export default {
   computed: {
     textareaClasses() {
       const resizeClasses = {
-        none: 'resize-none',
-        vertical: 'resize-y',
-        horizontal: 'resize-x',
-        both: 'resize'
+        none: 'kj-resize-none',
+        vertical: 'kj-resize-y',
+        horizontal: 'kj-resize-x',
+        both: 'kj-resize'
       }
 
       return [...this.fieldClasses, 'ds-field--textarea', resizeClasses[this.resize]]

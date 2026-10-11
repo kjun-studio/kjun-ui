@@ -6233,14 +6233,14 @@
         "name": "activeColorClass",
         "type": "string",
         "required": false,
-        "default": "\"text-brand\"",
+        "default": "\"kj-text-brand\"",
         "description": ""
       },
       {
         "name": "inactiveColorClass",
         "type": "string",
         "required": false,
-        "default": "\"text-text-tertiary\"",
+        "default": "\"kj-text-text-tertiary\"",
         "description": ""
       },
       {

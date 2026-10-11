@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-w-0" v-click-outside="close">
+  <div class="kj-relative kj-min-w-0" v-click-outside="close">
     <!-- Input Trigger -->
     <div class="ds-field-shell" :class="fieldSizeClass">
       <DsIcon name="search" class="ds-field-prefix" />
@@ -45,7 +45,7 @@
     <!-- Dropdown -->
     <transition name="ds-combobox-dropdown" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
       @enter-cancelled="motionCancel" @leave-cancelled="motionCancel">
-      <div v-kjun-layer.field="'popup'" v-if="isOpen" :id="`combobox-options-${_uid}`" role="listbox" class="absolute z-50 w-full mt-1 ds-field-menu max-h-menu-list-max-height overflow-y-auto">
+      <div v-kjun-layer.field="'popup'" v-if="isOpen" :id="`combobox-options-${_uid}`" role="listbox" class="kj-absolute kj-z-50 kj-w-full kj-mt-1 ds-field-menu kj-max-h-menu-list-max-height kj-overflow-y-auto">
         <div
           v-for="(option, index) in filteredOptions"
           :key="getOptionValue(option)"
@@ -57,12 +57,12 @@
           @mousedown.prevent="selectOption(option)"
         >
           <slot name="option" :option="option" :index="index">
-            <span class="truncate">{{ getOptionLabel(option) }}</span>
+            <span class="kj-truncate">{{ getOptionLabel(option) }}</span>
           </slot>
-          <DsIcon v-if="isSelected(option)" name="check" size="var(--extension-menu-icon-size)" class="text-brand flex-shrink-0" />
+          <DsIcon v-if="isSelected(option)" name="check" size="var(--extension-menu-icon-size)" class="kj-text-brand kj-flex-shrink-0" />
         </div>
 
-        <div v-if="filteredOptions.length === 0" class="px-3 py-3 text-sm text-text-tertiary text-center">
+        <div v-if="filteredOptions.length === 0" class="kj-px-3 kj-py-3 kj-text-sm kj-text-text-tertiary kj-text-center">
           {{ emptyText }}
         </div>
       </div>

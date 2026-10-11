@@ -6,7 +6,7 @@
     :menu-id="menuId"
     :trigger-id="triggerId"
     menu-class="ds-menu-button__menu"
-    class="ds-menu-button inline-flex"
+    class="ds-menu-button kj-inline-flex"
     @open="onOpen"
     @close="onClose"
   >

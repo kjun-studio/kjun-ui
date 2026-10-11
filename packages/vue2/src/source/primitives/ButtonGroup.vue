@@ -11,7 +11,7 @@
       :aria-pressed="String(value === option.value)"
       @click.stop="selectOption(option.value)"
     >
-      <DsIcon v-if="option.icon" size="var(--extension-selection-icon-size)" :name="option.icon" :class="option.label ? 'mr-1.5' : ''" />
+      <DsIcon v-if="option.icon" size="var(--extension-selection-icon-size)" :name="option.icon" :class="option.label ? 'kj-mr-1.5' : ''" />
       <span class="kjun-button-group-label"><span aria-hidden="true" :style="selectionStyle(true)">{{ option.label }}</span><span>{{ option.label }}</span></span>
     </button>
   </div>
@@ -87,8 +87,8 @@ export default {
       // align-items:stretch는 cross-size가 auto일 때만 늘리므로, 명시 폭을 주면 모바일 세로
       // 헤더에서 회색 트랙만 전폭으로 늘어나던 stretch 사고를 컴포넌트 차원에서 차단한다.
       return [
-        'ds-button-group inline-flex',
-        this.fullWidth ? 'w-full' : 'w-fit'
+        'ds-button-group kj-inline-flex',
+        this.fullWidth ? 'kj-w-full' : 'kj-w-fit'
       ]
     }
   },
@@ -103,26 +103,26 @@ export default {
       const isActive = this.value === option.value
 
       const base = [
-        'ds-button-group__button inline-flex items-center justify-center font-medium whitespace-nowrap',
-        this.fullWidth ? 'flex-1' : ''
+        'ds-button-group__button kj-inline-flex kj-items-center kj-justify-center kj-font-medium kj-whitespace-nowrap',
+        this.fullWidth ? 'kj-flex-1' : ''
       ]
 
       // 높이는 컨테이너가 결정(stretch) — 여기선 가로 패딩과 폰트만.
       const sizeClasses = {
-        xs: 'text-xs',
-        sm: 'text-[length:var(--control-label-size)]',
-        md: 'text-sm',
-        lg: 'text-base',
-        xl: 'text-base'
+        xs: 'kj-text-xs',
+        sm: 'kj-text-[length:var(--control-label-size)]',
+        md: 'kj-text-sm',
+        lg: 'kj-text-base',
+        xl: 'kj-text-base'
       }
 
       const stateClasses = isActive
-        ? 'bg-card-bg text-text-primary font-semibold'
-        : 'bg-transparent text-text-secondary'
+        ? 'kj-bg-card-bg kj-text-text-primary kj-font-semibold'
+        : 'kj-bg-transparent kj-text-text-secondary'
 
       const disabledClasses = this.disabled
-        ? 'opacity-disabled cursor-not-allowed'
-        : 'cursor-pointer'
+        ? 'kj-opacity-disabled kj-cursor-not-allowed'
+        : 'kj-cursor-pointer'
 
       return [...base, sizeClasses[this.size], stateClasses, disabledClasses]
     }

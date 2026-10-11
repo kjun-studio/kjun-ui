@@ -1,29 +1,29 @@
 <template>
-  <nav aria-label="경로" class="flex items-center text-sm">
+  <nav aria-label="경로" class="kj-flex kj-items-center kj-text-sm">
     <template v-for="(item, idx) in items">
       <DsIcon
         v-if="idx > 0"
         :key="`sep-${idx}`"
         name="chevron-right" size="var(--extension-breadcrumb-separator-size)"
-        class="mx-2 text-text-tertiary text-xs"
+        class="kj-mx-2 kj-text-text-tertiary kj-text-xs"
       />
 
       <a
         v-if="item.to && idx < items.length - 1"
         :key="`link-${idx}`"
         :href="safeHref(item.to)" @click="$emit('navigate', item, $event)"
-        class="ds-breadcrumb-link text-text-secondary hover:text-brand transition-colors"
+        class="ds-breadcrumb-link kj-text-text-secondary hover:kj-text-brand kj-transition-colors"
       >
-        <DsIcon v-if="item.icon" :name="item.icon" size="var(--extension-breadcrumb-icon-size)" class="mr-1" />
+        <DsIcon v-if="item.icon" :name="item.icon" size="var(--extension-breadcrumb-icon-size)" class="kj-mr-1" />
         {{ item.label }}
       </a>
 
       <span
         v-else
         :key="`text-${idx}`"
-        :class="idx === items.length - 1 ? 'text-text-primary font-medium' : 'text-text-secondary'"
+        :class="idx === items.length - 1 ? 'kj-text-text-primary kj-font-medium' : 'kj-text-text-secondary'"
       >
-        <DsIcon v-if="item.icon" :name="item.icon" size="var(--extension-breadcrumb-icon-size)" class="mr-1" />
+        <DsIcon v-if="item.icon" :name="item.icon" size="var(--extension-breadcrumb-icon-size)" class="kj-mr-1" />
         {{ item.label }}
       </span>
     </template>

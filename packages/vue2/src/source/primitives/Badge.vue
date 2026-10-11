@@ -33,19 +33,19 @@ export default {
   computed: {
     badgeStyle() { const { x, y } = tokens.extensions.badge.padding[this.size]; return { padding: `${y}px ${x}px`, gap: tokens.extensions.badge.gap + "px" }; },
     badgeClasses() {
-      const base = 'ds-badge max-w-full min-w-0 inline-flex items-center whitespace-normal font-semibold rounded-badge'
+      const base = 'ds-badge kj-max-w-full kj-min-w-0 kj-inline-flex kj-items-center kj-whitespace-normal kj-font-semibold kj-rounded-badge'
 
       const variants = {
-        default: 'bg-bg-secondary text-text-secondary',
-        secondary: 'bg-bg-secondary text-text-secondary',
-        primary: 'bg-brand-subtle-bg text-brand-hover',
-        success: 'bg-success-bg text-success',
-        warning: 'bg-warning-bg text-warning',
-        danger: 'bg-danger-bg text-danger',
-        info: 'bg-info-bg text-info',
+        default: 'kj-bg-bg-secondary kj-text-text-secondary',
+        secondary: 'kj-bg-bg-secondary kj-text-text-secondary',
+        primary: 'kj-bg-brand-subtle-bg kj-text-brand-hover',
+        success: 'kj-bg-success-bg kj-text-success',
+        warning: 'kj-bg-warning-bg kj-text-warning',
+        danger: 'kj-bg-danger-bg kj-text-danger',
+        info: 'kj-bg-info-bg kj-text-info',
         // 시세/손익 배지 — 한국식/미국식 테마 토큰을 그대로 따른다 (success/danger 혼용 금지)
-        'price-up': 'bg-price-up-bg text-price-up',
-        'price-down': 'bg-price-down-bg text-price-down'
+        'price-up': 'kj-bg-price-up-bg kj-text-price-up',
+        'price-down': 'kj-bg-price-down-bg kj-text-price-down'
       }
 
       const sizes = {

@@ -4,7 +4,7 @@
         <div v-for="index in skeletonRows" :key="index" class="ds-table-card" aria-hidden="true">
           <div class="ds-table-card-header">
             <div class="ds-table-card-header-left">
-              <DsSkeleton v-if="selectable" type="block" width="var(--_kjun-geometry-table-selection-size)" height="var(--_kjun-geometry-table-selection-size)" class="mr-2 shrink-0" />
+              <DsSkeleton v-if="selectable" type="block" width="var(--_kjun-geometry-table-selection-size)" height="var(--_kjun-geometry-table-selection-size)" class="kj-mr-2 kj-shrink-0" />
               <DsSkeleton type="block" height="var(--extension-table-card-title-skeleton-height)" width="var(--extension-table-card-title-skeleton-width)" />
             </div>
             <DsSkeleton v-if="badgeColumns.length || cardSubtitle || inlineCardActions || inlineCardColumns.length" type="block" width="var(--extension-table-card-badge-skeleton-width)" height="var(--extension-table-card-title-skeleton-height)" />
@@ -50,7 +50,7 @@
               v-if="selectable"
               :checked="isSelected(row)"
               aria-label="행 선택"
-              class="mr-2 flex-shrink-0"
+              class="kj-mr-2 kj-flex-shrink-0"
               @change="toggleRow(row)"
               @click.stop
             />
@@ -135,7 +135,7 @@
             @click.stop="toggleExpand(row)"
             :aria-expanded="String(isExpanded(row))"
           >
-            <DsIcon :name="isExpanded(row) ? 'chevron-down' : 'chevron-right'" class="text-xs mr-1.5" />
+            <DsIcon :name="isExpanded(row) ? 'chevron-down' : 'chevron-right'" class="kj-text-xs kj-mr-1.5" />
             {{ isExpanded(row) ? '접기' : '상세 보기' }}
           </button>
           <div v-if="isExpanded(row)" class="ds-table-card-expand-content">

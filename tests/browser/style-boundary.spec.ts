@@ -56,3 +56,14 @@ for (const platform of ['react', 'vue2']) {
     await expect(button).toHaveCSS('font-family', font);
   });
 }
+
+test('vue2: rendered kjun markup carries no unprefixed utility classes', async ({ page }) => {
+  await openFixture(page, 'vue2', '?component=all', 'catalog', 'production', true);
+  const bare = await page.evaluate(() => {
+    const utility = /^(-?(m|p)[trblxy]?-|gap-|space-|w-|h-|min-|max-|text-|font-|leading-|tracking-|bg-|border|rounded|shadow|opacity-|flex|inline|block|grid|hidden|items-|justify-|self-|shrink|grow|overflow-|truncate|whitespace-|cursor-|select-|transition|duration-|ease-|z-|relative|absolute|fixed|sticky|inset-|top-|left-|right-|bottom-|sr-only|underline|uppercase|align-|animate-|resize|outline|pointer-events-)/;
+    return [...new Set([...document.querySelectorAll('[class*="kjun-"] *, [class*="kjun-"]')]
+      .flatMap(el => [...el.classList].map(c => c.split(/:(?![^[]*\])/).pop()!.replace(/^!/, '')))
+      .filter(c => utility.test(c)))];
+  });
+  expect(bare).toEqual([]);
+});

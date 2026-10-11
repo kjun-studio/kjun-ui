@@ -6,7 +6,7 @@
     size="sm"
     @close="cancel"
   >
-    <p v-if="message" class="text-sm text-text-secondary mb-3">{{ message }}</p>
+    <p v-if="message" class="kj-text-sm kj-text-text-secondary kj-mb-3">{{ message }}</p>
     <DsInput
       ref="inputRef"
       v-model="inputValue"

@@ -6,7 +6,7 @@
       :disabled="effectiveDisabled"
       :name="name || (radioGroup ? `ds-radio-group-${radioGroup._uid}` : undefined)"
       :value="val"
-      class="sr-only"
+      class="kj-sr-only"
       @change="handleChange"
     />
     <span :class="radioClasses">

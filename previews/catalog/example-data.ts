@@ -52,7 +52,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         columns,
         rows: 3,
         showActions: true,
-        alignClass: (v: string) => "text-" + (v || "left"),
+        alignClass: (v: string) => "kj-text-" + (v || "left"),
         widthClass: () => "",
       });
     case "DsTooltip":

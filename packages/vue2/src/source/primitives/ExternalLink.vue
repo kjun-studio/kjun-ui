@@ -5,7 +5,7 @@
     <template v-if="mode === 'icon'"><DsIcon name="external-link" /></template>
     <slot v-else />
     <DsIcon v-if="url && mode === 'text'" name="external-link" :size="iconSize" class="kjun-external-link-icon" />
-    <span v-if="url && mode === 'text' && !label && !$attrs['aria-label']" class="sr-only"> (새 창)</span>
+    <span v-if="url && mode === 'text' && !label && !$attrs['aria-label']" class="kj-sr-only"> (새 창)</span>
   </component>
 </template>
 <script>

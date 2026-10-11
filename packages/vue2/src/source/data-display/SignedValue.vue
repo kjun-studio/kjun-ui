@@ -1,7 +1,7 @@
 <template>
   <span class="ds-signed-value" :class="valueClass" :aria-busy="String(loading)">
-    <DsSkeleton v-if="loading" type="block" width="var(--extension-financial-signed-skeleton-width)" height="1lh" class="inline-block align-top" />
-    <template v-else>{{ display }}<DsFreshness v-if="showFreshness && stale && number !== null" stale class="ml-financial-affix-gap" /></template>
+    <DsSkeleton v-if="loading" type="block" width="var(--extension-financial-signed-skeleton-width)" height="1lh" class="kj-inline-block kj-align-top" />
+    <template v-else>{{ display }}<DsFreshness v-if="showFreshness && stale && number !== null" stale class="kj-ml-financial-affix-gap" /></template>
   </span>
 </template>
 <script>
@@ -12,7 +12,7 @@ import { domainColorMixin } from "../../domain-colors.js";
 import { finiteSignedValue } from './signedValue'
 import { getSignedNumberClass, getSignedPillClass } from '@kjun-adapter/formatters.js'
 import { oneOf, SIGNED_VALUE_FORMATS, SIGNED_VALUE_TONES } from '../tokens'
-const SIGNED_PILL_BASE = 'inline-block px-financial-pill-padding-x py-financial-pill-padding-y rounded-financial-pill-radius text-xs font-semibold'
+const SIGNED_PILL_BASE = 'kj-inline-block kj-px-financial-pill-padding-x kj-py-financial-pill-padding-y kj-rounded-financial-pill-radius kj-text-xs kj-font-semibold'
 export default {
   mixins: [...componentMixins, domainColorMixin(vm => !vm.loading && !vm.stale && vm.number !== null)],
   components: { DsFreshness, DsSkeleton },
@@ -35,8 +35,8 @@ export default {
   computed: {
     number() { return finiteSignedValue(this.value) },
     valueClass() {
-      if (this.loading || this.number === null) return 'text-text-secondary'
-      if (this.stale) return (this.tone === 'pill' ? SIGNED_PILL_BASE + ' ' : '') + 'text-text-tertiary'
+      if (this.loading || this.number === null) return 'kj-text-text-secondary'
+      if (this.stale) return (this.tone === 'pill' ? SIGNED_PILL_BASE + ' ' : '') + 'kj-text-text-tertiary'
       return this.tone === 'pill' ? getSignedPillClass(this.number, { base: SIGNED_PILL_BASE }) : getSignedNumberClass(this.number)
     },
     display() {

@@ -143,6 +143,8 @@ const utilities = await postcss([
   tailwind({
     content: ["packages/vue2/src/**/*.vue", "packages/vue2/src/**/*.js"],
     important: ".kjun-scope",
+    // kj- keeps kjun's utility names apart from the app's own Tailwind classes.
+    prefix: "kj-",
     corePlugins: { preflight: false },
     theme: createVueStyleTheme(input, styleUtilities),
   }),

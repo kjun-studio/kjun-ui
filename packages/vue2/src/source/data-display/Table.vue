@@ -1,32 +1,32 @@
 <template>
-  <div class="ds-table-query-state" :class="showCardMode ? '' : 'overflow-hidden'" :aria-busy="loading ? 'true' : 'false'">
+  <div class="ds-table-query-state" :class="showCardMode ? '' : 'kj-overflow-hidden'" :aria-busy="loading ? 'true' : 'false'">
     <!-- 선택 툴바 -->
     <div
       v-if="selectable && selected.length > 0"
       role="toolbar"
       aria-label="선택 작업"
-      class="flex items-center gap-2 px-3 py-2 bg-selected-bg border-b border-brand/30 text-sm"
+      class="kj-flex kj-items-center kj-gap-2 kj-px-3 kj-py-2 kj-bg-selected-bg kj-border-b border-brand/30 kj-text-sm"
     >
-      <span class="text-brand font-semibold">{{ selected.length }}개 선택</span>
-      <span class="text-text-disabled">|</span>
+      <span class="kj-text-brand kj-font-semibold">{{ selected.length }}개 선택</span>
+      <span class="kj-text-text-disabled">|</span>
       <button
         type="button"
-        class="text-text-secondary hover:text-text-primary text-sm"
+        class="kj-text-text-secondary hover:kj-text-text-primary kj-text-sm"
         @click.stop="toggleAll"
       >전체 선택</button>
       <button
         type="button"
-        class="text-text-secondary hover:text-text-primary text-sm"
+        class="kj-text-text-secondary hover:kj-text-text-primary kj-text-sm"
         @click.stop="clearSelection"
       >선택 해제</button>
-      <div class="flex-1"></div>
+      <div class="kj-flex-1"></div>
       <slot name="selection-toolbar" :selected="selected"></slot>
     </div>
 
     <!-- Toolbar: 검색 + 커스텀 필터 -->
     <!-- Like React and Native: the shared sm search field on a surface toolbar, so the field stands out. -->
-    <div v-if="searchable || $slots.toolbar" class="flex flex-wrap items-center gap-2 px-3 py-2 bg-card-bg border-b border-border-primary">
-      <div v-if="searchable" class="flex-shrink-0 w-table-search-width max-w-full">
+    <div v-if="searchable || $slots.toolbar" class="kj-flex kj-flex-wrap kj-items-center kj-gap-2 kj-px-3 kj-py-2 kj-bg-card-bg kj-border-b kj-border-border-primary">
+      <div v-if="searchable" class="kj-flex-shrink-0 kj-w-table-search-width kj-max-w-full">
         <DsInput
           :value="searchQuery"
           size="sm"
@@ -94,13 +94,13 @@
         :style="tableWrapperStyle"
         @scroll="handleTableScroll"
       >
-      <table class="w-full ds-table-grid" :data-compact="String(compact)" :aria-label="ariaLabel || undefined">
-        <thead :class="stickyHeader ? 'sticky top-0 z-10' : ''">
+      <table class="kj-w-full ds-table-grid" :data-compact="String(compact)" :aria-label="ariaLabel || undefined">
+        <thead :class="stickyHeader ? 'kj-sticky kj-top-0 kj-z-10' : ''">
           <tr>
             <th
               v-if="selectable"
               scope="col"
-              class="ds-table-action-cell text-center ds-table-header"
+              class="ds-table-action-cell kj-text-center ds-table-header"
             >
               <TableCheck
                 :checked="isAllSelected"
@@ -127,10 +127,10 @@
               @keydown.enter.prevent="handleSort(col)"
               @keydown.space.prevent="handleSort(col)"
             >
-              <div :class="['flex items-center gap-1', headerJustifyClass(col)]">
+              <div :class="['kj-flex kj-items-center kj-gap-1', headerJustifyClass(col)]">
                 <span>{{ col.label }}</span>
                 <template v-if="col.sortable && sortable && sortKey === col.key">
-                  <DsIcon :name="sortOrder === 'asc' ? 'sort-ascending' : 'sort-descending'" class="text-xs" />
+                  <DsIcon :name="sortOrder === 'asc' ? 'sort-ascending' : 'sort-descending'" class="kj-text-xs" />
                 </template>
               </div>
             </th>
@@ -151,9 +151,9 @@
 
           <!-- Empty -->
           <tr v-else-if="sortedData.length === 0">
-            <td :colspan="expandColspan" class="ds-table-empty-cell text-center">
+            <td :colspan="expandColspan" class="ds-table-empty-cell kj-text-center">
               <slot name="empty">
-                <p class="text-sm text-text-secondary">{{ emptyText }}</p>
+                <p class="kj-text-sm kj-text-text-secondary">{{ emptyText }}</p>
               </slot>
             </td>
           </tr>
@@ -170,7 +170,7 @@
               @keydown="handleRowKey($event, row, idx)"
               @click="handleRowClick(row, idx)"
             >
-              <td v-if="selectable" class="ds-table-action-cell text-center">
+              <td v-if="selectable" class="ds-table-action-cell kj-text-center">
                 <TableCheck
                   :checked="isSelected(row)"
                   aria-label="행 선택"
@@ -178,7 +178,7 @@
                   @click.stop
                 />
               </td>
-              <td v-if="expandable" class="ds-table-action-cell text-center">
+              <td v-if="expandable" class="ds-table-action-cell kj-text-center">
                 <!-- The shared xs ghost button, like React and Native, so the row keeps their height. -->
                 <DsButton
                   variant="ghost"
@@ -208,7 +208,7 @@
             <tr
               v-if="expandable && isExpanded(row)"
               :key="getRowKey(row, idx) + '-expand'"
-              class="bg-bg-secondary"
+              class="kj-bg-bg-secondary"
             >
               <td :colspan="expandColspan" class="ds-table-expanded-cell">
                 <slot name="expand" :row="row" :index="idx"></slot>

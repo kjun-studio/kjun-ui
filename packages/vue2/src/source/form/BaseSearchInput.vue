@@ -1,5 +1,5 @@
 <template>
-  <div class="ds-field-shell w-full" :class="fieldSizeClass" v-click-outside="closeDropdown">
+  <div class="ds-field-shell kj-w-full" :class="fieldSizeClass" v-click-outside="closeDropdown">
     <DsIcon name="search" class="ds-field-prefix" />
     <input
       ref="input"
@@ -50,12 +50,12 @@
       <div
         v-kjun-layer.field="'popup'" v-if="showDropdown"
         role="listbox" :id="`kjun-search-${_uid}`" :aria-label="ariaLabel || placeholder"
-        class="absolute z-50 w-full mt-1 ds-field-menu max-h-menu-list-max-height overflow-y-auto"
+        class="kj-absolute kj-z-50 kj-w-full kj-mt-1 ds-field-menu kj-max-h-menu-list-max-height kj-overflow-y-auto"
       >
         <!-- Select와 같은 로딩 행: 스피너와 문구를 가운데 정렬한다 -->
-        <div v-if="searching" class="flex items-center justify-center gap-2 px-3 py-3 text-sm text-text-secondary" role="status"><DsSpinner size="sm" />검색 중...</div>
+        <div v-if="searching" class="kj-flex kj-items-center kj-justify-center kj-gap-2 kj-px-3 kj-py-3 kj-text-sm kj-text-text-secondary" role="status"><DsSpinner size="sm" />검색 중...</div>
         <!-- 요청 실패는 빈 결과와 구분해 오류로 알린다 -->
-        <div v-else-if="failed" class="px-3 py-3 text-sm text-danger text-center" role="alert">{{ errorText }}</div>
+        <div v-else-if="failed" class="kj-px-3 kj-py-3 kj-text-sm kj-text-danger kj-text-center" role="alert">{{ errorText }}</div>
         <template v-else-if="results.length > 0">
           <div
             v-for="(item, index) in results"
@@ -65,11 +65,11 @@
             @mousedown.prevent="selectItem(item)"
           >
             <slot name="item" :item="item" :index="index">
-              <span class="break-words">{{ item[labelField] }}</span>
+              <span class="kj-break-words">{{ item[labelField] }}</span>
             </slot>
           </div>
         </template>
-        <div v-else class="px-3 py-3 text-sm text-text-tertiary text-center">
+        <div v-else class="kj-px-3 kj-py-3 kj-text-sm kj-text-text-tertiary kj-text-center">
           {{ emptyText }}
         </div>
       </div>
@@ -331,7 +331,7 @@ export default {
     },
     scrollToHighlighted() {
       this.$nextTick(() => {
-        const dropdown = this.$el.querySelector('.overflow-y-auto')
+        const dropdown = this.$el.querySelector('.kj-overflow-y-auto')
         const items = dropdown?.children
         const highlighted = items?.[this.highlightedIndex]
         if (highlighted) {

@@ -1,6 +1,6 @@
 <template>
   <!-- The heart draws one icon step larger within the same box to match the star optically, like React and Native. -->
-  <DsIcon :name="state.icon" :filled="active" :size="iconSize" :style="{ margin: (boxSize - Number(iconSize)) / 2 + 'px' }" :class="[sizeClass, active ? state.color : 'text-text-tertiary']" />
+  <DsIcon :name="state.icon" :filled="active" :size="iconSize" :style="{ margin: (boxSize - Number(iconSize)) / 2 + 'px' }" :class="[sizeClass, active ? state.color : 'kj-text-text-tertiary']" />
 </template>
 <script>
 import { tokens } from "@kjun-ui/tokens";
@@ -22,7 +22,7 @@ export default {
     boxSize() { return tokens.extensions.financial.markSizes[this.size] },
     iconSize() { return String(this.kind === 'interest' ? tokens.extensions.financial.heartMarkSizes[this.size] : this.boxSize) },
     state() { return COLLECTION_STATES[this.kind] },
-    sizeClass() { return { sm: 'text-xs', md: 'text-sm', lg: 'text-base' }[this.size] },
+    sizeClass() { return { sm: 'kj-text-xs', md: 'kj-text-sm', lg: 'kj-text-base' }[this.size] },
   },
 }
 </script>

@@ -90,11 +90,11 @@ export default {
       return [...this.fieldClasses, 'ds-datepicker-field']
     },
     overlayClasses() {
-      const tone = this.value ? 'text-text-primary' : 'text-text-tertiary'
+      const tone = this.value ? 'kj-text-text-primary' : 'kj-text-text-tertiary'
       return [
-        'ds-datepicker-overlay absolute inset-y-0 flex items-center pointer-events-none whitespace-nowrap overflow-hidden',
+        'ds-datepicker-overlay kj-absolute kj-inset-y-0 kj-flex kj-items-center kj-pointer-events-none kj-whitespace-nowrap kj-overflow-hidden',
         this.value ? '' : 'ds-field-placeholder',
-        this.disabled ? 'text-text-disabled' : this.$attrs.readonly != null && this.$attrs.readonly !== false ? 'text-text-secondary' : tone,
+        this.disabled ? 'kj-text-text-disabled' : this.$attrs.readonly != null && this.$attrs.readonly !== false ? 'kj-text-text-secondary' : tone,
       ].filter(Boolean).join(' ')
     }
   }

@@ -1,15 +1,15 @@
 <template>
   <div
     v-if="computedTotalPages > 1 || showSizeSelector || (showInfo && totalRows > 0)"
-    class="px-pagination-padding pagination-wide:px-6 py-pagination-padding border-t border-border flex flex-col pagination:flex-row pagination:items-center pagination:justify-between gap-pagination-gap"
+    class="kj-px-pagination-padding pagination-wide:kj-px-6 kj-py-pagination-padding kj-border-t kj-border-border kj-flex kj-flex-col pagination:kj-flex-row pagination:kj-items-center pagination:kj-justify-between kj-gap-pagination-gap"
   >
     <!-- Info (optional) -->
-    <div v-if="showInfo && totalRows > 0" class="text-sm text-text-secondary">
+    <div v-if="showInfo && totalRows > 0" class="kj-text-sm kj-text-text-secondary">
       {{ startRow }} - {{ endRow }} / {{ $formatNumber(totalRows) }}개
     </div>
-    <div v-else-if="!showInfo" class="hidden pagination:block"></div>
+    <div v-else-if="!showInfo" class="kj-hidden pagination:kj-block"></div>
 
-    <div class="kjun-pagination-controls flex items-center gap-2">
+    <div class="kjun-pagination-controls kj-flex kj-items-center kj-gap-2">
       <!-- Page Size Selector (optional) -->
       <div v-if="showSizeSelector" class="kjun-pagination-size"><DsSelect
         size="sm"
@@ -20,7 +20,7 @@
       /></div>
 
       <!-- Page Buttons: Mobile compact -->
-      <div v-if="computedTotalPages > 1" class="kjun-pagination-mobile flex pagination:hidden items-center gap-pagination-item-gap">
+      <div v-if="computedTotalPages > 1" class="kjun-pagination-mobile kj-flex pagination:kj-hidden kj-items-center kj-gap-pagination-item-gap">
         <button
           type="button"
           :class="buttonClasses(false)"
@@ -30,7 +30,7 @@
         >
           <DsIcon size="var(--extension-pagination-icon-size)" name="chevron-left" />
         </button>
-        <span class="px-pagination-label-padding-x text-sm text-text-primary whitespace-nowrap">
+        <span class="kj-px-pagination-label-padding-x kj-text-sm kj-text-text-primary kj-whitespace-nowrap">
           <strong>{{ computedCurrentPage }}</strong> / {{ computedTotalPages }}
         </span>
         <button
@@ -45,7 +45,7 @@
       </div>
 
       <!-- Page Buttons: Desktop full -->
-      <div v-if="computedTotalPages > 1" class="hidden pagination:flex items-center gap-pagination-item-gap">
+      <div v-if="computedTotalPages > 1" class="kj-hidden pagination:kj-flex kj-items-center kj-gap-pagination-item-gap">
         <!-- First -->
         <button
           v-if="showFirstLast"
@@ -73,7 +73,7 @@
           <span
             v-if="pageNum === '...'"
             :key="'ellipsis-' + index"
-            class="px-2 text-text-tertiary"
+            class="kj-px-2 kj-text-text-tertiary"
           >
             ...
           </span>
@@ -205,10 +205,10 @@ export default {
   },
   methods: {
     buttonClasses(isActive) {
-      const base = 'ds-pagination-button flex items-center justify-center text-sm rounded-pagination-radius transition-colors'
+      const base = 'ds-pagination-button kj-flex kj-items-center kj-justify-center kj-text-sm kj-rounded-pagination-radius kj-transition-colors'
       const active = isActive
-        ? 'bg-brand text-on-brand'
-        : 'text-text-secondary hover:bg-bg-hover disabled:opacity-disabled disabled:cursor-not-allowed'
+        ? 'kj-bg-brand kj-text-on-brand'
+        : 'kj-text-text-secondary hover:kj-bg-bg-hover disabled:kj-opacity-disabled disabled:kj-cursor-not-allowed'
       return [base, active].join(' ')
     },
     changePage(newPage) {

@@ -255,19 +255,19 @@ export default {
       this._tabPress = null
     },
     tabClasses() {
-      return ['ds-tab kjun-tab', this.$listeners['tab-menu'] ? 'select-none' : '']
+      return ['ds-tab kjun-tab', this.$listeners['tab-menu'] ? 'kj-select-none' : '']
     },
     // 상태의 의미 색상은 보존하되 배지 배경은 사용하지 않는다.
     badgeClass(tab) {
       switch (tab.badgeVariant) {
         case 'danger':
-          return 'text-danger'
+          return 'kj-text-danger'
         case 'warning':
-          return 'text-warning'
+          return 'kj-text-warning'
         case 'success':
-          return 'text-success'
+          return 'kj-text-success'
         case 'brand':
-          return 'text-brand-hover'
+          return 'kj-text-brand-hover'
         default:
           return ''
       }

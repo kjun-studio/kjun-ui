@@ -44,8 +44,8 @@ export default {
     active: { type: Boolean, default: false },
     activeIcon: { type: String, required: true },
     inactiveIcon: { type: String, default: null },
-    activeColorClass: { type: String, default: 'text-brand' },
-    inactiveColorClass: { type: String, default: 'text-text-tertiary' },
+    activeColorClass: { type: String, default: 'kj-text-brand' },
+    inactiveColorClass: { type: String, default: 'kj-text-text-tertiary' },
     size: {
       type: String,
       default: 'md',
@@ -67,7 +67,7 @@ export default {
     },
     buttonClasses() {
       // Loading blocks presses but stays legible; only disabled dims.
-      return ['kjun-icon-toggle', 'ds-icon-toggle', this.disabled ? 'opacity-disabled cursor-not-allowed' : ''].filter(Boolean).join(' ')
+      return ['kjun-icon-toggle', 'ds-icon-toggle', this.disabled ? 'kj-opacity-disabled kj-cursor-not-allowed' : ''].filter(Boolean).join(' ')
     },
     iconClass() {
       return this.active ? this.activeColorClass : this.inactiveColorClass

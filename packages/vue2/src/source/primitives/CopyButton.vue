@@ -8,7 +8,7 @@
     :aria-label="ariaLabel || text || '복사'"
     @click.stop="copyToClipboard"
   >
-    <DsIcon :name="copied ? 'check' : 'copy'" :size="iconSize" :class="copied ? 'text-success' : ''" />
+    <DsIcon :name="copied ? 'check' : 'copy'" :size="iconSize" :class="copied ? 'kj-text-success' : ''" />
     <span v-if="text && !inline">{{ copied ? successText : text }}</span>
     <span v-if="!kjunFeedback" class="kjun-sr-only" role="status">{{ copied ? successText : failed ? '복사 실패' : '' }}</span>
   </button>
@@ -66,7 +66,7 @@ export default {
     },
     buttonClasses() {
       // 색·hover·focus-visible·disabled는 React와 같은 .kjun-copy-button 규칙을 공유한다.
-      return ['kjun-copy-button', this.size === 'xs' ? 'text-xs' : 'text-sm']
+      return ['kjun-copy-button', this.size === 'xs' ? 'kj-text-xs' : 'kj-text-sm']
     },
     buttonStyle() {
       const d = tokens.dimension

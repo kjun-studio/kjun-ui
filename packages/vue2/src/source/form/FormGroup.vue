@@ -2,15 +2,15 @@
   <div class="ds-form-group">
     <label v-if="label" :id="labelId" :for="id" :class="labelClasses">
       {{ label }}
-      <span v-if="required" class="text-danger ml-0.5">*</span>
+      <span v-if="required" class="kj-text-danger kj-ml-0.5">*</span>
     </label>
 
-    <div :class="{ 'mt-form-label-gap': label }">
+    <div :class="{ 'kj-mt-form-label-gap': label }">
       <slot></slot>
     </div>
 
     <div v-if="error" :id="errorId" class="ds-form-error" role="alert">
-      <DsIcon name="alert-circle" size="var(--extension-form-message-icon-size)" class="mr-1.5 flex-shrink-0" />
+      <DsIcon name="alert-circle" size="var(--extension-form-message-icon-size)" class="kj-mr-1.5 kj-flex-shrink-0" />
       {{ error }}
     </div>
     <div v-else-if="hint" :id="hintId" class="ds-form-hint">
@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     labelClasses() {
-      return 'block text-sm font-medium text-text-primary'
+      return 'kj-block kj-text-sm kj-font-medium kj-text-text-primary'
     },
     labelId() {
       return this.label ? `ds-form-label-${this._uid}` : null

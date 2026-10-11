@@ -1,7 +1,7 @@
 <template>
-  <div class="kjun-form-skeleton grid grid-cols-1" :data-columns="columns" aria-hidden="true" :style="{ '--form-skeleton-radius': inputSpec.radius + 'px' }">
+  <div class="kjun-form-skeleton kj-grid kj-grid-cols-1" :data-columns="columns" aria-hidden="true" :style="{ '--form-skeleton-radius': inputSpec.radius + 'px' }">
     <div v-for="(field, index) in fields" :key="index">
-      <div v-if="field" class="text-sm font-medium text-text-primary">{{ typeof field === 'string' ? field : field.label }}</div>
+      <div v-if="field" class="kj-text-sm kj-font-medium kj-text-text-primary">{{ typeof field === 'string' ? field : field.label }}</div>
       <!-- The bar sits in a label-line slot so the field starts where the real input will. -->
       <div v-else class="kjun-form-skeleton-label-slot"><DsSkeleton type="block" height="var(--extension-skeleton-form-label-height)" width="var(--extension-skeleton-form-label-width)" /></div>
       <DsSkeleton type="block" :height="fieldHeight(field)" />

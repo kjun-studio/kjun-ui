@@ -1,6 +1,6 @@
 <template>
   <div
-    class="ds-tooltip-wrapper relative inline-block"
+    class="ds-tooltip-wrapper kj-relative kj-inline-block"
     ref="trigger"
     @mouseenter="show"
     @mouseleave="hide"
@@ -18,10 +18,10 @@
         :id="tooltipId"
         role="tooltip"
         :style="floatingStyle"
-        class="fixed px-tooltip-padding-x py-tooltip-padding-y text-xs rounded whitespace-normal break-words max-w-tooltip-max-width bg-chart-tooltip-bg text-chart-tooltip-text pointer-events-none"
+        class="kj-fixed kj-px-tooltip-padding-x kj-py-tooltip-padding-y kj-text-xs kj-rounded kj-whitespace-normal kj-break-words kj-max-w-tooltip-max-width kj-bg-chart-tooltip-bg kj-text-chart-tooltip-text kj-pointer-events-none"
       >
         {{ content }}
-        <div class="absolute w-tooltip-arrow-size h-tooltip-arrow-size bg-chart-tooltip-bg rotate-45" :style="arrowStyle"></div>
+        <div class="kj-absolute kj-w-tooltip-arrow-size kj-h-tooltip-arrow-size kj-bg-chart-tooltip-bg kj-rotate-45" :style="arrowStyle"></div>
       </div>
     </transition>
   </div>

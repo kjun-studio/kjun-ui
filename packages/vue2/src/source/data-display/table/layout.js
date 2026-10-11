@@ -1,9 +1,9 @@
 export default {
   computed: {
     tableWrapperClasses() {
-      const classes = ['overflow-x-auto']
+      const classes = ['kj-overflow-x-auto']
       if (this.maxHeight) {
-        classes.push('overflow-y-auto')
+        classes.push('kj-overflow-y-auto')
       }
       return classes.join(' ')
     },
@@ -13,7 +13,7 @@ export default {
       return { maxHeight: val }
     },
     tbodyClasses() {
-      const classes = ['divide-y divide-border-primary']
+      const classes = ['kj-divide-y kj-divide-border-primary']
       if (this.striped) {
         classes.push('ds-table-striped')
       }
@@ -24,14 +24,14 @@ export default {
   methods: {
     headerCellClasses(col) {
       const px = ''
-      const base = `${px} text-left ds-table-header`
-      const sortable = col.sortable && this.sortable ? 'cursor-pointer hover:bg-bg-hover select-none' : ''
-      const align = col.align === 'center' ? 'text-center' : col.align === 'right' ? 'text-right' : ''
+      const base = `${px} kj-text-left ds-table-header`
+      const sortable = col.sortable && this.sortable ? 'kj-cursor-pointer hover:kj-bg-bg-hover kj-select-none' : ''
+      const align = col.align === 'center' ? 'kj-text-center' : col.align === 'right' ? 'kj-text-right' : ''
       return [base, sortable, align].filter(Boolean).join(' ')
     },
     headerJustifyClass(col) {
-      if (col.align === 'right') return 'justify-end'
-      if (col.align === 'center') return 'justify-center'
+      if (col.align === 'right') return 'kj-justify-end'
+      if (col.align === 'center') return 'kj-justify-center'
       return ''
     },
     pillClasses(value) {
@@ -41,8 +41,8 @@ export default {
     },
     cellClasses(col, row) {
       const px = ''
-      const align = col.align === 'center' ? 'text-center' : col.align === 'right' ? 'text-right' : ''
-      const numeric = col.type === 'number' ? 'tabular-nums' : ''
+      const align = col.align === 'center' ? 'kj-text-center' : col.align === 'right' ? 'kj-text-right' : ''
+      const numeric = col.type === 'number' ? 'kj-tabular-nums' : ''
       const secondary = col.secondary ? 'ds-table-secondary' : ''
 
       // col.cellClass 지원
@@ -58,7 +58,7 @@ export default {
       // cellClass가 텍스트 색을 지정하면 기본 text-text-primary를 뺀다 — 유틸리티 클래스는
       // 특이도가 같아 스타일시트 순서로 승부가 나므로, 기본색이 커스텀 색을 조용히 덮을 수 있다
       const hasCustomTextColor = this.hasTextColorClass(custom)
-      const base = hasCustomTextColor ? `${px} text-sm` : `${px} text-sm text-text-primary`
+      const base = hasCustomTextColor ? `${px} kj-text-sm` : `${px} kj-text-sm kj-text-text-primary`
 
       return [base, align, numeric, secondary, custom].filter(Boolean).join(' ')
     },
@@ -68,6 +68,7 @@ export default {
       const nonColor = /^text-(left|right|center|justify|2?xs|3xs|sm|base|lg|\d?xl|nowrap|wrap|ellipsis|clip)$/
       return String(classString)
         .split(/\s+/)
+        .map(cls => cls.replace(/^kj-/, ''))
         .some(cls => cls.startsWith('text-') && !nonColor.test(cls))
     },
     // 소비자가 준 행 클래스 — 테이블 행과 카드가 공유한다
@@ -75,10 +76,10 @@ export default {
       return typeof this.rowClass === 'function' ? this.rowClass(row, idx) : this.rowClass
     },
     rowClasses(row, idx) {
-      const base = 'transition-colors'
-      const hoverable = this.hoverable ? 'hover:bg-bg-hover cursor-pointer' : ''
+      const base = 'kj-transition-colors'
+      const hoverable = this.hoverable ? 'hover:kj-bg-bg-hover kj-cursor-pointer' : ''
       const striped = this.striped && idx % 2 === 1 ? 'bg-bg-secondary/30' : ''
-      const selected = this.selectable && this.isSelected(row) ? 'bg-selected-bg' : ''
+      const selected = this.selectable && this.isSelected(row) ? 'kj-bg-selected-bg' : ''
       return [base, hoverable, striped, selected, this.customRowClass(row, idx)]
         .filter(Boolean)
         .join(' ')

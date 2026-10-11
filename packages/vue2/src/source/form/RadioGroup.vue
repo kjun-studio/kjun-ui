@@ -46,8 +46,8 @@ export default {
   computed: {
     groupClasses() {
       return this.direction === 'vertical'
-        ? 'flex flex-col gap-2'
-        : 'flex flex-wrap gap-4'
+        ? 'kj-flex kj-flex-col kj-gap-2'
+        : 'kj-flex kj-flex-wrap kj-gap-4'
     }
   },
   methods: {
