@@ -103,6 +103,16 @@ Playwright의 기본 조건 대기는 30초, 일반 테스트 제한은 90초다
 
 `tokens.basis`와 `tokens.json`의 `basis` 키 값은 `KJUN`이다. 이는 현재 규격의 이름을 나타내는 메타데이터다. 구조·크기·간격·색상 역할·동작 토큰은 바꾸지 않는다. 저장소의 소비 코드에는 이 값으로 분기하거나 이전 리터럴 타입에 의존하는 곳이 없었다. 별도 소비 코드가 이전 문자열을 비교한다면 해당 비교를 갱신해야 한다.
 
+## CI와 릴리스
+
+GitHub Actions는 `compose.yaml`과 같은 `node:24-bookworm-slim` 이미지에서 실행한다.
+
+- `ci.yml`: main에 push할 때마다 `npm run setup` → `npm test` → `test:browser:smoke` → `test:docs:smoke`를 실행한다. 배포하지 않는다.
+- `full.yml`: Actions 화면에서 수동으로 실행하는 전체 패키지·문서 검사다.
+- `release.yml`: `vX.Y.Z` 태그를 push하면 태그와 패키지 버전이 같은지 확인하고 빌드·검사한 뒤, npm trusted publishing으로 다섯 패키지를 provenance와 함께 배포하고 문서를 Cloudflare에 배포한다.
+
+릴리스 순서: 다섯 패키지와 루트의 버전을 올리고 `CHANGELOG.md`를 갱신한 뒤 로컬 검증을 마치고 커밋한다. `git tag -a vX.Y.Z -m "KJUN UI X.Y.Z"` 후 main과 태그를 push한다. npm 패키지마다 trusted publisher(`kjun-studio/kjun-ui`, `release.yml`)를 등록해야 하며, 문서 배포에는 GitHub `production` Environment의 `CLOUDFLARE_API_TOKEN` 비밀값이 필요하다.
+
 ## 공통 상태와 선언 파일
 
 React·Native의 Table, MarketCards, SearchInput 상태 로직은 `shared/package-runtime`에서 관리한다. 이 소스는 각 패키지의 ESM·CJS 번들에 포함되며 별도 배포 패키지나 런타임 의존성을 추가하지 않는다. 렌더링·포커스·팝업 열기·플랫폼 이벤트는 각 패키지가 담당한다. MarketCards 저장소 접근은 주입하며 React는 기본 localStorage, Native는 소비자가 전달한 저장소를 사용한다.

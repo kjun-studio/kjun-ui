@@ -1,0 +1,35 @@
+# Complete package and docs suites. Long-running, so it runs only on request.
+name: Full test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    container: node:24-bookworm-slim
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/ms-playwright
+          key: kjun-${{ runner.os }}-${{ hashFiles('package-lock.json', 'apps/docs/package-lock.json') }}
+          restore-keys: kjun-${{ runner.os }}-
+      - run: npm run setup
+      - run: npm test
+      - run: npm run test:browser:full
+      - run: npm run test:docs:full
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            test-results*/
+            playwright-report*/
+          retention-days: 7

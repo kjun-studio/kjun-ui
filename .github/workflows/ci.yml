@@ -1,0 +1,42 @@
+# Verifies every push to main from a clean checkout in the same Node image as compose.yaml.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container: node:24-bookworm-slim
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/ms-playwright
+          key: kjun-${{ runner.os }}-${{ hashFiles('package-lock.json', 'apps/docs/package-lock.json') }}
+          restore-keys: kjun-${{ runner.os }}-
+      # Installs dependencies and browsers, then runs the full build pipeline.
+      - run: npm run setup
+      - run: npm test
+      - run: npm run test:browser:smoke
+      - run: npm run test:docs:smoke
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            test-results*/
+            playwright-report*/
+          retention-days: 7
