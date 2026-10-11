@@ -1,4 +1,3 @@
-// frontend/src/components/design-system/data-display/_tableSelection.js
 /**
  * DsTable 행 선택 mixin
  * selectable prop 활성화 시 체크박스 + 선택 툴바 제공

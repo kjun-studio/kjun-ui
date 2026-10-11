@@ -1,5 +1,3 @@
-// frontend/src/components/design-system/data-display/_kpiFormat.js
-
 export function resolveSemanticColor(value, semantic) {
   if (semantic !== 'price') return 'text-text-primary'
   if (value > 0) return 'text-price-up'

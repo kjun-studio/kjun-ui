@@ -1,7 +1,6 @@
 [
   {
     "name": "DsAnimatedNumber",
-    "source": "frontend/src/components/design-system/data-display/AnimatedNumber.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsAnimatedNumber",
@@ -38,7 +37,6 @@
   },
   {
     "name": "DsChartSkeleton",
-    "source": "frontend/src/components/design-system/data-display/ChartSkeleton.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsChartSkeleton",
@@ -75,7 +73,6 @@
   },
   {
     "name": "DsCollectionMark",
-    "source": "frontend/src/components/design-system/data-display/CollectionMark.vue",
     "category": "data-display",
     "kind": "domain",
     "owner": "DsCollectionMark",
@@ -112,7 +109,6 @@
   },
   {
     "name": "DsDeviation",
-    "source": "frontend/src/components/design-system/data-display/Deviation.vue",
     "category": "data-display",
     "kind": "domain",
     "owner": "DsDeviation",
@@ -149,7 +145,6 @@
   },
   {
     "name": "DsEmpty",
-    "source": "frontend/src/components/design-system/data-display/Empty.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsEmpty",
@@ -186,7 +181,6 @@
   },
   {
     "name": "DsExecutionStatusBadge",
-    "source": "frontend/src/components/design-system/data-display/ExecutionStatusBadge.vue",
     "category": "data-display",
     "kind": "domain",
     "owner": "DsExecutionStatusBadge",
@@ -223,7 +217,6 @@
   },
   {
     "name": "DsFormSkeleton",
-    "source": "frontend/src/components/design-system/data-display/FormSkeleton.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsFormSkeleton",
@@ -260,7 +253,6 @@
   },
   {
     "name": "DsFreshness",
-    "source": "frontend/src/components/design-system/data-display/Freshness.vue",
     "category": "data-display",
     "kind": "domain",
     "owner": "DsFreshness",
@@ -297,7 +289,6 @@
   },
   {
     "name": "DsHeatmapCell",
-    "source": "frontend/src/components/design-system/data-display/HeatmapCell.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsHeatmapCell",
@@ -334,7 +325,6 @@
   },
   {
     "name": "DsKpiHero",
-    "source": "frontend/src/components/design-system/data-display/KpiHero.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsKpiHero",
@@ -371,7 +361,6 @@
   },
   {
     "name": "DsKpiRow",
-    "source": "frontend/src/components/design-system/data-display/KpiRow.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsKpiRow",
@@ -408,7 +397,6 @@
   },
   {
     "name": "DsListSkeleton",
-    "source": "frontend/src/components/design-system/data-display/ListSkeleton.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsListSkeleton",
@@ -445,7 +433,6 @@
   },
   {
     "name": "DsMarketCards",
-    "source": "frontend/src/components/design-system/data-display/MarketCards.vue",
     "category": "data-display",
     "kind": "domain",
     "owner": "DsMarketCards",
@@ -482,7 +469,6 @@
   },
   {
     "name": "DsMarketSimpleList",
-    "source": "frontend/src/components/design-system/data-display/MarketSimpleList.vue",
     "category": "data-display",
     "kind": "domain",
     "owner": "DsMarketSimpleList",
@@ -519,7 +505,6 @@
   },
   {
     "name": "DsMarketTable",
-    "source": "frontend/src/components/design-system/data-display/MarketTable.vue",
     "category": "data-display",
     "kind": "domain",
     "owner": "DsMarketTable",
@@ -556,7 +541,6 @@
   },
   {
     "name": "DsMarketTableSkeleton",
-    "source": "frontend/src/components/design-system/data-display/MarketTableSkeleton.vue",
     "category": "data-display",
     "kind": "domain",
     "owner": "DsMarketTableSkeleton",
@@ -593,7 +577,6 @@
   },
   {
     "name": "DsPopover",
-    "source": "frontend/src/components/design-system/data-display/Popover.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsPopover",
@@ -630,7 +613,6 @@
   },
   {
     "name": "DsPriceCell",
-    "source": "frontend/src/components/design-system/data-display/PriceCell.vue",
     "category": "data-display",
     "kind": "domain",
     "owner": "DsPriceCell",
@@ -667,7 +649,6 @@
   },
   {
     "name": "DsProgressCell",
-    "source": "frontend/src/components/design-system/data-display/ProgressCell.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsProgressCell",
@@ -704,7 +685,6 @@
   },
   {
     "name": "DsSignedValue",
-    "source": "frontend/src/components/design-system/data-display/SignedValue.vue",
     "category": "data-display",
     "kind": "domain",
     "owner": "DsSignedValue",
@@ -741,7 +721,6 @@
   },
   {
     "name": "DsSkeleton",
-    "source": "frontend/src/components/design-system/data-display/Skeleton.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsSkeleton",
@@ -778,7 +757,6 @@
   },
   {
     "name": "DsSparkline",
-    "source": "frontend/src/components/design-system/data-display/Sparkline.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsSparkline",
@@ -815,7 +793,6 @@
   },
   {
     "name": "DsTable",
-    "source": "frontend/src/components/design-system/data-display/Table.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsTable",
@@ -852,7 +829,6 @@
   },
   {
     "name": "DsTooltip",
-    "source": "frontend/src/components/design-system/data-display/Tooltip.vue",
     "category": "data-display",
     "kind": "component",
     "owner": "DsTooltip",
@@ -889,7 +865,6 @@
   },
   {
     "name": "DsTableCards",
-    "source": "frontend/src/components/design-system/data-display/table/TableCards.vue",
     "category": "data-display",
     "kind": "internal",
     "owner": "DsTable",
@@ -925,7 +900,6 @@
   },
   {
     "name": "DsAlert",
-    "source": "frontend/src/components/design-system/feedback/Alert.vue",
     "category": "feedback",
     "kind": "component",
     "owner": "DsAlert",
@@ -962,7 +936,6 @@
   },
   {
     "name": "DsConfirmModal",
-    "source": "frontend/src/components/design-system/feedback/ConfirmModal.vue",
     "category": "feedback",
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
@@ -999,7 +972,6 @@
   },
   {
     "name": "DsDataState",
-    "source": "frontend/src/components/design-system/feedback/DataState.vue",
     "category": "feedback",
     "kind": "component",
     "owner": "DsDataState",
@@ -1036,7 +1008,6 @@
   },
   {
     "name": "DsErrorBoundary",
-    "source": "frontend/src/components/design-system/feedback/ErrorBoundary.vue",
     "category": "feedback",
     "kind": "component",
     "owner": "DsErrorBoundary",
@@ -1073,7 +1044,6 @@
   },
   {
     "name": "DsProgress",
-    "source": "frontend/src/components/design-system/feedback/Progress.vue",
     "category": "feedback",
     "kind": "component",
     "owner": "DsProgress",
@@ -1110,7 +1080,6 @@
   },
   {
     "name": "DsPromptModal",
-    "source": "frontend/src/components/design-system/feedback/PromptModal.vue",
     "category": "feedback",
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
@@ -1147,7 +1116,6 @@
   },
   {
     "name": "DsSpinner",
-    "source": "frontend/src/components/design-system/feedback/Spinner.vue",
     "category": "feedback",
     "kind": "component",
     "owner": "DsSpinner",
@@ -1184,7 +1152,6 @@
   },
   {
     "name": "DsToast",
-    "source": "frontend/src/components/design-system/feedback/Toast.vue",
     "category": "feedback",
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
@@ -1221,7 +1188,6 @@
   },
   {
     "name": "DsToastContainer",
-    "source": "frontend/src/components/design-system/feedback/ToastContainer.vue",
     "category": "feedback",
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
@@ -1258,7 +1224,6 @@
   },
   {
     "name": "DsSearchInput",
-    "source": "frontend/src/components/design-system/form/BaseSearchInput.vue",
     "category": "form",
     "kind": "component",
     "owner": "DsSearchInput",
@@ -1295,7 +1260,6 @@
   },
   {
     "name": "DsCheckbox",
-    "source": "frontend/src/components/design-system/form/Checkbox.vue",
     "category": "form",
     "kind": "component",
     "owner": "DsCheckbox",
@@ -1332,7 +1296,6 @@
   },
   {
     "name": "DsCombobox",
-    "source": "frontend/src/components/design-system/form/Combobox.vue",
     "category": "form",
     "kind": "component",
     "owner": "DsCombobox",
@@ -1369,7 +1332,6 @@
   },
   {
     "name": "DsDatePicker",
-    "source": "frontend/src/components/design-system/form/DatePicker.vue",
     "category": "form",
     "kind": "component",
     "owner": "DsDatePicker",
@@ -1406,7 +1368,6 @@
   },
   {
     "name": "DsFormActions",
-    "source": "frontend/src/components/design-system/form/FormActions.vue",
     "category": "form",
     "kind": "component",
     "owner": "DsFormActions",
@@ -1443,7 +1404,6 @@
   },
   {
     "name": "DsFormGroup",
-    "source": "frontend/src/components/design-system/form/FormGroup.vue",
     "category": "form",
     "kind": "component",
     "owner": "DsFormGroup",
@@ -1480,7 +1440,6 @@
   },
   {
     "name": "DsRadio",
-    "source": "frontend/src/components/design-system/form/Radio.vue",
     "category": "form",
     "kind": "component",
     "owner": "DsRadio",
@@ -1517,7 +1476,6 @@
   },
   {
     "name": "DsRadioGroup",
-    "source": "frontend/src/components/design-system/form/RadioGroup.vue",
     "category": "form",
     "kind": "component",
     "owner": "DsRadioGroup",
@@ -1554,7 +1512,6 @@
   },
   {
     "name": "DsSelect",
-    "source": "frontend/src/components/design-system/form/Select.vue",
     "category": "form",
     "kind": "component",
     "owner": "DsSelect",
@@ -1591,7 +1548,6 @@
   },
   {
     "name": "DsSwitch",
-    "source": "frontend/src/components/design-system/form/Switch.vue",
     "category": "form",
     "kind": "component",
     "owner": "DsSwitch",
@@ -1628,7 +1584,6 @@
   },
   {
     "name": "DsTextarea",
-    "source": "frontend/src/components/design-system/form/Textarea.vue",
     "category": "form",
     "kind": "component",
     "owner": "DsTextarea",
@@ -1665,7 +1620,6 @@
   },
   {
     "name": "DsAccordion",
-    "source": "frontend/src/components/design-system/layout/Accordion.vue",
     "category": "layout",
     "kind": "component",
     "owner": "DsAccordion",
@@ -1702,7 +1656,6 @@
   },
   {
     "name": "DsAccordionItem",
-    "source": "frontend/src/components/design-system/layout/AccordionItem.vue",
     "category": "layout",
     "kind": "component",
     "owner": "DsAccordionItem",
@@ -1739,7 +1692,6 @@
   },
   {
     "name": "DsCard",
-    "source": "frontend/src/components/design-system/layout/Card.vue",
     "category": "layout",
     "kind": "component",
     "owner": "DsCard",
@@ -1776,7 +1728,6 @@
   },
   {
     "name": "DsDrawer",
-    "source": "frontend/src/components/design-system/layout/Drawer.vue",
     "category": "layout",
     "kind": "component",
     "owner": "DsDrawer",
@@ -1813,7 +1764,6 @@
   },
   {
     "name": "DsDropdown",
-    "source": "frontend/src/components/design-system/layout/Dropdown.vue",
     "category": "layout",
     "kind": "component",
     "owner": "DsDropdown",
@@ -1850,7 +1800,6 @@
   },
   {
     "name": "DsDropdownDivider",
-    "source": "frontend/src/components/design-system/layout/DropdownDivider.vue",
     "category": "layout",
     "kind": "component",
     "owner": "DsDropdownDivider",
@@ -1887,7 +1836,6 @@
   },
   {
     "name": "DsDropdownItem",
-    "source": "frontend/src/components/design-system/layout/DropdownItem.vue",
     "category": "layout",
     "kind": "component",
     "owner": "DsDropdownItem",
@@ -1924,7 +1872,6 @@
   },
   {
     "name": "DsMarketListPanel",
-    "source": "frontend/src/components/design-system/layout/MarketListPanel.vue",
     "category": "layout",
     "kind": "domain",
     "owner": "DsMarketListPanel",
@@ -1961,7 +1908,6 @@
   },
   {
     "name": "DsModal",
-    "source": "frontend/src/components/design-system/layout/Modal.vue",
     "category": "layout",
     "kind": "component",
     "owner": "DsModal",
@@ -1998,7 +1944,6 @@
   },
   {
     "name": "DsTabPane",
-    "source": "frontend/src/components/design-system/layout/TabPane.vue",
     "category": "layout",
     "kind": "component",
     "owner": "DsTabPane",
@@ -2035,7 +1980,6 @@
   },
   {
     "name": "DsTabs",
-    "source": "frontend/src/components/design-system/layout/Tabs.vue",
     "category": "layout",
     "kind": "component",
     "owner": "DsTabs",
@@ -2072,7 +2016,6 @@
   },
   {
     "name": "DsBreadcrumb",
-    "source": "frontend/src/components/design-system/navigation/Breadcrumb.vue",
     "category": "navigation",
     "kind": "component",
     "owner": "DsBreadcrumb",
@@ -2109,7 +2052,6 @@
   },
   {
     "name": "DsPagination",
-    "source": "frontend/src/components/design-system/navigation/Pagination.vue",
     "category": "navigation",
     "kind": "component",
     "owner": "DsPagination",
@@ -2146,7 +2088,6 @@
   },
   {
     "name": "DsBadge",
-    "source": "frontend/src/components/design-system/primitives/Badge.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsBadge",
@@ -2183,7 +2124,6 @@
   },
   {
     "name": "DsButton",
-    "source": "frontend/src/components/design-system/primitives/Button.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsButton",
@@ -2220,7 +2160,6 @@
   },
   {
     "name": "DsButtonGroup",
-    "source": "frontend/src/components/design-system/primitives/ButtonGroup.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsButtonGroup",
@@ -2257,7 +2196,6 @@
   },
   {
     "name": "DsCopyButton",
-    "source": "frontend/src/components/design-system/primitives/CopyButton.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsCopyButton",
@@ -2294,7 +2232,6 @@
   },
   {
     "name": "DsExternalLink",
-    "source": "frontend/src/components/design-system/primitives/ExternalLink.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsExternalLink",
@@ -2331,7 +2268,6 @@
   },
   {
     "name": "DsFilterGroup",
-    "source": "frontend/src/components/design-system/primitives/FilterGroup.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsFilterGroup",
@@ -2368,7 +2304,6 @@
   },
   {
     "name": "DsIcon",
-    "source": "frontend/src/components/design-system/primitives/Icon.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsIcon",
@@ -2405,7 +2340,6 @@
   },
   {
     "name": "DsIconToggle",
-    "source": "frontend/src/components/design-system/primitives/IconToggle.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsIconToggle",
@@ -2442,7 +2376,6 @@
   },
   {
     "name": "DsInput",
-    "source": "frontend/src/components/design-system/primitives/Input.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsInput",
@@ -2479,7 +2412,6 @@
   },
   {
     "name": "DsMenuButton",
-    "source": "frontend/src/components/design-system/primitives/MenuButton.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsMenuButton",
@@ -2516,7 +2448,6 @@
   },
   {
     "name": "DsRefreshButton",
-    "source": "frontend/src/components/design-system/primitives/RefreshButton.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsRefreshButton",
@@ -2553,7 +2484,6 @@
   },
   {
     "name": "DsScrollFade",
-    "source": "frontend/src/components/design-system/primitives/ScrollFade.vue",
     "category": "primitives",
     "kind": "component",
     "owner": "DsScrollFade",
@@ -2590,7 +2520,6 @@
   },
   {
     "name": "DsListRow",
-    "source": "packages/vue2/src/components/ListRow.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/ListRow.vue",
       "react": "packages/react/src/list.tsx",
@@ -2628,7 +2557,6 @@
   },
   {
     "name": "DsListSection",
-    "source": "packages/vue2/src/components/ListSection.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/ListSection.vue",
       "react": "packages/react/src/list.tsx",
@@ -2666,7 +2594,6 @@
   },
   {
     "name": "DsTopNavigation",
-    "source": "packages/vue2/src/components/TopNavigation.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/TopNavigation.vue",
       "react": "packages/react/src/app-navigation.tsx",
@@ -2704,7 +2631,6 @@
   },
   {
     "name": "DsBottomNavigation",
-    "source": "packages/vue2/src/components/BottomNavigation.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/BottomNavigation.vue",
       "react": "packages/react/src/app-navigation.tsx",
@@ -2742,7 +2668,6 @@
   },
   {
     "name": "DsBottomActionBar",
-    "source": "packages/vue2/src/components/BottomActionBar.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/BottomActionBar.vue",
       "react": "packages/react/src/app-navigation.tsx",
@@ -2780,7 +2705,6 @@
   },
   {
     "name": "DsImage",
-    "source": "packages/vue2/src/components/Image.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/Image.vue",
       "react": "packages/react/src/media.tsx",
@@ -2818,7 +2742,6 @@
   },
   {
     "name": "DsAvatar",
-    "source": "packages/vue2/src/components/Avatar.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/Avatar.vue",
       "react": "packages/react/src/media.tsx",
@@ -2856,7 +2779,6 @@
   },
   {
     "name": "DsChip",
-    "source": "packages/vue2/src/components/Chip.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/Chip.vue",
       "react": "packages/react/src/chip.tsx",
@@ -2894,7 +2816,6 @@
   },
   {
     "name": "DsSlider",
-    "source": "packages/vue2/src/components/Slider.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/Slider.vue",
       "react": "packages/react/src/range-input.tsx",
@@ -2932,7 +2853,6 @@
   },
   {
     "name": "DsRangeSlider",
-    "source": "packages/vue2/src/components/RangeSlider.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/RangeSlider.vue",
       "react": "packages/react/src/range-input.tsx",
@@ -2970,7 +2890,6 @@
   },
   {
     "name": "DsTimePicker",
-    "source": "packages/vue2/src/components/TimePicker.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/TimePicker.vue",
       "react": "packages/react/src/time-picker.tsx",
@@ -3008,7 +2927,6 @@
   },
   {
     "name": "DsQuantityStepper",
-    "source": "packages/vue2/src/components/QuantityStepper.vue",
     "sources": {
       "vue2": "packages/vue2/src/components/QuantityStepper.vue",
       "react": "packages/react/src/quantity-stepper.tsx",

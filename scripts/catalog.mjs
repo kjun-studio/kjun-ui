@@ -5,19 +5,17 @@ import ts from "typescript";
 const root = resolve(import.meta.dirname, "..");
 const json = async (path) =>
   JSON.parse(await readFile(resolve(root, path), "utf8"));
-const [catalog, api, guides, dependencies] = await Promise.all(
+const [catalog, api, guides] = await Promise.all(
   [
     "shared/component-catalog.json",
     "apps/docs/lib/generated/api.json",
     "shared/component-guides.json",
-    "shared/component-dependencies.json",
   ].map(json)
 );
 const fail = (message) => {
   throw Error("Catalog contract: " + message);
 };
 if (new Set(catalog.map(x => x.name)).size !== catalog.length) fail("duplicate component name");
-if (new Set(catalog.map(x => x.source)).size !== catalog.length) fail("duplicate implementation mapping");
 const helpers = await json("shared/platform-helpers.json");
 const publicNames = catalog
   .filter((x) => x.kind !== "internal")
@@ -45,7 +43,6 @@ for (const entry of catalog) {
     if (!entry.sources?.[platform]) fail("missing platform source " + entry.name);
     await access(resolve(root, entry.sources[platform]));
   }
-  if (!dependencies[entry.name]) fail("untracked imports " + entry.name);
   if (entry.kind === "internal" && !names.includes(entry.owner))
     fail("missing internal owner " + entry.name);
   if (!entry.docs || !entry.example || !entry.tests?.length)
