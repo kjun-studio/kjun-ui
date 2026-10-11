@@ -74,3 +74,22 @@
   font-family: var(--kjun-font);
   color: var(--kjun-text);
 }
+/* A React overlay used without any Provider portals straight to document.body, so it has no .kjun-scope
+   ancestor: its root (kjun-scope plus a kjun- class) is the outermost kjun element. Zero specificity. */
+:where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *)),
+:where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *)) *,
+:where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *))::before,
+:where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *))::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: var(--_kjun-color-border);
+}
+:where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *)) {
+  font-family: var(--kjun-font);
+  color: var(--kjun-text);
+  font-size: var(--_kjun-type-body-size);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}

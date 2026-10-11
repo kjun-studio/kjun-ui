@@ -3,7 +3,7 @@ import { openFixture } from './packed-fixture';
 
 const props = ['display', 'box-sizing', 'margin-top', 'margin-bottom', 'padding-top', 'padding-left',
   'list-style-type', 'color', 'text-decoration-line', 'font-size', 'font-weight', 'background-color',
-  'border-top-width', 'border-top-style', 'border-top-left-radius', 'border-collapse'];
+  'border-top-width', 'border-top-style', 'border-top-left-radius', 'border-collapse', 'box-shadow'];
 
 async function probes(page: Page, testId: string) {
   return page.locator(`[data-testid="${testId}"]`).evaluate((root, names) =>
@@ -42,7 +42,8 @@ for (const platform of ['react', 'vue2']) {
     // Elements kjun renders carry ds- or kjun- classes on themselves or an ancestor. Example code's own
     // markup has neither and is app markup. Every kjun-rendered element must sit inside a kjun- element.
     const orphans = await page.evaluate(() => [...document.querySelectorAll('.catalog-root *')]
-      .filter(el => el.closest('[class^="ds-"], [class*=" ds-"]') && !el.closest('[class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]'))
+      // ds-form-layout is a CSS-only layout class that apps put on their own wrapper, not a component.
+      .filter(el => el.closest('[class^="ds-"]:not(.ds-form-layout), [class*=" ds-"]:not(.ds-form-layout)') && !el.closest('[class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]'))
       .map(el => el.tagName.toLowerCase() + ' ' + el.outerHTML.slice(0, 100)));
     expect([...new Set(orphans)]).toEqual([]);
   });
@@ -60,7 +61,7 @@ for (const platform of ['react', 'vue2']) {
 test('vue2: rendered kjun markup carries no unprefixed utility classes', async ({ page }) => {
   await openFixture(page, 'vue2', '?component=all', 'catalog', 'production', true);
   const bare = await page.evaluate(() => {
-    const utility = /^(-?(m|p)[trblxy]?-|gap-|space-|w-|h-|min-|max-|text-|font-|leading-|tracking-|bg-|border|rounded|shadow|opacity-|flex|inline|block|grid|hidden|items-|justify-|self-|shrink|grow|overflow-|truncate|whitespace-|cursor-|select-|transition|duration-|ease-|z-|relative|absolute|fixed|sticky|inset-|top-|left-|right-|bottom-|sr-only|underline|uppercase|align-|animate-|resize|outline|pointer-events-)/;
+    const utility = /^(-?(m|p)[trblxy]?-|gap-|space-|w-|h-|min-|max-|text-|font-|leading-|tracking-|bg-|border|rounded|shadow|opacity-|flex|inline|block|grid|hidden|items-|justify-|self-|shrink|grow|overflow-|truncate|whitespace-|cursor-|select-|transition|duration-|ease-|z-|relative|absolute|fixed|sticky|inset-|top-|left-|right-|bottom-|sr-only|underline|uppercase|align-|animate-|resize|outline|pointer-events-|invisible|visible)/;
     return [...new Set([...document.querySelectorAll('[class*="kjun-"] *, [class*="kjun-"]')]
       .flatMap(el => [...el.classList].map(c => c.split(/:(?![^[]*\])/).pop()!.replace(/^!/, '')))
       .filter(c => utility.test(c)))];
@@ -76,3 +77,20 @@ for (const platform of ['react', 'vue2']) {
     await expect(icon).toHaveCSS('font-size', '30px');
   });
 }
+
+for (const platform of ['react', 'vue2']) {
+  test(`${platform}: app markup inside KjunFeedbackProvider keeps the app's own styles`, async ({ page }) => {
+    await page.setViewportSize({ width: 1024, height: 900 });
+    await openFixture(page, platform, '', 'style-boundary');
+    expect(await probes(page, 'inside-feedback')).toEqual(await probes(page, 'outside'));
+  });
+}
+
+test('react: a modal used without a Provider still takes the kjun font and text colour', async ({ page }) => {
+  await openFixture(page, 'react', '?standalone', 'style-boundary');
+  const body = page.getByTestId('standalone-body');
+  const vars = await page.evaluate(() => { const s = getComputedStyle(document.documentElement); return [s.getPropertyValue('--kjun-font').trim(), s.getPropertyValue('--kjun-text').trim()]; });
+  await expect(body).toHaveCSS('font-family', vars[0]);
+  const color = await page.evaluate(value => { const probe = document.createElement('span'); probe.style.color = value; document.body.append(probe); const c = getComputedStyle(probe).color; probe.remove(); return c; }, vars[1]);
+  await expect(body).toHaveCSS('color', color);
+});

@@ -14,7 +14,7 @@
     <DsIcon v-if="icon" :name="icon" class="ds-dropdown-icon kj-w-menu-icon-size kj-h-menu-icon-size kj-flex-shrink-0" />
     <span class="ds-dropdown-label"><slot></slot></span>
     <span v-if="selected !== null" class="kj-flex-shrink-0 kj-inline-flex" aria-hidden="true">
-      <DsIcon name="check" class="kj-w-menu-icon-size kj-h-menu-icon-size kj-text-brand" :class="{ invisible: !selected }" />
+      <DsIcon name="check" class="kj-w-menu-icon-size kj-h-menu-icon-size kj-text-brand" :class="{ 'kj-invisible': !selected }" />
     </span>
   </button>
 </template>

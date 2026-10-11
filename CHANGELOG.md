@@ -4,11 +4,15 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue2`·`react`·`native`)는 같�
 
 ## 0.4.0 — 2026-10-11
 
-- `KjunProvider`가 앱 마크업의 모양을 바꾸지 않습니다. 기본 스타일 초기화(reset)와 기본 글꼴·색·글자 크기는 kjun 컴포넌트 안에서만 적용되고, Provider는 색·서체 변수와 레이어·피드백만 제공합니다.
-- Vue 패키지 내부 유틸리티 클래스가 `kj-` 접두사를 씁니다. 앱의 Tailwind 클래스(`hidden md:flex` 등)와 이름이 겹치지 않습니다.
-- kjun 유틸리티를 class 속성으로 넘기던 코드는 `kj-` 이름으로 바꾸세요. 예: `activeColorClass="text-favorite"` → `activeColorClass="kj-text-favorite"`, `alignClass` 콜백의 `text-right` → `kj-text-right`.
-- kjun 컴포넌트 안에 넣은 슬롯 콘텐츠는 kjun 기본 스타일을 따릅니다. 요소 선택자 대신 클래스로 꾸미세요.
-- 공개 API(컴포넌트, props, 이벤트, 슬롯, `--kjun-*` 변수)는 바뀌지 않았습니다.
+`KjunProvider`(와 `KjunFeedbackProvider`)로 앱 전체를 감싸도 kjun CSS가 앱 마크업의 모양을 바꾸지 않습니다. 컴포넌트·props·이벤트·슬롯·`--kjun-*` 변수 이름은 그대로지만, 아래 항목은 **깨지는 변경**입니다.
+
+- **Provider가 앱 요소를 꾸미지 않습니다.** 기본 스타일 초기화(reset), Tailwind 기본 변수(`--tw-*`), 기본 글꼴·글자색·글자 크기는 kjun 컴포넌트 안에서만 적용됩니다. Provider에 기대어 앱 본문의 글꼴·색을 정하던 앱은 앱 CSS에서 직접 지정하세요.
+- **Vue 내부 유틸리티 클래스가 `kj-` 접두사를 씁니다.** 앱의 Tailwind 클래스(`hidden md:flex` 등)와 이름이 겹치지 않습니다. 같은 `styles.css`를 쓰므로 React 앱도 해당합니다.
+- **kjun 유틸리티를 직접 쓰던 코드는 `kj-` 이름으로 바꾸세요.** 앱 마크업에 쓴 `text-text-secondary`, `font-medium` 같은 kjun 전용 클래스와, 클래스를 받는 props에 넘기던 값이 대상입니다: `alignClass`, `widthClass`, `rowClass`, `cellClass`, `descClass`, `menuClass`, `flashClass`, `activeColorClass`, `inactiveColorClass`, `titleClass`, `subtitleClass`. 예: `activeColorClass="text-favorite"` → `"kj-text-favorite"`.
+- **Vue `DsIconToggle`의 `activeColorClass`·`inactiveColorClass` 기본값**이 `kj-text-brand`·`kj-text-text-tertiary`로 바뀌었습니다.
+- **kjun 컴포넌트 안에 넣은 슬롯 콘텐츠**는 kjun 기본 스타일을 따릅니다. 요소 선택자 대신 클래스로 꾸미세요.
+- **`kjun-`로 시작하는 클래스 이름은 kjun 전용입니다.** 앱 요소나 Provider의 `className`에 `kjun-`로 시작하는 클래스를 붙이면 그 영역이 kjun 마크업으로 처리됩니다.
+- 앱 아이콘 주변 글자의 색·크기는 kjun 아이콘에 그대로 이어집니다(`currentColor`, `1em`).
 
 ## 0.3.2 — 2026-10-11
 

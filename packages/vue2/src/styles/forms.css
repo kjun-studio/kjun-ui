@@ -117,7 +117,7 @@
 .ds-form-group { margin-bottom: var(--extension-form-item-gap); min-width: 0; }
 .ds-form-group:last-child { margin-bottom: 0; }
 /* 그리드·툴바는 부모 gap을 사용하고, 일반 문서 흐름의 기존 폼만 기본 간격을 유지한다. */
-:where(.flex, .inline-flex, .grid, .inline-grid, .ds-form-layout) > .ds-form-group { margin-bottom: 0; }
+:where(.flex, .inline-flex, .grid, .inline-grid, .kj-flex, .kj-inline-flex, .kj-grid, .kj-inline-grid, .ds-form-layout) > .ds-form-group { margin-bottom: 0; }
 .ds-field-menu {
   padding: var(--extension-menu-padding);
   border: var(--_kjun-border-default-width) solid var(--border-primary);

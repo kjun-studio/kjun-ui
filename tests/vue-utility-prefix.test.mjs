@@ -42,6 +42,11 @@ test('Vue class strings use only kj- prefixed utilities', async () => {
     };
     for (const m of text.matchAll(/\s(?:class|[\w-]*-class)="([^"]*)"/g)) check(m[1], 'class');
     for (const m of text.matchAll(/\s:class="([^"]*)"/g)) for (const s of m[1].matchAll(/'([^']*)'|`([^`]*)`/g)) check(s[1] ?? s[2], ':class');
+    // Object keys in :class bindings, quoted or bare: { invisible: cond, 'opacity-50': x }.
+    for (const m of text.matchAll(/\s:class="([^"]*)"/g)) for (const k of m[1].matchAll(/(?:^|[{,]\s*)(?:'([^']+)'|([A-Za-z][\w-]*))\s*:/g)) {
+      const key = k[1] ?? k[2];
+      if (utility(key) && !owned(key)) bare.push(`${file} :class key: ${key}`);
+    }
     const script = file.endsWith('.vue') ? text.slice(text.indexOf('<script')) : text;
     for (const m of script.matchAll(/'([^'\n]*)'|"([^"\n]*)"|`([^`]*)`/g)) check(m[1] ?? m[2] ?? m[3], 'script');
   }

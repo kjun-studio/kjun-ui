@@ -75,7 +75,7 @@ export const KjunFeedbackProvider = {
   render(h) {
     const request = this.presentedRequest,
       options = request?.options || {};
-    return h("div", { class: "kjun-feedback-scope" }, [
+    return h("div", { attrs: { "data-kjun-feedback-scope": "" } }, [
       this.$slots.default,
       h(ToastStack, { props: { toasts: this.snapshot.toasts, controller: this.controller } }),
       request &&

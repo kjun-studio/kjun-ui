@@ -11,6 +11,7 @@ new Vue({
       h('div', { attrs: { 'data-testid': 'outside' } }, [app()]),
       h(K.KjunProvider, [
         h('div', { attrs: { 'data-testid': 'inside' } }, [app()]),
+        h(K.KjunFeedbackProvider, [h('div', { attrs: { 'data-testid': 'inside-feedback' } }, [app()])]),
         h('span', { attrs: { 'data-testid': 'icon-host' }, style: { color: 'rgb(1, 2, 3)', fontSize: '30px' } }, [h(K.DsIcon, { props: { name: 'star' } })]),
         h('div', { attrs: { 'data-testid': 'kjun' }, style: { display: 'grid', gap: '16px', width: '360px' } }, [
           h(K.DsButton, { props: { variant: 'primary' } }, '저장'),

@@ -151,12 +151,18 @@ const utilities = await postcss([
 ]).process("@tailwind base;\n@tailwind utilities;", { from: undefined });
 // Utilities require Tailwind's per-element transform/ring/shadow defaults.
 // Scope those defaults too, and replace Tailwind's built-in paint values.
+// kjun-owned markup: elements with a kjun- class other than the bare Provider root, plus portal roots that
+// pair kjun-scope with a kjun- class. Provider-less overlays portal to body with no .kjun-scope ancestor.
+const kjunMarkup = ':where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"])';
+const kjunOverlay = ':where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *))';
 const utilityRoot = postcss.parse(utilities.css);
 utilityRoot.walkRules(rule => {
   if (rule.selector === "*, ::before, ::after") {
-    rule.selector = ".kjun-scope, .kjun-scope *, .kjun-scope::before, .kjun-scope::after, .kjun-scope *::before, .kjun-scope *::after";
+    // Only kjun-owned markup (see reset.css), so app elements inside the Provider keep their own --tw-* values.
+    const owned = [`.kjun-scope ${kjunMarkup}`, kjunOverlay];
+    rule.selector = owned.flatMap(root => [root, root + " *", root + "::before", root + "::after", root + " *::before", root + " *::after"]).join(", ");
   } else if (rule.selector === "::backdrop") {
-    rule.selector = ".kjun-scope::backdrop, .kjun-scope *::backdrop";
+    rule.selector = [`.kjun-scope ${kjunMarkup}`, kjunOverlay].flatMap(root => [root + "::backdrop", root + " *::backdrop"]).join(", ");
   } else return;
   rule.walkDecls("--tw-ring-color", decl => { decl.value = "var(--kjun-focus-ring)"; });
   rule.walkDecls("--tw-ring-offset-color", decl => { decl.value = "var(--kjun-surface)"; });

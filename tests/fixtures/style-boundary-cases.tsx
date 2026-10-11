@@ -13,11 +13,14 @@ ul{list-style:disc;padding-left:20px;margin:0 0 8px}
 a{color:rgb(0,0,238);text-decoration:underline}
 button{background:rgb(200,200,200);padding:4px 8px;border:1px solid rgb(0,0,0)}
 table{border-collapse:separate}
+*,::before,::after{--tw-ring-color:rgb(0,0,255)}
+.ring-2{box-shadow:0 0 0 2px var(--tw-ring-color)}
 `;
 
 export const appHtml = `
 <div class="hidden md:flex" data-probe="responsive">menu</div>
 <div class="flex mt-1 text-lg rounded" data-probe="utilities">utilities</div>
+<div class="ring-2" data-probe="ring">ring</div>
 <section class="app-card" data-probe="card">
   <h2 data-probe="heading">공지</h2>
   <p data-probe="paragraph">본문</p>
