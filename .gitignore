@@ -28,3 +28,7 @@ docs/migration-0.3.md
 !.env.example
 .dev.vars*
 *.pem
+
+# Internal implementation plans
+docs/superpowers/
+.superpowers/
