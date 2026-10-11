@@ -31,7 +31,7 @@ const css =
   "\n" + Object.entries(data.states.focus).map(([key, value]) => `  --_kjun-state-focus-${kebab(key)}: ${value}px;`).join("\n") +
   "\n" + Object.entries(data.border).map(([key, value]) => `  --_kjun-border-${kebab(key)}: ${value}px;`).join("\n") +
   "\n" + Object.entries(data.motionDistance).map(([key, value]) => `  --_kjun-motion-distance-${kebab(key)}: ${value}px;`).join("\n") +
-  "\n  font-family: var(--kjun-font); color: var(--kjun-text);\n}\n";
+  "\n}\n";
 function componentElevationCss() {
   const lines = [];
   function visit(value, path) {

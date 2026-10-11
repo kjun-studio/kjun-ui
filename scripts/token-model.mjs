@@ -169,7 +169,7 @@ export function typographyCss(data) {
     const key = '--_kjun-type-' + kebab(role);
     lines.push(`  ${key}-size: ${rem(t.fontSizePx)};`, `  ${key}-line: ${rem(t.lineHeightPx)};`, `  ${key}-weight: ${t.fontWeight};`, `  ${key}-tracking: ${t.letterSpacingEm}em;`);
   }
-  lines.push('  font-size: var(--_kjun-type-body-size); line-height: var(--_kjun-type-body-line); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);', '}');
+  lines.push('}');
   for (const role of Object.keys(data.typography)) {
     const key = '--_kjun-type-' + kebab(role);
     lines.push(`.kjun-scope .kjun-type-${kebab(role)} { font-size: var(${key}-size); line-height: var(${key}-line); font-weight: var(${key}-weight); letter-spacing: var(${key}-tracking);${/^(number|display)/.test(role) ? ' font-family: var(--font-numeric); font-variant-numeric: tabular-nums;' : ''} }`);

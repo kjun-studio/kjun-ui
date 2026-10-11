@@ -1,42 +1,75 @@
-/* Scoped baseline required by the component utilities. No app-wide reset. */
-.kjun-scope,
-.kjun-scope *,
-.kjun-scope::before,
-.kjun-scope::after,
-.kjun-scope *::before,
-.kjun-scope *::after {
+/* Baseline for kjun-owned markup only. Component roots carry a kjun- class (Vue adds kjun-root, the Vue layer host is kjun-layers);
+   portal roots pair kjun-scope with a kjun- class. The bare Provider root (kjun-scope) is excluded, so app markup inside the Provider keeps its own styles.
+   Slot content placed inside a kjun component follows this baseline; style it with classes. */
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *,
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"])::before,
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"])::after,
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *::before,
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *::after {
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;
   border-color: var(--_kjun-color-border);
 }
-.kjun-scope :where(h1, h2, h3, h4, h5, h6, p, blockquote, dl, dd, figure, pre) {
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(h1, h2, h3, h4, h5, h6, p, blockquote, dl, dd, figure, pre),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(h1, h2, h3, h4, h5, h6, p, blockquote, dl, dd, figure, pre) {
   margin: 0;
 }
-.kjun-scope :where(h1, h2, h3, h4, h5, h6) {
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(h1, h2, h3, h4, h5, h6),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(h1, h2, h3, h4, h5, h6) {
   font-size: inherit;
   font-weight: inherit;
 }
-.kjun-scope :where(button, input, optgroup, select, textarea) {
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, input, optgroup, select, textarea),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(button, input, optgroup, select, textarea) {
   font: inherit;
   letter-spacing: inherit;
   color: inherit;
   margin: 0;
   padding: 0;
 }
-.kjun-scope :where(button, select) { text-transform: none; }
-.kjun-scope :where(button, [type="button"], [type="reset"], [type="submit"]) {
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, select),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(button, select) { text-transform: none; }
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, [type="button"], [type="reset"], [type="submit"]),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(button, [type="button"], [type="reset"], [type="submit"]) {
   -webkit-appearance: button;
   background-color: transparent;
   background-image: none;
 }
-.kjun-scope :where(button, [role="button"]) { cursor: pointer; }
-.kjun-scope :where(:disabled) { cursor: default; }
-.kjun-scope :where(a) { color: inherit; text-decoration: inherit; }
-.kjun-scope :where(ol, ul, menu) { list-style: none; margin: 0; padding: 0; }
-.kjun-scope :where(table) { text-indent: 0; border-color: inherit; border-collapse: collapse; }
-.kjun-scope :where(fieldset, legend) { margin: 0; padding: 0; }
-.kjun-scope :where(textarea) { resize: vertical; }
-.kjun-scope :where(input, textarea)::placeholder { opacity: 1; }
-.kjun-scope :where(img, video) { max-width: 100%; height: auto; }
-.kjun-scope :where([hidden]:not([hidden="until-found"])) { display: none; }
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, [role="button"]),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(button, [role="button"]) { cursor: pointer; }
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(:disabled),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(:disabled) { cursor: default; }
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(a),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(a) { color: inherit; text-decoration: inherit; }
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(ol, ul, menu),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(ol, ul, menu) { list-style: none; margin: 0; padding: 0; }
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(table),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(table) { text-indent: 0; border-color: inherit; border-collapse: collapse; }
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(fieldset, legend),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(fieldset, legend) { margin: 0; padding: 0; }
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(textarea),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(textarea) { resize: vertical; }
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(input, textarea)::placeholder,
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(input, textarea)::placeholder { opacity: 1; }
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(img, video),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(img, video) { max-width: 100%; height: auto; }
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where([hidden]:not([hidden="until-found"])),
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where([hidden]:not([hidden="until-found"])) { display: none; }
+/* Last so it wins over the element resets above (e.g. font: inherit on a root <button>).
+   The outermost kjun element takes the scope's text style; nested kjun elements inherit it. */
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]):not(:where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *) {
+  font-family: var(--kjun-font);
+  color: var(--kjun-text);
+  font-size: var(--_kjun-type-body-size);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+/* A Provider nested inside kjun markup (e.g. in a modal) re-reads its own font and color variables;
+   otherwise its content would inherit the outer kjun element's resolved values. */
+.kjun-scope :where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]) .kjun-scope {
+  font-family: var(--kjun-font);
+  color: var(--kjun-text);
+}

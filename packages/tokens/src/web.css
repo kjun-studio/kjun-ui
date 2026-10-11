@@ -1,17 +1,4 @@
 /* KJUN 공통 구조. 색상과 서체는 프로젝트가 제공한 CSS 변수를 사용한다. */
-.kjun-scope {
-  box-sizing: border-box;
-  line-height: var(--_kjun-type-body-line);
-}
-.kjun-scope *,
-.kjun-scope *::before,
-.kjun-scope *::after {
-  box-sizing: border-box;
-}
-.kjun-scope button,
-.kjun-scope input {
-  font-family: inherit;
-}
 .kjun-button {
   position: relative;
   display: inline-flex;

@@ -698,7 +698,6 @@
   --_kjun-motion-distance-modal-exit: 8px;
   --_kjun-motion-distance-popup: 4px;
   --_kjun-motion-distance-toast: 8px;
-  font-family: var(--kjun-font); color: var(--kjun-text);
 }
 
 .kjun-scope {

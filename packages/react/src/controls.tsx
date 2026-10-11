@@ -52,7 +52,7 @@ export function DsCheckbox<T = ChoiceValue>({
       isSelected={checked}
       isDisabled={disabled}
       aria-label={ariaLabel}
-      className={"ds-choice" + (disabled ? " ds-choice--disabled" : "")}
+      className={"kjun-choice ds-choice" + (disabled ? " ds-choice--disabled" : "")}
       onChange={(next) => {
         const result = Array.isArray(value)
           ? next
@@ -103,7 +103,7 @@ export function DsSwitch({
       isSelected={value}
       isDisabled={disabled}
       aria-label={ariaLabel || label}
-      className={"ds-choice" + (disabled ? " ds-choice--disabled" : "")}
+      className={"kjun-choice ds-choice" + (disabled ? " ds-choice--disabled" : "")}
       onChange={(next) => {
         onValueChange?.(next);
         onChange?.(next);
@@ -152,7 +152,7 @@ export function DsRadio({
   const group = useContext(RadioContext),
     selected = (group ? group.value : value) === val;
   return (
-    <label className={"ds-choice" + (disabled ? " ds-choice--disabled" : "")}>
+    <label className={"kjun-choice ds-choice" + (disabled ? " ds-choice--disabled" : "")}>
       <input
         type="radio"
         className="kjun-sr-only"

@@ -68,7 +68,6 @@
   --_kjun-type-display-lg-line: 3rem;
   --_kjun-type-display-lg-weight: 700;
   --_kjun-type-display-lg-tracking: -0.02em;
-  font-size: var(--_kjun-type-body-size); line-height: var(--_kjun-type-body-line); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
 }
 .kjun-scope .kjun-type-caption { font-size: var(--_kjun-type-caption-size); line-height: var(--_kjun-type-caption-line); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking); }
 .kjun-scope .kjun-type-meta { font-size: var(--_kjun-type-meta-size); line-height: var(--_kjun-type-meta-line); font-weight: var(--_kjun-type-meta-weight); letter-spacing: var(--_kjun-type-meta-tracking); }

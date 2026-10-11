@@ -4,6 +4,7 @@ import { build } from "esbuild";
 import { beginPackageBuild, finishPackageBuild, packageNames } from "./package-state.mjs";
 import { componentModule } from "./vue-component.mjs";
 import { createVueStyleTheme } from "../packages/vue2/style-theme.mjs";
+import { rootClassModule } from "./vue-root-class.mjs";
 import { responsiveCss } from "./responsive-css.mjs";
 import { createHash } from "node:crypto";
 import {
@@ -56,6 +57,7 @@ const vuePlugin = {
           .slice(0, 8);
       const compiled = compiler.compile(d.template?.content || "<div/>", {
         whitespace: "condense",
+        modules: [rootClassModule],
       });
       if (compiled.errors.length) throw new Error(compiled.errors.join("\n"));
       const render = transpile(

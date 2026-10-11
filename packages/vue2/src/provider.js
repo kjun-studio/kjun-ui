@@ -33,5 +33,5 @@ export const KjunProvider = {
       validateKjunCssScope(this.$el);
     },
   },
-  render(h) { return h('div', { class: 'kjun-scope' }, [h('div', { ref: 'content', attrs: { 'data-kjun-content': '' } }, this.$slots.default), h('div', { ref: 'layers', attrs: { 'data-kjun-layer-host': '' } })]); },
+  render(h) { return h('div', { class: 'kjun-scope' }, [h('div', { ref: 'content', attrs: { 'data-kjun-content': '' } }, this.$slots.default), h('div', { ref: 'layers', class: 'kjun-layers', attrs: { 'data-kjun-layer-host': '' } })]); },
 };

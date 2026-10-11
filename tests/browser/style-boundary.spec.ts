@@ -35,3 +35,24 @@ for (const platform of ['react', 'vue2']) {
     expect(await kjunElements(page)).toEqual(without);
   });
 }
+
+for (const platform of ['react', 'vue2']) {
+  test(`${platform}: every catalog element that the reset targets sits inside kjun-owned markup`, async ({ page }) => {
+    await openFixture(page, platform, '?component=all', 'catalog', 'production', true);
+    // Elements kjun renders carry ds- or kjun- classes on themselves or an ancestor. Example code's own
+    // markup has neither and is app markup. Every kjun-rendered element must sit inside a kjun- element.
+    const orphans = await page.evaluate(() => [...document.querySelectorAll('.catalog-root *')]
+      .filter(el => el.closest('[class^="ds-"], [class*=" ds-"]') && !el.closest('[class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"]'))
+      .map(el => el.tagName.toLowerCase() + ' ' + el.outerHTML.slice(0, 100)));
+    expect([...new Set(orphans)]).toEqual([]);
+  });
+}
+
+for (const platform of ['react', 'vue2']) {
+  test(`${platform}: a kjun component whose root is a button still takes the scope font`, async ({ page }) => {
+    await openFixture(page, platform, '?noapp', 'style-boundary');
+    const button = page.getByTestId('kjun').getByRole('button', { name: '저장' });
+    const font = await page.locator('.kjun-scope').first().evaluate(el => getComputedStyle(el).getPropertyValue('--kjun-font').trim());
+    await expect(button).toHaveCSS('font-family', font);
+  });
+}
