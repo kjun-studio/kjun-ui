@@ -42,7 +42,7 @@ export function generate(input: UsageInput) {
       }, '', item.suffix ? { suffix: b.text(item.suffix) } : {}))) : [b.node('DsFormGroup', {
         label: '목록 이름', hint: '동료가 구분할 수 있는 이름을 입력하세요.', error: s.error ? '목록 이름을 입력해 주세요.' : '',
       }, b.node(name, { value: b.state('input', ''), onValueChange: b.update('input'), ...b.props('size', 'disabled', 'readOnly', 'error'), clearable: true, placeholder: '예: 장기 보유 자산' }))];
-      content = b.node(b.native ? 'View' : 'div', { style: { width: b.native ? 360 : '360px', maxWidth: '100%' } }, b.native ? b.node('DsFormLayout', { gap: 20 }, fields.join('\n')) : b.node('div', { [b.vue ? 'class' : 'className']: 'ds-form-layout kjun-form-layout', style: { display: 'flex', flexDirection: 'column', gap: '20px' } }, fields.join('\n'))); break;
+      content = b.node(b.native ? 'View' : 'div', { style: { width: b.native ? 360 : '360px', maxWidth: '100%' } }, b.native ? b.node('DsFormLayout', { gap: 20 }, fields.join('\n')) : b.node('div', { [b.vue ? 'class' : 'className']: 'kjun-form-layout', style: { display: 'flex', flexDirection: 'column', gap: '20px' } }, fields.join('\n'))); break;
     }
     case 'DsFormGroup':
       content = b.node(name, { ...b.props('label', 'hint', 'required'), error: s.errorMessage }, field('input', String(s.label))); break;

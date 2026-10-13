@@ -5,6 +5,7 @@ import { beginPackageBuild, finishPackageBuild, packageNames } from "./package-s
 import { componentModule } from "./vue-component.mjs";
 import { createVueStyleTheme } from "../packages/vue2/style-theme.mjs";
 import { rootClassModule } from "./vue-root-class.mjs";
+import { scopeDsRules } from "./ds-scope.mjs";
 import { responsiveCss } from "./responsive-css.mjs";
 import { createHash } from "node:crypto";
 import {
@@ -183,7 +184,9 @@ const scoped = await postcss([
   from: undefined,
 });
 const styleFiles=JSON.parse(await readFile("shared/web-style-sources.json","utf8"));
-const css=responsiveCss((await readFile("packages/tokens/src/bindings.css","utf8"))+"\n"+(await readFile("packages/tokens/src/reset.css","utf8"))+"\n"+utilityRoot.toString()+"\n"+scoped.css+"\n"+(await Promise.all(styleFiles.map(file=>readFile("packages/tokens/src/"+file,"utf8")))).join("\n"), input);
+const responsive=responsiveCss((await readFile("packages/tokens/src/bindings.css","utf8"))+"\n"+(await readFile("packages/tokens/src/reset.css","utf8"))+"\n"+utilityRoot.toString()+"\n"+scoped.css+"\n"+(await Promise.all(styleFiles.map(file=>readFile("packages/tokens/src/"+file,"utf8")))).join("\n"), input);
+// ds-* rules match only kjun-owned markup; apps use the same ds-* names (see scripts/ds-scope.mjs).
+const css = (await postcss([scopeDsRules()]).process(responsive, { from: undefined })).css;
 for (const name of ["tokens", "vue2", "react", "native"]) {
   await writeFile("packages/" + name + "/dist/styles.css", css);
   await copyFile(

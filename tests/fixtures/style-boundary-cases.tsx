@@ -21,6 +21,10 @@ export const appHtml = `
 <div class="hidden md:flex" data-probe="responsive">menu</div>
 <div class="flex mt-1 text-lg rounded" data-probe="utilities">utilities</div>
 <div class="ring-2" data-probe="ring">ring</div>
+<input class="ds-field" data-probe="ds-field" value="app field">
+<label class="ds-choice" data-probe="ds-choice">app choice</label>
+<div class="ds-form-group" data-probe="ds-form-group">app group</div>
+<button class="ds-dropdown-item" type="button" data-probe="ds-dropdown-item">app item</button>
 <section class="app-card" data-probe="card">
   <h2 data-probe="heading">공지</h2>
   <p data-probe="paragraph">본문</p>
