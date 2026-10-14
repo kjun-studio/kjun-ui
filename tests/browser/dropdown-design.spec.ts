@@ -3,10 +3,10 @@ import { openFixture } from './packed-fixture';
 import { longMenuLabel } from '../fixtures/dropdown-design-cases';
 
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureDropdown(next), next);
-const panel = (page: Page, platform: string) => page.locator(platform === 'react' ? '.kjun-dropdown' : platform === 'vue2' ? '[role="menu"]' : '[aria-label="메뉴"]');
+const panel = (page: Page, platform: string) => page.locator(platform === 'react' || platform === 'vue3' ? '.kjun-dropdown' : platform === 'vue2' ? '[role="menu"]' : '[aria-label="메뉴"]');
 const item = (page: Page, text: string) => page.locator('[role="menuitem"], [role="menuitemradio"], [role="radio"]').filter({ hasText: text });
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   for (const trigger of ['plain', 'menu-button']) test(`${platform}: ${trigger} preserves selection and visible keyboard focus after portaling`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'dropdown-design');

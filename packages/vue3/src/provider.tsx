@@ -4,6 +4,7 @@ import { createPortalScope } from "../../../shared/package-runtime/portal-scope"
 import { validateKjunCssScope } from "../../../shared/package-runtime/css-contract";
 import { provideIcons } from "./runtime/icons";
 import { kjunPortalKey } from "./runtime/keys";
+import { provideLayers } from "./runtime/layers";
 
 export const KjunProvider = defineComponent({
   name: "KjunProvider",
@@ -12,6 +13,8 @@ export const KjunProvider = defineComponent({
   },
   setup(props, { slots }) {
     provideIcons(() => props.icons);
+    // Nested Providers share the outermost one's window order, Escape handling and focus ownership.
+    provideLayers();
     // undefined: the outermost Provider, which hosts the layer portal itself.
     const parentPortal = inject(kjunPortalKey, undefined);
     const portal = shallowRef<HTMLElement | null>(null);

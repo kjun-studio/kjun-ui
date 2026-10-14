@@ -17,7 +17,7 @@ const iconPath = (page: Page) => icon(page).evaluate(el => el.innerHTML);
 const menu = (page: Page, platform: string) => platform === 'native'
   ? page.locator('[aria-label="메뉴"]') : page.getByRole('menu');
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: menu sizes, compact mode and loading reuse Button geometry`, async ({ page }) => {
     await openFixture(page, platform, '', 'menu-button');
     await expect(trigger(page)).toHaveCSS('height', '40px');

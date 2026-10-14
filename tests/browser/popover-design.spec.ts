@@ -9,7 +9,7 @@ async function close(page: Page) {
   await page.mouse.click(900, 700);
   await expect(page.getByTestId('open')).toHaveText('false');
 }
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: popovers have subtle borderless surfaces and preserve placement, width and overflow`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const palette of ['default', 'dark']) {
@@ -58,7 +58,7 @@ for (const platform of ['react', 'vue2', 'native']) {
       }).toBe(true);
       expect(await popup.evaluate(el => [el, ...el.querySelectorAll('*')].every(node => node.scrollWidth <= node.clientWidth + 1))).toBe(true);
       expect(await popup.evaluate(el => [el, ...el.querySelectorAll('*')].some(node => node.scrollHeight > node.clientHeight + 1 && ['auto', 'scroll'].includes(getComputedStyle(node).overflowY)))).toBe(true);
-      if (platform === 'react') {
+      if (platform === 'react' || platform === 'vue3') {
         await configure(page, { maxHeight: '140px' });
         await expect(popup).toHaveCSS('height', '140px');
       }
@@ -66,6 +66,7 @@ for (const platform of ['react', 'vue2', 'native']) {
   });
 
   test(`${platform}: packed examples show a quiet trigger and an intrinsic right-aligned action`, async ({ page }) => {
+    test.skip(platform === 'vue3', 'Vue 3 catalog previews arrive with the platform cut-over (E1).');
     await page.setViewportSize({ width: 800, height: 700 });
     await openFixture(page, platform, '?component=KjunPopover', 'catalog');
     const open = page.getByRole('button', { name: '추가 정보', exact: true });
