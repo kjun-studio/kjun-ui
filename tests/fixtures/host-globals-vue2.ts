@@ -13,6 +13,10 @@ const proto = Vue.prototype as Record<string, unknown>;
 for (const name of ['Number', 'Percent', 'Date', 'RelativeTime', 'Price', 'KRW', 'BigKRW', 'Compact']) proto['$format' + name] = () => 'APP';
 proto.$toast = { success: () => record.appToast.push('success'), error: () => record.appToast.push('error'), info: () => record.appToast.push('info') };
 
+// The app keeps its own DsButton; installing KJUN's plugin neither warns nor replaces it.
+Vue.component('DsButton', { render: (h: Vue.CreateElement) => h('button', { attrs: { type: 'button' } }, 'APP-DS') });
+Vue.use(K.default);
+
 const AppScope = {
   provide: {
     dropdown: { app: true }, radioGroup: { app: true, value: 'b', name: 'app' }, tabsContainer: { app: true },
@@ -34,6 +38,7 @@ new Vue({
     return h(K.KjunProvider, [h(K.KjunFeedbackProvider, [
       h('div', { attrs: { 'data-testid': 'reference' } }, subtree(h)),
       h(AppScope, [h('div', { attrs: { 'data-testid': 'app-scope' } }, subtree(h))]),
+      h('div', { attrs: { 'data-testid': 'app-button' } }, [h('DsButton'), h('KjunButton', '저장')]),
       h('div', { attrs: { 'data-testid': 'copy' } }, [h(K.KjunCopyButton, { props: { value: '복사할 값' } })]),
       h('div', { attrs: { 'data-testid': 'boundary' } }, [
         h(K.KjunErrorBoundary, { on: { error: (error: Error) => record.boundary.push(error.message) } }, [h(Thrower)]),

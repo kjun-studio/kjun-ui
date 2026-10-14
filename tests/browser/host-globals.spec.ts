@@ -36,3 +36,11 @@ test('vue2: with no KJUN layer open, the app still receives Escape', async ({ pa
   await page.keyboard.press('Escape');
   expect(await page.evaluate(() => (window as unknown as { escapes: number }).escapes)).toBe(1);
 });
+
+test('vue2: an app DsButton survives installing the KJUN plugin, which registers KjunButton beside it', async ({ page }) => {
+  await openFixture(page, 'vue2', '', 'host-globals');
+  const host = page.getByTestId('app-button');
+  await expect(host.getByRole('button', { name: 'APP-DS' })).toBeVisible();
+  await expect(host.getByRole('button', { name: '저장' })).toHaveClass(/kjun-/);
+  expect((await record(page)).warnings).toEqual([]);
+});

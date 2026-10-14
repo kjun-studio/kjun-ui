@@ -16,6 +16,10 @@ table{border-collapse:separate}
 *,::before,::after{--tw-ring-color:rgb(0,0,255)}
 .ring-2{box-shadow:0 0 0 2px var(--tw-ring-color)}
 /* Reads variable names an app (shadcn, Tailwind v4) may leave undefined; KJUN must not supply them. */
+/* Names KJUN used before 0.5.0: defining them must not reach KJUN. */
+:root{--border:rgb(1,2,3);--text-primary:rgb(4,5,6);--brand:rgb(7,8,9);--font-sans:serif;--ease-out:steps(1);--motion-control:5s}
+.mobile-simple-list,.metric-pill,.market-card,.num,.ds-button,.ds-modal-container{outline:3px solid rgb(9,9,9)}
+@keyframes price-flash-up{from{opacity:0}to{opacity:0}}
 @keyframes app-spin{to{transform:rotate(360deg)}}
 .app-spin{animation:app-spin 1s linear infinite;transition:opacity 300ms}
 .app-var{border:2px solid var(--border, rgb(1,2,3));color:var(--text-primary, rgb(4,5,6))}
