@@ -1,6 +1,8 @@
 import { nextTableSort, type TableSort, type QueryDisplayProps } from "@kjun-ui/tokens";
 export type { TableSort } from "@kjun-ui/tokens";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { sortTableRows, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "./table-model";
+export { getValue } from "./table-model";
 
 export interface TableColumn<Row extends object = Record<string, unknown>> {
   key: string;
@@ -86,17 +88,6 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   onSearch?: (query: string) => void;
   onRetry?: () => void;
 }
-export function getValue(row: object, key: string): unknown {
-  return key
-    .split(".")
-    .reduce<unknown>(
-      (value, part) =>
-        value != null && typeof value === "object"
-          ? (value as Record<string, unknown>)[part]
-          : undefined,
-      row
-    );
-}
 export function useTableModel<Row extends object>(props: TableProps<Row, unknown>) {
   const {
     data = [],
@@ -118,30 +109,9 @@ export function useTableModel<Row extends object>(props: TableProps<Row, unknown
     timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
   const sort = props.sort === undefined ? internalSort : props.sort ?? { key: "", order: "asc" as const };
-  const rows =
-    sortable && sortMode !== "server" && sort.key
-      ? [...data].sort((a, b) => {
-          const x = getValue(a, sort.key),
-            y = getValue(b, sort.key);
-          const order =
-            x === y
-              ? 0
-              : typeof x === "number" && typeof y === "number"
-              ? x > y
-                ? 1
-                : -1
-              : String(x) > String(y)
-              ? 1
-              : -1;
-          return sort.order === "asc" ? order : -order;
-        })
-      : data;
-  const key = (row: Row, index = 0) =>
-    (getValue(row, rowKey) ?? index) as string | number;
-  const selectedRow = (row: Row) =>
-    selected.some((r) => getValue(r, rowKey) === getValue(row, rowKey));
-  const all = rows.length > 0 && rows.every(selectedRow),
-    some = rows.some(selectedRow) && !all,
+  const rows = sortTableRows(data, sort, { sortable, sortMode }) as Row[];
+  const key = (row: Row, index = 0) => tableRowKey(row, rowKey, index);
+  const { isSelected: selectedRow, all, some } = tableSelection(rows, selected, rowKey),
     expanded = expandedRows ?? internalExpanded;
   return {
     rows,
@@ -163,20 +133,10 @@ export function useTableModel<Row extends object>(props: TableProps<Row, unknown
       if (props.sort === undefined) setSort(next);
       props.onSortChange?.(next);
     },
-    toggleRow: (row: Row) =>
-      onSelectionChange?.(
-        selectedRow(row)
-          ? selected.filter(
-              (r) => getValue(r, rowKey) !== getValue(row, rowKey)
-            )
-          : [...selected, row]
-      ),
-    toggleAll: () => onSelectionChange?.(all ? [] : [...rows]),
+    toggleRow: (row: Row) => onSelectionChange?.(toggleSelectedRow(selected, row, rowKey)),
+    toggleAll: () => onSelectionChange?.(toggleAllRows(rows, all)),
     toggleExpand: (row: Row, index: number) => {
-      const id = key(row, index),
-        next = expanded.includes(id)
-          ? expanded.filter((v) => v !== id)
-          : [...(expandSingle ? [] : expanded), id];
+      const next = toggleExpandedRow(expanded, key(row, index), expandSingle);
       setExpanded(next);
       onExpandedRowsChange?.(next);
     },
