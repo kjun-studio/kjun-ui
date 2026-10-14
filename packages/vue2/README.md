@@ -12,7 +12,7 @@ Nested Providers share window ordering, Escape handling and focus ownership. The
 
 Import only the components you use and register them locally, for example `import { KjunProvider, KjunButton } from '@kjun-ui/vue2'`. Each component registers its own internal dependencies; global installation is unnecessary. ESM consumers can remove unused component code. Styles remain a shared stylesheet.
 
-For global registration, use `import Kjun from '@kjun-ui/vue2/plugin'; Vue.use(Kjun)`. The root default import remains compatible with existing installations. Global registration includes all public components.
+For global registration, use `import Kjun from '@kjun-ui/vue2/plugin'; Vue.use(Kjun)`. The root default import remains compatible with existing installations. Global registration includes all public components. If the app already registered a component under a `Kjun*` name, KJUN warns before replacing it; `Vue.use(Kjun, { skipExisting: true })` keeps the app's component.
 
 `KjunTable` uses internal expansion state when `expandedRows` is omitted. Passing an array makes expansion controlled: `[]` closes every row, and `update:expandedRows` proposes the next array. Consumers that previously passed a fixed empty array to enable internal toggles should omit the prop or reflect the event into their state.
 
