@@ -29,7 +29,7 @@ async function record(page: Page) {
     requestAnimationFrame(tick);
   }, markerSelector);
 }
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: size tokens preserve track inset and matching item corners through selection and resize`, async ({ page }, testInfo) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'button-group');
@@ -151,7 +151,7 @@ for (const platform of ['react', 'vue2', 'native']) {
   });
 }
 
-for (const platform of ['react', 'vue2']) test(`${platform}: RTL scroll, hidden mount and font changes retain the selected background`, async ({ page }, testInfo) => {
+for (const platform of ['react', 'vue2', 'vue3']) test(`${platform}: RTL scroll, hidden mount and font changes retain the selected background`, async ({ page }, testInfo) => {
   await openFixture(page, platform, '', 'button-group'); await aligned(page, 0);
   await configure(page, { dir: 'rtl', width: 150 }); await aligned(page, 0);
   await buttons(page).last().click(); await aligned(page, 2);

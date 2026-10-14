@@ -24,15 +24,15 @@
     "name": "@kjun-ui/vue3",
     "version": "0.5.1",
     "file": "kjun-ui-vue3-0.5.1.tgz",
-    "bytes": 63915,
-    "integrity": "sha512-I8V20fJDoTEmsdm6QiOyIdXcvLrFa05L+f61HeESwz8vsPXl0Br8U0FnUMzwo+I+3iWcRwpRFVNUJeeXN61g7A=="
+    "bytes": 97356,
+    "integrity": "sha512-LW6sAubkleNysKkeVIoAVMGyCPtpLqEFDpLcwINNuG6BBzyTCjgmGnYq8GA7tkTaPW8/YxupmgtMvpvCE2oq6Q=="
   },
   {
     "name": "@kjun-ui/react",
     "version": "0.5.1",
     "file": "kjun-ui-react-0.5.1.tgz",
-    "bytes": 215230,
-    "integrity": "sha512-7tRn/XG7/R6vmge6zmEwTIXAIGK2YfZc7EER2aYEhzdWMjDdju3nG3CUw4//sd8cfx/8IFsiy0l6/keut/byNA=="
+    "bytes": 215701,
+    "integrity": "sha512-UDDsK1ZfR09Pmj0XtiAv0xWV4fyrIRMZssnt/x4aeurVA2/K+KnmbDQfYrUSX2tjmaVCKvrmM9/+BOcApQyCpQ=="
   },
   {
     "name": "@kjun-ui/native",

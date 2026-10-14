@@ -5,7 +5,6 @@ createContext,
 forwardRef,
 useContext,
 useId,
-type KeyboardEvent,
 type ReactNode,
 type TextareaHTMLAttributes,
 } from "react";
@@ -16,6 +15,7 @@ Switch as AriaSwitch,
 import { KjunIcon } from "./button";
 import { useKjunField } from "./input";
 import { useSelectionIndicator } from "./use-selection-indicator";
+import { groupKeydown } from "../../../shared/package-runtime/group-keyboard";
 export type ChoiceValue = string | number | boolean | null;
 export interface ChoiceOption<T = ChoiceValue> {
   value: T;
@@ -292,29 +292,7 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
     );
   }
 );
-export function groupKeydown(event: KeyboardEvent<HTMLElement>) {
-  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-  const buttons = Array.from(
-    event.currentTarget.querySelectorAll<HTMLButtonElement>(
-      "button:not(:disabled)"
-    )
-  );
-  const current = buttons.indexOf(event.target as HTMLButtonElement);
-  if (current < 0) return;
-  event.preventDefault();
-  const direction =
-    getComputedStyle(event.currentTarget).direction === "rtl" ? -1 : 1;
-  const next =
-    event.key === "Home"
-      ? 0
-      : event.key === "End"
-      ? buttons.length - 1
-      : (current +
-          (event.key === "ArrowRight" ? direction : -direction) +
-          buttons.length) %
-        buttons.length;
-  buttons[next]?.focus();
-}
+export { groupKeydown };
 export interface KjunButtonGroupProps {
   value: ChoiceValue;
   options: ChoiceOption[];

@@ -28,7 +28,7 @@ async function roles(page: Page) {
     return { brand: role('brand'), hover: role('brand-hover'), active: role('brand-active'), border: role('border-strong'), disabledBorder: role('border-secondary'), surface: role('surface') };
   });
 }
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: radio proportions and label spacing stay stable through selection in both palettes`, async ({ page }) => {
     for (const palette of ['', '?palette=dark']) {
       await openFixture(page, platform, palette, 'radio-design');
