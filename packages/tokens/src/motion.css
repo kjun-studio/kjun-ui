@@ -1,6 +1,6 @@
 .kjun-tabs-track { position: relative; overflow-x: auto; min-width: 0; scrollbar-width: none; }
 .kjun-tabs-track .kjun-tabs-list { overflow: visible; width: max-content; }
-.kjun-vue-tabs .ds-tabs-scroller { position: relative; }
+.kjun-vue-tabs .kjun-tabs-scroller { position: relative; }
 .kjun-motion-label { display: inline-grid; }
 .kjun-motion-label::after { content: attr(data-label); font-weight: var(--_kjun-type-control-weight); letter-spacing: var(--_kjun-type-control-tracking); visibility: hidden; grid-area: 1 / 1; }
 .kjun-motion-label > span { grid-area: 1 / 1; }
@@ -8,8 +8,8 @@
 .kjun-tab-indicator[hidden] { display: none; }
 .kjun-tab-indicator[data-animate="true"] { transition: transform var(--motion-indicator) var(--ease-out), width var(--motion-indicator) var(--ease-out); }
 [data-variant="underline"] .kjun-tab-indicator { background: var(--_kjun-color-brand); border-radius: calc(var(--extension-tabs-indicator-height) / 2); }
-.kjun-tabs-track .kjun-tab, .kjun-vue-tabs .ds-tab { z-index: 1; background: transparent !important; }
-.kjun-tabs-track .kjun-tab::after, .kjun-vue-tabs .ds-tab::after { display: none; }
+.kjun-tabs-track .kjun-tab, .kjun-vue-tabs .kjun-tab { z-index: 1; background: transparent !important; }
+.kjun-tabs-track .kjun-tab::after, .kjun-vue-tabs .kjun-tab::after { display: none; }
 .kjun-accordion-trigger svg { transition: transform var(--motion-collapse) var(--ease-out); }
 .kjun-motion-collapse { overflow: hidden; }
 .kjun-scope[data-motion] { animation: none; }

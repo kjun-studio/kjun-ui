@@ -1,8 +1,8 @@
 <template>
   <div class="kj-relative kj-min-w-0" v-click-outside="close">
     <!-- Input Trigger -->
-    <div class="ds-field-shell" :class="fieldSizeClass">
-      <DsIcon name="search" class="ds-field-prefix" />
+    <div class="kjun-field-shell" :class="fieldSizeClass">
+      <DsIcon name="search" class="kjun-field-prefix" />
       <input
         ref="input"
         v-bind="$attrs"
@@ -36,16 +36,16 @@
       />
       <div
         v-if="showClear"
-        class="ds-field-suffix"
+        class="kjun-field-suffix"
       >
-        <DsButton variant="ghost" size="sm" class="ds-field-clear" prefix-icon="x" aria-label="선택 지우기" title="선택 지우기" :disabled="disabled" @click.stop="clear" />
+        <DsButton variant="ghost" size="sm" class="kjun-field-clear" prefix-icon="x" aria-label="선택 지우기" title="선택 지우기" :disabled="disabled" @click.stop="clear" />
       </div>
     </div>
 
     <!-- Dropdown -->
-    <transition name="ds-combobox-dropdown" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
+    <transition name="kjun-combobox-dropdown" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
       @enter-cancelled="motionCancel" @leave-cancelled="motionCancel">
-      <div v-kjun-layer.field="'popup'" v-if="isOpen" :id="`combobox-options-${_uid}`" role="listbox" class="kj-absolute kj-z-50 kj-w-full kj-mt-1 ds-field-menu kj-max-h-menu-list-max-height kj-overflow-y-auto">
+      <div v-kjun-layer.field="'popup'" v-if="isOpen" :id="`combobox-options-${_uid}`" role="listbox" class="kj-absolute kj-z-50 kj-w-full kj-mt-1 kjun-field-menu kj-max-h-menu-list-max-height kj-overflow-y-auto">
         <div
           v-for="(option, index) in filteredOptions"
           :key="getOptionValue(option)"
@@ -180,7 +180,7 @@ export default {
       return this.clearable && !this.disabled && this.inputDisplayValue !== ''
     },
     inputClasses() {
-      return [...this.fieldClasses, 'ds-field--prefix', { 'ds-field--suffix': this.showClear, 'ds-field--open': this.isOpen }]
+      return [...this.fieldClasses, 'kjun-field--prefix', { 'kjun-field--suffix': this.showClear, 'kjun-field--open': this.isOpen }]
     }
   },
   watch: {
@@ -203,7 +203,7 @@ export default {
       return this.value === this.getOptionValue(option)
     },
     optionClasses(option, index) {
-      return ['ds-field-option', { 'ds-field-option--highlighted': index === this.highlightedIndex }]
+      return ['kjun-field-option', { 'kjun-field-option--highlighted': index === this.highlightedIndex }]
     },
     onInput(val) {
       this.query = val

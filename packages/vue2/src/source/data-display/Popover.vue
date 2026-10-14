@@ -1,5 +1,5 @@
 <template>
-  <div class="ds-popover-wrapper kj-relative kj-inline-block" ref="wrapper" v-click-outside="close" @focusout="onFocusOut">
+  <div class="kjun-popover-wrapper kj-relative kj-inline-block" ref="wrapper" v-click-outside="close" @focusout="onFocusOut">
     <div
       ref="trigger"
       @click.capture="onTriggerClick"
@@ -10,7 +10,7 @@
       <slot name="trigger" :open="isOpen" :panel-id="panelId"></slot>
     </div>
 
-    <transition name="ds-popover" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
+    <transition name="kjun-popover" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
       @enter-cancelled="motionCancel" @leave-cancelled="motionCancel">
       <div
         v-kjun-layer="'popup'" v-if="isOpen"
@@ -20,7 +20,7 @@
         :aria-label="ariaLabel || undefined"
         tabindex="-1"
         :style="floatingStyle"
-        class="ds-popover-panel kjun-content-popover kj-fixed kj-z-50"
+        class="kjun-popover-panel kjun-content-popover kj-fixed kj-z-50"
         @keydown="onPanelKeydown"
       >
         <div class="kjun-popover-content" :data-no-padding="String(noPadding)"><slot :close="closeAndFocus"></slot></div>
@@ -82,7 +82,7 @@ export default {
     }
   },
   computed: {
-    panelId() { return `ds-popover-${this._uid}` }
+    panelId() { return `kjun-popover-${this._uid}` }
   },
   watch: {
     value(value) { this.isOpen = value },
@@ -204,5 +204,5 @@ export default {
 </script>
 
 <style scoped>
-.ds-popover-panel { display: flex; flex-direction: column; outline: none; overflow:auto; }
+.kjun-popover-panel { display: flex; flex-direction: column; outline: none; overflow:auto; }
 </style>

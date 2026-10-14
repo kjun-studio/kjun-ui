@@ -38,8 +38,8 @@ export default {
     return [
       h(
         'span',
-        { class: ['kjun-root', 'ds-price-cell', props.flashClass, props.stale ? 'kj-text-text-tertiary' : ''],
-          hook: domainColorHooks(/\bprice-flash-(up|down)/.test(props.flashClass)) },
+        { class: ['kjun-root', 'kjun-price-cell', props.flashClass, props.stale ? 'kj-text-text-tertiary' : ''],
+          hook: domainColorHooks(/\bkjun-price-flash-(up|down)/.test(props.flashClass)) },
         [
           h(DsAnimatedNumber, {
             props: {

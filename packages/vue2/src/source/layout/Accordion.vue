@@ -1,5 +1,5 @@
 <template>
-  <div class="ds-accordion kjun-accordion" :data-tone="tone">
+  <div class="kjun-accordion" :data-tone="tone">
     <slot></slot>
   </div>
 </template>

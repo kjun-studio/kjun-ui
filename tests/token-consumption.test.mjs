@@ -53,6 +53,6 @@ test('field interaction durations reference the semantic control role', async ()
 
 test('shared CSS only establishes a connection for a platform that uses its selector', () => {
   const css = '.kjun-scope .kjun-pagination button { width:var(--extension-pagination-item-size) }';
-  assert.equal(connectedCss(css, '<div class="kjun-scope ds-pagination"></div>'), '');
+  assert.equal(connectedCss(css, '<div class="kjun-scope kjun-tabs"></div>'), '');
   assert.match(connectedCss(css, '<div class="kjun-pagination"></div>'), /pagination-item-size/);
 });

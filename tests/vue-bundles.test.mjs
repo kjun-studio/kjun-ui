@@ -20,10 +20,10 @@ test("a packed Vue named import excludes unrelated UI, while either plugin entry
     bundle("import * as ui from '@kjun-ui/vue2'; console.log(ui);"),
     bundle("import plugin from '@kjun-ui/vue2/plugin'; console.log(plugin);"),
   ]);
-  assert.doesNotMatch(button.text, /ds-table-query-state|kjun-toast-stack|ds-modal-overlay/);
+  assert.doesNotMatch(button.text, /kjun-table-query-state|kjun-toast-stack|kjun-modal-overlay/);
   assert.ok(button.contents.length < all.contents.length * .45, "Button must not pull in most of the UI library");
   assert.ok(gzipSync(button.contents).length < gzipSync(all.contents).length * .45);
-  assert.match(plugin.text, /ds-table-query-state/);
+  assert.match(plugin.text, /kjun-table-query-state/);
   const require = createRequire(directory + "/package.json");
   const ui = require("@kjun-ui/vue2");
   assert.equal(require("@kjun-ui/vue2/plugin"), ui.default, "CJS entries share component identities");

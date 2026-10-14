@@ -1,7 +1,7 @@
 <template>
     <div
       v-kjun-layer="'window'" v-if="motionPresent"
-      class="ds-modal-overlay"
+      class="kjun-modal-overlay"
       @click.self="handleOverlayClick"
     >
       <div
@@ -14,16 +14,16 @@
         @click.stop
       >
         <!-- Header -->
-        <div v-if="showHeader" class="ds-modal-header">
+        <div v-if="showHeader" class="kjun-modal-header">
           <!-- id를 래퍼에 둬서 #header 슬롯(커스텀 헤더)에서도 aria-labelledby가 유효 -->
-          <div :id="`modal-title-${_uid}`" class="ds-modal-title">
+          <div :id="`modal-title-${_uid}`" class="kjun-modal-title">
             <slot name="header">
               <h3>{{ title }}</h3>
             </slot>
           </div>
           <button
             v-if="closable"
-            class="ds-modal-close"
+            class="kjun-modal-close"
             @click="close"
             type="button"
             aria-label="닫기"
@@ -38,7 +38,7 @@
         </div>
 
         <!-- Footer -->
-        <div v-if="showFooter || $slots.footer" class="ds-modal-footer">
+        <div v-if="showFooter || $slots.footer" class="kjun-modal-footer">
           <slot name="footer"><DsFormActions
             :size="footerSize"
             cancel-variant="secondary"
@@ -171,25 +171,25 @@ export default {
   },
   computed: {
     modalClasses() {
-      const base = 'ds-modal-container'
+      const base = 'kjun-modal-container'
 
       const sizes = {
-        sm: 'ds-modal-sm',
-        md: 'ds-modal-md',
-        lg: 'ds-modal-lg',
-        xl: 'ds-modal-xl',
-        full: 'ds-modal-full'
+        sm: 'kjun-modal-sm',
+        md: 'kjun-modal-md',
+        lg: 'kjun-modal-lg',
+        xl: 'kjun-modal-xl',
+        full: 'kjun-modal-full'
       }
 
-      return [base, sizes[this.size], this.height ? 'ds-modal-fixed' : ''].filter(Boolean).join(' ')
+      return [base, sizes[this.size], this.height ? 'kjun-modal-fixed' : ''].filter(Boolean).join(' ')
     },
     containerStyle() {
       return this.height ? { height: this.height } : null
     },
     bodyClasses() {
       return [
-        'ds-modal-body',
-        this.noPadding ? 'ds-modal-body-no-padding' : ''
+        'kjun-modal-body',
+        this.noPadding ? 'kjun-modal-body-no-padding' : ''
       ].filter(Boolean).join(' ')
     },
   },
@@ -263,7 +263,7 @@ export default {
 
 <style scoped>
 /* Overlay */
-.ds-modal-overlay {
+.kjun-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -279,7 +279,7 @@ export default {
 }
 
 /* Container */
-.ds-modal-container {
+.kjun-modal-container {
   background: var(--card-bg);
   border-radius: var(--_kjun-geometry-modal-radius);
   /* border removed per design system policy */
@@ -291,27 +291,27 @@ export default {
 }
 
 /* Sizes */
-.ds-modal-sm {
+.kjun-modal-sm {
   width: var(--_kjun-geometry-modal-widths-sm);
   max-width: 100%;
 }
 
-.ds-modal-md {
+.kjun-modal-md {
   width: var(--_kjun-geometry-modal-widths-md);
   max-width: 100%;
 }
 
-.ds-modal-lg {
+.kjun-modal-lg {
   width: var(--_kjun-geometry-modal-widths-lg);
   max-width: 100%;
 }
 
-.ds-modal-xl {
+.kjun-modal-xl {
   width: var(--_kjun-geometry-modal-widths-xl);
   max-width: 100%;
 }
 
-.ds-modal-full {
+.kjun-modal-full {
   width: calc(100vw - 2 * var(--_kjun-geometry-modal-mobile-inset));
   height: calc(100vh - 2 * var(--_kjun-geometry-modal-mobile-inset));
   height: calc(100dvh - 2 * var(--_kjun-geometry-modal-mobile-inset));
@@ -320,7 +320,7 @@ export default {
 }
 
 /* Header */
-.ds-modal-header {
+.kjun-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -329,7 +329,7 @@ export default {
   flex-shrink: 0;
 }
 
-.ds-modal-title {
+.kjun-modal-title {
   flex: 1;
   min-width: 0;
   padding-right: var(--_kjun-geometry-modal-title-action-gap);
@@ -341,12 +341,12 @@ export default {
   letter-spacing: var(--_kjun-type-section-title-tracking);
 }
 
-.ds-modal-title h3 {
+.kjun-modal-title h3 {
   margin: 0;
   font: inherit;
 }
 
-.ds-modal-close {
+.kjun-modal-close {
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -361,13 +361,13 @@ export default {
   transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out);
 }
 
-.ds-modal-close:hover {
+.kjun-modal-close:hover {
   background: var(--bg-secondary);
   color: var(--text-primary);
 }
 
 /* Body */
-.ds-modal-body {
+.kjun-modal-body {
   padding: var(--_kjun-geometry-modal-padding);
   flex: 1;
   min-height: 0;
@@ -375,17 +375,17 @@ export default {
   color: var(--text-primary);
 }
 
-.ds-modal-body-no-padding {
+.kjun-modal-body-no-padding {
   padding: 0;
 }
 
 /* 고정 높이 모달(height prop): 컨텐츠 양과 무관하게 body가 프레임을 채우며 스크롤한다 */
-.ds-modal-fixed .ds-modal-body {
+.kjun-modal-fixed .kjun-modal-body {
   max-height: none;
 }
 
 /* Footer */
-.ds-modal-footer {
+.kjun-modal-footer {
   padding: var(--_kjun-geometry-modal-header-padding-y) var(--_kjun-geometry-modal-padding);
   border-top: var(--_kjun-border-default-width) solid var(--border-primary);
   display: flex;
@@ -396,42 +396,42 @@ export default {
 }
 
 /* Scrollbar styling */
-.ds-modal-body::-webkit-scrollbar {
+.kjun-modal-body::-webkit-scrollbar {
   width: var(--extension-scrollbar-width);
 }
 
-.ds-modal-body::-webkit-scrollbar-track {
+.kjun-modal-body::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.ds-modal-body::-webkit-scrollbar-thumb {
+.kjun-modal-body::-webkit-scrollbar-thumb {
   background: var(--border-secondary);
   border-radius: var(--_kjun-geometry-radius-radius9999);
 }
 
-.ds-modal-body::-webkit-scrollbar-thumb:hover {
+.kjun-modal-body::-webkit-scrollbar-thumb:hover {
   background: var(--border-strong);
 }
 
 /* Shared modal threshold controls the full-width mobile layout. */
 @media (width <= token(responsive.modal)) {
-  .ds-modal-sm,
-  .ds-modal-md,
-  .ds-modal-lg,
-  .ds-modal-xl {
+  .kjun-modal-sm,
+  .kjun-modal-md,
+  .kjun-modal-lg,
+  .kjun-modal-xl {
     width: calc(100vw - 2 * var(--_kjun-geometry-modal-mobile-inset)) !important;
     max-height: 85vh;
     max-height: 85dvh;
   }
 
   /* 고정 높이를 지정하지 않은 일반 모달은 헤더·본문·푸터를 함께 스크롤한다. */
-  .ds-modal-container:not(.ds-modal-fixed):not(.ds-modal-full) {
+  .kjun-modal-container:not(.kjun-modal-fixed):not(.kjun-modal-full) {
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
   }
 
-  .ds-modal-container:not(.ds-modal-fixed):not(.ds-modal-full) .ds-modal-body {
+  .kjun-modal-container:not(.kjun-modal-fixed):not(.kjun-modal-full) .kjun-modal-body {
     flex: 0 0 auto;
     min-height: auto;
     overflow-y: visible;

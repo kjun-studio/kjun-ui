@@ -1,7 +1,7 @@
 <template>
-  <div v-if="visible" :class="['ds-alert', 'ds-alert-' + normalizedType, 'kjun-alert']"
+  <div v-if="visible" :class="['kjun-alert', 'kjun-alert-' + normalizedType, 'kjun-alert']"
     :data-size="sizeKey" :style="toneStyle" :role="normalizedType === 'danger' ? 'alert' : 'status'">
-    <span class="kjun-alert-icon ds-alert-icon" :style="{ color: toneStyle.color }">
+    <span class="kjun-alert-icon" :style="{ color: toneStyle.color }">
       <DsIcon :name="iconName" :size="iconSize" />
     </span>
     <div class="kjun-alert-content">

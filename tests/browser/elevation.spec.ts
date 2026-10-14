@@ -26,7 +26,7 @@ for (const platform of ['react', 'vue2', 'native']) {
     await page.screenshot({ path: `artifacts/elevation/${platform}-${palette}-${browserName}-surfaces.png`, fullPage: true });
     await page.getByRole('button', { name: '알림 행동' }).click();
     await page.evaluate(() => (window as any).elevation.openWindow());
-    const modal = page.locator(platform === 'react' ? '.kjun-modal' : platform === 'vue2' ? '.ds-modal-container' : '[aria-label="새 창"]');
+    const modal = page.locator(platform === 'react' ? '.kjun-modal' : platform === 'vue2' ? '.kjun-modal-container' : '[aria-label="새 창"]');
     await expect(modal).toHaveCSS('box-shadow', new RegExp(`${tokens.modal.elevation[0].blurRadius}px`));
     await page.keyboard.press('Escape');
     }

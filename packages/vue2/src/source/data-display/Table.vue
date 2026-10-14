@@ -1,5 +1,5 @@
 <template>
-  <div class="ds-table-query-state" :class="showCardMode ? '' : 'kj-overflow-hidden'" :aria-busy="loading ? 'true' : 'false'">
+  <div class="kjun-table-query-state" :class="showCardMode ? '' : 'kj-overflow-hidden'" :aria-busy="loading ? 'true' : 'false'">
     <!-- 선택 툴바 -->
     <div
       v-if="selectable && selected.length > 0"
@@ -87,20 +87,20 @@
     </TableCards>
 
     <!-- 기존 테이블 (일반 + 컴팩트 모드) -->
-    <div v-else class="ds-table-scroll-shell">
+    <div v-else class="kjun-table-scroll-shell">
       <div
         ref="tableScrollWrapper"
-        :class="[tableWrapperClasses, 'ds-table-scroll-wrapper']"
+        :class="[tableWrapperClasses, 'kjun-table-scroll-wrapper']"
         :style="tableWrapperStyle"
         @scroll="handleTableScroll"
       >
-      <table class="kj-w-full ds-table-grid" :data-compact="String(compact)" :aria-label="ariaLabel || undefined">
+      <table class="kj-w-full kjun-table-grid" :data-compact="String(compact)" :aria-label="ariaLabel || undefined">
         <thead :class="stickyHeader ? 'kj-sticky kj-top-0 kj-z-10' : ''">
           <tr>
             <th
               v-if="selectable"
               scope="col"
-              class="ds-table-action-cell kj-text-center ds-table-header"
+              class="kjun-table-action-cell kj-text-center kjun-table-header"
             >
               <TableCheck
                 :checked="isAllSelected"
@@ -112,7 +112,7 @@
             <th
               v-if="expandable"
               scope="col"
-              class="ds-table-action-cell ds-table-header"
+              class="kjun-table-action-cell kjun-table-header"
             ></th>
             <th
               v-for="col in visibleColumns"
@@ -141,8 +141,8 @@
           <!-- Loading -->
           <template v-if="initialLoading">
             <tr v-for="index in skeletonRows" :key="'loading-' + index" aria-hidden="true">
-              <td v-if="selectable" class="ds-table-action-cell"><DsSkeleton type="block" height="var(--_kjun-geometry-table-selection-size)" width="var(--_kjun-geometry-table-selection-size)" /></td>
-              <td v-if="expandable" class="ds-table-action-cell"></td>
+              <td v-if="selectable" class="kjun-table-action-cell"><DsSkeleton type="block" height="var(--_kjun-geometry-table-selection-size)" width="var(--_kjun-geometry-table-selection-size)" /></td>
+              <td v-if="expandable" class="kjun-table-action-cell"></td>
               <td v-for="col in visibleColumns" :key="col.key"  :style="col.width ? { width: col.width } : {}">
                 <DsSkeleton type="block" :height="tableGeometry.skeletonHeight + 'px'" :width="col.key === 'actions' ? tableGeometry.actionColumnWidth + 'px' : '75%'" />
               </td>
@@ -151,7 +151,7 @@
 
           <!-- Empty -->
           <tr v-else-if="sortedData.length === 0">
-            <td :colspan="expandColspan" class="ds-table-empty-cell kj-text-center">
+            <td :colspan="expandColspan" class="kjun-table-empty-cell kj-text-center">
               <slot name="empty">
                 <p class="kj-text-sm kj-text-text-secondary">{{ emptyText }}</p>
               </slot>
@@ -170,7 +170,7 @@
               @keydown="handleRowKey($event, row, idx)"
               @click="handleRowClick(row, idx)"
             >
-              <td v-if="selectable" class="ds-table-action-cell kj-text-center">
+              <td v-if="selectable" class="kjun-table-action-cell kj-text-center">
                 <TableCheck
                   :checked="isSelected(row)"
                   aria-label="행 선택"
@@ -178,7 +178,7 @@
                   @click.stop
                 />
               </td>
-              <td v-if="expandable" class="ds-table-action-cell kj-text-center">
+              <td v-if="expandable" class="kjun-table-action-cell kj-text-center">
                 <!-- The shared xs ghost button, like React and Native, so the row keeps their height. -->
                 <DsButton
                   variant="ghost"
@@ -210,7 +210,7 @@
               :key="getRowKey(row, idx) + '-expand'"
               class="kj-bg-bg-secondary"
             >
-              <td :colspan="expandColspan" class="ds-table-expanded-cell">
+              <td :colspan="expandColspan" class="kjun-table-expanded-cell">
                 <slot name="expand" :row="row" :index="idx"></slot>
               </td>
             </tr>
@@ -218,7 +218,7 @@
         </tbody>
       </table>
       </div>
-      <div v-if="showRightScrollHint" class="ds-table-scroll-fade" aria-hidden="true"></div>
+      <div v-if="showRightScrollHint" class="kjun-table-scroll-fade" aria-hidden="true"></div>
     </div>
 
     <!-- Pagination -->

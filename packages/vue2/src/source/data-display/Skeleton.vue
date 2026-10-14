@@ -5,57 +5,57 @@
       <div
         v-for="i in rows"
         :key="i"
-        class="ds-skeleton-line"
+        class="kjun-skeleton-line"
         :style="getLineStyle(i)"
       ></div>
     </template>
 
     <!-- Avatar type -->
     <template v-else-if="type === 'avatar'">
-      <div class="ds-skeleton-avatar" :style="avatarStyle"></div>
+      <div class="kjun-skeleton-avatar" :style="avatarStyle"></div>
     </template>
 
     <!-- Card type -->
     <template v-else-if="type === 'card'">
-      <div class="ds-skeleton-card">
-        <div class="ds-skeleton-card-header">
-          <div class="ds-skeleton-avatar ds-skeleton-avatar-sm"></div>
-          <div class="ds-skeleton-card-header-text">
-            <div class="ds-skeleton-line" style="width: 60%"></div>
-            <div class="ds-skeleton-line ds-skeleton-line-sm" style="width: 40%"></div>
+      <div class="kjun-skeleton-card">
+        <div class="kjun-skeleton-card-header">
+          <div class="kjun-skeleton-avatar kjun-skeleton-avatar-sm"></div>
+          <div class="kjun-skeleton-card-header-text">
+            <div class="kjun-skeleton-line" style="width: 60%"></div>
+            <div class="kjun-skeleton-line kjun-skeleton-line-sm" style="width: 40%"></div>
           </div>
         </div>
-        <div class="ds-skeleton-card-body">
-          <div class="ds-skeleton-line" style="width: 100%"></div>
-          <div class="ds-skeleton-line" style="width: 80%"></div>
-          <div class="ds-skeleton-line" style="width: 60%"></div>
+        <div class="kjun-skeleton-card-body">
+          <div class="kjun-skeleton-line" style="width: 100%"></div>
+          <div class="kjun-skeleton-line" style="width: 80%"></div>
+          <div class="kjun-skeleton-line" style="width: 60%"></div>
         </div>
       </div>
     </template>
 
     <!-- Table type -->
     <template v-else-if="type === 'table'">
-      <div class="ds-skeleton-table">
-        <div class="ds-skeleton-table-header">
+      <div class="kjun-skeleton-table">
+        <div class="kjun-skeleton-table-header">
           <div
             v-for="col in columns"
             :key="`header-${col}`"
-            class="ds-skeleton-table-cell"
+            class="kjun-skeleton-table-cell"
           >
-            <div class="ds-skeleton-line" style="width: 70%"></div>
+            <div class="kjun-skeleton-line" style="width: 70%"></div>
           </div>
         </div>
         <div
           v-for="row in rows"
           :key="`row-${row}`"
-          class="ds-skeleton-table-row"
+          class="kjun-skeleton-table-row"
         >
           <div
             v-for="col in columns"
             :key="`cell-${row}-${col}`"
-            class="ds-skeleton-table-cell"
+            class="kjun-skeleton-table-cell"
           >
-            <div class="ds-skeleton-line" :style="{ width: getCellWidth(row, col) }"></div>
+            <div class="kjun-skeleton-line" :style="{ width: getCellWidth(row, col) }"></div>
           </div>
         </div>
       </div>
@@ -63,36 +63,36 @@
 
     <!-- Chart type -->
     <template v-else-if="type === 'chart'">
-      <div class="ds-skeleton-chart" :style="chartStyle">
-        <div class="ds-skeleton-chart-bars">
+      <div class="kjun-skeleton-chart" :style="chartStyle">
+        <div class="kjun-skeleton-chart-bars">
           <div
             v-for="i in 7"
             :key="i"
-            class="ds-skeleton-chart-bar"
+            class="kjun-skeleton-chart-bar"
             :style="{ height: getBarHeight(i) }"
           ></div>
         </div>
-        <div class="ds-skeleton-chart-axis"></div>
+        <div class="kjun-skeleton-chart-axis"></div>
       </div>
     </template>
 
     <!-- Stat Card type -->
     <template v-else-if="type === 'stat'">
-      <div class="ds-skeleton-stat">
-        <div class="ds-skeleton-stat-content">
-          <div class="ds-skeleton-line ds-skeleton-line-sm" style="width: 40%"></div>
-          <div class="ds-skeleton-line ds-skeleton-line-lg" style="width: 60%"></div>
-          <div class="ds-skeleton-line ds-skeleton-line-sm" style="width: 30%"></div>
+      <div class="kjun-skeleton-stat">
+        <div class="kjun-skeleton-stat-content">
+          <div class="kjun-skeleton-line kjun-skeleton-line-sm" style="width: 40%"></div>
+          <div class="kjun-skeleton-line kjun-skeleton-line-lg" style="width: 60%"></div>
+          <div class="kjun-skeleton-line kjun-skeleton-line-sm" style="width: 30%"></div>
         </div>
-        <div class="ds-skeleton-stat-chart">
-          <div class="ds-skeleton-sparkline"></div>
+        <div class="kjun-skeleton-stat-chart">
+          <div class="kjun-skeleton-sparkline"></div>
         </div>
       </div>
     </template>
 
     <!-- Custom/Block type -->
     <template v-else>
-      <div class="ds-skeleton-block" :style="blockStyle"></div>
+      <div class="kjun-skeleton-block" :style="blockStyle"></div>
     </template>
   </div>
 </template>
@@ -142,7 +142,7 @@ export default {
     }
   },
   computed: {
-    // 래퍼 폭은 width prop으로만 좁힌다. 아래 .ds-skeleton { width: 100% }는 scoped 속성이
+    // 래퍼 폭은 width prop으로만 좁힌다. 아래 .kjun-skeleton { width: 100% }는 scoped 속성이
     // 붙어 Tailwind의 크기 유틸리티 같은 유틸리티 클래스를 specificity로 눌러버리므로, 호출부가
     // 클래스로 고정폭을 주면 shrink-to-fit 부모(예: flex-shrink-0 가격 셀) 안에서
     // "부모 폭=자식 내용, 자식 폭=부모의 100%" 순환이 생겨 0px로 붕괴한다.
@@ -151,8 +151,8 @@ export default {
     },
     skeletonClasses() {
       return [
-        'ds-skeleton',
-        this.animated ? 'ds-skeleton-animated' : ''
+        'kjun-skeleton',
+        this.animated ? 'kjun-skeleton-animated' : ''
       ].filter(Boolean).join(' ')
     },
     avatarStyle() {
@@ -194,7 +194,7 @@ export default {
 </script>
 
 <style scoped>
-.ds-skeleton {
+.kjun-skeleton {
   width: 100%;
   /* 방어선: block 타입 내부 요소는 height prop 미지정 시 인라인 100px로 렌더된다.
      호출부가 클래스(크기 유틸리티 등)로만 래퍼 높이를 제한한 경우 내부가 행 밖으로 흘러넘쳐
@@ -203,98 +203,98 @@ export default {
 }
 
 /* Base line */
-.ds-skeleton-line {
+.kjun-skeleton-line {
   height: var(--extension-skeleton-line-heights-md);
   background: var(--skeleton);
   border-radius: var(--extension-skeleton-line-radius);
   margin-bottom: var(--extension-skeleton-gap);
 }
 
-.ds-skeleton-line:last-child {
+.kjun-skeleton-line:last-child {
   margin-bottom: 0;
 }
 
-.ds-skeleton-line-sm {
+.kjun-skeleton-line-sm {
   height: var(--extension-skeleton-line-heights-sm);
 }
 
-.ds-skeleton-line-lg {
+.kjun-skeleton-line-lg {
   height: var(--extension-skeleton-line-heights-lg);
 }
 
 /* Avatar */
-.ds-skeleton-avatar {
+.kjun-skeleton-avatar {
   background: var(--skeleton);
   flex-shrink: 0;
 }
 
-.ds-skeleton-avatar-sm {
+.kjun-skeleton-avatar-sm {
   width: var(--extension-skeleton-card-avatar-size);
   height: var(--extension-skeleton-card-avatar-size);
   border-radius: 50%;
 }
 
 /* Card */
-.ds-skeleton-card {
+.kjun-skeleton-card {
   padding: var(--extension-skeleton-padding);
   border: var(--_kjun-border-default-width) solid var(--border-primary);
   border-radius: var(--extension-skeleton-radius);
   background: var(--bg-primary);
 }
 
-.ds-skeleton-card-header {
+.kjun-skeleton-card-header {
   display: flex;
   align-items: center;
   gap: var(--extension-skeleton-gap);
   margin-bottom: var(--extension-skeleton-form-gap);
 }
 
-.ds-skeleton-card-header-text {
+.kjun-skeleton-card-header-text {
   flex: 1;
 }
 
-.ds-skeleton-card-header-text .ds-skeleton-line {
+.kjun-skeleton-card-header-text .kjun-skeleton-line {
   margin-bottom: var(--extension-skeleton-field-gap);
 }
 
-.ds-skeleton-card-body .ds-skeleton-line {
+.kjun-skeleton-card-body .kjun-skeleton-line {
   margin-bottom: var(--_kjun-geometry-dimension-value10);
 }
 
 /* Table */
-.ds-skeleton-table {
+.kjun-skeleton-table {
   border: var(--_kjun-border-default-width) solid var(--border-primary);
   border-radius: var(--extension-skeleton-block-radius);
   overflow: hidden;
 }
 
-.ds-skeleton-table-header {
+.kjun-skeleton-table-header {
   display: flex;
   background: var(--bg-secondary);
   border-bottom: var(--_kjun-border-default-width) solid var(--border-primary);
 }
 
-.ds-skeleton-table-row {
+.kjun-skeleton-table-row {
   display: flex;
   border-bottom: var(--_kjun-border-default-width) solid var(--border-primary);
 }
 
-.ds-skeleton-table-row:last-child {
+.kjun-skeleton-table-row:last-child {
   border-bottom: none;
 }
 
-.ds-skeleton-table-cell {
+.kjun-skeleton-table-cell {
   flex: 1;
   padding: var(--_kjun-geometry-dimension-value12) var(--_kjun-geometry-dimension-value16);
 }
 
-.ds-skeleton-table-cell .ds-skeleton-line {
+.kjun-skeleton-table-cell .kjun-skeleton-line {
   margin-bottom: 0;
   height: var(--extension-skeleton-table-line-height);
 }
 
 /* Chart */
-.ds-skeleton-chart {
+.kjun-skeleton-chart {
   display: flex;
   flex-direction: column;
   padding: var(--extension-skeleton-padding);
@@ -303,7 +303,7 @@ export default {
   background: var(--bg-primary);
 }
 
-.ds-skeleton-chart-bars {
+.kjun-skeleton-chart-bars {
   flex: 1;
   display: flex;
   align-items: flex-end;
@@ -312,20 +312,20 @@ export default {
   /* Bars stand on the axis line, like ChartSkeleton. */
 }
 
-.ds-skeleton-chart-bar {
+.kjun-skeleton-chart-bar {
   flex: 1;
   max-width: var(--extension-skeleton-chart-bar-max-width);
   background: var(--skeleton);
   border-radius: var(--extension-skeleton-line-radius) var(--_kjun-geometry-radius-radius4) 0 0;
 }
 
-.ds-skeleton-chart-axis {
+.kjun-skeleton-chart-axis {
   height: var(--extension-skeleton-chart-axis-height);
   background: var(--border-primary);
 }
 
 /* Stat Card */
-.ds-skeleton-stat {
+.kjun-skeleton-stat {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -335,20 +335,20 @@ export default {
   background: var(--bg-primary);
 }
 
-.ds-skeleton-stat-content {
+.kjun-skeleton-stat-content {
   flex: 1;
 }
 
-.ds-skeleton-stat-content .ds-skeleton-line {
+.kjun-skeleton-stat-content .kjun-skeleton-line {
   margin-bottom: var(--extension-skeleton-field-gap);
 }
 
-.ds-skeleton-stat-chart {
+.kjun-skeleton-stat-chart {
   width: var(--extension-skeleton-stat-width);
   height: var(--extension-skeleton-stat-height);
 }
 
-.ds-skeleton-sparkline {
+.kjun-skeleton-sparkline {
   width: 100%;
   height: 100%;
   background: var(--skeleton);
@@ -356,17 +356,17 @@ export default {
 }
 
 /* Block */
-.ds-skeleton-block {
+.kjun-skeleton-block {
   background: var(--skeleton);
   border-radius: var(--extension-skeleton-block-radius);
 }
 
 /* Animation */
-.ds-skeleton-animated .ds-skeleton-line,
-.ds-skeleton-animated .ds-skeleton-avatar,
-.ds-skeleton-animated .ds-skeleton-chart-bar,
-.ds-skeleton-animated .ds-skeleton-sparkline,
-.ds-skeleton-animated .ds-skeleton-block {
+.kjun-skeleton-animated .kjun-skeleton-line,
+.kjun-skeleton-animated .kjun-skeleton-avatar,
+.kjun-skeleton-animated .kjun-skeleton-chart-bar,
+.kjun-skeleton-animated .kjun-skeleton-sparkline,
+.kjun-skeleton-animated .kjun-skeleton-block {
   background: linear-gradient(
     90deg,
     var(--skeleton) 25%,
@@ -374,10 +374,10 @@ export default {
     var(--skeleton) 75%
   );
   background-size: 200% 100%;
-  animation: ds-skeleton-shimmer var(--motion-shimmer) ease-in-out infinite;
+  animation: kjun-skeleton-shimmer var(--motion-shimmer) ease-in-out infinite;
 }
 
-@keyframes ds-skeleton-shimmer {
+@keyframes kjun-skeleton-shimmer {
   0% {
     background-position: 200% 0;
   }
@@ -387,6 +387,6 @@ export default {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ds-skeleton-animated * { animation: none !important; }
+  .kjun-skeleton-animated * { animation: none !important; }
 }
 </style>

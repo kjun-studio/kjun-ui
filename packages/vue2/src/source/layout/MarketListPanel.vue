@@ -1,9 +1,9 @@
 <template>
-  <DsCard class="ds-market-list-panel">
-    <div class="ds-market-list-panel__controls">
+  <DsCard class="kjun-market-list-panel">
+    <div class="kjun-market-list-panel__controls">
       <slot name="controls" />
     </div>
-    <div class="ds-market-list-panel__results mobile-list-surface kj-border-t kj-border-border kj-mt-4">
+    <div class="kjun-market-list-panel__results kjun-mobile-list-surface kj-border-t kj-border-border kj-mt-4">
       <slot />
     </div>
   </DsCard>

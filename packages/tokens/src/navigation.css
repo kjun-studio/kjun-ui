@@ -33,7 +33,7 @@
 }
 /* Underline tabs ring outside their label and indicator (the first tab has no start padding to clip into).
    Their scroller (React track, Vue list) keeps room for the ring so overflow does not cut it. */
-.kjun-tabs[data-variant="underline"] :is(.kjun-tabs-track, .ds-tabs-scroller) {
+.kjun-tabs[data-variant="underline"] :is(.kjun-tabs-track, .kjun-tabs-scroller) {
   --_kjun-tab-ring-room:calc(var(--_kjun-state-focus-width) + var(--_kjun-state-focus-offset));
   padding:var(--_kjun-tab-ring-room); margin:calc(-1 * var(--_kjun-tab-ring-room));
   scroll-padding-inline:var(--_kjun-tab-ring-room);
@@ -41,7 +41,7 @@
 .kjun-tabs[data-variant="underline"] .kjun-tab:is([data-focus-visible], :focus-visible) { outline-offset:var(--_kjun-state-focus-offset); }
 .kjun-tab:hover:not([aria-disabled="true"]):not(:disabled) { color:var(--_kjun-color-text); }
 /* Pills answer hover with the hover surface, like ButtonGroup; motion.css keeps tab backgrounds transparent otherwise. */
-.kjun-tabs[data-variant="pills"] :is(.kjun-tabs-track, .ds-tabs-scroller) .kjun-tab:hover:not([aria-selected="true"]):not([aria-disabled="true"]):not(:disabled) {
+.kjun-tabs[data-variant="pills"] :is(.kjun-tabs-track, .kjun-tabs-scroller) .kjun-tab:hover:not([aria-selected="true"]):not([aria-disabled="true"]):not(:disabled) {
   background:var(--_kjun-color-hover) !important;
 }
 .kjun-tab-badge {
@@ -97,7 +97,7 @@
 }
 /* Underlined as well as recolored: with a near-text brand color, hover would otherwise look like the current page. */
 .kjun-breadcrumb a:hover,
-.ds-breadcrumb-link:hover {
+.kjun-breadcrumb-link:hover {
   color: var(--_kjun-color-brand);
   text-decoration: underline;
   text-underline-offset: var(--_kjun-geometry-dimension-value2);

@@ -205,7 +205,7 @@ export default {
   },
   methods: {
     buttonClasses(isActive) {
-      const base = 'ds-pagination-button kj-flex kj-items-center kj-justify-center kj-text-sm kj-rounded-pagination-radius kj-transition-colors'
+      const base = 'kjun-pagination-button kj-flex kj-items-center kj-justify-center kj-text-sm kj-rounded-pagination-radius kj-transition-colors'
       const active = isActive
         ? 'kj-bg-brand kj-text-on-brand'
         : 'kj-text-text-secondary hover:kj-bg-bg-hover disabled:kj-opacity-disabled disabled:kj-cursor-not-allowed'
@@ -231,7 +231,7 @@ export default {
 </script>
 
 <style scoped>
-.ds-pagination-button {
+.kjun-pagination-button {
   width: var(--extension-pagination-item-size);
   height: var(--extension-pagination-item-size);
   flex-shrink: 0;

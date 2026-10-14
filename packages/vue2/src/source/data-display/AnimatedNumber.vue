@@ -1,8 +1,8 @@
 <template>
-  <span class="ds-animated-number"
-    ><span v-if="prefix" class="ds-animated-number__affix">{{ prefix }}</span
-    ><span class="ds-animated-number__num">{{ display }}</span
-    ><span v-if="suffix" class="ds-animated-number__affix">{{ suffix }}</span
+  <span class="kjun-animated-number"
+    ><span v-if="prefix" class="kjun-animated-number__affix">{{ prefix }}</span
+    ><span class="kjun-animated-number__num">{{ display }}</span
+    ><span v-if="suffix" class="kjun-animated-number__affix">{{ suffix }}</span
   ></span>
 </template>
 
@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style scoped>
-.ds-animated-number { font-variant-numeric: tabular-nums; font-family: var(--font-numeric); }
-.ds-animated-number__affix:first-child { margin-right: var(--_kjun-geometry-dimension-value4); }
-.ds-animated-number__affix:last-child { margin-left: var(--_kjun-geometry-dimension-value4); }
+.kjun-animated-number { font-variant-numeric: tabular-nums; font-family: var(--font-numeric); }
+.kjun-animated-number__affix:first-child { margin-right: var(--_kjun-geometry-dimension-value4); }
+.kjun-animated-number__affix:last-child { margin-left: var(--_kjun-geometry-dimension-value4); }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="kjun-card ds-card" :style="cardStyle" :data-surface="surface" :data-padding="padding"
+  <div class="kjun-card" :style="cardStyle" :data-surface="surface" :data-padding="padding"
     :data-body-padding="resolvedBodyPadding" :data-border="String(border)" :data-dividers="String(dividers)" :data-elevation="elevation">
     <div v-if="hasContent('media')" class="kjun-card-media"><slot name="media" /></div>
     <div v-if="hasHeading() || hasContent('header-actions')" class="kjun-card-header" :data-description="!hasContent('header') && !!subtitle.trim()">

@@ -1,6 +1,6 @@
 <template>
-  <div class="ds-field-shell kj-w-full" :class="fieldSizeClass" v-click-outside="closeDropdown">
-    <DsIcon name="search" class="ds-field-prefix" />
+  <div class="kjun-field-shell kj-w-full" :class="fieldSizeClass" v-click-outside="closeDropdown">
+    <DsIcon name="search" class="kjun-field-prefix" />
     <input
       ref="input"
       v-bind="$attrs"
@@ -35,22 +35,22 @@
       v-if="isAutocomplete && searching && !(clearable && query)"
       name="loader-2"
       spin
-      class="ds-field-suffix"
+      class="kjun-field-suffix"
     />
     <div
       v-else-if="clearable && query"
-      class="ds-field-suffix"
+      class="kjun-field-suffix"
     >
-      <DsButton variant="ghost" size="sm" class="ds-field-clear" prefix-icon="x" aria-label="검색어 지우기" title="검색어 지우기" :disabled="disabled" @click.stop="handleClear" />
+      <DsButton variant="ghost" size="sm" class="kjun-field-clear" prefix-icon="x" aria-label="검색어 지우기" title="검색어 지우기" :disabled="disabled" @click.stop="handleClear" />
     </div>
 
     <!-- Autocomplete dropdown -->
-    <transition name="ds-search-dropdown" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
+    <transition name="kjun-search-dropdown" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
       @enter-cancelled="motionCancel" @leave-cancelled="motionCancel">
       <div
         v-kjun-layer.field="'popup'" v-if="showDropdown"
         role="listbox" :id="`kjun-search-${_uid}`" :aria-label="ariaLabel || placeholder"
-        class="kj-absolute kj-z-50 kj-w-full kj-mt-1 ds-field-menu kj-max-h-menu-list-max-height kj-overflow-y-auto"
+        class="kj-absolute kj-z-50 kj-w-full kj-mt-1 kjun-field-menu kj-max-h-menu-list-max-height kj-overflow-y-auto"
       >
         <!-- Select와 같은 로딩 행: 스피너와 문구를 가운데 정렬한다 -->
         <div v-if="searching" class="kj-flex kj-items-center kj-justify-center kj-gap-2 kj-px-3 kj-py-3 kj-text-sm kj-text-text-secondary" role="status"><DsSpinner size="sm" />검색 중...</div>
@@ -215,7 +215,7 @@ export default {
       )
     },
     inputClasses() {
-      return [...this.fieldClasses, 'ds-field--prefix ds-field--suffix']
+      return [...this.fieldClasses, 'kjun-field--prefix kjun-field--suffix']
     }
   },
   methods: {
@@ -372,7 +372,7 @@ export default {
       this.highlightedIndex = -1
     },
     optionClasses(index) {
-      return ['ds-field-option', { 'ds-field-option--highlighted': index === this.highlightedIndex }]
+      return ['kjun-field-option', { 'kjun-field-option--highlighted': index === this.highlightedIndex }]
     },
     handleClear() {
       if (this.disabled) return

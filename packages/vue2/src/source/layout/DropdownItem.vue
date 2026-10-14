@@ -11,8 +11,8 @@
     @click="handleClick"
     @mousemove="handlePointer"
   >
-    <DsIcon v-if="icon" :name="icon" class="ds-dropdown-icon kj-w-menu-icon-size kj-h-menu-icon-size kj-flex-shrink-0" />
-    <span class="ds-dropdown-label"><slot></slot></span>
+    <DsIcon v-if="icon" :name="icon" class="kjun-dropdown-icon kj-w-menu-icon-size kj-h-menu-icon-size kj-flex-shrink-0" />
+    <span class="kjun-dropdown-label"><slot></slot></span>
     <span v-if="selected !== null" class="kj-flex-shrink-0 kj-inline-flex" aria-hidden="true">
       <DsIcon name="check" class="kj-w-menu-icon-size kj-h-menu-icon-size kj-text-brand" :class="{ 'kj-invisible': !selected }" />
     </span>
@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     itemClasses() {
-      const base = 'ds-dropdown-item kj-w-full kj-flex kj-items-center kj-text-left kj-transition-colors'
+      const base = 'kjun-dropdown-item kj-w-full kj-flex kj-items-center kj-text-left kj-transition-colors'
 
       const variants = {
         default: 'kj-text-text-primary',

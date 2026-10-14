@@ -12,7 +12,7 @@
         v-if="item.to && idx < items.length - 1"
         :key="`link-${idx}`"
         :href="safeHref(item.to)" @click="$emit('navigate', item, $event)"
-        class="ds-breadcrumb-link kj-text-text-secondary hover:kj-text-brand kj-transition-colors"
+        class="kjun-breadcrumb-link kj-text-text-secondary hover:kj-text-brand kj-transition-colors"
       >
         <DsIcon v-if="item.icon" :name="item.icon" size="var(--extension-breadcrumb-icon-size)" class="kj-mr-1" />
         {{ item.label }}

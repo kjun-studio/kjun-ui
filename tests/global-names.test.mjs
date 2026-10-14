@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { auditGlobalNames } from "../scripts/global-names-audit.mjs";
 
 // Categories still being migrated are null; each one is driven to zero and then enforced.
-const BASELINE = { classes: null, properties: null, keyframes: null, ids: null, vueComponents: null, provideKeys: null, vueMembers: null, exports: null };
+const BASELINE = { classes: 0, properties: null, keyframes: null, ids: null, vueComponents: null, provideKeys: null, vueMembers: null, exports: null };
 
 test("every shared-namespace name KJUN ships is kjun-prefixed", async () => {
   const found = await auditGlobalNames({ root: process.cwd() });

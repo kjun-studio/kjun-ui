@@ -1,12 +1,9 @@
 .kjun-animated-number,
-.ds-signed-value,
-.ds-deviation,
-.ds-deviation-badge .ds-badge,
-.ds-heatmap-cell,
-.ds-progress-cell-label,
 .kjun-signed-value,
 .kjun-deviation,
 .kjun-deviation-badge .kjun-badge,
+.kjun-heatmap-cell,
+.kjun-progress-cell-label,
 .kjun-heat-cell,
 .kjun-progress-cell {
   font-variant-numeric: tabular-nums;
@@ -68,7 +65,7 @@
   outline: none;
 }
 /* Vue's tooltip wrapper is inline-block; as a flex box it centres the target instead of seating it on the baseline. */
-.ds-deviation-badge > .ds-tooltip-wrapper {
+.kjun-deviation-badge > .kjun-tooltip-wrapper {
   display: flex;
 }
 /* Freshness badges are tooltip targets: focusable, with the system ring around the badge. */

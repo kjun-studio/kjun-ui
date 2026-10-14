@@ -11,7 +11,7 @@
     <span :class="checkboxClasses">
       <DsIcon v-if="isChecked" name="check" :size="checkMarkSize" />
     </span>
-    <span v-if="$slots.default || label" class="ds-choice-label">
+    <span v-if="$slots.default || label" class="kjun-choice-label">
       <slot>{{ label }}</slot>
     </span>
   </label>
@@ -63,10 +63,10 @@ export default {
       return this.value
     },
     wrapperClasses() {
-      return ['ds-choice', { 'ds-choice--disabled': this.disabled }]
+      return ['kjun-choice', { 'kjun-choice--disabled': this.disabled }]
     },
     checkboxClasses() {
-      return ['ds-choice-control ds-checkbox', `ds-checkbox--${this.size}`, { 'ds-checkbox--checked': this.isChecked }]
+      return ['kjun-choice-control kjun-checkbox', `kjun-checkbox--${this.size}`, { 'kjun-checkbox--checked': this.isChecked }]
     },
     checkMarkSize() {
       return tokens.extensions.checkbox.iconSizes[this.size] + 'px'

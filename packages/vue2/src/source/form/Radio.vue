@@ -4,7 +4,7 @@
       type="radio"
       :checked="isChecked"
       :disabled="effectiveDisabled"
-      :name="name || (radioGroup ? `ds-radio-group-${radioGroup._uid}` : undefined)"
+      :name="name || (radioGroup ? `kjun-radio-group-${radioGroup._uid}` : undefined)"
       :value="val"
       class="kj-sr-only"
       @change="handleChange"
@@ -12,7 +12,7 @@
     <span :class="radioClasses">
       <span v-if="isChecked" :class="dotClasses"></span>
     </span>
-    <span v-if="$slots.default || label" class="ds-choice-label">
+    <span v-if="$slots.default || label" class="kjun-choice-label">
       <slot>{{ label }}</slot>
     </span>
   </label>
@@ -65,13 +65,13 @@ export default {
       return this.value === this.val
     },
     wrapperClasses() {
-      return ['ds-choice', { 'ds-choice--disabled': this.effectiveDisabled }]
+      return ['kjun-choice', { 'kjun-choice--disabled': this.effectiveDisabled }]
     },
     radioClasses() {
-      return ['ds-choice-control ds-radio', { 'ds-radio--checked': this.isChecked }]
+      return ['kjun-choice-control kjun-radio', { 'kjun-radio--checked': this.isChecked }]
     },
     dotClasses() {
-      return 'ds-radio-dot'
+      return 'kjun-radio-dot'
     }
   },
   methods: {

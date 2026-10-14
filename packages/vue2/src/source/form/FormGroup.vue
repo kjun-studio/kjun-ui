@@ -1,5 +1,5 @@
 <template>
-  <div class="ds-form-group">
+  <div class="kjun-form-group">
     <label v-if="label" :id="labelId" :for="id" :class="labelClasses">
       {{ label }}
       <span v-if="required" class="kj-text-danger kj-ml-0.5">*</span>
@@ -9,11 +9,11 @@
       <slot></slot>
     </div>
 
-    <div v-if="error" :id="errorId" class="ds-form-error" role="alert">
+    <div v-if="error" :id="errorId" class="kjun-form-error" role="alert">
       <DsIcon name="alert-circle" size="var(--extension-form-message-icon-size)" class="kj-mr-1.5 kj-flex-shrink-0" />
       {{ error }}
     </div>
-    <div v-else-if="hint" :id="hintId" class="ds-form-hint">
+    <div v-else-if="hint" :id="hintId" class="kjun-form-hint">
       {{ hint }}
     </div>
   </div>
@@ -60,15 +60,15 @@ export default {
       return 'kj-block kj-text-sm kj-font-medium kj-text-text-primary'
     },
     labelId() {
-      return this.label ? `ds-form-label-${this._uid}` : null
+      return this.label ? `kjun-form-label-${this._uid}` : null
     },
     errorId() {
       if (!this.error) return null
-      return this.id ? `${this.id}-error` : `ds-form-error-${this._uid}`
+      return this.id ? `${this.id}-error` : `kjun-form-error-${this._uid}`
     },
     hintId() {
       if (!this.hint) return null
-      return this.id ? `${this.id}-hint` : `ds-form-hint-${this._uid}`
+      return this.id ? `${this.id}-hint` : `kjun-form-hint-${this._uid}`
     },
     describedById() {
       return this.errorId || this.hintId
@@ -78,7 +78,7 @@ export default {
 </script>
 
 <style scoped>
-.ds-form-error {
+.kjun-form-error {
   display: flex;
   align-items: flex-start;
   font-size: var(--_kjun-type-caption-size);
@@ -89,7 +89,7 @@ export default {
   letter-spacing: var(--_kjun-type-caption-tracking);
 }
 
-.ds-form-hint {
+.kjun-form-hint {
   font-size: var(--_kjun-type-caption-size);
   color: var(--text-secondary);
   margin-top: var(--extension-form-message-gap);

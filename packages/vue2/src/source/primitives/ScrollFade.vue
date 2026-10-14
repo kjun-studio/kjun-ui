@@ -1,7 +1,7 @@
 <template>
   <div
     ref="scroller"
-    class="ds-scroll-fade"
+    class="kjun-scroll-fade"
     :style="maskStyle"
     @scroll.passive="updateOverflow"
   >
@@ -64,13 +64,13 @@ export default {
 </script>
 
 <style scoped>
-.ds-scroll-fade {
+.kjun-scroll-fade {
   overflow-x: auto;
   min-width: 0;
   max-width: 100%;
   scrollbar-width: none;
 }
-.ds-scroll-fade::-webkit-scrollbar {
+.kjun-scroll-fade::-webkit-scrollbar {
   display: none;
 }
 </style>

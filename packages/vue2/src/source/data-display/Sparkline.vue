@@ -4,7 +4,7 @@
     :height="height"
     :viewBox="`0 0 ${width} ${height}`"
     :preserveAspectRatio="stretch ? 'none' : 'xMidYMid meet'"
-    class="ds-sparkline"
+    class="kjun-sparkline"
   >
     <defs v-if="fill && points.length > 1">
       <linearGradient :id="gradientId" x1="0" y1="0" x2="0" y2="1">
@@ -137,7 +137,7 @@ export default {
 </script>
 
 <style scoped>
-.ds-sparkline {
+.kjun-sparkline {
   display: inline-block;
   vertical-align: middle;
 }

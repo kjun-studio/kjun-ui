@@ -67,7 +67,7 @@ export default {
     },
     buttonClasses() {
       // Loading blocks presses but stays legible; only disabled dims.
-      return ['kjun-icon-toggle', 'ds-icon-toggle', this.disabled ? 'kj-opacity-disabled kj-cursor-not-allowed' : ''].filter(Boolean).join(' ')
+      return ['kjun-icon-toggle', 'kjun-icon-toggle', this.disabled ? 'kj-opacity-disabled kj-cursor-not-allowed' : ''].filter(Boolean).join(' ')
     },
     iconClass() {
       return this.active ? this.activeColorClass : this.inactiveColorClass
@@ -77,15 +77,15 @@ export default {
 </script>
 
 <style scoped>
-.ds-icon-toggle .ds-icon {
+.kjun-icon-toggle .kjun-icon {
   transition: color var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out);
 }
 
-.ds-icon-toggle:not(:disabled):hover .ds-icon {
+.kjun-icon-toggle:not(:disabled):hover .kjun-icon {
   transform: scale(1.12);
 }
 
-.ds-icon-toggle:not(:disabled):active .ds-icon {
+.kjun-icon-toggle:not(:disabled):active .kjun-icon {
   transform: scale(0.94);
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="ds-field-shell" :class="fieldSizeClass">
+  <div class="kjun-field-shell" :class="fieldSizeClass">
     <input
       v-bind="$attrs"
       :id="fieldId"
@@ -12,7 +12,7 @@
       :aria-labelledby="fieldLabelledby"
       :aria-describedby="fieldDescribedby"
       :aria-invalid="fieldInvalid ? 'true' : undefined"
-      :class="[inputClasses, showOverlay ? 'ds-datepicker-masked' : '']"
+      :class="[inputClasses, showOverlay ? 'kjun-datepicker-masked' : '']"
       @input="$emit('input', $event.target.value)"
       @change="$emit('change', $event.target.value)"
       @focus="focused = true"
@@ -26,7 +26,7 @@
       aria-hidden="true"
     >{{ displayText }}</span>
     <!-- Native와 같은 달력 아이콘. 클릭은 위에 겹친 투명한 브라우저 인디케이터가 받는다 -->
-    <span class="ds-field-suffix ds-datepicker-icon" aria-hidden="true"><DsIcon name="calendar" :size="iconSize" /></span>
+    <span class="kjun-field-suffix kjun-datepicker-icon" aria-hidden="true"><DsIcon name="calendar" :size="iconSize" /></span>
   </div>
 </template>
 
@@ -87,13 +87,13 @@ export default {
       return String(tokens.input[this.size].iconSize)
     },
     inputClasses() {
-      return [...this.fieldClasses, 'ds-datepicker-field']
+      return [...this.fieldClasses, 'kjun-datepicker-field']
     },
     overlayClasses() {
       const tone = this.value ? 'kj-text-text-primary' : 'kj-text-text-tertiary'
       return [
-        'ds-datepicker-overlay kj-absolute kj-inset-y-0 kj-flex kj-items-center kj-pointer-events-none kj-whitespace-nowrap kj-overflow-hidden',
-        this.value ? '' : 'ds-field-placeholder',
+        'kjun-datepicker-overlay kj-absolute kj-inset-y-0 kj-flex kj-items-center kj-pointer-events-none kj-whitespace-nowrap kj-overflow-hidden',
+        this.value ? '' : 'kjun-field-placeholder',
         this.disabled ? 'kj-text-text-disabled' : this.$attrs.readonly != null && this.$attrs.readonly !== false ? 'kj-text-text-secondary' : tone,
       ].filter(Boolean).join(' ')
     }
@@ -103,10 +103,10 @@ export default {
 
 <style scoped>
 /* 오버레이 표기 중에는 네이티브 로케일 텍스트를 숨긴다 (인디케이터는 유지) */
-.ds-field.ds-datepicker-masked {
+.kjun-field.kjun-datepicker-masked {
   color: transparent;
 }
-.ds-datepicker-overlay {
+.kjun-datepicker-overlay {
   left: var(--field-padding);
   right: calc(var(--field-padding) + var(--field-icon-size) + var(--field-affix-gap));
   font-size: var(--field-font-size);
@@ -114,14 +114,14 @@ export default {
   font-weight: var(--_kjun-type-input-weight);
   letter-spacing: var(--_kjun-type-input-tracking);
 }
-.ds-datepicker-overlay.ds-field-placeholder {
+.kjun-datepicker-overlay.kjun-field-placeholder {
   font-size: var(--field-placeholder-size);
 }
 /* 아이콘 자리만큼 오른쪽 여백을 비운다 */
-.ds-field.ds-datepicker-field {
+.kjun-field.kjun-datepicker-field {
   padding-right: calc(var(--field-padding) + var(--field-icon-size) + var(--field-affix-gap) - var(--_kjun-border-control-width));
 }
-.ds-datepicker-icon { pointer-events: none; }
+.kjun-datepicker-icon { pointer-events: none; }
 /* 브라우저 인디케이터는 그린 아이콘 위의 투명한 클릭 영역으로만 남긴다 */
 input[type="date"]::-webkit-calendar-picker-indicator {
   position: absolute;

@@ -23,7 +23,7 @@ export default {
       "svg",
       {
         key: this.spin ? "spin" : "idle",
-        class: ["kjun-icon", "ds-icon", { "kjun-spin": this.spin }],
+        class: ["kjun-icon", "kjun-icon", { "kjun-spin": this.spin }],
         on: this.$listeners,
         attrs: {
           xmlns: "http://www.w3.org/2000/svg",

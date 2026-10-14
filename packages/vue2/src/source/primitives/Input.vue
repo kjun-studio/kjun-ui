@@ -1,7 +1,7 @@
 <template>
   <div class="kj-min-w-0">
-    <div class="ds-field-shell" :class="fieldSizeClass" :style="affixStyle" :data-disabled="disabled || undefined">
-      <div v-if="$slots.prefix || prefixIcon" ref="prefix" class="ds-field-prefix">
+    <div class="kjun-field-shell" :class="fieldSizeClass" :style="affixStyle" :data-disabled="disabled || undefined">
+      <div v-if="$slots.prefix || prefixIcon" ref="prefix" class="kjun-field-prefix">
         <slot name="prefix">
           <ds-icon v-if="prefixIcon" :name="prefixIcon" />
         </slot>
@@ -37,12 +37,12 @@
         @keypress="$emit('keypress', $event)"
       />
 
-      <div v-if="$slots.suffix || suffixIcon || clearable" ref="suffix" class="ds-field-suffix">
+      <div v-if="$slots.suffix || suffixIcon || clearable" ref="suffix" class="kjun-field-suffix">
         <DsButton
           v-if="clearable && value"
           variant="ghost"
           size="sm"
-          class="ds-field-clear"
+          class="kjun-field-clear"
           prefix-icon="x"
           aria-label="입력 지우기"
           title="입력 지우기"
@@ -54,7 +54,7 @@
         </slot>
       </div>
     </div>
-    <p v-if="showFieldErrorMessage" :id="`input-error-${_uid}`" class="ds-field-error" role="alert">{{ errorMessage }}</p>
+    <p v-if="showFieldErrorMessage" :id="`input-error-${_uid}`" class="kjun-field-error" role="alert">{{ errorMessage }}</p>
   </div>
 </template>
 
@@ -178,7 +178,7 @@ export default {
       const hasPrefix = this.$slots.prefix || this.prefixIcon
       // Reserve the suffix space only while something shows there, like React; the clear button needs a value.
       const hasSuffix = this.$slots.suffix || this.suffixIcon || (this.clearable && this.value)
-      return [...this.fieldClasses, 'ds-input-native', { 'ds-field--prefix': hasPrefix, 'ds-field--suffix': hasSuffix }]
+      return [...this.fieldClasses, 'kjun-input-native', { 'kjun-field--prefix': hasPrefix, 'kjun-field--suffix': hasSuffix }]
     }
   },
   mounted() {

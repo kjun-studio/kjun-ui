@@ -53,13 +53,13 @@ for (const platform of ['react', 'vue2', 'native']) {
     await page.keyboard.press('Tab');
     const checkbox = page.getByRole('checkbox', { name: '작은 선택' });
     await expect(checkbox).toBeFocused();
-    const checkboxBox = platform === 'native' ? checkbox.locator(':scope > *').first() : page.getByTestId('checkbox').locator('.ds-checkbox');
+    const checkboxBox = platform === 'native' ? checkbox.locator(':scope > *').first() : page.getByTestId('checkbox').locator('.kjun-checkbox');
     await expect(checkboxBox).toHaveCSS('border-radius', px(tokens.extensions.checkbox.radii.sm));
     if (platform === 'native') await checkbox.click();
     else await checkbox.press('Space');
     await expect(checkbox).toBeChecked();
     const toggle = page.getByRole('switch', { name: '사용 설정' });
-    const track = platform === 'native' ? toggle.locator(':scope > *').first() : page.getByTestId('switch').locator('.ds-switch');
+    const track = platform === 'native' ? toggle.locator(':scope > *').first() : page.getByTestId('switch').locator('.kjun-switch');
     await expect(track).toHaveCSS('padding-top', px(tokens.extensions.switch.padding));
     // Native draws the off boundary as an overlay before the thumb, so the thumb is the last child.
     const thumb = track.locator(':scope > *').last();
@@ -138,8 +138,8 @@ test.describe('touch choice dimensions', () => {
       for (const size of ['sm', 'md', 'lg'] as const) {
         const section = page.getByTestId(`checkbox-${size}`);
         const checkbox = section.getByRole('checkbox');
-        const hit = platform === 'native' ? checkbox : section.locator('.ds-choice');
-        const box = platform === 'native' ? checkbox.locator(':scope > *').first() : section.locator('.ds-checkbox');
+        const hit = platform === 'native' ? checkbox : section.locator('.kjun-choice');
+        const box = platform === 'native' ? checkbox.locator(':scope > *').first() : section.locator('.kjun-checkbox');
         await expect(hit).toHaveCSS('min-height', px(tokens.native.minimumTouchTarget));
         await expect(box).toHaveCSS('width', px(tokens.extensions.checkbox.sizes[size]));
         await expect(box).toHaveCSS('height', px(tokens.extensions.checkbox.sizes[size]));
@@ -147,8 +147,8 @@ test.describe('touch choice dimensions', () => {
         await expect(box.locator('svg')).toHaveCSS('width', px(tokens.extensions.checkbox.iconSizes[size]));
         const toggleSection = page.getByTestId(`switch-${size}`);
         const toggle = toggleSection.getByRole('switch');
-        const target = platform === 'native' ? toggle : toggleSection.locator('.ds-choice');
-        const track = platform === 'native' ? toggle.locator(':scope > *').first() : toggleSection.locator('.ds-switch');
+        const target = platform === 'native' ? toggle : toggleSection.locator('.kjun-choice');
+        const track = platform === 'native' ? toggle.locator(':scope > *').first() : toggleSection.locator('.kjun-switch');
         // Native draws the off boundary as an overlay before the thumb, so the thumb is the last child.
         const thumb = track.locator(':scope > *').last();
         const geometry = tokens.extensions.switch, border = tokens.border.controlWidth;
@@ -308,7 +308,7 @@ for (const platform of platforms) {
       await expect(segments.getByText('/', { exact: true })).not.toBeVisible();
       await expect(segments.getByText('첫 조각', { exact: true })).toHaveCSS('margin-right', px(tokens.dimension.value4));
     } else {
-      const labeled = segments.locator(platform === 'react' ? '.kjun-kpi-row__segment--labeled' : '.ds-kpi-row__segment--labeled').last();
+      const labeled = segments.locator(platform === 'react' ? '.kjun-kpi-row__segment--labeled' : '.kjun-kpi-row__segment--labeled').last();
       expect(await labeled.evaluate(el => getComputedStyle(el, '::before').marginLeft)).toBe(px(tokens.extensions.kpiRow.separatorGap));
     }
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -402,7 +402,7 @@ for (const platform of ['react', 'vue2', 'native']) {
   test(`${platform}: packed modal threshold and aliased menu typography survive resizing`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '?scenario=layers', 'motion');
-    const panel = page.locator('.kjun-modal, .ds-modal-container, [role="dialog"][aria-label="Motion modal"]');
+    const panel = page.locator('.kjun-modal, .kjun-modal-container, [role="dialog"][aria-label="Motion modal"]');
     await page.getByRole('button', { name: 'Open modal', exact: true }).click();
     for (const delta of [-1, 0, 1]) {
       const width = tokens.responsive.modal + delta;
@@ -427,7 +427,7 @@ for (const platform of ['react', 'vue2', 'native']) {
   test(`${platform}: packed modal popup and toast displacements follow motion roles`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await openFixture(page, platform, '?scenario=layers', 'motion');
-    const modal = '.kjun-modal, .ds-modal-container, [role="dialog"][aria-label="Motion modal"]';
+    const modal = '.kjun-modal, .kjun-modal-container, [role="dialog"][aria-label="Motion modal"]';
     const toast = platform === 'native' ? '[data-testid^="toast-slot-"] > *' : platform === 'vue2' ? '.kjun-toast-stack > *' : '[data-toast-id] > *';
     const cases: [string, string, number, number][] = [
       [modal, 'modal-enter', tokens.motionDistance.modalEnter, tokens.motion.layerEnter],

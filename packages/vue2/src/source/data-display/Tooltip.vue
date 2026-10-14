@@ -1,6 +1,6 @@
 <template>
   <div
-    class="ds-tooltip-wrapper kj-relative kj-inline-block"
+    class="kjun-tooltip-wrapper kj-relative kj-inline-block"
     ref="trigger"
     @mouseenter="show"
     @mouseleave="hide"
@@ -10,7 +10,7 @@
     @keydown.esc="hide"
   >
     <slot></slot>
-    <transition name="ds-tooltip" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
+    <transition name="kjun-tooltip" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
       @enter-cancelled="motionCancel" @leave-cancelled="motionCancel">
       <div
         v-kjun-layer="'tooltip'" v-if="visible && content"
@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     tooltipId() {
-      return `ds-tooltip-${this._uid}`
+      return `kjun-tooltip-${this._uid}`
     }
   },
   mounted() {

@@ -119,7 +119,7 @@ export function DsPriceCell({
     <>
       <span
         className={"kjun-price-cell " + flashClass}
-        ref={domainColorRef(/\bprice-flash-(up|down)/.test(flashClass))}
+        ref={domainColorRef(/\bkjun-price-flash-(up|down)/.test(flashClass))}
         style={{ color: stale ? "var(--_kjun-color-text-tertiary)" : undefined }}
       >
         <DsAnimatedNumber

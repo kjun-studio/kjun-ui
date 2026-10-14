@@ -3317,7 +3317,7 @@
               {
                 "label": "알림 영역",
                 "description": "상태 의미와 관련 설명을 본문 위치에 표시합니다.",
-                "target": "[role=\"alert\"], [role=\"status\"], .ds-alert, .kjun-alert",
+                "target": "[role=\"alert\"], [role=\"status\"], .kjun-alert, .kjun-alert",
                 "optional": false
               },
               {
@@ -3387,7 +3387,7 @@
               {
                 "label": "알림 영역",
                 "description": "상태 의미와 관련 설명을 본문 위치에 표시합니다.",
-                "target": "[role=\"alert\"], [role=\"status\"], .ds-alert, .kjun-alert",
+                "target": "[role=\"alert\"], [role=\"status\"], .kjun-alert, .kjun-alert",
                 "optional": false
               },
               {
@@ -3457,7 +3457,7 @@
               {
                 "label": "알림 영역",
                 "description": "상태 의미와 관련 설명을 본문 위치에 표시합니다.",
-                "target": "[role=\"alert\"], [role=\"status\"], .ds-alert, .kjun-alert",
+                "target": "[role=\"alert\"], [role=\"status\"], .kjun-alert, .kjun-alert",
                 "optional": false
               },
               {
@@ -3990,7 +3990,7 @@
               {
                 "label": "소비자 콘텐츠",
                 "description": "정상 상태에는 자식을 그대로 표시합니다. 이 Alert는 예제가 제공한 콘텐츠이며 ErrorBoundary 자체 외형이 아닙니다.",
-                "target": "[role=\"alert\"], [role=\"status\"], .ds-alert, .kjun-alert",
+                "target": "[role=\"alert\"], [role=\"status\"], .kjun-alert, .kjun-alert",
                 "optional": false
               }
             ]
@@ -4017,7 +4017,7 @@
               {
                 "label": "소비자 콘텐츠",
                 "description": "정상 상태에는 자식을 그대로 표시합니다. 이 Alert는 예제가 제공한 콘텐츠이며 ErrorBoundary 자체 외형이 아닙니다.",
-                "target": "[role=\"alert\"], [role=\"status\"], .ds-alert, .kjun-alert",
+                "target": "[role=\"alert\"], [role=\"status\"], .kjun-alert, .kjun-alert",
                 "optional": false
               }
             ]
@@ -4044,7 +4044,7 @@
               {
                 "label": "소비자 콘텐츠",
                 "description": "정상 상태에는 자식을 그대로 표시합니다. 이 Alert는 예제가 제공한 콘텐츠이며 ErrorBoundary 자체 외형이 아닙니다.",
-                "target": "[role=\"alert\"], [role=\"status\"], .ds-alert, .kjun-alert",
+                "target": "[role=\"alert\"], [role=\"status\"], .kjun-alert, .kjun-alert",
                 "optional": false
               }
             ]

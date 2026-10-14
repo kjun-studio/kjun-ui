@@ -61,7 +61,7 @@
 /* Two digits wide, so the placeholder and the value occupy the same slot. */
 .kjun-time-picker [data-time-segment] > span { flex:0 0 auto; min-width:2ch; text-align:center; }
 .kjun-time-picker [data-time-segment]:is(:hover,:focus-visible,[aria-expanded="true"]):not(:disabled) { background:var(--_kjun-color-hover); }
-/* Scoped like the Vue field ring it replaces (.kjun-scope .ds-field:focus-visible); the group ring above is the only outline. */
+/* Scoped like the Vue field ring it replaces (.kjun-scope .kjun-field:focus-visible); the group ring above is the only outline. */
 .kjun-scope .kjun-time-picker [data-time-segment]:is(:focus,:focus-visible,[aria-invalid="true"]) { outline:none; border-color:transparent; box-shadow:none; }
 .kjun-time-clear { flex:0 0 var(--_kjun-geometry-native-minimum-touch-target); width:var(--_kjun-geometry-native-minimum-touch-target); padding:0; }
 @media (pointer:coarse) {

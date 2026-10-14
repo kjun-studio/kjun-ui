@@ -79,7 +79,7 @@ for (const platform of ["react", "vue2"]) for (const width of [1280, 390]) {
   test(`${platform} table rows retain keyboard actions and inner controls at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await openFixture(page, platform, "?table", "review-contract");
-    const row = page.locator(width < 768 ? ".kjun-table-card, .ds-table-card" : "tbody tr").first();
+    const row = page.locator(width < 768 ? ".kjun-table-card, .kjun-table-card" : "tbody tr").first();
     await expect(row).toHaveAttribute("tabindex", "0");
     await row.focus(); await row.press("Enter"); await row.press("Space");
     await expect(events(page)).toHaveText('[["row",[3,0]],["row",[3,0]]]');
@@ -99,7 +99,7 @@ for (const platform of ["react", "vue2"]) for (const width of [1280, 390]) {
 const open = (page: Page, platform: string) => openFixture(page, platform, '?table', 'review-contract');
 
 for (const platform of ['vue2', 'react', 'native']) {
-  const card = (page: Page) => platform === 'native' ? page.getByText('상세 보기', { exact: true }).first() : page.locator('.ds-table-card, .kjun-table-card').first();
+  const card = (page: Page) => platform === 'native' ? page.getByText('상세 보기', { exact: true }).first() : page.locator('.kjun-table-card, .kjun-table-card').first();
   const expand = (page: Page) => page.getByRole('button', { name: /행 확장|상세 보기|접기/ }).first();
   test(`${platform} Table switches strictly below 768px and retains selection, expansion and cell slots`, async ({ page }) => {
     await page.setViewportSize({ width: 768, height: 900 }); await open(page, platform);
@@ -160,9 +160,9 @@ test('Vue Table clear and retype drops the old timer; scroll hints update in tab
   await page.setViewportSize({ width: 641, height: 900 });
   await page.locator('table').evaluate(el => { el.style.minWidth = '1400px'; });
   await page.evaluate(() => window.dispatchEvent(new Event('resize')));
-  await expect(page.locator('.ds-table-scroll-fade')).toBeVisible();
-  await page.locator('.ds-table-scroll-wrapper').evaluate(el => { el.scrollLeft = el.scrollWidth; el.dispatchEvent(new Event('scroll')); });
-  await expect(page.locator('.ds-table-scroll-fade')).toHaveCount(0);
+  await expect(page.locator('.kjun-table-scroll-fade')).toBeVisible();
+  await page.locator('.kjun-table-scroll-wrapper').evaluate(el => { el.scrollLeft = el.scrollWidth; el.dispatchEvent(new Event('scroll')); });
+  await expect(page.locator('.kjun-table-scroll-fade')).toHaveCount(0);
 });
 
 for (const platform of ["vue2", "react", "native"]) for (const width of [1280, 375]) {

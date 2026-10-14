@@ -1,18 +1,18 @@
 <template>
-  <div class="ds-market-cards">
+  <div class="kjun-market-cards">
     <!-- 지표 pill (가로 스크롤) -->
-    <div v-if="pills.length > 0" class="metric-pills">
+    <div v-if="pills.length > 0" class="kjun-metric-pill-group">
       <button
         v-for="pill in pills"
         :key="pill.key"
         :ref="`pill_${pill.key}`"
         type="button"
         :aria-pressed="String(selectedKey === pill.key)"
-        :class="['metric-pill', selectedKey === pill.key ? 'metric-pill-active' : '']"
+        :class="['kjun-metric-pill', selectedKey === pill.key ? 'kjun-metric-pill--active' : '']"
         @click.stop="selectPill(pill.key)"
       >
         {{ pill.label }}
-        <span v-if="arrowVisible(pill)" class="pill-arrow">
+        <span v-if="arrowVisible(pill)" class="kjun-metric-pill-arrow">
           {{ sortOrder === 'desc' ? '↓' : '↑' }}
         </span>
       </button>
@@ -49,21 +49,21 @@
         <div
           v-for="row in rows"
           :key="row[rowKey]"
-          class="market-card kj-flex kj-items-center kj-justify-between kj-px-4 kj-py-2.5 kj-cursor-pointer hover:kj-bg-bg-hover kj-transition-colors"
+          class="kjun-market-card kj-flex kj-items-center kj-justify-between kj-px-4 kj-py-2.5 kj-cursor-pointer hover:kj-bg-bg-hover kj-transition-colors"
           @click.stop="$emit('row-click', row)"
         >
           <!-- 종목 식별 로고 등 선행 표식 주입 seam (없으면 렌더 없음) -->
-          <AssetIdentity class="card-left kj-min-w-0 kj-flex-1" :title="primaryLabel(row)" :gap="0"><template #leading><slot name="name-prefix" :row="row" /></template><template #title><div class="card-name kj-text-sm kj-font-medium kj-text-text-primary">
+          <AssetIdentity class="kjun-market-card-left kj-min-w-0 kj-flex-1" :title="primaryLabel(row)" :gap="0"><template #leading><slot name="name-prefix" :row="row" /></template><template #title><div class="kjun-market-card-name kj-text-sm kj-font-medium kj-text-text-primary">
               <span class="kj-truncate kj-inline-block kj-max-w-full kj-align-middle" :title="primaryLabel(row)">{{ primaryLabel(row) }}</span>
               <DsCollectionMark v-if="isInterest(row)" class="kj-ml-1" aria-label="관심" kind="interest" size="sm" active />
               <DsCollectionMark v-if="isFavorite(row)" class="kj-ml-1" aria-label="즐겨찾기" kind="favorite" size="sm" active />
               <!-- 도메인 종목명 표식(예: 위험 상태 뱃지) 주입 seam -->
               <slot name="name-suffix" :row="row" />
-            </div></template><template #subtitle><div v-if="subMeta(row)" class="card-subline kj-text-xs kj-text-text-tertiary kj-truncate" :title="subMeta(row)">
+            </div></template><template #subtitle><div v-if="subMeta(row)" class="kjun-market-card-subline kj-text-xs kj-text-text-tertiary kj-truncate" :title="subMeta(row)">
               {{ subMeta(row) }}
             </div></template></AssetIdentity>
 
-          <div class="card-right kj-flex-shrink-0 kj-ml-3 kj-text-right">
+          <div class="kjun-market-card-right kj-flex-shrink-0 kj-ml-3 kj-text-right">
             <template v-if="selectedPill && selectedPill.format === 'sparkline'">
               <DsSparkline :data="row[selectedKey] || []" :width="sparklineSize.width" :height="sparklineSize.height" />
             </template>
@@ -108,7 +108,7 @@
 
     <DsPagination
       v-if="pagination && pagination.total > pagination.size"
-      class="ds-market-cards__pagination"
+      class="kjun-market-cards__pagination"
       :current-page="pagination.page"
       :total-pages="Math.ceil(pagination.total / pagination.size)"
       :total-rows="pagination.total"
@@ -119,7 +119,7 @@
 
     <div
       v-if="showFooter && !initialLoading && rows.length > 0"
-      class="ds-market-cards__footer kj-px-4 kj-py-3 kj-border-t kj-border-border kj-flex kj-items-center kj-justify-between kj-text-xs kj-text-text-tertiary"
+      class="kjun-market-cards__footer kj-px-4 kj-py-3 kj-border-t kj-border-border kj-flex kj-items-center kj-justify-between kj-text-xs kj-text-text-tertiary"
     >
       <span v-if="calculatedAt">마지막 업데이트: {{ $formatDate(calculatedAt, { format: 'datetime' }) }}</span>
       <span v-else-if="footerNote">{{ footerNote }}</span>
@@ -316,7 +316,7 @@ export default {
 
 <style scoped>
 /* 가로 스크롤 pill의 스크롤바 숨김은 Tailwind 유틸리티로 표현 불가해 scoped style을 사용한다. */
-.metric-pills {
+.kjun-metric-pill-group {
   display: flex;
   gap: var(--_kjun-geometry-dimension-value8);
   overflow-x: auto;
@@ -324,10 +324,10 @@ export default {
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
-.metric-pills::-webkit-scrollbar {
+.kjun-metric-pill-group::-webkit-scrollbar {
   display: none;
 }
-.metric-pill {
+.kjun-metric-pill {
   flex: 0 0 auto;
   background: var(--bg-secondary);
   color: var(--text-secondary);
@@ -342,16 +342,16 @@ export default {
   font-weight: var(--_kjun-type-label-weight);
   letter-spacing: var(--_kjun-type-label-tracking);
 }
-.metric-pill:focus-visible {
+.kjun-metric-pill:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--focus-ring);
 }
-.metric-pill-active {
+.kjun-metric-pill--active {
   background: var(--brand);
   color: var(--on-brand);
   font-weight: var(--_kjun-type-number-lg-weight);
 }
-.pill-arrow {
+.kjun-metric-pill-arrow {
   margin-left: var(--_kjun-geometry-dimension-value4);
   font-size: var(--_kjun-type-caption-size);
   line-height: var(--_kjun-type-caption-line);

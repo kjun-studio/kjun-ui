@@ -59,7 +59,7 @@
 /* List and table prices drop the flash pill inset so every value ends on its header's edge, like Vue. */
 .kjun-scope :is(.kjun-market-simple-list, .kjun-market-table-grid) .kjun-price-cell { padding: 0; border-radius: 0; }
 /* Vue rows draw the same divider as .kjun-market-row. */
-.mobile-simple-list .mobile-simple-list__row { border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border); }
+.kjun-mobile-simple-list .kjun-mobile-simple-list__row { border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border); }
 .kjun-market-price {
   font-size: var(--_kjun-type-control-size);
   font-variant-numeric: tabular-nums;
@@ -225,29 +225,29 @@
   letter-spacing: var(--_kjun-type-caption-tracking);
 }
 @media (width < token(responsive.market)) {
-  .kjun-market-simple-list .kjun-market-row, .mobile-simple-list .mobile-simple-list__row {
+  .kjun-market-simple-list .kjun-market-row, .kjun-mobile-simple-list .kjun-mobile-simple-list__row {
     min-height: var(--extension-market-list-minimum-height);
     padding: var(--_kjun-geometry-dimension-value14) var(--_kjun-geometry-dimension-value20);
   }
-  /* Vue renders the same list with mobile-simple-list classes; both get the same mobile type. */
-  :is(.kjun-market-simple-list .kjun-market-name, .mobile-simple-list .mobile-simple-list__name) {
+  /* Vue renders the same list with kjun-mobile-simple-list classes; both get the same mobile type. */
+  :is(.kjun-market-simple-list .kjun-market-name, .kjun-mobile-simple-list .kjun-mobile-simple-list__name) {
     font-size: var(--_kjun-type-input-size);
     line-height: var(--_kjun-type-input-line);
     font-weight: var(--_kjun-type-input-weight);
     letter-spacing: var(--_kjun-type-input-tracking);
   }
-  :is(.kjun-market-simple-list .kjun-market-name > span, .mobile-simple-list .mobile-simple-list__label) {
+  :is(.kjun-market-simple-list .kjun-market-name > span, .kjun-mobile-simple-list .kjun-mobile-simple-list__label) {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow-wrap: anywhere;
     white-space: normal;
   }
-  .kjun-market-simple-list .kjun-market-quote, .mobile-simple-list .mobile-simple-list__quote {
+  .kjun-market-simple-list .kjun-market-quote, .kjun-mobile-simple-list .kjun-mobile-simple-list__quote {
     min-width: var(--extension-market-list-mobile-quote-minimum-width);
     max-width: 50%;
   }
-  :is(.kjun-market-simple-list .kjun-market-price, .mobile-simple-list .mobile-simple-list__price) {
+  :is(.kjun-market-simple-list .kjun-market-price, .kjun-mobile-simple-list .kjun-mobile-simple-list__price) {
     font-size: var(--_kjun-type-input-size);
     overflow-wrap: anywhere;
     line-height: var(--_kjun-type-input-line);
@@ -256,15 +256,15 @@
   }
   .kjun-market-simple-list .kjun-market-meta,
   .kjun-market-simple-list .kjun-market-change,
-  .mobile-simple-list .mobile-simple-list__meta,
-  .mobile-simple-list .mobile-simple-list__change {
+  .kjun-mobile-simple-list .kjun-mobile-simple-list__meta,
+  .kjun-mobile-simple-list .kjun-mobile-simple-list__change {
     font-size: var(--_kjun-type-body-size);
     line-height: var(--_kjun-type-body-line);
     font-weight: var(--_kjun-type-body-weight);
     letter-spacing: var(--_kjun-type-body-tracking);
   }
   /* Vue's signed value carries text-xs; inherit the change line like Web .kjun-market-change .kjun-signed-value. */
-  .mobile-simple-list .mobile-simple-list__change .ds-signed-value {
+  .kjun-mobile-simple-list .kjun-mobile-simple-list__change .kjun-signed-value {
     font-size: inherit;
     line-height: inherit;
     font-weight: var(--_kjun-type-label-weight);

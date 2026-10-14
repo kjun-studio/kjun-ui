@@ -1,72 +1,72 @@
 <template>
-  <div  :aria-busy="loading || items.some(item => item.loading) ? 'true' : 'false'" class="ds-kpi-row" :class="[sizeClass, { 'ds-kpi-row--hero-first': heroFirst, 'ds-kpi-row--mobile-summary': mobileSummary && size !== 'sm' }]">
+  <div  :aria-busy="loading || items.some(item => item.loading) ? 'true' : 'false'" class="kjun-kpi-row" :class="[sizeClass, { 'kjun-kpi-row--hero-first': heroFirst, 'kjun-kpi-row--mobile-summary': mobileSummary && size !== 'sm' }]">
     <div
       v-for="(item, idx) in items"
       :key="idx"
-      class="ds-kpi-row__item"
+      class="kjun-kpi-row__item"
       :class="{
-        'ds-kpi-row__item--clickable': item.clickable,
-        'ds-kpi-row__item--full': item.mobileFull,
-        'ds-kpi-row__item--summary-full': mobileSummary && idx === mobileTrailingFullIndex,
-        'ds-kpi-row__item--secondary': mobileSecondaryFlags[idx],
-        'ds-kpi-row__item--labeled-segments': hasSegmentLabels(item),
+        'kjun-kpi-row__item--clickable': item.clickable,
+        'kjun-kpi-row__item--full': item.mobileFull,
+        'kjun-kpi-row__item--summary-full': mobileSummary && idx === mobileTrailingFullIndex,
+        'kjun-kpi-row__item--secondary': mobileSecondaryFlags[idx],
+        'kjun-kpi-row__item--labeled-segments': hasSegmentLabels(item),
       }"
       :role="item.clickable ? 'button' : null"
       :tabindex="item.clickable && !loading && !item.loading ? 0 : null"
       @click="!loading && !item.loading && item.clickable && $emit('item-click', item, idx)"
       @keyup.enter="!loading && !item.loading && item.clickable && $emit('item-click', item, idx)"
     >
-      <div class="ds-kpi-row__label-row">
-        <div class="ds-kpi-row__label"><DsSkeleton v-if="(loading || item.loading) && !item.label" type="block" width="var(--extension-kpi-row-label-skeleton-width)" height="var(--extension-kpi-row-label-skeleton-height)" /><template v-else>{{ item.label }}</template></div>
+      <div class="kjun-kpi-row__label-row">
+        <div class="kjun-kpi-row__label"><DsSkeleton v-if="(loading || item.loading) && !item.label" type="block" width="var(--extension-kpi-row-label-skeleton-width)" height="var(--extension-kpi-row-label-skeleton-height)" /><template v-else>{{ item.label }}</template></div>
         <span
           v-if="!loading && !item.loading && item.badge && item.badgePlacement !== 'value'"
           :class="badgeClass(item.badge.variant)"
-          class="ds-kpi-row__badge"
+          class="kjun-kpi-row__badge"
         >
-          <span v-if="badgeShowDot(item.badge.variant)" :class="badgeDotClass(item.badge.variant)" class="ds-kpi-row__badge-dot"></span>
+          <span v-if="badgeShowDot(item.badge.variant)" :class="badgeDotClass(item.badge.variant)" class="kjun-kpi-row__badge-dot"></span>
           {{ item.badge.text }}
         </span>
       </div>
-      <div class="ds-kpi-row__value-row">
+      <div class="kjun-kpi-row__value-row">
         <div
-          :class="[valueColorClass(item), { 'ds-kpi-row__value--text': item.valueKind === 'text', 'ds-kpi-row__value--mobile-neutral': item.mobileNeutral }]"
+          :class="[valueColorClass(item), { 'kjun-kpi-row__value--text': item.valueKind === 'text', 'kjun-kpi-row__value--mobile-neutral': item.mobileNeutral }]"
           :title="item.valueKind === 'text' && typeof item.value === 'string' ? item.value : null"
-          class="ds-kpi-row__value"
+          class="kjun-kpi-row__value"
         >
           <DsSkeleton v-if="(loading || item.loading) && !item.valueSegments" type="block" height="1lh" width="5ch" />
           <template v-else-if="item.valueSegments">
             <span
               v-for="(seg, i) in item.valueSegments"
               :key="i"
-              :class="[seg.class, { 'ds-kpi-row__segment--labeled': seg.label, 'ds-kpi-row__segment--separator': seg.separator }]"
-            ><span v-if="seg.label" class="ds-kpi-row__segment-label">{{ seg.label }}</span><DsSkeleton v-if="(loading || item.loading) && !seg.separator" type="block" height="1lh" width="3ch" /><template v-else>{{ seg.text }}</template></span>
+              :class="[seg.class, { 'kjun-kpi-row__segment--labeled': seg.label, 'kjun-kpi-row__segment--separator': seg.separator }]"
+            ><span v-if="seg.label" class="kjun-kpi-row__segment-label">{{ seg.label }}</span><DsSkeleton v-if="(loading || item.loading) && !seg.separator" type="block" height="1lh" width="3ch" /><template v-else>{{ seg.text }}</template></span>
           </template>
           <!-- animated에서도 prefix/suffix는 affix 스타일을 유지하고, 커스텀 formatter가 없으면
                비-animated 분기(formatValue)와 동일한 숫자 포맷을 쓴다 (표시 문자열 회귀 방지) -->
           <template v-else-if="item.animated && typeof item.value === 'number'">
-            <span v-if="item.prefix" class="ds-kpi-row__affix">{{ item.prefix }}</span
+            <span v-if="item.prefix" class="kjun-kpi-row__affix">{{ item.prefix }}</span
             ><DsAnimatedNumber
               from-previous
               :value="item.value"
               :formatter="item.formatter || ((v) => formatNumericValue(item, v))"
-            /><span v-if="item.suffix" class="ds-kpi-row__affix">{{ item.suffix }}</span>
+            /><span v-if="item.suffix" class="kjun-kpi-row__affix">{{ item.suffix }}</span>
           </template>
           <template v-else>
-            <span v-if="item.prefix" class="ds-kpi-row__affix">{{ item.prefix }}</span>
-            {{ formatValue(item) }}<span v-if="item.suffix" class="ds-kpi-row__affix">{{ item.suffix }}</span>
+            <span v-if="item.prefix" class="kjun-kpi-row__affix">{{ item.prefix }}</span>
+            {{ formatValue(item) }}<span v-if="item.suffix" class="kjun-kpi-row__affix">{{ item.suffix }}</span>
           </template>
         </div>
         <!-- badgePlacement:'value' — 배지가 값의 속성(예: 지표명 옆 변동률)일 때 라벨 행 대신 값 옆에 붙인다 -->
         <span
           v-if="!loading && !item.loading && item.badge && item.badgePlacement === 'value'"
           :class="badgeClass(item.badge.variant)"
-          class="ds-kpi-row__badge"
+          class="kjun-kpi-row__badge"
         >
-          <span v-if="badgeShowDot(item.badge.variant)" :class="badgeDotClass(item.badge.variant)" class="ds-kpi-row__badge-dot"></span>
+          <span v-if="badgeShowDot(item.badge.variant)" :class="badgeDotClass(item.badge.variant)" class="kjun-kpi-row__badge-dot"></span>
           {{ item.badge.text }}
         </span>
       </div>
-      <div v-if="item.desc" :class="descColorClass(item)" class="ds-kpi-row__desc"><DsSkeleton v-if="loading || item.loading" type="block" height="1lh" width="7ch" /><template v-else>{{ item.desc }}</template></div>
+      <div v-if="item.desc" :class="descColorClass(item)" class="kjun-kpi-row__desc"><DsSkeleton v-if="loading || item.loading" type="block" height="1lh" width="7ch" /><template v-else>{{ item.desc }}</template></div>
     </div>
   </div>
 </template>
@@ -97,7 +97,7 @@ export default {
   },
   computed: {
     sizeClass() {
-      return this.size === 'sm' ? 'ds-kpi-row--sm' : null
+      return this.size === 'sm' ? 'kjun-kpi-row--sm' : null
     },
     // 모바일에서 첫 항목을 전폭 헤드라인으로 올리는 경우(1+2 레이아웃). 홀수 개수가 반폭 그리드에서
     // 마지막 항목이 고아로 남는 문제를 피하고, 요약 지표를 강조한다.
@@ -188,45 +188,45 @@ export default {
 </script>
 
 <style scoped>
-.ds-kpi-row {
+.kjun-kpi-row {
   display: flex;
   padding: var(--extension-kpi-row-md-padding-y) var(--extension-kpi-row-md-padding-x);
   background: var(--card-bg);
   border-radius: var(--extension-kpi-row-radius);
 }
-.ds-kpi-row__item {
+.kjun-kpi-row__item {
   flex: 1;
   padding: var(--extension-kpi-row-md-item-padding-y) var(--extension-kpi-row-md-item-padding-x);
   border-left: var(--_kjun-border-default-width) solid var(--border-primary);
   min-width: 0;
 }
-.ds-kpi-row__item:first-child {
+.kjun-kpi-row__item:first-child {
   border-left: none;
 }
-.ds-kpi-row__item--clickable {
+.kjun-kpi-row__item--clickable {
   cursor: pointer;
   border-radius: var(--extension-kpi-row-item-radius);
   transition: background-color var(--motion-control) var(--ease-out);
 }
-.ds-kpi-row__item--clickable:hover {
+.kjun-kpi-row__item--clickable:hover {
   background: var(--bg-hover);
 }
-.ds-kpi-row__item--clickable:focus-visible {
+.kjun-kpi-row__item--clickable:focus-visible {
   outline: var(--_kjun-state-focus-width) solid var(--focus-ring);
   outline-offset: var(--_kjun-state-focus-inset-offset);
 }
-.ds-kpi-row__label-row {
+.kjun-kpi-row__label-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--extension-kpi-row-md-label-gap);
   margin-bottom: var(--extension-kpi-row-md-label-margin);
 }
-.ds-kpi-row__label {
+.kjun-kpi-row__label {
   color: var(--text-secondary);
   margin-bottom: 0; /* moved to label-row */
 }
-.ds-kpi-row__badge {
+.kjun-kpi-row__badge {
   display: inline-flex;
   align-items: center;
   gap: var(--extension-kpi-row-badge-gap);
@@ -238,26 +238,26 @@ export default {
   min-width: 0;
   flex-shrink: 1;
 }
-.ds-kpi-row__badge-dot {
+.kjun-kpi-row__badge-dot {
   display: inline-block;
   width: var(--extension-kpi-row-dot-size);
   height: var(--extension-kpi-row-dot-size);
   border-radius: 50%;
 }
 /* 값과 배지를 같은 행에 배치하고 긴 콘텐츠는 가용 폭 안에서 줄바꿈한다. */
-.ds-kpi-row__value-row {
+.kjun-kpi-row__value-row {
   display: flex;
   align-items: center;
   gap: var(--extension-kpi-row-value-gap);
   min-width: 0;
 }
-.ds-kpi-row__value {
+.kjun-kpi-row__value {
   font-family: var(--font-numeric);
   font-variant-numeric: tabular-nums;
 }
 /* 텍스트형 값(예: 최대 증가/감소 지표명) — 큰 숫자 글자 크기는 긴 한글명이 모바일 반폭 칸에서 여러 줄로
    터지므로, 텍스트에 맞는 크기 + 한글 단어 보존(keep-all)으로 행 높이를 안정화한다. */
-.ds-kpi-row__value--text {
+.kjun-kpi-row__value--text {
   font-family: var(--kjun-font);
   font-variant-numeric: normal;
   white-space: normal;
@@ -265,92 +265,92 @@ export default {
   word-break: keep-all;
 }
 /* Units inherit their value's colour, like KpiHero and Native. */
-.ds-kpi-row__desc {
+.kjun-kpi-row__desc {
   margin-top: var(--extension-kpi-row-md-description-gap);
 }
-.ds-kpi-row__segment-label {
+.kjun-kpi-row__segment-label {
   display: none;
 }
 
 @media (width <= token(responsive.kpiRow)) {
   /* 페이지 KPI는 긴 한국어 라벨을 한눈에 비교할 수 있도록 스크롤 대신 조밀한 2열 그리드를 쓴다. */
-  .ds-kpi-row:not(.ds-kpi-row--sm) {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     padding: var(--extension-kpi-row-mobile-padding-y) var(--extension-kpi-row-mobile-padding-x);
     overflow: hidden;
   }
-  .ds-kpi-row:not(.ds-kpi-row--sm) .ds-kpi-row__item {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item {
     padding: var(--extension-kpi-row-mobile-item-padding-y) var(--extension-kpi-row-mobile-item-padding-x);
     border-left: none;
     border-top: none;
   }
-  .ds-kpi-row:not(.ds-kpi-row--sm) .ds-kpi-row__item:nth-child(even) {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item:nth-child(even) {
     border-left: var(--_kjun-border-default-width) solid var(--border-primary);
   }
-  .ds-kpi-row:not(.ds-kpi-row--sm) .ds-kpi-row__item:nth-child(n + 3) {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item:nth-child(n + 3) {
     border-top: var(--_kjun-border-default-width) solid var(--border-primary);
   }
   /* 홀수 개수의 마지막 항목은 전폭으로 마감해 빈 반쪽 셀을 남기지 않는다. */
-  .ds-kpi-row:not(.ds-kpi-row--sm):not(.ds-kpi-row--hero-first) .ds-kpi-row__item:last-child:nth-child(odd) {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm):not(.kjun-kpi-row--hero-first) .kjun-kpi-row__item:last-child:nth-child(odd) {
     grid-column: 1 / -1;
     border-left: none;
   }
   /* hero-first는 전폭 헤드라인 아래에 나머지 항목을 2열로 배치한다. */
-  .ds-kpi-row:not(.ds-kpi-row--sm) .ds-kpi-row__item--full {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item--full {
     grid-column: 1 / -1;
   }
-  .ds-kpi-row:not(.ds-kpi-row--sm).ds-kpi-row--hero-first .ds-kpi-row__item:nth-child(2) {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm).kjun-kpi-row--hero-first .kjun-kpi-row__item:nth-child(2) {
     border-left: none;
     border-top: var(--_kjun-border-default-width) solid var(--border-primary);
   }
-  .ds-kpi-row:not(.ds-kpi-row--sm).ds-kpi-row--hero-first .ds-kpi-row__item:nth-child(3) {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm).kjun-kpi-row--hero-first .kjun-kpi-row__item:nth-child(3) {
     border-left: var(--_kjun-border-default-width) solid var(--border-primary);
   }
-  .ds-kpi-row:not(.ds-kpi-row--sm) .ds-kpi-row__label-row {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__label-row {
     gap: var(--extension-kpi-row-mobile-label-gap);
     margin-bottom: var(--extension-kpi-row-mobile-label-margin);
   }
-  .ds-kpi-row:not(.ds-kpi-row--sm) .ds-kpi-row__value {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__value {
   }
-  .ds-kpi-row:not(.ds-kpi-row--sm) .ds-kpi-row__value--text {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__value--text {
   }
-  .ds-kpi-row:not(.ds-kpi-row--sm) .ds-kpi-row__desc {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__desc {
     margin-top: var(--extension-kpi-row-mobile-description-gap);
   }
-  .ds-kpi-row:not(.ds-kpi-row--sm) .ds-kpi-row__badge {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__badge {
     padding: var(--extension-kpi-row-badge-padding-y) var(--extension-kpi-row-badge-padding-x);
   }
 }
 
 @media (width <= token(responsive.kpiRow)) {
   /* 시장 요약은 주요 지수를 먼저 읽고, 보조 지표는 내용 너비에 따라 한 줄 또는 여러 줄로 흐르게 한다. */
-  .ds-kpi-row.ds-kpi-row--mobile-summary:not(.ds-kpi-row--sm) {
+  .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) {
     display: flex;
     flex-wrap: wrap;
     gap: var(--extension-kpi-row-summary-gap-y) var(--extension-kpi-row-summary-gap-x);
     padding: var(--extension-kpi-row-summary-padding-y) var(--extension-kpi-row-summary-padding-x);
     overflow: visible;
   }
-  .ds-kpi-row.ds-kpi-row--mobile-summary:not(.ds-kpi-row--sm) .ds-kpi-row__item:nth-child(n) {
+  .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__item:nth-child(n) {
     flex: 0 0 calc((100% - var(--extension-kpi-row-summary-gap-x)) / 2);
     padding: 0;
     border: 0;
   }
-  .ds-kpi-row.ds-kpi-row--mobile-summary:not(.ds-kpi-row--sm) .ds-kpi-row__item--full:nth-child(n),
-  .ds-kpi-row.ds-kpi-row--mobile-summary:not(.ds-kpi-row--sm) .ds-kpi-row__item--summary-full:nth-child(n) {
+  .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__item--full:nth-child(n),
+  .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__item--summary-full:nth-child(n) {
     flex-basis: 100%;
   }
-  .ds-kpi-row--mobile-summary:not(.ds-kpi-row--sm) .ds-kpi-row__value {
+  .kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__value {
   }
-  .ds-kpi-row--mobile-summary:not(.ds-kpi-row--sm) .ds-kpi-row__value--text {
+  .kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__value--text {
   }
-  .ds-kpi-row--mobile-summary:not(.ds-kpi-row--sm) .ds-kpi-row__value--mobile-neutral {
+  .kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__value--mobile-neutral {
     color: var(--text-primary);
   }
-  .ds-kpi-row--mobile-summary:not(.ds-kpi-row--sm) .ds-kpi-row__desc {
+  .kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__desc {
   }
-  .ds-kpi-row.ds-kpi-row--mobile-summary:not(.ds-kpi-row--sm) .ds-kpi-row__item--secondary:nth-child(n) {
+  .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__item--secondary:nth-child(n) {
     display: flex;
     flex: 0 1 auto;
     flex-wrap: wrap;
@@ -358,38 +358,38 @@ export default {
     gap: var(--extension-kpi-row-segment-gap);
     max-width: 100%;
   }
-  .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary:last-child {
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary:last-child {
     margin-left: auto;
   }
-  .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary .ds-kpi-row__label-row {
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__label-row {
     margin: 0;
     max-width: 100%;
   }
-  .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary .ds-kpi-row__value-row {
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__value-row {
     flex-wrap: wrap;
     max-width: 100%;
     gap: var(--extension-kpi-row-summary-secondary-gap);
   }
-  .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary .ds-kpi-row__label,
-  .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary .ds-kpi-row__value {
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__label,
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__value {
     white-space: normal;
     overflow-wrap: anywhere;
   }
-  .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary .ds-kpi-row__value {
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__value {
   }
-  .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary .ds-kpi-row__desc {
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__desc {
     margin: 0;
   }
-  .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary.ds-kpi-row__item--labeled-segments .ds-kpi-row__label-row,
-  .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary .ds-kpi-row__segment--separator {
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary.kjun-kpi-row__item--labeled-segments .kjun-kpi-row__label-row,
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__segment--separator {
     display: none;
   }
-  .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary .ds-kpi-row__segment-label {
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__segment-label {
     display: inline;
     margin-right: var(--_kjun-geometry-dimension-value4);
     color: var(--text-secondary);
   }
-  .ds-kpi-row--mobile-summary .ds-kpi-row__item--secondary .ds-kpi-row__segment--labeled ~ .ds-kpi-row__segment--labeled::before {
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__segment--labeled ~ .kjun-kpi-row__segment--labeled::before {
     content: '·';
     margin: 0 var(--extension-kpi-row-separator-gap);
     color: var(--text-tertiary);
@@ -397,35 +397,35 @@ export default {
 }
 
 /* size=sm — 모달, 컴팩트 카드 내부용 */
-.ds-kpi-row--sm { padding: var(--extension-kpi-row-sm-padding-y) var(--extension-kpi-row-sm-padding-x); }
-.ds-kpi-row--sm .ds-kpi-row__item { padding: var(--extension-kpi-row-sm-item-padding-y) var(--extension-kpi-row-sm-item-padding-x); }
-.ds-kpi-row--sm .ds-kpi-row__label-row { margin-bottom: var(--extension-kpi-row-sm-label-margin); gap: var(--extension-kpi-row-sm-label-gap); }
-.ds-kpi-row--sm .ds-kpi-row__label { }
-.ds-kpi-row--sm .ds-kpi-row__value { }
-.ds-kpi-row--sm .ds-kpi-row__value--text { }
-.ds-kpi-row--sm .ds-kpi-row__desc { margin-top: var(--extension-kpi-row-sm-description-gap); }
-.ds-kpi-row--sm .ds-kpi-row__badge { padding: var(--extension-kpi-row-badge-padding-y) var(--extension-kpi-row-badge-padding-x); }
+.kjun-kpi-row--sm { padding: var(--extension-kpi-row-sm-padding-y) var(--extension-kpi-row-sm-padding-x); }
+.kjun-kpi-row--sm .kjun-kpi-row__item { padding: var(--extension-kpi-row-sm-item-padding-y) var(--extension-kpi-row-sm-item-padding-x); }
+.kjun-kpi-row--sm .kjun-kpi-row__label-row { margin-bottom: var(--extension-kpi-row-sm-label-margin); gap: var(--extension-kpi-row-sm-label-gap); }
+.kjun-kpi-row--sm .kjun-kpi-row__label { }
+.kjun-kpi-row--sm .kjun-kpi-row__value { }
+.kjun-kpi-row--sm .kjun-kpi-row__value--text { }
+.kjun-kpi-row--sm .kjun-kpi-row__desc { margin-top: var(--extension-kpi-row-sm-description-gap); }
+.kjun-kpi-row--sm .kjun-kpi-row__badge { padding: var(--extension-kpi-row-badge-padding-y) var(--extension-kpi-row-badge-padding-x); }
 
 @media (width <= token(responsive.kpiRow)) {
-  .ds-kpi-row--sm {
+  .kjun-kpi-row--sm {
     flex-wrap: wrap;
   }
-  .ds-kpi-row--sm .ds-kpi-row__item {
+  .kjun-kpi-row--sm .kjun-kpi-row__item {
     flex: 1 1 50%;
     padding: var(--extension-kpi-row-small-mobile-item-padding-y) var(--extension-kpi-row-small-mobile-item-padding-x);
     border-left: none;
     border-top: var(--_kjun-border-default-width) solid var(--border-primary);
   }
-  .ds-kpi-row--sm:not(.ds-kpi-row--hero-first) .ds-kpi-row__item:first-child,
-  .ds-kpi-row--sm:not(.ds-kpi-row--hero-first) .ds-kpi-row__item:nth-child(2) {
+  .kjun-kpi-row--sm:not(.kjun-kpi-row--hero-first) .kjun-kpi-row__item:first-child,
+  .kjun-kpi-row--sm:not(.kjun-kpi-row--hero-first) .kjun-kpi-row__item:nth-child(2) {
     border-top: none;
   }
-  .ds-kpi-row--sm .ds-kpi-row__item--full {
+  .kjun-kpi-row--sm .kjun-kpi-row__item--full {
     flex-basis: 100%;
   }
-  .ds-kpi-row--sm.ds-kpi-row--hero-first .ds-kpi-row__item:first-child {
+  .kjun-kpi-row--sm.kjun-kpi-row--hero-first .kjun-kpi-row__item:first-child {
     border-top: none;
   }
-  .ds-kpi-row--sm .ds-kpi-row__value { }
+  .kjun-kpi-row--sm .kjun-kpi-row__value { }
 }
 </style>

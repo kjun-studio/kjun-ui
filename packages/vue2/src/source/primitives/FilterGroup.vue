@@ -17,8 +17,8 @@
           :style="{ backgroundColor: option.dot }"
         ></span>
         <DsIcon v-if="option.icon" :name="option.icon" size="var(--extension-selection-icon-size)" />
-        <span class="ds-filter-chip__label">
-          <span class="ds-filter-chip__measure" aria-hidden="true" :style="selectionStyle(true)">{{ option.label }}</span>
+        <span class="kjun-filter-chip__label">
+          <span class="kjun-filter-chip__measure" aria-hidden="true" :style="selectionStyle(true)">{{ option.label }}</span>
           <span>{{ option.label }}</span>
         </span>
       </span>
@@ -79,9 +79,9 @@ export default {
     // 높이와 같은 Button 체계로 모서리를 키워 크기마다 형태 비율을 유지한다.
     chipStyle() { return { borderRadius: tokens.button.radii[this.size] + 'px' } },
     containerClasses() {
-      return ['ds-filter-group', this.scroll
+      return ['kjun-filter-group', this.scroll
         // flex-nowrap + overflow-x-auto로 한 줄 유지. 스크롤바는 숨기고 넘치는 칩의 부분 노출로 스크롤 여지를 알린다.
-        ? 'ds-filter-group--scroll kj-flex kj-flex-nowrap kj-gap-2 kj-overflow-x-auto'
+        ? 'kjun-filter-group--scroll kj-flex kj-flex-nowrap kj-gap-2 kj-overflow-x-auto'
         : 'kj-inline-flex kj-flex-wrap kj-gap-2']
     },
     surfaceClasses() {
@@ -92,7 +92,7 @@ export default {
         lg: 'kj-px-3.5 kj-text-sm',
         xl: 'kj-px-4 kj-text-base'
       }
-      return ['ds-filter-chip__surface', CONTROL_HEIGHTS[this.size], sizes[this.size]]
+      return ['kjun-filter-chip__surface', CONTROL_HEIGHTS[this.size], sizes[this.size]]
     }
   },
   methods: {
@@ -132,9 +132,9 @@ export default {
 
     chipClasses(option) {
       return [
-        'ds-filter-chip',
-        `ds-filter-chip--${this.size}`,
-        { 'ds-filter-chip--selected': this.isSelected(option.value) }
+        'kjun-filter-chip',
+        `kjun-filter-chip--${this.size}`,
+        { 'kjun-filter-chip--selected': this.isSelected(option.value) }
       ]
     }
   }
@@ -142,12 +142,12 @@ export default {
 </script>
 
 <style scoped>
-.ds-filter-group {
+.kjun-filter-group {
   min-width: 0;
   max-width: 100%;
 }
 
-.ds-filter-chip {
+.kjun-filter-chip {
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
@@ -159,7 +159,7 @@ export default {
   outline: none;
 }
 
-.ds-filter-chip__surface {
+.kjun-filter-chip__surface {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -173,63 +173,63 @@ export default {
   transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out);
 }
 
-.ds-filter-chip--sm .ds-filter-chip__surface {
+.kjun-filter-chip--sm .kjun-filter-chip__surface {
   font-size: var(--control-label-size);
 }
 
 /* 굵기 변경으로 옆 칩과 스크롤 위치가 움직이지 않도록 선택 상태의 글자 폭을 확보한다. */
-.ds-filter-chip__label {
+.kjun-filter-chip__label {
   display: inline-grid;
 }
 
-.ds-filter-chip__label > span {
+.kjun-filter-chip__label > span {
   grid-area: 1 / 1;
 }
 
-.ds-filter-chip__measure {
+.kjun-filter-chip__measure {
   visibility: hidden;
   font-weight: var(--font-semibold);
 }
 
-.ds-filter-chip--selected .ds-filter-chip__surface {
+.kjun-filter-chip--selected .kjun-filter-chip__surface {
   background: var(--text-primary);
   color: var(--text-inverse);
   font-weight: var(--font-semibold);
 }
 
 @media (hover: hover) {
-  .ds-filter-chip:not(:disabled):not(.ds-filter-chip--selected):hover .ds-filter-chip__surface {
+  .kjun-filter-chip:not(:disabled):not(.kjun-filter-chip--selected):hover .kjun-filter-chip__surface {
     background: var(--bg-hover);
   }
 }
 
-.ds-filter-chip:focus-visible .ds-filter-chip__surface {
+.kjun-filter-chip:focus-visible .kjun-filter-chip__surface {
   /* 스크롤 컨테이너 가장자리에서도 초점 표시가 잘리지 않도록 안쪽으로 그린다. */
   outline: var(--_kjun-state-focus-width) solid var(--focus-ring);
   outline-offset: var(--_kjun-state-focus-inset-offset);
 }
 
-.ds-filter-chip:disabled {
+.kjun-filter-chip:disabled {
   opacity: var(--_kjun-state-opacity-disabled-strong);
   cursor: not-allowed;
 }
 
 @media (width < token(responsive.selection)) {
-  .ds-filter-chip {
+  .kjun-filter-chip {
     min-height: var(--_kjun-geometry-native-minimum-touch-target);
   }
 
-  .ds-filter-chip__surface {
+  .kjun-filter-chip__surface {
     min-height: var(--extension-selection-minimum-height);
   }
 }
 
 /* 가로 스크롤 모드: 스크롤바를 숨겨 칩 행이 깔끔하게 보이도록 한다(넘치는 칩 부분 노출로 스크롤 여지 전달). */
-.ds-filter-group--scroll {
+.kjun-filter-group--scroll {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
-.ds-filter-group--scroll::-webkit-scrollbar {
+.kjun-filter-group--scroll::-webkit-scrollbar {
   display: none;
 }
 </style>

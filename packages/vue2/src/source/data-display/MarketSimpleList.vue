@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile-simple-list">
+  <div class="kjun-mobile-simple-list">
     <DsDataState
       :query-key="queryKey"
     :result-key="resultKey"
@@ -15,37 +15,37 @@
         <DsListSkeleton />
       </template>
       <template #empty>
-        <DsEmpty class="mobile-simple-list__empty" :text="emptyMessage" :description="emptySubMessage" />
+        <DsEmpty class="kjun-mobile-simple-list__empty" :text="emptyMessage" :description="emptySubMessage" />
       </template>
 
       <div>
         <div
           v-for="row in rows"
           :key="row[rowKey]"
-          class="market-simple-card mobile-simple-list__row kj-flex kj-items-center kj-justify-between kj-px-4 kj-py-4 kj-cursor-pointer hover:kj-bg-bg-hover kj-transition-colors"
+          class="kjun-market-simple-card kjun-mobile-simple-list__row kj-flex kj-items-center kj-justify-between kj-px-4 kj-py-4 kj-cursor-pointer hover:kj-bg-bg-hover kj-transition-colors"
           @click.stop="$emit('row-click', row)"
         >
           <!-- 종목 식별 로고 등 선행 표식 주입 seam (없으면 렌더 없음) -->
-          <AssetIdentity class="card-left kj-min-w-0 kj-flex-1" :title="primaryLabel(row)" :gap="0"><template #leading><slot name="name-prefix" :row="row" /></template><template #title><div class="card-name mobile-simple-list__name kj-text-sm kj-font-medium kj-text-text-primary kj-flex kj-items-center kj-gap-1 kj-min-w-0">
-              <span class="mobile-simple-list__label kj-truncate" :title="primaryLabel(row)">{{ primaryLabel(row) }}</span>
+          <AssetIdentity class="kjun-market-card-left kj-min-w-0 kj-flex-1" :title="primaryLabel(row)" :gap="0"><template #leading><slot name="name-prefix" :row="row" /></template><template #title><div class="kjun-market-card-name kjun-mobile-simple-list__name kj-text-sm kj-font-medium kj-text-text-primary kj-flex kj-items-center kj-gap-1 kj-min-w-0">
+              <span class="kjun-mobile-simple-list__label kj-truncate" :title="primaryLabel(row)">{{ primaryLabel(row) }}</span>
               <DsCollectionMark v-if="isInterest(row)" class="kj-flex-shrink-0" aria-label="관심" kind="interest" size="sm" active />
               <DsCollectionMark v-if="isFavorite(row)" class="kj-flex-shrink-0" aria-label="즐겨찾기" kind="favorite" size="sm" active />
               <!-- 도메인 종목명 표식(예: 위험 상태 뱃지) 주입 seam -->
               <slot name="name-suffix" :row="row" />
-            </div></template><template #subtitle><div v-if="subMeta(row) || $scopedSlots['sub-meta']" class="card-sub1 mobile-simple-list__meta kj-text-xs kj-text-text-tertiary kj-mt-0.5 kj-truncate" :title="subMeta(row)">
+            </div></template><template #subtitle><div v-if="subMeta(row) || $scopedSlots['sub-meta']" class="kjun-market-card-sub1 kjun-mobile-simple-list__meta kj-text-xs kj-text-text-tertiary kj-mt-0.5 kj-truncate" :title="subMeta(row)">
               <slot name="sub-meta" :row="row">{{ subMeta(row) }}</slot>
             </div></template></AssetIdentity>
 
-          <div class="card-right mobile-simple-list__quote kj-flex-shrink-0 kj-ml-3 kj-text-right">
-            <div class="mobile-simple-list__price kj-text-sm kj-font-semibold kj-text-text-primary kj-tabular-nums">
+          <div class="kjun-market-card-right kjun-mobile-simple-list__quote kj-flex-shrink-0 kj-ml-3 kj-text-right">
+            <div class="kjun-mobile-simple-list__price kj-text-sm kj-font-semibold kj-text-text-primary kj-tabular-nums">
               <DsSkeleton v-if="priceValue(row) == null" type="block" height="var(--extension-financial-price-skeleton-height)" width="var(--extension-financial-price-skeleton-width)" class="kj-inline-block" />
-              <span v-else class="mobile-simple-list__price-line kj-inline-flex kj-items-center kj-justify-end kj-gap-1">
-                <span :class="['ds-price-cell', priceFlashClass(row), row.stale ? 'kj-text-text-tertiary' : '']">
+              <span v-else class="kjun-mobile-simple-list__price-line kj-inline-flex kj-items-center kj-justify-end kj-gap-1">
+                <span :class="['kjun-price-cell', priceFlashClass(row), row.stale ? 'kj-text-text-tertiary' : '']">
                   <DsAnimatedNumber from-previous :value="priceValue(row)" :formatter="priceFormatter" />
                 </span>
               </span>
             </div>
-            <div class="mobile-simple-list__change kj-flex kj-flex-wrap kj-items-center kj-justify-end kj-gap-1.5 kj-mt-0.5">
+            <div class="kjun-mobile-simple-list__change kj-flex kj-flex-wrap kj-items-center kj-justify-end kj-gap-1.5 kj-mt-0.5">
               <!-- 가격 관련 표식은 와치리스트와 같이 보조 줄에 두어 현재가 정렬을 유지한다. -->
               <slot v-if="priceValue(row) != null" name="price-prefix" :row="row" />
               <template v-if="hasQuoteValue(row)">
@@ -83,7 +83,7 @@
 
     <DsPagination
       v-if="pagination && pagination.total > pagination.size"
-      class="market-simple-pagination"
+      class="kjun-market-simple-pagination"
       :current-page="pagination.page"
       :total-pages="Math.ceil(pagination.total / pagination.size)"
       :total-rows="pagination.total"
@@ -94,7 +94,7 @@
 
     <div
       v-if="showFooter && !initialLoading && rows.length > 0"
-      class="mobile-simple-list__inset kj-px-4 kj-py-3 kj-flex kj-flex-wrap kj-gap-2 kj-items-center kj-justify-between kj-text-xs kj-text-text-tertiary"
+      class="kjun-mobile-simple-list__inset kj-px-4 kj-py-3 kj-flex kj-flex-wrap kj-gap-2 kj-items-center kj-justify-between kj-text-xs kj-text-text-tertiary"
     >
       <span v-if="calculatedAt">마지막 업데이트: {{ $formatDate(calculatedAt, { format: 'datetime' }) }}</span>
       <span v-else-if="footerNote">{{ footerNote }}</span>
@@ -163,12 +163,12 @@ export default {
     priceFlashClass(row) {
       if (row.stale) return ''
       const dir = row._flash && row._flash.price
-      return dir ? `price-flash-${dir}-bg-pop` : ''
+      return dir ? `kjun-price-flash-${dir}-bg-pop` : ''
     },
     // 등락률 갱신 강조는 투명으로 끝나 상시 배경을 남기지 않는다.
     changeFlashClass(row) {
       if (row.stale || !(row._flash && row._flash.change)) return ''
-      return (this.changeValue(row) || 0) >= 0 ? 'price-flash-up-bg-pop' : 'price-flash-down-bg-pop'
+      return (this.changeValue(row) || 0) >= 0 ? 'kjun-price-flash-up-bg-pop' : 'kjun-price-flash-down-bg-pop'
     },
     getChangeRateTextClass,
   },
@@ -176,12 +176,12 @@ export default {
 </script>
 
 <style scoped>
-.market-simple-pagination {
+.kjun-market-simple-pagination {
   border-top: 0;
 }
 
 /* 가격과 등락률의 오른쪽 끝을 일치시킨다. */
-.ds-price-cell {
+.kjun-price-cell {
   display: inline-block;
   padding: 0;
   border-radius: 0;

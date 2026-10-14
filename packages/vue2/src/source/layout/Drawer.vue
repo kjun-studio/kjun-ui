@@ -1,20 +1,20 @@
 <template>
     <div
       v-kjun-layer="'window'" v-if="motionPresent"
-      class="ds-drawer-overlay"
+      class="kjun-drawer-overlay"
       @click.self="handleOverlayClick"
     >
-      <div class="ds-drawer-scrim" aria-hidden="true"></div>
+      <div class="kjun-drawer-scrim" aria-hidden="true"></div>
       <div :class="drawerClasses" :style="drawerStyle" role="dialog" aria-modal="true" :aria-labelledby="title ? `drawer-title-${_uid}` : undefined" @click.stop>
         <!-- Header -->
-        <div v-if="title || $slots.header" class="ds-drawer-header">
+        <div v-if="title || $slots.header" class="kjun-drawer-header">
           <slot name="header">
-            <h3 :id="`drawer-title-${_uid}`" class="ds-drawer-title">{{ title }}</h3>
+            <h3 :id="`drawer-title-${_uid}`" class="kjun-drawer-title">{{ title }}</h3>
           </slot>
           <button
             v-if="closable"
             type="button"
-            class="ds-drawer-close"
+            class="kjun-drawer-close"
             aria-label="닫기"
             @click.stop="close"
           >
@@ -23,12 +23,12 @@
         </div>
 
         <!-- Body -->
-        <div :class="['ds-drawer-body', noPadding ? 'ds-drawer-body-no-padding' : '']">
+        <div :class="['kjun-drawer-body', noPadding ? 'kjun-drawer-body-no-padding' : '']">
           <slot></slot>
         </div>
 
         <!-- Footer -->
-        <div v-if="$slots.footer" class="ds-drawer-footer">
+        <div v-if="$slots.footer" class="kjun-drawer-footer">
           <slot name="footer"></slot>
         </div>
       </div>
@@ -91,8 +91,8 @@ export default {
   computed: {
     drawerClasses() {
       return [
-        'ds-drawer-panel',
-        `ds-drawer-${this.position}`
+        'kjun-drawer-panel',
+        `kjun-drawer-${this.position}`
       ].join(' ')
     },
     drawerStyle() {
@@ -150,7 +150,7 @@ export default {
 </script>
 
 <style scoped>
-.ds-drawer-overlay {
+.kjun-drawer-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -160,14 +160,14 @@ export default {
 }
 
 /* The scrim fades on its own layer so the panel stays opaque while it travels. Clicks reach the overlay. */
-.ds-drawer-scrim {
+.kjun-drawer-scrim {
   position: absolute;
   inset: 0;
   background: var(--_kjun-color-overlay);
   pointer-events: none;
 }
 
-.ds-drawer-panel {
+.kjun-drawer-panel {
   border-radius: var(--extension-drawer-radius);
   position: fixed;
   top: 0;
@@ -179,17 +179,17 @@ export default {
   flex-direction: column;
 }
 
-.ds-drawer-right {
+.kjun-drawer-right {
   right: 0;
 }
 
-.ds-drawer-left {
+.kjun-drawer-left {
   box-shadow: var(--_kjun-drawer-elevation-left);
   left: 0;
 }
 
 /* bottom sheet: 화면 하단에 붙고 최대 높이 제한, 상단 모서리 라운드 */
-.ds-drawer-bottom {
+.kjun-drawer-bottom {
   top: auto;
   left: 0;
   right: 0;
@@ -201,7 +201,7 @@ export default {
   box-shadow: var(--_kjun-drawer-elevation-bottom);
 }
 
-.ds-drawer-header {
+.kjun-drawer-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -210,7 +210,7 @@ export default {
   flex-shrink: 0;
 }
 
-.ds-drawer-title {
+.kjun-drawer-title {
   margin: 0;
   font-size: var(--_kjun-type-section-title-size);
   color: var(--text-primary);
@@ -219,7 +219,7 @@ export default {
   letter-spacing: var(--_kjun-type-section-title-tracking);
 }
 
-.ds-drawer-close {
+.kjun-drawer-close {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -233,45 +233,45 @@ export default {
   transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out);
 }
 
-.ds-drawer-close:hover {
+.kjun-drawer-close:hover {
   background: var(--bg-secondary, var(--_kjun-color-surface));
   color: var(--text-primary);
 }
 
-.ds-drawer-body {
+.kjun-drawer-body {
   padding: var(--extension-drawer-body-padding);
   flex: 1;
   overflow-y: auto;
   color: var(--text-primary);
 }
 
-.ds-drawer-body-no-padding {
+.kjun-drawer-body-no-padding {
   padding: 0;
 }
 
-.ds-drawer-footer {
+.kjun-drawer-footer {
   padding: var(--extension-drawer-padding-y) var(--extension-drawer-padding-x);
   border-top: var(--_kjun-border-default-width) solid var(--border-primary, var(--_kjun-color-surface));
   flex-shrink: 0;
 }
 
 /* Scrollbar styling */
-.ds-drawer-body::-webkit-scrollbar {
+.kjun-drawer-body::-webkit-scrollbar {
   width: var(--extension-scrollbar-width);
 }
-.ds-drawer-body::-webkit-scrollbar-track {
+.kjun-drawer-body::-webkit-scrollbar-track {
   background: transparent;
 }
-.ds-drawer-body::-webkit-scrollbar-thumb {
+.kjun-drawer-body::-webkit-scrollbar-thumb {
   background: var(--border-secondary, var(--_kjun-color-surface));
   border-radius: var(--_kjun-geometry-radius-radius9999);
 }
 
 /* Shared drawer threshold controls the mobile layout. */
 @media (width <= token(responsive.drawer)) {
-  .ds-drawer-panel {
+  .kjun-drawer-panel {
     width: 100vw !important;
   }
 }
-.ds-drawer-top { left:0; right:0; top:0; bottom:auto; width:100%; max-height:90dvh; box-shadow:var(--_kjun-drawer-elevation-top); }
+.kjun-drawer-top { left:0; right:0; top:0; bottom:auto; width:100%; max-height:90dvh; box-shadow:var(--_kjun-drawer-elevation-top); }
 </style>

@@ -53,7 +53,7 @@ for (const platform of ['react', 'vue2', 'native']) {
     await openFixture(page, platform, '', 'provider-layers');
     await page.getByRole('button', { name: 'Open outer', exact: true }).click();
     await page.getByRole('button', { name: 'Open inner', exact: true }).click();
-    const surface = page.locator(platform === 'react' ? '.kjun-modal' : platform === 'vue2' ? '.ds-modal-container' : '[aria-label="Inner dialog"]').filter({ hasText: 'Inner action' }).last();
+    const surface = page.locator(platform === 'react' ? '.kjun-modal' : platform === 'vue2' ? '.kjun-modal-container' : '[aria-label="Inner dialog"]').filter({ hasText: 'Inner action' }).last();
     await expect(surface).toHaveCSS('background-color', 'rgb(255, 244, 221)');
     if (platform !== 'native') await expect(surface).toHaveCSS('font-family', 'monospace');
     await page.evaluate(() => (window as any).providerLayers.changeStyle());

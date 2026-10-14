@@ -15,7 +15,7 @@ export default {
     tbodyClasses() {
       const classes = ['kj-divide-y kj-divide-border-primary']
       if (this.striped) {
-        classes.push('ds-table-striped')
+        classes.push('kjun-table-striped')
       }
       return classes.join(' ')
     },
@@ -24,7 +24,7 @@ export default {
   methods: {
     headerCellClasses(col) {
       const px = ''
-      const base = `${px} kj-text-left ds-table-header`
+      const base = `${px} kj-text-left kjun-table-header`
       const sortable = col.sortable && this.sortable ? 'kj-cursor-pointer hover:kj-bg-bg-hover kj-select-none' : ''
       const align = col.align === 'center' ? 'kj-text-center' : col.align === 'right' ? 'kj-text-right' : ''
       return [base, sortable, align].filter(Boolean).join(' ')
@@ -36,14 +36,14 @@ export default {
     },
     pillClasses(value) {
       const num = typeof value === 'string' ? parseFloat(value) : value
-      if (typeof num !== 'number' || isNaN(num) || num === 0) return 'ds-table-pill'
-      return num > 0 ? 'ds-table-pill ds-table-pill-up' : 'ds-table-pill ds-table-pill-down'
+      if (typeof num !== 'number' || isNaN(num) || num === 0) return 'kjun-table-pill'
+      return num > 0 ? 'kjun-table-pill kjun-table-pill-up' : 'kjun-table-pill kjun-table-pill-down'
     },
     cellClasses(col, row) {
       const px = ''
       const align = col.align === 'center' ? 'kj-text-center' : col.align === 'right' ? 'kj-text-right' : ''
       const numeric = col.type === 'number' ? 'kj-tabular-nums' : ''
-      const secondary = col.secondary ? 'ds-table-secondary' : ''
+      const secondary = col.secondary ? 'kjun-table-secondary' : ''
 
       // col.cellClass 지원
       let custom = ''

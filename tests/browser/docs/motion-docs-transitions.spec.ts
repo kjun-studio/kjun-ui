@@ -75,7 +75,7 @@ for (const platform of platforms) {
         const body = document.body;
         const marker = () => body.querySelector('.kjun-tab-indicator,[data-testid="kjun-tab-indicator"]');
         const text = (label: string) => [...body.querySelectorAll('*')].find(node => node.textContent === label && ![...node.children].some(child => child.textContent === label));
-        const panel = () => body.querySelector(kind === 'modal' ? '.kjun-modal,.ds-modal-container' : '.kjun-drawer,.ds-drawer-panel') || body.querySelector('[aria-label="작업 확인"]');
+        const panel = () => body.querySelector(kind === 'modal' ? '.kjun-modal,.kjun-modal-container' : '.kjun-drawer,.kjun-drawer-panel') || body.querySelector('[aria-label="작업 확인"]');
         const read = () => {
           const node = kind === 'tabs' ? marker() : kind === 'accordion' ? body.querySelector('.catalog-render') : kind === 'toast' ? text('알림 3') : panel();
           if (!node) return null;

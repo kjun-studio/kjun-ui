@@ -74,7 +74,7 @@ export default {
         both: 'kj-resize'
       }
 
-      return [...this.fieldClasses, 'ds-field--textarea', resizeClasses[this.resize]]
+      return [...this.fieldClasses, 'kjun-field--textarea', resizeClasses[this.resize]]
     }
   },
   methods: {

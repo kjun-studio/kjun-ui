@@ -1,8 +1,8 @@
 <template>
-  <div class="ds-data-state kjun-data-state" :aria-busy="loading || refreshing ? 'true' : 'false'">
+  <div class="kjun-data-state" :aria-busy="loading || refreshing ? 'true' : 'false'">
     <!-- 갱신 표시의 바깥 DOM을 고정해 Vue 2의 본문 재사용·이동으로 인한 스크롤 초기화를 막는다. -->
     <div key="refresh-status">
-      <div v-if="isRefreshing" class="ds-data-state-status kjun-data-status" role="status">
+      <div v-if="isRefreshing" class="kjun-data-state-status kjun-data-status" role="status">
         <DsSpinner size="xs" /><span>{{ refreshingText }}</span>
       </div>
     </div>
@@ -60,8 +60,8 @@
       v-if="showContent"
       key="content"
       :class="{
-        'ds-data-state-refreshing': loading && !usesQueryState,
-        'ds-data-state-concealed': contentConcealed,
+        'kjun-data-state-refreshing': loading && !usesQueryState,
+        'kjun-data-state-concealed': contentConcealed,
       }"
       :aria-hidden="contentConcealed ? 'true' : undefined"
       :inert="contentConcealed ? '' : null"
@@ -196,9 +196,9 @@ export default {
 </script>
 
 <style scoped>
-.ds-data-state { position: relative; }
-.ds-data-state-concealed { position: absolute; top: 0; left: 0; right: 0; visibility: hidden; pointer-events: none; }
-.ds-data-state-refreshing {
+.kjun-data-state { position: relative; }
+.kjun-data-state-concealed { position: absolute; top: 0; left: 0; right: 0; visibility: hidden; pointer-events: none; }
+.kjun-data-state-refreshing {
   opacity: var(--_kjun-state-opacity-pending);
   pointer-events: none;
   transition: opacity var(--motion-control) var(--ease-out);

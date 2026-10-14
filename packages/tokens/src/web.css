@@ -111,7 +111,7 @@
   vertical-align: middle;
 }
 .kjun-spin,
-.ds-icon-spin {
+.kjun-icon-spin {
   animation: kjun-spin var(--motion-spin) linear infinite;
 }
 @keyframes kjun-spin {
@@ -123,15 +123,7 @@
   min-width: 0;
   margin-bottom: var(--extension-form-item-gap);
 }
-:where(
-    .flex,
-    .inline-flex,
-    .grid,
-    .inline-grid,
-    .ds-form-layout,
-    .kjun-form-layout
-  )
-  > .kjun-form-group {
+:where(.kjun-form-layout) > .kjun-form-group {
   margin-bottom: 0;
 }
 .kjun-form-group:last-child {
@@ -382,5 +374,5 @@
     transition-duration: 0.01ms !important;
   }
   .kjun-scope .kjun-input,
-  .kjun-scope .ds-field { transition: none !important; }
+  .kjun-scope .kjun-field { transition: none !important; }
 }

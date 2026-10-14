@@ -1,12 +1,12 @@
 <template>
-  <div class="ds-progress-cell">
-    <div class="ds-progress-cell-bar" :style="{ height: `${height}px` }">
+  <div class="kjun-progress-cell">
+    <div class="kjun-progress-cell-bar" :style="{ height: `${height}px` }">
       <div
-        class="ds-progress-cell-fill"
+        class="kjun-progress-cell-fill"
         :style="{ width: `${percent}%`, backgroundColor: barColor }"
       ></div>
     </div>
-    <span v-if="showLabel" class="ds-progress-cell-label">
+    <span v-if="showLabel" class="kjun-progress-cell-label">
       {{ Math.round(percent) }}%
     </span>
   </div>
@@ -78,27 +78,27 @@ export default {
 </script>
 
 <style scoped>
-.ds-progress-cell {
+.kjun-progress-cell {
   display: flex;
   align-items: center;
   gap: var(--extension-financial-progress-gap);
   min-width: var(--extension-financial-progress-minimum-width);
 }
 
-.ds-progress-cell-bar {
+.kjun-progress-cell-bar {
   flex: 1;
   background: var(--bg-tertiary);
   border-radius: var(--extension-financial-progress-radius);
   overflow: hidden;
 }
 
-.ds-progress-cell-fill {
+.kjun-progress-cell-fill {
   height: 100%;
   border-radius: var(--extension-financial-progress-radius);
   transition: width var(--motion-progress) var(--ease-out);
 }
 
-.ds-progress-cell-label {
+.kjun-progress-cell-label {
   font-size: var(--_kjun-type-caption-size);
   color: var(--text-secondary);
   min-width: var(--extension-financial-progress-label-width);

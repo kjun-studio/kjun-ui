@@ -1,6 +1,6 @@
 <template>
   <div class="kj-relative kj-min-w-0" v-click-outside="close">
-    <div class="ds-field-shell" :class="fieldSizeClass">
+    <div class="kjun-field-shell" :class="fieldSizeClass">
       <!-- Trigger -->
       <button
         ref="trigger"
@@ -26,31 +26,31 @@
       >
         <slot name="selected" :option="selectedOption" :label="selectedLabel">
           <span v-if="selectedLabel" class="kj-truncate">{{ selectedLabel }}</span>
-          <span v-else class="ds-field-placeholder kj-truncate">{{ placeholder }}</span>
+          <span v-else class="kjun-field-placeholder kj-truncate">{{ placeholder }}</span>
         </slot>
 
-        <DsIcon name="chevron-down" :style="kjunCompoundControl ? { width: 'var(--extension-time-picker-icon-size)', height: 'var(--extension-time-picker-icon-size)' } : undefined" :class="['ds-select-indicator kj-shrink-0 kj-text-text-tertiary kj-transition-transform', isOpen && !kjunLayerBlocked ? 'kj-rotate-180' : '']" />
+        <DsIcon name="chevron-down" :style="kjunCompoundControl ? { width: 'var(--extension-time-picker-icon-size)', height: 'var(--extension-time-picker-icon-size)' } : undefined" :class="['kjun-select-indicator kj-shrink-0 kj-text-text-tertiary kj-transition-transform', isOpen && !kjunLayerBlocked ? 'kj-rotate-180' : '']" />
       </button>
-      <div v-if="clearable && hasValue" class="ds-field-suffix ds-select-clear">
-        <DsButton variant="ghost" size="sm" class="ds-field-clear" prefix-icon="x" aria-label="선택 지우기" title="선택 지우기" :disabled="disabled" @click.stop="clear" />
+      <div v-if="clearable && hasValue" class="kjun-field-suffix kjun-select-clear">
+        <DsButton variant="ghost" size="sm" class="kjun-field-clear" prefix-icon="x" aria-label="선택 지우기" title="선택 지우기" :disabled="disabled" @click.stop="clear" />
       </div>
     </div>
 
-    <transition name="ds-select-dropdown" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
+    <transition name="kjun-select-dropdown" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
       @enter-cancelled="motionCancel" @leave-cancelled="motionCancel">
-      <div v-kjun-layer="'popup'" v-if="isOpen" ref="dropdown" :style="dropdownStyle" class="kj-fixed kj-z-50 ds-field-menu kj-flex kj-flex-col kj-overflow-hidden">
+      <div v-kjun-layer="'popup'" v-if="isOpen" ref="dropdown" :style="dropdownStyle" class="kj-fixed kj-z-50 kjun-field-menu kj-flex kj-flex-col kj-overflow-hidden">
         <div v-if="$slots['menu-header'] || $scopedSlots['menu-header']" ref="menuHeader" class="kj-shrink-0"><slot name="menu-header" /></div>
         <!-- Search -->
         <div v-if="searchable" ref="searchPanel" class="kj-p-2 kj-border-b kj-border-border-primary kj-shrink-0">
-          <div class="ds-field-shell ds-field--md">
-            <DsIcon name="search" class="ds-field-prefix" />
+          <div class="kjun-field-shell kjun-field--md">
+            <DsIcon name="search" class="kjun-field-prefix" />
             <input
               ref="searchInput"
               v-model="searchQuery"
               type="text"
               :placeholder="searchPlaceholder"
               aria-label="선택 항목 검색"
-              class="ds-field ds-field--md ds-field--prefix"
+              class="kjun-field kjun-field--md kjun-field--prefix"
               @compositionstart="composing = true"
               @compositionend="composing = false"
               @keydown="handleSearchKeydown"
@@ -246,9 +246,9 @@ export default {
       return { height: spec.height + "px", borderRadius: spec.radius + "px" }
     },
     triggerClasses() {
-      return [...this.fieldClasses, 'ds-field--select', {
-        'ds-field--open': this.isOpen && !this.kjunLayerBlocked,
-        'ds-field--clearable': this.clearable && this.hasValue,
+      return [...this.fieldClasses, 'kjun-field--select', {
+        'kjun-field--open': this.isOpen && !this.kjunLayerBlocked,
+        'kjun-field--clearable': this.clearable && this.hasValue,
       }]
     },
   },
@@ -324,7 +324,7 @@ export default {
       return this.value === val
     },
     optionClasses() {
-      return 'ds-field-option'
+      return 'kjun-field-option'
     },
     requestOpen(next) {
       if (next === this.isOpen || (next && this.disabled)) return
@@ -411,10 +411,10 @@ export default {
 }
 </script>
 <style scoped>
-.ds-select-clear {
+.kjun-select-clear {
   right: calc(var(--field-padding) + var(--field-icon-size) + var(--field-affix-gap));
 }
-.ds-select-indicator {
+.kjun-select-indicator {
   font-size: var(--field-icon-size);
 }
 </style>

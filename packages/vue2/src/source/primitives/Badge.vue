@@ -33,7 +33,7 @@ export default {
   computed: {
     badgeStyle() { const { x, y } = tokens.extensions.badge.padding[this.size]; return { padding: `${y}px ${x}px`, gap: tokens.extensions.badge.gap + "px" }; },
     badgeClasses() {
-      const base = 'ds-badge kj-max-w-full kj-min-w-0 kj-inline-flex kj-items-center kj-whitespace-normal kj-font-semibold kj-rounded-badge'
+      const base = 'kjun-badge kj-max-w-full kj-min-w-0 kj-inline-flex kj-items-center kj-whitespace-normal kj-font-semibold kj-rounded-badge'
 
       const variants = {
         default: 'kj-bg-bg-secondary kj-text-text-secondary',

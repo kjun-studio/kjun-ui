@@ -1,6 +1,6 @@
 <template>
-  <div class="ds-error-boundary">
-    <div v-if="hasError" class="ds-error-boundary-fallback">
+  <div class="kjun-error-boundary">
+    <div v-if="hasError" class="kjun-error-boundary-fallback">
       <div class="kjun-error-fallback">
         <h3 >{{ fallbackMessage }}</h3>
         <p >

@@ -7,7 +7,7 @@ for (const platform of ['react', 'vue2', 'native']) {
   test(`${platform}: Switch moves through intermediate positions and reduction snaps`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' }); await start(page, platform, 'switch');
     // Native draws the off boundary as an overlay before the thumb, so the thumb is the last child.
-    const selector = platform === 'native' ? '[role="switch"] > div > div:last-child' : '.ds-switch-thumb';
+    const selector = platform === 'native' ? '[role="switch"] > div > div:last-child' : '.kjun-switch-thumb';
     const values = await page.evaluate(async selector => {
       // Thumb centers: the off thumb is smaller (it clears the inset boundary), so its left edge travels less.
       const x = () => { const box = document.querySelector(selector)!.getBoundingClientRect(); return box.x + box.width / 2; };
@@ -29,7 +29,7 @@ for (const platform of ['react', 'vue2', 'native']) {
       await page.setViewportSize({ width: 390, height: 740 }); await start(page, platform, 'layers');
       await configure(page, { position });
       const trigger = page.getByRole('button', { name: 'Open drawer', exact: true }); await trigger.click();
-      const panel = page.locator(platform === 'react' ? '.kjun-drawer' : platform === 'vue2' ? '.ds-drawer-panel' : '[aria-label="Motion drawer"]');
+      const panel = page.locator(platform === 'react' ? '.kjun-drawer' : platform === 'vue2' ? '.kjun-drawer-panel' : '[aria-label="Motion drawer"]');
       await expect(panel).toBeVisible(); await page.waitForTimeout(350);
       const box = (await panel.boundingBox())!;
       expect(box.x).toBeGreaterThanOrEqual(-1); expect(box.y).toBeGreaterThanOrEqual(-1);

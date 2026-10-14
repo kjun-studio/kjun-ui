@@ -5,7 +5,7 @@ export const feedback: Record<string, GuideAuthor> = {
       p(
         "알림 영역",
         "상태 의미와 관련 설명을 본문 위치에 표시합니다.",
-        '[role="alert"], [role="status"], .ds-alert, .kjun-alert',
+        '[role="alert"], [role="status"], .kjun-alert, .kjun-alert',
       ),
       t("제목", "상태를 짧게 요약합니다.", "안내", true),
       t("설명", "현재 상황과 다음 행동을 설명합니다.", "작업 상태를 설명하는 문장입니다."),
@@ -33,7 +33,7 @@ export const feedback: Record<string, GuideAuthor> = {
       p(
         "소비자 콘텐츠",
         "정상 상태에는 자식을 그대로 표시합니다. 이 Alert는 예제가 제공한 콘텐츠이며 ErrorBoundary 자체 외형이 아닙니다.",
-        '[role="alert"], [role="status"], .ds-alert, .kjun-alert',
+        '[role="alert"], [role="status"], .kjun-alert, .kjun-alert',
       ),
     ],
     related: "loading",

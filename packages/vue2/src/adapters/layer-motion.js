@@ -46,11 +46,11 @@ export function layerMotion(kind = 'popup') {
         const large = kind === 'modal' || kind === 'drawer';
         const preset = kind === 'tooltip' ? 'tooltip' : kind === 'toast' ? 'toast' : large ? 'layer' : 'popup';
         const duration = tokens.motion[preset + (open ? 'Enter' : 'Exit')];
-        const panel = large ? el.querySelector(kind === 'modal' ? '.ds-modal-container' : '.ds-drawer-panel') : el;
+        const panel = large ? el.querySelector(kind === 'modal' ? '.kjun-modal-container' : '.kjun-drawer-panel') : el;
         // Opacity fades linearly on exit and ends before the movement, so the layer never stalls and then cuts.
         const fade = open ? (large ? tokens.motion.backdrop : duration) : (large ? tokens.motion.backdropExit : Math.min(duration, tokens.motion.fadeExit));
         // Drawer fades only its scrim; the edge panel stays opaque while it travels.
-        const faded = (kind === 'drawer' && el.querySelector('.ds-drawer-scrim')) || el;
+        const faded = (kind === 'drawer' && el.querySelector('.kjun-drawer-scrim')) || el;
         const targets = [{ node: faded, property: 'opacity', from: saved?.opacity ?? (open ? '0' : getComputedStyle(faded).opacity), to: open ? '1' : '0', duration: fade, easing: open ? out : linear }];
         if (panel && kind !== 'tooltip') {
           const distance = tokens.motionDistance;

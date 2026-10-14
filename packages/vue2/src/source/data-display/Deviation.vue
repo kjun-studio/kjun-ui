@@ -2,7 +2,7 @@
   <span v-if="value === null || value === undefined" class="kj-text-text-disabled">-</span>
 
   <!-- badge variant: 신호 임계 초과 시 배지 + 경고 아이콘, 그 외 색상 텍스트 -->
-  <span v-else-if="variant === 'badge'" class="ds-deviation-badge">
+  <span v-else-if="variant === 'badge'" class="kjun-deviation-badge">
     <!-- Every value shares the badge box and the icon slot so a column keeps its digits aligned, like React and Native. -->
     <DsBadge :variant="isNeutral ? 'secondary' : value > 0 ? 'price-up' : 'price-down'" size="sm" :style="isSignal ? undefined : { background: 'transparent' }">{{ formatted }}</DsBadge>
     <span v-if="!isSignal" class="kjun-deviation-signal-slot" aria-hidden="true"></span>
@@ -15,10 +15,10 @@
   </span>
 
   <!-- text variant: 보조 괴리율 등 위계를 낮춰야 할 때 — pill 없이 색상 텍스트만 -->
-  <span v-else-if="variant === 'text'" class="ds-deviation kjun-type-control" :class="textColorClass">{{ formatted }}</span>
+  <span v-else-if="variant === 'text'" class="kjun-deviation kjun-type-control" :class="textColorClass">{{ formatted }}</span>
 
   <!-- pill variant(기본): 절대 괴리율 강도 4단계 농도 -->
-  <span v-else class="ds-deviation-pill ds-deviation" :class="pillClass">{{ formatted }}</span>
+  <span v-else class="kjun-deviation-pill kjun-deviation" :class="pillClass">{{ formatted }}</span>
 </template>
 
 <script>
@@ -62,24 +62,24 @@ export default {
     },
     pillClass() {
       const abs = Math.abs(this.value)
-      if (abs < DEVIATION_THRESHOLDS.negligible) return 'ds-deviation-pill--neutral'
+      if (abs < DEVIATION_THRESHOLDS.negligible) return 'kjun-deviation-pill--neutral'
       const dir = this.value > 0 ? 'up' : 'down'
-      if (abs < DEVIATION_THRESHOLDS.low) return `ds-deviation-pill--${dir}-soft`
-      if (abs < DEVIATION_THRESHOLDS.high) return `ds-deviation-pill--${dir}-mid`
-      return `ds-deviation-pill--${dir}-strong`
+      if (abs < DEVIATION_THRESHOLDS.low) return `kjun-deviation-pill--${dir}-soft`
+      if (abs < DEVIATION_THRESHOLDS.high) return `kjun-deviation-pill--${dir}-mid`
+      return `kjun-deviation-pill--${dir}-strong`
     },
   },
 }
 </script>
 
 <style scoped>
-.ds-deviation-badge {
+.kjun-deviation-badge {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
   gap: var(--extension-financial-badge-gap);
 }
-.ds-deviation-pill {
+.kjun-deviation-pill {
   display: inline-flex;
   align-items: center;
   padding: var(--extension-financial-pill-padding-y) var(--extension-financial-pill-padding-x);
@@ -89,11 +89,11 @@ export default {
   font-weight: var(--_kjun-type-control-weight);
   letter-spacing: var(--_kjun-type-control-tracking);
 }
-.ds-deviation-pill--neutral     { background: var(--bg-secondary); color: var(--text-secondary); }
-.ds-deviation-pill--up-soft     { background: color-mix(in srgb, var(--price-up)   8%, transparent); color: var(--price-up); }
-.ds-deviation-pill--up-mid      { background: color-mix(in srgb, var(--price-up)  14%, transparent); color: var(--price-up); }
-.ds-deviation-pill--up-strong   { background: color-mix(in srgb, var(--price-up)  22%, transparent); color: var(--price-up); font-weight: var(--_kjun-type-number-lg-weight); }
-.ds-deviation-pill--down-soft   { background: color-mix(in srgb, var(--price-down) 8%, transparent); color: var(--price-down); }
-.ds-deviation-pill--down-mid    { background: color-mix(in srgb, var(--price-down) 14%, transparent); color: var(--price-down); }
-.ds-deviation-pill--down-strong { background: color-mix(in srgb, var(--price-down) 22%, transparent); color: var(--price-down); font-weight: var(--_kjun-type-number-lg-weight); }
+.kjun-deviation-pill--neutral     { background: var(--bg-secondary); color: var(--text-secondary); }
+.kjun-deviation-pill--up-soft     { background: color-mix(in srgb, var(--price-up)   8%, transparent); color: var(--price-up); }
+.kjun-deviation-pill--up-mid      { background: color-mix(in srgb, var(--price-up)  14%, transparent); color: var(--price-up); }
+.kjun-deviation-pill--up-strong   { background: color-mix(in srgb, var(--price-up)  22%, transparent); color: var(--price-up); font-weight: var(--_kjun-type-number-lg-weight); }
+.kjun-deviation-pill--down-soft   { background: color-mix(in srgb, var(--price-down) 8%, transparent); color: var(--price-down); }
+.kjun-deviation-pill--down-mid    { background: color-mix(in srgb, var(--price-down) 14%, transparent); color: var(--price-down); }
+.kjun-deviation-pill--down-strong { background: color-mix(in srgb, var(--price-down) 22%, transparent); color: var(--price-down); font-weight: var(--_kjun-type-number-lg-weight); }
 </style>

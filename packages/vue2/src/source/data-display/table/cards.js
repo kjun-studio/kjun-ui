@@ -81,7 +81,7 @@ export default {
     },
     cardSectionLayoutClass(section) {
       const layout = ['stack', 'grid', 'metrics'].includes(section.layout) ? section.layout : 'grid'
-      return `ds-table-card-body--${layout}`
+      return `kjun-table-card-body--${layout}`
     },
   },
 }

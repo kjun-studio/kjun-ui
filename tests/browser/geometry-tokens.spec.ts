@@ -6,7 +6,7 @@ const platforms = ['react','vue2','native'];
 const outer = (page: Page,id:string) => page.getByTestId(id).locator(':scope > *').first();
 const px = (value:number) => value+'px';
 async function geometry(node:Locator,expected:Record<string,string>){for(const [property,value] of Object.entries(expected))await expect(node).toHaveCSS(property,value);}
-const tableCard=(page:Page,platform:string)=>platform==='native'?page.getByTestId('table').locator('[tabindex]').first():page.getByTestId('table').locator(platform==='vue2'?'.ds-table-card':'.kjun-table-card').first();
+const tableCard=(page:Page,platform:string)=>platform==='native'?page.getByTestId('table').locator('[tabindex]').first():page.getByTestId('table').locator(platform==='vue2'?'.kjun-table-card':'.kjun-table-card').first();
 for (const platform of platforms) {
   test(`${platform}: packed geometry roles propagate through all component families`,async({page}, testInfo)=>{
     await page.setViewportSize({width:1280,height:1100});await page.emulateMedia({reducedMotion:'reduce'});
@@ -22,19 +22,19 @@ for (const platform of platforms) {
     await geometry(outer(page,'hero-sm'),{'padding-left':px(e.kpiHero.sm.paddingX),'padding-top':px(e.kpiHero.sm.paddingY)});
     await geometry(outer(page,'row'),{'padding-left':px(e.kpiRow.md.paddingX),'padding-top':px(e.kpiRow.md.paddingY),'border-radius':px(e.kpiRow.radius)});
     await geometry(outer(page,'alert'),{'padding-left':px(e.alert.md.paddingX),'padding-top':px(e.alert.md.paddingY),'border-radius':px(e.alert.radius)});
-    const skeleton=platform==='native'?outer(page,'skeleton').locator(':scope > *').first():page.getByTestId('skeleton').locator(platform==='vue2'?'.ds-skeleton-card':'.kjun-skeleton-card');
+    const skeleton=platform==='native'?outer(page,'skeleton').locator(':scope > *').first():page.getByTestId('skeleton').locator(platform==='vue2'?'.kjun-skeleton-card':'.kjun-skeleton-card');
     await geometry(skeleton,{'padding-left':px(e.skeleton.padding),'border-radius':px(e.skeleton.radius)});
     await page.setViewportSize({width:390,height:1100});
     await geometry(tableCard(page,platform),{'padding-left':px(e.tableCard.padding),'border-radius':px(e.tableCard.radius)});
     await page.getByRole('button',{name:'패널 열기',exact:true}).click();
-    const drawer=page.locator(platform==='react'?'.kjun-drawer':platform==='vue2'?'.ds-drawer-panel':'[aria-label="검사 패널"]');
+    const drawer=page.locator(platform==='react'?'.kjun-drawer':platform==='vue2'?'.kjun-drawer-panel':'[aria-label="검사 패널"]');
     await geometry(drawer,{'border-top-left-radius':px(e.drawer.bottomRadius),'border-top-right-radius':px(e.drawer.bottomRadius),'border-bottom-left-radius':px(e.drawer.radius)});
     await geometry(platform==='react'?drawer.locator('.kjun-drawer-header'):drawer.locator(':scope > *').first(),{'padding-left':px(e.drawer.paddingX),'padding-top':px(e.drawer.paddingY)});
     await expect(drawer).toHaveCSS('box-shadow',new RegExp(`${tokens.extensions.drawer.elevation[0].blurRadius}px`));
     await drawer.screenshot({path: testInfo.outputPath(`${platform}-drawer.png`)});
     await page.keyboard.press('Escape');await expect(drawer).toBeHidden();
     await page.getByRole('button',{name:'대화상자 열기',exact:true}).click();
-    if(platform!=='native')await geometry(page.locator(platform==='react'?'.kjun-modal-overlay':'.ds-modal-overlay'),{'padding-left':px(tokens.modal.mobileInset)});
+    if(platform!=='native')await geometry(page.locator(platform==='react'?'.kjun-modal-overlay':'.kjun-modal-overlay'),{'padding-left':px(tokens.modal.mobileInset)});
     else {
       const panel=page.locator('[aria-label="검사 대화상자"]');
       await expect(panel).toBeVisible();

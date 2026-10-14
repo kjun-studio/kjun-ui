@@ -87,7 +87,7 @@ export default {
       // align-items:stretch는 cross-size가 auto일 때만 늘리므로, 명시 폭을 주면 모바일 세로
       // 헤더에서 회색 트랙만 전폭으로 늘어나던 stretch 사고를 컴포넌트 차원에서 차단한다.
       return [
-        'ds-button-group kj-inline-flex',
+        'kjun-button-group kj-inline-flex',
         this.fullWidth ? 'kj-w-full' : 'kj-w-fit'
       ]
     }
@@ -103,7 +103,7 @@ export default {
       const isActive = this.value === option.value
 
       const base = [
-        'ds-button-group__button kj-inline-flex kj-items-center kj-justify-center kj-font-medium kj-whitespace-nowrap',
+        'kjun-button-group__button kj-inline-flex kj-items-center kj-justify-center kj-font-medium kj-whitespace-nowrap',
         this.fullWidth ? 'kj-flex-1' : ''
       ]
 
@@ -131,7 +131,7 @@ export default {
 </script>
 
 <style scoped>
-.ds-button-group {
+.kjun-button-group {
   position: relative;
   isolation: isolate;
   min-width: 0;
@@ -139,43 +139,43 @@ export default {
   background: var(--bg-secondary);
 }
 
-.ds-button-group__button {
+.kjun-button-group__button {
   position: relative;
   z-index: 1;
   flex-shrink: 0;
   outline: none;
   transition: color var(--motion-control) var(--ease-out);
 }
-.ds-button-group[data-indicator] .ds-button-group__button[aria-pressed="true"] { background: transparent; }
-.ds-button-group .kjun-button-group-indicator { background: var(--card-bg); }
+.kjun-button-group[data-indicator] .kjun-button-group__button[aria-pressed="true"] { background: transparent; }
+.kjun-button-group .kjun-button-group-indicator { background: var(--card-bg); }
 @media (prefers-reduced-motion: reduce) {
-  .ds-button-group__button { transition: none; }
+  .kjun-button-group__button { transition: none; }
 }
 
 @media (hover: hover) {
-  .ds-button-group__button:not(:disabled)[aria-pressed="false"]:hover {
+  .kjun-button-group__button:not(:disabled)[aria-pressed="false"]:hover {
     background: var(--bg-hover);
     color: var(--text-primary);
   }
 }
 
-.ds-button-group__button:focus-visible {
+.kjun-button-group__button:focus-visible {
   /* 가로 스크롤 가장자리에서도 키보드 초점이 잘리지 않도록 안쪽에 표시한다. */
   outline: var(--_kjun-state-focus-width) solid var(--focus-ring);
   outline-offset: var(--_kjun-state-focus-inset-offset);
 }
 
 @media (width < token(responsive.selection)), (pointer: coarse) {
-  .ds-button-group {
+  .kjun-button-group {
     overflow-x: auto;
     scrollbar-width: none;
   }
 
-  .ds-button-group::-webkit-scrollbar {
+  .kjun-button-group::-webkit-scrollbar {
     display: none;
   }
 
-  .ds-button-group__button {
+  .kjun-button-group__button {
     min-width: var(--_kjun-geometry-native-minimum-touch-target);
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;

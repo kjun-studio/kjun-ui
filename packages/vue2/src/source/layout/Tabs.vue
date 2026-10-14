@@ -2,7 +2,7 @@
   <div class="kjun-vue-tabs kjun-tabs" :data-variant="variant" :data-density="density">
     <!-- 배경(header)과 페이드 mask(scroller)를 분리: mask는 요소 배경까지 투명하게 깎아,
          sticky+불투명 배경 소비자(상세모달)에서 페이드 구간 뒤로 스크롤 콘텐츠가 비치는 것을 막는다 -->
-    <div class="ds-tabs-header kjun-tabs-header">
+    <div class="kjun-tabs-header">
       <div ref="scroller" :class="scrollerClasses" :style="maskStyle" role="tablist" :aria-label="ariaLabel" tabindex="-1" @scroll="updateOverflow">
         <button
           v-for="tab in normalizedTabs"
@@ -118,7 +118,7 @@ export default {
         name: tab.name || tab.value || tab.id  // Support 'name', 'value', and 'id'
       }))
     },
-    scrollerClasses() { return 'ds-tabs-scroller kjun-tabs-list' },
+    scrollerClasses() { return 'kjun-tabs-scroller kjun-tabs-list' },
     // 색을 칠하지 않고 strip 자체 alpha를 페이드 → 모달/페이지 등 어떤 배경에서도 맞는다
     maskStyle() {
       const fade = tokens.extensions.scrollFade.width
@@ -255,7 +255,7 @@ export default {
       this._tabPress = null
     },
     tabClasses() {
-      return ['ds-tab kjun-tab', this.$listeners['tab-menu'] ? 'kj-select-none' : '']
+      return ['kjun-tab', this.$listeners['tab-menu'] ? 'kj-select-none' : '']
     },
     // 상태의 의미 색상은 보존하되 배지 배경은 사용하지 않는다.
     badgeClass(tab) {
@@ -277,7 +277,7 @@ export default {
 </script>
 
 <style scoped>
-.ds-tabs-scroller { -ms-overflow-style:none; }
-.ds-tabs-scroller::-webkit-scrollbar { display:none; }
-.ds-tabs-scroller:focus-within { mask-image:none !important; -webkit-mask-image:none !important; }
+.kjun-tabs-scroller { -ms-overflow-style:none; }
+.kjun-tabs-scroller::-webkit-scrollbar { display:none; }
+.kjun-tabs-scroller:focus-within { mask-image:none !important; -webkit-mask-image:none !important; }
 </style>

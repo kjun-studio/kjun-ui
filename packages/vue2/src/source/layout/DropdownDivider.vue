@@ -1,5 +1,5 @@
 <template>
-  <div class="ds-dropdown-divider" role="separator"></div>
+  <div class="kjun-dropdown-divider" role="separator"></div>
 </template>
 
 <script>

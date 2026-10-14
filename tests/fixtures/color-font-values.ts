@@ -41,7 +41,7 @@ export const diagnosticCases: Record<string, [string, Record<string, unknown>]> 
   collection: ['DsCollectionMark', { kind: 'favorite', active: true }],
   table: ['DsTable', { data: [{ value: 2 }], columns: [{ key: 'value', label: 'Value', pill: true }] }],
   market: ['DsMarketTable', { rows: [{ id: 1, name: 'Test' }], columns: [], showActions: true }],
-  flash: ['DsPriceCell', { value: 2, flashClass: 'price-flash-up' }],
+  flash: ['DsPriceCell', { value: 2, flashClass: 'kjun-price-flash-up' }],
 };
 Object.assign(window, { colorFontErrors: [] as string[] });
 // Functional Vue VNode hooks report through window.error rather than errorHandler.

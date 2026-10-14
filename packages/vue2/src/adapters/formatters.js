@@ -3,7 +3,7 @@ export const formatNumber = (value, { decimals = 0 } = {}) => value == null || !
 export const formatPercent = (value, { decimals = 2, isRaw = false, showSign = false } = {}) => value == null ? '—' : (showSign && Number(value) > 0 ? '+' : '') + formatNumber(Number(value) * (isRaw ? 1 : 100), { decimals }) + '%';
 // Zero reads in the tertiary text role, like React and Native.
 export const getSignedNumberClass = value => Number(value) > 0 ? 'kj-text-price-up' : Number(value) < 0 ? 'kj-text-price-down' : 'kj-text-text-tertiary';
-export const getSignedPillClass = (value, { base = 'kj-inline-flex kj-items-center kj-px-2 kj-py-0.5 kj-rounded-full kj-text-xs kj-font-semibold num' } = {}) => base + ' ' + (Number(value) > 0 ? 'kj-bg-price-up-bg kj-text-price-up' : Number(value) < 0 ? 'kj-bg-price-down-bg kj-text-price-down' : 'kj-bg-bg-secondary kj-text-text-secondary');
+export const getSignedPillClass = (value, { base = 'kj-inline-flex kj-items-center kj-px-2 kj-py-0.5 kj-rounded-full kj-text-xs kj-font-semibold' } = {}) => base + ' ' + (Number(value) > 0 ? 'kj-bg-price-up-bg kj-text-price-up' : Number(value) < 0 ? 'kj-bg-price-down-bg kj-text-price-down' : 'kj-bg-bg-secondary kj-text-text-secondary');
 export const formatters = {
   number: formatNumber, percent: formatPercent,
   date: value => value ? new Intl.DateTimeFormat().format(new Date(value)) : '—',

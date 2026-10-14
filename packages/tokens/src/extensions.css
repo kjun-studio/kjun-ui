@@ -20,11 +20,11 @@
 .kjun-chip button:hover{background:var(--_kjun-color-hover)}
 .kjun-chip[data-disabled=true]{opacity:var(--_kjun-state-opacity-disabled)}
 /* Links and page buttons use the system ring instead of the browser default; Vue Breadcrumb and Pagination use their own ds- classes. */
-.kjun-scope :is(.kjun-list-main,.kjun-bottom-navigation a,.kjun-chip button,.kjun-breadcrumb a,.ds-breadcrumb-link,.kjun-external-link,.ds-pagination-button):focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
+.kjun-scope :is(.kjun-list-main,.kjun-bottom-navigation a,.kjun-chip button,.kjun-breadcrumb a,.kjun-breadcrumb-link,.kjun-external-link,.kjun-pagination-button):focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
 /* Kept out of the :is() above: its :not() would raise that whole rule over the inset overrides below. */
 .kjun-scope .kjun-pagination button:not(.kjun-select-trigger):focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
 /* Inline text links round the ring so it does not box the glyphs. */
-.kjun-scope :is(.kjun-breadcrumb a,.ds-breadcrumb-link,.kjun-external-link):focus-visible{border-radius:var(--_kjun-geometry-radius-radius4)}
+.kjun-scope :is(.kjun-breadcrumb a,.kjun-breadcrumb-link,.kjun-external-link):focus-visible{border-radius:var(--_kjun-geometry-radius-radius4)}
 /* Draw the removal ring inside its circle so it stays within the chip outline and clear of the label. */
 .kjun-scope .kjun-chip button:focus-visible{outline-offset:var(--_kjun-state-focus-inset-offset)}
 /* Bottom bars meet the screen edges, so their items draw the ring inside, like tabs. */

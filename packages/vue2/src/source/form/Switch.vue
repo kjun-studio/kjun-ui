@@ -13,7 +13,7 @@
     >
       <span :class="dotClasses"></span>
     </button>
-    <span v-if="$slots.default || label" class="ds-choice-label">
+    <span v-if="$slots.default || label" class="kjun-choice-label">
       <slot>{{ label }}</slot>
     </span>
   </label>
@@ -51,13 +51,13 @@ export default {
   },
   computed: {
     wrapperClasses() {
-      return ['ds-choice', { 'ds-choice--disabled': this.disabled }]
+      return ['kjun-choice', { 'kjun-choice--disabled': this.disabled }]
     },
     switchClasses() {
-      return ['ds-switch', `ds-switch--${this.size}`, { 'ds-switch--on': this.value }]
+      return ['kjun-switch', `kjun-switch--${this.size}`, { 'kjun-switch--on': this.value }]
     },
     dotClasses() {
-      return 'ds-switch-thumb'
+      return 'kjun-switch-thumb'
     }
   },
   methods: {

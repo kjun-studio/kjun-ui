@@ -198,7 +198,7 @@ for (const platform of ['react', 'vue2', 'native']) {
     await page.emulateMedia({ reducedMotion: 'reduce' }); await open(page, platform);
     // Three 24px lines, 12px vertical padding and 2px borders make 100px.
     for (const [id, height, radius] of [['sm', 32, 10], ['md', 40, 12], ['lg', 48, 14], ['override', 40, 14], ['multiline', 100, 12]] as const) {
-      const shape = page.getByTestId('form-' + id).locator(platform === 'native' ? ':scope > div > div > div:last-child' : '.kjun-skeleton-block, .ds-skeleton-block');
+      const shape = page.getByTestId('form-' + id).locator(platform === 'native' ? ':scope > div > div > div:last-child' : '.kjun-skeleton-block, .kjun-skeleton-block');
       expect((await box(shape)).height).toBe(height);
       expect((await box(shape)).width).toBeCloseTo((await box(page.getByTestId('form-' + id))).width, 0);
       await expect(shape).toHaveCSS('border-radius', radius + 'px');
@@ -209,9 +209,9 @@ for (const platform of ['react', 'vue2', 'native']) {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const mode of ['', '&dark']) {
       await page.setViewportSize({ width: 375, height: 1000 }); await open(page, platform, '?roles' + mode);
-      const field = page.getByTestId('form-md').locator(platform === 'native' ? ':scope > div > div > div:last-child' : '.kjun-skeleton-block, .ds-skeleton-block');
+      const field = page.getByTestId('form-md').locator(platform === 'native' ? ':scope > div > div > div:last-child' : '.kjun-skeleton-block, .kjun-skeleton-block');
       expect((await box(field)).width).toBeCloseTo((await box(page.getByTestId('form-md'))).width, 0);
-      const shape = page.getByTestId('skeleton').locator(platform === 'native' ? ':scope > div > div' : '.kjun-skeleton-block, .ds-skeleton-block');
+      const shape = page.getByTestId('skeleton').locator(platform === 'native' ? ':scope > div > div' : '.kjun-skeleton-block, .kjun-skeleton-block');
       if (platform === 'native') await expect(shape).toHaveCSS('background-color', 'rgb(120, 154, 188)');
       else {
         const background = await shape.evaluate(el => getComputedStyle(el).backgroundImage);

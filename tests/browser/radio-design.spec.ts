@@ -3,11 +3,11 @@ import { openFixture } from './packed-fixture';
 
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureRadio(next), next);
 const radio = (page: Page, name = '사과') => page.getByRole('radio', { name, exact: true });
-const control = (item: Locator, platform: string) => platform === 'native' ? item.locator(':scope > div').first() : item.locator('..').locator('.ds-choice-control');
+const control = (item: Locator, platform: string) => platform === 'native' ? item.locator(':scope > div').first() : item.locator('..').locator('.kjun-choice-control');
 async function geometry(item: Locator, platform: string) {
   return item.evaluate((el, platform) => {
     const wrapper = platform === 'native' ? el : el.closest('label')!;
-    const circle = platform === 'native' ? wrapper.firstElementChild! : wrapper.querySelector('.ds-choice-control')!;
+    const circle = platform === 'native' ? wrapper.firstElementChild! : wrapper.querySelector('.kjun-choice-control')!;
     const label = wrapper.lastElementChild!;
     const rect = (node: Element) => { const r = node.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; };
     const c = rect(circle), l = rect(label), s = getComputedStyle(circle);

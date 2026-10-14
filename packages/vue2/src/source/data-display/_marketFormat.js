@@ -18,12 +18,12 @@ export function getInvestorClass(value) {
 // 상세 카드의 지표 pill은 배경을 유지한다.
 export function getChangeRatePillClass(rate) {
   return getSignedPillClass(rate, {
-    base: 'kj-inline-flex kj-items-center kj-px-2 kj-py-0.5 kj-rounded-full kj-text-xs kj-font-semibold num',
+    base: 'kj-inline-flex kj-items-center kj-px-2 kj-py-0.5 kj-rounded-full kj-text-xs kj-font-semibold',
   })
 }
 
 export function getChangeRateTextClass(rate, stale = false) {
-  return `kj-inline-flex kj-items-center kj-text-xs kj-font-medium num ${stale ? 'kj-text-text-tertiary' : getSignedNumberClass(rate)}`
+  return `kj-inline-flex kj-items-center kj-text-xs kj-font-medium ${stale ? 'kj-text-text-tertiary' : getSignedNumberClass(rate)}`
 }
 
 // --- pill 목록 (모바일 카드 지표 로테이션) ---
@@ -107,7 +107,7 @@ export function formatMetricValue(value, format, ctx, helpers) {
 
 // --- 현재가 틱 플래시 ---
 // 폴링 갱신 시 직전값 대비 방향을 계산해 row._flash = { price, change }로 싣는다.
-// CSS 클래스(price-flash-*-bg-*)는 클래스 제거→재추가로 재발화하므로 호출부가 일정 시간 뒤 _flash를 비운다.
+// CSS 클래스(kjun-price-flash-*-bg-*)는 클래스 제거→재추가로 재발화하므로 호출부가 일정 시간 뒤 _flash를 비운다.
 
 // 현재가 틱 방향: 상승 'up' / 하락 'down' / 변동 없음 null
 export function priceFlashDir(before, after) {
@@ -133,12 +133,12 @@ export function flashCellClass(row, column, { plain = false } = {}) {
   const flash = row && row._flash
   if (!flash || !column.flash) return ''
   if (column.flash === 'price') {
-    return flash.price ? `price-flash-${flash.price}-bg-pop` : ''
+    return flash.price ? `kjun-price-flash-${flash.price}-bg-pop` : ''
   }
   if (column.flash === 'change') {
     if (!flash.change) return ''
     const direction = (row[column.key] || 0) >= 0 ? 'up' : 'down'
-    return `price-flash-${direction}-${plain ? 'bg-pop' : 'bg-strong'}`
+    return `kjun-price-flash-${direction}-${plain ? 'bg-pop' : 'bg-strong'}`
   }
   return ''
 }

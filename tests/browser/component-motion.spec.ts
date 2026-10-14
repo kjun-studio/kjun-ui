@@ -5,9 +5,9 @@ const configure = (page: Page, next: object) => page.evaluate(next => (window as
 const start = (page: Page, platform: string, scenario: string) => openFixture(page, platform, '?scenario=' + scenario, 'motion', 'development');
 const marker = '.kjun-tab-indicator, [data-testid="kjun-tab-indicator"]';
 const panelSelector = {
-  modal: '.kjun-modal, .ds-modal-container, [role="dialog"][aria-label="Motion modal"]',
-  drawer: '.kjun-drawer, .ds-drawer-panel, [aria-label="Motion drawer"]:not(.kjun-drawer-dialog)',
-  menu: '.kjun-floating, .ds-dropdown-menu, [aria-label="메뉴"]',
+  modal: '.kjun-modal, .kjun-modal-container, [role="dialog"][aria-label="Motion modal"]',
+  drawer: '.kjun-drawer, .kjun-drawer-panel, [aria-label="Motion drawer"]:not(.kjun-drawer-dialog)',
+  menu: '.kjun-floating, .kjun-dropdown-menu, [aria-label="메뉴"]',
 };
 test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });

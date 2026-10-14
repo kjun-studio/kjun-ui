@@ -52,7 +52,7 @@ export function DsCheckbox<T = ChoiceValue>({
       isSelected={checked}
       isDisabled={disabled}
       aria-label={ariaLabel}
-      className={"kjun-choice ds-choice" + (disabled ? " ds-choice--disabled" : "")}
+      className={"kjun-choice" + (disabled ? " kjun-choice--disabled" : "")}
       onChange={(next) => {
         const result = Array.isArray(value)
           ? next
@@ -64,8 +64,8 @@ export function DsCheckbox<T = ChoiceValue>({
       }}
     >
       <span
-        className={`ds-choice-control ds-checkbox ds-checkbox--${size}${
-          checked ? " ds-checkbox--checked" : ""
+        className={`kjun-choice-control kjun-checkbox kjun-checkbox--${size}${
+          checked ? " kjun-checkbox--checked" : ""
         }`}
       >
         {checked && (
@@ -73,7 +73,7 @@ export function DsCheckbox<T = ChoiceValue>({
         )}
       </span>
       {(children || label) && (
-        <span className="ds-choice-label">{children || label}</span>
+        <span className="kjun-choice-label">{children || label}</span>
       )}
     </AriaCheckbox>
   );
@@ -103,21 +103,21 @@ export function DsSwitch({
       isSelected={value}
       isDisabled={disabled}
       aria-label={ariaLabel || label}
-      className={"kjun-choice ds-choice" + (disabled ? " ds-choice--disabled" : "")}
+      className={"kjun-choice" + (disabled ? " kjun-choice--disabled" : "")}
       onChange={(next) => {
         onValueChange?.(next);
         onChange?.(next);
       }}
     >
       <span
-        className={`ds-switch ds-switch--${size}${
-          value ? " ds-switch--on" : ""
+        className={`kjun-switch kjun-switch--${size}${
+          value ? " kjun-switch--on" : ""
         }`}
       >
-        <span className="ds-switch-thumb" />
+        <span className="kjun-switch-thumb" />
       </span>
       {(children || label) && (
-        <span className="ds-choice-label">{children || label}</span>
+        <span className="kjun-choice-label">{children || label}</span>
       )}
     </AriaSwitch>
   );
@@ -152,7 +152,7 @@ export function DsRadio({
   const group = useContext(RadioContext),
     selected = (group ? group.value : value) === val;
   return (
-    <label className={"kjun-choice ds-choice" + (disabled ? " ds-choice--disabled" : "")}>
+    <label className={"kjun-choice" + (disabled ? " kjun-choice--disabled" : "")}>
       <input
         type="radio"
         className="kjun-sr-only"
@@ -170,13 +170,13 @@ export function DsRadio({
       />
       <span
         className={
-          "ds-choice-control ds-radio" + (selected ? " ds-radio--checked" : "")
+          "kjun-choice-control kjun-radio" + (selected ? " kjun-radio--checked" : "")
         }
       >
-        {selected && <span className="ds-radio-dot" />}
+        {selected && <span className="kjun-radio-dot" />}
       </span>
       {(children || label) && (
-        <span className="ds-choice-label">{children || label}</span>
+        <span className="kjun-choice-label">{children || label}</span>
       )}
     </label>
   );

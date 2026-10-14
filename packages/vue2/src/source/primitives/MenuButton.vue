@@ -5,8 +5,8 @@
     :disabled="disabled || loading"
     :menu-id="menuId"
     :trigger-id="triggerId"
-    menu-class="ds-menu-button__menu"
-    class="ds-menu-button kj-inline-flex"
+    menu-class="kjun-menu-button__menu"
+    class="kjun-menu-button kj-inline-flex"
     @open="onOpen"
     @close="onClose"
   >
@@ -130,10 +130,10 @@ export default {
   },
   computed: {
     triggerId() {
-      return `ds-menu-button-trigger-${this._uid}`
+      return `kjun-menu-button-trigger-${this._uid}`
     },
     menuId() {
-      return `ds-menu-button-menu-${this._uid}`
+      return `kjun-menu-button-menu-${this._uid}`
     },
     iconOnly() { return this.compact || (!this.label && !this.$slots.label && !this.$scopedSlots.label) },
     accessibleLabel() { return this.ariaLabel || this.label || this.tooltip || (this.iconOnly ? '메뉴' : undefined) }

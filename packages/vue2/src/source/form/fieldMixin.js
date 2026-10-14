@@ -27,10 +27,10 @@ export default {
       return !!this.errorMessage && !this.dsFormGroup?.error
     },
     fieldSizeClass() {
-      return `ds-field--${this.size || 'md'}`
+      return `kjun-field--${this.size || 'md'}`
     },
     fieldClasses() {
-      return ['ds-field', this.fieldSizeClass, { 'ds-field--error': this.fieldInvalid }]
+      return ['kjun-field', this.fieldSizeClass, { 'kjun-field--error': this.fieldInvalid }]
     },
   },
 }

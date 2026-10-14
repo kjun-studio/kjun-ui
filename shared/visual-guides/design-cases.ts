@@ -110,7 +110,7 @@ export const designCases: DesignCase[] = [
     caution: "취소를 비활성화하지 마세요. 실제로 복원할 수 있는 서비스라면 복구 가능 여부와 보관 기간을 사실대로 적습니다.",
     points: [
       { title: "대상과 결과를 함께 확인", before: "일반적인 제목과 ‘계속 진행할까요?’로 삭제 결과를 설명하지 않습니다.", after: "제목에 ‘프로젝트 계획’을, 본문에 문서 삭제와 복구 불가를 명시합니다.", target: target("delete-context") },
-      { title: "안전한 취소와 위험 행동의 구분", before: "확정 버튼이 일반적인 primary와 ‘확인’ 문구여서 삭제인지 알기 어렵습니다.", after: "Modal의 취소·확정 순서를 유지하고 확정에 danger와 ‘문서 삭제’를 사용합니다.", target: '[role="dialog"] .kjun-modal-footer, [role="dialog"] .ds-modal-footer, [role="dialog"][aria-label] > div:last-child' },
+      { title: "안전한 취소와 위험 행동의 구분", before: "확정 버튼이 일반적인 primary와 ‘확인’ 문구여서 삭제인지 알기 어렵습니다.", after: "Modal의 취소·확정 순서를 유지하고 확정에 danger와 ‘문서 삭제’를 사용합니다.", target: '[role="dialog"] .kjun-modal-footer, [role="dialog"] .kjun-modal-footer, [role="dialog"][aria-label] > div:last-child' },
     ],
   },
   {

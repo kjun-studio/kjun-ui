@@ -1,5 +1,5 @@
 <template>
-  <span class="ds-heatmap-cell"><span class="ds-heatmap-cell__fill" :style="fillStyle" aria-hidden="true"/><span class="ds-heatmap-cell__content"><slot>{{ value }}</slot></span></span>
+  <span class="kjun-heatmap-cell"><span class="kjun-heatmap-cell__fill" :style="fillStyle" aria-hidden="true"/><span class="kjun-heatmap-cell__content"><slot>{{ value }}</slot></span></span>
 </template>
 <script>
 import { componentMixins } from "../../component-mixins.js";
@@ -21,7 +21,7 @@ export default {
 };
 </script>
 <style scoped>
-.ds-heatmap-cell{position:relative;display:inline-block;padding:var(--extension-financial-pill-padding-y) var(--extension-financial-pill-padding-x);border-radius:var(--extension-financial-cell-radius);color:var(--text-primary);font-variant-numeric:tabular-nums}
-.ds-heatmap-cell__fill{position:absolute;inset:0;border-radius:inherit;pointer-events:none}
-.ds-heatmap-cell__content{position:relative}
+.kjun-heatmap-cell{position:relative;display:inline-block;padding:var(--extension-financial-pill-padding-y) var(--extension-financial-pill-padding-x);border-radius:var(--extension-financial-cell-radius);color:var(--text-primary);font-variant-numeric:tabular-nums}
+.kjun-heatmap-cell__fill{position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+.kjun-heatmap-cell__content{position:relative}
 </style>

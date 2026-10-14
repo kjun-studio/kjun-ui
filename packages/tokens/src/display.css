@@ -396,5 +396,4 @@
 }
 
 
-.kjun-form-skeleton > div > .kjun-skeleton:last-child .kjun-skeleton-block,
-.kjun-form-skeleton > div > .ds-skeleton:last-child .ds-skeleton-block { border-radius: var(--form-skeleton-radius); }
+.kjun-form-skeleton > div > .kjun-skeleton:last-child .kjun-skeleton-block{ border-radius: var(--form-skeleton-radius); }

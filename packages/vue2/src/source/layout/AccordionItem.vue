@@ -1,5 +1,5 @@
 <template>
-  <div class="ds-accordion-item">
+  <div class="kjun-accordion-item">
     <!-- Header -->
     <button
       type="button"
@@ -20,7 +20,7 @@
 
     <!-- Content -->
     <transition
-      name="ds-accordion-content"
+      name="kjun-accordion-content"
       :css="false"
       @before-enter="prepareCollapse"
       @enter-cancelled="stopCollapse"
@@ -37,7 +37,7 @@
         :id="'accordion-panel-' + itemId"
         role="region"
         :aria-labelledby="'accordion-header-' + itemId"
-        class="ds-accordion-content"
+        class="kjun-accordion-content"
       >
         <div class="kjun-accordion-panel">
           <slot></slot>

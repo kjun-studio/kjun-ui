@@ -1,5 +1,5 @@
 <template>
-  <div class="market-table" :class="embedded ? '' : 'kj-bg-surface-card kj-rounded-card'">
+  <div class="kjun-market-table-frame" :class="embedded ? '' : 'kj-bg-surface-card kj-rounded-card'">
     <DsDataState
       :query-key="queryKey"
     :result-key="resultKey"
@@ -103,7 +103,6 @@
                 :class="[
                   'kj-px-3 kj-py-3.5 kj-text-sm kj-whitespace-nowrap',
                   alignClass(col.align),
-                  isNumeric(col) ? 'num' : '',
                   weightClass(col)
                 ]"
               >
@@ -376,7 +375,7 @@ export default {
 
 <style scoped>
 /* 도메인 슬롯의 가격도 여백 없는 숫자로 맞춰 열의 오른쪽 기준선을 유지한다. */
-.market-table ::v-deep .ds-price-cell {
+.kjun-market-table-frame ::v-deep .kjun-price-cell {
   padding: 0;
   border-radius: 0;
 }
