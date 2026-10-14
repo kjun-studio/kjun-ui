@@ -25,6 +25,11 @@ export const appHtml = `
 <label class="ds-choice" data-probe="ds-choice">app choice</label>
 <div class="ds-form-group" data-probe="ds-form-group">app group</div>
 <button class="ds-dropdown-item" type="button" data-probe="ds-dropdown-item">app item</button>
+<div class="ds-kpi-hero" data-probe="ds-kpi-hero"><span class="ds-kpi-hero__value" data-probe="ds-kpi-hero__value">1,234</span></div>
+<div class="ds-kpi-row" data-probe="ds-kpi-row"><span class="ds-kpi-row__badge" data-probe="ds-kpi-row__badge">+3%</span></div>
+<span class="ds-animated-number" data-probe="ds-animated-number"><span class="ds-animated-number__affix" data-probe="ds-animated-number__affix">원</span></span>
+<div class="ds-button-group" data-probe="ds-button-group">app group</div>
+<span class="ds-badge" data-probe="ds-badge">app badge</span>
 <section class="app-card" data-probe="card">
   <h2 data-probe="heading">공지</h2>
   <p data-probe="paragraph">본문</p>

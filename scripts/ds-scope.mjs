@@ -3,28 +3,43 @@ import selectorParser from "postcss-selector-parser";
 // kjun-owned markup, as in packages/tokens/src/reset.css: an element with a kjun- class other than the
 // bare Provider root, or a portal root that pairs kjun-scope with a kjun- class.
 export const kjunMarkup = ':where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"])';
-// Already tied to kjun markup: a kjun- class other than kjun-scope, the boundary itself, or Vue's scope attribute.
-const owned = /\[class\*="kjun-"\]|\.kjun-(?!scope\b)|data-v-kjun-/;
 // CSS-only helpers that apps put on their own wrappers.
 const helpers = new Set([".ds-form-layout"]);
 
-const hasDsClass = compound => compound.some(node => node.type === "class" && node.value.startsWith("ds-"));
+// Tied to kjun markup when a compound the selector must pass through requires a kjun- class (other than the
+// kjun-scope boundary), Vue's data-v-kjun scope attribute, or the kjun markup marker. A kjun- class offered
+// as one alternative inside :is()/:where() (e.g. :is(.kjun-badge, .ds-badge)) does not tie it.
+const requiresKjun = node =>
+  (node.type === "class" && node.value.startsWith("kjun-") && node.value !== "kjun-scope") ||
+  (node.type === "attribute" && node.attribute.startsWith("data-v-kjun-")) ||
+  (node.type === "pseudo" && node.value === ":where" && node.toString().includes('[class*="kjun-"]'));
+
+// A ds-* class at the compound's top level or offered inside :is()/:where() (not :not()).
+const mentionsDs = node =>
+  (node.type === "class" && node.value.startsWith("ds-")) ||
+  (node.type === "pseudo" && (node.value === ":is" || node.value === ":where") &&
+    node.nodes.some(inner => inner.nodes.some(mentionsDs)));
+const hasDsClass = compound => compound.some(mentionsDs);
 
 // Apps (notably the one kjun was extracted from) use the same ds-* names, so a .ds-* rule must not match
 // app markup inside the Provider. Each selector becomes two: the first ds-* compound inside kjun markup,
 // or the compound itself being kjun markup. :where() keeps the specificity unchanged.
 function scopeSelector(selector) {
-  if (!/\.ds-/.test(selector) || owned.test(selector) || helpers.has(selector.trim())) return [selector];
+  if (!/\.ds-/.test(selector) || helpers.has(selector.trim())) return [selector];
   const variants = [];
   selectorParser(root => {
     const original = root.first;
+    if (original.nodes.some(requiresKjun)) { variants.push(selector); return; }
     const compounds = [[]];
     const combinators = [null];
     for (const node of original.nodes) {
       if (node.type === "combinator") { compounds.push([]); combinators.push(node); }
       else compounds[compounds.length - 1].push(node);
     }
-    const index = compounds.findIndex(hasDsClass);
+    // Prefer a compound with a ds-* class of its own; a ds-* class only inside :is()/:where() of an earlier
+    // compound may be a parent condition (e.g. :where(.flex, .ds-form-layout) > .ds-form-group).
+    const direct = compounds.findIndex(compound => compound.some(node => node.type === "class" && node.value.startsWith("ds-")));
+    const index = direct >= 0 ? direct : compounds.findIndex(hasDsClass);
     if (index < 0) { variants.push(selector); return; }
     const marker = () => selectorParser.pseudo({ value: ":where", nodes: selectorParser(r => r).astSync(kjunMarkup.slice(7, -1)).nodes });
     // Self: append the marker before any pseudo-element of the compound.
