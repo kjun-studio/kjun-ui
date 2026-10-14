@@ -32,6 +32,8 @@ export const FloatingPanel = defineComponent({
     field: { type: Boolean, default: false },
     flip: { type: Boolean, default: true },
     nonModal: { type: Boolean, default: false },
+    /** The panel is itself the dialog unless its content renders one (Popover). */
+    dialog: { type: Boolean, default: true },
   },
   setup(props, { slots, expose }) {
     const reduced = useReducedMotion();
@@ -93,7 +95,7 @@ export const FloatingPanel = defineComponent({
     onUpdated(update);
     onBeforeUnmount(detach);
     expose({ panel });
-    const dismiss = () => !props.nonModal && (
+    const dismiss = () => (
       <div style={visuallyHidden}><button aria-label="Dismiss" tabindex={-1} style={{ width: "1px", height: "1px" }} onClick={() => props.onOpenChange(false)} /></div>
     );
     return () => {
@@ -103,13 +105,14 @@ export const FloatingPanel = defineComponent({
         <Teleport to={to}>
           <div ref={panel} data-motion="popup" data-motion-open={String(motion.active())} class={["kjun-scope kjun-floating", props.panelClass]}
             data-placement={position.side} inert={!props.open}
+            role={props.dialog && !props.nonModal ? "dialog" : undefined} tabindex={props.dialog && !props.nonModal ? -1 : undefined}
             style={{
               position: "fixed", zIndex: layer.zIndex.value, top: position.top + "px", left: position.left + "px",
               maxHeight: position.maxHeight != null ? position.maxHeight + "px" : undefined,
               "--trigger-width": position.triggerWidth + "px",
               width: props.matchTriggerWidth ? "var(--trigger-width)" : undefined,
             }}>
-            {dismiss()}
+            {!props.nonModal && dismiss()}
             {slots.default?.()}
             {dismiss()}
           </div>

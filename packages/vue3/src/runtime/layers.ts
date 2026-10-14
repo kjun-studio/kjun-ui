@@ -104,3 +104,12 @@ export function useLayer(open: () => boolean, present: () => boolean, kind: Laye
   };
 }
 export type Layer = ReturnType<typeof useLayer>;
+
+/** A popup closed by Escape returns focus to its field; that focus must not reopen it. */
+export function usePopupFocusGuard(trigger: () => FocusTarget | null) {
+  const { state } = useLayerContext();
+  return {
+    canOpen: () => !state.isRestoredFocus(focusTrigger(trigger())),
+    clear: () => state.clearRestoredFocus(focusTrigger(trigger())),
+  };
+}

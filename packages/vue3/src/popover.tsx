@@ -49,7 +49,7 @@ export const KjunPopover = defineComponent({
           aria-haspopup="dialog" aria-expanded={expanded.value} aria-controls={expanded.value ? id : undefined}>
           {slots.trigger?.({ open: open.value })}
         </div>
-        <FloatingPanel open={open.value} onOpenChange={change} trigger={() => trigger.value} panelClass="kjun-content-popover"
+        <FloatingPanel open={open.value} onOpenChange={change} trigger={() => trigger.value} panelClass="kjun-content-popover" dialog={false}
           placement={props.placement} matchTriggerWidth={props.matchTriggerWidth} maxHeight={props.maxHeight} flip={props.flip}>
           {{ default: () => (
             <section ref={dialog} id={id} aria-label={props.ariaLabel || "상세 정보"} class="kjun-popover-dialog" role="dialog" tabindex={-1}

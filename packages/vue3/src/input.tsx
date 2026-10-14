@@ -194,3 +194,12 @@ export const KjunInput = defineComponent({
     };
   },
 });
+
+/** Hides the enclosing FormGroup from popup content, like React's FieldContext.Provider value={null}. */
+export const KjunFieldReset = defineComponent({
+  name: "KjunFieldReset",
+  setup(_, { slots }) {
+    provide(kjunFieldKey, { value: null });
+    return () => slots.default?.();
+  },
+});

@@ -12,3 +12,7 @@ export { KjunSlider, KjunRangeSlider } from "./range-input";
 export { KjunQuantityStepper } from "./quantity-stepper";
 export { KjunPopover, KjunTooltip } from "./popover";
 export { KjunDropdown, KjunDropdownItem, KjunDropdownDivider, KjunMenuButton } from "./dropdown";
+export { KjunSelect } from "./select-control";
+export { KjunCombobox } from "./combobox";
+export { KjunSearchInput } from "./search-input";
+export { KjunDatePicker, KjunTimePicker } from "./date-picker";
