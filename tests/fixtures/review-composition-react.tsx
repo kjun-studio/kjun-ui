@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { KjunProvider, DsButton, DsInput, DsPopover, DsMarketSimpleList, DsMarketCards, DsSearchInput } from '@kjun-ui/react';
+import { KjunProvider, KjunButton, KjunInput, KjunPopover, KjunMarketSimpleList, KjunMarketCards, KjunSearchInput } from '@kjun-ui/react';
 import { setRootValues } from './style-values';
 import { SearchContracts } from './review-composition-search';
 setRootValues();
@@ -14,16 +14,16 @@ function Cases() {
     rows: [{ id: 1, name: 'Alpha', current_price: 1 }], primaryLabel: (row: { name: string }) => row.name,
     priceValue: () => 1, changeValue: () => null, priceFormatter: String,
     onRowClick: params.has('passive') ? undefined : () => log('row'),
-    renderNameSuffix: () => <DsButton onClick={() => log('action')}>Action</DsButton>,
+    renderNameSuffix: () => <KjunButton onClick={() => log('action')}>Action</KjunButton>,
   };
   return <>
-    {mode === 'focus' && <DsPopover trigger={<DsButton>Open</DsButton>} focusOnOpen ariaLabel="Editor"
+    {mode === 'focus' && <KjunPopover trigger={<KjunButton>Open</KjunButton>} focusOnOpen ariaLabel="Editor"
       open={open} onOpenChange={setOpen}>
-      <DsInput value={value} ariaLabel="Edit value" onValueChange={setValue} />
-    </DsPopover>}
-    {mode === 'list' && <DsMarketSimpleList {...market} />}
-    {mode === 'cards' && <DsMarketCards {...market} storageNamespace="review-composition" metricConfig={{ current_price: { label: 'Price' } }} columns={[{ key: 'current_price', label: 'Price' }]} />}
-    {!mode && <SearchContracts Search={DsSearchInput} />}
+      <KjunInput value={value} ariaLabel="Edit value" onValueChange={setValue} />
+    </KjunPopover>}
+    {mode === 'list' && <KjunMarketSimpleList {...market} />}
+    {mode === 'cards' && <KjunMarketCards {...market} storageNamespace="review-composition" metricConfig={{ current_price: { label: 'Price' } }} columns={[{ key: 'current_price', label: 'Price' }]} />}
+    {!mode && <SearchContracts Search={KjunSearchInput} />}
     {mode && <><output data-testid="value">{value}</output><output data-testid="events">{JSON.stringify(events)}</output></>}
   </>;
 }

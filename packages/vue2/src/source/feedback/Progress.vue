@@ -27,7 +27,7 @@ import { SIZES_CORE, SEMANTIC_VARIANTS, oneOf } from '../tokens'
 
 export default {
   mixins: componentMixins,
-  name: 'DsProgress',
+  name: 'KjunProgress',
   props: {
     value: {
       type: Number,

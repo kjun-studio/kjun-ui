@@ -13,9 +13,9 @@ import { recommendations } from '../../../../shared/visual-guides/usage-content'
 import type { VisualGuide } from '../../../../shared/visual-guides/types';
 const guides = definitions as unknown as Record<string, VisualGuide>;
 const compactComponents = new Set([
-  'DsButtonGroup', 'DsCopyButton', 'DsRefreshButton', 'DsIconToggle', 'DsChip',
-  'DsCheckbox', 'DsRadio', 'DsSwitch', 'DsBadge', 'DsIcon', 'DsAvatar', 'DsSpinner',
-  'DsDivider', 'DsCollectionMark',
+  'KjunButtonGroup', 'KjunCopyButton', 'KjunRefreshButton', 'KjunIconToggle', 'KjunChip',
+  'KjunCheckbox', 'KjunRadio', 'KjunSwitch', 'KjunBadge', 'KjunIcon', 'KjunAvatar', 'KjunSpinner',
+  'KjunDivider', 'KjunCollectionMark',
 ]);
 const buttonComparisons = [
   ['button-variants', '변형'], ['button-sizes', '크기'], ['button-states', '상태'],
@@ -40,8 +40,8 @@ export function VisualSections({ name }: { name: string }) {
   const data = guide.platforms[platform];
   return (
     <>
-      {name === 'DsTable' && <TableExamples />}
-      {name === 'DsCard' && <CardExamples />}
+      {name === 'KjunTable' && <TableExamples />}
+      {name === 'KjunCard' && <CardExamples />}
       <section id="anatomy">
         <h2>구조</h2>
         {data.figures.map((figure) => (
@@ -57,11 +57,11 @@ export function VisualSections({ name }: { name: string }) {
         <h2>상태·크기</h2>
         <p className="body-copy">{data.note}</p>
         <ComponentDimensions name={name} />
-        {['DsButton', 'DsInput', 'DsTabs', 'DsTabPane'].includes(name) && <p className="body-copy"><Link href="/interaction">상태·상호작용</Link>에서 조작·선택·비활성·읽기 전용·작업 진행의 차이를 직접 확인하세요.</p>}
+        {['KjunButton', 'KjunInput', 'KjunTabs', 'KjunTabPane'].includes(name) && <p className="body-copy"><Link href="/interaction">상태·상호작용</Link>에서 조작·선택·비활성·읽기 전용·작업 진행의 차이를 직접 확인하세요.</p>}
         <p className="guide-note">
           아래는 비교용 설정입니다. 속성을 생략했을 때의 기본값은 API에서 확인하세요.
         </p>
-        {name === 'DsButton' ? <div className="guide-comparison-grid detail-comparisons" data-layout="wide">
+        {name === 'KjunButton' ? <div className="guide-comparison-grid detail-comparisons" data-layout="wide">
           {buttonComparisons.map(([id, label]) => {
             const scenario = data.states.find(item => item.id === id)!;
             return <GuideExample key={platform + id} name={name} mode="comparison" scenario={{ ...scenario, label }} />;

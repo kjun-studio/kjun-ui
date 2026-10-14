@@ -35,21 +35,21 @@ test('every public component and provider has sources, valid controls and preset
   }
 });
 test('only meaningful controls are offered and malformed settings are rejected', () => {
-  for (const name of ['DsBadge', 'DsProgress', 'DsDropdownDivider', 'DsErrorBoundary']) assert.equal(exampleDefinition(name).controls.length, 0);
-  assert.deepEqual(exampleDefinition('DsIcon').controls.map(c => c.key), ['spin']);
-  assert.deepEqual(exampleDefinition('DsPriceCell').controls.map(c => c.key), ['stale']);
-  assert.ok(!exampleDefinition('DsKpiHero').controls.some(c => c.key === 'stale'));
-  assert.throws(() => validateSettings('DsBadge', { disabled: true }));
-  assert.throws(() => validateSettings('DsSelect', { multiple: 'yes' }));
-  assert.throws(() => validateSettings('DsSearchInput', { debounce: Infinity }));
-  assert.ok(!visibleControls('DsTimePicker', presetConfig('DsTimePicker').settings).some(c => c.key === 'secondStep'));
-  assert.ok(visibleControls('DsTimePicker', presetConfig('DsTimePicker', 'seconds').settings).some(c => c.key === 'secondStep'));
+  for (const name of ['KjunBadge', 'KjunProgress', 'KjunDropdownDivider', 'KjunErrorBoundary']) assert.equal(exampleDefinition(name).controls.length, 0);
+  assert.deepEqual(exampleDefinition('KjunIcon').controls.map(c => c.key), ['spin']);
+  assert.deepEqual(exampleDefinition('KjunPriceCell').controls.map(c => c.key), ['stale']);
+  assert.ok(!exampleDefinition('KjunKpiHero').controls.some(c => c.key === 'stale'));
+  assert.throws(() => validateSettings('KjunBadge', { disabled: true }));
+  assert.throws(() => validateSettings('KjunSelect', { multiple: 'yes' }));
+  assert.throws(() => validateSettings('KjunSearchInput', { debounce: Infinity }));
+  assert.ok(!visibleControls('KjunTimePicker', presetConfig('KjunTimePicker').settings).some(c => c.key === 'secondStep'));
+  assert.ok(visibleControls('KjunTimePicker', presetConfig('KjunTimePicker', 'seconds').settings).some(c => c.key === 'secondStep'));
   const config = presetConfig('KjunFeedbackProvider', 'confirm');
   assert.ok(!visibleControls('KjunFeedbackProvider', config.settings).some(c => c.key === 'duration'));
 });
 test('false values and current input survive code generation while event history does not', () => {
-  const settings = { ...presetConfig('DsSelect').settings, searchable: false, clearable: false };
-  const source = exampleSource(manifest.DsSelect.sources.react, 'react', settings, { select: 'a', selectOpen: true, message: 'last event' });
+  const settings = { ...presetConfig('KjunSelect').settings, searchable: false, clearable: false };
+  const source = exampleSource(manifest.KjunSelect.sources.react, 'react', settings, { select: 'a', selectOpen: true, message: 'last event' });
   assert.match(source, /"searchable": false/); assert.match(source, /"clearable": false/);
   assert.match(source, /"select": "a"/); assert.match(source, /"selectOpen": true/);
   assert.doesNotMatch(source, /last event/);
@@ -58,11 +58,11 @@ test('false values and current input survive code generation while event history
 
 test('comparison examples hide controls overridden by their fixed cases', () => {
   const keys = (name, preset) => visibleControls(name, presetConfig(name, preset).settings).map(control => control.key);
-  assert.ok(!keys('DsButton', 'sizes').includes('size'));
-  assert.ok(!keys('DsButton', 'sizes').includes('iconOnly'));
-  assert.ok(!keys('DsButton', 'variants').includes('variant'));
-  assert.ok(!keys('DsButton', 'states').includes('loading'));
-  assert.ok(!keys('DsInput', 'states').includes('readOnly'));
-  assert.ok(keys('DsButton', 'default').includes('iconOnly'));
-  assert.ok(keys('DsInput', 'default').includes('readOnly'));
+  assert.ok(!keys('KjunButton', 'sizes').includes('size'));
+  assert.ok(!keys('KjunButton', 'sizes').includes('iconOnly'));
+  assert.ok(!keys('KjunButton', 'variants').includes('variant'));
+  assert.ok(!keys('KjunButton', 'states').includes('loading'));
+  assert.ok(!keys('KjunInput', 'states').includes('readOnly'));
+  assert.ok(keys('KjunButton', 'default').includes('iconOnly'));
+  assert.ok(keys('KjunInput', 'default').includes('readOnly'));
 });

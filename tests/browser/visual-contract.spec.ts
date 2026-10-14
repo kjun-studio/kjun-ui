@@ -307,9 +307,9 @@ const option = (page: Page, platform: string, name: string) => page.getByRole(pl
 for (const platform of platforms) {
   test(`${platform}: compact time segments fit 240px and clear returns focus`, async ({ page }) => {
     await page.setViewportSize({ width: 288, height: 560 });
-    await visit(page, platform, 'DsTimePicker');
+    await visit(page, platform, 'KjunTimePicker');
     for (const palette of ['default', 'dark']) for (const size of ['sm', 'md', 'lg']) {
-      await configure(page, 'DsTimePicker', { precision: 'second', size }, { time: '09:30:15' }, palette);
+      await configure(page, 'KjunTimePicker', { precision: 'second', size }, { time: '09:30:15' }, palette);
       const root = page.locator('[aria-label="알림 시각"]').first();
       const bounds = (await root.boundingBox())!;
       expect(bounds.width).toBeLessThanOrEqual(240);
@@ -324,7 +324,7 @@ for (const platform of platforms) {
       await page.screenshot({ path: `${output}/${platform}-time-${palette}-${size}.png` });
     }
     await page.setViewportSize({ width: 390, height: 560 });
-    await configure(page, 'DsTimePicker', { precision: 'second', size: 'md' }, { time: '09:30:15' });
+    await configure(page, 'KjunTimePicker', { precision: 'second', size: 'md' }, { time: '09:30:15' });
     await page.locator('[aria-label="알림 시각"]').first().screenshot({ path: `${output}/${platform}-time-wide.png` });
     await timePart(page, platform, '시').click();
     await option(page, platform, '10').click();
@@ -333,15 +333,15 @@ for (const platform of platforms) {
     await expect.poll(async () => (await state(page)).time).toBe(null);
     await expect(timePart(page, platform, '시')).toBeFocused();
     await expect(page.getByRole('button', { name: '알림 시각 지우기' })).toHaveCount(0);
-    await configure(page, 'DsTimePicker', { precision: 'second', disabled: true, error: true }, { time: '09:30:15' });
+    await configure(page, 'KjunTimePicker', { precision: 'second', disabled: true, error: true }, { time: '09:30:15' });
     for (const part of ['시', '분', '초']) await expect(timePart(page, platform, part)).toBeDisabled();
     await page.screenshot({ path: `${output}/${platform}-time-disabled-error.png` });
   });
 
   test(`${platform}: pagination size selector resets the page and compact controls fit`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 650 });
-    await visit(page, platform, 'DsPagination');
-    await configure(page, 'DsPagination', {}, { page: 4, pageSize: 20 });
+    await visit(page, platform, 'KjunPagination');
+    await configure(page, 'KjunPagination', {}, { page: 4, pageSize: 20 });
     const size = page.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '페이지당 항목 수', exact: true });
     await size.click();
     await option(page, platform, '50개씩').click();
@@ -363,8 +363,8 @@ for (const platform of platforms) {
 
   test(`${platform}: bottom navigation indicator follows selection without covering long labels`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 500 });
-    await visit(page, platform, 'DsBottomNavigation');
-    await configure(page, 'DsBottomNavigation', { long: true });
+    await visit(page, platform, 'KjunBottomNavigation');
+    await configure(page, 'KjunBottomNavigation', { long: true });
     const nav = page.getByRole('navigation', { name: '주요 탐색' });
     const activity = nav.getByRole('link', { name: /모든 프로젝트 활동 내역/ });
     await activity.click();

@@ -55,7 +55,7 @@ export function buildCoverage({ catalog, guides, navigation, discovery, helpers,
   const services = [
     { name: 'KjunProvider', description: '색상·서체 적용 영역', docs: '/styling', linkLabel: '색상·서체 연결', platforms },
     { name: 'KjunFeedbackProvider', description: 'Toast·Confirm·Prompt', docs: '/feedback', linkLabel: '피드백 서비스', platforms },
-    ...helpers.filter(helper => helper.name === 'DsFormLayout').map(helper => ({ name: helper.name, description: helper.description,
+    ...helpers.filter(helper => helper.name === 'KjunFormLayout').map(helper => ({ name: helper.name, description: helper.description,
       docs: helper.docs, linkLabel: 'FormGroup 사용 안내', platforms: [helper.platform] })),
   ];
   if (services.length !== 3 || services[2].platforms.join() !== 'native') fail('invalid FormLayout scope');

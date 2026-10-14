@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, DsButton, DsModal, DsInput } from "@kjun-ui/react";
+import { KjunProvider, KjunButton, KjunModal, KjunInput } from "@kjun-ui/react";
 import {
   scopedColors,
   scopedFont,
@@ -15,12 +15,12 @@ function App() {
   const [innerOpen, setInnerOpen] = useState(false);
   return (
     <KjunProvider>
-      <DsButton>Outer button</DsButton>
+      <KjunButton>Outer button</KjunButton>
       <KjunProvider
         style={cssValues(scopedColors(changed), scopedFont(changed))}
       >
-        <DsButton onClick={() => setOpen(true)}>Open scoped dialog</DsButton>
-        <DsModal
+        <KjunButton onClick={() => setOpen(true)}>Open scoped dialog</KjunButton>
+        <KjunModal
           open={open}
           onOpenChange={setOpen}
           title="Scoped dialog"
@@ -28,29 +28,29 @@ function App() {
           confirmText="Confirm"
           onConfirm={() => setOpen(false)}
         >
-          <DsButton onClick={() => setChanged((v) => !v)}>
+          <KjunButton onClick={() => setChanged((v) => !v)}>
             Change scoped values
-          </DsButton>
-          <DsInput
+          </KjunButton>
+          <KjunInput
             ariaLabel="Scoped input"
             value="example"
             onChange={() => {}}
             error
             errorMessage="Project error"
           />
-          <DsButton onClick={() => setInnerOpen(true)}>
+          <KjunButton onClick={() => setInnerOpen(true)}>
             Open inner dialog
-          </DsButton>
-          <DsModal
+          </KjunButton>
+          <KjunModal
             open={innerOpen}
             onOpenChange={setInnerOpen}
             title="Inner dialog"
           >
-            <DsButton onClick={() => setInnerOpen(false)}>
+            <KjunButton onClick={() => setInnerOpen(false)}>
               Close inner dialog
-            </DsButton>
-          </DsModal>
-        </DsModal>
+            </KjunButton>
+          </KjunModal>
+        </KjunModal>
       </KjunProvider>
     </KjunProvider>
   );

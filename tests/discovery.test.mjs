@@ -14,7 +14,7 @@ test('discovery covers every public component exactly once and keeps structural 
   assert.deepEqual(index.categories.map(category => category.count), [11, 16, 7, 8, 10, 14, 11]);
   assert.equal(entries.filter(entry => entry.parent).length, 4);
   assert.deepEqual(Object.fromEntries(entries.filter(entry => entry.parent).map(entry => [entry.component, entry.parent])), {
-    DsDropdownDivider: 'DsDropdown', DsDropdownItem: 'DsDropdown', DsTabPane: 'DsTabs', DsAccordionItem: 'DsAccordion',
+    KjunDropdownDivider: 'KjunDropdown', KjunDropdownItem: 'KjunDropdown', KjunTabPane: 'KjunTabs', KjunAccordionItem: 'KjunAccordion',
   });
   for (const entry of entries.filter(entry => entry.parent)) {
     const parentIndex = entries.findIndex(parent => parent.component === entry.parent);
@@ -36,14 +36,14 @@ test('names, Korean synonyms, purpose and API queries resolve to public document
   assert.equal(search('SearchInput loadOptions')[0].href, '/components/search-input#api');
   for (const id of ['form-group', 'input', 'form-actions', 'modal'])
     assert.ok(search('저장 폼').some(result => result.document.id === id));
-  for (const query of ['Toast', 'Confirm', 'Prompt', 'DsToast', 'ConfirmModal'])
+  for (const query of ['Toast', 'Confirm', 'Prompt', 'KjunToast', 'ConfirmModal'])
     assert.equal(search(query)[0].document.id, 'feedback');
-  for (const query of ['DsButton', 'ds-button', 'ＤｓＢｕｔｔｏｎ', 'BUTTON'])
+  for (const query of ['KjunButton', 'kjun-button', 'ＫｊｕｎＢｕｔｔｏｎ', 'BUTTON'])
     assert.equal(search(query)[0].document.id, 'button');
   assert.equal(search('Tab Pane')[0].document.id, 'tab-pane');
   assert.equal(search('데이터상태')[0].document.id, 'data-state');
   assert.equal(search('Table')[0].document.id, 'table');
-  for (const [query, id] of [['Tag', 'chip'], ['수량', 'quantity-stepper'], ['범용 행', 'list-row'], ['DsRangeSlider', 'range-slider']]) assert.equal(search(query)[0].document.id, id, query);
+  for (const [query, id] of [['Tag', 'chip'], ['수량', 'quantity-stepper'], ['범용 행', 'list-row'], ['KjunRangeSlider', 'range-slider']]) assert.equal(search(query)[0].document.id, id, query);
   assert.equal(search('thumbLabels')[0].href, '/components/range-slider#api');
   assert.equal(search('없는검색어987654').length, 0);
   assert.equal(new Set(search('loading').map(result => result.document.path)).size, search('loading').length);

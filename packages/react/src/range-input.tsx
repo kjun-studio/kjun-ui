@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Slider, SliderTrack, SliderThumb, Label, SliderOutput } from "react-aria-components";
 import { createSliderDomain } from "@kjun-ui/tokens";
-export interface DsSliderProps {
+export interface KjunSliderProps {
   value: number;
   min?: number;
   max?: number;
@@ -12,13 +12,13 @@ export interface DsSliderProps {
   onValueChange?: (value: number) => void;
   onChangeCommit?: (value: number) => void;
 }
-export interface DsRangeSliderProps extends Omit<DsSliderProps, "value" | "onValueChange" | "onChangeCommit"> {
+export interface KjunRangeSliderProps extends Omit<KjunSliderProps, "value" | "onValueChange" | "onChangeCommit"> {
   value: [number, number];
   thumbLabels?: [string, string];
   onValueChange?: (value: [number, number]) => void;
   onChangeCommit?: (value: [number, number]) => void;
 }
-function RangeInput({ value, min = 0, max = 100, step = 1, disabled = false, label, ariaLabel, onValueChange, onChangeCommit, ...rest }: DsRangeSliderProps | DsSliderProps) {
+function RangeInput({ value, min = 0, max = 100, step = 1, disabled = false, label, ariaLabel, onValueChange, onChangeCommit, ...rest }: KjunRangeSliderProps | KjunSliderProps) {
   const thumbLabels = "thumbLabels" in rest ? rest.thumbLabels || ["최솟값", "최댓값"] : ["최솟값", "최댓값"];
   const domain = createSliderDomain(min, max, step);
   const list = Array.isArray(value) ? value : [value];
@@ -43,5 +43,5 @@ function RangeInput({ value, min = 0, max = 100, step = 1, disabled = false, lab
     </>}</SliderTrack>
   </Slider>;
 }
-export function DsSlider(props: DsSliderProps) { return <RangeInput {...props} />; }
-export function DsRangeSlider(props: DsRangeSliderProps) { return <RangeInput {...props} />; }
+export function KjunSlider(props: KjunSliderProps) { return <RangeInput {...props} />; }
+export function KjunRangeSlider(props: KjunRangeSliderProps) { return <RangeInput {...props} />; }

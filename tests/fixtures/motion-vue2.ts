@@ -11,22 +11,22 @@ const Cases = Vue.extend({
     const scenario = new URLSearchParams(location.search).get('scenario') || 'numbers';
     const content = [];
     if (scenario === 'numbers' && this.show) content.push(
-      h('div', { attrs: { 'data-testid': 'number' } }, [h(api.DsAnimatedNumber, { props: { value: this.value, animated: this.animated, fromPrevious: this.fromPrevious, decimals: this.decimals } })]),
-      h('div', { attrs: { 'data-testid': 'price' } }, [h(api.DsPriceCell, { props: { value: typeof this.value === 'number' ? this.value : null, formatter: (n: number) => n.toFixed(2) } })]),
+      h('div', { attrs: { 'data-testid': 'number' } }, [h(api.KjunAnimatedNumber, { props: { value: this.value, animated: this.animated, fromPrevious: this.fromPrevious, decimals: this.decimals } })]),
+      h('div', { attrs: { 'data-testid': 'price' } }, [h(api.KjunPriceCell, { props: { value: typeof this.value === 'number' ? this.value : null, formatter: (n: number) => n.toFixed(2) } })]),
     );
-    if (scenario === 'tabs') content.push(h(api.DsTabs, { props: { value: this.tab, items: this.items, variant: this.variant }, on: {
+    if (scenario === 'tabs') content.push(h(api.KjunTabs, { props: { value: this.tab, items: this.items, variant: this.variant }, on: {
       input: (tab: string) => { if (this.accept) this.tab = tab; this.events.push(tab); },
-    } }, this.items.map(item => h(api.DsTabPane, { key: item.name, props: item }, item.name + ' content'))));
-    if (scenario === 'accordion') content.push(h(api.DsAccordion, [h(api.DsAccordionItem, { props: { title: 'Expand details' } }, [h('div', { attrs: { 'data-testid': 'details' }, style: { height: this.paragraphs * 40 + 'px' } }, 'Accordion content')])]));
+    } }, this.items.map(item => h(api.KjunTabPane, { key: item.name, props: item }, item.name + ' content'))));
+    if (scenario === 'accordion') content.push(h(api.KjunAccordion, [h(api.KjunAccordionItem, { props: { title: 'Expand details' } }, [h('div', { attrs: { 'data-testid': 'details' }, style: { height: this.paragraphs * 40 + 'px' } }, 'Accordion content')])]));
     if (scenario === 'layers') content.push(
       h('button', { on: { click: () => { this.modal = true; } } }, 'Open modal'),
       h('button', { on: { click: () => { this.drawer = true; } } }, 'Open drawer'),
-      h(api.DsDropdown, [h(api.DsButton, { slot: 'trigger' }, 'Open menu'), h(api.DsDropdownItem, 'Menu choice')]),
-      h(api.DsModal, { props: { value: this.modal, title: 'Motion modal' }, on: { input: (v: boolean) => { this.modal = v; }, close: () => this.events.push('modal-close') } }, ['Modal content']),
-      h(api.DsDrawer, { props: { value: this.drawer, title: 'Motion drawer', position: this.position }, on: { input: (v: boolean) => { this.drawer = v; }, close: () => this.events.push('drawer-close') } }, [h('div', { style: { height: '180px' } }, 'Drawer content')]),
+      h(api.KjunDropdown, [h(api.KjunButton, { slot: 'trigger' }, 'Open menu'), h(api.KjunDropdownItem, 'Menu choice')]),
+      h(api.KjunModal, { props: { value: this.modal, title: 'Motion modal' }, on: { input: (v: boolean) => { this.modal = v; }, close: () => this.events.push('modal-close') } }, ['Modal content']),
+      h(api.KjunDrawer, { props: { value: this.drawer, title: 'Motion drawer', position: this.position }, on: { input: (v: boolean) => { this.drawer = v; }, close: () => this.events.push('drawer-close') } }, [h('div', { style: { height: '180px' } }, 'Drawer content')]),
     );
-    if (scenario === 'switch') content.push(h(api.DsSwitch, { props: { value: this.sw, label: 'Motion switch' }, on: { input: (sw: boolean) => { this.sw = sw; } } }));
-    if (scenario === 'spinner') content.push(h(api.DsSpinner), h(api.DsIcon, { props: { name: 'refresh', spin: true } }));
+    if (scenario === 'switch') content.push(h(api.KjunSwitch, { props: { value: this.sw, label: 'Motion switch' }, on: { input: (sw: boolean) => { this.sw = sw; } } }));
+    if (scenario === 'spinner') content.push(h(api.KjunSpinner), h(api.KjunIcon, { props: { name: 'refresh', spin: true } }));
     return h('div', [h('div', { attrs: { 'data-testid': 'frame', dir: this.dir }, style: { padding: '24px', width: this.width + 'px', maxWidth: '100%' } }, content),
       h('output', { attrs: { 'data-testid': 'events' } }, JSON.stringify(this.events)), h('output', { attrs: { 'data-testid': 'tab-value' } }, this.tab)]);
   },

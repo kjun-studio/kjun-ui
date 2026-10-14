@@ -11,9 +11,9 @@ export function MotionCases({ api }: { api: any }) {
   const change = (next: object) => setConfig(old => ({ ...old, ...next }));
   Object.assign(window, { configureMotion: (next: object) => flushSync(() => change(next)), feedback });
   const scenario = new URLSearchParams(location.search).get('scenario') || 'numbers';
-  const { DsAnimatedNumber: NumberView, DsPriceCell: Price, DsTabs: Tabs, DsTabPane: Pane, DsAccordion: Accordion,
-    DsAccordionItem: Item, DsModal: Modal, DsDrawer: Drawer, DsDropdown: Dropdown, DsDropdownItem: MenuItem,
-    DsButton: Button, DsSwitch: Switch, DsSpinner: Spinner, DsIcon: Icon, DsPopover: Popover } = api;
+  const { KjunAnimatedNumber: NumberView, KjunPriceCell: Price, KjunTabs: Tabs, KjunTabPane: Pane, KjunAccordion: Accordion,
+    KjunAccordionItem: Item, KjunModal: Modal, KjunDrawer: Drawer, KjunDropdown: Dropdown, KjunDropdownItem: MenuItem,
+    KjunButton: Button, KjunSwitch: Switch, KjunSpinner: Spinner, KjunIcon: Icon, KjunPopover: Popover } = api;
   return <>
     <div style={{ padding: 24, width: config.width, maxWidth: '100%' }} dir={config.dir} data-testid="frame">
       {scenario === 'numbers' && config.show && <>

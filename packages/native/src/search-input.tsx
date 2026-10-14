@@ -2,9 +2,9 @@ import { type InputSize } from "@kjun-ui/tokens";
 import { useState, type ReactNode } from "react";
 import { useSearchInputModel, type SearchInputModelProps } from "../../../shared/package-runtime/search-input";
 import { SearchField } from "./combobox";
-import { DsInput } from "./input";
+import { KjunInput } from "./input";
 import { SelectOption,optionLabel } from "./select-options";
-export interface DsSearchInputProps<T extends SelectOption = SelectOption> extends SearchInputModelProps<T> {
+export interface KjunSearchInputProps<T extends SelectOption = SelectOption> extends SearchInputModelProps<T> {
   placeholder?: string;
   ariaLabel?: string;
   error?: boolean;
@@ -20,7 +20,7 @@ export interface DsSearchInputProps<T extends SelectOption = SelectOption> exten
   onEnter?: () => void;
   onClear?: () => void;
 }
-export function DsSearchInput<T extends SelectOption = SelectOption>({
+export function KjunSearchInput<T extends SelectOption = SelectOption>({
   value,
   placeholder = "검색...",
   ariaLabel,
@@ -41,7 +41,7 @@ export function DsSearchInput<T extends SelectOption = SelectOption>({
   onSearchError,
   onEnter,
   onClear,
-}: DsSearchInputProps<T>) {
+}: KjunSearchInputProps<T>) {
   const [open, setOpen] = useState(false);
   const model = useSearchInputModel({ value, disabled, debounce, loadOptions, minChars, onValueChange, onSearchError }, open);
   const { query, options, loading, failed } = model;
@@ -55,7 +55,7 @@ export function DsSearchInput<T extends SelectOption = SelectOption>({
   };
   if (!loadOptions)
     return (
-      <DsInput
+      <KjunInput
         error={error}
         value={query}
         prefixIcon="search"

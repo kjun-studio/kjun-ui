@@ -1,7 +1,7 @@
 'use client';
 import Link from './doc-link';
 import { PlatformLoading, useDocsPlatform } from './docs-platform';
-import { DsTable } from '@kjun-ui/react';
+import { KjunTable } from '@kjun-ui/react';
 import {
   Collapsible,
   CollapsibleContent,
@@ -67,7 +67,7 @@ export function ContractTable({
   anchor?: { platform: string; group: string };
 }) {
   if (!members.length) return <p className="body-copy">공개 {label} 없음</p>;
-  return <div className="api-reference-table"><DsTable<Member> responsive="none" hoverable={false} rowKey="name" ariaLabel={label}
+  return <div className="api-reference-table"><KjunTable<Member> responsive="none" hoverable={false} rowKey="name" ariaLabel={label}
     columns={[
       { key: 'name', label: label === '속성' ? '속성' : '항목', render: (_, member) => <code className="api-member-anchor" id={anchor ? apiAnchor(anchor.platform, anchor.group, member.name) : undefined}>{breakableName(member.name)}</code> },
       { key: 'type', label: '타입 / 데이터', className: 'api-member-type', render: (_, member) => <code>{member.type}</code> },

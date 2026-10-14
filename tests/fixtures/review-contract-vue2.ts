@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { KjunProvider, DsModal, DsDrawer, DsFormGroup, DsQuantityStepper, DsTable, DsButton } from "@kjun-ui/vue2";
+import { KjunProvider, KjunModal, KjunDrawer, KjunFormGroup, KjunQuantityStepper, KjunTable, KjunButton } from "@kjun-ui/vue2";
 import { setRootValues } from "./style-values";
 setRootValues();
 const rows = [{ id: 3, name: "Three", amount: 30 }, { id: 1, name: "One", amount: 10 }, { id: 2, name: "Two", amount: 20 }];
@@ -14,8 +14,8 @@ const vm = new Vue({
     responsive: "card", maxHeight: undefined as number | undefined, events: [] as unknown[], selected: [] as object[] }),
   methods: { emit(name: string, value?: unknown) { this.events.push([name, value]); } },
   render(h) {
-    const button = (label: string, click: () => void) => h(DsButton, { on: { click } }, label);
-    const content = location.search.includes("table") ? [this.show ? h(DsTable, {
+    const button = (label: string, click: () => void) => h(KjunButton, { on: { click } }, label);
+    const content = location.search.includes("table") ? [this.show ? h(KjunTable, {
       props: { data: this.data, columns: [{ key: "name", label: "Name" }, { key: "amount", label: "Amount", sortable: true }, { key: "actions", label: "Actions" }],
         responsive: this.responsive, searchable: this.searchable, maxHeight: this.maxHeight,
         expandedRows: this.controlledExpansion ? this.expanded : undefined, expandSingle: this.expandSingle, selectable: true, selected: this.selected, expandable: true,
@@ -32,13 +32,13 @@ const vm = new Vue({
         "cell-actions": () => button("Action", () => this.emit("action")),
         expand: ({ row }: { row: typeof rows[number] }) => h("span", "Detail " + row.id),
       },
-    }) : null] : [button("Open", () => { this.open = true; }), h(this.layerKind === 'drawer' ? DsDrawer : DsModal, {
+    }) : null] : [button("Open", () => { this.open = true; }), h(this.layerKind === 'drawer' ? KjunDrawer : KjunModal, {
       props: { value: this.open, title: this.dialogTitle, ariaLabel: this.dialogLabel, showHeader: this.showHeader, closeOnEsc: this.closeOnEsc },
       scopedSlots: this.customHeader ? { header: () => h('span', 'Custom heading') } : {},
       on: { input: (open: boolean) => { this.open = open; } },
     }, [
-      h(DsFormGroup, { props: { id: "quantity-field", label: this.label, hint: this.hint, error: this.error, required: this.required } }, [
-        h(DsQuantityStepper, { props: { value: this.value, disabled: this.disabled, id: this.inputId, ariaLabel: this.ariaLabel },
+      h(KjunFormGroup, { props: { id: "quantity-field", label: this.label, hint: this.hint, error: this.error, required: this.required } }, [
+        h(KjunQuantityStepper, { props: { value: this.value, disabled: this.disabled, id: this.inputId, ariaLabel: this.ariaLabel },
           on: { input: (value: number) => { this.emit("value", value); if (this.accept) this.value = value; }, change: (value: number) => this.emit("commit", value), "invalid-input": (draft: string) => this.emit("invalid", draft) } }),
       ]), button("Other field", () => {}),
     ])];

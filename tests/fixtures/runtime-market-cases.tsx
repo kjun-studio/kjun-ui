@@ -25,7 +25,7 @@ export function MarketCases({ K }: { K: any }) {
     marketStorage: () => ({ reads, writes, stored }),
   });
   return <>
-    {config.show && <K.DsMarketCards columns={columns} metricConfig={metricConfig} storageNamespace={config.namespace}
+    {config.show && <K.KjunMarketCards columns={columns} metricConfig={metricConfig} storageNamespace={config.namespace}
       storage={params.has('browser') ? undefined : storage} excludeKeys={config.exclude} sortKey={config.sortKey}
       emitSortOnMount={config.emit} onSort={(key: string) => setEvents(old => [...old, key])} />}
     <output data-testid="events">{JSON.stringify(events)}</output>

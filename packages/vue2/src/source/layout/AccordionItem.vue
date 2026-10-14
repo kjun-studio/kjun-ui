@@ -15,7 +15,7 @@
           <span>{{ title }}</span>
         </slot>
       </div>
-      <DsIcon name="chevron-down" :size="iconSize" class="kjun-accordion-chevron" :style="{ transform: isItemOpen ? 'rotate(180deg)' : undefined }" />
+      <KjunIcon name="chevron-down" :size="iconSize" class="kjun-accordion-chevron" :style="{ transform: isItemOpen ? 'rotate(180deg)' : undefined }" />
     </button>
 
     <!-- Content -->
@@ -49,15 +49,15 @@
 
 <script>
 import { prepareCollapse, stopCollapse, moveCollapse } from "../../adapters/collapse-motion.js";
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { tokens } from "@kjun-ui/tokens";
 import { componentMixins } from "../../component-mixins.js";
 let accordionItemUid = 0
 
 export default {
   mixins: componentMixins,
-  components: { DsIcon },
-  name: 'DsAccordionItem',
+  components: { KjunIcon },
+  name: 'KjunAccordionItem',
   inject: {
     accordion: {
       default: null

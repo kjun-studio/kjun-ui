@@ -13,8 +13,8 @@ for (const platform of ['vue2', 'react', 'native']) {
   test(`${platform}: IconToggle is the only public icon toggle and remains controlled`, async ({ page }) => {
     await open(page, platform);
     const exports = await page.evaluate(() => (window as any).toggleExports);
-    expect(exports).toContain('DsIconToggle');
-    for (const name of ['DsCollectionToggle', 'DsFavoriteToggle', 'DsInterestToggle']) {
+    expect(exports).toContain('KjunIconToggle');
+    for (const name of ['KjunCollectionToggle', 'KjunFavoriteToggle', 'KjunInterestToggle']) {
       expect(exports).not.toContain(name);
       expect(await readFile(`packages/${platform}/dist/index.d.ts`, 'utf8')).not.toContain(name);
     }
@@ -28,7 +28,7 @@ for (const platform of ['vue2', 'react', 'native']) {
     const selected = page.getByRole('button', { name: '예제 항목 관심 해제', exact: true });
     await expect(selected).toHaveAttribute('aria-pressed', 'true');
     expect(await selected.locator('svg').innerHTML()).not.toBe(inactive);
-    // Like RefreshButton, the visible name hint comes from DsTooltip and also opens on keyboard focus.
+    // Like RefreshButton, the visible name hint comes from KjunTooltip and also opens on keyboard focus.
     if (platform !== 'native') await expect(selected).not.toHaveAttribute('title');
     // Re-enter by keyboard, as RefreshButton's spec does, so focus counts as keyboard modality.
     await selected.focus(); await page.keyboard.press('Tab'); await page.keyboard.press('Shift+Tab');

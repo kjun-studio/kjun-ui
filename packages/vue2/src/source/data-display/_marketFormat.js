@@ -99,7 +99,7 @@ export function formatMetricValue(value, format, ctx, helpers) {
     case 'trade_amount':
       return formatTradeAmount(value, formatNumber)
     case 'sparkline':
-      return null // 카드 템플릿에서 DsSparkline 분기 렌더
+      return null // 카드 템플릿에서 KjunSparkline 분기 렌더
     default:
       return String(value)
   }

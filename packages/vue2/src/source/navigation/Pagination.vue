@@ -11,7 +11,7 @@
 
     <div class="kjun-pagination-controls kj-flex kj-items-center kj-gap-2">
       <!-- Page Size Selector (optional) -->
-      <div v-if="showSizeSelector" class="kjun-pagination-size"><DsSelect
+      <div v-if="showSizeSelector" class="kjun-pagination-size"><KjunSelect
         size="sm"
         aria-label="페이지당 항목 수"
         :value="pageSize"
@@ -28,7 +28,7 @@
           aria-label="이전 페이지"
           @click="changePage(computedCurrentPage - 1)"
         >
-          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-left" />
+          <KjunIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-left" />
         </button>
         <span class="kj-px-pagination-label-padding-x kj-text-sm kj-text-text-primary kj-whitespace-nowrap">
           <strong>{{ computedCurrentPage }}</strong> / {{ computedTotalPages }}
@@ -40,7 +40,7 @@
           aria-label="다음 페이지"
           @click="changePage(computedCurrentPage + 1)"
         >
-          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-right" />
+          <KjunIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-right" />
         </button>
       </div>
 
@@ -55,7 +55,7 @@
           aria-label="첫 페이지"
           @click="changePage(1)"
         >
-          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevrons-left" />
+          <KjunIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevrons-left" />
         </button>
         <!-- Previous -->
         <button
@@ -65,7 +65,7 @@
           aria-label="이전 페이지"
           @click="changePage(computedCurrentPage - 1)"
         >
-          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-left" />
+          <KjunIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-left" />
         </button>
 
         <!-- Page Numbers -->
@@ -96,7 +96,7 @@
           aria-label="다음 페이지"
           @click="changePage(computedCurrentPage + 1)"
         >
-          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-right" />
+          <KjunIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-right" />
         </button>
         <!-- Last -->
         <button
@@ -107,7 +107,7 @@
           aria-label="마지막 페이지"
           @click="changePage(computedTotalPages)"
         >
-          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevrons-right" />
+          <KjunIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevrons-right" />
         </button>
       </div>
     </div>
@@ -115,13 +115,13 @@
 </template>
 
 <script>
-import DsIcon from "../../icon.js";
-import DsSelect from "../form/Select.vue";
+import KjunIcon from "../../icon.js";
+import KjunSelect from "../form/Select.vue";
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  components: { DsIcon, DsSelect },
-  name: 'DsPagination',
+  components: { KjunIcon, KjunSelect },
+  name: 'KjunPagination',
   props: {
     // Primary prop (preferred)
     currentPage: {

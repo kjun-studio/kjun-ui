@@ -8,12 +8,12 @@ View,
 useWindowDimensions
 } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { ChoiceOption,ChoiceValue } from "./choice-controls";
 import { KText, finePointer } from "./internal";
 import { useKjunStyles } from "./provider";
 import { ButtonGroupLabel, useButtonGroupMotion } from "./button-group-motion";
-export interface DsButtonGroupProps {
+export interface KjunButtonGroupProps {
   value: ChoiceValue;
   options: ChoiceOption[];
   size?: ButtonSize;
@@ -24,7 +24,7 @@ export interface DsButtonGroupProps {
   onValueChange?: (value: ChoiceValue) => void;
   onChange?: (value: ChoiceValue) => void;
 }
-export function DsButtonGroup({
+export function KjunButtonGroup({
   value,
   options,
   size = "md",
@@ -33,7 +33,7 @@ export function DsButtonGroup({
   ariaLabel,
   onValueChange,
   onChange,
-}: DsButtonGroupProps) {
+}: KjunButtonGroupProps) {
   const { colors } = useKjunStyles();
   const selected = options.find(option => option.value === value);
   const motion = useButtonGroupMotion(selected);
@@ -112,7 +112,7 @@ export function DsButtonGroup({
               })}
             >
               {option.icon && (
-                <DsIcon
+                <KjunIcon
                   name={option.icon}
                   size={tokens.extensions.selection.iconSize}
                   color={active ? colors.text : colors.textSecondary}
@@ -127,9 +127,9 @@ export function DsButtonGroup({
     </ScrollView>
   );
 }
-export interface DsFilterGroupProps
+export interface KjunFilterGroupProps
   extends Omit<
-    DsButtonGroupProps,
+    KjunButtonGroupProps,
     "value" | "onValueChange" | "onChange" | "fullWidth" | "variant"
   > {
   value: ChoiceValue | ChoiceValue[];
@@ -138,7 +138,7 @@ export interface DsFilterGroupProps
   onValueChange?: (value: ChoiceValue | ChoiceValue[]) => void;
   onChange?: (value: ChoiceValue | ChoiceValue[]) => void;
 }
-export function DsFilterGroup({
+export function KjunFilterGroup({
   value,
   options,
   size = "sm",
@@ -148,7 +148,7 @@ export function DsFilterGroup({
   ariaLabel,
   onValueChange,
   onChange,
-}: DsFilterGroupProps) {
+}: KjunFilterGroupProps) {
   const { colors } = useKjunStyles();
   // Like Web's selection media rule: a wide window with a fine pointer uses the plain button height;
   // narrow or touch layouts keep the 36px chip in a 44px touch row.
@@ -222,7 +222,7 @@ export function DsFilterGroup({
                 />
               )}
               {option.icon && (
-                <DsIcon
+                <KjunIcon
                   name={option.icon}
                   size={tokens.extensions.selection.iconSize}
                   color={active ? colors.inverse : colors.textSecondary}

@@ -6,11 +6,11 @@
         <p >
           페이지를 새로고침하면 문제가 해결될 수 있습니다.
         </p>
-        <DsButton
+        <KjunButton
           @click.stop="reload"
         >
           새로고침
-        </DsButton>
+        </KjunButton>
       </div>
     </div>
     <slot v-else />
@@ -18,16 +18,16 @@
 </template>
 
 <script>
-import DsButton from "../primitives/Button.vue";
+import KjunButton from "../primitives/Button.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { createLogger } from '@kjun-adapter/logger.js'
 
-const logger = createLogger('DsErrorBoundary')
+const logger = createLogger('KjunErrorBoundary')
 
 export default {
   mixins: componentMixins,
-  components: { DsButton },
-  name: 'DsErrorBoundary',
+  components: { KjunButton },
+  name: 'KjunErrorBoundary',
   props: {
     fallbackMessage: {
       type: String,

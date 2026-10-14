@@ -1,5 +1,5 @@
 <template>
-  <DsModal
+  <KjunModal
     :value="visible"
     :title="title"
     :closable="true"
@@ -7,7 +7,7 @@
     @close="cancel"
   >
     <p v-if="message" class="kj-text-sm kj-text-text-secondary kj-mb-3">{{ message }}</p>
-    <DsInput
+    <KjunInput
       ref="inputRef"
       v-model="inputValue"
       :placeholder="placeholder"
@@ -16,7 +16,7 @@
       @enter="confirm"
     />
     <template #footer>
-      <DsFormActions
+      <KjunFormActions
         size="lg"
         variant="primary"
         cancel-variant="ghost"
@@ -26,18 +26,18 @@
         @confirm="confirm"
       />
     </template>
-  </DsModal>
+  </KjunModal>
 </template>
 
 <script>
-import DsFormActions from "../form/FormActions.vue";
-import DsInput from "../primitives/Input.vue";
-import DsModal from "../layout/Modal.vue";
+import KjunFormActions from "../form/FormActions.vue";
+import KjunInput from "../primitives/Input.vue";
+import KjunModal from "../layout/Modal.vue";
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  components: { DsFormActions, DsInput, DsModal },
-  name: 'DsPromptModal',
+  components: { KjunFormActions, KjunInput, KjunModal },
+  name: 'KjunPromptModal',
   data() {
     return {
       visible: false,

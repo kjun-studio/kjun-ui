@@ -1,5 +1,5 @@
 {
-  "DsAccordion": {
+  "KjunAccordion": {
     "vue2": [
       "formatters",
       "multiple",
@@ -16,7 +16,7 @@
       "children"
     ]
   },
-  "DsAccordionItem": {
+  "KjunAccordionItem": {
     "vue2": [
       "formatters",
       "title",
@@ -38,7 +38,7 @@
       "children"
     ]
   },
-  "DsCard": {
+  "KjunCard": {
     "vue2": [
       "dividers",
       "formatters",
@@ -92,7 +92,7 @@
       "media"
     ]
   },
-  "DsDrawer": {
+  "KjunDrawer": {
     "vue2": [
       "formatters",
       "value",
@@ -137,7 +137,7 @@
       "ariaLabel"
     ]
   },
-  "DsModal": {
+  "KjunModal": {
     "vue2": [
       "formatters",
       "footerSize",
@@ -217,7 +217,7 @@
       "ariaLabel"
     ]
   },
-  "DsPopover": {
+  "KjunPopover": {
     "vue2": [
       "noPadding",
       "formatters",
@@ -259,7 +259,7 @@
       "children"
     ]
   },
-  "DsScrollFade": {
+  "KjunScrollFade": {
     "vue2": [
       "formatters"
     ],

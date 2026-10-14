@@ -6,8 +6,8 @@ useEffect,
 useRef,
 useState
 } from "react";
-import { DsBadge,DsSkeleton } from "./display";
-import { DsTooltip } from "./popover";
+import { KjunBadge,KjunSkeleton } from "./display";
+import { KjunTooltip } from "./popover";
 import { formatRelativeTime } from "../../../shared/package-runtime/relative-time";
 
 export const finiteNumber = (value: unknown): number | null =>
@@ -31,7 +31,7 @@ export function useCountUp(
   return useNumberMotion(value, animated, fromPrevious, useReducedMotion());
 }
 
-export interface DsAnimatedNumberProps {
+export interface KjunAnimatedNumberProps {
   value: number | string;
   decimals?: number;
   prefix?: string;
@@ -41,7 +41,7 @@ export interface DsAnimatedNumberProps {
   formatter?: (value: number) => string;
   className?: string;
 }
-export function DsAnimatedNumber({
+export function KjunAnimatedNumber({
   value,
   decimals = 0,
   prefix = "",
@@ -50,7 +50,7 @@ export function DsAnimatedNumber({
   fromPrevious = false,
   formatter,
   className = "",
-}: DsAnimatedNumberProps) {
+}: KjunAnimatedNumberProps) {
   const n = useCountUp(value, animated, fromPrevious);
   return (
     <span className={"kjun-animated-number " + className}>
@@ -66,21 +66,21 @@ export function DsAnimatedNumber({
     </span>
   );
 }
-export interface DsFreshnessProps {
+export interface KjunFreshnessProps {
   stale?: boolean;
   source?: string | null;
   fetchedAt?: string | null;
   formatter?: (time: string) => string;
 }
-export function DsFreshness({
+export function KjunFreshness({
   stale = false,
   source,
   fetchedAt,
   formatter,
-}: DsFreshnessProps) {
+}: KjunFreshnessProps) {
   // A focusable tooltip target, so keyboard and touch reach when the value was fetched (not only a hover title).
   return stale ? (
-    <DsTooltip
+    <KjunTooltip
       content={
         (source === "close"
           ? "실시간 시세 없음 · 최근 종가 표시"
@@ -89,21 +89,21 @@ export function DsFreshness({
       }
     >
       <span tabIndex={0} className="kjun-freshness">
-        <DsBadge variant="warning" size="xs">
+        <KjunBadge variant="warning" size="xs">
           {source === "close" ? "종가" : "지연"}
-        </DsBadge>
+        </KjunBadge>
       </span>
-    </DsTooltip>
+    </KjunTooltip>
   ) : null;
 }
-export interface DsPriceCellProps extends Omit<DsFreshnessProps, "formatter"> {
+export interface KjunPriceCellProps extends Omit<KjunFreshnessProps, "formatter"> {
   value?: number | null;
   formatter?: (value: number) => string;
   flashClass?: string;
   fromPrevious?: boolean;
   showFreshness?: boolean;
 }
-export function DsPriceCell({
+export function KjunPriceCell({
   value,
   formatter,
   stale = false,
@@ -112,9 +112,9 @@ export function DsPriceCell({
   fetchedAt,
   flashClass = "",
   fromPrevious = true,
-}: DsPriceCellProps) {
+}: KjunPriceCellProps) {
   return value == null ? (
-    <DsSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
+    <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
   ) : (
     <>
       <span
@@ -122,19 +122,19 @@ export function DsPriceCell({
         ref={domainColorRef(/\bkjun-price-flash-(up|down)/.test(flashClass))}
         style={{ color: stale ? "var(--_kjun-color-text-tertiary)" : undefined }}
       >
-        <DsAnimatedNumber
+        <KjunAnimatedNumber
           value={value}
           formatter={formatter}
           fromPrevious={fromPrevious}
         />
       </span>
       {showFreshness && (
-        <DsFreshness stale={stale} source={source} fetchedAt={fetchedAt} />
+        <KjunFreshness stale={stale} source={source} fetchedAt={fetchedAt} />
       )}
     </>
   );
 }
-export interface DsSignedValueProps {
+export interface KjunSignedValueProps {
   value?: number | string | null;
   format?: "number" | "percent";
   isRaw?: boolean;
@@ -148,7 +148,7 @@ export interface DsSignedValueProps {
   showFreshness?: boolean;
   formatter?: (value: number) => string;
 }
-export function DsSignedValue({
+export function KjunSignedValue({
   value,
   format: kind = "number",
   isRaw = false,
@@ -161,7 +161,7 @@ export function DsSignedValue({
   stale = false,
   showFreshness = true,
   formatter,
-}: DsSignedValueProps) {
+}: KjunSignedValueProps) {
   const n = finiteNumber(value),
     role =
       loading || n === null
@@ -197,9 +197,9 @@ export function DsSignedValue({
             : undefined,
       }}
     >
-      {loading ? <DsSkeleton type="block" width={tokens.extensions.financial.signedSkeletonWidth} height="1lh" /> : display}
+      {loading ? <KjunSkeleton type="block" width={tokens.extensions.financial.signedSkeletonWidth} height="1lh" /> : display}
       {!loading && showFreshness && stale && n !== null && (
-        <DsFreshness stale />
+        <KjunFreshness stale />
       )}
     </span>
   );

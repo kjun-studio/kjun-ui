@@ -18,7 +18,7 @@ for (const platform of platforms) {
     await expect(preview).toHaveAttribute('data-ready', 'true');
     await expect(usage.locator('pre')).toBeVisible();
     const original = await copy(page);
-    expect(original).toEqual((await usageTools.usageExample({ name: 'DsInput', platform, ...presetConfig('DsInput') })).code);
+    expect(original).toEqual((await usageTools.usageExample({ name: 'KjunInput', platform, ...presetConfig('KjunInput') })).code);
     await preview.frameLocator('iframe').getByRole('textbox', { name: '목록 이름', exact: true }).fill('바뀐 입력');
     await openExampleSettings(page);
     await preview.getByRole('switch', { name: '읽기 전용', exact: true }).press('Space');

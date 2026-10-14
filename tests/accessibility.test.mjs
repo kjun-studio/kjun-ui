@@ -22,7 +22,7 @@ test('documentation rejects missing platforms/items, invented API/check IDs and 
   invalid(next => { next[0].id = 'render-passed'; }, /invalid check ID/);
   invalid(next => { next[0].api = ['inventedPalette']; }, /invalid API/);
   invalid(next => { next.find(def => !def.applicable).reason = ''; }, /not-applicable reason/);
-  invalid(next => { next.find(def => def.component === 'DsTabPane').scenario.parent = ''; }, /parent context/);
+  invalid(next => { next.find(def => def.component === 'KjunTabPane').scenario.parent = ''; }, /parent context/);
 });
 function record() {
   const date = '2026-09-14T03:00:00.000Z';
@@ -54,9 +54,9 @@ test('current version, integrity and check-definition changes require rerunning,
 test('selection shares component/platform/record/item and skips filtered non-executions only by default', () => {
   const older = record(), newer = structuredClone(older);
   newer.id = 'a11y-20260914T040000000Z-12345678'; newer.results.forEach(result => { result.startedAt = null; });
-  assert.equal(latestRun([newer, older], 'DsButton', 'react'), older);
+  assert.equal(latestRun([newer, older], 'KjunButton', 'react'), older);
   assert.equal(resultFor(defs[0], newer).status, 'not-run');
-  assert.equal(verificationHref('DsInput', 'native', older.id, 'labeling'), '/verification?component=DsInput&platform=native&record=' + older.id + '#labeling');
+  assert.equal(verificationHref('KjunInput', 'native', older.id, 'labeling'), '/verification?component=KjunInput&platform=native&record=' + older.id + '#labeling');
   assert.equal(apiAnchor('react', 'props', 'ariaLabel'), 'api-react-props-ariaLabel');
 });
 test('generated downloads preserve the exact bytes of every original execution record', async () => {

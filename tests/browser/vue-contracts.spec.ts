@@ -114,13 +114,13 @@ test("all Vue 2 catalog examples validate props in development across documented
   page.on("console", message => { if (["warning", "error"].includes(message.type())) errors.push(message.text()); });
   await openFixture(page, "vue2", "?component=all", "catalog", "development");
   await expect(page.locator("[data-component]")).toHaveCount(exampleNames.length);
-  await expect(page.locator('[data-component="DsExecutionStatusBadge"]')).toContainText("완료");
-  await expect(page.locator('[data-component="DsSignedValue"]')).toContainText("+2.35%");
+  await expect(page.locator('[data-component="KjunExecutionStatusBadge"]')).toContainText("완료");
+  await expect(page.locator('[data-component="KjunSignedValue"]')).toContainText("+2.35%");
   for (const state of ["loading", "error", "disabled"]) {
     await page.evaluate(state => window.postMessage({ type: "kjun:catalog-configure", config: { loading: false, error: false, disabled: false, [state]: true } }, location.origin), state);
-    if (state === "loading") await expect(page.locator('[data-component="DsButton"] button')).toHaveAttribute("aria-busy", "true");
-    if (state === "error") await expect(page.locator('[data-component="DsInput"] input')).toHaveAttribute("aria-invalid", "true");
-    if (state === "disabled") await expect(page.locator('[data-component="DsRadioGroup"] input').first()).toBeDisabled();
+    if (state === "loading") await expect(page.locator('[data-component="KjunButton"] button')).toHaveAttribute("aria-busy", "true");
+    if (state === "error") await expect(page.locator('[data-component="KjunInput"] input')).toHaveAttribute("aria-invalid", "true");
+    if (state === "disabled") await expect(page.locator('[data-component="KjunRadioGroup"] input').first()).toBeDisabled();
   }
   expect(errors).toEqual([]);
 });

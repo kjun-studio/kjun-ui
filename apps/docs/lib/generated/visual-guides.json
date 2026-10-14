@@ -1,6 +1,6 @@
 {
-  "DsAnimatedNumber": {
-    "name": "DsAnimatedNumber",
+  "KjunAnimatedNumber": {
+    "name": "KjunAnimatedNumber",
     "path": "/components/animated-number",
     "related": "assets",
     "description": "값 변경을 숫자 전환으로 표현합니다. formatter와 접두·접미사는 프로젝트가 제공합니다.",
@@ -88,8 +88,8 @@
       }
     }
   },
-  "DsChartSkeleton": {
-    "name": "DsChartSkeleton",
+  "KjunChartSkeleton": {
+    "name": "KjunChartSkeleton",
     "path": "/components/chart-skeleton",
     "related": "loading",
     "description": "차트 영역의 높이를 유지하며 조회 중인 상태를 표시합니다.",
@@ -177,8 +177,8 @@
       }
     }
   },
-  "DsCollectionMark": {
-    "name": "DsCollectionMark",
+  "KjunCollectionMark": {
+    "name": "KjunCollectionMark",
     "path": "/components/collection-mark",
     "related": "assets",
     "description": "즐겨찾기·관심 여부를 표시합니다. 변경 액션은 IconToggle을 사용합니다.",
@@ -210,7 +210,7 @@
             "label": "미등록",
             "description": "수집 표시의 비활성 값입니다. 클릭 비활성과 다릅니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"active\":false}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"active\":false}}}"
             }
           }
         ],
@@ -220,7 +220,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -228,7 +228,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -236,7 +236,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -270,7 +270,7 @@
             "label": "미등록",
             "description": "수집 표시의 비활성 값입니다. 클릭 비활성과 다릅니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"active\":false}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"active\":false}}}"
             }
           }
         ],
@@ -280,7 +280,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -288,7 +288,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -296,7 +296,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -330,7 +330,7 @@
             "label": "미등록",
             "description": "수집 표시의 비활성 값입니다. 클릭 비활성과 다릅니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"active\":false}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"active\":false}}}"
             }
           }
         ],
@@ -340,7 +340,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -348,7 +348,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -356,7 +356,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCollectionMark\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunCollectionMark\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -365,8 +365,8 @@
       }
     }
   },
-  "DsDeviation": {
-    "name": "DsDeviation",
+  "KjunDeviation": {
+    "name": "KjunDeviation",
     "path": "/components/deviation",
     "related": "assets",
     "description": "기준과의 편차를 숫자 또는 신호로 표시합니다.",
@@ -454,8 +454,8 @@
       }
     }
   },
-  "DsEmpty": {
-    "name": "DsEmpty",
+  "KjunEmpty": {
+    "name": "KjunEmpty",
     "path": "/components/empty",
     "related": "writing",
     "description": "결과가 없는 이유와 사용자가 실행할 다음 행동을 설명합니다.",
@@ -579,8 +579,8 @@
       }
     }
   },
-  "DsExecutionStatusBadge": {
-    "name": "DsExecutionStatusBadge",
+  "KjunExecutionStatusBadge": {
+    "name": "KjunExecutionStatusBadge",
     "path": "/components/execution-status-badge",
     "related": "assets",
     "description": "실행 상태와 사용자가 읽을 상태명을 함께 표시합니다.",
@@ -614,7 +614,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -622,7 +622,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -630,7 +630,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -638,7 +638,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -646,7 +646,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -682,7 +682,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -690,7 +690,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -698,7 +698,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -706,7 +706,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -714,7 +714,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -750,7 +750,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -758,7 +758,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -766,7 +766,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -774,7 +774,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -782,7 +782,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsExecutionStatusBadge\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunExecutionStatusBadge\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -791,8 +791,8 @@
       }
     }
   },
-  "DsFormSkeleton": {
-    "name": "DsFormSkeleton",
+  "KjunFormSkeleton": {
+    "name": "KjunFormSkeleton",
     "path": "/components/form-skeleton",
     "related": "loading",
     "description": "폼 항목과 열 구성을 유지하면서 조회를 기다립니다.",
@@ -826,7 +826,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormSkeleton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunFormSkeleton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -834,7 +834,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormSkeleton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunFormSkeleton\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -842,7 +842,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormSkeleton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunFormSkeleton\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -878,7 +878,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormSkeleton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunFormSkeleton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -886,7 +886,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormSkeleton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunFormSkeleton\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -894,7 +894,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormSkeleton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunFormSkeleton\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -930,7 +930,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormSkeleton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunFormSkeleton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -938,7 +938,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormSkeleton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunFormSkeleton\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -946,7 +946,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormSkeleton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunFormSkeleton\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -955,8 +955,8 @@
       }
     }
   },
-  "DsFreshness": {
-    "name": "DsFreshness",
+  "KjunFreshness": {
+    "name": "KjunFreshness",
     "path": "/components/freshness",
     "related": "assets",
     "description": "이전 값 또는 종가임을 표시하고 조회 시각을 설명합니다.",
@@ -988,7 +988,7 @@
             "label": "오래된 값",
             "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
             "settings": {
-              "visual": "{\"DsFreshness\":{\"props\":{\"stale\":true}}}"
+              "visual": "{\"KjunFreshness\":{\"props\":{\"stale\":true}}}"
             }
           }
         ],
@@ -1023,7 +1023,7 @@
             "label": "오래된 값",
             "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
             "settings": {
-              "visual": "{\"DsFreshness\":{\"props\":{\"stale\":true}}}"
+              "visual": "{\"KjunFreshness\":{\"props\":{\"stale\":true}}}"
             }
           }
         ],
@@ -1058,7 +1058,7 @@
             "label": "오래된 값",
             "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
             "settings": {
-              "visual": "{\"DsFreshness\":{\"props\":{\"stale\":true}}}"
+              "visual": "{\"KjunFreshness\":{\"props\":{\"stale\":true}}}"
             }
           }
         ],
@@ -1068,8 +1068,8 @@
       }
     }
   },
-  "DsHeatmapCell": {
-    "name": "DsHeatmapCell",
+  "KjunHeatmapCell": {
+    "name": "KjunHeatmapCell",
     "path": "/components/heatmap-cell",
     "related": "assets",
     "description": "프로젝트 색상을 배경층에 연결하고 값의 농도만 투명도로 조절합니다.",
@@ -1157,8 +1157,8 @@
       }
     }
   },
-  "DsKpiHero": {
-    "name": "DsKpiHero",
+  "KjunKpiHero": {
+    "name": "KjunKpiHero",
     "path": "/components/kpi-hero",
     "related": "assets",
     "description": "대표 수치와 증감, 보조 지표를 한 영역에서 표시합니다.",
@@ -1202,7 +1202,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsKpiHero\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunKpiHero\":{\"props\":{\"loading\":true}}}"
             }
           }
         ],
@@ -1212,7 +1212,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiHero\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunKpiHero\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -1220,7 +1220,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiHero\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunKpiHero\":{\"props\":{\"size\":\"sm\"}}}"
             }
           }
         ],
@@ -1266,7 +1266,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsKpiHero\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunKpiHero\":{\"props\":{\"loading\":true}}}"
             }
           }
         ],
@@ -1276,7 +1276,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiHero\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunKpiHero\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -1284,7 +1284,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiHero\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunKpiHero\":{\"props\":{\"size\":\"md\"}}}"
             }
           }
         ],
@@ -1330,7 +1330,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsKpiHero\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunKpiHero\":{\"props\":{\"loading\":true}}}"
             }
           }
         ],
@@ -1340,7 +1340,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiHero\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunKpiHero\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -1348,7 +1348,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiHero\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunKpiHero\":{\"props\":{\"size\":\"md\"}}}"
             }
           }
         ],
@@ -1357,8 +1357,8 @@
       }
     }
   },
-  "DsKpiRow": {
-    "name": "DsKpiRow",
+  "KjunKpiRow": {
+    "name": "KjunKpiRow",
     "path": "/components/kpi-row",
     "related": "assets",
     "description": "여러 KPI를 같은 행에 놓고 모바일에서 정보 위계를 유지합니다.",
@@ -1402,7 +1402,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsKpiRow\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunKpiRow\":{\"props\":{\"loading\":true}}}"
             }
           }
         ],
@@ -1412,7 +1412,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiRow\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunKpiRow\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -1420,7 +1420,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiRow\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunKpiRow\":{\"props\":{\"size\":\"sm\"}}}"
             }
           }
         ],
@@ -1466,7 +1466,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsKpiRow\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunKpiRow\":{\"props\":{\"loading\":true}}}"
             }
           }
         ],
@@ -1476,7 +1476,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiRow\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunKpiRow\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -1484,7 +1484,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiRow\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunKpiRow\":{\"props\":{\"size\":\"md\"}}}"
             }
           }
         ],
@@ -1530,7 +1530,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsKpiRow\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunKpiRow\":{\"props\":{\"loading\":true}}}"
             }
           }
         ],
@@ -1540,7 +1540,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiRow\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunKpiRow\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -1548,7 +1548,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsKpiRow\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunKpiRow\":{\"props\":{\"size\":\"md\"}}}"
             }
           }
         ],
@@ -1557,8 +1557,8 @@
       }
     }
   },
-  "DsListSkeleton": {
-    "name": "DsListSkeleton",
+  "KjunListSkeleton": {
+    "name": "KjunListSkeleton",
     "path": "/components/list-skeleton",
     "related": "loading",
     "description": "목록의 자산 식별 영역과 숫자 영역을 유지합니다.",
@@ -1646,8 +1646,8 @@
       }
     }
   },
-  "DsMarketCards": {
-    "name": "DsMarketCards",
+  "KjunMarketCards": {
+    "name": "KjunMarketCards",
     "path": "/components/market-cards",
     "related": "assets",
     "description": "표시 지표를 선택하여 자산 목록의 핵심 값을 보여줍니다.",
@@ -1691,7 +1691,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMarketCards\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMarketCards\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -1699,7 +1699,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsMarketCards\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunMarketCards\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           }
         ],
@@ -1746,7 +1746,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMarketCards\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMarketCards\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -1754,7 +1754,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsMarketCards\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunMarketCards\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           }
         ],
@@ -1801,7 +1801,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMarketCards\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMarketCards\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -1809,7 +1809,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsMarketCards\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunMarketCards\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           }
         ],
@@ -1819,8 +1819,8 @@
       }
     }
   },
-  "DsMarketSimpleList": {
-    "name": "DsMarketSimpleList",
+  "KjunMarketSimpleList": {
+    "name": "KjunMarketSimpleList",
     "path": "/components/market-simple-list",
     "related": "assets",
     "description": "자산명·가격·증감과 데이터의 최신 여부를 표시합니다.",
@@ -1864,7 +1864,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMarketSimpleList\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMarketSimpleList\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -1872,7 +1872,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsMarketSimpleList\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunMarketSimpleList\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           }
         ],
@@ -1919,7 +1919,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMarketSimpleList\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMarketSimpleList\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -1927,7 +1927,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsMarketSimpleList\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunMarketSimpleList\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           }
         ],
@@ -1974,7 +1974,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMarketSimpleList\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMarketSimpleList\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -1982,7 +1982,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsMarketSimpleList\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunMarketSimpleList\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           }
         ],
@@ -1992,8 +1992,8 @@
       }
     }
   },
-  "DsMarketTable": {
-    "name": "DsMarketTable",
+  "KjunMarketTable": {
+    "name": "KjunMarketTable",
     "path": "/components/market-table",
     "related": "assets",
     "description": "정렬·컬렉션 액션과 프로젝트의 금융 포맷터를 연결하는 표입니다.",
@@ -2037,7 +2037,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMarketTable\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMarketTable\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -2045,7 +2045,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsMarketTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunMarketTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           }
         ],
@@ -2092,7 +2092,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMarketTable\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMarketTable\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -2100,7 +2100,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsMarketTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunMarketTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           }
         ],
@@ -2147,7 +2147,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMarketTable\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMarketTable\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -2155,7 +2155,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsMarketTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunMarketTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           }
         ],
@@ -2165,8 +2165,8 @@
       }
     }
   },
-  "DsMarketTableSkeleton": {
-    "name": "DsMarketTableSkeleton",
+  "KjunMarketTableSkeleton": {
+    "name": "KjunMarketTableSkeleton",
     "path": "/components/market-table-skeleton",
     "related": "loading",
     "description": "실제 시장 표의 열·행·액션 영역을 유지합니다.",
@@ -2272,8 +2272,8 @@
       }
     }
   },
-  "DsPopover": {
-    "name": "DsPopover",
+  "KjunPopover": {
+    "name": "KjunPopover",
     "path": "/components/popover",
     "related": "layers",
     "description": "트리거 가까이에 추가 정보나 작업 영역을 엽니다.",
@@ -2418,8 +2418,8 @@
       }
     }
   },
-  "DsPriceCell": {
-    "name": "DsPriceCell",
+  "KjunPriceCell": {
+    "name": "KjunPriceCell",
     "path": "/components/price-cell",
     "related": "assets",
     "description": "가격 포맷과 이전 값 표시를 분리해 표현합니다.",
@@ -2451,7 +2451,7 @@
             "label": "오래된 값",
             "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
             "settings": {
-              "visual": "{\"DsPriceCell\":{\"props\":{\"stale\":true}}}"
+              "visual": "{\"KjunPriceCell\":{\"props\":{\"stale\":true}}}"
             }
           }
         ],
@@ -2486,7 +2486,7 @@
             "label": "오래된 값",
             "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
             "settings": {
-              "visual": "{\"DsPriceCell\":{\"props\":{\"stale\":true}}}"
+              "visual": "{\"KjunPriceCell\":{\"props\":{\"stale\":true}}}"
             }
           }
         ],
@@ -2521,7 +2521,7 @@
             "label": "오래된 값",
             "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
             "settings": {
-              "visual": "{\"DsPriceCell\":{\"props\":{\"stale\":true}}}"
+              "visual": "{\"KjunPriceCell\":{\"props\":{\"stale\":true}}}"
             }
           }
         ],
@@ -2531,8 +2531,8 @@
       }
     }
   },
-  "DsProgressCell": {
-    "name": "DsProgressCell",
+  "KjunProgressCell": {
+    "name": "KjunProgressCell",
     "path": "/components/progress-cell",
     "related": "assets",
     "description": "표 안에서 수치와 진행 비율을 함께 보여줍니다.",
@@ -2620,8 +2620,8 @@
       }
     }
   },
-  "DsSignedValue": {
-    "name": "DsSignedValue",
+  "KjunSignedValue": {
+    "name": "KjunSignedValue",
     "path": "/components/signed-value",
     "related": "assets",
     "description": "양수·음수·중립의 의미를 숫자 부호와 역할 색상으로 표시합니다.",
@@ -2653,7 +2653,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsSignedValue\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunSignedValue\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -2661,7 +2661,7 @@
             "label": "오래된 값",
             "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
             "settings": {
-              "visual": "{\"DsSignedValue\":{\"props\":{\"stale\":true}}}"
+              "visual": "{\"KjunSignedValue\":{\"props\":{\"stale\":true}}}"
             }
           }
         ],
@@ -2696,7 +2696,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsSignedValue\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunSignedValue\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -2704,7 +2704,7 @@
             "label": "오래된 값",
             "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
             "settings": {
-              "visual": "{\"DsSignedValue\":{\"props\":{\"stale\":true}}}"
+              "visual": "{\"KjunSignedValue\":{\"props\":{\"stale\":true}}}"
             }
           }
         ],
@@ -2739,7 +2739,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsSignedValue\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunSignedValue\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -2747,7 +2747,7 @@
             "label": "오래된 값",
             "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
             "settings": {
-              "visual": "{\"DsSignedValue\":{\"props\":{\"stale\":true}}}"
+              "visual": "{\"KjunSignedValue\":{\"props\":{\"stale\":true}}}"
             }
           }
         ],
@@ -2757,8 +2757,8 @@
       }
     }
   },
-  "DsSkeleton": {
-    "name": "DsSkeleton",
+  "KjunSkeleton": {
+    "name": "KjunSkeleton",
     "path": "/components/skeleton",
     "related": "loading",
     "description": "텍스트·카드·표·차트·통계·블록의 조회 대기 모양을 표시합니다.",
@@ -2846,8 +2846,8 @@
       }
     }
   },
-  "DsSparkline": {
-    "name": "DsSparkline",
+  "KjunSparkline": {
+    "name": "KjunSparkline",
     "path": "/components/sparkline",
     "related": "assets",
     "description": "작은 공간에 값의 추세를 표시합니다. 의미와 색상은 입력으로 연결합니다.",
@@ -2935,8 +2935,8 @@
       }
     }
   },
-  "DsTable": {
-    "name": "DsTable",
+  "KjunTable": {
+    "name": "KjunTable",
     "path": "/components/table",
     "related": "assets",
     "description": "데이터 열, 정렬, 행 선택, 확장, 모바일 카드 표현을 구성합니다.",
@@ -2980,7 +2980,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsTable\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunTable\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -2988,7 +2988,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           },
           {
@@ -3054,7 +3054,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsTable\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunTable\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -3062,7 +3062,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           },
           {
@@ -3128,7 +3128,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsTable\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunTable\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -3136,7 +3136,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
+              "visual": "{\"KjunTable\":{\"props\":{\"error\":\"목록을 불러오지 못했습니다.\"}}}"
             }
           },
           {
@@ -3165,8 +3165,8 @@
       }
     }
   },
-  "DsTooltip": {
-    "name": "DsTooltip",
+  "KjunTooltip": {
+    "name": "KjunTooltip",
     "path": "/components/tooltip",
     "related": "layers",
     "description": "트리거에 대한 짧은 설명을 표시합니다.",
@@ -3285,7 +3285,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsTooltip\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunTooltip\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -3301,8 +3301,8 @@
       }
     }
   },
-  "DsAlert": {
-    "name": "DsAlert",
+  "KjunAlert": {
+    "name": "KjunAlert",
     "path": "/components/alert",
     "related": "feedback",
     "description": "상태의 의미와 사용자가 해야 할 행동을 본문으로 설명합니다.",
@@ -3354,7 +3354,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAlert\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunAlert\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -3362,7 +3362,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAlert\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunAlert\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -3370,7 +3370,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAlert\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunAlert\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -3424,7 +3424,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAlert\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunAlert\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -3432,7 +3432,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAlert\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunAlert\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -3440,7 +3440,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAlert\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunAlert\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -3494,7 +3494,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAlert\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunAlert\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -3502,7 +3502,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAlert\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunAlert\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -3510,7 +3510,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAlert\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunAlert\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -3519,8 +3519,8 @@
       }
     }
   },
-  "DsDataState": {
-    "name": "DsDataState",
+  "KjunDataState": {
+    "name": "KjunDataState",
     "path": "/components/data-state",
     "related": "loading",
     "description": "최초 조회·조건 변경·동일 조건 갱신·실패를 구분하여 표시합니다.",
@@ -3648,7 +3648,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDataState\":{\"props\":{\"size\":\"sm\"}}}",
+              "visual": "{\"KjunDataState\":{\"props\":{\"size\":\"sm\"}}}",
               "empty": true
             }
           },
@@ -3657,7 +3657,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDataState\":{\"props\":{\"size\":\"md\"}}}",
+              "visual": "{\"KjunDataState\":{\"props\":{\"size\":\"md\"}}}",
               "empty": true
             }
           },
@@ -3666,7 +3666,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDataState\":{\"props\":{\"size\":\"lg\"}}}",
+              "visual": "{\"KjunDataState\":{\"props\":{\"size\":\"lg\"}}}",
               "empty": true
             }
           }
@@ -3797,7 +3797,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDataState\":{\"props\":{\"size\":\"sm\"}}}",
+              "visual": "{\"KjunDataState\":{\"props\":{\"size\":\"sm\"}}}",
               "empty": true
             }
           },
@@ -3806,7 +3806,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDataState\":{\"props\":{\"size\":\"md\"}}}",
+              "visual": "{\"KjunDataState\":{\"props\":{\"size\":\"md\"}}}",
               "empty": true
             }
           },
@@ -3815,7 +3815,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDataState\":{\"props\":{\"size\":\"lg\"}}}",
+              "visual": "{\"KjunDataState\":{\"props\":{\"size\":\"lg\"}}}",
               "empty": true
             }
           }
@@ -3946,7 +3946,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDataState\":{\"props\":{\"size\":\"sm\"}}}",
+              "visual": "{\"KjunDataState\":{\"props\":{\"size\":\"sm\"}}}",
               "empty": true
             }
           },
@@ -3955,7 +3955,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDataState\":{\"props\":{\"size\":\"md\"}}}",
+              "visual": "{\"KjunDataState\":{\"props\":{\"size\":\"md\"}}}",
               "empty": true
             }
           },
@@ -3964,7 +3964,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDataState\":{\"props\":{\"size\":\"lg\"}}}",
+              "visual": "{\"KjunDataState\":{\"props\":{\"size\":\"lg\"}}}",
               "empty": true
             }
           }
@@ -3974,8 +3974,8 @@
       }
     }
   },
-  "DsErrorBoundary": {
-    "name": "DsErrorBoundary",
+  "KjunErrorBoundary": {
+    "name": "KjunErrorBoundary",
     "path": "/components/error-boundary",
     "related": "loading",
     "description": "하위 렌더링 오류를 대체 콘텐츠로 표현하고 오류 보고를 프로젝트에 전달합니다.",
@@ -4063,8 +4063,8 @@
       }
     }
   },
-  "DsProgress": {
-    "name": "DsProgress",
+  "KjunProgress": {
+    "name": "KjunProgress",
     "path": "/components/progress",
     "related": "loading",
     "description": "범위를 벗어난 값을 제한하여 완료 비율을 표시합니다.",
@@ -4110,7 +4110,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsProgress\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunProgress\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -4118,7 +4118,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsProgress\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunProgress\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -4126,7 +4126,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsProgress\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunProgress\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -4174,7 +4174,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsProgress\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunProgress\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -4182,7 +4182,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsProgress\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunProgress\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -4190,7 +4190,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsProgress\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunProgress\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -4238,7 +4238,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsProgress\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunProgress\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -4246,7 +4246,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsProgress\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunProgress\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -4254,7 +4254,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsProgress\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunProgress\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -4263,8 +4263,8 @@
       }
     }
   },
-  "DsSpinner": {
-    "name": "DsSpinner",
+  "KjunSpinner": {
+    "name": "KjunSpinner",
     "path": "/components/spinner",
     "related": "loading",
     "description": "작업이 진행 중임을 표시합니다. 완료 여부는 프로젝트가 결정합니다.",
@@ -4304,7 +4304,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -4312,7 +4312,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -4320,7 +4320,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -4328,7 +4328,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -4336,7 +4336,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -4378,7 +4378,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -4386,7 +4386,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -4394,7 +4394,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -4402,7 +4402,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -4410,7 +4410,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -4452,7 +4452,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -4460,7 +4460,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -4468,7 +4468,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -4476,7 +4476,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -4484,7 +4484,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSpinner\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunSpinner\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -4493,8 +4493,8 @@
       }
     }
   },
-  "DsSearchInput": {
-    "name": "DsSearchInput",
+  "KjunSearchInput": {
+    "name": "KjunSearchInput",
     "path": "/components/search-input",
     "related": "selection",
     "description": "검색 지연, 요청 취소, 늦은 응답 무시와 결과 선택을 담당합니다.",
@@ -4540,7 +4540,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -4548,7 +4548,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -4594,7 +4594,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -4602,7 +4602,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -4610,7 +4610,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -4658,7 +4658,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -4666,7 +4666,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -4712,7 +4712,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -4720,7 +4720,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -4728,7 +4728,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -4776,7 +4776,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -4784,7 +4784,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -4830,7 +4830,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -4838,7 +4838,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -4846,7 +4846,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSearchInput\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -4855,8 +4855,8 @@
       }
     }
   },
-  "DsCheckbox": {
-    "name": "DsCheckbox",
+  "KjunCheckbox": {
+    "name": "KjunCheckbox",
     "path": "/components/checkbox",
     "related": "form",
     "description": "단일 여부 또는 배열에 포함되는 선택값을 변경합니다.",
@@ -4894,7 +4894,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -4912,7 +4912,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -4920,7 +4920,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -4928,7 +4928,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -4968,7 +4968,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -4986,7 +4986,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -4994,7 +4994,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -5002,7 +5002,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -5042,7 +5042,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -5060,7 +5060,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -5068,7 +5068,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -5076,7 +5076,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCheckbox\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunCheckbox\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -5085,8 +5085,8 @@
       }
     }
   },
-  "DsCombobox": {
-    "name": "DsCombobox",
+  "KjunCombobox": {
+    "name": "KjunCombobox",
     "path": "/components/combobox",
     "related": "selection",
     "description": "입력한 조건에 맞는 옵션을 검색하고 선택합니다.",
@@ -5138,7 +5138,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -5146,7 +5146,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -5164,7 +5164,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -5172,7 +5172,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -5180,7 +5180,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -5234,7 +5234,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -5242,7 +5242,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -5260,7 +5260,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -5268,7 +5268,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -5276,7 +5276,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -5330,7 +5330,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -5338,7 +5338,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -5356,7 +5356,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -5364,7 +5364,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -5372,7 +5372,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCombobox\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunCombobox\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -5381,8 +5381,8 @@
       }
     }
   },
-  "DsDatePicker": {
-    "name": "DsDatePicker",
+  "KjunDatePicker": {
+    "name": "KjunDatePicker",
     "path": "/components/date-picker",
     "related": "form",
     "description": "허용 날짜 범위 안에서 날짜 문자열을 선택합니다.",
@@ -5414,7 +5414,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -5422,7 +5422,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           }
         ],
@@ -5432,7 +5432,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -5440,7 +5440,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -5448,7 +5448,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -5482,7 +5482,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -5490,7 +5490,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           }
         ],
@@ -5500,7 +5500,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -5508,7 +5508,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -5516,7 +5516,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -5550,7 +5550,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -5558,7 +5558,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           }
         ],
@@ -5568,7 +5568,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -5576,7 +5576,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -5584,7 +5584,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsDatePicker\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunDatePicker\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -5593,8 +5593,8 @@
       }
     }
   },
-  "DsFormActions": {
-    "name": "DsFormActions",
+  "KjunFormActions": {
+    "name": "KjunFormActions",
     "path": "/components/form-actions",
     "related": "form",
     "description": "확인·취소 액션과 로딩 중 중복 실행 방지를 연결합니다.",
@@ -5632,7 +5632,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -5640,7 +5640,7 @@
             "label": "확인 비활성",
             "description": "푸터 확인 행동에만 적용됩니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"confirmDisabled\":true}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"confirmDisabled\":true}}}"
             }
           },
           {
@@ -5677,7 +5677,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -5685,7 +5685,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -5693,7 +5693,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -5733,7 +5733,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -5741,7 +5741,7 @@
             "label": "확인 비활성",
             "description": "푸터 확인 행동에만 적용됩니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"confirmDisabled\":true}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"confirmDisabled\":true}}}"
             }
           },
           {
@@ -5778,7 +5778,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -5786,7 +5786,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -5794,7 +5794,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -5834,7 +5834,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -5842,7 +5842,7 @@
             "label": "확인 비활성",
             "description": "푸터 확인 행동에만 적용됩니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"confirmDisabled\":true}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"confirmDisabled\":true}}}"
             }
           },
           {
@@ -5879,7 +5879,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -5887,7 +5887,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -5895,7 +5895,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFormActions\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunFormActions\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -5904,8 +5904,8 @@
       }
     }
   },
-  "DsFormGroup": {
-    "name": "DsFormGroup",
+  "KjunFormGroup": {
+    "name": "KjunFormGroup",
     "path": "/components/form-group",
     "related": "form",
     "description": "라벨·필수 표시·안내·오류를 입력 컨트롤과 연결합니다.",
@@ -6143,8 +6143,8 @@
       }
     }
   },
-  "DsRadio": {
-    "name": "DsRadio",
+  "KjunRadio": {
+    "name": "KjunRadio",
     "path": "/components/radio",
     "related": "form",
     "description": "RadioGroup의 단일 선택 항목을 구성합니다.",
@@ -6182,7 +6182,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsRadio\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunRadio\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -6231,7 +6231,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsRadio\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunRadio\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -6280,7 +6280,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsRadio\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunRadio\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -6298,8 +6298,8 @@
       }
     }
   },
-  "DsRadioGroup": {
-    "name": "DsRadioGroup",
+  "KjunRadioGroup": {
+    "name": "KjunRadioGroup",
     "path": "/components/radio-group",
     "related": "form",
     "description": "서로 배타적인 선택지를 옵션 또는 자식으로 구성합니다.",
@@ -6337,7 +6337,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsRadioGroup\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -6437,8 +6437,8 @@
       }
     }
   },
-  "DsSelect": {
-    "name": "DsSelect",
+  "KjunSelect": {
+    "name": "KjunSelect",
     "path": "/components/select",
     "related": "selection",
     "description": "단일·복수 선택, 검색과 비활성 항목을 지원합니다.",
@@ -6496,7 +6496,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -6504,7 +6504,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -6512,7 +6512,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -6562,7 +6562,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -6570,7 +6570,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -6578,7 +6578,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -6638,7 +6638,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -6646,7 +6646,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -6654,7 +6654,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -6704,7 +6704,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -6712,7 +6712,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -6720,7 +6720,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -6780,7 +6780,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -6788,7 +6788,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -6796,7 +6796,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -6846,7 +6846,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -6854,7 +6854,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -6862,7 +6862,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSelect\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSelect\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -6871,8 +6871,8 @@
       }
     }
   },
-  "DsSwitch": {
-    "name": "DsSwitch",
+  "KjunSwitch": {
+    "name": "KjunSwitch",
     "path": "/components/switch",
     "related": "form",
     "description": "즉시 적용되는 켜짐·꺼짐 상태를 변경합니다.",
@@ -6910,7 +6910,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -6928,7 +6928,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -6936,7 +6936,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -6944,7 +6944,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -6984,7 +6984,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -7002,7 +7002,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -7010,7 +7010,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -7018,7 +7018,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -7058,7 +7058,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -7076,7 +7076,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -7084,7 +7084,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -7092,7 +7092,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsSwitch\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunSwitch\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -7101,8 +7101,8 @@
       }
     }
   },
-  "DsTextarea": {
-    "name": "DsTextarea",
+  "KjunTextarea": {
+    "name": "KjunTextarea",
     "path": "/components/textarea",
     "related": "form",
     "description": "여러 줄의 텍스트를 입력합니다.",
@@ -7134,7 +7134,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -7142,7 +7142,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           }
         ],
@@ -7152,7 +7152,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -7160,7 +7160,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -7168,7 +7168,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -7202,7 +7202,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -7210,7 +7210,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           }
         ],
@@ -7220,7 +7220,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -7228,7 +7228,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -7236,7 +7236,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -7270,7 +7270,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -7278,7 +7278,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           }
         ],
@@ -7288,7 +7288,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -7296,7 +7296,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -7304,7 +7304,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTextarea\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunTextarea\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -7313,8 +7313,8 @@
       }
     }
   },
-  "DsAccordion": {
-    "name": "DsAccordion",
+  "KjunAccordion": {
+    "name": "KjunAccordion",
     "path": "/components/accordion",
     "related": "form",
     "description": "항목별 펼침 상태를 관리하며 단일·복수 펼침을 선택합니다.",
@@ -7441,8 +7441,8 @@
       }
     }
   },
-  "DsAccordionItem": {
-    "name": "DsAccordionItem",
+  "KjunAccordionItem": {
+    "name": "KjunAccordionItem",
     "path": "/components/accordion-item",
     "related": "form",
     "description": "제목을 눌러 설명 영역을 펼치거나 접습니다.",
@@ -7481,7 +7481,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsAccordionItem\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunAccordionItem\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -7529,7 +7529,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsAccordionItem\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunAccordionItem\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -7577,7 +7577,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsAccordionItem\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunAccordionItem\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -7593,8 +7593,8 @@
       }
     }
   },
-  "DsCard": {
-    "name": "DsCard",
+  "KjunCard": {
+    "name": "KjunCard",
     "path": "/components/card",
     "related": "assets",
     "description": "미디어·헤더·본문·푸터를 공통 표면과 여백 규칙으로 묶습니다.",
@@ -7718,8 +7718,8 @@
       }
     }
   },
-  "DsDrawer": {
-    "name": "DsDrawer",
+  "KjunDrawer": {
+    "name": "KjunDrawer",
     "path": "/components/drawer",
     "related": "layers",
     "description": "화면 가장자리에서 작업 영역을 엽니다.",
@@ -7864,8 +7864,8 @@
       }
     }
   },
-  "DsDropdown": {
-    "name": "DsDropdown",
+  "KjunDropdown": {
+    "name": "KjunDropdown",
     "path": "/components/dropdown",
     "related": "layers",
     "description": "트리거를 기준으로 작업 메뉴를 엽니다.",
@@ -7904,7 +7904,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsDropdown\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunDropdown\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -7952,7 +7952,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsDropdown\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunDropdown\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -8000,7 +8000,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsDropdown\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunDropdown\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -8016,8 +8016,8 @@
       }
     }
   },
-  "DsDropdownDivider": {
-    "name": "DsDropdownDivider",
+  "KjunDropdownDivider": {
+    "name": "KjunDropdownDivider",
     "path": "/components/dropdown-divider",
     "related": "layers",
     "description": "메뉴 항목 사이의 구분선을 표시합니다.",
@@ -8126,8 +8126,8 @@
       }
     }
   },
-  "DsDropdownItem": {
-    "name": "DsDropdownItem",
+  "KjunDropdownItem": {
+    "name": "KjunDropdownItem",
     "path": "/components/dropdown-item",
     "related": "layers",
     "description": "메뉴의 실행·선택·비활성·위험 액션을 표현합니다.",
@@ -8166,7 +8166,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsDropdownItem\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunDropdownItem\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -8214,7 +8214,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsDropdownItem\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunDropdownItem\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -8262,7 +8262,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsDropdownItem\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunDropdownItem\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -8278,8 +8278,8 @@
       }
     }
   },
-  "DsMarketListPanel": {
-    "name": "DsMarketListPanel",
+  "KjunMarketListPanel": {
+    "name": "KjunMarketListPanel",
     "path": "/components/market-list-panel",
     "related": "assets",
     "description": "조회 조건과 시장 목록 사이의 간격·구분선을 구성합니다.",
@@ -8403,8 +8403,8 @@
       }
     }
   },
-  "DsModal": {
-    "name": "DsModal",
+  "KjunModal": {
+    "name": "KjunModal",
     "path": "/components/modal",
     "related": "layers",
     "description": "현재 흐름에서 확인이나 입력을 수행하고 이전 포커스로 돌아갑니다.",
@@ -8455,7 +8455,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -8463,7 +8463,7 @@
             "label": "확인 비활성",
             "description": "푸터 확인 행동에만 적용됩니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"confirmDisabled\":true}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"confirmDisabled\":true}}}"
             }
           },
           {
@@ -8479,7 +8479,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"sm\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8488,7 +8488,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"md\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8497,7 +8497,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"lg\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8506,7 +8506,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"xl\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8515,7 +8515,7 @@
             "label": "full",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"full\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"full\"}}}"
             },
             "action": "모달 열기"
           }
@@ -8569,7 +8569,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -8577,7 +8577,7 @@
             "label": "확인 비활성",
             "description": "푸터 확인 행동에만 적용됩니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"confirmDisabled\":true}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"confirmDisabled\":true}}}"
             }
           },
           {
@@ -8593,7 +8593,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"sm\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8602,7 +8602,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"md\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8611,7 +8611,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"lg\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8620,7 +8620,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"xl\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8629,7 +8629,7 @@
             "label": "full",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"full\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"full\"}}}"
             },
             "action": "모달 열기"
           }
@@ -8683,7 +8683,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -8691,7 +8691,7 @@
             "label": "확인 비활성",
             "description": "푸터 확인 행동에만 적용됩니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"confirmDisabled\":true}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"confirmDisabled\":true}}}"
             }
           },
           {
@@ -8707,7 +8707,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"sm\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8716,7 +8716,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"md\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8725,7 +8725,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"lg\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8734,7 +8734,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"xl\"}}}"
             },
             "action": "모달 열기"
           },
@@ -8743,7 +8743,7 @@
             "label": "full",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsModal\":{\"props\":{\"size\":\"full\"}}}"
+              "visual": "{\"KjunModal\":{\"props\":{\"size\":\"full\"}}}"
             },
             "action": "모달 열기"
           }
@@ -8753,8 +8753,8 @@
       }
     }
   },
-  "DsTabPane": {
-    "name": "DsTabPane",
+  "KjunTabPane": {
+    "name": "KjunTabPane",
     "path": "/components/tab-pane",
     "related": "assets",
     "description": "Tabs의 제목과 연결된 본문을 구성합니다.",
@@ -8792,7 +8792,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsTabPane\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunTabPane\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -8841,7 +8841,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsTabPane\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunTabPane\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -8890,7 +8890,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsTabPane\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunTabPane\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -8908,8 +8908,8 @@
       }
     }
   },
-  "DsTabs": {
-    "name": "DsTabs",
+  "KjunTabs": {
+    "name": "KjunTabs",
     "path": "/components/tabs",
     "related": "assets",
     "description": "동일 영역의 보기를 선택하고 현재 패널을 표시합니다.",
@@ -9057,8 +9057,8 @@
       }
     }
   },
-  "DsBreadcrumb": {
-    "name": "DsBreadcrumb",
+  "KjunBreadcrumb": {
+    "name": "KjunBreadcrumb",
     "path": "/components/breadcrumb",
     "related": "assets",
     "description": "현재 위치와 상위 경로를 표시합니다.",
@@ -9164,8 +9164,8 @@
       }
     }
   },
-  "DsPagination": {
-    "name": "DsPagination",
+  "KjunPagination": {
+    "name": "KjunPagination",
     "path": "/components/pagination",
     "related": "assets",
     "description": "현재 페이지, 이동 가능한 페이지와 페이지 크기를 표시합니다.",
@@ -9271,8 +9271,8 @@
       }
     }
   },
-  "DsBadge": {
-    "name": "DsBadge",
+  "KjunBadge": {
+    "name": "KjunBadge",
     "path": "/components/badge",
     "related": "assets",
     "description": "짧은 상태명과 의미를 작은 표시로 전달합니다.",
@@ -9306,7 +9306,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -9314,7 +9314,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -9322,7 +9322,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -9330,7 +9330,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -9338,7 +9338,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -9374,7 +9374,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -9382,7 +9382,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -9390,7 +9390,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -9398,7 +9398,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -9406,7 +9406,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -9442,7 +9442,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -9450,7 +9450,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -9458,7 +9458,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -9466,7 +9466,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -9474,7 +9474,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsBadge\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunBadge\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -9483,8 +9483,8 @@
       }
     }
   },
-  "DsButton": {
-    "name": "DsButton",
+  "KjunButton": {
+    "name": "KjunButton",
     "path": "/components/button",
     "related": "writing",
     "description": "행동의 중요도, 크기와 실행 가능 상태를 표현합니다.",
@@ -9516,7 +9516,7 @@
               }
             ],
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"prefixIcon\":\"plus\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"prefixIcon\":\"plus\"}}}"
             }
           }
         ],
@@ -9531,7 +9531,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -9539,7 +9539,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -9591,7 +9591,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -9599,7 +9599,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -9607,7 +9607,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -9615,7 +9615,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -9623,7 +9623,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -9657,7 +9657,7 @@
               }
             ],
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"prefixIcon\":\"plus\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"prefixIcon\":\"plus\"}}}"
             }
           }
         ],
@@ -9672,7 +9672,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -9680,7 +9680,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -9732,7 +9732,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -9740,7 +9740,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -9748,7 +9748,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -9756,7 +9756,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -9764,7 +9764,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -9798,7 +9798,7 @@
               }
             ],
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"prefixIcon\":\"plus\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"prefixIcon\":\"plus\"}}}"
             }
           }
         ],
@@ -9813,7 +9813,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -9821,7 +9821,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -9873,7 +9873,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -9881,7 +9881,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -9889,7 +9889,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -9897,7 +9897,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -9905,7 +9905,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButton\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunButton\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -9914,8 +9914,8 @@
       }
     }
   },
-  "DsButtonGroup": {
-    "name": "DsButtonGroup",
+  "KjunButtonGroup": {
+    "name": "KjunButtonGroup",
     "path": "/components/button-group",
     "related": "toolbar",
     "description": "서로 연결된 보기나 조건을 버튼 형태로 선택합니다.",
@@ -9953,7 +9953,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -9971,7 +9971,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -9979,7 +9979,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -9987,7 +9987,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -9995,7 +9995,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -10003,7 +10003,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -10043,7 +10043,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -10061,7 +10061,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -10069,7 +10069,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -10077,7 +10077,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -10085,7 +10085,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -10093,7 +10093,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -10133,7 +10133,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -10151,7 +10151,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -10159,7 +10159,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -10167,7 +10167,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -10175,7 +10175,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -10183,7 +10183,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsButtonGroup\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunButtonGroup\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -10192,8 +10192,8 @@
       }
     }
   },
-  "DsCopyButton": {
-    "name": "DsCopyButton",
+  "KjunCopyButton": {
+    "name": "KjunCopyButton",
     "path": "/components/copy-button",
     "related": "toolbar",
     "description": "프로젝트가 지정한 값을 복사하고 결과를 알립니다.",
@@ -10231,7 +10231,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"disabled\":true}}}"
             }
           }
         ],
@@ -10241,7 +10241,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -10249,7 +10249,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -10257,7 +10257,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"size\":\"md\"}}}"
             }
           }
         ],
@@ -10297,7 +10297,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"disabled\":true}}}"
             }
           }
         ],
@@ -10307,7 +10307,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -10315,7 +10315,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -10323,7 +10323,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"size\":\"md\"}}}"
             }
           }
         ],
@@ -10363,7 +10363,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"disabled\":true}}}"
             }
           }
         ],
@@ -10373,7 +10373,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -10381,7 +10381,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -10389,7 +10389,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsCopyButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunCopyButton\":{\"props\":{\"size\":\"md\"}}}"
             }
           }
         ],
@@ -10398,8 +10398,8 @@
       }
     }
   },
-  "DsExternalLink": {
-    "name": "DsExternalLink",
+  "KjunExternalLink": {
+    "name": "KjunExternalLink",
     "path": "/components/external-link",
     "related": "writing",
     "description": "외부 문서나 서비스를 여는 링크를 표시합니다.",
@@ -10487,8 +10487,8 @@
       }
     }
   },
-  "DsFilterGroup": {
-    "name": "DsFilterGroup",
+  "KjunFilterGroup": {
+    "name": "KjunFilterGroup",
     "path": "/components/filter-group",
     "related": "toolbar",
     "description": "단일 또는 복수 필터 조건을 선택합니다.",
@@ -10526,7 +10526,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -10547,7 +10547,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -10555,7 +10555,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -10563,7 +10563,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -10571,7 +10571,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -10579,7 +10579,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -10619,7 +10619,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -10640,7 +10640,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -10648,7 +10648,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -10656,7 +10656,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -10664,7 +10664,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -10672,7 +10672,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -10712,7 +10712,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -10733,7 +10733,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -10741,7 +10741,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -10749,7 +10749,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -10757,7 +10757,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -10765,7 +10765,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsFilterGroup\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunFilterGroup\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -10774,8 +10774,8 @@
       }
     }
   },
-  "DsIcon": {
-    "name": "DsIcon",
+  "KjunIcon": {
+    "name": "KjunIcon",
     "path": "/components/icon",
     "related": "toolbar",
     "description": "Tabler 3.48.0의 선형 5,166개·채움형 1,054개를 공통 @kjun-ui/icons 패키지로 제공합니다. 추가 아이콘은 개별 import 후 KjunProvider.icons에 등록합니다.",
@@ -10809,7 +10809,7 @@
             "label": "16",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIcon\":{\"props\":{\"size\":16}}}"
+              "visual": "{\"KjunIcon\":{\"props\":{\"size\":16}}}"
             }
           },
           {
@@ -10817,7 +10817,7 @@
             "label": "24",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIcon\":{\"props\":{\"size\":24}}}"
+              "visual": "{\"KjunIcon\":{\"props\":{\"size\":24}}}"
             }
           },
           {
@@ -10825,7 +10825,7 @@
             "label": "32",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIcon\":{\"props\":{\"size\":32}}}"
+              "visual": "{\"KjunIcon\":{\"props\":{\"size\":32}}}"
             }
           }
         ],
@@ -10861,7 +10861,7 @@
             "label": "16",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIcon\":{\"props\":{\"size\":16}}}"
+              "visual": "{\"KjunIcon\":{\"props\":{\"size\":16}}}"
             }
           },
           {
@@ -10869,7 +10869,7 @@
             "label": "24",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIcon\":{\"props\":{\"size\":24}}}"
+              "visual": "{\"KjunIcon\":{\"props\":{\"size\":24}}}"
             }
           },
           {
@@ -10877,7 +10877,7 @@
             "label": "32",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIcon\":{\"props\":{\"size\":32}}}"
+              "visual": "{\"KjunIcon\":{\"props\":{\"size\":32}}}"
             }
           }
         ],
@@ -10913,7 +10913,7 @@
             "label": "16",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIcon\":{\"props\":{\"size\":16}}}"
+              "visual": "{\"KjunIcon\":{\"props\":{\"size\":16}}}"
             }
           },
           {
@@ -10921,7 +10921,7 @@
             "label": "24",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIcon\":{\"props\":{\"size\":24}}}"
+              "visual": "{\"KjunIcon\":{\"props\":{\"size\":24}}}"
             }
           },
           {
@@ -10929,7 +10929,7 @@
             "label": "32",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIcon\":{\"props\":{\"size\":32}}}"
+              "visual": "{\"KjunIcon\":{\"props\":{\"size\":32}}}"
             }
           }
         ],
@@ -10938,8 +10938,8 @@
       }
     }
   },
-  "DsIconToggle": {
-    "name": "DsIconToggle",
+  "KjunIconToggle": {
+    "name": "KjunIconToggle",
     "path": "/components/icon-toggle",
     "related": "toolbar",
     "description": "아이콘으로 선택 상태를 표현합니다. 즐겨찾기·관심도 같은 컨트롤로 구성합니다.",
@@ -10971,7 +10971,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -10979,7 +10979,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -11013,7 +11013,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -11021,7 +11021,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -11029,7 +11029,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -11037,7 +11037,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -11045,7 +11045,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -11079,7 +11079,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -11087,7 +11087,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -11121,7 +11121,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -11129,7 +11129,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -11137,7 +11137,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -11145,7 +11145,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -11153,7 +11153,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -11187,7 +11187,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -11195,7 +11195,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -11229,7 +11229,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -11237,7 +11237,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -11245,7 +11245,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -11253,7 +11253,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -11261,7 +11261,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsIconToggle\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunIconToggle\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -11270,8 +11270,8 @@
       }
     }
   },
-  "DsInput": {
-    "name": "DsInput",
+  "KjunInput": {
+    "name": "KjunInput",
     "path": "/components/input",
     "related": "form",
     "description": "한 줄 입력, 앞뒤 콘텐츠, 지우기와 오류 상태를 표현합니다.",
@@ -11357,7 +11357,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -11365,7 +11365,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           }
         ],
@@ -11375,7 +11375,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -11383,7 +11383,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -11391,7 +11391,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -11479,7 +11479,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -11487,7 +11487,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           }
         ],
@@ -11497,7 +11497,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -11505,7 +11505,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -11513,7 +11513,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -11601,7 +11601,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -11609,7 +11609,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           }
         ],
@@ -11619,7 +11619,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -11627,7 +11627,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -11635,7 +11635,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsInput\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunInput\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -11644,8 +11644,8 @@
       }
     }
   },
-  "DsMenuButton": {
-    "name": "DsMenuButton",
+  "KjunMenuButton": {
+    "name": "KjunMenuButton",
     "path": "/components/menu-button",
     "related": "toolbar",
     "description": "버튼과 메뉴를 연결하며 compact 표현을 지원합니다.",
@@ -11684,7 +11684,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -11692,7 +11692,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -11726,7 +11726,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"xs\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -11735,7 +11735,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"sm\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -11744,7 +11744,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"md\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -11753,7 +11753,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"lg\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -11762,7 +11762,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"xl\"}}}"
             },
             "action": "작업 메뉴"
           }
@@ -11804,7 +11804,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -11812,7 +11812,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -11846,7 +11846,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"xs\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -11855,7 +11855,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"sm\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -11864,7 +11864,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"md\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -11873,7 +11873,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"lg\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -11882,7 +11882,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"xl\"}}}"
             },
             "action": "작업 메뉴"
           }
@@ -11924,7 +11924,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -11932,7 +11932,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -11966,7 +11966,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"xs\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -11975,7 +11975,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"sm\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -11984,7 +11984,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"md\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -11993,7 +11993,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"lg\"}}}"
             },
             "action": "작업 메뉴"
           },
@@ -12002,7 +12002,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsMenuButton\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunMenuButton\":{\"props\":{\"size\":\"xl\"}}}"
             },
             "action": "작업 메뉴"
           }
@@ -12012,8 +12012,8 @@
       }
     }
   },
-  "DsRefreshButton": {
-    "name": "DsRefreshButton",
+  "KjunRefreshButton": {
+    "name": "KjunRefreshButton",
     "path": "/components/refresh-button",
     "related": "loading",
     "description": "갱신 요청과 갱신 중 회전 표시를 연결합니다.",
@@ -12045,7 +12045,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -12053,7 +12053,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -12089,7 +12089,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -12097,7 +12097,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -12105,7 +12105,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -12113,7 +12113,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -12121,7 +12121,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -12155,7 +12155,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -12163,7 +12163,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -12199,7 +12199,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -12207,7 +12207,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -12215,7 +12215,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -12223,7 +12223,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -12231,7 +12231,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -12265,7 +12265,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -12273,7 +12273,7 @@
             "label": "로딩",
             "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"loading\":true}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"loading\":true}}}"
             }
           },
           {
@@ -12309,7 +12309,7 @@
             "label": "xs",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"xs\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"xs\"}}}"
             }
           },
           {
@@ -12317,7 +12317,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -12325,7 +12325,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -12333,7 +12333,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"lg\"}}}"
             }
           },
           {
@@ -12341,7 +12341,7 @@
             "label": "xl",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsRefreshButton\":{\"props\":{\"size\":\"xl\"}}}"
+              "visual": "{\"KjunRefreshButton\":{\"props\":{\"size\":\"xl\"}}}"
             }
           }
         ],
@@ -12350,8 +12350,8 @@
       }
     }
   },
-  "DsScrollFade": {
-    "name": "DsScrollFade",
+  "KjunScrollFade": {
+    "name": "KjunScrollFade",
     "path": "/components/scroll-fade",
     "related": "toolbar",
     "description": "가로 콘텐츠의 스크롤 영역을 구성합니다.",
@@ -12457,8 +12457,8 @@
       }
     }
   },
-  "DsListRow": {
-    "name": "DsListRow",
+  "KjunListRow": {
+    "name": "KjunListRow",
     "path": "/components/list-row",
     "related": "generic-lists",
     "description": "제목·설명·앞뒤 정보와 별도의 보조 행동으로 범용 목록 행을 구성합니다.",
@@ -12502,7 +12502,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsListRow\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunListRow\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -12557,7 +12557,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsListRow\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunListRow\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -12612,7 +12612,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsListRow\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunListRow\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -12630,8 +12630,8 @@
       }
     }
   },
-  "DsListSection": {
-    "name": "DsListSection",
+  "KjunListSection": {
+    "name": "KjunListSection",
     "path": "/components/list-section",
     "related": "generic-lists",
     "description": "제목과 설명이 있는 범용 목록 묶음입니다.",
@@ -12755,8 +12755,8 @@
       }
     }
   },
-  "DsTopNavigation": {
-    "name": "DsTopNavigation",
+  "KjunTopNavigation": {
+    "name": "KjunTopNavigation",
     "path": "/components/top-navigation",
     "related": "app-screen",
     "description": "화면 제목과 앞쪽 탐색·보조 행동을 배치합니다.",
@@ -12982,8 +12982,8 @@
       }
     }
   },
-  "DsBottomNavigation": {
-    "name": "DsBottomNavigation",
+  "KjunBottomNavigation": {
+    "name": "KjunBottomNavigation",
     "path": "/components/bottom-navigation",
     "related": "app-screen",
     "description": "앱의 주요 목적지와 현재 위치를 표시합니다.",
@@ -13155,8 +13155,8 @@
       }
     }
   },
-  "DsBottomActionBar": {
-    "name": "DsBottomActionBar",
+  "KjunBottomActionBar": {
+    "name": "KjunBottomActionBar",
     "path": "/components/bottom-action-bar",
     "related": "app-screen",
     "description": "화면 하단의 설명과 주요 행동을 묶습니다.",
@@ -13286,8 +13286,8 @@
       }
     }
   },
-  "DsImage": {
-    "name": "DsImage",
+  "KjunImage": {
+    "name": "KjunImage",
     "path": "/components/image",
     "related": "thumbnail",
     "description": "콘텐츠 이미지의 비율과 실패 대체 표현을 제공합니다.",
@@ -13474,8 +13474,8 @@
       }
     }
   },
-  "DsAvatar": {
-    "name": "DsAvatar",
+  "KjunAvatar": {
+    "name": "KjunAvatar",
     "path": "/components/avatar",
     "related": "generic-lists",
     "description": "사용자 이미지와 이름 기반 대체 표현을 제공합니다.",
@@ -13525,7 +13525,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAvatar\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunAvatar\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -13533,7 +13533,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAvatar\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunAvatar\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -13541,7 +13541,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAvatar\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunAvatar\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -13593,7 +13593,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAvatar\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunAvatar\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -13601,7 +13601,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAvatar\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunAvatar\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -13609,7 +13609,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAvatar\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunAvatar\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -13661,7 +13661,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAvatar\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunAvatar\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -13669,7 +13669,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAvatar\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunAvatar\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -13677,7 +13677,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsAvatar\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunAvatar\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -13686,8 +13686,8 @@
       }
     }
   },
-  "DsChip": {
-    "name": "DsChip",
+  "KjunChip": {
+    "name": "KjunChip",
     "path": "/components/chip",
     "related": "input-settings",
     "description": "선택된 항목의 라벨과 선택적인 삭제 행동을 표시합니다.",
@@ -13725,7 +13725,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -13743,7 +13743,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -13751,7 +13751,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -13759,7 +13759,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -13799,7 +13799,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -13817,7 +13817,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -13825,7 +13825,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -13833,7 +13833,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -13873,7 +13873,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -13891,7 +13891,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -13899,7 +13899,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -13907,7 +13907,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsChip\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunChip\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -13916,8 +13916,8 @@
       }
     }
   },
-  "DsSlider": {
-    "name": "DsSlider",
+  "KjunSlider": {
+    "name": "KjunSlider",
     "path": "/components/slider",
     "related": "input-settings",
     "description": "한 값을 가로 슬라이더로 조절합니다.",
@@ -13955,7 +13955,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSlider\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSlider\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14007,7 +14007,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSlider\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSlider\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14059,7 +14059,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsSlider\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunSlider\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14080,8 +14080,8 @@
       }
     }
   },
-  "DsRangeSlider": {
-    "name": "DsRangeSlider",
+  "KjunRangeSlider": {
+    "name": "KjunRangeSlider",
     "path": "/components/range-slider",
     "related": "input-settings",
     "description": "두 손잡이로 값의 시작과 끝을 선택합니다.",
@@ -14119,7 +14119,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsRangeSlider\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunRangeSlider\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14174,7 +14174,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsRangeSlider\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunRangeSlider\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14229,7 +14229,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsRangeSlider\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunRangeSlider\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14253,8 +14253,8 @@
       }
     }
   },
-  "DsTimePicker": {
-    "name": "DsTimePicker",
+  "KjunTimePicker": {
+    "name": "KjunTimePicker",
     "path": "/components/time-picker",
     "related": "input-settings",
     "description": "시·분 또는 시·분·초를 선택해 하루 안의 시각을 입력합니다.",
@@ -14301,7 +14301,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14309,7 +14309,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -14339,7 +14339,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -14347,7 +14347,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -14355,7 +14355,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -14404,7 +14404,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14412,7 +14412,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -14442,7 +14442,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -14450,7 +14450,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -14458,7 +14458,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -14507,7 +14507,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14515,7 +14515,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -14545,7 +14545,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -14553,7 +14553,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -14561,7 +14561,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsTimePicker\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunTimePicker\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -14570,8 +14570,8 @@
       }
     }
   },
-  "DsQuantityStepper": {
-    "name": "DsQuantityStepper",
+  "KjunQuantityStepper": {
+    "name": "KjunQuantityStepper",
     "path": "/components/quantity-stepper",
     "related": "input-settings",
     "description": "직접 입력과 증감 버튼으로 수량을 조절합니다.",
@@ -14615,7 +14615,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14623,7 +14623,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -14644,7 +14644,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -14652,7 +14652,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -14660,7 +14660,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -14706,7 +14706,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14714,7 +14714,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -14735,7 +14735,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -14743,7 +14743,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -14751,7 +14751,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],
@@ -14797,7 +14797,7 @@
             "label": "비활성",
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"disabled\":true}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"disabled\":true}}}"
             }
           },
           {
@@ -14805,7 +14805,7 @@
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"error\":true}},\"DsFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
             }
           },
           {
@@ -14826,7 +14826,7 @@
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"size\":\"sm\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"size\":\"sm\"}}}"
             }
           },
           {
@@ -14834,7 +14834,7 @@
             "label": "md",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"size\":\"md\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"size\":\"md\"}}}"
             }
           },
           {
@@ -14842,7 +14842,7 @@
             "label": "lg",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
-              "visual": "{\"DsQuantityStepper\":{\"props\":{\"size\":\"lg\"}}}"
+              "visual": "{\"KjunQuantityStepper\":{\"props\":{\"size\":\"lg\"}}}"
             }
           }
         ],

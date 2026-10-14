@@ -1,9 +1,9 @@
 [
   {
-    "name": "DsAnimatedNumber",
+    "name": "KjunAnimatedNumber",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsAnimatedNumber",
+    "owner": "KjunAnimatedNumber",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -36,10 +36,10 @@
     }
   },
   {
-    "name": "DsChartSkeleton",
+    "name": "KjunChartSkeleton",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsChartSkeleton",
+    "owner": "KjunChartSkeleton",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -72,10 +72,10 @@
     }
   },
   {
-    "name": "DsCollectionMark",
+    "name": "KjunCollectionMark",
     "category": "data-display",
     "kind": "domain",
-    "owner": "DsCollectionMark",
+    "owner": "KjunCollectionMark",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -108,10 +108,10 @@
     }
   },
   {
-    "name": "DsDeviation",
+    "name": "KjunDeviation",
     "category": "data-display",
     "kind": "domain",
-    "owner": "DsDeviation",
+    "owner": "KjunDeviation",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -144,10 +144,10 @@
     }
   },
   {
-    "name": "DsEmpty",
+    "name": "KjunEmpty",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsEmpty",
+    "owner": "KjunEmpty",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -180,10 +180,10 @@
     }
   },
   {
-    "name": "DsExecutionStatusBadge",
+    "name": "KjunExecutionStatusBadge",
     "category": "data-display",
     "kind": "domain",
-    "owner": "DsExecutionStatusBadge",
+    "owner": "KjunExecutionStatusBadge",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -216,10 +216,10 @@
     }
   },
   {
-    "name": "DsFormSkeleton",
+    "name": "KjunFormSkeleton",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsFormSkeleton",
+    "owner": "KjunFormSkeleton",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -252,10 +252,10 @@
     }
   },
   {
-    "name": "DsFreshness",
+    "name": "KjunFreshness",
     "category": "data-display",
     "kind": "domain",
-    "owner": "DsFreshness",
+    "owner": "KjunFreshness",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -288,10 +288,10 @@
     }
   },
   {
-    "name": "DsHeatmapCell",
+    "name": "KjunHeatmapCell",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsHeatmapCell",
+    "owner": "KjunHeatmapCell",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -324,10 +324,10 @@
     }
   },
   {
-    "name": "DsKpiHero",
+    "name": "KjunKpiHero",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsKpiHero",
+    "owner": "KjunKpiHero",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -360,10 +360,10 @@
     }
   },
   {
-    "name": "DsKpiRow",
+    "name": "KjunKpiRow",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsKpiRow",
+    "owner": "KjunKpiRow",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -396,10 +396,10 @@
     }
   },
   {
-    "name": "DsListSkeleton",
+    "name": "KjunListSkeleton",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsListSkeleton",
+    "owner": "KjunListSkeleton",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -432,10 +432,10 @@
     }
   },
   {
-    "name": "DsMarketCards",
+    "name": "KjunMarketCards",
     "category": "data-display",
     "kind": "domain",
-    "owner": "DsMarketCards",
+    "owner": "KjunMarketCards",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -468,10 +468,10 @@
     }
   },
   {
-    "name": "DsMarketSimpleList",
+    "name": "KjunMarketSimpleList",
     "category": "data-display",
     "kind": "domain",
-    "owner": "DsMarketSimpleList",
+    "owner": "KjunMarketSimpleList",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -504,10 +504,10 @@
     }
   },
   {
-    "name": "DsMarketTable",
+    "name": "KjunMarketTable",
     "category": "data-display",
     "kind": "domain",
-    "owner": "DsMarketTable",
+    "owner": "KjunMarketTable",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -540,10 +540,10 @@
     }
   },
   {
-    "name": "DsMarketTableSkeleton",
+    "name": "KjunMarketTableSkeleton",
     "category": "data-display",
     "kind": "domain",
-    "owner": "DsMarketTableSkeleton",
+    "owner": "KjunMarketTableSkeleton",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -576,10 +576,10 @@
     }
   },
   {
-    "name": "DsPopover",
+    "name": "KjunPopover",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsPopover",
+    "owner": "KjunPopover",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -612,10 +612,10 @@
     }
   },
   {
-    "name": "DsPriceCell",
+    "name": "KjunPriceCell",
     "category": "data-display",
     "kind": "domain",
-    "owner": "DsPriceCell",
+    "owner": "KjunPriceCell",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -648,10 +648,10 @@
     }
   },
   {
-    "name": "DsProgressCell",
+    "name": "KjunProgressCell",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsProgressCell",
+    "owner": "KjunProgressCell",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -684,10 +684,10 @@
     }
   },
   {
-    "name": "DsSignedValue",
+    "name": "KjunSignedValue",
     "category": "data-display",
     "kind": "domain",
-    "owner": "DsSignedValue",
+    "owner": "KjunSignedValue",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -720,10 +720,10 @@
     }
   },
   {
-    "name": "DsSkeleton",
+    "name": "KjunSkeleton",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsSkeleton",
+    "owner": "KjunSkeleton",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -756,10 +756,10 @@
     }
   },
   {
-    "name": "DsSparkline",
+    "name": "KjunSparkline",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsSparkline",
+    "owner": "KjunSparkline",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -792,10 +792,10 @@
     }
   },
   {
-    "name": "DsTable",
+    "name": "KjunTable",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsTable",
+    "owner": "KjunTable",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -828,10 +828,10 @@
     }
   },
   {
-    "name": "DsTooltip",
+    "name": "KjunTooltip",
     "category": "data-display",
     "kind": "component",
-    "owner": "DsTooltip",
+    "owner": "KjunTooltip",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -864,10 +864,10 @@
     }
   },
   {
-    "name": "DsTableCards",
+    "name": "KjunTableCards",
     "category": "data-display",
     "kind": "internal",
-    "owner": "DsTable",
+    "owner": "KjunTable",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -899,10 +899,10 @@
     }
   },
   {
-    "name": "DsAlert",
+    "name": "KjunAlert",
     "category": "feedback",
     "kind": "component",
-    "owner": "DsAlert",
+    "owner": "KjunAlert",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -935,7 +935,7 @@
     }
   },
   {
-    "name": "DsConfirmModal",
+    "name": "KjunConfirmModal",
     "category": "feedback",
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
@@ -971,10 +971,10 @@
     }
   },
   {
-    "name": "DsDataState",
+    "name": "KjunDataState",
     "category": "feedback",
     "kind": "component",
-    "owner": "DsDataState",
+    "owner": "KjunDataState",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1007,10 +1007,10 @@
     }
   },
   {
-    "name": "DsErrorBoundary",
+    "name": "KjunErrorBoundary",
     "category": "feedback",
     "kind": "component",
-    "owner": "DsErrorBoundary",
+    "owner": "KjunErrorBoundary",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1043,10 +1043,10 @@
     }
   },
   {
-    "name": "DsProgress",
+    "name": "KjunProgress",
     "category": "feedback",
     "kind": "component",
-    "owner": "DsProgress",
+    "owner": "KjunProgress",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1079,7 +1079,7 @@
     }
   },
   {
-    "name": "DsPromptModal",
+    "name": "KjunPromptModal",
     "category": "feedback",
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
@@ -1115,10 +1115,10 @@
     }
   },
   {
-    "name": "DsSpinner",
+    "name": "KjunSpinner",
     "category": "feedback",
     "kind": "component",
-    "owner": "DsSpinner",
+    "owner": "KjunSpinner",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1151,7 +1151,7 @@
     }
   },
   {
-    "name": "DsToast",
+    "name": "KjunToast",
     "category": "feedback",
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
@@ -1187,7 +1187,7 @@
     }
   },
   {
-    "name": "DsToastContainer",
+    "name": "KjunToastContainer",
     "category": "feedback",
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
@@ -1223,10 +1223,10 @@
     }
   },
   {
-    "name": "DsSearchInput",
+    "name": "KjunSearchInput",
     "category": "form",
     "kind": "component",
-    "owner": "DsSearchInput",
+    "owner": "KjunSearchInput",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1259,10 +1259,10 @@
     }
   },
   {
-    "name": "DsCheckbox",
+    "name": "KjunCheckbox",
     "category": "form",
     "kind": "component",
-    "owner": "DsCheckbox",
+    "owner": "KjunCheckbox",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1295,10 +1295,10 @@
     }
   },
   {
-    "name": "DsCombobox",
+    "name": "KjunCombobox",
     "category": "form",
     "kind": "component",
-    "owner": "DsCombobox",
+    "owner": "KjunCombobox",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1331,10 +1331,10 @@
     }
   },
   {
-    "name": "DsDatePicker",
+    "name": "KjunDatePicker",
     "category": "form",
     "kind": "component",
-    "owner": "DsDatePicker",
+    "owner": "KjunDatePicker",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1367,10 +1367,10 @@
     }
   },
   {
-    "name": "DsFormActions",
+    "name": "KjunFormActions",
     "category": "form",
     "kind": "component",
-    "owner": "DsFormActions",
+    "owner": "KjunFormActions",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1403,10 +1403,10 @@
     }
   },
   {
-    "name": "DsFormGroup",
+    "name": "KjunFormGroup",
     "category": "form",
     "kind": "component",
-    "owner": "DsFormGroup",
+    "owner": "KjunFormGroup",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1439,10 +1439,10 @@
     }
   },
   {
-    "name": "DsRadio",
+    "name": "KjunRadio",
     "category": "form",
     "kind": "component",
-    "owner": "DsRadio",
+    "owner": "KjunRadio",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1475,10 +1475,10 @@
     }
   },
   {
-    "name": "DsRadioGroup",
+    "name": "KjunRadioGroup",
     "category": "form",
     "kind": "component",
-    "owner": "DsRadioGroup",
+    "owner": "KjunRadioGroup",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1511,10 +1511,10 @@
     }
   },
   {
-    "name": "DsSelect",
+    "name": "KjunSelect",
     "category": "form",
     "kind": "component",
-    "owner": "DsSelect",
+    "owner": "KjunSelect",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1547,10 +1547,10 @@
     }
   },
   {
-    "name": "DsSwitch",
+    "name": "KjunSwitch",
     "category": "form",
     "kind": "component",
-    "owner": "DsSwitch",
+    "owner": "KjunSwitch",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1583,10 +1583,10 @@
     }
   },
   {
-    "name": "DsTextarea",
+    "name": "KjunTextarea",
     "category": "form",
     "kind": "component",
-    "owner": "DsTextarea",
+    "owner": "KjunTextarea",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1619,10 +1619,10 @@
     }
   },
   {
-    "name": "DsAccordion",
+    "name": "KjunAccordion",
     "category": "layout",
     "kind": "component",
-    "owner": "DsAccordion",
+    "owner": "KjunAccordion",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1655,10 +1655,10 @@
     }
   },
   {
-    "name": "DsAccordionItem",
+    "name": "KjunAccordionItem",
     "category": "layout",
     "kind": "component",
-    "owner": "DsAccordionItem",
+    "owner": "KjunAccordionItem",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1691,10 +1691,10 @@
     }
   },
   {
-    "name": "DsCard",
+    "name": "KjunCard",
     "category": "layout",
     "kind": "component",
-    "owner": "DsCard",
+    "owner": "KjunCard",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1727,10 +1727,10 @@
     }
   },
   {
-    "name": "DsDrawer",
+    "name": "KjunDrawer",
     "category": "layout",
     "kind": "component",
-    "owner": "DsDrawer",
+    "owner": "KjunDrawer",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1763,10 +1763,10 @@
     }
   },
   {
-    "name": "DsDropdown",
+    "name": "KjunDropdown",
     "category": "layout",
     "kind": "component",
-    "owner": "DsDropdown",
+    "owner": "KjunDropdown",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1799,10 +1799,10 @@
     }
   },
   {
-    "name": "DsDropdownDivider",
+    "name": "KjunDropdownDivider",
     "category": "layout",
     "kind": "component",
-    "owner": "DsDropdownDivider",
+    "owner": "KjunDropdownDivider",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1835,10 +1835,10 @@
     }
   },
   {
-    "name": "DsDropdownItem",
+    "name": "KjunDropdownItem",
     "category": "layout",
     "kind": "component",
-    "owner": "DsDropdownItem",
+    "owner": "KjunDropdownItem",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1871,10 +1871,10 @@
     }
   },
   {
-    "name": "DsMarketListPanel",
+    "name": "KjunMarketListPanel",
     "category": "layout",
     "kind": "domain",
-    "owner": "DsMarketListPanel",
+    "owner": "KjunMarketListPanel",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1907,10 +1907,10 @@
     }
   },
   {
-    "name": "DsModal",
+    "name": "KjunModal",
     "category": "layout",
     "kind": "component",
-    "owner": "DsModal",
+    "owner": "KjunModal",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1943,10 +1943,10 @@
     }
   },
   {
-    "name": "DsTabPane",
+    "name": "KjunTabPane",
     "category": "layout",
     "kind": "component",
-    "owner": "DsTabPane",
+    "owner": "KjunTabPane",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -1979,10 +1979,10 @@
     }
   },
   {
-    "name": "DsTabs",
+    "name": "KjunTabs",
     "category": "layout",
     "kind": "component",
-    "owner": "DsTabs",
+    "owner": "KjunTabs",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2015,10 +2015,10 @@
     }
   },
   {
-    "name": "DsBreadcrumb",
+    "name": "KjunBreadcrumb",
     "category": "navigation",
     "kind": "component",
-    "owner": "DsBreadcrumb",
+    "owner": "KjunBreadcrumb",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2051,10 +2051,10 @@
     }
   },
   {
-    "name": "DsPagination",
+    "name": "KjunPagination",
     "category": "navigation",
     "kind": "component",
-    "owner": "DsPagination",
+    "owner": "KjunPagination",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2087,10 +2087,10 @@
     }
   },
   {
-    "name": "DsBadge",
+    "name": "KjunBadge",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsBadge",
+    "owner": "KjunBadge",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2123,10 +2123,10 @@
     }
   },
   {
-    "name": "DsButton",
+    "name": "KjunButton",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsButton",
+    "owner": "KjunButton",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2159,10 +2159,10 @@
     }
   },
   {
-    "name": "DsButtonGroup",
+    "name": "KjunButtonGroup",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsButtonGroup",
+    "owner": "KjunButtonGroup",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2195,10 +2195,10 @@
     }
   },
   {
-    "name": "DsCopyButton",
+    "name": "KjunCopyButton",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsCopyButton",
+    "owner": "KjunCopyButton",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2231,10 +2231,10 @@
     }
   },
   {
-    "name": "DsExternalLink",
+    "name": "KjunExternalLink",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsExternalLink",
+    "owner": "KjunExternalLink",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2267,10 +2267,10 @@
     }
   },
   {
-    "name": "DsFilterGroup",
+    "name": "KjunFilterGroup",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsFilterGroup",
+    "owner": "KjunFilterGroup",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2303,10 +2303,10 @@
     }
   },
   {
-    "name": "DsIcon",
+    "name": "KjunIcon",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsIcon",
+    "owner": "KjunIcon",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2339,10 +2339,10 @@
     }
   },
   {
-    "name": "DsIconToggle",
+    "name": "KjunIconToggle",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsIconToggle",
+    "owner": "KjunIconToggle",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2375,10 +2375,10 @@
     }
   },
   {
-    "name": "DsInput",
+    "name": "KjunInput",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsInput",
+    "owner": "KjunInput",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2411,10 +2411,10 @@
     }
   },
   {
-    "name": "DsMenuButton",
+    "name": "KjunMenuButton",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsMenuButton",
+    "owner": "KjunMenuButton",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2447,10 +2447,10 @@
     }
   },
   {
-    "name": "DsRefreshButton",
+    "name": "KjunRefreshButton",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsRefreshButton",
+    "owner": "KjunRefreshButton",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2483,10 +2483,10 @@
     }
   },
   {
-    "name": "DsScrollFade",
+    "name": "KjunScrollFade",
     "category": "primitives",
     "kind": "component",
-    "owner": "DsScrollFade",
+    "owner": "KjunScrollFade",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2519,7 +2519,7 @@
     }
   },
   {
-    "name": "DsListRow",
+    "name": "KjunListRow",
     "sources": {
       "vue2": "packages/vue2/src/components/ListRow.vue",
       "react": "packages/react/src/list.tsx",
@@ -2527,7 +2527,7 @@
     },
     "category": "data-display",
     "kind": "component",
-    "owner": "DsListRow",
+    "owner": "KjunListRow",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2556,7 +2556,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
-    "name": "DsListSection",
+    "name": "KjunListSection",
     "sources": {
       "vue2": "packages/vue2/src/components/ListSection.vue",
       "react": "packages/react/src/list.tsx",
@@ -2564,7 +2564,7 @@
     },
     "category": "data-display",
     "kind": "component",
-    "owner": "DsListSection",
+    "owner": "KjunListSection",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2593,7 +2593,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
-    "name": "DsTopNavigation",
+    "name": "KjunTopNavigation",
     "sources": {
       "vue2": "packages/vue2/src/components/TopNavigation.vue",
       "react": "packages/react/src/app-navigation.tsx",
@@ -2601,7 +2601,7 @@
     },
     "category": "navigation",
     "kind": "component",
-    "owner": "DsTopNavigation",
+    "owner": "KjunTopNavigation",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2630,7 +2630,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
-    "name": "DsBottomNavigation",
+    "name": "KjunBottomNavigation",
     "sources": {
       "vue2": "packages/vue2/src/components/BottomNavigation.vue",
       "react": "packages/react/src/app-navigation.tsx",
@@ -2638,7 +2638,7 @@
     },
     "category": "navigation",
     "kind": "component",
-    "owner": "DsBottomNavigation",
+    "owner": "KjunBottomNavigation",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2667,7 +2667,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
-    "name": "DsBottomActionBar",
+    "name": "KjunBottomActionBar",
     "sources": {
       "vue2": "packages/vue2/src/components/BottomActionBar.vue",
       "react": "packages/react/src/app-navigation.tsx",
@@ -2675,7 +2675,7 @@
     },
     "category": "layout",
     "kind": "component",
-    "owner": "DsBottomActionBar",
+    "owner": "KjunBottomActionBar",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2704,7 +2704,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
-    "name": "DsImage",
+    "name": "KjunImage",
     "sources": {
       "vue2": "packages/vue2/src/components/Image.vue",
       "react": "packages/react/src/media.tsx",
@@ -2712,7 +2712,7 @@
     },
     "category": "data-display",
     "kind": "component",
-    "owner": "DsImage",
+    "owner": "KjunImage",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2741,7 +2741,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
-    "name": "DsAvatar",
+    "name": "KjunAvatar",
     "sources": {
       "vue2": "packages/vue2/src/components/Avatar.vue",
       "react": "packages/react/src/media.tsx",
@@ -2749,7 +2749,7 @@
     },
     "category": "data-display",
     "kind": "component",
-    "owner": "DsAvatar",
+    "owner": "KjunAvatar",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2778,7 +2778,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
-    "name": "DsChip",
+    "name": "KjunChip",
     "sources": {
       "vue2": "packages/vue2/src/components/Chip.vue",
       "react": "packages/react/src/chip.tsx",
@@ -2786,7 +2786,7 @@
     },
     "category": "actions",
     "kind": "component",
-    "owner": "DsChip",
+    "owner": "KjunChip",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2815,7 +2815,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
-    "name": "DsSlider",
+    "name": "KjunSlider",
     "sources": {
       "vue2": "packages/vue2/src/components/Slider.vue",
       "react": "packages/react/src/range-input.tsx",
@@ -2823,7 +2823,7 @@
     },
     "category": "inputs",
     "kind": "component",
-    "owner": "DsSlider",
+    "owner": "KjunSlider",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2852,7 +2852,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
-    "name": "DsRangeSlider",
+    "name": "KjunRangeSlider",
     "sources": {
       "vue2": "packages/vue2/src/components/RangeSlider.vue",
       "react": "packages/react/src/range-input.tsx",
@@ -2860,7 +2860,7 @@
     },
     "category": "inputs",
     "kind": "component",
-    "owner": "DsRangeSlider",
+    "owner": "KjunRangeSlider",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2889,7 +2889,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
-    "name": "DsTimePicker",
+    "name": "KjunTimePicker",
     "sources": {
       "vue2": "packages/vue2/src/components/TimePicker.vue",
       "react": "packages/react/src/time-picker.tsx",
@@ -2897,7 +2897,7 @@
     },
     "category": "inputs",
     "kind": "component",
-    "owner": "DsTimePicker",
+    "owner": "KjunTimePicker",
     "platforms": {
       "vue2": {
         "status": "implemented",
@@ -2926,7 +2926,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
-    "name": "DsQuantityStepper",
+    "name": "KjunQuantityStepper",
     "sources": {
       "vue2": "packages/vue2/src/components/QuantityStepper.vue",
       "react": "packages/react/src/quantity-stepper.tsx",
@@ -2934,7 +2934,7 @@
     },
     "category": "inputs",
     "kind": "component",
-    "owner": "DsQuantityStepper",
+    "owner": "KjunQuantityStepper",
     "platforms": {
       "vue2": {
         "status": "implemented",

@@ -6,7 +6,7 @@ import { componentMixins } from "../../component-mixins.js";
 import { domainColorMixin } from "../../domain-colors.js";
 export default {
   mixins: [...componentMixins, domainColorMixin(vm => vm.mode === 'price')],
-  name: 'DsHeatmapCell',
+  name: 'KjunHeatmapCell',
   props: { value: {type:Number,default:0}, min:{type:Number,default:0}, max:{type:Number,default:1}, mode:{type:String,default:'diverging'}, color:{type:String,default:'brand'} },
   computed: {
     fillStyle() {

@@ -21,13 +21,13 @@ async function copy(page: Page, label: string) {
 }
 
 function setupExample(platform: PlatformName, feedback: boolean, domainColors: boolean) {
-  const builder = new UsageBuilder({ name: 'DsButton', platform, settings: {}, values: {} });
+  const builder = new UsageBuilder({ name: 'KjunButton', platform, settings: {}, values: {} });
   builder.feedback = feedback;
   builder.domainColors = domainColors;
   const children = [builder.button('실행 확인', builder.handler('run', '', builder.result('"실행됨"')))];
   if (feedback) children.push(builder.button('설정 알림', builder.handler('notify', '',
     `${builder.vue ? 'this.kjunFeedback' : 'feedback'}.toast.info("피드백 설정됨", { duration: 0 });`)));
-  if (domainColors) children.push(builder.node('DsIconToggle', {
+  if (domainColors) children.push(builder.node('KjunIconToggle', {
     active: builder.state('favorite', false), activeIcon: 'star', ariaLabel: '설정 항목 즐겨찾기',
     ...(builder.vue ? { activeColorClass: 'kj-text-favorite' } : { activeColor: builder.native
       ? (builder.declare('appDomainColors', 'import { appDomainColors } from \"./kjun\";'), expr('appDomainColors.favorite'))
@@ -72,7 +72,7 @@ for (const platform of ['vue2', 'react', 'native'] as const) {
       const setup = applySetupAdditions(platform, files, additions, { feedback, domainColors });
       expect(setup).toEqual(usageTools.usageSetup(platform, 'default', { feedback, domainColors }));
       const id = `guide-setup-${feedback}-${domainColors}`;
-      const entry = await prepareExample(platform, 'DsButton', id, {}, {}, 'default', setupExample(platform, feedback, domainColors), 'usage', setup);
+      const entry = await prepareExample(platform, 'KjunButton', id, {}, {}, 'default', setupExample(platform, feedback, domainColors), 'usage', setup);
       await compileEntries(platform, { [id]: entry });
       await other.goto(`/previews/export-checks/${platform}/${id}.html`);
       await other.getByRole('button', { name: '실행 확인', exact: true }).click();

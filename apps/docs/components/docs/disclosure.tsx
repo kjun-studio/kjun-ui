@@ -1,6 +1,6 @@
 'use client';
 import { createContext, useContext, useId, useState, type HTMLAttributes } from 'react';
-import { DsButton, type DsButtonProps } from '@kjun-ui/react';
+import { KjunButton, type KjunButtonProps } from '@kjun-ui/react';
 
 const Context = createContext<{ open: boolean; change(open: boolean): void; id: string } | null>(null);
 function useDisclosure() {
@@ -18,9 +18,9 @@ export function Collapsible({ open: controlled, onOpenChange, children, ...props
     <div {...props}>{children}</div>
   </Context.Provider>;
 }
-export function CollapsibleTrigger({ onClick, ...props }: DsButtonProps) {
+export function CollapsibleTrigger({ onClick, ...props }: KjunButtonProps) {
   const { open, change, id } = useDisclosure();
-  return <DsButton size="sm" variant="ghost" aria-expanded={open} aria-controls={id}
+  return <KjunButton size="sm" variant="ghost" aria-expanded={open} aria-controls={id}
     {...props} onClick={event => { onClick?.(event); if (!event.defaultPrevented) change(!open); }} />;
 }
 export function CollapsibleContent({ keepMounted = false, children, className = '', ...props }: HTMLAttributes<HTMLDivElement> & { keepMounted?: boolean }) {

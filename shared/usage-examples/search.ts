@@ -27,7 +27,7 @@ export function generate(input: UsageInput) {
       ? { ...row, name: row.name + " · 긴 한국어 이름과 추가 설명을 함께 표시합니다" }
       : row);
 }`);
-  return b.finish(b.node(b.native ? 'View' : 'div', { style: { width: b.native ? 360 : '360px', maxWidth: '100%' } }, b.node('DsFormGroup', { label: '자산 검색', hint: '이름이나 종목 코드를 입력하세요.' }, b.node('DsSearchInput', {
+  return b.finish(b.node(b.native ? 'View' : 'div', { style: { width: b.native ? 360 : '360px', maxWidth: '100%' } }, b.node('KjunFormGroup', { label: '자산 검색', hint: '이름이나 종목 코드를 입력하세요.' }, b.node('KjunSearchInput', {
     value: b.state('search', ''), onValueChange: b.update('search'), loadOptions,
     ...b.props('clearable', 'size', 'debounce', 'error', 'minChars', 'disabled'),
     labelField: 'name', ariaLabel: '자산 검색', placeholder: '한국어 또는 AAA 검색',

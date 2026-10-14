@@ -8,22 +8,22 @@
     :aria-label="ariaLabel || text || '복사'"
     @click.stop="copyToClipboard"
   >
-    <DsIcon :name="copied ? 'check' : 'copy'" :size="iconSize" :class="copied ? 'kj-text-success' : ''" />
+    <KjunIcon :name="copied ? 'check' : 'copy'" :size="iconSize" :class="copied ? 'kj-text-success' : ''" />
     <span v-if="text && !inline">{{ copied ? successText : text }}</span>
     <span v-if="!kjunFeedback" class="kjun-sr-only" role="status">{{ copied ? successText : failed ? '복사 실패' : '' }}</span>
   </button>
 </template>
 
 <script>
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { tokens } from '@kjun-ui/tokens'
 import { CONTROL_ICON_SIZES } from '../tokens'
 
 export default {
   mixins: componentMixins,
-  components: { DsIcon },
-  name: 'DsCopyButton',
+  components: { KjunIcon },
+  name: 'KjunCopyButton',
   props: {
     ariaLabel: { type: String, default: '' },
     copyText: { type: Function, default: null },

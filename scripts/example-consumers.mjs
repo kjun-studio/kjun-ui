@@ -11,18 +11,18 @@ const manifest = JSON.parse(await readFile(resolve(root, 'artifacts/examples/man
 const bundled = await build({ entryPoints: [resolve(root, 'shared/example-code.ts')], bundle: true, write: false, platform: 'node', format: 'esm', target: 'node24' });
 export const codeTools = await import('data:text/javascript;base64,' + Buffer.from(bundled.outputFiles[0].text).toString('base64'));
 export const snapshotFixtures = {
-  DsButton: { count: 3 }, DsInput: { input: '공유 컴포넌트' }, DsModal: { open: true },
-  DsSelect: { select: 'a', selectOpen: true }, DsSearchInput: { search: 'AAA' }, DsFormGroup: { input: '저장할 내용' },
-  DsTable: { selected: [{ id: 'a', name: '긴 한국어 자산 이름', symbol: 'AAA', price: 1234567, change: 2.35 }], expanded: ['a'] },
-  DsCard: {}, DsProgress: { progress: 0 }, DsCheckbox: { checked: true }, DsSwitch: { switch: false },
-  DsRadio: { radio: 'c' }, DsRadioGroup: { radio: 'c' }, DsTextarea: { textarea: '첫 줄\n한글 "인용" </script>' },
-  DsCombobox: { combo: 'a' }, DsDatePicker: { date: '2026-09-20' }, DsButtonGroup: { group: 'c' }, DsFilterGroup: { filters: [] },
-  DsTabs: { tab: 'two' }, DsTabPane: { tab: 'two' }, DsDrawer: { open: true, input: '' }, DsPopover: { popoverOpen: true },
-  DsPagination: { page: 2, pageSize: 50 }, DsIconToggle: { active: true }, DsAnimatedNumber: { number: 0 },
-  DsDataState: { queryKey: 'b', resultKey: 'b', queryLoading: false, queryError: null },
-  DsListRow: { notifications: false }, DsListSection: { notifications: false }, DsBottomNavigation: { destination: 'activity' },
-  DsImage: { imageReady: true, imageVersion: 1 }, DsChip: { removed: true }, DsSlider: { slider: 0 },
-  DsRangeSlider: { range: [0, 100] }, DsTimePicker: { time: null }, DsQuantityStepper: { quantity: 0 },
+  KjunButton: { count: 3 }, KjunInput: { input: '공유 컴포넌트' }, KjunModal: { open: true },
+  KjunSelect: { select: 'a', selectOpen: true }, KjunSearchInput: { search: 'AAA' }, KjunFormGroup: { input: '저장할 내용' },
+  KjunTable: { selected: [{ id: 'a', name: '긴 한국어 자산 이름', symbol: 'AAA', price: 1234567, change: 2.35 }], expanded: ['a'] },
+  KjunCard: {}, KjunProgress: { progress: 0 }, KjunCheckbox: { checked: true }, KjunSwitch: { switch: false },
+  KjunRadio: { radio: 'c' }, KjunRadioGroup: { radio: 'c' }, KjunTextarea: { textarea: '첫 줄\n한글 "인용" </script>' },
+  KjunCombobox: { combo: 'a' }, KjunDatePicker: { date: '2026-09-20' }, KjunButtonGroup: { group: 'c' }, KjunFilterGroup: { filters: [] },
+  KjunTabs: { tab: 'two' }, KjunTabPane: { tab: 'two' }, KjunDrawer: { open: true, input: '' }, KjunPopover: { popoverOpen: true },
+  KjunPagination: { page: 2, pageSize: 50 }, KjunIconToggle: { active: true }, KjunAnimatedNumber: { number: 0 },
+  KjunDataState: { queryKey: 'b', resultKey: 'b', queryLoading: false, queryError: null },
+  KjunListRow: { notifications: false }, KjunListSection: { notifications: false }, KjunBottomNavigation: { destination: 'activity' },
+  KjunImage: { imageReady: true, imageVersion: 1 }, KjunChip: { removed: true }, KjunSlider: { slider: 0 },
+  KjunRangeSlider: { range: [0, 100] }, KjunTimePicker: { time: null }, KjunQuantityStepper: { quantity: 0 },
 };
 export async function prepareExample(platform, name, id, settings, values, palette = 'default', suppliedCode, mode = 'full', suppliedSetup) {
   const directory = resolve(consumer.directory, 'example-checks', platform, (mode === 'usage' ? 'usage-' : '') + name + '-' + id);

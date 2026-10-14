@@ -3,13 +3,13 @@ import * as K from '@kjun-ui/vue2';
 import { cssPalette } from './typography-values';
 cssPalette();
 const query = new URLSearchParams(location.search);
-const First = query.get('kind') === 'drawer' ? K.DsDrawer : K.DsModal;
-const button = (h: any, label: string, action: () => void) => h(K.DsButton, { on: { click: action } }, label);
+const First = query.get('kind') === 'drawer' ? K.KjunDrawer : K.KjunModal;
+const button = (h: any, label: string, action: () => void) => h(K.KjunButton, { on: { click: action } }, label);
 const Editor = Vue.extend({
   inject: ['draftContext'],
   data: () => ({ draft: 'Original', count: 0 }),
   render(h) { return h('div', [
-    h(K.DsTextarea, { props: { ariaLabel: 'Draft', value: this.draft }, on: { input: (value: string) => this.draft = value } }),
+    h(K.KjunTextarea, { props: { ariaLabel: 'Draft', value: this.draft }, on: { input: (value: string) => this.draft = value } }),
     button(h, 'Edit count ' + this.count, () => this.count++),
     h('span', { attrs: { 'data-testid': 'draft-context' } }, (this as any).draftContext),
   ]); },
@@ -27,7 +27,7 @@ const Cases = Vue.extend({
     button(h, 'Open first', () => this.first = true), button(h, 'Page action', () => this.actions++),
     h('output', { attrs: { 'data-testid': 'actions' } }, String(this.actions)),
     this.mounted && h(First, { props: { value: this.first, title: 'First window' }, on: { input: (value: boolean) => this.first = value } }, [h(Editor)]),
-    this.mounted && h(K.KjunProvider, [h(K.DsModal, { props: { value: this.second, title: 'Second window' }, on: { input: (value: boolean) => this.second = value } }, [button(h, 'Second action', () => this.actions++)])]),
+    this.mounted && h(K.KjunProvider, [h(K.KjunModal, { props: { value: this.second, title: 'Second window' }, on: { input: (value: boolean) => this.second = value } }, [button(h, 'Second action', () => this.actions++)])]),
   ]); },
 });
 new Vue({ render: h => h(K.KjunProvider, [h(K.KjunFeedbackProvider, [h(Cases)])]) }).$mount('#root');

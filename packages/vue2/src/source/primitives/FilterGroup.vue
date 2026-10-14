@@ -16,7 +16,7 @@
           class="kj-inline-block kj-w-selection-dot-size kj-h-selection-dot-size kj-rounded-full kj-shrink-0"
           :style="{ backgroundColor: option.dot }"
         ></span>
-        <DsIcon v-if="option.icon" :name="option.icon" size="var(--_kjun-extension-selection-icon-size)" />
+        <KjunIcon v-if="option.icon" :name="option.icon" size="var(--_kjun-extension-selection-icon-size)" />
         <span class="kjun-filter-chip__label">
           <span class="kjun-filter-chip__measure" aria-hidden="true" :style="selectionStyle(true)">{{ option.label }}</span>
           <span>{{ option.label }}</span>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { selectionTypeStyle } from '../../typography'
 import { tokens } from '@kjun-ui/tokens'
@@ -35,10 +35,10 @@ import { SIZES_EXTENDED, CONTROL_HEIGHTS, oneOf } from '../tokens'
 import groupKeyboardNav from './_groupKeyboardNav'
 
 // 필터 칩 그룹 — multiple prop으로 다중 선택 지원 (예: 자산 타입 필터, 로그 레벨 필터).
-// 단일 선택 세그먼트 컨트롤이 필요하면 DsButtonGroup을 사용한다.
+// 단일 선택 세그먼트 컨트롤이 필요하면 KjunButtonGroup을 사용한다.
 export default {
-  components: { DsIcon },
-  name: 'DsFilterGroup',
+  components: { KjunIcon },
+  name: 'KjunFilterGroup',
   mixins: [groupKeyboardNav, ...componentMixins],
   props: {
     value: {

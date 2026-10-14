@@ -49,7 +49,7 @@ async function verifyConsumer(dir) {
   });
   await writeFile(
     dir + "/consumer.tsx",
-    `import React from 'react';import Vue from 'vue';import VueUI from '@kjun-ui/vue2';import {DsButton,DsInput,DsModal,KjunProvider} from '@kjun-ui/react';import {DsButton as NativeButton,DsInput as NativeInput,DsModal as NativeModal,KjunProvider as NativeProvider} from '@kjun-ui/native';import {tokens, type KjunColors} from '@kjun-ui/tokens';
+    `import React from 'react';import Vue from 'vue';import VueUI from '@kjun-ui/vue2';import {KjunButton,KjunInput,KjunModal,KjunProvider} from '@kjun-ui/react';import {KjunButton as NativeButton,KjunInput as NativeInput,KjunModal as NativeModal,KjunProvider as NativeProvider} from '@kjun-ui/native';import {tokens, type KjunColors} from '@kjun-ui/tokens';
 Vue.use(VueUI);
 const sharedLength: 48 = tokens.dimension.value48;
 // @ts-expect-error Pre-release spacing names were removed without aliases.
@@ -57,12 +57,12 @@ const retiredSpacing = tokens.spacing;
 import VuePlugin from '@kjun-ui/vue2/plugin';
 Vue.use(VuePlugin);
 import * as VueComponents from '@kjun-ui/vue2';
-const vueButtonProps: VueComponents.DsButtonProps={size:'xl',variant:'danger-ghost'};
-const vueInputProps: VueComponents.DsInputProps={size:'md',value:'',errorMessage:null};
+const vueButtonProps: VueComponents.KjunButtonProps={size:'xl',variant:'danger-ghost'};
+const vueInputProps: VueComponents.KjunInputProps={size:'md',value:'',errorMessage:null};
 // @ts-expect-error Vue's declared sizes must follow its runtime validator.
-const invalidVueSize: VueComponents.DsButtonProps={size:'xxl'};
+const invalidVueSize: VueComponents.KjunButtonProps={size:'xxl'};
 // @ts-expect-error Input has the three-step source size contract.
-const invalidVueInput: VueComponents.DsInputProps={size:'xl'};
+const invalidVueInput: VueComponents.KjunInputProps={size:'xl'};
 import * as ReactComponents from '@kjun-ui/react';
 import * as NativeComponents from '@kjun-ui/native';
 ${["VueComponents", "ReactComponents", "NativeComponents"]
@@ -73,14 +73,14 @@ ${["VueComponents", "ReactComponents", "NativeComponents"]
         .join(",")}];`,
   )
   .join("\n")}
-const search=<ReactComponents.DsSearchInput value="" loadOptions={async(query,{signal})=>{signal.throwIfAborted();return [{name:query}]}}/>;
-const nativeSearch=<NativeComponents.DsSearchInput value="" loadOptions={async(query,{signal})=>{signal.throwIfAborted();return [{name:query}]}}/>;
-const filled=<ReactComponents.DsIcon name="star" filled/>;
+const search=<ReactComponents.KjunSearchInput value="" loadOptions={async(query,{signal})=>{signal.throwIfAborted();return [{name:query}]}}/>;
+const nativeSearch=<NativeComponents.KjunSearchInput value="" loadOptions={async(query,{signal})=>{signal.throwIfAborted();return [{name:query}]}}/>;
+const filled=<ReactComponents.KjunIcon name="star" filled/>;
 // @ts-expect-error Native device clipboard must be supplied by the project.
-const missingClipboard=<NativeComponents.DsCopyButton value="copy"/>;
+const missingClipboard=<NativeComponents.KjunCopyButton value="copy"/>;
 // @ts-expect-error Product palettes are not a native provider API.
 const oldNative=<NativeComponents.KjunProvider theme="product" colors={appColors}>Body</NativeComponents.KjunProvider>;
-const web=<KjunProvider><DsButton size="xl" variant="danger-ghost">Delete</DsButton><DsInput value="value" onChange={()=>{}}/><DsModal open={false} onOpenChange={()=>{}}>Body</DsModal></KjunProvider>;
+const web=<KjunProvider><KjunButton size="xl" variant="danger-ghost">Delete</KjunButton><KjunInput value="value" onChange={()=>{}}/><KjunModal open={false} onOpenChange={()=>{}}>Body</KjunModal></KjunProvider>;
 declare const appColors: KjunColors;
 declare const coreColors: import('@kjun-ui/tokens').KjunCoreColors<import('react-native').ColorValue>;
 const minimalNative=<NativeProvider colors={coreColors}><NativeButton>Core colors</NativeButton></NativeProvider>;
@@ -90,12 +90,12 @@ const optionalRoleAfterResolution: string=resolvedColors.inputBorderFocus;
 ${["VueComponents", "ReactComponents", "NativeComponents"]
   .map(
     (namespace) => `
-const ${namespace}AccentCard: ${namespace}.DsCardProps={surface:'accent',padding:'sm',bodyPadding:'none',radius:'lg',border:false};
-const ${namespace}SubtleCard: ${namespace}.DsCardProps={surface:'subtle'};
+const ${namespace}AccentCard: ${namespace}.KjunCardProps={surface:'accent',padding:'sm',bodyPadding:'none',radius:'lg',border:false};
+const ${namespace}SubtleCard: ${namespace}.KjunCardProps={surface:'subtle'};
 // @ts-expect-error Color names are no longer card options.
-const ${namespace}OldBlueCard: ${namespace}.DsCardProps={gradient:'blue'};
+const ${namespace}OldBlueCard: ${namespace}.KjunCardProps={gradient:'blue'};
 // @ts-expect-error Color names are no longer card options.
-const ${namespace}OldIndigoCard: ${namespace}.DsCardProps={gradient:'indigo'};
+const ${namespace}OldIndigoCard: ${namespace}.KjunCardProps={gradient:'indigo'};
 `,
   )
   .join("\n")}
@@ -113,12 +113,12 @@ ${["VueComponents", "ReactComponents", "NativeComponents"]
   .map(
     (namespace) => `
 const ${namespace}Sort: ${namespace}.TableSort = {key:"amount",order:"desc"};
-const ${namespace}ServerTable: ${namespace}.DsTableProps = {columns:[{key:"amount",label:"Amount",sortable:true}],sort:${namespace}Sort,sortMode:"server"};
-const ${namespace}ClearedTable: ${namespace}.DsTableProps = {columns:[],sort:null};
+const ${namespace}ServerTable: ${namespace}.KjunTableProps = {columns:[{key:"amount",label:"Amount",sortable:true}],sort:${namespace}Sort,sortMode:"server"};
+const ${namespace}ClearedTable: ${namespace}.KjunTableProps = {columns:[],sort:null};
 // @ts-expect-error Only supported sorting locations belong to the contract.
-const ${namespace}InvalidSortMode: ${namespace}.DsTableProps = {columns:[],sortMode:"remote"};
+const ${namespace}InvalidSortMode: ${namespace}.KjunTableProps = {columns:[],sortMode:"remote"};
 // @ts-expect-error Sort order is a direction, not a free-form string.
-const ${namespace}InvalidSort: ${namespace}.DsTableProps = {columns:[],sort:{key:"amount",order:"descending"}};
+const ${namespace}InvalidSort: ${namespace}.KjunTableProps = {columns:[],sort:{key:"amount",order:"descending"}};
 `,
   )
   .join("\n")}
@@ -158,7 +158,7 @@ if(tokens.button.heights.md!==40)throw new Error('Invalid token output');
     [
       "--input-type=module",
       "-e",
-      "import Vue from 'vue';import ui,{DsButton} from '@kjun-ui/vue2';import plugin from '@kjun-ui/vue2/plugin';import {tokens} from '@kjun-ui/tokens';Vue.use(ui);if(plugin!==ui||Vue.version!=='2.6.14'||DsButton.props.size.default!=='md'||tokens.button.heights.md!==40)throw Error('consumer failed');",
+      "import Vue from 'vue';import ui,{KjunButton} from '@kjun-ui/vue2';import plugin from '@kjun-ui/vue2/plugin';import {tokens} from '@kjun-ui/tokens';Vue.use(ui);if(plugin!==ui||Vue.version!=='2.6.14'||KjunButton.props.size.default!=='md'||tokens.button.heights.md!==40)throw Error('consumer failed');",
     ],
     { cwd: dir, stdio: "inherit" },
   );

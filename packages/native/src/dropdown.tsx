@@ -14,19 +14,19 @@ import {
 View
 } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsButton,DsIcon,type DsButtonProps } from "./button";
+import { KjunButton,KjunIcon,type KjunButtonProps } from "./button";
 import { FloatingPanel,LayerTrigger } from "./floating-panel";
 import { content } from "./internal";
-import { DsTooltip,type DsTooltipProps } from "./popover";
+import { KjunTooltip,type KjunTooltipProps } from "./popover";
 import { useKjunStyles } from "./provider";
 export const DropdownContext = createContext<(() => void) | null>(null);
 // True once any item in the open menu has a leading icon, so icon-less labels share its start line.
 const MenuIconSlotContext = createContext(false);
 function hasLeadingIcon(node: ReactNode): boolean {
   return Children.toArray(node).some(child => isValidElement<{ icon?: string; children?: ReactNode }>(child) &&
-    (child.type === Fragment ? hasLeadingIcon(child.props.children) : child.type === DsDropdownItem && !!child.props.icon));
+    (child.type === Fragment ? hasLeadingIcon(child.props.children) : child.type === KjunDropdownItem && !!child.props.icon));
 }
-export interface DsDropdownProps {
+export interface KjunDropdownProps {
   disabled?: boolean;
   placement?: "bottom-start" | "bottom-end" | "top-start" | "top-end";
   menuId?: string;
@@ -36,21 +36,21 @@ export interface DsDropdownProps {
   onOpen?: () => void;
   onClose?: () => void;
 }
-export function DsDropdown({
+export function KjunDropdown({
   disabled = false,
   placement = "bottom-start",
   trigger,
   children,
   onOpen,
   onClose,
-}: DsDropdownProps) {
+}: KjunDropdownProps) {
   const [open, setOpen] = useState(false),
     currentOpen = useRef(false),
     ref = useRef<View>(null);
   let control = trigger;
-  while (isValidElement<DsTooltipProps>(control) && control.type === DsTooltip)
+  while (isValidElement<KjunTooltipProps>(control) && control.type === KjunTooltip)
     control = control.props.children;
-  const unavailable = disabled || (isValidElement<DsButtonProps>(control) &&
+  const unavailable = disabled || (isValidElement<KjunButtonProps>(control) &&
     !!(control.props.disabled || control.props.loading));
   const change = (v: boolean) => {
     if (v === currentOpen.current || (v && unavailable)) return;
@@ -84,7 +84,7 @@ export function DsDropdown({
     </DropdownContext.Provider>
   );
 }
-export interface DsDropdownItemProps {
+export interface KjunDropdownItemProps {
   id?: string;
   variant?: "default" | "danger";
   icon?: string;
@@ -93,14 +93,14 @@ export interface DsDropdownItemProps {
   children: ReactNode;
   onPress?: () => void;
 }
-export function DsDropdownItem({
+export function KjunDropdownItem({
   variant = "default",
   icon,
   disabled = false,
   selected = null,
   children,
   onPress,
-}: DsDropdownItemProps) {
+}: KjunDropdownItemProps) {
   const { colors } = useKjunStyles(),
     close = useContext(DropdownContext),
     color = variant === "danger" ? colors.danger : colors.text,
@@ -136,16 +136,16 @@ export function DsDropdownItem({
         opacity: disabled ? tokens.states.opacity.disabled : 1,
       })}
     >
-      {icon ? <DsIcon name={icon} size={tokens.extensions.menu.iconSize} color={iconColor} />
+      {icon ? <KjunIcon name={icon} size={tokens.extensions.menu.iconSize} color={iconColor} />
         : reserveIcon && <View style={{ width: tokens.extensions.menu.iconSize }} accessible={false} />}
       <View style={{ flexGrow: 1, flexShrink: 1 }}>{content(children, { color, fontSize: tokens.extensions.menu.optionFontSize, lineHeight: tokens.extensions.menu.optionLineHeight })}</View>
       {selected !== null && <View style={{ opacity: selected ? 1 : 0 }} accessible={false}>
-        <DsIcon name="check" size={tokens.extensions.menu.iconSize} color={colors.brand} />
+        <KjunIcon name="check" size={tokens.extensions.menu.iconSize} color={colors.brand} />
       </View>}
     </Pressable>
   );
 }
-export function DsDropdownDivider() {
+export function KjunDropdownDivider() {
   const { colors } = useKjunStyles();
   return (
     <View
@@ -154,19 +154,19 @@ export function DsDropdownDivider() {
     />
   );
 }
-export interface DsMenuButtonProps extends Omit<DsDropdownProps, "trigger"> {
+export interface KjunMenuButtonProps extends Omit<KjunDropdownProps, "trigger"> {
   label?: string;
-  size?: DsButtonProps["size"];
-  variant?: DsButtonProps["variant"];
+  size?: KjunButtonProps["size"];
+  variant?: KjunButtonProps["variant"];
   /** Show a square dots-vertical button; label remains its accessible name. */
   compact?: boolean;
   loading?: boolean;
   tooltip?: string;
-  tooltipPlacement?: DsTooltipProps["placement"];
+  tooltipPlacement?: KjunTooltipProps["placement"];
   tooltipDelay?: number;
   ariaLabel?: string;
 }
-export function DsMenuButton({
+export function KjunMenuButton({
   label,
   size = "md",
   variant = "secondary",
@@ -179,20 +179,20 @@ export function DsMenuButton({
   onOpen,
   onClose,
   ...props
-}: DsMenuButtonProps) {
+}: KjunMenuButtonProps) {
   const [open, setOpen] = useState(false);
   return (
-    <DsDropdown
+    <KjunDropdown
       {...props}
       onOpen={() => { setOpen(true); onOpen?.(); }}
       onClose={() => { setOpen(false); onClose?.(); }}
       trigger={
-        <DsTooltip
+        <KjunTooltip
           content={open ? '' : tooltip}
           placement={tooltipPlacement}
           delay={tooltipDelay}
         >
-          <DsButton
+          <KjunButton
             size={size}
             variant={variant}
             disabled={props.disabled}
@@ -203,8 +203,8 @@ export function DsMenuButton({
             ariaLabel={ariaLabel || label || tooltip || "메뉴"}
           >
             {compact ? undefined : label}
-          </DsButton>
-        </DsTooltip>
+          </KjunButton>
+        </KjunTooltip>
       }
     />
   );

@@ -67,7 +67,7 @@ export function useCatalog(name: string, platform: PlatformName, initialPalette:
     setConfig(previous => {
       const settings = { ...previous.settings, [key]: value };
       let values = current.current.snapshot.values, reset = previous.reset;
-      if (['DsSlider', 'DsRangeSlider', 'DsTimePicker', 'DsQuantityStepper'].includes(name) && ['decimal', 'precision', 'minuteStep', 'secondStep', 'bounded', 'negative'].includes(key)) { values = {}; reset++; }
+      if (['KjunSlider', 'KjunRangeSlider', 'KjunTimePicker', 'KjunQuantityStepper'].includes(name) && ['decimal', 'precision', 'minuteStep', 'secondStep', 'bounded', 'negative'].includes(key)) { values = {}; reset++; }
       if (name === 'GuideAppScreen' && key === 'keyboardVisible') { values = { ...values, keyboard: value }; reset++; }
       if (key === 'multiple') { values = { ...values, select: value ? [] : null, selectOpen: false }; reset++; }
       if (key === 'queryState') { values = {}; reset++; }

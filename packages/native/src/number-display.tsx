@@ -8,9 +8,9 @@ View,
 type StyleProp,
 type TextStyle
 } from "react-native";
-import { DsBadge,DsSkeleton } from "./display";
+import { KjunBadge,KjunSkeleton } from "./display";
 import { AccessiblePressable } from "./a11y";
-import { DsTooltip } from "./popover";
+import { KjunTooltip } from "./popover";
 import { formatRelativeTime } from "../../../shared/package-runtime/relative-time";
 import { KText,domainColor,useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
@@ -36,7 +36,7 @@ export function useCountUp(
   return useNumberMotion(value, animated, fromPrevious, useReducedMotion());
 }
 
-export interface DsAnimatedNumberProps {
+export interface KjunAnimatedNumberProps {
   value: number | string;
   decimals?: number;
   prefix?: string;
@@ -49,7 +49,7 @@ export interface DsAnimatedNumberProps {
 /** Internal: market lists set price and change type like Web .kjun-market-price/.kjun-market-change (Text styles do not inherit). */
 export const MarketQuoteTypeContext = createContext<{ price: TextStyle; change: TextStyle } | null>(null);
 // Inside a market list the price drops its flash pill inset so price and change share a right edge.
-export function DsAnimatedNumber({
+export function KjunAnimatedNumber({
   value,
   decimals = 0,
   prefix = "",
@@ -58,7 +58,7 @@ export function DsAnimatedNumber({
   fromPrevious = false,
   formatter,
   style,
-}: DsAnimatedNumberProps) {
+}: KjunAnimatedNumberProps) {
   const n = useCountUp(value, animated, fromPrevious),
     { numericFontFamily, fontFamily } = useKjunStyles();
   return (
@@ -81,22 +81,22 @@ export function DsAnimatedNumber({
     </KText>
   );
 }
-export interface DsFreshnessProps {
+export interface KjunFreshnessProps {
   stale?: boolean;
   source?: string | null;
   fetchedAt?: string | null;
   formatter?: (time: string) => string;
 }
-export function DsFreshness({
+export function KjunFreshness({
   stale = false,
   source,
   fetchedAt,
   formatter,
-}: DsFreshnessProps) {
+}: KjunFreshnessProps) {
   const label = source === "close" ? "종가" : "지연";
   // Like Web: a focusable tooltip target, so keyboard and touch (long press) reach when the value was fetched.
   return stale ? (
-    <DsTooltip
+    <KjunTooltip
       content={
         (source === "close"
           ? "실시간 시세 없음 · 최근 종가 표시"
@@ -105,18 +105,18 @@ export function DsFreshness({
       }
     >
       <AccessiblePressable accessibilityLabel={label} focusRingRadius={tokens.extensions.badge.radius}>
-        <DsBadge variant="warning" size="xs">{label}</DsBadge>
+        <KjunBadge variant="warning" size="xs">{label}</KjunBadge>
       </AccessiblePressable>
-    </DsTooltip>
+    </KjunTooltip>
   ) : null;
 }
-export interface DsPriceCellProps extends Omit<DsFreshnessProps, "formatter"> {
+export interface KjunPriceCellProps extends Omit<KjunFreshnessProps, "formatter"> {
   value?: number | null;
   formatter?: (value: number) => string;
   fromPrevious?: boolean;
   showFreshness?: boolean;
 }
-export function DsPriceCell({
+export function KjunPriceCell({
   value,
   formatter,
   stale = false,
@@ -124,16 +124,16 @@ export function DsPriceCell({
   source,
   fetchedAt,
   fromPrevious = true,
-}: DsPriceCellProps) {
+}: KjunPriceCellProps) {
   const { colors } = useKjunStyles(), quoteType = useContext(MarketQuoteTypeContext);
   return value == null ? (
-    <DsSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
+    <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
   ) : (
     <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.affixGap }}>
       <View
         style={quoteType ? undefined : { paddingVertical: tokens.extensions.financial.pillPaddingY, paddingHorizontal: tokens.extensions.financial.pillPaddingX, borderRadius: tokens.radius.radius9999 }}
       >
-        <DsAnimatedNumber
+        <KjunAnimatedNumber
           value={value}
           formatter={formatter}
           fromPrevious={fromPrevious}
@@ -143,13 +143,13 @@ export function DsPriceCell({
       {/* The tooltip wrapper hugs its trigger from the top; this View centres the badge on the value line. */}
       {showFreshness && (
         <View style={{ alignSelf: "center" }}>
-          <DsFreshness stale={stale} source={source} fetchedAt={fetchedAt} />
+          <KjunFreshness stale={stale} source={source} fetchedAt={fetchedAt} />
         </View>
       )}
     </View>
   );
 }
-export interface DsSignedValueProps {
+export interface KjunSignedValueProps {
   value?: number | string | null;
   format?: "number" | "percent";
   isRaw?: boolean;
@@ -163,7 +163,7 @@ export interface DsSignedValueProps {
   showFreshness?: boolean;
   formatter?: (value: number) => string;
 }
-export function DsSignedValue({
+export function KjunSignedValue({
   value,
   format: kind = "number",
   isRaw = false,
@@ -176,7 +176,7 @@ export function DsSignedValue({
   stale = false,
   showFreshness = true,
   formatter,
-}: DsSignedValueProps) {
+}: KjunSignedValueProps) {
   const { colors, domainColors, numericFontFamily, fontFamily } =
       useKjunStyles(),
     quoteType = useContext(MarketQuoteTypeContext),
@@ -217,7 +217,7 @@ export function DsSignedValue({
       }}
     >
       {loading ? (
-        <DsSkeleton type="block" width={tokens.extensions.financial.signedSkeletonWidth} height={tokens.extensions.financial.signedSkeletonHeight} />
+        <KjunSkeleton type="block" width={tokens.extensions.financial.signedSkeletonWidth} height={tokens.extensions.financial.signedSkeletonHeight} />
       ) : (
         <KText
           style={{
@@ -235,7 +235,7 @@ export function DsSignedValue({
       )}
       {!loading && showFreshness && stale && n !== null && (
         <View style={{ alignSelf: "center" }}>
-          <DsFreshness stale />
+          <KjunFreshness stale />
         </View>
       )}
     </View>

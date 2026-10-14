@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { DsButton as Button } from '@kjun-ui/react';
+import { KjunButton as Button } from '@kjun-ui/react';
 import { tokens } from '@kjun-ui/tokens';
 import { useReducedMotion } from './motion-preference';
 import { useMotionSpeed } from './motion-speed';

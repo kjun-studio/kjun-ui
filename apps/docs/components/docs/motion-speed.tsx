@@ -1,6 +1,6 @@
 'use client';
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
-import { DsButtonGroup } from '@kjun-ui/react';
+import { KjunButtonGroup } from '@kjun-ui/react';
 
 // One playback rate for every demo on the page, so a slowed comparison stays comparable.
 type Speed = { rate: number; setRate: (rate: number) => void };
@@ -35,7 +35,7 @@ function SpeedToggle() {
   const { rate, setRate } = useMotionSpeed();
   return <div className="motion-speed">
     <span aria-hidden="true">재생 속도</span>
-    <DsButtonGroup size="xs" ariaLabel="재생 속도" value={String(rate)}
+    <KjunButtonGroup size="xs" ariaLabel="재생 속도" value={String(rate)}
       options={[{ value: '1', label: '1×' }, { value: '0.25', label: '0.25×' }]}
       onValueChange={value => setRate(Number(value))} />
   </div>;

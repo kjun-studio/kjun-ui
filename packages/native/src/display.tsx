@@ -1,12 +1,12 @@
-export { DsCard } from "./card";
-export type { DsCardProps } from "./card";
+export { KjunCard } from "./card";
+export type { KjunCardProps } from "./card";
 export {
-DsAlert,DsBadge,
-DsEmpty,DsProgress,DsSpinner
+KjunAlert,KjunBadge,
+KjunEmpty,KjunProgress,KjunSpinner
 } from "./display-primitives";
 export type {
-DisplaySize,DsAlertProps,DsBadgeProps,
-DsEmptyProps,DsProgressProps,DsSpinnerProps,SemanticTone
+DisplaySize,KjunAlertProps,KjunBadgeProps,
+KjunEmptyProps,KjunProgressProps,KjunSpinnerProps,SemanticTone
 } from "./display-primitives";
-export { DsSkeleton } from "./skeleton-base";
-export type { DsSkeletonProps } from "./skeleton-base";
+export { KjunSkeleton } from "./skeleton-base";
+export type { KjunSkeletonProps } from "./skeleton-base";

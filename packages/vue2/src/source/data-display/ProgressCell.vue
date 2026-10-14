@@ -22,7 +22,7 @@ const AUTO_THRESHOLDS = {
 
 export default {
   mixins: componentMixins,
-  name: 'DsProgressCell',
+  name: 'KjunProgressCell',
   props: {
     value: {
       type: Number,

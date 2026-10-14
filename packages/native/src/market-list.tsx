@@ -2,12 +2,12 @@ import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { View,useWindowDimensions } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsDataState } from "./data-state";
-import { DsBadge,DsEmpty,DsSkeleton } from "./display";
+import { KjunDataState } from "./data-state";
+import { KjunBadge,KjunEmpty,KjunSkeleton } from "./display";
 import {
-DsFreshness,
-DsPriceCell,
-DsSignedValue,
+KjunFreshness,
+KjunPriceCell,
+KjunSignedValue,
 finiteNumber
 } from "./financial";
 import { KText } from "./internal";
@@ -15,14 +15,14 @@ import { MarketQuoteTypeContext } from "./number-display";
 const changeWeight = { fontWeight: typeStyle("label").fontWeight };
 const quoteDesktop = { price: typeStyle("control"), change: { ...typeStyle("caption"), ...changeWeight } };
 const quoteMobile = { price: typeStyle("input"), change: { ...typeStyle("body"), ...changeWeight } };
-import { DsMarketSimpleListProps } from "./market-model";
+import { KjunMarketSimpleListProps } from "./market-model";
 import { MarketFooter,MarketIdentity } from "./market-parts";
 import { useKjunStyles } from "./provider";
-import { DsListSkeleton } from "./skeletons";
+import { KjunListSkeleton } from "./skeletons";
 import { getValue } from "./table";
-export function DsMarketSimpleList<
+export function KjunMarketSimpleList<
   Row extends object = Record<string, unknown>
->(props: DsMarketSimpleListProps<Row>) {
+>(props: KjunMarketSimpleListProps<Row>) {
   const {
       rows = [],
       rowKey = "id",
@@ -38,14 +38,14 @@ export function DsMarketSimpleList<
     mobile = useWindowDimensions().width < tokens.responsive.market;
   return (
     <View>
-      <DsDataState
+      <KjunDataState
         {...props}
         loadingPadding="none"
         empty={!rows.length}
         emptyText={emptyMessage}
-        loadingContent={<DsListSkeleton />}
+        loadingContent={<KjunListSkeleton />}
         emptyContent={
-          <DsEmpty text={emptyMessage} description={emptySubMessage} />
+          <KjunEmpty text={emptyMessage} description={emptySubMessage} />
         }
       >
         <View>
@@ -84,7 +84,7 @@ export function DsMarketSimpleList<
                     alignItems: "flex-end",
                   }}
                 >
-                  <DsPriceCell
+                  <KjunPriceCell
                     value={price}
                     formatter={priceFormatter}
                     stale={stale}
@@ -104,20 +104,20 @@ export function DsMarketSimpleList<
                     {(finiteNumber(price) !== null ||
                       (!changeLoading(row) && finiteNumber(change) !== null)) &&
                       (closingPrice && !stale ? (
-                        <DsBadge variant="secondary" size="xs">
+                        <KjunBadge variant="secondary" size="xs">
                           종가
-                        </DsBadge>
+                        </KjunBadge>
                       ) : (
-                        <DsFreshness
+                        <KjunFreshness
                           stale={stale}
                           source={closingPrice ? "close" : source}
                           fetchedAt={fetchedAt}
                         />
                       ))}
                     {changeLoading(row) ? (
-                      <DsSkeleton type="block" height={tokens.extensions.marketList.changeSkeletonHeight} width={tokens.extensions.marketList.changeSkeletonWidth} />
+                      <KjunSkeleton type="block" height={tokens.extensions.marketList.changeSkeletonHeight} width={tokens.extensions.marketList.changeSkeletonWidth} />
                     ) : change !== null ? (
-                      <DsSignedValue
+                      <KjunSignedValue
                         value={change}
                         stale={stale}
                         showFreshness={false}
@@ -138,7 +138,7 @@ export function DsMarketSimpleList<
             );
           })}
         </View>
-      </DsDataState>
+      </KjunDataState>
       <MarketFooter props={props} />
     </View>
   );

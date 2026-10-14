@@ -1,14 +1,14 @@
 <template>
   <div class="kjun-list-skeleton" aria-hidden="true">
     <div v-for="row in rows" :key="row" :class="['kjun-list-skeleton__row', variant === 'market' ? 'kjun-mobile-simple-list__row' : '', `kjun-list-skeleton__row--${variant}`]">
-      <DsSkeleton v-if="avatar" type="avatar" :width="avatarSize" :height="avatarSize" class="kj-shrink-0" />
+      <KjunSkeleton v-if="avatar" type="avatar" :width="avatarSize" :height="avatarSize" class="kj-shrink-0" />
       <div class="kjun-list-skeleton__label">
-        <DsSkeleton type="block" height="var(--_kjun-extension-skeleton-line-heights-md)" :width="row % 2 ? '65%' : '80%'" />
-        <DsSkeleton type="block" height="var(--_kjun-extension-skeleton-line-heights-sm)" width="50%" />
+        <KjunSkeleton type="block" height="var(--_kjun-extension-skeleton-line-heights-md)" :width="row % 2 ? '65%' : '80%'" />
+        <KjunSkeleton type="block" height="var(--_kjun-extension-skeleton-line-heights-sm)" width="50%" />
       </div>
       <div v-if="quote" class="kjun-list-skeleton__quote">
-        <DsSkeleton type="block" height="var(--_kjun-extension-skeleton-quote-height)" width="var(--_kjun-extension-skeleton-quote-width)" />
-        <DsSkeleton type="block" height="var(--_kjun-extension-skeleton-line-heights-sm)" width="var(--_kjun-extension-skeleton-detail-width)" />
+        <KjunSkeleton type="block" height="var(--_kjun-extension-skeleton-quote-height)" width="var(--_kjun-extension-skeleton-quote-width)" />
+        <KjunSkeleton type="block" height="var(--_kjun-extension-skeleton-line-heights-sm)" width="var(--_kjun-extension-skeleton-detail-width)" />
       </div>
     </div>
   </div>
@@ -16,12 +16,12 @@
 
 <script>
 import { tokens } from "@kjun-ui/tokens";
-import DsSkeleton from "./Skeleton.vue";
+import KjunSkeleton from "./Skeleton.vue";
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  components: { DsSkeleton },
-  name: 'ListSkeleton',
+  components: { KjunSkeleton },
+  name: 'KjunListSkeleton',
   props: {
     rows: { type: Number, default: 8 },
     variant: { type: String, default: 'market', validator: value => ['market', 'compact', 'notification'].includes(value) },

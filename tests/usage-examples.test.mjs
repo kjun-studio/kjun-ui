@@ -41,7 +41,7 @@ test('every public component and feedback has an explicit independent usage gene
         await transform(file.name.endsWith('.vue') ? compileVueExample(file.code, file.name) : file.code, { loader: file.name.endsWith('.jsx') ? 'jsx' : 'js' });
       }
     }
-    if (name === 'DsButton') assert.ok(generator({ name, platform, ...defaults }).code.trim().split('\n').length <= 30);
+    if (name === 'KjunButton') assert.ok(generator({ name, platform, ...defaults }).code.trim().split('\n').length <= 30);
   }
   await assert.rejects(() => usageTools.loadUsageGenerator('MissingComponent'), /누락/);
   await assert.rejects(() => usageTools.loadUsageGenerator('GuideActionPlacement'), /누락/);
@@ -49,9 +49,9 @@ test('every public component and feedback has an explicit independent usage gene
 test('usage snapshots preserve falsy state and safely encode user strings in Vue and JSX', async () => {
   const hostile = '따옴표 "\' & < >\n한글 </script>\u2028\u2029';
   for (const platform of platforms) for (const [name, values] of [
-    ['DsButton', { count: 0 }], ['DsInput', { input: hostile }], ['DsFormGroup', { input: '' }],
-    ['DsCheckbox', { checked: false }], ['DsSelect', { select: null, selectOpen: false }], ['DsRangeSlider', { range: [0, 0] }],
-    ['DsTable', { selected: [], expanded: [] }], ['DsDataState', { queryError: null, resultKey: '' }],
+    ['KjunButton', { count: 0 }], ['KjunInput', { input: hostile }], ['KjunFormGroup', { input: '' }],
+    ['KjunCheckbox', { checked: false }], ['KjunSelect', { select: null, selectOpen: false }], ['KjunRangeSlider', { range: [0, 0] }],
+    ['KjunTable', { selected: [], expanded: [] }], ['KjunDataState', { queryError: null, resultKey: '' }],
     ['KjunFeedbackProvider', {}],
   ]) {
     const { settings } = presetConfig(name);
@@ -63,7 +63,7 @@ test('usage snapshots preserve falsy state and safely encode user strings in Vue
       await transform(compileVueExample(code, name), { loader: 'js' });
     } else await transform(code, { loader: 'jsx' });
     for (const [key, value] of Object.entries(values)) {
-      if (name === 'DsButton') assert.match(code, platform === 'vue2' ? /count: 0/ : /useState\(0\)/);
+      if (name === 'KjunButton') assert.match(code, platform === 'vue2' ? /count: 0/ : /useState\(0\)/);
       else assert.ok(code.replace(/\s/g, '').includes(JSON.stringify(value, null, 2).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029').replace(/\s/g, '')), `${platform} ${name} ${key}`);
     }
   }

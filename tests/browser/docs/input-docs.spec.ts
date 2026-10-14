@@ -21,13 +21,13 @@ async function visit(page: Page, platform: string, component: string, palette = 
 
 for (const platform of ['react', 'vue2', 'native']) {
   test(`${platform}: packed basic input examples render purpose, surface and bounded width`, async ({ page }) => {
-    for (const component of ['DsInput', 'DsTextarea', 'DsSelect', 'DsCombobox', 'DsSearchInput', 'DsDatePicker', 'DsTimePicker', 'DsQuantityStepper']) {
+    for (const component of ['KjunInput', 'KjunTextarea', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunTimePicker', 'KjunQuantityStepper']) {
       await visit(page, platform, component);
       const control = page.locator('.catalog-render').locator('input, textarea, button, [role="button"]').first();
       await expect(control).toBeVisible();
       expect((await control.boundingBox())!.width).toBeLessThanOrEqual(360);
-      if (component === 'DsInput') await expect(control).toHaveAccessibleName('목록 이름');
-      if (component === 'DsSelect') {
+      if (component === 'KjunInput') await expect(control).toHaveAccessibleName('목록 이름');
+      if (component === 'KjunSelect') {
         await expect(control).toHaveAccessibleName('공개 범위');
         await control.click();
         await expect(page.getByRole(platform === 'native' ? 'radio' : 'option', { name: '나만 보기', exact: true })).toBeVisible();

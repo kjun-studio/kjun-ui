@@ -52,7 +52,7 @@ test('icons navigation and search preserve component and API priority', () => {
   assert.equal(documents[i - 1].id, 'interaction'); assert.equal(documents[i + 1].id, 'usage-guide');
   assert.deepEqual(documents[i].sections.map(([id]) => id), ['catalog', 'size-alignment', 'variants', 'usage']);
   for (const query of ['아이콘', '아이콘 목록', '아이콘 검색', 'icons', '선형 아이콘', '채움 아이콘']) assert.equal(searchDocuments(documents, query)[0].href, '/icons', query);
-  for (const query of ['Icon', 'DsIcon']) assert.equal(searchDocuments(documents, query)[0].href, '/components/icon');
+  for (const query of ['Icon', 'KjunIcon']) assert.equal(searchDocuments(documents, query)[0].href, '/components/icon');
   assert.equal(searchDocuments(documents, 'IconToggle')[0].href, '/components/icon-toggle');
   for (const query of ['filled', 'spin', 'size', 'name']) assert.equal(searchDocuments(documents, query)[0].href, searchDocuments(documents.filter(e => e.id !== 'icons'), query)[0].href, query);
 });

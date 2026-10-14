@@ -15,7 +15,7 @@ const Example = {
     const rawH = (name, props = {}, children, slots = {}) => {
       if (name === "ExampleFailure") return create({ name: "ExampleFailure", render(h) {
         if (props.failed) throw new Error("예제에서 의도적으로 발생시킨 렌더링 오류입니다.");
-        return h(K.DsAlert, { props: { type: "success" } }, "정상 콘텐츠를 표시합니다.");
+        return h(K.KjunAlert, { props: { type: "success" } }, "정상 콘텐츠를 표시합니다.");
       } });
       if (name === "ScrollItems") return create("div", { style: { display: "flex", flexWrap: "nowrap", gap: "12px", width: "max-content" } }, children);
       if (name === "Status") return create("p", { attrs: { role: "status", "aria-live": "polite", "aria-atomic": "true", tabindex: -1 }, style: { margin: 0 }, hook: { insert: vnode => props.ref?.(vnode.elm), postpatch: (_old, vnode) => props.ref?.(vnode.elm), destroy: () => props.ref?.(null) } }, children);
@@ -32,16 +32,16 @@ const Example = {
     if (name === "Inset") return create("div", { style: { paddingInline: "16px" } }, Array.isArray(children) ? children : [children]);
     if (["Screen", "Scroll", "Box"].includes(name)) return create("div", { style: name === "Screen" ? { height: (props.height || 520) + "px", display: "flex", flexDirection: "column", overflow: "hidden", border: "1px solid var(--kjun-divider)" } : name === "Scroll" ? { flex: 1, minHeight: 0, overflow: "auto", padding: "16px 0", display: "flex", flexDirection: "column", gap: "16px" } : { width: props.width + "px", maxWidth: "100%" } }, Array.isArray(children) ? children : [children]);
     if (["Group", "Stack", "Text"].includes(name)) return create(name === "Text" ? "span" : "div", { class: "catalog-" + name.toLowerCase(), style: props.style }, children);
-      const events = { onChangeCommit: "change", onValueChange: "input", onOpenChange: name === "DsSelect" ? "update:open" : "input", onSelectionChange: "selection-change", onExpandedRowsChange: "update:expandedRows" };
-      if (name === "DsPagination") Object.assign(events, { onPageChange: "update:currentPage", onPageSizeChange: "update:page-size" });
+      const events = { onChangeCommit: "change", onValueChange: "input", onOpenChange: name === "KjunSelect" ? "update:open" : "input", onSelectionChange: "selection-change", onExpandedRowsChange: "update:expandedRows" };
+      if (name === "KjunPagination") Object.assign(events, { onPageChange: "update:currentPage", onPageSizeChange: "update:page-size" });
       const mapped = { ...props }, on = {};
       for (const [key, value] of Object.entries(props)) if (/^on[A-Z]/.test(key)) {
         on[events[key] || key.slice(2).replace(/^[A-Z]/, c => c.toLowerCase()).replace(/[A-Z]/g, c => "-" + c.toLowerCase())] = value;
         delete mapped[key];
       }
-      if (["DsModal", "DsDrawer", "DsPopover"].includes(name)) { mapped.value = mapped.open; delete mapped.open; }
-      if (name === "DsInput" && "readOnly" in mapped) { mapped.readonly = mapped.readOnly; delete mapped.readOnly; }
-      if (name === "DsIcon" && mapped.size != null) mapped.size = String(mapped.size);
+      if (["KjunModal", "KjunDrawer", "KjunPopover"].includes(name)) { mapped.value = mapped.open; delete mapped.open; }
+      if (name === "KjunInput" && "readOnly" in mapped) { mapped.readonly = mapped.readOnly; delete mapped.readOnly; }
+      if (name === "KjunIcon" && mapped.size != null) mapped.size = String(mapped.size);
       const scopedSlots = {}, named = [];
       for (const [key, value] of Object.entries(slots)) {
         const slot = key.replace(/[A-Z]/g, c => "-" + c.toLowerCase());

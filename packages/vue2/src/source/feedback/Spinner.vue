@@ -18,7 +18,7 @@ import { SIZES_EXTENDED, oneOf } from '../tokens'
 
 export default {
   mixins: componentMixins,
-  name: 'DsSpinner',
+  name: 'KjunSpinner',
   props: {
     size: {
       type: String,

@@ -22,7 +22,7 @@ export interface CatalogConfig {
   session: string;
 }
 const params = new URLSearchParams(location.search);
-const component = params.get("component") || "DsCard";
+const component = params.get("component") || "KjunCard";
 const platform = location.pathname.includes("native")
   ? "native"
   : location.pathname.includes("react")
@@ -31,7 +31,7 @@ const platform = location.pathname.includes("native")
 let config: CatalogConfig = {
   component,
   palette: "default",
-  ...presetConfig(component === "all" ? "DsCard" : component),
+  ...presetConfig(component === "all" ? "KjunCard" : component),
   preset: "default",
   revision: 0,
   reset: 0,

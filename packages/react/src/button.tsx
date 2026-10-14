@@ -13,20 +13,20 @@ useState,
 type ButtonHTMLAttributes,
 type SVGProps,
 } from "react";
-export interface DsIconProps extends SVGProps<SVGSVGElement> {
+export interface KjunIconProps extends SVGProps<SVGSVGElement> {
   name: string;
   size?: number | string;
   spin?: boolean;
   filled?: boolean;
 }
-export function DsIcon({
+export function KjunIcon({
   name,
   size = "1em",
   spin = false,
   filled = false,
   className = "",
   ...props
-}: DsIconProps) {
+}: KjunIconProps) {
   const { nodes, filled: renderFilled } = useIcon(name, filled);
   return (
     <svg
@@ -65,7 +65,7 @@ export function useMinimumLoading(loading: boolean) {
   }, [loading]);
   return loading || active;
 }
-export interface DsButtonProps
+export interface KjunButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> {
   variant?: ButtonVariant;
   size?: ButtonSize;
@@ -78,8 +78,8 @@ export interface DsButtonProps
   ariaLabel?: string;
   spinOnLoading?: boolean;
 }
-export const DsButton = forwardRef<HTMLButtonElement, DsButtonProps>(
-  function DsButton(
+export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
+  function KjunButton(
     props,
     ref
   ) {
@@ -156,7 +156,7 @@ export const DsButton = forwardRef<HTMLButtonElement, DsButtonProps>(
         }}
       >
         {before && (
-          <DsIcon
+          <KjunIcon
             name={before}
             filled={!busy && prefixIconFilled}
             spin={busy}
@@ -165,7 +165,7 @@ export const DsButton = forwardRef<HTMLButtonElement, DsButtonProps>(
         )}
         <span className="kjun-button-label" style={{ opacity: overlayLoading ? 0 : 1 }}>{children}</span>
         {suffixIcon && (
-          <DsIcon
+          <KjunIcon
             name={busy && !prefixIcon ? "loader-2" : suffixIcon}
             filled={!busy && suffixIconFilled}
             spin={busy && !prefixIcon}
@@ -174,7 +174,7 @@ export const DsButton = forwardRef<HTMLButtonElement, DsButtonProps>(
           />
         )}
         {overlayLoading && <span className="kjun-button-loader" aria-hidden="true">
-          <DsIcon name="loader-2" spin size={iconSize} />
+          <KjunIcon name="loader-2" spin size={iconSize} />
         </span>}
       </button>
     );

@@ -17,11 +17,11 @@ for (const platform of ['react', 'vue2', 'native']) for (const format of ['esm',
   alias["@kjun-ui/icons/all"] = modules + "/@kjun-ui/icons/dist/all.js";
   alias["@kjun-ui/icons/icons"] = modules + "/@kjun-ui/icons/dist/icons";
   if (format === 'cjs') for (const key of Object.keys(alias)) if (key.startsWith('@kjun-ui/')) delete alias[key];
-  const contents = format === 'esm' ? `import { DsIcon, KjunProvider } from '@kjun-ui/${platform}';
+  const contents = format === 'esm' ? `import { KjunIcon, KjunProvider } from '@kjun-ui/${platform}';
     ${extra ? "import alien from '@kjun-ui/icons/icons/alien';" : ''}
-    export { DsIcon, KjunProvider }; export const projectIcons = ${extra ? '{ alien }' : '{}'};` : `const { DsIcon, KjunProvider } = require('@kjun-ui/${platform}');
+    export { KjunIcon, KjunProvider }; export const projectIcons = ${extra ? '{ alien }' : '{}'};` : `const { KjunIcon, KjunProvider } = require('@kjun-ui/${platform}');
     ${extra ? "const alien = require('@kjun-ui/icons/icons/alien');" : ''}
-    module.exports = { DsIcon, KjunProvider, projectIcons: ${extra ? '{ alien }' : '{}'} };`;
+    module.exports = { KjunIcon, KjunProvider, projectIcons: ${extra ? '{ alien }' : '{}'} };`;
   const bundle = await build({ stdin: { contents, resolveDir: directory }, alias, bundle: true, write: false, minify: true,
     metafile: true, format, platform: 'browser', mainFields: ['browser', 'module', 'main'],
     resolveExtensions: ['.web.js', '.js', '.json'], define: { 'process.env.NODE_ENV': '"production"', __DEV__: 'false', global: 'globalThis' } });

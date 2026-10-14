@@ -1,4 +1,4 @@
-// 숫자 카운트업 애니메이션 (프레임워크 독립). DsAnimatedNumber 등에서 사용.
+// 숫자 카운트업 애니메이션 (프레임워크 독립). KjunAnimatedNumber 등에서 사용.
 import { tokens } from "@kjun-ui/tokens";
 const COUNT_UP_DURATION_MS = tokens.motion.number
 

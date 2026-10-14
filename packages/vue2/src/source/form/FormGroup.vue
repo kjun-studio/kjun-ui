@@ -10,7 +10,7 @@
     </div>
 
     <div v-if="error" :id="errorId" class="kjun-form-error" role="alert">
-      <DsIcon name="alert-circle" size="var(--_kjun-extension-form-message-icon-size)" class="kj-mr-1.5 kj-flex-shrink-0" />
+      <KjunIcon name="alert-circle" size="var(--_kjun-extension-form-message-icon-size)" class="kj-mr-1.5 kj-flex-shrink-0" />
       {{ error }}
     </div>
     <div v-else-if="hint" :id="hintId" class="kjun-form-hint">
@@ -20,13 +20,13 @@
 </template>
 
 <script>
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  components: { DsIcon },
-  name: 'DsFormGroup',
-  // 내부 Ds 입력 컴포넌트(DsInput/DsSelect/DsTextarea)가 inject로 받아
+  components: { KjunIcon },
+  name: 'KjunFormGroup',
+  // 내부 Kjun 입력 컴포넌트(KjunInput/KjunSelect/KjunTextarea)가 inject로 받아
   // aria-labelledby/aria-describedby를 자동 연결한다.
   provide() {
     return {

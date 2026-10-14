@@ -3,27 +3,27 @@ import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import { watchTrailingOverflow } from "../../../shared/package-runtime/trailing-overflow";
 import { useEffect, useRef, useState } from "react";
 import { MarketColumns, webMarketLayout } from "./market-layout";
-import { DsIconToggle } from "./actions";
-import { DsIcon } from "./button";
-import { DsDataState } from "./data-state";
-import { DsEmpty,DsSkeleton } from "./display";
+import { KjunIconToggle } from "./actions";
+import { KjunIcon } from "./button";
+import { KjunDataState } from "./data-state";
+import { KjunEmpty,KjunSkeleton } from "./display";
 import {
-DsCollectionMark,
-DsFreshness,
-DsPriceCell,
-DsSignedValue,
-DsSparkline,
+KjunCollectionMark,
+KjunFreshness,
+KjunPriceCell,
+KjunSignedValue,
+KjunSparkline,
 finiteNumber,
 } from "./financial";
 import {
-DsMarketTableProps,
+KjunMarketTableProps,
 MarketColumn
 } from "./market-model";
 import { MarketFooter,MarketIdentity } from "./market-parts";
-import { DsMarketTableSkeleton } from "./skeletons";
+import { KjunMarketTableSkeleton } from "./skeletons";
 import { getValue } from "./table";
-export function DsMarketTable<Row extends object = Record<string, unknown>>(
-  props: DsMarketTableProps<Row>
+export function KjunMarketTable<Row extends object = Record<string, unknown>>(
+  props: KjunMarketTableProps<Row>
 ) {
   const {
     rows = [],
@@ -50,13 +50,13 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
     const value = getValue(row, col.key),
       stale = !!getValue(row, "stale");
     if (cellLoading(row, col))
-      return <DsSkeleton type="block" height={tokens.extensions.marketTable.valueSkeletonHeight} width={tokens.extensions.marketTable.valueSkeletonWidth} />;
+      return <KjunSkeleton type="block" height={tokens.extensions.marketTable.valueSkeletonHeight} width={tokens.extensions.marketTable.valueSkeletonWidth} />;
     if (renderCell) return renderCell(row, col);
     if (["stock_name", "name", "symbol"].includes(col.key))
       return <MarketIdentity row={row} props={props} />;
     if (col.type === "sparkline")
       return (
-        <DsSparkline
+        <KjunSparkline
           data={Array.isArray(value) ? (value as number[]) : []}
           width={tokens.extensions.marketTable.sparklineWidth}
           height={tokens.extensions.marketTable.sparklineHeight}
@@ -64,7 +64,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
       );
     if (col.type === "price")
       return (
-        <DsPriceCell
+        <KjunPriceCell
           value={finiteNumber(value)}
           formatter={priceFormatter}
           stale={stale}
@@ -75,7 +75,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
       return value == null ? (
         "-"
       ) : (
-        <DsSignedValue
+        <KjunSignedValue
           value={finiteNumber(value)}
           format="percent"
           isRaw
@@ -99,7 +99,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
       ? "-"
       : String(value);
     return ["investor", "net_amount", "net_volume"].includes(col.type || "") ? (
-      <DsSignedValue
+      <KjunSignedValue
         value={finiteNumber(value)}
         formatter={() => text}
         stale={stale}
@@ -112,16 +112,16 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
   return (
     <div className="kjun-market-table" data-embedded={embedded}
       ref={domainColorRef(showActions && rows.length > 0 && !props.loading)}>
-      <DsDataState
+      <KjunDataState
         {...props}
         loadingPadding="none"
         empty={!rows.length}
         emptyText={emptyMessage}
         loadingContent={
-          <DsMarketTableSkeleton columns={columns} showActions={showActions} />
+          <KjunMarketTableSkeleton columns={columns} showActions={showActions} />
         }
         emptyContent={
-          <DsEmpty text={emptyMessage} description={emptySubMessage} />
+          <KjunEmpty text={emptyMessage} description={emptySubMessage} />
         }
       >
         <div className="kjun-table-scroll" ref={scroller} data-fade-end={fadeEnd || undefined}>
@@ -131,8 +131,8 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
               <tr>
                 {showActions && (
                   <th className="kjun-market-actions">
-                    <span className="kjun-market-actions-mark"><DsCollectionMark kind="interest" size="md" /></span>
-                    <span className="kjun-market-actions-mark"><DsCollectionMark kind="favorite" size="md" /></span>
+                    <span className="kjun-market-actions-mark"><KjunCollectionMark kind="interest" size="md" /></span>
+                    <span className="kjun-market-actions-mark"><KjunCollectionMark kind="favorite" size="md" /></span>
                   </th>
                 )}
                 {columns.map((col) => (
@@ -155,7 +155,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
                         onClick={() => props.onSort?.(col.key)}
                       >
                         {col.label}
-                        <DsIcon
+                        <KjunIcon
                           name={
                             sortKey === col.key
                               ? sortOrder === "asc"
@@ -189,7 +189,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
                   >
                     {showActions && (
                       <td className="kjun-market-actions">
-                        <DsIconToggle
+                        <KjunIconToggle
                           size="xs"
                           active={props.interestKeys?.has(id)}
                           activeIcon="heart"
@@ -201,7 +201,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
                           loading={togglingInterest === id}
                           onToggle={() => props.onToggleInterest?.(row)}
                         />
-                        <DsIconToggle
+                        <KjunIconToggle
                           size="xs"
                           active={props.favoriteKeys?.has(id)}
                           activeIcon="star"
@@ -225,7 +225,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
                       >
                         {render(row, col)}
                         {col.key === priceCol?.key && (
-                          <DsFreshness
+                          <KjunFreshness
                             stale={!!getValue(row, "stale")}
                             source={String(getValue(row, "source") || "")}
                             fetchedAt={String(
@@ -241,7 +241,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
             </tbody>
           </table>
         </div>
-      </DsDataState>
+      </KjunDataState>
       <MarketFooter props={props} />
     </div>
   );

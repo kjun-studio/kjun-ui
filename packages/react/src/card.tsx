@@ -2,7 +2,7 @@ import type { CardElevation, CardPadding, CardRadius, CardSurface } from "@kjun-
 import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 import { hasContent as present } from "../../../shared/package-runtime/content-presence";
 
-export interface DsCardProps extends HTMLAttributes<HTMLDivElement> {
+export interface KjunCardProps extends HTMLAttributes<HTMLDivElement> {
   title?: string;
   subtitle?: string;
   header?: ReactNode;
@@ -17,10 +17,10 @@ export interface DsCardProps extends HTMLAttributes<HTMLDivElement> {
   border?: boolean;
   dividers?: boolean;
 }
-export function DsCard({ title, subtitle, header, headerActions, media, footer,
+export function KjunCard({ title, subtitle, header, headerActions, media, footer,
   padding = "md", bodyPadding = padding, radius = "md", surface = "default",
   elevation = "flat", border = false, dividers = false, children, style, className = "", ...props
-}: DsCardProps) {
+}: KjunCardProps) {
   const hasHeading = present(header) || present(title) || present(subtitle);
   const hasHeader = hasHeading || present(headerActions);
   return <div {...props} className={["kjun-card", className].filter(Boolean).join(" ")}

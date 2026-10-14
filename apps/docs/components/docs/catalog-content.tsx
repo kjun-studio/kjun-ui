@@ -23,8 +23,8 @@ export function CatalogComponent({ name }: { name: string }) {
         <h2>동작과 책임</h2>
         <p className="body-copy">{guide.interaction}</p>
         <UsageAdvice name={name} />
-        {["DsIcon", "DsIconToggle"].includes(name) && <p className="body-copy"><Link href="/icons#catalog">아이콘 목록·검색</Link>에서 이름을 고르고 <Link href="/icons#variants">형태와 선택 상태</Link>를 구분하세요.</p>}
-        {["DsDrawer", "DsPopover", "DsTooltip", "DsBottomActionBar", "DsBottomNavigation", "DsTopNavigation"].includes(name) && <p className="body-copy"><Link href="/layout#cta">화면 배치와 하단 영역</Link> · <Link href="/elevation#overlap">레이어 겹침 규칙</Link></p>}
+        {["KjunIcon", "KjunIconToggle"].includes(name) && <p className="body-copy"><Link href="/icons#catalog">아이콘 목록·검색</Link>에서 이름을 고르고 <Link href="/icons#variants">형태와 선택 상태</Link>를 구분하세요.</p>}
+        {["KjunDrawer", "KjunPopover", "KjunTooltip", "KjunBottomActionBar", "KjunBottomNavigation", "KjunTopNavigation"].includes(name) && <p className="body-copy"><Link href="/layout#cta">화면 배치와 하단 영역</Link> · <Link href="/elevation#overlap">레이어 겹침 규칙</Link></p>}
       </section>
       <BasicUsage name={name} />
       <VisualSections name={name} />

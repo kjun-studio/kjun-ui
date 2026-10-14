@@ -3,11 +3,11 @@ import { typeStyle } from "./typography";
 import { Fragment, useId, useState } from "react";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import type { TableGridProps } from "../../../shared/package-runtime/table-presentation";
-import { DsIcon } from "./button";
-import { DsSkeleton } from "./display";
+import { KjunIcon } from "./button";
+import { KjunSkeleton } from "./display";
 import { ScrollView, View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsCheckbox } from "./controls";
+import { KjunCheckbox } from "./controls";
 import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
 import type { TableColumn } from "./table-model";
@@ -47,7 +47,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, st
               >
                 {selectable && (
                   <View style={{ width: geometry.actionColumnWidth, alignItems: "center" }}>
-                    <DsCheckbox
+                    <KjunCheckbox
                       size="sm"
                       value={state.all}
                       ariaLabel={
@@ -97,7 +97,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, st
                       {col.label}
                     </KText>
                     {sortable !== false && state.sort.key === col.key && (
-                      <DsIcon
+                      <KjunIcon
                         name={
                           state.sort.order === "asc"
                             ? "sort-ascending"
@@ -124,7 +124,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, st
                           paddingHorizontal: cellPadding.x,
                         }}
                       >
-                        <DsSkeleton
+                        <KjunSkeleton
                           type="block"
                           height={geometry.skeletonHeight}
                           width={col.key === "actions" ? tokens.table.actionColumnWidth : "75%"}

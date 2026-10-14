@@ -18,8 +18,8 @@ type ReactElement,
 type ReactNode,
 } from "react";
 import { Tab,TabList,TabPanel,Tabs } from "react-aria-components";
-import { DsIcon } from "./button";
-import { DsSelect } from "./select";
+import { KjunIcon } from "./button";
+import { KjunSelect } from "./select";
 export interface TabItem {
   name: string;
   label: string;
@@ -28,7 +28,7 @@ export interface TabItem {
   badgeVariant?: "danger" | "success" | "warning" | "info";
   disabled?: boolean;
 }
-export interface DsTabsProps {
+export interface KjunTabsProps {
   value: string;
   items?: TabItem[];
   density?: "comfortable" | "compact";
@@ -45,7 +45,7 @@ export interface DsTabsProps {
     pointer: "mouse" | "touch";
   }) => void;
 }
-export function DsTabs({
+export function KjunTabs({
   value,
   items = [],
   density = "comfortable",
@@ -56,15 +56,15 @@ export function DsTabs({
   onValueChange,
   onChange,
   onTabMenu,
-}: DsTabsProps) {
+}: KjunTabsProps) {
   const { group, indicator } = useSelectionIndicator(true);
   const panes = Children.toArray(children).filter(
     isValidElement
-  ) as ReactElement<DsTabPaneProps>[];
+  ) as ReactElement<KjunTabPaneProps>[];
   const tabs = items.length
     ? items
     : panes
-        .filter((child) => child.type === DsTabPane)
+        .filter((child) => child.type === KjunTabPane)
         .map((child) => child.props);
   useLayoutEffect(() => {
     const list = group.current?.querySelector<HTMLElement>('[role="tablist"]');
@@ -73,7 +73,7 @@ export function DsTabs({
     if (list) return manageTabList(list, () => {}, false);
   }, [group]);
   useLayoutEffect(() => {
-    const panelNames = new Set(panes.filter(child => child.type === DsTabPane).map(child => child.props.name));
+    const panelNames = new Set(panes.filter(child => child.type === KjunTabPane).map(child => child.props.name));
     for (const tab of group.current?.querySelectorAll<HTMLElement>('[role="tab"]') || []) {
       if (!panelNames.has(tab.dataset.tabName!)) tab.removeAttribute('aria-controls');
     }
@@ -151,7 +151,7 @@ export function DsTabs({
               onTouchEnd={clear}
               onTouchCancel={clear}
             >
-              {tab.icon && <DsIcon name={tab.icon} size={tokens.extensions.tabs.iconSize} />} <span className="kjun-motion-label" data-label={tab.label}><span>{tab.label}</span></span>
+              {tab.icon && <KjunIcon name={tab.icon} size={tokens.extensions.tabs.iconSize} />} <span className="kjun-motion-label" data-label={tab.label}><span>{tab.label}</span></span>
               {tab.badge != null && (
                 <span
                   className="kjun-tab-badge"
@@ -175,10 +175,10 @@ export function DsTabs({
     </Tabs>
   );
 }
-export interface DsTabPaneProps extends TabItem {
+export interface KjunTabPaneProps extends TabItem {
   children?: ReactNode;
 }
-export function DsTabPane({ name, children }: DsTabPaneProps) {
+export function KjunTabPane({ name, children }: KjunTabPaneProps) {
   return (
     <TabPanel id={name} className="kjun-tab-panel" shouldForceMount
       style={({ isInert }) => ({ display: isInert ? 'none' : undefined })}>
@@ -191,16 +191,16 @@ const AccordionContext = createContext<{
   toggle: (id: string) => void;
   register: (id: string, defaultOpen: boolean) => () => void;
 } | null>(null);
-export interface DsAccordionProps {
+export interface KjunAccordionProps {
   multiple?: boolean;
   tone?: "card" | "muted";
   children: ReactNode;
 }
-export function DsAccordion({
+export function KjunAccordion({
   multiple = false,
   tone = "card",
   children,
-}: DsAccordionProps) {
+}: KjunAccordionProps) {
   const state = useAccordionState(multiple);
   return (
     <AccordionContext.Provider
@@ -212,20 +212,20 @@ export function DsAccordion({
     </AccordionContext.Provider>
   );
 }
-export interface DsAccordionItemProps {
+export interface KjunAccordionItemProps {
   title?: string;
   defaultOpen?: boolean;
   disabled?: boolean;
   header?: ReactNode;
   children: ReactNode;
 }
-export function DsAccordionItem({
+export function KjunAccordionItem({
   title = "",
   defaultOpen = false,
   disabled = false,
   header,
   children,
-}: DsAccordionItemProps) {
+}: KjunAccordionItemProps) {
   const group = useContext(AccordionContext),
     id = useId(),
     [own, setOwn] = useState(defaultOpen),
@@ -245,7 +245,7 @@ export function DsAccordionItem({
         onClick={() => (group ? group.toggle(id) : setOwn(!own))}
       >
         <span className="kjun-accordion-heading">{header || title}</span>
-        <DsIcon
+        <KjunIcon
           name="chevron-down"
           className="kjun-accordion-chevron"
           size={tokens.extensions.accordion.iconSize}
@@ -270,27 +270,27 @@ export interface BreadcrumbItem {
   to?: string;
   icon?: string;
 }
-export interface DsBreadcrumbProps {
+export interface KjunBreadcrumbProps {
   items: BreadcrumbItem[];
   renderLink?: (item: BreadcrumbItem, children: ReactNode) => ReactNode;
   ariaLabel?: string;
 }
-export function DsBreadcrumb({
+export function KjunBreadcrumb({
   items,
   renderLink,
   ariaLabel = "현재 위치",
-}: DsBreadcrumbProps) {
+}: KjunBreadcrumbProps) {
   return (
     <nav aria-label={ariaLabel} className="kjun-breadcrumb">
       {items.map((item, i) => {
         const label = (
           <>
-            {item.icon && <DsIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} />} {item.label}
+            {item.icon && <KjunIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} />} {item.label}
           </>
         );
         return (
           <Fragment key={i}>
-            {i > 0 && <DsIcon name="chevron-right" size={tokens.extensions.breadcrumb.separatorSize} />}{" "}
+            {i > 0 && <KjunIcon name="chevron-right" size={tokens.extensions.breadcrumb.separatorSize} />}{" "}
             {item.to && i < items.length - 1 ? (
               renderLink?.(item, label) || <a href={item.to}>{label}</a>
             ) : (
@@ -304,7 +304,7 @@ export function DsBreadcrumb({
     </nav>
   );
 }
-export interface DsPaginationProps {
+export interface KjunPaginationProps {
   currentPage?: number;
   page?: number;
   totalPages: number;
@@ -320,7 +320,7 @@ export interface DsPaginationProps {
   onChange?: (page: number) => void;
   onPageSizeChange?: (size: number) => void;
 }
-export function DsPagination({
+export function KjunPagination({
   currentPage,
   page,
   totalPages,
@@ -335,7 +335,7 @@ export function DsPagination({
   onPageChange,
   onChange,
   onPageSizeChange,
-}: DsPaginationProps) {
+}: KjunPaginationProps) {
   const current = Math.max(1, Math.min(totalPages, currentPage ?? page ?? 1));
   if (totalPages <= 1 && !showSizeSelector && !(showInfo && totalRows > 0)) return null;
   const change = (v: number) => {
@@ -361,7 +361,7 @@ export function DsPagination({
       disabled={target < 1 || target > totalPages || target === current}
       onClick={() => change(target)}
     >
-      <DsIcon name={icon} size={tokens.extensions.pagination.iconSize} />
+      <KjunIcon name={icon} size={tokens.extensions.pagination.iconSize} />
     </button>
   );
   return (
@@ -376,7 +376,7 @@ export function DsPagination({
       )}
       <div className="kjun-pagination-controls">
         {showSizeSelector && (
-          <div className="kjun-pagination-size"><DsSelect
+          <div className="kjun-pagination-size"><KjunSelect
             size="sm"
             ariaLabel="페이지당 항목 수"
             value={pageSize}

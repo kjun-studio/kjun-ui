@@ -20,12 +20,12 @@ export function ContractCases({ K, native = false }: { K: any; native?: boolean 
   const update = (next: Partial<typeof config>) => setConfig(old => ({ ...old, ...next }));
   const emit = (name: string, value?: unknown) => setEvents(old => [...old, [name, value]]);
   Object.assign(window, { configureReview: update, resetReviewEvents: () => setEvents([]) });
-  const button = (label: string, click: () => void) => <K.DsButton {...(native ? { onPress: click } : { onClick: click })}>{label}</K.DsButton>;
+  const button = (label: string, click: () => void) => <K.KjunButton {...(native ? { onPress: click } : { onClick: click })}>{label}</K.KjunButton>;
   const text = (value: string, id?: string) => native ? <Text testID={id}>{value}</Text> : <span data-testid={id}>{value}</span>;
   const table = location.search.includes("table");
-  const Layer = config.layerKind === 'drawer' ? K.DsDrawer : K.DsModal;
+  const Layer = config.layerKind === 'drawer' ? K.KjunDrawer : K.KjunModal;
   return <>
-    {table ? config.show && <K.DsTable data={config.data} columns={[
+    {table ? config.show && <K.KjunTable data={config.data} columns={[
       { key: "name", label: "Name", render: (_: unknown, row: typeof rows[number]) => text(row.name, "row-" + row.id) },
       { key: "amount", label: "Amount", sortable: true },
       { key: "actions", label: "Actions", render: () => button("Action", () => emit("action")) },
@@ -41,11 +41,11 @@ export function ContractCases({ K, native = false }: { K: any; native?: boolean 
       <Layer open={config.open} onOpenChange={(open: boolean) => update({ open })} title={config.dialogTitle}
         closeOnEsc={config.closeOnEsc} showHeader={config.showHeader} ariaLabel={config.dialogLabel}
         header={config.customHeader ? text('Custom heading') : undefined}>
-        <K.DsFormGroup id="quantity-field" label={config.label} hint={config.hint} error={config.error} required={config.required}>
-          <K.DsQuantityStepper value={config.value} disabled={config.disabled} id={config.inputId} ariaLabel={config.ariaLabel}
+        <K.KjunFormGroup id="quantity-field" label={config.label} hint={config.hint} error={config.error} required={config.required}>
+          <K.KjunQuantityStepper value={config.value} disabled={config.disabled} id={config.inputId} ariaLabel={config.ariaLabel}
             onValueChange={(value: number) => { emit("value", value); if (config.accept) update({ value }); }}
             onChangeCommit={(value: number) => emit("commit", value)} onInvalidInput={(draft: string) => emit("invalid", draft)} />
-        </K.DsFormGroup>
+        </K.KjunFormGroup>
         {button("Other field", () => {})}
       </Layer>
     </>}

@@ -8,7 +8,7 @@ type CSSProperties,
 type HTMLAttributes,
 type ReactNode,
 } from "react";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { ActionSizeContext, alertActionSizes } from "../../../shared/package-runtime/action-size";
 export type DisplaySize = "xs" | "sm" | "md" | "lg" | "xl";
 export type SemanticTone =
@@ -18,19 +18,19 @@ export type SemanticTone =
   | "danger"
   | "info";
 const role = (name: string) => `var(--_kjun-color-${name})`;
-export interface DsBadgeProps extends HTMLAttributes<HTMLSpanElement> {
+export interface KjunBadgeProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: "default" | "secondary" | SemanticTone | "price-up" | "price-down";
   size?: DisplaySize;
   dot?: boolean;
 }
-export function DsBadge({
+export function KjunBadge({
   variant = "default",
   size = "sm",
   dot = false,
   children,
   style,
   ...props
-}: DsBadgeProps) {
+}: KjunBadgeProps) {
   const { x, y } = tokens.extensions.badge.padding[size];
   const neutral = variant === "default" || variant === "secondary";
   return (
@@ -63,34 +63,34 @@ export function DsBadge({
     </span>
   );
 }
-export { DsCard } from "./card";
-export type { DsCardProps } from "./card";
-export interface DsEmptyProps {
+export { KjunCard } from "./card";
+export type { KjunCardProps } from "./card";
+export interface KjunEmptyProps {
   text?: string;
   description?: string;
   icon?: string;
   children?: ReactNode;
 }
-export function DsEmpty({
+export function KjunEmpty({
   text = "데이터가 없습니다",
   description,
   icon,
   children,
-}: DsEmptyProps) {
+}: KjunEmptyProps) {
   return (
     <div className="kjun-empty">
-      {icon && <DsIcon name={icon} size={tokens.extensions.empty.iconSize} />}
+      {icon && <KjunIcon name={icon} size={tokens.extensions.empty.iconSize} />}
       <p>{text}</p>
       {description && <small>{description}</small>}
       {children && <div>{children}</div>}
     </div>
   );
 }
-export interface DsSpinnerProps {
+export interface KjunSpinnerProps {
   size?: DisplaySize;
   text?: string;
 }
-export function DsSpinner({ size = "md", text }: DsSpinnerProps) {
+export function KjunSpinner({ size = "md", text }: KjunSpinnerProps) {
   // The stroke keeps a size-specific pixel weight instead of scaling with the 24-unit viewBox.
   const stroke = (tokens.extensions.spinner.strokeWidths[size] * 24) / tokens.extensions.spinner.sizes[size];
   return (
@@ -121,18 +121,18 @@ export function DsSpinner({ size = "md", text }: DsSpinnerProps) {
     </span>
   );
 }
-export interface DsAlertProps {
+export interface KjunAlertProps {
   type?: "info" | "success" | "warning" | "danger" | "error";
   variant?: SemanticTone;
   size?: "sm" | "md" | "lg";
   title?: ReactNode;
   closable?: boolean;
   children?: ReactNode;
-  /** Buttons placed under the message; unsized DsButtons follow the alert size. */
+  /** Buttons placed under the message; unsized KjunButtons follow the alert size. */
   actions?: ReactNode;
   onClose?: () => void;
 }
-export function DsAlert({
+export function KjunAlert({
   type = "info",
   variant,
   size = "md",
@@ -141,7 +141,7 @@ export function DsAlert({
   children,
   actions,
   onClose,
-}: DsAlertProps) {
+}: KjunAlertProps) {
   const [visible, setVisible] = useState(true);
   if (!visible) return null;
   const tone = variant || (type === "error" ? "danger" : type),
@@ -157,7 +157,7 @@ export function DsAlert({
       }}
     >
       <span className="kjun-alert-icon" style={{ color: role(tone === "primary" ? "brand" : tone + "-accent") }}>
-        <DsIcon
+        <KjunIcon
           name={
             {
               info: "info-circle",
@@ -189,13 +189,13 @@ export function DsAlert({
             onClose?.();
           }}
         >
-          <DsIcon name="x" size={tokens.extensions.alert.closeIconSize} />
+          <KjunIcon name="x" size={tokens.extensions.alert.closeIconSize} />
         </button>
       )}
     </div>
   );
 }
-export interface DsProgressProps {
+export interface KjunProgressProps {
   value?: number;
   max?: number;
   size?: "sm" | "md" | "lg";
@@ -204,7 +204,7 @@ export interface DsProgressProps {
   label?: ReactNode;
   subLabel?: ReactNode;
 }
-export function DsProgress({
+export function KjunProgress({
   value = 0,
   max = 100,
   size = "md",
@@ -212,7 +212,7 @@ export function DsProgress({
   showLabel = false,
   label,
   subLabel,
-}: DsProgressProps) {
+}: KjunProgressProps) {
   const percentage =
     Number.isFinite(value) && max > 0
       ? Math.min(100, Math.max(0, Math.round((value / max) * 100)))
@@ -245,7 +245,7 @@ export function DsProgress({
     </div>
   );
 }
-export interface DsSkeletonProps {
+export interface KjunSkeletonProps {
   type?: "text" | "avatar" | "card" | "table" | "chart" | "stat" | "block";
   rows?: number;
   columns?: number;
@@ -254,7 +254,7 @@ export interface DsSkeletonProps {
   animated?: boolean;
   rounded?: boolean;
 }
-export function DsSkeleton({
+export function KjunSkeleton({
   type = "text",
   rows = 3,
   columns = 4,
@@ -262,7 +262,7 @@ export function DsSkeleton({
   width,
   animated = true,
   rounded = true,
-}: DsSkeletonProps) {
+}: KjunSkeletonProps) {
   const line = (w: CSSProperties["width"], key?: number, h?: number) => (
     <div
       key={key}

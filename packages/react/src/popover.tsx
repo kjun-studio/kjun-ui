@@ -6,7 +6,7 @@ import { Dialog, Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-
 import { FloatingPanel } from "./floating-panel";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { useKjunPortalContainer } from "./provider";
-export interface DsPopoverProps {
+export interface KjunPopoverProps {
   noPadding?: boolean;
   open?: boolean;
   onOpenChange?: (v: boolean) => void;
@@ -20,7 +20,7 @@ export interface DsPopoverProps {
   trigger: ReactNode | ((open: boolean) => ReactNode);
   children: ReactNode | ((close: () => void) => ReactNode);
 }
-export function DsPopover({
+export function KjunPopover({
   noPadding = false,
   open: controlled,
   onOpenChange,
@@ -33,7 +33,7 @@ export function DsPopover({
   placement = "bottom",
   trigger,
   children,
-}: DsPopoverProps) {
+}: KjunPopoverProps) {
   const [internal, setInternal] = useState(false),
     open = controlled ?? internal,
     ref = useRef<HTMLDivElement>(null),
@@ -99,18 +99,18 @@ export function DsPopover({
     </>
   );
 }
-export interface DsTooltipProps {
+export interface KjunTooltipProps {
   content?: string;
   placement?: "top" | "bottom" | "left" | "right";
   delay?: number;
   children: ReactNode;
 }
-export function DsTooltip({
+export function KjunTooltip({
   content = "",
   placement = "top",
   delay = 0,
   children,
-}: DsTooltipProps) {
+}: KjunTooltipProps) {
   const container = useKjunPortalContainer();
   const [open, setOpen] = useState(false);
   const layer = useLayer(open, open, "tooltip", () => setOpen(false));

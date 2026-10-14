@@ -26,20 +26,20 @@
       aria-hidden="true"
     >{{ displayText }}</span>
     <!-- Native와 같은 달력 아이콘. 클릭은 위에 겹친 투명한 브라우저 인디케이터가 받는다 -->
-    <span class="kjun-field-suffix kjun-datepicker-icon" aria-hidden="true"><DsIcon name="calendar" :size="iconSize" /></span>
+    <span class="kjun-field-suffix kjun-datepicker-icon" aria-hidden="true"><KjunIcon name="calendar" :size="iconSize" /></span>
   </div>
 </template>
 
 <script>
 import { componentMixins } from "../../component-mixins.js";
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { tokens } from '@kjun-ui/tokens'
 import { SIZES_CORE, oneOf } from '../tokens'
 import fieldMixin from './fieldMixin'
 
 export default {
-  name: 'DsDatePicker',
-  components: { DsIcon },
+  name: 'KjunDatePicker',
+  components: { KjunIcon },
   inheritAttrs: false,
   mixins: [fieldMixin, ...componentMixins],
   props: {

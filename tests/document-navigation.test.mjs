@@ -33,7 +33,7 @@ test('all component and feedback navigation groups follow the complete document 
   for (const page of pages) {
     assert.deepEqual(page.sectionGroups.map(group => group.title), ['사용법', '디자인', 'API', '접근성']);
     assert.deepEqual(page.sectionGroups.flatMap(group => group.sections), page.sections.map(([id]) => id), page.path);
-    assert.deepEqual(page.sectionGroups.map(group => group.sections[0]), ['preview', page.component === 'DsTable' ? 'table-designs' : page.component === 'DsCard' ? 'card-designs' : 'anatomy', 'api', 'accessibility']);
+    assert.deepEqual(page.sectionGroups.map(group => group.sections[0]), ['preview', page.component === 'KjunTable' ? 'table-designs' : page.component === 'KjunCard' ? 'card-designs' : 'anatomy', 'api', 'accessibility']);
   }
 });
 

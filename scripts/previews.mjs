@@ -55,8 +55,8 @@ await copyFile(
 );
 await writeFile(
   out + "/demo.css",
-  ".catalog-example[data-component=\"DsPopover\"] .catalog-render{display:flex;justify-content:center}" +
-  "@media(max-width:480px){.catalog-root:has(.catalog-example[data-component=\"DsAlert\"]){padding:16px}}" +
+  ".catalog-example[data-component=\"KjunPopover\"] .catalog-render{display:flex;justify-content:center}" +
+  "@media(max-width:480px){.catalog-root:has(.catalog-example[data-component=\"KjunAlert\"]){padding:16px}}" +
   foundationPreviewCss + "html,body{margin:0;background:transparent;font-size:16px}body{font-family:Inter,Pretendard,system-ui,sans-serif}button,input{font:inherit}.demo-stage{box-sizing:border-box;min-height:260px;padding:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;background:var(--kjun-surface)}.demo-control{display:flex;justify-content:center;width:100%}.demo-field{width:100%;max-width:320px}.catalog-root{padding:24px;background:var(--kjun-surface);color:var(--kjun-text);min-height:0;box-sizing:border-box}.catalog-example{max-width:760px;margin:0;min-width:0}.catalog-example+.catalog-example{margin-top:24px}.catalog-render{width:100%;min-width:0}.catalog-stack{display:flex;flex-direction:column;gap:16px}.catalog-group{display:flex;flex-wrap:wrap;align-items:center;gap:12px}.catalog-example>output{display:block;margin-top:12px;font-size:12px}.demo-stage output{font-size:12px;color:var(--kjun-text-secondary);line-height:20px;text-align:center}.kjun-modal-dialog{display:flex;flex-direction:column;min-height:0;max-height:inherit;height:inherit}"
 );
 const aliases = {

@@ -34,7 +34,7 @@ Rect,
 } from "react-native-svg";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { useKjunStyles } from "./provider";
-export function DsIcon({
+export function KjunIcon({
   name,
   size = tokens.iconSizes.default,
   color,
@@ -143,7 +143,7 @@ function useMinimumLoading(loading: boolean) {
   }, [loading]);
   return loading || active;
 }
-export interface DsButtonProps
+export interface KjunButtonProps
   extends Omit<PressableProps, "children" | "style"> {
   children?: ReactNode;
   variant?: ButtonVariant;
@@ -158,7 +158,7 @@ export interface DsButtonProps
   spinOnLoading?: boolean;
   style?: StyleProp<ViewStyle>;
 }
-export function DsButton(input: DsButtonProps) {
+export function KjunButton(input: KjunButtonProps) {
   const {
   children,
   variant = "primary",
@@ -285,7 +285,7 @@ export function DsButton(input: DsButtonProps) {
       {({ pressed, hovered }: any) => {
         const color = paint(pressed, hovered && Platform.OS === "web").ink;
         return <>
-          {before && <DsIcon name={before} filled={!busy && prefixIconFilled}
+          {before && <KjunIcon name={before} filled={!busy && prefixIconFilled}
             size={iconSize} color={color} spin={busy} />}
           {hasContent && <Text numberOfLines={navigation?.slot === 'leading' ? 1 : undefined} ellipsizeMode="tail" style={{ fontFamily,
             ...typeStyle(tokens.button.typography[size]),
@@ -293,14 +293,14 @@ export function DsButton(input: DsButtonProps) {
             ...(multiline || navigation ? { flexShrink: 1, minWidth: 0, textAlign: 'center' as const } : {}),
           }}>{children}</Text>}
           {suffixIcon && <View style={{ opacity: busy && prefixIcon ? 0 : 1 }}>
-            <DsIcon name={busy && !prefixIcon ? "loader-2" : suffixIcon}
+            <KjunIcon name={busy && !prefixIcon ? "loader-2" : suffixIcon}
               filled={!busy && suffixIconFilled} spin={busy && !prefixIcon}
               size={iconSize} color={color} />
           </View>}
           {overlayLoading && <View pointerEvents="none" accessible={false} style={{
             position: "absolute", top: 0, bottom: 0, left: 0, right: 0,
             alignItems: "center", justifyContent: "center",
-          }}><DsIcon name="loader-2" spin size={iconSize} color={color} /></View>}
+          }}><KjunIcon name="loader-2" spin size={iconSize} color={color} /></View>}
         </>;
       }}
     </Pressable>

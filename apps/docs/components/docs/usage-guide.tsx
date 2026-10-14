@@ -57,7 +57,7 @@ function GuideSection({ id }: { id: string }) {
     <p className="body-copy">{comparison.situation}</p>
     <DataTable headings={['컴포넌트', '선택할 상황', '책임과 차이']}
       rows={comparison.rows.map(([name, use, responsibility]) => [
-        <Link key={name} href={paths[name]}>{name === 'KjunFeedbackProvider' ? 'Toast · 피드백 서비스' : name.slice(2)}</Link>,
+        <Link key={name} href={paths[name]}>{name === 'KjunFeedbackProvider' ? 'Toast · 피드백 서비스' : name.replace(/^Kjun/, '')}</Link>,
         use, responsibility,
       ])} />
     <div className="guide-comparison-grid">{comparison.rows.map(([name]) =>

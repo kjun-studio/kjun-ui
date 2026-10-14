@@ -3,7 +3,7 @@
     <div class="kjun-field-shell" :class="fieldSizeClass" :style="affixStyle" :data-disabled="disabled || undefined">
       <div v-if="$slots.prefix || prefixIcon" ref="prefix" class="kjun-field-prefix">
         <slot name="prefix">
-          <ds-icon v-if="prefixIcon" :name="prefixIcon" />
+          <kjun-icon v-if="prefixIcon" :name="prefixIcon" />
         </slot>
       </div>
 
@@ -38,7 +38,7 @@
       />
 
       <div v-if="$slots.suffix || suffixIcon || clearable" ref="suffix" class="kjun-field-suffix">
-        <DsButton
+        <KjunButton
           v-if="clearable && value"
           variant="ghost"
           size="sm"
@@ -50,7 +50,7 @@
           @click.stop="handleClear"
         />
         <slot name="suffix">
-          <ds-icon v-if="suffixIcon" :name="suffixIcon" class="kj-text-text-tertiary" />
+          <kjun-icon v-if="suffixIcon" :name="suffixIcon" class="kj-text-text-tertiary" />
         </slot>
       </div>
     </div>
@@ -60,15 +60,15 @@
 
 <script>
 import { isComposingKey } from "@kjun-ui/tokens";
-import DsButton from "./Button.vue";
-import DsIcon from "../../icon.js";
+import KjunButton from "./Button.vue";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { SIZES_CORE, oneOf } from '../tokens'
 import fieldMixin from '../form/fieldMixin'
 
 export default {
-  components: { DsButton, DsIcon },
-  name: 'DsInput',
+  components: { KjunButton, KjunIcon },
+  name: 'KjunInput',
   inheritAttrs: false,
   mixins: [fieldMixin, ...componentMixins],
   inject: {
@@ -149,7 +149,7 @@ export default {
       type: String,
       default: null
     },
-    // DsFormGroup으로 감쌀 수 없는 위치(테이블 셀 인라인 입력 등)에서
+    // KjunFormGroup으로 감쌀 수 없는 위치(테이블 셀 인라인 입력 등)에서
     // 내부 input에 직접 접근 가능 이름을 부여한다. (래퍼 div fall-through 방지)
     ariaLabel: {
       type: String,

@@ -29,7 +29,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
     settings, rows, options,
   } = tools;
   switch (name) {
-    case "DsEmpty":
+    case "KjunEmpty":
       return h(
         name,
         {
@@ -37,17 +37,17 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           description: "조건을 바꾸거나 새 항목을 추가하세요.",
           icon: "search",
         },
-        button("추가", () => message((JSON.parse(settings.visual || "{}").DsButton?.text || "추가") + " 요청"))
+        button("추가", () => message((JSON.parse(settings.visual || "{}").KjunButton?.text || "추가") + " 요청"))
       );
-    case "DsSkeleton":
+    case "KjunSkeleton":
       return h(name, { type: "card", animated: settings.animated, rows: 3 });
-    case "DsListSkeleton":
+    case "KjunListSkeleton":
       return h(name, { rows: 3, variant: "market", avatar: true });
-    case "DsFormSkeleton":
+    case "KjunFormSkeleton":
       return h(name, { fields: ["", "", ""], size: settings.size || "md", multiline: !!settings.multiline, columns: 1 });
-    case "DsChartSkeleton":
+    case "KjunChartSkeleton":
       return h(name, { kind: settings.kind, loadingText:settings.loadingText, height: 180 });
-    case "DsMarketTableSkeleton":
+    case "KjunMarketTableSkeleton":
       return h(name, {
         columns,
         rows: 3,
@@ -55,37 +55,37 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         alignClass: (v: string) => "kj-text-" + (v || "left"),
         widthClass: () => "",
       });
-    case "DsTooltip":
+    case "KjunTooltip":
       return h(
         name,
         { content: "이 버튼의 도움말", delay: 100 },
         button("도움말", () => {})
       );
-    case "DsPopover":
+    case "KjunPopover":
       return h(
         name,
         { noPadding:settings.noPadding, manualTrigger: true, ariaLabel: "추가 정보", open: get("popoverOpen", false), onOpenChange: change("popoverOpen") },
         [
           h("Text", { style: { lineHeight: platform === "native" ? 20 : "20px" } }, "팝오버 내용"),
-          h("DsFormActions", { size: "md", showCancel: false, confirmText: "실행", onConfirm: () => message("팝오버 실행") }),
+          h("KjunFormActions", { size: "md", showCancel: false, confirmText: "실행", onConfirm: () => message("팝오버 실행") }),
         ],
-        { trigger: h("DsButton", { variant: "ghost", ...action(() => set("popoverOpen", !get("popoverOpen", false))) }, "추가 정보") }
+        { trigger: h("KjunButton", { variant: "ghost", ...action(() => set("popoverOpen", !get("popoverOpen", false))) }, "추가 정보") }
       );
-    case "DsDataState":
+    case "KjunDataState":
       return h("Stack", {}, [
         // Demo controls are peers, so none of them claims the primary emphasis.
         h("Group", {}, [
-          h("DsButton", { variant: "secondary", ...action(() => {
+          h("KjunButton", { variant: "secondary", ...action(() => {
             set("queryKey", "b");
             set("queryLoading", true);
           }) }, "조건 변경"),
-          h("DsButton", { variant: "secondary", ...action(() => set("queryLoading", true)) }, "동일 조건 갱신"),
-          h("DsButton", { variant: "secondary", ...action(() => {
+          h("KjunButton", { variant: "secondary", ...action(() => set("queryLoading", true)) }, "동일 조건 갱신"),
+          h("KjunButton", { variant: "secondary", ...action(() => {
             set("resultKey", query.queryKey);
             set("queryLoading", false);
             set("queryError", null);
           }) }, "조회 완료"),
-          h("DsButton", { variant: "secondary", ...action(() => {
+          h("KjunButton", { variant: "secondary", ...action(() => {
             set("queryLoading", false);
             set("queryError", "조회에 실패했습니다");
           }) }, "조회 실패"),
@@ -112,18 +112,18 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
             },
           },
           h(
-            "DsCard",
+            "KjunCard",
             { title: "조회 결과", surface: "muted" },
             "이전 결과와 현재 조건을 구분합니다."
           )
         ),
       ]);
-    case "DsErrorBoundary":
+    case "KjunErrorBoundary":
       return h("Stack", {}, [
         // Demo controls are peers, so none of them claims the fallback's primary emphasis.
         h("Group", {}, [
-          h("DsButton", { variant: "secondary", ...action(() => set("renderFailure", true)) }, "오류 발생"),
-          h("DsButton", { variant: "secondary", ...action(() => {
+          h("KjunButton", { variant: "secondary", ...action(() => set("renderFailure", true)) }, "오류 발생"),
+          h("KjunButton", { variant: "secondary", ...action(() => {
             set("renderFailure", false);
             set("boundaryRun", get("boundaryRun", 0) + 1);
             message("예제를 복구했습니다.");
@@ -135,15 +135,15 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           onReset: () => { set("renderFailure", false); message("다시 시도했습니다."); },
         }, h("ExampleFailure", { failed: get("renderFailure", false) })),
       ]);
-    case "DsTable": {
+    case "KjunTable": {
       const example = tableExample(settings);
-      const status = (row: any) => h('DsBadge', { size: 'sm', variant: row.status === '완료' ? 'success' : row.status === '검토 대기' ? 'warning' : 'primary', dot: true }, row.status);
-      const progress = (row: any) => h('DsProgressCell', { value: row.progress, max: 100 });
-      const money = (row: any, key: string) => h('DsPriceCell', { value: row[key], formatter: priceFormat });
-      const delta = (row: any) => h('DsSignedValue', { value: row.change, format: 'percent', isRaw: true });
-      const view = (row: any) => h('DsButton', { size: 'xs', variant: 'ghost', ariaLabel: row.name + ' 보기', ...action(() => message(row.name + ' 상세 보기')) }, '보기');
-      const detail = (row: any) => example.project ? h('DsAlert', { type: 'info' }, row.summary + ' 담당자 ' + row.owner + ' · 마감 ' + row.due) : '상세: ' + row.name;
-      const selectionAction = () => h('DsButton', { size: 'xs', variant: 'secondary', ...action(() => message(get('selected', []).map((row: any) => row.name).join(', ') + ' 선택 확인')) }, '선택 항목 확인');
+      const status = (row: any) => h('KjunBadge', { size: 'sm', variant: row.status === '완료' ? 'success' : row.status === '검토 대기' ? 'warning' : 'primary', dot: true }, row.status);
+      const progress = (row: any) => h('KjunProgressCell', { value: row.progress, max: 100 });
+      const money = (row: any, key: string) => h('KjunPriceCell', { value: row[key], formatter: priceFormat });
+      const delta = (row: any) => h('KjunSignedValue', { value: row.change, format: 'percent', isRaw: true });
+      const view = (row: any) => h('KjunButton', { size: 'xs', variant: 'ghost', ariaLabel: row.name + ' 보기', ...action(() => message(row.name + ' 상세 보기')) }, '보기');
+      const detail = (row: any) => example.project ? h('KjunAlert', { type: 'info' }, row.summary + ' 담당자 ' + row.owner + ' · 마감 ' + row.due) : '상세: ' + row.name;
+      const selectionAction = () => h('KjunButton', { size: 'xs', variant: 'secondary', ...action(() => message(get('selected', []).map((row: any) => row.name).join(', ') + ' 선택 확인')) }, '선택 항목 확인');
       return h(
         name,
         {
@@ -193,7 +193,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         } : {}
       );
     }
-    case "DsKpiHero":
+    case "KjunKpiHero":
       return h(name, {
         label: "총 평가 금액",
         value: 123456789,
@@ -214,7 +214,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           },
         ],
       });
-    case "DsKpiRow":
+    case "KjunKpiRow":
       return h(name, {
         loading, mobileSummary:settings.mobileSummary,
         items: [
@@ -234,7 +234,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           },
         ],
       });
-    case "DsAnimatedNumber":
+    case "KjunAnimatedNumber":
       return h("Stack", {}, [
         h(name, {
           value: get("number", 1234567),
@@ -243,20 +243,20 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         }),
         button("숫자 변경", () => set("number", get("number", 1234567) + 123)),
       ]);
-    case "DsFreshness":
+    case "KjunFreshness":
       return h(name, {
         stale: true,
         source: "close",
         fetchedAt: "2026-09-12T03:00:00Z",
       });
-    case "DsPriceCell":
+    case "KjunPriceCell":
       return h(name, {
         value: 1234567,
         formatter: priceFormat,
         stale: settings.stale,
         showFreshness: true,
       });
-    case "DsSignedValue":
+    case "KjunSignedValue":
       return h(
         "Group",
         {},
@@ -270,13 +270,13 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           })
         )
       );
-    case "DsDeviation":
+    case "KjunDeviation":
       return h(
         "Group",
         {},
         [-1.25, 0, 2.35].map((value) => h(name, { value, variant: "badge" }))
       );
-    case "DsHeatmapCell":
+    case "KjunHeatmapCell":
       return h(
         "Group",
         {},
@@ -284,14 +284,14 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           h(name, { value, min: -1, max: 1, mode: "price" }, String(value))
         )
       );
-    case "DsProgressCell":
+    case "KjunProgressCell":
       return h(name, { value: 42, max: 100, showLabel: true });
-    case "DsCollectionMark":
+    case "KjunCollectionMark":
       return h("Group", {}, [
         h(name, { kind: "favorite", active: true }),
         h(name, { kind: "interest", active: true }),
       ]);
-    case "DsExecutionStatusBadge":
+    case "KjunExecutionStatusBadge":
       return h(
         "Group",
         {},
@@ -299,7 +299,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           h(name, { status })
         )
       );
-    case "DsSparkline":
+    case "KjunSparkline":
       return h(name, {
         data: [1, 4, 3, 7, 5, 8],
         width: 240,
@@ -308,20 +308,20 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         semantic: "price",
         ariaLabel: "추세",
       });
-    case "DsMarketSimpleList":
+    case "KjunMarketSimpleList":
       return h(name, {
         ...market,
         priceValue: (r: any) => r.price,
         changeValue: (r: any) => r.change,
       });
-    case "DsMarketTable":
+    case "KjunMarketTable":
       return h(name, {
         ...market,
         onToggleFavorite: (r: any) => message("즐겨찾기 " + r.name),
         onToggleInterest: (r: any) => message("관심 " + r.name),
         onSort: (key: string) => message((market.columns.find(column => column.key === key)?.label || "선택한 항목") + " 기준으로 정렬했습니다."),
       });
-    case "DsMarketCards":
+    case "KjunMarketCards":
       return h(name, {
         ...market,
         storageNamespace: "kjun-docs-market",
@@ -333,9 +333,9 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         changeMetricKey: "change",
         onSort: (key: string) => message((market.columns.find(column => column.key === key)?.label || "선택한 항목") + " 기준으로 정렬했습니다."),
       });
-    case "DsMarketListPanel":
-      return h(name, {}, h("DsMarketSimpleList", { ...market, priceValue: (r: any) => r.price, changeValue: (r: any) => r.change }), {
-        controls: h("DsFilterGroup", {
+    case "KjunMarketListPanel":
+      return h(name, {}, h("KjunMarketSimpleList", { ...market, priceValue: (r: any) => r.price, changeValue: (r: any) => r.change }), {
+        controls: h("KjunFilterGroup", {
           value: "a",
           options,
           onValueChange: (v: any) => message(String(v)),

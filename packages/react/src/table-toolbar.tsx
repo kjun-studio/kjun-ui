@@ -1,7 +1,7 @@
 import { tokens } from "@kjun-ui/tokens";
 import type { TableToolbarProps } from "../../../shared/package-runtime/table-presentation";
-import { DsButton } from "./button";
-import { DsInput } from "./input";
+import { KjunButton } from "./button";
+import { KjunInput } from "./input";
 export function TableToolbar<Row extends object>({ selectable, selected, toggleAll, clearSelection,
   renderSelectionToolbar, searchable, search, searchChange, searchPlaceholder, toolbar }: TableToolbarProps<Row>) {
   return <>
@@ -12,23 +12,23 @@ export function TableToolbar<Row extends object>({ selectable, selected, toggleA
           className="kjun-table-selection"
         >
           <strong>{selected.length}개 선택</strong>
-          <DsButton size="xs" variant="ghost" onClick={toggleAll}>
+          <KjunButton size="xs" variant="ghost" onClick={toggleAll}>
             전체 선택
-          </DsButton>
-          <DsButton
+          </KjunButton>
+          <KjunButton
             size="xs"
             variant="ghost"
             onClick={clearSelection}
           >
             선택 해제
-          </DsButton>
+          </KjunButton>
           {renderSelectionToolbar?.(selected)}
         </div>
       )}
       {(searchable || toolbar) && (
         <div className="kjun-table-toolbar">
           {searchable && (
-            <DsInput
+            <KjunInput
               size="sm"
               style={{ width: tokens.table.searchWidth, maxWidth: "100%" }}
               value={search}

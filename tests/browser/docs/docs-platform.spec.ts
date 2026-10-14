@@ -73,7 +73,7 @@ test('gallery filters, document links, search anchors, feedback and installation
   await selected(page, 'react');
   await page.getByRole('button', { name: '전체 컴포넌트 보기', exact: true }).click();
   await expect(page).toHaveURL(url => url.searchParams.size === 1 && url.searchParams.get('platform') === 'react');
-  await page.locator('[data-component-card="DsSelect"]').click(); await ready(page, 'react');
+  await page.locator('[data-component-card="KjunSelect"]').click(); await ready(page, 'react');
   const next = page.locator('.page-navigation a').last();
   expect(new URL((await next.getAttribute('href'))!, page.url()).searchParams.get('platform')).toBe('react');
   await next.click(); await ready(page, 'react');

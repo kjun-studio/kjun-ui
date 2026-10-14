@@ -21,7 +21,7 @@ const Content = Vue.extend({
   }),
   render(h) {
     const button = (label: string, fn: () => void) =>
-      h(K.DsButton, { on: { click: fn } }, label);
+      h(K.KjunButton, { on: { click: fn } }, label);
     const feedback = (this as any).kjunFeedback;
     const loadOptions = (query: string, { signal }: { signal: AbortSignal }) =>
       new Promise((resolve) => {
@@ -44,7 +44,7 @@ const Content = Vue.extend({
         },
       },
       [
-        h(K.DsCheckbox, {
+        h(K.KjunCheckbox, {
           props: { value: this.checked, label: "체크" },
           on: {
             input: (v) => {
@@ -52,7 +52,7 @@ const Content = Vue.extend({
             },
           },
         }),
-        h(K.DsSwitch, {
+        h(K.KjunSwitch, {
           props: { value: this.toggle, label: "스위치" },
           on: {
             input: (v) => {
@@ -60,7 +60,7 @@ const Content = Vue.extend({
             },
           },
         }),
-        h(K.DsRadioGroup, {
+        h(K.KjunRadioGroup, {
           props: {
             value: this.radio,
             options: [
@@ -75,7 +75,7 @@ const Content = Vue.extend({
             },
           },
         }),
-        h(K.DsSelect, {
+        h(K.KjunSelect, {
           props: {
             value: this.selected,
             options: [
@@ -93,7 +93,7 @@ const Content = Vue.extend({
           },
         }),
         h("output", { attrs: { "data-testid": "selected" } }, this.selected),
-        h(K.DsSearchInput, {
+        h(K.KjunSearchInput, {
           props: { value: this.query, ariaLabel: "원격 검색", loadOptions },
           on: {
             input: (v) => {
@@ -102,7 +102,7 @@ const Content = Vue.extend({
           },
         }),
         h(
-          K.DsTabs,
+          K.KjunTabs,
           {
             props: { value: this.tab },
             on: {
@@ -113,21 +113,21 @@ const Content = Vue.extend({
           },
           [
             h(
-              K.DsTabPane,
+              K.KjunTabPane,
               { props: { name: "one", label: "첫 탭" } },
               "첫 내용"
             ),
             h(
-              K.DsTabPane,
+              K.KjunTabPane,
               { props: { name: "two", label: "둘째 탭" } },
               "둘째 내용"
             ),
           ]
         ),
-        h(K.DsDropdown, [
+        h(K.KjunDropdown, [
           h("div", { slot: "trigger" }, [button("메뉴 열기", () => {})]),
           h(
-            K.DsDropdownItem,
+            K.KjunDropdownItem,
             {
               on: {
                 click: () => {
@@ -138,9 +138,9 @@ const Content = Vue.extend({
             "메뉴 항목"
           ),
         ]),
-        h(K.DsAccordion, [
-          h(K.DsAccordionItem, { props: { title: "열기 하나" } }, "내용 하나"),
-          h(K.DsAccordionItem, { props: { title: "열기 둘" } }, "내용 둘"),
+        h(K.KjunAccordion, [
+          h(K.KjunAccordionItem, { props: { title: "열기 하나" } }, "내용 하나"),
+          h(K.KjunAccordionItem, { props: { title: "열기 둘" } }, "내용 둘"),
         ]),
         button("대기열 시작", async () => {
           const a = feedback.confirm({ title: "첫 확인" }),
@@ -168,7 +168,7 @@ new Vue({
       },
       [
         h(
-          K.DsButton,
+          K.KjunButton,
           {
             on: {
               click: () => {

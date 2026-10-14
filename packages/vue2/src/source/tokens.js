@@ -4,7 +4,7 @@ import { tokens } from '@kjun-ui/tokens'
  * 디자인 시스템 공통 어휘 (단일 출처)
  *
  * size/variant 값 집합이 컴포넌트마다 갈라지는 것을 막기 위해
- * 모든 Ds 컴포넌트의 validator는 이 모듈의 집합을 사용한다.
+ * 모든 Kjun 컴포넌트의 validator는 이 모듈의 집합을 사용한다.
  *
  * - SIZES_CORE: 폼/입력 계열 (Input, Select, Checkbox, Switch, Progress 등) 3단계
  * - SIZES_EXTENDED: 버튼/배지/칩 계열 (Button, Badge, ButtonGroup, FilterGroup, Spinner) 5단계

@@ -16,7 +16,7 @@ type ColorValue,
 type ViewStyle
 } from "react-native";
 import { AccessiblePressable as Pressable, focusVisible } from "./a11y";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { content, finePointer } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useRadioKeyboard } from "./choice-accessibility";
@@ -29,7 +29,7 @@ export interface ChoiceOption<T = ChoiceValue> {
   icon?: string;
   dot?: ColorValue;
 }
-export interface DsCheckboxProps<T = ChoiceValue> {
+export interface KjunCheckboxProps<T = ChoiceValue> {
   value: boolean | T[];
   val?: T;
   label?: string;
@@ -40,7 +40,7 @@ export interface DsCheckboxProps<T = ChoiceValue> {
   onValueChange?: (value: boolean | T[]) => void;
   onChange?: (value: boolean | T[]) => void;
 }
-export function DsCheckbox<T = ChoiceValue>({
+export function KjunCheckbox<T = ChoiceValue>({
   value,
   val,
   label,
@@ -50,7 +50,7 @@ export function DsCheckbox<T = ChoiceValue>({
   children,
   onValueChange,
   onChange,
-}: DsCheckboxProps<T>) {
+}: KjunCheckboxProps<T>) {
   const { colors } = useKjunStyles(),
     checked = Array.isArray(value) ? value.includes(val!) : value,
     dimension = tokens.extensions.checkbox.sizes[size];
@@ -93,7 +93,7 @@ export function DsCheckbox<T = ChoiceValue>({
         }}
       >
         {checked && (
-          <DsIcon
+          <KjunIcon
             name="check"
             size={tokens.extensions.checkbox.iconSizes[size]}
             color={colors.onBrand}
@@ -125,7 +125,7 @@ function useControlFocus(disabled: boolean) {
       : {}) as ViewStyle,
   };
 }
-export interface DsSwitchProps {
+export interface KjunSwitchProps {
   value: boolean;
   label?: string;
   ariaLabel?: string;
@@ -135,7 +135,7 @@ export interface DsSwitchProps {
   onValueChange?: (value: boolean) => void;
   onChange?: (value: boolean) => void;
 }
-export function DsSwitch({
+export function KjunSwitch({
   value,
   label,
   ariaLabel,
@@ -144,7 +144,7 @@ export function DsSwitch({
   children,
   onValueChange,
   onChange,
-}: DsSwitchProps) {
+}: KjunSwitchProps) {
   const { colors } = useKjunStyles();
   const width = tokens.extensions.switch.widths[size];
   const height = tokens.extensions.switch.heights[size];
@@ -234,7 +234,7 @@ export const RadioContext = createContext<{
   value: ChoiceValue;
   change: (v: ChoiceValue) => void;
 } | null>(null);
-export interface DsRadioProps {
+export interface KjunRadioProps {
   value?: ChoiceValue;
   val: ChoiceValue;
   label?: string;
@@ -245,7 +245,7 @@ export interface DsRadioProps {
   onValueChange?: (value: ChoiceValue) => void;
   onChange?: (value: ChoiceValue) => void;
 }
-export function DsRadio({
+export function KjunRadio({
   value,
   val,
   label,
@@ -254,7 +254,7 @@ export function DsRadio({
   children,
   onValueChange,
   onChange,
-}: DsRadioProps) {
+}: KjunRadioProps) {
   const group = useContext(RadioContext),
     { colors } = useKjunStyles(),
     selected = (group ? group.value : value) === val;
@@ -324,7 +324,7 @@ export function DsRadio({
     </Pressable>
   );
 }
-export interface DsRadioGroupProps {
+export interface KjunRadioGroupProps {
   value: ChoiceValue;
   options?: ChoiceOption[];
   direction?: "horizontal" | "vertical";
@@ -333,7 +333,7 @@ export interface DsRadioGroupProps {
   onValueChange?: (value: ChoiceValue) => void;
   onChange?: (value: ChoiceValue) => void;
 }
-export function DsRadioGroup({
+export function KjunRadioGroup({
   value,
   options = [],
   direction = "horizontal",
@@ -341,7 +341,7 @@ export function DsRadioGroup({
   children,
   onValueChange,
   onChange,
-}: DsRadioGroupProps) {
+}: KjunRadioGroupProps) {
   const root = useRef<View>(null);
   useRadioKeyboard(root);
   return (
@@ -366,7 +366,7 @@ export function DsRadioGroup({
       >
         {children ||
           options.map((option) => (
-            <DsRadio
+            <KjunRadio
               key={String(option.value)}
               val={option.value}
               label={option.label}

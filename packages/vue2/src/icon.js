@@ -3,7 +3,7 @@ import { componentMixins } from "./component-mixins.js";
 import { defaultIcons, resolveIcon } from "../../../shared/package-runtime/icon-registry";
 export default {
   mixins: componentMixins,
-  name: "DsIcon",
+  name: "KjunIcon",
   inject: { kjunIcons: { default: null } },
   inheritAttrs: false,
   props: {

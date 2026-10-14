@@ -54,10 +54,10 @@ for (const platform of ["vue2", "react", "native"]) {
 }
 export const coreContracts = {
   ...extensionContracts,
-  DsFormGroup: formGroup,
-  DsSelect: select,
-  DsSearchInput: searchInput,
-  DsTable: table,
-  DsDataState: dataState,
+  KjunFormGroup: formGroup,
+  KjunSelect: select,
+  KjunSearchInput: searchInput,
+  KjunTable: table,
+  KjunDataState: dataState,
 };
 export const feedbackContracts = feedback;

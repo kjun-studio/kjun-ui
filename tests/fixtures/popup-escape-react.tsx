@@ -1,6 +1,6 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { DsButton, DsDropdown, DsDropdownItem, DsModal, DsSelect, KjunProvider } from '@kjun-ui/react';
+import { KjunButton, KjunDropdown, KjunDropdownItem, KjunModal, KjunSelect, KjunProvider } from '@kjun-ui/react';
 import { setRootValues } from './style-values';
 
 function App() {
@@ -8,16 +8,16 @@ function App() {
   const [events, setEvents] = useState<string[]>([]);
   const record = (event: string) => setEvents(previous => [...previous, event]);
   return <KjunProvider>
-    <DsButton onClick={() => setOpen(true)}>Open dialog</DsButton>
-    <DsModal open={open} onOpenChange={setOpen} onClose={() => record('dialog-close')} title="Parent dialog">
-      <DsSelect ariaLabel="Choose item" value="alpha" options={['alpha', 'beta']}
+    <KjunButton onClick={() => setOpen(true)}>Open dialog</KjunButton>
+    <KjunModal open={open} onOpenChange={setOpen} onClose={() => record('dialog-close')} title="Parent dialog">
+      <KjunSelect ariaLabel="Choose item" value="alpha" options={['alpha', 'beta']}
         onOpenChange={value => record(value ? 'select-open' : 'select-close')}
-        menuHeader={<DsButton onClick={() => setChild(true)}>Open child</DsButton>} />
-      <DsDropdown trigger={<DsButton>Open menu</DsButton>} onClose={() => record('menu-close')}>
-        <DsDropdownItem>Menu item</DsDropdownItem>
-      </DsDropdown>
-    </DsModal>
-    <DsModal open={child} onOpenChange={setChild} title="Child dialog"><p>Child content</p></DsModal>
+        menuHeader={<KjunButton onClick={() => setChild(true)}>Open child</KjunButton>} />
+      <KjunDropdown trigger={<KjunButton>Open menu</KjunButton>} onClose={() => record('menu-close')}>
+        <KjunDropdownItem>Menu item</KjunDropdownItem>
+      </KjunDropdown>
+    </KjunModal>
+    <KjunModal open={child} onOpenChange={setChild} title="Child dialog"><p>Child content</p></KjunModal>
     <output data-testid="events">{JSON.stringify(events)}</output>
   </KjunProvider>;
 }

@@ -2,7 +2,7 @@
 import { useDocsPlatform, PlatformLoading } from "./docs-platform";
 import packages from "@/lib/generated/packages.json";
 import Link from "@/components/docs/doc-link";
-import { DsButtonGroup, DsIcon as Icon } from "@kjun-ui/react";
+import { KjunButtonGroup, KjunIcon as Icon } from "@kjun-ui/react";
 import { platformNames } from "../../../../shared/demo-config";
 import { isPlatform } from "../../../../shared/docs-platform";
 import { ActionLink } from "./action-link";
@@ -41,7 +41,7 @@ export function GettingStarted() {
           <code>@kjun-ui/icons</code>를 함께 설치합니다.
         </p>
         <div className="install-platform">
-          <DsButtonGroup
+          <KjunButtonGroup
             ariaLabel="설치할 플랫폼"
             value={platform}
             options={Object.entries(platformNames).map(([value, label]) => ({ value, label }))}
@@ -107,7 +107,7 @@ export function GettingStarted() {
           />
         </div>
         <p className="body-copy">
-          Vue는 Ds 명칭과 v-model 계약을 사용합니다. 웹 패키지는 컴파일된
+          Vue는 Kjun 명칭과 v-model 계약을 사용합니다. 웹 패키지는 컴파일된
           JavaScript와 CSS를 제공하므로 별도의 Tailwind 설정이나 Vue SFC 빌드
           설정이 필요하지 않습니다. Vue 2의 기본 스타일과 포커스·그림자 초기값은
           KjunProvider 내부에 적용됩니다.

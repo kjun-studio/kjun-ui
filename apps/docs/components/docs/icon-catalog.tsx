@@ -1,6 +1,6 @@
 'use client';
 import { useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { DsButton as Button, DsIcon as Icon, DsInput as Input, DsSelect, DsRadioGroup, KjunProvider } from '@kjun-ui/react';
+import { KjunButton as Button, KjunIcon as Icon, KjunInput as Input, KjunSelect, KjunRadioGroup, KjunProvider } from '@kjun-ui/react';
 import { tokens } from '@kjun-ui/tokens';
 import { useIconCatalogData, useIconPage } from './use-icon-data';
 import { iconPageSize, searchIcons, selectIcon, type IconEntry, type IconSelection } from '../../../../shared/icon-catalog';
@@ -76,10 +76,10 @@ export function IconCatalog() {
         <div className="icon-name"><CodeBlock code={selected.name} label={selected.label} copyLabel="이름 복사" requestKey={selectionKey}
           copySuccess="이름을 복사했습니다" copyFailure="복사하지 못했습니다. 공식 이름을 직접 선택해 주세요." /></div>
         <div className="icon-options">
-          <div><p>크기</p><DsSelect ariaLabel="아이콘 크기" value={selection.size}
+          <div><p>크기</p><KjunSelect ariaLabel="아이콘 크기" value={selection.size}
             options={Object.entries(tokens.iconSizes).map(([role, size]) => ({ value: size, label: `${size} · ${role}` }))}
             onValueChange={value => setSelection({ ...selection, size: Number(value) })} /></div>
-          <div><p>형태</p><DsRadioGroup ariaLabel="아이콘 형태" value={selection.filled ? 'filled' : 'outline'}
+          <div><p>형태</p><KjunRadioGroup ariaLabel="아이콘 형태" value={selection.filled ? 'filled' : 'outline'}
             options={[{ value: 'outline', label: '선형' }, { value: 'filled', label: '채움형', disabled: !selected.filled }]}
             onValueChange={value => setSelection({ ...selection, filled: value === 'filled' })} /></div>
         </div>

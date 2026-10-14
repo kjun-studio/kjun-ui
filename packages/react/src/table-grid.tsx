@@ -1,8 +1,8 @@
 import { tokens } from "@kjun-ui/tokens";
 import { Fragment, type CSSProperties, type KeyboardEvent } from "react";
 import type { TableGridProps } from "../../../shared/package-runtime/table-presentation";
-import { DsIcon } from "./button";
-import { DsSkeleton } from "./display";
+import { KjunIcon } from "./button";
+import { KjunSkeleton } from "./display";
 import { TableCheck } from "./table-check";
 interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["maxHeight"]> {
   ariaLabel: string;
@@ -63,7 +63,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, st
                         >
                           {col.label}
                           {state.sort.key === col.key && (
-                            <DsIcon
+                            <KjunIcon
                               name={
                                 state.sort.order === "asc"
                                   ? "sort-ascending"
@@ -86,13 +86,13 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, st
                     <tr key={i} aria-hidden="true">
                       {selectable && (
                         <td className="kjun-table-action-cell">
-                          <DsSkeleton type="block" height={tokens.table.selectionSize} width={tokens.table.selectionSize} />
+                          <KjunSkeleton type="block" height={tokens.table.selectionSize} width={tokens.table.selectionSize} />
                         </td>
                       )}
                       {expandable && <td className="kjun-table-action-cell" />}
                       {visible.map((col) => (
                         <td key={col.key}>
-                          <DsSkeleton
+                          <KjunSkeleton
                             type="block"
                             height={tokens.table.skeletonHeight}
                             width={col.key === "actions" ? tokens.table.actionColumnWidth : "75%"}

@@ -11,7 +11,7 @@ test('market examples preserve price units, signed percentages, zero and missing
     [null, 'price', '—'], [undefined, 'percent', '—'], ['', 'price', '—'],
     [NaN, 'price', '—'], [Infinity, 'percent', '—'], ['invalid', 'percent', '—'], ['HBT', 'text', 'HBT']];
   for (const [value, format, expected] of cases) assert.equal(metricFormat(value, format), expected);
-  for (const name of ['DsMarketTable', 'DsMarketCards']) for (const platform of ['react', 'vue2', 'native']) {
+  for (const name of ['KjunMarketTable', 'KjunMarketCards']) for (const platform of ['react', 'vue2', 'native']) {
     const { code } = await usageTools.usageExample({ name, platform, ...presetConfig(name) });
     const source = code.match(/function formatMetric\(value, format\) \{[\s\S]*?\n\}/)?.[0];
     assert.ok(source, `${name} ${platform} includes its formatter`);

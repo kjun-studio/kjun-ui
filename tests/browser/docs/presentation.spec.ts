@@ -39,33 +39,33 @@ test('overview fits desktop and mobile widths and entry links preserve platform'
 
 test('representative capture scenes omit demo instructions and retain real package states', async ({ browser }) => {
   test.setTimeout(90000); // Each of the fourteen capture profiles opens a fresh browser context.
-  for (const name of ['DsButton', 'DsButtonGroup', 'DsChip', 'DsInput', 'DsTable', 'DsModal', 'DsDrawer', 'DsMenuButton', 'DsDropdownItem', 'DsDropdownDivider', 'DsTabPane', 'DsAccordionItem', 'DsTooltip', 'DsPopover']) {
+  for (const name of ['KjunButton', 'KjunButtonGroup', 'KjunChip', 'KjunInput', 'KjunTable', 'KjunModal', 'KjunDrawer', 'KjunMenuButton', 'KjunDropdownItem', 'KjunDropdownDivider', 'KjunTabPane', 'KjunAccordionItem', 'KjunTooltip', 'KjunPopover']) {
     const scene = presentations.find(s => s.name === name)!, capture = captureFor(scene);
     const context = await browser.newContext({ viewport: { width: capture.width, height: capture.height }, deviceScaleFactor: capture.deviceScaleFactor, reducedMotion: 'reduce' });
     try {
       const page = await context.newPage();
       await page.goto((process.env.KJUN_TEST_URL || 'http://127.0.0.1:4173') + '/previews/presentation.html?scene=' + name);
       await preparePresentation(page, scene);
-      if (name === 'DsButton') {
+      if (name === 'KjunButton') {
         await expect(page.getByRole('button')).toHaveCount(3);
         await expect(page.getByRole('button').last()).toBeDisabled();
         expect(await page.getByRole('button').first().evaluate(el => el.getBoundingClientRect().height)).toBe(40);
       }
-      if (name === 'DsButtonGroup') {
+      if (name === 'KjunButtonGroup') {
         await expect(page.getByRole('button')).toHaveText(['일간', '주간', '월간'], { useInnerText: true });
         await expect(page.getByRole('button', { name: '주간', exact: true })).toHaveAttribute('aria-pressed', 'true');
         await expect(page.locator('.kjun-button-group')).toHaveCSS('height', '40px');
         await expect(page.getByRole('button').first()).toHaveCSS('font-size', '14px');
       }
-      if (name === 'DsChip') {
+      if (name === 'KjunChip') {
         await expect(page.locator('.kjun-chip')).toHaveCount(3);
         await expect(page.locator('.kjun-chip').last()).toHaveAttribute('data-disabled', 'true');
         await expect(page.getByRole('button', { name: '팀 공유 삭제' })).toBeVisible();
         await expect(page.locator('.kjun-chip').first()).toHaveCSS('min-height', '32px');
         await expect(page.locator('.kjun-chip').first()).toHaveCSS('font-size', '14px');
       }
-      if (['DsButton', 'DsButtonGroup', 'DsChip'].includes(name)) {
-        const selector = name === 'DsButton' ? '.kjun-button' : name === 'DsButtonGroup' ? '.kjun-button-group' : '.kjun-chip';
+      if (['KjunButton', 'KjunButtonGroup', 'KjunChip'].includes(name)) {
+        const selector = name === 'KjunButton' ? '.kjun-button' : name === 'KjunButtonGroup' ? '.kjun-button-group' : '.kjun-chip';
         const measure = () => page.locator(selector).evaluateAll(elements => elements.map(el => {
           const r = el.getBoundingClientRect(), style = getComputedStyle(el);
           return { width: r.width, height: r.height, font: style.fontSize, radius: style.borderRadius, padding: style.padding, transform: style.transform, zoom: style.zoom };
@@ -78,9 +78,9 @@ test('representative capture scenes omit demo instructions and retain real packa
         expect(actual.every(item => item.transform === 'none' && item.zoom === '1')).toBe(true);
       }
       if (scene.highlight) await expect(page.locator('.presentation-highlight')).toBeVisible();
-      if (name === 'DsAccordionItem') { await expect(page.locator('.kjun-accordion-item')).toHaveCount(1); await expect(page.getByRole('button')).toHaveAttribute('aria-expanded', 'true'); }
-      if (name === 'DsDropdownItem') await expect(page.getByRole('menuitem').first().locator('svg')).toHaveCount(2);
-      if (name === 'DsMenuButton') { await expect(page.getByRole('button', { name: '목록 관리' })).toHaveText(''); await expect(page.getByRole('menu')).toBeVisible(); }
+      if (name === 'KjunAccordionItem') { await expect(page.locator('.kjun-accordion-item')).toHaveCount(1); await expect(page.getByRole('button')).toHaveAttribute('aria-expanded', 'true'); }
+      if (name === 'KjunDropdownItem') await expect(page.getByRole('menuitem').first().locator('svg')).toHaveCount(2);
+      if (name === 'KjunMenuButton') { await expect(page.getByRole('button', { name: '목록 관리' })).toHaveText(''); await expect(page.getByRole('menu')).toBeVisible(); }
     } finally { await context.close(); }
   }
 });
@@ -98,7 +98,7 @@ test('overview and gallery retain readable captions and links at actual 200% zoo
         const width = await page.locator('.component-gallery').evaluate(el => el.clientWidth);
         expect(await page.locator('.gallery-grid').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(width >= 1000 ? 3 : width >= 660 ? 2 : 1);
       }
-      const link = path.startsWith('/?') ? page.locator('.overview-actions').getByRole('link', { name: '컴포넌트 보기', exact: true }) : page.locator('[data-component-card="DsButton"]');
+      const link = path.startsWith('/?') ? page.locator('.overview-actions').getByRole('link', { name: '컴포넌트 보기', exact: true }) : page.locator('[data-component-card="KjunButton"]');
       await link.focus(); await expect(link).toBeFocused();
       await expect(link).toBeInViewport();
       if (path.startsWith('/components')) {

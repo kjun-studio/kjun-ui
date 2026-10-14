@@ -1,6 +1,6 @@
 import { part as p, textPart as t, control as c, type GuideAuthor } from "./types.ts";
 export const layout: Record<string, GuideAuthor> = {
-  DsAccordion: {
+  KjunAccordion: {
     action: "첫 항목",
     parts: [
       c("항목 헤더", "최소 48px 영역에 14px·600 제목과 회전하는 16px 화살표를 배치합니다."),
@@ -8,7 +8,7 @@ export const layout: Record<string, GuideAuthor> = {
     ],
     related: "form",
   },
-  DsAccordionItem: {
+  KjunAccordionItem: {
     action: "첫 항목",
     parts: [
       t("자식 헤더", "14px·600 제목과 16px 화살표로 이 항목을 열고 닫습니다.", "첫 항목"),
@@ -16,7 +16,7 @@ export const layout: Record<string, GuideAuthor> = {
     ],
     related: "form",
   },
-  DsCard: {
+  KjunCard: {
     parts: [
       t("제목", "묶인 콘텐츠의 목적을 요약합니다.", "카드 제목"),
       t("본문", "소비자가 제공하는 카드 내용입니다.", "본문과 헤더·푸터 간격을 확인하세요."),
@@ -24,7 +24,7 @@ export const layout: Record<string, GuideAuthor> = {
     ],
     related: "assets",
   },
-  DsDrawer: {
+  KjunDrawer: {
     action: "패널 열기",
     parts: [
       t("제목", "열린 패널의 목적을 설명합니다.", "작업 확인"),
@@ -33,7 +33,7 @@ export const layout: Record<string, GuideAuthor> = {
     ],
     related: "layers",
   },
-  DsModal: {
+  KjunModal: {
     action: "모달 열기",
     parts: [
       t("제목", "현재 수행할 작업을 설명합니다.", "작업 확인"),
@@ -43,7 +43,7 @@ export const layout: Record<string, GuideAuthor> = {
     ],
     related: "layers",
   },
-  DsPopover: {
+  KjunPopover: {
     action: "추가 정보",
     parts: [
       t("트리거", "부가 영역을 여는 ghost 버튼 예제입니다.", "추가 정보"),
@@ -52,7 +52,7 @@ export const layout: Record<string, GuideAuthor> = {
     ],
     related: "layers",
   },
-  DsScrollFade: {
+  KjunScrollFade: {
     parts: [
       p("스크롤 영역", "가로 콘텐츠와 넘친 방향의 페이드를 표시합니다."),
       t("소비자 콘텐츠", "영역 안에 배치한 항목입니다.", "항목 1"),

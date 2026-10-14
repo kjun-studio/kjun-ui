@@ -1,6 +1,6 @@
 <template>
   <div class="kjun-market-table-frame" :class="embedded ? '' : 'kj-bg-surface-card kj-rounded-card'">
-    <DsDataState
+    <KjunDataState
       :query-key="queryKey"
     :result-key="resultKey"
       :has-loaded-once="hasLoadedOnce"
@@ -12,11 +12,11 @@
       :empty-text="emptyMessage"
     >
       <template #loading>
-        <DsMarketTableSkeleton :columns="columns" :show-actions="showActions" :align-class="alignClass" :width-class="widthClass" />
+        <KjunMarketTableSkeleton :columns="columns" :show-actions="showActions" :align-class="alignClass" :width-class="widthClass" />
       </template>
 
       <template #empty>
-        <DsEmpty :text="emptyMessage" :description="emptySubMessage" />
+        <KjunEmpty :text="emptyMessage" :description="emptySubMessage" />
       </template>
 
       <!-- Like React and Native: the trailing edge fades while columns still overflow it. -->
@@ -31,8 +31,8 @@
             <tr>
               <!-- 관심/즐겨찾기 액션 컬럼 -->
               <th v-if="showActions" class="kjun-market-actions">
-                <span class="kjun-market-actions-mark"><DsCollectionMark kind="interest" size="md" /></span>
-                <span class="kjun-market-actions-mark"><DsCollectionMark kind="favorite" size="md" /></span>
+                <span class="kjun-market-actions-mark"><KjunCollectionMark kind="interest" size="md" /></span>
+                <span class="kjun-market-actions-mark"><KjunCollectionMark kind="favorite" size="md" /></span>
               </th>
 
               <th
@@ -49,12 +49,12 @@
                 <span class="kj-inline-flex kj-items-center kj-gap-1">
                   {{ col.label }}
                   <!-- Like React and Native: one sort icon size, in the header text colour. -->
-                  <DsIcon
+                  <KjunIcon
                     v-if="col.sortable && sortKey === col.key"
                     :name="sortOrder === 'asc' ? 'sort-ascending' : 'sort-descending'"
                     :size="geometry.sortIconSize"
                   />
-                  <DsIcon
+                  <KjunIcon
                     v-else-if="col.sortable"
                     name="arrows-sort"
                     :size="geometry.sortIconSize"
@@ -75,7 +75,7 @@
               <!-- 관심/즐겨찾기 토글 -->
               <td v-if="showActions" class="kjun-market-actions">
                 <div class="kj-flex kj-items-center kj-justify-center">
-                  <DsIconToggle
+                  <KjunIconToggle
                     size="xs"
                     :active="isInterest(row)"
                     @toggle="$emit('toggle-interest', row)"
@@ -84,7 +84,7 @@
                     :aria-label="[rowActionLabel(row), '관심', isInterest(row) ? '해제' : '등록'].filter(Boolean).join(' ')"
                     :loading="togglingInterest === row[rowKey]"
                   />
-                  <DsIconToggle
+                  <KjunIconToggle
                     size="xs"
                     :active="isFavorite(row)"
                     @toggle="$emit('toggle-favorite', row)"
@@ -106,7 +106,7 @@
                   weightClass(col)
                 ]"
               >
-                <DsSkeleton
+                <KjunSkeleton
                   v-if="cellLoading(row, col)"
                   type="block"
                   height="var(--_kjun-extension-market-table-value-skeleton-height)"
@@ -130,7 +130,7 @@
                 </div>
 
                 <!-- 내장 타입 렌더러 -->
-                <DsSparkline
+                <KjunSparkline
                   v-else-if="col.type === 'sparkline'"
                   :data="row[col.key] || []"
                   :width="sparklineSize.width"
@@ -139,7 +139,7 @@
 
                 <template v-else-if="col.type === 'price'">
                   <span class="kj-inline-flex kj-items-center kj-justify-end kj-gap-1">
-                    <DsPriceCell
+                    <KjunPriceCell
                       :value="row[col.key]"
                       :formatter="priceFormatter"
                       :stale="!!row.stale"
@@ -152,7 +152,7 @@
                 </template>
 
                 <template v-else-if="col.type === 'percent'">
-                  <DsSignedValue
+                  <KjunSignedValue
                     v-if="row[col.key] != null"
                     :value="row[col.key]"
                     class="kj-inline-flex"
@@ -178,7 +178,7 @@
 
                 <!-- trade_amount / bigAmount / ratio / compact / 기본: 색 없는 텍스트 -->
                 <template v-else>{{ cellText(row, col) }}</template>
-                <DsFreshness
+                <KjunFreshness
                   v-if="freshnessColumnKey(row) === col.key"
                   :stale="!!row.stale"
                   :source="row.source"
@@ -190,10 +190,10 @@
           </tbody>
         </table>
       </div>
-    </DsDataState>
+    </KjunDataState>
 
     <!-- Pagination -->
-    <DsPagination
+    <KjunPagination
       v-if="pagination && pagination.total > pagination.size"
       :current-page="pagination.page"
       :total-pages="Math.ceil(pagination.total / pagination.size)"
@@ -220,21 +220,21 @@
 import { tokens } from "@kjun-ui/tokens";
 import { marketGeometry, webMarketLayout, legacyMarketWidthClass, isMarketIdentity } from "../../../../../shared/package-runtime/market-layout";
 import { watchTrailingOverflow } from "../../../../../shared/package-runtime/trailing-overflow";
-import DsEmpty from "./Empty.vue";
-import DsCollectionMark from "./CollectionMark.vue";
-import DsDataState from "../feedback/DataState.vue";
-import DsIconToggle from "../primitives/IconToggle.vue";
-import DsFreshness from "./Freshness.vue";
-import DsIcon from "../../icon.js";
-import DsMarketTableSkeleton from "./MarketTableSkeleton.vue";
-import DsPagination from "../navigation/Pagination.vue";
-import DsPriceCell from "./PriceCell.vue";
-import DsSignedValue from "./SignedValue.vue";
-import DsSkeleton from "./Skeleton.vue";
+import KjunEmpty from "./Empty.vue";
+import KjunCollectionMark from "./CollectionMark.vue";
+import KjunDataState from "../feedback/DataState.vue";
+import KjunIconToggle from "../primitives/IconToggle.vue";
+import KjunFreshness from "./Freshness.vue";
+import KjunIcon from "../../icon.js";
+import KjunMarketTableSkeleton from "./MarketTableSkeleton.vue";
+import KjunPagination from "../navigation/Pagination.vue";
+import KjunPriceCell from "./PriceCell.vue";
+import KjunSignedValue from "./SignedValue.vue";
+import KjunSkeleton from "./Skeleton.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { domainColorMixin } from "../../domain-colors.js";
 import queryDisplayMixin from '@kjun-adapter/queryDisplayMixin.js'
-import DsSparkline from './Sparkline.vue'
+import KjunSparkline from './Sparkline.vue'
 import { finiteSignedValue } from './signedValue'
 import {
   flashCellClass,
@@ -252,8 +252,8 @@ const NUMERIC_TYPES = new Set([
 
 export default {
   mixins: [queryDisplayMixin, ...componentMixins, domainColorMixin(vm => vm.showActions && vm.rows.length > 0 && !vm.loading)],
-  name: 'MarketTable',
-  components: { DsEmpty, DsSparkline, DsCollectionMark, DsDataState, DsIconToggle, DsFreshness, DsIcon, DsMarketTableSkeleton, DsPagination, DsPriceCell, DsSignedValue, DsSkeleton },
+  name: 'KjunMarketTable',
+  components: { KjunEmpty, KjunSparkline, KjunCollectionMark, KjunDataState, KjunIconToggle, KjunFreshness, KjunIcon, KjunMarketTableSkeleton, KjunPagination, KjunPriceCell, KjunSignedValue, KjunSkeleton },
   props: {
     rows: { type: Array, default: () => [] },
     columns: { type: Array, required: true },

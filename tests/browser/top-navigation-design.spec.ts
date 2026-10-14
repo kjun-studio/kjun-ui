@@ -176,7 +176,7 @@ for (const platform of ['react', 'vue2', 'native']) {
 
   test(`${platform}: packed documentation offers standalone, narrow and mixed navigation examples`, async ({ page }) => {
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
-    await openFixture(page, platform, '?component=DsTopNavigation', 'catalog');
+    await openFixture(page, platform, '?component=KjunTopNavigation', 'catalog');
     let revision = 0;
     const settings = (settings: object) => page.evaluate(config => window.postMessage({ type: 'kjun:catalog-configure', config }, location.origin), { settings, revision: ++revision, reset: revision });
     const controls = page.getByRole('button');

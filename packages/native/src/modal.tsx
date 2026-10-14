@@ -16,10 +16,10 @@ Text,
 useWindowDimensions,
 View
 } from "react-native";
-import { DsButton, DsIcon } from "./button";
+import { KjunButton, KjunIcon } from "./button";
 import { ScopedNativeModal } from "./overlay-host";
 import { useKjunStyles } from "./provider";
-export interface DsFormActionsProps {
+export interface KjunFormActionsProps {
   size?: InputSize;
   cancelText?: string;
   confirmText?: string;
@@ -33,7 +33,7 @@ export interface DsFormActionsProps {
   onCancel?: () => void;
   onConfirm?: () => void;
 }
-export function DsFormActions({
+export function KjunFormActions({
   size = "lg",
   cancelText = "취소",
   confirmText = "저장",
@@ -46,7 +46,7 @@ export function DsFormActions({
   cancelVariant = "ghost",
   onCancel,
   onConfirm,
-}: DsFormActionsProps) {
+}: KjunFormActionsProps) {
   const { fontFamily } = useKjunStyles();
   const [width, setWidth] = useState(0), [measurements, setMeasurements] = useState<Record<string, number>>({});
   const labels = [showCancel && { text: cancelText }, showConfirm && { text: confirmText }].filter(Boolean) as { text: string }[];
@@ -74,17 +74,17 @@ export function DsFormActions({
           style={{ fontFamily, ...typeStyle(tokens.button.typography[size]), flexShrink: 0 }}>{label.text}</Text>)}
       </View>
       {showCancel && (
-        <DsButton
+        <KjunButton
           size={size}
           variant={cancelVariant}
           disabled={cancelDisabled}
           onPress={onCancel}
         >
           {cancelText}
-        </DsButton>
+        </KjunButton>
       )}
       {showConfirm && (
-        <DsButton
+        <KjunButton
           size={size}
           variant={variant}
           disabled={confirmDisabled}
@@ -92,13 +92,13 @@ export function DsFormActions({
           onPress={onConfirm}
         >
           {confirmText}
-        </DsButton>
+        </KjunButton>
       )}
     </View>
     </FormActionsContext.Provider>
   );
 }
-export interface DsModalProps {
+export interface KjunModalProps {
   open: boolean;
   onOpenChange: (value: boolean) => void;
   onClose?: () => void;
@@ -126,7 +126,7 @@ export interface DsModalProps {
   children: ReactNode;
   ariaLabel?: string;
 }
-export function DsModal({
+export function KjunModal({
   open,
   onOpenChange,
   onClose,
@@ -153,7 +153,7 @@ export function DsModal({
   footer,
   children,
   ariaLabel,
-}: DsModalProps) {
+}: KjunModalProps) {
   const { colors: c, fontFamily } = useKjunStyles();
   const window = useWindowDimensions();
   const motion = useNativePresence(open, tokens.motion.layerEnter, tokens.motion.layerExit, true, 0, { fade: tokens.motion.backdropExit });
@@ -261,13 +261,13 @@ export function DsModal({
                 )}
               </View>
               {closable && (
-                <DsButton
+                <KjunButton
                   variant="ghost"
                   size="sm"
                   ariaLabel="닫기"
                   onPress={close}
                   style={{ borderRadius: tokens.modal.closeRadius, width: tokens.modal.closeSize, height: tokens.modal.closeSize, paddingHorizontal: 0, paddingVertical: 0 }}
-                ><DsIcon name="x" size={tokens.modal.closeIconSize} /></DsButton>
+                ><KjunIcon name="x" size={tokens.modal.closeIconSize} /></KjunButton>
               )}
             </View>
           )}
@@ -292,7 +292,7 @@ export function DsModal({
               }}
             >
               {footer || (
-                <DsFormActions
+                <KjunFormActions
                   size={footerSize}
                   cancelVariant="secondary"
                   showCancel={showCancelButton}

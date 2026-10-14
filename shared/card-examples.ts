@@ -4,7 +4,7 @@ import type { PaletteName } from './demo-config';
 import { demoPalettes } from './demo-colors.ts';
 
 export function cardPreviewStyle(component: string, surface: unknown, palette: PaletteName) {
-  if (component !== 'DsCard') return undefined;
+  if (component !== 'KjunCard') return undefined;
   const colors = demoPalettes[palette];
   return { background: surface === 'muted' ? colors.surface : palette === 'dark' ? colors.background : colors.secondary, minHeight: '100vh' };
 }

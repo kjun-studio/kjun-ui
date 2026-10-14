@@ -8,8 +8,8 @@ useRef,
 useState,
 type ReactNode
 } from "react";
-import { DsSpinner } from "./display";
-import { DsInput } from "./input";
+import { KjunSpinner } from "./display";
+import { KjunInput } from "./input";
 import { useCompositionGuard } from "./composition";
 import { FloatingPanel } from "./layers";
 import {
@@ -19,7 +19,7 @@ optionKey,
 OptionValue,
 SelectOption,
 } from "./select-options";
-export interface DsComboboxProps<T extends SelectOption = SelectOption> {
+export interface KjunComboboxProps<T extends SelectOption = SelectOption> {
   value: OptionValue | null;
   options?: T[];
   placeholder?: string;
@@ -38,7 +38,7 @@ export interface DsComboboxProps<T extends SelectOption = SelectOption> {
   onSearch?: (v: string) => void;
   onClear?: () => void;
 }
-export function DsCombobox<T extends SelectOption = SelectOption>({
+export function KjunCombobox<T extends SelectOption = SelectOption>({
   value,
   options = [],
   placeholder = "검색 또는 선택",
@@ -56,7 +56,7 @@ export function DsCombobox<T extends SelectOption = SelectOption>({
   onChange,
   onSearch,
   onClear,
-}: DsComboboxProps<T>) {
+}: KjunComboboxProps<T>) {
   const model = useComboboxModel({ value, options, labelKey, valueKey, disabled, filterFn,
     onValueChange, onChange, onSearch, onClear });
   return (
@@ -163,7 +163,7 @@ export function SearchField<T extends SelectOption>({
   };
   return (
     <>
-      <DsInput
+      <KjunInput
         error={error}
         ref={ref}
         value={value}
@@ -252,7 +252,7 @@ export function SearchField<T extends SelectOption>({
         >
           {loading ? (
             <div className="kjun-select-empty">
-              <DsSpinner size="sm" text="검색 중..." />
+              <KjunSpinner size="sm" text="검색 중..." />
             </div>
           ) : failed ? (
             <div className="kjun-select-empty" role="alert">{errorText}</div>

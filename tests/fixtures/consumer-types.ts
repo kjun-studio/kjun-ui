@@ -10,39 +10,39 @@ const height: number = tokens.input[size].height;
 declare const colors: KjunColors;
 const color: string = colors.brand;
 const item = { value: 0, label: 'Zero', amount: 7 };
-R.DsSelect({ value: 0, options: [item], renderOption: option => {
+R.KjunSelect({ value: 0, options: [item], renderOption: option => {
   const amount: number = option.amount;
   // @ts-expect-error Inference must retain the number field, never any.
   const invalid: string = option.amount;
   // @ts-expect-error Unknown fields must not be accepted by inferred options.
   return option.missing;
 } });
-N.DsSelect({ value: 0, options: [item], renderOption: option => {
+N.KjunSelect({ value: 0, options: [item], renderOption: option => {
   const amount: number = option.amount;
   // @ts-expect-error Inference must retain the number field, never any.
   const invalid: string = option.amount;
   // @ts-expect-error Unknown fields must not be accepted by inferred options.
   return option.missing;
 } });
-R.DsTable({ data: [item], columns: [], onSelectionChange: rows => {
+R.KjunTable({ data: [item], columns: [], onSelectionChange: rows => {
   const amount: number = rows[0].amount;
   // @ts-expect-error Row inference must survive every declaration hop.
   const invalid: string = rows[0].amount;
 } });
-N.DsTable({ data: [item], columns: [], onSelectionChange: rows => {
+N.KjunTable({ data: [item], columns: [], onSelectionChange: rows => {
   const amount: number = rows[0].amount;
   // @ts-expect-error Row inference must survive every declaration hop.
   const invalid: string = rows[0].amount;
 } });
-const reactProps: R.DsSelectProps<typeof item> = { value: 0, options: [item] };
-const nativeProps: N.DsTabsProps = { value: '', items: [] };
-const vueProps: V.DsSelectProps = { value: 0, open: undefined };
+const reactProps: R.KjunSelectProps<typeof item> = { value: 0, options: [item] };
+const nativeProps: N.KjunTabsProps = { value: '', items: [] };
+const vueProps: V.KjunSelectProps = { value: 0, open: undefined };
 // @ts-expect-error Public interfaces must not degrade to any.
-const invalidReact: R.DsSelectProps = { value: 0, open: 'yes' };
+const invalidReact: R.KjunSelectProps = { value: 0, open: 'yes' };
 // @ts-expect-error Public interfaces must not degrade to any.
-const invalidNative: N.DsAccordionProps = { multiple: 'yes', children: null };
+const invalidNative: N.KjunAccordionProps = { multiple: 'yes', children: null };
 // @ts-expect-error Public interfaces must not degrade to any.
-const invalidVue: V.DsSelectProps = { open: 'yes' };
+const invalidVue: V.KjunSelectProps = { open: 'yes' };
 // @ts-expect-error Token unions must not degrade to any.
 const invalidSize: InputSize = 'unknown';
 
@@ -50,17 +50,17 @@ const elevationR: R.CardElevation = 'raised';
 const elevationN: N.ElevationRole = 'floating';
 const elevationV: V.CardElevation = 'flat';
 const shadowLayer: V.ShadowLayer = tokens.shadowScale.ambient[0];
-const cardR: R.DsCardProps = { elevation: elevationR };
-const cardN: N.DsCardProps = { elevation: 'flat' };
-const cardV: V.DsCardProps = { elevation: elevationV };
+const cardR: R.KjunCardProps = { elevation: elevationR };
+const cardN: N.KjunCardProps = { elevation: 'flat' };
+const cardV: V.KjunCardProps = { elevation: elevationV };
 // @ts-expect-error Cards cannot float as popups.
-const floatingCard: R.DsCardProps = { elevation: 'floating' };
+const floatingCard: R.KjunCardProps = { elevation: 'floating' };
 // @ts-expect-error Removed shadow prop has no compatibility alias.
-const oldCard: R.DsCardProps = { shadow: 'card' };
+const oldCard: R.KjunCardProps = { shadow: 'card' };
 // @ts-expect-error Removed hover prop has no compatibility alias.
-const oldNativeCard: N.DsCardProps = { hover: true };
+const oldNativeCard: N.KjunCardProps = { hover: true };
 // @ts-expect-error Removed Vue shadow prop has no compatibility alias.
-const oldVueCard: V.DsCardProps = { shadow: 'sm' };
+const oldVueCard: V.KjunCardProps = { shadow: 'sm' };
 
 import rocket from '@kjun-ui/icons/icons/rocket';
 import { tablerVersion, type KjunIconRegistry } from '@kjun-ui/icons';

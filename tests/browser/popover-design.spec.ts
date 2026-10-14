@@ -67,7 +67,7 @@ for (const platform of ['react', 'vue2', 'native']) {
 
   test(`${platform}: packed examples show a quiet trigger and an intrinsic right-aligned action`, async ({ page }) => {
     await page.setViewportSize({ width: 800, height: 700 });
-    await openFixture(page, platform, '?component=DsPopover', 'catalog');
+    await openFixture(page, platform, '?component=KjunPopover', 'catalog');
     const open = page.getByRole('button', { name: '추가 정보', exact: true });
     await expect(open).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     await open.focus(); await open.press('Enter');

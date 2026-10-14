@@ -10,30 +10,30 @@ export function tableUsageExample(input: UsageInput) {
   const cases: string[] = [];
   if (example.project || example.metrics) {
     b.declare('formatPrice', 'function formatPrice(value) {\n  return new Intl.NumberFormat("ko-KR").format(Number(value)) + "원";\n}');
-    const progress = b.node('DsProgressCell', { value: expr('row.progress'), max: 100 });
+    const progress = b.node('KjunProgressCell', { value: expr('row.progress'), max: 100 });
     if (b.vue) slots['cell-progress'] = progress;
     else cases.push(`if (column.key === "progress") return ${progress};`);
   }
   if (example.project) {
-    const status = b.node('DsBadge', { size: 'sm', dot: true, variant: expr('row.status === "완료" ? "success" : row.status === "검토 대기" ? "warning" : "primary"') }, b.text(expr('row.status')));
-    const money = b.node('DsPriceCell', { value: expr('row.budget'), formatter: expr('formatPrice') });
+    const status = b.node('KjunBadge', { size: 'sm', dot: true, variant: expr('row.status === "완료" ? "success" : row.status === "검토 대기" ? "warning" : "primary"') }, b.text(expr('row.status')));
+    const money = b.node('KjunPriceCell', { value: expr('row.budget'), formatter: expr('formatPrice') });
     const view = report('viewProject', 'row', 'row.name + " 상세 보기"');
     const action = b.button('보기', b.call(view, 'row'), { size: 'xs', variant: 'ghost', ariaLabel: expr('row.name + " 보기"') });
     if (b.vue) Object.assign(slots, { 'cell-status': status, 'cell-budget': money, 'cell-actions': action });
     else cases.push(`if (column.key === "status") return ${status};`, `if (column.key === "budget") return ${money};`, `if (column.key === "actions") return ${action};`);
   }
   if (example.metrics) {
-    const money = b.node('DsPriceCell', { value: expr('row.revenue'), formatter: expr('formatPrice') });
-    const delta = b.node('DsSignedValue', { value: expr('row.change'), format: 'percent', isRaw: true });
+    const money = b.node('KjunPriceCell', { value: expr('row.revenue'), formatter: expr('formatPrice') });
+    const delta = b.node('KjunSignedValue', { value: expr('row.change'), format: 'percent', isRaw: true });
     if (b.vue) Object.assign(slots, { 'cell-revenue': money, 'cell-change': delta });
     else cases.push(`if (column.key === "revenue") return ${money};`, `if (column.key === "change") return ${delta};`);
   }
   const detail = example.project
-    ? b.node('DsAlert', { type: 'info' }, b.text(expr('row.summary + " 담당자 " + row.owner + " · 마감 " + row.due')))
+    ? b.node('KjunAlert', { type: 'info' }, b.text(expr('row.summary + " 담당자 " + row.owner + " · 마감 " + row.due')))
     : b.text(expr('"상세: " + row.name'));
   const selection = b.button('선택 항목 확인', report('confirmSelection', '', b.read('selected') + '.map(row => row.name).join(", ") + " 선택 확인"'), { size: 'xs', variant: 'secondary' });
   const vueCells = Object.entries(slots).map(([key, body]) => `<template #${key}="{ row }">\n${body}\n</template>`).join('\n');
-  return b.finish(b.node('DsTable', {
+  return b.finish(b.node('KjunTable', {
     columns: b.data('columns', example.columns), data: b.data('rows', example.data),
     ...b.props('selectable', 'sortable', 'expandable', 'responsive', 'loading', 'searchable', 'compact', 'striped', 'hoverable', 'stickyHeader'),
     maxHeight: s.stickyHeader ? 240 : undefined,

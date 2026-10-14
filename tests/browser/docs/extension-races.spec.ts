@@ -18,7 +18,7 @@ async function standalone(page: Page, platform: string, name: string, suffix: st
 }
 for (const platform of ["vue2", "react", "native"]) {
   test(`${platform} quantity stays controlled when a consumer ignores a proposed value`, async ({ page }) => {
-    await standalone(page, platform, "DsQuantityStepper", "controlled-quantity", source => source.replace('onValueChange: change("quantity")', 'onValueChange: undefined'));
+    await standalone(page, platform, "KjunQuantityStepper", "controlled-quantity", source => source.replace('onValueChange: change("quantity")', 'onValueChange: undefined'));
     const input = page.getByRole("spinbutton", { name: "주문 수량" });
     await input.fill("7"); await input.press("Enter");
     await expect(input).toHaveValue("2");
@@ -39,7 +39,7 @@ for (const platform of ["vue2", "react", "native"]) {
         finished();
       } else await route.fulfill({ contentType: "image/svg+xml", body: '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#678B82"/></svg>' });
     });
-    await standalone(page, platform, "DsImage", "image-race", source => source.replace('sampleImage(get("imageVersion", 0))', '"/extension-image-" + get("imageVersion", 0) + ".svg"'));
+    await standalone(page, platform, "KjunImage", "image-race", source => source.replace('sampleImage(get("imageVersion", 0))', '"/extension-image-" + get("imageVersion", 0) + ".svg"'));
     await requested;
     await page.getByRole("button", { name: "이미지 주소 변경" }).click();
     await expect(page.getByText("이미지 로드 완료", { exact: true })).toBeVisible();
@@ -50,10 +50,10 @@ for (const platform of ["vue2", "react", "native"]) {
     await expect(page.getByRole("img", { name: "산과 하늘을 표현한 프로젝트 표지" })).toBeVisible();
   });
   test(`${platform} decorative images are omitted and navigation keeps native link behavior and owned selection`, async ({ page }) => {
-    await standalone(page, platform, "DsImage", "decorative", source => source, { decorative: true, imageState: "실패" });
+    await standalone(page, platform, "KjunImage", "decorative", source => source, { decorative: true, imageState: "실패" });
     await expect(page.getByText("이미지를 불러올 수 없습니다", { exact: true })).toBeVisible();
     await expect(page.getByRole("img")).toHaveCount(0);
-    await standalone(page, platform, "DsBottomNavigation", "owned-navigation", source => source.replace('event.preventDefault();', '').replace('set("destination", key);', ''));
+    await standalone(page, platform, "KjunBottomNavigation", "owned-navigation", source => source.replace('event.preventDefault();', '').replace('set("destination", key);', ''));
     const home = page.getByRole("link", { name: "홈", exact: true }), activity = page.getByRole("link", { name: /활동/ });
     await expect(activity).toHaveAttribute("href", "#activity");
     await activity.click();

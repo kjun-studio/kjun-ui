@@ -117,7 +117,7 @@ for (const platform of ['react', 'vue2', 'native']) {
   test(`${platform}: FormActions documentation renders comparisons and narrow presets from packed packages`, async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
-    await openFixture(page, platform, '?component=DsFormActions', 'catalog');
+    await openFixture(page, platform, '?component=KjunFormActions', 'catalog');
     const controls = page.getByRole('button');
     await expect(controls).toHaveCount(2);
     let revision = 0;

@@ -59,7 +59,7 @@ for (const platform of Object.keys(platforms) as (keyof typeof platforms)[]) {
     frame = page.frameLocator('.playground iframe');
     await frame.getByRole(platform === 'native' ? 'textbox' : 'combobox', { name: '자산 검색', exact: true }).last().fill('A');
     await expect(frame.getByText(/검색 중|조회 중|불러오는/).first()).toBeVisible();
-    await expect(page.locator('.example-events')).toContainText('DsSearchInput.loadOptions');
+    await expect(page.locator('.example-events')).toContainText('KjunSearchInput.loadOptions');
     await frame.getByRole(platform === 'native' ? 'textbox' : 'combobox', { name: '자산 검색', exact: true }).last().fill('AAA');
     await expect(page.locator('.example-events')).toContainText('취소');
     await openExampleSettings(page);
@@ -151,8 +151,8 @@ test('compact canvas, unsupported controls, failure fallback, IME, and event his
   // Start the failure expectation after the client has mounted the preview.
   await expect(page.locator('.playground iframe')).toBeAttached({ timeout: 30000 });
   await expect(page.locator('.preview-loading')).toContainText('불러오지 못했습니다', { timeout: 45000 });
-  await expect(page.locator('#usage .code-block')).toContainText('DsCheckbox');
-  expect(await copy(page)).toContain('DsCheckbox');
+  await expect(page.locator('#usage .code-block')).toContainText('KjunCheckbox');
+  expect(await copy(page)).toContain('KjunCheckbox');
   await page.unroute('**/previews/catalog-*.js');
   await page.getByRole('button', { name: '다시 시도', exact: true }).click();
   await expect(page.locator('.playground')).toHaveAttribute('data-ready', 'true');
@@ -168,7 +168,7 @@ test('compact canvas, unsupported controls, failure fallback, IME, and event his
 });
 
 test('unused source failure does not block preview or basic usage', async ({ page }) => {
-  await page.route('**/previews/sources/DsSelect.json', route => route.abort());
+  await page.route('**/previews/sources/KjunSelect.json', route => route.abort());
   const frame = await visit(page, 'select', 'react');
   // Fixed option panels must remain inside the visible iframe before selecting.
   await page.locator('.playground iframe').scrollIntoViewIfNeeded();
@@ -181,7 +181,7 @@ test('unused source failure does not block preview or basic usage', async ({ pag
   await expect(trigger).toContainText('나만 보기');
   await openExampleSettings(page);
   await expect(page.locator('#preview .code-block')).toHaveCount(0);
-  expect(await copy(page)).toContain('DsSelect');
+  expect(await copy(page)).toContain('KjunSelect');
   await expect(trigger).toContainText('나만 보기');
 });
 

@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { KjunProvider, DsButton, DsModal, DsInput } from "@kjun-ui/vue2";
+import { KjunProvider, KjunButton, KjunModal, KjunInput } from "@kjun-ui/vue2";
 import {
   scopedColors,
   scopedFont,
@@ -20,7 +20,7 @@ new Vue({
   }),
   render(h) {
     return h(KjunProvider, [
-      h(DsButton, "Outer button"),
+      h(KjunButton, "Outer button"),
       h(
         KjunProvider,
         {
@@ -31,7 +31,7 @@ new Vue({
         },
         [
           h(
-            DsButton,
+            KjunButton,
             {
               on: {
                 click: () => {
@@ -42,7 +42,7 @@ new Vue({
             "Open scoped dialog"
           ),
           h(
-            DsModal,
+            KjunModal,
             {
               props: {
                 value: this.open,
@@ -61,7 +61,7 @@ new Vue({
             },
             [
               h(
-                DsButton,
+                KjunButton,
                 {
                   on: {
                     click: () => {
@@ -71,7 +71,7 @@ new Vue({
                 },
                 "Change scoped values"
               ),
-              h(DsInput, {
+              h(KjunInput, {
                 props: {
                   ariaLabel: "Scoped input",
                   value: "example",
@@ -80,7 +80,7 @@ new Vue({
                 },
               }),
               h(
-                DsButton,
+                KjunButton,
                 {
                   on: {
                     click: () => {
@@ -91,7 +91,7 @@ new Vue({
                 "Open inner dialog"
               ),
               h(
-                DsModal,
+                KjunModal,
                 {
                   props: { value: this.innerOpen, title: "Inner dialog" },
                   on: {
@@ -102,7 +102,7 @@ new Vue({
                 },
                 [
                   h(
-                    DsButton,
+                    KjunButton,
                     {
                       on: {
                         click: () => {

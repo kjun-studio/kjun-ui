@@ -18,5 +18,5 @@
 </template>
 <script>
 import slider from "./slider.js";
-export default { name: "DsRangeSlider", mixins: [slider], props: { value: { type: Array, required: true }, thumbLabels: { type: Array, default: () => ["최솟값", "최댓값"] } } };
+export default { name: "KjunRangeSlider", mixins: [slider], props: { value: { type: Array, required: true }, thumbLabels: { type: Array, default: () => ["최솟값", "최댓값"] } } };
 </script>

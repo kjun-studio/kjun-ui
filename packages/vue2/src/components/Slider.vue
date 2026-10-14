@@ -17,5 +17,5 @@
 </template>
 <script>
 import slider from "./slider.js";
-export default { name: "DsSlider", mixins: [slider], props: { value: { type: Number, required: true } } };
+export default { name: "KjunSlider", mixins: [slider], props: { value: { type: Number, required: true } } };
 </script>

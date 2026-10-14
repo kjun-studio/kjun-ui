@@ -82,7 +82,7 @@ export function componentProps(c: DemoConfig) {
 const kebab = (s: string) => s.replace(/[A-Z]/g, (x) => "-" + x.toLowerCase());
 export function exampleCode(platform: PlatformName, c: DemoConfig) {
   const name =
-    c.component === "button" ? "DsButton" : c.component === "input" ? "DsInput" : "DsModal";
+    c.component === "button" ? "KjunButton" : c.component === "input" ? "KjunInput" : "KjunModal";
   const props = componentProps(c);
   const jsx = Object.entries(props)
     .filter(([, v]) => v !== false && v !== "" && v !== undefined)
@@ -103,47 +103,47 @@ export function exampleCode(platform: PlatformName, c: DemoConfig) {
       .join(" ");
     const body =
       c.component === "button"
-        ? "<DsButton " + attrs + ' @click="onAction">' + (labelFor(c) || "") + "</DsButton>"
+        ? "<KjunButton " + attrs + ' @click="onAction">' + (labelFor(c) || "") + "</KjunButton>"
         : c.component === "input"
-          ? '<DsFormGroup label="내용"><DsInput v-model="value" ' + attrs + " /></DsFormGroup>"
-          : '<DsButton @click="open = true">모달 열기</DsButton>\n  <DsModal v-model="open" ' +
+          ? '<KjunFormGroup label="내용"><KjunInput v-model="value" ' + attrs + " /></KjunFormGroup>"
+          : '<KjunButton @click="open = true">모달 열기</KjunButton>\n  <KjunModal v-model="open" ' +
             attrs +
-            ' @confirm="save">입력한 내용을 저장할까요?</DsModal>';
+            ' @confirm="save">입력한 내용을 저장할까요?</KjunModal>';
     return (
       '<template>\n  <KjunProvider>\n    ' +
       body +
-      '\n  </KjunProvider>\n</template>\n<script>\nimport { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun-ui/vue2";\nimport "@kjun-ui/vue2/styles.css";\nimport "./design-system/kjun.css";\nexport default {\n  components: { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup },\n  data: () => ({ value: "", open: false }),\n  methods: { onAction() {}, save() { this.open = false; } }\n};\n</script>'
+      '\n  </KjunProvider>\n</template>\n<script>\nimport { KjunProvider, KjunButton, KjunInput, KjunModal, KjunFormGroup } from "@kjun-ui/vue2";\nimport "@kjun-ui/vue2/styles.css";\nimport "./design-system/kjun.css";\nexport default {\n  components: { KjunProvider, KjunButton, KjunInput, KjunModal, KjunFormGroup },\n  data: () => ({ value: "", open: false }),\n  methods: { onAction() {}, save() { this.open = false; } }\n};\n</script>'
     );
   }
   const native = platform === "native";
   const click = native ? "onPress" : "onClick";
   const body =
     c.component === "button"
-      ? "<DsButton " +
+      ? "<KjunButton " +
         jsx +
         " " +
         click +
         "={() => setCount(count + 1)}" +
-        (c.iconOnly ? " />" : ">계속하기</DsButton>")
+        (c.iconOnly ? " />" : ">계속하기</KjunButton>")
       : c.component === "input"
-        ? '<DsFormGroup label="내용">\n      <DsInput value={value} ' +
+        ? '<KjunFormGroup label="내용">\n      <KjunInput value={value} ' +
           (native
             ? "onChangeText={setValue}"
             : "onChange={event => setValue(event.target.value)}") +
           " " +
           jsx +
-          " />\n    </DsFormGroup>"
-        : "<DsButton " +
+          " />\n    </KjunFormGroup>"
+        : "<KjunButton " +
           click +
-          "={() => setOpen(true)}>모달 열기</DsButton>\n    <DsModal open={open} onOpenChange={setOpen} " +
+          "={() => setOpen(true)}>모달 열기</KjunButton>\n    <KjunModal open={open} onOpenChange={setOpen} " +
           jsx +
           " onConfirm={() => setOpen(false)}>" +
           (native ? "<Text>입력한 내용을 저장할까요?</Text>" : "입력한 내용을 저장할까요?") +
-          "</DsModal>";
+          "</KjunModal>";
   return (
     'import { useState } from "react";\n' +
     (native ? 'import { Text } from "react-native";\n' : "") +
-    'import { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun-ui/' +
+    'import { KjunProvider, KjunButton, KjunInput, KjunModal, KjunFormGroup } from "@kjun-ui/' +
     platform +
     '";\n' +
     (native ? 'import { appColors, appFont } from "./design-system/kjun";\n' : 'import "@kjun-ui/react/styles.css";\nimport "./design-system/kjun.css";\n') +

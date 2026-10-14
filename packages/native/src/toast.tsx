@@ -5,7 +5,7 @@ import { createFeedbackController,type ToastItem } from "@kjun-ui/tokens";
 import { useEffect,useRef } from "react";
 import { Animated,View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { KText,useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
 export function ToastView({
@@ -66,7 +66,7 @@ export function ToastView({
           overflow: "hidden",
         }}
       >
-        <DsIcon name={icon} color={colors[`${tone}Accent`]} />
+        <KjunIcon name={icon} color={colors[`${tone}Accent`]} />
         <View style={{ flex: 1, minWidth: 0 }}>
           {toast.title && (
             <KText style={{ fontWeight: typeStyle('control').fontWeight, marginBottom: tokens.extensions.toast.titleGap }}>
@@ -116,7 +116,7 @@ export function ToastView({
               borderRadius: tokens.extensions.toast.closeRadius,
             }}
           >
-            <DsIcon name="x" color={colors.textTertiary} />
+            <KjunIcon name="x" color={colors.textTertiary} />
           </Pressable>
         )}
         {toast.showProgress !== false && !!toast.duration && (

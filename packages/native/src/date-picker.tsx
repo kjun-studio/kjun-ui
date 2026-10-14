@@ -4,7 +4,7 @@ import { tokens,type InputSize } from "@kjun-ui/tokens";
 import { useRef,useState } from "react";
 import { Platform, View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsButton,DsIcon } from "./button";
+import { KjunButton,KjunIcon } from "./button";
 import { KText } from "./internal";
 import { FloatingPanel } from "./layers";
 import { useKjunStyles } from "./provider";
@@ -15,7 +15,7 @@ function displayMonth(value: string) {
   return Number.isNaN(date.getTime()) ? new Date() : date;
 }
 
-export interface DsDatePickerProps {
+export interface KjunDatePickerProps {
   value: string;
   min?: string;
   max?: string;
@@ -27,7 +27,7 @@ export interface DsDatePickerProps {
   onValueChange?: (v: string) => void;
   onChange?: (v: string) => void;
 }
-export function DsDatePicker({
+export function KjunDatePicker({
   value,
   min,
   max,
@@ -38,7 +38,7 @@ export function DsDatePicker({
   error,
   onValueChange,
   onChange,
-}: DsDatePickerProps) {
+}: KjunDatePickerProps) {
   const { colors } = useKjunStyles(),
     field = useKjunField(),
     [open, setOpen] = useState(false),
@@ -96,7 +96,7 @@ export function DsDatePicker({
           >
             {value ? value.replace(/-/g, ". ") + "." : placeholder}
           </KText>
-          <DsIcon
+          <KjunIcon
             name="calendar"
             size={spec.iconSize}
             color={surface.icon}
@@ -121,7 +121,7 @@ export function DsDatePicker({
               justifyContent: "space-between",
             }}
           >
-            <DsButton
+            <KjunButton
               size="sm"
               variant="ghost"
               prefixIcon="chevron-left"
@@ -131,7 +131,7 @@ export function DsDatePicker({
             <KText>
               {year}년 {m + 1}월
             </KText>
-            <DsButton
+            <KjunButton
               size="sm"
               variant="ghost"
               prefixIcon="chevron-right"

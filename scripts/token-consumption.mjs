@@ -14,7 +14,7 @@ export const platformSpecific = {
   'table.selectionSize': { excludes: ['native'], reason: 'HTML checkbox footprint; Native composes the size-specific Checkbox and minimum touch target.' },
   'extensions.tooltip.arrowSize': { excludes: ['native'], reason: 'Tooltip arrow; Web and Native Web draw it, Native device tooltips use the modal panel without one.' },
   'extensions.scrollbar.width': { excludes: ['react', 'native'], reason: 'Vue window scrollbar skin; other platforms retain their system scrollbar.' },
-  'extensions.scrollFade.width': { excludes: ['native'], reason: 'CSS edge mask; Native draws it only for the overflowing table grid, and DsScrollFade keeps the platform ScrollView.' },
+  'extensions.scrollFade.width': { excludes: ['native'], reason: 'CSS edge mask; Native draws it only for the overflowing table grid, and KjunScrollFade keeps the platform ScrollView.' },
   'extensions.calendar.minimumWidth': { excludes: ['react', 'vue2'], reason: 'Native seven-column calendar panel; Web uses the browser date picker.' },
   ...Object.fromEntries(['identityWidth', 'identityHeight'].map(key => ['extensions.skeleton.' + key, {
     excludes: ['react', 'native'], reason: 'Vue AssetIdentity loading adapter; other platforms render the supplied identity slot.',

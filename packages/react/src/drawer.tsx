@@ -4,10 +4,10 @@ import { usePresence } from "../../../shared/package-runtime/use-presence";
 import { useReducedMotion } from "./use-reduced-motion";
 import type { ReactNode } from "react";
 import { Dialog, Modal, ModalOverlay } from "react-aria-components";
-import { DsButton, DsIcon } from "./button";
+import { KjunButton, KjunIcon } from "./button";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { useKjunPortalContainer } from "./provider";
-export interface DsDrawerProps {
+export interface KjunDrawerProps {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   title?: string;
@@ -23,7 +23,7 @@ export interface DsDrawerProps {
   onClose?: () => void;
   ariaLabel?: string;
 }
-export function DsDrawer({
+export function KjunDrawer({
   open,
   onOpenChange,
   title,
@@ -38,7 +38,7 @@ export function DsDrawer({
   children,
   onClose,
   ariaLabel,
-}: DsDrawerProps) {
+}: KjunDrawerProps) {
   const motion = usePresence(open, useReducedMotion(), tokens.motion.layerExit);
   const container = useKjunPortalContainer();
   const close = () => {
@@ -81,13 +81,13 @@ export function DsDrawer({
             <div className="kjun-drawer-header">
               <div>{header || <h2>{title}</h2>}</div>
               {closable && (
-                <DsButton
+                <KjunButton
                   size="sm"
                   variant="ghost"
                   ariaLabel="닫기"
                   onClick={close}
                   style={{ borderRadius: tokens.extensions.drawer.closeRadius, width: tokens.extensions.drawer.closeSize, height: tokens.extensions.drawer.closeSize, padding: 0 }}
-                ><DsIcon name="x" size={tokens.extensions.drawer.closeIconSize} /></DsButton>
+                ><KjunIcon name="x" size={tokens.extensions.drawer.closeIconSize} /></KjunButton>
               )}
             </div>
           )}

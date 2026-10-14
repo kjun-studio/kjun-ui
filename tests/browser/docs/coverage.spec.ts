@@ -78,7 +78,7 @@ test('search relevance, categories, empty/reset and URL history preserve platfor
   await page.getByRole('button', { name: '전체 컴포넌트 보기', exact: true }).click();
   await expect(rows(page)).toHaveCount(coverage.components.length);
   await expect(page).toHaveURL(/\/catalog\?platform=native#coverage$/);
-  for (const query of ['DsButton', '수량', '저장 폼', 'loadOptions']) {
+  for (const query of ['KjunButton', '수량', '저장 폼', 'loadOptions']) {
     await search(page).fill(query);
     const expected = searchDocuments(discovery.documents.filter(document => document.component) as any, query).map(result => result.document.component);
     expect(await rows(page).evaluateAll(elements => elements.map(element => element.getAttribute('data-coverage-component') || element.querySelector('[data-coverage-component]')?.getAttribute('data-coverage-component')))).toEqual(expected);
@@ -96,7 +96,7 @@ test('search relevance, categories, empty/reset and URL history preserve platfor
 
 test('720px content boundary and mobile cards retain expansion and expose only one view', async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 1000 });
-  await visit(page, '?q=DsSearchInput&platform=vue2');
+  await visit(page, '?q=KjunSearchInput&platform=vue2');
   const trigger = () => rows(page).getByRole('button', { name: /SearchInput 플랫폼 차이·근거/ });
   await trigger().click();
   await expect(trigger()).toHaveAttribute('aria-expanded', 'true');
@@ -108,17 +108,17 @@ test('720px content boundary and mobile cards retain expansion and expose only o
     await expect(trigger()).toHaveAttribute('aria-expanded', 'true');
     const id = await trigger().getAttribute('aria-controls');
     await expect(page.locator('#' + id)).toBeVisible();
-    await expect(page.locator('#' + id)).toContainText(coverage.components.find(entry => entry.name === 'DsSearchInput')!.differences);
+    await expect(page.locator('#' + id)).toContainText(coverage.components.find(entry => entry.name === 'KjunSearchInput')!.differences);
   }
   await page.locator('.coverage-page').evaluate(element => { (element as HTMLElement).style.width = ''; });
   for (const width of [320, 390, 1600]) {
     await page.setViewportSize({ width, height: 1000 });
-    await expect(search(page)).toHaveValue('DsSearchInput');
+    await expect(search(page)).toHaveValue('KjunSearchInput');
     await expect(trigger()).toHaveAttribute('aria-expanded', 'true');
     await expect(rows(page).locator('.coverage-status')).toHaveText(['지원', '지원', '미리보기']);
     if (width < 720) await expect(rows(page).locator('dt')).toHaveText(['Vue 2', 'React', 'Native Web']);
     await noOverflow(page);
-    for (const name of ['KjunProvider', 'KjunFeedbackProvider', 'DsFormLayout']) {
+    for (const name of ['KjunProvider', 'KjunFeedbackProvider', 'KjunFormLayout']) {
       const card = page.locator(`[data-coverage-service="${name}"]`);
       await expect(card.getByRole('heading')).toBeVisible();
       expect(await card.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
@@ -134,7 +134,7 @@ test('720px content boundary and mobile cards retain expansion and expose only o
   await page.keyboard.press('Space');
   await expect(trigger()).toHaveAttribute('aria-expanded', 'true');
   await page.getByRole('button', { name: '검색·분류 초기화', exact: true }).click();
-  await search(page).fill('DsSearchInput');
+  await search(page).fill('KjunSearchInput');
   await expect(trigger()).toHaveAttribute('aria-expanded', 'true');
 });
 
@@ -149,7 +149,7 @@ test('sticky comparison header and preserved anchors align below the document ba
     await aligned(page, id);
     await expect(page).toHaveURL(url => url.searchParams.get('platform') === 'react' && url.hash === '#' + id);
   }
-  await search(page).fill('DsSearchInput');
+  await search(page).fill('KjunSearchInput');
   await rows(page).getByRole('button', { name: /펼치기/ }).click();
   await rows(page).getByRole('link', { name: /원본 기록 ·/ }).click();
   await expect(page.locator(locationSafeRecord())).toBeInViewport();
@@ -160,7 +160,7 @@ test('sticky comparison header and preserved anchors align below the document ba
     await noOverflow(page);
   }
 });
-function locationSafeRecord() { return `[id="record-${coverage.components.find(entry => entry.name === 'DsSearchInput')!.recordId}"]`; }
+function locationSafeRecord() { return `[id="record-${coverage.components.find(entry => entry.name === 'KjunSearchInput')!.recordId}"]`; }
 
 test('actual 200% browser zoom keeps all statuses and service names readable', async () => {
   const directory = await mkdtemp('/tmp/kjun-coverage-zoom-');
@@ -194,7 +194,7 @@ test('actual 200% browser zoom keeps all statuses and service names readable', a
     await rows(page).first().evaluate(element => element.scrollIntoView({ behavior: 'instant', block: 'center' }));
     await capture('artifacts/coverage-zoom-200.png');
     await page.locator('[data-coverage-service="KjunFeedbackProvider"]').evaluate(element => element.scrollIntoView({ behavior: 'instant', block: 'center' }));
-    await expect(page.locator('.coverage-service h3')).toHaveText(['KjunProvider', 'KjunFeedbackProvider', 'DsFormLayout']);
+    await expect(page.locator('.coverage-service h3')).toHaveText(['KjunProvider', 'KjunFeedbackProvider', 'KjunFormLayout']);
     for (const service of await page.locator('.coverage-service').all()) expect(await service.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
     await capture('artifacts/coverage-services-zoom-200.png');
   } finally { await context.close(); await rm(directory, { recursive: true, force: true }); }

@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
 import Link from './doc-link';
-import { DsButton as Button } from '@kjun-ui/react';
-import { DsCard as Card } from '@kjun-ui/react';
-import { DsBadge as Badge } from '@kjun-ui/react';
+import { KjunButton as Button } from '@kjun-ui/react';
+import { KjunCard as Card } from '@kjun-ui/react';
+import { KjunBadge as Badge } from '@kjun-ui/react';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from './disclosure';
-import { DsTable } from '@kjun-ui/react';
+import { KjunTable } from '@kjun-ui/react';
 import coverage from '@/lib/generated/coverage.json';
 import { verificationHref } from '../../../../shared/accessibility-guides/selection';
 import { categories, categoryFor } from '@/lib/discovery';
@@ -86,7 +86,7 @@ function GroupedCards({ entries, expanded, toggle }: { entries: Entry[]; expande
 export function CoverageList({ entries, expanded, toggle, grouped = false }: { entries: Entry[]; expanded: Set<string>; toggle(name: string): void; grouped?: boolean }) {
   return <>
     <div className="coverage-table-view">
-      <DsTable<Entry> ariaLabel="컴포넌트 플랫폼 지원 비교" responsive="none" rowKey="name" hoverable={false}
+      <KjunTable<Entry> ariaLabel="컴포넌트 플랫폼 지원 비교" responsive="none" rowKey="name" hoverable={false}
         columns={[
           { key: 'name', label: '컴포넌트', width: '22%', render: (_, entry) => <span data-coverage-component={entry.name} className="coverage-name">
             <Link href={entry.docs} className="coverage-component-link">{entry.title}</Link>

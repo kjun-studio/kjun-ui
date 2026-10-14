@@ -14,7 +14,7 @@ new Vue({
       for(const [key,event] of Object.entries({onClick:'click',onValueChange:'input',onOpenChange:'input',onRetry:'retry',onConfirm:'confirm',onNavigate:'navigate'})) {
         if(passed[key]) {on[event]=passed[key];delete passed[key];}
       }
-      if(name==='DsPopover') {passed.value=passed.open;delete passed.open;}
+      if(name==='KjunPopover') {passed.value=passed.open;delete passed.open;}
       const nodes=Array.isArray(children)?children:children==null?[]:[children];
       const named=Object.entries(slots||{}).map(([slot,node])=>create('template',{slot},[node as any]));
       return create((K as any)[name],{props:passed,on},[...nodes,...named]);

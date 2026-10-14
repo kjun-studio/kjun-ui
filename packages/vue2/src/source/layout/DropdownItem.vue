@@ -11,21 +11,21 @@
     @click="handleClick"
     @mousemove="handlePointer"
   >
-    <DsIcon v-if="icon" :name="icon" class="kjun-dropdown-icon kj-w-menu-icon-size kj-h-menu-icon-size kj-flex-shrink-0" />
+    <KjunIcon v-if="icon" :name="icon" class="kjun-dropdown-icon kj-w-menu-icon-size kj-h-menu-icon-size kj-flex-shrink-0" />
     <span class="kjun-dropdown-label"><slot></slot></span>
     <span v-if="selected !== null" class="kj-flex-shrink-0 kj-inline-flex" aria-hidden="true">
-      <DsIcon name="check" class="kj-w-menu-icon-size kj-h-menu-icon-size kj-text-brand" :class="{ 'kj-invisible': !selected }" />
+      <KjunIcon name="check" class="kj-w-menu-icon-size kj-h-menu-icon-size kj-text-brand" :class="{ 'kj-invisible': !selected }" />
     </span>
   </button>
 </template>
 
 <script>
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  components: { DsIcon },
-  name: 'DsDropdownItem',
+  components: { KjunIcon },
+  name: 'KjunDropdownItem',
   inject: ['dropdown'],
   props: {
     variant: {

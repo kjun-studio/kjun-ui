@@ -4,13 +4,13 @@ import { TableGrid } from "./table-grid";
 import { TableCards } from "./table-cards";
 import { useEffect, useState, type KeyboardEvent } from "react";
 import { isComposingKey, tokens } from "@kjun-ui/tokens";
-import { DsButton } from "./button";
+import { KjunButton } from "./button";
 import { TableCheck } from "./table-check";
-import { DsDataState,useQueryDisplay } from "./data-state";
-import { DsPagination } from "./navigation";
-import { DsTableProps, TableColumn, useTableModel } from "./table-model";
-export function DsTable<Row extends object = Record<string, unknown>>(
-  props: DsTableProps<Row>
+import { KjunDataState,useQueryDisplay } from "./data-state";
+import { KjunPagination } from "./navigation";
+import { KjunTableProps, TableColumn, useTableModel } from "./table-model";
+export function KjunTable<Row extends object = Record<string, unknown>>(
+  props: KjunTableProps<Row>
 ) {
   const {
     skeletonRows = 8,
@@ -84,7 +84,7 @@ export function DsTable<Row extends object = Record<string, unknown>>(
     />
   );
   const expand = (row: Row, i: number) => (
-    <DsButton
+    <KjunButton
       variant="ghost"
       size="xs"
       prefixIcon={
@@ -101,7 +101,7 @@ export function DsTable<Row extends object = Record<string, unknown>>(
           ? "접기"
           : "상세 보기"
         : undefined}
-    </DsButton>
+    </KjunButton>
   );
   return (
     <div className="kjun-table-state" aria-busy={!!props.loading}
@@ -109,7 +109,7 @@ export function DsTable<Row extends object = Record<string, unknown>>(
       <TableToolbar {...{ selectable, selected, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }}
         toggleAll={state.toggleAll} clearSelection={() => props.onSelectionChange?.([])}
         search={state.search} searchChange={state.searchChange} />
-      <DsDataState
+      <KjunDataState
         queryKey={props.queryKey}
         resultKey={
           query.usesQueryState
@@ -130,7 +130,7 @@ export function DsTable<Row extends object = Record<string, unknown>>(
           <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown }} sortable={props.sortable} />
         )}
         {pagination && (
-          <DsPagination
+          <KjunPagination
             currentPage={pagination.page}
             totalPages={Math.ceil(
               pagination.total / (pagination.pageSize || 20)
@@ -141,7 +141,7 @@ export function DsTable<Row extends object = Record<string, unknown>>(
             onPageChange={props.onPageChange}
           />
         )}
-      </DsDataState>
+      </KjunDataState>
     </div>
   );
 }

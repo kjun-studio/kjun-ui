@@ -3,23 +3,23 @@ import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { Fragment,useEffect,useRef,type ReactNode } from "react";
 import { Animated,View,useWindowDimensions,type DimensionValue } from "react-native";
 import Svg,{ G,Path,Rect } from "react-native-svg";
-import { DsSkeleton } from "./display";
+import { KjunSkeleton } from "./display";
 import { KText,useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
-export interface DsListSkeletonProps {
+export interface KjunListSkeletonProps {
   rows?: number;
   variant?: "market" | "compact" | "notification";
   avatar?: boolean;
   avatarSize?: DimensionValue;
   quote?: boolean;
 }
-export function DsListSkeleton({
+export function KjunListSkeleton({
   rows = 8,
   variant = "market",
   avatar = true,
   avatarSize = tokens.extensions.skeleton.listAvatarSize,
   quote = true,
-}: DsListSkeletonProps) {
+}: KjunListSkeletonProps) {
   const { colors } = useKjunStyles();
   // Market rows follow simple-list market rows (like Web): 16px all round, 14/20 with a minimum height on
   // narrow screens, and bars centred in the name and meta line slots.
@@ -46,20 +46,20 @@ export function DsListSkeleton({
           }}
         >
           {avatar && (
-            <DsSkeleton type="avatar" width={avatarSize} height={avatarSize} />
+            <KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} />
           )}
           <View style={{ flex: 1, minWidth: 0, gap: market ? tokens.dimension.value2 : tokens.extensions.skeleton.detailGap }}>
-            {slot(0, <DsSkeleton
+            {slot(0, <KjunSkeleton
               type="block"
               height={tokens.extensions.skeleton.lineHeights.md}
               width={i % 2 ? "80%" : "65%"}
             />)}
-            {slot(1, <DsSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width="50%" />)}
+            {slot(1, <KjunSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width="50%" />)}
           </View>
           {quote && (
             <View style={{ alignItems: "flex-end", gap: market ? tokens.dimension.value2 : tokens.extensions.skeleton.detailGap }}>
-              {slot(0, <DsSkeleton type="block" height={tokens.extensions.skeleton.quoteHeight} width={tokens.extensions.skeleton.quoteWidth} />)}
-              {slot(1, <DsSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width={tokens.extensions.skeleton.detailWidth} />)}
+              {slot(0, <KjunSkeleton type="block" height={tokens.extensions.skeleton.quoteHeight} width={tokens.extensions.skeleton.quoteWidth} />)}
+              {slot(1, <KjunSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width={tokens.extensions.skeleton.detailWidth} />)}
             </View>
           )}
         </View>
@@ -67,18 +67,18 @@ export function DsListSkeleton({
     </View>
   );
 }
-export interface DsFormSkeletonProps {
+export interface KjunFormSkeletonProps {
   fields?: (string | { label?: string; height?: DimensionValue })[];
   columns?: number;
   multiline?: boolean;
   size?: InputSize;
 }
-export function DsFormSkeleton({
+export function KjunFormSkeleton({
   fields = ["", "", "", ""],
   columns = 1,
   multiline = false,
   size = "md",
-}: DsFormSkeletonProps) {
+}: KjunFormSkeletonProps) {
   const { colors } = useKjunStyles();
   const window = useWindowDimensions();
   const twoColumns = columns === 2 && window.width >= tokens.responsive.formColumns;
@@ -109,11 +109,11 @@ export function DsFormSkeleton({
           ) : (
             // The bar sits in a label-line slot so the field starts where the real input will.
             <View style={{ height: typeStyle('label').lineHeight, justifyContent: "center" }}>
-              <DsSkeleton type="block" height={tokens.extensions.skeleton.formLabelHeight} width={tokens.extensions.skeleton.formLabelWidth} />
+              <KjunSkeleton type="block" height={tokens.extensions.skeleton.formLabelHeight} width={tokens.extensions.skeleton.formLabelWidth} />
             </View>
           )}
           <View style={{ borderRadius: tokens.input[size].radius, overflow: "hidden" }}>
-            <DsSkeleton
+            <KjunSkeleton
               type="block"
               height={
                 typeof field === "object" && field.height != null
@@ -129,16 +129,16 @@ export function DsFormSkeleton({
     </View>
   );
 }
-export interface DsChartSkeletonProps {
+export interface KjunChartSkeletonProps {
   loadingText?: string;
   kind?: "grid" | "line" | "bar" | "donut" | "candle" | "matrix";
   height?: DimensionValue;
 }
-export function DsChartSkeleton({
+export function KjunChartSkeleton({
   loadingText = "차트를 불러오는 중",
   kind = "line",
   height = tokens.extensions.chartSkeleton.height,
-}: DsChartSkeletonProps) {
+}: KjunChartSkeletonProps) {
   const { colors } = useKjunStyles(),
     reduced = useReducedMotion(),
     opacity = useRef(new Animated.Value(1)).current;
@@ -189,7 +189,7 @@ export function DsChartSkeleton({
             justifyContent: "center",
           }}
         >
-          <DsSkeleton type="block" width={tokens.extensions.chartSkeleton.donutLabelWidth} height={tokens.extensions.chartSkeleton.donutLabelHeight} />
+          <KjunSkeleton type="block" width={tokens.extensions.chartSkeleton.donutLabelWidth} height={tokens.extensions.chartSkeleton.donutLabelHeight} />
         </View>
       ) : (
         <Svg
@@ -256,5 +256,5 @@ export function DsChartSkeleton({
     </Animated.View>
   );
 }
-export { DsMarketTableSkeleton } from "./market-skeleton";
-export type { DsMarketTableSkeletonProps } from "./market-skeleton";
+export { KjunMarketTableSkeleton } from "./market-skeleton";
+export type { KjunMarketTableSkeletonProps } from "./market-skeleton";

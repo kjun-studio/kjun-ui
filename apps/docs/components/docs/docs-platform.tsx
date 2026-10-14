@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { DsSelect } from '@kjun-ui/react';
+import { KjunSelect } from '@kjun-ui/react';
 import { platformNames, type PlatformName } from '../../../../shared/demo-config';
 import { isPlatform, platformHref, platformStorageKey, resolvePlatform } from '../../../../shared/docs-platform';
 
@@ -53,7 +53,7 @@ export function PlatformLoading() {
 export function DocsPlatformSelect() {
   const { platform, selectPlatform } = useDocsPlatform();
   return <div className="docs-platform-select">
-    <DsSelect value={platform} disabled={!platform} size="sm" ariaLabel="문서 플랫폼" placeholder="플랫폼 확인 중…"
+    <KjunSelect value={platform} disabled={!platform} size="sm" ariaLabel="문서 플랫폼" placeholder="플랫폼 확인 중…"
       options={Object.entries(platformNames).map(([value, label]) => ({ value, label }))}
       onValueChange={value => { if (isPlatform(value)) selectPlatform(value); }} />
   </div>;

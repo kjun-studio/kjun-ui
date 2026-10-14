@@ -34,7 +34,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
     domainColors,
   } = tools;
   switch (name) {
-    case "DsButton": {
+    case "KjunButton": {
       const cases = buttonComparisons[String(settings.comparison)];
       if (cases) return h("Group", {}, cases.map(item => h("Stack", {}, [
         h("Text", {}, item.caption),
@@ -49,14 +49,14 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
       }, settings.iconOnly ? undefined : "계속하기")]),
       h("Text", {}, get("count", 0) ? get("count", 0) + "번 실행했습니다" : "버튼을 눌러보세요")]);
     }
-    case "DsIcon":
+    case "KjunIcon":
       return h("Group", {}, [
         h(name, { name: "heart", size: 28 }),
         h(name, { name: "heart", filled: true, size: 28 }),
         h(name, { name: "star", filled: true, size: 28 }),
         h(name, { name: "refresh", spin: settings.spin, size: 28 }),
       ]);
-    case "DsBadge":
+    case "KjunBadge":
       return h(
         "Group",
         {},
@@ -70,16 +70,16 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
           "price-down",
         ].map((variant) => h(name, { variant, dot: true }, variant))
       );
-    case "DsSpinner":
+    case "KjunSpinner":
       return h(name, { size: "md", text: "조회 중" });
-    case "DsAlert":
+    case "KjunAlert":
       return h(name, {
         variant: settings.tone, size: settings.size, title: settings.title,
         closable: settings.closable, onClose: () => message("알림 닫힘"),
       }, settings.body, settings.action
-        ? { actions: h("DsButton", { variant: "secondary", ...action(() => message("재시도 요청")) }, "다시 시도") }
+        ? { actions: h("KjunButton", { variant: "secondary", ...action(() => message("재시도 요청")) }, "다시 시도") }
         : {});
-    case "DsProgress":
+    case "KjunProgress":
       return h("Stack", {}, [
         h(name, {
           value: get("progress", 42),
@@ -88,18 +88,18 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         }),
         button("진행", () => set("progress", (get("progress", 42) + 10) % 101)),
       ]);
-    case "DsInput": {
+    case "KjunInput": {
       const cases = inputComparisons[String(settings.comparison)];
-      if (cases) return h("Box", { width: 360 }, h("FieldStack", {}, cases.map((item, index) => h("DsFormGroup", {
+      if (cases) return h("Box", { width: 360 }, h("FieldStack", {}, cases.map((item, index) => h("KjunFormGroup", {
         label: item.caption, error: item.props?.error ? "목록 이름을 입력해 주세요." : "",
       }, h(name, { size: settings.size, value: get("inputCase" + index, item.value || ""),
         onValueChange: change("inputCase" + index), placeholder: "목록 이름", ...item.props,
       }, undefined, item.suffix ? { suffix: h("Text", {}, item.suffix) } : {})))));
-      return h("Box", { width: 360 }, h("DsFormGroup", { label: "목록 이름", hint: "동료가 구분할 수 있는 이름을 입력하세요.", error: error ? "목록 이름을 입력해 주세요." : "" },
+      return h("Box", { width: 360 }, h("KjunFormGroup", { label: "목록 이름", hint: "동료가 구분할 수 있는 이름을 입력하세요.", error: error ? "목록 이름을 입력해 주세요." : "" },
         h(name, { value: get("input", ""), onValueChange: change("input"), size: settings.size, disabled,
           readOnly: settings.readOnly, error, clearable: true, placeholder: "예: 장기 보유 자산" })));
     }
-    case "DsFormGroup":
+    case "KjunFormGroup":
       return h(
         name,
         {
@@ -110,7 +110,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         },
         input()
       );
-    case "DsFormActions": {
+    case "KjunFormActions": {
       const props = Object.fromEntries(['size', 'variant', 'cancelVariant', 'confirmText', 'cancelText', 'showCancel', 'showConfirm', 'cancelDisabled'].map(key => [key, settings[key]]));
       const cases = formActionsComparisons[String(settings.comparison)] || [{ caption: '', props: {} }];
       return h('Box', { width: Number(settings.exampleWidth || 360) },
@@ -119,30 +119,30 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
             onConfirm: () => message('확인'), onCancel: () => message('취소') }),
         ]))));
     }
-    case "DsCheckbox":
+    case "KjunCheckbox":
       return h(name, {
         value: get("checked", false),
         onValueChange: change("checked"),
         label: "알림 받기",
         disabled,
       });
-    case "DsSwitch":
+    case "KjunSwitch":
       return h(name, {
         value: get("switch", false),
         onValueChange: change("switch"),
         label: "자동 갱신",
         disabled,
       });
-    case "DsRadio":
+    case "KjunRadio":
       return h(
-        "DsRadioGroup",
+        "KjunRadioGroup",
         { value: get("radio", "a"), onValueChange: change("radio") },
         [
           h(name, { val: "a", label: "첫 선택", disabled }),
           h(name, { val: "c", label: "다음 선택" }),
         ]
       );
-    case "DsRadioGroup":
+    case "KjunRadioGroup":
       return h(name, {
         value: get("radio", "a"),
         options,
@@ -150,7 +150,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         ariaLabel: "과일 라디오",
         onValueChange: change("radio"),
       });
-    case "DsTextarea":
+    case "KjunTextarea":
       return singleField("목록 설명", "목록의 목적을 간단히 설명해 주세요.", h(name, {
         value: get("textarea", ""),
         onValueChange: change("textarea"),
@@ -161,7 +161,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         disabled,
         error,
       }), error ? "목록 설명을 입력해 주세요." : "");
-    case "DsSelect":
+    case "KjunSelect":
       return singleField("공개 범위", "선택한 범위의 사용자만 목록을 볼 수 있습니다.", h(name, {
         value: get("select", settings.multiple ? [] : null),
         multiple: settings.multiple,
@@ -177,7 +177,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         loading,
         error,
       }), error ? "공개 범위를 선택해 주세요." : "");
-    case "DsCombobox":
+    case "KjunCombobox":
       return singleField("자산 선택", "자산 이름을 입력해 후보를 찾아보세요.", h(name, {
         value: get("combo", null),
         onValueChange: change("combo"),
@@ -188,7 +188,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         error,
         disabled,
       }), error ? "목록에 있는 자산을 선택해 주세요." : "");
-    case "DsSearchInput":
+    case "KjunSearchInput":
       return singleField("자산 검색", "이름이나 종목 코드를 입력하세요.", h(name, {
         value: get("search", ""),
         onValueChange: change("search"),
@@ -205,7 +205,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         onSelect: (r: any) => message(r.name),
         onSearchError: () => message("검색 오류"),
       }), error ? "검색어를 다시 확인해 주세요." : "");
-    case "DsDatePicker":
+    case "KjunDatePicker":
       return singleField("시작일", "목록을 사용하기 시작할 날짜를 선택하세요.", h(name, {
         value: get("date", "2026-09-12"),
         onValueChange: change("date"),
@@ -216,7 +216,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         disabled,
         error,
       }), error ? "시작일을 선택해 주세요." : "");
-    case "DsButtonGroup":
+    case "KjunButtonGroup":
       return h(name, {
         size: settings.size,
         fullWidth: settings.fullWidth,
@@ -226,7 +226,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         ariaLabel: "과일 보기",
         disabled,
       });
-    case "DsFilterGroup":
+    case "KjunFilterGroup":
       return h(name, {
         value: get("filters", ["a"]),
         multiple: true,
@@ -235,39 +235,39 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         ariaLabel: "과일 필터",
         disabled,
       });
-    case "DsTabs":
-    case "DsTabPane":
+    case "KjunTabs":
+    case "KjunTabPane":
       return h(
-        "DsTabs",
+        "KjunTabs",
         { ariaLabel: "예제 보기", value: get("tab", "one"), onValueChange: change("tab"), variant: settings.variant, density: settings.density },
         [
-          h("DsTabPane", { name: "one", label: "첫 탭" }, "첫 내용"),
-          h("DsTabPane", { name: "two", label: "둘째 탭" }, "둘째 내용"),
+          h("KjunTabPane", { name: "one", label: "첫 탭" }, "첫 내용"),
+          h("KjunTabPane", { name: "two", label: "둘째 탭" }, "둘째 내용"),
           h(
-            "DsTabPane",
+            "KjunTabPane",
             { name: "blocked", label: "비활성 탭", disabled: true },
             "비활성 내용"
           ),
         ]
       );
-    case "DsDropdown":
-    case "DsDropdownItem":
-    case "DsDropdownDivider":
-      return h("DsDropdown", { disabled }, menuItems(), {
+    case "KjunDropdown":
+    case "KjunDropdownItem":
+    case "KjunDropdownDivider":
+      return h("KjunDropdown", { disabled }, menuItems(), {
         trigger: button("메뉴 열기", () => {}),
       });
-    case "DsMenuButton":
+    case "KjunMenuButton":
       return h(name, { label: "작업 메뉴", size: settings.size, variant: settings.variant, compact: settings.compact, disabled, loading }, menuItems());
-    case "DsAccordion":
-    case "DsAccordionItem":
-      return h("DsAccordion", { tone: settings.tone, multiple: settings.multiple }, [
-        h("DsAccordionItem", { title: "첫 항목", disabled: !!settings.itemDisabled }, "첫 내용"),
-        h("DsAccordionItem", { title: "둘째 항목" }, "둘째 내용"),
+    case "KjunAccordion":
+    case "KjunAccordionItem":
+      return h("KjunAccordion", { tone: settings.tone, multiple: settings.multiple }, [
+        h("KjunAccordionItem", { title: "첫 항목", disabled: !!settings.itemDisabled }, "첫 내용"),
+        h("KjunAccordionItem", { title: "둘째 항목" }, "둘째 내용"),
       ]);
-    case "DsModal":
-    case "DsDrawer":
+    case "KjunModal":
+    case "KjunDrawer":
       return h("Stack", {}, [
-        button(name === "DsModal" ? "모달 열기" : "패널 열기", () =>
+        button(name === "KjunModal" ? "모달 열기" : "패널 열기", () =>
           set("open", true)
         ),
         h(
@@ -276,7 +276,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
             open: get("open", false),
             onOpenChange: change("open"),
             title: settings.title || "작업 확인",
-            ...(name === "DsModal" ? {
+            ...(name === "KjunModal" ? {
               size: settings.size || "md", confirmText: settings.confirmText || "확인", showFooter: true,
               loading, confirmDisabled: disabled,
               onConfirm: () => { set("open", false); message("저장했습니다"); },
@@ -285,13 +285,13 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
           h("Stack", {}, [
             input(),
             // A secondary body action leaves the footer's confirm as the layer's one primary action.
-            h("DsButton", { variant: "secondary", ...action(() =>
+            h("KjunButton", { variant: "secondary", ...action(() =>
               feedback.toast.info("열린 레이어의 영역 알림", { duration: 0 })
             ) }, "알림 표시"),
           ])
         ),
       ]);
-    case "DsBreadcrumb":
+    case "KjunBreadcrumb":
       return h(name, {
         items: [
           { label: "홈", to: "#home", href: "#home" },
@@ -300,7 +300,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         ],
         onNavigate: () => message("탐색"),
       });
-    case "DsPagination":
+    case "KjunPagination":
       return h(name, {
         currentPage: get("page", 1),
         totalPages: 10,
@@ -311,7 +311,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         onPageChange: change("page"),
         onPageSizeChange: (n: number) => { set("pageSize", n); message("페이지 크기 " + n); },
       });
-    case "DsIconToggle": {
+    case "KjunIconToggle": {
       const kind = settings.usage === "즐겨찾기" ? "favorite" : settings.usage === "관심" ? "interest" : null;
       const label = kind === "favorite" ? "즐겨찾기" : "관심";
       return h(name, {
@@ -326,7 +326,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         onToggle: () => set("active", !get("active", false)),
       });
     }
-    case "DsCopyButton":
+    case "KjunCopyButton":
       return h(name, {
         value: "KJUN UI",
         text: "복사",
@@ -336,7 +336,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         },
         onCopied: () => message("복사 완료"),
       });
-    case "DsRefreshButton":
+    case "KjunRefreshButton":
       return h(name, {
         targetName: "목록",
         mode: settings.mode,
@@ -345,7 +345,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         disabled,
         onRefresh: () => message("갱신 요청"),
       });
-    case "DsExternalLink":
+    case "KjunExternalLink":
       return h(
         name,
         {
@@ -355,7 +355,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         },
         "외부 페이지"
       );
-    case "DsScrollFade":
+    case "KjunScrollFade":
       return h(
         name,
         {},
@@ -364,7 +364,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
           {},
           Array.from({ length: 12 }, (_, i) =>
             h(
-              "DsButton",
+              "KjunButton",
               { variant: "secondary", size: "sm", key: i },
               "항목 " + (i + 1)
             )
@@ -372,7 +372,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         )
       );
     case "KjunProvider":
-      return h("DsCard", { title: "프로젝트 영역" }, input());
+      return h("KjunCard", { title: "프로젝트 영역" }, input());
     case "KjunFeedbackProvider":
       return h("Group", {}, [
         ...(["전체", "Toast"].includes(settings.service) ? [button("Toast 표시", () =>

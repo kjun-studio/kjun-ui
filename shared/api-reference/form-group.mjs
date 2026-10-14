@@ -36,7 +36,7 @@ export default {
       default: slot(
         "라벨과 설명을 공유할 입력을 배치합니다.",
         "제공 데이터 없음",
-        "DsInput·DsSelect·DsTextarea 등은 inject로 필드 맥락을 받습니다. 입력의 value와 변경 이벤트는 자식에 연결합니다.",
+        "KjunInput·KjunSelect·KjunTextarea 등은 inject로 필드 맥락을 받습니다. 입력의 value와 변경 이벤트는 자식에 연결합니다.",
       ),
     },
   },
@@ -71,7 +71,7 @@ export default {
       children: slot(
         "필드 맥락을 사용할 Native 입력을 배치합니다.",
         "ReactNode",
-        "입력값과 onChangeText는 자식에 연결합니다. 여러 그룹의 간격은 DsFormLayout으로 구성할 수 있습니다.",
+        "입력값과 onChangeText는 자식에 연결합니다. 여러 그룹의 간격은 KjunFormLayout으로 구성할 수 있습니다.",
       ),
     },
   },

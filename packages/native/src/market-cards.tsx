@@ -2,24 +2,24 @@ import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { ScrollView,View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsDataState } from "./data-state";
-import { DsEmpty,DsSkeleton } from "./display";
+import { KjunDataState } from "./data-state";
+import { KjunEmpty,KjunSkeleton } from "./display";
 import {
-DsSignedValue,
-DsSparkline,
+KjunSignedValue,
+KjunSparkline,
 finiteNumber
 } from "./financial";
 import { KText } from "./internal";
 import {
-DsMarketCardsProps,
+KjunMarketCardsProps,
 useMarketCards
 } from "./market-model";
 import { MarketFooter,MarketIdentity } from "./market-parts";
 import { useKjunStyles } from "./provider";
-import { DsListSkeleton } from "./skeletons";
+import { KjunListSkeleton } from "./skeletons";
 import { getValue } from "./table";
-export function DsMarketCards<Row extends object = Record<string, unknown>>(
-  props: DsMarketCardsProps<Row>
+export function KjunMarketCards<Row extends object = Record<string, unknown>>(
+  props: KjunMarketCardsProps<Row>
 ) {
   const {
       rows = [],
@@ -113,13 +113,13 @@ export function DsMarketCards<Row extends object = Record<string, unknown>>(
         })
       ) : (
         <>
-          <DsDataState
+          <KjunDataState
             {...props}
             loadingPadding="none"
             empty={!rows.length}
-            loadingContent={<DsListSkeleton variant="compact" />}
+            loadingContent={<KjunListSkeleton variant="compact" />}
             emptyContent={
-              <DsEmpty text={emptyMessage} description={emptySubMessage} />
+              <KjunEmpty text={emptyMessage} description={emptySubMessage} />
             }
           >
             <View>
@@ -143,7 +143,7 @@ export function DsMarketCards<Row extends object = Record<string, unknown>>(
                   <MarketIdentity row={row} props={props} compact />
                   <View style={{ marginLeft: tokens.dimension.value12, alignItems: "flex-end" }}>
                     {state.pill?.format === "sparkline" ? (
-                      <DsSparkline
+                      <KjunSparkline
                         data={(getValue(row, state.key) as number[]) || []}
                         width={tokens.extensions.marketTable.sparklineWidth}
                         height={tokens.extensions.marketTable.sparklineHeight}
@@ -151,16 +151,16 @@ export function DsMarketCards<Row extends object = Record<string, unknown>>(
                     ) : state.pill ? (
                       <>
                         {metricLoading(row, state.key) ? (
-                          <DsSkeleton type="block" height={tokens.extensions.marketTable.valueSkeletonHeight} width={tokens.extensions.marketTable.valueSkeletonWidth} />
+                          <KjunSkeleton type="block" height={tokens.extensions.marketTable.valueSkeletonHeight} width={tokens.extensions.marketTable.valueSkeletonWidth} />
                         ) : isChange && getValue(row, state.key) != null ? (
-                          <DsSignedValue
+                          <KjunSignedValue
                             value={finiteNumber(getValue(row, state.key))}
                             formatter={() => display(row)}
                             stale={!!getValue(row, "stale")}
                             tone="pill"
                           />
                         ) : isPrice && getValue(row, state.key) == null ? (
-                          <DsSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
+                          <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
                         ) : (
                           <View
                             style={{
@@ -196,7 +196,7 @@ export function DsMarketCards<Row extends object = Record<string, unknown>>(
                 </Pressable>
               ))}
             </View>
-          </DsDataState>
+          </KjunDataState>
           <MarketFooter props={props} />
         </>
       )}

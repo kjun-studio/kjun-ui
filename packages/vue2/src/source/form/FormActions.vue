@@ -1,18 +1,18 @@
 <template>
   <div class="kjun-form-actions">
-    <DsButton v-if="showCancel" :size="size" :variant="cancelVariant" :disabled="cancelDisabled" @click="$emit('cancel')">{{ cancelText }}</DsButton>
-    <DsButton v-if="showConfirm" :size="size" :variant="variant" :loading="loading" :disabled="confirmDisabled" @click="$emit('confirm')">{{ confirmText }}</DsButton>
+    <KjunButton v-if="showCancel" :size="size" :variant="cancelVariant" :disabled="cancelDisabled" @click="$emit('cancel')">{{ cancelText }}</KjunButton>
+    <KjunButton v-if="showConfirm" :size="size" :variant="variant" :loading="loading" :disabled="confirmDisabled" @click="$emit('confirm')">{{ confirmText }}</KjunButton>
   </div>
 </template>
 <script>
-import DsButton from "../primitives/Button.vue";
+import KjunButton from "../primitives/Button.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { SIZES_CORE, oneOf, FORM_CONFIRM_VARIANTS, REFRESH_VARIANTS } from '../tokens'
 import { observeFormActions } from '../../../../../shared/package-runtime/form-actions'
 export default {
   mixins: componentMixins,
-  components: { DsButton },
-  name: 'DsFormActions',
+  components: { KjunButton },
+  name: 'KjunFormActions',
   mounted() { this._stopActionsLayout = observeFormActions(this.$el) },
   beforeDestroy() { this._stopActionsLayout?.() },
   props: {

@@ -6,29 +6,29 @@ import { ScrollView,View } from "react-native";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { MarketQuoteTypeContext } from "./number-display";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsIconToggle } from "./actions";
-import { DsIcon } from "./button";
-import { DsDataState } from "./data-state";
-import { DsEmpty,DsSkeleton } from "./display";
+import { KjunIconToggle } from "./actions";
+import { KjunIcon } from "./button";
+import { KjunDataState } from "./data-state";
+import { KjunEmpty,KjunSkeleton } from "./display";
 import {
-DsCollectionMark,
-DsFreshness,
-DsPriceCell,
-DsSignedValue,
-DsSparkline,
+KjunCollectionMark,
+KjunFreshness,
+KjunPriceCell,
+KjunSignedValue,
+KjunSparkline,
 finiteNumber,
 } from "./financial";
 import { KText,content,domainColor } from "./internal";
 import {
-DsMarketTableProps,
+KjunMarketTableProps,
 MarketColumn
 } from "./market-model";
 import { MarketFooter,MarketIdentity } from "./market-parts";
 import { useKjunStyles } from "./provider";
-import { DsMarketTableSkeleton } from "./skeletons";
+import { KjunMarketTableSkeleton } from "./skeletons";
 import { getValue } from "./table";
-export function DsMarketTable<Row extends object = Record<string, unknown>>(
-  props: DsMarketTableProps<Row>
+export function KjunMarketTable<Row extends object = Record<string, unknown>>(
+  props: KjunMarketTableProps<Row>
 ) {
   const {
       rows = [],
@@ -53,13 +53,13 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
     const value = getValue(row, col.key),
       stale = !!getValue(row, "stale");
     if (cellLoading(row, col))
-      return <DsSkeleton type="block" height={tokens.extensions.marketTable.valueSkeletonHeight} width={tokens.extensions.marketTable.valueSkeletonWidth} />;
+      return <KjunSkeleton type="block" height={tokens.extensions.marketTable.valueSkeletonHeight} width={tokens.extensions.marketTable.valueSkeletonWidth} />;
     if (renderCell) return content(renderCell(row, col));
     if (["stock_name", "name", "symbol"].includes(col.key))
       return <MarketIdentity row={row} props={props} table />;
     if (col.type === "sparkline")
       return (
-        <DsSparkline
+        <KjunSparkline
           data={Array.isArray(value) ? (value as number[]) : []}
           width={tokens.extensions.marketTable.sparklineWidth}
           height={tokens.extensions.marketTable.sparklineHeight}
@@ -67,7 +67,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
       );
     if (col.type === "price")
       return (
-        <DsPriceCell
+        <KjunPriceCell
           value={finiteNumber(value)}
           formatter={priceFormatter}
           stale={stale}
@@ -78,7 +78,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
       return value == null ? (
         <KText>-</KText>
       ) : (
-        <DsSignedValue
+        <KjunSignedValue
           value={finiteNumber(value)}
           format="percent"
           isRaw
@@ -102,7 +102,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
       ? "-"
       : String(value);
     return ["investor", "net_amount", "net_volume"].includes(col.type || "") ? (
-      <DsSignedValue
+      <KjunSignedValue
         value={finiteNumber(value)}
         formatter={() => text}
         stale={stale}
@@ -133,16 +133,16 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
         borderRadius: embedded ? 0 : tokens.radius.radius12,
       }}
     >
-      <DsDataState
+      <KjunDataState
         {...props}
         loadingPadding="none"
         empty={!rows.length}
         emptyText={emptyMessage}
         loadingContent={
-          <DsMarketTableSkeleton columns={columns} showActions={showActions} />
+          <KjunMarketTableSkeleton columns={columns} showActions={showActions} />
         }
         emptyContent={
-          <DsEmpty text={emptyMessage} description={emptySubMessage} />
+          <KjunEmpty text={emptyMessage} description={emptySubMessage} />
         }
       >
         <MarketQuoteTypeContext.Provider value={tableQuote}>
@@ -171,7 +171,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
                   {/* Header marks share the row toggles' column so both icons line up. */}
                   {(["interest", "favorite"] as const).map(kind => (
                     <View key={kind} style={{ width: Math.max(tokens.native.minimumTouchTarget, tokens.extensions.iconToggle.sizes.xs), alignItems: "center" }}>
-                      <DsCollectionMark kind={kind} size="md" />
+                      <KjunCollectionMark kind={kind} size="md" />
                     </View>
                   ))}
                 </View>
@@ -208,7 +208,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
                     {col.label}
                   </KText>
                   {col.sortable && (
-                    <DsIcon
+                    <KjunIcon
                       name={
                         sortKey === col.key
                           ? sortOrder === "asc"
@@ -255,7 +255,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
                         justifyContent: "center",
                       }}
                     >
-                      <DsIconToggle
+                      <KjunIconToggle
                         size="xs"
                         active={props.interestKeys?.has(id)}
                         activeIcon="heart"
@@ -267,7 +267,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
                         loading={togglingInterest === id}
                         onToggle={() => props.onToggleInterest?.(row)}
                       />
-                      <DsIconToggle
+                      <KjunIconToggle
                         size="xs"
                         active={props.favoriteKeys?.has(id)}
                         activeIcon="star"
@@ -297,13 +297,13 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
                             : undefined,
                       }}
                     >
-                      {/* The wrapper takes the column alignment; content-hugging values (DsSignedValue) would
+                      {/* The wrapper takes the column alignment; content-hugging values (KjunSignedValue) would
                           otherwise pull themselves to the start of a right-aligned cell. */}
                       <View style={{ alignSelf: col.align === "right" ? "flex-end" : col.align === "center" ? "center" : undefined }}>
                         {render(row, col)}
                       </View>
                       {col.key === priceCol?.key && (
-                        <DsFreshness
+                        <KjunFreshness
                           stale={!!getValue(row, "stale")}
                           source={String(getValue(row, "source") || "")}
                           fetchedAt={String(getValue(row, "fetched_at") || "")}
@@ -329,7 +329,7 @@ export function DsMarketTable<Row extends object = Record<string, unknown>>(
         )}
         </View>
         </MarketQuoteTypeContext.Provider>
-      </DsDataState>
+      </KjunDataState>
       <MarketFooter props={props} />
     </View>
   );

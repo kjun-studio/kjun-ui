@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsTable } from '@kjun-ui/vue2';
+import { KjunProvider, KjunTable } from '@kjun-ui/vue2';
 import { setRootValues } from './style-values';
 setRootValues();
 const row = { id: 0, name: 'Zero', code: 'Z', badge: 'Badge', amount: 10, blank: '', control: true };
@@ -8,7 +8,7 @@ const vm = new Vue({
   render(h) {
     const cell = ({ row, value, index }: any) => h('span', { attrs: { 'data-testid': 'slot-' + String(value) } }, `${value}:${row.id}:${index}`);
     const button = (label: string) => h('button', { on: { click: (event: Event) => { event.stopPropagation(); this.events.push(label); } } }, label);
-    return h(KjunProvider, [h(DsTable, {
+    return h(KjunProvider, [h(KjunTable, {
       props: {
         data: [row], columns: [
           { key: 'name', label: 'Name' }, { key: 'code', label: 'Code' },

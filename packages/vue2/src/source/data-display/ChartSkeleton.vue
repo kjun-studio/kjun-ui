@@ -3,7 +3,7 @@
     <div class="kjun-chart-skeleton-status">
       <span v-if="loadingText">{{ loadingText }}</span>
     </div>
-    <div v-if="kind === 'donut'" class="kjun-chart-skeleton__donut"><DsSkeleton type="block" width="var(--_kjun-extension-chart-skeleton-donut-label-width)" height="var(--_kjun-extension-chart-skeleton-donut-label-height)" /></div>
+    <div v-if="kind === 'donut'" class="kjun-chart-skeleton__donut"><KjunSkeleton type="block" width="var(--_kjun-extension-chart-skeleton-donut-label-width)" height="var(--_kjun-extension-chart-skeleton-donut-label-height)" /></div>
     <svg v-else viewBox="0 0 600 240" preserveAspectRatio="none" class="kjun-chart-skeleton__plot">
       <path d="M20 10V220H590 M20 65H590 M20 120H590 M20 175H590" class="kjun-chart-skeleton__grid" />
       <!-- A line kind previews its series; grid keeps only the axes. -->
@@ -21,13 +21,13 @@
 
 <script>
 import { tokens } from "@kjun-ui/tokens";
-import DsSkeleton from "./Skeleton.vue";
+import KjunSkeleton from "./Skeleton.vue";
 import { componentMixins } from "../../component-mixins.js";
 const BAR_HEIGHTS = [60, 100, 85, 140, 110, 165, 180]
 export default {
   mixins: componentMixins,
-  components: { DsSkeleton },
-  name: 'ChartSkeleton',
+  components: { KjunSkeleton },
+  name: 'KjunChartSkeleton',
   props: {
     loadingText: { type:String, default:"차트를 불러오는 중" },
     kind: { type: String, default: 'line', validator: value => ['grid', 'line', 'bar', 'donut', 'candle', 'matrix'].includes(value) },

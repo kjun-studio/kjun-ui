@@ -16,9 +16,9 @@ useSyncExternalStore,
 type ReactNode,
 } from "react";
 import { View } from "react-native";
-import { DsInput } from "./input";
+import { KjunInput } from "./input";
 import { KText } from "./internal";
-import { DsModal } from "./modal";
+import { KjunModal } from "./modal";
 import { FeedbackOverlayContext } from "./overlay-host";
 import { useReducedMotion } from "./internal";
 export function useKjunFeedback(): KjunFeedback {
@@ -38,7 +38,7 @@ function FeedbackDialog({
 }) {
   const { options, value, error, busy, edit, cancel, submit } = useFeedbackDialog(controller, request);
   return (
-    <DsModal
+    <KjunModal
       open={open}
       onOpenChange={(open) => {
         if (!open) cancel();
@@ -58,7 +58,7 @@ function FeedbackDialog({
         <KText style={{ marginBottom: tokens.dimension.value16 }}>{options.message}</KText>
       )}
       {request.kind === "prompt" && (
-        <DsInput
+        <KjunInput
           autoFocus
           value={value}
           ariaLabel={options.title || "입력"}
@@ -68,7 +68,7 @@ function FeedbackDialog({
           onSubmitEditing={submit}
         />
       )}
-    </DsModal>
+    </KjunModal>
   );
 }
 export function KjunFeedbackProvider({ children }: { children: ReactNode }) {

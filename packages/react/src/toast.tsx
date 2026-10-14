@@ -1,6 +1,6 @@
 import { createFeedbackController,type ToastItem } from "@kjun-ui/tokens";
 import { useEffect,useRef,type CSSProperties } from "react";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 export function ToastView({
   toast,
   controller,
@@ -47,7 +47,7 @@ export function ToastView({
         className="kjun-toast-icon"
         style={{ color: `var(--_kjun-color-${tone}-accent)` }}
       >
-        <DsIcon name={icon} />
+        <KjunIcon name={icon} />
       </span>
       <div className="kjun-toast-content">
         {toast.title && <strong>{toast.title}</strong>}
@@ -75,7 +75,7 @@ export function ToastView({
           aria-label="알림 닫기"
           onClick={() => dismiss()}
         >
-          <DsIcon name="x" />
+          <KjunIcon name="x" />
         </button>
       )}
       {toast.showProgress !== false && !!toast.duration && (

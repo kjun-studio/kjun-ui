@@ -4,14 +4,14 @@
   <!-- badge variant: 신호 임계 초과 시 배지 + 경고 아이콘, 그 외 색상 텍스트 -->
   <span v-else-if="variant === 'badge'" class="kjun-deviation-badge">
     <!-- Every value shares the badge box and the icon slot so a column keeps its digits aligned, like React and Native. -->
-    <DsBadge :variant="isNeutral ? 'secondary' : value > 0 ? 'price-up' : 'price-down'" size="sm" :style="isSignal ? undefined : { background: 'transparent' }">{{ formatted }}</DsBadge>
+    <KjunBadge :variant="isNeutral ? 'secondary' : value > 0 ? 'price-up' : 'price-down'" size="sm" :style="isSignal ? undefined : { background: 'transparent' }">{{ formatted }}</KjunBadge>
     <span v-if="!isSignal" class="kjun-deviation-signal-slot" aria-hidden="true"></span>
     <!-- Like React and Native: a 24px keyboard-reachable target around the 12px signal icon. -->
-    <DsTooltip v-if="isSignal" :content="signalTooltip">
+    <KjunTooltip v-if="isSignal" :content="signalTooltip">
       <span tabindex="0" role="img" aria-label="차익거래 기회" class="kjun-deviation-signal">
-        <DsIcon name="alert-triangle" size="var(--_kjun-extension-financial-warning-icon-size)" aria-hidden="true" />
+        <KjunIcon name="alert-triangle" size="var(--_kjun-extension-financial-warning-icon-size)" aria-hidden="true" />
       </span>
-    </DsTooltip>
+    </KjunTooltip>
   </span>
 
   <!-- text variant: 보조 괴리율 등 위계를 낮춰야 할 때 — pill 없이 색상 텍스트만 -->
@@ -22,17 +22,17 @@
 </template>
 
 <script>
-import DsBadge from "../primitives/Badge.vue";
-import DsIcon from "../../icon.js";
-import DsTooltip from "./Tooltip.vue";
+import KjunBadge from "../primitives/Badge.vue";
+import KjunIcon from "../../icon.js";
+import KjunTooltip from "./Tooltip.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { domainColorMixin } from "../../domain-colors.js";
 import { DEVIATION_THRESHOLDS } from './deviation.js'
 
 export default {
   mixins: [...componentMixins, domainColorMixin(vm => vm.value != null && !vm.isNeutral)],
-  components: { DsBadge, DsIcon, DsTooltip },
-  name: 'DsDeviation',
+  components: { KjunBadge, KjunIcon, KjunTooltip },
+  name: 'KjunDeviation',
   props: {
     value: { type: Number, default: null },
     variant: {

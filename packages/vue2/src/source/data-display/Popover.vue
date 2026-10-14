@@ -41,12 +41,12 @@ const TRIGGER_GAP = tokens.extensions.floating.anchorGap
 
 /**
  * 탭/클릭으로 여는 팝오버. hover 툴팁과 달리 모바일에서도 동작하고,
- * 긴 설명·상호작용 콘텐츠를 담는다(짧은 hover 힌트는 DsTooltip).
- * 위치는 DsTooltip과 동일한 computeFloatingPosition으로 flip + clamp 처리.
+ * 긴 설명·상호작용 콘텐츠를 담는다(짧은 hover 힌트는 KjunTooltip).
+ * 위치는 KjunTooltip과 동일한 computeFloatingPosition으로 flip + clamp 처리.
  */
 export default {
   mixins: [...componentMixins, layerMotion("popup")],
-  name: 'DsPopover',
+  name: 'KjunPopover',
   directives: {
     'click-outside': {
       bind(el, binding) {

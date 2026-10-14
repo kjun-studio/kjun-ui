@@ -10,7 +10,7 @@
 <script>
 import { tokens } from '@kjun-ui/tokens';
 export default {
-  name: "DsTopNavigation",
+  name: "KjunTopNavigation",
   provide() { return { kjunTopNavigation: tokens.extensions.topNavigation }; },
   props: { title: { type: String, required: true }, description: String, safeAreaTop: { type: Number, default: 0 } },
 };

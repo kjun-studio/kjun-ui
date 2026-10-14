@@ -1,7 +1,7 @@
 import { part as p, textPart as t, control as c, visual, type GuideAuthor } from "./types.ts";
 export const actions: Record<string, GuideAuthor> = {
-  DsButton: {
-    settings: visual("DsButton", { prefixIcon: "plus" }),
+  KjunButton: {
+    settings: visual("KjunButton", { prefixIcon: "plus" }),
     parts: [
       c("컨트롤", "행동의 중요도와 클릭 범위를 표시합니다."),
       t("라벨", "실행할 행동을 짧은 동사로 설명합니다.", "계속하기"),
@@ -21,21 +21,21 @@ export const actions: Record<string, GuideAuthor> = {
     ],
     related: "writing",
   },
-  DsButtonGroup: {
+  KjunButtonGroup: {
     parts: [
       c("선택 항목", "같은 목적의 선택지를 묶습니다."),
       t("항목 라벨", "선택 후 적용될 기준을 설명합니다.", "사과"),
     ],
     related: "toolbar",
   },
-  DsCopyButton: {
+  KjunCopyButton: {
     parts: [
       c("복사 컨트롤", "소비자가 제공한 값을 복사합니다."),
       t("복사 라벨", "복사 동작과 완료 결과를 표시합니다.", "복사"),
     ],
     related: "toolbar",
   },
-  DsDropdown: {
+  KjunDropdown: {
     action: "메뉴 열기",
     parts: [
       t("트리거", "메뉴를 여는 버튼입니다.", "메뉴 열기"),
@@ -43,7 +43,7 @@ export const actions: Record<string, GuideAuthor> = {
     ],
     related: "layers",
   },
-  DsDropdownDivider: {
+  KjunDropdownDivider: {
     action: "메뉴 열기",
     parts: [
       p(
@@ -54,7 +54,7 @@ export const actions: Record<string, GuideAuthor> = {
     ],
     related: "layers",
   },
-  DsDropdownItem: {
+  KjunDropdownItem: {
     action: "메뉴 열기",
     parts: [
       c("항목 컨트롤", "부모 Dropdown 안의 행동과 선택·비활성 표현을 담당합니다.", "menuitem"),
@@ -62,7 +62,7 @@ export const actions: Record<string, GuideAuthor> = {
     ],
     related: "layers",
   },
-  DsFormActions: {
+  KjunFormActions: {
     parts: [
       t("보조 행동", "입력을 취소하거나 이전 단계로 돌아갑니다.", "취소"),
       t("주요 행동", "폼을 검증하고 저장하는 소비자 콜백에 연결합니다.", "저장"),
@@ -74,7 +74,7 @@ export const actions: Record<string, GuideAuthor> = {
     ],
     related: "form",
   },
-  DsIconToggle: {
+  KjunIconToggle: {
     parts: [c("토글 컨트롤", "아이콘의 선택 상태와 접근성 이름으로 의미를 전달합니다.")],
     states: [
       { id: "favorite", label: "즐겨찾기", description: "별 아이콘과 프로젝트의 즐겨찾기 색상·문구를 연결합니다.", settings: { usage: "즐겨찾기" } },
@@ -82,7 +82,7 @@ export const actions: Record<string, GuideAuthor> = {
     ],
     related: "toolbar",
   },
-  DsMenuButton: {
+  KjunMenuButton: {
     action: "작업 메뉴",
     parts: [
       t("메뉴 트리거", "관련 행동이 있는 메뉴를 엽니다.", "작업 메뉴"),
@@ -94,7 +94,7 @@ export const actions: Record<string, GuideAuthor> = {
     ],
     related: "toolbar",
   },
-  DsRefreshButton: {
+  KjunRefreshButton: {
     parts: [
       c("갱신 컨트롤", "새로고침 요청과 진행 상태를 표시합니다. 실제 요청은 소비자가 수행합니다."),
     ],

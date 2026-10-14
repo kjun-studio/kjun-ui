@@ -4,24 +4,24 @@ import {
 useId,
 type ReactNode
 } from "react";
-import { DsIcon } from "./button";
-import { DsBadge,type DisplaySize } from "./display";
-import { DsTooltip } from "./layers";
+import { KjunIcon } from "./button";
+import { KjunBadge,type DisplaySize } from "./display";
+import { KjunTooltip } from "./layers";
 import { finiteNumber,format } from "./number-display";
-export interface DsDeviationProps {
+export interface KjunDeviationProps {
   value?: number | null;
   variant?: "pill" | "badge" | "text";
   signalThreshold?: number;
   decimals?: number;
   formatter?: (value: number) => string;
 }
-export function DsDeviation({
+export function KjunDeviation({
   value,
   variant = "pill",
   signalThreshold = 1,
   decimals = 2,
   formatter,
-}: DsDeviationProps) {
+}: KjunDeviationProps) {
   const n = finiteNumber(value);
   if (n === null)
     return <span style={{ color: "var(--_kjun-color-text-disabled)" }}>-</span>;
@@ -37,21 +37,21 @@ export function DsDeviation({
   if (variant === "badge")
     return (
       <span className="kjun-deviation-badge">
-        <DsBadge variant={neutral ? "secondary" : n > 0 ? "price-up" : "price-down"} size="sm"
+        <KjunBadge variant={neutral ? "secondary" : n > 0 ? "price-up" : "price-down"} size="sm"
           style={signal ? undefined : { background: "transparent" }}>
           {label}
-        </DsBadge>
-        {!signal ? <span className="kjun-deviation-signal-slot" aria-hidden="true" /> : <DsTooltip
+        </KjunBadge>
+        {!signal ? <span className="kjun-deviation-signal-slot" aria-hidden="true" /> : <KjunTooltip
           content={`괴리율 ${signalThreshold}% 초과 — 차익거래 기회 가능`}
         >
           <span tabIndex={0} role="img" aria-label="차익거래 기회" className="kjun-deviation-signal">
-            <DsIcon
+            <KjunIcon
               name="alert-triangle"
               size={tokens.extensions.financial.warningIconSize}
               style={{ color: "var(--_kjun-color-warning)" }}
             />
           </span>
-        </DsTooltip>}
+        </KjunTooltip>}
       </span>
     );
   return (
@@ -77,7 +77,7 @@ export function DsDeviation({
     </span>
   );
 }
-export interface DsHeatmapCellProps {
+export interface KjunHeatmapCellProps {
   value?: number;
   min?: number;
   max?: number;
@@ -85,14 +85,14 @@ export interface DsHeatmapCellProps {
   color?: "brand" | "success" | "danger" | "warning";
   children?: ReactNode;
 }
-export function DsHeatmapCell({
+export function KjunHeatmapCell({
   value = 0,
   min = 0,
   max = 1,
   mode = "diverging",
   color = "brand",
   children,
-}: DsHeatmapCellProps) {
+}: KjunHeatmapCellProps) {
   const ratio =
     max === min ? 0.5 : Math.min(1, Math.max(0, (value - min) / (max - min)));
   const role =
@@ -121,7 +121,7 @@ export function DsHeatmapCell({
     </span>
   );
 }
-export interface DsProgressCellProps {
+export interface KjunProgressCellProps {
   value?: number;
   max?: number;
   showLabel?: boolean;
@@ -129,14 +129,14 @@ export interface DsProgressCellProps {
   customColor?: string;
   height?: number;
 }
-export function DsProgressCell({
+export function KjunProgressCell({
   value = 0,
   max = 100,
   showLabel = true,
   color = "auto",
   customColor,
   height = tokens.extensions.financial.progressHeight,
-}: DsProgressCellProps) {
+}: KjunProgressCellProps) {
   const percent =
       max > 0 && Number.isFinite(value)
         ? Math.min(100, Math.max(0, (value / max) * 100))
@@ -164,21 +164,21 @@ export function DsProgressCell({
     </div>
   );
 }
-export interface DsCollectionMarkProps {
+export interface KjunCollectionMarkProps {
   kind: "favorite" | "interest";
   active?: boolean;
   size?: "sm" | "md" | "lg";
 }
-export function DsCollectionMark({
+export function KjunCollectionMark({
   kind,
   active = false,
   size = "md",
-}: DsCollectionMarkProps) {
+}: KjunCollectionMarkProps) {
   // The heart glyph carries more inner space than the star, so it draws one icon step larger within the same box.
   const box = tokens.extensions.financial.markSizes[size],
     glyph = kind === "interest" ? tokens.extensions.financial.heartMarkSizes[size] : box;
   return (
-    <DsIcon
+    <KjunIcon
       ref={domainColorRef(active)}
       name={kind === "favorite" ? "star" : "heart"}
       filled={active}
@@ -200,27 +200,27 @@ export const executionStates = {
   completed_with_errors: ["warning", "완료 (오류)"],
   failed: ["danger", "실패"],
 } as const;
-export interface DsExecutionStatusBadgeProps {
+export interface KjunExecutionStatusBadgeProps {
   status?: string | null;
   label?: string;
   size?: DisplaySize;
 }
-export function DsExecutionStatusBadge({
+export function KjunExecutionStatusBadge({
   status,
   label,
   size = "md",
-}: DsExecutionStatusBadgeProps) {
+}: KjunExecutionStatusBadgeProps) {
   const state = status
     ? executionStates[status as keyof typeof executionStates]
     : undefined;
   // A running job carries a dot, so it reads apart from queued at a glance.
   return (
-    <DsBadge variant={state?.[0] || "secondary"} size={size} dot={status === "running"}>
+    <KjunBadge variant={state?.[0] || "secondary"} size={size} dot={status === "running"}>
       {label || state?.[1] || (status ? "알 수 없음" : "실행 이력 없음")}
-    </DsBadge>
+    </KjunBadge>
   );
 }
-export interface DsSparklineProps {
+export interface KjunSparklineProps {
   data?: number[];
   width?: number;
   height?: number;
@@ -231,7 +231,7 @@ export interface DsSparklineProps {
   stretch?: boolean;
   ariaLabel?: string;
 }
-export function DsSparkline({
+export function KjunSparkline({
   data = [],
   width = tokens.extensions.financial.sparklineWidth,
   height = tokens.extensions.financial.sparklineHeight,
@@ -241,7 +241,7 @@ export function DsSparkline({
   strokeWidth = 1.5,
   stretch = false,
   ariaLabel,
-}: DsSparklineProps) {
+}: KjunSparklineProps) {
   const id = useId().replace(/:/g, ""),
     values = data.filter(Number.isFinite),
     min = Math.min(...values),

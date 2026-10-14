@@ -9,9 +9,9 @@ import { verifyKeyboard } from '../../scripts/a11y/keyboard.mjs';
 import { verifyLabeling } from '../../scripts/a11y/labeling.mjs';
 // @ts-ignore
 import { verifyFocus } from '../../scripts/a11y/focus.mjs';
-const cases = ['DsTabs', 'DsTabPane', 'DsModal', 'DsInput', 'DsFormGroup', 'DsButton', 'DsTextarea', 'DsCheckbox', 'DsSwitch', 'DsRadioGroup']
+const cases = ['KjunTabs', 'KjunTabPane', 'KjunModal', 'KjunInput', 'KjunFormGroup', 'KjunButton', 'KjunTextarea', 'KjunCheckbox', 'KjunSwitch', 'KjunRadioGroup']
   .flatMap(component => ['react', 'vue2', 'native'].map(platform => ({ component, platform })));
-cases.push({ component: 'DsTimePicker', platform: 'react' }, { component: 'DsTimePicker', platform: 'vue2' }, { component: 'DsTooltip', platform: 'vue2' });
+cases.push({ component: 'KjunTimePicker', platform: 'react' }, { component: 'KjunTimePicker', platform: 'vue2' }, { component: 'KjunTooltip', platform: 'vue2' });
 for (const { component, platform } of cases) {
     test(`${platform}: ${component} keyboard, name and focus contracts`, async ({ page }) => {
       const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));

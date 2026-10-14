@@ -9,19 +9,19 @@ export const capture = captureProfiles.large; // Overview scenes retain their or
 export const captureFor = scene => captureProfiles[scene.captureType];
 // Explicit public-component coverage. Widths belong to the consuming canvas.
 const groups = [
-  ['control', 456, ['DsTabPane']],
-  ['control', 464, ['DsTopNavigation', 'DsBottomNavigation', 'DsPagination', 'DsTabs']],
-  ['desktop', 736, ['DsKpiRow', 'DsMarketTable', 'DsMarketTableSkeleton']],
-  ['small', null, ['DsButton', 'DsIcon', 'DsButtonGroup', 'DsFilterGroup', 'DsIconToggle', 'DsCopyButton', 'DsRefreshButton', 'DsExternalLink', 'DsBadge', 'DsChip', 'DsBreadcrumb', 'DsAvatar', 'DsAnimatedNumber', 'DsPriceCell', 'DsSignedValue', 'DsDeviation', 'DsCollectionMark', 'DsExecutionStatusBadge', 'DsSpinner', 'DsTooltip']],
-  ['control', 360, ['DsRadio', 'DsInput', 'DsFormGroup', 'DsFormActions', 'DsTextarea', 'DsCheckbox', 'DsSwitch', 'DsRadioGroup', 'DsSelect', 'DsCombobox', 'DsSearchInput', 'DsDatePicker', 'DsTimePicker', 'DsQuantityStepper', 'DsSlider', 'DsRangeSlider', 'DsScrollFade', 'DsImage', 'DsProgressCell', 'DsSparkline', 'DsSkeleton', 'DsFormSkeleton', 'DsProgress', 'DsFreshness']],
-  ['large', 480, ['DsCard', 'DsAccordion', 'DsAccordionItem', 'DsListRow', 'DsListSection', 'DsBottomActionBar', 'DsHeatmapCell', 'DsListSkeleton', 'DsChartSkeleton', 'DsAlert', 'DsEmpty', 'DsDataState', 'DsErrorBoundary']],
-  ['large', 576, ['DsTable', 'DsMarketSimpleList', 'DsMarketCards', 'DsMarketListPanel', 'DsKpiHero', 'DsModal', 'DsDrawer']],
-  ['control', 240, ['DsDropdown', 'DsDropdownItem', 'DsDropdownDivider', 'DsMenuButton', 'DsPopover']],
+  ['control', 456, ['KjunTabPane']],
+  ['control', 464, ['KjunTopNavigation', 'KjunBottomNavigation', 'KjunPagination', 'KjunTabs']],
+  ['desktop', 736, ['KjunKpiRow', 'KjunMarketTable', 'KjunMarketTableSkeleton']],
+  ['small', null, ['KjunButton', 'KjunIcon', 'KjunButtonGroup', 'KjunFilterGroup', 'KjunIconToggle', 'KjunCopyButton', 'KjunRefreshButton', 'KjunExternalLink', 'KjunBadge', 'KjunChip', 'KjunBreadcrumb', 'KjunAvatar', 'KjunAnimatedNumber', 'KjunPriceCell', 'KjunSignedValue', 'KjunDeviation', 'KjunCollectionMark', 'KjunExecutionStatusBadge', 'KjunSpinner', 'KjunTooltip']],
+  ['control', 360, ['KjunRadio', 'KjunInput', 'KjunFormGroup', 'KjunFormActions', 'KjunTextarea', 'KjunCheckbox', 'KjunSwitch', 'KjunRadioGroup', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunTimePicker', 'KjunQuantityStepper', 'KjunSlider', 'KjunRangeSlider', 'KjunScrollFade', 'KjunImage', 'KjunProgressCell', 'KjunSparkline', 'KjunSkeleton', 'KjunFormSkeleton', 'KjunProgress', 'KjunFreshness']],
+  ['large', 480, ['KjunCard', 'KjunAccordion', 'KjunAccordionItem', 'KjunListRow', 'KjunListSection', 'KjunBottomActionBar', 'KjunHeatmapCell', 'KjunListSkeleton', 'KjunChartSkeleton', 'KjunAlert', 'KjunEmpty', 'KjunDataState', 'KjunErrorBoundary']],
+  ['large', 576, ['KjunTable', 'KjunMarketSimpleList', 'KjunMarketCards', 'KjunMarketListPanel', 'KjunKpiHero', 'KjunModal', 'KjunDrawer']],
+  ['control', 240, ['KjunDropdown', 'KjunDropdownItem', 'KjunDropdownDivider', 'KjunMenuButton', 'KjunPopover']],
 ];
 export const presentations = groups.flatMap(([captureType, width, names]) => names.map(name => ({ name, width, captureType,
-  prepare: ['DsDropdown', 'DsDropdownItem', 'DsDropdownDivider', 'DsMenuButton'].includes(name) ? 'menu' : name === 'DsTooltip' ? 'tooltip' : null,
-  layer: ['DsModal', 'DsDrawer'].includes(name),
-  highlight: name === 'DsDropdownDivider' ? '[role="separator"]' : name === 'DsTabPane' ? '[role="tabpanel"]' : null,
+  prepare: ['KjunDropdown', 'KjunDropdownItem', 'KjunDropdownDivider', 'KjunMenuButton'].includes(name) ? 'menu' : name === 'KjunTooltip' ? 'tooltip' : null,
+  layer: ['KjunModal', 'KjunDrawer'].includes(name),
+  highlight: name === 'KjunDropdownDivider' ? '[role="separator"]' : name === 'KjunTabPane' ? '[role="tabpanel"]' : null,
 })));
 export const overviewScenes = [
   { id: 'lists', name: 'OverviewLists', title: '목록', description: '사람과 활동, 알림 설정을 한 목록에 연결합니다.', destination: '/usage-guide/data#generic-lists', alt: '아바타, 활동 목록, 상태 배지와 알림 스위치를 조합한 화면', width: 480 },

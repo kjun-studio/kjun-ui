@@ -17,10 +17,10 @@ for (const platform of ["vue2", "react", "native"]) {
         node.querySelector('.catalog-render')?.childNodes.length || 0])));
     for (const name of names) expect(rendered[name], name).toBeGreaterThan(0);
     await expect(
-      page.locator('[data-component="DsMarketSimpleList"]')
+      page.locator('[data-component="KjunMarketSimpleList"]')
     ).toContainText("긴 한국어 자산 이름");
     await expect(
-      page.locator('[data-component="DsMarketCards"]')
+      page.locator('[data-component="KjunMarketCards"]')
     ).toContainText("긴 한국어 자산 이름");
     expect(errors).toEqual([]);
   });
@@ -28,8 +28,8 @@ for (const platform of ["vue2", "react", "native"]) {
     page,
   }) => {
     await page.setViewportSize({ width: 1100, height: 900 });
-    await page.goto(`/previews/catalog-${platform}.html?component=DsTable`);
-    const root = page.locator('[data-component="DsTable"]');
+    await page.goto(`/previews/catalog-${platform}.html?component=KjunTable`);
+    const root = page.locator('[data-component="KjunTable"]');
     await expect(root).toContainText("긴 한국어 자산 이름");
     await root
       .getByRole(platform === "vue2" ? "columnheader" : "button", {
@@ -57,7 +57,7 @@ for (const platform of ["vue2", "react", "native"]) {
   test(`${platform} packed data state distinguishes changed queries and refresh failures`, async ({
     page,
   }) => {
-    await page.goto(`/previews/catalog-${platform}.html?component=DsDataState`);
+    await page.goto(`/previews/catalog-${platform}.html?component=KjunDataState`);
     await expect(page.getByText("조회 결과", { exact: true })).toBeVisible();
     await page.getByRole("button", { name: "동일 조건 갱신" }).click();
     await expect(page.getByText("조회 결과", { exact: true })).toBeVisible();
@@ -79,7 +79,7 @@ for (const platform of ["vue2", "react", "native"]) {
   test(`${platform} open modal and feedback update together when project colors change`, async ({
     page,
   }) => {
-    await page.goto(`/previews/catalog-${platform}.html?component=DsModal`);
+    await page.goto(`/previews/catalog-${platform}.html?component=KjunModal`);
     await page.getByRole("button", { name: "모달 열기", exact: true }).click();
     const dialog = page.getByRole("dialog", { name: "작업 확인", exact: true });
     await expect(dialog).toBeVisible();

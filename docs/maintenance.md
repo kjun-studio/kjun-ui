@@ -95,7 +95,7 @@ Playwright의 기본 조건 대기는 30초, 일반 테스트 제한은 90초다
 
 `artifacts/build-state.json`은 빌드 입력과 출력 해시, `pack-state.json`은 패키지 manifest와 빌드 연결을 기록한다. 빌드를 시작하면 이전 성공 기록을 무효화하므로 실패한 빌드 뒤에 이전 파일을 최신 패키지로 검증할 수 없다. 빌드 중 자동 생성하는 Vue API 선언은 입력에서 제외하고 배포되는 `dist/index.d.ts`를 출력으로 검사한다. 소비 검증은 lockfile의 무결성과 설치된 파일 내용까지 대조한다. 미리보기·복사 예제·그림·접근성 검사도 같은 사전 검사를 사용한다.
 
-[컴포넌트 카탈로그](../shared/component-catalog.json)는 공개 컴포넌트 80개와 내부 구현 5개를 추적한다. 내부 TableCards는 DsTable, Toast·ToastContainer·ConfirmModal·PromptModal은 KjunFeedbackProvider에 연결된다. 사용자용 지원 현황에는 공개 컴포넌트·설정 API·피드백 서비스와 플랫폼별 사용 범위를 표시한다.
+[컴포넌트 카탈로그](../shared/component-catalog.json)는 공개 컴포넌트 80개와 내부 구현 5개를 추적한다. 내부 TableCards는 KjunTable, Toast·ToastContainer·ConfirmModal·PromptModal은 KjunFeedbackProvider에 연결된다. 사용자용 지원 현황에는 공개 컴포넌트·설정 API·피드백 서비스와 플랫폼별 사용 범위를 표시한다.
 
 카탈로그의 `origin`, `sources`, 내부 `owner`는 유지보수 정보다. 공개 화면의 제목·설명·검색 결과에 구현 출처나 이관 단위를 그대로 표시하지 않는다. 문서 플랫폼이 Native일 때 공통 셸에서 브라우저 미리보기·기기 미검증 안내를 한 번 표시하고, 컴포넌트 본문에는 해당 기능의 구체적인 차이를 설명한다.
 

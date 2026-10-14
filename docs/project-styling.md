@@ -45,7 +45,7 @@ import "@kjun-ui/react/styles.css";
 import "./design-system/kjun.css";
 
 <KjunProvider>
-  <DsButton variant="primary">저장</DsButton>
+  <KjunButton variant="primary">저장</KjunButton>
 </KjunProvider>
 ```
 
@@ -115,7 +115,7 @@ export const appFont = fonts.body;
 
 ## 카드 표면과 색상 역할
 
-`DsCard`의 `surface="accent"`는 강조 배경, `surface="subtle"`은 은은한 강조 배경이며 `surface="brand"`는 브랜드 배경입니다. 실제 색상과 강도는 적용 프로젝트가 결정합니다.
+`KjunCard`의 `surface="accent"`는 강조 배경, `surface="subtle"`은 은은한 강조 배경이며 `surface="brand"`는 브랜드 배경입니다. 실제 색상과 강도는 적용 프로젝트가 결정합니다.
 
 | 표면 | 연결할 선택 역할 |
 | --- | --- |

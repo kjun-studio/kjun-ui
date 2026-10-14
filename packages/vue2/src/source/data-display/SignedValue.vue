@@ -1,12 +1,12 @@
 <template>
   <span class="kjun-signed-value" :class="valueClass" :aria-busy="String(loading)">
-    <DsSkeleton v-if="loading" type="block" width="var(--_kjun-extension-financial-signed-skeleton-width)" height="1lh" class="kj-inline-block kj-align-top" />
-    <template v-else>{{ display }}<DsFreshness v-if="showFreshness && stale && number !== null" stale class="kj-ml-financial-affix-gap" /></template>
+    <KjunSkeleton v-if="loading" type="block" width="var(--_kjun-extension-financial-signed-skeleton-width)" height="1lh" class="kj-inline-block kj-align-top" />
+    <template v-else>{{ display }}<KjunFreshness v-if="showFreshness && stale && number !== null" stale class="kj-ml-financial-affix-gap" /></template>
   </span>
 </template>
 <script>
-import DsFreshness from "./Freshness.vue";
-import DsSkeleton from "./Skeleton.vue";
+import KjunFreshness from "./Freshness.vue";
+import KjunSkeleton from "./Skeleton.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { domainColorMixin } from "../../domain-colors.js";
 import { finiteSignedValue } from './signedValue'
@@ -15,8 +15,8 @@ import { oneOf, SIGNED_VALUE_FORMATS, SIGNED_VALUE_TONES } from '../tokens'
 const SIGNED_PILL_BASE = 'kj-inline-block kj-px-financial-pill-padding-x kj-py-financial-pill-padding-y kj-rounded-financial-pill-radius kj-text-xs kj-font-semibold'
 export default {
   mixins: [...componentMixins, domainColorMixin(vm => !vm.loading && !vm.stale && vm.number !== null)],
-  components: { DsFreshness, DsSkeleton },
-  name: 'DsSignedValue',
+  components: { KjunFreshness, KjunSkeleton },
+  name: 'KjunSignedValue',
   props: {
     value: { type: [Number, String], default: null },
     format: { type: String, default: 'number', validator: oneOf(SIGNED_VALUE_FORMATS) },

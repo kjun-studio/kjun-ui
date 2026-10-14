@@ -8,10 +8,10 @@ for (const platform of ['react', 'vue2', 'native'] as const) for (const mode of 
     test.setTimeout(180000);
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
     const entries: Record<string, string> = {};
-    const presets = exampleDefinition('DsDataState').presets;
+    const presets = exampleDefinition('KjunDataState').presets;
     for (const preset of presets) {
-      const config = presetConfig('DsDataState', preset.id), id = `data-state-${mode}-${preset.id}`;
-      entries[id] = await prepareExample(platform, 'DsDataState', id, config.settings, config.values, platform === 'native' && mode === 'usage' ? 'dark' : 'default', undefined, mode);
+      const config = presetConfig('KjunDataState', preset.id), id = `data-state-${mode}-${preset.id}`;
+      entries[id] = await prepareExample(platform, 'KjunDataState', id, config.settings, config.values, platform === 'native' && mode === 'usage' ? 'dark' : 'default', undefined, mode);
     }
     await compileEntries(platform, entries);
     await page.route('**/previews/export-checks/**', async route => {

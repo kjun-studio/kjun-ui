@@ -1,8 +1,8 @@
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
 import type { TableToolbarProps } from "../../../shared/package-runtime/table-presentation";
-import { DsButton } from "./button";
-import { DsInput } from "./input";
+import { KjunButton } from "./button";
+import { KjunInput } from "./input";
 import { View } from "react-native";
 import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
@@ -30,16 +30,16 @@ export function TableToolbar<Row extends object>({ selectable, selected, toggleA
           <KText style={{ fontWeight: typeStyle('control').fontWeight, color: colors.brand }}>
             {selected.length}개 선택
           </KText>
-          <DsButton size="xs" variant="ghost" onPress={toggleAll}>
+          <KjunButton size="xs" variant="ghost" onPress={toggleAll}>
             전체 선택
-          </DsButton>
-          <DsButton
+          </KjunButton>
+          <KjunButton
             size="xs"
             variant="ghost"
             onPress={clearSelection}
           >
             선택 해제
-          </DsButton>
+          </KjunButton>
           {renderSelectionToolbar?.(selected)}
         </View>
       )}
@@ -48,7 +48,7 @@ export function TableToolbar<Row extends object>({ selectable, selected, toggleA
         <View style={{ ...toolbarStyle, backgroundColor: colors.surface }}>
           {searchable && (
             <View style={{ width: tokens.table.searchWidth, maxWidth: "100%" }}>
-              <DsInput
+              <KjunInput
                 size="sm"
                 value={search}
                 ariaLabel="표 검색"

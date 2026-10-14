@@ -29,10 +29,10 @@
           <span v-else class="kjun-field-placeholder kj-truncate">{{ placeholder }}</span>
         </slot>
 
-        <DsIcon name="chevron-down" :style="kjunCompoundControl ? { width: 'var(--_kjun-extension-time-picker-icon-size)', height: 'var(--_kjun-extension-time-picker-icon-size)' } : undefined" :class="['kjun-select-indicator kj-shrink-0 kj-text-text-tertiary kj-transition-transform', isOpen && !kjunLayerBlocked ? 'kj-rotate-180' : '']" />
+        <KjunIcon name="chevron-down" :style="kjunCompoundControl ? { width: 'var(--_kjun-extension-time-picker-icon-size)', height: 'var(--_kjun-extension-time-picker-icon-size)' } : undefined" :class="['kjun-select-indicator kj-shrink-0 kj-text-text-tertiary kj-transition-transform', isOpen && !kjunLayerBlocked ? 'kj-rotate-180' : '']" />
       </button>
       <div v-if="clearable && hasValue" class="kjun-field-suffix kjun-select-clear">
-        <DsButton variant="ghost" size="sm" class="kjun-field-clear" prefix-icon="x" aria-label="선택 지우기" title="선택 지우기" :disabled="disabled" @click.stop="clear" />
+        <KjunButton variant="ghost" size="sm" class="kjun-field-clear" prefix-icon="x" aria-label="선택 지우기" title="선택 지우기" :disabled="disabled" @click.stop="clear" />
       </div>
     </div>
 
@@ -43,7 +43,7 @@
         <!-- Search -->
         <div v-if="searchable" ref="searchPanel" class="kj-p-2 kj-border-b kj-border-border-primary kj-shrink-0">
           <div class="kjun-field-shell kjun-field--md">
-            <DsIcon name="search" class="kjun-field-prefix" />
+            <KjunIcon name="search" class="kjun-field-prefix" />
             <input
               ref="searchInput"
               v-model="searchQuery"
@@ -60,7 +60,7 @@
 
         <!-- Options -->
         <div ref="options" :id="`select-options-${_uid}`" class="kj-min-h-0 kj-max-h-menu-list-max-height kj-overflow-y-auto" role="listbox" :aria-multiselectable="multiple ? 'true' : undefined" @keydown.down.prevent="focusNextOption" @keydown.up.prevent="focusPrevOption" @keydown.home.prevent="openAndFocusFirst" @keydown.end.prevent="openAndFocusLast" @keydown.enter.prevent="selectFocusedOption" @keydown.space.prevent="selectFocusedOption" @keydown.escape="handleEscape">
-          <div v-if="loading" class="kj-flex kj-items-center kj-justify-center kj-gap-2 kj-px-3 kj-py-3 kj-text-sm kj-text-text-secondary" role="status"><DsSpinner size="sm" />검색 중...</div>
+          <div v-if="loading" class="kj-flex kj-items-center kj-justify-center kj-gap-2 kj-px-3 kj-py-3 kj-text-sm kj-text-text-secondary" role="status"><KjunSpinner size="sm" />검색 중...</div>
           <div
             v-for="(entry, index) in visibleEntries"
             :key="entry.key"
@@ -75,10 +75,10 @@
             <slot name="option" :option="entry.option" :selected="isSelected(entry.option)">
               <span class="kj-truncate">{{ getOptionLabel(entry.option) }}</span>
             </slot>
-            <DsIcon v-if="isSelected(entry.option)" name="check" size="var(--_kjun-extension-menu-icon-size)" class="kj-text-brand kj-flex-shrink-0" />
+            <KjunIcon v-if="isSelected(entry.option)" name="check" size="var(--_kjun-extension-menu-icon-size)" class="kj-text-brand kj-flex-shrink-0" />
           </div>
 
-          <DsButton v-if="hasMoreOptions" variant="ghost" size="sm" block @click.stop="showMoreOptions" @keydown.native.stop>더 보기</DsButton>
+          <KjunButton v-if="hasMoreOptions" variant="ghost" size="sm" block @click.stop="showMoreOptions" @keydown.native.stop>더 보기</KjunButton>
           <div v-if="!loading && filteredOptions.length === 0" class="kj-px-3 kj-py-2 kj-text-sm kj-text-text-tertiary kj-text-center">
             결과가 없습니다
           </div>
@@ -94,9 +94,9 @@ import { optionKey, nextOptionValue } from "../../../../../shared/package-runtim
 import selectState from "./select-state.js";
 import selectKeyboard from "./select-keyboard.js";
 import { layerMotion } from "../../adapters/layer-motion.js";
-import DsButton from "../primitives/Button.vue";
-import DsIcon from "../../icon.js";
-import DsSpinner from "../feedback/Spinner.vue";
+import KjunButton from "../primitives/Button.vue";
+import KjunIcon from "../../icon.js";
+import KjunSpinner from "../feedback/Spinner.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { SIZES_CORE, oneOf } from '../tokens'
 import fieldMixin from './fieldMixin'
@@ -108,8 +108,8 @@ const VIEWPORT_KEYBOARD_GRACE_MS = 400
 import { tokens } from "@kjun-ui/tokens";
 
 export default {
-  components: { DsButton, DsIcon, DsSpinner },
-  name: 'DsSelect',
+  components: { KjunButton, KjunIcon, KjunSpinner },
+  name: 'KjunSelect',
   inheritAttrs: false,
   mixins: [selectState, selectKeyboard, fieldMixin, ...componentMixins, layerMotion("popup")],
   inject: {
@@ -147,7 +147,7 @@ export default {
       type: String,
       default: '선택'
     },
-    // 시각적 label 없이 인라인으로 쓸 때의 접근 이름(DsFormGroup 안에서는 aria-labelledby가 우선)
+    // 시각적 label 없이 인라인으로 쓸 때의 접근 이름(KjunFormGroup 안에서는 aria-labelledby가 우선)
     ariaLabel: {
       type: String,
       default: ''

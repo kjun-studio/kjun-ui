@@ -1,5 +1,5 @@
 /**
- * 버튼 그룹(DsButtonGroup, DsFilterGroup)의 화살표 키 포커스 이동 믹스인.
+ * 버튼 그룹(KjunButtonGroup, KjunFilterGroup)의 화살표 키 포커스 이동 믹스인.
  * 컨테이너에 @keydown="handleGroupKeydown"을 바인딩하면
  * ←/→는 이전/다음 버튼, Home/End는 처음/끝 버튼으로 포커스를 옮긴다 (순환).
  */

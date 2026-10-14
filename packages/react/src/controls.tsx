@@ -13,7 +13,7 @@ import {
 Checkbox as AriaCheckbox,
 Switch as AriaSwitch,
 } from "react-aria-components";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { useKjunField } from "./input";
 import { useSelectionIndicator } from "./use-selection-indicator";
 export type ChoiceValue = string | number | boolean | null;
@@ -24,7 +24,7 @@ export interface ChoiceOption<T = ChoiceValue> {
   icon?: string;
   dot?: string;
 }
-export interface DsCheckboxProps<T = ChoiceValue> {
+export interface KjunCheckboxProps<T = ChoiceValue> {
   value: boolean | T[];
   val?: T;
   label?: string;
@@ -35,7 +35,7 @@ export interface DsCheckboxProps<T = ChoiceValue> {
   onValueChange?: (value: boolean | T[]) => void;
   onChange?: (value: boolean | T[]) => void;
 }
-export function DsCheckbox<T = ChoiceValue>({
+export function KjunCheckbox<T = ChoiceValue>({
   value,
   val,
   label,
@@ -45,7 +45,7 @@ export function DsCheckbox<T = ChoiceValue>({
   children,
   onValueChange,
   onChange,
-}: DsCheckboxProps<T>) {
+}: KjunCheckboxProps<T>) {
   const checked = Array.isArray(value) ? value.includes(val!) : value;
   return (
     <AriaCheckbox
@@ -69,7 +69,7 @@ export function DsCheckbox<T = ChoiceValue>({
         }`}
       >
         {checked && (
-          <DsIcon name="check" size={tokens.extensions.checkbox.iconSizes[size]} />
+          <KjunIcon name="check" size={tokens.extensions.checkbox.iconSizes[size]} />
         )}
       </span>
       {(children || label) && (
@@ -78,7 +78,7 @@ export function DsCheckbox<T = ChoiceValue>({
     </AriaCheckbox>
   );
 }
-export interface DsSwitchProps {
+export interface KjunSwitchProps {
   value: boolean;
   label?: string;
   ariaLabel?: string;
@@ -88,7 +88,7 @@ export interface DsSwitchProps {
   onValueChange?: (value: boolean) => void;
   onChange?: (value: boolean) => void;
 }
-export function DsSwitch({
+export function KjunSwitch({
   value,
   label,
   ariaLabel,
@@ -97,7 +97,7 @@ export function DsSwitch({
   children,
   onValueChange,
   onChange,
-}: DsSwitchProps) {
+}: KjunSwitchProps) {
   return (
     <AriaSwitch
       isSelected={value}
@@ -127,7 +127,7 @@ const RadioContext = createContext<{
   name: string;
   change: (v: ChoiceValue) => void;
 } | null>(null);
-export interface DsRadioProps {
+export interface KjunRadioProps {
   value?: ChoiceValue;
   val: ChoiceValue;
   label?: string;
@@ -138,7 +138,7 @@ export interface DsRadioProps {
   onValueChange?: (value: ChoiceValue) => void;
   onChange?: (value: ChoiceValue) => void;
 }
-export function DsRadio({
+export function KjunRadio({
   value,
   val,
   label,
@@ -148,7 +148,7 @@ export function DsRadio({
   children,
   onValueChange,
   onChange,
-}: DsRadioProps) {
+}: KjunRadioProps) {
   const group = useContext(RadioContext),
     selected = (group ? group.value : value) === val;
   return (
@@ -181,7 +181,7 @@ export function DsRadio({
     </label>
   );
 }
-export interface DsRadioGroupProps {
+export interface KjunRadioGroupProps {
   value: ChoiceValue;
   options?: ChoiceOption[];
   direction?: "horizontal" | "vertical";
@@ -190,7 +190,7 @@ export interface DsRadioGroupProps {
   onValueChange?: (value: ChoiceValue) => void;
   onChange?: (value: ChoiceValue) => void;
 }
-export function DsRadioGroup({
+export function KjunRadioGroup({
   value,
   options = [],
   direction = "horizontal",
@@ -198,7 +198,7 @@ export function DsRadioGroup({
   children,
   onValueChange,
   onChange,
-}: DsRadioGroupProps) {
+}: KjunRadioGroupProps) {
   const name = useId();
   return (
     <RadioContext.Provider
@@ -223,7 +223,7 @@ export function DsRadioGroup({
       >
         {children ||
           options.map((option) => (
-            <DsRadio
+            <KjunRadio
               key={String(option.value)}
               val={option.value}
               label={option.label}
@@ -234,7 +234,7 @@ export function DsRadioGroup({
     </RadioContext.Provider>
   );
 }
-export interface DsTextareaProps
+export interface KjunTextareaProps
   extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "size" | "value"> {
   value: string;
   size?: InputSize;
@@ -243,8 +243,8 @@ export interface DsTextareaProps
   ariaLabel?: string;
   onValueChange?: (value: string) => void;
 }
-export const DsTextarea = forwardRef<HTMLTextAreaElement, DsTextareaProps>(
-  function DsTextarea(
+export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
+  function KjunTextarea(
     {
       value,
       size = "md",
@@ -315,7 +315,7 @@ export function groupKeydown(event: KeyboardEvent<HTMLElement>) {
         buttons.length;
   buttons[next]?.focus();
 }
-export interface DsButtonGroupProps {
+export interface KjunButtonGroupProps {
   value: ChoiceValue;
   options: ChoiceOption[];
   size?: ButtonSize;
@@ -326,7 +326,7 @@ export interface DsButtonGroupProps {
   onValueChange?: (value: ChoiceValue) => void;
   onChange?: (value: ChoiceValue) => void;
 }
-export function DsButtonGroup({
+export function KjunButtonGroup({
   value,
   options,
   size = "md",
@@ -335,7 +335,7 @@ export function DsButtonGroup({
   ariaLabel,
   onValueChange,
   onChange,
-}: DsButtonGroupProps) {
+}: KjunButtonGroupProps) {
   const { group, indicator } = useSelectionIndicator();
   return (
     <div
@@ -370,7 +370,7 @@ export function DsButtonGroup({
             onChange?.(option.value);
           }}
         >
-          {option.icon && <DsIcon name={option.icon} size={tokens.extensions.selection.iconSize} />}
+          {option.icon && <KjunIcon name={option.icon} size={tokens.extensions.selection.iconSize} />}
           <span className="kjun-button-group-label">
             <span aria-hidden="true" style={typeStyle(tokens.button.typography[size])}>{option.label}</span><span>{option.label}</span>
           </span>
@@ -379,9 +379,9 @@ export function DsButtonGroup({
     </div>
   );
 }
-export interface DsFilterGroupProps
+export interface KjunFilterGroupProps
   extends Omit<
-    DsButtonGroupProps,
+    KjunButtonGroupProps,
     "value" | "onValueChange" | "onChange" | "fullWidth" | "variant"
   > {
   value: ChoiceValue | ChoiceValue[];
@@ -390,7 +390,7 @@ export interface DsFilterGroupProps
   onValueChange?: (value: ChoiceValue | ChoiceValue[]) => void;
   onChange?: (value: ChoiceValue | ChoiceValue[]) => void;
 }
-export function DsFilterGroup({
+export function KjunFilterGroup({
   value,
   options,
   size = "sm",
@@ -400,7 +400,7 @@ export function DsFilterGroup({
   ariaLabel,
   onValueChange,
   onChange,
-}: DsFilterGroupProps) {
+}: KjunFilterGroupProps) {
   const selected = (v: ChoiceValue) =>
     multiple
       ? Array.isArray(value) &&
@@ -443,7 +443,7 @@ export function DsFilterGroup({
             }}
           >
             {option.dot && <i style={{ background: option.dot }} />}
-            {option.icon && <DsIcon name={option.icon} size={tokens.extensions.selection.iconSize} />}
+            {option.icon && <KjunIcon name={option.icon} size={tokens.extensions.selection.iconSize} />}
             <span className="kjun-filter-label">
               <span aria-hidden="true" style={typeStyle(tokens.button.typography[size])}>{option.label}</span>
               <span>{option.label}</span>

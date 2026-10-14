@@ -4,7 +4,7 @@ export function iconToggleExample(input: UsageInput) {
   const b = new UsageBuilder(input), { settings: s } = input;
   const active = b.state('active', false);
   const kind = s.usage === '즐겨찾기' ? 'favorite' : s.usage === '관심' ? 'interest' : null;
-  if (!kind) return b.finish(b.node('DsIconToggle', {
+  if (!kind) return b.finish(b.node('KjunIconToggle', {
     active, activeIcon: 'heart', ariaLabel: '좋아요', ...b.props('size', 'disabled', 'loading'),
     onToggle: b.handler('toggle', '', b.set('active', '!' + b.read('active'))),
   }));
@@ -32,7 +32,7 @@ try {
 } finally {
   ${b.set('pending', 'false')}
 }`, true);
-  return b.finish(b.node('DsIconToggle', {
+  return b.finish(b.node('KjunIconToggle', {
     active, activeIcon: kind === 'favorite' ? 'star' : 'heart', ...color,
     ariaLabel: expr(`"예제 항목 ${label} " + (state.active ? "해제" : "등록")`),
     ...b.props('size', 'disabled'), loading: expr(`state.pending || ${!!s.loading}`), onToggle,

@@ -8,13 +8,13 @@ const vm = new Vue({
   render(h) {
     const config = this.config;
     return h(K.KjunProvider, [
-      h('div', { on: { click: () => this.emit('parent') } }, [h(K.DsIconToggle, {
+      h('div', { on: { click: () => this.emit('parent') } }, [h(K.KjunIconToggle, {
         props: { active: config.active, activeIcon: config.activeIcon, inactiveIcon: config.inactiveIcon,
           ariaLabel: '예제 항목 관심 ' + (config.active ? '해제' : '등록'),
           loading: config.loading, disabled: config.disabled, size: config.size },
         on: { toggle: () => this.emit('toggle') },
       })]),
-      h(K.DsMarketTable, {
+      h(K.KjunMarketTable, {
         props: { rows, columns, hasLoadedOnce: true, showActions: true,
           favoriteKeys: new Set(config.favorite), interestKeys: new Set(config.interest),
           togglingFavorite: config.togglingFavorite, togglingInterest: config.togglingInterest },

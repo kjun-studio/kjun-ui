@@ -1,5 +1,5 @@
 <template>
-  <DsModal
+  <KjunModal
     :value="visible"
     size="sm"
     :closable="!loading"
@@ -9,11 +9,11 @@
   >
     <template #header>
       <div class="kj-flex kj-items-center kj-gap-2.5">
-        <!-- data-icon: DsIcon이 $attrs를 SVG에 펼치므로 컴포넌트 수정 없이
+        <!-- data-icon: KjunIcon이 $attrs를 SVG에 펼치므로 컴포넌트 수정 없이
              아이콘 이름이 DOM에 드러난다. e2e가 trash → alert-circle 회귀를
              감시하는 데 쓴다. -->
         <!-- 헤더 슬롯에서도 기본 아이콘 크기를 명시해 글자 크기 상속과 분리한다. -->
-        <DsIcon :name="iconName" :data-icon="iconName" :class="iconColorClass" :size="iconSize" />
+        <KjunIcon :name="iconName" :data-icon="iconName" :class="iconColorClass" :size="iconSize" />
         <h3 class="kj-text-lg kj-font-semibold kj-text-text-primary">{{ title }}</h3>
       </div>
     </template>
@@ -21,27 +21,27 @@
     <p class="kj-text-sm kj-leading-relaxed kj-text-text-secondary">{{ message }}</p>
 
     <template #footer>
-      <DsButton variant="ghost" :disabled="loading" @click.stop="handleCancel">
+      <KjunButton variant="ghost" :disabled="loading" @click.stop="handleCancel">
         {{ cancelText }}
-      </DsButton>
-      <DsButton :variant="confirmVariant" :loading="loading" @click.stop="handleConfirm">
+      </KjunButton>
+      <KjunButton :variant="confirmVariant" :loading="loading" @click.stop="handleConfirm">
         {{ confirmText }}
-      </DsButton>
+      </KjunButton>
     </template>
-  </DsModal>
+  </KjunModal>
 </template>
 
 <script>
 import { tokens } from "@kjun-ui/tokens";
-import DsButton from "../primitives/Button.vue";
-import DsIcon from "../../icon.js";
-import DsModal from "../layout/Modal.vue";
+import KjunButton from "../primitives/Button.vue";
+import KjunIcon from "../../icon.js";
+import KjunModal from "../layout/Modal.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { createLogger } from '@kjun-adapter/logger.js'
 
 const logger = createLogger('components.design-system.feedback.ConfirmModal')
 
-// 아이콘은 DsAlert(Alert.vue의 TYPE_MAP)와 같은 어휘를 쓴다.
+// 아이콘은 KjunAlert(Alert.vue의 TYPE_MAP)와 같은 어휘를 쓴다.
 // danger에 trash를 쓰지 않는 이유: 제목이 이미 "삭제"라고 말하므로 아이콘이
 // 같은 말을 반복한다. alert-triangle은 warning 전용으로 남긴다.
 const TYPE_MAP = {
@@ -52,8 +52,8 @@ const TYPE_MAP = {
 
 export default {
   mixins: componentMixins,
-  components: { DsButton, DsIcon, DsModal },
-  name: 'DsConfirmModal',
+  components: { KjunButton, KjunIcon, KjunModal },
+  name: 'KjunConfirmModal',
   data() {
     return {
       visible: false,

@@ -1,18 +1,18 @@
 <template>
   <!-- The heart draws one icon step larger within the same box to match the star optically, like React and Native. -->
-  <DsIcon :name="state.icon" :filled="active" :size="iconSize" :style="{ margin: (boxSize - Number(iconSize)) / 2 + 'px' }" :class="[sizeClass, active ? state.color : 'kj-text-text-tertiary']" />
+  <KjunIcon :name="state.icon" :filled="active" :size="iconSize" :style="{ margin: (boxSize - Number(iconSize)) / 2 + 'px' }" :class="[sizeClass, active ? state.color : 'kj-text-text-tertiary']" />
 </template>
 <script>
 import { tokens } from "@kjun-ui/tokens";
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { domainColorMixin } from "../../domain-colors.js";
 import { COLLECTION_KINDS, COLLECTION_STATES } from '../primitives/collectionState'
 import { SIZES_CORE, oneOf } from '../tokens'
 export default {
   mixins: [...componentMixins, domainColorMixin(vm => vm.active)],
-  components: { DsIcon },
-  name: 'DsCollectionMark',
+  components: { KjunIcon },
+  name: 'KjunCollectionMark',
   props: {
     kind: { type: String, required: true, validator: oneOf(COLLECTION_KINDS) },
     active: { type: Boolean, default: false },

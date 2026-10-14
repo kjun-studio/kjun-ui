@@ -2,8 +2,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from './doc-link';
-import { DsCard as Card } from '@kjun-ui/react';
-import { DsSelect } from '@kjun-ui/react';
+import { KjunCard as Card } from '@kjun-ui/react';
+import { KjunSelect } from '@kjun-ui/react';
 import { PlatformLoading, useDocsPlatform } from './docs-platform';
 import coverage from '@/lib/generated/coverage.json';
 import { AccessibilityDescription, ResultBadge } from './accessibility-guide';
@@ -17,9 +17,9 @@ export function Verification() {
   const params = useSearchParams(), search = params.toString();
   const { platform } = useDocsPlatform();
   const accessibility = useAccessibilityData();
-  const [selection, setSelection] = useState({ component: params.get('component') || 'DsButton', record: params.get('record') || '' });
+  const [selection, setSelection] = useState({ component: params.get('component') || 'KjunButton', record: params.get('record') || '' });
   useEffect(() => {
-    const restore = () => { const q = new URLSearchParams(location.search); setSelection({ component: q.get('component') || 'DsButton', record: q.get('record') || '' }); };
+    const restore = () => { const q = new URLSearchParams(location.search); setSelection({ component: q.get('component') || 'KjunButton', record: q.get('record') || '' }); };
     restore(); window.addEventListener('popstate', restore); window.addEventListener('pageshow', restore);
     return () => { window.removeEventListener('popstate', restore); window.removeEventListener('pageshow', restore); };
   }, [search]);
@@ -45,10 +45,10 @@ export function Verification() {
       <h2>대상·검증 기록</h2>
       <p className="body-copy">공개 컴포넌트 {coverage.components.length}개와 피드백 서비스의 세 항목을 같은 기준으로 연결합니다. 문서 플랫폼 선택은 이 페이지에도 적용됩니다.</p>
       <div className="verification-selectors">
-        <div><label>대상</label><DsSelect value={selection.component} ariaLabel="대상" searchable
+        <div><label>대상</label><KjunSelect value={selection.component} ariaLabel="대상" searchable
           options={targetOptions}
           onValueChange={value => { if (typeof value === 'string') update(value, ''); }} /></div>
-        <div><label>기록</label><DsSelect value={selection.record || 'latest'} ariaLabel="기록"
+        <div><label>기록</label><KjunSelect value={selection.record || 'latest'} ariaLabel="기록"
           options={recordOptions}
           onValueChange={value => { if (typeof value === 'string') update(selection.component, value === 'latest' ? '' : value); }} /></div>
       </div>

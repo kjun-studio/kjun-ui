@@ -13,7 +13,7 @@ function Example(/* PARAMS */) {
   const rawH = (name, props = {}, children, slots = {}) => {
     if (name === "ExampleFailure") return createElement(function ExampleFailure() {
       if (props.failed) throw new Error("예제에서 의도적으로 발생시킨 렌더링 오류입니다.");
-      return createElement(K.DsAlert, { type: "success" }, "정상 콘텐츠를 표시합니다.");
+      return createElement(K.KjunAlert, { type: "success" }, "정상 콘텐츠를 표시합니다.");
     });
     if (name === "ScrollItems") return <View style={{ flexDirection: "row", flexWrap: "nowrap", gap: 12 }}>{children}</View>;
     if (name === "Status") {
@@ -39,12 +39,12 @@ function Example(/* PARAMS */) {
     // Scroll bodies keep lists full-bleed; Inset aligns other content with list text.
     if (name === "Inset") return <View style={{ paddingHorizontal: 16 }}>{children}</View>;
     if (name === "Scroll") return <ScrollView style={{ flex: 1, minHeight: 0 }} contentContainerStyle={{ paddingVertical: 16, gap: 16 }} keyboardShouldPersistTaps="handled">{children}</ScrollView>;
-    if (name === "FieldStack") return <K.DsFormLayout gap={20}>{children}</K.DsFormLayout>;
+    if (name === "FieldStack") return <K.KjunFormLayout gap={20}>{children}</K.KjunFormLayout>;
     if (name === "Box") return <View style={{ width: props.width, maxWidth: "100%" }}>{children}</View>;
     if (name === "Text") return <Text style={{ color: colors[props.colorRole || "text"], fontFamily, fontSize: 14, ...props.style }}>{children}</Text>;
     if (name === "IconAlignmentRow") return <View style={{ flexDirection: "row", gap: 12, ...props.style }}>{children}</View>;
     if (name === "Group" || name === "Stack") return <View style={{ gap: 12, ...(name === "Group" ? { flexDirection: "row", flexWrap: "wrap", alignItems: "center" } : {}), ...props.style }}>{children}</View>;
-    if (["DsInput", "DsTextarea"].includes(name) && props.onValueChange) {
+    if (["KjunInput", "KjunTextarea"].includes(name) && props.onValueChange) {
       props = { ...props, onChangeText: props.onValueChange };
       delete props.onValueChange;
     }

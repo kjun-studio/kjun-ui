@@ -7,7 +7,7 @@ import { typeStyle } from "./typography";
 import { focusVisible } from "./a11y";
 const geometry = tokens.extensions.slider;
 const targetSize = tokens.native.minimumTouchTarget;
-export interface DsSliderProps {
+export interface KjunSliderProps {
   value: number;
   min?: number;
   max?: number;
@@ -18,8 +18,8 @@ export interface DsSliderProps {
   onValueChange?: (value: number) => void;
   onChangeCommit?: (value: number) => void;
 }
-export interface DsRangeSliderProps extends Omit<
-  DsSliderProps,
+export interface KjunRangeSliderProps extends Omit<
+  KjunSliderProps,
   "value" | "onValueChange" | "onChangeCommit"
 > {
   value: [number, number];
@@ -41,7 +41,7 @@ function RangeInput({
   onValueChange,
   onChangeCommit,
   ...rest
-}: DsSliderProps | DsRangeSliderProps) {
+}: KjunSliderProps | KjunRangeSliderProps) {
   const { colors, numericFontFamily, fontFamily } = useKjunStyles();
   const domain = createSliderDomain(min, max, step),
     values = Array.isArray(value) ? value : [value];
@@ -325,9 +325,9 @@ function RangeInput({
     </View>
   );
 }
-export function DsSlider(props: DsSliderProps) {
+export function KjunSlider(props: KjunSliderProps) {
   return <RangeInput {...props} />;
 }
-export function DsRangeSlider(props: DsRangeSliderProps) {
+export function KjunRangeSlider(props: KjunRangeSliderProps) {
   return <RangeInput {...props} />;
 }

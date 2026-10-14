@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import { useDocsPlatform, PlatformLoading } from './docs-platform';
-import { DsButton as Button, DsCard as Card } from '@kjun-ui/react';
+import { KjunButton as Button, KjunCard as Card } from '@kjun-ui/react';
 import { CatalogSettings, LayoutPreviewHint } from './catalog-settings';
 import { ExampleRunner } from './example-runner';
 import { useCatalog } from './use-catalog';

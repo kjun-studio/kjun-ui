@@ -9,13 +9,13 @@ type QueryDisplayProps,
 import { Component,useState,type ErrorInfo,type ReactNode } from "react";
 import { Platform,View,type ViewStyle } from "react-native";
 import { DataStateContentContext } from "./data-state-context";
-import { DsButton } from "./button";
+import { KjunButton } from "./button";
 import {
-DsAlert,
-DsEmpty,
-DsSkeleton,
-DsSpinner,
-type DsSkeletonProps,
+KjunAlert,
+KjunEmpty,
+KjunSkeleton,
+KjunSpinner,
+type KjunSkeletonProps,
 } from "./display";
 import { KText,content } from "./internal";
 import { useKjunStyles } from "./provider";
@@ -32,7 +32,7 @@ export function useQueryDisplay(props: QueryDisplayProps) {
   }
   return queryDisplayStatus(next, props);
 }
-export interface DsDataStateProps extends QueryDisplayProps {
+export interface KjunDataStateProps extends QueryDisplayProps {
   preserveContent?: boolean;
   refreshing?: boolean;
   refreshError?: string | null;
@@ -46,7 +46,7 @@ export interface DsDataStateProps extends QueryDisplayProps {
   retryText?: string;
   size?: "sm" | "md" | "lg";
   skeleton?: boolean;
-  skeletonType?: DsSkeletonProps["type"];
+  skeletonType?: KjunSkeletonProps["type"];
   skeletonCount?: number;
   children?: ReactNode;
   loadingContent?: ReactNode;
@@ -55,7 +55,7 @@ export interface DsDataStateProps extends QueryDisplayProps {
   onRetry?: () => void;
   onEmptyAction?: () => void;
 }
-export function DsDataState({
+export function KjunDataState({
   preserveContent = false,
   refreshing = false,
   refreshError,
@@ -78,7 +78,7 @@ export function DsDataState({
   onRetry,
   onEmptyAction,
   ...query
-}: DsDataStateProps) {
+}: KjunDataStateProps) {
   const state = useQueryDisplay(query),
     blockingError =
       query.error && !(state.usesQueryState && state.hasCurrentResult),
@@ -110,7 +110,7 @@ export function DsDataState({
               backgroundColor: colors.surface,
             }}
           >
-            <DsSpinner size="xs" />
+            <KjunSpinner size="xs" />
             <KText style={{ ...typeStyle('caption'), color: colors.textTertiary, flexShrink: 1, minWidth: 0 }}>
               {refreshingText}
             </KText>
@@ -126,12 +126,12 @@ export function DsDataState({
             (skeleton ? (
               <View style={{ gap: tokens.dimension.value12 }}>
                 {Array.from({ length: skeletonCount }, (_, i) => (
-                  <DsSkeleton key={i} type={skeletonType} />
+                  <KjunSkeleton key={i} type={skeletonType} />
                 ))}
               </View>
             ) : (
               <View style={{ alignItems: "center", gap: tokens.dimension.value12 }}>
-                <DsSpinner size="md" />
+                <KjunSpinner size="md" />
                 <KText style={{ ...typeStyle("body"), color: colors.textSecondary, textAlign: "center", maxWidth: "100%" }}>{loadingText}</KText>
               </View>
             ))}
@@ -140,14 +140,14 @@ export function DsDataState({
         <DataStateContentContext.Provider value="message">
         <View style={{ paddingVertical: padding }}>
           {errorContent || (
-            <DsAlert type="danger" title="오류 발생" actions={onRetry && (
-              <DsButton variant="secondary" onPress={onRetry}>
+            <KjunAlert type="danger" title="오류 발생" actions={onRetry && (
+              <KjunButton variant="secondary" onPress={onRetry}>
                 {retryText}
-              </DsButton>
+              </KjunButton>
             )}>
-              {/* The alert's own body type applies, like any other DsAlert. */}
+              {/* The alert's own body type applies, like any other KjunAlert. */}
               {query.error}
-            </DsAlert>
+            </KjunAlert>
           )}
         </View>
         </DataStateContentContext.Provider>
@@ -155,11 +155,11 @@ export function DsDataState({
         <DataStateContentContext.Provider value="empty">
         <View style={{ paddingVertical: padding }}>
           {emptyContent || (
-            <DsEmpty text={emptyText} icon={emptyIcon}>
+            <KjunEmpty text={emptyText} icon={emptyIcon}>
               {emptyActionText && (
-                <DsButton onPress={onEmptyAction}>{emptyActionText}</DsButton>
+                <KjunButton onPress={onEmptyAction}>{emptyActionText}</KjunButton>
               )}
-            </DsEmpty>
+            </KjunEmpty>
           )}
         </View>
         </DataStateContentContext.Provider>
@@ -192,13 +192,13 @@ export function DsDataState({
         <DataStateContentContext.Provider value="message">
         <View style={{ marginTop: tokens.dimension.value12 }}>
         {/* Retry sits in the actions slot like the blocking error; the sm alert sizes the button. */}
-        <DsAlert type="warning" size="sm" actions={onRetry && (
-          <DsButton variant="secondary" onPress={onRetry}>
+        <KjunAlert type="warning" size="sm" actions={onRetry && (
+          <KjunButton variant="secondary" onPress={onRetry}>
             {retryText}
-          </DsButton>
+          </KjunButton>
         )}>
           {`${visibleRefreshError} · 이전 조회 결과를 표시하고 있습니다.`}
-        </DsAlert>
+        </KjunAlert>
         </View>
         </DataStateContentContext.Provider>
       )}
@@ -209,15 +209,15 @@ function BoundaryDescription() {
   const { colors } = useKjunStyles();
   return <KText style={{ ...typeStyle({ ...tokens.typography.caption, fontSizePx: tokens.extensions.state.descriptionSize }), color:colors.textSecondary, textAlign:"center" }}>다시 시도하면 문제가 해결될 수 있습니다.</KText>;
 }
-export interface DsErrorBoundaryProps {
+export interface KjunErrorBoundaryProps {
   children: ReactNode;
   fallbackMessage?: string;
   fallback?: ReactNode;
   onError?: (error: Error, info: ErrorInfo) => void;
   onReset?: () => void;
 }
-export class DsErrorBoundary extends Component<
-  DsErrorBoundaryProps,
+export class KjunErrorBoundary extends Component<
+  KjunErrorBoundaryProps,
   { error: boolean }
 > {
   state = { error: false };
@@ -244,9 +244,9 @@ export class DsErrorBoundary extends Component<
             </KText>
             <BoundaryDescription />
             </View>
-            {/* DsButton hugs the start edge by default; the fallback centers it with its text.
+            {/* KjunButton hugs the start edge by default; the fallback centers it with its text.
                 It resets the boundary rather than reloading the page, like DataState's retry. */}
-            <DsButton
+            <KjunButton
               style={{ alignSelf: "center" }}
               onPress={() => {
                 this.setState({ error: false });
@@ -254,7 +254,7 @@ export class DsErrorBoundary extends Component<
               }}
             >
               다시 시도
-            </DsButton>
+            </KjunButton>
           </View>
         )
       : this.props.children;

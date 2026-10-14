@@ -11,7 +11,7 @@ import { componentMixins } from "../../component-mixins.js";
 import { createNumberMotion } from "../../../../../shared/package-runtime/number-motion.ts";
 export default {
   mixins: componentMixins,
-  name: 'AnimatedNumber',
+  name: 'KjunAnimatedNumber',
   props: {
     value: { type: [Number, String], required: true },
     decimals: { type: Number, default: 0 },

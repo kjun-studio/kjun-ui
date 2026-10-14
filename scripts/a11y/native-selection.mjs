@@ -9,7 +9,7 @@ export async function nativeInputPopup(page) {
   return { input, dialog, active };
 }
 export async function nativeSelectionKeyboard(page, d, note) {
-  if (d.profile === 'search' || d.component === 'DsCombobox') {
+  if (d.profile === 'search' || d.component === 'KjunCombobox') {
     const { active, dialog } = await nativeInputPopup(page);
     if (d.profile === 'search') { await active.fill('AAA'); await expect(dialog.getByRole('radio')).toBeVisible(); }
     const before = await snapshot(page);
@@ -25,7 +25,7 @@ export async function nativeSelectionKeyboard(page, d, note) {
   }
 }
 export async function nativeSelectionFocus(page, d, note) {
-  if (d.profile === 'search' || d.component === 'DsCombobox') {
+  if (d.profile === 'search' || d.component === 'KjunCombobox') {
     const { input, dialog, active } = await nativeInputPopup(page);
     await expect(active).toBeFocused(); note('입력 포커스가 Modal 내부 입력으로 이동');
     await page.keyboard.press('Escape'); await expect(dialog).not.toBeVisible(); await expect(input).toBeFocused();

@@ -15,12 +15,12 @@ ScrollView,
 View,
 useWindowDimensions
 } from "react-native";
-import { DsButton, DsIcon } from "./button";
+import { KjunButton, KjunIcon } from "./button";
 import { KText,content } from "./internal";
 import { ScopedNativeModal } from "./overlay-host";
 import { useKjunStyles } from "./provider";
 
-export interface DsDrawerProps {
+export interface KjunDrawerProps {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   title?: string;
@@ -36,7 +36,7 @@ export interface DsDrawerProps {
   onClose?: () => void;
   ariaLabel?: string;
 }
-export function DsDrawer({
+export function KjunDrawer({
   open,
   onOpenChange,
   title,
@@ -51,7 +51,7 @@ export function DsDrawer({
   children,
   onClose,
   ariaLabel,
-}: DsDrawerProps) {
+}: KjunDrawerProps) {
   const { colors } = useKjunStyles(),
     window = useWindowDimensions(),
     vertical = position === "left" || position === "right";
@@ -141,13 +141,13 @@ export function DsDrawer({
                 )}
               </View>
               {closable && (
-                <DsButton
+                <KjunButton
                   size="sm"
                   variant="ghost"
                   ariaLabel="닫기"
                   onPress={close}
                   style={{ borderRadius: tokens.extensions.drawer.closeRadius, width: tokens.extensions.drawer.closeSize, height: tokens.extensions.drawer.closeSize, paddingHorizontal: 0, paddingVertical: 0 }}
-                ><DsIcon name="x" size={tokens.extensions.drawer.closeIconSize} /></DsButton>
+                ><KjunIcon name="x" size={tokens.extensions.drawer.closeIconSize} /></KjunButton>
               )}
             </View>
           )}

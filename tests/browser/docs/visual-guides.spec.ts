@@ -31,7 +31,7 @@ for (const platform of platforms) {
         await expect(card.locator(".guide-running")).toHaveAttribute("data-ready", "true");
         await expect(card.locator(".guide-running")).toHaveAttribute("data-platform", platform);
         const frame = card.frameLocator("iframe");
-        if (name === "DsModal") {
+        if (name === "KjunModal") {
           await frame.getByRole("button", { name: "모달 열기", exact: true }).click();
           await expect(frame.getByRole("dialog").last()).toBeVisible();
           await expect
@@ -47,7 +47,7 @@ for (const platform of platforms) {
           await frame.getByRole("button", { name: "취소", exact: true }).click();
           await expect(frame.getByRole("dialog")).toHaveCount(0);
         }
-        if (name === "DsSelect") {
+        if (name === "KjunSelect") {
           await frame
             .getByRole(platform === "vue2" ? "combobox" : "button", {
               name: platform === "native" ? "자산 선택" : "공개 범위",
@@ -88,7 +88,7 @@ for (const platform of platforms) {
     await expect(anatomy.locator(".anatomy-graphic img")).toHaveCount(2);
     await expect(anatomy.locator(".anatomy-graphic img").first()).toHaveAttribute(
       "src",
-      new RegExp(platform + "-DsSelect"),
+      new RegExp(platform + "-KjunSelect"),
     );
     await expect(anatomy.locator(".anatomy-graphic img").first()).toBeVisible();
     await expect(anatomy.getByRole("button", { name: "도해 크게 보기" })).toHaveCount(0);
@@ -102,7 +102,7 @@ for (const platform of platforms) {
     await expect(page.locator("#anatomy")).toContainText("hint 대신 표시");
     await expect(page.locator("#anatomy .anatomy-graphic img").last()).toHaveAttribute(
       "src",
-      new RegExp(platform + "-DsFormGroup-error"),
+      new RegExp(platform + "-KjunFormGroup-error"),
     );
   });
   test(`${platform} composition form validates, saves, copies initial implementation and resets`, async ({
@@ -189,7 +189,7 @@ test("state previews load on demand in compact frames and a failed anatomy image
   expect(
     await card.locator("iframe").evaluate((f) => f.getBoundingClientRect().height),
   ).toBeLessThan(250);
-  await page.route("**/guide-figures/*DsButton*.png*", (route) => route.abort());
+  await page.route("**/guide-figures/*KjunButton*.png*", (route) => route.abort());
   await page.reload();
   await expect(page.getByRole('button', { name: '문서 플랫폼', exact: true })).toBeEnabled({ timeout: 30000 });
   await page.locator("#anatomy").scrollIntoViewIfNeeded();

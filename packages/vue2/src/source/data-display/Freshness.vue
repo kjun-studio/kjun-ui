@@ -1,18 +1,18 @@
 <template>
   <!-- Like React and Native: a focusable tooltip target, so keyboard and touch reach the fetch time. -->
-  <DsTooltip v-if="stale" :content="title">
-    <span tabindex="0" class="kjun-freshness"><DsBadge variant="warning" size="xs">{{ label }}</DsBadge></span>
-  </DsTooltip>
+  <KjunTooltip v-if="stale" :content="title">
+    <span tabindex="0" class="kjun-freshness"><KjunBadge variant="warning" size="xs">{{ label }}</KjunBadge></span>
+  </KjunTooltip>
 </template>
 
 <script>
-import DsBadge from "../primitives/Badge.vue";
-import DsTooltip from "./Tooltip.vue";
+import KjunBadge from "../primitives/Badge.vue";
+import KjunTooltip from "./Tooltip.vue";
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  components: { DsBadge, DsTooltip },
-  name: 'DsFreshness',
+  components: { KjunBadge, KjunTooltip },
+  name: 'KjunFreshness',
   props: {
     stale: { type: Boolean, default: false },
     source: { type: String, default: null },

@@ -18,7 +18,7 @@
             aria-label="닫기"
             @click.stop="close"
           >
-            <DsIcon name="x" size="var(--_kjun-extension-drawer-close-icon-size)" />
+            <KjunIcon name="x" size="var(--_kjun-extension-drawer-close-icon-size)" />
           </button>
         </div>
 
@@ -38,15 +38,15 @@
 <script>
 import { tokens } from "@kjun-ui/tokens";
 import { layerMotion } from "../../adapters/layer-motion.js";
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { createFocusTrap } from '../../focusTrap'
 import { createBodyScrollLock } from '../../bodyScrollLock'
 
 export default {
   mixins: [...componentMixins, layerMotion("drawer")],
-  components: { DsIcon },
-  name: 'DsDrawer',
+  components: { KjunIcon },
+  name: 'KjunDrawer',
   props: {
     value: {
       type: Boolean,

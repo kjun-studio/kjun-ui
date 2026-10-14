@@ -2,9 +2,9 @@
 import Link from '@/components/docs/doc-link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { DsInput as Input } from '@kjun-ui/react';
-import { DsButton as Button } from '@kjun-ui/react';
-import { DsCard as Card } from '@kjun-ui/react';
+import { KjunInput as Input } from '@kjun-ui/react';
+import { KjunButton as Button } from '@kjun-ui/react';
+import { KjunCard as Card } from '@kjun-ui/react';
 import { categories, components, categoryFor, searchDocuments, type DiscoveryDocument } from '@/lib/discovery';
 
 function GalleryCard({ document }: { document: DiscoveryDocument }) {
@@ -22,7 +22,7 @@ function GalleryCard({ document }: { document: DiscoveryDocument }) {
       <div className="gallery-card-content">
         <span className="gallery-card-category">{categoryFor(document.category)?.label}</span>
         <h2>{document.title}</h2><p>{document.description}</p>
-        {document.parent && <span className="gallery-parent">{document.parent.slice(2)}의 구성 요소</span>}
+        {document.parent && <span className="gallery-parent">{document.parent.replace(/^Kjun/, '')}의 구성 요소</span>}
       </div>
     </Card>
   </Link>;

@@ -12,7 +12,7 @@ type TextInputProps
 import { useKjunField } from "./input";
 import { useKjunStyles } from "./provider";
 
-export interface DsTextareaProps extends TextInputProps {
+export interface KjunTextareaProps extends TextInputProps {
   size?: InputSize;
   value: string;
   error?: boolean;
@@ -21,8 +21,8 @@ export interface DsTextareaProps extends TextInputProps {
   readonly?: boolean;
   ariaLabel?: string;
 }
-export const DsTextarea = forwardRef<TextInput, DsTextareaProps>(
-  function DsTextarea(
+export const KjunTextarea = forwardRef<TextInput, KjunTextareaProps>(
+  function KjunTextarea(
     {
       value,
       size = "md",

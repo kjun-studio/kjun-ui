@@ -81,7 +81,7 @@ export async function verifyLabeling(page, d, note) {
   }
   if (profile === 'feedback') return feedbackLabeling(page, note);
   if (['select', 'time', 'search'].includes(profile)) {
-    if (d.platform === 'native' && (profile === 'search' || d.component === 'DsCombobox')) {
+    if (d.platform === 'native' && (profile === 'search' || d.component === 'KjunCombobox')) {
       const { active } = await nativeInputPopup(page);
       if (profile === 'search') { await active.fill('AAA'); await expect(page.getByRole('radio')).toBeVisible(); }
     } else if (profile === 'search') {
@@ -98,7 +98,7 @@ export async function verifyLabeling(page, d, note) {
   if (profile === 'data-state') await page.getByRole('button', { name: '조회 실패', exact: true }).click();
   await namedControls(page); note('실제 컨트롤의 이름과 모든 ID 참조 확인');
   // Field-like wrappers additionally exercise their public error state; this does not claim FormGroup propagation.
-  if (['select', 'search', 'date', 'time', 'stepper'].includes(profile) && d.component !== 'DsCombobox') {
+  if (['select', 'search', 'date', 'time', 'stepper'].includes(profile) && d.component !== 'KjunCombobox') {
     await configure(page, { error: true });
     const field = profile === 'stepper' ? page.getByRole('spinbutton') : controls(page).first();
     await expect(field).toHaveAttribute('aria-invalid', 'true');

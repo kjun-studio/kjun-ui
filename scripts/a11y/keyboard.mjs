@@ -176,7 +176,7 @@ export async function verifyKeyboard(page, d, note) {
   if (profile === 'choice') target = page.getByRole('button', { name: '체리', exact: true });
   if (profile === 'pagination') target = page.getByRole('button', { name: /다음/ }).first();
   if (profile === 'bottom-nav') target = page.getByRole('link', { name: /활동/ }).or(page.getByRole('button', { name: /활동/ })).first();
-  if (profile === 'market') target = component === 'DsMarketCards' ? page.getByRole('button', { name: '변동', exact: true }) : controls(page).first();
+  if (profile === 'market') target = component === 'KjunMarketCards' ? page.getByRole('button', { name: '변동', exact: true }) : controls(page).first();
   const before = await snapshot(page), eventCount = await events(page);
   await activate(page, target, ['checked', 'toggle', 'choice'].includes(profile) ? 'Space' : 'Enter');
   await expect.poll(() => events(page)).toBeGreaterThan(eventCount);

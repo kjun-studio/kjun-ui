@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { DsButton as Button, DsIcon as Icon, DsTabs, DsTabPane } from '@kjun-ui/react';
+import { KjunButton as Button, KjunIcon as Icon, KjunTabs, KjunTabPane } from '@kjun-ui/react';
 import Link from './doc-link';
 import { useDocsPlatform, PlatformLoading } from './docs-platform';
 import { useCatalog } from './use-catalog';
@@ -19,13 +19,13 @@ export function MotionPlayground() {
   const { platform } = useDocsPlatform();
   const [selected, setSelected] = useState(motionScenarios[0].scenario.id);
   return <div className="motion-playground">
-    <DsTabs value={selected} onValueChange={setSelected} density="compact" ariaLabel="모션 예제">
-      {motionScenarios.map(entry => <DsTabPane key={entry.scenario.id} name={entry.scenario.id} label={entry.tab} disabled={!platform}>
+    <KjunTabs value={selected} onValueChange={setSelected} density="compact" ariaLabel="모션 예제">
+      {motionScenarios.map(entry => <KjunTabPane key={entry.scenario.id} name={entry.scenario.id} label={entry.tab} disabled={!platform}>
         {selected === entry.scenario.id && (platform
           ? <MotionPreview key={platform + selected} entry={entry} platform={platform} />
           : <div className="motion-playground-loading"><PlatformLoading /></div>)}
-      </DsTabPane>)}
-    </DsTabs>
+      </KjunTabPane>)}
+    </KjunTabs>
   </div>;
 }
 

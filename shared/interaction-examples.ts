@@ -2,7 +2,7 @@ import type { GuideCase } from './visual-guides/types';
 export const interactionExampleNames = ['GuideInteractionTabs', 'GuideInteractionInput', 'GuideInteractionLoading'];
 // The page, copied source and packed compilation use these same definitions.
 export const interactionScenarios: { name: string; destination: string; scenario: GuideCase }[] = [
-  { name: 'DsButton', destination: '/components/button#states', scenario: {
+  { name: 'KjunButton', destination: '/components/button#states', scenario: {
     id: 'interaction-button', label: 'Button · 조작과 실행',
     description: '마우스를 올리고 누른 채 유지한 뒤 놓아 보세요. 버튼 밖에서 놓으면 실행하지 않습니다. Tab으로 들어와 Enter·Space로도 실행 횟수를 확인하세요.',
     values: { count: 0 },

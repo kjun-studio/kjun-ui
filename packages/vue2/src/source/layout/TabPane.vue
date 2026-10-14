@@ -15,7 +15,7 @@ import { panelNeedsFocus } from "../../../../../shared/package-runtime/tab-keybo
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  name: 'DsTabPane',
+  name: 'KjunTabPane',
   inject: ['tabsContainer'],
   props: {
     name: {

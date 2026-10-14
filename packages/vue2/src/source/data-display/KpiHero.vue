@@ -4,12 +4,12 @@
       <div class="kjun-kpi-hero__main">
         <div class="kjun-kpi-hero__label">{{ label }}</div>
         <div class="kjun-kpi-hero__value kjun-type-display-sm"
-          ><DsSkeleton v-if="loading" type="block" height="1lh" width="7ch" /><template v-else><span v-if="prefix" class="kjun-kpi-hero__affix">{{ prefix }}</span
-          ><DsAnimatedNumber class="kjun-kpi-hero__num" :value="value" :decimals="decimals" :animated="animated" :formatter="formatter"
+          ><KjunSkeleton v-if="loading" type="block" height="1lh" width="7ch" /><template v-else><span v-if="prefix" class="kjun-kpi-hero__affix">{{ prefix }}</span
+          ><KjunAnimatedNumber class="kjun-kpi-hero__num" :value="value" :decimals="decimals" :animated="animated" :formatter="formatter"
           /><span v-if="suffix" class="kjun-kpi-hero__affix">{{ suffix }}</span
         ></template></div>
         <div v-if="showDelta" class="kjun-kpi-hero__delta-line">
-          <DsSkeleton v-if="loading" type="block" height="1lh" width="var(--_kjun-extension-kpi-hero-delta-skeleton-width)" class="kjun-kpi-hero__delta-abs" />
+          <KjunSkeleton v-if="loading" type="block" height="1lh" width="var(--_kjun-extension-kpi-hero-delta-skeleton-width)" class="kjun-kpi-hero__delta-abs" />
           <template v-else>
           <span v-if="deltaAbsolute !== null" :class="absoluteColorClass" class="kjun-kpi-hero__delta-abs">
             <template v-if="deltaFormatter">{{ deltaAbsoluteFormatted }}</template><template v-else>{{ deltaSign(deltaAbsolute) }}<span v-if="prefix" class="kjun-number-affix" data-side="prefix">{{ prefix }}</span>{{ deltaAbsoluteFormatted }}</template>
@@ -30,19 +30,19 @@
       <div v-for="(item, idx) in secondary" :key="idx" class="kjun-kpi-hero__sec-item">
         <div class="kjun-kpi-hero__sec-label">{{ item.label }}</div>
         <div :class="secondaryValueClass(item)" class="kjun-kpi-hero__sec-value"
-          ><DsSkeleton v-if="loading" type="block" height="1lh" width="5ch" /><template v-else><span v-if="item.prefix" class="kjun-kpi-hero__sec-affix">{{ item.prefix }}</span
+          ><KjunSkeleton v-if="loading" type="block" height="1lh" width="5ch" /><template v-else><span v-if="item.prefix" class="kjun-kpi-hero__sec-affix">{{ item.prefix }}</span
           ><span class="kjun-kpi-hero__sec-num">{{ formatSecondary(item) }}</span
           ><span v-if="item.suffix" class="kjun-kpi-hero__sec-affix">{{ item.suffix }}</span
         ></template></div>
-        <div v-if="item.desc" :class="item.descClass || 'kj-text-text-tertiary'" class="kjun-kpi-hero__sec-desc"><DsSkeleton v-if="loading" type="block" width="7ch" height="1lh" /><template v-else>{{ item.desc }}</template></div>
+        <div v-if="item.desc" :class="item.descClass || 'kj-text-text-tertiary'" class="kjun-kpi-hero__sec-desc"><KjunSkeleton v-if="loading" type="block" width="7ch" height="1lh" /><template v-else>{{ item.desc }}</template></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import DsAnimatedNumber from "./AnimatedNumber.vue";
-import DsSkeleton from "./Skeleton.vue";
+import KjunAnimatedNumber from "./AnimatedNumber.vue";
+import KjunSkeleton from "./Skeleton.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { domainColorMixin } from "../../domain-colors.js";
 import { resolveSemanticColor, resolveSemanticColorForLight } from './_kpiFormat'
@@ -50,8 +50,8 @@ import { resolveSemanticColor, resolveSemanticColorForLight } from './_kpiFormat
 export default {
   mixins: [...componentMixins, domainColorMixin(vm => !vm.loading && (Number(vm.deltaAbsolute) !== 0 || Number(vm.deltaPercent) !== 0 ||
     vm.secondary.some(item => item.semantic === 'price' && Number(item.value) !== 0)))],
-  components: { DsAnimatedNumber, DsSkeleton },
-  name: 'KpiHero',
+  components: { KjunAnimatedNumber, KjunSkeleton },
+  name: 'KjunKpiHero',
   props: {
     loading: { type: Boolean, default: false },
     formatter: { type: Function, default: null },

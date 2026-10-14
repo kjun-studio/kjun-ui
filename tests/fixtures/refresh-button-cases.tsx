@@ -7,9 +7,9 @@ export function RefreshButtonCases({ K }: { K: any }) {
   useLayoutEffect(() => { Object.assign(window, { configureRefresh: (next: object) => setConfig((old: object) => ({ ...old, ...next })) }); }, []);
   const box = (id: string, children: any) => <div data-testid={id} style={{ width: config.block ? 300 : undefined }}>{children}</div>;
   return <div style={refreshStyle}>
-    {box('icon', <K.DsRefreshButton {...config} targetName="목록" onRefresh={() => setEvents(n => n + 1)} />)}
-    {box('text', <K.DsRefreshButton {...config} mode="text" targetName="목록" onRefresh={() => setEvents(n => n + 1)} />)}
-    {box('reference', <K.DsButton {...config} prefixIcon="refresh">새로고침</K.DsButton>)}
+    {box('icon', <K.KjunRefreshButton {...config} targetName="목록" onRefresh={() => setEvents(n => n + 1)} />)}
+    {box('text', <K.KjunRefreshButton {...config} mode="text" targetName="목록" onRefresh={() => setEvents(n => n + 1)} />)}
+    {box('reference', <K.KjunButton {...config} prefixIcon="refresh">새로고침</K.KjunButton>)}
     <button data-testid="outside">바깥 버튼</button>
     <output data-testid="events">{events}</output>
     <output data-testid="config" hidden>{JSON.stringify(config)}</output>

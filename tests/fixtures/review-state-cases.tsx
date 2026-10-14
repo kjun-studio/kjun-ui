@@ -23,25 +23,25 @@ export function StateCases({ K, native = false }: { K: any; native?: boolean }) 
   const emit = (name: string, value?: unknown) => setEvents(old => [...old, [name, value]]);
   Object.assign(window, { configureState: update, resetStateEvents: () => setEvents([]) });
   const kind = new URLSearchParams(location.search).get("case") || "select";
-  const button = (label: string) => <K.DsButton>{label}</K.DsButton>;
-  const select = <K.DsSelect value={config.value} options={config.options} ariaLabel="Choose" searchable
+  const button = (label: string) => <K.KjunButton>{label}</K.KjunButton>;
+  const select = <K.KjunSelect value={config.value} options={config.options} ariaLabel="Choose" searchable
     open={config.controlled ? config.open : undefined} disabled={config.disabled} optionPageSize={config.pageSize} multiple={config.multiple}
     onOpenChange={(open: boolean) => { emit("open", open); if (config.accept) update({ open }); }}
     onSearch={(q: string) => emit("search", q)} renderOption={(option: typeof options[number]) => <Option option={option} native={native} />}
     onValueChange={(value: unknown) => { emit("value", value); if (config.accept) update({ value }); }} onChange={(value: unknown) => emit("change", value)} />;
   return <>
     {kind === "select" && select}
-    {kind === "modal" && <K.DsModal open title="Editor" onOpenChange={() => emit("modal")}>{select}</K.DsModal>}
-    {kind === "tabs" && <K.DsTabs value={config.tabValue} items={config.compound ? undefined : config.tabs}
+    {kind === "modal" && <K.KjunModal open title="Editor" onOpenChange={() => emit("modal")}>{select}</K.KjunModal>}
+    {kind === "tabs" && <K.KjunTabs value={config.tabValue} items={config.compound ? undefined : config.tabs}
       onValueChange={(value: string) => { emit("value", value); if (config.accept) update({ tabValue: value }); }} onChange={(value: string) => emit("change", value)}>
-      {config.compound && config.tabs.map(tab => <K.DsTabPane key={tab.name} {...tab}>{tab.label} content</K.DsTabPane>)}
-    </K.DsTabs>}
-    {kind === "accordion" && <K.DsAccordion multiple={config.accordionMultiple}>
-      {config.children.map(title => <K.DsAccordionItem key={title} title={title} defaultOpen={config.defaults}>{title} content</K.DsAccordionItem>)}
-    </K.DsAccordion>}
-    {kind === "dropdown" && <K.DsDropdown trigger={button("Menu")} onOpen={() => emit("open")} onClose={() => emit("close")}>
-      <K.DsDropdownItem onClick={() => emit("action")}>Action</K.DsDropdownItem>
-    </K.DsDropdown>}
+      {config.compound && config.tabs.map(tab => <K.KjunTabPane key={tab.name} {...tab}>{tab.label} content</K.KjunTabPane>)}
+    </K.KjunTabs>}
+    {kind === "accordion" && <K.KjunAccordion multiple={config.accordionMultiple}>
+      {config.children.map(title => <K.KjunAccordionItem key={title} title={title} defaultOpen={config.defaults}>{title} content</K.KjunAccordionItem>)}
+    </K.KjunAccordion>}
+    {kind === "dropdown" && <K.KjunDropdown trigger={button("Menu")} onOpen={() => emit("open")} onClose={() => emit("close")}>
+      <K.KjunDropdownItem onClick={() => emit("action")}>Action</K.KjunDropdownItem>
+    </K.KjunDropdown>}
     <button style={{ marginTop: 40 }} onClick={() => {}}>Outside</button>
     <output data-testid="events">{JSON.stringify(events)}</output>
   </>;

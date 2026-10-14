@@ -1,12 +1,12 @@
-export { DsDrawer } from "./drawer";
-export type { DsDrawerProps } from "./drawer";
+export { KjunDrawer } from "./drawer";
+export type { KjunDrawerProps } from "./drawer";
 export {
-DsDropdown,DsDropdownDivider,DsDropdownItem,DsMenuButton
+KjunDropdown,KjunDropdownDivider,KjunDropdownItem,KjunMenuButton
 } from "./dropdown";
 export type {
-DsDropdownItemProps,DsDropdownProps,DsMenuButtonProps
+KjunDropdownItemProps,KjunDropdownProps,KjunMenuButtonProps
 } from "./dropdown";
 export { FloatingPanel } from "./floating-panel";
 export type { Placement } from "./floating-panel";
-export { DsPopover,DsTooltip } from "./popover";
-export type { DsPopoverProps,DsTooltipProps } from "./popover";
+export { KjunPopover,KjunTooltip } from "./popover";
+export type { KjunPopoverProps,KjunTooltipProps } from "./popover";

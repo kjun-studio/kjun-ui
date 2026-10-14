@@ -13,7 +13,7 @@ import { SIZES_EXTENDED, SEMANTIC_VARIANTS, oneOf } from '../tokens'
 
 export default {
   mixins: [...componentMixins, domainColorMixin(vm => vm.variant.startsWith('price-'))],
-  name: 'DsBadge',
+  name: 'KjunBadge',
   props: {
     variant: {
       type: String,

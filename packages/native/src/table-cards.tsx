@@ -4,7 +4,7 @@ import {
 View
 } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsSkeleton } from "./display";
+import { KjunSkeleton } from "./display";
 import { KText,content } from "./internal";
 import { useKjunStyles } from "./provider";
 import type { TableCardsProps } from "../../../shared/package-runtime/table-presentation";
@@ -16,7 +16,7 @@ export function TableCards<Row extends object>({ initialLoading, skeletonRows, s
     <View style={{ gap: tokens.extensions.tableCard.gap, padding: tokens.extensions.tableCard.listPadding }}>
       {initialLoading
         ? Array.from({ length: skeletonRows }, (_, i) => (
-            <DsSkeleton key={i} type="card" />
+            <KjunSkeleton key={i} type="card" />
           ))
         : state.rows.map((row, i) => (
             <Pressable
@@ -153,7 +153,7 @@ export function TableCards<Row extends object>({ initialLoading, skeletonRows, s
                     alignItems: "flex-end",
                   }}
                 >
-                  {/* The wrapper holds the end edge; a DsButton's own flex-start would otherwise pull it left. */}
+                  {/* The wrapper holds the end edge; a KjunButton's own flex-start would otherwise pull it left. */}
                   <View style={{ alignSelf: "flex-end" }}>{cell(actions, row, i)}</View>
                 </View>
               )}

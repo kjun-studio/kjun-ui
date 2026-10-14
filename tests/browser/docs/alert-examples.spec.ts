@@ -9,10 +9,10 @@ for (const platform of ['react', 'vue2', 'native'] as const) for (const mode of 
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
     const entries: Record<string, string> = {};
-    const presets = exampleDefinition('DsAlert').presets;
+    const presets = exampleDefinition('KjunAlert').presets;
     for (const preset of presets) {
-      const config = presetConfig('DsAlert', preset.id), id = 'alert-' + mode + '-' + preset.id;
-      entries[id] = await prepareExample(platform, 'DsAlert', id, config.settings, config.values, 'default', undefined, mode);
+      const config = presetConfig('KjunAlert', preset.id), id = 'alert-' + mode + '-' + preset.id;
+      entries[id] = await prepareExample(platform, 'KjunAlert', id, config.settings, config.values, 'default', undefined, mode);
     }
     await compileEntries(platform, entries);
     await page.route('**/previews/export-checks/**', async route => {
@@ -29,7 +29,7 @@ for (const platform of ['react', 'vue2', 'native'] as const) for (const mode of 
         await expect(page.getByText('재시도 요청', { exact: true })).toBeVisible();
       }
       const close = page.getByRole('button', { name: /닫기/ });
-      await expect(close).toHaveCSS('width', presetConfig('DsAlert', preset.id).settings.size === 'sm' ? '24px' : '28px');
+      await expect(close).toHaveCSS('width', presetConfig('KjunAlert', preset.id).settings.size === 'sm' ? '24px' : '28px');
       await close.press('Enter');
       await expect(page.getByText('알림 닫힘', { exact: true })).toBeVisible();
       await expect(close).toHaveCount(0);

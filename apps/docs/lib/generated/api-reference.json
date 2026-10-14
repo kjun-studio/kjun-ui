@@ -1,6 +1,6 @@
 {
   "components": {
-    "DsAnimatedNumber": {
+    "KjunAnimatedNumber": {
       "vue2": {
         "props": [
           {
@@ -242,7 +242,7 @@
         "types": []
       }
     },
-    "DsChartSkeleton": {
+    "KjunChartSkeleton": {
       "vue2": {
         "props": [
           {
@@ -358,7 +358,7 @@
         "types": []
       }
     },
-    "DsCollectionMark": {
+    "KjunCollectionMark": {
       "vue2": {
         "props": [
           {
@@ -474,7 +474,7 @@
         "types": []
       }
     },
-    "DsDeviation": {
+    "KjunDeviation": {
       "vue2": {
         "props": [
           {
@@ -635,7 +635,7 @@
         "types": []
       }
     },
-    "DsEmpty": {
+    "KjunEmpty": {
       "vue2": {
         "props": [
           {
@@ -778,7 +778,7 @@
         "types": []
       }
     },
-    "DsExecutionStatusBadge": {
+    "KjunExecutionStatusBadge": {
       "vue2": {
         "props": [
           {
@@ -894,7 +894,7 @@
         "types": []
       }
     },
-    "DsFormSkeleton": {
+    "KjunFormSkeleton": {
       "vue2": {
         "props": [
           {
@@ -1037,7 +1037,7 @@
         "types": []
       }
     },
-    "DsFreshness": {
+    "KjunFreshness": {
       "vue2": {
         "props": [
           {
@@ -1171,7 +1171,7 @@
         "types": []
       }
     },
-    "DsHeatmapCell": {
+    "KjunHeatmapCell": {
       "vue2": {
         "props": [
           {
@@ -1368,7 +1368,7 @@
         "types": []
       }
     },
-    "DsKpiHero": {
+    "KjunKpiHero": {
       "vue2": {
         "props": [
           {
@@ -1826,7 +1826,7 @@
         "types": []
       }
     },
-    "DsKpiRow": {
+    "KjunKpiRow": {
       "vue2": {
         "props": [
           {
@@ -2012,7 +2012,7 @@
         "types": []
       }
     },
-    "DsListSkeleton": {
+    "KjunListSkeleton": {
       "vue2": {
         "props": [
           {
@@ -2182,7 +2182,7 @@
         "types": []
       }
     },
-    "DsMarketCards": {
+    "KjunMarketCards": {
       "vue2": {
         "props": [
           {
@@ -3332,7 +3332,7 @@
         "types": []
       }
     },
-    "DsMarketSimpleList": {
+    "KjunMarketSimpleList": {
       "vue2": {
         "props": [
           {
@@ -4237,7 +4237,7 @@
         "types": []
       }
     },
-    "DsMarketTable": {
+    "KjunMarketTable": {
       "vue2": {
         "props": [
           {
@@ -5321,7 +5321,7 @@
         "types": []
       }
     },
-    "DsMarketTableSkeleton": {
+    "KjunMarketTableSkeleton": {
       "vue2": {
         "props": [
           {
@@ -5473,7 +5473,7 @@
         "types": []
       }
     },
-    "DsPopover": {
+    "KjunPopover": {
       "vue2": {
         "props": [
           {
@@ -5846,7 +5846,7 @@
         "types": []
       }
     },
-    "DsPriceCell": {
+    "KjunPriceCell": {
       "vue2": {
         "props": [
           {
@@ -6088,7 +6088,7 @@
         "types": []
       }
     },
-    "DsProgressCell": {
+    "KjunProgressCell": {
       "vue2": {
         "props": [
           {
@@ -6285,7 +6285,7 @@
         "types": []
       }
     },
-    "DsSignedValue": {
+    "KjunSignedValue": {
       "vue2": {
         "props": [
           {
@@ -6644,7 +6644,7 @@
         "types": []
       }
     },
-    "DsSkeleton": {
+    "KjunSkeleton": {
       "vue2": {
         "props": [
           {
@@ -6868,7 +6868,7 @@
         "types": []
       }
     },
-    "DsSparkline": {
+    "KjunSparkline": {
       "vue2": {
         "props": [
           {
@@ -7137,7 +7137,7 @@
         "types": []
       }
     },
-    "DsTable": {
+    "KjunTable": {
       "vue2": {
         "props": [
           {
@@ -9593,7 +9593,7 @@
         ]
       }
     },
-    "DsTooltip": {
+    "KjunTooltip": {
       "vue2": {
         "props": [
           {
@@ -9754,7 +9754,7 @@
         "types": []
       }
     },
-    "DsAlert": {
+    "KjunAlert": {
       "vue2": {
         "props": [
           {
@@ -9910,8 +9910,8 @@
             "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "Buttons placed under the message; unsized DsButtons follow the alert size.",
-            "summary": "본문 아래 행동 영역입니다. size를 생략한 DsButton은 sm 알림에서 xs, md 알림에서 sm 크기를 사용하고, secondary는 surface 배경을 사용합니다. 직접 지정한 size가 우선합니다.",
+            "description": "Buttons placed under the message; unsized KjunButtons follow the alert size.",
+            "summary": "본문 아래 행동 영역입니다. size를 생략한 KjunButton은 sm 알림에서 xs, md 알림에서 sm 크기를 사용하고, secondary는 surface 배경을 사용합니다. 직접 지정한 size가 우선합니다.",
             "source": "packages/react/src/display.tsx"
           },
           {
@@ -9990,8 +9990,8 @@
             "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "Buttons placed under the message; unsized DsButtons follow the alert size.",
-            "summary": "본문 아래 행동 영역입니다. size를 생략한 DsButton은 sm 알림에서 xs, md 알림에서 sm 크기를 사용하고, secondary는 surface 배경을 사용합니다. 직접 지정한 size가 우선합니다.",
+            "description": "Buttons placed under the message; unsized KjunButtons follow the alert size.",
+            "summary": "본문 아래 행동 영역입니다. size를 생략한 KjunButton은 sm 알림에서 xs, md 알림에서 sm 크기를 사용하고, secondary는 surface 배경을 사용합니다. 직접 지정한 size가 우선합니다.",
             "source": "packages/native/src/display-primitives.tsx"
           },
           {
@@ -10010,7 +10010,7 @@
         "types": []
       }
     },
-    "DsDataState": {
+    "KjunDataState": {
       "vue2": {
         "props": [
           {
@@ -10263,7 +10263,7 @@
             "details": [
               {
                 "label": "구성",
-                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 DsEmpty에는 여백을 중복 적용하지 않습니다."
+                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않습니다."
               }
             ],
             "source": "packages/vue2/src/source/feedback/DataState.vue",
@@ -10405,7 +10405,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "DataState가 size에 따른 바깥 여백을 담당합니다. 슬롯의 DsEmpty에는 기본 여백을 중복 적용하지 않습니다."
+                "text": "DataState가 size에 따른 바깥 여백을 담당합니다. 슬롯의 KjunEmpty에는 기본 여백을 중복 적용하지 않습니다."
               }
             ],
             "example": "/components/data-state#preview"
@@ -10580,7 +10580,7 @@
             "details": [
               {
                 "label": "구성",
-                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 DsEmpty에는 여백을 중복 적용하지 않습니다."
+                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않습니다."
               }
             ],
             "source": "packages/react/src/data-state.tsx",
@@ -10667,7 +10667,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "DataState가 size에 따른 바깥 여백을 담당합니다. 내부 DsEmpty에는 기본 여백을 중복 적용하지 않습니다."
+                "text": "DataState가 size에 따른 바깥 여백을 담당합니다. 내부 KjunEmpty에는 기본 여백을 중복 적용하지 않습니다."
               }
             ],
             "source": "packages/react/src/data-state.tsx",
@@ -11002,7 +11002,7 @@
             "details": [
               {
                 "label": "구성",
-                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 DsEmpty에는 여백을 중복 적용하지 않습니다."
+                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않습니다."
               }
             ],
             "source": "packages/native/src/data-state.tsx",
@@ -11089,7 +11089,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "DataState가 size에 따른 바깥 여백을 담당합니다. 내부 DsEmpty에는 기본 여백을 중복 적용하지 않습니다."
+                "text": "DataState가 size에 따른 바깥 여백을 담당합니다. 내부 KjunEmpty에는 기본 여백을 중복 적용하지 않습니다."
               }
             ],
             "source": "packages/native/src/data-state.tsx",
@@ -11282,7 +11282,7 @@
         "types": []
       }
     },
-    "DsErrorBoundary": {
+    "KjunErrorBoundary": {
       "vue2": {
         "props": [
           {
@@ -11415,7 +11415,7 @@
         "types": []
       }
     },
-    "DsProgress": {
+    "KjunProgress": {
       "vue2": {
         "props": [
           {
@@ -11639,7 +11639,7 @@
         "types": []
       }
     },
-    "DsSpinner": {
+    "KjunSpinner": {
       "vue2": {
         "props": [
           {
@@ -11737,7 +11737,7 @@
         "types": []
       }
     },
-    "DsSearchInput": {
+    "KjunSearchInput": {
       "vue2": {
         "props": [
           {
@@ -12832,7 +12832,7 @@
         ]
       }
     },
-    "DsCheckbox": {
+    "KjunCheckbox": {
       "vue2": {
         "props": [
           {
@@ -13096,7 +13096,7 @@
         "types": []
       }
     },
-    "DsCombobox": {
+    "KjunCombobox": {
       "vue2": {
         "props": [
           {
@@ -13582,7 +13582,7 @@
         "types": []
       }
     },
-    "DsDatePicker": {
+    "KjunDatePicker": {
       "vue2": {
         "props": [
           {
@@ -13981,7 +13981,7 @@
         "types": []
       }
     },
-    "DsFormActions": {
+    "KjunFormActions": {
       "vue2": {
         "props": [
           {
@@ -14335,7 +14335,7 @@
         "types": []
       }
     },
-    "DsFormGroup": {
+    "KjunFormGroup": {
       "vue2": {
         "props": [
           {
@@ -14456,7 +14456,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "DsInput·DsSelect·DsTextarea 등은 inject로 필드 맥락을 받습니다. 입력의 value와 변경 이벤트는 자식에 연결합니다."
+                "text": "KjunInput·KjunSelect·KjunTextarea 등은 inject로 필드 맥락을 받습니다. 입력의 value와 변경 이벤트는 자식에 연결합니다."
               }
             ],
             "example": "/components/form-group#preview"
@@ -14699,7 +14699,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "입력값과 onChangeText는 자식에 연결합니다. 여러 그룹의 간격은 DsFormLayout으로 구성할 수 있습니다."
+                "text": "입력값과 onChangeText는 자식에 연결합니다. 여러 그룹의 간격은 KjunFormLayout으로 구성할 수 있습니다."
               }
             ],
             "source": "packages/native/src/input.tsx",
@@ -14724,7 +14724,7 @@
         "types": []
       }
     },
-    "DsRadio": {
+    "KjunRadio": {
       "vue2": {
         "props": [
           {
@@ -14988,7 +14988,7 @@
         "types": []
       }
     },
-    "DsRadioGroup": {
+    "KjunRadioGroup": {
       "vue2": {
         "props": [
           {
@@ -15216,7 +15216,7 @@
         "types": []
       }
     },
-    "DsSelect": {
+    "KjunSelect": {
       "vue2": {
         "props": [
           {
@@ -16520,7 +16520,7 @@
         ]
       }
     },
-    "DsSwitch": {
+    "KjunSwitch": {
       "vue2": {
         "props": [
           {
@@ -16766,7 +16766,7 @@
         "types": []
       }
     },
-    "DsTextarea": {
+    "KjunTextarea": {
       "vue2": {
         "props": [
           {
@@ -17231,7 +17231,7 @@
         "types": []
       }
     },
-    "DsAccordion": {
+    "KjunAccordion": {
       "vue2": {
         "props": [
           {
@@ -17380,7 +17380,7 @@
         "types": []
       }
     },
-    "DsAccordionItem": {
+    "KjunAccordionItem": {
       "vue2": {
         "props": [
           {
@@ -17549,7 +17549,7 @@
         "types": []
       }
     },
-    "DsCard": {
+    "KjunCard": {
       "vue2": {
         "props": [
           {
@@ -18051,7 +18051,7 @@
         "types": []
       }
     },
-    "DsDrawer": {
+    "KjunDrawer": {
       "vue2": {
         "props": [
           {
@@ -18448,7 +18448,7 @@
         "types": []
       }
     },
-    "DsDropdown": {
+    "KjunDropdown": {
       "vue2": {
         "props": [
           {
@@ -18594,7 +18594,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "메뉴를 여는 단일 버튼 요소입니다. id·aria-haspopup·aria-expanded·aria-controls와 disabled를 실제 버튼에 전달합니다. 사용자 정의 버튼은 받은 속성을 DOM 버튼에 전달해야 합니다. DsTooltip으로 감싼 버튼도 지원합니다.",
+            "summary": "메뉴를 여는 단일 버튼 요소입니다. id·aria-haspopup·aria-expanded·aria-controls와 disabled를 실제 버튼에 전달합니다. 사용자 정의 버튼은 받은 속성을 DOM 버튼에 전달해야 합니다. KjunTooltip으로 감싼 버튼도 지원합니다.",
             "source": "packages/react/src/dropdown.tsx"
           },
           {
@@ -18718,7 +18718,7 @@
         "types": []
       }
     },
-    "DsDropdownDivider": {
+    "KjunDropdownDivider": {
       "vue2": {
         "props": [
           {
@@ -18751,7 +18751,7 @@
         "types": []
       }
     },
-    "DsDropdownItem": {
+    "KjunDropdownItem": {
       "vue2": {
         "props": [
           {
@@ -18973,7 +18973,7 @@
         "types": []
       }
     },
-    "DsMarketListPanel": {
+    "KjunMarketListPanel": {
       "vue2": {
         "props": [
           {
@@ -19061,7 +19061,7 @@
         "types": []
       }
     },
-    "DsModal": {
+    "KjunModal": {
       "vue2": {
         "props": [
           {
@@ -19785,7 +19785,7 @@
         "types": []
       }
     },
-    "DsTabPane": {
+    "KjunTabPane": {
       "vue2": {
         "props": [
           {
@@ -20000,7 +20000,7 @@
         "types": []
       }
     },
-    "DsTabs": {
+    "KjunTabs": {
       "vue2": {
         "props": [
           {
@@ -20329,7 +20329,7 @@
         "types": []
       }
     },
-    "DsBreadcrumb": {
+    "KjunBreadcrumb": {
       "vue2": {
         "props": [
           {
@@ -20443,7 +20443,7 @@
         "types": []
       }
     },
-    "DsPagination": {
+    "KjunPagination": {
       "vue2": {
         "props": [
           {
@@ -20845,7 +20845,7 @@
         "types": []
       }
     },
-    "DsBadge": {
+    "KjunBadge": {
       "vue2": {
         "props": [
           {
@@ -21060,7 +21060,7 @@
         "types": []
       }
     },
-    "DsButton": {
+    "KjunButton": {
       "vue2": {
         "props": [
           {
@@ -21543,7 +21543,7 @@
         "types": []
       }
     },
-    "DsButtonGroup": {
+    "KjunButtonGroup": {
       "vue2": {
         "props": [
           {
@@ -21816,7 +21816,7 @@
         "types": []
       }
     },
-    "DsCopyButton": {
+    "KjunCopyButton": {
       "vue2": {
         "props": [
           {
@@ -22116,7 +22116,7 @@
         "types": []
       }
     },
-    "DsExternalLink": {
+    "KjunExternalLink": {
       "vue2": {
         "props": [
           {
@@ -22268,7 +22268,7 @@
         "types": []
       }
     },
-    "DsFilterGroup": {
+    "KjunFilterGroup": {
       "vue2": {
         "props": [
           {
@@ -22541,7 +22541,7 @@
         "types": []
       }
     },
-    "DsIcon": {
+    "KjunIcon": {
       "vue2": {
         "props": [
           {
@@ -22783,7 +22783,7 @@
         "types": []
       }
     },
-    "DsIconToggle": {
+    "KjunIconToggle": {
       "vue2": {
         "props": [
           {
@@ -23185,7 +23185,7 @@
         "types": []
       }
     },
-    "DsInput": {
+    "KjunInput": {
       "vue2": {
         "props": [
           {
@@ -23898,7 +23898,7 @@
         "types": []
       }
     },
-    "DsMenuButton": {
+    "KjunMenuButton": {
       "vue2": {
         "props": [
           {
@@ -24359,7 +24359,7 @@
         "types": []
       }
     },
-    "DsRefreshButton": {
+    "KjunRefreshButton": {
       "vue2": {
         "props": [
           {
@@ -24932,7 +24932,7 @@
         "types": []
       }
     },
-    "DsScrollFade": {
+    "KjunScrollFade": {
       "vue2": {
         "props": [
           {
@@ -24994,7 +24994,7 @@
         "types": []
       }
     },
-    "DsListRow": {
+    "KjunListRow": {
       "vue2": {
         "props": [
           {
@@ -25397,7 +25397,7 @@
         "types": []
       }
     },
-    "DsListSection": {
+    "KjunListSection": {
       "vue2": {
         "props": [
           {
@@ -25632,7 +25632,7 @@
         "types": []
       }
     },
-    "DsTopNavigation": {
+    "KjunTopNavigation": {
       "vue2": {
         "props": [
           {
@@ -25867,7 +25867,7 @@
         "types": []
       }
     },
-    "DsBottomNavigation": {
+    "KjunBottomNavigation": {
       "vue2": {
         "props": [
           {
@@ -26311,7 +26311,7 @@
         ]
       }
     },
-    "DsBottomActionBar": {
+    "KjunBottomActionBar": {
       "vue2": {
         "props": [
           {
@@ -26514,7 +26514,7 @@
         "types": []
       }
     },
-    "DsImage": {
+    "KjunImage": {
       "vue2": {
         "props": [
           {
@@ -26934,7 +26934,7 @@
         "types": []
       }
     },
-    "DsAvatar": {
+    "KjunAvatar": {
       "vue2": {
         "props": [
           {
@@ -27363,7 +27363,7 @@
         "types": []
       }
     },
-    "DsChip": {
+    "KjunChip": {
       "vue2": {
         "props": [
           {
@@ -27642,7 +27642,7 @@
         "types": []
       }
     },
-    "DsSlider": {
+    "KjunSlider": {
       "vue2": {
         "props": [
           {
@@ -28113,7 +28113,7 @@
         "types": []
       }
     },
-    "DsRangeSlider": {
+    "KjunRangeSlider": {
       "vue2": {
         "props": [
           {
@@ -28632,7 +28632,7 @@
         "types": []
       }
     },
-    "DsTimePicker": {
+    "KjunTimePicker": {
       "vue2": {
         "props": [
           {
@@ -29211,7 +29211,7 @@
         "types": []
       }
     },
-    "DsQuantityStepper": {
+    "KjunQuantityStepper": {
       "vue2": {
         "props": [
           {

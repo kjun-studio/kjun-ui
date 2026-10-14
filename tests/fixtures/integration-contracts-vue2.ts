@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { KjunProvider, KjunFeedbackProvider, DsTable } from "@kjun-ui/vue2";
+import { KjunProvider, KjunFeedbackProvider, KjunTable } from "@kjun-ui/vue2";
 import { setRootValues } from "./style-values";
 
 setRootValues();
@@ -18,7 +18,7 @@ new Vue({
     if (location.search.includes("toast")) return h(KjunProvider, [h(KjunFeedbackProvider, [h(ToastCase)])]);
     return h(KjunProvider, [
       h("form", { on: { submit: (event: Event) => { event.preventDefault(); this.submits++; } } }, [
-        h(DsTable, {
+        h(KjunTable, {
           props: {
             data: [{ id: 1, name: "One" }, { id: 2, name: "Two" }],
             columns: [{ key: "name", label: "Name" }],

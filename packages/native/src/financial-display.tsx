@@ -13,27 +13,27 @@ Polygon,
 Polyline,
 Stop,
 } from "react-native-svg";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { AccessiblePressable } from "./a11y";
-import { DsTooltip } from "./popover";
-import { DsBadge,type DisplaySize } from "./display";
+import { KjunTooltip } from "./popover";
+import { KjunBadge,type DisplaySize } from "./display";
 import { KText,content,domainColor } from "./internal";
 import { finiteNumber,format } from "./number-display";
 import { useKjunStyles } from "./provider";
-export interface DsDeviationProps {
+export interface KjunDeviationProps {
   value?: number | null;
   variant?: "pill" | "badge" | "text";
   signalThreshold?: number;
   decimals?: number;
   formatter?: (value: number) => string;
 }
-export function DsDeviation({
+export function KjunDeviation({
   value,
   variant = "pill",
   signalThreshold = 1,
   decimals = 2,
   formatter,
-}: DsDeviationProps) {
+}: KjunDeviationProps) {
   const { colors, domainColors, numericFontFamily, fontFamily } =
       useKjunStyles(),
     n = finiteNumber(value);
@@ -60,17 +60,17 @@ export function DsDeviation({
           gap: tokens.extensions.financial.badgeGap,
         }}
       >
-        <DsBadge variant={neutral ? "secondary" : n > 0 ? "price-up" : "price-down"} size="sm"
+        <KjunBadge variant={neutral ? "secondary" : n > 0 ? "price-up" : "price-down"} size="sm"
           style={signal ? undefined : { backgroundColor: "transparent" }}>
           <KText style={{ ...typeStyle('controlSmall'), color, flexShrink: 1, minWidth: 0,
             fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"] }}>{label}</KText>
-        </DsBadge>
+        </KjunBadge>
         {!signal && <View style={{ width: tokens.extensions.financial.warningIconSize, flexShrink: 0 }} />}
         {signal && (<>
         {/* Like Web: a 24px focusable tooltip target around the 12px icon; negative margins keep the layout.
             The outer View centres it in the row, since the tooltip wrapper hugs its trigger from the top. */}
         <View style={{ alignSelf: "center" }}>
-        <DsTooltip content={`괴리율 ${signalThreshold}% 초과 — 차익거래 기회 가능`}>
+        <KjunTooltip content={`괴리율 ${signalThreshold}% 초과 — 차익거래 기회 가능`}>
           <AccessiblePressable
             accessibilityRole="image"
             accessibilityLabel="차익거래 기회"
@@ -84,9 +84,9 @@ export function DsDeviation({
               justifyContent: "center",
             }}
           >
-            <DsIcon name="alert-triangle" size={tokens.extensions.financial.warningIconSize} color={colors.warning} />
+            <KjunIcon name="alert-triangle" size={tokens.extensions.financial.warningIconSize} color={colors.warning} />
           </AccessiblePressable>
-        </DsTooltip>
+        </KjunTooltip>
         </View>
         </>)}
       </View>
@@ -128,7 +128,7 @@ export function DsDeviation({
     </View>
   );
 }
-export interface DsHeatmapCellProps {
+export interface KjunHeatmapCellProps {
   value?: number;
   min?: number;
   max?: number;
@@ -136,14 +136,14 @@ export interface DsHeatmapCellProps {
   color?: "brand" | "success" | "danger" | "warning";
   children?: ReactNode;
 }
-export function DsHeatmapCell({
+export function KjunHeatmapCell({
   value = 0,
   min = 0,
   max = 1,
   mode = "diverging",
   color = "brand",
   children,
-}: DsHeatmapCellProps) {
+}: KjunHeatmapCellProps) {
   const { colors, domainColors, numericFontFamily, fontFamily } =
       useKjunStyles(),
     ratio =
@@ -185,7 +185,7 @@ export function DsHeatmapCell({
     </View>
   );
 }
-export interface DsProgressCellProps {
+export interface KjunProgressCellProps {
   value?: number;
   max?: number;
   showLabel?: boolean;
@@ -193,14 +193,14 @@ export interface DsProgressCellProps {
   customColor?: ColorValue;
   height?: number;
 }
-export function DsProgressCell({
+export function KjunProgressCell({
   value = 0,
   max = 100,
   showLabel = true,
   color = "auto",
   customColor,
   height = tokens.extensions.financial.progressHeight,
-}: DsProgressCellProps) {
+}: KjunProgressCellProps) {
   const { colors, numericFontFamily, fontFamily } = useKjunStyles(),
     percent =
       max > 0 && Number.isFinite(value)
@@ -261,23 +261,23 @@ export function DsProgressCell({
     </View>
   );
 }
-export interface DsCollectionMarkProps {
+export interface KjunCollectionMarkProps {
   kind: "favorite" | "interest";
   active?: boolean;
   size?: "sm" | "md" | "lg";
 }
-export function DsCollectionMark({
+export function KjunCollectionMark({
   kind,
   active = false,
   size = "md",
-}: DsCollectionMarkProps) {
+}: KjunCollectionMarkProps) {
   const { colors, domainColors } = useKjunStyles();
   // Like Web: the heart draws one icon step larger within the same box to match the star optically.
   const box = tokens.extensions.financial.markSizes[size],
     glyph = kind === "interest" ? tokens.extensions.financial.heartMarkSizes[size] : box;
   return (
     <View style={{ width: box, height: box, alignItems: "center", justifyContent: "center", overflow: "visible" }}>
-      <DsIcon
+      <KjunIcon
         name={kind === "favorite" ? "star" : "heart"}
         filled={active}
         size={glyph}
@@ -296,27 +296,27 @@ export const executionStates = {
   completed_with_errors: ["warning", "완료 (오류)"],
   failed: ["danger", "실패"],
 } as const;
-export interface DsExecutionStatusBadgeProps {
+export interface KjunExecutionStatusBadgeProps {
   status?: string | null;
   label?: string;
   size?: DisplaySize;
 }
-export function DsExecutionStatusBadge({
+export function KjunExecutionStatusBadge({
   status,
   label,
   size = "md",
-}: DsExecutionStatusBadgeProps) {
+}: KjunExecutionStatusBadgeProps) {
   const state = status
     ? executionStates[status as keyof typeof executionStates]
     : undefined;
   // A running job carries a dot, so it reads apart from queued at a glance.
   return (
-    <DsBadge variant={state?.[0] || "secondary"} size={size} dot={status === "running"}>
+    <KjunBadge variant={state?.[0] || "secondary"} size={size} dot={status === "running"}>
       {label || state?.[1] || (status ? "알 수 없음" : "실행 이력 없음")}
-    </DsBadge>
+    </KjunBadge>
   );
 }
-export interface DsSparklineProps {
+export interface KjunSparklineProps {
   data?: number[];
   width?: number;
   height?: number;
@@ -327,7 +327,7 @@ export interface DsSparklineProps {
   stretch?: boolean;
   ariaLabel?: string;
 }
-export function DsSparkline({
+export function KjunSparkline({
   data = [],
   width = tokens.extensions.financial.sparklineWidth,
   height = tokens.extensions.financial.sparklineHeight,
@@ -337,7 +337,7 @@ export function DsSparkline({
   strokeWidth = 1.5,
   stretch = false,
   ariaLabel,
-}: DsSparklineProps) {
+}: KjunSparklineProps) {
   const { colors, domainColors } = useKjunStyles(),
     id = useId().replace(/:/g, ""),
     values = data.filter(Number.isFinite),

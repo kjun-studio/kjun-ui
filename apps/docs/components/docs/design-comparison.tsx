@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState } from 'react';
-import { DsTabs, DsTabPane } from '@kjun-ui/react';
+import { KjunTabs, KjunTabPane } from '@kjun-ui/react';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from './disclosure';
 import { designCases, designSections, designScenario, designWidths, type DesignCase } from '../../../../shared/visual-guides/design-cases';
 import { usageGuideHref } from '../../../../shared/document-navigation';
@@ -27,15 +27,15 @@ function DesignComparison({ item }: { item: DesignCase }) {
     <h3>{item.title}</h3><p className="body-copy">{item.situation}</p>
     {item.appliesWhen && <p className="body-copy"><strong>적용 조건</strong> · {item.appliesWhen}</p>}
     {item.caution && <p className="design-caption"><strong>주의</strong> · {item.caution}</p>}
-    <DsTabs value={String(width)} onValueChange={value => setWidth(Number(value))} density="compact" ariaLabel={`${item.title} 화면 폭`}>
+    <KjunTabs value={String(width)} onValueChange={value => setWidth(Number(value))} density="compact" ariaLabel={`${item.title} 화면 폭`}>
 
       <p className="design-caption">같은 화면 폭과 색상·서체에서 배치와 문구의 차이를 비교하세요.</p>
-      {designWidths.map(value => <DsTabPane name={String(value)} label={value === 375 ? "좁은 화면 · 375px" : "넓은 화면 · 640px"} key={value}>
+      {designWidths.map(value => <KjunTabPane name={String(value)} label={value === 375 ? "좁은 화면 · 375px" : "넓은 화면 · 640px"} key={value}>
         {!platform ? <PlatformLoading /> : <div className="design-pair" data-width={value}>
           {(['before', 'after'] as const).map(side => <DesignFigure key={platform + side + value} item={item} side={side} width={value} platform={platform} onRun={run} />)}
         </div>}
-      </DsTabPane>)}
-    </DsTabs>
+      </KjunTabPane>)}
+    </KjunTabs>
     <div ref={execution} className="design-execution">
       <Collapsible open={opened} onOpenChange={setOpened}>
         <CollapsibleTrigger variant="secondary">실행 예제 {opened ? '접기' : '보기'}</CollapsibleTrigger>
@@ -48,7 +48,7 @@ function DesignComparison({ item }: { item: DesignCase }) {
     </div>
     <ImplementationUsage name={item.name} />
     <p className="body-copy related-usage-links">관련 기본 사용법 · {item.components.map((name, index) => <span key={name}>
-      {index > 0 && ' · '}<Link href={(name === 'KjunFeedbackProvider' ? '/feedback' : componentPaths[name]) + '#usage'}>{name === 'KjunFeedbackProvider' ? '피드백 서비스' : name.slice(2)}</Link>
+      {index > 0 && ' · '}<Link href={(name === 'KjunFeedbackProvider' ? '/feedback' : componentPaths[name]) + '#usage'}>{name === 'KjunFeedbackProvider' ? '피드백 서비스' : name.replace(/^Kjun/, '')}</Link>
     </span>)}</p>
   </article>;
 }

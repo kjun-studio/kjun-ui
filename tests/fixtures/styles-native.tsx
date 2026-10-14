@@ -1,6 +1,6 @@
 import { Component, useState, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, DsButton, DsModal, DsInput, DsSignedValue } from "@kjun-ui/native";
+import { KjunProvider, KjunButton, KjunModal, KjunInput, KjunSignedValue } from "@kjun-ui/native";
 import { appColors, scopedColors, scopedFont } from "./style-values";
 
 class Boundary extends Component<{ children: ReactNode }, { error: string }> {
@@ -19,22 +19,22 @@ class Boundary extends Component<{ children: ReactNode }, { error: string }> {
 function App() {
   const [changed, setChanged] = useState(false);
   const [open, setOpen] = useState(location.search.includes("open"));
-  if (location.search.includes("missing-domain"))return <KjunProvider colors={appColors}><DsSignedValue value={2}/></KjunProvider>;
-  if (location.search.includes("partial-domain"))return <KjunProvider colors={appColors} domainColors={{priceUp: 'red'} as any}><DsSignedValue value={2}/></KjunProvider>;
+  if (location.search.includes("missing-domain"))return <KjunProvider colors={appColors}><KjunSignedValue value={2}/></KjunProvider>;
+  if (location.search.includes("partial-domain"))return <KjunProvider colors={appColors} domainColors={{priceUp: 'red'} as any}><KjunSignedValue value={2}/></KjunProvider>;
   if (location.search.includes("missing-provider"))
-    return <DsButton>Missing</DsButton>;
+    return <KjunButton>Missing</KjunButton>;
   if (location.search.includes("missing-colors"))
     return (
       <KjunProvider colors={{ brand: "red" } as any}>
-        <DsButton>Missing</DsButton>
+        <KjunButton>Missing</KjunButton>
       </KjunProvider>
     );
   return (
     <KjunProvider colors={appColors} fontFamily={scopedFont(changed)}>
-      <DsButton>Outer button</DsButton>
+      <KjunButton>Outer button</KjunButton>
       <KjunProvider colors={scopedColors(changed)}>
-        <DsButton onPress={() => setOpen(true)}>Open scoped dialog</DsButton>
-        <DsModal
+        <KjunButton onPress={() => setOpen(true)}>Open scoped dialog</KjunButton>
+        <KjunModal
           open={open}
           onOpenChange={setOpen}
           title="Scoped dialog"
@@ -42,17 +42,17 @@ function App() {
           confirmText="Confirm"
           onConfirm={() => setOpen(false)}
         >
-          <DsButton onPress={() => setChanged((v) => !v)}>
+          <KjunButton onPress={() => setChanged((v) => !v)}>
             Change scoped values
-          </DsButton>
-          <DsInput
+          </KjunButton>
+          <KjunInput
             ariaLabel="Scoped input"
             value="example"
             onChangeText={() => {}}
             error
             errorMessage="Project error"
           />
-        </DsModal>
+        </KjunModal>
       </KjunProvider>
     </KjunProvider>
   );

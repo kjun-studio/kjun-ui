@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun-ui/react";
+import { KjunProvider, KjunButton, KjunInput, KjunModal, KjunFormGroup } from "@kjun-ui/react";
 import { type ButtonSize, type InputSize } from "@kjun-ui/tokens";
 import { componentProps, labelFor, type DemoConfig } from "../shared/demo-config";
 import { connectDemo } from "./bridge";
@@ -19,13 +19,13 @@ function Demo({ config: c }: { config: DemoConfig }) {
         {c.component === "button" ? (
           <>
             <div className="demo-control">
-              <DsButton
+              <KjunButton
                 {...(props as any)}
                 size={c.size as ButtonSize}
                 onClick={() => setCount(count + 1)}
               >
                 {labelFor(c)}
-              </DsButton>
+              </KjunButton>
             </div>
             <output aria-live="polite">
               {count ? count + "번 실행했습니다" : "버튼을 눌러보세요"}
@@ -34,20 +34,20 @@ function Demo({ config: c }: { config: DemoConfig }) {
         ) : c.component === "input" ? (
           <>
             <div className="demo-field">
-              <DsFormGroup label="내용" hint="입력한 값은 이 예제 안에서만 사용됩니다.">
-                <DsInput
+              <KjunFormGroup label="내용" hint="입력한 값은 이 예제 안에서만 사용됩니다.">
+                <KjunInput
                   {...(props as any)}
                   size={c.size as InputSize}
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
                 />
-              </DsFormGroup>
+              </KjunFormGroup>
             </div>
             <output aria-live="polite">{value ? "입력값: " + value : "입력 대기 중"}</output>
           </>
         ) : (
           <>
-            <DsButton
+            <KjunButton
               size="lg"
               onClick={() => {
                 setSaved(false);
@@ -55,11 +55,11 @@ function Demo({ config: c }: { config: DemoConfig }) {
               }}
             >
               모달 열기
-            </DsButton>
+            </KjunButton>
             <output aria-live="polite">
               {saved ? "저장했습니다" : "확인·취소·닫기를 살펴보세요"}
             </output>
-            <DsModal
+            <KjunModal
               {...(props as any)}
               open={open}
               onOpenChange={setOpen}
@@ -72,7 +72,7 @@ function Demo({ config: c }: { config: DemoConfig }) {
               <p style={{ margin: "12px 0 0", fontSize: 14, color: "var(--kjun-text-secondary)" }}>
                 확인을 누르면 저장하고 모달을 닫습니다.
               </p>
-            </DsModal>
+            </KjunModal>
           </>
         )}
       </div>

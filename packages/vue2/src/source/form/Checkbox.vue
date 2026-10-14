@@ -9,7 +9,7 @@
       @change="handleChange"
     />
     <span :class="checkboxClasses">
-      <DsIcon v-if="isChecked" name="check" :size="checkMarkSize" />
+      <KjunIcon v-if="isChecked" name="check" :size="checkMarkSize" />
     </span>
     <span v-if="$slots.default || label" class="kjun-choice-label">
       <slot>{{ label }}</slot>
@@ -18,15 +18,15 @@
 </template>
 
 <script>
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { SIZES_CORE, oneOf } from '../tokens'
 import { tokens } from '@kjun-ui/tokens'
 
 export default {
   mixins: componentMixins,
-  components: { DsIcon },
-  name: 'DsCheckbox',
+  components: { KjunIcon },
+  name: 'KjunCheckbox',
   // DS 표준 v-model 계약: prop은 value, 이벤트는 input (change는 호환용으로 함께 emit)
   model: {
     prop: 'value',

@@ -43,9 +43,9 @@ function traced(fn: Function, name: string, observer: ExampleObserver, swallow =
   return names.get(name)!;
 }
 export function eventName(component: string, key: string, platform: string) {
-  if (platform === 'native' && key === 'onValueChange' && ['DsInput', 'DsTextarea'].includes(component)) return 'onChangeText';
+  if (platform === 'native' && key === 'onValueChange' && ['KjunInput', 'KjunTextarea'].includes(component)) return 'onChangeText';
   if (platform !== 'vue2' || !/^on[A-Z]/.test(key)) return key;
-  const names: Record<string, string> = { onChangeCommit: 'change', onValueChange: 'input', onOpenChange: component === 'DsSelect' ? 'update:open' : 'input', onSelectionChange: 'selection-change', onExpandedRowsChange: 'update:expandedRows' };
+  const names: Record<string, string> = { onChangeCommit: 'change', onValueChange: 'input', onOpenChange: component === 'KjunSelect' ? 'update:open' : 'input', onSelectionChange: 'selection-change', onExpandedRowsChange: 'update:expandedRows' };
   return names[key] || key.slice(2).replace(/^[A-Z]/, c => c.toLowerCase()).replace(/[A-Z]/g, c => '-' + c.toLowerCase());
 }
 export function instrumentRenderer(render: Function, observer: ExampleObserver, platform: string) {

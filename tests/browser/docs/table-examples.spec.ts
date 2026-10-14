@@ -33,9 +33,9 @@ for (const platform of ['vue2', 'react', 'native'] as const) {
       page.on('pageerror', error => errors.push(error.message));
       const entries: Record<string, string> = {};
       for (const scenario of tableDesignExamples) {
-        const config = presetConfig('DsTable', scenario.id);
+        const config = presetConfig('KjunTable', scenario.id);
         const id = `${scenario.id}-${mode}`;
-        entries[id] = await prepareExample(platform, 'DsTable', id, config.settings, config.values, 'default', undefined, mode);
+        entries[id] = await prepareExample(platform, 'KjunTable', id, config.settings, config.values, 'default', undefined, mode);
       }
       await compileEntries(platform, entries);
       await page.route('**/previews/export-checks/**', async route => {

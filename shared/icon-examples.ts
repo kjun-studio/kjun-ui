@@ -26,7 +26,7 @@ export const iconScenarios = [
   { name: 'GuideIconVariants', destination: '/components/icon#states', scenario: {
     id: 'icons-variants', label: '선형과 채움형 비교', description: 'heart·star의 두 형태와 선형·이름 대체 동작을 비교합니다.',
   } },
-  { name: 'DsIconToggle', destination: '/components/icon-toggle', scenario: {
+  { name: 'KjunIconToggle', destination: '/components/icon-toggle', scenario: {
     id: 'icons-toggle', label: '지속적인 선택 · IconToggle', description: '버튼을 눌러 선택값과 접근성 상태를 함께 바꿉니다.', settings: { usage: '즐겨찾기' },
   } },
 ] satisfies { name: string; destination: string; scenario: GuideCase }[];

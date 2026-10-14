@@ -20,21 +20,21 @@ export function InputDesignCases({ K, Affix = 'span', native = false }: { K: any
   const change = native ? { onChangeText: recordChange } : { onValueChange: recordChange };
   const text = { value, ...change, ...config };
   return <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 400 }}>
-    <div data-testid="input"><K.DsFormGroup label="목록 이름" hint="공유할 이름을 입력하세요." error={config.error ? '이름을 확인해 주세요.' : ''}>
-      <K.DsInput {...text} clearable />
-    </K.DsFormGroup></div>
-    <div data-testid="affix"><K.DsInput {...text} ariaLabel="금액" clearable
+    <div data-testid="input"><K.KjunFormGroup label="목록 이름" hint="공유할 이름을 입력하세요." error={config.error ? '이름을 확인해 주세요.' : ''}>
+      <K.KjunInput {...text} clearable />
+    </K.KjunFormGroup></div>
+    <div data-testid="affix"><K.KjunInput {...text} ariaLabel="금액" clearable
       prefix={<Affix style={{ fontSize: 16, color: native ? inputDesignColors.textSecondary : undefined }}>합계 금액</Affix>}
       suffix={<Affix style={{ fontSize: 16, color: native ? inputDesignColors.textSecondary : undefined }}>KRW</Affix>} /></div>
-    <div data-testid="textarea"><K.DsTextarea {...text} readonly={native ? config.readOnly : undefined} rows={3} ariaLabel="목록 설명" /></div>
-    <div data-testid="select"><K.DsSelect {...config} value={selected} options={designOptions} onValueChange={setSelected} clearable ariaLabel="공개 범위" /></div>
-    <div data-testid="combo"><K.DsCombobox {...config} value={selected} options={designOptions} onValueChange={setSelected} clearable ariaLabel="범위 검색" /></div>
-    <div data-testid="search"><K.DsSearchInput {...config} value="" onValueChange={() => {}} loadOptions={async () => designOptions} ariaLabel="자산 검색" /></div>
-    <div data-testid="date"><K.DsDatePicker {...config} value="2026-09-20" onValueChange={() => {}} ariaLabel="시작일" /></div>
-    <div data-testid="quantity"><K.DsQuantityStepper {...config} value={quantity} onValueChange={setQuantity} min={1} max={20} ariaLabel="수량" /></div>
-    <div data-testid="time"><K.DsTimePicker {...config} value={time} onValueChange={setTime} ariaLabel="알림 시각" /></div>
-    <div data-testid="button"><K.DsButton size={config.size}>저장</K.DsButton></div>
-    <div data-testid="skeleton"><K.DsFormSkeleton fields={['목록 이름']} size={config.size} /></div>
+    <div data-testid="textarea"><K.KjunTextarea {...text} readonly={native ? config.readOnly : undefined} rows={3} ariaLabel="목록 설명" /></div>
+    <div data-testid="select"><K.KjunSelect {...config} value={selected} options={designOptions} onValueChange={setSelected} clearable ariaLabel="공개 범위" /></div>
+    <div data-testid="combo"><K.KjunCombobox {...config} value={selected} options={designOptions} onValueChange={setSelected} clearable ariaLabel="범위 검색" /></div>
+    <div data-testid="search"><K.KjunSearchInput {...config} value="" onValueChange={() => {}} loadOptions={async () => designOptions} ariaLabel="자산 검색" /></div>
+    <div data-testid="date"><K.KjunDatePicker {...config} value="2026-09-20" onValueChange={() => {}} ariaLabel="시작일" /></div>
+    <div data-testid="quantity"><K.KjunQuantityStepper {...config} value={quantity} onValueChange={setQuantity} min={1} max={20} ariaLabel="수량" /></div>
+    <div data-testid="time"><K.KjunTimePicker {...config} value={time} onValueChange={setTime} ariaLabel="알림 시각" /></div>
+    <div data-testid="button"><K.KjunButton size={config.size}>저장</K.KjunButton></div>
+    <div data-testid="skeleton"><K.KjunFormSkeleton fields={['목록 이름']} size={config.size} /></div>
     <output data-testid="value">{value}</output>
     <output data-testid="changes">{changes}</output>
   </div>;

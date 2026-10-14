@@ -1,5 +1,5 @@
 import { tokens } from "@kjun-ui/tokens";
-import DsSkeleton from "../source/data-display/Skeleton.vue";
+import KjunSkeleton from "../source/data-display/Skeleton.vue";
 
 export default {
   name: 'KjunAssetIdentity', inheritAttrs: false,
@@ -16,7 +16,7 @@ export default {
     const custom = this.kjunRenderIdentity?.(h, props, this.$slots);
     if (custom != null) return custom;
     const label = this.loading
-      ? h(DsSkeleton, { props: { type: 'block', width: tokens.extensions.skeleton.identityWidth + 'px', height: tokens.extensions.skeleton.identityHeight + 'px' } })
+      ? h(KjunSkeleton, { props: { type: 'block', width: tokens.extensions.skeleton.identityWidth + 'px', height: tokens.extensions.skeleton.identityHeight + 'px' } })
       : this.$slots.title || h('span', { class: ['kj-block kj-truncate', this.titleClass] }, this.title);
     const subtitle = this.$slots.subtitle || (this.subtitle && h('span', { class: ['kj-block kj-truncate', this.subtitleClass] }, this.subtitle));
     return h('div', { class: 'kj-flex kj-items-center kj-min-w-0', style: { gap: this.gap + 'px' } }, [

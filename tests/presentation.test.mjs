@@ -14,10 +14,10 @@ test('presentation registry covers each public component exactly once', async ()
     assert.equal(profile.height * profile.deviceScaleFactor, 800);
     assert.ok(scene.width === null || (scene.width > 0 && scene.width <= profile.width - 2 * profile.padding));
   }
-  assert.deepEqual(captureFor(presentations.find(scene => scene.name === 'DsRadio')), captureFor(presentations.find(scene => scene.name === 'DsRadioGroup')));
-  assert.ok(captureFor(presentations.find(scene => scene.name === 'DsKpiRow')).width >= 768);
-  for (const name of ['DsButtonGroup', 'DsChip']) assert.equal(captureFor(presentations.find(scene => scene.name === name)).deviceScaleFactor / capture.deviceScaleFactor, 2);
-  assert.equal(presentations.find(scene => scene.name === 'DsFreshness').captureType, 'control');
+  assert.deepEqual(captureFor(presentations.find(scene => scene.name === 'KjunRadio')), captureFor(presentations.find(scene => scene.name === 'KjunRadioGroup')));
+  assert.ok(captureFor(presentations.find(scene => scene.name === 'KjunKpiRow')).width >= 768);
+  for (const name of ['KjunButtonGroup', 'KjunChip']) assert.equal(captureFor(presentations.find(scene => scene.name === name)).deviceScaleFactor / capture.deviceScaleFactor, 2);
+  assert.equal(presentations.find(scene => scene.name === 'KjunFreshness').captureType, 'control');
 });
 test('overview images connect the canonical list, form and data guide anchors', () => {
   assert.deepEqual(overviewScenes.map(scene => scene.destination), ['generic-lists', 'form', 'assets'].map(usageGuideHref));

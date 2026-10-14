@@ -28,7 +28,7 @@
             type="button"
             aria-label="닫기"
           >
-            <DsIcon name="x" size="var(--_kjun-geometry-modal-close-icon-size)" />
+            <KjunIcon name="x" size="var(--_kjun-geometry-modal-close-icon-size)" />
           </button>
         </div>
 
@@ -39,7 +39,7 @@
 
         <!-- Footer -->
         <div v-if="showFooter || $slots.footer" class="kjun-modal-footer">
-          <slot name="footer"><DsFormActions
+          <slot name="footer"><KjunFormActions
             :size="footerSize"
             cancel-variant="secondary"
             :show-cancel="showCancelButton"
@@ -59,16 +59,16 @@
 
 <script>
 import { layerMotion } from "../../adapters/layer-motion.js";
-import DsFormActions from "../form/FormActions.vue";
-import DsIcon from "../../icon.js";
+import KjunFormActions from "../form/FormActions.vue";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { createFocusTrap } from '../../focusTrap'
 import { createBodyScrollLock } from '../../bodyScrollLock'
 
 export default {
   mixins: [...componentMixins, layerMotion("modal")],
-  components: { DsFormActions, DsIcon },
-  name: 'DsModal',
+  components: { KjunFormActions, KjunIcon },
+  name: 'KjunModal',
   props: {
     footerSize: { type: String, default: 'md' },
     // v-model 지원

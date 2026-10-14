@@ -25,7 +25,7 @@
       :metric-display="metricDisplay"
       :metric-value-class="metricValueClass"
     >
-    <DsDataState
+    <KjunDataState
       :query-key="queryKey"
     :result-key="resultKey"
       :has-loaded-once="hasLoadedOnce"
@@ -37,10 +37,10 @@
       :empty-text="emptyMessage"
     >
       <template #loading>
-        <DsListSkeleton variant="compact" />
+        <KjunListSkeleton variant="compact" />
       </template>
       <template #empty>
-        <DsEmpty :text="emptyMessage" :description="emptySubMessage" />
+        <KjunEmpty :text="emptyMessage" :description="emptySubMessage" />
       </template>
 
       <!-- Like React and Native: the column label sits above the rows, outside their dividers. -->
@@ -55,8 +55,8 @@
           <!-- 종목 식별 로고 등 선행 표식 주입 seam (없으면 렌더 없음) -->
           <AssetIdentity class="kjun-market-card-left kj-min-w-0 kj-flex-1" :title="primaryLabel(row)" :gap="0"><template #leading><slot name="name-prefix" :row="row" /></template><template #title><div class="kjun-market-card-name kj-text-sm kj-font-medium kj-text-text-primary">
               <span class="kj-truncate kj-inline-block kj-max-w-full kj-align-middle" :title="primaryLabel(row)">{{ primaryLabel(row) }}</span>
-              <DsCollectionMark v-if="isInterest(row)" class="kj-ml-1" aria-label="관심" kind="interest" size="sm" active />
-              <DsCollectionMark v-if="isFavorite(row)" class="kj-ml-1" aria-label="즐겨찾기" kind="favorite" size="sm" active />
+              <KjunCollectionMark v-if="isInterest(row)" class="kj-ml-1" aria-label="관심" kind="interest" size="sm" active />
+              <KjunCollectionMark v-if="isFavorite(row)" class="kj-ml-1" aria-label="즐겨찾기" kind="favorite" size="sm" active />
               <!-- 도메인 종목명 표식(예: 위험 상태 뱃지) 주입 seam -->
               <slot name="name-suffix" :row="row" />
             </div></template><template #subtitle><div v-if="subMeta(row)" class="kjun-market-card-subline kj-text-xs kj-text-text-tertiary kj-truncate" :title="subMeta(row)">
@@ -65,10 +65,10 @@
 
           <div class="kjun-market-card-right kj-flex-shrink-0 kj-ml-3 kj-text-right">
             <template v-if="selectedPill && selectedPill.format === 'sparkline'">
-              <DsSparkline :data="row[selectedKey] || []" :width="sparklineSize.width" :height="sparklineSize.height" />
+              <KjunSparkline :data="row[selectedKey] || []" :width="sparklineSize.width" :height="sparklineSize.height" />
             </template>
             <template v-else-if="selectedPill">
-              <DsSkeleton
+              <KjunSkeleton
                 v-if="metricLoading(row, selectedKey)"
                 type="block"
                 height="var(--_kjun-extension-market-table-value-skeleton-height)"
@@ -76,7 +76,7 @@
                 class="kj-inline-block"
               />
               <!-- 등락률은 데스크탑 표와 동일하게 pill로 표시 (값이 있을 때만) -->
-              <DsSignedValue
+              <KjunSignedValue
                 v-else-if="isChangeMetric && row[selectedKey] != null"
                 :value="row[selectedKey]"
                 :formatter="() => metricDisplay(row)"
@@ -84,7 +84,7 @@
                 tone="pill"
                 class="kj-rounded-full"
               />
-              <DsSkeleton
+              <KjunSkeleton
                 v-else-if="isPriceMetric && row[selectedKey] == null"
                 type="block"
                 height="var(--_kjun-extension-financial-price-skeleton-height)"
@@ -104,9 +104,9 @@
           </div>
         </div>
       </div>
-    </DsDataState>
+    </KjunDataState>
 
-    <DsPagination
+    <KjunPagination
       v-if="pagination && pagination.total > pagination.size"
       class="kjun-market-cards__pagination"
       :current-page="pagination.page"
@@ -132,17 +132,17 @@
 
 <script>
 import { tokens } from "@kjun-ui/tokens";
-import DsCollectionMark from "./CollectionMark.vue";
-import DsDataState from "../feedback/DataState.vue";
-import DsEmpty from "./Empty.vue";
-import DsListSkeleton from "./ListSkeleton.vue";
-import DsPagination from "../navigation/Pagination.vue";
-import DsSignedValue from "./SignedValue.vue";
-import DsSkeleton from "./Skeleton.vue";
+import KjunCollectionMark from "./CollectionMark.vue";
+import KjunDataState from "../feedback/DataState.vue";
+import KjunEmpty from "./Empty.vue";
+import KjunListSkeleton from "./ListSkeleton.vue";
+import KjunPagination from "../navigation/Pagination.vue";
+import KjunSignedValue from "./SignedValue.vue";
+import KjunSkeleton from "./Skeleton.vue";
 import { componentMixins } from "../../component-mixins.js";
 import AssetIdentity from '@kjun-adapter/AssetIdentity.js'
 import queryDisplayMixin from '@kjun-adapter/queryDisplayMixin.js'
-import DsSparkline from './Sparkline.vue'
+import KjunSparkline from './Sparkline.vue'
 import {
   pillsFromColumns,
   formatMetricValue,
@@ -153,8 +153,8 @@ import {
 
 export default {
   mixins: [queryDisplayMixin, ...componentMixins],
-  name: 'MarketCards',
-  components: { AssetIdentity, DsSparkline, DsCollectionMark, DsDataState, DsEmpty, DsListSkeleton, DsPagination, DsSignedValue, DsSkeleton },
+  name: 'KjunMarketCards',
+  components: { AssetIdentity, KjunSparkline, KjunCollectionMark, KjunDataState, KjunEmpty, KjunListSkeleton, KjunPagination, KjunSignedValue, KjunSkeleton },
   props: {
     rows: { type: Array, default: () => [] },
     columns: { type: Array, required: true },

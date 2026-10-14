@@ -1,6 +1,6 @@
 <template>
   <div class="kjun-field-shell kj-w-full" :class="fieldSizeClass" v-click-outside="closeDropdown">
-    <DsIcon name="search" class="kjun-field-prefix" />
+    <KjunIcon name="search" class="kjun-field-prefix" />
     <input
       ref="input"
       v-bind="$attrs"
@@ -31,7 +31,7 @@
       @keydown.enter="onEnter"
       @keydown.esc="onEscape"
     />
-    <DsIcon
+    <KjunIcon
       v-if="isAutocomplete && searching && !(clearable && query)"
       name="loader-2"
       spin
@@ -41,7 +41,7 @@
       v-else-if="clearable && query"
       class="kjun-field-suffix"
     >
-      <DsButton variant="ghost" size="sm" class="kjun-field-clear" prefix-icon="x" aria-label="검색어 지우기" title="검색어 지우기" :disabled="disabled" @click.stop="handleClear" />
+      <KjunButton variant="ghost" size="sm" class="kjun-field-clear" prefix-icon="x" aria-label="검색어 지우기" title="검색어 지우기" :disabled="disabled" @click.stop="handleClear" />
     </div>
 
     <!-- Autocomplete dropdown -->
@@ -53,7 +53,7 @@
         class="kj-absolute kj-z-50 kj-w-full kj-mt-1 kjun-field-menu kj-max-h-menu-list-max-height kj-overflow-y-auto"
       >
         <!-- Select와 같은 로딩 행: 스피너와 문구를 가운데 정렬한다 -->
-        <div v-if="searching" class="kj-flex kj-items-center kj-justify-center kj-gap-2 kj-px-3 kj-py-3 kj-text-sm kj-text-text-secondary" role="status"><DsSpinner size="sm" />검색 중...</div>
+        <div v-if="searching" class="kj-flex kj-items-center kj-justify-center kj-gap-2 kj-px-3 kj-py-3 kj-text-sm kj-text-text-secondary" role="status"><KjunSpinner size="sm" />검색 중...</div>
         <!-- 요청 실패는 빈 결과와 구분해 오류로 알린다 -->
         <div v-else-if="failed" class="kj-px-3 kj-py-3 kj-text-sm kj-text-danger kj-text-center" role="alert">{{ errorText }}</div>
         <template v-else-if="results.length > 0">
@@ -80,9 +80,9 @@
 <script>
 import { containsLayer } from "../../layer-host.js";
 import { layerMotion } from "../../adapters/layer-motion.js";
-import DsButton from "../primitives/Button.vue";
-import DsIcon from "../../icon.js";
-import DsSpinner from "../feedback/Spinner.vue";
+import KjunButton from "../primitives/Button.vue";
+import KjunIcon from "../../icon.js";
+import KjunSpinner from "../feedback/Spinner.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { SIZES_CORE, oneOf } from '../tokens'
 import fieldMixin from './fieldMixin'
@@ -92,8 +92,8 @@ const BLUR_DELAY_MS = 150
 const MIN_SEARCH_CHARS = 2
 
 export default {
-  components: { DsButton, DsIcon, DsSpinner },
-  name: 'DsSearchInput',
+  components: { KjunButton, KjunIcon, KjunSpinner },
+  name: 'KjunSearchInput',
   inheritAttrs: false,
   mixins: [fieldMixin, ...componentMixins, layerMotion("popup")],
   directives: {

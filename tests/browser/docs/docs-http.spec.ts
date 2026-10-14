@@ -57,7 +57,7 @@ for (const platform of ['vue2', 'react', 'native']) {
     await expect(page.locator('#usage pre')).toBeVisible();
     await page.frameLocator('.playground iframe').getByRole('button', { name: '체리', exact: true }).click();
     const basic = await copy(page, '기본 코드 복사');
-    expect(basic).toContain('DsButtonGroup');
+    expect(basic).toContain('KjunButtonGroup');
     expect(basic).toContain('"group": "a"');
     await expect(page.locator('.usage-source > .code-block pre')).toBeVisible();
     await expect(page.locator('.usage-source > .code-block code')).toContainText('"group": "a"');
@@ -65,8 +65,8 @@ for (const platform of ['vue2', 'react', 'native']) {
 }
 
 for (const [path, name] of [
-  ['/components/card', 'DsCard'], ['/components/table', 'DsTable'],
-  ['/components/chip', 'DsChip'], ['/components/search-input', 'DsSearchInput'],
+  ['/components/card', 'KjunCard'], ['/components/table', 'KjunTable'],
+  ['/components/chip', 'KjunChip'], ['/components/search-input', 'KjunSearchInput'],
   ['/feedback', 'kjunFeedback'],
 ]) {
   test(`HTTP code loader supports ${name}`, async ({ page }) => {

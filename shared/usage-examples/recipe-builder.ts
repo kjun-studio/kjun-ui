@@ -29,7 +29,7 @@ export class RecipeBuilder extends UsageBuilder {
       : `{${list}.map(${item} => (\n${this.node(this.native ? 'View' : 'div', { key: expr(key) }, content)}\n))}`;
   }
   field(key: string, fallback: string, label: string, extra: Record<string, unknown> = {}) {
-    return this.node('DsInput', { value: this.state(key, fallback), onValueChange: this.update(key), ariaLabel: label, ...extra });
+    return this.node('KjunInput', { value: this.state(key, fallback), onValueChange: this.update(key), ariaLabel: label, ...extra });
   }
   message(name: string, text: string) { return this.handler(name, '', this.result(JSON.stringify(text))); }
 }

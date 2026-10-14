@@ -10,11 +10,11 @@ Project color and font setup: https://ui.kjun.dev/styling.
 
 Nested Providers share window ordering, Escape handling and focus ownership. Their overlays render outside ancestor windows while retaining the nearest Provider's color roles, fonts and live project styling changes. Place the outermost Provider outside ancestors that transform/filter or clip fixed overlays.
 
-Import only the components you use and register them locally, for example `import { KjunProvider, DsButton } from '@kjun-ui/vue2'`. Each component registers its own internal dependencies; global installation is unnecessary. ESM consumers can remove unused component code. Styles remain a shared stylesheet.
+Import only the components you use and register them locally, for example `import { KjunProvider, KjunButton } from '@kjun-ui/vue2'`. Each component registers its own internal dependencies; global installation is unnecessary. ESM consumers can remove unused component code. Styles remain a shared stylesheet.
 
 For global registration, use `import Kjun from '@kjun-ui/vue2/plugin'; Vue.use(Kjun)`. The root default import remains compatible with existing installations. Global registration includes all public components.
 
-`DsTable` uses internal expansion state when `expandedRows` is omitted. Passing an array makes expansion controlled: `[]` closes every row, and `update:expandedRows` proposes the next array. Consumers that previously passed a fixed empty array to enable internal toggles should omit the prop or reflect the event into their state.
+`KjunTable` uses internal expansion state when `expandedRows` is omitted. Passing an array makes expansion controlled: `[]` closes every row, and `update:expandedRows` proposes the next array. Consumers that previously passed a fixed empty array to enable internal toggles should omit the prop or reflect the event into their state.
 
 Install: `npm install @kjun-ui/vue2 @kjun-ui/tokens @kjun-ui/icons`
 
@@ -24,7 +24,7 @@ Card uses `surface` for its background/foreground roles, `padding` for section i
 
 ## Tab panel state
 
-`DsTabPane` children mount with their parent tabs and stay mounted when another tab is selected. Hidden panels are excluded from layout, keyboard navigation and accessibility navigation. Removing a pane or unmounting the tabs disposes its children. Effects and timers continue while a pane is hidden; use the controlled tab value to manage active requests or subscriptions. This contract is shared across React, Vue 2 and Native. Native browser tests do not certify device behavior.
+`KjunTabPane` children mount with their parent tabs and stay mounted when another tab is selected. Hidden panels are excluded from layout, keyboard navigation and accessibility navigation. Removing a pane or unmounting the tabs disposes its children. Effects and timers continue while a pane is hidden; use the controlled tab value to manage active requests or subscriptions. This contract is shared across React, Vue 2 and Native. Native browser tests do not certify device behavior.
 
 Disabled tabs block selection and auxiliary menu callbacks. Disabling or removing a tab during a press cancels its pending auxiliary action.
 
@@ -33,7 +33,7 @@ Disabled tabs block selection and auxiliary menu callbacks. Disabling or removin
 Install the local `@kjun-ui/icons` tarball together with this package and `@kjun-ui/tokens`.
 Tabler 3.48.0 includes 5,166 outline and 1,054 filled icons. The existing 153 outline
 names and heart/star filled shapes remain available by default. Additional icons
-require an explicit import and Provider registration; `DsIcon`, `prefixIcon` and
+require an explicit import and Provider registration; `KjunIcon`, `prefixIcon` and
 `suffixIcon` use the same registry.
 
 ```js
@@ -41,7 +41,7 @@ import rocket from '@kjun-ui/icons/icons/rocket';
 const projectIcons = { rocket };
 // In render(h):
 h(KjunProvider, { props: { icons: projectIcons } }, [
-  h(DsButton, { props: { prefixIcon: 'rocket' } }, '시작'),
+  h(KjunButton, { props: { prefixIcon: 'rocket' } }, '시작'),
 ]);
 ```
 

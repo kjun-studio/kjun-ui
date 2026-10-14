@@ -1,6 +1,6 @@
 'use client';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { DsButton, DsDrawer } from '@kjun-ui/react';
+import { KjunButton, KjunDrawer } from '@kjun-ui/react';
 
 const Context = createContext<{
   mobile: boolean; open: boolean; openMobile: boolean;
@@ -26,14 +26,14 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
 }
 export function SidebarTrigger() {
   const state = useSidebar();
-  return <DsButton className="docs-menu-trigger" variant="ghost" size="sm" prefixIcon="menu-2" ariaLabel="탐색 메뉴"
+  return <KjunButton className="docs-menu-trigger" variant="ghost" size="sm" prefixIcon="menu-2" ariaLabel="탐색 메뉴"
     aria-expanded={state.mobile ? state.openMobile : state.open} aria-controls="docs-navigation" onClick={state.toggle} />;
 }
 export function Sidebar({ children }: { children: ReactNode }) {
   const { mobile, open, openMobile, setOpenMobile } = useSidebar();
-  return mobile ? <DsDrawer open={openMobile} onOpenChange={setOpenMobile} position="left" width="min(320px, 90vw)" title="문서 탐색" noPadding>
+  return mobile ? <KjunDrawer open={openMobile} onOpenChange={setOpenMobile} position="left" width="min(320px, 90vw)" title="문서 탐색" noPadding>
     <div className="docs-sidebar-content" id="docs-navigation">{children}</div>
-  </DsDrawer> : <aside className="docs-sidebar" hidden={!open} id="docs-navigation">
+  </KjunDrawer> : <aside className="docs-sidebar" hidden={!open} id="docs-navigation">
     <div className="docs-sidebar-content">{children}</div>
   </aside>;
 }

@@ -9,9 +9,9 @@ type ColorValue,
 type TextStyle,
 } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsSkeleton } from "./display";
+import { KjunSkeleton } from "./display";
 import { BadgeView } from "./display-primitives";
-import { DsAnimatedNumber } from "./financial";
+import { KjunAnimatedNumber } from "./financial";
 import { KText,domainColor } from "./internal";
 import { KpiValue,kpiFormat } from "./kpi-hero";
 import { useKjunStyles } from "./provider";
@@ -42,7 +42,7 @@ export interface KpiRowItem extends KpiValue {
   };
   badgePlacement?: "label" | "value";
 }
-export interface DsKpiRowProps {
+export interface KjunKpiRowProps {
   loading?: boolean;
   items: KpiRowItem[];
   size?: "md" | "sm";
@@ -50,14 +50,14 @@ export interface DsKpiRowProps {
   onItemClick?: (item: KpiRowItem, index: number) => void;
   renderValue?: (item: KpiRowItem, index: number) => ReactNode;
 }
-export function DsKpiRow({
+export function KjunKpiRow({
   loading = false,
   items,
   size = "md",
   mobileSummary = true,
   onItemClick,
   renderValue,
-}: DsKpiRowProps) {
+}: KjunKpiRowProps) {
   const { colors, domainColors, numericFontFamily, fontFamily } =
       useKjunStyles(),
     mobile = useWindowDimensions().width <= tokens.responsive.kpiRow,
@@ -200,7 +200,7 @@ export function DsKpiRow({
               }}
             >
               {busy && !item.label ? (
-                <DsSkeleton type="block" width={geometry.labelSkeletonWidth} height={geometry.labelSkeletonHeight} />
+                <KjunSkeleton type="block" width={geometry.labelSkeletonWidth} height={geometry.labelSkeletonHeight} />
               ) : (
                 <KText style={{ minWidth: 0, flexShrink: 1, color: colors.textSecondary, ...typeStyle('caption') }}>
                   {item.label}
@@ -232,7 +232,7 @@ export function DsKpiRow({
                         </KText>
                       )}
                       {busy && !seg.separator ? (
-                        <DsSkeleton
+                        <KjunSkeleton
                           type="block"
                           height={valueStyle.lineHeight}
                           width={geometry.segmentSkeletonWidth}
@@ -253,7 +253,7 @@ export function DsKpiRow({
               ) : busy ? (
                 // Like Web's 1lh × 5ch: the placeholder fills the value line, and its width (set for the display
                 // number) scales with the value's font so a text value gets a text-sized bar.
-                <DsSkeleton type="block" height={valueStyle.lineHeight}
+                <KjunSkeleton type="block" height={valueStyle.lineHeight}
                   width={geometry.valueSkeletonWidth * (valueStyle.fontSize ?? numberSize) / typeStyle("displaySm").fontSize} />
               ) : (
                 renderValue?.(item, i) || (
@@ -272,7 +272,7 @@ export function DsKpiRow({
                       </Text>
                     )}
                     {item.animated && typeof item.value === "number" ? (
-                      <DsAnimatedNumber
+                      <KjunAnimatedNumber
                         fromPrevious
                         value={item.value}
                         formatter={(v) => kpiFormat(item, v)}
@@ -298,7 +298,7 @@ export function DsKpiRow({
             </View>
             {item.desc &&
               (busy ? (
-                <DsSkeleton type="block" height={typeStyle("caption").lineHeight} width={geometry.descriptionSkeletonWidth} />
+                <KjunSkeleton type="block" height={typeStyle("caption").lineHeight} width={geometry.descriptionSkeletonWidth} />
               ) : (
                 <KText
                   style={{

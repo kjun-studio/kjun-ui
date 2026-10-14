@@ -6,7 +6,7 @@ const vm = new Vue({
   data: () => ({ config: { ...navigationConfig }, events: [] as string[] }),
   render(h) {
     return h(K.KjunProvider, [h('main', { style: { padding: '16px' } }, [
-      h(K.DsBottomNavigation, { props: { ...this.config, items: navigationItems(this.config) }, on: { navigate: (key: string, event: MouseEvent) => {
+      h(K.KjunBottomNavigation, { props: { ...this.config, items: navigationItems(this.config) }, on: { navigate: (key: string, event: MouseEvent) => {
         event.preventDefault(); this.events.push(key); if (this.config.acceptNavigation) this.config.value = key;
       } } }),
       h('output', { attrs: { 'data-testid': 'events' } }, this.events.join('|')),

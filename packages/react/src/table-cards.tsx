@@ -1,7 +1,7 @@
 import type { KeyboardEvent } from "react";
 import type { TableCardSection } from "./table-model";
 import type { TableCardsProps } from "../../../shared/package-runtime/table-presentation";
-import { DsSkeleton } from "./display";
+import { KjunSkeleton } from "./display";
 interface Props<Row extends object> extends TableCardsProps<Row> {
   ariaLabel: string;
   customClass: (row: Row, index: number) => string;
@@ -15,7 +15,7 @@ export function TableCards<Row extends object>({ initialLoading, skeletonRows, s
             {initialLoading
               ? Array.from({ length: skeletonRows }, (_, i) => (
                   <div key={i} className="kjun-table-card">
-                    <DsSkeleton type="card" />
+                    <KjunSkeleton type="card" />
                   </div>
                 ))
               : state.rows.map((row, i) => (

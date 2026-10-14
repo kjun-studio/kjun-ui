@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { DsCombobox, DsSelect, DsSearchInput } from "@kjun-ui/react";
+import type { KjunCombobox, KjunSelect, KjunSearchInput } from "@kjun-ui/react";
 
-type Controls = { Combo: typeof DsCombobox; Select: typeof DsSelect; Search: typeof DsSearchInput };
+type Controls = { Combo: typeof KjunCombobox; Select: typeof KjunSelect; Search: typeof KjunSearchInput };
 const requests: { query: string; signal: AbortSignal; resolve: (value: { name: string }[]) => void }[] = [];
 const loadOptions = (query: string, { signal }: { signal: AbortSignal }) =>
   new Promise<{ name: string }[]>(resolve => requests.push({ query, signal, resolve }));

@@ -18,7 +18,7 @@ Card uses `surface` for its background/foreground roles, `padding` for section i
 
 ## Tab panel state
 
-`DsTabPane` children mount with their parent tabs and stay mounted when another tab is selected. Hidden panels are excluded from layout, keyboard navigation and accessibility navigation. Removing a pane or unmounting the tabs disposes its children. Effects and timers continue while a pane is hidden; use the controlled tab value to manage active requests or subscriptions. This contract is shared across React, Vue 2 and Native. Native browser tests do not certify device behavior.
+`KjunTabPane` children mount with their parent tabs and stay mounted when another tab is selected. Hidden panels are excluded from layout, keyboard navigation and accessibility navigation. Removing a pane or unmounting the tabs disposes its children. Effects and timers continue while a pane is hidden; use the controlled tab value to manage active requests or subscriptions. This contract is shared across React, Vue 2 and Native. Native browser tests do not certify device behavior.
 
 Disabled tabs block selection and auxiliary menu callbacks. Disabling or removing a tab during a press cancels its pending auxiliary action.
 
@@ -27,15 +27,15 @@ Disabled tabs block selection and auxiliary menu callbacks. Disabling or removin
 Install the local `@kjun-ui/icons` tarball together with this package and `@kjun-ui/tokens`.
 Tabler 3.48.0 includes 5,166 outline and 1,054 filled icons. The existing 153 outline
 names and heart/star filled shapes remain available by default. Additional icons
-require an explicit import and Provider registration; `DsIcon`, `prefixIcon` and
+require an explicit import and Provider registration; `KjunIcon`, `prefixIcon` and
 `suffixIcon` use the same registry.
 
 ```tsx
 import rocket from '@kjun-ui/icons/icons/rocket';
 const projectIcons = { rocket };
 <KjunProvider colors={appColors} icons={projectIcons}>
-  <DsIcon name="rocket" />
-  <DsButton prefixIcon="rocket">시작</DsButton>
+  <KjunIcon name="rocket" />
+  <KjunButton prefixIcon="rocket">시작</KjunButton>
 </KjunProvider>
 ```
 

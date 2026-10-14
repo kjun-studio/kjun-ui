@@ -12,9 +12,9 @@ type ReactNode
 import { ListBox,ListBoxItem } from "react-aria-components";
 import { useSelectState } from "../../../shared/package-runtime/select";
 import { useCompositionGuard } from "./composition";
-import { DsButton,DsIcon } from "./button";
-import { DsSpinner } from "./display";
-import { DsInput,FieldContext,useKjunField } from "./input";
+import { KjunButton,KjunIcon } from "./button";
+import { KjunSpinner } from "./display";
+import { KjunInput,FieldContext,useKjunField } from "./input";
 import { CompoundControlContext } from "./compound-control";
 import { FloatingPanel } from "./layers";
 import {
@@ -23,7 +23,7 @@ optionLabel,
 OptionValue,
 SelectOption,
 } from "./select-options";
-export interface DsSelectProps<T extends SelectOption = SelectOption> {
+export interface KjunSelectProps<T extends SelectOption = SelectOption> {
   value: OptionValue | OptionValue[] | null;
   options?: T[];
   placeholder?: string;
@@ -49,7 +49,7 @@ export interface DsSelectProps<T extends SelectOption = SelectOption> {
   onSearch?: (v: string) => void;
   onClear?: () => void;
 }
-export function DsSelect<T extends SelectOption = SelectOption>({
+export function KjunSelect<T extends SelectOption = SelectOption>({
   value,
   options = [],
   placeholder = "선택",
@@ -74,7 +74,7 @@ export function DsSelect<T extends SelectOption = SelectOption>({
   onOpenChange,
   onSearch,
   onClear,
-}: DsSelectProps<T>) {
+}: KjunSelectProps<T>) {
   const { open, query, limit, session, changeOpen, search, showMore } = useSelectState(controlled, disabled, optionPageSize, onOpenChange);
   const composition = useCompositionGuard();
   const ref = useRef<HTMLButtonElement>(null),
@@ -130,10 +130,10 @@ export function DsSelect<T extends SelectOption = SelectOption>({
           <span className={!label ? "kjun-placeholder" : undefined} style={{ flex: 1, paddingRight: clearable && label ? spec.clearSize + spec.affixGap : undefined }}>
             {renderSelected?.(selectedOption) || label || placeholder}
           </span>
-          <DsIcon name="chevron-down" className="kjun-select-indicator" data-open={expanded || undefined} size={segment ? tokens.extensions.timePicker.iconSize : spec.iconSize} style={{ flexShrink: 0, color: disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
+          <KjunIcon name="chevron-down" className="kjun-select-indicator" data-open={expanded || undefined} size={segment ? tokens.extensions.timePicker.iconSize : spec.iconSize} style={{ flexShrink: 0, color: disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
         </button>
         {clearable && !!label && (
-          <DsButton
+          <KjunButton
             size="sm"
             variant="ghost"
             ariaLabel="선택 지우기"
@@ -146,7 +146,7 @@ export function DsSelect<T extends SelectOption = SelectOption>({
               onClear?.();
               ref.current?.focus();
             }}
-          ><DsIcon name="x" size={spec.iconSize} /></DsButton>
+          ><KjunIcon name="x" size={spec.iconSize} /></KjunButton>
         )}
       </div>
       <FloatingPanel
@@ -162,7 +162,7 @@ export function DsSelect<T extends SelectOption = SelectOption>({
           {menuHeader && <div className="kjun-select-header">{menuHeader}</div>}
           {searchable && (
             <div className="kjun-select-search">
-              <DsInput
+              <KjunInput
                 autoFocus
                 value={query}
                 placeholder={searchPlaceholder}
@@ -193,7 +193,7 @@ export function DsSelect<T extends SelectOption = SelectOption>({
           )}
           {loading && (
             <div className="kjun-select-empty">
-              <DsSpinner size="sm" text="검색 중..." />
+              <KjunSpinner size="sm" text="검색 중..." />
             </div>
           )}
           <ListBox
@@ -234,7 +234,7 @@ export function DsSelect<T extends SelectOption = SelectOption>({
                 {renderOption?.(o, selected(o)) || (
                   <span>{optionLabel(o, labelKey)}</span>
                 )}
-                {selected(o) && <DsIcon name="check" size={tokens.extensions.menu.iconSize} />}
+                {selected(o) && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
               </ListBoxItem>
             ))}
           </ListBox>
@@ -242,14 +242,14 @@ export function DsSelect<T extends SelectOption = SelectOption>({
             <div className="kjun-select-empty">결과가 없습니다</div>
           )}
           {!loading && visible.length < matching.length && (
-            <DsButton
+            <KjunButton
               size="sm"
               variant="ghost"
               block
               onClick={showMore}
             >
               더 보기
-            </DsButton>
+            </KjunButton>
           )}
         </div></FieldContext.Provider>
       </FloatingPanel>

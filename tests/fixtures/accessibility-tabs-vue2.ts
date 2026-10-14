@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsTabs, DsTabPane, DsButton } from '@kjun-ui/vue2';
+import { KjunProvider, KjunTabs, KjunTabPane, KjunButton } from '@kjun-ui/vue2';
 import { applyDemoColors } from '../../shared/demo-colors';
 applyDemoColors('default');
 new Vue({
@@ -9,11 +9,11 @@ new Vue({
   ], refuse: false, itemsOnly: false, interactive: false, events: [] as string[] }),
   mounted() { (window as any).configureTabs = (patch: any) => Object.assign(this, patch); },
   render(h) {
-    const group = (secondary = false) => h(DsTabs, {
+    const group = (secondary = false) => h(KjunTabs, {
       props: { value: secondary ? 'one' : this.value, ariaLabel: secondary ? '두 번째 목록' : '탭 검사', items: this.itemsOnly ? this.tabs : [] },
       on: { input: (value: string) => { if (secondary) return; this.events.push(value); if (!this.refuse) this.value = value; } },
-    }, this.itemsOnly ? [] : this.tabs.map(tab => h(DsTabPane, { key: tab.name, props: tab }, [
-      this.interactive ? h(DsButton, '패널 행동') : '내용 ' + tab.name,
+    }, this.itemsOnly ? [] : this.tabs.map(tab => h(KjunTabPane, { key: tab.name, props: tab }, [
+      this.interactive ? h(KjunButton, '패널 행동') : '내용 ' + tab.name,
     ])));
     return h(KjunProvider, [
       h('button', { attrs: { id: 'before' } }, '앞'), h('div', { style: { maxWidth: '260px' }, attrs: { 'data-testid': 'primary' } }, [group()]),

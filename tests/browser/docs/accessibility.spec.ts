@@ -8,7 +8,7 @@ const labels = ['키보드 동작', '라벨·오류 연결', '포커스 이동·
 
 for (const platform of ['vue2', 'react', 'native']) test(`${platform}: shared descriptions, API anchors and explicit record links connect exact check evidence`, async ({ page }) => {
   test.setTimeout(120000);
-  for (const [path, name] of [['button', 'DsButton'], ['input', 'DsInput'], ['modal', 'DsModal'], ['select', 'DsSelect'], ['skeleton', 'DsSkeleton'], ['feedback', 'KjunFeedbackProvider']]) {
+  for (const [path, name] of [['button', 'KjunButton'], ['input', 'KjunInput'], ['modal', 'KjunModal'], ['select', 'KjunSelect'], ['skeleton', 'KjunSkeleton'], ['feedback', 'KjunFeedbackProvider']]) {
     await page.goto((path === 'feedback' ? '/feedback' : '/components/' + path) + '?platform=' + platform + '#accessibility'); await ready(page);
     await expect(page.locator('#accessibility [data-accessibility-item] h3')).toHaveText(labels);
     await expect(page.locator('#accessibility .accessibility-status')).toHaveCount(3);
@@ -35,19 +35,19 @@ for (const platform of ['vue2', 'react', 'native']) test(`${platform}: shared de
 
 test('component/platform/record restore on reload and back, including original JSON download', async ({ page, request }) => {
   const run = generated.runs[0];
-  await page.goto(`/verification?component=DsInput&platform=react&record=${run.id}#focus`); await ready(page);
+  await page.goto(`/verification?component=KjunInput&platform=react&record=${run.id}#focus`); await ready(page);
   await expect(page.getByRole('button', { name: '대상', exact: true })).toContainText('Input');
-  await expect(page.locator('#focus .verification-id')).toContainText('DsInput.react.focus.v1');
+  await expect(page.locator('#focus .verification-id')).toContainText('KjunInput.react.focus.v1');
   // Narrow the long target list the way a reader does instead of clicking in the same frame as a scripted scroll.
   await page.getByRole('button', { name: '대상', exact: true }).click(); await page.getByRole('textbox', { name: '선택 항목 검색' }).fill('Modal');
   await page.getByRole('option', { name: 'Modal', exact: true }).click();
-  await expect(page).toHaveURL(url => url.searchParams.get('component') === 'DsModal');
+  await expect(page).toHaveURL(url => url.searchParams.get('component') === 'KjunModal');
   await page.getByRole('button', { name: '문서 플랫폼', exact: true }).click(); await page.getByRole('option', { name: 'React Native', exact: true }).click();
-  await expect(page.locator('#focus .verification-id')).toContainText('DsModal.native.focus.v1');
-  await page.goBack(); await expect(page.locator('#focus .verification-id')).toContainText('DsModal.react.focus.v1');
+  await expect(page.locator('#focus .verification-id')).toContainText('KjunModal.native.focus.v1');
+  await page.goBack(); await expect(page.locator('#focus .verification-id')).toContainText('KjunModal.react.focus.v1');
   await page.goBack(); await expect(page.getByRole('button', { name: '대상', exact: true })).toContainText('Input');
   await expect(page).toHaveURL(url => url.searchParams.get('record') === run.id && url.hash === '#focus');
-  await page.reload(); await expect(page.locator('#focus .verification-id')).toContainText('DsInput.react.focus.v1');
+  await page.reload(); await expect(page.locator('#focus .verification-id')).toContainText('KjunInput.react.focus.v1');
   const link = page.getByRole('link', { name: '원본 실행 기록 다운로드 (.json)', exact: true });
   const response = await request.get((await link.getAttribute('href'))!); expect(response.ok()).toBe(true);
   expect((await response.body()).equals(await readFile('docs/accessibility-runs/' + run.id + '.json'))).toBe(true);
@@ -56,9 +56,9 @@ test('component/platform/record restore on reload and back, including original J
 
 for (const width of [1600, 390]) test(`${width}px: expanded record links open implementation provenance and preserve original record date`, async ({ page, request }) => {
   await page.setViewportSize({ width, height: 1000 });
-  await page.goto('/catalog?q=DsButton&platform=react#coverage'); await ready(page);
+  await page.goto('/catalog?q=KjunButton&platform=react#coverage'); await ready(page);
   // The table marks the name cell; the mobile card marks the whole card.
-  const row = page.locator('[data-coverage-component="DsButton"]:visible').locator('xpath=ancestor-or-self::*[self::tr or @role="listitem"][1]');
+  const row = page.locator('[data-coverage-component="KjunButton"]:visible').locator('xpath=ancestor-or-self::*[self::tr or @role="listitem"][1]');
   await expect(row.locator('.coverage-status')).toHaveText(['지원', '지원', '미리보기']);
   await expect(row.locator('a .coverage-status')).toHaveCount(0);
   const recordLink = row.getByRole('link', { name: 'Button Native Web 검증 기록 보기', exact: true });
@@ -66,18 +66,18 @@ for (const width of [1600, 390]) test(`${width}px: expanded record links open im
   await row.getByRole('button', { name: 'Button 플랫폼 차이·근거 펼치기', exact: true }).click();
   for (const [platform, label] of [['vue2', 'Vue 2'], ['react', 'React'], ['native', 'Native Web']]) {
     const href = await row.getByRole('link', { name: `Button ${label} 검증 기록 보기`, exact: true }).getAttribute('href');
-    expect(href).toContain('component=DsButton'); expect(href).toContain('platform=' + platform);
-    expect(href).toContain('record=' + coverage.components.find(entry => entry.name === 'DsButton')!.recordId);
+    expect(href).toContain('component=KjunButton'); expect(href).toContain('platform=' + platform);
+    expect(href).toContain('record=' + coverage.components.find(entry => entry.name === 'KjunButton')!.recordId);
   }
   await overflow(page);
   await recordLink.focus(); await page.keyboard.press('Enter');
   await expect(page).toHaveURL(url => url.pathname === '/verification' && url.searchParams.get('platform') === 'native');
-  const record = coverage.records.find(record => record.id === coverage.components.find(entry => entry.name === 'DsButton')!.recordId)!;
+  const record = coverage.records.find(record => record.id === coverage.components.find(entry => entry.name === 'KjunButton')!.recordId)!;
   await expect(page.locator('.verification-legacy time')).toHaveText(record.date);
   await expect(page.locator('.verification-legacy')).toContainText('구현');
   await expect(page.locator('#keyboard')).toContainText('자동검사 결과를 포함하지 않습니다');
   const response = await request.get(record.download); expect((await response.body()).equals(await readFile(record.source))).toBe(true);
-  await page.goBack(); await expect(page.getByRole('textbox', { name: '컴포넌트 검색어', exact: true })).toHaveValue('DsButton');
+  await page.goBack(); await expect(page.getByRole('textbox', { name: '컴포넌트 검색어', exact: true })).toHaveValue('KjunButton');
 });
 
 test('failed, not-run, N/A, stale and invalid records are distinct without fallback success', async ({ page }) => {
@@ -90,12 +90,12 @@ test('failed, not-run, N/A, stale and invalid records are distinct without fallb
   const skipped = partial.results.find(result => result.status === 'not-run')!;
   await page.goto(`/verification?component=${skipped.component}&platform=${skipped.platform}&record=${partial.id}#${skipped.item}`);
   await expect(page.locator('#' + skipped.item + ' .accessibility-status')).toContainText('미실행');
-  await page.goto(`/verification?component=DsSkeleton&platform=react&record=${partial.id}#keyboard`);
+  await page.goto(`/verification?component=KjunSkeleton&platform=react&record=${partial.id}#keyboard`);
   await expect(page.locator('#keyboard .accessibility-status')).toContainText('해당 없음');
   const stale = generated.runs.find(run => run.stale)!; expect(stale).toBeTruthy();
-  await page.goto(`/verification?component=DsButton&platform=react&record=${stale.id}`);
+  await page.goto(`/verification?component=KjunButton&platform=react&record=${stale.id}`);
   await expect(page.locator('.verification-stale')).toContainText('재검증 필요');
-  await page.goto('/verification?component=DsInput&platform=react&record=missing-record');
+  await page.goto('/verification?component=KjunInput&platform=react&record=missing-record');
   await expect(page.getByRole('alert')).toContainText('기록을 찾을 수 없습니다');
   await expect(page.locator('[data-verification-item]')).toHaveCount(0);
 });
@@ -107,7 +107,7 @@ test('390px evidence layout contains text, selectors, observations and downloads
   await page.locator('#labeling').scrollIntoViewIfNeeded(); await overflow(page);
   await page.screenshot({ path: 'artifacts/accessibility-390.png', fullPage: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto('/verification?component=DsInput&platform=react'); await ready(page);
+  await page.goto('/verification?component=KjunInput&platform=react'); await ready(page);
   await page.screenshot({ path: 'artifacts/accessibility-desktop.png', fullPage: true });
 });
 
@@ -117,7 +117,7 @@ test('actual browser 200% zoom keeps evidence controls and text readable', async
   await writeFile(directory + '/Default/Preferences', JSON.stringify({ partition: { default_zoom_level: { x: Math.log(2) / Math.log(1.2) } } }));
   const context = await chromium.launchPersistentContext(directory, { channel: 'chromium', headless: true, viewport: null, args: ['--window-size=1440,1000'] });
   try {
-    const page = await context.newPage(); await page.goto((process.env.KJUN_TEST_URL || 'http://127.0.0.1:4173') + '/verification?component=DsInput&platform=react'); await ready(page);
+    const page = await context.newPage(); await page.goto((process.env.KJUN_TEST_URL || 'http://127.0.0.1:4173') + '/verification?component=KjunInput&platform=react'); await ready(page);
     expect(await page.evaluate(() => devicePixelRatio)).toBeGreaterThanOrEqual(2);
     await overflow(page); await expect(page.getByRole('button', { name: '대상', exact: true })).toBeVisible();
     const cdp = await context.newCDPSession(page);

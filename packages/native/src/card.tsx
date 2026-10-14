@@ -8,7 +8,7 @@ import { useKjunStyles } from "./provider";
 import { hasContent as present } from "../../../shared/package-runtime/content-presence";
 import { CardActionsContext } from "./card-actions-context";
 
-export interface DsCardProps {
+export interface KjunCardProps {
   title?: string;
   subtitle?: string;
   header?: ReactNode;
@@ -25,10 +25,10 @@ export interface DsCardProps {
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
 }
-export function DsCard({ title, subtitle, header, headerActions, media, footer,
+export function KjunCard({ title, subtitle, header, headerActions, media, footer,
   padding = "md", bodyPadding = padding, radius = "md", surface = "default",
   elevation = "flat", border = false, dividers = false, children, style,
-}: DsCardProps) {
+}: KjunCardProps) {
   const { colors } = useKjunStyles();
   const id = useId().replace(/[^a-z0-9]/gi, "");
   const inset = tokens.card.padding[padding], bodyInset = tokens.card.padding[bodyPadding];

@@ -9,7 +9,7 @@ type ViewStyle
 import { useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
 
-export interface DsSkeletonProps {
+export interface KjunSkeletonProps {
   type?: "text" | "avatar" | "card" | "table" | "chart" | "stat" | "block";
   rows?: number;
   columns?: number;
@@ -18,7 +18,7 @@ export interface DsSkeletonProps {
   animated?: boolean;
   rounded?: boolean;
 }
-export function DsSkeleton({
+export function KjunSkeleton({
   type = "text",
   rows = 3,
   columns = 4,
@@ -26,7 +26,7 @@ export function DsSkeleton({
   width,
   animated = true,
   rounded = true,
-}: DsSkeletonProps) {
+}: KjunSkeletonProps) {
   const { colors } = useKjunStyles(),
     reduced = useReducedMotion(),
     opacity = useRef(new Animated.Value(1)).current;

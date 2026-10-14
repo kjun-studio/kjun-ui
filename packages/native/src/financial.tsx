@@ -1,21 +1,21 @@
 export {
-DsCollectionMark,DsDeviation,DsExecutionStatusBadge,DsHeatmapCell,
-DsProgressCell,DsSparkline
+KjunCollectionMark,KjunDeviation,KjunExecutionStatusBadge,KjunHeatmapCell,
+KjunProgressCell,KjunSparkline
 } from "./financial-display";
 export type {
-DsCollectionMarkProps,DsDeviationProps,DsExecutionStatusBadgeProps,DsHeatmapCellProps,
-DsProgressCellProps,DsSparklineProps
+KjunCollectionMarkProps,KjunDeviationProps,KjunExecutionStatusBadgeProps,KjunHeatmapCellProps,
+KjunProgressCellProps,KjunSparklineProps
 } from "./financial-display";
 export {
-DsAnimatedNumber,
-DsFreshness,
-DsPriceCell,
-DsSignedValue,finiteNumber,
+KjunAnimatedNumber,
+KjunFreshness,
+KjunPriceCell,
+KjunSignedValue,finiteNumber,
 useCountUp
 } from "./number-display";
 export type {
-DsAnimatedNumberProps,
-DsFreshnessProps,
-DsPriceCellProps,
-DsSignedValueProps
+KjunAnimatedNumberProps,
+KjunFreshnessProps,
+KjunPriceCellProps,
+KjunSignedValueProps
 } from "./number-display";

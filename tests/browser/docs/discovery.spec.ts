@@ -52,7 +52,7 @@ test('gallery covers all public components with packed thumbnails and a shared s
   }
   await expect(page.locator('.gallery-note a')).toHaveAttribute('href', '/catalog?platform=vue2');
   await expect(page.locator('.gallery-card .platform-status, .gallery-card .device-status')).toHaveCount(0);
-  await expect(page.locator('[data-component-card="DsTabPane"]')).toContainText('Tabs의 구성 요소');
+  await expect(page.locator('[data-component-card="KjunTabPane"]')).toContainText('Tabs의 구성 요소');
   const manifest = await (await request.get('/previews/thumbnails/manifest.json')).json();
   expect(manifest.renderer).toBe('@kjun-ui/react');
   expect(Object.keys(manifest.images)).toHaveLength(components.length);
@@ -65,7 +65,7 @@ test('gallery search and category persist through reload and history, and empty 
   await expect(input).toHaveValue('검색');
   const filters = page.locator('.gallery-filters');
   await expect(filters.getByRole('button', { name: /Inputs/ })).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('[data-component-card="DsSearchInput"]')).toBeVisible();
+  await expect(page.locator('[data-component-card="KjunSearchInput"]')).toBeVisible();
   await filters.getByRole('button', { name: /Finance/ }).click();
   await expect(page).toHaveURL(/category=finance/);
   await page.goBack();
@@ -81,7 +81,7 @@ test('gallery search and category persist through reload and history, and empty 
   await expect(page.locator('[data-component-card]')).toHaveCount(components.length);
   await input.pressSequentially('loadOptions');
   await expect(page.locator('[data-component-card]')).toHaveCount(1);
-  await expect(page.locator('[data-component-card="DsSearchInput"]')).toBeVisible();
+  await expect(page.locator('[data-component-card="KjunSearchInput"]')).toBeVisible();
 });
 
 test('global search finds synonyms, purpose, internal service aliases and API anchors', async ({ page }) => {
@@ -156,8 +156,8 @@ test('category and child navigation preserve URLs, open the current ancestors an
 test('mobile discovery has no overflow and image failures keep the document reachable', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.route('**/previews/thumbnails/input.png', route => route.abort());
-  await visit(page, '/components?q=DsInput');
-  const card = page.locator('[data-component-card="DsInput"]');
+  await visit(page, '/components?q=KjunInput');
+  const card = page.locator('[data-component-card="KjunInput"]');
   await expect(card).toContainText('미리보기를 불러오지 못했습니다');
   await card.click();
   await expect(page).toHaveURL(/\/components\/input\?platform=vue2$/);
@@ -202,11 +202,11 @@ test('gallery column boundaries use the container even inside a wide viewport', 
   }
   await page.locator('.component-gallery').evaluate(el => { (el as HTMLElement).style.removeProperty('width'); });
   await expect(page.locator('.gallery-note')).toContainText('대표 이미지는 형태를 알아보기 쉽게 확대했습니다. 실제 크기는 상세 예제에서 확인하세요.');
-  const button = page.locator('[data-component-card="DsButton"]');
+  const button = page.locator('[data-component-card="KjunButton"]');
   await button.focus(); await page.keyboard.press('Tab');
-  await expect(page.locator('[data-component-card="DsButtonGroup"]')).toBeFocused();
+  await expect(page.locator('[data-component-card="KjunButtonGroup"]')).toBeFocused();
   await page.keyboard.press('Tab');
-  await expect(page.locator('[data-component-card="DsChip"]')).toBeFocused();
+  await expect(page.locator('[data-component-card="KjunChip"]')).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/components\/chip\?platform=react$/);
 });

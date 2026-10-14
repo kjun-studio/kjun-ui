@@ -20,7 +20,7 @@ import { FloatingPanel,LayerTrigger } from "./floating-panel";
 import { KText,content } from "./internal";
 import { tokens } from "@kjun-ui/tokens";
 import { useKjunStyles } from "./provider";
-export interface DsPopoverProps {
+export interface KjunPopoverProps {
   noPadding?: boolean;
   open?: boolean;
   onOpenChange?: (v: boolean) => void;
@@ -34,7 +34,7 @@ export interface DsPopoverProps {
   trigger: ReactNode | ((open: boolean) => ReactNode);
   children: ReactNode | ((close: () => void) => ReactNode);
 }
-export function DsPopover({
+export function KjunPopover({
   noPadding = false,
   open: controlled,
   onOpenChange,
@@ -47,7 +47,7 @@ export function DsPopover({
   placement = "bottom",
   trigger,
   children,
-}: DsPopoverProps) {
+}: KjunPopoverProps) {
   const [internal, setInternal] = useState(false),
     open = controlled ?? internal,
     ref = useRef<View>(null);
@@ -85,21 +85,21 @@ export function DsPopover({
     </>
   );
 }
-export interface DsTooltipProps
+export interface KjunTooltipProps
   extends Pick<PressableProps, "onPress" | "disabled"> {
   content?: string;
   placement?: "top" | "bottom" | "left" | "right";
   delay?: number;
   children: ReactNode;
 }
-export function DsTooltip({
+export function KjunTooltip({
   content: message = "",
   placement = "top",
   delay = 0,
   children,
   onPress,
   disabled,
-}: DsTooltipProps) {
+}: KjunTooltipProps) {
   const { colors } = useKjunStyles(),
     [open, setOpen] = useState(false),
     ref = useRef<View>(null),

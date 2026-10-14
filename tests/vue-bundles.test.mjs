@@ -16,7 +16,7 @@ test("a packed Vue named import excludes unrelated UI, while either plugin entry
     return result.outputFiles[0];
   };
   const [button, all, plugin] = await Promise.all([
-    bundle("import {DsButton} from '@kjun-ui/vue2'; console.log(DsButton);"),
+    bundle("import {KjunButton} from '@kjun-ui/vue2'; console.log(KjunButton);"),
     bundle("import * as ui from '@kjun-ui/vue2'; console.log(ui);"),
     bundle("import plugin from '@kjun-ui/vue2/plugin'; console.log(plugin);"),
   ]);
@@ -29,11 +29,11 @@ test("a packed Vue named import excludes unrelated UI, while either plugin entry
   assert.equal(require("@kjun-ui/vue2/plugin"), ui.default, "CJS entries share component identities");
   const registered = new Map();
   ui.default.install({ component: (name, component) => registered.set(name, component) });
-  const publicNames = Object.keys(ui).filter(name => /^(Ds|Kjun)/.test(name));
+  const publicNames = Object.keys(ui).filter(name => /^Kjun/.test(name));
   assert.deepEqual([...registered.keys()].sort(), publicNames.sort());
   for (const name of publicNames) assert.equal(registered.get(name), ui[name]);
-  assert.equal(ui.DsButton.components.DsIcon, ui.DsIcon);
-  assert.equal(ui.DsButton.components.DsTable, undefined);
+  assert.equal(ui.KjunButton.components.KjunIcon, ui.KjunIcon);
+  assert.equal(ui.KjunButton.components.KjunTable, undefined);
 });
 
 test("the packed Vue package never loads React, so Vue-only apps need no React install", async () => {

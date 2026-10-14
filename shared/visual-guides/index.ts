@@ -32,18 +32,18 @@ export const guideAnchors = [
   "writing",
 ];
 const selection: Record<string, Record<string, any>> = {
-  DsCheckbox: { checked: true },
-  DsSwitch: { switch: true },
-  DsRadio: { radio: "c" },
-  DsRadioGroup: { radio: "c" },
-  DsSelect: { select: "a" },
-  DsCombobox: { combo: "a" },
-  DsButtonGroup: { group: "c" },
-  DsFilterGroup: { filters: ["a", "c"] },
-  DsTabs: { tab: "two" },
-  DsTabPane: { tab: "two" },
-  DsIconToggle: { active: true },
-  DsTable: {
+  KjunCheckbox: { checked: true },
+  KjunSwitch: { switch: true },
+  KjunRadio: { radio: "c" },
+  KjunRadioGroup: { radio: "c" },
+  KjunSelect: { select: "a" },
+  KjunCombobox: { combo: "a" },
+  KjunButtonGroup: { group: "c" },
+  KjunFilterGroup: { filters: ["a", "c"] },
+  KjunTabs: { tab: "two" },
+  KjunTabPane: { tab: "two" },
+  KjunIconToggle: { active: true },
+  KjunTable: {
     selected: [
       { id: "a", name: "긴 한국어 자산 이름", symbol: "AAA", price: 1234567, change: 2.35 },
     ],
@@ -103,8 +103,8 @@ export function buildVisualGuides(
           ] as const) {
             if (
               !has(prop) ||
-              name === "DsDataState" ||
-              (name === "DsFormGroup" && prop === "error")
+              name === "KjunDataState" ||
+              (name === "KjunFormGroup" && prop === "error")
             )
               continue;
             const literal =
@@ -115,17 +115,17 @@ export function buildVisualGuides(
             // A boolean field error only colors the control; the wrapping FormGroup carries the text,
             // so the comparison never shows an error by color alone. Examples without a FormGroup ignore it.
             if (prop === "error" && literal === true)
-              state.settings = { visual: JSON.stringify({ ...JSON.parse(String(state.settings!.visual)), DsFormGroup: { props: { error: "입력 내용을 확인해 주세요." } } }) };
+              state.settings = { visual: JSON.stringify({ ...JSON.parse(String(state.settings!.visual)), KjunFormGroup: { props: { error: "입력 내용을 확인해 주세요." } } }) };
             states.push(state);
           }
           if (selection[name])
             states.push({
               id: "selected",
-              label: name === "DsTable" ? "선택·확장" : "선택 상태",
+              label: name === "KjunTable" ? "선택·확장" : "선택 상태",
               description: "소비자가 관리하는 값을 예제의 초기 상태로 제공합니다.",
               values: selection[name],
             });
-          if (name === "DsFormGroup")
+          if (name === "KjunFormGroup")
             states.push(
               {
                 id: "error",
@@ -159,7 +159,7 @@ export function buildVisualGuides(
                 "실행 비교를 연 뒤 트리거로 내용을 확인합니다. 닫기와 키보드 동작도 함께 확인하세요.",
               action: author.action,
             });
-          if (["DsDataState", "DsSelect", "DsSearchInput"].includes(name)) {
+          if (["KjunDataState", "KjunSelect", "KjunSearchInput"].includes(name)) {
             for (const preset of exampleDefinition(name).presets.filter(
               (p) => p.id !== "default" && !states.some((s) => s.id === p.id),
             ))
@@ -186,7 +186,7 @@ export function buildVisualGuides(
               })),
             );
           }
-          if (name === "DsCollectionMark")
+          if (name === "KjunCollectionMark")
             states.push(
               make(
                 "inactive",
@@ -200,7 +200,7 @@ export function buildVisualGuides(
           const size = props.find((p) => p.name === "size");
           const sizeNames: Array<string | number> = !size
             ? []
-            : name === "DsIcon"
+            : name === "KjunIcon"
               ? [16, 24, 32]
               : size.type.includes("DisplaySize")
                 ? ["xs", "sm", "md", "lg", "xl"]
@@ -214,7 +214,7 @@ export function buildVisualGuides(
               value,
             ),
             ...(author.action ? { action: author.action } : {}),
-            ...(name === "DsDataState"
+            ...(name === "KjunDataState"
               ? { settings: { ...visual(name, { size: value }), empty: true } }
               : {}),
           }));

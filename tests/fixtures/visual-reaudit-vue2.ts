@@ -12,8 +12,8 @@ new Vue({
       if (name === 'Output') return create('output', { attrs: { 'data-testid': 'state' }, style: { display: 'block', overflowWrap: 'anywhere' } }, [children]);
       const on: any = {}, passed = { ...props };
       for (const [key, event] of Object.entries({ onClick: 'click', onValueChange: 'input', onSort: 'sort' })) if (passed[key]) { on[event] = passed[key]; delete passed[key]; }
-      if (name === 'DsSkeleton') for (const key of ['width', 'height']) if (typeof passed[key] === 'number') passed[key] += 'px';
-      if (name === 'DsIcon') passed.size = String(passed.size);
+      if (name === 'KjunSkeleton') for (const key of ['width', 'height']) if (typeof passed[key] === 'number') passed[key] += 'px';
+      if (name === 'KjunIcon') passed.size = String(passed.size);
       const nodes = Array.isArray(children) ? children : children == null ? [] : [children];
       const named = Object.entries(slots || {}).map(([slot, node]) => create('template', { slot }, [node as any]));
       return create((K as any)[name], { props: passed, on }, [...nodes, ...named]);

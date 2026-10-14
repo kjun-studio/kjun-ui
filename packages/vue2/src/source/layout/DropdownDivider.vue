@@ -6,6 +6,6 @@
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  name: 'DsDropdownDivider'
+  name: 'KjunDropdownDivider'
 }
 </script>

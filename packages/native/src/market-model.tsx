@@ -48,7 +48,7 @@ export type MarketFormatter<Row extends object> = (
   format: string,
   context: { currency: string; row: Row; column?: MarketColumn }
 ) => string;
-export interface DsMarketSimpleListProps<
+export interface KjunMarketSimpleListProps<
   Row extends object = Record<string, unknown>
 > extends MarketBaseProps<Row> {
   priceValue: (row: Row) => number | null;
@@ -58,7 +58,7 @@ export interface DsMarketSimpleListProps<
   closingPrice?: boolean;
   renderPricePrefix?: (row: Row) => ReactNode;
 }
-export interface DsMarketTableProps<
+export interface KjunMarketTableProps<
   Row extends object = Record<string, unknown>
 > extends MarketBaseProps<Row> {
   columns: MarketColumn[];
@@ -77,7 +77,7 @@ export interface DsMarketTableProps<
   onToggleInterest?: (row: Row) => void;
   onToggleFavorite?: (row: Row) => void;
 }
-export interface DsMarketCardsProps<
+export interface KjunMarketCardsProps<
   Row extends object = Record<string, unknown>
 > extends MarketBaseProps<Row>, MarketCardsModelProps {
   columns: MarketColumn[];
@@ -94,6 +94,6 @@ export interface DsMarketCardsProps<
     metricDisplay: (row: Row) => string;
   }) => ReactNode;
 }
-export function useMarketCards<Row extends object>(props: DsMarketCardsProps<Row>) {
+export function useMarketCards<Row extends object>(props: KjunMarketCardsProps<Row>) {
   return useMarketCardsModel(props, () => props.storage);
 }

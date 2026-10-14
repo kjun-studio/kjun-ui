@@ -3,5 +3,5 @@
 </template>
 <script>
 import { tokens } from "@kjun-ui/tokens";
-export default { name: "DsBottomActionBar", computed: { navigationPadding() { return tokens.extensions.navigation.padding; } }, props: { description: String, safeAreaBottom: { type: Number, default: 0 }, keyboardVisible: { type: Boolean, default: false }, hideOnKeyboard: { type: Boolean, default: false } } };
+export default { name: "KjunBottomActionBar", computed: { navigationPadding() { return tokens.extensions.navigation.padding; } }, props: { description: String, safeAreaBottom: { type: Number, default: 0 }, keyboardVisible: { type: Boolean, default: false }, hideOnKeyboard: { type: Boolean, default: false } } };
 </script>

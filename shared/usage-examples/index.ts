@@ -13,7 +13,7 @@ const loaders = {
   controls: () => import('./controls'), layers: () => import('./layers'), data: () => import('./data'),
   extensions: () => import('./extensions'), search: () => import('./search'), feedback: () => import('./feedback'), recipes: () => import('./recipes'),
 };
-const groups = Object.fromEntries(Object.entries(categories).flatMap(([group, names]) => names.split(' ').map(name => ['Ds' + name, group]))) as Record<string, keyof typeof loaders>;
+const groups = Object.fromEntries(Object.entries(categories).flatMap(([group, names]) => names.split(' ').map(name => ['Kjun' + name, group]))) as Record<string, keyof typeof loaders>;
 groups.KjunFeedbackProvider = 'feedback';
 for (const name of implementationNames) groups[name] = 'recipes';
 export const usageNames = [...catalog.filter(item => item.kind !== 'internal').map(item => item.name), 'KjunFeedbackProvider', ...implementationNames];

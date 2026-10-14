@@ -1,6 +1,6 @@
 <template>
   <!-- inline-flex keeps the wrapper free of a line box so rows and toolbars keep the toggle's own height. -->
-  <DsTooltip :content="disabled || loading ? '' : hint" :placement="tooltipPlacement" :delay="tooltipDelay"
+  <KjunTooltip :content="disabled || loading ? '' : hint" :placement="tooltipPlacement" :delay="tooltipDelay"
     :style="{ display: 'inline-flex', verticalAlign: 'middle' }">
   <button
     type="button"
@@ -14,9 +14,9 @@
     :disabled="disabled || loading"
     @click.stop="$emit('toggle')"
   >
-    <DsIcon v-if="loading && kjunTopNavigation" name="loader-2" spin :size="iconSize" />
-    <DsSpinner v-else-if="loading" size="sm" />
-    <DsIcon
+    <KjunIcon v-if="loading && kjunTopNavigation" name="loader-2" spin :size="iconSize" />
+    <KjunSpinner v-else-if="loading" size="sm" />
+    <KjunIcon
       v-else
       :name="active ? activeIcon : (inactiveIcon || activeIcon)"
       :filled="active"
@@ -24,20 +24,20 @@
       :class="iconClass"
     />
   </button>
-  </DsTooltip>
+  </KjunTooltip>
 </template>
 
 <script>
 import { componentMixins } from "../../component-mixins.js";
-import DsIcon from '../../icon.js'
-import DsSpinner from '../feedback/Spinner.vue'
-import DsTooltip from '../data-display/Tooltip.vue'
+import KjunIcon from '../../icon.js'
+import KjunSpinner from '../feedback/Spinner.vue'
+import KjunTooltip from '../data-display/Tooltip.vue'
 import { CONTROL_ICON_SIZES, SIZES_EXTENDED, oneOf } from '../tokens'
 
 export default {
   mixins: componentMixins,
-  name: 'DsIconToggle',
-  components: { DsIcon, DsSpinner, DsTooltip },
+  name: 'KjunIconToggle',
+  components: { KjunIcon, KjunSpinner, KjunTooltip },
   inheritAttrs: false,
   inject: { kjunTopNavigation: { default: null } },
   props: {

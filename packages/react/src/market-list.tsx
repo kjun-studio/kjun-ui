@@ -1,19 +1,19 @@
 import { tokens } from "@kjun-ui/tokens";
-import { DsDataState } from "./data-state";
-import { DsBadge,DsEmpty,DsSkeleton } from "./display";
+import { KjunDataState } from "./data-state";
+import { KjunBadge,KjunEmpty,KjunSkeleton } from "./display";
 import {
-DsFreshness,
-DsPriceCell,
-DsSignedValue,
+KjunFreshness,
+KjunPriceCell,
+KjunSignedValue,
 finiteNumber
 } from "./financial";
-import { DsMarketSimpleListProps } from "./market-model";
+import { KjunMarketSimpleListProps } from "./market-model";
 import { MarketFooter,MarketIdentity } from "./market-parts";
-import { DsListSkeleton } from "./skeletons";
+import { KjunListSkeleton } from "./skeletons";
 import { getValue } from "./table";
-export function DsMarketSimpleList<
+export function KjunMarketSimpleList<
   Row extends object = Record<string, unknown>
->(props: DsMarketSimpleListProps<Row>) {
+>(props: KjunMarketSimpleListProps<Row>) {
   const {
     rows = [],
     rowKey = "id",
@@ -27,14 +27,14 @@ export function DsMarketSimpleList<
   } = props;
   return (
     <div className="kjun-market-simple-list">
-      <DsDataState
+      <KjunDataState
         {...props}
         loadingPadding="none"
         empty={!rows.length}
         emptyText={emptyMessage}
-        loadingContent={<DsListSkeleton />}
+        loadingContent={<KjunListSkeleton />}
         emptyContent={
-          <DsEmpty text={emptyMessage} description={emptySubMessage} />
+          <KjunEmpty text={emptyMessage} description={emptySubMessage} />
         }
       >
         <div>
@@ -62,7 +62,7 @@ export function DsMarketSimpleList<
                 <MarketIdentity row={row} props={props} />
                 <div className="kjun-market-quote">
                   <div className="kjun-market-price">
-                    <DsPriceCell
+                    <KjunPriceCell
                       value={price}
                       formatter={priceFormatter}
                       stale={stale}
@@ -74,20 +74,20 @@ export function DsMarketSimpleList<
                     {(finiteNumber(price) !== null ||
                       (!changeLoading(row) && finiteNumber(change) !== null)) &&
                       (closingPrice && !stale ? (
-                        <DsBadge variant="secondary" size="xs">
+                        <KjunBadge variant="secondary" size="xs">
                           종가
-                        </DsBadge>
+                        </KjunBadge>
                       ) : (
-                        <DsFreshness
+                        <KjunFreshness
                           stale={stale}
                           source={closingPrice ? "close" : source}
                           fetchedAt={fetchedAt}
                         />
                       ))}
                     {changeLoading(row) ? (
-                      <DsSkeleton type="block" height={tokens.extensions.marketList.changeSkeletonHeight} width={tokens.extensions.marketList.changeSkeletonWidth} />
+                      <KjunSkeleton type="block" height={tokens.extensions.marketList.changeSkeletonHeight} width={tokens.extensions.marketList.changeSkeletonWidth} />
                     ) : change !== null ? (
-                      <DsSignedValue
+                      <KjunSignedValue
                         value={change}
                         stale={stale}
                         showFreshness={false}
@@ -103,7 +103,7 @@ export function DsMarketSimpleList<
             );
           })}
         </div>
-      </DsDataState>
+      </KjunDataState>
       <MarketFooter props={props} />
     </div>
   );

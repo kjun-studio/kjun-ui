@@ -8,8 +8,8 @@ useWindowDimensions,
 type ColorValue,
 type TextStyle,
 } from "react-native";
-import { DsSkeleton } from "./display";
-import { DsAnimatedNumber } from "./financial";
+import { KjunSkeleton } from "./display";
+import { KjunAnimatedNumber } from "./financial";
 import { KText,domainColor } from "./internal";
 import { useKjunStyles } from "./provider";
 
@@ -40,7 +40,7 @@ export const kpiFormat = (item: KpiValue, value = item.value): string =>
         minimumFractionDigits: item.decimals ?? 0,
         maximumFractionDigits: item.decimals ?? 0,
       }).format(item.semantic === "price" ? Math.abs(value) : value);
-export interface DsKpiHeroProps {
+export interface KjunKpiHeroProps {
   loading?: boolean;
   label: string;
   value: number | string;
@@ -58,7 +58,7 @@ export interface DsKpiHeroProps {
   deltaFormatter?: (value: number, kind: "absolute" | "percent") => string;
   renderSecondary?: (item: KpiValue, index: number) => ReactNode;
 }
-export function DsKpiHero(props: DsKpiHeroProps) {
+export function KjunKpiHero(props: KjunKpiHeroProps) {
   const {
     loading = false,
     label,
@@ -151,11 +151,11 @@ export function DsKpiHero(props: DsKpiHeroProps) {
           </KText>
           {loading ? (
             // Placeholders fill each line's height, like Web's 1lh; the value width approximates Web's 7ch.
-            <DsSkeleton type="block" height={typeStyle(numberRole).lineHeight} width={font * 4.8} />
+            <KjunSkeleton type="block" height={typeStyle(numberRole).lineHeight} width={font * 4.8} />
           ) : (
             <KpiNumberLine prefix={prefix} suffix={suffix} prefixGap={geometry.prefixGap} suffixGap={geometry.suffixGap}
               style={{ ...numeric, ...typeStyle(numberRole) }} unitStyle={unitStyle}>
-              <DsAnimatedNumber value={value} decimals={decimals} animated={animated} formatter={formatter} style={typeStyle(numberRole)} />
+              <KjunAnimatedNumber value={value} decimals={decimals} animated={animated} formatter={formatter} style={typeStyle(numberRole)} />
             </KpiNumberLine>
           )}
           {showDelta && (
@@ -169,7 +169,7 @@ export function DsKpiHero(props: DsKpiHeroProps) {
               }}
             >
               {loading ? (
-                <DsSkeleton type="block" height={typeStyle("numberMd").lineHeight} width={geometry.deltaSkeletonWidth} />
+                <KjunSkeleton type="block" height={typeStyle("numberMd").lineHeight} width={geometry.deltaSkeletonWidth} />
               ) : (
                 <>
                   {deltaAbsolute !== null &&
@@ -232,7 +232,7 @@ export function DsKpiHero(props: DsKpiHeroProps) {
                 {item.label}
               </KText>
               {loading ? (
-                <DsSkeleton
+                <KjunSkeleton
                   type="block"
                   height={typeStyle("numberMd").lineHeight}
                   width={geometry.secondarySkeletonWidth}
@@ -250,7 +250,7 @@ export function DsKpiHero(props: DsKpiHeroProps) {
               )}
               {item.desc &&
                 (loading ? (
-                  <DsSkeleton
+                  <KjunSkeleton
                     type="block"
                     width={geometry.descriptionSkeletonWidth}
                     height={typeStyle("caption").lineHeight}

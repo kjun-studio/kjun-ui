@@ -46,7 +46,7 @@ test('installed ESM and CJS entries bundle and execute without workspace source'
       : `const ${name} = require('@kjun-ui/${name}');`).join('\n');
     await build({
       stdin: { contents: imports + `\nif(tokens.tokens.table.mobileBreakpoint!==768)throw Error('token');
-        for(const ui of [vue2,react,native])for(const name of ['DsTable','DsMarketCards','DsSearchInput'])if(!ui[name])throw Error(name);`, resolveDir: directory },
+        for(const ui of [vue2,react,native])for(const name of ['KjunTable','KjunMarketCards','KjunSearchInput'])if(!ui[name])throw Error(name);`, resolveDir: directory },
       outfile, bundle: true, format, platform: 'node', packages: 'bundle',
       alias: {
         'react-native': modules + '/react-native-web/dist/index.js',
@@ -65,8 +65,8 @@ test('Native Web resolves its browser host while the device entry remains free o
   for (const format of ['esm', 'cjs']) for (const browser of [false, true]) for (const alias of [false, true]) {
     const result = await build({
       stdin: { contents: format === 'esm'
-        ? "import {DsModal} from '@kjun-ui/native'; console.log(DsModal);"
-        : "console.log(require('@kjun-ui/native').DsModal);", resolveDir: directory },
+        ? "import {KjunModal} from '@kjun-ui/native'; console.log(KjunModal);"
+        : "console.log(require('@kjun-ui/native').KjunModal);", resolveDir: directory },
       bundle: true, write: false, metafile: true, format,
       platform: browser ? 'browser' : 'neutral',
       conditions: browser ? ['browser'] : ['react-native'],

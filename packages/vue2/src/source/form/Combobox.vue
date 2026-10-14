@@ -2,7 +2,7 @@
   <div class="kj-relative kj-min-w-0" v-click-outside="close">
     <!-- Input Trigger -->
     <div class="kjun-field-shell" :class="fieldSizeClass">
-      <DsIcon name="search" class="kjun-field-prefix" />
+      <KjunIcon name="search" class="kjun-field-prefix" />
       <input
         ref="input"
         v-bind="$attrs"
@@ -38,7 +38,7 @@
         v-if="showClear"
         class="kjun-field-suffix"
       >
-        <DsButton variant="ghost" size="sm" class="kjun-field-clear" prefix-icon="x" aria-label="선택 지우기" title="선택 지우기" :disabled="disabled" @click.stop="clear" />
+        <KjunButton variant="ghost" size="sm" class="kjun-field-clear" prefix-icon="x" aria-label="선택 지우기" title="선택 지우기" :disabled="disabled" @click.stop="clear" />
       </div>
     </div>
 
@@ -59,7 +59,7 @@
           <slot name="option" :option="option" :index="index">
             <span class="kj-truncate">{{ getOptionLabel(option) }}</span>
           </slot>
-          <DsIcon v-if="isSelected(option)" name="check" size="var(--_kjun-extension-menu-icon-size)" class="kj-text-brand kj-flex-shrink-0" />
+          <KjunIcon v-if="isSelected(option)" name="check" size="var(--_kjun-extension-menu-icon-size)" class="kj-text-brand kj-flex-shrink-0" />
         </div>
 
         <div v-if="filteredOptions.length === 0" class="kj-px-3 kj-py-3 kj-text-sm kj-text-text-tertiary kj-text-center">
@@ -73,15 +73,15 @@
 <script>
 import { containsLayer } from "../../layer-host.js";
 import { layerMotion } from "../../adapters/layer-motion.js";
-import DsButton from "../primitives/Button.vue";
-import DsIcon from "../../icon.js";
+import KjunButton from "../primitives/Button.vue";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { SIZES_CORE, oneOf } from '../tokens'
 import fieldMixin from './fieldMixin'
 
 export default {
-  components: { DsButton, DsIcon },
-  name: 'DsCombobox',
+  components: { KjunButton, KjunIcon },
+  name: 'KjunCombobox',
   inheritAttrs: false,
   mixins: [fieldMixin, ...componentMixins, layerMotion("popup")],
   directives: {

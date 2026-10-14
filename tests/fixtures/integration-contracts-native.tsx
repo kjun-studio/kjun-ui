@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, KjunFeedbackProvider, useKjunFeedback, DsFormGroup, DsCombobox, DsSearchInput, DsModal, DsButton } from "@kjun-ui/native";
+import { KjunProvider, KjunFeedbackProvider, useKjunFeedback, KjunFormGroup, KjunCombobox, KjunSearchInput, KjunModal, KjunButton } from "@kjun-ui/native";
 import { scopedColors } from "./style-values";
 
 const options = [{ value: "a", label: "Alpha", name: "Alpha" }];
@@ -10,11 +10,11 @@ function FieldCase({ id }: { id: string }) {
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
   Object.assign(window, { ["setError_" + id]: setError });
-  return <DsFormGroup id={id} label={id} hint="Field hint" error={error} required>
+  return <KjunFormGroup id={id} label={id} hint="Field hint" error={error} required>
     {location.search.includes("remote")
-      ? <DsSearchInput ariaLabel="Search" value={query} onValueChange={setQuery} loadOptions={loadOptions} />
-      : <DsCombobox ariaLabel="Search" value={value} onValueChange={setValue} options={options} />}
-  </DsFormGroup>;
+      ? <KjunSearchInput ariaLabel="Search" value={query} onValueChange={setQuery} loadOptions={loadOptions} />
+      : <KjunCombobox ariaLabel="Search" value={value} onValueChange={setValue} options={options} />}
+  </KjunFormGroup>;
 }
 function ToastCase() {
   const feedback = useKjunFeedback();
@@ -24,7 +24,7 @@ function ToastCase() {
     openModal: () => setOpen(true),
   });
   return <><button data-testid="outside">Outside</button>
-    <DsModal open={open} onOpenChange={setOpen} title="Modal"><DsButton>Modal target</DsButton></DsModal></>;
+    <KjunModal open={open} onOpenChange={setOpen} title="Modal"><KjunButton>Modal target</KjunButton></KjunModal></>;
 }
 createRoot(document.getElementById("root")!).render(<KjunProvider colors={scopedColors(false)}><KjunFeedbackProvider>
   {location.search.includes("toast") ? <ToastCase /> : <><FieldCase id="first" /><FieldCase id="second" /></>}

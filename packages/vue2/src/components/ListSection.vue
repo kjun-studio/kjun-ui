@@ -5,5 +5,5 @@
   </section>
 </template>
 <script>
-export default { name: "DsListSection", props: { title: String, description: String, ariaLabel: String } };
+export default { name: "KjunListSection", props: { title: String, description: String, ariaLabel: String } };
 </script>

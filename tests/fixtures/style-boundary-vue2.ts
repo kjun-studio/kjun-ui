@@ -12,13 +12,13 @@ new Vue({
       h(K.KjunProvider, [
         h('div', { attrs: { 'data-testid': 'inside' } }, [app()]),
         h(K.KjunFeedbackProvider, [h('div', { attrs: { 'data-testid': 'inside-feedback' } }, [app()])]),
-        h('span', { attrs: { 'data-testid': 'icon-host' }, style: { color: 'rgb(1, 2, 3)', fontSize: '30px' } }, [h(K.DsIcon, { props: { name: 'star' } })]),
+        h('span', { attrs: { 'data-testid': 'icon-host' }, style: { color: 'rgb(1, 2, 3)', fontSize: '30px' } }, [h(K.KjunIcon, { props: { name: 'star' } })]),
         h('div', { attrs: { 'data-testid': 'kjun' }, style: { display: 'grid', gap: '16px', width: '360px' } }, [
-          h(K.DsButton, { props: { variant: 'primary' } }, '저장'),
-          h(K.DsInput, { props: { value: '값', ariaLabel: '입력' } }),
-          h(K.DsAlert, { props: { type: 'info', title: '알림' } }, '본문'),
-          h(K.DsCard, { props: { title: '카드' } }, '내용'),
-          h(K.DsModal, { props: { value: true, title: '모달' } }, '모달 본문'),
+          h(K.KjunButton, { props: { variant: 'primary' } }, '저장'),
+          h(K.KjunInput, { props: { value: '값', ariaLabel: '입력' } }),
+          h(K.KjunAlert, { props: { type: 'info', title: '알림' } }, '본문'),
+          h(K.KjunCard, { props: { title: '카드' } }, '내용'),
+          h(K.KjunModal, { props: { value: true, title: '모달' } }, '모달 본문'),
         ]),
       ]),
     ]);

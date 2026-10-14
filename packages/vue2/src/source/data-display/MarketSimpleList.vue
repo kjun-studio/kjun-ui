@@ -1,6 +1,6 @@
 <template>
   <div class="kjun-mobile-simple-list">
-    <DsDataState
+    <KjunDataState
       :query-key="queryKey"
     :result-key="resultKey"
       :has-loaded-once="hasLoadedOnce"
@@ -12,10 +12,10 @@
       :empty-text="emptyMessage"
     >
       <template #loading>
-        <DsListSkeleton />
+        <KjunListSkeleton />
       </template>
       <template #empty>
-        <DsEmpty class="kjun-mobile-simple-list__empty" :text="emptyMessage" :description="emptySubMessage" />
+        <KjunEmpty class="kjun-mobile-simple-list__empty" :text="emptyMessage" :description="emptySubMessage" />
       </template>
 
       <div>
@@ -28,8 +28,8 @@
           <!-- 종목 식별 로고 등 선행 표식 주입 seam (없으면 렌더 없음) -->
           <AssetIdentity class="kjun-market-card-left kj-min-w-0 kj-flex-1" :title="primaryLabel(row)" :gap="0"><template #leading><slot name="name-prefix" :row="row" /></template><template #title><div class="kjun-market-card-name kjun-mobile-simple-list__name kj-text-sm kj-font-medium kj-text-text-primary kj-flex kj-items-center kj-gap-1 kj-min-w-0">
               <span class="kjun-mobile-simple-list__label kj-truncate" :title="primaryLabel(row)">{{ primaryLabel(row) }}</span>
-              <DsCollectionMark v-if="isInterest(row)" class="kj-flex-shrink-0" aria-label="관심" kind="interest" size="sm" active />
-              <DsCollectionMark v-if="isFavorite(row)" class="kj-flex-shrink-0" aria-label="즐겨찾기" kind="favorite" size="sm" active />
+              <KjunCollectionMark v-if="isInterest(row)" class="kj-flex-shrink-0" aria-label="관심" kind="interest" size="sm" active />
+              <KjunCollectionMark v-if="isFavorite(row)" class="kj-flex-shrink-0" aria-label="즐겨찾기" kind="favorite" size="sm" active />
               <!-- 도메인 종목명 표식(예: 위험 상태 뱃지) 주입 seam -->
               <slot name="name-suffix" :row="row" />
             </div></template><template #subtitle><div v-if="subMeta(row) || $scopedSlots['sub-meta']" class="kjun-market-card-sub1 kjun-mobile-simple-list__meta kj-text-xs kj-text-text-tertiary kj-mt-0.5 kj-truncate" :title="subMeta(row)">
@@ -38,10 +38,10 @@
 
           <div class="kjun-market-card-right kjun-mobile-simple-list__quote kj-flex-shrink-0 kj-ml-3 kj-text-right">
             <div class="kjun-mobile-simple-list__price kj-text-sm kj-font-semibold kj-text-text-primary kj-tabular-nums">
-              <DsSkeleton v-if="priceValue(row) == null" type="block" height="var(--_kjun-extension-financial-price-skeleton-height)" width="var(--_kjun-extension-financial-price-skeleton-width)" class="kj-inline-block" />
+              <KjunSkeleton v-if="priceValue(row) == null" type="block" height="var(--_kjun-extension-financial-price-skeleton-height)" width="var(--_kjun-extension-financial-price-skeleton-width)" class="kj-inline-block" />
               <span v-else class="kjun-mobile-simple-list__price-line kj-inline-flex kj-items-center kj-justify-end kj-gap-1">
                 <span :class="['kjun-price-cell', priceFlashClass(row), row.stale ? 'kj-text-text-tertiary' : '']">
-                  <DsAnimatedNumber from-previous :value="priceValue(row)" :formatter="priceFormatter" />
+                  <KjunAnimatedNumber from-previous :value="priceValue(row)" :formatter="priceFormatter" />
                 </span>
               </span>
             </div>
@@ -49,22 +49,22 @@
               <!-- 가격 관련 표식은 와치리스트와 같이 보조 줄에 두어 현재가 정렬을 유지한다. -->
               <slot v-if="priceValue(row) != null" name="price-prefix" :row="row" />
               <template v-if="hasQuoteValue(row)">
-                <DsBadge v-if="closingPrice && !row.stale" variant="secondary" size="xs">종가</DsBadge>
-                <DsFreshness
+                <KjunBadge v-if="closingPrice && !row.stale" variant="secondary" size="xs">종가</KjunBadge>
+                <KjunFreshness
                   v-else
                   :stale="!!row.stale"
                   :source="closingPrice ? 'close' : row.source"
                   :fetched-at="row.fetched_at"
                 />
               </template>
-              <DsSkeleton
+              <KjunSkeleton
                 v-if="changeLoading(row)"
                 type="block"
                 height="var(--_kjun-extension-market-list-change-skeleton-height)"
                 width="var(--_kjun-extension-market-list-change-skeleton-width)"
                 class="kj-inline-block"
               />
-              <DsSignedValue
+              <KjunSignedValue
                 v-else-if="changeValue(row) != null"
                 :value="changeValue(row)"
                 class="kj-inline-flex kj-text-xs kj-font-medium"
@@ -79,9 +79,9 @@
           </div>
         </div>
       </div>
-    </DsDataState>
+    </KjunDataState>
 
-    <DsPagination
+    <KjunPagination
       v-if="pagination && pagination.total > pagination.size"
       class="kjun-market-simple-pagination"
       :current-page="pagination.page"
@@ -105,26 +105,26 @@
 </template>
 
 <script>
-import DsBadge from "../primitives/Badge.vue";
-import DsCollectionMark from "./CollectionMark.vue";
-import DsDataState from "../feedback/DataState.vue";
-import DsEmpty from "./Empty.vue";
-import DsFreshness from "./Freshness.vue";
-import DsListSkeleton from "./ListSkeleton.vue";
-import DsPagination from "../navigation/Pagination.vue";
-import DsSignedValue from "./SignedValue.vue";
-import DsSkeleton from "./Skeleton.vue";
+import KjunBadge from "../primitives/Badge.vue";
+import KjunCollectionMark from "./CollectionMark.vue";
+import KjunDataState from "../feedback/DataState.vue";
+import KjunEmpty from "./Empty.vue";
+import KjunFreshness from "./Freshness.vue";
+import KjunListSkeleton from "./ListSkeleton.vue";
+import KjunPagination from "../navigation/Pagination.vue";
+import KjunSignedValue from "./SignedValue.vue";
+import KjunSkeleton from "./Skeleton.vue";
 import { componentMixins } from "../../component-mixins.js";
 import AssetIdentity from '@kjun-adapter/AssetIdentity.js'
 import queryDisplayMixin from '@kjun-adapter/queryDisplayMixin.js'
-import DsAnimatedNumber from './AnimatedNumber.vue'
+import KjunAnimatedNumber from './AnimatedNumber.vue'
 import { finiteSignedValue } from './signedValue'
 import { getChangeRateTextClass } from './_marketFormat'
 
 export default {
   mixins: [queryDisplayMixin, ...componentMixins],
-  name: 'MarketSimpleList',
-  components: { AssetIdentity, DsAnimatedNumber, DsBadge, DsCollectionMark, DsDataState, DsEmpty, DsFreshness, DsListSkeleton, DsPagination, DsSignedValue, DsSkeleton },
+  name: 'KjunMarketSimpleList',
+  components: { AssetIdentity, KjunAnimatedNumber, KjunBadge, KjunCollectionMark, KjunDataState, KjunEmpty, KjunFreshness, KjunListSkeleton, KjunPagination, KjunSignedValue, KjunSkeleton },
   props: {
     rows: { type: Array, default: () => [] },
     rowKey: { type: String, default: 'id' },

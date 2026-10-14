@@ -3,13 +3,13 @@ import { tokens } from "@kjun-ui/tokens";
 import { Children, Fragment, isValidElement, useState, type ReactNode } from "react";
 import { View, Platform, type TextStyle, type GestureResponderEvent, type LayoutChangeEvent } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
 import { TopNavigationContext } from "./top-navigation-context";
 import { BottomActionBarContext } from "./bottom-action-bar-context";
-export interface DsTopNavigationProps { title: string; description?: string; leading?: ReactNode; actions?: ReactNode; safeAreaTop?: number }
-export function DsTopNavigation({ title, description, leading, actions, safeAreaTop = 0 }: DsTopNavigationProps) {
+export interface KjunTopNavigationProps { title: string; description?: string; leading?: ReactNode; actions?: ReactNode; safeAreaTop?: number }
+export function KjunTopNavigation({ title, description, leading, actions, safeAreaTop = 0 }: KjunTopNavigationProps) {
   const { colors } = useKjunStyles();
   const geometry = tokens.extensions.topNavigation;
   const titleInset = Math.max(0, (geometry.controlSize - tokens.typography.sectionTitle.lineHeightPx) / 2);
@@ -44,8 +44,8 @@ export function DsTopNavigation({ title, description, leading, actions, safeArea
   </TopNavigationContext.Provider>;
 }
 export interface NavigationDestination { key: string; label: string; href?: string; icon?: string; badge?: string | number; disabled?: boolean }
-export interface DsBottomNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: (key: string, event: GestureResponderEvent) => void }
-export function DsBottomNavigation({ items, value, ariaLabel = "주요 탐색", safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = true, onNavigate }: DsBottomNavigationProps) {
+export interface KjunBottomNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: (key: string, event: GestureResponderEvent) => void }
+export function KjunBottomNavigation({ items, value, ariaLabel = "주요 탐색", safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = true, onNavigate }: KjunBottomNavigationProps) {
   const { colors } = useKjunStyles();
   const geometry = tokens.extensions.bottomNavigation;
   const hasIcons = items.some(item => item.icon);
@@ -77,7 +77,7 @@ export function DsBottomNavigation({ items, value, ariaLabel = "주요 탐색", 
           paddingHorizontal: geometry.itemPaddingX, paddingVertical: geometry.itemPaddingY,
           opacity: item.disabled ? tokens.states.opacity.disabled : 1 }}>
         {hasIcons && <View style={{ width: geometry.iconSize, height: geometry.iconSize, flexShrink: 0 }}>
-          {item.icon && <DsIcon name={item.icon} size={geometry.iconSize} color={ink} />}{badge}
+          {item.icon && <KjunIcon name={item.icon} size={geometry.iconSize} color={ink} />}{badge}
         </View>}
         <View style={{ maxWidth: "100%" }}><KText style={{ ...typeStyle('caption'), textAlign: "center", fontWeight: selected ? typeStyle('control').fontWeight : typeStyle('label').fontWeight, color: ink }}>{item.label}</KText>{!hasIcons && badge}
           {/* Under the label, so a neighbour's wrapped label does not pull it away. */}
@@ -87,8 +87,8 @@ export function DsBottomNavigation({ items, value, ariaLabel = "주요 탐색", 
     })}
   </View>;
 }
-export interface DsBottomActionBarProps { description?: string; children: ReactNode; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean }
-export function DsBottomActionBar({ description, children, safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = false }: DsBottomActionBarProps) {
+export interface KjunBottomActionBarProps { description?: string; children: ReactNode; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean }
+export function KjunBottomActionBar({ description, children, safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = false }: KjunBottomActionBarProps) {
   const { colors } = useKjunStyles();
   const [width, setWidth] = useState(0);
   const geometry = tokens.extensions.navigation;

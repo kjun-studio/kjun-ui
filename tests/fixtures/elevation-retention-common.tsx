@@ -7,14 +7,14 @@ const DraftContext = createContext('missing context');
 export function mountRetention(K: any, native: boolean) {
   cssPalette();
   const query = new URLSearchParams(location.search);
-  const First = query.get('kind') === 'drawer' ? K.DsDrawer : K.DsModal;
+  const First = query.get('kind') === 'drawer' ? K.KjunDrawer : K.KjunModal;
   const provider = native ? { colors: palette(), fontFamily: demoFont } : {};
-  const button = (label: string, action: () => void) => h(K.DsButton, { [native ? 'onPress' : 'onClick']: action }, label);
+  const button = (label: string, action: () => void) => h(K.KjunButton, { [native ? 'onPress' : 'onClick']: action }, label);
   function Editor() {
     const [draft, setDraft] = useState('Original'), [count, setCount] = useState(0);
     const context = useContext(DraftContext);
     return h('div', null,
-      h(K.DsTextarea, { ariaLabel: 'Draft', value: draft,
+      h(K.KjunTextarea, { ariaLabel: 'Draft', value: draft,
         ...(native ? { onChangeText: setDraft } : { onChange: (event: any) => setDraft(event.target.value) }) }),
       button('Edit count ' + count, () => setCount(value => value + 1)),
       h('span', { 'data-testid': 'draft-context' }, context));
@@ -35,7 +35,7 @@ export function mountRetention(K: any, native: boolean) {
       mounted && h(DraftContext.Provider, { value: 'Project context' },
         h(First, { open: first, onOpenChange: setFirst, title: 'First window' }, h(Editor))),
       mounted && h(K.KjunProvider, provider,
-        h(K.DsModal, { open: second, onOpenChange: setSecond, title: 'Second window' }, button('Second action', () => setActions(value => value + 1)))));
+        h(K.KjunModal, { open: second, onOpenChange: setSecond, title: 'Second window' }, button('Second action', () => setActions(value => value + 1)))));
   }
   createRoot(document.getElementById('root')!).render(h(K.KjunProvider, provider, h(K.KjunFeedbackProvider, null, h(Cases))));
 }

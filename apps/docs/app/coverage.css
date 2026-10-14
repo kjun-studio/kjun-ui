@@ -45,7 +45,7 @@
 .coverage-legend dd { line-height: 1.5; }
 .coverage-status { white-space: nowrap; }
 
-/* Comparison table: DsTable renders .kjun-table. */
+/* Comparison table: KjunTable renders .kjun-table. */
 .coverage-table-view { display: block; }
 .coverage-table-view .kjun-table { table-layout: fixed; }
 .coverage-table-view .kjun-table thead th { background: var(--background); border-bottom: 1px solid var(--border); padding: 10px 12px; font-size: var(--docs-type-caption, .75rem); }

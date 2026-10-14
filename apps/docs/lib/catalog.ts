@@ -32,7 +32,7 @@ export const componentGuides = {
     title: '필드의 맥락에 맞는 크기를 사용하세요.',
     paragraph:
       '기본 필드는 md(40px), 작성·설정 폼은 lg(48px), 표·검색 툴바는 sm(32px)을 사용합니다. 같은 줄의 버튼도 같은 size로 맞춥니다. 기존 md의 48px 높이가 필요하면 lg를 지정하세요. 오류 상태에서는 포커스가 있어도 오류 테두리를 유지합니다.',
-    do: 'DsFormGroup으로 라벨·안내·오류를 필드와 연결합니다.',
+    do: 'KjunFormGroup으로 라벨·안내·오류를 필드와 연결합니다.',
     dont: 'placeholder만으로 입력의 목적을 설명하지 않습니다.',
     rows: [
       ['value', 'string | number', '필수 / Vue: ""', '제어형 입력값'],

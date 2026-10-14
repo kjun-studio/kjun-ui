@@ -1,13 +1,13 @@
-<template><DsBadge :variant="state.variant" :size="size" :dot="status === 'running'">{{ label || state.label }}</DsBadge></template>
+<template><KjunBadge :variant="state.variant" :size="size" :dot="status === 'running'">{{ label || state.label }}</KjunBadge></template>
 <script>
-import DsBadge from "../primitives/Badge.vue";
+import KjunBadge from "../primitives/Badge.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { executionStatus } from './executionStatus'
 import { SIZES_EXTENDED, oneOf } from '../tokens'
 export default {
   mixins: componentMixins,
-  components: { DsBadge },
-  name: 'DsExecutionStatusBadge',
+  components: { KjunBadge },
+  name: 'KjunExecutionStatusBadge',
   props: {
     status: { type: String, default: null },
     label: { type: String, default: '' },

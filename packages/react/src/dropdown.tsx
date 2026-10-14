@@ -1,11 +1,11 @@
 import { tokens } from "@kjun-ui/tokens";
 import { cloneElement, createContext, isValidElement, useCallback, useContext, useEffect, useId, useRef, useState, type ReactNode, type ReactElement } from "react";
 import { Menu, MenuItem, Separator } from "react-aria-components";
-import { DsButton, DsIcon, type DsButtonProps } from "./button";
+import { KjunButton, KjunIcon, type KjunButtonProps } from "./button";
 import { FloatingPanel, type Placement } from "./floating-panel";
-import { DsTooltip, type DsTooltipProps } from "./popover";
+import { KjunTooltip, type KjunTooltipProps } from "./popover";
 const DropdownContext = createContext<(() => void) | null>(null);
-export interface DsDropdownProps {
+export interface KjunDropdownProps {
   disabled?: boolean;
   placement?: Extract<
     Placement,
@@ -19,7 +19,7 @@ export interface DsDropdownProps {
   onOpen?: () => void;
   onClose?: () => void;
 }
-export function DsDropdown({
+export function KjunDropdown({
   disabled = false,
   placement = "bottom-start",
   menuId,
@@ -29,7 +29,7 @@ export function DsDropdown({
   children,
   onOpen,
   onClose,
-}: DsDropdownProps) {
+}: KjunDropdownProps) {
   const [open, setOpen] = useState(false),
     currentOpen = useRef(false),
     ref = useRef<HTMLDivElement>(null),
@@ -60,19 +60,19 @@ export function DsDropdown({
     };
   }, []);
   let control = trigger;
-  while (isValidElement<DsTooltipProps>(control) && control.type === DsTooltip)
+  while (isValidElement<KjunTooltipProps>(control) && control.type === KjunTooltip)
     control = control.props.children;
-  const unavailable = disabled || (isValidElement<DsButtonProps>(control) &&
+  const unavailable = disabled || (isValidElement<KjunButtonProps>(control) &&
     !!(control.props.disabled || control.props.loading));
-  const controlId = triggerId || (isValidElement<DsButtonProps>(control) && control.props.id) || id;
+  const controlId = triggerId || (isValidElement<KjunButtonProps>(control) && control.props.id) || id;
   const popupId = menuId || id + "-menu";
   const bindTrigger = (node: ReactNode): ReactNode => {
     if (!isValidElement(node)) return node;
-    if (node.type === DsTooltip) {
-      const tooltip = node as ReactElement<DsTooltipProps>;
+    if (node.type === KjunTooltip) {
+      const tooltip = node as ReactElement<KjunTooltipProps>;
       return cloneElement(tooltip, {}, bindTrigger(tooltip.props.children));
     }
-    const button = node as ReactElement<DsButtonProps>;
+    const button = node as ReactElement<KjunButtonProps>;
     return cloneElement(button, {
       id: controlId, "aria-haspopup": "menu", "aria-expanded": open,
       "aria-controls": open ? popupId : undefined,
@@ -128,7 +128,7 @@ export function DsDropdown({
     </DropdownContext.Provider>
   );
 }
-export interface DsDropdownItemProps {
+export interface KjunDropdownItemProps {
   id?: string;
   variant?: "default" | "danger";
   icon?: string;
@@ -138,7 +138,7 @@ export interface DsDropdownItemProps {
   children: ReactNode;
   onClick?: () => void;
 }
-export function DsDropdownItem({
+export function KjunDropdownItem({
   id,
   variant = "default",
   icon,
@@ -147,7 +147,7 @@ export function DsDropdownItem({
   textValue,
   children,
   onClick,
-}: DsDropdownItemProps) {
+}: KjunDropdownItemProps) {
   const close = useContext(DropdownContext);
   return (
     <MenuItem
@@ -164,29 +164,29 @@ export function DsDropdownItem({
         close?.();
       }}
     >
-      {icon && <DsIcon name={icon} className="kjun-menu-icon" size={tokens.extensions.menu.iconSize} />}
+      {icon && <KjunIcon name={icon} className="kjun-menu-icon" size={tokens.extensions.menu.iconSize} />}
       <span>{children}</span>
-      {selected !== null && <DsIcon name="check" className="kjun-menu-check" size={tokens.extensions.menu.iconSize}
+      {selected !== null && <KjunIcon name="check" className="kjun-menu-check" size={tokens.extensions.menu.iconSize}
         style={{ visibility: selected ? "visible" : "hidden" }} />}
     </MenuItem>
   );
 }
-export function DsDropdownDivider() {
+export function KjunDropdownDivider() {
   return <Separator className="kjun-menu-divider" />;
 }
-export interface DsMenuButtonProps extends Omit<DsDropdownProps, "trigger"> {
+export interface KjunMenuButtonProps extends Omit<KjunDropdownProps, "trigger"> {
   label?: string;
-  size?: DsButtonProps["size"];
-  variant?: DsButtonProps["variant"];
+  size?: KjunButtonProps["size"];
+  variant?: KjunButtonProps["variant"];
   /** Show a square dots-vertical button; label remains its accessible name. */
   compact?: boolean;
   loading?: boolean;
   tooltip?: string;
-  tooltipPlacement?: DsTooltipProps["placement"];
+  tooltipPlacement?: KjunTooltipProps["placement"];
   tooltipDelay?: number;
   ariaLabel?: string;
 }
-export function DsMenuButton({
+export function KjunMenuButton({
   label,
   size = "md",
   variant = "secondary",
@@ -199,10 +199,10 @@ export function DsMenuButton({
   onOpen,
   onClose,
   ...props
-}: DsMenuButtonProps) {
+}: KjunMenuButtonProps) {
   const [open, setOpen] = useState(false);
   const button = (
-    <DsButton
+    <KjunButton
       className="kjun-menu-button"
       size={size}
       variant={variant}
@@ -213,22 +213,22 @@ export function DsMenuButton({
       ariaLabel={ariaLabel || label || tooltip || "메뉴"}
     >
       {compact ? undefined : label}
-    </DsButton>
+    </KjunButton>
   );
   return (
-    <DsDropdown
+    <KjunDropdown
       {...props}
       onOpen={() => { setOpen(true); onOpen?.(); }}
       onClose={() => { setOpen(false); onClose?.(); }}
       trigger={
         tooltip ? (
-          <DsTooltip
+          <KjunTooltip
             content={open ? '' : tooltip}
             placement={tooltipPlacement}
             delay={tooltipDelay}
           >
             {button}
-          </DsTooltip>
+          </KjunTooltip>
         ) : (
           button
         )

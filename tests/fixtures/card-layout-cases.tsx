@@ -4,7 +4,7 @@ import { applyDemoColors, demoPalettes, demoFont } from '../../shared/demo-color
 
 export function renderCardLayouts(K: any, native = false) {
   applyDemoColors('default');
-  const { KjunProvider, DsCard: Card, DsButton: Button, DsBadge: Badge } = K;
+  const { KjunProvider, KjunCard: Card, KjunButton: Button, KjunBadge: Badge } = K;
   function App() {
     const [actions, setActions] = useState(0), [body, setBody] = useState(false);
     const button = (label: string) => <Button {...{ [native ? 'onPress' : 'onClick']: () => setActions(n => n + 1) }}>{label}</Button>;

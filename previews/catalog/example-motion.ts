@@ -5,7 +5,7 @@ export function renderMotionExample(name: string, tools: ExampleTools): any {
   switch (name) {
     case 'GuideMotionNumber':
       return h('Stack', {}, [
-        h('DsAnimatedNumber', { value: get('number', 100), animated: true, fromPrevious: true, decimals: 0 }),
+        h('KjunAnimatedNumber', { value: get('number', 100), animated: true, fromPrevious: true, decimals: 0 }),
         h('Text', {}, '목표값: ' + get('number', 100)),
         h('Group', {}, [
           button('1000으로 변경', () => set('number', 1000)),

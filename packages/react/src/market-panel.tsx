@@ -1,8 +1,8 @@
 import { tokens } from "@kjun-ui/tokens";
 import { type ReactNode } from "react";
-import { DsCard } from "./display";
+import { KjunCard } from "./display";
 
-export function DsMarketListPanel({
+export function KjunMarketListPanel({
   controls,
   children,
 }: {
@@ -10,11 +10,11 @@ export function DsMarketListPanel({
   children: ReactNode;
 }) {
   return (
-    <DsCard>
+    <KjunCard>
       <div>{controls}</div>
       <div style={{ marginTop: tokens.dimension.value16, borderTop: `${tokens.border.defaultWidth}px solid var(--_kjun-color-border)` }}>
         {children}
       </div>
-    </DsCard>
+    </KjunCard>
   );
 }

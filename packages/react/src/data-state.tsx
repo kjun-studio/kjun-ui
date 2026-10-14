@@ -5,13 +5,13 @@ queryDisplayStatus,
 type QueryDisplayProps,
 } from "@kjun-ui/tokens";
 import { Component,useState,type ErrorInfo,type ReactNode } from "react";
-import { DsButton } from "./button";
+import { KjunButton } from "./button";
 import {
-DsAlert,
-DsEmpty,
-DsSkeleton,
-DsSpinner,
-type DsSkeletonProps,
+KjunAlert,
+KjunEmpty,
+KjunSkeleton,
+KjunSpinner,
+type KjunSkeletonProps,
 } from "./display";
 export function useQueryDisplay(props: QueryDisplayProps) {
   const [state, setState] = useState(() => initialQueryDisplay(props));
@@ -26,7 +26,7 @@ export function useQueryDisplay(props: QueryDisplayProps) {
   }
   return queryDisplayStatus(next, props);
 }
-export interface DsDataStateProps extends QueryDisplayProps {
+export interface KjunDataStateProps extends QueryDisplayProps {
   preserveContent?: boolean;
   refreshing?: boolean;
   refreshError?: string | null;
@@ -40,7 +40,7 @@ export interface DsDataStateProps extends QueryDisplayProps {
   retryText?: string;
   size?: "sm" | "md" | "lg";
   skeleton?: boolean;
-  skeletonType?: DsSkeletonProps["type"];
+  skeletonType?: KjunSkeletonProps["type"];
   skeletonCount?: number;
   children?: ReactNode;
   loadingContent?: ReactNode;
@@ -49,7 +49,7 @@ export interface DsDataStateProps extends QueryDisplayProps {
   onRetry?: () => void;
   onEmptyAction?: () => void;
 }
-export function DsDataState({
+export function KjunDataState({
   preserveContent = false,
   refreshing = false,
   refreshError,
@@ -72,7 +72,7 @@ export function DsDataState({
   onRetry,
   onEmptyAction,
   ...query
-}: DsDataStateProps) {
+}: KjunDataStateProps) {
   const state = useQueryDisplay(query),
     blockingError =
       query.error && !(state.usesQueryState && state.hasCurrentResult),
@@ -86,7 +86,7 @@ export function DsDataState({
       <div>
         {(refreshing || state.queryRefreshing) && (
           <div className="kjun-data-status" role="status">
-            <DsSpinner size="xs" />
+            <KjunSpinner size="xs" />
             <span>{refreshingText}</span>
           </div>
         )}
@@ -101,12 +101,12 @@ export function DsDataState({
             (skeleton ? (
               <div style={{ display: "grid", gap: tokens.dimension.value12 }}>
                 {Array.from({ length: skeletonCount }, (_, i) => (
-                  <DsSkeleton key={i} type={skeletonType} />
+                  <KjunSkeleton key={i} type={skeletonType} />
                 ))}
               </div>
             ) : (
               <div className="kjun-data-loading">
-                <DsSpinner size="md" />
+                <KjunSpinner size="md" />
                 <p>{loadingText}</p>
               </div>
             ))}
@@ -114,24 +114,24 @@ export function DsDataState({
       ) : blockingError ? (
         <div className="kjun-state-actions" style={{ paddingBlock: padding }}>
           {errorContent || (
-            <DsAlert type="danger" title="오류 발생" actions={onRetry && (
-              <DsButton variant="secondary" onClick={onRetry}>
+            <KjunAlert type="danger" title="오류 발생" actions={onRetry && (
+              <KjunButton variant="secondary" onClick={onRetry}>
                 {retryText}
-              </DsButton>
+              </KjunButton>
             )}>
-              {/* The alert's own body type applies, like any other DsAlert. */}
+              {/* The alert's own body type applies, like any other KjunAlert. */}
               {query.error}
-            </DsAlert>
+            </KjunAlert>
           )}
         </div>
       ) : empty ? (
         <div className="kjun-data-empty kjun-state-actions" style={{ paddingBlock: padding }}>
           {emptyContent || (
-            <DsEmpty text={emptyText} icon={emptyIcon}>
+            <KjunEmpty text={emptyText} icon={emptyIcon}>
               {emptyActionText && (
-                <DsButton onClick={onEmptyAction}>{emptyActionText}</DsButton>
+                <KjunButton onClick={onEmptyAction}>{emptyActionText}</KjunButton>
               )}
-            </DsEmpty>
+            </KjunEmpty>
           )}
         </div>
       ) : null}
@@ -151,27 +151,27 @@ export function DsDataState({
       {visibleRefreshError && !state.initialLoading && (
         <div className="kjun-data-warning kjun-state-actions">
         {/* Retry sits in the actions slot like the blocking error; the sm alert sizes the button. */}
-        <DsAlert type="warning" size="sm" actions={onRetry && (
-          <DsButton variant="secondary" onClick={onRetry}>
+        <KjunAlert type="warning" size="sm" actions={onRetry && (
+          <KjunButton variant="secondary" onClick={onRetry}>
             {retryText}
-          </DsButton>
+          </KjunButton>
         )}>
           {visibleRefreshError} · 이전 조회 결과를 표시하고 있습니다.
-        </DsAlert>
+        </KjunAlert>
         </div>
       )}
     </div>
   );
 }
-export interface DsErrorBoundaryProps {
+export interface KjunErrorBoundaryProps {
   children: ReactNode;
   fallbackMessage?: string;
   fallback?: ReactNode;
   onError?: (error: Error, info: ErrorInfo) => void;
   onReset?: () => void;
 }
-export class DsErrorBoundary extends Component<
-  DsErrorBoundaryProps,
+export class KjunErrorBoundary extends Component<
+  KjunErrorBoundaryProps,
   { error: boolean }
 > {
   state = { error: false };
@@ -187,7 +187,7 @@ export class DsErrorBoundary extends Component<
           <div className="kjun-error-fallback">
             <h3>{this.props.fallbackMessage || "문제가 발생했습니다"}</h3>
             <p>다시 시도하면 문제가 해결될 수 있습니다.</p>
-            <DsButton
+            <KjunButton
               onClick={() => {
                 this.setState({ error: false });
                 this.props.onReset?.();
@@ -195,7 +195,7 @@ export class DsErrorBoundary extends Component<
             >
               {/* It resets the boundary rather than reloading the page, like DataState's retry. */}
               다시 시도
-            </DsButton>
+            </KjunButton>
           </div>
         )
       : this.props.children;

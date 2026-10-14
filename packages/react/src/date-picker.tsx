@@ -4,9 +4,9 @@ import {
 useState,
 type InputHTMLAttributes
 } from "react";
-import { DsInput } from "./input";
+import { KjunInput } from "./input";
 
-export interface DsDatePickerProps
+export interface KjunDatePickerProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "value"> {
   value: string;
   size?: InputSize;
@@ -14,7 +14,7 @@ export interface DsDatePickerProps
   error?: boolean;
   onValueChange?: (v: string) => void;
 }
-export function DsDatePicker({
+export function KjunDatePicker({
   value,
   size = "md",
   placeholder = "날짜 선택",
@@ -24,7 +24,7 @@ export function DsDatePicker({
   onFocus,
   onBlur,
   ...props
-}: DsDatePickerProps) {
+}: KjunDatePickerProps) {
   const [focus, setFocus] = useState(false);
   return (
     // The drawn calendar icon matches Native; the transparent browser indicator sits on top of it
@@ -34,7 +34,7 @@ export function DsDatePicker({
       ["--_kjun-date-icon-inset" as string]: tokens.input[size].padding + "px",
       ["--_kjun-date-icon-size" as string]: tokens.input[size].iconSize + "px",
     }}>
-      <DsInput
+      <KjunInput
         {...props}
         value={value}
         size={size}

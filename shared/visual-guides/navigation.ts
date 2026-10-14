@@ -1,17 +1,17 @@
 import { part as p, textPart as t, control as c, type GuideAuthor } from "./types.ts";
 export const navigation: Record<string, GuideAuthor> = {
-  DsBreadcrumb: {
+  KjunBreadcrumb: {
     parts: [
       t("상위 위치", "상위 문서나 목록으로 돌아가는 경로입니다.", "홈"),
       t("현재 위치", "현재 보고 있는 위치를 표시합니다.", "현재 위치"),
     ],
     related: "assets",
   },
-  DsExternalLink: {
+  KjunExternalLink: {
     parts: [p("외부 링크", "이동할 대상과 외부 탐색 동작을 연결합니다.", 'a, [role="link"]')],
     related: "writing",
   },
-  DsPagination: {
+  KjunPagination: {
     parts: [
       p(
         "이전 이동",
@@ -22,7 +22,7 @@ export const navigation: Record<string, GuideAuthor> = {
     ],
     related: "assets",
   },
-  DsTabs: {
+  KjunTabs: {
     parts: [
       p("탭 목록", "44px 기본 높이로 전환할 영역을 나열합니다. compact는 32px입니다.", '[role="tablist"]'),
       c("개별 탭", "14px 라벨과 2px 선택선으로 현재 영역을 표시합니다. 선택 600, 미선택 500 굵기를 사용합니다.", "tab"),
@@ -30,7 +30,7 @@ export const navigation: Record<string, GuideAuthor> = {
     ],
     related: "assets",
   },
-  DsTabPane: {
+  KjunTabPane: {
     parts: [
       t("탭 라벨", "부모 Tabs가 자식의 라벨로 탭을 만듭니다.", "첫 탭"),
       t("탭 내용", "선택한 TabPane의 콘텐츠입니다.", "첫 내용"),

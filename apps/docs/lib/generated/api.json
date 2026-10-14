@@ -1,5 +1,5 @@
 {
-  "DsAccordion": {
+  "KjunAccordion": {
     "vue2": [
       {
         "name": "formatters",
@@ -74,7 +74,7 @@
       }
     ]
   },
-  "DsAccordionItem": {
+  "KjunAccordionItem": {
     "vue2": [
       {
         "name": "formatters",
@@ -185,7 +185,7 @@
       }
     ]
   },
-  "DsAlert": {
+  "KjunAlert": {
     "vue2": [
       {
         "name": "formatters",
@@ -286,7 +286,7 @@
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": "Buttons placed under the message; unsized DsButtons follow the alert size."
+        "description": "Buttons placed under the message; unsized KjunButtons follow the alert size."
       },
       {
         "name": "onClose",
@@ -344,7 +344,7 @@
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": "Buttons placed under the message; unsized DsButtons follow the alert size."
+        "description": "Buttons placed under the message; unsized KjunButtons follow the alert size."
       },
       {
         "name": "onClose",
@@ -355,7 +355,7 @@
       }
     ]
   },
-  "DsAnimatedNumber": {
+  "KjunAnimatedNumber": {
     "vue2": [
       {
         "name": "formatters",
@@ -533,7 +533,7 @@
       }
     ]
   },
-  "DsAvatar": {
+  "KjunAvatar": {
     "vue2": [
       {
         "name": "src",
@@ -723,7 +723,7 @@
       }
     ]
   },
-  "DsBadge": {
+  "KjunBadge": {
     "vue2": [
       {
         "name": "formatters",
@@ -875,7 +875,7 @@
       }
     ]
   },
-  "DsBottomActionBar": {
+  "KjunBottomActionBar": {
     "vue2": [
       {
         "name": "description",
@@ -985,7 +985,7 @@
       }
     ]
   },
-  "DsBottomNavigation": {
+  "KjunBottomNavigation": {
     "vue2": [
       {
         "name": "items",
@@ -1137,7 +1137,7 @@
       }
     ]
   },
-  "DsBreadcrumb": {
+  "KjunBreadcrumb": {
     "vue2": [
       {
         "name": "formatters",
@@ -1212,7 +1212,7 @@
       }
     ]
   },
-  "DsButton": {
+  "KjunButton": {
     "vue2": [
       {
         "name": "formatters",
@@ -1569,7 +1569,7 @@
       }
     ]
   },
-  "DsButtonGroup": {
+  "KjunButtonGroup": {
     "vue2": [
       {
         "name": "formatters",
@@ -1764,7 +1764,7 @@
       }
     ]
   },
-  "DsCard": {
+  "KjunCard": {
     "vue2": [
       {
         "name": "formatters",
@@ -2102,7 +2102,7 @@
       }
     ]
   },
-  "DsChartSkeleton": {
+  "KjunChartSkeleton": {
     "vue2": [
       {
         "name": "formatters",
@@ -2182,7 +2182,7 @@
       }
     ]
   },
-  "DsCheckbox": {
+  "KjunCheckbox": {
     "vue2": [
       {
         "name": "formatters",
@@ -2365,7 +2365,7 @@
       }
     ]
   },
-  "DsChip": {
+  "KjunChip": {
     "vue2": [
       {
         "name": "label",
@@ -2517,7 +2517,7 @@
       }
     ]
   },
-  "DsCollectionMark": {
+  "KjunCollectionMark": {
     "vue2": [
       {
         "name": "formatters",
@@ -2597,7 +2597,7 @@
       }
     ]
   },
-  "DsCombobox": {
+  "KjunCombobox": {
     "vue2": [
       {
         "name": "error",
@@ -2943,7 +2943,7 @@
       }
     ]
   },
-  "DsCopyButton": {
+  "KjunCopyButton": {
     "vue2": [
       {
         "name": "formatters",
@@ -3159,7 +3159,7 @@
       }
     ]
   },
-  "DsDataState": {
+  "KjunDataState": {
     "vue2": [
       {
         "name": "queryKey",
@@ -3688,7 +3688,7 @@
       }
     ]
   },
-  "DsDatePicker": {
+  "KjunDatePicker": {
     "vue2": [
       {
         "name": "error",
@@ -3981,7 +3981,7 @@
       }
     ]
   },
-  "DsDeviation": {
+  "KjunDeviation": {
     "vue2": [
       {
         "name": "formatters",
@@ -4096,7 +4096,7 @@
       }
     ]
   },
-  "DsDrawer": {
+  "KjunDrawer": {
     "vue2": [
       {
         "name": "formatters",
@@ -4372,7 +4372,7 @@
       }
     ]
   },
-  "DsDropdown": {
+  "KjunDropdown": {
     "vue2": [
       {
         "name": "formatters",
@@ -4546,7 +4546,7 @@
       }
     ]
   },
-  "DsDropdownDivider": {
+  "KjunDropdownDivider": {
     "vue2": [
       {
         "name": "formatters",
@@ -4561,7 +4561,7 @@
     "react": [],
     "native": []
   },
-  "DsDropdownItem": {
+  "KjunDropdownItem": {
     "vue2": [
       {
         "name": "formatters",
@@ -4715,7 +4715,7 @@
       }
     ]
   },
-  "DsEmpty": {
+  "KjunEmpty": {
     "vue2": [
       {
         "name": "formatters",
@@ -4811,7 +4811,7 @@
       }
     ]
   },
-  "DsErrorBoundary": {
+  "KjunErrorBoundary": {
     "vue2": [
       {
         "name": "formatters",
@@ -4907,7 +4907,7 @@
       }
     ]
   },
-  "DsExecutionStatusBadge": {
+  "KjunExecutionStatusBadge": {
     "vue2": [
       {
         "name": "formatters",
@@ -4987,7 +4987,7 @@
       }
     ]
   },
-  "DsExternalLink": {
+  "KjunExternalLink": {
     "vue2": [
       {
         "name": "formatters",
@@ -5090,7 +5090,28 @@
       }
     ]
   },
-  "DsFilterGroup": {
+  "KjunFeedbackProvider": {
+    "vue2": [],
+    "react": [
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
+  "KjunFilterGroup": {
     "vue2": [
       {
         "name": "formatters",
@@ -5285,7 +5306,7 @@
       }
     ]
   },
-  "DsFormActions": {
+  "KjunFormActions": {
     "vue2": [
       {
         "name": "formatters",
@@ -5543,7 +5564,7 @@
       }
     ]
   },
-  "DsFormGroup": {
+  "KjunFormGroup": {
     "vue2": [
       {
         "name": "formatters",
@@ -5688,7 +5709,7 @@
       }
     ]
   },
-  "DsFormSkeleton": {
+  "KjunFormSkeleton": {
     "vue2": [
       {
         "name": "formatters",
@@ -5789,7 +5810,7 @@
       }
     ]
   },
-  "DsFreshness": {
+  "KjunFreshness": {
     "vue2": [
       {
         "name": "formatters",
@@ -5883,7 +5904,7 @@
       }
     ]
   },
-  "DsHeatmapCell": {
+  "KjunHeatmapCell": {
     "vue2": [
       {
         "name": "formatters",
@@ -6021,7 +6042,7 @@
       }
     ]
   },
-  "DsIcon": {
+  "KjunIcon": {
     "vue2": [
       {
         "name": "formatters",
@@ -6199,7 +6220,7 @@
       }
     ]
   },
-  "DsIconToggle": {
+  "KjunIconToggle": {
     "vue2": [
       {
         "name": "formatters",
@@ -6498,7 +6519,7 @@
       }
     ]
   },
-  "DsImage": {
+  "KjunImage": {
     "vue2": [
       {
         "name": "src",
@@ -6681,7 +6702,7 @@
       }
     ]
   },
-  "DsInput": {
+  "KjunInput": {
     "vue2": [
       {
         "name": "error",
@@ -7186,7 +7207,7 @@
       }
     ]
   },
-  "DsKpiHero": {
+  "KjunKpiHero": {
     "vue2": [
       {
         "name": "formatters",
@@ -7527,7 +7548,7 @@
       }
     ]
   },
-  "DsKpiRow": {
+  "KjunKpiRow": {
     "vue2": [
       {
         "name": "formatters",
@@ -7658,7 +7679,7 @@
       }
     ]
   },
-  "DsListRow": {
+  "KjunListRow": {
     "vue2": [
       {
         "name": "title",
@@ -7814,7 +7835,7 @@
       }
     ]
   },
-  "DsListSection": {
+  "KjunListSection": {
     "vue2": [
       {
         "name": "title",
@@ -7918,7 +7939,7 @@
       }
     ]
   },
-  "DsListSkeleton": {
+  "KjunListSkeleton": {
     "vue2": [
       {
         "name": "formatters",
@@ -8040,7 +8061,7 @@
       }
     ]
   },
-  "DsMarketCards": {
+  "KjunMarketCards": {
     "vue2": [
       {
         "name": "queryKey",
@@ -8879,7 +8900,7 @@
       }
     ]
   },
-  "DsMarketListPanel": {
+  "KjunMarketListPanel": {
     "vue2": [
       {
         "name": "formatters",
@@ -8927,7 +8948,7 @@
       }
     ]
   },
-  "DsMarketSimpleList": {
+  "KjunMarketSimpleList": {
     "vue2": [
       {
         "name": "queryKey",
@@ -9583,7 +9604,7 @@
       }
     ]
   },
-  "DsMarketTable": {
+  "KjunMarketTable": {
     "vue2": [
       {
         "name": "queryKey",
@@ -10386,7 +10407,7 @@
       }
     ]
   },
-  "DsMarketTableSkeleton": {
+  "KjunMarketTableSkeleton": {
     "vue2": [
       {
         "name": "formatters",
@@ -10494,7 +10515,7 @@
       }
     ]
   },
-  "DsMenuButton": {
+  "KjunMenuButton": {
     "vue2": [
       {
         "name": "formatters",
@@ -10825,7 +10846,7 @@
       }
     ]
   },
-  "DsModal": {
+  "KjunModal": {
     "vue2": [
       {
         "name": "formatters",
@@ -11348,7 +11369,7 @@
       }
     ]
   },
-  "DsPagination": {
+  "KjunPagination": {
     "vue2": [
       {
         "name": "formatters",
@@ -11636,7 +11657,7 @@
       }
     ]
   },
-  "DsPopover": {
+  "KjunPopover": {
     "vue2": [
       {
         "name": "formatters",
@@ -11889,7 +11910,7 @@
       }
     ]
   },
-  "DsPriceCell": {
+  "KjunPriceCell": {
     "vue2": [
       {
         "name": "formatters",
@@ -12067,7 +12088,7 @@
       }
     ]
   },
-  "DsProgress": {
+  "KjunProgress": {
     "vue2": [
       {
         "name": "formatters",
@@ -12226,7 +12247,7 @@
       }
     ]
   },
-  "DsProgressCell": {
+  "KjunProgressCell": {
     "vue2": [
       {
         "name": "formatters",
@@ -12369,7 +12390,148 @@
       }
     ]
   },
-  "DsQuantityStepper": {
+  "KjunProvider": {
+    "vue2": [
+      {
+        "name": "icons",
+        "type": "import('@kjun-ui/icons').KjunIconRegistry | null",
+        "required": false,
+        "default": "null",
+        "description": ""
+      },
+      {
+        "name": "formatters",
+        "type": "Record<string, (...values: any[]) => string>",
+        "required": false,
+        "default": "{}",
+        "description": ""
+      },
+      {
+        "name": "renderIdentity",
+        "type": "((h: CreateElement, props: Record<string, unknown>, slots: Record<string, VNode[] | undefined>) => VNode | null | undefined) | null",
+        "required": false,
+        "default": "null",
+        "description": ""
+      }
+    ],
+    "react": [
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "icons",
+        "type": "Readonly<Record<string, import(\"/workspace/packages/icons/dist/index\").KjunIconDefinition>> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "autoFocus",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ChangeEventHandler<HTMLDivElement, Element> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").KeyboardEventHandler<HTMLDivElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").MouseEventHandler<HTMLDivElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "icons",
+        "type": "Readonly<Record<string, import(\"/workspace/packages/icons/dist/index\").KjunIconDefinition>> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "colors",
+        "type": "import(\"/workspace/packages/tokens/dist/colors\").KjunColors<import(\"/workspace/node_modules/react-native/types/index\").ColorValue>",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "fontFamily",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "numericFontFamily",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "domainColors",
+        "type": "Readonly<Record<\"priceUp\" | \"priceUpLight\" | \"priceUpBg\" | \"priceUpBgStrong\" | \"priceDown\" | \"priceDownLight\" | \"priceDownBg\" | \"priceDownBgStrong\" | \"priceNeutral\" | \"priceNeutralBg\" | \"favorite\" | \"favoriteHover\" | \"interest\", import(\"/workspace/node_modules/react-native/types/index\").ColorValue>> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
+  "KjunQuantityStepper": {
     "vue2": [
       {
         "name": "error",
@@ -12652,7 +12814,7 @@
       }
     ]
   },
-  "DsRadio": {
+  "KjunRadio": {
     "vue2": [
       {
         "name": "formatters",
@@ -12835,7 +12997,7 @@
       }
     ]
   },
-  "DsRadioGroup": {
+  "KjunRadioGroup": {
     "vue2": [
       {
         "name": "formatters",
@@ -12990,7 +13152,7 @@
       }
     ]
   },
-  "DsRangeSlider": {
+  "KjunRangeSlider": {
     "vue2": [
       {
         "name": "min",
@@ -13196,7 +13358,7 @@
       }
     ]
   },
-  "DsRefreshButton": {
+  "KjunRefreshButton": {
     "vue2": [
       {
         "name": "formatters",
@@ -13628,7 +13790,7 @@
       }
     ]
   },
-  "DsScrollFade": {
+  "KjunScrollFade": {
     "vue2": [
       {
         "name": "formatters",
@@ -13661,7 +13823,7 @@
       }
     ]
   },
-  "DsSearchInput": {
+  "KjunSearchInput": {
     "vue2": [
       {
         "name": "error",
@@ -14063,7 +14225,7 @@
       }
     ]
   },
-  "DsSelect": {
+  "KjunSelect": {
     "vue2": [
       {
         "name": "error",
@@ -14538,7 +14700,7 @@
       }
     ]
   },
-  "DsSignedValue": {
+  "KjunSignedValue": {
     "vue2": [
       {
         "name": "formatters",
@@ -14807,7 +14969,7 @@
       }
     ]
   },
-  "DsSkeleton": {
+  "KjunSkeleton": {
     "vue2": [
       {
         "name": "formatters",
@@ -14971,7 +15133,7 @@
       }
     ]
   },
-  "DsSlider": {
+  "KjunSlider": {
     "vue2": [
       {
         "name": "min",
@@ -15156,7 +15318,7 @@
       }
     ]
   },
-  "DsSparkline": {
+  "KjunSparkline": {
     "vue2": [
       {
         "name": "formatters",
@@ -15355,7 +15517,7 @@
       }
     ]
   },
-  "DsSpinner": {
+  "KjunSpinner": {
     "vue2": [
       {
         "name": "formatters",
@@ -15416,7 +15578,7 @@
       }
     ]
   },
-  "DsSwitch": {
+  "KjunSwitch": {
     "vue2": [
       {
         "name": "formatters",
@@ -15585,7 +15747,7 @@
       }
     ]
   },
-  "DsTabPane": {
+  "KjunTabPane": {
     "vue2": [
       {
         "name": "formatters",
@@ -15737,7 +15899,7 @@
       }
     ]
   },
-  "DsTable": {
+  "KjunTable": {
     "vue2": [
       {
         "name": "selectable",
@@ -16638,7 +16800,7 @@
       }
     ]
   },
-  "DsTabs": {
+  "KjunTabs": {
     "vue2": [
       {
         "name": "formatters",
@@ -16837,7 +16999,7 @@
       }
     ]
   },
-  "DsTextarea": {
+  "KjunTextarea": {
     "vue2": [
       {
         "name": "error",
@@ -17174,7 +17336,7 @@
       }
     ]
   },
-  "DsTimePicker": {
+  "KjunTimePicker": {
     "vue2": [
       {
         "name": "error",
@@ -17446,7 +17608,7 @@
       }
     ]
   },
-  "DsTooltip": {
+  "KjunTooltip": {
     "vue2": [
       {
         "name": "formatters",
@@ -17556,7 +17718,7 @@
       }
     ]
   },
-  "DsTopNavigation": {
+  "KjunTopNavigation": {
     "vue2": [
       {
         "name": "title",
@@ -17654,168 +17816,6 @@
       {
         "name": "safeAreaTop",
         "type": "number | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      }
-    ]
-  },
-  "KjunFeedbackProvider": {
-    "vue2": [],
-    "react": [
-      {
-        "name": "children",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
-        "required": true,
-        "default": "—",
-        "description": ""
-      }
-    ],
-    "native": [
-      {
-        "name": "children",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
-        "required": true,
-        "default": "—",
-        "description": ""
-      }
-    ]
-  },
-  "KjunProvider": {
-    "vue2": [
-      {
-        "name": "icons",
-        "type": "import('@kjun-ui/icons').KjunIconRegistry | null",
-        "required": false,
-        "default": "null",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, (...values: any[]) => string>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "renderIdentity",
-        "type": "((h: CreateElement, props: Record<string, unknown>, slots: Record<string, VNode[] | undefined>) => VNode | null | undefined) | null",
-        "required": false,
-        "default": "null",
-        "description": ""
-      }
-    ],
-    "react": [
-      {
-        "name": "children",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
-        "required": true,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "icons",
-        "type": "Readonly<Record<string, import(\"/workspace/packages/icons/dist/index\").KjunIconDefinition>> | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "autoFocus",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "className",
-        "type": "string | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "id",
-        "type": "string | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "style",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "onChange",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ChangeEventHandler<HTMLDivElement, Element> | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "onKeyDown",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").KeyboardEventHandler<HTMLDivElement> | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "onClick",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").MouseEventHandler<HTMLDivElement> | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      }
-    ],
-    "native": [
-      {
-        "name": "icons",
-        "type": "Readonly<Record<string, import(\"/workspace/packages/icons/dist/index\").KjunIconDefinition>> | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "colors",
-        "type": "import(\"/workspace/packages/tokens/dist/colors\").KjunColors<import(\"/workspace/node_modules/react-native/types/index\").ColorValue>",
-        "required": true,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "children",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
-        "required": true,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "style",
-        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "fontFamily",
-        "type": "string | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "numericFontFamily",
-        "type": "string | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "domainColors",
-        "type": "Readonly<Record<\"priceUp\" | \"priceUpLight\" | \"priceUpBg\" | \"priceUpBgStrong\" | \"priceDown\" | \"priceDownLight\" | \"priceDownBg\" | \"priceDownBgStrong\" | \"priceNeutral\" | \"priceNeutralBg\" | \"favorite\" | \"favoriteHover\" | \"interest\", import(\"/workspace/node_modules/react-native/types/index\").ColorValue>> | undefined",
         "required": false,
         "default": "—",
         "description": ""

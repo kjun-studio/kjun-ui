@@ -1,15 +1,15 @@
 import { Fragment, useEffect, useId, useMemo, useRef } from "react";
 import { createTimeDomain, type TimePrecision, type InputSize } from "@kjun-ui/tokens";
 import { CompoundControlContext } from "./compound-control";
-import { DsSelect } from "./select";
-import { DsButton } from "./button";
+import { KjunSelect } from "./select";
+import { KjunButton } from "./button";
 import { FieldContext, useKjunField } from "./input";
-export interface DsTimePickerProps {
+export interface KjunTimePickerProps {
   value: string | null; precision?: TimePrecision; min?: string; max?: string; minuteStep?: number; secondStep?: number;
   disabled?: boolean; error?: boolean; clearable?: boolean; size?: InputSize; ariaLabel?: string;
   onValueChange?: (value: string | null) => void; onChangeCommit?: (value: string | null) => void;
 }
-export function DsTimePicker({ value, precision = "minute", min, max, minuteStep = 1, secondStep = 1, disabled = false, error = false, clearable = true, size = "md", ariaLabel = "시간", onValueChange, onChangeCommit }: DsTimePickerProps) {
+export function KjunTimePicker({ value, precision = "minute", min, max, minuteStep = 1, secondStep = 1, disabled = false, error = false, clearable = true, size = "md", ariaLabel = "시간", onValueChange, onChangeCommit }: KjunTimePickerProps) {
   const root = useRef<HTMLDivElement>(null);
   const field = useKjunField(), uid = useId();
   const fieldId = field?.id || `kjun-time-${uid}`;
@@ -25,7 +25,7 @@ export function DsTimePicker({ value, precision = "minute", min, max, minuteStep
       const labelId = `${fieldId}-segment-${index}`;
       return <Fragment key={label}>{index > 0 && <span className="kjun-time-separator" aria-hidden>:</span>}<FieldContext.Provider value={{ ...field, id: segmentId, labelId: field?.labelId ? `${field.labelId} ${labelId}` : undefined }}>
         <div className="kjun-time-segment"><span id={labelId} className="kjun-sr-only" aria-hidden>{label}</span>
-          <DsSelect value={time === null ? null : domain.part(time, index)}
+          <KjunSelect value={time === null ? null : domain.part(time, index)}
             options={domain.options(value, index).map(n => ({ value: n, label: String(n).padStart(2, "0") }))}
             onValueChange={next => { if (typeof next === "number") change(domain.select(value, index, next)); }}
             ariaLabel={ariaLabel + " " + label} placeholder={label} disabled={disabled || !valid} error={error} size={size} clearable={false} searchable={false} />
@@ -33,6 +33,6 @@ export function DsTimePicker({ value, precision = "minute", min, max, minuteStep
       </FieldContext.Provider></Fragment>;
     })}
     </div></CompoundControlContext.Provider>
-    {clearable && value !== null && <DsButton className="kjun-time-clear" size={size} variant="ghost" prefixIcon="x" ariaLabel={ariaLabel + " 지우기"} disabled={disabled || !valid} onClick={() => { change(null); root.current?.querySelector<HTMLButtonElement>(".kjun-select-trigger")?.focus(); }} />}
+    {clearable && value !== null && <KjunButton className="kjun-time-clear" size={size} variant="ghost" prefixIcon="x" ariaLabel={ariaLabel + " 지우기"} disabled={disabled || !valid} onClick={() => { change(null); root.current?.querySelector<HTMLButtonElement>(".kjun-select-trigger")?.focus(); }} />}
   </div>;
 }

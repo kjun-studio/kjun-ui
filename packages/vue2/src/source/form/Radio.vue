@@ -22,14 +22,14 @@
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  name: 'DsRadio',
+  name: 'KjunRadio',
   inject: {
     radioGroup: {
       default: null
     }
   },
   // DS 표준 v-model 계약: value = 선택된 값(v-model), val = 이 라디오 자신의 값.
-  // DsRadioGroup 안에서는 그룹의 value를 따르므로 개별 v-model은 생략한다.
+  // KjunRadioGroup 안에서는 그룹의 value를 따르므로 개별 v-model은 생략한다.
   model: {
     prop: 'value',
     event: 'input'

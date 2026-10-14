@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { AccessiblePressable } from "./a11y";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { useKjunStyles } from "./provider";
 
 /** The visual clear affordance is smaller than its 44px activation target. */
@@ -18,7 +18,7 @@ export function FieldClear({ size, disabled, label, onPress }: {
     {({ pressed, hovered }: any) => <View pointerEvents="none" style={{ width: spec.clearSize, height: spec.clearSize,
       borderRadius: spec.clearSize / 2, alignItems: "center", justifyContent: "center",
       backgroundColor: disabled ? "transparent" : pressed ? colors.active : hovered ? colors.hover : "transparent" }}>
-      <DsIcon name="x" size={spec.iconSize} color={disabled ? colors.textDisabled : colors.textSecondary} />
+      <KjunIcon name="x" size={spec.iconSize} color={disabled ? colors.textDisabled : colors.textSecondary} />
     </View>}
   </AccessiblePressable>;
 }

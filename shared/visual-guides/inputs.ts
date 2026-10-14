@@ -1,14 +1,14 @@
 import { part as p, textPart as t, control as c, type GuideAuthor } from "./types.ts";
 const field = p("입력 영역", "현재 값과 입력 위치를 표시합니다.", "input, textarea");
 export const inputs: Record<string, GuideAuthor> = {
-  DsCheckbox: {
+  KjunCheckbox: {
     parts: [
       c("선택 컨트롤", "선택 여부를 표시하고 변경합니다.", "checkbox"),
       t("라벨", "선택할 내용의 의미를 설명합니다.", "알림 받기"),
     ],
     related: "form",
   },
-  DsCombobox: {
+  KjunCombobox: {
     parts: [field],
     related: "selection",
     figures: [
@@ -24,7 +24,7 @@ export const inputs: Record<string, GuideAuthor> = {
       },
     ],
   },
-  DsDatePicker: {
+  KjunDatePicker: {
     parts: [
       p(
         "날짜 컨트롤",
@@ -34,14 +34,14 @@ export const inputs: Record<string, GuideAuthor> = {
     ],
     related: "form",
   },
-  DsFilterGroup: {
+  KjunFilterGroup: {
     parts: [
       c("필터 항목", "현재 적용한 필터 조건을 표시합니다."),
       t("조건 라벨", "필터가 포함할 대상을 설명합니다.", "사과"),
     ],
     related: "toolbar",
   },
-  DsFormGroup: {
+  KjunFormGroup: {
     parts: [
       t("라벨", "자식 입력의 목적을 설명하고 접근성 이름에 연결합니다.", "내용"),
       field,
@@ -71,7 +71,7 @@ export const inputs: Record<string, GuideAuthor> = {
       },
     ],
   },
-  DsInput: {
+  KjunInput: {
     parts: [t("소비자 라벨", "이 예제는 FormGroup으로 목적을 연결합니다.", "목록 이름"), field],
     related: "form",
     figures: [
@@ -80,21 +80,21 @@ export const inputs: Record<string, GuideAuthor> = {
       { id: "affixes", label: "아이콘과 단위", description: "앞뒤 콘텐츠와 입력값 사이에 8px 이상을 확보합니다.", settings: { comparison: "아이콘·단위" }, parts: [field] },
     ],
   },
-  DsRadio: {
+  KjunRadio: {
     parts: [
       c("선택 컨트롤", "RadioGroup 안에서 하나의 항목을 고릅니다.", "radio"),
       t("라벨", "해당 선택지를 설명합니다.", "첫 선택"),
     ],
     related: "form",
   },
-  DsRadioGroup: {
+  KjunRadioGroup: {
     parts: [
       p("선택 그룹", "하나의 선택값을 공유하는 라디오 집합입니다.", '[role="radiogroup"]'),
       c("선택지", "그룹의 개별 라디오입니다.", "radio"),
     ],
     related: "form",
   },
-  DsSearchInput: {
+  KjunSearchInput: {
     parts: [field],
     related: "selection",
     figures: [
@@ -113,7 +113,7 @@ export const inputs: Record<string, GuideAuthor> = {
       },
     ],
   },
-  DsSelect: {
+  KjunSelect: {
     parts: [
       p(
         "선택 컨트롤",
@@ -136,12 +136,12 @@ export const inputs: Record<string, GuideAuthor> = {
     ],
     related: "selection",
   },
-  DsSwitch: {
+  KjunSwitch: {
     parts: [
       c("전환 컨트롤", "켜짐과 꺼짐을 전환합니다.", "switch"),
       t("라벨", "전환하는 설정을 설명합니다.", "자동 갱신"),
     ],
     related: "form",
   },
-  DsTextarea: { parts: [field], related: "form" },
+  KjunTextarea: { parts: [field], related: "form" },
 };

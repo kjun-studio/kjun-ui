@@ -64,16 +64,16 @@ for (const platform of ['react', 'vue2', 'native']) {
     expect((await box(region)).height).toBe(56);
     await update(page, { customLoading: true });
     expect((await box(region)).height).toBe(64);
-    for (const related of ['DsMarketTable', 'DsMarketCards', 'DsMarketSimpleList']) {
+    for (const related of ['KjunMarketTable', 'KjunMarketCards', 'KjunMarketSimpleList']) {
       await update(page, { related, loading: false, empty: true, resultKey: 'a' });
       const title = await box(region.getByText('Empty title', { exact: true }));
       const desc = await box(region.getByText('Empty description', { exact: true }));
-      // Shared DsEmpty contributes no second 32px padding inside DataState.
+      // Shared KjunEmpty contributes no second 32px padding inside DataState.
       expect((await box(region)).y + (await box(region)).height - desc.y - desc.height).toBe(48);
       expect(desc.y - title.y - title.height).toBe(8);
       await region.screenshot({ path: `artifacts/data-state-visual-fix/related-${platform}-${related}-empty.png` });
     }
-    for (const related of ['DsTable', 'DsMarketTable', 'DsMarketCards', 'DsMarketSimpleList']) {
+    for (const related of ['KjunTable', 'KjunMarketTable', 'KjunMarketCards', 'KjunMarketSimpleList']) {
       await update(page, { related, loading: true, empty: false });
       const status = await box(region.getByText('갱신 중...', { exact: true }));
       const row = await box(region.getByText('Result row', { exact: true }));

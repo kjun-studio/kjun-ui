@@ -27,7 +27,7 @@
     <!-- Like React and Native: the shared sm search field on a surface toolbar, so the field stands out. -->
     <div v-if="searchable || $slots.toolbar" class="kj-flex kj-flex-wrap kj-items-center kj-gap-2 kj-px-3 kj-py-2 kj-bg-card-bg kj-border-b kj-border-border-primary">
       <div v-if="searchable" class="kj-flex-shrink-0 kj-w-table-search-width kj-max-w-full">
-        <DsInput
+        <KjunInput
           :value="searchQuery"
           size="sm"
           prefix-icon="search"
@@ -42,7 +42,7 @@
     </div>
 
     <!-- 행 스켈레톤은 표/카드가 열 구조 안에서 그린다. 공통 상태는 오류와 갱신 피드백을 맡는다. -->
-    <DsDataState
+    <KjunDataState
       :query-key="queryKey"
       :result-key="usesQueryState ? (hasCurrentResult ? queryKey : null) : undefined"
       :has-loaded-once="hasLoadedOnce"
@@ -130,7 +130,7 @@
               <div :class="['kj-flex kj-items-center kj-gap-1', headerJustifyClass(col)]">
                 <span>{{ col.label }}</span>
                 <template v-if="col.sortable && sortable && sortKey === col.key">
-                  <DsIcon :name="sortOrder === 'asc' ? 'sort-ascending' : 'sort-descending'" class="kj-text-xs" />
+                  <KjunIcon :name="sortOrder === 'asc' ? 'sort-ascending' : 'sort-descending'" class="kj-text-xs" />
                 </template>
               </div>
             </th>
@@ -141,10 +141,10 @@
           <!-- Loading -->
           <template v-if="initialLoading">
             <tr v-for="index in skeletonRows" :key="'loading-' + index" aria-hidden="true">
-              <td v-if="selectable" class="kjun-table-action-cell"><DsSkeleton type="block" height="var(--_kjun-geometry-table-selection-size)" width="var(--_kjun-geometry-table-selection-size)" /></td>
+              <td v-if="selectable" class="kjun-table-action-cell"><KjunSkeleton type="block" height="var(--_kjun-geometry-table-selection-size)" width="var(--_kjun-geometry-table-selection-size)" /></td>
               <td v-if="expandable" class="kjun-table-action-cell"></td>
               <td v-for="col in visibleColumns" :key="col.key"  :style="col.width ? { width: col.width } : {}">
-                <DsSkeleton type="block" :height="tableGeometry.skeletonHeight + 'px'" :width="col.key === 'actions' ? tableGeometry.actionColumnWidth + 'px' : '75%'" />
+                <KjunSkeleton type="block" :height="tableGeometry.skeletonHeight + 'px'" :width="col.key === 'actions' ? tableGeometry.actionColumnWidth + 'px' : '75%'" />
               </td>
             </tr>
           </template>
@@ -180,7 +180,7 @@
               </td>
               <td v-if="expandable" class="kjun-table-action-cell kj-text-center">
                 <!-- The shared xs ghost button, like React and Native, so the row keeps their height. -->
-                <DsButton
+                <KjunButton
                   variant="ghost"
                   size="xs"
                   :prefix-icon="isExpanded(row) ? 'chevron-down' : 'chevron-right'"
@@ -222,7 +222,7 @@
     </div>
 
     <!-- Pagination -->
-    <ds-pagination
+    <kjun-pagination
       v-if="pagination && paginationTotalPages > 1"
       :current-page="pagination.page"
       :total-pages="paginationTotalPages"
@@ -231,17 +231,17 @@
       :show-info="true"
       @change="handlePageChange"
     />
-    </DsDataState>
+    </KjunDataState>
   </div>
 </template>
 
 <script>
-import DsDataState from "../feedback/DataState.vue";
-import DsIcon from "../../icon.js";
-import DsInput from "../primitives/Input.vue";
-import DsButton from "../primitives/Button.vue";
-import DsPagination from "../navigation/Pagination.vue";
-import DsSkeleton from "./Skeleton.vue";
+import KjunDataState from "../feedback/DataState.vue";
+import KjunIcon from "../../icon.js";
+import KjunInput from "../primitives/Input.vue";
+import KjunButton from "../primitives/Button.vue";
+import KjunPagination from "../navigation/Pagination.vue";
+import KjunSkeleton from "./Skeleton.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { domainColorMixin } from "../../domain-colors.js";
 import queryDisplayMixin from '@kjun-adapter/queryDisplayMixin.js'
@@ -258,8 +258,8 @@ import tableViewport from './table/viewport.js'
 
 
 export default {
-  name: 'DsTable',
-  components: { TableCards, TableCheck, DsButton, DsDataState, DsIcon, DsInput, DsPagination, DsSkeleton },
+  name: 'KjunTable',
+  components: { TableCards, TableCheck, KjunButton, KjunDataState, KjunIcon, KjunInput, KjunPagination, KjunSkeleton },
   mixins: [tableSelection, tableSorting, tableLayout, tableSearch, tableCards, tableExpansion, tableViewport, queryDisplayMixin, ...componentMixins,
     domainColorMixin(vm => !vm.initialLoading && vm.data.length > 0 && vm.columns.some(column => column.pill))],
   props: {

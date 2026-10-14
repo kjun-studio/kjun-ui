@@ -8,21 +8,21 @@
       @change="$emit('change', $event)"
       @click="$emit('click', $event)"
     />
-    <DsIcon name="check" :size="iconSize" class="kjun-table-check-mark" />
-    <DsIcon name="minus" :size="iconSize" class="kjun-table-check-dash" />
+    <KjunIcon name="check" :size="iconSize" class="kjun-table-check-mark" />
+    <KjunIcon name="minus" :size="iconSize" class="kjun-table-check-dash" />
   </span>
 </template>
 
 <script>
-// A native checkbox (role, indeterminate, row click isolation) drawn like DsCheckbox sm.
+// A native checkbox (role, indeterminate, row click isolation) drawn like KjunCheckbox sm.
 import { tokens } from "@kjun-ui/tokens";
-import DsIcon from "../../../icon.js";
+import KjunIcon from "../../../icon.js";
 import { defaultIcons, withFallbackIcons } from "../../../../../../shared/package-runtime/icon-registry";
 import { componentIcons } from "../../../../../../shared/package-runtime/component-icons";
 
 export default {
-  name: "TableCheck",
-  components: { DsIcon },
+  name: "KjunTableCheck",
+  components: { KjunIcon },
   inheritAttrs: false,
   inject: { parentIcons: { from: "kjunIcons", default: null } },
   provide() { return { kjunIcons: () => this.checkIcons }; },

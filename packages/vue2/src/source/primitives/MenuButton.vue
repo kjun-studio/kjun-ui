@@ -1,5 +1,5 @@
 <template>
-  <DsDropdown
+  <KjunDropdown
     ref="dropdown"
     :placement="placement"
     :disabled="disabled || loading"
@@ -11,13 +11,13 @@
     @close="onClose"
   >
     <template #trigger>
-      <DsTooltip
+      <KjunTooltip
         v-if="tooltip"
         :content="isOpen ? '' : tooltip"
         :placement="tooltipPlacement"
         :delay="tooltipDelay"
       >
-        <DsButton
+        <KjunButton
           :id="triggerId"
           :size="size"
           :variant="variant"
@@ -33,9 +33,9 @@
           @click.stop
         >
           <template v-if="!iconOnly"><slot name="label">{{ label }}</slot></template>
-        </DsButton>
-      </DsTooltip>
-      <DsButton
+        </KjunButton>
+      </KjunTooltip>
+      <KjunButton
         :id="triggerId"
         v-else
         :size="size"
@@ -52,26 +52,26 @@
         @click.stop
       >
         <template v-if="!iconOnly"><slot name="label">{{ label }}</slot></template>
-      </DsButton>
+      </KjunButton>
     </template>
     <slot></slot>
-  </DsDropdown>
+  </KjunDropdown>
 </template>
 
 <script>
-import DsButton from "./Button.vue";
-import DsDropdown from "../layout/Dropdown.vue";
-import DsTooltip from "../data-display/Tooltip.vue";
+import KjunButton from "./Button.vue";
+import KjunDropdown from "../layout/Dropdown.vue";
+import KjunTooltip from "../data-display/Tooltip.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { SIZES_EXTENDED, oneOf } from '../tokens'
 
-// "값/모드를 골라 실행하는" 메뉴 버튼 — 트리거(라벨+chevron)와 DsDropdown 배선을 표준화한다.
-// 버튼이 아닌 임의 트리거(테이블 행 long-press 등)는 DsDropdown을 직접 사용한다.
+// "값/모드를 골라 실행하는" 메뉴 버튼 — 트리거(라벨+chevron)와 KjunDropdown 배선을 표준화한다.
+// 버튼이 아닌 임의 트리거(테이블 행 long-press 등)는 KjunDropdown을 직접 사용한다.
 // compact는 라벨을 접근성 이름으로 유지하는 정사각형 더보기 버튼이다.
 export default {
   mixins: componentMixins,
-  components: { DsButton, DsDropdown, DsTooltip },
-  name: 'DsMenuButton',
+  components: { KjunButton, KjunDropdown, KjunTooltip },
+  name: 'KjunMenuButton',
   props: {
     // 트리거 라벨 텍스트. 아이콘/스와치 등 비텍스트 라벨은 #label 슬롯 사용.
     label: {
@@ -147,7 +147,7 @@ export default {
       this.isOpen = false
       this.$emit('close')
     },
-    // 패널형 콘텐츠(DsDropdownItem이 아닌 슬롯)에서 선택 후 수동으로 닫을 때 사용
+    // 패널형 콘텐츠(KjunDropdownItem이 아닌 슬롯)에서 선택 후 수동으로 닫을 때 사용
     close() {
       this.$refs.dropdown?.close()
     }

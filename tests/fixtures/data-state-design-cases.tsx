@@ -11,22 +11,22 @@ export function DataStateCases({ K }: { K: any }) {
   const [events, setEvents] = useState({ retry: 0, empty: 0, export: 0 });
   useLayoutEffect(() => { Object.assign(window, { configureDataState: (next: object) => setConfig((old: object) => ({ ...old, ...next })) }); }, []);
   const action = (key: keyof typeof events) => () => setEvents(e => ({ ...e, [key]: e[key] + 1 }));
-  const retry = () => <K.DsButton size="sm" variant="secondary" onClick={action('retry')} onPress={action('retry')}>{c.retryText || 'Retry'}</K.DsButton>;
+  const retry = () => <K.KjunButton size="sm" variant="secondary" onClick={action('retry')} onPress={action('retry')}>{c.retryText || 'Retry'}</K.KjunButton>;
   const Related = K[c.related];
   return <div style={{ padding: 24 }}>
     <div data-testid="region" style={{ width: c.width }}>
       {Related ? <Related {...relatedProps} {...c} data={c.empty ? [] : [{ id: 'a', name: 'Result row', price: 100 }]} rows={c.empty ? [] : [{ id: 'a', name: 'Result row', price: 100 }]} onRetry={action('retry')} /> :
-      <K.DsDataState {...c} onRetry={action('retry')} onEmptyAction={action('empty')}
-        emptyContent={c.customEmpty ? <K.DsEmpty text="Empty title" description="Empty description">{c.emptyActionText && retry()}</K.DsEmpty> : undefined}
-        errorContent={c.customError ? <K.DsAlert title="Custom error">{retry()}</K.DsAlert> : undefined}
-        loadingContent={c.customLoading ? <K.DsSkeleton type="block" height={64} /> : undefined}>
-        <K.DsCard title="Result title" surface="muted" headerActions={<K.DsButton size="sm" variant="secondary" onClick={action('export')} onPress={action('export')}>Export</K.DsButton>}>
+      <K.KjunDataState {...c} onRetry={action('retry')} onEmptyAction={action('empty')}
+        emptyContent={c.customEmpty ? <K.KjunEmpty text="Empty title" description="Empty description">{c.emptyActionText && retry()}</K.KjunEmpty> : undefined}
+        errorContent={c.customError ? <K.KjunAlert title="Custom error">{retry()}</K.KjunAlert> : undefined}
+        loadingContent={c.customLoading ? <K.KjunSkeleton type="block" height={64} /> : undefined}>
+        <K.KjunCard title="Result title" surface="muted" headerActions={<K.KjunButton size="sm" variant="secondary" onClick={action('export')} onPress={action('export')}>Export</K.KjunButton>}>
           <div data-testid="scroll" style={{ height: 96, overflow: 'auto' }}>
             <input aria-label="Retained input" defaultValue="original" />
             <div style={{ height: 600 }}>Result body</div>
           </div>
-        </K.DsCard>
-      </K.DsDataState>}
+        </K.KjunCard>
+      </K.KjunDataState>}
     </div>
     <output data-testid="events">{events.retry}/{events.empty}/{events.export}</output>
   </div>;

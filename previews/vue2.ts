@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { KjunProvider, DsButton, DsInput, DsModal, DsFormGroup } from "@kjun-ui/vue2";
+import { KjunProvider, KjunButton, KjunInput, KjunModal, KjunFormGroup } from "@kjun-ui/vue2";
 import { defaultConfig, componentProps, labelFor } from "../shared/demo-config";
 import { connectDemo } from "./bridge";
 import {applyDemoColors} from "../shared/demo-colors";
@@ -21,7 +21,7 @@ const app = new Vue({
     if (c.component === "button")
       children = [
         h("div", { class: "demo-control" }, [
-          h(DsButton, { props, on: { click: () => this.count++ } }, labelFor(c)),
+          h(KjunButton, { props, on: { click: () => this.count++ } }, labelFor(c)),
         ]),
         output(this.count ? this.count + "번 실행했습니다" : "버튼을 눌러보세요"),
       ];
@@ -30,10 +30,10 @@ const app = new Vue({
       children = [
         h("div", { class: "demo-field" }, [
           h(
-            DsFormGroup,
+            KjunFormGroup,
             { props: { label: "내용", hint: "입력한 값은 이 예제 안에서만 사용됩니다." } },
             [
-              h(DsInput, {
+              h(KjunInput, {
                 props: { ...inputProps, readonly: readOnly, value: this.value },
                 on: { input: (value: string) => (this.value = value) },
               }),
@@ -45,7 +45,7 @@ const app = new Vue({
     } else
       children = [
         h(
-          DsButton,
+          KjunButton,
           {
             props: { size: "lg" },
             on: {
@@ -59,7 +59,7 @@ const app = new Vue({
         ),
         output(this.saved ? "저장했습니다" : "확인·취소·닫기를 살펴보세요"),
         h(
-          DsModal,
+          KjunModal,
           {
             props: { ...props, value: this.open },
             on: {

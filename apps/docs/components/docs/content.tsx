@@ -21,7 +21,7 @@ import componentContracts from "../../../../shared/component-guides.json";
 import packages from "@/lib/generated/packages.json";
 import entries from "@/lib/generated/component-catalog.json";
 import Link from "@/components/docs/doc-link";
-import { DsIcon as Icon } from "@kjun-ui/react";
+import { KjunIcon as Icon } from "@kjun-ui/react";
 import { Tokens } from "./tokens";
 import { componentGuides, componentNameFor, type PageId } from "@/lib/catalog";
 import { Playground } from "./playground";
@@ -90,9 +90,9 @@ export function Overview() {
   );
 }
 export function ComponentContent({ component }: { component: ComponentName }) {
-  const name = { button: "DsButton", input: "DsInput", modal: "DsModal" }[component];
+  const name = { button: "KjunButton", input: "KjunInput", modal: "KjunModal" }[component];
   const guide = componentGuides[component];
-  const contract = componentContracts[{ button: "DsButton", input: "DsInput", modal: "DsModal" }[component] as keyof typeof componentContracts];
+  const contract = componentContracts[{ button: "KjunButton", input: "KjunInput", modal: "KjunModal" }[component] as keyof typeof componentContracts];
   return (
     <>
       <section id="preview">
@@ -110,7 +110,7 @@ export function ComponentContent({ component }: { component: ComponentName }) {
       <VisualSections name={name} />
       <ApiContract
         name={
-          { button: "DsButton", input: "DsInput", modal: "DsModal" }[component]
+          { button: "KjunButton", input: "KjunInput", modal: "KjunModal" }[component]
         }
       />
       <AccessibilityGuide name={name} />

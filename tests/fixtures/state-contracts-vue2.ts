@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Kjun, { KjunProvider, DsTable, DsSearchInput } from "@kjun-ui/vue2";
+import Kjun, { KjunProvider, KjunTable, KjunSearchInput } from "@kjun-ui/vue2";
 import { setRootValues } from "./style-values";
 Vue.use(Kjun); setRootValues();
 const rows = [{ id: 2, name: "Two" }, { id: 0, name: "Zero" }, { id: 1, name: "One" }];
@@ -11,7 +11,7 @@ const vm = new Vue({
     value: "", remote: true, disabled: false, debounce: 1000, mounted: true, selected: "none" }),
   render(h) {
     if (location.search.includes("table")) return h(KjunProvider, [
-      h(DsTable, { props: { data: rows, columns: [{ key: "name", label: "Name" }], responsive: "card", expandable: true,
+      h(KjunTable, { props: { data: rows, columns: [{ key: "name", label: "Name" }], responsive: "card", expandable: true,
         expandedRows: this.controlled ? this.expanded : undefined, expandSingle: this.single },
         on: { "update:expandedRows": (expanded: number[]) => { this.events.push(expanded); if (this.accept) this.expanded = expanded; } },
         scopedSlots: { expand: ({ row }: { row: { id: number } }) => h("span", "Detail " + row.id) } }),
@@ -19,7 +19,7 @@ const vm = new Vue({
       h("output", { attrs: { "data-testid": "events" } }, JSON.stringify(this.events)),
     ]);
     return h(KjunProvider, [
-      this.mounted && h(DsSearchInput, { props: { value: this.value, disabled: this.disabled, debounce: this.debounce,
+      this.mounted && h(KjunSearchInput, { props: { value: this.value, disabled: this.disabled, debounce: this.debounce,
         loadOptions: this.remote ? loadOptions : null, ariaLabel: "Search" },
         on: { input: (value: string) => { this.events.push(value); this.value = value; },
           select: (option: { name: string }) => { this.selected = option.name; } } }),

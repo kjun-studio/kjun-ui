@@ -23,7 +23,7 @@
           @touchend="clearTabPress"
           @touchcancel="clearTabPress"
         >
-          <DsIcon v-if="tab.icon" :name="tab.icon" :size="iconSize" />
+          <KjunIcon v-if="tab.icon" :name="tab.icon" :size="iconSize" />
           <span class="kjun-motion-label" :data-label="tab.label"><span>{{ tab.label }}</span></span>
           <span v-if="tab.badge || tab.badge === 0" class="kjun-tab-badge" :class="badgeClass(tab)">
             {{ tab.badge }}
@@ -45,7 +45,7 @@
 <script>
 import { manageTabList } from "../../../../../shared/package-runtime/tab-keyboard";
 import { selectionIndicator } from "../../adapters/selection-indicator.js";
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { oneOf } from '../tokens'
 import { tokens } from '@kjun-ui/tokens'
@@ -59,8 +59,8 @@ const TAB_VARIANTS = ['underline', 'pills']
 
 export default {
   mixins: componentMixins,
-  components: { DsIcon },
-  name: 'DsTabs',
+  components: { KjunIcon },
+  name: 'KjunTabs',
   provide() {
     return {
       tabsContainer: this
@@ -72,7 +72,7 @@ export default {
       type: String,
       default: ''
     },
-    // Props-based tabs (alternative to compound DsTab components)
+    // Props-based tabs (alternative to compound KjunTab components)
     items: {
       type: Array,
       default: () => []

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { DsButton } from '@kjun-ui/react';
+import { KjunButton } from '@kjun-ui/react';
 import { exampleSource, type ExampleSources } from '../../../../shared/example-code';
 import type { IconSelection } from '../../../../shared/icon-catalog';
 import type { PlatformName } from '../../../../shared/demo-config';
@@ -25,7 +25,7 @@ export function IconRegistrationCode({ selection, platform }: { selection: IconS
       <p>프로젝트에 필요한 아이콘만 등록합니다. 색상·폰트 설정은 설치 안내를 따릅니다.</p>
       {sources ? <CodeBlock label={`${platform} · ${selection.name}`} copyLabel="등록 예제 복사"
         code={exampleSource(sources.sources[platform], platform, { ...selection }, {})} requestKey={JSON.stringify([platform, selection])} />
-        : error ? <div role="alert"><p>{error}</p><DsButton onClick={() => setAttempt(value => value + 1)}>등록 예제 다시 시도</DsButton></div>
+        : error ? <div role="alert"><p>{error}</p><KjunButton onClick={() => setAttempt(value => value + 1)}>등록 예제 다시 시도</KjunButton></div>
           : <p role="status">등록 예제를 불러오는 중입니다.</p>}
     </>}
   </details>;

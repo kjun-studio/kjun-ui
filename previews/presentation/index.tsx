@@ -21,7 +21,7 @@ document.documentElement.style.setProperty('--presentation-height', capture.heig
 document.documentElement.style.setProperty('--presentation-padding', capture.padding + 'px');
 document.documentElement.dataset.presentation = name.startsWith('Overview') ? 'overview' : 'component';
 const root = createRoot(document.getElementById('root')!, { onCaughtError: error => {
-  if (name === 'DsErrorBoundary' && error instanceof Error && error.message === 'presentation: expected boundary example') document.documentElement.dataset.expectedBoundary = 'caught';
+  if (name === 'KjunErrorBoundary' && error instanceof Error && error.message === 'presentation: expected boundary example') document.documentElement.dataset.expectedBoundary = 'caught';
   else throw error;
 } });
 root.render(<main className="presentation-canvas" data-scene={name} data-embedded={embedded}>

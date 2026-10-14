@@ -1,8 +1,8 @@
 import { tokens } from "@kjun-ui/tokens";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import { type ReactNode } from "react";
-import { DsSkeleton } from "./display";
-import { DsAnimatedNumber } from "./financial";
+import { KjunSkeleton } from "./display";
+import { KjunAnimatedNumber } from "./financial";
 export interface KpiValue {
   label?: string;
   value: number | string;
@@ -34,7 +34,7 @@ export const kpiColor = (value: unknown, semantic?: string, neutral = "text") =>
   semantic === "price" && Number(value) !== 0
     ? `var(--_kjun-color-price-${Number(value) > 0 ? "up" : "down"})`
     : `var(--_kjun-color-${neutral})`;
-export interface DsKpiHeroProps {
+export interface KjunKpiHeroProps {
   loading?: boolean;
   label: string;
   value: number | string;
@@ -52,7 +52,7 @@ export interface DsKpiHeroProps {
   deltaFormatter?: (value: number, kind: "absolute" | "percent") => string;
   renderSecondary?: (item: KpiValue, index: number) => ReactNode;
 }
-export function DsKpiHero(props: DsKpiHeroProps) {
+export function KjunKpiHero(props: KjunKpiHeroProps) {
   const {
     loading = false,
     label,
@@ -101,13 +101,13 @@ export function DsKpiHero(props: DsKpiHeroProps) {
           <div className="kjun-kpi-hero__label">{label}</div>
           <div className="kjun-kpi-hero__value">
             {loading ? (
-              <DsSkeleton type="block" height="1lh" width="7ch" />
+              <KjunSkeleton type="block" height="1lh" width="7ch" />
             ) : (
               <>
                 {prefix && (
                   <span className="kjun-kpi-hero__affix">{prefix}</span>
                 )}
-                <DsAnimatedNumber
+                <KjunAnimatedNumber
                   value={value}
                   decimals={decimals}
                   animated={animated}
@@ -123,7 +123,7 @@ export function DsKpiHero(props: DsKpiHeroProps) {
             <div className="kjun-kpi-hero__delta-line">
               {loading ? (
                 // The placeholder takes the delta numbers' line height, like Vue, so the hero keeps its loaded height.
-                <span className="kjun-kpi-hero__delta-abs"><DsSkeleton type="block" height="1lh" width={tokens.extensions.kpiHero.deltaSkeletonWidth} /></span>
+                <span className="kjun-kpi-hero__delta-abs"><KjunSkeleton type="block" height="1lh" width={tokens.extensions.kpiHero.deltaSkeletonWidth} /></span>
               ) : (
                 <>
                   {deltaAbsolute !== null && (
@@ -172,7 +172,7 @@ export function DsKpiHero(props: DsKpiHeroProps) {
                 style={{ color: kpiColor(item.value, item.semantic) }}
               >
                 {loading ? (
-                  <DsSkeleton type="block" height="1lh" width="5ch" />
+                  <KjunSkeleton type="block" height="1lh" width="5ch" />
                 ) : (
                   renderSecondary?.(item, i) || (
                     <>
@@ -199,7 +199,7 @@ export function DsKpiHero(props: DsKpiHeroProps) {
                   style={{ color: "var(--_kjun-color-text-tertiary)" }}
                 >
                   {loading ? (
-                    <DsSkeleton type="block" width="7ch" height="1lh" />
+                    <KjunSkeleton type="block" width="7ch" height="1lh" />
                   ) : (
                     item.desc
                   )}
@@ -239,7 +239,7 @@ export interface KpiRowItem extends KpiValue {
   };
   badgePlacement?: "label" | "value";
 }
-export interface DsKpiRowProps {
+export interface KjunKpiRowProps {
   loading?: boolean;
   items: KpiRowItem[];
   size?: "md" | "sm";
@@ -247,14 +247,14 @@ export interface DsKpiRowProps {
   onItemClick?: (item: KpiRowItem, index: number) => void;
   renderValue?: (item: KpiRowItem, index: number) => ReactNode;
 }
-export function DsKpiRow({
+export function KjunKpiRow({
   loading = false,
   items,
   size = "md",
   mobileSummary = true,
   onItemClick,
   renderValue,
-}: DsKpiRowProps) {
+}: KjunKpiRowProps) {
   const explicit = items.some(
       (item) => typeof item.mobileSecondary === "boolean"
     ),
@@ -343,7 +343,7 @@ export function DsKpiRow({
             <div className="kjun-kpi-row__label-row">
               <div className="kjun-kpi-row__label">
                 {busy && !item.label ? (
-                  <DsSkeleton type="block" width={tokens.extensions.kpiRow.labelSkeletonWidth} height={tokens.extensions.kpiRow.labelSkeletonHeight} />
+                  <KjunSkeleton type="block" width={tokens.extensions.kpiRow.labelSkeletonWidth} height={tokens.extensions.kpiRow.labelSkeletonHeight} />
                 ) : (
                   item.label
                 )}
@@ -389,14 +389,14 @@ export function DsKpiRow({
                         </span>
                       )}
                       {busy && !seg.separator ? (
-                        <DsSkeleton type="block" height="1lh" width="3ch" />
+                        <KjunSkeleton type="block" height="1lh" width="3ch" />
                       ) : (
                         seg.text
                       )}
                     </span>
                   ))
                 ) : busy ? (
-                  <DsSkeleton type="block" height="1lh" width="5ch" />
+                  <KjunSkeleton type="block" height="1lh" width="5ch" />
                 ) : (
                   renderValue?.(item, i) || (
                     <>
@@ -406,7 +406,7 @@ export function DsKpiRow({
                         </span>
                       )}
                       {item.animated && typeof item.value === "number" ? (
-                        <DsAnimatedNumber
+                        <KjunAnimatedNumber
                           fromPrevious
                           value={item.value}
                           formatter={(v) => kpiFormat(item, v)}
@@ -435,7 +435,7 @@ export function DsKpiRow({
                 }}
               >
                 {busy ? (
-                  <DsSkeleton type="block" height="1lh" width="7ch" />
+                  <KjunSkeleton type="block" height="1lh" width="7ch" />
                 ) : (
                   item.desc
                 )}

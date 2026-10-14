@@ -1,10 +1,10 @@
 import { tokens } from "@kjun-ui/tokens";
 import { type ReactNode } from "react";
 import { View } from "react-native";
-import { DsCard } from "./display";
+import { KjunCard } from "./display";
 import { useKjunStyles } from "./provider";
 
-export function DsMarketListPanel({
+export function KjunMarketListPanel({
   controls,
   children,
 }: {
@@ -13,7 +13,7 @@ export function DsMarketListPanel({
 }) {
   const { colors } = useKjunStyles();
   return (
-    <DsCard>
+    <KjunCard>
       <View>{controls}</View>
       <View
         style={{
@@ -24,6 +24,6 @@ export function DsMarketListPanel({
       >
         {children}
       </View>
-    </DsCard>
+    </KjunCard>
   );
 }

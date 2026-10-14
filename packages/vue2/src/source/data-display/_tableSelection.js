@@ -1,5 +1,5 @@
 /**
- * DsTable 행 선택 mixin
+ * KjunTable 행 선택 mixin
  * selectable prop 활성화 시 체크박스 + 선택 툴바 제공
  */
 export default {

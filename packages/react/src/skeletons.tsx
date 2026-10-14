@@ -1,39 +1,39 @@
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { Fragment,type CSSProperties } from "react";
-import { DsSkeleton } from "./display";
-export interface DsListSkeletonProps {
+import { KjunSkeleton } from "./display";
+export interface KjunListSkeletonProps {
   rows?: number;
   variant?: "market" | "compact" | "notification";
   avatar?: boolean;
   avatarSize?: CSSProperties["width"];
   quote?: boolean;
 }
-export function DsListSkeleton({
+export function KjunListSkeleton({
   rows = 8,
   variant = "market",
   avatar = true,
   avatarSize = tokens.extensions.skeleton.listAvatarSize,
   quote = true,
-}: DsListSkeletonProps) {
+}: KjunListSkeletonProps) {
   return (
     <div aria-hidden="true">
       {Array.from({ length: rows }, (_, i) => (
         <div key={i} className="kjun-list-skeleton-row" data-variant={variant}>
           {avatar && (
-            <DsSkeleton type="avatar" width={avatarSize} height={avatarSize} />
+            <KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} />
           )}
           <div className="kjun-list-skeleton-label">
-            <DsSkeleton
+            <KjunSkeleton
               type="block"
               height={tokens.extensions.skeleton.lineHeights.md}
               width={i % 2 ? "80%" : "65%"}
             />
-            <DsSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width="50%" />
+            <KjunSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width="50%" />
           </div>
           {quote && (
             <div className="kjun-list-skeleton-quote">
-              <DsSkeleton type="block" height={tokens.extensions.skeleton.quoteHeight} width={tokens.extensions.skeleton.quoteWidth} />
-              <DsSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width={tokens.extensions.skeleton.detailWidth} />
+              <KjunSkeleton type="block" height={tokens.extensions.skeleton.quoteHeight} width={tokens.extensions.skeleton.quoteWidth} />
+              <KjunSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width={tokens.extensions.skeleton.detailWidth} />
             </div>
           )}
         </div>
@@ -41,18 +41,18 @@ export function DsListSkeleton({
     </div>
   );
 }
-export interface DsFormSkeletonProps {
+export interface KjunFormSkeletonProps {
   fields?: (string | { label?: string; height?: CSSProperties["height"] })[];
   columns?: number;
   multiline?: boolean;
   size?: InputSize;
 }
-export function DsFormSkeleton({
+export function KjunFormSkeleton({
   fields = ["", "", "", ""],
   columns = 1,
   multiline = false,
   size = "md",
-}: DsFormSkeletonProps) {
+}: KjunFormSkeletonProps) {
   return (
     <div
       aria-hidden="true"
@@ -69,10 +69,10 @@ export function DsFormSkeleton({
           ) : (
             // The bar sits in a label-line slot so the field starts where the real input will.
             <div className="kjun-form-skeleton-label-slot">
-              <DsSkeleton type="block" height={tokens.extensions.skeleton.formLabelHeight} width={tokens.extensions.skeleton.formLabelWidth} />
+              <KjunSkeleton type="block" height={tokens.extensions.skeleton.formLabelHeight} width={tokens.extensions.skeleton.formLabelWidth} />
             </div>
           )}
-          <DsSkeleton
+          <KjunSkeleton
             type="block"
             height={
               typeof field === "object" && field.height != null
@@ -87,16 +87,16 @@ export function DsFormSkeleton({
     </div>
   );
 }
-export interface DsChartSkeletonProps {
+export interface KjunChartSkeletonProps {
   loadingText?: string;
   kind?: "grid" | "line" | "bar" | "donut" | "candle" | "matrix";
   height?: CSSProperties["height"];
 }
-export function DsChartSkeleton({
+export function KjunChartSkeleton({
   loadingText = "차트를 불러오는 중",
   kind = "line",
   height = tokens.extensions.chartSkeleton.height,
-}: DsChartSkeletonProps) {
+}: KjunChartSkeletonProps) {
   return (
     <div className="kjun-chart-skeleton" style={{ height }} aria-hidden="true">
       <div className="kjun-chart-skeleton-status">
@@ -104,7 +104,7 @@ export function DsChartSkeleton({
       </div>
       {kind === "donut" ? (
         <div className="kjun-chart-skeleton-donut">
-          <DsSkeleton type="block" width={tokens.extensions.chartSkeleton.donutLabelWidth} height={tokens.extensions.chartSkeleton.donutLabelHeight} />
+          <KjunSkeleton type="block" width={tokens.extensions.chartSkeleton.donutLabelWidth} height={tokens.extensions.chartSkeleton.donutLabelHeight} />
         </div>
       ) : (
         <svg
@@ -167,5 +167,5 @@ export function DsChartSkeleton({
     </div>
   );
 }
-export { DsMarketTableSkeleton } from "./market-skeleton";
-export type { DsMarketTableSkeletonProps } from "./market-skeleton";
+export { KjunMarketTableSkeleton } from "./market-skeleton";
+export type { KjunMarketTableSkeletonProps } from "./market-skeleton";

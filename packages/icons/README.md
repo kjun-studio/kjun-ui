@@ -6,12 +6,12 @@ network request or automatic global registration.
 
 ```tsx
 import rocket from '@kjun-ui/icons/icons/rocket';
-import { KjunProvider, DsIcon, DsButton } from '@kjun-ui/react';
+import { KjunProvider, KjunIcon, KjunButton } from '@kjun-ui/react';
 
 const icons = { rocket };
 <KjunProvider icons={icons}>
-  <DsIcon name="rocket" />
-  <DsButton prefixIcon="rocket">시작</DsButton>
+  <KjunIcon name="rocket" />
+  <KjunButton prefixIcon="rocket">시작</KjunButton>
 </KjunProvider>;
 ```
 

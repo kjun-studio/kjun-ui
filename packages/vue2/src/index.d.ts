@@ -2,20 +2,20 @@
 export type { KjunIconDefinition, KjunIconRegistry } from "@kjun-ui/icons";
 import type { VueConstructor, CreateElement, VNode } from "vue";
 export type { ShadowLayer, ElevationRole, CardElevation, TableSort, KjunColors, KjunDomainColors, ColorRole, DomainColorRole, ButtonSize, InputSize, ButtonVariant, KjunFeedback, ConfirmOptions, PromptOptions, ToastOptions } from "@kjun-ui/tokens";
-export interface DsAccordionProps {
+export interface KjunAccordionProps {
   "formatters"?: Record<string, any>;
   "multiple"?: boolean;
   "tone"?: "card" | "muted";
 }
-export const DsAccordion: VueConstructor;
-export interface DsAccordionItemProps {
+export const KjunAccordion: VueConstructor;
+export interface KjunAccordionItemProps {
   "formatters"?: Record<string, any>;
   "title"?: string;
   "defaultOpen"?: boolean;
   "disabled"?: boolean;
 }
-export const DsAccordionItem: VueConstructor;
-export interface DsAlertProps {
+export const KjunAccordionItem: VueConstructor;
+export interface KjunAlertProps {
   "formatters"?: Record<string, any>;
   "type"?: "success" | "warning" | "danger" | "info" | "error";
   "variant"?: string | null;
@@ -23,8 +23,8 @@ export interface DsAlertProps {
   "title"?: string;
   "closable"?: boolean;
 }
-export const DsAlert: VueConstructor;
-export interface DsAnimatedNumberProps {
+export const KjunAlert: VueConstructor;
+export interface KjunAnimatedNumberProps {
   "formatters"?: Record<string, any>;
   "value": number | string;
   "decimals"?: number;
@@ -34,8 +34,8 @@ export interface DsAnimatedNumberProps {
   "fromPrevious"?: boolean;
   "formatter"?: ((...args: any[]) => any) | null;
 }
-export const DsAnimatedNumber: VueConstructor;
-export interface DsAvatarProps {
+export const KjunAnimatedNumber: VueConstructor;
+export interface KjunAvatarProps {
   "src"?: string;
   "name"?: string;
   "alt"?: string;
@@ -43,22 +43,22 @@ export interface DsAvatarProps {
   "size"?: "sm" | "md" | "lg";
   "shape"?: "circle" | "square";
 }
-export const DsAvatar: VueConstructor;
-export interface DsBadgeProps {
+export const KjunAvatar: VueConstructor;
+export interface KjunBadgeProps {
   "formatters"?: Record<string, any>;
   "variant"?: "default" | "secondary" | "primary" | "success" | "warning" | "danger" | "info" | "price-up" | "price-down";
   "size"?: "xs" | "sm" | "md" | "lg" | "xl";
   "dot"?: boolean;
 }
-export const DsBadge: VueConstructor;
-export interface DsBottomActionBarProps {
+export const KjunBadge: VueConstructor;
+export interface KjunBottomActionBarProps {
   "description"?: string;
   "safeAreaBottom"?: number;
   "keyboardVisible"?: boolean;
   "hideOnKeyboard"?: boolean;
 }
-export const DsBottomActionBar: VueConstructor;
-export interface DsBottomNavigationProps {
+export const KjunBottomActionBar: VueConstructor;
+export interface KjunBottomNavigationProps {
   "items": Array<{
     key: string;
     label: string;
@@ -73,13 +73,13 @@ export interface DsBottomNavigationProps {
   "keyboardVisible"?: boolean;
   "hideOnKeyboard"?: boolean;
 }
-export const DsBottomNavigation: VueConstructor;
-export interface DsBreadcrumbProps {
+export const KjunBottomNavigation: VueConstructor;
+export interface KjunBreadcrumbProps {
   "formatters"?: Record<string, any>;
   "items": any[];
 }
-export const DsBreadcrumb: VueConstructor;
-export interface DsButtonProps {
+export const KjunBreadcrumb: VueConstructor;
+export interface KjunButtonProps {
   "formatters"?: Record<string, any>;
   "variant"?: "primary" | "secondary" | "ghost" | "danger" | "danger-ghost" | "success" | "warning";
   "size"?: "xs" | "sm" | "md" | "lg" | "xl";
@@ -94,8 +94,8 @@ export interface DsButtonProps {
   "ariaLabel"?: string | null;
   "spinOnLoading"?: boolean | null;
 }
-export const DsButton: VueConstructor;
-export interface DsButtonGroupProps {
+export const KjunButton: VueConstructor;
+export interface KjunButtonGroupProps {
   "formatters"?: Record<string, any>;
   "value"?: string | number | null;
   "options": any[];
@@ -105,8 +105,8 @@ export interface DsButtonGroupProps {
   "fullWidth"?: boolean;
   "ariaLabel"?: string | null;
 }
-export const DsButtonGroup: VueConstructor;
-export interface DsCardProps {
+export const KjunButtonGroup: VueConstructor;
+export interface KjunCardProps {
   "formatters"?: Record<string, any>;
   "title"?: string;
   "subtitle"?: string;
@@ -118,15 +118,15 @@ export interface DsCardProps {
   "border"?: boolean;
   "dividers"?: boolean;
 }
-export const DsCard: VueConstructor;
-export interface DsChartSkeletonProps {
+export const KjunCard: VueConstructor;
+export interface KjunChartSkeletonProps {
   "formatters"?: Record<string, any>;
   "loadingText"?: string;
   "kind"?: "grid" | "line" | "bar" | "donut" | "candle" | "matrix";
   "height"?: string | number;
 }
-export const DsChartSkeleton: VueConstructor;
-export interface DsCheckboxProps {
+export const KjunChartSkeleton: VueConstructor;
+export interface KjunCheckboxProps {
   "formatters"?: Record<string, any>;
   "value"?: boolean | any[];
   "val"?: string | number | boolean | Record<string, any> | null;
@@ -134,8 +134,8 @@ export interface DsCheckboxProps {
   "disabled"?: boolean;
   "size"?: "sm" | "md" | "lg";
 }
-export const DsCheckbox: VueConstructor;
-export interface DsChipProps {
+export const KjunCheckbox: VueConstructor;
+export interface KjunChipProps {
   "label": string;
   "icon"?: string;
   "removable"?: boolean;
@@ -143,15 +143,15 @@ export interface DsChipProps {
   "size"?: "sm" | "md" | "lg";
   "removeLabel"?: string;
 }
-export const DsChip: VueConstructor;
-export interface DsCollectionMarkProps {
+export const KjunChip: VueConstructor;
+export interface KjunCollectionMarkProps {
   "formatters"?: Record<string, any>;
   "kind": "favorite" | "interest";
   "active"?: boolean;
   "size"?: "sm" | "md" | "lg";
 }
-export const DsCollectionMark: VueConstructor;
-export interface DsComboboxProps {
+export const KjunCollectionMark: VueConstructor;
+export interface KjunComboboxProps {
   "error"?: boolean;
   "ariaLabel"?: string;
   "formatters"?: Record<string, any>;
@@ -166,8 +166,8 @@ export interface DsComboboxProps {
   "clearable"?: boolean;
   "emptyText"?: string;
 }
-export const DsCombobox: VueConstructor;
-export interface DsCopyButtonProps {
+export const KjunCombobox: VueConstructor;
+export interface KjunCopyButtonProps {
   "formatters"?: Record<string, any>;
   "ariaLabel"?: string;
   "copyText"?: ((...args: any[]) => any) | null;
@@ -178,8 +178,8 @@ export interface DsCopyButtonProps {
   "size"?: "xs" | "sm" | "md";
   "disabled"?: boolean;
 }
-export const DsCopyButton: VueConstructor;
-export interface DsDataStateProps {
+export const KjunCopyButton: VueConstructor;
+export interface KjunDataStateProps {
   "queryKey"?: string | number | null;
   "resultKey"?: string | number;
   "loading"?: boolean;
@@ -202,8 +202,8 @@ export interface DsDataStateProps {
   "skeletonType"?: "text" | "card" | "table" | "stat" | "chart" | "block";
   "skeletonCount"?: number;
 }
-export const DsDataState: VueConstructor;
-export interface DsDatePickerProps {
+export const KjunDataState: VueConstructor;
+export interface KjunDatePickerProps {
   "error"?: boolean;
   "ariaLabel"?: string;
   "formatters"?: Record<string, any>;
@@ -214,16 +214,16 @@ export interface DsDatePickerProps {
   "size"?: "sm" | "md" | "lg";
   "disabled"?: boolean;
 }
-export const DsDatePicker: VueConstructor;
-export interface DsDeviationProps {
+export const KjunDatePicker: VueConstructor;
+export interface KjunDeviationProps {
   "formatters"?: Record<string, any>;
   "value"?: number | null;
   "variant"?: "pill" | "badge" | "text";
   "signalThreshold"?: number;
   "decimals"?: number;
 }
-export const DsDeviation: VueConstructor;
-export interface DsDrawerProps {
+export const KjunDeviation: VueConstructor;
+export interface KjunDrawerProps {
   "formatters"?: Record<string, any>;
   "value"?: boolean;
   "title"?: string;
@@ -234,8 +234,8 @@ export interface DsDrawerProps {
   "closeOnEsc"?: boolean;
   "noPadding"?: boolean;
 }
-export const DsDrawer: VueConstructor;
-export interface DsDropdownProps {
+export const KjunDrawer: VueConstructor;
+export interface KjunDropdownProps {
   "formatters"?: Record<string, any>;
   "disabled"?: boolean;
   "menuId"?: string;
@@ -243,46 +243,50 @@ export interface DsDropdownProps {
   "menuClass"?: string | any[] | Record<string, any>;
   "placement"?: "bottom-start" | "bottom-end" | "top-start" | "top-end";
 }
-export const DsDropdown: VueConstructor;
-export interface DsDropdownDividerProps {
+export const KjunDropdown: VueConstructor;
+export interface KjunDropdownDividerProps {
   "formatters"?: Record<string, any>;
 }
-export const DsDropdownDivider: VueConstructor;
-export interface DsDropdownItemProps {
+export const KjunDropdownDivider: VueConstructor;
+export interface KjunDropdownItemProps {
   "formatters"?: Record<string, any>;
   "variant"?: "default" | "danger";
   "icon"?: string | null;
   "disabled"?: boolean;
   "selected"?: boolean | null;
 }
-export const DsDropdownItem: VueConstructor;
-export interface DsEmptyProps {
+export const KjunDropdownItem: VueConstructor;
+export interface KjunEmptyProps {
   "formatters"?: Record<string, any>;
   "text"?: string;
   "description"?: string;
   "icon"?: string;
 }
-export const DsEmpty: VueConstructor;
-export interface DsErrorBoundaryProps {
+export const KjunEmpty: VueConstructor;
+export interface KjunErrorBoundaryProps {
   "formatters"?: Record<string, any>;
   "fallbackMessage"?: string;
 }
-export const DsErrorBoundary: VueConstructor;
-export interface DsExecutionStatusBadgeProps {
+export const KjunErrorBoundary: VueConstructor;
+export interface KjunExecutionStatusBadgeProps {
   "formatters"?: Record<string, any>;
   "status"?: string | null;
   "label"?: string;
   "size"?: "xs" | "sm" | "md" | "lg" | "xl";
 }
-export const DsExecutionStatusBadge: VueConstructor;
-export interface DsExternalLinkProps {
+export const KjunExecutionStatusBadge: VueConstructor;
+export interface KjunExternalLinkProps {
   "formatters"?: Record<string, any>;
   "href"?: string;
   "mode"?: "icon" | "text";
   "label"?: string;
 }
-export const DsExternalLink: VueConstructor;
-export interface DsFilterGroupProps {
+export const KjunExternalLink: VueConstructor;
+export interface KjunFeedbackProviderProps {
+
+}
+export const KjunFeedbackProvider: VueConstructor;
+export interface KjunFilterGroupProps {
   "formatters"?: Record<string, any>;
   "value"?: string | number | any[] | null;
   "options": any[];
@@ -292,8 +296,8 @@ export interface DsFilterGroupProps {
   "scroll"?: boolean;
   "ariaLabel"?: string | null;
 }
-export const DsFilterGroup: VueConstructor;
-export interface DsFormActionsProps {
+export const KjunFilterGroup: VueConstructor;
+export interface KjunFormActionsProps {
   "formatters"?: Record<string, any>;
   "confirmText"?: string;
   "cancelText"?: string;
@@ -306,8 +310,8 @@ export interface DsFormActionsProps {
   "variant"?: "primary" | "danger" | "success";
   "cancelVariant"?: "ghost" | "secondary";
 }
-export const DsFormActions: VueConstructor;
-export interface DsFormGroupProps {
+export const KjunFormActions: VueConstructor;
+export interface KjunFormGroupProps {
   "formatters"?: Record<string, any>;
   "label"?: string;
   "id"?: string | null;
@@ -315,23 +319,23 @@ export interface DsFormGroupProps {
   "error"?: string;
   "hint"?: string;
 }
-export const DsFormGroup: VueConstructor;
-export interface DsFormSkeletonProps {
+export const KjunFormGroup: VueConstructor;
+export interface KjunFormSkeletonProps {
   "formatters"?: Record<string, any>;
   "fields"?: any[];
   "columns"?: number;
   "multiline"?: boolean;
   "size"?: "sm" | "md" | "lg";
 }
-export const DsFormSkeleton: VueConstructor;
-export interface DsFreshnessProps {
+export const KjunFormSkeleton: VueConstructor;
+export interface KjunFreshnessProps {
   "formatters"?: Record<string, any>;
   "stale"?: boolean;
   "source"?: string | null;
   "fetchedAt"?: string | null;
 }
-export const DsFreshness: VueConstructor;
-export interface DsHeatmapCellProps {
+export const KjunFreshness: VueConstructor;
+export interface KjunHeatmapCellProps {
   "formatters"?: Record<string, any>;
   "value"?: number;
   "min"?: number;
@@ -339,16 +343,16 @@ export interface DsHeatmapCellProps {
   "mode"?: string;
   "color"?: string;
 }
-export const DsHeatmapCell: VueConstructor;
-export interface DsIconProps {
+export const KjunHeatmapCell: VueConstructor;
+export interface KjunIconProps {
   "formatters"?: Record<string, any>;
   "name": string;
   "size"?: string | number | null;
   "spin"?: boolean;
   "filled"?: boolean;
 }
-export const DsIcon: VueConstructor;
-export interface DsIconToggleProps {
+export const KjunIcon: VueConstructor;
+export interface KjunIconToggleProps {
   "formatters"?: Record<string, any>;
   "active"?: boolean;
   "activeIcon": string;
@@ -363,8 +367,8 @@ export interface DsIconToggleProps {
   "tooltipPlacement"?: "top" | "bottom" | "left" | "right";
   "tooltipDelay"?: number;
 }
-export const DsIconToggle: VueConstructor;
-export interface DsImageProps {
+export const KjunIconToggle: VueConstructor;
+export interface KjunImageProps {
   "src"?: string;
   "alt": string;
   "decorative"?: boolean;
@@ -372,8 +376,8 @@ export interface DsImageProps {
   "fit"?: "cover" | "contain";
   "lazy"?: boolean;
 }
-export const DsImage: VueConstructor;
-export interface DsInputProps {
+export const KjunImage: VueConstructor;
+export interface KjunInputProps {
   "error"?: boolean;
   "ariaLabel"?: string | null;
   "formatters"?: Record<string, any>;
@@ -394,8 +398,8 @@ export interface DsInputProps {
   "inputmode"?: "none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url" | null;
   "autocomplete"?: string | null;
 }
-export const DsInput: VueConstructor;
-export interface DsKpiHeroProps {
+export const KjunInput: VueConstructor;
+export interface KjunKpiHeroProps {
   "formatters"?: Record<string, any>;
   "loading"?: boolean;
   "formatter"?: ((...args: any[]) => any) | null;
@@ -412,29 +416,29 @@ export interface DsKpiHeroProps {
   "animated"?: boolean;
   "size"?: "md" | "sm";
 }
-export const DsKpiHero: VueConstructor;
-export interface DsKpiRowProps {
+export const KjunKpiHero: VueConstructor;
+export interface KjunKpiRowProps {
   "formatters"?: Record<string, any>;
   "loading"?: boolean;
   "items": any[];
   "size"?: "md" | "sm";
   "mobileSummary"?: boolean;
 }
-export const DsKpiRow: VueConstructor;
-export interface DsListRowProps {
+export const KjunKpiRow: VueConstructor;
+export interface KjunListRowProps {
   "title": string;
   "description"?: string;
   "href"?: string;
   "disabled"?: boolean;
 }
-export const DsListRow: VueConstructor;
-export interface DsListSectionProps {
+export const KjunListRow: VueConstructor;
+export interface KjunListSectionProps {
   "title"?: string;
   "description"?: string;
   "ariaLabel"?: string;
 }
-export const DsListSection: VueConstructor;
-export interface DsListSkeletonProps {
+export const KjunListSection: VueConstructor;
+export interface KjunListSkeletonProps {
   "formatters"?: Record<string, any>;
   "rows"?: number;
   "variant"?: "market" | "compact" | "notification";
@@ -442,8 +446,8 @@ export interface DsListSkeletonProps {
   "avatarSize"?: string;
   "quote"?: boolean;
 }
-export const DsListSkeleton: VueConstructor;
-export interface DsMarketCardsProps {
+export const KjunListSkeleton: VueConstructor;
+export interface KjunMarketCardsProps {
   "queryKey"?: string | number | null;
   "resultKey"?: string | number;
   "loading"?: boolean;
@@ -476,12 +480,12 @@ export interface DsMarketCardsProps {
   "totalCount"?: number;
   "unitLabel"?: string;
 }
-export const DsMarketCards: VueConstructor;
-export interface DsMarketListPanelProps {
+export const KjunMarketCards: VueConstructor;
+export interface KjunMarketListPanelProps {
   "formatters"?: Record<string, any>;
 }
-export const DsMarketListPanel: VueConstructor;
-export interface DsMarketSimpleListProps {
+export const KjunMarketListPanel: VueConstructor;
+export interface KjunMarketSimpleListProps {
   "queryKey"?: string | number | null;
   "resultKey"?: string | number;
   "loading"?: boolean;
@@ -508,8 +512,8 @@ export interface DsMarketSimpleListProps {
   "totalCount"?: number;
   "unitLabel"?: string;
 }
-export const DsMarketSimpleList: VueConstructor;
-export interface DsMarketTableProps {
+export const KjunMarketSimpleList: VueConstructor;
+export interface KjunMarketTableProps {
   "queryKey"?: string | number | null;
   "resultKey"?: string | number;
   "loading"?: boolean;
@@ -539,8 +543,8 @@ export interface DsMarketTableProps {
   "totalCount"?: number;
   "unitLabel"?: string;
 }
-export const DsMarketTable: VueConstructor;
-export interface DsMarketTableSkeletonProps {
+export const KjunMarketTable: VueConstructor;
+export interface KjunMarketTableSkeletonProps {
   "formatters"?: Record<string, any>;
   "columns"?: any[];
   "rows"?: number;
@@ -548,8 +552,8 @@ export interface DsMarketTableSkeletonProps {
   "alignClass"?: ((...args: any[]) => any) | null;
   "widthClass"?: ((...args: any[]) => any) | null;
 }
-export const DsMarketTableSkeleton: VueConstructor;
-export interface DsMenuButtonProps {
+export const KjunMarketTableSkeleton: VueConstructor;
+export interface KjunMenuButtonProps {
   "formatters"?: Record<string, any>;
   "label"?: string;
   "size"?: "xs" | "sm" | "md" | "lg" | "xl";
@@ -563,8 +567,8 @@ export interface DsMenuButtonProps {
   "ariaLabel"?: string;
   "placement"?: string;
 }
-export const DsMenuButton: VueConstructor;
-export interface DsModalProps {
+export const KjunMenuButton: VueConstructor;
+export interface KjunModalProps {
   "formatters"?: Record<string, any>;
   "footerSize"?: string;
   "value"?: boolean;
@@ -586,8 +590,8 @@ export interface DsModalProps {
   "height"?: string;
   "confirmVariant"?: "primary" | "danger" | "success";
 }
-export const DsModal: VueConstructor;
-export interface DsPaginationProps {
+export const KjunModal: VueConstructor;
+export interface KjunPaginationProps {
   "formatters"?: Record<string, any>;
   "currentPage"?: number | null;
   "page"?: number | null;
@@ -600,8 +604,8 @@ export interface DsPaginationProps {
   "showSizeSelector"?: boolean;
   "showFirstLast"?: boolean;
 }
-export const DsPagination: VueConstructor;
-export interface DsPopoverProps {
+export const KjunPagination: VueConstructor;
+export interface KjunPopoverProps {
   "formatters"?: Record<string, any>;
   "noPadding"?: boolean;
   "value"?: boolean;
@@ -613,8 +617,8 @@ export interface DsPopoverProps {
   "ariaLabel"?: string;
   "placement"?: "top" | "bottom" | "left" | "right";
 }
-export const DsPopover: VueConstructor;
-export interface DsPriceCellProps {
+export const KjunPopover: VueConstructor;
+export interface KjunPriceCellProps {
   "formatters"?: Record<string, any>;
   "value"?: number | null;
   "formatter"?: ((...args: any[]) => any) | null;
@@ -625,8 +629,8 @@ export interface DsPriceCellProps {
   "flashClass"?: string;
   "fromPrevious"?: boolean;
 }
-export const DsPriceCell: VueConstructor;
-export interface DsProgressProps {
+export const KjunPriceCell: VueConstructor;
+export interface KjunProgressProps {
   "formatters"?: Record<string, any>;
   "value"?: number;
   "max"?: number;
@@ -635,8 +639,8 @@ export interface DsProgressProps {
   "showLabel"?: boolean;
   "label"?: string;
 }
-export const DsProgress: VueConstructor;
-export interface DsProgressCellProps {
+export const KjunProgress: VueConstructor;
+export interface KjunProgressCellProps {
   "formatters"?: Record<string, any>;
   "value"?: number;
   "max"?: number;
@@ -645,8 +649,14 @@ export interface DsProgressCellProps {
   "customColor"?: string;
   "height"?: number;
 }
-export const DsProgressCell: VueConstructor;
-export interface DsQuantityStepperProps {
+export const KjunProgressCell: VueConstructor;
+export interface KjunProviderProps {
+  "icons"?: import('@kjun-ui/icons').KjunIconRegistry | null;
+  "formatters"?: Record<string, (...values: any[]) => string>;
+  "renderIdentity"?: ((h: CreateElement, props: Record<string, unknown>, slots: Record<string, VNode[] | undefined>) => VNode | null | undefined) | null;
+}
+export const KjunProvider: VueConstructor;
+export interface KjunQuantityStepperProps {
   "error"?: boolean;
   "ariaLabel"?: string;
   "block"?: boolean;
@@ -659,8 +669,8 @@ export interface DsQuantityStepperProps {
   "size"?: "sm" | "md" | "lg";
   "id"?: string;
 }
-export const DsQuantityStepper: VueConstructor;
-export interface DsRadioProps {
+export const KjunQuantityStepper: VueConstructor;
+export interface KjunRadioProps {
   "formatters"?: Record<string, any>;
   "value"?: string | number | boolean | null;
   "val"?: string | number | boolean | null;
@@ -668,8 +678,8 @@ export interface DsRadioProps {
   "disabled"?: boolean;
   "name"?: string;
 }
-export const DsRadio: VueConstructor;
-export interface DsRadioGroupProps {
+export const KjunRadio: VueConstructor;
+export interface KjunRadioGroupProps {
   "formatters"?: Record<string, any>;
   "disabled"?: boolean;
   "ariaLabel"?: string;
@@ -677,8 +687,8 @@ export interface DsRadioGroupProps {
   "options"?: any[];
   "direction"?: "horizontal" | "vertical";
 }
-export const DsRadioGroup: VueConstructor;
-export interface DsRangeSliderProps {
+export const KjunRadioGroup: VueConstructor;
+export interface KjunRangeSliderProps {
   "min"?: number;
   "max"?: number;
   "step"?: number;
@@ -694,8 +704,8 @@ export interface DsRangeSliderProps {
     string
 ];
 }
-export const DsRangeSlider: VueConstructor;
-export interface DsRefreshButtonProps {
+export const KjunRangeSlider: VueConstructor;
+export interface KjunRefreshButtonProps {
   "formatters"?: Record<string, any>;
   "targetName"?: string;
   "mode"?: "icon" | "text";
@@ -711,12 +721,12 @@ export interface DsRefreshButtonProps {
   "tooltipPlacement"?: "top" | "bottom" | "left" | "right";
   "tooltipDelay"?: number;
 }
-export const DsRefreshButton: VueConstructor;
-export interface DsScrollFadeProps {
+export const KjunRefreshButton: VueConstructor;
+export interface KjunScrollFadeProps {
   "formatters"?: Record<string, any>;
 }
-export const DsScrollFade: VueConstructor;
-export interface DsSearchInputProps {
+export const KjunScrollFade: VueConstructor;
+export interface KjunSearchInputProps {
   "error"?: boolean;
   "ariaLabel"?: string;
   "formatters"?: Record<string, any>;
@@ -735,8 +745,8 @@ export interface DsSearchInputProps {
   "emptyText"?: string;
   "errorText"?: string;
 }
-export const DsSearchInput: VueConstructor;
-export interface DsSelectProps {
+export const KjunSearchInput: VueConstructor;
+export interface KjunSelectProps {
   "error"?: boolean;
   "ariaLabel"?: string;
   "formatters"?: Record<string, any>;
@@ -755,8 +765,8 @@ export interface DsSelectProps {
   "clearable"?: boolean;
   "multiple"?: boolean;
 }
-export const DsSelect: VueConstructor;
-export interface DsSignedValueProps {
+export const KjunSelect: VueConstructor;
+export interface KjunSignedValueProps {
   "formatters"?: Record<string, any>;
   "value"?: number | string | null;
   "format"?: "number" | "percent";
@@ -771,8 +781,8 @@ export interface DsSignedValueProps {
   "showFreshness"?: boolean;
   "formatter"?: ((...args: any[]) => any) | null;
 }
-export const DsSignedValue: VueConstructor;
-export interface DsSkeletonProps {
+export const KjunSignedValue: VueConstructor;
+export interface KjunSkeletonProps {
   "formatters"?: Record<string, any>;
   "type"?: "text" | "avatar" | "card" | "table" | "chart" | "stat" | "block";
   "rows"?: number;
@@ -782,8 +792,8 @@ export interface DsSkeletonProps {
   "animated"?: boolean;
   "rounded"?: boolean;
 }
-export const DsSkeleton: VueConstructor;
-export interface DsSliderProps {
+export const KjunSkeleton: VueConstructor;
+export interface KjunSliderProps {
   "min"?: number;
   "max"?: number;
   "step"?: number;
@@ -792,8 +802,8 @@ export interface DsSliderProps {
   "ariaLabel"?: string;
   "value": number;
 }
-export const DsSlider: VueConstructor;
-export interface DsSparklineProps {
+export const KjunSlider: VueConstructor;
+export interface KjunSparklineProps {
   "formatters"?: Record<string, any>;
   "data"?: any[];
   "width"?: number;
@@ -804,14 +814,14 @@ export interface DsSparklineProps {
   "strokeWidth"?: number;
   "stretch"?: boolean;
 }
-export const DsSparkline: VueConstructor;
-export interface DsSpinnerProps {
+export const KjunSparkline: VueConstructor;
+export interface KjunSpinnerProps {
   "formatters"?: Record<string, any>;
   "size"?: "xs" | "sm" | "md" | "lg" | "xl";
   "text"?: string;
 }
-export const DsSpinner: VueConstructor;
-export interface DsSwitchProps {
+export const KjunSpinner: VueConstructor;
+export interface KjunSwitchProps {
   "formatters"?: Record<string, any>;
   "value"?: boolean;
   "label"?: string;
@@ -819,8 +829,8 @@ export interface DsSwitchProps {
   "size"?: "sm" | "md" | "lg";
   "ariaLabel"?: string | null;
 }
-export const DsSwitch: VueConstructor;
-export interface DsTabPaneProps {
+export const KjunSwitch: VueConstructor;
+export interface KjunTabPaneProps {
   "formatters"?: Record<string, any>;
   "name": string;
   "label": string;
@@ -828,8 +838,8 @@ export interface DsTabPaneProps {
   "badge"?: string | number | null;
   "disabled"?: boolean;
 }
-export const DsTabPane: VueConstructor;
-export interface DsTableProps {
+export const KjunTabPane: VueConstructor;
+export interface KjunTableProps {
   "selectable"?: boolean;
   "selected"?: any[];
   "sort"?: import('@kjun-ui/tokens').TableSort | null;
@@ -865,8 +875,8 @@ export interface DsTableProps {
   "expandSingle"?: boolean;
   "rowClass"?: ((...args: any[]) => any) | string | null;
 }
-export const DsTable: VueConstructor;
-export interface DsTabsProps {
+export const KjunTable: VueConstructor;
+export interface KjunTabsProps {
   "formatters"?: Record<string, any>;
   "ariaLabel"?: string;
   "value"?: string;
@@ -874,8 +884,8 @@ export interface DsTabsProps {
   "density"?: "comfortable" | "compact";
   "variant"?: "underline" | "pills";
 }
-export const DsTabs: VueConstructor;
-export interface DsTextareaProps {
+export const KjunTabs: VueConstructor;
+export interface KjunTextareaProps {
   "error"?: boolean;
   "ariaLabel"?: string;
   "formatters"?: Record<string, any>;
@@ -887,8 +897,8 @@ export interface DsTextareaProps {
   "readonly"?: boolean;
   "resize"?: "none" | "vertical" | "horizontal" | "both";
 }
-export const DsTextarea: VueConstructor;
-export interface DsTimePickerProps {
+export const KjunTextarea: VueConstructor;
+export interface KjunTimePickerProps {
   "error"?: boolean;
   "ariaLabel"?: string;
   "value"?: string | null;
@@ -901,29 +911,19 @@ export interface DsTimePickerProps {
   "clearable"?: boolean;
   "size"?: "sm" | "md" | "lg";
 }
-export const DsTimePicker: VueConstructor;
-export interface DsTooltipProps {
+export const KjunTimePicker: VueConstructor;
+export interface KjunTooltipProps {
   "formatters"?: Record<string, any>;
   "content"?: string;
   "placement"?: "top" | "bottom" | "left" | "right";
   "delay"?: number;
 }
-export const DsTooltip: VueConstructor;
-export interface DsTopNavigationProps {
+export const KjunTooltip: VueConstructor;
+export interface KjunTopNavigationProps {
   "title": string;
   "description"?: string;
   "safeAreaTop"?: number;
 }
-export const DsTopNavigation: VueConstructor;
-export interface KjunFeedbackProviderProps {
-
-}
-export const KjunFeedbackProvider: VueConstructor;
-export interface KjunProviderProps {
-  "icons"?: import('@kjun-ui/icons').KjunIconRegistry | null;
-  "formatters"?: Record<string, (...values: any[]) => string>;
-  "renderIdentity"?: ((h: CreateElement, props: Record<string, unknown>, slots: Record<string, VNode[] | undefined>) => VNode | null | undefined) | null;
-}
-export const KjunProvider: VueConstructor;
+export const KjunTopNavigation: VueConstructor;
 declare const plugin: { install(Vue: VueConstructor): void };
 export default plugin;

@@ -1,6 +1,6 @@
 <template>
   <div :class="wrapperClasses">
-    <DsIcon
+    <KjunIcon
       v-if="icon"
       :name="icon"
       :size="iconSize"
@@ -16,12 +16,12 @@
 
 <script>
 import { tokens } from '@kjun-ui/tokens';
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  components: { DsIcon },
-  name: 'DsEmpty',
+  components: { KjunIcon },
+  name: 'KjunEmpty',
   props: {
     text: {
       type: String,

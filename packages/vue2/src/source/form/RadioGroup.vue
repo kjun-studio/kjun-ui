@@ -1,7 +1,7 @@
 <template>
   <div :class="groupClasses" role="radiogroup" :aria-label="ariaLabel || undefined" :aria-disabled="disabled ? 'true' : undefined">
     <slot>
-      <DsRadio
+      <KjunRadio
         v-for="option in options"
         :key="String(option.value)"
         :val="option.value"
@@ -14,12 +14,12 @@
 
 <script>
 import { componentMixins } from "../../component-mixins.js";
-import DsRadio from './Radio.vue'
+import KjunRadio from './Radio.vue'
 
 export default {
   mixins: componentMixins,
-  name: 'DsRadioGroup',
-  components: { DsRadio },
+  name: 'KjunRadioGroup',
+  components: { KjunRadio },
   provide() {
     return {
       radioGroup: this

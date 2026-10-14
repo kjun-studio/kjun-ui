@@ -6,9 +6,9 @@ const vm = new Vue({
   data: () => ({ config: { ...accordionConfig } }),
   render(h) {
     return h(K.KjunProvider, [h('main', { style: { padding: '16px' } }, [
-      h('div', { attrs: { 'data-testid': 'frame' } }, [h(K.DsAccordion, { props: { tone: this.config.tone, multiple: this.config.multiple } }, [
-        h(K.DsAccordionItem, { props: { title: this.config.title, disabled: this.config.disabled } }, this.config.action ? [h(K.DsButton, { props: { variant: 'ghost', size: 'sm' } }, '본문 행동')] : this.config.body),
-        h(K.DsAccordionItem, { props: { title: '알림 설정' } }, '알림을 받을 방식을 선택하세요.'),
+      h('div', { attrs: { 'data-testid': 'frame' } }, [h(K.KjunAccordion, { props: { tone: this.config.tone, multiple: this.config.multiple } }, [
+        h(K.KjunAccordionItem, { props: { title: this.config.title, disabled: this.config.disabled } }, this.config.action ? [h(K.KjunButton, { props: { variant: 'ghost', size: 'sm' } }, '본문 행동')] : this.config.body),
+        h(K.KjunAccordionItem, { props: { title: '알림 설정' } }, '알림을 받을 방식을 선택하세요.'),
       ])]),
     ])]);
   },

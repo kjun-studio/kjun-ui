@@ -51,21 +51,21 @@ async function chooseTime(page: Page, label: string, option: string) {
 }
 for (const platform of platforms) {
   test(`${platform} generic rows isolate secondary actions and preserve consumer selection`, async ({ page }) => {
-    await visit(page, platform, "DsListRow");
+    await visit(page, platform, "KjunListRow");
     await page.getByRole("button", { name: "공유", exact: true }).click();
     await expect.poll(async () => (await snapshot(page)).values.message).toBe("프로필 공유");
     const events = await page.evaluate(() => (window as any).extensionEvents);
-    expect(events.some((e: any) => e.name.startsWith("DsListRow."))).toBe(false);
+    expect(events.some((e: any) => e.name.startsWith("KjunListRow."))).toBe(false);
     await page.getByRole("button", { name: /프로필 설정/ }).click();
     await expect.poll(async () => (await snapshot(page)).values.message).toBe("프로필 설정 열기");
     if (platform === "native") await page.getByRole("switch").click();
     else { await page.getByRole("switch").focus(); await page.getByRole("switch").press("Space"); }
     await expect.poll(async () => (await snapshot(page)).values.notifications).toBe(false);
-    await replay(page, platform, "DsListRow");
+    await replay(page, platform, "KjunListRow");
     await expect(page.getByRole("switch")).not.toBeChecked();
   });
   test(`${platform} decimal quantity commits, cancels, validates and replays current values`, async ({ page }) => {
-    await visit(page, platform, "DsQuantityStepper", { decimal: true, negative: true });
+    await visit(page, platform, "KjunQuantityStepper", { decimal: true, negative: true });
     const field = page.getByRole("spinbutton", { name: "주문 수량", exact: true });
     await field.fill("-1.005"); await field.press("Enter");
     await expect(field).toHaveValue("-1.01");
@@ -82,11 +82,11 @@ for (const platform of platforms) {
       await field.dispatchEvent("compositionend"); await field.press("Enter");
       await expect(field).toHaveValue("2.35");
     }
-    await replay(page, platform, "DsQuantityStepper");
+    await replay(page, platform, "KjunQuantityStepper");
     await expect(page.getByRole("spinbutton")).toHaveValue("2.35");
   });
   test(`${platform} range hands keep order and support decimal keyboard steps`, async ({ page }) => {
-    await visit(page, platform, "DsRangeSlider", { decimal: true });
+    await visit(page, platform, "KjunRangeSlider", { decimal: true });
     const first = page.getByRole("slider", { name: "시작 값" }), last = page.getByRole("slider", { name: "끝 값" });
     await first.focus(); await first.press("ArrowRight");
     await expect.poll(async () => (await snapshot(page)).values.range).toEqual([.3, .8]);
@@ -96,12 +96,12 @@ for (const platform of platforms) {
     expect((await snapshot(page)).values.range).toEqual([.8, .8]);
     await first.focus(); await first.press("Home");
     await expect.poll(async () => (await snapshot(page)).values.range).toEqual([0, .8]);
-    await replay(page, platform, "DsRangeSlider");
+    await replay(page, platform, "KjunRangeSlider");
     await expect.poll(() => page.getByRole("slider", { name: "시작 값" }).evaluate((el: any) => el.getAttribute("aria-valuenow") ?? el.value)).toBe("0");
     await expect.poll(() => page.getByRole("slider", { name: "끝 값" }).evaluate((el: any) => el.getAttribute("aria-valuenow") ?? el.value)).toBe("0.8");
   });
   test(`${platform} slider pointer changes and commits separately from keyboard steps`, async ({ page }) => {
-    await visit(page, platform, "DsSlider");
+    await visit(page, platform, "KjunSlider");
     const thumb = page.getByRole("slider");
     const track = platform === "react" ? page.locator(".kjun-slider-track") : platform === "vue2" ? thumb : thumb.locator("..");
     const box = (await track.boundingBox())!;
@@ -115,40 +115,40 @@ for (const platform of platforms) {
     await expect.poll(async () => (await snapshot(page)).values.slider).toBeLessThan(30);
     await thumb.focus(); await thumb.press("Home"); await thumb.press("PageUp");
     await expect.poll(async () => (await snapshot(page)).values.slider).toBe(10);
-    await visit(page, platform, "DsRangeSlider");
+    await visit(page, platform, "KjunRangeSlider");
     await page.getByRole("slider", { name: "시작 값" }).focus(); await page.keyboard.press("Tab");
     await expect(page.getByRole("slider", { name: "끝 값" })).toBeFocused();
   });
   test(`${platform} time selection produces complete bounded seconds and clears`, async ({ page }) => {
-    await visit(page, platform, "DsTimePicker", { precision: "second", bounded: true });
+    await visit(page, platform, "KjunTimePicker", { precision: "second", bounded: true });
     await chooseTime(page, "알림 시각 시", "09");
     await expect.poll(async () => (await snapshot(page)).values.time).toBe("09:30:15");
     await chooseTime(page, "알림 시각 분", "31");
     await chooseTime(page, "알림 시각 초", "20");
     await expect.poll(async () => (await snapshot(page)).values.time).toBe("09:31:20");
-    await replay(page, platform, "DsTimePicker");
+    await replay(page, platform, "KjunTimePicker");
     await expect(page.getByRole("combobox", { name: "알림 시각 초", exact: true }).or(page.getByRole("button", { name: "알림 시각 초", exact: true }))).toContainText("20");
     await page.getByRole("button", { name: "알림 시각 지우기" }).click();
     await expect(page.getByRole("button", { name: "알림 시각 지우기" })).toHaveCount(0);
   });
   test(`${platform} image fallback, address changes, avatars and consumer chip removal work`, async ({ page }) => {
-    await visit(page, platform, "DsImage", { imageState: "실패" });
+    await visit(page, platform, "KjunImage", { imageState: "실패" });
     await expect(page.getByText("이미지를 불러올 수 없습니다", { exact: true })).toBeVisible();
     await expect(page.getByRole("img", { name: "산과 하늘을 표현한 프로젝트 표지" })).toBeVisible();
-    await configure(page, "DsImage", { imageState: "로딩" }, {}, 2);
+    await configure(page, "KjunImage", { imageState: "로딩" }, {}, 2);
     await expect(page.getByText("이미지 주소를 준비합니다", { exact: true })).toBeVisible();
     await page.getByRole("button", { name: "로컬 이미지 준비 · 2초" }).click();
     await expect.poll(async () => (await snapshot(page)).values.message).toBe("이미지 로드 완료");
-    await configure(page, "DsImage", {}, {}, 3);
+    await configure(page, "KjunImage", {}, {}, 3);
     await expect.poll(async () => (await snapshot(page)).values.message).toBe("이미지 로드 완료");
     await page.getByRole("button", { name: "이미지 주소 변경" }).click();
     await expect.poll(async () => (await snapshot(page)).values.imageVersion).toBe(1);
-    await visit(page, platform, "DsAvatar");
+    await visit(page, platform, "KjunAvatar");
     await expect(page.getByRole("img", { name: "김하늘" })).toBeVisible();
-    await visit(page, platform, "DsChip");
+    await visit(page, platform, "KjunChip");
     await page.getByRole("button", { name: "프로젝트 삭제" }).click();
     await expect(page.getByRole("button", { name: "태그 복원" })).toBeVisible();
-    await replay(page, platform, "DsChip");
+    await replay(page, platform, "KjunChip");
     await expect(page.getByRole("button", { name: "태그 복원" })).toBeVisible();
   });
   test(`${platform} application recipes handle narrow width, safe insets, keyboard and bottom content`, async ({ page }) => {

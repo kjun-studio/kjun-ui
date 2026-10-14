@@ -5,10 +5,10 @@ import { tokens,type ButtonVariant,type InputSize } from "@kjun-ui/tokens";
 import { useId,useLayoutEffect,useRef,type ReactNode } from "react";
 import { observeFormActions } from "../../../shared/package-runtime/form-actions";
 import { Dialog,Heading,Modal,ModalOverlay } from "react-aria-components";
-import { DsButton,DsIcon } from "./button";
+import { KjunButton,KjunIcon } from "./button";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { useKjunPortalContainer } from "./provider";
-export interface DsFormActionsProps {
+export interface KjunFormActionsProps {
   size?: InputSize;
   cancelText?: string;
   confirmText?: string;
@@ -22,7 +22,7 @@ export interface DsFormActionsProps {
   onCancel?: () => void;
   onConfirm?: () => void;
 }
-export function DsFormActions({
+export function KjunFormActions({
   size = "lg",
   cancelText = "취소",
   confirmText = "저장",
@@ -35,23 +35,23 @@ export function DsFormActions({
   cancelVariant = "ghost",
   onCancel,
   onConfirm,
-}: DsFormActionsProps) {
+}: KjunFormActionsProps) {
   const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => observeFormActions(ref.current!), []);
   return (
     <div className="kjun-form-actions" ref={ref}>
       {showCancel && (
-        <DsButton
+        <KjunButton
           size={size}
           variant={cancelVariant}
           disabled={cancelDisabled}
           onClick={onCancel}
         >
           {cancelText}
-        </DsButton>
+        </KjunButton>
       )}
       {showConfirm && (
-        <DsButton
+        <KjunButton
           size={size}
           variant={variant}
           disabled={confirmDisabled}
@@ -59,12 +59,12 @@ export function DsFormActions({
           onClick={onConfirm}
         >
           {confirmText}
-        </DsButton>
+        </KjunButton>
       )}
     </div>
   );
 }
-export interface DsModalProps {
+export interface KjunModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onClose?: () => void;
@@ -92,7 +92,7 @@ export interface DsModalProps {
   children: ReactNode;
   ariaLabel?: string;
 }
-export function DsModal({
+export function KjunModal({
   open,
   onOpenChange,
   onClose,
@@ -119,7 +119,7 @@ export function DsModal({
   footer,
   children,
   ariaLabel,
-}: DsModalProps) {
+}: KjunModalProps) {
   const motion = usePresence(open, useReducedMotion());
   const portalContainer = useKjunPortalContainer();
   const id = useId();
@@ -182,7 +182,7 @@ export function DsModal({
                   aria-label="닫기"
                   onClick={close}
                 >
-                  <DsIcon name="x" size={tokens.modal.closeIconSize} />
+                  <KjunIcon name="x" size={tokens.modal.closeIconSize} />
                 </button>
               )}
             </div>
@@ -196,7 +196,7 @@ export function DsModal({
           {(showFooter || footer) && (
             <div className="kjun-modal-footer">
               {footer || (
-                <DsFormActions
+                <KjunFormActions
                   size={footerSize}
                   cancelVariant="secondary"
                   showCancel={showCancelButton}

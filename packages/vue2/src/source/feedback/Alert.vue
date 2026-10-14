@@ -2,7 +2,7 @@
   <div v-if="visible" :class="['kjun-alert', 'kjun-alert-' + normalizedType, 'kjun-alert']"
     :data-size="sizeKey" :style="toneStyle" :role="normalizedType === 'danger' ? 'alert' : 'status'">
     <span class="kjun-alert-icon" :style="{ color: toneStyle.color }">
-      <DsIcon :name="iconName" :size="iconSize" />
+      <KjunIcon :name="iconName" :size="iconSize" />
     </span>
     <div class="kjun-alert-content">
       <h4 v-if="hasTitle()" class="kjun-alert-title"><slot name="title">{{ title }}</slot></h4>
@@ -10,21 +10,21 @@
       <AlertActions v-if="hasSlot('actions')" :size="actionSize"><slot name="actions" /></AlertActions>
     </div>
     <button v-if="closable" type="button" aria-label="알림 닫기" class="kjun-alert-close" @click="close">
-      <DsIcon name="x" :size="closeIconSize" />
+      <KjunIcon name="x" :size="closeIconSize" />
     </button>
   </div>
 </template>
 
 <script>
 import { tokens } from "@kjun-ui/tokens";
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { SEMANTIC_VARIANTS, SIZES_CORE, oneOf } from '../tokens';
 import { alertActionSizes } from "../../../../../shared/package-runtime/alert-action-size";
 
 // Scopes the action size to the actions slot, not to buttons inside the message.
 const AlertActions = {
-  name: 'AlertActions',
+  name: 'KjunAlertActions',
   props: { size: { type: String, required: true } },
   provide() { return { kjunActionSize: () => this.size }; },
   render(h) { return h('div', { class: 'kjun-alert-actions' }, this.$slots.default); },
@@ -36,8 +36,8 @@ const role = name => `var(--_kjun-color-${name})`;
 
 export default {
   mixins: componentMixins,
-  components: { DsIcon, AlertActions },
-  name: 'DsAlert',
+  components: { KjunIcon, AlertActions },
+  name: 'KjunAlert',
   props: {
     type: { type: String, default: 'info', validator: oneOf([...SEMANTIC_VARIANTS, 'error']) },
     variant: { type: String, default: null, validator: v => v === null || oneOf([...VARIANTS, 'error'])(v) },

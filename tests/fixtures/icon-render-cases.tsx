@@ -8,7 +8,7 @@ export function IconRenderCases({ K, native = false }: { K: any; native?: boolea
   return <K.KjunProvider icons={allIcons} {...(native ? { colors: appColors } : {})}>
     <div data-testid="icon-batch" data-offset={offset} style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
       {iconRenderCases.slice(offset, offset + 120).map(({ name, filled }) => <div key={name + filled} data-icon={name} data-filled={filled}>
-        <K.DsIcon name={name} filled={filled} size={24} />
+        <K.KjunIcon name={name} filled={filled} size={24} />
       </div>)}
     </div>
   </K.KjunProvider>;

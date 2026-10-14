@@ -314,7 +314,7 @@
   padding-inline: 0;
   text-align: center;
 }
-/* Native checkbox semantics with the DsCheckbox sm appearance. */
+/* Native checkbox semantics with the KjunCheckbox sm appearance. */
 .kjun-table-check {
   position: relative;
   display: inline-flex;

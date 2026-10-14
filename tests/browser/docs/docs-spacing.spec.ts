@@ -52,12 +52,12 @@ for (const width of [1440, 390, 320]) test(`${width}: accessibility cards separa
   await section.locator('.accessibility-items').screenshot({ path: `artifacts/accessibility-card-fix/cards-${width}.png`, style: captureStyle });
   const link = cards.first().getByRole('link', { name: '키보드 동작 · 검증 기록 보기', exact: true });
   await link.focus(); await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(url => url.pathname === '/verification' && url.searchParams.get('component') === 'DsCard' && url.hash === '#keyboard');
+  await expect(page).toHaveURL(url => url.pathname === '/verification' && url.searchParams.get('component') === 'KjunCard' && url.hash === '#keyboard');
 });
 
 for (const width of [1440, 390]) test(`${width}: related coverage and verification cards keep spacing and controls`, async ({ page }) => {
   await page.setViewportSize({ width, height: 1000 });
-  await page.goto('/catalog?q=DsCard&platform=react'); await ready(page);
+  await page.goto('/catalog?q=KjunCard&platform=react'); await ready(page);
   const cards = page.locator('.coverage-page .kjun-card:visible');
   expect(await cards.count()).toBeGreaterThan(3);
   for (const card of await cards.all()) {
@@ -69,7 +69,7 @@ for (const width of [1440, 390]) test(`${width}: related coverage and verificati
   await contained(page);
   await page.locator('#support-summary').screenshot({ path: `artifacts/accessibility-card-fix/coverage-${width}.png`, style: captureStyle });
 
-  await page.goto('/verification?component=DsCard&platform=react'); await ready(page);
+  await page.goto('/verification?component=KjunCard&platform=react'); await ready(page);
   for (const card of await page.locator('.verification-check').all()) {
     await mutedCard(card);
     await expect(card.locator(':scope > .kjun-card-body')).toHaveCSS('row-gap', '12px');
@@ -79,7 +79,7 @@ for (const width of [1440, 390]) test(`${width}: related coverage and verificati
   await contained(page);
   await page.locator('#keyboard').screenshot({ path: `artifacts/accessibility-card-fix/verification-${width}.png`, style: captureStyle });
 
-  await page.goto(`/verification?component=DsCard&platform=react&record=${coverage.records[0].id}`); await ready(page);
+  await page.goto(`/verification?component=KjunCard&platform=react&record=${coverage.records[0].id}`); await ready(page);
   const legacy = page.locator('.verification-legacy');
   await mutedCard(legacy);
   await expect(legacy.locator(':scope > .kjun-card-body')).toHaveCSS('row-gap', '12px');

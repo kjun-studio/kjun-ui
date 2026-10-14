@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, KjunFeedbackProvider, DsChip } from '@kjun-ui/vue2';
+import { KjunProvider, KjunFeedbackProvider, KjunChip } from '@kjun-ui/vue2';
 import { cssPalette } from './typography-values';
 import { chipSizes, toastMessage } from './chip-toast-tokens-common';
 cssPalette();
@@ -9,9 +9,9 @@ const Cases = Vue.extend({
   render(h) {
     return h('div', { style: { padding: '16px' } }, [
       ...chipSizes.map(size => h('div', { key: size, attrs: { 'data-testid': `chip-${size}` }, style: { display: 'flex', alignItems: 'flex-start' } },
-        this.removed.includes(size) ? [] : [h(DsChip, { props: { size, label: `칩 ${size}`, removable: true,
+        this.removed.includes(size) ? [] : [h(KjunChip, { props: { size, label: `칩 ${size}`, removable: true,
           removeLabel: `삭제 ${size}` }, on: { remove: () => { this.removed.push(size); } } })])),
-      h('div', { attrs: { 'data-testid': 'disabled-chip' }, style: { display: 'flex', alignItems: 'flex-start' } }, [h(DsChip, { props: { label: '비활성 칩', removable: true,
+      h('div', { attrs: { 'data-testid': 'disabled-chip' }, style: { display: 'flex', alignItems: 'flex-start' } }, [h(KjunChip, { props: { label: '비활성 칩', removable: true,
         disabled: true, removeLabel: '비활성 삭제' }, on: { remove: () => { this.actions += 100; } } })]),
       h('button', { on: { click: () => (this as any).kjunFeedback.toast.info(toastMessage, { title: '토큰 알림',
         duration: 60000, action: { label: '알림 실행', onClick: () => { this.actions++; } } }) } }, '알림 열기'),

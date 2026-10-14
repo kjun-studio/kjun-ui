@@ -3,14 +3,14 @@
     <!-- 갱신 표시의 바깥 DOM을 고정해 Vue 2의 본문 재사용·이동으로 인한 스크롤 초기화를 막는다. -->
     <div key="refresh-status">
       <div v-if="isRefreshing" class="kjun-data-state-status kjun-data-status" role="status">
-        <DsSpinner size="xs" /><span>{{ refreshingText }}</span>
+        <KjunSpinner size="xs" /><span>{{ refreshingText }}</span>
       </div>
     </div>
     <!-- 첫 로딩: skeleton 모드 (재조회 시에는 hasLoadedOnce로 이전 콘텐츠 유지) -->
     <div v-if="isInitialLoading && skeleton" :class="loadingClasses" role="status" :aria-label="loadingText">
       <slot name="loading">
         <div class="kj-space-y-3">
-          <ds-skeleton
+          <kjun-skeleton
             v-for="i in skeletonCount"
             :key="i"
             :type="skeletonType"
@@ -23,7 +23,7 @@
     <div v-else-if="isInitialLoading" :class="loadingClasses" role="status" :aria-label="loadingText">
       <slot name="loading">
         <div class="kjun-data-loading">
-          <ds-spinner size="md" />
+          <kjun-spinner size="md" />
           <p>{{ loadingText }}</p>
         </div>
       </slot>
@@ -32,26 +32,26 @@
     <!-- Error -->
     <div v-else-if="blockingError" class="kjun-state-actions" :class="containerClasses" :role="$scopedSlots.error || $slots.error ? 'alert' : undefined">
       <slot name="error" :error="error" :retry="emitRetry">
-        <DsAlert type="danger" title="오류 발생">
+        <KjunAlert type="danger" title="오류 발생">
           {{ error }}
           <template v-if="hasRetryListener" #actions>
-            <DsButton variant="secondary" @click.stop="emitRetry">{{ retryText }}</DsButton>
+            <KjunButton variant="secondary" @click.stop="emitRetry">{{ retryText }}</KjunButton>
           </template>
-        </DsAlert>
+        </KjunAlert>
       </slot>
     </div>
 
     <!-- Empty -->
     <div v-else-if="empty" class="kjun-data-empty kjun-state-actions" :class="containerClasses">
       <slot name="empty">
-        <DsEmpty :text="emptyText" :icon="emptyIcon">
-          <DsButton
+        <KjunEmpty :text="emptyText" :icon="emptyIcon">
+          <KjunButton
             v-if="emptyActionText"
             @click.stop="$emit('empty-action')"
           >
             {{ emptyActionText }}
-          </DsButton>
-        </DsEmpty>
+          </KjunButton>
+        </KjunEmpty>
       </slot>
     </div>
 
@@ -70,28 +70,28 @@
     </div>
     <div v-if="visibleRefreshError && !isInitialLoading" class="kjun-data-warning kjun-state-actions">
     <!-- Retry sits in the actions slot like the blocking error; the sm alert sizes the button. -->
-    <DsAlert type="warning" size="sm">
+    <KjunAlert type="warning" size="sm">
       {{ visibleRefreshError }} · 이전 조회 결과를 표시하고 있습니다.
       <template v-if="hasRetryListener" #actions>
-        <DsButton variant="secondary" @click.stop="emitRetry">{{ retryText }}</DsButton>
+        <KjunButton variant="secondary" @click.stop="emitRetry">{{ retryText }}</KjunButton>
       </template>
-    </DsAlert>
+    </KjunAlert>
     </div>
   </div>
 </template>
 
 <script>
-import DsAlert from "./Alert.vue";
-import DsButton from "../primitives/Button.vue";
-import DsEmpty from "../data-display/Empty.vue";
-import DsSkeleton from "../data-display/Skeleton.vue";
-import DsSpinner from "./Spinner.vue";
+import KjunAlert from "./Alert.vue";
+import KjunButton from "../primitives/Button.vue";
+import KjunEmpty from "../data-display/Empty.vue";
+import KjunSkeleton from "../data-display/Skeleton.vue";
+import KjunSpinner from "./Spinner.vue";
 import { componentMixins } from "../../component-mixins.js";
 import queryDisplayMixin from '@kjun-adapter/queryDisplayMixin.js'
 
 export default {
-  components: { DsAlert, DsButton, DsEmpty, DsSkeleton, DsSpinner },
-  name: 'DsDataState',
+  components: { KjunAlert, KjunButton, KjunEmpty, KjunSkeleton, KjunSpinner },
+  name: 'KjunDataState',
   mixins: [queryDisplayMixin, ...componentMixins],
   props: {
     // null은 기존 계약을 유지한다. 조건 키를 전달한 화면만 동일 조건 갱신에서 본문을 보존한다.
@@ -127,7 +127,7 @@ export default {
       type: String,
       default: '데이터가 없습니다'
     },
-    // 기본은 텍스트만 — 빈 상태 아이콘은 필요한 페이지에서 empty-icon으로 명시 opt-in (DsEmpty와 동일 규칙)
+    // 기본은 텍스트만 — 빈 상태 아이콘은 필요한 페이지에서 empty-icon으로 명시 opt-in (KjunEmpty와 동일 규칙)
     emptyIcon: {
       type: String,
       default: ''

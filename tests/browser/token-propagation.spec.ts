@@ -297,7 +297,7 @@ for (const platform of platforms) {
     await expect(next).toHaveCSS('width', px(size));
     await expect(next).toHaveCSS('border-radius', px(tokens.extensions.pagination.radius));
     await next.click(); await expect(page.getByTestId('events')).toHaveText('0/2');
-    // A blocking error is an md DsAlert; its message takes the alert body type like any other alert.
+    // A blocking error is an md KjunAlert; its message takes the alert body type like any other alert.
     await expect(page.getByText('연결 오류 메시지', { exact: true })).toHaveCSS('font-size', px(tokens.typography.body.fontSizePx));
     await page.setViewportSize({ width: 320, height: 1000 });
     const segments = page.getByTestId('segments');

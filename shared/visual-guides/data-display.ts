@@ -1,6 +1,6 @@
 import { part as p, textPart as t, type GuideAuthor } from "./types.ts";
 export const dataDisplay: Record<string, GuideAuthor> = {
-  DsAnimatedNumber: {
+  KjunAnimatedNumber: {
     parts: [
       p(
         "숫자와 단위",
@@ -10,11 +10,11 @@ export const dataDisplay: Record<string, GuideAuthor> = {
     ],
     related: "assets",
   },
-  DsBadge: {
+  KjunBadge: {
     parts: [t("상태 라벨", "짧은 상태를 텍스트와 색상 역할로 전달합니다.", "success")],
     related: "assets",
   },
-  DsEmpty: {
+  KjunEmpty: {
     parts: [
       t("제목", "결과가 없는 상황을 설명합니다.", "항목이 없습니다"),
       t("설명", "가능한 다음 행동을 안내합니다.", "조건을 바꾸거나 새 항목을 추가하세요.", true),
@@ -22,11 +22,11 @@ export const dataDisplay: Record<string, GuideAuthor> = {
     ],
     related: "writing",
   },
-  DsHeatmapCell: {
+  KjunHeatmapCell: {
     parts: [t("수치 셀", "같은 범위의 상대적 크기를 색상과 숫자로 표현합니다.", "-0.5")],
     related: "assets",
   },
-  DsIcon: {
+  KjunIcon: {
     parts: [
       p(
         "아이콘 도형",
@@ -36,7 +36,7 @@ export const dataDisplay: Record<string, GuideAuthor> = {
     ],
     related: "toolbar",
   },
-  DsKpiHero: {
+  KjunKpiHero: {
     parts: [
       t("지표 라벨", "대표 수치의 의미입니다.", "총 평가 금액"),
       t("대표 수치", "가장 중요한 지표를 우선 표시합니다.", "123,456,789"),
@@ -44,7 +44,7 @@ export const dataDisplay: Record<string, GuideAuthor> = {
     ],
     related: "assets",
   },
-  DsKpiRow: {
+  KjunKpiRow: {
     parts: [
       t("지표 이름", "나란히 배치한 수치의 의미입니다.", "평가 금액"),
       t("단위", "수치의 단위를 표시합니다.", "원"),
@@ -52,15 +52,15 @@ export const dataDisplay: Record<string, GuideAuthor> = {
     ],
     related: "assets",
   },
-  DsProgressCell: {
+  KjunProgressCell: {
     parts: [t("진행 수치", "최대값에 대한 진행량을 표시합니다.", "42%")],
     related: "assets",
   },
-  DsSparkline: {
+  KjunSparkline: {
     parts: [p("추세 선", "같은 항목의 값 변화 흐름을 압축해 표시합니다.", "svg")],
     related: "assets",
   },
-  DsTable: {
+  KjunTable: {
     parts: [
       t("열 제목", "열에 표시할 값을 설명하며 정렬 진입점을 제공합니다.", "이름"),
       t("행 데이터", "한 항목의 값들을 같은 행으로 묶습니다.", "긴 한국어 자산 이름"),

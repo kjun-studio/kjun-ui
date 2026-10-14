@@ -4,23 +4,23 @@ import {
   KjunProvider,
   KjunFeedbackProvider,
   useKjunFeedback,
-  DsButton,
-  DsSelect,
-  DsSearchInput,
-  DsCheckbox,
-  DsRadioGroup,
-  DsSwitch,
-  DsTabs,
-  DsTabPane,
-  DsDropdown,
-  DsDropdownItem,
-  DsAccordion,
-  DsAccordionItem,
-  DsCard,
-  DsBadge,
-  DsProgress,
-  DsSkeleton,
-  DsTooltip,
+  KjunButton,
+  KjunSelect,
+  KjunSearchInput,
+  KjunCheckbox,
+  KjunRadioGroup,
+  KjunSwitch,
+  KjunTabs,
+  KjunTabPane,
+  KjunDropdown,
+  KjunDropdownItem,
+  KjunAccordion,
+  KjunAccordionItem,
+  KjunCard,
+  KjunBadge,
+  KjunProgress,
+  KjunSkeleton,
+  KjunTooltip,
 } from "@kjun-ui/react";
 import {
   cssValues,
@@ -50,18 +50,18 @@ function Content() {
     [message, setMessage] = useState("");
   return (
     <div style={{ padding: 24, display: "grid", gap: 16, maxWidth: 520 }}>
-      <DsCard title="상태">
-        <DsBadge>배지</DsBadge>
-        <DsProgress value={42} showLabel />
-        <DsSkeleton rows={1} />
-      </DsCard>
-      <DsCheckbox
+      <KjunCard title="상태">
+        <KjunBadge>배지</KjunBadge>
+        <KjunProgress value={42} showLabel />
+        <KjunSkeleton rows={1} />
+      </KjunCard>
+      <KjunCheckbox
         value={checked}
         label="체크"
         onValueChange={(v) => setChecked(!!v)}
       />
-      <DsSwitch value={toggle} label="스위치" onValueChange={setToggle} />
-      <DsRadioGroup
+      <KjunSwitch value={toggle} label="스위치" onValueChange={setToggle} />
+      <KjunRadioGroup
         value={radio}
         ariaLabel="라디오"
         options={[
@@ -71,7 +71,7 @@ function Content() {
         ]}
         onValueChange={setRadio}
       />
-      <DsSelect
+      <KjunSelect
         value={selected}
         options={[
           { value: "a", label: "사과" },
@@ -83,34 +83,34 @@ function Content() {
         onValueChange={setSelected}
       />
       <output data-testid="selected">{selected}</output>
-      <DsSearchInput
+      <KjunSearchInput
         value={query}
         ariaLabel="원격 검색"
         loadOptions={loadOptions}
         onValueChange={setQuery}
         onSelect={(o) => setMessage(o.name)}
       />
-      <DsTabs value={tab} onValueChange={setTab}>
-        <DsTabPane name="one" label="첫 탭">
+      <KjunTabs value={tab} onValueChange={setTab}>
+        <KjunTabPane name="one" label="첫 탭">
           첫 내용
-        </DsTabPane>
-        <DsTabPane name="two" label="둘째 탭">
+        </KjunTabPane>
+        <KjunTabPane name="two" label="둘째 탭">
           둘째 내용
-        </DsTabPane>
-      </DsTabs>
-      <DsDropdown trigger={<DsButton>메뉴 열기</DsButton>}>
-        <DsDropdownItem onClick={() => setMessage("chosen")}>
+        </KjunTabPane>
+      </KjunTabs>
+      <KjunDropdown trigger={<KjunButton>메뉴 열기</KjunButton>}>
+        <KjunDropdownItem onClick={() => setMessage("chosen")}>
           메뉴 항목
-        </DsDropdownItem>
-      </DsDropdown>
-      <DsTooltip content="도움말">
-        <DsButton>도움</DsButton>
-      </DsTooltip>
-      <DsAccordion>
-        <DsAccordionItem title="열기 하나">내용 하나</DsAccordionItem>
-        <DsAccordionItem title="열기 둘">내용 둘</DsAccordionItem>
-      </DsAccordion>
-      <DsButton
+        </KjunDropdownItem>
+      </KjunDropdown>
+      <KjunTooltip content="도움말">
+        <KjunButton>도움</KjunButton>
+      </KjunTooltip>
+      <KjunAccordion>
+        <KjunAccordionItem title="열기 하나">내용 하나</KjunAccordionItem>
+        <KjunAccordionItem title="열기 둘">내용 둘</KjunAccordionItem>
+      </KjunAccordion>
+      <KjunButton
         onClick={async () => {
           const a = feedback.confirm({ title: "첫 확인" }),
             b = feedback.prompt({
@@ -121,12 +121,12 @@ function Content() {
         }}
       >
         대기열 시작
-      </DsButton>
-      <DsButton
+      </KjunButton>
+      <KjunButton
         onClick={() => feedback.toast.success("영역 알림", { duration: 0 })}
       >
         알림 표시
-      </DsButton>
+      </KjunButton>
       <output role="status">{message}</output>
     </div>
   );
@@ -138,9 +138,9 @@ function App() {
       <KjunProvider
         style={cssValues(scopedColors(changed), scopedFont(changed))}
       >
-        <DsButton onClick={() => setChanged((v) => !v)}>
+        <KjunButton onClick={() => setChanged((v) => !v)}>
           영역 색상 변경
-        </DsButton>
+        </KjunButton>
         <KjunFeedbackProvider>
           <Content />
         </KjunFeedbackProvider>

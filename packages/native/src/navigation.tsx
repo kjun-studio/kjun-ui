@@ -15,26 +15,26 @@ type ReactNode,
 } from "react";
 import { Animated,ScrollView,View,useWindowDimensions,Platform,type TextStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsButton,DsIcon } from "./button";
+import { KjunButton,KjunIcon } from "./button";
 import { KText,content } from "./internal";
 import { useKjunStyles } from "./provider";
-import { DsSelect } from "./select";
-export { DsTabs, DsTabPane, type TabItem, type DsTabsProps, type DsTabPaneProps } from "./tabs";
+import { KjunSelect } from "./select";
+export { KjunTabs, KjunTabPane, type TabItem, type KjunTabsProps, type KjunTabPaneProps } from "./tabs";
 const AccordionContext = createContext<{
   opened: Set<string>;
   toggle: (id: string) => void;
   register: (id: string, defaultOpen: boolean) => () => void;
 } | null>(null);
-export interface DsAccordionProps {
+export interface KjunAccordionProps {
   multiple?: boolean;
   tone?: "card" | "muted";
   children: ReactNode;
 }
-export function DsAccordion({
+export function KjunAccordion({
   multiple = false,
   tone = "card",
   children,
-}: DsAccordionProps) {
+}: KjunAccordionProps) {
   const { colors } = useKjunStyles(),
     state = useAccordionState(multiple);
   return (
@@ -53,20 +53,20 @@ export function DsAccordion({
     </AccordionContext.Provider>
   );
 }
-export interface DsAccordionItemProps {
+export interface KjunAccordionItemProps {
   title?: string;
   defaultOpen?: boolean;
   disabled?: boolean;
   header?: ReactNode;
   children: ReactNode;
 }
-export function DsAccordionItem({
+export function KjunAccordionItem({
   title = "",
   defaultOpen = false,
   disabled = false,
   header,
   children,
-}: DsAccordionItemProps) {
+}: KjunAccordionItemProps) {
   const { colors } = useKjunStyles(),
     group = useContext(AccordionContext),
     id = useId(),
@@ -109,7 +109,7 @@ export function DsAccordionItem({
           {content(header || title, { ...typeStyle("control"), ...wrapping })}
         </View>
         <Animated.View style={{ flexShrink: 0, transform: [{ rotate: rotation.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "180deg"] }) }] }}>
-          <DsIcon name="chevron-down" size={geometry.iconSize} color={colors.textSecondary} />
+          <KjunIcon name="chevron-down" size={geometry.iconSize} color={colors.textSecondary} />
         </Animated.View>
       </Pressable>
       <Collapse open={open}>
@@ -128,18 +128,18 @@ export interface BreadcrumbItem {
   to?: string;
   icon?: string;
 }
-export interface DsBreadcrumbProps {
+export interface KjunBreadcrumbProps {
   items: BreadcrumbItem[];
   renderLink?: (item: BreadcrumbItem, children: ReactNode) => ReactNode;
   onNavigate?: (item: BreadcrumbItem) => void;
   ariaLabel?: string;
 }
-export function DsBreadcrumb({
+export function KjunBreadcrumb({
   items,
   renderLink,
   onNavigate,
   ariaLabel = "현재 위치",
-}: DsBreadcrumbProps) {
+}: KjunBreadcrumbProps) {
   const { colors } = useKjunStyles();
   return (
     <View
@@ -155,7 +155,7 @@ export function DsBreadcrumb({
         const label = (
           <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.dimension.value4 }}>
             {item.icon && (
-              <DsIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} color={colors.textSecondary} />
+              <KjunIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} color={colors.textSecondary} />
             )}
             <KText
               style={{
@@ -171,7 +171,7 @@ export function DsBreadcrumb({
         return (
           <Fragment key={i}>
             {i > 0 && (
-              <DsIcon
+              <KjunIcon
                 name="chevron-right"
                 size={tokens.extensions.breadcrumb.separatorSize}
                 color={colors.textTertiary}
@@ -194,7 +194,7 @@ export function DsBreadcrumb({
     </View>
   );
 }
-export interface DsPaginationProps {
+export interface KjunPaginationProps {
   currentPage?: number;
   page?: number;
   totalPages: number;
@@ -210,7 +210,7 @@ export interface DsPaginationProps {
   onChange?: (page: number) => void;
   onPageSizeChange?: (size: number) => void;
 }
-export function DsPagination({
+export function KjunPagination({
   currentPage,
   page,
   totalPages,
@@ -225,7 +225,7 @@ export function DsPagination({
   onPageChange,
   onChange,
   onPageSizeChange,
-}: DsPaginationProps) {
+}: KjunPaginationProps) {
   const { colors } = useKjunStyles(),
     window = useWindowDimensions(),
     current = Math.max(1, Math.min(totalPages, currentPage ?? page ?? 1));
@@ -257,7 +257,7 @@ export function DsPagination({
   const arrowSize = (Object.keys(tokens.button.iconSizes) as ButtonSize[])
     .find(size => tokens.button.iconSizes[size] === tokens.extensions.pagination.iconSize) ?? "sm";
   const button = (target: number, label: string, icon: string) => (
-    <DsButton
+    <KjunButton
       style={pageButtonStyle}
       size={arrowSize}
       variant="ghost"
@@ -298,7 +298,7 @@ export function DsPagination({
         }}
       >
         {showSizeSelector && (
-          <View style={{ minWidth: tokens.extensions.pagination.selectorMinimumWidth }}><DsSelect
+          <View style={{ minWidth: tokens.extensions.pagination.selectorMinimumWidth }}><KjunSelect
             size="sm"
             ariaLabel="페이지당 항목 수"
             value={pageSize}
@@ -325,7 +325,7 @@ export function DsPagination({
             typeof n === "string" ? (
               <KText key={"dots" + i}>...</KText>
             ) : (
-              <DsButton
+              <KjunButton
                 key={n}
                 style={pageButtonStyle}
                 size="sm"
@@ -334,7 +334,7 @@ export function DsPagination({
                 onPress={() => change(n)}
               >
                 {n}
-              </DsButton>
+              </KjunButton>
             )
           )
         )}

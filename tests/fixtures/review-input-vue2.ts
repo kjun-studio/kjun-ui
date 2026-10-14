@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { KjunProvider, DsCombobox, DsSelect, DsSearchInput } from "@kjun-ui/vue2";
+import { KjunProvider, KjunCombobox, KjunSelect, KjunSearchInput } from "@kjun-ui/vue2";
 import { setRootValues } from "./style-values";
 setRootValues();
 const params = new URLSearchParams(location.search), kind = params.get("control") || "combo", zero = params.has("zero");
@@ -11,7 +11,7 @@ const vm = new Vue({
     minChars: 2, multiple: false, events: [] as unknown[], query: "" }),
   render(h) {
     const options = zero ? [0, 1] : [{ value: "a", label: "Alpha" }, { value: "b", label: "Beta" }];
-    return h(KjunProvider, [h(kind === "search" ? DsSearchInput : kind === "select" ? DsSelect : DsCombobox, {
+    return h(KjunProvider, [h(kind === "search" ? KjunSearchInput : kind === "select" ? KjunSelect : KjunCombobox, {
       props: { ariaLabel: kind === "search" ? "Search" : "Choice", value: this.value, options,
         clearable: true, disabled: this.disabled, minChars: this.minChars, multiple: this.multiple,
         ...(kind === "search" ? { loadOptions } : {}) },

@@ -13,7 +13,7 @@ type ViewStyle
 } from "react-native";
 import Svg,{ Circle,Path } from "react-native-svg";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { AlertActionsContext } from "./alert-actions-context";
 import { ActionSizeContext, alertActionSizes } from "../../../shared/package-runtime/action-size";
 import { KText,content,domainColor,useReducedMotion } from "./internal";
@@ -26,14 +26,14 @@ export type SemanticTone =
   | "warning"
   | "danger"
   | "info";
-export interface DsBadgeProps {
+export interface KjunBadgeProps {
   variant?: "default" | "secondary" | SemanticTone | "price-up" | "price-down";
   size?: DisplaySize;
   dot?: boolean;
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
 }
-export function DsBadge(props: DsBadgeProps) {
+export function KjunBadge(props: KjunBadgeProps) {
   return <BadgeView {...props} />;
 }
 /** Internal composition keeps KPI dots on their own shared geometry role. */
@@ -44,7 +44,7 @@ export function BadgeView({
   children,
   style,
   dotSize = tokens.extensions.badge.dotSize,
-}: DsBadgeProps & { dotSize?: number }) {
+}: KjunBadgeProps & { dotSize?: number }) {
   const { colors, domainColors } = useKjunStyles();
   const { x, y } = tokens.extensions.badge.padding[size];
   const type = typeStyle(size === "xl" ? "controlLarge" : size === "lg" ? "control" : "controlSmall");
@@ -106,18 +106,18 @@ export function BadgeView({
     </View>
   );
 }
-export interface DsEmptyProps {
+export interface KjunEmptyProps {
   text?: string;
   description?: string;
   icon?: string;
   children?: ReactNode;
 }
-export function DsEmpty({
+export function KjunEmpty({
   text = "데이터가 없습니다",
   description,
   icon,
   children,
-}: DsEmptyProps) {
+}: KjunEmptyProps) {
   const { colors } = useKjunStyles();
   const spec = tokens.extensions.empty;
   const stateContent = useContext(DataStateContentContext);
@@ -131,7 +131,7 @@ export function DsEmpty({
     >
       {icon && (
         <View style={{ marginBottom: spec.iconGap }}>
-          <DsIcon name={icon} size={spec.iconSize} color={colors.textSecondary} />
+          <KjunIcon name={icon} size={spec.iconSize} color={colors.textSecondary} />
         </View>
       )}
       <KText style={{ ...typeStyle('cardTitle'), color: colors.text, fontSize: spec.titleSize, lineHeight: spec.titleLineHeight, textAlign: "center", maxWidth: spec.textMaxWidth }}>
@@ -156,11 +156,11 @@ export function DsEmpty({
     </View>
   );
 }
-export interface DsSpinnerProps {
+export interface KjunSpinnerProps {
   size?: DisplaySize;
   text?: string;
 }
-export function DsSpinner({ size = "md", text }: DsSpinnerProps) {
+export function KjunSpinner({ size = "md", text }: KjunSpinnerProps) {
   const { colors } = useKjunStyles(),
     reduced = useReducedMotion(),
     rotation = useRef(new Animated.Value(0)).current;
@@ -231,18 +231,18 @@ export function DsSpinner({ size = "md", text }: DsSpinnerProps) {
     </View>
   );
 }
-export interface DsAlertProps {
+export interface KjunAlertProps {
   type?: "info" | "success" | "warning" | "danger" | "error";
   variant?: SemanticTone;
   size?: "sm" | "md" | "lg";
   title?: ReactNode;
   closable?: boolean;
   children?: ReactNode;
-  /** Buttons placed under the message; unsized DsButtons follow the alert size. */
+  /** Buttons placed under the message; unsized KjunButtons follow the alert size. */
   actions?: ReactNode;
   onClose?: () => void;
 }
-export function DsAlert({
+export function KjunAlert({
   type = "info",
   variant,
   size = "md",
@@ -251,7 +251,7 @@ export function DsAlert({
   children,
   actions,
   onClose,
-}: DsAlertProps) {
+}: KjunAlertProps) {
   const { colors } = useKjunStyles();
   const [visible, setVisible] = useState(true);
   if (!visible) return null;
@@ -280,7 +280,7 @@ export function DsAlert({
       }}
     >
       <View style={{ height: lineHeight, justifyContent: "center", flexShrink: 0 }}>
-      <DsIcon
+      <KjunIcon
         name={
           {
             info: "info-circle",
@@ -330,14 +330,14 @@ export function DsAlert({
             onClose?.();
           }}
         >
-          {({ pressed, hovered }: any) => <DsIcon name="x" size={geometry.closeIconSize}
+          {({ pressed, hovered }: any) => <KjunIcon name="x" size={geometry.closeIconSize}
             color={pressed || hovered ? colors.text : colors.textTertiary} />}
         </Pressable>
       )}
     </View>
   );
 }
-export interface DsProgressProps {
+export interface KjunProgressProps {
   value?: number;
   max?: number;
   size?: "sm" | "md" | "lg";
@@ -346,7 +346,7 @@ export interface DsProgressProps {
   label?: ReactNode;
   subLabel?: ReactNode;
 }
-export function DsProgress({
+export function KjunProgress({
   value = 0,
   max = 100,
   size = "md",
@@ -354,7 +354,7 @@ export function DsProgress({
   showLabel = false,
   label,
   subLabel,
-}: DsProgressProps) {
+}: KjunProgressProps) {
   const { colors } = useKjunStyles();
   const percentage =
     Number.isFinite(value) && max > 0

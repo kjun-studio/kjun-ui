@@ -1,25 +1,25 @@
 {
-  "DsBreadcrumb": {
+  "KjunBreadcrumb": {
     "vue2": ["formatters", "items"],
     "react": ["items", "renderLink", "ariaLabel"],
     "native": ["items", "renderLink", "onNavigate", "ariaLabel"]
   },
-  "DsExternalLink": {
+  "KjunExternalLink": {
     "vue2": ["formatters", "href", "mode", "label"],
     "react": ["href", "mode", "label", "children"],
     "native": ["href", "mode", "label", "children", "openUrl"]
   },
-  "DsPagination": {
+  "KjunPagination": {
     "vue2": ["formatters", "currentPage", "page", "totalPages", "totalRows", "pageSize", "pageSizeOptions", "siblingCount", "showInfo", "showSizeSelector", "showFirstLast"],
     "react": ["currentPage", "page", "totalPages", "totalRows", "pageSize", "pageSizeOptions", "siblingCount", "showInfo", "showSizeSelector", "showFirstLast", "formatter", "onPageChange", "onChange", "onPageSizeChange"],
     "native": ["currentPage", "page", "totalPages", "totalRows", "pageSize", "pageSizeOptions", "siblingCount", "showInfo", "showSizeSelector", "showFirstLast", "formatter", "onPageChange", "onChange", "onPageSizeChange"]
   },
-  "DsTabs": {
+  "KjunTabs": {
     "vue2": ["formatters", "ariaLabel", "value", "items", "density", "variant"],
     "react": ["value", "items", "density", "variant", "actions", "children", "ariaLabel", "onValueChange", "onChange", "onTabMenu"],
     "native": ["value", "items", "density", "variant", "actions", "children", "ariaLabel", "onValueChange", "onChange", "onTabMenu"]
   },
-  "DsTabPane": {
+  "KjunTabPane": {
     "vue2": ["formatters", "name", "label", "icon", "badge", "disabled"],
     "react": ["children", "name", "label", "icon", "badge", "badgeVariant", "disabled"],
     "native": ["children", "name", "label", "icon", "badge", "badgeVariant", "disabled"]

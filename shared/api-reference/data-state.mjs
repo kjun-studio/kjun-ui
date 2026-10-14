@@ -28,7 +28,7 @@ export const queryProps = {
 };
 const common = {
   ...queryProps,
-  size: detail("대체 상태의 위아래 여백을 지정합니다.", { 구성: "sm 24px · md 48px · lg 80px입니다. 빈 상태의 DsEmpty에는 여백을 중복 적용하지 않습니다." }),
+  size: detail("대체 상태의 위아래 여백을 지정합니다.", { 구성: "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않습니다." }),
   refreshingText: detail("본문 위 별도 줄에 갱신 상태를 표시합니다.", { 배치: "긴 문구는 영역 안에서 줄바꿈하며 제목이나 행동 버튼을 덮지 않습니다." }),
   retryText: detail("오류와 갱신 경고의 재시도 버튼 문구입니다.", { 배치: "긴 문구는 버튼 안에서 줄바꿈하고 버튼 높이가 늘어납니다." }),
   preserveContent: detail("가려진 본문의 인스턴스를 유지합니다.", {
@@ -72,7 +72,7 @@ export default {
     events: { retry, "empty-action": empty },
     slots: {
       loading: slot("기본 최초 로딩 표시를 교체합니다."),
-      empty: slot("기본 빈 상태를 교체합니다.", "제공 데이터 없음", "DataState가 size에 따른 바깥 여백을 담당합니다. 슬롯의 DsEmpty에는 기본 여백을 중복 적용하지 않습니다."),
+      empty: slot("기본 빈 상태를 교체합니다.", "제공 데이터 없음", "DataState가 size에 따른 바깥 여백을 담당합니다. 슬롯의 KjunEmpty에는 기본 여백을 중복 적용하지 않습니다."),
       error: slot(
         "기본 오류 표시를 교체합니다.",
         "{ error: 오류 메시지, retry: () => void }",
@@ -113,7 +113,7 @@ export default {
       },
       children: slot("성공 결과의 본문입니다.", "ReactNode"),
       loadingContent: slot("기본 최초 로딩 표시를 교체합니다.", "ReactNode"),
-      emptyContent: slot("기본 빈 상태를 교체합니다.", "ReactNode", "DataState가 size에 따른 바깥 여백을 담당합니다. 내부 DsEmpty에는 기본 여백을 중복 적용하지 않습니다."),
+      emptyContent: slot("기본 빈 상태를 교체합니다.", "ReactNode", "DataState가 size에 따른 바깥 여백을 담당합니다. 내부 KjunEmpty에는 기본 여백을 중복 적용하지 않습니다."),
       errorContent: slot(
         "기본 오류 표시를 교체합니다.",
         "ReactNode",

@@ -3,9 +3,9 @@ import { useTableModel as useSharedTableModel, type TableProps } from "../../../
 export { getValue } from "../../../shared/package-runtime/table";
 export type { TableSort, TableColumn, TableCardSection, TablePagination } from "../../../shared/package-runtime/table";
 
-export interface DsTableProps<Row extends object = Record<string, unknown>>
+export interface KjunTableProps<Row extends object = Record<string, unknown>>
   extends TableProps<Row, CSSProperties["maxHeight"]> {}
 
-export function useTableModel<Row extends object>(props: DsTableProps<Row>) {
+export function useTableModel<Row extends object>(props: KjunTableProps<Row>) {
   return useSharedTableModel(props);
 }

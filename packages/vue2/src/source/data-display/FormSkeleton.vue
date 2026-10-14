@@ -3,20 +3,20 @@
     <div v-for="(field, index) in fields" :key="index">
       <div v-if="field" class="kj-text-sm kj-font-medium kj-text-text-primary">{{ typeof field === 'string' ? field : field.label }}</div>
       <!-- The bar sits in a label-line slot so the field starts where the real input will. -->
-      <div v-else class="kjun-form-skeleton-label-slot"><DsSkeleton type="block" height="var(--_kjun-extension-skeleton-form-label-height)" width="var(--_kjun-extension-skeleton-form-label-width)" /></div>
-      <DsSkeleton type="block" :height="fieldHeight(field)" />
+      <div v-else class="kjun-form-skeleton-label-slot"><KjunSkeleton type="block" height="var(--_kjun-extension-skeleton-form-label-height)" width="var(--_kjun-extension-skeleton-form-label-width)" /></div>
+      <KjunSkeleton type="block" :height="fieldHeight(field)" />
     </div>
   </div>
 </template>
 
 <script>
 import { tokens } from "@kjun-ui/tokens";
-import DsSkeleton from "./Skeleton.vue";
+import KjunSkeleton from "./Skeleton.vue";
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  components: { DsSkeleton },
-  name: 'FormSkeleton',
+  components: { KjunSkeleton },
+  name: 'KjunFormSkeleton',
   props: {
     fields: { type: Array, default: () => ['', '', '', ''] },
     columns: { type: Number, default: 1 },

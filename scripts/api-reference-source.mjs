@@ -75,7 +75,7 @@ export function reactContracts(platform) {
   )) {
     const target = resolveSymbol(symbol),
       fn = implementation(target?.valueDeclaration);
-    if (!fn || !symbol.name.startsWith("Ds")) continue;
+    if (!fn || !symbol.name.startsWith("Kjun") || /Provider$/.test(symbol.name)) continue;
     const defaults = {},
       seen = new Set();
     function collect(fn) {

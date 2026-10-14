@@ -16,10 +16,10 @@ export function SliderDesignCases({ K }: { K: any }) {
   const commit = (value: number | number[]) => setEvents(old => [...old, 'commit:' + JSON.stringify(value)]);
   const { min, max, step, disabled, label } = config;
   return <div style={{ padding: 24, width: config.width, display: 'grid', gap: 24 }}>
-    <div data-testid="single"><K.DsSlider {...{ min, max, step, disabled, label }} ariaLabel="음량" value={config.value} onValueChange={(v: number) => change('value', v)} onChangeCommit={commit} /></div>
-    <div data-testid="range"><K.DsRangeSlider {...{ min, max, step, disabled }} label="조회 범위" value={config.range} thumbLabels={['시작', '끝']} onValueChange={(v: number[]) => change('range', v)} onChangeCommit={commit} /></div>
-    <K.DsButton>적용하기</K.DsButton>
-    <K.DsButtonGroup value="all" options={[{ value: 'all', label: '전체' }, { value: 'selected', label: '선택' }]} />
+    <div data-testid="single"><K.KjunSlider {...{ min, max, step, disabled, label }} ariaLabel="음량" value={config.value} onValueChange={(v: number) => change('value', v)} onChangeCommit={commit} /></div>
+    <div data-testid="range"><K.KjunRangeSlider {...{ min, max, step, disabled }} label="조회 범위" value={config.range} thumbLabels={['시작', '끝']} onValueChange={(v: number[]) => change('range', v)} onChangeCommit={commit} /></div>
+    <K.KjunButton>적용하기</K.KjunButton>
+    <K.KjunButtonGroup value="all" options={[{ value: 'all', label: '전체' }, { value: 'selected', label: '선택' }]} />
     <output data-testid="events">{events.join('|')}</output>
   </div>;
 }

@@ -10,17 +10,17 @@ const catalog = JSON.parse(
   await readFile(resolve(root, "shared/component-catalog.json"), "utf8")
 );
 const exports = Object.keys(ui)
-  .filter((name) => /^(Ds|Kjun)/.test(name))
+  .filter((name) => /^Kjun/.test(name))
   .sort();
 const overrides = {
-  "DsTable.sort": "import('@kjun-ui/tokens').TableSort | null",
-  "DsRangeSlider.value": "[number, number]",
-  "DsRangeSlider.thumbLabels": "[string, string]",
-  "DsTimePicker.value": "string | null",
-  "DsBottomNavigation.items": "Array<{ key: string; label: string; href: string; icon?: string; badge?: string | number; disabled?: boolean }>",
-  "DsSearchInput.loadOptions":
+  "KjunTable.sort": "import('@kjun-ui/tokens').TableSort | null",
+  "KjunRangeSlider.value": "[number, number]",
+  "KjunRangeSlider.thumbLabels": "[string, string]",
+  "KjunTimePicker.value": "string | null",
+  "KjunBottomNavigation.items": "Array<{ key: string; label: string; href: string; icon?: string; badge?: string | number; disabled?: boolean }>",
+  "KjunSearchInput.loadOptions":
     "(query: string, context: { signal: AbortSignal }) => Promise<Record<string, unknown>[]>",
-  "DsTable.formatters":
+  "KjunTable.formatters":
     "Record<string, (value: unknown, row: Record<string, unknown>) => string>",
   "KjunProvider.renderIdentity":
     "(h: CreateElement, props: Record<string, unknown>, slots: Record<string, VNode[] | undefined>) => VNode | null | undefined",

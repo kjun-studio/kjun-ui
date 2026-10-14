@@ -1,4 +1,4 @@
-import DsIcon from "./icon.js";
+import KjunIcon from "./icon.js";
 export const ToastView = {
   name: "KjunToastView",
   props: { toast: Object, controller: Object },
@@ -55,7 +55,7 @@ export const ToastView = {
             class: "kjun-toast-icon",
             style: { color: `var(--_kjun-color-${tone}-accent)` },
           },
-          [h(DsIcon, { props: { name: icon } })]
+          [h(KjunIcon, { props: { name: icon } })]
         ),
         h("div", { class: "kjun-toast-content" }, [
           t.title && h("strong", t.title),
@@ -87,7 +87,7 @@ export const ToastView = {
               attrs: { type: "button", "aria-label": "알림 닫기" },
               on: { click: this.dismiss },
             },
-            [h(DsIcon, { props: { name: "x" } })]
+            [h(KjunIcon, { props: { name: "x" } })]
           ),
         t.showProgress !== false &&
           t.duration > 0 &&

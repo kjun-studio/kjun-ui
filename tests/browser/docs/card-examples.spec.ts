@@ -31,8 +31,8 @@ for (const platform of ['vue2','react','native'] as const) for (const mode of ['
     page.on('pageerror', error => errors.push(error.message));
     const entries: Record<string, string> = {};
     for (const example of cardDesignExamples) {
-      const config = presetConfig('DsCard', example.id);
-      entries[example.id + '-' + mode] = await prepareExample(platform, 'DsCard', example.id + '-' + mode, config.settings, config.values, 'default', undefined, mode);
+      const config = presetConfig('KjunCard', example.id);
+      entries[example.id + '-' + mode] = await prepareExample(platform, 'KjunCard', example.id + '-' + mode, config.settings, config.values, 'default', undefined, mode);
     }
     await compileEntries(platform, entries);
     await page.route('**/previews/export-checks/**', async route => {

@@ -21,7 +21,7 @@ import { tokens } from "@kjun-ui/tokens";
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  name: "DesignCard",
+  name: "KjunCard",
   props: {
     title: { type: String, default: "" },
     subtitle: { type: String, default: "" },

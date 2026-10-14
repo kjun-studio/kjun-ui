@@ -51,7 +51,7 @@ export function Styling() {
         <CodeBlock code={webMapping} label="Vue 2 · React 공통 연결" />
         <CodeBlock
           code={
-            'import "@kjun-ui/react/styles.css";\nimport "./design-system/kjun.css";\n\n<KjunProvider>\n  <DsButton variant="primary">저장</DsButton>\n</KjunProvider>'
+            'import "@kjun-ui/react/styles.css";\nimport "./design-system/kjun.css";\n\n<KjunProvider>\n  <KjunButton variant="primary">저장</KjunButton>\n</KjunProvider>'
           }
           label="웹 Provider에는 색상 속성이 없습니다"
         />

@@ -5,24 +5,24 @@ export const motionExampleNames = ['GuideMotionToast', 'GuideMotionNumber'];
 // tab, hint and timing describe the docs playground; timing names motion token keys.
 export type MotionTiming = [duration: string, curve: string | null];
 export const motionScenarios: { name: string; destination: string; tab: string; hint: string; timing: MotionTiming[]; scenario: GuideCase }[] = [
-  { name: 'DsTabs', destination: '/components/tabs',
+  { name: 'KjunTabs', destination: '/components/tabs',
     tab: '선택선', hint: '탭을 바꾸면 내용은 바로 바뀌고 선택선은 새 위치로 이어집니다.', timing: [['indicator', 'easeOut']], scenario: {
     id: 'motion-tabs', label: 'Tabs · 선택선 이동',
     description: '첫 탭과 둘째 탭을 빠르게 왕복하세요. 선택 상태와 내용은 즉시 바뀌고 선택선은 새 위치로 이어집니다.',
     values: { tab: 'one' },
   } },
-  { name: 'DsAccordion', destination: '/components/accordion',
+  { name: 'KjunAccordion', destination: '/components/accordion',
     tab: '펼침', hint: '항목을 펼치는 도중 다시 누르면 현재 높이에서 방향이 바뀝니다.', timing: [['collapse', 'easeOut']], scenario: {
     id: 'motion-accordion', label: 'Accordion · 펼침과 접힘',
     description: '첫 항목을 열고 펼쳐지는 도중 다시 누르세요. 현재 높이에서 방향이 바뀝니다.',
   } },
-  { name: 'DsModal', destination: '/components/modal',
+  { name: 'KjunModal', destination: '/components/modal',
     tab: '모달', hint: '모달을 열고 닫아 보세요. 닫으면 열기 버튼으로 포커스가 돌아옵니다.', timing: [['layerEnter', 'easeOut'], ['layerExit', 'easeIn']], scenario: {
     id: 'motion-modal', label: 'Modal · 등장과 퇴장',
     description: '모달을 열고 닫기 버튼이나 Escape로 닫으세요. 퇴장 후 모달 열기 버튼으로 포커스가 돌아옵니다.',
     values: { open: false }, viewportHeight: 600,
   } },
-  { name: 'DsDrawer', destination: '/components/drawer',
+  { name: 'KjunDrawer', destination: '/components/drawer',
     tab: '패널', hint: '패널이 가장자리에서 들어오고 나가는 움직임을 살펴보세요.', timing: [['layerEnter', 'easeEmphasized'], ['layerExit', 'easeIn']], scenario: {
     id: 'motion-drawer', label: 'Drawer · 가장자리에서 이동',
     description: '패널을 열고 닫으세요. 패널 크기만큼 가장자리에서 이동하며 닫힌 뒤 트리거로 포커스가 돌아옵니다.',

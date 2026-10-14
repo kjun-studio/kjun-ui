@@ -1,6 +1,6 @@
 import { part as p, textPart as t, type GuideAuthor } from "./types.ts";
 export const feedback: Record<string, GuideAuthor> = {
-  DsAlert: {
+  KjunAlert: {
     parts: [
       p(
         "알림 영역",
@@ -13,11 +13,11 @@ export const feedback: Record<string, GuideAuthor> = {
     ],
     related: "feedback",
   },
-  DsChartSkeleton: {
+  KjunChartSkeleton: {
     parts: [p("차트 자리 표시자", "완료 후 차트가 차지할 공간과 형태를 미리 보여줍니다.")],
     related: "loading",
   },
-  DsDataState: {
+  KjunDataState: {
     parts: [
       t("조회 콘텐츠", "현재 결과 키에 해당하는 소비자 콘텐츠입니다.", "조회 결과"),
       t(
@@ -28,7 +28,7 @@ export const feedback: Record<string, GuideAuthor> = {
     ],
     related: "loading",
   },
-  DsErrorBoundary: {
+  KjunErrorBoundary: {
     parts: [
       p(
         "소비자 콘텐츠",
@@ -38,15 +38,15 @@ export const feedback: Record<string, GuideAuthor> = {
     ],
     related: "loading",
   },
-  DsFormSkeleton: {
+  KjunFormSkeleton: {
     parts: [p("폼 자리 표시자", "라벨과 필드가 배치될 공간을 묶어서 보여줍니다.")],
     related: "loading",
   },
-  DsListSkeleton: {
+  KjunListSkeleton: {
     parts: [p("목록 자리 표시자", "목록 항목의 반복 구조와 메타 정보 자리를 보여줍니다.")],
     related: "loading",
   },
-  DsProgress: {
+  KjunProgress: {
     parts: [
       t("작업 라벨", "진행률이 가리키는 작업을 설명합니다.", "완료율", true),
       p("진행 막대", "최대값에 대한 현재 진행량입니다.", '[role="progressbar"]'),
@@ -54,7 +54,7 @@ export const feedback: Record<string, GuideAuthor> = {
     ],
     related: "loading",
   },
-  DsSkeleton: {
+  KjunSkeleton: {
     parts: [
       p(
         "콘텐츠 자리 표시자",
@@ -63,7 +63,7 @@ export const feedback: Record<string, GuideAuthor> = {
     ],
     related: "loading",
   },
-  DsSpinner: {
+  KjunSpinner: {
     parts: [
       p(
         "진행 표시",
@@ -74,7 +74,7 @@ export const feedback: Record<string, GuideAuthor> = {
     ],
     related: "loading",
   },
-  DsTooltip: {
+  KjunTooltip: {
     action: "hover:도움말",
     parts: [
       t("트리거", "보조 설명이 연결된 컨트롤입니다.", "도움말"),

@@ -102,7 +102,7 @@ import { tokens } from "@kjun-ui/tokens";
 import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
-  name: 'DsSkeleton',
+  name: 'KjunSkeleton',
   props: {
     // 스켈레톤 타입
     type: {

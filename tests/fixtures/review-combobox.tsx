@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { DsCombobox } from "@kjun-ui/react";
+import type { KjunCombobox } from "@kjun-ui/react";
 
-export function ComboboxCase({ Control }: { Control: typeof DsCombobox }) {
+export function ComboboxCase({ Control }: { Control: typeof KjunCombobox }) {
   const dynamic = location.search.includes("dynamic");
   const [config, setConfig] = useState({ value: dynamic ? null as string | null : "a", label: "Alpha", blocked: false, removed: false });
   const [query, setQuery] = useState("");

@@ -6,7 +6,7 @@ export function CardExamples() {
     <h2>디자인 예제</h2>
     <p className="body-copy">내용에 맞게 헤더·미디어·본문·푸터를 구성하세요. 표면, 여백, 모서리, 테두리와 그림자는 독립적으로 선택합니다.</p>
     <div className="guide-comparison-grid detail-comparisons" data-layout="wide">
-      {cardDesignExamples.map(scenario => <GuideExample key={scenario.id} name="DsCard" scenario={scenario} />)}
+      {cardDesignExamples.map(scenario => <GuideExample key={scenario.id} name="KjunCard" scenario={scenario} />)}
     </div>
   </section>;
 }

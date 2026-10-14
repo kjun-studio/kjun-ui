@@ -7,20 +7,20 @@ import {
 View,
 useWindowDimensions
 } from "react-native";
-import { DsButton } from "./button";
-import { DsCheckbox } from "./controls";
-import { DsDataState,useQueryDisplay } from "./data-state";
+import { KjunButton } from "./button";
+import { KjunCheckbox } from "./controls";
+import { KjunDataState,useQueryDisplay } from "./data-state";
 import { content,domainColor } from "./internal";
-import { DsPagination } from "./navigation";
+import { KjunPagination } from "./navigation";
 import { useKjunStyles } from "./provider";
 import { TableCards } from "./table-cards";
 import {
-DsTableProps,
+KjunTableProps,
 TableColumn,
 useTableModel
 } from "./table-model";
-export function DsTable<Row extends object = Record<string, unknown>>(
-  props: DsTableProps<Row>
+export function KjunTable<Row extends object = Record<string, unknown>>(
+  props: KjunTableProps<Row>
 ) {
   const {
     skeletonRows = 8,
@@ -83,7 +83,7 @@ export function DsTable<Row extends object = Record<string, unknown>>(
     });
   };
   const checkbox = (row: Row, i: number) => (
-    <DsCheckbox
+    <KjunCheckbox
       value={state.selectedRow(row)}
       ariaLabel={`행 선택 ${i + 1}`}
       size="sm"
@@ -91,7 +91,7 @@ export function DsTable<Row extends object = Record<string, unknown>>(
     />
   );
   const expand = (row: Row, i: number) => (
-    <DsButton
+    <KjunButton
       variant="ghost"
       size="xs"
       prefixIcon={
@@ -107,7 +107,7 @@ export function DsTable<Row extends object = Record<string, unknown>>(
           ? "접기"
           : "상세 보기"
         : undefined}
-    </DsButton>
+    </KjunButton>
   );
   return (
     <View
@@ -117,7 +117,7 @@ export function DsTable<Row extends object = Record<string, unknown>>(
       <TableToolbar {...{ selectable, selected, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }}
         toggleAll={state.toggleAll} clearSelection={() => props.onSelectionChange?.([])}
         search={state.search} searchChange={state.searchChange} />
-      <DsDataState
+      <KjunDataState
         queryKey={props.queryKey}
         resultKey={
           query.usesQueryState
@@ -138,7 +138,7 @@ export function DsTable<Row extends object = Record<string, unknown>>(
           <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable }} sortable={props.sortable} />
         )}
         {pagination && (
-          <DsPagination
+          <KjunPagination
             currentPage={pagination.page}
             totalPages={Math.ceil(
               pagination.total / (pagination.pageSize || 20)
@@ -149,7 +149,7 @@ export function DsTable<Row extends object = Record<string, unknown>>(
             onPageChange={props.onPageChange}
           />
         )}
-      </DsDataState>
+      </KjunDataState>
     </View>
   );
 }

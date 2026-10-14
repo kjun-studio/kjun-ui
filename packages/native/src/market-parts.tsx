@@ -3,11 +3,11 @@ import { typeStyle } from "./typography";
 import { View,useWindowDimensions } from "react-native";
 import { useQueryDisplay } from "./data-state";
 import {
-DsCollectionMark
+KjunCollectionMark
 } from "./financial";
 import { KText } from "./internal";
 import { MarketBaseProps } from "./market-model";
-import { DsPagination } from "./navigation";
+import { KjunPagination } from "./navigation";
 import { useKjunStyles } from "./provider";
 import { getValue } from "./table";
 export function MarketIdentity<Row extends object>({
@@ -50,10 +50,10 @@ export function MarketIdentity<Row extends object>({
             {label}
           </KText>
           {props.interestKeys?.has(id) && (
-            <DsCollectionMark kind="interest" size="sm" active />
+            <KjunCollectionMark kind="interest" size="sm" active />
           )}
           {props.favoriteKeys?.has(id) && (
-            <DsCollectionMark kind="favorite" size="sm" active />
+            <KjunCollectionMark kind="favorite" size="sm" active />
           )}
           {props.renderNameSuffix?.(row)}
         </View>
@@ -108,7 +108,7 @@ export function MarketFooter<Row extends object>({
   return (
     <>
       {pagination && (
-        <DsPagination
+        <KjunPagination
           currentPage={pagination.page}
           totalPages={Math.ceil(pagination.total / pagination.size)}
           totalRows={pagination.total}

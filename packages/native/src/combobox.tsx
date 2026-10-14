@@ -3,8 +3,8 @@ import { useComboboxModel } from "../../../shared/package-runtime/combobox";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useId,useRef,type ReactNode } from "react";
 import { Platform, View } from "react-native";
-import { DsSpinner } from "./display";
-import { DsInput,FieldContext } from "./input";
+import { KjunSpinner } from "./display";
+import { KjunInput,FieldContext } from "./input";
 import { KText } from "./internal";
 import { FloatingPanel } from "./layers";
 import { useKjunStyles } from "./provider";
@@ -16,7 +16,7 @@ optionDisabled,
 optionLabel,
 optionKey,
 } from "./select-options";
-export interface DsComboboxProps<T extends SelectOption = SelectOption> {
+export interface KjunComboboxProps<T extends SelectOption = SelectOption> {
   value: OptionValue | null;
   options?: T[];
   placeholder?: string;
@@ -35,7 +35,7 @@ export interface DsComboboxProps<T extends SelectOption = SelectOption> {
   onSearch?: (v: string) => void;
   onClear?: () => void;
 }
-export function DsCombobox<T extends SelectOption = SelectOption>({
+export function KjunCombobox<T extends SelectOption = SelectOption>({
   value,
   options = [],
   placeholder = "검색 또는 선택",
@@ -53,7 +53,7 @@ export function DsCombobox<T extends SelectOption = SelectOption>({
   onChange,
   onSearch,
   onClear,
-}: DsComboboxProps<T>) {
+}: KjunComboboxProps<T>) {
   const model = useComboboxModel({ value, options, labelKey, valueKey, disabled, filterFn,
     onValueChange, onChange, onSearch, onClear });
   return (
@@ -152,7 +152,7 @@ export function SearchField<T extends SelectOption>({
   return (
     <>
       <View ref={ref} collapsable={false}>
-        <DsInput {...inputProps} {...(Platform.OS === 'web' ? { onClick: openFromPress } : { onPressIn: openFromPress })} aria-expanded={open && !disabled} onBlur={focusGuard.clear} onFocus={() => { if (!clearing.current && focusGuard.canOpen()) onOpenChange(true); }} />
+        <KjunInput {...inputProps} {...(Platform.OS === 'web' ? { onClick: openFromPress } : { onPressIn: openFromPress })} aria-expanded={open && !disabled} onBlur={focusGuard.clear} onFocus={() => { if (!clearing.current && focusGuard.canOpen()) onOpenChange(true); }} />
       </View>
       <FloatingPanel
         field
@@ -171,12 +171,12 @@ export function SearchField<T extends SelectOption>({
             borderBottomColor: colors.border,
           }}
         >
-          <DsInput {...inputProps} nativeID={searchId} autoFocus />
+          <KjunInput {...inputProps} nativeID={searchId} autoFocus />
         </View>
         {loading ? (
           // Centered like the Select loading row on every platform.
           <View style={{ padding: tokens.dimension.value12, alignItems: "center" }}>
-            <DsSpinner size="sm" text="검색 중..." />
+            <KjunSpinner size="sm" text="검색 중..." />
           </View>
         ) : failed ? (
           <KText

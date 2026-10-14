@@ -77,7 +77,7 @@ export function useSearchInputModel<T>({
   const clear = () => {
     clearTimeout(timer.current);
     setQuery("");
-    // DsInput already emits the empty value. Flush only a deferred plain input.
+    // KjunInput already emits the empty value. Flush only a deferred plain input.
     if (!loadOptions && debounce > 0) onValueChange?.("");
   };
   return {

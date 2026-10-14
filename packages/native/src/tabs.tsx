@@ -4,7 +4,7 @@ import { Children, createContext, isValidElement, useContext, useCallback, useLa
 import { useInitialTab } from "../../../shared/package-runtime/navigation";
 import { Animated, Platform, ScrollView, View, type LayoutRectangle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useTabKeyboard, usePanelFocus } from "./tabs-accessibility";
@@ -17,7 +17,7 @@ export interface TabItem {
   badgeVariant?: "danger" | "success" | "warning" | "info";
   disabled?: boolean;
 }
-export interface DsTabsProps {
+export interface KjunTabsProps {
   value: string;
   items?: TabItem[];
   density?: "comfortable" | "compact";
@@ -35,7 +35,7 @@ export interface DsTabsProps {
   }) => void;
 }
 const TabContext = createContext({ value: "", id: "", names: [] as string[] });
-export function DsTabs({
+export function KjunTabs({
   value,
   items = [],
   density = "comfortable",
@@ -46,15 +46,15 @@ export function DsTabs({
   onValueChange,
   onChange,
   onTabMenu,
-}: DsTabsProps) {
+}: KjunTabsProps) {
   const { colors } = useKjunStyles(),
     panes = Children.toArray(children).filter(
       isValidElement
-    ) as ReactElement<DsTabPaneProps>[];
+    ) as ReactElement<KjunTabPaneProps>[];
   const tabs = items.length
     ? items
     : panes
-        .filter((child) => child.type === DsTabPane)
+        .filter((child) => child.type === KjunTabPane)
         .map((child) => child.props);
   const id = useId(), root = useRef<View>(null);
   const menuState = useRef({ tabs, onTabMenu });
@@ -63,7 +63,7 @@ export function DsTabs({
   useLayoutEffect(() => {
     if (!onTabMenu || !tabs.some(tab => tab.name === pressedMenu.current && !tab.disabled)) pressedMenu.current = null;
   }, [tabs, onTabMenu]);
-  const panelNames = panes.filter(child => child.type === DsTabPane).map(child => child.props.name);
+  const panelNames = panes.filter(child => child.type === KjunTabPane).map(child => child.props.name);
   const geometry = tokens.extensions.tabs;
   const underline = variant === 'underline';
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
@@ -182,7 +182,7 @@ export function DsTabs({
               >
 
                 {tab.icon && (
-                  <DsIcon
+                  <KjunIcon
                     name={tab.icon}
                     size={geometry.iconSize}
                     color={active ? colors.text : colors.textSecondary}
@@ -219,10 +219,10 @@ export function DsTabs({
     </TabContext.Provider>
   );
 }
-export interface DsTabPaneProps extends TabItem {
+export interface KjunTabPaneProps extends TabItem {
   children?: ReactNode;
 }
-export function DsTabPane({ name, children }: DsTabPaneProps) {
+export function KjunTabPane({ name, children }: KjunTabPaneProps) {
   const { value, id, names } = useContext(TabContext);
   const root = useRef<View>(null);
   usePanelFocus(root);

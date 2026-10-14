@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { DsButton as Button } from '@kjun-ui/react';
+import { KjunButton as Button } from '@kjun-ui/react';
 import { defaultFigureDescription, type FigureSpec } from '../../../../shared/visual-guides/types';
 interface FigureAsset {
   src: string;
@@ -68,7 +68,7 @@ export function AnatomyFigure({
           key={asset.src + retry}
           loading="lazy"
           src={asset.src + '?v=' + retry}
-          alt={`${name.replace(/^Ds/, '')} ${figure.label}. 번호별 영역 설명은 아래 목록을 참고하세요.`}
+          alt={`${name.replace(/^Kjun/, '')} ${figure.label}. 번호별 영역 설명은 아래 목록을 참고하세요.`}
           onError={() => setFailed(true)}
           style={{
             top: `${(top / height) * 100}%`,

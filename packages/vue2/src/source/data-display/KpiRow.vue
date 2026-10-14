@@ -17,7 +17,7 @@
       @keyup.enter="!loading && !item.loading && item.clickable && $emit('item-click', item, idx)"
     >
       <div class="kjun-kpi-row__label-row">
-        <div class="kjun-kpi-row__label"><DsSkeleton v-if="(loading || item.loading) && !item.label" type="block" width="var(--_kjun-extension-kpi-row-label-skeleton-width)" height="var(--_kjun-extension-kpi-row-label-skeleton-height)" /><template v-else>{{ item.label }}</template></div>
+        <div class="kjun-kpi-row__label"><KjunSkeleton v-if="(loading || item.loading) && !item.label" type="block" width="var(--_kjun-extension-kpi-row-label-skeleton-width)" height="var(--_kjun-extension-kpi-row-label-skeleton-height)" /><template v-else>{{ item.label }}</template></div>
         <span
           v-if="!loading && !item.loading && item.badge && item.badgePlacement !== 'value'"
           :class="badgeClass(item.badge.variant)"
@@ -33,19 +33,19 @@
           :title="item.valueKind === 'text' && typeof item.value === 'string' ? item.value : null"
           class="kjun-kpi-row__value"
         >
-          <DsSkeleton v-if="(loading || item.loading) && !item.valueSegments" type="block" height="1lh" width="5ch" />
+          <KjunSkeleton v-if="(loading || item.loading) && !item.valueSegments" type="block" height="1lh" width="5ch" />
           <template v-else-if="item.valueSegments">
             <span
               v-for="(seg, i) in item.valueSegments"
               :key="i"
               :class="[seg.class, { 'kjun-kpi-row__segment--labeled': seg.label, 'kjun-kpi-row__segment--separator': seg.separator }]"
-            ><span v-if="seg.label" class="kjun-kpi-row__segment-label">{{ seg.label }}</span><DsSkeleton v-if="(loading || item.loading) && !seg.separator" type="block" height="1lh" width="3ch" /><template v-else>{{ seg.text }}</template></span>
+            ><span v-if="seg.label" class="kjun-kpi-row__segment-label">{{ seg.label }}</span><KjunSkeleton v-if="(loading || item.loading) && !seg.separator" type="block" height="1lh" width="3ch" /><template v-else>{{ seg.text }}</template></span>
           </template>
           <!-- animated에서도 prefix/suffix는 affix 스타일을 유지하고, 커스텀 formatter가 없으면
                비-animated 분기(formatValue)와 동일한 숫자 포맷을 쓴다 (표시 문자열 회귀 방지) -->
           <template v-else-if="item.animated && typeof item.value === 'number'">
             <span v-if="item.prefix" class="kjun-kpi-row__affix">{{ item.prefix }}</span
-            ><DsAnimatedNumber
+            ><KjunAnimatedNumber
               from-previous
               :value="item.value"
               :formatter="item.formatter || ((v) => formatNumericValue(item, v))"
@@ -66,14 +66,14 @@
           {{ item.badge.text }}
         </span>
       </div>
-      <div v-if="item.desc" :class="descColorClass(item)" class="kjun-kpi-row__desc"><DsSkeleton v-if="loading || item.loading" type="block" height="1lh" width="7ch" /><template v-else>{{ item.desc }}</template></div>
+      <div v-if="item.desc" :class="descColorClass(item)" class="kjun-kpi-row__desc"><KjunSkeleton v-if="loading || item.loading" type="block" height="1lh" width="7ch" /><template v-else>{{ item.desc }}</template></div>
     </div>
   </div>
 </template>
 
 <script>
-import DsAnimatedNumber from "./AnimatedNumber.vue";
-import DsSkeleton from "./Skeleton.vue";
+import KjunAnimatedNumber from "./AnimatedNumber.vue";
+import KjunSkeleton from "./Skeleton.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { domainColorMixin } from "../../domain-colors.js";
 import { resolveSemanticColor } from './_kpiFormat'
@@ -83,8 +83,8 @@ const MOBILE_PRIMARY_ITEM_COUNT = 2
 export default {
   mixins: [...componentMixins, domainColorMixin(vm => !vm.loading && vm.items.some(item => !item.loading && (
     item.semantic === 'price' && Number(item.value) !== 0 || item.badge?.variant?.startsWith('price-'))))],
-  components: { DsAnimatedNumber, DsSkeleton },
-  name: 'KpiRow',
+  components: { KjunAnimatedNumber, KjunSkeleton },
+  name: 'KjunKpiRow',
   props: {
     loading: { type: Boolean, default: false },
     items: { type: Array, required: true },
@@ -149,7 +149,7 @@ export default {
       return resolveSemanticColor(item.value, item.semantic)
     },
     badgeClass(variant) {
-      // success/danger는 상태 시맨틱(정상=초록/이상=빨강, DsBadge와 동일 계약).
+      // success/danger는 상태 시맨틱(정상=초록/이상=빨강, KjunBadge와 동일 계약).
       // 시세 방향 배지(변동률·상승/하락 카운트)는 price-up/price-down을 사용한다 — 혼용 금지
       const map = {
         warning: 'kj-bg-warning-bg kj-text-warning',

@@ -12,7 +12,7 @@ export function styleMotionPreview(document: Document, scenario: string) {
     html[data-motion-example="motion-modal"] .catalog-stack,
     html[data-motion-example="motion-drawer"] .catalog-stack,
     html[data-motion-example="motion-number"] .catalog-stack { align-items: center; }
-    [data-testid="DsModal"] > div, [data-testid="DsDrawer"] > div,
+    [data-testid="KjunModal"] > div, [data-testid="KjunDrawer"] > div,
     [data-testid="GuideMotionNumber"] > div { align-items: center; }
     [data-testid="GuideMotionToast"] > div { justify-content: center; }
     /* Tabs are narrower than the example column; size to them so the list sits on the stage centre. */

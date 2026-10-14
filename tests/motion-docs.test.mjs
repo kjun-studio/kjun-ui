@@ -23,7 +23,7 @@ test('motion scenarios are registered public-package examples with valid detail 
     assert.deepEqual(exampleDefinition(name).platforms, ['vue2', 'react', 'native']);
     assert.ok(documents.some(page => page.path === destination));
     assert.equal(scenario.action, undefined, 'motion starts only on user interaction');
-    if (['DsModal', 'DsDrawer', 'GuideMotionToast'].includes(name)) assert.equal(scenario.viewportHeight, 600);
+    if (['KjunModal', 'KjunDrawer', 'GuideMotionToast'].includes(name)) assert.equal(scenario.viewportHeight, 600);
   }
   assert.equal(motionScenarios.find(item => item.name === 'GuideMotionNumber').scenario.values.number, 100);
 });

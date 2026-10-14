@@ -1,5 +1,5 @@
 {
-  "DsListRow": {
+  "KjunListRow": {
     "vue2": [
       "title",
       "description",
@@ -27,7 +27,7 @@
       "onPress"
     ]
   },
-  "DsListSection": {
+  "KjunListSection": {
     "vue2": [
       "title",
       "description",
@@ -48,7 +48,7 @@
       "ariaLabel"
     ]
   },
-  "DsTopNavigation": {
+  "KjunTopNavigation": {
     "vue2": [
       "title",
       "description",
@@ -69,7 +69,7 @@
       "safeAreaTop"
     ]
   },
-  "DsBottomNavigation": {
+  "KjunBottomNavigation": {
     "vue2": [
       "items",
       "value",
@@ -97,7 +97,7 @@
       "onNavigate"
     ]
   },
-  "DsBottomActionBar": {
+  "KjunBottomActionBar": {
     "vue2": [
       "description",
       "safeAreaBottom",
@@ -119,7 +119,7 @@
       "hideOnKeyboard"
     ]
   },
-  "DsImage": {
+  "KjunImage": {
     "vue2": [
       "src",
       "alt",
@@ -151,7 +151,7 @@
       "onError"
     ]
   },
-  "DsAvatar": {
+  "KjunAvatar": {
     "vue2": [
       "src",
       "name",
@@ -184,7 +184,7 @@
       "onError"
     ]
   },
-  "DsChip": {
+  "KjunChip": {
     "vue2": [
       "label",
       "icon",
@@ -212,7 +212,7 @@
       "onRemove"
     ]
   },
-  "DsSlider": {
+  "KjunSlider": {
     "vue2": [
       "min",
       "max",
@@ -245,7 +245,7 @@
       "onChangeCommit"
     ]
   },
-  "DsRangeSlider": {
+  "KjunRangeSlider": {
     "vue2": [
       "min",
       "max",
@@ -281,7 +281,7 @@
       "label"
     ]
   },
-  "DsTimePicker": {
+  "KjunTimePicker": {
     "vue2": [
       "value",
       "precision",
@@ -326,7 +326,7 @@
       "onChangeCommit"
     ]
   },
-  "DsQuantityStepper": {
+  "KjunQuantityStepper": {
     "vue2": [
       "block",
       "value",

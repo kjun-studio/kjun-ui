@@ -8,9 +8,9 @@ import { useContext, useEffect, useRef,type ReactNode } from "react";
 import { CompoundControlContext } from "./compound-control";
 import { useSelectState } from "../../../shared/package-runtime/select";
 import { Platform, View } from "react-native";
-import { DsButton,DsIcon } from "./button";
-import { DsSpinner } from "./display";
-import { DsInput,FieldContext,useKjunField } from "./input";
+import { KjunButton,KjunIcon } from "./button";
+import { KjunSpinner } from "./display";
+import { KjunInput,FieldContext,useKjunField } from "./input";
 import { KText } from "./internal";
 import { FloatingPanel } from "./layers";
 import { useKjunStyles } from "./provider";
@@ -21,7 +21,7 @@ SelectOption,
 optionDisabled,
 optionLabel,
 } from "./select-options";
-export interface DsSelectProps<T extends SelectOption = SelectOption> {
+export interface KjunSelectProps<T extends SelectOption = SelectOption> {
   value: OptionValue | OptionValue[] | null;
   options?: T[];
   placeholder?: string;
@@ -47,7 +47,7 @@ export interface DsSelectProps<T extends SelectOption = SelectOption> {
   onSearch?: (v: string) => void;
   onClear?: () => void;
 }
-export function DsSelect<T extends SelectOption = SelectOption>({
+export function KjunSelect<T extends SelectOption = SelectOption>({
   value,
   options = [],
   placeholder = "선택",
@@ -72,7 +72,7 @@ export function DsSelect<T extends SelectOption = SelectOption>({
   onOpenChange,
   onSearch,
   onClear,
-}: DsSelectProps<T>) {
+}: KjunSelectProps<T>) {
   const { open, query, limit, changeOpen, search, showMore } = useSelectState(controlled, disabled, optionPageSize, onOpenChange);
   const { colors } = useKjunStyles(),
     field = useKjunField(),
@@ -141,7 +141,7 @@ export function DsSelect<T extends SelectOption = SelectOption>({
           </View>
           {/* Like Vue and React, the indicator turns over while the list is open. */}
           <View style={{ transform: [{ rotate: expanded ? "180deg" : "0deg" }] }}>
-            <DsIcon
+            <KjunIcon
               name="chevron-down"
               size={compound ? tokens.extensions.timePicker.iconSize : spec.iconSize}
               color={surface.icon}
@@ -187,7 +187,7 @@ export function DsSelect<T extends SelectOption = SelectOption>({
               borderBottomColor: colors.border,
             }}
           >
-            <DsInput
+            <KjunInput
               autoFocus
               value={query}
               placeholder={searchPlaceholder}
@@ -203,7 +203,7 @@ export function DsSelect<T extends SelectOption = SelectOption>({
         )}
         {loading ? (
           <View style={{ padding: tokens.dimension.value12 }}>
-            <DsSpinner size="sm" text="검색 중..." />
+            <KjunSpinner size="sm" text="검색 중..." />
           </View>
         ) : (
           visible.map(({ option: o, key }, index) => (
@@ -235,14 +235,14 @@ export function DsSelect<T extends SelectOption = SelectOption>({
           </KText>
         )}
         {!loading && visible.length < matching.length && (
-          <DsButton
+          <KjunButton
             size="sm"
             variant="ghost"
             block
             onPress={showMore}
           >
             더 보기
-          </DsButton>
+          </KjunButton>
         )}
         </FieldContext.Provider>
       </FloatingPanel>

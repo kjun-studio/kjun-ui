@@ -16,12 +16,12 @@ export function RadioDesignCases({ K }: { K: any }) {
   const change = (value: string) => { setConfig(old => ({ ...old, value })); setEvents(old => [...old, 'value:' + value]); };
   const notify = (value: string) => setEvents(old => [...old, 'change:' + value]);
   return <div style={{ padding: 24, width: config.width, display: 'grid', gap: 24 }}>
-    <div data-testid="group"><K.DsRadioGroup value={config.value} direction={config.direction} ariaLabel="과일"
+    <div data-testid="group"><K.KjunRadioGroup value={config.value} direction={config.direction} ariaLabel="과일"
       options={radioOptions.map(option => ({ ...option, disabled: config.disabled || option.disabled }))}
       onValueChange={change} onChange={notify} /></div>
-    <div data-testid="standalone"><K.DsRadio value={config.standalone} val={true} label="개별 항목" disabled={config.disabled}
+    <div data-testid="standalone"><K.KjunRadio value={config.standalone} val={true} label="개별 항목" disabled={config.disabled}
       onValueChange={(standalone: boolean) => setConfig(old => ({ ...old, standalone }))} /></div>
-    <div data-testid="checkbox"><K.DsCheckbox value={false} label="체크박스" /></div>
+    <div data-testid="checkbox"><K.KjunCheckbox value={false} label="체크박스" /></div>
     <output data-testid="events">{events.join('|')}</output>
   </div>;
 }

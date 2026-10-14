@@ -74,7 +74,7 @@ for (const platform of ["vue2", "react", "native"]) {
       return target.flags & ts.SymbolFlags.Value;
     })
     .map((s) => s.name)
-    .filter((name) => /^(Ds|Kjun)/.test(name));
+    .filter((name) => /^Kjun/.test(name));
   for (const name of runtimeNames)
     if (
       !names.includes(name) &&

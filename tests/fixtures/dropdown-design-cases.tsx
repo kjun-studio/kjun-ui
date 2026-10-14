@@ -25,19 +25,19 @@ export function DropdownDesignCases({ K, native = false }: { K: any; native?: bo
   }, [config.dark]);
   const action = (value: string) => ({ [native ? 'onPress' : 'onClick']: () => { setSelected(value); setEvents(n => n + 1); } });
   const items = () => <>
-    <K.DsDropdownItem selected={selected === 'first'} icon="check" {...action('first')}>{menuLabel(config.long)}</K.DsDropdownItem>
-    <K.DsDropdownItem selected={selected === 'second'} icon={config.mixed ? undefined : 'copy'} {...action('second')}>둘째 항목</K.DsDropdownItem>
-    <K.DsDropdownDivider />
-    <K.DsDropdownItem disabled icon="lock" {...action('disabled')}>비활성 항목</K.DsDropdownItem>
-    <K.DsDropdownItem variant="danger" icon="trash" {...action('delete')}>삭제</K.DsDropdownItem>
+    <K.KjunDropdownItem selected={selected === 'first'} icon="check" {...action('first')}>{menuLabel(config.long)}</K.KjunDropdownItem>
+    <K.KjunDropdownItem selected={selected === 'second'} icon={config.mixed ? undefined : 'copy'} {...action('second')}>둘째 항목</K.KjunDropdownItem>
+    <K.KjunDropdownDivider />
+    <K.KjunDropdownItem disabled icon="lock" {...action('disabled')}>비활성 항목</K.KjunDropdownItem>
+    <K.KjunDropdownItem variant="danger" icon="trash" {...action('delete')}>삭제</K.KjunDropdownItem>
   </>;
   return <K.KjunProvider {...(native ? { colors: config.dark ? darkDropdownColors : dropdownColors, fontFamily: 'sans-serif' } : {})}>
     <div style={{ padding: 24, display: 'flex', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
-      <div data-testid="plain"><K.DsDropdown disabled={config.disabled}
-        trigger={<K.DsButton variant="secondary" suffixIcon="chevron-down">기본 메뉴</K.DsButton>}>{items()}</K.DsDropdown></div>
-      <div data-testid="menu-button"><K.DsMenuButton label="작업 메뉴" disabled={config.disabled} loading={config.loading}>{items()}</K.DsMenuButton></div>
-      <div data-testid="button"><K.DsButton variant="secondary">일반 버튼</K.DsButton></div>
-      <K.DsButtonGroup value="first" options={[{ value: 'first', label: '첫 항목' }, { value: 'second', label: '둘째 항목' }]} />
+      <div data-testid="plain"><K.KjunDropdown disabled={config.disabled}
+        trigger={<K.KjunButton variant="secondary" suffixIcon="chevron-down">기본 메뉴</K.KjunButton>}>{items()}</K.KjunDropdown></div>
+      <div data-testid="menu-button"><K.KjunMenuButton label="작업 메뉴" disabled={config.disabled} loading={config.loading}>{items()}</K.KjunMenuButton></div>
+      <div data-testid="button"><K.KjunButton variant="secondary">일반 버튼</K.KjunButton></div>
+      <K.KjunButtonGroup value="first" options={[{ value: 'first', label: '첫 항목' }, { value: 'second', label: '둘째 항목' }]} />
       <output data-testid="events">{events}</output>
     </div>
   </K.KjunProvider>;

@@ -12,18 +12,18 @@ export function MenuButtonCases({ K, native = false }: { K: any; native?: boolea
   const record = (event: string) => setEvents(old => [...old, event]);
   useLayoutEffect(() => { Object.assign(window, { configureMenu: (next: object) => setConfig((old: object) => ({ ...old, ...next })) }); }, []);
   return <div style={fixtureStyle}>
-    <div data-testid="menu"><K.DsMenuButton {...config} onOpen={() => record('open')} onClose={() => record('close')}>
-      <K.DsDropdownItem icon="edit" {...{ [native ? 'onPress' : 'onClick']: () => record('action') }}>수정하기</K.DsDropdownItem>
-      <K.DsDropdownItem disabled>비활성 항목</K.DsDropdownItem>
-      <K.DsDropdownItem icon="copy">복제하기</K.DsDropdownItem>
-    </K.DsMenuButton></div>
-    <div data-testid="reference"><K.DsButton size={config.size} variant={config.variant || 'secondary'}
+    <div data-testid="menu"><K.KjunMenuButton {...config} onOpen={() => record('open')} onClose={() => record('close')}>
+      <K.KjunDropdownItem icon="edit" {...{ [native ? 'onPress' : 'onClick']: () => record('action') }}>수정하기</K.KjunDropdownItem>
+      <K.KjunDropdownItem disabled>비활성 항목</K.KjunDropdownItem>
+      <K.KjunDropdownItem icon="copy">복제하기</K.KjunDropdownItem>
+    </K.KjunMenuButton></div>
+    <div data-testid="reference"><K.KjunButton size={config.size} variant={config.variant || 'secondary'}
       loading={config.loading} disabled={config.disabled}
       prefixIcon={config.compact || !config.label ? 'dots-vertical' : undefined}
       suffixIcon={!config.compact && config.label ? 'chevron-down' : undefined}>
       {config.compact ? undefined : config.label}
-    </K.DsButton></div>
-    <div data-testid="group"><K.DsButtonGroup size={config.size} value="week" options={menuChoices} ariaLabel="조회 기간" /></div>
+    </K.KjunButton></div>
+    <div data-testid="group"><K.KjunButtonGroup size={config.size} value="week" options={menuChoices} ariaLabel="조회 기간" /></div>
     <button data-testid="outside">바깥 버튼</button>
     <output data-testid="events">{events.join(',')}</output>
     <output data-testid="config" hidden>{JSON.stringify(config)}</output>

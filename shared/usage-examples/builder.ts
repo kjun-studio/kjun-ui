@@ -90,7 +90,7 @@ export class UsageBuilder {
     return expr(`{ fontFamily, color: colors.textSecondary, fontSize: ${fontSize}, lineHeight: ${lineHeight} }`);
   }
   button(label: string, handler?: Expression, props: Record<string, unknown> = {}) {
-    return this.node('DsButton', { ...props, ...(handler ? { [this.native ? 'onPress' : 'onClick']: handler } : {}) }, this.text(label));
+    return this.node('KjunButton', { ...props, ...(handler ? { [this.native ? 'onPress' : 'onClick']: handler } : {}) }, this.text(label));
   }
   text(value: string | Expression) {
     const content = value instanceof Expression ? (this.vue ? `{{ ${value.code} }}` : `{${value.code}}`) : this.vue ? attribute(value) : `{${literal(value)}}`;
@@ -99,24 +99,24 @@ export class UsageBuilder {
   }
   group(children: string[]) { return this.node(this.native ? 'View' : 'div', {}, children.join('\n')); }
   node(name: string, props: Record<string, unknown> = {}, children = '', slots: Record<string, string> = {}) {
-    if (name.startsWith('Ds')) this.imports.add(name);
+    if (name.startsWith('Kjun')) this.imports.add(name);
     if (['View', 'Text', 'ScrollView'].includes(name)) this.nativeImports.add(name);
     const attributes: string[] = [];
     for (let [key, value] of Object.entries(props)) {
       if (value === undefined) continue;
       if (this.vue) {
         if (key === 'renderExpand') continue;
-        if (['DsModal', 'DsDrawer', 'DsPopover'].includes(name) && key === 'open') key = 'value';
-        if (name === 'DsInput' && key === 'readOnly') key = 'readonly';
-        if (name === 'DsIcon' && key === 'size') value = String(value);
+        if (['KjunModal', 'KjunDrawer', 'KjunPopover'].includes(name) && key === 'open') key = 'value';
+        if (name === 'KjunInput' && key === 'readOnly') key = 'readonly';
+        if (name === 'KjunIcon' && key === 'size') value = String(value);
         if (value instanceof Handler) {
-          const events: Record<string, string> = { onValueChange: 'input', onOpenChange: name === 'DsSelect' ? 'update:open' : 'input', onChangeCommit: 'change', onSelectionChange: 'selection-change', onExpandedRowsChange: 'update:expandedRows' };
-          if (name === 'DsPagination') Object.assign(events, { onPageChange: 'update:currentPage', onPageSizeChange: 'update:page-size' });
+          const events: Record<string, string> = { onValueChange: 'input', onOpenChange: name === 'KjunSelect' ? 'update:open' : 'input', onChangeCommit: 'change', onSelectionChange: 'selection-change', onExpandedRowsChange: 'update:expandedRows' };
+          if (name === 'KjunPagination') Object.assign(events, { onPageChange: 'update:currentPage', onPageSizeChange: 'update:page-size' });
           attributes.push(`@${events[key] || kebab(key.slice(2)).slice(1)}="${attribute(vueCode(value.code))}"`);
         } else if (typeof value === 'string' && !/[\n\r]/.test(value)) attributes.push(`${kebab(key)}="${attribute(value)}"`);
         else attributes.push(`:${kebab(key)}="${attribute(value instanceof Expression ? vueCode(value.code) : vueLiteral(value))}"`);
       } else {
-        if (this.native && ['DsInput', 'DsTextarea'].includes(name) && key === 'onValueChange') key = 'onChangeText';
+        if (this.native && ['KjunInput', 'KjunTextarea'].includes(name) && key === 'onValueChange') key = 'onChangeText';
         attributes.push(`${key}={${value instanceof Expression ? value.code : literal(value)}}`);
       }
     }

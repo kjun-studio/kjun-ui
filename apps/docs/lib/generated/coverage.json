@@ -46,7 +46,7 @@
   ],
   "components": [
     {
-      "name": "DsAccordion",
+      "name": "KjunAccordion",
       "title": "Accordion",
       "docs": "/components/accordion",
       "category": "layout",
@@ -77,7 +77,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsAccordionItem",
+      "name": "KjunAccordionItem",
       "title": "AccordionItem",
       "docs": "/components/accordion-item",
       "category": "layout",
@@ -108,7 +108,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsAlert",
+      "name": "KjunAlert",
       "title": "Alert",
       "docs": "/components/alert",
       "category": "feedback",
@@ -139,7 +139,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsAnimatedNumber",
+      "name": "KjunAnimatedNumber",
       "title": "AnimatedNumber",
       "docs": "/components/animated-number",
       "category": "data-display",
@@ -170,7 +170,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsAvatar",
+      "name": "KjunAvatar",
       "title": "Avatar",
       "docs": "/components/avatar",
       "category": "data-display",
@@ -201,7 +201,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsBadge",
+      "name": "KjunBadge",
       "title": "Badge",
       "docs": "/components/badge",
       "category": "data-display",
@@ -232,7 +232,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsBottomActionBar",
+      "name": "KjunBottomActionBar",
       "title": "BottomActionBar",
       "docs": "/components/bottom-action-bar",
       "category": "layout",
@@ -263,7 +263,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsBottomNavigation",
+      "name": "KjunBottomNavigation",
       "title": "BottomNavigation",
       "docs": "/components/bottom-navigation",
       "category": "navigation",
@@ -294,7 +294,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsBreadcrumb",
+      "name": "KjunBreadcrumb",
       "title": "Breadcrumb",
       "docs": "/components/breadcrumb",
       "category": "navigation",
@@ -325,7 +325,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsButton",
+      "name": "KjunButton",
       "title": "Button",
       "docs": "/components/button",
       "category": "actions",
@@ -356,7 +356,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsButtonGroup",
+      "name": "KjunButtonGroup",
       "title": "ButtonGroup",
       "docs": "/components/button-group",
       "category": "actions",
@@ -387,7 +387,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsCard",
+      "name": "KjunCard",
       "title": "Card",
       "docs": "/components/card",
       "category": "layout",
@@ -418,7 +418,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsChartSkeleton",
+      "name": "KjunChartSkeleton",
       "title": "ChartSkeleton",
       "docs": "/components/chart-skeleton",
       "category": "feedback",
@@ -449,7 +449,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsCheckbox",
+      "name": "KjunCheckbox",
       "title": "Checkbox",
       "docs": "/components/checkbox",
       "category": "inputs",
@@ -480,7 +480,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsChip",
+      "name": "KjunChip",
       "title": "Chip",
       "docs": "/components/chip",
       "category": "actions",
@@ -511,7 +511,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsCollectionMark",
+      "name": "KjunCollectionMark",
       "title": "CollectionMark",
       "docs": "/components/collection-mark",
       "category": "finance",
@@ -542,7 +542,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsCombobox",
+      "name": "KjunCombobox",
       "title": "Combobox",
       "docs": "/components/combobox",
       "category": "inputs",
@@ -573,7 +573,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsCopyButton",
+      "name": "KjunCopyButton",
       "title": "CopyButton",
       "docs": "/components/copy-button",
       "category": "actions",
@@ -604,7 +604,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsDataState",
+      "name": "KjunDataState",
       "title": "DataState",
       "docs": "/components/data-state",
       "category": "feedback",
@@ -635,7 +635,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsDatePicker",
+      "name": "KjunDatePicker",
       "title": "DatePicker",
       "docs": "/components/date-picker",
       "category": "inputs",
@@ -666,7 +666,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsDeviation",
+      "name": "KjunDeviation",
       "title": "Deviation",
       "docs": "/components/deviation",
       "category": "finance",
@@ -697,7 +697,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsDrawer",
+      "name": "KjunDrawer",
       "title": "Drawer",
       "docs": "/components/drawer",
       "category": "layout",
@@ -728,7 +728,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsDropdown",
+      "name": "KjunDropdown",
       "title": "Dropdown",
       "docs": "/components/dropdown",
       "category": "actions",
@@ -759,7 +759,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsDropdownDivider",
+      "name": "KjunDropdownDivider",
       "title": "DropdownDivider",
       "docs": "/components/dropdown-divider",
       "category": "actions",
@@ -790,7 +790,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsDropdownItem",
+      "name": "KjunDropdownItem",
       "title": "DropdownItem",
       "docs": "/components/dropdown-item",
       "category": "actions",
@@ -821,7 +821,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsEmpty",
+      "name": "KjunEmpty",
       "title": "Empty",
       "docs": "/components/empty",
       "category": "data-display",
@@ -852,7 +852,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsErrorBoundary",
+      "name": "KjunErrorBoundary",
       "title": "ErrorBoundary",
       "docs": "/components/error-boundary",
       "category": "feedback",
@@ -883,7 +883,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsExecutionStatusBadge",
+      "name": "KjunExecutionStatusBadge",
       "title": "ExecutionStatusBadge",
       "docs": "/components/execution-status-badge",
       "category": "finance",
@@ -914,7 +914,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsExternalLink",
+      "name": "KjunExternalLink",
       "title": "ExternalLink",
       "docs": "/components/external-link",
       "category": "navigation",
@@ -945,7 +945,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsFilterGroup",
+      "name": "KjunFilterGroup",
       "title": "FilterGroup",
       "docs": "/components/filter-group",
       "category": "inputs",
@@ -976,7 +976,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsFormActions",
+      "name": "KjunFormActions",
       "title": "FormActions",
       "docs": "/components/form-actions",
       "category": "actions",
@@ -1007,7 +1007,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsFormGroup",
+      "name": "KjunFormGroup",
       "title": "FormGroup",
       "docs": "/components/form-group",
       "category": "inputs",
@@ -1038,7 +1038,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsFormSkeleton",
+      "name": "KjunFormSkeleton",
       "title": "FormSkeleton",
       "docs": "/components/form-skeleton",
       "category": "feedback",
@@ -1069,7 +1069,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsFreshness",
+      "name": "KjunFreshness",
       "title": "Freshness",
       "docs": "/components/freshness",
       "category": "finance",
@@ -1100,7 +1100,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsHeatmapCell",
+      "name": "KjunHeatmapCell",
       "title": "HeatmapCell",
       "docs": "/components/heatmap-cell",
       "category": "data-display",
@@ -1131,7 +1131,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsIcon",
+      "name": "KjunIcon",
       "title": "Icon",
       "docs": "/components/icon",
       "category": "data-display",
@@ -1162,7 +1162,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsIconToggle",
+      "name": "KjunIconToggle",
       "title": "IconToggle",
       "docs": "/components/icon-toggle",
       "category": "actions",
@@ -1193,7 +1193,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsImage",
+      "name": "KjunImage",
       "title": "Image",
       "docs": "/components/image",
       "category": "data-display",
@@ -1224,7 +1224,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsInput",
+      "name": "KjunInput",
       "title": "Input",
       "docs": "/components/input",
       "category": "inputs",
@@ -1255,7 +1255,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsKpiHero",
+      "name": "KjunKpiHero",
       "title": "KpiHero",
       "docs": "/components/kpi-hero",
       "category": "data-display",
@@ -1286,7 +1286,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsKpiRow",
+      "name": "KjunKpiRow",
       "title": "KpiRow",
       "docs": "/components/kpi-row",
       "category": "data-display",
@@ -1317,7 +1317,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsListRow",
+      "name": "KjunListRow",
       "title": "ListRow",
       "docs": "/components/list-row",
       "category": "data-display",
@@ -1348,7 +1348,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsListSection",
+      "name": "KjunListSection",
       "title": "ListSection",
       "docs": "/components/list-section",
       "category": "data-display",
@@ -1379,7 +1379,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsListSkeleton",
+      "name": "KjunListSkeleton",
       "title": "ListSkeleton",
       "docs": "/components/list-skeleton",
       "category": "feedback",
@@ -1410,7 +1410,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsMarketCards",
+      "name": "KjunMarketCards",
       "title": "MarketCards",
       "docs": "/components/market-cards",
       "category": "finance",
@@ -1441,7 +1441,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsMarketListPanel",
+      "name": "KjunMarketListPanel",
       "title": "MarketListPanel",
       "docs": "/components/market-list-panel",
       "category": "finance",
@@ -1472,7 +1472,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsMarketSimpleList",
+      "name": "KjunMarketSimpleList",
       "title": "MarketSimpleList",
       "docs": "/components/market-simple-list",
       "category": "finance",
@@ -1503,7 +1503,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsMarketTable",
+      "name": "KjunMarketTable",
       "title": "MarketTable",
       "docs": "/components/market-table",
       "category": "finance",
@@ -1534,7 +1534,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsMarketTableSkeleton",
+      "name": "KjunMarketTableSkeleton",
       "title": "MarketTableSkeleton",
       "docs": "/components/market-table-skeleton",
       "category": "finance",
@@ -1565,7 +1565,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsMenuButton",
+      "name": "KjunMenuButton",
       "title": "MenuButton",
       "docs": "/components/menu-button",
       "category": "actions",
@@ -1596,7 +1596,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsModal",
+      "name": "KjunModal",
       "title": "Modal",
       "docs": "/components/modal",
       "category": "layout",
@@ -1627,7 +1627,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsPagination",
+      "name": "KjunPagination",
       "title": "Pagination",
       "docs": "/components/pagination",
       "category": "navigation",
@@ -1658,7 +1658,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsPopover",
+      "name": "KjunPopover",
       "title": "Popover",
       "docs": "/components/popover",
       "category": "layout",
@@ -1689,7 +1689,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsPriceCell",
+      "name": "KjunPriceCell",
       "title": "PriceCell",
       "docs": "/components/price-cell",
       "category": "finance",
@@ -1720,7 +1720,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsProgress",
+      "name": "KjunProgress",
       "title": "Progress",
       "docs": "/components/progress",
       "category": "feedback",
@@ -1751,7 +1751,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsProgressCell",
+      "name": "KjunProgressCell",
       "title": "ProgressCell",
       "docs": "/components/progress-cell",
       "category": "data-display",
@@ -1782,7 +1782,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsQuantityStepper",
+      "name": "KjunQuantityStepper",
       "title": "QuantityStepper",
       "docs": "/components/quantity-stepper",
       "category": "inputs",
@@ -1813,7 +1813,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsRadio",
+      "name": "KjunRadio",
       "title": "Radio",
       "docs": "/components/radio",
       "category": "inputs",
@@ -1844,7 +1844,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsRadioGroup",
+      "name": "KjunRadioGroup",
       "title": "RadioGroup",
       "docs": "/components/radio-group",
       "category": "inputs",
@@ -1875,7 +1875,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsRangeSlider",
+      "name": "KjunRangeSlider",
       "title": "RangeSlider",
       "docs": "/components/range-slider",
       "category": "inputs",
@@ -1906,7 +1906,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsRefreshButton",
+      "name": "KjunRefreshButton",
       "title": "RefreshButton",
       "docs": "/components/refresh-button",
       "category": "actions",
@@ -1937,7 +1937,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsScrollFade",
+      "name": "KjunScrollFade",
       "title": "ScrollFade",
       "docs": "/components/scroll-fade",
       "category": "layout",
@@ -1968,7 +1968,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsSearchInput",
+      "name": "KjunSearchInput",
       "title": "SearchInput",
       "docs": "/components/search-input",
       "category": "inputs",
@@ -1999,7 +1999,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsSelect",
+      "name": "KjunSelect",
       "title": "Select",
       "docs": "/components/select",
       "category": "inputs",
@@ -2030,7 +2030,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsSignedValue",
+      "name": "KjunSignedValue",
       "title": "SignedValue",
       "docs": "/components/signed-value",
       "category": "finance",
@@ -2061,7 +2061,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsSkeleton",
+      "name": "KjunSkeleton",
       "title": "Skeleton",
       "docs": "/components/skeleton",
       "category": "feedback",
@@ -2092,7 +2092,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsSlider",
+      "name": "KjunSlider",
       "title": "Slider",
       "docs": "/components/slider",
       "category": "inputs",
@@ -2123,7 +2123,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsSparkline",
+      "name": "KjunSparkline",
       "title": "Sparkline",
       "docs": "/components/sparkline",
       "category": "data-display",
@@ -2154,7 +2154,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsSpinner",
+      "name": "KjunSpinner",
       "title": "Spinner",
       "docs": "/components/spinner",
       "category": "feedback",
@@ -2185,7 +2185,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsSwitch",
+      "name": "KjunSwitch",
       "title": "Switch",
       "docs": "/components/switch",
       "category": "inputs",
@@ -2216,7 +2216,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsTable",
+      "name": "KjunTable",
       "title": "Table",
       "docs": "/components/table",
       "category": "data-display",
@@ -2247,7 +2247,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsTabPane",
+      "name": "KjunTabPane",
       "title": "TabPane",
       "docs": "/components/tab-pane",
       "category": "navigation",
@@ -2278,7 +2278,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsTabs",
+      "name": "KjunTabs",
       "title": "Tabs",
       "docs": "/components/tabs",
       "category": "navigation",
@@ -2309,7 +2309,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsTextarea",
+      "name": "KjunTextarea",
       "title": "Textarea",
       "docs": "/components/textarea",
       "category": "inputs",
@@ -2340,7 +2340,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsTimePicker",
+      "name": "KjunTimePicker",
       "title": "TimePicker",
       "docs": "/components/time-picker",
       "category": "inputs",
@@ -2371,7 +2371,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsTooltip",
+      "name": "KjunTooltip",
       "title": "Tooltip",
       "docs": "/components/tooltip",
       "category": "feedback",
@@ -2402,7 +2402,7 @@
       "recordId": "verification-v0.3.0"
     },
     {
-      "name": "DsTopNavigation",
+      "name": "KjunTopNavigation",
       "title": "TopNavigation",
       "docs": "/components/top-navigation",
       "category": "navigation",
@@ -2457,7 +2457,7 @@
       ]
     },
     {
-      "name": "DsFormLayout",
+      "name": "KjunFormLayout",
       "description": "FormGroup을 복수로 배치할 때 자식의 기본 margin 대신 gap을 적용하는 Native 레이아웃입니다.",
       "docs": "/components/form-group",
       "linkLabel": "FormGroup 사용 안내",

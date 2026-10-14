@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { KjunProvider, KjunFeedbackProvider, useKjunFeedback, DsCombobox, DsSearchInput, DsModal } from "@kjun-ui/react";
+import { KjunProvider, KjunFeedbackProvider, useKjunFeedback, KjunCombobox, KjunSearchInput, KjunModal } from "@kjun-ui/react";
 import { setRootValues } from "./style-values";
 
 setRootValues();
@@ -12,9 +12,9 @@ function AutocompleteCase() {
   const [enters, setEnters] = useState(0);
   return <>
     {location.search.includes("remote")
-      ? <DsSearchInput ariaLabel="Search" value={query} onValueChange={setQuery} loadOptions={loadOptions}
+      ? <KjunSearchInput ariaLabel="Search" value={query} onValueChange={setQuery} loadOptions={loadOptions}
           onSelect={option => setValue(option.value)} onEnter={() => setEnters(n => n + 1)} />
-      : <DsCombobox ariaLabel="Search" value={value} options={options} onValueChange={setValue} />}
+      : <KjunCombobox ariaLabel="Search" value={value} options={options} onValueChange={setValue} />}
     <output data-testid="selected">{value ?? "none"}</output>
     <output data-testid="enters">{enters}</output>
   </>;
@@ -27,7 +27,7 @@ function ToastCase() {
     openModal: () => setOpen(true),
   });
   return <><button data-testid="outside">Outside</button>
-    <DsModal open={open} onOpenChange={setOpen} title="Modal"><button>Modal target</button></DsModal></>;
+    <KjunModal open={open} onOpenChange={setOpen} title="Modal"><button>Modal target</button></KjunModal></>;
 }
 createRoot(document.getElementById("root")!).render(<KjunProvider><KjunFeedbackProvider>
   {location.search.includes("toast") ? <ToastCase /> : <AutocompleteCase />}

@@ -1,5 +1,5 @@
 {
-  "DsAlert": {
+  "KjunAlert": {
     "vue2": [
       "formatters",
       "type",
@@ -29,7 +29,7 @@
       "onClose"
     ]
   },
-  "DsChartSkeleton": {
+  "KjunChartSkeleton": {
     "vue2": [
       "loadingText",
       "formatters",
@@ -47,7 +47,7 @@
       "height"
     ]
   },
-  "DsDataState": {
+  "KjunDataState": {
     "vue2": [
       "queryKey",
       "resultKey",
@@ -128,7 +128,7 @@
       "hasLoadedOnce"
     ]
   },
-  "DsErrorBoundary": {
+  "KjunErrorBoundary": {
     "vue2": [
       "formatters",
       "fallbackMessage"
@@ -148,7 +148,7 @@
       "onReset"
     ]
   },
-  "DsFormSkeleton": {
+  "KjunFormSkeleton": {
     "vue2": [
       "formatters",
       "fields",
@@ -169,7 +169,7 @@
       "size"
     ]
   },
-  "DsListSkeleton": {
+  "KjunListSkeleton": {
     "vue2": [
       "formatters",
       "rows",
@@ -193,7 +193,7 @@
       "quote"
     ]
   },
-  "DsProgress": {
+  "KjunProgress": {
     "vue2": [
       "formatters",
       "value",
@@ -222,7 +222,7 @@
       "subLabel"
     ]
   },
-  "DsSkeleton": {
+  "KjunSkeleton": {
     "vue2": [
       "formatters",
       "type",
@@ -252,7 +252,7 @@
       "rounded"
     ]
   },
-  "DsSpinner": {
+  "KjunSpinner": {
     "vue2": [
       "formatters",
       "size",
@@ -267,7 +267,7 @@
       "text"
     ]
   },
-  "DsTooltip": {
+  "KjunTooltip": {
     "vue2": [
       "formatters",
       "content",

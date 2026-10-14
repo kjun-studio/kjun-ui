@@ -73,7 +73,7 @@
   ],
   "components": [
     {
-      "name": "DsButton",
+      "name": "KjunButton",
       "category": "actions",
       "aliases": [
         "버튼",
@@ -86,7 +86,7 @@
       ]
     },
     {
-      "name": "DsButtonGroup",
+      "name": "KjunButtonGroup",
       "category": "actions",
       "aliases": [
         "버튼 그룹",
@@ -99,7 +99,7 @@
       ]
     },
     {
-      "name": "DsCopyButton",
+      "name": "KjunCopyButton",
       "category": "actions",
       "aliases": [
         "복사",
@@ -108,7 +108,7 @@
       "useCases": []
     },
     {
-      "name": "DsDropdown",
+      "name": "KjunDropdown",
       "category": "actions",
       "aliases": [
         "드롭다운",
@@ -117,25 +117,25 @@
       "useCases": []
     },
     {
-      "name": "DsDropdownDivider",
+      "name": "KjunDropdownDivider",
       "category": "actions",
       "aliases": [
         "메뉴 구분선"
       ],
       "useCases": [],
-      "parent": "DsDropdown"
+      "parent": "KjunDropdown"
     },
     {
-      "name": "DsDropdownItem",
+      "name": "KjunDropdownItem",
       "category": "actions",
       "aliases": [
         "메뉴 항목"
       ],
       "useCases": [],
-      "parent": "DsDropdown"
+      "parent": "KjunDropdown"
     },
     {
-      "name": "DsFormActions",
+      "name": "KjunFormActions",
       "category": "actions",
       "aliases": [
         "폼 버튼",
@@ -146,7 +146,7 @@
       ]
     },
     {
-      "name": "DsIconToggle",
+      "name": "KjunIconToggle",
       "category": "actions",
       "aliases": [
         "아이콘 토글",
@@ -159,7 +159,7 @@
       "useCases": []
     },
     {
-      "name": "DsMenuButton",
+      "name": "KjunMenuButton",
       "category": "actions",
       "aliases": [
         "메뉴 버튼"
@@ -167,7 +167,7 @@
       "useCases": []
     },
     {
-      "name": "DsRefreshButton",
+      "name": "KjunRefreshButton",
       "category": "actions",
       "aliases": [
         "새로고침",
@@ -179,7 +179,7 @@
       ]
     },
     {
-      "name": "DsCheckbox",
+      "name": "KjunCheckbox",
       "category": "inputs",
       "aliases": [
         "체크박스",
@@ -192,7 +192,7 @@
       ]
     },
     {
-      "name": "DsCombobox",
+      "name": "KjunCombobox",
       "category": "inputs",
       "aliases": [
         "검색",
@@ -204,7 +204,7 @@
       ]
     },
     {
-      "name": "DsDatePicker",
+      "name": "KjunDatePicker",
       "category": "inputs",
       "aliases": [
         "날짜",
@@ -214,7 +214,7 @@
       "useCases": []
     },
     {
-      "name": "DsFilterGroup",
+      "name": "KjunFilterGroup",
       "category": "inputs",
       "aliases": [
         "필터",
@@ -225,7 +225,7 @@
       ]
     },
     {
-      "name": "DsFormGroup",
+      "name": "KjunFormGroup",
       "category": "inputs",
       "aliases": [
         "폼 그룹",
@@ -237,7 +237,7 @@
       ]
     },
     {
-      "name": "DsInput",
+      "name": "KjunInput",
       "category": "inputs",
       "aliases": [
         "입력",
@@ -249,7 +249,7 @@
       ]
     },
     {
-      "name": "DsRadio",
+      "name": "KjunRadio",
       "category": "inputs",
       "aliases": [
         "라디오",
@@ -260,7 +260,7 @@
       ]
     },
     {
-      "name": "DsRadioGroup",
+      "name": "KjunRadioGroup",
       "category": "inputs",
       "aliases": [
         "라디오 그룹",
@@ -271,7 +271,7 @@
       ]
     },
     {
-      "name": "DsSearchInput",
+      "name": "KjunSearchInput",
       "category": "inputs",
       "aliases": [
         "검색",
@@ -283,7 +283,7 @@
       ]
     },
     {
-      "name": "DsSelect",
+      "name": "KjunSelect",
       "category": "inputs",
       "aliases": [
         "선택",
@@ -296,7 +296,7 @@
       ]
     },
     {
-      "name": "DsSwitch",
+      "name": "KjunSwitch",
       "category": "inputs",
       "aliases": [
         "스위치",
@@ -307,7 +307,7 @@
       ]
     },
     {
-      "name": "DsTextarea",
+      "name": "KjunTextarea",
       "category": "inputs",
       "aliases": [
         "여러 줄 입력",
@@ -319,7 +319,7 @@
       ]
     },
     {
-      "name": "DsBreadcrumb",
+      "name": "KjunBreadcrumb",
       "category": "navigation",
       "aliases": [
         "경로",
@@ -330,7 +330,7 @@
       ]
     },
     {
-      "name": "DsExternalLink",
+      "name": "KjunExternalLink",
       "category": "navigation",
       "aliases": [
         "외부 링크",
@@ -341,7 +341,7 @@
       ]
     },
     {
-      "name": "DsPagination",
+      "name": "KjunPagination",
       "category": "navigation",
       "aliases": [
         "페이지 이동",
@@ -353,7 +353,7 @@
       ]
     },
     {
-      "name": "DsTabs",
+      "name": "KjunTabs",
       "category": "navigation",
       "aliases": [
         "탭",
@@ -364,7 +364,7 @@
       ]
     },
     {
-      "name": "DsTabPane",
+      "name": "KjunTabPane",
       "category": "navigation",
       "aliases": [
         "탭 패널",
@@ -373,10 +373,10 @@
       "useCases": [
         "화면 이동"
       ],
-      "parent": "DsTabs"
+      "parent": "KjunTabs"
     },
     {
-      "name": "DsAccordion",
+      "name": "KjunAccordion",
       "category": "layout",
       "aliases": [
         "아코디언",
@@ -387,16 +387,16 @@
       ]
     },
     {
-      "name": "DsAccordionItem",
+      "name": "KjunAccordionItem",
       "category": "layout",
       "aliases": [
         "아코디언 항목"
       ],
       "useCases": [],
-      "parent": "DsAccordion"
+      "parent": "KjunAccordion"
     },
     {
-      "name": "DsCard",
+      "name": "KjunCard",
       "category": "layout",
       "aliases": [
         "카드",
@@ -407,7 +407,7 @@
       ]
     },
     {
-      "name": "DsDrawer",
+      "name": "KjunDrawer",
       "category": "layout",
       "aliases": [
         "드로어",
@@ -421,7 +421,7 @@
       ]
     },
     {
-      "name": "DsModal",
+      "name": "KjunModal",
       "category": "layout",
       "aliases": [
         "모달",
@@ -434,7 +434,7 @@
       ]
     },
     {
-      "name": "DsPopover",
+      "name": "KjunPopover",
       "category": "layout",
       "aliases": [
         "팝오버",
@@ -443,7 +443,7 @@
       "useCases": []
     },
     {
-      "name": "DsScrollFade",
+      "name": "KjunScrollFade",
       "category": "layout",
       "aliases": [
         "스크롤 페이드",
@@ -452,7 +452,7 @@
       "useCases": []
     },
     {
-      "name": "DsAlert",
+      "name": "KjunAlert",
       "category": "feedback",
       "aliases": [
         "알림",
@@ -465,7 +465,7 @@
       ]
     },
     {
-      "name": "DsChartSkeleton",
+      "name": "KjunChartSkeleton",
       "category": "feedback",
       "aliases": [
         "차트 로딩"
@@ -475,7 +475,7 @@
       ]
     },
     {
-      "name": "DsDataState",
+      "name": "KjunDataState",
       "category": "feedback",
       "aliases": [
         "데이터 상태",
@@ -490,7 +490,7 @@
       ]
     },
     {
-      "name": "DsErrorBoundary",
+      "name": "KjunErrorBoundary",
       "category": "feedback",
       "aliases": [
         "오류 경계",
@@ -501,7 +501,7 @@
       ]
     },
     {
-      "name": "DsFormSkeleton",
+      "name": "KjunFormSkeleton",
       "category": "feedback",
       "aliases": [
         "폼 로딩"
@@ -511,7 +511,7 @@
       ]
     },
     {
-      "name": "DsListSkeleton",
+      "name": "KjunListSkeleton",
       "category": "feedback",
       "aliases": [
         "목록 로딩"
@@ -521,7 +521,7 @@
       ]
     },
     {
-      "name": "DsProgress",
+      "name": "KjunProgress",
       "category": "feedback",
       "aliases": [
         "진행률",
@@ -533,7 +533,7 @@
       ]
     },
     {
-      "name": "DsSkeleton",
+      "name": "KjunSkeleton",
       "category": "feedback",
       "aliases": [
         "스켈레톤",
@@ -545,7 +545,7 @@
       ]
     },
     {
-      "name": "DsSpinner",
+      "name": "KjunSpinner",
       "category": "feedback",
       "aliases": [
         "스피너",
@@ -557,7 +557,7 @@
       ]
     },
     {
-      "name": "DsTooltip",
+      "name": "KjunTooltip",
       "category": "feedback",
       "aliases": [
         "툴팁",
@@ -566,7 +566,7 @@
       "useCases": []
     },
     {
-      "name": "DsAnimatedNumber",
+      "name": "KjunAnimatedNumber",
       "category": "data-display",
       "aliases": [
         "숫자 애니메이션"
@@ -574,7 +574,7 @@
       "useCases": []
     },
     {
-      "name": "DsBadge",
+      "name": "KjunBadge",
       "category": "data-display",
       "aliases": [
         "배지",
@@ -584,7 +584,7 @@
       "useCases": []
     },
     {
-      "name": "DsEmpty",
+      "name": "KjunEmpty",
       "category": "data-display",
       "aliases": [
         "빈 상태",
@@ -597,7 +597,7 @@
       ]
     },
     {
-      "name": "DsHeatmapCell",
+      "name": "KjunHeatmapCell",
       "category": "data-display",
       "aliases": [
         "히트맵",
@@ -608,7 +608,7 @@
       ]
     },
     {
-      "name": "DsIcon",
+      "name": "KjunIcon",
       "category": "data-display",
       "aliases": [
         "아이콘"
@@ -616,7 +616,7 @@
       "useCases": []
     },
     {
-      "name": "DsKpiHero",
+      "name": "KjunKpiHero",
       "category": "data-display",
       "aliases": [
         "대표 지표",
@@ -627,7 +627,7 @@
       ]
     },
     {
-      "name": "DsKpiRow",
+      "name": "KjunKpiRow",
       "category": "data-display",
       "aliases": [
         "지표 행",
@@ -638,7 +638,7 @@
       ]
     },
     {
-      "name": "DsProgressCell",
+      "name": "KjunProgressCell",
       "category": "data-display",
       "aliases": [
         "진행률 셀"
@@ -646,7 +646,7 @@
       "useCases": []
     },
     {
-      "name": "DsSparkline",
+      "name": "KjunSparkline",
       "category": "data-display",
       "aliases": [
         "스파크라인",
@@ -657,7 +657,7 @@
       ]
     },
     {
-      "name": "DsTable",
+      "name": "KjunTable",
       "category": "data-display",
       "aliases": [
         "표",
@@ -669,7 +669,7 @@
       ]
     },
     {
-      "name": "DsCollectionMark",
+      "name": "KjunCollectionMark",
       "category": "finance",
       "aliases": [
         "컬렉션 표시"
@@ -679,7 +679,7 @@
       ]
     },
     {
-      "name": "DsDeviation",
+      "name": "KjunDeviation",
       "category": "finance",
       "aliases": [
         "편차",
@@ -690,7 +690,7 @@
       ]
     },
     {
-      "name": "DsExecutionStatusBadge",
+      "name": "KjunExecutionStatusBadge",
       "category": "finance",
       "aliases": [
         "체결 상태",
@@ -701,7 +701,7 @@
       ]
     },
     {
-      "name": "DsFreshness",
+      "name": "KjunFreshness",
       "category": "finance",
       "aliases": [
         "최신 상태",
@@ -712,7 +712,7 @@
       ]
     },
     {
-      "name": "DsMarketCards",
+      "name": "KjunMarketCards",
       "category": "finance",
       "aliases": [
         "시세 카드",
@@ -724,7 +724,7 @@
       ]
     },
     {
-      "name": "DsMarketListPanel",
+      "name": "KjunMarketListPanel",
       "category": "finance",
       "aliases": [
         "시세 목록 패널"
@@ -734,7 +734,7 @@
       ]
     },
     {
-      "name": "DsMarketSimpleList",
+      "name": "KjunMarketSimpleList",
       "category": "finance",
       "aliases": [
         "간단 시세 목록"
@@ -744,7 +744,7 @@
       ]
     },
     {
-      "name": "DsMarketTable",
+      "name": "KjunMarketTable",
       "category": "finance",
       "aliases": [
         "시세 표",
@@ -756,7 +756,7 @@
       ]
     },
     {
-      "name": "DsMarketTableSkeleton",
+      "name": "KjunMarketTableSkeleton",
       "category": "finance",
       "aliases": [
         "시세 표 로딩"
@@ -766,7 +766,7 @@
       ]
     },
     {
-      "name": "DsPriceCell",
+      "name": "KjunPriceCell",
       "category": "finance",
       "aliases": [
         "가격",
@@ -777,7 +777,7 @@
       ]
     },
     {
-      "name": "DsSignedValue",
+      "name": "KjunSignedValue",
       "category": "finance",
       "aliases": [
         "부호 수치",
@@ -789,7 +789,7 @@
       ]
     },
     {
-      "name": "DsListRow",
+      "name": "KjunListRow",
       "category": "data-display",
       "aliases": [
         "목록 행",
@@ -803,7 +803,7 @@
       ]
     },
     {
-      "name": "DsListSection",
+      "name": "KjunListSection",
       "category": "data-display",
       "aliases": [
         "목록 섹션",
@@ -814,7 +814,7 @@
       ]
     },
     {
-      "name": "DsTopNavigation",
+      "name": "KjunTopNavigation",
       "category": "navigation",
       "aliases": [
         "상단 탐색",
@@ -826,7 +826,7 @@
       ]
     },
     {
-      "name": "DsBottomNavigation",
+      "name": "KjunBottomNavigation",
       "category": "navigation",
       "aliases": [
         "하단 탐색",
@@ -838,7 +838,7 @@
       ]
     },
     {
-      "name": "DsBottomActionBar",
+      "name": "KjunBottomActionBar",
       "category": "layout",
       "aliases": [
         "하단 CTA",
@@ -850,7 +850,7 @@
       ]
     },
     {
-      "name": "DsImage",
+      "name": "KjunImage",
       "category": "data-display",
       "aliases": [
         "이미지",
@@ -863,7 +863,7 @@
       ]
     },
     {
-      "name": "DsAvatar",
+      "name": "KjunAvatar",
       "category": "data-display",
       "aliases": [
         "아바타",
@@ -875,7 +875,7 @@
       ]
     },
     {
-      "name": "DsChip",
+      "name": "KjunChip",
       "category": "actions",
       "aliases": [
         "칩",
@@ -888,7 +888,7 @@
       ]
     },
     {
-      "name": "DsSlider",
+      "name": "KjunSlider",
       "category": "inputs",
       "aliases": [
         "슬라이더",
@@ -900,7 +900,7 @@
       ]
     },
     {
-      "name": "DsRangeSlider",
+      "name": "KjunRangeSlider",
       "category": "inputs",
       "aliases": [
         "범위 슬라이더",
@@ -912,7 +912,7 @@
       ]
     },
     {
-      "name": "DsTimePicker",
+      "name": "KjunTimePicker",
       "category": "inputs",
       "aliases": [
         "시간 선택",
@@ -924,7 +924,7 @@
       ]
     },
     {
-      "name": "DsQuantityStepper",
+      "name": "KjunQuantityStepper",
       "category": "inputs",
       "aliases": [
         "수량",

@@ -8,8 +8,8 @@ export async function preparePresentation(page, scene) {
   await surface.evaluate(() => document.fonts.ready);
   if (scene.prepare === 'menu') { await page.getByRole('button', { name: '목록 관리', exact: true }).click(); await page.getByRole('menu').waitFor(); }
   if (scene.prepare === 'tooltip') { await page.keyboard.press('Tab'); await page.getByRole('button', { name: '관심 목록', exact: true }).focus(); await page.getByRole('tooltip').waitFor(); }
-  if (scene.name === 'DsPopover') await page.getByRole('dialog').waitFor();
-  if (scene.name === 'DsErrorBoundary') await expect(page.locator('html')).toHaveAttribute('data-expected-boundary', 'caught');
+  if (scene.name === 'KjunPopover') await page.getByRole('dialog').waitFor();
+  if (scene.name === 'KjunErrorBoundary') await expect(page.locator('html')).toHaveAttribute('data-expected-boundary', 'caught');
   await surface.evaluate(async () => {
     await Promise.all([...document.images].map(img => img.decode()));
     await new Promise(done => requestAnimationFrame(() => requestAnimationFrame(done)));

@@ -24,7 +24,7 @@ type StyleProp,
 type TextInputProps,
 type ViewStyle,
 } from "react-native";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { useKjunStyles } from "./provider";
 interface FieldValue {
   id: string;
@@ -37,7 +37,7 @@ interface FieldValue {
 // Internal boundary for composite fields; index.ts exports only public controls.
 export const FieldContext = createContext<FieldValue | null>(null);
 export const useKjunField = () => useContext(FieldContext);
-export interface DsFormGroupProps {
+export interface KjunFormGroupProps {
   label?: string;
   id?: string;
   required?: boolean;
@@ -46,7 +46,7 @@ export interface DsFormGroupProps {
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
 }
-export function DsFormGroup({
+export function KjunFormGroup({
   label,
   id,
   required = false,
@@ -54,7 +54,7 @@ export function DsFormGroup({
   hint = "",
   children,
   style,
-}: DsFormGroupProps) {
+}: KjunFormGroupProps) {
   const uid = useId().replace(/:/g, "");
   const fieldId = id || "kjun-native-" + uid;
   const { colors: c, fontFamily } = useKjunStyles();
@@ -89,7 +89,7 @@ export function DsFormGroup({
               marginTop: tokens.extensions.form.messageGap,
             }}
           >
-            {!!error && <DsIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} color={c.danger} />}
+            {!!error && <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} color={c.danger} />}
             <Text
               nativeID={fieldId + (error ? "-error" : "-hint")}
               accessibilityRole={error ? "alert" : undefined}
@@ -108,7 +108,7 @@ export function DsFormGroup({
     </FieldContext.Provider>
   );
 }
-export interface DsInputProps
+export interface KjunInputProps
   extends Omit<TextInputProps, "value" | "onChange"> {
   value: string | number;
   size?: InputSize;
@@ -124,7 +124,7 @@ export interface DsInputProps
   onClear?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
-export const DsInput = forwardRef<TextInput, DsInputProps>(function DsInput(
+export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInput(
   {
     value,
     size = "md",
@@ -258,7 +258,7 @@ export const DsInput = forwardRef<TextInput, DsInputProps>(function DsInput(
             }}
           >
             {prefix || (
-              <DsIcon
+              <KjunIcon
                 name={prefixIcon!}
                 size={spec.iconSize}
                 color={surface.icon}
@@ -289,7 +289,7 @@ export const DsInput = forwardRef<TextInput, DsInputProps>(function DsInput(
             )}
             {suffix ||
               (suffixIcon && (
-                <DsIcon
+                <KjunIcon
                   name={suffixIcon}
                   size={spec.iconSize}
                   color={surface.icon}
@@ -317,7 +317,7 @@ export const DsInput = forwardRef<TextInput, DsInputProps>(function DsInput(
   );
 });
 
-export function DsFormLayout({
+export function KjunFormLayout({
   children,
   gap = tokens.extensions.form.itemGap,
 }: {
@@ -327,7 +327,7 @@ export function DsFormLayout({
   return (
     <View style={{ gap }}>
       {Children.map(children, (child) =>
-        isValidElement<DsFormGroupProps>(child) && child.type === DsFormGroup
+        isValidElement<KjunFormGroupProps>(child) && child.type === KjunFormGroup
           ? cloneElement(child, {
               style: [{ marginBottom: 0 }, child.props.style],
             })

@@ -15,7 +15,7 @@ export function renderLayoutExample(name: string, tools: ExampleTools): any {
       };
       return h("FieldStack", {}, [
         h(
-          "DsFormGroup",
+          "KjunFormGroup",
           {
             id: "settings-name",
             label: long ? "함께 사용하는 자산 목록에 표시할 긴 한국어 이름" : "목록 이름",
@@ -23,7 +23,7 @@ export function renderLayoutExample(name: string, tools: ExampleTools): any {
             hint: "동료가 구분할 수 있는 이름을 입력하세요.",
             error: invalid ? "목록 이름을 입력해 주세요." : "",
           },
-          h("DsInput", {
+          h("KjunInput", {
             id: "settings-name",
             value: get("formName", ""),
             onValueChange: change("formName"),
@@ -33,13 +33,13 @@ export function renderLayoutExample(name: string, tools: ExampleTools): any {
           }),
         ),
         h(
-          "DsFormGroup",
+          "KjunFormGroup",
           {
             id: "settings-visibility",
             label: "공개 범위",
             hint: "선택한 범위의 사용자만 목록을 볼 수 있습니다.",
           },
-          h("DsSelect", {
+          h("KjunSelect", {
             value: get("visibility", "private"),
             onValueChange: change("visibility"),
             ariaLabel: "공개 범위",
@@ -53,7 +53,7 @@ export function renderLayoutExample(name: string, tools: ExampleTools): any {
             ],
           }),
         ),
-        h("DsFormActions", {
+        h("KjunFormActions", {
           size: "lg",
           confirmText: "변경 사항 저장",
           cancelText: "입력 초기화",
@@ -76,9 +76,9 @@ export function renderLayoutExample(name: string, tools: ExampleTools): any {
       );
       return h("Stack", {}, [
         h(
-          "DsFormGroup",
+          "KjunFormGroup",
           { label: "자산 검색", hint: "이름이나 종목 코드를 입력하세요." },
-          h("DsSearchInput", {
+          h("KjunSearchInput", {
             value: query,
             onValueChange: change("search"),
             minChars: 1,
@@ -96,7 +96,7 @@ export function renderLayoutExample(name: string, tools: ExampleTools): any {
           }),
         ),
         h("Group", {}, [
-          h("DsFilterGroup", {
+          h("KjunFilterGroup", {
             value: filter,
             onValueChange: change("filter"),
             size: "sm",
@@ -113,7 +113,7 @@ export function renderLayoutExample(name: string, tools: ExampleTools): any {
             ],
           }),
           h(
-            "DsButton",
+            "KjunButton",
             {
               variant: "secondary",
               size: "sm",
@@ -144,12 +144,12 @@ export function renderLayoutExample(name: string, tools: ExampleTools): any {
               price: r.price * 1000,
             }))
           : rows;
-      const price = (row: any) => h("DsPriceCell", { value: row.price, formatter: priceFormat });
+      const price = (row: any) => h("KjunPriceCell", { value: row.price, formatter: priceFormat });
       const delta = (row: any) =>
-        h("DsSignedValue", { value: row.change, format: "percent", isRaw: true });
+        h("KjunSignedValue", { value: row.change, format: "percent", isRaw: true });
       return h("Stack", {}, [
         h(
-          "DsDataState",
+          "KjunDataState",
           {
             queryKey: "assets",
             resultKey: ["최초 로딩", "실패"].includes(status) ? null : "assets",
@@ -161,20 +161,20 @@ export function renderLayoutExample(name: string, tools: ExampleTools): any {
           },
           empty
             ? h(
-                "DsEmpty",
+                "KjunEmpty",
                 {
                   text: "조건에 맞는 자산이 없습니다",
                   description: "필터를 초기화해 전체 목록을 확인하세요.",
                   icon: "search",
                 },
                 h(
-                  "DsButton",
+                  "KjunButton",
                   { variant: "secondary", ...action(() => set("status", "정상")) },
                   "필터 초기화",
                 ),
               )
             : h(
-                "DsTable",
+                "KjunTable",
                 {
                   data,
                   columns,

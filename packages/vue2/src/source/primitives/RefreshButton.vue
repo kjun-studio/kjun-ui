@@ -1,23 +1,23 @@
 <template>
-  <DsTooltip :content="disabled || loading ? '' : tooltipContent" :placement="tooltipPlacement" :delay="tooltipDelay"
+  <KjunTooltip :content="disabled || loading ? '' : tooltipContent" :placement="tooltipPlacement" :delay="tooltipDelay"
     :style="{ width: block ? '100%' : undefined }">
-  <DsButton
+  <KjunButton
     v-bind="buttonAttrs" :size="size" :variant="variant" prefix-icon="refresh" :block="block"
     :spin-on-loading="!reducedMotion && spinOnLoading"
     :loading="loading" :disabled="disabled" :aria-label="label"
     @click="$emit('refresh')"
-  ><template v-if="mode === 'text'">{{ text }}</template></DsButton>
-  </DsTooltip>
+  ><template v-if="mode === 'text'">{{ text }}</template></KjunButton>
+  </KjunTooltip>
 </template>
 <script>
-import DsButton from "./Button.vue";
-import DsTooltip from "../data-display/Tooltip.vue";
+import KjunButton from "./Button.vue";
+import KjunTooltip from "../data-display/Tooltip.vue";
 import { componentMixins } from "../../component-mixins.js";
 import { SIZES_EXTENDED, oneOf, ACTION_LABEL_MODES, REFRESH_VARIANTS } from '../tokens'
 export default {
   mixins: componentMixins,
-  components: { DsButton, DsTooltip },
-  name: 'DsRefreshButton',
+  components: { KjunButton, KjunTooltip },
+  name: 'KjunRefreshButton',
   inheritAttrs: false,
   props: {
     targetName: { type: String, default: '' },

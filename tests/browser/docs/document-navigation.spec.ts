@@ -17,11 +17,11 @@ async function aligned(page: Page, id: string) {
 for (const platform of ['vue2', 'react', 'native']) {
   test(`${platform}: preview focus releases anchor correction while later content settles`, async ({ page }) => {
     await page.goto('/usage-guide/forms?platform=' + platform + '#selection');
-    const card = page.locator('#selection [data-guide-case="choose-DsSelect"]');
+    const card = page.locator('#selection [data-guide-case="choose-KjunSelect"]');
     await expect(card.locator('.guide-running')).toHaveAttribute('data-ready', 'true');
     await page.evaluate(() => {
       window.addEventListener('message', event => {
-        if (event.data?.type === 'kjun:catalog-focus' && event.data.component === 'DsSelect') (window as any).__previewFocused = true;
+        if (event.data?.type === 'kjun:catalog-focus' && event.data.component === 'KjunSelect') (window as any).__previewFocused = true;
       });
       window.scrollBy({ top: 250, behavior: 'instant' });
     });

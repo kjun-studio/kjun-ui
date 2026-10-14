@@ -9,7 +9,7 @@
 <script>
 import { safeLinkHref } from "../source/primitives/externalUrl";
 export default {
-  name: "DsListRow",
+  name: "KjunListRow",
   props: { title: { type: String, required: true }, description: String, href: String, disabled: { type: Boolean, default: false } },
   methods: { safeHref: safeLinkHref, activate(event) { if (this.disabled) { event.preventDefault(); return; } this.$emit("click", event); } },
 };

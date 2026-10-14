@@ -31,35 +31,35 @@ test("visual definitions cover public components plus feedback on every platform
         validateSettings(entry.name, scenario.settings || {});
     }
   }
-  for (const n of ["DsAccordionItem", "DsTabPane", "DsDropdownItem", "DsDropdownDivider"])
+  for (const n of ["KjunAccordionItem", "KjunTabPane", "KjunDropdownItem", "KjunDropdownDivider"])
     assert.ok(guides[n].platforms.react.figures[0].parts.length);
   assert.equal(guides.KjunFeedbackProvider.platforms.native.figures.length, 3);
 });
 test("visual state and size differences reflect public APIs rather than shared guesses", () => {
-  assert.ok(guides.DsRadioGroup.platforms.vue2.states.some((s) => s.id === "disabled"));
-  assert.ok(!guides.DsRadioGroup.platforms.react.states.some((s) => s.id === "disabled"));
-  assert.equal(guides.DsDrawer.platforms.react.sizes.length, 0);
-  assert.ok(!guides.DsDrawer.platforms.react.states.some((s) => s.id === "loading"));
-  assert.ok(guides.DsFormGroup.platforms.native.states.some((s) => s.id === "child-disabled"));
-  assert.ok(guides.DsIconToggle.platforms.vue2.sizes.some((s) => s.label === "xl"));
-  assert.ok(guides.DsIconToggle.platforms.react.sizes.some((s) => s.label === "xl"));
-  assert.equal(guides.DsBadge.platforms.vue2.sizeDefault, '"sm"');
-  assert.equal(guides.DsBadge.platforms.react.sizeDefault, '"sm"');
+  assert.ok(guides.KjunRadioGroup.platforms.vue2.states.some((s) => s.id === "disabled"));
+  assert.ok(!guides.KjunRadioGroup.platforms.react.states.some((s) => s.id === "disabled"));
+  assert.equal(guides.KjunDrawer.platforms.react.sizes.length, 0);
+  assert.ok(!guides.KjunDrawer.platforms.react.states.some((s) => s.id === "loading"));
+  assert.ok(guides.KjunFormGroup.platforms.native.states.some((s) => s.id === "child-disabled"));
+  assert.ok(guides.KjunIconToggle.platforms.vue2.sizes.some((s) => s.label === "xl"));
+  assert.ok(guides.KjunIconToggle.platforms.react.sizes.some((s) => s.label === "xl"));
+  assert.equal(guides.KjunBadge.platforms.vue2.sizeDefault, '"sm"');
+  assert.equal(guides.KjunBadge.platforms.react.sizeDefault, '"sm"');
 });
 test("unknown public references and duplicate figures fail generation", () => {
   const broken = structuredClone(api);
-  broken.components.DsButton.react.props = broken.components.DsButton.react.props.filter(
+  broken.components.KjunButton.react.props = broken.components.KjunButton.react.props.filter(
     (p) => p.name !== "prefixIcon",
   );
   assert.throws(() => buildVisualGuides(broken, catalog, descriptions), /Unknown visual prop/);
-  const original = authors.DsButton.figures;
+  const original = authors.KjunButton.figures;
   try {
-    authors.DsButton.figures = [
-      { id: "default", label: "중복", description: "중복", parts: authors.DsButton.parts },
+    authors.KjunButton.figures = [
+      { id: "default", label: "중복", description: "중복", parts: authors.KjunButton.parts },
     ];
     assert.throws(() => buildVisualGuides(api, catalog, descriptions), /Duplicate/);
   } finally {
-    authors.DsButton.figures = original;
+    authors.KjunButton.figures = original;
   }
 });
 test("anatomy manifest proves installed package rendering and every image has valid annotation coordinates", async () => {

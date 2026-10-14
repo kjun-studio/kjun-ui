@@ -1,8 +1,8 @@
 import { tokens } from "@kjun-ui/tokens";
 import { ToastStack } from "./toast-stack.js";
 import { createFeedbackController } from "@kjun-ui/tokens";
-import DsModal from "./source/layout/Modal.vue";
-import DsInput from "./source/primitives/Input.vue";
+import KjunModal from "./source/layout/Modal.vue";
+import KjunInput from "./source/primitives/Input.vue";
 export const KjunFeedbackProvider = {
   name: "KjunFeedbackProvider",
   data() {
@@ -80,7 +80,7 @@ export const KjunFeedbackProvider = {
       h(ToastStack, { props: { toasts: this.snapshot.toasts, controller: this.controller } }),
       request &&
         h(
-          DsModal,
+          KjunModal,
           {
             key: request.id,
             props: {
@@ -106,7 +106,7 @@ export const KjunFeedbackProvider = {
           [
             options.message && h("p", options.message),
             request.kind === "prompt" &&
-              h(DsInput, {
+              h(KjunInput, {
                 attrs: { autofocus: true },
                 props: {
                   value: this.input,

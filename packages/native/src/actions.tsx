@@ -3,14 +3,14 @@ import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
 import { Platform,ScrollView,View,type ColorValue } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsButton,DsIcon,type DsButtonProps } from "./button";
-import { DsSpinner } from "./display";
+import { KjunButton,KjunIcon,type KjunButtonProps } from "./button";
+import { KjunSpinner } from "./display";
 import { KText,content,useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useOptionalKjunFeedback } from "./feedback-context";
-import { DsTooltip, type DsTooltipProps } from "./popover";
+import { KjunTooltip, type KjunTooltipProps } from "./popover";
 import { TopNavigationContext } from "./top-navigation-context";
-export interface DsIconToggleProps {
+export interface KjunIconToggleProps {
   active?: boolean;
   activeIcon: string;
   inactiveIcon?: string;
@@ -22,11 +22,11 @@ export interface DsIconToggleProps {
   ariaLabel: string;
   /** Defaults to ariaLabel, like RefreshButton; an empty string disables the hint. */
   tooltip?: string;
-  tooltipPlacement?: DsTooltipProps["placement"];
+  tooltipPlacement?: KjunTooltipProps["placement"];
   tooltipDelay?: number;
   onToggle?: () => void;
 }
-export function DsIconToggle({
+export function KjunIconToggle({
   active = false,
   activeIcon,
   inactiveIcon,
@@ -40,12 +40,12 @@ export function DsIconToggle({
   tooltipPlacement,
   tooltipDelay,
   onToggle,
-}: DsIconToggleProps) {
+}: KjunIconToggleProps) {
   const { colors } = useKjunStyles();
   const navigation = useContext(TopNavigationContext);
   const box = navigation ? navigation.controlSize : size === "xs" ? tokens.extensions.iconToggle.compactSize : tokens.extensions.iconToggle.sizes[size];
   return (
-    <DsTooltip content={disabled || loading ? "" : tooltip ?? ariaLabel} placement={tooltipPlacement} delay={tooltipDelay}>
+    <KjunTooltip content={disabled || loading ? "" : tooltip ?? ariaLabel} placement={tooltipPlacement} delay={tooltipDelay}>
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={ariaLabel}
@@ -84,9 +84,9 @@ export function DsIconToggle({
       {({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => (
       <View style={{ width: box, height: box, alignItems: "center", justifyContent: "center", borderRadius: tokens.extensions.iconToggle.radii[size], backgroundColor: !disabled && !loading && (pressed || hovered) ? colors.hover : "transparent" }}>
       {loading ? (
-        navigation ? <DsIcon name="loader-2" spin size={navigation.iconSize} /> : <DsSpinner size="sm" />
+        navigation ? <KjunIcon name="loader-2" spin size={navigation.iconSize} /> : <KjunSpinner size="sm" />
       ) : (
-        <DsIcon
+        <KjunIcon
           name={active ? activeIcon : inactiveIcon || activeIcon}
           filled={active}
           size={navigation?.iconSize ?? tokens.button.iconSizes[size]}
@@ -102,10 +102,10 @@ export function DsIconToggle({
       </View>
       )}
     </Pressable>
-    </DsTooltip>
+    </KjunTooltip>
   );
 }
-export interface DsCopyButtonProps {
+export interface KjunCopyButtonProps {
   value: string;
   ariaLabel?: string;
   text?: string;
@@ -117,7 +117,7 @@ export interface DsCopyButtonProps {
   onCopied?: (value: string) => void;
   onCopyError?: (error: unknown) => void;
 }
-export function DsCopyButton({
+export function KjunCopyButton({
   value,
   ariaLabel,
   text,
@@ -128,7 +128,7 @@ export function DsCopyButton({
   copyText,
   onCopied,
   onCopyError,
-}: DsCopyButtonProps) {
+}: KjunCopyButtonProps) {
   const feedback = useOptionalKjunFeedback(),
     { colors } = useKjunStyles(),
     [copied, setCopied] = useState(false),
@@ -189,7 +189,7 @@ export function DsCopyButton({
           opacity: disabled ? tokens.states.opacity.disabled : 1,
         })}
       >
-        <DsIcon
+        <KjunIcon
           name={copied ? "check" : "copy"}
           size={tokens.button.iconSizes[size]}
           color={copied ? colors.success : colors.textSecondary}
@@ -208,18 +208,18 @@ export function DsCopyButton({
     </View>
   );
 }
-export interface DsRefreshButtonProps
-  extends Omit<DsButtonProps, "onPress" | "children"> {
+export interface KjunRefreshButtonProps
+  extends Omit<KjunButtonProps, "onPress" | "children"> {
   targetName?: string;
   mode?: "icon" | "text";
   text?: string;
   /** Defaults to the icon button's accessible label; an empty string disables it. */
   tooltip?: string;
-  tooltipPlacement?: DsTooltipProps["placement"];
+  tooltipPlacement?: KjunTooltipProps["placement"];
   tooltipDelay?: number;
   onRefresh?: () => void;
 }
-export function DsRefreshButton({
+export function KjunRefreshButton({
   targetName = "",
   mode = "icon",
   text = "새로고침",
@@ -232,13 +232,13 @@ export function DsRefreshButton({
   spinOnLoading = true,
   onRefresh,
   ...props
-}: DsRefreshButtonProps) {
+}: KjunRefreshButtonProps) {
   const reduced = useReducedMotion();
   const label = ariaLabel || [targetName, "새로고침"].filter(Boolean).join(" ");
   const hint = tooltip ?? (mode === "icon" ? label : "");
   const button = (
-    <DsTooltip content={props.disabled || props.loading ? "" : hint} placement={tooltipPlacement} delay={tooltipDelay}>
-    <DsButton
+    <KjunTooltip content={props.disabled || props.loading ? "" : hint} placement={tooltipPlacement} delay={tooltipDelay}>
+    <KjunButton
       {...props}
       size={size}
       variant={variant}
@@ -248,8 +248,8 @@ export function DsRefreshButton({
       onPress={onRefresh}
     >
       {mode === "text" ? text : undefined}
-    </DsButton>
-    </DsTooltip>
+    </KjunButton>
+    </KjunTooltip>
   );
   return props.block ? <View style={{ alignSelf: "stretch", width: "100%" }}>{button}</View> : button;
 }
@@ -261,26 +261,26 @@ export function safeExternalUrl(href: string) {
     return "";
   }
 }
-export interface DsExternalLinkProps {
+export interface KjunExternalLinkProps {
   href?: string;
   mode?: "icon" | "text";
   label?: string;
   children?: ReactNode;
   openUrl: (url: string) => void | Promise<void>;
 }
-export function DsExternalLink({
+export function KjunExternalLink({
   href = "",
   mode = "text",
   label,
   children,
   openUrl,
-}: DsExternalLinkProps) {
+}: KjunExternalLinkProps) {
   const { colors } = useKjunStyles(),
     url = safeExternalUrl(href),
     name = label || (mode === "icon" ? "외부 링크" : undefined),
     body =
       mode === "icon" ? (
-        <DsIcon name="external-link" color={colors.text} />
+        <KjunIcon name="external-link" color={colors.text} />
       ) : (
         content(children)
       );
@@ -296,7 +296,7 @@ export function DsExternalLink({
         // Like Web, text links show the new-window cue after the text.
         <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.dimension.value4 }}>
           {body}
-          <DsIcon name="external-link" size={tokens.iconSizes.small} color={colors.text} />
+          <KjunIcon name="external-link" size={tokens.iconSizes.small} color={colors.text} />
         </View>
       ) : body}
     </Pressable>
@@ -304,7 +304,7 @@ export function DsExternalLink({
     <View>{body}</View>
   );
 }
-export function DsScrollFade({ children }: { children: ReactNode }) {
+export function KjunScrollFade({ children }: { children: ReactNode }) {
   return (
     <ScrollView
       horizontal

@@ -28,7 +28,7 @@
 
 검색은 갤러리와 같은 `searchDocuments`를 사용합니다. 기본은 이름순, 검색 중에는 관련도순입니다. `q`·`category`를 URL에서 복원하고 변경 시 문서 플랫폼과 앵커를 보존합니다. 본문 가용 폭 720px 이상은 고정 헤더 비교표, 미만은 세 플랫폼을 세로로 보여주는 카드입니다. 숨긴 구성은 접근성 탐색에서 제외하며 검색·분류·플랫폼 변경과 화면 폭 전환 중 항목의 펼침 상태를 유지합니다.
 
-검증 원문은 현재 연결된 기록만 `/downloads/verification/`에 바이트 그대로 복사합니다. 제목과 기록일은 원문의 제목·첫 문단에서 읽고, 기록일을 최종 검증일로 해석하지 않습니다. `KjunProvider`·`KjunFeedbackProvider`는 세 플랫폼, `DsFormLayout`은 Native 제공이며 서비스의 제공 여부와 개별 검증 통과를 구분합니다.
+검증 원문은 현재 연결된 기록만 `/downloads/verification/`에 바이트 그대로 복사합니다. 제목과 기록일은 원문의 제목·첫 문단에서 읽고, 기록일을 최종 검증일로 해석하지 않습니다. `KjunProvider`·`KjunFeedbackProvider`는 세 플랫폼, `KjunFormLayout`은 Native 제공이며 서비스의 제공 여부와 개별 검증 통과를 구분합니다.
 
 생성 데이터와 실패 경로는 `tests/coverage.test.mjs`, URL·검색·분류·펼침·반응형·실제 200% 확대·다운로드는 `tests/browser/coverage.spec.ts`에서 검사합니다.
 

@@ -11,27 +11,27 @@
     :data-disabled="String(disabled)"
     @click.stop="handleClick"
   >
-    <ds-icon v-if="prefixIcon" :name="prefixIconName" :spin="effectiveLoading"
+    <kjun-icon v-if="prefixIcon" :name="prefixIconName" :spin="effectiveLoading"
       :filled="!effectiveLoading && prefixIconFilled" :size="iconSize" />
     <span class="kjun-button-label" :style="{ opacity: overlayLoading ? 0 : 1 }"><slot /></span>
-    <ds-icon v-if="suffixIcon" :name="effectiveLoading && !prefixIcon ? 'loader-2' : suffixIcon"
+    <kjun-icon v-if="suffixIcon" :name="effectiveLoading && !prefixIcon ? 'loader-2' : suffixIcon"
       :filled="!effectiveLoading && suffixIconFilled" :spin="effectiveLoading && !prefixIcon"
       :size="iconSize" :style="{ opacity: effectiveLoading && prefixIcon ? 0 : 1 }" />
     <span v-if="overlayLoading" class="kjun-button-loader" aria-hidden="true">
-      <ds-icon name="loader-2" spin :size="iconSize" />
+      <kjun-icon name="loader-2" spin :size="iconSize" />
     </span>
   </button>
 </template>
 <script>
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { tokens } from '@kjun-ui/tokens';
 import { SIZES_EXTENDED, oneOf } from '../tokens'
 
 export default {
   mixins: componentMixins,
-  components: { DsIcon },
-  name: 'DsButton',
+  components: { KjunIcon },
+  name: 'KjunButton',
   inject: { kjunTopNavigation: { default: null }, kjunActionSize: { default: null } },
   props: {
     // primary/secondary/ghost/danger-ghost는 버튼 전용 인터랙션 variant

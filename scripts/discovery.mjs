@@ -50,12 +50,12 @@ const componentDocuments = publicEntries.map(entry => {
   const contractTerms = Object.values(contract).flatMap(platform => [...platform.ownership, ...platform.types.flatMap(type => [type.name, type.summary, ...type.fields.flatMap(memberText)])]);
   const category = navigation.categories.find(category => category.id === meta.category);
   return {
-    id: guide.slug, path: entry.docs, title: entry.name.slice(2), group: 'Components',
+    id: guide.slug, path: entry.docs, title: entry.name.replace(/^Kjun/, ''), group: 'Components',
     component: entry.name, description: guide.description, category: meta.category,
     ...(meta.parent ? { parent: meta.parent } : {}),
-    aliases: [...meta.aliases, ...(entry.name === 'DsTable' ? tableDesignExamples.map(item => item.label) : entry.name === 'DsCard' ? cardDesignExamples.map(item => item.label) : [])], useCases: meta.useCases,
+    aliases: [...meta.aliases, ...(entry.name === 'KjunTable' ? tableDesignExamples.map(item => item.label) : entry.name === 'KjunCard' ? cardDesignExamples.map(item => item.label) : [])], useCases: meta.useCases,
     api: [...new Set(apiNames)],
-    sectionGroups: detailSectionGroups(designCases.filter(item => item.components.includes(entry.name)).map(item => 'design-' + item.id), entry.name === 'DsTable' ? ['table-designs'] : entry.name === 'DsCard' ? ['card-designs'] : []),
+    sectionGroups: detailSectionGroups(designCases.filter(item => item.components.includes(entry.name)).map(item => 'design-' + item.id), entry.name === 'KjunTable' ? ['table-designs'] : entry.name === 'KjunCard' ? ['card-designs'] : []),
     terms: ['구조 도해', 'Anatomy', ...designTerms(designCases.filter(item => item.components.includes(entry.name))), ...Object.values(visuals[entry.name].platforms).flatMap(p => [...p.figures.flatMap(f => f.parts.flatMap(part => [part.label, part.description])), ...p.states.map(s => s.label)]), ...members.flatMap(memberText), ...contractTerms, guide.interaction, guide.states, guide.differences, category.label, ...category.aliases, ...sectionsFor(guide.slug).map(section => section[1])],
     sections: [...sectionsFor(guide.slug).slice(0, -2), ...designCases.filter(item => item.components.includes(entry.name)).map(item => ["design-" + item.id, item.title]), ...sectionsFor(guide.slug).slice(-2)], platforms: entry.platforms,
     thumbnail: '/previews/thumbnails/' + guide.slug + '.png',

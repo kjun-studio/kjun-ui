@@ -42,7 +42,7 @@ test("all public components have one description per prop and valid examples", a
   assert.equal(count, catalog.filter(c => c.kind !== "internal").reduce((total, entry) => total + platforms.reduce((sum, platform) => sum + raw[entry.name][platform].length, 0), 0));
 });
 test("core docs cover every extracted event, slot and callback with ownership", () => {
-  for (const name of ["DsFormGroup", "DsSelect", "DsSearchInput", "DsTable", "DsDataState", "DsListRow", "DsListSection", "DsTopNavigation", "DsBottomNavigation", "DsBottomActionBar", "DsImage", "DsAvatar", "DsChip", "DsSlider", "DsRangeSlider", "DsTimePicker", "DsQuantityStepper"])
+  for (const name of ["KjunFormGroup", "KjunSelect", "KjunSearchInput", "KjunTable", "KjunDataState", "KjunListRow", "KjunListSection", "KjunTopNavigation", "KjunBottomNavigation", "KjunBottomActionBar", "KjunImage", "KjunAvatar", "KjunChip", "KjunSlider", "KjunRangeSlider", "KjunTimePicker", "KjunQuantityStepper"])
     for (const platform of platforms) {
       const c = reference.components[name][platform];
       assert.ok(c.ownership.length);
@@ -89,16 +89,16 @@ test("docs extraction retains Vue mixin/conditional events and named/dynamic/for
 test("literal defaults come from the implementation, and nominal public types stay readable", () => {
   for (const platform of ["react", "native"]) {
     const actual = reactContracts(platform);
-    assert.equal(actual.DsSelect.defaults.searchable.value, "false");
-    assert.equal(actual.DsSelect.defaults.clearable.value, "false");
-    assert.equal(actual.DsSearchInput.defaults.minChars.value, "2");
-    assert.equal(actual.DsTable.defaults.sortable.value, "true");
-    assert.equal(actual.DsTable.defaults.sortable.source, "shared/package-runtime/table.ts");
-    assert.equal(actual.DsTable.defaults.expandSingle.value, "false");
-    assert.equal(actual.DsMarketCards.defaults.excludeKeys.value, "[]");
-    assert.equal(actual.DsMarketCards.defaults.excludeKeys.source, "shared/package-runtime/market-cards.ts");
-    assert.equal(actual.DsFormGroup.defaults.id, undefined); // useId is not a literal default.
-    const form = reference.components.DsFormGroup[platform];
+    assert.equal(actual.KjunSelect.defaults.searchable.value, "false");
+    assert.equal(actual.KjunSelect.defaults.clearable.value, "false");
+    assert.equal(actual.KjunSearchInput.defaults.minChars.value, "2");
+    assert.equal(actual.KjunTable.defaults.sortable.value, "true");
+    assert.equal(actual.KjunTable.defaults.sortable.source, "shared/package-runtime/table.ts");
+    assert.equal(actual.KjunTable.defaults.expandSingle.value, "false");
+    assert.equal(actual.KjunMarketCards.defaults.excludeKeys.value, "[]");
+    assert.equal(actual.KjunMarketCards.defaults.excludeKeys.source, "shared/package-runtime/market-cards.ts");
+    assert.equal(actual.KjunFormGroup.defaults.id, undefined); // useId is not a literal default.
+    const form = reference.components.KjunFormGroup[platform];
     assert.equal(form.props.find((p) => p.name === "id").default, "자동 생성");
     assert.equal(
       form.props.some((p) => p.name === "value"),
@@ -112,7 +112,7 @@ test("literal defaults come from the implementation, and nominal public types st
     "ReactNode | StyleProp<ViewStyle>",
   );
   assert.ok(
-    reference.components.DsTable.react.props
+    reference.components.KjunTable.react.props
       .find((p) => p.name === "renderCell")
       .type.includes("TableColumn<Row>"),
   );

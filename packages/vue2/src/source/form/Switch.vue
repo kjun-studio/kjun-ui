@@ -25,7 +25,7 @@ import { SIZES_CORE, oneOf } from '../tokens'
 
 export default {
   mixins: componentMixins,
-  name: 'DsSwitch',
+  name: 'KjunSwitch',
   props: {
     value: {
       type: Boolean,

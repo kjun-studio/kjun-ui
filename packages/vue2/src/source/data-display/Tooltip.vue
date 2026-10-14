@@ -38,7 +38,7 @@ const ARROW = tokens.extensions.tooltip.arrowSize
 
 export default {
   mixins: [...componentMixins, layerMotion("tooltip")],
-  name: 'DsTooltip',
+  name: 'KjunTooltip',
   props: {
     content: {
       type: String,

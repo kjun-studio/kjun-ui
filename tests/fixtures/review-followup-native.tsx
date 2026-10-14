@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
-import { KjunProvider, DsSearchInput, DsSelect, DsDatePicker, DsFormGroup, DsPagination } from "@kjun-ui/native";
+import { KjunProvider, KjunSearchInput, KjunSelect, KjunDatePicker, KjunFormGroup, KjunPagination } from "@kjun-ui/native";
 import { scopedColors } from "./style-values";
 import { SearchCase, PaginationCase } from "./review-followup-cases";
 function FieldsCase() {
@@ -8,15 +8,15 @@ function FieldsCase() {
   const [date, setDate] = useState("2026-09-14"), [error, setError] = useState("");
   Object.assign(window, { configureFollowup: (next: { error: string }) => setError(next.error) });
   return <>
-    <DsFormGroup id="followup-select" label="담당자" hint="담당자를 선택하세요" error={error}>
-      <DsSelect value={value} options={[{ value: "a", label: "Alpha" }]} searchable onValueChange={setValue} />
-    </DsFormGroup>
-    <DsFormGroup id="followup-date" label="출발 날짜" hint="출발일을 선택하세요" error={error} required>
-      <DsDatePicker value={date} onValueChange={setDate} />
-    </DsFormGroup>
+    <KjunFormGroup id="followup-select" label="담당자" hint="담당자를 선택하세요" error={error}>
+      <KjunSelect value={value} options={[{ value: "a", label: "Alpha" }]} searchable onValueChange={setValue} />
+    </KjunFormGroup>
+    <KjunFormGroup id="followup-date" label="출발 날짜" hint="출발일을 선택하세요" error={error} required>
+      <KjunDatePicker value={date} onValueChange={setDate} />
+    </KjunFormGroup>
     <output data-testid="date">{date}</output>
   </>;
 }
 createRoot(document.getElementById("root")!).render(<KjunProvider colors={scopedColors(false)}>
-  {location.search.includes("fields") ? <FieldsCase /> : location.search.includes("pagination") ? <PaginationCase Control={DsPagination} /> : <SearchCase Control={DsSearchInput} />}
+  {location.search.includes("fields") ? <FieldsCase /> : location.search.includes("pagination") ? <PaginationCase Control={KjunPagination} /> : <SearchCase Control={KjunSearchInput} />}
 </KjunProvider>);

@@ -18,7 +18,7 @@ import { componentMixins } from "../../component-mixins.js";
 // 콘텐츠 alpha를 mask로 깎아 어떤 배경에서도 자연스럽다.
 export default {
   mixins: componentMixins,
-  name: 'ScrollFade',
+  name: 'KjunScrollFade',
   data() {
     return {
       overflowLeft: false,

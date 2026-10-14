@@ -2,7 +2,7 @@ import { tokens } from "@kjun-ui/tokens";
 import { type ReactNode } from "react";
 import { View, type PressableProps } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { DsIcon } from "./button";
+import { KjunIcon } from "./button";
 import { content } from "./internal";
 import { useKjunStyles } from "./provider";
 
@@ -52,7 +52,7 @@ export function OptionRow({
       })}
     >
       <View style={{ flex: 1 }}>{content(children || label, { fontSize: tokens.extensions.menu.optionFontSize, lineHeight: tokens.extensions.menu.optionLineHeight })}</View>
-      {selected && <DsIcon name="check" size={tokens.extensions.menu.iconSize} color={colors.brand} />}
+      {selected && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} color={colors.brand} />}
     </Pressable>
   );
 }

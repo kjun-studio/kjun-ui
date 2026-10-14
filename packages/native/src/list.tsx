@@ -7,8 +7,8 @@ import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
 // A section tells its last row so the divider stays between rows, like Web's :last-child.
 const LastListRow = createContext(false);
-export interface DsListRowProps { title: string; description?: string; leading?: ReactNode; trailing?: ReactNode; actions?: ReactNode; href?: string; disabled?: boolean; onPress?: (event: GestureResponderEvent) => void }
-export function DsListRow({ title, description, leading, trailing, actions, href, disabled = false, onPress }: DsListRowProps) {
+export interface KjunListRowProps { title: string; description?: string; leading?: ReactNode; trailing?: ReactNode; actions?: ReactNode; href?: string; disabled?: boolean; onPress?: (event: GestureResponderEvent) => void }
+export function KjunListRow({ title, description, leading, trailing, actions, href, disabled = false, onPress }: KjunListRowProps) {
   const { colors } = useKjunStyles(), last = useContext(LastListRow);
   const parts = <>{leading && <View>{content(leading)}</View>}<View style={{ flex: 1, minWidth: 0 }}><KText style={{  ...typeStyle('label'),  }}>{title}</KText>{description && <KText style={{ marginTop: tokens.extensions.list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'),  }}>{description}</KText>}</View>{trailing && <View style={{ maxWidth: "35%" }}>{content(trailing)}</View>}</>;
   const style = { flex: 1, minWidth: 0, minHeight: tokens.extensions.list.minimumHeight, flexDirection: "row" as const, alignItems: "center" as const, gap: tokens.extensions.list.gap, padding: tokens.extensions.list.padding };
@@ -18,8 +18,8 @@ export function DsListRow({ title, description, leading, trailing, actions, href
     {actions && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: "45%", flexDirection: "row", flexWrap: "wrap", gap: tokens.extensions.list.actionsGap, paddingRight: tokens.extensions.list.actionsPadding, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}</View>}
   </View>;
 }
-export interface DsListSectionProps { title?: string; description?: string; actions?: ReactNode; children: ReactNode; ariaLabel?: string }
-export function DsListSection({ title, description, actions, children, ariaLabel }: DsListSectionProps) {
+export interface KjunListSectionProps { title?: string; description?: string; actions?: ReactNode; children: ReactNode; ariaLabel?: string }
+export function KjunListSection({ title, description, actions, children, ariaLabel }: KjunListSectionProps) {
   const { colors } = useKjunStyles();
   return <View style={{ minWidth: 0, backgroundColor: colors.surface }}>
     {(title || description || actions) && <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.list.gap, padding: tokens.extensions.list.padding }}><View style={{ flex: 1 }}>{title && <KText accessibilityRole="header" style={{ ...typeStyle('cardTitle'),  }}>{title}</KText>}{description && <KText style={{ marginTop: tokens.extensions.list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'),  }}>{description}</KText>}</View>{content(actions)}</View>}

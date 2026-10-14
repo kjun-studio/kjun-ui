@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { KjunProvider, DsButton, DsModal, DsSearchInput } from '@kjun-ui/vue2';
+import { KjunProvider, KjunButton, KjunModal, KjunSearchInput } from '@kjun-ui/vue2';
 import { setRootValues } from './style-values';
 setRootValues();
 const params = new URLSearchParams(location.search);
@@ -19,7 +19,7 @@ const Result = Vue.extend({
 const vm = new Vue({
   data: () => ({ open: false, value: 'Alpha', events: [] as unknown[], itemKey: 'code' }),
   render(h) {
-    const field = h(DsSearchInput, {
+    const field = h(KjunSearchInput, {
       props: { value: this.value, loadOptions: params.has('plain') ? undefined : loadOptions,
         ariaLabel: 'Search', minChars: 0, itemKey: this.itemKey, debounce: Number(params.get('debounce') || 0) },
       on: {
@@ -30,8 +30,8 @@ const vm = new Vue({
     });
     return h(KjunProvider, [
       ...(params.has('modal') ? [
-        h(DsButton, { on: { click: () => { this.open = true; } } }, ['Open']),
-        h(DsModal, { props: { value: this.open, title: 'Editor' }, on: { input: (next: boolean) => { this.open = next; } } }, [field]),
+        h(KjunButton, { on: { click: () => { this.open = true; } } }, ['Open']),
+        h(KjunModal, { props: { value: this.open, title: 'Editor' }, on: { input: (next: boolean) => { this.open = next; } } }, [field]),
       ] : [field]),
       h('output', { attrs: { 'data-testid': 'events' } }, JSON.stringify(this.events)),
     ]);

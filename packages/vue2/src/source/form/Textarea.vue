@@ -26,7 +26,7 @@ import fieldMixin from './fieldMixin'
 import { SIZES_CORE, oneOf } from '../tokens'
 
 export default {
-  name: 'DsTextarea',
+  name: 'KjunTextarea',
   mixins: [fieldMixin, ...componentMixins],
   inject: {
     dsFormGroup: {

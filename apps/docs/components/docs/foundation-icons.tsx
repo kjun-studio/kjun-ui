@@ -1,6 +1,6 @@
 'use client';
 import { tokens } from '@kjun-ui/tokens';
-import { DsIcon as Icon } from '@kjun-ui/react';
+import { KjunIcon as Icon } from '@kjun-ui/react';
 import Link from './doc-link';
 import { DataTable } from './data-table';
 import { GuideExample } from './guide-example';

@@ -12,7 +12,7 @@ type CSSProperties,
 type InputHTMLAttributes,
 type ReactNode,
 } from "react";
-import { DsButton,DsIcon } from "./button";
+import { KjunButton,KjunIcon } from "./button";
 import { useCompositionGuard } from "./composition";
 interface FieldContextValue {
   id: string;
@@ -24,7 +24,7 @@ interface FieldContextValue {
 // Internal boundary for composite fields; index.ts exports only public controls.
 export const FieldContext = createContext<FieldContextValue | null>(null);
 export const useKjunField = () => useContext(FieldContext);
-export interface DsFormGroupProps {
+export interface KjunFormGroupProps {
   label?: string;
   id?: string;
   required?: boolean;
@@ -32,14 +32,14 @@ export interface DsFormGroupProps {
   hint?: string;
   children: ReactNode;
 }
-export function DsFormGroup({
+export function KjunFormGroup({
   label,
   id,
   required = false,
   error = "",
   hint = "",
   children,
-}: DsFormGroupProps) {
+}: KjunFormGroupProps) {
   const uid = useId().replace(/:/g, "");
   const fieldId = id || "kjun-field-" + uid;
   const labelId = label ? fieldId + "-label" : undefined;
@@ -64,7 +64,7 @@ export function DsFormGroup({
         {children}
         {error ? (
           <p id={describedBy} className="kjun-form-error" role="alert">
-            <DsIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} />
+            <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} />
             {error}
           </p>
         ) : hint ? (
@@ -76,7 +76,7 @@ export function DsFormGroup({
     </FieldContext.Provider>
   );
 }
-export interface DsInputProps
+export interface KjunInputProps
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
     "size" | "prefix" | "value" | "defaultValue"
@@ -95,8 +95,8 @@ export interface DsInputProps
   onValueChange?: (value: string) => void;
   onEnter?: () => void;
 }
-export const DsInput = forwardRef<HTMLInputElement, DsInputProps>(
-  function DsInput(
+export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
+  function KjunInput(
     {
       size = "md",
       value,
@@ -166,7 +166,7 @@ export const DsInput = forwardRef<HTMLInputElement, DsInputProps>(
               className="kjun-input-affix"
               style={{ left: spec.padding, pointerEvents: "none" }}
             >
-              {prefix || <DsIcon name={prefixIcon!} size={spec.iconSize} />}
+              {prefix || <KjunIcon name={prefixIcon!} size={spec.iconSize} />}
             </span>
           )}
           <input
@@ -223,7 +223,7 @@ export const DsInput = forwardRef<HTMLInputElement, DsInputProps>(
               style={{ right: spec.padding }}
             >
               {clearable && !!value && (
-                <DsButton
+                <KjunButton
                   variant="ghost"
                   size="sm"
 
@@ -249,11 +249,11 @@ export const DsInput = forwardRef<HTMLInputElement, DsInputProps>(
                     onClear?.();
                     el.focus();
                   }}
-                ><DsIcon name="x" size={spec.iconSize} /></DsButton>
+                ><KjunIcon name="x" size={spec.iconSize} /></KjunButton>
               )}
               {suffix ||
                 (suffixIcon && (
-                  <DsIcon name={suffixIcon} size={spec.iconSize} />
+                  <KjunIcon name={suffixIcon} size={spec.iconSize} />
                 ))}
             </span>
           )}

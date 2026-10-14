@@ -51,7 +51,7 @@ let sparklineUid = 0
 
 export default {
   mixins: [...componentMixins, domainColorMixin(vm => !vm.color && vm.semantic === 'price' && vm.data.length > 1 && vm.data[0] !== vm.data[vm.data.length - 1])],
-  name: 'DsSparkline',
+  name: 'KjunSparkline',
   props: {
     data: {
       type: Array,

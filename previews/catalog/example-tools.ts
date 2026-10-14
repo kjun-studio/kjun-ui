@@ -157,7 +157,7 @@ export const defaultOptions = [
   { value: "c", label: "체리" },
 ];
 export const fieldOptions = (name: string, data?: unknown) => {
-  const labels = name === "DsSelect" ? ["나만 보기", "전체 공개", "팀에 공개"] : ["한빛테크", "그린에너지", "오로라모빌리티"];
+  const labels = name === "KjunSelect" ? ["나만 보기", "전체 공개", "팀에 공개"] : ["한빛테크", "그린에너지", "오로라모빌리티"];
   return data === "empty" ? [] : defaultOptions.map((option, index) => ({ ...option,
     label: labels[index] + (data === "long" ? " · 긴 옵션 이름과 설명을 함께 표시합니다" : ""),
   }));
@@ -212,12 +212,12 @@ export function createExampleTools(c: ExampleContext) {
   const action = (fn: () => void) =>
     platform === "native" ? { onPress: fn } : { onClick: fn };
   const button = (label: string, fn: () => void) =>
-    h("DsButton", action(fn), label);
+    h("KjunButton", action(fn), label);
   const message = (text: string) => set("message", text);
   // The error text replaces the hint so an error state never relies on the border color alone.
-  const singleField = (label: string, hint: string, child: any, errorText = "") => h("Box", { width: 360 }, h("DsFormGroup", { label, hint, error: errorText }, child));
+  const singleField = (label: string, hint: string, child: any, errorText = "") => h("Box", { width: 360 }, h("KjunFormGroup", { label, hint, error: errorText }, child));
   const input = () =>
-    h("DsInput", {
+    h("KjunInput", {
       value: get("input", ""),
       onValueChange: change("input"),
       ariaLabel: settings.label ? undefined : "입력 예제",
@@ -231,14 +231,14 @@ export function createExampleTools(c: ExampleContext) {
     });
   const menuItems = () => [
     h(
-      "DsDropdownItem",
+      "KjunDropdownItem",
       { disabled: !!settings.itemDisabled, ...action(() => message("첫 항목 선택")) },
       "첫 항목"
     ),
-    h("DsDropdownDivider"),
-    h("DsDropdownItem", { disabled: true }, "비활성 항목"),
+    h("KjunDropdownDivider"),
+    h("KjunDropdownItem", { disabled: true }, "비활성 항목"),
     h(
-      "DsDropdownItem",
+      "KjunDropdownItem",
       { variant: "danger", ...action(() => message("마지막 항목 선택")) },
       "마지막 항목"
     ),

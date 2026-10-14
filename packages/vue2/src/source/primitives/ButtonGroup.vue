@@ -11,14 +11,14 @@
       :aria-pressed="String(value === option.value)"
       @click.stop="selectOption(option.value)"
     >
-      <DsIcon v-if="option.icon" size="var(--_kjun-extension-selection-icon-size)" :name="option.icon" :class="option.label ? 'kj-mr-1.5' : ''" />
+      <KjunIcon v-if="option.icon" size="var(--_kjun-extension-selection-icon-size)" :name="option.icon" :class="option.label ? 'kj-mr-1.5' : ''" />
       <span class="kjun-button-group-label"><span aria-hidden="true" :style="selectionStyle(true)">{{ option.label }}</span><span>{{ option.label }}</span></span>
     </button>
   </div>
 </template>
 
 <script>
-import DsIcon from "../../icon.js";
+import KjunIcon from "../../icon.js";
 import { componentMixins } from "../../component-mixins.js";
 import { tokens } from '@kjun-ui/tokens'
 import { selectionTypeStyle } from '../../typography'
@@ -27,10 +27,10 @@ import groupKeyboardNav from './_groupKeyboardNav'
 import { selectionIndicator } from '@kjun-adapter/selection-indicator.js'
 
 // 단일 선택 세그먼트 컨트롤 (예: 통화 ₩/$ 토글, 기간 선택).
-// 다중 선택 필터 칩이 필요하면 DsFilterGroup을 사용한다.
+// 다중 선택 필터 칩이 필요하면 KjunFilterGroup을 사용한다.
 export default {
-  components: { DsIcon },
-  name: 'DsButtonGroup',
+  components: { KjunIcon },
+  name: 'KjunButtonGroup',
   mixins: [groupKeyboardNav, ...componentMixins],
   mounted() { this._indicator = selectionIndicator(this.$el, this.$refs.indicator) },
   updated() { this._indicator?.update() },

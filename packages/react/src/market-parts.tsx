@@ -1,9 +1,9 @@
 import { useQueryDisplay } from "./data-state";
 import {
-DsCollectionMark
+KjunCollectionMark
 } from "./financial";
 import { MarketBaseProps } from "./market-model";
-import { DsPagination } from "./navigation";
+import { KjunPagination } from "./navigation";
 import { getValue } from "./table";
 export function MarketIdentity<Row extends object>({
   row,
@@ -23,10 +23,10 @@ export function MarketIdentity<Row extends object>({
         <div className="kjun-market-name">
           <span title={label}>{label}</span>
           {props.interestKeys?.has(id) && (
-            <DsCollectionMark kind="interest" size="sm" active />
+            <KjunCollectionMark kind="interest" size="sm" active />
           )}
           {props.favoriteKeys?.has(id) && (
-            <DsCollectionMark kind="favorite" size="sm" active />
+            <KjunCollectionMark kind="favorite" size="sm" active />
           )}
           {props.renderNameSuffix?.(row)}
         </div>
@@ -62,7 +62,7 @@ export function MarketFooter<Row extends object>({
   return (
     <>
       {pagination && (
-        <DsPagination
+        <KjunPagination
           currentPage={pagination.page}
           totalPages={Math.ceil(pagination.total / pagination.size)}
           totalRows={pagination.total}

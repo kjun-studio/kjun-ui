@@ -12,9 +12,9 @@ export function mountChipToastTokens(api: any, native: boolean) {
     const feedback = api.useKjunFeedback();
     return h('div', { style: { padding: 16 } }, [
       ...chipSizes.map(size => h('div', { key: size, 'data-testid': `chip-${size}`, style: { display: 'flex', alignItems: 'flex-start' } },
-        !removed.includes(size) && h(api.DsChip, { size, label: `칩 ${size}`, removable: true,
+        !removed.includes(size) && h(api.KjunChip, { size, label: `칩 ${size}`, removable: true,
           removeLabel: `삭제 ${size}`, onRemove: () => setRemoved(old => [...old, size]) }))),
-      h('div', { key: 'disabled', 'data-testid': 'disabled-chip', style: { display: 'flex', alignItems: 'flex-start' } }, h(api.DsChip, { label: '비활성 칩', removable: true,
+      h('div', { key: 'disabled', 'data-testid': 'disabled-chip', style: { display: 'flex', alignItems: 'flex-start' } }, h(api.KjunChip, { label: '비활성 칩', removable: true,
         disabled: true, removeLabel: '비활성 삭제', onRemove: () => setActions(old => old + 100) })),
       h('button', { key: 'toast', onClick: () => feedback.toast.info(toastMessage, { title: '토큰 알림',
         duration: 60000, action: { label: '알림 실행', onClick: () => setActions(old => old + 1) } }) }, '알림 열기'),

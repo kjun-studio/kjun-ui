@@ -26,7 +26,7 @@ let activeDropdown = null
 
 export default {
   mixins: [...componentMixins, layerMotion("popup")],
-  name: 'DsDropdown',
+  name: 'KjunDropdown',
   directives: {
     'click-outside': {
       bind(el, binding) {
@@ -47,7 +47,7 @@ export default {
       dropdown: this
     }
   },
-  // 중첩 드롭다운(팝오버형 메뉴 안의 DsMenuButton 등)에서 조상 드롭다운을 식별한다.
+  // 중첩 드롭다운(팝오버형 메뉴 안의 KjunMenuButton 등)에서 조상 드롭다운을 식별한다.
   // 자기 자신의 provide는 inject 해석에서 제외되므로 가장 가까운 조상이 잡힌다.
   inject: {
     parentDropdown: { from: 'dropdown', default: null }

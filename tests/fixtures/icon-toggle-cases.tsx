@@ -9,14 +9,14 @@ export function ToggleCases({ K, native = false }: { K: any; native?: boolean })
     configureToggle: (next: Partial<typeof initial>) => setConfig(old => ({ ...old, ...next })),
     resetToggleEvents: () => setEvents([]), toggleExports: Object.keys(K),
   });
-  const toggle = <K.DsIconToggle active={config.active} activeIcon={config.activeIcon}
+  const toggle = <K.KjunIconToggle active={config.active} activeIcon={config.activeIcon}
     inactiveIcon={config.inactiveIcon} ariaLabel={'예제 항목 관심 ' + (config.active ? '해제' : '등록')}
     loading={config.loading} disabled={config.disabled} size={config.size}
     onToggle={() => emit('toggle')} />;
   return <>
     {native ? <Pressable onPress={() => emit('parent')}>{toggle}</Pressable>
       : <div onClick={() => emit('parent')}>{toggle}</div>}
-    <K.DsMarketTable rows={rows} columns={columns} hasLoadedOnce showActions
+    <K.KjunMarketTable rows={rows} columns={columns} hasLoadedOnce showActions
       primaryLabel={(row: typeof rows[number]) => row.id === 0 ? '사용자 이름' : ''}
       favoriteKeys={new Set(config.favorite)} interestKeys={new Set(config.interest)}
       togglingFavorite={config.togglingFavorite} togglingInterest={config.togglingInterest}

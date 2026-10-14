@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { DsButton, DsInput, DsModal } from '@kjun-ui/react';
+import { KjunButton, KjunInput, KjunModal } from '@kjun-ui/react';
 import { documents, categoryFor, searchDocuments } from '@/lib/discovery';
 import { useDocsPlatform } from './docs-platform';
 
@@ -41,17 +41,17 @@ export function DocsSearch() {
   }, [open]);
   useEffect(() => { document.getElementById(`${listId}-${active}`)?.scrollIntoView({ block: 'nearest' }); }, [active, listId, results]);
   return <>
-    <DsButton disabled={!ready} variant="secondary" size="sm" prefixIcon="search" className="docs-search-trigger" ariaLabel="문서 검색"
+    <KjunButton disabled={!ready} variant="secondary" size="sm" prefixIcon="search" className="docs-search-trigger" ariaLabel="문서 검색"
       aria-haspopup="dialog" aria-expanded={open} onClick={() => changeOpen(true)}>
       <span>문서 검색</span><kbd>{shortcut}</kbd>
-    </DsButton>
-    <DsModal open={open} onOpenChange={changeOpen} title="문서 검색" ariaLabel="문서 검색" size="lg" closable={false}
+    </KjunButton>
+    <KjunModal open={open} onOpenChange={changeOpen} title="문서 검색" ariaLabel="문서 검색" size="lg" closable={false}
       header={<span className="docs-search-heading"><span>문서 검색</span>
-        <DsButton variant="ghost" size="sm" prefixIcon="x" ariaLabel="검색 닫기" onClick={() => changeOpen(false)} />
+        <KjunButton variant="ghost" size="sm" prefixIcon="x" ariaLabel="검색 닫기" onClick={() => changeOpen(false)} />
       </span>}>
       <div className="docs-search-dialog">
         <p className="sr-only" id={`${listId}-description`}>컴포넌트 이름, 용도 또는 API 속성으로 검색하세요.</p>
-        <DsInput ref={input} value={query} onValueChange={value => { setQuery(value); setActive(0); }} prefixIcon="search"
+        <KjunInput ref={input} value={query} onValueChange={value => { setQuery(value); setActive(0); }} prefixIcon="search"
           placeholder="이름, 용도, API 검색…" ariaLabel="문서 검색어" role="combobox" aria-autocomplete="list"
           aria-expanded={open} aria-controls={listId} aria-describedby={`${listId}-description`}
           aria-activedescendant={results[active] ? `${listId}-${active}` : undefined}
@@ -76,6 +76,6 @@ export function DocsSearch() {
         {!results.length && <p className="docs-search-empty">{query.trim() ? '일치하는 문서가 없습니다. 다른 용도로 검색해 보세요.' : '검색어를 입력하세요.'}</p>}
         <p className="search-keyboard-hint">↑ ↓ 선택 <span>Enter 이동</span><span>Esc 닫기</span></p>
       </div>
-    </DsModal>
+    </KjunModal>
   </>;
 }
