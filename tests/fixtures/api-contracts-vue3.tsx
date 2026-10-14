@@ -1,0 +1,36 @@
+import { createApp, defineComponent, reactive } from 'vue';
+import * as K from '@kjun-ui/vue3';
+import { setRootValues } from './style-values';
+const w = window as any;
+const log = (name: string, value?: unknown) => w.contractEvents.push({ name, value });
+const loadOptions = (query: string, { signal }: { signal: AbortSignal }) => {
+  log('request', query);
+  signal.addEventListener('abort', () => log('abort', query));
+  return new Promise<any>((resolve, reject) => setTimeout(() => query === 'fail' ? reject(new Error('request failed')) : resolve([{ id: query, name: query + ' result' }]), query === 'slow' ? 900 : 30));
+};
+setRootValues(); w.contractEvents = [];
+const scenario = new URLSearchParams(location.search).get('scenario') || 'select';
+// Scenarios for components that are not on Vue 3 yet render nothing until their group lands.
+const Content = defineComponent(() => {
+  const s = reactive({ value: null as any, query: '', options: { queryKey: 'a', resultKey: null, loading: true, preserveContent: true } as any });
+  w.configureContract = (next: any) => { s.options = { ...s.options, ...next }; };
+  w.feedbackContract = K.useKjunFeedback();
+  return () => {
+    let content: any = null;
+    if (scenario.startsWith('select')) content = <K.KjunSelect ariaLabel="계약 선택" modelValue={s.value} options={[{ value: 'a', label: 'Alpha', base: 'BTC' }, { value: 'b', label: 'Beta' }]}
+      {...(scenario === 'select-fixed' ? { open: false } : {})} searchable={scenario === 'select-search'} clearable={scenario !== 'select-defaults'} multiple={scenario === 'select-multiple'}
+      onUpdate:modelValue={(v: any) => { log('value', v); s.value = v; }} onChange={(v: any) => log('change', v)} onClear={() => log('clear')} onUpdate:open={(v: boolean) => log('open', v)}>
+      {{ selected: ({ option }: any) => { w.selectedSlot = option || null; return null; } }}
+    </K.KjunSelect>;
+    if (scenario === 'search') content = <K.KjunSearchInput ariaLabel="계약 검색" modelValue={s.query} loadOptions={loadOptions} debounce={10000}
+      onUpdate:modelValue={(v: string) => s.query = v} onSearch-error={(error: Error) => log('error', error.message)} onSelect={(v: any) => log('select', v)} />;
+    if (scenario === 'form') content = <K.KjunFormGroup label="계약 필드" id="contract-field" hint="필드 도움말" error={s.options.error} required>
+      <K.KjunInput modelValue={s.query} onUpdate:modelValue={(v: string) => s.query = v} />
+    </K.KjunFormGroup>;
+    if (scenario === 'feedback') content = <K.KjunButton>서비스 준비</K.KjunButton>;
+    return <div style={{ padding: '24px', maxWidth: '950px' }}>{content}</div>;
+  };
+});
+const app = createApp(defineComponent(() => () => <K.KjunProvider><K.KjunFeedbackProvider><Content /></K.KjunFeedbackProvider></K.KjunProvider>));
+w.unmountContract = () => app.unmount();
+app.mount('#root');

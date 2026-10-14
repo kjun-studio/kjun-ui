@@ -16,3 +16,6 @@ export { KjunSelect } from "./select-control";
 export { KjunCombobox } from "./combobox";
 export { KjunSearchInput } from "./search-input";
 export { KjunDatePicker, KjunTimePicker } from "./date-picker";
+export { KjunModal, KjunFormActions } from "./modal";
+export { KjunDrawer } from "./drawer";
+export { KjunFeedbackProvider } from "./feedback";

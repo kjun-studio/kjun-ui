@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: a menu action opens a persistent modal and returns to the menu trigger`, async ({ page }) => {
     await openFixture(page, platform, '', 'elevation');
     const trigger = page.getByRole('button', { name: '화면 메뉴', exact: true });

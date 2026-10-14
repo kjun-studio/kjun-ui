@@ -11,7 +11,7 @@ async function typography(node: Locator, spec: TypographyToken, scale: number) {
   expect(tracking === 'normal' ? 0 : parseFloat(tracking)).toBeCloseTo(spec.fontSizePx * spec.letterSpacingEm * scale, 2);
 }
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: packed Chip typography and removal dimensions share their roles`, async ({ page }, testInfo) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'chip-toast-tokens');

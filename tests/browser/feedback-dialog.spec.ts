@@ -18,7 +18,7 @@ async function start(page: Page, platform: string) {
   });
 }
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform} feedback prevents duplicate async submission and resets dialog state for the next request`, async ({ page }) => {
     await start(page, platform);
     const confirm = page.getByRole('dialog', { name: '저장 확인', exact: true });

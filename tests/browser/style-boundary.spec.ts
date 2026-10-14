@@ -20,7 +20,7 @@ async function kjunElements(page: Page) {
     .map(el => { const style = getComputedStyle(el); return names.map(name => style.getPropertyValue(name)).join('|'); }), props);
 }
 
-for (const platform of ['react', 'vue2']) {
+for (const platform of ['react', 'vue2', 'vue3']) {
   test(`${platform}: app markup inside KjunProvider keeps the app's own styles`, async ({ page }) => {
     await page.setViewportSize({ width: 1024, height: 900 });
     await openFixture(page, platform, '', 'style-boundary');
@@ -36,7 +36,7 @@ for (const platform of ['react', 'vue2']) {
   });
 }
 
-for (const platform of ['react', 'vue2']) {
+for (const platform of ['react', 'vue2', 'vue3']) {
   test(`${platform}: the form layout attribute spaces form groups and leaves the app wrapper's own text alone`, async ({ page }) => {
     await page.setViewportSize({ width: 1024, height: 900 });
     await openFixture(page, platform, '', 'style-boundary');
@@ -50,7 +50,7 @@ for (const platform of ['react', 'vue2']) {
   });
 }
 
-for (const platform of ['react', 'vue2']) {
+for (const platform of ['react', 'vue2', 'vue3']) {
   test(`${platform}: reduced motion slows kjun animations only, not app animations inside the Provider`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: 1024, height: 900 });
@@ -60,7 +60,7 @@ for (const platform of ['react', 'vue2']) {
   });
 }
 
-for (const platform of ['react', 'vue2']) {
+for (const platform of ['react', 'vue2', 'vue3']) {
   test(`${platform}: a kjun component whose root is a button still takes the scope font`, async ({ page }) => {
     await openFixture(page, platform, '?noapp', 'style-boundary');
     const button = page.getByTestId('kjun').getByRole('button', { name: '저장' });
@@ -80,7 +80,7 @@ test('vue2: rendered kjun markup carries no unprefixed utility classes', async (
   expect(bare).toEqual([]);
 });
 
-for (const platform of ['react', 'vue2']) {
+for (const platform of ['react', 'vue2', 'vue3']) {
   test(`${platform}: an icon placed in app text keeps the app's colour and font size`, async ({ page }) => {
     await openFixture(page, platform, '?noapp', 'style-boundary');
     const icon = page.getByTestId('icon-host').locator('svg');
@@ -89,7 +89,7 @@ for (const platform of ['react', 'vue2']) {
   });
 }
 
-for (const platform of ['react', 'vue2']) {
+for (const platform of ['react', 'vue2', 'vue3']) {
   test(`${platform}: app markup inside KjunFeedbackProvider keeps the app's own styles`, async ({ page }) => {
     await page.setViewportSize({ width: 1024, height: 900 });
     await openFixture(page, platform, '', 'style-boundary');
@@ -97,8 +97,8 @@ for (const platform of ['react', 'vue2']) {
   });
 }
 
-test('react: a modal used without a Provider still takes the kjun font and text colour', async ({ page }) => {
-  await openFixture(page, 'react', '?standalone', 'style-boundary');
+for (const platform of ['react', 'vue3']) test(`${platform}: a modal used without a Provider still takes the kjun font and text colour`, async ({ page }) => {
+  await openFixture(page, platform, '?standalone', 'style-boundary');
   const body = page.getByTestId('standalone-body');
   const vars = await page.evaluate(() => { const s = getComputedStyle(document.documentElement); return [s.getPropertyValue('--kjun-font').trim(), s.getPropertyValue('--kjun-text').trim()]; });
   await expect(body).toHaveCSS('font-family', vars[0]);

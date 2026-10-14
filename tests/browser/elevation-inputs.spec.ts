@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
-for (const platform of ['react', 'vue2', 'native']) for (const [label, option] of [['화면 자동완성', '자동완성 후보'], ['화면 검색 제안', '검색 후보']]) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) for (const [label, option] of [['화면 자동완성', '자동완성 후보'], ['화면 검색 제안', '검색 후보']]) {
   test(`${platform}: ${label} restores focus without reopening suggestions`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'elevation');

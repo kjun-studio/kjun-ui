@@ -19,3 +19,7 @@ export type { KjunSelectProps, OptionValue, SelectOption } from "./select-contro
 export type { KjunComboboxProps } from "./combobox";
 export type { KjunSearchInputProps } from "./search-input";
 export type { KjunDatePickerProps, KjunTimePickerProps } from "./date-picker";
+export type { KjunModalProps, KjunFormActionsProps } from "./modal";
+export type { KjunDrawerProps } from "./drawer";
+export { useKjunFeedback } from "./feedback";
+export type { ConfirmOptions, KjunFeedback, PromptOptions, ToastOptions } from "./feedback";

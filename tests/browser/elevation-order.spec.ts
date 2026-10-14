@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
-for (const platform of ['react', 'vue2', 'native']) test(`${platform}: window opening order controls paint and input independently of declaration order`, async ({ page }) => {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) test(`${platform}: window opening order controls paint and input independently of declaration order`, async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await openFixture(page, platform, '', 'elevation');
   await page.evaluate(() => (window as any).elevation.openWindow());
