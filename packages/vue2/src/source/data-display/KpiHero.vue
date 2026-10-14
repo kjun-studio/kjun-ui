@@ -89,12 +89,12 @@ export default {
       if (this.deltaAbsolute === null) return ''
       if (this.deltaFormatter) return this.deltaFormatter(this.deltaAbsolute, 'absolute')
       const abs = Math.abs(this.deltaAbsolute)
-      return this.$formatNumber(abs, { decimals: this.decimals })
+      return this.kjunFormatNumber(abs, { decimals: this.decimals })
     },
     deltaPercentFormatted() {
       if (this.deltaPercent === null) return ''
       if (this.deltaFormatter) return this.deltaFormatter(this.deltaPercent, 'percent')
-      return this.$formatNumber(Math.abs(this.deltaPercent), { decimals: 1 })
+      return this.kjunFormatNumber(Math.abs(this.deltaPercent), { decimals: 1 })
     },
     absoluteColorClass() {
       return resolveSemanticColorForLight(this.deltaAbsolute)
@@ -111,12 +111,12 @@ export default {
       const decimals = item.decimals != null ? item.decimals : 0
       const abs = Math.abs(item.value)
       if (item.semantic === 'price' && item.value < 0) {
-        return '−' + this.$formatNumber(abs, { decimals })
+        return '−' + this.kjunFormatNumber(abs, { decimals })
       }
       if (item.showSign && item.value > 0) {
-        return '+' + this.$formatNumber(abs, { decimals })
+        return '+' + this.kjunFormatNumber(abs, { decimals })
       }
-      return this.$formatNumber(item.value, { decimals })
+      return this.kjunFormatNumber(item.value, { decimals })
     },
     secondaryValueClass(item) {
       return resolveSemanticColor(item.value, item.semantic)

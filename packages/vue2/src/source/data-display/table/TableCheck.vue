@@ -24,7 +24,7 @@ export default {
   name: "KjunTableCheck",
   components: { KjunIcon },
   inheritAttrs: false,
-  inject: { parentIcons: { from: "kjunIcons", default: null } },
+  inject: { kjunParentIcons: { from: "kjunIcons", default: null } },
   provide() { return { kjunIcons: () => this.checkIcons }; },
   props: {
     checked: { type: Boolean, default: false },
@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     iconSize() { return String(tokens.extensions.checkbox.iconSizes.sm); },
-    checkIcons() { return withFallbackIcons(this.parentIcons?.() || defaultIcons, componentIcons); },
+    checkIcons() { return withFallbackIcons(this.kjunParentIcons?.() || defaultIcons, componentIcons); },
   },
 };
 </script>

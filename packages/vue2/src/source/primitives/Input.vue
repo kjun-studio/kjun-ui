@@ -54,7 +54,7 @@
         </slot>
       </div>
     </div>
-    <p v-if="showFieldErrorMessage" :id="`input-error-${_uid}`" class="kjun-field-error" role="alert">{{ errorMessage }}</p>
+    <p v-if="showFieldErrorMessage" :id="`kjun-input-error-${_uid}`" class="kjun-field-error" role="alert">{{ errorMessage }}</p>
   </div>
 </template>
 
@@ -72,7 +72,7 @@ export default {
   inheritAttrs: false,
   mixins: [fieldMixin, ...componentMixins],
   inject: {
-    dsFormGroup: {
+    kjunFormGroup: {
       default: null
     }
   },

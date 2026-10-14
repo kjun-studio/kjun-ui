@@ -4,7 +4,7 @@
       type="radio"
       :checked="isChecked"
       :disabled="effectiveDisabled"
-      :name="name || (radioGroup ? `kjun-radio-group-${radioGroup._uid}` : undefined)"
+      :name="name || (kjunRadioGroup ? `kjun-radio-group-${kjunRadioGroup._uid}` : undefined)"
       :value="val"
       class="kj-sr-only"
       @change="handleChange"
@@ -24,7 +24,7 @@ export default {
   mixins: componentMixins,
   name: 'KjunRadio',
   inject: {
-    radioGroup: {
+    kjunRadioGroup: {
       default: null
     }
   },
@@ -57,10 +57,10 @@ export default {
     }
   },
   computed: {
-    effectiveDisabled() { return this.disabled || !!this.radioGroup?.disabled },
+    effectiveDisabled() { return this.disabled || !!this.kjunRadioGroup?.disabled },
     isChecked() {
-      if (this.radioGroup) {
-        return this.radioGroup.value === this.val
+      if (this.kjunRadioGroup) {
+        return this.kjunRadioGroup.value === this.val
       }
       return this.value === this.val
     },
@@ -78,8 +78,8 @@ export default {
     handleChange() {
       if (this.effectiveDisabled) return
 
-      if (this.radioGroup) {
-        this.radioGroup.change(this.val)
+      if (this.kjunRadioGroup) {
+        this.kjunRadioGroup.change(this.val)
       } else {
         this.$emit('input', this.val)
         this.$emit('change', this.val)

@@ -26,7 +26,7 @@ export default {
   mixins: componentMixins,
   components: { KjunIcon },
   name: 'KjunDropdownItem',
-  inject: ['dropdown'],
+  inject: ['kjunDropdown'],
   props: {
     variant: {
       type: String,
@@ -69,7 +69,7 @@ export default {
     handleClick(e) {
       if (this.disabled) return
       this.$emit('click', e)
-      this.dropdown.close()
+      this.kjunDropdown.close()
     }
   }
 }

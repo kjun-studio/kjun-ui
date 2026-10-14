@@ -43,8 +43,8 @@ export default {
       if (this.number === null) return '—'
       if (this.formatter) return this.formatter(this.number)
       const text = this.format === 'percent'
-        ? this.$formatPercent(this.number, { decimals: this.decimals, isRaw: this.isRaw, showSign: this.showSign })
-        : (this.showSign && this.number > 0 ? '+' : '') + this.$formatNumber(this.number, { decimals: this.decimals })
+        ? this.kjunFormatPercent(this.number, { decimals: this.decimals, isRaw: this.isRaw, showSign: this.showSign })
+        : (this.showSign && this.number > 0 ? '+' : '') + this.kjunFormatNumber(this.number, { decimals: this.decimals })
       return this.prefix + text + this.suffix
     },
   },

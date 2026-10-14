@@ -47,7 +47,7 @@ export default {
   computed: {
     isNeutral() { return Math.abs(this.value) < DEVIATION_THRESHOLDS.negligible },
     formatted() {
-      return this.$formatPercent(this.value, { isRaw: true, showSign: true, decimals: this.decimals })
+      return this.kjunFormatPercent(this.value, { isRaw: true, showSign: true, decimals: this.decimals })
     },
     isSignal() {
       if (this.value === null || this.value === undefined) return false

@@ -57,9 +57,12 @@ async function auditIds(root) {
   const found = new Set();
   const sources = [...await files(root, "packages/vue2/src/**/*.vue"), ...await files(root, "packages/react/src/**/*.tsx"), ...await files(root, "shared/package-runtime/**/*.tsx")];
   // Literal id prefixes: id="x", :id="`x-${...}`" or :id="'x-' + ...", id={`x-${...}`}.
+  // Computed ids: gradientId() { return `x-${...}` }.
+  const computed = /\w*[iI]d\s*\(\)\s*\{\s*return\s*[`'"]([a-z][\w-]*)/g;
   const literal = /(?<![:\w-])id="([a-z][\w-]*)|(?<![\w-]):id="\s*[`']([a-z][\w-]*)|(?<![\w-])id=\{\s*[`'"]([a-z][\w-]*)/g;
   for (const file of sources) {
     const text = await read(root, file);
+    for (const [, prefix] of text.matchAll(computed)) if (!allowedId(prefix)) found.add(prefix);
     for (const match of text.matchAll(literal)) { const prefix = match[1] ?? match[2] ?? match[3]; if (!allowedId(prefix)) found.add(prefix); }
   }
   return found;

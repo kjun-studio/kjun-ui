@@ -84,11 +84,11 @@ export default {
         } else if (navigator.clipboard && window.isSecureContext) {
           await navigator.clipboard.writeText(this.value)
         } else {
-          this._fallbackCopy(this.value)
+          this.kjunFallbackCopy(this.value)
         }
         this.copied = true
         this.failed = false
-        this.$toast.success(this.successText)
+        this.kjunToast.success(this.successText)
         this.$emit('copied', this.value)
 
         clearTimeout(this.copiedTimer)
@@ -97,11 +97,11 @@ export default {
         }, 1500)
       } catch (err) {
         this.failed = true
-        this.$toast.error('복사 실패')
+        this.kjunToast.error('복사 실패')
         this.$emit('copy-error', err)
       }
     },
-    _fallbackCopy(text) {
+    kjunFallbackCopy(text) {
       const ta = document.createElement('textarea')
       ta.value = text
       ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px'

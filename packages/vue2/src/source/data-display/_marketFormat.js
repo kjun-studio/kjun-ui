@@ -70,7 +70,7 @@ export function formatTradeAmount(value, formatNumber) {
 
 // --- 값 포맷 (format 타입별) ---
 // ctx: 도메인 컨텍스트. 현재는 통화 분기에 사용 ({ currency: 'usd' | 'krw' }).
-// helpers: Vue 프로토타입 포맷터 번들($formatNumber 등)을 주입받는다.
+// helpers: Vue 프로토타입 포맷터 번들(kjunFormatNumber 등)을 주입받는다.
 export function formatMetricValue(value, format, ctx, helpers) {
   const { formatNumber, formatKRW, formatPrice, formatBigKRW, formatCompact, formatPercent } = helpers
   const currency = (ctx && ctx.currency) || 'krw'

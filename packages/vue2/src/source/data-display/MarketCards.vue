@@ -121,7 +121,7 @@
       v-if="showFooter && !initialLoading && rows.length > 0"
       class="kjun-market-cards__footer kj-px-4 kj-py-3 kj-border-t kj-border-border kj-flex kj-items-center kj-justify-between kj-text-xs kj-text-text-tertiary"
     >
-      <span v-if="calculatedAt">마지막 업데이트: {{ $formatDate(calculatedAt, { format: 'datetime' }) }}</span>
+      <span v-if="calculatedAt">마지막 업데이트: {{ kjunFormatDate(calculatedAt, { format: 'datetime' }) }}</span>
       <span v-else-if="footerNote">{{ footerNote }}</span>
       <span v-else />
       <span>총 {{ totalCount }}{{ unitLabel }}</span>
@@ -214,12 +214,12 @@ export default {
     },
     formatHelpers() {
       return {
-        formatNumber: this.$formatNumber,
-        formatKRW: this.$formatKRW,
-        formatPrice: this.$formatPrice,
-        formatBigKRW: this.$formatBigKRW,
-        formatCompact: this.$formatCompact,
-        formatPercent: this.$formatPercent,
+        formatNumber: this.kjunFormatNumber,
+        formatKRW: this.kjunFormatKRW,
+        formatPrice: this.kjunFormatPrice,
+        formatBigKRW: this.kjunFormatBigKRW,
+        formatCompact: this.kjunFormatCompact,
+        formatPercent: this.kjunFormatPercent,
       }
     },
   },

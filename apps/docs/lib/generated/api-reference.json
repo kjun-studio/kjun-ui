@@ -11304,7 +11304,14 @@
             "source": "packages/vue2/src/source/feedback/ErrorBoundary.vue"
           }
         ],
-        "events": [],
+        "events": [
+          {
+            "name": "error",
+            "source": "packages/vue2/src/source/feedback/ErrorBoundary.vue",
+            "type": "이벤트",
+            "summary": "error 이벤트를 통지합니다."
+          }
+        ],
         "slots": [
           {
             "name": "default",

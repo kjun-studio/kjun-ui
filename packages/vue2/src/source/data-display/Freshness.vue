@@ -28,7 +28,7 @@ export default {
         : '실시간 시세 지연'
       // fetchedAt이 있으면 상대시각을 덧붙여 "언제 적 값인지"를 툴팁에서 바로 확인 가능하게 한다
       if (!this.fetchedAt) return base
-      return `${base} · ${this.$formatRelativeTime(this.fetchedAt)}`
+      return `${base} · ${this.kjunFormatRelativeTime(this.fetchedAt)}`
     },
   },
 }

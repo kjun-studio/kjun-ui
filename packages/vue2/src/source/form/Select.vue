@@ -14,7 +14,7 @@
         role="combobox"
         :aria-expanded="isOpen && !kjunLayerBlocked ? 'true' : 'false'"
         aria-haspopup="listbox"
-        :aria-controls="`select-options-${_uid}`"
+        :aria-controls="`kjun-select-options-${_uid}`"
         :aria-invalid="fieldInvalid ? 'true' : undefined"
         :aria-describedby="fieldDescribedby"
         :aria-labelledby="fieldLabelledby"
@@ -59,7 +59,7 @@
         </div>
 
         <!-- Options -->
-        <div ref="options" :id="`select-options-${_uid}`" class="kj-min-h-0 kj-max-h-menu-list-max-height kj-overflow-y-auto" role="listbox" :aria-multiselectable="multiple ? 'true' : undefined" @keydown.down.prevent="focusNextOption" @keydown.up.prevent="focusPrevOption" @keydown.home.prevent="openAndFocusFirst" @keydown.end.prevent="openAndFocusLast" @keydown.enter.prevent="selectFocusedOption" @keydown.space.prevent="selectFocusedOption" @keydown.escape="handleEscape">
+        <div ref="options" :id="`kjun-select-options-${_uid}`" class="kj-min-h-0 kj-max-h-menu-list-max-height kj-overflow-y-auto" role="listbox" :aria-multiselectable="multiple ? 'true' : undefined" @keydown.down.prevent="focusNextOption" @keydown.up.prevent="focusPrevOption" @keydown.home.prevent="openAndFocusFirst" @keydown.end.prevent="openAndFocusLast" @keydown.enter.prevent="selectFocusedOption" @keydown.space.prevent="selectFocusedOption" @keydown.escape="handleEscape">
           <div v-if="loading" class="kj-flex kj-items-center kj-justify-center kj-gap-2 kj-px-3 kj-py-3 kj-text-sm kj-text-text-secondary" role="status"><KjunSpinner size="sm" />검색 중...</div>
           <div
             v-for="(entry, index) in visibleEntries"
@@ -114,7 +114,7 @@ export default {
   mixins: [selectState, selectKeyboard, fieldMixin, ...componentMixins, layerMotion("popup")],
   inject: {
     kjunCompoundControl: { default: null },
-    dsFormGroup: {
+    kjunFormGroup: {
       default: null
     }
   },

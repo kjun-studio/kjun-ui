@@ -30,7 +30,7 @@ export default {
   // aria-labelledby/aria-describedby를 자동 연결한다.
   provide() {
     return {
-      dsFormGroup: this
+      kjunFormGroup: this
     }
   },
   props: {

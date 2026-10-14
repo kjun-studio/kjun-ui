@@ -95,7 +95,7 @@ export default {
   },
   computed: {
     gradientId() {
-      return `sparkline-grad-${this.uid}`
+      return `kjun-sparkline-grad-${this.uid}`
     },
     lineColor() {
       if (this.color) return this.color

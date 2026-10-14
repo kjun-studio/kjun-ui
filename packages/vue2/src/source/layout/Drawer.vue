@@ -5,11 +5,11 @@
       @click.self="handleOverlayClick"
     >
       <div class="kjun-drawer-scrim" aria-hidden="true"></div>
-      <div :class="drawerClasses" :style="drawerStyle" role="dialog" aria-modal="true" :aria-labelledby="title ? `drawer-title-${_uid}` : undefined" @click.stop>
+      <div :class="drawerClasses" :style="drawerStyle" role="dialog" aria-modal="true" :aria-labelledby="title ? `kjun-drawer-title-${_uid}` : undefined" @click.stop>
         <!-- Header -->
         <div v-if="title || $slots.header" class="kjun-drawer-header">
           <slot name="header">
-            <h3 :id="`drawer-title-${_uid}`" class="kjun-drawer-title">{{ title }}</h3>
+            <h3 :id="`kjun-drawer-title-${_uid}`" class="kjun-drawer-title">{{ title }}</h3>
           </slot>
           <button
             v-if="closable"

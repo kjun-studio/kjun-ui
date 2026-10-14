@@ -9,14 +9,14 @@
         :style="containerStyle"
         role="dialog"
         aria-modal="true"
-        :aria-labelledby="labelledByHeading() ? `modal-title-${_uid}` : undefined"
+        :aria-labelledby="labelledByHeading() ? `kjun-modal-title-${_uid}` : undefined"
         :aria-label="dialogLabel()"
         @click.stop
       >
         <!-- Header -->
         <div v-if="showHeader" class="kjun-modal-header">
           <!-- id를 래퍼에 둬서 #header 슬롯(커스텀 헤더)에서도 aria-labelledby가 유효 -->
-          <div :id="`modal-title-${_uid}`" class="kjun-modal-title">
+          <div :id="`kjun-modal-title-${_uid}`" class="kjun-modal-title">
             <slot name="header">
               <h3>{{ title }}</h3>
             </slot>

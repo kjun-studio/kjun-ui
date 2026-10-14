@@ -25,18 +25,18 @@ export default {
     }
   },
   methods: {
-    _getRowId(row) {
+    kjunGetRowId(row) {
       return row[this.rowKey]
     },
     isSelected(row) {
       // API 재조회 시 객체 참조가 바뀌므로 rowKey 기준으로 비교
-      const id = this._getRowId(row)
-      return this.selected.some(r => this._getRowId(r) === id)
+      const id = this.kjunGetRowId(row)
+      return this.selected.some(r => this.kjunGetRowId(r) === id)
     },
     toggleRow(row) {
-      const id = this._getRowId(row)
+      const id = this.kjunGetRowId(row)
       const next = this.isSelected(row)
-        ? this.selected.filter(r => this._getRowId(r) !== id)
+        ? this.selected.filter(r => this.kjunGetRowId(r) !== id)
         : [...this.selected, row]
       this.$emit('selection-change', next)
     },

@@ -7,12 +7,12 @@
         <button
           v-for="tab in normalizedTabs"
           :key="tab.name"
-          :id="'tab-' + _uid + '-' + tab.name"
+          :id="'kjun-tab-' + _uid + '-' + tab.name"
           type="button"
           role="tab"
           :aria-selected="String(value === tab.name)"
           :data-tab-name="tab.name"
-          :aria-controls="registeredTabs.some(pane => pane.name === tab.name) ? 'tabpanel-' + _uid + '-' + tab.name : undefined"
+          :aria-controls="registeredTabs.some(pane => pane.name === tab.name) ? 'kjun-tabpanel-' + _uid + '-' + tab.name : undefined"
           :disabled="tab.disabled"
           :tabindex="entryName === tab.name ? 0 : -1"
           :class="tabClasses(tab)"
@@ -63,7 +63,7 @@ export default {
   name: 'KjunTabs',
   provide() {
     return {
-      tabsContainer: this
+      kjunTabs: this
     }
   },
   props: {

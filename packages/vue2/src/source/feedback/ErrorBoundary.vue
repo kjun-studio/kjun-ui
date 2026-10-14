@@ -20,10 +20,6 @@
 <script>
 import KjunButton from "../primitives/Button.vue";
 import { componentMixins } from "../../component-mixins.js";
-import { createLogger } from '@kjun-adapter/logger.js'
-
-const logger = createLogger('KjunErrorBoundary')
-
 export default {
   mixins: componentMixins,
   components: { KjunButton },
@@ -39,10 +35,11 @@ export default {
       hasError: false
     }
   },
+  // Like React's onError: the app hears about the error through the error event, and it keeps
+  // propagating to Vue.config.errorHandler so error reporting still sees it.
   errorCaptured(err, vm, info) {
     this.hasError = true
-    logger.error('컴포넌트 에러 포착:', err, { component: vm?.$options?.name, info })
-    return false
+    this.$emit('error', err, info)
   },
   methods: {
     reload() {

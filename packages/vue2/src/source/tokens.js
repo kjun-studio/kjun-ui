@@ -9,7 +9,7 @@ import { tokens } from '@kjun-ui/tokens'
  * - SIZES_CORE: 폼/입력 계열 (Input, Select, Checkbox, Switch, Progress 등) 3단계
  * - SIZES_EXTENDED: 버튼/배지/칩 계열 (Button, Badge, ButtonGroup, FilterGroup, Spinner) 5단계
  * - SEMANTIC_VARIANTS: 상태 표현 표준 어휘. 'error'는 'danger'의 별칭으로만 수용한다
- *   (Toast는 공개 API($toast.error) 호환을 위해 내부적으로 error를 canonical로 유지).
+ *   (Toast는 공개 API(kjunToast.error) 호환을 위해 내부적으로 error를 canonical로 유지).
  */
 export const SIZES_CORE = ['sm', 'md', 'lg']
 export const SIZES_EXTENDED = ['xs', 'sm', 'md', 'lg', 'xl']

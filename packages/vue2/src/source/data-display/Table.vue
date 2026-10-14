@@ -398,13 +398,13 @@ export default {
       }
 
       if (col.type === 'number') {
-        return typeof value === 'number' ? this.$formatNumber(value) : value
+        return typeof value === 'number' ? this.kjunFormatNumber(value) : value
       }
       if (col.type === 'date') {
-        return this.$formatDate(value, { format: 'date' })
+        return this.kjunFormatDate(value, { format: 'date' })
       }
       if (col.type === 'datetime') {
-        return this.$formatDate(value, { format: 'datetime' })
+        return this.kjunFormatDate(value, { format: 'datetime' })
       }
 
       return value

@@ -96,7 +96,7 @@
       v-if="showFooter && !initialLoading && rows.length > 0"
       class="kjun-mobile-simple-list__inset kj-px-4 kj-py-3 kj-flex kj-flex-wrap kj-gap-2 kj-items-center kj-justify-between kj-text-xs kj-text-text-tertiary"
     >
-      <span v-if="calculatedAt">마지막 업데이트: {{ $formatDate(calculatedAt, { format: 'datetime' }) }}</span>
+      <span v-if="calculatedAt">마지막 업데이트: {{ kjunFormatDate(calculatedAt, { format: 'datetime' }) }}</span>
       <span v-else-if="footerNote">{{ footerNote }}</span>
       <span v-else />
       <span>총 {{ totalCount }}{{ unitLabel }}</span>

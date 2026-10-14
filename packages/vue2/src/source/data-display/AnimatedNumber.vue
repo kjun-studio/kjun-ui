@@ -25,7 +25,7 @@ export default {
   computed: {
     display() {
       return typeof this.raw === 'string' ? this.raw : this.formatter
-        ? this.formatter(this.raw) : this.$formatNumber(this.raw, { decimals: this.decimals });
+        ? this.formatter(this.raw) : this.kjunFormatNumber(this.raw, { decimals: this.decimals });
     },
   },
   watch: { value: 'updateMotion', animated: 'updateMotion', fromPrevious: 'updateMotion' },

@@ -22,7 +22,7 @@ export default {
   components: { KjunRadio },
   provide() {
     return {
-      radioGroup: this
+      kjunRadioGroup: this
     }
   },
   props: {

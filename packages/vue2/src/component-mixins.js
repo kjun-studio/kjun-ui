@@ -5,7 +5,7 @@ import { formatterMixin } from "./adapters/formatters.js";
 export const feedbackMixin = {
   inject: { kjunFeedback: { default: null } },
   computed: {
-    $toast() {
+    kjunToast() {
       return this.kjunFeedback?.toast || {
         success() {}, error() {}, warning() {}, info() {},
       };

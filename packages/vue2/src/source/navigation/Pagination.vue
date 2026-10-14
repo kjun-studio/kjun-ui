@@ -5,7 +5,7 @@
   >
     <!-- Info (optional) -->
     <div v-if="showInfo && totalRows > 0" class="kj-text-sm kj-text-text-secondary">
-      {{ startRow }} - {{ endRow }} / {{ $formatNumber(totalRows) }}개
+      {{ startRow }} - {{ endRow }} / {{ kjunFormatNumber(totalRows) }}개
     </div>
     <div v-else-if="!showInfo" class="kj-hidden pagination:kj-block"></div>
 

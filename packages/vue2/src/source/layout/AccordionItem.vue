@@ -3,11 +3,11 @@
     <!-- Header -->
     <button
       type="button"
-      :id="'accordion-header-' + itemId"
+      :id="'kjun-accordion-header-' + itemId"
       class="kjun-accordion-trigger"
       :disabled="disabled"
       :aria-expanded="String(isItemOpen)"
-      :aria-controls="'accordion-panel-' + itemId"
+      :aria-controls="'kjun-accordion-panel-' + itemId"
       @click.stop="toggle"
     >
       <div class="kjun-accordion-heading">
@@ -34,9 +34,9 @@
         ref="panel"
         :inert="!isItemOpen"
         :aria-hidden="!isItemOpen ? 'true' : null"
-        :id="'accordion-panel-' + itemId"
+        :id="'kjun-accordion-panel-' + itemId"
         role="region"
-        :aria-labelledby="'accordion-header-' + itemId"
+        :aria-labelledby="'kjun-accordion-header-' + itemId"
         class="kjun-accordion-content"
       >
         <div class="kjun-accordion-panel">
@@ -59,7 +59,7 @@ export default {
   components: { KjunIcon },
   name: 'KjunAccordionItem',
   inject: {
-    accordion: {
+    kjunAccordion: {
       default: null
     }
   },
@@ -85,28 +85,28 @@ export default {
   computed: {
     iconSize() { return tokens.extensions.accordion.iconSize },
     isItemOpen() {
-      if (this.accordion) {
-        return this.accordion.isOpen(this.itemId)
+      if (this.kjunAccordion) {
+        return this.kjunAccordion.isOpen(this.itemId)
       }
       return false
     },
 
   },
   mounted() {
-    if (this.defaultOpen && this.accordion) {
-      this.accordion.registerDefault(this.itemId)
+    if (this.defaultOpen && this.kjunAccordion) {
+      this.kjunAccordion.registerDefault(this.itemId)
     }
   },
   beforeDestroy() {
-    this.accordion?.unregisterItem(this.itemId)
+    this.kjunAccordion?.unregisterItem(this.itemId)
     if (this.$refs.panel) stopCollapse(this.$refs.panel)
   },
   methods: {
     prepareCollapse, stopCollapse,
     toggle() {
       if (this.disabled) return
-      if (this.accordion) {
-        this.accordion.toggleItem(this.itemId)
+      if (this.kjunAccordion) {
+        this.kjunAccordion.toggleItem(this.itemId)
       }
     },
     onEnter(el, done) { moveCollapse(el, true, done); },

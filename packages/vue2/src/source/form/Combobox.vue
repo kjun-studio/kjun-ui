@@ -19,8 +19,8 @@
         :aria-describedby="fieldDescribedby"
         :aria-invalid="fieldInvalid ? 'true' : undefined"
         :aria-expanded="String(isOpen)"
-        :aria-controls="`combobox-options-${_uid}`"
-        :aria-activedescendant="isOpen && highlightedIndex >= 0 ? `combobox-option-${_uid}-${highlightedIndex}` : undefined"
+        :aria-controls="`kjun-combobox-options-${_uid}`"
+        :aria-activedescendant="isOpen && highlightedIndex >= 0 ? `kjun-combobox-option-${_uid}-${highlightedIndex}` : undefined"
         @input="onInput($event.target.value)"
         @click="onPointerOpen"
       @focus="onFocus"
@@ -45,11 +45,11 @@
     <!-- Dropdown -->
     <transition name="kjun-combobox-dropdown" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
       @enter-cancelled="motionCancel" @leave-cancelled="motionCancel">
-      <div v-kjun-layer.field="'popup'" v-if="isOpen" :id="`combobox-options-${_uid}`" role="listbox" class="kj-absolute kj-z-50 kj-w-full kj-mt-1 kjun-field-menu kj-max-h-menu-list-max-height kj-overflow-y-auto">
+      <div v-kjun-layer.field="'popup'" v-if="isOpen" :id="`kjun-combobox-options-${_uid}`" role="listbox" class="kj-absolute kj-z-50 kj-w-full kj-mt-1 kjun-field-menu kj-max-h-menu-list-max-height kj-overflow-y-auto">
         <div
           v-for="(option, index) in filteredOptions"
           :key="getOptionValue(option)"
-          :id="`combobox-option-${_uid}-${index}`"
+          :id="`kjun-combobox-option-${_uid}-${index}`"
           role="option"
           :aria-selected="String(isSelected(option))"
           :aria-disabled="isOptionDisabled(option) ? 'true' : undefined"

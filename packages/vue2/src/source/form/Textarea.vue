@@ -29,7 +29,7 @@ export default {
   name: 'KjunTextarea',
   mixins: [fieldMixin, ...componentMixins],
   inject: {
-    dsFormGroup: {
+    kjunFormGroup: {
       default: null
     }
   },

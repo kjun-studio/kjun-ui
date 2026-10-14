@@ -44,13 +44,13 @@ export default {
   },
   provide() {
     return {
-      dropdown: this
+      kjunDropdown: this
     }
   },
   // 중첩 드롭다운(팝오버형 메뉴 안의 KjunMenuButton 등)에서 조상 드롭다운을 식별한다.
   // 자기 자신의 provide는 inject 해석에서 제외되므로 가장 가까운 조상이 잡힌다.
   inject: {
-    parentDropdown: { from: 'dropdown', default: null }
+    kjunParentDropdown: { from: 'kjunDropdown', default: null }
   },
   props: {
     disabled: { type: Boolean, default: false },
@@ -144,7 +144,7 @@ export default {
       if (this.isTriggerDisabled()) return
       // 싱글톤 규칙: 열린 다른 드롭다운은 닫는다 — 단, 그것이 내 조상(중첩 호스트)이면
       // 닫는 순간 조상 메뉴(v-if)가 unmount되며 나까지 사라지므로 유지한다.
-      if (activeDropdown && activeDropdown !== this && activeDropdown !== this.parentDropdown) {
+      if (activeDropdown && activeDropdown !== this && activeDropdown !== this.kjunParentDropdown) {
         activeDropdown.close()
       }
       activeDropdown = this
@@ -154,7 +154,7 @@ export default {
     close() {
       if (activeDropdown === this) {
         // 중첩 드롭다운이 닫힐 때는 아직 열려 있는 조상에게 싱글톤 소유권을 돌려준다.
-        activeDropdown = this.parentDropdown && this.parentDropdown.isOpen ? this.parentDropdown : null
+        activeDropdown = this.kjunParentDropdown && this.kjunParentDropdown.isOpen ? this.kjunParentDropdown : null
       }
       this.isOpen = false
     },

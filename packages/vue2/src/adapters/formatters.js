@@ -14,7 +14,7 @@ export const formatters = {
 export const formatterMixin = {
   inject: { kjunFormatters: { default: () => ({}) } },
   props: { formatters: { type: Object, default: () => ({}) } },
-  methods: Object.fromEntries(Object.keys(formatters).map(key => ['$format'+key[0].toUpperCase()+key.slice(1), function(...args) {
+  methods: Object.fromEntries(Object.keys(formatters).map(key => ['kjunFormat'+key[0].toUpperCase()+key.slice(1), function(...args) {
     return (this.formatters[key] || this.kjunFormatters[key] || formatters[key])(...args);
   }])),
 };

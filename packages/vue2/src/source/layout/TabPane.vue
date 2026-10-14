@@ -1,10 +1,10 @@
 <template>
   <div
     v-show="isActive"
-    :id="'tabpanel-' + tabsContainer._uid + '-' + name"
+    :id="'kjun-tabpanel-' + kjunTabs._uid + '-' + name"
     role="tabpanel"
     :tabindex="panelTabIndex"
-    :aria-labelledby="'tab-' + tabsContainer._uid + '-' + name"
+    :aria-labelledby="'kjun-tab-' + kjunTabs._uid + '-' + name"
   >
     <slot></slot>
   </div>
@@ -16,7 +16,7 @@ import { componentMixins } from "../../component-mixins.js";
 export default {
   mixins: componentMixins,
   name: 'KjunTabPane',
-  inject: ['tabsContainer'],
+  inject: ['kjunTabs'],
   props: {
     name: {
       type: String,
@@ -47,20 +47,20 @@ export default {
       return { registrationId: this._uid, name: this.name, label: this.label, icon: this.icon, badge: this.badge, disabled: this.disabled }
     },
     isActive() {
-      return this.tabsContainer.value === this.name
+      return this.kjunTabs.value === this.name
     }
   },
   watch: {
     registration(tab) {
-      this.tabsContainer.updateTab(tab)
+      this.kjunTabs.updateTab(tab)
     }
   },
   mounted() {
-    this.tabsContainer.registerTab(this.registration)
+    this.kjunTabs.registerTab(this.registration)
     this.updatePanelFocus()
   },
   beforeDestroy() {
-    this.tabsContainer.unregisterTab(this._uid)
+    this.kjunTabs.unregisterTab(this._uid)
   }
 }
 </script>

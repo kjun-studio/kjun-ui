@@ -2,7 +2,7 @@ const files = (...names) => names.map(name => `tests/browser/${name}.spec.ts`);
 export const smokeFiles = files('expanded', 'card-contract', 'data-state-design');
 const contracts = files('api-reference', 'vue-contracts');
 const fields = files('input-contracts', 'controlled-state', 'live-updates', 'accessibility-controls');
-const visuals = files('visual-contract', 'size-contracts', 'token-propagation', 'style-boundary');
+const visuals = files('visual-contract', 'size-contracts', 'token-propagation', 'style-boundary', 'host-globals');
 const layers = files('elevation', 'elevation-edges', 'elevation-inputs', 'elevation-keyboard',
   'elevation-order', 'elevation-reopen', 'elevation-retention', 'provider-layers',
   'layer-contracts', 'layer-motion-edges', 'popup-escape', 'styles');

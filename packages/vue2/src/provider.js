@@ -3,19 +3,19 @@ import { createVueLayerHost } from "./layer-host.js";
 import { validateKjunCssScope } from '../../../shared/package-runtime/css-contract';
 export const KjunProvider = {
   name: 'KjunProvider',
-  inject: { parentIcons: { from: 'kjunIcons', default: null }, parentLayers: { from: 'kjunLayers', default: null }, parentFormatters: { from: 'kjunFormatters', default: null }, parentIdentity: { from: 'kjunRenderIdentity', default: null } },
+  inject: { kjunParentIcons: { from: 'kjunIcons', default: null }, kjunParentLayers: { from: 'kjunLayers', default: null }, kjunParentFormatters: { from: 'kjunFormatters', default: null }, kjunParentIdentity: { from: 'kjunRenderIdentity', default: null } },
   props: { icons: { type: Object, default: null }, formatters: { type: Object, default: () => ({}) }, renderIdentity: { type: Function, default: null } },
-  data() { return { layerHost: createVueLayerHost(this.parentLayers) }; },
+  data() { return { layerHost: createVueLayerHost(this.kjunParentLayers) }; },
   computed: {
-    iconRegistry() { return mergeIcons(this.parentIcons?.() || defaultIcons, this.icons); },
+    iconRegistry() { return mergeIcons(this.kjunParentIcons?.() || defaultIcons, this.icons); },
   },
   provide() {
     const self = this;
     return {
       kjunLayers: this.layerHost,
       kjunIcons: () => self.iconRegistry,
-      kjunFormatters: new Proxy({}, { get(_, key) { return self.formatters[key] ?? self.parentFormatters?.[key]; } }),
-      kjunRenderIdentity: (h, props, slots) => (self.renderIdentity || self.parentIdentity)?.(h, props, slots),
+      kjunFormatters: new Proxy({}, { get(_, key) { return self.formatters[key] ?? self.kjunParentFormatters?.[key]; } }),
+      kjunRenderIdentity: (h, props, slots) => (self.renderIdentity || self.kjunParentIdentity)?.(h, props, slots),
     };
   },
   mounted() {

@@ -168,7 +168,7 @@
                 <template v-else-if="col.type === 'investor'">
                   <span v-if="row[col.key] == null" class="kj-text-text-tertiary">—</span>
                   <span v-else :class="getInvestorClass(row[col.key])">
-                    {{ row[col.key] >= 0 ? '+' : '' }}{{ $formatBigKRW(row[col.key]) }}
+                    {{ row[col.key] >= 0 ? '+' : '' }}{{ kjunFormatBigKRW(row[col.key]) }}
                   </span>
                 </template>
 
@@ -208,7 +208,7 @@
       v-if="showFooter && !initialLoading && rows.length > 0"
       class="kj-px-4 kj-py-3 kj-border-t kj-border-border kj-flex kj-items-center kj-justify-between kj-text-xs kj-text-text-tertiary"
     >
-      <span v-if="calculatedAt">마지막 업데이트: {{ $formatDate(calculatedAt, { format: 'datetime' }) }}</span>
+      <span v-if="calculatedAt">마지막 업데이트: {{ kjunFormatDate(calculatedAt, { format: 'datetime' }) }}</span>
       <span v-else-if="footerNote">{{ footerNote }}</span>
       <span v-else />
       <span>총 {{ totalCount }}{{ unitLabel }}</span>
@@ -348,18 +348,18 @@ export default {
       if (value === null || value === undefined || value === '') return '-'
       switch (col.type) {
         case 'net_amount':
-          return formatNetAmount(value, this.$formatNumber)
+          return formatNetAmount(value, this.kjunFormatNumber)
         case 'net_volume':
-          return formatNetVolume(value, this.$formatNumber)
+          return formatNetVolume(value, this.kjunFormatNumber)
         case 'trade_amount':
-          return formatTradeAmount(value, this.$formatNumber)
+          return formatTradeAmount(value, this.kjunFormatNumber)
         case 'bigAmount':
-          return this.currency === 'usd' ? this.$formatCompact(value) : this.$formatBigKRW(value)
+          return this.currency === 'usd' ? this.kjunFormatCompact(value) : this.kjunFormatBigKRW(value)
         case 'compact':
-          return this.$formatCompact(value)
+          return this.kjunFormatCompact(value)
         case 'ratio':
           // 0/falsy는 의미 없는 비율로 보고 '-' (기존 주식 표 동작 보존)
-          return value ? this.$formatNumber(value, { decimals: col.decimals != null ? col.decimals : 2 }) : '-'
+          return value ? this.kjunFormatNumber(value, { decimals: col.decimals != null ? col.decimals : 2 }) : '-'
         default:
           return value
       }

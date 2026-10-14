@@ -135,13 +135,13 @@ export default {
     formatNumericValue(item, value) {
       const decimals = item.decimals != null ? item.decimals : 0
       if (item.semantic === 'price' && value < 0) {
-        return '−' + this.$formatNumber(Math.abs(value), { decimals })
+        return '−' + this.kjunFormatNumber(Math.abs(value), { decimals })
       }
       // showSign: 등락률처럼 방향이 의미인 값에 양수 부호를 명시 (opt-in)
       if (item.showSign && value > 0) {
-        return '+' + this.$formatNumber(value, { decimals })
+        return '+' + this.kjunFormatNumber(value, { decimals })
       }
-      return this.$formatNumber(value, { decimals })
+      return this.kjunFormatNumber(value, { decimals })
     },
     valueColorClass(item) {
       // 값 부호로 색을 정할 수 없는 경우(예: 항상 양수인 상승/하락 카운트) 명시적 색을 우선한다

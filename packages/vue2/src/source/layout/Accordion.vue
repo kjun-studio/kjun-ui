@@ -11,7 +11,7 @@ export default {
   name: 'KjunAccordion',
   provide() {
     return {
-      accordion: this
+      kjunAccordion: this
     }
   },
   props: {

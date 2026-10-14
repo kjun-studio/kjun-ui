@@ -17,8 +17,8 @@
     "name": "@kjun-ui/vue2",
     "version": "0.4.2",
     "file": "kjun-ui-vue2-0.4.2.tgz",
-    "bytes": 253160,
-    "integrity": "sha512-0SNmf38fUJP49HBsKQWb7XyfuimYLY1zb4nLt1VYurmU0UHahfd6Mz4jCTkQD3sIx6qjpu5RaOJ771uWH13a6w=="
+    "bytes": 253158,
+    "integrity": "sha512-aJ/6cUH+qRvI+arHCX4lqN9J3KNfiwqXCzQBEWcjaIHoXDc4TD6zSVBrOV+3NlXgquQN11ul6Qgdakyym1tXGA=="
   },
   {
     "name": "@kjun-ui/react",
