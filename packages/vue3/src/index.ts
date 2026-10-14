@@ -11,3 +11,5 @@ export type { KjunListSkeletonProps, KjunFormSkeletonProps, KjunChartSkeletonPro
 export type { KjunInputProps, KjunFormGroupProps } from "./input";
 export type { ChoiceValue, ChoiceOption, KjunCheckboxProps, KjunSwitchProps, KjunRadioProps, KjunRadioGroupProps, KjunTextareaProps, KjunButtonGroupProps, KjunFilterGroupProps } from "./controls";
 export { groupKeydown } from "../../../shared/package-runtime/group-keyboard";
+export type { KjunSliderProps, KjunRangeSliderProps } from "./range-input";
+export type { KjunQuantityStepperProps } from "./quantity-stepper";

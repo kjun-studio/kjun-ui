@@ -12,7 +12,7 @@ async function appearance(page: Page, platform: string, id = 'single') {
     const fill = platform === 'native' ? track.children[1] : track.querySelector('.kjun-slider-fill')!;
     const rect = (el: Element) => { const r = el.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; };
     const thumbs = sliders.map((slider: any) => {
-      const el = platform === 'react' ? slider.closest('.kjun-slider-thumb') : platform === 'native' ? slider.firstElementChild : slider;
+      const el = platform === 'react' || platform === 'vue3' ? slider.closest('.kjun-slider-thumb') : platform === 'native' ? slider.firstElementChild : slider;
       // Chromium returns the input's own style for vendor range pseudo-elements.
       // Resolve the matching thumb rules on a detached-from-layout probe instead.
       let probe: HTMLElement | undefined;
@@ -48,7 +48,7 @@ async function appearance(page: Page, platform: string, id = 'single') {
   }, platform);
 }
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: slider fills meet thumb centers at both ends and collapsed ranges`, async ({ page }) => {
     await openFixture(page, platform, '', 'slider-design');
     for (const value of [0, 40, 100]) {

@@ -8,3 +8,5 @@ export { KjunImage, KjunAvatar } from "./media";
 export { KjunListSkeleton, KjunFormSkeleton, KjunChartSkeleton } from "./skeletons";
 export { KjunInput, KjunFormGroup } from "./input";
 export { KjunCheckbox, KjunSwitch, KjunRadio, KjunRadioGroup, KjunTextarea, KjunButtonGroup, KjunFilterGroup } from "./controls";
+export { KjunSlider, KjunRangeSlider } from "./range-input";
+export { KjunQuantityStepper } from "./quantity-stepper";
