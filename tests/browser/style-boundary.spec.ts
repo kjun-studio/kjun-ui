@@ -37,6 +37,20 @@ for (const platform of ['react', 'vue2']) {
 }
 
 for (const platform of ['react', 'vue2']) {
+  test(`${platform}: the form layout attribute spaces form groups and leaves the app wrapper's own text alone`, async ({ page }) => {
+    await page.setViewportSize({ width: 1024, height: 900 });
+    await openFixture(page, platform, '', 'style-boundary');
+    // The wrapper's app heading and paragraph look exactly like the same app markup elsewhere in the Provider.
+    const layout = Object.fromEntries(await probes(page, 'form-layout'));
+    const inside = Object.fromEntries(await probes(page, 'inside'));
+    expect({ heading: layout.heading, paragraph: layout.paragraph }).toEqual({ heading: inside.heading, paragraph: inside.paragraph });
+    await expect(page.getByTestId('form-layout')).toHaveCSS('font-size', await page.getByTestId('inside').evaluate(el => getComputedStyle(el).fontSize));
+    for (const group of await page.getByTestId('form-layout').locator('.kjun-form-group').all())
+      await expect(group).toHaveCSS('margin-bottom', '0px');
+  });
+}
+
+for (const platform of ['react', 'vue2']) {
   test(`${platform}: reduced motion slows kjun animations only, not app animations inside the Provider`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: 1024, height: 900 });

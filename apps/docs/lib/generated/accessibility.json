@@ -15898,32 +15898,39 @@
       "name": "@kjun-ui/tokens",
       "version": "0.5.0",
       "file": "kjun-ui-tokens-0.5.0.tgz",
-      "bytes": 96702,
-      "integrity": "sha512-vd1yS0h6PBxvtt41iQvJFrSXfkg7htFb/2Jpo5dUETBYmC/vBzM6RohNCt7kYyerChj5BKrm1i5/++vgBA2NTA=="
+      "bytes": 96715,
+      "integrity": "sha512-YdkYJSC0Mw4y5K/PizGeE6b+x898hjLEydmO+xhAdP6G5VCqwcmIwSeDblMLQLGk6IpFnxdYqUZjB/VH93iUiA=="
     },
     {
       "name": "@kjun-ui/vue2",
       "version": "0.5.0",
       "file": "kjun-ui-vue2-0.5.0.tgz",
-      "bytes": 253499,
-      "integrity": "sha512-sIQJVeHvpjqajs2OLnACa9JVuW3nND5N+1OA4qqgseQHE9IIkRNiQTRVH7TgjtnSBuGujBylOIS+NFpxyEUF8w=="
+      "bytes": 253511,
+      "integrity": "sha512-IrlAFZNpmACsZ8Qbh9k2x2MBp7AA/kdo5Ak1y3jz+bVJpSfEZeIlCU3GzuEIclAuac0FJ174x8Ivsr3/0Jy71A=="
+    },
+    {
+      "name": "@kjun-ui/vue3",
+      "version": "0.5.0",
+      "file": "kjun-ui-vue3-0.5.0.tgz",
+      "bytes": 63913,
+      "integrity": "sha512-sgzztIMl4ZswGmi2bFlXLBhPh1wk62Fu5BGoy1QIxp0Y4IF6Dor4SJKx2OBSJhToj/tjqksygzn9u4gTQ+V+BQ=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.5.0",
       "file": "kjun-ui-react-0.5.0.tgz",
-      "bytes": 214349,
-      "integrity": "sha512-kIa/BIeGt9PGmrIg+GAmRLv1fmMxcLJotrFAXyCgNB8BJhx8MFeaaXAglN6by+zR5sJpfXWOIZYlwF+qNf8xHA=="
+      "bytes": 215233,
+      "integrity": "sha512-xRjq//zgwK7kR6kqvhy6XEF/H4eWwGCPXJ8+a8IS8lM/eE9sQaU8vxUbzfGfVb4ly8DURyhIzzC0KfT/ataRQw=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.5.0",
       "file": "kjun-ui-native-0.5.0.tgz",
-      "bytes": 435627,
-      "integrity": "sha512-xvDWrnIlUc0anrp5Dc78bZhYW6vUvC+y6FU6IUiOPF9Q+1bL9fPheuWGj3QxmfQm+mt+5GcjH2dDRsmFVimASg=="
+      "bytes": 436709,
+      "integrity": "sha512-kJVb3UHyAho9UPX+1EpxoH9HO4CIsZ3cnp0nskUbplLzcd0iPToPa8Z42h+tbQayOIHqlkMOLQgQqdtxKwyVOg=="
     }
   ],
-  "definitionHash": "sha256-3887c6a9b94968ba2b8e7a0fcc3f0554273eaca14e3514f81f3b01634bf89cee",
+  "definitionHash": "sha256-9e853deec4417b3d09276fcadc61ef37b497e3cc625818a0947a93fbd4aee4e2",
   "runs": [
     {
       "schemaVersion": 1,

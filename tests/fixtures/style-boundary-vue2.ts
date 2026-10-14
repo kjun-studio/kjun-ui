@@ -13,6 +13,13 @@ new Vue({
         h('div', { attrs: { 'data-testid': 'inside' } }, [app()]),
         h(K.KjunFeedbackProvider, [h('div', { attrs: { 'data-testid': 'inside-feedback' } }, [app()])]),
         h('span', { attrs: { 'data-testid': 'icon-host' }, style: { color: 'rgb(1, 2, 3)', fontSize: '30px' } }, [h(K.KjunIcon, { props: { name: 'star' } })]),
+        // An app wrapper that opts form groups into its own flex spacing with the layout attribute.
+        h('div', { attrs: { 'data-testid': 'form-layout', 'data-kjun-layout': 'form' }, style: { display: 'flex', flexDirection: 'column', gap: '16px', width: '360px' } }, [
+          h('h2', { attrs: { 'data-probe': 'heading' } }, '공지'),
+          h('p', { attrs: { 'data-probe': 'paragraph' } }, '본문'),
+          h(K.KjunFormGroup, { props: { label: '이름' } }, [h(K.KjunInput, { props: { value: '', ariaLabel: '이름' } })]),
+          h(K.KjunFormGroup, { props: { label: '메모' } }, [h(K.KjunInput, { props: { value: '', ariaLabel: '메모' } })]),
+        ]),
         h('div', { attrs: { 'data-testid': 'kjun' }, style: { display: 'grid', gap: '16px', width: '360px' } }, [
           h(K.KjunButton, { props: { variant: 'primary' } }, '저장'),
           h(K.KjunInput, { props: { value: '값', ariaLabel: '입력' } }),
