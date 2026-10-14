@@ -6,7 +6,7 @@ const label = (page: Page, text: string) => nav(page).getByText(text, { exact: t
 const icon = (page: Page, text: string) => nav(page).getByRole('link', { name: new RegExp('^' + text) }).locator('svg');
 const rect = async (item: ReturnType<typeof label>) => (await item.boundingBox())!;
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: badges do not move icons or labels and selection uses ink and weight`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 600 });
     for (const palette of ['default', 'dark']) {

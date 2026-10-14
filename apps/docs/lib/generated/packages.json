@@ -24,8 +24,8 @@
     "name": "@kjun-ui/vue3",
     "version": "0.5.1",
     "file": "kjun-ui-vue3-0.5.1.tgz",
-    "bytes": 173089,
-    "integrity": "sha512-JWeS/Pq1xGXbrljvzL7U+aiWA3254NLbtULyV9BHe9SxmJKa05u4XVlXo9L9M8CUnQP2c1Rq4Ya6ua0IupTvrQ=="
+    "bytes": 191938,
+    "integrity": "sha512-7EETb3mWrjh1QJ++c4nDpNLMQfgYk0I4/2XL+W/IrN0aHGxQXB8Od2wV2JXpgQJL9eylGq2DtPBcBAJcNrIk2w=="
   },
   {
     "name": "@kjun-ui/react",

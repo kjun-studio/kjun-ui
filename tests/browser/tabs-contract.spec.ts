@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 const configure = (page: Page, patch: object) => page.evaluate(patch => (window as any).configureTabContract(patch), patch);
 const lifecycle = (page: Page) => page.evaluate(() => (window as any).tabLifecycle);
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: panels preserve local state while hidden and dispose it only on removal`, async ({ page }) => {
     await openFixture(page, platform, '', 'tabs-contract');
     const first = page.getByRole('textbox', { name: '첫 초안' });
@@ -27,7 +27,7 @@ for (const platform of ['react', 'vue2', 'native']) {
   });
 }
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: unavailable tabs cancel pending auxiliary actions`, async ({ page }) => {
     await page.clock.install(); await page.clock.pauseAt(new Date(Date.now() + 1000));
     await openFixture(page, platform, '', 'tabs-contract');

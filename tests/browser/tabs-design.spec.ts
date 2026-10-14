@@ -20,7 +20,7 @@ async function aligned(page: Page, index: number, variant: string) {
   }, { timeout: 5000 }).toBe('aligned');
 }
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: shared tab sizes, readable labels and flat indicators align across variants and palettes`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const palette of ['default', 'dark'] as const) {
