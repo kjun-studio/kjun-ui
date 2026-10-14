@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 const update = (page: Page, options: object) => page.evaluate(options => (window as any).configureAlert(options), options);
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: Alert empty sections, first-line alignment and nested actions`, async ({ page }) => {
     test.setTimeout(180000);
     const errors: string[] = [];

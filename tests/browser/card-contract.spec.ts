@@ -3,7 +3,7 @@ import { tokens } from '../../packages/tokens/dist/index.js';
 import { openFixture } from './packed-fixture';
 import { cardOutline } from './card-outline';
 
-for (const platform of ['vue2','react','native']) {
+for (const platform of ['vue2', 'vue3', 'react', 'native']) {
   test(`${platform}: Card sections, surfaces and header actions compose independently`, async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));

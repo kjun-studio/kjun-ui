@@ -13,7 +13,7 @@ async function gradient(card: Locator, platform: string, start: string, end: str
   }
 }
 
-for (const platform of ["react", "vue2", "native"]) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform} card roles follow project colors and keep surface, border and project colors independent`, async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", error => errors.push(error.message));
