@@ -34,7 +34,9 @@ export function useRunResults(run: RunSummary | undefined) {
     const pending = records.get(run.id) ?? fetch(run.download).then(response => {
       if (!response.ok) throw Error('Accessibility record ' + response.status);
       return response.json() as Promise<{ results: Result[] }>;
-    }).then(record => record.results);
+    // Records before 0.5.0 name components Ds*; read them under the current Kjun* names.
+    }).then(record => record.results.map(result => ({ ...result,
+      id: result.id.replace(/^Ds(?=[A-Z])/, 'Kjun'), component: result.component.replace(/^Ds(?=[A-Z])/, 'Kjun') })));
     records.set(run.id, pending);
     pending.then(results => { if (live) setState({ id: run.id, results }); }, () => records.delete(run.id));
     return () => { live = false; };

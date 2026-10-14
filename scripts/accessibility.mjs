@@ -11,7 +11,9 @@ export async function generateAccessibility(check = false) {
     if (file !== run.id + '.json') throw Error('Accessibility record filename mismatch: ' + file);
     const download = '/downloads/accessibility/' + file;
     // Guides only need each check's status; full evidence stays in the downloadable record.
-    const results = run.results.map(({ id, component, platform, item, status, startedAt }) => ({ id, component, platform, item, status, startedAt }));
+    // Records before 0.5.0 name components Ds*; the record files stay as recorded.
+    const results = run.results.map(({ id, component, platform, item, status, startedAt }) =>
+      ({ id, component: component.replace(/^Ds(?=[A-Z])/, 'Kjun'), platform, item, status, startedAt }));
     runs.push({ ...run, results, download, stale: isStale(run, current.definitionHash, current.packages) });
     outputs.push(['apps/docs/public' + download, bytes]);
   }
