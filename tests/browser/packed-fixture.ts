@@ -18,8 +18,9 @@ export async function openFixture(
   const cacheKey = family + ":" + platform + ":" + mode + ":" + standalone;
   let fixture = cache.get(cacheKey);
   if (!fixture) {
-    const { directory } = await (consumer ??= assertCurrentConsumer());
+    const { directory, vue3Directory } = await (consumer ??= assertCurrentConsumer());
     const modules = directory + "/node_modules";
+    const vue3 = platform === "vue3", vue3Modules = vue3Directory + "/node_modules";
     const alias: Record<string, string> = {
       react: modules + "/react",
       "react-dom": modules + "/react-dom",
@@ -31,6 +32,11 @@ export async function openFixture(
     };
     for (const name of ["icons", "tokens", "react", "vue2", "native"])
       alias["@kjun-ui/" + name] = modules + "/@kjun-ui/" + name;
+    // Vue 3 fixtures run against the separately installed Vue 3 consumer project.
+    if (vue3) Object.assign(alias, {
+      vue: vue3Modules + "/vue/dist/vue.runtime.esm-bundler.js",
+      "@kjun-ui/vue3": vue3Modules + "/@kjun-ui/vue3",
+    });
     alias["@kjun-ui/icons/defaults"] = modules + "/@kjun-ui/icons/dist/defaults.js";
     alias["@kjun-ui/icons/metadata"] = modules + "/@kjun-ui/icons/dist/metadata.js";
     alias["@kjun-ui/icons/all"] = modules + "/@kjun-ui/icons/dist/all.js";
@@ -46,7 +52,10 @@ export async function openFixture(
       write: false,
       format: "iife",
       platform: "browser",
-      jsx: "automatic",
+      // Vue 3 fixtures are TSX compiled to h(); see packages/vue3/src/runtime/jsx.ts.
+      ...(vue3
+        ? { jsx: "transform" as const, jsxFactory: "h", jsxFragment: "Fragment", inject: [resolve("packages/vue3/src/runtime/jsx.ts")], tsconfigRaw: {} }
+        : { jsx: "automatic" as const }),
       alias,
       mainFields: ["browser", "module", "main"],
       resolveExtensions: [
@@ -61,6 +70,9 @@ export async function openFixture(
       define: {
         "process.env.NODE_ENV": JSON.stringify(mode),
         __DEV__: mode === "development" ? "true" : "false",
+        __VUE_OPTIONS_API__: "true",
+        __VUE_PROD_DEVTOOLS__: "false",
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false",
         global: "globalThis",
       },
     });

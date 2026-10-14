@@ -43,6 +43,8 @@ async function auditMarkupClasses(root) {
     ...await files(root, "packages/react/src/**/*.ts"),
     ...await files(root, "shared/package-runtime/**/*.ts"),
     ...await files(root, "shared/package-runtime/**/*.tsx"),
+    ...await files(root, "packages/vue3/src/**/*.ts"),
+    ...await files(root, "packages/vue3/src/**/*.tsx"),
   ];
   const attribute = /(?<![\w:-])(?:class|className|staticClass)\s*[=:]\s*"([^"{}]*)"/g;
   for (const file of sources) {
@@ -55,7 +57,8 @@ async function auditMarkupClasses(root) {
 
 async function auditIds(root) {
   const found = new Set();
-  const sources = [...await files(root, "packages/vue2/src/**/*.vue"), ...await files(root, "packages/react/src/**/*.tsx"), ...await files(root, "shared/package-runtime/**/*.tsx")];
+  const sources = [...await files(root, "packages/vue2/src/**/*.vue"), ...await files(root, "packages/react/src/**/*.tsx"),
+    ...await files(root, "shared/package-runtime/**/*.tsx"), ...await files(root, "packages/vue3/src/**/*.tsx")];
   // Literal id prefixes: id="x", :id="`x-${...}`" or :id="'x-' + ...", id={`x-${...}`}.
   // Computed ids: gradientId() { return `x-${...}` }.
   const computed = /\w*[iI]d\s*\(\)\s*\{\s*return\s*[`'"]([a-z][\w-]*)/g;
@@ -97,12 +100,21 @@ async function auditVue(root) {
     for (const [, name] of text.matchAll(/["']\$(\w+)["']\s*\+/g)) vueMembers.add("$" + name + "*");
     for (const [, name] of text.matchAll(/^\s{2,6}([$_]\w+)\s*(?:\(|:\s*(?:function|\(|\{))/gm)) vueMembers.add(name);
   }
+  // Vue 3: provide keys are Symbols named kjun*, components are named Kjun*, and the app instance
+  // gets no unprefixed globalProperties.
+  for (const file of [...await files(root, "packages/vue3/src/**/*.ts"), ...await files(root, "packages/vue3/src/**/*.tsx")]) {
+    const text = await read(root, file);
+    for (const [, key] of text.matchAll(/Symbol\(\s*["'`]([^"'`]*)["'`]\s*\)/g)) if (!/^kjun/.test(key)) provideKeys.add(key);
+    for (const [, key] of text.matchAll(/\bprovide\(\s*["'`]([^"'`]*)["'`]/g)) if (!/^kjun/.test(key)) provideKeys.add(key);
+    for (const [, name] of text.matchAll(/defineComponent\(\{\s*name:\s*["'`]([^"'`]*)["'`]/g)) if (!/^Kjun/.test(name)) vueComponents.add(name);
+    for (const [, name] of text.matchAll(/globalProperties\.(\w+)/g)) if (!/^\$kjun/.test(name)) vueMembers.add(name);
+  }
   return { vueComponents, provideKeys, vueMembers };
 }
 
 async function auditExports(root) {
   const found = new Set();
-  for (const file of ["packages/vue2/dist/index.d.ts", "packages/react/dist/index.d.ts", "packages/native/dist/index.d.ts"]) {
+  for (const file of ["packages/vue2/dist/index.d.ts", "packages/vue3/dist/index.d.ts", "packages/react/dist/index.d.ts", "packages/native/dist/index.d.ts"]) {
     const text = await read(root, file);
     for (const [name] of text.matchAll(/\bDs[A-Z]\w*/g)) found.add(name);
   }

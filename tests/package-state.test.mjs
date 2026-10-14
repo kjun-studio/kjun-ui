@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
 import { buildInputs, packageNames, beginPackageBuild, finishPackageBuild, recordPackedState,
-  assertCurrentConsumer, assertCurrentPacked } from '../scripts/package-state.mjs';
+  assertCurrentConsumer, assertCurrentPacked, consumerProject } from '../scripts/package-state.mjs';
 
 async function setup(t) {
   const base = await mkdtemp(resolve(tmpdir(), 'kjun-package-state-'));
@@ -31,12 +31,14 @@ async function setup(t) {
   const packed = await assertCurrentPacked(base), directory = resolve(base, 'consumer');
   for (const name of packageNames) {
     for (const file of ['dist', 'README.md', 'package.json']) {
-      const target = resolve(directory, 'node_modules/@kjun-ui', name, file);
+      const target = resolve(consumerProject(directory, '@kjun-ui/' + name), 'node_modules/@kjun-ui', name, file);
       await mkdir(dirname(target), { recursive: true });
       await cp(resolve(base, 'packages', name, file), target, { recursive: true });
     }
   }
-  await write('consumer/package-lock.json', { packages: Object.fromEntries(manifest.map(p => ['node_modules/' + p.name, { integrity: p.integrity }])) });
+  const lock = packages => ({ packages: Object.fromEntries(packages.map(p => ['node_modules/' + p.name, { integrity: p.integrity }])) });
+  await write('consumer/package-lock.json', lock(manifest.filter(p => p.name !== '@kjun-ui/vue3')));
+  await write('consumer/vue3/package-lock.json', lock(manifest.filter(p => p.name === '@kjun-ui/vue3')));
   await write('artifacts/consumer.json', { directory, source: packed.source, manifest });
   return { base, write, packed };
 }

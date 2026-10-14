@@ -98,7 +98,7 @@ const vuePlugin = {
     });
   },
 };
-for (const name of ["tokens", "vue2", "react", "native"]) {
+for (const name of ["tokens", "vue2", "vue3", "react", "native"]) {
   const dir = "packages/" + name;
   await mkdir(dir + "/dist", { recursive: true });
   const entry = dir + "/src/index." + (name === "vue2" ? "js" : "ts");
@@ -109,7 +109,12 @@ for (const name of ["tokens", "vue2", "react", "native"]) {
       bundle: true,
       format,
       target: "es2018",
-      jsx: "automatic",
+      // Vue 3 components are TSX render functions compiled to h(type, props, ...children);
+      // vue/jsx-runtime is for type checking only and would pass children as a prop.
+      ...(name === "vue3"
+        // tsconfigRaw keeps the type-only `vue` path mapping out of the bundle: the package imports `vue`.
+        ? { jsx: "transform", jsxFactory: "h", jsxFragment: "Fragment", inject: ["packages/vue3/src/runtime/jsx.ts"], tsconfigRaw: {} }
+        : { jsx: "automatic" }),
       packages: "external",
       plugins: name === "vue2" ? [vuePlugin] : [],
       banner:
@@ -129,6 +134,12 @@ for (const name of ["tokens", "vue2", "react", "native"]) {
     await writeFile(dir + '/dist/icons.cjs', "const { icons, filledIcons } = require('@kjun-ui/icons/defaults'); exports.icons = icons; exports.filledIcons = filledIcons;\n");
     await writeFile(dir + '/dist/icons.d.ts', "export type { IconNode } from '@kjun-ui/icons';\nexport { icons, filledIcons } from '@kjun-ui/icons/defaults';\n");
     await copyFile(dir + "/src/tokens.json", dir + "/dist/tokens.json");
+  }
+  if (name === "vue3") {
+    // The plugin subpath shares component identities with the root export.
+    await writeFile(dir + "/dist/plugin.js", 'export { default } from "./index.js";\n');
+    await writeFile(dir + "/dist/plugin.cjs", 'module.exports = require("./index.cjs").default;\n');
+    await writeFile(dir + "/dist/plugin.d.ts", 'export { default } from "./index.js";\n');
   }
   if (name === "vue2") {
     await copyFile(dir + "/src/index.d.ts", dir + "/dist/index.d.ts");
@@ -185,7 +196,7 @@ const scoped = await postcss([
 const styleFiles=JSON.parse(await readFile("shared/web-style-sources.json","utf8"));
 const responsive=responsiveCss((await readFile("packages/tokens/src/bindings.css","utf8"))+"\n"+(await readFile("packages/tokens/src/reset.css","utf8"))+"\n"+utilityRoot.toString()+"\n"+scoped.css+"\n"+(await Promise.all(styleFiles.map(file=>readFile("packages/tokens/src/"+file,"utf8")))).join("\n"), input);
 const css = responsive;
-for (const name of ["tokens", "vue2", "react", "native"]) {
+for (const name of ["tokens", "vue2", "vue3", "react", "native"]) {
   await writeFile("packages/" + name + "/dist/styles.css", css);
   await copyFile(
     "licenses/Tabler-LICENSE",
@@ -195,6 +206,6 @@ for (const name of ["tokens", "vue2", "react", "native"]) {
 }
 execFileSync("node", ["scripts/roles.mjs"], { stdio: "inherit" });
 execFileSync("node", ["scripts/api.mjs"], { stdio: "inherit" });
-for (const name of ["tokens", "vue2", "react", "native"]) await finalizeDeclarations(name);
+for (const name of ["tokens", "vue2", "vue3", "react", "native"]) await finalizeDeclarations(name);
 await finishPackageBuild(sourceFingerprint);
 console.log("Built five independent packages: ESM, CJS, types and scoped CSS.");

@@ -1,4 +1,4 @@
-import { writeFile, readFile, copyFile } from "node:fs/promises";
+import { writeFile, readFile, copyFile, mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { execFileSync } from "node:child_process";
 import { assertCurrentPacked, verifyInstalledPackages } from "./package-state.mjs";
@@ -28,8 +28,20 @@ async function verifyConsumer(dir) {
     "KjunFeedbackProvider",
   ];
   const manifest = JSON.parse(await readFile(resolve(root, "artifacts/manifest.json"), "utf8"));
+  const tarball = (name) => "file:" + resolve(root, "artifacts", manifest.find((item) => item.name === name).file);
   for (const item of manifest)
-    dependencies[item.name] = "file:" + resolve(root, "artifacts", item.file);
+    if (item.name !== "@kjun-ui/vue3") dependencies[item.name] = "file:" + resolve(root, "artifacts", item.file);
+  // Vue 3 cannot share a project with the Vue 2 package, so @kjun-ui/vue3 installs beside it.
+  await mkdir(dir + "/vue3", { recursive: true });
+  await writeFile(dir + "/vue3/package.json", JSON.stringify({ name: "kjun-packed-consumer-vue3", private: true, type: "module",
+    dependencies: { vue: "3.5.43", "@kjun-ui/vue3": tarball("@kjun-ui/vue3"), "@kjun-ui/tokens": tarball("@kjun-ui/tokens"), "@kjun-ui/icons": tarball("@kjun-ui/icons") } }, null, 2));
+  execFileSync("npm", ["install", "--no-audit", "--no-fund"], { cwd: dir + "/vue3", stdio: "inherit" });
+  execFileSync("node", ["--input-type=module", "-e",
+    "import {createSSRApp,h} from 'vue';import {renderToString} from 'vue/server-renderer';import Kjun,{KjunProvider,KjunButton} from '@kjun-ui/vue3';import plugin from '@kjun-ui/vue3/plugin';const app=createSSRApp({render:()=>h(KjunProvider,null,{default:()=>h(KjunButton,null,{default:()=>'Save'})})});app.use(Kjun);const html=await renderToString(app);if(plugin!==Kjun||!html.includes('kjun-scope')||!html.includes('kjun-button'))throw Error('Vue 3 consumer failed: '+html);"],
+    { cwd: dir + "/vue3", stdio: "inherit" });
+  execFileSync("node", ["--input-type=commonjs", "-e",
+    "const ui=require('@kjun-ui/vue3');const plugin=require('@kjun-ui/vue3/plugin');if(plugin!==ui.default||typeof plugin.install!=='function')throw Error('Vue 3 CommonJS consumer failed');"],
+    { cwd: dir + "/vue3", stdio: "inherit" });
   await writeFile(
     dir + "/package.json",
     JSON.stringify(
@@ -184,6 +196,7 @@ if(tokens.button.heights.md!==40)throw new Error('Invalid token output');
     manifest: packed.manifest,
     verified: [
       "Vue 2.6 runtime",
+      "Vue 3.5 runtime (SSR render and CommonJS plugin)",
       "React 19 types",
       "React Native 0.86 types",
       "Bundler, Node16, NodeNext ESM and CommonJS types with inference and negative cases",

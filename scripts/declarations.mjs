@@ -5,6 +5,12 @@ import ts from 'typescript';
 
 export async function emitDeclarations(name, entry) {
   const dir = `packages/${name}`;
+  if (name === 'vue3') {
+    // Its tsconfig maps `vue` to Vue 3 while the root still installs Vue 2 for vue2.
+    execFileSync('npx', ['tsc', '-p', dir + '/tsconfig.json'], { stdio: 'inherit' });
+    await writeFile(dir + '/dist/index.d.ts', `export * from "./types/packages/${name}/src/index";\nexport { default } from "./types/packages/${name}/src/index";\n`);
+    return;
+  }
   const shared = name === 'react' || name === 'native';
   execFileSync('npx', [
     'tsc', entry, '--declaration', '--emitDeclarationOnly',
@@ -60,7 +66,7 @@ export async function finalizeDeclarations(name) {
   for (const file of [...files].sort()) {
     const source = await readFile(file, 'utf8');
     await writeFile(file, normalizeDeclaration(source, file, '.js', files));
-    const commonjs = name === 'vue2' && file === resolve(dist, 'plugin.d.ts')
+    const commonjs = (name === 'vue2' || name === 'vue3') && file === resolve(dist, 'plugin.d.ts')
       ? 'import { default as plugin } from "./index.cjs";\nexport = plugin;\n'
       : normalizeDeclaration(source, file, '.cjs', files);
     await writeFile(file.replace(/\.d\.ts$/, '.d.cts'), commonjs);
