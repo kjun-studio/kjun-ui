@@ -24,6 +24,7 @@ export const appHtml = `
 <div class="flex mt-1 text-lg rounded" data-probe="utilities">utilities</div>
 <div class="ring-2" data-probe="ring">ring</div>
 <div class="app-var" data-probe="app-var">app variables</div>
+<div class="my-kjun-logo" data-probe="kjun-substring"><button type="button" data-probe="kjun-substring-button">앱 로고 버튼</button></div>
 <input class="ds-field" data-probe="ds-field" value="app field">
 <label class="ds-choice" data-probe="ds-choice">app choice</label>
 <div class="ds-form-group" data-probe="ds-form-group">app group</div>

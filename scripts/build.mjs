@@ -153,7 +153,7 @@ const utilities = await postcss([
 // Scope those defaults too, and replace Tailwind's built-in paint values.
 // kjun-owned markup: elements with a kjun- class other than the bare Provider root, plus portal roots that
 // pair kjun-scope with a kjun- class. Provider-less overlays portal to body with no .kjun-scope ancestor.
-const kjunMarkup = ':where([class*="kjun-"]:not(.kjun-scope), .kjun-scope[class*=" kjun-"])';
+const kjunMarkup = ':where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"])';
 const kjunOverlay = ':where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *))';
 const utilityRoot = postcss.parse(utilities.css);
 utilityRoot.walkRules(rule => {

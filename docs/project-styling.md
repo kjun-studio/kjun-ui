@@ -49,7 +49,7 @@ import "./design-system/kjun.css";
 </KjunProvider>
 ```
 
-Provider에는 `theme` prop이 없습니다. `.kjun-scope` 범위와 컴포넌트 스타일의 역할 연결만 제공하며 색상을 덮어쓰지 않습니다. Provider는 앱 전체를 감싸도 앱 마크업의 스타일을 바꾸지 않습니다. 기본 스타일 초기화(reset)와 기본 글꼴·색은 kjun 컴포넌트 안에서만 적용되고, Vue 컴포넌트의 내부 유틸리티 클래스는 `kj-` 접두사를 써서 앱의 Tailwind 클래스와 겹치지 않습니다. kjun 컴포넌트 안에 넣은 슬롯 콘텐츠는 kjun 기본 스타일을 따르므로 요소 선택자 대신 클래스로 꾸미세요. 라이트/다크 전환은 기존 앱 변수 값을 바꾸세요. 부분 영역은 중첩 Provider의 class/style에 CSS 변수를 연결합니다.
+Provider에는 `theme` prop이 없습니다. `.kjun-scope` 범위와 컴포넌트 스타일의 역할 연결만 제공하며 색상을 덮어쓰지 않습니다. Provider는 앱 전체를 감싸도 앱 마크업의 스타일을 바꾸지 않습니다. 기본 스타일 초기화(reset)와 기본 글꼴·색은 kjun 컴포넌트 안에서만 적용되고, Vue 컴포넌트의 내부 유틸리티 클래스는 `kj-` 접두사를 써서 앱의 Tailwind 클래스와 겹치지 않습니다. kjun 컴포넌트 안에 넣은 슬롯 콘텐츠는 kjun 기본 스타일을 따르므로 요소 선택자 대신 클래스로 꾸미세요. KJUN은 `kjun-`으로 시작하는 클래스와 `Kjun` 컴포넌트 이름, `--kjun-`·`--_kjun-` 변수를 사용합니다. 앱 요소에 `kjun-`으로 시작하는 클래스를 붙이면 kjun 마크업으로 인식되어 기본 스타일이 적용되므로 앱 클래스에는 이 접두사를 쓰지 마세요. 라이트/다크 전환은 기존 앱 변수 값을 바꾸세요. 부분 영역은 중첩 Provider의 class/style에 CSS 변수를 연결합니다.
 
 React 모달은 가장 가까운 Provider 안에 렌더링되어 해당 영역의 색상·폰트와 변경을 상속합니다. Provider는 transform/filter로 고정 위치의 기준을 변경하거나 모달을 자르는 상위 요소 밖에 배치합니다. Provider가 없는 React 모달은 document.body에 렌더링되어 문서 루트의 변수를 사용합니다. Vue 모달은 기존처럼 Provider 안에 렌더링됩니다.
 
