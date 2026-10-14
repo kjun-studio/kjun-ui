@@ -59,7 +59,7 @@
           <slot name="option" :option="option" :index="index">
             <span class="kj-truncate">{{ getOptionLabel(option) }}</span>
           </slot>
-          <DsIcon v-if="isSelected(option)" name="check" size="var(--extension-menu-icon-size)" class="kj-text-brand kj-flex-shrink-0" />
+          <DsIcon v-if="isSelected(option)" name="check" size="var(--_kjun-extension-menu-icon-size)" class="kj-text-brand kj-flex-shrink-0" />
         </div>
 
         <div v-if="filteredOptions.length === 0" class="kj-px-3 kj-py-3 kj-text-sm kj-text-text-tertiary kj-text-center">

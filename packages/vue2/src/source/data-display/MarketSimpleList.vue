@@ -38,7 +38,7 @@
 
           <div class="kjun-market-card-right kjun-mobile-simple-list__quote kj-flex-shrink-0 kj-ml-3 kj-text-right">
             <div class="kjun-mobile-simple-list__price kj-text-sm kj-font-semibold kj-text-text-primary kj-tabular-nums">
-              <DsSkeleton v-if="priceValue(row) == null" type="block" height="var(--extension-financial-price-skeleton-height)" width="var(--extension-financial-price-skeleton-width)" class="kj-inline-block" />
+              <DsSkeleton v-if="priceValue(row) == null" type="block" height="var(--_kjun-extension-financial-price-skeleton-height)" width="var(--_kjun-extension-financial-price-skeleton-width)" class="kj-inline-block" />
               <span v-else class="kjun-mobile-simple-list__price-line kj-inline-flex kj-items-center kj-justify-end kj-gap-1">
                 <span :class="['kjun-price-cell', priceFlashClass(row), row.stale ? 'kj-text-text-tertiary' : '']">
                   <DsAnimatedNumber from-previous :value="priceValue(row)" :formatter="priceFormatter" />
@@ -60,8 +60,8 @@
               <DsSkeleton
                 v-if="changeLoading(row)"
                 type="block"
-                height="var(--extension-market-list-change-skeleton-height)"
-                width="var(--extension-market-list-change-skeleton-width)"
+                height="var(--_kjun-extension-market-list-change-skeleton-height)"
+                width="var(--_kjun-extension-market-list-change-skeleton-width)"
                 class="kj-inline-block"
               />
               <DsSignedValue

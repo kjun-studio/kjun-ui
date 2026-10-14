@@ -6,7 +6,7 @@
 
     <transition name="kjun-dropdown" :css="false" @before-enter="motionPrepare" @enter="motionEnter" @leave="motionLeave"
       @enter-cancelled="motionCancel" @leave-cancelled="motionCancel">
-      <div v-kjun-layer="'popup'" v-if="isOpen" :id="menuId || undefined" ref="menu" draggable="false" :style="menuStyle" :class="menuClass" class="kj-fixed kj-z-50 kj-min-w-menu-minimum-width kj-max-w-[calc(100vw-2*var(--extension-floating-viewport-inset))] kj-overflow-y-auto kjun-field-menu kj-select-none" role="menu" :aria-labelledby="triggerId || undefined" @keydown="onMenuKeydown">
+      <div v-kjun-layer="'popup'" v-if="isOpen" :id="menuId || undefined" ref="menu" draggable="false" :style="menuStyle" :class="menuClass" class="kj-fixed kj-z-50 kj-min-w-menu-minimum-width kj-overflow-y-auto kjun-field-menu kjun-dropdown-menu kj-select-none" role="menu" :aria-labelledby="triggerId || undefined" @keydown="onMenuKeydown">
         <slot></slot>
       </div>
     </transition>
@@ -253,4 +253,6 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.kjun-dropdown-menu { max-width: calc(100vw - 2 * var(--_kjun-extension-floating-viewport-inset)); }
+</style>

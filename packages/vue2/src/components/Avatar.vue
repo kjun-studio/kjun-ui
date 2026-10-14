@@ -1,5 +1,5 @@
 <template>
-  <span class="kjun-avatar" :data-shape="shape" :data-size="size" :style="{ width: dimension + 'px', height: dimension + 'px' }"><DsImage :src="src" :alt="alt || name || '사용자'" :decorative="decorative" @load="$emit('load')" @error="$emit('error')"><template #fallback><slot name="fallback"><span v-if="initial">{{ initial }}</span><DsIcon v-else name="user" :size="'var(--extension-avatar-fallback-icon-sizes-' + size + ')'" /></slot></template></DsImage></span>
+  <span class="kjun-avatar" :data-shape="shape" :data-size="size" :style="{ width: dimension + 'px', height: dimension + 'px' }"><DsImage :src="src" :alt="alt || name || '사용자'" :decorative="decorative" @load="$emit('load')" @error="$emit('error')"><template #fallback><slot name="fallback"><span v-if="initial">{{ initial }}</span><DsIcon v-else name="user" :size="'var(--_kjun-extension-avatar-fallback-icon-sizes-' + size + ')'" /></slot></template></DsImage></span>
 </template>
 <script>
 import { tokens } from "@kjun-ui/tokens";

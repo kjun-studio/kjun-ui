@@ -31,7 +31,7 @@ test('changing an Accordion dimension selection preserves other roles and the sc
   assert.equal(compiled.button.heights.lg, 48);
   assert.equal(compiled.extensions.state.padding.md, 48);
   assert.deepEqual(compiled.dimension, original.dimension);
-  assert.match(extensionGeometryCss(compiled, changed), /--extension-accordion-minimum-height: 56px;/);
+  assert.match(extensionGeometryCss(compiled, changed), /--_kjun-extension-accordion-minimum-height: 56px;/);
 });
 
 test('numeric dimension names cannot drift or alias a mutable role', () => {

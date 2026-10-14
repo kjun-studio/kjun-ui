@@ -3,7 +3,7 @@ import { openFixture } from './packed-fixture';
 
 const props = ['display', 'box-sizing', 'margin-top', 'margin-bottom', 'padding-top', 'padding-left',
   'list-style-type', 'color', 'text-decoration-line', 'font-size', 'font-weight', 'background-color',
-  'border-top-width', 'border-top-style', 'border-top-left-radius', 'border-collapse', 'box-shadow'];
+  'border-top-width', 'border-top-style', 'border-top-color', 'border-top-left-radius', 'border-collapse', 'box-shadow'];
 
 async function probes(page: Page, testId: string) {
   return page.locator(`[data-testid="${testId}"]`).evaluate((root, names) =>

@@ -67,9 +67,9 @@ test('Chip composite typography preserves roles and CSS units through aliases', 
   changed.extensions.chip.typography.md = { $ref: 'button.typography.md' };
   const tokens = compileTokens(changed), css = extensionGeometryCss(tokens, changed);
   assert.deepEqual(tokens.extensions.chip.typography.sm, tokens.typography.meta);
-  assert.match(css, /--extension-chip-typography-sm-font-size-px: 0.75rem;/);
-  assert.match(css, /--extension-chip-typography-sm-font-weight: 500;/);
-  assert.match(css, /--extension-chip-typography-md-line-height-px: 1.25rem;/);
+  assert.match(css, /--_kjun-extension-chip-typography-sm-font-size-px: 0.75rem;/);
+  assert.match(css, /--_kjun-extension-chip-typography-sm-font-weight: 500;/);
+  assert.match(css, /--_kjun-extension-chip-typography-md-line-height-px: 1.25rem;/);
   changed.extensions.chip.typography.md = { $ref: 'dimension.value16' };
   assert.throws(() => compileTokens(changed), /Invalid typography reference/);
 });

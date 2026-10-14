@@ -21,7 +21,7 @@ export default {
 };
 </script>
 <style scoped>
-.kjun-heatmap-cell{position:relative;display:inline-block;padding:var(--extension-financial-pill-padding-y) var(--extension-financial-pill-padding-x);border-radius:var(--extension-financial-cell-radius);color:var(--text-primary);font-variant-numeric:tabular-nums}
+.kjun-heatmap-cell{position:relative;display:inline-block;padding:var(--_kjun-extension-financial-pill-padding-y) var(--_kjun-extension-financial-pill-padding-x);border-radius:var(--_kjun-extension-financial-cell-radius);color:var(--_kjun-text-primary);font-variant-numeric:tabular-nums}
 .kjun-heatmap-cell__fill{position:absolute;inset:0;border-radius:inherit;pointer-events:none}
 .kjun-heatmap-cell__content{position:relative}
 </style>

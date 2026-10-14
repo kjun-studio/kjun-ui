@@ -62,16 +62,16 @@ export default {
       }
       if (this.color !== 'auto') {
         const colorMap = {
-          brand: 'var(--brand)',
-          success: 'var(--success)',
-          danger: 'var(--danger)',
-          warning: 'var(--warning)'
+          brand: 'var(--_kjun-brand)',
+          success: 'var(--_kjun-success)',
+          danger: 'var(--_kjun-danger)',
+          warning: 'var(--_kjun-warning)'
         }
         return colorMap[this.color]
       }
-      if (this.percent < AUTO_THRESHOLDS.LOW) return 'var(--danger)'
-      if (this.percent < AUTO_THRESHOLDS.MID) return 'var(--warning)'
-      return 'var(--success)'
+      if (this.percent < AUTO_THRESHOLDS.LOW) return 'var(--_kjun-danger)'
+      if (this.percent < AUTO_THRESHOLDS.MID) return 'var(--_kjun-warning)'
+      return 'var(--_kjun-success)'
     }
   }
 }
@@ -81,27 +81,27 @@ export default {
 .kjun-progress-cell {
   display: flex;
   align-items: center;
-  gap: var(--extension-financial-progress-gap);
-  min-width: var(--extension-financial-progress-minimum-width);
+  gap: var(--_kjun-extension-financial-progress-gap);
+  min-width: var(--_kjun-extension-financial-progress-minimum-width);
 }
 
 .kjun-progress-cell-bar {
   flex: 1;
-  background: var(--bg-tertiary);
-  border-radius: var(--extension-financial-progress-radius);
+  background: var(--_kjun-bg-tertiary);
+  border-radius: var(--_kjun-extension-financial-progress-radius);
   overflow: hidden;
 }
 
 .kjun-progress-cell-fill {
   height: 100%;
-  border-radius: var(--extension-financial-progress-radius);
-  transition: width var(--motion-progress) var(--ease-out);
+  border-radius: var(--_kjun-extension-financial-progress-radius);
+  transition: width var(--_kjun-motion-progress) var(--_kjun-ease-out);
 }
 
 .kjun-progress-cell-label {
   font-size: var(--_kjun-type-caption-size);
-  color: var(--text-secondary);
-  min-width: var(--extension-financial-progress-label-width);
+  color: var(--_kjun-text-secondary);
+  min-width: var(--_kjun-extension-financial-progress-label-width);
   text-align: right;
   font-variant-numeric: tabular-nums;
   line-height: var(--_kjun-type-caption-line);

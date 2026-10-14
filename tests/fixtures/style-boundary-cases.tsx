@@ -15,12 +15,15 @@ button{background:rgb(200,200,200);padding:4px 8px;border:1px solid rgb(0,0,0)}
 table{border-collapse:separate}
 *,::before,::after{--tw-ring-color:rgb(0,0,255)}
 .ring-2{box-shadow:0 0 0 2px var(--tw-ring-color)}
+/* Reads variable names an app (shadcn, Tailwind v4) may leave undefined; KJUN must not supply them. */
+.app-var{border:2px solid var(--border, rgb(1,2,3));color:var(--text-primary, rgb(4,5,6))}
 `;
 
 export const appHtml = `
 <div class="hidden md:flex" data-probe="responsive">menu</div>
 <div class="flex mt-1 text-lg rounded" data-probe="utilities">utilities</div>
 <div class="ring-2" data-probe="ring">ring</div>
+<div class="app-var" data-probe="app-var">app variables</div>
 <input class="ds-field" data-probe="ds-field" value="app field">
 <label class="ds-choice" data-probe="ds-choice">app choice</label>
 <div class="ds-form-group" data-probe="ds-form-group">app group</div>

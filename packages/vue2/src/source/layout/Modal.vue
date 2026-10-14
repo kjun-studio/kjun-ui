@@ -269,7 +269,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--overlay);
+  background: var(--_kjun-overlay);
   backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
@@ -280,7 +280,7 @@ export default {
 
 /* Container */
 .kjun-modal-container {
-  background: var(--card-bg);
+  background: var(--_kjun-card-bg);
   border-radius: var(--_kjun-geometry-modal-radius);
   /* border removed per design system policy */
   box-shadow: var(--_kjun-modal-elevation);
@@ -325,7 +325,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: var(--_kjun-geometry-modal-header-padding-y) var(--_kjun-geometry-modal-padding);
-  border-bottom: var(--_kjun-border-default-width) solid var(--border-primary);
+  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
   flex-shrink: 0;
 }
 
@@ -335,7 +335,7 @@ export default {
   padding-right: var(--_kjun-geometry-modal-title-action-gap);
   overflow-wrap: anywhere;
   font-size: var(--_kjun-geometry-modal-title-size);
-  color: var(--text-primary);
+  color: var(--_kjun-text-primary);
   line-height: var(--_kjun-geometry-modal-title-line-height);
   font-weight: var(--_kjun-geometry-modal-title-weight);
   letter-spacing: var(--_kjun-type-section-title-tracking);
@@ -357,13 +357,13 @@ export default {
   border: none;
   border-radius: var(--_kjun-geometry-modal-close-radius);
   cursor: pointer;
-  color: var(--text-secondary);
-  transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out);
+  color: var(--_kjun-text-secondary);
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
 
 .kjun-modal-close:hover {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
+  background: var(--_kjun-bg-secondary);
+  color: var(--_kjun-text-primary);
 }
 
 /* Body */
@@ -372,7 +372,7 @@ export default {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  color: var(--text-primary);
+  color: var(--_kjun-text-primary);
 }
 
 .kjun-modal-body-no-padding {
@@ -387,7 +387,7 @@ export default {
 /* Footer */
 .kjun-modal-footer {
   padding: var(--_kjun-geometry-modal-header-padding-y) var(--_kjun-geometry-modal-padding);
-  border-top: var(--_kjun-border-default-width) solid var(--border-primary);
+  border-top: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -397,7 +397,7 @@ export default {
 
 /* Scrollbar styling */
 .kjun-modal-body::-webkit-scrollbar {
-  width: var(--extension-scrollbar-width);
+  width: var(--_kjun-extension-scrollbar-width);
 }
 
 .kjun-modal-body::-webkit-scrollbar-track {
@@ -405,12 +405,12 @@ export default {
 }
 
 .kjun-modal-body::-webkit-scrollbar-thumb {
-  background: var(--border-secondary);
+  background: var(--_kjun-border-secondary);
   border-radius: var(--_kjun-geometry-radius-radius9999);
 }
 
 .kjun-modal-body::-webkit-scrollbar-thumb:hover {
-  background: var(--border-strong);
+  background: var(--_kjun-border-strong);
 }
 
 /* Shared modal threshold controls the full-width mobile layout. */

@@ -17,7 +17,7 @@
       @keyup.enter="!loading && !item.loading && item.clickable && $emit('item-click', item, idx)"
     >
       <div class="kjun-kpi-row__label-row">
-        <div class="kjun-kpi-row__label"><DsSkeleton v-if="(loading || item.loading) && !item.label" type="block" width="var(--extension-kpi-row-label-skeleton-width)" height="var(--extension-kpi-row-label-skeleton-height)" /><template v-else>{{ item.label }}</template></div>
+        <div class="kjun-kpi-row__label"><DsSkeleton v-if="(loading || item.loading) && !item.label" type="block" width="var(--_kjun-extension-kpi-row-label-skeleton-width)" height="var(--_kjun-extension-kpi-row-label-skeleton-height)" /><template v-else>{{ item.label }}</template></div>
         <span
           v-if="!loading && !item.loading && item.badge && item.badgePlacement !== 'value'"
           :class="badgeClass(item.badge.variant)"
@@ -190,14 +190,14 @@ export default {
 <style scoped>
 .kjun-kpi-row {
   display: flex;
-  padding: var(--extension-kpi-row-md-padding-y) var(--extension-kpi-row-md-padding-x);
-  background: var(--card-bg);
-  border-radius: var(--extension-kpi-row-radius);
+  padding: var(--_kjun-extension-kpi-row-md-padding-y) var(--_kjun-extension-kpi-row-md-padding-x);
+  background: var(--_kjun-card-bg);
+  border-radius: var(--_kjun-extension-kpi-row-radius);
 }
 .kjun-kpi-row__item {
   flex: 1;
-  padding: var(--extension-kpi-row-md-item-padding-y) var(--extension-kpi-row-md-item-padding-x);
-  border-left: var(--_kjun-border-default-width) solid var(--border-primary);
+  padding: var(--_kjun-extension-kpi-row-md-item-padding-y) var(--_kjun-extension-kpi-row-md-item-padding-x);
+  border-left: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
   min-width: 0;
 }
 .kjun-kpi-row__item:first-child {
@@ -205,33 +205,33 @@ export default {
 }
 .kjun-kpi-row__item--clickable {
   cursor: pointer;
-  border-radius: var(--extension-kpi-row-item-radius);
-  transition: background-color var(--motion-control) var(--ease-out);
+  border-radius: var(--_kjun-extension-kpi-row-item-radius);
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
 .kjun-kpi-row__item--clickable:hover {
-  background: var(--bg-hover);
+  background: var(--_kjun-bg-hover);
 }
 .kjun-kpi-row__item--clickable:focus-visible {
-  outline: var(--_kjun-state-focus-width) solid var(--focus-ring);
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-focus-ring);
   outline-offset: var(--_kjun-state-focus-inset-offset);
 }
 .kjun-kpi-row__label-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--extension-kpi-row-md-label-gap);
-  margin-bottom: var(--extension-kpi-row-md-label-margin);
+  gap: var(--_kjun-extension-kpi-row-md-label-gap);
+  margin-bottom: var(--_kjun-extension-kpi-row-md-label-margin);
 }
 .kjun-kpi-row__label {
-  color: var(--text-secondary);
+  color: var(--_kjun-text-secondary);
   margin-bottom: 0; /* moved to label-row */
 }
 .kjun-kpi-row__badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--extension-kpi-row-badge-gap);
-  padding: var(--extension-kpi-row-badge-padding-y) var(--extension-kpi-row-badge-padding-x);
-  border-radius: var(--extension-kpi-row-badge-radius);
+  gap: var(--_kjun-extension-kpi-row-badge-gap);
+  padding: var(--_kjun-extension-kpi-row-badge-padding-y) var(--_kjun-extension-kpi-row-badge-padding-x);
+  border-radius: var(--_kjun-extension-kpi-row-badge-radius);
   white-space: normal;
   overflow-wrap: anywhere;
   max-width: 100%;
@@ -240,19 +240,19 @@ export default {
 }
 .kjun-kpi-row__badge-dot {
   display: inline-block;
-  width: var(--extension-kpi-row-dot-size);
-  height: var(--extension-kpi-row-dot-size);
+  width: var(--_kjun-extension-kpi-row-dot-size);
+  height: var(--_kjun-extension-kpi-row-dot-size);
   border-radius: 50%;
 }
 /* 값과 배지를 같은 행에 배치하고 긴 콘텐츠는 가용 폭 안에서 줄바꿈한다. */
 .kjun-kpi-row__value-row {
   display: flex;
   align-items: center;
-  gap: var(--extension-kpi-row-value-gap);
+  gap: var(--_kjun-extension-kpi-row-value-gap);
   min-width: 0;
 }
 .kjun-kpi-row__value {
-  font-family: var(--font-numeric);
+  font-family: var(--_kjun-font-numeric);
   font-variant-numeric: tabular-nums;
 }
 /* 텍스트형 값(예: 최대 증가/감소 지표명) — 큰 숫자 글자 크기는 긴 한글명이 모바일 반폭 칸에서 여러 줄로
@@ -266,7 +266,7 @@ export default {
 }
 /* Units inherit their value's colour, like KpiHero and Native. */
 .kjun-kpi-row__desc {
-  margin-top: var(--extension-kpi-row-md-description-gap);
+  margin-top: var(--_kjun-extension-kpi-row-md-description-gap);
 }
 .kjun-kpi-row__segment-label {
   display: none;
@@ -277,19 +277,19 @@ export default {
   .kjun-kpi-row:not(.kjun-kpi-row--sm) {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    padding: var(--extension-kpi-row-mobile-padding-y) var(--extension-kpi-row-mobile-padding-x);
+    padding: var(--_kjun-extension-kpi-row-mobile-padding-y) var(--_kjun-extension-kpi-row-mobile-padding-x);
     overflow: hidden;
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item {
-    padding: var(--extension-kpi-row-mobile-item-padding-y) var(--extension-kpi-row-mobile-item-padding-x);
+    padding: var(--_kjun-extension-kpi-row-mobile-item-padding-y) var(--_kjun-extension-kpi-row-mobile-item-padding-x);
     border-left: none;
     border-top: none;
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item:nth-child(even) {
-    border-left: var(--_kjun-border-default-width) solid var(--border-primary);
+    border-left: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item:nth-child(n + 3) {
-    border-top: var(--_kjun-border-default-width) solid var(--border-primary);
+    border-top: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
   }
   /* 홀수 개수의 마지막 항목은 전폭으로 마감해 빈 반쪽 셀을 남기지 않는다. */
   .kjun-kpi-row:not(.kjun-kpi-row--sm):not(.kjun-kpi-row--hero-first) .kjun-kpi-row__item:last-child:nth-child(odd) {
@@ -302,24 +302,24 @@ export default {
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm).kjun-kpi-row--hero-first .kjun-kpi-row__item:nth-child(2) {
     border-left: none;
-    border-top: var(--_kjun-border-default-width) solid var(--border-primary);
+    border-top: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm).kjun-kpi-row--hero-first .kjun-kpi-row__item:nth-child(3) {
-    border-left: var(--_kjun-border-default-width) solid var(--border-primary);
+    border-left: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__label-row {
-    gap: var(--extension-kpi-row-mobile-label-gap);
-    margin-bottom: var(--extension-kpi-row-mobile-label-margin);
+    gap: var(--_kjun-extension-kpi-row-mobile-label-gap);
+    margin-bottom: var(--_kjun-extension-kpi-row-mobile-label-margin);
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__value {
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__value--text {
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__desc {
-    margin-top: var(--extension-kpi-row-mobile-description-gap);
+    margin-top: var(--_kjun-extension-kpi-row-mobile-description-gap);
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__badge {
-    padding: var(--extension-kpi-row-badge-padding-y) var(--extension-kpi-row-badge-padding-x);
+    padding: var(--_kjun-extension-kpi-row-badge-padding-y) var(--_kjun-extension-kpi-row-badge-padding-x);
   }
 }
 
@@ -328,12 +328,12 @@ export default {
   .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--extension-kpi-row-summary-gap-y) var(--extension-kpi-row-summary-gap-x);
-    padding: var(--extension-kpi-row-summary-padding-y) var(--extension-kpi-row-summary-padding-x);
+    gap: var(--_kjun-extension-kpi-row-summary-gap-y) var(--_kjun-extension-kpi-row-summary-gap-x);
+    padding: var(--_kjun-extension-kpi-row-summary-padding-y) var(--_kjun-extension-kpi-row-summary-padding-x);
     overflow: visible;
   }
   .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__item:nth-child(n) {
-    flex: 0 0 calc((100% - var(--extension-kpi-row-summary-gap-x)) / 2);
+    flex: 0 0 calc((100% - var(--_kjun-extension-kpi-row-summary-gap-x)) / 2);
     padding: 0;
     border: 0;
   }
@@ -346,7 +346,7 @@ export default {
   .kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__value--text {
   }
   .kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__value--mobile-neutral {
-    color: var(--text-primary);
+    color: var(--_kjun-text-primary);
   }
   .kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__desc {
   }
@@ -355,7 +355,7 @@ export default {
     flex: 0 1 auto;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--extension-kpi-row-segment-gap);
+    gap: var(--_kjun-extension-kpi-row-segment-gap);
     max-width: 100%;
   }
   .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary:last-child {
@@ -368,7 +368,7 @@ export default {
   .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__value-row {
     flex-wrap: wrap;
     max-width: 100%;
-    gap: var(--extension-kpi-row-summary-secondary-gap);
+    gap: var(--_kjun-extension-kpi-row-summary-secondary-gap);
   }
   .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__label,
   .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__value {
@@ -387,24 +387,24 @@ export default {
   .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__segment-label {
     display: inline;
     margin-right: var(--_kjun-geometry-dimension-value4);
-    color: var(--text-secondary);
+    color: var(--_kjun-text-secondary);
   }
   .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__segment--labeled ~ .kjun-kpi-row__segment--labeled::before {
     content: '·';
-    margin: 0 var(--extension-kpi-row-separator-gap);
-    color: var(--text-tertiary);
+    margin: 0 var(--_kjun-extension-kpi-row-separator-gap);
+    color: var(--_kjun-text-tertiary);
   }
 }
 
 /* size=sm — 모달, 컴팩트 카드 내부용 */
-.kjun-kpi-row--sm { padding: var(--extension-kpi-row-sm-padding-y) var(--extension-kpi-row-sm-padding-x); }
-.kjun-kpi-row--sm .kjun-kpi-row__item { padding: var(--extension-kpi-row-sm-item-padding-y) var(--extension-kpi-row-sm-item-padding-x); }
-.kjun-kpi-row--sm .kjun-kpi-row__label-row { margin-bottom: var(--extension-kpi-row-sm-label-margin); gap: var(--extension-kpi-row-sm-label-gap); }
+.kjun-kpi-row--sm { padding: var(--_kjun-extension-kpi-row-sm-padding-y) var(--_kjun-extension-kpi-row-sm-padding-x); }
+.kjun-kpi-row--sm .kjun-kpi-row__item { padding: var(--_kjun-extension-kpi-row-sm-item-padding-y) var(--_kjun-extension-kpi-row-sm-item-padding-x); }
+.kjun-kpi-row--sm .kjun-kpi-row__label-row { margin-bottom: var(--_kjun-extension-kpi-row-sm-label-margin); gap: var(--_kjun-extension-kpi-row-sm-label-gap); }
 .kjun-kpi-row--sm .kjun-kpi-row__label { }
 .kjun-kpi-row--sm .kjun-kpi-row__value { }
 .kjun-kpi-row--sm .kjun-kpi-row__value--text { }
-.kjun-kpi-row--sm .kjun-kpi-row__desc { margin-top: var(--extension-kpi-row-sm-description-gap); }
-.kjun-kpi-row--sm .kjun-kpi-row__badge { padding: var(--extension-kpi-row-badge-padding-y) var(--extension-kpi-row-badge-padding-x); }
+.kjun-kpi-row--sm .kjun-kpi-row__desc { margin-top: var(--_kjun-extension-kpi-row-sm-description-gap); }
+.kjun-kpi-row--sm .kjun-kpi-row__badge { padding: var(--_kjun-extension-kpi-row-badge-padding-y) var(--_kjun-extension-kpi-row-badge-padding-x); }
 
 @media (width <= token(responsive.kpiRow)) {
   .kjun-kpi-row--sm {
@@ -412,9 +412,9 @@ export default {
   }
   .kjun-kpi-row--sm .kjun-kpi-row__item {
     flex: 1 1 50%;
-    padding: var(--extension-kpi-row-small-mobile-item-padding-y) var(--extension-kpi-row-small-mobile-item-padding-x);
+    padding: var(--_kjun-extension-kpi-row-small-mobile-item-padding-y) var(--_kjun-extension-kpi-row-small-mobile-item-padding-x);
     border-left: none;
-    border-top: var(--_kjun-border-default-width) solid var(--border-primary);
+    border-top: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
   }
   .kjun-kpi-row--sm:not(.kjun-kpi-row--hero-first) .kjun-kpi-row__item:first-child,
   .kjun-kpi-row--sm:not(.kjun-kpi-row--hero-first) .kjun-kpi-row__item:nth-child(2) {

@@ -18,9 +18,6 @@
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/MarketCards.vue",
-      "packages/vue2/src/source/data-display/ProgressCell.vue",
-      "packages/vue2/src/styles/forms.css",
       "packages/react/src/actions.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
@@ -51,7 +48,6 @@
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/display-primitives.tsx",
@@ -71,7 +67,6 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/range-input.tsx"
@@ -88,10 +83,6 @@
       "--surface-background"
     ],
     "implementationFiles": [
-      "packages/tokens/src/display.css",
-      "packages/tokens/src/table.css",
-      "packages/vue2/src/source/data-display/Skeleton.vue",
-      "packages/vue2/src/source/data-display/table/table.css",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/table-cards.tsx"
     ]
@@ -110,20 +101,12 @@
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
-      "packages/tokens/src/kpi-hero.css",
-      "packages/tokens/src/kpi-row.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/KpiHero.vue",
-      "packages/vue2/src/source/data-display/KpiRow.vue",
-      "packages/vue2/src/source/data-display/table/table.css",
       "packages/vue2/src/source/layout/Drawer.vue",
-      "packages/vue2/src/source/layout/Modal.vue",
-      "packages/vue2/src/source/primitives/ButtonGroup.vue",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
@@ -162,13 +145,7 @@
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/Deviation.vue",
       "packages/vue2/src/source/data-display/HeatmapCell.vue",
-      "packages/vue2/src/source/data-display/MarketCards.vue",
-      "packages/vue2/src/source/data-display/Skeleton.vue",
-      "packages/vue2/src/source/layout/Modal.vue",
-      "packages/vue2/src/source/primitives/ButtonGroup.vue",
-      "packages/vue2/src/source/primitives/FilterGroup.vue",
       "packages/react/src/financial-display.tsx",
       "packages/native/src/chip.tsx",
       "packages/native/src/display-primitives.tsx",
@@ -196,16 +173,9 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
-      "packages/tokens/src/kpi-row.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
-      "packages/tokens/src/table.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/KpiRow.vue",
-      "packages/vue2/src/source/data-display/table/table.css",
-      "packages/vue2/src/source/primitives/ButtonGroup.vue",
-      "packages/vue2/src/source/primitives/FilterGroup.vue",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/actions.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/display-primitives.tsx",
@@ -239,7 +209,6 @@
       "packages/tokens/src/display.css",
       "packages/tokens/src/motion.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/display-primitives.tsx",
@@ -299,23 +268,12 @@
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
-      "packages/tokens/src/kpi-hero.css",
-      "packages/tokens/src/kpi-row.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/reset.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/HeatmapCell.vue",
-      "packages/vue2/src/source/data-display/KpiHero.vue",
-      "packages/vue2/src/source/data-display/KpiRow.vue",
-      "packages/vue2/src/source/data-display/table/table.css",
-      "packages/vue2/src/source/layout/Drawer.vue",
-      "packages/vue2/src/source/layout/Modal.vue",
-      "packages/vue2/src/source/primitives/ButtonGroup.vue",
-      "packages/vue2/src/source/primitives/FilterGroup.vue",
-      "packages/vue2/src/styles/forms.css",
       "packages/react/src/date-picker.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/button-group-motion.tsx",
@@ -357,24 +315,11 @@
       "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/financial.css",
-      "packages/tokens/src/kpi-hero.css",
-      "packages/tokens/src/kpi-row.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/Deviation.vue",
-      "packages/vue2/src/source/data-display/KpiHero.vue",
-      "packages/vue2/src/source/data-display/KpiRow.vue",
-      "packages/vue2/src/source/data-display/MarketCards.vue",
-      "packages/vue2/src/source/data-display/ProgressCell.vue",
-      "packages/vue2/src/source/data-display/table/table.css",
-      "packages/vue2/src/source/form/FormGroup.vue",
-      "packages/vue2/src/source/layout/Drawer.vue",
-      "packages/vue2/src/source/layout/Modal.vue",
-      "packages/vue2/src/source/primitives/FilterGroup.vue",
-      "packages/vue2/src/styles/forms.css",
       "packages/react/src/date-picker.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
@@ -416,18 +361,10 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
-      "packages/tokens/src/kpi-hero.css",
-      "packages/tokens/src/kpi-row.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
-      "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/KpiHero.vue",
-      "packages/vue2/src/source/data-display/KpiRow.vue",
-      "packages/vue2/src/source/data-display/Sparkline.vue",
-      "packages/vue2/src/source/data-display/table/table.css",
-      "packages/vue2/src/styles/forms.css",
       "packages/react/src/actions.tsx",
       "packages/react/src/financial-display.tsx",
       "packages/react/src/kpi.tsx",
@@ -467,7 +404,6 @@
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/styles/forms.css",
       "packages/react/src/date-picker.tsx",
       "packages/react/src/financial-display.tsx",
       "packages/react/src/select-control.tsx",
@@ -493,7 +429,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/controls.css",
-      "packages/vue2/src/source/primitives/FilterGroup.vue",
       "packages/native/src/button.tsx",
       "packages/native/src/selection-groups.tsx"
     ]
@@ -511,24 +446,13 @@
     "implementationFiles": [
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
-      "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
-      "packages/tokens/src/kpi-hero.css",
-      "packages/tokens/src/kpi-row.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/reset.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/ChartSkeleton.vue",
-      "packages/vue2/src/source/data-display/KpiHero.vue",
-      "packages/vue2/src/source/data-display/KpiRow.vue",
-      "packages/vue2/src/source/data-display/ListSkeleton.vue",
-      "packages/vue2/src/source/data-display/Skeleton.vue",
-      "packages/vue2/src/source/data-display/table/table.css",
-      "packages/vue2/src/source/layout/Modal.vue",
-      "packages/vue2/src/styles/forms.css",
       "packages/react/src/market-panel.tsx",
       "packages/react/src/skeletons.tsx",
       "packages/native/src/combobox.tsx",
@@ -565,8 +489,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/table.css",
-      "packages/vue2/src/source/layout/Modal.vue",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/choice-controls.tsx"
     ]
   },
@@ -583,10 +505,6 @@
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/ProgressCell.vue",
-      "packages/vue2/src/source/data-display/Sparkline.vue",
-      "packages/vue2/src/source/form/FormGroup.vue",
-      "packages/vue2/src/styles/forms.css",
       "packages/react/src/input.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/combobox.tsx",
@@ -638,7 +556,6 @@
     "implementationFiles": [
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/button.tsx",
       "packages/native/src/dropdown.tsx"
     ]
@@ -654,8 +571,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/ProgressCell.vue",
-      "packages/vue2/src/source/data-display/Sparkline.vue",
       "packages/react/src/actions.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/button.tsx",
@@ -701,7 +616,6 @@
     "implementationFiles": [
       "packages/tokens/src/financial.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/ProgressCell.vue",
       "packages/react/src/financial-display.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/financial-display.tsx"
@@ -747,7 +661,6 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
       "packages/vue2/src/source/layout/Drawer.vue",
-      "packages/vue2/src/source/layout/Modal.vue",
       "packages/native/src/drawer.tsx",
       "packages/native/src/modal.tsx"
     ]
@@ -781,7 +694,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/financial.css",
-      "packages/vue2/src/source/data-display/ProgressCell.vue",
       "packages/native/src/financial-display.tsx"
     ]
   },
@@ -796,8 +708,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/table.css",
-      "packages/vue2/src/source/layout/Modal.vue",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/choice-controls.tsx"
     ]
   },
@@ -813,7 +723,6 @@
     "implementationFiles": [
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/field-surface.ts",
       "packages/native/src/quantity-stepper.tsx",
       "packages/native/src/time-picker.tsx"
@@ -831,7 +740,6 @@
     "implementationFiles": [
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/styles/forms.css",
       "packages/react/src/date-picker.tsx",
       "packages/native/src/date-picker.tsx",
       "packages/native/src/input.tsx",
@@ -850,7 +758,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/web.css",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/field-surface.ts"
     ]
   },
@@ -1012,17 +919,11 @@
       "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/financial.css",
-      "packages/tokens/src/kpi-row.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/KpiRow.vue",
-      "packages/vue2/src/source/data-display/MarketCards.vue",
-      "packages/vue2/src/source/primitives/ButtonGroup.vue",
-      "packages/vue2/src/source/primitives/FilterGroup.vue",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/a11y.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
@@ -1116,9 +1017,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/data-state.css",
-      "packages/tokens/src/display.css",
-      "packages/vue2/src/source/data-display/ChartSkeleton.vue",
-      "packages/vue2/src/source/data-display/Skeleton.vue",
       "packages/react/src/skeletons.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/skeletons.tsx"
@@ -1134,8 +1032,6 @@
       "--skeleton-shine"
     ],
     "implementationFiles": [
-      "packages/tokens/src/display.css",
-      "packages/vue2/src/source/data-display/Skeleton.vue",
       "packages/native/src/skeleton-base.tsx"
     ]
   },
@@ -1363,7 +1259,6 @@
     "implementationFiles": [
       "packages/tokens/src/controls.css",
       "packages/tokens/src/table.css",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/select-options.tsx",
       "packages/native/src/table-toolbar.tsx"
@@ -1384,8 +1279,6 @@
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/MarketCards.vue",
-      "packages/vue2/src/styles/forms.css",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
@@ -1444,13 +1337,7 @@
     "upstreamAliases": [
       "--price-up"
     ],
-    "implementationFiles": [
-      "packages/tokens/src/price-motion.css",
-      "packages/tokens/src/table.css",
-      "packages/vue2/src/source/data-display/Deviation.vue",
-      "packages/vue2/src/source/data-display/Sparkline.vue",
-      "packages/vue2/src/source/data-display/table/table.css"
-    ]
+    "implementationFiles": []
   },
   {
     "role": "priceUpLight",
@@ -1472,11 +1359,7 @@
     "upstreamAliases": [
       "--price-up-bg"
     ],
-    "implementationFiles": [
-      "packages/tokens/src/price-motion.css",
-      "packages/tokens/src/table.css",
-      "packages/vue2/src/source/data-display/table/table.css"
-    ]
+    "implementationFiles": []
   },
   {
     "role": "priceUpBgStrong",
@@ -1487,9 +1370,7 @@
     "upstreamAliases": [
       "--price-up-bg-strong"
     ],
-    "implementationFiles": [
-      "packages/tokens/src/price-motion.css"
-    ]
+    "implementationFiles": []
   },
   {
     "role": "priceDown",
@@ -1500,13 +1381,7 @@
     "upstreamAliases": [
       "--price-down"
     ],
-    "implementationFiles": [
-      "packages/tokens/src/price-motion.css",
-      "packages/tokens/src/table.css",
-      "packages/vue2/src/source/data-display/Deviation.vue",
-      "packages/vue2/src/source/data-display/Sparkline.vue",
-      "packages/vue2/src/source/data-display/table/table.css"
-    ]
+    "implementationFiles": []
   },
   {
     "role": "priceDownLight",
@@ -1528,11 +1403,7 @@
     "upstreamAliases": [
       "--price-down-bg"
     ],
-    "implementationFiles": [
-      "packages/tokens/src/price-motion.css",
-      "packages/tokens/src/table.css",
-      "packages/vue2/src/source/data-display/table/table.css"
-    ]
+    "implementationFiles": []
   },
   {
     "role": "priceDownBgStrong",
@@ -1543,9 +1414,7 @@
     "upstreamAliases": [
       "--price-down-bg-strong"
     ],
-    "implementationFiles": [
-      "packages/tokens/src/price-motion.css"
-    ]
+    "implementationFiles": []
   },
   {
     "role": "priceNeutral",

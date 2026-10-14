@@ -109,8 +109,8 @@
                 <DsSkeleton
                   v-if="cellLoading(row, col)"
                   type="block"
-                  height="var(--extension-market-table-value-skeleton-height)"
-                  width="var(--extension-market-table-value-skeleton-width)"
+                  height="var(--_kjun-extension-market-table-value-skeleton-height)"
+                  width="var(--_kjun-extension-market-table-value-skeleton-width)"
                   class="kj-inline-block"
                 />
                 <!-- 도메인 셀 슬롯 우선 (#cell-{key}). flashClass를 함께 넘겨 슬롯이 그린 셀도 동일 펄스 -->

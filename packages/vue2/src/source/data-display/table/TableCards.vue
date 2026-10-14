@@ -5,9 +5,9 @@
           <div class="kjun-table-card-header">
             <div class="kjun-table-card-header-left">
               <DsSkeleton v-if="selectable" type="block" width="var(--_kjun-geometry-table-selection-size)" height="var(--_kjun-geometry-table-selection-size)" class="kj-mr-2 kj-shrink-0" />
-              <DsSkeleton type="block" height="var(--extension-table-card-title-skeleton-height)" width="var(--extension-table-card-title-skeleton-width)" />
+              <DsSkeleton type="block" height="var(--_kjun-extension-table-card-title-skeleton-height)" width="var(--_kjun-extension-table-card-title-skeleton-width)" />
             </div>
-            <DsSkeleton v-if="badgeColumns.length || cardSubtitle || inlineCardActions || inlineCardColumns.length" type="block" width="var(--extension-table-card-badge-skeleton-width)" height="var(--extension-table-card-title-skeleton-height)" />
+            <DsSkeleton v-if="badgeColumns.length || cardSubtitle || inlineCardActions || inlineCardColumns.length" type="block" width="var(--_kjun-extension-table-card-badge-skeleton-width)" height="var(--_kjun-extension-table-card-title-skeleton-height)" />
           </div>
           <template v-if="cardSectionGroups.length">
             <section v-for="section in cardSectionGroups" :key="section.key" class="kjun-table-card-section">
@@ -15,7 +15,7 @@
               <div :class="['kjun-table-card-body', cardSectionLayoutClass(section)]">
                 <div v-for="col in section.columns" :key="col.key" :class="['kjun-table-card-field', { 'kjun-table-card-field--full': col.fullWidthInCard, 'kjun-table-card-field--label-right': section.labelAlign === 'right' }]">
                   <span class="kjun-table-card-label">{{ col.label }}</span>
-                  <DsSkeleton type="block" height="var(--extension-table-card-field-skeleton-height)" width="70%" />
+                  <DsSkeleton type="block" height="var(--_kjun-extension-table-card-field-skeleton-height)" width="70%" />
                 </div>
               </div>
             </section>
@@ -23,11 +23,11 @@
           <div v-else class="kjun-table-card-body">
             <div v-for="col in cardBodyColumns" :key="col.key" :class="['kjun-table-card-field', { 'kjun-table-card-field--full': col.fullWidthInCard }]">
               <span class="kjun-table-card-label">{{ col.label }}</span>
-              <DsSkeleton type="block" height="var(--extension-table-card-field-skeleton-height)" width="70%" />
+              <DsSkeleton type="block" height="var(--_kjun-extension-table-card-field-skeleton-height)" width="70%" />
             </div>
           </div>
-          <div v-if="expandable" class="kjun-table-card-expand-toggle"><DsSkeleton type="block" width="var(--extension-table-card-action-skeleton-width)" height="var(--extension-table-card-field-skeleton-height)" /></div>
-          <div v-if="$scopedSlots['cell-actions'] && !inlineCardActions" class="kjun-table-card-actions"><DsSkeleton type="block" width="var(--extension-table-card-action-skeleton-width)" height="var(--extension-table-card-action-skeleton-height)" /></div>
+          <div v-if="expandable" class="kjun-table-card-expand-toggle"><DsSkeleton type="block" width="var(--_kjun-extension-table-card-action-skeleton-width)" height="var(--_kjun-extension-table-card-field-skeleton-height)" /></div>
+          <div v-if="$scopedSlots['cell-actions'] && !inlineCardActions" class="kjun-table-card-actions"><DsSkeleton type="block" width="var(--_kjun-extension-table-card-action-skeleton-width)" height="var(--_kjun-extension-table-card-action-skeleton-height)" /></div>
         </div>
       </template>
       <template v-else>

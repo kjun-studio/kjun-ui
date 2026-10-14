@@ -96,7 +96,7 @@ export const ToastView = {
             class: "kjun-toast-progress",
             attrs: { "aria-hidden": "true" },
             style: {
-              "--toast-start": `${(t.remaining / t.duration) * 100}%`,
+              "--_kjun-toast-start": `${(t.remaining / t.duration) * 100}%`,
               animationDuration: `${t.remaining}ms`,
               animationPlayState: t.paused ? "paused" : "running",
               background: `var(--_kjun-color-${tone})`,

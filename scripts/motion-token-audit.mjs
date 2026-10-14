@@ -4,7 +4,7 @@ import { resolve, relative } from 'node:path';
 
 // Motion must speak one language across platforms: token durations and token easing roles only.
 const sources = ['packages/tokens/src', 'packages/vue2/src', 'packages/react/src', 'packages/native/src', 'shared/package-runtime'];
-const scaleStep = /var\(--motion-(?:instant|quick|fast|normal)\)/;
+const scaleStep = /var\(--_kjun-motion-(?:instant|quick|fast|normal)\)/;
 const keywordEasing = /(?<![\w(-])(?:ease|ease-in|ease-out|ease-in-out)(?![\w-])/;
 
 /** Each comma-separated transition/animation must name a token duration and a token easing role. */
@@ -18,8 +18,8 @@ export function auditMotionCss(source, file) {
       const loop = /\binfinite\b/.test(part);
       if (/^all\b/.test(part)) issues.push(`${where} (name the animated properties)`);
       if (/(?<![\w-])\d*\.?\d+m?s\b/.test(part.replace(/\b0m?s\b/g, ''))) issues.push(`${where} (literal duration)`);
-      if (!loop && keywordEasing.test(part.replace(/var\(--ease-[\w-]+\)/g, ''))) issues.push(`${where} (keyword easing)`);
-      if (!loop && /var\(--motion-/.test(part) && !/var\(--ease-|\blinear\b|steps\(/.test(part)) issues.push(`${where} (missing token easing)`);
+      if (!loop && keywordEasing.test(part.replace(/var\(--_kjun-ease-[\w-]+\)/g, ''))) issues.push(`${where} (keyword easing)`);
+      if (!loop && /var\(--_kjun-motion-(?!distance-)/.test(part) && !/var\(--_kjun-ease-|\blinear\b|steps\(/.test(part)) issues.push(`${where} (missing token easing)`);
       if (/ease-out-expo|cubic-bezier\(/.test(part)) issues.push(`${where} (raw curve)`);
       // Scale steps only feed role tokens, so the same kind of change keeps one speed everywhere.
       if (scaleStep.test(part)) issues.push(`${where} (scale step instead of a motion role)`);

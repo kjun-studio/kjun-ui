@@ -18,10 +18,10 @@ function geometryUtilities(tokens) {
 }
 export function createVueStyleTheme(tokens, utilities) {
   const geometry = geometryUtilities(tokens);
-  const colors = { ...utilities.colors, white: "var(--text-inverse)", transparent: "transparent", current: "currentColor" };
+  const colors = { ...utilities.colors, white: "var(--_kjun-text-inverse)", transparent: "transparent", current: "currentColor" };
   return {
     screens: { pagination: tokens.responsive.pagination + 'px', 'pagination-wide': tokens.responsive.paginationWide + 'px' },
-    boxShadow: { none: "none", focus: "0 0 0 var(--_kjun-state-focus-ring-width) var(--focus-ring)", ...Object.fromEntries(Object.keys(tokens.elevation).map(key => ["elevation-" + key, `var(--_kjun-elevation-${key})`])) },
+    boxShadow: { none: "none", focus: "0 0 0 var(--_kjun-state-focus-ring-width) var(--_kjun-focus-ring)", ...Object.fromEntries(Object.keys(tokens.elevation).map(key => ["elevation-" + key, `var(--_kjun-elevation-${key})`])) },
     colors,
     fontWeight: { normal: "var(--_kjun-type-body-weight)", medium: "var(--_kjun-type-label-weight)", semibold: "var(--_kjun-type-control-weight)", bold: "var(--_kjun-type-number-lg-weight)" },
     extend: {
@@ -31,7 +31,7 @@ export function createVueStyleTheme(tokens, utilities) {
       ringWidth: { 2: 'var(--_kjun-state-focus-width)' },
       ringOffsetWidth: { 2: 'var(--_kjun-state-focus-offset)', 3: 'var(--_kjun-state-focus-choice-offset)' },
       borderWidth: { DEFAULT: 'var(--_kjun-border-default-width)', 2: 'var(--_kjun-border-control-width)' },
-      fontFamily: { sans: ["var(--kjun-font)"], mono: ["var(--font-numeric)"] },
+      fontFamily: { sans: ["var(--kjun-font)"], mono: ["var(--_kjun-font-numeric)"] },
       spacing: { ...Object.fromEntries(Object.entries(tokens.dimension).map(([name, value]) => [String(Number(name.slice(5)) / 4), value + "px"])), ...geometry.spacing },
       borderRadius: {
         ...geometry.borderRadius,
@@ -43,8 +43,8 @@ export function createVueStyleTheme(tokens, utilities) {
       fontSize: Object.fromEntries(Object.entries({ xs: 'caption', sm: 'body', base: 'input', lg: 'numberLg', xl: 'numberLg', '2xl': 'displaySm', '3xl': 'displayMd', '4xl': 'displayLg' }).map(([key,role]) => [key, [tokens.typography[role].fontSizePx / 16 + 'rem', { lineHeight: tokens.typography[role].lineHeightPx / 16 + 'rem', letterSpacing: tokens.typography[role].letterSpacingEm + 'em' }]])),
       zIndex: Object.fromEntries(Object.entries(tokens.layers.page).map(([key, value]) => [key.replace(/[A-Z]/g, c => "-" + c.toLowerCase()), String(value)])),
       // Utility transitions (transition-colors etc.) default to the semantic control role.
-      transitionDuration: { DEFAULT: "var(--motion-control)" },
-      transitionTimingFunction: { DEFAULT: "var(--ease-out)" },
+      transitionDuration: { DEFAULT: "var(--_kjun-motion-control)" },
+      transitionTimingFunction: { DEFAULT: "var(--_kjun-ease-out)" },
     },
   };
 }

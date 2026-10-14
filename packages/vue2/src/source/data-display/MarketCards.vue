@@ -71,8 +71,8 @@
               <DsSkeleton
                 v-if="metricLoading(row, selectedKey)"
                 type="block"
-                height="var(--extension-market-table-value-skeleton-height)"
-                width="var(--extension-market-table-value-skeleton-width)"
+                height="var(--_kjun-extension-market-table-value-skeleton-height)"
+                width="var(--_kjun-extension-market-table-value-skeleton-width)"
                 class="kj-inline-block"
               />
               <!-- 등락률은 데스크탑 표와 동일하게 pill로 표시 (값이 있을 때만) -->
@@ -87,8 +87,8 @@
               <DsSkeleton
                 v-else-if="isPriceMetric && row[selectedKey] == null"
                 type="block"
-                height="var(--extension-financial-price-skeleton-height)"
-                width="var(--extension-financial-price-skeleton-width)"
+                height="var(--_kjun-extension-financial-price-skeleton-height)"
+                width="var(--_kjun-extension-financial-price-skeleton-width)"
                 class="kj-inline-block"
               />
               <div
@@ -329,26 +329,26 @@ export default {
 }
 .kjun-metric-pill {
   flex: 0 0 auto;
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
+  background: var(--_kjun-bg-secondary);
+  color: var(--_kjun-text-secondary);
   border: 0;
   padding: var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-dimension-value16);
   border-radius: var(--_kjun-geometry-radius-radius9999);
   font-size: var(--_kjun-type-label-size);
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out);
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out);
   line-height: var(--_kjun-type-label-line);
   font-weight: var(--_kjun-type-label-weight);
   letter-spacing: var(--_kjun-type-label-tracking);
 }
 .kjun-metric-pill:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  box-shadow: 0 0 0 3px var(--_kjun-focus-ring);
 }
 .kjun-metric-pill--active {
-  background: var(--brand);
-  color: var(--on-brand);
+  background: var(--_kjun-brand);
+  color: var(--_kjun-on-brand);
   font-weight: var(--_kjun-type-number-lg-weight);
 }
 .kjun-metric-pill-arrow {

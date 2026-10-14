@@ -58,7 +58,7 @@ export function DsFormSkeleton({
       aria-hidden="true"
       className="kjun-form-skeleton"
       data-columns={columns}
-      style={{ "--form-skeleton-radius": `${tokens.input[size].radius}px` } as CSSProperties}
+      style={{ "--_kjun-form-skeleton-radius": `${tokens.input[size].radius}px` } as CSSProperties}
     >
       {fields.map((field, i) => (
         <div key={i}>

@@ -85,7 +85,7 @@ export function ToastView({
           className="kjun-toast-progress"
           style={
             {
-              "--toast-start": `${(toast.remaining / toast.duration) * 100}%`,
+              "--_kjun-toast-start": `${(toast.remaining / toast.duration) * 100}%`,
               animationDuration: `${toast.remaining}ms`,
               animationPlayState: toast.paused ? "paused" : "running",
               background: `var(--_kjun-color-${tone})`,

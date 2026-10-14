@@ -155,7 +155,7 @@ export default {
       if (!triggerEl || !floatingEl) return
 
       const trigger = triggerEl.getBoundingClientRect()
-      const dimensions = { width: 'var(--extension-popover-width)', maxWidth: `calc(100vw - ${VIEWPORT_MARGIN * 2}px)` }
+      const dimensions = { width: 'var(--_kjun-extension-popover-width)', maxWidth: `calc(100vw - ${VIEWPORT_MARGIN * 2}px)` }
       if (this.matchTriggerWidth) dimensions.width = `${trigger.width}px`
       if (this.maxHeight) {
         const viewport = window.visualViewport

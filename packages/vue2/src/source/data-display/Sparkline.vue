@@ -99,11 +99,11 @@ export default {
     },
     lineColor() {
       if (this.color) return this.color
-      if (this.data.length < 2) return 'var(--text-tertiary)'
+      if (this.data.length < 2) return 'var(--_kjun-text-tertiary)'
       const change = this.data[this.data.length - 1] - this.data[0]
-      if (change === 0) return 'var(--text-tertiary)'
-      if (this.semantic === 'status') return change > 0 ? 'var(--success)' : 'var(--danger)'
-      return change > 0 ? 'var(--price-up)' : 'var(--price-down)'
+      if (change === 0) return 'var(--_kjun-text-tertiary)'
+      if (this.semantic === 'status') return change > 0 ? 'var(--_kjun-success)' : 'var(--_kjun-danger)'
+      return change > 0 ? 'var(--_kjun-price-up)' : 'var(--_kjun-price-down)'
     },
     points() {
       if (!this.data || this.data.length === 0) return []

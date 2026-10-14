@@ -9,7 +9,7 @@
     <!-- Like React and Native: a 24px keyboard-reachable target around the 12px signal icon. -->
     <DsTooltip v-if="isSignal" :content="signalTooltip">
       <span tabindex="0" role="img" aria-label="차익거래 기회" class="kjun-deviation-signal">
-        <DsIcon name="alert-triangle" size="var(--extension-financial-warning-icon-size)" aria-hidden="true" />
+        <DsIcon name="alert-triangle" size="var(--_kjun-extension-financial-warning-icon-size)" aria-hidden="true" />
       </span>
     </DsTooltip>
   </span>
@@ -77,23 +77,23 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--extension-financial-badge-gap);
+  gap: var(--_kjun-extension-financial-badge-gap);
 }
 .kjun-deviation-pill {
   display: inline-flex;
   align-items: center;
-  padding: var(--extension-financial-pill-padding-y) var(--extension-financial-pill-padding-x);
-  border-radius: var(--extension-financial-cell-radius);
+  padding: var(--_kjun-extension-financial-pill-padding-y) var(--_kjun-extension-financial-pill-padding-x);
+  border-radius: var(--_kjun-extension-financial-cell-radius);
   font-size: var(--_kjun-type-control-size);
   line-height: var(--_kjun-type-control-line);
   font-weight: var(--_kjun-type-control-weight);
   letter-spacing: var(--_kjun-type-control-tracking);
 }
-.kjun-deviation-pill--neutral     { background: var(--bg-secondary); color: var(--text-secondary); }
-.kjun-deviation-pill--up-soft     { background: color-mix(in srgb, var(--price-up)   8%, transparent); color: var(--price-up); }
-.kjun-deviation-pill--up-mid      { background: color-mix(in srgb, var(--price-up)  14%, transparent); color: var(--price-up); }
-.kjun-deviation-pill--up-strong   { background: color-mix(in srgb, var(--price-up)  22%, transparent); color: var(--price-up); font-weight: var(--_kjun-type-number-lg-weight); }
-.kjun-deviation-pill--down-soft   { background: color-mix(in srgb, var(--price-down) 8%, transparent); color: var(--price-down); }
-.kjun-deviation-pill--down-mid    { background: color-mix(in srgb, var(--price-down) 14%, transparent); color: var(--price-down); }
-.kjun-deviation-pill--down-strong { background: color-mix(in srgb, var(--price-down) 22%, transparent); color: var(--price-down); font-weight: var(--_kjun-type-number-lg-weight); }
+.kjun-deviation-pill--neutral     { background: var(--_kjun-bg-secondary); color: var(--_kjun-text-secondary); }
+.kjun-deviation-pill--up-soft     { background: color-mix(in srgb, var(--_kjun-price-up)   8%, transparent); color: var(--_kjun-price-up); }
+.kjun-deviation-pill--up-mid      { background: color-mix(in srgb, var(--_kjun-price-up)  14%, transparent); color: var(--_kjun-price-up); }
+.kjun-deviation-pill--up-strong   { background: color-mix(in srgb, var(--_kjun-price-up)  22%, transparent); color: var(--_kjun-price-up); font-weight: var(--_kjun-type-number-lg-weight); }
+.kjun-deviation-pill--down-soft   { background: color-mix(in srgb, var(--_kjun-price-down) 8%, transparent); color: var(--_kjun-price-down); }
+.kjun-deviation-pill--down-mid    { background: color-mix(in srgb, var(--_kjun-price-down) 14%, transparent); color: var(--_kjun-price-down); }
+.kjun-deviation-pill--down-strong { background: color-mix(in srgb, var(--_kjun-price-down) 22%, transparent); color: var(--_kjun-price-down); font-weight: var(--_kjun-type-number-lg-weight); }
 </style>

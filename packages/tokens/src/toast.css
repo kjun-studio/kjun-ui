@@ -1,11 +1,11 @@
 .kjun-toast-stack {
   position: fixed;
-  top: var(--extension-toast-inset);
-  right: var(--extension-toast-inset);
+  top: var(--_kjun-extension-toast-inset);
+  right: var(--_kjun-extension-toast-inset);
   display: flex;
   flex-direction: column;
-  gap: var(--extension-toast-stack-gap);
-  max-height: calc(100dvh - 2 * var(--extension-toast-inset));
+  gap: var(--_kjun-extension-toast-stack-gap);
+  max-height: calc(100dvh - 2 * var(--_kjun-extension-toast-inset));
   overflow: hidden;
   pointer-events: none;
 }
@@ -13,13 +13,13 @@
   box-shadow: var(--_kjun-toast-elevation);
   display: flex;
   align-items: center;
-  gap: var(--extension-toast-gap);
-  padding: var(--extension-toast-padding);
+  gap: var(--_kjun-extension-toast-gap);
+  padding: var(--_kjun-extension-toast-padding);
   background: var(--_kjun-color-surface);
-  border-radius: var(--extension-toast-radius);
+  border-radius: var(--_kjun-extension-toast-radius);
   border: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
-  min-width: var(--extension-toast-min-width);
-  max-width: var(--extension-toast-max-width);
+  min-width: var(--_kjun-extension-toast-min-width);
+  max-width: var(--_kjun-extension-toast-max-width);
   position: relative;
   overflow: hidden;
   pointer-events: auto;
@@ -45,7 +45,7 @@
   display: block;
   font-size: var(--_kjun-type-control-size);
   color: var(--_kjun-color-text);
-  margin-bottom: var(--extension-toast-title-gap);
+  margin-bottom: var(--_kjun-extension-toast-title-gap);
   line-height: var(--_kjun-type-control-line);
   font-weight: var(--_kjun-type-control-weight);
   letter-spacing: var(--_kjun-type-control-tracking);
@@ -60,7 +60,7 @@
 }
 .kjun-toast-action {
   display: block;
-  margin-top: var(--extension-toast-action-gap);
+  margin-top: var(--_kjun-extension-toast-action-gap);
   padding: 0;
   background: none;
   border: none;
@@ -68,7 +68,7 @@
   font-size: var(--_kjun-type-label-size);
   color: var(--_kjun-color-brand);
   cursor: pointer;
-  transition: color var(--motion-control) var(--ease-out);
+  transition: color var(--_kjun-motion-control) var(--_kjun-ease-out);
   line-height: var(--_kjun-type-label-line);
   font-weight: var(--_kjun-type-label-weight);
   letter-spacing: var(--_kjun-type-label-tracking);
@@ -81,15 +81,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--extension-toast-close-size);
-  height: var(--extension-toast-close-size);
+  width: var(--_kjun-extension-toast-close-size);
+  height: var(--_kjun-extension-toast-close-size);
   padding: 0;
   background: transparent;
   border: none;
-  border-radius: var(--extension-toast-close-radius);
+  border-radius: var(--_kjun-extension-toast-close-radius);
   cursor: pointer;
   color: var(--_kjun-color-text-tertiary);
-  transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out);
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out);
   flex-shrink: 0;
 }
 .kjun-toast-close:hover {
@@ -105,13 +105,13 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  height: var(--extension-toast-progress-height);
-  border-radius: 0 0 var(--extension-toast-radius) var(--extension-toast-radius);
+  height: var(--_kjun-extension-toast-progress-height);
+  border-radius: 0 0 var(--_kjun-extension-toast-radius) var(--_kjun-extension-toast-radius);
   animation: kjun-toast-progress linear forwards;
 }
 @keyframes kjun-toast-progress {
   from {
-    width: var(--toast-start);
+    width: var(--_kjun-toast-start);
   }
   to {
     width: 0;
@@ -119,8 +119,8 @@
 }
 @media (width <= token(responsive.toast)) {
   .kjun-toast-stack {
-    left: var(--extension-toast-inset);
-    right: var(--extension-toast-inset);
+    left: var(--_kjun-extension-toast-inset);
+    right: var(--_kjun-extension-toast-inset);
   }
   .kjun-toast {
   box-shadow: var(--_kjun-toast-elevation);

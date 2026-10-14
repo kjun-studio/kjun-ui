@@ -48,7 +48,7 @@
   font-weight: var(--_kjun-type-label-weight);
   white-space: nowrap;
   cursor: pointer;
-  transition: color var(--motion-indicator) var(--ease-out);
+  transition: color var(--_kjun-motion-indicator) var(--_kjun-ease-out);
 }
 .kjun-button-group button[aria-pressed="true"] {
   background: var(--_kjun-color-surface);
@@ -64,7 +64,7 @@
   background: var(--_kjun-color-surface);
 }
 .kjun-button-group-indicator[data-animate="true"] {
-  transition: transform var(--motion-indicator) var(--ease-out), width var(--motion-indicator) var(--ease-out);
+  transition: transform var(--_kjun-motion-indicator) var(--_kjun-ease-out), width var(--_kjun-motion-indicator) var(--_kjun-ease-out);
 }
 .kjun-button-group-label { display: inline-grid; }
 .kjun-button-group-label > span { grid-area: 1 / 1; }
@@ -82,16 +82,16 @@
 /* Narrow groups scroll; the clipped edge fades so a cut option reads as more content. Vue keeps its ds- root class. */
 :is(.kjun-button-group) { scrollbar-width: none; }
 :is(.kjun-button-group)[data-overflow="end"] {
-  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
-  mask-image: linear-gradient(to right, currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
+  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), transparent);
+  mask-image: linear-gradient(to right, currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), transparent);
 }
 :is(.kjun-button-group)[data-overflow="start"] {
-  -webkit-mask-image: linear-gradient(to right, transparent, currentColor var(--extension-scroll-fade-width));
-  mask-image: linear-gradient(to right, transparent, currentColor var(--extension-scroll-fade-width));
+  -webkit-mask-image: linear-gradient(to right, transparent, currentColor var(--_kjun-extension-scroll-fade-width));
+  mask-image: linear-gradient(to right, transparent, currentColor var(--_kjun-extension-scroll-fade-width));
 }
 :is(.kjun-button-group)[data-overflow="both"] {
-  -webkit-mask-image: linear-gradient(to right, transparent, currentColor var(--extension-scroll-fade-width), currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
-  mask-image: linear-gradient(to right, transparent, currentColor var(--extension-scroll-fade-width), currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, currentColor var(--_kjun-extension-scroll-fade-width), currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), transparent);
+  mask-image: linear-gradient(to right, transparent, currentColor var(--_kjun-extension-scroll-fade-width), currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), transparent);
 }
 .kjun-filter-group {
   display: inline-flex;
@@ -141,8 +141,8 @@
   background: var(--_kjun-color-hover);
 }
 .kjun-filter-chip i {
-  width: var(--extension-selection-dot-size);
-  height: var(--extension-selection-dot-size);
+  width: var(--_kjun-extension-selection-dot-size);
+  height: var(--_kjun-extension-selection-dot-size);
   border-radius: 50%;
 }
 .kjun-filter-label {
@@ -168,7 +168,7 @@
     min-height: var(--_kjun-geometry-native-minimum-touch-target);
   }
   .kjun-filter-chip > span {
-    min-height: var(--extension-selection-minimum-height);
+    min-height: var(--_kjun-extension-selection-minimum-height);
   }
 }
 .kjun-layer-trigger {
@@ -192,28 +192,28 @@
   color: var(--_kjun-color-danger-dark);
 }
 .kjun-floating {
-  max-width: calc(100vw - 2 * var(--extension-floating-viewport-inset));
+  max-width: calc(100vw - 2 * var(--_kjun-extension-floating-viewport-inset));
   overflow: auto;
   border: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
-  border-radius: var(--extension-menu-radius);
+  border-radius: var(--_kjun-extension-menu-radius);
   background: var(--_kjun-color-surface);
   color: var(--_kjun-color-text);
   box-shadow: var(--_kjun-menu-elevation);
   outline: none;
 }
 .kjun-content-popover {
-  width:var(--extension-popover-width); border:0; border-radius:var(--extension-popover-radius);
+  width:var(--_kjun-extension-popover-width); border:0; border-radius:var(--_kjun-extension-popover-radius);
   background:var(--_kjun-color-surface); color:var(--_kjun-color-text); box-shadow:var(--_kjun-popover-elevation);
   font-size:var(--_kjun-type-body-size); line-height:var(--_kjun-type-body-line);
   font-weight:var(--_kjun-type-body-weight); letter-spacing:var(--_kjun-type-body-tracking);
 }
 .kjun-popover-dialog { outline:none; }
-.kjun-popover-content { display:flex; flex-direction:column; gap:var(--extension-popover-gap); padding:var(--extension-popover-padding); min-width:0; word-break:keep-all; overflow-wrap:anywhere; }
+.kjun-popover-content { display:flex; flex-direction:column; gap:var(--_kjun-extension-popover-gap); padding:var(--_kjun-extension-popover-padding); min-width:0; word-break:keep-all; overflow-wrap:anywhere; }
 .kjun-popover-content[data-no-padding="true"] { padding:0; gap:0; }
 .kjun-tooltip {
   box-shadow: var(--_kjun-tooltip-elevation);
-  max-width: var(--extension-tooltip-max-width);
-  padding: var(--extension-tooltip-padding-y) var(--extension-tooltip-padding-x);
+  max-width: var(--_kjun-extension-tooltip-max-width);
+  padding: var(--_kjun-extension-tooltip-padding-y) var(--_kjun-extension-tooltip-padding-x);
   border-radius: var(--_kjun-geometry-radius-radius6);
   font-size: var(--_kjun-type-caption-size);
   background: var(--_kjun-color-chart-tooltip-bg);
@@ -237,21 +237,21 @@
   transform: rotate(90deg);
 }
 .kjun-dropdown {
-  min-width: var(--extension-menu-minimum-width);
+  min-width: var(--_kjun-extension-menu-minimum-width);
 }
 .kjun-menu {
-  padding: var(--extension-menu-padding);
+  padding: var(--_kjun-extension-menu-padding);
   outline: none;
 }
 .kjun-menu-item {
   display: flex;
   align-items: center;
   gap: var(--_kjun-geometry-dimension-value8);
-  min-height: var(--extension-menu-option-height);
-  padding: var(--extension-menu-option-padding-y) var(--extension-menu-option-padding-x);
-  border-radius: var(--extension-menu-option-radius);
-  font-size: var(--extension-menu-option-font-size); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
-  line-height: var(--extension-menu-option-line-height);
+  min-height: var(--_kjun-extension-menu-option-height);
+  padding: var(--_kjun-extension-menu-option-padding-y) var(--_kjun-extension-menu-option-padding-x);
+  border-radius: var(--_kjun-extension-menu-option-radius);
+  font-size: var(--_kjun-extension-menu-option-font-size); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
+  line-height: var(--_kjun-extension-menu-option-line-height);
   cursor: pointer;
   outline: none;
   color: var(--_kjun-color-text);
@@ -280,7 +280,7 @@
 .kjun-menu-item:not([data-variant="danger"]) .kjun-menu-icon { color: var(--_kjun-color-text-secondary); }
 /* Once any item has a leading icon, icon-less labels start on the same line. */
 .kjun-menu:has(.kjun-menu-icon) .kjun-menu-item:not(:has(.kjun-menu-icon)) {
-  padding-left: calc(var(--extension-menu-option-padding-x) + var(--extension-menu-icon-size) + var(--_kjun-geometry-dimension-value8));
+  padding-left: calc(var(--_kjun-extension-menu-option-padding-x) + var(--_kjun-extension-menu-icon-size) + var(--_kjun-geometry-dimension-value8));
 }
 .kjun-menu-item[data-disabled] {
   opacity: var(--_kjun-state-opacity-disabled);
@@ -290,7 +290,7 @@
   color: var(--_kjun-color-danger);
 }
 .kjun-menu-divider {
-  height: var(--extension-menu-divider-height);
+  height: var(--_kjun-extension-menu-divider-height);
   margin: var(--_kjun-geometry-dimension-value4) 0;
   background: var(--_kjun-color-border);
 }
@@ -319,7 +319,7 @@
   background: var(--_kjun-color-surface);
   color: var(--_kjun-color-text);
   box-shadow: var(--_kjun-drawer-elevation-right);
-  border-radius: var(--extension-drawer-radius);
+  border-radius: var(--_kjun-extension-drawer-radius);
 }
 .kjun-drawer-overlay:is([data-position="right"], [data-position="left"])
   .kjun-drawer {
@@ -336,7 +336,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--extension-drawer-padding-y) var(--extension-drawer-padding-x);
+  padding: var(--_kjun-extension-drawer-padding-y) var(--_kjun-extension-drawer-padding-x);
   border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
 }
 .kjun-drawer-header h2 {
@@ -352,7 +352,7 @@
   flex: 1;
 }
 .kjun-drawer-footer {
-  padding: var(--extension-drawer-padding-y) var(--extension-drawer-padding-x);
+  padding: var(--_kjun-extension-drawer-padding-y) var(--_kjun-extension-drawer-padding-x);
   border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
 }
 .kjun-select-shell {
@@ -385,8 +385,8 @@
 .kjun-select-trigger:disabled .kjun-placeholder { color: var(--_kjun-color-text-disabled); }
 .kjun-select-panel {
   border-radius: var(--_kjun-geometry-radius-radius12);
-  min-width: var(--extension-menu-minimum-width);
-  padding: var(--extension-menu-padding);
+  min-width: var(--_kjun-extension-menu-minimum-width);
+  padding: var(--_kjun-extension-menu-padding);
 }
 .kjun-select-search {
   padding: var(--_kjun-geometry-dimension-value8);
@@ -395,7 +395,7 @@
 .kjun-listbox {
   /* Options measure their offset from the list, so keyboard focus scrolls within it. */
   position: relative;
-  max-height: var(--extension-menu-list-max-height);
+  max-height: var(--_kjun-extension-menu-list-max-height);
   overflow-y: auto;
   outline: none;
 }
@@ -423,10 +423,10 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--_kjun-geometry-dimension-value8);
-  min-height: var(--extension-menu-option-height);
-  padding: var(--extension-menu-option-padding-y) var(--extension-menu-option-padding-x);
-  font-size: var(--extension-menu-option-font-size); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
-  line-height: var(--extension-menu-option-line-height);
+  min-height: var(--_kjun-extension-menu-option-height);
+  padding: var(--_kjun-extension-menu-option-padding-y) var(--_kjun-extension-menu-option-padding-x);
+  font-size: var(--_kjun-extension-menu-option-font-size); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
+  line-height: var(--_kjun-extension-menu-option-line-height);
   cursor: pointer;
   outline: none;
   color: var(--_kjun-color-text);
@@ -456,7 +456,7 @@
   letter-spacing: var(--_kjun-type-body-tracking);
 }
 /* Like Vue, the indicator turns over while the list is open. */
-.kjun-select-indicator { transition: transform var(--motion-control) var(--ease-out); }
+.kjun-select-indicator { transition: transform var(--_kjun-motion-control) var(--_kjun-ease-out); }
 .kjun-select-indicator[data-open] { transform: rotate(180deg); }
 @media (prefers-reduced-motion: reduce) { .kjun-select-indicator { transition: none; } }
 /* A failed search reads as an error, never as an empty result. */
@@ -493,4 +493,4 @@
 .kjun-drawer-overlay[data-position="left"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-left); }
 .kjun-drawer-overlay[data-position="top"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-top); }
 .kjun-drawer-overlay[data-position="bottom"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-bottom); }
-.kjun-drawer-overlay[data-position="bottom"] .kjun-drawer { border-top-left-radius:var(--extension-drawer-bottom-radius); border-top-right-radius:var(--extension-drawer-bottom-radius); }
+.kjun-drawer-overlay[data-position="bottom"] .kjun-drawer { border-top-left-radius:var(--_kjun-extension-drawer-bottom-radius); border-top-right-radius:var(--_kjun-extension-drawer-bottom-radius); }

@@ -201,6 +201,6 @@ export default {
 .kjun-data-state-refreshing {
   opacity: var(--_kjun-state-opacity-pending);
   pointer-events: none;
-  transition: opacity var(--motion-control) var(--ease-out);
+  transition: opacity var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
 </style>

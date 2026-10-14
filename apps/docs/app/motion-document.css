@@ -29,7 +29,7 @@
 @media (min-width: 768px) { .motion-preview-stage { height: 480px; } }
 .motion-preview-stage iframe { display: block; width: 100%; height: 100%; border: 0; }
 .motion-preview-stage[data-ready="false"] iframe { visibility: hidden; opacity: 0; }
-.motion-preview-stage[data-ready="true"] iframe { opacity: 1; transition: opacity var(--motion-fast) var(--ease-out); }
+.motion-preview-stage[data-ready="true"] iframe { opacity: 1; transition: opacity var(--_kjun-motion-fast) var(--_kjun-ease-out); }
 /* Fast loads show nothing; the status appears only when preparing takes noticeably long. */
 .motion-preview-status[data-failed="false"] { animation: motion-status-in 1ms 320ms both; }
 @keyframes motion-status-in { from { opacity: 0; } to { opacity: 1; } }
@@ -56,8 +56,8 @@
 /* One playback control for every demo: it floats at the bottom edge while the page scrolls. */
 .motion-speed-dock { position: sticky; bottom: 16px; z-index: 2; display: flex; justify-content: flex-end; max-width: 720px; margin-top: 32px; pointer-events: none; }
 .motion-speed-dock > .motion-speed { pointer-events: auto; padding: 4px 4px 4px 16px; border: 1px solid var(--border); border-radius: 999px; background: var(--background); box-shadow: 0 2px 8px rgb(0 0 0 / 0.08); }
-.motion-speed-dock > .motion-speed { transition: opacity var(--motion-control) var(--ease-out), visibility 0s linear; }
-.motion-speed-dock[data-visible="false"]:not(:focus-within) > .motion-speed { visibility: hidden; opacity: 0; transition: opacity var(--motion-control) var(--ease-out), visibility 0s linear var(--motion-control); }
+.motion-speed-dock > .motion-speed { transition: opacity var(--_kjun-motion-control) var(--_kjun-ease-out), visibility 0s linear; }
+.motion-speed-dock[data-visible="false"]:not(:focus-within) > .motion-speed { visibility: hidden; opacity: 0; transition: opacity var(--_kjun-motion-control) var(--_kjun-ease-out), visibility 0s linear var(--_kjun-motion-control); }
 /* Wide layouts leave a gutter beside the 720px column; the control moves there instead of covering content. */
 @media (min-width: 1280px) { .motion-speed-dock { max-width: none; } }
 /* Curve comparison: one overlaid plot, then full-width tracks sharing a 90% column. */

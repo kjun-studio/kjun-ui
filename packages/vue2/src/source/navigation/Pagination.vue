@@ -28,7 +28,7 @@
           aria-label="이전 페이지"
           @click="changePage(computedCurrentPage - 1)"
         >
-          <DsIcon size="var(--extension-pagination-icon-size)" name="chevron-left" />
+          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-left" />
         </button>
         <span class="kj-px-pagination-label-padding-x kj-text-sm kj-text-text-primary kj-whitespace-nowrap">
           <strong>{{ computedCurrentPage }}</strong> / {{ computedTotalPages }}
@@ -40,7 +40,7 @@
           aria-label="다음 페이지"
           @click="changePage(computedCurrentPage + 1)"
         >
-          <DsIcon size="var(--extension-pagination-icon-size)" name="chevron-right" />
+          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-right" />
         </button>
       </div>
 
@@ -55,7 +55,7 @@
           aria-label="첫 페이지"
           @click="changePage(1)"
         >
-          <DsIcon size="var(--extension-pagination-icon-size)" name="chevrons-left" />
+          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevrons-left" />
         </button>
         <!-- Previous -->
         <button
@@ -65,7 +65,7 @@
           aria-label="이전 페이지"
           @click="changePage(computedCurrentPage - 1)"
         >
-          <DsIcon size="var(--extension-pagination-icon-size)" name="chevron-left" />
+          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-left" />
         </button>
 
         <!-- Page Numbers -->
@@ -96,7 +96,7 @@
           aria-label="다음 페이지"
           @click="changePage(computedCurrentPage + 1)"
         >
-          <DsIcon size="var(--extension-pagination-icon-size)" name="chevron-right" />
+          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevron-right" />
         </button>
         <!-- Last -->
         <button
@@ -107,7 +107,7 @@
           aria-label="마지막 페이지"
           @click="changePage(computedTotalPages)"
         >
-          <DsIcon size="var(--extension-pagination-icon-size)" name="chevrons-right" />
+          <DsIcon size="var(--_kjun-extension-pagination-icon-size)" name="chevrons-right" />
         </button>
       </div>
     </div>
@@ -232,8 +232,8 @@ export default {
 
 <style scoped>
 .kjun-pagination-button {
-  width: var(--extension-pagination-item-size);
-  height: var(--extension-pagination-item-size);
+  width: var(--_kjun-extension-pagination-item-size);
+  height: var(--_kjun-extension-pagination-item-size);
   flex-shrink: 0;
 }
 </style>

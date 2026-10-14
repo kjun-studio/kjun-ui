@@ -11,9 +11,10 @@ const css =
   [...data.colorRoles, ...data.domainColorRoles]
     .map(role => `  --_kjun-color-${kebab(role)}: ${expression(role)};`).join("\n") + "\n" +
   Object.entries(data.roleBindings)
-    .map(([key, value]) => `  --${key}: var(--${value === "font" ? "kjun" : "_kjun-color"}-${kebab(value)});`)
+    // The card surface keeps --_kjun-card-border for its own instance value.
+    .map(([key, value]) => `  --_kjun-${key === "card-border" ? "role-card-border" : key}: var(--${value === "font" ? "kjun" : "_kjun-color"}-${kebab(value)});`)
     .join("\n") +
-  `\n  --font-numeric: var(--kjun-font-numeric, var(--kjun-font));\n  --control-label-size: var(--_kjun-type-control-size);\n  --radius-card: ${data.card.radii.md}px;\n  --kpi-value-size: var(--_kjun-type-display-lg-size);\n  --kpi-value-size-mobile: var(--_kjun-type-display-md-size);\n  --font-medium: var(--_kjun-type-label-weight);\n  --font-semibold: var(--_kjun-type-control-weight);\n` +
+  `\n  --_kjun-font-numeric: var(--kjun-font-numeric, var(--kjun-font));\n  --_kjun-control-label-size: var(--_kjun-type-control-size);\n  --_kjun-radius-card: ${data.card.radii.md}px;\n  --_kjun-kpi-value-size: var(--_kjun-type-display-lg-size);\n  --_kjun-kpi-value-size-mobile: var(--_kjun-type-display-md-size);\n  --_kjun-font-medium: var(--_kjun-type-label-weight);\n  --_kjun-font-semibold: var(--_kjun-type-control-weight);\n` +
   Object.entries(data.elevation)
     .map(([key, value]) => `  --_kjun-elevation-${key}: ${shadowCss(value)};`)
     .join("\n") +
@@ -21,8 +22,8 @@ const css =
   Object.entries(data.motion)
     .map(([key, value]) =>
       typeof value === "number"
-        ? `  --motion-${kebab(key)}: ${value}ms;`
-        : `  --${kebab(key)}: ${value};`
+        ? `  --_kjun-motion-${kebab(key)}: ${value}ms;`
+        : `  --_kjun-${kebab(key)}: ${value};`
     )
     .join("\n") +
   "\n" + Object.entries(data.layers.page).map(([key,value]) => `  --_kjun-layer-page-${kebab(key)}: ${value};`).join("\n") +

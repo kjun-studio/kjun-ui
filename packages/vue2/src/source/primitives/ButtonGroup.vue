@@ -11,7 +11,7 @@
       :aria-pressed="String(value === option.value)"
       @click.stop="selectOption(option.value)"
     >
-      <DsIcon v-if="option.icon" size="var(--extension-selection-icon-size)" :name="option.icon" :class="option.label ? 'kj-mr-1.5' : ''" />
+      <DsIcon v-if="option.icon" size="var(--_kjun-extension-selection-icon-size)" :name="option.icon" :class="option.label ? 'kj-mr-1.5' : ''" />
       <span class="kjun-button-group-label"><span aria-hidden="true" :style="selectionStyle(true)">{{ option.label }}</span><span>{{ option.label }}</span></span>
     </button>
   </div>
@@ -110,7 +110,7 @@ export default {
       // 높이는 컨테이너가 결정(stretch) — 여기선 가로 패딩과 폰트만.
       const sizeClasses = {
         xs: 'kj-text-xs',
-        sm: 'kj-text-[length:var(--control-label-size)]',
+        sm: 'kjun-button-group__button--sm',
         md: 'kj-text-sm',
         lg: 'kj-text-base',
         xl: 'kj-text-base'
@@ -136,32 +136,33 @@ export default {
   isolation: isolate;
   min-width: 0;
   max-width: 100%;
-  background: var(--bg-secondary);
+  background: var(--_kjun-bg-secondary);
 }
 
+.kjun-button-group__button--sm { font-size: var(--_kjun-control-label-size); }
 .kjun-button-group__button {
   position: relative;
   z-index: 1;
   flex-shrink: 0;
   outline: none;
-  transition: color var(--motion-control) var(--ease-out);
+  transition: color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
 .kjun-button-group[data-indicator] .kjun-button-group__button[aria-pressed="true"] { background: transparent; }
-.kjun-button-group .kjun-button-group-indicator { background: var(--card-bg); }
+.kjun-button-group .kjun-button-group-indicator { background: var(--_kjun-card-bg); }
 @media (prefers-reduced-motion: reduce) {
   .kjun-button-group__button { transition: none; }
 }
 
 @media (hover: hover) {
   .kjun-button-group__button:not(:disabled)[aria-pressed="false"]:hover {
-    background: var(--bg-hover);
-    color: var(--text-primary);
+    background: var(--_kjun-bg-hover);
+    color: var(--_kjun-text-primary);
   }
 }
 
 .kjun-button-group__button:focus-visible {
   /* 가로 스크롤 가장자리에서도 키보드 초점이 잘리지 않도록 안쪽에 표시한다. */
-  outline: var(--_kjun-state-focus-width) solid var(--focus-ring);
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-focus-ring);
   outline-offset: var(--_kjun-state-focus-inset-offset);
 }
 

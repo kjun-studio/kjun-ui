@@ -29,7 +29,7 @@ export function extensionGeometryCss(data, definitions) {
   function visit(value, path) {
     if (typeof value === 'number') {
       const unit = tokenCssUnit(definitions, ['extensions', ...path].join('.'));
-      lines.push(`  --extension-${path.map(kebab).join('-')}: ${unit === 'rem' ? rem(value) : value + unit};`);
+      lines.push(`  --_kjun-extension-${path.map(kebab).join('-')}: ${unit === 'rem' ? rem(value) : value + unit};`);
     } else if (value && typeof value === 'object' && !Array.isArray(value)) for (const [key, child] of Object.entries(value)) visit(child, [...path, key]);
   }
   visit(data.extensions, []);

@@ -10,15 +10,15 @@ test('package motion uses token durations and token easing roles on every platfo
 
 test('motion audit rejects keyword easing, all, literal durations and utility timing', () => {
   for (const css of [
-    '.a { transition: opacity var(--motion-quick) ease; }',
-    '.a { transition: all var(--motion-control) var(--ease-out); }',
-    '.a { transition: color 150ms var(--ease-out); }',
-    '.a { transition: color var(--motion-control); }',
-    '.a { animation: x var(--motion-fast) cubic-bezier(0.16, 1, 0.3, 1); }',
-    '.a { transition: color var(--motion-quick) var(--ease-out); }',
+    '.a { transition: opacity var(--_kjun-motion-quick) ease; }',
+    '.a { transition: all var(--_kjun-motion-control) var(--_kjun-ease-out); }',
+    '.a { transition: color 150ms var(--_kjun-ease-out); }',
+    '.a { transition: color var(--_kjun-motion-control); }',
+    '.a { animation: x var(--_kjun-motion-fast) cubic-bezier(0.16, 1, 0.3, 1); }',
+    '.a { transition: color var(--_kjun-motion-quick) var(--_kjun-ease-out); }',
   ]) assert.notDeepEqual(auditMotionCss(css, 'x.css'), [], css);
-  assert.deepEqual(auditMotionCss('.a { transition: opacity var(--motion-fade-exit) var(--ease-linear), translate var(--motion-popup-exit) var(--ease-in); }', 'x.css'), []);
-  assert.deepEqual(auditMotionCss('.a { animation: s var(--motion-shimmer) ease-in-out infinite; }', 'x.css'), []);
+  assert.deepEqual(auditMotionCss('.a { transition: opacity var(--_kjun-motion-fade-exit) var(--_kjun-ease-linear), translate var(--_kjun-motion-popup-exit) var(--_kjun-ease-in); }', 'x.css'), []);
+  assert.deepEqual(auditMotionCss('.a { animation: s var(--_kjun-motion-shimmer) ease-in-out infinite; }', 'x.css'), []);
   assert.notDeepEqual(auditMotionScript(`const c = 'h-full transition-all duration-300';`, 'x.js'), []);
   assert.notDeepEqual(auditMotionScript(`el.animate(k, { easing: 'ease-out' });`, 'x.js'), []);
   assert.deepEqual(auditMotionScript(`el.animate(k, { easing: tokens.motion.easeOut });`, 'x.js'), []);
@@ -32,5 +32,5 @@ test('easing roles separate small moves, edge panels and exit fades', async () =
   assert.ok(motion.fadeExit < motion.popupExit && motion.backdropExit < motion.layerExit, 'exit fades end before the movement');
   for (const removed of ['slow', 'emphasis', 'easeBounce']) assert.equal(motion[removed], undefined, removed);
   const css = await readFile(root + 'packages/tokens/src/motion.css', 'utf8');
-  assert.match(css, /\.kjun-drawer \{ transform: none; transition: transform var\(--motion-layer-enter\) var\(--ease-emphasized\)/);
+  assert.match(css, /\.kjun-drawer \{ transform: none; transition: transform var\(--_kjun-motion-layer-enter\) var\(--_kjun-ease-emphasized\)/);
 });

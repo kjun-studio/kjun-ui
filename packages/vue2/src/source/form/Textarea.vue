@@ -7,7 +7,7 @@
     :readonly="readonly"
     :required="fieldRequired"
     :rows="rows"
-    :style="{ minHeight: `max(var(--field-height), calc(${Number(rows)} * var(--_kjun-type-input-line) + var(--field-textarea-padding-y) * 2 + 2 * var(--_kjun-border-control-width)))` }"
+    :style="{ minHeight: `max(var(--_kjun-field-height), calc(${Number(rows)} * var(--_kjun-type-input-line) + var(--_kjun-field-textarea-padding-y) * 2 + 2 * var(--_kjun-border-control-width)))` }"
     :class="textareaClasses"
     :aria-label="ariaLabel || undefined"
     :aria-invalid="fieldInvalid ? 'true' : undefined"

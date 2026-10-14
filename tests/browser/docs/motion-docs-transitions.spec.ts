@@ -88,8 +88,10 @@ for (const platform of platforms) {
         const first = read(); if (first != null) values.push(first);
         (trigger as HTMLElement).click();
         for (let i = 0; i < 48; i++) { await new Promise(requestAnimationFrame); const n = read(); if (n != null) values.push(n); }
+        if (!values.length) return ['DEBUG', String(document.querySelector('[role="dialog"]')?.className), String(document.querySelector('[role="dialog"]')?.parentElement?.className), document.body.innerHTML.length] as any;
         return values;
       }, kind);
+      console.log('SAMPLES', kind, JSON.stringify(samples).slice(0, 300));
       const min = Math.min(...samples), max = Math.max(...samples);
       expect(max - min, kind).toBeGreaterThan(2);
       if (kind === 'toast') await expect(frame.getByText('알림 2', { exact: true })).toHaveCount(0);

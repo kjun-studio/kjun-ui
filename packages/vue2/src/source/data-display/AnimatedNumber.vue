@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style scoped>
-.kjun-animated-number { font-variant-numeric: tabular-nums; font-family: var(--font-numeric); }
+.kjun-animated-number { font-variant-numeric: tabular-nums; font-family: var(--_kjun-font-numeric); }
 .kjun-animated-number__affix:first-child { margin-right: var(--_kjun-geometry-dimension-value4); }
 .kjun-animated-number__affix:last-child { margin-left: var(--_kjun-geometry-dimension-value4); }
 </style>

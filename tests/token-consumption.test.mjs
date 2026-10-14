@@ -46,13 +46,13 @@ test('readback aliases reject independent edits and follow their canonical geome
 test('field interaction durations reference the semantic control role', async () => {
   for (const file of ['packages/native/src/field-surface.ts', 'packages/vue2/src/styles/forms.css']) {
     const source = await readFile(root + file, 'utf8');
-    assert.doesNotMatch(source, /tokens\.motion\.fast|var\(--motion-fast\)/);
-    assert.match(source, /tokens\.motion\.control|var\(--motion-control\)/);
+    assert.doesNotMatch(source, /tokens\.motion\.fast|var\(--_kjun-motion-fast\)/);
+    assert.match(source, /tokens\.motion\.control|var\(--_kjun-motion-control\)/);
   }
 });
 
 test('shared CSS only establishes a connection for a platform that uses its selector', () => {
-  const css = '.kjun-scope .kjun-pagination button { width:var(--extension-pagination-item-size) }';
+  const css = '.kjun-scope .kjun-pagination button { width:var(--_kjun-extension-pagination-item-size) }';
   assert.equal(connectedCss(css, '<div class="kjun-scope kjun-tabs"></div>'), '');
   assert.match(connectedCss(css, '<div class="kjun-pagination"></div>'), /pagination-item-size/);
 });

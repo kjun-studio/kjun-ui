@@ -49,7 +49,7 @@ export const actions: Record<string, GuideAuthor> = {
       p(
         "구분선",
         "부모 메뉴 안에서 행동 묶음의 경계를 표시합니다. 독립적인 행동이나 라벨이 아닙니다.",
-        '.kjun-dropdown-divider, [role="menu"] > [style*="--extension-menu-divider-height"], [role="menuitem"] + [style*="height: 1px"], [role="separator"]',
+        '.kjun-dropdown-divider, [role="menu"] > [style*="--_kjun-extension-menu-divider-height"], [role="menuitem"] + [style*="height: 1px"], [role="separator"]',
       ),
     ],
     related: "layers",

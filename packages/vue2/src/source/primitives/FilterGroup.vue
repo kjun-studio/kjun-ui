@@ -16,7 +16,7 @@
           class="kj-inline-block kj-w-selection-dot-size kj-h-selection-dot-size kj-rounded-full kj-shrink-0"
           :style="{ backgroundColor: option.dot }"
         ></span>
-        <DsIcon v-if="option.icon" :name="option.icon" size="var(--extension-selection-icon-size)" />
+        <DsIcon v-if="option.icon" :name="option.icon" size="var(--_kjun-extension-selection-icon-size)" />
         <span class="kjun-filter-chip__label">
           <span class="kjun-filter-chip__measure" aria-hidden="true" :style="selectionStyle(true)">{{ option.label }}</span>
           <span>{{ option.label }}</span>
@@ -166,15 +166,15 @@ export default {
   gap: var(--_kjun-geometry-dimension-value4);
   width: 100%;
   border-radius: inherit;
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-  font-weight: var(--font-medium);
+  background: var(--_kjun-bg-secondary);
+  color: var(--_kjun-text-secondary);
+  font-weight: var(--_kjun-font-medium);
   white-space: nowrap;
-  transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out);
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
 
 .kjun-filter-chip--sm .kjun-filter-chip__surface {
-  font-size: var(--control-label-size);
+  font-size: var(--_kjun-control-label-size);
 }
 
 /* 굵기 변경으로 옆 칩과 스크롤 위치가 움직이지 않도록 선택 상태의 글자 폭을 확보한다. */
@@ -188,24 +188,24 @@ export default {
 
 .kjun-filter-chip__measure {
   visibility: hidden;
-  font-weight: var(--font-semibold);
+  font-weight: var(--_kjun-font-semibold);
 }
 
 .kjun-filter-chip--selected .kjun-filter-chip__surface {
-  background: var(--text-primary);
-  color: var(--text-inverse);
-  font-weight: var(--font-semibold);
+  background: var(--_kjun-text-primary);
+  color: var(--_kjun-text-inverse);
+  font-weight: var(--_kjun-font-semibold);
 }
 
 @media (hover: hover) {
   .kjun-filter-chip:not(:disabled):not(.kjun-filter-chip--selected):hover .kjun-filter-chip__surface {
-    background: var(--bg-hover);
+    background: var(--_kjun-bg-hover);
   }
 }
 
 .kjun-filter-chip:focus-visible .kjun-filter-chip__surface {
   /* 스크롤 컨테이너 가장자리에서도 초점 표시가 잘리지 않도록 안쪽으로 그린다. */
-  outline: var(--_kjun-state-focus-width) solid var(--focus-ring);
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-focus-ring);
   outline-offset: var(--_kjun-state-focus-inset-offset);
 }
 
@@ -220,7 +220,7 @@ export default {
   }
 
   .kjun-filter-chip__surface {
-    min-height: var(--extension-selection-minimum-height);
+    min-height: var(--_kjun-extension-selection-minimum-height);
   }
 }
 

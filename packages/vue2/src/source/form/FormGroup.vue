@@ -10,7 +10,7 @@
     </div>
 
     <div v-if="error" :id="errorId" class="kjun-form-error" role="alert">
-      <DsIcon name="alert-circle" size="var(--extension-form-message-icon-size)" class="kj-mr-1.5 kj-flex-shrink-0" />
+      <DsIcon name="alert-circle" size="var(--_kjun-extension-form-message-icon-size)" class="kj-mr-1.5 kj-flex-shrink-0" />
       {{ error }}
     </div>
     <div v-else-if="hint" :id="hintId" class="kjun-form-hint">
@@ -82,8 +82,8 @@ export default {
   display: flex;
   align-items: flex-start;
   font-size: var(--_kjun-type-caption-size);
-  color: var(--danger);
-  margin-top: var(--extension-form-message-gap);
+  color: var(--_kjun-danger);
+  margin-top: var(--_kjun-extension-form-message-gap);
   line-height: var(--_kjun-type-caption-line);
   font-weight: var(--_kjun-type-caption-weight);
   letter-spacing: var(--_kjun-type-caption-tracking);
@@ -91,8 +91,8 @@ export default {
 
 .kjun-form-hint {
   font-size: var(--_kjun-type-caption-size);
-  color: var(--text-secondary);
-  margin-top: var(--extension-form-message-gap);
+  color: var(--_kjun-text-secondary);
+  margin-top: var(--_kjun-extension-form-message-gap);
   line-height: var(--_kjun-type-caption-line);
   font-weight: var(--_kjun-type-caption-weight);
   letter-spacing: var(--_kjun-type-caption-tracking);

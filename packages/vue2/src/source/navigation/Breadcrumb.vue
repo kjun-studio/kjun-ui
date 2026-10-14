@@ -4,7 +4,7 @@
       <DsIcon
         v-if="idx > 0"
         :key="`sep-${idx}`"
-        name="chevron-right" size="var(--extension-breadcrumb-separator-size)"
+        name="chevron-right" size="var(--_kjun-extension-breadcrumb-separator-size)"
         class="kj-mx-2 kj-text-text-tertiary kj-text-xs"
       />
 
@@ -14,7 +14,7 @@
         :href="safeHref(item.to)" @click="$emit('navigate', item, $event)"
         class="kjun-breadcrumb-link kj-text-text-secondary hover:kj-text-brand kj-transition-colors"
       >
-        <DsIcon v-if="item.icon" :name="item.icon" size="var(--extension-breadcrumb-icon-size)" class="kj-mr-1" />
+        <DsIcon v-if="item.icon" :name="item.icon" size="var(--_kjun-extension-breadcrumb-icon-size)" class="kj-mr-1" />
         {{ item.label }}
       </a>
 
@@ -23,7 +23,7 @@
         :key="`text-${idx}`"
         :class="idx === items.length - 1 ? 'kj-text-text-primary kj-font-medium' : 'kj-text-text-secondary'"
       >
-        <DsIcon v-if="item.icon" :name="item.icon" size="var(--extension-breadcrumb-icon-size)" class="kj-mr-1" />
+        <DsIcon v-if="item.icon" :name="item.icon" size="var(--_kjun-extension-breadcrumb-icon-size)" class="kj-mr-1" />
         {{ item.label }}
       </span>
     </template>

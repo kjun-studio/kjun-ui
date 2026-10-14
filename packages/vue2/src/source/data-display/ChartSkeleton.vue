@@ -3,7 +3,7 @@
     <div class="kjun-chart-skeleton-status">
       <span v-if="loadingText">{{ loadingText }}</span>
     </div>
-    <div v-if="kind === 'donut'" class="kjun-chart-skeleton__donut"><DsSkeleton type="block" width="var(--extension-chart-skeleton-donut-label-width)" height="var(--extension-chart-skeleton-donut-label-height)" /></div>
+    <div v-if="kind === 'donut'" class="kjun-chart-skeleton__donut"><DsSkeleton type="block" width="var(--_kjun-extension-chart-skeleton-donut-label-width)" height="var(--_kjun-extension-chart-skeleton-donut-label-height)" /></div>
     <svg v-else viewBox="0 0 600 240" preserveAspectRatio="none" class="kjun-chart-skeleton__plot">
       <path d="M20 10V220H590 M20 65H590 M20 120H590 M20 175H590" class="kjun-chart-skeleton__grid" />
       <!-- A line kind previews its series; grid keeps only the axes. -->
@@ -41,13 +41,13 @@ export default {
 </script>
 
 <style scoped>
-.kjun-chart-skeleton { position:relative; display: flex; align-items: center; justify-content: center; width: 100%; min-width: 0; animation: kjun-chart-pulse var(--motion-shimmer) ease-in-out infinite; }
+.kjun-chart-skeleton { position:relative; display: flex; align-items: center; justify-content: center; width: 100%; min-width: 0; animation: kjun-chart-pulse var(--_kjun-motion-shimmer) ease-in-out infinite; }
 .kjun-chart-skeleton__plot { width: 100%; height: 100%; }
-.kjun-chart-skeleton__grid { fill: none; stroke: var(--border); stroke-width: 1; }
-.kjun-chart-skeleton__wick { fill: none; stroke: var(--skeleton); stroke-width: 4; }
-.kjun-chart-skeleton__line { fill: none; stroke: var(--skeleton); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
-.kjun-chart-skeleton__bar { fill: var(--skeleton); }
-.kjun-chart-skeleton__donut { height: 80%; aspect-ratio: 1; border: var(--extension-chart-skeleton-donut-thickness) solid var(--skeleton); border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+.kjun-chart-skeleton__grid { fill: none; stroke: var(--_kjun-border); stroke-width: 1; }
+.kjun-chart-skeleton__wick { fill: none; stroke: var(--_kjun-skeleton); stroke-width: 4; }
+.kjun-chart-skeleton__line { fill: none; stroke: var(--_kjun-skeleton); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.kjun-chart-skeleton__bar { fill: var(--_kjun-skeleton); }
+.kjun-chart-skeleton__donut { height: 80%; aspect-ratio: 1; border: var(--_kjun-extension-chart-skeleton-donut-thickness) solid var(--_kjun-skeleton); border-radius: 50%; display: flex; justify-content: center; align-items: center; }
 @keyframes kjun-chart-pulse { 50% { opacity: 0.55; } }
 @media (prefers-reduced-motion: reduce) { .kjun-chart-skeleton { animation: none; } }
 </style>

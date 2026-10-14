@@ -1,6 +1,6 @@
 @keyframes kjun-price-flash-up {
   0%, 20% {
-    color: var(--price-up);
+    color: var(--_kjun-price-up);
   }
   100% {
     color: inherit;
@@ -9,7 +9,7 @@
 
 @keyframes kjun-price-flash-down {
   0%, 20% {
-    color: var(--price-down);
+    color: var(--_kjun-price-down);
   }
   100% {
     color: inherit;
@@ -17,48 +17,48 @@
 }
 
 .kjun-scope .kjun-price-flash-up {
-  animation: kjun-price-flash-up var(--motion-price-flash) var(--ease-out);
+  animation: kjun-price-flash-up var(--_kjun-motion-price-flash) var(--_kjun-ease-out);
 }
 
 .kjun-scope .kjun-price-flash-down {
-  animation: kjun-price-flash-down var(--motion-price-flash) var(--ease-out);
+  animation: kjun-price-flash-down var(--_kjun-motion-price-flash) var(--_kjun-ease-out);
 }
 
 
 @keyframes kjun-price-flash-up-bg {
-  0% { background-color: var(--price-up-bg); }
+  0% { background-color: var(--_kjun-price-up-bg); }
   100% { background-color: transparent; }
 }
 @keyframes kjun-price-flash-down-bg {
-  0% { background-color: var(--price-down-bg); }
+  0% { background-color: var(--_kjun-price-down-bg); }
   100% { background-color: transparent; }
 }
-.kjun-scope .kjun-price-flash-up-bg { animation: kjun-price-flash-up-bg var(--motion-price-background) var(--ease-out); }
-.kjun-scope .kjun-price-flash-down-bg { animation: kjun-price-flash-down-bg var(--motion-price-background) var(--ease-out); }
+.kjun-scope .kjun-price-flash-up-bg { animation: kjun-price-flash-up-bg var(--_kjun-motion-price-background) var(--_kjun-ease-out); }
+.kjun-scope .kjun-price-flash-down-bg { animation: kjun-price-flash-down-bg var(--_kjun-motion-price-background) var(--_kjun-ease-out); }
 
 
 @keyframes kjun-price-flash-up-bg-strong {
-  0% { background-color: var(--price-up-bg-strong); }
-  100% { background-color: var(--price-up-bg); }
+  0% { background-color: var(--_kjun-price-up-bg-strong); }
+  100% { background-color: var(--_kjun-price-up-bg); }
 }
 @keyframes kjun-price-flash-down-bg-strong {
-  0% { background-color: var(--price-down-bg-strong); }
-  100% { background-color: var(--price-down-bg); }
+  0% { background-color: var(--_kjun-price-down-bg-strong); }
+  100% { background-color: var(--_kjun-price-down-bg); }
 }
-.kjun-scope .kjun-price-flash-up-bg-strong { animation: kjun-price-flash-up-bg-strong var(--motion-price-background) var(--ease-out); }
-.kjun-scope .kjun-price-flash-down-bg-strong { animation: kjun-price-flash-down-bg-strong var(--motion-price-background) var(--ease-out); }
+.kjun-scope .kjun-price-flash-up-bg-strong { animation: kjun-price-flash-up-bg-strong var(--_kjun-motion-price-background) var(--_kjun-ease-out); }
+.kjun-scope .kjun-price-flash-down-bg-strong { animation: kjun-price-flash-down-bg-strong var(--_kjun-motion-price-background) var(--_kjun-ease-out); }
 
 
 @keyframes kjun-price-flash-up-bg-pop {
-  0% { background-color: var(--price-up-bg-strong); }
+  0% { background-color: var(--_kjun-price-up-bg-strong); }
   100% { background-color: transparent; }
 }
 @keyframes kjun-price-flash-down-bg-pop {
-  0% { background-color: var(--price-down-bg-strong); }
+  0% { background-color: var(--_kjun-price-down-bg-strong); }
   100% { background-color: transparent; }
 }
-.kjun-scope .kjun-price-flash-up-bg-pop { animation: kjun-price-flash-up-bg-pop var(--motion-price-background) var(--ease-out); }
-.kjun-scope .kjun-price-flash-down-bg-pop { animation: kjun-price-flash-down-bg-pop var(--motion-price-background) var(--ease-out); }
+.kjun-scope .kjun-price-flash-up-bg-pop { animation: kjun-price-flash-up-bg-pop var(--_kjun-motion-price-background) var(--_kjun-ease-out); }
+.kjun-scope .kjun-price-flash-down-bg-pop { animation: kjun-price-flash-down-bg-pop var(--_kjun-motion-price-background) var(--_kjun-ease-out); }
 
 
 .kjun-scope .kjun-price-cell {

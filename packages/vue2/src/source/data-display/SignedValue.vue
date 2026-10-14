@@ -1,6 +1,6 @@
 <template>
   <span class="kjun-signed-value" :class="valueClass" :aria-busy="String(loading)">
-    <DsSkeleton v-if="loading" type="block" width="var(--extension-financial-signed-skeleton-width)" height="1lh" class="kj-inline-block kj-align-top" />
+    <DsSkeleton v-if="loading" type="block" width="var(--_kjun-extension-financial-signed-skeleton-width)" height="1lh" class="kj-inline-block kj-align-top" />
     <template v-else>{{ display }}<DsFreshness v-if="showFreshness && stale && number !== null" stale class="kj-ml-financial-affix-gap" /></template>
   </span>
 </template>

@@ -107,19 +107,19 @@ export default {
   color: transparent;
 }
 .kjun-datepicker-overlay {
-  left: var(--field-padding);
-  right: calc(var(--field-padding) + var(--field-icon-size) + var(--field-affix-gap));
-  font-size: var(--field-font-size);
-  line-height: var(--field-line-height);
+  left: var(--_kjun-field-padding);
+  right: calc(var(--_kjun-field-padding) + var(--_kjun-field-icon-size) + var(--_kjun-field-affix-gap));
+  font-size: var(--_kjun-field-font-size);
+  line-height: var(--_kjun-field-line-height);
   font-weight: var(--_kjun-type-input-weight);
   letter-spacing: var(--_kjun-type-input-tracking);
 }
 .kjun-datepicker-overlay.kjun-field-placeholder {
-  font-size: var(--field-placeholder-size);
+  font-size: var(--_kjun-field-placeholder-size);
 }
 /* 아이콘 자리만큼 오른쪽 여백을 비운다 */
 .kjun-field.kjun-datepicker-field {
-  padding-right: calc(var(--field-padding) + var(--field-icon-size) + var(--field-affix-gap) - var(--_kjun-border-control-width));
+  padding-right: calc(var(--_kjun-field-padding) + var(--_kjun-field-icon-size) + var(--_kjun-field-affix-gap) - var(--_kjun-border-control-width));
 }
 .kjun-datepicker-icon { pointer-events: none; }
 /* 브라우저 인디케이터는 그린 아이콘 위의 투명한 클릭 영역으로만 남긴다 */
@@ -127,8 +127,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: var(--field-padding);
-  width: var(--field-icon-size);
+  right: var(--_kjun-field-padding);
+  width: var(--_kjun-field-icon-size);
   height: auto;
   margin: 0;
   padding: 0;

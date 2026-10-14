@@ -37,7 +37,7 @@
 .kjun-quantity[data-block="true"] { display:flex; width:100%; }
 .kjun-quantity input {
   font:inherit; font-size:var(--_kjun-compound-font-size); color:var(--_kjun-color-text);
-  border-radius:0; min-width:0; width:var(--extension-compound-value-width); background:transparent;
+  border-radius:0; min-width:0; width:var(--_kjun-extension-compound-value-width); background:transparent;
   border-color:transparent;
   height:var(--_kjun-compound-height); padding:0 calc(var(--_kjun-compound-padding) - var(--_kjun-border-control-width)); text-align:center; font-variant-numeric:tabular-nums; line-height: var(--_kjun-compound-line-height); font-weight: var(--_kjun-type-input-weight); letter-spacing: var(--_kjun-type-input-tracking);
 }
@@ -50,12 +50,12 @@
 .kjun-time-picker:focus-within,.kjun-time-picker:has([aria-expanded="true"]) { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-offset); }
 .kjun-time-segments { display:flex; align-items:center; flex:1; min-width:0; }
 /* Segments hug their values so "09 : 30" stays together; leftover width collects before the clear button. */
-.kjun-time-segment { flex:0 0 auto; min-width:var(--extension-time-picker-segment-minimum-width); }
+.kjun-time-segment { flex:0 0 auto; min-width:var(--_kjun-extension-time-picker-segment-minimum-width); }
 /* Same type as the segment values so "09 : 30" reads as one time. */
-.kjun-time-separator { flex:0 0 var(--extension-time-picker-separator-width); text-align:center; font-size:var(--_kjun-type-input-size); line-height:var(--_kjun-type-input-line); color:var(--_kjun-color-text-secondary); }
+.kjun-time-separator { flex:0 0 var(--_kjun-extension-time-picker-separator-width); text-align:center; font-size:var(--_kjun-type-input-size); line-height:var(--_kjun-type-input-line); color:var(--_kjun-color-text-secondary); }
 /* Disabled separators fade with the values instead of outranking them. */
 .kjun-time-picker[data-disabled="true"] .kjun-time-separator { color:var(--_kjun-color-text-disabled); }
-.kjun-time-picker [data-time-segment] { background:transparent; border-color:transparent; text-align:center; font-variant-numeric:tabular-nums; gap:var(--extension-time-picker-segment-padding); padding-inline:var(--extension-time-picker-segment-padding); }
+.kjun-time-picker [data-time-segment] { background:transparent; border-color:transparent; text-align:center; font-variant-numeric:tabular-nums; gap:var(--_kjun-extension-time-picker-segment-padding); padding-inline:var(--_kjun-extension-time-picker-segment-padding); }
 /* The first value starts on the field text line, like Input and DatePicker values. */
 .kjun-time-segment:first-child [data-time-segment] { padding-inline-start:calc(var(--_kjun-compound-padding) - var(--_kjun-border-control-width)); }
 /* Two digits wide, so the placeholder and the value occupy the same slot. */

@@ -29,7 +29,7 @@
           <span v-else class="kjun-field-placeholder kj-truncate">{{ placeholder }}</span>
         </slot>
 
-        <DsIcon name="chevron-down" :style="kjunCompoundControl ? { width: 'var(--extension-time-picker-icon-size)', height: 'var(--extension-time-picker-icon-size)' } : undefined" :class="['kjun-select-indicator kj-shrink-0 kj-text-text-tertiary kj-transition-transform', isOpen && !kjunLayerBlocked ? 'kj-rotate-180' : '']" />
+        <DsIcon name="chevron-down" :style="kjunCompoundControl ? { width: 'var(--_kjun-extension-time-picker-icon-size)', height: 'var(--_kjun-extension-time-picker-icon-size)' } : undefined" :class="['kjun-select-indicator kj-shrink-0 kj-text-text-tertiary kj-transition-transform', isOpen && !kjunLayerBlocked ? 'kj-rotate-180' : '']" />
       </button>
       <div v-if="clearable && hasValue" class="kjun-field-suffix kjun-select-clear">
         <DsButton variant="ghost" size="sm" class="kjun-field-clear" prefix-icon="x" aria-label="선택 지우기" title="선택 지우기" :disabled="disabled" @click.stop="clear" />
@@ -75,7 +75,7 @@
             <slot name="option" :option="entry.option" :selected="isSelected(entry.option)">
               <span class="kj-truncate">{{ getOptionLabel(entry.option) }}</span>
             </slot>
-            <DsIcon v-if="isSelected(entry.option)" name="check" size="var(--extension-menu-icon-size)" class="kj-text-brand kj-flex-shrink-0" />
+            <DsIcon v-if="isSelected(entry.option)" name="check" size="var(--_kjun-extension-menu-icon-size)" class="kj-text-brand kj-flex-shrink-0" />
           </div>
 
           <DsButton v-if="hasMoreOptions" variant="ghost" size="sm" block @click.stop="showMoreOptions" @keydown.native.stop>더 보기</DsButton>
@@ -412,9 +412,9 @@ export default {
 </script>
 <style scoped>
 .kjun-select-clear {
-  right: calc(var(--field-padding) + var(--field-icon-size) + var(--field-affix-gap));
+  right: calc(var(--_kjun-field-padding) + var(--_kjun-field-icon-size) + var(--_kjun-field-affix-gap));
 }
 .kjun-select-indicator {
-  font-size: var(--field-icon-size);
+  font-size: var(--_kjun-field-icon-size);
 }
 </style>

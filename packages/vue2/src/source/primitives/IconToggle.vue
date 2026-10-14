@@ -78,7 +78,7 @@ export default {
 
 <style scoped>
 .kjun-icon-toggle .kjun-icon {
-  transition: color var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out);
+  transition: color var(--_kjun-motion-control) var(--_kjun-ease-out), transform var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
 
 .kjun-icon-toggle:not(:disabled):hover .kjun-icon {

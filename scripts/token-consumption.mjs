@@ -131,7 +131,7 @@ export async function auditTokenConsumption(root) {
     const missing = leaves.filter(path => {
       if (!/^(?:button|modal|input|table|card|extensions)\./.test(path)) return false;
       if (readbackAliases[path] || platformSpecific[path]?.excludes.includes(platform)) return false;
-      const css = path.startsWith('extensions.') ? '--extension-' + kebab(path.slice(11).replaceAll('.', '-')) : '--_kjun-geometry-' + kebab(path.replaceAll('.', '-'));
+      const css = path.startsWith('extensions.') ? '--_kjun-extension-' + kebab(path.slice(11).replaceAll('.', '-')) : '--_kjun-geometry-' + kebab(path.replaceAll('.', '-'));
       const utility = kebab((path.startsWith('extensions.') ? path.slice(11) : path).replaceAll('.', '-'));
       return !reads.some(r => r.test(path)) && !(platform !== 'native' && (text.includes('var(' + css) || dynamicCss.some(r => r.test(css)))) &&
         !(platform === 'vue2' && new RegExp('(?:p[xytrbl]?|m[xytrbl]?|gap|rounded|w|h|min-w|min-h|max-w|max-h)-' + utility + '\\b').test(text));

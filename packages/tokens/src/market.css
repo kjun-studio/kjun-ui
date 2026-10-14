@@ -110,7 +110,7 @@
 }
 .kjun-market-table-grid th {
   box-sizing: border-box;
-  height: var(--extension-market-table-header-height);
+  height: var(--_kjun-extension-market-table-header-height);
   position: sticky;
   top: 0;
   z-index: 1;
@@ -138,7 +138,7 @@
 }
 .kjun-market-table-grid td {
   box-sizing: border-box;
-  height: var(--extension-market-table-row-height);
+  height: var(--_kjun-extension-market-table-row-height);
   vertical-align: middle;
   padding: var(--_kjun-geometry-dimension-value14) var(--_kjun-geometry-dimension-value12);
   font-size: var(--_kjun-type-body-size);
@@ -153,7 +153,7 @@
   background: var(--_kjun-color-hover);
 }
 .kjun-market-table-grid .kjun-market-actions {
-  width: var(--extension-market-table-actions-width);
+  width: var(--_kjun-extension-market-table-actions-width);
   padding: var(--_kjun-geometry-dimension-value12) var(--_kjun-geometry-dimension-value4);
   text-align: center;
 }
@@ -165,7 +165,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--extension-icon-toggle-sizes-xs);
+  width: var(--_kjun-extension-icon-toggle-sizes-xs);
   vertical-align: middle;
 }
 .kjun-metric-pills {
@@ -226,7 +226,7 @@
 }
 @media (width < token(responsive.market)) {
   .kjun-market-simple-list .kjun-market-row, .kjun-mobile-simple-list .kjun-mobile-simple-list__row {
-    min-height: var(--extension-market-list-minimum-height);
+    min-height: var(--_kjun-extension-market-list-minimum-height);
     padding: var(--_kjun-geometry-dimension-value14) var(--_kjun-geometry-dimension-value20);
   }
   /* Vue renders the same list with kjun-mobile-simple-list classes; both get the same mobile type. */
@@ -244,7 +244,7 @@
     white-space: normal;
   }
   .kjun-market-simple-list .kjun-market-quote, .kjun-mobile-simple-list .kjun-mobile-simple-list__quote {
-    min-width: var(--extension-market-list-mobile-quote-minimum-width);
+    min-width: var(--_kjun-extension-market-list-mobile-quote-minimum-width);
     max-width: 50%;
   }
   :is(.kjun-market-simple-list .kjun-market-price, .kjun-mobile-simple-list .kjun-mobile-simple-list__price) {
@@ -287,6 +287,6 @@
 
 /* Market tables fade their trailing edge while columns still overflow it, like the Native grid. */
 .kjun-table-scroll[data-fade-end] {
-  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
-  mask-image: linear-gradient(to right, currentColor calc(100% - var(--extension-scroll-fade-width)), transparent);
+  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), transparent);
+  mask-image: linear-gradient(to right, currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), transparent);
 }

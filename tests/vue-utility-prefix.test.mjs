@@ -52,3 +52,10 @@ test('Vue class strings use only kj- prefixed utilities', async () => {
   }
   assert.deepEqual(bare, []);
 });
+
+// Tailwind turns "_" in arbitrary values into spaces, so var(--_kjun-x) there compiles to var(-- kjun-x).
+test('Vue arbitrary utilities do not read --_kjun- variables', async () => {
+  const offenders = (await sources('packages/vue2/src'))
+    .flatMap(([path, text]) => [...text.matchAll(/kj-[\w:-]*\[[^\]\s"'`]*--_kjun-[^\]\s"'`]*\]/g)].map(match => path + ': ' + match[0]));
+  assert.deepEqual(offenders, []);
+});

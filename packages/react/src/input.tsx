@@ -194,7 +194,7 @@ export const DsInput = forwardRef<HTMLInputElement, DsInputProps>(
                 paddingRight: widths.after
                   ? spec.padding + widths.after + spec.affixGap - tokens.border.controlWidth
                   : spec.padding - tokens.border.controlWidth,
-                "--placeholder-size": spec.placeholderSize / 16 + "rem",
+                "--_kjun-placeholder-size": spec.placeholderSize / 16 + "rem",
                 ...style,
               } as CSSProperties
             }

@@ -13,7 +13,7 @@
       aria-valuemax="100"
       :aria-label="label || undefined"
     >
-      <div :class="barClasses" :style="{ width: `${percentage}%`, transition: 'width var(--motion-progress) var(--ease-out)' }"></div>
+      <div :class="barClasses" :style="{ width: `${percentage}%`, transition: 'width var(--_kjun-motion-progress) var(--_kjun-ease-out)' }"></div>
     </div>
     <div v-if="$slots.sublabel" class="kjun-progress-sub">
       <slot name="sublabel"></slot>

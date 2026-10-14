@@ -27,8 +27,8 @@ test('component geometry resolves from the shared scales with additive paths', (
   assert.equal(value.extensions.skeleton.padding, value.card.padding.md);
   assert.equal(value.extensions.kpiRow.badgeRadius, value.extensions.badge.radius);
   const css = extensionGeometryCss(value, altered);
-  assert.match(css, /--extension-badge-padding-xs-y: 0px;/);
-  assert.match(css, /--extension-menu-option-font-size: 0.875rem;/);
+  assert.match(css, /--_kjun-extension-badge-padding-xs-y: 0px;/);
+  assert.match(css, /--_kjun-extension-menu-option-font-size: 0.875rem;/);
   assert.doesNotMatch(css, /\[object Object\]/);
   const theme = createVueStyleTheme(value, {});
   assert.equal(theme.extend.spacing['badge-padding-xs-x'], '4px');
@@ -61,9 +61,9 @@ test('extension CSS preserves typography units through scalar and composite alia
     altered.extensions.menu.optionFontSize = { $ref: ref };
     altered.extensions.menu.optionLineHeight = { $ref: 'button.typography.md.lineHeightPx' };
     const css = extensionGeometryCss(compileTokens(altered), altered);
-    assert.match(css, /--extension-menu-option-font-size: 0\.875rem;/, ref);
-    assert.match(css, /--extension-menu-option-line-height: 1\.25rem;/, ref);
-    assert.match(css, /--extension-list-actions-padding: 16px;/, 'geometry aliases retain px');
+    assert.match(css, /--_kjun-extension-menu-option-font-size: 0\.875rem;/, ref);
+    assert.match(css, /--_kjun-extension-menu-option-line-height: 1\.25rem;/, ref);
+    assert.match(css, /--_kjun-extension-list-actions-padding: 16px;/, 'geometry aliases retain px');
   }
 });
 

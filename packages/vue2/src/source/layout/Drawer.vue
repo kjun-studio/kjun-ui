@@ -18,7 +18,7 @@
             aria-label="닫기"
             @click.stop="close"
           >
-            <DsIcon name="x" size="var(--extension-drawer-close-icon-size)" />
+            <DsIcon name="x" size="var(--_kjun-extension-drawer-close-icon-size)" />
           </button>
         </div>
 
@@ -168,11 +168,11 @@ export default {
 }
 
 .kjun-drawer-panel {
-  border-radius: var(--extension-drawer-radius);
+  border-radius: var(--_kjun-extension-drawer-radius);
   position: fixed;
   top: 0;
   bottom: 0;
-  background: var(--card-bg, var(--_kjun-color-surface));
+  background: var(--_kjun-card-bg, var(--_kjun-color-surface));
   /* border removed per design system policy */
   box-shadow: var(--_kjun-drawer-elevation-right);
   display: flex;
@@ -196,8 +196,8 @@ export default {
   bottom: 0;
   width: 100vw;
   max-height: 85vh;
-  border-top-left-radius: var(--extension-drawer-bottom-radius);
-  border-top-right-radius: var(--extension-drawer-bottom-radius);
+  border-top-left-radius: var(--_kjun-extension-drawer-bottom-radius);
+  border-top-right-radius: var(--_kjun-extension-drawer-bottom-radius);
   box-shadow: var(--_kjun-drawer-elevation-bottom);
 }
 
@@ -205,15 +205,15 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--extension-drawer-padding-y) var(--extension-drawer-padding-x);
-  border-bottom: var(--_kjun-border-default-width) solid var(--border-primary, var(--_kjun-color-surface));
+  padding: var(--_kjun-extension-drawer-padding-y) var(--_kjun-extension-drawer-padding-x);
+  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-border-primary, var(--_kjun-color-surface));
   flex-shrink: 0;
 }
 
 .kjun-drawer-title {
   margin: 0;
   font-size: var(--_kjun-type-section-title-size);
-  color: var(--text-primary);
+  color: var(--_kjun-text-primary);
   line-height: var(--_kjun-type-section-title-line);
   font-weight: var(--_kjun-type-section-title-weight);
   letter-spacing: var(--_kjun-type-section-title-tracking);
@@ -223,26 +223,26 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--extension-drawer-close-size);
-  height: var(--extension-drawer-close-size);
+  width: var(--_kjun-extension-drawer-close-size);
+  height: var(--_kjun-extension-drawer-close-size);
   background: transparent;
   border: none;
-  border-radius: var(--extension-drawer-close-radius);
+  border-radius: var(--_kjun-extension-drawer-close-radius);
   cursor: pointer;
-  color: var(--text-secondary);
-  transition: background-color var(--motion-control) var(--ease-out), color var(--motion-control) var(--ease-out);
+  color: var(--_kjun-text-secondary);
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
 
 .kjun-drawer-close:hover {
-  background: var(--bg-secondary, var(--_kjun-color-surface));
-  color: var(--text-primary);
+  background: var(--_kjun-bg-secondary, var(--_kjun-color-surface));
+  color: var(--_kjun-text-primary);
 }
 
 .kjun-drawer-body {
-  padding: var(--extension-drawer-body-padding);
+  padding: var(--_kjun-extension-drawer-body-padding);
   flex: 1;
   overflow-y: auto;
-  color: var(--text-primary);
+  color: var(--_kjun-text-primary);
 }
 
 .kjun-drawer-body-no-padding {
@@ -250,20 +250,20 @@ export default {
 }
 
 .kjun-drawer-footer {
-  padding: var(--extension-drawer-padding-y) var(--extension-drawer-padding-x);
-  border-top: var(--_kjun-border-default-width) solid var(--border-primary, var(--_kjun-color-surface));
+  padding: var(--_kjun-extension-drawer-padding-y) var(--_kjun-extension-drawer-padding-x);
+  border-top: var(--_kjun-border-default-width) solid var(--_kjun-border-primary, var(--_kjun-color-surface));
   flex-shrink: 0;
 }
 
 /* Scrollbar styling */
 .kjun-drawer-body::-webkit-scrollbar {
-  width: var(--extension-scrollbar-width);
+  width: var(--_kjun-extension-scrollbar-width);
 }
 .kjun-drawer-body::-webkit-scrollbar-track {
   background: transparent;
 }
 .kjun-drawer-body::-webkit-scrollbar-thumb {
-  background: var(--border-secondary, var(--_kjun-color-surface));
+  background: var(--_kjun-border-secondary, var(--_kjun-color-surface));
   border-radius: var(--_kjun-geometry-radius-radius9999);
 }
 

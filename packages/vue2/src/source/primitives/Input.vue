@@ -166,7 +166,7 @@ export default {
   },
   computed: {
     affixStyle() {
-      return { '--input-prefix-width': `${this.prefixWidth}px`, '--input-suffix-width': `${this.suffixWidth}px` }
+      return { '--_kjun-input-prefix-width': `${this.prefixWidth}px`, '--_kjun-input-suffix-width': `${this.suffixWidth}px` }
     },
     ariaLabelledby() {
       return this.fieldLabelledby
