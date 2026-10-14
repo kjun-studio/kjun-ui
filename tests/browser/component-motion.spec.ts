@@ -140,6 +140,22 @@ for (const platform of ['react', 'vue2', 'native']) {
     expect(opacities.at(-1)).toBeGreaterThan(0.99);
   });
 
+  test(`${platform}: an open drawer paints its backdrop once`, async ({ page }) => {
+    await start(page, platform, 'layers');
+    await configure(page, { drawer: true });
+    await expect(page.locator(panelSelector.drawer)).toBeVisible();
+    await page.waitForTimeout(tokens.motion.layerEnter + 100);
+    // Full-viewport layers with a painted background: the scrim (Vue) or the overlay ::before (React).
+    const layers = await page.evaluate(() => [...document.querySelectorAll('body *')].flatMap(el => [null, '::before', '::after'].map(pseudo => {
+      const style = getComputedStyle(el, pseudo);
+      if (pseudo && style.content === 'none') return null;
+      const box = el.getBoundingClientRect();
+      const painted = style.backgroundColor !== 'rgba(0, 0, 0, 0)' && Number(style.opacity) > 0;
+      return painted && box.width >= innerWidth - 1 && box.height >= innerHeight - 1 ? el.className + (pseudo || '') : null;
+    })).filter(Boolean));
+    expect(layers.length, layers.join(', ')).toBe(1);
+  });
+
   test(`${platform}: toast exit, stack movement and service timers remain independent`, async ({ page }) => {
     await start(page, platform, 'feedback');
     const ids = await page.evaluate(() => ['First toast', 'Second toast', 'Third toast'].map(message => (window as any).feedback.toast.info(message, { duration: 0 })));

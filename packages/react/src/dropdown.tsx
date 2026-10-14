@@ -33,7 +33,7 @@ export function KjunDropdown({
   const [open, setOpen] = useState(false),
     currentOpen = useRef(false),
     ref = useRef<HTMLDivElement>(null),
-    id = useId();
+    id = "kjun-" + useId();
   const menuFocusCleanup = useRef<() => void>(() => {});
   const bindMenu = useCallback((menu: HTMLDivElement | null) => {
     menuFocusCleanup.current();

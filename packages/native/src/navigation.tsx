@@ -69,7 +69,7 @@ export function KjunAccordionItem({
 }: KjunAccordionItemProps) {
   const { colors } = useKjunStyles(),
     group = useContext(AccordionContext),
-    id = useId(),
+    id = "kjun-" + useId(),
     [own, setOwn] = useState(defaultOpen),
     open = group ? group.opened.has(id) : own;
   const rotation = useMotionValue(open ? 1 : 0, tokens.motion.collapse, undefined, undefined, true);

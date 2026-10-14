@@ -56,7 +56,7 @@ export function KjunTabs({
     : panes
         .filter((child) => child.type === KjunTabPane)
         .map((child) => child.props);
-  const id = useId(), root = useRef<View>(null);
+  const id = "kjun-" + useId(), root = useRef<View>(null);
   const menuState = useRef({ tabs, onTabMenu });
   menuState.current = { tabs, onTabMenu };
   const pressedMenu = useRef<string | null>(null);

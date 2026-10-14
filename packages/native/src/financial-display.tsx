@@ -339,7 +339,7 @@ export function KjunSparkline({
   ariaLabel,
 }: KjunSparklineProps) {
   const { colors, domainColors } = useKjunStyles(),
-    id = useId().replace(/:/g, ""),
+    id = "kjun-" + useId().replace(/:/g, ""),
     values = data.filter(Number.isFinite),
     min = Math.min(...values),
     max = Math.max(...values),

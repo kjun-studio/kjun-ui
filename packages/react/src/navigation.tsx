@@ -227,7 +227,7 @@ export function KjunAccordionItem({
   children,
 }: KjunAccordionItemProps) {
   const group = useContext(AccordionContext),
-    id = useId(),
+    id = "kjun-" + useId(),
     [own, setOwn] = useState(defaultOpen),
     open = group ? group.opened.has(id) : own;
   useEffect(() => {

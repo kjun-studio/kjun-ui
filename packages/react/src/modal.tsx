@@ -122,7 +122,7 @@ export function KjunModal({
 }: KjunModalProps) {
   const motion = usePresence(open, useReducedMotion());
   const portalContainer = useKjunPortalContainer();
-  const id = useId();
+  const id = "kjun-" + useId();
   const explicitLabel = ariaLabel?.trim();
   const heading = header || title;
   const labelledByHeading = showHeader && !explicitLabel &&

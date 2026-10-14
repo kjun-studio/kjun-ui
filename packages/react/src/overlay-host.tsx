@@ -20,7 +20,7 @@ export function FeedbackLayerOutlet() {
   const entry = scope ? layers.entries.get(scope) : undefined;
   const active = !!entry && layers.isActive(entry.id), order = entry?.order ?? 0;
   const host = useContext(FeedbackOverlayContext),
-    id = useId(),
+    id = "kjun-" + useId(),
     register = host?.register;
   // A retained window can become active again without mounting a new outlet.
   useLayoutEffect(() => active ? register?.(id, order) : undefined, [register, id, active, order]);

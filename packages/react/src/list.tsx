@@ -16,7 +16,7 @@ export function KjunListRow({ title, description, leading, trailing, actions, hr
 }
 export interface KjunListSectionProps { title?: string; description?: string; actions?: ReactNode; children: ReactNode; ariaLabel?: string }
 export function KjunListSection({ title, description, actions, children, ariaLabel }: KjunListSectionProps) {
-  const id = useId();
+  const id = "kjun-" + useId();
   return <section className="kjun-list-section" aria-labelledby={title ? id : undefined} aria-label={title ? undefined : ariaLabel}>
     {(title || description || actions) && <div className="kjun-list-heading"><div>{title && <h3 id={id}>{title}</h3>}{description && <p>{description}</p>}</div>{actions}</div>}
     <ul className="kjun-list" aria-label={ariaLabel || title}>{children}</ul>

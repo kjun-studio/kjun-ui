@@ -30,7 +30,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, footer
   elevation = "flat", border = false, dividers = false, children, style,
 }: KjunCardProps) {
   const { colors } = useKjunStyles();
-  const id = useId().replace(/[^a-z0-9]/gi, "");
+  const id = "kjun-" + useId().replace(/[^a-z0-9]/gi, "");
   const inset = tokens.card.padding[padding], bodyInset = tokens.card.padding[bodyPadding];
   const corner = tokens.card.radii[radius];
   const paint: { background: ColorRole; gradientEnd?: ColorRole; border: ColorRole; text: ColorRole; description: ColorRole } = tokens.cardSurfaces[surface];

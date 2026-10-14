@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import KjunButton from "../primitives/Button.vue";
 import { componentMixins } from "../../component-mixins.js";
 export default {
@@ -35,11 +36,14 @@ export default {
       hasError: false
     }
   },
-  // Like React's onError: the app hears about the error through the error event, and it keeps
-  // propagating to Vue.config.errorHandler so error reporting still sees it.
+  // Like React's onError, the nearest boundary handles the error: it emits error, reports it to the
+  // app's Vue.config.errorHandler (or the console, as Vue would), and stops outer boundaries from reacting.
   errorCaptured(err, vm, info) {
     this.hasError = true
     this.$emit('error', err, info)
+    if (Vue.config.errorHandler) Vue.config.errorHandler(err, vm, info)
+    else console.error(err)
+    return false
   },
   methods: {
     reload() {

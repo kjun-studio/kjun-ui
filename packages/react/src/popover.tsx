@@ -37,7 +37,7 @@ export function KjunPopover({
   const [internal, setInternal] = useState(false),
     open = controlled ?? internal,
     ref = useRef<HTMLDivElement>(null),
-    id = useId();
+    id = "kjun-" + useId();
   const expanded = usePopupExpanded(open, ref);
   const focusOnMount = useRef(focusOnOpen);
   focusOnMount.current = focusOnOpen;

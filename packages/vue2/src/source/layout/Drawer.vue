@@ -1,7 +1,7 @@
 <template>
     <div
       v-kjun-layer="'window'" v-if="motionPresent"
-      class="kjun-drawer-overlay"
+      class="kjun-drawer-layer"
       @click.self="handleOverlayClick"
     >
       <div class="kjun-drawer-scrim" aria-hidden="true"></div>
@@ -150,7 +150,7 @@ export default {
 </script>
 
 <style scoped>
-.kjun-drawer-overlay {
+.kjun-drawer-layer {
   position: fixed;
   top: 0;
   left: 0;

@@ -4,8 +4,8 @@ import { applyDemoColors } from '../../shared/demo-colors';
 applyDemoColors('default');
 
 // An app that already uses names KJUN once shared: instance helpers, a global toast and provide keys.
-const record = window as unknown as { warnings: string[]; errors: string[]; appToast: string[]; boundary: string[]; escapes: number };
-record.warnings = []; record.errors = []; record.appToast = []; record.boundary = []; record.escapes = 0;
+const record = window as unknown as { warnings: string[]; errors: string[]; appToast: string[]; boundary: string[]; outer: string[]; escapes: number };
+record.warnings = []; record.errors = []; record.appToast = []; record.boundary = []; record.outer = []; record.escapes = 0;
 document.addEventListener('keydown', event => { if (event.key === 'Escape') record.escapes++; });
 Vue.config.warnHandler = message => { record.warnings.push(message); };
 Vue.config.errorHandler = error => { record.errors.push(String((error as Error).message)); };
@@ -41,7 +41,11 @@ new Vue({
       h('div', { attrs: { 'data-testid': 'app-button' } }, [h('DsButton'), h('KjunButton', '저장')]),
       h('div', { attrs: { 'data-testid': 'copy' } }, [h(K.KjunCopyButton, { props: { value: '복사할 값' } })]),
       h('div', { attrs: { 'data-testid': 'boundary' } }, [
-        h(K.KjunErrorBoundary, { on: { error: (error: Error) => record.boundary.push(error.message) } }, [h(Thrower)]),
+        // A page-level boundary around a widget-level one: only the nearest boundary takes the error.
+        h(K.KjunErrorBoundary, { on: { error: (error: Error) => record.outer.push(error.message) } }, [
+          h('p', '바깥 콘텐츠'),
+          h(K.KjunErrorBoundary, { on: { error: (error: Error) => record.boundary.push(error.message) } }, [h(Thrower)]),
+        ]),
       ]),
     ])]);
   },

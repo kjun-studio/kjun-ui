@@ -23,7 +23,7 @@ export function ScopedNativeModal({ children, visible, ...props }: ModalProps) {
   const generation = entry?.order ?? 0;
   const inactive = !!scope && !layers.isActive(scope);
   const host = useContext(FeedbackOverlayContext),
-    id = useId(),
+    id = "kjun-" + useId(),
     register = host?.register;
   useEffect(
     () => (visible && register ? register(id) : undefined),

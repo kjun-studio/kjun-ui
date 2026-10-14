@@ -65,6 +65,18 @@ async function auditIds(root) {
     for (const [, prefix] of text.matchAll(computed)) if (!allowedId(prefix)) found.add(prefix);
     for (const match of text.matchAll(literal)) { const prefix = match[1] ?? match[2] ?? match[3]; if (!allowedId(prefix)) found.add(prefix); }
   }
+  // React/Native: a useId() value becomes a DOM id; it must gain a kjun- prefix where it is created or
+  // within the next few lines (const uid = useId(); const fieldId = "kjun-field-" + uid).
+  for (const file of [...await files(root, "packages/react/src/**/*.tsx"), ...await files(root, "packages/native/src/**/*.tsx")]) {
+    const lines = (await read(root, file)).split("\n");
+    lines.forEach((line, index) => {
+      const match = line.match(/(?:^|const|let|,)\s*(\w+)\s*=\s*([^,;=]*?)useId\(\)/);
+      if (!match || /["'`]kjun-/.test(match[2])) return;
+      const next = lines.slice(index, index + 4).join("\n");
+      if (!new RegExp("[\"'`]kjun-[\\w-]*[\"'`]?\\s*\\+\\s*" + match[1] + "\\b|\\$\\{" + match[1] + "\\}").test(next) || !/kjun-/.test(next))
+        found.add(file + ":" + (index + 1) + ":" + match[1]);
+    });
+  }
   return found;
 }
 

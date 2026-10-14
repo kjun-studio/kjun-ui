@@ -242,7 +242,7 @@ export function KjunSparkline({
   stretch = false,
   ariaLabel,
 }: KjunSparklineProps) {
-  const id = useId().replace(/:/g, ""),
+  const id = "kjun-" + useId().replace(/:/g, ""),
     values = data.filter(Number.isFinite),
     min = Math.min(...values),
     max = Math.max(...values),

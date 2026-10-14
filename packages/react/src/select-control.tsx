@@ -80,7 +80,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   const ref = useRef<HTMLButtonElement>(null),
     menu = useRef<HTMLDivElement>(null),
     field = useKjunField(),
-    id = useId();
+    id = "kjun-" + useId();
   const segment = useContext(CompoundControlContext) !== null;
   const spec = tokens.input[size];
   const expanded = usePopupExpanded(open, ref);

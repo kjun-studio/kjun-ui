@@ -126,7 +126,7 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
     ref
   ) {
     const field = useContext(FieldContext);
-    const uid = useId().replace(/:/g, "");
+    const uid = "kjun-" + useId().replace(/:/g, "");
     const input = useRef<HTMLInputElement>(null);
     const composition = useCompositionGuard();
     const before = useRef<HTMLSpanElement>(null);

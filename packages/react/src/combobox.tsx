@@ -132,7 +132,7 @@ export function SearchField<T extends SelectOption>({
   const clearing = useRef(false);
   const ref = useRef<HTMLInputElement>(null),
     [highlighted, setActive] = useState(-1),
-    id = useId();
+    id = "kjun-" + useId();
   const focusGuard = usePopupFocusGuard(ref);
   const active = !disabled && !loading && highlighted >= 0 &&
     highlighted < options.length && !optionDisabled(options[highlighted])

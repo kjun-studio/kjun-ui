@@ -199,7 +199,7 @@ export function KjunRadioGroup({
   onValueChange,
   onChange,
 }: KjunRadioGroupProps) {
-  const name = useId();
+  const name = "kjun-" + useId();
   return (
     <RadioContext.Provider
       value={{
