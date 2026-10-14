@@ -4,7 +4,7 @@ import { openFixture } from './packed-fixture';
 const require = createRequire(import.meta.url);
 const { allIcons } = require('@kjun-ui/icons/all');
 const cases = Object.entries(allIcons).flatMap(([name, icon]: [string, any]) => [{ name, filled: false }, ...(icon.filled ? [{ name, filled: true }] : [])]);
-for (const platform of ['react', 'vue2', 'native']) test(`${platform}: all 6,220 shapes render with exact nodes and nonempty SVG geometry`, async ({ page }) => {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) test(`${platform}: all 6,220 shapes render with exact nodes and nonempty SVG geometry`, async ({ page }) => {
   test.setTimeout(240000);
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
