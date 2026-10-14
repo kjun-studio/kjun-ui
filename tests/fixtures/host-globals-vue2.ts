@@ -4,8 +4,9 @@ import { applyDemoColors } from '../../shared/demo-colors';
 applyDemoColors('default');
 
 // An app that already uses names KJUN once shared: instance helpers, a global toast and provide keys.
-const record = window as unknown as { warnings: string[]; errors: string[]; appToast: string[]; boundary: string[] };
-record.warnings = []; record.errors = []; record.appToast = []; record.boundary = [];
+const record = window as unknown as { warnings: string[]; errors: string[]; appToast: string[]; boundary: string[]; escapes: number };
+record.warnings = []; record.errors = []; record.appToast = []; record.boundary = []; record.escapes = 0;
+document.addEventListener('keydown', event => { if (event.key === 'Escape') record.escapes++; });
 Vue.config.warnHandler = message => { record.warnings.push(message); };
 Vue.config.errorHandler = error => { record.errors.push(String((error as Error).message)); };
 const proto = Vue.prototype as Record<string, unknown>;

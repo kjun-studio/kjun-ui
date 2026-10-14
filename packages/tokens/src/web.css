@@ -366,9 +366,19 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .kjun-scope *,
-  .kjun-scope *::before,
-  .kjun-scope *::after {
+  /* kjun markup only (see reset.css); app animations inside the Provider keep their own timing. */
+  .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]),
+  .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"])::before,
+  .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"])::after,
+  .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *,
+  .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *::before,
+  .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *::after,
+  :where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *)),
+  :where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *))::before,
+  :where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *))::after,
+  :where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *)) *,
+  :where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *)) *::before,
+  :where(.kjun-scope[class*=" kjun-"]):not(:where(.kjun-scope *)) *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

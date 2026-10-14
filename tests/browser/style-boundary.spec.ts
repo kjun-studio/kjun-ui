@@ -3,7 +3,7 @@ import { openFixture } from './packed-fixture';
 
 const props = ['display', 'box-sizing', 'margin-top', 'margin-bottom', 'padding-top', 'padding-left',
   'list-style-type', 'color', 'text-decoration-line', 'font-size', 'font-weight', 'background-color',
-  'border-top-width', 'border-top-style', 'border-top-color', 'border-top-left-radius', 'border-collapse', 'box-shadow'];
+  'border-top-width', 'border-top-style', 'border-top-color', 'animation-duration', 'transition-duration', 'border-top-left-radius', 'border-collapse', 'box-shadow'];
 
 async function probes(page: Page, testId: string) {
   return page.locator(`[data-testid="${testId}"]`).evaluate((root, names) =>
@@ -33,6 +33,16 @@ for (const platform of ['react', 'vue2']) {
     const without = await kjunElements(page);
     await openFixture(page, platform, '', 'style-boundary');
     expect(await kjunElements(page)).toEqual(without);
+  });
+}
+
+for (const platform of ['react', 'vue2']) {
+  test(`${platform}: reduced motion slows kjun animations only, not app animations inside the Provider`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 1024, height: 900 });
+    await openFixture(page, platform, '', 'style-boundary');
+    expect(await probes(page, 'inside')).toEqual(await probes(page, 'outside'));
+    await expect(page.getByTestId('inside').locator('[data-probe="app-spin"]')).toHaveCSS('animation-duration', '1s');
   });
 }
 

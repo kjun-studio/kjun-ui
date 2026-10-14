@@ -29,3 +29,10 @@ test('vue2: KjunErrorBoundary shows its fallback, emits error and still reaches 
   expect(result.boundary).toEqual(['child failed']);
   expect(result.errors).toEqual(['child failed']);
 });
+
+test('vue2: with no KJUN layer open, the app still receives Escape', async ({ page }) => {
+  await openFixture(page, 'vue2', '', 'host-globals');
+  await expect(page.getByTestId('reference')).toBeVisible();
+  await page.keyboard.press('Escape');
+  expect(await page.evaluate(() => (window as unknown as { escapes: number }).escapes)).toBe(1);
+});

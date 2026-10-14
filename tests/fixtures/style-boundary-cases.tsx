@@ -16,6 +16,8 @@ table{border-collapse:separate}
 *,::before,::after{--tw-ring-color:rgb(0,0,255)}
 .ring-2{box-shadow:0 0 0 2px var(--tw-ring-color)}
 /* Reads variable names an app (shadcn, Tailwind v4) may leave undefined; KJUN must not supply them. */
+@keyframes app-spin{to{transform:rotate(360deg)}}
+.app-spin{animation:app-spin 1s linear infinite;transition:opacity 300ms}
 .app-var{border:2px solid var(--border, rgb(1,2,3));color:var(--text-primary, rgb(4,5,6))}
 `;
 
@@ -24,6 +26,7 @@ export const appHtml = `
 <div class="flex mt-1 text-lg rounded" data-probe="utilities">utilities</div>
 <div class="ring-2" data-probe="ring">ring</div>
 <div class="app-var" data-probe="app-var">app variables</div>
+<div class="app-spin" data-probe="app-spin">spin</div>
 <div class="my-kjun-logo" data-probe="kjun-substring"><button type="button" data-probe="kjun-substring-button">앱 로고 버튼</button></div>
 <input class="ds-field" data-probe="ds-field" value="app field">
 <label class="ds-choice" data-probe="ds-choice">app choice</label>
