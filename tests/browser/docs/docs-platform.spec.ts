@@ -129,7 +129,7 @@ test('platform switches reset the selected preset, preserve palette while basic 
   await expect(page.locator('.playground')).toHaveAttribute('data-ready', 'true');
   await page.frameLocator('.playground iframe').getByRole('textbox', { name: '내용', exact: true }).fill('전환 전 입력');
   await page.locator('#usage .code-block').getByRole('button', { name: '기본 코드 복사' }).click();
-  expect(await page.evaluate(() => (window as any).__copied[0])).toContain('@kjun-ui/vue3');
+  await expect.poll(() => page.evaluate(() => (window as any).__copied[0])).toContain('@kjun-ui/vue3');
   await choose(page, '문서 플랫폼', 'React'); await ready(page, 'react');
   await expect(page.getByRole('button', { name: '프리셋', exact: true })).toContainText('검증 오류');
   await expect(page.getByRole('button', { name: '색상 예제', exact: true })).toContainText('보라색 예제');

@@ -6,6 +6,7 @@ import { installFocusVisible, isFocusVisible } from "../../../shared/package-run
 import { FloatingPanel, usePortalTarget } from "./floating-panel";
 import { useKjunId } from "./input";
 import { FeedbackLayerOutlet } from "./overlay-host";
+import { containTab } from "./runtime/modal";
 import { useLayer, usePopupExpanded } from "./runtime/layers";
 import { usePresence, useReducedMotion } from "./runtime/presence";
 
@@ -58,6 +59,7 @@ export const KjunPopover = defineComponent({
           placement={props.placement} matchTriggerWidth={props.matchTriggerWidth} maxHeight={props.maxHeight} flip={props.flip}>
           {{ default: () => (
             <section ref={dialog} id={id} aria-label={props.ariaLabel || "상세 정보"} class="kjun-popover-dialog" role="dialog" tabindex={-1}
+              onKeydown={(event: KeyboardEvent) => containTab(event.currentTarget as HTMLElement, event)}
               style={{ maxHeight: typeof props.maxHeight === "number" ? props.maxHeight + "px" : props.maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: "auto" }}>
               <div class="kjun-popover-content" data-no-padding={String(props.noPadding)}>{slots.default?.({ close: () => change(false) })}</div>
               <FeedbackLayerOutlet />

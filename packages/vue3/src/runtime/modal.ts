@@ -8,6 +8,16 @@ function lockScroll() {
   if (locks++ === 0) { previousOverflow = document.documentElement.style.overflow; document.documentElement.style.overflow = "hidden"; }
   return () => { if (--locks === 0) document.documentElement.style.overflow = previousOverflow; };
 }
+/** Tab and Shift+Tab wrap inside scope. Like react-aria's FocusScope, inert subtrees (an exiting Toast) and tabindex=-1 are skipped. */
+export function containTab(scope: HTMLElement, event: KeyboardEvent) {
+  if (event.key !== "Tab") return;
+  const nodes = [...scope.querySelectorAll<HTMLElement>(tabbable)]
+    .filter(node => node.tabIndex >= 0 && !node.closest("[inert]") && (node.offsetParent !== null || node === document.activeElement));
+  if (!nodes.length) { event.preventDefault(); scope.focus(); return; }
+  const first = nodes[0], last = nodes[nodes.length - 1], current = document.activeElement;
+  if (event.shiftKey && (current === first || current === scope || !scope.contains(current))) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && (current === last || !scope.contains(current))) { event.preventDefault(); first.focus(); }
+}
 function hideOutside(root: HTMLElement) {
   const hidden: HTMLElement[] = [];
   for (let node: HTMLElement | null = root; node && node !== document.body; node = node.parentElement) {
@@ -26,13 +36,7 @@ function hideOutside(root: HTMLElement) {
 export function useModalOverlay(root: Ref<HTMLElement | null>, dialog: Ref<HTMLElement | null>, active: () => boolean) {
   let release: (() => void)[] = [];
   const contain = (event: KeyboardEvent) => {
-    const scope = dialog.value;
-    if (event.key !== "Tab" || !scope) return;
-    const nodes = [...scope.querySelectorAll<HTMLElement>(tabbable)].filter(node => node.offsetParent !== null || node === document.activeElement);
-    if (!nodes.length) { event.preventDefault(); scope.focus(); return; }
-    const first = nodes[0], last = nodes[nodes.length - 1], current = document.activeElement;
-    if (event.shiftKey && (current === first || current === scope || !scope.contains(current))) { event.preventDefault(); last.focus(); }
-    else if (!event.shiftKey && (current === last || !scope.contains(current))) { event.preventDefault(); first.focus(); }
+    if (dialog.value) containTab(dialog.value, event);
   };
   const keepFocus = (event: FocusEvent) => {
     const scope = dialog.value, target = event.target as Node | null;

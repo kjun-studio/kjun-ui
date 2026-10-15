@@ -81,13 +81,15 @@ for (const width of [1600, 390]) test(`${width}px: expanded record links open im
 });
 
 test('failed, not-run, N/A, stale and invalid records are distinct without fallback success', async ({ page }) => {
-  const failedRun = generated.runs.find(run => run.results.some(result => result.status === 'failed'))!;
-  expect(failedRun).toBeTruthy(); const failed = failedRun.results.find(result => result.status === 'failed')!;
+  // Retired vue2 records open as Vue 3, so pick results from current platforms.
+  const current = (result: { platform: string }) => result.platform !== 'vue2';
+  const failedRun = generated.runs.find(run => run.results.some(result => result.status === 'failed' && current(result)))!;
+  expect(failedRun).toBeTruthy(); const failed = failedRun.results.find(result => result.status === 'failed' && current(result))!;
   await page.goto(`/verification?component=${failed.component}&platform=${failed.platform}&record=${failedRun.id}#${failed.item}`); await ready(page);
   await expect(page.locator('#' + failed.item + ' .accessibility-status')).toContainText('실패');
   await expect(page.locator('#' + failed.item + ' .verification-failure')).toContainText('실패 사유');
-  const partial = generated.runs.find(run => run.results.some(result => result.status === 'not-run'))!;
-  const skipped = partial.results.find(result => result.status === 'not-run')!;
+  const partial = generated.runs.find(run => run.results.some(result => result.status === 'not-run' && current(result)))!;
+  const skipped = partial.results.find(result => result.status === 'not-run' && current(result))!;
   await page.goto(`/verification?component=${skipped.component}&platform=${skipped.platform}&record=${partial.id}#${skipped.item}`);
   await expect(page.locator('#' + skipped.item + ' .accessibility-status')).toContainText('미실행');
   await page.goto(`/verification?component=KjunSkeleton&platform=react&record=${partial.id}#keyboard`);
