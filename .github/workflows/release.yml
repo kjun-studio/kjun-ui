@@ -64,10 +64,17 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: packages
-      # Dependency order: icons → tokens → platform packages.
+      # Dependency order: icons → tokens → platform packages. A version already on npm is skipped:
+      # a new package's first version is published by hand so its trusted publisher can be configured.
       - run: |
+          version="${GITHUB_REF_NAME#v}"
           for name in icons tokens vue3 react native; do
-            npm publish "./kjun-ui-$name-${GITHUB_REF_NAME#v}.tgz" --access public --provenance
+            # npm view prints nothing (and exits 0) for a missing version of an existing package.
+            if [ "$(npm view "@kjun-ui/$name@$version" version 2>/dev/null)" = "$version" ]; then
+              echo "@kjun-ui/$name@$version is already published; skipping"
+            else
+              npm publish "./kjun-ui-$name-$version.tgz" --access public --provenance
+            fi
           done
 
   deploy-docs:
