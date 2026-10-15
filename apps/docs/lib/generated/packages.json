@@ -1,37 +1,37 @@
 [
   {
     "name": "@kjun-ui/icons",
-    "version": "0.5.1",
-    "file": "kjun-ui-icons-0.5.1.tgz",
+    "version": "0.6.0",
+    "file": "kjun-ui-icons-0.6.0.tgz",
     "bytes": 1457071,
-    "integrity": "sha512-jmPWlZ5xLVqPJf7N6T42x4fQ+BixOPSHFCC1zSyVDpbeUuGuAwfj/0X/vB7Zw/GANYDJEtM8y+qvM1uMKDr3QQ=="
+    "integrity": "sha512-3GvnCGTJvTA43Qu6iDAowrpMysQXbsrAFPUPXEUMLgu1moiUk/1lszU4m3GdR3NiXmLvAUSJ8PEpRG1RpvKovA=="
   },
   {
     "name": "@kjun-ui/tokens",
-    "version": "0.5.1",
-    "file": "kjun-ui-tokens-0.5.1.tgz",
-    "bytes": 83959,
-    "integrity": "sha512-+S+WIri0C85bdDHxtFEFNUP8e2eY66od5q7vHAqUDvrBluawOaD+eClxNFQbOhcjasPbhhCJuFNSEtdJ9tx1+Q=="
+    "version": "0.6.0",
+    "file": "kjun-ui-tokens-0.6.0.tgz",
+    "bytes": 83961,
+    "integrity": "sha512-eKsuXqa/uKNEmzZ/moOB2+d4uoOyIZWJfllhhnoK3c/oN1ygRi17UbZDolZderWjvxf0DPmcxpM3tHp1Q4po1w=="
   },
   {
     "name": "@kjun-ui/vue3",
-    "version": "0.5.1",
-    "file": "kjun-ui-vue3-0.5.1.tgz",
-    "bytes": 250422,
-    "integrity": "sha512-qUQPZ3aoZRmyT/a884GhXIc99/TU1w9INtJVVBLlYb+YLEbFyS1/vcFOMMtwhbYkdectju2ANSsFB52RV+VJCw=="
+    "version": "0.6.0",
+    "file": "kjun-ui-vue3-0.6.0.tgz",
+    "bytes": 250421,
+    "integrity": "sha512-NpU6YDuo70EL25NtMd+NZ4Ca+U/vaVH0vAAZKeuA3DoqOIJd6hdTQ/9dx/Qz15Ca9tkziVByj6DsuE17HMhRnA=="
   },
   {
     "name": "@kjun-ui/react",
-    "version": "0.5.1",
-    "file": "kjun-ui-react-0.5.1.tgz",
-    "bytes": 202728,
-    "integrity": "sha512-FokNP8/v4FgnOY0jvOWSp39J9kLWdjlDZCCyN96D4BiGhBWAWxLH04ZnBxQd3FgoK1t4mg59yiZWrQtaG9MyfA=="
+    "version": "0.6.0",
+    "file": "kjun-ui-react-0.6.0.tgz",
+    "bytes": 202731,
+    "integrity": "sha512-KMXsQWwrCchiUT1bZNLSGU5z7dukWdf8s2+eXyZZrAlZLctUTFlj42JrmE5iNP7OKyszXfvBzYIX6tEBoHvR0w=="
   },
   {
     "name": "@kjun-ui/native",
-    "version": "0.5.1",
-    "file": "kjun-ui-native-0.5.1.tgz",
+    "version": "0.6.0",
+    "file": "kjun-ui-native-0.6.0.tgz",
     "bytes": 423636,
-    "integrity": "sha512-gQ1CpY+gzFawYOyn6qweoZog6ZWu6cWq5jJgQsXqAM3j9QVUgMs1H87jyKOPkmkL4eVYmwj9kwYW5Hm04pgR1Q=="
+    "integrity": "sha512-RRtrQpFwF1hiZLL8uVRzh2frNqTXEDGLeMTkQT8sLbP4hegxwMq3t1BIxIupV538a10d1pdGC/hpX+6jOmciyw=="
   }
 ]

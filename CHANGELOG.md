@@ -1,6 +1,35 @@
 # 변경 내역
 
-KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue2`·`react`·`native`)는 같은 버전으로 함께 배포합니다.
+KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
+
+## 0.6.0 — 2026-10-15
+
+Vue 패키지를 Vue 3용 `@kjun-ui/vue3`로 새로 만들었습니다. `@kjun-ui/vue2`는 0.5.x가 마지막 버전이며 더 이상 갱신하지 않습니다. **깨지는 변경**입니다.
+
+- `@kjun-ui/vue3`는 Vue 3.5 이상이 필요합니다(peer `vue ^3.5`). React 패키지와 같은 DOM·클래스·`data-*`·`aria-*`를 렌더링하고, 스타일은 토큰 CSS만 사용합니다. Vue 2의 `kj-` 유틸리티 클래스는 더 이상 배포하지 않습니다.
+- 플러그인: `app.use(Kjun)` (`import Kjun from '@kjun-ui/vue3/plugin'`). `{ skipExisting: true }` 옵션은 그대로입니다.
+- 문서의 Vue 예제는 `<script setup>` SFC입니다. 예전 `?platform=vue2` 링크는 Vue 3 문서로 열립니다.
+
+| Vue 2 (0.5) | Vue 3 (0.6) |
+| --- | --- |
+| `v-model` (`value` / `input`) — Input·Select 등 값 컴포넌트 | `v-model` (`modelValue` / `update:modelValue`) |
+| Modal·Drawer·Popover `v-model` (`value` / `input`) | `v-model:open` |
+| Select `:open.sync` | `v-model:open` |
+| Table `selection-change`, `:sort.sync` + `sort-change`, `row-expand`·`row-collapse` | `v-model:selected`, `v-model:sort`, `v-model:expandedRows` |
+| Pagination `update:currentPage`, `update:page-size` | `v-model:page`, `v-model:pageSize` |
+| 슬롯 `header-actions`, `menu-header`, `selection-toolbar`, `sub-label`, SearchInput `item` | `headerActions`, `menuHeader`, `selectionToolbar`, `subLabel`, `option` |
+| `formatters` 주입·prop | 컴포넌트별 `formatter`·`formatMetric` 함수 prop (React와 같음) |
+| `inject: ['kjunFeedback']`, `this.kjunFeedback` | `const feedback = useKjunFeedback()` |
+| Button `htmlType` | `type` |
+| Icon `size="16px"` | `:size="16"` 또는 CSS 길이 문자열 |
+| ErrorBoundary 새로고침 버튼 | `다시 시도`로 경계를 초기화, `fallback` 슬롯·`reset` 이벤트 |
+| Breadcrumb `navigate` 이벤트 | `link` 슬롯 (`{ item, label }`) |
+| RadioGroup 그룹 `disabled` | 옵션별 `disabled` (React와 같음) |
+
+- 이벤트 이름은 kebab-case(`@page-change`, `@toggle-interest`, `@search-error`)이며, 행 클릭·재시도처럼 연결 여부로 동작이 바뀌는 콜백(`@row-click`, `@retry`)은 prop으로 선언되어 있습니다.
+- 모든 슬롯은 타입(`SlotsType`)으로 선언되어 IDE에서 슬롯 이름과 데이터를 확인할 수 있습니다.
+- 모든 웹 패키지의 `styles.css`에서 Vue 2 전용 규칙(Tailwind `kj-` 유틸리티, Vue 2 컴포넌트 스타일)을 뺐습니다. React·Vue 3 컴포넌트가 쓰는 `kjun-` 규칙은 그대로이며, 앱이 `kj-` 클래스를 직접 쓰고 있었다면 앱 스타일로 옮기세요.
+- 입력 스타일(`forms.css`)은 토큰 패키지 소스로 옮겼습니다. 배포되는 `styles.css` 내용은 같습니다.
 
 ## 0.5.1 — 2026-10-15
 
