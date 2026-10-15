@@ -3,14 +3,13 @@ import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const packageNames = ['icons', 'tokens', 'vue2', 'vue3', 'react', 'native'];
+export const packageNames = ['icons', 'tokens', 'vue3', 'react', 'native'];
 const root = resolve(import.meta.dirname, '..');
 export const buildInputs = [
-  'package.json', 'package-lock.json', 'scripts/build.mjs', 'scripts/icon-build.mjs', 'scripts/vue-component.mjs',
+  'package.json', 'package-lock.json', 'scripts/build.mjs', 'scripts/icon-build.mjs', 'scripts/vue3-api.mjs', 'scripts/vue3-runtime.mjs',
   'scripts/package-state.mjs', 'scripts/tokens.mjs', 'scripts/token-model.mjs', 'scripts/token-validation.mjs', 'scripts/token-aliases.mjs', 'scripts/responsive-css.mjs', 'scripts/roles.mjs', 'scripts/api.mjs',
-  'scripts/declarations.mjs', 'scripts/vue-prop-type.mjs', 'scripts/vue-root-class.mjs', 'shared/package-runtime',
-  'shared/web-style-sources.json', 'packages/vue2/style-theme.mjs',
-  'packages/vue2/style-utilities.json', 'licenses/Tabler-LICENSE', 'LICENSE',
+  'scripts/declarations.mjs', 'shared/package-runtime',
+  'shared/web-style-sources.json', 'licenses/Tabler-LICENSE', 'LICENSE',
   ...packageNames.flatMap(name => [`packages/${name}/src`, `packages/${name}/package.json`, `packages/${name}/README.md`]),
 ];
 const digest = value => createHash('sha256').update(value).digest('hex');
@@ -45,10 +44,7 @@ async function files(base, entries) {
   return Object.fromEntries(result);
 }
 export async function sourceFingerprint(base = root) {
-  const inputs = await files(base, buildInputs);
-  // api.mjs regenerates this file during the build; its dist copy is checked as output.
-  delete inputs['packages/vue2/src/index.d.ts'];
-  return digest(JSON.stringify(inputs));
+  return digest(JSON.stringify(await files(base, buildInputs)));
 }
 async function packageFiles(base) {
   return Object.fromEntries(await Promise.all(packageNames.map(async name => [
@@ -95,8 +91,8 @@ export async function assertCurrentPacked(base = root) {
   await verifyTarballs(base, manifest);
   return state;
 }
-// @kjun-ui/vue3 needs Vue 3, so the consumer installs it in its own vue3/ project beside the Vue 2 one.
-export const consumerProject = (directory, name) => name === '@kjun-ui/vue3' ? resolve(directory, 'vue3') : directory;
+// Every package installs into one consumer project.
+export const consumerProject = (directory) => directory;
 export async function verifyInstalledPackages(directory, state) {
   for (const pkg of state.manifest) {
     const project = consumerProject(directory, pkg.name);
@@ -113,7 +109,8 @@ export async function assertCurrentConsumer(base = root) {
   if (!consumer || consumer.source !== state.source || JSON.stringify(consumer.manifest) !== JSON.stringify(state.manifest))
     fail('missing or stale installed consumer');
   await verifyInstalledPackages(consumer.directory, state);
-  return { ...consumer, vue3Directory: resolve(consumer.directory, 'vue3') };
+  // vue3Directory names the project that installs Vue 3; it is the same consumer now that Vue 2 is gone.
+  return { ...consumer, vue3Directory: consumer.directory };
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   await assertCurrentConsumer();

@@ -18,7 +18,7 @@ async function walk(path) {
 }
 const files = (
   await Promise.all(
-    ["tokens", "vue2", "react", "native"].map((name) =>
+    ["tokens", "vue3", "react", "native"].map((name) =>
       walk(resolve(root, `packages/${name}/src`))
     )
   )

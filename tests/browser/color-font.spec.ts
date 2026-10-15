@@ -36,7 +36,7 @@ async function verifySamples(page: Page, numeric: string, body: string, changed 
   expect((await textStyle(page.getByTestId(prefix + 'neutral'))).color).toBe('rgb(102, 102, 102)');
 }
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: numeric/body fonts and financial roles survive scoped modal updates`, async ({ page }, info) => {
     await open(page, platform);
     await verifySamples(page, 'monospace', 'serif');
@@ -86,7 +86,7 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   });
 }
 
-for (const platform of ['react', 'vue2', 'vue3']) {
+for (const platform of ['react', 'vue3']) {
   test(`${platform}: missing body font has an explicit diagnostic`, async ({ page }) => {
     await open(page, platform, '?scenario=missing-font');
     await expect.poll(async () => (await errors(page)).join(' ')).toContain('--kjun-font');
@@ -108,7 +108,7 @@ for (const platform of ['react', 'vue2', 'vue3']) {
 
 const configureFollowup = (page: Page, next: object) => page.evaluate(next => (window as any).configureFollowup(next), next);
 const followupFixture = (page: Page, platform: string, scenario: string) => openFixture(page, platform, `?scenario=${scenario}`, "review-followup");
-for (const platform of ["react", "vue2", "vue3", "native"]) test(`${platform} core-only colors support nested overrides and live modal updates`, async ({ page }) => {
+for (const platform of ["react", "vue3", "native"]) test(`${platform} core-only colors support nested overrides and live modal updates`, async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await openFixture(page, platform, "", "color-contract");

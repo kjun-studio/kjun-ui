@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { openFixture } from "./packed-fixture";
 // Remote search races are covered by runtime-search/state-contracts and feedback queues by api-reference.
-for (const platform of ["react", "vue2", "vue3", "native"]) {
+for (const platform of ["react", "vue3", "native"]) {
   test(`${platform} packed controls and menu support selection and disabled options`, async ({
     page,
   }) => {
@@ -20,7 +20,7 @@ for (const platform of ["react", "vue2", "vue3", "native"]) {
       await expect(page.getByRole("radio", { name: "B", exact: true })).toBeDisabled();
     }
     await expect(page.getByRole("radio", { name: "C", exact: true })).toBeChecked();
-    const select = page.getByRole(platform === "vue2" ? "combobox" : "button", { name: "과일", exact: true });
+    const select = page.getByRole("button", { name: "과일", exact: true });
     await select.click();
     await page.getByRole(platform === "native" ? "radio" : "option", { name: "체리", exact: true }).click();
     await expect(page.getByTestId("selected")).toHaveText("c");

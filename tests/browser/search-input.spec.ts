@@ -14,13 +14,9 @@ async function search(page: Page, platform: string, plain = false) {
 const configureInput = (page: Page, next: object) => page.evaluate(next => (window as any).configureInput(next), next);
 const inputFixture = (page: Page, platform: string, query = "") => openFixture(page, platform, query, "review-input");
 const configureState = (page: Page, next: object) => page.evaluate(next => (window as any).configureState(next), next);
-const stateFixture = (page: Page, platform: string, scenario: string) => openFixture(page, platform, "?scenario=" + scenario, "state-contracts");
 
 const events = (page: Page) => page.getByTestId('events');
-// Vue 3 keeps the Vue 2 state-contracts search scenario in its composition fixture.
-const searchStateFixture = (page: Page, platform: string) =>
-  platform === 'vue2' ? stateFixture(page, 'vue2', 'search') : compositionFixture(page, platform, '?case=state-search');
-const label = (platform: string) => platform === 'vue2' ? 'Vue' : platform;
+const searchStateFixture = (page: Page, platform: string) => compositionFixture(page, platform, '?case=state-search');
 
 for (const platform of ['react', 'native', 'vue3']) {
   for (const next of [{ value: 'External' }, { disabled: true }, { debounce: 500 }, { async: true }, { show: false }]) {
@@ -73,7 +69,7 @@ for (const platform of ['react', 'native', 'vue3']) {
 
 }
 
-for (const platform of ['vue2', 'vue3']) test(`${label(platform)} SearchInput consumes one Escape before its parent Modal`, async ({ page }) => {
+for (const platform of ['vue3']) test(`${platform} SearchInput consumes one Escape before its parent Modal`, async ({ page }) => {
   await compositionFixture(page, platform, '?modal');
   await page.getByRole('button', { name: 'Open', exact: true }).click();
   const dialog = page.getByRole('dialog'), input = page.getByRole('combobox', { name: 'Search' });
@@ -86,7 +82,7 @@ for (const platform of ['vue2', 'vue3']) test(`${label(platform)} SearchInput co
   await expect(page.getByRole('button', { name: 'Open', exact: true })).toBeFocused();
 });
 
-for (const platform of ['react', 'native', 'vue2', 'vue3']) {
+for (const platform of ['react', 'native', 'vue3']) {
   for (const mode of ['async', 'plain', 'debounced', 'rejected']) test(`${platform} SearchInput clear emits one immediate value then clear (${mode})`, async ({ page }) => {
     const plain = mode === 'plain' || mode === 'debounced';
     await compositionFixture(page, platform, plain ? `?plain&debounce=${mode === 'debounced' ? 1000 : 0}` : mode === 'rejected' ? '?reject' : '');
@@ -145,7 +141,7 @@ for (const platform of ['react', 'native', 'vue2', 'vue3']) {
   });
 }
 
-for (const platform of ["react", "native", "vue2", "vue3"]) {
+for (const platform of ["react", "native", "vue3"]) {
   test(`${platform} SearchInput invalidates requests when minChars changes and resumes after lowering it`, async ({ page }) => {
     await page.clock.install(); await inputFixture(page, platform, "?control=search");
     let input = page.locator("input").first(); await input.click();
@@ -168,7 +164,7 @@ for (const platform of ["react", "native", "vue2", "vue3"]) {
   });
 }
 
-for (const platform of ['vue2', 'vue3']) test(`${label(platform)} SearchInput cancels pending drafts on debounce and mode changes`, async ({ page }) => {
+for (const platform of ['vue3']) test(`${platform} SearchInput cancels pending drafts on debounce and mode changes`, async ({ page }) => {
   await page.clock.install(); await searchStateFixture(page, platform);
   await configureState(page, { remote: false });
   const input = page.getByRole("textbox", { name: "Search" });
@@ -182,7 +178,7 @@ for (const platform of ['vue2', 'vue3']) test(`${label(platform)} SearchInput ca
   await expect(page.getByTestId("events")).toHaveText('[""]');
 });
 
-for (const platform of ['vue2', 'vue3']) test(`${label(platform)} SearchInput aborts remote results after external resets, disabling and mode changes`, async ({ page }) => {
+for (const platform of ['vue3']) test(`${platform} SearchInput aborts remote results after external resets, disabling and mode changes`, async ({ page }) => {
   await page.clock.install(); await searchStateFixture(page, platform);
   const input = page.getByRole("combobox", { name: "Search" });
   await input.fill("old"); await page.clock.runFor(350);

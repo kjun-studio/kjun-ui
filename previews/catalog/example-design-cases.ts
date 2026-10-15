@@ -137,7 +137,7 @@ export function renderDesignExample(name: string, tools: ExampleTools): any {
           h("Text", {}, "2. 문서 조회 요청"),
           !after ? h("KjunEmpty", { text: "데이터 없음" }) : h("KjunDataState", {
             error: retried ? null : "연결 실패", size: "sm", onRetry: retry,
-          }, h("KjunListRow", { title: "회의 기록", description: "재시도 완료 · 로컬 성공 결과" }), platform === "vue2" ? { error: failure } : { errorContent: failure }),
+          }, h("KjunListRow", { title: "회의 기록", description: "재시도 완료 · 로컬 성공 결과" }), { errorContent: failure }),
         ])),
       ]);
     }

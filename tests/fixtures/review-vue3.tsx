@@ -38,7 +38,7 @@ const PromptCase = defineComponent(() => {
     <output data-testid="prompt">{value.value}</output>
   </>;
 });
-// Nested modals with live Escape policies, as in the Vue 2 fixture.
+// Nested modals with live Escape policies.
 const ModalCase = defineComponent(() => {
   const config = reactive({ open: true, inner: false, escape: false, innerEscape: true });
   Object.assign(window, { configureReview: (next: Partial<typeof config>) => Object.assign(config, next) });

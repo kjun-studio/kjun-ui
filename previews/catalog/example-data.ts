@@ -52,7 +52,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         columns,
         rows: 3,
         showActions: true,
-        alignClass: (v: string) => "kj-text-" + (v || "left"),
+        alignClass: (v: string) => "catalog-align-" + (v || "left"),
         widthClass: () => "",
       });
     case "KjunTooltip":
@@ -183,14 +183,6 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           onSearch: (q: string) => message("프로젝트 검색: " + q),
           onSortChange: (s: any) => message("정렬 " + s.key + " " + s.order),
         },
-        undefined,
-        platform === 'vue2' ? {
-          expand: ({ row }: any) => detail(row),
-          'selection-toolbar': selectionAction,
-          ...(example.project ? { 'cell-status': ({ row }: any) => status(row), 'cell-actions': ({ row }: any) => view(row), 'cell-budget': ({ row }: any) => money(row, 'budget') } : {}),
-          ...(example.project || example.metrics ? { 'cell-progress': ({ row }: any) => progress(row) } : {}),
-          ...(example.metrics ? { 'cell-revenue': ({ row }: any) => money(row, 'revenue'), 'cell-change': ({ row }: any) => delta(row) } : {}),
-        } : {}
       );
     }
     case "KjunKpiHero":

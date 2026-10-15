@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { auditGeometryScript, auditGeometryCss } from '../scripts/style-token-audit.mjs';
-import { createVueStyleTheme } from '../packages/vue2/style-theme.mjs';
 import { readTokenDefinitions, compileTokens, mergeTokenDefinitions, extensionGeometryCss } from '../scripts/token-model.mjs';
 const root = new URL('..', import.meta.url).pathname;
 const definitions = await readTokenDefinitions(root);
@@ -30,10 +29,6 @@ test('component geometry resolves from the shared scales with additive paths', (
   assert.match(css, /--_kjun-extension-badge-padding-xs-y: 0px;/);
   assert.match(css, /--_kjun-extension-menu-option-font-size: 0.875rem;/);
   assert.doesNotMatch(css, /\[object Object\]/);
-  const theme = createVueStyleTheme(value, {});
-  assert.equal(theme.extend.spacing['badge-padding-xs-x'], '4px');
-  assert.equal(theme.extend.borderRadius['drawer-bottom-radius'], '16px');
-  assert.equal(theme.extend.spacing['card-padding-md'], '24px');
 });
 
 test('definition fragments reject collisions and recursive aliases', () => {
@@ -71,17 +66,13 @@ test('all package geometry styles consume shared tokens', async () => {
   const binding = await readFile(root + '/packages/tokens/src/bindings.css', 'utf8');
   const declared = new Set([...binding.matchAll(/(--[\w-]+)\s*:/g)].map(m => m[1]));
   const issues = [];
-  for (const name of ['tokens', 'react', 'native', 'vue2']) {
+  for (const name of ['tokens', 'react', 'native', 'vue3']) {
     const directory = `packages/${name}/src`;
     for (const entry of await readdir(root + '/' + directory, { recursive: true })) {
-      if (!/\.(?:ts|tsx|js|vue|css)$/.test(entry) || ['bindings.css', 'typography.css'].includes(entry) || name === 'tokens' && entry === 'index.ts') continue;
+      if (!/\.(?:ts|tsx|js|css)$/.test(entry) || ['bindings.css', 'typography.css'].includes(entry) || name === 'tokens' && entry === 'index.ts') continue;
       const file = directory + '/' + entry, source = await readFile(root + '/' + file, 'utf8');
       if (file.endsWith('.css')) issues.push(...auditGeometryCss(source, file, declared));
-      else if (file.endsWith('.vue')) {
-        for (const match of source.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) issues.push(...auditGeometryCss(match[1], file, declared));
-        for (const match of source.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)) issues.push(...auditGeometryScript(match[1], file));
-        for (const match of source.matchAll(/(?::style|v-bind:style)="([^"]*)"/g)) issues.push(...auditGeometryScript('const style = (' + match[1] + ');', file + ' template'));
-      } else issues.push(...auditGeometryScript(source, file));
+      else issues.push(...auditGeometryScript(source, file));
       assert.doesNotMatch(source, /(?:p[xytrbl]?|m[xytrbl]?|gap|rounded)-\[\d+(?:px|rem)\]/, `${file}: arbitrary utility bypasses geometry`);
     }
   }

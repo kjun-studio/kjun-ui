@@ -3,8 +3,8 @@ import { tokens } from '@kjun-ui/tokens';
 import { openFixture } from './packed-fixture';
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureMotion(next), next);
 const start = (page: Page, platform: string, scenario: string) => openFixture(page, platform, '?scenario=' + scenario, 'motion');
-const label = (platform: string) => platform === 'react' ? 'React' : platform === 'vue2' ? 'Vue' : platform;
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+const label = (platform: string) => platform === 'react' ? 'React' : platform;
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: Switch moves through intermediate positions and reduction snaps`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' }); await start(page, platform, 'switch');
     // Native draws the off boundary as an overlay before the thumb, so the thumb is the last child.
@@ -30,7 +30,7 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
       await page.setViewportSize({ width: 390, height: 740 }); await start(page, platform, 'layers');
       await configure(page, { position });
       const trigger = page.getByRole('button', { name: 'Open drawer', exact: true }); await trigger.click();
-      const panel = page.locator(platform === 'react' || platform === 'vue3' ? '.kjun-drawer' : platform === 'vue2' ? '.kjun-drawer-panel' : '[aria-label="Motion drawer"]');
+      const panel = page.locator(platform === 'react' || platform === 'vue3' ? '.kjun-drawer' : '[aria-label="Motion drawer"]');
       await expect(panel).toBeVisible(); await page.waitForTimeout(350);
       const box = (await panel.boundingBox())!;
       expect(box.x).toBeGreaterThanOrEqual(-1); expect(box.y).toBeGreaterThanOrEqual(-1);
@@ -78,7 +78,7 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   });
 }
 
-for (const platform of ['vue2', 'vue3']) test(`${label(platform)} layers consume Escape before parent shortcuts and restore focus with reduced motion`, async ({ page }) => {
+for (const platform of ['vue3']) test(`${label(platform)} layers consume Escape before parent shortcuts and restore focus with reduced motion`, async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   for (const kind of ['modal', 'drawer']) {
     await start(page, platform, 'layers');

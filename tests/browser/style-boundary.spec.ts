@@ -20,7 +20,7 @@ async function kjunElements(page: Page) {
     .map(el => { const style = getComputedStyle(el); return names.map(name => style.getPropertyValue(name)).join('|'); }), props);
 }
 
-for (const platform of ['react', 'vue2', 'vue3']) {
+for (const platform of ['react', 'vue3']) {
   test(`${platform}: app markup inside KjunProvider keeps the app's own styles`, async ({ page }) => {
     await page.setViewportSize({ width: 1024, height: 900 });
     await openFixture(page, platform, '', 'style-boundary');
@@ -36,7 +36,7 @@ for (const platform of ['react', 'vue2', 'vue3']) {
   });
 }
 
-for (const platform of ['react', 'vue2', 'vue3']) {
+for (const platform of ['react', 'vue3']) {
   test(`${platform}: the form layout attribute spaces form groups and leaves the app wrapper's own text alone`, async ({ page }) => {
     await page.setViewportSize({ width: 1024, height: 900 });
     await openFixture(page, platform, '', 'style-boundary');
@@ -50,7 +50,7 @@ for (const platform of ['react', 'vue2', 'vue3']) {
   });
 }
 
-for (const platform of ['react', 'vue2', 'vue3']) {
+for (const platform of ['react', 'vue3']) {
   test(`${platform}: reduced motion slows kjun animations only, not app animations inside the Provider`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: 1024, height: 900 });
@@ -60,7 +60,7 @@ for (const platform of ['react', 'vue2', 'vue3']) {
   });
 }
 
-for (const platform of ['react', 'vue2', 'vue3']) {
+for (const platform of ['react', 'vue3']) {
   test(`${platform}: a kjun component whose root is a button still takes the scope font`, async ({ page }) => {
     await openFixture(page, platform, '?noapp', 'style-boundary');
     const button = page.getByTestId('kjun').getByRole('button', { name: '저장' });
@@ -69,18 +69,7 @@ for (const platform of ['react', 'vue2', 'vue3']) {
   });
 }
 
-test('vue2: rendered kjun markup carries no unprefixed utility classes', async ({ page }) => {
-  await openFixture(page, 'vue2', '?component=all', 'catalog', 'production', true);
-  const bare = await page.evaluate(() => {
-    const utility = /^(-?(m|p)[trblxy]?-|gap-|space-|w-|h-|min-|max-|text-|font-|leading-|tracking-|bg-|border|rounded|shadow|opacity-|flex|inline|block|grid|hidden|items-|justify-|self-|shrink|grow|overflow-|truncate|whitespace-|cursor-|select-|transition|duration-|ease-|z-|relative|absolute|fixed|sticky|inset-|top-|left-|right-|bottom-|sr-only|underline|uppercase|align-|animate-|resize|outline|pointer-events-|invisible|visible)/;
-    return [...new Set([...document.querySelectorAll('[class^="kjun-"] *, [class*=" kjun-"] *, [class^="kjun-"], [class*=" kjun-"]')]
-      .flatMap(el => [...el.classList].map(c => c.split(/:(?![^[]*\])/).pop()!.replace(/^!/, '')))
-      .filter(c => utility.test(c)))];
-  });
-  expect(bare).toEqual([]);
-});
-
-for (const platform of ['react', 'vue2', 'vue3']) {
+for (const platform of ['react', 'vue3']) {
   test(`${platform}: an icon placed in app text keeps the app's colour and font size`, async ({ page }) => {
     await openFixture(page, platform, '?noapp', 'style-boundary');
     const icon = page.getByTestId('icon-host').locator('svg');
@@ -89,7 +78,7 @@ for (const platform of ['react', 'vue2', 'vue3']) {
   });
 }
 
-for (const platform of ['react', 'vue2', 'vue3']) {
+for (const platform of ['react', 'vue3']) {
   test(`${platform}: app markup inside KjunFeedbackProvider keeps the app's own styles`, async ({ page }) => {
     await page.setViewportSize({ width: 1024, height: 900 });
     await openFixture(page, platform, '', 'style-boundary');

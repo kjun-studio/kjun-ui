@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: Card headings stay readable and actions fit narrow cards`, async ({ page }) => {
     await page.setViewportSize({ width: 680, height: 1000 });
     await openFixture(page, platform, '', 'card-layout');

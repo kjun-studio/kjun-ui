@@ -28,7 +28,7 @@ test("published token and CSS contracts contain no product palette", async () =>
   assert.equal("themes" in api.tokens, false);
   assert.ok(api.colorRoles.includes("brand"));
   assert.ok(api.colorRoles.includes("shadow"));
-  for (const name of ["tokens", "react", "vue2", "native"]) {
+  for (const name of ["tokens", "react", "vue3", "native"]) {
     const css = (await readFile("packages/" + name + "/dist/styles.css", "utf8")).replace(/\/\*[\s\S]*?\*\//g, "");
     assert.doesNotMatch(css, /data-kjun-theme|kjun-theme/i);
     assert.doesNotMatch(css, /--kjun-[\w-]+\s*:/); // Values must come from the consuming app.
@@ -55,7 +55,7 @@ test("all generated examples are syntactically valid for their target framework"
     }
 });
 test("package exports resolve without workspace source references", async () => {
-  for (const name of ["tokens", "vue2", "react", "native"]) {
+  for (const name of ["tokens", "vue3", "react", "native"]) {
     const pkg = JSON.parse(await readFile("packages/" + name + "/package.json", "utf8"));
     await readFile("packages/" + name + "/" + pkg.types);
     for (const format of ["import", "require"])
@@ -68,7 +68,7 @@ test("package exports resolve without workspace source references", async () => 
 
 test('all distributed JavaScript, styles and declarations are independent of app values', async () => {
   const {readdir}=await import('node:fs/promises');
-  for(const name of ['tokens','vue2','react','native']){
+  for(const name of ['tokens','vue3','react','native']){
     const directory=new URL(`../packages/${name}/dist/`,import.meta.url);
     for(const file of await readdir(directory)){
       if(!/\.(?:js|cjs|css|ts)$/.test(file))continue;

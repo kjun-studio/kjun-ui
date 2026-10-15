@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { build } from 'esbuild';
 import { assertCurrentConsumer } from './package-state.mjs';
-import { compileVueExample, compileVue3Example } from './vue-example.mjs';
+import { compileVue3Example } from './vue-example.mjs';
 import { usageTools } from './usage-tools.mjs';
 import { exampleNames, exampleDefinition, presetConfig } from '../shared/example-registry.ts';
 const root = resolve(import.meta.dirname, '..');
@@ -30,7 +30,7 @@ export async function prepareExample(platform, name, id, settings, values, palet
   const usage = mode === 'usage' ? await usageTools.usageExample({ name, platform, settings, values }) : null;
   const code = suppliedCode ?? usage?.code ?? codeTools.exampleSource(manifest[name].sources[platform], platform, settings, values);
   let module = code;
-  const vue = platform === 'vue2' || platform === 'vue3', compile = platform === 'vue3' ? compileVue3Example : compileVueExample;
+  const vue = platform === 'vue3', compile = compileVue3Example;
   if (vue) module = compile(code, name);
   await writeFile(resolve(directory, 'Example.' + (vue ? 'js' : 'jsx')), module);
   await writeFile(resolve(directory, platform === 'native' ? 'kjun.js' : 'kjun.css'), codeTools.exampleSetup(platform, palette));
@@ -40,8 +40,7 @@ export async function prepareExample(platform, name, id, settings, values, palet
   const component = usage ? 'App' : 'Example';
   const entry = platform === 'vue3'
     ? `import { createApp } from "vue"; import Example from "./${component}.js"; createApp(Example).mount("#root");`
-    : platform === 'vue2'
-    ? `import Vue from "vue"; import Example from "./${component}.js"; new Vue({render: h => h(Example)}).$mount("#root");`
+
     : `import React from "react"; import {createRoot} from "react-dom/client"; import Example from "./${component}.jsx"; createRoot(document.getElementById("root")).render(<Example/>);`;
   const path = resolve(directory, 'main.jsx');
   await writeFile(path, entry);
@@ -53,7 +52,7 @@ export async function compileEntries(platform, entries) {
   await mkdir(directory, { recursive: true });
   const result = await build({ entryPoints: entries, outdir: directory, bundle: true, platform: 'browser', format: 'esm', splitting: true,
     jsx: 'automatic', target: 'es2020', minify: true, metafile: true,
-    alias: { ...(platform === 'vue3' ? { vue: vue3Modules + '/vue/dist/vue.runtime.esm-bundler.js', '@kjun-ui/vue3': vue3Modules + '/@kjun-ui/vue3', '@kjun-ui/vue3/styles.css': vue3Modules + '/@kjun-ui/vue3/dist/styles.css' } : { vue: modules + '/vue/dist/vue.runtime.esm.js' }), 'react-native': modules + '/react-native-web/dist/index.js', 'react-native-svg': modules + '/react-native-svg/lib/module/ReactNativeSVG.web.js' },
+    alias: { ...(platform === 'vue3' ? { vue: vue3Modules + '/vue/dist/vue.runtime.esm-bundler.js', '@kjun-ui/vue3': vue3Modules + '/@kjun-ui/vue3', '@kjun-ui/vue3/styles.css': vue3Modules + '/@kjun-ui/vue3/dist/styles.css' } : { vue: modules + '/vue/dist/vue.runtime.esm-bundler.js' }), 'react-native': modules + '/react-native-web/dist/index.js', 'react-native-svg': modules + '/react-native-svg/lib/module/ReactNativeSVG.web.js' },
     mainFields: ['browser', 'module', 'main'], resolveExtensions: ['.web.js', '.web.tsx', '.tsx', '.ts', '.js', '.jsx', '.json'],
     define: { 'process.env.NODE_ENV': '"production"', __DEV__: 'false', global: 'globalThis', __VUE_OPTIONS_API__: 'true', __VUE_PROD_DEVTOOLS__: 'false', __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false' },
   });

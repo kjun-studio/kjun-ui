@@ -9,7 +9,7 @@ async function close(page: Page) {
   await page.mouse.click(900, 700);
   await expect(page.getByTestId('open')).toHaveText('false');
 }
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: popovers have subtle borderless surfaces and preserve placement, width and overflow`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const palette of ['default', 'dark']) {

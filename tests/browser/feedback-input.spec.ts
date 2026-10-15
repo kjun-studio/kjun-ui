@@ -8,7 +8,7 @@ async function start(page: Page, platform: string) {
 }
 const results = (page: Page) => page.evaluate(() => (window as any).feedbackResults);
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: prompt focuses its input, describes validation errors and clears their reference`, async ({ page }) => {
     await start(page, platform);
     const trigger = page.getByRole('button', { name: '서비스 준비' });

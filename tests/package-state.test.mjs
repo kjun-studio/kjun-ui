@@ -37,8 +37,7 @@ async function setup(t) {
     }
   }
   const lock = packages => ({ packages: Object.fromEntries(packages.map(p => ['node_modules/' + p.name, { integrity: p.integrity }])) });
-  await write('consumer/package-lock.json', lock(manifest.filter(p => p.name !== '@kjun-ui/vue3')));
-  await write('consumer/vue3/package-lock.json', lock(manifest.filter(p => p.name === '@kjun-ui/vue3')));
+  await write('consumer/package-lock.json', lock(manifest));
   await write('artifacts/consumer.json', { directory, source: packed.source, manifest });
   return { base, write, packed };
 }
@@ -49,7 +48,6 @@ test('current consumer requires matching source, build, tarballs, lock and insta
     ['packages/react/src/index.ts', /stale package build/],
     ['shared/package-runtime/index.ts', /stale package build/],
     ['scripts/declarations.mjs', /stale package build/],
-    ['scripts/vue-prop-type.mjs', /stale package build/],
     ['packages/react/dist/index.js', /output changed/],
     ['artifacts/react.tgz', /tarball integrity mismatch/],
     ['consumer/node_modules/@kjun-ui/react/dist/index.js', /installed files differ/],
@@ -73,13 +71,9 @@ test('an old consumer or interrupted build cannot be certified by existing artif
   await beginPackageBuild(base);
   await assert.rejects(assertCurrentConsumer(base), /stale package build/);
 });
-test('API declaration generation is a build output, while authored source changes still invalidate the build', async t => {
+test('authored source changes during a package build invalidate the build', async t => {
   const { base, write } = await setup(t);
-  const source = await beginPackageBuild(base);
-  await write('packages/vue2/src/index.d.ts', 'export declare const Generated: unknown;');
-  await write('packages/vue2/dist/index.d.ts', 'export declare const Generated: unknown;');
-  await finishPackageBuild(source, base);
   const next = await beginPackageBuild(base);
-  await write('packages/vue2/src/index.ts', 'export const changed = true;');
+  await write('packages/vue3/src/index.ts', 'export const changed = true;');
   await assert.rejects(finishPackageBuild(next, base), /source changed during package build/);
 });

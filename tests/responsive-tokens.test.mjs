@@ -3,10 +3,9 @@ import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { readTokenDefinitions, compileTokens } from '../scripts/token-model.mjs';
 import { responsiveCss } from '../scripts/responsive-css.mjs';
-import { createVueStyleTheme } from '../packages/vue2/style-theme.mjs';
 const source = await readTokenDefinitions(new URL('..', import.meta.url).pathname);
 
-test('responsive aliases compile media, container and Vue utility thresholds from one source', () => {
+test('responsive aliases compile media and container thresholds from one source', () => {
   const changed = structuredClone(source);
   changed.breakpoints.compact = 700;
   changed.breakpoints.medium = 820;
@@ -18,7 +17,6 @@ test('responsive aliases compile media, container and Vue utility thresholds fro
   assert.match(css, /width >= 500px/);
   assert.doesNotMatch(css, /token\(/);
   assert.equal(tokens.table.mobileBreakpoint, 820);
-  assert.equal(createVueStyleTheme(tokens, {}).screens.pagination, '700px');
   assert.throws(() => responsiveCss('@media (width < token(responsive.missing)) {}', tokens), /Invalid responsive/);
   assert.throws(() => responsiveCss('@media (width < token(motion.fast)) {}', tokens), /Invalid responsive/);
 });
@@ -33,10 +31,10 @@ test('responsive and motion distances reject invalid values and time references'
 });
 
 test('authored package queries do not repeat fixed width thresholds', async () => {
-  for (const pkg of ['tokens', 'vue2']) {
+  for (const pkg of ['tokens', 'vue3']) {
     const root = `packages/${pkg}/src`;
     for (const name of await readdir(root, { recursive: true })) {
-      if (!/\.(css|vue)$/.test(name)) continue;
+      if (!/\.css$/.test(name)) continue;
       const text = await readFile(`${root}/${name}`, 'utf8');
       assert.doesNotMatch(text, /@(?:media|container)[^{]*(?:width\s*[<>]=?|(?:min|max)-width\s*:)\s*\d+(?:px|rem)/, name);
     }

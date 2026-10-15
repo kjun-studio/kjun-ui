@@ -1,7 +1,6 @@
-import { readFileSync, existsSync } from "node:fs";
-import { resolve, dirname, relative } from "node:path";
+import { readFileSync } from "node:fs";
+import { resolve, relative } from "node:path";
 import ts from "typescript";
-import compiler from "vue-template-compiler";
 const root = resolve(import.meta.dirname, "..");
 const sourcePath = (file) => relative(root, file).replaceAll("\\", "/");
 const parsed = (file, content) =>
@@ -126,103 +125,6 @@ export function reactContracts(platform) {
     records[symbol.name] = { defaults, source: sourcePath(fn.getSourceFile().fileName) };
   }
   return records;
-}
-function strings(node) {
-  if (!node) return [];
-  if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) return [node.text];
-  if (ts.isConditionalExpression(node))
-    return [...strings(node.whenTrue), ...strings(node.whenFalse)];
-  if (ts.isTemplateExpression(node))
-    return [node.head.text + node.templateSpans.map((span) => "*" + span.literal.text).join("")];
-  return [];
-}
-function localImport(file, request) {
-  const base = request.startsWith("@kjun-adapter/")
-    ? resolve(root, "packages/vue2/src/adapters", request.slice(14))
-    : request.startsWith(".")
-      ? resolve(dirname(file), request)
-      : null;
-  return base && [base, base + ".js", base + ".vue"].find(existsSync);
-}
-export function vueContracts(file) {
-  const events = new Map(),
-    slots = new Map(),
-    visited = new Set();
-  function inspect(file) {
-    if (visited.has(file)) return;
-    visited.add(file);
-    const content = readFileSync(file, "utf8"),
-      sfc = file.endsWith(".vue") ? compiler.parseComponent(content) : null;
-    const source = parsed(file, sfc ? sfc.script?.content || "" : content),
-      imports = new Map();
-    for (const statement of source.statements) {
-      if (!ts.isImportDeclaration(statement)) continue;
-      const target = localImport(file, statement.moduleSpecifier.text);
-      if (target && statement.importClause?.name)
-        imports.set(statement.importClause.name.text, target);
-      const bindings = statement.importClause?.namedBindings;
-      if (target && bindings && ts.isNamedImports(bindings))
-        for (const item of bindings.elements) imports.set(item.name.text, target);
-    }
-    const recordEvents = (node) => {
-      if (
-        ts.isCallExpression(node) &&
-        ((ts.isPropertyAccessExpression(node.expression) &&
-          node.expression.name.text === "$emit") ||
-          (ts.isIdentifier(node.expression) && node.expression.text === "$emit"))
-      ) {
-        for (const name of strings(node.arguments[0]))
-          events.set(name, { name, source: sourcePath(file) });
-      }
-      if (
-        ts.isPropertyAssignment(node) &&
-        keyOf(node.name) === "mixins" &&
-        ts.isArrayLiteralExpression(node.initializer)
-      ) {
-        for (const mixin of node.initializer.elements) {
-          const target = imports.get(keyOf(mixin));
-          if (target) inspect(target);
-        }
-      }
-      ts.forEachChild(node, recordEvents);
-    };
-    recordEvents(source);
-    if (!sfc?.template) return;
-    const template = compiler.compile(sfc.template.content, { outputSourceRange: true }).ast,
-      walked = new Set();
-    function visit(node) {
-      if (!node || walked.has(node)) return;
-      walked.add(node);
-      const attrs = node.attrsMap || {};
-      for (const [key, value] of Object.entries(attrs))
-        if (key.startsWith("@") || key.startsWith("v-on:")) recordEvents(parsed(file, value));
-      if (node.tag === "slot") {
-        const dynamic = attrs[":name"] || attrs["v-bind:name"];
-        const names = dynamic
-          ? strings(parsed("slot.js", "(" + dynamic + ")").statements[0]?.expression?.expression)
-          : [attrs.name || "default"];
-        const forwarded = !!attrs["v-bind"];
-        for (const name of names.length ? names : ["*"]) {
-          const data = Object.keys(attrs)
-            .filter((k) => /^(:|v-bind:)/.test(k) && ![":name", "v-bind:name"].includes(k))
-            .map((k) => k.replace(/^(:|v-bind:)/, ""));
-          const previous = slots.get(name);
-          slots.set(name, {
-            name,
-            source: sourcePath(file),
-            data: [...new Set([...(previous?.data || []), ...data])],
-            forwarded,
-          });
-        }
-      }
-      for (const child of node.children || []) visit(child);
-      for (const child of Object.values(node.scopedSlots || {})) visit(child);
-      for (const condition of node.ifConditions || []) visit(condition.block);
-    }
-    visit(template);
-  }
-  inspect(file);
-  return { events: [...events.values()], slots: [...slots.values()] };
 }
 export function feedbackApiMembers() {
   const file = resolve(root, "packages/tokens/src/feedback.ts");

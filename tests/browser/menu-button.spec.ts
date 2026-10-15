@@ -17,7 +17,7 @@ const iconPath = (page: Page) => icon(page).evaluate(el => el.innerHTML);
 const menu = (page: Page, platform: string) => platform === 'native'
   ? page.locator('[aria-label="메뉴"]') : page.getByRole('menu');
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: menu sizes, compact mode and loading reuse Button geometry`, async ({ page }) => {
     await openFixture(page, platform, '', 'menu-button');
     await expect(trigger(page)).toHaveCSS('height', '40px');
@@ -133,11 +133,3 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
     await page.getByTestId('menu').screenshot({ path: `artifacts/menu-button-review/${platform}-fixed-compact.png` });
   });
 }
-
-test('vue2: custom label slots keep their visible accessible name', async ({ page }) => {
-  await openFixture(page, 'vue2', '', 'menu-button');
-  await configure(page, { label: '', slotLabel: '필터 작업' });
-  await expect(trigger(page)).toHaveText('필터 작업');
-  await expect(trigger(page)).toHaveAccessibleName('필터 작업');
-  await expect(icon(page)).toHaveAttribute('width', '16');
-});

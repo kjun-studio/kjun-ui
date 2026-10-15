@@ -27,7 +27,6 @@ const Cases = defineComponent(() => {
       box(`switch-${size}`, <api.KjunSwitch size={size} modelValue={value(`switch-${size}`, false)} label={`설정 ${size}`} onUpdate:modelValue={change(`switch-${size}`)} />),
     ])}
     {box('input', <api.KjunInput modelValue={value('input', '')} ariaLabel="터치 입력" onUpdate:modelValue={change('input')} />)}
-    {box('utilities', <div class="kjun-scope"><span class="kj-font-medium">중간 굵기</span><span class="kj-font-semibold">강조 굵기</span></div>)}
   </div>;
 });
 createApp(defineComponent(() => () => <api.KjunProvider><Cases /></api.KjunProvider>)).mount('#root');

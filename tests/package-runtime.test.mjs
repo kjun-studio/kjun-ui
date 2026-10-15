@@ -10,7 +10,7 @@ import { assertCurrentConsumer } from '../scripts/package-state.mjs';
 
 test('every packed relative declaration import resolves inside its own package', async () => {
   const { directory } = await assertCurrentConsumer();
-  for (const name of ['icons', 'tokens', 'vue2', 'react', 'native']) {
+  for (const name of ['icons', 'tokens', 'vue3', 'react', 'native']) {
     const root = resolve(directory, 'node_modules/@kjun-ui', name);
     async function visit(dir) {
       for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -41,12 +41,12 @@ test('installed ESM and CJS entries bundle and execute without workspace source'
   const modules = resolve(directory, 'node_modules');
   for (const format of ['esm', 'cjs']) {
     const outfile = resolve(output, format === 'esm' ? 'entry.mjs' : 'entry.cjs');
-    const imports = ['icons', 'tokens', 'vue2', 'react', 'native'].map(name => format === 'esm'
+    const imports = ['icons', 'tokens', 'vue3', 'react', 'native'].map(name => format === 'esm'
       ? `import * as ${name} from '@kjun-ui/${name}';`
       : `const ${name} = require('@kjun-ui/${name}');`).join('\n');
     await build({
       stdin: { contents: imports + `\nif(tokens.tokens.table.mobileBreakpoint!==768)throw Error('token');
-        for(const ui of [vue2,react,native])for(const name of ['KjunTable','KjunMarketCards','KjunSearchInput'])if(!ui[name])throw Error(name);`, resolveDir: directory },
+        for(const ui of [vue3,react,native])for(const name of ['KjunTable','KjunMarketCards','KjunSearchInput'])if(!ui[name])throw Error(name);`, resolveDir: directory },
       outfile, bundle: true, format, platform: 'node', packages: 'bundle',
       alias: {
         'react-native': modules + '/react-native-web/dist/index.js',

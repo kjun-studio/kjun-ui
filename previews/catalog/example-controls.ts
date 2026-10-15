@@ -146,7 +146,6 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
       return h(name, {
         value: get("radio", "a"),
         options,
-        ...(platform === "vue2" ? { disabled } : {}),
         ariaLabel: "과일 라디오",
         onValueChange: change("radio"),
       });
@@ -318,8 +317,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         active: get("active", false),
         activeIcon: kind === "favorite" ? "star" : "heart",
         ariaLabel: kind ? "예제 항목 " + label + (get("active", false) ? " 해제" : " 등록") : "좋아요",
-        ...(kind ? platform === "vue2" ? { activeColorClass: "kj-text-" + kind }
-          : { activeColor: platform === "native" ? domainColors[kind] : `var(--kjun-${kind})` } : {}),
+        ...(kind ? { activeColor: platform === "native" ? domainColors[kind] : `var(--kjun-${kind})` } : {}),
         size: settings.size,
         disabled,
         loading,

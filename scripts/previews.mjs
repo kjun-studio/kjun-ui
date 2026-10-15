@@ -16,8 +16,7 @@ import {
 import { resolve } from "node:path";
 const root = resolve(import.meta.dirname, "..");
 process.chdir(root);
-const { directory: consumer, vue3Directory } = await assertCurrentConsumer();
-const vue3Modules = vue3Directory + "/node_modules";
+const { directory: consumer } = await assertCurrentConsumer();
 const modules = consumer + "/node_modules";
 const out = resolve("apps/docs/public/previews");
 await mkdir(out, { recursive: true });
@@ -63,29 +62,24 @@ await writeFile(
 const aliases = {
   react: modules + "/react",
   "react-dom": modules + "/react-dom",
-  vue: modules + "/vue/dist/vue.runtime.esm.js",
+  vue: modules + "/vue/dist/vue.runtime.esm-bundler.js",
   "react-native": modules + "/react-native-web/dist/index.js",
   "react-native-svg":
     modules + "/react-native-svg/lib/module/ReactNativeSVG.web.js",
 };
-for (const name of ["icons", "tokens", "vue2", "react", "native"])
+for (const name of ["icons", "tokens", "vue3", "react", "native"])
   aliases["@kjun-ui/" + name] = modules + "/@kjun-ui/" + name;
 aliases["@kjun-ui/icons/defaults"] = modules + "/@kjun-ui/icons/dist/defaults.js";
 aliases["@kjun-ui/icons/metadata"] = modules + "/@kjun-ui/icons/dist/metadata.js";
 aliases["@kjun-ui/icons/all"] = modules + "/@kjun-ui/icons/dist/all.js";
 aliases["@kjun-ui/icons/icons"] = modules + "/@kjun-ui/icons/dist/icons";
-for (const name of ["vue2", "react", "native"]) aliases["@kjun-ui/" + name + "/styles.css"] = modules + "/@kjun-ui/" + name + "/dist/styles.css";
+for (const name of ["vue3", "react", "native"]) aliases["@kjun-ui/" + name + "/styles.css"] = modules + "/@kjun-ui/" + name + "/dist/styles.css";
 aliases["@kjun-ui/tokens/icons"] = modules + "/@kjun-ui/tokens/dist/icons.js";
-// Vue 3 entries resolve vue and the package from the Vue 3 consumer project.
-const vue3Aliases = { ...aliases, vue: vue3Modules + "/vue/dist/vue.runtime.esm-bundler.js", "@kjun-ui/vue3": vue3Modules + "/@kjun-ui/vue3",
-  "@kjun-ui/vue3/styles.css": vue3Modules + "/@kjun-ui/vue3/dist/styles.css" };
 for (const entry of [
-  "vue2",
   "vue3",
   "react",
   "native",
   "typography",
-  "catalog/vue2",
   "catalog/vue3",
   "catalog/react",
   "catalog/native",
@@ -94,7 +88,7 @@ for (const entry of [
   const vue3 = entry.endsWith("vue3");
   await build({
     entryPoints: [
-      "previews/" + entry + (/vue[23]$/.test(entry) ? ".ts" : ".tsx"),
+      "previews/" + entry + (vue3 ? ".ts" : ".tsx"),
     ],
     outfile: out + "/" + name + ".js",
     bundle: true,
@@ -103,7 +97,7 @@ for (const entry of [
     target: "es2020",
     jsx: "automatic",
     minify: true,
-    alias: vue3 ? vue3Aliases : aliases,
+    alias: aliases,
     mainFields: ["browser", "module", "main"],
     resolveExtensions: [
       ".web.tsx",

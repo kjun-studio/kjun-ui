@@ -44,7 +44,7 @@ test('readback aliases reject independent edits and follow their canonical geome
 });
 
 test('field interaction durations reference the semantic control role', async () => {
-  for (const file of ['packages/native/src/field-surface.ts', 'packages/vue2/src/styles/forms.css']) {
+  for (const file of ['packages/native/src/field-surface.ts', 'packages/tokens/src/forms.css']) {
     const source = await readFile(root + file, 'utf8');
     assert.doesNotMatch(source, /tokens\.motion\.fast|var\(--_kjun-motion-fast\)/);
     assert.match(source, /tokens\.motion\.control|var\(--_kjun-motion-control\)/);

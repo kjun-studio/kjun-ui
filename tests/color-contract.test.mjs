@@ -1,8 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { coreColorRoles, colorRoles, colorRoleFallbacks, resolveKjunColors } from "../packages/tokens/dist/index.js";
-import { createVueStyleTheme } from "../packages/vue2/style-theme.mjs";
 const core = () => Object.fromEntries(coreColorRoles.map(role => [role, `app-${role}`]));
 
 test("core colors resolve every optional role without supplying a package palette", () => {
@@ -48,20 +46,4 @@ test("missing required colors still fail even when component overrides are suppl
   assert.throws(() => resolveKjunColors(undefined), /Missing KJUN colors/);
   assert.throws(() => resolveKjunColors({ ...core(), focusRing: undefined, inputBorderFocus: "app-input" }), /focusRing/);
   assert.throws(() => resolveKjunColors({ ...core(), brand: "" }), /brand/);
-});
-
-test("Vue utility geometry follows current KJUN tokens independently of historical settings", async () => {
-  const tokens = JSON.parse(await readFile("packages/tokens/src/tokens.json", "utf8"));
-  const utilities = JSON.parse(await readFile("packages/vue2/style-utilities.json", "utf8"));
-  tokens.button.radius = 17;
-  tokens.layers.page.navigation = 4321;
-  tokens.card.radii.md = 20;
-  tokens.dimension.value18 = 18;
-  const theme = createVueStyleTheme(tokens, utilities);
-  assert.equal(theme.extend.borderRadius.button, "17px");
-  assert.equal(theme.extend.zIndex.navigation, "4321");
-  assert.equal(theme.extend.borderRadius.card, "20px");
-  assert.equal(theme.extend.spacing["4"], "16px");
-  assert.equal(theme.extend.spacing["4.5"], "18px");
-  assert.equal(theme.extend.fontFamily.sans[0], "var(--kjun-font)");
 });

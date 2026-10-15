@@ -10,7 +10,7 @@ async function uniqueIds(page: Page) {
   })).toEqual([]);
 }
 
-for (const platform of ["react", "native", "vue2", "vue3"]) test(`${platform} debounced drafts yield to external values, disabled state and unmount`, async ({ page }) => {
+for (const platform of ["react", "native", "vue3"]) test(`${platform} debounced drafts yield to external values, disabled state and unmount`, async ({ page }) => {
   await page.clock.install();
   await followupFixture(page, platform, "search");
   const input = page.getByRole("textbox", { name: "검색", exact: true });
@@ -38,7 +38,7 @@ for (const platform of ["react", "native", "vue2", "vue3"]) test(`${platform} de
   await expect(page.getByTestId("events")).toHaveText('["latest:latest draft"]');
 });
 
-for (const platform of ["vue2", "vue3"]) test(`${platform}: Vue compound tabs track live props and unregister by stable identity`, async ({ page }) => {
+for (const platform of ["vue3"]) test(`${platform}: Vue compound tabs track live props and unregister by stable identity`, async ({ page }) => {
   await followupFixture(page, platform, "tabs");
   await configureFollowup(page, { disabled: true, label: "Updated", badge: 2 });
   const updated = page.getByRole("tab", { name: "Updated 2" });
@@ -85,10 +85,10 @@ test("Native Select isolates popup search and DatePicker consumes live field fee
   await uniqueIds(page);
 });
 
-for (const platform of ["react", "vue2", "vue3", "native"]) test(`${platform} page size stays reversible with one or zero pages`, async ({ page }) => {
+for (const platform of ["react", "vue3", "native"]) test(`${platform} page size stays reversible with one or zero pages`, async ({ page }) => {
   await followupFixture(page, platform, "pagination");
   // The equally named popup can remain mounted briefly while closing.
-  const size = page.getByRole(platform === "vue2" ? "combobox" : "button", { name: "페이지당 항목 수", exact: true });
+  const size = page.getByRole("button", { name: "페이지당 항목 수", exact: true });
   const choose = async (value: string) => {
     await size.click();
     await page.getByRole(platform === "native" ? "radio" : "option", { name: value + "개씩", exact: true }).click();

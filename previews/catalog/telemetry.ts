@@ -51,9 +51,7 @@ export function eventName(component: string, key: string, platform: string) {
     if (!/^on[A-Z]/.test(key)) return key;
     return names[key] || key.slice(2).replace(/^[A-Z]/, c => c.toLowerCase()).replace(/[A-Z]/g, c => '-' + c.toLowerCase());
   }
-  if (platform !== 'vue2' || !/^on[A-Z]/.test(key)) return key;
-  const names: Record<string, string> = { onChangeCommit: 'change', onValueChange: 'input', onOpenChange: component === 'KjunSelect' ? 'update:open' : 'input', onSelectionChange: 'selection-change', onExpandedRowsChange: 'update:expandedRows' };
-  return names[key] || key.slice(2).replace(/^[A-Z]/, c => c.toLowerCase()).replace(/[A-Z]/g, c => '-' + c.toLowerCase());
+  return key;
 }
 export function instrumentRenderer(render: Function, observer: ExampleObserver, platform: string) {
   return (name: string, props: Record<string, any> = {}, children?: any, slots?: any) => {

@@ -6,7 +6,7 @@ const alien = require('@kjun-ui/icons/icons/alien'), rocket = require('@kjun-ui/
 const { defaultIcons } = require('@kjun-ui/icons/defaults');
 const paths = (nodes: [string, Record<string, string>][]) => nodes.map(([, attrs]) => attrs.d);
 const rendered = (locator: Locator) => locator.locator('svg path').evaluateAll(nodes => nodes.map(node => node.getAttribute('d')));
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: scoped registration, variants, updates, isolation and layer inheritance`, async ({ page }) => {
     await openFixture(page, platform, '', 'icon-registry');
     for (const [id, definition] of [['extra', alien.outline], ['extra-filled', alien.filled], ['prefix', alien.outline],

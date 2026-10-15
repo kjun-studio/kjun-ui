@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 import { tokens } from '../../packages/tokens/dist/index.js';
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: packed elevation roles preserve quiet cards and floating surfaces`, async ({ page, browserName }) => {
     for (const palette of ['default', 'dark']) {
     await openFixture(page, platform, '?palette=' + palette, 'elevation');
@@ -26,7 +26,7 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
     await page.screenshot({ path: `artifacts/elevation/${platform}-${palette}-${browserName}-surfaces.png`, fullPage: true });
     await page.getByRole('button', { name: '알림 행동' }).click();
     await page.evaluate(() => (window as any).elevation.openWindow());
-    const modal = page.locator(platform === 'react' || platform === 'vue3' ? '.kjun-modal' : platform === 'vue2' ? '.kjun-modal-container' : '[aria-label="새 창"]');
+    const modal = page.locator(platform === 'react' || platform === 'vue3' ? '.kjun-modal' : '[aria-label="새 창"]');
     await expect(modal).toHaveCSS('box-shadow', new RegExp(`${tokens.modal.elevation[0].blurRadius}px`));
     await page.keyboard.press('Escape');
     }
@@ -46,7 +46,7 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: delayed controlled selection stays suppressed across a new window and Escape ignores IME`, async ({ page }) => {
     await openFixture(page, platform, '', 'elevation');
     await page.evaluate(() => (window as any).elevation.delay());
-    await page.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '화면 선택', exact: true }).click();
+    await page.getByRole('button', { name: '화면 선택', exact: true }).click();
     await expect(page.getByRole(platform === 'native' ? 'radio' : 'option', { name: '둘째 옵션' })).toBeVisible();
     await page.evaluate(() => (window as any).elevation.openWindow());
     await expect(page.getByRole('button', { name: '새 창 행동' })).toBeVisible();
@@ -59,9 +59,9 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
     await expect(page.getByRole('button', { name: '새 창 행동' })).toHaveCount(0);
     await expect(page.getByRole(platform === 'native' ? 'radio' : 'option', { name: '둘째 옵션' })).toHaveCount(0);
     await expect(page.getByTestId('closes')).toHaveText('1');
-    await expect(page.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '화면 선택', exact: true })).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.getByRole('button', { name: '화면 선택', exact: true })).toHaveAttribute('aria-expanded', 'false');
     await page.evaluate(() => (window as any).elevation.acknowledge());
-    await page.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '화면 선택', exact: true }).click();
+    await page.getByRole('button', { name: '화면 선택', exact: true }).click();
     await expect(page.getByRole(platform === 'native' ? 'radio' : 'option', { name: '둘째 옵션' })).toBeVisible();
   });
   test(`${platform}: nested windows, host clipping, toast action and unmount release input`, async ({ page }) => {

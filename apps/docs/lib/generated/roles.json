@@ -18,6 +18,7 @@
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
+      "packages/vue3/src/actions.tsx",
       "packages/react/src/actions.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
@@ -106,7 +107,6 @@
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/layout/Drawer.vue",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
@@ -145,7 +145,7 @@
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/data-display/HeatmapCell.vue",
+      "packages/vue3/src/financial-display.tsx",
       "packages/react/src/financial-display.tsx",
       "packages/native/src/chip.tsx",
       "packages/native/src/display-primitives.tsx",
@@ -274,6 +274,7 @@
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
+      "packages/vue3/src/date-picker.tsx",
       "packages/react/src/date-picker.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/button-group-motion.tsx",
@@ -320,6 +321,7 @@
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
+      "packages/vue3/src/date-picker.tsx",
       "packages/react/src/date-picker.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
@@ -365,6 +367,11 @@
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
+      "packages/vue3/src/actions.tsx",
+      "packages/vue3/src/financial-display.tsx",
+      "packages/vue3/src/kpi.tsx",
+      "packages/vue3/src/number-display.tsx",
+      "packages/vue3/src/select-control.tsx",
       "packages/react/src/actions.tsx",
       "packages/react/src/financial-display.tsx",
       "packages/react/src/kpi.tsx",
@@ -404,6 +411,9 @@
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
+      "packages/vue3/src/date-picker.tsx",
+      "packages/vue3/src/financial-display.tsx",
+      "packages/vue3/src/select-control.tsx",
       "packages/react/src/date-picker.tsx",
       "packages/react/src/financial-display.tsx",
       "packages/react/src/select-control.tsx",
@@ -453,6 +463,8 @@
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
+      "packages/vue3/src/market-parts.tsx",
+      "packages/vue3/src/skeletons.tsx",
       "packages/react/src/market-panel.tsx",
       "packages/react/src/skeletons.tsx",
       "packages/native/src/combobox.tsx",
@@ -505,6 +517,7 @@
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
+      "packages/vue3/src/input.tsx",
       "packages/react/src/input.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/combobox.tsx",
@@ -571,6 +584,7 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/web.css",
+      "packages/vue3/src/actions.tsx",
       "packages/react/src/actions.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/button.tsx",
@@ -616,6 +630,7 @@
     "implementationFiles": [
       "packages/tokens/src/financial.css",
       "packages/tokens/src/web.css",
+      "packages/vue3/src/financial-display.tsx",
       "packages/react/src/financial-display.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/financial-display.tsx"
@@ -660,7 +675,6 @@
     "implementationFiles": [
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
-      "packages/vue2/src/source/layout/Drawer.vue",
       "packages/native/src/drawer.tsx",
       "packages/native/src/modal.tsx"
     ]
@@ -740,6 +754,7 @@
     "implementationFiles": [
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
+      "packages/vue3/src/date-picker.tsx",
       "packages/react/src/date-picker.tsx",
       "packages/native/src/date-picker.tsx",
       "packages/native/src/input.tsx",
@@ -977,7 +992,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/table.css",
-      "packages/vue2/src/source/data-display/table/table.css",
       "packages/native/src/table-grid.tsx"
     ]
   },
@@ -1017,6 +1031,7 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/data-state.css",
+      "packages/vue3/src/skeletons.tsx",
       "packages/react/src/skeletons.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/skeletons.tsx"
@@ -1448,6 +1463,7 @@
       "--favorite"
     ],
     "implementationFiles": [
+      "packages/vue3/src/market-table.tsx",
       "packages/react/src/market-table.tsx"
     ]
   },
@@ -1472,6 +1488,7 @@
       "--interest"
     ],
     "implementationFiles": [
+      "packages/vue3/src/market-table.tsx",
       "packages/react/src/market-table.tsx"
     ]
   }

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: nested Providers keep Escape, Tab and focus in the active window`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'provider-layers');
@@ -53,7 +53,7 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
     await openFixture(page, platform, '', 'provider-layers');
     await page.getByRole('button', { name: 'Open outer', exact: true }).click();
     await page.getByRole('button', { name: 'Open inner', exact: true }).click();
-    const surface = page.locator(platform === 'react' || platform === 'vue3' ? '.kjun-modal' : platform === 'vue2' ? '.kjun-modal-container' : '[aria-label="Inner dialog"]').filter({ hasText: 'Inner action' }).last();
+    const surface = page.locator(platform === 'react' || platform === 'vue3' ? '.kjun-modal' : '[aria-label="Inner dialog"]').filter({ hasText: 'Inner action' }).last();
     await expect(surface).toHaveCSS('background-color', 'rgb(255, 244, 221)');
     if (platform !== 'native') await expect(surface).toHaveCSS('font-family', 'monospace');
     await page.evaluate(() => (window as any).providerLayers.changeStyle());

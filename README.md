@@ -1,6 +1,6 @@
 # KJUN UI
 
-여러 제품에서 함께 사용하는 Vue 2·React·React Native 컴포넌트와 한국어 사용 가이드입니다. KJUN은 컴포넌트의 구조·크기·간격·상태·동작을 정의하고, 적용 프로젝트는 색상·서체·모드 전환과 데이터를 연결합니다.
+여러 제품에서 함께 사용하는 Vue 3·React·React Native 컴포넌트와 한국어 사용 가이드입니다. KJUN은 컴포넌트의 구조·크기·간격·상태·동작을 정의하고, 적용 프로젝트는 색상·서체·모드 전환과 데이터를 연결합니다.
 
 ## 시작하기
 
@@ -10,11 +10,11 @@
 | --- | --- |
 | 공통 아이콘 데이터 | `@kjun-ui/icons` |
 | 공통 토큰과 타입 | `@kjun-ui/tokens` |
-| Vue 2 | `@kjun-ui/vue2` |
+| Vue 3 (3.5 이상) | `@kjun-ui/vue3` |
 | React | `@kjun-ui/react` |
 | React Native | `@kjun-ui/native` |
 
-사용하는 플랫폼의 패키지와 `@kjun-ui/tokens`·`@kjun-ui/icons`를 함께 설치합니다.
+사용하는 플랫폼의 패키지와 `@kjun-ui/tokens`·`@kjun-ui/icons`를 함께 설치합니다. Vue 2용 `@kjun-ui/vue2`는 0.5.x가 마지막 버전입니다. Vue 3로 옮기는 방법은 [CHANGELOG](CHANGELOG.md)의 0.6.0 항목을 참고하세요.
 
 문서 페이지도 패키징된 `@kjun-ui/react`·`@kjun-ui/tokens`·`@kjun-ui/icons`를 사용합니다. 색상·서체는 문서 앱이 제공하고 컨트롤의 규격·동작은 패키지에서 가져옵니다. 패키지를 수정했다면 Docker 안에서 `build:packages` → `pack:local` → `docs:install` 순으로 갱신하세요. 전체 `build`에는 이 과정이 포함됩니다.
 

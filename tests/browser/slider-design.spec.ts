@@ -12,31 +12,10 @@ async function appearance(page: Page, platform: string, id = 'single') {
     const fill = platform === 'native' ? track.children[1] : track.querySelector('.kjun-slider-fill')!;
     const rect = (el: Element) => { const r = el.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; };
     const thumbs = sliders.map((slider: any) => {
-      const el = platform === 'react' || platform === 'vue3' ? slider.closest('.kjun-slider-thumb') : platform === 'native' ? slider.firstElementChild : slider;
-      // Chromium returns the input's own style for vendor range pseudo-elements.
-      // Resolve the matching thumb rules on a detached-from-layout probe instead.
-      let probe: HTMLElement | undefined;
-      if (platform === 'vue2') {
-        probe = document.createElement('span');
-        for (const sheet of [...document.styleSheets]) for (const rule of [...sheet.cssRules]) {
-          if (!(rule instanceof CSSStyleRule)) continue;
-          if (!rule.selectorText.split(',').some(selector => selector.includes('::-webkit-slider-thumb') && slider.matches(selector.trim().replace('::-webkit-slider-thumb', '')))) continue;
-          // Keep variable-bearing shorthands intact; expanded border longhands
-          // have empty values until their custom properties are resolved.
-          probe.style.cssText += rule.style.cssText;
-        }
-        probe.style.position = 'fixed'; probe.style.left = '-10000px'; probe.style.display = 'block';
-        slider.parentElement.appendChild(probe);
-      }
-      const style = getComputedStyle(probe || el);
-      let box = rect(el);
-      if (platform === 'vue2') {
-        const width = parseFloat(style.width), span = Number(slider.max) - Number(slider.min);
-        const fraction = span > 0 ? (Number(slider.value) - Number(slider.min)) / span : 0;
-        box = { x: box.x + (box.width - width) * fraction, y: box.y + (box.height - width) / 2, width, height: parseFloat(style.height) };
-      }
+      const el = platform === 'native' ? slider.firstElementChild : slider.closest('.kjun-slider-thumb');
+      const style = getComputedStyle(el);
+      const box = rect(el);
       const result = { ...box, border: style.borderTopWidth, color: style.borderTopColor, background: style.backgroundColor, shadow: style.boxShadow, outline: style.outlineStyle, outlineWidth: style.outlineWidth, outlineOffset: style.outlineOffset };
-      probe?.remove();
       return result;
     });
     const caption = root.firstElementChild!;
@@ -48,7 +27,7 @@ async function appearance(page: Page, platform: string, id = 'single') {
   }, platform);
 }
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: slider fills meet thumb centers at both ends and collapsed ranges`, async ({ page }) => {
     await openFixture(page, platform, '', 'slider-design');
     for (const value of [0, 40, 100]) {

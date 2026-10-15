@@ -3,7 +3,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { resolve, relative } from 'node:path';
 
 // Motion must speak one language across platforms: token durations and token easing roles only.
-const sources = ['packages/tokens/src', 'packages/vue2/src', 'packages/react/src', 'packages/native/src', 'shared/package-runtime'];
+const sources = ['packages/tokens/src', 'packages/vue3/src', 'packages/react/src', 'packages/native/src', 'shared/package-runtime'];
 const scaleStep = /var\(--_kjun-motion-(?:instant|quick|fast|normal)\)/;
 const keywordEasing = /(?<![\w(-])(?:ease|ease-in|ease-out|ease-in-out)(?![\w-])/;
 

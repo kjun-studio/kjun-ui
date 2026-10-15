@@ -49,7 +49,7 @@ docker exec kjun_ui_dev npm run test:docs:related -- select --list
 ```
 
 - `test:docs`와 `test:docs:full`: 기존 전체 검사. 기존 파일 지정·`--grep` 인자도 유지한다.
-- `test:docs:smoke`: 문서 셸·검색·모바일 탐색과 Vue 2/React/Native Web의 데스크톱·모바일 미리보기 12개 사례. 전체 검증 완료로 기록하지 않는다.
+- `test:docs:smoke`: 문서 셸·검색·모바일 탐색과 Vue 3/React/Native Web의 데스크톱·모바일 미리보기 12개 사례. 전체 검증 완료로 기록하지 않는다.
 - `test:docs:related`: `alert`, `data-state`, `card`, `table`, `select`, `input`, `button`, `icons`, `navigation`, `accessibility`, `docs`, `overview`, `catalog`, `foundations`, `guides`, `exports` 중 하나 이상을 쉼표로 지정한다. 선택 파일의 모든 플랫폼 사례를 실행한다. `all`, `tokens`, `runtime`, `layers`, `layout`, `motion`, `shell`이 포함되면 전체 검사로 확장한다. 기본 검증은 영향 범위만 실행한다. 전역 CSS 파일을 수정하더라도 바뀐 선택자를 실제로 쓰는 페이지의 범위를 지정하고, 셸·사이드바·헤더의 배치를 바꾼 경우에만 `shell`로 전체 검사를 실행한다. 전체 검사는 요청이 있을 때나 공통 토큰·런타임·레이어 변경에만 실행한다. 모든 문서 spec은 적어도 한 그룹에 속해야 하며 `test:workflow`가 이를 확인한다. 4174 포트에 이미 응답하는 서버가 있으면 오래된 빌드를 검사하지 않도록 빌드 전과 서버 시작 직전에 실패한다. 목록에 없는 범위는 실패하므로 전체 검사 또는 명시적인 spec 파일을 선택한다. 매핑은 `scripts/docs-test-profiles.mjs`에서 관리하며 컴포넌트 소비 관계가 바뀌면 함께 갱신한다.
 
 빠른·관련 검사 결과는 각각 `test-results-docs-smoke`, `test-results-docs-related`에 저장한다. 기본 워커 1개와 기존 패키지 정합성 검사는 유지한다. 빌드 캐시나 타임아웃 완화는 적용하지 않는다.
@@ -115,13 +115,13 @@ GitHub Actions는 `compose.yaml`과 같은 `node:24-bookworm-slim` 이미지에�
 
 ## 공통 상태와 선언 파일
 
-React·Native의 Table, MarketCards, SearchInput 상태 로직은 `shared/package-runtime`에서 관리한다. 이 소스는 각 패키지의 ESM·CJS 번들에 포함되며 별도 배포 패키지나 런타임 의존성을 추가하지 않는다. 렌더링·포커스·팝업 열기·플랫폼 이벤트는 각 패키지가 담당한다. MarketCards 저장소 접근은 주입하며 React는 기본 localStorage, Native는 소비자가 전달한 저장소를 사용한다.
+Vue 3·React·Native의 Table, MarketCards, SearchInput 상태 로직은 `shared/package-runtime`에서 관리한다. 이 소스는 각 패키지의 ESM·CJS 번들에 포함되며 별도 배포 패키지나 런타임 의존성을 추가하지 않는다. 렌더링·포커스·팝업 열기·플랫폼 이벤트는 각 패키지가 담당한다. MarketCards 저장소 접근은 주입하며 React는 기본 localStorage, Native는 소비자가 전달한 저장소를 사용한다.
 
-`shared/package-runtime`과 `scripts/declarations.mjs`, `scripts/vue-prop-type.mjs`는 빌드 소스 해시에 포함된다. API 추출은 공통 모델의 상속된 props와 기본값도 따라간다. Vue 함수형 prop은 TypeScript AST로 최상위 union을 조합하므로 콜백의 반환값 null과 prop 자체의 null을 구분한다. 생성된 Vue `src/index.d.ts`와 문서 API 데이터는 같은 타입 계산을 사용한다.
+`shared/package-runtime`과 `scripts/declarations.mjs`, `scripts/vue3-api.mjs`는 빌드 소스 해시에 포함된다. Vue 3 API는 `scripts/vue3-api.mjs`가 만든다. prop과 슬롯 타입은 컴포넌트 인스턴스 타입(`$props`, `$slots`)에서, 필수 여부와 기본값은 런타임 props에서, 이벤트는 선언된 `emits`에서 읽는다.
 
-React·Native의 `dist/index.d.ts`는 `dist/types/packages/<platform>/src/index.d.ts`를 재수출한다. `dist/types/shared/package-runtime`에도 선언을 출력해 상대 경로를 패키지 안에서 완결한다. 선언 생성은 `scripts/declarations.mjs`에서 저장소 기준 rootDir로 수행한다. 빌드는 시작 기록을 pending으로 만든 뒤 다섯 패키지의 생성 전용 dist 전체를 비우고 icons → tokens → vue2 → react → native 순서로 다시 만든다. 실패하거나 중단된 빌드는 pack·소비 검증을 통과할 수 없다.
+Vue 3·React·Native의 `dist/index.d.ts`는 `dist/types/packages/<platform>/src/index.d.ts`를 재수출한다. `dist/types/shared/package-runtime`에도 선언을 출력해 상대 경로를 패키지 안에서 완결한다. 선언 생성은 `scripts/declarations.mjs`에서 저장소 기준 rootDir로 수행한다. 빌드는 시작 기록을 pending으로 만든 뒤 다섯 패키지의 생성 전용 dist 전체를 비우고 icons → tokens → vue3 → react → native 순서로 다시 만든다. 실패하거나 중단된 빌드는 pack·소비 검증을 통과할 수 없다.
 
-Vue Table은 부모가 상태와 이벤트를 소유하며 `table/`의 sorting·search·expansion·cards·layout·viewport 모듈로 계산과 감지를 나눈다. TableCards에는 카드에 필요한 값과 콜백만 전달한다. 세 플랫폼의 카드·컴팩트 전환은 `tokens.table.mobileBreakpoint = 768` 미만을 사용한다.
+Vue 3 Table은 React와 같은 `shared/package-runtime/table-model`을 쓰며 `table.tsx`·`table-parts.tsx`로 렌더링을 나눈다. 세 플랫폼의 카드·컴팩트 전환은 `tokens.table.mobileBreakpoint = 768` 미만을 사용한다.
 
 `tests/browser/{table-contracts,runtime-cards,runtime-market,search-input}.spec.ts`는 설치된 tarball로 화면 경계·상태 유지·카드 슬롯·검색 취소·저장값 복원을 검사한다. `tests/fixtures/runtime-types.tsx`는 독립 소비 프로젝트에서 nullable Vue 콜백·제네릭 추론·플랫폼별 높이 타입을 검사한다. `tests/package-runtime.test.mjs`는 선언의 상대 참조가 패키지 안에서 해결되는지, 설치한 ESM·CJS가 실행되는지 확인한다. Native 런타임 검증은 Native Web을 사용한다.
 
@@ -149,7 +149,7 @@ React 레이어의 기존 재수출 경로는 유지하며 FloatingPanel·Popove
 
 ## 스타일 소스
 
-Vue 유틸리티 설정은 `packages/vue2/style-utilities.json`과 `style-theme.mjs`, 입력 스타일은 `packages/vue2/src/styles/forms.css`에서 KJUN 소스로 관리한다. 레이어와 버튼 반경은 공통 토큰에서 가져온다. 서드파티 라이선스와 에셋 기록은 `licenses/`에 둔다.
+웹 스타일은 모두 `packages/tokens/src/*.css`에서 관리하며 입력 스타일은 `packages/tokens/src/forms.css`에 있다. 빌드는 이를 `.kjun-scope` 범위로 묶어 Vue 3·React 패키지에 같은 `styles.css`로 넣는다. 0.6.0부터 Tailwind `kj-` 유틸리티는 만들지 않는다. 레이어와 버튼 반경은 공통 토큰에서 가져온다. 서드파티 라이선스와 에셋 기록은 `licenses/`에 둔다.
 
 ## 상세 유지보수 문서
 

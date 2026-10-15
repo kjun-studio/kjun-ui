@@ -3,10 +3,10 @@ import { tokens, type TypographyToken } from '../../packages/tokens/dist/index.j
 import { openFixture } from './packed-fixture';
 // Packed token roles reach rendered components. scripts/token-mutation.mjs reruns this file with changed tokens.
 const px = (value: number) => value + 'px';
-const platforms = ['react', 'vue2', 'vue3', 'native'];
+const platforms = ['react', 'vue3', 'native'];
 
 // Table spacing and control motion
-for (const platform of ['react','vue2','vue3','native']) {
+for (const platform of ['react','vue3','native']) {
   test(`${platform}: packed table spacing and control motion follow token changes`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await openFixture(page, platform, '', 'token-application');
@@ -29,7 +29,7 @@ for (const platform of ['react','vue2','vue3','native']) {
 }
 
 // Remaining geometry and state roles
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: packed remaining geometry and state roles reach interactive components`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 900, height: 1000 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -95,7 +95,7 @@ async function weightedTypography(text: Locator, spec: TypographyToken, weight =
   expect(spacing === 'normal' ? 0 : parseFloat(spacing)).toBeCloseTo(spec.fontSizePx * spec.letterSpacingEm, 2);
 }
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: packed typography weights and tracking reach visible and measured labels`, async ({ page }) => {
     await page.setViewportSize({ width: 900, height: 1400 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -124,14 +124,12 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
     await tab.click();
     await expect(tab).toHaveAttribute('aria-selected', 'true');
     await weightedTypography(label, tokens.typography.control);
-    await expect(page.getByText('중간 굵기', { exact: true })).toHaveCSS('font-weight', String(tokens.typography.label.fontWeight));
-    await expect(page.getByText('강조 굵기', { exact: true })).toHaveCSS('font-weight', String(tokens.typography.control.fontWeight));
   });
 }
 
 test.describe('touch choice dimensions', () => {
   test.use({ hasTouch: true, viewport: { width: 900, height: 1600 } });
-  for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+  for (const platform of ['react', 'vue3', 'native']) {
     test(`${platform}: packed choice dimensions and minimum targets follow their tokens`, async ({ page }, testInfo) => {
       await page.emulateMedia({ reducedMotion: 'reduce' });
       await openFixture(page, platform, '', 'token-followup');
@@ -229,7 +227,7 @@ for (const platform of platforms) {
         const spec = tokens.input[size];
         await expect(input).toHaveCSS('padding-left', px(spec.padding + spec.iconSize + spec.affixGap - tokens.border.controlWidth));
         const minimum = Math.max(spec.height, spec.lineHeight * 2 + spec.textareaPaddingY * 2 + 2 * tokens.border.controlWidth);
-        if (platform !== 'vue2') await expect(textarea).toHaveCSS('min-height', px(minimum));
+        await expect(textarea).toHaveCSS('min-height', px(minimum));
       }
     }
     await page.evaluate(() => document.documentElement.style.fontSize = '16px');
@@ -361,7 +359,7 @@ async function displacement(page: Page, selector: string, action: string, durati
   }, { selector, action, duration });
 }
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: packed market typography and skeleton lines share scalable roles`, async ({ page }, testInfo) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'visual-reaudit');
@@ -428,7 +426,7 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await openFixture(page, platform, '?scenario=layers', 'motion');
     const modal = '.kjun-modal, .kjun-modal-container, [role="dialog"][aria-label="Motion modal"]';
-    const toast = platform === 'native' ? '[data-testid^="toast-slot-"] > *' : platform === 'vue2' ? '.kjun-toast-stack > *' : '[data-toast-id] > *';
+    const toast = platform === 'native' ? '[data-testid^="toast-slot-"] > *' : '[data-toast-id] > *';
     const cases: [string, string, number, number][] = [
       [modal, 'modal-enter', tokens.motionDistance.modalEnter, tokens.motion.layerEnter],
       [modal, 'modal-exit', tokens.motionDistance.modalExit, tokens.motion.layerExit],

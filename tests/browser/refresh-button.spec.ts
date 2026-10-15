@@ -19,7 +19,7 @@ const rotation = (page: Page) => button(page).evaluate(el => {
   return getComputedStyle(svg.classList.contains('kjun-icon') ? svg : svg.parentElement!).transform;
 });
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: refresh sizes and visible labels preserve Button geometry while loading`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'refresh-button');

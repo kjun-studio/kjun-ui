@@ -19,7 +19,7 @@ async function cappedScroll(child: Locator, maximum: number) {
   }, maximum)).toBe(true);
 }
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: packed size roles drive Spinner, Progress, icons and selection`, async ({ page }, info) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'size-contracts');
@@ -120,7 +120,7 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
     await expect(menuItem.locator('svg')).toHaveCSS('width', px(e.menu.iconSize));
     await cappedScroll(menuItem, e.floating.maxHeight);
     await page.keyboard.press('Escape'); await expect(page.getByRole('menuitem')).toHaveCount(0);
-    await page.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '크기 선택', exact: true }).click();
+    await page.getByRole('button', { name: '크기 선택', exact: true }).click();
     const option = page.getByRole(platform === 'native' ? 'radio' : 'option', { name: '선택 항목 1', exact: true });
     await cappedScroll(option, e.menu.listMaxHeight);
     await option.click();

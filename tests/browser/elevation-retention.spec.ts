@@ -8,7 +8,7 @@ async function settle(page: Page) {
   await page.clock.runFor(32);
 }
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) for (const kind of ['modal', 'drawer']) for (const interleaved of [false, true]) {
+for (const platform of ['react', 'vue3', 'native']) for (const kind of ['modal', 'drawer']) for (const interleaved of [false, true]) {
   test(`${platform}: ${kind} retains child state through ${interleaved ? 'A-B-A across Providers' : 'an interrupted exit'}`, async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));

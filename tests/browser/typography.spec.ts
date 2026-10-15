@@ -10,7 +10,7 @@ const textStyle = async (node: import('@playwright/test').Locator, ownText = fal
   }
   throw Error('No text in fixture');
 }, ownText);
-for(const platform of ['react','vue2','vue3','native']) {
+for(const platform of ['react','vue3','native']) {
   test(`${platform}: packed typography, geometry, foreground and focus roles`,async({page}, testInfo)=>{
     await openFixture(page,platform,'','typography');
     expect((await textStyle(page.getByTestId('body'))).size).toBe(tokens.typography.body.fontSizePx+'px');
@@ -64,7 +64,7 @@ for(const platform of ['react','vue2','vue3','native']) {
       }
       expect((await textStyle(fields.getByText('선택 값',{exact:true})))).toMatchObject(inputMetrics);
       for (const text of ['2026. 09. 16.','미정']) expect(await textStyle(fields.getByText(text,{exact:true}))).toMatchObject(inputMetrics);
-      const trigger=fields.getByRole(platform === 'vue2' ? 'combobox' : 'button',{name:'선택 '+size,exact:true});
+      const trigger=fields.getByRole('button',{name:'선택 '+size,exact:true});
       await trigger.scrollIntoViewIfNeeded();
       // Vue dismisses popups on page scroll; let the scripted scroll settle before opening.
       await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
@@ -88,7 +88,7 @@ for(const platform of ['react','vue2','vue3','native']) {
       await page.getByRole('button',{name:'날짜 sm',exact:true}).click();
       await expect.poll(async()=>(await textStyle(page.getByRole('button',{name:'2026-09-16',exact:true}))).color).toBe('rgb(170, 187, 204)');
     } else {
-      const select=pagination.getByRole(platform === 'vue2' ? 'combobox' : 'button',{name:'페이지당 항목 수'});
+      const select=pagination.getByRole('button',{name:'페이지당 항목 수'});
       await expect(select).toHaveCSS('font-size','16px');
       expect((await select.boundingBox())!.height).toBe(tokens.input.sm.height);
       await select.scrollIntoViewIfNeeded();
@@ -105,7 +105,7 @@ for(const platform of ['react','vue2','vue3','native']) {
     } else {
       await page.evaluate(()=>document.documentElement.style.fontSize='20px');
       expect(await textStyle(page.getByTestId('fields-sm').getByText('2026. 09. 16.',{exact:true}))).toMatchObject({size:'20px',line:'30px'});
-      await expect(pagination.getByRole(platform === 'vue2' ? 'combobox' : 'button',{name:'페이지당 항목 수'})).toHaveCSS('font-size','20px');
+      await expect(pagination.getByRole('button',{name:'페이지당 항목 수'})).toHaveCSS('font-size','20px');
     }
   });
   test(`${platform}: KPI stages and narrow layouts`,async({page}, testInfo)=>{
@@ -154,7 +154,7 @@ test('typography stays usable at actual 200% browser zoom',async({}, testInfo)=>
   const context=await chromium.launchPersistentContext(directory,{channel:'chromium',headless:true,viewport:null,baseURL:process.env.KJUN_TEST_URL||'http://127.0.0.1:4173',args:['--window-size=780,1100']});
   try {
     const page=context.pages()[0];
-    for(const platform of ['react','vue2','vue3','native']) {
+    for(const platform of ['react','vue3','native']) {
       await openFixture(page,platform,'','typography');
       expect(await page.evaluate(()=>({ratio:devicePixelRatio,width:innerWidth}))).toEqual({ratio:2,width:390});
       await page.getByRole('textbox',{name:'입력 md'}).fill('확대한 화면의 입력');

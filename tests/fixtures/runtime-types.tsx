@@ -1,15 +1,12 @@
-import * as V from '@kjun-ui/vue2';
+import * as V from '@kjun-ui/vue3';
 import * as R from '@kjun-ui/react';
 import * as N from '@kjun-ui/native';
 
-const vueSearch: V.KjunSearchInputProps[] = [{}, { loadOptions: null }, { loadOptions: async query => [{ name: query }] }];
-const vueIdentity: V.KjunProviderProps[] = [{}, { renderIdentity: null }, { renderIdentity: () => null }, { renderIdentity: () => undefined }];
-const vueRows: V.KjunTableProps[] = [{ columns: [], rowClass: null }, { columns: [], rowClass: 'row' }, { columns: [], rowClass: () => 'row' }];
+const vueSearch: V.KjunSearchInputProps[] = [{}, { loadOptions: undefined }, { loadOptions: async query => [{ name: query }] }];
+const vueRows: V.KjunTableProps[] = [{ columns: [], rowClass: undefined }, { columns: [], rowClass: 'row' }, { columns: [], rowClass: () => 'row' }];
 // @ts-expect-error A callback prop cannot be a string.
 const invalidSearch: V.KjunSearchInputProps = { loadOptions: 'request' };
-// @ts-expect-error An identity callback cannot be a number.
-const invalidIdentity: V.KjunProviderProps = { renderIdentity: 1 };
-// @ts-expect-error Row classes accept functions, strings or null.
+// @ts-expect-error Row classes accept functions or strings.
 const invalidRowClass: V.KjunTableProps = { columns: [], rowClass: 2 };
 
 const data = [{ id: 0, name: 'Zero', amount: 7 }];

@@ -24,7 +24,7 @@ async function clickAt(page: Page, node: Locator) {
   const r = await rect(node); await page.mouse.click(r.x + r.width / 2, r.y + r.height / 2);
 }
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: header controls align with the title line independently of description and safe area`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 700 });
     for (const palette of ['default', 'dark']) {

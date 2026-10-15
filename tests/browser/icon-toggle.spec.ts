@@ -9,7 +9,7 @@ async function open(page: Page, platform: string) {
   await openFixture(page, platform, '', 'icon-toggle');
   await expect(events(page)).toBeVisible();
 }
-for (const platform of ['vue2', 'vue3', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   test(`${platform}: IconToggle is the only public icon toggle and remains controlled`, async ({ page }) => {
     await open(page, platform);
     const exports = await page.evaluate(() => (window as any).toggleExports);
@@ -67,7 +67,7 @@ for (const platform of ['vue2', 'vue3', 'react', 'native']) {
   test(`${platform}: MarketTable preserves action labels, colors, row payloads and loading`, async ({ page }) => {
     await open(page, platform);
     await configure(page, { favorite: [0], interest: ['b'] });
-    const firstLabel = platform === 'vue2' ? '첫 항목' : '사용자 이름';
+    const firstLabel = '사용자 이름';
     const favorite = page.getByRole('button', { name: `${firstLabel} 즐겨찾기 해제`, exact: true });
     const interest = page.getByRole('button', { name: '둘째 항목 관심 해제', exact: true });
     for (const [button, color] of [[favorite, 'rgb(208, 136, 18)'], [interest, 'rgb(176, 51, 104)']] as const) {

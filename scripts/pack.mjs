@@ -18,8 +18,8 @@ for (const name of names) {
       "npm",
       [
         "pack",
-        // vue3 stays outside the npm workspaces while the root still installs Vue 2 for vue2.
-        ...(name === "vue3" ? ["./packages/vue3"] : ["--workspace", "@kjun-ui/" + name]),
+        "--workspace",
+        "@kjun-ui/" + name,
         "--pack-destination",
         resolve("artifacts"),
         "--json",

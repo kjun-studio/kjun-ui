@@ -27,9 +27,7 @@ const platform = location.pathname.includes("native")
   ? "native"
   : location.pathname.includes("react")
     ? "react"
-    : location.pathname.includes("vue3")
-      ? "vue3"
-      : "vue2";
+    : "vue3";
 let config: CatalogConfig = {
   component,
   palette: "default",

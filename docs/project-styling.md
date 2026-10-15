@@ -4,7 +4,7 @@ KJUN UI는 색상 역할과 공통 규격을 정의합니다. 적용 프로젝�
 
 ## 웹
 
-`@kjun-ui/react/styles.css` 또는 `@kjun-ui/vue2/styles.css`를 한 번 가져오고 프로젝트에서 아래 연결 파일을 만듭니다. `--app-*`는 예시 이름이므로 우변을 실제 프로젝트 토큰으로 연결하세요. 값을 복사하지 않습니다.
+`@kjun-ui/react/styles.css` 또는 `@kjun-ui/vue3/styles.css`를 한 번 가져오고 프로젝트에서 아래 연결 파일을 만듭니다. `--app-*`는 예시 이름이므로 우변을 실제 프로젝트 토큰으로 연결하세요. 값을 복사하지 않습니다.
 
 ```css
 :root {

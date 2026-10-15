@@ -17,7 +17,7 @@ const assertContained = async (container: Locator) => {
   })).toBe(true);
 };
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: FormActions retains Button geometry and row spacing at each size`, async ({ page }) => {
     await openFixture(page, platform, '', 'form-actions');
     for (const [size, height, radius] of [['sm', 32, 10], ['md', 40, 12], ['lg', 48, 14]] as const) {

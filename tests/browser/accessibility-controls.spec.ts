@@ -64,7 +64,7 @@ test('native: radio single entry, arrows, controlled refusal, removal and group 
   await page.keyboard.press('Space'); await expect(children.getByRole('radio', { name: '자식 하나' })).toBeChecked();
 });
 
-for (const platform of ['vue2', 'vue3']) test(`${platform}: tooltip descriptions preserve consumer IDs through updates, close and trigger replacement`, async ({ page }) => {
+for (const platform of ['vue3']) test(`${platform}: tooltip descriptions preserve consumer IDs through updates, close and trigger replacement`, async ({ page }) => {
   await openFixture(page, platform, '', 'accessibility-tooltip');
   let trigger = page.getByRole('button', { name: '도움말', exact: true });
   await trigger.focus(); await expect(page.getByRole('tooltip')).toBeVisible();

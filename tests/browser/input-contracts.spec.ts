@@ -20,15 +20,12 @@ async function uniqueIds(page: Page) {
     return ids.filter((id, index) => ids.indexOf(id) !== index);
   })).toEqual([]);
 }
-const configureState = (page: Page, next: object) => page.evaluate(next => (window as any).configureState(next), next);
-const stateFixture = (page: Page, platform: string, scenario: string) => openFixture(page, platform, "?scenario=" + scenario, "state-contracts");
-const resolveSearch = (page: Page, index: number) => page.evaluate(index => (window as any).resolveSearch(index), index);
 
-for (const platform of ["react", "native", "vue2", "vue3"]) {
+for (const platform of ["react", "native", "vue3"]) {
   for (const control of ["select", "combo"]) for (const multiple of control === "select" ? [false, true] : [false]) test(`${platform} ${control} displays and clears primitive zero (multiple=${multiple})`, async ({ page }) => {
     await inputFixture(page, platform, `?control=${control}&zero`);
     if (multiple) await configureInput(page, { multiple: true, value: [0] });
-    const field = control === "select" ? page.getByRole(platform === "vue2" ? "combobox" : "button", { name: "Choice" }) : page.locator("input");
+    const field = control === "select" ? page.getByRole("button", { name: "Choice" }) : page.locator("input");
     if (control === "select") await expect(field).toContainText("0");
     else await expect(field).toHaveValue("0");
     await expect(page.getByTestId("model")).toHaveText(multiple ? "[0]" : "0");
@@ -65,7 +62,7 @@ for (const platform of ["react", "native", "vue2", "vue3"]) {
   });
 }
 
-for (const platform of ["react", "vue2", "vue3"]) test(`${platform} combobox leaves composition keys to the IME`, async ({ page }) => {
+for (const platform of ["react", "vue3"]) test(`${platform} combobox leaves composition keys to the IME`, async ({ page }) => {
   await inputFixture(page, platform); const input = await comboInput(page, platform);
   await input.fill(""); await input.press("ArrowDown");
   const active = await input.getAttribute("aria-activedescendant");
@@ -139,9 +136,9 @@ for (const platform of ["react", "vue3"]) test(`${platform === "react" ? "React"
   await expect(page.getByTestId("events")).toHaveText('["start","end","enter"]');
 });
 
-for (const platform of ["react", "native", "vue2", "vue3"]) test(`${platform} TimePicker scopes segment names, IDs and field feedback`, async ({ page }) => {
+for (const platform of ["react", "native", "vue3"]) test(`${platform} TimePicker scopes segment names, IDs and field feedback`, async ({ page }) => {
   await scenarioFixture(page, platform, "time");
-  const role = platform === "vue2" ? "combobox" : "button";
+  const role = "button";
   for (const segment of ["시", "분", "초"]) await expect(page.getByRole(role, { name: "예약 시간 " + segment, exact: true })).toBeVisible();
   await uniqueIds(page);
   if (platform !== "native") {
@@ -176,27 +173,6 @@ for (const platform of ["react", "vue3"]) test(`${platform === "react" ? "React"
   await expect(search).toBeFocused(); await uniqueIds(page);
   await search.fill("Al"); await page.getByRole("option", { name: "Alpha" }).click();
   await expect(page.getByRole("button", { name: "담당자", exact: true })).toHaveText("Alpha");
-});
-
-test("Vue autocomplete ignores composition keys until composition has finished", async ({ page }) => {
-  await page.clock.install(); await stateFixture(page, "vue2", "search");
-  const input = page.getByRole("combobox", { name: "Search" });
-  await input.fill("한글"); await page.clock.runFor(350); await resolveSearch(page, 0);
-  await expect(page.getByRole("option")).toBeVisible(); await input.press("ArrowDown");
-  const active = await input.getAttribute("aria-activedescendant");
-  await input.dispatchEvent("keydown", { key: "Enter", keyCode: 13, isComposing: true });
-  await expect(page.getByTestId("selected")).toHaveText("none");
-  await input.dispatchEvent("compositionstart");
-  for (const [key, keyCode] of [["ArrowDown", 40], ["ArrowUp", 38], ["Home", 36], ["End", 35], ["Enter", 13], ["Escape", 27]] as const)
-    await input.dispatchEvent("keydown", { key, keyCode });
-  await expect(input).toHaveAttribute("aria-activedescendant", active!);
-  await expect(page.getByRole("listbox")).toBeVisible(); await expect(input).toHaveValue("한글");
-  await expect(page.getByTestId("selected")).toHaveText("none");
-  await input.dispatchEvent("compositionend", { data: "한글" });
-  await input.dispatchEvent("keydown", { key: "Enter", keyCode: 229 });
-  await expect(page.getByTestId("selected")).toHaveText("none");
-  await input.press("Enter"); await expect(page.getByTestId("selected")).toHaveText("한글 result");
-  await expect(page.getByRole("listbox")).toHaveCount(0);
 });
 
 for (const kind of ["combo", "remote"]) {

@@ -13,12 +13,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "dist/types",
-    "rootDir": "../..",
-    "baseUrl": ".",
-    "paths": {
-      "vue": ["../../node_modules/vue3-runtime"],
-      "vue/jsx-runtime": ["../../node_modules/vue3-runtime/jsx-runtime"]
-    }
+    "rootDir": "../.."
   },
   "files": ["src/index.ts"]
 }

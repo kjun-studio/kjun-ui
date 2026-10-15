@@ -1,6 +1,6 @@
 # API 설명과 사용 계약
 
-공개 컴포넌트 80개, Vue 2·React·Native Web의 문서용 API는 `apps/docs/lib/generated/api-reference.json`에 생성한다. FormGroup·Select·SearchInput·Table·DataState·피드백 서비스는 상태 소유권과 콜백·이벤트·슬롯의 상세 계약을 포함한다. API 화면은 공통 문서 플랫폼 선택을 구독하며 기존 `#api`와 `#preview` 주소를 사용한다.
+공개 컴포넌트 80개, Vue 3·React·Native Web의 문서용 API는 `apps/docs/lib/generated/api-reference.json`에 생성한다. FormGroup·Select·SearchInput·Table·DataState·피드백 서비스는 상태 소유권과 콜백·이벤트·슬롯의 상세 계약을 포함한다. API 화면은 공통 문서 플랫폼 선택을 구독하며 기존 `#api`와 `#preview` 주소를 사용한다.
 
 ## 데이터와 생성
 

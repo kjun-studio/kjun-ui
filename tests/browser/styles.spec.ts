@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { openFixture } from "./packed-fixture";
 
-for (const platform of ["react", "vue2", "vue3", "native"]) {
+for (const platform of ["react", "vue3", "native"]) {
   test(
     platform + ": project values stay scoped and update inside an open modal",
     async ({ page }) => {
@@ -84,7 +84,7 @@ test("Native requires a Provider and the required app color contract", async ({
   await expect(page.getByRole("alert")).toContainText("Missing KJUN colors:");
 });
 
-for (const platform of ["react", "vue2", "vue3"]) {
+for (const platform of ["react", "vue3"]) {
   test(
     platform + ": nested modals retain focus and the closest CSS scope",
     async ({ page }) => {
@@ -128,7 +128,7 @@ for (const platform of ["react", "vue2", "vue3"]) {
   );
 }
 
-for(const platform of ['react','vue2','vue3'])test(`${platform}: missing required CSS roles fail explicitly`,async({page})=>{
+for(const platform of ['react','vue3'])test(`${platform}: missing required CSS roles fail explicitly`,async({page})=>{
  const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
  await openFixture(page,platform,'?missing-role');
  await expect.poll(async()=>platform!=='react'?page.evaluate(()=>(window as any).__roleError):errors.join(' ')).toContain('focusRing');

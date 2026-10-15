@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 
-for (const platform of ['vue2', 'vue3']) test(`${platform}: TableCards preserves grouped columns, dynamic slots, inline actions and parent toolbar state`, async ({ page }) => {
+for (const platform of ['vue3']) test(`${platform}: TableCards preserves grouped columns, dynamic slots, inline actions and parent toolbar state`, async ({ page }) => {
   await page.setViewportSize({ width: 641, height: 900 });
   await openFixture(page, platform, '', 'runtime-cards');
   const card = page.locator('.kjun-table-card');
@@ -28,7 +28,7 @@ for (const platform of ['vue2', 'vue3']) test(`${platform}: TableCards preserves
   await expect(page.getByTestId('slot-Zero')).toHaveText('Zero:0:0');
 });
 
-for (const platform of ['vue2', 'vue3']) test(`${platform}: compact mode applies mobileColumns below the same boundary`, async ({ page }) => {
+for (const platform of ['vue3']) test(`${platform}: compact mode applies mobileColumns below the same boundary`, async ({ page }) => {
   await openFixture(page, platform, '', 'runtime-cards');
   await page.evaluate(() => (window as any).configureCards({ responsive: 'compact' }));
   for (const width of [640, 641, 767, 768]) {

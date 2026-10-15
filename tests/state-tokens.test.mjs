@@ -6,24 +6,19 @@ import { auditStateScript } from '../scripts/style-token-audit.mjs';
 
 test('all package disabled and focus styles use shared state roles', async () => {
   const issues = [];
-  for (const pkg of ['tokens', 'react', 'native', 'vue2']) {
+  for (const pkg of ['tokens', 'react', 'native', 'vue3']) {
     const directory = `packages/${pkg}/src`;
     for (const entry of await readdir(directory, { recursive: true })) {
-      if (!/\.(ts|tsx|js|css|vue)$/.test(entry) || ['index.ts', 'bindings.css'].includes(entry)) continue;
+      if (!/\.(ts|tsx|js|css)$/.test(entry) || ['index.ts', 'bindings.css'].includes(entry)) continue;
       const file = directory + '/' + entry, source = await readFile(file, 'utf8');
-      const sheets = entry.endsWith('.css') ? [source] : [...source.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map(m => m[1]);
+      const sheets = entry.endsWith('.css') ? [source] : [];
       for (const sheet of sheets) postcss.parse(sheet).walkDecls(d => {
         if (d.prop === 'outline' && /^\d+px/.test(d.value) || d.prop === 'outline-offset' && /^-?[1-9]/.test(d.value))
           issues.push(`${file}: literal ${d.prop} ${d.value}`);
         if (d.prop === 'opacity' && /disabled/.test(d.parent.selector ?? '') && /^(?:0?\.[1-9])/.test(d.value))
           issues.push(`${file}: literal disabled opacity`);
       });
-      if (entry.endsWith('.vue')) {
-        for (const match of source.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)) issues.push(...auditStateScript(match[1], file));
-        for (const match of source.matchAll(/(?::style|v-bind:style)="([^"]*)"/g)) issues.push(...auditStateScript('const style = (' + match[1] + ');', file + ' template'));
-      }
-      else if (!entry.endsWith('.css')) issues.push(...auditStateScript(source, file));
-      if (pkg === 'vue2') assert.doesNotMatch(source, /opacity-(?:40|50)\b/);
+      if (!entry.endsWith('.css')) issues.push(...auditStateScript(source, file));
     }
   }
   assert.deepEqual(issues, []);

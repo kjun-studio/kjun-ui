@@ -6,8 +6,6 @@ import { kjunLayerScopeKey, useLayer } from "./runtime/layers";
 import { usePresence, useReducedMotion } from "./runtime/presence";
 
 export type { Placement };
-const visuallyHidden = { border: 0, clip: "rect(0px, 0px, 0px, 0px)", clipPath: "inset(50%)", height: "1px", margin: "-1px",
-  overflow: "hidden", padding: 0, position: "absolute" as const, width: "1px", whiteSpace: "nowrap" as const };
 
 /** Where a layer's DOM goes: the Provider's layer host, or document.body without a Provider. null waits for the host. */
 export function usePortalTarget() {
@@ -96,7 +94,7 @@ export const FloatingPanel = defineComponent({
     onBeforeUnmount(detach);
     expose({ panel });
     const dismiss = () => (
-      <div style={visuallyHidden}><button aria-label="Dismiss" tabindex={-1} style={{ width: "1px", height: "1px" }} onClick={() => props.onOpenChange(false)} /></div>
+      <div class="kjun-sr-only"><button aria-label="Dismiss" tabindex={-1} onClick={() => props.onOpenChange(false)} /></div>
     );
     return () => {
       const to = target();

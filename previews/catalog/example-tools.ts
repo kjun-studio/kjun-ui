@@ -257,12 +257,7 @@ export function createExampleTools(c: ExampleContext) {
     loading,
     error: error ? "조회 오류" : null,
     priceFormatter: priceFormat,
-    formatMetric: platform === "vue2" ? undefined : metricFormat,
-    formatters: platform === "vue2" ? {
-      KRW: (value: unknown) => metricFormat(value, "price"),
-      price: (value: unknown) => metricFormat(value, "price"),
-      percent: (value: unknown) => metricFormat(value, "percent"),
-    } : undefined,
+    formatMetric: metricFormat,
     onRowClick: (r: any) => message(r.name),
     showActions: true,
   };

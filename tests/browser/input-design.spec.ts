@@ -10,7 +10,7 @@ const field = (page: Page, id: string) => page.getByTestId(id).locator('input, t
 const geometry = (page: Page) => page.getByTestId('input').locator('input').evaluate(el => {
   const box = el.getBoundingClientRect(); return { x: box.x, y: box.y, width: box.width, height: box.height };
 });
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: every field shares button geometry and textarea row sizing`, async ({ page }) => {
     await openFixture(page, platform, '', 'input-design');
     for (const [size, height, radius, textarea] of [['sm', 32, 10, 92], ['md', 40, 12, 100], ['lg', 48, 14, 108]] as const) {

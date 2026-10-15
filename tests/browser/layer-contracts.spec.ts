@@ -6,10 +6,10 @@ const configureScenario = (page: Page, next: object) => page.evaluate(next => (w
 const scenarioFixture = (page: Page, platform: string, scenario: string) => openFixture(page, platform, "?scenario=" + scenario, "review");
 const configureState = (page: Page, next: object) => page.evaluate(next => (window as any).configureState(next), next);
 const stateFixture = (page: Page, platform: string, scenario: string) => openFixture(page, platform, "?scenario=" + scenario, "state-contracts");
-// Existing React and Vue 2 test names stay stable; Vue 3 variants carry the platform id.
-// Vue 2 locks scrolling on <body>, Vue 3 on <html> like the shared window layer.
+// Existing React test names stay stable; Vue 3 variants carry the platform id.
+// Vue 3 locks scrolling on <html> like the shared window layer.
 const scrollLock = (page: Page) => page.evaluate(() => document.body.style.overflow || document.documentElement.style.overflow);
-const label = (platform: string) => platform === 'react' ? 'React' : platform === 'vue2' ? 'Vue' : platform;
+const label = (platform: string) => platform === 'react' ? 'React' : platform;
 
 for (const platform of ['react', 'vue3']) for (const initial of [false, true]) test(`${label(platform)} Popover focuses on opening and preserves continuous edits (initial=${initial})`, async ({ page }) => {
   await compositionFixture(page, platform, '?case=focus' + (initial ? '&initial' : ''));
@@ -33,7 +33,7 @@ for (const platform of ['react', 'vue3']) test(`${label(platform)} prompt waits 
   await expect(dialog).not.toBeVisible(); await expect(page.getByTestId("prompt")).toHaveText("홍길동");
 });
 
-for (const platform of ['vue2', 'vue3']) test(`${label(platform)} modal owns initial mount, live Escape policy, nested focus and cleanup without build patches`, async ({ page }) => {
+for (const platform of ['vue3']) test(`${label(platform)} modal owns initial mount, live Escape policy, nested focus and cleanup without build patches`, async ({ page }) => {
   await scenarioFixture(page, platform, "modal");
   const outer = page.getByRole("dialog", { name: "바깥 모달", exact: true });
   await expect(outer).toBeVisible();
@@ -50,7 +50,7 @@ for (const platform of ['vue2', 'vue3']) test(`${label(platform)} modal owns ini
   await expect(inner).toBeVisible();
   // The covered window stays open but is hidden from assistive technology while the inner one is on top.
   const coveredOuter = page.getByRole("dialog", { name: "바깥 모달", exact: true, includeHidden: true });
-  // Vue 2 marks it aria-hidden; Vue 3 makes it inert like React.
+  // Vue 3 makes it inert like React.
   await expect.poll(() => coveredOuter.evaluate(el => !!el.closest('[aria-hidden="true"], [inert]'))).toBe(true);
   await configureScenario(page, { innerEscape: false }); await page.keyboard.press("Escape");
   await expect(inner).toBeVisible(); await expect(coveredOuter).toBeVisible();
@@ -103,7 +103,7 @@ for (const platform of ['react', 'vue3']) for (const kind of ["native", "button"
   });
 }
 
-for (const platform of ["react", "native", "vue2", "vue3"]) {
+for (const platform of ["react", "native", "vue3"]) {
   test(`${platform} toast waits until both pointer and keyboard leave, including child focus changes`, async ({ page }) => {
     await page.clock.install();
     await openFixture(page, platform, "?scenario=toast", "integration-contracts");

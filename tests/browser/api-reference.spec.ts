@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
-const platforms = ['vue2', 'vue3', 'react', 'native'] as const;
+const platforms = ['vue3', 'react', 'native'] as const;
 const events = (page: Page) => page.evaluate(() => (window as any).contractEvents as { name: string; value?: any }[]);
 const clear = (page: Page) => page.evaluate(() => { (window as any).contractEvents = []; });
 const configure = (page: Page, props: object) => page.evaluate(props => (window as any).configureContract(props), props);
@@ -9,33 +9,32 @@ const fixture = (page: Page, platform: string, scenario: string) => openFixture(
 for (const platform of platforms) {
   test(`${platform} packed Select exposes actual open ownership and ordered value/clear payloads`, async ({ page }) => {
     await fixture(page, platform, 'select-fixed');
-    await page.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '계약 선택', exact: true }).click();
+    await page.getByRole('button', { name: '계약 선택', exact: true }).click();
     await expect.poll(() => events(page)).toContainEqual({ name: 'open', value: true });
     await expect(page.getByRole(platform === 'native' ? 'radio' : 'option')).toHaveCount(0);
-    await expect(page.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '계약 선택', exact: true })).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.getByRole('button', { name: '계약 선택', exact: true })).toHaveAttribute('aria-expanded', 'false');
     for (const scenario of ['select', 'select-multiple']) {
       await fixture(page, platform, scenario);
-      await page.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '계약 선택', exact: true }).click(); await clear(page);
+      await page.getByRole('button', { name: '계약 선택', exact: true }).click(); await clear(page);
       await page.getByRole(platform === 'native' ? (scenario === 'select-multiple' ? 'checkbox' : 'radio') : 'option', { name: 'Alpha' }).click();
       const value = scenario === 'select' ? 'a' : ['a'];
       await expect.poll(async () => (await events(page)).slice(0, 2)).toEqual([{ name: 'value', value }, { name: 'change', value }]);
       if (scenario === 'select') await expect.poll(() => events(page)).toContainEqual({ name: 'open', value: false });
       else {
         const selected = await page.evaluate(() => (window as any).selectedSlot);
-        if (platform === 'vue2') expect(selected).toBeNull(); else expect(selected.value).toBe('a');
+        expect(selected.value).toBe('a');
         await page.mouse.click(1200, 700);
       }
       await page.getByRole('button', { name: '선택 지우기', exact: true }).click();
       await expect.poll(async () => (await events(page)).filter(e => ['value', 'change', 'clear'].includes(e.name)).slice(-3)).toEqual([{ name: 'value', value: scenario === 'select' ? null : [] }, { name: 'change', value: scenario === 'select' ? null : [] }, { name: 'clear', value: undefined }]);
     }
-    await fixture(page, platform, 'select-defaults'); await page.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '계약 선택' }).click();
+    await fixture(page, platform, 'select-defaults'); await page.getByRole('button', { name: '계약 선택' }).click();
     await expect(page.getByRole('textbox')).toHaveCount(0); await page.getByRole(platform === 'native' ? 'radio' : 'option', { name: 'Alpha' }).click();
     await expect(page.getByRole('button', { name: '선택 지우기' })).toHaveCount(0);
     await fixture(page, platform, 'select-search');
-    await page.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '계약 선택', exact: true }).click();
+    await page.getByRole('button', { name: '계약 선택', exact: true }).click();
     await page.getByRole('textbox', { name: '선택 항목 검색' }).fill('BTC');
-    if (platform === 'vue2') await expect(page.getByRole('option', { name: 'Alpha' })).toBeVisible();
-    else await expect(page.getByText('결과가 없습니다', { exact: true })).toBeVisible();
+    await expect(page.getByText('결과가 없습니다', { exact: true })).toBeVisible();
   });
   test(`${platform} packed Table distinguishes row objects, keys, empty controlled expansion and sort payloads`, async ({ page }) => {
     await page.setViewportSize({ width: 1300, height: 900 }); await fixture(page, platform, 'table');
@@ -48,7 +47,7 @@ for (const platform of platforms) {
     const cell = await page.evaluate(() => (window as any).cellContract);
     expect(cell.row).toHaveProperty('id'); expect(typeof cell.index).toBe('number');
     // The complete sort cycle lives in table-sort.test.mjs and table-contracts.spec.ts.
-    await page.getByRole(platform === 'vue2' ? 'columnheader' : 'button', { name: /금액/ }).click();
+    await page.getByRole('button', { name: /금액/ }).click();
     await expect.poll(async () => (await events(page)).filter(e => e.name === 'sort')).toEqual([
       { name: 'sort', value: { key: 'amount', order: 'asc' } },
     ]);
@@ -84,7 +83,6 @@ for (const platform of platforms) {
     await page.getByRole('button', { name: '다시 시도', exact: true }).click(); await expect.poll(() => events(page)).toContainEqual({ name: 'retry', value: undefined });
     await configure(page, { queryKey: 'b', loading: true, error: null }); await expect(page.getByText('현재 결과', { exact: true })).not.toBeVisible();
     await configure(page, { loading: false, error: '새 조건 실패' }); await expect(page.getByText('현재 결과', { exact: true })).not.toBeVisible();
-    if (platform === 'vue2') expect(await page.evaluate(() => (window as any).errorSlotContract)).toEqual({ error: '새 조건 실패', retryType: 'function' });
     await configure(page, { resultKey: 'b', error: null }); await expect(page.getByText('현재 결과', { exact: true })).toBeVisible();
   });
   test(`${platform} packed feedback returns typed cancellation and failure, validates prompts, and disposes FIFO requests`, async ({ page }) => {

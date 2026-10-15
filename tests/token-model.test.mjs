@@ -133,10 +133,10 @@ test('choice geometry rejects nonpositive targets and impossible switch thumbs',
 test('current package source has no retired typography or numeric brand APIs', async () => {
   const root = new URL('..', import.meta.url).pathname;
   const retired = /numericTypography|\.typo-|brand(?:50|100|200|300|400|800|900)\b|font-size\s*:\s*(?:9|10|11|13|15|17|18|22|26|28|44)px\b|fontSize\s*:\s*(?:9|10|11|13|15|17|18|22|26|28|44)\b/;
-  for (const name of ['tokens','react','vue2','native']) {
+  for (const name of ['tokens','react','vue3','native']) {
     const directory = `${root}/packages/${name}/src`;
     for (const file of await readdir(directory, { recursive: true })) {
-      if (!/\.(?:ts|tsx|js|vue|css|json)$/.test(file)) continue;
+      if (!/\.(?:ts|tsx|js|css|json)$/.test(file)) continue;
       assert.doesNotMatch(await readFile(`${directory}/${file}`, 'utf8'), retired, `${name}/${file}`);
     }
   }

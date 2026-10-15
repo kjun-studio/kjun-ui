@@ -2,7 +2,7 @@ import { createApp, defineComponent, reactive } from "vue";
 import { KjunProvider, KjunTable } from "@kjun-ui/vue3";
 import { setRootValues } from "./style-values";
 setRootValues();
-// The Vue table form case from integration-contracts-vue2.ts: table controls inside a <form>.
+// The Vue table form case: table controls inside a <form>.
 const state = reactive({ submits: 0, selected: [] as object[] });
 createApp(defineComponent(() => () => <KjunProvider>
   <form onSubmit={(event: Event) => { event.preventDefault(); state.submits++; }}>

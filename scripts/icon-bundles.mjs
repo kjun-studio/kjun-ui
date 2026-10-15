@@ -5,13 +5,13 @@ import { assertCurrentConsumer } from './package-state.mjs';
 const { directory } = await assertCurrentConsumer();
 const modules = directory + '/node_modules';
 const results = [];
-for (const platform of ['react', 'vue2', 'native']) for (const format of ['esm', 'cjs']) for (const extra of [false, true]) {
+for (const platform of ['react', 'vue3', 'native']) for (const format of ['esm', 'cjs']) for (const extra of [false, true]) {
   const alias = {
-    react: modules + '/react', 'react-dom': modules + '/react-dom', vue: modules + '/vue/dist/vue.runtime.esm.js',
+    react: modules + '/react', 'react-dom': modules + '/react-dom', vue: modules + '/vue/dist/vue.runtime.esm-bundler.js',
     'react-native': modules + '/react-native-web/dist/index.js',
     'react-native-svg': modules + '/react-native-svg/lib/module/ReactNativeSVG.web.js',
   };
-  for (const name of ['icons', 'tokens', 'react', 'vue2', 'native']) alias['@kjun-ui/' + name] = modules + '/@kjun-ui/' + name;
+  for (const name of ['icons', 'tokens', 'react', 'vue3', 'native']) alias['@kjun-ui/' + name] = modules + '/@kjun-ui/' + name;
   alias["@kjun-ui/icons/defaults"] = modules + "/@kjun-ui/icons/dist/defaults.js";
   alias["@kjun-ui/icons/metadata"] = modules + "/@kjun-ui/icons/dist/metadata.js";
   alias["@kjun-ui/icons/all"] = modules + "/@kjun-ui/icons/dist/all.js";

@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
-const platforms = ['react', 'vue2', 'vue3', 'native'];
+const platforms = ['react', 'vue3', 'native'];
 const set = (page: Page, patch: object) => page.evaluate(patch => (window as any).configureTabs(patch), patch);
 const tabs = [ { name: 'one', label: '첫 탭' }, { name: 'blocked', label: '비활성 탭', disabled: true }, { name: 'two', label: '둘째 탭' }, { name: 'three', label: '마지막 탭' } ];
 for (const platform of platforms) {

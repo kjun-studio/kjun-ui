@@ -24,13 +24,12 @@ export async function openFixture(
     const alias: Record<string, string> = {
       react: modules + "/react",
       "react-dom": modules + "/react-dom",
-      vue: modules + "/vue/dist/vue.runtime.esm.js",
       "react-native": modules + "/react-native-web/dist/index.js",
       "react-native-svg":
         modules + "/react-native-svg/lib/module/ReactNativeSVG.web.js",
       "@kjun-ui/tokens/icons": modules + "/@kjun-ui/tokens/dist/icons.js",
     };
-    for (const name of ["icons", "tokens", "react", "vue2", "native"])
+    for (const name of ["icons", "tokens", "react", "native"])
       alias["@kjun-ui/" + name] = modules + "/@kjun-ui/" + name;
     // Vue 3 fixtures run against the separately installed Vue 3 consumer project.
     if (vue3) Object.assign(alias, {
@@ -45,7 +44,7 @@ export async function openFixture(
       entryPoints: [
         resolve(
           (family === "catalog" ? "previews/catalog/" : "tests/fixtures/" + family + "-") + platform +
-            (platform === "vue2" || (platform === "vue3" && family === "catalog") ? ".ts" : ".tsx")
+            (vue3 && family === "catalog" ? ".ts" : ".tsx")
         ),
       ],
       bundle: true,

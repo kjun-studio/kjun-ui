@@ -7,27 +7,27 @@ import { readbackAliases } from './token-aliases.mjs';
 
 // These values describe an actual platform distinction, not missing wiring.
 export const platformSpecific = {
-  'table.columnWidth': { excludes: ['react', 'vue2'], reason: 'Native numeric column fallback; HTML tables use content layout and explicit column widths.' },
-  'extensions.chip.nativeRemoveSize': { excludes: ['react', 'vue2'], reason: 'Native removal touch target; Web consumes removeSize.' },
+  'table.columnWidth': { excludes: ['react', 'vue3'], reason: 'Native numeric column fallback; HTML tables use content layout and explicit column widths.' },
+  'extensions.chip.nativeRemoveSize': { excludes: ['react', 'vue3'], reason: 'Native removal touch target; Web consumes removeSize.' },
   'extensions.toast.minWidth': { excludes: ['native'], reason: 'Desktop Web minimum width; Native and narrow Web must fit the viewport.' },
   'extensions.choice.minimumHeight': { excludes: ['native'], reason: 'Desktop choice row; Native uses native.minimumTouchTarget.' },
   'table.selectionSize': { excludes: ['native'], reason: 'HTML checkbox footprint; Native composes the size-specific Checkbox and minimum touch target.' },
   'extensions.tooltip.arrowSize': { excludes: ['native'], reason: 'Tooltip arrow; Web and Native Web draw it, Native device tooltips use the modal panel without one.' },
-  'extensions.scrollbar.width': { excludes: ['react', 'native'], reason: 'Vue window scrollbar skin; other platforms retain their system scrollbar.' },
+  'extensions.scrollbar.width': { excludes: ['react', 'vue3', 'native'], reason: 'Retired Vue 2 window scrollbar skin; every current platform keeps the system scrollbar. Kept for token compatibility.' },
   'extensions.scrollFade.width': { excludes: ['native'], reason: 'CSS edge mask; Native draws it only for the overflowing table grid, and KjunScrollFade keeps the platform ScrollView.' },
-  'extensions.calendar.minimumWidth': { excludes: ['react', 'vue2'], reason: 'Native seven-column calendar panel; Web uses the browser date picker.' },
+  'extensions.calendar.minimumWidth': { excludes: ['react', 'vue3'], reason: 'Native seven-column calendar panel; Web uses the browser date picker.' },
   ...Object.fromEntries(['identityWidth', 'identityHeight'].map(key => ['extensions.skeleton.' + key, {
-    excludes: ['react', 'native'], reason: 'Vue AssetIdentity loading adapter; other platforms render the supplied identity slot.',
+    excludes: ['react', 'vue3', 'native'], reason: 'Retired Vue 2 AssetIdentity loading adapter; current platforms render the supplied identity slot. Kept for token compatibility.',
   }])),
   ...Object.fromEntries(['titleSkeletonWidth', 'titleSkeletonHeight', 'badgeSkeletonWidth', 'fieldSkeletonHeight', 'actionSkeletonWidth', 'actionSkeletonHeight'].map(key => ['extensions.tableCard.' + key, {
-    excludes: ['react', 'native'], reason: 'Vue section-aware table loading cards; React and Native compose the general Card skeleton.',
+    excludes: ['react', 'vue3', 'native'], reason: 'Retired Vue 2 section-aware table loading cards; current platforms compose the general Card skeleton. Kept for token compatibility.',
   }])),
   ...Object.fromEntries([
     'financial.signedSkeletonHeight',
     'kpiHero.secondarySkeletonWidth', 'kpiHero.descriptionSkeletonWidth',
     ...['value', 'segment', 'description'].map(part => 'kpiRow.' + part + 'SkeletonWidth'),
   ].map(path => ['extensions.' + path, {
-    excludes: ['react', 'vue2'], reason: 'Native logical-unit placeholder; Web uses intrinsic em/ch/lh text-relative dimensions.',
+    excludes: ['react', 'vue3'], reason: 'Native logical-unit placeholder; Web uses intrinsic em/ch/lh text-relative dimensions.',
   }])),
 };
 
@@ -88,7 +88,7 @@ export function tokenReads(source, filename, imports = {}) {
 
 export async function sourceInventory(root) {
   const files = [];
-  for (const directory of ['packages/react/src', 'packages/native/src', 'packages/vue2/src', 'packages/tokens/src', 'shared/package-runtime']) {
+  for (const directory of ['packages/react/src', 'packages/native/src', 'packages/vue3/src', 'packages/tokens/src', 'shared/package-runtime']) {
     for (const name of await readdir(resolve(root, directory), { recursive: true })) {
       if (!/\.(?:tsx?|js|vue|css)$/.test(name) || /(?:^|\/)(?:index\.ts|.*\.d\.ts|bindings\.css|typography\.css|color-roles\.ts)$/.test(name)) continue;
       const file = directory + '/' + name, source = await readFile(resolve(root, file), 'utf8');
@@ -102,9 +102,12 @@ export async function sourceInventory(root) {
 
 export function connectedCss(source, consumerSource) {
   const rules = [];
+  // Class names built in templates (`kjun-checkbox--${size}`) connect every class with that prefix.
+  const prefixes = [...consumerSource.matchAll(/(kjun-[\w-]*?-)\$\{/g)].map(m => m[1]);
+  const used = name => consumerSource.includes(name) || prefixes.some(prefix => name.startsWith(prefix) && name.length > prefix.length);
   postcss.parse(source).walkRules(rule => {
     const classes = [...rule.selector.matchAll(/\.([_a-zA-Z][\w-]*)/g)].map(m => m[1]).filter(name => name !== 'kjun-scope');
-    if (classes.some(name => consumerSource.includes(name))) rules.push(rule.toString());
+    if (classes.some(used)) rules.push(rule.toString());
   });
   return rules.join('\n');
 }
@@ -120,11 +123,11 @@ export async function auditTokenConsumption(root) {
   const files = await sourceInventory(root);
   const kebab = value => value.replace(/[A-Z]/g, c => '-' + c.toLowerCase());
   const report = { componentRoles: leaves.filter(p => /^(?:button|modal|input|table|card|extensions)\./.test(p) && !readbackAliases[p]).length, readbackAliases: Object.keys(readbackAliases).length, platforms: {} };
-  for (const platform of ['react', 'vue2', 'native']) {
-    const selected = files.filter(({ file }) => file.startsWith('shared/') || file.startsWith('packages/' + platform + '/') || platform !== 'native' && (file.startsWith('packages/tokens/') || file === 'packages/vue2/src/styles/forms.css'));
+  for (const platform of ['react', 'vue3', 'native']) {
+    const selected = files.filter(({ file }) => file.startsWith('shared/') || file.startsWith('packages/' + platform + '/') || platform !== 'native' && (file.startsWith('packages/tokens/')));
     const reads = selected.flatMap(f => f.reads).map(p => new RegExp('^' + p.split('.').map(x => x === '*' ? '[^.]+' : x).join('\\.') + '(?:\\.|$)'));
     const ownSource = selected.filter(f => !f.file.startsWith('packages/tokens/')).map(f => f.source).join('\n');
-    // Shipping React CSS alongside Vue does not establish a Vue connection.
+    // Shipping shared CSS does not establish a connection; a platform must use the rule's classes.
     const sharedCss = selected.filter(f => f.file.startsWith('packages/tokens/') && f.file.endsWith('.css')).map(f => connectedCss(f.source, ownSource));
     const text = ownSource + '\n' + sharedCss.join('\n');
     const dynamicCss = [...text.matchAll(/var\((--[\w-]*(?:\$\{[^}]+\}[\w-]*)+)/g)].map(m => new RegExp('^' + m[1].replace(/\$\{[^}]+\}/g, '[\\w-]+') + '$'));
@@ -132,9 +135,7 @@ export async function auditTokenConsumption(root) {
       if (!/^(?:button|modal|input|table|card|extensions)\./.test(path)) return false;
       if (readbackAliases[path] || platformSpecific[path]?.excludes.includes(platform)) return false;
       const css = path.startsWith('extensions.') ? '--_kjun-extension-' + kebab(path.slice(11).replaceAll('.', '-')) : '--_kjun-geometry-' + kebab(path.replaceAll('.', '-'));
-      const utility = kebab((path.startsWith('extensions.') ? path.slice(11) : path).replaceAll('.', '-'));
-      return !reads.some(r => r.test(path)) && !(platform !== 'native' && (text.includes('var(' + css) || dynamicCss.some(r => r.test(css)))) &&
-        !(platform === 'vue2' && new RegExp('(?:p[xytrbl]?|m[xytrbl]?|gap|rounded|w|h|min-w|min-h|max-w|max-h)-' + utility + '\\b').test(text));
+      return !reads.some(r => r.test(path)) && !(platform !== 'native' && (text.includes('var(' + css) || dynamicCss.some(r => r.test(css))));
     });
     const objectReferences = selected.flatMap(({ file, reads }) => reads.filter(path => {
       if (!/^(?:button|modal|input|table|card|extensions)\./.test(path)) return false;

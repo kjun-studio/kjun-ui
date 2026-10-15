@@ -19,8 +19,8 @@ export async function verifyConsumerTypes(root, directory) {
       .replace("import { icons, type IconNode } from '@kjun-ui/tokens/icons';", "import I = require('@kjun-ui/tokens/icons'); const { icons } = I; type IconNode = I.IconNode;");
     await writeFile(target + '/consumer.' + (format === 'esm' ? 'mts' : 'cts'), source);
     await writeFile(target + '/plugin.' + (format === 'esm' ? 'mts' : 'cts'), format === 'esm'
-      ? `import plugin from '@kjun-ui/vue2/plugin';\nimport { type VueConstructor } from 'vue';\ndeclare const Vue: VueConstructor;\nplugin.install(Vue);\n// @ts-expect-error plugin is a typed install object.\nplugin.missing();\n`
-      : `import plugin = require('@kjun-ui/vue2/plugin');\nimport { type VueConstructor } from 'vue';\ndeclare const Vue: VueConstructor;\nplugin.install(Vue);\n// @ts-expect-error CommonJS exports the install object itself.\nplugin.default.install(Vue);\n// @ts-expect-error plugin is not any.\nplugin.missing();\n`);
+      ? `import plugin from '@kjun-ui/vue3/plugin';\nimport { createApp } from 'vue';\ncreateApp({}).use(plugin, { skipExisting: true });\n// @ts-expect-error plugin is a typed install object.\nplugin.missing();\n`
+      : `import plugin = require('@kjun-ui/vue3/plugin');\nimport vue = require('vue');\nvue.createApp({}).use(plugin);\n// @ts-expect-error CommonJS exports the install object itself.\nplugin.default.install(vue.createApp({}));\n`);
     for (const resolution of ['Bundler', 'Node16', 'NodeNext']) {
       execFileSync(tsc, ['consumer.' + (format === 'esm' ? 'mts' : 'cts'), 'plugin.' + (format === 'esm' ? 'mts' : 'cts'), ...common,
         '--moduleResolution', resolution, '--module', resolution === 'Bundler' ? 'Preserve' : resolution],

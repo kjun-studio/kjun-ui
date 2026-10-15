@@ -7,7 +7,7 @@ const box = async (node: Locator) => (await node.boundingBox())!;
 const bodyText = '이 계정에서 사용할 기본 정보를 확인하고 변경할 수 있습니다.';
 const rgb = (hex: string) => 'rgb(' + [1, 3, 5].map(n => parseInt(hex.slice(n, n + 2), 16)).join(', ') + ')';
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: flat accordion geometry, title hierarchy and content spacing remain legible`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: 390, height: 800 });

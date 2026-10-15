@@ -13,7 +13,7 @@ async function verifyConsumer(dir) {
   const dependencies = {
     react: "19.2.6",
     "react-dom": "19.2.6",
-    vue: "2.6.14",
+    vue: "3.5.43",
     "react-native": "0.86.3",
     "react-native-web": "0.21.0",
     "react-native-svg": "15.15.5",
@@ -28,20 +28,7 @@ async function verifyConsumer(dir) {
     "KjunFeedbackProvider",
   ];
   const manifest = JSON.parse(await readFile(resolve(root, "artifacts/manifest.json"), "utf8"));
-  const tarball = (name) => "file:" + resolve(root, "artifacts", manifest.find((item) => item.name === name).file);
-  for (const item of manifest)
-    if (item.name !== "@kjun-ui/vue3") dependencies[item.name] = "file:" + resolve(root, "artifacts", item.file);
-  // Vue 3 cannot share a project with the Vue 2 package, so @kjun-ui/vue3 installs beside it.
-  await mkdir(dir + "/vue3", { recursive: true });
-  await writeFile(dir + "/vue3/package.json", JSON.stringify({ name: "kjun-packed-consumer-vue3", private: true, type: "module",
-    dependencies: { vue: "3.5.43", "@kjun-ui/vue3": tarball("@kjun-ui/vue3"), "@kjun-ui/tokens": tarball("@kjun-ui/tokens"), "@kjun-ui/icons": tarball("@kjun-ui/icons") } }, null, 2));
-  execFileSync("npm", ["install", "--no-audit", "--no-fund"], { cwd: dir + "/vue3", stdio: "inherit" });
-  execFileSync("node", ["--input-type=module", "-e",
-    "import {createSSRApp,h} from 'vue';import {renderToString} from 'vue/server-renderer';import Kjun,{KjunProvider,KjunButton} from '@kjun-ui/vue3';import plugin from '@kjun-ui/vue3/plugin';const app=createSSRApp({render:()=>h(KjunProvider,null,{default:()=>h(KjunButton,null,{default:()=>'Save'})})});app.use(Kjun);const html=await renderToString(app);if(plugin!==Kjun||!html.includes('kjun-scope')||!html.includes('kjun-button'))throw Error('Vue 3 consumer failed: '+html);"],
-    { cwd: dir + "/vue3", stdio: "inherit" });
-  execFileSync("node", ["--input-type=commonjs", "-e",
-    "const ui=require('@kjun-ui/vue3');const plugin=require('@kjun-ui/vue3/plugin');if(plugin!==ui.default||typeof plugin.install!=='function')throw Error('Vue 3 CommonJS consumer failed');"],
-    { cwd: dir + "/vue3", stdio: "inherit" });
+  for (const item of manifest) dependencies[item.name] = "file:" + resolve(root, "artifacts", item.file);
   await writeFile(
     dir + "/package.json",
     JSON.stringify(
@@ -59,19 +46,22 @@ async function verifyConsumer(dir) {
     cwd: dir,
     stdio: "inherit",
   });
+  execFileSync("node", ["--input-type=module", "-e",
+    "import {createSSRApp,h} from 'vue';import {renderToString} from 'vue/server-renderer';import Kjun,{KjunProvider,KjunButton} from '@kjun-ui/vue3';import plugin from '@kjun-ui/vue3/plugin';const app=createSSRApp({render:()=>h(KjunProvider,null,{default:()=>h(KjunButton,null,{default:()=>'Save'})})});app.use(Kjun);const html=await renderToString(app);if(plugin!==Kjun||!html.includes('kjun-scope')||!html.includes('kjun-button'))throw Error('Vue 3 consumer failed: '+html);"],
+    { cwd: dir, stdio: "inherit" });
+  execFileSync("node", ["--input-type=commonjs", "-e",
+    "const ui=require('@kjun-ui/vue3');const plugin=require('@kjun-ui/vue3/plugin');if(plugin!==ui.default||typeof plugin.install!=='function')throw Error('Vue 3 CommonJS consumer failed');"],
+    { cwd: dir, stdio: "inherit" });
   await writeFile(
     dir + "/consumer.tsx",
-    `import React from 'react';import Vue from 'vue';import VueUI from '@kjun-ui/vue2';import {KjunButton,KjunInput,KjunModal,KjunProvider} from '@kjun-ui/react';import {KjunButton as NativeButton,KjunInput as NativeInput,KjunModal as NativeModal,KjunProvider as NativeProvider} from '@kjun-ui/native';import {tokens, type KjunColors} from '@kjun-ui/tokens';
-Vue.use(VueUI);
+    `import React from 'react';import {KjunButton,KjunInput,KjunModal,KjunProvider} from '@kjun-ui/react';import {KjunButton as NativeButton,KjunInput as NativeInput,KjunModal as NativeModal,KjunProvider as NativeProvider} from '@kjun-ui/native';import {tokens, type KjunColors} from '@kjun-ui/tokens';
 const sharedLength: 48 = tokens.dimension.value48;
 // @ts-expect-error Pre-release spacing names were removed without aliases.
 const retiredSpacing = tokens.spacing;
-import VuePlugin from '@kjun-ui/vue2/plugin';
-Vue.use(VuePlugin);
-import * as VueComponents from '@kjun-ui/vue2';
+import * as VueComponents from '@kjun-ui/vue3';
 const vueButtonProps: VueComponents.KjunButtonProps={size:'xl',variant:'danger-ghost'};
-const vueInputProps: VueComponents.KjunInputProps={size:'md',value:'',errorMessage:null};
-// @ts-expect-error Vue's declared sizes must follow its runtime validator.
+const vueInputProps: VueComponents.KjunInputProps={size:'md',modelValue:'',errorMessage:''};
+// @ts-expect-error Vue's declared sizes follow the shared button sizes.
 const invalidVueSize: VueComponents.KjunButtonProps={size:'xxl'};
 // @ts-expect-error Input has the three-step source size contract.
 const invalidVueInput: VueComponents.KjunInputProps={size:'xl'};
@@ -165,24 +155,6 @@ if(tokens.button.heights.md!==40)throw new Error('Invalid token output');
     ],
     { cwd: dir, stdio: "inherit" },
   );
-  execFileSync(
-    "node",
-    [
-      "--input-type=module",
-      "-e",
-      "import Vue from 'vue';import ui,{KjunButton} from '@kjun-ui/vue2';import plugin from '@kjun-ui/vue2/plugin';import {tokens} from '@kjun-ui/tokens';Vue.use(ui);if(plugin!==ui||Vue.version!=='2.6.14'||KjunButton.props.size.default!=='md'||tokens.button.heights.md!==40)throw Error('consumer failed');",
-    ],
-    { cwd: dir, stdio: "inherit" },
-  );
-  execFileSync(
-    "node",
-    [
-      "--input-type=commonjs",
-      "-e",
-      "const ui=require('@kjun-ui/vue2');const plugin=require('@kjun-ui/vue2/plugin');const {icons}=require('@kjun-ui/tokens/icons');if(plugin!==ui.default||typeof plugin.install!=='function'||plugin.default!==undefined||!icons.check)throw Error('CommonJS subpath consumer failed');",
-    ],
-    { cwd: dir, stdio: "inherit" },
-  );
   await verifyInstalledPackages(dir, packed);
   // Do not certify a consumer if files changed while npm was installing.
   const currentPacked = await assertCurrentPacked();
@@ -195,7 +167,6 @@ if(tokens.button.heights.md!==40)throw new Error('Invalid token output');
     source: packed.source,
     manifest: packed.manifest,
     verified: [
-      "Vue 2.6 runtime",
       "Vue 3.5 runtime (SSR render and CommonJS plugin)",
       "React 19 types",
       "React Native 0.86 types",

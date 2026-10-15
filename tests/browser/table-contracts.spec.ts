@@ -8,8 +8,8 @@ const order = (page: Page) => page.locator('[data-testid^="row-"]').allTextConte
 const configureState = (page: Page, next: object) => page.evaluate(next => (window as any).configureState(next), next);
 const stateFixture = (page: Page, platform: string, scenario: string) => openFixture(page, platform, "?scenario=" + scenario, "state-contracts");
 
-for (const platform of ["react", "native", "vue2", "vue3"]) {
-  const header = (page: Page) => platform === "vue2" ? page.getByRole("columnheader", { name: "Amount" }) : page.getByRole("button", { name: "Amount", exact: true });
+for (const platform of ["react", "native", "vue3"]) {
+  const header = (page: Page) => page.getByRole("button", { name: "Amount", exact: true });
   test(`${platform} table preserves the client sort cycle without controlled props`, async ({ page }) => {
     await openFixture(page, platform, "?table", "review-contract");
     await expect.poll(() => order(page)).toEqual(["Three", "One", "Two"]);
@@ -65,17 +65,7 @@ for (const platform of ["react", "native", "vue2", "vue3"]) {
   });
 }
 
-test("Vue controlled server sorting supports update:sort before sort-change without duplicate requests", async ({ page }) => {
-  await openFixture(page, "vue2", "?table", "review-contract");
-  await configure(page, { controlled: true, sortMode: "server", sync: true });
-  await page.getByRole("columnheader", { name: "Amount" }).click();
-  await expect(events(page)).toHaveText('[["update:sort",{"key":"amount","order":"asc"}],["sort",{"key":"amount","order":"asc"}]]');
-  await expect(page.getByRole("columnheader", { name: "Amount" })).toHaveAttribute("aria-sort", "ascending");
-  await expect.poll(() => order(page)).toEqual(["Three", "One", "Two"]);
-  await reset(page); await configure(page, { sort: null });
-  await expect(events(page)).toHaveText("[]");
-});
-for (const platform of ["react", "vue2", "vue3"]) for (const width of [1280, 390]) {
+for (const platform of ["react", "vue3"]) for (const width of [1280, 390]) {
   test(`${platform} table rows retain keyboard actions and inner controls at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await openFixture(page, platform, "?table", "review-contract");
@@ -98,7 +88,7 @@ for (const platform of ["react", "vue2", "vue3"]) for (const width of [1280, 390
 
 const open = (page: Page, platform: string) => openFixture(page, platform, '?table', 'review-contract');
 
-for (const platform of ['vue2', 'vue3', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   const card = (page: Page) => platform === 'native' ? page.getByText('상세 보기', { exact: true }).first() : page.locator('.kjun-table-card, .kjun-table-card').first();
   const expand = (page: Page) => page.getByRole('button', { name: /행 확장|상세 보기|접기/ }).first();
   test(`${platform} Table switches strictly below 768px and retains selection, expansion and cell slots`, async ({ page }) => {
@@ -140,38 +130,26 @@ for (const platform of ['vue2', 'vue3', 'react', 'native']) {
     const input = page.getByRole('textbox');
     await input.fill('old'); await page.clock.runFor(100);
     await page.getByRole('button', { name: /검색 지우기|입력 지우기/ }).click();
-    if (platform === 'vue2') await expect(events(page)).toHaveText('[["search",""]]');
-    else await expect(events(page)).toHaveText('[]');
+    await expect(events(page)).toHaveText('[]');
     await page.clock.runFor(301); await expect(events(page)).toHaveText('[["search",""]]');
     await input.fill('pending'); await configure(page, { show: false });
     await page.clock.runFor(301); await expect(events(page)).toHaveText('[["search",""]]');
   });
 }
-// Vue 2 notifies the clear at once and shows scroll hints; Vue 3 follows React's debounced clear and has no scroll hint.
-for (const platform of ['vue2', 'vue3']) test(platform === 'vue2' ? 'Vue Table clear and retype drops the old timer; scroll hints update in table mode' : 'vue3 Table clear and retype drops the old timer', async ({ page }) => {
+// Vue 3 follows React's debounced clear and has no scroll hint.
+test('vue3 Table clear and retype drops the old timer', async ({ page }) => {
   await page.clock.install();
   await page.clock.pauseAt(new Date());
-  await open(page, platform); await configure(page, { searchable: true, responsive: 'none' });
+  await open(page, 'vue3'); await configure(page, { searchable: true, responsive: 'none' });
   const input = page.getByRole('textbox');
   await input.fill('old'); await page.clock.runFor(100);
   await page.getByRole('button', { name: /검색 지우기|입력 지우기/ }).click();
   await input.fill('new'); await page.clock.runFor(210);
-  if (platform !== 'vue2') {
-    await expect(events(page)).toHaveText('[]');
-    await page.clock.runFor(100); await expect(events(page)).toHaveText('[["search","new"]]');
-    return;
-  }
-  await expect(events(page)).toHaveText('[["search",""]]');
-  await page.clock.runFor(100); await expect(events(page)).toHaveText('[["search",""],["search","new"]]');
-  await page.setViewportSize({ width: 641, height: 900 });
-  await page.locator('table').evaluate(el => { el.style.minWidth = '1400px'; });
-  await page.evaluate(() => window.dispatchEvent(new Event('resize')));
-  await expect(page.locator('.kjun-table-scroll-fade')).toBeVisible();
-  await page.locator('.kjun-table-scroll-wrapper').evaluate(el => { el.scrollLeft = el.scrollWidth; el.dispatchEvent(new Event('scroll')); });
-  await expect(page.locator('.kjun-table-scroll-fade')).toHaveCount(0);
+  await expect(events(page)).toHaveText('[]');
+  await page.clock.runFor(100); await expect(events(page)).toHaveText('[["search","new"]]');
 });
 
-for (const platform of ["vue2", "vue3", "react", "native"]) for (const width of [1280, 375]) {
+for (const platform of ["vue3", "react", "native"]) for (const width of [1280, 375]) {
   test(`${platform} Table owns empty, supplied and uncontrolled expansion at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 }); await stateFixture(page, platform, "table");
     const toggles = page.getByRole("button", { name: /행 확장|상세 보기|접기/ });
@@ -193,11 +171,10 @@ for (const platform of ["vue2", "vue3", "react", "native"]) for (const width of 
   });
 }
 
-for (const platform of ["vue2", "vue3"]) for (const width of [1280, 375]) {
-  test(platform === "vue2" ? `Vue table actions never submit their containing form at ${width}px` : `vue3 table actions never submit their containing form at ${width}px`, async ({ page }) => {
+for (const width of [1280, 375]) {
+  test(`vue3 table actions never submit their containing form at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    if (platform === "vue2") await openFixture(page, "vue2", "?scenario=table", "integration-contracts");
-    else await openFixture(page, platform, "", "table-form");
+    await openFixture(page, "vue3", "", "table-form");
     const expand = page.getByRole("button", { name: /행 확장|상세 보기|접기/ }).first();
     await expand.click();
     await expect(page.getByText("Detail", { exact: true })).toBeVisible();

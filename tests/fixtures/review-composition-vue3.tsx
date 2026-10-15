@@ -47,7 +47,7 @@ const market = () => ({
   onRowClick: params.has('passive') ? undefined : () => log('row'),
 });
 const nameSuffix = () => <K.KjunButton onClick={() => log('action')}>Action</K.KjunButton>;
-// Mirrors the Vue 2 state-contracts search scenario: a controlled SearchInput with live debounce and mode switches.
+// A controlled SearchInput with live debounce and mode switches.
 const stateRequests: { query: string; signal: AbortSignal; resolve: (options: object[]) => void }[] = [];
 const StateSearch = defineComponent(() => {
   const config = reactive({ value: '', remote: true, disabled: false, debounce: 1000, mounted: true, selected: 'none', events: [] as unknown[] });

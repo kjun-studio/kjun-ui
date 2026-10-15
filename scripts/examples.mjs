@@ -96,19 +96,16 @@ export function previewSource(template, platform) {
     .replace('const feedback = K.useKjunFeedback();', 'const feedback = instrumentFeedback(K.useKjunFeedback(), exampleProps.observer);')
     .replace('const h = visualH;', 'const h = instrumentRenderer(visualH, exampleProps.observer, "vue3");')
     .replace('import "@kjun-ui/vue3/styles.css";', '');
-  let source = template.replace('/* ICON_IMPORTS */', '').replace('/* ICON_PROVIDER */', platform === 'vue2' ? 'props: { icons: this.icons }' : 'icons={props.icons}').replace(/import "@kjun-ui\/(?:vue2|react)\/styles\.css";/g, '').replace('const settings = __KJUN_SETTINGS__;', platform === 'vue2' ? 'const settings = this.settings;' : '')
-    .replaceAll('__KJUN_VALUES__', platform === 'vue2' ? 'this.initialValues || {}' : 'initialValues || {}')
+  let source = template.replace('/* ICON_IMPORTS */', '').replace('/* ICON_PROVIDER */', 'icons={props.icons}').replace(/import "@kjun-ui\/react\/styles\.css";/g, '').replace('const settings = __KJUN_SETTINGS__;', '')
+    .replaceAll('__KJUN_VALUES__', 'initialValues || {}')
     .replace('/* PARAMS */', '{ settings, initialValues, observer }')
     .replace('/* PAGE_PARAMS */', 'props')
     .replace('/* EXAMPLE_PROPS */', '{...props}')
     .replaceAll('/* VUE_PROPS */', 'props: ["settings", "initialValues", "observer", "icons"],')
-    .replace('/* VUE_EXAMPLE_PROPS */', '{ props: this.$props }')
-    .replace('/* VUE_OBSERVE */', 'mounted() { this.observer.snapshot(this.values); }, updated() { this.observer.snapshot(this.values); },')
     .replace('/* OBSERVE */', 'useEffect(() => { observer.snapshot(values); }, [values, settings, observer]);')
     .replace('createElement, useState', 'createElement, useState, useEffect')
-    .replace('const h = visualH;', `const h = instrumentRenderer(visualH, ${platform === 'vue2' ? 'this.observer' : 'observer'}, ${JSON.stringify(platform)});`)
+    .replace('const h = visualH;', `const h = instrumentRenderer(visualH, observer, ${JSON.stringify(platform)});`)
     .replace('const feedback = K.useKjunFeedback();', 'const feedback = instrumentFeedback(K.useKjunFeedback(), observer);')
-    .replace('const feedback = this.kjunFeedback;', 'const feedback = instrumentFeedback(this.kjunFeedback, this.observer);')
     .replace(/import "\.\/kjun.css";/, '')
     .replace('import { appColors, appDomainColors, appFont } from "./kjun";', '')
     .replace('colors={appColors} domainColors={appDomainColors} fontFamily={appFont}', 'colors={props.colors} domainColors={props.domainColors} fontFamily={props.font}');
@@ -119,7 +116,7 @@ export async function generateExamples() {
   const sourcesRoot = resolve(root, 'apps/docs/public/previews/sources');
   await mkdir(sourcesRoot, { recursive: true });
   const manifest = {};
-  for (const platform of ['vue2', 'vue3', 'react', 'native']) {
+  for (const platform of ['vue3', 'react', 'native']) {
     const directory = resolve(root, 'artifacts/examples', platform);
     await mkdir(directory, { recursive: true });
     const template = await read('previews/templates/' + platform + '.txt');
@@ -133,14 +130,13 @@ export async function generateExamples() {
       let source = template.replace('/* MODULE */', iconImports + foundation + recipe).replaceAll('__KJUN_NAME__', name);
       if (name === 'GuideIconSelection') {
         source = '/* ICON_IMPORTS */\n' + source;
-        source = platform === 'vue2' ? source.replace('h(K.KjunProvider, [', 'h(K.KjunProvider, { /* ICON_PROVIDER */ }, [')
-          : platform === 'vue3' ? source.replace('create(K.KjunProvider, null, {', 'create(K.KjunProvider, { /* ICON_PROVIDER */ }, {')
+        source = platform === 'vue3' ? source.replace('create(K.KjunProvider, null, {', 'create(K.KjunProvider, { /* ICON_PROVIDER */ }, {')
           : source.replace('<K.KjunProvider', '<K.KjunProvider /* ICON_PROVIDER */');
       }
       if (foundation) source = source.replaceAll('K[name]', '({ FoundationLayout, FoundationScreen }[name] || K[name])');
       manifest[name] ||= { sources: {}, events: /on[A-Z]|feedback\./.test(recipe), controls: exampleDefinition(name).controls.map(c => c.key) };
       manifest[name].sources[platform] = source;
-      const extension = platform === 'vue2' || platform === 'vue3' ? 'js' : 'jsx';
+      const extension = platform === 'vue3' ? 'js' : 'jsx';
       await writeFile(resolve(directory, `${name}.${extension}`), previewSource(source, platform));
       exports.push(`import ${name} from './${name}.${extension}';`);
     }

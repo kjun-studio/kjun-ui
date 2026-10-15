@@ -21,7 +21,7 @@ const settledPaint = async (page: Page) => {
   return previous;
 };
 const ink = (page: Page) => button(page).evaluate(el => getComputedStyle(el.querySelector('span, [dir="auto"]') || el).color);
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: button geometry and neighboring actions stay stable through loading`, async ({ page }) => {
     await openFixture(page, platform, '', 'button-design');
     for (const [size, height, font, radius] of [['xs', 24, 12, 8], ['sm', 32, 14, 10], ['md', 40, 14, 12], ['lg', 48, 16, 14], ['xl', 56, 16, 16]] as const) {

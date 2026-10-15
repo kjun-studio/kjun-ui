@@ -17,7 +17,7 @@ test.beforeEach(async ({ page }) => {
 });
 test.afterEach(async ({ page }) => { expect((page as any).motionErrors).toEqual([]); });
 
-for (const platform of ['react', 'vue2', 'vue3', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: number retargeting, strings and motion preference changes`, async ({ page }) => {
     await start(page, platform, 'numbers');
     await expect(page.getByTestId('number')).toHaveText('100.00');

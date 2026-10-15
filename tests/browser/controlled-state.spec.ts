@@ -5,11 +5,11 @@ const reset = (page: Page) => page.evaluate(() => (window as any).resetStateEven
 const events = (page: Page) => page.getByTestId("events");
 const input = (page: Page) => page.getByRole("textbox", { name: "선택 항목 검색" });
 const fixture = (page: Page, platform: string, kind = "select") => openFixture(page, platform, "?case=" + kind, "review-state", "development");
-const trigger = (page: Page, platform: string) => page.getByRole(platform === "vue2" ? "combobox" : "button", { name: "Choose", exact: true });
+const trigger = (page: Page, platform: string) => page.getByRole("button", { name: "Choose", exact: true });
 const rows = (page: Page, platform: string) => page.getByRole(platform === "native" ? "radio" : "option");
 const tabs = [{ name: "first", label: "First" }, { name: "second", label: "Second" }];
 
-for (const platform of ["react", "native", "vue2", "vue3"]) {
+for (const platform of ["react", "native", "vue3"]) {
   test(`${platform} Select controlled opening can be rejected and missing keys use original indices`, async ({ page }) => {
     await fixture(page, platform); await configure(page, { controlled: true, accept: false, pageSize: 0 });
     await trigger(page, platform).click(); await expect(events(page)).toHaveText('[["open",true]]'); await expect(input(page)).toHaveCount(0);
@@ -93,7 +93,7 @@ for (const platform of ["react", "native", "vue2", "vue3"]) {
     if (method === "Escape") await input(page).press("Escape");
     else await page.mouse.click(1100, 700);
     await expect(input(page)).toHaveCount(0);
-    await expect(events(page)).toHaveText(platform === "vue2" ? '[["open",false],["search",""]]' : '[["open",false]]');
+    await expect(events(page)).toHaveText('[["open",false]]');
     if (method === "Escape" && platform !== "native") await expect(trigger(page, platform)).toBeFocused();
     await trigger(page, platform).click(); await expect(input(page)).toHaveValue(""); await expect(input(page)).toBeFocused();
     await expect(rows(page, platform)).toHaveCount(2);
@@ -143,7 +143,7 @@ for (const platform of ["react", "native", "vue2", "vue3"]) {
     for (const title of ["One", "Two", "Three"]) await expect(page.getByRole("button", { name: title, exact: true })).toHaveAttribute("aria-expanded", title === "One" ? "true" : "false");
   });
 }
-for (const platform of ["react", "vue2", "vue3"]) test(`${platform} Select IME keys preserve focus, input defaults and parent layer`, async ({ page }) => {
+for (const platform of ["react", "vue3"]) test(`${platform} Select IME keys preserve focus, input defaults and parent layer`, async ({ page }) => {
   await fixture(page, platform, "modal"); await trigger(page, platform).click(); await input(page).fill("zero"); await reset(page);
   for (const guard of ["composition", "isComposing", "keyCode"]) {
     if (guard === "composition") await input(page).dispatchEvent("compositionstart");
@@ -159,7 +159,7 @@ for (const platform of ["react", "vue2", "vue3"]) test(`${platform} Select IME k
   await expect(events(page)).toHaveText("[]");
   await input(page).press("ArrowDown"); await expect(rows(page, platform).first()).toBeFocused();
   await page.keyboard.press("Escape"); await expect(input(page)).toHaveCount(0); await expect(page.getByRole("dialog", { name: "Editor" })).toBeVisible();
-  await expect(events(page)).toHaveText(platform === "vue2" ? '[["open",false],["search",""]]' : '[["open",false]]');
+  await expect(events(page)).toHaveText('[["open",false]]');
 });
 for (const platform of ["react", "vue3"]) for (const method of ["click", "Enter", "Space", "Escape", "outside"]) test(`${platform === "react" ? "React" : platform} Dropdown ${method} closes exactly once after action`, async ({ page }) => {
   await fixture(page, platform, "dropdown");

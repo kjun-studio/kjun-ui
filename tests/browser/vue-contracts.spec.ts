@@ -3,10 +3,9 @@ import { exampleNames } from "../../shared/example-registry";
 import { test, expect } from "@playwright/test";
 import { openFixture } from "./packed-fixture";
 
-// Vue 2 keeps its own titles; Vue 3 follows React's DOM (the Select trigger is a button, not a combobox).
-const vues = ["vue2", "vue3"] as const;
-const title = (platform: string, text: string) => platform === "vue2" ? "Vue 2 " + text : "vue3: Vue 3 " + text;
-const selectRole = (platform: string) => platform === "vue2" ? "combobox" as const : "button" as const;
+// Vue 3 follows React's DOM (the Select trigger is a button, not a combobox).
+const vues = ["vue3"] as const;
+const title = (_platform: string, text: string) => "vue3: Vue 3 " + text;
 
 for (const platform of vues) test(title(platform, "packed CSS supplies geometry, transforms and visible keyboard focus without an app reset"), async ({ page }) => {
   await openFixture(page, platform, "", "vue-contracts", "development");
@@ -30,7 +29,7 @@ for (const platform of vues) test(title(platform, "packed CSS supplies geometry,
   await expect(primary).toBeFocused();
   await expect(primary).toHaveCSS("outline-style", "solid");
   await expect(primary).toHaveCSS("outline-width", "2px");
-  const trigger = page.getByRole(selectRole(platform), { name: "목록 선택" });
+  const trigger = page.getByRole("button", { name: "목록 선택" });
   await trigger.click();
   await expect(trigger.locator("svg")).toHaveCSS("transform", "matrix(-1, 0, 0, -1, 0, 0)");
 });
@@ -42,11 +41,6 @@ for (const platform of vues) test(title(platform, "percent units, pill geometry 
   await expect(page.getByTestId("raw").locator("span").first()).toHaveCSS("padding-left", "8px");
   await expect(page.getByTestId("deviation")).toHaveText("-1.25%");
   await expect(page.getByTestId("override")).toHaveText("셀 포맷");
-  // Provider-level formatters are a Vue 2 API; Vue 3 (like React) only has the per-component formatter.
-  if (platform !== "vue2") return;
-  await expect(page.getByTestId("injected")).toHaveText("프로젝트 2.35");
-  await page.getByRole("button", { name: "포맷 변경" }).click();
-  await expect(page.getByTestId("injected")).toHaveText("변경 2.35");
 });
 
 for (const platform of vues) test(title(platform, "icon preserves SVG direction, accessibility and component listeners"), async ({ page }) => {
@@ -60,7 +54,7 @@ for (const platform of vues) test(title(platform, "icon preserves SVG direction,
   await expect(page.getByTestId("icon-clicks")).toHaveText("1");
   await expect(page.getByTestId("filled").locator("svg")).toHaveAttribute("fill", "currentColor");
   // Vue 3 uses React's close label.
-  await page.getByRole("button", { name: platform === "vue2" ? "알림 닫기" : "닫기", exact: true }).click();
+  await page.getByRole("button", { name: "닫기", exact: true }).click();
   await expect(page.getByRole("alert")).toHaveCount(0);
 });
 
@@ -82,7 +76,7 @@ for (const platform of vues) test(title(platform, "combobox rejects disabled opt
   await expect(combo).toHaveValue("체리");
   // The closing popup remains mounted during its exit motion.
   await expect(page.locator('[role="listbox"]')).toHaveCount(0);
-  await page.getByRole(selectRole(platform), { name: "목록 선택" }).press("ArrowDown");
+  await page.getByRole("button", { name: "목록 선택" }).press("ArrowDown");
   await expect(page.getByRole("listbox").getByRole("option", { name: "사과" })).toBeFocused();
   await page.keyboard.press("ArrowDown");
   await expect(page.getByRole("listbox").getByRole("option", { name: "체리" })).toBeFocused();
@@ -91,7 +85,7 @@ for (const platform of vues) test(title(platform, "combobox rejects disabled opt
   await page.keyboard.press("Home");
   await expect(page.getByRole("listbox").getByRole("option", { name: "사과" })).toBeFocused();
   await page.keyboard.press("Space");
-  await expect(page.getByRole(selectRole(platform), { name: "목록 선택" })).toHaveText("사과");
+  await expect(page.getByRole("button", { name: "목록 선택" })).toHaveText("사과");
   await page.getByRole("button", { name: "비활성 전환" }).click();
   await expect(combo).toBeDisabled();
   for (const label of ["사과", "배", "체리"]) await expect(page.getByRole("radio", { name: "라디오 " + label })).toBeDisabled();
@@ -103,7 +97,7 @@ for (const platform of vues) test(title(platform, "Escape closes the active sele
     const opener = page.getByRole("button", { name: "중첩 선택 열기" });
     await opener.click();
     const dialog = page.getByRole("dialog", { name: "선택 대화상자" });
-    const field = dialog.getByRole(name === "모달 선택" ? selectRole(platform) : "combobox", { name });
+    const field = dialog.getByRole(name === "모달 선택" ? "button" : "combobox", { name });
     await field.click();
     await expect(field).toHaveAttribute("aria-expanded", "true");
     await page.keyboard.press("Escape");
@@ -116,7 +110,7 @@ for (const platform of vues) test(title(platform, "Escape closes the active sele
   }
 });
 
-for (const platform of vues) test(platform === "vue2" ? "all Vue 2 catalog examples validate props in development across documented states" : "vue3: all Vue 3 catalog examples validate props in development across documented states", async ({ page }) => {
+for (const platform of vues) test("vue3: all Vue 3 catalog examples validate props in development across documented states", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   page.on("console", message => { if (["warning", "error"].includes(message.type())) errors.push(message.text()); });
@@ -128,8 +122,8 @@ for (const platform of vues) test(platform === "vue2" ? "all Vue 2 catalog examp
     await page.evaluate(state => window.postMessage({ type: "kjun:catalog-configure", config: { loading: false, error: false, disabled: false, [state]: true } }, location.origin), state);
     if (state === "loading") await expect(page.locator('[data-component="KjunButton"] button')).toHaveAttribute("aria-busy", "true");
     if (state === "error") await expect(page.locator('[data-component="KjunInput"] input')).toHaveAttribute("aria-invalid", "true");
-    // Group-level disabled is a Vue 2 API; Vue 3 (like React) disables the individual KjunRadio.
-    if (state === "disabled") await expect(page.locator(platform === "vue2" ? '[data-component="KjunRadioGroup"] input' : '[data-component="KjunRadio"] input').first()).toBeDisabled();
+    // Vue 3 (like React) disables the individual KjunRadio rather than the group.
+    if (state === "disabled") await expect(page.locator('[data-component="KjunRadio"] input').first()).toBeDisabled();
   }
   expect(errors).toEqual([]);
 });

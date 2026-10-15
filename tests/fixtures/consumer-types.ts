@@ -1,6 +1,6 @@
 import * as R from '@kjun-ui/react';
 import * as N from '@kjun-ui/native';
-import * as V from '@kjun-ui/vue2';
+import * as V from '@kjun-ui/vue3';
 import { tokens, type KjunColors, type InputSize } from '@kjun-ui/tokens';
 import { icons, type IconNode } from '@kjun-ui/tokens/icons';
 
@@ -36,7 +36,7 @@ N.KjunTable({ data: [item], columns: [], onSelectionChange: rows => {
 } });
 const reactProps: R.KjunSelectProps<typeof item> = { value: 0, options: [item] };
 const nativeProps: N.KjunTabsProps = { value: '', items: [] };
-const vueProps: V.KjunSelectProps = { value: 0, open: undefined };
+const vueProps: V.KjunSelectProps = { modelValue: 0, open: undefined };
 // @ts-expect-error Public interfaces must not degrade to any.
 const invalidReact: R.KjunSelectProps = { value: 0, open: 'yes' };
 // @ts-expect-error Public interfaces must not degrade to any.
@@ -48,8 +48,7 @@ const invalidSize: InputSize = 'unknown';
 
 const elevationR: R.CardElevation = 'raised';
 const elevationN: N.ElevationRole = 'floating';
-const elevationV: V.CardElevation = 'flat';
-const shadowLayer: V.ShadowLayer = tokens.shadowScale.ambient[0];
+const elevationV: V.KjunCardProps['elevation'] = 'flat';
 const cardR: R.KjunCardProps = { elevation: elevationR };
 const cardN: N.KjunCardProps = { elevation: 'flat' };
 const cardV: V.KjunCardProps = { elevation: elevationV };
@@ -70,7 +69,7 @@ import { allIcons } from '@kjun-ui/icons/all';
 const projectIcons: KjunIconRegistry = { rocket };
 const iconsReact: R.KjunProviderProps = { icons: projectIcons, children: null };
 const iconsNative: N.KjunProviderProps = { icons: projectIcons, colors, children: null };
-const iconsVue: V.KjunProviderProps = { icons: projectIcons };
+const iconsVue: InstanceType<typeof V.KjunProvider>['$props'] = { icons: projectIcons };
 // @ts-expect-error A registry value must contain an outline definition.
 const invalidIcon: KjunIconRegistry = { rocket: [] };
 const pinnedTabler: '3.48.0' = tablerVersion;

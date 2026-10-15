@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { readTokenDefinitions, compileTokens, extensionGeometryCss } from '../scripts/token-model.mjs';
-import { createVueStyleTheme } from '../packages/vue2/style-theme.mjs';
 
 const root = new URL('..', import.meta.url).pathname;
 const source = await readTokenDefinitions(root);
@@ -17,9 +16,6 @@ test('dimension is the single shared length scale without spacing aliases', asyn
   const bindings = await readFile(root + '/packages/tokens/src/bindings.css', 'utf8');
   assert.match(bindings, /--_kjun-geometry-dimension-value48: 48px;/);
   assert.doesNotMatch(bindings, /--_kjun-geometry-spacing-/);
-  const theme = createVueStyleTheme(tokens, {});
-  assert.equal(theme.extend.spacing['4'], '16px');
-  assert.equal(theme.extend.spacing['12'], '48px');
 });
 
 test('changing an Accordion dimension selection preserves other roles and the scale', () => {

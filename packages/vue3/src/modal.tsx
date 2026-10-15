@@ -46,8 +46,8 @@ export const DismissButton = defineComponent({
   name: "KjunDismissButton",
   props: { onDismiss: { type: Function as PropType<() => void>, required: true } },
   setup: props => () => (
-    <div style={{ border: 0, clip: "rect(0px, 0px, 0px, 0px)", clipPath: "inset(50%)", height: "1px", margin: "-1px", overflow: "hidden", padding: 0, position: "absolute", width: "1px", whiteSpace: "nowrap" }}>
-      <button aria-label="Dismiss" tabindex={-1} style={{ width: "1px", height: "1px" }} onClick={() => props.onDismiss()} />
+    <div class="kjun-sr-only">
+      <button aria-label="Dismiss" tabindex={-1} onClick={() => props.onDismiss()} />
     </div>
   ),
 });

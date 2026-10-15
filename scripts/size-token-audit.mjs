@@ -105,7 +105,7 @@ export function auditSizeVue(template, file) {
 
 export async function auditPackageSizes(root) {
   const issues = [];
-  for (const directory of ['packages/react/src', 'packages/native/src', 'packages/vue2/src', 'packages/tokens/src', 'shared/package-runtime']) {
+  for (const directory of ['packages/react/src', 'packages/native/src', 'packages/vue3/src', 'packages/tokens/src', 'shared/package-runtime']) {
     for (const entry of await readdir(resolve(root, directory), { recursive: true })) {
       if (!/\.(?:tsx?|js|vue|css)$/.test(entry) || /(?:^|\/)(?:index\.ts|.*\.d\.ts|bindings\.css|typography\.css|color-roles\.ts)$/.test(entry)) continue;
       const file = directory + '/' + entry, source = await readFile(resolve(root, file), 'utf8');

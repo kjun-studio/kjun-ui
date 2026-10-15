@@ -28,7 +28,6 @@ export function mountTokenFollowup(api: any, native: boolean) {
         box(`switch-${size}`, h(api.KjunSwitch, { size, value: value(`switch-${size}`, false), label: `설정 ${size}`, onValueChange: change(`switch-${size}`) })),
       ]),
       box('input', h(api.KjunInput, { value: value('input', ''), ariaLabel: '터치 입력', ...(native ? { onChangeText: change('input') } : { onChange: (event: any) => change('input')(event.target.value) }) })),
-      box('utilities', h('div', { className: 'kjun-scope' }, h('span', { className: 'kj-font-medium' }, '중간 굵기'), h('span', { className: 'kj-font-semibold' }, '강조 굵기'))),
     ]);
   }
   createRoot(document.getElementById('root')!).render(h(api.KjunProvider, native ? { colors: palette(), fontFamily: 'sans-serif' } : null, h(Cases)));
