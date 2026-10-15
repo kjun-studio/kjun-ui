@@ -24,7 +24,7 @@ const configureState = (page: Page, next: object) => page.evaluate(next => (wind
 const stateFixture = (page: Page, platform: string, scenario: string) => openFixture(page, platform, "?scenario=" + scenario, "state-contracts");
 const resolveSearch = (page: Page, index: number) => page.evaluate(index => (window as any).resolveSearch(index), index);
 
-for (const platform of ["react", "native", "vue2"]) {
+for (const platform of ["react", "native", "vue2", "vue3"]) {
   for (const control of ["select", "combo"]) for (const multiple of control === "select" ? [false, true] : [false]) test(`${platform} ${control} displays and clears primitive zero (multiple=${multiple})`, async ({ page }) => {
     await inputFixture(page, platform, `?control=${control}&zero`);
     if (multiple) await configureInput(page, { multiple: true, value: [0] });
@@ -44,7 +44,7 @@ for (const platform of ["react", "native", "vue2"]) {
       await input.fill("Beta");
       if (close === "outside") await page.getByRole("button", { name: "Outside" }).click();
       else await input.press(close);
-      if (close === "Tab" && platform === "react") {
+      if (close === "Tab" && (platform === "react" || platform === "vue3")) {
         await expect(page.getByRole("button", { name: "입력 지우기" })).toBeFocused();
         await page.keyboard.press("Tab");
       }
@@ -65,7 +65,7 @@ for (const platform of ["react", "native", "vue2"]) {
   });
 }
 
-for (const platform of ["react", "vue2"]) test(`${platform} combobox leaves composition keys to the IME`, async ({ page }) => {
+for (const platform of ["react", "vue2", "vue3"]) test(`${platform} combobox leaves composition keys to the IME`, async ({ page }) => {
   await inputFixture(page, platform); const input = await comboInput(page, platform);
   await input.fill(""); await input.press("ArrowDown");
   const active = await input.getAttribute("aria-activedescendant");
@@ -83,9 +83,9 @@ for (const platform of ["react", "vue2"]) test(`${platform} combobox leaves comp
   await input.press("Enter"); await expect(page.getByTestId("events")).toHaveText('["a"]');
 });
 
-for (const platform of ["react", "native"]) test(`${platform} Combobox keeps drafts through consumer renders and follows explicit selection updates`, async ({ page }) => {
+for (const platform of ["react", "vue3", "native"]) test(`${platform} Combobox keeps drafts through consumer renders and follows explicit selection updates`, async ({ page }) => {
   await scenarioFixture(page, platform, "combobox");
-  let input = page.getByRole(platform === "react" ? "combobox" : "textbox");
+  let input = page.getByRole(platform === "native" ? "textbox" : "combobox");
   if (platform === "native") { await input.click(); input = page.getByRole("dialog").getByRole("textbox"); }
   await input.fill("Beta");
   await expect(page.getByTestId("query")).toHaveText("Beta");
@@ -102,8 +102,8 @@ for (const platform of ["react", "native"]) test(`${platform} Combobox keeps dra
   await expect(input).toHaveValue("");
 });
 
-test("React Combobox revalidates disabled and removed highlighted options", async ({ page }) => {
-  await scenarioFixture(page, "react", "dynamic");
+for (const platform of ["react", "vue3"]) test(`${platform === "react" ? "React" : platform} Combobox revalidates disabled and removed highlighted options`, async ({ page }) => {
+  await scenarioFixture(page, platform, "dynamic");
   const input = page.getByRole("combobox");
   await input.click(); await input.press("ArrowDown");
   await expect(input).toHaveAttribute("aria-activedescendant", /.+/);
@@ -122,8 +122,8 @@ test("React Combobox revalidates disabled and removed highlighted options", asyn
   await expect(page.getByTestId("selected")).toHaveText("none");
 });
 
-test("React Input preserves composition handlers and only commits an unconsumed Enter", async ({ page }) => {
-  await scenarioFixture(page, "react", "input");
+for (const platform of ["react", "vue3"]) test(`${platform === "react" ? "React" : platform} Input preserves composition handlers and only commits an unconsumed Enter`, async ({ page }) => {
+  await scenarioFixture(page, platform, "input");
   const input = page.getByRole("textbox");
   await input.fill("한글");
   await input.dispatchEvent("keydown", { key: "Enter", isComposing: true });
@@ -139,7 +139,7 @@ test("React Input preserves composition handlers and only commits an unconsumed 
   await expect(page.getByTestId("events")).toHaveText('["start","end","enter"]');
 });
 
-for (const platform of ["react", "native", "vue2"]) test(`${platform} TimePicker scopes segment names, IDs and field feedback`, async ({ page }) => {
+for (const platform of ["react", "native", "vue2", "vue3"]) test(`${platform} TimePicker scopes segment names, IDs and field feedback`, async ({ page }) => {
   await scenarioFixture(page, platform, "time");
   const role = platform === "vue2" ? "combobox" : "button";
   for (const segment of ["시", "분", "초"]) await expect(page.getByRole(role, { name: "예약 시간 " + segment, exact: true })).toBeVisible();
@@ -147,7 +147,7 @@ for (const platform of ["react", "native", "vue2"]) test(`${platform} TimePicker
   if (platform !== "native") {
     await page.locator("label").filter({ hasText: "예약 시간" }).click();
     await expect(page.getByRole("listbox")).toBeVisible();
-    if (platform === "react") await expect.poll(() => page.getByRole("listbox").evaluate(el => el.contains(document.activeElement))).toBe(true);
+    if (platform === "react" || platform === "vue3") await expect.poll(() => page.getByRole("listbox").evaluate(el => el.contains(document.activeElement))).toBe(true);
     await page.keyboard.press("Escape");
     await expect(page.getByRole("listbox")).toHaveCount(0);
     await expect(page.getByRole(role, { name: "예약 시간 시", exact: true })).toBeFocused();
@@ -169,8 +169,8 @@ for (const platform of ["react", "native", "vue2"]) test(`${platform} TimePicker
   await uniqueIds(page);
 });
 
-test("React Select popup search keeps its own name and ID inside FormGroup", async ({ page }) => {
-  await scenarioFixture(page, "react", "select");
+for (const platform of ["react", "vue3"]) test(`${platform === "react" ? "React" : platform} Select popup search keeps its own name and ID inside FormGroup`, async ({ page }) => {
+  await scenarioFixture(page, platform, "select");
   await page.getByRole("button", { name: "담당자", exact: true }).click();
   const search = page.getByRole("textbox", { name: "선택 항목 검색", exact: true });
   await expect(search).toBeFocused(); await uniqueIds(page);
@@ -200,8 +200,8 @@ test("Vue autocomplete ignores composition keys until composition has finished",
 });
 
 for (const kind of ["combo", "remote"]) {
-  test(`React ${kind} ignores composition navigation and confirmation before ordinary Enter`, async ({ page }) => {
-    await openFixture(page, "react", "?scenario=" + kind, "integration-contracts");
+  for (const platform of ["react", "vue3"]) test(`${platform === "react" ? "React" : platform} ${kind} ignores composition navigation and confirmation before ordinary Enter`, async ({ page }) => {
+    await openFixture(page, platform, "?scenario=" + kind, "integration-contracts");
     const input = page.getByRole("combobox", { name: "Search" });
     await input.fill(kind === "remote" ? "한글" : "a");
     await expect(page.getByRole("option")).toHaveCount(2);

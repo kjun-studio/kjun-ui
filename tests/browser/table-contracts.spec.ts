@@ -147,14 +147,20 @@ for (const platform of ['vue2', 'vue3', 'react', 'native']) {
     await page.clock.runFor(301); await expect(events(page)).toHaveText('[["search",""]]');
   });
 }
-test('Vue Table clear and retype drops the old timer; scroll hints update in table mode', async ({ page }) => {
+// Vue 2 notifies the clear at once and shows scroll hints; Vue 3 follows React's debounced clear and has no scroll hint.
+for (const platform of ['vue2', 'vue3']) test(platform === 'vue2' ? 'Vue Table clear and retype drops the old timer; scroll hints update in table mode' : 'vue3 Table clear and retype drops the old timer', async ({ page }) => {
   await page.clock.install();
   await page.clock.pauseAt(new Date());
-  await open(page, 'vue2'); await configure(page, { searchable: true, responsive: 'none' });
+  await open(page, platform); await configure(page, { searchable: true, responsive: 'none' });
   const input = page.getByRole('textbox');
   await input.fill('old'); await page.clock.runFor(100);
-  await page.getByRole('button', { name: '입력 지우기' }).click();
+  await page.getByRole('button', { name: /검색 지우기|입력 지우기/ }).click();
   await input.fill('new'); await page.clock.runFor(210);
+  if (platform !== 'vue2') {
+    await expect(events(page)).toHaveText('[]');
+    await page.clock.runFor(100); await expect(events(page)).toHaveText('[["search","new"]]');
+    return;
+  }
   await expect(events(page)).toHaveText('[["search",""]]');
   await page.clock.runFor(100); await expect(events(page)).toHaveText('[["search",""],["search","new"]]');
   await page.setViewportSize({ width: 641, height: 900 });
@@ -187,10 +193,11 @@ for (const platform of ["vue2", "vue3", "react", "native"]) for (const width of 
   });
 }
 
-for (const width of [1280, 375]) {
-  test(`Vue table actions never submit their containing form at ${width}px`, async ({ page }) => {
+for (const platform of ["vue2", "vue3"]) for (const width of [1280, 375]) {
+  test(platform === "vue2" ? `Vue table actions never submit their containing form at ${width}px` : `vue3 table actions never submit their containing form at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    await openFixture(page, "vue2", "?scenario=table", "integration-contracts");
+    if (platform === "vue2") await openFixture(page, "vue2", "?scenario=table", "integration-contracts");
+    else await openFixture(page, platform, "", "table-form");
     const expand = page.getByRole("button", { name: /행 확장|상세 보기|접기/ }).first();
     await expand.click();
     await expect(page.getByText("Detail", { exact: true })).toBeVisible();

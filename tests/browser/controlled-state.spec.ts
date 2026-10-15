@@ -9,7 +9,7 @@ const trigger = (page: Page, platform: string) => page.getByRole(platform === "v
 const rows = (page: Page, platform: string) => page.getByRole(platform === "native" ? "radio" : "option");
 const tabs = [{ name: "first", label: "First" }, { name: "second", label: "Second" }];
 
-for (const platform of ["react", "native", "vue2"]) {
+for (const platform of ["react", "native", "vue2", "vue3"]) {
   test(`${platform} Select controlled opening can be rejected and missing keys use original indices`, async ({ page }) => {
     await fixture(page, platform); await configure(page, { controlled: true, accept: false, pageSize: 0 });
     await trigger(page, platform).click(); await expect(events(page)).toHaveText('[["open",true]]'); await expect(input(page)).toHaveCount(0);
@@ -143,7 +143,7 @@ for (const platform of ["react", "native", "vue2"]) {
     for (const title of ["One", "Two", "Three"]) await expect(page.getByRole("button", { name: title, exact: true })).toHaveAttribute("aria-expanded", title === "One" ? "true" : "false");
   });
 }
-for (const platform of ["react", "vue2"]) test(`${platform} Select IME keys preserve focus, input defaults and parent layer`, async ({ page }) => {
+for (const platform of ["react", "vue2", "vue3"]) test(`${platform} Select IME keys preserve focus, input defaults and parent layer`, async ({ page }) => {
   await fixture(page, platform, "modal"); await trigger(page, platform).click(); await input(page).fill("zero"); await reset(page);
   for (const guard of ["composition", "isComposing", "keyCode"]) {
     if (guard === "composition") await input(page).dispatchEvent("compositionstart");
@@ -161,8 +161,8 @@ for (const platform of ["react", "vue2"]) test(`${platform} Select IME keys pres
   await page.keyboard.press("Escape"); await expect(input(page)).toHaveCount(0); await expect(page.getByRole("dialog", { name: "Editor" })).toBeVisible();
   await expect(events(page)).toHaveText(platform === "vue2" ? '[["open",false],["search",""]]' : '[["open",false]]');
 });
-for (const method of ["click", "Enter", "Space", "Escape", "outside"]) test(`React Dropdown ${method} closes exactly once after action`, async ({ page }) => {
-  await fixture(page, "react", "dropdown");
+for (const platform of ["react", "vue3"]) for (const method of ["click", "Enter", "Space", "Escape", "outside"]) test(`${platform === "react" ? "React" : platform} Dropdown ${method} closes exactly once after action`, async ({ page }) => {
+  await fixture(page, platform, "dropdown");
   const menu = page.getByRole("button", { name: "Menu", exact: true });
   await menu.click(); await expect(page.getByRole("menuitem")).toBeVisible(); await reset(page);
   if (method === "click") await page.getByRole("menuitem").click();

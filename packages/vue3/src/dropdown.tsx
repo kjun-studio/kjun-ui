@@ -51,7 +51,9 @@ export const KjunDropdown = defineComponent({
     const bindTrigger = () => {
       const node = button();
       if (!node) return;
-      if (!node.id) node.id = controlId();
+      // Like React: an explicit triggerId wins, otherwise the trigger keeps its own id.
+      if (props.triggerId) node.id = props.triggerId;
+      else if (!node.id) node.id = controlId();
       node.setAttribute("aria-haspopup", "menu");
       node.setAttribute("aria-expanded", String(open.value));
       if (open.value) node.setAttribute("aria-controls", popupId.value); else node.removeAttribute("aria-controls");

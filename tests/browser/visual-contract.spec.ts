@@ -4,7 +4,7 @@ import { presetConfig } from '../../shared/example-registry';
 import { openFixture } from './packed-fixture';
 const box = async (node:Locator) => (await node.boundingBox())!;
 const middle = (r:{y:number;height:number}) => r.y + r.height/2;
-for(const platform of ['react','vue2','native']) {
+for(const platform of ['react','vue2','vue3','native']) {
   test(`${platform}: compound controls retain their geometry, width options and number interactions`,async({page})=>{
     for(const [size,height] of [['sm',32],['md',40],['lg',48]] as const) {
       await page.setViewportSize({width:768,height:1000});
@@ -173,7 +173,7 @@ const sameGeometry = (a: Awaited<ReturnType<typeof geometry>>, b: Awaited<Return
   for (const [index, row] of a.rows.entries()) expect(Math.abs(row.height - b.rows[index].height)).toBeLessThanOrEqual(1);
 };
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: market loading and completion retain row and column geometry`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const width of [320, 375, 768, 1280]) for (const query of ['', '?fixed', '?no-actions', ...(platform === 'native' ? [] : ['?css', '?legacy'])]) {
@@ -269,7 +269,7 @@ test('updated component layouts remain usable at actual 200% browser zoom', asyn
   context.setDefaultTimeout(30000);
   try {
     const page = await context.newPage();
-    for (const platform of ['react', 'vue2', 'native']) {
+    for (const platform of ['react', 'vue2', 'vue3', 'native']) {
       await open(page, platform);
       expect(await page.evaluate(() => devicePixelRatio)).toBe(2);
       for (const id of ['navigation', 'form-md', 'empty', 'loaded', 'select']) expect(await page.getByTestId(id).evaluate(el => el.scrollWidth <= el.clientWidth + 1), platform + ' ' + id).toBe(true);
@@ -282,7 +282,7 @@ test('updated component layouts remain usable at actual 200% browser zoom', asyn
 });
 
 // TimePicker, Pagination, BottomNavigation and quantity refinements
-const platforms = ['react', 'vue2', 'native'];
+const platforms = ['react', 'vue2', 'vue3', 'native'];
 const output = 'artifacts/visual-refinement-20260928';
 async function configure(page: Page, name: string, settings: object = {}, values: object = {}, palette = 'default') {
   const defaults = presetConfig(name);

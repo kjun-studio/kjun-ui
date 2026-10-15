@@ -55,7 +55,7 @@ export function renderFoundationExample(name: string, tools: ExampleTools): any 
             ])),
         ] : []),
         h("FoundationScreen", { overlay: settings.overlay, height: keyboard ? 400 : 520 }, content, { header, dock }),
-        ...(layers ? [h("KjunModal", { open: get("open", false), onOpenChange: change("open"), title: "변경 내용 확인", height: platform === "vue2" ? "440px" : 440 }, h("Stack", {}, [
+        ...(layers ? [h("KjunModal", { open: get("open", false), onOpenChange: change("open"), title: "변경 내용 확인", height: platform === "native" ? 440 : "440px" }, h("Stack", {}, [
           h("Text", {}, "배경의 하단 CTA는 이 창을 닫은 뒤 다시 사용할 수 있습니다."),
           h("KjunPopover", { ariaLabel: "모달 팝업", open: get("modalPopup", false), onOpenChange: change("modalPopup") },
             button("새 모달 열기", () => set("childOpen", true)), { trigger: button("모달 안 팝업", () => {}) }),

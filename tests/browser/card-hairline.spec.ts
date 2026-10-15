@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 
-for (const platform of ['react', 'vue2', 'native']) for (const density of [1, 2]) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) for (const density of [1, 2]) {
   test(`${platform}: half-pixel card outline stays lighter at ${density}x density`, async ({ browser }) => {
     const context = await browser.newContext({ deviceScaleFactor: density, baseURL: 'http://127.0.0.1:4173' });
     try {

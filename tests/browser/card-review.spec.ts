@@ -11,7 +11,7 @@ const textStyle = (node: Locator) => node.evaluate(el => {
   }
   throw Error('No text');
 });
-const platforms = ['react', 'vue2', 'native'];
+const platforms = ['react', 'vue2', 'vue3', 'native'];
 for (const platform of platforms) {
   test(`${platform}: packed card roles respond to geometry and foreground tokens`, async ({ page }) => {
     await openFixture(page, platform, '', 'card-review');

@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
-const platforms = ['vue2', 'react', 'native'] as const;
+const platforms = ['vue2', 'vue3', 'react', 'native'] as const;
 const events = (page: Page) => page.evaluate(() => (window as any).contractEvents as { name: string; value?: any }[]);
 const clear = (page: Page) => page.evaluate(() => { (window as any).contractEvents = []; });
 const configure = (page: Page, props: object) => page.evaluate(props => (window as any).configureContract(props), props);

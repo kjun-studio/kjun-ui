@@ -19,7 +19,7 @@ async function cappedScroll(child: Locator, maximum: number) {
   }, maximum)).toBe(true);
 }
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: packed size roles drive Spinner, Progress, icons and selection`, async ({ page }, info) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'size-contracts');
@@ -105,7 +105,7 @@ for (const platform of ['react', 'vue2', 'native']) {
     await openFixture(page, platform, '', 'size-contracts');
     await page.getByRole('button', { name: '기본 패널 열기', exact: true }).click();
     const drawer = page.getByRole('dialog').filter({ hasText: '기본 크기 패널' });
-    const drawerPanel = platform === 'native' ? page.getByText('기본 크기 패널', { exact: true }).locator('../..') : platform === 'react' ? drawer.locator('..') : drawer;
+    const drawerPanel = platform === 'native' ? page.getByText('기본 크기 패널', { exact: true }).locator('../..') : platform === 'react' || platform === 'vue3' ? drawer.locator('..') : drawer;
     await expect(drawerPanel).toHaveCSS('width', px(e.drawer.width));
     await expect(drawer.getByRole('button', { name: '닫기', exact: true }).locator('svg')).toHaveCSS('width', px(e.drawer.closeIconSize));
     await drawer.getByRole('button', { name: '닫기', exact: true }).click();
@@ -127,7 +127,7 @@ for (const platform of ['react', 'vue2', 'native']) {
     await expect(page.getByTestId('events')).toHaveText('25/false/1');
     await page.getByRole('button', { name: '크기 도움말 열기', exact: true }).hover();
     const tooltip = page.getByRole('tooltip'); await expect(tooltip).toBeVisible();
-    if (platform === 'react') await expect(tooltip.locator('svg')).toHaveCSS('width', px(e.tooltip.arrowSize));
+    if (platform === 'react' || platform === 'vue3') await expect(tooltip.locator('svg')).toHaveCSS('width', px(e.tooltip.arrowSize));
     const textBox = platform === 'native' ? page.getByText('크기 도움말', { exact: true }).locator('..') : tooltip;
     await expect(textBox).toHaveCSS('max-width', px(e.tooltip.maxWidth));
   });

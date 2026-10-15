@@ -10,7 +10,7 @@ const textStyle = async (node: import('@playwright/test').Locator, ownText = fal
   }
   throw Error('No text in fixture');
 }, ownText);
-for(const platform of ['react','vue2','native']) {
+for(const platform of ['react','vue2','vue3','native']) {
   test(`${platform}: packed typography, geometry, foreground and focus roles`,async({page}, testInfo)=>{
     await openFixture(page,platform,'','typography');
     expect((await textStyle(page.getByTestId('body'))).size).toBe(tokens.typography.body.fontSizePx+'px');
@@ -72,7 +72,7 @@ for(const platform of ['react','vue2','native']) {
       await trigger.press(platform === 'native' ? 'Enter' : 'ArrowDown');
       expect((await textStyle(page.getByRole(platform === 'native' ? 'radio' : 'option',{name:'다른 옵션',exact:true})))).toMatchObject({size:tokens.typography.body.fontSizePx+'px',line:tokens.typography.body.lineHeightPx+'px'});
       await expect(page.getByRole(platform === 'native' ? 'radio' : 'option',{name:'선택 값',exact:true})).toHaveCSS('background-color','rgb(238, 221, 238)');
-      if(platform === 'react') await expect(page.getByRole('option',{name:'선택 값',exact:true})).toHaveCSS('outline-color','rgb(255, 0, 255)');
+      if(platform === 'react' || platform === 'vue3') await expect(page.getByRole('option',{name:'선택 값',exact:true})).toHaveCSS('outline-color','rgb(255, 0, 255)');
       await page.keyboard.press('Escape');
       await expect(page.getByRole(platform === 'native' ? 'radio' : 'option',{name:'다른 옵션',exact:true})).toHaveCount(0);
     }
@@ -154,7 +154,7 @@ test('typography stays usable at actual 200% browser zoom',async({}, testInfo)=>
   const context=await chromium.launchPersistentContext(directory,{channel:'chromium',headless:true,viewport:null,baseURL:process.env.KJUN_TEST_URL||'http://127.0.0.1:4173',args:['--window-size=780,1100']});
   try {
     const page=context.pages()[0];
-    for(const platform of ['react','vue2','native']) {
+    for(const platform of ['react','vue2','vue3','native']) {
       await openFixture(page,platform,'','typography');
       expect(await page.evaluate(()=>({ratio:devicePixelRatio,width:innerWidth}))).toEqual({ratio:2,width:390});
       await page.getByRole('textbox',{name:'입력 md'}).fill('확대한 화면의 입력');

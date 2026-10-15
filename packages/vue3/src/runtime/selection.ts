@@ -36,7 +36,8 @@ export function useComboboxModel<T extends SelectOption>(props: () => {
   });
   const query = ref(selectedLabel.value), open = ref(false);
   // Recreated option objects do not replace an in-progress search draft.
-  watch(() => [props().value, selectedLabel.value], () => { query.value = selectedLabel.value; });
+  // Separate sources compare by value: a new options array with the same selected label keeps the draft.
+  watch([() => props().value, selectedLabel], () => { query.value = selectedLabel.value; });
   watch(() => props().disabled, value => { if (value) open.value = false; });
   return {
     open,

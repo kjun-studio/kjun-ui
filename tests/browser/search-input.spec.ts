@@ -17,8 +17,12 @@ const configureState = (page: Page, next: object) => page.evaluate(next => (wind
 const stateFixture = (page: Page, platform: string, scenario: string) => openFixture(page, platform, "?scenario=" + scenario, "state-contracts");
 
 const events = (page: Page) => page.getByTestId('events');
+// Vue 3 keeps the Vue 2 state-contracts search scenario in its composition fixture.
+const searchStateFixture = (page: Page, platform: string) =>
+  platform === 'vue2' ? stateFixture(page, 'vue2', 'search') : compositionFixture(page, platform, '?case=state-search');
+const label = (platform: string) => platform === 'vue2' ? 'Vue' : platform;
 
-for (const platform of ['react', 'native']) {
+for (const platform of ['react', 'native', 'vue3']) {
   for (const next of [{ value: 'External' }, { disabled: true }, { debounce: 500 }, { async: true }, { show: false }]) {
     test(`${platform} SearchInput cancels pending draft on ${JSON.stringify(next)}`, async ({ page }) => {
       await openFixture(page, platform, '?plain&debounce=1000', 'review-composition');
@@ -69,8 +73,8 @@ for (const platform of ['react', 'native']) {
 
 }
 
-test('Vue SearchInput consumes one Escape before its parent Modal', async ({ page }) => {
-  await compositionFixture(page, 'vue2', '?modal');
+for (const platform of ['vue2', 'vue3']) test(`${label(platform)} SearchInput consumes one Escape before its parent Modal`, async ({ page }) => {
+  await compositionFixture(page, platform, '?modal');
   await page.getByRole('button', { name: 'Open', exact: true }).click();
   const dialog = page.getByRole('dialog'), input = page.getByRole('combobox', { name: 'Search' });
   await input.click(); await expect.poll(() => requests(page)).toHaveLength(1);
@@ -82,7 +86,7 @@ test('Vue SearchInput consumes one Escape before its parent Modal', async ({ pag
   await expect(page.getByRole('button', { name: 'Open', exact: true })).toBeFocused();
 });
 
-for (const platform of ['react', 'native', 'vue2']) {
+for (const platform of ['react', 'native', 'vue2', 'vue3']) {
   for (const mode of ['async', 'plain', 'debounced', 'rejected']) test(`${platform} SearchInput clear emits one immediate value then clear (${mode})`, async ({ page }) => {
     const plain = mode === 'plain' || mode === 'debounced';
     await compositionFixture(page, platform, plain ? `?plain&debounce=${mode === 'debounced' ? 1000 : 0}` : mode === 'rejected' ? '?reject' : '');
@@ -110,14 +114,14 @@ for (const platform of ['react', 'native', 'vue2']) {
   test(`${platform} SearchInput selection emits a value before select without clearing or submitting`, async ({ page }) => {
     await compositionFixture(page, platform); const input = await search(page, platform);
     await expect.poll(() => requests(page)).toHaveLength(1); await resolve(page);
-    if (platform === 'react') {
+    if (platform === 'react' || platform === 'vue3') {
       await expect(page.getByRole('option')).toHaveCount(3);
       await input.press('ArrowDown'); await input.press('Enter');
     } else await page.getByRole(platform === 'native' ? 'radio' : 'option', { name: 'Missing', exact: true }).click();
     await expect(page.getByTestId('events')).toHaveText('[["value","Missing"],["select"]]');
     await expect(page.locator('input').first()).toHaveValue('Missing');
     await expect(page.getByRole(platform === 'native' ? 'dialog' : 'listbox')).toHaveCount(0);
-    if (platform === 'react') {
+    if (platform === 'react' || platform === 'vue3') {
       await input.press('Enter');
       await expect(page.getByTestId('events')).toHaveText('[["value","Missing"],["select"],["enter"]]');
     }
@@ -141,7 +145,7 @@ for (const platform of ['react', 'native', 'vue2']) {
   });
 }
 
-for (const platform of ["react", "native", "vue2"]) {
+for (const platform of ["react", "native", "vue2", "vue3"]) {
   test(`${platform} SearchInput invalidates requests when minChars changes and resumes after lowering it`, async ({ page }) => {
     await page.clock.install(); await inputFixture(page, platform, "?control=search");
     let input = page.locator("input").first(); await input.click();
@@ -164,8 +168,8 @@ for (const platform of ["react", "native", "vue2"]) {
   });
 }
 
-test("Vue SearchInput cancels pending drafts on debounce and mode changes", async ({ page }) => {
-  await page.clock.install(); await stateFixture(page, "vue2", "search");
+for (const platform of ['vue2', 'vue3']) test(`${label(platform)} SearchInput cancels pending drafts on debounce and mode changes`, async ({ page }) => {
+  await page.clock.install(); await searchStateFixture(page, platform);
   await configureState(page, { remote: false });
   const input = page.getByRole("textbox", { name: "Search" });
   await input.fill("old interval"); await configureState(page, { debounce: 2000 });
@@ -173,13 +177,13 @@ test("Vue SearchInput cancels pending drafts on debounce and mode changes", asyn
   await input.fill("old mode"); await configureState(page, { remote: true });
   await page.clock.runFor(2100); await expect(page.getByTestId("events")).toHaveText("[]");
   await configureState(page, { remote: false, value: "", debounce: 1000 });
-  await input.fill("draft"); await page.getByRole("button", { name: "검색어 지우기" }).click();
+  await input.fill("draft"); await page.getByRole("button", { name: /입력 지우기|검색어 지우기/ }).click();
   await expect(input).toHaveValue(""); await page.clock.runFor(1100);
   await expect(page.getByTestId("events")).toHaveText('[""]');
 });
 
-test("Vue SearchInput aborts remote results after external resets, disabling and mode changes", async ({ page }) => {
-  await page.clock.install(); await stateFixture(page, "vue2", "search");
+for (const platform of ['vue2', 'vue3']) test(`${label(platform)} SearchInput aborts remote results after external resets, disabling and mode changes`, async ({ page }) => {
+  await page.clock.install(); await searchStateFixture(page, platform);
   const input = page.getByRole("combobox", { name: "Search" });
   await input.fill("old"); await page.clock.runFor(350);
   await configureState(page, { value: "new" }); await page.clock.runFor(350);

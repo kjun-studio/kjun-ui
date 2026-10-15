@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { openFixture } from "./packed-fixture";
 // Remote search races are covered by runtime-search/state-contracts and feedback queues by api-reference.
-for (const platform of ["react", "vue2", "native"]) {
+for (const platform of ["react", "vue2", "vue3", "native"]) {
   test(`${platform} packed controls and menu support selection and disabled options`, async ({
     page,
   }) => {
@@ -12,7 +12,7 @@ for (const platform of ["react", "vue2", "native"]) {
     await expect(page.getByRole("checkbox", { name: "체크" })).toBeChecked();
     await page.getByText("스위치", { exact: true }).click();
     await expect(page.getByRole("switch", { name: "스위치" })).toBeChecked();
-    if (platform === "react") {
+    if (platform === "react" || platform === "vue3") {
       await page.getByRole("radio", { name: "A", exact: true }).focus();
       await page.keyboard.press("ArrowRight");
     } else {
@@ -24,7 +24,7 @@ for (const platform of ["react", "vue2", "native"]) {
     await select.click();
     await page.getByRole(platform === "native" ? "radio" : "option", { name: "체리", exact: true }).click();
     await expect(page.getByTestId("selected")).toHaveText("c");
-    if (platform === "react") {
+    if (platform === "react" || platform === "vue3") {
       await expect(select).toBeFocused();
       await page.getByRole("tab", { name: "첫 탭" }).focus();
       await page.keyboard.press("ArrowRight");
@@ -44,10 +44,10 @@ for (const platform of ["react", "vue2", "native"]) {
   });
 }
 
-test("React packed menus and feedback preserve scope during a mode change", async ({
+for (const platform of ["react", "vue3"]) test(`${platform === "react" ? "React" : platform} packed menus and feedback preserve scope during a mode change`, async ({
   page,
 }) => {
-  await openFixture(page, "react", "", "expanded");
+  await openFixture(page, platform, "", "expanded");
   await page.getByRole("button", { name: "메뉴 열기" }).click();
   await expect(page.getByRole("menuitem", { name: "메뉴 항목" })).toBeVisible();
   await page.keyboard.press("Escape");

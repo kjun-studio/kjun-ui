@@ -130,7 +130,8 @@ export const KjunModal = defineComponent({
       const footer = slots.footer?.();
       return (
         <Teleport to={to}>
-          <div ref={overlay} data-motion="modal" data-motion-open={String(motion.active())} class="kjun-scope kjun-modal-overlay"
+          <div ref={overlay} data-motion="modal" data-motion-open={String(motion.active())} data-entering={props.open && !motion.active() ? "true" : undefined}
+            class="kjun-scope kjun-modal-overlay"
             style={{ zIndex: layer.zIndex.value }} inert={!props.open || !layer.active.value} {...press}>
             <div ref={modal} class="kjun-modal" data-size={props.size} data-fixed={String(!!props.height)} style={{
               zIndex: layer.state.zIndex(layer.id, "content"),

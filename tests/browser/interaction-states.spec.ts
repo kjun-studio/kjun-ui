@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 const configureButton = (page: Page, next: object) => page.evaluate(next => (window as any).configureButton(next), next);
 const button = (page: Page) => page.getByTestId('text').getByRole('button').first();
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: press, cancellation and becoming unavailable never execute a stale action`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'button-design');

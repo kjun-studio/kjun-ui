@@ -2,7 +2,7 @@ import { test, expect, chromium, type Page, type Locator } from '@playwright/tes
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { openFixture } from './packed-fixture';
 import { tokens } from '../../packages/tokens/dist/index.js';
-const platforms = ['react','vue2','native'];
+const platforms = ['react','vue2','vue3','native'];
 const outer = (page: Page,id:string) => page.getByTestId(id).locator(':scope > *').first();
 const px = (value:number) => value+'px';
 async function geometry(node:Locator,expected:Record<string,string>){for(const [property,value] of Object.entries(expected))await expect(node).toHaveCSS(property,value);}
@@ -27,9 +27,9 @@ for (const platform of platforms) {
     await page.setViewportSize({width:390,height:1100});
     await geometry(tableCard(page,platform),{'padding-left':px(e.tableCard.padding),'border-radius':px(e.tableCard.radius)});
     await page.getByRole('button',{name:'패널 열기',exact:true}).click();
-    const drawer=page.locator(platform==='react'?'.kjun-drawer':platform==='vue2'?'.kjun-drawer-panel':'[aria-label="검사 패널"]');
+    const drawer=page.locator(platform==='react'||platform==='vue3'?'.kjun-drawer':platform==='vue2'?'.kjun-drawer-panel':'[aria-label="검사 패널"]');
     await geometry(drawer,{'border-top-left-radius':px(e.drawer.bottomRadius),'border-top-right-radius':px(e.drawer.bottomRadius),'border-bottom-left-radius':px(e.drawer.radius)});
-    await geometry(platform==='react'?drawer.locator('.kjun-drawer-header'):drawer.locator(':scope > *').first(),{'padding-left':px(e.drawer.paddingX),'padding-top':px(e.drawer.paddingY)});
+    await geometry(platform==='react'||platform==='vue3'?drawer.locator('.kjun-drawer-header'):drawer.locator(':scope > *').first(),{'padding-left':px(e.drawer.paddingX),'padding-top':px(e.drawer.paddingY)});
     await expect(drawer).toHaveCSS('box-shadow',new RegExp(`${tokens.extensions.drawer.elevation[0].blurRadius}px`));
     await drawer.screenshot({path: testInfo.outputPath(`${platform}-drawer.png`)});
     await page.keyboard.press('Escape');await expect(drawer).toBeHidden();
@@ -72,7 +72,7 @@ for (const platform of platforms) {
   });
 }
 
-test('geometry fits at actual 200% browser zoom on all three platforms',async({}, testInfo)=>{
+test('geometry fits at actual 200% browser zoom on all platforms',async({}, testInfo)=>{
   test.setTimeout(180000);const directory=await mkdtemp('/tmp/kjun-geometry-zoom-');await mkdir(directory+'/Default');
   await writeFile(directory+'/Default/Preferences',JSON.stringify({partition:{default_zoom_level:{x:Math.log(2)/Math.log(1.2)}}}));
   const context=await chromium.launchPersistentContext(directory,{channel:'chromium',headless:true,viewport:null,baseURL:process.env.KJUN_TEST_URL||'http://127.0.0.1:4173',args:['--window-size=780,1100']});

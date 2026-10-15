@@ -18,7 +18,7 @@ async function described(page: Page, input: Locator) {
   return (await page.locator(`[id="${id}"]`).textContent())?.trim();
 }
 
-for (const platform of ["react", "native", "vue2"]) {
+for (const platform of ["react", "native", "vue2", "vue3"]) {
   test(`${platform} quantity cancels its edit before dismissing the parent Modal`, async ({ page }) => {
     const input = await quantity(page, platform);
     await input.fill("9"); await input.press("Escape");
