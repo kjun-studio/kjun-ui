@@ -18,7 +18,7 @@ Card uses `surface` for its background/foreground roles, `padding` for section i
 
 ## Tab panel state
 
-`KjunTabPane` children mount with their parent tabs and stay mounted when another tab is selected. Hidden panels are excluded from layout, keyboard navigation and accessibility navigation. Removing a pane or unmounting the tabs disposes its children. Effects and timers continue while a pane is hidden; use the controlled tab value to manage active requests or subscriptions. This contract is shared across React, Vue 2 and Native. Native browser tests do not certify device behavior.
+`KjunTabPane` children mount with their parent tabs and stay mounted when another tab is selected. Hidden panels are excluded from layout, keyboard navigation and accessibility navigation. Removing a pane or unmounting the tabs disposes its children. Effects and timers continue while a pane is hidden; use the controlled tab value to manage active requests or subscriptions. This contract is shared across React, Vue 3 and Native. Native browser tests do not certify device behavior.
 
 Disabled tabs block selection and auxiliary menu callbacks. Disabling or removing a tab during a press cancels its pending auxiliary action.
 

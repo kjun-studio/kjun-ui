@@ -1,6 +1,6 @@
 # @kjun-ui/icons
 
-Tabler 3.48.0 icon data for KJUN React, Vue 2 and React Native. MIT licensed.
+Tabler 3.48.0 icon data for KJUN React, Vue 3 and React Native. MIT licensed.
 Includes 5,166 outline icons and 1,054 filled variants. No framework dependency,
 network request or automatic global registration.
 
@@ -16,7 +16,7 @@ const icons = { rocket };
 ```
 
 Use the same `icons` prop on Native's `KjunProvider` (alongside project colors),
-or `:icons="icons"` in Vue 2. Each definition has `outline` and optional `filled`
+or `:icons="icons"` on Vue 3's `KjunProvider`. Each definition has `outline` and optional `filled`
 nodes. Child providers inherit parent registrations and override each variant.
 Registrations are scoped to the provider and update when its prop changes.
 

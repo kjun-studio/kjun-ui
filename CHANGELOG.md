@@ -2,6 +2,11 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.6.1 — 2026-10-15
+
+- npm에 표시되는 패키지 설명(README)에서 Vue 2 안내를 Vue 3로 고쳤습니다(`@kjun-ui/icons`, `@kjun-ui/react`, `@kjun-ui/native`). 코드 변경은 없습니다.
+- `@kjun-ui/vue3`도 다른 패키지처럼 GitHub Actions에서 provenance와 함께 배포합니다.
+
 ## 0.6.0 — 2026-10-15
 
 Vue 패키지를 Vue 3용 `@kjun-ui/vue3`로 새로 만들었습니다. `@kjun-ui/vue2`는 0.5.x가 마지막 버전이며 더 이상 갱신하지 않습니다. **깨지는 변경**입니다.
