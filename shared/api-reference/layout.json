@@ -1,7 +1,6 @@
 {
   "KjunAccordion": {
-    "vue2": [
-      "formatters",
+    "vue3": [
       "multiple",
       "tone"
     ],
@@ -17,8 +16,7 @@
     ]
   },
   "KjunAccordionItem": {
-    "vue2": [
-      "formatters",
+    "vue3": [
       "title",
       "defaultOpen",
       "disabled"
@@ -39,17 +37,16 @@
     ]
   },
   "KjunCard": {
-    "vue2": [
-      "dividers",
-      "formatters",
+    "vue3": [
       "title",
       "subtitle",
-      "elevation",
-      "border",
       "padding",
       "bodyPadding",
       "radius",
-      "surface"
+      "surface",
+      "elevation",
+      "border",
+      "dividers"
     ],
     "react": [
       "dividers",
@@ -93,16 +90,16 @@
     ]
   },
   "KjunDrawer": {
-    "vue2": [
-      "formatters",
-      "value",
+    "vue3": [
+      "open",
       "title",
       "position",
       "width",
       "closable",
       "closeOnOverlay",
       "closeOnEsc",
-      "noPadding"
+      "noPadding",
+      "ariaLabel"
     ],
     "react": [
       "open",
@@ -138,12 +135,9 @@
     ]
   },
   "KjunModal": {
-    "vue2": [
-      "formatters",
-      "footerSize",
-      "value",
+    "vue3": [
+      "open",
       "title",
-      "ariaLabel",
       "size",
       "closable",
       "closeOnOverlay",
@@ -158,7 +152,9 @@
       "loading",
       "noPadding",
       "height",
-      "confirmVariant"
+      "confirmVariant",
+      "footerSize",
+      "ariaLabel"
     ],
     "react": [
       "open",
@@ -218,10 +214,9 @@
     ]
   },
   "KjunPopover": {
-    "vue2": [
+    "vue3": [
       "noPadding",
-      "formatters",
-      "value",
+      "open",
       "manualTrigger",
       "matchTriggerWidth",
       "maxHeight",
@@ -260,8 +255,8 @@
     ]
   },
   "KjunScrollFade": {
-    "vue2": [
-      "formatters"
+    "vue3": [
+
     ],
     "react": [
       "children"

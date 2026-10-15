@@ -82,7 +82,7 @@ export function FoundationMotionGuide() {
         <summary>예제 실행 환경 안내</summary>
         <p>선택한 예제는 바로 조작할 수 있습니다. 모션은 직접 조작할 때 시작하며, 레이어와 알림은 시연 영역 안에서 열립니다.</p>
         <p>다른 예제 선택·초기화·플랫폼 전환은 열린 레이어와 알림, 진행 중인 전환을 정리합니다. 각 예제는 처음 상태에서 시작합니다.</p>
-        <p>Vue 2·React는 브라우저에서 실행합니다. React Native 선택은 Native Web 미리보기이며, iOS·Android 기기 검증은 별도로 필요합니다.</p>
+        <p>Vue 3·React는 브라우저에서 실행합니다. React Native 선택은 Native Web 미리보기이며, iOS·Android 기기 검증은 별도로 필요합니다.</p>
       </details>
     </section>
     <section id="interruption">

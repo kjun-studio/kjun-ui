@@ -1,5 +1,5 @@
 import { Teleport, cloneVNode, computed, defineComponent, isVNode, onBeforeUnmount, onMounted, onUpdated, reactive, ref, watch,
-  type ExtractPublicPropTypes, type PropType, type VNode } from "vue";
+  type ExtractPublicPropTypes, type PropType, type VNode, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { computeFloatingPosition } from "../../../shared/package-runtime/floating-position";
 import { installFocusVisible, isFocusVisible } from "../../../shared/package-runtime/focus-visible";
@@ -26,6 +26,10 @@ export const KjunPopover = defineComponent({
   name: "KjunPopover",
   props: kjunPopoverProps,
   emits: { "update:open": (_open: boolean) => true },
+  slots: Object as SlotsType<{
+    trigger?: (scope: { open: boolean }) => VNodeChild;
+    default?: (scope: { close: () => void }) => VNodeChild;
+  }>,
   setup(props, { slots, emit }) {
     const internal = ref(false);
     const open = computed(() => props.open ?? internal.value);
@@ -77,6 +81,7 @@ const openTooltips = new Set<() => void>();
 export const KjunTooltip = defineComponent({
   name: "KjunTooltip",
   props: kjunTooltipProps,
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     const open = ref(false);
     const layer = useLayer(() => open.value, () => open.value, "tooltip", () => { open.value = false; });
@@ -125,7 +130,7 @@ export const KjunTooltip = defineComponent({
       onPointerdown: hide,
     };
     return () => {
-      const [child, ...rest] = (slots.default?.() ?? []).filter(node => isVNode(node));
+      const [child, ...rest] = ((slots.default?.() ?? []) as VNode[]).filter(node => isVNode(node));
       const shown = open.value && !layer.blocked.value;
       // The tooltip joins any description the app already gave the control.
       const described = [(child as VNode | undefined)?.props?.["aria-describedby"], shown ? id : undefined].filter(Boolean).join(" ") || undefined;

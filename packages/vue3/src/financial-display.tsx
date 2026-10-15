@@ -1,4 +1,4 @@
-import { defineComponent, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { KjunBadge, type DisplaySize } from "./display";
@@ -68,6 +68,7 @@ export type KjunHeatmapCellProps = ExtractPublicPropTypes<typeof kjunHeatmapCell
 export const KjunHeatmapCell = defineComponent({
   name: "KjunHeatmapCell",
   props: kjunHeatmapCellProps,
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     return () => {
       const { value, min, max, mode } = props;

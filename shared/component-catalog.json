@@ -5,7 +5,7 @@
     "kind": "component",
     "owner": "KjunAnimatedNumber",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -30,7 +30,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/AnimatedNumber.vue",
+      "vue3": "packages/vue3/src/number-display.tsx",
       "react": "packages/react/src/number-display.tsx",
       "native": "packages/native/src/number-display.tsx"
     }
@@ -41,7 +41,7 @@
     "kind": "component",
     "owner": "KjunChartSkeleton",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -66,7 +66,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/ChartSkeleton.vue",
+      "vue3": "packages/vue3/src/skeletons.tsx",
       "react": "packages/react/src/skeletons.tsx",
       "native": "packages/native/src/skeletons.tsx"
     }
@@ -77,7 +77,7 @@
     "kind": "domain",
     "owner": "KjunCollectionMark",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -102,7 +102,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/CollectionMark.vue",
+      "vue3": "packages/vue3/src/financial-display.tsx",
       "react": "packages/react/src/financial-display.tsx",
       "native": "packages/native/src/financial-display.tsx"
     }
@@ -113,7 +113,7 @@
     "kind": "domain",
     "owner": "KjunDeviation",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -138,7 +138,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/Deviation.vue",
+      "vue3": "packages/vue3/src/financial-display.tsx",
       "react": "packages/react/src/financial-display.tsx",
       "native": "packages/native/src/financial-display.tsx"
     }
@@ -149,7 +149,7 @@
     "kind": "component",
     "owner": "KjunEmpty",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -174,7 +174,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/Empty.vue",
+      "vue3": "packages/vue3/src/display.tsx",
       "react": "packages/react/src/display.tsx",
       "native": "packages/native/src/display-primitives.tsx"
     }
@@ -185,7 +185,7 @@
     "kind": "domain",
     "owner": "KjunExecutionStatusBadge",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -210,7 +210,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/ExecutionStatusBadge.vue",
+      "vue3": "packages/vue3/src/financial-display.tsx",
       "react": "packages/react/src/financial-display.tsx",
       "native": "packages/native/src/financial-display.tsx"
     }
@@ -221,7 +221,7 @@
     "kind": "component",
     "owner": "KjunFormSkeleton",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -246,7 +246,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/FormSkeleton.vue",
+      "vue3": "packages/vue3/src/skeletons.tsx",
       "react": "packages/react/src/skeletons.tsx",
       "native": "packages/native/src/skeletons.tsx"
     }
@@ -257,7 +257,7 @@
     "kind": "domain",
     "owner": "KjunFreshness",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -282,7 +282,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/Freshness.vue",
+      "vue3": "packages/vue3/src/number-display.tsx",
       "react": "packages/react/src/number-display.tsx",
       "native": "packages/native/src/number-display.tsx"
     }
@@ -293,7 +293,7 @@
     "kind": "component",
     "owner": "KjunHeatmapCell",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -318,7 +318,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/HeatmapCell.vue",
+      "vue3": "packages/vue3/src/financial-display.tsx",
       "react": "packages/react/src/financial-display.tsx",
       "native": "packages/native/src/financial-display.tsx"
     }
@@ -329,7 +329,7 @@
     "kind": "component",
     "owner": "KjunKpiHero",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -354,7 +354,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/KpiHero.vue",
+      "vue3": "packages/vue3/src/kpi.tsx",
       "react": "packages/react/src/kpi.tsx",
       "native": "packages/native/src/kpi-hero.tsx"
     }
@@ -365,7 +365,7 @@
     "kind": "component",
     "owner": "KjunKpiRow",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -390,7 +390,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/KpiRow.vue",
+      "vue3": "packages/vue3/src/kpi.tsx",
       "react": "packages/react/src/kpi.tsx",
       "native": "packages/native/src/kpi-row.tsx"
     }
@@ -401,7 +401,7 @@
     "kind": "component",
     "owner": "KjunListSkeleton",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -426,7 +426,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/ListSkeleton.vue",
+      "vue3": "packages/vue3/src/skeletons.tsx",
       "react": "packages/react/src/skeletons.tsx",
       "native": "packages/native/src/skeletons.tsx"
     }
@@ -437,7 +437,7 @@
     "kind": "domain",
     "owner": "KjunMarketCards",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -462,7 +462,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/MarketCards.vue",
+      "vue3": "packages/vue3/src/market-cards.tsx",
       "react": "packages/react/src/market-cards.tsx",
       "native": "packages/native/src/market-cards.tsx"
     }
@@ -473,7 +473,7 @@
     "kind": "domain",
     "owner": "KjunMarketSimpleList",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -498,7 +498,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/MarketSimpleList.vue",
+      "vue3": "packages/vue3/src/market-list.tsx",
       "react": "packages/react/src/market-list.tsx",
       "native": "packages/native/src/market-list.tsx"
     }
@@ -509,7 +509,7 @@
     "kind": "domain",
     "owner": "KjunMarketTable",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -534,7 +534,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/MarketTable.vue",
+      "vue3": "packages/vue3/src/market-table.tsx",
       "react": "packages/react/src/market-table.tsx",
       "native": "packages/native/src/market-table.tsx"
     }
@@ -545,7 +545,7 @@
     "kind": "domain",
     "owner": "KjunMarketTableSkeleton",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -570,7 +570,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/MarketTableSkeleton.vue",
+      "vue3": "packages/vue3/src/market-parts.tsx",
       "react": "packages/react/src/market-skeleton.tsx",
       "native": "packages/native/src/market-skeleton.tsx"
     }
@@ -581,7 +581,7 @@
     "kind": "component",
     "owner": "KjunPopover",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -606,7 +606,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/Popover.vue",
+      "vue3": "packages/vue3/src/popover.tsx",
       "react": "packages/react/src/layers.tsx",
       "native": "packages/native/src/popover.tsx"
     }
@@ -617,7 +617,7 @@
     "kind": "domain",
     "owner": "KjunPriceCell",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -642,7 +642,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/PriceCell.vue",
+      "vue3": "packages/vue3/src/number-display.tsx",
       "react": "packages/react/src/number-display.tsx",
       "native": "packages/native/src/number-display.tsx"
     }
@@ -653,7 +653,7 @@
     "kind": "component",
     "owner": "KjunProgressCell",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -678,7 +678,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/ProgressCell.vue",
+      "vue3": "packages/vue3/src/financial-display.tsx",
       "react": "packages/react/src/financial-display.tsx",
       "native": "packages/native/src/financial-display.tsx"
     }
@@ -689,7 +689,7 @@
     "kind": "domain",
     "owner": "KjunSignedValue",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -714,7 +714,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/SignedValue.vue",
+      "vue3": "packages/vue3/src/number-display.tsx",
       "react": "packages/react/src/number-display.tsx",
       "native": "packages/native/src/number-display.tsx"
     }
@@ -725,7 +725,7 @@
     "kind": "component",
     "owner": "KjunSkeleton",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -750,7 +750,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/Skeleton.vue",
+      "vue3": "packages/vue3/src/display.tsx",
       "react": "packages/react/src/display.tsx",
       "native": "packages/native/src/skeleton-base.tsx"
     }
@@ -761,7 +761,7 @@
     "kind": "component",
     "owner": "KjunSparkline",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -786,7 +786,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/Sparkline.vue",
+      "vue3": "packages/vue3/src/financial-display.tsx",
       "react": "packages/react/src/financial-display.tsx",
       "native": "packages/native/src/financial-display.tsx"
     }
@@ -797,7 +797,7 @@
     "kind": "component",
     "owner": "KjunTable",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -822,7 +822,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/Table.vue",
+      "vue3": "packages/vue3/src/table.tsx",
       "react": "packages/react/src/table-view.tsx",
       "native": "packages/native/src/table-view.tsx"
     }
@@ -833,7 +833,7 @@
     "kind": "component",
     "owner": "KjunTooltip",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -858,7 +858,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/Tooltip.vue",
+      "vue3": "packages/vue3/src/popover.tsx",
       "react": "packages/react/src/layers.tsx",
       "native": "packages/native/src/popover.tsx"
     }
@@ -869,7 +869,7 @@
     "kind": "internal",
     "owner": "KjunTable",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -893,7 +893,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/data-display/table/TableCards.vue",
+      "vue3": "packages/vue3/src/table-parts.tsx",
       "react": "packages/react/src/table-view.tsx",
       "native": "packages/native/src/table-view.tsx"
     }
@@ -904,7 +904,7 @@
     "kind": "component",
     "owner": "KjunAlert",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -929,7 +929,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/feedback/Alert.vue",
+      "vue3": "packages/vue3/src/display.tsx",
       "react": "packages/react/src/display.tsx",
       "native": "packages/native/src/display-primitives.tsx"
     }
@@ -940,7 +940,7 @@
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -965,7 +965,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/feedback/ConfirmModal.vue",
+      "vue3": "packages/vue3/src/feedback.tsx",
       "react": "packages/react/src/feedback.tsx",
       "native": "packages/native/src/feedback.tsx"
     }
@@ -976,7 +976,7 @@
     "kind": "component",
     "owner": "KjunDataState",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1001,7 +1001,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/feedback/DataState.vue",
+      "vue3": "packages/vue3/src/data-state.tsx",
       "react": "packages/react/src/data-state.tsx",
       "native": "packages/native/src/data-state.tsx"
     }
@@ -1012,7 +1012,7 @@
     "kind": "component",
     "owner": "KjunErrorBoundary",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1037,7 +1037,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/feedback/ErrorBoundary.vue",
+      "vue3": "packages/vue3/src/data-state.tsx",
       "react": "packages/react/src/feedback.tsx",
       "native": "packages/native/src/feedback.tsx"
     }
@@ -1048,7 +1048,7 @@
     "kind": "component",
     "owner": "KjunProgress",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1073,7 +1073,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/feedback/Progress.vue",
+      "vue3": "packages/vue3/src/display.tsx",
       "react": "packages/react/src/display.tsx",
       "native": "packages/native/src/display-primitives.tsx"
     }
@@ -1084,7 +1084,7 @@
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1109,7 +1109,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/feedback/PromptModal.vue",
+      "vue3": "packages/vue3/src/feedback.tsx",
       "react": "packages/react/src/feedback.tsx",
       "native": "packages/native/src/feedback.tsx"
     }
@@ -1120,7 +1120,7 @@
     "kind": "component",
     "owner": "KjunSpinner",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1145,7 +1145,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/feedback/Spinner.vue",
+      "vue3": "packages/vue3/src/display.tsx",
       "react": "packages/react/src/display.tsx",
       "native": "packages/native/src/display-primitives.tsx"
     }
@@ -1156,7 +1156,7 @@
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1181,7 +1181,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/feedback.js",
+      "vue3": "packages/vue3/src/feedback.tsx",
       "react": "packages/react/src/feedback.tsx",
       "native": "packages/native/src/feedback.tsx"
     }
@@ -1192,7 +1192,7 @@
     "kind": "internal",
     "owner": "KjunFeedbackProvider",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1217,7 +1217,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/feedback.js",
+      "vue3": "packages/vue3/src/feedback.tsx",
       "react": "packages/react/src/feedback.tsx",
       "native": "packages/native/src/feedback.tsx"
     }
@@ -1228,7 +1228,7 @@
     "kind": "component",
     "owner": "KjunSearchInput",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1253,7 +1253,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/form/BaseSearchInput.vue",
+      "vue3": "packages/vue3/src/search-input.tsx",
       "react": "packages/react/src/search-input.tsx",
       "native": "packages/native/src/search-input.tsx"
     }
@@ -1264,7 +1264,7 @@
     "kind": "component",
     "owner": "KjunCheckbox",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1289,7 +1289,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/form/Checkbox.vue",
+      "vue3": "packages/vue3/src/controls.tsx",
       "react": "packages/react/src/controls.tsx",
       "native": "packages/native/src/choice-controls.tsx"
     }
@@ -1300,7 +1300,7 @@
     "kind": "component",
     "owner": "KjunCombobox",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1325,7 +1325,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/form/Combobox.vue",
+      "vue3": "packages/vue3/src/combobox.tsx",
       "react": "packages/react/src/combobox.tsx",
       "native": "packages/native/src/combobox.tsx"
     }
@@ -1336,7 +1336,7 @@
     "kind": "component",
     "owner": "KjunDatePicker",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1361,7 +1361,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/form/DatePicker.vue",
+      "vue3": "packages/vue3/src/date-picker.tsx",
       "react": "packages/react/src/date-picker.tsx",
       "native": "packages/native/src/date-picker.tsx"
     }
@@ -1372,7 +1372,7 @@
     "kind": "component",
     "owner": "KjunFormActions",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1397,7 +1397,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/form/FormActions.vue",
+      "vue3": "packages/vue3/src/modal.tsx",
       "react": "packages/react/src/modal.tsx",
       "native": "packages/native/src/modal.tsx"
     }
@@ -1408,7 +1408,7 @@
     "kind": "component",
     "owner": "KjunFormGroup",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1433,7 +1433,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/form/FormGroup.vue",
+      "vue3": "packages/vue3/src/input.tsx",
       "react": "packages/react/src/input.tsx",
       "native": "packages/native/src/input.tsx"
     }
@@ -1444,7 +1444,7 @@
     "kind": "component",
     "owner": "KjunRadio",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1469,7 +1469,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/form/Radio.vue",
+      "vue3": "packages/vue3/src/controls.tsx",
       "react": "packages/react/src/controls.tsx",
       "native": "packages/native/src/choice-controls.tsx"
     }
@@ -1480,7 +1480,7 @@
     "kind": "component",
     "owner": "KjunRadioGroup",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1505,7 +1505,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/form/RadioGroup.vue",
+      "vue3": "packages/vue3/src/controls.tsx",
       "react": "packages/react/src/controls.tsx",
       "native": "packages/native/src/choice-controls.tsx"
     }
@@ -1516,7 +1516,7 @@
     "kind": "component",
     "owner": "KjunSelect",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1541,7 +1541,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/form/Select.vue",
+      "vue3": "packages/vue3/src/select-control.tsx",
       "react": "packages/react/src/select-control.tsx",
       "native": "packages/native/src/select-control.tsx"
     }
@@ -1552,7 +1552,7 @@
     "kind": "component",
     "owner": "KjunSwitch",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1577,7 +1577,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/form/Switch.vue",
+      "vue3": "packages/vue3/src/controls.tsx",
       "react": "packages/react/src/controls.tsx",
       "native": "packages/native/src/choice-controls.tsx"
     }
@@ -1588,7 +1588,7 @@
     "kind": "component",
     "owner": "KjunTextarea",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1613,7 +1613,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/form/Textarea.vue",
+      "vue3": "packages/vue3/src/controls.tsx",
       "react": "packages/react/src/controls.tsx",
       "native": "packages/native/src/textarea.tsx"
     }
@@ -1624,7 +1624,7 @@
     "kind": "component",
     "owner": "KjunAccordion",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1649,7 +1649,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/layout/Accordion.vue",
+      "vue3": "packages/vue3/src/navigation.tsx",
       "react": "packages/react/src/navigation.tsx",
       "native": "packages/native/src/navigation.tsx"
     }
@@ -1660,7 +1660,7 @@
     "kind": "component",
     "owner": "KjunAccordionItem",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1685,7 +1685,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/layout/AccordionItem.vue",
+      "vue3": "packages/vue3/src/navigation.tsx",
       "react": "packages/react/src/navigation.tsx",
       "native": "packages/native/src/navigation.tsx"
     }
@@ -1696,7 +1696,7 @@
     "kind": "component",
     "owner": "KjunCard",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1721,7 +1721,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/layout/Card.vue",
+      "vue3": "packages/vue3/src/card.tsx",
       "react": "packages/react/src/card.tsx",
       "native": "packages/native/src/card.tsx"
     }
@@ -1732,7 +1732,7 @@
     "kind": "component",
     "owner": "KjunDrawer",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1757,7 +1757,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/layout/Drawer.vue",
+      "vue3": "packages/vue3/src/drawer.tsx",
       "react": "packages/react/src/layers.tsx",
       "native": "packages/native/src/drawer.tsx"
     }
@@ -1768,7 +1768,7 @@
     "kind": "component",
     "owner": "KjunDropdown",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1793,7 +1793,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/layout/Dropdown.vue",
+      "vue3": "packages/vue3/src/dropdown.tsx",
       "react": "packages/react/src/layers.tsx",
       "native": "packages/native/src/dropdown.tsx"
     }
@@ -1804,7 +1804,7 @@
     "kind": "component",
     "owner": "KjunDropdownDivider",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1829,7 +1829,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/layout/DropdownDivider.vue",
+      "vue3": "packages/vue3/src/dropdown.tsx",
       "react": "packages/react/src/feedback.tsx",
       "native": "packages/native/src/feedback.tsx"
     }
@@ -1840,7 +1840,7 @@
     "kind": "component",
     "owner": "KjunDropdownItem",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1865,7 +1865,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/layout/DropdownItem.vue",
+      "vue3": "packages/vue3/src/dropdown.tsx",
       "react": "packages/react/src/layers.tsx",
       "native": "packages/native/src/dropdown.tsx"
     }
@@ -1876,7 +1876,7 @@
     "kind": "domain",
     "owner": "KjunMarketListPanel",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1901,7 +1901,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/layout/MarketListPanel.vue",
+      "vue3": "packages/vue3/src/market-parts.tsx",
       "react": "packages/react/src/market-panel.tsx",
       "native": "packages/native/src/market-panel.tsx"
     }
@@ -1912,7 +1912,7 @@
     "kind": "component",
     "owner": "KjunModal",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1937,7 +1937,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/layout/Modal.vue",
+      "vue3": "packages/vue3/src/modal.tsx",
       "react": "packages/react/src/modal.tsx",
       "native": "packages/native/src/modal.tsx"
     }
@@ -1948,7 +1948,7 @@
     "kind": "component",
     "owner": "KjunTabPane",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -1973,7 +1973,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/layout/TabPane.vue",
+      "vue3": "packages/vue3/src/tabs.tsx",
       "react": "packages/react/src/navigation.tsx",
       "native": "packages/native/src/navigation.tsx"
     }
@@ -1984,7 +1984,7 @@
     "kind": "component",
     "owner": "KjunTabs",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2009,7 +2009,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/layout/Tabs.vue",
+      "vue3": "packages/vue3/src/tabs.tsx",
       "react": "packages/react/src/navigation.tsx",
       "native": "packages/native/src/navigation.tsx"
     }
@@ -2020,7 +2020,7 @@
     "kind": "component",
     "owner": "KjunBreadcrumb",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2045,7 +2045,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/navigation/Breadcrumb.vue",
+      "vue3": "packages/vue3/src/navigation.tsx",
       "react": "packages/react/src/navigation.tsx",
       "native": "packages/native/src/navigation.tsx"
     }
@@ -2056,7 +2056,7 @@
     "kind": "component",
     "owner": "KjunPagination",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2081,7 +2081,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/navigation/Pagination.vue",
+      "vue3": "packages/vue3/src/navigation.tsx",
       "react": "packages/react/src/navigation.tsx",
       "native": "packages/native/src/navigation.tsx"
     }
@@ -2092,7 +2092,7 @@
     "kind": "component",
     "owner": "KjunBadge",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2117,7 +2117,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/primitives/Badge.vue",
+      "vue3": "packages/vue3/src/display.tsx",
       "react": "packages/react/src/display.tsx",
       "native": "packages/native/src/display-primitives.tsx"
     }
@@ -2128,7 +2128,7 @@
     "kind": "component",
     "owner": "KjunButton",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2153,7 +2153,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/primitives/Button.vue",
+      "vue3": "packages/vue3/src/button.tsx",
       "react": "packages/react/src/button.tsx",
       "native": "packages/native/src/button.tsx"
     }
@@ -2164,7 +2164,7 @@
     "kind": "component",
     "owner": "KjunButtonGroup",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2189,7 +2189,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/primitives/ButtonGroup.vue",
+      "vue3": "packages/vue3/src/controls.tsx",
       "react": "packages/react/src/controls.tsx",
       "native": "packages/native/src/selection-groups.tsx"
     }
@@ -2200,7 +2200,7 @@
     "kind": "component",
     "owner": "KjunCopyButton",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2225,7 +2225,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/primitives/CopyButton.vue",
+      "vue3": "packages/vue3/src/actions.tsx",
       "react": "packages/react/src/actions.tsx",
       "native": "packages/native/src/actions.tsx"
     }
@@ -2236,7 +2236,7 @@
     "kind": "component",
     "owner": "KjunExternalLink",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2261,7 +2261,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/primitives/ExternalLink.vue",
+      "vue3": "packages/vue3/src/actions.tsx",
       "react": "packages/react/src/actions.tsx",
       "native": "packages/native/src/actions.tsx"
     }
@@ -2272,7 +2272,7 @@
     "kind": "component",
     "owner": "KjunFilterGroup",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2297,7 +2297,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/primitives/FilterGroup.vue",
+      "vue3": "packages/vue3/src/controls.tsx",
       "react": "packages/react/src/controls.tsx",
       "native": "packages/native/src/selection-groups.tsx"
     }
@@ -2308,7 +2308,7 @@
     "kind": "component",
     "owner": "KjunIcon",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2333,7 +2333,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/icon.js",
+      "vue3": "packages/vue3/src/button.tsx",
       "react": "packages/react/src/button.tsx",
       "native": "packages/native/src/button.tsx"
     }
@@ -2344,7 +2344,7 @@
     "kind": "component",
     "owner": "KjunIconToggle",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2369,7 +2369,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/primitives/IconToggle.vue",
+      "vue3": "packages/vue3/src/actions.tsx",
       "react": "packages/react/src/actions.tsx",
       "native": "packages/native/src/actions.tsx"
     }
@@ -2380,7 +2380,7 @@
     "kind": "component",
     "owner": "KjunInput",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2405,7 +2405,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/primitives/Input.vue",
+      "vue3": "packages/vue3/src/input.tsx",
       "react": "packages/react/src/input.tsx",
       "native": "packages/native/src/input.tsx"
     }
@@ -2416,7 +2416,7 @@
     "kind": "component",
     "owner": "KjunMenuButton",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2441,7 +2441,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/primitives/MenuButton.vue",
+      "vue3": "packages/vue3/src/dropdown.tsx",
       "react": "packages/react/src/layers.tsx",
       "native": "packages/native/src/dropdown.tsx"
     }
@@ -2452,7 +2452,7 @@
     "kind": "component",
     "owner": "KjunRefreshButton",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2477,7 +2477,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/primitives/RefreshButton.vue",
+      "vue3": "packages/vue3/src/actions.tsx",
       "react": "packages/react/src/actions.tsx",
       "native": "packages/native/src/actions.tsx"
     }
@@ -2488,7 +2488,7 @@
     "kind": "component",
     "owner": "KjunScrollFade",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2513,7 +2513,7 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue2": "packages/vue2/src/source/primitives/ScrollFade.vue",
+      "vue3": "packages/vue3/src/actions.tsx",
       "react": "packages/react/src/actions.tsx",
       "native": "packages/native/src/actions.tsx"
     }
@@ -2521,7 +2521,7 @@
   {
     "name": "KjunListRow",
     "sources": {
-      "vue2": "packages/vue2/src/components/ListRow.vue",
+      "vue3": "packages/vue3/src/list.tsx",
       "react": "packages/react/src/list.tsx",
       "native": "packages/native/src/list.tsx"
     },
@@ -2529,7 +2529,7 @@
     "kind": "component",
     "owner": "KjunListRow",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2558,7 +2558,7 @@
   {
     "name": "KjunListSection",
     "sources": {
-      "vue2": "packages/vue2/src/components/ListSection.vue",
+      "vue3": "packages/vue3/src/list.tsx",
       "react": "packages/react/src/list.tsx",
       "native": "packages/native/src/list.tsx"
     },
@@ -2566,7 +2566,7 @@
     "kind": "component",
     "owner": "KjunListSection",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2595,7 +2595,7 @@
   {
     "name": "KjunTopNavigation",
     "sources": {
-      "vue2": "packages/vue2/src/components/TopNavigation.vue",
+      "vue3": "packages/vue3/src/app-navigation.tsx",
       "react": "packages/react/src/app-navigation.tsx",
       "native": "packages/native/src/app-navigation.tsx"
     },
@@ -2603,7 +2603,7 @@
     "kind": "component",
     "owner": "KjunTopNavigation",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2632,7 +2632,7 @@
   {
     "name": "KjunBottomNavigation",
     "sources": {
-      "vue2": "packages/vue2/src/components/BottomNavigation.vue",
+      "vue3": "packages/vue3/src/app-navigation.tsx",
       "react": "packages/react/src/app-navigation.tsx",
       "native": "packages/native/src/app-navigation.tsx"
     },
@@ -2640,7 +2640,7 @@
     "kind": "component",
     "owner": "KjunBottomNavigation",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2669,7 +2669,7 @@
   {
     "name": "KjunBottomActionBar",
     "sources": {
-      "vue2": "packages/vue2/src/components/BottomActionBar.vue",
+      "vue3": "packages/vue3/src/app-navigation.tsx",
       "react": "packages/react/src/app-navigation.tsx",
       "native": "packages/native/src/app-navigation.tsx"
     },
@@ -2677,7 +2677,7 @@
     "kind": "component",
     "owner": "KjunBottomActionBar",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2706,7 +2706,7 @@
   {
     "name": "KjunImage",
     "sources": {
-      "vue2": "packages/vue2/src/components/Image.vue",
+      "vue3": "packages/vue3/src/media.tsx",
       "react": "packages/react/src/media.tsx",
       "native": "packages/native/src/media.tsx"
     },
@@ -2714,7 +2714,7 @@
     "kind": "component",
     "owner": "KjunImage",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2743,7 +2743,7 @@
   {
     "name": "KjunAvatar",
     "sources": {
-      "vue2": "packages/vue2/src/components/Avatar.vue",
+      "vue3": "packages/vue3/src/media.tsx",
       "react": "packages/react/src/media.tsx",
       "native": "packages/native/src/media.tsx"
     },
@@ -2751,7 +2751,7 @@
     "kind": "component",
     "owner": "KjunAvatar",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2780,7 +2780,7 @@
   {
     "name": "KjunChip",
     "sources": {
-      "vue2": "packages/vue2/src/components/Chip.vue",
+      "vue3": "packages/vue3/src/chip.tsx",
       "react": "packages/react/src/chip.tsx",
       "native": "packages/native/src/chip.tsx"
     },
@@ -2788,7 +2788,7 @@
     "kind": "component",
     "owner": "KjunChip",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2817,7 +2817,7 @@
   {
     "name": "KjunSlider",
     "sources": {
-      "vue2": "packages/vue2/src/components/Slider.vue",
+      "vue3": "packages/vue3/src/range-input.tsx",
       "react": "packages/react/src/range-input.tsx",
       "native": "packages/native/src/range-input.tsx"
     },
@@ -2825,7 +2825,7 @@
     "kind": "component",
     "owner": "KjunSlider",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2854,7 +2854,7 @@
   {
     "name": "KjunRangeSlider",
     "sources": {
-      "vue2": "packages/vue2/src/components/RangeSlider.vue",
+      "vue3": "packages/vue3/src/range-input.tsx",
       "react": "packages/react/src/range-input.tsx",
       "native": "packages/native/src/range-input.tsx"
     },
@@ -2862,7 +2862,7 @@
     "kind": "component",
     "owner": "KjunRangeSlider",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2891,7 +2891,7 @@
   {
     "name": "KjunTimePicker",
     "sources": {
-      "vue2": "packages/vue2/src/components/TimePicker.vue",
+      "vue3": "packages/vue3/src/date-picker.tsx",
       "react": "packages/react/src/time-picker.tsx",
       "native": "packages/native/src/time-picker.tsx"
     },
@@ -2899,7 +2899,7 @@
     "kind": "component",
     "owner": "KjunTimePicker",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"
@@ -2928,7 +2928,7 @@
   {
     "name": "KjunQuantityStepper",
     "sources": {
-      "vue2": "packages/vue2/src/components/QuantityStepper.vue",
+      "vue3": "packages/vue3/src/quantity-stepper.tsx",
       "react": "packages/react/src/quantity-stepper.tsx",
       "native": "packages/native/src/quantity-stepper.tsx"
     },
@@ -2936,7 +2936,7 @@
     "kind": "component",
     "owner": "KjunQuantityStepper",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "status": "implemented",
         "verification": "passed",
         "runtime": "chromium"

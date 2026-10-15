@@ -3,7 +3,7 @@ import { resolve, basename } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const root = resolve(import.meta.dirname, '..');
-export const platforms = ['vue2', 'react', 'native'];
+export const platforms = ['vue3', 'react', 'native'];
 const fail = message => { throw Error('Docs coverage: ' + message); };
 
 export function coverageStatus(state, platform) {

@@ -44,13 +44,13 @@ test('gallery covers all public components with packed thumbnails and a shared s
   await expect(page.getByRole('heading', { level: 1, name: '전체 컴포넌트' })).toBeVisible();
   await expect(page.locator('.page-toc')).toHaveCount(0);
   expect(await page.locator('[data-component-card]').evaluateAll(cards => cards.map(card => card.getAttribute('href'))))
-    .toEqual(components.map((document: { path: string }) => document.path + '?platform=vue2'));
+    .toEqual(components.map((document: { path: string }) => document.path + '?platform=vue3'));
   for (let offset = 0; offset < components.length; offset += 8) {
     const responses = await Promise.all(components.slice(offset, offset + 8).map(async (document: { thumbnail: string }) =>
       [document.thumbnail, (await request.get(document.thumbnail)).status()]));
     for (const [path, status] of responses) expect(status, path).toBe(200);
   }
-  await expect(page.locator('.gallery-note a')).toHaveAttribute('href', '/catalog?platform=vue2');
+  await expect(page.locator('.gallery-note a')).toHaveAttribute('href', '/catalog?platform=vue3');
   await expect(page.locator('.gallery-card .platform-status, .gallery-card .device-status')).toHaveCount(0);
   await expect(page.locator('[data-component-card="KjunTabPane"]')).toContainText('Tabs의 구성 요소');
   const manifest = await (await request.get('/previews/thumbnails/manifest.json')).json();
@@ -77,7 +77,7 @@ test('gallery search and category persist through reload and history, and empty 
   await expect(page.locator('[data-component-card]')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: '일치하는 컴포넌트가 없습니다' })).toBeVisible();
   await page.getByRole('button', { name: '전체 컴포넌트 보기', exact: true }).click();
-  await expect(page).toHaveURL(/\/components\?platform=vue2$/);
+  await expect(page).toHaveURL(/\/components\?platform=vue3$/);
   await expect(page.locator('[data-component-card]')).toHaveCount(components.length);
   await input.pressSequentially('loadOptions');
   await expect(page.locator('[data-component-card]')).toHaveCount(1);
@@ -95,7 +95,7 @@ test('global search finds synonyms, purpose, internal service aliases and API an
   await input.fill('loadOptions');
   await expect(dialog.getByRole('option').first()).toContainText('SearchInput');
   await input.press('Enter');
-  await expect(page).toHaveURL(/\/components\/search-input\?platform=vue2#api$/);
+  await expect(page).toHaveURL(/\/components\/search-input\?platform=vue3#api$/);
   await expect(dialog).not.toBeVisible();
   await expect(page.locator('#api')).toBeInViewport();
 });
@@ -128,7 +128,7 @@ test('search shortcut, keyboard navigation, focus return and Korean composition 
   await expect(dialog).toBeVisible();
   await input.dispatchEvent('compositionend');
   await input.press('Enter');
-  await expect(page).toHaveURL(/\/components\/data-state\?platform=vue2#api$/);
+  await expect(page).toHaveURL(/\/components\/data-state\?platform=vue3#api$/);
 });
 
 test('category and child navigation preserve URLs, open the current ancestors and survive navigation', async ({ page }) => {
@@ -140,16 +140,16 @@ test('category and child navigation preserve URLs, open the current ancestors an
   await expect(nav.getByRole('button', { name: 'Accordion 하위 구성', exact: true })).toHaveAttribute('aria-expanded', 'true');
   await expect(nav.getByRole('link', { name: 'AccordionItem', exact: true })).toHaveAttribute('aria-current', 'page');
   await expect(page.locator('.breadcrumbs')).toContainText('Layout');
-  await expect(page.locator('.page-navigation a').first()).toHaveAttribute('href', '/components/accordion?platform=vue2');
+  await expect(page.locator('.page-navigation a').first()).toHaveAttribute('href', '/components/accordion?platform=vue3');
   await nav.getByRole('button', { name: 'Inputs 분류', exact: true }).click();
   await nav.getByRole('link', { name: 'Input', exact: true }).click();
-  await expect(page).toHaveURL(/\/components\/input\?platform=vue2$/);
+  await expect(page).toHaveURL(/\/components\/input\?platform=vue3$/);
   await expect(page.getByRole('button', { name: '문서 검색', exact: true })).toBeEnabled({ timeout: 30000 });
   await expect(nav.getByRole('button', { name: 'Layout 분류', exact: true })).toHaveAttribute('aria-expanded', 'true');
   await nav.getByRole('button', { name: 'Actions 분류', exact: true }).click();
   await nav.getByRole('button', { name: 'Dropdown 하위 구성', exact: true }).click();
   await nav.getByRole('link', { name: 'DropdownDivider', exact: true }).click();
-  await expect(page).toHaveURL(/\/components\/dropdown-divider\?platform=vue2$/);
+  await expect(page).toHaveURL(/\/components\/dropdown-divider\?platform=vue3$/);
   expect(errors).toEqual([]);
 });
 
@@ -160,13 +160,13 @@ test('mobile discovery has no overflow and image failures keep the document reac
   const card = page.locator('[data-component-card="KjunInput"]');
   await expect(card).toContainText('미리보기를 불러오지 못했습니다');
   await card.click();
-  await expect(page).toHaveURL(/\/components\/input\?platform=vue2$/);
+  await expect(page).toHaveURL(/\/components\/input\?platform=vue3$/);
   await expect(page.getByRole('heading', { level: 1, name: 'Input', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: '문서 검색', exact: true })).toBeEnabled();
   await page.getByRole('button', { name: '탐색 메뉴', exact: true }).click();
   const nav = page.getByRole('navigation', { name: '문서 탐색', exact: true });
   await nav.getByRole('link', { name: 'Select', exact: true }).click();
-  await expect(page).toHaveURL(/\/components\/select\?platform=vue2$/);
+  await expect(page).toHaveURL(/\/components\/select\?platform=vue3$/);
   await expect(nav).not.toBeVisible();
   await openSearch(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

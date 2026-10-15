@@ -1,4 +1,4 @@
-import { computed, defineComponent, h, inject, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType } from "vue";
+import { computed, defineComponent, h, inject, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { typeStyle } from "../../../shared/package-runtime/typography";
 import { useIcon } from "./runtime/icons";
@@ -82,6 +82,7 @@ export const KjunButton = defineComponent({
   name: "KjunButton",
   props: kjunButtonProps,
   emits: { click: (_event: MouseEvent) => true },
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { attrs, slots, emit }) {
     const size = useActionSize(() => props.size, "md");
     const busy = useMinimumLoading(() => props.loading);

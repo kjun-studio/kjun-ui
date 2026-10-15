@@ -45,7 +45,7 @@ export async function openFixture(
       entryPoints: [
         resolve(
           (family === "catalog" ? "previews/catalog/" : "tests/fixtures/" + family + "-") + platform +
-            (platform === "vue2" ? ".ts" : ".tsx")
+            (platform === "vue2" || (platform === "vue3" && family === "catalog") ? ".ts" : ".tsx")
         ),
       ],
       bundle: true,

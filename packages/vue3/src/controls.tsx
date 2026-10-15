@@ -1,5 +1,5 @@
 import { computed, defineComponent, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, provide, ref,
-  type ExtractPublicPropTypes, type InjectionKey, type PropType } from "vue";
+  type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type InputSize } from "@kjun-ui/tokens";
 import { selectionTypeStyle, typeStyle } from "../../../shared/package-runtime/typography";
 import { selectionIndicator } from "../../../shared/package-runtime/selection-indicator";
@@ -31,6 +31,7 @@ export const KjunCheckbox = defineComponent({
   name: "KjunCheckbox",
   props: kjunCheckboxProps,
   emits: { "update:modelValue": (_value: boolean | ChoiceValue[]) => true, change: (_value: boolean | ChoiceValue[]) => true },
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     const focus = useFocusVisible();
     return () => {
@@ -71,6 +72,7 @@ export const KjunSwitch = defineComponent({
   name: "KjunSwitch",
   props: kjunSwitchProps,
   emits: { "update:modelValue": (_value: boolean) => true, change: (_value: boolean) => true },
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     const focus = useFocusVisible();
     return () => (
@@ -108,6 +110,7 @@ export const KjunRadio = defineComponent({
   name: "KjunRadio",
   props: kjunRadioProps,
   emits: { "update:modelValue": (_value: ChoiceValue) => true, change: (_value: ChoiceValue) => true },
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     const group = inject(kjunRadioGroupKey, null);
     const focus = useFocusVisible();
@@ -145,6 +148,7 @@ export const KjunRadioGroup = defineComponent({
   name: "KjunRadioGroup",
   props: kjunRadioGroupProps,
   emits: { "update:modelValue": (_value: ChoiceValue) => true, change: (_value: ChoiceValue) => true },
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     const name = useKjunId("kjun-");
     provide(kjunRadioGroupKey, computed(() => ({
@@ -172,6 +176,8 @@ const kjunTextareaProps = {
   ariaLabel: { type: String, default: undefined },
   id: { type: String, default: undefined },
   required: { type: Boolean, default: undefined },
+  disabled: { type: Boolean, default: false },
+  readOnly: { type: Boolean, default: false },
 } as const;
 export type KjunTextareaProps = ExtractPublicPropTypes<typeof kjunTextareaProps>;
 /** v-model; other attributes reach the <textarea>. */
@@ -188,6 +194,7 @@ export const KjunTextarea = defineComponent({
       const spec = tokens.input[props.size], owner = field.value;
       return (
         <textarea {...mergeProps(attrs, { onInput: (event: Event) => emit("update:modelValue", (event.target as HTMLTextAreaElement).value) })}
+          disabled={props.disabled} readonly={props.readOnly}
           ref={textarea}
           id={props.id || owner?.id}
           value={props.modelValue}

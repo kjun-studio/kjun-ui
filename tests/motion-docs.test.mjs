@@ -20,7 +20,7 @@ test('motion discovery follows tokens and preserves component and API search pri
 test('motion scenarios are registered public-package examples with valid detail destinations', () => {
   assert.equal(motionScenarios.length, 6);
   for (const { name, scenario, destination } of motionScenarios) {
-    assert.deepEqual(exampleDefinition(name).platforms, ['vue2', 'react', 'native']);
+    assert.deepEqual(exampleDefinition(name).platforms, ['vue3', 'react', 'native']);
     assert.ok(documents.some(page => page.path === destination));
     assert.equal(scenario.action, undefined, 'motion starts only on user interaction');
     if (['KjunModal', 'KjunDrawer', 'GuideMotionToast'].includes(name)) assert.equal(scenario.viewportHeight, 600);

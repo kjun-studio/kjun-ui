@@ -17,7 +17,7 @@ test('accessibility discovery has stable anchors and preserves API/component pri
 test('accessibility scenarios use registered packed examples and public detail destinations', () => {
   assert.equal(accessibilityScenarios.length, 3);
   for (const { name, scenario, destination } of accessibilityScenarios) {
-    assert.deepEqual(exampleDefinition(name).platforms, ['vue2', 'react', 'native']);
+    assert.deepEqual(exampleDefinition(name).platforms, ['vue3', 'react', 'native']);
     assert.ok(documents.some(page => page.path === destination.split('#')[0]));
     assert.equal(scenario.action, undefined);
   }

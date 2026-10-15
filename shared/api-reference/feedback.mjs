@@ -185,14 +185,12 @@ const ownership = [
   "Provider 해제: 미완료 Confirm은 false, Prompt는 null로 정리하고 알림 타이머와 대기열을 제거합니다.",
 ];
 export default Object.fromEntries(
-  ["vue2", "react", "native"].map((platform) => [
+  ["vue3", "react", "native"].map((platform) => [
     platform,
     {
       ownership: [
         ...ownership,
-        platform === "vue2"
-          ? "Vue는 inject한 kjunFeedback 서비스를 사용합니다."
-          : "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다.",
+        "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다.",
       ],
       methods,
       options,

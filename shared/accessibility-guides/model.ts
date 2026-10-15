@@ -1,4 +1,4 @@
-export type Platform = 'vue2' | 'react' | 'native';
+export type Platform = 'vue3' | 'react' | 'native';
 export type Item = 'keyboard' | 'labeling' | 'focus';
 export type Status = 'passed' | 'failed' | 'not-run' | 'not-applicable';
 export interface Definition {

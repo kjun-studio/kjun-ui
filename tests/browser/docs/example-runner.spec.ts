@@ -12,7 +12,7 @@ async function visit(page: Page, slug: string, platform: string) {
   return page.frameLocator('.example-runner iframe');
 }
 
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   test(`${platform}: presets only expose effective controls and reset modified settings`, async ({ page }) => {
     await visit(page, 'button', platform);
     const runner = page.locator('.example-runner');
@@ -120,7 +120,7 @@ async function expectOnlyListScroll(list: Locator) {
 
 test('Alert preview preset dropdown has only one scrollable region', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto('/components/alert?platform=vue2');
+  await page.goto('/components/alert?platform=vue3');
   const runner = page.locator('.example-runner');
   await expect(runner).toHaveAttribute('data-ready', 'true');
   await runner.getByRole('button', { name: '프리셋', exact: true }).click();

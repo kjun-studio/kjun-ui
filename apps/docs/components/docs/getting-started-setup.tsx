@@ -9,8 +9,8 @@ const colorPreviewLines = 8;
 
 export function GettingStartedSetup({ platform }: { platform: PlatformName }) {
   const files = usageSetup(platform, 'default', { feedback: false, domainColors: false });
-  const app = platform === 'vue2' ? 'App.vue' : 'App.jsx';
-  const example = platform === 'vue2' ? 'Example.vue' : 'Example.jsx';
+  const app = platform === 'vue3' ? 'App.vue' : 'App.jsx';
+  const example = platform === 'vue3' ? 'Example.vue' : 'Example.jsx';
   return (
     <section id="connect">
       <h2>2. 공통 앱 설정</h2>
@@ -31,7 +31,7 @@ export function GettingStartedSetup({ platform }: { platform: PlatformName }) {
 /** Optional additions, grouped after the required steps. */
 export function GettingStartedExtras({ platform }: { platform: PlatformName }) {
   const { feedback, domainColors } = usageSetupAdditions(platform, 'default');
-  const app = platform === 'vue2' ? 'App.vue' : 'App.jsx';
+  const app = platform === 'vue3' ? 'App.vue' : 'App.jsx';
   return <section id="extras">
     <h2>필요할 때 추가</h2>
     <p className="body-copy">아래 설정은 해당 기능을 쓰는 예제에만 적용합니다. 필수 단계를 마친 뒤 필요한 항목만 추가하세요.</p>
@@ -39,10 +39,6 @@ export function GettingStartedExtras({ platform }: { platform: PlatformName }) {
       <h3>피드백 Provider</h3>
       <p className="body-copy">Toast·Confirm·Prompt를 호출하는 예제에 적용합니다. <code>{app}</code>의 기존 import에 아래 import를 추가합니다.</p>
       <CodeBlock code={feedback.imports} label={`${app} import에 추가`} copyLabel="피드백 import 복사" />
-      {platform === 'vue2' && <>
-        <p className="body-copy">기존 <code>components</code> 객체에 등록 항목을 추가합니다. KjunProvider와 Example 등록은 유지합니다.</p>
-        <CodeBlock code={feedback.registration} label="components 객체에 추가" copyLabel="피드백 등록 코드 복사" />
-      </>}
       <p className="body-copy">KjunProvider 내부의 <code>{'<Example />'}</code>를 아래 내용으로 감쌉니다.
         이미 피드백 Provider가 있는 영역에서는 다시 감싸지 않습니다.</p>
       <CodeBlock code={feedback.content} label="KjunProvider 내부" copyLabel="피드백 Provider 코드 복사" />
@@ -69,7 +65,7 @@ export function GettingStartedExtras({ platform }: { platform: PlatformName }) {
       <h3>추가 아이콘 등록</h3>
       <p className="body-copy">세 플랫폼 모두 기본 선형 153개와 heart·star 채움형을 바로 사용할 수 있습니다. 추가 아이콘은 필요한 이름만 import한 뒤 KjunProvider의 <code>icons</code>에 등록합니다. <Link href="/icons">전체 아이콘 목록</Link>에서 선택한 플랫폼의 등록 예제를 복사하세요.</p>
       <CodeBlock label="개별 아이콘 import" code={"import rocket from '@kjun-ui/icons/icons/rocket';\nconst projectIcons = { rocket };"} />
-      <CodeBlock label="Provider 등록" code={platform === 'vue2'
+      <CodeBlock label="Provider 등록" code={platform === 'vue3'
         ? '<KjunProvider :icons="projectIcons">\n  <KjunButton prefix-icon="rocket">시작</KjunButton>\n</KjunProvider>'
         : `<KjunProvider ${platform === 'native' ? 'colors={appColors} ' : ''}icons={projectIcons}>\n  <KjunButton prefixIcon="rocket">시작</KjunButton>\n</KjunProvider>`} />
     </section>

@@ -42,14 +42,14 @@ test('search, IME, pagination, keyboard selection, focus recovery and reset', as
   await page.getByRole('button', { name: '다음 페이지', exact: true }).evaluate((node: HTMLButtonElement) => node.click());
   await expect(page.getByRole('heading', { name: '검색 결과' })).toBeFocused();
 });
-for (const platform of ['react', 'vue2', 'native']) test(`${platform}: selection, shapes, sizes and source`, async ({ page }) => {
+for (const platform of ['react', 'vue3', 'native']) test(`${platform}: selection, shapes, sizes and source`, async ({ page }) => {
   await clipboard(page); await page.goto('/icons?platform=' + platform);
   await chooseIcon(page, 'heart'); const root = await launchIcon(page);
   const frame = root.frameLocator('iframe'), svg = frame.locator('svg').first();
   await setIconSize(page, '24');
   await setIconFilled(page);
   await expect(root.locator('.guide-running')).toHaveAttribute('data-ready', 'true');
-  await expect(svg).toHaveAttribute('width', platform === 'vue2' ? '24px' : '24');
+  await expect(svg).toHaveAttribute('width', '24');
   const filledPath = filledIcons.heart.find(([tag]) => tag === 'path')![1].d;
   await expect(svg.locator('path').first()).toHaveAttribute('d', filledPath);
   await expect(root.locator('.code-block')).toHaveCount(0);
@@ -73,7 +73,7 @@ for (const platform of ['react', 'vue2', 'native']) test(`${platform}: selection
   await expect(shapes.nth(4).locator('path').first()).toHaveAttribute('d', icons.search.find(([tag]) => tag === 'path')![1].d);
   await expect(shapes.nth(5).locator('path').first()).toHaveAttribute('d', icons['help-circle'].find(([tag]) => tag === 'path')![1].d);
   const align = await launchIcon(page, 'alignment'), af = align.frameLocator('iframe'), sizes = af.locator('svg');
-  for (const [i, size] of Object.values(tokens.iconSizes).entries()) await expect(sizes.nth(i)).toHaveAttribute('width', platform === 'vue2' ? size + 'px' : String(size));
+  for (const [i, size] of Object.values(tokens.iconSizes).entries()) await expect(sizes.nth(i)).toHaveAttribute('width', String(size));
   if (platform !== 'native') {
     await af.getByRole('button', { name: '글자 크기 24px로 변경' }).click();
     await expect.poll(() => sizes.nth(10).evaluate(node => node.getBoundingClientRect().width)).toBe(24);
@@ -88,7 +88,7 @@ test('platform changes keep selection and replace sessions; document links and d
   await page.goto('/icons?platform=react#catalog'); await chooseIcon(page, 'star');
   await setIconSize(page, '20'); await setIconFilled(page);
   const root = await launchIcon(page), previous = await root.locator('iframe').getAttribute('src');
-  for (const platform of ['vue2', 'native', 'react']) {
+  for (const platform of ['vue3', 'native', 'react']) {
     await changePlatform(page, platform);
     await expect(root.locator('.guide-running')).toHaveAttribute('data-ready', 'true');
     await expect(root.locator('.guide-running')).toHaveAttribute('data-platform', platform);
@@ -104,20 +104,20 @@ test('platform changes keep selection and replace sessions; document links and d
   for (const id of ['catalog', 'size-alignment', 'variants', 'usage']) await expect(page.locator('main #' + id)).toHaveCount(1);
 });
 test('table of contents, previous/next navigation and document search', async ({ page }) => {
-  await page.goto('/icons?platform=vue2#variants');
+  await page.goto('/icons?platform=vue3#variants');
   await expect(page.getByRole('button', { name: '문서 검색', exact: true })).toBeEnabled();
   const toc = page.getByRole('navigation', { name: '상세 문서 바로가기' });
   await expect(toc.getByRole('link')).toHaveText(['아이콘 목록·검색', '크기·정렬', '형태 선택', '사용 규칙']);
   await toc.getByRole('link', { name: '사용 규칙', exact: true }).click();
-  await expect(page).toHaveURL(/platform=vue2#usage/); await expect(page.locator('#usage')).toBeFocused();
-  await expect(page.locator('.page-navigation a').first()).toHaveAttribute('href', '/interaction?platform=vue2');
-  await expect(page.locator('.page-navigation a').last()).toHaveAttribute('href', '/usage-guide?platform=vue2');
+  await expect(page).toHaveURL(/platform=vue3#usage/); await expect(page.locator('#usage')).toBeFocused();
+  await expect(page.locator('.page-navigation a').first()).toHaveAttribute('href', '/interaction?platform=vue3');
+  await expect(page.locator('.page-navigation a').last()).toHaveAttribute('href', '/usage-guide?platform=vue3');
   await page.getByRole('button', { name: '문서 검색', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: '문서 검색', exact: true });
   const input = dialog.getByRole('combobox', { name: '문서 검색어' });
   await input.fill('아이콘 검색');
   await expect(dialog.getByRole('option').first()).toContainText('아이콘');
-  await page.keyboard.press('Enter'); await expect(page).toHaveURL(/\/icons\?platform=vue2/);
+  await page.keyboard.press('Enter'); await expect(page).toHaveURL(/\/icons\?platform=vue3/);
 });
 
 test('initial controls wait for hydration and the final build keeps selected settings', async ({ page }) => {

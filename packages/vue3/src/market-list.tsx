@@ -1,10 +1,10 @@
-import { defineComponent, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { getValue } from "../../../shared/package-runtime/table-model";
 import { KjunDataState } from "./data-state";
 import { KjunBadge, KjunEmpty, KjunSkeleton } from "./display";
 import { marketBaseProps, queryProps } from "./market-model";
-import { MarketFooter, marketIdentity } from "./market-parts";
+import { MarketFooter, marketIdentity, type MarketIdentitySlots } from "./market-parts";
 import { KjunFreshness, KjunPriceCell, KjunSignedValue, finiteNumber } from "./number-display";
 import { KjunListSkeleton } from "./skeletons";
 
@@ -30,6 +30,7 @@ export const KjunMarketSimpleList = defineComponent({
   name: "KjunMarketSimpleList",
   props: kjunMarketSimpleListProps,
   emits: { "page-change": (_page: number) => true },
+  slots: Object as SlotsType<MarketIdentitySlots & { pricePrefix?: (scope: { row: any }) => VNodeChild }>,
   setup(props, { slots, emit }) {
     return () => {
       const { rows } = props;

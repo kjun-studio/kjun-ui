@@ -14,7 +14,7 @@ async function aligned(page: Page, id: string) {
   })).toBe(true);
 }
 
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   test(`${platform}: preview focus releases anchor correction while later content settles`, async ({ page }) => {
     await page.goto('/usage-guide/forms?platform=' + platform + '#selection');
     const card = page.locator('#selection [data-guide-case="choose-KjunSelect"]');
@@ -25,7 +25,7 @@ for (const platform of ['vue2', 'react', 'native']) {
       });
       window.scrollBy({ top: 250, behavior: 'instant' });
     });
-    await card.frameLocator('iframe').getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: platform === 'native' ? '자산 선택' : '공개 범위', exact: true }).focus();
+    await card.frameLocator('iframe').getByRole('button', { name: platform === 'native' ? '자산 선택' : '공개 범위', exact: true }).focus();
     await page.waitForFunction(() => (window as any).__previewFocused);
     const before = await page.evaluate(() => scrollY);
     // A late block below the reader resizes main without moving their content.
@@ -146,9 +146,9 @@ test('keyboard shortcuts stay visible at mobile and desktop sizes, and platform 
     }
     await shortcuts(page).getByRole('link', { name: 'API', exact: true }).click();
     await page.getByRole('button', { name: '문서 플랫폼', exact: true }).click();
-    await page.getByRole('option', { name: 'Vue 2', exact: true }).click();
-    await expect(page).toHaveURL(/platform=vue2#api$/);
-    await expect(page.locator('#api .api-platform')).toContainText('Vue 2');
+    await page.getByRole('option', { name: 'Vue 3', exact: true }).click();
+    await expect(page).toHaveURL(/platform=vue3#api$/);
+    await expect(page.locator('#api .api-platform')).toContainText('Vue 3');
     await shortcuts(page).getByRole('link', { name: 'API', exact: true }).click();
     await aligned(page, 'api');
     await page.screenshot({ path: `artifacts/document-navigation-${width}.png` });

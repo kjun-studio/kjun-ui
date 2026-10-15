@@ -1,8 +1,8 @@
 import coverage from '@/lib/generated/coverage.json';
 
-export const platforms = ['vue2', 'react', 'native'] as const;
+export const platforms = ['vue3', 'react', 'native'] as const;
 export type Platform = typeof platforms[number];
-export const platformLabels: Record<Platform, string> = { vue2: 'Vue 2', react: 'React', native: 'Native Web' };
+export const platformLabels: Record<Platform, string> = { vue3: 'Vue 3', react: 'React', native: 'Native Web' };
 export const statusLabels = { supported: '지원', preview: '미리보기', review: '확인 필요', unsupported: '미지원' };
 export type Status = keyof typeof statusLabels;
 export type Entry = typeof coverage.components[number];

@@ -14,7 +14,7 @@ async function layout(page: Page, platform: string) {
   const clipped = await page.locator('.icon-card, .icon-detail, .icon-search').evaluateAll(nodes => nodes.filter(node => node.scrollWidth > node.clientWidth + 1).map(node => node.className));
   expect(clipped).toEqual([]);
 }
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   for (const width of layoutWidths(platform, [320, 375, 1440])) test(`${platform}: icons fit ${width}px`, async ({ page }) => {
     test.setTimeout(180000); await page.setViewportSize({ width, height: 1000 });
     await layout(page, platform);

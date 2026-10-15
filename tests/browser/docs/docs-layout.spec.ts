@@ -54,7 +54,7 @@ for (const width of [1440, 1280, 390, 320]) {
   });
 }
 
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   test(`${platform}: reduced Popover preview fits its open panel and preserves keyboard actions`, async ({ page }) => {
     for (const width of [1440, 390, 320]) {
       await page.setViewportSize({ width, height: 900 });

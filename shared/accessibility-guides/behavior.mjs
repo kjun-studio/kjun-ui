@@ -25,7 +25,7 @@ export const behavior = {
   table: '설정에 따라 검색·정렬·선택·확장 컨트롤을 제공합니다. 행을 선택하거나 펼친 상태는 제어값과 변경 이벤트로 연결합니다.',
   market: '시세 행과 정렬·필터 컨트롤을 조합합니다. 행 실행과 데이터 변경은 프로젝트가 처리합니다.',
   'data-state': '조회 실패를 텍스트로 설명하고 재시도 이벤트를 제공합니다. 이전 결과를 유지하는 설정에서는 실패 안내와 기존 콘텐츠가 함께 표시됩니다.',
-  boundary: '자식 렌더 오류를 fallback으로 바꿉니다. Vue는 새로고침, React·Native는 reset 이벤트를 제공합니다.',
+  boundary: '자식 렌더 오류를 fallback으로 바꾸고 다시 시도 버튼으로 경계를 초기화합니다.',
   feedback: 'Toast는 알림 메시지와 닫기를, Confirm·Prompt는 순서대로 처리되는 요청·취소·검증 결과를 제공합니다.',
   text, image: 'alt 또는 name으로 이미지 이름을 전달하고 decorative 설정으로 장식 여부를 구분합니다.', chart: text, progress: text,
   decorative: '장식이나 로딩 자리표시자이며 자체 입력·실행 이벤트를 제공하지 않습니다.',

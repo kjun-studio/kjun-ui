@@ -5,7 +5,7 @@
     "related": "assets",
     "description": "값 변경을 숫자 전환으로 표현합니다. formatter와 접두·접미사는 프로젝트가 제공합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -94,7 +94,7 @@
     "related": "loading",
     "description": "차트 영역의 높이를 유지하며 조회 중인 상태를 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -183,7 +183,7 @@
     "related": "assets",
     "description": "즐겨찾기·관심 여부를 표시합니다. 변경 액션은 IconToggle을 사용합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -371,7 +371,7 @@
     "related": "assets",
     "description": "기준과의 편차를 숫자 또는 신호로 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -460,7 +460,7 @@
     "related": "writing",
     "description": "결과가 없는 이유와 사용자가 실행할 다음 행동을 설명합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -585,7 +585,7 @@
     "related": "assets",
     "description": "실행 상태와 사용자가 읽을 상태명을 함께 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -797,7 +797,7 @@
     "related": "loading",
     "description": "폼 항목과 열 구성을 유지하면서 조회를 기다립니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -961,7 +961,7 @@
     "related": "assets",
     "description": "이전 값 또는 종가임을 표시하고 조회 시각을 설명합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -1074,7 +1074,7 @@
     "related": "assets",
     "description": "프로젝트 색상을 배경층에 연결하고 값의 농도만 투명도로 조절합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -1163,7 +1163,7 @@
     "related": "assets",
     "description": "대표 수치와 증감, 보조 지표를 한 영역에서 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -1208,19 +1208,19 @@
         ],
         "sizes": [
           {
-            "id": "size-md",
-            "label": "md",
-            "description": "공개 size 속성의 비교 설정입니다.",
-            "settings": {
-              "visual": "{\"KjunKpiHero\":{\"props\":{\"size\":\"md\"}}}"
-            }
-          },
-          {
             "id": "size-sm",
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
               "visual": "{\"KjunKpiHero\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunKpiHero\":{\"props\":{\"size\":\"md\"}}}"
             }
           }
         ],
@@ -1363,7 +1363,7 @@
     "related": "assets",
     "description": "여러 KPI를 같은 행에 놓고 모바일에서 정보 위계를 유지합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -1408,19 +1408,19 @@
         ],
         "sizes": [
           {
-            "id": "size-md",
-            "label": "md",
-            "description": "공개 size 속성의 비교 설정입니다.",
-            "settings": {
-              "visual": "{\"KjunKpiRow\":{\"props\":{\"size\":\"md\"}}}"
-            }
-          },
-          {
             "id": "size-sm",
             "label": "sm",
             "description": "공개 size 속성의 비교 설정입니다.",
             "settings": {
               "visual": "{\"KjunKpiRow\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunKpiRow\":{\"props\":{\"size\":\"md\"}}}"
             }
           }
         ],
@@ -1563,7 +1563,7 @@
     "related": "loading",
     "description": "목록의 자산 식별 영역과 숫자 영역을 유지합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -1652,7 +1652,7 @@
     "related": "assets",
     "description": "표시 지표를 선택하여 자산 목록의 핵심 값을 보여줍니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -1825,7 +1825,7 @@
     "related": "assets",
     "description": "자산명·가격·증감과 데이터의 최신 여부를 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -1998,7 +1998,7 @@
     "related": "assets",
     "description": "정렬·컬렉션 액션과 프로젝트의 금융 포맷터를 연결하는 표입니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -2171,7 +2171,7 @@
     "related": "loading",
     "description": "실제 시장 표의 열·행·액션 영역을 유지합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -2278,7 +2278,7 @@
     "related": "layers",
     "description": "트리거 가까이에 추가 정보나 작업 영역을 엽니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -2424,7 +2424,7 @@
     "related": "assets",
     "description": "가격 포맷과 이전 값 표시를 분리해 표현합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -2537,7 +2537,7 @@
     "related": "assets",
     "description": "표 안에서 수치와 진행 비율을 함께 보여줍니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -2626,7 +2626,7 @@
     "related": "assets",
     "description": "양수·음수·중립의 의미를 숫자 부호와 역할 색상으로 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -2763,7 +2763,7 @@
     "related": "loading",
     "description": "텍스트·카드·표·차트·통계·블록의 조회 대기 모양을 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -2852,7 +2852,7 @@
     "related": "assets",
     "description": "작은 공간에 값의 추세를 표시합니다. 의미와 색상은 입력으로 연결합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -2941,7 +2941,7 @@
     "related": "assets",
     "description": "데이터 열, 정렬, 행 선택, 확장, 모바일 카드 표현을 구성합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -3171,7 +3171,7 @@
     "related": "layers",
     "description": "트리거에 대한 짧은 설명을 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -3307,7 +3307,7 @@
     "related": "feedback",
     "description": "상태의 의미와 사용자가 해야 할 행동을 본문으로 설명합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -3525,7 +3525,7 @@
     "related": "loading",
     "description": "최초 조회·조건 변경·동일 조건 갱신·실패를 구분하여 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -3980,7 +3980,7 @@
     "related": "loading",
     "description": "하위 렌더링 오류를 대체 콘텐츠로 표현하고 오류 보고를 프로젝트에 전달합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -4069,7 +4069,7 @@
     "related": "loading",
     "description": "범위를 벗어난 값을 제한하여 완료 비율을 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -4269,7 +4269,7 @@
     "related": "loading",
     "description": "작업이 진행 중임을 표시합니다. 완료 여부는 프로젝트가 결정합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -4499,7 +4499,7 @@
     "related": "selection",
     "description": "검색 지연, 요청 취소, 늦은 응답 무시와 결과 선택을 담당합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -4861,7 +4861,7 @@
     "related": "form",
     "description": "단일 여부 또는 배열에 포함되는 선택값을 변경합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -5091,7 +5091,7 @@
     "related": "selection",
     "description": "입력한 조건에 맞는 옵션을 검색하고 선택합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -5387,7 +5387,7 @@
     "related": "form",
     "description": "허용 날짜 범위 안에서 날짜 문자열을 선택합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -5599,7 +5599,7 @@
     "related": "form",
     "description": "확인·취소 액션과 로딩 중 중복 실행 방지를 연결합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -5910,7 +5910,7 @@
     "related": "form",
     "description": "라벨·필수 표시·안내·오류를 입력 컨트롤과 연결합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -6149,7 +6149,7 @@
     "related": "form",
     "description": "RadioGroup의 단일 선택 항목을 구성합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -6304,7 +6304,7 @@
     "related": "form",
     "description": "서로 배타적인 선택지를 옵션 또는 자식으로 구성합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -6333,14 +6333,6 @@
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
           },
           {
-            "id": "disabled",
-            "label": "비활성",
-            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
-            "settings": {
-              "visual": "{\"KjunRadioGroup\":{\"props\":{\"disabled\":true}}}"
-            }
-          },
-          {
             "id": "selected",
             "label": "선택 상태",
             "description": "소비자가 관리하는 값을 예제의 초기 상태로 제공합니다.",
@@ -6351,7 +6343,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "현재 단일 선택과 옵션별 disabled를 구분합니다. 그룹 전체 disabled는 Vue에만 제공됩니다."
+        "note": "현재 단일 선택과 옵션별 disabled를 구분합니다."
       },
       "react": {
         "figures": [
@@ -6392,7 +6384,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "현재 단일 선택과 옵션별 disabled를 구분합니다. 그룹 전체 disabled는 Vue에만 제공됩니다."
+        "note": "현재 단일 선택과 옵션별 disabled를 구분합니다."
       },
       "native": {
         "figures": [
@@ -6433,7 +6425,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "현재 단일 선택과 옵션별 disabled를 구분합니다. 그룹 전체 disabled는 Vue에만 제공됩니다."
+        "note": "현재 단일 선택과 옵션별 disabled를 구분합니다."
       }
     }
   },
@@ -6443,7 +6435,7 @@
     "related": "selection",
     "description": "단일·복수 선택, 검색과 비활성 항목을 지원합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -6877,7 +6869,7 @@
     "related": "form",
     "description": "즉시 적용되는 켜짐·꺼짐 상태를 변경합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -7107,7 +7099,7 @@
     "related": "form",
     "description": "여러 줄의 텍스트를 입력합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -7319,7 +7311,7 @@
     "related": "form",
     "description": "항목별 펼침 상태를 관리하며 단일·복수 펼침을 선택합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -7447,7 +7439,7 @@
     "related": "form",
     "description": "제목을 눌러 설명 영역을 펼치거나 접습니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -7599,7 +7591,7 @@
     "related": "assets",
     "description": "미디어·헤더·본문·푸터를 공통 표면과 여백 규칙으로 묶습니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -7724,7 +7716,7 @@
     "related": "layers",
     "description": "화면 가장자리에서 작업 영역을 엽니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -7870,7 +7862,7 @@
     "related": "layers",
     "description": "트리거를 기준으로 작업 메뉴를 엽니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -8022,7 +8014,7 @@
     "related": "layers",
     "description": "메뉴 항목 사이의 구분선을 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -8132,7 +8124,7 @@
     "related": "layers",
     "description": "메뉴의 실행·선택·비활성·위험 액션을 표현합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -8284,7 +8276,7 @@
     "related": "assets",
     "description": "조회 조건과 시장 목록 사이의 간격·구분선을 구성합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -8409,7 +8401,7 @@
     "related": "layers",
     "description": "현재 흐름에서 확인이나 입력을 수행하고 이전 포커스로 돌아갑니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -8759,7 +8751,7 @@
     "related": "assets",
     "description": "Tabs의 제목과 연결된 본문을 구성합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -8914,7 +8906,7 @@
     "related": "assets",
     "description": "동일 영역의 보기를 선택하고 현재 패널을 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -9063,7 +9055,7 @@
     "related": "assets",
     "description": "현재 위치와 상위 경로를 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -9170,7 +9162,7 @@
     "related": "assets",
     "description": "현재 페이지, 이동 가능한 페이지와 페이지 크기를 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -9277,7 +9269,7 @@
     "related": "assets",
     "description": "짧은 상태명과 의미를 작은 표시로 전달합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -9489,7 +9481,7 @@
     "related": "writing",
     "description": "행동의 중요도, 크기와 실행 가능 상태를 표현합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -9627,7 +9619,7 @@
             }
           }
         ],
-        "sizeDefault": "\"md\"",
+        "sizeDefault": "—",
         "note": "크기별 모서리는 공통 반경 토큰을 따릅니다. 높이와 반경은 아래 기본 규격에서 확인하세요. 같은 크기의 텍스트·아이콘 전용 버튼과 모든 변형에 동일하게 적용합니다. 텍스트 전용 버튼은 로딩 중 라벨의 공간을 유지하고 중앙에 스피너를 표시합니다. 아이콘이 있으면 같은 위치에서 스피너로 전환합니다. 비활성·로딩 중 실행과 hover·pressed 효과를 막고, loading은 최소 400ms 표시합니다."
       },
       "react": {
@@ -9920,7 +9912,7 @@
     "related": "toolbar",
     "description": "서로 연결된 보기나 조건을 버튼 형태로 선택합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -10198,7 +10190,7 @@
     "related": "toolbar",
     "description": "프로젝트가 지정한 값을 복사하고 결과를 알립니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -10404,7 +10396,7 @@
     "related": "writing",
     "description": "외부 문서나 서비스를 여는 링크를 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -10493,7 +10485,7 @@
     "related": "toolbar",
     "description": "단일 또는 복수 필터 조건을 선택합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -10780,7 +10772,7 @@
     "related": "toolbar",
     "description": "Tabler 3.48.0의 선형 5,166개·채움형 1,054개를 공통 @kjun-ui/icons 패키지로 제공합니다. 추가 아이콘은 개별 import 후 KjunProvider.icons에 등록합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -10829,7 +10821,7 @@
             }
           }
         ],
-        "sizeDefault": "null",
+        "sizeDefault": "\"1em\"",
         "note": "outline·filled·spin과 크기·색상을 설정합니다. 기본 채움형은 heart·star이며 등록한 아이콘의 채움형도 사용할 수 있습니다. 채움형이 없는 유효한 이름은 해당 선형으로 표시하고, 존재하지 않는 이름은 help-circle로 대체합니다."
       },
       "react": {
@@ -10944,7 +10936,7 @@
     "related": "toolbar",
     "description": "아이콘으로 선택 상태를 표현합니다. 즐겨찾기·관심도 같은 컨트롤로 구성합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -11276,7 +11268,7 @@
     "related": "form",
     "description": "한 줄 입력, 앞뒤 콘텐츠, 지우기와 오류 상태를 표현합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -11650,7 +11642,7 @@
     "related": "toolbar",
     "description": "버튼과 메뉴를 연결하며 compact 표현을 지원합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -12018,7 +12010,7 @@
     "related": "loading",
     "description": "갱신 요청과 갱신 중 회전 표시를 연결합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -12356,7 +12348,7 @@
     "related": "toolbar",
     "description": "가로 콘텐츠의 스크롤 영역을 구성합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -12463,7 +12455,7 @@
     "related": "generic-lists",
     "description": "제목·설명·앞뒤 정보와 별도의 보조 행동으로 범용 목록 행을 구성합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -12636,7 +12628,7 @@
     "related": "generic-lists",
     "description": "제목과 설명이 있는 범용 목록 묶음입니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -12761,7 +12753,7 @@
     "related": "app-screen",
     "description": "화면 제목과 앞쪽 탐색·보조 행동을 배치합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -12988,7 +12980,7 @@
     "related": "app-screen",
     "description": "앱의 주요 목적지와 현재 위치를 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -13161,7 +13153,7 @@
     "related": "app-screen",
     "description": "화면 하단의 설명과 주요 행동을 묶습니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -13292,7 +13284,7 @@
     "related": "thumbnail",
     "description": "콘텐츠 이미지의 비율과 실패 대체 표현을 제공합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -13480,7 +13472,7 @@
     "related": "generic-lists",
     "description": "사용자 이미지와 이름 기반 대체 표현을 제공합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -13692,7 +13684,7 @@
     "related": "input-settings",
     "description": "선택된 항목의 라벨과 선택적인 삭제 행동을 표시합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -13922,7 +13914,7 @@
     "related": "input-settings",
     "description": "한 값을 가로 슬라이더로 조절합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -14086,7 +14078,7 @@
     "related": "input-settings",
     "description": "두 손잡이로 값의 시작과 끝을 선택합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -14259,7 +14251,7 @@
     "related": "input-settings",
     "description": "시·분 또는 시·분·초를 선택해 하루 안의 시각을 입력합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -14576,7 +14568,7 @@
     "related": "input-settings",
     "description": "직접 입력과 증감 버튼으로 수량을 조절합니다.",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",
@@ -14857,7 +14849,7 @@
     "related": "feedback",
     "description": "영역별 Toast·Confirm·Prompt",
     "platforms": {
-      "vue2": {
+      "vue3": {
         "figures": [
           {
             "id": "default",

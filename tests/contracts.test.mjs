@@ -36,8 +36,8 @@ test("published token and CSS contracts contain no product palette", async () =>
   }
 });
 test("all generated examples are syntactically valid for their target framework", async () => {
-  const compiler = (await import("vue-template-compiler")).default;
-  for (const platform of ["vue2", "react", "native"])
+  const { compileVue3Example } = await import("../scripts/vue-example.mjs");
+  for (const platform of ["vue3", "react", "native"])
     for (const component of ["button", "input", "modal"]) {
       const c = parseConfig({
         ...defaultConfig,
@@ -50,11 +50,8 @@ test("all generated examples are syntactically valid for their target framework"
         iconOnly: true,
       });
       const code = exampleCode(platform, c);
-      if (platform === "vue2") {
-        const parts = compiler.parseComponent(code);
-        assert.deepEqual(compiler.compile(parts.template.content).errors, []);
-        await transform(parts.script.content, { loader: "js" });
-      } else await transform(code, { loader: "tsx" });
+      if (platform === "vue3") await transform(compileVue3Example(code, component), { loader: "js" });
+      else await transform(code, { loader: "tsx" });
     }
 });
 test("package exports resolve without workspace source references", async () => {

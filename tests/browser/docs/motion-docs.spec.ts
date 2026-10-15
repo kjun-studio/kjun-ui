@@ -97,7 +97,7 @@ for (const platform of platforms) {
     await nf.getByRole('button', { name: '1000으로 변경' }).click();
 
     let current = platform as string;
-    const next = platform === 'react' ? 'vue2' : platform === 'vue2' ? 'native' : 'react';
+    const next = platform === 'react' ? 'vue3' : platform === 'vue3' ? 'native' : 'react';
     await changePlatform(page, next); current = next;
     await expect(number.locator('.guide-running')).toHaveAttribute('data-platform', next);
     await expect(number.locator('.guide-running')).toHaveAttribute('data-ready', 'true');
@@ -171,7 +171,7 @@ test('failed motion frames retry and reject old snapshots after reset', async ({
   });
   await expect(root.frameLocator('iframe').getByText('100', { exact: true })).toBeVisible();
   await expect(root.locator('.code-block, details')).toHaveCount(0);
-  await changePlatform(page, 'vue2');
+  await changePlatform(page, 'vue3');
   await expect(root.locator('.guide-running')).toHaveAttribute('data-ready', 'true');
   await expect(root.frameLocator('iframe').getByText('100', { exact: true })).toBeVisible();
 });

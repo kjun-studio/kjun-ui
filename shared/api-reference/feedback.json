@@ -1,7 +1,6 @@
 {
   "KjunAlert": {
-    "vue2": [
-      "formatters",
+    "vue3": [
       "type",
       "variant",
       "size",
@@ -30,9 +29,8 @@
     ]
   },
   "KjunChartSkeleton": {
-    "vue2": [
+    "vue3": [
       "loadingText",
-      "formatters",
       "kind",
       "height"
     ],
@@ -48,13 +46,12 @@
     ]
   },
   "KjunDataState": {
-    "vue2": [
+    "vue3": [
       "queryKey",
       "resultKey",
       "loading",
       "error",
       "hasLoadedOnce",
-      "formatters",
       "preserveContent",
       "refreshing",
       "refreshError",
@@ -69,7 +66,8 @@
       "size",
       "skeleton",
       "skeletonType",
-      "skeletonCount"
+      "skeletonCount",
+      "onRetry"
     ],
     "react": [
       "preserveContent",
@@ -129,8 +127,7 @@
     ]
   },
   "KjunErrorBoundary": {
-    "vue2": [
-      "formatters",
+    "vue3": [
       "fallbackMessage"
     ],
     "react": [
@@ -149,8 +146,7 @@
     ]
   },
   "KjunFormSkeleton": {
-    "vue2": [
-      "formatters",
+    "vue3": [
       "fields",
       "columns",
       "multiline",
@@ -170,8 +166,7 @@
     ]
   },
   "KjunListSkeleton": {
-    "vue2": [
-      "formatters",
+    "vue3": [
       "rows",
       "variant",
       "avatar",
@@ -194,14 +189,14 @@
     ]
   },
   "KjunProgress": {
-    "vue2": [
-      "formatters",
+    "vue3": [
       "value",
       "max",
       "size",
       "variant",
       "showLabel",
-      "label"
+      "label",
+      "subLabel"
     ],
     "react": [
       "value",
@@ -223,8 +218,7 @@
     ]
   },
   "KjunSkeleton": {
-    "vue2": [
-      "formatters",
+    "vue3": [
       "type",
       "rows",
       "columns",
@@ -253,8 +247,7 @@
     ]
   },
   "KjunSpinner": {
-    "vue2": [
-      "formatters",
+    "vue3": [
       "size",
       "text"
     ],
@@ -268,8 +261,7 @@
     ]
   },
   "KjunTooltip": {
-    "vue2": [
-      "formatters",
+    "vue3": [
       "content",
       "placement",
       "delay"

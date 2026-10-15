@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "..",
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "paths": {
+      "vue": ["node_modules/vue3-runtime"],
+      "vue/jsx-runtime": ["node_modules/vue3-runtime/jsx-runtime"],
+      "@kjun-ui/vue3": ["packages/vue3/src/index.ts"]
+    }
+  },
+  "include": ["vue3.ts", "catalog/vue3.ts"],
+  "exclude": []
+}

@@ -4,14 +4,13 @@ import { fileURLToPath } from "node:url";
 import {
   cleanType,
   reactContracts,
-  vueContracts,
   feedbackApiMembers,
 } from "./api-reference-source.mjs";
 import { overrides } from "../shared/api-reference/overrides.mjs";
 import { coreContracts, feedbackContracts } from "../shared/api-reference/contracts.mjs";
 const root = resolve(import.meta.dirname, "..");
 const json = async (path) => JSON.parse(await readFile(resolve(root, path), "utf8"));
-const platforms = ["vue2", "react", "native"];
+const platforms = ["vue3", "react", "native"];
 import {
   fail,
   validateBindings,
@@ -47,8 +46,9 @@ export async function generateReference({ check = false } = {}) {
   const validateItem = (item, label) => validateMember(item, label, knownPaths, root);
   for (const entry of publicEntries) {
     const name = entry.name,
-      vueSource = entry.sources.vue2;
-    const vue = vueContracts(resolve(root, vueSource));
+      vueSource = entry.sources.vue3;
+    // Vue 3 events and slots come from the declared emits and typed slots (scripts/vue3-api.mjs).
+    const vue = { events: api[name].events, slots: api[name].slots };
     const component = (components[name] = {});
     for (const platform of platforms) {
       const rows = api[name][platform],
@@ -56,25 +56,29 @@ export async function generateReference({ check = false } = {}) {
       validateBindings(rows, expected, name + "." + platform);
       const basic = { ...overrides[name]?.common, ...overrides[name]?.[platform] };
       const core = coreContracts[name]?.[platform] || {};
+      // Vue 3 names the v-model value modelValue; it shares the value descriptions.
+      const alias = (key) => (platform === "vue3" && key === "value" && expected.includes("modelValue") ? "modelValue" : key);
+      const describe = (key) => (platform === "vue3" && key === "modelValue" ? "value" : key);
       const unionProps = new Set(platforms.flatMap((p) => api[name][p].map((row) => row.name)));
       for (const key of Object.keys(overrides[name]?.common || {}))
         if (!unionProps.has(key)) fail("unknown shared prop " + name + "." + key);
       for (const key of Object.keys(overrides[name]?.[platform] || {}))
-        if (!expected.includes(key))
+        if (!expected.includes(alias(key)))
           fail("unknown platform prop " + name + "." + platform + "." + key);
       for (const key of Object.keys(core.props || {}))
-        if (!expected.includes(key))
+        if (!expected.includes(alias(key)))
           fail("unknown detailed prop " + name + "." + platform + "." + key);
       const props = rows.map((row) => {
-        const extra = { ...basic[row.name], ...core.props?.[row.name] };
+        const key = describe(row.name);
+        const extra = { ...basic[key], ...core.props?.[key], ...core.props?.[row.name] };
         return {
           ...row,
           type: cleanType(extra.type || row.type),
           default:
             extra.default ?? actual[platform]?.[name]?.defaults[row.name]?.value ?? row.default,
-          summary: extra.summary || terms[row.name],
+          summary: extra.summary || terms[key],
           ...extra,
-          source: platform === "vue2" ? vueSource : actual[platform]?.[name]?.source,
+          source: platform === "vue3" ? vueSource : actual[platform]?.[name]?.source,
           ...(extra.details?.length ? { example: extra.example || entry.docs + "#preview" } : {}),
         };
       });
@@ -105,8 +109,8 @@ export async function generateReference({ check = false } = {}) {
       };
       component[platform] = {
         props,
-        events: platform === "vue2" ? makeMembers("events", vue.events) : [],
-        slots: platform === "vue2" ? makeMembers("slots", vue.slots) : [],
+        events: platform === "vue3" ? makeMembers("events", vue.events) : [],
+        slots: platform === "vue3" ? makeMembers("slots", vue.slots) : [],
         ownership: core.ownership || [],
         types: core.types || [],
       };

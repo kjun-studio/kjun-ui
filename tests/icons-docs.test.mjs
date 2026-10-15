@@ -45,7 +45,7 @@ test('registered configurations cover every packed name, size and filled shape',
   for (const selection of iconValidationSelections) assert.deepEqual(validateSettings('GuideIconSelection', selection), selection);
   assert.deepEqual([...new Set(iconValidationSelections.map(e => e.size))].sort((a, b) => a - b), Object.values(tokens.iconSizes));
   for (const settings of [{ name: '../missing' }, { size: 15 }, { filled: 'true' }]) assert.throws(() => validateSettings('GuideIconSelection', settings));
-  for (const { name } of iconScenarios) assert.deepEqual(exampleDefinition(name).platforms, ['vue2', 'react', 'native']);
+  for (const { name } of iconScenarios) assert.deepEqual(exampleDefinition(name).platforms, ['vue3', 'react', 'native']);
 });
 test('icons navigation and search preserve component and API priority', () => {
   const i = documents.findIndex(e => e.id === 'icons');

@@ -1,4 +1,4 @@
-import { defineComponent, ref, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { alertActionSizes } from "../../../shared/package-runtime/alert-action-size";
 import { typeStyle } from "../../../shared/package-runtime/typography";
@@ -21,6 +21,7 @@ export type KjunBadgeProps = ExtractPublicPropTypes<typeof kjunBadgeProps>;
 export const KjunBadge = defineComponent({
   name: "KjunBadge",
   props: kjunBadgeProps,
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     return () => {
       const { x, y } = tokens.extensions.badge.padding[props.size];
@@ -49,6 +50,7 @@ export type KjunEmptyProps = ExtractPublicPropTypes<typeof kjunEmptyProps>;
 export const KjunEmpty = defineComponent({
   name: "KjunEmpty",
   props: kjunEmptyProps,
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     return () => {
       const children = slots.default?.();
@@ -104,6 +106,11 @@ export const KjunAlert = defineComponent({
   name: "KjunAlert",
   props: kjunAlertProps,
   emits: { close: () => true },
+  slots: Object as SlotsType<{
+    default?: () => VNodeChild;
+    title?: () => VNodeChild;
+    actions?: () => VNodeChild;
+  }>,
   setup(props, { slots, emit }) {
     const visible = ref(true);
     return () => {
@@ -154,6 +161,10 @@ export type KjunProgressProps = ExtractPublicPropTypes<typeof kjunProgressProps>
 export const KjunProgress = defineComponent({
   name: "KjunProgress",
   props: kjunProgressProps,
+  slots: Object as SlotsType<{
+    label?: () => VNodeChild;
+    subLabel?: () => VNodeChild;
+  }>,
   setup(props, { slots }) {
     return () => {
       const percentage = Number.isFinite(props.value) && props.max > 0
@@ -195,8 +206,8 @@ export const KjunSkeleton = defineComponent({
   name: "KjunSkeleton",
   props: kjunSkeletonProps,
   setup(props) {
-    const line = (w: Length | undefined, key?: number, h?: number) =>
-      <div key={key} class="kjun-skeleton-line" style={css({ width: w, height: h })} />;
+    const line = (w: Length | undefined, key?: number, lineHeight?: number) =>
+      <div key={key} class="kjun-skeleton-line" style={css({ width: w, height: lineHeight })} />;
     const avatar = (sm = false) => (
       <div class={"kjun-skeleton-avatar" + (sm ? " kjun-skeleton-avatar-sm" : "")}
         style={sm ? undefined : css({
@@ -238,7 +249,7 @@ export const KjunSkeleton = defineComponent({
           {type === "chart" && (
             <div class="kjun-skeleton-chart" style={css({ height: height || sizes.chartHeight })}>
               <div class="kjun-skeleton-chart-bars">
-                {[40, 65, 50, 80, 60, 90, 75].map((h, i) => <div key={i} class="kjun-skeleton-chart-bar" style={{ height: h + "%" }} />)}
+                {[40, 65, 50, 80, 60, 90, 75].map((bar, i) => <div key={i} class="kjun-skeleton-chart-bar" style={{ height: bar + "%" }} />)}
               </div>
               <div class="kjun-skeleton-chart-axis" />
             </div>

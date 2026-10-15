@@ -1,0 +1,48 @@
+import { onBeforeUnmount, ref } from "vue";
+import { tokens as foundationTokens } from "@kjun-ui/tokens";
+// Application recipe defaults, not public package tokens.
+const foundationRules = __KJUN_FOUNDATION_RULES__;
+function useFoundationMeasure(read) {
+  const node = ref(null), size = ref(0);
+  let observer;
+  const bind = element => {
+    if (element === node.value) return;
+    observer?.disconnect(); node.value = element;
+    if (!element) return;
+    const measure = () => { size.value = read(element.getBoundingClientRect()); };
+    observer = new ResizeObserver(measure);
+    measure(); observer.observe(element);
+  };
+  onBeforeUnmount(() => observer?.disconnect());
+  return [bind, size];
+}
+const FoundationLayout = defineComponent({
+  props: ["reading"],
+  setup(props, { slots }) {
+    const [bind, measured] = useFoundationMeasure(rect => rect.width);
+    return () => {
+      const rules = foundationRules, width = measured.value;
+      const gutter = width < rules.mediumFrom ? rules.gutters.compact : width < rules.wideFrom ? rules.gutters.medium : rules.gutters.wide;
+      const gap = width < rules.mediumFrom ? rules.gaps.compact : rules.gaps.regular;
+      const two = !props.reading && width >= rules.columnsFrom;
+      return create("div", { ref: bind, "data-testid": "foundation-area", style: { width: "100%", minWidth: 0 } }, [
+        create("div", { "data-testid": "foundation-container", style: { boxSizing: "border-box", width: "100%", maxWidth: (props.reading ? rules.readingMax : rules.pageMax) + "px", margin: "0 auto", padding: gutter + "px" } }, [
+          create("p", { style: { margin: "0 0 16px", overflowWrap: "anywhere" } }, `가용 폭 ${Math.round(width)}px · ${two ? "2열" : "1열"} · 좌우 ${gutter}px`),
+          create("div", { style: { display: "flex", flexDirection: two ? "row" : "column", gap: gap + "px" } }, (slots.default?.() || []).map((child, index) =>
+            create("div", { key: index, "data-testid": index ? "foundation-aside" : "foundation-main", style: { minWidth: 0, flex: two ? `${index ? 1 : 2} 1 0px` : undefined } }, [child]))),
+        ]),
+      ]);
+    };
+  },
+});
+const FoundationScreen = defineComponent({
+  props: ["overlay", "height"],
+  setup(props, { slots }) {
+    const [bind, dockHeight] = useFoundationMeasure(rect => rect.height);
+    return () => create("div", { "data-testid": "foundation-screen", style: { position: "relative", height: props.height + "px", display: "flex", flexDirection: "column", overflow: "hidden", background: "var(--kjun-surface)", outline: "1px solid var(--kjun-divider)" } }, [
+      create("div", { style: { flexShrink: 0 } }, slots.header?.()),
+      create("div", { "data-testid": "foundation-scroll", tabindex: 0, role: "region", "aria-label": "화면 본문", style: { flex: 1, minHeight: 0, overflow: "auto", overscrollBehavior: "contain", padding: "16px 0", paddingBottom: (props.overlay ? dockHeight.value + foundationRules.dockGap : 16) + "px" } }, slots.default?.()),
+      create("div", { ref: bind, "data-testid": "foundation-dock", style: { flexShrink: 0, ...(props.overlay ? { position: "absolute", bottom: 0, left: 0, right: 0, zIndex: foundationTokens.layers.page.sticky } : {}), background: "var(--kjun-surface)" } }, slots.dock?.()),
+    ]);
+  },
+});

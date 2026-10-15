@@ -33,7 +33,7 @@ const common = {
   }),
   labelField: detail("검색 결과에서 라벨을 읽을 필드입니다.", {
     "입력 계약":
-      "기본값은 name입니다. 결과 객체에 문자열 라벨을 제공하세요. Vue는 필드가 없으면 빈 문자열을 통지하고 React·Native는 옵션 라벨 헬퍼를 사용합니다.",
+      "기본값은 name입니다. 결과 객체에 문자열 라벨을 제공하세요. 필드가 없으면 세 플랫폼 모두 같은 옵션 라벨 헬퍼로 표시 문자열을 정합니다.",
   }),
 };
 const changed = event(
@@ -71,15 +71,24 @@ const types = [
   ]),
 ];
 export default {
-  vue2: {
+  vue3: {
     ownership,
     types,
     props: common,
-    events: { input: changed, select: selected, "search-error": error, clear: cleared },
+    events: {
+      "update:modelValue": changed, select: selected, "search-error": error, clear: cleared,
+      enter: event(
+        "입력의 Enter 행동을 통지합니다.",
+        "일반 입력의 Enter 또는 자동 완성에서 활성 결과를 선택하지 않는 Enter 경로",
+        "없음",
+        "반환값은 사용하지 않습니다.",
+        "활성 결과를 Enter로 선택하면 select만 통지하며 enter를 중복 통지하지 않습니다. 활성 결과가 없으면 enter로 제출 동작을 처리합니다.",
+      ),
+    },
     slots: {
-      item: slot(
+      option: slot(
         "검색 결과의 표시 내용을 교체합니다.",
-        "{ item: 결과 객체, index: 결과 목록 인덱스 }",
+        "{ option: 결과 객체 }",
         "선택·방향키 이동은 SearchInput이 처리합니다. 슬롯은 콘텐츠 표시를 담당합니다.",
       ),
     },

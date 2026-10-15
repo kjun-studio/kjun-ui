@@ -24,7 +24,7 @@ test('Card documentation exposes compositions and copies the current surface con
   await expect(page.locator('#api')).toContainText('bodyPadding');
 });
 
-for (const platform of ['vue2','react','native'] as const) for (const mode of ['full','usage']) {
+for (const platform of ['vue3','react','native'] as const) for (const mode of ['full','usage']) {
   test(`${platform} Card ${mode}: all compositions run from copied code`, async ({ page }) => {
     test.setTimeout(180000);
     const errors: string[] = [];

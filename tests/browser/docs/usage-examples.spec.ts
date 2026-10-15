@@ -5,7 +5,7 @@ import { presetConfig } from '../../../shared/example-registry';
 import { usageTools } from '../../../scripts/usage-tools.mjs';
 const discovery = JSON.parse(await readFile('apps/docs/lib/generated/discovery.json', 'utf8'));
 import { openExampleSettings } from './example-settings';
-const platforms = ['vue2', 'react', 'native'] as const;
+const platforms = ['vue3', 'react', 'native'] as const;
 async function copy(page: Page) {
   await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (text: string) => { (window as any).__copy = text; } } }));
   await page.locator('#usage').getByRole('button', { name: '기본 코드 복사', exact: true }).click();
@@ -81,7 +81,7 @@ test('delayed downloads and rapid platform changes never display or copy stale c
   await page.goto('/components/button?platform=react');
   const usage = page.locator('#usage');
   await expect(usage.getByRole('status')).toBeVisible();
-  for (const label of ['Vue 2', 'React Native', 'React', 'React Native']) {
+  for (const label of ['Vue 3', 'React Native', 'React', 'React Native']) {
     await page.getByRole('button', { name: '문서 플랫폼', exact: true }).click();
     await page.getByRole('option', { name: label, exact: true }).click();
     await expect(usage.locator('pre')).toHaveCount(0);

@@ -44,6 +44,13 @@ function traced(fn: Function, name: string, observer: ExampleObserver, swallow =
 }
 export function eventName(component: string, key: string, platform: string) {
   if (platform === 'native' && key === 'onValueChange' && ['KjunInput', 'KjunTextarea'].includes(component)) return 'onChangeText';
+  if (platform === 'vue3') {
+    // Vue 3 names the events its components emit; v-model updates read as update:<prop>.
+    const names: Record<string, string> = { onValueChange: 'update:modelValue', onOpenChange: 'update:open', onChangeCommit: 'change', onSelectionChange: 'update:selected',
+      onExpandedRowsChange: 'update:expandedRows', onSortChange: 'update:sort', onPageSizeChange: 'update:pageSize', ...(component === 'KjunPagination' ? { onPageChange: 'update:page' } : {}) };
+    if (!/^on[A-Z]/.test(key)) return key;
+    return names[key] || key.slice(2).replace(/^[A-Z]/, c => c.toLowerCase()).replace(/[A-Z]/g, c => '-' + c.toLowerCase());
+  }
   if (platform !== 'vue2' || !/^on[A-Z]/.test(key)) return key;
   const names: Record<string, string> = { onChangeCommit: 'change', onValueChange: 'input', onOpenChange: component === 'KjunSelect' ? 'update:open' : 'input', onSelectionChange: 'selection-change', onExpandedRowsChange: 'update:expandedRows' };
   return names[key] || key.slice(2).replace(/^[A-Z]/, c => c.toLowerCase()).replace(/[A-Z]/g, c => '-' + c.toLowerCase());

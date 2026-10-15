@@ -6,7 +6,7 @@ export function forms(b: RecipeBuilder): string | undefined {
     case 'GuideSettingsForm': {
       b.feedback = true;
       const invalid = b.state('invalid', false);
-      const save = b.handler('save', '', `if (!${b.read('formName')}.trim()) {\n  ${b.set('invalid', 'true')}\n  return;\n}\n${b.set('invalid', 'false')}\n// 실제 저장 요청이 성공한 뒤 안내합니다.\n${b.vue ? 'this.kjunFeedback' : 'feedback'}.toast.success("변경 사항을 저장했습니다.");`);
+      const save = b.handler('save', '', `if (!${b.read('formName')}.trim()) {\n  ${b.set('invalid', 'true')}\n  return;\n}\n${b.set('invalid', 'false')}\n// 실제 저장 요청이 성공한 뒤 안내합니다.\nfeedback.toast.success("변경 사항을 저장했습니다.");`);
       return b.stack([
         b.node('KjunFormGroup', { id: 'settings-name', label: '목록 이름', required: true, hint: '동료가 구분할 수 있는 이름을 입력하세요.', error: expr('state.invalid ? "목록 이름을 입력해 주세요." : ""') },
           b.field('formName', '', '목록 이름', { id: 'settings-name', size: 'lg', error: invalid, placeholder: '예: 장기 보유 자산' })),

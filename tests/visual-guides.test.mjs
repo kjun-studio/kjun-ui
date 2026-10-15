@@ -23,7 +23,7 @@ test("visual definitions cover public components plus feedback on every platform
   assert.equal(Object.keys(guides).length, catalog.filter(entry => entry.kind !== "internal").length + 1);
   for (const entry of catalog.filter((c) => c.kind !== "internal")) {
     assert.equal(guides[entry.name].path, entry.docs);
-    for (const platform of ["vue2", "react", "native"]) {
+    for (const platform of ["vue3", "react", "native"]) {
       const data = guides[entry.name].platforms[platform];
       assert.ok(data.figures.length);
       assert.ok(data.states.length);
@@ -36,14 +36,14 @@ test("visual definitions cover public components plus feedback on every platform
   assert.equal(guides.KjunFeedbackProvider.platforms.native.figures.length, 3);
 });
 test("visual state and size differences reflect public APIs rather than shared guesses", () => {
-  assert.ok(guides.KjunRadioGroup.platforms.vue2.states.some((s) => s.id === "disabled"));
+  assert.ok(!guides.KjunRadioGroup.platforms.vue3.states.some((s) => s.id === "disabled"));
   assert.ok(!guides.KjunRadioGroup.platforms.react.states.some((s) => s.id === "disabled"));
   assert.equal(guides.KjunDrawer.platforms.react.sizes.length, 0);
   assert.ok(!guides.KjunDrawer.platforms.react.states.some((s) => s.id === "loading"));
   assert.ok(guides.KjunFormGroup.platforms.native.states.some((s) => s.id === "child-disabled"));
-  assert.ok(guides.KjunIconToggle.platforms.vue2.sizes.some((s) => s.label === "xl"));
+  assert.ok(guides.KjunIconToggle.platforms.vue3.sizes.some((s) => s.label === "xl"));
   assert.ok(guides.KjunIconToggle.platforms.react.sizes.some((s) => s.label === "xl"));
-  assert.equal(guides.KjunBadge.platforms.vue2.sizeDefault, '"sm"');
+  assert.equal(guides.KjunBadge.platforms.vue3.sizeDefault, '"sm"');
   assert.equal(guides.KjunBadge.platforms.react.sizeDefault, '"sm"');
 });
 test("unknown public references and duplicate figures fail generation", () => {
@@ -64,7 +64,7 @@ test("unknown public references and duplicate figures fail generation", () => {
 });
 test("anatomy manifest proves installed package rendering and every image has valid annotation coordinates", async () => {
   const manifest = await read("apps/docs/public/previews/guide-figures/manifest.json");
-  assert.deepEqual(manifest.renderers, ["@kjun-ui/vue2", "@kjun-ui/react", "@kjun-ui/native"]);
+  assert.deepEqual(manifest.renderers, ["@kjun-ui/vue3", "@kjun-ui/react", "@kjun-ui/native"]);
   const expected = Object.values(guides).flatMap((g) =>
     Object.entries(g.platforms).flatMap(([p, data]) =>
       data.figures.map((f) => [`${p}/${g.name}/${f.id}`, f]),

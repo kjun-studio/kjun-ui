@@ -5,7 +5,7 @@ const common = {
     "복합 입력": "QuantityStepper는 숫자 입력에 라벨·ID·오류·도움말·필수 정보를 연결합니다. TimePicker는 각 부분에 고유한 ID와 시·분·초 이름을 부여하고 도움말·오류를 공유합니다. 웹에서 연결된 라벨은 첫 번째 시 선택 컨트롤을 가리킵니다. Native DatePicker도 필드의 라벨·오류·도움말을 사용하며, Select 팝업의 검색창은 바깥 필드 맥락을 상속하지 않습니다.",
   }),
   required: detail("필수 표시와 자식 필드 맥락을 제공합니다.", {
-    "입력 연결": "Input·Textarea는 이 상태를 상속합니다. React·Vue 2는 기본 required, Native Web은 aria-required로 필수 입력 의미를 전달합니다. React·Vue 2 입력에 명시한 required 값은 FormGroup보다 우선합니다.",
+    "입력 연결": "Input·Textarea는 이 상태를 상속합니다. React·Vue 3는 기본 required, Native Web은 aria-required로 필수 입력 의미를 전달합니다. React·Vue 2 입력에 명시한 required 값은 FormGroup보다 우선합니다.",
     "상태 책임":
       "FormGroup은 값이나 검증 결과를 계산하지 않습니다. 값·검증 규칙은 소비자가 관리하고 결과 메시지를 error에 전달합니다. required만으로 모든 플랫폼의 제출 검증을 보장하지 않습니다.",
   }),
@@ -24,19 +24,19 @@ const ownership = [
   "라벨·도움말·오류 연결: FormGroup이 필드 맥락과 설명 요소를 제공하고 KJUN 입력이 이를 소비합니다.",
 ];
 export default {
-  vue2: {
+  vue3: {
     ownership,
     props: {
       ...common,
       id: detail("라벨의 for와 자식 입력에 사용할 명시적 필드 ID입니다.", {
-        연결: "id를 제공하면 label의 for를 연결하고 오류·도움말 ID에도 사용합니다. 생략 시 라벨·설명 ID를 내부 UID로 만들지만 label의 for는 비어 있으므로 명시적 클릭 연결이 필요하면 id를 지정하세요.",
+        연결: "id를 제공하면 label의 for와 자식 입력의 id에 사용하고 오류·도움말 ID의 기준으로 삼습니다. 생략하면 고유 ID를 생성해 같은 방식으로 연결합니다.",
       }),
     },
     slots: {
       default: slot(
         "라벨과 설명을 공유할 입력을 배치합니다.",
         "제공 데이터 없음",
-        "KjunInput·KjunSelect·KjunTextarea 등은 inject로 필드 맥락을 받습니다. 입력의 value와 변경 이벤트는 자식에 연결합니다.",
+        "KjunInput·KjunSelect·KjunTextarea 등은 provide/inject로 필드 맥락을 받습니다. 입력의 v-model은 자식에 연결합니다.",
       ),
     },
   },

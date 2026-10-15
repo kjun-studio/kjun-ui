@@ -3,7 +3,7 @@ import { implementationNames } from '../../../shared/implementation-examples';
 import { guideTopics } from '../../../shared/document-navigation';
 import { exportsRoute } from './export-checks';
 
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   test(`${platform}: implementation code belongs only to the 15 explicit guide cases`, async ({ page }) => {
     test.setTimeout(120000);
     const found: string[] = [];
@@ -41,7 +41,7 @@ for (const platform of ['vue2', 'react', 'native']) {
         await page.getByRole(platform === 'native' ? 'radio' : 'option').first().click();
         await expect(page.getByText('선택한 자산: 긴 한국어 자산 이름', { exact: true })).toBeVisible();
       } else if (name === 'GuideAssetList') {
-        const trigger = page.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '목록 상태', exact: true });
+        const trigger = page.getByRole('button', { name: '목록 상태', exact: true });
         await trigger.click();
         await page.getByRole(platform === 'native' ? 'radio' : 'option', { name: '빈 결과', exact: true }).click();
         await expect(page.getByText('조건에 맞는 자산이 없습니다', { exact: true })).toBeVisible();

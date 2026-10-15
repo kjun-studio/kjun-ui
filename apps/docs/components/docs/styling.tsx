@@ -48,7 +48,7 @@ export function Styling() {
           이름으로 연결하고 HEX 값을 다시 복사하지 마세요. 아래 역할과
           --kjun-font를 정의합니다. 필수 색상은 {tokens.coreColorRoles.length}개이며 나머지는 선택적으로 지정합니다.
         </p>
-        <CodeBlock code={webMapping} label="Vue 2 · React 공통 연결" />
+        <CodeBlock code={webMapping} label="Vue 3 · React 공통 연결" />
         <CodeBlock
           code={
             'import "@kjun-ui/react/styles.css";\nimport "./design-system/kjun.css";\n\n<KjunProvider>\n  <KjunButton variant="primary">저장</KjunButton>\n</KjunProvider>'

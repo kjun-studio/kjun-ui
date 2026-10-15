@@ -70,7 +70,7 @@ export function FoundationElevationGuide() {
         <DataTable headings={['페이지 레이어', '값']} rows={Object.entries(tokens.layers.page).map(([name, value]) => [`layers.page.${name}`, value])} />
         <p className="body-copy">창의 중첩 순서는 패키지가 자동으로 관리합니다. 내부 CSS 변수와 계산값은 프로젝트 설정 API가 아닙니다.</p>
       </CollapsibleContent></Collapsible>
-      <p className="body-copy">React·Vue 2는 Provider의 색상·서체 범위를 유지하는 Web 호스트를 사용합니다. Native는 활성 Modal 창 내부에 Toast를 표시합니다. Web z-index와 Native 창 순서는 서로 다른 플랫폼 기능입니다.</p>
+      <p className="body-copy">React·Vue 3는 Provider의 색상·서체 범위를 유지하는 Web 호스트를 사용합니다. Native는 활성 Modal 창 내부에 Toast를 표시합니다. Web z-index와 Native 창 순서는 서로 다른 플랫폼 기능입니다.</p>
       <p className="body-copy">Native Web은 브라우저 미리보기입니다. iOS·Android의 기기 키보드·안전 영역·뒤로 가기·VoiceOver·TalkBack 검증은 별도로 수행합니다.</p>
       <p className="body-copy"><Link href="/layout#cta">하단 CTA 공간 확보</Link> · <Link href="/feedback">피드백 서비스</Link> · <Link href="/components/card">Card</Link> · <Link href="/components/modal">Modal</Link></p>
     </section>

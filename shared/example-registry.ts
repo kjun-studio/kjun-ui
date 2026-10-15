@@ -142,7 +142,7 @@ export function exampleDefinition(name: string) {
   if (!extras[name] && list.some(c => c.key === "error")) presets.push(preset("error", "오류", { error: true }));
   const defaults = Object.fromEntries(list.map(c => [c.key, c.default])) as Settings;
   if (name === "KjunFormGroup") defaults.required = false;
-  return { name, controls: list, presets, defaults, platforms: ["vue2", "react", "native"] as PlatformName[],
+  return { name, controls: list, presets, defaults, platforms: ["vue3", "react", "native"] as PlatformName[],
     minHeight: name === "GuideLayerStack" || name === "GuideScrollCTA" || name === "GuideBottomSheet" || name === "KjunFeedbackProvider" || ["KjunModal", "KjunDrawer"].includes(name) ? 600 : name === "KjunPopover" ? 240 : layers.has(name) ? 400 : 160,
     limitation: foundationNames.includes(name) ? "가용 폭과 CTA 높이는 실행 환경에서 다시 측정합니다. 키보드 상태·안전 영역은 모의 입력이며 기기 검증을 대신하지 않습니다. 스크롤 위치·포커스·표시 중인 Toast는 복원하지 않습니다." : name === "KjunQuantityStepper" ? "확정된 숫자를 복사합니다. 편집 중인 미확정 문자열은 Enter 또는 초점 이동으로 확정한 뒤 복사하세요." : name === "KjunTable" ? "선택·확장 행은 복원합니다. 내부 정렬 방향 표시와 검색창의 검색어는 기본 상태로 시작합니다." : name === "KjunFeedbackProvider" ? "서비스 옵션을 복사합니다. 진행 중인 요청, Prompt에서 입력 중인 값, 알림의 남은 시간은 복원하지 않습니다." : layers.has(name) ? "공개 API로 제어되는 값과 열림 상태를 복원합니다. hover·focus와 내부 검색·팝업 상태는 기본 상태로 시작할 수 있습니다." : "공개 API로 설정할 수 있는 현재 값을 코드의 시작값으로 복사합니다. 내부 상태와 hover·focus는 복원하지 않습니다.",
   };
@@ -153,7 +153,7 @@ export function presetConfig(name: string, id = "default") {
   if (!preset) throw Error("존재하지 않는 프리셋");
   return { settings: { ...definition.defaults, ...preset.settings }, values: { ...preset.values }, narrow: !!preset.narrow };
 }
-export function visibleControls(name: string, settings: Settings, platform: PlatformName = "vue2") {
+export function visibleControls(name: string, settings: Settings, platform: PlatformName = "vue3") {
   const fixed = new Set<string>();
   if (settings.comparison && settings.comparison !== '기본') {
     if (name === 'KjunButton') {
@@ -168,7 +168,7 @@ export function visibleControls(name: string, settings: Settings, platform: Plat
     }
     if (settings.comparison === '크기') fixed.add('size');
   }
-  return exampleDefinition(name).controls.filter(c => !fixed.has(c.key) && !(name === "KjunRadioGroup" && c.key === "disabled" && platform !== "vue2") && (!c.when || Object.entries(c.when).every(([key, values]) => values.includes(settings[key]))));
+  return exampleDefinition(name).controls.filter(c => !fixed.has(c.key) && !(name === "KjunRadioGroup" && c.key === "disabled") && (!c.when || Object.entries(c.when).every(([key, values]) => values.includes(settings[key]))));
 }
 export function validateSettings(name: string, settings: unknown): Settings {
   if (!settings || typeof settings !== "object" || Array.isArray(settings)) throw Error("설정은 객체여야 합니다.");

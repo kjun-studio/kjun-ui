@@ -1,4 +1,4 @@
-import { defineComponent, onBeforeUnmount, onMounted, ref, type ExtractPublicPropTypes, type PropType, type VNodeChild } from "vue";
+import { defineComponent, onBeforeUnmount, onMounted, ref, type ExtractPublicPropTypes, type PropType, type VNodeChild, type SlotsType } from "vue";
 import { isComposingKey, nextTableSort, tokens, type TableSort } from "@kjun-ui/tokens";
 import { getValue, sortTableRows, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
 import { tablePresentation } from "../../../shared/package-runtime/table-presentation";
@@ -14,6 +14,7 @@ export type { TableCardSection, TableColumn, TablePagination };
 
 export { getValue };
 export type { TableSort };
+type TableCellScope = { value: unknown; column: TableColumn<any>; row: any; index: number };
 const kjunTableProps = {
   columns: { type: Array as PropType<TableColumn<any>[]>, required: true },
   data: { type: Array as PropType<object[]>, default: () => [] },
@@ -68,6 +69,14 @@ export const KjunTable = defineComponent({
     "update:sort": (_sort: TableSort) => true, "update:selected": (_rows: any[]) => true,
     "update:expandedRows": (_keys: (string | number)[]) => true, "page-change": (_page: number) => true, search: (_query: string) => true,
   },
+  slots: Object as SlotsType<{
+    cell?: (scope: TableCellScope) => VNodeChild;
+    [key: `cell-${string}`]: ((scope: TableCellScope) => VNodeChild) | undefined;
+    expand?: (scope: { row: object; index: number }) => VNodeChild;
+    selectionToolbar?: (scope: { selected: object[] }) => VNodeChild;
+    toolbar?: () => VNodeChild;
+    empty?: () => VNodeChild;
+  }>,
   setup(props, { slots, emit }) {
     const internalSort = ref<TableSort>({ key: "", order: "asc" }), internalExpanded = ref<(string | number)[]>([]), search = ref("");
     const mobile = ref(false);

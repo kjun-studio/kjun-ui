@@ -2,6 +2,7 @@ import { readFile, access, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { createRequire } from "node:module";
 import ts from "typescript";
+import { requireVue3Package } from "./vue3-runtime.mjs";
 const root = resolve(import.meta.dirname, "..");
 const json = async (path) =>
   JSON.parse(await readFile(resolve(root, path), "utf8"));
@@ -30,7 +31,7 @@ const examples = (
   )
 ).join("\n");
 for (const entry of catalog) {
-  for (const platform of ["vue2", "react", "native"])
+  for (const platform of ["vue3", "react", "native"])
     if (
       entry.platforms[platform]?.status !== "implemented" ||
       entry.platforms[platform]?.verification !== "passed"
@@ -39,7 +40,7 @@ for (const entry of catalog) {
   if (!entry.verificationEvidence)
     fail("missing verification record " + entry.name);
   await access(resolve(root, entry.verificationEvidence));
-  for (const platform of ["vue2", "react", "native"]) {
+  for (const platform of ["vue3", "react", "native"]) {
     if (!entry.sources?.[platform]) fail("missing platform source " + entry.name);
     await access(resolve(root, entry.sources[platform]));
   }
@@ -56,7 +57,7 @@ for (const entry of catalog) {
   )
     fail("missing docs " + entry.name);
 }
-for (const platform of ["vue2", "react", "native"]) {
+for (const platform of ["vue3", "react", "native"]) {
   const file = resolve(root, `packages/${platform}/dist/index.d.ts`);
   const program = ts.createProgram([file], {
     skipLibCheck: true,
@@ -104,11 +105,11 @@ for (const platform of ["vue2", "react", "native"]) {
     fail("app dependency in " + platform);
 }
 const require = createRequire(import.meta.url),
-  vue = require(resolve(root, "packages/vue2/dist/index.cjs")),
+  vue = requireVue3Package(),
   react = require(resolve(root, "packages/react/dist/index.cjs"));
 for (const name of names)
   for (const [platform, ui] of [
-    ["vue2", vue],
+    ["vue3", vue],
     ["react", react],
   ])
     if (!ui[name]) fail("runtime export " + platform + " " + name);

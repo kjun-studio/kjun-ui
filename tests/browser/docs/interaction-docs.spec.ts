@@ -63,7 +63,7 @@ for (const platform of platforms) test(`${platform}: interaction navigation, exa
     if (kind === 'tabs') await expect(frame.getByRole('button', { name: '첫 탭 비활성화' })).toBeVisible();
     if (kind === 'loading') await frame.getByRole('button', { name: '저장', exact: true }).click();
   }
-  const next = platform === 'react' ? 'vue2' : 'react'; await changePlatform(page, next);
+  const next = platform === 'react' ? 'vue3' : 'react'; await changePlatform(page, next);
   for (const kind of ['button', 'tabs', 'input', 'loading']) {
     const root = interactionExample(page, kind);
     await expect(root.locator('.guide-running')).toHaveAttribute('data-platform', next);

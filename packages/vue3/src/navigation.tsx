@@ -1,5 +1,5 @@
 import { Fragment, defineComponent, inject, onBeforeUnmount, onMounted, provide, ref, shallowRef, watch,
-  type ExtractPublicPropTypes, type InjectionKey, type PropType, type VNode } from "vue";
+  type ExtractPublicPropTypes, type InjectionKey, type PropType, type VNode, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { KjunCollapse } from "./collapse";
@@ -40,6 +40,7 @@ export type KjunAccordionProps = ExtractPublicPropTypes<typeof kjunAccordionProp
 export const KjunAccordion = defineComponent({
   name: "KjunAccordion",
   props: kjunAccordionProps,
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     provide(kjunAccordionKey, useAccordionState(() => props.multiple));
     return () => <div class="kjun-accordion" data-tone={props.tone}>{slots.default?.()}</div>;
@@ -56,6 +57,10 @@ export type KjunAccordionItemProps = ExtractPublicPropTypes<typeof kjunAccordion
 export const KjunAccordionItem = defineComponent({
   name: "KjunAccordionItem",
   props: kjunAccordionItemProps,
+  slots: Object as SlotsType<{
+    default?: () => VNodeChild;
+    header?: () => VNodeChild;
+  }>,
   setup(props, { slots }) {
     const group = inject(kjunAccordionKey, null);
     const id = useKjunId("kjun-");
@@ -93,6 +98,7 @@ export type KjunBreadcrumbProps = ExtractPublicPropTypes<typeof kjunBreadcrumbPr
 export const KjunBreadcrumb = defineComponent({
   name: "KjunBreadcrumb",
   props: kjunBreadcrumbProps,
+  slots: Object as SlotsType<{ link?: (scope: { item: BreadcrumbItem; label: VNode }) => VNodeChild }>,
   setup(props, { slots }) {
     return () => (
       <nav aria-label={props.ariaLabel} class="kjun-breadcrumb">

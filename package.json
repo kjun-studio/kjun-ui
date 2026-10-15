@@ -21,7 +21,7 @@
     "build:previews": "node scripts/workflow-run.mjs build:previews sh -c 'node scripts/previews.mjs \"$@\"' --",
     "build": "node scripts/workflow-run.mjs build sh -c 'npm run tokens:check && npm run build:packages && npm run catalog:check && npm run pack:local && npm run docs:install && npm run docs:generate && npm run docs:check && npm run typecheck && npm run verify:consumers && npm run build:previews && npm run examples:verify && npm run guides:verify && npm run build:thumbnails && npm run build:guide-figures && npm run build:design-figures && npm --prefix apps/docs run build \"$@\"' --",
     "dev": "npm --prefix apps/docs run dev -- --port 4173",
-    "typecheck": "node scripts/workflow-run.mjs typecheck sh -c 'npm run examples:generate && tsc --noEmit && tsc -p apps/docs/tsconfig.json --noEmit \"$@\"' --",
+    "typecheck": "node scripts/workflow-run.mjs typecheck sh -c 'npm run examples:generate && tsc --noEmit && tsc -p previews/tsconfig.vue3.json --noEmit && tsc -p apps/docs/tsconfig.json --noEmit \"$@\"' --",
     "test": "node scripts/workflow-run.mjs test sh -c 'npm run verify:current && node --test tests/*.test.mjs \"$@\"' --",
     "test:browser": "node scripts/workflow-run.mjs test:browser sh -c 'playwright test \"$@\"' --",
     "test:browser:full": "node scripts/workflow-run.mjs test:browser:full sh -c 'node scripts/browser-test.mjs \"$@\"' --",

@@ -3,7 +3,7 @@ import { revealFrame } from './motion-docs-helpers';
 import { openExampleSettings } from './example-settings';
 
 test.use({ reducedMotion: 'reduce' });
-const platforms = ['vue2', 'react', 'native'] as const;
+const platforms = ['vue3', 'react', 'native'] as const;
 
 for (const platform of platforms) {
   test(`${platform}: detail previews lead the page and remain usable at desktop and mobile widths`, async ({ page }) => {
@@ -138,7 +138,7 @@ test('legacy design anchors lead to concise links and full guides keep their too
 
 test('API detail tables stay within a 320px page and platform transitions replace expanded descriptions', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
-  await page.goto('/components/select?platform=vue2#api');
+  await page.goto('/components/select?platform=vue3#api');
   await page.getByRole('button', { name: 'open 사용 계약', exact: true }).click();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const container = page.locator('#api .kjun-table-scroll').first();
@@ -151,7 +151,7 @@ test('API detail tables stay within a 320px page and platform transitions replac
   await expect(page.locator('#api .api-member-details')).not.toContainText('isOpen');
 });
 
-for (const platform of ['react', 'vue2', 'native']) test(`${platform}: button documentation comparisons render packed sizes, variants and narrow layouts`, async ({ page }) => {
+for (const platform of ['react', 'vue3', 'native']) test(`${platform}: button documentation comparisons render packed sizes, variants and narrow layouts`, async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -197,7 +197,7 @@ for (const platform of ['react', 'vue2', 'native']) test(`${platform}: button do
   expect(errors).toEqual([]);
 });
 
-for (const platform of ['vue2', 'react', 'native'] as const) {
+for (const platform of ['vue3', 'react', 'native'] as const) {
   test(`${platform} API summaries, details, defaults and ownership follow the document platform`, async ({ page }) => {
     const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
     await page.goto(`/components/select?platform=${platform}#api`);
@@ -217,10 +217,10 @@ for (const platform of ['vue2', 'react', 'native'] as const) {
     await expect(page.locator('.api-ownership')).toContainText('value prop이나 값 변경 이벤트가 없습니다');
     await expect(page.locator('#api').getByRole('cell', { name: 'value', exact: true })).toHaveCount(0);
     await page.goto(`/components/table?platform=${platform}#api`);
-    if (platform === 'vue2') {
-      await expect(page.getByRole('table', { name: '슬롯', exact: true })).toContainText('cell-*');
+    if (platform === 'vue3') {
+      await expect(page.getByRole('table', { name: '슬롯', exact: true })).toContainText('cell-<key>');
       await expect(page.getByRole('table', { name: '슬롯', exact: true }).getByRole('cell', { name: 'default', exact: true })).toHaveCount(0);
-      await expect(page.getByRole('table', { name: '이벤트', exact: true })).toContainText('selection-change');
+      await expect(page.getByRole('table', { name: '이벤트', exact: true })).toContainText('update:selected');
     } else await expect(page.locator('#api')).toContainText('TableColumn<Row>');
     expect(errors).toEqual([]);
   });

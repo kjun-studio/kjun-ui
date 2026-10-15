@@ -66,17 +66,17 @@ const empty = event(
   "생성·조건 변경 등 실제 행동은 소비자가 구현합니다.",
 );
 export default {
-  vue2: {
+  vue3: {
     ownership,
-    props: common,
-    events: { retry, "empty-action": empty },
+    props: { ...common, onRetry: retry },
+    events: { "empty-action": empty },
     slots: {
       loading: slot("기본 최초 로딩 표시를 교체합니다."),
       empty: slot("기본 빈 상태를 교체합니다.", "제공 데이터 없음", "DataState가 size에 따른 바깥 여백을 담당합니다. 슬롯의 KjunEmpty에는 기본 여백을 중복 적용하지 않습니다."),
       error: slot(
         "기본 오류 표시를 교체합니다.",
-        "{ error: 오류 메시지, retry: () => void }",
-        "retry()는 retry 이벤트를 통지합니다. 데이터 요청은 소비자 리스너가 수행합니다.",
+        "{ error: 오류 메시지, retry: (() => void) | undefined }",
+        "retry는 @retry로 연결한 함수이며 연결하지 않으면 undefined입니다. 데이터 요청은 소비자 함수가 수행합니다.",
       ),
       default: slot(
         "성공 결과 콘텐츠를 배치합니다.",

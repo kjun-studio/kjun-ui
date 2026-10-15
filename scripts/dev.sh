@@ -14,7 +14,7 @@ if curl -fsS http://127.0.0.1:4173/ -o /dev/null 2>/dev/null; then
   echo "KJUN UI: http://127.0.0.1:4173"
   exit 0
 fi
-if ! docker exec kjun_ui_dev test -f /workspace/apps/docs/public/previews/vue2.html; then
+if ! docker exec kjun_ui_dev test -f /workspace/apps/docs/public/previews/vue3.html; then
   docker exec kjun_ui_dev npm run setup
 fi
 docker exec -it -w /workspace/apps/docs kjun_ui_dev npm run dev -- --port 4173

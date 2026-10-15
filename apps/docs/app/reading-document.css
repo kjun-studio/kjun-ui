@@ -35,7 +35,7 @@
   .reading-document .download-row > a { width: 100%; justify-content: flex-start; }
   .reading-document .download-row > a > span { margin-left: auto; }
   /* The comparison keeps the feature column and the selected platform only. */
-  .compatibility-table[data-platform="vue2"] :is(th, td):is(:nth-child(3), :nth-child(4)),
+  .compatibility-table[data-platform="vue3"] :is(th, td):is(:nth-child(3), :nth-child(4)),
   .compatibility-table[data-platform="react"] :is(th, td):is(:nth-child(2), :nth-child(4)),
   .compatibility-table[data-platform="native"] :is(th, td):is(:nth-child(2), :nth-child(3)) { display: none; }
 }

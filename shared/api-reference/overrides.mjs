@@ -71,9 +71,9 @@ set("ButtonGroup RadioGroup", {
 });
 set("Tabs", { value: { summary: "활성 탭 이름은 소비자가 소유하며 변경 요청을 value에 반영합니다.", details: [
   { label: "빈 값의 초기 선택", text: "value가 빈 문자열이면 첫 활성 항목의 도착·변경을 감지하여 선택을 요청합니다. items와 복합 TabPane 모두 지원합니다. 같은 빈 값 기간에 같은 후보는 한 번만 요청하며 객체 재생성·부모의 거절로 반복하지 않습니다. 비어 있지 않은 부모 값은 자동 교체하지 않습니다." },
-  { label: "통지 순서", text: "초기 선택과 사용자 선택 모두 Vue input → change, React·Native onValueChange → onChange 순서입니다. 부모가 비어 있지 않은 값을 지정한 뒤 다시 빈 값으로 초기화하면 초기 선택을 다시 요청할 수 있습니다." },
+  { label: "통지 순서", text: "초기 선택과 사용자 선택 모두 Vue update:modelValue → change, React·Native onValueChange → onChange 순서입니다. 부모가 비어 있지 않은 값을 지정한 뒤 다시 빈 값으로 초기화하면 초기 선택을 다시 요청할 수 있습니다." },
 ] } });
-set("TabPane", { disabled: "탭 선택을 비활성화합니다. Vue의 복합 탭 등록 정보도 속성 변경을 따라갑니다." }, "vue2");
+set("TabPane", { disabled: "탭 선택을 비활성화합니다. 부모 Tabs가 속성 변경을 따라 탭 목록을 갱신합니다." }, "vue3");
 set("Pagination", {
   showSizeSelector: "페이지당 항목 수 선택기를 표시합니다. 전체 페이지가 0개나 1개여도 선택기를 유지합니다.",
   showInfo: "전체 행이 있으면 현재 표시 범위와 전체 행 수를 표시합니다. 한 페이지일 때도 유지합니다.",
@@ -87,7 +87,6 @@ set("AnimatedNumber PriceCell SignedValue Deviation Progress ProgressCell Heatma
   value: "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",
 });
 set("CopyButton", { value: "클립보드에 복사할 문자열입니다." });
-set("Modal Drawer Popover", { value: "Vue v-model로 연결할 현재 열림 여부입니다." }, "vue2");
 set("Accordion", { multiple: { summary: "여러 항목을 동시에 펼치도록 허용합니다.", details: [
   { label: "동적 변경", text: "false로 전환하면 현재 열린 항목 중 마지막으로 연 항목만 유지합니다. 다시 true로 바꿔도 닫힌 항목을 복원하지 않습니다. 제거된 자식은 열린 상태 목록에서도 정리합니다." },
   { label: "기본 펼침", text: "단일 모드에서 여러 자식이 defaultOpen이면 첫 등록 항목만 엽니다. defaultOpen은 최초 등록용이며 이후 상태 제어 prop이 아닙니다." },
@@ -149,7 +148,6 @@ set("FormActions", {
 });
 set("Alert", { type: "알림의 의미 색상(info·success·warning·danger 등)을 선택합니다." });
 set("Input Button", { type: "기본 입력 또는 버튼 요소에 전달할 HTML 동작 유형입니다." }, "react");
-set("Input", { type: "웹 입력 요소의 종류입니다." }, "vue2");
 set("SearchInput", {
   itemKey:
     "자동 완성 결과의 반복 렌더링 key로 읽을 필드입니다. 모든 플랫폼에서 기본값은 id이며 string·number 식별자를 사용합니다.",
@@ -180,22 +178,8 @@ set(
   },
   "react",
 );
-set(
-  "ButtonGroup",
-  {
-    options:
-      "단일 선택 옵션 { value, label, icon? }입니다. Vue는 옵션별 disabled를 소비하지 않습니다.",
-  },
-  "vue2",
-);
-set(
-  "RadioGroup",
-  { disabled: "그룹 내 옵션과 슬롯 Radio의 실행을 막습니다. Vue에서만 지원합니다." },
-  "vue2",
-);
 set("Freshness", { formatter: "수집 시각 문자열을 설명에 표시할 문자열로 변환합니다." });
-set("Progress", { label: "진행률의 제목입니다. Vue는 showLabel이 켜져야 제목을 표시합니다." });
-set("Input", { step: "HTML 숫자 입력의 증가·감소 간격입니다." }, "vue2");
+set("Progress", { label: "진행률의 제목입니다. showLabel과 관계없이 표시하며 showLabel은 백분율을 더합니다." });
 set("MarketTableSkeleton", {
   alignClass: "선택적 웹 정렬 클래스 콜백입니다. 생략하면 columns[].align을 사용합니다.",
   widthClass: "선택적 웹 너비 클래스 콜백입니다. 생략하면 공통 열 배치를 사용합니다.",

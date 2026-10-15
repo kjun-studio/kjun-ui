@@ -1,10 +1,11 @@
 {
   "KjunListRow": {
-    "vue2": [
+    "vue3": [
       "title",
       "description",
       "href",
-      "disabled"
+      "disabled",
+      "onClick"
     ],
     "react": [
       "title",
@@ -28,7 +29,7 @@
     ]
   },
   "KjunListSection": {
-    "vue2": [
+    "vue3": [
       "title",
       "description",
       "ariaLabel"
@@ -49,7 +50,7 @@
     ]
   },
   "KjunTopNavigation": {
-    "vue2": [
+    "vue3": [
       "title",
       "description",
       "safeAreaTop"
@@ -70,7 +71,7 @@
     ]
   },
   "KjunBottomNavigation": {
-    "vue2": [
+    "vue3": [
       "items",
       "value",
       "ariaLabel",
@@ -98,7 +99,7 @@
     ]
   },
   "KjunBottomActionBar": {
-    "vue2": [
+    "vue3": [
       "description",
       "safeAreaBottom",
       "keyboardVisible",
@@ -120,7 +121,7 @@
     ]
   },
   "KjunImage": {
-    "vue2": [
+    "vue3": [
       "src",
       "alt",
       "decorative",
@@ -152,7 +153,7 @@
     ]
   },
   "KjunAvatar": {
-    "vue2": [
+    "vue3": [
       "src",
       "name",
       "alt",
@@ -185,7 +186,7 @@
     ]
   },
   "KjunChip": {
-    "vue2": [
+    "vue3": [
       "label",
       "icon",
       "removable",
@@ -213,14 +214,14 @@
     ]
   },
   "KjunSlider": {
-    "vue2": [
+    "vue3": [
       "min",
       "max",
       "step",
       "disabled",
       "label",
       "ariaLabel",
-      "value"
+      "modelValue"
     ],
     "react": [
       "value",
@@ -246,14 +247,14 @@
     ]
   },
   "KjunRangeSlider": {
-    "vue2": [
+    "vue3": [
       "min",
       "max",
       "step",
       "disabled",
       "label",
       "ariaLabel",
-      "value",
+      "modelValue",
       "thumbLabels"
     ],
     "react": [
@@ -282,8 +283,8 @@
     ]
   },
   "KjunTimePicker": {
-    "vue2": [
-      "value",
+    "vue3": [
+      "modelValue",
       "precision",
       "min",
       "max",
@@ -327,9 +328,8 @@
     ]
   },
   "KjunQuantityStepper": {
-    "vue2": [
-      "block",
-      "value",
+    "vue3": [
+      "modelValue",
       "min",
       "max",
       "step",
@@ -337,6 +337,7 @@
       "disabled",
       "error",
       "size",
+      "block",
       "id",
       "ariaLabel"
     ],

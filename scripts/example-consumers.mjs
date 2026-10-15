@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { build } from 'esbuild';
 import { assertCurrentConsumer } from './package-state.mjs';
-import { compileVueExample } from './vue-example.mjs';
+import { compileVueExample, compileVue3Example } from './vue-example.mjs';
 import { usageTools } from './usage-tools.mjs';
 import { exampleNames, exampleDefinition, presetConfig } from '../shared/example-registry.ts';
 const root = resolve(import.meta.dirname, '..');
@@ -30,16 +30,17 @@ export async function prepareExample(platform, name, id, settings, values, palet
   const usage = mode === 'usage' ? await usageTools.usageExample({ name, platform, settings, values }) : null;
   const code = suppliedCode ?? usage?.code ?? codeTools.exampleSource(manifest[name].sources[platform], platform, settings, values);
   let module = code;
-  if (platform === 'vue2') {
-    module = compileVueExample(code, name);
-  }
-  await writeFile(resolve(directory, 'Example.' + (platform === 'vue2' ? 'js' : 'jsx')), module);
+  const vue = platform === 'vue2' || platform === 'vue3', compile = platform === 'vue3' ? compileVue3Example : compileVueExample;
+  if (vue) module = compile(code, name);
+  await writeFile(resolve(directory, 'Example.' + (vue ? 'js' : 'jsx')), module);
   await writeFile(resolve(directory, platform === 'native' ? 'kjun.js' : 'kjun.css'), codeTools.exampleSetup(platform, palette));
   if (usage) for (const file of suppliedSetup ?? usageTools.usageSetup(platform, palette, usage)) {
-    await writeFile(resolve(directory, file.name.replace('.vue', '.js')), file.name.endsWith('.vue') ? compileVueExample(file.code, 'App').replace('./Example.vue', './Example.js') : file.code);
+    await writeFile(resolve(directory, file.name.replace('.vue', '.js')), file.name.endsWith('.vue') ? compile(file.code, 'App').replace('./Example.vue', './Example.js') : file.code);
   }
   const component = usage ? 'App' : 'Example';
-  const entry = platform === 'vue2'
+  const entry = platform === 'vue3'
+    ? `import { createApp } from "vue"; import Example from "./${component}.js"; createApp(Example).mount("#root");`
+    : platform === 'vue2'
     ? `import Vue from "vue"; import Example from "./${component}.js"; new Vue({render: h => h(Example)}).$mount("#root");`
     : `import React from "react"; import {createRoot} from "react-dom/client"; import Example from "./${component}.jsx"; createRoot(document.getElementById("root")).render(<Example/>);`;
   const path = resolve(directory, 'main.jsx');
@@ -47,21 +48,21 @@ export async function prepareExample(platform, name, id, settings, values, palet
   return path;
 }
 export async function compileEntries(platform, entries) {
-  const modules = resolve(consumer.directory, 'node_modules');
+  const modules = resolve(consumer.directory, 'node_modules'), vue3Modules = resolve(consumer.vue3Directory, 'node_modules');
   const directory = resolve(root, 'artifacts/export-checks', platform);
   await mkdir(directory, { recursive: true });
   const result = await build({ entryPoints: entries, outdir: directory, bundle: true, platform: 'browser', format: 'esm', splitting: true,
     jsx: 'automatic', target: 'es2020', minify: true, metafile: true,
-    alias: { vue: modules + '/vue/dist/vue.runtime.esm.js', 'react-native': modules + '/react-native-web/dist/index.js', 'react-native-svg': modules + '/react-native-svg/lib/module/ReactNativeSVG.web.js' },
+    alias: { ...(platform === 'vue3' ? { vue: vue3Modules + '/vue/dist/vue.runtime.esm-bundler.js', '@kjun-ui/vue3': vue3Modules + '/@kjun-ui/vue3', '@kjun-ui/vue3/styles.css': vue3Modules + '/@kjun-ui/vue3/dist/styles.css' } : { vue: modules + '/vue/dist/vue.runtime.esm.js' }), 'react-native': modules + '/react-native-web/dist/index.js', 'react-native-svg': modules + '/react-native-svg/lib/module/ReactNativeSVG.web.js' },
     mainFields: ['browser', 'module', 'main'], resolveExtensions: ['.web.js', '.web.tsx', '.tsx', '.ts', '.js', '.jsx', '.json'],
-    define: { 'process.env.NODE_ENV': '"production"', __DEV__: 'false', global: 'globalThis' },
+    define: { 'process.env.NODE_ENV': '"production"', __DEV__: 'false', global: 'globalThis', __VUE_OPTIONS_API__: 'true', __VUE_PROD_DEVTOOLS__: 'false', __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false' },
   });
   if (!Object.keys(result.metafile.inputs).some(path => path.includes('kjun-consumer-') && path.includes('@kjun-ui/' + platform))) throw Error('Export checks did not consume installed packages.');
   for (const id of Object.keys(entries)) await writeFile(resolve(directory, id + '.html'), `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/fonts/fonts.css">${platform === 'native' ? '' : `<link rel="stylesheet" href="./${id}.css">`}<style>body{margin:24px}</style></head><body><div id="root"></div><script type="module" src="./${id}.js"></script></body></html>`);
 }
 export async function verifyExampleConsumers(mode = 'full') {
   let count = 0;
-  for (const platform of ['vue2', 'react', 'native']) {
+  for (const platform of ['vue3', 'react', 'native']) {
     const entries = {};
     for (const name of mode === 'usage' ? usageTools.usageNames : exampleNames) {
       const prepare = (id, settings, values) => prepareExample(platform, name, id, settings, values, 'default', undefined, mode);

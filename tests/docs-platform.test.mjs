@@ -3,13 +3,18 @@ import assert from 'node:assert/strict';
 import { resolvePlatform, platformHref } from '../shared/docs-platform.ts';
 
 test('document platform URLs override the tab preference and invalid values fall back', () => {
-  for (const platform of ['vue2', 'react', 'native']) {
+  for (const platform of ['vue3', 'react', 'native']) {
     assert.equal(resolvePlatform('?platform=' + platform, 'native'), platform);
     assert.equal(resolvePlatform('', platform), platform);
     assert.equal(resolvePlatform('?platform=unsupported', platform), platform);
   }
-  assert.equal(resolvePlatform('?platform=React', null), 'vue2');
-  assert.equal(resolvePlatform('', 'invalid'), 'vue2');
+  assert.equal(resolvePlatform('?platform=React', null), 'vue3');
+  assert.equal(resolvePlatform('', 'invalid'), 'vue3');
+});
+
+test('links and saved choices from before 0.6.0 open the Vue 3 documentation', () => {
+  assert.equal(resolvePlatform('?platform=vue2', 'react'), 'vue3');
+  assert.equal(resolvePlatform('', 'vue2'), 'vue3');
 });
 
 test('document links preserve explicit platforms, other parameters and API anchors', () => {

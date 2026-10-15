@@ -1,4 +1,4 @@
-import { computed, defineComponent, provide, ref, useId, watch, type ExtractPublicPropTypes, type PropType } from "vue";
+import { computed, defineComponent, provide, ref, useId, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { createTimeDomain, tokens, type InputSize, type TimePrecision } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { KjunButton } from "./button";
@@ -15,6 +15,9 @@ const kjunDatePickerProps = {
   error: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   readOnly: { type: Boolean, default: false },
+  /** Earliest and latest selectable dates (YYYY-MM-DD). */
+  min: { type: String, default: undefined },
+  max: { type: String, default: undefined },
 } as const;
 export type KjunDatePickerProps = ExtractPublicPropTypes<typeof kjunDatePickerProps>;
 /** v-model holds YYYY-MM-DD; other attributes reach the date <input>. */
@@ -23,6 +26,7 @@ export const KjunDatePicker = defineComponent({
   inheritAttrs: false,
   props: kjunDatePickerProps,
   emits: { "update:modelValue": (_value: string) => true },
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { attrs, emit }) {
     const focused = ref(false);
     return () => {
@@ -31,7 +35,7 @@ export const KjunDatePicker = defineComponent({
         // The drawn calendar icon matches Native; the transparent browser indicator sits on top of it
         // (sized by these variables) so clicking the icon still opens the browser picker.
         <div class="kjun-date-picker" style={{ position: "relative", "--_kjun-date-icon-inset": spec.padding + "px", "--_kjun-date-icon-size": spec.iconSize + "px" }}>
-          <KjunInput {...attrs} modelValue={props.modelValue} size={props.size} suffixIcon="calendar" ariaLabel={props.ariaLabel || props.placeholder}
+          <KjunInput {...attrs} {...{ min: props.min, max: props.max }} modelValue={props.modelValue} size={props.size} suffixIcon="calendar" ariaLabel={props.ariaLabel || props.placeholder}
             error={props.error} disabled={props.disabled} readOnly={props.readOnly} class={!focused.value ? "kjun-date-masked" : ""}
             {...{
               type: "date",

@@ -93,7 +93,7 @@ test('elevation documentation and windows remain usable at actual 200% browser z
   } finally { await context.close(); await rm(directory, { recursive: true, force: true }); }
 });
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform} elevation walkthrough closes its popup and keeps modal Toast actionable`, async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 1000 });
     await page.goto('/elevation?platform=' + platform, { waitUntil: 'domcontentloaded' });

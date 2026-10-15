@@ -1,7 +1,7 @@
 import { expect, type Page, type Locator } from '@playwright/test';
-export const platforms = ['react', 'vue2', 'native'] as const;
+export const platforms = ['react', 'vue3', 'native'] as const;
 // Document layout specs check the docs shell around previews. React covers every width and real zoom;
-// Vue 2 and Native keep the narrowest width so each platform's preview still meets a tight frame.
+// Vue 3 and Native keep the narrowest width so each platform's preview still meets a tight frame.
 export const layoutWidths = (platform: string, widths: number[]) => platform === 'react' ? widths : widths.slice(0, 1);
 export const checksZoom = (platform: string) => platform === 'react';
 export const example = (page: Page, kind: string) => page.locator(`[data-guide-case="motion-${kind}"]`);
@@ -26,7 +26,7 @@ export async function resetMotionExample(root: Locator) {
 }
 export async function changePlatform(page: Page, platform: string) {
   await page.getByRole('button', { name: '문서 플랫폼', exact: true }).click();
-  await page.getByRole('option', { name: { react: 'React', vue2: 'Vue 2', native: 'React Native' }[platform], exact: true }).click();
+  await page.getByRole('option', { name: { react: 'React', vue3: 'Vue 3', native: 'React Native' }[platform], exact: true }).click();
 }
 export async function clipboard(page: Page) {
   await page.addInitScript(() => {

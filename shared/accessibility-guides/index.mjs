@@ -7,7 +7,10 @@ import display from './data-display.mjs';
 import finance from './finance.mjs';
 import { profiles, notApplicable } from './profiles.mjs';
 import { platformBehavior } from './behavior.mjs';
-export const platforms = ['vue2', 'react', 'native'];
+export const platforms = ['vue3', 'react', 'native'];
+// Vue 3 components whose value is v-model (modelValue); keep in step with shared/usage-examples/builder.ts.
+const vueModelComponents = new Set(['KjunInput', 'KjunTextarea', 'KjunCheckbox', 'KjunSwitch', 'KjunRadio', 'KjunRadioGroup', 'KjunButtonGroup', 'KjunFilterGroup',
+  'KjunSlider', 'KjunRangeSlider', 'KjunQuantityStepper', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunTimePicker', 'KjunTabs']);
 export const items = ['keyboard', 'labeling', 'focus'];
 export const itemLabels = { keyboard: '키보드 동작', labeling: '라벨·오류 연결', focus: '포커스 이동·복귀' };
 const rows = [...actions, ...inputs, ...navigation, ...layout, ...feedback, ...display, ...finance];
@@ -23,8 +26,6 @@ export function definitions() {
       ? { procedure: '키보드로 Native 선택 Modal을 열고 내부 입력·radio 옵션에서 방향키와 Enter로 값을 선택합니다.', expected: 'Modal 내부 활성 옵션이 방향키에 반응하고 Enter로 선택값을 전달하며 닫힙니다.' }
       : platform === 'native' && ['select', 'search', 'time'].includes(target.profile) && item === 'focus'
       ? { procedure: '키보드 진입으로 열린 Modal의 초기 포커스를 확인하고 Escape로 닫습니다.', expected: '내부 입력 또는 옵션으로 포커스가 이동하고 닫힌 뒤 외부 입력·트리거로 복귀합니다.' }
-      : target.profile === 'boundary' && platform === 'vue2' && item === 'keyboard'
-      ? { procedure: '자식 렌더에서 오류를 발생시키고 새로고침 버튼을 키보드로 실행합니다.', expected: 'fallback 메시지가 오류를 설명하고 페이지를 다시 불러옵니다. Vue는 reset 콜백 대신 새로고침을 제공합니다.' }
       : profiles[target.profile]?.[index];
     if (!profiles[target.profile]) throw Error('Unknown accessibility profile: ' + target.profile);
     const native = platform === 'native';
@@ -35,9 +36,10 @@ export function definitions() {
       responsibility: responsibilities[item],
       platformNote: native
         ? 'Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.'
-        : platform === 'vue2' ? 'Vue 2의 DOM 속성·이벤트·슬롯 조합을 검사합니다. React와 동일한 속성 전달이나 포커스 구현을 가정하지 않습니다.'
+        : platform === 'vue3' ? 'Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.'
           : 'React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.',
-      api: (typeof target.api === 'string' ? target.api : target.api[platform]).split(' ').filter(Boolean),
+      api: (typeof target.api === 'string' ? target.api : target.api[platform]).split(' ').filter(Boolean)
+        .map(name => platform === 'vue3' && name === 'value' && vueModelComponents.has(target.name) ? 'modelValue' : name),
       applicable: !!contract, reason: contract ? null : notApplicable(target.profile, item, target.subject),
       procedure: contract?.procedure || '정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.',
       expected: contract?.expected || notApplicable(target.profile, item, target.subject),

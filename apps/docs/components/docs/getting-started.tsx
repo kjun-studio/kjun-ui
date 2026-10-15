@@ -96,11 +96,11 @@ export function GettingStarted() {
         <div className="compatibility-table" data-platform={platform}>
           <DataTable
             presentation="prose"
-            headings={["기능", "Vue 2", "React", "React Native"]}
+            headings={["기능", "Vue 3", "React", "React Native"]}
             rows={[
               ["버튼 실행", <code>@click</code>, <code>onClick</code>, <code>onPress</code>],
               ["입력 값 변경", <code>v-model</code>, <><code>value</code> · <code>onChange</code></>, <><code>value</code> · <code>onChangeText</code></>],
-              ["모달 열림", <code>v-model</code>, <><code>open</code> · <code>onOpenChange</code></>, <><code>open</code> · <code>onOpenChange</code></>],
+              ["모달 열림", <code>v-model:open</code>, <><code>open</code> · <code>onOpenChange</code></>, <><code>open</code> · <code>onOpenChange</code></>],
               ["사용자 정의 영역", <code>slot</code>, <code>ReactNode</code>, <code>ReactNode</code>],
               ["모달 높이", "CSS 길이", "CSS 길이", "숫자(dp)"],
             ]}
@@ -108,9 +108,9 @@ export function GettingStarted() {
         </div>
         <p className="body-copy">
           Vue는 Kjun 명칭과 v-model 계약을 사용합니다. 웹 패키지는 컴파일된
-          JavaScript와 CSS를 제공하므로 별도의 Tailwind 설정이나 Vue SFC 빌드
-          설정이 필요하지 않습니다. Vue 2의 기본 스타일과 포커스·그림자 초기값은
-          KjunProvider 내부에 적용됩니다.
+          JavaScript와 CSS를 제공하므로 별도의 Tailwind 설정이나 패키지용 빌드
+          설정이 필요하지 않습니다. React와 같은 DOM·CSS 계약을 사용하며 기본
+          스타일과 포커스·그림자 초기값은 KjunProvider 내부에 적용됩니다.
         </p>
       </section>
     </div>

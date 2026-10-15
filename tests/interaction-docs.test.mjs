@@ -19,7 +19,7 @@ test('interaction navigation and search preserve component and API priority', ()
 test('all four interaction scenarios use registered packed examples and public links', () => {
   assert.equal(interactionScenarios.length, 4);
   for (const { name, scenario, destination } of interactionScenarios) {
-    assert.deepEqual(exampleDefinition(name).platforms, ['vue2', 'react', 'native']);
+    assert.deepEqual(exampleDefinition(name).platforms, ['vue3', 'react', 'native']);
     assert.ok(documents.some(page => page.path === destination.split('#')[0]));
     assert.equal(scenario.action, undefined);
   }

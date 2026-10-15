@@ -18,7 +18,7 @@ const arg = key => { const index = process.argv.indexOf(key); return index < 0 ?
 const onlyComponent = arg('--component'), onlyPlatform = arg('--platform');
 const defs = definitions();
 if (onlyComponent && !defs.some(def => def.component === onlyComponent)) throw Error('Unknown component filter');
-if (onlyPlatform && !['react', 'vue2', 'native'].includes(onlyPlatform)) throw Error('Unknown platform filter');
+if (onlyPlatform && !['react', 'vue3', 'native'].includes(onlyPlatform)) throw Error('Unknown platform filter');
 const startedAt = new Date().toISOString();
 const run = {
   schemaVersion: 1, id: 'a11y-' + startedAt.replace(/[-:.]/g, '') + '-' + randomBytes(4).toString('hex'),
@@ -38,7 +38,7 @@ try {
   if (!process.argv.includes('--prepared')) for (const command of ['build:packages', 'pack:local', 'verify:consumers', 'examples:generate'])
     execFileSync('npm', ['run', command], { stdio: 'inherit' });
   run.packages = await json('artifacts/manifest.json');
-  const { directory } = await assertCurrentConsumer();
+  const { directory, vue3Directory } = await assertCurrentConsumer();
   const lock = JSON.parse(await readFile(resolve(directory, 'package-lock.json'), 'utf8'));
   for (const pkg of run.packages) {
     const bytes = await readFile(resolve(root, 'artifacts', pkg.file));
@@ -47,7 +47,8 @@ try {
       throw Error('Packed/installed integrity mismatch: ' + pkg.name);
   }
   for (const name of ['react', 'vue', 'react-native', 'react-native-web', 'react-aria-components']) {
-    const pkg = JSON.parse(await readFile(resolve(directory, 'node_modules', name, 'package.json'), 'utf8'));
+    // Vue 3 lives in the separate Vue 3 consumer project.
+    const pkg = JSON.parse(await readFile(resolve(name === 'vue' ? vue3Directory : directory, 'node_modules', name, 'package.json'), 'utf8'));
     run.environment.runtimes[name] = pkg.version;
   }
   browser = await chromium.launch(); run.environment.browser = 'Chromium ' + browser.version();

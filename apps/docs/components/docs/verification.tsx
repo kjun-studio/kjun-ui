@@ -52,7 +52,7 @@ export function Verification() {
           options={recordOptions}
           onValueChange={value => { if (typeof value === 'string') update(selection.component, value === 'latest' ? '' : value); }} /></div>
       </div>
-      <p><strong>{selection.component} · {platform === 'native' ? 'Native Web' : platform === 'vue2' ? 'Vue 2' : 'React'}</strong></p>
+      <p><strong>{selection.component} · {platform === 'native' ? 'Native Web' : platform === 'vue3' ? 'Vue 3' : 'React'}</strong></p>
       {target && <p><Link href={target.docs + '#accessibility'}>상세 접근성 설명</Link> · <Link href={verificationHref(target.name, platform, run?.id || legacy?.id)}>이 대상·플랫폼·기록의 직접 링크</Link></p>}
       {!target && <p role="alert">알 수 없는 대상입니다. 위 목록에서 대상을 선택하세요.</p>}
       {missingRecord && <p role="alert">기록을 찾을 수 없습니다. 요청한 기록: <code>{selection.record}</code>. 다른 기록으로 자동 대체하지 않았습니다.</p>}

@@ -6,7 +6,7 @@ const ready = (page: Page) => expect(page.getByRole('button', { name: '문서 �
 const overflow = async (page: Page) => expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 const labels = ['키보드 동작', '라벨·오류 연결', '포커스 이동·복귀'];
 
-for (const platform of ['vue2', 'react', 'native']) test(`${platform}: shared descriptions, API anchors and explicit record links connect exact check evidence`, async ({ page }) => {
+for (const platform of ['vue3', 'react', 'native']) test(`${platform}: shared descriptions, API anchors and explicit record links connect exact check evidence`, async ({ page }) => {
   test.setTimeout(120000);
   for (const [path, name] of [['button', 'KjunButton'], ['input', 'KjunInput'], ['modal', 'KjunModal'], ['select', 'KjunSelect'], ['skeleton', 'KjunSkeleton'], ['feedback', 'KjunFeedbackProvider']]) {
     await page.goto((path === 'feedback' ? '/feedback' : '/components/' + path) + '?platform=' + platform + '#accessibility'); await ready(page);
@@ -64,7 +64,7 @@ for (const width of [1600, 390]) test(`${width}px: expanded record links open im
   const recordLink = row.getByRole('link', { name: 'Button Native Web 검증 기록 보기', exact: true });
   await expect(recordLink).toHaveCount(0);
   await row.getByRole('button', { name: 'Button 플랫폼 차이·근거 펼치기', exact: true }).click();
-  for (const [platform, label] of [['vue2', 'Vue 2'], ['react', 'React'], ['native', 'Native Web']]) {
+  for (const [platform, label] of [['vue3', 'Vue 3'], ['react', 'React'], ['native', 'Native Web']]) {
     const href = await row.getByRole('link', { name: `Button ${label} 검증 기록 보기`, exact: true }).getAttribute('href');
     expect(href).toContain('component=KjunButton'); expect(href).toContain('platform=' + platform);
     expect(href).toContain('record=' + coverage.components.find(entry => entry.name === 'KjunButton')!.recordId);

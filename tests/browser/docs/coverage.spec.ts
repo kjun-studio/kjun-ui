@@ -96,7 +96,7 @@ test('search relevance, categories, empty/reset and URL history preserve platfor
 
 test('720px content boundary and mobile cards retain expansion and expose only one view', async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 1000 });
-  await visit(page, '?q=KjunSearchInput&platform=vue2');
+  await visit(page, '?q=KjunSearchInput&platform=vue3');
   const trigger = () => rows(page).getByRole('button', { name: /SearchInput 플랫폼 차이·근거/ });
   await trigger().click();
   await expect(trigger()).toHaveAttribute('aria-expanded', 'true');
@@ -116,7 +116,7 @@ test('720px content boundary and mobile cards retain expansion and expose only o
     await expect(search(page)).toHaveValue('KjunSearchInput');
     await expect(trigger()).toHaveAttribute('aria-expanded', 'true');
     await expect(rows(page).locator('.coverage-status')).toHaveText(['지원', '지원', '미리보기']);
-    if (width < 720) await expect(rows(page).locator('dt')).toHaveText(['Vue 2', 'React', 'Native Web']);
+    if (width < 720) await expect(rows(page).locator('dt')).toHaveText(['Vue 3', 'React', 'Native Web']);
     await noOverflow(page);
     for (const name of ['KjunProvider', 'KjunFeedbackProvider', 'KjunFormLayout']) {
       const card = page.locator(`[data-coverage-service="${name}"]`);
@@ -179,7 +179,7 @@ test('actual 200% browser zoom keeps all statuses and service names readable', a
     await expect(rows(page)).toHaveCount(coverage.components.length);
     await expect(page.getByRole('table')).toHaveCount(0);
     for (const row of await rows(page).all()) {
-      await expect(row.locator('dt')).toHaveText(['Vue 2', 'React', 'Native Web']);
+      await expect(row.locator('dt')).toHaveText(['Vue 3', 'React', 'Native Web']);
       await expect(row.locator('.coverage-status')).toHaveText(['지원', '지원', '미리보기']);
       expect(await row.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
     }

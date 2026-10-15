@@ -20,7 +20,7 @@ async function layout(page: Page, platform: string, size: string) {
     await usage.locator('pre').evaluate(node => { node.scrollLeft = 0; (node as HTMLElement).blur(); });
   }
 }
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   for (const width of layoutWidths(platform, [390, 1280, 1440])) test(`${platform}: code and setup links fit ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1000 });
     await layout(page, platform, String(width));

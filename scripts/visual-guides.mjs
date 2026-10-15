@@ -15,7 +15,7 @@ const guides = buildVisualGuides(api, catalog, descriptions);
 for (const { name, scenario } of usageScenarios) {
   if (!guides[name]) throw Error("Unknown usage destination: " + name);
   validateSettings(name, scenario.settings || {});
-  for (const platform of ["vue2", "react", "native"]) {
+  for (const platform of ["vue3", "react", "native"]) {
     for (const [target, spec] of Object.entries(JSON.parse(scenario.settings?.visual || "{}"))) {
       const props = api.components[target]?.[platform]?.props;
       if (!props) throw Error("Unknown usage target: " + target);

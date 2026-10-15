@@ -1,6 +1,6 @@
 import { openExampleSettings } from './example-settings';
 import { test, expect, type Page } from '@playwright/test';
-const labels = { vue2: 'Vue 2', react: 'React', native: 'React Native' } as const;
+const labels = { vue3: 'Vue 3', react: 'React', native: 'React Native' } as const;
 type Platform = keyof typeof labels;
 const selector = (page: Page) => page.getByRole('button', { name: '문서 플랫폼', exact: true });
 async function choose(page: Page, name: string, value: string) {
@@ -37,8 +37,8 @@ for (const platform of Object.keys(labels) as Platform[]) test(`${platform}: URL
   expect(frames.every(url => url.includes(`catalog-${platform}.html`))).toBe(true);
   await expect(page.locator('#api .api-platform')).toHaveText(`${labels[platform]} · @kjun-ui/${platform}`);
   await expect(page.locator('#api')).toBeInViewport();
-  await expect(page.locator('#api').getByRole('heading', { name: '이벤트 · 슬롯' })).toHaveCount(platform === 'vue2' ? 1 : 0);
-  if (platform === 'vue2') await expect(page.locator('#api')).toContainText('update:open');
+  await expect(page.locator('#api').getByRole('heading', { name: '이벤트 · 슬롯' })).toHaveCount(platform === 'vue3' ? 1 : 0);
+  if (platform === 'vue3') await expect(page.locator('#api')).toContainText('update:open');
   else await expect(page.locator('#api').getByRole('cell', { name: 'onOpenChange', exact: true })).toBeVisible();
   await expect(page.getByRole('tab')).toHaveCount(0);
   await page.locator('#usage .code-block').getByRole('button', { name: '기본 코드 복사' }).click();
@@ -49,7 +49,7 @@ for (const platform of Object.keys(labels) as Platform[]) test(`${platform}: URL
 
 test('tab preference, URL priority, normalization, reload and history preserve the platform', async ({ page }) => {
   await page.goto('/components/select?note=keep#api');
-  await ready(page, 'vue2');
+  await ready(page, 'vue3');
   await choose(page, '문서 플랫폼', 'React');
   await ready(page, 'react');
   await expect(page).toHaveURL(url => url.searchParams.get('note') === 'keep' && url.hash === '#api');
@@ -87,9 +87,10 @@ test('gallery filters, document links, search anchors, feedback and installation
   await page.goto('/feedback'); await ready(page, 'react');
   await expect(page.locator('#api .code-block')).toHaveCount(1);
   await expect(page.locator('#api .code-header')).toHaveText('React · @kjun-ui/react');
-  await choose(page, '문서 플랫폼', 'Vue 2'); await ready(page, 'vue2');
-  await expect(page.locator('#api .code-block')).toContainText('inject:');
-  await page.goto('/getting-started'); await selected(page, 'vue2');
+  await choose(page, '문서 플랫폼', 'Vue 3'); await ready(page, 'vue3');
+  await expect(page.locator('#api .code-header')).toHaveText('Vue 3 · @kjun-ui/vue3');
+  await expect(page.locator('#api .code-block')).toContainText('useKjunFeedback()');
+  await page.goto('/getting-started'); await selected(page, 'vue3');
   await choose(page, '문서 플랫폼', 'React Native'); await selected(page, 'native');
   await expect(page.locator('.download-row')).toContainText('@kjun-ui/native');
   await expect(page.locator('#connect')).toContainText('colors={appColors}');
@@ -102,7 +103,7 @@ test('gallery filters, document links, search anchors, feedback and installation
 test('independent tabs keep separate preferences, while a shared URL restores its platform', async ({ page, context }) => {
   await page.goto('/components/select?platform=react'); await ready(page, 'react');
   const other = await context.newPage();
-  await other.goto('/components/select'); await ready(other, 'vue2');
+  await other.goto('/components/select'); await ready(other, 'vue3');
   await choose(other, '문서 플랫폼', 'React Native'); await ready(other, 'native');
   await selected(page, 'react');
   await other.goto(page.url()); await ready(other, 'react');
@@ -114,7 +115,7 @@ test('storage denial still permits selection, links and reload from the URL', as
     Storage.prototype.getItem = () => { throw Error('Storage disabled'); };
     Storage.prototype.setItem = () => { throw Error('Storage disabled'); };
   });
-  await page.goto('/components/select?platform=unknown'); await ready(page, 'vue2');
+  await page.goto('/components/select?platform=unknown'); await ready(page, 'vue3');
   await choose(page, '문서 플랫폼', 'React'); await ready(page, 'react');
   await page.reload(); await ready(page, 'react');
   await page.locator('.page-navigation a').last().click(); await ready(page, 'react');
@@ -122,13 +123,13 @@ test('storage denial still permits selection, links and reload from the URL', as
 
 test('platform switches reset the selected preset, preserve palette while basic code follows the platform', async ({ page }) => {
   await clipboard(page);
-  await page.goto('/components/form-group?platform=vue2'); await ready(page, 'vue2');
+  await page.goto('/components/form-group?platform=vue3'); await ready(page, 'vue3');
   await choose(page, '프리셋', '검증 오류');
   await choose(page, '색상 예제', '보라색 예제');
   await expect(page.locator('.playground')).toHaveAttribute('data-ready', 'true');
   await page.frameLocator('.playground iframe').getByRole('textbox', { name: '내용', exact: true }).fill('전환 전 입력');
   await page.locator('#usage .code-block').getByRole('button', { name: '기본 코드 복사' }).click();
-  expect(await page.evaluate(() => (window as any).__copied[0])).toContain('@kjun-ui/vue2');
+  expect(await page.evaluate(() => (window as any).__copied[0])).toContain('@kjun-ui/vue3');
   await choose(page, '문서 플랫폼', 'React'); await ready(page, 'react');
   await expect(page.getByRole('button', { name: '프리셋', exact: true })).toContainText('검증 오류');
   await expect(page.getByRole('button', { name: '색상 예제', exact: true })).toContainText('보라색 예제');
@@ -141,7 +142,7 @@ test('platform switches reset the selected preset, preserve palette while basic 
 });
 
 test('rapid changes ignore an old delayed frame and keep basic code usable while the new frame loads', async ({ page }) => {
-  await page.goto('/components/select?platform=vue2'); await ready(page, 'vue2');
+  await page.goto('/components/select?platform=vue3'); await ready(page, 'vue3');
   let release!: () => void;
   const gate = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/previews/catalog-react.html*', async route => { await gate; await route.continue().catch(() => {}); });
@@ -158,7 +159,7 @@ test('rapid changes ignore an old delayed frame and keep basic code usable while
 
 for (const width of [320, 390]) test(`${width}px header platform selection supports keyboard, search and mobile navigation`, async ({ page }) => {
   await page.setViewportSize({ width, height: 844 });
-  await page.goto('/components/select?platform=vue2'); await ready(page, 'vue2');
+  await page.goto('/components/select?platform=vue3'); await ready(page, 'vue3');
   await selector(page).focus(); await page.keyboard.press('Enter');
   await expect(page.getByRole('listbox')).toBeFocused();
   await page.keyboard.press('Escape'); await expect(selector(page)).toBeFocused();

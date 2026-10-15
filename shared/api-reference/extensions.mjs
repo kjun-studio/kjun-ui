@@ -68,16 +68,15 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     if (key.startsWith("on")) entry = callback(name, key, platform);
     else if (name === "KjunTopNavigation" && topNavigationSlots[key]) entry = topNavigationSlots[key];
     else if (childProps[key]) entry = childProps[key];
-    else if (key === "value") entry = detail(valueDescription[name], { "상태 책임": guides[name].interaction });
+    else if (key === "value" || key === "modelValue") entry = detail(valueDescription[name], { "상태 책임": guides[name].interaction });
     else if (key === "items") entry = detail("안정적인 key와 이름을 가진 목적지 목록입니다.", { "항목 필드": "key: 고유 문자열, label: 전체 이름, href: 웹 링크 주소, icon?: 아이콘 이름, badge?: 문자열·숫자, disabled?: 이동 비활성. 웹에서는 href를 제공하세요.", "권장 사용": "2~5개의 주요 목적지를 권장합니다. 항목 순서와 현재 key는 앱에서 관리합니다." });
     else if (key === "thumbLabels") entry = { default: '["최솟값", "최댓값"]', ...detail("시작·끝 손잡이의 접근성 이름 쌍입니다.", { "키보드": "Tab 순서는 시작→끝으로 고정됩니다. 손잡이는 서로 넘지 않으며 Home/End도 다른 손잡이 값으로 제한됩니다." }) };
     else if (key === "precision") entry = name === "KjunTimePicker" ? detail("minute는 시·분, second는 시·분·초를 제공합니다.", { "값 형태": "정밀도를 바꿀 때 소비자가 value 형식도 함께 바꾸거나 null로 초기화하세요." }) : detail("수량의 소수 자릿수입니다. 0~6의 정수를 받습니다.", { "반올림": "Enter·blur 시 지정 자리로 반올림합니다. 정확히 절반이면 절댓값이 커지는 방향이며 이후 min/max로 제한합니다.", "설정 제약": "value·min·max·step은 precision으로 표현 가능해야 하며 정수 스케일 값은 Number.MAX_SAFE_INTEGER 범위여야 합니다." });
     else if (["min", "max", "step"].includes(key)) entry = detail(name === "KjunTimePicker" ? (key === "min" ? "선택할 수 있는 가장 이른 시각입니다." : "선택할 수 있는 가장 늦은 시각입니다.") : key === "step" ? (name === "KjunQuantityStepper" ? "버튼과 방향키의 증감 단위입니다. 직접 입력은 배수로 강제하지 않습니다." : "최솟값부터 시작하는 선택 간격입니다. 소수 여섯 자리까지 지원합니다.") : key === "min" ? "허용하는 최솟값입니다." : "허용하는 최댓값입니다.", { "범위": name === "KjunTimePicker" ? "precision과 같은 형식으로 전달하고 min ≤ max여야 합니다. 자정을 넘는 범위는 지원하지 않습니다." : name === "KjunQuantityStepper" ? "min ≤ max이고 step > 0이어야 합니다. 범위를 벗어난 직접 입력은 확정할 때 제한합니다." : "min < max, step > 0이어야 합니다. max가 step에 맞지 않으면 max 이하의 마지막 단계를 사용합니다." });
     else if (summaries[key]) entry = { summary: summaries[key] };
-    else if (key === "formatters") entry = { summary: "Vue의 기존 공통 formatter 주입입니다. 이 신규 컴포넌트에서는 사용하지 않습니다." };
     else throw Error("Missing extension prop description: " + name + "." + key);
     if (name === "KjunQuantityStepper" && key === "block") entry.default = "false";
-    if (name === "KjunQuantityStepper" && key === "value") entry = detail(valueDescription[name], {
+    if (name === "KjunQuantityStepper" && (key === "value" || key === "modelValue")) entry = detail(valueDescription[name], {
       "상태 책임": guides[name].interaction,
       "키보드": "Enter·blur는 변경값을 확정합니다. 편집 중 첫 Escape는 초안을 되돌리고 상위 창에 전달하지 않습니다. 편집이 끝난 뒤 Escape는 상위 창이 처리합니다. IME 조합 중 키와 조합 확정 keyCode=229는 수량을 확정하거나 증감하지 않습니다.",
       "폼 연결": "FormGroup의 라벨·ID·도움말·오류·필수 정보를 상속합니다. 명시한 ariaLabel·id는 입력의 이름·ID를 우선 지정하며, 오류 설명 연결은 유지합니다.",
@@ -85,10 +84,10 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     if (name.includes("Slider") && ["min", "max", "step", "disabled"].includes(key)) entry.default = { min: "0", max: "100", step: "1", disabled: "false" }[key];
     return [key, entry];
   }));
-  if (name === "KjunRangeSlider" && platform === "vue2") props.value.type = "[number, number]";
+  if (name === "KjunRangeSlider" && platform === "vue3") props.modelValue.type = "[number, number]";
   const events = {}, slots = {};
-  if (platform === "vue2") {
-    const eventKeys = name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { input: "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : name === "KjunListRow" ? { click: "onClick" } : name === "KjunBottomNavigation" ? { navigate: "onNavigate" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : {};
+  if (platform === "vue3") {
+    const eventKeys = name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : name === "KjunBottomNavigation" ? { navigate: "onNavigate" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
     const slotNames = { KjunListRow: ["leading", "trailing", "actions"], KjunListSection: ["actions", "default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"] }[name] || [];
     for (const key of slotNames) {

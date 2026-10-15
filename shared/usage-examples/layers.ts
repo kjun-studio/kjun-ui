@@ -34,7 +34,7 @@ export function generate(input: UsageInput) {
           ...(name === 'KjunModal' ? { size: s.size, confirmText: s.confirmText, showFooter: true, loading: s.loading, confirmDisabled: s.disabled,
             onConfirm: b.handler('confirm', '', b.set('open', 'false') + '\n' + b.result('"저장했습니다"')) } : {}),
         }, [b.node('KjunInput', { value: b.state('input', ''), onValueChange: b.update('input'), ariaLabel: '입력 예제', clearable: true }),
-          b.button('알림 표시', b.handler('showToast', '', `${b.vue ? 'this.kjunFeedback' : 'feedback'}.toast.info("열린 레이어의 영역 알림", { duration: 0 });`))].join('\n')),
+          b.button('알림 표시', b.handler('showToast', '', `feedback.toast.info("열린 레이어의 영역 알림", { duration: 0 });`))].join('\n')),
       ]); break;
     }
     case 'KjunTooltip': content = b.node(name, { content: '이 버튼의 도움말', delay: 100 }, b.button('도움말')); break;

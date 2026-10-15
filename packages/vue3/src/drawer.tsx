@@ -1,4 +1,4 @@
-import { Teleport, defineComponent, ref, type ExtractPublicPropTypes, type PropType } from "vue";
+import { Teleport, defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunButton, KjunIcon } from "./button";
 import { usePortalTarget } from "./floating-panel";
@@ -25,6 +25,11 @@ export const KjunDrawer = defineComponent({
   name: "KjunDrawer",
   props: kjunDrawerProps,
   emits: { "update:open": (_open: boolean) => true, close: () => true },
+  slots: Object as SlotsType<{
+    default?: () => VNodeChild;
+    header?: () => VNodeChild;
+    footer?: () => VNodeChild;
+  }>,
   setup(props, { slots, emit }) {
     const target = usePortalTarget();
     const close = () => { if (!props.open) return; emit("update:open", false); emit("close"); };

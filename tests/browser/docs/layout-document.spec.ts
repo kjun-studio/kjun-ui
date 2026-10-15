@@ -49,7 +49,7 @@ for (const width of [390, 1280, 1440]) test(`layout document: readable criteria,
   }
 });
 
-for (const platform of ['vue2', 'react', 'native']) test(`${platform}: layout anchors, history and related links preserve the platform`, async ({ page }) => {
+for (const platform of ['vue3', 'react', 'native']) test(`${platform}: layout anchors, history and related links preserve the platform`, async ({ page }) => {
   await ready(page, platform, '#spacing');
   const nav = page.getByRole('navigation', { name: '상세 문서 바로가기' });
   await expect(nav.locator('[aria-current]')).toHaveText('폭·간격');
@@ -95,7 +95,7 @@ test('layout: actual 200% zoom preserves readable document and live input', asyn
   context.setDefaultTimeout(30000);
   try {
     const page = context.pages()[0];
-    for (const platform of ['vue2', 'react', 'native']) {
+    for (const platform of ['vue3', 'react', 'native']) {
       await ready(page, platform);
       expect(await page.evaluate(() => ({ width: innerWidth, ratio: devicePixelRatio }))).toEqual({ width: 720, ratio: 2 });
       const example = page.locator('[data-example="GuideScreenLayout"]');

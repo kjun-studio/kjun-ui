@@ -1,7 +1,7 @@
 import { openExampleSettings } from './example-settings';
 import { test, expect, type Page } from "@playwright/test";
 import { tokens } from "../../../packages/tokens/dist/index.js";
-const platforms = ["Vue 2", "React", "React Native"];
+const platforms = ["Vue 3", "React", "React Native"];
 async function choose(page: Page, label: string, value: string) {
   if (label !== '문서 플랫폼') await openExampleSettings(page);
   await page.getByRole("button", { name: label, exact: true }).click();

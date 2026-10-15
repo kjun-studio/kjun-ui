@@ -27,14 +27,8 @@ export async function verifyKeyboard(page, d, note) {
   }
   if (profile === 'boundary') {
     await expect(page.getByText('예제 렌더 오류', { exact: true })).toBeVisible();
-    if (d.platform === 'vue2') {
-      const navigation = page.waitForEvent('framenavigated');
-      await activate(page, page.getByRole('button', { name: '새로고침', exact: true })); await navigation;
-      note('Vue 오류 경계의 명시된 새로고침 동작');
-    } else {
-      await activate(page, page.getByRole('button').first()); await expect(page.getByTestId('resets')).toHaveText('1');
-      note('오류 경계의 reset 콜백');
-    }
+    await activate(page, page.getByRole('button').first()); await expect(page.getByTestId('resets')).toHaveText('1');
+    note('오류 경계의 reset 콜백');
     return;
   }
   if (profile === 'dialog') {
@@ -121,8 +115,8 @@ export async function verifyKeyboard(page, d, note) {
       await page.keyboard.press('Enter'); await stateChanged(page, { date: '2026-09-12' });
     } else {
       const option = page.getByRole('option').first(); await expect(option).toBeVisible();
-      // React moves DOM focus into its listbox; Vue keeps it on the combobox.
-      if (d.platform === 'react') await expect.poll(() => page.getByRole('listbox').evaluate(node => node.contains(document.activeElement)),
+      // React and Vue 3 move DOM focus into the listbox.
+      if (d.platform !== 'native') await expect.poll(() => page.getByRole('listbox').evaluate(node => node.contains(document.activeElement)),
         { message: '시간 선택 목록의 초기 포커스' }).toBe(true);
       await page.keyboard.press('ArrowDown'); const before = await snapshot(page); await page.keyboard.press('Enter');
       await stateChanged(page, before);

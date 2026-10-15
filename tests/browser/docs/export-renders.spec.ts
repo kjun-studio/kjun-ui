@@ -13,13 +13,13 @@ const rendered: Check = async (page, id) => {
 };
 // Usage code runs with only the common setup, so no unregistered DS-* element may remain.
 const usageRendered = (platform: string): Check => async (page, id) => {
-  const root = page.locator(platform === 'vue2' ? 'body > .kjun-scope' : '#root > *');
+  const root = page.locator('#root > *');
   await expect(root, id).toBeVisible();
   await expect.poll(() => root.evaluate(root => root.querySelectorAll('*').length), { message: id }).toBeGreaterThan(0);
   expect(await root.evaluate(root => [...root.querySelectorAll('*')].some(node => node.tagName.startsWith('DS-'))), id).toBe(false);
 };
 
-for (const platform of ['vue2', 'react', 'native'] as const) {
+for (const platform of ['vue3', 'react', 'native'] as const) {
   test(`${platform} every copied example, usage and visual guide export renders without runtime errors`, async ({ context }) => {
     test.setTimeout(600000);
     const cases: { id: string; check: Check }[] = [

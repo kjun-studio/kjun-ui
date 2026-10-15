@@ -41,7 +41,7 @@ async function openCase(page: Page, id: string, width = 375) {
   expect(await after.frameLocator("iframe").locator("body").evaluate(() => innerWidth)).toBe(width);
   return { section, after, frame: after.frameLocator("iframe") };
 }
-for (const platform of ["vue2", "react", "native"] as const) {
+for (const platform of ["vue3", "react", "native"] as const) {
   // Figures, disclosure and widths belong to the docs page; the packed-consumer test below keeps all
   // three platforms because each runs a different package.
   if (platform === "react") test(`${platform} design figures, disclosure, actual widths and independent actions`, async ({ page }) => {

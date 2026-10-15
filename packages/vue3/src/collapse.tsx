@@ -1,4 +1,4 @@
-import { defineComponent, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { defineComponent, onBeforeUnmount, onMounted, ref, watch, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { useReducedMotion } from "./runtime/presence";
 
@@ -6,6 +6,7 @@ import { useReducedMotion } from "./runtime/presence";
 export const KjunCollapse = defineComponent({
   name: "KjunCollapse",
   props: { open: { type: Boolean, required: true } },
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     const reduced = useReducedMotion();
     const retained = ref(props.open);

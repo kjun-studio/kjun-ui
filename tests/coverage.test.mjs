@@ -23,7 +23,7 @@ test('coverage includes every public component once, excluding services and inte
   }
   assert.equal(data.summary.find(summary => summary.platform === 'native').devicesNotRun, true);
   assert.deepEqual(data.services.map(service => [service.name, service.platforms]), [
-    ['KjunProvider', ['vue2', 'react', 'native']], ['KjunFeedbackProvider', ['vue2', 'react', 'native']], ['KjunFormLayout', ['native']],
+    ['KjunProvider', ['vue3', 'react', 'native']], ['KjunFeedbackProvider', ['vue3', 'react', 'native']], ['KjunFormLayout', ['native']],
   ]);
 });
 

@@ -1,4 +1,4 @@
-import { defineComponent, type ExtractPublicPropTypes, type PropType, type Slots, type VNodeChild } from "vue";
+import { defineComponent, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { isMarketIdentity, marketGeometry, normalizeMarketColumns, webMarketLayout, type LayoutColumn } from "../../../shared/package-runtime/market-layout";
 import { getValue } from "../../../shared/package-runtime/table-model";
@@ -18,8 +18,14 @@ interface IdentityProps {
   interestKeys?: ReadonlySet<unknown>;
   favoriteKeys?: ReadonlySet<unknown>;
 }
+export type MarketIdentitySlots = {
+  identity?: (scope: { row: object; content: VNode }) => VNodeChild;
+  namePrefix?: (scope: { row: object }) => VNodeChild;
+  nameSuffix?: (scope: { row: object }) => VNodeChild;
+  subMeta?: (scope: { row: object }) => VNodeChild;
+};
 /** Name, collection marks and meta line; slots identity({ row, content }), namePrefix, nameSuffix, subMeta({ row }). */
-export function marketIdentity(row: object, props: IdentityProps, slots: Slots): VNodeChild {
+export function marketIdentity(row: object, props: IdentityProps, slots: Readonly<MarketIdentitySlots>): VNodeChild {
   const label = props.primaryLabel?.(row) ?? String(getValue(row, "name") ?? ""), meta = props.subMeta?.(row) || "";
   const id = getValue(row, props.rowKey || "id");
   const subMeta = slots.subMeta?.({ row });
@@ -138,6 +144,10 @@ export const KjunMarketTableSkeleton = defineComponent({
 /** Slots: default (the list), controls. */
 export const KjunMarketListPanel = defineComponent({
   name: "KjunMarketListPanel",
+  slots: Object as SlotsType<{
+    default?: () => VNodeChild;
+    controls?: () => VNodeChild;
+  }>,
   setup(_, { slots }) {
     return () => (
       <KjunCard>

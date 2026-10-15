@@ -25,7 +25,7 @@ test('Table documentation exposes the design examples and runs the selected scen
   await expect(example.getByRole('button', { name: '코드 복사', exact: true })).toHaveCount(0);
 });
 
-for (const platform of ['vue2', 'react', 'native'] as const) {
+for (const platform of ['vue3', 'react', 'native'] as const) {
   for (const mode of ['full', 'usage']) {
     test(`${platform} Table ${mode}: design examples render and preserve row interactions`, async ({ page }) => {
       test.setTimeout(180000);
@@ -56,7 +56,7 @@ for (const platform of ['vue2', 'react', 'native'] as const) {
         }
         if (scenario.id === 'table-metrics') {
           await expect(page.getByText('32,480,000원', { exact: true })).toBeVisible();
-          const column = page.getByRole(platform === 'vue2' ? 'columnheader' : 'button', { name: '매출', exact: true });
+          const column = page.getByRole('button', { name: '매출', exact: true });
           await column.click();
           await expect(page.getByText('정렬 revenue asc', { exact: true })).toBeVisible();
           await column.click();

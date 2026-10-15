@@ -46,7 +46,7 @@ function ResolvedSource({ name, platform, implementation }: { name: string; plat
   }, [name, platform, implementation, attempt]);
   return <div className="usage-source" data-code-platform={platform}>
     {usage ? <>
-      <CodeBlock code={usage.code} label={`${platform === 'vue2' ? 'Vue 2' : platform === 'native' ? 'React Native' : 'React'} · ${implementation ? '구현 예제' : '기본 사용법'}`}
+      <CodeBlock code={usage.code} label={`${platform === 'vue3' ? 'Vue 3' : platform === 'native' ? 'React Native' : 'React'} · ${implementation ? '구현 예제' : '기본 사용법'}`}
         copyLabel={implementation ? '구현 코드 복사' : '기본 코드 복사'} requestKey={`${name}:${platform}:${attempt}`} />
       <div className="usage-setup-links">
         <p><Link href="/getting-started#connect">공통 설정: 시작하기</Link></p>

@@ -45,6 +45,8 @@ export function validateDefinitions(defs, catalog, api, navigation) {
   if (defs.length !== ids.size) fail('unknown check/target');
 }
 const statuses = new Set(['passed', 'failed', 'not-run', 'not-applicable']);
+// Records before 0.6.0 checked the Vue 2 package; they stay valid as recorded and never count for Vue 3.
+const retiredPlatforms = ['vue2'];
 export function validateRun(run, defs, hash) {
   if (run.schemaVersion !== 1 || !/^a11y-\d{8}T\d{9}Z-[a-f0-9]{8}$/.test(run.id)) fail('invalid record identity');
   for (const date of [run.startedAt, run.finishedAt]) if (!date || !Number.isFinite(Date.parse(date))) fail('missing actual execution time');
@@ -53,7 +55,7 @@ export function validateRun(run, defs, hash) {
   const ids = new Set();
   for (const result of run.results) {
     if (ids.has(result.id)) fail('duplicate result ' + result.id); ids.add(result.id);
-    if (result.id !== `${result.component}.${result.platform}.${result.item}.v1` || !platforms.includes(result.platform) || !items.includes(result.item)) fail('invalid result ID');
+    if (result.id !== `${result.component}.${result.platform}.${result.item}.v1` || ![...platforms, ...retiredPlatforms].includes(result.platform) || !items.includes(result.item)) fail('invalid result ID');
     if (!statuses.has(result.status) || !result.actual || !result.procedure || !result.expected || !Array.isArray(result.observations)) fail('incomplete result');
     if (result.status !== 'passed' && !result.reason) fail('missing failure/skip reason');
     if (['passed', 'failed'].includes(result.status) && (!result.startedAt || !result.finishedAt || result.startedAt < run.startedAt || result.finishedAt > run.finishedAt)) fail('missing/invalid check execution time');

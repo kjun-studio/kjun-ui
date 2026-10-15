@@ -26,7 +26,7 @@ async function noClipping(page: Page) {
   expect(overflow).toEqual([]);
 }
 
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   test(`tokens: ${platform} anchors, history and component destinations`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto('/tokens?platform=' + platform + '#spacing');

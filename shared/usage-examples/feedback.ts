@@ -3,7 +3,7 @@ import { UsageBuilder, literal, type UsageInput } from './builder';
 export function generate(input: UsageInput) {
   const b = new UsageBuilder(input), s = input.settings;
   b.feedback = true;
-  const feedback = b.vue ? 'this.kjunFeedback' : 'feedback';
+  const feedback = 'feedback';
   const buttons: string[] = [];
   if (['전체', 'Toast'].includes(String(s.service))) buttons.push(b.button('Toast 표시', b.handler('showToast', '',
     `${feedback}.toast.${s.tone === 'danger' ? 'error' : s.tone}(${literal(s.message)}, ${literal({ title: s.title, duration: s.duration, closable: s.closable })});`)));

@@ -9,12 +9,15 @@ import { servePreviews, configureFigure, partBox } from "./guide-capture.mjs";
 
 const read = async path => JSON.parse(await readFile(path, "utf8"));
 const hash = data => createHash("sha256").update(data).digest("hex");
-const platforms = ["vue2", "react", "native"], sides = ["before", "after"];
+const platforms = ["vue3", "react", "native"], sides = ["before", "after"];
 const packages = await read("artifacts/manifest.json"), consumer = await assertCurrentConsumer();
 for (const platform of platforms) {
   const name = "@kjun-ui/" + platform;
-  const installed = await read(resolve(consumer.directory, "node_modules", name, "package.json"));
-  if (installed.name !== name || !consumer.packages[name]?.startsWith("file:") || !packages.some(p => p.name === name && p.version === installed.version))
+  // Vue 3 is installed in the separate Vue 3 consumer project.
+  const directory = name === "@kjun-ui/vue3" ? consumer.vue3Directory : consumer.directory;
+  const installed = await read(resolve(directory, "node_modules", name, "package.json"));
+  const declared = (await read(resolve(directory, "package.json"))).dependencies;
+  if (installed.name !== name || !declared[name]?.startsWith("file:") || !packages.some(p => p.name === name && p.version === installed.version))
     throw Error("Design figures require installed tarballs: " + name);
 }
 const fingerprint = createHash("sha256");

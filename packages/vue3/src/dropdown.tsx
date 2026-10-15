@@ -1,5 +1,5 @@
 import { computed, defineComponent, inject, onBeforeUnmount, onUpdated, provide, ref, shallowRef, watch, nextTick,
-  type ExtractPublicPropTypes, type InjectionKey, type PropType } from "vue";
+  type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { isFocusVisible } from "../../../shared/package-runtime/focus-visible";
 import { KjunButton, KjunIcon } from "./button";
@@ -28,6 +28,10 @@ export const KjunDropdown = defineComponent({
   name: "KjunDropdown",
   props: kjunDropdownProps,
   emits: { open: () => true, close: () => true },
+  slots: Object as SlotsType<{
+    trigger?: () => VNodeChild;
+    default?: () => VNodeChild;
+  }>,
   setup(props, { slots, emit }) {
     const open = ref(false);
     const wrapper = ref<HTMLElement | null>(null), menu = ref<HTMLElement | null>(null);
@@ -119,6 +123,7 @@ export const KjunDropdownItem = defineComponent({
   name: "KjunDropdownItem",
   props: kjunDropdownItemProps,
   emits: { click: () => true },
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     const menu = inject(kjunDropdownKey, null);
     const item = ref<HTMLElement | null>(null);
@@ -172,6 +177,7 @@ export const KjunMenuButton = defineComponent({
   name: "KjunMenuButton",
   props: kjunMenuButtonProps,
   emits: { open: () => true, close: () => true },
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     const open = ref(false);
     return () => {

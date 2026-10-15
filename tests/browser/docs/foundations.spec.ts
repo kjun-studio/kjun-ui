@@ -56,7 +56,7 @@ async function bottomIsReachable(page: Page) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 }
 
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   test(`${platform} Foundation uses available width, exact boundaries and reading order`, async ({ page }) => {
     await visit(page, platform, 'GuideScreenLayout', { long: true });
     await page.getByRole('textbox', { name: '프로젝트 이름', exact: true }).fill('유지할 입력');
@@ -209,7 +209,7 @@ test('Foundation remains usable at actual 200% browser zoom', async () => {
   });
   try {
     const page = context.pages()[0];
-    for (const platform of ['vue2', 'react', 'native']) {
+    for (const platform of ['vue3', 'react', 'native']) {
       await visit(page, platform, 'GuideScreenLayout', { long: true });
       expect(await page.evaluate(() => ({ width: innerWidth, ratio: devicePixelRatio }))).toEqual({ width: 720, ratio: 2 });
       await expect(page.getByTestId('foundation-area')).toContainText('1열');

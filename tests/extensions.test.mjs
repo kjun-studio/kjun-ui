@@ -10,7 +10,7 @@ test("twelve KJUN contracts extend the public catalog without duplicate recipe e
   assert.equal(catalog.filter(entry => entry.kind !== "internal").length, 77);
   assert.deepEqual(additions.map(e => e.name).sort(), [...names].sort());
   assert.equal(new Set(catalog.map(e => e.name)).size, catalog.length);
-  for (const item of additions) for (const platform of ["vue2", "react", "native"]) assert.ok(readFileSync(item.sources[platform], "utf8").length);
+  for (const item of additions) for (const platform of ["vue3", "react", "native"]) assert.ok(readFileSync(item.sources[platform], "utf8").length);
   for (const name of ["KjunBottomSheet", "KjunThumbnail", "KjunTag", "KjunSegmentedControl"]) assert.ok(!catalog.some(e => e.name === name));
 });
 test("decimal commitment rounds ties away from zero before clamping", () => {

@@ -68,7 +68,7 @@ export function buildVisualGuides(
       if (!author || !author.parts.length || !guideAnchors.includes(author.related!))
         throw Error("Incomplete visual guide: " + name);
       const platforms = Object.fromEntries(
-        (["vue2", "react", "native"] as PlatformName[]).map((platform) => {
+        (["vue3", "react", "native"] as PlatformName[]).map((platform) => {
           const props: any[] = api.components[name]?.[platform]?.props || [];
           const has = (key: string) => props.some((p) => p.name === key);
           const make = (

@@ -8,7 +8,6 @@ export function usageSetupAdditions(platform: PlatformName, palette: PaletteName
   return {
     feedback: {
       imports: `import { KjunFeedbackProvider } from "@kjun-ui/${platform}";`,
-      registration: platform === 'vue2' ? 'KjunFeedbackProvider,' : '',
       content: '<KjunFeedbackProvider>\n  <Example />\n</KjunFeedbackProvider>',
     },
     domainColors: {
@@ -28,8 +27,8 @@ export function usageSetup(platform: PlatformName, palette: PaletteName, usage: 
   const feedbackImport = usage.feedback ? additions.feedback.imports + '\n' : '';
   const content = usage.feedback ? additions.feedback.content : '<Example />';
   const domainCode = usage.domainColors ? '\n' + additions.domainColors.file.code : '';
-  if (platform === 'vue2') return [
-    { name: 'App.vue', code: `<template>\n  <KjunProvider>\n${indent(content, 4)}\n  </KjunProvider>\n</template>\n\n<script>\nimport { KjunProvider } from "@kjun-ui/vue2";\n${feedbackImport}import Example from "./Example.vue";\nimport "@kjun-ui/vue2/styles.css";\nimport "./kjun.css";\n\nexport default {\n  components: { KjunProvider, ${usage.feedback ? additions.feedback.registration + ' ' : ''}Example },\n};\n</script>\n` },
+  if (platform === 'vue3') return [
+    { name: 'App.vue', code: `<template>\n  <KjunProvider>\n${indent(content, 4)}\n  </KjunProvider>\n</template>\n\n<script setup>\nimport { KjunProvider } from "@kjun-ui/vue3";\n${feedbackImport}import Example from "./Example.vue";\nimport "@kjun-ui/vue3/styles.css";\nimport "./kjun.css";\n</script>\n` },
     { name: 'kjun.css', code: css(palette) + domainCode },
   ];
   const native = platform === 'native';

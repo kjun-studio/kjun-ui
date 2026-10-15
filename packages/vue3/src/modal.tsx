@@ -1,4 +1,4 @@
-import { Teleport, defineComponent, onBeforeUnmount, onMounted, provide, ref, type ExtractPublicPropTypes, type PropType } from "vue";
+import { Teleport, defineComponent, onBeforeUnmount, onMounted, provide, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonVariant, type InputSize } from "@kjun-ui/tokens";
 import { observeFormActions } from "../../../shared/package-runtime/form-actions";
 import { KjunButton, KjunIcon } from "./button";
@@ -107,6 +107,11 @@ export const KjunModal = defineComponent({
   name: "KjunModal",
   props: kjunModalProps,
   emits: { "update:open": (_open: boolean) => true, close: () => true, cancel: () => true, confirm: () => true },
+  slots: Object as SlotsType<{
+    default?: () => VNodeChild;
+    header?: () => VNodeChild;
+    footer?: () => VNodeChild;
+  }>,
   setup(props, { slots, emit }) {
     const target = usePortalTarget();
     const id = useKjunId("kjun-");

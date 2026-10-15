@@ -1,5 +1,5 @@
 import { computed, defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref, shallowRef, watch,
-  type InjectionKey, type PropType } from "vue";
+  type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { createFeedbackController, tokens, type ConfirmOptions, type FeedbackRequest, type KjunFeedback, type PromptOptions, type ToastItem } from "@kjun-ui/tokens";
 import { createToastLayout } from "../../../shared/package-runtime/toast-layout";
 import { KjunIcon } from "./button";
@@ -193,6 +193,7 @@ const FeedbackDialog = defineComponent({
 /** Provides toast, confirm and prompt (useKjunFeedback) to its subtree. */
 export const KjunFeedbackProvider = defineComponent({
   name: "KjunFeedbackProvider",
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(_, { slots }) {
     const controller = createFeedbackController();
     const snapshot = shallowRef(controller.getSnapshot());

@@ -3,6 +3,7 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import ts from "typescript";
+import { vue3Contracts } from "./vue3-api.mjs";
 const root = resolve(import.meta.dirname, "..");
 const require = createRequire(import.meta.url);
 const ui = require(resolve(root, "packages/vue2/dist/index.cjs"));
@@ -111,6 +112,12 @@ for (const name of exports) {
       ),
     ];
   }
+}
+// The documented Vue platform is Vue 3; the Vue 2 rows above only write the Vue 2 package declarations.
+const vue3 = vue3Contracts(exports);
+for (const name of exports) {
+  if (!vue3[name]) throw Error("missing Vue 3 export " + name);
+  api[name] = { vue3: vue3[name].props, events: vue3[name].events, slots: vue3[name].slots };
 }
 declaration +=
   "declare const plugin: { install(Vue: VueConstructor): void };\nexport default plugin;\n";

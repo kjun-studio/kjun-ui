@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { presetConfig } from "../../../shared/example-registry";
 // @ts-ignore Node-only packed consumer compiler.
 import { prepareExample, compileEntries } from "../../../scripts/example-consumers.mjs";
-const platforms = ["vue2", "react", "native"] as const;
+const platforms = ["vue3", "react", "native"] as const;
 async function configure(page: Page, name: string, settings: Record<string, any> = {}, values: Record<string, any> = {}, revision = 1) {
   const config = presetConfig(name);
   await page.evaluate(({ settings, values, revision }) => {
@@ -103,13 +103,12 @@ for (const platform of platforms) {
   test(`${platform} slider pointer changes and commits separately from keyboard steps`, async ({ page }) => {
     await visit(page, platform, "KjunSlider");
     const thumb = page.getByRole("slider");
-    const track = platform === "react" ? page.locator(".kjun-slider-track") : platform === "vue2" ? thumb : thumb.locator("..");
+    const track = platform === "native" ? thumb.locator("..") : page.locator(".kjun-slider-track");
     const box = (await track.boundingBox())!;
     await page.mouse.click(box.x + box.width * .75, box.y + box.height / 2);
     await expect.poll(async () => (await snapshot(page)).values.slider).toBeGreaterThan(60);
     await expect.poll(async () => (await snapshot(page)).values.message).toMatch(/^확정: /);
-    const value = (await snapshot(page)).values.slider;
-    const handle = platform === "react" ? (await page.locator(".kjun-slider-thumb").boundingBox())! : platform === "native" ? (await thumb.boundingBox())! : { x: box.x + 10 + (box.width - 20) * value / 100 - 10, y: box.y, width: 20, height: box.height };
+    const handle = platform === "native" ? (await thumb.boundingBox())! : (await page.locator(".kjun-slider-thumb").boundingBox())!;
     await page.mouse.move(handle.x + handle.width / 2, handle.y + handle.height / 2);
     await page.mouse.down(); await page.mouse.move(box.x + box.width * .15, box.y + box.height / 2, { steps: 12 }); await page.mouse.up();
     await expect.poll(async () => (await snapshot(page)).values.slider).toBeLessThan(30);

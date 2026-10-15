@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { exampleDefinition, presetConfig } from '../../../shared/example-registry';
 // @ts-ignore Compiles copied examples against the independent packed consumer.
 import { prepareExample, compileEntries } from '../../../scripts/example-consumers.mjs';
-for (const platform of ['react', 'vue2', 'native'] as const) for (const mode of ['full', 'usage']) {
+for (const platform of ['react', 'vue3', 'native'] as const) for (const mode of ['full', 'usage']) {
   test(`${platform} Alert ${mode}: presets and copied code render and close`, async ({ page }) => {
     test.setTimeout(180000);
     const errors: string[] = [];

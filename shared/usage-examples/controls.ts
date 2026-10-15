@@ -29,7 +29,7 @@ export function generate(input: UsageInput) {
       if (s.iconOnly) props.push(b.vue ? 'prefix-icon="plus" aria-label="항목 추가"' : 'prefixIcon="plus" ariaLabel="항목 추가"');
       const event = b.vue ? '@click="count++"' : `${b.native ? 'onPress' : 'onClick'}={() => setCount(count => count + 1)}`;
       const label = s.iconOnly ? '' : '계속하기';
-      const code = b.vue ? `<template>\n  <div>\n    <KjunButton\n      ${props.slice(0, 2).join(' ')}\n      ${props.slice(2).join(' ')}\n      ${event}\n    >${label}</KjunButton>\n    <output>{{ count }}번 실행했습니다</output>\n  </div>\n</template>\n\n<script>\nimport { KjunButton } from "@kjun-ui/vue2";\n\nexport default {\n  components: { KjunButton },\n  data() { return { count: ${count} }; },\n};\n</script>\n`
+      const code = b.vue ? `<template>\n  <div>\n    <KjunButton\n      ${props.slice(0, 2).join(' ')}\n      ${props.slice(2).join(' ')}\n      ${event}\n    >${label}</KjunButton>\n    <output>{{ count }}번 실행했습니다</output>\n  </div>\n</template>\n\n<script setup>\nimport { ref } from "vue";\nimport { KjunButton } from "@kjun-ui/vue3";\n\nconst count = ref(${count});\n</script>\n`
         : `import { useState } from "react";\nimport { KjunButton } from "@kjun-ui/${input.platform}";\n${b.native ? 'import { View, Text } from "react-native";\n' : ''}\nexport default function Example() {\n  const [count, setCount] = useState(${count});\n  return (\n    <${b.native ? 'View' : 'div'}>\n      <KjunButton\n        ${props.slice(0, 2).join(' ')}\n        ${props.slice(2).join(' ')}\n        ${event}\n      >${label}</KjunButton>\n      <${b.native ? 'Text' : 'output'}>{count}번 실행했습니다</${b.native ? 'Text' : 'output'}>\n    </${b.native ? 'View' : 'div'}>\n  );\n}\n`;
       return { code, provider: true as const, domainColors: false, feedback: false };
     }
@@ -65,7 +65,7 @@ export function generate(input: UsageInput) {
         b.node(name, { val: 'a', label: '첫 선택', disabled: s.disabled }), b.node(name, { val: 'c', label: '다음 선택' }),
       ].join('\n')); break;
     case 'KjunRadioGroup':
-      content = b.node(name, { value: b.state('radio', 'a'), onValueChange: b.update('radio'), options: options(), ariaLabel: '과일 라디오', ...(b.vue ? b.props('disabled') : {}) }); break;
+      content = b.node(name, { value: b.state('radio', 'a'), onValueChange: b.update('radio'), options: options(), ariaLabel: '과일 라디오', }); break;
     case 'KjunTextarea':
       content = b.node(name, { value: b.state('textarea', ''), onValueChange: b.update('textarea'), placeholder: '목록의 목적과 공유할 내용을 입력하세요.', ariaLabel: '목록 설명', rows: 3, ...b.props('size', 'disabled', 'error') }); break;
     case 'KjunSelect':

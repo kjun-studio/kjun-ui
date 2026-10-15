@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.use({ reducedMotion: 'reduce' });
 
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   test(`${platform}: layout controls preserve inputs across disclosure and width changes`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/layout?platform=' + platform);

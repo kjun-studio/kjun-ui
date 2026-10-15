@@ -118,7 +118,7 @@ export function ApiContract({ name }: { name: string }) {
           </p>
           <Ownership items={contract.ownership} />
           <ContractTable members={contract.props} label="속성" props anchor={{ platform, group: 'props' }} />
-          {platform === 'vue2' && (
+          {platform === 'vue3' && (
             <>
               <h3>이벤트 · 슬롯</h3>
               <h4>이벤트</h4>

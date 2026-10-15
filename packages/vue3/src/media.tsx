@@ -1,4 +1,4 @@
-import { defineComponent, ref, watch, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { css } from "./runtime/style";
@@ -17,6 +17,7 @@ export const KjunImage = defineComponent({
   name: "KjunImage",
   props: kjunImageProps,
   emits: { load: () => true, error: () => true },
+  slots: Object as SlotsType<{ fallback?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     // A late event from a previous source must not change the current one.
     const version = ref(0), state = ref<"loading" | "loaded" | "error">("loading");
@@ -59,6 +60,7 @@ export const KjunAvatar = defineComponent({
   name: "KjunAvatar",
   props: kjunAvatarProps,
   emits: { load: () => true, error: () => true },
+  slots: Object as SlotsType<{ fallback?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     return () => {
       const initial = Array.from(props.name.trim())[0];

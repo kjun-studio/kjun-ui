@@ -35,6 +35,9 @@ const vueLiteral = (value: unknown): string => {
 const indent = (text: string, spaces = 2) => text.split('\n').map(line => ' '.repeat(spaces) + line).join('\n');
 const kebab = (name: string) => name.replace(/[A-Z]/g, c => '-' + c.toLowerCase());
 export class Expression { constructor(public code: string) {} }
+/** Vue 3 components whose value is v-model (modelValue / update:modelValue). */
+export const vueModelComponents = new Set(['KjunInput', 'KjunTextarea', 'KjunCheckbox', 'KjunSwitch', 'KjunRadio', 'KjunRadioGroup', 'KjunButtonGroup', 'KjunFilterGroup',
+  'KjunSlider', 'KjunRangeSlider', 'KjunQuantityStepper', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunTimePicker', 'KjunTabs']);
 class Handler extends Expression {}
 export const expr = (code: string) => new Expression(code);
 
@@ -52,22 +55,22 @@ export class UsageBuilder {
   feedback = false;
   domainColors = false;
   constructor(public input: UsageInput) {
-    this.vue = input.platform === 'vue2';
+    this.vue = input.platform === 'vue3';
     this.native = input.platform === 'native';
   }
   state(key: string, fallback: unknown) {
     this.initial[key] = Object.prototype.hasOwnProperty.call(this.input.values, key) ? this.input.values[key] : fallback;
     return expr('state.' + key);
   }
-  read(key: string) { return (this.vue ? 'this.' : '') + 'state.' + key; }
+  read(key: string) { return 'state.' + key; }
   set(key: string, value: string) {
-    return this.vue ? `this.state.${key} = ${value};` : `setState(state => ({ ...state, ${key}: ${value} }));`;
+    return this.vue ? `state.${key} = ${value};` : `setState(state => ({ ...state, ${key}: ${value} }));`;
   }
   update(key: string) {
     return new Handler(this.vue ? `state.${key} = $event` : `value => setState(state => ({ ...state, ${key}: value }))`);
   }
   handler(name: string, args: string, body: string, async = false) {
-    this.methods.push(`${async ? 'async ' : ''}${this.vue ? '' : 'function '}${name}(${args}) {\n${indent(body)}\n}`);
+    this.methods.push(`${async ? 'async ' : ''}function ${name}(${args}) {\n${indent(body)}\n}`);
     return new Handler(name);
   }
   call(handler: Expression, args: string) {
@@ -102,16 +105,25 @@ export class UsageBuilder {
     if (name.startsWith('Kjun')) this.imports.add(name);
     if (['View', 'Text', 'ScrollView'].includes(name)) this.nativeImports.add(name);
     const attributes: string[] = [];
+    if (this.vue) {
+      // v-model pairs a state value with the update handler that writes it back.
+      for (const [valueKey, eventKey, model] of [['value', 'onValueChange', 'v-model'], ['open', 'onOpenChange', 'v-model:open']] as const) {
+        const value = props[valueKey], handler = props[eventKey];
+        if (value instanceof Expression && handler instanceof Handler && handler.code === `${value.code} = $event` && (valueKey === 'open' || vueModelComponents.has(name))) {
+          attributes.push(`${model}="${attribute(vueCode(value.code))}"`);
+          props = Object.fromEntries(Object.entries(props).filter(([key]) => key !== valueKey && key !== eventKey));
+        }
+      }
+    }
     for (let [key, value] of Object.entries(props)) {
       if (value === undefined) continue;
       if (this.vue) {
-        if (key === 'renderExpand') continue;
-        if (['KjunModal', 'KjunDrawer', 'KjunPopover'].includes(name) && key === 'open') key = 'value';
-        if (name === 'KjunInput' && key === 'readOnly') key = 'readonly';
-        if (name === 'KjunIcon' && key === 'size') value = String(value);
+        if (['renderExpand', 'renderCell', 'renderSelectionToolbar'].includes(key)) continue;
+        if (key === 'value' && vueModelComponents.has(name)) key = 'modelValue';
         if (value instanceof Handler) {
-          const events: Record<string, string> = { onValueChange: 'input', onOpenChange: name === 'KjunSelect' ? 'update:open' : 'input', onChangeCommit: 'change', onSelectionChange: 'selection-change', onExpandedRowsChange: 'update:expandedRows' };
-          if (name === 'KjunPagination') Object.assign(events, { onPageChange: 'update:currentPage', onPageSizeChange: 'update:page-size' });
+          const events: Record<string, string> = { onValueChange: vueModelComponents.has(name) ? 'update:model-value' : 'update:value', onOpenChange: 'update:open', onChangeCommit: 'change',
+            onSelectionChange: 'update:selected', onExpandedRowsChange: 'update:expanded-rows', onSortChange: 'update:sort', onPageSizeChange: 'update:page-size' };
+          if (name === 'KjunPagination') events.onPageChange = 'update:page';
           attributes.push(`@${events[key] || kebab(key.slice(2)).slice(1)}="${attribute(vueCode(value.code))}"`);
         } else if (typeof value === 'string' && !/[\n\r]/.test(value)) attributes.push(`${kebab(key)}="${attribute(value)}"`);
         else attributes.push(`:${kebab(key)}="${attribute(value instanceof Expression ? vueCode(value.code) : vueLiteral(value))}"`);
@@ -121,7 +133,8 @@ export class UsageBuilder {
       }
     }
     for (const [slot, content] of Object.entries(slots)) {
-      if (this.vue) children += `\n<template #${kebab(slot)}${slot === 'expand' ? '="{ row }"' : ''}>\n${indent(content)}\n</template>`;
+      // Vue 3 keeps slot names as written: KJUN slots are camelCase, column slots are cell-<key>.
+      if (this.vue) children += `\n<template #${slot}${slot === 'expand' || slot.startsWith('cell-') ? '="{ row }"' : ''}>\n${indent(content)}\n</template>`;
       else if (slot !== 'expand') attributes.push(`${slot}={<>\n${indent(content)}\n</>}`);
     }
     const attributesText = attributes.length ? (attributes.join(' ').length < 100 ? ' ' + attributes.join(' ') : '\n' + indent(attributes.join('\n'))) : '';
@@ -132,13 +145,15 @@ export class UsageBuilder {
     const imports = [...this.imports].join(', '), declarations = this.declarations.join('\n\n');
     let code: string;
     if (this.vue) {
-      code = `<template>\n${indent(content)}\n</template>\n\n<script>\nimport { ${imports} } from "@kjun-ui/vue2";\n`;
+      const vueImports = [Object.keys(this.initial).length ? 'reactive' : ''].filter(Boolean);
+      code = `<template>\n${indent(content)}\n</template>\n\n<script setup>\n`;
+      if (vueImports.length) code += `import { ${vueImports.join(', ')} } from "vue";\n`;
+      code += `import { ${imports}${this.feedback ? ', useKjunFeedback' : ''} } from "@kjun-ui/vue3";\n`;
       if (declarations) code += '\n' + declarations + '\n';
-      code += `\nexport default {\n  components: { ${imports} },\n`;
-      if (this.feedback) code += '  inject: ["kjunFeedback"],\n';
-      code += `  data() {\n    return { state: ${indent(literal(this.initial), 4).trimStart()}${this.exposed.length ? ', ' + this.exposed.join(', ') : ''} };\n  },\n`;
-      if (this.methods.length) code += `  methods: {\n${indent(this.methods.join(',\n'), 4)}\n  },\n`;
-      code += '};\n</script>\n';
+      if (Object.keys(this.initial).length) code += `\nconst state = reactive(${literal(this.initial)});\n`;
+      if (this.feedback) code += 'const feedback = useKjunFeedback();\n';
+      if (this.methods.length) code += '\n' + this.methods.join('\n\n') + '\n';
+      code += '</script>\n';
     } else {
       code = `${Object.keys(this.initial).length ? 'import { useState } from "react";\n' : ''}import { ${imports}${this.feedback ? ', useKjunFeedback' : ''} } from "@kjun-ui/${this.input.platform}";\n`;
       if (this.nativeImports.size) code += `import { ${[...this.nativeImports].join(', ')} } from "react-native";\n`;

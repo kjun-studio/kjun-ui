@@ -1,4 +1,4 @@
-import { computed, defineComponent, inject, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNodeChild } from "vue";
+import { computed, defineComponent, inject, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { isFocusVisible } from "../../../shared/package-runtime/focus-visible";
@@ -45,6 +45,11 @@ export const KjunSelect = defineComponent({
     "update:modelValue": (_value: SelectValue) => true, change: (_value: SelectValue) => true,
     "update:open": (_open: boolean) => true, search: (_query: string) => true, clear: () => true,
   },
+  slots: Object as SlotsType<{
+    option?: (scope: { option: SelectOption; selected: boolean }) => VNodeChild;
+    selected?: (scope: { option: SelectOption | undefined }) => VNodeChild;
+    menuHeader?: () => VNodeChild;
+  }>,
   setup(props, { slots, emit, expose }) {
     const state = useSelectState(() => props.open, () => props.disabled, () => props.optionPageSize, value => emit("update:open", value));
     const composition = useCompositionGuard();
@@ -98,7 +103,7 @@ export const KjunSelect = defineComponent({
       const spec = tokens.input[props.size], owner = field.value;
       const { selected, matching, visible, selectedOption, label, nextValue } = model.value;
       const open = state.open.value;
-      const shown = slots.selected?.({ option: selectedOption });
+      const shown = slots.selected?.({ option: selectedOption }) as VNode[] | undefined;
       return (
         <>
           <div class="kjun-select-shell">

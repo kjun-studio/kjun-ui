@@ -19,7 +19,7 @@ async function visit(page: Page, platform: string, component: string, palette = 
   await expect.poll(() => page.evaluate(() => (window as any).inputDocsRevision)).toBe(true);
 }
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: packed basic input examples render purpose, surface and bounded width`, async ({ page }) => {
     for (const component of ['KjunInput', 'KjunTextarea', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunTimePicker', 'KjunQuantityStepper']) {
       await visit(page, platform, component);

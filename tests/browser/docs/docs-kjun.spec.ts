@@ -5,7 +5,7 @@ import { tokens } from '../../../packages/tokens/dist/index.js';
 test('the docs shell renders packed KJUN geometry and keeps platform previews independent', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.goto('/components/button?platform=vue2');
+  await page.goto('/components/button?platform=vue3');
   const search = page.getByRole('button', { name: '문서 검색', exact: true });
   await expect(search).toBeEnabled();
   await expect(search).toHaveClass(/kjun-button/);
@@ -14,7 +14,7 @@ test('the docs shell renders packed KJUN geometry and keeps platform previews in
   const platform = page.getByRole('button', { name: '문서 플랫폼', exact: true });
   await expect(platform).toHaveClass(/kjun-select-trigger/);
   await expect(platform).toHaveCSS('height', `${tokens.input.sm.height}px`);
-  await expect(page.locator('.catalog-playground iframe')).toHaveAttribute('src', /catalog-vue2/);
+  await expect(page.locator('.catalog-playground iframe')).toHaveAttribute('src', /catalog-vue3/);
   await platform.click();
   await page.getByRole('option', { name: 'React', exact: true }).click();
   await expect(page.locator('.catalog-playground iframe')).toHaveAttribute('src', /catalog-react/);

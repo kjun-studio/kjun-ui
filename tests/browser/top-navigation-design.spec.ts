@@ -175,7 +175,6 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   });
 
   test(`${platform}: packed documentation offers standalone, narrow and mixed navigation examples`, async ({ page }) => {
-    test.skip(platform === 'vue3', 'Catalog previews move to Vue 3 with the platform cut-over (E1).');
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
     await openFixture(page, platform, '?component=KjunTopNavigation', 'catalog');
     let revision = 0;

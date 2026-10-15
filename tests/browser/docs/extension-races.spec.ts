@@ -16,7 +16,7 @@ async function standalone(page: Page, platform: string, name: string, suffix: st
   });
   await page.goto(`/previews/export-checks/${platform}/${id}.html`, { waitUntil: "domcontentloaded" });
 }
-for (const platform of ["vue2", "react", "native"]) {
+for (const platform of ["vue3", "react", "native"]) {
   test(`${platform} quantity stays controlled when a consumer ignores a proposed value`, async ({ page }) => {
     await standalone(page, platform, "KjunQuantityStepper", "controlled-quantity", source => source.replace('onValueChange: change("quantity")', 'onValueChange: undefined'));
     const input = page.getByRole("spinbutton", { name: "주문 수량" });

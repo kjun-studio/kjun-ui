@@ -26,22 +26,22 @@ function setupExample(platform: PlatformName, feedback: boolean, domainColors: b
   builder.domainColors = domainColors;
   const children = [builder.button('실행 확인', builder.handler('run', '', builder.result('"실행됨"')))];
   if (feedback) children.push(builder.button('설정 알림', builder.handler('notify', '',
-    `${builder.vue ? 'this.kjunFeedback' : 'feedback'}.toast.info("피드백 설정됨", { duration: 0 });`)));
+    'feedback.toast.info("피드백 설정됨", { duration: 0 });')));
   if (domainColors) children.push(builder.node('KjunIconToggle', {
     active: builder.state('favorite', false), activeIcon: 'star', ariaLabel: '설정 항목 즐겨찾기',
-    ...(builder.vue ? { activeColorClass: 'kj-text-favorite' } : { activeColor: builder.native
+    activeColor: builder.native
       ? (builder.declare('appDomainColors', 'import { appDomainColors } from \"./kjun\";'), expr('appDomainColors.favorite'))
-      : 'var(--kjun-favorite)' }),
+      : 'var(--kjun-favorite)',
     onToggle: builder.handler('toggle', '', builder.set('favorite', '!' + builder.read('favorite'))),
   }));
   return builder.finish(builder.group(children)).code;
 }
 
-for (const platform of ['vue2', 'react', 'native'] as const) {
+for (const platform of ['vue3', 'react', 'native'] as const) {
   test(`${platform}: copied guide setup runs all four additions combinations`, async ({ page, context }) => {
     test.setTimeout(180000);
     await page.goto('/getting-started?platform=' + platform);
-    const app = platform === 'vue2' ? 'App.vue' : 'App.jsx';
+    const app = platform === 'vue3' ? 'App.vue' : 'App.jsx';
     const colors = platform === 'native' ? 'kjun.js' : 'kjun.css';
     const files = [
       { name: app, code: await copy(page, `${app} 공통 설정 복사`) },
@@ -50,7 +50,6 @@ for (const platform of ['vue2', 'react', 'native'] as const) {
     const additions = {
       feedback: {
         imports: await copy(page, '피드백 import 복사'),
-        registration: platform === 'vue2' ? await copy(page, '피드백 등록 코드 복사') : '',
         content: await copy(page, '피드백 Provider 코드 복사'),
       },
       domainColors: {
@@ -123,7 +122,7 @@ for (const platform of ['vue2', 'react', 'native'] as const) {
       if (item.domain) await page.screenshot({ path: `artifacts/setup-guide-${platform}-390.png` });
       await page.goBack();
       await expect(page).toHaveURL(`${item.path}?platform=${platform}`);
-      await expect(page.getByRole('button', { name: '문서 플랫폼', exact: true })).toContainText(platform === 'vue2' ? 'Vue 2' : platform === 'native' ? 'React Native' : 'React');
+      await expect(page.getByRole('button', { name: '문서 플랫폼', exact: true })).toContainText(platform === 'vue3' ? 'Vue 3' : platform === 'native' ? 'React Native' : 'React');
     }
     await page.goto('/getting-started?platform=' + platform + '#connect');
     for (const id of ['connect', 'feedback-setup', 'domain-colors']) {

@@ -28,3 +28,22 @@ test("Vue 3 JSX renders false and null children as nothing and passes component 
   const html = (await render()).replace(/<!--.*?-->/g, "");
   assert.equal(html, "<div><span></span><span></span><span>0</span><b></b><section>text </section><section>slot<em>x</em></section></div>");
 });
+
+// JSX compiles to calls of the injected h(); a local binding named h (a parameter, variable or callback
+// argument) silently replaces it inside that scope and breaks rendering there.
+test("Vue 3 sources never bind a local name h that would shadow the JSX factory", async () => {
+  const { readdir, readFile } = await import("node:fs/promises");
+  const ts = (await import("typescript")).default;
+  const shadows = [];
+  for (const dir of ["packages/vue3/src", "packages/vue3/src/runtime"])
+    for (const file of (await readdir(dir)).filter((name) => name.endsWith(".tsx"))) {
+      const source = ts.createSourceFile(file, await readFile(dir + "/" + file, "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+      const visit = (node) => {
+        if ((ts.isParameter(node) || ts.isVariableDeclaration(node)) && ts.isIdentifier(node.name) && node.name.text === "h")
+          shadows.push(`${dir}/${file}:${source.getLineAndCharacterOfPosition(node.getStart()).line + 1}`);
+        ts.forEachChild(node, visit);
+      };
+      visit(source);
+    }
+  assert.deepEqual(shadows, []);
+});

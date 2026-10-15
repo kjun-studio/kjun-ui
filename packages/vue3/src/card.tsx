@@ -1,4 +1,4 @@
-import { defineComponent, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import type { CardElevation, CardPadding, CardRadius, CardSurface } from "@kjun-ui/tokens";
 import { hasContent } from "./runtime/slots";
 
@@ -18,6 +18,13 @@ export type KjunCardProps = ExtractPublicPropTypes<typeof kjunCardProps>;
 export const KjunCard = defineComponent({
   name: "KjunCard",
   props: kjunCardProps,
+  slots: Object as SlotsType<{
+    default?: () => VNodeChild;
+    header?: () => VNodeChild;
+    headerActions?: () => VNodeChild;
+    media?: () => VNodeChild;
+    footer?: () => VNodeChild;
+  }>,
   setup(props, { slots }) {
     return () => {
       const bodyPadding = props.bodyPadding ?? props.padding;

@@ -1,51 +1,51 @@
 {
   "KjunAnimatedNumber": {
-    "vue2": ["formatters", "value", "decimals", "prefix", "suffix", "animated", "fromPrevious", "formatter"],
+    "vue3": ["value", "decimals", "prefix", "suffix", "animated", "fromPrevious", "formatter"],
     "react": ["value", "decimals", "prefix", "suffix", "animated", "fromPrevious", "formatter", "className"],
     "native": ["value", "decimals", "prefix", "suffix", "animated", "fromPrevious", "formatter", "style"]
   },
   "KjunBadge": {
-    "vue2": ["formatters", "variant", "size", "dot"],
+    "vue3": ["variant", "size", "dot"],
     "react": ["variant", "size", "dot", "autoFocus", "className", "id", "style", "children", "onChange", "onKeyDown", "onClick"],
     "native": ["variant", "size", "dot", "children", "style"]
   },
   "KjunEmpty": {
-    "vue2": ["formatters", "text", "description", "icon"],
+    "vue3": ["text", "description", "icon"],
     "react": ["text", "description", "icon", "children"],
     "native": ["text", "description", "icon", "children"]
   },
   "KjunHeatmapCell": {
-    "vue2": ["formatters", "value", "min", "max", "mode", "color"],
+    "vue3": ["value", "min", "max", "mode", "color"],
     "react": ["value", "min", "max", "mode", "color", "children"],
     "native": ["value", "min", "max", "mode", "color", "children"]
   },
   "KjunIcon": {
-    "vue2": ["formatters", "name", "size", "spin", "filled"],
+    "vue3": ["name", "size", "spin", "filled"],
     "react": ["name", "size", "spin", "filled", "className", "id", "max", "min", "style", "type", "children", "onChange", "onKeyDown", "onClick"],
     "native": ["name", "size", "color", "spin", "filled"]
   },
   "KjunKpiHero": {
-    "vue2": ["formatters", "loading", "formatter", "deltaFormatter", "label", "value", "prefix", "suffix", "decimals", "deltaAbsolute", "deltaPercent", "deltaDescription", "secondary", "animated", "size"],
+    "vue3": ["loading", "label", "value", "prefix", "suffix", "decimals", "deltaAbsolute", "deltaPercent", "deltaDescription", "secondary", "animated", "size", "formatter", "deltaFormatter"],
     "react": ["loading", "label", "value", "prefix", "suffix", "decimals", "deltaAbsolute", "deltaPercent", "deltaDescription", "secondary", "animated", "size", "aside", "formatter", "deltaFormatter", "renderSecondary"],
     "native": ["loading", "label", "value", "prefix", "suffix", "decimals", "deltaAbsolute", "deltaPercent", "deltaDescription", "secondary", "animated", "size", "aside", "formatter", "deltaFormatter", "renderSecondary"]
   },
   "KjunKpiRow": {
-    "vue2": ["formatters", "loading", "items", "size", "mobileSummary"],
+    "vue3": ["loading", "items", "size", "mobileSummary"],
     "react": ["loading", "items", "size", "mobileSummary", "onItemClick", "renderValue"],
     "native": ["loading", "items", "size", "mobileSummary", "onItemClick", "renderValue"]
   },
   "KjunProgressCell": {
-    "vue2": ["formatters", "value", "max", "showLabel", "color", "customColor", "height"],
+    "vue3": ["value", "max", "showLabel", "color", "customColor", "height"],
     "react": ["value", "max", "showLabel", "color", "customColor", "height"],
     "native": ["value", "max", "showLabel", "color", "customColor", "height"]
   },
   "KjunSparkline": {
-    "vue2": ["formatters", "data", "width", "height", "color", "semantic", "fill", "strokeWidth", "stretch"],
+    "vue3": ["data", "width", "height", "color", "semantic", "fill", "strokeWidth", "stretch", "ariaLabel"],
     "react": ["data", "width", "height", "color", "semantic", "fill", "strokeWidth", "stretch", "ariaLabel"],
     "native": ["data", "width", "height", "color", "semantic", "fill", "strokeWidth", "stretch", "ariaLabel"]
   },
   "KjunTable": {
-    "vue2": ["selectable", "selected", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce", "formatters", "skeletonRows", "columns", "data", "rowKey", "emptyText", "sortable", "sort", "sortMode", "hoverable", "searchable", "searchPlaceholder", "stickyHeader", "maxHeight", "pagination", "compact", "striped", "ariaLabel", "responsive", "mobileColumns", "cardTitle", "cardSubtitle", "cardSections", "expandable", "expandedRows", "expandSingle", "rowClass"],
+    "vue3": ["columns", "data", "rowKey", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce", "skeletonRows", "emptyText", "sortable", "sort", "sortMode", "hoverable", "searchable", "searchPlaceholder", "stickyHeader", "maxHeight", "pagination", "compact", "striped", "ariaLabel", "responsive", "mobileColumns", "cardTitle", "cardSubtitle", "cardSections", "expandable", "expandedRows", "expandSingle", "rowClass", "selectable", "selected", "formatValue", "onRowClick", "onRetry"],
     "react": ["columns", "data", "rowKey", "skeletonRows", "emptyText", "sortable", "sort", "sortMode", "hoverable", "searchable", "searchPlaceholder", "stickyHeader", "maxHeight", "pagination", "compact", "striped", "ariaLabel", "responsive", "mobileColumns", "cardTitle", "cardSubtitle", "cardSections", "expandable", "expandedRows", "expandSingle", "rowClass", "selectable", "selected", "toolbar", "emptyContent", "renderCell", "formatValue", "renderExpand", "renderSelectionToolbar", "onSortChange", "onSelectionChange", "onExpandedRowsChange", "onPageChange", "onRowClick", "onSearch", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"],
     "native": ["columns", "data", "rowKey", "skeletonRows", "emptyText", "sortable", "sort", "sortMode", "hoverable", "searchable", "searchPlaceholder", "stickyHeader", "maxHeight", "pagination", "compact", "striped", "ariaLabel", "responsive", "mobileColumns", "cardTitle", "cardSubtitle", "cardSections", "expandable", "expandedRows", "expandSingle", "rowClass", "selectable", "selected", "toolbar", "emptyContent", "renderCell", "formatValue", "renderExpand", "renderSelectionToolbar", "onSortChange", "onSelectionChange", "onExpandedRowsChange", "onPageChange", "onRowClick", "onSearch", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"]
   }

@@ -1,5 +1,5 @@
 import { computed, defineComponent, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, provide, reactive, ref, useId,
-  type ExtractPublicPropTypes, type InjectionKey, type PropType } from "vue";
+  type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type InputSize, isComposingKey } from "@kjun-ui/tokens";
 import { KjunButton, KjunIcon } from "./button";
 import { css } from "./runtime/style";
@@ -38,6 +38,7 @@ export type KjunFormGroupProps = ExtractPublicPropTypes<typeof kjunFormGroupProp
 export const KjunFormGroup = defineComponent({
   name: "KjunFormGroup",
   props: kjunFormGroupProps,
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     const uid = useKjunId("kjun-field-");
     const field = computed<FieldContextValue>(() => {
@@ -97,6 +98,10 @@ export const KjunInput = defineComponent({
   inheritAttrs: false,
   props: kjunInputProps,
   emits: { "update:modelValue": (_value: string) => true, clear: () => true, enter: () => true },
+  slots: Object as SlotsType<{
+    prefix?: () => VNodeChild;
+    suffix?: () => VNodeChild;
+  }>,
   setup(props, { attrs, slots, emit, expose }) {
     const field = useKjunField();
     const uid = useKjunId("kjun-");
@@ -198,6 +203,7 @@ export const KjunInput = defineComponent({
 /** Hides the enclosing FormGroup from popup content, like React's FieldContext.Provider value={null}. */
 export const KjunFieldReset = defineComponent({
   name: "KjunFieldReset",
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(_, { slots }) {
     provide(kjunFieldKey, { value: null });
     return () => slots.default?.();

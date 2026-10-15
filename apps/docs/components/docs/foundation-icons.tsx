@@ -22,7 +22,7 @@ export function FoundationIconsGuide() {
         <summary>플랫폼별 크기 API와 단위</summary>
         <div>
           <DataTable headings={['플랫폼', '기본 크기', '크기 API 예']} rows={[
-            ['React', '1em', <><code>{'size={16}'}</code> 또는 <code>size="1.5em"</code></>], ['Vue 2', '1em', <><code>size="16px"</code> 또는 <code>size="1.5em"</code></>], ['React Native', '16 논리 단위', <code>{'size={16}'}</code>],
+            ['React', '1em', <><code>{'size={16}'}</code> 또는 <code>size="1.5em"</code></>], ['Vue 3', '1em', <><code>:size="16"</code> 또는 <code>size="1.5em"</code></>], ['React Native', '16 논리 단위', <code>{'size={16}'}</code>],
           ]} />
           <p>웹의 숫자 크기는 px, em은 부모 글자 크기에 비례합니다. Native의 숫자는 논리 단위이며 기기 픽셀 수가 아닙니다. SVG의 24 × 24 내부 좌표는 표시 크기를 고정하지 않습니다.</p>
           <p>Button은 별도 button.iconSizes를 따릅니다: {Object.entries(tokens.button.iconSizes).map(([role, size]) => `${role} ${size}`).join(' · ')}.</p>

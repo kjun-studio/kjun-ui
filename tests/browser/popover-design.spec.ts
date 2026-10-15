@@ -66,7 +66,6 @@ for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   });
 
   test(`${platform}: packed examples show a quiet trigger and an intrinsic right-aligned action`, async ({ page }) => {
-    test.skip(platform === 'vue3', 'Vue 3 catalog previews arrive with the platform cut-over (E1).');
     await page.setViewportSize({ width: 800, height: 700 });
     await openFixture(page, platform, '?component=KjunPopover', 'catalog');
     const open = page.getByRole('button', { name: '추가 정보', exact: true });

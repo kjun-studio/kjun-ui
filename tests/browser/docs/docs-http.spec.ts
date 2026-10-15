@@ -13,7 +13,7 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-async function ready(page: Page, path: string, platform = 'vue2') {
+async function ready(page: Page, path: string, platform = 'vue3') {
   await page.goto(path + '?platform=' + platform);
   await expect(page.locator('.playground')).toHaveAttribute('data-ready', 'true');
   await expect(page.locator('.usage-code-status')).toHaveCount(0);
@@ -40,10 +40,10 @@ async function copy(page: Page, label: string) {
   return copies[0];
 }
 
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   test(`${platform}: HTTP getting-started setup and additions copy without secure APIs`, async ({ page }) => {
     await page.goto('/getting-started?platform=' + platform);
-    const app = platform === 'vue2' ? 'App.vue' : 'App.jsx';
+    const app = platform === 'vue3' ? 'App.vue' : 'App.jsx';
     const colors = platform === 'native' ? 'kjun.js' : 'kjun.css';
     expect(await copy(page, `${app} 공통 설정 복사`)).toContain('KjunProvider');
     expect(await copy(page, `${colors} 공통 설정 복사`)).toContain(platform === 'native' ? 'appColors' : '--kjun-brand');
@@ -67,7 +67,7 @@ for (const platform of ['vue2', 'react', 'native']) {
 for (const [path, name] of [
   ['/components/card', 'KjunCard'], ['/components/table', 'KjunTable'],
   ['/components/chip', 'KjunChip'], ['/components/search-input', 'KjunSearchInput'],
-  ['/feedback', 'kjunFeedback'],
+  ['/feedback', 'useKjunFeedback'],
 ]) {
   test(`HTTP code loader supports ${name}`, async ({ page }) => {
     await ready(page, path);
@@ -79,7 +79,7 @@ test('HTTP category loading retries with a fresh URL and preserves state', async
   const pattern = /\/previews\/usage\/controls\.js(?:\?.*)?$/;
   const requests: string[] = [];
   await page.route(pattern, route => { requests.push(route.request().url()); return route.abort(); });
-  await page.goto('/components/button-group?platform=vue2');
+  await page.goto('/components/button-group?platform=vue3');
   await expect(page.locator('.playground')).toHaveAttribute('data-ready', 'true');
   await expect(page.locator('.usage-code-status')).toHaveAttribute('role', 'alert');
   await page.frameLocator('.playground iframe').getByRole('button', { name: '체리', exact: true }).click();

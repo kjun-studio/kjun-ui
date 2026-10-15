@@ -28,8 +28,8 @@ test('every public component and provider has sources, valid controls and preset
         let source = exampleSource(manifest[name].sources[platform], platform, config.settings, { ...config.values, input: '<script>한글</script>', message: '이력' });
         assert.doesNotMatch(source, /__KJUN_|\/\* (?:PARAMS|OBSERVE)|instrumentRenderer|catalog-snapshot/);
         assert.ok(source.includes('\\u003cscript>한글\\u003c/script>'));
-        if (platform === 'vue2') source = source.slice('<script>\n'.length, -'</script>\n'.length);
-        await transform(source, { loader: platform === 'vue2' ? 'js' : 'jsx' });
+        if (platform === 'vue3') source = source.slice('<script>\n'.length, -'</script>\n'.length);
+        await transform(source, { loader: platform === 'vue3' ? 'js' : 'jsx' });
       }
     }
   }

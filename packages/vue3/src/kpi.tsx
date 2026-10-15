@@ -1,4 +1,4 @@
-import { defineComponent, getCurrentInstance, type ExtractPublicPropTypes, type PropType, type VNodeChild } from "vue";
+import { defineComponent, getCurrentInstance, type ExtractPublicPropTypes, type PropType, type VNodeChild, type SlotsType } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunSkeleton } from "./display";
 import { KjunAnimatedNumber } from "./number-display";
@@ -27,7 +27,7 @@ export const kpiFormat = (item: KpiValue, value = item.value): string =>
         .format(item.semantic === "price" ? Math.abs(value) : value);
 export const kpiColor = (value: unknown, semantic?: string, neutral = "text") =>
   semantic === "price" && Number(value) !== 0 ? `var(--_kjun-color-price-${Number(value) > 0 ? "up" : "down"})` : `var(--_kjun-color-${neutral})`;
-const slotContent = (nodes: VNode[] | undefined) => hasContent(nodes) ? nodes : undefined;
+const slotContent = (nodes: VNodeChild) => hasContent(nodes) ? nodes : undefined;
 
 const kjunKpiHeroProps = {
   loading: { type: Boolean, default: false },
@@ -50,6 +50,10 @@ export type KjunKpiHeroProps = ExtractPublicPropTypes<typeof kjunKpiHeroProps>;
 export const KjunKpiHero = defineComponent({
   name: "KjunKpiHero",
   props: kjunKpiHeroProps,
+  slots: Object as SlotsType<{
+    aside?: () => VNodeChild;
+    secondary?: (scope: { item: KpiValue; index: number }) => VNodeChild;
+  }>,
   setup(props, { slots }) {
     const instance = getCurrentInstance()!;
     // While loading, a delta line passed by the app keeps its placeholder even before its numbers arrive.
@@ -144,6 +148,7 @@ export const KjunKpiRow = defineComponent({
   name: "KjunKpiRow",
   props: kjunKpiRowProps,
   emits: { "item-click": (_item: KpiRowItem, _index: number) => true },
+  slots: Object as SlotsType<{ value?: (scope: { item: KpiRowItem; index: number }) => VNodeChild }>,
   setup(props, { slots, emit }) {
     const badge = (item: KpiRowItem) => {
       if (!item.badge) return null;

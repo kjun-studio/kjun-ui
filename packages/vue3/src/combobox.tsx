@@ -1,4 +1,4 @@
-import { computed, defineComponent, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type Slot } from "vue";
+import { computed, defineComponent, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
 import type { InputSize } from "@kjun-ui/tokens";
 import { optionDisabled, optionKey, optionLabel, type OptionValue, type SelectOption } from "../../../shared/package-runtime/options";
 import { KjunSpinner } from "./display";
@@ -27,7 +27,7 @@ export const SearchField = defineComponent({
     /** A failed request; shown instead of the empty text so the two never look alike. */
     failed: { type: Boolean, default: false },
     errorText: { type: String, default: "" },
-    renderOption: { type: Function as PropType<Slot>, default: undefined },
+    renderOption: { type: Function as PropType<(scope: { option: SelectOption }) => VNodeChild>, default: undefined },
     onOpenChange: { type: Function as PropType<(open: boolean) => void>, required: true },
     onValueChange: { type: Function as PropType<(value: string) => void>, required: true },
     onSelect: { type: Function as PropType<(option: SelectOption) => void>, required: true },
@@ -104,7 +104,7 @@ export const SearchField = defineComponent({
               {props.loading ? <div class="kjun-select-empty"><KjunSpinner size="sm" text="검색 중..." /></div>
                 : props.failed ? <div class="kjun-select-empty" role="alert">{props.errorText}</div>
                 : props.options.length ? props.options.map((option, i) => {
-                    const custom = props.renderOption?.({ option });
+                    const custom = props.renderOption?.({ option }) as VNode[] | undefined;
                     return (
                       <div key={optionKey(option, props.itemKey, i)} id={id + "-" + i} role="option" aria-selected={active.value === i}
                         aria-disabled={optionDisabled(option) ? "true" : undefined} class="kjun-option" data-focused={active.value === i || undefined}
@@ -143,6 +143,7 @@ export const KjunCombobox = defineComponent({
   name: "KjunCombobox",
   props: kjunComboboxProps,
   emits: { "update:modelValue": (_value: OptionValue | null) => true, change: (_value: OptionValue | null) => true, search: (_query: string) => true, clear: () => true },
+  slots: Object as SlotsType<{ option?: (scope: { option: SelectOption }) => VNodeChild }>,
   setup(props, { slots, emit }) {
     const model = useComboboxModel(() => ({ value: props.modelValue, options: props.options, labelKey: props.labelKey, valueKey: props.valueKey,
       disabled: props.disabled, filterFn: props.filterFn }), {

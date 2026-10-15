@@ -1,4 +1,4 @@
-import { defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { typeStyle } from "../../../shared/package-runtime/typography";
 import { KjunButton, KjunIcon } from "./button";
@@ -191,6 +191,7 @@ export type KjunExternalLinkProps = ExtractPublicPropTypes<typeof kjunExternalLi
 export const KjunExternalLink = defineComponent({
   name: "KjunExternalLink",
   props: kjunExternalLinkProps,
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     return () => {
       const url = safeExternalUrl(props.href), name = props.label || (props.mode === "icon" ? "외부 링크" : undefined);
@@ -210,6 +211,7 @@ export const KjunExternalLink = defineComponent({
 /** Fades whichever horizontal edge still has content to scroll to. */
 export const KjunScrollFade = defineComponent({
   name: "KjunScrollFade",
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(_, { slots }) {
     const root = ref<HTMLElement | null>(null), edges = ref({ left: false, right: false });
     const update = () => {

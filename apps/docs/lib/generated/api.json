@@ -1,13 +1,6 @@
 {
   "KjunAccordion": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "multiple",
         "type": "boolean",
@@ -25,7 +18,11 @@
     ],
     "events": [],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/navigation.tsx"
+      }
     ],
     "react": [
       {
@@ -75,14 +72,7 @@
     ]
   },
   "KjunAccordionItem": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "title",
         "type": "string",
@@ -107,8 +97,16 @@
     ],
     "events": [],
     "slots": [
-      "header",
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/navigation.tsx"
+      },
+      {
+        "name": "header",
+        "data": [],
+        "source": "packages/vue3/src/navigation.tsx"
+      }
     ],
     "react": [
       {
@@ -186,26 +184,19 @@
     ]
   },
   "KjunAlert": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "type",
-        "type": "\"success\" | \"warning\" | \"danger\" | \"info\" | \"error\"",
+        "type": "\"danger\" | \"success\" | \"warning\" | \"info\" | \"error\"",
         "required": false,
         "default": "\"info\"",
         "description": ""
       },
       {
         "name": "variant",
-        "type": "string | null",
+        "type": "SemanticTone",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -219,7 +210,7 @@
         "name": "title",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -231,12 +222,27 @@
       }
     ],
     "events": [
-      "close"
+      {
+        "name": "close",
+        "source": "packages/vue3/src/display.tsx"
+      }
     ],
     "slots": [
-      "title",
-      "default",
-      "actions"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/display.tsx"
+      },
+      {
+        "name": "title",
+        "data": [],
+        "source": "packages/vue3/src/display.tsx"
+      },
+      {
+        "name": "actions",
+        "data": [],
+        "source": "packages/vue3/src/display.tsx"
+      }
     ],
     "react": [
       {
@@ -356,17 +362,10 @@
     ]
   },
   "KjunAnimatedNumber": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "value",
-        "type": "number | string",
+        "type": "string | number",
         "required": true,
         "default": "—",
         "description": ""
@@ -408,9 +407,9 @@
       },
       {
         "name": "formatter",
-        "type": "((...args: any[]) => any) | null",
+        "type": "(value: number) => string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       }
     ],
@@ -534,7 +533,7 @@
     ]
   },
   "KjunAvatar": {
-    "vue2": [
+    "vue3": [
       {
         "name": "src",
         "type": "string",
@@ -579,11 +578,21 @@
       }
     ],
     "events": [
-      "load",
-      "error"
+      {
+        "name": "load",
+        "source": "packages/vue3/src/media.tsx"
+      },
+      {
+        "name": "error",
+        "source": "packages/vue3/src/media.tsx"
+      }
     ],
     "slots": [
-      "fallback"
+      {
+        "name": "fallback",
+        "data": [],
+        "source": "packages/vue3/src/media.tsx"
+      }
     ],
     "react": [
       {
@@ -724,24 +733,17 @@
     ]
   },
   "KjunBadge": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "variant",
-        "type": "\"default\" | \"secondary\" | \"primary\" | \"success\" | \"warning\" | \"danger\" | \"info\" | \"price-up\" | \"price-down\"",
+        "type": "\"default\" | \"secondary\" | SemanticTone | \"price-up\" | \"price-down\"",
         "required": false,
         "default": "\"default\"",
         "description": ""
       },
       {
         "name": "size",
-        "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "type": "DisplaySize",
         "required": false,
         "default": "\"sm\"",
         "description": ""
@@ -756,7 +758,11 @@
     ],
     "events": [],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/display.tsx"
+      }
     ],
     "react": [
       {
@@ -876,7 +882,7 @@
     ]
   },
   "KjunBottomActionBar": {
-    "vue2": [
+    "vue3": [
       {
         "name": "description",
         "type": "string",
@@ -908,7 +914,11 @@
     ],
     "events": [],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/app-navigation.tsx"
+      }
     ],
     "react": [
       {
@@ -986,10 +996,10 @@
     ]
   },
   "KjunBottomNavigation": {
-    "vue2": [
+    "vue3": [
       {
         "name": "items",
-        "type": "Array<{\n    key: string;\n    label: string;\n    href: string;\n    icon?: string;\n    badge?: string | number;\n    disabled?: boolean;\n}>",
+        "type": "NavigationDestination[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -1031,7 +1041,10 @@
       }
     ],
     "events": [
-      "navigate"
+      {
+        "name": "navigate",
+        "source": "packages/vue3/src/app-navigation.tsx"
+      }
     ],
     "slots": [],
     "react": [
@@ -1138,26 +1151,33 @@
     ]
   },
   "KjunBreadcrumb": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "items",
-        "type": "any[]",
+        "type": "BreadcrumbItem[]",
         "required": true,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"현재 위치\"",
+        "description": ""
       }
     ],
-    "events": [
-      "navigate"
+    "events": [],
+    "slots": [
+      {
+        "name": "link",
+        "data": [
+          "item",
+          "label"
+        ],
+        "source": "packages/vue3/src/navigation.tsx"
+      }
     ],
-    "slots": [],
     "react": [
       {
         "name": "items",
@@ -1213,14 +1233,7 @@
     ]
   },
   "KjunButton": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "variant",
         "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\"",
@@ -1232,25 +1245,18 @@
         "name": "size",
         "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
         "required": false,
-        "default": "\"md\"",
+        "default": "—",
         "description": ""
       },
       {
-        "name": "htmlType",
-        "type": "string",
-        "required": false,
-        "default": "\"button\"",
-        "description": ""
-      },
-      {
-        "name": "disabled",
+        "name": "loading",
         "type": "boolean",
         "required": false,
         "default": "false",
         "description": ""
       },
       {
-        "name": "loading",
+        "name": "disabled",
         "type": "boolean",
         "required": false,
         "default": "false",
@@ -1265,16 +1271,16 @@
       },
       {
         "name": "prefixIcon",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "suffixIcon",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -1293,24 +1299,38 @@
       },
       {
         "name": "ariaLabel",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "spinOnLoading",
-        "type": "boolean | null",
+        "type": "boolean",
         "required": false,
-        "default": "null",
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "type",
+        "type": "\"button\" | \"submit\" | \"reset\"",
+        "required": false,
+        "default": "\"button\"",
         "description": ""
       }
     ],
     "events": [
-      "click"
+      {
+        "name": "click",
+        "source": "packages/vue3/src/button.tsx"
+      }
     ],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/button.tsx"
+      }
     ],
     "react": [
       {
@@ -1570,24 +1590,17 @@
     ]
   },
   "KjunButtonGroup": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string | number | null",
+        "name": "modelValue",
+        "type": "string | number | boolean",
         "required": false,
         "default": "null",
         "description": ""
       },
       {
         "name": "options",
-        "type": "any[]",
+        "type": "ChoiceOption<ChoiceValue>[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -1603,7 +1616,7 @@
         "name": "variant",
         "type": "\"primary\" | \"secondary\" | \"ghost\"",
         "required": false,
-        "default": "\"primary\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -1622,15 +1635,21 @@
       },
       {
         "name": "ariaLabel",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       }
     ],
     "events": [
-      "input",
-      "change"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/controls.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/controls.tsx"
+      }
     ],
     "slots": [],
     "react": [
@@ -1765,52 +1784,45 @@
     ]
   },
   "KjunCard": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "title",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "subtitle",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "padding",
-        "type": "\"none\" | \"sm\" | \"md\" | \"lg\"",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"none\"",
         "required": false,
         "default": "\"md\"",
         "description": ""
       },
       {
         "name": "bodyPadding",
-        "type": "\"none\" | \"sm\" | \"md\" | \"lg\"",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"none\"",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "radius",
-        "type": "\"none\" | \"sm\" | \"md\" | \"lg\"",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"none\"",
         "required": false,
         "default": "\"md\"",
         "description": ""
       },
       {
         "name": "surface",
-        "type": "\"default\" | \"muted\" | \"accent\" | \"success\" | \"warning\" | \"danger\" | \"subtle\" | \"brand\" | \"glass\"",
+        "type": "\"default\" | \"danger\" | \"success\" | \"warning\" | \"muted\" | \"accent\" | \"subtle\" | \"brand\" | \"glass\"",
         "required": false,
         "default": "\"default\"",
         "description": ""
@@ -1839,11 +1851,31 @@
     ],
     "events": [],
     "slots": [
-      "media",
-      "header",
-      "header-actions",
-      "default",
-      "footer"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/card.tsx"
+      },
+      {
+        "name": "header",
+        "data": [],
+        "source": "packages/vue3/src/card.tsx"
+      },
+      {
+        "name": "headerActions",
+        "data": [],
+        "source": "packages/vue3/src/card.tsx"
+      },
+      {
+        "name": "media",
+        "data": [],
+        "source": "packages/vue3/src/card.tsx"
+      },
+      {
+        "name": "footer",
+        "data": [],
+        "source": "packages/vue3/src/card.tsx"
+      }
     ],
     "react": [
       {
@@ -2103,14 +2135,7 @@
     ]
   },
   "KjunChartSkeleton": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "loadingText",
         "type": "string",
@@ -2127,9 +2152,9 @@
       },
       {
         "name": "height",
-        "type": "string | number",
+        "type": "Length",
         "required": false,
-        "default": "\"240px\"",
+        "default": "240",
         "description": ""
       }
     ],
@@ -2183,33 +2208,33 @@
     ]
   },
   "KjunCheckbox": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "value",
-        "type": "boolean | any[]",
+        "name": "modelValue",
+        "type": "boolean | ChoiceValue[]",
         "required": false,
         "default": "false",
         "description": ""
       },
       {
         "name": "val",
-        "type": "string | number | boolean | Record<string, any> | null",
+        "type": "string | number | boolean",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "label",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
         "description": ""
       },
       {
@@ -2228,11 +2253,21 @@
       }
     ],
     "events": [
-      "input",
-      "change"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/controls.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/controls.tsx"
+      }
     ],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/controls.tsx"
+      }
     ],
     "react": [
       {
@@ -2366,7 +2401,7 @@
     ]
   },
   "KjunChip": {
-    "vue2": [
+    "vue3": [
       {
         "name": "label",
         "type": "string",
@@ -2411,7 +2446,10 @@
       }
     ],
     "events": [
-      "remove"
+      {
+        "name": "remove",
+        "source": "packages/vue3/src/chip.tsx"
+      }
     ],
     "slots": [],
     "react": [
@@ -2518,14 +2556,7 @@
     ]
   },
   "KjunCollectionMark": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "kind",
         "type": "\"favorite\" | \"interest\"",
@@ -2598,38 +2629,17 @@
     ]
   },
   "KjunCombobox": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string",
-        "required": false,
-        "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string | number | null",
+        "name": "modelValue",
+        "type": "OptionValue",
         "required": false,
         "default": "null",
         "description": ""
       },
       {
         "name": "options",
-        "type": "any[]",
+        "type": "SelectOption[]",
         "required": false,
         "default": "[]",
         "description": ""
@@ -2639,6 +2649,13 @@
         "type": "string",
         "required": false,
         "default": "\"검색 또는 선택\"",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
         "description": ""
       },
       {
@@ -2657,9 +2674,9 @@
       },
       {
         "name": "filterFn",
-        "type": "((...args: any[]) => any) | null",
+        "type": "(option: SelectOption, query: string) => boolean",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -2671,6 +2688,13 @@
       },
       {
         "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "error",
         "type": "boolean",
         "required": false,
         "default": "false",
@@ -2692,13 +2716,31 @@
       }
     ],
     "events": [
-      "search",
-      "input",
-      "change",
-      "clear"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/combobox.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/combobox.tsx"
+      },
+      {
+        "name": "search",
+        "source": "packages/vue3/src/combobox.tsx"
+      },
+      {
+        "name": "clear",
+        "source": "packages/vue3/src/combobox.tsx"
+      }
     ],
     "slots": [
-      "option"
+      {
+        "name": "option",
+        "data": [
+          "option"
+        ],
+        "source": "packages/vue3/src/combobox.tsx"
+      }
     ],
     "react": [
       {
@@ -2944,28 +2986,7 @@
     ]
   },
   "KjunCopyButton": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string",
-        "required": false,
-        "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "copyText",
-        "type": "((...args: any[]) => any) | null",
-        "required": false,
-        "default": "null",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "value",
         "type": "string",
@@ -2974,10 +2995,17 @@
         "description": ""
       },
       {
-        "name": "text",
-        "type": "string | null",
+        "name": "ariaLabel",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "text",
+        "type": "string",
+        "required": false,
+        "default": "—",
         "description": ""
       },
       {
@@ -3007,11 +3035,24 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "copyText",
+        "type": "(value: string) => void | Promise<void>",
+        "required": false,
+        "default": "\"callback\"",
+        "description": ""
       }
     ],
     "events": [
-      "copied",
-      "copy-error"
+      {
+        "name": "copied",
+        "source": "packages/vue3/src/actions.tsx"
+      },
+      {
+        "name": "copy-error",
+        "source": "packages/vue3/src/actions.tsx"
+      }
     ],
     "slots": [],
     "react": [
@@ -3160,12 +3201,12 @@
     ]
   },
   "KjunDataState": {
-    "vue2": [
+    "vue3": [
       {
         "name": "queryKey",
-        "type": "string | number | null",
+        "type": "string | number",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -3184,7 +3225,7 @@
       },
       {
         "name": "error",
-        "type": "string | null",
+        "type": "string",
         "required": false,
         "default": "null",
         "description": ""
@@ -3193,14 +3234,7 @@
         "name": "hasLoadedOnce",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
+        "default": "—",
         "description": ""
       },
       {
@@ -3219,7 +3253,7 @@
       },
       {
         "name": "refreshError",
-        "type": "string | null",
+        "type": "string",
         "required": false,
         "default": "null",
         "description": ""
@@ -3256,14 +3290,14 @@
         "name": "emptyIcon",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "emptyActionText",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -3296,7 +3330,7 @@
       },
       {
         "name": "skeletonType",
-        "type": "\"text\" | \"card\" | \"table\" | \"stat\" | \"chart\" | \"block\"",
+        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"chart\" | \"stat\"",
         "required": false,
         "default": "\"text\"",
         "description": ""
@@ -3307,17 +3341,45 @@
         "required": false,
         "default": "3",
         "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "default": "—",
+        "description": "Declared as a prop: the retry button appears only when the app listens."
       }
     ],
     "events": [
-      "empty-action",
-      "retry"
+      {
+        "name": "empty-action",
+        "source": "packages/vue3/src/data-state.tsx"
+      }
     ],
     "slots": [
-      "loading",
-      "error",
-      "empty",
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/data-state.tsx"
+      },
+      {
+        "name": "loading",
+        "data": [],
+        "source": "packages/vue3/src/data-state.tsx"
+      },
+      {
+        "name": "empty",
+        "data": [],
+        "source": "packages/vue3/src/data-state.tsx"
+      },
+      {
+        "name": "error",
+        "data": [
+          "error",
+          "retry"
+        ],
+        "source": "packages/vue3/src/data-state.tsx"
+      }
     ],
     "react": [
       {
@@ -3689,54 +3751,12 @@
     ]
   },
   "KjunDatePicker": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
+        "name": "modelValue",
         "type": "string",
         "required": false,
         "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string",
-        "required": false,
-        "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "placeholder",
-        "type": "string",
-        "required": false,
-        "default": "\"날짜 선택\"",
-        "description": ""
-      },
-      {
-        "name": "min",
-        "type": "string | null",
-        "required": false,
-        "default": "null",
-        "description": ""
-      },
-      {
-        "name": "max",
-        "type": "string | null",
-        "required": false,
-        "default": "null",
         "description": ""
       },
       {
@@ -3747,18 +3767,68 @@
         "description": ""
       },
       {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "default": "\"날짜 선택\"",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
         "name": "disabled",
         "type": "boolean",
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Earliest and latest selectable dates (YYYY-MM-DD)."
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "events": [
-      "input",
-      "change"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/date-picker.tsx"
+      }
     ],
-    "slots": [],
+    "slots": [
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/date-picker.tsx"
+      }
+    ],
     "react": [
       {
         "name": "value",
@@ -3982,24 +4052,17 @@
     ]
   },
   "KjunDeviation": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "value",
-        "type": "number | null",
+        "type": "number",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "variant",
-        "type": "\"pill\" | \"badge\" | \"text\"",
+        "type": "\"text\" | \"badge\" | \"pill\"",
         "required": false,
         "default": "\"pill\"",
         "description": ""
@@ -4016,6 +4079,13 @@
         "type": "number",
         "required": false,
         "default": "2",
+        "description": ""
+      },
+      {
+        "name": "formatter",
+        "type": "(value: number) => string",
+        "required": false,
+        "default": "—",
         "description": ""
       }
     ],
@@ -4097,40 +4167,33 @@
     ]
   },
   "KjunDrawer": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "value",
+        "name": "open",
         "type": "boolean",
-        "required": false,
-        "default": "false",
+        "required": true,
+        "default": "—",
         "description": ""
       },
       {
         "name": "title",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "position",
-        "type": "\"left\" | \"right\" | \"top\" | \"bottom\"",
+        "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
         "required": false,
         "default": "\"right\"",
         "description": ""
       },
       {
         "name": "width",
-        "type": "string",
+        "type": "string | number",
         "required": false,
-        "default": "\"400px\"",
+        "default": "400",
         "description": ""
       },
       {
@@ -4160,16 +4223,41 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "events": [
-      "input",
-      "close"
+      {
+        "name": "update:open",
+        "source": "packages/vue3/src/drawer.tsx"
+      },
+      {
+        "name": "close",
+        "source": "packages/vue3/src/drawer.tsx"
+      }
     ],
     "slots": [
-      "header",
-      "default",
-      "footer"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/drawer.tsx"
+      },
+      {
+        "name": "header",
+        "data": [],
+        "source": "packages/vue3/src/drawer.tsx"
+      },
+      {
+        "name": "footer",
+        "data": [],
+        "source": "packages/vue3/src/drawer.tsx"
+      }
     ],
     "react": [
       {
@@ -4373,14 +4461,7 @@
     ]
   },
   "KjunDropdown": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "disabled",
         "type": "boolean",
@@ -4389,38 +4470,55 @@
         "description": ""
       },
       {
+        "name": "placement",
+        "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\"",
+        "required": false,
+        "default": "\"bottom-start\"",
+        "description": ""
+      },
+      {
         "name": "menuId",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "triggerId",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "menuClass",
-        "type": "string | any[] | Record<string, any>",
+        "type": "string",
         "required": false,
         "default": "\"\"",
         "description": ""
-      },
-      {
-        "name": "placement",
-        "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\"",
-        "required": false,
-        "default": "\"bottom-start\"",
-        "description": ""
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "open",
+        "source": "packages/vue3/src/dropdown.tsx"
+      },
+      {
+        "name": "close",
+        "source": "packages/vue3/src/dropdown.tsx"
+      }
+    ],
     "slots": [
-      "trigger",
-      "default"
+      {
+        "name": "trigger",
+        "data": [],
+        "source": "packages/vue3/src/dropdown.tsx"
+      },
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/dropdown.tsx"
+      }
     ],
     "react": [
       {
@@ -4547,27 +4645,19 @@
     ]
   },
   "KjunDropdownDivider": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      }
-    ],
+    "vue3": [],
     "events": [],
     "slots": [],
     "react": [],
     "native": []
   },
   "KjunDropdownItem": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
+        "name": "id",
+        "type": "string",
         "required": false,
-        "default": "{}",
+        "default": "—",
         "description": ""
       },
       {
@@ -4579,9 +4669,9 @@
       },
       {
         "name": "icon",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -4593,17 +4683,31 @@
       },
       {
         "name": "selected",
-        "type": "boolean | null",
+        "type": "boolean",
         "required": false,
         "default": "null",
+        "description": ""
+      },
+      {
+        "name": "textValue",
+        "type": "string",
+        "required": false,
+        "default": "—",
         "description": ""
       }
     ],
     "events": [
-      "click"
+      {
+        "name": "click",
+        "source": "packages/vue3/src/dropdown.tsx"
+      }
     ],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/dropdown.tsx"
+      }
     ],
     "react": [
       {
@@ -4716,14 +4820,7 @@
     ]
   },
   "KjunEmpty": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "text",
         "type": "string",
@@ -4735,20 +4832,24 @@
         "name": "description",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "icon",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       }
     ],
     "events": [],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/display.tsx"
+      }
     ],
     "react": [
       {
@@ -4812,27 +4913,38 @@
     ]
   },
   "KjunErrorBoundary": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "fallbackMessage",
         "type": "string",
         "required": false,
-        "default": "\"문제가 발생했습니다\"",
+        "default": "—",
         "description": ""
       }
     ],
     "events": [
-      "error"
+      {
+        "name": "error",
+        "source": "packages/vue3/src/data-state.tsx"
+      },
+      {
+        "name": "reset",
+        "source": "packages/vue3/src/data-state.tsx"
+      }
     ],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/data-state.tsx"
+      },
+      {
+        "name": "fallback",
+        "data": [
+          "reset"
+        ],
+        "source": "packages/vue3/src/data-state.tsx"
+      }
     ],
     "react": [
       {
@@ -4910,31 +5022,24 @@
     ]
   },
   "KjunExecutionStatusBadge": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "status",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "label",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "size",
-        "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "type": "DisplaySize",
         "required": false,
         "default": "\"md\"",
         "description": ""
@@ -4990,14 +5095,7 @@
     ]
   },
   "KjunExternalLink": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "href",
         "type": "string",
@@ -5007,7 +5105,7 @@
       },
       {
         "name": "mode",
-        "type": "\"icon\" | \"text\"",
+        "type": "\"text\" | \"icon\"",
         "required": false,
         "default": "\"text\"",
         "description": ""
@@ -5016,13 +5114,17 @@
         "name": "label",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       }
     ],
     "events": [],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/actions.tsx"
+      }
     ],
     "react": [
       {
@@ -5093,7 +5195,15 @@
     ]
   },
   "KjunFeedbackProvider": {
-    "vue2": [],
+    "vue3": [],
+    "events": [],
+    "slots": [
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/feedback.tsx"
+      }
+    ],
     "react": [
       {
         "name": "children",
@@ -5114,33 +5224,19 @@
     ]
   },
   "KjunFilterGroup": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string | number | any[] | null",
+        "name": "modelValue",
+        "type": "string | number | boolean | ChoiceValue[]",
         "required": false,
         "default": "null",
         "description": ""
       },
       {
         "name": "options",
-        "type": "any[]",
+        "type": "ChoiceOption<ChoiceValue>[]",
         "required": true,
         "default": "—",
-        "description": ""
-      },
-      {
-        "name": "multiple",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
         "description": ""
       },
       {
@@ -5158,6 +5254,13 @@
         "description": ""
       },
       {
+        "name": "multiple",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
         "name": "scroll",
         "type": "boolean",
         "required": false,
@@ -5166,15 +5269,21 @@
       },
       {
         "name": "ariaLabel",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       }
     ],
     "events": [
-      "input",
-      "change"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/controls.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/controls.tsx"
+      }
     ],
     "slots": [],
     "react": [
@@ -5309,19 +5418,12 @@
     ]
   },
   "KjunFormActions": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\"",
         "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "confirmText",
-        "type": "string",
-        "required": false,
-        "default": "\"저장\"",
+        "default": "\"lg\"",
         "description": ""
       },
       {
@@ -5332,14 +5434,28 @@
         "description": ""
       },
       {
-        "name": "size",
-        "type": "\"sm\" | \"md\" | \"lg\"",
+        "name": "confirmText",
+        "type": "string",
         "required": false,
-        "default": "\"lg\"",
+        "default": "\"저장\"",
         "description": ""
       },
       {
-        "name": "loading",
+        "name": "showCancel",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": ""
+      },
+      {
+        "name": "showConfirm",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": ""
+      },
+      {
+        "name": "cancelDisabled",
         "type": "boolean",
         "required": false,
         "default": "false",
@@ -5353,24 +5469,10 @@
         "description": ""
       },
       {
-        "name": "cancelDisabled",
+        "name": "loading",
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": ""
-      },
-      {
-        "name": "showConfirm",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
-        "description": ""
-      },
-      {
-        "name": "showCancel",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
         "description": ""
       },
       {
@@ -5382,15 +5484,21 @@
       },
       {
         "name": "cancelVariant",
-        "type": "\"ghost\" | \"secondary\"",
+        "type": "\"secondary\" | \"ghost\"",
         "required": false,
         "default": "\"ghost\"",
         "description": ""
       }
     ],
     "events": [
-      "cancel",
-      "confirm"
+      {
+        "name": "cancel",
+        "source": "packages/vue3/src/modal.tsx"
+      },
+      {
+        "name": "confirm",
+        "source": "packages/vue3/src/modal.tsx"
+      }
     ],
     "slots": [],
     "react": [
@@ -5567,26 +5675,19 @@
     ]
   },
   "KjunFormGroup": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "label",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "id",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -5613,7 +5714,11 @@
     ],
     "events": [],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/input.tsx"
+      }
     ],
     "react": [
       {
@@ -5712,17 +5817,10 @@
     ]
   },
   "KjunFormSkeleton": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "fields",
-        "type": "any[]",
+        "type": "FormSkeletonField[]",
         "required": false,
         "default": "[\"\",\"\",\"\",\"\"]",
         "description": ""
@@ -5813,14 +5911,7 @@
     ]
   },
   "KjunFreshness": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "stale",
         "type": "boolean",
@@ -5830,16 +5921,23 @@
       },
       {
         "name": "source",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "fetchedAt",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "formatter",
+        "type": "(time: string) => string",
+        "required": false,
+        "default": "—",
         "description": ""
       }
     ],
@@ -5907,14 +6005,7 @@
     ]
   },
   "KjunHeatmapCell": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "value",
         "type": "number",
@@ -5938,14 +6029,14 @@
       },
       {
         "name": "mode",
-        "type": "string",
+        "type": "\"diverging\" | \"sequential\" | \"price\"",
         "required": false,
         "default": "\"diverging\"",
         "description": ""
       },
       {
         "name": "color",
-        "type": "string",
+        "type": "\"danger\" | \"success\" | \"warning\" | \"brand\"",
         "required": false,
         "default": "\"brand\"",
         "description": ""
@@ -5953,7 +6044,11 @@
     ],
     "events": [],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/financial-display.tsx"
+      }
     ],
     "react": [
       {
@@ -6045,14 +6140,7 @@
     ]
   },
   "KjunIcon": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "name",
         "type": "string",
@@ -6062,23 +6150,23 @@
       },
       {
         "name": "size",
-        "type": "string | number | null",
+        "type": "string | number",
         "required": false,
-        "default": "null",
+        "default": "\"1em\"",
         "description": ""
       },
       {
         "name": "spin",
         "type": "boolean",
         "required": false,
-        "default": "—",
+        "default": "false",
         "description": ""
       },
       {
         "name": "filled",
         "type": "boolean",
         "required": false,
-        "default": "—",
+        "default": "false",
         "description": ""
       }
     ],
@@ -6223,14 +6311,7 @@
     ]
   },
   "KjunIconToggle": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "active",
         "type": "boolean",
@@ -6247,23 +6328,37 @@
       },
       {
         "name": "inactiveIcon",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "activeColorClass",
         "type": "string",
         "required": false,
-        "default": "\"kj-text-brand\"",
+        "default": "\"\"",
         "description": ""
       },
       {
         "name": "inactiveColorClass",
         "type": "string",
         "required": false,
-        "default": "\"kj-text-text-tertiary\"",
+        "default": "\"\"",
+        "description": ""
+      },
+      {
+        "name": "activeColor",
+        "type": "string",
+        "required": false,
+        "default": "\"var(--_kjun-color-brand)\"",
+        "description": ""
+      },
+      {
+        "name": "inactiveColor",
+        "type": "string",
+        "required": false,
+        "default": "\"var(--_kjun-color-text-tertiary)\"",
         "description": ""
       },
       {
@@ -6296,28 +6391,31 @@
       },
       {
         "name": "tooltip",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
-        "description": ""
+        "default": "—",
+        "description": "Defaults to ariaLabel, like RefreshButton; an empty string disables the hint."
       },
       {
         "name": "tooltipPlacement",
         "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
         "required": false,
-        "default": "\"top\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "tooltipDelay",
         "type": "number",
         "required": false,
-        "default": "0",
+        "default": "—",
         "description": ""
       }
     ],
     "events": [
-      "toggle"
+      {
+        "name": "toggle",
+        "source": "packages/vue3/src/actions.tsx"
+      }
     ],
     "slots": [],
     "react": [
@@ -6522,7 +6620,7 @@
     ]
   },
   "KjunImage": {
-    "vue2": [
+    "vue3": [
       {
         "name": "src",
         "type": "string",
@@ -6567,11 +6665,21 @@
       }
     ],
     "events": [
-      "load",
-      "error"
+      {
+        "name": "load",
+        "source": "packages/vue3/src/media.tsx"
+      },
+      {
+        "name": "error",
+        "source": "packages/vue3/src/media.tsx"
+      }
     ],
     "slots": [
-      "fallback"
+      {
+        "name": "fallback",
+        "data": [],
+        "source": "packages/vue3/src/media.tsx"
+      }
     ],
     "react": [
       {
@@ -6705,45 +6813,10 @@
     ]
   },
   "KjunInput": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string | null",
-        "required": false,
-        "default": "null",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "value",
+        "name": "modelValue",
         "type": "string | number",
-        "required": false,
-        "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "type",
-        "type": "string",
-        "required": false,
-        "default": "\"text\"",
-        "description": ""
-      },
-      {
-        "name": "placeholder",
-        "type": "string",
         "required": false,
         "default": "\"\"",
         "description": ""
@@ -6756,31 +6829,17 @@
         "description": ""
       },
       {
-        "name": "disabled",
+        "name": "error",
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": ""
-      },
-      {
-        "name": "readonly",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "required",
-        "type": "boolean",
-        "required": false,
-        "default": "—",
         "description": ""
       },
       {
         "name": "errorMessage",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "\"\"",
         "description": ""
       },
       {
@@ -6792,67 +6851,93 @@
       },
       {
         "name": "prefixIcon",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "suffixIcon",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
-        "name": "min",
-        "type": "number | string | null",
+        "name": "prefix",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
-        "name": "max",
-        "type": "number | string | null",
+        "name": "suffix",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
-        "name": "step",
-        "type": "number | string | null",
+        "name": "ariaLabel",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
-        "name": "inputmode",
-        "type": "\"none\" | \"text\" | \"decimal\" | \"numeric\" | \"tel\" | \"search\" | \"email\" | \"url\" | null",
+        "name": "id",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
-        "name": "autocomplete",
-        "type": "string | null",
+        "name": "disabled",
+        "type": "boolean",
         "required": false,
-        "default": "null",
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "—",
         "description": ""
       }
     ],
     "events": [
-      "change",
-      "keypress",
-      "input",
-      "focus",
-      "blur",
-      "keydown",
-      "enter",
-      "clear"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/input.tsx"
+      },
+      {
+        "name": "clear",
+        "source": "packages/vue3/src/input.tsx"
+      },
+      {
+        "name": "enter",
+        "source": "packages/vue3/src/input.tsx"
+      }
     ],
     "slots": [
-      "prefix",
-      "suffix"
+      {
+        "name": "prefix",
+        "data": [],
+        "source": "packages/vue3/src/input.tsx"
+      },
+      {
+        "name": "suffix",
+        "data": [],
+        "source": "packages/vue3/src/input.tsx"
+      }
     ],
     "react": [
       {
@@ -7210,33 +7295,12 @@
     ]
   },
   "KjunKpiHero": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "loading",
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": ""
-      },
-      {
-        "name": "formatter",
-        "type": "((...args: any[]) => any) | null",
-        "required": false,
-        "default": "null",
-        "description": ""
-      },
-      {
-        "name": "deltaFormatter",
-        "type": "((...args: any[]) => any) | null",
-        "required": false,
-        "default": "null",
         "description": ""
       },
       {
@@ -7248,7 +7312,7 @@
       },
       {
         "name": "value",
-        "type": "number | string",
+        "type": "string | number",
         "required": true,
         "default": "—",
         "description": ""
@@ -7276,14 +7340,14 @@
       },
       {
         "name": "deltaAbsolute",
-        "type": "number | null",
+        "type": "number",
         "required": false,
         "default": "null",
         "description": ""
       },
       {
         "name": "deltaPercent",
-        "type": "number | null",
+        "type": "number",
         "required": false,
         "default": "null",
         "description": ""
@@ -7297,7 +7361,7 @@
       },
       {
         "name": "secondary",
-        "type": "any[]",
+        "type": "KpiValue[]",
         "required": false,
         "default": "[]",
         "description": ""
@@ -7311,15 +7375,41 @@
       },
       {
         "name": "size",
-        "type": "\"md\" | \"sm\"",
+        "type": "\"sm\" | \"md\"",
         "required": false,
         "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "formatter",
+        "type": "(value: number) => string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "deltaFormatter",
+        "type": "(value: number, kind: \"absolute\" | \"percent\") => string",
+        "required": false,
+        "default": "—",
         "description": ""
       }
     ],
     "events": [],
     "slots": [
-      "aside"
+      {
+        "name": "aside",
+        "data": [],
+        "source": "packages/vue3/src/kpi.tsx"
+      },
+      {
+        "name": "secondary",
+        "data": [
+          "item",
+          "index"
+        ],
+        "source": "packages/vue3/src/kpi.tsx"
+      }
     ],
     "react": [
       {
@@ -7551,14 +7641,7 @@
     ]
   },
   "KjunKpiRow": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "loading",
         "type": "boolean",
@@ -7568,14 +7651,14 @@
       },
       {
         "name": "items",
-        "type": "any[]",
+        "type": "KpiRowItem[]",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "size",
-        "type": "\"md\" | \"sm\"",
+        "type": "\"sm\" | \"md\"",
         "required": false,
         "default": "\"md\"",
         "description": ""
@@ -7589,9 +7672,21 @@
       }
     ],
     "events": [
-      "item-click"
+      {
+        "name": "item-click",
+        "source": "packages/vue3/src/kpi.tsx"
+      }
     ],
-    "slots": [],
+    "slots": [
+      {
+        "name": "value",
+        "data": [
+          "item",
+          "index"
+        ],
+        "source": "packages/vue3/src/kpi.tsx"
+      }
+    ],
     "react": [
       {
         "name": "loading",
@@ -7682,7 +7777,7 @@
     ]
   },
   "KjunListRow": {
-    "vue2": [
+    "vue3": [
       {
         "name": "title",
         "type": "string",
@@ -7710,15 +7805,32 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "(event: MouseEvent) => void",
+        "required": false,
+        "default": "—",
+        "description": "Declared as a prop: a row is a button only when the app listens for clicks."
       }
     ],
-    "events": [
-      "click"
-    ],
+    "events": [],
     "slots": [
-      "leading",
-      "trailing",
-      "actions"
+      {
+        "name": "leading",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      },
+      {
+        "name": "trailing",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      },
+      {
+        "name": "actions",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      }
     ],
     "react": [
       {
@@ -7838,7 +7950,7 @@
     ]
   },
   "KjunListSection": {
-    "vue2": [
+    "vue3": [
       {
         "name": "title",
         "type": "string",
@@ -7863,8 +7975,16 @@
     ],
     "events": [],
     "slots": [
-      "actions",
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      },
+      {
+        "name": "actions",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      }
     ],
     "react": [
       {
@@ -7942,14 +8062,7 @@
     ]
   },
   "KjunListSkeleton": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "rows",
         "type": "number",
@@ -7973,9 +8086,9 @@
       },
       {
         "name": "avatarSize",
-        "type": "string",
+        "type": "Length",
         "required": false,
-        "default": "\"36px\"",
+        "default": "36",
         "description": ""
       },
       {
@@ -8064,12 +8177,26 @@
     ]
   },
   "KjunMarketCards": {
-    "vue2": [
+    "vue3": [
+      {
+        "name": "rows",
+        "type": "object[]",
+        "required": false,
+        "default": "[]",
+        "description": ""
+      },
+      {
+        "name": "rowKey",
+        "type": "string",
+        "required": false,
+        "default": "\"id\"",
+        "description": ""
+      },
       {
         "name": "queryKey",
-        "type": "string | number | null",
+        "type": "string | number",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -8088,7 +8215,7 @@
       },
       {
         "name": "error",
-        "type": "string | null",
+        "type": "string",
         "required": false,
         "default": "null",
         "description": ""
@@ -8097,140 +8224,42 @@
         "name": "hasLoadedOnce",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "rows",
-        "type": "any[]",
-        "required": false,
-        "default": "[]",
-        "description": ""
-      },
-      {
-        "name": "columns",
-        "type": "any[]",
-        "required": true,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "rowKey",
-        "type": "string",
-        "required": false,
-        "default": "\"id\"",
-        "description": ""
-      },
-      {
-        "name": "metricConfig",
-        "type": "Record<string, any>",
-        "required": true,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "excludeKeys",
-        "type": "any[]",
-        "required": false,
-        "default": "[]",
-        "description": ""
-      },
-      {
-        "name": "storageNamespace",
-        "type": "string",
-        "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "interestKeys",
-        "type": "unknown",
+        "type": "ReadonlySet<unknown>",
         "required": false,
-        "default": "{}",
+        "default": "—",
         "description": ""
       },
       {
         "name": "favoriteKeys",
-        "type": "unknown",
+        "type": "ReadonlySet<unknown>",
         "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "sortKey",
-        "type": "string | null",
-        "required": false,
-        "default": "null",
-        "description": ""
-      },
-      {
-        "name": "sortOrder",
-        "type": "string",
-        "required": false,
-        "default": "\"desc\"",
-        "description": ""
-      },
-      {
-        "name": "emitSortOnMount",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
+        "default": "—",
         "description": ""
       },
       {
         "name": "pagination",
-        "type": "Record<string, any> | null",
+        "type": "MarketPagination",
         "required": false,
-        "default": "null",
-        "description": ""
-      },
-      {
-        "name": "currency",
-        "type": "string",
-        "required": false,
-        "default": "\"krw\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "primaryLabel",
-        "type": "(...args: any[]) => any",
+        "type": "(row: any) => string",
         "required": false,
-        "default": "\"callback\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "subMeta",
-        "type": "(...args: any[]) => any",
+        "type": "(row: any) => string",
         "required": false,
-        "default": "\"callback\"",
-        "description": ""
-      },
-      {
-        "name": "changeMetricKey",
-        "type": "string",
-        "required": false,
-        "default": "\"change_rate\"",
-        "description": ""
-      },
-      {
-        "name": "priceMetricKeys",
-        "type": "any[]",
-        "required": false,
-        "default": "[\"current_price\",\"close_price\"]",
-        "description": ""
-      },
-      {
-        "name": "metricLoading",
-        "type": "(...args: any[]) => any",
-        "required": false,
-        "default": "\"callback\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -8256,16 +8285,16 @@
       },
       {
         "name": "calculatedAt",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "footerNote",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -8281,19 +8310,178 @@
         "required": false,
         "default": "\"개\"",
         "description": ""
+      },
+      {
+        "name": "formatDate",
+        "type": "(value: string) => string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onRowClick",
+        "type": "(row: any) => void",
+        "required": false,
+        "default": "—",
+        "description": "Declared as props: rows become buttons and the retry action appears only when the app listens."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "columns",
+        "type": "MarketColumn[]",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "metricConfig",
+        "type": "Record<string, MarketMetric>",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "excludeKeys",
+        "type": "string[]",
+        "required": false,
+        "default": "[]",
+        "description": ""
+      },
+      {
+        "name": "storageNamespace",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "storage",
+        "type": "MetricStorage",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "sortKey",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "sortOrder",
+        "type": "\"asc\" | \"desc\"",
+        "required": false,
+        "default": "\"desc\"",
+        "description": ""
+      },
+      {
+        "name": "emitSortOnMount",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": ""
+      },
+      {
+        "name": "currency",
+        "type": "string",
+        "required": false,
+        "default": "\"krw\"",
+        "description": ""
+      },
+      {
+        "name": "changeMetricKey",
+        "type": "string",
+        "required": false,
+        "default": "\"change_rate\"",
+        "description": ""
+      },
+      {
+        "name": "priceMetricKeys",
+        "type": "string[]",
+        "required": false,
+        "default": "[\"current_price\",\"close_price\"]",
+        "description": ""
+      },
+      {
+        "name": "metricLoading",
+        "type": "(row: any, key: string) => boolean",
+        "required": false,
+        "default": "\"callback\"",
+        "description": ""
+      },
+      {
+        "name": "formatMetric",
+        "type": "MarketFormatter",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "events": [
-      "retry",
-      "row-click",
-      "page-change",
-      "sort"
+      {
+        "name": "sort",
+        "source": "packages/vue3/src/market-cards.tsx"
+      },
+      {
+        "name": "page-change",
+        "source": "packages/vue3/src/market-cards.tsx"
+      }
     ],
     "slots": [
-      "list",
-      "name-prefix",
-      "name-suffix",
-      "metric-prefix"
+      {
+        "name": "identity",
+        "data": [
+          "row",
+          "content"
+        ],
+        "source": "packages/vue3/src/market-cards.tsx"
+      },
+      {
+        "name": "namePrefix",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-cards.tsx"
+      },
+      {
+        "name": "nameSuffix",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-cards.tsx"
+      },
+      {
+        "name": "subMeta",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-cards.tsx"
+      },
+      {
+        "name": "list",
+        "data": [
+          "selectedKey",
+          "selectedPill",
+          "metricDisplay"
+        ],
+        "source": "packages/vue3/src/market-cards.tsx"
+      },
+      {
+        "name": "metricPrefix",
+        "data": [
+          "row",
+          "key",
+          "isPrice"
+        ],
+        "source": "packages/vue3/src/market-cards.tsx"
+      }
     ],
     "react": [
       {
@@ -8903,19 +9091,19 @@
     ]
   },
   "KjunMarketListPanel": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      }
-    ],
+    "vue3": [],
     "events": [],
     "slots": [
-      "controls",
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/market-parts.tsx"
+      },
+      {
+        "name": "controls",
+        "data": [],
+        "source": "packages/vue3/src/market-parts.tsx"
+      }
     ],
     "react": [
       {
@@ -8951,12 +9139,26 @@
     ]
   },
   "KjunMarketSimpleList": {
-    "vue2": [
+    "vue3": [
+      {
+        "name": "rows",
+        "type": "object[]",
+        "required": false,
+        "default": "[]",
+        "description": ""
+      },
+      {
+        "name": "rowKey",
+        "type": "string",
+        "required": false,
+        "default": "\"id\"",
+        "description": ""
+      },
       {
         "name": "queryKey",
-        "type": "string | number | null",
+        "type": "string | number",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -8975,7 +9177,7 @@
       },
       {
         "name": "error",
-        "type": "string | null",
+        "type": "string",
         "required": false,
         "default": "null",
         "description": ""
@@ -8984,98 +9186,42 @@
         "name": "hasLoadedOnce",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "rows",
-        "type": "any[]",
-        "required": false,
-        "default": "[]",
-        "description": ""
-      },
-      {
-        "name": "rowKey",
-        "type": "string",
-        "required": false,
-        "default": "\"id\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "interestKeys",
-        "type": "unknown",
+        "type": "ReadonlySet<unknown>",
         "required": false,
-        "default": "{}",
+        "default": "—",
         "description": ""
       },
       {
         "name": "favoriteKeys",
-        "type": "unknown",
+        "type": "ReadonlySet<unknown>",
         "required": false,
-        "default": "{}",
+        "default": "—",
         "description": ""
       },
       {
         "name": "pagination",
-        "type": "Record<string, any> | null",
+        "type": "MarketPagination",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "primaryLabel",
-        "type": "(...args: any[]) => any",
+        "type": "(row: any) => string",
         "required": false,
-        "default": "\"callback\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "subMeta",
-        "type": "(...args: any[]) => any",
+        "type": "(row: any) => string",
         "required": false,
-        "default": "\"callback\"",
-        "description": ""
-      },
-      {
-        "name": "priceValue",
-        "type": "(...args: any[]) => any",
-        "required": true,
         "default": "—",
-        "description": ""
-      },
-      {
-        "name": "changeValue",
-        "type": "(...args: any[]) => any",
-        "required": true,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "changeLoading",
-        "type": "(...args: any[]) => any",
-        "required": false,
-        "default": "\"callback\"",
-        "description": ""
-      },
-      {
-        "name": "priceFormatter",
-        "type": "(...args: any[]) => any",
-        "required": true,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "closingPrice",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
         "description": ""
       },
       {
@@ -9101,16 +9247,16 @@
       },
       {
         "name": "calculatedAt",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "footerNote",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -9126,18 +9272,107 @@
         "required": false,
         "default": "\"개\"",
         "description": ""
+      },
+      {
+        "name": "formatDate",
+        "type": "(value: string) => string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onRowClick",
+        "type": "(row: any) => void",
+        "required": false,
+        "default": "—",
+        "description": "Declared as props: rows become buttons and the retry action appears only when the app listens."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "priceValue",
+        "type": "(row: any) => number | null",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "changeValue",
+        "type": "(row: any) => number | null",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "changeLoading",
+        "type": "(row: any) => boolean",
+        "required": false,
+        "default": "\"callback\"",
+        "description": ""
+      },
+      {
+        "name": "priceFormatter",
+        "type": "(value: number) => string",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "closingPrice",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
       }
     ],
     "events": [
-      "retry",
-      "row-click",
-      "page-change"
+      {
+        "name": "page-change",
+        "source": "packages/vue3/src/market-list.tsx"
+      }
     ],
     "slots": [
-      "name-prefix",
-      "name-suffix",
-      "sub-meta",
-      "default"
+      {
+        "name": "identity",
+        "data": [
+          "row",
+          "content"
+        ],
+        "source": "packages/vue3/src/market-list.tsx"
+      },
+      {
+        "name": "namePrefix",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-list.tsx"
+      },
+      {
+        "name": "nameSuffix",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-list.tsx"
+      },
+      {
+        "name": "subMeta",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-list.tsx"
+      },
+      {
+        "name": "pricePrefix",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-list.tsx"
+      }
     ],
     "react": [
       {
@@ -9607,12 +9842,26 @@
     ]
   },
   "KjunMarketTable": {
-    "vue2": [
+    "vue3": [
+      {
+        "name": "rows",
+        "type": "object[]",
+        "required": false,
+        "default": "[]",
+        "description": ""
+      },
+      {
+        "name": "rowKey",
+        "type": "string",
+        "required": false,
+        "default": "\"id\"",
+        "description": ""
+      },
       {
         "name": "queryKey",
-        "type": "string | number | null",
+        "type": "string | number",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -9631,7 +9880,7 @@
       },
       {
         "name": "error",
-        "type": "string | null",
+        "type": "string",
         "required": false,
         "default": "null",
         "description": ""
@@ -9640,119 +9889,42 @@
         "name": "hasLoadedOnce",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "rows",
-        "type": "any[]",
-        "required": false,
-        "default": "[]",
-        "description": ""
-      },
-      {
-        "name": "columns",
-        "type": "any[]",
-        "required": true,
         "default": "—",
         "description": ""
       },
       {
-        "name": "rowKey",
-        "type": "string",
-        "required": false,
-        "default": "\"id\"",
-        "description": ""
-      },
-      {
-        "name": "cellLoading",
-        "type": "(...args: any[]) => any",
-        "required": false,
-        "default": "\"callback\"",
-        "description": ""
-      },
-      {
-        "name": "showActions",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
         "name": "interestKeys",
-        "type": "unknown",
+        "type": "ReadonlySet<unknown>",
         "required": false,
-        "default": "{}",
+        "default": "—",
         "description": ""
       },
       {
         "name": "favoriteKeys",
-        "type": "unknown",
+        "type": "ReadonlySet<unknown>",
         "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "togglingInterest",
-        "type": "string | number | null",
-        "required": false,
-        "default": "null",
-        "description": ""
-      },
-      {
-        "name": "togglingFavorite",
-        "type": "string | number | null",
-        "required": false,
-        "default": "null",
-        "description": ""
-      },
-      {
-        "name": "sortKey",
-        "type": "string | null",
-        "required": false,
-        "default": "null",
-        "description": ""
-      },
-      {
-        "name": "sortOrder",
-        "type": "string",
-        "required": false,
-        "default": "\"desc\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "pagination",
-        "type": "Record<string, any> | null",
+        "type": "MarketPagination",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
-        "name": "priceFormatter",
-        "type": "((...args: any[]) => any) | null",
+        "name": "primaryLabel",
+        "type": "(row: any) => string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
-        "name": "currency",
-        "type": "string",
+        "name": "subMeta",
+        "type": "(row: any) => string",
         "required": false,
-        "default": "\"krw\"",
-        "description": ""
-      },
-      {
-        "name": "embedded",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
+        "default": "—",
         "description": ""
       },
       {
@@ -9778,16 +9950,16 @@
       },
       {
         "name": "calculatedAt",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "footerNote",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -9803,18 +9975,162 @@
         "required": false,
         "default": "\"개\"",
         "description": ""
+      },
+      {
+        "name": "formatDate",
+        "type": "(value: string) => string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onRowClick",
+        "type": "(row: any) => void",
+        "required": false,
+        "default": "—",
+        "description": "Declared as props: rows become buttons and the retry action appears only when the app listens."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "columns",
+        "type": "MarketColumn[]",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "cellLoading",
+        "type": "(row: any, column: MarketColumn) => boolean",
+        "required": false,
+        "default": "\"callback\"",
+        "description": ""
+      },
+      {
+        "name": "showActions",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": ""
+      },
+      {
+        "name": "togglingInterest",
+        "type": "never",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "togglingFavorite",
+        "type": "never",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "sortKey",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "sortOrder",
+        "type": "\"asc\" | \"desc\"",
+        "required": false,
+        "default": "\"desc\"",
+        "description": ""
+      },
+      {
+        "name": "priceFormatter",
+        "type": "(value: number) => string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "currency",
+        "type": "string",
+        "required": false,
+        "default": "\"krw\"",
+        "description": ""
+      },
+      {
+        "name": "embedded",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "formatMetric",
+        "type": "MarketFormatter",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "events": [
-      "retry",
-      "sort",
-      "row-click",
-      "toggle-interest",
-      "toggle-favorite",
-      "page-change"
+      {
+        "name": "sort",
+        "source": "packages/vue3/src/market-table.tsx"
+      },
+      {
+        "name": "toggle-interest",
+        "source": "packages/vue3/src/market-table.tsx"
+      },
+      {
+        "name": "toggle-favorite",
+        "source": "packages/vue3/src/market-table.tsx"
+      },
+      {
+        "name": "page-change",
+        "source": "packages/vue3/src/market-table.tsx"
+      }
     ],
     "slots": [
-      "default"
+      {
+        "name": "identity",
+        "data": [
+          "row",
+          "content"
+        ],
+        "source": "packages/vue3/src/market-table.tsx"
+      },
+      {
+        "name": "namePrefix",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-table.tsx"
+      },
+      {
+        "name": "nameSuffix",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-table.tsx"
+      },
+      {
+        "name": "subMeta",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-table.tsx"
+      },
+      {
+        "name": "cell",
+        "data": [
+          "row",
+          "column"
+        ],
+        "source": "packages/vue3/src/market-table.tsx"
+      }
     ],
     "react": [
       {
@@ -10410,17 +10726,10 @@
     ]
   },
   "KjunMarketTableSkeleton": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "columns",
-        "type": "any[]",
+        "type": "(string | LayoutColumn)[]",
         "required": false,
         "default": "[]",
         "description": ""
@@ -10441,16 +10750,16 @@
       },
       {
         "name": "alignClass",
-        "type": "((...args: any[]) => any) | null",
+        "type": "(align: unknown) => string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "widthClass",
-        "type": "((...args: any[]) => any) | null",
+        "type": "(column: unknown) => string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       }
     ],
@@ -10518,19 +10827,47 @@
     ]
   },
   "KjunMenuButton": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
+        "name": "disabled",
+        "type": "boolean",
         "required": false,
-        "default": "{}",
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "placement",
+        "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\"",
+        "required": false,
+        "default": "\"bottom-start\"",
+        "description": ""
+      },
+      {
+        "name": "menuId",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "triggerId",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "menuClass",
+        "type": "string",
+        "required": false,
+        "default": "\"\"",
         "description": ""
       },
       {
         "name": "label",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -10542,7 +10879,7 @@
       },
       {
         "name": "variant",
-        "type": "string",
+        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\"",
         "required": false,
         "default": "\"secondary\"",
         "description": ""
@@ -10552,14 +10889,7 @@
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": ""
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
+        "description": "Show a square dots-vertical button; label remains its accessible name."
       },
       {
         "name": "loading",
@@ -10572,45 +10902,47 @@
         "name": "tooltip",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "tooltipPlacement",
         "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
         "required": false,
-        "default": "\"top\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "tooltipDelay",
         "type": "number",
         "required": false,
-        "default": "0",
+        "default": "—",
         "description": ""
       },
       {
         "name": "ariaLabel",
         "type": "string",
         "required": false,
-        "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "placement",
-        "type": "string",
-        "required": false,
-        "default": "\"bottom-start\"",
+        "default": "—",
         "description": ""
       }
     ],
     "events": [
-      "open",
-      "close"
+      {
+        "name": "open",
+        "source": "packages/vue3/src/dropdown.tsx"
+      },
+      {
+        "name": "close",
+        "source": "packages/vue3/src/dropdown.tsx"
+      }
     ],
     "slots": [
-      "label",
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/dropdown.tsx"
+      }
     ],
     "react": [
       {
@@ -10849,37 +11181,16 @@
     ]
   },
   "KjunModal": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "footerSize",
-        "type": "string",
-        "required": false,
-        "default": "\"md\"",
-        "description": ""
-      },
-      {
-        "name": "value",
+        "name": "open",
         "type": "boolean",
-        "required": false,
-        "default": "false",
+        "required": true,
+        "default": "—",
         "description": ""
       },
       {
         "name": "title",
-        "type": "string",
-        "required": false,
-        "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
         "type": "string",
         "required": false,
         "default": "\"\"",
@@ -10980,7 +11291,7 @@
         "name": "height",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -10989,18 +11300,56 @@
         "required": false,
         "default": "\"primary\"",
         "description": ""
+      },
+      {
+        "name": "footerSize",
+        "type": "\"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "events": [
-      "input",
-      "close",
-      "confirm",
-      "cancel"
+      {
+        "name": "update:open",
+        "source": "packages/vue3/src/modal.tsx"
+      },
+      {
+        "name": "close",
+        "source": "packages/vue3/src/modal.tsx"
+      },
+      {
+        "name": "cancel",
+        "source": "packages/vue3/src/modal.tsx"
+      },
+      {
+        "name": "confirm",
+        "source": "packages/vue3/src/modal.tsx"
+      }
     ],
     "slots": [
-      "header",
-      "default",
-      "footer"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/modal.tsx"
+      },
+      {
+        "name": "header",
+        "data": [],
+        "source": "packages/vue3/src/modal.tsx"
+      },
+      {
+        "name": "footer",
+        "data": [],
+        "source": "packages/vue3/src/modal.tsx"
+      }
     ],
     "react": [
       {
@@ -11372,26 +11721,19 @@
     ]
   },
   "KjunPagination": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
+        "name": "page",
+        "type": "number",
         "required": false,
-        "default": "{}",
-        "description": ""
+        "default": "—",
+        "description": "v-model:page. currentPage is accepted as an alias."
       },
       {
         "name": "currentPage",
-        "type": "number | null",
+        "type": "number",
         "required": false,
-        "default": "null",
-        "description": ""
-      },
-      {
-        "name": "page",
-        "type": "number | null",
-        "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -11413,11 +11755,11 @@
         "type": "number",
         "required": false,
         "default": "20",
-        "description": ""
+        "description": "v-model:pageSize."
       },
       {
         "name": "pageSizeOptions",
-        "type": "any[]",
+        "type": "number[]",
         "required": false,
         "default": "[10,20,50,100]",
         "description": ""
@@ -11449,13 +11791,28 @@
         "required": false,
         "default": "true",
         "description": ""
+      },
+      {
+        "name": "formatter",
+        "type": "(value: number) => string",
+        "required": false,
+        "default": "\"callback\"",
+        "description": ""
       }
     ],
     "events": [
-      "update:currentPage",
-      "update:page",
-      "change",
-      "update:page-size"
+      {
+        "name": "update:page",
+        "source": "packages/vue3/src/navigation.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/navigation.tsx"
+      },
+      {
+        "name": "update:pageSize",
+        "source": "packages/vue3/src/navigation.tsx"
+      }
     ],
     "slots": [],
     "react": [
@@ -11660,14 +12017,7 @@
     ]
   },
   "KjunPopover": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "noPadding",
         "type": "boolean",
@@ -11676,10 +12026,10 @@
         "description": ""
       },
       {
-        "name": "value",
+        "name": "open",
         "type": "boolean",
         "required": false,
-        "default": "false",
+        "default": "—",
         "description": ""
       },
       {
@@ -11698,9 +12048,9 @@
       },
       {
         "name": "maxHeight",
-        "type": "string",
+        "type": "string | number",
         "required": false,
-        "default": "\"min(60vh, 480px)\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -11721,7 +12071,7 @@
         "name": "ariaLabel",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -11733,11 +12083,26 @@
       }
     ],
     "events": [
-      "input"
+      {
+        "name": "update:open",
+        "source": "packages/vue3/src/popover.tsx"
+      }
     ],
     "slots": [
-      "trigger",
-      "default"
+      {
+        "name": "trigger",
+        "data": [
+          "open"
+        ],
+        "source": "packages/vue3/src/popover.tsx"
+      },
+      {
+        "name": "default",
+        "data": [
+          "close"
+        ],
+        "source": "packages/vue3/src/popover.tsx"
+      }
     ],
     "react": [
       {
@@ -11913,26 +12278,19 @@
     ]
   },
   "KjunPriceCell": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "value",
-        "type": "number | null",
+        "type": "number",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "formatter",
-        "type": "((...args: any[]) => any) | null",
+        "type": "(value: number) => string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -11951,16 +12309,16 @@
       },
       {
         "name": "source",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "fetchedAt",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -12091,14 +12449,7 @@
     ]
   },
   "KjunProgress": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "value",
         "type": "number",
@@ -12122,7 +12473,7 @@
       },
       {
         "name": "variant",
-        "type": "\"primary\" | \"success\" | \"warning\" | \"danger\" | \"info\"",
+        "type": "SemanticTone",
         "required": false,
         "default": "\"primary\"",
         "description": ""
@@ -12138,13 +12489,29 @@
         "name": "label",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "subLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
         "description": ""
       }
     ],
     "events": [],
     "slots": [
-      "sublabel"
+      {
+        "name": "label",
+        "data": [],
+        "source": "packages/vue3/src/display.tsx"
+      },
+      {
+        "name": "subLabel",
+        "data": [],
+        "source": "packages/vue3/src/display.tsx"
+      }
     ],
     "react": [
       {
@@ -12250,14 +12617,7 @@
     ]
   },
   "KjunProgressCell": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "value",
         "type": "number",
@@ -12281,7 +12641,7 @@
       },
       {
         "name": "color",
-        "type": "\"auto\" | \"brand\" | \"success\" | \"danger\" | \"warning\" | \"custom\"",
+        "type": "\"danger\" | \"success\" | \"warning\" | \"brand\" | \"auto\" | \"custom\"",
         "required": false,
         "default": "\"auto\"",
         "description": ""
@@ -12290,7 +12650,7 @@
         "name": "customColor",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -12393,27 +12753,21 @@
     ]
   },
   "KjunProvider": {
-    "vue2": [
+    "vue3": [
       {
         "name": "icons",
-        "type": "import('@kjun-ui/icons').KjunIconRegistry | null",
+        "type": "Readonly<Record<string, KjunIconDefinition>>",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
-      },
+      }
+    ],
+    "events": [],
+    "slots": [
       {
-        "name": "formatters",
-        "type": "Record<string, (...values: any[]) => string>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "renderIdentity",
-        "type": "((h: CreateElement, props: Record<string, unknown>, slots: Record<string, VNode[] | undefined>) => VNode | null | undefined) | null",
-        "required": false,
-        "default": "null",
-        "description": ""
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/provider.tsx"
       }
     ],
     "react": [
@@ -12534,30 +12888,9 @@
     ]
   },
   "KjunQuantityStepper": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string",
-        "required": false,
-        "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "block",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "value",
+        "name": "modelValue",
         "type": "number",
         "required": true,
         "default": "—",
@@ -12599,10 +12932,24 @@
         "description": ""
       },
       {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
         "name": "size",
         "type": "\"sm\" | \"md\" | \"lg\"",
         "required": false,
         "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "block",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
         "description": ""
       },
       {
@@ -12611,9 +12958,29 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/quantity-stepper.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/quantity-stepper.tsx"
+      },
+      {
+        "name": "invalid-input",
+        "source": "packages/vue3/src/quantity-stepper.tsx"
+      }
+    ],
     "slots": [],
     "react": [
       {
@@ -12817,33 +13184,26 @@
     ]
   },
   "KjunRadio": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
+        "name": "modelValue",
+        "type": "string | number | boolean",
         "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string | number | boolean | null",
-        "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "val",
-        "type": "string | number | boolean | null",
-        "required": false,
-        "default": "null",
+        "type": "string | number | boolean",
+        "required": true,
+        "default": "—",
         "description": ""
       },
       {
         "name": "label",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -12857,16 +13217,33 @@
         "name": "name",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
         "description": ""
       }
     ],
     "events": [
-      "input",
-      "change"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/controls.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/controls.tsx"
+      }
     ],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/controls.tsx"
+      }
     ],
     "react": [
       {
@@ -13000,38 +13377,17 @@
     ]
   },
   "KjunRadioGroup": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string",
-        "required": false,
-        "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string | number | boolean | null",
+        "name": "modelValue",
+        "type": "string | number | boolean",
         "required": false,
         "default": "null",
         "description": ""
       },
       {
         "name": "options",
-        "type": "any[]",
+        "type": "ChoiceOption<ChoiceValue>[]",
         "required": false,
         "default": "[]",
         "description": ""
@@ -13042,14 +13398,31 @@
         "required": false,
         "default": "\"horizontal\"",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "events": [
-      "input",
-      "change"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/controls.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/controls.tsx"
+      }
     ],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/controls.tsx"
+      }
     ],
     "react": [
       {
@@ -13155,7 +13528,7 @@
     ]
   },
   "KjunRangeSlider": {
-    "vue2": [
+    "vue3": [
       {
         "name": "min",
         "type": "number",
@@ -13199,21 +13572,30 @@
         "description": ""
       },
       {
-        "name": "value",
-        "type": "[\n    number,\n    number\n]",
+        "name": "modelValue",
+        "type": "SliderValue",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "thumbLabels",
-        "type": "[\n    string,\n    string\n]",
+        "type": "{ type: PropType<[string, string]>; default: () => string[]; }",
         "required": false,
         "default": "[\"최솟값\",\"최댓값\"]",
         "description": ""
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/range-input.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/range-input.tsx"
+      }
+    ],
     "slots": [],
     "react": [
       {
@@ -13361,14 +13743,7 @@
     ]
   },
   "KjunRefreshButton": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "targetName",
         "type": "string",
@@ -13378,7 +13753,7 @@
       },
       {
         "name": "mode",
-        "type": "\"icon\" | \"text\"",
+        "type": "\"text\" | \"icon\"",
         "required": false,
         "default": "\"icon\"",
         "description": ""
@@ -13391,14 +13766,28 @@
         "description": ""
       },
       {
-        "name": "loading",
+        "name": "size",
+        "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "default": "\"sm\"",
+        "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\"",
+        "required": false,
+        "default": "\"ghost\"",
+        "description": ""
+      },
+      {
+        "name": "disabled",
         "type": "boolean",
         "required": false,
         "default": "false",
         "description": ""
       },
       {
-        "name": "disabled",
+        "name": "loading",
         "type": "boolean",
         "required": false,
         "default": "false",
@@ -13412,17 +13801,38 @@
         "description": ""
       },
       {
-        "name": "size",
-        "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "name": "ariaLabel",
+        "type": "string",
         "required": false,
-        "default": "\"sm\"",
+        "default": "—",
         "description": ""
       },
       {
-        "name": "variant",
-        "type": "\"ghost\" | \"secondary\"",
+        "name": "title",
+        "type": "string",
         "required": false,
-        "default": "\"ghost\"",
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "tooltip",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Defaults to the icon button's accessible label; an empty string disables it."
+      },
+      {
+        "name": "tooltipPlacement",
+        "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "tooltipDelay",
+        "type": "number",
+        "required": false,
+        "default": "—",
         "description": ""
       },
       {
@@ -13431,38 +13841,13 @@
         "required": false,
         "default": "true",
         "description": ""
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string",
-        "required": false,
-        "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "tooltip",
-        "type": "string | null",
-        "required": false,
-        "default": "null",
-        "description": ""
-      },
-      {
-        "name": "tooltipPlacement",
-        "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
-        "required": false,
-        "default": "\"top\"",
-        "description": ""
-      },
-      {
-        "name": "tooltipDelay",
-        "type": "number",
-        "required": false,
-        "default": "0",
-        "description": ""
       }
     ],
     "events": [
-      "refresh"
+      {
+        "name": "refresh",
+        "source": "packages/vue3/src/actions.tsx"
+      }
     ],
     "slots": [],
     "react": [
@@ -13793,18 +14178,14 @@
     ]
   },
   "KjunScrollFade": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      }
-    ],
+    "vue3": [],
     "events": [],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/actions.tsx"
+      }
     ],
     "react": [
       {
@@ -13826,30 +14207,9 @@
     ]
   },
   "KjunSearchInput": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string",
-        "required": false,
-        "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "value",
+        "name": "modelValue",
         "type": "string",
         "required": false,
         "default": "\"\"",
@@ -13863,7 +14223,21 @@
         "description": ""
       },
       {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "error",
         "type": "boolean",
         "required": false,
         "default": "false",
@@ -13892,9 +14266,9 @@
       },
       {
         "name": "loadOptions",
-        "type": "((query: string, context: {\n    signal: AbortSignal;\n}) => Promise<Record<string, unknown>[]>) | null",
+        "type": "(query: string, context: { signal: AbortSignal; }) => Promise<SelectOption[]>",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -13930,17 +14304,39 @@
         "type": "string",
         "required": false,
         "default": "\"검색하지 못했습니다. 다시 시도해 주세요.\"",
-        "description": ""
+        "description": "Shown when loadOptions rejects, instead of the empty text."
       }
     ],
     "events": [
-      "input",
-      "search-error",
-      "select",
-      "clear"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/search-input.tsx"
+      },
+      {
+        "name": "select",
+        "source": "packages/vue3/src/search-input.tsx"
+      },
+      {
+        "name": "enter",
+        "source": "packages/vue3/src/search-input.tsx"
+      },
+      {
+        "name": "clear",
+        "source": "packages/vue3/src/search-input.tsx"
+      },
+      {
+        "name": "search-error",
+        "source": "packages/vue3/src/search-input.tsx"
+      }
     ],
     "slots": [
-      "item"
+      {
+        "name": "option",
+        "data": [
+          "option"
+        ],
+        "source": "packages/vue3/src/search-input.tsx"
+      }
     ],
     "react": [
       {
@@ -14228,38 +14624,17 @@
     ]
   },
   "KjunSelect": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string",
-        "required": false,
-        "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string | number | any[] | null",
+        "name": "modelValue",
+        "type": "string | number | OptionValue[]",
         "required": false,
         "default": "null",
         "description": ""
       },
       {
         "name": "options",
-        "type": "any[]",
+        "type": "SelectOption[]",
         "required": false,
         "default": "[]",
         "description": ""
@@ -14269,6 +14644,13 @@
         "type": "string",
         "required": false,
         "default": "\"선택\"",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
         "description": ""
       },
       {
@@ -14347,19 +14729,58 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
       }
     ],
     "events": [
-      "search",
-      "update:open",
-      "input",
-      "change",
-      "clear"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/select-control.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/select-control.tsx"
+      },
+      {
+        "name": "update:open",
+        "source": "packages/vue3/src/select-control.tsx"
+      },
+      {
+        "name": "search",
+        "source": "packages/vue3/src/select-control.tsx"
+      },
+      {
+        "name": "clear",
+        "source": "packages/vue3/src/select-control.tsx"
+      }
     ],
     "slots": [
-      "selected",
-      "menu-header",
-      "option"
+      {
+        "name": "option",
+        "data": [
+          "option",
+          "selected"
+        ],
+        "source": "packages/vue3/src/select-control.tsx"
+      },
+      {
+        "name": "selected",
+        "data": [
+          "option"
+        ],
+        "source": "packages/vue3/src/select-control.tsx"
+      },
+      {
+        "name": "menuHeader",
+        "data": [],
+        "source": "packages/vue3/src/select-control.tsx"
+      }
     ],
     "react": [
       {
@@ -14703,19 +15124,12 @@
     ]
   },
   "KjunSignedValue": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "value",
-        "type": "number | string | null",
+        "type": "string | number",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -14790,9 +15204,9 @@
       },
       {
         "name": "formatter",
-        "type": "((...args: any[]) => any) | null",
+        "type": "(value: number) => string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       }
     ],
@@ -14972,17 +15386,10 @@
     ]
   },
   "KjunSkeleton": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "type",
-        "type": "\"text\" | \"avatar\" | \"card\" | \"table\" | \"chart\" | \"stat\" | \"block\"",
+        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"chart\" | \"stat\"",
         "required": false,
         "default": "\"text\"",
         "description": ""
@@ -15003,16 +15410,16 @@
       },
       {
         "name": "height",
-        "type": "string | null",
+        "type": "Length",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "width",
-        "type": "string | null",
+        "type": "Length",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -15136,7 +15543,7 @@
     ]
   },
   "KjunSlider": {
-    "vue2": [
+    "vue3": [
       {
         "name": "min",
         "type": "number",
@@ -15180,14 +15587,23 @@
         "description": ""
       },
       {
-        "name": "value",
-        "type": "number",
+        "name": "modelValue",
+        "type": "SliderValue",
         "required": true,
         "default": "—",
         "description": ""
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/range-input.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/range-input.tsx"
+      }
+    ],
     "slots": [],
     "react": [
       {
@@ -15321,17 +15737,10 @@
     ]
   },
   "KjunSparkline": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "data",
-        "type": "any[]",
+        "type": "number[]",
         "required": false,
         "default": "[]",
         "description": ""
@@ -15352,9 +15761,9 @@
       },
       {
         "name": "color",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -15383,6 +15792,13 @@
         "type": "boolean",
         "required": false,
         "default": "false",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
         "description": ""
       }
     ],
@@ -15520,17 +15936,10 @@
     ]
   },
   "KjunSpinner": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "size",
-        "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "type": "DisplaySize",
         "required": false,
         "default": "\"md\"",
         "description": ""
@@ -15539,14 +15948,12 @@
         "name": "text",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
         "description": ""
       }
     ],
     "events": [],
-    "slots": [
-      "default"
-    ],
+    "slots": [],
     "react": [
       {
         "name": "size",
@@ -15581,16 +15988,9 @@
     ]
   },
   "KjunSwitch": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "value",
+        "name": "modelValue",
         "type": "boolean",
         "required": false,
         "default": "false",
@@ -15600,7 +16000,14 @@
         "name": "label",
         "type": "string",
         "required": false,
-        "default": "\"\"",
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
         "description": ""
       },
       {
@@ -15616,21 +16023,24 @@
         "required": false,
         "default": "\"md\"",
         "description": ""
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string | null",
-        "required": false,
-        "default": "null",
-        "description": ""
       }
     ],
     "events": [
-      "input",
-      "change"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/controls.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/controls.tsx"
+      }
     ],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/controls.tsx"
+      }
     ],
     "react": [
       {
@@ -15750,14 +16160,7 @@
     ]
   },
   "KjunTabPane": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "name",
         "type": "string",
@@ -15774,16 +16177,23 @@
       },
       {
         "name": "icon",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "badge",
-        "type": "string | number | null",
+        "type": "string | number",
         "required": false,
-        "default": "null",
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "badgeVariant",
+        "type": "\"danger\" | \"success\" | \"warning\" | \"info\"",
+        "required": false,
+        "default": "—",
         "description": ""
       },
       {
@@ -15796,7 +16206,11 @@
     ],
     "events": [],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/tabs.tsx"
+      }
     ],
     "react": [
       {
@@ -15902,40 +16316,33 @@
     ]
   },
   "KjunTable": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "selectable",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
+        "name": "columns",
+        "type": "TableColumn<any>[]",
+        "required": true,
+        "default": "—",
         "description": ""
       },
       {
-        "name": "selected",
-        "type": "any[]",
+        "name": "data",
+        "type": "object[]",
         "required": false,
         "default": "[]",
         "description": ""
       },
       {
-        "name": "sort",
-        "type": "import('@kjun-ui/tokens').TableSort | null",
+        "name": "rowKey",
+        "type": "string",
         "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "sortMode",
-        "type": "\"client\" | \"server\"",
-        "required": false,
-        "default": "\"client\"",
+        "default": "\"id\"",
         "description": ""
       },
       {
         "name": "queryKey",
-        "type": "string | number | null",
+        "type": "string | number",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -15954,7 +16361,7 @@
       },
       {
         "name": "error",
-        "type": "string | null",
+        "type": "string",
         "required": false,
         "default": "null",
         "description": ""
@@ -15963,14 +16370,7 @@
         "name": "hasLoadedOnce",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, (value: unknown, row: Record<string, unknown>) => string>",
-        "required": false,
-        "default": "{}",
+        "default": "—",
         "description": ""
       },
       {
@@ -15978,27 +16378,6 @@
         "type": "number",
         "required": false,
         "default": "8",
-        "description": ""
-      },
-      {
-        "name": "columns",
-        "type": "any[]",
-        "required": true,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "data",
-        "type": "any[]",
-        "required": false,
-        "default": "[]",
-        "description": ""
-      },
-      {
-        "name": "rowKey",
-        "type": "string",
-        "required": false,
-        "default": "\"id\"",
         "description": ""
       },
       {
@@ -16013,6 +16392,20 @@
         "type": "boolean",
         "required": false,
         "default": "true",
+        "description": ""
+      },
+      {
+        "name": "sort",
+        "type": "TableSort",
+        "required": false,
+        "default": "—",
+        "description": "v-model:sort; leave unset for internal sorting."
+      },
+      {
+        "name": "sortMode",
+        "type": "\"client\" | \"server\"",
+        "required": false,
+        "default": "\"client\"",
         "description": ""
       },
       {
@@ -16045,16 +16438,16 @@
       },
       {
         "name": "maxHeight",
-        "type": "number | string | null",
+        "type": "string | number",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "pagination",
-        "type": "Record<string, any> | null",
+        "type": "TablePagination",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
@@ -16073,42 +16466,42 @@
       },
       {
         "name": "ariaLabel",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "\"데이터 표\"",
         "description": ""
       },
       {
         "name": "responsive",
-        "type": "\"card\" | \"compact\" | \"none\" | null",
+        "type": "\"card\" | \"none\" | \"compact\"",
         "required": false,
         "default": "null",
         "description": ""
       },
       {
         "name": "mobileColumns",
-        "type": "any[]",
+        "type": "string[]",
         "required": false,
         "default": "[]",
         "description": ""
       },
       {
         "name": "cardTitle",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "cardSubtitle",
-        "type": "string | null",
+        "type": "string",
         "required": false,
-        "default": "null",
+        "default": "—",
         "description": ""
       },
       {
         "name": "cardSections",
-        "type": "any[]",
+        "type": "TableCardSection[]",
         "required": false,
         "default": "[]",
         "description": ""
@@ -16122,10 +16515,10 @@
       },
       {
         "name": "expandedRows",
-        "type": "any[]",
+        "type": "(string | number)[]",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "v-model:expandedRows; leave unset for internal expansion."
       },
       {
         "name": "expandSingle",
@@ -16136,22 +16529,115 @@
       },
       {
         "name": "rowClass",
-        "type": "((...args: any[]) => any) | string | null",
+        "type": "string | ((row: any, index: number) => string)",
         "required": false,
-        "default": "null",
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "selectable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "selected",
+        "type": "object[]",
+        "required": false,
+        "default": "[]",
+        "description": "v-model:selected."
+      },
+      {
+        "name": "formatValue",
+        "type": "(value: unknown, column: TableColumn<any>, row: any) => VNodeChild",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onRowClick",
+        "type": "(row: any, index: number) => void",
+        "required": false,
+        "default": "—",
+        "description": "Declared as props: rows become keyboard targets and the retry button appears only when the app listens."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "default": "—",
         "description": ""
       }
     ],
     "events": [
-      "row-click",
-      "page-change"
+      {
+        "name": "update:sort",
+        "source": "packages/vue3/src/table.tsx"
+      },
+      {
+        "name": "update:selected",
+        "source": "packages/vue3/src/table.tsx"
+      },
+      {
+        "name": "update:expandedRows",
+        "source": "packages/vue3/src/table.tsx"
+      },
+      {
+        "name": "page-change",
+        "source": "packages/vue3/src/table.tsx"
+      },
+      {
+        "name": "search",
+        "source": "packages/vue3/src/table.tsx"
+      }
     ],
     "slots": [
-      "selection-toolbar",
-      "toolbar",
-      "default",
-      "empty",
-      "expand"
+      {
+        "name": "cell",
+        "data": [
+          "value",
+          "column",
+          "row",
+          "index"
+        ],
+        "source": "packages/vue3/src/table.tsx"
+      },
+      {
+        "name": "expand",
+        "data": [
+          "row",
+          "index"
+        ],
+        "source": "packages/vue3/src/table.tsx"
+      },
+      {
+        "name": "selectionToolbar",
+        "data": [
+          "selected"
+        ],
+        "source": "packages/vue3/src/table.tsx"
+      },
+      {
+        "name": "toolbar",
+        "data": [],
+        "source": "packages/vue3/src/table.tsx"
+      },
+      {
+        "name": "empty",
+        "data": [],
+        "source": "packages/vue3/src/table.tsx"
+      },
+      {
+        "name": "cell-<key>",
+        "data": [
+          "value",
+          "column",
+          "row",
+          "index"
+        ],
+        "source": "packages/vue3/src/table.tsx"
+      }
     ],
     "react": [
       {
@@ -16803,23 +17289,9 @@
     ]
   },
   "KjunTabs": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string",
-        "required": false,
-        "default": "\"탭\"",
-        "description": ""
-      },
-      {
-        "name": "value",
+        "name": "modelValue",
         "type": "string",
         "required": false,
         "default": "\"\"",
@@ -16827,14 +17299,14 @@
       },
       {
         "name": "items",
-        "type": "any[]",
+        "type": "TabItem[]",
         "required": false,
         "default": "[]",
         "description": ""
       },
       {
         "name": "density",
-        "type": "\"comfortable\" | \"compact\"",
+        "type": "\"compact\" | \"comfortable\"",
         "required": false,
         "default": "\"comfortable\"",
         "description": ""
@@ -16845,16 +17317,43 @@
         "required": false,
         "default": "\"underline\"",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"탭\"",
+        "description": ""
+      },
+      {
+        "name": "onTabMenu",
+        "type": "(event: TabMenuEvent) => void",
+        "required": false,
+        "default": "—",
+        "description": "Declared as a prop so the tab menu only engages when the app listens."
       }
     ],
     "events": [
-      "input",
-      "change",
-      "tab-menu"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/tabs.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/tabs.tsx"
+      }
     ],
     "slots": [
-      "actions",
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/tabs.tsx"
+      },
+      {
+        "name": "actions",
+        "data": [],
+        "source": "packages/vue3/src/tabs.tsx"
+      }
     ],
     "react": [
       {
@@ -17002,26 +17501,12 @@
     ]
   },
   "KjunTextarea": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
+        "name": "modelValue",
         "type": "string",
         "required": false,
         "default": "\"\"",
-        "description": ""
-      },
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
         "description": ""
       },
       {
@@ -17032,24 +17517,45 @@
         "description": ""
       },
       {
-        "name": "value",
-        "type": "string",
+        "name": "error",
+        "type": "boolean",
         "required": false,
-        "default": "\"\"",
+        "default": "false",
         "description": ""
       },
       {
-        "name": "placeholder",
-        "type": "string",
+        "name": "resize",
+        "type": "\"none\" | \"horizontal\" | \"vertical\" | \"both\"",
         "required": false,
-        "default": "\"\"",
+        "default": "\"vertical\"",
         "description": ""
       },
       {
         "name": "rows",
-        "type": "number | string",
+        "type": "number",
         "required": false,
         "default": "3",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "—",
         "description": ""
       },
       {
@@ -17060,25 +17566,18 @@
         "description": ""
       },
       {
-        "name": "readonly",
+        "name": "readOnly",
         "type": "boolean",
         "required": false,
         "default": "false",
         "description": ""
-      },
-      {
-        "name": "resize",
-        "type": "\"none\" | \"vertical\" | \"horizontal\" | \"both\"",
-        "required": false,
-        "default": "\"vertical\"",
-        "description": ""
       }
     ],
     "events": [
-      "change",
-      "focus",
-      "blur",
-      "input"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/controls.tsx"
+      }
     ],
     "slots": [],
     "react": [
@@ -17339,31 +17838,17 @@
     ]
   },
   "KjunTimePicker": {
-    "vue2": [
+    "vue3": [
       {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
+        "name": "modelValue",
         "type": "string",
-        "required": false,
-        "default": "\"시간\"",
-        "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string | null",
         "required": false,
         "default": "null",
         "description": ""
       },
       {
         "name": "precision",
-        "type": "\"minute\" | \"second\"",
+        "type": "TimePrecision",
         "required": false,
         "default": "\"minute\"",
         "description": ""
@@ -17404,6 +17889,13 @@
         "description": ""
       },
       {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
         "name": "clearable",
         "type": "boolean",
         "required": false,
@@ -17416,11 +17908,24 @@
         "required": false,
         "default": "\"md\"",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"시간\"",
+        "description": ""
       }
     ],
     "events": [
-      "input",
-      "change"
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/date-picker.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/date-picker.tsx"
+      }
     ],
     "slots": [],
     "react": [
@@ -17611,14 +18116,7 @@
     ]
   },
   "KjunTooltip": {
-    "vue2": [
-      {
-        "name": "formatters",
-        "type": "Record<string, any>",
-        "required": false,
-        "default": "{}",
-        "description": ""
-      },
+    "vue3": [
       {
         "name": "content",
         "type": "string",
@@ -17643,7 +18141,11 @@
     ],
     "events": [],
     "slots": [
-      "default"
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/popover.tsx"
+      }
     ],
     "react": [
       {
@@ -17721,7 +18223,7 @@
     ]
   },
   "KjunTopNavigation": {
-    "vue2": [
+    "vue3": [
       {
         "name": "title",
         "type": "string",
@@ -17746,8 +18248,16 @@
     ],
     "events": [],
     "slots": [
-      "leading",
-      "actions"
+      {
+        "name": "leading",
+        "data": [],
+        "source": "packages/vue3/src/app-navigation.tsx"
+      },
+      {
+        "name": "actions",
+        "data": [],
+        "source": "packages/vue3/src/app-navigation.tsx"
+      }
     ],
     "react": [
       {

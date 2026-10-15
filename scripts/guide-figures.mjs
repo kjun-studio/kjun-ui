@@ -9,12 +9,15 @@ const read = async (file) => JSON.parse(await readFile(file, "utf8"));
 const guides = await read("apps/docs/lib/generated/visual-guides.json");
 const consumer = await assertCurrentConsumer(),
   packages = await read("artifacts/manifest.json");
-for (const platform of ["vue2", "react", "native"]) {
-  const name = "@kjun-ui/" + platform,
-    installed = await read(resolve(consumer.directory, "node_modules", name, "package.json"));
+for (const platform of ["vue3", "react", "native"]) {
+  // Vue 3 is installed in the separate Vue 3 consumer project.
+  const directory = platform === "vue3" ? consumer.vue3Directory : consumer.directory,
+    name = "@kjun-ui/" + platform,
+    installed = await read(resolve(directory, "node_modules", name, "package.json")),
+    declared = (await read(resolve(directory, "package.json"))).dependencies;
   if (
     installed.name !== name ||
-    !consumer.packages[name]?.startsWith("file:") ||
+    !declared[name]?.startsWith("file:") ||
     !packages.some((p) => p.name === name && p.version === installed.version)
   )
     throw Error("Figures require verified installed tarballs: " + name);
@@ -27,7 +30,7 @@ for (const file of [
   "apps/docs/lib/generated/visual-guides.json",
   "apps/docs/public/previews/demo.css",
   "apps/docs/public/previews/components.css",
-  ...["vue2", "react", "native"].flatMap((p) => [
+  ...["vue3", "react", "native"].flatMap((p) => [
     `apps/docs/public/previews/catalog-${p}.js`,
     `apps/docs/public/previews/catalog-${p}.html`,
   ]),
@@ -176,7 +179,7 @@ else {
       JSON.stringify(
         {
           fingerprint: digest,
-          renderers: ["@kjun-ui/vue2", "@kjun-ui/react", "@kjun-ui/native"],
+          renderers: ["@kjun-ui/vue3", "@kjun-ui/react", "@kjun-ui/native"],
           packages,
           figures,
         },

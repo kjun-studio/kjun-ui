@@ -5,7 +5,7 @@ import { presetConfig } from "../../../shared/example-registry";
 import { prepareExample, compileEntries } from "../../../scripts/example-consumers.mjs";
 import { comparisons } from "../../../shared/visual-guides/usage-content";
 import { exportsRoute } from './export-checks';
-const platforms = ["vue2", "react", "native"] as const;
+const platforms = ["vue3", "react", "native"] as const;
 async function choose(page: Page, region: string, label: string, value: string) {
   const trigger = page.locator(region).getByRole("button", { name: label, exact: true });
   await expect(page.locator(region + " .playground")).toHaveAttribute("data-ready", "true");
@@ -49,7 +49,7 @@ for (const platform of platforms) {
         }
         if (name === "KjunSelect") {
           await frame
-            .getByRole(platform === "vue2" ? "combobox" : "button", {
+            .getByRole("button", {
               name: platform === "native" ? "자산 선택" : "공개 범위",
               exact: true,
             })
@@ -65,7 +65,7 @@ for (const platform of platforms) {
             })
             .click();
           await expect(
-            frame.getByRole(platform === "vue2" ? "combobox" : "button", {
+            frame.getByRole("button", {
               name: platform === "native" ? "자산 선택" : "공개 범위",
               exact: true,
             }),
@@ -95,9 +95,7 @@ for (const platform of platforms) {
     await expect(anatomy.locator(".guide-case-actions")).toHaveCount(0);
     await expect(anatomy.locator(".anatomy-parts").first()).toBeVisible();
     await page.goto("/components/radio-group?platform=" + platform + "#states");
-    await expect(page.locator('#states [data-guide-case="disabled"]')).toHaveCount(
-      platform === "vue2" ? 1 : 0,
-    );
+    await expect(page.locator('#states [data-guide-case="disabled"]')).toHaveCount(0);
     await page.goto("/components/form-group?platform=" + platform + "#anatomy");
     await expect(page.locator("#anatomy")).toContainText("hint 대신 표시");
     await expect(page.locator("#anatomy .anatomy-graphic img").last()).toHaveAttribute(

@@ -1,5 +1,5 @@
 import { Fragment, camelize, computed, defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref, watch,
-  type ExtractPublicPropTypes, type InjectionKey, type PropType, type VNode } from "vue";
+  type ExtractPublicPropTypes, type InjectionKey, type PropType, type VNode, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { isFocusVisible, installFocusVisible } from "../../../shared/package-runtime/focus-visible";
 import { manageTabList, panelNeedsFocus } from "../../../shared/package-runtime/tab-keyboard";
@@ -59,6 +59,10 @@ export const KjunTabs = defineComponent({
   name: "KjunTabs",
   props: kjunTabsProps,
   emits: { "update:modelValue": (_name: string) => true, change: (_name: string) => true },
+  slots: Object as SlotsType<{
+    default?: () => VNodeChild;
+    actions?: () => VNodeChild;
+  }>,
   setup(props, { slots, emit }) {
     const { group, indicator } = useSelectionIndicator(true);
     const listId = useKjunId("kjun-");
@@ -84,7 +88,7 @@ export const KjunTabs = defineComponent({
     watch([tabs, () => props.onTabMenu], () => { if (press && !canOpenMenu(press.name)) clear(); }, { flush: "sync" });
 
     return () => {
-      const content = slots.default?.();
+      const content = slots.default?.() as VNode[] | undefined;
       // Pane props come from this render's slot; keep the list in step without another render pass.
       const fromSlot = paneItems(content);
       if (JSON.stringify(fromSlot) !== JSON.stringify(panes.value)) panes.value = fromSlot;
@@ -167,6 +171,7 @@ export type KjunTabPaneProps = ExtractPublicPropTypes<typeof kjunTabPaneProps>;
 export const KjunTabPane = defineComponent({
   name: "KjunTabPane",
   props: kjunTabPaneProps,
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     const tabs = inject(kjunTabsKey, null);
     const panel = ref<HTMLElement | null>(null);

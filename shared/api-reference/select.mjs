@@ -18,7 +18,7 @@ const common = {
     default: "내부 상태",
     ...detail("선택 팝업의 제어형 열림 여부입니다.", {
       "상태 책임":
-        "생략하거나 undefined이면 내부적으로 열고 닫습니다. boolean을 제공하면 열림 변경 요청을 open에 반영해야 합니다. 외부 prop 변경은 다시 통지하지 않습니다. Vue에서 open을 초기값처럼 사용했다면 prop을 생략하거나 :open.sync로 연결하세요.",
+        "생략하거나 undefined이면 내부적으로 열고 닫습니다. boolean을 제공하면 열림 변경 요청을 open에 반영해야 합니다. 외부 prop 변경은 다시 통지하지 않습니다. Vue에서는 v-model:open으로 연결하세요.",
     }),
   },
   valueKey: detail("옵션의 선택값과 렌더링 식별자로 사용할 필드입니다.", {
@@ -53,19 +53,19 @@ const types = [
   ]),
 ];
 export default {
-  vue2: {
+  vue3: {
     ownership,
     types,
     props: common,
     events: {
-      input: valueEvent("input"),
+      "update:modelValue": valueEvent("update:modelValue"),
       change: valueEvent("change"),
       "update:open": event(
         "다음 팝업 열림 여부를 통지합니다.",
         "트리거 실행, 단일 옵션 선택, Escape·바깥 클릭 등 사용자 행동이 다른 열림 상태를 요청할 때",
         "boolean",
         "반환값은 사용하지 않습니다.",
-        "open을 전달했다면 .sync 또는 update:open에서 갱신하세요. 선택 시 input → change 이후 닫힘을 통지합니다.",
+        "open을 전달했다면 v-model:open 또는 update:open에서 갱신하세요. 선택 시 update:modelValue → change 이후 닫힘을 통지합니다.",
       ),
       search: event(
         "옵션 검색어를 통지합니다.",
@@ -74,19 +74,19 @@ export default {
         "반환값은 사용하지 않습니다.",
         "필터는 내부에서 적용합니다. 서버 요청을 자동 실행하지 않습니다.",
       ),
-      clear: event("선택 지우기를 통지합니다.", "input과 change로 빈 선택을 전달한 다음", "없음"),
+      clear: event("선택 지우기를 통지합니다.", "update:modelValue와 change로 빈 선택을 전달한 다음", "없음"),
     },
     slots: {
       selected: slot(
         "선택한 옵션의 표시를 교체합니다.",
-        "{ option: 선택된 옵션 | undefined, label: 기본 표시 문자열 }",
+        "{ option: 선택된 옵션 | undefined }",
       ),
       option: slot(
         "옵션 내용을 교체합니다.",
         "{ option: 옵션 객체, selected: boolean }",
         "옵션의 선택·비활성 동작은 Select가 처리합니다. 별도 선택 상태를 슬롯 안에 중복 보관하지 마세요.",
       ),
-      "menu-header": slot("옵션 메뉴 위에 콘텐츠를 배치합니다."),
+      menuHeader: slot("옵션 메뉴 위에 콘텐츠를 배치합니다."),
     },
   },
   react: {

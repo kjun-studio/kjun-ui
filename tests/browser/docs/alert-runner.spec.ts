@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.use({ reducedMotion: 'reduce' });
 
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   test(`${platform}: mobile Alert keeps recovery copy and gains room when expanded`, async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(`/components/alert?platform=${platform}`);

@@ -1,26 +1,26 @@
 {
   "KjunBreadcrumb": {
-    "vue2": ["formatters", "items"],
+    "vue3": ["items", "ariaLabel"],
     "react": ["items", "renderLink", "ariaLabel"],
     "native": ["items", "renderLink", "onNavigate", "ariaLabel"]
   },
   "KjunExternalLink": {
-    "vue2": ["formatters", "href", "mode", "label"],
+    "vue3": ["href", "mode", "label"],
     "react": ["href", "mode", "label", "children"],
     "native": ["href", "mode", "label", "children", "openUrl"]
   },
   "KjunPagination": {
-    "vue2": ["formatters", "currentPage", "page", "totalPages", "totalRows", "pageSize", "pageSizeOptions", "siblingCount", "showInfo", "showSizeSelector", "showFirstLast"],
+    "vue3": ["page", "currentPage", "totalPages", "totalRows", "pageSize", "pageSizeOptions", "siblingCount", "showInfo", "showSizeSelector", "showFirstLast", "formatter"],
     "react": ["currentPage", "page", "totalPages", "totalRows", "pageSize", "pageSizeOptions", "siblingCount", "showInfo", "showSizeSelector", "showFirstLast", "formatter", "onPageChange", "onChange", "onPageSizeChange"],
     "native": ["currentPage", "page", "totalPages", "totalRows", "pageSize", "pageSizeOptions", "siblingCount", "showInfo", "showSizeSelector", "showFirstLast", "formatter", "onPageChange", "onChange", "onPageSizeChange"]
   },
   "KjunTabs": {
-    "vue2": ["formatters", "ariaLabel", "value", "items", "density", "variant"],
+    "vue3": ["modelValue", "items", "density", "variant", "ariaLabel", "onTabMenu"],
     "react": ["value", "items", "density", "variant", "actions", "children", "ariaLabel", "onValueChange", "onChange", "onTabMenu"],
     "native": ["value", "items", "density", "variant", "actions", "children", "ariaLabel", "onValueChange", "onChange", "onTabMenu"]
   },
   "KjunTabPane": {
-    "vue2": ["formatters", "name", "label", "icon", "badge", "disabled"],
+    "vue3": ["name", "label", "icon", "badge", "badgeVariant", "disabled"],
     "react": ["children", "name", "label", "icon", "badge", "badgeVariant", "disabled"],
     "native": ["children", "name", "label", "icon", "badge", "badgeVariant", "disabled"]
   }

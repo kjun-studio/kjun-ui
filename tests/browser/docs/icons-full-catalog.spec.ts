@@ -55,7 +55,7 @@ test('slow previous shape requests cannot overwrite a new search or selection', 
   await expect(iconCard(page, 'rocket').locator('svg path').first()).toHaveAttribute('d', rocket.outline[0][1].d);
   await expect(root.frameLocator('iframe').locator('svg path').first()).toHaveAttribute('d', rocket.outline[0][1].d);
 });
-for (const platform of ['react', 'vue2', 'native']) test(`${platform}: additional filled icon retry and copied static registration run independently`, async ({ page }) => {
+for (const platform of ['react', 'vue3', 'native']) test(`${platform}: additional filled icon retry and copied static registration run independently`, async ({ page }) => {
   await clipboard(page);
   let failFrame = true;
   const frameShapes = new Set<string>();

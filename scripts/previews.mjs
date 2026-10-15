@@ -16,7 +16,8 @@ import {
 import { resolve } from "node:path";
 const root = resolve(import.meta.dirname, "..");
 process.chdir(root);
-const { directory: consumer } = await assertCurrentConsumer();
+const { directory: consumer, vue3Directory } = await assertCurrentConsumer();
+const vue3Modules = vue3Directory + "/node_modules";
 const modules = consumer + "/node_modules";
 const out = resolve("apps/docs/public/previews");
 await mkdir(out, { recursive: true });
@@ -75,19 +76,25 @@ aliases["@kjun-ui/icons/all"] = modules + "/@kjun-ui/icons/dist/all.js";
 aliases["@kjun-ui/icons/icons"] = modules + "/@kjun-ui/icons/dist/icons";
 for (const name of ["vue2", "react", "native"]) aliases["@kjun-ui/" + name + "/styles.css"] = modules + "/@kjun-ui/" + name + "/dist/styles.css";
 aliases["@kjun-ui/tokens/icons"] = modules + "/@kjun-ui/tokens/dist/icons.js";
+// Vue 3 entries resolve vue and the package from the Vue 3 consumer project.
+const vue3Aliases = { ...aliases, vue: vue3Modules + "/vue/dist/vue.runtime.esm-bundler.js", "@kjun-ui/vue3": vue3Modules + "/@kjun-ui/vue3",
+  "@kjun-ui/vue3/styles.css": vue3Modules + "/@kjun-ui/vue3/dist/styles.css" };
 for (const entry of [
   "vue2",
+  "vue3",
   "react",
   "native",
   "typography",
   "catalog/vue2",
+  "catalog/vue3",
   "catalog/react",
   "catalog/native",
 ]) {
   const name = entry.replace("catalog/", "catalog-");
+  const vue3 = entry.endsWith("vue3");
   await build({
     entryPoints: [
-      "previews/" + entry + (entry.endsWith("vue2") ? ".ts" : ".tsx"),
+      "previews/" + entry + (/vue[23]$/.test(entry) ? ".ts" : ".tsx"),
     ],
     outfile: out + "/" + name + ".js",
     bundle: true,
@@ -96,7 +103,7 @@ for (const entry of [
     target: "es2020",
     jsx: "automatic",
     minify: true,
-    alias: aliases,
+    alias: vue3 ? vue3Aliases : aliases,
     mainFields: ["browser", "module", "main"],
     resolveExtensions: [
       ".web.tsx",
@@ -112,6 +119,7 @@ for (const entry of [
       __DEV__: "false",
       // React Native Web의 애니메이션 정리 경로는 global을 참조한다.
       global: "globalThis",
+      ...(vue3 ? { __VUE_OPTIONS_API__: "true", __VUE_PROD_DEVTOOLS__: "false", __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false" } : {}),
     },
   });
   await writeFile(

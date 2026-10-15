@@ -7,7 +7,7 @@ async function settledScroll(page: Page) {
   });
 }
 
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue3', 'react', 'native']) {
   for (const width of [1440, 390]) {
     test(`${platform} ${width}: visible ButtonGroup interactions preserve document scroll`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
@@ -23,7 +23,7 @@ for (const platform of ['vue2', 'react', 'native']) {
         window.scrollBy({ top: frame.getBoundingClientRect().top - (innerHeight - 240), behavior: 'instant' });
       });
       const before = await settledScroll(page);
-      for (const index of platform === 'vue2' ? [1, 2, 0] : [2, 0]) {
+      for (const index of [2, 0]) {
         const button = buttons.nth(index);
         const box = await button.boundingBox();
         expect(box).not.toBeNull();
@@ -36,7 +36,7 @@ for (const platform of ['vue2', 'react', 'native']) {
         await expect(button).toBeFocused();
       }
       await page.keyboard.press('Tab');
-      const next = buttons.nth(platform === 'vue2' ? 1 : 2);
+      const next = buttons.nth(2);
       await expect(next).toBeFocused();
       expect(Math.abs(await settledScroll(page) - before)).toBeLessThanOrEqual(1);
       await page.keyboard.press('Enter');

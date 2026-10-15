@@ -117,12 +117,12 @@ export const KjunChartSkeleton = defineComponent({
                       ))}
                     </g>
                   ))
-                : (kind === "bar" || kind === "candle") && [60, 100, 85, 140, 110, 165, 180].map((h, i) => [
+                : (kind === "bar" || kind === "candle") && [60, 100, 85, 140, 110, 165, 180].map((bar, i) => [
                     // The wick extends 15 past each end of the body and stays above the axis.
-                    kind === "candle" && <path key={"wick" + i} d={`M${55 + i * 75} ${195 - h}V${225 - h / 2}`} fill="none" stroke={fill} stroke-width={4} />,
+                    kind === "candle" && <path key={"wick" + i} d={`M${55 + i * 75} ${195 - bar}V${225 - bar / 2}`} fill="none" stroke={fill} stroke-width={4} />,
                     // Bars stand on the axis (y 220); candle bodies float within their wick.
-                    <rect key={"body" + i} x={35 + i * 75} y={kind === "candle" ? 210 - h : 220 - h} width={kind === "candle" ? 28 : 42}
-                      height={kind === "candle" ? h / 2 : h} rx={3} fill={fill} />,
+                    <rect key={"body" + i} x={35 + i * 75} y={kind === "candle" ? 210 - bar : 220 - bar} width={kind === "candle" ? 28 : 42}
+                      height={kind === "candle" ? bar / 2 : bar} rx={3} fill={fill} />,
                   ])}
             </svg>
           )}

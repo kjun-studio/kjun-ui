@@ -3,7 +3,7 @@ const attr = (value: string) => vueCode(value).replace(/&/g, '&amp;').replace(/"
 
 export class RecipeBuilder extends UsageBuilder {
   node(name: string, props: Record<string, unknown> = {}, children = '', slots: Record<string, string> = {}) {
-    // Vue 2 style bindings need explicit units; React adds them for dimensional values.
+    // Vue style bindings need explicit units; React adds them for dimensional values.
     if (this.vue && props.style && typeof props.style === 'object' && !('code' in props.style)) {
       const unitless = new Set(['flex', 'flexGrow', 'flexShrink', 'opacity', 'zIndex', 'order', 'fontWeight']);
       props = { ...props, style: Object.fromEntries(Object.entries(props.style).map(([key, value]) =>

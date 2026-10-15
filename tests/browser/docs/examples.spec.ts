@@ -1,6 +1,6 @@
 import { openExampleSettings } from './example-settings';
 import { test, expect, type Page } from '@playwright/test';
-const platforms = { vue2: 'Vue 2', react: 'React', native: 'React Native' } as const;
+const platforms = { vue3: 'Vue 3', react: 'React', native: 'React Native' } as const;
 async function choose(page: Page, label: string, option: string) {
   await page.getByRole('button', { name: label, exact: true }).click();
   await page.getByRole('option', { name: option, exact: true }).click();
@@ -27,27 +27,27 @@ for (const platform of Object.keys(platforms) as (keyof typeof platforms)[]) {
     const frame = await visit(page, 'select', platform);
     // Fixed popups stay in the iframe viewport; bring that viewport on screen before pointer selection.
     await page.locator('.playground iframe').scrollIntoViewIfNeeded();
-    await frame.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '공개 범위', exact: true }).click();
+    await frame.getByRole('button', { name: '공개 범위', exact: true }).click();
     const apple = frame.getByRole(platform === 'native' ? 'radio' : 'option', { name: '나만 보기', exact: true });
     if (platform === 'native') await apple.focus();
     else await frame.getByRole('textbox', { name: '선택 항목 검색', exact: true }).press('ArrowDown');
     await apple.press('Enter');
-    await expect(frame.getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '공개 범위', exact: true })).toContainText('나만 보기');
+    await expect(frame.getByRole('button', { name: '공개 범위', exact: true })).toContainText('나만 보기');
     await page.getByRole('switch', { name: '검색', exact: true }).locator('xpath=ancestor::label').click();
     await page.getByRole('switch', { name: '지우기', exact: true }).locator('xpath=ancestor::label').click();
     const code = await copy(page);
     expect(code).toMatch(/searchable(?:=\{true\}|="true")/); expect(code).toMatch(/clearable(?:=\{true\}|="true")/);
     await page.getByRole('button', { name: '넓게 보기', exact: true }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
-    await expect(page.getByRole('dialog').frameLocator('iframe').getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '공개 범위', exact: true })).toContainText('나만 보기');
+    await expect(page.getByRole('dialog').frameLocator('iframe').getByRole('button', { name: '공개 범위', exact: true })).toContainText('나만 보기');
     await page.getByRole('dialog').getByRole('button', { name: '닫기', exact: true }).click();
     await expect(page.getByRole('button', { name: '넓게 보기', exact: true })).toBeFocused();
-    await expect(page.frameLocator('.playground iframe').getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '공개 범위', exact: true })).toContainText('나만 보기');
+    await expect(page.frameLocator('.playground iframe').getByRole('button', { name: '공개 범위', exact: true })).toContainText('나만 보기');
     await choose(page, '프리셋', '복수 선택');
     await expect(page.getByRole('switch', { name: '복수 선택', exact: true })).toBeChecked();
     await expect(page.locator('#usage .code-block')).not.toContainText('"select": [');
     await choose(page, '프리셋', '빈 옵션');
-    await page.frameLocator('.playground iframe').getByRole(platform === 'vue2' ? 'combobox' : 'button', { name: '공개 범위', exact: true }).press('Enter');
+    await page.frameLocator('.playground iframe').getByRole('button', { name: '공개 범위', exact: true }).press('Enter');
     await expect(page.frameLocator('.playground iframe').getByText('결과가 없습니다')).toBeVisible();
   });
   test(`${platform} SearchInput mock responses, live text, cancellation and events`, async ({ page, context }) => {
@@ -67,7 +67,7 @@ for (const platform of Object.keys(platforms) as (keyof typeof platforms)[]) {
     await choose(page, '프리셋', '요청 실패');
     await page.frameLocator('.playground iframe').getByRole(platform === 'native' ? 'textbox' : 'combobox', { name: '자산 검색', exact: true }).last().fill('AAA');
     await expect(page.locator('.example-events')).toContainText('실패');
-    await expect(page.locator('.example-events')).toContainText(platform === 'vue2' ? 'search-error' : 'onSearchError');
+    await expect(page.locator('.example-events')).toContainText(platform === 'vue3' ? 'search-error' : 'onSearchError');
     await page.getByRole('button', { name: '기록 비우기' }).click();
     await expect(page.locator('.example-events summary')).toContainText('(0)');
   });
@@ -185,7 +185,7 @@ test('unused source failure does not block preview or basic usage', async ({ pag
   await expect(trigger).toContainText('나만 보기');
 });
 
-for (const platform of ['react', 'vue2', 'native']) test(`${platform}: financial detail examples show the same complete units as the gallery`, async ({ page }) => {
+for (const platform of ['react', 'vue3', 'native']) test(`${platform}: financial detail examples show the same complete units as the gallery`, async ({ page }) => {
   for (const slug of ['market-cards', 'market-table']) {
     await page.goto('/components/' + slug + '?platform=' + platform);
     await expect(page.locator('.playground')).toHaveAttribute('data-ready', 'true');

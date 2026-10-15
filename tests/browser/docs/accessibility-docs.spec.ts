@@ -44,7 +44,7 @@ for (const platform of platforms) {
     await expect(form.getByText('검색 실행: 장기 투자', { exact: true })).toBeVisible();
     await expect(formRoot.locator('.code-block')).toHaveCount(0);
     await modal.getByRole('button', { name: '모달 열기' }).click();
-    const next = platform === 'react' ? 'vue2' : 'react'; await changePlatform(page, next);
+    const next = platform === 'react' ? 'vue3' : 'react'; await changePlatform(page, next);
     await expect(page.getByRole('button', { name: '문서 플랫폼', exact: true })).toBeFocused();
     await expect(modalRoot.locator('.guide-running')).toHaveAttribute('data-platform', next);
     await expect(modalRoot.locator('.guide-running')).toHaveAttribute('data-ready', 'true');

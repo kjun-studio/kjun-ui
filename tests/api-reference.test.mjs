@@ -5,7 +5,6 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import {
   cleanType,
-  vueContracts,
   reactContracts,
   feedbackApiMembers,
 } from "../scripts/api-reference-source.mjs";
@@ -16,13 +15,14 @@ import {
   validateFeedback,
 } from "../scripts/api-reference-validation.mjs";
 import { searchDocuments } from "../shared/docs-search.mjs";
+import { vue3Contracts } from "../scripts/vue3-api.mjs";
 const json = (name) => JSON.parse(readFileSync(new URL(name, import.meta.url), "utf8"));
 const reference = json("../apps/docs/lib/generated/api-reference.json");
 const raw = json("../apps/docs/lib/generated/api.json");
 const catalog = json("../shared/component-catalog.json");
 const paths = new Set(catalog.map((c) => c.docs));
 paths.add("/feedback");
-const platforms = ["vue2", "react", "native"];
+const platforms = ["vue3", "react", "native"];
 
 test("all public components have one description per prop and valid examples", async () => {
   assert.equal(Object.keys(reference.components).length, catalog.filter(entry => entry.kind !== "internal").length);
@@ -56,35 +56,15 @@ test("core docs cover every extracted event, slot and callback with ownership", 
   const source = feedbackApiMembers();
   for (const platform of platforms) validateFeedback(reference.feedback[platform], source);
 });
-test("docs extraction retains Vue mixin/conditional events and named/dynamic/forwarded slots", () => {
-  const table = vueContracts(resolve("packages/vue2/src/source/data-display/Table.vue"));
-  for (const name of ["selection-change", "row-expand", "row-collapse", "update:expandedRows"])
-    assert.ok(table.events.some((e) => e.name === name));
-  assert.deepEqual(table.slots.find((s) => s.name === "cell-*").data, ["row", "value", "index"]);
-  assert.equal(table.slots.find((s) => s.name === "*").forwarded, true);
-  assert.ok(!table.slots.some((s) => s.name === "default"));
-  const dir = mkdtempSync(join(tmpdir(), "api-extraction-"));
-  try {
-    writeFileSync(
-      join(dir, "mixin.js"),
-      "export default { methods: { change(ok) { this.$emit(ok ? 'yes' : 'no', 1) } } }",
-    );
-    writeFileSync(
-      join(dir, "Example.vue"),
-      '<template><div><slot name="heading" :row="item"/><slot :name="`cell-${key}`" :value="value"/><slot :name="name" v-bind="slotProps"/></div></template><script>import mixed from "./mixin.js"; export default { mixins: [mixed] }</script>',
-    );
-    const extracted = vueContracts(join(dir, "Example.vue"));
-    assert.deepEqual(
-      extracted.events.map((e) => e.name),
-      ["yes", "no"],
-    );
-    assert.deepEqual(
-      extracted.slots.map((s) => s.name),
-      ["heading", "cell-*", "*"],
-    );
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
+test("Vue 3 contracts come from declared emits and typed slots", () => {
+  const { KjunTable, KjunSelect, KjunBottomNavigation } = vue3Contracts(["KjunTable", "KjunSelect", "KjunBottomNavigation"]);
+  assert.deepEqual(KjunTable.events.map((e) => e.name), ["update:sort", "update:selected", "update:expandedRows", "page-change", "search"]);
+  assert.deepEqual(KjunTable.slots.find((s) => s.name === "cell-<key>").data, ["value", "column", "row", "index"]);
+  assert.ok(!KjunTable.slots.some((s) => s.name === "default"));
+  assert.deepEqual(KjunSelect.slots.find((s) => s.name === "option").data, ["option", "selected"]);
+  assert.equal(KjunSelect.props.find((p) => p.name === "placeholder").default, '"선택"');
+  // A component without declared slots lists none rather than Vue's open string index.
+  assert.deepEqual(KjunBottomNavigation.slots, []);
 });
 test("literal defaults come from the implementation, and nominal public types stay readable", () => {
   for (const platform of ["react", "native"]) {
@@ -154,6 +134,6 @@ test("contract descriptions and dynamic API names join discovery without losing 
   assert.equal(search("queryKey")[0].href, "/components/data-state#api");
   assert.ok(search("AbortSignal").some((r) => r.document.id === "search-input"));
   assert.ok(search("행 키 배열").some((r) => r.document.id === "table"));
-  assert.ok(search("cell-*").some((r) => r.href === "/components/table#api"));
+  assert.ok(search("cell-<key>").some((r) => r.href === "/components/table#api"));
   assert.equal(search("ToastOptions.duration")[0].href, "/feedback#api");
 });

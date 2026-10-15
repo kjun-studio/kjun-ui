@@ -4,7 +4,7 @@ const catalog = JSON.parse(
   readFileSync("shared/component-catalog.json", "utf8")
 ) as { name: string; kind: string }[];
 const names = Object.keys(JSON.parse(readFileSync("artifacts/examples/manifest.json", "utf8")));
-for (const platform of ["vue2", "react", "native"]) {
+for (const platform of ["vue3", "react", "native"]) {
   test(`${platform} packed catalog renders every public component`, async ({
     page,
   }) => {
@@ -32,7 +32,7 @@ for (const platform of ["vue2", "react", "native"]) {
     const root = page.locator('[data-component="KjunTable"]');
     await expect(root).toContainText("긴 한국어 자산 이름");
     await root
-      .getByRole(platform === "vue2" ? "columnheader" : "button", {
+      .getByRole("button", {
         name: "가격",
         exact: true,
       })
@@ -75,7 +75,7 @@ for (const platform of ["vue2", "react", "native"]) {
   });
 }
 
-for (const platform of ["vue2", "react", "native"]) {
+for (const platform of ["vue3", "react", "native"]) {
   test(`${platform} open modal and feedback update together when project colors change`, async ({
     page,
   }) => {
@@ -102,7 +102,7 @@ for (const platform of ["vue2", "react", "native"]) {
       )
     );
     await expect(
-      platform === "react" ? page.locator(".kjun-modal") : dialog
+      platform === "native" ? dialog : page.locator(".kjun-modal")
     ).toHaveCSS("background-color", "rgb(24, 24, 24)");
     await expect(toast).toHaveCSS("color", "rgb(212, 212, 212)");
     await page.getByRole("button", { name: "알림 닫기" }).click();

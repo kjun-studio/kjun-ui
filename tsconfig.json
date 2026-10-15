@@ -23,5 +23,9 @@
     "packages/native/src/**/*.ts",
     "previews/**/*.tsx",
     "previews/**/*.ts"
+  ],
+  "exclude": [
+    "previews/vue3.ts",
+    "previews/catalog/vue3.ts"
   ]
 }

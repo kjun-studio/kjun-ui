@@ -25,7 +25,7 @@ import './fonts.generated.css';
 export const metadata: Metadata = {
   title: 'KJUN UI — Design System',
   description:
-    '공통 구조와 동작을 제공하는 KJUN 디자인 시스템. Vue 2·React·React Native의 컴포넌트와 사용 가이드를 제공합니다.',
+    '공통 구조와 동작을 제공하는 KJUN 디자인 시스템. Vue 3·React·React Native의 컴포넌트와 사용 가이드를 제공합니다.',
 };
 export default function RootLayout({
   children,

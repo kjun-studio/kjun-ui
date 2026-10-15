@@ -45,5 +45,5 @@ export function tableUsageExample(input: UsageInput) {
     error: s.error ? '조회 오류' : null, hasLoadedOnce: true,
     onSearch: report('search', 'query', '"프로젝트 검색: " + query'),
     onSortChange: report('sort', 'sort', '"정렬 " + sort.key + " " + sort.order'),
-  }, b.vue ? vueCells : '', b.vue ? { expand: detail, 'selection-toolbar': selection } : {}));
+  }, b.vue ? vueCells : '', b.vue ? { expand: detail, selectionToolbar: selection } : {}));
 }

@@ -1,4 +1,4 @@
-import { defineComponent, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
 
@@ -15,6 +15,11 @@ export type KjunListRowProps = ExtractPublicPropTypes<typeof kjunListRowProps>;
 export const KjunListRow = defineComponent({
   name: "KjunListRow",
   props: kjunListRowProps,
+  slots: Object as SlotsType<{
+    leading?: () => VNodeChild;
+    trailing?: () => VNodeChild;
+    actions?: () => VNodeChild;
+  }>,
   setup(props, { slots }) {
     return () => {
       const leading = slots.leading?.(), trailing = slots.trailing?.(), actions = slots.actions?.();
@@ -45,6 +50,10 @@ export type KjunListSectionProps = ExtractPublicPropTypes<typeof kjunListSection
 export const KjunListSection = defineComponent({
   name: "KjunListSection",
   props: kjunListSectionProps,
+  slots: Object as SlotsType<{
+    default?: () => VNodeChild;
+    actions?: () => VNodeChild;
+  }>,
   setup(props, { slots }) {
     const id = useKjunId("kjun-");
     return () => {

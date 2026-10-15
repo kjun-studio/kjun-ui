@@ -2,11 +2,11 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { transform } from 'esbuild';
 import { usageTools } from '../scripts/usage-tools.mjs';
-import { compileVueExample } from '../scripts/vue-example.mjs';
+import { compileVue3Example } from '../scripts/vue-example.mjs';
 import { exampleDefinition, presetConfig } from '../shared/example-registry.ts';
 import { applySetupAdditions } from './fixtures/usage-setup.ts';
 
-const platforms = ['vue2', 'react', 'native'];
+const platforms = ['vue3', 'react', 'native'];
 test('shared setup is the common guide plus independent, composable additions', async () => {
   for (const platform of platforms) for (const palette of ['default', 'violet', 'dark']) {
     const base = usageTools.usageSetup(platform, palette, { feedback: false, domainColors: false });
@@ -18,7 +18,7 @@ test('shared setup is the common guide plus independent, composable additions', 
       assert.deepEqual(files, usageTools.usageSetup(platform, palette, { feedback, domainColors }));
       for (const file of files) {
         if (file.name.endsWith('.css')) continue;
-        await transform(file.name.endsWith('.vue') ? compileVueExample(file.code, file.name) : file.code, { loader: file.name.endsWith('.jsx') ? 'jsx' : 'js' });
+        await transform(file.name.endsWith('.vue') ? compileVue3Example(file.code, file.name) : file.code, { loader: file.name.endsWith('.jsx') ? 'jsx' : 'js' });
       }
     }
   }
@@ -34,11 +34,11 @@ test('every public component and feedback has an explicit independent usage gene
     for (const config of configs) {
       const usage = generator({ name, platform, ...config });
       assert.doesNotMatch(usage.code, /rawH|renderExample|instrumentRenderer|catalog-|from ["'].*previews|__KJUN_|eventMap/);
-      const module = platform === 'vue2' ? compileVueExample(usage.code, name) : usage.code;
-      await transform(module, { loader: platform === 'vue2' ? 'js' : 'jsx' });
+      const module = platform === 'vue3' ? compileVue3Example(usage.code, name) : usage.code;
+      await transform(module, { loader: platform === 'vue3' ? 'js' : 'jsx' });
       for (const file of usageTools.usageSetup(platform, 'default', usage)) {
         if (file.name.endsWith('.css')) continue;
-        await transform(file.name.endsWith('.vue') ? compileVueExample(file.code, file.name) : file.code, { loader: file.name.endsWith('.jsx') ? 'jsx' : 'js' });
+        await transform(file.name.endsWith('.vue') ? compileVue3Example(file.code, file.name) : file.code, { loader: file.name.endsWith('.jsx') ? 'jsx' : 'js' });
       }
     }
     if (name === 'KjunButton') assert.ok(generator({ name, platform, ...defaults }).code.trim().split('\n').length <= 30);
@@ -58,12 +58,12 @@ test('usage snapshots preserve falsy state and safely encode user strings in Vue
     for (const key of ['label', 'hint', 'title', 'message', 'confirmTitle', 'confirmMessage', 'promptTitle', 'promptMessage', 'initialValue', 'confirmText', 'cancelText']) if (key in settings) settings[key] = hostile;
     const { code } = await usageTools.usageExample({ name, platform, settings, values: { ...values, message: 'EXCLUDED_EVENT_HISTORY' } });
     assert.doesNotMatch(code, /EXCLUDED_EVENT_HISTORY/);
-    if (platform === 'vue2') {
+    if (platform === 'vue3') {
       assert.equal((code.match(/<\/script>/g) || []).length, 1);
-      await transform(compileVueExample(code, name), { loader: 'js' });
+      await transform(compileVue3Example(code, name), { loader: 'js' });
     } else await transform(code, { loader: 'jsx' });
     for (const [key, value] of Object.entries(values)) {
-      if (name === 'KjunButton') assert.match(code, platform === 'vue2' ? /count: 0/ : /useState\(0\)/);
+      if (name === 'KjunButton') assert.match(code, platform === 'vue3' ? /ref\(0\)/ : /useState\(0\)/);
       else assert.ok(code.replace(/\s/g, '').includes(JSON.stringify(value, null, 2).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029').replace(/\s/g, '')), `${platform} ${name} ${key}`);
     }
   }

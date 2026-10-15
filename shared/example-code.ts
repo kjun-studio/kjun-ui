@@ -12,10 +12,10 @@ export function exampleSource(template: string, platform: PlatformName, settings
   const iconName = String(settings.name || 'heart');
   if (template.includes('/* ICON_IMPORTS */') && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(iconName)) throw Error('Invalid icon import');
   const code = template.replace('/* ICON_IMPORTS */', () => `import selectedIcon from '@kjun-ui/icons/icons/${iconName}';\nconst projectIcons = { ${JSON.stringify(iconName)}: selectedIcon };`)
-    .replace('/* ICON_PROVIDER */', platform === 'vue2' ? 'props: { icons: projectIcons }' : 'icons={projectIcons}').replace('__KJUN_SETTINGS__', () => literal(settings)).replace('__KJUN_VALUES__', () => literal(copiedValues(values)))
+    .replace('/* ICON_PROVIDER */', platform === 'vue3' ? 'icons: projectIcons' : 'icons={projectIcons}').replace('__KJUN_SETTINGS__', () => literal(settings)).replace('__KJUN_VALUES__', () => literal(copiedValues(values)))
     .replace(/\/\* (?:PARAMS|PAGE_PARAMS|EXAMPLE_PROPS|OBSERVE|VUE_PROPS|VUE_OBSERVE) \*\//g, '')
     .replace('/* VUE_EXAMPLE_PROPS */', '{}');
-  return platform === 'vue2' ? '<script>\n' + code + '</script>\n' : code;
+  return platform === 'vue3' ? '<script>\n' + code + '</script>\n' : code;
 }
 export function exampleSetup(platform: PlatformName, palette: PaletteName) {
   if (platform === 'native') return `// Consuming app values; KJUN packages define roles only.\nexport const appColors = ${JSON.stringify(demoPalettes[palette], null, 2)};\nexport const appDomainColors = ${JSON.stringify(demoDomainPalettes[palette], null, 2)};\nexport const appFont = ${JSON.stringify(demoFont)};\n`;

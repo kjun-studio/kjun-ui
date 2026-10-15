@@ -13,8 +13,7 @@ export function applySetupAdditions(platform: PlatformName, base: SetupFile[], a
   if (flags.feedback) {
     const imported = `import { KjunProvider } from "@kjun-ui/${platform}";`;
     replace(imported, imported + '\n' + additions.feedback.imports);
-    if (platform === 'vue2') replace('components: { KjunProvider, Example }', `components: { KjunProvider, ${additions.feedback.registration} Example }`);
-    const indent = ' '.repeat(platform === 'vue2' ? 4 : 6);
+    const indent = ' '.repeat(platform === 'vue3' ? 4 : 6);
     replace(indent + '<Example />', additions.feedback.content.split('\n').map(line => indent + line).join('\n'));
   }
   if (flags.domainColors) {

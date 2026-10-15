@@ -9,7 +9,7 @@ import { usageScenarios } from "../shared/visual-guides/usage-content.ts";
 import { designScenarios } from "../shared/visual-guides/design-cases.ts";
 import { motionScenarios } from "../shared/motion-examples.ts";
 let count = 0;
-for (const platform of ["vue2", "react", "native"]) {
+for (const platform of ["vue3", "react", "native"]) {
   const entries = {};
   for (const guide of Object.values(guides)) {
     for (const scenario of [

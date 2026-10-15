@@ -1,4 +1,4 @@
-import { defineComponent, ref, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import type { InputSize } from "@kjun-ui/tokens";
 import { optionLabel, type SelectOption } from "../../../shared/package-runtime/options";
 import { SearchField } from "./combobox";
@@ -31,6 +31,7 @@ export const KjunSearchInput = defineComponent({
     "update:modelValue": (_value: string) => true, select: (_option: SelectOption) => true, enter: () => true,
     clear: () => true, "search-error": (_error: unknown) => true,
   },
+  slots: Object as SlotsType<{ option?: (scope: { option: SelectOption }) => VNodeChild }>,
   setup(props, { slots, emit }) {
     const open = ref(false);
     const model = useSearchInputModel(() => ({ value: props.modelValue, disabled: props.disabled, debounce: props.debounce,

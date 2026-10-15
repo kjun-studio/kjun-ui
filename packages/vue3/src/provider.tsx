@@ -1,4 +1,4 @@
-import { defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, shallowRef, watch, type PropType } from "vue";
+import { defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, shallowRef, watch, type PropType, type SlotsType, type VNodeChild } from "vue";
 import type { KjunIconRegistry } from "@kjun-ui/icons";
 import { createPortalScope } from "../../../shared/package-runtime/portal-scope";
 import { validateKjunCssScope } from "../../../shared/package-runtime/css-contract";
@@ -11,6 +11,7 @@ export const KjunProvider = defineComponent({
   props: {
     icons: { type: Object as PropType<KjunIconRegistry>, default: undefined },
   },
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     provideIcons(() => props.icons);
     // Nested Providers share the outermost one's window order, Escape handling and focus ownership.

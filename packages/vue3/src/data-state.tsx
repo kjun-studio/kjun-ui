@@ -1,4 +1,4 @@
-import { defineComponent, getCurrentInstance, onErrorCaptured, ref, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, getCurrentInstance, onErrorCaptured, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, advanceQueryDisplay, initialQueryDisplay, queryDisplayStatus, type QueryDisplayProps, type QueryDisplayState } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
 import { KjunAlert, KjunEmpty, KjunSkeleton, KjunSpinner, type KjunSkeletonProps } from "./display";
@@ -47,6 +47,12 @@ export const KjunDataState = defineComponent({
   name: "KjunDataState",
   props: kjunDataStateProps,
   emits: { "empty-action": () => true },
+  slots: Object as SlotsType<{
+    default?: () => VNodeChild;
+    loading?: () => VNodeChild;
+    empty?: () => VNodeChild;
+    error?: (scope: { error: string | null; retry: (() => void) | undefined }) => VNodeChild;
+  }>,
   setup(props, { slots, emit }) {
     const status = useQueryDisplay(() => ({ queryKey: props.queryKey, resultKey: props.resultKey, loading: props.loading, error: props.error, hasLoadedOnce: props.hasLoadedOnce }));
     return () => {
@@ -121,6 +127,10 @@ export const KjunErrorBoundary = defineComponent({
   name: "KjunErrorBoundary",
   props: kjunErrorBoundaryProps,
   emits: { error: (_error: unknown, _info: string) => true, reset: () => true },
+  slots: Object as SlotsType<{
+    default?: () => VNodeChild;
+    fallback?: (scope: { reset: () => void }) => VNodeChild;
+  }>,
   setup(props, { slots, emit }) {
     const failed = ref(false);
     const config = getCurrentInstance()!.appContext.config;

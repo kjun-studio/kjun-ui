@@ -1,4 +1,4 @@
-export const platformNames = { vue2: "Vue 2", react: "React", native: "React Native" } as const;
+export const platformNames = { vue3: "Vue 3", react: "React", native: "React Native" } as const;
 export type PlatformName = keyof typeof platformNames;
 export const paletteLabels = { default: "문서 기본", violet: "보라색 예제", dark: "어두운 배경 예제" } as const;
 export type PaletteName = keyof typeof paletteLabels;
@@ -92,13 +92,11 @@ export function exampleCode(platform: PlatformName, c: DemoConfig) {
         : k + "=" + (typeof v === "string" ? JSON.stringify(v) : "{" + v + "}"),
     )
     .join(" ");
-  if (platform === "vue2") {
+  if (platform === "vue3") {
     const attrs = Object.entries(props)
       .filter(([, v]) => v !== false && v !== "" && v !== undefined)
       .map(([k, v]) =>
-        typeof v === "boolean"
-          ? ":" + kebab(k === "readOnly" ? "readonly" : k) + '="true"'
-          : kebab(k) + "=" + JSON.stringify(v),
+        typeof v === "boolean" ? ":" + kebab(k) + '="true"' : kebab(k) + "=" + JSON.stringify(v),
       )
       .join(" ");
     const body =
@@ -106,13 +104,13 @@ export function exampleCode(platform: PlatformName, c: DemoConfig) {
         ? "<KjunButton " + attrs + ' @click="onAction">' + (labelFor(c) || "") + "</KjunButton>"
         : c.component === "input"
           ? '<KjunFormGroup label="내용"><KjunInput v-model="value" ' + attrs + " /></KjunFormGroup>"
-          : '<KjunButton @click="open = true">모달 열기</KjunButton>\n  <KjunModal v-model="open" ' +
+          : '<KjunButton @click="open = true">모달 열기</KjunButton>\n    <KjunModal v-model:open="open" ' +
             attrs +
-            ' @confirm="save">입력한 내용을 저장할까요?</KjunModal>';
+            ' @confirm="open = false">입력한 내용을 저장할까요?</KjunModal>';
     return (
       '<template>\n  <KjunProvider>\n    ' +
       body +
-      '\n  </KjunProvider>\n</template>\n<script>\nimport { KjunProvider, KjunButton, KjunInput, KjunModal, KjunFormGroup } from "@kjun-ui/vue2";\nimport "@kjun-ui/vue2/styles.css";\nimport "./design-system/kjun.css";\nexport default {\n  components: { KjunProvider, KjunButton, KjunInput, KjunModal, KjunFormGroup },\n  data: () => ({ value: "", open: false }),\n  methods: { onAction() {}, save() { this.open = false; } }\n};\n</script>'
+      '\n  </KjunProvider>\n</template>\n<script setup>\nimport { ref } from "vue";\nimport { KjunProvider, KjunButton, KjunInput, KjunModal, KjunFormGroup } from "@kjun-ui/vue3";\nimport "@kjun-ui/vue3/styles.css";\nimport "./design-system/kjun.css";\nconst value = ref(""), open = ref(false);\nfunction onAction() {}\n</script>'
     );
   }
   const native = platform === "native";

@@ -1,4 +1,4 @@
-import { defineComponent, provide, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, provide, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { kjunTopNavigationKey } from "./runtime/keys";
@@ -15,6 +15,10 @@ export type KjunTopNavigationProps = ExtractPublicPropTypes<typeof kjunTopNaviga
 export const KjunTopNavigation = defineComponent({
   name: "KjunTopNavigation",
   props: kjunTopNavigationProps,
+  slots: Object as SlotsType<{
+    leading?: () => VNodeChild;
+    actions?: () => VNodeChild;
+  }>,
   setup(props, { slots }) {
     provide(kjunTopNavigationKey, tokens.extensions.topNavigation);
     return () => {
@@ -80,6 +84,7 @@ export type KjunBottomActionBarProps = ExtractPublicPropTypes<typeof kjunBottomA
 export const KjunBottomActionBar = defineComponent({
   name: "KjunBottomActionBar",
   props: kjunBottomActionBarProps,
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     return () => props.keyboardVisible && props.hideOnKeyboard ? null : (
       <div class="kjun-bottom-action-bar" style={css({ paddingBottom: tokens.extensions.navigation.padding + Math.max(0, props.safeAreaBottom) })}>

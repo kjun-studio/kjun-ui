@@ -1,4 +1,4 @@
-import { defineComponent, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { getValue } from "../../../shared/package-runtime/table-model";
 import { KjunDataState } from "./data-state";
@@ -6,11 +6,12 @@ import { KjunEmpty, KjunSkeleton } from "./display";
 import { KjunSparkline } from "./financial-display";
 import { rowKeydown } from "./market-list";
 import { marketBaseProps, queryProps, useMarketCardsModel, type MarketColumn, type MarketFormatter, type MarketMetric, type MetricStorage } from "./market-model";
-import { MarketFooter, marketIdentity } from "./market-parts";
+import { MarketFooter, marketIdentity, type MarketIdentitySlots } from "./market-parts";
 import { KjunSignedValue, finiteNumber } from "./number-display";
 import { hasContent } from "./runtime/slots";
 import { KjunListSkeleton } from "./skeletons";
 
+type MarketPill = ReturnType<ReturnType<typeof useMarketCardsModel>>["pill"];
 const kjunMarketCardsProps = {
   ...marketBaseProps,
   columns: { type: Array as PropType<MarketColumn[]>, required: true },
@@ -36,6 +37,10 @@ export const KjunMarketCards = defineComponent({
   name: "KjunMarketCards",
   props: kjunMarketCardsProps,
   emits: { sort: (_key: string) => true, "page-change": (_page: number) => true },
+  slots: Object as SlotsType<MarketIdentitySlots & {
+    list?: (scope: { selectedKey: string; selectedPill: MarketPill; metricDisplay: (row: any) => string }) => VNodeChild;
+    metricPrefix?: (scope: { row: any; key: string; isPrice: boolean }) => VNodeChild;
+  }>,
   setup(props, { slots, emit }) {
     const model = useMarketCardsModel(props, key => emit("sort", key));
     return () => {

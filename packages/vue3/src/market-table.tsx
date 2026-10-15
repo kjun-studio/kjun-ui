@@ -1,4 +1,4 @@
-import { defineComponent, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type VNodeChild } from "vue";
+import { defineComponent, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type VNodeChild, type SlotsType } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { webMarketLayout } from "../../../shared/package-runtime/market-layout";
 import { getValue } from "../../../shared/package-runtime/table-model";
@@ -9,7 +9,7 @@ import { KjunDataState } from "./data-state";
 import { KjunEmpty, KjunSkeleton } from "./display";
 import { KjunCollectionMark, KjunSparkline } from "./financial-display";
 import { marketBaseProps, queryProps, type MarketColumn, type MarketFormatter } from "./market-model";
-import { KjunMarketTableSkeleton, MarketFooter, marketColumns, marketIdentity } from "./market-parts";
+import { KjunMarketTableSkeleton, MarketFooter, marketColumns, marketIdentity, type MarketIdentitySlots } from "./market-parts";
 import { KjunFreshness, KjunPriceCell, KjunSignedValue, finiteNumber } from "./number-display";
 import { domainRef } from "./runtime/refs";
 
@@ -35,6 +35,7 @@ export const KjunMarketTable = defineComponent({
   name: "KjunMarketTable",
   props: kjunMarketTableProps,
   emits: { sort: (_key: string) => true, "toggle-interest": (_row: any) => true, "toggle-favorite": (_row: any) => true, "page-change": (_page: number) => true },
+  slots: Object as SlotsType<MarketIdentitySlots & { cell?: (scope: { row: any; column: MarketColumn }) => VNodeChild }>,
   setup(props, { slots, emit }) {
     // Like Native and React: the trailing edge fades while columns still overflow it.
     const scroller = ref<HTMLElement | null>(null), fadeEnd = ref(false);
