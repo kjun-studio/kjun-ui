@@ -166,8 +166,9 @@ export function KjunTooltip({
   };
   return (
     <>
-      {/* Content width like Web's inline-block wrapper, so the tooltip anchors to the trigger, not the row. */}
-      <View ref={ref} collapsable={false} style={{ alignSelf: "flex-start" }}>
+      {/* Content width like Web's inline-block wrapper, so the tooltip anchors to the trigger, not the row.
+          A block trigger (RefreshButton block) fills the row, so the wrapper stretches with it. */}
+      <View ref={ref} collapsable={false} style={{ alignSelf: (childProps as { block?: boolean } | undefined)?.block ? "stretch" : "flex-start" }}>
         {child ? (
           cloneElement(child, handlers)
         ) : (

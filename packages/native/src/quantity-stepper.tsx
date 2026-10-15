@@ -1,7 +1,7 @@
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { useEffect, useRef, useState } from "react";
-import { Platform, TextInput, View } from "react-native";
+import { Platform, TextInput, View, type DimensionValue } from "react-native";
 import { createNumberDomain, quantityKeyAction, tokens, type InputSize, type InputKeyEvent } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
@@ -68,7 +68,9 @@ export function KjunQuantityStepper({ value, min = 0, max, step = 1, precision =
   // The filled surface and its ring keep the input height of the size, centred in the row, so sm/md read as
   // different sizes even where touch layouts grow the row to the 44px target.
   const surfaceBox = { position: "absolute" as const, left: 0, right: 0, top: "50%" as const, height: tokens.input[size].height, marginTop: -tokens.input[size].height / 2, borderRadius: surface.spec.radius };
-  return <IconFallbacks icons={componentIcons}><View style={{ flexDirection: "row", alignItems: "center", alignSelf: block ? "stretch" : "flex-start", maxWidth: "100%" }}>
+  // The root is the field shape, as on Web. A Web block parent ignores alignSelf, so a non-block field hugs its content there.
+  const hug = Platform.OS === "web" && !block ? { width: "fit-content" as DimensionValue } : {};
+  return <IconFallbacks icons={componentIcons}><View style={{ flexDirection: "row", alignItems: "center", alignSelf: block ? "stretch" : "flex-start", maxWidth: "100%", borderRadius: surface.spec.radius, ...hug }}>
     <View pointerEvents="none" aria-hidden={true} style={{ ...surfaceBox, backgroundColor: colors.inputBg }} />
     <CompoundTarget square><KjunButton size={size} style={decreaseStyle} variant="ghost" ariaLabel="수량 줄이기" disabled={blocked || value <= min} onPress={() => move(-1)} prefixIcon="minus" /></CompoundTarget>
     <View style={{ flex: block ? 1 : undefined, width: block ? undefined : geometry.valueWidth, minWidth: 0, minHeight: finePointer() ? undefined : tokens.native.minimumTouchTarget, justifyContent: "center" }} {...fieldTarget(() => inputRef.current?.focus(), blocked)}>

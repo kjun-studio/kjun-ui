@@ -30,6 +30,9 @@ Vue 패키지를 Vue 3용 `@kjun-ui/vue3`로 새로 만들었습니다. `@kjun-u
 - 모든 슬롯은 타입(`SlotsType`)으로 선언되어 IDE에서 슬롯 이름과 데이터를 확인할 수 있습니다.
 - 모든 웹 패키지의 `styles.css`에서 Vue 2 전용 규칙(Tailwind `kj-` 유틸리티, Vue 2 컴포넌트 스타일)을 뺐습니다. React·Vue 3 컴포넌트가 쓰는 `kjun-` 규칙은 그대로이며, 앱이 `kj-` 클래스를 직접 쓰고 있었다면 앱 스타일로 옮기세요.
 - 입력 스타일(`forms.css`)은 토큰 패키지 소스로 옮겼습니다. 배포되는 `styles.css` 내용은 같습니다.
+- Native: `block` RefreshButton이 행 폭을 채웁니다. 툴팁 래퍼가 내용 폭으로 줄이던 문제를 고쳤습니다.
+- Native: QuantityStepper의 바깥 모서리 반경이 루트에 적용되고, 웹에서 `block`이 아니면 내용 폭에 맞춥니다(React와 같음).
+- Vue 3: Popover 대화상자 안에서 Tab 포커스가 유지되고, 사라지는 중인 Toast처럼 `inert`인 요소는 Tab 순서에서 빠집니다.
 
 ## 0.5.1 — 2026-10-15
 
