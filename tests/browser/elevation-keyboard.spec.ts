@@ -10,7 +10,7 @@ async function openEditor(page: Page, platform: string, value: object = {}) {
   return page.getByRole('spinbutton');
 }
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   for (const layerKind of ['modal', 'drawer']) for (const closeOnEsc of [true, false]) {
     test(`${platform}: ${layerKind} lets an editor cancel before dismissal (closeOnEsc=${closeOnEsc})`, async ({ page }) => {
       const input = await openEditor(page, platform, { layerKind, closeOnEsc });
@@ -69,7 +69,7 @@ for (const platform of ['react', 'vue2', 'native']) {
   });
 }
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: Modal keeps its accessible name when the header is hidden`, async ({ page }) => {
     await openEditor(page, platform, { showHeader: false });
     await expect(page.getByRole('dialog', { name: 'Editor', exact: true })).toBeVisible();
@@ -80,8 +80,8 @@ for (const platform of ['react', 'vue2', 'native']) {
   });
 }
 
-test('vue2: Modal names custom headers and gives explicit names priority', async ({ page }) => {
-  await openEditor(page, 'vue2', { customHeader: true });
+for (const platform of ['vue2', 'vue3']) test(`${platform}: Modal names custom headers and gives explicit names priority`, async ({ page }) => {
+  await openEditor(page, platform, { customHeader: true });
   await expect(page.getByRole('dialog', { name: 'Custom heading', exact: true })).toBeVisible();
   await configure(page, { dialogLabel: 'Explicit name' });
   await expect(page.getByRole('dialog', { name: 'Explicit name', exact: true })).toBeVisible();

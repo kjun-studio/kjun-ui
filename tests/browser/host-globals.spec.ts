@@ -10,8 +10,8 @@ const record = (page: import('@playwright/test').Page) => page.evaluate(() => {
 const markup = (page: import('@playwright/test').Page, testId: string) => page.getByTestId(testId).evaluate(el =>
   el.innerHTML.replace(/\s(id|for|aria-[a-z]+|name)="[^"]*"/g, ''));
 
-test('vue2: app instance helpers, toast and provide keys with KJUN\'s old names leave KJUN unchanged', async ({ page }) => {
-  await openFixture(page, 'vue2', '', 'host-globals');
+for (const platform of ['vue2', 'vue3']) test(`${platform}: app instance helpers, toast and provide keys with KJUN's old names leave KJUN unchanged`, async ({ page }) => {
+  await openFixture(page, platform, '', 'host-globals');
   await expect(page.getByTestId('reference')).toBeVisible();
   expect(await markup(page, 'app-scope')).toEqual(await markup(page, 'reference'));
   await expect(page.getByTestId('reference')).not.toContainText('APP');
@@ -22,8 +22,8 @@ test('vue2: app instance helpers, toast and provide keys with KJUN\'s old names 
   expect(result.warnings).toEqual([]);
 });
 
-test('vue2: the nearest KjunErrorBoundary shows its fallback, emits error and still reaches the app error handler', async ({ page }) => {
-  await openFixture(page, 'vue2', '', 'host-globals');
+for (const platform of ['vue2', 'vue3']) test(`${platform}: the nearest KjunErrorBoundary shows its fallback, emits error and still reaches the app error handler`, async ({ page }) => {
+  await openFixture(page, platform, '', 'host-globals');
   await expect(page.getByTestId('boundary')).toContainText('문제가 발생했습니다');
   const result = await record(page);
   await expect(page.getByTestId('boundary')).toContainText('바깥 콘텐츠');
@@ -32,15 +32,15 @@ test('vue2: the nearest KjunErrorBoundary shows its fallback, emits error and st
   expect(result.errors).toEqual(['child failed']);
 });
 
-test('vue2: with no KJUN layer open, the app still receives Escape', async ({ page }) => {
-  await openFixture(page, 'vue2', '', 'host-globals');
+for (const platform of ['vue2', 'vue3']) test(`${platform}: with no KJUN layer open, the app still receives Escape`, async ({ page }) => {
+  await openFixture(page, platform, '', 'host-globals');
   await expect(page.getByTestId('reference')).toBeVisible();
   await page.keyboard.press('Escape');
   expect(await page.evaluate(() => (window as unknown as { escapes: number }).escapes)).toBe(1);
 });
 
-test('vue2: an app DsButton survives installing the KJUN plugin, which registers KjunButton beside it', async ({ page }) => {
-  await openFixture(page, 'vue2', '', 'host-globals');
+for (const platform of ['vue2', 'vue3']) test(`${platform}: an app DsButton survives installing the KJUN plugin, which registers KjunButton beside it`, async ({ page }) => {
+  await openFixture(page, platform, '', 'host-globals');
   const host = page.getByTestId('app-button');
   await expect(host.getByRole('button', { name: 'APP-DS' })).toBeVisible();
   await expect(host.getByRole('button', { name: '저장' })).toHaveClass(/kjun-/);

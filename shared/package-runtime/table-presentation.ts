@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { getValue, type TableColumn, type TableCardSection, type TableProps, type useTableModel } from "./table";
+import { getValue } from "./table-model";
+import type { TableColumn, TableCardSection, TableProps, useTableModel } from "./table";
 
 export function tablePresentation<Row extends object>(props: TableProps<Row, unknown>, mobile: boolean) {
   const { columns, responsive = null, mobileColumns = [], cardTitle, cardSubtitle, cardSections = [] } = props;

@@ -8,7 +8,7 @@ const order = (page: Page) => page.locator('[data-testid^="row-"]').allTextConte
 const configureState = (page: Page, next: object) => page.evaluate(next => (window as any).configureState(next), next);
 const stateFixture = (page: Page, platform: string, scenario: string) => openFixture(page, platform, "?scenario=" + scenario, "state-contracts");
 
-for (const platform of ["react", "native", "vue2"]) {
+for (const platform of ["react", "native", "vue2", "vue3"]) {
   const header = (page: Page) => platform === "vue2" ? page.getByRole("columnheader", { name: "Amount" }) : page.getByRole("button", { name: "Amount", exact: true });
   test(`${platform} table preserves the client sort cycle without controlled props`, async ({ page }) => {
     await openFixture(page, platform, "?table", "review-contract");
@@ -75,7 +75,7 @@ test("Vue controlled server sorting supports update:sort before sort-change with
   await reset(page); await configure(page, { sort: null });
   await expect(events(page)).toHaveText("[]");
 });
-for (const platform of ["react", "vue2"]) for (const width of [1280, 390]) {
+for (const platform of ["react", "vue2", "vue3"]) for (const width of [1280, 390]) {
   test(`${platform} table rows retain keyboard actions and inner controls at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await openFixture(page, platform, "?table", "review-contract");
@@ -98,7 +98,7 @@ for (const platform of ["react", "vue2"]) for (const width of [1280, 390]) {
 
 const open = (page: Page, platform: string) => openFixture(page, platform, '?table', 'review-contract');
 
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue2', 'vue3', 'react', 'native']) {
   const card = (page: Page) => platform === 'native' ? page.getByText('상세 보기', { exact: true }).first() : page.locator('.kjun-table-card, .kjun-table-card').first();
   const expand = (page: Page) => page.getByRole('button', { name: /행 확장|상세 보기|접기/ }).first();
   test(`${platform} Table switches strictly below 768px and retains selection, expansion and cell slots`, async ({ page }) => {
@@ -165,7 +165,7 @@ test('Vue Table clear and retype drops the old timer; scroll hints update in tab
   await expect(page.locator('.kjun-table-scroll-fade')).toHaveCount(0);
 });
 
-for (const platform of ["vue2", "react", "native"]) for (const width of [1280, 375]) {
+for (const platform of ["vue2", "vue3", "react", "native"]) for (const width of [1280, 375]) {
   test(`${platform} Table owns empty, supplied and uncontrolled expansion at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 }); await stateFixture(page, platform, "table");
     const toggles = page.getByRole("button", { name: /행 확장|상세 보기|접기/ });

@@ -9,7 +9,7 @@ async function open(page: Page, platform: string) {
   await openFixture(page, platform, '', 'icon-toggle');
   await expect(events(page)).toBeVisible();
 }
-for (const platform of ['vue2', 'react', 'native']) {
+for (const platform of ['vue2', 'vue3', 'react', 'native']) {
   test(`${platform}: IconToggle is the only public icon toggle and remains controlled`, async ({ page }) => {
     await open(page, platform);
     const exports = await page.evaluate(() => (window as any).toggleExports);

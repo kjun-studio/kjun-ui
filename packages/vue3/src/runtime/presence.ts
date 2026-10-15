@@ -29,5 +29,7 @@ export function usePresence(open: () => boolean, reduced: () => boolean, exitDur
     }
   }, { immediate: true, flush: "sync" });
   onBeforeUnmount(cancel);
-  return { present: () => open() || retained.value, active: () => open() && active.value };
+  // Drops a running exit at once, for a layer that must give way immediately.
+  const skipExit = () => { if (open()) return; cancel(); mounted = false; retained.value = false; };
+  return { present: () => open() || retained.value, active: () => open() && active.value, skipExit };
 }

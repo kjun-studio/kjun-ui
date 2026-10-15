@@ -3,7 +3,7 @@ import { openFixture } from './packed-fixture';
 const events = (page: Page) => page.getByTestId('events');
 const storage = (page: Page) => page.evaluate(() => (window as any).marketStorage());
 const configure = (page: Page, next: object) => page.evaluate(value => (window as any).configureMarket(value), next);
-for (const platform of ['react', 'native']) {
+for (const platform of ['react', 'vue3', 'native']) {
   const pill = (page: Page, name: string) => page.getByRole('button', { name, exact: platform === 'native' });
   const selected = async (page: Page, name: string) => expect(pill(page, name)).toHaveAttribute('aria-pressed', 'true');
   for (const stored of ['price', 'missing', '']) test(`${platform} MarketCards restores ${stored || 'default'} and emits initial sort once`, async ({ page }) => {

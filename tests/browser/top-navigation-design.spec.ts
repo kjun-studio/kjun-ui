@@ -24,7 +24,7 @@ async function clickAt(page: Page, node: Locator) {
   const r = await rect(node); await page.mouse.click(r.x + r.width / 2, r.y + r.height / 2);
 }
 
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: header controls align with the title line independently of description and safe area`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 700 });
     for (const palette of ['default', 'dark']) {
@@ -175,6 +175,7 @@ for (const platform of ['react', 'vue2', 'native']) {
   });
 
   test(`${platform}: packed documentation offers standalone, narrow and mixed navigation examples`, async ({ page }) => {
+    test.skip(platform === 'vue3', 'Catalog previews move to Vue 3 with the platform cut-over (E1).');
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
     await openFixture(page, platform, '?component=KjunTopNavigation', 'catalog');
     let revision = 0;

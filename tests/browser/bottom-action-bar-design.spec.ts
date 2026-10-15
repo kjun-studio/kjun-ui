@@ -9,7 +9,7 @@ const rect = async (node: Locator) => (await node.boundingBox())!;
 async function clickAt(page: Page, node: Locator) {
   const r = await rect(node); await page.mouse.click(r.x + r.width / 2, r.y + r.height / 2);
 }
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: action bars stay flat and expand primary actions at their own compact width`, async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 1000 });
     for (const palette of ['default', 'dark']) {

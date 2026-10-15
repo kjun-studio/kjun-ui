@@ -10,7 +10,10 @@ const loadOptions = (query: string, { signal }: { signal: AbortSignal }) => {
 };
 setRootValues(); w.contractEvents = [];
 const scenario = new URLSearchParams(location.search).get('scenario') || 'select';
-// Scenarios for components that are not on Vue 3 yet render nothing until their group lands.
+const copyButtons = () => <div style={{ display: 'flex', gap: '12px' }}>
+  <K.KjunCopyButton ariaLabel="복사 성공" value="success" text="복사" successText="복사 완료" copyText={async () => {}} />
+  <K.KjunCopyButton ariaLabel="복사 실패" value="failure" text="복사" successText="복사 완료" copyText={async () => { throw new Error('clipboard failed'); }} />
+</div>;
 const Content = defineComponent(() => {
   const s = reactive({ value: null as any, query: '', options: { queryKey: 'a', resultKey: null, loading: true, preserveContent: true } as any });
   w.configureContract = (next: any) => { s.options = { ...s.options, ...next }; };
@@ -28,9 +31,10 @@ const Content = defineComponent(() => {
       <K.KjunInput modelValue={s.query} onUpdate:modelValue={(v: string) => s.query = v} />
     </K.KjunFormGroup>;
     if (scenario === 'feedback') content = <K.KjunButton>서비스 준비</K.KjunButton>;
+    if (scenario === 'copy') content = copyButtons();
     return <div style={{ padding: '24px', maxWidth: '950px' }}>{content}</div>;
   };
 });
-const app = createApp(defineComponent(() => () => <K.KjunProvider><K.KjunFeedbackProvider><Content /></K.KjunFeedbackProvider></K.KjunProvider>));
+const app = createApp(defineComponent(() => () => <K.KjunProvider>{scenario === 'copy-standalone' ? copyButtons() : <K.KjunFeedbackProvider><Content /></K.KjunFeedbackProvider>}</K.KjunProvider>));
 w.unmountContract = () => app.unmount();
 app.mount('#root');

@@ -27,3 +27,18 @@ export type { KjunTabsProps, KjunTabPaneProps, TabItem, TabMenuEvent } from "./t
 export type { KjunAccordionProps, KjunAccordionItemProps, BreadcrumbItem, KjunBreadcrumbProps, KjunPaginationProps } from "./navigation";
 export type { KjunTopNavigationProps, NavigationDestination, KjunBottomNavigationProps, KjunBottomActionBarProps } from "./app-navigation";
 export type { KjunListRowProps, KjunListSectionProps } from "./list";
+export type { KjunIconToggleProps, KjunCopyButtonProps, KjunRefreshButtonProps, KjunExternalLinkProps } from "./actions";
+export { safeExternalUrl } from "./actions";
+export type { KjunDataStateProps, KjunErrorBoundaryProps } from "./data-state";
+export { useQueryDisplay } from "./data-state";
+export type { KjunAnimatedNumberProps, KjunFreshnessProps, KjunPriceCellProps, KjunSignedValueProps } from "./number-display";
+export { finiteNumber, useCountUp } from "./number-display";
+export type { KpiValue, KpiRowItem, KjunKpiHeroProps, KjunKpiRowProps } from "./kpi";
+export type { KjunTableProps, TableColumn, TableCardSection, TablePagination, TableSort } from "./table";
+export { getValue } from "./table";
+export type { KjunDeviationProps, KjunHeatmapCellProps, KjunProgressCellProps, KjunCollectionMarkProps, KjunExecutionStatusBadgeProps, KjunSparklineProps } from "./financial-display";
+export type { KjunMarketTableSkeletonProps } from "./market-parts";
+export type { MarketColumn, MarketFormatter, MarketMetric, MarketPagination } from "./market-model";
+export type { KjunMarketTableProps } from "./market-table";
+export type { KjunMarketSimpleListProps } from "./market-list";
+export type { KjunMarketCardsProps } from "./market-cards";

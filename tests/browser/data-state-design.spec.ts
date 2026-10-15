@@ -16,7 +16,7 @@ async function contained(region: Locator) {
     }
   }
 }
-for (const platform of ['react', 'vue2', 'native']) {
+for (const platform of ['react', 'vue2', 'vue3', 'native']) {
   test(`${platform}: DataState refresh row retains content, focus and scroll`, async ({ page }) => {
     await openFixture(page, platform, '', 'data-state-design');
     const region = page.getByTestId('region'), input = page.getByRole('textbox', { name: 'Retained input' });

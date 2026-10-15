@@ -72,6 +72,8 @@ const kjunTooltipProps = {
 } as const;
 export type KjunTooltipProps = ExtractPublicPropTypes<typeof kjunTooltipProps>;
 /** Default slot: the one focusable element the tooltip describes (it gets the hover, focus and aria-describedby wiring). */
+// Like react-aria, one tooltip shows at a time: opening one closes the others without their exit.
+const openTooltips = new Set<() => void>();
 export const KjunTooltip = defineComponent({
   name: "KjunTooltip",
   props: kjunTooltipProps,
@@ -93,6 +95,13 @@ export const KjunTooltip = defineComponent({
       else timer = setTimeout(() => { open.value = true; }, props.delay);
     };
     const hide = () => { clearTimeout(timer); open.value = false; };
+    const closeNow = () => { openTooltips.delete(closeNow); hide(); motion.skipExit(); };
+    watch(open, value => {
+      if (!value) return;
+      for (const close of openTooltips) if (close !== closeNow) close();
+      openTooltips.add(closeNow);
+    }, { flush: "sync" });
+    onBeforeUnmount(() => openTooltips.delete(closeNow));
     watch(disabled, value => { if (value) hide(); });
     let uninstall: (() => void) | undefined;
     onMounted(() => { uninstall = installFocusVisible(document); });
