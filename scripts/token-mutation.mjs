@@ -125,8 +125,7 @@ await change('sizing', s => {
     tableLineHeight:17,statWidth:92,
     statHeight:44,blockHeight:116,listAvatarSize:38,quoteWidth:96,quoteHeight:20,
     detailWidth:62,formLabelWidth:104,formLabelHeight:15});
-  Object.assign(e.chartSkeleton,{height:260,donutThickness:26,donutLabelWidth:84,
-    donutLabelHeight:18});
+  Object.assign(e.chartSkeleton,{height:260,donutThickness:26});
   Object.assign(e.marketTable,{actionSkeletonWidth:36,headerSkeletonHeight:17});
   Object.assign(e.kpiHero,{deltaSkeletonWidth:236,secondarySkeletonWidth:78,descriptionSkeletonWidth:88});
   Object.assign(e.kpiRow,{dotSize:5,labelSkeletonWidth:88,labelSkeletonHeight:15,

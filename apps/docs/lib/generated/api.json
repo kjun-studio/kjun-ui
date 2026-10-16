@@ -2241,15 +2241,8 @@
     ],
     "native": [
       {
-        "name": "loadingText",
-        "type": "string | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
         "name": "kind",
-        "type": "\"grid\" | \"line\" | \"bar\" | \"donut\" | \"candle\" | \"matrix\" | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/chart-skeleton\").KjunChartSkeletonKind | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -2257,6 +2250,41 @@
       {
         "name": "height",
         "type": "import(\"/workspace/node_modules/react-native/types/index\").DimensionValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "skeleton",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "rows",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "columns",
+        "type": "number | undefined",
         "required": false,
         "default": "—",
         "description": ""

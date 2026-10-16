@@ -1083,7 +1083,8 @@
     "implementationFiles": [
       "packages/tokens/src/data-state.css",
       "packages/vue3/src/skeletons.tsx",
-      "packages/react/src/skeletons.tsx"
+      "packages/react/src/skeletons.tsx",
+      "packages/native/src/skeletons.tsx"
     ]
   },
   {

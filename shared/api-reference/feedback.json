@@ -48,9 +48,13 @@
       "columns"
     ],
     "native": [
-      "loadingText",
       "kind",
-      "height"
+      "height",
+      "loadingText",
+      "skeleton",
+      "loadingDelay",
+      "rows",
+      "columns"
     ]
   },
   "KjunDataState": {

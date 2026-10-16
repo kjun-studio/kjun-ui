@@ -64,7 +64,6 @@ for (const platform of ['react', 'vue3', 'native']) {
     await dimensions(page.getByTestId('form-skeleton'), e.skeleton.formLabelWidth, e.skeleton.formLabelHeight);
     await dimensions(page.getByTestId('form-skeleton'), undefined, tokens.input.md.lineHeight * 3 + tokens.input.md.textareaPaddingY * 2 + 2 * tokens.border.controlWidth);
     await dimensions(page.getByTestId('chart-skeleton'), undefined, e.chartSkeleton.height);
-    await dimensions(page.getByTestId('chart-skeleton'), e.chartSkeleton.donutLabelWidth, e.chartSkeleton.donutLabelHeight);
     await page.getByTestId('chart-skeleton').screenshot({ path: info.outputPath('size-chart.png') });
   });
 

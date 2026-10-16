@@ -32,11 +32,12 @@ test('KjunSkeleton no longer offers a chart type on any platform', () => {
   assert.doesNotMatch(read('packages/tokens/src/definitions/sizing.json'), /"chartHeight"|"chartBarMaxWidth"|"chartAxisHeight"/);
 });
 
-const chartSource = (path) => { const source = read(path); return source.slice(source.indexOf('KjunChartSkeleton')); };
+// Starts at the props definition (KjunChartSkeletonProps / kjunChartSkeletonProps), past the shared-helper import.
+const chartSource = (path) => { const source = read(path); return source.slice(source.search(/[Kk]junChartSkeletonProps/)); };
 const chartSources = { react: 'packages/react/src/skeletons.tsx', vue3: 'packages/vue3/src/skeletons.tsx', native: 'packages/native/src/skeletons.tsx' };
 
 for (const [platform, path] of Object.entries(chartSources)) {
-  test(`${platform} KjunChartSkeleton offers only frame, donut and matrix and draws the grid with chart-grid`, { todo: platform === 'native' }, () => {
+  test(`${platform} KjunChartSkeleton offers only frame, donut and matrix and draws the grid with chart-grid`, () => {
     const source = chartSource(path);
     assert.match(source, /"frame" \| "donut" \| "matrix"|KjunChartSkeletonKind/);
     assert.doesNotMatch(source, /"line"|"candle"|"bar"/);

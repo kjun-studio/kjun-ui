@@ -379,19 +379,10 @@
       "native": {
         "props": [
           {
-            "name": "loadingText",
-            "type": "string | undefined",
-            "required": false,
-            "default": "\"차트를 불러오는 중\"",
-            "description": "",
-            "summary": "시각적으로 표시할 로딩 문구입니다. 빈 문자열은 문구만 숨깁니다. 스크린 리더 알림은 DataState 등 부모 상태 영역에서 제공합니다.",
-            "source": "packages/native/src/skeletons.tsx"
-          },
-          {
             "name": "kind",
-            "type": "\"grid\" | \"line\" | \"bar\" | \"donut\" | \"candle\" | \"matrix\" | undefined",
+            "type": "KjunChartSkeletonKind | undefined",
             "required": false,
-            "default": "\"line\"",
+            "default": "\"frame\"",
             "description": "",
             "summary": "표시 종류를 지정합니다. 허용값은 해당 컴포넌트 타입을 따릅니다.",
             "source": "packages/native/src/skeletons.tsx"
@@ -403,6 +394,51 @@
             "default": "—",
             "description": "",
             "summary": "콘텐츠 또는 표시 영역의 높이입니다. 플랫폼별 타입의 단위를 따릅니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "\"차트를 불러오는 중\"",
+            "description": "",
+            "summary": "시각적으로 표시할 로딩 문구입니다. 빈 문자열은 문구만 숨깁니다. 스크린 리더 알림은 DataState 등 부모 상태 영역에서 제공합니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "skeleton",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "",
+            "summary": "최초 로딩을 스피너 대신 스켈레톤으로 표시합니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "rows",
+            "type": "number | undefined",
+            "required": false,
+            "default": "8",
+            "description": "",
+            "summary": "표시할 행 데이터 또는 자리 표시자의 행 수입니다. 타입을 확인하세요.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "columns",
+            "type": "number | undefined",
+            "required": false,
+            "default": "14",
+            "description": "",
+            "summary": "표시할 열과 열별 레이블·렌더링 규칙입니다.",
             "source": "packages/native/src/skeletons.tsx"
           }
         ],

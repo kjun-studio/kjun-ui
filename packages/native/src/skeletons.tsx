@@ -1,11 +1,20 @@
 import { typeStyle } from "./typography";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
-import { Fragment,useEffect,useRef,type ReactNode } from "react";
-import { Animated,View,useWindowDimensions,type DimensionValue } from "react-native";
-import Svg,{ G,Path,Rect } from "react-native-svg";
-import { KjunSkeleton } from "./display";
+import { useEffect,useRef,useState,type ReactNode } from "react";
+import { Animated,Platform,View,useWindowDimensions,type DimensionValue } from "react-native";
+import Svg,{ Path } from "react-native-svg";
+import { KjunSkeleton,KjunSpinner } from "./display";
 import { KText,useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
+import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
+import {
+  chartDonutHole,
+  chartFramePath,
+  chartFrameViewBox,
+  chartMatrixMuted,
+  chartSkeletonCount,
+  type KjunChartSkeletonKind,
+} from "../../../shared/package-runtime/chart-skeleton";
 export interface KjunListSkeletonProps {
   rows?: number;
   variant?: "market" | "compact" | "notification";
@@ -130,32 +139,43 @@ export function KjunFormSkeleton({
   );
 }
 export interface KjunChartSkeletonProps {
-  loadingText?: string;
-  kind?: "grid" | "line" | "bar" | "donut" | "candle" | "matrix";
+  kind?: KjunChartSkeletonKind;
   height?: DimensionValue;
+  loadingText?: string;
+  skeleton?: boolean;
+  loadingDelay?: number;
+  rows?: number;
+  columns?: number;
 }
+// React Native Web prints dataSet as data-* so the packed web contracts can find each part.
+const chartPart = (name: string) => (Platform.OS === "web" ? { dataSet: { kjunChartPart: name } } : {});
 export function KjunChartSkeleton({
-  loadingText = "차트를 불러오는 중",
-  kind = "line",
+  kind = "frame",
   height = tokens.extensions.chartSkeleton.height,
+  loadingText = "차트를 불러오는 중",
+  skeleton = true,
+  loadingDelay = 0,
+  rows = 8,
+  columns = 14,
 }: KjunChartSkeletonProps) {
   const { colors } = useKjunStyles(),
     reduced = useReducedMotion(),
-    opacity = useRef(new Animated.Value(1)).current;
+    opacity = useRef(new Animated.Value(1)).current,
+    revealed = useLoadingReveal(true, loadingDelay),
+    [measured, setMeasured] = useState(0),
+    thickness = tokens.extensions.chartSkeleton.donutThickness,
+    boxHeight = typeof height === "number" ? height : measured,
+    hole = boxHeight > 0 ? chartDonutHole(boxHeight, thickness) : undefined,
+    rowCount = chartSkeletonCount(rows),
+    columnCount = chartSkeletonCount(columns),
+    status = revealed && loadingText ? ("status" as const) : undefined,
+    hidden = { "aria-hidden": true, importantForAccessibility: "no-hide-descendants" as const };
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || !skeleton) return;
     const loop = Animated.loop(
       Animated.sequence([
-        Animated.timing(opacity, {
-          toValue: 0.55,
-          duration: tokens.motion.shimmer / 2,
-          useNativeDriver: true,
-        }),
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: tokens.motion.shimmer / 2,
-          useNativeDriver: true,
-        }),
+        Animated.timing(opacity, { toValue: 0.55, duration: tokens.motion.shimmer / 2, useNativeDriver: true }),
+        Animated.timing(opacity, { toValue: 1, duration: tokens.motion.shimmer / 2, useNativeDriver: true }),
       ])
     );
     loop.start();
@@ -163,96 +183,84 @@ export function KjunChartSkeleton({
       loop.stop();
       opacity.setValue(1);
     };
-  }, [opacity, reduced]);
+  }, [opacity, reduced, skeleton]);
   return (
     <Animated.View
-      style={{
-        height,
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        minWidth: 0,
-        opacity,
-      }}
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
+      onLayout={typeof height === "number" ? undefined : (event) => setMeasured(event.nativeEvent.layout.height)}
+      style={{ height, alignItems: "center", justifyContent: "center", width: "100%", minWidth: 0, opacity: revealed ? opacity : 0 }}
+      aria-hidden={revealed ? undefined : true}
+      importantForAccessibility={revealed ? undefined : "no-hide-descendants"}
+      {...(Platform.OS === "web" ? { dataSet: { kjunChartKind: kind, skeleton: skeleton ? undefined : "false" } } : {})}
     >
-      {kind === "donut" ? (
-        <View
-          style={{
-            height: "80%",
-            aspectRatio: 1,
-            borderWidth: tokens.extensions.chartSkeleton.donutThickness,
-            borderColor: colors.skeleton,
-            borderRadius: tokens.radius.radius9999,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <KjunSkeleton type="block" width={tokens.extensions.chartSkeleton.donutLabelWidth} height={tokens.extensions.chartSkeleton.donutLabelHeight} />
+      {!skeleton ? (
+        <View {...chartPart("loading")} role={status} style={{ alignItems: "center", gap: tokens.dimension.value12 }}>
+          <KjunSpinner size="md" />
+          {!!loadingText && (
+            <KText style={{ ...typeStyle("body"), color: colors.textSecondary, textAlign: "center", maxWidth: "100%" }}>{loadingText}</KText>
+          )}
         </View>
       ) : (
-        <Svg
-          viewBox="0 0 600 240"
-          preserveAspectRatio="none"
-          width="100%"
-          height="100%"
-        >
-          <Path
-            d="M20 10V220H590 M20 65H590 M20 120H590 M20 175H590"
-            fill="none"
-            stroke={colors.border}
-            strokeWidth={1}
-          />
-          {/* A line kind previews its series; grid keeps only the axes. */}
-          {kind === "line" && (
-            <Path d="M20 190 L100 160 L180 172 L260 120 L340 140 L420 96 L500 110 L590 64" fill="none" stroke={colors.skeleton} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" />
-          )}
-          {kind === "matrix"
-            ? Array.from({ length: 8 }, (_, row) => (
-                <G key={row}>
-                  {Array.from({ length: 14 }, (_, col) => (
-                    <Rect
-                      key={col}
-                      x={24 + col * 40}
-                      y={12 + row * 26}
-                      width={36}
-                      height={22}
-                      rx={2}
-                      fill={colors.skeleton}
-                      opacity={(row + col + 2) % 3 === 0 ? 0.55 : 1}
+        <>
+          {kind === "donut" ? (
+            <View
+              {...chartPart("donut")}
+              {...hidden}
+              style={{ height: "80%", aspectRatio: 1, borderWidth: thickness, borderColor: colors.skeleton, borderRadius: tokens.radius.radius9999 }}
+            />
+          ) : kind === "matrix" ? (
+            <View {...chartPart("matrix")} {...hidden} style={{ alignSelf: "stretch", flex: 1, gap: tokens.dimension.value4 }}>
+              {Array.from({ length: rowCount }, (_, row) => (
+                <View key={row} style={{ flex: 1, flexDirection: "row", gap: tokens.dimension.value4 }}>
+                  {Array.from({ length: columnCount }, (_, column) => (
+                    <View
+                      key={column}
+                      {...chartPart("cell")}
+                      style={{
+                        flex: 1,
+                        borderRadius: tokens.extensions.skeleton.lineRadius,
+                        backgroundColor: colors.skeleton,
+                        opacity: chartMatrixMuted(row, column) ? tokens.states.opacity.pending : 1,
+                      }}
                     />
                   ))}
-                </G>
-              ))
-            : (kind === "bar" || kind === "candle") &&
-              [60, 100, 85, 140, 110, 165, 180].map((h, i) => (
-                <Fragment key={i}>
-                  {kind === "candle" && (
-                    <Path
-                      // The wick extends 15 past each end of the body and stays above the axis.
-                      d={`M${55 + i * 75} ${195 - h}V${225 - h / 2}`}
-                      fill="none"
-                      stroke={colors.skeleton}
-                      strokeWidth={4}
-                    />
-                  )}
-                  <Rect
-                    x={35 + i * 75}
-                    // Bars stand on the axis (y 220); candle bodies float within their wick.
-                    y={kind === "candle" ? 210 - h : 220 - h}
-                    width={kind === "candle" ? 28 : 42}
-                    height={kind === "candle" ? h / 2 : h}
-                    rx={3}
-                    fill={colors.skeleton}
-                  />
-                </Fragment>
+                </View>
               ))}
-        </Svg>
+            </View>
+          ) : (
+            <View {...chartPart("plot")} {...hidden} style={{ alignSelf: "stretch", flex: 1 }}>
+              {/* Only the frame is honest before data arrives; any series shape would be invented. */}
+              <Svg viewBox={chartFrameViewBox} preserveAspectRatio="none" width="100%" height="100%">
+                <Path d={chartFramePath} fill="none" stroke={colors.chartGrid} strokeWidth={tokens.border.defaultWidth} vectorEffect="non-scaling-stroke" />
+              </Svg>
+            </View>
+          )}
+          {!!loadingText && (
+            <View
+              {...chartPart("status")}
+              role={status}
+              pointerEvents="none"
+              style={{ position: "absolute", inset: 0, alignItems: "center", justifyContent: "center" }}
+            >
+              <KText
+                style={{
+                  ...typeStyle("body"),
+                  paddingHorizontal: tokens.dimension.value12,
+                  paddingVertical: tokens.dimension.value4,
+                  borderRadius: tokens.radius.radius6,
+                  borderWidth: kind === "donut" ? 0 : tokens.border.defaultWidth,
+                  borderColor: colors.chartGrid,
+                  backgroundColor: colors.surface,
+                  color: colors.textSecondary,
+                  maxWidth: kind === "donut" && hole != null ? hole : "90%",
+                  textAlign: "center",
+                }}
+              >
+                {loadingText}
+              </KText>
+            </View>
+          )}
+        </>
       )}
-      <View pointerEvents="none" style={{ position:"absolute", inset:0, alignItems:"center", justifyContent:"center", gap:tokens.dimension.value12 }}>
-        {!!loadingText && <KText style={{ ...typeStyle('body'),  paddingHorizontal:tokens.dimension.value12, paddingVertical:tokens.dimension.value4, borderRadius:tokens.radius.radius6, backgroundColor:colors.surface, color:colors.textSecondary, maxWidth:"90%", textAlign:"center" }}>{loadingText}</KText>}
-      </View>
     </Animated.View>
   );
 }

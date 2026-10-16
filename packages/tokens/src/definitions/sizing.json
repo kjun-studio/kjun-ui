@@ -261,9 +261,7 @@
     },
     "chartSkeleton": {
       "height": 240,
-      "donutThickness": 22,
-      "donutLabelWidth": 76,
-      "donutLabelHeight": 14
+      "donutThickness": 22
     },
     "tableCard": {
       "titleSkeletonWidth": 96,
