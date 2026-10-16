@@ -7,11 +7,12 @@ interface Props<Row extends object> extends TableCardsProps<Row> {
   customClass: (row: Row, index: number) => string;
   rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
 }
-export function TableCards<Row extends object>({ initialLoading, skeletonRows, state, onRowClick, selectable,
+export function TableCards<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable,
   checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }: Props<Row>) {
   const { title, subtitle, badges, inline, sections, actions, columnsForSection } = layout;
   return (
-          <div className="kjun-table-cards" role="list" aria-label={ariaLabel}>
+          <div className="kjun-table-cards" role="list" aria-label={ariaLabel}
+            style={skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={skeletonHidden || undefined}>
             {initialLoading
               ? Array.from({ length: skeletonRows }, (_, i) => (
                   <div key={i} className="kjun-table-card">

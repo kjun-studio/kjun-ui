@@ -9,6 +9,7 @@ useWindowDimensions
 } from "react-native";
 import { KjunButton } from "./button";
 import { KjunCheckbox } from "./controls";
+import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import { KjunDataState,useQueryDisplay } from "./data-state";
 import { content,domainColor } from "./internal";
 import { KjunPagination } from "./navigation";
@@ -24,6 +25,9 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
 ) {
   const {
     skeletonRows = 8,
+    skeleton = true,
+    loadingText = "로딩 중...",
+    loadingDelay = 0,
     emptyText = "데이터가 없습니다",
     hoverable = true,
     searchable = false,
@@ -47,6 +51,8 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
   const { colors, domainColors } = useKjunStyles(),
     state = useTableModel(props),
     query = useQueryDisplay(props),
+    // Skeleton rows wait out loadingDelay here; the spinner waits inside KjunDataState.
+    revealed = useLoadingReveal(query.initialLoading, skeleton ? loadingDelay : 0),
     mobile = useWindowDimensions().width < tokens.table.mobileBreakpoint;
   const layout = tablePresentation(props, mobile);
   const { card, visible } = layout;
@@ -131,11 +137,14 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         refreshing={query.queryRefreshing}
         loadingPadding="none"
         onRetry={onRetry}
+        loading={skeleton ? undefined : props.loading}
+        loadingText={loadingText}
+        loadingDelay={skeleton ? 0 : loadingDelay}
       >
         {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} />
+          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} />
         ) : (
-          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable }} sortable={props.sortable} />
+          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable }} sortable={props.sortable} />
         )}
         {pagination && (
           <KjunPagination

@@ -18,6 +18,11 @@ export interface MarketBaseProps<Row extends object> extends QueryDisplayProps {
   subMeta?: (row: Row) => string;
   emptyMessage?: string;
   emptySubMessage?: string;
+  /** false shows the shared spinner and loadingText instead of the skeleton. Default true. */
+  skeleton?: boolean;
+  loadingText?: string;
+  /** Milliseconds a first load must last before its loading display shows. */
+  loadingDelay?: number;
   showFooter?: boolean;
   calculatedAt?: string | null;
   footerNote?: string;

@@ -7,6 +7,7 @@ import { KjunDataState, useQueryDisplay } from "./data-state";
 import { KjunInput } from "./input";
 import { KjunPagination } from "./navigation";
 import { domainRef } from "./runtime/refs";
+import { useLoadingReveal } from "./runtime/loading-reveal";
 import { hasContent } from "./runtime/slots";
 import { TableCheck, tableCards, tableGrid, type TableLayout, type TableRenderState } from "./table-parts";
 import type { TableCardSection, TableColumn, TablePagination } from "./table-types";
@@ -25,6 +26,11 @@ const kjunTableProps = {
   error: { type: String as PropType<string | null>, default: null },
   hasLoadedOnce: { type: Boolean, default: undefined },
   skeletonRows: { type: Number, default: 8 },
+  /** false shows the shared spinner and loadingText instead of skeleton rows. */
+  skeleton: { type: Boolean, default: true },
+  loadingText: { type: String, default: "로딩 중..." },
+  /** Milliseconds a first load must last before its loading display shows. */
+  loadingDelay: { type: Number, default: 0 },
   emptyText: { type: String, default: "데이터가 없습니다" },
   sortable: { type: Boolean, default: true },
   /** v-model:sort; leave unset for internal sorting. */
@@ -85,6 +91,8 @@ export const KjunTable = defineComponent({
     onMounted(() => { media = matchMedia(`(width < ${tokens.table.mobileBreakpoint}px)`); updateMobile(); media.addEventListener("change", updateMobile); });
     onBeforeUnmount(() => { clearTimeout(timer); media?.removeEventListener("change", updateMobile); });
     const query = useQueryDisplay(() => props);
+    // Skeleton rows wait out loadingDelay here; the spinner waits inside KjunDataState.
+    const revealed = useLoadingReveal(() => query().initialLoading, () => props.skeleton ? props.loadingDelay : 0);
 
     const model = (): TableRenderState & { toggleRow: (row: object) => void; toggleExpand: (row: object, index: number) => void } => {
       const sort = props.sort === undefined ? internalSort.value : props.sort ?? { key: "", order: "asc" as const };
@@ -150,7 +158,7 @@ export const KjunTable = defineComponent({
       };
       const empty = slots.empty?.();
       const context = {
-        initialLoading: status.initialLoading, skeletonRows: props.skeletonRows, state, clickable: !!props.onRowClick,
+        initialLoading: status.initialLoading, skeletonRows: props.skeletonRows, skeletonHidden: status.initialLoading && !revealed(), state, clickable: !!props.onRowClick,
         rowClick: (row: object, index: number) => props.onRowClick?.(row, index), selectable: props.selectable, expandable: props.expandable,
         checkbox, expand, cell, renderExpand: (row: object, index: number) => slots.expand?.({ row, index }),
         empty: () => hasContent(empty) ? empty : props.emptyText, ariaLabel: props.ariaLabel, customClass, rowKeyDown,
@@ -179,7 +187,8 @@ export const KjunTable = defineComponent({
             </div>
           )}
           <KjunDataState queryKey={props.queryKey} resultKey={status.usesQueryState ? status.hasCurrentResult ? props.queryKey : null : undefined}
-            hasLoadedOnce={props.hasLoadedOnce} error={props.error} refreshing={status.queryRefreshing} loadingPadding="none" onRetry={props.onRetry}>
+            hasLoadedOnce={props.hasLoadedOnce} error={props.error} refreshing={status.queryRefreshing} loadingPadding="none" onRetry={props.onRetry}
+            loading={props.skeleton ? undefined : props.loading} loadingText={props.loadingText} loadingDelay={props.skeleton ? 0 : props.loadingDelay}>
             {card ? tableCards({ ...context, layout }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
               sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable })}
             {pagination && (

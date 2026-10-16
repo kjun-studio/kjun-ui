@@ -189,3 +189,11 @@
   .kjun-kpi-hero--sm .kjun-kpi-hero__value {
   }
 }
+
+/* surface="none": 앱의 카드·모달·전폭 목록 안에서는 자체 카드 표면을 그리지 않는다. 미디어 규칙보다 뒤에 두어 좁은 화면에서도 이긴다. */
+/* 클래스를 겹쳐 모바일 규칙(.kjun-kpi-hero:not(.kjun-kpi-hero--sm))보다 명시도를 높인다. */
+.kjun-kpi-hero.kjun-kpi-hero[data-surface="none"] {
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}

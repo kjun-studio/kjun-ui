@@ -47,6 +47,8 @@ export interface KjunKpiHeroProps {
   secondary?: KpiValue[];
   animated?: boolean;
   size?: "md" | "sm";
+  /** "none" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list. */
+  surface?: "card" | "none";
   aside?: ReactNode;
   formatter?: (value: number) => string;
   deltaFormatter?: (value: number, kind: "absolute" | "percent") => string;
@@ -66,6 +68,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     secondary = [],
     animated = true,
     size = "md",
+    surface = "card",
     aside,
     formatter,
     deltaFormatter,
@@ -92,6 +95,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
   return (
     <div
       className={"kjun-kpi-hero" + (size === "sm" ? " kjun-kpi-hero--sm" : "")}
+      data-surface={surface === "none" ? "none" : undefined}
       ref={domainColorRef(!loading && (Number(deltaAbsolute) !== 0 || Number(deltaPercent) !== 0 ||
         secondary.some(item => item.semantic === 'price' && Number(item.value) !== 0)))}
       aria-busy={loading}
@@ -243,6 +247,8 @@ export interface KjunKpiRowProps {
   loading?: boolean;
   items: KpiRowItem[];
   size?: "md" | "sm";
+  /** "none" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list. */
+  surface?: "card" | "none";
   mobileSummary?: boolean;
   onItemClick?: (item: KpiRowItem, index: number) => void;
   renderValue?: (item: KpiRowItem, index: number) => ReactNode;
@@ -251,6 +257,7 @@ export function KjunKpiRow({
   loading = false,
   items,
   size = "md",
+  surface = "card",
   mobileSummary = true,
   onItemClick,
   renderValue,
@@ -305,6 +312,7 @@ export function KjunKpiRow({
         (items[0]?.mobileFull ? " kjun-kpi-row--hero-first" : "") +
         (mobileSummary && size !== "sm" ? " kjun-kpi-row--mobile-summary" : "")
       }
+      data-surface={surface === "none" ? "none" : undefined}
       aria-busy={loading || items.some((item) => item.loading)}
       ref={domainColorRef(!loading && items.some(item => !item.loading && (
         item.semantic === 'price' && Number(item.value) !== 0 || item.badge?.variant?.startsWith('price-'))))}

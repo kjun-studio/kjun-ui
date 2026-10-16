@@ -71,9 +71,10 @@ export const KjunMarketTable = defineComponent({
       const { rows, columns, showActions, sortKey, sortOrder } = props;
       return (
         <div class="kjun-market-table" data-embedded={String(props.embedded)} ref={domainRef(showActions && rows.length > 0 && !props.loading)}>
-          <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={props.emptyMessage}>
+          <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={props.emptyMessage}
+            loadingText={props.loadingText} loadingDelay={props.loadingDelay}>
             {{
-              loading: () => <KjunMarketTableSkeleton columns={columns} showActions={showActions} />,
+              loading: props.skeleton ? () => <KjunMarketTableSkeleton columns={columns} showActions={showActions} /> : undefined,
               empty: () => <KjunEmpty text={props.emptyMessage} description={props.emptySubMessage} />,
               default: () => (
                 <div class="kjun-table-scroll" ref={scroller} data-fade-end={fadeEnd.value || undefined}>

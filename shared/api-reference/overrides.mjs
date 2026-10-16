@@ -164,6 +164,8 @@ set("CollectionMark", {
   active: "등록·관심 여부를 표시합니다. 이 컴포넌트는 변경 행동을 제공하지 않습니다.",
 });
 set("KpiHero", { value: "대표 지표의 현재 값입니다. 계산과 데이터 조회는 소비자가 수행합니다." });
+set("KpiHero KpiRow", { surface: { default: '"card"', summary: "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다." } });
+set("Table MarketCards MarketSimpleList MarketTable", { skeleton: { default: "true", summary: "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다." } });
 set("SignedValue", {
   isRaw: "percent 형식에서 true면 퍼센트 단위(2.35), false면 비율 단위(0.0235)를 받습니다.",
 });

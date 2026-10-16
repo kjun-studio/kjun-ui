@@ -2,6 +2,7 @@ import { defineComponent, getCurrentInstance, onErrorCaptured, ref, type Extract
 import { tokens, advanceQueryDisplay, initialQueryDisplay, queryDisplayStatus, type QueryDisplayProps, type QueryDisplayState } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
 import { KjunAlert, KjunEmpty, KjunSkeleton, KjunSpinner, type KjunSkeletonProps } from "./display";
+import { useLoadingReveal } from "./runtime/loading-reveal";
 import { hasContent } from "./runtime/slots";
 import { css } from "./runtime/style";
 
@@ -33,6 +34,8 @@ const kjunDataStateProps = {
   emptyIcon: { type: String, default: undefined },
   emptyActionText: { type: String, default: undefined },
   loadingText: { type: String, default: "로딩 중..." },
+  /** Milliseconds a first load must last before its loading display shows; the box keeps its space meanwhile. */
+  loadingDelay: { type: Number, default: 0 },
   retryText: { type: String, default: "다시 시도" },
   size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   skeleton: { type: Boolean, default: false },
@@ -55,6 +58,7 @@ export const KjunDataState = defineComponent({
   }>,
   setup(props, { slots, emit }) {
     const status = useQueryDisplay(() => ({ queryKey: props.queryKey, resultKey: props.resultKey, loading: props.loading, error: props.error, hasLoadedOnce: props.hasLoadedOnce }));
+    const revealed = useLoadingReveal(() => status().initialLoading, () => props.loadingDelay);
     return () => {
       const state = status();
       const blockingError = props.error && !(state.usesQueryState && state.hasCurrentResult);
@@ -71,7 +75,8 @@ export const KjunDataState = defineComponent({
             )}
           </div>
           {state.initialLoading ? (
-            <div role="status" aria-label={props.loadingText} style={css({ paddingBlock: props.loadingPadding === "none" ? 0 : padding })}>
+            <div role={revealed() ? "status" : undefined} aria-label={revealed() ? props.loadingText : undefined} aria-hidden={revealed() ? undefined : "true"}
+              style={css({ paddingBlock: props.loadingPadding === "none" ? 0 : padding, visibility: revealed() ? undefined : "hidden" })}>
               {hasContent(loading) ? loading : props.skeleton ? (
                 <div style={css({ display: "grid", gap: tokens.dimension.value12 })}>
                   {Array.from({ length: props.skeletonCount }, (_, i) => <KjunSkeleton key={i} type={props.skeletonType} />)}

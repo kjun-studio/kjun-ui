@@ -352,7 +352,7 @@
   "KjunTabs": {
     "slug": "tabs",
     "description": "동일 영역의 보기를 선택하고 현재 패널을 표시합니다.",
-    "interaction": "활성 탭의 name을 value에 연결합니다. 변경 통지를 반영하고 items 또는 TabPane으로 목록과 본문을 구성합니다. disabled 항목은 선택과 보조 메뉴 콜백을 차단하며, 누르는 도중 비활성화·제거되면 예약된 보조 동작을 취소합니다.",
+    "interaction": "활성 탭의 name을 value에 연결합니다. 변경 통지를 반영하고 items 또는 TabPane으로 목록과 본문을 구성합니다. disabled 항목은 선택과 보조 메뉴 콜백을 차단하며, 누르는 도중 비활성화·제거되면 예약된 보조 동작을 취소합니다. 스크롤되는 모달이나 패널에서 탭 헤더를 고정하려면 items만 넘겨 탭 목록만 렌더링하고, 앱의 position: sticky 래퍼로 감싼 뒤 본문은 앱이 선택 값에 따라 그립니다.",
     "differences": "Vue v-model과 actions 슬롯·tab-menu에 대응해 React·Native는 value·onValueChange·actions·onTabMenu를 제공합니다. 웹 키보드 이동과 Native 누름 조작을 구분합니다.",
     "states": "기본 높이는 44px, compact는 32px이며 14px 글자를 사용합니다. 선택은 600, 미선택은 500 굵기와 보조 텍스트 색상으로 구분합니다. underline은 첫 탭과 본문 시작선을 맞추고 2px 선택선을 표시하며, 포커스 테두리를 라벨과 선택선 바깥에 그립니다. pills는 그림자 없는 중립 배경으로 선택을, hover 배경으로 포인터 위치를 표시합니다. Native의 compact 탭은 32px 높이를 유지하면서 44px 터치 영역을 사용합니다. 웹에서 방향키·Home/End로 이동하고 비활성 항목은 건너뜁니다."
   },

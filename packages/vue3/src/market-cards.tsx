@@ -68,9 +68,10 @@ export const KjunMarketCards = defineComponent({
             ))}
           </div>
           {slots.list ? (hasContent(custom) ? custom : null) : <>
-            <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length}>
+            <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length}
+              loadingText={props.loadingText} loadingDelay={props.loadingDelay}>
               {{
-                loading: () => <KjunListSkeleton variant="compact" />,
+                loading: props.skeleton ? () => <KjunListSkeleton variant="compact" /> : undefined,
                 empty: () => <KjunEmpty text={props.emptyMessage} description={props.emptySubMessage} />,
                 default: () => <div>
                   {state.pill && <div class="kjun-market-column-label">{state.pill.label}</div>}

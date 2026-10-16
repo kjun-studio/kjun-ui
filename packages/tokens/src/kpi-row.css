@@ -285,3 +285,11 @@
   .kjun-kpi-row--sm .kjun-kpi-row__value {
   }
 }
+
+/* surface="none": 앱의 카드·모달·전폭 목록 안에서는 자체 카드 표면을 그리지 않는다. 미디어 규칙보다 뒤에 두어 좁은 화면에서도 이긴다. */
+/* 클래스를 겹쳐 모바일 요약 규칙(.kjun-kpi-row.kjun-kpi-row--mobile-summary:not(...))과 같은 명시도로 맞춘다. */
+.kjun-kpi-row.kjun-kpi-row[data-surface="none"] {
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}

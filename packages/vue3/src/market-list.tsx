@@ -36,9 +36,10 @@ export const KjunMarketSimpleList = defineComponent({
       const { rows } = props;
       return (
         <div class="kjun-market-simple-list">
-          <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={props.emptyMessage}>
+          <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={props.emptyMessage}
+            loadingText={props.loadingText} loadingDelay={props.loadingDelay}>
             {{
-              loading: () => <KjunListSkeleton />,
+              loading: props.skeleton ? () => <KjunListSkeleton /> : undefined,
               empty: () => <KjunEmpty text={props.emptyMessage} description={props.emptySubMessage} />,
               default: () => <div>
                 {rows.map((row: any, i) => {

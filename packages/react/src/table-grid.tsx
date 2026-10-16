@@ -9,9 +9,9 @@ interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["m
   customClass: (row: Row, index: number) => string;
   rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
 }
-export function TableGrid<Row extends object>({ initialLoading, skeletonRows, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown }: Props<Row>) {
+export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown }: Props<Row>) {
   return (
-          <div className="kjun-table-scroll" style={{ maxHeight }}>
+          <div className="kjun-table-scroll" style={{ maxHeight, visibility: skeletonHidden ? "hidden" : undefined }} aria-hidden={skeletonHidden || undefined}>
             <table
               className="kjun-table"
               aria-label={ariaLabel}

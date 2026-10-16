@@ -8,6 +8,7 @@ type QueryDisplayProps,
 } from "@kjun-ui/tokens";
 import { Component,useState,type ErrorInfo,type ReactNode } from "react";
 import { Platform,View,type ViewStyle } from "react-native";
+import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import { DataStateContentContext } from "./data-state-context";
 import { KjunButton } from "./button";
 import {
@@ -43,6 +44,8 @@ export interface KjunDataStateProps extends QueryDisplayProps {
   emptyIcon?: string;
   emptyActionText?: string;
   loadingText?: string;
+  /** Milliseconds a first load must last before its loading display shows; the box keeps its space meanwhile. */
+  loadingDelay?: number;
   retryText?: string;
   size?: "sm" | "md" | "lg";
   skeleton?: boolean;
@@ -66,6 +69,7 @@ export function KjunDataState({
   emptyIcon,
   emptyActionText,
   loadingText = "로딩 중...",
+  loadingDelay = 0,
   retryText = "다시 시도",
   size = "md",
   skeleton = false,
@@ -86,7 +90,8 @@ export function KjunDataState({
       refreshError ||
       (state.usesQueryState && state.hasCurrentResult ? query.error : null),
     concealed = state.initialLoading || !!blockingError || empty,
-    padding = tokens.extensions.state.padding[size];
+    padding = tokens.extensions.state.padding[size],
+    revealed = useLoadingReveal(state.initialLoading, loadingDelay);
   const { colors } = useKjunStyles();
   return (
     <View
@@ -119,8 +124,10 @@ export function KjunDataState({
       </View>
       {state.initialLoading ? (
         <View
-          accessibilityLabel={loadingText}
-          style={{ paddingVertical: loadingPadding === "none" ? 0 : padding }}
+          accessibilityLabel={revealed ? loadingText : undefined}
+          aria-hidden={revealed ? undefined : true}
+          importantForAccessibility={revealed ? undefined : "no-hide-descendants"}
+          style={{ paddingVertical: loadingPadding === "none" ? 0 : padding, opacity: revealed ? undefined : 0 }}
         >
           {loadingContent ||
             (skeleton ? (

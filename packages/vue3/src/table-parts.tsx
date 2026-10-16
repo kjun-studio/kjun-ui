@@ -54,6 +54,8 @@ export interface TableRenderState {
 export interface TableRowsContext {
   initialLoading: boolean;
   skeletonRows: number;
+  /** A loadingDelay is still running: the skeleton keeps its space but stays out of sight. */
+  skeletonHidden?: boolean;
   state: TableRenderState;
   clickable: boolean;
   rowClick: (row: Row, index: number) => void;
@@ -74,7 +76,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
   const { state, visible, selectable, expandable } = c;
   const sorting = (col: TableColumn<any>) => col.sortable && c.sortable !== false;
   return (
-    <div class="kjun-table-scroll" style={css({ maxHeight: c.maxHeight })}>
+    <div class="kjun-table-scroll" style={css({ maxHeight: c.maxHeight, visibility: c.skeletonHidden ? "hidden" : undefined })} aria-hidden={c.skeletonHidden ? "true" : undefined}>
       <table class="kjun-table" aria-label={c.ariaLabel} data-compact={String(c.compact)} data-hoverable={String(c.hoverable)} data-striped={String(c.striped)}>
         <thead style={c.stickyHeader ? { position: "sticky", top: 0, zIndex: 2 } : undefined}>
           <tr>
@@ -138,7 +140,8 @@ export function tableCards(c: TableRowsContext & { layout: TableLayout }) {
   const { state } = c;
   const stop = (event: MouseEvent) => event.stopPropagation();
   return (
-    <div class="kjun-table-cards" role="list" aria-label={c.ariaLabel}>
+    <div class="kjun-table-cards" role="list" aria-label={c.ariaLabel}
+      style={c.skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={c.skeletonHidden ? "true" : undefined}>
       {c.initialLoading
         ? Array.from({ length: c.skeletonRows }, (_, i) => <div key={i} class="kjun-table-card"><KjunSkeleton type="card" /></div>)
         : state.rows.map((row, i) => (

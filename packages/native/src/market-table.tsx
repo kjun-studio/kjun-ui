@@ -138,9 +138,9 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
         loadingPadding="none"
         empty={!rows.length}
         emptyText={emptyMessage}
-        loadingContent={
+        loadingContent={props.skeleton === false ? undefined : (
           <KjunMarketTableSkeleton columns={columns} showActions={showActions} />
-        }
+        )}
         emptyContent={
           <KjunEmpty text={emptyMessage} description={emptySubMessage} />
         }

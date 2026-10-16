@@ -41,6 +41,11 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   data?: Row[];
   rowKey?: string;
   skeletonRows?: number;
+  /** false shows the shared spinner and loadingText instead of skeleton rows. Default true. */
+  skeleton?: boolean;
+  loadingText?: string;
+  /** Milliseconds a first load must last before its loading display shows. */
+  loadingDelay?: number;
   emptyText?: string;
   sortable?: boolean;
   sort?: TableSort | null;

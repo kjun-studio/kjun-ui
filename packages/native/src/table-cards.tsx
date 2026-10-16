@@ -8,12 +8,13 @@ import { KjunSkeleton } from "./display";
 import { KText,content } from "./internal";
 import { useKjunStyles } from "./provider";
 import type { TableCardsProps } from "../../../shared/package-runtime/table-presentation";
-export function TableCards<Row extends object>({ initialLoading, skeletonRows, state, onRowClick, selectable,
+export function TableCards<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable,
   checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }: TableCardsProps<Row>) {
   const { colors } = useKjunStyles();
   const { title, subtitle, badges, inline, sections, actions, columnsForSection } = layout;
   return (
-    <View style={{ gap: tokens.extensions.tableCard.gap, padding: tokens.extensions.tableCard.listPadding }}>
+    <View style={{ gap: tokens.extensions.tableCard.gap, padding: tokens.extensions.tableCard.listPadding, opacity: skeletonHidden ? 0 : undefined }}
+      aria-hidden={skeletonHidden || undefined}>
       {initialLoading
         ? Array.from({ length: skeletonRows }, (_, i) => (
             <KjunSkeleton key={i} type="card" />

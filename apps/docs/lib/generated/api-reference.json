@@ -1415,6 +1415,15 @@
             "source": "packages/vue3/src/kpi.tsx"
           },
           {
+            "name": "surface",
+            "type": "\"card\" | \"none\"",
+            "required": false,
+            "default": "\"card\"",
+            "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list.",
+            "summary": "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다.",
+            "source": "packages/vue3/src/kpi.tsx"
+          },
+          {
             "name": "formatter",
             "type": "(value: number) => string",
             "required": false,
@@ -1567,6 +1576,15 @@
             "source": "packages/react/src/kpi.tsx"
           },
           {
+            "name": "surface",
+            "type": "\"none\" | \"card\" | undefined",
+            "required": false,
+            "default": "\"card\"",
+            "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list.",
+            "summary": "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다.",
+            "source": "packages/react/src/kpi.tsx"
+          },
+          {
             "name": "aside",
             "type": "ReactNode",
             "required": false,
@@ -1719,6 +1737,15 @@
             "source": "packages/native/src/kpi-hero.tsx"
           },
           {
+            "name": "surface",
+            "type": "\"none\" | \"card\" | undefined",
+            "required": false,
+            "default": "\"card\"",
+            "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list.",
+            "summary": "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다.",
+            "source": "packages/native/src/kpi-hero.tsx"
+          },
+          {
             "name": "aside",
             "type": "ReactNode",
             "required": false,
@@ -1792,6 +1819,15 @@
             "source": "packages/vue3/src/kpi.tsx"
           },
           {
+            "name": "surface",
+            "type": "\"card\" | \"none\"",
+            "required": false,
+            "default": "\"card\"",
+            "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list.",
+            "summary": "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다.",
+            "source": "packages/vue3/src/kpi.tsx"
+          },
+          {
             "name": "mobileSummary",
             "type": "boolean",
             "required": false,
@@ -1854,6 +1890,15 @@
             "source": "packages/react/src/kpi.tsx"
           },
           {
+            "name": "surface",
+            "type": "\"none\" | \"card\" | undefined",
+            "required": false,
+            "default": "\"card\"",
+            "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list.",
+            "summary": "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다.",
+            "source": "packages/react/src/kpi.tsx"
+          },
+          {
             "name": "mobileSummary",
             "type": "boolean | undefined",
             "required": false,
@@ -1913,6 +1958,15 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
+            "source": "packages/native/src/kpi-row.tsx"
+          },
+          {
+            "name": "surface",
+            "type": "\"none\" | \"card\" | undefined",
+            "required": false,
+            "default": "\"card\"",
+            "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list.",
+            "summary": "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다.",
             "source": "packages/native/src/kpi-row.tsx"
           },
           {
@@ -2237,6 +2291,33 @@
             "default": "\"\"",
             "description": "",
             "summary": "빈 목록의 추가 안내 문구입니다.",
+            "source": "packages/vue3/src/market-cards.tsx"
+          },
+          {
+            "name": "skeleton",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of the skeleton.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/vue3/src/market-cards.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string",
+            "required": false,
+            "default": "\"로딩 중...\"",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/vue3/src/market-cards.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
             "source": "packages/vue3/src/market-cards.tsx"
           },
           {
@@ -2672,6 +2753,33 @@
             "source": "packages/react/src/market-cards.tsx"
           },
           {
+            "name": "skeleton",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/react/src/market-cards.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/react/src/market-cards.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
+            "source": "packages/react/src/market-cards.tsx"
+          },
+          {
             "name": "showFooter",
             "type": "boolean | undefined",
             "required": false,
@@ -3067,6 +3175,33 @@
             "source": "packages/native/src/market-cards.tsx"
           },
           {
+            "name": "skeleton",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/native/src/market-cards.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/native/src/market-cards.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
+            "source": "packages/native/src/market-cards.tsx"
+          },
+          {
             "name": "showFooter",
             "type": "boolean | undefined",
             "required": false,
@@ -3428,6 +3563,33 @@
             "source": "packages/vue3/src/market-list.tsx"
           },
           {
+            "name": "skeleton",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of the skeleton.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/vue3/src/market-list.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string",
+            "required": false,
+            "default": "\"로딩 중...\"",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/vue3/src/market-list.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
+            "source": "packages/vue3/src/market-list.tsx"
+          },
+          {
             "name": "showFooter",
             "type": "boolean",
             "required": false,
@@ -3742,6 +3904,33 @@
             "source": "packages/react/src/market-list.tsx"
           },
           {
+            "name": "skeleton",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/react/src/market-list.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/react/src/market-list.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
+            "source": "packages/react/src/market-list.tsx"
+          },
+          {
             "name": "showFooter",
             "type": "boolean | undefined",
             "required": false,
@@ -4047,6 +4236,33 @@
             "source": "packages/native/src/market-list.tsx"
           },
           {
+            "name": "skeleton",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/native/src/market-list.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/native/src/market-list.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
+            "source": "packages/native/src/market-list.tsx"
+          },
+          {
             "name": "showFooter",
             "type": "boolean | undefined",
             "required": false,
@@ -4342,6 +4558,33 @@
             "default": "\"\"",
             "description": "",
             "summary": "빈 목록의 추가 안내 문구입니다.",
+            "source": "packages/vue3/src/market-table.tsx"
+          },
+          {
+            "name": "skeleton",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of the skeleton.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/vue3/src/market-table.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string",
+            "required": false,
+            "default": "\"로딩 중...\"",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/vue3/src/market-table.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
             "source": "packages/vue3/src/market-table.tsx"
           },
           {
@@ -4813,6 +5056,33 @@
             "source": "packages/react/src/market-table.tsx"
           },
           {
+            "name": "skeleton",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/react/src/market-table.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/react/src/market-table.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
+            "source": "packages/react/src/market-table.tsx"
+          },
+          {
             "name": "showFooter",
             "type": "boolean | undefined",
             "required": false,
@@ -5196,6 +5466,33 @@
             "default": "\"\"",
             "description": "",
             "summary": "빈 목록의 추가 안내 문구입니다.",
+            "source": "packages/native/src/market-table.tsx"
+          },
+          {
+            "name": "skeleton",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/native/src/market-table.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/native/src/market-table.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
             "source": "packages/native/src/market-table.tsx"
           },
           {
@@ -7254,6 +7551,33 @@
             "source": "packages/vue3/src/table.tsx"
           },
           {
+            "name": "skeleton",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of skeleton rows.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/vue3/src/table.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string",
+            "required": false,
+            "default": "\"로딩 중...\"",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/vue3/src/table.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
+            "source": "packages/vue3/src/table.tsx"
+          },
+          {
             "name": "emptyText",
             "type": "string",
             "required": false,
@@ -8009,6 +8333,33 @@
             "default": "8",
             "description": "",
             "summary": "표 로딩 스켈레톤의 행 수입니다.",
+            "source": "packages/react/src/table-view.tsx"
+          },
+          {
+            "name": "skeleton",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of skeleton rows. Default true.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/react/src/table-view.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "\"로딩 중...\"",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/react/src/table-view.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
             "source": "packages/react/src/table-view.tsx"
           },
           {
@@ -8813,6 +9164,33 @@
             "default": "8",
             "description": "",
             "summary": "표 로딩 스켈레톤의 행 수입니다.",
+            "source": "packages/native/src/table-view.tsx"
+          },
+          {
+            "name": "skeleton",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "false shows the shared spinner and loadingText instead of skeleton rows. Default true.",
+            "summary": "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다.",
+            "source": "packages/native/src/table-view.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "\"로딩 중...\"",
+            "description": "",
+            "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/native/src/table-view.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Milliseconds a first load must last before its loading display shows.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
             "source": "packages/native/src/table-view.tsx"
           },
           {
@@ -10174,6 +10552,15 @@
             "source": "packages/vue3/src/data-state.tsx"
           },
           {
+            "name": "loadingDelay",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Milliseconds a first load must last before its loading display shows; the box keeps its space meanwhile.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
+            "source": "packages/vue3/src/data-state.tsx"
+          },
+          {
             "name": "retryText",
             "type": "string",
             "required": false,
@@ -10487,6 +10874,15 @@
             "default": "\"로딩 중...\"",
             "description": "",
             "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/react/src/data-state.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Milliseconds a first load must last before its loading display shows; the box keeps its space meanwhile.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
             "source": "packages/react/src/data-state.tsx"
           },
           {
@@ -10909,6 +11305,15 @@
             "default": "\"로딩 중...\"",
             "description": "",
             "summary": "최초 로딩 중 표시할 안내 문구입니다.",
+            "source": "packages/native/src/data-state.tsx"
+          },
+          {
+            "name": "loadingDelay",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Milliseconds a first load must last before its loading display shows; the box keeps its space meanwhile.",
+            "summary": "최초 로딩이 이 시간(ms)보다 길어질 때만 로딩 표시를 보여 줍니다. 그전에는 같은 공간을 비워 두어 빠른 응답에서 깜빡임과 레이아웃 이동이 없습니다. 기본값 0은 바로 표시합니다.",
             "source": "packages/native/src/data-state.tsx"
           },
           {

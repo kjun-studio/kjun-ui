@@ -3308,6 +3308,13 @@
         "description": ""
       },
       {
+        "name": "loadingDelay",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Milliseconds a first load must last before its loading display shows; the box keeps its space meanwhile."
+      },
+      {
         "name": "retryText",
         "type": "string",
         "required": false,
@@ -3451,6 +3458,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Milliseconds a first load must last before its loading display shows; the box keeps its space meanwhile."
       },
       {
         "name": "retryText",
@@ -3635,6 +3649,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Milliseconds a first load must last before its loading display shows; the box keeps its space meanwhile."
       },
       {
         "name": "retryText",
@@ -7381,6 +7402,13 @@
         "description": ""
       },
       {
+        "name": "surface",
+        "type": "\"card\" | \"none\"",
+        "required": false,
+        "default": "\"card\"",
+        "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list."
+      },
+      {
         "name": "formatter",
         "type": "(value: number) => string",
         "required": false,
@@ -7497,6 +7525,13 @@
         "description": ""
       },
       {
+        "name": "surface",
+        "type": "\"none\" | \"card\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list."
+      },
+      {
         "name": "aside",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
@@ -7611,6 +7646,13 @@
         "description": ""
       },
       {
+        "name": "surface",
+        "type": "\"none\" | \"card\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list."
+      },
+      {
         "name": "aside",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
@@ -7664,6 +7706,13 @@
         "description": ""
       },
       {
+        "name": "surface",
+        "type": "\"card\" | \"none\"",
+        "required": false,
+        "default": "\"card\"",
+        "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list."
+      },
+      {
         "name": "mobileSummary",
         "type": "boolean",
         "required": false,
@@ -7710,6 +7759,13 @@
         "description": ""
       },
       {
+        "name": "surface",
+        "type": "\"none\" | \"card\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list."
+      },
+      {
         "name": "mobileSummary",
         "type": "boolean | undefined",
         "required": false,
@@ -7752,6 +7808,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "\"none\" | \"card\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list."
       },
       {
         "name": "mobileSummary",
@@ -8277,6 +8340,27 @@
         "description": ""
       },
       {
+        "name": "skeleton",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "false shows the shared spinner and loadingText instead of the skeleton."
+      },
+      {
+        "name": "loadingText",
+        "type": "string",
+        "required": false,
+        "default": "\"로딩 중...\"",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Milliseconds a first load must last before its loading display shows."
+      },
+      {
         "name": "showFooter",
         "type": "boolean",
         "required": false,
@@ -8611,6 +8695,27 @@
         "description": ""
       },
       {
+        "name": "skeleton",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Milliseconds a first load must last before its loading display shows."
+      },
+      {
         "name": "showFooter",
         "type": "boolean | undefined",
         "required": false,
@@ -8912,6 +9017,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "skeleton",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Milliseconds a first load must last before its loading display shows."
       },
       {
         "name": "showFooter",
@@ -9239,6 +9365,27 @@
         "description": ""
       },
       {
+        "name": "skeleton",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "false shows the shared spinner and loadingText instead of the skeleton."
+      },
+      {
+        "name": "loadingText",
+        "type": "string",
+        "required": false,
+        "default": "\"로딩 중...\"",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Milliseconds a first load must last before its loading display shows."
+      },
+      {
         "name": "showFooter",
         "type": "boolean",
         "required": false,
@@ -9481,6 +9628,27 @@
         "description": ""
       },
       {
+        "name": "skeleton",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Milliseconds a first load must last before its loading display shows."
+      },
+      {
         "name": "showFooter",
         "type": "boolean | undefined",
         "required": false,
@@ -9714,6 +9882,27 @@
         "description": ""
       },
       {
+        "name": "skeleton",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Milliseconds a first load must last before its loading display shows."
+      },
+      {
         "name": "showFooter",
         "type": "boolean | undefined",
         "required": false,
@@ -9940,6 +10129,27 @@
         "required": false,
         "default": "\"\"",
         "description": ""
+      },
+      {
+        "name": "skeleton",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "false shows the shared spinner and loadingText instead of the skeleton."
+      },
+      {
+        "name": "loadingText",
+        "type": "string",
+        "required": false,
+        "default": "\"로딩 중...\"",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Milliseconds a first load must last before its loading display shows."
       },
       {
         "name": "showFooter",
@@ -10302,6 +10512,27 @@
         "description": ""
       },
       {
+        "name": "skeleton",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Milliseconds a first load must last before its loading display shows."
+      },
+      {
         "name": "showFooter",
         "type": "boolean | undefined",
         "required": false,
@@ -10596,6 +10827,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "skeleton",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false shows the shared spinner and loadingText instead of the skeleton. Default true."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Milliseconds a first load must last before its loading display shows."
       },
       {
         "name": "showFooter",
@@ -16381,6 +16633,27 @@
         "description": ""
       },
       {
+        "name": "skeleton",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "false shows the shared spinner and loadingText instead of skeleton rows."
+      },
+      {
+        "name": "loadingText",
+        "type": "string",
+        "required": false,
+        "default": "\"로딩 중...\"",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Milliseconds a first load must last before its loading display shows."
+      },
+      {
         "name": "emptyText",
         "type": "string",
         "required": false,
@@ -16667,6 +16940,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "skeleton",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false shows the shared spinner and loadingText instead of skeleton rows. Default true."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Milliseconds a first load must last before its loading display shows."
       },
       {
         "name": "emptyText",
@@ -16991,6 +17285,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "skeleton",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false shows the shared spinner and loadingText instead of skeleton rows. Default true."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Milliseconds a first load must last before its loading display shows."
       },
       {
         "name": "emptyText",

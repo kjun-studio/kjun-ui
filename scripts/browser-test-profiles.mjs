@@ -10,10 +10,10 @@ const layers = files('elevation', 'elevation-edges', 'elevation-inputs', 'elevat
 // 제목 필터 대신 파일 전체를 선택해 플랫폼별 사례와 함께 쓰이는 컴포넌트를 보존한다.
 export const relatedGroups = {
   alert: [...files('alert-design', 'accessibility-components', 'chip-toast-tokens'), ...visuals],
-  'data-state': [...files('data-state-design', 'table-contracts', 'runtime-cards', 'runtime-market'), ...contracts],
+  'data-state': [...files('data-state-design', 'loading-options', 'table-contracts', 'runtime-cards', 'runtime-market'), ...contracts],
   card: [...files('card-contract', 'card-review', 'card-layout', 'card-colors', 'card-hairline', 'geometry-tokens'), ...visuals],
-  table: [...files('table-contracts', 'runtime-cards', 'data-state-design', 'accessibility-components'), ...contracts, ...visuals],
-  market: [...files('runtime-market', 'data-state-design', 'geometry-tokens'), ...visuals],
+  table: [...files('table-contracts', 'loading-options', 'runtime-cards', 'data-state-design', 'accessibility-components'), ...contracts, ...visuals],
+  market: [...files('runtime-market', 'loading-options', 'data-state-design', 'geometry-tokens'), ...visuals],
   select: [...files('select-scroll', 'expanded', 'elevation-inputs', 'popup-escape'), ...fields, ...contracts, ...visuals],
   combobox: [...files('select-scroll', 'popup-escape', 'elevation-inputs'), ...fields, ...contracts, ...visuals],
   'search-input': [...files('search-input', 'elevation-inputs'), ...fields, ...contracts],
@@ -31,7 +31,7 @@ export const relatedGroups = {
   tooltip: [...layers, ...files('expanded', 'size-contracts')],
   icons: [...files('icon-render', 'icon-registry', 'icon-toggle', 'menu-button', 'button-design'), ...contracts, ...visuals],
   typography: files('typography', 'color-font', 'geometry-tokens', 'card-layout', 'visual-contract'),
-  kpi: [...files('kpi-secondary', 'typography', 'geometry-tokens', 'card-layout'), ...visuals],
+  kpi: [...files('kpi-secondary', 'loading-options', 'typography', 'geometry-tokens', 'card-layout'), ...visuals],
   quantity: [...files('quantity', 'elevation-inputs', 'interaction-states'), ...fields, ...visuals],
   slider: [...files('slider-design'), ...fields, ...visuals],
   'time-picker': [...files('elevation-inputs'), ...fields, ...visuals],

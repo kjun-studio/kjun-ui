@@ -42,6 +42,8 @@ const kjunKpiHeroProps = {
   secondary: { type: Array as PropType<KpiValue[]>, default: () => [] },
   animated: { type: Boolean, default: true },
   size: { type: String as PropType<"md" | "sm">, default: "md" },
+  /** "none" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list. */
+  surface: { type: String as PropType<"card" | "none">, default: "card" },
   formatter: { type: Function as PropType<(value: number) => string>, default: undefined },
   deltaFormatter: { type: Function as PropType<(value: number, kind: "absolute" | "percent") => string>, default: undefined },
 } as const;
@@ -70,7 +72,7 @@ export const KjunKpiHero = defineComponent({
       </>;
       const aside = slots.aside?.();
       return (
-        <div class={"kjun-kpi-hero" + (props.size === "sm" ? " kjun-kpi-hero--sm" : "")} aria-busy={loading}
+        <div class={"kjun-kpi-hero" + (props.size === "sm" ? " kjun-kpi-hero--sm" : "")} data-surface={props.surface === "none" ? "none" : undefined} aria-busy={loading}
           ref={domainRef(!loading && (Number(deltaAbsolute) !== 0 || Number(deltaPercent) !== 0 || secondary.some(item => item.semantic === "price" && Number(item.value) !== 0)))}>
           <div class="kjun-kpi-hero__layout">
             <div class="kjun-kpi-hero__main">
@@ -140,6 +142,8 @@ const kjunKpiRowProps = {
   loading: { type: Boolean, default: false },
   items: { type: Array as PropType<KpiRowItem[]>, required: true },
   size: { type: String as PropType<"md" | "sm">, default: "md" },
+  /** "none" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list. */
+  surface: { type: String as PropType<"card" | "none">, default: "card" },
   mobileSummary: { type: Boolean, default: true },
 } as const;
 export type KjunKpiRowProps = ExtractPublicPropTypes<typeof kjunKpiRowProps>;
@@ -170,6 +174,7 @@ export const KjunKpiRow = defineComponent({
       return (
         <div class={"kjun-kpi-row" + (size === "sm" ? " kjun-kpi-row--sm" : "") + (items[0]?.mobileFull ? " kjun-kpi-row--hero-first" : "") +
           (mobileSummary && size !== "sm" ? " kjun-kpi-row--mobile-summary" : "")}
+          data-surface={props.surface === "none" ? "none" : undefined}
           aria-busy={loading || items.some(item => item.loading)}
           ref={domainRef(!loading && items.some(item => !item.loading && (item.semantic === "price" && Number(item.value) !== 0 || !!item.badge?.variant?.startsWith("price-"))))}>
           {items.map((item, i) => {

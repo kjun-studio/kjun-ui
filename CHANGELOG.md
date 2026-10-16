@@ -2,9 +2,26 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
-## 0.6.2 — 2026-10-16
+## 0.7.0 — 2026-10-16
 
-첫 적용 프로젝트의 피드백에서 찾은 결함을 고쳤습니다.
+로딩 표시 방식을 고를 수 있게 하고, KPI를 다른 표면 안에 넣을 수 있게 했습니다. 모두 기본값이 기존 동작과 같아 바꿀 코드는 없습니다.
+
+- **`skeleton`**: Table·MarketTable·MarketCards·MarketSimpleList에 추가했습니다(기본 `true`). `false`이면 스켈레톤 대신 DataState의 스피너와 `loadingText`를 표시합니다.
+- **`loadingDelay`**(ms): DataState와 위 네 컴포넌트에 추가했습니다(기본 `0`). 최초 로딩이 이 시간보다 길어질 때만 로딩 표시를 보여 주고, 그전에는 같은 공간을 비워 둡니다. 빠른 응답에서 로딩 표시가 깜빡이거나 레이아웃이 움직이지 않습니다.
+- **`loadingText`**: Table과 Market 세 컴포넌트에 추가했습니다. 스피너 모드의 안내 문구입니다.
+- **KpiHero·KpiRow `surface="none"`**: 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않습니다.
+
+```vue
+<!-- 300ms 안에 끝나는 조회는 로딩 표시 없이, 그보다 길면 스피너와 안내 문구 -->
+<KjunMarketCards :rows="rows" :loading="loading" :skeleton="false" :loading-delay="300" loading-text="관심 종목을 불러오는 중" ... />
+<KjunKpiHero surface="none" label="총 평가 금액" :value="total" />
+```
+
+- Tabs 헤더를 스크롤 영역 위에 고정하는 방법(items만 넘기고 앱의 sticky 래퍼로 감싸기)을 Tabs 문서에 추가했습니다.
+
+### 결함 수정
+
+첫 적용 프로젝트의 피드백에서 찾은 결함입니다.
 
 - **숫자 글꼴**: `.kjun-type-number-*`·`.kjun-type-display-*`가 접두사 없는 앱 변수 `--font-numeric`을 읽던 것을 `--kjun-font-numeric`(없으면 `--kjun-font`) 연결로 바꿨습니다. 앱이 `--font-numeric`을 정의하지 않아도 숫자 글꼴이 적용됩니다. 전역 이름 검사가 CSS `var()` 참조도 확인합니다.
 - **IconToggle**: `activeColorClass`·`inactiveColorClass`로 넘긴 앱 색 클래스가 실제로 아이콘 색을 정합니다(이전에는 기본 색이 이겼습니다). 색 클래스를 쓰면 KJUN 기본 색과 hover 색을 적용하지 않습니다.

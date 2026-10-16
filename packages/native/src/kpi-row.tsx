@@ -46,6 +46,8 @@ export interface KjunKpiRowProps {
   loading?: boolean;
   items: KpiRowItem[];
   size?: "md" | "sm";
+  /** "none" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list. */
+  surface?: "card" | "none";
   mobileSummary?: boolean;
   onItemClick?: (item: KpiRowItem, index: number) => void;
   renderValue?: (item: KpiRowItem, index: number) => ReactNode;
@@ -54,6 +56,7 @@ export function KjunKpiRow({
   loading = false,
   items,
   size = "md",
+  surface = "card",
   mobileSummary = true,
   onItemClick,
   renderValue,
@@ -123,10 +126,13 @@ export function KjunKpiRow({
       style={{
         flexDirection: "row",
         flexWrap: mobile ? "wrap" : "nowrap",
-        paddingVertical: summary ? geometry.summary.paddingY : spec.paddingY,
-        paddingHorizontal: paddingX,
-        borderRadius: geometry.radius,
-        backgroundColor: colors.surface,
+        // surface="none" sits inside the app's own card or list, so it drops its own card box.
+        ...(surface === "none" ? {} : {
+          paddingVertical: summary ? geometry.summary.paddingY : spec.paddingY,
+          paddingHorizontal: paddingX,
+          borderRadius: geometry.radius,
+          backgroundColor: colors.surface,
+        }),
         rowGap: summary ? geometry.summary.gapY : 0,
         columnGap: gapX,
       }}

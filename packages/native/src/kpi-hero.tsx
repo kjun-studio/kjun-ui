@@ -53,6 +53,8 @@ export interface KjunKpiHeroProps {
   secondary?: KpiValue[];
   animated?: boolean;
   size?: "md" | "sm";
+  /** "none" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list. */
+  surface?: "card" | "none";
   aside?: ReactNode;
   formatter?: (value: number) => string;
   deltaFormatter?: (value: number, kind: "absolute" | "percent") => string;
@@ -72,6 +74,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     secondary = [],
     animated = true,
     size = "md",
+    surface = "card",
     aside,
     formatter,
     deltaFormatter,
@@ -126,10 +129,13 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     <View
       accessibilityState={{ busy: loading }}
       style={{
-        paddingVertical: spec.paddingY,
-        paddingHorizontal: spec.paddingX,
-        backgroundColor: colors.surface,
-        borderRadius: geometry.radius,
+        // surface="none" sits inside the app's own card or list, so it drops its own card box.
+        ...(surface === "none" ? {} : {
+          paddingVertical: spec.paddingY,
+          paddingHorizontal: spec.paddingX,
+          backgroundColor: colors.surface,
+          borderRadius: geometry.radius,
+        }),
       }}
     >
       <View

@@ -11,7 +11,7 @@ import { KjunCheckbox } from "./controls";
 import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
 import type { TableColumn } from "./table-model";
-export function TableGrid<Row extends object>({ initialLoading, skeletonRows, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable }: TableGridProps<Row, number>) {
+export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable }: TableGridProps<Row, number>) {
   const { colors } = useKjunStyles();
   const geometry = tokens.table;
   // Like Web's scroll hint: when columns overflow, the trailing edge fades until the end is reached.
@@ -29,7 +29,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, st
     (expandable ? geometry.actionColumnWidth : 0);
   const fade = totalWidth - scroll.viewport - scroll.x > 1;
   return (
-        <View style={{ position: "relative", minWidth: 0 }}>
+        <View style={{ position: "relative", minWidth: 0, opacity: skeletonHidden ? 0 : undefined }} aria-hidden={skeletonHidden || undefined}>
           <ScrollView horizontal style={{ maxHeight }} scrollEventThrottle={16}
             onLayout={(event) => { const viewport = event.nativeEvent.layout.width; setScroll((previous) => ({ ...previous, viewport })); }}
             onScroll={(event) => { const x = event.nativeEvent.contentOffset.x; setScroll((previous) => ({ ...previous, x })); }}>

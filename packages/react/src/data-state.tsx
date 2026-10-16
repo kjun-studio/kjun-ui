@@ -5,6 +5,7 @@ queryDisplayStatus,
 type QueryDisplayProps,
 } from "@kjun-ui/tokens";
 import { Component,useState,type ErrorInfo,type ReactNode } from "react";
+import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import { KjunButton } from "./button";
 import {
 KjunAlert,
@@ -37,6 +38,8 @@ export interface KjunDataStateProps extends QueryDisplayProps {
   emptyIcon?: string;
   emptyActionText?: string;
   loadingText?: string;
+  /** Milliseconds a first load must last before its loading display shows; the box keeps its space meanwhile. */
+  loadingDelay?: number;
   retryText?: string;
   size?: "sm" | "md" | "lg";
   skeleton?: boolean;
@@ -60,6 +63,7 @@ export function KjunDataState({
   emptyIcon,
   emptyActionText,
   loadingText = "로딩 중...",
+  loadingDelay = 0,
   retryText = "다시 시도",
   size = "md",
   skeleton = false,
@@ -80,7 +84,8 @@ export function KjunDataState({
       refreshError ||
       (state.usesQueryState && state.hasCurrentResult ? query.error : null),
     concealed = state.initialLoading || !!blockingError || empty,
-    padding = tokens.extensions.state.padding[size];
+    padding = tokens.extensions.state.padding[size],
+    revealed = useLoadingReveal(state.initialLoading, loadingDelay);
   return (
     <div className="kjun-data-state" aria-busy={!!query.loading || refreshing}>
       <div>
@@ -93,9 +98,10 @@ export function KjunDataState({
       </div>
       {state.initialLoading ? (
         <div
-          role="status"
-          aria-label={loadingText}
-          style={{ paddingBlock: loadingPadding === "none" ? 0 : padding }}
+          role={revealed ? "status" : undefined}
+          aria-label={revealed ? loadingText : undefined}
+          aria-hidden={revealed ? undefined : true}
+          style={{ paddingBlock: loadingPadding === "none" ? 0 : padding, visibility: revealed ? undefined : "hidden" }}
         >
           {loadingContent ||
             (skeleton ? (

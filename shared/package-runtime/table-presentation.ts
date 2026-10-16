@@ -43,6 +43,8 @@ export function tableCellValue<Row extends object>(props: TableProps<Row, unknow
 export interface TableRowsProps<Row extends object> {
   initialLoading: boolean;
   skeletonRows: number;
+  /** A loadingDelay is still running: the skeleton keeps its space but stays out of sight. */
+  skeletonHidden?: boolean;
   state: Pick<ReturnType<typeof useTableModel<Row>>, "rows" | "key" | "expanded" | "selectedRow">;
   onRowClick: TableProps<Row>["onRowClick"];
   selectable: boolean;
