@@ -14,7 +14,7 @@ export const feedback: Record<string, GuideAuthor> = {
     related: "feedback",
   },
   KjunChartSkeleton: {
-    parts: [p("차트 자리 표시자", "완료 후 차트가 차지할 공간과 형태를 미리 보여줍니다.")],
+    parts: [p("차트 자리 표시자", "완료 후 차트가 차지할 공간과, 데이터와 무관하게 정해진 틀(축·격자, 링, 셀)을 보여줍니다.")],
     related: "loading",
   },
   KjunDataState: {

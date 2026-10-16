@@ -9,9 +9,9 @@
   "KjunChartSkeleton": {
     "slug": "chart-skeleton",
     "description": "차트 영역의 높이를 유지하며 조회 중인 상태를 표시합니다.",
-    "interaction": "차트의 kind와 height로 자리 표시자를 구성합니다. 실제 요청 상태에 따라 표시 여부를 소비자가 결정합니다.",
-    "differences": "세 플랫폼의 공개 조절기는 kind·height입니다. animated나 행 수를 직접 조절하는 prop은 없습니다.",
-    "states": "kind로 차트 형태를, height로 공간을 정합니다. 입력·선택 상태나 자체 요청은 없습니다."
+    "interaction": "데이터가 오기 전에도 변하지 않는 부분만 그립니다. 선·막대·캔들 차트는 kind=\"frame\"으로 축과 격자만, 원형 차트는 donut, 히트맵은 matrix를 씁니다. 표시 여부는 소비자가 요청 상태에 따라 정합니다.",
+    "differences": "세 플랫폼 모두 kind·height·loadingText·skeleton·loadingDelay·rows·columns를 받습니다.",
+    "states": "skeleton=false이면 스피너와 문구를, loadingDelay 동안은 높이만 유지한 빈 영역을 표시합니다. 문구가 있으면 status 역할로 알립니다."
   },
   "KjunCollectionMark": {
     "slug": "collection-mark",

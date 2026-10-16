@@ -1,6 +1,6 @@
 export default [
   ['KjunAlert', 'dismiss', 'title closable', '안내 알림의 본문과 닫기 버튼', {}],
-  ['KjunChartSkeleton', 'decorative', 'kind', '차트의 비대화형 로딩 자리표시자', {}],
+  ['KjunChartSkeleton', 'text', 'loadingText', '차트 로딩 상태 문구', { text: '차트를 불러오는 중' }],
   ['KjunDataState', 'data-state', 'retryText error', '조회 실패 메시지와 재시도 버튼', {}],
   ['KjunErrorBoundary', 'boundary', 'fallbackMessage', '렌더 오류 뒤 fallback 메시지와 다시 시도 버튼', {}],
   ['KjunFormSkeleton', 'decorative', 'fields', '폼의 비대화형 로딩 자리표시자', {}],

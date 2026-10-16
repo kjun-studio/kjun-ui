@@ -19,7 +19,7 @@ export function generate(input: UsageInput) {
     case 'KjunSkeleton': content = b.node(name, { type: 'card', animated: s.animated, rows: 3 }); break;
     case 'KjunListSkeleton': content = b.node(name, { rows: 3, variant: 'market', avatar: true }); break;
     case 'KjunFormSkeleton': content = b.node(name, { fields: ['', '', ''], columns: 1, size: s.size || 'md', multiline: s.multiline }); break;
-    case 'KjunChartSkeleton': content = b.node(name, { kind:s.kind, loadingText:s.loadingText, height:180 }); break;
+    case 'KjunChartSkeleton': content = b.node(name, { kind:s.kind, skeleton:s.skeleton, loadingText:s.loadingText, height:180 }); break;
     case 'KjunMarketTableSkeleton':
       content = b.node(name, { columns: b.data('columns', columns), rows: 3, showActions: true }); break;
     case 'KjunTable': return tableUsageExample(input);

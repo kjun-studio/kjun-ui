@@ -206,7 +206,13 @@ set("RefreshButton", {
 
 set("Popover", { noPadding: { default:"false", summary:"기본 16px 패딩과 12px 콘텐츠 간격을 제거합니다. 직접 구성하는 콘텐츠에 사용합니다." } });
 set("Card", { dividers: { default:"false", summary:"헤더·본문·푸터 사이 구분선을 표시합니다. 기본은 구분선 없이 16px 간격으로 나눕니다." } });
-set("ChartSkeleton", { loadingText: { default:'"차트를 불러오는 중"', summary:"시각적으로 표시할 로딩 문구입니다. 빈 문자열은 문구만 숨깁니다. 스크린 리더 알림은 DataState 등 부모 상태 영역에서 제공합니다." } });
+set("ChartSkeleton", {
+  kind: { default:'"frame"', summary:"frame은 축과 격자만, donut은 링만, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다." },
+  loadingText: { default:'"차트를 불러오는 중"', summary:"표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다." },
+  skeleton: { default:"true", summary:"false이면 자리 표시 대신 같은 높이 안에 스피너와 loadingText를 표시합니다." },
+  rows: { default:"8", summary:"matrix의 행 수입니다. 1 이상 정수로 내림합니다." },
+  columns: { default:"14", summary:"matrix의 열 수입니다. 1 이상 정수로 내림합니다." },
+});
 set("Tabs", { density:"comfortable은 44px, compact는 32px 높이입니다. 두 변형 모두 14px 라벨을 사용합니다.", variant:"underline은 2px 선택선, pills는 선택 항목의 중립 배경을 제공합니다." });
 
 set("Card", { elevation: { summary: "콘텐츠 표면의 역할입니다. 기본 flat에는 그림자가 없고 raised에는 옅은 접촉 그림자가 있습니다.", details: [{ label: "행동", text: "Card 자체에는 hover 그림자·상승·pointer 효과가 없습니다. 행동은 내부 Button·Link에 연결합니다." }] } });

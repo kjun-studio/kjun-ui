@@ -54,7 +54,7 @@ assign("MenuButton", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "
 assign("Input", [choice("comparison", "비교", ["기본", "크기", "상태", "아이콘·단위"]), size, disabled, toggle("readOnly", "읽기 전용"), error]);
 controls.KjunCard = cardControls;
 assign("Popover", [toggle("noPadding", "기본 여백 제거")]);
-assign("ChartSkeleton", [choice("kind", "차트 종류", ["line", "grid", "bar", "donut", "candle", "matrix"]), field("loadingText", "로딩 문구", "차트를 불러오는 중")]);
+assign("ChartSkeleton", [choice("kind", "차트 종류", ["frame", "donut", "matrix"]), toggle("skeleton", "스켈레톤", true), field("loadingText", "로딩 문구", "차트를 불러오는 중")]);
 // Alert renders two sizes; "lg" stays accepted for compatibility but draws md, so the example offers sm and md.
 assign("Alert", [choice("tone", "종류", ["info", "success", "warning", "danger", "primary"]), choice("size", "크기", ["sm", "md"], "md"), field("title", "제목", "안내"), field("body", "본문", "작업 상태를 설명하는 문장입니다."), toggle("closable", "닫기 표시", true), toggle("action", "재시도 버튼")]);
 assign("Icon", [toggle("spin", "회전")]);

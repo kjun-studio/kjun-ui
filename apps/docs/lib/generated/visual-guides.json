@@ -103,7 +103,7 @@
             "parts": [
               {
                 "label": "차트 자리 표시자",
-                "description": "완료 후 차트가 차지할 공간과 형태를 미리 보여줍니다.",
+                "description": "완료 후 차트가 차지할 공간과, 데이터와 무관하게 정해진 틀(축·격자, 링, 셀)을 보여줍니다.",
                 "target": ".catalog-render > *",
                 "optional": false
               }
@@ -119,7 +119,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "kind로 차트 형태를, height로 공간을 정합니다. 입력·선택 상태나 자체 요청은 없습니다."
+        "note": "skeleton=false이면 스피너와 문구를, loadingDelay 동안은 높이만 유지한 빈 영역을 표시합니다. 문구가 있으면 status 역할로 알립니다."
       },
       "react": {
         "figures": [
@@ -130,7 +130,7 @@
             "parts": [
               {
                 "label": "차트 자리 표시자",
-                "description": "완료 후 차트가 차지할 공간과 형태를 미리 보여줍니다.",
+                "description": "완료 후 차트가 차지할 공간과, 데이터와 무관하게 정해진 틀(축·격자, 링, 셀)을 보여줍니다.",
                 "target": ".catalog-render > *",
                 "optional": false
               }
@@ -146,7 +146,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "kind로 차트 형태를, height로 공간을 정합니다. 입력·선택 상태나 자체 요청은 없습니다."
+        "note": "skeleton=false이면 스피너와 문구를, loadingDelay 동안은 높이만 유지한 빈 영역을 표시합니다. 문구가 있으면 status 역할로 알립니다."
       },
       "native": {
         "figures": [
@@ -157,7 +157,7 @@
             "parts": [
               {
                 "label": "차트 자리 표시자",
-                "description": "완료 후 차트가 차지할 공간과 형태를 미리 보여줍니다.",
+                "description": "완료 후 차트가 차지할 공간과, 데이터와 무관하게 정해진 틀(축·격자, 링, 셀)을 보여줍니다.",
                 "target": ".catalog-render > *",
                 "optional": false
               }
@@ -173,7 +173,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "kind로 차트 형태를, height로 공간을 정합니다. 입력·선택 상태나 자체 요청은 없습니다."
+        "note": "skeleton=false이면 스피너와 문구를, loadingDelay 동안은 높이만 유지한 빈 영역을 표시합니다. 문구가 있으면 status 역할로 알립니다."
       }
     }
   },

@@ -422,7 +422,7 @@
       "title": "ChartSkeleton",
       "docs": "/components/chart-skeleton",
       "category": "feedback",
-      "differences": "세 플랫폼의 공개 조절기는 kind·height입니다. animated나 행 수를 직접 조절하는 prop은 없습니다.",
+      "differences": "세 플랫폼 모두 kind·height·loadingText·skeleton·loadingDelay·rows·columns를 받습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
