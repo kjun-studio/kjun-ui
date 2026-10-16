@@ -11,6 +11,9 @@ test('chart skeleton counts normalize to positive integers', () => {
   assert.equal(chartSkeletonCount(8), 8);
   assert.equal(chartSkeletonCount(2.7), 2);
   for (const value of [0, -3, 0.4, NaN, Infinity, -Infinity]) assert.equal(chartSkeletonCount(value), 1);
+  // Counts derived from data must not render an unbounded grid.
+  assert.equal(chartSkeletonCount(100), 100);
+  for (const value of [101, 1e4, 1e9]) assert.equal(chartSkeletonCount(value), 100);
 });
 
 test('chart skeleton frame, matrix pattern and donut hole', () => {

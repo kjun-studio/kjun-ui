@@ -210,8 +210,8 @@ set("ChartSkeleton", {
   kind: { default:'"frame"', summary:"frame은 축과 격자만, donut은 링만, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다." },
   loadingText: { default:'"차트를 불러오는 중"', summary:"표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다." },
   skeleton: { default:"true", summary:"false이면 자리 표시 대신 같은 높이 안에 스피너와 loadingText를 표시합니다." },
-  rows: { default:"8", summary:"matrix의 행 수입니다. 1 이상 정수로 내림합니다." },
-  columns: { default:"14", summary:"matrix의 열 수입니다. 1 이상 정수로 내림합니다." },
+  rows: { default:"8", summary:"matrix의 행 수입니다. 1–100 사이 정수로 내림합니다." },
+  columns: { default:"14", summary:"matrix의 열 수입니다. 1–100 사이 정수로 내림합니다." },
 });
 set("Tabs", { density:"comfortable은 44px, compact는 32px 높이입니다. 두 변형 모두 14px 라벨을 사용합니다.", variant:"underline은 2px 선택선, pills는 선택 항목의 중립 배경을 제공합니다." });
 

@@ -141,6 +141,11 @@ for(const platform of ['react','vue3','native']) {
       if(platform!=='native') expect(await path.getAttribute('stroke')).toBe('var(--_kjun-color-chart-grid)');
     }
   });
+  test(`${platform}: chart skeleton frame keeps a width inside a shrink-to-fit parent`,async({page})=>{
+    test.skip(platform==='native','inline-block parents are a web layout case');
+    await openFixture(page,platform,'?kind=frame&chart-shrink','visual-contract');
+    expect((await box(chartRoot(page))).width).toBeGreaterThan(100);
+  });
   test(`${platform}: chart skeleton matrix draws rows × columns round cells`,async({page})=>{
     await page.emulateMedia({reducedMotion:'reduce'});
     for(const width of [320,760]) {
@@ -168,10 +173,14 @@ for(const platform of ['react','vue3','native']) {
     await page.emulateMedia({reducedMotion:'reduce'});
     await openFixture(page,platform,'?spinner','visual-contract');
     await expect(chartPart(page,'loading')).toBeVisible();
-    // KjunSpinner carries its own status role, as in DataState's spinner mode; the chart's status is the one with the text.
-    await expect(page.getByTestId('chart').getByRole('status').filter({hasText:'차트를 불러오는 중'})).toBeVisible();
+    // The chart's status carries the text; the spinner inside it is decorative so nothing is announced twice.
+    await expect(page.getByTestId('chart').getByRole('status')).toHaveCount(1);
+    await expect(page.getByTestId('chart').getByRole('status')).toHaveText('차트를 불러오는 중');
     await expect(chartPart(page,'plot')).toHaveCount(0);
     expect((await box(chartRoot(page))).height).toBe(180);
+    await openFixture(page,platform,'?spinner&no-text','visual-contract');
+    await expect(chartPart(page,'loading')).toBeVisible();
+    await expect(page.getByTestId('chart').getByRole('status')).toHaveCount(0);
     await openFixture(page,platform,'?delay=4000','visual-contract');
     expect((await box(chartRoot(page))).height).toBe(180);
     await expect(page.getByTestId('chart').getByRole('status')).toHaveCount(0);

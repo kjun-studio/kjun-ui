@@ -5,9 +5,12 @@ export type KjunChartSkeletonKind = "frame" | "donut" | "matrix";
 export const chartFrameViewBox = "0 0 600 240";
 export const chartFramePath = "M20 10V220H590 M20 65H590 M20 120H590 M20 175H590";
 
-/** Matrix rows and columns: finite values floor to at least 1; anything else is 1. */
+/** Upper bound for matrix rows and columns, so counts derived from data never render an unbounded grid. */
+export const chartSkeletonMaxCount = 100;
+
+/** Matrix rows and columns: finite values floor into 1–100; anything else is 1. */
 export function chartSkeletonCount(value: number) {
-  return Number.isFinite(value) ? Math.max(1, Math.floor(value)) : 1;
+  return Number.isFinite(value) ? Math.min(chartSkeletonMaxCount, Math.max(1, Math.floor(value))) : 1;
 }
 
 /** Every third diagonal cell is drawn at the pending opacity so the matrix reads as a heatmap. */

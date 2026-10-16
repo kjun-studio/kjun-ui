@@ -194,7 +194,10 @@ export function KjunChartSkeleton({
     >
       {!skeleton ? (
         <View {...chartPart("loading")} role={status} style={{ alignItems: "center", gap: tokens.dimension.value12 }}>
-          <KjunSpinner size="md" />
+          {/* The chart's status carries the text; the spinner stays out of the accessibility tree. */}
+          <View {...hidden}>
+            <KjunSpinner size="md" />
+          </View>
           {!!loadingText && (
             <KText style={{ ...typeStyle("body"), color: colors.textSecondary, textAlign: "center", maxWidth: "100%" }}>{loadingText}</KText>
           )}

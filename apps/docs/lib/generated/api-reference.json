@@ -287,7 +287,7 @@
             "required": false,
             "default": "8",
             "description": "",
-            "summary": "matrix의 행 수입니다. 1 이상 정수로 내림합니다.",
+            "summary": "matrix의 행 수입니다. 1–100 사이 정수로 내림합니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           },
           {
@@ -296,7 +296,7 @@
             "required": false,
             "default": "14",
             "description": "",
-            "summary": "matrix의 열 수입니다. 1 이상 정수로 내림합니다.",
+            "summary": "matrix의 열 수입니다. 1–100 사이 정수로 내림합니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           }
         ],
@@ -358,7 +358,7 @@
             "required": false,
             "default": "8",
             "description": "",
-            "summary": "matrix의 행 수입니다. 1 이상 정수로 내림합니다.",
+            "summary": "matrix의 행 수입니다. 1–100 사이 정수로 내림합니다.",
             "source": "packages/react/src/skeletons.tsx"
           },
           {
@@ -367,7 +367,7 @@
             "required": false,
             "default": "14",
             "description": "",
-            "summary": "matrix의 열 수입니다. 1 이상 정수로 내림합니다.",
+            "summary": "matrix의 열 수입니다. 1–100 사이 정수로 내림합니다.",
             "source": "packages/react/src/skeletons.tsx"
           }
         ],
@@ -429,7 +429,7 @@
             "required": false,
             "default": "8",
             "description": "",
-            "summary": "matrix의 행 수입니다. 1 이상 정수로 내림합니다.",
+            "summary": "matrix의 행 수입니다. 1–100 사이 정수로 내림합니다.",
             "source": "packages/native/src/skeletons.tsx"
           },
           {
@@ -438,7 +438,7 @@
             "required": false,
             "default": "14",
             "description": "",
-            "summary": "matrix의 열 수입니다. 1 이상 정수로 내림합니다.",
+            "summary": "matrix의 열 수입니다. 1–100 사이 정수로 내림합니다.",
             "source": "packages/native/src/skeletons.tsx"
           }
         ],

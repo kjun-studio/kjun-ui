@@ -98,9 +98,12 @@
   justify-content: center;
   width: 100%;
   min-width: 0;
-  /* The donut label measures the hole against this box's height. */
-  container-type: size;
   animation: kjun-chart-pulse var(--_kjun-motion-shimmer) ease-in-out infinite;
+}
+.kjun-chart-skeleton[data-kjun-chart-kind="donut"] {
+  /* Only the donut label measures the hole against this box's height; size containment elsewhere would
+     drop the frame's intrinsic width inside shrink-to-fit parents. */
+  container-type: size;
 }
 .kjun-chart-skeleton[data-skeleton="false"] {
   animation: none;

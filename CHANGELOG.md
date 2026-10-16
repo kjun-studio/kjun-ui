@@ -16,7 +16,7 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 | 토큰 `extensions.skeleton.chartHeight`·`chartBarMaxWidth`·`chartAxisHeight`, `extensions.chartSkeleton.donutLabelWidth`·`donutLabelHeight` | 제거 |
 
 - **`kind`**: `frame`(축·격자), `donut`(링), `matrix`(셀)만 남았습니다. 기본값은 `frame`입니다.
-- **`rows`·`columns`**: matrix의 행·열 수입니다(기본 8·14).
+- **`rows`·`columns`**: matrix의 행·열 수입니다(기본 8·14, 1–100 사이로 맞춤).
 - **`skeleton`**·**`loadingDelay`**: Table 계열과 같은 계약입니다. `skeleton={false}`이면 같은 높이 안에 스피너와 문구를, `loadingDelay` 동안은 빈 영역을 표시합니다.
 - **접근성**: `loadingText`가 있으면 `role="status"`로 알립니다. DataState 안에서는 `loadingText=""`로 두어 중복 알림을 피하세요.
 - **표시 개선**: 격자가 `--kjun-chart-grid` 색 역할을 쓰고 폭과 관계없이 1px로 그려집니다. donut 문구는 구멍 안에서 줄바꿈되고, 문구 칩은 테두리로 차트 위 레이어임을 드러냅니다.

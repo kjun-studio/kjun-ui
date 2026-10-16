@@ -127,7 +127,10 @@ export function KjunChartSkeleton({
     >
       {!skeleton ? (
         <div className="kjun-data-loading" data-kjun-chart-part="loading" role={status}>
-          <KjunSpinner size="md" />
+          {/* The spinner's own status would announce "로딩 중" on top of (or instead of) the chart's text. */}
+          <span aria-hidden="true">
+            <KjunSpinner size="md" />
+          </span>
           {loadingText && <p>{loadingText}</p>}
         </div>
       ) : (

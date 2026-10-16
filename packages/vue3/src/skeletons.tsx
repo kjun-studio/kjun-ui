@@ -113,7 +113,8 @@ export const KjunChartSkeleton = defineComponent({
           aria-hidden={shown ? undefined : "true"} style={css({ height: props.height, visibility: shown ? undefined : "hidden" })}>
           {!props.skeleton ? (
             <div class="kjun-data-loading" data-kjun-chart-part="loading" role={status}>
-              <KjunSpinner size="md" />
+              {/* The spinner's own status would announce "로딩 중" on top of (or instead of) the chart's text. */}
+              <span aria-hidden="true"><KjunSpinner size="md" /></span>
               {props.loadingText && <p>{props.loadingText}</p>}
             </div>
           ) : [
