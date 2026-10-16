@@ -193,7 +193,7 @@ export const KjunProgress = defineComponent({
 
 type Length = number | string;
 const kjunSkeletonProps = {
-  type: { type: String as PropType<"text" | "avatar" | "card" | "table" | "chart" | "stat" | "block">, default: "text" },
+  type: { type: String as PropType<"text" | "avatar" | "card" | "table" | "stat" | "block">, default: "text" },
   rows: { type: Number, default: 3 },
   columns: { type: Number, default: 4 },
   height: { type: [Number, String] as PropType<Length>, default: undefined },
@@ -244,14 +244,6 @@ export const KjunSkeleton = defineComponent({
                   ))}
                 </div>
               ))}
-            </div>
-          )}
-          {type === "chart" && (
-            <div class="kjun-skeleton-chart" style={css({ height: height || sizes.chartHeight })}>
-              <div class="kjun-skeleton-chart-bars">
-                {[40, 65, 50, 80, 60, 90, 75].map((bar, i) => <div key={i} class="kjun-skeleton-chart-bar" style={{ height: bar + "%" }} />)}
-              </div>
-              <div class="kjun-skeleton-chart-axis" />
             </div>
           )}
           {type === "stat" && (

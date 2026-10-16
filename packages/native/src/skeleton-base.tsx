@@ -10,7 +10,7 @@ import { useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
 
 export interface KjunSkeletonProps {
-  type?: "text" | "avatar" | "card" | "table" | "chart" | "stat" | "block";
+  type?: "text" | "avatar" | "card" | "table" | "stat" | "block";
   rows?: number;
   columns?: number;
   height?: DimensionValue;
@@ -172,35 +172,6 @@ export function KjunSkeleton({
               ))}
             </View>
           ))}
-        </View>
-      )}
-      {type === "chart" && (
-        <View style={[frame, { height: height || tokens.extensions.skeleton.chartHeight }]}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "flex-end",
-              justifyContent: "space-around",
-              gap: tokens.extensions.skeleton.gap,
-              // Bars stand on the axis line, like ChartSkeleton.
-            }}
-          >
-            {[40, 65, 50, 80, 60, 90, 75].map((h, i) => (
-              <Animated.View
-                key={i}
-                style={{
-                  flex: 1,
-                  maxWidth: tokens.extensions.skeleton.chartBarMaxWidth,
-                  height: `${h}%`,
-                  backgroundColor: shimmer,
-                  borderTopLeftRadius: tokens.radius.radius4,
-                  borderTopRightRadius: tokens.radius.radius4,
-                }}
-              />
-            ))}
-          </View>
-          {block("100%", tokens.extensions.skeleton.chartAxisHeight, { backgroundColor: colors.border })}
         </View>
       )}
       {type === "stat" && (

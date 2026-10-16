@@ -122,7 +122,7 @@ await change('sizing', s => {
     sparklineWidth:96,sparklineHeight:32,priceSkeletonWidth:76,priceSkeletonHeight:20,
     signedSkeletonWidth:60,signedSkeletonHeight:22});
   Object.assign(e.skeleton,{lineHeights:{sm:10,md:18,lg:26},avatarSize:52,cardAvatarSize:44,
-    tableLineHeight:17,chartHeight:220,chartBarMaxWidth:44,chartAxisHeight:3,statWidth:92,
+    tableLineHeight:17,statWidth:92,
     statHeight:44,blockHeight:116,listAvatarSize:38,quoteWidth:96,quoteHeight:20,
     detailWidth:62,formLabelWidth:104,formLabelHeight:15});
   Object.assign(e.chartSkeleton,{height:260,donutThickness:26,donutLabelWidth:84,

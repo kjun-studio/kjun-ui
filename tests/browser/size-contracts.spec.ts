@@ -56,8 +56,6 @@ for (const platform of ['react', 'vue3', 'native']) {
     await dimensions(page.getByTestId('skeleton-card'), e.skeleton.cardAvatarSize, e.skeleton.cardAvatarSize);
     await dimensions(page.getByTestId('skeleton-card'), undefined, e.skeleton.lineHeights.sm);
     await dimensions(page.getByTestId('skeleton-table'), undefined, e.skeleton.tableLineHeight);
-    await dimensions(page.getByTestId('skeleton-chart'), undefined, e.skeleton.chartHeight);
-    await dimensions(page.getByTestId('skeleton-chart'), undefined, e.skeleton.chartAxisHeight);
     await dimensions(page.getByTestId('skeleton-stat'), e.skeleton.statWidth, e.skeleton.statHeight);
     await dimensions(page.getByTestId('skeleton-block'), undefined, e.skeleton.blockHeight);
     await dimensions(page.getByTestId('list-skeleton'), e.skeleton.listAvatarSize, e.skeleton.listAvatarSize);

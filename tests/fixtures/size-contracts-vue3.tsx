@@ -5,7 +5,7 @@ cssPalette();
 // Same lists as size-contracts-common.tsx, which imports React.
 const displaySizes = ['xs', 'sm', 'md', 'lg', 'xl'] as any[];
 const coreSizes = ['sm', 'md', 'lg'] as any[];
-const skeletonKinds = ['text', 'avatar', 'card', 'table', 'chart', 'stat', 'block'] as any[];
+const skeletonKinds = ['text', 'avatar', 'card', 'table', 'stat', 'block'] as any[];
 const Cases = defineComponent(() => {
   const state = reactive({ progress: 25, removed: false, drawer: false, modal: false, selection: 'a' });
   const box = (id: string, child: any) => <div key={id} data-testid={id} style={{ marginBottom: '12px', minWidth: 0 }}>{child}</div>;

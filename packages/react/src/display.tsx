@@ -246,7 +246,7 @@ export function KjunProgress({
   );
 }
 export interface KjunSkeletonProps {
-  type?: "text" | "avatar" | "card" | "table" | "chart" | "stat" | "block";
+  type?: "text" | "avatar" | "card" | "table" | "stat" | "block";
   rows?: number;
   columns?: number;
   height?: CSSProperties["height"];
@@ -338,20 +338,6 @@ export function KjunSkeleton({
               ))}
             </div>
           ))}
-        </div>
-      )}
-      {type === "chart" && (
-        <div className="kjun-skeleton-chart" style={{ height: height || tokens.extensions.skeleton.chartHeight }}>
-          <div className="kjun-skeleton-chart-bars">
-            {[40, 65, 50, 80, 60, 90, 75].map((h, i) => (
-              <div
-                key={i}
-                className="kjun-skeleton-chart-bar"
-                style={{ height: h + "%" }}
-              />
-            ))}
-          </div>
-          <div className="kjun-skeleton-chart-axis" />
         </div>
       )}
       {type === "stat" && (

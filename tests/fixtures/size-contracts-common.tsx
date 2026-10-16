@@ -4,7 +4,7 @@ import { cssPalette, palette, demoDomainColors, demoFont } from './typography-va
 
 export const displaySizes = ['xs', 'sm', 'md', 'lg', 'xl'];
 export const coreSizes = ['sm', 'md', 'lg'];
-export const skeletonKinds = ['text', 'avatar', 'card', 'table', 'chart', 'stat', 'block'];
+export const skeletonKinds = ['text', 'avatar', 'card', 'table', 'stat', 'block'];
 
 export function mountSizeContracts(K: any, native: boolean) {
   cssPalette();

@@ -97,37 +97,6 @@
   height: var(--_kjun-extension-skeleton-table-line-height);
 }
 
-/* Chart */
-.kjun-skeleton-chart {
-  display: flex;
-  flex-direction: column;
-  padding: var(--_kjun-extension-skeleton-padding);
-  border: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
-  border-radius: var(--_kjun-extension-skeleton-radius);
-  background: var(--_kjun-bg-primary);
-}
-
-.kjun-skeleton-chart-bars {
-  flex: 1;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  gap: var(--_kjun-extension-skeleton-gap);
-  /* Bars stand on the axis line, like ChartSkeleton. */
-}
-
-.kjun-skeleton-chart-bar {
-  flex: 1;
-  max-width: var(--_kjun-extension-skeleton-chart-bar-max-width);
-  background: var(--_kjun-skeleton);
-  border-radius: var(--_kjun-extension-skeleton-line-radius) var(--_kjun-geometry-radius-radius4) 0 0;
-}
-
-.kjun-skeleton-chart-axis {
-  height: var(--_kjun-extension-skeleton-chart-axis-height);
-  background: var(--_kjun-border-primary);
-}
-
 /* Stat Card */
 .kjun-skeleton-stat {
   display: flex;
@@ -168,7 +137,6 @@
 /* Animation */
 .kjun-skeleton-animated .kjun-skeleton-line,
 .kjun-skeleton-animated .kjun-skeleton-avatar,
-.kjun-skeleton-animated .kjun-skeleton-chart-bar,
 .kjun-skeleton-animated .kjun-skeleton-sparkline,
 .kjun-skeleton-animated .kjun-skeleton-block {
   background: linear-gradient(

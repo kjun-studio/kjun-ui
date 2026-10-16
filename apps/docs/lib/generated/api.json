@@ -3337,7 +3337,7 @@
       },
       {
         "name": "skeletonType",
-        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"chart\" | \"stat\"",
+        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
         "required": false,
         "default": "\"text\"",
         "description": ""
@@ -3489,7 +3489,7 @@
       },
       {
         "name": "skeletonType",
-        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"chart\" | \"stat\" | undefined",
+        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -3680,7 +3680,7 @@
       },
       {
         "name": "skeletonType",
-        "type": "\"text\" | \"block\" | \"avatar\" | \"card\" | \"table\" | \"chart\" | \"stat\" | undefined",
+        "type": "\"text\" | \"block\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -15641,7 +15641,7 @@
     "vue3": [
       {
         "name": "type",
-        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"chart\" | \"stat\"",
+        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
         "required": false,
         "default": "\"text\"",
         "description": ""
@@ -15694,7 +15694,7 @@
     "react": [
       {
         "name": "type",
-        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"chart\" | \"stat\" | undefined",
+        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -15745,7 +15745,7 @@
     "native": [
       {
         "name": "type",
-        "type": "\"text\" | \"block\" | \"avatar\" | \"card\" | \"table\" | \"chart\" | \"stat\" | undefined",
+        "type": "\"text\" | \"block\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
