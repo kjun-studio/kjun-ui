@@ -28,7 +28,7 @@ docker exec -w /workspace kjun_ui_dev npm --prefix apps/docs run build
 
 `vinext start`는 `dist/client`에 복사된 정적 미리보기를 제공합니다. 미리보기나 이미지를 다시 생성한 뒤에는 문서 production 빌드와 서버 재시작까지 수행하고, 검증 서버의 번들이 최신 생성 파일과 일치하는지 확인하세요.
 
-선행 패키징·독립 소비 환경 준비는 `pack:local`, `verify:consumers`를 사용합니다. 캡처는 설치된 tarball의 Vue 2·React·Native Web 번들을 임시 정적 서버에서 실행하므로 문서 개발 서버에 의존하지 않습니다. 폰트와 설정 적용 완료, 실제 레이어 열림을 기다린 후 PNG·주석 좌표를 생성합니다. 메뉴·목록·도움말·대화상자 전체가 캡처 경계 안에 있는지도 검사합니다.
+선행 패키징·독립 소비 환경 준비는 `pack:local`, `verify:consumers`를 사용합니다. 캡처는 설치된 tarball의 Vue 3·React·Native Web 번들을 임시 정적 서버에서 실행하므로 문서 개발 서버에 의존하지 않습니다. 폰트와 설정 적용 완료, 실제 레이어 열림을 기다린 후 PNG·주석 좌표를 생성합니다. 메뉴·목록·도움말·대화상자 전체가 캡처 경계 안에 있는지도 검사합니다.
 
 `apps/docs/public/previews/guide-figures/manifest.json`은 패키지 기록, 번들·스타일·폰트·도해 정의·캡처 스크립트의 fingerprint, 개별 이미지 해시와 주석 좌표를 보관합니다. 변경 후 이미지를 재생성해야 하며 `guide-figures:check`는 누락·오래된 결과를 실패 처리합니다. 
 

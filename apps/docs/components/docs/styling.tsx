@@ -58,7 +58,7 @@ export function Styling() {
         <p className="body-copy">
           Provider는 스타일 범위를 만들며 프로젝트의 변수를 덮어쓰지 않습니다.
           앱 전체 값은 :root에서 연결하세요. 일부 영역만 다르면 해당 Provider의
-          class나 style에서 변수를 연결합니다. React 모달도 가장 가까운 Provider
+          class나 style에서 변수를 연결합니다. Vue 3·React 모달도 가장 가까운 Provider
           안에 렌더링되어 색상·폰트와 이후 변경을 그대로 상속합니다. Provider는
           transform·filter로 고정 위치의 기준을 바꾸거나 모달을 자르는 상위 요소
           밖에 배치하세요.
