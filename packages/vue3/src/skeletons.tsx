@@ -1,6 +1,14 @@
 import { defineComponent, type ExtractPublicPropTypes, type PropType } from "vue";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
-import { KjunSkeleton } from "./display";
+import { KjunSkeleton, KjunSpinner } from "./display";
+import { useLoadingReveal } from "./runtime/loading-reveal";
+import {
+  chartFramePath,
+  chartFrameViewBox,
+  chartMatrixMuted,
+  chartSkeletonCount,
+  type KjunChartSkeletonKind,
+} from "../../../shared/package-runtime/chart-skeleton";
 import { css } from "./runtime/style";
 
 type Length = number | string;
@@ -81,51 +89,54 @@ export const KjunFormSkeleton = defineComponent({
 
 const chart = tokens.extensions.chartSkeleton;
 const kjunChartSkeletonProps = {
-  loadingText: { type: String, default: "차트를 불러오는 중" },
-  kind: { type: String as PropType<"grid" | "line" | "bar" | "donut" | "candle" | "matrix">, default: "line" },
+  kind: { type: String as PropType<KjunChartSkeletonKind>, default: "frame" },
   height: { type: [Number, String] as PropType<Length>, default: chart.height },
+  loadingText: { type: String, default: "차트를 불러오는 중" },
+  skeleton: { type: Boolean, default: true },
+  loadingDelay: { type: Number, default: 0 },
+  rows: { type: Number, default: 8 },
+  columns: { type: Number, default: 14 },
 } as const;
 export type KjunChartSkeletonProps = ExtractPublicPropTypes<typeof kjunChartSkeletonProps>;
 export const KjunChartSkeleton = defineComponent({
   name: "KjunChartSkeleton",
   props: kjunChartSkeletonProps,
   setup(props) {
-    const fill = "var(--_kjun-color-skeleton)";
+    const revealed = useLoadingReveal(() => true, () => props.loadingDelay);
     return () => {
-      const { kind } = props;
+      const shown = revealed(),
+        status = shown && props.loadingText ? "status" : undefined,
+        rowCount = chartSkeletonCount(props.rows),
+        columnCount = chartSkeletonCount(props.columns);
       return (
-        <div class="kjun-chart-skeleton" style={css({ height: props.height })} aria-hidden="true">
-          <div class="kjun-chart-skeleton-status">{props.loadingText && <span>{props.loadingText}</span>}</div>
-          {kind === "donut" ? (
-            <div class="kjun-chart-skeleton-donut">
-              <KjunSkeleton type="block" width={chart.donutLabelWidth} height={chart.donutLabelHeight} />
+        <div class="kjun-chart-skeleton" data-kjun-chart-kind={props.kind} data-skeleton={props.skeleton ? undefined : "false"}
+          aria-hidden={shown ? undefined : "true"} style={css({ height: props.height, visibility: shown ? undefined : "hidden" })}>
+          {!props.skeleton ? (
+            <div class="kjun-data-loading" data-kjun-chart-part="loading" role={status}>
+              <KjunSpinner size="md" />
+              {props.loadingText && <p>{props.loadingText}</p>}
             </div>
-          ) : (
-            <svg viewBox="0 0 600 240" preserveAspectRatio="none" class="kjun-chart-skeleton-plot">
-              <path d="M20 10V220H590 M20 65H590 M20 120H590 M20 175H590" fill="none" stroke="var(--_kjun-color-border)" stroke-width={1} />
-              {/* A line kind previews its series; grid keeps only the axes. */}
-              {kind === "line" && (
-                <path d="M20 190 L100 160 L180 172 L260 120 L340 140 L420 96 L500 110 L590 64" fill="none" stroke={fill}
-                  stroke-width={4} stroke-linecap="round" stroke-linejoin="round" />
-              )}
-              {kind === "matrix"
-                ? Array.from({ length: 8 }, (_, row) => (
-                    <g key={row}>
-                      {Array.from({ length: 14 }, (_, col) => (
-                        <rect key={col} x={24 + col * 40} y={12 + row * 26} width={36} height={22} rx={2} fill={fill}
-                          opacity={(row + col + 2) % 3 === 0 ? 0.55 : 1} />
-                      ))}
-                    </g>
-                  ))
-                : (kind === "bar" || kind === "candle") && [60, 100, 85, 140, 110, 165, 180].map((bar, i) => [
-                    // The wick extends 15 past each end of the body and stays above the axis.
-                    kind === "candle" && <path key={"wick" + i} d={`M${55 + i * 75} ${195 - bar}V${225 - bar / 2}`} fill="none" stroke={fill} stroke-width={4} />,
-                    // Bars stand on the axis (y 220); candle bodies float within their wick.
-                    <rect key={"body" + i} x={35 + i * 75} y={kind === "candle" ? 210 - bar : 220 - bar} width={kind === "candle" ? 28 : 42}
-                      height={kind === "candle" ? bar / 2 : bar} rx={3} fill={fill} />,
-                  ])}
-            </svg>
-          )}
+          ) : [
+            props.kind === "donut" ? (
+              <div key="donut" class="kjun-chart-skeleton-donut" data-kjun-chart-part="donut" aria-hidden="true" />
+            ) : props.kind === "matrix" ? (
+              <div key="matrix" class="kjun-chart-skeleton-matrix" data-kjun-chart-part="matrix" aria-hidden="true"
+                style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`, gridTemplateRows: `repeat(${rowCount}, minmax(0, 1fr))` }}>
+                {Array.from({ length: rowCount * columnCount }, (_, i) => (
+                  <div key={i} class="kjun-chart-skeleton-cell" data-kjun-chart-part="cell"
+                    data-muted={chartMatrixMuted(Math.floor(i / columnCount), i % columnCount) ? "" : undefined} />
+                ))}
+              </div>
+            ) : (
+              <svg key="plot" viewBox={chartFrameViewBox} preserveAspectRatio="none" class="kjun-chart-skeleton-plot" data-kjun-chart-part="plot" aria-hidden="true">
+                {/* Only the frame is honest before data arrives; any series shape would be invented. */}
+                <path d={chartFramePath} fill="none" stroke="var(--_kjun-color-chart-grid)" stroke-width={tokens.border.defaultWidth} vector-effect="non-scaling-stroke" />
+              </svg>
+            ),
+            props.loadingText && (
+              <div key="status" class="kjun-chart-skeleton-status" data-kjun-chart-part="status" role={status}><span>{props.loadingText}</span></div>
+            ),
+          ]}
         </div>
       );
     };

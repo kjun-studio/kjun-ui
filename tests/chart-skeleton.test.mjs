@@ -36,7 +36,7 @@ const chartSource = (path) => { const source = read(path); return source.slice(s
 const chartSources = { react: 'packages/react/src/skeletons.tsx', vue3: 'packages/vue3/src/skeletons.tsx', native: 'packages/native/src/skeletons.tsx' };
 
 for (const [platform, path] of Object.entries(chartSources)) {
-  test(`${platform} KjunChartSkeleton offers only frame, donut and matrix and draws the grid with chart-grid`, { todo: platform !== 'react' }, () => {
+  test(`${platform} KjunChartSkeleton offers only frame, donut and matrix and draws the grid with chart-grid`, { todo: platform === 'native' }, () => {
     const source = chartSource(path);
     assert.match(source, /"frame" \| "donut" \| "matrix"|KjunChartSkeletonKind/);
     assert.doesNotMatch(source, /"line"|"candle"|"bar"/);

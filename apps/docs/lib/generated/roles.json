@@ -464,7 +464,6 @@
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/market-parts.tsx",
-      "packages/vue3/src/skeletons.tsx",
       "packages/react/src/market-panel.tsx",
       "packages/native/src/combobox.tsx",
       "packages/native/src/drawer.tsx",
@@ -1030,7 +1029,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/data-state.css",
-      "packages/vue3/src/skeletons.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/skeletons.tsx"
     ]
@@ -1084,6 +1082,7 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/data-state.css",
+      "packages/vue3/src/skeletons.tsx",
       "packages/react/src/skeletons.tsx"
     ]
   },

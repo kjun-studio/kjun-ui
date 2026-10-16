@@ -2137,17 +2137,10 @@
   "KjunChartSkeleton": {
     "vue3": [
       {
-        "name": "loadingText",
-        "type": "string",
-        "required": false,
-        "default": "\"차트를 불러오는 중\"",
-        "description": ""
-      },
-      {
         "name": "kind",
-        "type": "\"grid\" | \"line\" | \"bar\" | \"donut\" | \"candle\" | \"matrix\"",
+        "type": "KjunChartSkeletonKind",
         "required": false,
-        "default": "\"line\"",
+        "default": "\"frame\"",
         "description": ""
       },
       {
@@ -2155,6 +2148,41 @@
         "type": "Length",
         "required": false,
         "default": "240",
+        "description": ""
+      },
+      {
+        "name": "loadingText",
+        "type": "string",
+        "required": false,
+        "default": "\"차트를 불러오는 중\"",
+        "description": ""
+      },
+      {
+        "name": "skeleton",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": ""
+      },
+      {
+        "name": "loadingDelay",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": ""
+      },
+      {
+        "name": "rows",
+        "type": "number",
+        "required": false,
+        "default": "8",
+        "description": ""
+      },
+      {
+        "name": "columns",
+        "type": "number",
+        "required": false,
+        "default": "14",
         "description": ""
       }
     ],

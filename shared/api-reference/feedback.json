@@ -30,9 +30,13 @@
   },
   "KjunChartSkeleton": {
     "vue3": [
-      "loadingText",
       "kind",
-      "height"
+      "height",
+      "loadingText",
+      "skeleton",
+      "loadingDelay",
+      "rows",
+      "columns"
     ],
     "react": [
       "kind",
