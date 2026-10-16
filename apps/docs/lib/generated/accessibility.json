@@ -15907,38 +15907,38 @@
   "packages": [
     {
       "name": "@kjun-ui/icons",
-      "version": "0.7.0",
-      "file": "kjun-ui-icons-0.7.0.tgz",
+      "version": "0.8.0",
+      "file": "kjun-ui-icons-0.8.0.tgz",
       "bytes": 1457073,
-      "integrity": "sha512-9T4cyZGJoXapQvlHHyBEq/4wqcAsRRU2rJm2gabYnpTbHlLO/e01MZoPut+ARJfYw8VFj0+L3a7DIMn1sMBcUw=="
+      "integrity": "sha512-qXgvQxKzO9j/yWwOAOYDX/2e7FqbvMIwz2XBGX7L9h0ZzeV0HEiO98ukIeQ8iHduxULiDvjSKKOTG9k8h0Xpmg=="
     },
     {
       "name": "@kjun-ui/tokens",
-      "version": "0.7.0",
-      "file": "kjun-ui-tokens-0.7.0.tgz",
+      "version": "0.8.0",
+      "file": "kjun-ui-tokens-0.8.0.tgz",
       "bytes": 85087,
-      "integrity": "sha512-h3aIvUjTGGF4jO7QBw84ShK0qU+25J+OrYSIf2A3y26XZnvtCwfYn+6gypwoVjLmTi5vE4FjJvrscPqOq6Wqbw=="
+      "integrity": "sha512-N+F+z0UKoUO8is9ADT82RYVpSQHIkblqOEO036Ay4fBpzySyGR9szeIzaXWmcJddUNODNhkOYpQ3VzbKYmJF9A=="
     },
     {
       "name": "@kjun-ui/vue3",
-      "version": "0.7.0",
-      "file": "kjun-ui-vue3-0.7.0.tgz",
+      "version": "0.8.0",
+      "file": "kjun-ui-vue3-0.8.0.tgz",
       "bytes": 254901,
-      "integrity": "sha512-Jyg/TySdK/WelbNHLW9TUN7O+ZaXVhgOV46g88nNlSGBl7O3tl37bSkhf2IqWaMPTxS27A39LkE4T3DZ/55X8w=="
+      "integrity": "sha512-TBJoAuD1fKRjCrXeMXNomTbDDNAEZ4iubsOXZy0gzY5Z+6uq83PhIw8FbSTFum+TrCW58lEoxS9IT6O+ETUR2A=="
     },
     {
       "name": "@kjun-ui/react",
-      "version": "0.7.0",
-      "file": "kjun-ui-react-0.7.0.tgz",
+      "version": "0.8.0",
+      "file": "kjun-ui-react-0.8.0.tgz",
       "bytes": 205496,
-      "integrity": "sha512-IifJuArbJnxFrawa+syZ5Ga+EOU9gGLAZttXyAxf1iquJTU+hWhyucwFE+4/mIfJmfEbWSa6TWuobO4muvf0/Q=="
+      "integrity": "sha512-gkbPXyPinBl1dYEXV6fwteNOtNsjyAeCwsr3n4vKF863uwTZDIxtjbIBc5IhQ1e2VeQmEz8U3gD2y4vvJxcJbw=="
     },
     {
       "name": "@kjun-ui/native",
-      "version": "0.7.0",
-      "file": "kjun-ui-native-0.7.0.tgz",
+      "version": "0.8.0",
+      "file": "kjun-ui-native-0.8.0.tgz",
       "bytes": 427886,
-      "integrity": "sha512-5FKLajh71znUdZoTNzCmow7o9GdqNhU/q2uMEMzqFe9idSopv10CGasj9lFgo9VibVC2ZFyEAMt6I1VJtLKd2w=="
+      "integrity": "sha512-t8WyxpP5k+nzQeUdQmty022My9f4R747STNGXtp1j0wCa7jbeA64gET8B34d8zdBizAAX+G9p3hKAZhC+NAu4w=="
     }
   ],
   "definitionHash": "sha256-3d6fa98a7ae0af31958fd7fcb5c585bb65d05401b313b0d6b56981a79b2117a0",

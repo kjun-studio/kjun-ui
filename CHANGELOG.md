@@ -2,6 +2,30 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.8.0 — 2026-10-16
+
+차트 스켈레톤이 데이터 모양을 지어내지 않도록 정리했습니다. **깨지는 변경**이 있어 아래 표대로 코드를 바꿔야 합니다.
+
+선·막대·캔들 차트의 실제 모양은 데이터마다 달라서, 미리 그린 가짜 시리즈는 도착 순간 화면을 크게 바꾸고 시세로 오해될 수 있었습니다. 이제 데이터와 무관하게 정해진 틀만 그립니다.
+
+| 이전 | 이후 |
+|---|---|
+| `KjunChartSkeleton kind="line" \| "bar" \| "candle" \| "grid"` | `kind="frame"` (기본값이므로 생략 가능) |
+| `<KjunSkeleton type="chart" />` | `<KjunChartSkeleton />` |
+| `<KjunDataState skeleton skeletonType="chart" />` | `loadingContent`에 `<KjunChartSkeleton loadingText="" />` |
+| 토큰 `extensions.skeleton.chartHeight`·`chartBarMaxWidth`·`chartAxisHeight`, `extensions.chartSkeleton.donutLabelWidth`·`donutLabelHeight` | 제거 |
+
+- **`kind`**: `frame`(축·격자), `donut`(링), `matrix`(셀)만 남았습니다. 기본값은 `frame`입니다.
+- **`rows`·`columns`**: matrix의 행·열 수입니다(기본 8·14).
+- **`skeleton`**·**`loadingDelay`**: Table 계열과 같은 계약입니다. `skeleton={false}`이면 같은 높이 안에 스피너와 문구를, `loadingDelay` 동안은 빈 영역을 표시합니다.
+- **접근성**: `loadingText`가 있으면 `role="status"`로 알립니다. DataState 안에서는 `loadingText=""`로 두어 중복 알림을 피하세요.
+- **표시 개선**: 격자가 `--kjun-chart-grid` 색 역할을 쓰고 폭과 관계없이 1px로 그려집니다. donut 문구는 구멍 안에서 줄바꿈되고, 문구 칩은 테두리로 차트 위 레이어임을 드러냅니다.
+
+```vue
+<KjunChartSkeleton v-if="loading" :height="240" :loading-delay="300" />
+<KjunChartSkeleton v-if="loading" kind="matrix" :rows="7" :columns="24" />
+```
+
 ## 0.7.0 — 2026-10-16
 
 로딩 표시 방식을 고를 수 있게 하고, KPI를 다른 표면 안에 넣을 수 있게 했습니다. 모두 기본값이 기존 동작과 같아 바꿀 코드는 없습니다.
