@@ -146,6 +146,16 @@ for(const platform of ['react','vue3','native']) {
     await openFixture(page,platform,'?kind=frame&chart-shrink','visual-contract');
     expect((await box(chartRoot(page))).width).toBeGreaterThan(100);
   });
+  test(`${platform}: chart skeleton draws a frame for a removed kind and names it frame`,async({page})=>{
+    await openFixture(page,platform,'?kind=line','visual-contract');
+    await expect(chartRoot(page)).toHaveAttribute('data-kjun-chart-kind','frame');
+    await expect(chartPart(page,'plot')).toHaveCount(1);
+  });
+  test(`${platform}: chart skeleton status is a polite live region`,async({page})=>{
+    test.skip(platform!=='native','role="status" is already polite on the web; Native needs an explicit live region');
+    await openFixture(page,platform,'?kind=frame','visual-contract');
+    await expect(chartPart(page,'status')).toHaveAttribute('aria-live','polite');
+  });
   test(`${platform}: chart skeleton matrix draws rows × columns round cells`,async({page})=>{
     await page.emulateMedia({reducedMotion:'reduce'});
     for(const width of [320,760]) {
@@ -167,6 +177,7 @@ for(const platform of ['react','vue3','native']) {
     const ring=await box(donut), label=await box(chartPart(page,'status').getByText('차트를 불러오는 중',{exact:true}));
     const hole=ring.height-2*tokens.extensions.chartSkeleton.donutThickness;
     expect(label.width).toBeLessThanOrEqual(hole+1);
+    expect(label.height).toBeLessThanOrEqual(hole+1);
     expect(Math.abs(label.x+label.width/2-(ring.x+ring.width/2))).toBeLessThanOrEqual(1);
   });
   test(`${platform}: chart skeleton spinner mode and loading delay keep the height`,async({page})=>{

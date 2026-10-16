@@ -7,6 +7,7 @@ import {
   chartFrameViewBox,
   chartMatrixMuted,
   chartSkeletonCount,
+  chartSkeletonKind,
   type KjunChartSkeletonKind,
 } from "../../../shared/package-runtime/chart-skeleton";
 import { css } from "./runtime/style";
@@ -104,12 +105,13 @@ export const KjunChartSkeleton = defineComponent({
   setup(props) {
     const revealed = useLoadingReveal(() => true, () => props.loadingDelay);
     return () => {
-      const shown = revealed(),
+      const kind = chartSkeletonKind(props.kind),
+        shown = revealed(),
         status = shown && props.loadingText ? "status" : undefined,
         rowCount = chartSkeletonCount(props.rows),
         columnCount = chartSkeletonCount(props.columns);
       return (
-        <div class="kjun-chart-skeleton" data-kjun-chart-kind={props.kind} data-skeleton={props.skeleton ? undefined : "false"}
+        <div class="kjun-chart-skeleton" data-kjun-chart-kind={kind} data-skeleton={props.skeleton ? undefined : "false"}
           aria-hidden={shown ? undefined : "true"} style={css({ height: props.height, visibility: shown ? undefined : "hidden" })}>
           {!props.skeleton ? (
             <div class="kjun-data-loading" data-kjun-chart-part="loading" role={status}>
@@ -118,9 +120,9 @@ export const KjunChartSkeleton = defineComponent({
               {props.loadingText && <p>{props.loadingText}</p>}
             </div>
           ) : [
-            props.kind === "donut" ? (
+            kind === "donut" ? (
               <div key="donut" class="kjun-chart-skeleton-donut" data-kjun-chart-part="donut" aria-hidden="true" />
-            ) : props.kind === "matrix" ? (
+            ) : kind === "matrix" ? (
               <div key="matrix" class="kjun-chart-skeleton-matrix" data-kjun-chart-part="matrix" aria-hidden="true"
                 style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`, gridTemplateRows: `repeat(${rowCount}, minmax(0, 1fr))` }}>
                 {Array.from({ length: rowCount * columnCount }, (_, i) => (

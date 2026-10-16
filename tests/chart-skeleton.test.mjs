@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
-  chartFramePath, chartFrameViewBox, chartSkeletonCount, chartMatrixMuted, chartDonutHole,
+  chartFramePath, chartFrameViewBox, chartSkeletonCount, chartMatrixMuted, chartDonutHole, chartDonutRatio, chartSkeletonKind,
 } from '../shared/package-runtime/chart-skeleton.ts';
 
 const read = (path) => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
@@ -50,3 +50,19 @@ for (const [platform, path] of Object.entries(chartSources)) {
     assert.doesNotMatch(source, /donutLabel/);
   });
 }
+
+test('unknown chart skeleton kinds fall back to frame', () => {
+  for (const kind of ['frame', 'donut', 'matrix']) assert.equal(chartSkeletonKind(kind), kind);
+  for (const kind of ['line', 'bar', 'candle', 'grid', '', undefined, null]) assert.equal(chartSkeletonKind(kind), 'frame');
+});
+
+test('the donut ratio is shared by the helper, the web CSS and Native', () => {
+  const css = read('packages/tokens/src/data-state.css'), percent = chartDonutRatio * 100;
+  const donut = css.slice(css.indexOf('.kjun-chart-skeleton-donut {'), css.indexOf('}', css.indexOf('.kjun-chart-skeleton-donut {')));
+  assert.match(donut, new RegExp(`height: ${percent}%;`));
+  assert.match(css, new RegExp(`max-width:calc\\(${percent}cqh - 2 \\*`));
+  assert.match(read('packages/native/src/skeletons.tsx'), /chartDonutRatio \* 100/);
+  // The hole formula assumes border-box; it must not depend on the provider's reset.
+  assert.match(donut, /box-sizing: border-box;/);
+  assert.match(css, /data-kjun-chart-kind="donut"\] \.kjun-chart-skeleton-status>span \{[^}]*box-sizing:border-box/);
+});

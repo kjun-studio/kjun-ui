@@ -9,10 +9,12 @@ import { useKjunStyles } from "./provider";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import {
   chartDonutHole,
+  chartDonutRatio,
   chartFramePath,
   chartFrameViewBox,
   chartMatrixMuted,
   chartSkeletonCount,
+  chartSkeletonKind,
   type KjunChartSkeletonKind,
 } from "../../../shared/package-runtime/chart-skeleton";
 export interface KjunListSkeletonProps {
@@ -150,7 +152,7 @@ export interface KjunChartSkeletonProps {
 // React Native Web prints dataSet as data-* so the packed web contracts can find each part.
 const chartPart = (name: string) => (Platform.OS === "web" ? { dataSet: { kjunChartPart: name } } : {});
 export function KjunChartSkeleton({
-  kind = "frame",
+  kind: requestedKind = "frame",
   height = tokens.extensions.chartSkeleton.height,
   loadingText = "차트를 불러오는 중",
   skeleton = true,
@@ -158,7 +160,8 @@ export function KjunChartSkeleton({
   rows = 8,
   columns = 14,
 }: KjunChartSkeletonProps) {
-  const { colors } = useKjunStyles(),
+  const kind = chartSkeletonKind(requestedKind),
+    { colors } = useKjunStyles(),
     reduced = useReducedMotion(),
     opacity = useRef(new Animated.Value(1)).current,
     revealed = useLoadingReveal(true, loadingDelay),
@@ -208,7 +211,7 @@ export function KjunChartSkeleton({
             <View
               {...chartPart("donut")}
               {...hidden}
-              style={{ height: "80%", aspectRatio: 1, borderWidth: thickness, borderColor: colors.skeleton, borderRadius: tokens.radius.radius9999 }}
+              style={{ height: `${chartDonutRatio * 100}%`, aspectRatio: 1, borderWidth: thickness, borderColor: colors.skeleton, borderRadius: tokens.radius.radius9999 }}
             />
           ) : kind === "matrix" ? (
             <View {...chartPart("matrix")} {...hidden} style={{ alignSelf: "stretch", flex: 1, gap: tokens.dimension.value4 }}>
@@ -241,6 +244,8 @@ export function KjunChartSkeleton({
             <View
               {...chartPart("status")}
               role={status}
+              // iOS and Android do not treat role="status" as a live region; Android needs it explicitly.
+              accessibilityLiveRegion={status ? "polite" : undefined}
               pointerEvents="none"
               style={{ position: "absolute", inset: 0, alignItems: "center", justifyContent: "center" }}
             >

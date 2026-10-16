@@ -113,6 +113,8 @@
   height: 100%;
 }
 .kjun-chart-skeleton-donut {
+  /* The hole is 80% − 2 × thickness only in border-box, whatever the app's reset. */
+  box-sizing: border-box;
   height: 80%;
   aspect-ratio: 1;
   border: var(--_kjun-extension-chart-skeleton-donut-thickness) solid var(--_kjun-color-skeleton);
@@ -148,7 +150,7 @@
 
 .kjun-chart-skeleton-status { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--_kjun-extension-skeleton-gap); pointer-events:none; }
 .kjun-chart-skeleton-status>span { max-width:90%; padding:var(--_kjun-geometry-dimension-value4) var(--_kjun-geometry-dimension-value12); border-radius:var(--_kjun-geometry-radius-radius6); font-size:var(--_kjun-type-body-size); text-align:center; overflow-wrap:anywhere; background:var(--_kjun-color-surface); color:var(--_kjun-color-text-secondary); line-height: var(--_kjun-type-body-line); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking); border:var(--_kjun-border-default-width) solid var(--_kjun-color-chart-grid); }
-.kjun-chart-skeleton[data-kjun-chart-kind="donut"] .kjun-chart-skeleton-status>span { border:0; max-width:calc(80cqh - 2 * var(--_kjun-extension-chart-skeleton-donut-thickness)); }
+.kjun-chart-skeleton[data-kjun-chart-kind="donut"] .kjun-chart-skeleton-status>span { box-sizing:border-box; border:0; max-width:calc(80cqh - 2 * var(--_kjun-extension-chart-skeleton-donut-thickness)); }
 
 .kjun-data-status > .kjun-spinner { flex-shrink: 0; }
 .kjun-data-status > span:last-child { min-width: 0; overflow-wrap: anywhere; }

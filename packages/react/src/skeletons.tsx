@@ -7,6 +7,7 @@ import {
   chartFrameViewBox,
   chartMatrixMuted,
   chartSkeletonCount,
+  chartSkeletonKind,
   type KjunChartSkeletonKind,
 } from "../../../shared/package-runtime/chart-skeleton";
 export interface KjunListSkeletonProps {
@@ -105,7 +106,7 @@ export interface KjunChartSkeletonProps {
   columns?: number;
 }
 export function KjunChartSkeleton({
-  kind = "frame",
+  kind: requestedKind = "frame",
   height = tokens.extensions.chartSkeleton.height,
   loadingText = "차트를 불러오는 중",
   skeleton = true,
@@ -113,7 +114,8 @@ export function KjunChartSkeleton({
   rows = 8,
   columns = 14,
 }: KjunChartSkeletonProps) {
-  const revealed = useLoadingReveal(true, loadingDelay),
+  const kind = chartSkeletonKind(requestedKind),
+    revealed = useLoadingReveal(true, loadingDelay),
     status = revealed && loadingText ? "status" : undefined,
     rowCount = chartSkeletonCount(rows),
     columnCount = chartSkeletonCount(columns);
