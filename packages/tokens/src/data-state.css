@@ -92,13 +92,18 @@
   }
 }
 .kjun-chart-skeleton {
-  position:relative;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   min-width: 0;
+  /* The donut label measures the hole against this box's height. */
+  container-type: size;
   animation: kjun-chart-pulse var(--_kjun-motion-shimmer) ease-in-out infinite;
+}
+.kjun-chart-skeleton[data-skeleton="false"] {
+  animation: none;
 }
 .kjun-chart-skeleton-plot {
   width: 100%;
@@ -109,9 +114,19 @@
   aspect-ratio: 1;
   border: var(--_kjun-extension-chart-skeleton-donut-thickness) solid var(--_kjun-color-skeleton);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+}
+.kjun-chart-skeleton-matrix {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  gap: var(--_kjun-geometry-dimension-value4);
+}
+.kjun-chart-skeleton-cell {
+  background: var(--_kjun-color-skeleton);
+  border-radius: var(--_kjun-extension-skeleton-line-radius);
+}
+.kjun-chart-skeleton-cell[data-muted] {
+  opacity: var(--_kjun-state-opacity-pending);
 }
 @keyframes kjun-chart-pulse {
   50% {
@@ -129,7 +144,8 @@
 .kjun-error-fallback p { margin:var(--_kjun-geometry-dimension-value8) 0 var(--_kjun-geometry-dimension-value16); font-size:var(--_kjun-extension-state-description-size); line-height:var(--_kjun-type-caption-line); color:var(--_kjun-color-text-secondary); font-weight:var(--_kjun-type-caption-weight);letter-spacing:var(--_kjun-type-caption-tracking);}
 
 .kjun-chart-skeleton-status { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--_kjun-extension-skeleton-gap); pointer-events:none; }
-.kjun-chart-skeleton-status>span { max-width:90%; padding:var(--_kjun-geometry-dimension-value4) var(--_kjun-geometry-dimension-value12); border-radius:var(--_kjun-geometry-radius-radius6); font-size:var(--_kjun-type-body-size); text-align:center; overflow-wrap:anywhere; background:var(--_kjun-color-surface); color:var(--_kjun-color-text-secondary); line-height: var(--_kjun-type-body-line); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking); }
+.kjun-chart-skeleton-status>span { max-width:90%; padding:var(--_kjun-geometry-dimension-value4) var(--_kjun-geometry-dimension-value12); border-radius:var(--_kjun-geometry-radius-radius6); font-size:var(--_kjun-type-body-size); text-align:center; overflow-wrap:anywhere; background:var(--_kjun-color-surface); color:var(--_kjun-color-text-secondary); line-height: var(--_kjun-type-body-line); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking); border:var(--_kjun-border-default-width) solid var(--_kjun-color-chart-grid); }
+.kjun-chart-skeleton[data-kjun-chart-kind="donut"] .kjun-chart-skeleton-status>span { border:0; max-width:calc(80cqh - 2 * var(--_kjun-extension-chart-skeleton-donut-thickness)); }
 
 .kjun-data-status > .kjun-spinner { flex-shrink: 0; }
 .kjun-data-status > span:last-child { min-width: 0; overflow-wrap: anywhere; }

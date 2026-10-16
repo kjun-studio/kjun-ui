@@ -466,7 +466,6 @@
       "packages/vue3/src/market-parts.tsx",
       "packages/vue3/src/skeletons.tsx",
       "packages/react/src/market-panel.tsx",
-      "packages/react/src/skeletons.tsx",
       "packages/native/src/combobox.tsx",
       "packages/native/src/drawer.tsx",
       "packages/native/src/dropdown.tsx",
@@ -1032,7 +1031,6 @@
     "implementationFiles": [
       "packages/tokens/src/data-state.css",
       "packages/vue3/src/skeletons.tsx",
-      "packages/react/src/skeletons.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/skeletons.tsx"
     ]
@@ -1084,7 +1082,10 @@
     "upstreamAliases": [
       "--chart-grid"
     ],
-    "implementationFiles": []
+    "implementationFiles": [
+      "packages/tokens/src/data-state.css",
+      "packages/react/src/skeletons.tsx"
+    ]
   },
   {
     "role": "chartAxis",

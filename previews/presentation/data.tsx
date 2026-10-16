@@ -27,7 +27,7 @@ export function data(name: string) {
     case 'KjunSkeleton': return <K.KjunSkeleton type="card" height={200} />;
     case 'KjunListSkeleton': return surface(<K.KjunListSkeleton rows={3} variant="notification" avatar />, false);
     case 'KjunFormSkeleton': return surface(<K.KjunFormSkeleton fields={['목록 이름', '공개 범위']} />);
-    case 'KjunChartSkeleton': return surface(<K.KjunChartSkeleton kind="line" height={200} />);
+    case 'KjunChartSkeleton': return surface(<K.KjunChartSkeleton kind="frame" height={200} />);
     case 'KjunMarketTableSkeleton': return surface(<K.KjunMarketTableSkeleton columns={marketColumns} rows={3} showActions />, false);
     case 'KjunSpinner': return row(<><K.KjunSpinner text="조회 중" /><K.KjunSpinner size="sm" text="저장 중" /></>);
     case 'KjunProgress': return stack(<><K.KjunProgress value={72} label="파일 업로드" showLabel /><K.KjunProgress value={100} label="검토 완료" showLabel variant="success" /></>);

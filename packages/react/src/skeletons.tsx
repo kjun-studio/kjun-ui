@@ -1,6 +1,14 @@
 import { tokens, type InputSize } from "@kjun-ui/tokens";
-import { Fragment,type CSSProperties } from "react";
-import { KjunSkeleton } from "./display";
+import { type CSSProperties } from "react";
+import { KjunSkeleton, KjunSpinner } from "./display";
+import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
+import {
+  chartFramePath,
+  chartFrameViewBox,
+  chartMatrixMuted,
+  chartSkeletonCount,
+  type KjunChartSkeletonKind,
+} from "../../../shared/package-runtime/chart-skeleton";
 export interface KjunListSkeletonProps {
   rows?: number;
   variant?: "market" | "compact" | "notification";
@@ -88,81 +96,87 @@ export function KjunFormSkeleton({
   );
 }
 export interface KjunChartSkeletonProps {
-  loadingText?: string;
-  kind?: "grid" | "line" | "bar" | "donut" | "candle" | "matrix";
+  kind?: KjunChartSkeletonKind;
   height?: CSSProperties["height"];
+  loadingText?: string;
+  skeleton?: boolean;
+  loadingDelay?: number;
+  rows?: number;
+  columns?: number;
 }
 export function KjunChartSkeleton({
-  loadingText = "차트를 불러오는 중",
-  kind = "line",
+  kind = "frame",
   height = tokens.extensions.chartSkeleton.height,
+  loadingText = "차트를 불러오는 중",
+  skeleton = true,
+  loadingDelay = 0,
+  rows = 8,
+  columns = 14,
 }: KjunChartSkeletonProps) {
+  const revealed = useLoadingReveal(true, loadingDelay),
+    status = revealed && loadingText ? "status" : undefined,
+    rowCount = chartSkeletonCount(rows),
+    columnCount = chartSkeletonCount(columns);
   return (
-    <div className="kjun-chart-skeleton" style={{ height }} aria-hidden="true">
-      <div className="kjun-chart-skeleton-status">
-        {loadingText && <span>{loadingText}</span>}
-      </div>
-      {kind === "donut" ? (
-        <div className="kjun-chart-skeleton-donut">
-          <KjunSkeleton type="block" width={tokens.extensions.chartSkeleton.donutLabelWidth} height={tokens.extensions.chartSkeleton.donutLabelHeight} />
+    <div
+      className="kjun-chart-skeleton"
+      data-kjun-chart-kind={kind}
+      data-skeleton={skeleton ? undefined : "false"}
+      aria-hidden={revealed ? undefined : true}
+      style={{ height, visibility: revealed ? undefined : "hidden" }}
+    >
+      {!skeleton ? (
+        <div className="kjun-data-loading" data-kjun-chart-part="loading" role={status}>
+          <KjunSpinner size="md" />
+          {loadingText && <p>{loadingText}</p>}
         </div>
       ) : (
-        <svg
-          viewBox="0 0 600 240"
-          preserveAspectRatio="none"
-          className="kjun-chart-skeleton-plot"
-        >
-          <path
-            d="M20 10V220H590 M20 65H590 M20 120H590 M20 175H590"
-            fill="none"
-            stroke="var(--_kjun-color-border)"
-            strokeWidth={1}
-          />
-          {/* A line kind previews its series; grid keeps only the axes. */}
-          {kind === "line" && (
-            <path d="M20 190 L100 160 L180 172 L260 120 L340 140 L420 96 L500 110 L590 64" fill="none" stroke="var(--_kjun-color-skeleton)" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" />
-          )}
-          {kind === "matrix"
-            ? Array.from({ length: 8 }, (_, row) => (
-                <g key={row}>
-                  {Array.from({ length: 14 }, (_, col) => (
-                    <rect
-                      key={col}
-                      x={24 + col * 40}
-                      y={12 + row * 26}
-                      width={36}
-                      height={22}
-                      rx={2}
-                      fill="var(--_kjun-color-skeleton)"
-                      opacity={(row + col + 2) % 3 === 0 ? 0.55 : 1}
-                    />
-                  ))}
-                </g>
-              ))
-            : (kind === "bar" || kind === "candle") &&
-              [60, 100, 85, 140, 110, 165, 180].map((h, i) => (
-                <Fragment key={i}>
-                  {kind === "candle" && (
-                    <path
-                      // The wick extends 15 past each end of the body and stays above the axis.
-                      d={`M${55 + i * 75} ${195 - h}V${225 - h / 2}`}
-                      fill="none"
-                      stroke="var(--_kjun-color-skeleton)"
-                      strokeWidth={4}
-                    />
-                  )}
-                  <rect
-                    x={35 + i * 75}
-                    // Bars stand on the axis (y 220); candle bodies float within their wick.
-                    y={kind === "candle" ? 210 - h : 220 - h}
-                    width={kind === "candle" ? 28 : 42}
-                    height={kind === "candle" ? h / 2 : h}
-                    rx={3}
-                    fill="var(--_kjun-color-skeleton)"
-                  />
-                </Fragment>
+        <>
+          {kind === "donut" ? (
+            <div className="kjun-chart-skeleton-donut" data-kjun-chart-part="donut" aria-hidden="true" />
+          ) : kind === "matrix" ? (
+            <div
+              className="kjun-chart-skeleton-matrix"
+              data-kjun-chart-part="matrix"
+              aria-hidden="true"
+              style={{
+                gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+                gridTemplateRows: `repeat(${rowCount}, minmax(0, 1fr))`,
+              }}
+            >
+              {Array.from({ length: rowCount * columnCount }, (_, i) => (
+                <div
+                  key={i}
+                  className="kjun-chart-skeleton-cell"
+                  data-kjun-chart-part="cell"
+                  data-muted={chartMatrixMuted(Math.floor(i / columnCount), i % columnCount) ? "" : undefined}
+                />
               ))}
-        </svg>
+            </div>
+          ) : (
+            <svg
+              viewBox={chartFrameViewBox}
+              preserveAspectRatio="none"
+              className="kjun-chart-skeleton-plot"
+              data-kjun-chart-part="plot"
+              aria-hidden="true"
+            >
+              {/* Only the frame is honest before data arrives; any series shape would be invented. */}
+              <path
+                d={chartFramePath}
+                fill="none"
+                stroke="var(--_kjun-color-chart-grid)"
+                strokeWidth={tokens.border.defaultWidth}
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+          )}
+          {loadingText && (
+            <div className="kjun-chart-skeleton-status" data-kjun-chart-part="status" role={status}>
+              <span>{loadingText}</span>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

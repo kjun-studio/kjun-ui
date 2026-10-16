@@ -35,9 +35,13 @@
       "height"
     ],
     "react": [
-      "loadingText",
       "kind",
-      "height"
+      "height",
+      "loadingText",
+      "skeleton",
+      "loadingDelay",
+      "rows",
+      "columns"
     ],
     "native": [
       "loadingText",

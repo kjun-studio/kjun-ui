@@ -31,3 +31,18 @@ test('KjunSkeleton no longer offers a chart type on any platform', () => {
   assert.doesNotMatch(read('packages/tokens/src/display.css'), /kjun-skeleton-chart/);
   assert.doesNotMatch(read('packages/tokens/src/definitions/sizing.json'), /"chartHeight"|"chartBarMaxWidth"|"chartAxisHeight"/);
 });
+
+const chartSource = (path) => { const source = read(path); return source.slice(source.indexOf('KjunChartSkeleton')); };
+const chartSources = { react: 'packages/react/src/skeletons.tsx', vue3: 'packages/vue3/src/skeletons.tsx', native: 'packages/native/src/skeletons.tsx' };
+
+for (const [platform, path] of Object.entries(chartSources)) {
+  test(`${platform} KjunChartSkeleton offers only frame, donut and matrix and draws the grid with chart-grid`, { todo: platform !== 'react' }, () => {
+    const source = chartSource(path);
+    assert.match(source, /"frame" \| "donut" \| "matrix"|KjunChartSkeletonKind/);
+    assert.doesNotMatch(source, /"line"|"candle"|"bar"/);
+    assert.doesNotMatch(source, /color-border|colors\.border/);
+    assert.match(source, /chart-grid|colors\.chartGrid/);
+    assert.match(source, /non-scaling-stroke/);
+    assert.doesNotMatch(source, /donutLabel/);
+  });
+}

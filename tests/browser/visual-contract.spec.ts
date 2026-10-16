@@ -2,7 +2,10 @@ import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { test, expect, chromium, type Locator, type Page } from '@playwright/test';
 import { presetConfig } from '../../shared/example-registry';
 import { openFixture } from './packed-fixture';
+import { tokens } from '../../packages/tokens/dist/index.js';
 const box = async (node:Locator) => (await node.boundingBox())!;
+const chartPart = (page:Page, name:string) => page.getByTestId('chart').locator(`[data-kjun-chart-part="${name}"]`);
+const chartRoot = (page:Page) => page.getByTestId('chart').locator('[data-kjun-chart-kind]');
 const middle = (r:{y:number;height:number}) => r.y + r.height/2;
 for(const platform of ['react','vue3','native']) {
   test(`${platform}: compound controls retain their geometry, width options and number interactions`,async({page})=>{
@@ -116,12 +119,63 @@ for(const platform of ['react','vue3','native']) {
   });
   test(`${platform}: chart loading labels remain clear without animation and can be hidden`,async({page})=>{
     await page.emulateMedia({reducedMotion:'reduce'});
-    for(const kind of ['line','grid','bar','donut','candle','matrix']) {
+    for(const kind of ['frame','donut','matrix']) {
       await openFixture(page,platform,'?kind='+kind,'visual-contract');
-      await expect(page.getByTestId('chart').getByText('차트를 불러오는 중',{exact:true})).toBeVisible();
+      await expect(page.getByTestId('chart').getByRole('status')).toHaveText('차트를 불러오는 중');
     }
     await openFixture(page,platform,'?no-text','visual-contract');
     await expect(page.getByTestId('chart').getByText('차트를 불러오는 중',{exact:true})).toHaveCount(0);
+    await expect(page.getByTestId('chart').getByRole('status')).toHaveCount(0);
+  });
+  test(`${platform}: chart skeleton frame draws only a non-scaling chart-grid frame`,async({page})=>{
+    await page.emulateMedia({reducedMotion:'reduce'});
+    for(const width of [320,760]) {
+      await openFixture(page,platform,`?kind=frame&chart-width=${width}`,'visual-contract');
+      const plot=chartPart(page,'plot');
+      await expect(plot).toHaveAttribute('aria-hidden','true');
+      await expect(plot.locator('path')).toHaveCount(1);
+      await expect(plot.locator('rect')).toHaveCount(0);
+      const path=plot.locator('path');
+      expect(await path.evaluate(el=>getComputedStyle(el).vectorEffect)).toBe('non-scaling-stroke');
+      expect(await path.evaluate(el=>getComputedStyle(el).strokeWidth)).toBe('1px');
+      if(platform!=='native') expect(await path.getAttribute('stroke')).toBe('var(--_kjun-color-chart-grid)');
+    }
+  });
+  test(`${platform}: chart skeleton matrix draws rows × columns round cells`,async({page})=>{
+    await page.emulateMedia({reducedMotion:'reduce'});
+    for(const width of [320,760]) {
+      await openFixture(page,platform,`?kind=matrix&rows=3&columns=5&chart-width=${width}`,'visual-contract');
+      await expect(chartPart(page,'cell')).toHaveCount(15);
+      await expect(chartPart(page,'plot')).toHaveCount(0);
+      // A stretched SVG rect turned this corner elliptical ("4px 2px"); a CSS/View cell keeps it round.
+      const radius=await chartPart(page,'cell').first().evaluate(el=>getComputedStyle(el).borderTopLeftRadius);
+      expect(radius.split(' ').every(v=>v===`${tokens.extensions.skeleton.lineRadius}px`)).toBe(true);
+    }
+    await openFixture(page,platform,'?kind=matrix&rows=0&columns=2.5','visual-contract');
+    await expect(chartPart(page,'cell')).toHaveCount(2);
+  });
+  test(`${platform}: chart skeleton donut keeps its label inside the hole`,async({page})=>{
+    await page.emulateMedia({reducedMotion:'reduce'});
+    await openFixture(page,platform,'?kind=donut','visual-contract');
+    const donut=chartPart(page,'donut');
+    await expect(donut.locator('*')).toHaveCount(0);
+    const ring=await box(donut), label=await box(chartPart(page,'status').getByText('차트를 불러오는 중',{exact:true}));
+    const hole=ring.height-2*tokens.extensions.chartSkeleton.donutThickness;
+    expect(label.width).toBeLessThanOrEqual(hole+1);
+    expect(Math.abs(label.x+label.width/2-(ring.x+ring.width/2))).toBeLessThanOrEqual(1);
+  });
+  test(`${platform}: chart skeleton spinner mode and loading delay keep the height`,async({page})=>{
+    await page.emulateMedia({reducedMotion:'reduce'});
+    await openFixture(page,platform,'?spinner','visual-contract');
+    await expect(chartPart(page,'loading')).toBeVisible();
+    // KjunSpinner carries its own status role, as in DataState's spinner mode; the chart's status is the one with the text.
+    await expect(page.getByTestId('chart').getByRole('status').filter({hasText:'차트를 불러오는 중'})).toBeVisible();
+    await expect(chartPart(page,'plot')).toHaveCount(0);
+    expect((await box(chartRoot(page))).height).toBe(180);
+    await openFixture(page,platform,'?delay=4000','visual-contract');
+    expect((await box(chartRoot(page))).height).toBe(180);
+    await expect(page.getByTestId('chart').getByRole('status')).toHaveCount(0);
+    await expect(page.getByTestId('chart').getByRole('status')).toHaveText('차트를 불러오는 중',{timeout:15000});
   });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
