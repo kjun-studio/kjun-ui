@@ -45,9 +45,11 @@ export const KjunIconToggle = defineComponent({
             ? navigation ? <KjunIcon name="loader-2" spin size={navigation.iconSize} /> : <KjunSpinner size="sm" />
             : <KjunIcon name={props.active ? props.activeIcon : props.inactiveIcon || props.activeIcon} filled={props.active}
                 size={navigation?.iconSize ?? tokens.button.iconSizes[props.size]}
-                // Passed as a variable so the shared hover rule can darken the inactive icon.
+                // Passed as a variable so the shared hover rule can darken the inactive icon. An app color
+                // class opts the icon out of KJUN's color rules, so the class color shows.
                 style={{ "--_kjun-icon-toggle-color": props.active ? props.activeColor : props.inactiveColor }}
-                class={props.active ? props.activeColorClass : props.inactiveColorClass} />}
+                class={props.active ? props.activeColorClass : props.inactiveColorClass}
+                data-kjun-color-class={(props.active ? props.activeColorClass : props.inactiveColorClass) ? "" : undefined} />}
         </button>
       </KjunTooltip>
     );

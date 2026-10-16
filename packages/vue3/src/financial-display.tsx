@@ -1,5 +1,5 @@
 import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
-import { tokens } from "@kjun-ui/tokens";
+import { deviationLevel, tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { KjunBadge, type DisplaySize } from "./display";
 import { useKjunId } from "./input";
@@ -7,6 +7,9 @@ import { finiteNumber, format } from "./number-display";
 import { KjunTooltip } from "./popover";
 import { domainRef } from "./runtime/refs";
 import { css } from "./runtime/style";
+
+// Fill strength of a non-neutral deviation step.
+const deviationFill = { neutral: 1, low: tokens.states.opacity.deviationLow, medium: tokens.states.opacity.deviationMedium, strong: tokens.states.opacity.deviationStrong };
 
 const kjunDeviationProps = {
   value: { type: Number as PropType<number | null>, default: undefined },
@@ -23,7 +26,7 @@ export const KjunDeviation = defineComponent({
     return () => {
       const n = finiteNumber(props.value);
       if (n === null) return <span style={{ color: "var(--_kjun-color-text-disabled)" }}>-</span>;
-      const abs = Math.abs(n), signal = abs >= props.signalThreshold, neutral = abs < 0.1;
+      const abs = Math.abs(n), signal = abs >= props.signalThreshold, level = deviationLevel(n), neutral = level === "neutral";
       const role = neutral ? "text-secondary" : n > 0 ? "price-up" : "price-down";
       const label = props.formatter ? props.formatter(n) : (n > 0 ? "+" : "") + format(n, props.decimals) + "%";
       // In the badge variant every value shares the badge box and the icon slot, so a column of
@@ -42,11 +45,11 @@ export const KjunDeviation = defineComponent({
       );
       return (
         <span class="kjun-deviation" ref={domainRef(!neutral)} data-variant={props.variant}
-          style={{ color: `var(--_kjun-color-${role})`, fontWeight: abs >= 1 ? tokens.typography.numberLg.fontWeight : tokens.typography.control.fontWeight }}>
+          style={{ color: `var(--_kjun-color-${role})`, fontWeight: level === "strong" ? tokens.typography.numberLg.fontWeight : tokens.typography.control.fontWeight }}>
           {props.variant === "pill" && (
             <span aria-hidden="true" class="kjun-heat-layer" style={{
               background: neutral ? "var(--_kjun-color-secondary)" : `var(--_kjun-color-${role})`,
-              opacity: neutral ? 1 : abs < 0.5 ? 0.08 : abs < 1 ? 0.14 : 0.22,
+              opacity: deviationFill[level],
             }} />
           )}
           <span>{label}</span>

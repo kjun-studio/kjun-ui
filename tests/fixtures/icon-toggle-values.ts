@@ -13,8 +13,13 @@ export const initial = {
   togglingFavorite: null as number | string | null,
   togglingInterest: null as number | string | null,
 };
+// App color classes for the web color-class toggle; app rules carry ordinary class specificity.
+export const classColors = { on: 'rgb(18, 52, 86)', off: 'rgb(120, 90, 30)' };
 export function setup() {
   setRootValues();
+  const style = document.createElement('style');
+  style.textContent = `.app-toggle-on { color: ${classColors.on}; } .app-toggle-off { color: ${classColors.off}; }`;
+  document.head.append(style);
   for (const [name, color] of Object.entries(domainColors))
     document.documentElement.style.setProperty('--kjun-' + name.replace(/[A-Z]/g, letter => '-' + letter.toLowerCase()), color);
 }

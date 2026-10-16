@@ -133,6 +133,22 @@
   }
 }
 
+/* 좁은 화면에서 보조 지표가 셋 이상이면 두 열로 감싼다. 한 줄에 몰아 숫자가 자릿수 사이에서 끊기지 않게 한다. */
+@media (width <= token(responsive.kpiHeroSecondary)) {
+  .kjun-kpi-hero:not(.kjun-kpi-hero--sm) .kjun-kpi-hero__secondary:has(> .kjun-kpi-hero__sec-item:nth-child(3)) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--_kjun-extension-kpi-hero-mobile-secondary-padding);
+  }
+  .kjun-kpi-hero:not(.kjun-kpi-hero--sm) .kjun-kpi-hero__secondary:has(> .kjun-kpi-hero__sec-item:nth-child(3)) > .kjun-kpi-hero__sec-item:nth-child(odd) {
+    padding-left: 0;
+    border-left: none;
+  }
+  .kjun-kpi-hero:not(.kjun-kpi-hero--sm) .kjun-kpi-hero__secondary:has(> .kjun-kpi-hero__sec-item:nth-child(3)) > .kjun-kpi-hero__sec-item:nth-child(even) {
+    padding-right: 0;
+  }
+}
+
 /* size=sm — 모달, 컴팩트 카드 내부용 */
 .kjun-kpi-hero--sm {
   padding: var(--_kjun-extension-kpi-hero-sm-padding-y) var(--_kjun-extension-kpi-hero-sm-padding-x);

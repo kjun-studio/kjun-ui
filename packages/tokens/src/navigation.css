@@ -206,12 +206,14 @@
   opacity: var(--_kjun-state-opacity-disabled);
   cursor: not-allowed;
 }
-.kjun-icon-toggle svg {
+.kjun-icon-toggle svg:not([data-kjun-color-class]) {
   color: var(--_kjun-icon-toggle-color, currentColor);
+}
+.kjun-icon-toggle svg {
   transition: color var(--_kjun-motion-control) var(--_kjun-ease-out), transform var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
 /* Like RefreshButton, an inactive icon darkens on hover; the selected color stays as set. */
-.kjun-icon-toggle[aria-pressed="false"]:hover:not(:disabled) svg {
+.kjun-icon-toggle[aria-pressed="false"]:hover:not(:disabled) svg:not([data-kjun-color-class]) {
   color: var(--_kjun-color-text-secondary);
 }
 .kjun-icon-toggle:hover:not(:disabled) svg {

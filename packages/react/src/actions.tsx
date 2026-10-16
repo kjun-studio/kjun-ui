@@ -73,9 +73,11 @@ export function KjunIconToggle({
           name={active ? activeIcon : inactiveIcon || activeIcon}
           filled={active}
           size={navigation?.iconSize ?? tokens.button.iconSizes[size]}
-          // Passed as a variable so the shared hover rule can darken the inactive icon.
+          // Passed as a variable so the shared hover rule can darken the inactive icon. An app color
+          // class opts the icon out of KJUN's color rules, so the class color shows.
           style={{ ["--_kjun-icon-toggle-color" as string]: active ? activeColor : inactiveColor }}
           className={active ? activeColorClass : inactiveColorClass}
+          data-kjun-color-class={(active ? activeColorClass : inactiveColorClass) ? "" : undefined}
         />
       )}
     </button>

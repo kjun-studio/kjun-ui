@@ -79,7 +79,8 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
   } = props;
   const { colors, domainColors, numericFontFamily, fontFamily } =
       useKjunStyles(),
-    mobile = useWindowDimensions().width <= tokens.responsive.kpiHero,
+    windowWidth = useWindowDimensions().width,
+    mobile = windowWidth <= tokens.responsive.kpiHero,
     small = size === "sm",
     numberRole = small ? "displaySm" : mobile ? "displayMd" : "displayLg",
     font = typeStyle(numberRole).fontSize,
@@ -205,17 +206,22 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
             borderTopColor: colors.border,
           }}
         >
-          {secondary.map((item, i) => (
+          {secondary.map((item, i) => {
+            // Like Web: on a narrow screen three or more metrics take two columns, so a row starts at each even index.
+            const columns = mobile && !small && windowWidth <= tokens.responsive.kpiHeroSecondary && secondary.length >= 3 ? 2 : 0;
+            const first = columns ? i % columns === 0 : i === 0;
+            const last = columns ? i % columns === columns - 1 || i === secondary.length - 1 : i === secondary.length - 1;
+            return (
             <View
               key={i}
               style={
                 mobile && !small
                   ? {
-                      flex: 1,
+                      ...(columns ? { width: `${100 / columns}%` as const, marginTop: i >= columns ? spec.secondaryPadding : 0 } : { flex: 1 }),
                       minWidth: 0,
-                      paddingLeft: i ? geometry.itemPadding : 0,
-                      paddingRight: i === secondary.length - 1 ? 0 : geometry.itemPadding,
-                      borderLeftWidth: i ? tokens.border.defaultWidth : 0,
+                      paddingLeft: first ? 0 : geometry.itemPadding,
+                      paddingRight: last ? 0 : geometry.itemPadding,
+                      borderLeftWidth: first ? 0 : tokens.border.defaultWidth,
                       borderLeftColor: colors.border,
                     }
                   : { minWidth: 0, maxWidth: "100%", flexShrink: 1 }
@@ -268,7 +274,8 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                   </KText>
                 ))}
             </View>
-          ))}
+            );
+          })}
         </View>
       )}
     </View>

@@ -31,6 +31,7 @@ export const relatedGroups = {
   tooltip: [...layers, ...files('expanded', 'size-contracts')],
   icons: [...files('icon-render', 'icon-registry', 'icon-toggle', 'menu-button', 'button-design'), ...contracts, ...visuals],
   typography: files('typography', 'color-font', 'geometry-tokens', 'card-layout', 'visual-contract'),
+  kpi: [...files('kpi-secondary', 'typography', 'geometry-tokens', 'card-layout'), ...visuals],
   quantity: [...files('quantity', 'elevation-inputs', 'interaction-states'), ...fields, ...visuals],
   slider: [...files('slider-design'), ...fields, ...visuals],
   'time-picker': [...files('elevation-inputs'), ...fields, ...visuals],

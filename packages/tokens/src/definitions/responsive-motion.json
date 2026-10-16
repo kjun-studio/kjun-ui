@@ -1,5 +1,5 @@
 {
-  "breakpoints": { "compact": 640, "medium": 768, "wide": 1024, "actionContent": 448 },
+  "breakpoints": { "compact": 640, "medium": 768, "wide": 1024, "actionContent": 448, "narrow": 400 },
   "responsive": {
     "modal": { "$ref": "breakpoints.compact" },
     "drawer": { "$ref": "breakpoints.compact" },
@@ -7,6 +7,7 @@
     "pagination": { "$ref": "breakpoints.compact" },
     "paginationWide": { "$ref": "breakpoints.wide" },
     "kpiHero": { "$ref": "breakpoints.compact" },
+    "kpiHeroSecondary": { "$ref": "breakpoints.narrow" },
     "kpiRow": { "$ref": "breakpoints.medium" },
     "market": { "$ref": "breakpoints.medium" },
     "selection": { "$ref": "breakpoints.medium" },

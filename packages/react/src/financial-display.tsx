@@ -1,4 +1,4 @@
-import { tokens } from "@kjun-ui/tokens";
+import { deviationLevel, tokens } from "@kjun-ui/tokens";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import {
 useId,
@@ -8,6 +8,9 @@ import { KjunIcon } from "./button";
 import { KjunBadge,type DisplaySize } from "./display";
 import { KjunTooltip } from "./layers";
 import { finiteNumber,format } from "./number-display";
+
+// Fill strength of a non-neutral deviation step.
+const deviationFill = { neutral: 1, low: tokens.states.opacity.deviationLow, medium: tokens.states.opacity.deviationMedium, strong: tokens.states.opacity.deviationStrong };
 export interface KjunDeviationProps {
   value?: number | null;
   variant?: "pill" | "badge" | "text";
@@ -27,7 +30,8 @@ export function KjunDeviation({
     return <span style={{ color: "var(--_kjun-color-text-disabled)" }}>-</span>;
   const abs = Math.abs(n),
     signal = abs >= signalThreshold,
-    neutral = abs < 0.1,
+    level = deviationLevel(n),
+    neutral = level === "neutral",
     role = neutral ? "text-secondary" : n > 0 ? "price-up" : "price-down",
     label = formatter
       ? formatter(n)
@@ -59,7 +63,7 @@ export function KjunDeviation({
       className="kjun-deviation"
       ref={domainColorRef(!neutral)}
       data-variant={variant}
-      style={{ color: `var(--_kjun-color-${role})`, fontWeight: abs >= 1 ? tokens.typography.numberLg.fontWeight : tokens.typography.control.fontWeight }}
+      style={{ color: `var(--_kjun-color-${role})`, fontWeight: level === "strong" ? tokens.typography.numberLg.fontWeight : tokens.typography.control.fontWeight }}
     >
       {variant === "pill" && (
         <span
@@ -69,7 +73,7 @@ export function KjunDeviation({
             background: neutral
               ? "var(--_kjun-color-secondary)"
               : `var(--_kjun-color-${role})`,
-            opacity: neutral ? 1 : abs < 0.5 ? 0.08 : abs < 1 ? 0.14 : 0.22,
+            opacity: deviationFill[level],
           }}
         />
       )}

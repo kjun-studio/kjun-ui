@@ -686,6 +686,9 @@
   --_kjun-state-opacity-pending: 0.55;
   --_kjun-state-opacity-heat-minimum: 0.08;
   --_kjun-state-opacity-heat-maximum: 0.4;
+  --_kjun-state-opacity-deviation-low: 0.08;
+  --_kjun-state-opacity-deviation-medium: 0.14;
+  --_kjun-state-opacity-deviation-strong: 0.22;
   --_kjun-state-focus-width: 2px;
   --_kjun-state-focus-offset: 2px;
   --_kjun-state-focus-choice-offset: 3px;

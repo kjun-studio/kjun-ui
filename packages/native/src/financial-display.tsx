@@ -1,4 +1,4 @@
-import { tokens } from "@kjun-ui/tokens";
+import { deviationLevel, tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { useId,type ReactNode } from "react";
 import {
@@ -20,6 +20,9 @@ import { KjunBadge,type DisplaySize } from "./display";
 import { KText,content,domainColor } from "./internal";
 import { finiteNumber,format } from "./number-display";
 import { useKjunStyles } from "./provider";
+
+// Fill strength of a non-neutral deviation step.
+const deviationFill = { neutral: 1, low: tokens.states.opacity.deviationLow, medium: tokens.states.opacity.deviationMedium, strong: tokens.states.opacity.deviationStrong };
 export interface KjunDeviationProps {
   value?: number | null;
   variant?: "pill" | "badge" | "text";
@@ -41,7 +44,8 @@ export function KjunDeviation({
     return <KText style={{ color: colors.textDisabled }}>-</KText>;
   const abs = Math.abs(n),
     signal = abs >= signalThreshold,
-    neutral = abs < 0.1,
+    level = deviationLevel(n),
+    neutral = level === "neutral",
     color = neutral
       ? colors.textSecondary
       : domainColor(domainColors, n > 0 ? "priceUp" : "priceDown"),
@@ -109,7 +113,7 @@ export function KjunDeviation({
             inset: 0,
             borderRadius: tokens.extensions.financial.cellRadius,
             backgroundColor: neutral ? colors.secondary : color,
-            opacity: neutral ? 1 : abs < 0.5 ? 0.08 : abs < 1 ? 0.14 : 0.22,
+            opacity: deviationFill[level],
           }}
         />
       )}
@@ -120,7 +124,7 @@ export function KjunDeviation({
           fontVariant: ["tabular-nums"],
           ...typeStyle('body'),
           // Like Web: control weight, stronger once the deviation reaches 1%.
-          fontWeight: abs >= 1 ? typeStyle("numberLg").fontWeight : typeStyle("control").fontWeight,
+          fontWeight: level === "strong" ? typeStyle("numberLg").fontWeight : typeStyle("control").fontWeight,
         }}
       >
         {label}

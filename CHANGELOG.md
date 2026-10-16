@@ -2,6 +2,16 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.6.2 — 2026-10-16
+
+첫 적용 프로젝트의 피드백에서 찾은 결함을 고쳤습니다.
+
+- **숫자 글꼴**: `.kjun-type-number-*`·`.kjun-type-display-*`가 접두사 없는 앱 변수 `--font-numeric`을 읽던 것을 `--kjun-font-numeric`(없으면 `--kjun-font`) 연결로 바꿨습니다. 앱이 `--font-numeric`을 정의하지 않아도 숫자 글꼴이 적용됩니다. 전역 이름 검사가 CSS `var()` 참조도 확인합니다.
+- **IconToggle**: `activeColorClass`·`inactiveColorClass`로 넘긴 앱 색 클래스가 실제로 아이콘 색을 정합니다(이전에는 기본 색이 이겼습니다). 색 클래스를 쓰면 KJUN 기본 색과 hover 색을 적용하지 않습니다.
+- **KpiHero**: 좁은 화면(400px 이하)에서 보조 지표가 셋 이상이면 두 열로 감쌉니다. 한 줄에 몰려 숫자가 자릿수 사이에서, 라벨이 음절 사이에서 끊기던 문제를 고쳤습니다. 새 토큰 `breakpoints.narrow`(400)와 `responsive.kpiHeroSecondary`를 추가했습니다.
+- **Deviation**: 단계 경계(0.1·0.5·1%)를 `deviationThresholds`·`deviationLevel()`로 export하고, 단계별 배경 투명도를 토큰 `states.opacity.deviationLow·Medium·Strong`으로 옮겼습니다. 앱은 같은 경계를 사본 없이 가져다 쓸 수 있습니다.
+- `forms.css`에 남아 있던 Vue 2 전용 `kj-` 선택자를 지웠습니다(Vue 3·React에는 영향 없음).
+
 ## 0.6.1 — 2026-10-15
 
 - npm에 표시되는 패키지 설명(README)에서 Vue 2 안내를 Vue 3로 고쳤습니다(`@kjun-ui/icons`, `@kjun-ui/react`, `@kjun-ui/native`). 코드 변경은 없습니다.

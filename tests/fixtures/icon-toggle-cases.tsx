@@ -16,6 +16,8 @@ export function ToggleCases({ K, native = false }: { K: any; native?: boolean })
   return <>
     {native ? <Pressable onPress={() => emit('parent')}>{toggle}</Pressable>
       : <div onClick={() => emit('parent')}>{toggle}</div>}
+    {!native && <K.KjunIconToggle active={config.active} activeIcon="heart" ariaLabel="색 클래스 토글"
+      activeColorClass="app-toggle-on" inactiveColorClass="app-toggle-off" onToggle={() => emit('classed')} />}
     <K.KjunMarketTable rows={rows} columns={columns} hasLoadedOnce showActions
       primaryLabel={(row: typeof rows[number]) => row.id === 0 ? '사용자 이름' : ''}
       favoriteKeys={new Set(config.favorite)} interestKeys={new Set(config.interest)}

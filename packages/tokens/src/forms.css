@@ -94,7 +94,6 @@
 .kjun-field--suffix { padding-right: calc(var(--_kjun-field-padding) + var(--_kjun-field-clear-size) + var(--_kjun-field-affix-gap) - var(--_kjun-border-control-width)); }
 .kjun-input-native.kjun-field--prefix { padding-left: calc(var(--_kjun-field-padding) + var(--_kjun-input-prefix-width) + var(--_kjun-field-affix-gap) - var(--_kjun-border-control-width)); }
 .kjun-input-native.kjun-field--suffix { padding-right: calc(var(--_kjun-field-padding) + var(--_kjun-input-suffix-width) + var(--_kjun-field-affix-gap) - var(--_kjun-border-control-width)); }
-.kjun-field--clearable > .kj-truncate { padding-right: calc(var(--_kjun-field-clear-size) + var(--_kjun-field-affix-gap)); }
 .kjun-field--select { display: flex; align-items: center; justify-content: space-between; text-align: left; gap: var(--_kjun-geometry-dimension-value8); }
 .kjun-field--textarea { height: auto; padding-top: var(--_kjun-field-textarea-padding-y); padding-bottom: var(--_kjun-field-textarea-padding-y); }
 .kjun-field-shell { position: relative; min-width: 0; --_kjun-input-prefix-width: 0px; --_kjun-input-suffix-width: 0px; }
@@ -117,7 +116,7 @@
 .kjun-form-group { margin-bottom: var(--_kjun-extension-form-item-gap); min-width: 0; }
 .kjun-form-group:last-child { margin-bottom: 0; }
 /* 그리드·툴바는 부모 gap을 사용하고, 일반 문서 흐름의 기존 폼만 기본 간격을 유지한다. */
-:where(.kj-flex, .kj-inline-flex, .kj-grid, .kj-inline-grid, [data-kjun-layout="form"]) > .kjun-form-group { margin-bottom: 0; }
+:where([data-kjun-layout="form"]) > .kjun-form-group { margin-bottom: 0; }
 .kjun-field-menu {
   padding: var(--_kjun-extension-menu-padding);
   border: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);

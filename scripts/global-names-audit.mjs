@@ -6,11 +6,9 @@ import selectorParser from "postcss-selector-parser";
 // Names KJUN puts into namespaces it shares with the applying app: CSS classes, custom properties,
 // keyframes and ids in the page, Vue's global component registry, provide/inject keys and instance
 // members. Each must carry the kjun namespace so an app's same-named global can't reach KJUN, or the reverse.
-// Tailwind variants (hover:, pagination:) prefix the utility; the utility itself carries the namespace.
-const allowedClass = name => /^(kjun-|kj-)/.test(name.replace(/\[[^\]]*\]/g, "").split(":").pop());
-const allowedProperty = name => /^--(_?kjun-|tw-)/.test(name);
-// Vue scoped keyframes are renamed with the component's data-v-kjun- hash; kj- ones come from Tailwind.
-const allowedKeyframes = name => /^(kjun-|kj-)/.test(name) || name.includes("data-v-kjun-");
+const allowedClass = name => /^kjun-/.test(name);
+const allowedProperty = name => /^--_?kjun-/.test(name);
+const allowedKeyframes = name => /^kjun-/.test(name);
 const allowedId = name => /^kjun-/.test(name);
 
 const sorted = set => [...set].sort();
@@ -21,7 +19,11 @@ async function auditCss(root) {
   const classes = new Set(), properties = new Set(), keyframes = new Set(), ids = new Set();
   const css = postcss.parse(await read(root, "packages/tokens/dist/styles.css"));
   css.walkAtRules(/keyframes$/, rule => { if (!allowedKeyframes(rule.params)) keyframes.add(rule.params); });
-  css.walkDecls(decl => { if (decl.prop.startsWith("--") && !allowedProperty(decl.prop)) properties.add(decl.prop); });
+  css.walkDecls(decl => {
+    if (decl.prop.startsWith("--") && !allowedProperty(decl.prop)) properties.add(decl.prop);
+    // Reading an app-named variable lets the app's value reach KJUN, the same leak as defining one.
+    for (const [, name] of decl.value.matchAll(/var\(\s*(--[\w-]+)/g)) if (!allowedProperty(name)) properties.add(name);
+  });
   css.walkRules(rule => {
     if (rule.parent?.type === "atrule" && /keyframes$/.test(rule.parent.name)) return;
     selectorParser(selectors => selectors.walk(node => {

@@ -1,6 +1,8 @@
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { openFixture } from './packed-fixture';
+// Same values as classColors in fixtures/icon-toggle-values.ts.
+const classColors = { on: 'rgb(18, 52, 86)', off: 'rgb(120, 90, 30)' };
 
 const configure = (page: Page, next: object) => page.evaluate(value => (window as any).configureToggle(value), next);
 const reset = (page: Page) => page.evaluate(() => (window as any).resetToggleEvents());
@@ -87,5 +89,15 @@ for (const platform of ['vue3', 'react', 'native']) {
     await expect(page.getByRole('button', { name: `${firstLabel} 즐겨찾기 등록`, exact: true })).toBeEnabled();
     await page.getByText(firstLabel, { exact: true }).click();
     await expect(events(page)).toHaveText('[["row",0]]');
+  });
+}
+
+for (const platform of ['vue3', 'react']) {
+  test(`${platform}: IconToggle color classes color the icon over the default color`, async ({ page }) => {
+    await open(page, platform);
+    const icon = page.getByRole('button', { name: '색 클래스 토글', exact: true }).locator('svg');
+    await expect(icon).toHaveCSS('color', classColors.off);
+    await configure(page, { active: true });
+    await expect(icon).toHaveCSS('color', classColors.on);
   });
 }

@@ -16,6 +16,8 @@ createApp(defineComponent(() => () => {
         ariaLabel={'예제 항목 관심 ' + (config.active ? '해제' : '등록')} loading={config.loading} disabled={config.disabled} size={config.size as any}
         onToggle={() => emit('toggle')} />
     </div>
+    <K.KjunIconToggle active={config.active} activeIcon="heart" ariaLabel="색 클래스 토글"
+      activeColorClass="app-toggle-on" inactiveColorClass="app-toggle-off" onToggle={() => emit('classed')} />
     <K.KjunMarketTable rows={rows} columns={columns} hasLoadedOnce showActions
       primaryLabel={(row: typeof rows[number]) => row.id === 0 ? '사용자 이름' : ''}
       favoriteKeys={new Set(config.favorite)} interestKeys={new Set(config.interest)}
