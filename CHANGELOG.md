@@ -2,6 +2,14 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.8.1 — 2026-10-17
+
+차트 스켈레톤을 다듬었습니다. 바꿀 코드는 없습니다.
+
+- **제거된 kind 값**: JavaScript에서 `kind="line"`처럼 0.8.0에서 없앤 값이나 알 수 없는 값을 넘기면 frame으로 그리고, `data-kjun-chart-kind`도 `frame`으로 표시합니다.
+- **Native 알림**: 로딩 문구가 있으면 Android에서 `accessibilityLiveRegion="polite"`로 읽힙니다.
+- **donut**: 링과 문구가 앱의 CSS 리셋과 관계없이 `border-box`로 계산되어, 문구가 항상 구멍 안에 들어갑니다.
+
 ## 0.8.0 — 2026-10-16
 
 차트 스켈레톤이 데이터 모양을 지어내지 않도록 정리했습니다. **깨지는 변경**이 있어 아래 표대로 코드를 바꿔야 합니다.
