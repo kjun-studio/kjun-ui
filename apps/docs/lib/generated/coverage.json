@@ -1662,7 +1662,7 @@
       "title": "Popover",
       "docs": "/components/popover",
       "category": "layout",
-      "differences": "Vue는 v-model:open과 trigger 슬롯으로, React·Native는 open·onOpenChange와 trigger prop으로 연결합니다. Native 팝업은 Modal 기반이며 웹 배치 속성의 동작 범위는 API 타입을 따릅니다. returnFocus는 React·Vue에만 있고, Native는 모달이 닫힐 때 플랫폼이 접근성 초점을 돌려줍니다.",
+      "differences": "Vue는 v-model:open과 trigger 슬롯으로, React·Native는 open·onOpenChange와 trigger prop으로 연결합니다. Native 팝업은 Modal 기반이며 웹 배치 속성의 동작 범위는 API 타입을 따릅니다. returnFocus는 React·Vue에만 있고, Native는 모달이 닫힐 때 플랫폼이 접근성 초점을 돌려줍니다. Native의 modal=false는 화면 판독기 가둠만 끄며 Tab 동작은 해당 없습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

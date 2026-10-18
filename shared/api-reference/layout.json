@@ -224,7 +224,8 @@
       "focusOnOpen",
       "ariaLabel",
       "placement",
-      "returnFocus"
+      "returnFocus",
+      "modal"
     ],
     "react": [
       "noPadding",
@@ -240,7 +241,8 @@
       "trigger",
       "children",
       "returnFocus",
-      "header"
+      "header",
+      "modal"
     ],
     "native": [
       "noPadding",
@@ -255,7 +257,8 @@
       "placement",
       "trigger",
       "children",
-      "header"
+      "header",
+      "modal"
     ]
   },
   "KjunScrollFade": {

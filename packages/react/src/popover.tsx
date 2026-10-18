@@ -1,9 +1,10 @@
 import { tokens } from "@kjun-ui/tokens";
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
 import { useLayer } from "../../../shared/package-runtime/use-layer";
-import { useCallback, useId, useRef, useState, type CSSProperties, type ReactNode, type ComponentProps, type RefObject } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type CSSProperties, type ReactNode, type ComponentProps, type RefObject } from "react";
 import { Dialog, Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
 import { FloatingPanel } from "./floating-panel";
+import { installNonModalPopover } from "../../../shared/package-runtime/popover-nonmodal";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { useKjunPortalContainer } from "./provider";
 export interface KjunPopoverProps {
@@ -21,6 +22,8 @@ export interface KjunPopoverProps {
   returnFocus?: HTMLElement | RefObject<HTMLElement | null> | (() => HTMLElement | null);
   /** Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel. */
   header?: ReactNode;
+  /** false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus. */
+  modal?: boolean;
   trigger: ReactNode | ((open: boolean) => ReactNode);
   children: ReactNode | ((close: () => void) => ReactNode);
 }
@@ -37,6 +40,7 @@ export function KjunPopover({
   placement = "bottom",
   returnFocus,
   header,
+  modal = true,
   trigger,
   children,
 }: KjunPopoverProps) {
@@ -57,6 +61,17 @@ export function KjunPopover({
     setInternal(v);
     onOpenChange?.(v);
   };
+  // A non-modal Popover closed by an outside press or focus move leaves focus where the user put it.
+  const skipReturn = useRef(false);
+  useEffect(() => {
+    if (!open || modal) return;
+    skipReturn.current = false;
+    return installNonModalPopover({
+      panel: () => document.getElementById(id)?.closest<HTMLElement>(".kjun-floating") ?? null,
+      trigger: () => ref.current,
+      close: () => { skipReturn.current = true; change(false); },
+    });
+  });
   const content = (
     <div className="kjun-popover-content" data-no-padding={noPadding}>
       {typeof children === "function" ? children(() => change(false)) : children}
@@ -95,22 +110,30 @@ export function KjunPopover({
         matchTriggerWidth={matchTriggerWidth}
         maxHeight={maxHeight}
         flip={flip}
-        returnFocus={resolveReturn}
+        returnFocus={() => (skipReturn.current ? false : resolveReturn?.())}
+        nonModal={!modal}
+        ownsDismiss={!modal}
       >
-        <Dialog
-          id={id}
-          aria-label={header != null && !ariaLabel ? undefined : ariaLabel || "상세 정보"}
-          aria-labelledby={header != null && !ariaLabel ? id + "-header" : undefined}
-          className="kjun-popover-dialog"
-          style={{ maxHeight: maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: header != null ? undefined : "auto" }}
-          ref={focusContent}
-        >
-          {header != null && <div id={id + "-header"} className="kjun-popover-header">{header}</div>}
-          {header != null
-            ? <div className="kjun-popover-body">{content}</div>
-            : content}
-          <FeedbackLayerOutlet />
-        </Dialog>
+        {(() => {
+          const dialogProps = {
+            id,
+            "aria-label": header != null && !ariaLabel ? undefined : ariaLabel || "상세 정보",
+            "aria-labelledby": header != null && !ariaLabel ? id + "-header" : undefined,
+            className: "kjun-popover-dialog",
+            style: { maxHeight: maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: header != null ? undefined : "auto" } as CSSProperties,
+          };
+          const body = (
+            <>
+              {header != null && <div id={id + "-header"} className="kjun-popover-header">{header}</div>}
+              {header != null ? <div className="kjun-popover-body">{content}</div> : content}
+              <FeedbackLayerOutlet />
+            </>
+          );
+          // react-aria contains focus inside any popover holding its Dialog, so a non-modal one uses a plain dialog element.
+          return modal
+            ? <Dialog {...dialogProps} ref={focusContent}>{body}</Dialog>
+            : <section {...dialogProps} role="dialog" tabIndex={-1} ref={focusContent}>{body}</section>;
+        })()}
       </FloatingPanel>
     </>
   );

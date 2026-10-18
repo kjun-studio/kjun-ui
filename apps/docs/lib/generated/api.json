@@ -12423,6 +12423,13 @@
         "required": false,
         "default": "—",
         "description": "Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone."
+      },
+      {
+        "name": "modal",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus."
       }
     ],
     "events": [
@@ -12540,6 +12547,13 @@
         "description": "Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel."
       },
       {
+        "name": "modal",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus."
+      },
+      {
         "name": "trigger",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((open: boolean) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
         "required": true,
@@ -12631,6 +12645,13 @@
         "required": false,
         "default": "—",
         "description": "Fixed header above the body; only the body scrolls and maxHeight covers both."
+      },
+      {
+        "name": "modal",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false stops confining screen readers to the panel; Native has no Tab order to release."
       },
       {
         "name": "trigger",

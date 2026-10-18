@@ -33,6 +33,8 @@ export interface KjunPopoverProps {
   placement?: "top" | "bottom" | "left" | "right";
   /** Fixed header above the body; only the body scrolls and maxHeight covers both. */
   header?: ReactNode;
+  /** false stops confining screen readers to the panel; Native has no Tab order to release. */
+  modal?: boolean;
   trigger: ReactNode | ((open: boolean) => ReactNode);
   children: ReactNode | ((close: () => void) => ReactNode);
 }
@@ -48,6 +50,7 @@ export function KjunPopover({
   ariaLabel,
   placement = "bottom",
   header,
+  modal = true,
   trigger,
   children,
 }: KjunPopoverProps) {
@@ -81,6 +84,7 @@ export function KjunPopover({
         focusOnOpen={focusOnOpen}
         ariaLabel={ariaLabel}
         header={header != null ? content(header, { ...typeStyle("cardTitle"), color: colors.text }) : undefined}
+        nonModal={!modal}
       >
         <View style={{ padding: noPadding ? 0 : tokens.extensions.popover.padding, gap: noPadding ? 0 : tokens.extensions.popover.gap }}>
           {content(typeof children === "function" ? children(() => change(false)) : children,

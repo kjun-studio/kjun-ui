@@ -328,6 +328,50 @@ for(const platform of ['react','vue3','native']) {
     expect(header.y).toBeGreaterThanOrEqual(0);
     expect(header.y+header.height).toBeLessThanOrEqual(360);
   });
+  test(`${platform}: non-modal Popover leaves the page usable and lets Tab leave`,async({page})=>{
+    test.skip(platform==='native','keyboard and page interaction are web behaviors');
+    await openFixture(page,platform,'','visual-contract');
+    const open=page.getByRole('button',{name:'비모달 열기'}), dialog=page.getByRole('dialog',{name:'비모달 시험'});
+    await open.click(); await expect(dialog).toBeVisible();
+    await expect(dialog).not.toHaveAttribute('aria-modal','true');
+    await page.getByRole('textbox',{name:'바깥 입력'}).fill('가');
+    await expect(page.getByTestId('state')).toContainText('"typed":"가"');
+    await expect(page.getByTestId('state')).toContainText('"nmOpen":false');
+    await open.click(); await expect(dialog).toBeVisible(); await page.getByRole('button',{name:'비모달 끝 버튼'}).focus(); await page.keyboard.press('Tab');
+    await expect(page.getByRole('button',{name:'트리거 다음 버튼'})).toBeFocused();
+    await expect(dialog).toHaveCount(0);
+    await open.click(); await expect(dialog).toBeVisible(); await page.getByRole('button',{name:'비모달 첫 버튼'}).focus(); await page.keyboard.press('Shift+Tab');
+    await expect(open).toBeFocused(); await expect(dialog).toBeVisible();
+    await page.keyboard.press('Escape'); await expect(dialog).toHaveCount(0); await expect(open).toBeFocused();
+  });
+  test(`${platform}: non-modal Popover closes on an outside press without pulling focus back`,async({page})=>{
+    test.skip(platform==='native','focus is a web behavior');
+    await openFixture(page,platform,'','visual-contract');
+    const open=page.getByRole('button',{name:'비모달 열기'}), dialog=page.getByRole('dialog',{name:'비모달 시험'});
+    await open.click(); await page.getByRole('textbox',{name:'바깥 입력'}).click();
+    await expect(dialog).toHaveCount(0); await page.waitForTimeout(200);
+    await expect(page.getByRole('textbox',{name:'바깥 입력'})).toBeFocused();
+    await open.click(); await expect(dialog).toBeVisible(); await page.getByText('빈 영역 문단').click();
+    await expect(dialog).toHaveCount(0);
+    // react-aria's overlay focus scope returns focus to the trigger when focus fell to the body; Vue leaves it there.
+    if(platform==='vue3'){ await page.waitForTimeout(200); await expect(open).not.toBeFocused(); }
+  });
+  test(`${platform}: a menu opened inside a non-modal Popover keeps it open`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'비모달 열기'}).click();
+    await page.getByRole('button',{name:'비모달 메뉴'}).click();
+    await page.getByRole('menuitem',{name:'비모달 항목'}).click();
+    await expect(page.getByTestId('state')).toContainText('"pick":"비모달 항목"');
+    await expect(page.getByTestId('state')).toContainText('"nmOpen":true');
+  });
+  test(`${platform}: non-modal Native Popover does not trap screen readers`,async({page})=>{
+    test.skip(platform!=='native','Native modal flag');
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'비모달 열기'}).click();
+    await expect(page.getByRole('button',{name:'비모달 끝 버튼'})).toBeVisible();
+    // React Native Web's Modal always marks its own container aria-modal; the panel inside must not.
+    await expect(page.getByRole('dialog').locator('[aria-modal="true"]')).toHaveCount(0);
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {

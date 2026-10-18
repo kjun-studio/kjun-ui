@@ -25,6 +25,7 @@ export function FloatingPanel({
   field = false,
   flip = true,
   nonModal = false,
+  ownsDismiss = false,
   returnFocus,
 }: {
   open: boolean;
@@ -38,6 +39,8 @@ export function FloatingPanel({
   field?: boolean;
   flip?: boolean;
   nonModal?: boolean;
+  /** The consumer closes the panel itself (non-modal Popover); ignore react-aria's own close requests. */
+  ownsDismiss?: boolean;
   returnFocus?: () => HTMLElement | null | false | undefined;
 }) {
   const motion = usePresence(open, useReducedMotion(), tokens.motion.popupExit);
@@ -72,7 +75,9 @@ export function FloatingPanel({
       isNonModal={nonModal}
       isKeyboardDismissDisabled={layer.keyboardManaged}
       isOpen={motion.present}
-      onOpenChange={onOpenChange}
+      // react-aria closes a non-modal popover whenever focus leaves it, even to its own trigger. A non-modal
+      // Popover owns outside presses and focus moves, and with a Provider KJUN owns Escape.
+      onOpenChange={ownsDismiss && layer.keyboardManaged ? (next: boolean) => { if (next) onOpenChange(next); } : onOpenChange}
       triggerRef={triggerRef}
       UNSTABLE_portalContainer={container}
       placement={placement.replace("-", " ") as "bottom start"}

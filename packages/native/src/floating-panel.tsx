@@ -88,6 +88,7 @@ export function FloatingPanel({
   focusOnOpen = false,
   reveal,
   header,
+  nonModal = false,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
@@ -109,6 +110,8 @@ export function FloatingPanel({
   reveal?: RefObject<{ y: number; height: number } | null>;
   /** Popover header drawn above the scroll view, so only the body scrolls. */
   header?: ReactNode;
+  /** Popover modal={false}: screen readers are not confined to the panel. */
+  nonModal?: boolean;
 }) {
   const [headerHeight, setHeaderHeight] = useState(0);
   const panelRef = useRef<View>(null);
@@ -265,7 +268,7 @@ export function FloatingPanel({
           pointerEvents={open && anchored && sized ? "auto" : "none"}
           accessibilityElementsHidden={!open || !anchored || !sized}
           {...(!open || !anchored || !sized ? { inert: true } : {})}
-          accessibilityViewIsModal
+          accessibilityViewIsModal={!nonModal}
           accessibilityLabel={ariaLabel}
           style={{
             opacity: anchored && sized ? motion.opacity : 0,

@@ -7,6 +7,7 @@ import { FloatingPanel, usePortalTarget } from "./floating-panel";
 import { useKjunId } from "./input";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { containTab } from "./runtime/modal";
+import { installNonModalPopover } from "../../../shared/package-runtime/popover-nonmodal";
 import { useLayer, usePopupExpanded } from "./runtime/layers";
 import { usePresence, useReducedMotion } from "./runtime/presence";
 
@@ -22,6 +23,8 @@ const kjunPopoverProps = {
   placement: { type: String as PropType<"top" | "bottom" | "left" | "right">, default: "bottom" },
   /** Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone. */
   returnFocus: { type: [Object, Function] as PropType<HTMLElement | Ref<HTMLElement | null> | (() => HTMLElement | null)>, default: undefined },
+  /** false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus. */
+  modal: { type: Boolean, default: true },
 } as const;
 export type KjunPopoverProps = ExtractPublicPropTypes<typeof kjunPopoverProps>;
 /** v-model:open (optional). Slots: trigger({ open }), default({ close }). */
@@ -42,9 +45,29 @@ export const KjunPopover = defineComponent({
     const id = useKjunId("kjun-");
     const expanded = usePopupExpanded(() => open.value, () => trigger.value);
     const change = (value: boolean) => { internal.value = value; emit("update:open", value); };
+    // A non-modal Popover closed by an outside press or focus move leaves focus where the user put it.
+    let skipReturn = false, release = () => {};
+    watch([open, () => props.modal], ([isOpen, isModal]) => {
+      release(); release = () => {};
+      if (!isOpen || isModal) return;
+      skipReturn = false;
+      release = installNonModalPopover({
+        panel: () => document.getElementById(id)?.closest<HTMLElement>(".kjun-floating") ?? null,
+        trigger: () => trigger.value,
+        close: () => { skipReturn = true; change(false); },
+      });
+    }, { flush: "post", immediate: true });
+    onBeforeUnmount(() => release());
     // Like react-aria's Dialog: the dialog takes focus when it mounts unless something inside already has it.
+    // The dialog takes focus once per opening: renders retry until focus lands (the panel is not focusable
+    // before it is placed), and later renders while it stays or closes must not pull focus back.
+    let focusedDialog: HTMLElement | null = null;
+    watch(open, value => { if (!value) focusedDialog = null; });
     const dialog = (element: unknown) => {
-      if (element instanceof HTMLElement && !element.contains(document.activeElement)) element.focus({ preventScroll: true });
+      if (!(element instanceof HTMLElement)) { focusedDialog = null; return; }
+      if (element === focusedDialog) return;
+      if (!element.contains(document.activeElement)) element.focus({ preventScroll: true });
+      if (element.contains(document.activeElement)) focusedDialog = element;
     };
     return () => (
       <>
@@ -61,7 +84,9 @@ export const KjunPopover = defineComponent({
         </div>
         <FloatingPanel open={open.value} onOpenChange={change} trigger={() => trigger.value} panelClass={"kjun-content-popover" + (slots.header ? " kjun-popover-has-header" : "")} dialog={false}
           placement={props.placement} matchTriggerWidth={props.matchTriggerWidth} maxHeight={props.maxHeight} flip={props.flip}
+          nonModal={!props.modal}
           returnFocus={() => {
+            if (skipReturn) return false;
             // Vue does not unwrap a ref passed as a prop value, and the prop may change after mount.
             const target = props.returnFocus;
             return typeof target === "function" ? target() : unref(target) ?? undefined;
@@ -70,7 +95,7 @@ export const KjunPopover = defineComponent({
             <section ref={dialog} id={id} class="kjun-popover-dialog" role="dialog" tabindex={-1}
               aria-label={slots.header && !props.ariaLabel ? undefined : props.ariaLabel || "상세 정보"}
               aria-labelledby={slots.header && !props.ariaLabel ? id + "-header" : undefined}
-              onKeydown={(event: KeyboardEvent) => containTab(event.currentTarget as HTMLElement, event)}
+              onKeydown={(event: KeyboardEvent) => { if (props.modal) containTab(event.currentTarget as HTMLElement, event); }}
               style={{ maxHeight: typeof props.maxHeight === "number" ? props.maxHeight + "px" : props.maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: slots.header ? undefined : "auto" }}>
               {slots.header && <div id={id + "-header"} class="kjun-popover-header">{slots.header({ close: () => change(false) })}</div>}
               {slots.header
