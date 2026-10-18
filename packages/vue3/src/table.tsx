@@ -170,7 +170,7 @@ export const KjunTable = defineComponent({
         <div class="kjun-table-state" aria-busy={props.loading}
           ref={domainRef(!status.initialLoading && state.rows.length > 0 && props.columns.some(column => column.pill))}>
           {props.selectable && props.selected.length > 0 && (
-            <div role="toolbar" aria-label="선택 작업" class="kjun-table-selection">
+            <div role="group" aria-label="선택 작업" class="kjun-table-selection">
               <strong>{props.selected.length}개 선택</strong>
               <KjunButton size="xs" variant="ghost" onClick={state.toggleAll}>전체 선택</KjunButton>
               <KjunButton size="xs" variant="ghost" onClick={() => emit("update:selected", [])}>선택 해제</KjunButton>

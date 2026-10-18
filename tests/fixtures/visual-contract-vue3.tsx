@@ -16,6 +16,7 @@ const adapt = (name: string, props: any, children?: any, slots?: any): any => {
   const component = (K as any)[name], passed: any = { ...props };
   if ('onValueChange' in passed) { passed['onUpdate:modelValue'] = passed.onValueChange; delete passed.onValueChange; }
   if ('onOpenChange' in passed) { passed['onUpdate:open'] = passed.onOpenChange; delete passed.onOpenChange; }
+  if ('onSelectionChange' in passed) { passed['onUpdate:selected'] = passed.onSelectionChange; delete passed.onSelectionChange; }
   if ('value' in passed && 'modelValue' in component.props) { passed.modelValue = passed.value; delete passed.value; }
   const named = Object.fromEntries(Object.entries(slots || {}).map(([slot, node]) => [slot, () => node]));
   return create(component, passed, { ...(children == null ? {} : { default: () => children }), ...named });

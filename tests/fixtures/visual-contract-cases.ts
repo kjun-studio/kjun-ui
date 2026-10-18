@@ -1,5 +1,5 @@
 // Shared consumer composition; each adapter below renders only packed public components.
-export const initial = { quantity:2, time:'09:30:15', tab:'activity', open:false, retry:0, destination:'home', radio:'a', menuOpen:false, pick:'', focusOpen:false, targetGone:false, returnOn:false, headerOpen:false, nmOpen:false, typed:'' };
+export const initial = { quantity:2, time:'09:30:15', tab:'activity', open:false, retry:0, destination:'home', radio:'a', menuOpen:false, pick:'', focusOpen:false, targetGone:false, returnOn:false, headerOpen:false, nmOpen:false, typed:'', sortReset:false, sortClicks:0, tsel:[] as any[] };
 export function renderCases(h: (name:string, props:any, children?:any, slots?:any) => any, state:typeof initial, set:(key:string,value:any)=>void) {
   const query = new URLSearchParams(location.search), size = query.get('size') || 'md';
   const section = (id:string, children:any, style={}) => h('Section', { id, style }, children);
@@ -36,6 +36,9 @@ export function renderCases(h: (name:string, props:any, children?:any, slots?:an
       [button('비모달 첫 버튼'),h('KjunDropdown',{},h('KjunDropdownItem',{ onClick:()=>set('pick','비모달 항목') },'비모달 항목'),{ trigger:button('비모달 메뉴') }),button('비모달 끝 버튼')],
       { trigger:button('비모달 열기',()=>set('nmOpen',!state.nmOpen)) }),button('트리거 다음 버튼')]),
     section('nonmodal-outside',[h('KjunInput',{ value:state.typed, onValueChange:(v:string)=>set('typed',v), ariaLabel:'바깥 입력' }),h('Text',{},'빈 영역 문단')]),
+    section('menu-selection',h('KjunDropdown',{},[h('KjunDropdownItem',{ selected:true },'최신순'),h('KjunDropdownItem',{ selected:false },'이름순'),
+      h('KjunDropdownItem',{ onClick:()=>{ set('sortReset',true); set('sortClicks',state.sortClicks+1); } },'정렬 초기화')],{ trigger:button('정렬 메뉴') })),
+    section('table-select',h('KjunTable',{ selectable:true, selected:state.tsel, onSelectionChange:(v:any[])=>set('tsel',v), columns:[{key:'name',label:'이름'}], data:[{id:1,name:'선택 행'}] })),
     section('tooltip-outside',h('KjunTooltip',{ content:'바깥 도움말' },button('도움말 버튼'))),
     h('Output',{id:'state'},JSON.stringify(state)),
   ];

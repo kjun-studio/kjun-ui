@@ -23,7 +23,7 @@ export function TableToolbar<Row extends object>({ selectable, selected, toggleA
   return <>
       {selectable && selected.length > 0 && (
         <View
-          accessibilityRole="toolbar"
+          role="group"
           accessibilityLabel="선택 작업"
           style={[toolbarStyle, { backgroundColor: colors.selectedBg }]}
         >

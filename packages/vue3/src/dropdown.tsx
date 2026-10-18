@@ -10,7 +10,7 @@ import { useFocusVisible } from "./runtime/focus-visible";
 
 interface MenuContext { close: () => void; focused: { value: HTMLElement | null }; visible: { value: boolean } }
 const kjunDropdownKey: InjectionKey<MenuContext> = Symbol("kjunDropdown");
-const items = (menu: HTMLElement) => [...menu.querySelectorAll<HTMLElement>('[role="menuitem"]:not([data-disabled])')];
+const items = (menu: HTMLElement) => [...menu.querySelectorAll<HTMLElement>(':is([role="menuitem"], [role="menuitemradio"]):not([data-disabled])')];
 
 const kjunDropdownProps = {
   disabled: { type: Boolean, default: false },
@@ -134,7 +134,9 @@ export const KjunDropdownItem = defineComponent({
     return () => {
       const isFocused = !!item.value && menu?.focused.value === item.value;
       return (
-        <div ref={item} id={props.id} class="kjun-menu-item" role="menuitem" data-variant={props.variant}
+        <div ref={item} id={props.id} class="kjun-menu-item" data-variant={props.variant}
+          // A boolean `selected` makes this a single-choice item, like Native's radio.
+          role={props.selected === null ? "menuitem" : "menuitemradio"} aria-checked={props.selected === null ? undefined : props.selected}
           data-kjun-selected={props.selected === true || undefined} data-text-value={props.textValue}
           tabindex={props.disabled ? undefined : isFocused ? 0 : -1} aria-disabled={props.disabled ? "true" : undefined}
           data-disabled={props.disabled || undefined} data-focused={isFocused || undefined}

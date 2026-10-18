@@ -48,7 +48,7 @@ export function KjunDropdown({
         if (!currentOpen.current || !menu.isConnected || menu.ownerDocument.activeElement !== menu ||
             menu.closest('[inert], [aria-hidden="true"]')) return;
         const item = menu.querySelector<HTMLElement>('[data-focused="true"]:not([data-disabled])') ||
-          menu.querySelector<HTMLElement>('[role="menuitem"]:not([data-disabled])');
+          menu.querySelector<HTMLElement>(':is([role="menuitem"], [role="menuitemradio"]):not([data-disabled])');
         item?.focus({ preventScroll: true });
       });
     };
@@ -149,8 +149,17 @@ export function KjunDropdownItem({
   onClick,
 }: KjunDropdownItemProps) {
   const close = useContext(DropdownContext);
+  // A boolean `selected` makes this a single-choice item, like Native's radio. react-aria only assigns
+  // radio roles through menu-wide selection, which would also turn plain action items into radios.
+  // Applied whenever the rendered element attaches; react-aria keeps its own role value, so React never resets it.
+  const node = useCallback((element: HTMLDivElement | null) => {
+    if (!element || selected === null) return;
+    element.setAttribute("role", "menuitemradio");
+    element.setAttribute("aria-checked", String(selected));
+  }, [selected]);
   return (
     <MenuItem
+      ref={node}
       id={id}
       textValue={
         textValue || (typeof children === "string" ? children : undefined)

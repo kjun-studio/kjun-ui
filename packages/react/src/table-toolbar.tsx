@@ -7,7 +7,8 @@ export function TableToolbar<Row extends object>({ selectable, selected, toggleA
   return <>
       {selectable && selected.length > 0 && (
         <div
-          role="toolbar"
+          // No arrow-key navigation is provided, so this is a labelled group rather than an ARIA toolbar.
+          role="group"
           aria-label="선택 작업"
           className="kjun-table-selection"
         >

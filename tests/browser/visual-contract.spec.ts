@@ -381,6 +381,25 @@ for(const platform of ['react','vue3','native']) {
     // React Native Web's Modal always marks its own container aria-modal; the panel inside must not.
     await expect(page.getByRole('dialog').locator('[aria-modal="true"]')).toHaveCount(0);
   });
+  test(`${platform}: single-choice menu items are radios with a checked state`,async({page})=>{
+    test.skip(platform==='native','Native already exposes radio items');
+    await openFixture(page,platform,'','visual-contract');
+    const trigger=page.getByRole('button',{name:'정렬 메뉴'});
+    await trigger.focus(); await page.keyboard.press('Enter');
+    await expect(page.getByRole('menuitemradio',{name:'최신순'})).toHaveAttribute('aria-checked','true');
+    await expect(page.getByRole('menuitemradio',{name:'이름순'})).toHaveAttribute('aria-checked','false');
+    await expect(page.getByRole('menuitemradio',{name:'최신순'})).toBeFocused();
+    await page.getByRole('menuitem',{name:'정렬 초기화'}).click();
+    await expect(page.getByTestId('state')).toContainText('"sortReset":true');
+    await expect(page.getByTestId('state')).toContainText('"sortClicks":1');
+    await expect(page.getByRole('menuitemradio')).toHaveCount(0);
+  });
+  test(`${platform}: the table selection bar is a labelled group, not a toolbar`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByTestId('table-select').getByRole('checkbox',{name:'행 선택'}).first().click();
+    await expect(page.getByRole('group',{name:'선택 작업'})).toBeVisible();
+    await expect(page.getByRole('toolbar')).toHaveCount(0);
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {
