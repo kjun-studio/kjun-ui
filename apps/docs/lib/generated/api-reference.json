@@ -5998,6 +5998,15 @@
             "description": "",
             "summary": "트리거에 대한 팝업·도움말의 선호 위치입니다.",
             "source": "packages/vue3/src/popover.tsx"
+          },
+          {
+            "name": "returnFocus",
+            "type": "HTMLElement | (() => HTMLElement | null)",
+            "required": false,
+            "default": "—",
+            "description": "Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone.",
+            "summary": "닫힌 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받습니다. 대상이 없거나 문서에서 사라졌으면 트리거로 돌아갑니다.",
+            "source": "packages/vue3/src/popover.tsx"
           }
         ],
         "events": [
@@ -6121,6 +6130,15 @@
             "default": "\"bottom\"",
             "description": "",
             "summary": "트리거에 대한 팝업·도움말의 선호 위치입니다.",
+            "source": "packages/react/src/popover.tsx"
+          },
+          {
+            "name": "returnFocus",
+            "type": "HTMLElement | RefObject<HTMLElement | null> | (() => HTMLElement | null) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone.",
+            "summary": "닫힌 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받습니다. 대상이 없거나 문서에서 사라졌으면 트리거로 돌아갑니다.",
             "source": "packages/react/src/popover.tsx"
           },
           {

@@ -30,13 +30,15 @@ export const FloatingPanel = defineComponent({
     field: { type: Boolean, default: false },
     flip: { type: Boolean, default: true },
     nonModal: { type: Boolean, default: false },
+    returnFocus: { type: Function as PropType<() => HTMLElement | null | false | undefined>, default: undefined },
     /** The panel is itself the dialog unless its content renders one (Popover). */
     dialog: { type: Boolean, default: true },
   },
   setup(props, { slots, expose }) {
     const reduced = useReducedMotion();
     const motion = usePresence(() => props.open, () => reduced.value, tokens.motion.popupExit);
-    const layer = useLayer(() => props.open, motion.present, "popup", () => props.onOpenChange(false), () => props.trigger());
+    const layer = useLayer(() => props.open, motion.present, "popup", () => props.onOpenChange(false), () => props.trigger(),
+      props.returnFocus && (() => props.returnFocus!()));
     provide(kjunLayerScopeKey, layer.id);
     const target = usePortalTarget();
     const panel = ref<HTMLElement | null>(null);

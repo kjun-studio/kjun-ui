@@ -1,7 +1,7 @@
 import { tokens } from "@kjun-ui/tokens";
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
 import { useLayer } from "../../../shared/package-runtime/use-layer";
-import { useCallback, useId, useRef, useState, type CSSProperties, type ReactNode, type ComponentProps } from "react";
+import { useCallback, useId, useRef, useState, type CSSProperties, type ReactNode, type ComponentProps, type RefObject } from "react";
 import { Dialog, Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
 import { FloatingPanel } from "./floating-panel";
 import { FeedbackLayerOutlet } from "./overlay-host";
@@ -17,6 +17,8 @@ export interface KjunPopoverProps {
   focusOnOpen?: boolean;
   ariaLabel?: string;
   placement?: "top" | "bottom" | "left" | "right";
+  /** Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone. */
+  returnFocus?: HTMLElement | RefObject<HTMLElement | null> | (() => HTMLElement | null);
   trigger: ReactNode | ((open: boolean) => ReactNode);
   children: ReactNode | ((close: () => void) => ReactNode);
 }
@@ -31,6 +33,7 @@ export function KjunPopover({
   focusOnOpen = false,
   ariaLabel,
   placement = "bottom",
+  returnFocus,
   trigger,
   children,
 }: KjunPopoverProps) {
@@ -45,6 +48,8 @@ export function KjunPopover({
   const focusContent = useCallback((node: HTMLElement | null) => {
     if (node && focusOnMount.current) node.focus();
   }, []);
+  const resolveReturn = returnFocus === undefined ? undefined : () =>
+    typeof returnFocus === "function" ? returnFocus() : returnFocus instanceof HTMLElement ? returnFocus : returnFocus.current;
   const change = (v: boolean) => {
     setInternal(v);
     onOpenChange?.(v);
@@ -82,6 +87,7 @@ export function KjunPopover({
         matchTriggerWidth={matchTriggerWidth}
         maxHeight={maxHeight}
         flip={flip}
+        returnFocus={resolveReturn}
       >
         <Dialog
           id={id}

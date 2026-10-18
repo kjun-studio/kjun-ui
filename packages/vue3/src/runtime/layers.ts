@@ -1,6 +1,6 @@
 import { computed, inject, onBeforeUnmount, onMounted, provide, shallowRef, useId, watch, type InjectionKey, type Ref } from "vue";
 import { installLayerKeyboard } from "../../../../shared/package-runtime/layer-keyboard";
-import { createLayerState, type FocusTarget, type LayerKind } from "../../../../shared/package-runtime/layer-state";
+import { chooseReturnTarget, createLayerState, type FocusTarget, type LayerKind } from "../../../../shared/package-runtime/layer-state";
 
 // The Vue form of shared/package-runtime/use-layer.tsx: one layer stack per outermost Provider.
 type LayerState = ReturnType<typeof createLayerState>;
@@ -71,11 +71,17 @@ export function usePopupExpanded(open: () => boolean, trigger: () => FocusTarget
   });
 }
 
-export function useLayer(open: () => boolean, present: () => boolean, kind: LayerKind, close: () => void, trigger?: () => FocusTarget | null) {
+export function useLayer(open: () => boolean, present: () => boolean, kind: LayerKind, close: () => void, trigger?: () => FocusTarget | null,
+  returnFocus?: () => FocusTarget | null | false | undefined) {
   const context = useLayerContext(), { state, version } = context;
   const parent = inject(kjunLayerScopeKey, undefined);
   const id = "kjun-layer-" + useId();
   let openingFocus: FocusTarget | null = null, pendingFocus: FocusTarget | null | undefined = null;
+  // A Popover's returnFocus replaces where focus goes back; false leaves focus where it is.
+  const removeLayer = () => {
+    const removed = state.remove(id, currentFocus());
+    return removed && returnFocus ? chooseReturnTarget(returnFocus(), removed) : removed;
+  };
   // Sync flush runs as the state changes, before the DOM updates: focus is still on the opener.
   watch(open, (value, previous) => { if (value && !previous) openingFocus = currentFocus(); }, { flush: "sync", immediate: true });
   watch([open, present], ([isOpen, isPresent]) => {
@@ -85,13 +91,13 @@ export function useLayer(open: () => boolean, present: () => boolean, kind: Laye
     } else if (kind === "window" && isPresent) state.markClosing(id);
     // Suppressed controlled popups stay latched until the owner acknowledges false.
     else if (kind !== "window" || !isPresent) {
-      const target = state.remove(id, currentFocus());
+      const target = removeLayer();
       if (target) pendingFocus = target;
       if (!isPresent && pendingFocus) { restoreFocus(pendingFocus, state, id); pendingFocus = null; }
     }
   }, { flush: "sync", immediate: true });
   onBeforeUnmount(() => {
-    const target = state.remove(id, currentFocus());
+    const target = removeLayer();
     if (target || pendingFocus) restoreFocus(target || pendingFocus, state, id);
   });
   return {

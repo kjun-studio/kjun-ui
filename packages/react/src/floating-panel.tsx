@@ -25,6 +25,7 @@ export function FloatingPanel({
   field = false,
   flip = true,
   nonModal = false,
+  returnFocus,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
@@ -37,9 +38,10 @@ export function FloatingPanel({
   field?: boolean;
   flip?: boolean;
   nonModal?: boolean;
+  returnFocus?: () => HTMLElement | null | false | undefined;
 }) {
   const motion = usePresence(open, useReducedMotion(), tokens.motion.popupExit);
-  const layer = useLayer(open, motion.present, "popup", () => onOpenChange(false), triggerRef);
+  const layer = useLayer(open, motion.present, "popup", () => onOpenChange(false), triggerRef, returnFocus);
   const container = useKjunPortalContainer();
   const panel = useRef<HTMLDivElement>(null);
   useEffect(() => {

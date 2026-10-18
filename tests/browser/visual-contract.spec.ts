@@ -244,6 +244,15 @@ for(const platform of ['react','vue3','native']) {
     await expect(page.getByTestId('error').locator('.kjun-data-error')).toContainText('목록을 불러오지 못했습니다');
     await expect(page.getByTestId('loading-state').locator('.kjun-data-loading-block')).toHaveCount(1);
   });
+  test(`${platform}: Popover returnFocus sends focus to the chosen element when it closes`,async({page})=>{
+    test.skip(platform==='native','Native returns accessibility focus itself');
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'초점 시험 열기'}).click();
+    await expect(page.getByText('초점 팝오버 내용')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.getByText('초점 팝오버 내용')).toHaveCount(0);
+    await expect(page.getByRole('button',{name:'초점 받을 버튼'})).toBeFocused();
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {

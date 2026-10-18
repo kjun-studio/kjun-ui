@@ -20,6 +20,8 @@ const kjunPopoverProps = {
   focusOnOpen: { type: Boolean, default: false },
   ariaLabel: { type: String, default: undefined },
   placement: { type: String as PropType<"top" | "bottom" | "left" | "right">, default: "bottom" },
+  /** Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone. */
+  returnFocus: { type: [Object, Function] as PropType<HTMLElement | (() => HTMLElement | null)>, default: undefined },
 } as const;
 export type KjunPopoverProps = ExtractPublicPropTypes<typeof kjunPopoverProps>;
 /** v-model:open (optional). Slots: trigger({ open }), default({ close }). */
@@ -56,7 +58,9 @@ export const KjunPopover = defineComponent({
           {slots.trigger?.({ open: open.value })}
         </div>
         <FloatingPanel open={open.value} onOpenChange={change} trigger={() => trigger.value} panelClass="kjun-content-popover" dialog={false}
-          placement={props.placement} matchTriggerWidth={props.matchTriggerWidth} maxHeight={props.maxHeight} flip={props.flip}>
+          placement={props.placement} matchTriggerWidth={props.matchTriggerWidth} maxHeight={props.maxHeight} flip={props.flip}
+          returnFocus={props.returnFocus === undefined ? undefined
+            : () => typeof props.returnFocus === "function" ? props.returnFocus() : props.returnFocus as HTMLElement}>
           {{ default: () => (
             <section ref={dialog} id={id} aria-label={props.ariaLabel || "상세 정보"} class="kjun-popover-dialog" role="dialog" tabindex={-1}
               onKeydown={(event: KeyboardEvent) => containTab(event.currentTarget as HTMLElement, event)}

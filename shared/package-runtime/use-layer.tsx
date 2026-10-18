@@ -1,6 +1,6 @@
 import { installLayerKeyboard } from './layer-keyboard';
 import { createContext, useContext, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
-import { createLayerState, type FocusTarget, type LayerKind } from './layer-state';
+import { chooseReturnTarget, createLayerState, type FocusTarget, type LayerKind } from './layer-state';
 const fallback = createLayerState();
 const LayerContext = createContext(fallback);
 export const LayerScope = createContext<string | undefined>(undefined);
@@ -55,9 +55,15 @@ function restoreFocus(target: FocusTarget | null | undefined, state: ReturnType<
   else queueMicrotask(restore);
 }
 export function useLayer(open: boolean, present: boolean, kind: LayerKind, close: () => void,
-  trigger?: { current: FocusTarget | null }) {
+  trigger?: { current: FocusTarget | null }, returnFocus?: () => FocusTarget | null | false | undefined) {
   const state = useLayerState(), parent = useContext(LayerScope), id = useId();
   const callback = useRef(close); callback.current = close;
+  const returnRef = useRef(returnFocus); returnRef.current = returnFocus;
+  // A Popover's returnFocus replaces where focus goes back; false leaves focus where it is.
+  const removeLayer = () => {
+    const removed = state.remove(id, currentFocus());
+    return removed && returnRef.current ? chooseReturnTarget(returnRef.current(), removed) : removed;
+  };
   const openingFocus = useRef<FocusTarget | null>(null);
   const wasOpen = useRef(false);
   const pendingFocus = useRef<FocusTarget | null | undefined>(null);
@@ -71,7 +77,7 @@ export function useLayer(open: boolean, present: boolean, kind: LayerKind, close
     else if (kind === 'window' && present) state.markClosing(id);
     // Suppressed controlled popups stay latched until the owner acknowledges false.
     else if (kind !== 'window' || !present) {
-      const target = state.remove(id, currentFocus());
+      const target = removeLayer();
       if (target) pendingFocus.current = target;
       if (!present && pendingFocus.current) {
         restoreFocus(pendingFocus.current, state, id);
@@ -80,7 +86,7 @@ export function useLayer(open: boolean, present: boolean, kind: LayerKind, close
     }
   }, [open, present, state, id, kind, parent, trigger]);
   useLayoutEffect(() => () => {
-    const target = state.remove(id, currentFocus());
+    const target = removeLayer();
     if (target || pendingFocus.current) restoreFocus(target || pendingFocus.current, state, id);
   }, [state, id]);
   const entry = state.entries.get(id);

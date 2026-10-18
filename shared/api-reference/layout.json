@@ -223,7 +223,8 @@
       "flip",
       "focusOnOpen",
       "ariaLabel",
-      "placement"
+      "placement",
+      "returnFocus"
     ],
     "react": [
       "noPadding",
@@ -237,7 +238,8 @@
       "ariaLabel",
       "placement",
       "trigger",
-      "children"
+      "children",
+      "returnFocus"
     ],
     "native": [
       "noPadding",

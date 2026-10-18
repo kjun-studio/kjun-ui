@@ -12416,6 +12416,13 @@
         "required": false,
         "default": "\"bottom\"",
         "description": ""
+      },
+      {
+        "name": "returnFocus",
+        "type": "HTMLElement | (() => HTMLElement | null)",
+        "required": false,
+        "default": "—",
+        "description": "Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone."
       }
     ],
     "events": [
@@ -12510,6 +12517,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "returnFocus",
+        "type": "HTMLElement | import(\"/workspace/node_modules/@types/react/index\").RefObject<HTMLElement | null> | (() => HTMLElement | null) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone."
       },
       {
         "name": "trigger",
