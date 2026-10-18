@@ -35,6 +35,8 @@ export function createLayerState() {
   const active = (layer: LayerEntry) => !layer.blocked &&
     (layer.kind === 'window' ? topWindow()?.id === layer.id : topWindow()?.id === layer.owner);
   const top = () => [...entries.values()].filter(active).sort((a, b) => a.order - b.order).at(-1);
+  // Tooltips sit above popups but never own outside presses or Escape for them.
+  const topPopup = () => [...entries.values()].filter(layer => layer.kind !== 'tooltip' && active(layer)).sort((a, b) => a.order - b.order).at(-1);
   function dismiss(layer: LayerEntry) {
     if (layer.closeRequested) return;
     layer.closeRequested = true;
@@ -51,7 +53,7 @@ export function createLayerState() {
     return target;
   }
   return {
-    entries, topWindow, top, windowOf,
+    entries, topWindow, top, topPopup, windowOf,
     isRestoredFocus(target?: FocusTarget | null) { return !!target && restoredFocus.has(target); },
     clearRestoredFocus(target?: FocusTarget | null) { if (target) restoredFocus.delete(target); },
     markClosing(id: string) {

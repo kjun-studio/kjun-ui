@@ -49,12 +49,15 @@ export function focusTrigger(target: FocusTarget | null | undefined) {
       : target.querySelector<HTMLElement>("button,input,[href],[tabindex]") || target;
   return target;
 }
-function restoreFocus(target: FocusTarget | null | undefined, state: LayerState, id: string) {
+function restoreFocus(target: FocusTarget | null | undefined, state: LayerState, id: string, fallback?: FocusTarget | null) {
+  const usable = (item: FocusTarget | null | undefined) => item?.isConnected !== false &&
+    !(typeof HTMLElement !== "undefined" && item instanceof HTMLElement && item.closest("[inert]"));
   // Overlay content finishes its own focus cleanup after this update.
   const restore = () => {
     if (state.entries.has(id)) return;
-    if (target?.isConnected !== false && !(typeof HTMLElement !== "undefined" && target instanceof HTMLElement && target.closest("[inert]")))
-      target?.focus?.({ preventScroll: true });
+    if (usable(target)) target?.focus?.({ preventScroll: true });
+    // A chosen return target can vanish during the exit motion; the trigger is the next choice.
+    else if (fallback && fallback !== target && usable(fallback)) fallback.focus?.({ preventScroll: true });
     else state.topWindow()?.root?.focus?.({ preventScroll: true });
   };
   if (typeof requestAnimationFrame !== "undefined") requestAnimationFrame(restore);
@@ -76,10 +79,11 @@ export function useLayer(open: () => boolean, present: () => boolean, kind: Laye
   const context = useLayerContext(), { state, version } = context;
   const parent = inject(kjunLayerScopeKey, undefined);
   const id = "kjun-layer-" + useId();
-  let openingFocus: FocusTarget | null = null, pendingFocus: FocusTarget | null | undefined = null;
-  // A Popover's returnFocus replaces where focus goes back; false leaves focus where it is.
+  let openingFocus: FocusTarget | null = null, pendingFocus: FocusTarget | null | undefined = null, fallbackFocus: FocusTarget | null | undefined = null;
+  // A Popover's returnFocus replaces where focus goes back; the trigger stays the fallback.
   const removeLayer = () => {
     const removed = state.remove(id, currentFocus());
+    if (removed) fallbackFocus = removed;
     return removed && returnFocus ? chooseReturnTarget(returnFocus(), removed) : removed;
   };
   // Sync flush runs as the state changes, before the DOM updates: focus is still on the opener.
@@ -93,12 +97,12 @@ export function useLayer(open: () => boolean, present: () => boolean, kind: Laye
     else if (kind !== "window" || !isPresent) {
       const target = removeLayer();
       if (target) pendingFocus = target;
-      if (!isPresent && pendingFocus) { restoreFocus(pendingFocus, state, id); pendingFocus = null; }
+      if (!isPresent && pendingFocus) { restoreFocus(pendingFocus, state, id, fallbackFocus); pendingFocus = null; }
     }
   }, { flush: "sync", immediate: true });
   onBeforeUnmount(() => {
     const target = removeLayer();
-    if (target || pendingFocus) restoreFocus(target || pendingFocus, state, id);
+    if (target || pendingFocus) restoreFocus(target || pendingFocus, state, id, fallbackFocus);
   });
   return {
     id, state, keyboardManaged: context.managed,

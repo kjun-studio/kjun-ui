@@ -1,5 +1,5 @@
-import { Teleport, cloneVNode, computed, defineComponent, isVNode, onBeforeUnmount, onMounted, onUpdated, reactive, ref, watch,
-  type ExtractPublicPropTypes, type PropType, type VNode, type SlotsType, type VNodeChild } from "vue";
+import { Teleport, cloneVNode, computed, defineComponent, isVNode, onBeforeUnmount, onMounted, onUpdated, reactive, ref, unref, watch,
+  type ExtractPublicPropTypes, type PropType, type Ref, type VNode, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { computeFloatingPosition } from "../../../shared/package-runtime/floating-position";
 import { installFocusVisible, isFocusVisible } from "../../../shared/package-runtime/focus-visible";
@@ -21,7 +21,7 @@ const kjunPopoverProps = {
   ariaLabel: { type: String, default: undefined },
   placement: { type: String as PropType<"top" | "bottom" | "left" | "right">, default: "bottom" },
   /** Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone. */
-  returnFocus: { type: [Object, Function] as PropType<HTMLElement | (() => HTMLElement | null)>, default: undefined },
+  returnFocus: { type: [Object, Function] as PropType<HTMLElement | Ref<HTMLElement | null> | (() => HTMLElement | null)>, default: undefined },
 } as const;
 export type KjunPopoverProps = ExtractPublicPropTypes<typeof kjunPopoverProps>;
 /** v-model:open (optional). Slots: trigger({ open }), default({ close }). */
@@ -59,8 +59,11 @@ export const KjunPopover = defineComponent({
         </div>
         <FloatingPanel open={open.value} onOpenChange={change} trigger={() => trigger.value} panelClass="kjun-content-popover" dialog={false}
           placement={props.placement} matchTriggerWidth={props.matchTriggerWidth} maxHeight={props.maxHeight} flip={props.flip}
-          returnFocus={props.returnFocus === undefined ? undefined
-            : () => typeof props.returnFocus === "function" ? props.returnFocus() : props.returnFocus as HTMLElement}>
+          returnFocus={() => {
+            // Vue does not unwrap a ref passed as a prop value, and the prop may change after mount.
+            const target = props.returnFocus;
+            return typeof target === "function" ? target() : unref(target) ?? undefined;
+          }}>
           {{ default: () => (
             <section ref={dialog} id={id} aria-label={props.ariaLabel || "상세 정보"} class="kjun-popover-dialog" role="dialog" tabindex={-1}
               onKeydown={(event: KeyboardEvent) => containTab(event.currentTarget as HTMLElement, event)}

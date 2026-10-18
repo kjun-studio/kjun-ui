@@ -37,8 +37,9 @@ export const FloatingPanel = defineComponent({
   setup(props, { slots, expose }) {
     const reduced = useReducedMotion();
     const motion = usePresence(() => props.open, () => reduced.value, tokens.motion.popupExit);
+    // Read returnFocus at close time so a prop set or cleared after mount is honoured.
     const layer = useLayer(() => props.open, motion.present, "popup", () => props.onOpenChange(false), () => props.trigger(),
-      props.returnFocus && (() => props.returnFocus!()));
+      () => props.returnFocus?.());
     provide(kjunLayerScopeKey, layer.id);
     const target = usePortalTarget();
     const panel = ref<HTMLElement | null>(null);
@@ -62,7 +63,7 @@ export const FloatingPanel = defineComponent({
     let frame = 0, observer: ResizeObserver | undefined, pressedOutside = false;
     const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
     // Only the topmost layer reacts: a child menu is portaled outside this panel, so its presses look "outside".
-    const topmost = () => layer.state.top()?.id === layer.id;
+    const topmost = () => layer.state.topPopup()?.id === layer.id;
     const outside = (node: EventTarget | null) => node instanceof Node && !panel.value?.contains(node) && !props.trigger()?.contains(node);
     const onPointerDown = (event: PointerEvent) => { pressedOutside = props.open && topmost() && outside(event.target); };
     const onPointerUp = (event: PointerEvent) => {

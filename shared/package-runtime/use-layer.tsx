@@ -44,11 +44,15 @@ export function focusTrigger(target: FocusTarget | null | undefined) {
   }
   return target;
 }
-function restoreFocus(target: FocusTarget | null | undefined, state: ReturnType<typeof createLayerState>, id: string) {
-  // Overlay libraries finish their focus-scope cleanup after layout effects.
+function restoreFocus(target: FocusTarget | null | undefined, state: ReturnType<typeof createLayerState>, id: string, fallback?: FocusTarget | null) {
+  const usable = (item: FocusTarget | null | undefined) => item?.isConnected !== false &&
+    !(typeof HTMLElement !== 'undefined' && item instanceof HTMLElement && item.closest('[inert]'));
+  // Overlay content finishes its own focus cleanup after this update.
   const restore = () => {
     if (state.entries.has(id)) return;
-    if (target?.isConnected !== false && !(typeof HTMLElement !== 'undefined' && target instanceof HTMLElement && target.closest('[inert]'))) target?.focus?.({ preventScroll: true });
+    if (usable(target)) target?.focus?.({ preventScroll: true });
+    // A chosen return target can vanish during the exit motion; the trigger is the next choice.
+    else if (fallback && fallback !== target && usable(fallback)) fallback.focus?.({ preventScroll: true });
     else state.topWindow()?.root?.focus?.({ preventScroll: true });
   };
   if (typeof requestAnimationFrame !== 'undefined') requestAnimationFrame(restore);
@@ -59,9 +63,11 @@ export function useLayer(open: boolean, present: boolean, kind: LayerKind, close
   const state = useLayerState(), parent = useContext(LayerScope), id = useId();
   const callback = useRef(close); callback.current = close;
   const returnRef = useRef(returnFocus); returnRef.current = returnFocus;
-  // A Popover's returnFocus replaces where focus goes back; false leaves focus where it is.
+  const fallbackFocus = useRef<FocusTarget | null | undefined>(null);
+  // A Popover's returnFocus replaces where focus goes back; the trigger stays the fallback.
   const removeLayer = () => {
     const removed = state.remove(id, currentFocus());
+    if (removed) fallbackFocus.current = removed;
     return removed && returnRef.current ? chooseReturnTarget(returnRef.current(), removed) : removed;
   };
   const openingFocus = useRef<FocusTarget | null>(null);
@@ -80,14 +86,14 @@ export function useLayer(open: boolean, present: boolean, kind: LayerKind, close
       const target = removeLayer();
       if (target) pendingFocus.current = target;
       if (!present && pendingFocus.current) {
-        restoreFocus(pendingFocus.current, state, id);
+        restoreFocus(pendingFocus.current, state, id, fallbackFocus.current);
         pendingFocus.current = null;
       }
     }
   }, [open, present, state, id, kind, parent, trigger]);
   useLayoutEffect(() => () => {
     const target = removeLayer();
-    if (target || pendingFocus.current) restoreFocus(target || pendingFocus.current, state, id);
+    if (target || pendingFocus.current) restoreFocus(target || pendingFocus.current, state, id, fallbackFocus.current);
   }, [state, id]);
   const entry = state.entries.get(id);
   return { id, state, keyboardManaged: state !== fallback, scopeActive: state.windowOf(parent) === state.topWindow()?.id, blocked: !!entry?.blocked, active: entry ? state.isActive(id) : open,

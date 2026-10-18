@@ -253,6 +253,43 @@ for(const platform of ['react','vue3','native']) {
     await expect(page.getByText('초점 팝오버 내용')).toHaveCount(0);
     await expect(page.getByRole('button',{name:'초점 받을 버튼'})).toBeFocused();
   });
+  test(`${platform}: Popover returnFocus falls back to the trigger when its target is removed during the close`,async({page})=>{
+    test.skip(platform==='native','Native returns accessibility focus itself');
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'초점 시험 열기'}).click();
+    await page.getByRole('button',{name:'대상 지우고 닫기'}).click();
+    await expect(page.getByText('초점 팝오버 내용')).toHaveCount(0);
+    await expect(page.getByRole('button',{name:'초점 받을 버튼'})).toHaveCount(0);
+    await expect(page.getByRole('button',{name:'초점 시험 열기'})).toBeFocused();
+  });
+  test(`${platform}: Popover returnFocus set after mount is used`,async({page})=>{
+    test.skip(platform==='native','Native returns accessibility focus itself');
+    await openFixture(page,platform,'?late-return','visual-contract');
+    await page.getByRole('button',{name:'복귀 켜기'}).click();
+    await page.getByRole('button',{name:'초점 시험 열기'}).click();
+    await expect(page.getByText('초점 팝오버 내용')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('button',{name:'초점 받을 버튼'})).toBeFocused();
+  });
+  test(`${platform}: pressing a tooltipped button outside an open Popover closes it`,async({page})=>{
+    // React and Native make the page outside a modal popover inert, so only Vue lets a tooltip show outside it.
+    test.skip(platform!=='vue3','only Vue shows tooltips outside an open popover');
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'메뉴 묶음 열기'}).click();
+    await expect(page.getByRole('button',{name:'하위 메뉴'})).toBeVisible();
+    await page.getByRole('button',{name:'도움말 버튼'}).hover();
+    await expect(page.getByRole('tooltip')).toContainText('바깥 도움말');
+    await page.getByRole('button',{name:'도움말 버튼'}).click();
+    await expect(page.getByTestId('state')).toContainText('"menuOpen":false');
+  });
+  test(`${platform}: Vue Popover returnFocus accepts a Vue ref`,async({page})=>{
+    test.skip(platform!=='vue3','Vue refs are a Vue 3 prop shape');
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'ref 시험 열기'}).click();
+    await expect(page.getByText('ref 팝오버 내용')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('button',{name:'ref 대상 버튼'})).toBeFocused();
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {
