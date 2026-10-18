@@ -65,7 +65,8 @@ export const KjunPopover = defineComponent({
     watch(open, value => { if (!value) focusedDialog = null; });
     const dialog = (element: unknown) => {
       if (!(element instanceof HTMLElement)) { focusedDialog = null; return; }
-      if (element === focusedDialog) return;
+      // A non-modal Popover leaves focus where it was unless focusOnOpen asks for it, like React.
+      if (element === focusedDialog || (!props.modal && !props.focusOnOpen)) return;
       if (!element.contains(document.activeElement)) element.focus({ preventScroll: true });
       if (element.contains(document.activeElement)) focusedDialog = element;
     };

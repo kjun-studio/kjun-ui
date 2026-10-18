@@ -6,8 +6,8 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 
 Popover에 고정 머리글과 비모달 모드를 추가했습니다. 바꿀 코드는 없습니다.
 
-- **`header`**(React·Native prop, Vue `header` 슬롯): 본문 위에 고정되는 머리글입니다. 본문 한 곳만 스크롤하고, `maxHeight`는 머리글을 포함한 전체 높이입니다. `ariaLabel`이 없으면 머리글이 대화상자 이름이 됩니다. `noPadding`은 본문 여백만 없앱니다.
-- **`modal={false}`**: 페이지를 막지 않습니다. 첫 항목에서 Shift+Tab은 트리거로, 마지막 항목에서 Tab은 Popover를 닫고 트리거 다음 요소로 갑니다. 바깥을 누르거나 초점이 밖으로 나가면 닫히며 초점을 되돌리지 않고, Escape는 트리거로 돌아갑니다. 안에서 연 메뉴는 Popover를 닫지 않습니다.
+- **`header`**(React·Native prop, Vue `header` 슬롯): 본문 위에 고정되는 머리글입니다. 본문 한 곳만 스크롤하고, `maxHeight`는 머리글을 포함한 전체 높이입니다. 웹에서는 `ariaLabel`이 없으면 머리글이 대화상자 이름이 됩니다(Native는 `ariaLabel`을 지정하세요). `noPadding`은 본문 여백만 없앱니다.
+- **`modal={false}`**: 페이지를 막지 않습니다. 열릴 때 초점을 가져가지 않으며(`focusOnOpen`이면 가져감), 첫 항목에서 Shift+Tab은 트리거로, 마지막 항목에서 Tab은 Popover를 닫고 트리거 다음 요소로 갑니다. 바깥을 누르거나 초점이 밖으로 나가면 닫히며 초점을 되돌리지 않고, Escape는 트리거로 돌아갑니다. 안에서 연 메뉴는 Popover를 닫지 않습니다.
   - React에서 초점을 받을 수 없는 빈 영역을 누르면 초점이 트리거로 돌아갑니다(react-aria 동작).
   - Native는 화면 판독기를 패널에 가두지 않는 데까지만 적용됩니다.
 

@@ -356,6 +356,15 @@ for(const platform of ['react','vue3','native']) {
     // react-aria's overlay focus scope returns focus to the trigger when focus fell to the body; Vue leaves it there.
     if(platform==='vue3'){ await page.waitForTimeout(200); await expect(open).not.toBeFocused(); }
   });
+  test(`${platform}: non-modal Popover leaves focus on the trigger when it opens`,async({page})=>{
+    test.skip(platform==='native','focus is a web behavior');
+    await openFixture(page,platform,'','visual-contract');
+    const open=page.getByRole('button',{name:'비모달 열기'});
+    await open.click();
+    await expect(page.getByRole('dialog',{name:'비모달 시험'})).toBeVisible();
+    await page.waitForTimeout(200);
+    await expect(open).toBeFocused();
+  });
   test(`${platform}: a menu opened inside a non-modal Popover keeps it open`,async({page})=>{
     await openFixture(page,platform,'','visual-contract');
     await page.getByRole('button',{name:'비모달 열기'}).click();
