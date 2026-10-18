@@ -29,11 +29,22 @@ export function tablePresentation<Row extends object>(props: TableProps<Row, unk
   };
 }
 
+const warnedFormats = new Set<string>();
+// format must be a function; a string preset from another component would otherwise throw and blank the table.
+export function columnFormat<Format>(column: { key: string; format?: Format }): Format | undefined {
+  if (typeof column.format === "function") return column.format;
+  if (column.format != null && !warnedFormats.has(column.key)) {
+    warnedFormats.add(column.key);
+    console.warn(`KJUN Table: ${column.key} 열의 format은 함수여야 합니다.`);
+  }
+  return undefined;
+}
+
 export function tableCellValue<Row extends object>(props: TableProps<Row, unknown>, column: TableColumn<Row>, row: Row, index: number) {
   const value = getValue(row, column.key);
   const body = props.renderCell ? props.renderCell(value, column, row, index)
     : column.render ? column.render(value, row, index)
-    : column.format ? column.format(value, row)
+    : columnFormat(column) ? columnFormat(column)!(value, row)
     : props.formatValue ? props.formatValue(value, column, row)
     : value == null ? "-"
     : typeof value === "number" && column.type === "number" ? new Intl.NumberFormat().format(value) : String(value);

@@ -234,7 +234,8 @@ export function KjunRefreshButton({
   ...props
 }: KjunRefreshButtonProps) {
   const reduced = useReducedMotion();
-  const label = ariaLabel || [targetName, "새로고침"].filter(Boolean).join(" ");
+  // Text mode speaks what it shows (WCAG 2.5.3); icon mode keeps the action name.
+  const label = ariaLabel || [targetName, mode === "text" ? text : "새로고침"].filter(Boolean).join(" ");
   const hint = tooltip ?? (mode === "icon" ? label : "");
   const button = (
     <KjunTooltip content={props.disabled || props.loading ? "" : hint} placement={tooltipPlacement} delay={tooltipDelay}>

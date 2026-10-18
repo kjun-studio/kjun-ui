@@ -161,7 +161,8 @@ export const KjunRefreshButton = defineComponent({
   setup(props, { emit }) {
     const reduced = useReducedMotion();
     return () => {
-      const label = props.ariaLabel || [props.targetName, "새로고침"].filter(Boolean).join(" ");
+      // Text mode speaks what it shows (WCAG 2.5.3); icon mode keeps the action name.
+      const label = props.ariaLabel || [props.targetName, props.mode === "text" ? props.text : "새로고침"].filter(Boolean).join(" ");
       const hint = props.tooltip ?? props.title ?? (props.mode === "icon" ? label : "");
       return (
         <KjunTooltip content={props.disabled || props.loading ? "" : hint} placement={props.tooltipPlacement} delay={props.tooltipDelay}>

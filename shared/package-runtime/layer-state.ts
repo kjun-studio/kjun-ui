@@ -1,6 +1,11 @@
 /** Internal window ownership. Paint order, dismissal and surface appearance are independent. */
 export type LayerKind = 'window' | 'popup' | 'tooltip';
 export interface FocusTarget { focus?: (options?: { preventScroll?: boolean }) => void; isConnected?: boolean }
+/** A caller-chosen return target wins while it is still in the document; false means the caller moves focus itself. */
+export function chooseReturnTarget(chosen: FocusTarget | null | false | undefined, fallback: FocusTarget | null | undefined) {
+  if (chosen === false) return undefined;
+  return chosen && chosen.isConnected !== false ? chosen : fallback;
+}
 export interface LayerEntry {
   id: string;
   kind: LayerKind;

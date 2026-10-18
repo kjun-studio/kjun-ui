@@ -360,7 +360,7 @@ export function KjunRadioGroup({
         accessibilityLabel={ariaLabel}
         style={{
           flexDirection: direction === "vertical" ? "column" : "row",
-          flexWrap: "wrap",
+          flexWrap: direction === "vertical" ? "nowrap" : "wrap",
           gap: direction === "vertical" ? tokens.dimension.value8 : tokens.dimension.value16,
         }}
       >

@@ -157,7 +157,7 @@ export const KjunRadioGroup = defineComponent({
     })));
     return () => (
       <div role="radiogroup" aria-label={props.ariaLabel} style={css({
-        display: "flex", flexDirection: props.direction === "vertical" ? "column" : "row", flexWrap: "wrap",
+        display: "flex", flexDirection: props.direction === "vertical" ? "column" : "row", flexWrap: props.direction === "vertical" ? "nowrap" : "wrap",
         gap: props.direction === "vertical" ? tokens.dimension.value8 : tokens.dimension.value16,
       })}>
         {slots.default ? slots.default() : props.options.map(option =>

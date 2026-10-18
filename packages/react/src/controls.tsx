@@ -217,7 +217,8 @@ export function KjunRadioGroup({
         style={{
           display: "flex",
           flexDirection: direction === "vertical" ? "column" : "row",
-          flexWrap: "wrap",
+          // A wrapping column would split into extra columns whenever the group's height is fixed.
+          flexWrap: direction === "vertical" ? "nowrap" : "wrap",
           gap: direction === "vertical" ? tokens.dimension.value8 : tokens.dimension.value16,
         }}
       >

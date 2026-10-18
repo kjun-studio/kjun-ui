@@ -197,6 +197,26 @@ for(const platform of ['react','vue3','native']) {
     await expect(page.getByTestId('chart').getByRole('status')).toHaveCount(0);
     await expect(page.getByTestId('chart').getByRole('status')).toHaveText('차트를 불러오는 중',{timeout:15000});
   });
+  test(`${platform}: vertical RadioGroup stays one column in a short container`,async({page})=>{
+    // A grid parent stretches the group to a definite 96px height, the case where a wrapping column flexbox splits.
+    test.skip(platform==='native','React Native Web has no grid parent to give the group a definite height');
+    await openFixture(page,platform,'','visual-contract');
+    const radios=page.getByTestId('radio-vertical').getByRole('radio');
+    await expect(radios).toHaveCount(6);
+    const xs=await radios.evaluateAll(els=>els.map(el=>Math.round(el.getBoundingClientRect().x)));
+    expect(new Set(xs).size).toBe(1);
+  });
+  test(`${platform}: text RefreshButton names itself with its visible text`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    await expect(page.getByTestId('refresh-text').getByRole('button')).toHaveAccessibleName('주문 다시 불러오기');
+  });
+  test(`${platform}: a Table column with a non-function format renders the raw value and warns once`,async({page})=>{
+    const warnings:string[]=[];
+    page.on('console',message=>{ if(message.type()==='warning') warnings.push(message.text()); });
+    await openFixture(page,platform,'','visual-contract');
+    await expect(page.getByTestId('table-format').getByText('0.25',{exact:true}).first()).toBeVisible();
+    expect(warnings.filter(text=>text.includes('KJUN Table: rate'))).toHaveLength(1);
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {

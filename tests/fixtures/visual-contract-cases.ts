@@ -1,5 +1,5 @@
 // Shared consumer composition; each adapter below renders only packed public components.
-export const initial = { quantity:2, time:'09:30:15', tab:'activity', open:false, retry:0, destination:'home' };
+export const initial = { quantity:2, time:'09:30:15', tab:'activity', open:false, retry:0, destination:'home', radio:'a', menuOpen:false, pick:'', focusOpen:false };
 export function renderCases(h: (name:string, props:any, children?:any, slots?:any) => any, state:typeof initial, set:(key:string,value:any)=>void) {
   const query = new URLSearchParams(location.search), size = query.get('size') || 'md';
   const section = (id:string, children:any, style={}) => h('Section', { id, style }, children);
@@ -19,6 +19,13 @@ export function renderCases(h: (name:string, props:any, children?:any, slots?:an
     section('chart',h('KjunChartSkeleton',{ kind:query.get('kind') || 'frame', height:180, loadingText:query.has('no-text')?'':undefined, skeleton:!query.has('spinner'), loadingDelay:Number(query.get('delay') || 0), rows:query.has('rows')?Number(query.get('rows')):undefined, columns:query.has('columns')?Number(query.get('columns')):undefined }),query.has('chart-width')?{width:Number(query.get('chart-width'))}:query.has('chart-shrink')?{display:'inline-block'}:{}),
     section('bar',h('KjunBottomActionBar',{ description:'변경한 내용을 모든 기기에 적용합니다.',safeAreaBottom:34 },h('KjunFormActions',{confirmText:'변경 사항 저장',onConfirm:()=>set('retry',state.retry+1)})),query.has('narrow-bar')?{width:360}:{}),
     section('navigation',h('KjunBottomNavigation',{value:state.destination,items:[{key:'home',label:'홈',href:'#home',icon:'home'},{key:'activity',label:'활동',href:'#activity',icon:'list'}],onNavigate:(key:string,e:any)=>{e.preventDefault();set('destination',key);}})),
+    section('radio-vertical',h('KjunRadioGroup',{ direction:'vertical', value:state.radio, onValueChange:(v:any)=>set('radio',v), ariaLabel:'세로 선택', options:['a','b','c','d','e','f'].map(v=>({label:'항목 '+v,value:v})) }),{display:'grid',gridTemplateRows:'96px',height:96,overflow:'auto'}),
+    section('refresh-text',h('KjunRefreshButton',{ mode:'text', text:'다시 불러오기', targetName:'주문', onRefresh:()=>set('retry',state.retry+1) })),
+    section('table-format',h('KjunTable',{ columns:[{key:'rate',label:'비율',format:'percent'}], data:[{rate:0.25}] })),
+    section('loading-state',h('KjunDataState',{ queryKey:'a', loading:true },h('Text',{},'로딩 뒤 본문'))),
+    section('popover-menu',h('KjunPopover',{ open:state.menuOpen, onOpenChange:(v:boolean)=>set('menuOpen',v), manualTrigger:true, ariaLabel:'메뉴 팝오버' },h('KjunDropdown',{ trigger:button('하위 메뉴') },h('KjunDropdownItem',{ onClick:()=>set('pick','하위 항목') },'하위 항목')),{ trigger:button('메뉴 팝오버 열기',()=>set('menuOpen',!state.menuOpen)) })),
+    section('popover-return',h('KjunPopover',{ open:state.focusOpen, onOpenChange:(v:boolean)=>set('focusOpen',v), manualTrigger:true, ariaLabel:'초점 팝오버', returnFocus:query.has('no-return')?false:()=>document.querySelector<HTMLElement>('[data-testid="focus-target"] button') },h('Text',{},'초점 팝오버 내용'),{ trigger:button('초점 팝오버 열기',()=>set('focusOpen',!state.focusOpen)) })),
+    section('focus-target',button('초점 받을 버튼')),
     h('Output',{id:'state'},JSON.stringify(state)),
   ];
 }

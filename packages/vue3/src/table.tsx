@@ -1,7 +1,7 @@
 import { defineComponent, onBeforeUnmount, onMounted, ref, type ExtractPublicPropTypes, type PropType, type VNodeChild, type SlotsType } from "vue";
 import { isComposingKey, nextTableSort, tokens, type TableSort } from "@kjun-ui/tokens";
 import { getValue, sortTableRows, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
-import { tablePresentation } from "../../../shared/package-runtime/table-presentation";
+import { columnFormat, tablePresentation } from "../../../shared/package-runtime/table-presentation";
 import { KjunButton } from "./button";
 import { KjunDataState, useQueryDisplay } from "./data-state";
 import { KjunInput } from "./input";
@@ -131,7 +131,7 @@ export const KjunTable = defineComponent({
         const value = getValue(row, col.key);
         // A column slot (cell-<key>) wins over the shared cell slot, which wins over column render functions.
         const slot = slots[`cell-${col.key}`] ?? slots.cell;
-        const body = slot ? slot({ value, column: col, row, index }) : col.render ? col.render(value, row, index) : col.format ? col.format(value, row)
+        const body = slot ? slot({ value, column: col, row, index }) : col.render ? col.render(value, row, index) : columnFormat(col) ? columnFormat(col)!(value, row)
           : props.formatValue ? props.formatValue(value, col, row) : value == null ? "-"
           : typeof value === "number" && col.type === "number" ? new Intl.NumberFormat().format(value) : String(value);
         return col.pill
