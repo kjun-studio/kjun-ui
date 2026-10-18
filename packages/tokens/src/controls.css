@@ -208,6 +208,11 @@
   font-weight:var(--_kjun-type-body-weight); letter-spacing:var(--_kjun-type-body-tracking);
 }
 .kjun-popover-dialog { outline:none; }
+/* With a header only the body scrolls: the panel and dialog become clipping flex columns. */
+.kjun-popover-has-header { display:flex; flex-direction:column; overflow:hidden; }
+.kjun-popover-has-header .kjun-popover-dialog { display:flex; flex-direction:column; flex:1 1 auto; min-height:0; }
+.kjun-popover-header { flex:none; padding:var(--_kjun-extension-popover-padding) var(--_kjun-extension-popover-padding) var(--_kjun-extension-popover-header-padding-bottom); border-bottom:var(--_kjun-border-default-width) solid var(--_kjun-color-divider); font-size:var(--_kjun-type-card-title-size); line-height:var(--_kjun-type-card-title-line); font-weight:var(--_kjun-type-card-title-weight); letter-spacing:var(--_kjun-type-card-title-tracking); word-break:keep-all; overflow-wrap:anywhere; }
+.kjun-popover-body { flex:1 1 auto; min-height:0; overflow-y:auto; }
 .kjun-popover-content { display:flex; flex-direction:column; gap:var(--_kjun-extension-popover-gap); padding:var(--_kjun-extension-popover-padding); min-width:0; word-break:keep-all; overflow-wrap:anywhere; }
 .kjun-popover-content[data-no-padding="true"] { padding:0; gap:0; }
 .kjun-tooltip {

@@ -87,6 +87,7 @@ export function FloatingPanel({
   minimumWidth = 0,
   focusOnOpen = false,
   reveal,
+  header,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
@@ -106,7 +107,10 @@ export function FloatingPanel({
   focusOnOpen?: boolean;
   /** Layout of a row to bring into view when the panel opens (the selected option). */
   reveal?: RefObject<{ y: number; height: number } | null>;
+  /** Popover header drawn above the scroll view, so only the body scrolls. */
+  header?: ReactNode;
 }) {
+  const [headerHeight, setHeaderHeight] = useState(0);
   const panelRef = useRef<View>(null);
   const scroll = useRef<ScrollView>(null), viewport = useRef(0);
   const { colors } = useKjunStyles(),
@@ -159,7 +163,8 @@ export function FloatingPanel({
       Math.max(minimumPanelWidth, contentSizedMenu ? panel.width : matchTriggerWidth ? anchor.width : tokens.extensions.popover.width)
     );
   const available = Math.min(maxHeight ?? (field ? tokens.extensions.menu.listMaxHeight : tokens.extensions.floating.maxHeight), window.height - 2 * tokens.extensions.floating.viewportInset),
-    height = Math.min(panel.height, available),
+    // The header sits outside the measured scroll content but still takes room when choosing a side.
+    height = Math.min(panel.height + (header != null ? headerHeight : 0), available),
     roomAbove = anchor.y - gap - tokens.extensions.floating.viewportInset,
     roomBelow = window.height - anchor.y - anchor.height - gap - tokens.extensions.floating.viewportInset,
     // Either side flips when the panel does not fit and the other side has more room, like Web.
@@ -281,11 +286,25 @@ export function FloatingPanel({
             overflow: "hidden",
           }}
         >
+          {header != null && (
+            <View
+              onLayout={({ nativeEvent: { layout } }) => setHeaderHeight(layout.height)}
+              style={{
+                paddingTop: tokens.extensions.popover.padding,
+                paddingHorizontal: tokens.extensions.popover.padding,
+                paddingBottom: tokens.extensions.popover.headerPaddingBottom,
+                borderBottomWidth: tokens.border.defaultWidth,
+                borderBottomColor: colors.divider,
+              }}
+            >
+              {header}
+            </View>
+          )}
           <ScrollView
             ref={scroll}
             onLayout={(event) => { viewport.current = event.nativeEvent.layout.height; }}
             keyboardShouldPersistTaps="handled"
-            style={{ maxHeight: available }}
+            style={{ maxHeight: available - (header != null ? headerHeight : 0), flexShrink: 1 }}
             contentContainerStyle={{ padding: menu || field ? tokens.extensions.menu.padding : 0 }}
             onContentSizeChange={(width, height) => {
               if (contentSizedMenu) return;

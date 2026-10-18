@@ -19,6 +19,8 @@ export interface KjunPopoverProps {
   placement?: "top" | "bottom" | "left" | "right";
   /** Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone. */
   returnFocus?: HTMLElement | RefObject<HTMLElement | null> | (() => HTMLElement | null);
+  /** Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel. */
+  header?: ReactNode;
   trigger: ReactNode | ((open: boolean) => ReactNode);
   children: ReactNode | ((close: () => void) => ReactNode);
 }
@@ -34,6 +36,7 @@ export function KjunPopover({
   ariaLabel,
   placement = "bottom",
   returnFocus,
+  header,
   trigger,
   children,
 }: KjunPopoverProps) {
@@ -54,6 +57,11 @@ export function KjunPopover({
     setInternal(v);
     onOpenChange?.(v);
   };
+  const content = (
+    <div className="kjun-popover-content" data-no-padding={noPadding}>
+      {typeof children === "function" ? children(() => change(false)) : children}
+    </div>
+  );
   return (
     <>
       <div
@@ -82,7 +90,7 @@ export function KjunPopover({
         open={open}
         onOpenChange={change}
         triggerRef={ref}
-        className="kjun-content-popover"
+        className={"kjun-content-popover" + (header != null ? " kjun-popover-has-header" : "")}
         placement={placement}
         matchTriggerWidth={matchTriggerWidth}
         maxHeight={maxHeight}
@@ -91,14 +99,16 @@ export function KjunPopover({
       >
         <Dialog
           id={id}
-          aria-label={ariaLabel || "상세 정보"}
+          aria-label={header != null && !ariaLabel ? undefined : ariaLabel || "상세 정보"}
+          aria-labelledby={header != null && !ariaLabel ? id + "-header" : undefined}
           className="kjun-popover-dialog"
-          style={{ maxHeight: maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: "auto" }}
+          style={{ maxHeight: maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: header != null ? undefined : "auto" }}
           ref={focusContent}
         >
-          <div className="kjun-popover-content" data-no-padding={noPadding}>{typeof children === "function"
-            ? children(() => change(false))
-            : children}</div>
+          {header != null && <div id={id + "-header"} className="kjun-popover-header">{header}</div>}
+          {header != null
+            ? <div className="kjun-popover-body">{content}</div>
+            : content}
           <FeedbackLayerOutlet />
         </Dialog>
       </FloatingPanel>

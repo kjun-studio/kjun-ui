@@ -1,5 +1,5 @@
 // Shared consumer composition; each adapter below renders only packed public components.
-export const initial = { quantity:2, time:'09:30:15', tab:'activity', open:false, retry:0, destination:'home', radio:'a', menuOpen:false, pick:'', focusOpen:false, targetGone:false, returnOn:false };
+export const initial = { quantity:2, time:'09:30:15', tab:'activity', open:false, retry:0, destination:'home', radio:'a', menuOpen:false, pick:'', focusOpen:false, targetGone:false, returnOn:false, headerOpen:false };
 export function renderCases(h: (name:string, props:any, children?:any, slots?:any) => any, state:typeof initial, set:(key:string,value:any)=>void) {
   const query = new URLSearchParams(location.search), size = query.get('size') || 'md';
   const section = (id:string, children:any, style={}) => h('Section', { id, style }, children);
@@ -29,6 +29,9 @@ export function renderCases(h: (name:string, props:any, children?:any, slots?:an
       [h('Text',{},'초점 팝오버 내용'),button('대상 지우고 닫기',()=>{ set('focusOpen',false); setTimeout(()=>set('targetGone',true),0); })],
       { trigger:button('초점 시험 열기',()=>set('focusOpen',!state.focusOpen)) }),button('복귀 켜기',()=>set('returnOn',true))]),
     state.targetGone ? null : section('focus-target',button('초점 받을 버튼')),
+    section('popover-header',h('KjunPopover',{ open:state.headerOpen, onOpenChange:(v:boolean)=>set('headerOpen',v), manualTrigger:true, maxHeight:200, noPadding:query.has('header-no-padding') },
+      Array.from({length:20},(_,i)=>h('Text',{},'필터 항목 '+(i+1))),
+      { header:h('Text',{},'주문 필터'), trigger:button('머리글 시험 열기',()=>set('headerOpen',!state.headerOpen)) })),
     section('tooltip-outside',h('KjunTooltip',{ content:'바깥 도움말' },button('도움말 버튼'))),
     h('Output',{id:'state'},JSON.stringify(state)),
   ];

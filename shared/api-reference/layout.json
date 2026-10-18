@@ -239,7 +239,8 @@
       "placement",
       "trigger",
       "children",
-      "returnFocus"
+      "returnFocus",
+      "header"
     ],
     "native": [
       "noPadding",
@@ -253,7 +254,8 @@
       "ariaLabel",
       "placement",
       "trigger",
-      "children"
+      "children",
+      "header"
     ]
   },
   "KjunScrollFade": {

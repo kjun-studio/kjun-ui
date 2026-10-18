@@ -12445,6 +12445,13 @@
           "close"
         ],
         "source": "packages/vue3/src/popover.tsx"
+      },
+      {
+        "name": "header",
+        "data": [
+          "close"
+        ],
+        "source": "packages/vue3/src/popover.tsx"
       }
     ],
     "react": [
@@ -12524,6 +12531,13 @@
         "required": false,
         "default": "—",
         "description": "Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone."
+      },
+      {
+        "name": "header",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel."
       },
       {
         "name": "trigger",
@@ -12610,6 +12624,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "header",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Fixed header above the body; only the body scrolls and maxHeight covers both."
       },
       {
         "name": "trigger",

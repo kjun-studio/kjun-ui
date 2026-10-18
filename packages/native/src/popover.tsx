@@ -31,6 +31,8 @@ export interface KjunPopoverProps {
   focusOnOpen?: boolean;
   ariaLabel?: string;
   placement?: "top" | "bottom" | "left" | "right";
+  /** Fixed header above the body; only the body scrolls and maxHeight covers both. */
+  header?: ReactNode;
   trigger: ReactNode | ((open: boolean) => ReactNode);
   children: ReactNode | ((close: () => void) => ReactNode);
 }
@@ -45,9 +47,11 @@ export function KjunPopover({
   focusOnOpen = false,
   ariaLabel,
   placement = "bottom",
+  header,
   trigger,
   children,
 }: KjunPopoverProps) {
+  const { colors } = useKjunStyles();
   const [internal, setInternal] = useState(false),
     open = controlled ?? internal,
     ref = useRef<View>(null);
@@ -76,6 +80,7 @@ export function KjunPopover({
         popover
         focusOnOpen={focusOnOpen}
         ariaLabel={ariaLabel}
+        header={header != null ? content(header, { ...typeStyle("cardTitle"), color: colors.text }) : undefined}
       >
         <View style={{ padding: noPadding ? 0 : tokens.extensions.popover.padding, gap: noPadding ? 0 : tokens.extensions.popover.gap }}>
           {content(typeof children === "function" ? children(() => change(false)) : children,

@@ -6035,6 +6035,15 @@
             "source": "packages/vue3/src/popover.tsx",
             "type": "{ close }",
             "summary": "default 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "header",
+            "data": [
+              "close"
+            ],
+            "source": "packages/vue3/src/popover.tsx",
+            "type": "{ close }",
+            "summary": "header 영역의 기본 내용을 교체합니다."
           }
         ],
         "ownership": [],
@@ -6139,6 +6148,15 @@
             "default": "—",
             "description": "Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone.",
             "summary": "닫힌 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받습니다. 대상이 없거나 문서에서 사라졌으면 트리거로 돌아갑니다.",
+            "source": "packages/react/src/popover.tsx"
+          },
+          {
+            "name": "header",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel.",
+            "summary": "고정 머리글입니다. 본문만 스크롤하며 maxHeight는 머리글을 포함한 높이입니다. ariaLabel이 없으면 대화상자 이름이 됩니다. Vue는 header 슬롯을 씁니다.",
             "source": "packages/react/src/popover.tsx"
           },
           {
@@ -6255,6 +6273,15 @@
             "default": "\"bottom\"",
             "description": "",
             "summary": "트리거에 대한 팝업·도움말의 선호 위치입니다.",
+            "source": "packages/native/src/popover.tsx"
+          },
+          {
+            "name": "header",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Fixed header above the body; only the body scrolls and maxHeight covers both.",
+            "summary": "고정 머리글입니다. 본문만 스크롤하며 maxHeight는 머리글을 포함한 높이입니다. ariaLabel이 없으면 대화상자 이름이 됩니다. Vue는 header 슬롯을 씁니다.",
             "source": "packages/native/src/popover.tsx"
           },
           {

@@ -291,6 +291,7 @@
       "packages/native/src/modal.tsx",
       "packages/native/src/navigation.tsx",
       "packages/native/src/number-display.tsx",
+      "packages/native/src/popover.tsx",
       "packages/native/src/range-input.tsx",
       "packages/native/src/select-control.tsx",
       "packages/native/src/selection-groups.tsx",
@@ -1056,7 +1057,9 @@
       "--divider"
     ],
     "implementationFiles": [
+      "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
+      "packages/native/src/floating-panel.tsx",
       "packages/native/src/list.tsx"
     ]
   },

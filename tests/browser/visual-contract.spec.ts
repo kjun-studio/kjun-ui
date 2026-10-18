@@ -290,6 +290,44 @@ for(const platform of ['react','vue3','native']) {
     await page.keyboard.press('Escape');
     await expect(page.getByRole('button',{name:'ref 대상 버튼'})).toBeFocused();
   });
+  test(`${platform}: Popover header stays put while only the body scrolls`,async({page})=>{
+    // Reduced motion removes the opening slide so the header's resting position is measured.
+    await page.emulateMedia({reducedMotion:'reduce'});
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'머리글 시험 열기'}).click();
+    const header=page.getByText('주문 필터',{exact:true}), item=page.getByText('필터 항목 3',{exact:true});
+    const before=await box(header), itemBefore=await box(item);
+    await item.hover(); await page.mouse.wheel(0,200);
+    await expect.poll(async()=>(await box(item)).y).toBeLessThan(itemBefore.y);
+    expect(Math.abs((await box(header)).y-before.y)).toBeLessThanOrEqual(1);
+    if(platform!=='native'){
+      const dialog=page.getByRole('dialog',{name:'주문 필터'});
+      await expect(dialog).toBeVisible();
+      const scrollers=await dialog.evaluate(el=>{ const panel=el.closest('.kjun-floating')!;
+        return [panel,...panel.querySelectorAll('*')].filter(n=>n.scrollHeight>n.clientHeight+1&&/auto|scroll/.test(getComputedStyle(n).overflowY)).map(n=>(n as HTMLElement).className); });
+      expect(scrollers).toEqual(['kjun-popover-body']);
+    } else {
+      const panelBottom=await page.getByText('필터 항목 1',{exact:true}).evaluate(el=>{ let n:HTMLElement|null=el as HTMLElement; while(n&&!n.style.position.includes('absolute')) n=n.parentElement; return n!.getBoundingClientRect().bottom; });
+      expect(panelBottom).toBeLessThanOrEqual(page.viewportSize()!.height);
+    }
+  });
+  test(`${platform}: Popover header keeps its padding with noPadding`,async({page})=>{
+    test.skip(platform==='native','class hooks are a web contract');
+    await openFixture(page,platform,'?header-no-padding','visual-contract');
+    await page.getByRole('button',{name:'머리글 시험 열기'}).click();
+    await expect(page.locator('.kjun-popover-header')).toHaveCSS('padding-top',`${tokens.extensions.popover.padding}px`);
+    await expect(page.locator('.kjun-popover-header')).toHaveCSS('padding-bottom',`${(tokens.extensions.popover as any).headerPaddingBottom}px`);
+    await expect(page.locator('.kjun-popover-content')).toHaveCSS('padding-top','0px');
+  });
+  test(`${platform}: Popover with a header near the viewport bottom shrinks the body, not the header`,async({page})=>{
+    await page.setViewportSize({width:800,height:360});
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'머리글 시험 열기'}).scrollIntoViewIfNeeded();
+    await page.getByRole('button',{name:'머리글 시험 열기'}).click();
+    const header=await box(page.getByText('주문 필터',{exact:true}));
+    expect(header.y).toBeGreaterThanOrEqual(0);
+    expect(header.y+header.height).toBeLessThanOrEqual(360);
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {

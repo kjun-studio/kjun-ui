@@ -32,6 +32,8 @@ export const KjunPopover = defineComponent({
   slots: Object as SlotsType<{
     trigger?: (scope: { open: boolean }) => VNodeChild;
     default?: (scope: { close: () => void }) => VNodeChild;
+    /** Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel. */
+    header?: (scope: { close: () => void }) => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
     const internal = ref(false);
@@ -57,7 +59,7 @@ export const KjunPopover = defineComponent({
           aria-haspopup="dialog" aria-expanded={expanded.value} aria-controls={expanded.value ? id : undefined}>
           {slots.trigger?.({ open: open.value })}
         </div>
-        <FloatingPanel open={open.value} onOpenChange={change} trigger={() => trigger.value} panelClass="kjun-content-popover" dialog={false}
+        <FloatingPanel open={open.value} onOpenChange={change} trigger={() => trigger.value} panelClass={"kjun-content-popover" + (slots.header ? " kjun-popover-has-header" : "")} dialog={false}
           placement={props.placement} matchTriggerWidth={props.matchTriggerWidth} maxHeight={props.maxHeight} flip={props.flip}
           returnFocus={() => {
             // Vue does not unwrap a ref passed as a prop value, and the prop may change after mount.
@@ -65,10 +67,15 @@ export const KjunPopover = defineComponent({
             return typeof target === "function" ? target() : unref(target) ?? undefined;
           }}>
           {{ default: () => (
-            <section ref={dialog} id={id} aria-label={props.ariaLabel || "상세 정보"} class="kjun-popover-dialog" role="dialog" tabindex={-1}
+            <section ref={dialog} id={id} class="kjun-popover-dialog" role="dialog" tabindex={-1}
+              aria-label={slots.header && !props.ariaLabel ? undefined : props.ariaLabel || "상세 정보"}
+              aria-labelledby={slots.header && !props.ariaLabel ? id + "-header" : undefined}
               onKeydown={(event: KeyboardEvent) => containTab(event.currentTarget as HTMLElement, event)}
-              style={{ maxHeight: typeof props.maxHeight === "number" ? props.maxHeight + "px" : props.maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: "auto" }}>
-              <div class="kjun-popover-content" data-no-padding={String(props.noPadding)}>{slots.default?.({ close: () => change(false) })}</div>
+              style={{ maxHeight: typeof props.maxHeight === "number" ? props.maxHeight + "px" : props.maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: slots.header ? undefined : "auto" }}>
+              {slots.header && <div id={id + "-header"} class="kjun-popover-header">{slots.header({ close: () => change(false) })}</div>}
+              {slots.header
+                ? <div class="kjun-popover-body"><div class="kjun-popover-content" data-no-padding={String(props.noPadding)}>{slots.default?.({ close: () => change(false) })}</div></div>
+                : <div class="kjun-popover-content" data-no-padding={String(props.noPadding)}>{slots.default?.({ close: () => change(false) })}</div>}
               <FeedbackLayerOutlet />
             </section>
           ) }}
