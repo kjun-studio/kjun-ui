@@ -88,7 +88,7 @@ export function KjunDataState({
     revealed = useLoadingReveal(state.initialLoading, loadingDelay);
   return (
     <div className="kjun-data-state" aria-busy={!!query.loading || refreshing}>
-      <div>
+      <div className="kjun-data-status-slot">
         {(refreshing || state.queryRefreshing) && (
           <div className="kjun-data-status" role="status">
             <KjunSpinner size="xs" />
@@ -98,6 +98,7 @@ export function KjunDataState({
       </div>
       {state.initialLoading ? (
         <div
+          className="kjun-data-loading-block"
           role={revealed ? "status" : undefined}
           aria-label={revealed ? loadingText : undefined}
           aria-hidden={revealed ? undefined : true}
@@ -118,7 +119,7 @@ export function KjunDataState({
             ))}
         </div>
       ) : blockingError ? (
-        <div className="kjun-state-actions" style={{ paddingBlock: padding }}>
+        <div className="kjun-data-error kjun-state-actions" style={{ paddingBlock: padding }}>
           {errorContent || (
             <KjunAlert type="danger" title="오류 발생" actions={onRetry && (
               <KjunButton variant="secondary" onClick={onRetry}>
@@ -144,7 +145,7 @@ export function KjunDataState({
       {(!concealed || (preserveContent && state.hasQueryResult)) && (
         <div
           key="content"
-          className={concealed ? "kjun-data-concealed" : undefined}
+          className={"kjun-data-content" + (concealed ? " kjun-data-concealed" : "")}
           aria-hidden={concealed || undefined}
           inert={concealed || undefined}
           style={{

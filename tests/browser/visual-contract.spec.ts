@@ -235,6 +235,15 @@ for(const platform of ['react','vue3','native']) {
     await expect(page.getByRole('menuitem',{name:'하위 항목'})).toHaveCount(0);
     await expect(page.getByTestId('state')).toContainText('"menuOpen":true');
   });
+  test(`${platform}: DataState marks its status slot, loading block, error and content`,async({page})=>{
+    test.skip(platform==='native','class markers are a web styling contract');
+    await openFixture(page,platform,'','visual-contract');
+    const refresh=page.getByTestId('refresh-error');
+    await expect(refresh.locator('.kjun-data-content')).toContainText('유지한 데이터');
+    await expect(refresh.locator('.kjun-data-status-slot')).toHaveCount(1);
+    await expect(page.getByTestId('error').locator('.kjun-data-error')).toContainText('목록을 불러오지 못했습니다');
+    await expect(page.getByTestId('loading-state').locator('.kjun-data-loading-block')).toHaveCount(1);
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {

@@ -69,13 +69,13 @@ export const KjunDataState = defineComponent({
       const loading = slots.loading?.(), empty = slots.empty?.(), error = slots.error?.({ error: props.error, retry: props.onRetry });
       return (
         <div class="kjun-data-state" aria-busy={props.loading || props.refreshing}>
-          <div>
+          <div class="kjun-data-status-slot">
             {(props.refreshing || state.queryRefreshing) && (
               <div class="kjun-data-status" role="status"><KjunSpinner size="xs" /><span>{props.refreshingText}</span></div>
             )}
           </div>
           {state.initialLoading ? (
-            <div role={revealed() ? "status" : undefined} aria-label={revealed() ? props.loadingText : undefined} aria-hidden={revealed() ? undefined : "true"}
+            <div class="kjun-data-loading-block" role={revealed() ? "status" : undefined} aria-label={revealed() ? props.loadingText : undefined} aria-hidden={revealed() ? undefined : "true"}
               style={css({ paddingBlock: props.loadingPadding === "none" ? 0 : padding, visibility: revealed() ? undefined : "hidden" })}>
               {hasContent(loading) ? loading : props.skeleton ? (
                 <div style={css({ display: "grid", gap: tokens.dimension.value12 })}>
@@ -86,7 +86,7 @@ export const KjunDataState = defineComponent({
               )}
             </div>
           ) : blockingError ? (
-            <div class="kjun-state-actions" style={css({ paddingBlock: padding })}>
+            <div class="kjun-data-error kjun-state-actions" style={css({ paddingBlock: padding })}>
               {hasContent(error) ? error : (
                 // The alert's own body type applies, like any other KjunAlert.
                 <KjunAlert type="danger" title="오류 발생">{{ default: () => props.error, ...(retry ? { actions: () => retry } : {}) }}</KjunAlert>
@@ -102,7 +102,7 @@ export const KjunDataState = defineComponent({
             </div>
           ) : null}
           {(!concealed || (props.preserveContent && state.hasQueryResult)) && (
-            <div key="content" class={concealed ? "kjun-data-concealed" : undefined} aria-hidden={concealed || undefined} inert={concealed || undefined}
+            <div key="content" class={"kjun-data-content" + (concealed ? " kjun-data-concealed" : "")} aria-hidden={concealed || undefined} inert={concealed || undefined}
               style={{ opacity: props.loading && !state.usesQueryState ? tokens.states.opacity.pending : undefined }}>
               {slots.default?.()}
             </div>
