@@ -59,14 +59,16 @@ export const FloatingPanel = defineComponent({
     };
     let frame = 0, observer: ResizeObserver | undefined, pressedOutside = false;
     const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
+    // Only the topmost layer reacts: a child menu is portaled outside this panel, so its presses look "outside".
+    const topmost = () => layer.state.top()?.id === layer.id;
     const outside = (node: EventTarget | null) => node instanceof Node && !panel.value?.contains(node) && !props.trigger()?.contains(node);
-    const onPointerDown = (event: PointerEvent) => { pressedOutside = props.open && layer.active.value && outside(event.target); };
+    const onPointerDown = (event: PointerEvent) => { pressedOutside = props.open && topmost() && outside(event.target); };
     const onPointerUp = (event: PointerEvent) => {
-      if (pressedOutside && props.open && layer.active.value && outside(event.target)) props.onOpenChange(false);
+      if (pressedOutside && props.open && topmost() && outside(event.target)) props.onOpenChange(false);
       pressedOutside = false;
     };
     // Without a Provider the shared Escape handling is not installed.
-    const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape" && props.open && layer.active.value) props.onOpenChange(false); };
+    const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape" && props.open && topmost()) props.onOpenChange(false); };
     const attach = () => {
       detach();
       if (!panel.value) return;

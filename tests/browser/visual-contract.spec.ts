@@ -217,6 +217,24 @@ for(const platform of ['react','vue3','native']) {
     await expect(page.getByTestId('table-format').getByText('0.25',{exact:true}).first()).toBeVisible();
     expect(warnings.filter(text=>text.includes('KJUN Table: rate'))).toHaveLength(1);
   });
+  test(`${platform}: choosing a menu item inside a Popover keeps the Popover open`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'메뉴 팝오버 열기'}).click();
+    await page.getByRole('button',{name:'하위 메뉴'}).click();
+    await page.getByRole('menuitem',{name:'하위 항목'}).click();
+    await expect(page.getByTestId('state')).toContainText('"pick":"하위 항목"');
+    await expect(page.getByTestId('state')).toContainText('"menuOpen":true');
+    await expect(page.getByRole('button',{name:'하위 메뉴'})).toBeVisible();
+  });
+  test(`${platform}: Escape inside a Popover closes only its open menu`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'메뉴 팝오버 열기'}).click();
+    await page.getByRole('button',{name:'하위 메뉴'}).click();
+    await expect(page.getByRole('menuitem',{name:'하위 항목'})).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('menuitem',{name:'하위 항목'})).toHaveCount(0);
+    await expect(page.getByTestId('state')).toContainText('"menuOpen":true');
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {
