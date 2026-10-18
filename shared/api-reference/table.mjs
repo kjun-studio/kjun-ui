@@ -107,7 +107,7 @@ const types = [
     ["sortable", "boolean", "표 sortable과 함께 허용해야 정렬 가능"],
     ["width / align", "number | string / left | center | right", "열 너비와 기본 셀 정렬"],
     ["render", "(value, row, index) → ReactNode", "React·Native의 해당 열 셀 표시"],
-    ["format", "(value, row) → ReactNode", "React·Native의 열별 기본 포맷"],
+    ["format", "(value, row) → ReactNode", "React·Vue·Native의 열별 기본 포맷. 함수만 받으며, 문자열 등 함수가 아닌 값은 무시하고 경고합니다"],
     ["hideInCard / inlineInCard / fullWidthInCard", "boolean", "모바일 카드의 열 배치"],
     ["hideEmptyInCard / secondary", "boolean", "빈 값 숨김과 보조 값 표시"],
   ]),

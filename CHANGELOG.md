@@ -2,6 +2,21 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.9.0 — 2026-10-18
+
+적용 앱 피드백을 반영했습니다. 바꿀 코드는 없지만 **Select 검색 결과의 순서가 바뀝니다.**
+
+- **Select 검색**: 결과를 일치도 순으로 정렬합니다(label이 검색어로 시작 → label에 포함 → `searchKeys` 필드에 포함, 같은 순위는 원래 순서). 새 prop `searchKeys`로 label 외 필드도 검색하고, `filterFn`으로 일치 판정을 직접 정할 수 있습니다(이때는 원래 순서 유지, 서버 검색만 쓰려면 `() => true`).
+- **Popover `returnFocus`**(React·Vue 3): 닫힌 뒤 초점을 보낼 요소를 지정합니다. 요소·ref·요소를 돌려주는 함수를 받고, 대상이 없으면 트리거로 돌아갑니다.
+- **DataState**: 래퍼에 `kjun-data-status-slot`·`kjun-data-loading-block`·`kjun-data-error`·`kjun-data-content` 클래스를 붙였습니다(웹). 구조 선택자 없이 각 부분을 꾸밀 수 있습니다.
+
+### 결함 수정
+
+- **Vue 3 Popover**: 안에서 연 Dropdown·Select 항목을 누르면 Popover까지 닫히던 문제를 고쳤습니다. 이제 맨 위 레이어만 바깥 누름과 Escape에 반응합니다.
+- **RadioGroup**: `direction="vertical"`이 높이가 정해진 영역에서 둘째 열로 넘어가지 않습니다.
+- **RefreshButton**: `mode="text"`의 접근성 이름이 보이는 글자(`text`)를 따릅니다.
+- **Table**: 열 `format`에 함수가 아닌 값(예: `"percent"`)이 오면 표 전체가 깨지던 것을, 그 값을 무시하고 경고하도록 바꿨습니다.
+
 ## 0.8.1 — 2026-10-17
 
 차트 스켈레톤을 다듬었습니다. 바꿀 코드는 없습니다.

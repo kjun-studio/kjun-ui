@@ -8385,7 +8385,7 @@
               {
                 "name": "format",
                 "type": "(value, row) → ReactNode",
-                "summary": "React·Native의 열별 기본 포맷"
+                "summary": "React·Vue·Native의 열별 기본 포맷. 함수만 받으며, 문자열 등 함수가 아닌 값은 무시하고 경고합니다"
               },
               {
                 "name": "hideInCard / inlineInCard / fullWidthInCard",
@@ -9216,7 +9216,7 @@
               {
                 "name": "format",
                 "type": "(value, row) → ReactNode",
-                "summary": "React·Native의 열별 기본 포맷"
+                "summary": "React·Vue·Native의 열별 기본 포맷. 함수만 받으며, 문자열 등 함수가 아닌 값은 무시하고 경고합니다"
               },
               {
                 "name": "hideInCard / inlineInCard / fullWidthInCard",
@@ -10047,7 +10047,7 @@
               {
                 "name": "format",
                 "type": "(value, row) → ReactNode",
-                "summary": "React·Native의 열별 기본 포맷"
+                "summary": "React·Vue·Native의 열별 기본 포맷. 함수만 받으며, 문자열 등 함수가 아닌 값은 무시하고 경고합니다"
               },
               {
                 "name": "hideInCard / inlineInCard / fullWidthInCard",
