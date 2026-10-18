@@ -45,9 +45,9 @@
     "native": ["value", "placeholder", "ariaLabel", "disabled", "error", "clearable", "debounce", "size", "loadOptions", "itemKey", "labelField", "minChars", "emptyText", "errorText", "renderOption", "onValueChange", "onSelect", "onSearchError", "onEnter", "onClear"]
   },
   "KjunSelect": {
-    "vue3": ["modelValue", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error"],
-    "react": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "menuHeader", "renderOption", "renderSelected", "onValueChange", "onChange", "onOpenChange", "onSearch", "onClear"],
-    "native": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "menuHeader", "renderOption", "renderSelected", "onValueChange", "onChange", "onOpenChange", "onSearch", "onClear"]
+    "vue3": ["modelValue", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "filterFn", "searchKeys"],
+    "react": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "menuHeader", "renderOption", "renderSelected", "onValueChange", "onChange", "onOpenChange", "onSearch", "onClear", "filterFn", "searchKeys"],
+    "native": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "menuHeader", "renderOption", "renderSelected", "onValueChange", "onChange", "onOpenChange", "onSearch", "onClear", "filterFn", "searchKeys"]
   },
   "KjunSwitch": {
     "vue3": ["modelValue", "label", "ariaLabel", "disabled", "size"],

@@ -219,7 +219,7 @@ for(const platform of ['react','vue3','native']) {
   });
   test(`${platform}: choosing a menu item inside a Popover keeps the Popover open`,async({page})=>{
     await openFixture(page,platform,'','visual-contract');
-    await page.getByRole('button',{name:'메뉴 팝오버 열기'}).click();
+    await page.getByRole('button',{name:'메뉴 묶음 열기'}).click();
     await page.getByRole('button',{name:'하위 메뉴'}).click();
     await page.getByRole('menuitem',{name:'하위 항목'}).click();
     await expect(page.getByTestId('state')).toContainText('"pick":"하위 항목"');
@@ -228,7 +228,7 @@ for(const platform of ['react','vue3','native']) {
   });
   test(`${platform}: Escape inside a Popover closes only its open menu`,async({page})=>{
     await openFixture(page,platform,'','visual-contract');
-    await page.getByRole('button',{name:'메뉴 팝오버 열기'}).click();
+    await page.getByRole('button',{name:'메뉴 묶음 열기'}).click();
     await page.getByRole('button',{name:'하위 메뉴'}).click();
     await expect(page.getByRole('menuitem',{name:'하위 항목'})).toBeVisible();
     await page.keyboard.press('Escape');

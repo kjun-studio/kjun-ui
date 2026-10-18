@@ -15837,6 +15837,24 @@
             "description": "",
             "summary": "필드를 오류 상태로 표시합니다. 오류 설명과 검증 결과는 소비자가 별도로 제공합니다.",
             "source": "packages/vue3/src/select-control.tsx"
+          },
+          {
+            "name": "filterFn",
+            "type": "(option: SelectOption, query: string) => boolean",
+            "required": false,
+            "default": "—",
+            "description": "Replaces the default ranked label/searchKeys match; results keep the original order.",
+            "summary": "검색 일치 판정을 대신합니다. 주면 순위를 매기지 않고 원래 순서를 유지합니다. 서버 검색만 쓰려면 () => true를 넘깁니다.",
+            "source": "packages/vue3/src/select-control.tsx"
+          },
+          {
+            "name": "searchKeys",
+            "type": "string[]",
+            "required": false,
+            "default": "[]",
+            "description": "Extra option fields searched after the label.",
+            "summary": "label 외에 검색할 옵션 필드입니다. 기본 검색은 label이 검색어로 시작하는 항목, label에 포함된 항목, 이 필드에 포함된 항목 순으로 정렬합니다.",
+            "source": "packages/vue3/src/select-control.tsx"
           }
         ],
         "events": [
@@ -16426,6 +16444,24 @@
             "example": "/components/select#preview"
           },
           {
+            "name": "filterFn",
+            "type": "((option: T, query: string) => boolean) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Replaces the default ranked label/searchKeys match; results keep the original order.",
+            "summary": "검색 일치 판정을 대신합니다. 주면 순위를 매기지 않고 원래 순서를 유지합니다. 서버 검색만 쓰려면 () => true를 넘깁니다.",
+            "source": "packages/react/src/select-control.tsx"
+          },
+          {
+            "name": "searchKeys",
+            "type": "string[] | undefined",
+            "required": false,
+            "default": "[]",
+            "description": "Extra option fields searched after the label.",
+            "summary": "label 외에 검색할 옵션 필드입니다. 기본 검색은 label이 검색어로 시작하는 항목, label에 포함된 항목, 이 필드에 포함된 항목 순으로 정렬합니다.",
+            "source": "packages/react/src/select-control.tsx"
+          },
+          {
             "name": "onClear",
             "type": "(() => void) | undefined",
             "required": false,
@@ -16853,6 +16889,24 @@
             ],
             "source": "packages/native/src/select-control.tsx",
             "example": "/components/select#preview"
+          },
+          {
+            "name": "filterFn",
+            "type": "((option: T, query: string) => boolean) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Replaces the default ranked label/searchKeys match; results keep the original order.",
+            "summary": "검색 일치 판정을 대신합니다. 주면 순위를 매기지 않고 원래 순서를 유지합니다. 서버 검색만 쓰려면 () => true를 넘깁니다.",
+            "source": "packages/native/src/select-control.tsx"
+          },
+          {
+            "name": "searchKeys",
+            "type": "string[] | undefined",
+            "required": false,
+            "default": "[]",
+            "description": "Extra option fields searched after the label.",
+            "summary": "label 외에 검색할 옵션 필드입니다. 기본 검색은 label이 검색어로 시작하는 항목, label에 포함된 항목, 이 필드에 포함된 항목 순으로 정렬합니다.",
+            "source": "packages/native/src/select-control.tsx"
           },
           {
             "name": "onClear",

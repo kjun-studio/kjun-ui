@@ -45,6 +45,10 @@ export interface KjunSelectProps<T extends SelectOption = SelectOption> {
   onChange?: (v: OptionValue | OptionValue[] | null) => void;
   onOpenChange?: (v: boolean) => void;
   onSearch?: (v: string) => void;
+  /** Replaces the default ranked label/searchKeys match; results keep the original order. */
+  filterFn?: (option: T, query: string) => boolean;
+  /** Extra option fields searched after the label. */
+  searchKeys?: string[];
   onClear?: () => void;
 }
 export function KjunSelect<T extends SelectOption = SelectOption>({
@@ -72,6 +76,8 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   onOpenChange,
   onSearch,
   onClear,
+  filterFn,
+  searchKeys,
 }: KjunSelectProps<T>) {
   const { open, query, limit, changeOpen, search, showMore } = useSelectState(controlled, disabled, optionPageSize, onOpenChange);
   const { colors } = useKjunStyles(),
@@ -90,7 +96,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
     onChange?.(v);
   };
   const { selected, matching, visible, selectedOption, label, nextValue } = selectOptions({
-    options, value, labelKey, valueKey, query, pageSize: optionPageSize, limit, loading, multiple,
+    options, value, labelKey, valueKey, query, pageSize: optionPageSize, limit, loading, multiple, filterFn, searchKeys,
   });
   const firstSelected = visible.findIndex(({ option }) => selected(option));
   if (firstSelected < 0) selectedRow.current = null;

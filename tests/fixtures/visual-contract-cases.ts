@@ -23,8 +23,8 @@ export function renderCases(h: (name:string, props:any, children?:any, slots?:an
     section('refresh-text',h('KjunRefreshButton',{ mode:'text', text:'다시 불러오기', targetName:'주문', onRefresh:()=>set('retry',state.retry+1) })),
     section('table-format',h('KjunTable',{ columns:[{key:'rate',label:'비율',format:'percent'}], data:[{rate:0.25}] })),
     section('loading-state',h('KjunDataState',{ queryKey:'a', loading:true },h('Text',{},'로딩 뒤 본문'))),
-    section('popover-menu',h('KjunPopover',{ open:state.menuOpen, onOpenChange:(v:boolean)=>set('menuOpen',v), manualTrigger:true, ariaLabel:'메뉴 팝오버' },h('KjunDropdown',{},h('KjunDropdownItem',{ onClick:()=>set('pick','하위 항목') },'하위 항목'),{ trigger:button('하위 메뉴') }),{ trigger:button('메뉴 팝오버 열기',()=>set('menuOpen',!state.menuOpen)) })),
-    section('popover-return',h('KjunPopover',{ open:state.focusOpen, onOpenChange:(v:boolean)=>set('focusOpen',v), manualTrigger:true, ariaLabel:'초점 팝오버', returnFocus:query.has('no-return')?false:()=>document.querySelector<HTMLElement>('[data-testid="focus-target"] button') },h('Text',{},'초점 팝오버 내용'),{ trigger:button('초점 팝오버 열기',()=>set('focusOpen',!state.focusOpen)) })),
+    section('popover-menu',h('KjunPopover',{ open:state.menuOpen, onOpenChange:(v:boolean)=>set('menuOpen',v), manualTrigger:true, ariaLabel:'메뉴 팝오버' },h('KjunDropdown',{},h('KjunDropdownItem',{ onClick:()=>set('pick','하위 항목') },'하위 항목'),{ trigger:button('하위 메뉴') }),{ trigger:button('메뉴 묶음 열기',()=>set('menuOpen',!state.menuOpen)) })),
+    section('popover-return',h('KjunPopover',{ open:state.focusOpen, onOpenChange:(v:boolean)=>set('focusOpen',v), manualTrigger:true, ariaLabel:'초점 팝오버', returnFocus:query.has('no-return')?false:()=>document.querySelector<HTMLElement>('[data-testid="focus-target"] button') },h('Text',{},'초점 팝오버 내용'),{ trigger:button('초점 시험 열기',()=>set('focusOpen',!state.focusOpen)) })),
     section('focus-target',button('초점 받을 버튼')),
     h('Output',{id:'state'},JSON.stringify(state)),
   ];

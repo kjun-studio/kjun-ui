@@ -15072,6 +15072,20 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "filterFn",
+        "type": "(option: SelectOption, query: string) => boolean",
+        "required": false,
+        "default": "—",
+        "description": "Replaces the default ranked label/searchKeys match; results keep the original order."
+      },
+      {
+        "name": "searchKeys",
+        "type": "string[]",
+        "required": false,
+        "default": "[]",
+        "description": "Extra option fields searched after the label."
       }
     ],
     "events": [
@@ -15281,6 +15295,20 @@
         "description": ""
       },
       {
+        "name": "filterFn",
+        "type": "((option: T, query: string) => boolean) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Replaces the default ranked label/searchKeys match; results keep the original order."
+      },
+      {
+        "name": "searchKeys",
+        "type": "string[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra option fields searched after the label."
+      },
+      {
         "name": "onClear",
         "type": "(() => void) | undefined",
         "required": false,
@@ -15449,6 +15477,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "filterFn",
+        "type": "((option: T, query: string) => boolean) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Replaces the default ranked label/searchKeys match; results keep the original order."
+      },
+      {
+        "name": "searchKeys",
+        "type": "string[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra option fields searched after the label."
       },
       {
         "name": "onClear",

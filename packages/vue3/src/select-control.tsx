@@ -32,6 +32,10 @@ const kjunSelectProps = {
   clearable: { type: Boolean, default: false },
   multiple: { type: Boolean, default: false },
   error: { type: Boolean, default: false },
+  /** Replaces the default ranked label/searchKeys match; results keep the original order. */
+  filterFn: { type: Function as PropType<(option: SelectOption, query: string) => boolean>, default: undefined },
+  /** Extra option fields searched after the label. */
+  searchKeys: { type: Array as PropType<string[]>, default: () => [] },
 } as const;
 export type KjunSelectProps = ExtractPublicPropTypes<typeof kjunSelectProps>;
 /**
@@ -60,7 +64,8 @@ export const KjunSelect = defineComponent({
     const focused = shallowRef<string | null>(null), focusVisible = ref(false);
     const change = (value: SelectValue) => { emit("update:modelValue", value); emit("change", value); };
     const model = computed(() => selectOptions({ options: props.options, value: props.modelValue, labelKey: props.labelKey, valueKey: props.valueKey,
-      query: state.query.value, pageSize: props.optionPageSize, limit: state.limit.value, loading: props.loading, multiple: props.multiple }));
+      query: state.query.value, pageSize: props.optionPageSize, limit: state.limit.value, loading: props.loading, multiple: props.multiple,
+      filterFn: props.filterFn, searchKeys: props.searchKeys }));
     const optionElements = () => [...(menu.value?.querySelectorAll<HTMLElement>('[role="option"]:not([aria-disabled="true"])') ?? [])];
     const focusOption = (element: HTMLElement | undefined) => {
       if (!element) return;

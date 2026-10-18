@@ -59,6 +59,8 @@ set("Combobox", {
 });
 set("Select", {
   options: "문자열·숫자 또는 labelKey·valueKey로 읽을 객체 목록입니다. 원시 숫자 0도 라벨과 지우기 동작을 유지합니다.",
+  filterFn: { summary: "검색 일치 판정을 대신합니다. 주면 순위를 매기지 않고 원래 순서를 유지합니다. 서버 검색만 쓰려면 () => true를 넘깁니다." },
+  searchKeys: { default: "[]", summary: "label 외에 검색할 옵션 필드입니다. 기본 검색은 label이 검색어로 시작하는 항목, label에 포함된 항목, 이 필드에 포함된 항목 순으로 정렬합니다." },
 });
 for (const platform of ["react", "native"]) set("Combobox", {
   options: "검색 후보입니다. 같은 선택값·라벨을 가진 옵션 객체를 다시 만들어도 검색 초안을 유지합니다. 선택값이나 선택 라벨이 바뀌면 표시값을 동기화합니다.",
