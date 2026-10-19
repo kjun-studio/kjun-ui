@@ -1,4 +1,5 @@
 import { hasContent } from "../../../shared/package-runtime/content-presence";
+import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
 import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
@@ -237,6 +238,8 @@ export interface KjunAlertProps {
   size?: "sm" | "md" | "lg";
   title?: ReactNode;
   closable?: boolean;
+  /** How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise. */
+  live?: AlertLive;
   children?: ReactNode;
   /** Buttons placed under the message; unsized KjunButtons follow the alert size. */
   actions?: ReactNode;
@@ -248,6 +251,7 @@ export function KjunAlert({
   size = "md",
   title,
   closable = false,
+  live,
   children,
   actions,
   onClose,
@@ -266,7 +270,7 @@ export function KjunAlert({
     : colors[(tone + suffix) as keyof typeof colors];
   return (
     <View
-      role={tone === "danger" ? "alert" : "status"}
+      role={alertRole(tone, live)}
       style={{
         flexDirection: "row",
         alignItems: "flex-start",

@@ -410,6 +410,23 @@ for(const platform of ['react','vue3','native']) {
     const shortWrap=await box(page.getByRole('button',{name:'짧은 줄바꿈'})), base=await box(page.getByRole('button',{name:'짧은 기준'}));
     expect(Math.abs(shortWrap.height-base.height)).toBeLessThanOrEqual(1);
   });
+  test(`${platform}: Alert live overrides the announcement role`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    const section=page.getByTestId('alert-live');
+    await expect(section.getByRole('alert').filter({hasText:'경고 즉시'})).toHaveCount(1);
+    await expect(section.getByRole('status').filter({hasText:'기본 경고'})).toHaveCount(1);
+    await expect(section.getByRole('alert').filter({hasText:'조용한 안내'})).toHaveCount(0);
+    await expect(section.getByRole('status').filter({hasText:'조용한 안내'})).toHaveCount(0);
+  });
+  test(`${platform}: a controlled Tooltip follows its open prop`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'툴팁 열기'}).click();
+    await expect(page.getByRole('tooltip').filter({hasText:'제어 툴팁 내용'})).toBeVisible();
+    await openFixture(page,platform,'?tip-frozen','visual-contract');
+    await page.getByRole('button',{name:'제어 툴팁 대상'}).hover();
+    await page.waitForTimeout(400);
+    await expect(page.getByRole('tooltip').filter({hasText:'제어 툴팁 내용'})).toHaveCount(0);
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {

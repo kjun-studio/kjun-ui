@@ -1,5 +1,5 @@
 // Shared consumer composition; each adapter below renders only packed public components.
-export const initial = { quantity:2, time:'09:30:15', tab:'activity', open:false, retry:0, destination:'home', radio:'a', menuOpen:false, pick:'', focusOpen:false, targetGone:false, returnOn:false, headerOpen:false, nmOpen:false, typed:'', sortReset:false, sortClicks:0, tsel:[] as any[] };
+export const initial = { quantity:2, time:'09:30:15', tab:'activity', open:false, retry:0, destination:'home', radio:'a', menuOpen:false, pick:'', focusOpen:false, targetGone:false, returnOn:false, headerOpen:false, nmOpen:false, typed:'', sortReset:false, sortClicks:0, tsel:[] as any[], tipOpen:false };
 export function renderCases(h: (name:string, props:any, children?:any, slots?:any) => any, state:typeof initial, set:(key:string,value:any)=>void) {
   const query = new URLSearchParams(location.search), size = query.get('size') || 'md';
   const section = (id:string, children:any, style={}) => h('Section', { id, style }, children);
@@ -40,6 +40,8 @@ export function renderCases(h: (name:string, props:any, children?:any, slots?:an
       h('KjunDropdownItem',{ onClick:()=>{ set('sortReset',true); set('sortClicks',state.sortClicks+1); } },'정렬 초기화')],{ trigger:button('정렬 메뉴') })),
     section('table-select',h('KjunTable',{ selectable:true, selected:state.tsel, onSelectionChange:(v:any[])=>set('tsel',v), columns:[{key:'name',label:'이름'}], data:[{id:1,name:'선택 행'}] })),
     section('button-wrap',[h('KjunButton',{ wrap:true },'아주 긴 라벨이 있는 버튼이 좁은 칸에서 줄바꿈되는지 확인'),h('KjunButton',{ wrap:true },'짧은 줄바꿈'),h('KjunButton',{},'짧은 기준')],{width:160}),
+    section('alert-live',[h('KjunAlert',{ type:'warning', live:'assertive', title:'경고 즉시' }),h('KjunAlert',{ type:'info', live:'off', title:'조용한 안내' }),h('KjunAlert',{ type:'warning', title:'기본 경고' })]),
+    section('tooltip-controlled',[h('KjunTooltip',{ open:state.tipOpen, onOpenChange:(v:boolean)=>{ if(!query.has('tip-frozen')) set('tipOpen',v); }, content:'제어 툴팁 내용' },button('제어 툴팁 대상')),button('툴팁 열기',()=>set('tipOpen',true))]),
     section('tooltip-outside',h('KjunTooltip',{ content:'바깥 도움말' },button('도움말 버튼'))),
     h('Output',{id:'state'},JSON.stringify(state)),
   ];

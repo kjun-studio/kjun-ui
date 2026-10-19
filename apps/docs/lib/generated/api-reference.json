@@ -10147,9 +10147,25 @@
             "description": "",
             "summary": "도움말이 표시되기까지의 지연 시간(ms)입니다.",
             "source": "packages/vue3/src/popover.tsx"
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "Controlled visibility; omit to let hover and focus drive it.",
+            "summary": "표시 여부를 직접 제어합니다. 생략하면 hover와 포커스로 열립니다. Vue는 v-model:open입니다.",
+            "source": "packages/vue3/src/popover.tsx"
           }
         ],
-        "events": [],
+        "events": [
+          {
+            "name": "update:open",
+            "source": "packages/vue3/src/popover.tsx",
+            "type": "이벤트",
+            "summary": "update:open 이벤트를 통지합니다."
+          }
+        ],
         "slots": [
           {
             "name": "default",
@@ -10189,6 +10205,24 @@
             "default": "0",
             "description": "",
             "summary": "도움말이 표시되기까지의 지연 시간(ms)입니다.",
+            "source": "packages/react/src/popover.tsx"
+          },
+          {
+            "name": "open",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controlled visibility; omit to let hover and focus drive it.",
+            "summary": "표시 여부를 직접 제어합니다. 생략하면 hover와 포커스로 열립니다. Vue는 v-model:open입니다.",
+            "source": "packages/react/src/popover.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "hover·포커스·Escape로 열림 상태가 바뀌어야 할 때 호출합니다. 제어형이면 open을 바꿔야 반영됩니다.",
             "source": "packages/react/src/popover.tsx"
           },
           {
@@ -10233,6 +10267,24 @@
             "default": "0",
             "description": "",
             "summary": "도움말이 표시되기까지의 지연 시간(ms)입니다.",
+            "source": "packages/native/src/popover.tsx"
+          },
+          {
+            "name": "open",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controlled visibility; omit to let hover and focus drive it.",
+            "summary": "표시 여부를 직접 제어합니다. 생략하면 hover와 포커스로 열립니다. Vue는 v-model:open입니다.",
+            "source": "packages/native/src/popover.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "hover·포커스·Escape로 열림 상태가 바뀌어야 할 때 호출합니다. 제어형이면 open을 바꿔야 반영됩니다.",
             "source": "packages/native/src/popover.tsx"
           },
           {
@@ -10315,6 +10367,15 @@
             "default": "false",
             "description": "",
             "summary": "닫기 버튼을 표시합니다. sm은 24px, md는 28px이며 ✕가 본문 여백 끝에 맞춰집니다. 실행하면 내부 표시를 숨기고 닫힘을 통지합니다.",
+            "source": "packages/vue3/src/display.tsx"
+          },
+          {
+            "name": "live",
+            "type": "AlertLive",
+            "required": false,
+            "default": "—",
+            "description": "How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise.",
+            "summary": "보조기기 알림 방식입니다. assertive는 role=alert, polite는 status, off는 알리지 않습니다. 생략하면 danger는 alert, 나머지는 status입니다.",
             "source": "packages/vue3/src/display.tsx"
           }
         ],
@@ -10400,6 +10461,15 @@
             "source": "packages/react/src/display.tsx"
           },
           {
+            "name": "live",
+            "type": "AlertLive | undefined",
+            "required": false,
+            "default": "—",
+            "description": "How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise.",
+            "summary": "보조기기 알림 방식입니다. assertive는 role=alert, polite는 status, off는 알리지 않습니다. 생략하면 danger는 alert, 나머지는 status입니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
             "name": "children",
             "type": "ReactNode",
             "required": false,
@@ -10477,6 +10547,15 @@
             "default": "false",
             "description": "",
             "summary": "닫기 버튼을 표시합니다. sm은 24px, md는 28px이며 ✕가 본문 여백 끝에 맞춰집니다. 실행하면 내부 표시를 숨기고 닫힘을 통지합니다.",
+            "source": "packages/native/src/display-primitives.tsx"
+          },
+          {
+            "name": "live",
+            "type": "AlertLive | undefined",
+            "required": false,
+            "default": "—",
+            "description": "How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise.",
+            "summary": "보조기기 알림 방식입니다. assertive는 role=alert, polite는 status, off는 알리지 않습니다. 생략하면 danger는 alert, 나머지는 status입니다.",
             "source": "packages/native/src/display-primitives.tsx"
           },
           {

@@ -5,7 +5,8 @@
       "variant",
       "size",
       "title",
-      "closable"
+      "closable",
+      "live"
     ],
     "react": [
       "type",
@@ -15,7 +16,8 @@
       "closable",
       "children",
       "actions",
-      "onClose"
+      "onClose",
+      "live"
     ],
     "native": [
       "type",
@@ -25,7 +27,8 @@
       "closable",
       "children",
       "actions",
-      "onClose"
+      "onClose",
+      "live"
     ]
   },
   "KjunChartSkeleton": {
@@ -279,13 +282,16 @@
     "vue3": [
       "content",
       "placement",
-      "delay"
+      "delay",
+      "open"
     ],
     "react": [
       "content",
       "placement",
       "delay",
-      "children"
+      "children",
+      "open",
+      "onOpenChange"
     ],
     "native": [
       "content",
@@ -293,7 +299,9 @@
       "delay",
       "children",
       "onPress",
-      "disabled"
+      "disabled",
+      "open",
+      "onOpenChange"
     ]
   }
 }

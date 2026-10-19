@@ -115,6 +115,8 @@ const kjunTooltipProps = {
   content: { type: String, default: "" },
   placement: { type: String as PropType<"top" | "bottom" | "left" | "right">, default: "top" },
   delay: { type: Number, default: 0 },
+  /** Controlled visibility; omit to let hover and focus drive it. */
+  open: { type: Boolean, default: undefined },
 } as const;
 export type KjunTooltipProps = ExtractPublicPropTypes<typeof kjunTooltipProps>;
 /** Default slot: the one focusable element the tooltip describes (it gets the hover, focus and aria-describedby wiring). */
@@ -123,9 +125,12 @@ const openTooltips = new Set<() => void>();
 export const KjunTooltip = defineComponent({
   name: "KjunTooltip",
   props: kjunTooltipProps,
+  emits: { "update:open": (_open: boolean) => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
-  setup(props, { slots }) {
-    const open = ref(false);
+  setup(props, { slots, emit }) {
+    const internal = ref(false);
+    // v-model:open makes it controlled; otherwise hover and focus drive it.
+    const open = computed({ get: () => props.open ?? internal.value, set: (next: boolean) => { internal.value = next; emit("update:open", next); } });
     const layer = useLayer(() => open.value, () => open.value, "tooltip", () => { open.value = false; });
     const reduced = useReducedMotion();
     const motion = usePresence(() => open.value && !layer.blocked.value, () => reduced.value, tokens.motion.tooltipExit);

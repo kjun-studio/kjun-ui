@@ -99,6 +99,9 @@ export interface KjunTooltipProps
   content?: string;
   placement?: "top" | "bottom" | "left" | "right";
   delay?: number;
+  /** Controlled visibility; omit to let hover and focus drive it. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   children: ReactNode;
 }
 export function KjunTooltip({
@@ -108,9 +111,13 @@ export function KjunTooltip({
   children,
   onPress,
   disabled,
+  open: controlled,
+  onOpenChange,
 }: KjunTooltipProps) {
   const { colors } = useKjunStyles(),
-    [open, setOpen] = useState(false),
+    [internal, setInternal] = useState(false),
+    open = controlled ?? internal,
+    setOpen = (value: boolean) => { setInternal(value); onOpenChange?.(value); },
     ref = useRef<View>(null),
     timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const scopeActive = useActiveLayerScope();

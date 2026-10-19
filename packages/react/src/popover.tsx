@@ -142,16 +142,23 @@ export interface KjunTooltipProps {
   content?: string;
   placement?: "top" | "bottom" | "left" | "right";
   delay?: number;
+  /** Controlled visibility; omit to let hover and focus drive it. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   children: ReactNode;
 }
 export function KjunTooltip({
   content = "",
   placement = "top",
   delay = 0,
+  open: controlled,
+  onOpenChange,
   children,
 }: KjunTooltipProps) {
   const container = useKjunPortalContainer();
-  const [open, setOpen] = useState(false);
+  const [internal, setInternal] = useState(false),
+    open = controlled ?? internal;
+  const setOpen = (value: boolean) => { setInternal(value); onOpenChange?.(value); };
   const layer = useLayer(open, open, "tooltip", () => setOpen(false));
   return (
     <TooltipTrigger isOpen={open && !layer.blocked} onOpenChange={setOpen} delay={delay} closeDelay={0} isDisabled={!content || !layer.scopeActive}>

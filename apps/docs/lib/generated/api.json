@@ -219,6 +219,13 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "live",
+        "type": "AlertLive",
+        "required": false,
+        "default": "—",
+        "description": "How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise."
       }
     ],
     "events": [
@@ -281,6 +288,13 @@
         "description": ""
       },
       {
+        "name": "live",
+        "type": "import(\"/workspace/shared/package-runtime/alert-live\").AlertLive | undefined",
+        "required": false,
+        "default": "—",
+        "description": "How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise."
+      },
+      {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
@@ -337,6 +351,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "live",
+        "type": "import(\"/workspace/shared/package-runtime/alert-live\").AlertLive | undefined",
+        "required": false,
+        "default": "—",
+        "description": "How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise."
       },
       {
         "name": "children",
@@ -18669,9 +18690,21 @@
         "required": false,
         "default": "0",
         "description": ""
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "default": "—",
+        "description": "Controlled visibility; omit to let hover and focus drive it."
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "update:open",
+        "source": "packages/vue3/src/popover.tsx"
+      }
+    ],
     "slots": [
       {
         "name": "default",
@@ -18702,6 +18735,20 @@
         "description": ""
       },
       {
+        "name": "open",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Controlled visibility; omit to let hover and focus drive it."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "((open: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": true,
@@ -18727,6 +18774,20 @@
       {
         "name": "delay",
         "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "open",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Controlled visibility; omit to let hover and focus drive it."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "((open: boolean) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""

@@ -1,4 +1,5 @@
 import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { tokens } from "@kjun-ui/tokens";
 import { alertActionSizes } from "../../../shared/package-runtime/alert-action-size";
 import { typeStyle } from "../../../shared/package-runtime/typography";
@@ -99,6 +100,8 @@ const kjunAlertProps = {
   size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   title: { type: String, default: undefined },
   closable: { type: Boolean, default: false },
+  /** How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise. */
+  live: { type: String as PropType<AlertLive>, default: undefined },
 } as const;
 export type KjunAlertProps = ExtractPublicPropTypes<typeof kjunAlertProps>;
 /** Slots: default (message), title, actions (unsized KjunButtons follow the alert size). */
@@ -120,7 +123,7 @@ export const KjunAlert = defineComponent({
       const title = slots.title ? slots.title() : props.title;
       const children = slots.default?.(), actions = slots.actions?.();
       return (
-        <div role={tone === "danger" ? "alert" : "status"} class="kjun-alert" data-size={small ? "sm" : "md"}
+        <div role={alertRole(tone, props.live)} class="kjun-alert" data-size={small ? "sm" : "md"}
           style={{ background: role(tone === "primary" ? "brand-subtle-bg" : tone + "-bg"),
             borderColor: role(tone === "primary" ? "brand-light" : tone + "-light") }}>
           <span class="kjun-alert-icon" style={{ color: role(tone === "primary" ? "brand" : tone + "-accent") }}>

@@ -209,6 +209,8 @@ set("RefreshButton", {
 set("Popover", { noPadding: { default:"false", summary:"기본 16px 패딩과 12px 콘텐츠 간격을 제거합니다. 직접 구성하는 콘텐츠에 사용합니다." } });
 set("Button", { wrap: { default:"false", summary:"긴 라벨을 줄바꿈합니다. 크기별 높이는 최소 높이가 되고, 버튼이 칸을 넘지 않고 세로로 늘어납니다." } });
 set("RefreshButton", { wrap: { default:"false", summary:"Button의 wrap과 같습니다. 텍스트 모드의 긴 문구를 줄바꿈합니다." } });
+set("Alert", { live: { summary:"보조기기 알림 방식입니다. assertive는 role=alert, polite는 status, off는 알리지 않습니다. 생략하면 danger는 alert, 나머지는 status입니다." } });
+set("Tooltip", { open: { summary:"표시 여부를 직접 제어합니다. 생략하면 hover와 포커스로 열립니다. Vue는 v-model:open입니다." }, onOpenChange: { summary:"hover·포커스·Escape로 열림 상태가 바뀌어야 할 때 호출합니다. 제어형이면 open을 바꿔야 반영됩니다." } });
 set("Popover", { modal: { default:"true", summary:"false이면 페이지를 막지 않고, 열릴 때 초점을 가져가지 않습니다(focusOnOpen이면 가져감). 마지막 항목에서 Tab은 닫고 트리거 다음으로, 첫 항목에서 Shift+Tab은 트리거로 갑니다. 바깥을 누르거나 초점이 밖으로 나가면 닫히며 초점을 되돌리지 않고, Escape는 트리거로 돌아갑니다." } });
 set("Popover", { header: { summary:"고정 머리글입니다. 본문만 스크롤하며 maxHeight는 머리글을 포함한 높이입니다. 웹에서는 ariaLabel이 없으면 대화상자 이름이 되고, Native는 ariaLabel을 지정해야 합니다. Vue는 header 슬롯을 씁니다." } });
 set("Popover", { returnFocus: { summary:"닫힌 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받습니다. 대상이 없거나 문서에서 사라졌으면 트리거로 돌아갑니다." } });
