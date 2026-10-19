@@ -1,5 +1,6 @@
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { tokens } from "@kjun-ui/tokens";
+import { drawerOverlayVars } from "../../../shared/package-runtime/drawer-geometry";
 import { usePresence } from "../../../shared/package-runtime/use-presence";
 import { useReducedMotion } from "./use-reduced-motion";
 import type { ReactNode } from "react";
@@ -22,6 +23,12 @@ export interface KjunDrawerProps {
   children: ReactNode;
   onClose?: () => void;
   ariaLabel?: string;
+  /** Top safe area in px, padded inside top and side drawers and kept clear above a bottom sheet. */
+  safeAreaTop?: number;
+  /** Bottom safe area in px, padded inside bottom and side drawers and kept clear below a top sheet. */
+  safeAreaBottom?: number;
+  /** Height limit in px for top and bottom drawers; by default they stop a sheet gap short of the opposite edge. */
+  maxHeight?: number;
 }
 export function KjunDrawer({
   open,
@@ -38,6 +45,9 @@ export function KjunDrawer({
   children,
   onClose,
   ariaLabel,
+  safeAreaTop = 0,
+  safeAreaBottom = 0,
+  maxHeight,
 }: KjunDrawerProps) {
   const motion = usePresence(open, useReducedMotion(), tokens.motion.layerExit);
   const container = useKjunPortalContainer();
@@ -51,7 +61,7 @@ export function KjunDrawer({
   return (
     <LayerScope.Provider value={layer.id}>
     <ModalOverlay
-      style={{ zIndex: layer.zIndex }}
+      style={{ zIndex: layer.zIndex, ...drawerOverlayVars({ safeAreaTop, safeAreaBottom, maxHeight }) }}
       // Retain inactive content without retaining its focus trap or outside isolation.
       isOpen={motion.present && layer.active}
       isExiting={motion.present && !layer.active}

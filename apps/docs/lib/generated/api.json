@@ -4377,6 +4377,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "safeAreaTop",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Top safe area in px, padded inside top and side drawers and kept clear above a bottom sheet."
+      },
+      {
+        "name": "safeAreaBottom",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Bottom safe area in px, padded inside bottom and side drawers and kept clear below a top sheet."
+      },
+      {
+        "name": "maxHeight",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": "Height limit in px for top and bottom drawers; by default they stop a sheet gap short of the opposite edge."
       }
     ],
     "events": [
@@ -4504,6 +4525,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "safeAreaTop",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Top safe area in px, padded inside top and side drawers and kept clear above a bottom sheet."
+      },
+      {
+        "name": "safeAreaBottom",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Bottom safe area in px, padded inside bottom and side drawers and kept clear below a top sheet."
+      },
+      {
+        "name": "maxHeight",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Height limit in px for top and bottom drawers; by default they stop a sheet gap short of the opposite edge."
       }
     ],
     "native": [
@@ -4604,6 +4646,34 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "safeAreaTop",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Top safe area, padded inside top and side drawers and kept clear above a bottom sheet."
+      },
+      {
+        "name": "safeAreaBottom",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Bottom safe area, padded inside bottom and side drawers and kept clear below a top sheet."
+      },
+      {
+        "name": "maxHeight",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Height limit for top and bottom drawers; by default they stop a sheet gap short of the opposite edge."
+      },
+      {
+        "name": "avoidKeyboard",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Keeps the panel above the on-screen keyboard (devices only)."
       }
     ]
   },
@@ -5365,6 +5435,13 @@
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
         "default": "—",
         "description": ""
       }

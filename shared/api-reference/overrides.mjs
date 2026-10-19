@@ -228,3 +228,9 @@ set("Tabs", { density:"comfortable은 44px, compact는 32px 높이입니다. 두
 
 set("Card", { elevation: { summary: "콘텐츠 표면의 역할입니다. 기본 flat에는 그림자가 없고 raised에는 옅은 접촉 그림자가 있습니다.", details: [{ label: "행동", text: "Card 자체에는 hover 그림자·상승·pointer 효과가 없습니다. 행동은 내부 Button·Link에 연결합니다." }] } });
 set("Card", { border: { default: "false", summary: "카드 안쪽에 0.5px 외곽선을 표시합니다. 기본은 선이 없으며, 테두리를 켜도 콘텐츠의 여백과 전체 크기는 바뀌지 않습니다." } });
+set("Drawer", {
+  safeAreaTop: { default:"0", summary:"앱이 전달하는 상단 안전 영역(px)입니다. 위·좌우 Drawer는 안쪽 위 여백으로, 아래 Drawer는 높이 상한에서 비워 둡니다." },
+  safeAreaBottom: { default:"0", summary:"앱이 전달하는 하단 안전 영역(px)입니다. 아래·좌우 Drawer는 footer 아래 여백으로, 위 Drawer는 높이 상한에서 비워 둡니다." },
+  maxHeight: { default:"화면 높이 − 반대쪽 안전 영역 − 48px", summary:"위·아래 Drawer의 전체 높이 상한(px)입니다. 넘치면 본문만 스크롤하고 머리글·footer는 고정합니다. 좌우 Drawer에는 쓰지 않습니다." },
+});
+set("Drawer", { avoidKeyboard: { default:"true", summary:"화면 키보드가 패널을 가리지 않게 합니다. 아래 Drawer는 키보드 위로 올라가고 다른 위치는 높이를 줄입니다. 기기에서만 동작합니다." } }, "native");

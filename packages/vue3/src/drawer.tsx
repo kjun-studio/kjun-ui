@@ -1,5 +1,6 @@
 import { Teleport, defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
+import { drawerOverlayVars } from "../../../shared/package-runtime/drawer-geometry";
 import { KjunButton, KjunIcon } from "./button";
 import { usePortalTarget } from "./floating-panel";
 import { DismissButton, bindWindowRoot, useOutsidePress, useWindowLayer } from "./modal";
@@ -18,6 +19,12 @@ const kjunDrawerProps = {
   closeOnEsc: { type: Boolean, default: true },
   noPadding: { type: Boolean, default: false },
   ariaLabel: { type: String, default: undefined },
+  /** Top safe area in px, padded inside top and side drawers and kept clear above a bottom sheet. */
+  safeAreaTop: { type: Number, default: 0 },
+  /** Bottom safe area in px, padded inside bottom and side drawers and kept clear below a top sheet. */
+  safeAreaBottom: { type: Number, default: 0 },
+  /** Height limit in px for top and bottom drawers; by default they stop a sheet gap short of the opposite edge. */
+  maxHeight: { type: Number, default: undefined },
 } as const;
 export type KjunDrawerProps = ExtractPublicPropTypes<typeof kjunDrawerProps>;
 /** v-model:open. Slots: default (body), header (replaces the title), footer. Event: close. */
@@ -46,7 +53,7 @@ export const KjunDrawer = defineComponent({
       return (
         <Teleport to={to}>
           <div ref={overlay} class="kjun-scope kjun-drawer-overlay" data-motion="drawer" data-motion-open={String(motion.active())}
-            inert={!props.open || !layer.active.value} data-position={props.position} style={{ zIndex: layer.zIndex.value }} {...press}>
+            inert={!props.open || !layer.active.value} data-position={props.position} style={{ zIndex: layer.zIndex.value, ...drawerOverlayVars(props) }} {...press}>
             <div ref={drawer} class="kjun-drawer" style={css({ zIndex: layer.state.zIndex(layer.id, "content"), width: sideways ? props.width : "100%" })}>
               <DismissButton onDismiss={close} />
               <section ref={(node: unknown) => { dialog.value = node as HTMLElement | null; rootRef(node); }} class="kjun-drawer-dialog" role="dialog" tabindex={-1}

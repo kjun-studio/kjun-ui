@@ -337,6 +337,19 @@
   flex-direction: column;
   outline: none;
 }
+/* Safe areas arrive as --_kjun-drawer-safe-top/bottom on the overlay; the panel surface extends under them. */
+.kjun-drawer-overlay:not([data-position="bottom"]) .kjun-drawer-dialog { padding-top: var(--_kjun-drawer-safe-top); }
+.kjun-drawer-overlay:not([data-position="top"]) .kjun-drawer-dialog { padding-bottom: var(--_kjun-drawer-safe-bottom); }
+/* Top and bottom sheets stop short of the opposite edge (its safe area plus the sheet gap); only the body scrolls. */
+.kjun-drawer-overlay[data-position="bottom"] {
+  --_kjun-drawer-sheet-max: calc(100dvh - var(--_kjun-drawer-safe-top) - var(--_kjun-extension-drawer-sheet-gap));
+}
+.kjun-drawer-overlay[data-position="top"] {
+  --_kjun-drawer-sheet-max: calc(100dvh - var(--_kjun-drawer-safe-bottom) - var(--_kjun-extension-drawer-sheet-gap));
+}
+.kjun-drawer-overlay:is([data-position="top"], [data-position="bottom"]) :is(.kjun-drawer, .kjun-drawer-dialog) {
+  max-height: var(--_kjun-drawer-max-height, var(--_kjun-drawer-sheet-max));
+}
 .kjun-drawer-header {
   display: flex;
   align-items: center;

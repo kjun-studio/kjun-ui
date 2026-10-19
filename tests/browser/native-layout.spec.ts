@@ -60,3 +60,50 @@ for (const platform of platforms) {
     expect(breaks).toEqual([]);
   });
 }
+
+const rect = (locator: ReturnType<Page['getByRole']>) => locator.evaluate(el => el.getBoundingClientRect().toJSON());
+for (const platform of platforms) {
+  test(`${platform}: a bottom Drawer stops short of the top safe area and pads the bottom one`, async ({ page }) => {
+    await page.setViewportSize({ width: 400, height: 700 });
+    await openFixture(page, platform, '', 'native-layout');
+    await page.getByRole('button', { name: '아래 시트 열기' }).click();
+    const dialog = page.getByRole('dialog', { name: '시트 bottom' });
+    await expect(dialog).toBeVisible();
+    await expect(page.getByRole('button', { name: '시트 확인' })).toBeInViewport();
+    await page.waitForTimeout(500);
+    const panel = await rect(dialog), confirm = await rect(page.getByRole('button', { name: '시트 확인' }));
+    // 700 viewport − 20 top safe area − 48 sheet gap
+    expect(panel.height).toBeLessThanOrEqual(633);
+    expect(panel.height).toBeGreaterThan(600);
+    expect(Math.round(panel.bottom)).toBe(700);
+    expect(confirm.bottom).toBeLessThanOrEqual(700 - 34);
+  });
+  test(`${platform}: a bottom Drawer takes an explicit maxHeight`, async ({ page }) => {
+    await page.setViewportSize({ width: 400, height: 700 });
+    await openFixture(page, platform, '?max', 'native-layout');
+    await page.getByRole('button', { name: '아래 시트 열기' }).click();
+    const dialog = page.getByRole('dialog', { name: '시트 bottom' });
+    await expect(page.getByRole('button', { name: '시트 확인' })).toBeInViewport();
+    await page.waitForTimeout(500);
+    expect(Math.round((await rect(dialog)).height)).toBeLessThanOrEqual(300);
+    expect(Math.round((await rect(dialog)).height)).toBeGreaterThan(280);
+  });
+  test(`${platform}: top and side Drawers pad the safe areas`, async ({ page }) => {
+    await page.setViewportSize({ width: 400, height: 700 });
+    await openFixture(page, platform, '', 'native-layout');
+    await page.getByRole('button', { name: '위 시트 열기' }).click();
+    const top = page.getByRole('dialog', { name: '시트 top' });
+    await expect(top).toBeVisible(); await page.waitForTimeout(500);
+    const topPanel = await rect(top), topTitle = await rect(top.getByText('시트 top', { exact: true }));
+    expect(topTitle.top - topPanel.top).toBeGreaterThanOrEqual(20);
+    expect(topPanel.height).toBeLessThanOrEqual(700 - 48 + 1);
+    await page.keyboard.press('Escape');
+    await expect(top).toBeHidden();
+    await page.getByRole('button', { name: '오른쪽 시트 열기' }).click();
+    const side = page.getByRole('dialog', { name: '시트 right' });
+    await expect(page.getByRole('button', { name: '시트 확인' })).toBeInViewport(); await page.waitForTimeout(500);
+    const sidePanel = await rect(side), sideTitle = await rect(side.getByText('시트 right', { exact: true })), confirm = await rect(page.getByRole('button', { name: '시트 확인' }));
+    expect(sideTitle.top - sidePanel.top).toBeGreaterThanOrEqual(20);
+    expect(confirm.bottom).toBeLessThanOrEqual(700 - 34);
+  });
+}

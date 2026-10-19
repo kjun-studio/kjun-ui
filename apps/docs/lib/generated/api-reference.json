@@ -18735,6 +18735,33 @@
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/vue3/src/drawer.tsx"
+          },
+          {
+            "name": "safeAreaTop",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Top safe area in px, padded inside top and side drawers and kept clear above a bottom sheet.",
+            "summary": "앱이 전달하는 상단 안전 영역(px)입니다. 위·좌우 Drawer는 안쪽 위 여백으로, 아래 Drawer는 높이 상한에서 비워 둡니다.",
+            "source": "packages/vue3/src/drawer.tsx"
+          },
+          {
+            "name": "safeAreaBottom",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Bottom safe area in px, padded inside bottom and side drawers and kept clear below a top sheet.",
+            "summary": "앱이 전달하는 하단 안전 영역(px)입니다. 아래·좌우 Drawer는 footer 아래 여백으로, 위 Drawer는 높이 상한에서 비워 둡니다.",
+            "source": "packages/vue3/src/drawer.tsx"
+          },
+          {
+            "name": "maxHeight",
+            "type": "number",
+            "required": false,
+            "default": "화면 높이 − 반대쪽 안전 영역 − 48px",
+            "description": "Height limit in px for top and bottom drawers; by default they stop a sheet gap short of the opposite edge.",
+            "summary": "위·아래 Drawer의 전체 높이 상한(px)입니다. 넘치면 본문만 스크롤하고 머리글·footer는 고정합니다. 좌우 Drawer에는 쓰지 않습니다.",
+            "source": "packages/vue3/src/drawer.tsx"
           }
         ],
         "events": [
@@ -18904,6 +18931,33 @@
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/react/src/drawer.tsx"
+          },
+          {
+            "name": "safeAreaTop",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Top safe area in px, padded inside top and side drawers and kept clear above a bottom sheet.",
+            "summary": "앱이 전달하는 상단 안전 영역(px)입니다. 위·좌우 Drawer는 안쪽 위 여백으로, 아래 Drawer는 높이 상한에서 비워 둡니다.",
+            "source": "packages/react/src/drawer.tsx"
+          },
+          {
+            "name": "safeAreaBottom",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Bottom safe area in px, padded inside bottom and side drawers and kept clear below a top sheet.",
+            "summary": "앱이 전달하는 하단 안전 영역(px)입니다. 아래·좌우 Drawer는 footer 아래 여백으로, 위 Drawer는 높이 상한에서 비워 둡니다.",
+            "source": "packages/react/src/drawer.tsx"
+          },
+          {
+            "name": "maxHeight",
+            "type": "number | undefined",
+            "required": false,
+            "default": "화면 높이 − 반대쪽 안전 영역 − 48px",
+            "description": "Height limit in px for top and bottom drawers; by default they stop a sheet gap short of the opposite edge.",
+            "summary": "위·아래 Drawer의 전체 높이 상한(px)입니다. 넘치면 본문만 스크롤하고 머리글·footer는 고정합니다. 좌우 Drawer에는 쓰지 않습니다.",
+            "source": "packages/react/src/drawer.tsx"
           }
         ],
         "events": [],
@@ -19037,6 +19091,42 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
+            "source": "packages/native/src/drawer.tsx"
+          },
+          {
+            "name": "safeAreaTop",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Top safe area, padded inside top and side drawers and kept clear above a bottom sheet.",
+            "summary": "앱이 전달하는 상단 안전 영역(px)입니다. 위·좌우 Drawer는 안쪽 위 여백으로, 아래 Drawer는 높이 상한에서 비워 둡니다.",
+            "source": "packages/native/src/drawer.tsx"
+          },
+          {
+            "name": "safeAreaBottom",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Bottom safe area, padded inside bottom and side drawers and kept clear below a top sheet.",
+            "summary": "앱이 전달하는 하단 안전 영역(px)입니다. 아래·좌우 Drawer는 footer 아래 여백으로, 위 Drawer는 높이 상한에서 비워 둡니다.",
+            "source": "packages/native/src/drawer.tsx"
+          },
+          {
+            "name": "maxHeight",
+            "type": "number | undefined",
+            "required": false,
+            "default": "화면 높이 − 반대쪽 안전 영역 − 48px",
+            "description": "Height limit for top and bottom drawers; by default they stop a sheet gap short of the opposite edge.",
+            "summary": "위·아래 Drawer의 전체 높이 상한(px)입니다. 넘치면 본문만 스크롤하고 머리글·footer는 고정합니다. 좌우 Drawer에는 쓰지 않습니다.",
+            "source": "packages/native/src/drawer.tsx"
+          },
+          {
+            "name": "avoidKeyboard",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Keeps the panel above the on-screen keyboard (devices only).",
+            "summary": "화면 키보드가 패널을 가리지 않게 합니다. 아래 Drawer는 키보드 위로 올라가고 다른 위치는 높이를 줄입니다. 기기에서만 동작합니다.",
             "source": "packages/native/src/drawer.tsx"
           }
         ],
@@ -31370,7 +31460,8 @@
         "알림·요청 대기열·진행 중 표시·입력 초안: 해당 KjunFeedbackProvider 영역이 관리합니다.",
         "실제 저장·검증·성공 후 이동: 소비자가 콜백과 반환 Promise에서 처리합니다.",
         "Provider 해제: 미완료 Confirm은 false, Prompt는 null로 정리하고 알림 타이머와 대기열을 제거합니다.",
-        "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다."
+        "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다.",
+        "Native KjunFeedbackProvider는 앱 화면을 감싸는 View가 부모 크기를 그대로 이어받습니다. 레이아웃을 바꾸려면 style을 넘깁니다."
       ],
       "methods": [
         {

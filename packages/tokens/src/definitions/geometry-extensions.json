@@ -191,7 +191,8 @@
       "bodyPadding": { "$ref": "dimension.value20" },
       "bottomRadius": { "$ref": "radius.radius16" },
       "radius": { "$ref": "radius.radius0" },
-      "closeRadius": { "$ref": "radius.radius8" }
+      "closeRadius": { "$ref": "radius.radius8" },
+      "sheetGap": { "$ref": "dimension.value48" }
     },
     "toast": {
       "minWidth": 320,

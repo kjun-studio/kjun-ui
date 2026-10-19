@@ -2,7 +2,7 @@ const files = (...names) => names.map(name => `tests/browser/${name}.spec.ts`);
 export const smokeFiles = files('expanded', 'card-contract', 'data-state-design');
 const contracts = files('api-reference', 'vue-contracts');
 const fields = files('input-contracts', 'controlled-state', 'live-updates', 'accessibility-controls');
-const visuals = files('visual-contract', 'size-contracts', 'token-propagation', 'style-boundary', 'host-globals', 'domain-color-check');
+const visuals = files('visual-contract', 'native-layout', 'size-contracts', 'token-propagation', 'style-boundary', 'host-globals', 'domain-color-check');
 const layers = files('elevation', 'elevation-edges', 'elevation-inputs', 'elevation-keyboard',
   'elevation-order', 'elevation-reopen', 'elevation-retention', 'provider-layers',
   'layer-contracts', 'layer-motion-edges', 'layer-unmount', 'focus-containment', 'popup-escape', 'styles');
@@ -23,9 +23,9 @@ export const relatedGroups = {
   tabs: [...files('tabs-contract', 'tabs-design', 'accessibility-tabs', 'controlled-state', 'live-updates', 'component-motion', 'expanded'), ...visuals],
   accordion: [...files('accordion-design', 'controlled-state', 'component-motion', 'expanded', 'accessibility-components'), ...visuals],
   navigation: [...files('top-navigation-design', 'bottom-navigation-design', 'bottom-action-bar-design', 'accessibility-components'), ...visuals],
-  feedback: [...files('feedback-dialog', 'feedback-input', 'feedback-motion', 'copy-button-feedback', 'chip-toast-tokens', 'component-motion'), ...layers, ...contracts],
+  feedback: [...files('feedback-dialog', 'feedback-input', 'feedback-motion', 'copy-button-feedback', 'chip-toast-tokens', 'component-motion', 'native-layout'), ...layers, ...contracts],
   modal: [...layers, ...files('quantity', 'feedback-dialog', 'feedback-input', 'form-actions', 'component-motion'), ...contracts],
-  drawer: [...layers, ...files('component-motion', 'size-contracts')],
+  drawer: [...layers, ...files('component-motion', 'size-contracts', 'native-layout')],
   popover: [...layers, ...files('popover-design', 'expanded')],
   dropdown: [...layers, ...files('dropdown-design', 'menu-button', 'controlled-state', 'expanded')],
   tooltip: [...layers, ...files('expanded', 'size-contracts')],

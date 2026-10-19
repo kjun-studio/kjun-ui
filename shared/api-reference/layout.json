@@ -99,7 +99,10 @@
       "closeOnOverlay",
       "closeOnEsc",
       "noPadding",
-      "ariaLabel"
+      "ariaLabel",
+      "safeAreaTop",
+      "safeAreaBottom",
+      "maxHeight"
     ],
     "react": [
       "open",
@@ -115,7 +118,10 @@
       "footer",
       "children",
       "onClose",
-      "ariaLabel"
+      "ariaLabel",
+      "safeAreaTop",
+      "safeAreaBottom",
+      "maxHeight"
     ],
     "native": [
       "open",
@@ -131,7 +137,11 @@
       "footer",
       "children",
       "onClose",
-      "ariaLabel"
+      "ariaLabel",
+      "safeAreaTop",
+      "safeAreaBottom",
+      "maxHeight",
+      "avoidKeyboard"
     ]
   },
   "KjunModal": {

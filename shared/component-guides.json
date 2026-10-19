@@ -305,7 +305,7 @@
     "description": "화면 가장자리에서 작업 영역을 엽니다.",
     "interaction": "별도 영역을 열림 값에 연결합니다. 닫기 통지를 외부 값에 반영하고 내부 업무 완료 여부는 소비자가 판단합니다.",
     "differences": "Vue v-model:open과 React·Native open·onOpenChange를 사용합니다. 웹은 레이어 포커스·스크롤을, Native는 Modal과 뒤로 가기 경로를 처리합니다.",
-    "states": "열림 상태와 위치·크기·헤더 표시를 제어합니다. 열린 동안 배경 스크롤을 잠그고 최상위 레이어의 닫기 동작을 처리합니다."
+    "states": "열림 상태와 위치·크기·헤더 표시를 제어합니다. 열린 동안 배경 스크롤을 잠그고 최상위 레이어의 닫기 동작을 처리합니다. 안전 영역은 앱이 safeAreaTop·safeAreaBottom으로 넘기고, 위·아래 Drawer는 반대쪽 끝에서 48px을 비운 높이까지 커지며 넘치면 본문만 스크롤합니다. Native는 화면 키보드를 피합니다(avoidKeyboard)."
   },
   "KjunDropdown": {
     "slug": "dropdown",

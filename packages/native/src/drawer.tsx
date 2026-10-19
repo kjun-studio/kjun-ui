@@ -3,8 +3,9 @@ import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer"
 import { directionalShadow } from "../../../shared/package-runtime/elevation";
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
-import { useState } from "react";
-import { Animated } from "react-native";
+import { useEffect, useState } from "react";
+import { Animated, Keyboard } from "react-native";
+import { drawerFrame, keyboardOverlap } from "../../../shared/package-runtime/drawer-geometry";
 import { useNativePresence, motionEmphasized } from "./motion";
 import {
 type ReactNode
@@ -35,6 +36,30 @@ export interface KjunDrawerProps {
   children: ReactNode;
   onClose?: () => void;
   ariaLabel?: string;
+  /** Top safe area, padded inside top and side drawers and kept clear above a bottom sheet. */
+  safeAreaTop?: number;
+  /** Bottom safe area, padded inside bottom and side drawers and kept clear below a top sheet. */
+  safeAreaBottom?: number;
+  /** Height limit for top and bottom drawers; by default they stop a sheet gap short of the opposite edge. */
+  maxHeight?: number;
+  /** Keeps the panel above the on-screen keyboard (devices only). */
+  avoidKeyboard?: boolean;
+}
+// How much of the window the keyboard covers while enabled. Android may already have resized the
+// window, in which case the overlap is 0. React Native Web has no keyboard events.
+function useKeyboardOverlap(enabled: boolean, windowHeight: number) {
+  const [overlap, setOverlap] = useState(0);
+  useEffect(() => {
+    setOverlap(0);
+    if (!enabled || Platform.OS === "web") return;
+    const metrics = Keyboard.metrics?.();
+    if (metrics) setOverlap(keyboardOverlap(windowHeight, metrics.screenY));
+    const ios = Platform.OS === "ios";
+    const show = Keyboard.addListener(ios ? "keyboardWillShow" : "keyboardDidShow", event => setOverlap(keyboardOverlap(windowHeight, event.endCoordinates.screenY)));
+    const hide = Keyboard.addListener(ios ? "keyboardWillHide" : "keyboardDidHide", () => setOverlap(0));
+    return () => { show.remove(); hide.remove(); };
+  }, [enabled, windowHeight]);
+  return overlap;
 }
 export function KjunDrawer({
   open,
@@ -51,10 +76,17 @@ export function KjunDrawer({
   children,
   onClose,
   ariaLabel,
+  safeAreaTop = 0,
+  safeAreaBottom = 0,
+  maxHeight,
+  avoidKeyboard = true,
 }: KjunDrawerProps) {
   const { colors } = useKjunStyles(),
     window = useWindowDimensions(),
     vertical = position === "left" || position === "right";
+  const keyboard = useKeyboardOverlap(open && avoidKeyboard, window.height);
+  const frame = drawerFrame({ position, windowHeight: window.height, safeAreaTop: Math.max(0, safeAreaTop), safeAreaBottom: Math.max(0, safeAreaBottom),
+    gap: tokens.extensions.drawer.sheetGap, keyboard, maxHeight });
   const [panelHeight, setPanelHeight] = useState(0);
   const motion = useNativePresence(open, tokens.motion.layerEnter, tokens.motion.layerExit, vertical || panelHeight > 0, 0, { enterEasing: motionEmphasized });
   const backdrop = useNativePresence(open, tokens.motion.backdrop, tokens.motion.backdropExit, true, 0, { fade: tokens.motion.backdropExit });
@@ -110,8 +142,11 @@ export function KjunDrawer({
             transform: vertical ? [{ translateX: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [(position === "left" ? -1 : 1) * Math.min(width, window.width), 0] }) }]
               : [{ translateY: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [(position === "top" ? -1 : 1) * panelHeight, 0] }) }],
             width: vertical ? Math.min(width, window.width) : window.width,
-            height: vertical ? window.height : undefined,
-            maxHeight: window.height,
+            height: frame.height,
+            maxHeight: frame.maxHeight,
+            paddingTop: frame.paddingTop,
+            paddingBottom: frame.paddingBottom,
+            marginBottom: frame.lift,
             borderRadius: tokens.extensions.drawer.radius,
             borderTopLeftRadius: position === "bottom" ? tokens.extensions.drawer.bottomRadius : tokens.extensions.drawer.radius,
             borderTopRightRadius: position === "bottom" ? tokens.extensions.drawer.bottomRadius : tokens.extensions.drawer.radius,
@@ -153,7 +188,7 @@ export function KjunDrawer({
           )}
           <ScrollView
             keyboardShouldPersistTaps="handled"
-            style={vertical ? { flex: 1 } : { flexGrow: 0 }}
+            style={vertical ? { flex: 1 } : { flexGrow: 0, flexShrink: 1 }}
             contentContainerStyle={{ padding: noPadding ? 0 : tokens.extensions.drawer.bodyPadding }}
           >
             {content(children)}
