@@ -4,15 +4,28 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 
 ## 0.10.0 — 2026-10-19
 
-Popover에 고정 머리글과 비모달 모드를 추가했습니다. 바꿀 코드는 없습니다.
+Popover에 고정 머리글과 비모달 모드를 추가하고, 두 번째 적용 프로젝트(Tyve)의 보고를 반영했습니다. 바꿀 코드는 없지만 **FormGroup은 오류가 있어도 도움말을 함께 표시합니다.**
 
 - **`header`**(React·Native prop, Vue `header` 슬롯): 본문 위에 고정되는 머리글입니다. 본문 한 곳만 스크롤하고, `maxHeight`는 머리글을 포함한 전체 높이입니다. 웹에서는 `ariaLabel`이 없으면 머리글이 대화상자 이름이 됩니다(Native는 `ariaLabel`을 지정하세요). `noPadding`은 본문 여백만 없앱니다.
 - **`modal={false}`**: 페이지를 막지 않습니다. 열릴 때 초점을 가져가지 않으며(`focusOnOpen`이면 가져감), 첫 항목에서 Shift+Tab은 트리거로, 마지막 항목에서 Tab은 Popover를 닫고 트리거 다음 요소로 갑니다. 바깥을 누르거나 초점이 밖으로 나가면 닫히며 초점을 되돌리지 않고, Escape는 트리거로 돌아갑니다. 안에서 연 메뉴는 Popover를 닫지 않습니다.
   - React에서 초점을 받을 수 없는 빈 영역을 누르면 초점이 트리거로 돌아갑니다(react-aria 동작).
   - Native는 화면 판독기를 패널에 가두지 않는 데까지만 적용됩니다.
 
+### 적용 프로젝트 피드백 반영
+
+- **FormGroup**: 오류가 있어도 도움말을 유지하고 오류를 그 아래에 표시합니다. 입력은 도움말과 오류를 모두 `aria-describedby`로 연결합니다(기본 동작 변경). `labelHidden`으로 라벨을 화면에서만 숨길 수 있습니다.
+- **Select**: `id`(바깥 `<label for>` 연결)와 추가 설명 id(React `ariaDescribedBy`, Vue `ariaDescribedby`)를 받습니다. id나 FormGroup이 있으면 placeholder를 이름으로 쓰지 않습니다.
+- **설명 연결**: Input·Textarea·Select는 앱이 넘긴 설명 id와 FormGroup 설명을 중복 없이 합칩니다. Checkbox·Switch는 FormGroup 안에서 도움말·오류·필수 상태를 받습니다.
+- **Button `wrap`**: 긴 라벨을 줄바꿈합니다. 크기별 높이는 최소 높이가 됩니다.
+- **Alert `live`**: `assertive`·`polite`·`off`로 보조기기 알림 방식을 정합니다. 생략하면 지금처럼 danger만 즉시 알립니다.
+- **Tooltip `open`·`onOpenChange`**(Vue `v-model:open`): 표시 여부를 직접 제어합니다.
+- **`data-kjun-content`**: KJUN 컨테이너 안의 앱 래퍼에 붙이면 그 안의 앱 마크업이 KJUN 기본 스타일 초기화를 받지 않습니다. 앱의 `input { … }` 같은 요소 선택자 스타일이 그대로 적용됩니다.
+- **아이콘**: 등록되지 않은 이름을 쓰면 개발 모드에서 한 번 경고합니다(대체 아이콘 동작은 같음).
+
 ### 결함 수정
 
+- **단일 선택 메뉴**(React·Vue): `selected`가 boolean인 Dropdown 항목은 `menuitemradio`와 `aria-checked`로 선택 상태를 알립니다. Native는 이미 같은 규칙이었습니다.
+- **Table 선택 바**: 방향키 이동이 없으므로 `role="toolbar"` 대신 이름 있는 `group`입니다.
 - **Vue 3 Popover**: 열려 있거나 닫히는 동안 다시 그려질 때 대화상자가 초점을 다시 가져가던 문제를 고쳤습니다. 이제 열릴 때 한 번만 초점을 가져갑니다.
 
 ## 0.9.0 — 2026-10-18

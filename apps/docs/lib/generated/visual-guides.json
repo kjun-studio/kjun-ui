@@ -5985,7 +5985,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "label·required·hint·error에 따라 필드 설명을 구성합니다. 오류가 있으면 힌트보다 오류 메시지를 우선 표시하며 컨트롤과 접근성 속성으로 연결합니다."
+        "note": "label·required·hint·error에 따라 필드 설명을 구성합니다. 오류가 있어도 도움말을 함께 표시하고, 입력은 도움말과 오류를 모두 설명으로 연결합니다."
       },
       "react": {
         "figures": [
@@ -6062,7 +6062,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "label·required·hint·error에 따라 필드 설명을 구성합니다. 오류가 있으면 힌트보다 오류 메시지를 우선 표시하며 컨트롤과 접근성 속성으로 연결합니다."
+        "note": "label·required·hint·error에 따라 필드 설명을 구성합니다. 오류가 있어도 도움말을 함께 표시하고, 입력은 도움말과 오류를 모두 설명으로 연결합니다."
       },
       "native": {
         "figures": [
@@ -6139,7 +6139,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "label·required·hint·error에 따라 필드 설명을 구성합니다. 오류가 있으면 힌트보다 오류 메시지를 우선 표시하며 컨트롤과 접근성 속성으로 연결합니다."
+        "note": "label·required·hint·error에 따라 필드 설명을 구성합니다. 오류가 있어도 도움말을 함께 표시하고, 입력은 도움말과 오류를 모두 설명으로 연결합니다."
       }
     }
   },

@@ -125,5 +125,6 @@ for (const platform of vues) test("vue3: all Vue 3 catalog examples validate pro
     // Vue 3 (like React) disables the individual KjunRadio rather than the group.
     if (state === "disabled") await expect(page.locator('[data-component="KjunRadio"] input').first()).toBeDisabled();
   }
-  expect(errors).toEqual([]);
+  // The icon catalog shows the help-circle fallback on purpose; its one development warning is expected.
+  expect(errors.filter(text => !text.startsWith('KJUN Icon: "not-a-kjun-icon"'))).toEqual([]);
 });
