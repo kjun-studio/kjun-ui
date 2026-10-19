@@ -21,6 +21,13 @@ else createRoot(document.getElementById('root')!).render(<>
       <K.KjunFormGroup label="이름"><K.KjunInput value="" onValueChange={() => {}} ariaLabel="이름" /></K.KjunFormGroup>
       <K.KjunFormGroup label="메모"><K.KjunInput value="" onValueChange={() => {}} ariaLabel="메모" /></K.KjunFormGroup>
     </div>
+    {/* App fields inside a KJUN container: data-kjun-content opts the app's own markup out of the scope reset. */}
+    <div data-testid="content-optout" style={{ width: 360 }}>
+      <K.KjunCard title="앱 카드">
+        <div data-kjun-content><input data-probe="optout-input" aria-label="예외 앱 입력" /><K.KjunInput value="" onValueChange={() => {}} ariaLabel="예외 안 KJUN 입력" /></div>
+        <input data-probe="reset-input" aria-label="리셋 앱 입력" />
+      </K.KjunCard>
+    </div>
     <div data-testid="kjun" style={{ display: 'grid', gap: 16, width: 360 }}>
       <K.KjunButton variant="primary">저장</K.KjunButton>
       <K.KjunInput value="값" onValueChange={() => {}} ariaLabel="입력" />

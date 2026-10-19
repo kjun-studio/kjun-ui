@@ -23,6 +23,7 @@ table{border-collapse:separate}
 @keyframes app-spin{to{transform:rotate(360deg)}}
 .app-spin{animation:app-spin 1s linear infinite;transition:opacity 300ms}
 .app-var{border:2px solid var(--border, rgb(1,2,3));color:var(--text-primary, rgb(4,5,6))}
+input{border:2px solid rgb(1,2,3)}
 `;
 
 export const appHtml = `

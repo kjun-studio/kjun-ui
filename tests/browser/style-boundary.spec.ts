@@ -37,6 +37,20 @@ for (const platform of ['react', 'vue3']) {
 }
 
 for (const platform of ['react', 'vue3']) {
+  test(`${platform}: data-kjun-content keeps app fields inside KJUN containers on the app's own styles`, async ({ page }) => {
+    await openFixture(page, platform, '', 'style-boundary');
+    const area = page.getByTestId('content-optout');
+    const border = (label: string) => area.getByRole('textbox', { name: label, exact: true }).evaluate(el => getComputedStyle(el).borderTopWidth);
+    expect(await border('예외 앱 입력')).toBe('2px');
+    expect(await border('리셋 앱 입력')).toBe('0px');
+    // A KJUN component inside the opted-out area still gets its own baseline.
+    const kjunInside = await border('예외 안 KJUN 입력');
+    const kjunOutside = await page.getByTestId('kjun').getByRole('textbox', { name: '입력', exact: true }).evaluate(el => getComputedStyle(el).borderTopWidth);
+    expect(kjunInside).toBe(kjunOutside);
+  });
+}
+
+for (const platform of ['react', 'vue3']) {
   test(`${platform}: the form layout attribute spaces form groups and leaves the app wrapper's own text alone`, async ({ page }) => {
     await page.setViewportSize({ width: 1024, height: 900 });
     await openFixture(page, platform, '', 'style-boundary');

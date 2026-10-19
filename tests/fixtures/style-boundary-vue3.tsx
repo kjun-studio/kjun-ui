@@ -21,6 +21,12 @@ else createApp(defineComponent(() => () => <>
       <K.KjunFormGroup label="이름"><K.KjunInput modelValue="" ariaLabel="이름" /></K.KjunFormGroup>
       <K.KjunFormGroup label="메모"><K.KjunInput modelValue="" ariaLabel="메모" /></K.KjunFormGroup>
     </div>
+    <div data-testid="content-optout" style={{ width: '360px' }}>
+      <K.KjunCard title="앱 카드">
+        <div data-kjun-content><input data-probe="optout-input" aria-label="예외 앱 입력" /><K.KjunInput modelValue="" ariaLabel="예외 안 KJUN 입력" /></div>
+        <input data-probe="reset-input" aria-label="리셋 앱 입력" />
+      </K.KjunCard>
+    </div>
     <div data-testid="kjun" style={{ display: 'grid', gap: '16px', width: '360px' }}>
       <K.KjunButton variant="primary">저장</K.KjunButton>
       <K.KjunInput modelValue="값" ariaLabel="입력" />

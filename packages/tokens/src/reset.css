@@ -1,28 +1,30 @@
 /* Baseline for kjun-owned markup only: an element with a class that starts with kjun- (kjun- is reserved;
    my-kjun-logo is app markup). Component roots carry a kjun- class (Vue adds kjun-root, the Vue layer host is kjun-layers);
    portal roots pair kjun-scope with a kjun- class. The bare Provider root (kjun-scope) is excluded, so app markup inside the Provider keeps its own styles.
-   Slot content placed inside a kjun component follows this baseline; style it with classes. */
+   Slot content placed inside a kjun component follows this baseline; style it with classes.
+   App markup under [data-kjun-content] opts out of the descendant resets, while kjun elements inside it get them back;
+   both branches keep the same specificity as before (the exclusion sits in :where). */
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]),
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *,
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *:not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) *,
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"])::before,
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"])::after,
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *::before,
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *::after {
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *:not(:where([data-kjun-content] *))::before, .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) *::before,
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) *:not(:where([data-kjun-content] *))::after, .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) *::after {
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;
   border-color: var(--_kjun-color-border);
 }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(h1, h2, h3, h4, h5, h6, p, blockquote, dl, dd, figure, pre),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(h1, h2, h3, h4, h5, h6, p, blockquote, dl, dd, figure, pre):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(h1, h2, h3, h4, h5, h6, p, blockquote, dl, dd, figure, pre),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(h1, h2, h3, h4, h5, h6, p, blockquote, dl, dd, figure, pre) {
   margin: 0;
 }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(h1, h2, h3, h4, h5, h6),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(h1, h2, h3, h4, h5, h6):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(h1, h2, h3, h4, h5, h6),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(h1, h2, h3, h4, h5, h6) {
   font-size: inherit;
   font-weight: inherit;
 }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, input, optgroup, select, textarea),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, input, optgroup, select, textarea):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(button, input, optgroup, select, textarea),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(button, input, optgroup, select, textarea) {
   font: inherit;
   letter-spacing: inherit;
@@ -30,33 +32,33 @@
   margin: 0;
   padding: 0;
 }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, select),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, select):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(button, select),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(button, select) { text-transform: none; }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, [type="button"], [type="reset"], [type="submit"]),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, [type="button"], [type="reset"], [type="submit"]):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(button, [type="button"], [type="reset"], [type="submit"]),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(button, [type="button"], [type="reset"], [type="submit"]) {
   -webkit-appearance: button;
   background-color: transparent;
   background-image: none;
 }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, [role="button"]),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(button, [role="button"]):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(button, [role="button"]),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(button, [role="button"]) { cursor: pointer; }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(:disabled),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(:disabled):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(:disabled),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(:disabled) { cursor: default; }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(a),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(a):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(a),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(a) { color: inherit; text-decoration: inherit; }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(ol, ul, menu),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(ol, ul, menu):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(ol, ul, menu),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(ol, ul, menu) { list-style: none; margin: 0; padding: 0; }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(table),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(table):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(table),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(table) { text-indent: 0; border-color: inherit; border-collapse: collapse; }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(fieldset, legend),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(fieldset, legend):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(fieldset, legend),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(fieldset, legend) { margin: 0; padding: 0; }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(textarea),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(textarea):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(textarea),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(textarea) { resize: vertical; }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(input, textarea)::placeholder,
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(input, textarea):not(:where([data-kjun-content] *))::placeholder, .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(input, textarea)::placeholder,
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(input, textarea)::placeholder { opacity: 1; }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(img, video),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(img, video):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(img, video),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(img, video) { max-width: 100%; height: auto; }
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where([hidden]:not([hidden="until-found"])),
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where([hidden]:not([hidden="until-found"])):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where([hidden]:not([hidden="until-found"])),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where([hidden]:not([hidden="until-found"])) { display: none; }
 /* Last so it wins over the element resets above (e.g. font: inherit on a root <button>).
    The outermost kjun element takes the scope's text style; nested kjun elements inherit it.
