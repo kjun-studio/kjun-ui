@@ -39,6 +39,7 @@ export function renderCases(h: (name:string, props:any, children?:any, slots?:an
     section('menu-selection',h('KjunDropdown',{},[h('KjunDropdownItem',{ selected:true },'최신순'),h('KjunDropdownItem',{ selected:false },'이름순'),
       h('KjunDropdownItem',{ onClick:()=>{ set('sortReset',true); set('sortClicks',state.sortClicks+1); } },'정렬 초기화')],{ trigger:button('정렬 메뉴') })),
     section('table-select',h('KjunTable',{ selectable:true, selected:state.tsel, onSelectionChange:(v:any[])=>set('tsel',v), columns:[{key:'name',label:'이름'}], data:[{id:1,name:'선택 행'}] })),
+    section('button-wrap',[h('KjunButton',{ wrap:true },'아주 긴 라벨이 있는 버튼이 좁은 칸에서 줄바꿈되는지 확인'),h('KjunButton',{ wrap:true },'짧은 줄바꿈'),h('KjunButton',{},'짧은 기준')],{width:160}),
     section('tooltip-outside',h('KjunTooltip',{ content:'바깥 도움말' },button('도움말 버튼'))),
     h('Output',{id:'state'},JSON.stringify(state)),
   ];

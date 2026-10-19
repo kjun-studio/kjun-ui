@@ -400,6 +400,16 @@ for(const platform of ['react','vue3','native']) {
     await expect(page.getByRole('group',{name:'선택 작업'})).toBeVisible();
     await expect(page.getByRole('toolbar')).toHaveCount(0);
   });
+  test(`${platform}: a wrapping button stays inside a narrow column and short ones keep their height`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    const section=await box(page.getByTestId('button-wrap'));
+    const long=page.getByRole('button',{name:'아주 긴 라벨이 있는 버튼이 좁은 칸에서 줄바꿈되는지 확인'});
+    const longBox=await box(long);
+    expect(longBox.x+longBox.width).toBeLessThanOrEqual(section.x+section.width+1);
+    expect(longBox.height).toBeGreaterThan(tokens.button.heights.md);
+    const shortWrap=await box(page.getByRole('button',{name:'짧은 줄바꿈'})), base=await box(page.getByRole('button',{name:'짧은 기준'}));
+    expect(Math.abs(shortWrap.height-base.height)).toBeLessThanOrEqual(1);
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {

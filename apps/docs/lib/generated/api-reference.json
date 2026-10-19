@@ -21507,6 +21507,15 @@
             "source": "packages/vue3/src/button.tsx"
           },
           {
+            "name": "wrap",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing.",
+            "summary": "긴 라벨을 줄바꿈합니다. 크기별 높이는 최소 높이가 되고, 버튼이 칸을 넘지 않고 세로로 늘어납니다.",
+            "source": "packages/vue3/src/button.tsx"
+          },
+          {
             "name": "prefixIcon",
             "type": "string",
             "required": false,
@@ -21626,6 +21635,15 @@
             "default": "false",
             "description": "",
             "summary": "버튼이 가용 너비 전체를 사용하게 합니다.",
+            "source": "packages/react/src/button.tsx"
+          },
+          {
+            "name": "wrap",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing.",
+            "summary": "긴 라벨을 줄바꿈합니다. 크기별 높이는 최소 높이가 되고, 버튼이 칸을 넘지 않고 세로로 늘어납니다.",
             "source": "packages/react/src/button.tsx"
           },
           {
@@ -21832,6 +21850,15 @@
             "default": "false",
             "description": "",
             "summary": "버튼이 가용 너비 전체를 사용하게 합니다.",
+            "source": "packages/native/src/button.tsx"
+          },
+          {
+            "name": "wrap",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing.",
+            "summary": "긴 라벨을 줄바꿈합니다. 크기별 높이는 최소 높이가 되고, 버튼이 칸을 넘지 않고 세로로 늘어납니다.",
             "source": "packages/native/src/button.tsx"
           },
           {
@@ -24967,6 +24994,15 @@
             "source": "packages/react/src/actions.tsx"
           },
           {
+            "name": "wrap",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing.",
+            "summary": "Button의 wrap과 같습니다. 텍스트 모드의 긴 문구를 줄바꿈합니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
             "name": "prefixIcon",
             "type": "string | undefined",
             "required": false,
@@ -25179,6 +25215,15 @@
             "default": "—",
             "description": "",
             "summary": "버튼이 가용 너비 전체를 사용하게 합니다.",
+            "source": "packages/native/src/actions.tsx"
+          },
+          {
+            "name": "wrap",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing.",
+            "summary": "Button의 wrap과 같습니다. 텍스트 모드의 긴 문구를 줄바꿈합니다.",
             "source": "packages/native/src/actions.tsx"
           },
           {

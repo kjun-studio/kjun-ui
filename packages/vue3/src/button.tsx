@@ -68,6 +68,8 @@ const kjunButtonProps = {
   loading: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   block: { type: Boolean, default: false },
+  /** Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing. */
+  wrap: { type: Boolean, default: false },
   prefixIcon: { type: String, default: undefined },
   suffixIcon: { type: String, default: undefined },
   prefixIconFilled: { type: Boolean, default: false },
@@ -110,6 +112,7 @@ export const KjunButton = defineComponent({
           class="kjun-button"
           data-variant={props.variant}
           data-size={s}
+          data-wrap={props.wrap || undefined}
           data-disabled={String(props.disabled)}
           aria-label={props.ariaLabel || undefined}
           disabled={props.disabled || loading}
@@ -124,7 +127,7 @@ export const KjunButton = defineComponent({
             ...typeStyle(tokens.button.typography[s]),
             borderRadius: tokens.button.radii[s],
             gap: content ? tokens.button.contentGaps[s] : 0,
-          }, navigation && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) })}
+          }, (navigation || props.wrap) && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) })}
           onClick={(event: MouseEvent) => {
             event.stopPropagation();
             if (!props.disabled && !loading) emit("click", event);

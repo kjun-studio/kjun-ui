@@ -150,6 +150,8 @@ export interface KjunButtonProps
   size?: ButtonSize;
   loading?: boolean;
   block?: boolean;
+  /** Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing. */
+  wrap?: boolean;
   prefixIcon?: string;
   suffixIcon?: string;
   prefixIconFilled?: boolean;
@@ -165,6 +167,7 @@ export function KjunButton(input: KjunButtonProps) {
   size: declaredSize = "md",
   loading = false,
   block = false,
+  wrap = false,
   disabled = false,
   prefixIcon,
   suffixIcon,
@@ -185,7 +188,7 @@ export function KjunButton(input: KjunButtonProps) {
   const formActions = useContext(FormActionsContext);
   const cardActions = useContext(CardActionsContext);
   const stateContent = useContext(DataStateContentContext);
-  const multiline = !!formActions || cardActions || !!stateContent || navigation?.slot === 'actions';
+  const multiline = wrap || !!formActions || cardActions || !!stateContent || navigation?.slot === 'actions';
   const height = Math.max(tokens.button.heights[size], navigation?.controlSize ?? 0);
   const iconSize = navigation?.iconSize ?? tokens.button.iconSizes[size];
   const hasContent =

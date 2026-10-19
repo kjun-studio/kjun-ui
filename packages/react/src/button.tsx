@@ -71,6 +71,8 @@ export interface KjunButtonProps
   size?: ButtonSize;
   loading?: boolean;
   block?: boolean;
+  /** Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing. */
+  wrap?: boolean;
   prefixIcon?: string;
   suffixIcon?: string;
   prefixIconFilled?: boolean;
@@ -100,6 +102,7 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
       style,
       onClick,
       type = "button",
+      wrap = false,
       ...rest
     } = props;
     const size = useActionSize(props.size, declaredSize);
@@ -131,6 +134,7 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
         data-variant={variant}
         data-size={size}
         data-disabled={disabled}
+        data-wrap={wrap || undefined}
         aria-label={ariaLabel || rest["aria-label"]}
         disabled={disabled || busy}
         aria-busy={busy || undefined}
@@ -144,7 +148,7 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
           ...typeStyle(tokens.button.typography[size]),
           borderRadius: tokens.button.radii[size],
           gap: hasContent ? tokens.button.contentGaps[size] : 0,
-          ...(navigation ? {
+          ...(navigation || wrap ? {
             height: 'auto', maxWidth: '100%',
             paddingBlock: Math.max(0, (height - contentHeight) / 2),
           } : {}),

@@ -1270,6 +1270,13 @@
         "description": ""
       },
       {
+        "name": "wrap",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing."
+      },
+      {
         "name": "prefixIcon",
         "type": "string",
         "required": false,
@@ -1360,6 +1367,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "wrap",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing."
       },
       {
         "name": "prefixIcon",
@@ -1516,6 +1530,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "wrap",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing."
       },
       {
         "name": "prefixIcon",
@@ -14384,6 +14405,13 @@
         "description": ""
       },
       {
+        "name": "wrap",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing."
+      },
+      {
         "name": "prefixIcon",
         "type": "string | undefined",
         "required": false,
@@ -14545,6 +14573,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "wrap",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing."
       },
       {
         "name": "prefixIconFilled",

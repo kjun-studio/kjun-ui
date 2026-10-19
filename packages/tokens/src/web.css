@@ -311,6 +311,9 @@
   justify-content: flex-end;
   gap: var(--_kjun-geometry-modal-actions-gap);
 }
+/* wrap: the inline height becomes a minimum (set by the component) and the label may break lines. */
+.kjun-button[data-wrap] { flex-shrink: 1; max-width: 100%; white-space: normal; overflow-wrap: anywhere; text-align: center; }
+.kjun-button[data-wrap] > .kjun-button-label { min-width: 0; }
 .kjun-form-actions > .kjun-button {
   --_kjun-action-height: var(--_kjun-geometry-button-heights-lg);
   height: auto !important;
