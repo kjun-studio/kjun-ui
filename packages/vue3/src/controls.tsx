@@ -83,7 +83,8 @@ export const KjunSwitch = defineComponent({
     return () => (
       <label class={choiceClass(props.disabled)} data-focus-visible={focus.visible.value || undefined}>
         <input type="checkbox" role="switch" class="kjun-sr-only" checked={props.modelValue} disabled={props.disabled}
-          aria-label={props.ariaLabel || props.label} aria-describedby={field.value?.describedBy} onFocus={focus.onFocus} onBlur={focus.onBlur}
+          aria-label={props.ariaLabel || props.label} aria-describedby={field.value?.describedBy}
+          aria-invalid={field.value?.error ? "true" : undefined} aria-required={field.value?.required || undefined} onFocus={focus.onFocus} onBlur={focus.onBlur}
           onChange={(event: Event) => {
             const next = (event.target as HTMLInputElement).checked;
             (event.target as HTMLInputElement).checked = props.modelValue;

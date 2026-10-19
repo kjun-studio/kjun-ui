@@ -457,6 +457,19 @@ for(const platform of ['react','vue3','native']) {
     expect(ids).toEqual(['tyve-agree-error','tyve-agree-hint']);
     await expect(box_).toHaveAttribute('aria-invalid','true');
   });
+  test(`${platform}: a required FormGroup marks Checkbox and Switch without blocking native submit`,async({page})=>{
+    test.skip(platform==='native','aria-required and native validity are web semantics');
+    await openFixture(page,platform,'','visual-contract');
+    const box_=page.getByTestId('check-in-group').getByRole('checkbox',{name:'약관 동의'});
+    const toggle=page.getByTestId('switch-in-group').getByRole('switch',{name:'알림 받기'});
+    for(const control of [box_,toggle]) {
+      await expect(control).toHaveAttribute('aria-required','true');
+      await expect(control).toHaveAttribute('aria-invalid','true');
+      expect(await control.evaluate(el=>(el as HTMLInputElement).checkValidity())).toBe(true);
+    }
+    const ids=(await toggle.getAttribute('aria-describedby'))?.split(/\s+/).sort();
+    expect(ids).toEqual(['tyve-notify-error','tyve-notify-hint']);
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {

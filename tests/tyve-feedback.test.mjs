@@ -12,6 +12,7 @@ test('resolveIcon warns once per unregistered name outside production', async ()
   const warnings = [], warn = console.warn, env = process.env.NODE_ENV;
   console.warn = message => warnings.push(String(message));
   try {
+    process.env.NODE_ENV = 'development';
     const registry = { star: { outline: [] } };
     resolveIcon(registry, 'tyve-missing-a'); resolveIcon(registry, 'tyve-missing-a');
     resolveIcon(registry, 'star');
@@ -24,4 +25,21 @@ test('resolveIcon warns once per unregistered name outside production', async ()
     console.warn = warn;
     if (env === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = env;
   }
+});
+
+test('resolveIcon stays silent where the bundle supplies no process object', async () => {
+  const { resolveIcon } = await import('../shared/package-runtime/icon-registry.ts');
+  const { readFileSync } = await import('node:fs');
+  // Bundlers only replace the literal expression, so the source must spell it out.
+  assert.match(readFileSync(new URL('../shared/package-runtime/icon-registry.ts', import.meta.url), 'utf8'), /process\.env\.NODE_ENV/);
+  const warnings = [], warn = console.warn, saved = globalThis.process;
+  console.warn = message => warnings.push(String(message));
+  try {
+    globalThis.process = undefined;
+    resolveIcon({}, 'tyve-missing-browser');
+  } finally {
+    globalThis.process = saved;
+    console.warn = warn;
+  }
+  assert.equal(warnings.filter(w => w.includes('tyve-missing-browser')).length, 0);
 });

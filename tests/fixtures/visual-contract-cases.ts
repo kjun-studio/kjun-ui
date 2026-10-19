@@ -45,7 +45,8 @@ export function renderCases(h: (name:string, props:any, children?:any, slots?:an
     section('form-hint-error',h('KjunFormGroup',{ id:'tyve-name', label:'이름', hint:'공백은 유지됩니다', error:'이름이 필요합니다' },h('KjunInput',{ value:state.fname, onValueChange:(v:string)=>set('fname',v), 'aria-describedby':'tyve-name-hint' }))),
     section('form-hidden-label',h('KjunFormGroup',{ label:'숨긴 라벨', labelHidden:true },h('KjunInput',{ value:state.fhidden, onValueChange:(v:string)=>set('fhidden',v) }))),
     section('select-outside',[h('Label',{ for:'sel-ext' },'외부 라벨'),h('KjunSelect',{ id:'sel-ext', value:state.fsel, onValueChange:(v:any)=>set('fsel',v), placeholder:'선택하세요', options:[{label:'가',value:'a'}] })]),
-    section('check-in-group',h('KjunFormGroup',{ id:'tyve-agree', hint:'약관 안내', error:'동의가 필요합니다' },h('KjunCheckbox',{ value:state.agree, onValueChange:(v:boolean)=>set('agree',v), label:'약관 동의' }))),
+    section('check-in-group',h('KjunFormGroup',{ id:'tyve-agree', hint:'약관 안내', error:'동의가 필요합니다', required:true },h('KjunCheckbox',{ value:state.agree, onValueChange:(v:boolean)=>set('agree',v), label:'약관 동의' }))),
+    section('switch-in-group',h('KjunFormGroup',{ id:'tyve-notify', hint:'알림 안내', error:'알림 설정 오류', required:true },h('KjunSwitch',{ value:false, label:'알림 받기' }))),
     section('tooltip-outside',h('KjunTooltip',{ content:'바깥 도움말' },button('도움말 버튼'))),
     h('Output',{id:'state'},JSON.stringify(state)),
   ];

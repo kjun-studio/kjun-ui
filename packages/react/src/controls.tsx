@@ -4,6 +4,7 @@ import { tokens,type ButtonSize,type InputSize } from "@kjun-ui/tokens";
 import {
 createContext,
 forwardRef,
+useCallback,
 useContext,
 useId,
 type ReactNode,
@@ -58,6 +59,8 @@ export function KjunCheckbox<T = ChoiceValue>({
       aria-describedby={field?.describedBy}
       isInvalid={!!field?.error}
       isRequired={field?.required}
+      // The group's state is announced, not enforced: native validation would block submit per box.
+      validationBehavior="aria"
       className={"kjun-choice" + (disabled ? " kjun-choice--disabled" : "")}
       onChange={(next) => {
         const result = Array.isArray(value)
@@ -105,12 +108,20 @@ export function KjunSwitch({
   onChange,
 }: KjunSwitchProps) {
   const field = useKjunField();
+  const invalid = !!field?.error, required = !!field?.required;
+  // react-aria's Switch takes no validation props; mark the input directly (and clear stale marks).
+  const markInput = useCallback((input: HTMLInputElement | null) => {
+    if (!input) return;
+    if (invalid) input.setAttribute("aria-invalid", "true"); else input.removeAttribute("aria-invalid");
+    if (required) input.setAttribute("aria-required", "true"); else input.removeAttribute("aria-required");
+  }, [invalid, required]);
   return (
     <AriaSwitch
       isSelected={value}
       isDisabled={disabled}
       aria-label={ariaLabel || label}
       aria-describedby={field?.describedBy}
+      inputRef={markInput}
       className={"kjun-choice" + (disabled ? " kjun-choice--disabled" : "")}
       onChange={(next) => {
         onValueChange?.(next);

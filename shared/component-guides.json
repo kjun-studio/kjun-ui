@@ -240,7 +240,7 @@
   "KjunFormGroup": {
     "slug": "form-group",
     "description": "라벨·필수 표시·안내·오류를 입력 컨트롤과 연결합니다.",
-    "interaction": "필드의 라벨·도움말·오류를 묶는 컨테이너입니다. value나 값 변경 이벤트가 없으며 값·disabled·검증은 자식 입력과 소비자가 관리합니다. 텍스트형 입력(Input·Textarea·Select·DatePicker 등)을 위한 그룹입니다. Checkbox·Switch는 자기 label로 이름을 붙이고, 그룹 안에 두면 도움말·오류만 받습니다. labelHidden으로 라벨을 화면에서만 숨길 수 있습니다.",
+    "interaction": "필드의 라벨·도움말·오류를 묶는 컨테이너입니다. value나 값 변경 이벤트가 없으며 값·disabled·검증은 자식 입력과 소비자가 관리합니다. 텍스트형 입력(Input·Textarea·Select·DatePicker 등)을 위한 그룹입니다. Checkbox·Switch는 자기 label로 이름을 붙이고, 그룹 안에 두면 도움말·오류·필수 상태만 받습니다(웹). labelHidden으로 라벨을 화면에서만 숨길 수 있습니다.",
     "differences": "Vue·React는 생략한 id를 생성해 label과 필드를 연결하고, Native는 필드 맥락을 접근성 이름·설명에 사용합니다. 자세한 연결 규칙은 API에서 확인하세요.",
     "states": "label·required·hint·error에 따라 필드 설명을 구성합니다. 오류가 있어도 도움말을 함께 표시하고, 입력은 도움말과 오류를 모두 설명으로 연결합니다."
   },
