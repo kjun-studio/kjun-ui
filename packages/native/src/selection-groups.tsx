@@ -111,7 +111,7 @@ export function KjunButtonGroup({
                 opacity: blocked ? tokens.states.opacity.disabled : 1,
               })}
             >
-              {option.icon && (
+              {!!option.icon && (
                 <KjunIcon
                   name={option.icon}
                   size={tokens.extensions.selection.iconSize}
@@ -221,7 +221,7 @@ export function KjunFilterGroup({
                   }}
                 />
               )}
-              {option.icon && (
+              {!!option.icon && (
                 <KjunIcon
                   name={option.icon}
                   size={tokens.extensions.selection.iconSize}

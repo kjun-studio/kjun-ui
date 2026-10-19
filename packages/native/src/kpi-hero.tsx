@@ -183,7 +183,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                     delta(deltaAbsolute, "absolute", { ...numeric, color: direction(deltaAbsolute), ...typeStyle("numberMd") })}
                   {deltaPercent !== null &&
                     delta(deltaPercent, "percent", { ...numeric, color: direction(deltaPercent), ...typeStyle("numberMd"), opacity: 0.9 })}
-                  {deltaDescription && (
+                  {!!deltaDescription && (
                     <KText
                       style={{
                         color: colors.textTertiary,

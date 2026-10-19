@@ -267,7 +267,7 @@ export function KjunKpiRow({
 
                     style={[valueStyle, { flexShrink: 1, minWidth: 0 }]}
                   >
-                    {item.prefix && (
+                    {!!item.prefix && (
                       <Text
                         style={{
 
@@ -287,7 +287,7 @@ export function KjunKpiRow({
                     ) : (
                       kpiFormat(item)
                     )}
-                    {item.suffix && (
+                    {!!item.suffix && (
                       <Text
                         style={{
 

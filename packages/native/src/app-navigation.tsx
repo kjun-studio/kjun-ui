@@ -33,7 +33,7 @@ export function KjunTopNavigation({ title, description, leading, actions, safeAr
         {leading && <TopNavigationContext.Provider value={{ ...geometry, slot: 'leading' }}><View onLayout={square("leading")} style={{ minHeight: geometry.controlSize, minWidth: 0, maxWidth: '40%', flexShrink: 1, justifyContent: "center", marginLeft: iconEdges.leading ? -edgeInset : 0 }}>{content(leading)}</View></TopNavigationContext.Provider>}
         <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: geometry.titleMinimumWidth, minWidth: 0, paddingVertical: titleInset }}>
           <KText accessibilityRole="header" style={{ ...wrapping, ...typeStyle('sectionTitle'), fontWeight: typeStyle('control').fontWeight }}>{title}</KText>
-          {description && <KText style={{ ...wrapping, marginTop: geometry.descriptionGap, color: colors.textSecondary, ...typeStyle('caption') }}>{description}</KText>}
+          {!!description && <KText style={{ ...wrapping, marginTop: geometry.descriptionGap, color: colors.textSecondary, ...typeStyle('caption') }}>{description}</KText>}
         </View>
         {actions && <TopNavigationContext.Provider value={{ ...geometry, slot: 'actions' }}><View style={{ minHeight: geometry.controlSize, minWidth: 0, maxWidth: "100%", marginLeft: 'auto', flexShrink: 1, flexDirection: "row", flexWrap: "wrap", alignItems: "center", justifyContent: "flex-end", gap: geometry.actionsGap }}>
           {actionList.map((action, index) => index < actionList.length - 1 ? content(action)
@@ -77,7 +77,7 @@ export function KjunBottomNavigation({ items, value, ariaLabel = "주요 탐색"
           paddingHorizontal: geometry.itemPaddingX, paddingVertical: geometry.itemPaddingY,
           opacity: item.disabled ? tokens.states.opacity.disabled : 1 }}>
         {hasIcons && <View style={{ width: geometry.iconSize, height: geometry.iconSize, flexShrink: 0 }}>
-          {item.icon && <KjunIcon name={item.icon} size={geometry.iconSize} color={ink} />}{badge}
+          {!!item.icon && <KjunIcon name={item.icon} size={geometry.iconSize} color={ink} />}{badge}
         </View>}
         <View style={{ maxWidth: "100%" }}><KText style={{ ...typeStyle('caption'), textAlign: "center", fontWeight: selected ? typeStyle('control').fontWeight : typeStyle('label').fontWeight, color: ink }}>{item.label}</KText>{!hasIcons && badge}
           {/* Under the label, so a neighbour's wrapped label does not pull it away. */}
@@ -101,7 +101,7 @@ export function KjunBottomActionBar({ description, children, safeAreaBottom = 0,
       padding: geometry.padding, paddingBottom: geometry.padding + Math.max(0, safeAreaBottom),
       gap: geometry.actionGap, flexDirection: wide ? "row" : "column", alignItems: wide ? "center" : "stretch",
     }}>
-      {description && <KText style={{ ...typeStyle('body'), ...wrapping, color: colors.textSecondary, flex: wide ? 1 : undefined, minWidth: 0 }}>{description}</KText>}
+      {!!description && <KText style={{ ...typeStyle('body'), ...wrapping, color: colors.textSecondary, flex: wide ? 1 : undefined, minWidth: 0 }}>{description}</KText>}
       <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "flex-end", alignItems: "center", gap: geometry.actionsGap, minWidth: 0, maxWidth: "100%", flexShrink: 1 }}>{content(children)}</View>
     </View>
   </BottomActionBarContext.Provider>;

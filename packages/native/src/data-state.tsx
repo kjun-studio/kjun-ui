@@ -163,7 +163,7 @@ export function KjunDataState({
         <View style={{ paddingVertical: padding }}>
           {emptyContent || (
             <KjunEmpty text={emptyText} icon={emptyIcon}>
-              {emptyActionText && (
+              {!!emptyActionText && (
                 <KjunButton onPress={onEmptyAction}>{emptyActionText}</KjunButton>
               )}
             </KjunEmpty>

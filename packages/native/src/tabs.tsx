@@ -181,7 +181,7 @@ export function KjunTabs({
                 }}
               >
 
-                {tab.icon && (
+                {!!tab.icon && (
                   <KjunIcon
                     name={tab.icon}
                     size={geometry.iconSize}

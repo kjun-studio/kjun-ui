@@ -130,7 +130,7 @@ export function KjunEmpty({
         paddingVertical: stateContent === 'empty' ? 0 : tokens.dimension.value32,
       }}
     >
-      {icon && (
+      {!!icon && (
         <View style={{ marginBottom: spec.iconGap }}>
           <KjunIcon name={icon} size={spec.iconSize} color={colors.textSecondary} />
         </View>
@@ -138,7 +138,7 @@ export function KjunEmpty({
       <KText style={{ ...typeStyle('cardTitle'), color: colors.text, fontSize: spec.titleSize, lineHeight: spec.titleLineHeight, textAlign: "center", maxWidth: spec.textMaxWidth }}>
         {text}
       </KText>
-      {description && (
+      {!!description && (
         <KText
           style={{
             ...typeStyle('caption'),
@@ -224,7 +224,7 @@ export function KjunSpinner({ size = "md", text }: KjunSpinnerProps) {
           />
         </Svg>
       </Animated.View>
-      {text && (
+      {!!text && (
         <KText style={{ marginLeft: tokens.dimension.value8, color: colors.textSecondary }}>
           {text}
         </KText>
@@ -366,7 +366,7 @@ export function KjunProgress({
       : 0;
   return (
     <View>
-      {(label || showLabel) && (
+      {!!(label || showLabel) && (
         <View
           style={{
             flexDirection: "row",

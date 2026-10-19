@@ -50,7 +50,7 @@ export function TableCards<Row extends object>({ initialLoading, skeletonRows, s
                   }}
                 >
                   {selectable && checkbox(row, i)}
-                  {title && <View style={{ flex: 1, minWidth: 0 }}>{cell(title, row, i, "title")}</View>}
+                  {!!title && <View style={{ flex: 1, minWidth: 0 }}>{cell(title, row, i, "title")}</View>}
                 </View>
                 {badges.length ? (
                   <View style={{ flexDirection: "row", gap: tokens.extensions.tableCard.fieldGap }}>
@@ -81,7 +81,7 @@ export function TableCards<Row extends object>({ initialLoading, skeletonRows, s
                       marginTop: index ? tokens.dimension.value12 : 0,
                     }}
                   >
-                    {section.label && (
+                    {!!section.label && (
                       <KText
                         style={{
                           ...typeStyle('controlSmall'),

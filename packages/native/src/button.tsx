@@ -295,7 +295,7 @@ export function KjunButton(input: KjunButtonProps) {
             color, opacity: overlayLoading ? 0 : 1,
             ...(multiline || navigation ? { flexShrink: 1, minWidth: 0, textAlign: 'center' as const } : {}),
           }}>{children}</Text>}
-          {suffixIcon && <View style={{ opacity: busy && prefixIcon ? 0 : 1 }}>
+          {!!suffixIcon && <View style={{ opacity: busy && prefixIcon ? 0 : 1 }}>
             <KjunIcon name={busy && !prefixIcon ? "loader-2" : suffixIcon}
               filled={!busy && suffixIconFilled} spin={busy && !prefixIcon}
               size={iconSize} color={color} />

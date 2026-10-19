@@ -194,7 +194,7 @@ export function KjunCopyButton({
           size={tokens.button.iconSizes[size]}
           color={copied ? colors.success : colors.textSecondary}
         />
-        {text && !inline && (
+        {!!text && !inline && (
           <KText
             style={{
               ...typeStyle(size === "xs" ? "controlSmall" : "control"),

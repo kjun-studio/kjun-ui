@@ -66,8 +66,8 @@ export function KjunCard({ title, subtitle, header, headerActions, media, footer
     }}>
       {hasHeading && <View style={{ flexGrow: 1, flexShrink: 1, minWidth: 0, maxWidth: "100%" }}>
         {present(header) ? content(header, { color: foreground }) : <>
-          {title && <KText accessibilityRole="header" style={{ ...typeStyle("cardTitle"), color: foreground }}>{title}</KText>}
-          {subtitle && <KText style={{ ...typeStyle("caption"), marginTop: tokens.card.subtitleGap, color: colors[paint.description] }}>{subtitle}</KText>}
+          {!!title && <KText accessibilityRole="header" style={{ ...typeStyle("cardTitle"), color: foreground }}>{title}</KText>}
+          {!!subtitle && <KText style={{ ...typeStyle("caption"), marginTop: tokens.card.subtitleGap, color: colors[paint.description] }}>{subtitle}</KText>}
         </>}
       </View>}
       {present(headerActions) && <CardActionsContext.Provider value={true}><View style={{ flexDirection: "row", flexWrap: "wrap", minWidth: 0, maxWidth: "100%", marginStart: "auto", alignItems: "center", justifyContent: "flex-end", gap: tokens.card.titleGap }}>{content(headerActions, { color: foreground })}</View></CardActionsContext.Provider>}

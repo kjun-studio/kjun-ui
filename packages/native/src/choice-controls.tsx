@@ -100,7 +100,7 @@ export function KjunCheckbox<T = ChoiceValue>({
           />
         )}
       </View>
-      {(children || label) &&
+      {!!(children || label) &&
         content(children || label, {
           marginLeft: tokens.extensions.checkbox.labelGap,
           ...typeStyle('label'),
@@ -221,7 +221,7 @@ export function KjunSwitch({
           }}
         />
       </Animated.View>
-      {(children || label) &&
+      {!!(children || label) &&
         content(children || label, {
           marginLeft: tokens.extensions.switch.labelGap,
           ...typeStyle('label'),
@@ -315,7 +315,7 @@ export function KjunRadio({
               />
             )}
           </View>
-          {(children || label) && content(children || label, {
+          {!!(children || label) && content(children || label, {
             marginLeft: geometry.labelGap,
             ...typeStyle('label'),
           })}

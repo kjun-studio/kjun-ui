@@ -159,7 +159,7 @@ function RangeInput({
           minWidth: 0,
         }}
       >
-        {label && (
+        {!!label && (
           <KText
             style={{
               ...typeStyle("label"),

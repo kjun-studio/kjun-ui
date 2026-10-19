@@ -33,6 +33,6 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
     </View>
     {/* The 44px clear target overflows the row so the field keeps its size height. */}
     {clearable && value !== null && <View style={{ marginVertical: Math.min(0, (spec.height - tokens.native.minimumTouchTarget) / 2) }}><FieldClear size={size} label={ariaLabel + " 지우기"} disabled={disabled || !valid} onPress={() => { change(null); first.current?.focus(); }} /></View>}
-    {(error || !!field?.error || focused || opened !== null) && <View pointerEvents="none" aria-hidden={true} style={{ position: "absolute", inset: 0, borderRadius: spec.radius, borderWidth: error || !!field?.error ? tokens.border.controlWidth : tokens.states.focus.width, borderColor: error || field?.error ? colors.danger : colors.focusRing }} />}
+    {!!(error || !!field?.error || focused || opened !== null) && <View pointerEvents="none" aria-hidden={true} style={{ position: "absolute", inset: 0, borderRadius: spec.radius, borderWidth: error || !!field?.error ? tokens.border.controlWidth : tokens.states.focus.width, borderColor: error || field?.error ? colors.danger : colors.focusRing }} />}
   </View>;
 }

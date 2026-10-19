@@ -68,7 +68,7 @@ export function ToastView({
       >
         <KjunIcon name={icon} color={colors[`${tone}Accent`]} />
         <View style={{ flex: 1, minWidth: 0 }}>
-          {toast.title && (
+          {!!toast.title && (
             <KText style={{ fontWeight: typeStyle('control').fontWeight, marginBottom: tokens.extensions.toast.titleGap }}>
               {toast.title}
             </KText>

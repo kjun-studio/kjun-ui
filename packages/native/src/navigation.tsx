@@ -154,7 +154,7 @@ export function KjunBreadcrumb({
       {items.map((item, i) => {
         const label = (
           <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.dimension.value4 }}>
-            {item.icon && (
+            {!!item.icon && (
               <KjunIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} color={colors.textSecondary} />
             )}
             <KText

@@ -26,6 +26,7 @@ type TextInputProps,
 type ViewStyle,
 } from "react-native";
 import { KjunIcon } from "./button";
+import { content } from "./internal";
 import { useKjunStyles } from "./provider";
 interface FieldValue {
   id: string;
@@ -70,7 +71,7 @@ export function KjunFormGroup({
         describedBy: mergeIds(hint ? fieldId + "-hint" : undefined, error ? fieldId + "-error" : undefined) }}
     >
       <View style={[{ minWidth: 0, marginBottom: tokens.extensions.form.itemGap }, style]}>
-        {label && !labelHidden && (
+        {!!label && !labelHidden && (
           <Text
             nativeID={fieldId + "-label"}
             style={{
@@ -180,6 +181,8 @@ export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInpu
   const invalid = !!(error || errorMessage || field?.error);
   const canEdit = !disabled && !readOnly && editable;
   const surface = useFieldSurface(size, { disabled, readOnly: !!readOnly || !editable, invalid, open: props["aria-expanded"] === true });
+  // String affixes are text, which React Native only draws inside Text.
+  const affixText = { ...inputTypeStyle(size), color: surface.icon };
   const showClear = clearable && !!value;
   const [prefixWidth, setPrefixWidth] = useState(0);
   const [affixWidth, setAffixWidth] = useState(0);
@@ -253,7 +256,7 @@ export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInpu
             style,
           ]}
         />
-        {(prefix || prefixIcon) && (
+        {!!(prefix || prefixIcon) && (
           <View
             onLayout={(event) => setPrefixWidth(event.nativeEvent.layout.width)}
             pointerEvents="none"
@@ -265,7 +268,7 @@ export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInpu
               justifyContent: "center",
             }}
           >
-            {prefix || (
+            {prefix ? content(prefix, affixText) : (
               <KjunIcon
                 name={prefixIcon!}
                 size={spec.iconSize}
@@ -274,7 +277,7 @@ export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInpu
             )}
           </View>
         )}
-        {(showClear || suffix || suffixIcon) && (
+        {!!(showClear || suffix || suffixIcon) && (
           <View
             onLayout={(event) => setAffixWidth(event.nativeEvent.layout.width)}
             style={{
@@ -295,14 +298,13 @@ export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInpu
                 input.current?.focus();
               }} />
             )}
-            {suffix ||
-              (suffixIcon && (
-                <KjunIcon
-                  name={suffixIcon}
-                  size={spec.iconSize}
-                  color={surface.icon}
-                />
-              ))}
+            {suffix ? content(suffix, affixText) : !!suffixIcon && (
+              <KjunIcon
+                name={suffixIcon}
+                size={spec.iconSize}
+                color={surface.icon}
+              />
+            )}
           </View>
         )}
       </View>

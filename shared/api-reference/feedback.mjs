@@ -191,6 +191,9 @@ export default Object.fromEntries(
       ownership: [
         ...ownership,
         "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다.",
+        ...(platform === "native"
+          ? ["Native KjunFeedbackProvider는 앱 화면을 감싸는 View가 부모 크기를 그대로 이어받습니다. 레이아웃을 바꾸려면 style을 넘깁니다."]
+          : []),
       ],
       methods,
       options,

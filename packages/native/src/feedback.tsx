@@ -15,7 +15,7 @@ useState,
 useSyncExternalStore,
 type ReactNode,
 } from "react";
-import { View } from "react-native";
+import { View, type StyleProp, type ViewStyle } from "react-native";
 import { KjunInput } from "./input";
 import { KText } from "./internal";
 import { KjunModal } from "./modal";
@@ -54,7 +54,7 @@ function FeedbackDialog({
       onConfirm={submit}
       confirmVariant={options.type === "danger" ? "danger" : "primary"}
     >
-      {options.message && (
+      {!!options.message && (
         <KText style={{ marginBottom: tokens.dimension.value16 }}>{options.message}</KText>
       )}
       {request.kind === "prompt" && (
@@ -71,7 +71,8 @@ function FeedbackDialog({
     </KjunModal>
   );
 }
-export function KjunFeedbackProvider({ children }: { children: ReactNode }) {
+export interface KjunFeedbackProviderProps { children: ReactNode; style?: StyleProp<ViewStyle> }
+export function KjunFeedbackProvider({ children, style }: KjunFeedbackProviderProps) {
   const [controller] = useState(createFeedbackController);
   const life = useRef(0);
   const snapshot = useSyncExternalStore(
@@ -103,7 +104,9 @@ export function KjunFeedbackProvider({ children }: { children: ReactNode }) {
       value={{ top: layers[layers.length - 1], register, render: renderToasts }}
     >
       <KjunFeedbackContext.Provider value={controller.api}>
-        <View style={{ position: "relative" }}>
+        {/* Takes the parent's size like a pass-through, so a flex: 1 screen inside still fills it.
+            flex: 1 would collapse to zero height inside a parent without a definite height. */}
+        <View style={[{ position: "relative", flexGrow: 1, flexShrink: 1, alignSelf: "stretch" }, style]}>
           {children}
           {layers.length === 0 && renderToasts()}
         </View>

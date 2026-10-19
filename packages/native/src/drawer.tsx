@@ -119,7 +119,7 @@ export function KjunDrawer({
             backgroundColor: colors.surface,
           }}
         >
-          {(title || header || closable) && (
+          {!!(title || header || closable) && (
             <View
               style={{
                 flexDirection: "row",

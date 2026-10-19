@@ -71,13 +71,13 @@ export function KjunAnimatedNumber({
         style,
       ]}
     >
-      {prefix && <Text style={typeStyle("caption")}>{prefix} </Text>}
+      {!!prefix && <Text style={typeStyle("caption")}>{prefix} </Text>}
       {typeof n === "string"
         ? n
         : formatter
         ? formatter(n)
         : format(n, decimals)}
-      {suffix && <Text style={typeStyle("caption")}> {suffix}</Text>}
+      {!!suffix && <Text style={typeStyle("caption")}> {suffix}</Text>}
     </KText>
   );
 }

@@ -201,6 +201,8 @@
     .kjun-kpi-row__value {
     white-space: normal;
     overflow-wrap: anywhere;
+    /* Korean labels and values wrap at spaces, not between syllables; anywhere stays the last resort. */
+    word-break: keep-all;
   }
   .kjun-kpi-row--mobile-summary
     .kjun-kpi-row__item--secondary
