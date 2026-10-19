@@ -20,9 +20,9 @@
     "native": ["value", "multiple", "scroll", "onValueChange", "onChange", "disabled", "size", "ariaLabel", "options"]
   },
   "KjunFormGroup": {
-    "vue3": ["label", "id", "required", "error", "hint"],
-    "react": ["label", "id", "required", "error", "hint", "children"],
-    "native": ["label", "id", "required", "error", "hint", "children", "style"]
+    "vue3": ["label", "id", "required", "error", "hint", "labelHidden"],
+    "react": ["label", "id", "required", "error", "hint", "children", "labelHidden"],
+    "native": ["label", "id", "required", "error", "hint", "children", "style", "labelHidden"]
   },
   "KjunInput": {
     "vue3": ["modelValue", "size", "error", "errorMessage", "clearable", "prefixIcon", "suffixIcon", "prefix", "suffix", "ariaLabel", "id", "disabled", "readOnly", "required"],
@@ -45,8 +45,8 @@
     "native": ["value", "placeholder", "ariaLabel", "disabled", "error", "clearable", "debounce", "size", "loadOptions", "itemKey", "labelField", "minChars", "emptyText", "errorText", "renderOption", "onValueChange", "onSelect", "onSearchError", "onEnter", "onClear"]
   },
   "KjunSelect": {
-    "vue3": ["modelValue", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "filterFn", "searchKeys"],
-    "react": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "menuHeader", "renderOption", "renderSelected", "onValueChange", "onChange", "onOpenChange", "onSearch", "onClear", "filterFn", "searchKeys"],
+    "vue3": ["modelValue", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "filterFn", "searchKeys", "id", "ariaDescribedby"],
+    "react": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "menuHeader", "renderOption", "renderSelected", "onValueChange", "onChange", "onOpenChange", "onSearch", "onClear", "filterFn", "searchKeys", "id", "ariaDescribedBy"],
     "native": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "menuHeader", "renderOption", "renderSelected", "onValueChange", "onChange", "onOpenChange", "onSearch", "onClear", "filterFn", "searchKeys"]
   },
   "KjunSwitch": {

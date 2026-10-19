@@ -1,3 +1,4 @@
+import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { computed, defineComponent, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, provide, reactive, ref, useId,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type InputSize, isComposingKey } from "@kjun-ui/tokens";
@@ -33,6 +34,8 @@ const kjunFormGroupProps = {
   required: { type: Boolean, default: false },
   error: { type: String, default: "" },
   hint: { type: String, default: "" },
+  /** Hides the label visually while it still names the field. */
+  labelHidden: { type: Boolean, default: false },
 } as const;
 export type KjunFormGroupProps = ExtractPublicPropTypes<typeof kjunFormGroupProps>;
 export const KjunFormGroup = defineComponent({
@@ -45,30 +48,30 @@ export const KjunFormGroup = defineComponent({
       const id = props.id || uid;
       return {
         id, labelId: props.label ? id + "-label" : undefined,
-        describedBy: props.error ? id + "-error" : props.hint ? id + "-hint" : undefined,
+        // The hint stays with an error: it usually explains the format the error refers to.
+        describedBy: mergeIds(props.hint ? id + "-hint" : undefined, props.error ? id + "-error" : undefined),
         error: props.error, required: props.required,
       };
     });
     provide(kjunFieldKey, field);
     return () => {
-      const { id, labelId, describedBy } = field.value;
+      const { id, labelId } = field.value;
       return (
         <div class="kjun-form-group">
           {props.label && (
-            <label class="kjun-form-label" id={labelId} for={id}>
+            <label class={"kjun-form-label" + (props.labelHidden ? " kjun-sr-only" : "")} id={labelId} for={id}>
               {props.label}
               {props.required && <span style={{ color: "var(--_kjun-color-danger)" }}> *</span>}
             </label>
           )}
           {slots.default?.()}
-          {props.error ? (
-            <p id={describedBy} class="kjun-form-error" role="alert">
+          {props.hint && <p id={id + "-hint"} class="kjun-form-hint">{props.hint}</p>}
+          {props.error && (
+            <p id={id + "-error"} class="kjun-form-error" role="alert">
               <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} />
               {props.error}
             </p>
-          ) : props.hint ? (
-            <p id={describedBy} class="kjun-form-hint">{props.hint}</p>
-          ) : null}
+          )}
         </div>
       );
     };
@@ -132,7 +135,7 @@ export const KjunInput = defineComponent({
       const showError = !!props.errorMessage && !owner?.error;
       const invalid = !!(props.error || props.errorMessage || owner?.error);
       const ownErrorId = "kjun-input-error-" + uid;
-      const describedBy = [attrs["aria-describedby"], owner?.describedBy, showError ? ownErrorId : undefined].filter(Boolean).join(" ") || undefined;
+      const describedBy = mergeIds(attrs["aria-describedby"] as string | undefined, owner?.describedBy, showError ? ownErrorId : undefined);
       const prefix = slots.prefix?.() ?? props.prefix, suffix = slots.suffix?.() ?? props.suffix;
       return (
         <div style={{ minWidth: 0 }}>

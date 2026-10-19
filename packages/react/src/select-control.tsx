@@ -1,4 +1,5 @@
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
+import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { selectOptions } from "../../../shared/package-runtime/options";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
@@ -29,6 +30,10 @@ export interface KjunSelectProps<T extends SelectOption = SelectOption> {
   placeholder?: string;
   ariaLabel?: string;
   labelKey?: string;
+  /** Trigger id for an outside <label for>; defaults to the FormGroup's id. */
+  id?: string;
+  /** Extra description ids, merged with the FormGroup's hint and error. */
+  ariaDescribedBy?: string;
   valueKey?: string;
   size?: InputSize;
   disabled?: boolean;
@@ -59,6 +64,8 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   placeholder = "선택",
   ariaLabel,
   labelKey = "label",
+  id: triggerId,
+  ariaDescribedBy,
   valueKey = "value",
   size = "md",
   disabled = false,
@@ -106,7 +113,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
       <div className="kjun-select-shell">
         <button
           ref={ref}
-          id={field?.id}
+          id={triggerId ?? field?.id}
           type="button"
           className="kjun-input kjun-select-trigger"
           data-time-segment={segment || undefined}
@@ -114,9 +121,10 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
           aria-haspopup="listbox"
           aria-controls={expanded ? id : undefined}
           aria-expanded={expanded}
-          aria-label={ariaLabel || placeholder}
+          // The placeholder names the trigger only when nothing else can (an id lets an outside label do it).
+          aria-label={ariaLabel || (triggerId || field ? undefined : placeholder)}
           aria-labelledby={field?.labelId}
-          aria-describedby={field?.describedBy}
+          aria-describedby={mergeIds(ariaDescribedBy, field?.describedBy)}
           aria-invalid={error || !!field?.error || undefined}
           style={{
             height: spec.height,

@@ -1,4 +1,5 @@
 import { tokens,type InputSize } from "@kjun-ui/tokens";
+import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import {
 createContext,
 forwardRef,
@@ -30,6 +31,8 @@ export interface KjunFormGroupProps {
   required?: boolean;
   error?: string;
   hint?: string;
+  /** Hides the label visually while it still names the field. */
+  labelHidden?: boolean;
   children: ReactNode;
 }
 export function KjunFormGroup({
@@ -38,23 +41,22 @@ export function KjunFormGroup({
   required = false,
   error = "",
   hint = "",
+  labelHidden = false,
   children,
 }: KjunFormGroupProps) {
   const uid = useId().replace(/:/g, "");
   const fieldId = id || "kjun-field-" + uid;
   const labelId = label ? fieldId + "-label" : undefined;
-  const describedBy = error
-    ? fieldId + "-error"
-    : hint
-    ? fieldId + "-hint"
-    : undefined;
+  // The hint stays with an error: it usually explains the format the error refers to.
+  const hintId = hint ? fieldId + "-hint" : undefined, errorId = error ? fieldId + "-error" : undefined;
+  const describedBy = mergeIds(hintId, errorId);
   return (
     <FieldContext.Provider
       value={{ id: fieldId, labelId, describedBy, error, required }}
     >
       <div className="kjun-form-group">
         {label && (
-          <label className="kjun-form-label" id={labelId} htmlFor={fieldId}>
+          <label className={"kjun-form-label" + (labelHidden ? " kjun-sr-only" : "")} id={labelId} htmlFor={fieldId}>
             {label}
             {required && (
               <span style={{ color: "var(--_kjun-color-danger)" }}> *</span>
@@ -62,16 +64,17 @@ export function KjunFormGroup({
           </label>
         )}
         {children}
-        {error ? (
-          <p id={describedBy} className="kjun-form-error" role="alert">
+        {hint && (
+          <p id={hintId} className="kjun-form-hint">
+            {hint}
+          </p>
+        )}
+        {error && (
+          <p id={errorId} className="kjun-form-error" role="alert">
             <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} />
             {error}
           </p>
-        ) : hint ? (
-          <p id={describedBy} className="kjun-form-hint">
-            {hint}
-          </p>
-        ) : null}
+        )}
       </div>
     </FieldContext.Provider>
   );
@@ -149,14 +152,7 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
     const showError = !!errorMessage && !field?.error;
     const invalid = !!(error || errorMessage || field?.error);
     const ownErrorId = "kjun-input-error-" + uid;
-    const describedBy =
-      [
-        props["aria-describedby"],
-        field?.describedBy,
-        showError ? ownErrorId : undefined,
-      ]
-        .filter(Boolean)
-        .join(" ") || undefined;
+    const describedBy = mergeIds(props["aria-describedby"], field?.describedBy, showError ? ownErrorId : undefined);
     return (
       <div style={{ minWidth: 0 }}>
         <div className="kjun-input-wrap" data-disabled={disabled || undefined}>

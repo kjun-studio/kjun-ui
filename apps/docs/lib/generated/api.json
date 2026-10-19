@@ -5857,6 +5857,13 @@
         "required": false,
         "default": "\"\"",
         "description": ""
+      },
+      {
+        "name": "labelHidden",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Hides the label visually while it still names the field."
       }
     ],
     "events": [],
@@ -5904,6 +5911,13 @@
         "description": ""
       },
       {
+        "name": "labelHidden",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Hides the label visually while it still names the field."
+      },
+      {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": true,
@@ -5946,6 +5960,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "labelHidden",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Hides the label visually while it still names the field."
       },
       {
         "name": "children",
@@ -15102,6 +15123,20 @@
         "description": ""
       },
       {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Trigger id for an outside <label for>; defaults to the FormGroup's id."
+      },
+      {
+        "name": "ariaDescribedby",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Extra description ids, merged with the FormGroup's hint and error."
+      },
+      {
         "name": "labelKey",
         "type": "string",
         "required": false,
@@ -15279,6 +15314,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Trigger id for an outside <label for>; defaults to the FormGroup's id."
+      },
+      {
+        "name": "ariaDescribedBy",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra description ids, merged with the FormGroup's hint and error."
       },
       {
         "name": "valueKey",

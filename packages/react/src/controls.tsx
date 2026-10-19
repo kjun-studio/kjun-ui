@@ -1,4 +1,5 @@
 import { typeStyle, selectionTypeStyle } from "./typography";
+import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens,type ButtonSize,type InputSize } from "@kjun-ui/tokens";
 import {
 createContext,
@@ -47,11 +48,16 @@ export function KjunCheckbox<T = ChoiceValue>({
   onChange,
 }: KjunCheckboxProps<T>) {
   const checked = Array.isArray(value) ? value.includes(val!) : value;
+  // Inside a FormGroup the box keeps its own label but takes the group's hint, error and required state.
+  const field = useKjunField();
   return (
     <AriaCheckbox
       isSelected={checked}
       isDisabled={disabled}
       aria-label={ariaLabel}
+      aria-describedby={field?.describedBy}
+      isInvalid={!!field?.error}
+      isRequired={field?.required}
       className={"kjun-choice" + (disabled ? " kjun-choice--disabled" : "")}
       onChange={(next) => {
         const result = Array.isArray(value)
@@ -98,11 +104,13 @@ export function KjunSwitch({
   onValueChange,
   onChange,
 }: KjunSwitchProps) {
+  const field = useKjunField();
   return (
     <AriaSwitch
       isSelected={value}
       isDisabled={disabled}
       aria-label={ariaLabel || label}
+      aria-describedby={field?.describedBy}
       className={"kjun-choice" + (disabled ? " kjun-choice--disabled" : "")}
       onChange={(next) => {
         onValueChange?.(next);
@@ -273,7 +281,7 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
         required={props.required ?? field?.required}
         aria-label={ariaLabel || props["aria-label"]}
         aria-labelledby={props["aria-labelledby"] || field?.labelId}
-        aria-describedby={props["aria-describedby"] || field?.describedBy}
+        aria-describedby={mergeIds(props["aria-describedby"], field?.describedBy)}
         aria-invalid={error || !!field?.error || undefined}
         className={"kjun-input kjun-textarea " + className}
         style={{

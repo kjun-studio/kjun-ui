@@ -7,6 +7,7 @@ export function VisualCases({ K, native=false }: { K:any; native?:boolean }) {
     if(name==='Section') return <section key={props.id} data-testid={props.id} style={{marginBottom:24,...props.style}}>{children}</section>;
     if(name==='Output') return <output key={props.id} data-testid={props.id} style={{display:"block",overflowWrap:"anywhere",fontSize:12}}>{children}</output>;
     if(name==='Text') return native ? <Text>{children}</Text> : <p style={{margin:0}}>{children}</p>;
+    if(name==='Label') return native ? <Text>{children}</Text> : <label htmlFor={props.for}>{children}</label>;
     const adapted = native && props.onClick ? {...props,onPress:props.onClick,onClick:undefined} : props;
     return createElement(K[name],{...adapted,...slots},children);
   };

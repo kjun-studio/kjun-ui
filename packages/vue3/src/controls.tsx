@@ -1,3 +1,4 @@
+import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { computed, defineComponent, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, provide, ref,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type InputSize } from "@kjun-ui/tokens";
@@ -33,6 +34,7 @@ export const KjunCheckbox = defineComponent({
   emits: { "update:modelValue": (_value: boolean | ChoiceValue[]) => true, change: (_value: boolean | ChoiceValue[]) => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
+    const field = useKjunField();
     const focus = useFocusVisible();
     return () => {
       const value = props.modelValue;
@@ -40,6 +42,8 @@ export const KjunCheckbox = defineComponent({
       return (
         <label class={choiceClass(props.disabled)} data-focus-visible={focus.visible.value || undefined}>
           <input type="checkbox" class="kjun-sr-only" checked={checked} disabled={props.disabled} aria-label={props.ariaLabel}
+            // Inside a FormGroup the box keeps its own label but takes the group's hint, error and required state.
+            aria-describedby={field.value?.describedBy} aria-invalid={field.value?.error ? "true" : undefined} aria-required={field.value?.required || undefined}
             onFocus={focus.onFocus} onBlur={focus.onBlur}
             onChange={(event: Event) => {
               const next = (event.target as HTMLInputElement).checked;
@@ -74,11 +78,12 @@ export const KjunSwitch = defineComponent({
   emits: { "update:modelValue": (_value: boolean) => true, change: (_value: boolean) => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
+    const field = useKjunField();
     const focus = useFocusVisible();
     return () => (
       <label class={choiceClass(props.disabled)} data-focus-visible={focus.visible.value || undefined}>
         <input type="checkbox" role="switch" class="kjun-sr-only" checked={props.modelValue} disabled={props.disabled}
-          aria-label={props.ariaLabel || props.label} onFocus={focus.onFocus} onBlur={focus.onBlur}
+          aria-label={props.ariaLabel || props.label} aria-describedby={field.value?.describedBy} onFocus={focus.onFocus} onBlur={focus.onBlur}
           onChange={(event: Event) => {
             const next = (event.target as HTMLInputElement).checked;
             (event.target as HTMLInputElement).checked = props.modelValue;
@@ -202,7 +207,7 @@ export const KjunTextarea = defineComponent({
           required={props.required ?? owner?.required}
           aria-label={props.ariaLabel || (attrs["aria-label"] as string | undefined)}
           aria-labelledby={(attrs["aria-labelledby"] as string | undefined) || owner?.labelId}
-          aria-describedby={(attrs["aria-describedby"] as string | undefined) || owner?.describedBy}
+          aria-describedby={mergeIds(attrs["aria-describedby"] as string | undefined, owner?.describedBy)}
           aria-invalid={props.error || !!owner?.error ? "true" : undefined}
           class={["kjun-input kjun-textarea", attrs.class]}
           style={[css({

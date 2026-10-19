@@ -13,9 +13,12 @@ async function quantity(page: Page, platform: string) {
   return input;
 }
 async function described(page: Page, input: Locator) {
-  const id = await input.getAttribute("aria-describedby");
-  expect(id).toBeTruthy();
-  return (await page.locator(`[id="${id}"]`).textContent())?.trim();
+  // aria-describedby can list the hint and the error; read every referenced element in order.
+  const ids = (await input.getAttribute("aria-describedby"))?.split(/\s+/).filter(Boolean) ?? [];
+  expect(ids.length).toBeGreaterThan(0);
+  const texts = [];
+  for (const id of ids) texts.push((await page.locator(`[id="${id}"]`).textContent())?.trim());
+  return texts.join(" ");
 }
 
 for (const platform of ["react", "native", "vue3"]) {

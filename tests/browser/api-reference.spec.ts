@@ -73,7 +73,8 @@ for (const platform of platforms) {
     const input = page.getByRole('textbox'); await input.fill('보존할 값');
     await expect(page.getByText('필드 도움말', { exact: true })).toBeVisible();
     await configure(page, { error: '검증 오류' });
-    await expect(page.getByText('필드 도움말', { exact: true })).toHaveCount(0); await expect(input).toHaveValue('보존할 값');
+    // The hint stays beside the error (0.10.0): it usually explains what the error refers to.
+    await expect(page.getByText('필드 도움말', { exact: true })).toBeVisible(); await expect(page.getByText('검증 오류', { exact: true })).toBeVisible(); await expect(input).toHaveValue('보존할 값');
     await expect(input).toBeEnabled(); await expect(input).toHaveAttribute('aria-invalid', 'true');
     await fixture(page, platform, 'data-state');
     await expect(page.getByText('현재 결과', { exact: true })).toHaveCount(0);

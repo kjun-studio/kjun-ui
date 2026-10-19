@@ -14994,7 +14994,7 @@
             "required": false,
             "default": "\"\"",
             "description": "",
-            "summary": "오류 메시지입니다. hint보다 우선 표시합니다.",
+            "summary": "오류 메시지입니다. hint 아래에 함께 표시합니다.",
             "details": [
               {
                 "label": "적용 조건",
@@ -15018,11 +15018,20 @@
             "details": [
               {
                 "label": "표시 조건",
-                "text": "error가 비어 있을 때 표시하며, 오류가 있으면 접근성 설명도 오류를 우선합니다."
+                "text": "오류가 있어도 함께 표시합니다. 입력의 접근성 설명은 hint와 error를 이 순서로 모두 가리킵니다."
               }
             ],
             "source": "packages/vue3/src/input.tsx",
             "example": "/components/form-group#preview"
+          },
+          {
+            "name": "labelHidden",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Hides the label visually while it still names the field.",
+            "summary": "라벨을 화면에서만 숨깁니다. 라벨은 계속 입력의 이름이 됩니다.",
+            "source": "packages/vue3/src/input.tsx"
           }
         ],
         "events": [],
@@ -15116,7 +15125,7 @@
             "required": false,
             "default": "\"\"",
             "description": "",
-            "summary": "오류 메시지입니다. hint보다 우선 표시합니다.",
+            "summary": "오류 메시지입니다. hint 아래에 함께 표시합니다.",
             "details": [
               {
                 "label": "적용 조건",
@@ -15140,11 +15149,20 @@
             "details": [
               {
                 "label": "표시 조건",
-                "text": "error가 비어 있을 때 표시하며, 오류가 있으면 접근성 설명도 오류를 우선합니다."
+                "text": "오류가 있어도 함께 표시합니다. 입력의 접근성 설명은 hint와 error를 이 순서로 모두 가리킵니다."
               }
             ],
             "source": "packages/react/src/input.tsx",
             "example": "/components/form-group#preview"
+          },
+          {
+            "name": "labelHidden",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Hides the label visually while it still names the field.",
+            "summary": "라벨을 화면에서만 숨깁니다. 라벨은 계속 입력의 이름이 됩니다.",
+            "source": "packages/react/src/input.tsx"
           },
           {
             "name": "children",
@@ -15239,7 +15257,7 @@
             "required": false,
             "default": "\"\"",
             "description": "",
-            "summary": "오류 메시지입니다. hint보다 우선 표시합니다.",
+            "summary": "오류 메시지입니다. hint 아래에 함께 표시합니다.",
             "details": [
               {
                 "label": "적용 조건",
@@ -15263,11 +15281,20 @@
             "details": [
               {
                 "label": "표시 조건",
-                "text": "error가 비어 있을 때 표시하며, 오류가 있으면 접근성 설명도 오류를 우선합니다."
+                "text": "오류가 있어도 함께 표시합니다. 입력의 접근성 설명은 hint와 error를 이 순서로 모두 가리킵니다."
               }
             ],
             "source": "packages/native/src/input.tsx",
             "example": "/components/form-group#preview"
+          },
+          {
+            "name": "labelHidden",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Hides the label visually while it still names the field.",
+            "summary": "라벨을 화면에서만 숨깁니다. 라벨은 계속 입력의 이름이 됩니다.",
+            "source": "packages/native/src/input.tsx"
           },
           {
             "name": "children",
@@ -15831,6 +15858,24 @@
             "source": "packages/vue3/src/select-control.tsx"
           },
           {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Trigger id for an outside <label for>; defaults to the FormGroup's id.",
+            "summary": "트리거 버튼 id입니다. 바깥 <label for>가 이름을 붙일 수 있고, 생략하면 FormGroup의 id를 씁니다. id나 FormGroup이 있으면 placeholder를 이름으로 쓰지 않습니다.",
+            "source": "packages/vue3/src/select-control.tsx"
+          },
+          {
+            "name": "ariaDescribedby",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Extra description ids, merged with the FormGroup's hint and error.",
+            "summary": "추가 설명 요소 id입니다. FormGroup의 안내·오류와 중복 없이 합칩니다.",
+            "source": "packages/vue3/src/select-control.tsx"
+          },
+          {
             "name": "labelKey",
             "type": "string",
             "required": false,
@@ -16281,6 +16326,24 @@
             "default": "\"label\"",
             "description": "",
             "summary": "옵션에서 라벨을 읽을 필드 이름입니다.",
+            "source": "packages/react/src/select-control.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Trigger id for an outside <label for>; defaults to the FormGroup's id.",
+            "summary": "트리거 버튼 id입니다. 바깥 <label for>가 이름을 붙일 수 있고, 생략하면 FormGroup의 id를 씁니다. id나 FormGroup이 있으면 placeholder를 이름으로 쓰지 않습니다.",
+            "source": "packages/react/src/select-control.tsx"
+          },
+          {
+            "name": "ariaDescribedBy",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Extra description ids, merged with the FormGroup's hint and error.",
+            "summary": "추가 설명 요소 id입니다. FormGroup의 안내·오류와 중복 없이 합칩니다. Vue는 ariaDescribedby입니다.",
             "source": "packages/react/src/select-control.tsx"
           },
           {

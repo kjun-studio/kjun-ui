@@ -1,4 +1,5 @@
 import { FieldClear } from "./field-clear";
+import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
@@ -33,6 +34,7 @@ interface FieldValue {
   hint?: string;
   required?: boolean;
   describedBy?: string;
+  labelHidden?: boolean;
 }
 // Internal boundary for composite fields; index.ts exports only public controls.
 export const FieldContext = createContext<FieldValue | null>(null);
@@ -43,6 +45,8 @@ export interface KjunFormGroupProps {
   required?: boolean;
   error?: string;
   hint?: string;
+  /** Hides the label visually while it still names the field. */
+  labelHidden?: boolean;
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
 }
@@ -52,6 +56,7 @@ export function KjunFormGroup({
   required = false,
   error = "",
   hint = "",
+  labelHidden = false,
   children,
   style,
 }: KjunFormGroupProps) {
@@ -60,10 +65,12 @@ export function KjunFormGroup({
   const { colors: c, fontFamily } = useKjunStyles();
   return (
     <FieldContext.Provider
-      value={{ id: fieldId, label, error, hint, required, describedBy: error ? fieldId + "-error" : hint ? fieldId + "-hint" : undefined }}
+      // The hint stays with an error: it usually explains the format the error refers to.
+      value={{ id: fieldId, label, error, hint, required, labelHidden,
+        describedBy: mergeIds(hint ? fieldId + "-hint" : undefined, error ? fieldId + "-error" : undefined) }}
     >
       <View style={[{ minWidth: 0, marginBottom: tokens.extensions.form.itemGap }, style]}>
-        {label && (
+        {label && !labelHidden && (
           <Text
             nativeID={fieldId + "-label"}
             style={{
@@ -80,7 +87,15 @@ export function KjunFormGroup({
           </Text>
         )}
         {children}
-        {(error || hint) && (
+        {!!hint && (
+          <Text
+            nativeID={fieldId + "-hint"}
+            style={{ fontFamily, ...typeStyle('caption'), marginTop: tokens.extensions.form.messageGap, color: c.textSecondary }}
+          >
+            {hint}
+          </Text>
+        )}
+        {!!error && (
           <View
             style={{
               flexDirection: "row",
@@ -89,18 +104,13 @@ export function KjunFormGroup({
               marginTop: tokens.extensions.form.messageGap,
             }}
           >
-            {!!error && <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} color={c.danger} />}
+            <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} color={c.danger} />
             <Text
-              nativeID={fieldId + (error ? "-error" : "-hint")}
-              accessibilityRole={error ? "alert" : undefined}
-              style={{
-                fontFamily,
-                ...typeStyle('caption'),
-                flexShrink: 1,
-                color: error ? c.danger : c.textSecondary,
-              }}
+              nativeID={fieldId + "-error"}
+              accessibilityRole="alert"
+              style={{ fontFamily, ...typeStyle('caption'), flexShrink: 1, color: c.danger }}
             >
-              {error || hint}
+              {error}
             </Text>
           </View>
         )}
@@ -195,7 +205,7 @@ export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInpu
             ariaLabel || props.accessibilityLabel || field?.label
           }
           accessibilityLabelledBy={
-            field?.label ? field.id + "-label" : undefined
+            field?.label && !field.labelHidden ? field.id + "-label" : undefined
           }
           accessibilityHint={
             errorMessage ||

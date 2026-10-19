@@ -65,9 +65,9 @@ test("Native Select isolates popup search and DatePicker consumes live field fee
   await expect(date).toHaveAttribute("aria-required", "true");
   await configureFollowup(page, { error: "값을 확인하세요" });
   await expect(date).toHaveAttribute("aria-invalid", "true");
-  await expect(date).toHaveAttribute("aria-describedby", "followup-date-error");
+  await expect(date).toHaveAttribute("aria-describedby", "followup-date-hint followup-date-error");
   const select = page.getByRole("button", { name: "담당자", exact: true });
-  await expect(select).toHaveAttribute("aria-describedby", "followup-select-error");
+  await expect(select).toHaveAttribute("aria-describedby", "followup-select-hint followup-select-error");
   await select.click();
   const search = page.getByRole("textbox", { name: "선택 항목 검색", exact: true });
   await expect(search).toBeVisible();

@@ -1,4 +1,5 @@
 import { computed, defineComponent, inject, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
+import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { isFocusVisible } from "../../../shared/package-runtime/focus-visible";
@@ -20,6 +21,10 @@ const kjunSelectProps = {
   options: { type: Array as PropType<SelectOption[]>, default: () => [] },
   placeholder: { type: String, default: "선택" },
   ariaLabel: { type: String, default: undefined },
+  /** Trigger id for an outside <label for>; defaults to the FormGroup's id. */
+  id: { type: String, default: undefined },
+  /** Extra description ids, merged with the FormGroup's hint and error. */
+  ariaDescribedby: { type: String, default: undefined },
   labelKey: { type: String, default: "label" },
   valueKey: { type: String, default: "value" },
   size: { type: String as PropType<InputSize>, default: "md" },
@@ -112,9 +117,10 @@ export const KjunSelect = defineComponent({
       return (
         <>
           <div class="kjun-select-shell">
-            <button ref={trigger} id={owner?.id} type="button" class="kjun-input kjun-select-trigger" data-time-segment={segment ? "true" : undefined}
+            <button ref={trigger} id={props.id ?? owner?.id} type="button" class="kjun-input kjun-select-trigger" data-time-segment={segment ? "true" : undefined}
               disabled={props.disabled} aria-haspopup="listbox" aria-controls={expanded.value ? id : undefined} aria-expanded={expanded.value}
-              aria-label={props.ariaLabel || props.placeholder} aria-labelledby={owner?.labelId} aria-describedby={owner?.describedBy}
+              aria-label={props.ariaLabel || (props.id || owner ? undefined : props.placeholder)} aria-labelledby={owner?.labelId}
+              aria-describedby={mergeIds(props.ariaDescribedby, owner?.describedBy)}
               aria-invalid={props.error || !!owner?.error ? "true" : undefined}
               style={css({ height: spec.height, borderRadius: spec.radius, ...inputTypeStyle(props.size),
                 // Time segments take their padding from compound-controls.css, which also aligns the first value.

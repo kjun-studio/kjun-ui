@@ -160,7 +160,7 @@ for (const platform of ["react", "native", "vue3"]) test(`${platform} TimePicker
     for (const segment of ["시", "분", "초"]) {
       const control = page.getByRole(role, { name: "예약 시간 " + segment, exact: true });
       await expect(control).toHaveAttribute("aria-invalid", "true");
-      await expect(control).toHaveAttribute("aria-describedby", "review-time-error");
+      await expect(control).toHaveAttribute("aria-describedby", "review-time-hint review-time-error");
     }
   }
   await uniqueIds(page);
@@ -222,7 +222,7 @@ for (const kind of ["combo", "remote"]) {
       await expect(search).not.toHaveAttribute("aria-labelledby");
       await expect(search).not.toHaveAttribute("aria-describedby");
       await page.evaluate(id => (window as any)["setError_" + id]("Field error"), id);
-      await expect(field).toHaveAttribute("aria-describedby", id + "-error");
+      await expect(field).toHaveAttribute("aria-describedby", id + "-hint " + id + "-error");
       await expect(field).toHaveAttribute("aria-invalid", "true");
       await expect(search).not.toHaveAttribute("aria-invalid", "true");
       await search.fill("Al");

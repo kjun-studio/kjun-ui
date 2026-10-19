@@ -427,6 +427,36 @@ for(const platform of ['react','vue3','native']) {
     await page.waitForTimeout(400);
     await expect(page.getByRole('tooltip').filter({hasText:'제어 툴팁 내용'})).toHaveCount(0);
   });
+  test(`${platform}: FormGroup keeps the hint with an error and describes the field once each`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    const group=page.getByTestId('form-hint-error');
+    await expect(group.getByText('공백은 유지됩니다',{exact:true})).toBeVisible();
+    await expect(group.getByText('이름이 필요합니다',{exact:true})).toBeVisible();
+    if(platform==='native') return;
+    const ids=(await group.getByRole('textbox',{name:'이름'}).getAttribute('aria-describedby'))!.split(/\s+/).sort();
+    expect(ids).toEqual(['tyve-name-error','tyve-name-hint']);
+  });
+  test(`${platform}: FormGroup labelHidden still names the field`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    const group=page.getByTestId('form-hidden-label');
+    await expect(group.getByRole('textbox',{name:'숨긴 라벨'})).toHaveCount(1);
+    if(platform==='native') { await expect(group.getByText('숨긴 라벨',{exact:true})).toHaveCount(0); return; }
+    const label=await box(group.getByText('숨긴 라벨',{exact:true}));
+    expect(label.width).toBeLessThanOrEqual(1);
+  });
+  test(`${platform}: Select takes an id so an outside label names it`,async({page})=>{
+    test.skip(platform==='native','label for is a web association');
+    await openFixture(page,platform,'','visual-contract');
+    await expect(page.getByTestId('select-outside').getByRole('button',{name:'외부 라벨'})).toHaveCount(1);
+  });
+  test(`${platform}: a Checkbox in a FormGroup is described by its hint and error`,async({page})=>{
+    test.skip(platform==='native','aria-describedby is a web association');
+    await openFixture(page,platform,'','visual-contract');
+    const box_=page.getByTestId('check-in-group').getByRole('checkbox',{name:'약관 동의'});
+    const ids=(await box_.getAttribute('aria-describedby'))?.split(/\s+/).sort();
+    expect(ids).toEqual(['tyve-agree-error','tyve-agree-hint']);
+    await expect(box_).toHaveAttribute('aria-invalid','true');
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {
