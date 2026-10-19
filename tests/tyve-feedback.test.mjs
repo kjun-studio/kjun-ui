@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mergeIds } from '../shared/package-runtime/aria-ids.ts';
+import { mergeIds, joinHints } from '../shared/package-runtime/aria-ids.ts';
 
 test('mergeIds joins id lists once each and drops empties', () => {
   assert.equal(mergeIds('a b', 'b', undefined, ' c '), 'a b c');
@@ -42,4 +42,10 @@ test('resolveIcon stays silent where the bundle supplies no process object', asy
     console.warn = warn;
   }
   assert.equal(warnings.filter(w => w.includes('tyve-missing-browser')).length, 0);
+});
+
+test('joinHints keeps the hint with the error for device announcements', () => {
+  assert.equal(joinHints('형식 안내', '오류 문구'), '형식 안내. 오류 문구');
+  assert.equal(joinHints(undefined, '오류 문구'), '오류 문구');
+  assert.equal(joinHints('', null), undefined);
 });

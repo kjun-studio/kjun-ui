@@ -97,6 +97,12 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   const segment = useContext(CompoundControlContext) !== null;
   const spec = tokens.input[size];
   const expanded = usePopupExpanded(open, ref);
+  const registerControl = field?.setControlId;
+  useEffect(() => {
+    if (!registerControl || !triggerId) return;
+    registerControl(triggerId);
+    return () => registerControl(undefined);
+  }, [registerControl, triggerId]);
   useEffect(() => {
     if (open && searchable) menu.current?.querySelector('input')?.focus({ preventScroll: true });
     if (!open) composition.onCompositionEnd();

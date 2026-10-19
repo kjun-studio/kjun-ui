@@ -470,6 +470,41 @@ for(const platform of ['react','vue3','native']) {
     const ids=(await toggle.getAttribute('aria-describedby'))?.split(/\s+/).sort();
     expect(ids).toEqual(['tyve-notify-error','tyve-notify-hint']);
   });
+  test(`${platform}: a menu item that stops being single-choice drops its radio role`,async({page})=>{
+    test.skip(platform==='native','Native already exposes radio items');
+    await openFixture(page,platform,'','visual-contract');
+    await page.getByRole('button',{name:'플립 메뉴'}).click();
+    await expect(page.getByRole('menuitemradio',{name:'플립 항목'})).toHaveCount(1);
+    await expect(page.getByTestId('state')).toContainText('"sortFlip":true');
+    const item=page.getByRole('menuitem',{name:'플립 항목'});
+    await expect(item).toHaveCount(1);
+    await expect(item).not.toHaveAttribute('aria-checked',/.*/);
+  });
+  test(`${platform}: a controlled Tooltip reports only real open changes`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    const target=page.getByRole('button',{name:'횟수 툴팁 대상'});
+    await target.click();
+    await page.getByRole('button',{name:'도움말 버튼'}).hover();
+    await page.waitForTimeout(300);
+    // Hovering before the click may really open it (no delay); what must not appear is a repeated value.
+    const log=JSON.parse(await page.getByTestId('state').textContent() || '{}').tcLog as string;
+    expect(log).toMatch(/^(10)*1?$/);
+  });
+  test(`${platform}: a FormGroup label follows a Select's own id`,async({page})=>{
+    test.skip(platform==='native','label for is a web association');
+    await openFixture(page,platform,'','visual-contract');
+    const label=page.getByTestId('select-own-id').locator('label');
+    await expect(label).toHaveAttribute('for','tyve-own-sel');
+    await expect(page.locator('#tyve-own-sel')).toHaveCount(1);
+  });
+  test(`${platform}: hidden FormGroup labels leave no dangling references on other fields`,async({page})=>{
+    await openFixture(page,platform,'','visual-contract');
+    const root=page.getByTestId('hidden-label-others');
+    await expect(root.getByRole('textbox',{name:'숨긴 메모'})).toHaveCount(1);
+    const dangling=await root.evaluate(el=>[...el.querySelectorAll('[aria-labelledby]')].flatMap(node=>
+      node.getAttribute('aria-labelledby')!.split(/\s+/).filter(id=>!document.getElementById(id))));
+    expect(dangling).toEqual([]);
+  });
   test(`${platform}: Popover width stays within the viewport and action bars use their own width`,async({page})=>{
     await page.setViewportSize({width:320,height:1000});
     for(const match of [false,true]) {

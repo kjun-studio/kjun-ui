@@ -66,6 +66,12 @@ export const KjunSelect = defineComponent({
     const field = useKjunField(), id = useKjunId("kjun-");
     const segment = inject(kjunCompoundControlKey, null);
     const expanded = usePopupExpanded(() => state.open.value, () => trigger.value);
+    watch(() => props.id, (own, _previous, onCleanup) => {
+      const register = field.value?.setControlId;
+      if (!register || !own) return;
+      register(own);
+      onCleanup(() => register(undefined));
+    }, { immediate: true });
     const focused = shallowRef<string | null>(null), focusVisible = ref(false);
     const change = (value: SelectValue) => { emit("update:modelValue", value); emit("change", value); };
     const model = computed(() => selectOptions({ options: props.options, value: props.modelValue, labelKey: props.labelKey, valueKey: props.valueKey,

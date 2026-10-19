@@ -21,6 +21,8 @@ interface FieldContextValue {
   describedBy?: string;
   error?: string;
   required?: boolean;
+  /** A control with its own id registers it so the group label points at it. */
+  setControlId?: (id: string | undefined) => void;
 }
 // Internal boundary for composite fields; index.ts exports only public controls.
 export const FieldContext = createContext<FieldContextValue | null>(null);
@@ -50,13 +52,14 @@ export function KjunFormGroup({
   // The hint stays with an error: it usually explains the format the error refers to.
   const hintId = hint ? fieldId + "-hint" : undefined, errorId = error ? fieldId + "-error" : undefined;
   const describedBy = mergeIds(hintId, errorId);
+  const [controlId, setControlId] = useState<string>();
   return (
     <FieldContext.Provider
-      value={{ id: fieldId, labelId, describedBy, error, required }}
+      value={{ id: fieldId, labelId, describedBy, error, required, setControlId }}
     >
       <div className="kjun-form-group">
         {label && (
-          <label className={"kjun-form-label" + (labelHidden ? " kjun-sr-only" : "")} id={labelId} htmlFor={fieldId}>
+          <label className={"kjun-form-label" + (labelHidden ? " kjun-sr-only" : "")} id={labelId} htmlFor={controlId || fieldId}>
             {label}
             {required && (
               <span style={{ color: "var(--_kjun-color-danger)" }}> *</span>

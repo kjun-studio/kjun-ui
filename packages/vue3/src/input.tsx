@@ -11,6 +11,8 @@ export interface FieldContextValue {
   describedBy?: string;
   error?: string;
   required?: boolean;
+  /** A control with its own id registers it so the group label points at it. */
+  setControlId?: (id: string | undefined) => void;
 }
 // Internal boundary for composite fields; index.ts exports only public controls.
 export const kjunFieldKey: InjectionKey<Readonly<{ value: FieldContextValue | null }>> = Symbol("kjunField");
@@ -44,13 +46,15 @@ export const KjunFormGroup = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     const uid = useKjunId("kjun-field-");
+    const controlId = ref<string>();
+    const setControlId = (value: string | undefined) => { controlId.value = value; };
     const field = computed<FieldContextValue>(() => {
       const id = props.id || uid;
       return {
         id, labelId: props.label ? id + "-label" : undefined,
         // The hint stays with an error: it usually explains the format the error refers to.
         describedBy: mergeIds(props.hint ? id + "-hint" : undefined, props.error ? id + "-error" : undefined),
-        error: props.error, required: props.required,
+        error: props.error, required: props.required, setControlId,
       };
     });
     provide(kjunFieldKey, field);
@@ -59,7 +63,7 @@ export const KjunFormGroup = defineComponent({
       return (
         <div class="kjun-form-group">
           {props.label && (
-            <label class={"kjun-form-label" + (props.labelHidden ? " kjun-sr-only" : "")} id={labelId} for={id}>
+            <label class={"kjun-form-label" + (props.labelHidden ? " kjun-sr-only" : "")} id={labelId} for={controlId.value || id}>
               {props.label}
               {props.required && <span style={{ color: "var(--_kjun-color-danger)" }}> *</span>}
             </label>

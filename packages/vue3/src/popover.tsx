@@ -130,7 +130,11 @@ export const KjunTooltip = defineComponent({
   setup(props, { slots, emit }) {
     const internal = ref(false);
     // v-model:open makes it controlled; otherwise hover and focus drive it.
-    const open = computed({ get: () => props.open ?? internal.value, set: (next: boolean) => { internal.value = next; emit("update:open", next); } });
+    const open = computed({ get: () => props.open ?? internal.value, set: (next: boolean) => {
+      // hide() also runs while already closed (press, leave before the delay); report real changes only.
+      if (next === open.value) return;
+      internal.value = next; emit("update:open", next);
+    } });
     const layer = useLayer(() => open.value, () => open.value, "tooltip", () => { open.value = false; });
     const reduced = useReducedMotion();
     const motion = usePresence(() => open.value && !layer.blocked.value, () => reduced.value, tokens.motion.tooltipExit);

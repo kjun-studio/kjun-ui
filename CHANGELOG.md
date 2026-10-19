@@ -13,8 +13,8 @@ Popover에 고정 머리글과 비모달 모드를 추가하고, 두 번째 적�
 
 ### 적용 프로젝트 피드백 반영
 
-- **FormGroup**: 오류가 있어도 도움말을 유지하고 오류를 그 아래에 표시합니다. 입력은 도움말과 오류를 모두 `aria-describedby`로 연결합니다(기본 동작 변경). `labelHidden`으로 라벨을 화면에서만 숨길 수 있습니다.
-- **Select**: `id`(바깥 `<label for>` 연결)와 추가 설명 id(React `ariaDescribedBy`, Vue `ariaDescribedby`)를 받습니다. id나 FormGroup이 있으면 placeholder를 이름으로 쓰지 않습니다.
+- **FormGroup**: 오류가 있어도 도움말을 유지하고 오류를 그 아래에 표시합니다. 입력은 도움말과 오류를 모두 `aria-describedby`로 연결합니다(기본 동작 변경). `labelHidden`으로 라벨을 화면에서만 숨길 수 있습니다. Native 기기 화면 판독기도 도움말과 오류를 이어서 읽습니다.
+- **Select**: `id`(바깥 `<label for>` 연결)와 추가 설명 id(React `ariaDescribedBy`, Vue `ariaDescribedby`)를 받습니다. FormGroup 안에서 `id`를 주면 그룹 라벨도 그 id를 가리킵니다. id나 FormGroup이 있으면 placeholder를 이름으로 쓰지 않습니다.
 - **설명 연결**: Input·Textarea·Select는 앱이 넘긴 설명 id와 FormGroup 설명을 중복 없이 합칩니다. 웹(React·Vue)의 Checkbox·Switch는 FormGroup 안에서 도움말·오류·필수 상태를 접근성 속성으로 받습니다(브라우저 제출을 막지 않습니다. Native는 아직 해당 없음).
 - **Button `wrap`**: 긴 라벨을 줄바꿈합니다. 크기별 높이는 최소 높이가 됩니다.
 - **Alert `live`**: `assertive`·`polite`·`off`로 보조기기 알림 방식을 정합니다. 생략하면 지금처럼 danger만 즉시 알립니다.

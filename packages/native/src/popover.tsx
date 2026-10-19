@@ -117,9 +117,16 @@ export function KjunTooltip({
   const { colors } = useKjunStyles(),
     [internal, setInternal] = useState(false),
     open = controlled ?? internal,
-    setOpen = (value: boolean) => { setInternal(value); onOpenChange?.(value); },
+    // Timers read the latest state and handler; hide() while closed reports nothing.
+    latest = useRef({ open, onOpenChange }),
+    setOpen = (value: boolean) => {
+      if (latest.current.open === value) return;
+      latest.current.open = value;
+      setInternal(value); latest.current.onOpenChange?.(value);
+    },
     ref = useRef<View>(null),
     timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  latest.current = { open, onOpenChange };
   const scopeActive = useActiveLayerScope();
   const hide = () => {
     clearTimeout(timer.current);

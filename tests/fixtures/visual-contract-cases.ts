@@ -1,5 +1,5 @@
 // Shared consumer composition; each adapter below renders only packed public components.
-export const initial = { quantity:2, time:'09:30:15', tab:'activity', open:false, retry:0, destination:'home', radio:'a', menuOpen:false, pick:'', focusOpen:false, targetGone:false, returnOn:false, headerOpen:false, nmOpen:false, typed:'', sortReset:false, sortClicks:0, tsel:[] as any[], tipOpen:false, fname:'', fhidden:'', fsel:null as any, agree:false };
+export const initial = { quantity:2, time:'09:30:15', tab:'activity', open:false, retry:0, destination:'home', radio:'a', menuOpen:false, pick:'', focusOpen:false, targetGone:false, returnOn:false, headerOpen:false, nmOpen:false, typed:'', sortReset:false, sortClicks:0, tsel:[] as any[], tipOpen:false, sortFlip:false, tcOpen:false, tcLog:'', ownSel:'', hiddenMemo:'', hiddenQty:1, fname:'', fhidden:'', fsel:null as any, agree:false };
 export function renderCases(h: (name:string, props:any, children?:any, slots?:any) => any, state:typeof initial, set:(key:string,value:any)=>void) {
   const query = new URLSearchParams(location.search), size = query.get('size') || 'md';
   const section = (id:string, children:any, style={}) => h('Section', { id, style }, children);
@@ -47,6 +47,11 @@ export function renderCases(h: (name:string, props:any, children?:any, slots?:an
     section('select-outside',[h('Label',{ for:'sel-ext' },'외부 라벨'),h('KjunSelect',{ id:'sel-ext', value:state.fsel, onValueChange:(v:any)=>set('fsel',v), placeholder:'선택하세요', options:[{label:'가',value:'a'}] })]),
     section('check-in-group',h('KjunFormGroup',{ id:'tyve-agree', hint:'약관 안내', error:'동의가 필요합니다', required:true },h('KjunCheckbox',{ value:state.agree, onValueChange:(v:boolean)=>set('agree',v), label:'약관 동의' }))),
     section('switch-in-group',h('KjunFormGroup',{ id:'tyve-notify', hint:'알림 안내', error:'알림 설정 오류', required:true },h('KjunSwitch',{ value:false, label:'알림 받기' }))),
+    section('menu-flip',h('KjunDropdown',{},[h('KjunDropdownItem',{ selected:state.sortFlip ? null : false },'플립 항목')],{ trigger:button('플립 메뉴',()=>setTimeout(()=>set('sortFlip',true),400)) })),
+    section('tooltip-count',h('KjunTooltip',{ open:state.tcOpen, onOpenChange:(v:boolean)=>{ set('tcOpen',v); set('tcLog',state.tcLog+(v?'1':'0')); }, content:'횟수 툴팁' },button('횟수 툴팁 대상'))),
+    section('select-own-id',h('KjunFormGroup',{ id:'tyve-group-sel', label:'그룹 선택 라벨' },h('KjunSelect',{ id:'tyve-own-sel', value:state.ownSel, onValueChange:(v:any)=>set('ownSel',v), placeholder:'고르세요', options:[{label:'하나',value:'a'}] }))),
+    section('hidden-label-others',[h('KjunFormGroup',{ id:'tyve-hidden-memo', label:'숨긴 메모', labelHidden:true },h('KjunTextarea',{ value:state.hiddenMemo, onValueChange:(v:string)=>set('hiddenMemo',v) })),
+      h('KjunFormGroup',{ id:'tyve-hidden-qty', label:'숨긴 수량', labelHidden:true },h('KjunQuantityStepper',{ value:state.hiddenQty, onValueChange:(v:number)=>set('hiddenQty',v), max:5 }))]),
     section('tooltip-outside',h('KjunTooltip',{ content:'바깥 도움말' },button('도움말 버튼'))),
     h('Output',{id:'state'},JSON.stringify(state)),
   ];

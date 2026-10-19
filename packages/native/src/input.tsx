@@ -1,5 +1,5 @@
 import { FieldClear } from "./field-clear";
-import { mergeIds } from "../../../shared/package-runtime/aria-ids";
+import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
@@ -208,9 +208,7 @@ export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInpu
             field?.label && !field.labelHidden ? field.id + "-label" : undefined
           }
           accessibilityHint={
-            errorMessage ||
-            field?.error ||
-            field?.hint ||
+            joinHints(field?.hint, errorMessage || field?.error) ||
             props.accessibilityHint
           }
           accessibilityState={{ disabled }}

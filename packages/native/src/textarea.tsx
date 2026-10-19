@@ -1,3 +1,4 @@
+import { joinHints } from "../../../shared/package-runtime/aria-ids";
 import { inputTypeStyle } from "./typography";
 import { FieldTextInput, useFieldSurface } from "./field-surface";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
@@ -57,14 +58,14 @@ export const KjunTextarea = forwardRef<TextInput, KjunTextareaProps>(
           ariaLabel || props.accessibilityLabel || field?.label
         }
         accessibilityHint={
-          field?.error || field?.hint || props.accessibilityHint
+          joinHints(field?.hint, field?.error) || props.accessibilityHint
         }
         accessibilityState={{ disabled }}
         {...(Platform.OS === "web" ? {
           "aria-disabled": disabled,
           "aria-invalid": invalid || undefined,
           "aria-describedby": field?.describedBy,
-          "aria-labelledby": field?.label ? field.id + "-label" : undefined,
+          "aria-labelledby": field?.label && !field.labelHidden ? field.id + "-label" : undefined,
           "aria-required": field?.required || undefined,
         } : {})}
         placeholderTextColor={

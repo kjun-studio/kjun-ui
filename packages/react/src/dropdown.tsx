@@ -152,8 +152,14 @@ export function KjunDropdownItem({
   // A boolean `selected` makes this a single-choice item, like Native's radio. react-aria only assigns
   // radio roles through menu-wide selection, which would also turn plain action items into radios.
   // Applied whenever the rendered element attaches; react-aria keeps its own role value, so React never resets it.
+  // An item that stops being single-choice goes back to react-aria's menuitem.
   const node = useCallback((element: HTMLDivElement | null) => {
-    if (!element || selected === null) return;
+    if (!element) return;
+    if (selected === null) {
+      element.setAttribute("role", "menuitem");
+      element.removeAttribute("aria-checked");
+      return;
+    }
     element.setAttribute("role", "menuitemradio");
     element.setAttribute("aria-checked", String(selected));
   }, [selected]);

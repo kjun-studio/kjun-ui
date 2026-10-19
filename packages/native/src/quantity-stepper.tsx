@@ -1,3 +1,4 @@
+import { joinHints } from "../../../shared/package-runtime/aria-ids";
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { useEffect, useRef, useState } from "react";
@@ -15,7 +16,7 @@ export function KjunQuantityStepper({ value, min = 0, max, step = 1, precision =
   const { colors, fontFamily } = useKjunStyles();
   const field = useKjunField();
   const invalid = error || !!field?.error;
-  const labelledBy = !ariaLabel && field?.label ? field.id + "-label" : undefined;
+  const labelledBy = !ariaLabel && field?.label && !field.labelHidden ? field.id + "-label" : undefined;
   const geometry = tokens.extensions.compound;
   const buttonStyle = { width: tokens.input[size].height, paddingHorizontal: 0 };
   // Inner edges stay square; only the outer corners follow the field radius, like Web.
@@ -74,7 +75,7 @@ export function KjunQuantityStepper({ value, min = 0, max, step = 1, precision =
     <View pointerEvents="none" aria-hidden={true} style={{ ...surfaceBox, backgroundColor: colors.inputBg }} />
     <CompoundTarget square><KjunButton size={size} style={decreaseStyle} variant="ghost" ariaLabel="수량 줄이기" disabled={blocked || value <= min} onPress={() => move(-1)} prefixIcon="minus" /></CompoundTarget>
     <View style={{ flex: block ? 1 : undefined, width: block ? undefined : geometry.valueWidth, minWidth: 0, minHeight: finePointer() ? undefined : tokens.native.minimumTouchTarget, justifyContent: "center" }} {...fieldTarget(() => inputRef.current?.focus(), blocked)}>
-    <FieldTextInput {...surface.webHover} onFocus={() => surface.setFocused(true)} ref={inputRef} nativeID={id || field?.id} accessibilityLabel={ariaLabel || field?.label || "수량"} accessibilityLabelledBy={labelledBy} accessibilityHint={field?.error || field?.hint} role="spinbutton" accessibilityValue={{ min, max, now: value }} accessibilityState={{ disabled: blocked }} value={draft} editable={!blocked} inputMode={precision ? "decimal" : "numeric"} onChangeText={text => { dirty.current = true; setDraft(text); }} onBlur={() => { surface.setFocused(false); commit(); }} onSubmitEditing={Platform.OS === "web" ? undefined : commit}
+    <FieldTextInput {...surface.webHover} onFocus={() => surface.setFocused(true)} ref={inputRef} nativeID={id || field?.id} accessibilityLabel={ariaLabel || field?.label || "수량"} accessibilityLabelledBy={labelledBy} accessibilityHint={joinHints(field?.hint, field?.error)} role="spinbutton" accessibilityValue={{ min, max, now: value }} accessibilityState={{ disabled: blocked }} value={draft} editable={!blocked} inputMode={precision ? "decimal" : "numeric"} onChangeText={text => { dirty.current = true; setDraft(text); }} onBlur={() => { surface.setFocused(false); commit(); }} onSubmitEditing={Platform.OS === "web" ? undefined : commit}
       {...(Platform.OS === "web" ? { "aria-valuemin": min, "aria-valuemax": max, "aria-valuenow": value, "aria-labelledby": labelledBy, "aria-describedby": field?.describedBy, "aria-invalid": invalid || undefined, "aria-required": field?.required || undefined } : { onKeyPress: key })}
       style={{ width: "100%", minWidth: 0, ...surface.style, borderRadius: 0, borderTopColor: "transparent", borderBottomColor: "transparent", borderLeftColor: "transparent", borderRightColor: "transparent", backgroundColor: !blocked && (surface.active || surface.hovered) ? colors.hover : "transparent", outlineWidth: 0, color: surface.ink, fontFamily, ...inputTypeStyle(size), textAlign: "center", paddingHorizontal: surface.spec.padding - tokens.border.controlWidth, paddingVertical: 0 }} />
     </View>
