@@ -1,3 +1,4 @@
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { tokens } from '@kjun-ui/tokens';
 import { typeStyle, selectionTypeStyle } from "./typography";
 import { Children, createContext, isValidElement, useContext, useCallback, useLayoutEffect, useRef, useId, useState, type ReactElement, type ReactNode } from "react";
@@ -212,9 +213,9 @@ export function KjunTabs({
               </Pressable>
             );
           })}
-          {actions}
+          {content(actions)}
         </ScrollView>
-        {children && <View style={{ marginTop: geometry.contentGap }}>{children}</View>}
+        {hasContent(children) && <View style={{ marginTop: geometry.contentGap }}>{content(children)}</View>}
       </View>
     </TabContext.Provider>
   );

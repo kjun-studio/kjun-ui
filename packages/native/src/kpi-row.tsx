@@ -302,7 +302,7 @@ export function KjunKpiRow({
               )}
               {!busy && item.badgePlacement === "value" && badge(item)}
             </View>
-            {item.desc &&
+            {!!item.desc &&
               (busy ? (
                 <KjunSkeleton type="block" height={typeStyle("caption").lineHeight} width={geometry.descriptionSkeletonWidth} />
               ) : (

@@ -13,6 +13,20 @@ test('native: no text node reaches a View, including empty strings and string af
   expect(errors.filter(text => text.includes('Unexpected text node'))).toEqual([]);
 });
 
+test('native: string, empty and zero ReactNode slots never reach a View', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await openFixture(page, 'native', '?string-slots', 'native-layout', 'development');
+  await expect(page.getByText('문자 행', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '문자 시트 열기' }).click();
+  await expect(page.getByText('문자 머리글', { exact: true })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByText('문자 머리글', { exact: true })).toBeHidden();
+  await page.getByRole('button', { name: '문자 모달 열기' }).click();
+  await expect(page.getByText('문자 모달 머리글', { exact: true })).toBeVisible();
+  expect(errors.filter(text => text.includes('Unexpected text node'))).toEqual([]);
+});
+
 test('native: narrow segment labels stay on one line', async ({ page }) => {
   await openFixture(page, 'native', '', 'native-layout');
   const root = page.getByTestId('segment-narrow');

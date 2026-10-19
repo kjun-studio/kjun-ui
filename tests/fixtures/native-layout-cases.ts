@@ -6,9 +6,25 @@ export function renderCases(h: (name:string, props:any, children?:any, slots?:an
   const button = (text:string, fn=()=>{}) => h('KjunButton', { onClick:fn }, text);
   const groupOptions = [{label:'이번 주',value:'week',icon:''},{label:'지난 달 기록',value:'month'},{label:'올해 전체 보기',value:'year'}];
   const longBody = Array.from({ length:40 }, (_, i) => h('Text', {}, '본문 줄 ' + (i + 1)));
+  // Native only: ReactNode slots given strings, empty strings and 0 must still render inside Text.
+  const stringSlots = query.has('string-slots') ? [
+    section('string-slots', [
+      h('KjunKpiHero', { label:'문자 자산', value:1, animated:false, aside:'보조 글', secondary:[{ label:'보조', value:2, desc:'' }] }),
+      h('KjunListSection', { title:'목록' }, h('KjunListRow', { title:'문자 행', leading:'', trailing:0, actions:'문자 동작' })),
+      h('KjunTopNavigation', { title:'문자 제목', leading:'', actions:'문자 동작' }),
+      h('KjunEmpty', { text:'비어 있음' }, ''),
+      h('KjunAlert', { title:'문자 알림', actions:'문자 동작' }),
+      h('KjunTabs', { value:'a', items:[{ name:'a', label:'탭' }], actions:'문자 동작' }, ''),
+      button('문자 시트 열기', ()=>set('drawer','string')),
+      h('KjunDrawer', { open:state.drawer === 'string', onOpenChange:(v:boolean)=>set('drawer', v ? 'string' : ''), position:'bottom', ariaLabel:'문자 시트', header:'문자 머리글', footer:'' }, h('Text', {}, '문자 시트 본문')),
+      button('문자 모달 열기', ()=>set('drawer','modal')),
+      h('KjunModal', { open:state.drawer === 'modal', onOpenChange:(v:boolean)=>set('drawer', v ? 'modal' : ''), ariaLabel:'문자 모달', header:'문자 모달 머리글', footer:'문자 모달 바닥' }, h('Text', {}, '문자 모달 본문')),
+    ]),
+  ] : [];
   const drawer = (position:string, extra:any = {}) => h('KjunDrawer', { open:state.drawer === position, onOpenChange:(v:boolean)=>set('drawer', v ? position : ''), position, title:'시트 ' + position, ...extra },
     query.has('short') ? h('Text', {}, '짧은 본문') : longBody, { footer:button('시트 확인') });
   return [
+    ...stringSlots,
     section('empty-text', [
       h('KjunFormGroup', { label:'', hint:'' }, h('KjunInput', { value:state.qty, onValueChange:(v:string)=>set('qty',v), ariaLabel:'수량 입력', prefix:'약', suffix:'개', prefixIcon:'' })),
       h('KjunButton', { suffixIcon:'' }, '빈 아이콘 버튼'),

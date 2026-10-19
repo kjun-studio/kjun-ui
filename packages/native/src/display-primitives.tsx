@@ -153,7 +153,7 @@ export function KjunEmpty({
           {description}
         </KText>
       )}
-      {children && <View style={{ marginTop: spec.actionGap, maxWidth: '100%' }}>{content(children)}</View>}
+      {hasContent(children) && <View style={{ marginTop: spec.actionGap, maxWidth: '100%' }}>{content(children)}</View>}
     </View>
   );
 }
@@ -310,7 +310,7 @@ export function KjunAlert({
           <ActionSizeContext.Provider value={alertActionSizes[small ? "sm" : "md"]}>
             <AlertActionsContext.Provider value={true}>
               <View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: geometry.actionsGap, marginTop: geometry[small ? "sm" : "md"].actionGap }}>
-                {actions}
+                {content(actions)}
               </View>
             </AlertActionsContext.Provider>
           </ActionSizeContext.Provider>

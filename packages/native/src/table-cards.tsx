@@ -144,7 +144,7 @@ export function TableCards<Row extends object>({ initialLoading, skeletonRows, s
                   {content(renderExpand?.(row, i))}
                 </View>
               )}
-              {actions && !actions.inlineInCard && (
+              {!!actions && !actions.inlineInCard && (
                 <View
                   style={{
                     borderTopWidth: tokens.border.defaultWidth,

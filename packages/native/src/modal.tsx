@@ -1,3 +1,5 @@
+import { content } from "./internal";
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { LayerBackdrop } from "./layer-backdrop";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { typeStyle } from "./typography";
@@ -246,7 +248,7 @@ export function KjunModal({
               }}
             >
               <View style={{ flex: 1, paddingRight: tokens.modal.titleActionGap }}>
-                {header || (
+                {hasContent(header) ? content(header) : (
                   <Text
                     accessibilityRole="header"
                     style={{
@@ -278,7 +280,7 @@ export function KjunModal({
           >
             {children}
           </ScrollView>
-          {(showFooter || footer) && (
+          {(showFooter || hasContent(footer)) && (
             <View
               style={{
                 flexDirection: 'row',
@@ -291,7 +293,7 @@ export function KjunModal({
                 borderTopColor: c.border,
               }}
             >
-              {footer || (
+              {hasContent(footer) ? content(footer) : (
                 <KjunFormActions
                   size={footerSize}
                   cancelVariant="secondary"

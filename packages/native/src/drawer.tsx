@@ -1,3 +1,4 @@
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { LayerBackdrop } from "./layer-backdrop";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { directionalShadow } from "../../../shared/package-runtime/elevation";
@@ -5,7 +6,7 @@ import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useState } from "react";
 import { Animated, Keyboard } from "react-native";
-import { drawerFrame, keyboardOverlap } from "../../../shared/package-runtime/drawer-geometry";
+import { drawerFrame, keyboardEvents, keyboardOverlap } from "../../../shared/package-runtime/drawer-geometry";
 import { useNativePresence, motionEmphasized } from "./motion";
 import {
 type ReactNode
@@ -45,18 +46,18 @@ export interface KjunDrawerProps {
   /** Keeps the panel above the on-screen keyboard (devices only). */
   avoidKeyboard?: boolean;
 }
-// How much of the window the keyboard covers while enabled. Android may already have resized the
-// window, in which case the overlap is 0. React Native Web has no keyboard events.
+// How much of the full-screen iOS modal the keyboard covers while enabled. Android resizes the modal
+// window itself (adjustResize), which the measured root height reflects; React Native Web has no keyboard.
 function useKeyboardOverlap(enabled: boolean, windowHeight: number) {
   const [overlap, setOverlap] = useState(0);
   useEffect(() => {
     setOverlap(0);
-    if (!enabled || Platform.OS === "web") return;
+    const events = keyboardEvents(Platform.OS);
+    if (!enabled || !events) return;
     const metrics = Keyboard.metrics?.();
     if (metrics) setOverlap(keyboardOverlap(windowHeight, metrics.screenY));
-    const ios = Platform.OS === "ios";
-    const show = Keyboard.addListener(ios ? "keyboardWillShow" : "keyboardDidShow", event => setOverlap(keyboardOverlap(windowHeight, event.endCoordinates.screenY)));
-    const hide = Keyboard.addListener(ios ? "keyboardWillHide" : "keyboardDidHide", () => setOverlap(0));
+    const show = Keyboard.addListener(events.show, event => setOverlap(keyboardOverlap(windowHeight, event.endCoordinates.screenY)));
+    const hide = Keyboard.addListener(events.hide, () => setOverlap(0));
     return () => { show.remove(); hide.remove(); };
   }, [enabled, windowHeight]);
   return overlap;
@@ -84,8 +85,10 @@ export function KjunDrawer({
   const { colors } = useKjunStyles(),
     window = useWindowDimensions(),
     vertical = position === "left" || position === "right";
+  // The modal root's own height: Android shrinks it for the keyboard; elsewhere it equals the window.
+  const [rootHeight, setRootHeight] = useState(0);
   const keyboard = useKeyboardOverlap(open && avoidKeyboard, window.height);
-  const frame = drawerFrame({ position, windowHeight: window.height, safeAreaTop: Math.max(0, safeAreaTop), safeAreaBottom: Math.max(0, safeAreaBottom),
+  const frame = drawerFrame({ position, windowHeight: rootHeight || window.height, safeAreaTop: Math.max(0, safeAreaTop), safeAreaBottom: Math.max(0, safeAreaBottom),
     gap: tokens.extensions.drawer.sheetGap, keyboard, maxHeight });
   const [panelHeight, setPanelHeight] = useState(0);
   const motion = useNativePresence(open, tokens.motion.layerEnter, tokens.motion.layerExit, vertical || panelHeight > 0, 0, { enterEasing: motionEmphasized });
@@ -107,6 +110,7 @@ export function KjunDrawer({
       animationType="none"
     >
       <View
+        onLayout={event => setRootHeight(event.nativeEvent.layout.height)}
         style={{
           flex: 1,
           justifyContent: position === "bottom" ? "flex-end" : "flex-start",
@@ -167,7 +171,7 @@ export function KjunDrawer({
               }}
             >
               <View style={{ flex: 1 }}>
-                {header || (
+                {hasContent(header) ? content(header) : (
                   <KText
                     style={{ ...typeStyle('sectionTitle'),   }}
                   >
@@ -193,7 +197,7 @@ export function KjunDrawer({
           >
             {content(children)}
           </ScrollView>
-          {footer && (
+          {hasContent(footer) && (
             <View
               style={{
                 paddingVertical: tokens.extensions.drawer.paddingY,

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { drawerFrame, keyboardOverlap } from '../shared/package-runtime/drawer-geometry.ts';
+import { drawerFrame, keyboardEvents, keyboardOverlap } from '../shared/package-runtime/drawer-geometry.ts';
 
 const base = { windowHeight: 800, safeAreaTop: 40, safeAreaBottom: 30, gap: 48, keyboard: 0 };
 
@@ -29,4 +29,10 @@ test('a top sheet pads the top safe area and stops short of the bottom', () => {
 test('side drawers take the visible height and pad both safe areas', () => {
   assert.deepEqual(drawerFrame({ ...base, position: 'right' }), { maxHeight: 800, height: 800, paddingTop: 40, paddingBottom: 30, lift: 0 });
   assert.deepEqual(drawerFrame({ ...base, position: 'left', keyboard: 300 }), { maxHeight: 500, height: 500, paddingTop: 40, paddingBottom: 0, lift: 0 });
+});
+
+test('only iOS lifts the drawer itself; Android modals already resize for the keyboard', () => {
+  assert.deepEqual(keyboardEvents('ios'), { show: 'keyboardWillShow', hide: 'keyboardWillHide' });
+  assert.equal(keyboardEvents('android'), null);
+  assert.equal(keyboardEvents('web'), null);
 });

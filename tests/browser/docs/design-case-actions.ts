@@ -44,7 +44,7 @@ export async function checkAdditionalCase(surface: Surface, id: string, after: b
     await surface.getByRole("button", { name: "갱신 완료", exact: true }).click();
     await expect(title).toBeVisible();
     await surface.getByText("선택", { exact: true }).click(); await expect(selection).not.toBeChecked();
-    await surface.getByRole("button", { name: "문서 목록 새로고침", exact: true }).click();
+    await surface.getByRole("button", { name: "문서 목록 갱신 시작", exact: true }).click();
     if (after) { await expect(title).toBeVisible(); await expect(selection).not.toBeChecked(); }
     else await expect(title).toHaveCount(0);
     await surface.getByRole("button", { name: "갱신 실패", exact: true }).click();

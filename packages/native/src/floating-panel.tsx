@@ -1,3 +1,4 @@
+import { typeStyle } from "./typography";
 import { LayerBackdrop } from "./layer-backdrop";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
@@ -300,7 +301,7 @@ export function FloatingPanel({
                 borderBottomColor: colors.divider,
               }}
             >
-              {header}
+              {content(header, typeStyle("cardTitle"))}
             </View>
           )}
           <ScrollView

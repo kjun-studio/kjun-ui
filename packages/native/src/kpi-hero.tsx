@@ -1,3 +1,5 @@
+import { content } from "./internal";
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { KpiNumberLine } from "./kpi-number-line";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
@@ -198,7 +200,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
             </View>
           )}
         </View>
-        {aside && !mobile && <View>{aside}</View>}
+        {hasContent(aside) && !mobile && <View>{content(aside)}</View>}
       </View>
       {secondary.length > 0 && (
         <View
@@ -260,7 +262,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                   </KpiNumberLine>
                 )
               )}
-              {item.desc &&
+              {!!item.desc &&
                 (loading ? (
                   <KjunSkeleton
                     type="block"

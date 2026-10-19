@@ -8,8 +8,8 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 
 - **Drawer**(세 플랫폼): `safeAreaTop`·`safeAreaBottom`(px)으로 안전 영역을 받습니다. 위·좌우 Drawer는 위 여백, 아래·좌우 Drawer는 footer 아래 여백으로 쓰고, 위·아래 Drawer는 반대쪽 안전 영역을 비워 둡니다. `maxHeight`(px)로 위·아래 Drawer의 높이 상한을 정합니다.
   - **동작 변경**: 위·아래 Drawer는 기본으로 화면 높이에서 반대쪽 안전 영역과 48px(`extensions.drawer.sheetGap`)을 뺀 높이까지만 커집니다. 넘치면 본문만 스크롤하고 머리글·footer는 고정합니다. 전에는 화면 전체 높이까지 커졌습니다.
-  - Native `avoidKeyboard`(기본 true): 화면 키보드가 나오면 아래 Drawer는 키보드 위로 올라가고, 다른 위치는 높이를 줄여 본문이 스크롤됩니다. Android가 이미 창 크기를 줄였으면 더 보정하지 않습니다. 기기에서만 동작합니다.
-- **Native 빈 글자**: 빈 문자열(`label=""`, `icon=""` 등)이나 Input의 문자열 `prefix`·`suffix`가 View에 그대로 놓여 기기에서 "Text strings must be rendered within a <Text>" 오류가 나던 문제를 고쳤습니다. 문자열 affix는 입력 글자 크기의 Text로 그립니다.
+  - Native `avoidKeyboard`(기본 true): 화면 키보드가 나오면 아래 Drawer는 키보드 위로 올라가고, 다른 위치는 높이를 줄여 본문이 스크롤됩니다. iOS는 키보드 위치로 계산하고, Android는 React Native Modal 창이 키보드만큼 줄어드는 것(adjustResize)에 맞춰 크기를 잽니다. 기기에서는 아직 확인하지 않았습니다.
+- **Native 빈 글자**: 빈 문자열(`label=""`, `icon=""`, `desc=""` 등), Input의 문자열 `prefix`·`suffix`, 문자열·빈 값·0을 넘긴 slot(`header`·`footer`·`actions`·`leading`·`trailing`·`aside`·`children`)이 View에 그대로 놓여 기기에서 "Text strings must be rendered within a <Text>" 오류가 나던 문제를 고쳤습니다. 문자열은 KJUN 글자 스타일의 Text로 그리고, 빈 값은 그리지 않습니다.
 - **KpiRow**: 좁은 화면 요약 행에서 한국어 라벨·값이 음절 중간이 아니라 띄어쓰기에서 줄바꿈합니다.
 - **Native KjunFeedbackProvider**: 앱 화면을 감싸는 View가 부모 크기를 그대로 이어받아 `flex: 1` 화면이 높이를 잃지 않습니다. `style`로 덮어쓸 수 있습니다.
 

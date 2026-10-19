@@ -13,6 +13,13 @@ export interface DrawerFrameInput {
 }
 export interface DrawerFrame { maxHeight: number; height: number | undefined; paddingTop: number; paddingBottom: number; lift: number }
 
+/**
+ * Keyboard events a drawer listens to. Only iOS: React Native's Android Modal window is adjustResize,
+ * so the system already shrinks the modal and a measured root height covers it.
+ */
+export function keyboardEvents(os: string) {
+  return os === "ios" ? { show: "keyboardWillShow", hide: "keyboardWillHide" } as const : null;
+}
 /** The part of the window the keyboard covers; 0 when the platform already resized the window. */
 export function keyboardOverlap(windowHeight: number, keyboardScreenY: number) {
   return Math.max(0, windowHeight - keyboardScreenY);
