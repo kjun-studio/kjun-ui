@@ -7,7 +7,8 @@ export function LayoutCases({ K, native = false }: { K: any; native?: boolean })
     <div data-testid="text-variants">{variants.map(v => <K.KjunText key={v} variant={v}>{v}</K.KjunText>)}</div>
     <div data-testid="text-tones">{tones.map(t => <K.KjunText key={t} tone={t}>{toneTexts[t]}</K.KjunText>)}</div>
     <span data-testid="probe-secondary" style={{ color: 'var(--kjun-text-secondary)' }}>probe</span>
-    <div data-testid="text-clamp" style={{ width: 120 }}><K.KjunText maxLines={1}>{longSentence}</K.KjunText></div>
+    {/* A flex column like a Native View: RN Web Text is inline and only takes its parent's width inside one. */}
+    <div data-testid="text-clamp" style={{ width: 120, display: 'flex', flexDirection: 'column' }}><K.KjunText maxLines={1}>{longSentence}</K.KjunText></div>
     <div data-testid="stack-md"><K.KjunStack gap="md">{boxes(3)}</K.KjunStack></div>
     <div data-testid="stack-section"><K.KjunStack gap="section-md">{boxes(3)}</K.KjunStack></div>
     <div data-testid="inline-sm"><K.KjunInline gap="sm">{boxes(3)}</K.KjunInline></div>
