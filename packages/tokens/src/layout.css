@@ -1,0 +1,74 @@
+/* KjunText, KjunStack, KjunInline: 글자 역할과 간격 단계를 이름으로만 고른다. 값은 모두 기존 토큰이다. */
+
+/* KjunText: 크기·줄높이·굵기는 .kjun-type-* 역할이 정한다. 앱의 h1·p 요소 규칙이 들어오지 않도록
+   여백·색·글꼴을 명시하고, 색과 글꼴은 부모(브랜드 카드 등)를 따른다. */
+.kjun-text {
+  margin: 0;
+  color: inherit;
+  font-family: inherit;
+  overflow-wrap: anywhere;
+}
+.kjun-text.kjun-type-number-sm,
+.kjun-text.kjun-type-number-md,
+.kjun-text.kjun-type-number-lg,
+.kjun-text.kjun-type-display-sm,
+.kjun-text.kjun-type-display-md,
+.kjun-text.kjun-type-display-lg {
+  font-family: var(--_kjun-font-numeric);
+}
+.kjun-text[data-tone="secondary"] { color: var(--_kjun-color-text-secondary); }
+.kjun-text[data-tone="tertiary"] { color: var(--_kjun-color-text-tertiary); }
+.kjun-text[data-tone="disabled"] { color: var(--_kjun-color-text-disabled); }
+.kjun-text[data-align="start"] { text-align: start; }
+.kjun-text[data-align="center"] { text-align: center; }
+.kjun-text[data-align="end"] { text-align: end; }
+.kjun-text[data-max-lines] {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--_kjun-text-lines);
+  overflow: hidden;
+}
+
+/* KjunStack: 세로 쌓기. 간격은 space.stack·space.section 단계다. */
+.kjun-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--_kjun-geometry-space-stack-md);
+  min-width: 0;
+}
+.kjun-stack[data-gap="none"] { gap: 0; }
+.kjun-stack[data-gap="sm"] { gap: var(--_kjun-geometry-space-stack-sm); }
+.kjun-stack[data-gap="lg"] { gap: var(--_kjun-geometry-space-stack-lg); }
+.kjun-stack[data-gap="section-sm"] { gap: var(--_kjun-geometry-space-section-sm); }
+.kjun-stack[data-gap="section-md"] { gap: var(--_kjun-geometry-space-section-md); }
+.kjun-stack[data-gap="section-lg"] { gap: var(--_kjun-geometry-space-section-lg); }
+.kjun-stack[data-align="start"] { align-items: flex-start; }
+.kjun-stack[data-align="center"] { align-items: center; }
+.kjun-stack[data-align="end"] { align-items: flex-end; }
+
+/* KjunInline: 가로 배치. 간격은 space.inline 단계이고, 좁은 화면에서는 기본으로 줄바꿈한다. */
+.kjun-inline {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--_kjun-geometry-space-inline-sm);
+  min-width: 0;
+}
+.kjun-inline[data-wrap="false"] { flex-wrap: nowrap; }
+.kjun-inline[data-gap="none"] { gap: 0; }
+.kjun-inline[data-gap="xs"] { gap: var(--_kjun-geometry-space-inline-xs); }
+.kjun-inline[data-gap="md"] { gap: var(--_kjun-geometry-space-inline-md); }
+.kjun-inline[data-gap="lg"] { gap: var(--_kjun-geometry-space-inline-lg); }
+.kjun-inline[data-align="start"] { align-items: flex-start; }
+.kjun-inline[data-align="end"] { align-items: flex-end; }
+.kjun-inline[data-align="baseline"] { align-items: baseline; }
+.kjun-inline[data-align="stretch"] { align-items: stretch; }
+.kjun-inline[data-justify="center"] { justify-content: center; }
+.kjun-inline[data-justify="end"] { justify-content: flex-end; }
+.kjun-inline[data-justify="between"] { justify-content: space-between; }
+
+/* 직계 폼 그룹은 자체 아래 여백 대신 부모 gap만 따른다. */
+:is(.kjun-stack, .kjun-inline) > .kjun-form-group { margin-bottom: 0; }

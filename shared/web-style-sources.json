@@ -16,5 +16,6 @@
   "extensions.css",
   "compound-controls.css",
   "motion.css",
-  "kpi-typography.css"
+  "kpi-typography.css",
+  "layout.css"
 ]
