@@ -30,7 +30,7 @@ export const KjunText = defineComponent({
       const Tag = props.as ?? defaultTextTag(props.variant);
       const lines = props.maxLines && props.maxLines > 0 ? Math.floor(props.maxLines) : undefined;
       return (
-        <Tag class={["kjun-text", textTypeClass(props.variant)]} data-tone={props.tone === "default" ? undefined : props.tone}
+        <Tag class={["kjun-text", textTypeClass(props.variant)]} data-kjun-content="" data-tone={props.tone === "default" ? undefined : props.tone}
           data-align={props.align} data-max-lines={lines} style={lines ? { "--_kjun-text-lines": lines } : undefined}>
           {slots.default?.()}
         </Tag>

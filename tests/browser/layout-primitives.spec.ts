@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { tokens } from '../../packages/tokens/dist/index.js';
 import { openFixture } from './packed-fixture';
-import { formLabels, longSentence } from '../fixtures/layout-primitives-values';
+import { formLabels, longSentence, narrowNumber } from '../fixtures/layout-primitives-values';
 // KjunText, KjunStack and KjunInline: names (roles and steps) pick every size, color and gap from tokens.
 const box = async (locator: Locator) => (await locator.boundingBox())!;
 const px = (n: number) => `${n}px`;
@@ -37,6 +37,11 @@ for (const platform of ['react', 'vue3', 'native']) {
       const text = page.getByTestId('text-clamp').getByText(longSentence.trim().slice(0, 10));
       expect((await box(text)).height).toBeLessThanOrEqual(tokens.typography.body.lineHeightPx + 1);
       expect((await text.textContent())!.trim()).toBe(longSentence.trim());
+    });
+
+    test('number variants use fixed-width digits', async ({ page }) => {
+      const value = page.getByTestId('text-number').getByText('1234', { exact: true });
+      expect(await value.evaluate(el => getComputedStyle(el).fontVariantNumeric)).toContain('tabular-nums');
     });
 
     test('stack gaps follow space.stack and space.section', async ({ page }) => {
@@ -77,6 +82,22 @@ for (const platform of ['react', 'vue3', 'native']) {
       test('app markup inside stack keeps its own styles', async ({ page }) => {
         const heading = parseFloat(await page.getByTestId('stack-app-markup').locator('h2').evaluate(el => getComputedStyle(el).fontSize));
         expect(heading).toBeGreaterThan(tokens.typography.body.fontSizePx);
+      });
+
+      test('links inside KjunText keep the browser link style', async ({ page }) => {
+        const link = page.getByTestId('text-link').getByRole('link', { name: '동의' });
+        expect(await link.evaluate(el => getComputedStyle(el).textDecorationLine)).toContain('underline');
+      });
+
+      test('app content rules do not restyle KjunText margin or color', async ({ page }) => {
+        const text = page.getByTestId('app-prose').getByText('앱 본문 안의 글자', { exact: true });
+        await expect(text).toHaveCSS('margin-bottom', '0px');
+        expect(await text.evaluate(el => getComputedStyle(el).color)).not.toBe('rgb(1, 2, 3)');
+      });
+
+      test('numbers do not break between digits in a narrow box', async ({ page }) => {
+        const value = page.getByTestId('number-narrow').getByText(narrowNumber, { exact: true });
+        expect((await box(value)).height).toBeLessThanOrEqual(tokens.typography.numberMd.lineHeightPx + 1);
       });
 
       test('app markup inside nested stacks keeps its own styles', async ({ page }) => {

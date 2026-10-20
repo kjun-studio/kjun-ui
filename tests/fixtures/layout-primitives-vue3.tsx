@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import * as K from '@kjun-ui/vue3';
 import { applyDemoColors } from '../../shared/demo-colors';
-import { boxCss, formLabels, longSentence, toneTexts, tones, variants } from './layout-primitives-values';
+import { boxCss, formLabels, longSentence, narrowNumber, toneTexts, tones, variants } from './layout-primitives-values';
 applyDemoColors('default');
 document.head.append(Object.assign(document.createElement('style'), { textContent: boxCss }));
 const boxes = (count: number, wide = false) => Array.from({ length: count }, (_, i) => <div key={i} class={'app-box' + (wide ? ' app-wide' : '')} />);
@@ -11,6 +11,10 @@ createApp(() => <K.KjunProvider><div style={{ padding: '16px' }}>
   <div data-testid="text-tones">{tones.map(t => <K.KjunText key={t} tone={t}>{toneTexts[t]}</K.KjunText>)}</div>
   <span data-testid="probe-secondary" style={{ color: 'var(--kjun-text-secondary)' }}>probe</span>
   <div data-testid="text-clamp" style={{ width: '120px', display: 'flex', flexDirection: 'column' }}><K.KjunText maxLines={1}>{longSentence}</K.KjunText></div>
+  <div data-testid="text-number"><K.KjunText variant="numberMd">1234</K.KjunText></div>
+  <div data-testid="text-link"><K.KjunText>약관에 <a href="#terms">동의</a>합니다</K.KjunText></div>
+  <div data-testid="app-prose" class="app-prose"><K.KjunText>앱 본문 안의 글자</K.KjunText></div>
+  <div data-testid="number-narrow" style={{ width: '40px', display: 'flex', flexDirection: 'column' }}><K.KjunText variant="numberMd">{narrowNumber}</K.KjunText></div>
   <div data-testid="stack-md"><K.KjunStack gap="md">{boxes(3)}</K.KjunStack></div>
   <div data-testid="stack-section"><K.KjunStack gap="section-md">{boxes(3)}</K.KjunStack></div>
   <div data-testid="inline-sm"><K.KjunInline gap="sm">{boxes(3)}</K.KjunInline></div>

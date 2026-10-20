@@ -29,6 +29,8 @@ export function KjunText({ variant = "body", tone = "default", as, align, maxLin
   return createElement(as ?? defaultTextTag(variant), {
     ...rest,
     className: join("kjun-text", textTypeClass(variant), className),
+    // 안에 넣은 링크·강조 같은 앱 요소는 KJUN 리셋을 받지 않는다.
+    "data-kjun-content": "",
     "data-tone": tone === "default" ? undefined : tone,
     "data-align": align,
     "data-max-lines": lines,

@@ -1,4 +1,4 @@
-import { formLabels, longSentence, toneTexts, tones, variants } from './layout-primitives-values';
+import { formLabels, longSentence, narrowNumber, toneTexts, tones, variants } from './layout-primitives-values';
 const boxes = (count: number, wide = false) => Array.from({ length: count }, (_, i) =>
   <div key={i} className={'app-box' + (wide ? ' app-wide' : '')} />);
 export function LayoutCases({ K, native = false }: { K: any; native?: boolean }) {
@@ -9,6 +9,10 @@ export function LayoutCases({ K, native = false }: { K: any; native?: boolean })
     <span data-testid="probe-secondary" style={{ color: 'var(--kjun-text-secondary)' }}>probe</span>
     {/* A flex column like a Native View: RN Web Text is inline and only takes its parent's width inside one. */}
     <div data-testid="text-clamp" style={{ width: 120, display: 'flex', flexDirection: 'column' }}><K.KjunText maxLines={1}>{longSentence}</K.KjunText></div>
+    <div data-testid="text-number"><K.KjunText variant="numberMd">{'1234'}</K.KjunText></div>
+    {!native && <div data-testid="text-link"><K.KjunText>약관에 <a href="#terms">동의</a>합니다</K.KjunText></div>}
+    {!native && <div data-testid="app-prose" className="app-prose"><K.KjunText>앱 본문 안의 글자</K.KjunText></div>}
+    {!native && <div data-testid="number-narrow" style={{ width: 40, display: 'flex', flexDirection: 'column' }}><K.KjunText variant="numberMd">{narrowNumber}</K.KjunText></div>}
     <div data-testid="stack-md"><K.KjunStack gap="md">{boxes(3)}</K.KjunStack></div>
     <div data-testid="stack-section"><K.KjunStack gap="section-md">{boxes(3)}</K.KjunStack></div>
     <div data-testid="inline-sm"><K.KjunInline gap="sm">{boxes(3)}</K.KjunInline></div>

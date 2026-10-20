@@ -26,7 +26,7 @@ export interface KjunTextProps {
 const toneRole = { default: "text", secondary: "textSecondary", tertiary: "textTertiary", disabled: "textDisabled" } as const;
 const textAlign = { start: "left", center: "center", end: "right" } as const;
 export function KjunText({ variant = "body", tone = "default", align, maxLines, style, children }: KjunTextProps) {
-  const { colors, numericFontFamily } = useKjunStyles();
+  const { colors, fontFamily, numericFontFamily } = useKjunStyles();
   const lines = maxLines && maxLines > 0 ? Math.floor(maxLines) : undefined;
   return (
     <KText
@@ -36,7 +36,7 @@ export function KjunText({ variant = "body", tone = "default", align, maxLines, 
       style={[
         typeStyle(variant),
         { color: colors[toneRole[tone]] },
-        isNumericVariant(variant) && numericFontFamily ? { fontFamily: numericFontFamily, fontVariant: ["tabular-nums"] } : null,
+        isNumericVariant(variant) ? { fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"] } : null,
         align ? { textAlign: textAlign[align] } : null,
         style,
       ]}

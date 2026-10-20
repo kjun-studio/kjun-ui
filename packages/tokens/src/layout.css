@@ -1,8 +1,9 @@
 /* KjunText, KjunStack, KjunInline: 글자 역할과 간격 단계를 이름으로만 고른다. 값은 모두 기존 토큰이다. */
 
 /* KjunText: 크기·줄높이·굵기는 .kjun-type-* 역할이 정한다. 앱의 h1·p 요소 규칙이 들어오지 않도록
-   여백·색·글꼴을 명시하고, 색과 글꼴은 부모(브랜드 카드 등)를 따른다. */
-.kjun-text {
+   여백·색·글꼴을 명시하고, 색과 글꼴은 부모(브랜드 카드 등)를 따른다. 클래스를 두 번 써서 앱의
+   `.prose p` 같은 규칙(0,1,1)보다 강하게 하되, .kjun-scope 밖(포털 등)에서도 그대로 적용된다. */
+.kjun-text.kjun-text {
   margin: 0;
   color: inherit;
   font-family: inherit;
@@ -16,9 +17,13 @@
 .kjun-text.kjun-type-display-lg {
   font-family: var(--_kjun-font-numeric);
 }
-.kjun-text[data-tone="secondary"] { color: var(--_kjun-color-text-secondary); }
-.kjun-text[data-tone="tertiary"] { color: var(--_kjun-color-text-tertiary); }
-.kjun-text[data-tone="disabled"] { color: var(--_kjun-color-text-disabled); }
+/* 숫자는 자릿수 사이에서 끊지 않는다. display 크기는 휴대폰 폭을 넘지 않도록 기본 규칙(anywhere)을 둔다. */
+.kjun-text.kjun-type-number-sm,
+.kjun-text.kjun-type-number-md,
+.kjun-text.kjun-type-number-lg { overflow-wrap: normal; }
+.kjun-text.kjun-text[data-tone="secondary"] { color: var(--_kjun-color-text-secondary); }
+.kjun-text.kjun-text[data-tone="tertiary"] { color: var(--_kjun-color-text-tertiary); }
+.kjun-text.kjun-text[data-tone="disabled"] { color: var(--_kjun-color-text-disabled); }
 .kjun-text[data-align="start"] { text-align: start; }
 .kjun-text[data-align="center"] { text-align: center; }
 .kjun-text[data-align="end"] { text-align: end; }
