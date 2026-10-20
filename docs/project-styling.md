@@ -76,6 +76,7 @@ Vue 3·React 모달은 가장 가까운 Provider 안에 렌더링되어 해당 �
 ```
 
 - `KjunText`: `variant`로 글자 역할, `tone`으로 색 역할을 고릅니다. 제목 수준은 `as`로 바꿉니다(웹).
+  - 기본 tone의 색은 플랫폼마다 다릅니다. 웹은 감싼 영역의 글자색을 따르고, Native는 항상 `text` 색입니다(Native 글자는 부모 View의 색을 이어받지 못합니다). 색이 다른 배경 위에 둔 글자는 웹에서는 배경을 따라가지만 Native에서는 `text` 색으로 남으니, 두 플랫폼에서 모두 확인합니다.
 - `KjunStack`(세로)·`KjunInline`(가로): `gap`으로 간격 단계를 고릅니다. 바로 안의 폼 그룹은 자체 아래 여백 없이 `gap`만 따르므로 `data-kjun-layout="form"`이 필요 없습니다.
 - Stack·Inline은 KJUN 마크업으로 취급하지 않습니다. 안에 넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받습니다.
 

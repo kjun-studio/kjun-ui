@@ -75,9 +75,12 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
 
     if (platform === 'native') {
-      test('native stack wraps raw strings', async ({ page }) => {
-        await expect(page.getByTestId('stack-string').getByText('문자열 자식', { exact: true })).toBeVisible();
-      });
+      // A bare string inside a View crashes on a device; RN Web renders it anyway, so check it sits in a Text (dir="auto").
+      for (const [id, text] of [['stack-string', '문자열 자식'], ['stack-fragment-string', '조각 안 문자열']]) {
+        test(`native stack wraps raw strings in Text: ${id}`, async ({ page }) => {
+          await expect(page.getByTestId(id).getByText(text, { exact: true })).toHaveAttribute('dir', 'auto');
+        });
+      }
     } else {
       test('app markup inside stack keeps its own styles', async ({ page }) => {
         const heading = parseFloat(await page.getByTestId('stack-app-markup').locator('h2').evaluate(el => getComputedStyle(el).fontSize));

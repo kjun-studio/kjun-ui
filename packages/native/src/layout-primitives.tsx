@@ -1,4 +1,4 @@
-import { Children, cloneElement, isValidElement, type ReactElement, type ReactNode } from "react";
+import { Children, Fragment, cloneElement, isValidElement, type ReactElement, type ReactNode } from "react";
 import { View, type StyleProp, type TextStyle, type ViewStyle } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
 import {
@@ -7,7 +7,7 @@ import {
   type TextAlign, type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
 import { KjunFormGroup } from "./input";
-import { KText, content } from "./internal";
+import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
 export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackGap, TextAlign, TextTone, TextVariant };
@@ -47,15 +47,23 @@ export function KjunText({ variant = "body", tone = "default", align, maxLines, 
 }
 
 // Like Web's `> .kjun-form-group` rule: only a direct form group drops its own bottom margin, and raw strings
-// become body text (a bare string inside a View crashes on Native).
+// become body text (a bare string inside a View crashes on Native). Fragments are opened first, so their strings
+// and form groups count as direct children too.
+function flatten(children: ReactNode, path = ""): [string, ReactNode][] {
+  return Children.toArray(children).flatMap((child, i): [string, ReactNode][] => {
+    const key = `${path}${i}`;
+    return isValidElement<{ children?: ReactNode }>(child) && child.type === Fragment
+      ? flatten(child.props.children, `${key}.`) : [[key, child]];
+  });
+}
 function items(children: ReactNode) {
-  return Children.map(children, child => {
-    if (typeof child === "string" || typeof child === "number") return content(child);
+  return flatten(children).map(([key, child]) => {
+    if (typeof child === "string" || typeof child === "number") return <KText key={key}>{child}</KText>;
     if (isValidElement(child) && child.type === KjunFormGroup) {
       const group = child as ReactElement<{ style?: StyleProp<ViewStyle> }>;
-      return cloneElement(group, { style: [{ marginBottom: 0 }, group.props.style] });
+      return cloneElement(group, { key, style: [{ marginBottom: 0 }, group.props.style] });
     }
-    return child;
+    return isValidElement(child) ? cloneElement(child, { key }) : child;
   });
 }
 
