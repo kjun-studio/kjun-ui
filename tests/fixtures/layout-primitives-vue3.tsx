@@ -18,4 +18,5 @@ createApp(() => <K.KjunProvider><div style={{ padding: '16px' }}>
   <div data-testid="stack-form"><K.KjunStack gap="md">{formLabels.stack.map(field)}</K.KjunStack></div>
   <div data-testid="free-form">{formLabels.free.map(field)}</div>
   <div data-testid="stack-app-markup"><K.KjunStack><h2>앱 제목</h2></K.KjunStack></div>
+  <div data-testid="nested-app-markup"><K.KjunStack><K.KjunStack><K.KjunInline><h2>안쪽 앱 제목</h2></K.KjunInline></K.KjunStack></K.KjunStack></div>
 </div></K.KjunProvider>).mount('#root');

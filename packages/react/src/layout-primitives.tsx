@@ -45,10 +45,10 @@ export interface KjunStackProps extends RootAttributes {
   style?: CSSProperties;
   children?: ReactNode;
 }
-/** Vertical stack. App children are not reset (data-kjun-content); direct form groups drop their own bottom margin. */
+/** Vertical stack. It is not KJUN markup (a data attribute, no kjun- class), so app children keep the styles they would have without it; direct form groups drop their own bottom margin. */
 export function KjunStack({ gap = "md", align = "stretch", as = "div", className, style, children, ...rest }: KjunStackProps) {
-  return createElement(as, { ...rest, className: join("kjun-stack", className), style,
-    "data-kjun-content": "", "data-gap": gap, "data-align": align }, children);
+  return createElement(as, { ...rest, className: className || undefined, style,
+    "data-kjun-stack": "", "data-gap": gap, "data-align": align }, children);
 }
 
 export interface KjunInlineProps extends RootAttributes {
@@ -62,11 +62,11 @@ export interface KjunInlineProps extends RootAttributes {
   style?: CSSProperties;
   children?: ReactNode;
 }
-/** Horizontal row that wraps by default. App children are not reset (data-kjun-content). */
+/** Horizontal row that wraps by default. Like KjunStack it is not KJUN markup, so app children keep their own styles. */
 export function KjunInline({ gap = "sm", align = "center", justify = "start", wrap = true, className, style, children, ...rest }: KjunInlineProps) {
   return (
-    <div {...rest} className={join("kjun-inline", className)} style={style}
-      data-kjun-content="" data-gap={gap} data-align={align} data-justify={justify} data-wrap={wrap ? undefined : "false"}>
+    <div {...rest} className={className || undefined} style={style}
+      data-kjun-inline="" data-gap={gap} data-align={align} data-justify={justify} data-wrap={wrap ? undefined : "false"}>
       {children}
     </div>
   );

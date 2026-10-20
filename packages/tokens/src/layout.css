@@ -29,26 +29,28 @@
   overflow: hidden;
 }
 
-/* KjunStack: 세로 쌓기. 간격은 space.stack·space.section 단계다. */
-.kjun-stack {
+/* KjunStack: 세로 쌓기. 간격은 space.stack·space.section 단계다.
+   클래스 대신 data 속성을 써서 KJUN 마크업으로 판정되지 않는다. 그래서 안에 넣은 앱 요소는 Stack이
+   없을 때와 같은 스타일을 받고, Stack을 몇 겹 겹쳐도 달라지지 않는다. */
+[data-kjun-stack] {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: var(--_kjun-geometry-space-stack-md);
   min-width: 0;
 }
-.kjun-stack[data-gap="none"] { gap: 0; }
-.kjun-stack[data-gap="sm"] { gap: var(--_kjun-geometry-space-stack-sm); }
-.kjun-stack[data-gap="lg"] { gap: var(--_kjun-geometry-space-stack-lg); }
-.kjun-stack[data-gap="section-sm"] { gap: var(--_kjun-geometry-space-section-sm); }
-.kjun-stack[data-gap="section-md"] { gap: var(--_kjun-geometry-space-section-md); }
-.kjun-stack[data-gap="section-lg"] { gap: var(--_kjun-geometry-space-section-lg); }
-.kjun-stack[data-align="start"] { align-items: flex-start; }
-.kjun-stack[data-align="center"] { align-items: center; }
-.kjun-stack[data-align="end"] { align-items: flex-end; }
+[data-kjun-stack][data-gap="none"] { gap: 0; }
+[data-kjun-stack][data-gap="sm"] { gap: var(--_kjun-geometry-space-stack-sm); }
+[data-kjun-stack][data-gap="lg"] { gap: var(--_kjun-geometry-space-stack-lg); }
+[data-kjun-stack][data-gap="section-sm"] { gap: var(--_kjun-geometry-space-section-sm); }
+[data-kjun-stack][data-gap="section-md"] { gap: var(--_kjun-geometry-space-section-md); }
+[data-kjun-stack][data-gap="section-lg"] { gap: var(--_kjun-geometry-space-section-lg); }
+[data-kjun-stack][data-align="start"] { align-items: flex-start; }
+[data-kjun-stack][data-align="center"] { align-items: center; }
+[data-kjun-stack][data-align="end"] { align-items: flex-end; }
 
 /* KjunInline: 가로 배치. 간격은 space.inline 단계이고, 좁은 화면에서는 기본으로 줄바꿈한다. */
-.kjun-inline {
+[data-kjun-inline] {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -57,18 +59,18 @@
   gap: var(--_kjun-geometry-space-inline-sm);
   min-width: 0;
 }
-.kjun-inline[data-wrap="false"] { flex-wrap: nowrap; }
-.kjun-inline[data-gap="none"] { gap: 0; }
-.kjun-inline[data-gap="xs"] { gap: var(--_kjun-geometry-space-inline-xs); }
-.kjun-inline[data-gap="md"] { gap: var(--_kjun-geometry-space-inline-md); }
-.kjun-inline[data-gap="lg"] { gap: var(--_kjun-geometry-space-inline-lg); }
-.kjun-inline[data-align="start"] { align-items: flex-start; }
-.kjun-inline[data-align="end"] { align-items: flex-end; }
-.kjun-inline[data-align="baseline"] { align-items: baseline; }
-.kjun-inline[data-align="stretch"] { align-items: stretch; }
-.kjun-inline[data-justify="center"] { justify-content: center; }
-.kjun-inline[data-justify="end"] { justify-content: flex-end; }
-.kjun-inline[data-justify="between"] { justify-content: space-between; }
+[data-kjun-inline][data-wrap="false"] { flex-wrap: nowrap; }
+[data-kjun-inline][data-gap="none"] { gap: 0; }
+[data-kjun-inline][data-gap="xs"] { gap: var(--_kjun-geometry-space-inline-xs); }
+[data-kjun-inline][data-gap="md"] { gap: var(--_kjun-geometry-space-inline-md); }
+[data-kjun-inline][data-gap="lg"] { gap: var(--_kjun-geometry-space-inline-lg); }
+[data-kjun-inline][data-align="start"] { align-items: flex-start; }
+[data-kjun-inline][data-align="end"] { align-items: flex-end; }
+[data-kjun-inline][data-align="baseline"] { align-items: baseline; }
+[data-kjun-inline][data-align="stretch"] { align-items: stretch; }
+[data-kjun-inline][data-justify="center"] { justify-content: center; }
+[data-kjun-inline][data-justify="end"] { justify-content: flex-end; }
+[data-kjun-inline][data-justify="between"] { justify-content: space-between; }
 
 /* 직계 폼 그룹은 자체 아래 여백 대신 부모 gap만 따른다. */
-:is(.kjun-stack, .kjun-inline) > .kjun-form-group { margin-bottom: 0; }
+:is([data-kjun-stack], [data-kjun-inline]) > .kjun-form-group { margin-bottom: 0; }

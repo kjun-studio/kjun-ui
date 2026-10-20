@@ -57,6 +57,28 @@ Vue 3·React 모달은 가장 가까운 Provider 안에 렌더링되어 해당 �
 
 웹 Provider는 마운트·갱신 시 필수 색상과 `--kjun-font` 누락을 오류로 알립니다. 금융 색상을 사용하는 컴포넌트는 자신이 렌더링되는 범위에서 13개 금융 역할의 연결도 검사합니다. 일반 버튼·입력·숫자 표시만 사용하는 영역에는 금융 역할을 요구하지 않습니다. 폰트 파일의 로딩 여부와 색상 대비는 적용 프로젝트에서 확인합니다.
 
+### 글자와 간격은 KjunText·KjunStack·KjunInline으로
+
+화면의 제목·본문·보조 문구와 요소 사이 간격은 앱 CSS로 정하지 않고 KJUN 컴포넌트의 이름(역할·단계)으로 고릅니다. 앱 CSS에는 페이지 폭·그리드 열 같은 큰 배치만 남깁니다. 이렇게 하면 화면마다 `font-size: 28px`, `margin-top: 18px` 같은 값이 따로 생기지 않습니다.
+
+```vue
+<KjunStack gap="section-md">
+  <KjunStack gap="sm">
+    <KjunText variant="pageTitle">알림 설정</KjunText>
+    <KjunText tone="secondary">받을 알림을 고르세요.</KjunText>
+  </KjunStack>
+  <KjunStack gap="md">
+    <KjunFormGroup label="이메일"><KjunInput v-model="email" /></KjunFormGroup>
+    <KjunSwitch v-model="push" label="푸시 알림" />
+  </KjunStack>
+  <KjunInline justify="end"><KjunButton>저장</KjunButton></KjunInline>
+</KjunStack>
+```
+
+- `KjunText`: `variant`로 글자 역할, `tone`으로 색 역할을 고릅니다. 제목 수준은 `as`로 바꿉니다(웹).
+- `KjunStack`(세로)·`KjunInline`(가로): `gap`으로 간격 단계를 고릅니다. 바로 안의 폼 그룹은 자체 아래 여백 없이 `gap`만 따르므로 `data-kjun-layout="form"`이 필요 없습니다.
+- Stack·Inline은 KJUN 마크업으로 취급하지 않습니다. 안에 넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받습니다.
+
 ## Native
 
 ```tsx

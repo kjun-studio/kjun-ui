@@ -78,6 +78,11 @@ for (const platform of ['react', 'vue3', 'native']) {
         const heading = parseFloat(await page.getByTestId('stack-app-markup').locator('h2').evaluate(el => getComputedStyle(el).fontSize));
         expect(heading).toBeGreaterThan(tokens.typography.body.fontSizePx);
       });
+
+      test('app markup inside nested stacks keeps its own styles', async ({ page }) => {
+        const heading = parseFloat(await page.getByTestId('nested-app-markup').locator('h2').evaluate(el => getComputedStyle(el).fontSize));
+        expect(heading).toBeGreaterThan(tokens.typography.body.fontSizePx);
+      });
     }
   });
 }

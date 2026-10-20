@@ -46,7 +46,7 @@ const kjunStackProps = {
   as: { type: String as PropType<"div" | "section">, default: "div" },
 } as const;
 export type KjunStackProps = ExtractPublicPropTypes<typeof kjunStackProps>;
-/** Vertical stack. App children are not reset (data-kjun-content); direct form groups drop their own bottom margin. */
+/** Vertical stack. It is not KJUN markup (a data attribute, no kjun- class), so app children keep the styles they would have without it; direct form groups drop their own bottom margin. */
 export const KjunStack = defineComponent({
   name: "KjunStack",
   props: kjunStackProps,
@@ -54,7 +54,7 @@ export const KjunStack = defineComponent({
   setup(props, { slots }) {
     return () => {
       const Tag = props.as;
-      return <Tag class="kjun-stack" data-kjun-content="" data-gap={props.gap} data-align={props.align}>{slots.default?.()}</Tag>;
+      return <Tag data-kjun-stack="" data-gap={props.gap} data-align={props.align}>{slots.default?.()}</Tag>;
     };
   },
 });
@@ -68,14 +68,14 @@ const kjunInlineProps = {
   wrap: { type: Boolean, default: true },
 } as const;
 export type KjunInlineProps = ExtractPublicPropTypes<typeof kjunInlineProps>;
-/** Horizontal row that wraps by default. App children are not reset (data-kjun-content). */
+/** Horizontal row that wraps by default. Like KjunStack it is not KJUN markup, so app children keep their own styles. */
 export const KjunInline = defineComponent({
   name: "KjunInline",
   props: kjunInlineProps,
   slots: defaultSlot,
   setup(props, { slots }) {
     return () => (
-      <div class="kjun-inline" data-kjun-content="" data-gap={props.gap} data-align={props.align} data-justify={props.justify}
+      <div data-kjun-inline="" data-gap={props.gap} data-align={props.align} data-justify={props.justify}
         data-wrap={props.wrap ? undefined : "false"}>
         {slots.default?.()}
       </div>

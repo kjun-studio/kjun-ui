@@ -548,14 +548,14 @@
   "KjunStack": {
     "slug": "stack",
     "description": "요소를 세로로 쌓고 사이 간격을 토큰 단계로 정합니다.",
-    "interaction": "gap으로 간격 단계(sm·md·lg는 space.stack, section-sm·md·lg는 space.section)를, align으로 가로 정렬을 고릅니다. 안에 넣은 앱 요소는 KJUN 기본 스타일 초기화를 받지 않습니다. 바로 안의 FormGroup은 자체 아래 여백 대신 gap만 따릅니다. 앱 CSS로 margin을 더하지 말고 gap 단계를 바꿉니다.",
+    "interaction": "gap으로 간격 단계(sm·md·lg는 space.stack, section-sm·md·lg는 space.section)를, align으로 가로 정렬을 고릅니다. Stack 자체는 KJUN 마크업으로 취급하지 않으므로, 안에 넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받고 몇 겹 겹쳐도 같습니다. 바로 안의 FormGroup은 자체 아래 여백 대신 gap만 따릅니다. 앱 CSS로 margin을 더하지 말고 gap 단계를 바꿉니다.",
     "differences": "세 플랫폼 모두 gap·align을 사용합니다. as(div·section)는 웹 전용입니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
     "states": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)입니다."
   },
   "KjunInline": {
     "slug": "inline",
     "description": "요소를 가로로 배치하고 사이 간격을 토큰 단계로 정합니다. 좁은 화면에서는 줄바꿈합니다.",
-    "interaction": "gap으로 간격 단계(xs·sm·md·lg는 space.inline)를, align으로 세로 정렬, justify로 가로 분배(between은 양 끝 정렬)를 고릅니다. wrap 기본값은 true라 좁은 화면에서 가로로 넘치지 않습니다. 안에 넣은 앱 요소는 KJUN 기본 스타일 초기화를 받지 않습니다.",
+    "interaction": "gap으로 간격 단계(xs·sm·md·lg는 space.inline)를, align으로 세로 정렬, justify로 가로 분배(between은 양 끝 정렬)를 고릅니다. wrap 기본값은 true라 좁은 화면에서 가로로 넘치지 않습니다. Inline 자체는 KJUN 마크업으로 취급하지 않으므로, 안에 넣은 앱 요소는 Inline이 없을 때와 같은 스타일을 받습니다.",
     "differences": "세 플랫폼 모두 gap·align·justify·wrap을 사용합니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
     "states": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다."
   }
