@@ -2,12 +2,14 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
-## 0.12.0 — (릴리스 날짜)
+## 0.12.0 — 2026-10-20
 
 화면의 글자와 간격을 이름으로 고르는 컴포넌트 세 개를 추가했습니다. 기존 컴포넌트는 바뀌지 않습니다.
 
 - **`KjunText`**: `variant`(pageTitle·sectionTitle·cardTitle·body·label·meta·caption·숫자 역할)로 글자 크기·줄 높이·굵기를, `tone`(default·secondary·tertiary·disabled)으로 글자색 역할을 고릅니다. `maxLines`로 말줄임, `align`으로 정렬, 웹에서는 `as`로 제목 수준을 정합니다.
 - **`KjunStack`**(세로)·**`KjunInline`**(가로): `gap`을 토큰 단계(`space.stack`·`space.section`·`space.inline`)로 고릅니다. Inline은 기본으로 줄바꿈합니다. 바로 안의 `KjunFormGroup`은 자체 아래 여백 없이 `gap`만 따릅니다.
+- 숫자 역할(`numberSm`·`numberMd`·`numberLg`)은 자릿수 사이에서 줄바꿈하지 않고, 세 플랫폼 모두 고정폭 숫자를 씁니다. 웹 `KjunText` 안의 링크·강조는 브라우저 기본 모양을 유지하고, 앱의 `.prose p` 같은 규칙이 여백·색을 바꾸지 않습니다.
+- 기본 `tone`은 웹에서 감싼 영역의 글자색을, Native에서 `text` 색을 씁니다. Native Stack·Inline은 Fragment 안의 문자열도 Text로 감쌉니다.
 - 세 컴포넌트 모두 임의의 크기·색·간격 값을 받지 않습니다. 앱 CSS에는 페이지 폭·그리드 같은 큰 배치만 남기세요(문서 "색상·서체 연결").
 
 ## 0.11.0 — 2026-10-19
