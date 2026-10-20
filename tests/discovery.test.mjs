@@ -11,7 +11,7 @@ test('discovery covers every public component exactly once and keeps structural 
   const entries = index.documents.filter(document => document.component);
   assert.equal(entries.length, catalog.filter(entry => entry.kind !== "internal").length);
   assert.deepEqual(new Set(entries.map(entry => entry.component)), new Set(catalog.filter(entry => entry.kind !== 'internal').map(entry => entry.name)));
-  assert.deepEqual(index.categories.map(category => category.count), [11, 16, 7, 8, 10, 14, 11]);
+  assert.deepEqual(index.categories.map(category => category.count), [11, 16, 7, 11, 10, 14, 11]);
   assert.equal(entries.filter(entry => entry.parent).length, 4);
   assert.deepEqual(Object.fromEntries(entries.filter(entry => entry.parent).map(entry => [entry.component, entry.parent])), {
     KjunDropdownDivider: 'KjunDropdown', KjunDropdownItem: 'KjunDropdown', KjunTabPane: 'KjunTabs', KjunAccordionItem: 'KjunAccordion',

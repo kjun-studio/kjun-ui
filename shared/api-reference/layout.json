@@ -272,13 +272,87 @@
     ]
   },
   "KjunScrollFade": {
-    "vue3": [
-
-    ],
+    "vue3": [],
     "react": [
       "children"
     ],
     "native": [
+      "children"
+    ]
+  },
+  "KjunText": {
+    "vue3": [
+      "variant",
+      "tone",
+      "as",
+      "align",
+      "maxLines"
+    ],
+    "react": [
+      "variant",
+      "tone",
+      "as",
+      "align",
+      "maxLines",
+      "className",
+      "style",
+      "children",
+      "id"
+    ],
+    "native": [
+      "variant",
+      "tone",
+      "align",
+      "maxLines",
+      "style",
+      "children"
+    ]
+  },
+  "KjunStack": {
+    "vue3": [
+      "gap",
+      "align",
+      "as"
+    ],
+    "react": [
+      "gap",
+      "align",
+      "as",
+      "className",
+      "style",
+      "children",
+      "id"
+    ],
+    "native": [
+      "gap",
+      "align",
+      "style",
+      "children"
+    ]
+  },
+  "KjunInline": {
+    "vue3": [
+      "gap",
+      "align",
+      "justify",
+      "wrap"
+    ],
+    "react": [
+      "gap",
+      "align",
+      "justify",
+      "wrap",
+      "className",
+      "style",
+      "children",
+      "id"
+    ],
+    "native": [
+      "gap",
+      "align",
+      "justify",
+      "wrap",
+      "style",
       "children"
     ]
   }

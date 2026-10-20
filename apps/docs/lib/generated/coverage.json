@@ -1,11 +1,11 @@
 {
-  "total": 77,
+  "total": 80,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 77,
+      "provided": 80,
       "counts": {
-        "supported": 77,
+        "supported": 80,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 77,
+      "provided": 80,
       "counts": {
-        "supported": 77,
+        "supported": 80,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 77,
+      "provided": 80,
       "counts": {
         "supported": 0,
-        "preview": 77,
+        "preview": 80,
         "review": 0,
         "unsupported": 0
       },
@@ -1224,6 +1224,37 @@
       "recordId": "verification-v0.3.0"
     },
     {
+      "name": "KjunInline",
+      "title": "Inline",
+      "docs": "/components/inline",
+      "category": "layout",
+      "differences": "세 플랫폼 모두 gap·align·justify·wrap을 사용합니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
       "name": "KjunInput",
       "title": "Input",
       "docs": "/components/input",
@@ -2185,6 +2216,37 @@
       "recordId": "verification-v0.3.0"
     },
     {
+      "name": "KjunStack",
+      "title": "Stack",
+      "docs": "/components/stack",
+      "category": "layout",
+      "differences": "세 플랫폼 모두 gap·align을 사용합니다. as(div·section)는 웹 전용입니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
       "name": "KjunSwitch",
       "title": "Switch",
       "docs": "/components/switch",
@@ -2283,6 +2345,37 @@
       "docs": "/components/tabs",
       "category": "navigation",
       "differences": "Vue v-model과 actions 슬롯·tab-menu에 대응해 React·Native는 value·onValueChange·actions·onTabMenu를 제공합니다. 웹 키보드 이동과 Native 누름 조작을 구분합니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "KjunText",
+      "title": "Text",
+      "docs": "/components/text",
+      "category": "layout",
+      "differences": "세 플랫폼 모두 variant·tone·align·maxLines를 사용합니다. as는 웹 전용이며 Native는 제목 역할에 header 접근성 역할을, maxLines에 numberOfLines를 씁니다. 웹 기본 tone은 감싼 영역의 글자색을 따르고, Native 기본 tone은 text 색입니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -2473,7 +2566,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 77
+      "componentCount": 80
     }
   ]
 }

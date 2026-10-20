@@ -935,6 +935,49 @@
       "useCases": [
         "설정 폼"
       ]
+    },
+    {
+      "name": "KjunText",
+      "category": "layout",
+      "aliases": [
+        "텍스트",
+        "제목",
+        "본문",
+        "Typography",
+        "Heading"
+      ],
+      "useCases": [
+        "페이지 제목",
+        "보조 설명 문구"
+      ]
+    },
+    {
+      "name": "KjunStack",
+      "category": "layout",
+      "aliases": [
+        "세로 쌓기",
+        "간격",
+        "VStack",
+        "Stack"
+      ],
+      "useCases": [
+        "화면 구획 간격",
+        "폼 항목 간격"
+      ]
+    },
+    {
+      "name": "KjunInline",
+      "category": "layout",
+      "aliases": [
+        "가로 배치",
+        "HStack",
+        "Group",
+        "Row"
+      ],
+      "useCases": [
+        "버튼 묶음",
+        "라벨과 값 한 줄 배치"
+      ]
     }
   ]
 }

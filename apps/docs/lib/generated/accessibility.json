@@ -8560,6 +8560,582 @@
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
+      "id": "KjunText.vue3.keyboard.v1",
+      "component": "KjunText",
+      "platform": "vue3",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {},
+      "behavior": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "variant"
+      ],
+      "applicable": false,
+      "reason": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunText.vue3.labeling.v1",
+      "component": "KjunText",
+      "platform": "vue3",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {},
+      "behavior": "섹션 제목과 보조 설명 문구. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "variant"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunText.vue3.focus.v1",
+      "component": "KjunText",
+      "platform": "vue3",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {},
+      "behavior": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "variant"
+      ],
+      "applicable": false,
+      "reason": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunText.react.keyboard.v1",
+      "component": "KjunText",
+      "platform": "react",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {},
+      "behavior": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "variant"
+      ],
+      "applicable": false,
+      "reason": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunText.react.labeling.v1",
+      "component": "KjunText",
+      "platform": "react",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {},
+      "behavior": "섹션 제목과 보조 설명 문구. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "variant"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunText.react.focus.v1",
+      "component": "KjunText",
+      "platform": "react",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {},
+      "behavior": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "variant"
+      ],
+      "applicable": false,
+      "reason": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunText.native.keyboard.v1",
+      "component": "KjunText",
+      "platform": "native",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {},
+      "behavior": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "variant"
+      ],
+      "applicable": false,
+      "reason": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunText.native.labeling.v1",
+      "component": "KjunText",
+      "platform": "native",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {},
+      "behavior": "섹션 제목과 보조 설명 문구. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "variant"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunText.native.focus.v1",
+      "component": "KjunText",
+      "platform": "native",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {},
+      "behavior": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "variant"
+      ],
+      "applicable": false,
+      "reason": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "섹션 제목과 보조 설명 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunStack.vue3.keyboard.v1",
+      "component": "KjunStack",
+      "platform": "vue3",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunStack.vue3.labeling.v1",
+      "component": "KjunStack",
+      "platform": "vue3",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "세로로 쌓은 제목·설명·저장 버튼. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다. 이 항목은 문서에 명시한 하위 컨트롤을 공급한 조합을 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunStack.vue3.focus.v1",
+      "component": "KjunStack",
+      "platform": "vue3",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunStack.react.keyboard.v1",
+      "component": "KjunStack",
+      "platform": "react",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunStack.react.labeling.v1",
+      "component": "KjunStack",
+      "platform": "react",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "세로로 쌓은 제목·설명·저장 버튼. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다. 이 항목은 문서에 명시한 하위 컨트롤을 공급한 조합을 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunStack.react.focus.v1",
+      "component": "KjunStack",
+      "platform": "react",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunStack.native.keyboard.v1",
+      "component": "KjunStack",
+      "platform": "native",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunStack.native.labeling.v1",
+      "component": "KjunStack",
+      "platform": "native",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "세로로 쌓은 제목·설명·저장 버튼. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다. 이 항목은 문서에 명시한 하위 컨트롤을 공급한 조합을 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunStack.native.focus.v1",
+      "component": "KjunStack",
+      "platform": "native",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "세로로 쌓은 제목·설명·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunInline.vue3.keyboard.v1",
+      "component": "KjunInline",
+      "platform": "vue3",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunInline.vue3.labeling.v1",
+      "component": "KjunInline",
+      "platform": "vue3",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "가로로 놓은 취소·저장 버튼. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다. 이 항목은 문서에 명시한 하위 컨트롤을 공급한 조합을 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunInline.vue3.focus.v1",
+      "component": "KjunInline",
+      "platform": "vue3",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunInline.react.keyboard.v1",
+      "component": "KjunInline",
+      "platform": "react",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunInline.react.labeling.v1",
+      "component": "KjunInline",
+      "platform": "react",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "가로로 놓은 취소·저장 버튼. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다. 이 항목은 문서에 명시한 하위 컨트롤을 공급한 조합을 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunInline.react.focus.v1",
+      "component": "KjunInline",
+      "platform": "react",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunInline.native.keyboard.v1",
+      "component": "KjunInline",
+      "platform": "native",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunInline.native.labeling.v1",
+      "component": "KjunInline",
+      "platform": "native",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "가로로 놓은 취소·저장 버튼. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다. 이 항목은 문서에 명시한 하위 컨트롤을 공급한 조합을 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunInline.native.focus.v1",
+      "component": "KjunInline",
+      "platform": "native",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {
+        "children": true
+      },
+      "behavior": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "gap"
+      ],
+      "applicable": false,
+      "reason": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "가로로 놓은 취소·저장 버튼. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
       "id": "KjunBottomActionBar.vue3.keyboard.v1",
       "component": "KjunBottomActionBar",
       "platform": "vue3",
@@ -15916,32 +16492,32 @@
       "name": "@kjun-ui/tokens",
       "version": "0.11.0",
       "file": "kjun-ui-tokens-0.11.0.tgz",
-      "bytes": 85985,
-      "integrity": "sha512-u1wgK2AgW7UJ0puGPuBoKAItIilMy3PgPKtMk/cP4cmuZQj4s0oV4gNZlD4+daAr+m9WtPxDGr20Eagkm/GvjQ=="
+      "bytes": 86986,
+      "integrity": "sha512-OVyxzEAs9T6FuPdahqz38G4cEysrNQuuZO06Akg/Js9mcOW0jbmmxVFTrG3MNLxaIgsHqzY5FgjIg/+uqq5WFg=="
     },
     {
       "name": "@kjun-ui/vue3",
       "version": "0.11.0",
       "file": "kjun-ui-vue3-0.11.0.tgz",
-      "bytes": 267504,
-      "integrity": "sha512-RCuhPwiIfqSRIZrPdM8+dRYkq/bOZ9b4UDWRKs8snUFmAJ5X+Hd04kBPdouQmlaGfiztnL2HvZZ2FELxMdF6og=="
+      "bytes": 272646,
+      "integrity": "sha512-3AaWwiaUawiK78KWMBe6e0uNs36v9FWSFHlSXSTMbMTHfkuNRt56H9J2az60PeIvW9KiCL/Adh4nk8nV2QqnkQ=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.11.0",
       "file": "kjun-ui-react-0.11.0.tgz",
-      "bytes": 217076,
-      "integrity": "sha512-oHe4oSy4JShJHH9+nW601zhW2lHFMqmoDaCW4u8mVaf6i5yy/1t9W9TtpwRaUiSN5xOhaPvjSM/vSIQ0Id8m5A=="
+      "bytes": 222817,
+      "integrity": "sha512-SjTE9hawO5Zn8jRRwrfKCNjRSd0j7ftxNVSSPfYAY+KOnD630n6TpqG11DiDeojeGeE7wppaGt0gspZBYpSLgg=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.11.0",
       "file": "kjun-ui-native-0.11.0.tgz",
-      "bytes": 441734,
-      "integrity": "sha512-AB4nUgmU7s/JSoS59wVm5+mrjdcE655tl50j5iRkopDjWWV0TNqnLkO2xiaAn4liUC9TP36hLtybrJKRJdUM7Q=="
+      "bytes": 448092,
+      "integrity": "sha512-bOIjaT7xBsIt/ABygdcUwy3KzUbMJe7QWt2JIp4WsOYpkg9xKQ+IhD6Ib7eK7HPEGKDXFtLWpSMU0EEKZN9fqA=="
     }
   ],
-  "definitionHash": "sha256-939116451f00b38491feef2d4f0935b29f75f31033d342b0fc00f74293ad6f55",
+  "definitionHash": "sha256-67bf8329138828741e8d6b3ba77f536eb653bf1e41b00048e57f1bd4ae937c30",
   "runs": [
     {
       "schemaVersion": 1,

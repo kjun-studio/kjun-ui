@@ -29,7 +29,7 @@ test('every original guide section has one canonical page and a valid legacy des
 
 test('all component and feedback navigation groups follow the complete document order', () => {
   const pages = documents.filter(page => page.component || page.id === 'feedback');
-  assert.equal(pages.length, 78);
+  assert.equal(pages.length, 81);
   for (const page of pages) {
     assert.deepEqual(page.sectionGroups.map(group => group.title), ['사용법', '디자인', 'API', '접근성']);
     assert.deepEqual(page.sectionGroups.flatMap(group => group.sections), page.sections.map(([id]) => id), page.path);

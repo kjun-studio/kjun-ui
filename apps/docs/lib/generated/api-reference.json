@@ -29107,6 +29107,15 @@
             "source": "packages/native/src/range-input.tsx"
           },
           {
+            "name": "label",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "표시하거나 조절하는 값의 목적을 설명하는 라벨입니다.",
+            "source": "packages/native/src/range-input.tsx"
+          },
+          {
             "name": "min",
             "type": "number | undefined",
             "required": false,
@@ -29153,15 +29162,6 @@
             ],
             "source": "packages/native/src/range-input.tsx",
             "example": "/components/range-slider#preview"
-          },
-          {
-            "name": "label",
-            "type": "string | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "표시하거나 조절하는 값의 목적을 설명하는 라벨입니다.",
-            "source": "packages/native/src/range-input.tsx"
           }
         ],
         "events": [],
@@ -30466,6 +30466,576 @@
           "문자열 초안은 내부 상태이며 Enter·blur에서 숫자로 확정합니다. 값과 검증 결과는 소비자가 관리합니다.",
           "웹 한글 입력 조합 중에는 확정하지 않습니다. Native 키보드와 입력 방식은 실제 기기에서 별도 검증해야 합니다."
         ],
+        "types": []
+      }
+    },
+    "KjunText": {
+      "vue3": {
+        "props": [
+          {
+            "name": "variant",
+            "type": "TextVariant",
+            "required": false,
+            "default": "\"body\"",
+            "description": "Typography role; every size, line height and weight comes from tokens.typography.",
+            "summary": "글자 역할입니다. pageTitle·sectionTitle·cardTitle·body·label·meta·caption·숫자(number·display) 역할의 크기·줄 높이·굵기를 tokens.typography에서 가져옵니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "tone",
+            "type": "TextTone",
+            "required": false,
+            "default": "\"default\"",
+            "description": "Text color role; default follows the surrounding text color.",
+            "summary": "글자색 역할입니다. default는 웹에서 감싼 영역의 글자색을 따르고 Native에서는 text 색이며, secondary·tertiary·disabled는 같은 이름의 text 색 역할입니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "as",
+            "type": "TextTag",
+            "required": false,
+            "default": "—",
+            "description": "Document tag. Size comes from variant, meaning from as.",
+            "summary": "웹 문서 구조의 태그(h1~h6·p·span·div)입니다. 생략하면 pageTitle은 h1, sectionTitle은 h2, cardTitle은 h3, 숫자 역할은 span, 나머지는 p입니다. 크기는 variant가 정합니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "align",
+            "type": "TextAlign",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "글자 정렬(start·center·end)입니다. 생략하면 부모를 따릅니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "maxLines",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "Clamp to this many lines with an ellipsis; the full text stays in the DOM.",
+            "summary": "이 줄 수를 넘으면 말줄임표로 줄입니다. 전체 문장은 그대로 남아 보조 기술이 읽습니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [
+          {
+            "name": "default",
+            "data": [],
+            "source": "packages/vue3/src/layout-primitives.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "default 영역의 기본 내용을 교체합니다."
+          }
+        ],
+        "ownership": [],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "variant",
+            "type": "TextVariant | undefined",
+            "required": false,
+            "default": "\"body\"",
+            "description": "Typography role; every size, line height and weight comes from tokens.typography.",
+            "summary": "글자 역할입니다. pageTitle·sectionTitle·cardTitle·body·label·meta·caption·숫자(number·display) 역할의 크기·줄 높이·굵기를 tokens.typography에서 가져옵니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "tone",
+            "type": "TextTone | undefined",
+            "required": false,
+            "default": "\"default\"",
+            "description": "Text color role; default follows the surrounding text color.",
+            "summary": "글자색 역할입니다. default는 웹에서 감싼 영역의 글자색을 따르고 Native에서는 text 색이며, secondary·tertiary·disabled는 같은 이름의 text 색 역할입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "as",
+            "type": "TextTag | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Document tag. Size comes from variant, meaning from as.",
+            "summary": "웹 문서 구조의 태그(h1~h6·p·span·div)입니다. 생략하면 pageTitle은 h1, sectionTitle은 h2, cardTitle은 h3, 숫자 역할은 span, 나머지는 p입니다. 크기는 variant가 정합니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "align",
+            "type": "TextAlign | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "글자 정렬(start·center·end)입니다. 생략하면 부모를 따릅니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "maxLines",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Clamp to this many lines with an ellipsis; the full text stays in the DOM.",
+            "summary": "이 줄 수를 넘으면 말줄임표로 줄입니다. 전체 문장은 그대로 남아 보조 기술이 읽습니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소에 추가할 CSS 클래스입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "variant",
+            "type": "TextVariant | undefined",
+            "required": false,
+            "default": "\"body\"",
+            "description": "Typography role; every size, line height and weight comes from tokens.typography.",
+            "summary": "글자 역할입니다. pageTitle·sectionTitle·cardTitle·body·label·meta·caption·숫자(number·display) 역할의 크기·줄 높이·굵기를 tokens.typography에서 가져옵니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "tone",
+            "type": "TextTone | undefined",
+            "required": false,
+            "default": "\"default\"",
+            "description": "Text color role.",
+            "summary": "글자색 역할입니다. default는 웹에서 감싼 영역의 글자색을 따르고 Native에서는 text 색이며, secondary·tertiary·disabled는 같은 이름의 text 색 역할입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "align",
+            "type": "TextAlign | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "글자 정렬(start·center·end)입니다. 생략하면 부모를 따릅니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "maxLines",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Clamp to this many lines with an ellipsis (numberOfLines).",
+            "summary": "이 줄 수를 넘으면 말줄임표로 줄입니다. 전체 문장은 그대로 남아 보조 기술이 읽습니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<TextStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      }
+    },
+    "KjunStack": {
+      "vue3": {
+        "props": [
+          {
+            "name": "gap",
+            "type": "StackGap",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg).",
+            "summary": "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "align",
+            "type": "StackAlign",
+            "required": false,
+            "default": "\"stretch\"",
+            "description": "",
+            "summary": "자식의 가로 정렬입니다. stretch는 폭을 채우고 start·center·end는 내용 폭으로 둡니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "as",
+            "type": "\"div\" | \"section\"",
+            "required": false,
+            "default": "\"div\"",
+            "description": "",
+            "summary": "웹 태그(div·section)입니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [
+          {
+            "name": "default",
+            "data": [],
+            "source": "packages/vue3/src/layout-primitives.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "default 영역의 기본 내용을 교체합니다."
+          }
+        ],
+        "ownership": [],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "gap",
+            "type": "StackGap | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg).",
+            "summary": "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "align",
+            "type": "StackAlign | undefined",
+            "required": false,
+            "default": "\"stretch\"",
+            "description": "",
+            "summary": "자식의 가로 정렬입니다. stretch는 폭을 채우고 start·center·end는 내용 폭으로 둡니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "as",
+            "type": "\"div\" | \"section\" | undefined",
+            "required": false,
+            "default": "\"div\"",
+            "description": "",
+            "summary": "웹 태그(div·section)입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소에 추가할 CSS 클래스입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "gap",
+            "type": "StackGap | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg).",
+            "summary": "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "align",
+            "type": "StackAlign | undefined",
+            "required": false,
+            "default": "\"stretch\"",
+            "description": "",
+            "summary": "자식의 가로 정렬입니다. stretch는 폭을 채우고 start·center·end는 내용 폭으로 둡니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      }
+    },
+    "KjunInline": {
+      "vue3": {
+        "props": [
+          {
+            "name": "gap",
+            "type": "InlineGap",
+            "required": false,
+            "default": "\"sm\"",
+            "description": "Space between children: space.inline (xs·sm·md·lg).",
+            "summary": "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "align",
+            "type": "InlineAlign",
+            "required": false,
+            "default": "\"center\"",
+            "description": "",
+            "summary": "자식의 세로 정렬(start·center·end·baseline·stretch)입니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "justify",
+            "type": "InlineJustify",
+            "required": false,
+            "default": "\"start\"",
+            "description": "",
+            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "wrap",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Wrap onto new lines when the row runs out of width.",
+            "summary": "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [
+          {
+            "name": "default",
+            "data": [],
+            "source": "packages/vue3/src/layout-primitives.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "default 영역의 기본 내용을 교체합니다."
+          }
+        ],
+        "ownership": [],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "gap",
+            "type": "InlineGap | undefined",
+            "required": false,
+            "default": "\"sm\"",
+            "description": "Space between children: space.inline (xs·sm·md·lg).",
+            "summary": "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "align",
+            "type": "InlineAlign | undefined",
+            "required": false,
+            "default": "\"center\"",
+            "description": "",
+            "summary": "자식의 세로 정렬(start·center·end·baseline·stretch)입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "justify",
+            "type": "InlineJustify | undefined",
+            "required": false,
+            "default": "\"start\"",
+            "description": "",
+            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "wrap",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Wrap onto new lines when the row runs out of width. Default true.",
+            "summary": "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소에 추가할 CSS 클래스입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "gap",
+            "type": "InlineGap | undefined",
+            "required": false,
+            "default": "\"sm\"",
+            "description": "Space between children: space.inline (xs·sm·md·lg).",
+            "summary": "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "align",
+            "type": "InlineAlign | undefined",
+            "required": false,
+            "default": "\"center\"",
+            "description": "",
+            "summary": "자식의 세로 정렬(start·center·end·baseline·stretch)입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "justify",
+            "type": "InlineJustify | undefined",
+            "required": false,
+            "default": "\"start\"",
+            "description": "",
+            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "wrap",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Wrap onto new lines when the row runs out of width. Default true.",
+            "summary": "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
         "types": []
       }
     }

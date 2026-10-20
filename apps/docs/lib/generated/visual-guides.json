@@ -14843,6 +14843,327 @@
       }
     }
   },
+  "KjunText": {
+    "name": "KjunText",
+    "path": "/components/text",
+    "related": "form",
+    "description": "제목·본문·보조 문구의 글자 역할을 이름으로 고릅니다. 크기·줄 높이·굵기는 토큰이 정합니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "글자 역할",
+                "description": "variant가 크기·줄 높이·굵기를 정합니다. 예시는 sectionTitle입니다.",
+                "target": "text=섹션 제목",
+                "optional": false
+              },
+              {
+                "label": "보조 문구",
+                "description": "tone=\"secondary\"는 보조 글자색 역할을 씁니다.",
+                "target": "text=보조 설명 문구입니다.",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "역할별 크기·줄 높이·굵기는 tokens.typography를 따르고 숫자 역할은 숫자 글꼴과 고정폭 숫자를 씁니다. tone은 text·textSecondary·textTertiary·textDisabled 색 역할에 연결됩니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "글자 역할",
+                "description": "variant가 크기·줄 높이·굵기를 정합니다. 예시는 sectionTitle입니다.",
+                "target": "text=섹션 제목",
+                "optional": false
+              },
+              {
+                "label": "보조 문구",
+                "description": "tone=\"secondary\"는 보조 글자색 역할을 씁니다.",
+                "target": "text=보조 설명 문구입니다.",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "역할별 크기·줄 높이·굵기는 tokens.typography를 따르고 숫자 역할은 숫자 글꼴과 고정폭 숫자를 씁니다. tone은 text·textSecondary·textTertiary·textDisabled 색 역할에 연결됩니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "글자 역할",
+                "description": "variant가 크기·줄 높이·굵기를 정합니다. 예시는 sectionTitle입니다.",
+                "target": "text=섹션 제목",
+                "optional": false
+              },
+              {
+                "label": "보조 문구",
+                "description": "tone=\"secondary\"는 보조 글자색 역할을 씁니다.",
+                "target": "text=보조 설명 문구입니다.",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "역할별 크기·줄 높이·굵기는 tokens.typography를 따르고 숫자 역할은 숫자 글꼴과 고정폭 숫자를 씁니다. tone은 text·textSecondary·textTertiary·textDisabled 색 역할에 연결됩니다."
+      }
+    }
+  },
+  "KjunStack": {
+    "name": "KjunStack",
+    "path": "/components/stack",
+    "related": "form",
+    "description": "요소를 세로로 쌓고 사이 간격을 토큰 단계로 정합니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "쌓인 제목",
+                "description": "gap 단계만큼 아래 요소와 떨어집니다.",
+                "target": "text=알림 설정",
+                "optional": false
+              },
+              {
+                "label": "쌓인 설명",
+                "description": "자식 사이 간격은 space.stack 토큰입니다.",
+                "target": "text=받을 알림을 고르세요.",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)입니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "쌓인 제목",
+                "description": "gap 단계만큼 아래 요소와 떨어집니다.",
+                "target": "text=알림 설정",
+                "optional": false
+              },
+              {
+                "label": "쌓인 설명",
+                "description": "자식 사이 간격은 space.stack 토큰입니다.",
+                "target": "text=받을 알림을 고르세요.",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)입니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "쌓인 제목",
+                "description": "gap 단계만큼 아래 요소와 떨어집니다.",
+                "target": "text=알림 설정",
+                "optional": false
+              },
+              {
+                "label": "쌓인 설명",
+                "description": "자식 사이 간격은 space.stack 토큰입니다.",
+                "target": "text=받을 알림을 고르세요.",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)입니다."
+      }
+    }
+  },
+  "KjunInline": {
+    "name": "KjunInline",
+    "path": "/components/inline",
+    "related": "toolbar",
+    "description": "요소를 가로로 배치하고 사이 간격을 토큰 단계로 정합니다. 좁은 화면에서는 줄바꿈합니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "가로 항목",
+                "description": "gap 단계만큼 옆 요소와 떨어지고, 좁으면 줄바꿈합니다.",
+                "target": "text=취소",
+                "optional": true
+              },
+              {
+                "label": "가로 항목",
+                "description": "같은 줄의 다음 요소입니다.",
+                "target": "text=저장",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "가로 항목",
+                "description": "gap 단계만큼 옆 요소와 떨어지고, 좁으면 줄바꿈합니다.",
+                "target": "text=취소",
+                "optional": true
+              },
+              {
+                "label": "가로 항목",
+                "description": "같은 줄의 다음 요소입니다.",
+                "target": "text=저장",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "가로 항목",
+                "description": "gap 단계만큼 옆 요소와 떨어지고, 좁으면 줄바꿈합니다.",
+                "target": "text=취소",
+                "optional": true
+              },
+              {
+                "label": "가로 항목",
+                "description": "같은 줄의 다음 요소입니다.",
+                "target": "text=저장",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다."
+      }
+    }
+  },
   "KjunFeedbackProvider": {
     "name": "KjunFeedbackProvider",
     "path": "/feedback",

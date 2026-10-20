@@ -42,7 +42,7 @@
         "배치",
         "레이아웃"
       ],
-      "count": 8
+      "count": 11
     },
     {
       "id": "feedback",
@@ -6505,6 +6505,7 @@
         "저장·조회 등의 후속 요청을 연결합니다. 값 변경 콜백과 같은 요청을 중복 실행하지 마세요.",
         "이 컴포넌트의 사용자 입력 또는 주 행동을 막습니다. 별도 자식 컨트롤의 비활성은 직접 연결합니다.",
         "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+        "표시하거나 조절하는 값의 목적을 설명하는 라벨입니다.",
         "허용하는 최솟값입니다.",
         "범위",
         "min < max, step > 0이어야 합니다. max가 step에 맞지 않으면 max 이하의 마지막 단계를 사용합니다.",
@@ -6514,7 +6515,6 @@
         "최솟값부터 시작하는 선택 간격입니다. 소수 여섯 자리까지 지원합니다.",
         "범위",
         "min < max, step > 0이어야 합니다. max가 step에 맞지 않으면 max 이하의 마지막 단계를 사용합니다.",
-        "표시하거나 조절하는 값의 목적을 설명하는 라벨입니다.",
         "value는 순서가 있는 숫자 쌍입니다. 손잡이가 서로 넘거나 역할이 교환되지 않습니다.",
         "각 손잡이는 별도의 접근성 이름과 일정한 Tab 순서를 유지합니다.",
         "value는 순서가 있는 숫자 쌍입니다. 손잡이가 서로 넘거나 역할이 교환되지 않습니다.",
@@ -10792,6 +10792,170 @@
       "thumbnail": "/previews/thumbnails/drawer.png"
     },
     {
+      "id": "inline",
+      "path": "/components/inline",
+      "title": "Inline",
+      "group": "Components",
+      "component": "KjunInline",
+      "description": "요소를 가로로 배치하고 사이 간격을 토큰 단계로 정합니다. 좁은 화면에서는 줄바꿈합니다.",
+      "category": "layout",
+      "aliases": [
+        "가로 배치",
+        "HStack",
+        "Group",
+        "Row"
+      ],
+      "useCases": [
+        "버튼 묶음",
+        "라벨과 값 한 줄 배치"
+      ],
+      "api": [
+        "gap",
+        "align",
+        "justify",
+        "wrap",
+        "default",
+        "className",
+        "style",
+        "children",
+        "id"
+      ],
+      "sectionGroups": [
+        {
+          "id": "usage",
+          "title": "사용법",
+          "sections": [
+            "preview",
+            "guidelines",
+            "usage"
+          ]
+        },
+        {
+          "id": "design",
+          "title": "디자인",
+          "sections": [
+            "anatomy",
+            "states"
+          ]
+        },
+        {
+          "id": "api",
+          "title": "API",
+          "sections": [
+            "api"
+          ]
+        },
+        {
+          "id": "accessibility",
+          "title": "접근성",
+          "sections": [
+            "accessibility"
+          ]
+        }
+      ],
+      "terms": [
+        "구조 도해",
+        "Anatomy",
+        "가로 항목",
+        "gap 단계만큼 옆 요소와 떨어지고, 좁으면 줄바꿈합니다.",
+        "가로 항목",
+        "같은 줄의 다음 요소입니다.",
+        "기본 예제",
+        "가로 항목",
+        "gap 단계만큼 옆 요소와 떨어지고, 좁으면 줄바꿈합니다.",
+        "가로 항목",
+        "같은 줄의 다음 요소입니다.",
+        "기본 예제",
+        "가로 항목",
+        "gap 단계만큼 옆 요소와 떨어지고, 좁으면 줄바꿈합니다.",
+        "가로 항목",
+        "같은 줄의 다음 요소입니다.",
+        "기본 예제",
+        "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다.",
+        "자식의 세로 정렬(start·center·end·baseline·stretch)입니다.",
+        "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
+        "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다.",
+        "default 영역의 기본 내용을 교체합니다.",
+        "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다.",
+        "자식의 세로 정렬(start·center·end·baseline·stretch)입니다.",
+        "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
+        "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다.",
+        "기본 웹 요소에 추가할 CSS 클래스입니다.",
+        "기본 요소에 추가할 플랫폼 스타일입니다.",
+        "기본 콘텐츠 영역에 배치할 요소입니다.",
+        "기본 요소 또는 연결할 필드의 식별자입니다.",
+        "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다.",
+        "자식의 세로 정렬(start·center·end·baseline·stretch)입니다.",
+        "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
+        "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다.",
+        "기본 요소에 추가할 플랫폼 스타일입니다.",
+        "기본 콘텐츠 영역에 배치할 요소입니다.",
+        "gap으로 간격 단계(xs·sm·md·lg는 space.inline)를, align으로 세로 정렬, justify로 가로 분배(between은 양 끝 정렬)를 고릅니다. wrap 기본값은 true라 좁은 화면에서 가로로 넘치지 않습니다. 안에 넣은 앱 요소는 KJUN 기본 스타일 초기화를 받지 않습니다.",
+        "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다.",
+        "세 플랫폼 모두 gap·align·justify·wrap을 사용합니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
+        "Layout",
+        "화면",
+        "배치",
+        "레이아웃",
+        "실행 예제",
+        "동작과 책임",
+        "기본 사용법",
+        "구조",
+        "상태·크기",
+        "API",
+        "접근성·플랫폼 차이"
+      ],
+      "sections": [
+        [
+          "preview",
+          "실행 예제"
+        ],
+        [
+          "guidelines",
+          "동작과 책임"
+        ],
+        [
+          "usage",
+          "기본 사용법"
+        ],
+        [
+          "anatomy",
+          "구조"
+        ],
+        [
+          "states",
+          "상태·크기"
+        ],
+        [
+          "api",
+          "API"
+        ],
+        [
+          "accessibility",
+          "접근성·플랫폼 차이"
+        ]
+      ],
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "thumbnail": "/previews/thumbnails/inline.png"
+    },
+    {
       "id": "modal",
       "path": "/components/modal",
       "title": "Modal",
@@ -11409,6 +11573,333 @@
         }
       },
       "thumbnail": "/previews/thumbnails/scroll-fade.png"
+    },
+    {
+      "id": "stack",
+      "path": "/components/stack",
+      "title": "Stack",
+      "group": "Components",
+      "component": "KjunStack",
+      "description": "요소를 세로로 쌓고 사이 간격을 토큰 단계로 정합니다.",
+      "category": "layout",
+      "aliases": [
+        "세로 쌓기",
+        "간격",
+        "VStack",
+        "Stack"
+      ],
+      "useCases": [
+        "화면 구획 간격",
+        "폼 항목 간격"
+      ],
+      "api": [
+        "gap",
+        "align",
+        "as",
+        "default",
+        "className",
+        "style",
+        "children",
+        "id"
+      ],
+      "sectionGroups": [
+        {
+          "id": "usage",
+          "title": "사용법",
+          "sections": [
+            "preview",
+            "guidelines",
+            "usage"
+          ]
+        },
+        {
+          "id": "design",
+          "title": "디자인",
+          "sections": [
+            "anatomy",
+            "states"
+          ]
+        },
+        {
+          "id": "api",
+          "title": "API",
+          "sections": [
+            "api"
+          ]
+        },
+        {
+          "id": "accessibility",
+          "title": "접근성",
+          "sections": [
+            "accessibility"
+          ]
+        }
+      ],
+      "terms": [
+        "구조 도해",
+        "Anatomy",
+        "쌓인 제목",
+        "gap 단계만큼 아래 요소와 떨어집니다.",
+        "쌓인 설명",
+        "자식 사이 간격은 space.stack 토큰입니다.",
+        "기본 예제",
+        "쌓인 제목",
+        "gap 단계만큼 아래 요소와 떨어집니다.",
+        "쌓인 설명",
+        "자식 사이 간격은 space.stack 토큰입니다.",
+        "기본 예제",
+        "쌓인 제목",
+        "gap 단계만큼 아래 요소와 떨어집니다.",
+        "쌓인 설명",
+        "자식 사이 간격은 space.stack 토큰입니다.",
+        "기본 예제",
+        "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다.",
+        "자식의 가로 정렬입니다. stretch는 폭을 채우고 start·center·end는 내용 폭으로 둡니다.",
+        "웹 태그(div·section)입니다.",
+        "default 영역의 기본 내용을 교체합니다.",
+        "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다.",
+        "자식의 가로 정렬입니다. stretch는 폭을 채우고 start·center·end는 내용 폭으로 둡니다.",
+        "웹 태그(div·section)입니다.",
+        "기본 웹 요소에 추가할 CSS 클래스입니다.",
+        "기본 요소에 추가할 플랫폼 스타일입니다.",
+        "기본 콘텐츠 영역에 배치할 요소입니다.",
+        "기본 요소 또는 연결할 필드의 식별자입니다.",
+        "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다.",
+        "자식의 가로 정렬입니다. stretch는 폭을 채우고 start·center·end는 내용 폭으로 둡니다.",
+        "기본 요소에 추가할 플랫폼 스타일입니다.",
+        "기본 콘텐츠 영역에 배치할 요소입니다.",
+        "gap으로 간격 단계(sm·md·lg는 space.stack, section-sm·md·lg는 space.section)를, align으로 가로 정렬을 고릅니다. 안에 넣은 앱 요소는 KJUN 기본 스타일 초기화를 받지 않습니다. 바로 안의 FormGroup은 자체 아래 여백 대신 gap만 따릅니다. 앱 CSS로 margin을 더하지 말고 gap 단계를 바꿉니다.",
+        "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)입니다.",
+        "세 플랫폼 모두 gap·align을 사용합니다. as(div·section)는 웹 전용입니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
+        "Layout",
+        "화면",
+        "배치",
+        "레이아웃",
+        "실행 예제",
+        "동작과 책임",
+        "기본 사용법",
+        "구조",
+        "상태·크기",
+        "API",
+        "접근성·플랫폼 차이"
+      ],
+      "sections": [
+        [
+          "preview",
+          "실행 예제"
+        ],
+        [
+          "guidelines",
+          "동작과 책임"
+        ],
+        [
+          "usage",
+          "기본 사용법"
+        ],
+        [
+          "anatomy",
+          "구조"
+        ],
+        [
+          "states",
+          "상태·크기"
+        ],
+        [
+          "api",
+          "API"
+        ],
+        [
+          "accessibility",
+          "접근성·플랫폼 차이"
+        ]
+      ],
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "thumbnail": "/previews/thumbnails/stack.png"
+    },
+    {
+      "id": "text",
+      "path": "/components/text",
+      "title": "Text",
+      "group": "Components",
+      "component": "KjunText",
+      "description": "제목·본문·보조 문구의 글자 역할을 이름으로 고릅니다. 크기·줄 높이·굵기는 토큰이 정합니다.",
+      "category": "layout",
+      "aliases": [
+        "텍스트",
+        "제목",
+        "본문",
+        "Typography",
+        "Heading"
+      ],
+      "useCases": [
+        "페이지 제목",
+        "보조 설명 문구"
+      ],
+      "api": [
+        "variant",
+        "tone",
+        "as",
+        "align",
+        "maxLines",
+        "default",
+        "className",
+        "style",
+        "children",
+        "id"
+      ],
+      "sectionGroups": [
+        {
+          "id": "usage",
+          "title": "사용법",
+          "sections": [
+            "preview",
+            "guidelines",
+            "usage"
+          ]
+        },
+        {
+          "id": "design",
+          "title": "디자인",
+          "sections": [
+            "anatomy",
+            "states"
+          ]
+        },
+        {
+          "id": "api",
+          "title": "API",
+          "sections": [
+            "api"
+          ]
+        },
+        {
+          "id": "accessibility",
+          "title": "접근성",
+          "sections": [
+            "accessibility"
+          ]
+        }
+      ],
+      "terms": [
+        "구조 도해",
+        "Anatomy",
+        "글자 역할",
+        "variant가 크기·줄 높이·굵기를 정합니다. 예시는 sectionTitle입니다.",
+        "보조 문구",
+        "tone=\"secondary\"는 보조 글자색 역할을 씁니다.",
+        "기본 예제",
+        "글자 역할",
+        "variant가 크기·줄 높이·굵기를 정합니다. 예시는 sectionTitle입니다.",
+        "보조 문구",
+        "tone=\"secondary\"는 보조 글자색 역할을 씁니다.",
+        "기본 예제",
+        "글자 역할",
+        "variant가 크기·줄 높이·굵기를 정합니다. 예시는 sectionTitle입니다.",
+        "보조 문구",
+        "tone=\"secondary\"는 보조 글자색 역할을 씁니다.",
+        "기본 예제",
+        "글자 역할입니다. pageTitle·sectionTitle·cardTitle·body·label·meta·caption·숫자(number·display) 역할의 크기·줄 높이·굵기를 tokens.typography에서 가져옵니다.",
+        "글자색 역할입니다. default는 웹에서 감싼 영역의 글자색을 따르고 Native에서는 text 색이며, secondary·tertiary·disabled는 같은 이름의 text 색 역할입니다.",
+        "웹 문서 구조의 태그(h1~h6·p·span·div)입니다. 생략하면 pageTitle은 h1, sectionTitle은 h2, cardTitle은 h3, 숫자 역할은 span, 나머지는 p입니다. 크기는 variant가 정합니다.",
+        "글자 정렬(start·center·end)입니다. 생략하면 부모를 따릅니다.",
+        "이 줄 수를 넘으면 말줄임표로 줄입니다. 전체 문장은 그대로 남아 보조 기술이 읽습니다.",
+        "default 영역의 기본 내용을 교체합니다.",
+        "글자 역할입니다. pageTitle·sectionTitle·cardTitle·body·label·meta·caption·숫자(number·display) 역할의 크기·줄 높이·굵기를 tokens.typography에서 가져옵니다.",
+        "글자색 역할입니다. default는 웹에서 감싼 영역의 글자색을 따르고 Native에서는 text 색이며, secondary·tertiary·disabled는 같은 이름의 text 색 역할입니다.",
+        "웹 문서 구조의 태그(h1~h6·p·span·div)입니다. 생략하면 pageTitle은 h1, sectionTitle은 h2, cardTitle은 h3, 숫자 역할은 span, 나머지는 p입니다. 크기는 variant가 정합니다.",
+        "글자 정렬(start·center·end)입니다. 생략하면 부모를 따릅니다.",
+        "이 줄 수를 넘으면 말줄임표로 줄입니다. 전체 문장은 그대로 남아 보조 기술이 읽습니다.",
+        "기본 웹 요소에 추가할 CSS 클래스입니다.",
+        "기본 요소에 추가할 플랫폼 스타일입니다.",
+        "기본 콘텐츠 영역에 배치할 요소입니다.",
+        "기본 요소 또는 연결할 필드의 식별자입니다.",
+        "글자 역할입니다. pageTitle·sectionTitle·cardTitle·body·label·meta·caption·숫자(number·display) 역할의 크기·줄 높이·굵기를 tokens.typography에서 가져옵니다.",
+        "글자색 역할입니다. default는 웹에서 감싼 영역의 글자색을 따르고 Native에서는 text 색이며, secondary·tertiary·disabled는 같은 이름의 text 색 역할입니다.",
+        "글자 정렬(start·center·end)입니다. 생략하면 부모를 따릅니다.",
+        "이 줄 수를 넘으면 말줄임표로 줄입니다. 전체 문장은 그대로 남아 보조 기술이 읽습니다.",
+        "기본 요소에 추가할 플랫폼 스타일입니다.",
+        "기본 콘텐츠 영역에 배치할 요소입니다.",
+        "variant로 글자 역할(pageTitle·sectionTitle·cardTitle·body·label·meta·caption·숫자 역할)을, tone으로 색 역할(기본·보조·흐림·비활성)을 고릅니다. 크기는 variant가, 문서 구조는 as가 정하므로 제목 수준이 다르면 as만 바꿉니다. maxLines로 줄 수를 제한하면 말줄임표로 줄이고 전체 문장은 유지합니다. 앱 CSS로 글자 크기·색을 덮어쓰지 않습니다.",
+        "역할별 크기·줄 높이·굵기는 tokens.typography를 따르고 숫자 역할은 숫자 글꼴과 고정폭 숫자를 씁니다. tone은 text·textSecondary·textTertiary·textDisabled 색 역할에 연결됩니다.",
+        "세 플랫폼 모두 variant·tone·align·maxLines를 사용합니다. as는 웹 전용이며 Native는 제목 역할에 header 접근성 역할을, maxLines에 numberOfLines를 씁니다. 웹 기본 tone은 감싼 영역의 글자색을 따르고, Native 기본 tone은 text 색입니다.",
+        "Layout",
+        "화면",
+        "배치",
+        "레이아웃",
+        "실행 예제",
+        "동작과 책임",
+        "기본 사용법",
+        "구조",
+        "상태·크기",
+        "API",
+        "접근성·플랫폼 차이"
+      ],
+      "sections": [
+        [
+          "preview",
+          "실행 예제"
+        ],
+        [
+          "guidelines",
+          "동작과 책임"
+        ],
+        [
+          "usage",
+          "기본 사용법"
+        ],
+        [
+          "anatomy",
+          "구조"
+        ],
+        [
+          "states",
+          "상태·크기"
+        ],
+        [
+          "api",
+          "API"
+        ],
+        [
+          "accessibility",
+          "접근성·플랫폼 차이"
+        ]
+      ],
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "thumbnail": "/previews/thumbnails/text.png"
     },
     {
       "id": "alert",

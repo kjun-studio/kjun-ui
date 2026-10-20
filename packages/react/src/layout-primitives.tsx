@@ -1,4 +1,4 @@
-import { createElement, type CSSProperties, type HTMLAttributes, type ReactNode } from "react";
+import { createElement, type AriaAttributes, type CSSProperties, type ReactNode } from "react";
 import {
   defaultTextTag, textTypeClass,
   type InlineAlign, type InlineGap, type InlineJustify, type StackAlign, type StackGap,
@@ -6,7 +6,8 @@ import {
 } from "../../../shared/package-runtime/layout-primitives";
 export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackGap, TextAlign, TextTag, TextTone, TextVariant };
 
-type RootAttributes = Omit<HTMLAttributes<HTMLElement>, "children" | "className" | "style">;
+// Only the id and ARIA attributes reach the root, like Vue 3's fallthrough attributes; no event handlers.
+interface RootAttributes extends AriaAttributes { id?: string }
 const join = (...names: (string | false | undefined)[]) => names.filter(Boolean).join(" ");
 
 export interface KjunTextProps extends RootAttributes {

@@ -7057,6 +7057,148 @@
       }
     ]
   },
+  "KjunInline": {
+    "vue3": [
+      {
+        "name": "gap",
+        "type": "InlineGap",
+        "required": false,
+        "default": "\"sm\"",
+        "description": "Space between children: space.inline (xs·sm·md·lg)."
+      },
+      {
+        "name": "align",
+        "type": "InlineAlign",
+        "required": false,
+        "default": "\"center\"",
+        "description": ""
+      },
+      {
+        "name": "justify",
+        "type": "InlineJustify",
+        "required": false,
+        "default": "\"start\"",
+        "description": ""
+      },
+      {
+        "name": "wrap",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Wrap onto new lines when the row runs out of width."
+      }
+    ],
+    "events": [],
+    "slots": [
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/layout-primitives.tsx"
+      }
+    ],
+    "react": [
+      {
+        "name": "gap",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineGap | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Space between children: space.inline (xs·sm·md·lg)."
+      },
+      {
+        "name": "align",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineAlign | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "justify",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineJustify | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "wrap",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Wrap onto new lines when the row runs out of width. Default true."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "gap",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineGap | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Space between children: space.inline (xs·sm·md·lg)."
+      },
+      {
+        "name": "align",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineAlign | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "justify",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineJustify | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "wrap",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Wrap onto new lines when the row runs out of width. Default true."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
   "KjunInput": {
     "vue3": [
       {
@@ -14245,6 +14387,13 @@
         "description": ""
       },
       {
+        "name": "label",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "min",
         "type": "number | undefined",
         "required": false,
@@ -14261,13 +14410,6 @@
       {
         "name": "step",
         "type": "number | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "label",
-        "type": "string | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -16603,6 +16745,120 @@
       }
     ]
   },
+  "KjunStack": {
+    "vue3": [
+      {
+        "name": "gap",
+        "type": "StackGap",
+        "required": false,
+        "default": "\"md\"",
+        "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg)."
+      },
+      {
+        "name": "align",
+        "type": "StackAlign",
+        "required": false,
+        "default": "\"stretch\"",
+        "description": ""
+      },
+      {
+        "name": "as",
+        "type": "\"div\" | \"section\"",
+        "required": false,
+        "default": "\"div\"",
+        "description": ""
+      }
+    ],
+    "events": [],
+    "slots": [
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/layout-primitives.tsx"
+      }
+    ],
+    "react": [
+      {
+        "name": "gap",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackGap | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg)."
+      },
+      {
+        "name": "align",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackAlign | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "as",
+        "type": "\"div\" | \"section\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "gap",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackGap | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg)."
+      },
+      {
+        "name": "align",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackAlign | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
   "KjunSwitch": {
     "vue3": [
       {
@@ -18173,6 +18429,162 @@
       {
         "name": "onTabMenu",
         "type": "((event: { name: string; x: number; y: number; pointer: \"mouse\" | \"touch\"; }) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
+  "KjunText": {
+    "vue3": [
+      {
+        "name": "variant",
+        "type": "TextVariant",
+        "required": false,
+        "default": "\"body\"",
+        "description": "Typography role; every size, line height and weight comes from tokens.typography."
+      },
+      {
+        "name": "tone",
+        "type": "TextTone",
+        "required": false,
+        "default": "\"default\"",
+        "description": "Text color role; default follows the surrounding text color."
+      },
+      {
+        "name": "as",
+        "type": "TextTag",
+        "required": false,
+        "default": "—",
+        "description": "Document tag. Size comes from variant, meaning from as."
+      },
+      {
+        "name": "align",
+        "type": "TextAlign",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "maxLines",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": "Clamp to this many lines with an ellipsis; the full text stays in the DOM."
+      }
+    ],
+    "events": [],
+    "slots": [
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/layout-primitives.tsx"
+      }
+    ],
+    "react": [
+      {
+        "name": "variant",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextVariant | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Typography role; every size, line height and weight comes from tokens.typography."
+      },
+      {
+        "name": "tone",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextTone | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Text color role; default follows the surrounding text color."
+      },
+      {
+        "name": "as",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextTag | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Document tag. Size comes from variant, meaning from as."
+      },
+      {
+        "name": "align",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextAlign | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "maxLines",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Clamp to this many lines with an ellipsis; the full text stays in the DOM."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "variant",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextVariant | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Typography role; every size, line height and weight comes from tokens.typography."
+      },
+      {
+        "name": "tone",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextTone | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Text color role."
+      },
+      {
+        "name": "align",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextAlign | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "maxLines",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Clamp to this many lines with an ellipsis (numberOfLines)."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").TextStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
         "description": ""

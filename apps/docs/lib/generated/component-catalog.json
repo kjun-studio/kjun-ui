@@ -2961,5 +2961,116 @@
     ],
     "example": "previews/catalog/example-extensions.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "KjunText",
+    "category": "layout",
+    "kind": "component",
+    "owner": "KjunText",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/text",
+    "tests": [
+      "tests/browser/layout-primitives.spec.ts",
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue3": "packages/vue3/src/layout-primitives.tsx",
+      "react": "packages/react/src/layout-primitives.tsx",
+      "native": "packages/native/src/layout-primitives.tsx"
+    }
+  },
+  {
+    "name": "KjunStack",
+    "category": "layout",
+    "kind": "component",
+    "owner": "KjunStack",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/stack",
+    "tests": [
+      "tests/browser/layout-primitives.spec.ts",
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue3": "packages/vue3/src/layout-primitives.tsx",
+      "react": "packages/react/src/layout-primitives.tsx",
+      "native": "packages/native/src/layout-primitives.tsx"
+    }
+  },
+  {
+    "name": "KjunInline",
+    "category": "layout",
+    "kind": "component",
+    "owner": "KjunInline",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/inline",
+    "tests": [
+      "tests/browser/layout-primitives.spec.ts",
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue3": "packages/vue3/src/layout-primitives.tsx",
+      "react": "packages/react/src/layout-primitives.tsx",
+      "native": "packages/native/src/layout-primitives.tsx"
+    }
   }
 ]

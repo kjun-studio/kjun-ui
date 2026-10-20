@@ -166,6 +166,24 @@ set("CollectionMark", {
   active: "등록·관심 여부를 표시합니다. 이 컴포넌트는 변경 행동을 제공하지 않습니다.",
 });
 set("KpiHero", { value: "대표 지표의 현재 값입니다. 계산과 데이터 조회는 소비자가 수행합니다." });
+set("Text", {
+  variant: { default: '"body"', summary: "글자 역할입니다. pageTitle·sectionTitle·cardTitle·body·label·meta·caption·숫자(number·display) 역할의 크기·줄 높이·굵기를 tokens.typography에서 가져옵니다." },
+  tone: { default: '"default"', summary: "글자색 역할입니다. default는 웹에서 감싼 영역의 글자색을 따르고 Native에서는 text 색이며, secondary·tertiary·disabled는 같은 이름의 text 색 역할입니다." },
+  as: { summary: "웹 문서 구조의 태그(h1~h6·p·span·div)입니다. 생략하면 pageTitle은 h1, sectionTitle은 h2, cardTitle은 h3, 숫자 역할은 span, 나머지는 p입니다. 크기는 variant가 정합니다." },
+  align: { summary: "글자 정렬(start·center·end)입니다. 생략하면 부모를 따릅니다." },
+  maxLines: { summary: "이 줄 수를 넘으면 말줄임표로 줄입니다. 전체 문장은 그대로 남아 보조 기술이 읽습니다." },
+});
+set("Stack", {
+  gap: { default: '"md"', summary: "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다." },
+  align: { default: '"stretch"', summary: "자식의 가로 정렬입니다. stretch는 폭을 채우고 start·center·end는 내용 폭으로 둡니다." },
+  as: { default: '"div"', summary: "웹 태그(div·section)입니다." },
+});
+set("Inline", {
+  gap: { default: '"sm"', summary: "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다." },
+  align: { default: '"center"', summary: "자식의 세로 정렬(start·center·end·baseline·stretch)입니다." },
+  justify: { default: '"start"', summary: "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다." },
+  wrap: { default: "true", summary: "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다." },
+});
 set("KpiHero KpiRow", { surface: { default: '"card"', summary: "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다." } });
 set("Table MarketCards MarketSimpleList MarketTable", { skeleton: { default: "true", summary: "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다." } });
 set("SignedValue", {

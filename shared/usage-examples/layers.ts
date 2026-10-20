@@ -48,6 +48,13 @@ export function generate(input: UsageInput) {
       content = b.node(name, { items: b.data('items', [{ label: '홈', href: '#home', to: '#home' }, { label: '목록', href: '#list', to: '#list' }, { label: '현재 위치' }]), onNavigate: notify('navigate', '탐색') }); break;
     case 'KjunPagination':
       content = b.node(name, { currentPage: b.state('page', 1), onPageChange: b.update('page'), pageSize: b.state('pageSize', 20), onPageSizeChange: b.update('pageSize'), totalPages: 10, totalRows: 195, showInfo: true, showSizeSelector: true }); break;
+    case 'KjunText':
+      content = b.group([b.node(name, { variant: 'sectionTitle' }, b.text('섹션 제목')), b.node(name, { tone: 'secondary' }, b.text('보조 설명 문구입니다.'))]); break;
+    case 'KjunStack':
+      content = b.node(name, { gap: 'md' }, [b.node('KjunText', { variant: 'cardTitle' }, b.text('알림 설정')),
+        b.node('KjunText', { tone: 'secondary' }, b.text('받을 알림을 고르세요.')), b.button('저장', notify('save', '저장했습니다'))].join('\n')); break;
+    case 'KjunInline':
+      content = b.node(name, { gap: 'sm', justify: 'end' }, [b.button('취소', undefined, { variant: 'secondary' }), b.button('저장', notify('save', '저장했습니다'))].join('\n')); break;
     case 'KjunScrollFade':
       content = b.node(name, {}, b.group(Array.from({ length: 12 }, (_, i) => b.button('항목 ' + (i + 1), undefined, { variant: 'secondary', size: 'sm' })))); break;
     case 'KjunErrorBoundary':

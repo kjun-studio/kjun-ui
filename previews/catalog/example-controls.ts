@@ -72,6 +72,12 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
       );
     case "KjunSpinner":
       return h(name, { size: "md", text: "조회 중" });
+    case "KjunText":
+      return h("Stack", {}, [h(name, { variant: "sectionTitle" }, "섹션 제목"), h(name, { tone: "secondary" }, "보조 설명 문구입니다.")]);
+    case "KjunStack":
+      return h(name, { gap: "md" }, [h("KjunText", { variant: "cardTitle" }, "알림 설정"), h("KjunText", { tone: "secondary" }, "받을 알림을 고르세요."), h("KjunButton", {}, "저장")]);
+    case "KjunInline":
+      return h(name, { gap: "sm", justify: "end" }, [h("KjunButton", { variant: "secondary" }, "취소"), h("KjunButton", {}, "저장")]);
     case "KjunAlert":
       return h(name, {
         variant: settings.tone, size: settings.size, title: settings.title,

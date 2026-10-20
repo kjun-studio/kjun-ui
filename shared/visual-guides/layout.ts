@@ -59,4 +59,25 @@ export const layout: Record<string, GuideAuthor> = {
     ],
     related: "toolbar",
   },
+  KjunText: {
+    parts: [
+      t("글자 역할", "variant가 크기·줄 높이·굵기를 정합니다. 예시는 sectionTitle입니다.", "섹션 제목"),
+      t("보조 문구", "tone=\"secondary\"는 보조 글자색 역할을 씁니다.", "보조 설명 문구입니다."),
+    ],
+    related: "form",
+  },
+  KjunStack: {
+    parts: [
+      t("쌓인 제목", "gap 단계만큼 아래 요소와 떨어집니다.", "알림 설정"),
+      t("쌓인 설명", "자식 사이 간격은 space.stack 토큰입니다.", "받을 알림을 고르세요."),
+    ],
+    related: "form",
+  },
+  KjunInline: {
+    parts: [
+      t("가로 항목", "gap 단계만큼 옆 요소와 떨어지고, 좁으면 줄바꿈합니다.", "취소", true),
+      t("가로 항목", "같은 줄의 다음 요소입니다.", "저장", true),
+    ],
+    related: "toolbar",
+  },
 };
