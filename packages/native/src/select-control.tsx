@@ -1,3 +1,4 @@
+import { kjunMessagesKo } from "../../../shared/package-runtime/messages";
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
 import { FieldClear } from "./field-clear";
 import { FieldPressable, fieldTarget, useFieldSurface } from "./field-surface";
@@ -97,6 +98,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   };
   const { selected, matching, visible, selectedOption, label, nextValue } = selectOptions({
     options, value, labelKey, valueKey, query, pageSize: optionPageSize, limit, loading, multiple, filterFn, searchKeys,
+    selectedCount: kjunMessagesKo.selectedCount,
   });
   const firstSelected = visible.findIndex(({ option }) => selected(option));
   if (firstSelected < 0) selectedRow.current = null;

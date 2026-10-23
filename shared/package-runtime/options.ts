@@ -36,11 +36,14 @@ export function optionMatchRank(option: SelectOption, query: string, labelKey: s
 
 export function selectOptions<T extends SelectOption>({
   options, value, labelKey, valueKey, query, pageSize, limit, loading, multiple, filterFn, searchKeys = [],
+  selectedCount = (count: number) => String(count),
 }: {
   options: T[]; value: OptionValue | OptionValue[] | null;
   labelKey: string; valueKey: string; query: string;
   pageSize: number; limit: number; loading: boolean; multiple: boolean;
   filterFn?: (option: T, query: string) => boolean; searchKeys?: readonly string[];
+  /** Trigger label for several selected options; platforms pass KjunProvider's messages.selectedCount. */
+  selectedCount?: (count: number) => string;
 }) {
   const selected = (option: T) => optionSelected(value, option, valueKey);
   const indexed = options.map((option, index) => ({ option, key: optionKey(option, valueKey, index) }));
@@ -53,7 +56,7 @@ export function selectOptions<T extends SelectOption>({
   const visible = loading ? [] : pageSize > 0 ? matching.slice(0, limit) : matching;
   const selectedOption = options.find(selected);
   const label = multiple && Array.isArray(value) && value.length > 1
-    ? `${value.length}개 선택됨` : selectedOption !== undefined ? optionLabel(selectedOption, labelKey) : "";
+    ? selectedCount(value.length) : selectedOption !== undefined ? optionLabel(selectedOption, labelKey) : "";
   return { selected, matching, visible, selectedOption, label,
     nextValue: (option: T) => nextOptionValue(value, option, valueKey, multiple) };
 }

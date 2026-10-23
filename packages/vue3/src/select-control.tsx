@@ -1,3 +1,4 @@
+import { kjunMessagesKo } from "../../../shared/package-runtime/messages";
 import { computed, defineComponent, inject, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
@@ -76,7 +77,7 @@ export const KjunSelect = defineComponent({
     const change = (value: SelectValue) => { emit("update:modelValue", value); emit("change", value); };
     const model = computed(() => selectOptions({ options: props.options, value: props.modelValue, labelKey: props.labelKey, valueKey: props.valueKey,
       query: state.query.value, pageSize: props.optionPageSize, limit: state.limit.value, loading: props.loading, multiple: props.multiple,
-      filterFn: props.filterFn, searchKeys: props.searchKeys }));
+      filterFn: props.filterFn, searchKeys: props.searchKeys, selectedCount: kjunMessagesKo.selectedCount }));
     const optionElements = () => [...(menu.value?.querySelectorAll<HTMLElement>('[role="option"]:not([aria-disabled="true"])') ?? [])];
     const focusOption = (element: HTMLElement | undefined) => {
       if (!element) return;

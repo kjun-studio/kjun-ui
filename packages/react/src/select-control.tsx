@@ -1,3 +1,4 @@
+import { kjunMessagesKo } from "../../../shared/package-runtime/messages";
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { typeStyle, inputTypeStyle } from "./typography";
@@ -113,6 +114,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   };
   const { selected, matching, visible, selectedOption, label, nextValue } = selectOptions({
     options, value, labelKey, valueKey, query, pageSize: optionPageSize, limit, loading, multiple, filterFn, searchKeys,
+    selectedCount: kjunMessagesKo.selectedCount,
   });
   return (
     <>

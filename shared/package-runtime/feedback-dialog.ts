@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
+import { kjunMessagesKo, type KjunMessages } from "./messages";
 import type { createFeedbackController, ConfirmOptions, FeedbackRequest, PromptOptions } from "@kjun-ui/tokens";
 
 // Providers key the dialog by request ID. Presentation can outlive settlement.
-export function useFeedbackDialog(controller: ReturnType<typeof createFeedbackController>, request: FeedbackRequest) {
+export function useFeedbackDialog(controller: ReturnType<typeof createFeedbackController>, request: FeedbackRequest, messages: KjunMessages = kjunMessagesKo) {
   const options = request.options as PromptOptions & ConfirmOptions;
   const [value, setValue] = useState(options.initialValue || "");
   const [error, setError] = useState("");
@@ -20,7 +21,7 @@ export function useFeedbackDialog(controller: ReturnType<typeof createFeedbackCo
       if (request.kind === "prompt") {
         const valid = options.validator?.(value);
         if (valid === false || typeof valid === "string") {
-          setError(typeof valid === "string" ? valid : "입력 내용을 확인하세요.");
+          setError(typeof valid === "string" ? valid : messages.invalidInput);
           return;
         }
         controller.settle(value, undefined, request.id);
