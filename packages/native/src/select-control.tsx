@@ -136,7 +136,8 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
             ...(compound ? { paddingHorizontal: tokens.extensions.timePicker.segmentPadding, paddingRight: tokens.extensions.timePicker.segmentPadding, paddingLeft: compound.leading ? spec.padding - tokens.border.controlWidth : tokens.extensions.timePicker.segmentPadding, gap: tokens.extensions.timePicker.segmentPadding, backgroundColor: !disabled && (surface.active || surface.hovered) ? colors.hover : "transparent", borderColor: "transparent", outlineWidth: 0 } : {}),
           }}
         >
-          <View style={{ flex: 1, minWidth: 0, paddingRight: clearable && label ? tokens.native.minimumTouchTarget + spec.affixGap : 0 }}>
+          {/* Time segments size to their content: Yoga's flex: 1 has a zero basis, which would ignore the hidden "00". */}
+          <View style={{ ...(compound ? { flexGrow: 1, flexShrink: 0 } : { flex: 1, minWidth: 0 }), paddingRight: clearable && label ? tokens.native.minimumTouchTarget + spec.affixGap : 0 }}>
             {/* A hidden "00" sizes time segments, so the placeholder and the value occupy the same slot. */}
             {compound && <KText aria-hidden={true} importantForAccessibility="no-hide-descendants" style={{ ...inputTypeStyle(size), fontVariant: ["tabular-nums"], opacity: 0 }}>00</KText>}
             {renderSelected?.(selectedOption) || <KText numberOfLines={1} style={{

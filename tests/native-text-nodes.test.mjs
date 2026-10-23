@@ -40,3 +40,16 @@ test('Native JSX renders ReactNode slots through content(), never bare or as a |
   }
   assert.deepEqual(offences, []);
 });
+
+// Yoga treats flex: 1 as a zero flex basis, so an auto-sized time segment ignored the hidden "00" that sizes it
+// and clipped "19" to "·" on devices. React Native Web measures the content, so only this source check catches it.
+test('Native time segments let the hidden "00" set their width (no zero flex basis around it)', () => {
+  const source = readFileSync(new URL('../packages/native/src/select-control.tsx', import.meta.url), 'utf8');
+  const sizer = source.indexOf('A hidden "00" sizes time segments');
+  assert.ok(sizer > 0, 'hidden time-segment sizer not found');
+  const parent = source.slice(source.lastIndexOf('<View style={{', sizer), sizer);
+  const compoundStyle = parent.match(/compound\s*\?\s*(\{[^}]*\})\s*:/);
+  assert.ok(compoundStyle, `time segments need their own value style: ${parent.trim()}`);
+  assert.doesNotMatch(compoundStyle[1], /\bflex:\s*1\b|flexBasis:\s*0/);
+  assert.match(compoundStyle[1], /flexShrink:\s*0/);
+});
