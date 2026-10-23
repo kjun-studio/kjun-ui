@@ -1,37 +1,37 @@
 [
   {
     "name": "@kjun-ui/icons",
-    "version": "0.12.1",
-    "file": "kjun-ui-icons-0.12.1.tgz",
+    "version": "0.12.2",
+    "file": "kjun-ui-icons-0.12.2.tgz",
     "bytes": 1457074,
-    "integrity": "sha512-pIuObg8k37TQdQnBUvYhKSf29qHOnTNdJKp1aAp/f7dmRJ+Wcx5nMf9kH0AeueNpb/9/KiegLdfcNIasVVlxhg=="
+    "integrity": "sha512-YNILKMFjCbSAzWMxvXcb1QFTTSsNq+TgjcnlQOBRWMrDYnMX9Hf/CGrU71aBAakqgJuhA9/QSEd5MWCoSasP6Q=="
   },
   {
     "name": "@kjun-ui/tokens",
-    "version": "0.12.1",
-    "file": "kjun-ui-tokens-0.12.1.tgz",
+    "version": "0.12.2",
+    "file": "kjun-ui-tokens-0.12.2.tgz",
     "bytes": 87351,
-    "integrity": "sha512-drJ1guZCGUatHRzghwV32otf4TloMy6KzdpX/LbxfnIc8ZqkZAK4GuiOrGZDUkn6v8nRzlGqcmvBgg0ftO6xuw=="
+    "integrity": "sha512-HZZGvXKOiKhfKqHbMikyF/JuYyLR4Pr4EnOZmy6mVM9QtjKy+y8xZh54kznoHF3gYPIM/kYUHg6nnV2N+kZxJw=="
   },
   {
     "name": "@kjun-ui/vue3",
-    "version": "0.12.1",
-    "file": "kjun-ui-vue3-0.12.1.tgz",
+    "version": "0.12.2",
+    "file": "kjun-ui-vue3-0.12.2.tgz",
     "bytes": 273175,
-    "integrity": "sha512-BA0f+zJkMqFcBidpXA2d+cQf8z2e9Aw504W97nrEHM/Pm4bteRk6Orsa/tTU+f9sUpKbHwggI0tDu57JZMEMPQ=="
+    "integrity": "sha512-I79lqhhjxjeGjQUgEFaT2MkOjhxeu1YnSePaYR+A9JT1GfYT7A/R8V3F2WWDq8qL/m0nJus0+DgZIHMbnIQV5g=="
   },
   {
     "name": "@kjun-ui/react",
-    "version": "0.12.1",
-    "file": "kjun-ui-react-0.12.1.tgz",
-    "bytes": 223728,
-    "integrity": "sha512-GqOx3sSZYJ9DoXrSmDbImjuqHMGISMYnqhLD/wGMq5Nig7D02bkUOQuWnG3IVWZIg6w/yNvtcBp2Oxth51k2UA=="
+    "version": "0.12.2",
+    "file": "kjun-ui-react-0.12.2.tgz",
+    "bytes": 223730,
+    "integrity": "sha512-Y6cL82N8kHn6yuqRiftBdpxyX/p+1lqSsBVpe5XCcUkgyMolVIymGefs5PLav3xkyjGrlPxDjrsrz/kBIHAhSg=="
   },
   {
     "name": "@kjun-ui/native",
-    "version": "0.12.1",
-    "file": "kjun-ui-native-0.12.1.tgz",
-    "bytes": 449111,
-    "integrity": "sha512-SsIhHWs710ACgpntUVr4AXrQa9fSvVl02O6w5o3B3HY972ocK/huZx7pa2JDCV4VSc1MnFnSCzfQAIs/B9KRVw=="
+    "version": "0.12.2",
+    "file": "kjun-ui-native-0.12.2.tgz",
+    "bytes": 449198,
+    "integrity": "sha512-OUIz9QUhSke6cUS/E7Jm6icprt9heCJawTDTRp3JMCmeVmMqv+X6ntNGowtbrnIiGTvWOM9L0TEunezIrbJg5w=="
   }
 ]

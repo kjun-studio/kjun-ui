@@ -2,6 +2,10 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.12.2 — 2026-10-23
+
+- **Native TimePicker 시·분 칸**: 기기에서 시·분 숫자가 "·", "···"처럼 잘려 보이던 문제를 고쳤습니다. 칸 너비는 숨겨 둔 "00" 글자가 정하는데, 그 글자를 감싼 영역의 `flex: 1`이 앱 배치 엔진(Yoga)에서 기본 너비 0으로 계산돼 칸이 최소 너비(44px)에 머물렀습니다. 시간 칸에서는 이제 내용 너비에서 시작합니다. React Native Web에서는 재현되지 않습니다.
+
 ## 0.12.1 — 2026-10-23
 
 - **Native 앱 멈춤 수정**: React Native(0.86 이상)는 앱 화면 요소를 전역 `HTMLElement`로 정의하지만, 이 요소에는 웹의 `matches`·`closest`·`querySelector`가 없습니다. KJUN의 레이어 포커스 코드가 이 요소를 웹 요소로 판단해 해당 함수를 부르면서, 기기에서 `KjunSelect`(이를 쓰는 시간 선택기 포함)가 다시 그려질 때, `KjunCombobox`를 누를 때, Popover·Tooltip·Dropdown을 열고 닫을 때 "is not a function" 오류로 멈출 수 있었습니다. 이제 함수가 실제로 있을 때만 부릅니다. 0.3.0부터 있던 문제이며, React Native Web에서는 재현되지 않습니다.
