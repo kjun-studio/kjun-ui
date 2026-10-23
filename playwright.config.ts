@@ -1,6 +1,6 @@
 import { defineConfig } from "@playwright/test";
 const profile = process.env.KJUN_BROWSER_TEST_PROFILE;
-const suffix = profile === 'smoke' || profile === 'related' ? `-browser-${profile}` : '';
+const suffix = profile === 'smoke' || profile === 'related' || profile === 'patch' ? `-browser-${profile}` : '';
 export default defineConfig({
   testDir: "./tests/browser",
   // Package contracts run standalone; documentation-site checks live in playwright.docs.config.ts.

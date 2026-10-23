@@ -23,6 +23,7 @@
     "test:browser:full": "node scripts/workflow-run.mjs test:browser:full sh -c 'node scripts/browser-test.mjs \"$@\"' --",
     "test:browser:smoke": "node scripts/workflow-run.mjs test:browser:smoke sh -c 'node scripts/browser-test.mjs --profile smoke \"$@\"' --",
     "test:browser:related": "node scripts/workflow-run.mjs test:browser:related sh -c 'node scripts/browser-test.mjs --profile related \"$@\"' --",
+    "test:browser:patch": "node scripts/workflow-run.mjs test:browser:patch sh -c 'node scripts/browser-test.mjs --profile patch \"$@\"' --",
     "test:docs": "node scripts/workflow-run.mjs test:docs sh -c 'node scripts/docs-test.mjs \"$@\"' --",
     "pack:local": "node scripts/workflow-run.mjs pack:local sh -c 'node scripts/pack.mjs \"$@\"' --",
     "verify:consumers": "node scripts/workflow-run.mjs verify:consumers sh -c 'node scripts/consumers.mjs \"$@\"' --",

@@ -31,7 +31,7 @@ export const relatedGroups = {
   tooltip: [...layers, ...files('expanded', 'size-contracts')],
   icons: [...files('icon-render', 'icon-registry', 'icon-toggle', 'menu-button', 'button-design'), ...contracts, ...visuals],
   typography: files('typography', 'layout-primitives', 'color-font', 'geometry-tokens', 'card-layout', 'visual-contract'),
-  layout: [...files('layout-primitives', 'typography', 'geometry-tokens', 'card-layout', 'input-design'), ...visuals],
+  primitives: [...files('layout-primitives', 'typography', 'geometry-tokens', 'card-layout', 'input-design'), ...visuals],
   kpi: [...files('kpi-secondary', 'loading-options', 'typography', 'geometry-tokens', 'card-layout'), ...visuals],
   quantity: [...files('quantity', 'elevation-inputs', 'interaction-states'), ...fields, ...visuals],
   slider: [...files('slider-design'), ...fields, ...visuals],
@@ -40,6 +40,8 @@ export const relatedGroups = {
   accessibility: files('accessibility-tabs', 'accessibility-components', 'accessibility-controls', 'elevation-keyboard', 'input-contracts'),
 };
 export const fullScopes = ['all', 'tokens', 'runtime', 'layers', 'layout', 'motion'];
+// 패치 검사는 범위 전용 파일만 남긴다. 여러 범위가 함께 쓰는 시각·계약·입력·레이어 묶음은 기능 릴리스의 related 검사에 맡긴다.
+const sharedFiles = new Set([...contracts, ...fields, ...visuals, ...layers]);
 
 export function planBrowserTests(argv) {
   const args = [...argv];
@@ -48,18 +50,24 @@ export function planBrowserTests(argv) {
     args.shift();
     profile = args.shift();
   }
-  if (!['full', 'smoke', 'related'].includes(profile)) throw Error(`알 수 없는 검사 모드: ${profile}`);
+  if (!['full', 'smoke', 'related', 'patch'].includes(profile)) throw Error(`알 수 없는 검사 모드: ${profile}`);
   let selected = [], description = '전체 패키지 검사';
   if (profile === 'smoke') {
     selected = smokeFiles;
     description = '세 플랫폼의 기본 선택·카드·데이터 상태 빠른 검사';
   }
-  if (profile === 'related') {
+  if (profile === 'related' || profile === 'patch') {
     const scopes = (args.shift() || '').split(',').map(scope => scope.trim());
     if (scopes.some(scope => !Object.hasOwn(relatedGroups, scope) && !fullScopes.includes(scope))) {
       throw Error(`관련 검사 범위를 지정하세요: ${[...Object.keys(relatedGroups), ...fullScopes].join(', ')}. 여러 범위는 쉼표로 연결합니다.`);
     }
-    if (scopes.some(scope => fullScopes.includes(scope))) {
+    if (profile === 'patch') {
+      if (scopes.some(scope => fullScopes.includes(scope))) {
+        throw Error(`공통 변경(${scopes.join(', ')})은 패치 검사로 줄일 수 없습니다. test:browser:related 또는 test:browser:full을 사용하세요.`);
+      }
+      selected = [...new Set([...scopes.flatMap(scope => relatedGroups[scope]).filter(file => !sharedFiles.has(file)), ...smokeFiles])];
+      description = `패치 검사(범위 전용 파일 + smoke, 부분 검증): ${scopes.join(', ')}`;
+    } else if (scopes.some(scope => fullScopes.includes(scope))) {
       profile = 'full';
       description = `공통 변경(${scopes.join(', ')}) → 전체 패키지 검사`;
     } else {

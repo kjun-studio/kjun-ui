@@ -33,7 +33,8 @@ docker exec kjun_ui_dev npm run test:browser:related -- select --list
 
 - `test:browser`와 `test:browser:full`: 기존 전체 패키지 검사. 별도의 3종 브라우저 설정은 기존 `test:browser -- -c ...`로 실행한다.
 - `test:browser:smoke`: 기존 `expanded`, `card-contract`, `data-state-design` 파일의 17개 검사. 세 플랫폼의 기본 선택·카드·데이터 상태를 확인하며 전체 검증을 대신하지 않는다.
-- `test:browser:related`: `alert`, `data-state`, `card`, `table`, `market`, `select`, `combobox`, `search-input`, `input`, `button`, `form`, `tabs`, `accordion`, `navigation`, `feedback`, `modal`, `drawer`, `popover`, `dropdown`, `tooltip`, `icons`, `typography`, `kpi`, `quantity`, `slider`, `time-picker`, `radio`, `accessibility`를 쉼표로 지정한다. `all`, `tokens`, `runtime`, `layers`, `layout`, `motion`은 전체 검사로 확장한다. 매핑은 `scripts/browser-test-profiles.mjs`에서 관리하며 새 검사 파일도 관련 그룹에 등록한다.
+- `test:browser:related`: `alert`, `data-state`, `card`, `table`, `market`, `select`, `combobox`, `search-input`, `input`, `button`, `form`, `tabs`, `accordion`, `navigation`, `feedback`, `modal`, `drawer`, `popover`, `dropdown`, `tooltip`, `icons`, `typography`, `primitives`, `kpi`, `quantity`, `slider`, `time-picker`, `radio`, `accessibility`를 쉼표로 지정한다. `all`, `tokens`, `runtime`, `layers`, `layout`, `motion`은 전체 검사로 확장한다. 매핑은 `scripts/browser-test-profiles.mjs`에서 관리하며 새 검사 파일도 관련 그룹에 등록한다. 그룹 이름은 전체 검사 범위 이름과 겹치면 안 된다(겹치면 조용히 전체 검사가 된다).
+- `test:browser:patch`: `test:browser:related`와 같은 범위 이름을 받지만, 그 범위 전용 spec과 smoke만 실행한다. 여러 범위가 함께 쓰는 시각(`visual-contract` 등)·계약·입력·레이어 묶음은 빠진다. 작은 버그 수정의 패치 릴리스에 쓰고, 기능 릴리스와 공통 코드 변경에는 `related`를 쓴다. 전체 검사 범위 이름은 받지 않는다. 부분 검증이다.
 
 관련 검사는 변경 파일을 자동 추론하지 않는다. 호출자가 영향 범위를 지정하며 알 수 없는 범위는 실패한다. 컴포넌트가 다른 컴포넌트를 사용하는 경우 그 소비 관계도 매핑에 반영한다. 제목을 잘라 선택하지 않고 선택된 파일의 모든 플랫폼·화면 크기 사례를 실행한다. 빠른·관련 검사의 결과와 HTML 보고서는 각각 `test-results-browser-smoke`, `test-results-browser-related`, `playwright-report-browser-smoke`, `playwright-report-browser-related`에 저장한다. 기본 워커 1개, 현재 패키지 일치 검사와 기존 전체 테스트는 유지한다.
 
