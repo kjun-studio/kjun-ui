@@ -37,22 +37,29 @@ export function useActiveLayerScope() {
 function currentFocus(): FocusTarget | null {
   return typeof document === 'undefined' ? null : document.activeElement as HTMLElement;
 }
+// React Native defines a global HTMLElement for its host elements, which have no matches, closest or
+// querySelector. Check for the DOM methods themselves instead of `instanceof HTMLElement`.
+function domElement(target: unknown): target is HTMLElement {
+  const node = target as Partial<HTMLElement> | null | undefined;
+  return typeof node?.matches === 'function' && typeof node.closest === 'function' && typeof node.querySelector === 'function';
+}
 export function focusTrigger(target: FocusTarget | null | undefined) {
-  if (typeof HTMLElement !== 'undefined' && target instanceof HTMLElement) {
+  if (domElement(target)) {
     return target.matches('button,input,[href],[tabindex]') ? target :
       target.querySelector<HTMLElement>('button,input,[href],[tabindex]') || target;
   }
   return target;
 }
+export function isRestorableFocus(item: FocusTarget | null | undefined) {
+  return item?.isConnected !== false && !(domElement(item) && item.closest('[inert]'));
+}
 function restoreFocus(target: FocusTarget | null | undefined, state: ReturnType<typeof createLayerState>, id: string, fallback?: FocusTarget | null) {
-  const usable = (item: FocusTarget | null | undefined) => item?.isConnected !== false &&
-    !(typeof HTMLElement !== 'undefined' && item instanceof HTMLElement && item.closest('[inert]'));
   // Overlay content finishes its own focus cleanup after this update.
   const restore = () => {
     if (state.entries.has(id)) return;
-    if (usable(target)) target?.focus?.({ preventScroll: true });
+    if (isRestorableFocus(target)) target?.focus?.({ preventScroll: true });
     // A chosen return target can vanish during the exit motion; the trigger is the next choice.
-    else if (fallback && fallback !== target && usable(fallback)) fallback.focus?.({ preventScroll: true });
+    else if (fallback && fallback !== target && isRestorableFocus(fallback)) fallback.focus?.({ preventScroll: true });
     else state.topWindow()?.root?.focus?.({ preventScroll: true });
   };
   if (typeof requestAnimationFrame !== 'undefined') requestAnimationFrame(restore);
