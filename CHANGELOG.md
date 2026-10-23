@@ -2,6 +2,10 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.12.1 — 2026-10-23
+
+- **Native 앱 멈춤 수정**: React Native(0.86 이상)는 앱 화면 요소를 전역 `HTMLElement`로 정의하지만, 이 요소에는 웹의 `matches`·`closest`·`querySelector`가 없습니다. KJUN의 레이어 포커스 코드가 이 요소를 웹 요소로 판단해 해당 함수를 부르면서, 기기에서 `KjunSelect`(이를 쓰는 시간 선택기 포함)가 다시 그려질 때, `KjunCombobox`를 누를 때, Popover·Tooltip·Dropdown을 열고 닫을 때 "is not a function" 오류로 멈출 수 있었습니다. 이제 함수가 실제로 있을 때만 부릅니다. 0.3.0부터 있던 문제이며, React Native Web에서는 재현되지 않습니다.
+
 ## 0.12.0 — 2026-10-20
 
 화면의 글자와 간격을 이름으로 고르는 컴포넌트 세 개를 추가했습니다. 기존 컴포넌트는 바뀌지 않습니다.
