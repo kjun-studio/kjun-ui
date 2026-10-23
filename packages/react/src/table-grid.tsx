@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { Fragment, type CSSProperties, type KeyboardEvent } from "react";
 import type { TableGridProps } from "../../../shared/package-runtime/table-presentation";
@@ -10,6 +11,7 @@ interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["m
   rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
 }
 export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown }: Props<Row>) {
+  const m = useKjunMessages();
   return (
           <div className="kjun-table-scroll" style={{ maxHeight, visibility: skeletonHidden ? "hidden" : undefined }} aria-hidden={skeletonHidden || undefined}>
             <table
@@ -30,7 +32,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                   {selectable && (
                     <th scope="col" className="kjun-table-action-cell">
                       <TableCheck
-                        aria-label="전체 선택"
+                        aria-label={m.selectAll}
                         checked={state.all}
                         ref={(node) => {
                           if (node) node.indeterminate = state.some;

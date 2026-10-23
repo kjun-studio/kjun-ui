@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { tokens } from "@kjun-ui/tokens";
@@ -73,11 +74,13 @@ export interface KjunEmptyProps {
   children?: ReactNode;
 }
 export function KjunEmpty({
-  text = "데이터가 없습니다",
+  text,
   description,
   icon,
   children,
 }: KjunEmptyProps) {
+  const m = useKjunMessages();
+  text ??= m.noData;
   return (
     <div className="kjun-empty">
       {icon && <KjunIcon name={icon} size={tokens.extensions.empty.iconSize} />}
@@ -92,10 +95,11 @@ export interface KjunSpinnerProps {
   text?: string;
 }
 export function KjunSpinner({ size = "md", text }: KjunSpinnerProps) {
+  const m = useKjunMessages();
   // The stroke keeps a size-specific pixel weight instead of scaling with the 24-unit viewBox.
   const stroke = (tokens.extensions.spinner.strokeWidths[size] * 24) / tokens.extensions.spinner.sizes[size];
   return (
-    <span role="status" aria-label={text || "로딩 중"} className="kjun-spinner">
+    <span role="status" aria-label={text || m.loading} className="kjun-spinner">
       <svg
         className="kjun-spin"
         width={tokens.extensions.spinner.sizes[size]}
@@ -146,6 +150,7 @@ export function KjunAlert({
   actions,
   onClose,
 }: KjunAlertProps) {
+  const m = useKjunMessages();
   const [visible, setVisible] = useState(true);
   if (!visible) return null;
   const tone = variant || (type === "error" ? "danger" : type),
@@ -187,7 +192,7 @@ export function KjunAlert({
         <button
           className="kjun-alert-close"
           type="button"
-          aria-label="닫기"
+          aria-label={m.close}
           onClick={() => {
             setVisible(false);
             onClose?.();
@@ -217,6 +222,7 @@ export function KjunProgress({
   label,
   subLabel,
 }: KjunProgressProps) {
+  const m = useKjunMessages();
   const percentage =
     Number.isFinite(value) && max > 0
       ? Math.min(100, Math.max(0, Math.round((value / max) * 100)))
@@ -231,7 +237,7 @@ export function KjunProgress({
       )}
       <div
         role="progressbar"
-        aria-label={typeof label === "string" ? label : "진행률"}
+        aria-label={typeof label === "string" ? label : m.progress}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={percentage}

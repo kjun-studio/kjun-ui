@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from '@kjun-ui/tokens';
 import { Collapse } from "./collapse";
 import { useInitialTab, useAccordionState } from "../../../shared/package-runtime/navigation";
@@ -52,11 +53,13 @@ export function KjunTabs({
   variant = "underline",
   actions,
   children,
-  ariaLabel = "탭",
+  ariaLabel,
   onValueChange,
   onChange,
   onTabMenu,
 }: KjunTabsProps) {
+  const m = useKjunMessages();
+  ariaLabel ??= m.tabs;
   const { group, indicator } = useSelectionIndicator(true);
   const panes = Children.toArray(children).filter(
     isValidElement
@@ -278,8 +281,10 @@ export interface KjunBreadcrumbProps {
 export function KjunBreadcrumb({
   items,
   renderLink,
-  ariaLabel = "현재 위치",
+  ariaLabel,
 }: KjunBreadcrumbProps) {
+  const m = useKjunMessages();
+  ariaLabel ??= m.breadcrumb;
   return (
     <nav aria-label={ariaLabel} className="kjun-breadcrumb">
       {items.map((item, i) => {
@@ -336,6 +341,7 @@ export function KjunPagination({
   onChange,
   onPageSizeChange,
 }: KjunPaginationProps) {
+  const m = useKjunMessages();
   const current = Math.max(1, Math.min(totalPages, currentPage ?? page ?? 1));
   if (totalPages <= 1 && !showSizeSelector && !(showInfo && totalRows > 0)) return null;
   const change = (v: number) => {
@@ -365,11 +371,10 @@ export function KjunPagination({
     </button>
   );
   return (
-    <nav aria-label="페이지 탐색" className="kjun-pagination">
+    <nav aria-label={m.pagination} className="kjun-pagination">
       {showInfo && totalRows > 0 ? (
         <span>
-          {(current - 1) * pageSize + 1} -{" "}
-          {Math.min(current * pageSize, totalRows)} / {formatter(totalRows)}개
+          {m.pageRange((current - 1) * pageSize + 1, Math.min(current * pageSize, totalRows), formatter(totalRows))}
         </span>
       ) : (
         <span />
@@ -378,9 +383,9 @@ export function KjunPagination({
         {showSizeSelector && (
           <div className="kjun-pagination-size"><KjunSelect
             size="sm"
-            ariaLabel="페이지당 항목 수"
+            ariaLabel={m.itemsPerPage}
             value={pageSize}
-            options={pageSizeOptions.map(n => ({ value: n, label: `${n}개씩` }))}
+            options={pageSizeOptions.map(n => ({ value: n, label: m.perPage(n) }))}
             onValueChange={(value) => {
               onPageSizeChange?.(Number(value));
               onPageChange?.(1);
@@ -389,15 +394,15 @@ export function KjunPagination({
           /></div>
         )}
         {totalPages > 1 && <div className="kjun-pagination-mobile">
-          {button(current - 1, "이전 페이지", "chevron-left")}
+          {button(current - 1, m.previousPage, "chevron-left")}
           <span>
             <strong>{current}</strong> / {totalPages}
           </span>
-          {button(current + 1, "다음 페이지", "chevron-right")}
+          {button(current + 1, m.nextPage, "chevron-right")}
         </div>}
         {totalPages > 1 && <div className="kjun-pagination-desktop">
-          {showFirstLast && button(1, "첫 페이지", "chevrons-left")}
-          {button(current - 1, "이전 페이지", "chevron-left")}
+          {showFirstLast && button(1, m.firstPage, "chevrons-left")}
+          {button(current - 1, m.previousPage, "chevron-left")}
           {pages.map((n, i) =>
             typeof n === "string" ? (
               <span key={"dots" + i}>...</span>
@@ -405,7 +410,7 @@ export function KjunPagination({
               <button
                 key={n}
                 type="button"
-                aria-label={`${n} 페이지`}
+                aria-label={m.page(n)}
                 aria-current={current === n ? "page" : undefined}
                 onClick={() => change(n)}
               >
@@ -413,9 +418,9 @@ export function KjunPagination({
               </button>
             )
           )}
-          {button(current + 1, "다음 페이지", "chevron-right")}
+          {button(current + 1, m.nextPage, "chevron-right")}
           {showFirstLast &&
-            button(totalPages, "마지막 페이지", "chevrons-right")}
+            button(totalPages, m.lastPage, "chevrons-right")}
         </div>}
       </div>
     </nav>

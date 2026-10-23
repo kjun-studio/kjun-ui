@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { Fragment, useEffect, useId, useMemo, useRef } from "react";
 import { createTimeDomain, type TimePrecision, type InputSize } from "@kjun-ui/tokens";
 import { CompoundControlContext } from "./compound-control";
@@ -9,7 +10,9 @@ export interface KjunTimePickerProps {
   disabled?: boolean; error?: boolean; clearable?: boolean; size?: InputSize; ariaLabel?: string;
   onValueChange?: (value: string | null) => void; onChangeCommit?: (value: string | null) => void;
 }
-export function KjunTimePicker({ value, precision = "minute", min, max, minuteStep = 1, secondStep = 1, disabled = false, error = false, clearable = true, size = "md", ariaLabel = "시간", onValueChange, onChangeCommit }: KjunTimePickerProps) {
+export function KjunTimePicker({ value, precision = "minute", min, max, minuteStep = 1, secondStep = 1, disabled = false, error = false, clearable = true, size = "md", ariaLabel, onValueChange, onChangeCommit }: KjunTimePickerProps) {
+  const m = useKjunMessages();
+  ariaLabel ??= m.time;
   const root = useRef<HTMLDivElement>(null);
   const field = useKjunField(), uid = useId();
   const fieldId = field?.id || `kjun-time-${uid}`;
@@ -20,7 +23,7 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
   const time = value === null ? null : domain.parse(value);
   return <div ref={root} className="kjun-time-picker" data-size={size} data-error={error || !!field?.error} data-disabled={disabled || !valid} role="group" aria-label={ariaLabel} aria-labelledby={field?.labelId} aria-describedby={field?.describedBy}>
     <CompoundControlContext.Provider value={size}><div className="kjun-time-segments">
-    {["시", "분", "초"].slice(0, precision === "second" ? 3 : 2).map((label, index) => {
+    {[m.hour, m.minute, m.second].slice(0, precision === "second" ? 3 : 2).map((label, index) => {
       const segmentId = index === 0 ? fieldId : `${fieldId}-${index}`;
       const labelId = `${fieldId}-segment-${index}`;
       return <Fragment key={label}>{index > 0 && <span className="kjun-time-separator" aria-hidden>:</span>}<FieldContext.Provider value={{ ...field, id: segmentId, labelId: field?.labelId ? `${field.labelId} ${labelId}` : undefined }}>
@@ -33,6 +36,6 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
       </FieldContext.Provider></Fragment>;
     })}
     </div></CompoundControlContext.Provider>
-    {clearable && value !== null && <KjunButton className="kjun-time-clear" size={size} variant="ghost" prefixIcon="x" ariaLabel={ariaLabel + " 지우기"} disabled={disabled || !valid} onClick={() => { change(null); root.current?.querySelector<HTMLButtonElement>(".kjun-select-trigger")?.focus(); }} />}
+    {clearable && value !== null && <KjunButton className="kjun-time-clear" size={size} variant="ghost" prefixIcon="x" ariaLabel={m.clearValue(ariaLabel)} disabled={disabled || !valid} onClick={() => { change(null); root.current?.querySelector<HTMLButtonElement>(".kjun-select-trigger")?.focus(); }} />}
   </div>;
 }

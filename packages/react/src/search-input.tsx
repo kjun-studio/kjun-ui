@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { type InputSize } from "@kjun-ui/tokens";
 import { useState, type ReactNode } from "react";
 import { useSearchInputModel, type SearchInputModelProps } from "../../../shared/package-runtime/search-input";
@@ -22,7 +23,7 @@ export interface KjunSearchInputProps<T extends SelectOption = SelectOption> ext
 }
 export function KjunSearchInput<T extends SelectOption = SelectOption>({
   value,
-  placeholder = "검색...",
+  placeholder,
   ariaLabel,
   disabled = false,
   error = false,
@@ -33,8 +34,8 @@ export function KjunSearchInput<T extends SelectOption = SelectOption>({
   itemKey = "id",
   labelField = "name",
   minChars = 2,
-  emptyText = "결과가 없습니다",
-  errorText = "검색하지 못했습니다. 다시 시도해 주세요.",
+  emptyText,
+  errorText,
   renderOption,
   onValueChange,
   onSelect,
@@ -42,6 +43,10 @@ export function KjunSearchInput<T extends SelectOption = SelectOption>({
   onEnter,
   onClear,
 }: KjunSearchInputProps<T>) {
+  const m = useKjunMessages();
+  placeholder ??= m.search;
+  emptyText ??= m.noResults;
+  errorText ??= m.searchFailed;
   const [open, setOpen] = useState(false);
   const model = useSearchInputModel({ value, disabled, debounce, loadOptions, minChars, onValueChange, onSearchError }, open);
   const { query, options, loading, failed } = model;

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { createFeedbackController,type ToastItem } from "@kjun-ui/tokens";
 import { useEffect,useRef,type CSSProperties } from "react";
 import { KjunIcon } from "./button";
@@ -8,6 +9,7 @@ export function ToastView({
   toast: ToastItem;
   controller: ReturnType<typeof createFeedbackController>;
 }) {
+  const m = useKjunMessages();
   const previous = useRef<HTMLElement | null>(null);
   const reasons = useRef({ hover: Symbol("hover"), focus: Symbol("focus") }).current;
   useEffect(() => {
@@ -72,7 +74,7 @@ export function ToastView({
         <button
           type="button"
           className="kjun-toast-close"
-          aria-label="알림 닫기"
+          aria-label={m.closeNotification}
           onClick={() => dismiss()}
         >
           <KjunIcon name="x" />

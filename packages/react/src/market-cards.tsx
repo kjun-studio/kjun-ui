@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunDataState } from "./data-state";
 import { KjunEmpty,KjunSkeleton } from "./display";
@@ -16,6 +17,7 @@ import { getValue } from "./table";
 export function KjunMarketCards<Row extends object = Record<string, unknown>>(
   props: KjunMarketCardsProps<Row>
 ) {
+  const m = useKjunMessages();
   const {
     rows = [],
     rowKey = "id",
@@ -26,7 +28,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
     changeMetricKey = "change_rate",
     priceMetricKeys = ["current_price", "close_price"],
     metricLoading = () => false,
-    emptyMessage = "항목이 없습니다",
+    emptyMessage = m.noItems,
     emptySubMessage = "",
   } = props;
   const state = useMarketCards(props),
@@ -48,7 +50,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
   };
   return (
     <div className="kjun-market-cards">
-      <div className="kjun-metric-pills" role="group" aria-label="표시 지표">
+      <div className="kjun-metric-pills" role="group" aria-label={m.metrics}>
         {state.pills.map((pill) => (
           <button
             key={pill.key}

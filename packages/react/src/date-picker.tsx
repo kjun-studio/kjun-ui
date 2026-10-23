@@ -1,3 +1,5 @@
+import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
+import { formatDateValue } from "../../../shared/package-runtime/messages";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
 import {
@@ -17,7 +19,7 @@ export interface KjunDatePickerProps
 export function KjunDatePicker({
   value,
   size = "md",
-  placeholder = "날짜 선택",
+  placeholder,
   ariaLabel,
   error,
   onValueChange,
@@ -25,6 +27,8 @@ export function KjunDatePicker({
   onBlur,
   ...props
 }: KjunDatePickerProps) {
+  const scope = useKjunMessageScope();
+  placeholder ??= scope.messages.datePlaceholder;
   const [focus, setFocus] = useState(false);
   return (
     // The drawn calendar icon matches Native; the transparent browser indicator sits on top of it
@@ -70,7 +74,7 @@ export function KjunDatePicker({
               : "var(--_kjun-color-input-placeholder)",
           }}
         >
-          {value ? value.replace(/-/g, ". ") + "." : placeholder}
+          {value ? formatDateValue(value, scope) : placeholder}
         </span>
       )}
     </div>

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { tokens } from "@kjun-ui/tokens";
 import { drawerOverlayVars } from "../../../shared/package-runtime/drawer-geometry";
@@ -49,6 +50,7 @@ export function KjunDrawer({
   safeAreaBottom = 0,
   maxHeight,
 }: KjunDrawerProps) {
+  const m = useKjunMessages();
   const motion = usePresence(open, useReducedMotion(), tokens.motion.layerExit);
   const container = useKjunPortalContainer();
   const close = () => {
@@ -83,7 +85,7 @@ export function KjunDrawer({
         }}
       >
         <Dialog
-          aria-label={ariaLabel || title || "패널"}
+          aria-label={ariaLabel || title || m.panel}
           className="kjun-drawer-dialog"
           ref={node => { const entry = layer.state.entries.get(layer.id); if (entry) entry.root = node; }}
         >
@@ -94,7 +96,7 @@ export function KjunDrawer({
                 <KjunButton
                   size="sm"
                   variant="ghost"
-                  ariaLabel="닫기"
+                  ariaLabel={m.close}
                   onClick={close}
                   style={{ borderRadius: tokens.extensions.drawer.closeRadius, width: tokens.extensions.drawer.closeSize, height: tokens.extensions.drawer.closeSize, padding: 0 }}
                 ><KjunIcon name="x" size={tokens.extensions.drawer.closeIconSize} /></KjunButton>

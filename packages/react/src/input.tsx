@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import {
@@ -131,6 +132,7 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
     },
     ref
   ) {
+    const m = useKjunMessages();
     const field = useContext(FieldContext);
     const uid = "kjun-" + useId().replace(/:/g, "");
     const input = useRef<HTMLInputElement>(null);
@@ -226,7 +228,7 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
                   variant="ghost"
                   size="sm"
 
-                  ariaLabel="입력 지우기"
+                  ariaLabel={m.clearInput}
                   disabled={disabled || readOnly}
                   style={{
                     padding: 0,

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { usePresence } from "../../../shared/package-runtime/use-presence";
 import { useReducedMotion } from "./use-reduced-motion";
@@ -24,8 +25,8 @@ export interface KjunFormActionsProps {
 }
 export function KjunFormActions({
   size = "lg",
-  cancelText = "취소",
-  confirmText = "저장",
+  cancelText,
+  confirmText,
   showCancel = true,
   showConfirm = true,
   cancelDisabled = false,
@@ -36,6 +37,9 @@ export function KjunFormActions({
   onCancel,
   onConfirm,
 }: KjunFormActionsProps) {
+  const m = useKjunMessages();
+  cancelText ??= m.cancel;
+  confirmText ??= m.save;
   const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => observeFormActions(ref.current!), []);
   return (
@@ -107,8 +111,8 @@ export function KjunModal({
   showFooter = false,
   showConfirmButton = true,
   showCancelButton = true,
-  confirmText = "확인",
-  cancelText = "취소",
+  confirmText,
+  cancelText,
   confirmDisabled = false,
   loading = false,
   noPadding = false,
@@ -120,6 +124,9 @@ export function KjunModal({
   children,
   ariaLabel,
 }: KjunModalProps) {
+  const m = useKjunMessages();
+  confirmText ??= m.confirm;
+  cancelText ??= m.cancel;
   const motion = usePresence(open, useReducedMotion());
   const portalContainer = useKjunPortalContainer();
   const id = "kjun-" + useId();
@@ -167,7 +174,7 @@ export function KjunModal({
         <Dialog
           className="kjun-modal-dialog"
           ref={node => { const entry = layer.state.entries.get(layer.id); if (entry) entry.root = node; }}
-          aria-label={explicitLabel || (labelledByHeading ? undefined : title.trim() || "대화상자")}
+          aria-label={explicitLabel || (labelledByHeading ? undefined : title.trim() || m.dialog)}
           aria-labelledby={labelledByHeading ? id : undefined}
         >
           {showHeader && (
@@ -179,7 +186,7 @@ export function KjunModal({
                 <button
                   type="button"
                   className="kjun-modal-close"
-                  aria-label="닫기"
+                  aria-label={m.close}
                   onClick={close}
                 >
                   <KjunIcon name="x" size={tokens.modal.closeIconSize} />

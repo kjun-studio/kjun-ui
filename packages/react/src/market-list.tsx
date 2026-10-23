@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunDataState } from "./data-state";
 import { KjunBadge,KjunEmpty,KjunSkeleton } from "./display";
@@ -14,6 +15,7 @@ import { getValue } from "./table";
 export function KjunMarketSimpleList<
   Row extends object = Record<string, unknown>
 >(props: KjunMarketSimpleListProps<Row>) {
+  const m = useKjunMessages();
   const {
     rows = [],
     rowKey = "id",
@@ -22,7 +24,7 @@ export function KjunMarketSimpleList<
     changeLoading = () => false,
     priceFormatter,
     closingPrice = false,
-    emptyMessage = "항목이 없습니다",
+    emptyMessage = m.noItems,
     emptySubMessage = "",
   } = props;
   return (
@@ -75,7 +77,7 @@ export function KjunMarketSimpleList<
                       (!changeLoading(row) && finiteNumber(change) !== null)) &&
                       (closingPrice && !stale ? (
                         <KjunBadge variant="secondary" size="xs">
-                          종가
+                          {m.closePrice}
                         </KjunBadge>
                       ) : (
                         <KjunFreshness

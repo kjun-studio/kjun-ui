@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { createNumberDomain, quantityKeyAction, tokens, type InputSize } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
@@ -11,6 +12,7 @@ export interface KjunQuantityStepperProps {
   onInvalidInput?: (draft: string) => void;
 }
 export function KjunQuantityStepper({ value, min = 0, max, step = 1, precision = 0, disabled = false, error = false, size = "md", block = false, id, ariaLabel, onValueChange, onChangeCommit, onInvalidInput }: KjunQuantityStepperProps) {
+  const m = useKjunMessages();
   const geometry = tokens.extensions.compound;
   const buttonStyle = { width: tokens.input[size].height, padding: 0 };
   const domain = createNumberDomain({ min, max, step, precision });
@@ -45,11 +47,11 @@ export function KjunQuantityStepper({ value, min = 0, max, step = 1, precision =
     else move(action === "increment" ? 1 : -1);
   };
   return <IconFallbacks icons={componentIcons}><div className="kjun-quantity" data-size={size} data-block={block} data-error={error || !!field?.error}>
-    <KjunButton size={size} style={buttonStyle} variant="ghost" ariaLabel="수량 줄이기" disabled={blocked || value <= min} onMouseDown={e => e.preventDefault()} onClick={() => move(-1)} prefixIcon="minus" />
-    <input className="kjun-input" id={id || field?.id} type="text" inputMode={precision ? "decimal" : "numeric"} role="spinbutton" aria-label={ariaLabel || (field?.labelId ? undefined : "수량")} aria-labelledby={ariaLabel ? undefined : field?.labelId} aria-describedby={field?.describedBy} aria-invalid={error || !!field?.error || undefined} aria-valuemin={min} aria-valuemax={max} aria-valuenow={value} value={draft} disabled={blocked}
+    <KjunButton size={size} style={buttonStyle} variant="ghost" ariaLabel={m.decreaseQuantity} disabled={blocked || value <= min} onMouseDown={e => e.preventDefault()} onClick={() => move(-1)} prefixIcon="minus" />
+    <input className="kjun-input" id={id || field?.id} type="text" inputMode={precision ? "decimal" : "numeric"} role="spinbutton" aria-label={ariaLabel || (field?.labelId ? undefined : m.quantity)} aria-labelledby={ariaLabel ? undefined : field?.labelId} aria-describedby={field?.describedBy} aria-invalid={error || !!field?.error || undefined} aria-valuemin={min} aria-valuemax={max} aria-valuenow={value} value={draft} disabled={blocked}
       onChange={event => { dirty.current = true; setDraft(event.target.value); }} onBlur={commit}
       onCompositionStart={() => { composing.current = true; }} onCompositionEnd={event => { composing.current = false; dirty.current = true; setDraft(event.currentTarget.value); }}
       onKeyDown={key} aria-required={field?.required || undefined} />
-    <KjunButton size={size} style={buttonStyle} variant="ghost" ariaLabel="수량 늘리기" disabled={blocked || (max !== undefined && value >= max)} onMouseDown={e => e.preventDefault()} onClick={() => move(1)} prefixIcon="plus" />
+    <KjunButton size={size} style={buttonStyle} variant="ghost" ariaLabel={m.increaseQuantity} disabled={blocked || (max !== undefined && value >= max)} onMouseDown={e => e.preventDefault()} onClick={() => move(1)} prefixIcon="plus" />
   </div></IconFallbacks>;
 }

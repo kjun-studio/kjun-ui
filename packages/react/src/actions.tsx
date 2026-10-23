@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
 import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import {
@@ -118,7 +119,7 @@ export function KjunCopyButton({
   value,
   ariaLabel,
   text,
-  successText = "복사됨",
+  successText,
   inline = false,
   size = "sm",
   disabled = false,
@@ -126,6 +127,8 @@ export function KjunCopyButton({
   onCopied,
   onCopyError,
 }: KjunCopyButtonProps) {
+  const m = useKjunMessages();
+  successText ??= m.copied;
   const feedback = useOptionalKjunFeedback();
   const [copied, setCopied] = useState(false),
     [failed, setFailed] = useState(false),
@@ -144,7 +147,7 @@ export function KjunCopyButton({
       <button
         type="button"
         disabled={disabled}
-        aria-label={ariaLabel || text || "복사"}
+        aria-label={ariaLabel || text || m.copy}
         className="kjun-copy-button"
         data-inline={inline}
         style={{
@@ -169,7 +172,7 @@ export function KjunCopyButton({
           } catch (error) {
             if (mounted.current) {
               setFailed(true);
-              feedback?.toast.error("복사 실패");
+              feedback?.toast.error(m.copyFailed);
               onCopyError?.(error);
             }
           } finally {
@@ -185,7 +188,7 @@ export function KjunCopyButton({
         {text && !inline && <span>{copied ? successText : text}</span>}
       </button>
       <span role={feedback ? undefined : "status"} aria-hidden={feedback ? true : undefined} className="kjun-sr-only">
-        {copied ? successText : failed ? "복사 실패" : ""}
+        {copied ? successText : failed ? m.copyFailed : ""}
       </span>
     </>
   );
@@ -204,7 +207,7 @@ export interface KjunRefreshButtonProps
 export function KjunRefreshButton({
   targetName = "",
   mode = "icon",
-  text = "새로고침",
+  text,
   size = "sm",
   variant = "ghost",
   ariaLabel,
@@ -216,9 +219,11 @@ export function KjunRefreshButton({
   onRefresh,
   ...props
 }: KjunRefreshButtonProps) {
+  const m = useKjunMessages();
+  text ??= m.refresh;
   const reduced = useReducedMotion();
   // Text mode speaks what it shows (WCAG 2.5.3); icon mode keeps the action name.
-  const label = ariaLabel || [targetName, mode === "text" ? text : "새로고침"].filter(Boolean).join(" ");
+  const label = ariaLabel || [targetName, mode === "text" ? text : m.refresh].filter(Boolean).join(" ");
   const hint = tooltip ?? title ?? (mode === "icon" ? label : "");
   return (
     <KjunTooltip content={props.disabled || props.loading ? "" : hint} placement={tooltipPlacement} delay={tooltipDelay}>
@@ -256,22 +261,23 @@ export function KjunExternalLink({
   label,
   children,
 }: KjunExternalLinkProps) {
+  const m = useKjunMessages();
   const url = safeExternalUrl(href),
-    name = label || (mode === "icon" ? "외부 링크" : undefined),
+    name = label || (mode === "icon" ? m.externalLink : undefined),
     body = mode === "icon" ? <KjunIcon name="external-link" /> : children;
   return url ? (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={name ? name + " (새 창)" : undefined}
+      aria-label={name ? name + m.newWindow : undefined}
       title={name}
       className="kjun-external-link"
       onClick={(e) => e.stopPropagation()}
     >
       {body}
       {mode === "text" && <KjunIcon name="external-link" size={tokens.iconSizes.small} className="kjun-external-link-icon" />}
-      {!name && <span className="kjun-sr-only"> (새 창)</span>}
+      {!name && <span className="kjun-sr-only">{m.newWindow}</span>}
     </a>
   ) : (
     <span aria-label={name}>{body}</span>

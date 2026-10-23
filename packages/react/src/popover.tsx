@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
 import { useLayer } from "../../../shared/package-runtime/use-layer";
@@ -44,6 +45,7 @@ export function KjunPopover({
   trigger,
   children,
 }: KjunPopoverProps) {
+  const m = useKjunMessages();
   const [internal, setInternal] = useState(false),
     open = controlled ?? internal,
     ref = useRef<HTMLDivElement>(null),
@@ -117,7 +119,7 @@ export function KjunPopover({
         {(() => {
           const dialogProps = {
             id,
-            "aria-label": header != null && !ariaLabel ? undefined : ariaLabel || "상세 정보",
+            "aria-label": header != null && !ariaLabel ? undefined : ariaLabel || m.details,
             "aria-labelledby": header != null && !ariaLabel ? id + "-header" : undefined,
             className: "kjun-popover-dialog",
             style: { maxHeight: maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: header != null ? undefined : "auto" } as CSSProperties,

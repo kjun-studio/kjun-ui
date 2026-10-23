@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useRef, useState, type ReactNode } from "react";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
@@ -16,5 +17,6 @@ export function KjunImage({ src, alt, decorative = false, aspectRatio = 1, fit =
 }
 export interface KjunAvatarProps { src?: string; name?: string; alt?: string; decorative?: boolean; size?: "sm" | "md" | "lg"; shape?: "circle" | "square"; fallback?: ReactNode; onLoad?: () => void; onError?: () => void }
 export function KjunAvatar({ src, name = "", alt, decorative = false, size = "md", shape = "circle", fallback, onLoad, onError }: KjunAvatarProps) {
-  return <span className="kjun-avatar" data-shape={shape} data-size={size} style={{ width: tokens.extensions.avatar[size], height: tokens.extensions.avatar[size] }}><KjunImage src={src} alt={alt || name || "사용자"} decorative={decorative} fallback={fallback ?? (Array.from(name.trim())[0] || <KjunIcon name="user" size={tokens.extensions.avatar.fallbackIconSizes[size]} />)} onLoad={onLoad} onError={onError} /></span>;
+  const m = useKjunMessages();
+  return <span className="kjun-avatar" data-shape={shape} data-size={size} style={{ width: tokens.extensions.avatar[size], height: tokens.extensions.avatar[size] }}><KjunImage src={src} alt={alt || name || m.user} decorative={decorative} fallback={fallback ?? (Array.from(name.trim())[0] || <KjunIcon name="user" size={tokens.extensions.avatar.fallbackIconSizes[size]} />)} onLoad={onLoad} onError={onError} /></span>;
 }

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { cloneElement, createContext, isValidElement, useCallback, useContext, useEffect, useId, useRef, useState, type ReactNode, type ReactElement } from "react";
 import { Menu, MenuItem, Separator } from "react-aria-components";
@@ -215,6 +216,7 @@ export function KjunMenuButton({
   onClose,
   ...props
 }: KjunMenuButtonProps) {
+  const m = useKjunMessages();
   const [open, setOpen] = useState(false);
   const button = (
     <KjunButton
@@ -225,7 +227,7 @@ export function KjunMenuButton({
       loading={loading}
       prefixIcon={compact || !label ? "dots-vertical" : undefined}
       suffixIcon={!compact && label ? open ? "chevron-up" : "chevron-down" : undefined}
-      ariaLabel={ariaLabel || label || tooltip || "메뉴"}
+      ariaLabel={ariaLabel || label || tooltip || m.menu}
     >
       {compact ? undefined : label}
     </KjunButton>

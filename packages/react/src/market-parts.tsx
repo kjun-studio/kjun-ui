@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useQueryDisplay } from "./data-state";
 import {
 KjunCollectionMark
@@ -49,6 +50,7 @@ export function MarketFooter<Row extends object>({
 }: {
   props: MarketBaseProps<Row>;
 }) {
+  const m = useKjunMessages();
   const state = useQueryDisplay(props),
     {
       pagination,
@@ -57,7 +59,7 @@ export function MarketFooter<Row extends object>({
       calculatedAt,
       footerNote,
       totalCount = 0,
-      unitLabel = "개",
+      unitLabel = m.unitLabel,
     } = props;
   return (
     <>
@@ -75,13 +77,12 @@ export function MarketFooter<Row extends object>({
         <div className="kjun-market-footer">
           <span>
             {calculatedAt
-              ? "마지막 업데이트: " +
+              ? m.lastUpdated +
                 (props.formatDate?.(calculatedAt) || calculatedAt)
               : footerNote}
           </span>
           <span>
-            총 {totalCount}
-            {unitLabel}
+            {m.totalCount(totalCount, unitLabel)}
           </span>
         </div>
       )}

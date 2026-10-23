@@ -1,3 +1,6 @@
+import { KjunMessageContext } from "../../../shared/package-runtime/messages-context";
+import type { KjunMessageScope } from "../../../shared/package-runtime/messages";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens,
 advanceQueryDisplay,
 initialQueryDisplay,
@@ -56,15 +59,15 @@ export function KjunDataState({
   preserveContent = false,
   refreshing = false,
   refreshError,
-  refreshingText = "갱신 중...",
+  refreshingText,
   loadingPadding = "default",
   empty = false,
-  emptyText = "데이터가 없습니다",
+  emptyText,
   emptyIcon,
   emptyActionText,
-  loadingText = "로딩 중...",
+  loadingText,
   loadingDelay = 0,
-  retryText = "다시 시도",
+  retryText,
   size = "md",
   skeleton = false,
   skeletonType = "text",
@@ -77,6 +80,11 @@ export function KjunDataState({
   onEmptyAction,
   ...query
 }: KjunDataStateProps) {
+  const m = useKjunMessages();
+  refreshingText ??= m.refreshing;
+  emptyText ??= m.noData;
+  loadingText ??= m.loadingEllipsis;
+  retryText ??= m.retry;
   const state = useQueryDisplay(query),
     blockingError =
       query.error && !(state.usesQueryState && state.hasCurrentResult),
@@ -121,7 +129,7 @@ export function KjunDataState({
       ) : blockingError ? (
         <div className="kjun-data-error kjun-state-actions" style={{ paddingBlock: padding }}>
           {errorContent || (
-            <KjunAlert type="danger" title="오류 발생" actions={onRetry && (
+            <KjunAlert type="danger" title={m.errorTitle} actions={onRetry && (
               <KjunButton variant="secondary" onClick={onRetry}>
                 {retryText}
               </KjunButton>
@@ -163,7 +171,7 @@ export function KjunDataState({
             {retryText}
           </KjunButton>
         )}>
-          {visibleRefreshError} · 이전 조회 결과를 표시하고 있습니다.
+          {m.refreshError(String(visibleRefreshError))}
         </KjunAlert>
         </div>
       )}
@@ -181,6 +189,8 @@ export class KjunErrorBoundary extends Component<
   KjunErrorBoundaryProps,
   { error: boolean }
 > {
+  static contextType = KjunMessageContext;
+  declare context: KjunMessageScope;
   state = { error: false };
   static getDerivedStateFromError() {
     return { error: true };
@@ -192,8 +202,8 @@ export class KjunErrorBoundary extends Component<
     return this.state.error
       ? this.props.fallback || (
           <div className="kjun-error-fallback">
-            <h3>{this.props.fallbackMessage || "문제가 발생했습니다"}</h3>
-            <p>다시 시도하면 문제가 해결될 수 있습니다.</p>
+            <h3>{this.props.fallbackMessage || this.context.messages.somethingWentWrong}</h3>
+            <p>{this.context.messages.retryHint}</p>
             <KjunButton
               onClick={() => {
                 this.setState({ error: false });
@@ -201,7 +211,7 @@ export class KjunErrorBoundary extends Component<
               }}
             >
               {/* It resets the boundary rather than reloading the page, like DataState's retry. */}
-              다시 시도
+              {this.context.messages.retry}
             </KjunButton>
           </div>
         )

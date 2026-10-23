@@ -5,7 +5,7 @@ import { join } from 'node:path';
 
 // User-facing copy lives in the message packs so KjunProvider locale/messages can replace it.
 // Developer console warnings stay Korean (KJUN docs are Korean) and are allowed below.
-export const scanned = ['shared/package-runtime'];
+export const scanned = ['shared/package-runtime', 'packages/react/src'];
 const packs = new Set(['shared/package-runtime/messages/ko.ts']);
 const developerWarning = /console\.(warn|error)\(/;
 

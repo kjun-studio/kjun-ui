@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { usePopupFocusGuard } from "../../../shared/package-runtime/use-layer";
 import { useComboboxModel } from "../../../shared/package-runtime/combobox";
 import { type InputSize } from "@kjun-ui/tokens";
@@ -41,7 +42,7 @@ export interface KjunComboboxProps<T extends SelectOption = SelectOption> {
 export function KjunCombobox<T extends SelectOption = SelectOption>({
   value,
   options = [],
-  placeholder = "검색 또는 선택",
+  placeholder,
   ariaLabel,
   labelKey = "label",
   valueKey = "value",
@@ -50,13 +51,16 @@ export function KjunCombobox<T extends SelectOption = SelectOption>({
   disabled = false,
   error = false,
   clearable = false,
-  emptyText = "결과가 없습니다",
+  emptyText,
   renderOption,
   onValueChange,
   onChange,
   onSearch,
   onClear,
 }: KjunComboboxProps<T>) {
+  const m = useKjunMessages();
+  placeholder ??= m.searchOrSelect;
+  emptyText ??= m.noResults;
   const model = useComboboxModel({ value, options, labelKey, valueKey, disabled, filterFn,
     onValueChange, onChange, onSearch, onClear });
   return (
@@ -128,6 +132,7 @@ export function SearchField<T extends SelectOption>({
   onClear,
   onEnter,
 }: SearchFieldProps<T>) {
+  const m = useKjunMessages();
   const composition = useCompositionGuard();
   const clearing = useRef(false);
   const ref = useRef<HTMLInputElement>(null),
@@ -252,7 +257,7 @@ export function SearchField<T extends SelectOption>({
         >
           {loading ? (
             <div className="kjun-select-empty">
-              <KjunSpinner size="sm" text="검색 중..." />
+              <KjunSpinner size="sm" text={m.searching} />
             </div>
           ) : failed ? (
             <div className="kjun-select-empty" role="alert">{errorText}</div>

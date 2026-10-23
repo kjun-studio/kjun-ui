@@ -1,27 +1,29 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import type { TableToolbarProps } from "../../../shared/package-runtime/table-presentation";
 import { KjunButton } from "./button";
 import { KjunInput } from "./input";
 export function TableToolbar<Row extends object>({ selectable, selected, toggleAll, clearSelection,
   renderSelectionToolbar, searchable, search, searchChange, searchPlaceholder, toolbar }: TableToolbarProps<Row>) {
+  const m = useKjunMessages();
   return <>
       {selectable && selected.length > 0 && (
         <div
           // No arrow-key navigation is provided, so this is a labelled group rather than an ARIA toolbar.
           role="group"
-          aria-label="선택 작업"
+          aria-label={m.selectionActions}
           className="kjun-table-selection"
         >
-          <strong>{selected.length}개 선택</strong>
+          <strong>{m.selectedItems(selected.length)}</strong>
           <KjunButton size="xs" variant="ghost" onClick={toggleAll}>
-            전체 선택
+            {m.selectAll}
           </KjunButton>
           <KjunButton
             size="xs"
             variant="ghost"
             onClick={clearSelection}
           >
-            선택 해제
+            {m.deselectAll}
           </KjunButton>
           {renderSelectionToolbar?.(selected)}
         </div>
@@ -33,7 +35,7 @@ export function TableToolbar<Row extends object>({ selectable, selected, toggleA
               size="sm"
               style={{ width: tokens.table.searchWidth, maxWidth: "100%" }}
               value={search}
-              ariaLabel="표 검색"
+              ariaLabel={m.searchTable}
               placeholder={searchPlaceholder}
               prefixIcon="search"
               clearable

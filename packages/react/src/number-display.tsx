@@ -1,3 +1,4 @@
+import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { useReducedMotion } from "./use-reduced-motion";
 import { useNumberMotion } from "../../../shared/package-runtime/use-number-motion";
@@ -78,19 +79,20 @@ export function KjunFreshness({
   fetchedAt,
   formatter,
 }: KjunFreshnessProps) {
+  const scope = useKjunMessageScope();
   // A focusable tooltip target, so keyboard and touch reach when the value was fetched (not only a hover title).
   return stale ? (
     <KjunTooltip
       content={
         (source === "close"
-          ? "실시간 시세 없음 · 최근 종가 표시"
-          : "실시간 시세 지연") +
-        (fetchedAt ? " · " + (formatter?.(fetchedAt) || formatRelativeTime(fetchedAt)) : "")
+          ? scope.messages.noRealtimeQuote
+          : scope.messages.realtimeDelayed) +
+        (fetchedAt ? " · " + (formatter?.(fetchedAt) || formatRelativeTime(fetchedAt, undefined, scope)) : "")
       }
     >
       <span tabIndex={0} className="kjun-freshness">
         <KjunBadge variant="warning" size="xs">
-          {source === "close" ? "종가" : "지연"}
+          {source === "close" ? scope.messages.closePrice : scope.messages.delayed}
         </KjunBadge>
       </span>
     </KjunTooltip>

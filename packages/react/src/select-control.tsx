@@ -1,4 +1,4 @@
-import { kjunMessagesKo } from "../../../shared/package-runtime/messages";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { typeStyle, inputTypeStyle } from "./typography";
@@ -62,7 +62,7 @@ export interface KjunSelectProps<T extends SelectOption = SelectOption> {
 export function KjunSelect<T extends SelectOption = SelectOption>({
   value,
   options = [],
-  placeholder = "선택",
+  placeholder,
   ariaLabel,
   labelKey = "label",
   id: triggerId,
@@ -73,7 +73,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   searchable = false,
   open: controlled,
   loading = false,
-  searchPlaceholder = "검색...",
+  searchPlaceholder,
   optionPageSize = 0,
   clearable = false,
   multiple = false,
@@ -89,6 +89,9 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   filterFn,
   searchKeys,
 }: KjunSelectProps<T>) {
+  const m = useKjunMessages();
+  placeholder ??= m.select;
+  searchPlaceholder ??= m.search;
   const { open, query, limit, session, changeOpen, search, showMore } = useSelectState(controlled, disabled, optionPageSize, onOpenChange);
   const composition = useCompositionGuard();
   const ref = useRef<HTMLButtonElement>(null),
@@ -114,7 +117,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   };
   const { selected, matching, visible, selectedOption, label, nextValue } = selectOptions({
     options, value, labelKey, valueKey, query, pageSize: optionPageSize, limit, loading, multiple, filterFn, searchKeys,
-    selectedCount: kjunMessagesKo.selectedCount,
+    selectedCount: m.selectedCount,
   });
   return (
     <>
@@ -158,7 +161,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
           <KjunButton
             size="sm"
             variant="ghost"
-            ariaLabel="선택 지우기"
+            ariaLabel={m.clearSelection}
             disabled={disabled}
             className="kjun-select-clear"
             style={{
@@ -188,7 +191,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
                 autoFocus
                 value={query}
                 placeholder={searchPlaceholder}
-                ariaLabel="선택 항목 검색"
+                ariaLabel={m.searchOptions}
                 size="sm"
                 prefixIcon="search"
                 onValueChange={(v) => {
@@ -215,7 +218,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
           )}
           {loading && (
             <div className="kjun-select-empty">
-              <KjunSpinner size="sm" text="검색 중..." />
+              <KjunSpinner size="sm" text={m.searching} />
             </div>
           )}
           <ListBox
@@ -261,7 +264,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
             ))}
           </ListBox>
           {!loading && !matching.length && (
-            <div className="kjun-select-empty">결과가 없습니다</div>
+            <div className="kjun-select-empty">{m.noResults}</div>
           )}
           {!loading && visible.length < matching.length && (
             <KjunButton
@@ -270,7 +273,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
               block
               onClick={showMore}
             >
-              더 보기
+              {m.loadMore}
             </KjunButton>
           )}
         </div></FieldContext.Provider>

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import { watchTrailingOverflow } from "../../../shared/package-runtime/trailing-overflow";
@@ -25,6 +26,7 @@ import { getValue } from "./table";
 export function KjunMarketTable<Row extends object = Record<string, unknown>>(
   props: KjunMarketTableProps<Row>
 ) {
+  const m = useKjunMessages();
   const {
     rows = [],
     columns,
@@ -38,7 +40,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
     priceFormatter,
     currency = "krw",
     embedded = false,
-    emptyMessage = "항목이 없습니다",
+    emptyMessage = m.noItems,
     emptySubMessage = "",
     formatMetric,
     renderCell,
@@ -125,7 +127,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
         }
       >
         <div className="kjun-table-scroll" ref={scroller} data-fade-end={fadeEnd || undefined}>
-          <table aria-label="시장 데이터" className="kjun-market-table-grid" style={webMarketLayout(columns, showActions).tableStyle}>
+          <table aria-label={m.marketData} className="kjun-market-table-grid" style={webMarketLayout(columns, showActions).tableStyle}>
             <MarketColumns columns={columns} showActions={showActions} />
             <thead>
               <tr>
@@ -194,10 +196,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
                           active={props.interestKeys?.has(id)}
                           activeIcon="heart"
                           activeColor="var(--_kjun-color-interest)"
-                          ariaLabel={[
-                            props.primaryLabel?.(row) || String(getValue(row, "name") || ""),
-                            "관심", props.interestKeys?.has(id) ? "해제" : "등록",
-                          ].filter(Boolean).join(" ")}
+                          ariaLabel={m.watchToggle(props.primaryLabel?.(row) || String(getValue(row, "name") || ""), !!props.interestKeys?.has(id))}
                           loading={togglingInterest === id}
                           onToggle={() => props.onToggleInterest?.(row)}
                         />
@@ -206,10 +205,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
                           active={props.favoriteKeys?.has(id)}
                           activeIcon="star"
                           activeColor="var(--_kjun-color-favorite)"
-                          ariaLabel={[
-                            props.primaryLabel?.(row) || String(getValue(row, "name") || ""),
-                            "즐겨찾기", props.favoriteKeys?.has(id) ? "해제" : "등록",
-                          ].filter(Boolean).join(" ")}
+                          ariaLabel={m.favoriteToggle(props.primaryLabel?.(row) || String(getValue(row, "name") || ""), !!props.favoriteKeys?.has(id))}
                           loading={togglingFavorite === id}
                           onToggle={() => props.onToggleFavorite?.(row)}
                         />
