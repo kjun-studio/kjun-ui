@@ -1,4 +1,4 @@
-import { Teleport, defineComponent, inject, onBeforeUnmount, onUpdated, provide, reactive, ref, watch, type PropType } from "vue";
+import { Teleport, defineComponent, inject, onBeforeUnmount, onUpdated, provide, reactive, ref, unref, watch, type PropType, type Ref } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { computeFloatingPosition, type Placement } from "../../../shared/package-runtime/floating-position";
 import { kjunPortalKey } from "./runtime/keys";
@@ -124,3 +124,10 @@ export const FloatingPanel = defineComponent({
     };
   },
 });
+
+/** A focus target given as an element, a ref or a function read when the panel closes. */
+export type FocusReturn = HTMLElement | Ref<HTMLElement | null> | (() => HTMLElement | null);
+export const focusReturnProp = { type: [Object, Function] as PropType<FocusReturn>, default: undefined };
+// Vue does not unwrap a ref passed as a prop value, and the prop may change after mount, so read it at close time.
+export const readFocusReturn = (target: FocusReturn | undefined) =>
+  typeof target === "function" ? target() : unref(target) ?? undefined;

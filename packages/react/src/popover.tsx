@@ -4,7 +4,7 @@ import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
 import { useLayer } from "../../../shared/package-runtime/use-layer";
 import { useCallback, useEffect, useId, useRef, useState, type CSSProperties, type ReactNode, type ComponentProps, type RefObject } from "react";
 import { Dialog, Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
-import { FloatingPanel } from "./floating-panel";
+import { FloatingPanel, resolveFocusReturn } from "./floating-panel";
 import { installNonModalPopover } from "../../../shared/package-runtime/popover-nonmodal";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { useKjunPortalContainer } from "./provider";
@@ -57,8 +57,7 @@ export function KjunPopover({
   const focusContent = useCallback((node: HTMLElement | null) => {
     if (node && focusOnMount.current) node.focus();
   }, []);
-  const resolveReturn = returnFocus === undefined ? undefined : () =>
-    typeof returnFocus === "function" ? returnFocus() : returnFocus instanceof HTMLElement ? returnFocus : returnFocus.current;
+  const resolveReturn = resolveFocusReturn(returnFocus);
   const change = (v: boolean) => {
     setInternal(v);
     onOpenChange?.(v);

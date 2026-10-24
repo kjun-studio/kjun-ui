@@ -98,3 +98,8 @@ export function FloatingPanel({
     </LayerScope.Provider>
   );
 }
+
+/** A focus target given as an element, a ref or a function read when the panel closes. */
+export type FocusReturn = HTMLElement | RefObject<HTMLElement | null> | (() => HTMLElement | null);
+export const resolveFocusReturn = (target: FocusReturn | undefined) => target === undefined ? undefined : () =>
+  typeof target === "function" ? target() : target instanceof HTMLElement ? target : target.current;

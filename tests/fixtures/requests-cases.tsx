@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 // 0.15.0 adopter requests on React and Native (Vue 3 mirrors this in requests-vue3.tsx). One section per feature.
 export function RequestsCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const press = (handler: () => void) => native ? { onPress: handler } : { onClick: handler };
@@ -6,6 +6,9 @@ export function RequestsCases({ K, native = false, providerProps = {} }: { K: an
   const [closes, setCloses] = useState<string[]>([]);
   // Records whether the layer's body was still on screen when the close was reported.
   const afterClose = (name: string) => () => setCloses(list => [...list, name + (document.body.innerText.includes(name + ' body') ? ' visible' : ' gone')]);
+  const cell = useRef<HTMLInputElement>(null);
+  const [unit, setUnit] = useState<string | null>('a');
+  const options = [{ value: 'a', label: 'Alpha' }, { value: 'b', label: 'Beta' }];
   const reopen = () => { const name = layer; setLayer(null); setTimeout(() => setLayer(name), 30); };
   return <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16 }}>
     <div data-testid="after-close"><K.KjunProvider {...providerProps}>
@@ -33,5 +36,11 @@ export function RequestsCases({ K, native = false, providerProps = {} }: { K: an
     <div data-testid="text-props"><K.KjunProvider {...providerProps}>
       <K.KjunText {...(native ? { accessibilityLabel: 'Balance 1,000 won', testID: 'balance' } : { 'aria-label': 'Balance 1,000 won', 'data-testid': 'balance' })}>1,000</K.KjunText>
     </K.KjunProvider></div>
+    {!native && <div data-testid="return-focus"><K.KjunProvider {...providerProps}>
+      <input ref={cell} aria-label="Target cell" />
+      <K.KjunSelect ariaLabel="Unit select" options={options} value={unit} onValueChange={setUnit} returnFocus={cell} />
+      <K.KjunCombobox ariaLabel="Unit search" options={options} value={unit} onValueChange={setUnit} returnFocus={cell} />
+      <K.KjunMenuButton label="Actions" returnFocus={() => cell.current}><K.KjunDropdownItem onClick={() => {}}>Rename</K.KjunDropdownItem></K.KjunMenuButton>
+    </K.KjunProvider></div>}
   </div>;
 }

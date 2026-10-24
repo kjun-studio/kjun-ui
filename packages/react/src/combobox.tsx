@@ -13,6 +13,7 @@ import { KjunSpinner } from "./display";
 import { KjunInput } from "./input";
 import { useCompositionGuard } from "./composition";
 import { FloatingPanel } from "./layers";
+import { resolveFocusReturn, type FocusReturn } from "./floating-panel";
 import {
 optionDisabled,
 optionLabel,
@@ -38,6 +39,8 @@ export interface KjunComboboxProps<T extends SelectOption = SelectOption> {
   onChange?: (v: OptionValue | null) => void;
   onSearch?: (v: string) => void;
   onClear?: () => void;
+  /** Where focus goes after choosing an option or Escape. Closing while typing keeps focus in the input. Web only. */
+  returnFocus?: FocusReturn;
 }
 export function KjunCombobox<T extends SelectOption = SelectOption>({
   value,
@@ -57,6 +60,7 @@ export function KjunCombobox<T extends SelectOption = SelectOption>({
   onChange,
   onSearch,
   onClear,
+  returnFocus,
 }: KjunComboboxProps<T>) {
   const m = useKjunMessages();
   placeholder ??= m.searchOrSelect;
@@ -82,6 +86,7 @@ export function KjunCombobox<T extends SelectOption = SelectOption>({
       onValueChange={(v) => model.search(v, true)}
       onSelect={model.select}
       onClear={model.clear}
+      returnFocus={resolveFocusReturn(returnFocus)}
     />
   );
 }
@@ -108,6 +113,7 @@ export interface SearchFieldProps<T extends SelectOption> {
   onSelect: (o: T) => void;
   onClear?: () => void;
   onEnter?: () => void;
+  returnFocus?: () => HTMLElement | null;
 }
 export function SearchField<T extends SelectOption>({
   value,
@@ -131,6 +137,7 @@ export function SearchField<T extends SelectOption>({
   onSelect,
   onClear,
   onEnter,
+  returnFocus,
 }: SearchFieldProps<T>) {
   const m = useKjunMessages();
   const composition = useCompositionGuard();
@@ -164,7 +171,7 @@ export function SearchField<T extends SelectOption>({
     if (o === undefined || disabled || loading || optionDisabled(o)) return;
     onSelect(o);
     onOpenChange(false);
-    ref.current?.focus();
+    (returnFocus?.() ?? ref.current)?.focus();
   };
   return (
     <>
@@ -231,6 +238,7 @@ export function SearchField<T extends SelectOption>({
             e.preventDefault();
             e.stopPropagation();
             onOpenChange(false);
+            returnFocus?.()?.focus();
           }
           setActive(next);
           if (next >= 0)

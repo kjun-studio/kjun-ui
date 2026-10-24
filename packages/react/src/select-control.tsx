@@ -19,6 +19,7 @@ import { KjunSpinner } from "./display";
 import { KjunInput,FieldContext,useKjunField } from "./input";
 import { CompoundControlContext } from "./compound-control";
 import { FloatingPanel } from "./layers";
+import { resolveFocusReturn, type FocusReturn } from "./floating-panel";
 import {
 optionDisabled,
 optionLabel,
@@ -58,6 +59,8 @@ export interface KjunSelectProps<T extends SelectOption = SelectOption> {
   /** Extra option fields searched after the label. */
   searchKeys?: string[];
   onClear?: () => void;
+  /** Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only. */
+  returnFocus?: FocusReturn;
 }
 export function KjunSelect<T extends SelectOption = SelectOption>({
   value,
@@ -88,6 +91,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   onClear,
   filterFn,
   searchKeys,
+  returnFocus,
 }: KjunSelectProps<T>) {
   const m = useKjunMessages();
   placeholder ??= m.select;
@@ -177,6 +181,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
       <FloatingPanel
         field
         open={open}
+        returnFocus={resolveFocusReturn(returnFocus)}
         onOpenChange={changeOpen}
         triggerRef={ref}
         placement="bottom-start"

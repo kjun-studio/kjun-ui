@@ -4,7 +4,7 @@ import { computed, defineComponent, inject, onBeforeUnmount, onUpdated, provide,
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { isFocusVisible } from "../../../shared/package-runtime/focus-visible";
 import { KjunButton, KjunIcon } from "./button";
-import { FloatingPanel } from "./floating-panel";
+import { FloatingPanel, focusReturnProp, readFocusReturn } from "./floating-panel";
 import { useKjunId } from "./input";
 import { KjunTooltip } from "./popover";
 import { useFocusVisible } from "./runtime/focus-visible";
@@ -19,6 +19,8 @@ const kjunDropdownProps = {
   menuId: { type: String, default: undefined },
   triggerId: { type: String, default: undefined },
   menuClass: { type: String, default: "" },
+  /** Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only. */
+  returnFocus: focusReturnProp,
 } as const;
 export type KjunDropdownProps = ExtractPublicPropTypes<typeof kjunDropdownProps>;
 /**
@@ -99,7 +101,8 @@ export const KjunDropdown = defineComponent({
           onKeydown={(event: KeyboardEvent) => { if (["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); change(true); } }}>
           <span>{slots.trigger?.()}</span>
         </div>
-        <FloatingPanel open={open.value} onOpenChange={change} trigger={() => wrapper.value} placement={props.placement} panelClass="kjun-dropdown">
+        <FloatingPanel open={open.value} onOpenChange={change} trigger={() => wrapper.value} placement={props.placement} panelClass="kjun-dropdown"
+          returnFocus={props.returnFocus === undefined ? undefined : () => readFocusReturn(props.returnFocus)}>
           {{ default: () => (
             <div ref={menu} id={popupId.value} aria-labelledby={controlId()} class={"kjun-menu " + props.menuClass} role="menu" tabindex={-1}
               onKeydown={onMenuKeydown} onFocus={() => focusItem(focused.value ?? items(menu.value!)[0])}>
@@ -196,7 +199,7 @@ export const KjunMenuButton = defineComponent({
         </KjunButton>
       );
       return (
-        <KjunDropdown disabled={props.disabled} placement={props.placement} menuId={props.menuId} triggerId={props.triggerId} menuClass={props.menuClass}
+        <KjunDropdown disabled={props.disabled} placement={props.placement} menuId={props.menuId} triggerId={props.triggerId} menuClass={props.menuClass} returnFocus={props.returnFocus}
           onOpen={() => { open.value = true; emit("open"); }} onClose={() => { open.value = false; emit("close"); }}>
           {{
             trigger: () => props.tooltip

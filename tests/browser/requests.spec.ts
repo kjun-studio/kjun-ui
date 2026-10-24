@@ -46,5 +46,34 @@ for (const platform of ['react', 'vue3', 'native']) {
     test('text passes accessibility label and test id through', async ({ page }) => {
       await expect(section(page, 'text-props').getByTestId('balance')).toHaveAttribute('aria-label', 'Balance 1,000 won');
     });
+
+    test('select and menu button return focus to the given element', async ({ page }) => {
+      test.skip(platform === 'native', 'Web only: Native pickers have no keyboard focus to return');
+      const area = section(page, 'return-focus'), cell = area.getByRole('textbox', { name: 'Target cell' });
+      await area.getByRole('button', { name: /Unit select/ }).click();
+      await page.getByRole('option', { name: 'Beta' }).click();
+      await expect(cell).toBeFocused();
+      await area.getByRole('button', { name: /Unit select/ }).click();
+      await expect(page.getByRole('option', { name: 'Alpha' })).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(cell).toBeFocused();
+      await area.getByRole('button', { name: 'Actions' }).click();
+      await page.getByRole('menuitem', { name: 'Rename' }).click();
+      await expect(cell).toBeFocused();
+      await area.getByRole('button', { name: 'Actions' }).click();
+      await expect(page.getByRole('menuitem', { name: 'Rename' })).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(cell).toBeFocused();
+    });
+
+    test('combobox keeps focus while typing past a closed list', async ({ page }) => {
+      test.skip(platform === 'native', 'Web only');
+      const area = section(page, 'return-focus'), input = area.getByRole('combobox', { name: 'Unit search' });
+      await input.fill('zz');
+      await expect(input).toBeFocused();
+      await input.fill('Al');
+      await page.getByRole('option', { name: 'Alpha' }).click();
+      await expect(area.getByRole('textbox', { name: 'Target cell' })).toBeFocused();
+    });
   });
 }

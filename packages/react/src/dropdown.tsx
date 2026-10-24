@@ -3,7 +3,7 @@ import { tokens } from "@kjun-ui/tokens";
 import { cloneElement, createContext, isValidElement, useCallback, useContext, useEffect, useId, useRef, useState, type ReactNode, type ReactElement } from "react";
 import { Menu, MenuItem, Separator } from "react-aria-components";
 import { KjunButton, KjunIcon, type KjunButtonProps } from "./button";
-import { FloatingPanel, type Placement } from "./floating-panel";
+import { FloatingPanel, resolveFocusReturn, type FocusReturn, type Placement } from "./floating-panel";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
 const DropdownContext = createContext<(() => void) | null>(null);
 export interface KjunDropdownProps {
@@ -19,6 +19,8 @@ export interface KjunDropdownProps {
   children: ReactNode;
   onOpen?: () => void;
   onClose?: () => void;
+  /** Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only. */
+  returnFocus?: FocusReturn;
 }
 export function KjunDropdown({
   disabled = false,
@@ -30,6 +32,7 @@ export function KjunDropdown({
   children,
   onOpen,
   onClose,
+  returnFocus,
 }: KjunDropdownProps) {
   const [open, setOpen] = useState(false),
     currentOpen = useRef(false),
@@ -111,6 +114,7 @@ export function KjunDropdown({
       <FloatingPanel
         open={open}
         onOpenChange={change}
+        returnFocus={resolveFocusReturn(returnFocus)}
         triggerRef={ref}
         placement={placement}
         className="kjun-dropdown"

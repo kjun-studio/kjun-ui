@@ -7,7 +7,7 @@ import { isFocusVisible } from "../../../shared/package-runtime/focus-visible";
 import { optionDisabled, optionLabel, selectOptions, type OptionValue, type SelectOption } from "../../../shared/package-runtime/options";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunSpinner } from "./display";
-import { FloatingPanel } from "./floating-panel";
+import { FloatingPanel, focusReturnProp, readFocusReturn } from "./floating-panel";
 import { KjunFieldReset, KjunInput, useCompositionGuard, useKjunField, useKjunId } from "./input";
 import { kjunCompoundControlKey } from "./quantity-stepper";
 import { usePopupExpanded } from "./runtime/layers";
@@ -18,6 +18,8 @@ export type { OptionValue, SelectOption };
 type SelectValue = OptionValue | OptionValue[] | null;
 
 const kjunSelectProps = {
+  /** Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only. */
+  returnFocus: focusReturnProp,
   modelValue: { type: [String, Number, Array, null] as PropType<SelectValue>, default: null },
   options: { type: Array as PropType<SelectOption[]>, default: () => [] },
   placeholder: { type: String, default: undefined },
@@ -151,7 +153,7 @@ export const KjunSelect = defineComponent({
               </KjunButton>
             )}
           </div>
-          <FloatingPanel field open={open} onOpenChange={state.changeOpen} trigger={() => trigger.value} placement="bottom-start" matchTriggerWidth
+          <FloatingPanel field open={open} onOpenChange={state.changeOpen} trigger={() => trigger.value} returnFocus={props.returnFocus === undefined ? undefined : () => readFocusReturn(props.returnFocus)} placement="bottom-start" matchTriggerWidth
             panelClass="kjun-select-panel kjun-select-options-panel">
             <KjunFieldReset>
               <div ref={menu} class="kjun-select-content">

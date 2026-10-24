@@ -3,7 +3,7 @@ import { computed, defineComponent, onBeforeUnmount, ref, watch, type ExtractPub
 import type { InputSize } from "@kjun-ui/tokens";
 import { optionDisabled, optionKey, optionLabel, type OptionValue, type SelectOption } from "../../../shared/package-runtime/options";
 import { KjunSpinner } from "./display";
-import { FloatingPanel } from "./floating-panel";
+import { FloatingPanel, focusReturnProp, readFocusReturn } from "./floating-panel";
 import { KjunInput, useCompositionGuard, useKjunId } from "./input";
 import { usePopupFocusGuard } from "./runtime/layers";
 import { useComboboxModel } from "./runtime/selection";
@@ -34,6 +34,7 @@ export const SearchField = defineComponent({
     onSelect: { type: Function as PropType<(option: SelectOption) => void>, required: true },
     onClear: { type: Function as PropType<() => void>, default: undefined },
     onEnter: { type: Function as PropType<() => void>, default: undefined },
+    returnFocus: { type: Function as PropType<() => HTMLElement | null | undefined>, default: undefined },
   },
   setup(props) {
     const m = useKjunMessages();
@@ -62,7 +63,7 @@ export const SearchField = defineComponent({
       if (option === undefined || props.disabled || props.loading || optionDisabled(option)) return;
       props.onSelect(option);
       props.onOpenChange(false);
-      input()?.focus();
+      (props.returnFocus?.() ?? input())?.focus();
     };
     const keydown = (event: KeyboardEvent) => {
       if (composition.isComposing(event)) return;
@@ -74,7 +75,7 @@ export const SearchField = defineComponent({
       else if (event.key === "Enter") {
         if (props.open && active.value >= 0) { event.preventDefault(); select(props.options[active.value]); }
         else props.onEnter?.();
-      } else if (event.key === "Escape" && props.open) { event.preventDefault(); event.stopPropagation(); props.onOpenChange(false); }
+      } else if (event.key === "Escape" && props.open) { event.preventDefault(); event.stopPropagation(); props.onOpenChange(false); props.returnFocus?.()?.focus(); }
       highlighted.value = next;
       if (next >= 0) document.getElementById(id + "-" + next)?.scrollIntoView({ block: "nearest" });
     };
@@ -138,6 +139,8 @@ const kjunComboboxProps = {
   error: { type: Boolean, default: false },
   clearable: { type: Boolean, default: false },
   emptyText: { type: String, default: undefined },
+  /** Where focus goes after choosing an option or Escape. Closing while typing keeps focus in the input. Web only. */
+  returnFocus: focusReturnProp,
 } as const;
 export type KjunComboboxProps = ExtractPublicPropTypes<typeof kjunComboboxProps>;
 /** v-model; slot option({ option }); events change, search, clear. */
@@ -158,7 +161,8 @@ export const KjunCombobox = defineComponent({
       <SearchField error={props.error} value={model.displayValue.value} size={props.size} placeholder={(props.placeholder ?? m.value.searchOrSelect)} ariaLabel={props.ariaLabel}
         disabled={props.disabled} clearable={props.clearable} open={model.open.value} onOpenChange={model.changeOpen} options={model.options.value}
         labelKey={props.labelKey} itemKey={props.valueKey} emptyText={(props.emptyText ?? m.value.noResults)} renderOption={slots.option}
-        onValueChange={value => model.search(value, true)} onSelect={model.select} onClear={model.clear} />
+        onValueChange={value => model.search(value, true)} onSelect={model.select} onClear={model.clear}
+        returnFocus={props.returnFocus === undefined ? undefined : () => readFocusReturn(props.returnFocus)} />
     );
   },
 });

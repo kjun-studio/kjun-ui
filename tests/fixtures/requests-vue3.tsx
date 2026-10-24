@@ -6,6 +6,9 @@ applyDemoColors('default');
 const layer = ref<'drawer' | 'modal' | null>(null);
 const closes = ref<string[]>([]);
 const afterClose = (name: string) => () => { closes.value = [...closes.value, name + (document.body.innerText.includes(name + ' body') ? ' visible' : ' gone')]; };
+const cell = ref<HTMLInputElement | null>(null);
+const unit = ref<string | null>('a');
+const options = [{ value: 'a', label: 'Alpha' }, { value: 'b', label: 'Beta' }];
 const reopen = () => { const name = layer.value; layer.value = null; setTimeout(() => { layer.value = name; }, 30); };
 createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px' }}>
   <div data-testid="after-close"><K.KjunProvider>
@@ -32,5 +35,11 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
   </K.KjunProvider></div>
   <div data-testid="text-props"><K.KjunProvider>
     <K.KjunText aria-label="Balance 1,000 won" data-testid="balance">1,000</K.KjunText>
+  </K.KjunProvider></div>
+  <div data-testid="return-focus"><K.KjunProvider>
+    <input ref={cell} aria-label="Target cell" />
+    <K.KjunSelect ariaLabel="Unit select" options={options} modelValue={unit.value} onUpdate:modelValue={(v: any) => { unit.value = v; }} returnFocus={cell} />
+    <K.KjunCombobox ariaLabel="Unit search" options={options} modelValue={unit.value} onUpdate:modelValue={(v: any) => { unit.value = v; }} returnFocus={cell} />
+    <K.KjunMenuButton label="Actions" returnFocus={() => cell.value}><K.KjunDropdownItem onClick={() => {}}>Rename</K.KjunDropdownItem></K.KjunMenuButton>
   </K.KjunProvider></div>
 </div>).mount('#root');
