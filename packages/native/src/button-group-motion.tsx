@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Animated, Easing, View, type LayoutChangeEvent, type LayoutRectangle } from 'react-native';
+import { Animated, Easing, StyleSheet, View, type LayoutChangeEvent, type LayoutRectangle } from 'react-native';
 import { tokens, type ButtonSize } from '@kjun-ui/tokens';
 import { selectionTypeStyle } from './typography';
 import type { ChoiceOption, ChoiceValue } from './choice-controls';
-import { KText, useReducedMotion } from './internal';
+import { KText, useReducedMotion, useResolveFont } from './internal';
 import { useKjunStyles } from './provider';
 
 const curve = tokens.motion.easeOut.match(/-?\d*\.?\d+/g)!.map(Number) as [number, number, number, number];
@@ -53,11 +53,12 @@ export function ButtonGroupLabel({ label, active, size, reduced }: {
     else Animated.timing(progress, { toValue: active ? 1 : 0, duration: tokens.motion.indicator, easing, useNativeDriver: false }).start();
     return () => progress.stopAnimation();
   }, [active, reduced, interpolate, progress]);
+  const resolveFont = useResolveFont();
   return <View>
     <KText accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
       style={{ ...selectionTypeStyle(size, true), opacity: 0 }}>{label}</KText>
     <Animated.Text style={{ position: 'absolute', left: 0, right: 0, top: 0, textAlign: 'center',
-      fontFamily, ...selectionTypeStyle(size, active),
+      ...StyleSheet.flatten(resolveFont({ fontFamily, ...selectionTypeStyle(size, active) })),
       color: interpolate ? progress.interpolate({ inputRange: [0, 1], outputRange: [colors.textSecondary as string, colors.text as string] }) : active ? colors.text : colors.textSecondary,
     }}>{label}</Animated.Text>
   </View>;

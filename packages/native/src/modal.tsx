@@ -1,5 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { content } from "./internal";
+import { content, FontText } from "./internal";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { LayerBackdrop } from "./layer-backdrop";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
@@ -15,7 +15,6 @@ import {
 KeyboardAvoidingView,
 Platform,
 ScrollView,
-Text,
 useWindowDimensions,
 View
 } from "react-native";
@@ -75,9 +74,9 @@ export function KjunFormActions({
     >
       <View pointerEvents="none" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
         style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: 0, overflow: 'hidden', opacity: 0, flexDirection: 'row' }}>
-        {labels.map((label, index) => <Text key={index + keyFor(label.text)} numberOfLines={1}
+        {labels.map((label, index) => <FontText key={index + keyFor(label.text)} numberOfLines={1}
           onLayout={event => { const value = event.nativeEvent.layout.width; setMeasurements(old => old[keyFor(label.text)] === value ? old : { ...old, [keyFor(label.text)]: value }); }}
-          style={{ fontFamily, ...typeStyle(tokens.button.typography[size]), flexShrink: 0 }}>{label.text}</Text>)}
+          style={{ fontFamily, ...typeStyle(tokens.button.typography[size]), flexShrink: 0 }}>{label.text}</FontText>)}
       </View>
       {showCancel && (
         <KjunButton
@@ -256,7 +255,7 @@ export function KjunModal({
             >
               <View style={{ flex: 1, paddingRight: tokens.modal.titleActionGap }}>
                 {hasContent(header) ? content(header) : (
-                  <Text
+                  <FontText
                     accessibilityRole="header"
                     style={{
                       fontFamily,
@@ -266,7 +265,7 @@ export function KjunModal({
                     }}
                   >
                     {title}
-                  </Text>
+                  </FontText>
                 )}
               </View>
               {closable && (

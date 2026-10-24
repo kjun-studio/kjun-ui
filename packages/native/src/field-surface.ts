@@ -1,13 +1,18 @@
-import { useState } from "react";
-import { Animated, Platform, TextInput, type ViewStyle } from "react-native";
+import { createElement, forwardRef, useState } from "react";
+import { Animated, Platform, TextInput, type TextInputProps, type ViewStyle } from "react-native";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
-import { useReducedMotion } from "./internal";
+import { useReducedMotion, useResolveFont } from "./internal";
 import { useKjunStyles } from "./provider";
 import { AccessiblePressable } from "./a11y";
 import { useMotionValue } from "./motion";
 
 // CSS animates web fields; native fields use the same duration through Animated.
-export const FieldTextInput = (Platform.OS === "web" ? TextInput : Animated.createAnimatedComponent(TextInput)) as typeof TextInput;
+const BaseTextInput = (Platform.OS === "web" ? TextInput : Animated.createAnimatedComponent(TextInput)) as typeof TextInput;
+/** Field text input whose font family follows the Provider's weight maps, like KText. */
+export const FieldTextInput = forwardRef<TextInput, TextInputProps>(function FieldTextInput(props, ref) {
+  const resolve = useResolveFont();
+  return createElement(BaseTextInput, { ...props, ref, style: resolve(props.style) });
+}) as unknown as typeof TextInput;
 export const FieldPressable = Platform.OS === "web" ? AccessiblePressable : Animated.createAnimatedComponent(AccessiblePressable);
 
 /** Activate only the spare area around a small field, without duplicating child actions. */

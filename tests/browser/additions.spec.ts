@@ -99,5 +99,15 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(Math.round(frame.x + frame.width - (box.x + box.width))).toBe(16);
       expect(Math.round(frame.y + frame.height - (box.y + box.height))).toBe(16 + 20);
     });
+
+    if (platform === 'native') test('native font weights pick the matching face from a weight map', async ({ page }) => {
+      const block = section(page, 'font-weights');
+      const family = (text: string) => block.getByText(text, { exact: true }).evaluate(el => getComputedStyle(el).fontFamily);
+      expect(await family('Body text')).toContain('Face-Regular');
+      expect(await family('Label text')).toContain('Face-Medium');
+      // 600 sits between 500 and 700; ties take the heavier face.
+      expect(await family('Control text')).toContain('Face-Bold');
+      expect(await block.getByRole('textbox').evaluate(el => getComputedStyle(el).fontFamily)).toContain('Face-Regular');
+    });
   });
 }

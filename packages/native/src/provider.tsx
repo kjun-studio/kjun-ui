@@ -1,3 +1,4 @@
+import { baseFontFamily, fontFacesOf, type KjunFontFaces, type KjunFontFamily } from "./fonts";
 import { KjunMessagesProvider } from "../../../shared/package-runtime/messages-context";
 import type { KjunMessages } from "../../../shared/package-runtime/messages";
 import { IconProvider } from "../../../shared/package-runtime/icon-context";
@@ -22,6 +23,8 @@ interface KjunStyles {
   colors: ResolvedKjunColors<ColorValue>;
   fontFamily?: string;
   numericFontFamily?: string;
+  /** Weight maps by face name, from fontFamily / numericFontFamily maps. */
+  fontFaces?: KjunFontFaces;
   domainColors?: KjunDomainColors<ColorValue>;
 }
 const StylesContext = createContext<KjunStyles | null>(null);
@@ -33,7 +36,11 @@ export function useKjunStyles(): KjunStyles {
     );
   return value;
 }
-export interface KjunProviderProps extends Omit<KjunStyles, "colors"> {
+export interface KjunProviderProps extends Omit<KjunStyles, "colors" | "fontFamily" | "numericFontFamily" | "fontFaces"> {
+  /** A family name, or names by weight ({ 400: "Pretendard-Regular", 700: "Pretendard-Bold" }) for Android and Expo. */
+  fontFamily?: KjunFontFamily;
+  /** Same as fontFamily, for numbers. */
+  numericFontFamily?: KjunFontFamily;
   icons?: KjunIconRegistry;
   /** BCP 47 tag (e.g. "en-US") for KJUN copy and Intl formats; without it KJUN stays Korean. */
   locale?: string;
@@ -67,8 +74,9 @@ export function KjunProvider({
     <StylesContext.Provider
       value={{
         colors: resolvedColors,
-        fontFamily: fontFamily ?? parent?.fontFamily,
-        numericFontFamily: numericFontFamily ?? parent?.numericFontFamily,
+        fontFamily: baseFontFamily(fontFamily) ?? parent?.fontFamily,
+        numericFontFamily: baseFontFamily(numericFontFamily) ?? parent?.numericFontFamily,
+        fontFaces: { ...parent?.fontFaces, ...fontFacesOf(fontFamily), ...fontFacesOf(numericFontFamily) },
         domainColors: domainColors ?? parent?.domainColors,
       }}
     >

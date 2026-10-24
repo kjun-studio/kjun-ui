@@ -13,7 +13,7 @@ import { KjunBadge,KjunSkeleton } from "./display";
 import { AccessiblePressable } from "./a11y";
 import { KjunTooltip } from "./popover";
 import { formatRelativeTime } from "../../../shared/package-runtime/relative-time";
-import { KText,domainColor,useReducedMotion } from "./internal";
+import { KText,domainColor,useReducedMotion, FontText } from "./internal";
 import { useKjunStyles } from "./provider";
 
 export const finiteNumber = (value: unknown): number | null =>
@@ -72,13 +72,13 @@ export function KjunAnimatedNumber({
         style,
       ]}
     >
-      {!!prefix && <Text style={typeStyle("caption")}>{prefix} </Text>}
+      {!!prefix && <FontText style={typeStyle("caption")}>{prefix} </FontText>}
       {typeof n === "string"
         ? n
         : formatter
         ? formatter(n)
         : format(n, decimals)}
-      {!!suffix && <Text style={typeStyle("caption")}> {suffix}</Text>}
+      {!!suffix && <FontText style={typeStyle("caption")}> {suffix}</FontText>}
     </KText>
   );
 }

@@ -47,6 +47,12 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
         <K.KjunFab icon="plus" ariaLabel="Add schedule" safeAreaBottom={20} {...(native ? { onPress: () => {} } : { onClick: () => {} })} />
       </K.KjunProvider>
     </div>
+    {native && <div data-testid="font-weights"><K.KjunProvider {...providerProps} fontFamily={{ 400: 'Face-Regular', 500: 'Face-Medium', 700: 'Face-Bold' }}>
+      <K.KjunText>Body text</K.KjunText>
+      <K.KjunText variant="label">Label text</K.KjunText>
+      <K.KjunButton onPress={() => {}}>Control text</K.KjunButton>
+      <K.KjunFormGroup label="Field label"><K.KjunInput value="Typed" onChangeText={() => {}} /></K.KjunFormGroup>
+    </K.KjunProvider></div>}
     <div data-testid="optional-ko"><K.KjunProvider {...providerProps}><K.KjunFormGroup label="Nickname" optional><K.KjunInput value="" onValueChange={() => {}} /></K.KjunFormGroup></K.KjunProvider></div>
     <div data-testid="optional-en"><K.KjunProvider {...providerProps} locale="en-US"><K.KjunFormGroup label="Nickname" optional><K.KjunInput value="" onValueChange={() => {}} /></K.KjunFormGroup></K.KjunProvider></div>
   </div>;

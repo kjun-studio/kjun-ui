@@ -17,6 +17,7 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
   - `KjunButton` `variant="link"`: 여백 없이 글자에 맞는 링크 모양 버튼입니다. Native는 터치 영역을 44로 넓힙니다.
   - `KjunListSection` `divider={false}`, `density="compact"`: 구분선 없는 목록과 높이 44의 촘촘한 행입니다.
 - **새 컴포넌트 `KjunFab`**: 오른쪽 아래에 떠 있는 56 원형 주요 행동 버튼입니다. `safeAreaBottom`·`offsetBottom`으로 하단 영역을 피합니다. Native는 부모 기준으로 놓이므로 화면 최상위 View에 둡니다.
+- **Native 굵기별 글꼴**: `KjunProvider`의 `fontFamily`·`numericFontFamily`가 굵기별 이름(`{ 400: "Pretendard-Regular", 700: "Pretendard-Bold" }`)도 받습니다. Android·Expo에서 KJUN 글자가 한 굵기로만 나오던 문제를 해결합니다. 문자열은 이전과 같습니다. 기기에서는 아직 확인하지 않았습니다.
 - **수정**
   - Native `KjunBadge`가 가로 줄의 세로 가운데 정렬을 무시하고 위쪽에 붙던 문제를 고쳤습니다.
   - `KjunButtonGroup` 선택 칸에 `border` 색 테두리를 더해, 밝은 색상에서도 선택 칸이 바탕과 구분됩니다.

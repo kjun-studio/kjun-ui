@@ -13778,6 +13778,20 @@
     ],
     "native": [
       {
+        "name": "fontFamily",
+        "type": "import(\"/workspace/packages/native/src/fonts\").KjunFontFamily | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A family name, or names by weight ({ 400: \"Pretendard-Regular\", 700: \"Pretendard-Bold\" }) for Android and Expo."
+      },
+      {
+        "name": "numericFontFamily",
+        "type": "import(\"/workspace/packages/native/src/fonts\").KjunFontFamily | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Same as fontFamily, for numbers."
+      },
+      {
         "name": "icons",
         "type": "Readonly<Record<string, import(\"/workspace/packages/icons/dist/index\").KjunIconDefinition>> | undefined",
         "required": false,
@@ -13815,20 +13829,6 @@
       {
         "name": "style",
         "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "fontFamily",
-        "type": "string | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "numericFontFamily",
-        "type": "string | undefined",
         "required": false,
         "default": "—",
         "description": ""

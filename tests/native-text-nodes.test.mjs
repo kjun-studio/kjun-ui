@@ -53,3 +53,15 @@ test('Native time segments let the hidden "00" set their width (no zero flex bas
   assert.doesNotMatch(compoundStyle[1], /\bflex:\s*1\b|flexBasis:\s*0/);
   assert.match(compoundStyle[1], /flexShrink:\s*0/);
 });
+
+// Per-weight font families resolve where KJUN renders text; a raw Text or TextInput would skip that.
+test('Native text renders through the font resolver (KText, FontText, FieldTextInput)', () => {
+  const dir = new URL('../packages/native/src/', import.meta.url), offences = [];
+  for (const file of readdirSync(dir).filter(name => /\.tsx?$/.test(name) && !['internal.tsx', 'field-surface.ts'].includes(name))) {
+    const source = readFileSync(new URL(file, dir), 'utf8');
+    // JSX only: a type argument such as useRef<TextInput> is not a render.
+    if (/(^|[\s({>])<(Text|TextInput)[\s/>]/m.test(source)) offences.push(file + ': raw Text/TextInput');
+    if (/Animated\.Text/.test(source) && !/useResolveFont\(/.test(source)) offences.push(file + ': Animated.Text without useResolveFont');
+  }
+  assert.deepEqual(offences, []);
+});

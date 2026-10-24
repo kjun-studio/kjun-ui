@@ -128,6 +128,19 @@ export const appFont = fonts.body;
 
 중첩 Provider는 색상을 별도로 전달하고 fontFamily를 생략하면 부모 값을 상속합니다. 루트에서 서체를 생략하면 시스템 글꼴을 사용하며, 사용자 정의 폰트 로딩은 앱의 책임입니다.
 
+### Native 굵기별 글꼴 (Android·Expo)
+
+Android(특히 Expo로 글꼴을 불러온 경우)는 굵기마다 다른 글꼴 이름으로 등록되고, 숫자 `fontWeight`로 파일을 골라 주지 않습니다. 이때는 `fontFamily`·`numericFontFamily`에 굵기별 이름을 넘깁니다.
+
+```tsx
+<KjunProvider colors={appColors} fontFamily={{ 400: "Pretendard-Regular", 500: "Pretendard-Medium", 600: "Pretendard-SemiBold", 700: "Pretendard-Bold" }}>
+```
+
+- KJUN 글자는 그려질 때 최종 굵기에 맞는 이름을 고릅니다. 맵에 없는 굵기는 가장 가까운 굵기를 쓰고, 거리가 같으면 더 굵은 쪽을 씁니다.
+- 고른 글꼴이 이미 굵기를 담고 있으므로 Native에서는 숫자 굵기를 기본 굵기로 되돌려, 가짜 굵게가 겹치지 않게 합니다.
+- 문자열을 넘기면 이전과 같습니다. 웹은 CSS가 굵기를 처리하므로 해당 없습니다.
+- 실제 Android 기기에서 확인하세요(KJUN 검사는 React Native Web 기준입니다).
+
 ## 다국어 (locale · messages)
 
 KJUN이 그리는 문구(확인 창 버튼, 닫기 버튼의 화면 낭독 이름, 빈 결과, 페이지 이동 등)와 날짜·시간·숫자 형식은 `KjunProvider`의 `locale`과 `messages`를 따릅니다. Vue 3·React·Native가 같습니다.

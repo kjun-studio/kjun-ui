@@ -27,7 +27,7 @@ type TextInputProps,
 type ViewStyle,
 } from "react-native";
 import { KjunIcon } from "./button";
-import { content } from "./internal";
+import { content, FontText } from "./internal";
 import { useKjunStyles } from "./provider";
 interface FieldValue {
   id: string;
@@ -77,7 +77,7 @@ export function KjunFormGroup({
     >
       <View style={[{ minWidth: 0, marginBottom: tokens.extensions.form.itemGap }, style]}>
         {!!label && !labelHidden && (
-          <Text
+          <FontText
             nativeID={fieldId + "-label"}
             style={{
               fontFamily,
@@ -89,18 +89,18 @@ export function KjunFormGroup({
             }}
           >
             {label}
-            {required && <Text style={{ color: c.danger }}> *</Text>}
-            {optional && !required && <Text style={{ color: c.textTertiary, fontWeight: typeStyle('caption').fontWeight }}> {m.optional}</Text>}
-          </Text>
+            {required && <FontText style={{ color: c.danger }}> *</FontText>}
+            {optional && !required && <FontText style={{ color: c.textTertiary, fontWeight: typeStyle('caption').fontWeight }}> {m.optional}</FontText>}
+          </FontText>
         )}
         {children}
         {!!hint && (
-          <Text
+          <FontText
             nativeID={fieldId + "-hint"}
             style={{ fontFamily, ...typeStyle('caption'), marginTop: tokens.extensions.form.messageGap, color: c.textSecondary }}
           >
             {hint}
-          </Text>
+          </FontText>
         )}
         {!!error && (
           <View
@@ -112,13 +112,13 @@ export function KjunFormGroup({
             }}
           >
             <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} color={c.danger} />
-            <Text
+            <FontText
               nativeID={fieldId + "-error"}
               accessibilityRole="alert"
               style={{ fontFamily, ...typeStyle('caption'), flexShrink: 1, color: c.danger }}
             >
               {error}
-            </Text>
+            </FontText>
           </View>
         )}
       </View>
@@ -316,7 +316,7 @@ export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInpu
         )}
       </View>
       {showError && (
-        <Text
+        <FontText
           nativeID={ownErrorId}
           accessibilityRole="alert"
           style={{
@@ -328,7 +328,7 @@ export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInpu
           }}
         >
           {errorMessage}
-        </Text>
+        </FontText>
       )}
     </View>
   );

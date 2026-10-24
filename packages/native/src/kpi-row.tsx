@@ -2,7 +2,6 @@ import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { useState, type ReactNode } from "react";
 import {
-Text,
 View,
 useWindowDimensions,
 type ColorValue,
@@ -12,7 +11,7 @@ import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunSkeleton } from "./display";
 import { BadgeView } from "./display-primitives";
 import { KjunAnimatedNumber } from "./financial";
-import { KText,domainColor } from "./internal";
+import { KText,domainColor, FontText } from "./internal";
 import { KpiValue,kpiFormat } from "./kpi-hero";
 import { useKjunStyles } from "./provider";
 export interface KpiRowItem extends KpiValue {
@@ -268,14 +267,14 @@ export function KjunKpiRow({
                     style={[valueStyle, { flexShrink: 1, minWidth: 0 }]}
                   >
                     {!!item.prefix && (
-                      <Text
+                      <FontText
                         style={{
 
                           ...typeStyle(item.valueKind !== "text" && numberRole === "displaySm" ? "numberSm" : "caption"),
                         }}
                       >
                         {item.prefix}
-                      </Text>
+                      </FontText>
                     )}
                     {item.animated && typeof item.value === "number" ? (
                       <KjunAnimatedNumber
@@ -288,14 +287,14 @@ export function KjunKpiRow({
                       kpiFormat(item)
                     )}
                     {!!item.suffix && (
-                      <Text
+                      <FontText
                         style={{
 
                           ...typeStyle(item.valueKind !== "text" && numberRole === "displaySm" ? "numberSm" : "caption"),
                         }}
                       >
                         {item.suffix}
-                      </Text>
+                      </FontText>
                     )}
                   </KText>
                 )

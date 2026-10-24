@@ -1,3 +1,4 @@
+import { FontText } from "./internal";
 import { typeStyle } from "./typography";
 import { TopNavigationContext } from "./top-navigation-context";
 import { BottomActionBarContext } from "./bottom-action-bar-context";
@@ -15,7 +16,6 @@ Animated,
 Easing,
 Platform,
 StyleSheet,
-Text,
 View,
 type ColorValue,
 type PressableProps,
@@ -297,11 +297,11 @@ export function KjunButton(input: KjunButtonProps) {
         return <>
           {before && <KjunIcon name={before} filled={!busy && prefixIconFilled}
             size={iconSize} color={color} spin={busy} />}
-          {hasContent && <Text numberOfLines={navigation?.slot === 'leading' ? 1 : undefined} ellipsizeMode="tail" style={{ fontFamily,
+          {hasContent && <FontText numberOfLines={navigation?.slot === 'leading' ? 1 : undefined} ellipsizeMode="tail" style={{ fontFamily,
             ...typeStyle(tokens.button.typography[size]),
             color, opacity: overlayLoading ? 0 : 1,
             ...(multiline || navigation ? { flexShrink: 1, minWidth: 0, textAlign: 'center' as const } : {}),
-          }}>{children}</Text>}
+          }}>{children}</FontText>}
           {!!suffixIcon && <View style={{ opacity: busy && prefixIcon ? 0 : 1 }}>
             <KjunIcon name={busy && !prefixIcon ? "loader-2" : suffixIcon}
               filled={!busy && suffixIconFilled} spin={busy && !prefixIcon}
