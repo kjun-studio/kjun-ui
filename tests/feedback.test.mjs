@@ -52,6 +52,7 @@ test('an external controller survives provider remounts and shows requests made 
     const controller = feedbackControllerOf(feedback);
     const answer = feedback.confirm('before mount');
     assert.equal(controller.getSnapshot().current.options.message, 'before mount');
+    await Promise.resolve();
     assert.equal(warnings.filter(w => /no KjunFeedbackProvider/.test(w)).length, 1);
     const detach = controller.attach();
     detach();
@@ -64,4 +65,39 @@ test('an external controller survives provider remounts and shows requests made 
     assert.equal(warnings.filter(w => /more than one KjunFeedbackProvider/.test(w)).length, 1);
     second(); again();
   } finally { console.warn = warn; process.env.NODE_ENV = previous; }
+});
+
+test('a request made just before the provider attaches in the same task does not warn, and provider-made controllers never warn', async () => {
+  const { createKjunFeedback, feedbackControllerOf, createFeedbackController } = await import('../packages/tokens/dist/index.js');
+  const previous = process.env.NODE_ENV; process.env.NODE_ENV = 'development';
+  const warn = console.warn, warnings = []; console.warn = message => warnings.push(String(message));
+  try {
+    // React runs a child's mount effect before the Provider's attach effect in the same flush.
+    const feedback = createKjunFeedback(), controller = feedbackControllerOf(feedback);
+    feedback.toast.info('from a child effect', { duration: 0 });
+    const detach = controller.attach();
+    await Promise.resolve(); await Promise.resolve();
+    const owned = createFeedbackController();
+    owned.api.toast.info('owned, not yet attached', { duration: 0 });
+    await Promise.resolve(); await Promise.resolve();
+    assert.deepEqual(warnings.filter(w => /no KjunFeedbackProvider/.test(w)), []);
+    detach(); owned.dispose();
+  } finally { console.warn = warn; process.env.NODE_ENV = previous; }
+});
+
+test('toasts made while no provider is attached wait with their full duration', async () => {
+  const { createKjunFeedback, feedbackControllerOf } = await import('../packages/tokens/dist/index.js');
+  const warn = console.warn; console.warn = () => {};
+  try {
+    const feedback = createKjunFeedback(), controller = feedbackControllerOf(feedback);
+    feedback.toast.error('session expired', { duration: 40 });
+    await new Promise(r => setTimeout(r, 80));
+    assert.equal(controller.getSnapshot().toasts.length, 1, 'still waiting for a provider');
+    assert.equal(controller.getSnapshot().toasts[0].remaining, 40);
+    const detach = controller.attach();
+    assert.equal(controller.getSnapshot().toasts[0].paused, false);
+    await new Promise(r => setTimeout(r, 80));
+    assert.equal(controller.getSnapshot().toasts.length, 0, 'runs its timer once shown');
+    detach();
+  } finally { console.warn = warn; }
 });

@@ -58,7 +58,8 @@ export function KjunCard({ title, subtitle, header, headerActions, media, footer
       "--_kjun-card-padding": `var(--_kjun-geometry-card-padding-${padding})`,
       "--_kjun-card-body-padding": `var(--_kjun-geometry-card-padding-${bodyPadding})`,
       borderRadius: `var(--_kjun-geometry-card-radii-${radius})`,
-      boxShadow: `var(--_kjun-card-elevation-${elevation})`, ...style,
+      // A pressable card's shadow comes from CSS so its hover lift can replace it.
+      [pressable ? "--_kjun-card-shadow" : "boxShadow"]: `var(--_kjun-card-elevation-${elevation})`, ...style,
     } as CSSProperties}>
     {present(media) && <div className="kjun-card-media">{media}</div>}
     {hasHeader && <div className="kjun-card-header" data-description={!present(header) && present(subtitle)}>

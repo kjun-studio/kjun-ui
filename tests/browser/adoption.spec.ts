@@ -123,5 +123,14 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(Math.abs(button.x - stack.x)).toBeLessThan(1);
       expect(button.width).toBeLessThan(stack.width / 2);
     });
+
+    test('pressable web cards lift on hover', async ({ page }) => {
+      test.skip(platform === 'native', 'Native shows the press scale only');
+      const card = section(page, 'cards').getByRole('button', { name: 'Question card' });
+      await page.mouse.move(0, 0);
+      const rest = await card.evaluate(el => getComputedStyle(el).boxShadow);
+      await card.hover();
+      await expect.poll(() => card.evaluate(el => getComputedStyle(el).boxShadow)).not.toBe(rest);
+    });
   });
 }

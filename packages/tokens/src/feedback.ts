@@ -47,18 +47,26 @@ export interface KjunFeedback {
 function developmentMode() {
   try { return !!process.env.NODE_ENV && process.env.NODE_ENV !== "production"; } catch { return false; }
 }
-export function createFeedbackController() {
+/** external: an app-made controller (createKjunFeedback) may have no Provider for a while, so it warns and holds toasts then.
+ * A Provider's own controller is always drawn by that Provider and keeps the earlier behavior. */
+export function createFeedbackController({ external = false } = {}) {
   let sequence = 0,
     disposed = false,
     // Providers currently drawing this controller; an app-made controller may have none for a while.
     attached = 0,
     warnedUnattached = false,
     warnedShared = false;
+  // Checked after the current task: React runs a child's mount effect before the Provider's attach effect.
   const warnUnattached = () => {
-    if (attached || warnedUnattached || !developmentMode()) return;
-    warnedUnattached = true;
-    console.warn("KJUN feedback: no KjunFeedbackProvider is showing this controller yet; the request waits until one mounts.");
+    if (!external || attached || warnedUnattached || !developmentMode()) return;
+    queueMicrotask(() => {
+      if (attached || warnedUnattached) return;
+      warnedUnattached = true;
+      console.warn("KJUN feedback: no KjunFeedbackProvider is showing this controller yet; the request waits until one mounts.");
+    });
   };
+  // Toasts wait while no Provider shows them, so their time starts once they are visible.
+  const unattached = Symbol("unattached");
   let current: FeedbackRequest | null = null;
   let toasts: ToastItem[] = [];
   const listeners = new Set<() => void>();
@@ -115,11 +123,10 @@ export function createFeedbackController() {
       },
     ];
     emit();
-    if (duration > 0)
-      timers.set(
-        id,
-        setTimeout(() => dismiss(id), duration)
-      );
+    if (duration > 0) {
+      if (attached || !external) timers.set(id, setTimeout(() => dismiss(id), duration));
+      else pauseToast(id, unattached);
+    }
     return id;
   };
   const pauseToast = (id: number, reason: string | symbol = "manual") => {
@@ -214,12 +221,15 @@ export function createFeedbackController() {
     getSnapshot: () => snapshot,
     /** Marks a mounted Provider; returns the detach call. Two at once share one queue, which KJUN does not support. */
     attach() {
-      attached++;
+      if (!attached++ && external) [...toasts].forEach((toast) => resumeToast(toast.id, unattached));
       if (attached > 1 && !warnedShared && developmentMode()) {
         warnedShared = true;
         console.warn("KJUN feedback: one controller is attached to more than one KjunFeedbackProvider at once; give each Provider its own controller.");
       }
-      return () => { attached = Math.max(0, attached - 1); };
+      return () => {
+        attached = Math.max(0, attached - 1);
+        if (!attached && external && !disposed) [...toasts].forEach((toast) => pauseToast(toast.id, unattached));
+      };
     },
     subscribe(listener: () => void) {
       listeners.add(listener);
@@ -251,7 +261,7 @@ export type KjunFeedbackController = ReturnType<typeof createFeedbackController>
 const controllers = new WeakMap<KjunFeedback, KjunFeedbackController>();
 /** An app-owned feedback API that plain functions can call; pass it to KjunFeedbackProvider's controller. */
 export function createKjunFeedback(): KjunFeedback {
-  const controller = createFeedbackController();
+  const controller = createFeedbackController({ external: true });
   controllers.set(controller.api, controller);
   return controller.api;
 }

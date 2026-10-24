@@ -66,7 +66,8 @@ export const KjunCard = defineComponent({
             "--_kjun-card-padding": `var(--_kjun-geometry-card-padding-${props.padding})`,
             "--_kjun-card-body-padding": `var(--_kjun-geometry-card-padding-${bodyPadding})`,
             borderRadius: `var(--_kjun-geometry-card-radii-${props.radius})`,
-            boxShadow: `var(--_kjun-card-elevation-${props.elevation})`,
+            // A pressable card's shadow comes from CSS so its hover lift can replace it.
+            ...(props.pressable ? { "--_kjun-card-shadow": `var(--_kjun-card-elevation-${props.elevation})` } : { boxShadow: `var(--_kjun-card-elevation-${props.elevation})` }),
           }}>
           {hasContent(media) && <div class="kjun-card-media">{media}</div>}
           {hasHeader && (
