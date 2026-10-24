@@ -5,6 +5,7 @@ import { KjunFeedbackContext, useOptionalKjunFeedback } from "./feedback-context
 import { ToastStack } from "./toast-stack";
 import {
 createFeedbackController,
+feedbackControllerOf,
 type FeedbackRequest,
 type KjunFeedback,
 } from "@kjun-ui/tokens";
@@ -69,8 +70,11 @@ function FeedbackDialog({
     </KjunModal>
   );
 }
-export function KjunFeedbackProvider({ children }: { children: ReactNode }) {
-  const [controller] = useState(createFeedbackController);
+export function KjunFeedbackProvider({ children, controller: controllerProp }: { children: ReactNode; /** A feedback API from createKjunFeedback(), for calls outside components. */ controller?: KjunFeedback }) {
+  // An app-made controller (createKjunFeedback) outlives this Provider; only one the Provider made is disposed.
+  const [owned] = useState(() => controllerProp ? undefined : createFeedbackController());
+  const controller = controllerProp ? feedbackControllerOf(controllerProp) : owned!;
+  useEffect(() => controller.attach(), [controller]);
   const life = useRef(0);
   const snapshot = useSyncExternalStore(
     controller.subscribe,
@@ -84,7 +88,7 @@ export function KjunFeedbackProvider({ children }: { children: ReactNode }) {
     const version = ++life.current;
     return () => {
       queueMicrotask(() => {
-        if (life.current === version) controller.dispose();
+        if (life.current === version && !controllerProp) controller.dispose();
       });
     };
   }, [controller]);
@@ -120,3 +124,6 @@ export function KjunFeedbackProvider({ children }: { children: ReactNode }) {
 export type {
 ConfirmOptions,KjunFeedback,PromptOptions,ToastOptions
 } from "@kjun-ui/tokens";
+
+/** An app-owned feedback API that plain functions can call; pass it to KjunFeedbackProvider controller. */
+export { createKjunFeedback } from "@kjun-ui/tokens";

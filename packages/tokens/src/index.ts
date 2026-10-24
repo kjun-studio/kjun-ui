@@ -14,7 +14,7 @@ export type {QueryDisplayProps,QueryDisplayState} from "./query-state";
 export * from "./input-contract";
 export * from "./table-contract";
 export * from "./deviation";
-export { createFeedbackController } from "./feedback";
+export { createFeedbackController, createKjunFeedback, feedbackControllerOf, type KjunFeedbackController } from "./feedback";
 export type { KjunFeedback, ToastOptions, ToastItem, ConfirmOptions, PromptOptions, FeedbackRequest } from "./feedback";
 export type ButtonSize = keyof typeof tokens.button.heights;
 export type InputSize = keyof typeof tokens.input;

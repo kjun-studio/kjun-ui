@@ -44,9 +44,21 @@ export interface KjunFeedback {
   confirm(options: string | ConfirmOptions): Promise<boolean>;
   prompt(options: string | PromptOptions): Promise<string | null>;
 }
+function developmentMode() {
+  try { return !!process.env.NODE_ENV && process.env.NODE_ENV !== "production"; } catch { return false; }
+}
 export function createFeedbackController() {
   let sequence = 0,
-    disposed = false;
+    disposed = false,
+    // Providers currently drawing this controller; an app-made controller may have none for a while.
+    attached = 0,
+    warnedUnattached = false,
+    warnedShared = false;
+  const warnUnattached = () => {
+    if (attached || warnedUnattached || !developmentMode()) return;
+    warnedUnattached = true;
+    console.warn("KJUN feedback: no KjunFeedbackProvider is showing this controller yet; the request waits until one mounts.");
+  };
   let current: FeedbackRequest | null = null;
   let toasts: ToastItem[] = [];
   const listeners = new Set<() => void>();
@@ -78,6 +90,7 @@ export function createFeedbackController() {
     options: Partial<ToastOptions> = {}
   ) => {
     if (disposed) return -1;
+    warnUnattached();
     const id = ++sequence;
     const duration =
       options.duration ??
@@ -153,6 +166,7 @@ export function createFeedbackController() {
   ): Promise<T> => {
     if (disposed)
       return Promise.resolve((kind === "confirm" ? false : null) as T);
+    warnUnattached();
     const request = {
       id: ++sequence,
       kind,
@@ -198,6 +212,15 @@ export function createFeedbackController() {
     pauseToast,
     resumeToast,
     getSnapshot: () => snapshot,
+    /** Marks a mounted Provider; returns the detach call. Two at once share one queue, which KJUN does not support. */
+    attach() {
+      attached++;
+      if (attached > 1 && !warnedShared && developmentMode()) {
+        warnedShared = true;
+        console.warn("KJUN feedback: one controller is attached to more than one KjunFeedbackProvider at once; give each Provider its own controller.");
+      }
+      return () => { attached = Math.max(0, attached - 1); };
+    },
     subscribe(listener: () => void) {
       listeners.add(listener);
       return () => {
@@ -222,4 +245,19 @@ export function createFeedbackController() {
       listeners.clear();
     },
   };
+}
+
+export type KjunFeedbackController = ReturnType<typeof createFeedbackController>;
+const controllers = new WeakMap<KjunFeedback, KjunFeedbackController>();
+/** An app-owned feedback API that plain functions can call; pass it to KjunFeedbackProvider's controller. */
+export function createKjunFeedback(): KjunFeedback {
+  const controller = createFeedbackController();
+  controllers.set(controller.api, controller);
+  return controller.api;
+}
+/** The controller behind createKjunFeedback(); Providers use it to draw requests. */
+export function feedbackControllerOf(feedback: KjunFeedback): KjunFeedbackController {
+  const controller = controllers.get(feedback);
+  if (!controller) throw Error("KJUN feedback: pass a value created by createKjunFeedback().");
+  return controller;
 }

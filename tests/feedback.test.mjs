@@ -42,3 +42,26 @@ test('toast resumes only when every interaction owner releases its pause',()=>{
  assert.deepEqual(c.getSnapshot().toasts,[]);
  c.dispose();
 });
+
+test('an external controller survives provider remounts and shows requests made while no provider is attached', async () => {
+  const { createKjunFeedback, feedbackControllerOf } = await import('../packages/tokens/dist/index.js');
+  const previous = process.env.NODE_ENV; process.env.NODE_ENV = 'development';
+  const warn = console.warn, warnings = []; console.warn = message => warnings.push(String(message));
+  try {
+    const feedback = createKjunFeedback();
+    const controller = feedbackControllerOf(feedback);
+    const answer = feedback.confirm('before mount');
+    assert.equal(controller.getSnapshot().current.options.message, 'before mount');
+    assert.equal(warnings.filter(w => /no KjunFeedbackProvider/.test(w)).length, 1);
+    const detach = controller.attach();
+    detach();
+    const again = controller.attach();
+    controller.settle(true);
+    assert.equal(await answer, true);
+    feedback.toast.info('after remount', { duration: 0 });
+    assert.equal(controller.getSnapshot().toasts.length, 1);
+    const second = controller.attach();
+    assert.equal(warnings.filter(w => /more than one KjunFeedbackProvider/.test(w)).length, 1);
+    second(); again();
+  } finally { console.warn = warn; process.env.NODE_ENV = previous; }
+});

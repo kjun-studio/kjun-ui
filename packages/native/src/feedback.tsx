@@ -5,6 +5,7 @@ import { KjunFeedbackContext, useOptionalKjunFeedback } from "./feedback-context
 import { ToastStack } from "./toast-stack";
 import { tokens,
 createFeedbackController,
+feedbackControllerOf,
 type FeedbackRequest,
 type KjunFeedback,
 } from "@kjun-ui/tokens";
@@ -73,9 +74,16 @@ function FeedbackDialog({
     </KjunModal>
   );
 }
-export interface KjunFeedbackProviderProps { children: ReactNode; style?: StyleProp<ViewStyle> }
-export function KjunFeedbackProvider({ children, style }: KjunFeedbackProviderProps) {
-  const [controller] = useState(createFeedbackController);
+export interface KjunFeedbackProviderProps {
+  children: ReactNode; style?: StyleProp<ViewStyle>;
+  /** A feedback API from createKjunFeedback(), for calls outside components. */
+  controller?: KjunFeedback;
+}
+export function KjunFeedbackProvider({ children, style, controller: controllerProp }: KjunFeedbackProviderProps) {
+  // An app-made controller (createKjunFeedback) outlives this Provider; only one the Provider made is disposed.
+  const [owned] = useState(() => controllerProp ? undefined : createFeedbackController());
+  const controller = controllerProp ? feedbackControllerOf(controllerProp) : owned!;
+  useEffect(() => controller.attach(), [controller]);
   const life = useRef(0);
   const snapshot = useSyncExternalStore(
     controller.subscribe,
@@ -89,7 +97,7 @@ export function KjunFeedbackProvider({ children, style }: KjunFeedbackProviderPr
     const version = ++life.current;
     return () => {
       queueMicrotask(() => {
-        if (life.current === version) controller.dispose();
+        if (life.current === version && !controllerProp) controller.dispose();
       });
     };
   }, [controller]);
@@ -127,3 +135,6 @@ export function KjunFeedbackProvider({ children, style }: KjunFeedbackProviderPr
 export type {
 ConfirmOptions,KjunFeedback,PromptOptions,ToastOptions
 } from "@kjun-ui/tokens";
+
+/** An app-owned feedback API that plain functions can call; pass it to KjunFeedbackProvider controller. */
+export { createKjunFeedback } from "@kjun-ui/tokens";

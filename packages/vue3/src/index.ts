@@ -24,6 +24,7 @@ export type { KjunDatePickerProps, KjunTimePickerProps } from "./date-picker";
 export type { KjunModalProps, KjunFormActionsProps } from "./modal";
 export type { KjunDrawerProps } from "./drawer";
 export { useKjunFeedback } from "./feedback";
+export { createKjunFeedback } from "@kjun-ui/tokens";
 export type { ConfirmOptions, KjunFeedback, PromptOptions, ToastOptions } from "./feedback";
 export type { KjunTabsProps, KjunTabPaneProps, TabItem, TabMenuEvent } from "./tabs";
 export type { KjunAccordionProps, KjunAccordionItemProps, BreadcrumbItem, KjunBreadcrumbProps, KjunPaginationProps } from "./navigation";

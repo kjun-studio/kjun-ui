@@ -1,7 +1,7 @@
 import { useKjunMessages } from "./runtime/messages";
 import { computed, defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref, shallowRef, watch,
   type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
-import { createFeedbackController, tokens, type ConfirmOptions, type FeedbackRequest, type KjunFeedback, type PromptOptions, type ToastItem } from "@kjun-ui/tokens";
+import { createFeedbackController, feedbackControllerOf, tokens, type ConfirmOptions, type FeedbackRequest, type KjunFeedback, type PromptOptions, type ToastItem } from "@kjun-ui/tokens";
 import { createToastLayout } from "../../../shared/package-runtime/toast-layout";
 import { KjunIcon } from "./button";
 import { KjunInput } from "./input";
@@ -196,12 +196,19 @@ const FeedbackDialog = defineComponent({
 /** Provides toast, confirm and prompt (useKjunFeedback) to its subtree. */
 export const KjunFeedbackProvider = defineComponent({
   name: "KjunFeedbackProvider",
+  props: {
+    /** A feedback API from createKjunFeedback(), for calls outside components. */
+    controller: { type: Object as PropType<KjunFeedback>, default: undefined },
+  },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
-  setup(_, { slots }) {
-    const controller = createFeedbackController();
+  setup(props, { slots }) {
+    // An app-made controller (createKjunFeedback) outlives this Provider; only one the Provider made is disposed.
+    const external = props.controller;
+    const controller = external ? feedbackControllerOf(external) : createFeedbackController();
+    const detach = controller.attach();
     const snapshot = shallowRef(controller.getSnapshot());
     const unsubscribe = controller.subscribe(() => { snapshot.value = controller.getSnapshot(); });
-    onBeforeUnmount(() => { unsubscribe(); controller.dispose(); });
+    onBeforeUnmount(() => { unsubscribe(); detach(); if (!external) controller.dispose(); });
     provide(kjunFeedbackKey, controller.api);
     const reduced = useReducedMotion();
     const toasts = usePresentedToasts(() => snapshot.value.toasts, () => reduced.value);

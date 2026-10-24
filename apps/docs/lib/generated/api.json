@@ -5588,7 +5588,15 @@
     ]
   },
   "KjunFeedbackProvider": {
-    "vue3": [],
+    "vue3": [
+      {
+        "name": "controller",
+        "type": "KjunFeedback",
+        "required": false,
+        "default": "—",
+        "description": "A feedback API from createKjunFeedback(), for calls outside components."
+      }
+    ],
     "events": [],
     "slots": [
       {
@@ -5602,6 +5610,13 @@
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "controller",
+        "type": "import(\"/workspace/packages/tokens/dist/feedback\").KjunFeedback | undefined",
+        "required": false,
         "default": "—",
         "description": ""
       }
@@ -5620,6 +5635,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "controller",
+        "type": "import(\"/workspace/packages/tokens/dist/feedback\").KjunFeedback | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A feedback API from createKjunFeedback(), for calls outside components."
       }
     ]
   },
