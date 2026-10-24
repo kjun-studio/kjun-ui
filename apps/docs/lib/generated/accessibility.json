@@ -1666,6 +1666,222 @@
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
+      "id": "KjunFab.vue3.keyboard.v1",
+      "component": "KjunFab",
+      "platform": "vue3",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "action",
+      "scenario": {
+        "button": "일정 추가",
+        "event": "message"
+      },
+      "behavior": "일정 추가 플로팅 버튼의 이름과 실행. 버튼의 실행 이벤트를 소비 코드에 전달합니다. disabled·loading이 제공된 컨트롤은 실행을 차단하며, 슬롯 액션의 상태는 별도로 지정합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "disabled",
+        "ariaLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "첫 대상에 Tab으로 접근한 뒤 Enter·Space를 누르고 예제 상태를 비교합니다.",
+      "expected": "실행 콜백 또는 선택 상태가 바뀌고, 비활성 설정이 있는 경우 실행되지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunFab.vue3.labeling.v1",
+      "component": "KjunFab",
+      "platform": "vue3",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "action",
+      "scenario": {
+        "button": "일정 추가",
+        "event": "message"
+      },
+      "behavior": "일정 추가 플로팅 버튼의 이름과 실행. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "disabled",
+        "ariaLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunFab.vue3.focus.v1",
+      "component": "KjunFab",
+      "platform": "vue3",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "action",
+      "scenario": {
+        "button": "일정 추가",
+        "event": "message"
+      },
+      "behavior": "일정 추가 플로팅 버튼의 이름과 실행. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "disabled",
+        "ariaLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunFab.react.keyboard.v1",
+      "component": "KjunFab",
+      "platform": "react",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "action",
+      "scenario": {
+        "button": "일정 추가",
+        "event": "message"
+      },
+      "behavior": "일정 추가 플로팅 버튼의 이름과 실행. 버튼의 실행 이벤트를 소비 코드에 전달합니다. disabled·loading이 제공된 컨트롤은 실행을 차단하며, 슬롯 액션의 상태는 별도로 지정합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "disabled",
+        "ariaLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "첫 대상에 Tab으로 접근한 뒤 Enter·Space를 누르고 예제 상태를 비교합니다.",
+      "expected": "실행 콜백 또는 선택 상태가 바뀌고, 비활성 설정이 있는 경우 실행되지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunFab.react.labeling.v1",
+      "component": "KjunFab",
+      "platform": "react",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "action",
+      "scenario": {
+        "button": "일정 추가",
+        "event": "message"
+      },
+      "behavior": "일정 추가 플로팅 버튼의 이름과 실행. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "disabled",
+        "ariaLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunFab.react.focus.v1",
+      "component": "KjunFab",
+      "platform": "react",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "action",
+      "scenario": {
+        "button": "일정 추가",
+        "event": "message"
+      },
+      "behavior": "일정 추가 플로팅 버튼의 이름과 실행. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "disabled",
+        "ariaLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunFab.native.keyboard.v1",
+      "component": "KjunFab",
+      "platform": "native",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "action",
+      "scenario": {
+        "button": "일정 추가",
+        "event": "message"
+      },
+      "behavior": "일정 추가 플로팅 버튼의 이름과 실행. 버튼의 실행 이벤트를 소비 코드에 전달합니다. disabled·loading이 제공된 컨트롤은 실행을 차단하며, 슬롯 액션의 상태는 별도로 지정합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "disabled",
+        "ariaLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "첫 대상에 Tab으로 접근한 뒤 Enter·Space를 누르고 예제 상태를 비교합니다.",
+      "expected": "실행 콜백 또는 선택 상태가 바뀌고, 비활성 설정이 있는 경우 실행되지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunFab.native.labeling.v1",
+      "component": "KjunFab",
+      "platform": "native",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "action",
+      "scenario": {
+        "button": "일정 추가",
+        "event": "message"
+      },
+      "behavior": "일정 추가 플로팅 버튼의 이름과 실행. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "disabled",
+        "ariaLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunFab.native.focus.v1",
+      "component": "KjunFab",
+      "platform": "native",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "action",
+      "scenario": {
+        "button": "일정 추가",
+        "event": "message"
+      },
+      "behavior": "일정 추가 플로팅 버튼의 이름과 실행. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "disabled",
+        "ariaLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
       "id": "KjunMenuButton.vue3.keyboard.v1",
       "component": "KjunMenuButton",
       "platform": "vue3",
@@ -16483,41 +16699,41 @@
   "packages": [
     {
       "name": "@kjun-ui/icons",
-      "version": "0.12.2",
-      "file": "kjun-ui-icons-0.12.2.tgz",
+      "version": "0.13.0",
+      "file": "kjun-ui-icons-0.13.0.tgz",
       "bytes": 1457074,
-      "integrity": "sha512-YNILKMFjCbSAzWMxvXcb1QFTTSsNq+TgjcnlQOBRWMrDYnMX9Hf/CGrU71aBAakqgJuhA9/QSEd5MWCoSasP6Q=="
+      "integrity": "sha512-uOUHFEYDUqkbAEiAvMPsKJdm3loFfOLHxtefZ+pDHBTmFh3RNZrvt/8lMs3pD0GMUQ3b/yPeprmd4dWSgMgJPw=="
     },
     {
       "name": "@kjun-ui/tokens",
-      "version": "0.12.2",
-      "file": "kjun-ui-tokens-0.12.2.tgz",
-      "bytes": 87351,
-      "integrity": "sha512-HZZGvXKOiKhfKqHbMikyF/JuYyLR4Pr4EnOZmy6mVM9QtjKy+y8xZh54kznoHF3gYPIM/kYUHg6nnV2N+kZxJw=="
+      "version": "0.13.0",
+      "file": "kjun-ui-tokens-0.13.0.tgz",
+      "bytes": 88272,
+      "integrity": "sha512-zC5HuYTOggMliPkZsEOxCtdDYSvQrHJkiHzM9XTFn4zPRPIn0+tmL9YzVFlF2RgDzfHW+LJ0228M3qH808o2/w=="
     },
     {
       "name": "@kjun-ui/vue3",
-      "version": "0.12.2",
-      "file": "kjun-ui-vue3-0.12.2.tgz",
-      "bytes": 273175,
-      "integrity": "sha512-I79lqhhjxjeGjQUgEFaT2MkOjhxeu1YnSePaYR+A9JT1GfYT7A/R8V3F2WWDq8qL/m0nJus0+DgZIHMbnIQV5g=="
+      "version": "0.13.0",
+      "file": "kjun-ui-vue3-0.13.0.tgz",
+      "bytes": 287988,
+      "integrity": "sha512-3NaCPPrBLre0ZQHGUFtOEEyAnSqCZj1In81sPOMuSKdFmIgl91415hsckE9jnHnlyZ/NCKh0ziCBekjzqiE9SQ=="
     },
     {
       "name": "@kjun-ui/react",
-      "version": "0.12.2",
-      "file": "kjun-ui-react-0.12.2.tgz",
-      "bytes": 223730,
-      "integrity": "sha512-Y6cL82N8kHn6yuqRiftBdpxyX/p+1lqSsBVpe5XCcUkgyMolVIymGefs5PLav3xkyjGrlPxDjrsrz/kBIHAhSg=="
+      "version": "0.13.0",
+      "file": "kjun-ui-react-0.13.0.tgz",
+      "bytes": 237876,
+      "integrity": "sha512-kzwS6iwJXoiDqh2jDglg2rSWa26Q8Afhn6uUBx1qNC+x+QiUtUDO6+aAsfrMOK0l9w1EBzBWUB8tANSBSeflZQ=="
     },
     {
       "name": "@kjun-ui/native",
-      "version": "0.12.2",
-      "file": "kjun-ui-native-0.12.2.tgz",
-      "bytes": 449198,
-      "integrity": "sha512-OUIz9QUhSke6cUS/E7Jm6icprt9heCJawTDTRp3JMCmeVmMqv+X6ntNGowtbrnIiGTvWOM9L0TEunezIrbJg5w=="
+      "version": "0.13.0",
+      "file": "kjun-ui-native-0.13.0.tgz",
+      "bytes": 471485,
+      "integrity": "sha512-icatBv8z+i2E8y6EX0J/iTkJTM1+UgBwWBxSGB0qPPNmH3Oq3r2DdXIZ1UDuhqiR6ZBBm37a2TxzHg6dVw3moA=="
     }
   ],
-  "definitionHash": "sha256-67bf8329138828741e8d6b3ba77f536eb653bf1e41b00048e57f1bd4ae937c30",
+  "definitionHash": "sha256-c2e956f5bd7cde1d5433940aae1ff1f6ed727b8c0646bb6f0092fbd1597dac5b",
   "runs": [
     {
       "schemaVersion": 1,

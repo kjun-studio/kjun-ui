@@ -159,6 +159,17 @@
       "useCases": []
     },
     {
+      "name": "KjunFab",
+      "category": "actions",
+      "aliases": [
+        "플로팅 버튼",
+        "FAB",
+        "추가 버튼",
+        "떠 있는 버튼"
+      ],
+      "useCases": []
+    },
+    {
       "name": "KjunMenuButton",
       "category": "actions",
       "aliases": [

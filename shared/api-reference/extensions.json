@@ -32,21 +32,27 @@
     "vue3": [
       "title",
       "description",
-      "ariaLabel"
+      "ariaLabel",
+      "divider",
+      "density"
     ],
     "react": [
       "title",
       "description",
       "actions",
       "children",
-      "ariaLabel"
+      "ariaLabel",
+      "divider",
+      "density"
     ],
     "native": [
       "title",
       "description",
       "actions",
       "children",
-      "ariaLabel"
+      "ariaLabel",
+      "divider",
+      "density"
     ]
   },
   "KjunTopNavigation": {

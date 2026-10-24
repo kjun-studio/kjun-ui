@@ -8,6 +8,7 @@ export default [
   ['KjunDropdownDivider', 'divider', '', 'KjunDropdown 안의 비대화형 메뉴 구분선', { button: '메뉴 열기', parent: 'KjunDropdown' }],
   ['KjunFormActions', 'action', 'confirmDisabled loading confirmText', '저장·취소 버튼과 확인 콜백', { button: '저장', event: 'message', disabledKey: 'disabled' }],
   ['KjunIconToggle', 'toggle', 'active disabled ariaLabel', '좋아요 아이콘 버튼의 이름과 눌림 상태', {}],
+  ['KjunFab', 'action', 'disabled ariaLabel', '일정 추가 플로팅 버튼의 이름과 실행', { button: '일정 추가', event: 'message' }],
   ['KjunMenuButton', 'menu', 'disabled loading label', '작업 메뉴의 열기·항목 탐색·닫기', { button: '작업 메뉴' }],
   ['KjunRefreshButton', 'action', 'disabled loading targetName', '목록 갱신 버튼과 갱신 콜백', { event: 'message' }],
   ['KjunChip', 'remove', 'label removable disabled', '프로젝트 태그의 삭제 버튼', { button: '프로젝트 삭제' }],

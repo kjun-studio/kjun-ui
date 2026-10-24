@@ -27,7 +27,7 @@ function Example(/* PARAMS */) {
     if (name === "FieldStack") return createElement("div", { "data-kjun-layout": "form", style: { display: "flex", flexDirection: "column", gap: 20 } }, children);
     // Scroll bodies keep lists full-bleed; Inset aligns other content with list text.
     if (name === "Inset") return createElement("div", { style: { paddingInline: 16 } }, children);
-    if (["Screen", "Scroll", "Box"].includes(name)) return createElement("div", { style: name === "Screen" ? { height: props.height || 520, display: "flex", flexDirection: "column", overflow: "hidden", border: "1px solid var(--kjun-divider)" } : name === "Scroll" ? { flex: 1, minHeight: 0, overflow: "auto", padding: "16px 0", display: "flex", flexDirection: "column", gap: 16 } : { width: props.width, maxWidth: "100%" } }, children);
+    if (["Screen", "Scroll", "Box"].includes(name)) return createElement("div", { style: name === "Screen" ? { height: props.height || 520, display: "flex", flexDirection: "column", overflow: "hidden", border: "1px solid var(--kjun-divider)" } : name === "Scroll" ? { flex: 1, minHeight: 0, overflow: "auto", padding: "16px 0", display: "flex", flexDirection: "column", gap: 16 } : { width: props.width, maxWidth: "100%", ...(props.height ? { height: props.height, position: "relative", transform: "translateZ(0)" } : {}) } }, children);
     if (["Group", "Stack", "Text"].includes(name)) return createElement(name === "Text" ? "span" : "div", { className: "catalog-" + name.toLowerCase(), ...props }, children);
     return createElement(K[name], { ...props, ...Object.fromEntries(Object.entries(slots).filter(([key]) => key !== "expand")) }, children);
   };

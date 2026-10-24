@@ -1,11 +1,11 @@
 {
-  "total": 80,
+  "total": 81,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 80,
+      "provided": 81,
       "counts": {
-        "supported": 80,
+        "supported": 81,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 80,
+      "provided": 81,
       "counts": {
-        "supported": 80,
+        "supported": 81,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 80,
+      "provided": 81,
       "counts": {
         "supported": 0,
-        "preview": 80,
+        "preview": 81,
         "review": 0,
         "unsupported": 0
       },
@@ -919,6 +919,37 @@
       "docs": "/components/external-link",
       "category": "navigation",
       "differences": "웹은 안전한 HTTP(S) 링크를 열고 Native는 주입한 openUrl을 사용합니다. Native 연동 없이 실제 기기 URL 열림을 보장하지 않습니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "KjunFab",
+      "title": "Fab",
+      "docs": "/components/fab",
+      "category": "actions",
+      "differences": "웹은 화면(viewport)에 고정되고, Native는 부모 기준으로 놓이므로 화면 최상위 View에 둡니다. 하단 탭바가 있으면 offsetBottom에 그 높이를 넘깁니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -2566,7 +2597,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 80
+      "componentCount": 81
     }
   ]
 }

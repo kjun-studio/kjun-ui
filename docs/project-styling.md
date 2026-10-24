@@ -128,6 +128,26 @@ export const appFont = fonts.body;
 
 중첩 Provider는 색상을 별도로 전달하고 fontFamily를 생략하면 부모 값을 상속합니다. 루트에서 서체를 생략하면 시스템 글꼴을 사용하며, 사용자 정의 폰트 로딩은 앱의 책임입니다.
 
+## 다국어 (locale · messages)
+
+KJUN이 그리는 문구(확인 창 버튼, 닫기 버튼의 화면 낭독 이름, 빈 결과, 페이지 이동 등)와 날짜·시간·숫자 형식은 `KjunProvider`의 `locale`과 `messages`를 따릅니다. Vue 3·React·Native가 같습니다.
+
+```tsx
+import { KjunProvider, kjunMessagesEn } from "@kjun-ui/react";
+
+<KjunProvider locale={i18n.language} messages={{ cancel: t("common.cancel"), confirm: t("common.confirm") }}>
+  <App />
+</KjunProvider>
+```
+
+- `locale`은 BCP 47 태그입니다(`"en-US"`, `"ja-JP"`). `"en_US"`처럼 밑줄을 쓰면 `-`로 바꿔 씁니다. 쓸 수 없는 값이면 화면을 멈추지 않고 개발 모드에서 경고만 냅니다.
+- 문구를 고르는 순서는 컴포넌트 props(`cancelText` 등) → `messages` → `locale`에 맞는 KJUN 묶음입니다. KJUN은 한국어와 영어 묶음을 제공하고, 그 밖의 언어에서 넘기지 않은 문구는 영어로 나옵니다.
+- `locale`을 넘기지 않으면 이전과 똑같이 한국어 문구와 형식을 씁니다.
+- 일본어·중국어 같은 언어는 앱 번역 파일에서 `messages`로 넘깁니다. 키와 기본 문구는 `kjunMessagesKo`·`kjunMessagesEn`(타입 `KjunMessages`)에서 확인하고, `{ ...kjunMessagesEn, cancel: t("common.cancel") }`처럼 펼쳐서 일부만 바꿀 수 있습니다. 값이 들어가는 문구는 함수입니다(예: `selectedCount`는 개수를 받아 문구를 돌려줍니다).
+- Provider를 겹치면 안쪽이 바깥 설정을 이어받습니다. 안쪽이 다른 언어의 `locale`을 넘기면 바깥 `messages`는 버립니다(바깥 언어로 쓴 문구이기 때문입니다).
+- React는 `locale`이 있을 때 react-aria에도 같은 언어를 넘깁니다. 웹 DatePicker의 날짜 선택 팝업은 브라우저가 그리므로 브라우저 언어를 따릅니다.
+- 개발자 콘솔 경고는 한국어로 남습니다.
+
 ## 선택 역할과 기존 매핑
 
 `KjunColors`는 `KjunCoreColors`의 27개 필수 역할과 `colorRoleFallbacks`에 정의된 선택 역할을 받습니다. 생략한 역할은 `colorRoleFallbacks`에 따라 프로젝트가 이미 전달한 값으로 연결합니다. 예를 들어 inputBg는 secondary, inputBorderFocus는 focusRing, chartGrid는 border를 사용합니다. 패키지에 고정 색상값을 추가하지 않습니다.

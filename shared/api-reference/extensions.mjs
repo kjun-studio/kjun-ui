@@ -3,6 +3,8 @@ import { detail, event, slot, fields } from "./helpers.mjs";
 const bindings = JSON.parse(readFileSync(new URL("./extensions.json", import.meta.url), "utf8"));
 const guides = JSON.parse(readFileSync(new URL("../component-guides.json", import.meta.url), "utf8"));
 const summaries = {
+  divider: "행 사이 구분선을 그립니다. 기본값 true이며 false면 선 없이 붙여 그립니다.",
+  density: "행 밀도입니다. 기본값 default는 높이 56, compact는 44(터치 최소 크기)에 위아래 여백 12이며 시작 여백 16은 같습니다.",
   block: "부모의 전체 너비를 채우고 중앙 숫자 입력을 확장합니다. 기본값 false는 80px 입력과 정사각형 증감 버튼으로 구성합니다.",
   title: "영역이나 행의 제목입니다. 긴 문구는 줄바꿈합니다.", description: "제목 또는 행동을 보충하는 설명입니다.",
   href: "웹에서 이동할 실제 링크 주소입니다. 앱 라우터는 이동 이벤트의 기본 동작을 취소할 수 있습니다.",

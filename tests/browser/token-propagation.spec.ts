@@ -192,7 +192,8 @@ for (const platform of platforms) {
   test(`${platform}: packed independent display roles reach icons, dots, alerts and actions`, async ({ page }, info) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'token-connections');
-    const badge = page.getByTestId('badge'), dot = badge.locator(':scope > * > :empty');
+    // Native badges sit in a transparent alignment row, so the dot is one level deeper.
+    const badge = page.getByTestId('badge'), dot = badge.locator(platform === 'native' ? ':scope > * > * > :empty' : ':scope > * > :empty');
     await expect(dot).toHaveCSS('width', px(tokens.extensions.badge.dotSize));
     await expect(dot).toHaveCSS('height', px(tokens.extensions.badge.dotSize));
     await page.getByRole('button', { name: '점 전환', exact: true }).click();

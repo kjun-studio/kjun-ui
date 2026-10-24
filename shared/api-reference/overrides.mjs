@@ -252,3 +252,21 @@ set("Drawer", {
   maxHeight: { default:"화면 높이 − 반대쪽 안전 영역 − 48px", summary:"위·아래 Drawer의 전체 높이 상한(px)입니다. 넘치면 본문만 스크롤하고 머리글·footer는 고정합니다. 좌우 Drawer에는 쓰지 않습니다." },
 });
 set("Drawer", { avoidKeyboard: { default:"true", summary:"화면 키보드가 패널을 가리지 않게 합니다. 아래 Drawer는 키보드 위로 올라가고 다른 위치는 높이를 줄입니다. 기기에서만 동작합니다." } }, "native");
+// 0.13.0 additions.
+set("Button RefreshButton", { shape: { default:'"default"', summary:'"circle"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다.' } });
+set("ListSection", {
+  divider: { default:"true", summary:"행 사이 구분선을 그립니다. false면 선 없이 붙여 그립니다." },
+  density: { default:'"default"', summary:'"compact"는 행 높이를 56에서 44(터치 최소 크기)로 줄이고 위아래 여백을 12로 둡니다. 시작 여백 16은 그대로라 다른 목록과 글자 위치가 맞습니다.' },
+});
+set("DatePicker", { clearable: { default:"false", summary:"값이 있을 때 달력 아이콘 앞에 지우기 버튼을 보입니다. 누르면 빈 문자열로 바꿉니다. 버튼 이름은 KjunProvider 문구(clearDate)를 따릅니다." } });
+set("FormGroup", { optional: { default:"false", summary:"라벨 뒤에 선택 입력 표시를 붙입니다. 문구는 KjunProvider의 locale·messages(optional)를 따르며 required와 함께 주면 required가 우선합니다." } });
+set("Switch", { description: { summary:"라벨 아래 보조 설명입니다. 시작 위치는 라벨과 같고, 웹은 aria-describedby, Native는 accessibilityHint로 스위치를 설명합니다." } });
+set("Fab", {
+  icon: { summary:"가운데 아이콘 이름입니다. 크기는 24(extensions.fab.iconSize)로 고정됩니다." },
+  ariaLabel: { summary:"글자가 없으므로 반드시 넘기는 버튼 이름입니다." },
+  disabled: { default:"false", summary:"누를 수 없게 하고 흐리게 표시합니다." },
+  safeAreaBottom: { default:"0", summary:"하단 안전 영역입니다. 버튼은 16 + safeAreaBottom + offsetBottom만큼 아래에서 떨어집니다." },
+  offsetBottom: { default:"0", summary:"추가로 띄울 거리입니다. 하단 탭바가 있으면 그 높이를 넘깁니다." },
+});
+set("Fab", { onClick: { summary:"버튼을 누를 때 호출합니다. Vue는 click 이벤트입니다." } }, "react");
+set("Fab", { onPress: { summary:"버튼을 누를 때 호출합니다." } }, "native");

@@ -2375,6 +2375,43 @@
     }
   },
   {
+    "name": "KjunFab",
+    "category": "primitives",
+    "kind": "component",
+    "owner": "KjunFab",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/fab",
+    "tests": [
+      "tests/browser/additions.spec.ts",
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue3": "packages/vue3/src/fab.tsx",
+      "react": "packages/react/src/fab.tsx",
+      "native": "packages/native/src/fab.tsx"
+    }
+  },
+  {
     "name": "KjunInput",
     "category": "primitives",
     "kind": "component",

@@ -10,9 +10,9 @@
     "native": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "filterFn", "size", "disabled", "error", "clearable", "emptyText", "renderOption", "onValueChange", "onChange", "onSearch", "onClear"]
   },
   "KjunDatePicker": {
-    "vue3": ["modelValue", "size", "placeholder", "ariaLabel", "error", "disabled", "readOnly", "min", "max"],
-    "react": ["value", "size", "ariaLabel", "error", "onValueChange", "disabled", "name", "type", "autoFocus", "className", "id", "style", "children", "onChange", "onKeyDown", "onClick", "max", "min", "placeholder", "readOnly", "required"],
-    "native": ["value", "min", "max", "placeholder", "size", "disabled", "ariaLabel", "error", "onValueChange", "onChange"]
+    "vue3": ["modelValue", "size", "placeholder", "ariaLabel", "error", "disabled", "readOnly", "min", "max", "clearable"],
+    "react": ["value", "size", "ariaLabel", "error", "onValueChange", "disabled", "name", "type", "autoFocus", "className", "id", "style", "children", "onChange", "onKeyDown", "onClick", "max", "min", "placeholder", "readOnly", "required", "clearable"],
+    "native": ["value", "min", "max", "placeholder", "size", "disabled", "ariaLabel", "error", "onValueChange", "onChange", "clearable"]
   },
   "KjunFilterGroup": {
     "vue3": ["modelValue", "options", "size", "disabled", "multiple", "scroll", "ariaLabel"],
@@ -20,9 +20,9 @@
     "native": ["value", "multiple", "scroll", "onValueChange", "onChange", "disabled", "size", "ariaLabel", "options"]
   },
   "KjunFormGroup": {
-    "vue3": ["label", "id", "required", "error", "hint", "labelHidden"],
-    "react": ["label", "id", "required", "error", "hint", "children", "labelHidden"],
-    "native": ["label", "id", "required", "error", "hint", "children", "style", "labelHidden"]
+    "vue3": ["label", "id", "required", "error", "hint", "labelHidden", "optional"],
+    "react": ["label", "id", "required", "error", "hint", "children", "labelHidden", "optional"],
+    "native": ["label", "id", "required", "error", "hint", "children", "style", "labelHidden", "optional"]
   },
   "KjunInput": {
     "vue3": ["modelValue", "size", "error", "errorMessage", "clearable", "prefixIcon", "suffixIcon", "prefix", "suffix", "ariaLabel", "id", "disabled", "readOnly", "required"],
@@ -50,9 +50,9 @@
     "native": ["value", "options", "placeholder", "ariaLabel", "labelKey", "valueKey", "size", "disabled", "searchable", "open", "loading", "searchPlaceholder", "optionPageSize", "clearable", "multiple", "error", "menuHeader", "renderOption", "renderSelected", "onValueChange", "onChange", "onOpenChange", "onSearch", "onClear", "filterFn", "searchKeys"]
   },
   "KjunSwitch": {
-    "vue3": ["modelValue", "label", "ariaLabel", "disabled", "size"],
-    "react": ["value", "label", "ariaLabel", "disabled", "size", "children", "onValueChange", "onChange"],
-    "native": ["value", "label", "ariaLabel", "disabled", "size", "children", "onValueChange", "onChange"]
+    "vue3": ["modelValue", "label", "ariaLabel", "disabled", "size", "description"],
+    "react": ["value", "label", "ariaLabel", "disabled", "size", "children", "onValueChange", "onChange", "description"],
+    "native": ["value", "label", "ariaLabel", "disabled", "size", "children", "onValueChange", "onChange", "description"]
   },
   "KjunTextarea": {
     "vue3": ["modelValue", "size", "error", "resize", "rows", "ariaLabel", "id", "required", "disabled", "readOnly"],

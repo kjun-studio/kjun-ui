@@ -27,6 +27,7 @@
       "packages/native/src/date-picker.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
+      "packages/native/src/fab.tsx",
       "packages/native/src/market-cards.tsx",
       "packages/native/src/market-table.tsx",
       "packages/native/src/range-input.tsx",
@@ -70,6 +71,7 @@
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
+      "packages/native/src/fab.tsx",
       "packages/native/src/range-input.tsx"
     ]
   },
@@ -317,6 +319,7 @@
       "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/financial.css",
+      "packages/tokens/src/forms.css",
       "packages/tokens/src/layout.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
@@ -329,6 +332,7 @@
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button-group-motion.tsx",
       "packages/native/src/button.tsx",
+      "packages/native/src/choice-controls.tsx",
       "packages/native/src/data-state.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
@@ -387,6 +391,7 @@
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/field-surface.ts",
       "packages/native/src/financial-display.tsx",
+      "packages/native/src/input.tsx",
       "packages/native/src/kpi-hero.tsx",
       "packages/native/src/kpi-row.tsx",
       "packages/native/src/market-cards.tsx",
@@ -484,6 +489,7 @@
       "packages/native/src/navigation.tsx",
       "packages/native/src/range-input.tsx",
       "packages/native/src/select-control.tsx",
+      "packages/native/src/selection-groups.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/table-cards.tsx",
@@ -1305,7 +1311,21 @@
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/date-picker.tsx",
+      "packages/native/src/fab.tsx",
       "packages/native/src/market-cards.tsx"
+    ]
+  },
+  {
+    "role": "switchThumbOn",
+    "contract": "common",
+    "required": false,
+    "fallback": "onBrand",
+    "variable": "--kjun-switch-thumb-on",
+    "upstreamAliases": [
+      "--switch-thumb-on"
+    ],
+    "implementationFiles": [
+      "packages/native/src/choice-controls.tsx"
     ]
   },
   {

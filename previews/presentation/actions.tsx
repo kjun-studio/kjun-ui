@@ -8,6 +8,8 @@ export function actions(name: string) {
     case 'KjunButtonGroup': return <K.KjunButtonGroup value="week" options={choices} size="md" ariaLabel="조회 기간" />;
     case 'KjunFilterGroup': return <K.KjunFilterGroup value="all" options={[{ value: 'all', label: '전체' }, { value: 'up', label: '상승' }, { value: 'down', label: '하락' }]} ariaLabel="등락 필터" />;
     case 'KjunIconToggle': return row(<><K.KjunIconToggle active activeIcon="star" activeColor="var(--kjun-favorite)" ariaLabel="즐겨찾기 해제" /><K.KjunIconToggle active activeIcon="heart" activeColor="var(--kjun-interest)" ariaLabel="관심 해제" /><K.KjunIconToggle active={false} activeIcon="heart" ariaLabel="관심 등록" /></>);
+    // The transform makes the fixed FAB position against this frame instead of the page.
+    case 'KjunFab': return <div style={{ position: 'relative', transform: 'translateZ(0)', width: 160, height: 112 }}><K.KjunFab icon="plus" ariaLabel="일정 추가" /></div>;
     case 'KjunCopyButton': return row(<><K.KjunCopyButton value="HBT" text="종목 코드 복사" /><K.KjunCopyButton value="HBT" ariaLabel="복사" /></>);
     case 'KjunRefreshButton': return row(<><K.KjunRefreshButton targetName="자산 목록" mode="text" /><K.KjunRefreshButton targetName="자산 목록" /></>);
     case 'KjunExternalLink': return row(<><K.KjunExternalLink href="https://example.com/docs" mode="text">프로젝트 문서</K.KjunExternalLink><K.KjunExternalLink href="https://example.com/docs" mode="icon" label="외부 문서" /></>);

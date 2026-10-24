@@ -40,7 +40,7 @@ function Example(/* PARAMS */) {
     if (name === "Inset") return <View style={{ paddingHorizontal: 16 }}>{children}</View>;
     if (name === "Scroll") return <ScrollView style={{ flex: 1, minHeight: 0 }} contentContainerStyle={{ paddingVertical: 16, gap: 16 }} keyboardShouldPersistTaps="handled">{children}</ScrollView>;
     if (name === "FieldStack") return <K.KjunFormLayout gap={20}>{children}</K.KjunFormLayout>;
-    if (name === "Box") return <View style={{ width: props.width, maxWidth: "100%" }}>{children}</View>;
+    if (name === "Box") return <View style={{ width: props.width, maxWidth: "100%", ...(props.height ? { height: props.height, position: "relative" } : {}) }}>{children}</View>;
     if (name === "Text") return <Text style={{ color: colors[props.colorRole || "text"], fontFamily, fontSize: 14, ...props.style }}>{children}</Text>;
     if (name === "IconAlignmentRow") return <View style={{ flexDirection: "row", gap: 12, ...props.style }}>{children}</View>;
     if (name === "Group" || name === "Stack") return <View style={{ gap: 12, ...(name === "Group" ? { flexDirection: "row", flexWrap: "wrap", alignItems: "center" } : {}), ...props.style }}>{children}</View>;

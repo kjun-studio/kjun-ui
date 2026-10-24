@@ -1036,7 +1036,7 @@
         "name": "ariaLabel",
         "type": "string",
         "required": false,
-        "default": "\"주요 탐색\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -1184,7 +1184,7 @@
         "name": "ariaLabel",
         "type": "string",
         "required": false,
-        "default": "\"현재 위치\"",
+        "default": "—",
         "description": ""
       }
     ],
@@ -1257,7 +1257,7 @@
     "vue3": [
       {
         "name": "variant",
-        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\"",
+        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\"",
         "required": false,
         "default": "\"primary\"",
         "description": ""
@@ -1268,6 +1268,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "shape",
+        "type": "\"default\" | \"circle\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius."
       },
       {
         "name": "loading",
@@ -1363,7 +1370,7 @@
     "react": [
       {
         "name": "variant",
-        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | undefined",
+        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -1374,6 +1381,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "shape",
+        "type": "\"default\" | \"circle\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius."
       },
       {
         "name": "loading",
@@ -1526,7 +1540,7 @@
       },
       {
         "name": "variant",
-        "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | undefined",
+        "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | \"link\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -1537,6 +1551,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "shape",
+        "type": "\"default\" | \"circle\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius."
       },
       {
         "name": "loading",
@@ -2196,7 +2217,7 @@
         "name": "loadingText",
         "type": "string",
         "required": false,
-        "default": "\"차트를 불러오는 중\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -2774,7 +2795,7 @@
         "name": "placeholder",
         "type": "string",
         "required": false,
-        "default": "\"검색 또는 선택\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -2837,7 +2858,7 @@
         "name": "emptyText",
         "type": "string",
         "required": false,
-        "default": "\"결과가 없습니다\"",
+        "default": "—",
         "description": ""
       }
     ],
@@ -3138,7 +3159,7 @@
         "name": "successText",
         "type": "string",
         "required": false,
-        "default": "\"복사됨\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -3388,7 +3409,7 @@
         "name": "refreshingText",
         "type": "string",
         "required": false,
-        "default": "\"갱신 중...\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -3409,7 +3430,7 @@
         "name": "emptyText",
         "type": "string",
         "required": false,
-        "default": "\"데이터가 없습니다\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -3430,7 +3451,7 @@
         "name": "loadingText",
         "type": "string",
         "required": false,
-        "default": "\"로딩 중...\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -3444,7 +3465,7 @@
         "name": "retryText",
         "type": "string",
         "required": false,
-        "default": "\"다시 시도\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -3545,7 +3566,7 @@
       },
       {
         "name": "loadingPadding",
-        "type": "\"none\" | \"default\" | undefined",
+        "type": "\"default\" | \"none\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -3907,6 +3928,13 @@
         "description": ""
       },
       {
+        "name": "clearable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Shows a clear button while there is a value; it reports an empty string."
+      },
+      {
         "name": "size",
         "type": "\"sm\" | \"md\" | \"lg\"",
         "required": false,
@@ -3917,7 +3945,7 @@
         "name": "placeholder",
         "type": "string",
         "required": false,
-        "default": "\"날짜 선택\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -3990,6 +4018,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "clearable",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shows a clear button while there is a value; it reports an empty string."
       },
       {
         "name": "ariaLabel",
@@ -4132,6 +4167,13 @@
         "required": true,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "clearable",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shows a clear button while there is a value; it reports an empty string."
       },
       {
         "name": "min",
@@ -5042,7 +5084,7 @@
         "name": "text",
         "type": "string",
         "required": false,
-        "default": "\"데이터가 없습니다\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -5411,6 +5453,140 @@
       }
     ]
   },
+  "KjunFab": {
+    "vue3": [
+      {
+        "name": "icon",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": "The FAB has no visible text, so it needs a name."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "safeAreaBottom",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Bottom safe area (px) the FAB stays above."
+      },
+      {
+        "name": "offsetBottom",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Extra space below, e.g. a bottom navigation's height."
+      }
+    ],
+    "events": [
+      {
+        "name": "click",
+        "source": "packages/vue3/src/fab.tsx"
+      }
+    ],
+    "slots": [],
+    "react": [
+      {
+        "name": "icon",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": "The FAB has no visible text, so it needs a name."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "safeAreaBottom",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Bottom safe area (px) the FAB stays above."
+      },
+      {
+        "name": "offsetBottom",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra space below, e.g. a bottom navigation's height."
+      },
+      {
+        "name": "onClick",
+        "type": "((event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent<HTMLButtonElement>) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "icon",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": "The FAB has no visible text, so it needs a name."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "safeAreaBottom",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Bottom safe area (pt) the FAB stays above."
+      },
+      {
+        "name": "offsetBottom",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra space below, e.g. a bottom navigation's height."
+      },
+      {
+        "name": "onPress",
+        "type": "((event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
   "KjunFeedbackProvider": {
     "vue3": [],
     "events": [],
@@ -5654,14 +5830,14 @@
         "name": "cancelText",
         "type": "string",
         "required": false,
-        "default": "\"취소\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "confirmText",
         "type": "string",
         "required": false,
-        "default": "\"저장\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -5922,6 +6098,13 @@
         "description": ""
       },
       {
+        "name": "optional",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks the field as optional with the \"(선택)\" / \"(optional)\" message; required wins when both are set."
+      },
+      {
         "name": "error",
         "type": "string",
         "required": false,
@@ -5974,6 +6157,13 @@
         "description": ""
       },
       {
+        "name": "optional",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Marks the field as optional with the \"(선택)\" / \"(optional)\" message; required wins when both are set."
+      },
+      {
         "name": "error",
         "type": "string | undefined",
         "required": false,
@@ -6023,6 +6213,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "optional",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Marks the field as optional with the \"(선택)\" / \"(optional)\" message; required wins when both are set."
       },
       {
         "name": "error",
@@ -8400,6 +8597,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "divider",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Draws dividers between rows (default true)."
+      },
+      {
+        "name": "density",
+        "type": "\"default\" | \"compact\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56."
       }
     ],
     "events": [],
@@ -8450,6 +8661,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "divider",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Draws dividers between rows (default true)."
+      },
+      {
+        "name": "density",
+        "type": "\"default\" | \"compact\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56."
       }
     ],
     "native": [
@@ -8487,6 +8712,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "divider",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Draws dividers between rows (default true)."
+      },
+      {
+        "name": "density",
+        "type": "\"default\" | \"compact\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56."
       }
     ]
   },
@@ -8695,7 +8934,7 @@
         "name": "emptyMessage",
         "type": "string",
         "required": false,
-        "default": "\"항목이 없습니다\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -8716,7 +8955,7 @@
         "name": "loadingText",
         "type": "string",
         "required": false,
-        "default": "\"로딩 중...\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -8758,7 +8997,7 @@
         "name": "unitLabel",
         "type": "string",
         "required": false,
-        "default": "\"개\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -9720,7 +9959,7 @@
         "name": "emptyMessage",
         "type": "string",
         "required": false,
-        "default": "\"항목이 없습니다\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -9741,7 +9980,7 @@
         "name": "loadingText",
         "type": "string",
         "required": false,
-        "default": "\"로딩 중...\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -9783,7 +10022,7 @@
         "name": "unitLabel",
         "type": "string",
         "required": false,
-        "default": "\"개\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -10486,7 +10725,7 @@
         "name": "emptyMessage",
         "type": "string",
         "required": false,
-        "default": "\"항목이 없습니다\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -10507,7 +10746,7 @@
         "name": "loadingText",
         "type": "string",
         "required": false,
-        "default": "\"로딩 중...\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -10549,7 +10788,7 @@
         "name": "unitLabel",
         "type": "string",
         "required": false,
-        "default": "\"개\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -11497,7 +11736,7 @@
       },
       {
         "name": "variant",
-        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\"",
+        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\"",
         "required": false,
         "default": "\"secondary\"",
         "description": ""
@@ -11579,7 +11818,7 @@
       },
       {
         "name": "variant",
-        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | undefined",
+        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -11700,7 +11939,7 @@
       },
       {
         "name": "variant",
-        "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | undefined",
+        "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | \"link\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -11874,14 +12113,14 @@
         "name": "confirmText",
         "type": "string",
         "required": false,
-        "default": "\"확인\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "cancelText",
         "type": "string",
         "required": false,
-        "default": "\"취소\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -13434,6 +13673,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "BCP 47 tag (e.g. \"en-US\") for KJUN copy and Intl formats; without it KJUN stays Korean."
+      },
+      {
+        "name": "messages",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; confirmTitle: string; promptTitle: string; invalidInput: string; dialog: string; panel: string; details: string; menu: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; time: string; hour: string; minute: string; second: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; descending: string; tabs: string; breadcrumb: string; mainNavigation: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; closePrice: string; delayed: string; noRealtimeQuote: string; realtimeDelayed: string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }>",
+        "required": false,
+        "default": "—",
+        "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
       }
     ],
     "events": [],
@@ -13458,6 +13711,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "locale",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "BCP 47 tag (e.g. \"en-US\") for KJUN copy and Intl formats; without it KJUN stays Korean."
+      },
+      {
+        "name": "messages",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; confirmTitle: string; promptTitle: string; invalidInput: string; dialog: string; panel: string; details: string; menu: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; time: string; hour: string; minute: string; second: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; descending: string; tabs: string; breadcrumb: string; mainNavigation: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; closePrice: string; delayed: string; noRealtimeQuote: string; realtimeDelayed: string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
       },
       {
         "name": "autoFocus",
@@ -13516,6 +13783,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "locale",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "BCP 47 tag (e.g. \"en-US\") for KJUN copy and Intl formats; without it KJUN stays Korean."
+      },
+      {
+        "name": "messages",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; confirmTitle: string; promptTitle: string; invalidInput: string; dialog: string; panel: string; details: string; menu: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; time: string; hour: string; minute: string; second: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; descending: string; tabs: string; breadcrumb: string; mainNavigation: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; closePrice: string; delayed: string; noRealtimeQuote: string; realtimeDelayed: string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
       },
       {
         "name": "colors",
@@ -14254,9 +14535,9 @@
       },
       {
         "name": "thumbLabels",
-        "type": "{ type: PropType<[string, string]>; default: () => string[]; }",
+        "type": "{ type: PropType<[string, string]>; default: undefined; }",
         "required": false,
-        "default": "[\"최솟값\",\"최댓값\"]",
+        "default": "—",
         "description": ""
       }
     ],
@@ -14436,7 +14717,7 @@
         "name": "text",
         "type": "string",
         "required": false,
-        "default": "\"새로고침\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -14448,7 +14729,7 @@
       },
       {
         "name": "variant",
-        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\"",
+        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\"",
         "required": false,
         "default": "\"ghost\"",
         "description": ""
@@ -14646,10 +14927,17 @@
       },
       {
         "name": "variant",
-        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | undefined",
+        "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "shape",
+        "type": "\"default\" | \"circle\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius."
       },
       {
         "name": "loading",
@@ -14816,10 +15104,17 @@
       },
       {
         "name": "variant",
-        "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | undefined",
+        "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | \"link\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "shape",
+        "type": "\"default\" | \"circle\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius."
       },
       {
         "name": "loading",
@@ -14907,7 +15202,7 @@
         "name": "placeholder",
         "type": "string",
         "required": false,
-        "default": "\"검색...\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -14984,14 +15279,14 @@
         "name": "emptyText",
         "type": "string",
         "required": false,
-        "default": "\"결과가 없습니다\"",
+        "default": "—",
         "description": ""
       },
       {
         "name": "errorText",
         "type": "string",
         "required": false,
-        "default": "\"검색하지 못했습니다. 다시 시도해 주세요.\"",
+        "default": "—",
         "description": "Shown when loadOptions rejects, instead of the empty text."
       }
     ],
@@ -15331,7 +15626,7 @@
         "name": "placeholder",
         "type": "string",
         "required": false,
-        "default": "\"선택\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -15408,7 +15703,7 @@
         "name": "searchPlaceholder",
         "type": "string",
         "required": false,
-        "default": "\"검색...\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -16895,6 +17190,13 @@
         "required": false,
         "default": "\"md\"",
         "description": ""
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Supporting text under the label; it also describes the switch to screen readers."
       }
     ],
     "events": [
@@ -16949,6 +17251,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "description",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Supporting text under the label; it also describes the switch to screen readers."
       },
       {
         "name": "children",
@@ -17007,6 +17316,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "description",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Supporting text under the label; screen readers hear it as the hint."
       },
       {
         "name": "children",
@@ -17263,7 +17579,7 @@
         "name": "loadingText",
         "type": "string",
         "required": false,
-        "default": "\"로딩 중...\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -17277,7 +17593,7 @@
         "name": "emptyText",
         "type": "string",
         "required": false,
-        "default": "\"데이터가 없습니다\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -17319,7 +17635,7 @@
         "name": "searchPlaceholder",
         "type": "string",
         "required": false,
-        "default": "\"검색...\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -17361,7 +17677,7 @@
         "name": "ariaLabel",
         "type": "string",
         "required": false,
-        "default": "\"데이터 표\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -18257,7 +18573,7 @@
         "name": "ariaLabel",
         "type": "string",
         "required": false,
-        "default": "\"탭\"",
+        "default": "—",
         "description": ""
       },
       {
@@ -19004,7 +19320,7 @@
         "name": "ariaLabel",
         "type": "string",
         "required": false,
-        "default": "\"시간\"",
+        "default": "—",
         "description": ""
       }
     ],

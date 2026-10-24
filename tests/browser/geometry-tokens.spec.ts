@@ -12,7 +12,8 @@ for (const platform of platforms) {
     await page.setViewportSize({width:1280,height:1100});await page.emulateMedia({reducedMotion:'reduce'});
     await openFixture(page,platform,'','geometry-review');
     const e=tokens.extensions;
-    await geometry(outer(page,'badge'),{'border-radius':px(e.badge.radius),'padding-top':px(e.badge.padding.xs.y),'padding-left':px(e.badge.padding.xs.x)});
+    // Native badges sit in a transparent alignment row; the pill is its child.
+    await geometry(platform==='native'?page.getByTestId('badge').locator(':scope > * > *').first():outer(page,'badge'),{'border-radius':px(e.badge.radius),'padding-top':px(e.badge.padding.xs.y),'padding-left':px(e.badge.padding.xs.x)});
     await geometry(outer(page,'chip'),{'border-radius':px(e.chip.radius),'padding-top':px(e.chip.paddingY),'padding-left':px(e.chip.paddingX)});
     await geometry(outer(page,'navigation').locator(':scope > *').first(),{'padding-left':px(e.topNavigation.paddingX),'gap':px(e.topNavigation.gap)});
     await geometry(outer(page,'list').locator(':scope > *').first(),{'padding-top':px(e.list.padding),'gap':px(e.list.gap)});

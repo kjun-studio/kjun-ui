@@ -87,6 +87,8 @@ export function generate(input: UsageInput) {
         b.node('KjunTabPane', { name: 'blocked', label: '비활성 탭', disabled: true }, b.text('비활성 내용')),
       ].join('\n')); break;
     case 'KjunIconToggle': return iconToggleExample(input);
+    case 'KjunFab':
+      content = b.node(name, { icon: 'plus', ariaLabel: '일정 추가', ...b.props('disabled'), [b.native ? 'onPress' : 'onClick']: b.handler('add', '', b.result('"일정 추가"')) }); break;
     case 'KjunCopyButton':
       content = b.node(name, { value: 'KJUN UI', text: '복사', disabled: s.disabled,
         copyText: b.declare('copyText', 'async function copyText(value) {\n  // 프로젝트의 클립보드 연결 지점입니다.\n  console.log("복사 요청:", value);\n}'),

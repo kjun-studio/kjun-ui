@@ -82,6 +82,13 @@ export const actions: Record<string, GuideAuthor> = {
     ],
     related: "toolbar",
   },
+  KjunFab: {
+    parts: [c("떠 있는 버튼", "화면의 주요 행동 하나를 실행합니다. 아이콘만 있으므로 접근성 이름으로 행동을 알립니다.")],
+    states: [
+      { id: "default", label: "기본", description: "오른쪽 아래 16 위치에 브랜드 색 원형으로 떠 있습니다.", settings: {} },
+    ],
+    related: "toolbar",
+  },
   KjunMenuButton: {
     action: "작업 메뉴",
     parts: [

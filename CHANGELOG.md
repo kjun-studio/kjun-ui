@@ -2,6 +2,25 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.13.0 — (릴리스 날짜)
+
+다국어와 적용 프로젝트 의견을 반영한 기능 릴리스입니다. 기존 API와 기본 동작은 그대로입니다(`locale`을 넘기지 않으면 이전과 같은 한국어).
+
+- **다국어**: `KjunProvider`에 `locale`·`messages`를 추가했습니다(세 플랫폼). KJUN이 그리는 문구와 화면 낭독 이름, 상대 시간·달력·날짜 값 형식이 앱 언어를 따릅니다. 한국어(기본)와 영어 문구 묶음 `kjunMessagesKo`·`kjunMessagesEn`과 타입 `KjunMessages`를 export합니다. 그 밖의 언어는 앱이 `messages`로 넘기고, 넘기지 않은 문구는 영어로 나옵니다. 자세한 내용은 문서 "색상·서체 연결 → 다국어"를 보세요.
+  - 문구 props(`cancelText`, `emptyText`, `placeholder` 등)의 기본값은 이제 Provider 문구에서 옵니다. props를 넘기면 그대로 우선합니다.
+- **`switchThumbOn` 색 역할**(선택): 켜진 스위치 손잡이 색입니다. 지정하지 않으면 지금처럼 `onBrand`입니다. 파스텔 포인트 색처럼 `onBrand`를 어둡게 잡는 앱에서 손잡이를 흰색으로 둘 수 있습니다.
+- **새 옵션**
+  - `KjunDatePicker` `clearable`: 값이 있을 때 지우기 버튼을 보입니다(빈 문자열로 바꿈).
+  - `KjunSwitch` `description`: 라벨 아래 설명 문구입니다. 화면 낭독기에도 전달합니다.
+  - `KjunFormGroup` `optional`: 라벨 뒤에 "(선택)"/"(optional)"을 붙입니다.
+  - `KjunButton` `shape="circle"`: 아이콘만 있는 원형 버튼입니다.
+  - `KjunButton` `variant="link"`: 여백 없이 글자에 맞는 링크 모양 버튼입니다. Native는 터치 영역을 44로 넓힙니다.
+  - `KjunListSection` `divider={false}`, `density="compact"`: 구분선 없는 목록과 높이 44의 촘촘한 행입니다.
+- **새 컴포넌트 `KjunFab`**: 오른쪽 아래에 떠 있는 56 원형 주요 행동 버튼입니다. `safeAreaBottom`·`offsetBottom`으로 하단 영역을 피합니다. Native는 부모 기준으로 놓이므로 화면 최상위 View에 둡니다.
+- **수정**
+  - Native `KjunBadge`가 가로 줄의 세로 가운데 정렬을 무시하고 위쪽에 붙던 문제를 고쳤습니다.
+  - `KjunButtonGroup` 선택 칸에 `border` 색 테두리를 더해, 밝은 색상에서도 선택 칸이 바탕과 구분됩니다.
+
 ## 0.12.2 — 2026-10-23
 
 - **Native TimePicker 시·분 칸**: 기기에서 시·분 숫자가 "·", "···"처럼 잘려 보이던 문제를 고쳤습니다. 칸 너비는 숨겨 둔 "00" 글자가 정하는데, 그 글자를 감싼 영역의 `flex: 1`이 앱 배치 엔진(Yoga)에서 기본 너비 0으로 계산돼 칸이 최소 너비(44px)에 머물렀습니다. 시간 칸에서는 이제 내용 너비에서 시작합니다. React Native Web에서는 재현되지 않습니다.

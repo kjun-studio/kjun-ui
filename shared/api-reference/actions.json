@@ -1,8 +1,8 @@
 {
   "KjunButton": {
-    "vue3": ["variant", "size", "loading", "disabled", "block", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading", "type", "wrap"],
-    "react": ["variant", "size", "loading", "block", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading", "disabled", "name", "type", "autoFocus", "className", "id", "style", "children", "onChange", "onKeyDown", "onClick", "wrap"],
-    "native": ["children", "variant", "size", "loading", "block", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading", "style", "id", "onPress", "disabled", "wrap"]
+    "vue3": ["variant", "size", "loading", "disabled", "block", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading", "type", "wrap", "shape"],
+    "react": ["variant", "size", "loading", "block", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading", "disabled", "name", "type", "autoFocus", "className", "id", "style", "children", "onChange", "onKeyDown", "onClick", "wrap", "shape"],
+    "native": ["children", "variant", "size", "loading", "block", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading", "style", "id", "onPress", "disabled", "wrap", "shape"]
   },
   "KjunButtonGroup": {
     "vue3": ["modelValue", "options", "size", "variant", "disabled", "fullWidth", "ariaLabel"],
@@ -46,7 +46,12 @@
   },
   "KjunRefreshButton": {
     "vue3": ["targetName", "mode", "text", "size", "variant", "disabled", "loading", "block", "ariaLabel", "title", "tooltip", "tooltipPlacement", "tooltipDelay", "spinOnLoading"],
-    "react": ["targetName", "mode", "text", "tooltip", "tooltipPlacement", "tooltipDelay", "onRefresh", "size", "disabled", "name", "type", "autoFocus", "className", "id", "style", "onChange", "onKeyDown", "variant", "loading", "block", "wrap", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading"],
-    "native": ["targetName", "mode", "text", "tooltip", "tooltipPlacement", "tooltipDelay", "onRefresh", "style", "id", "disabled", "size", "prefixIcon", "suffixIcon", "ariaLabel", "variant", "loading", "block", "wrap", "prefixIconFilled", "suffixIconFilled", "spinOnLoading"]
+    "react": ["targetName", "mode", "text", "tooltip", "tooltipPlacement", "tooltipDelay", "onRefresh", "size", "disabled", "name", "type", "autoFocus", "className", "id", "style", "onChange", "onKeyDown", "variant", "loading", "block", "wrap", "prefixIcon", "suffixIcon", "prefixIconFilled", "suffixIconFilled", "ariaLabel", "spinOnLoading", "shape"],
+    "native": ["targetName", "mode", "text", "tooltip", "tooltipPlacement", "tooltipDelay", "onRefresh", "style", "id", "disabled", "size", "prefixIcon", "suffixIcon", "ariaLabel", "variant", "loading", "block", "wrap", "prefixIconFilled", "suffixIconFilled", "spinOnLoading", "shape"]
+  },
+  "KjunFab": {
+    "vue3": ["icon", "ariaLabel", "disabled", "safeAreaBottom", "offsetBottom"],
+    "react": ["icon", "ariaLabel", "disabled", "safeAreaBottom", "offsetBottom", "onClick"],
+    "native": ["icon", "ariaLabel", "disabled", "safeAreaBottom", "offsetBottom", "onPress"]
   }
 }

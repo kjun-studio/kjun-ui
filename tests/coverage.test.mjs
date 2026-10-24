@@ -13,12 +13,12 @@ const input = { catalog, guides, navigation, discovery, helpers, records: genera
 test('coverage includes every public component once, excluding services and internals', () => {
   const data = buildCoverage(input);
   assert.deepEqual(data, generated);
-  assert.equal(data.total, 80);
+  assert.equal(data.total, 81);
   assert.deepEqual(data.components.map(entry => entry.name).sort(), catalog.filter(entry => entry.kind !== 'internal').map(entry => entry.name).sort());
   assert.equal(new Set(data.components.map(entry => entry.docs)).size, data.total);
   for (const summary of data.summary) {
-    assert.equal(summary.provided, 80);
-    assert.equal(summary.counts[summary.platform === 'native' ? 'preview' : 'supported'], 80);
+    assert.equal(summary.provided, 81);
+    assert.equal(summary.counts[summary.platform === 'native' ? 'preview' : 'supported'], 81);
     assert.deepEqual(summary.runtimes, [summary.platform === 'native' ? 'react-native-web' : 'chromium']);
   }
   assert.equal(data.summary.find(summary => summary.platform === 'native').devicesNotRun, true);
@@ -34,10 +34,10 @@ test('implementation and verification determine all four statuses and summary co
   altered.catalog[0].platforms.react.status = 'not-implemented';
   altered.catalog[1].platforms.native.verification = 'not-run';
   const data = buildCoverage(altered);
-  assert.equal(data.summary[1].provided, 79);
+  assert.equal(data.summary[1].provided, 80);
   assert.equal(data.summary[1].counts.unsupported, 1);
   assert.equal(data.summary[2].counts.review, 1);
-  assert.equal(data.summary[2].counts.preview, 79);
+  assert.equal(data.summary[2].counts.preview, 80);
 });
 
 test('coverage rejects missing, duplicate and invalid component, document and evidence mappings', () => {
@@ -54,7 +54,7 @@ test('coverage rejects missing, duplicate and invalid component, document and ev
 
 test('downloaded records preserve original bytes, opening dates and current link counts', async () => {
   assert.deepEqual(generated.records.map(record => record.date).sort(), ['2026-10-08']);
-  assert.deepEqual(generated.records.map(record => record.componentCount), [80]);
+  assert.deepEqual(generated.records.map(record => record.componentCount), [81]);
   for (const record of generated.records) {
     const source = await readFile(new URL('../' + record.source, import.meta.url));
     const download = await readFile(new URL('../apps/docs/public' + record.download, import.meta.url));

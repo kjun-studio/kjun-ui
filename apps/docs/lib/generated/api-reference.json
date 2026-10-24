@@ -723,7 +723,7 @@
             "name": "text",
             "type": "string",
             "required": false,
-            "default": "\"데이터가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "표시할 문구입니다.",
             "source": "packages/vue3/src/display.tsx"
@@ -766,7 +766,7 @@
             "name": "text",
             "type": "string | undefined",
             "required": false,
-            "default": "\"데이터가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "표시할 문구입니다.",
             "source": "packages/react/src/display.tsx"
@@ -810,7 +810,7 @@
             "name": "text",
             "type": "string | undefined",
             "required": false,
-            "default": "\"데이터가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "표시할 문구입니다.",
             "source": "packages/native/src/display-primitives.tsx"
@@ -2387,7 +2387,7 @@
             "name": "emptyMessage",
             "type": "string",
             "required": false,
-            "default": "\"항목이 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "빈 목록의 주된 안내 문구입니다.",
             "source": "packages/vue3/src/market-cards.tsx"
@@ -2414,7 +2414,7 @@
             "name": "loadingText",
             "type": "string",
             "required": false,
-            "default": "\"로딩 중...\"",
+            "default": "—",
             "description": "",
             "summary": "최초 로딩 중 표시할 안내 문구입니다.",
             "source": "packages/vue3/src/market-cards.tsx"
@@ -2468,7 +2468,7 @@
             "name": "unitLabel",
             "type": "string",
             "required": false,
-            "default": "\"개\"",
+            "default": "—",
             "description": "",
             "summary": "전체 개수 뒤에 표시할 단위 문구입니다.",
             "source": "packages/vue3/src/market-cards.tsx"
@@ -2846,7 +2846,7 @@
             "name": "emptyMessage",
             "type": "string | undefined",
             "required": false,
-            "default": "\"항목이 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "빈 목록의 주된 안내 문구입니다.",
             "source": "packages/react/src/market-cards.tsx"
@@ -3268,7 +3268,7 @@
             "name": "emptyMessage",
             "type": "string | undefined",
             "required": false,
-            "default": "\"항목이 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "빈 목록의 주된 안내 문구입니다.",
             "source": "packages/native/src/market-cards.tsx"
@@ -3656,7 +3656,7 @@
             "name": "emptyMessage",
             "type": "string",
             "required": false,
-            "default": "\"항목이 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "빈 목록의 주된 안내 문구입니다.",
             "source": "packages/vue3/src/market-list.tsx"
@@ -3683,7 +3683,7 @@
             "name": "loadingText",
             "type": "string",
             "required": false,
-            "default": "\"로딩 중...\"",
+            "default": "—",
             "description": "",
             "summary": "최초 로딩 중 표시할 안내 문구입니다.",
             "source": "packages/vue3/src/market-list.tsx"
@@ -3737,7 +3737,7 @@
             "name": "unitLabel",
             "type": "string",
             "required": false,
-            "default": "\"개\"",
+            "default": "—",
             "description": "",
             "summary": "전체 개수 뒤에 표시할 단위 문구입니다.",
             "source": "packages/vue3/src/market-list.tsx"
@@ -3997,7 +3997,7 @@
             "name": "emptyMessage",
             "type": "string | undefined",
             "required": false,
-            "default": "\"항목이 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "빈 목록의 주된 안내 문구입니다.",
             "source": "packages/react/src/market-list.tsx"
@@ -4329,7 +4329,7 @@
             "name": "emptyMessage",
             "type": "string | undefined",
             "required": false,
-            "default": "\"항목이 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "빈 목록의 주된 안내 문구입니다.",
             "source": "packages/native/src/market-list.tsx"
@@ -4654,7 +4654,7 @@
             "name": "emptyMessage",
             "type": "string",
             "required": false,
-            "default": "\"항목이 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "빈 목록의 주된 안내 문구입니다.",
             "source": "packages/vue3/src/market-table.tsx"
@@ -4681,7 +4681,7 @@
             "name": "loadingText",
             "type": "string",
             "required": false,
-            "default": "\"로딩 중...\"",
+            "default": "—",
             "description": "",
             "summary": "최초 로딩 중 표시할 안내 문구입니다.",
             "source": "packages/vue3/src/market-table.tsx"
@@ -4735,7 +4735,7 @@
             "name": "unitLabel",
             "type": "string",
             "required": false,
-            "default": "\"개\"",
+            "default": "—",
             "description": "",
             "summary": "전체 개수 뒤에 표시할 단위 문구입니다.",
             "source": "packages/vue3/src/market-table.tsx"
@@ -5149,7 +5149,7 @@
             "name": "emptyMessage",
             "type": "string | undefined",
             "required": false,
-            "default": "\"항목이 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "빈 목록의 주된 안내 문구입니다.",
             "source": "packages/react/src/market-table.tsx"
@@ -5562,7 +5562,7 @@
             "name": "emptyMessage",
             "type": "string | undefined",
             "required": false,
-            "default": "\"항목이 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "빈 목록의 주된 안내 문구입니다.",
             "source": "packages/native/src/market-table.tsx"
@@ -7743,7 +7743,7 @@
             "name": "loadingText",
             "type": "string",
             "required": false,
-            "default": "\"로딩 중...\"",
+            "default": "—",
             "description": "",
             "summary": "최초 로딩 중 표시할 안내 문구입니다.",
             "source": "packages/vue3/src/table.tsx"
@@ -7761,7 +7761,7 @@
             "name": "emptyText",
             "type": "string",
             "required": false,
-            "default": "\"데이터가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/vue3/src/table.tsx"
@@ -7859,7 +7859,7 @@
             "name": "searchPlaceholder",
             "type": "string",
             "required": false,
-            "default": "\"검색...\"",
+            "default": "—",
             "description": "",
             "summary": "옵션·표 검색 입력에 표시할 안내 문구입니다.",
             "source": "packages/vue3/src/table.tsx"
@@ -7920,7 +7920,7 @@
             "name": "ariaLabel",
             "type": "string",
             "required": false,
-            "default": "\"데이터 표\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/vue3/src/table.tsx"
@@ -8528,7 +8528,7 @@
             "name": "loadingText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"로딩 중...\"",
+            "default": "—",
             "description": "",
             "summary": "최초 로딩 중 표시할 안내 문구입니다.",
             "source": "packages/react/src/table-view.tsx"
@@ -8546,7 +8546,7 @@
             "name": "emptyText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"데이터가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/react/src/table-view.tsx"
@@ -8644,7 +8644,7 @@
             "name": "searchPlaceholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"검색...\"",
+            "default": "—",
             "description": "",
             "summary": "옵션·표 검색 입력에 표시할 안내 문구입니다.",
             "source": "packages/react/src/table-view.tsx"
@@ -8705,7 +8705,7 @@
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
-            "default": "\"데이터 표\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/react/src/table-view.tsx"
@@ -9359,7 +9359,7 @@
             "name": "loadingText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"로딩 중...\"",
+            "default": "—",
             "description": "",
             "summary": "최초 로딩 중 표시할 안내 문구입니다.",
             "source": "packages/native/src/table-view.tsx"
@@ -9377,7 +9377,7 @@
             "name": "emptyText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"데이터가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/native/src/table-view.tsx"
@@ -9475,7 +9475,7 @@
             "name": "searchPlaceholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"검색...\"",
+            "default": "—",
             "description": "",
             "summary": "옵션·표 검색 입력에 표시할 안내 문구입니다.",
             "source": "packages/native/src/table-view.tsx"
@@ -9536,7 +9536,7 @@
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
-            "default": "\"데이터 표\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/native/src/table-view.tsx"
@@ -10737,7 +10737,7 @@
             "name": "refreshingText",
             "type": "string",
             "required": false,
-            "default": "\"갱신 중...\"",
+            "default": "—",
             "description": "",
             "summary": "본문 위 별도 줄에 갱신 상태를 표시합니다.",
             "details": [
@@ -10778,7 +10778,7 @@
             "name": "emptyText",
             "type": "string",
             "required": false,
-            "default": "\"데이터가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/vue3/src/data-state.tsx"
@@ -10805,7 +10805,7 @@
             "name": "loadingText",
             "type": "string",
             "required": false,
-            "default": "\"로딩 중...\"",
+            "default": "—",
             "description": "",
             "summary": "최초 로딩 중 표시할 안내 문구입니다.",
             "source": "packages/vue3/src/data-state.tsx"
@@ -10823,7 +10823,7 @@
             "name": "retryText",
             "type": "string",
             "required": false,
-            "default": "\"다시 시도\"",
+            "default": "—",
             "description": "",
             "summary": "오류와 갱신 경고의 재시도 버튼 문구입니다.",
             "details": [
@@ -11062,7 +11062,7 @@
             "name": "refreshingText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"갱신 중...\"",
+            "default": "—",
             "description": "",
             "summary": "본문 위 별도 줄에 갱신 상태를 표시합니다.",
             "details": [
@@ -11076,7 +11076,7 @@
           },
           {
             "name": "loadingPadding",
-            "type": "\"none\" | \"default\" | undefined",
+            "type": "\"default\" | \"none\" | undefined",
             "required": false,
             "default": "\"default\"",
             "description": "",
@@ -11103,7 +11103,7 @@
             "name": "emptyText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"데이터가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/react/src/data-state.tsx"
@@ -11130,7 +11130,7 @@
             "name": "loadingText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"로딩 중...\"",
+            "default": "—",
             "description": "",
             "summary": "최초 로딩 중 표시할 안내 문구입니다.",
             "source": "packages/react/src/data-state.tsx"
@@ -11148,7 +11148,7 @@
             "name": "retryText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"다시 시도\"",
+            "default": "—",
             "description": "",
             "summary": "오류와 갱신 경고의 재시도 버튼 문구입니다.",
             "details": [
@@ -11493,7 +11493,7 @@
             "name": "refreshingText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"갱신 중...\"",
+            "default": "—",
             "description": "",
             "summary": "본문 위 별도 줄에 갱신 상태를 표시합니다.",
             "details": [
@@ -11534,7 +11534,7 @@
             "name": "emptyText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"데이터가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/native/src/data-state.tsx"
@@ -11561,7 +11561,7 @@
             "name": "loadingText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"로딩 중...\"",
+            "default": "—",
             "description": "",
             "summary": "최초 로딩 중 표시할 안내 문구입니다.",
             "source": "packages/native/src/data-state.tsx"
@@ -11579,7 +11579,7 @@
             "name": "retryText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"다시 시도\"",
+            "default": "—",
             "description": "",
             "summary": "오류와 갱신 경고의 재시도 버튼 문구입니다.",
             "details": [
@@ -12359,7 +12359,7 @@
             "name": "placeholder",
             "type": "string",
             "required": false,
-            "default": "\"검색...\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/vue3/src/search-input.tsx"
@@ -12509,7 +12509,7 @@
             "name": "emptyText",
             "type": "string",
             "required": false,
-            "default": "\"결과가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/vue3/src/search-input.tsx"
@@ -12518,7 +12518,7 @@
             "name": "errorText",
             "type": "string",
             "required": false,
-            "default": "\"검색하지 못했습니다. 다시 시도해 주세요.\"",
+            "default": "—",
             "description": "Shown when loadOptions rejects, instead of the empty text.",
             "summary": "검색 요청이 실패했을 때 빈 결과 문구 대신 표시할 오류 문구입니다.",
             "source": "packages/vue3/src/search-input.tsx"
@@ -12703,7 +12703,7 @@
             "name": "placeholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"검색...\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/react/src/search-input.tsx"
@@ -12780,7 +12780,7 @@
             "name": "emptyText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"결과가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/react/src/search-input.tsx"
@@ -12789,7 +12789,7 @@
             "name": "errorText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"검색하지 못했습니다. 다시 시도해 주세요.\"",
+            "default": "—",
             "description": "Shown when loadOptions rejects, instead of the empty text.",
             "summary": "검색 요청이 실패했을 때 빈 결과 문구 대신 표시할 오류 문구입니다.",
             "source": "packages/react/src/search-input.tsx"
@@ -13076,7 +13076,7 @@
             "name": "placeholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"검색...\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/native/src/search-input.tsx"
@@ -13153,7 +13153,7 @@
             "name": "emptyText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"결과가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/native/src/search-input.tsx"
@@ -13162,7 +13162,7 @@
             "name": "errorText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"검색하지 못했습니다. 다시 시도해 주세요.\"",
+            "default": "—",
             "description": "Shown when loadOptions rejects, instead of the empty text.",
             "summary": "검색 요청이 실패했을 때 빈 결과 문구 대신 표시할 오류 문구입니다.",
             "source": "packages/native/src/search-input.tsx"
@@ -13733,7 +13733,7 @@
             "name": "placeholder",
             "type": "string",
             "required": false,
-            "default": "\"검색 또는 선택\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/vue3/src/combobox.tsx"
@@ -13814,7 +13814,7 @@
             "name": "emptyText",
             "type": "string",
             "required": false,
-            "default": "\"결과가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/vue3/src/combobox.tsx"
@@ -13884,7 +13884,7 @@
             "name": "placeholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"검색 또는 선택\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/react/src/combobox.tsx"
@@ -13965,7 +13965,7 @@
             "name": "emptyText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"결과가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/react/src/combobox.tsx"
@@ -14045,7 +14045,7 @@
             "name": "placeholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"검색 또는 선택\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/native/src/combobox.tsx"
@@ -14126,7 +14126,7 @@
             "name": "emptyText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"결과가 없습니다\"",
+            "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/native/src/combobox.tsx"
@@ -14196,6 +14196,15 @@
             "source": "packages/vue3/src/date-picker.tsx"
           },
           {
+            "name": "clearable",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Shows a clear button while there is a value; it reports an empty string.",
+            "summary": "값이 있을 때 달력 아이콘 앞에 지우기 버튼을 보입니다. 누르면 빈 문자열로 바꿉니다. 버튼 이름은 KjunProvider 문구(clearDate)를 따릅니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
             "name": "size",
             "type": "\"sm\" | \"md\" | \"lg\"",
             "required": false,
@@ -14208,7 +14217,7 @@
             "name": "placeholder",
             "type": "string",
             "required": false,
-            "default": "\"날짜 선택\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/vue3/src/date-picker.tsx"
@@ -14306,6 +14315,15 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "clearable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Shows a clear button while there is a value; it reports an empty string.",
+            "summary": "값이 있을 때 달력 아이콘 앞에 지우기 버튼을 보입니다. 누르면 빈 문자열로 바꿉니다. 버튼 이름은 KjunProvider 문구(clearDate)를 따릅니다.",
             "source": "packages/react/src/date-picker.tsx"
           },
           {
@@ -14456,7 +14474,7 @@
             "name": "placeholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"날짜 선택\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/react/src/date-picker.tsx"
@@ -14497,6 +14515,15 @@
             "source": "packages/native/src/date-picker.tsx"
           },
           {
+            "name": "clearable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Shows a clear button while there is a value; it reports an empty string.",
+            "summary": "값이 있을 때 달력 아이콘 앞에 지우기 버튼을 보입니다. 누르면 빈 문자열로 바꿉니다. 버튼 이름은 KjunProvider 문구(clearDate)를 따릅니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
             "name": "min",
             "type": "string | undefined",
             "required": false,
@@ -14518,7 +14545,7 @@
             "name": "placeholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"날짜 선택\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/native/src/date-picker.tsx"
@@ -14600,7 +14627,7 @@
             "name": "cancelText",
             "type": "string",
             "required": false,
-            "default": "\"취소\"",
+            "default": "—",
             "description": "",
             "summary": "취소 버튼의 문구입니다. 좁은 폭에서도 취소 → 확인 순서와 8px 간격을 유지합니다.",
             "source": "packages/vue3/src/modal.tsx"
@@ -14609,7 +14636,7 @@
             "name": "confirmText",
             "type": "string",
             "required": false,
-            "default": "\"저장\"",
+            "default": "—",
             "description": "",
             "summary": "확인 버튼의 문구입니다. 긴 문구는 영역 안에서 줄바꿈하며 두 버튼이 한 줄에 들어가지 않으면 전체 너비로 세로 배치합니다.",
             "source": "packages/vue3/src/modal.tsx"
@@ -14711,7 +14738,7 @@
             "name": "cancelText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"취소\"",
+            "default": "—",
             "description": "",
             "summary": "취소 버튼의 문구입니다. 좁은 폭에서도 취소 → 확인 순서와 8px 간격을 유지합니다.",
             "source": "packages/react/src/modal.tsx"
@@ -14720,7 +14747,7 @@
             "name": "confirmText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"저장\"",
+            "default": "—",
             "description": "",
             "summary": "확인 버튼의 문구입니다. 긴 문구는 영역 안에서 줄바꿈하며 두 버튼이 한 줄에 들어가지 않으면 전체 너비로 세로 배치합니다.",
             "source": "packages/react/src/modal.tsx"
@@ -14827,7 +14854,7 @@
             "name": "cancelText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"취소\"",
+            "default": "—",
             "description": "",
             "summary": "취소 버튼의 문구입니다. 좁은 폭에서도 취소 → 확인 순서와 8px 간격을 유지합니다.",
             "source": "packages/native/src/modal.tsx"
@@ -14836,7 +14863,7 @@
             "name": "confirmText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"저장\"",
+            "default": "—",
             "description": "",
             "summary": "확인 버튼의 문구입니다. 긴 문구는 영역 안에서 줄바꿈하며 두 버튼이 한 줄에 들어가지 않으면 전체 너비로 세로 배치합니다.",
             "source": "packages/native/src/modal.tsx"
@@ -14989,6 +15016,15 @@
             "example": "/components/form-group#preview"
           },
           {
+            "name": "optional",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks the field as optional with the \"(선택)\" / \"(optional)\" message; required wins when both are set.",
+            "summary": "라벨 뒤에 선택 입력 표시를 붙입니다. 문구는 KjunProvider의 locale·messages(optional)를 따르며 required와 함께 주면 required가 우선합니다.",
+            "source": "packages/vue3/src/input.tsx"
+          },
+          {
             "name": "error",
             "type": "string",
             "required": false,
@@ -15118,6 +15154,15 @@
             ],
             "source": "packages/react/src/input.tsx",
             "example": "/components/form-group#preview"
+          },
+          {
+            "name": "optional",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Marks the field as optional with the \"(선택)\" / \"(optional)\" message; required wins when both are set.",
+            "summary": "라벨 뒤에 선택 입력 표시를 붙입니다. 문구는 KjunProvider의 locale·messages(optional)를 따르며 required와 함께 주면 required가 우선합니다.",
+            "source": "packages/react/src/input.tsx"
           },
           {
             "name": "error",
@@ -15250,6 +15295,15 @@
             ],
             "source": "packages/native/src/input.tsx",
             "example": "/components/form-group#preview"
+          },
+          {
+            "name": "optional",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Marks the field as optional with the \"(선택)\" / \"(optional)\" message; required wins when both are set.",
+            "summary": "라벨 뒤에 선택 입력 표시를 붙입니다. 문구는 KjunProvider의 locale·messages(optional)를 따르며 required와 함께 주면 required가 우선합니다.",
+            "source": "packages/native/src/input.tsx"
           },
           {
             "name": "error",
@@ -15843,7 +15897,7 @@
             "name": "placeholder",
             "type": "string",
             "required": false,
-            "default": "\"선택\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/vue3/src/select-control.tsx"
@@ -15975,7 +16029,7 @@
             "name": "searchPlaceholder",
             "type": "string",
             "required": false,
-            "default": "\"검색...\"",
+            "default": "—",
             "description": "",
             "summary": "옵션·표 검색 입력에 표시할 안내 문구입니다.",
             "source": "packages/vue3/src/select-control.tsx"
@@ -16305,7 +16359,7 @@
             "name": "placeholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"선택\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/react/src/select-control.tsx"
@@ -16437,7 +16491,7 @@
             "name": "searchPlaceholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"검색...\"",
+            "default": "—",
             "description": "",
             "summary": "옵션·표 검색 입력에 표시할 안내 문구입니다.",
             "source": "packages/react/src/select-control.tsx"
@@ -16770,7 +16824,7 @@
             "name": "placeholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"선택\"",
+            "default": "—",
             "description": "",
             "summary": "값이 없을 때 표시할 입력·선택 안내입니다.",
             "source": "packages/native/src/select-control.tsx"
@@ -16884,7 +16938,7 @@
             "name": "searchPlaceholder",
             "type": "string | undefined",
             "required": false,
-            "default": "\"검색...\"",
+            "default": "—",
             "description": "",
             "summary": "옵션·표 검색 입력에 표시할 안내 문구입니다.",
             "source": "packages/native/src/select-control.tsx"
@@ -17231,6 +17285,15 @@
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
             "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Supporting text under the label; it also describes the switch to screen readers.",
+            "summary": "라벨 아래 보조 설명입니다. 시작 위치는 라벨과 같고, 웹은 aria-describedby, Native는 accessibilityHint로 스위치를 설명합니다.",
+            "source": "packages/vue3/src/controls.tsx"
           }
         ],
         "events": [
@@ -17304,6 +17367,15 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
+            "source": "packages/react/src/controls.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Supporting text under the label; it also describes the switch to screen readers.",
+            "summary": "라벨 아래 보조 설명입니다. 시작 위치는 라벨과 같고, 웹은 aria-describedby, Native는 accessibilityHint로 스위치를 설명합니다.",
             "source": "packages/react/src/controls.tsx"
           },
           {
@@ -17384,6 +17456,15 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
+            "source": "packages/native/src/choice-controls.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Supporting text under the label; screen readers hear it as the hint.",
+            "summary": "라벨 아래 보조 설명입니다. 시작 위치는 라벨과 같고, 웹은 aria-describedby, Native는 accessibilityHint로 스위치를 설명합니다.",
             "source": "packages/native/src/choice-controls.tsx"
           },
           {
@@ -19821,7 +19902,7 @@
             "name": "confirmText",
             "type": "string",
             "required": false,
-            "default": "\"확인\"",
+            "default": "—",
             "description": "",
             "summary": "확인 버튼 문구입니다.",
             "source": "packages/vue3/src/modal.tsx"
@@ -19830,7 +19911,7 @@
             "name": "cancelText",
             "type": "string",
             "required": false,
-            "default": "\"취소\"",
+            "default": "—",
             "description": "",
             "summary": "취소 버튼 문구입니다.",
             "source": "packages/vue3/src/modal.tsx"
@@ -20083,7 +20164,7 @@
             "name": "confirmText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"확인\"",
+            "default": "—",
             "description": "",
             "summary": "확인 버튼 문구입니다.",
             "source": "packages/react/src/modal.tsx"
@@ -20092,7 +20173,7 @@
             "name": "cancelText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"취소\"",
+            "default": "—",
             "description": "",
             "summary": "취소 버튼 문구입니다.",
             "source": "packages/react/src/modal.tsx"
@@ -20325,7 +20406,7 @@
             "name": "confirmText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"확인\"",
+            "default": "—",
             "description": "",
             "summary": "확인 버튼 문구입니다.",
             "source": "packages/native/src/modal.tsx"
@@ -20334,7 +20415,7 @@
             "name": "cancelText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"취소\"",
+            "default": "—",
             "description": "",
             "summary": "취소 버튼 문구입니다.",
             "source": "packages/native/src/modal.tsx"
@@ -20704,7 +20785,7 @@
             "name": "ariaLabel",
             "type": "string",
             "required": false,
-            "default": "\"탭\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/vue3/src/tabs.tsx"
@@ -20823,7 +20904,7 @@
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
-            "default": "\"탭\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/react/src/navigation.tsx"
@@ -20932,7 +21013,7 @@
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
-            "default": "\"탭\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/native/src/tabs.tsx"
@@ -20987,7 +21068,7 @@
             "name": "ariaLabel",
             "type": "string",
             "required": false,
-            "default": "\"현재 위치\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/vue3/src/navigation.tsx"
@@ -21033,7 +21114,7 @@
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
-            "default": "\"현재 위치\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/react/src/navigation.tsx"
@@ -21077,7 +21158,7 @@
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
-            "default": "\"현재 위치\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/native/src/navigation.tsx"
@@ -21695,7 +21776,7 @@
         "props": [
           {
             "name": "variant",
-            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\"",
+            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\"",
             "required": false,
             "default": "\"primary\"",
             "description": "",
@@ -21709,6 +21790,15 @@
             "default": "—",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
+            "source": "packages/vue3/src/button.tsx"
+          },
+          {
+            "name": "shape",
+            "type": "\"default\" | \"circle\"",
+            "required": false,
+            "default": "\"default\"",
+            "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius.",
+            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다.",
             "source": "packages/vue3/src/button.tsx"
           },
           {
@@ -21835,7 +21925,7 @@
         "props": [
           {
             "name": "variant",
-            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | undefined",
+            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\" | undefined",
             "required": false,
             "default": "\"primary\"",
             "description": "",
@@ -21849,6 +21939,15 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
+            "source": "packages/react/src/button.tsx"
+          },
+          {
+            "name": "shape",
+            "type": "\"default\" | \"circle\" | undefined",
+            "required": false,
+            "default": "\"default\"",
+            "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius.",
+            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다.",
             "source": "packages/react/src/button.tsx"
           },
           {
@@ -22050,7 +22149,7 @@
           },
           {
             "name": "variant",
-            "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | undefined",
+            "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | \"link\" | undefined",
             "required": false,
             "default": "\"primary\"",
             "description": "",
@@ -22064,6 +22163,15 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
+            "source": "packages/native/src/button.tsx"
+          },
+          {
+            "name": "shape",
+            "type": "\"default\" | \"circle\" | undefined",
+            "required": false,
+            "default": "\"default\"",
+            "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius.",
+            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다.",
             "source": "packages/native/src/button.tsx"
           },
           {
@@ -22488,7 +22596,7 @@
             "name": "successText",
             "type": "string",
             "required": false,
-            "default": "\"복사됨\"",
+            "default": "—",
             "description": "",
             "summary": "복사가 완료됐을 때 표시할 문구입니다.",
             "source": "packages/vue3/src/actions.tsx"
@@ -22581,7 +22689,7 @@
             "name": "successText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"복사됨\"",
+            "default": "—",
             "description": "",
             "summary": "복사가 완료됐을 때 표시할 문구입니다.",
             "source": "packages/react/src/actions.tsx"
@@ -22679,7 +22787,7 @@
             "name": "successText",
             "type": "string | undefined",
             "required": false,
-            "default": "\"복사됨\"",
+            "default": "—",
             "description": "",
             "summary": "복사가 완료됐을 때 표시할 문구입니다.",
             "source": "packages/native/src/actions.tsx"
@@ -23795,6 +23903,192 @@
         "types": []
       }
     },
+    "KjunFab": {
+      "vue3": {
+        "props": [
+          {
+            "name": "icon",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "가운데 아이콘 이름입니다. 크기는 24(extensions.fab.iconSize)로 고정됩니다.",
+            "source": "packages/vue3/src/fab.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "The FAB has no visible text, so it needs a name.",
+            "summary": "글자가 없으므로 반드시 넘기는 버튼 이름입니다.",
+            "source": "packages/vue3/src/fab.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "누를 수 없게 하고 흐리게 표시합니다.",
+            "source": "packages/vue3/src/fab.tsx"
+          },
+          {
+            "name": "safeAreaBottom",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Bottom safe area (px) the FAB stays above.",
+            "summary": "하단 안전 영역입니다. 버튼은 16 + safeAreaBottom + offsetBottom만큼 아래에서 떨어집니다.",
+            "source": "packages/vue3/src/fab.tsx"
+          },
+          {
+            "name": "offsetBottom",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Extra space below, e.g. a bottom navigation's height.",
+            "summary": "추가로 띄울 거리입니다. 하단 탭바가 있으면 그 높이를 넘깁니다.",
+            "source": "packages/vue3/src/fab.tsx"
+          }
+        ],
+        "events": [
+          {
+            "name": "click",
+            "source": "packages/vue3/src/fab.tsx",
+            "type": "이벤트",
+            "summary": "click 이벤트를 통지합니다."
+          }
+        ],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "icon",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "가운데 아이콘 이름입니다. 크기는 24(extensions.fab.iconSize)로 고정됩니다.",
+            "source": "packages/react/src/fab.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "The FAB has no visible text, so it needs a name.",
+            "summary": "글자가 없으므로 반드시 넘기는 버튼 이름입니다.",
+            "source": "packages/react/src/fab.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "누를 수 없게 하고 흐리게 표시합니다.",
+            "source": "packages/react/src/fab.tsx"
+          },
+          {
+            "name": "safeAreaBottom",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Bottom safe area (px) the FAB stays above.",
+            "summary": "하단 안전 영역입니다. 버튼은 16 + safeAreaBottom + offsetBottom만큼 아래에서 떨어집니다.",
+            "source": "packages/react/src/fab.tsx"
+          },
+          {
+            "name": "offsetBottom",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Extra space below, e.g. a bottom navigation's height.",
+            "summary": "추가로 띄울 거리입니다. 하단 탭바가 있으면 그 높이를 넘깁니다.",
+            "source": "packages/react/src/fab.tsx"
+          },
+          {
+            "name": "onClick",
+            "type": "((event: MouseEvent<HTMLButtonElement>) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "버튼을 누를 때 호출합니다. Vue는 click 이벤트입니다.",
+            "source": "packages/react/src/fab.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "icon",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "가운데 아이콘 이름입니다. 크기는 24(extensions.fab.iconSize)로 고정됩니다.",
+            "source": "packages/native/src/fab.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "The FAB has no visible text, so it needs a name.",
+            "summary": "글자가 없으므로 반드시 넘기는 버튼 이름입니다.",
+            "source": "packages/native/src/fab.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "누를 수 없게 하고 흐리게 표시합니다.",
+            "source": "packages/native/src/fab.tsx"
+          },
+          {
+            "name": "safeAreaBottom",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Bottom safe area (pt) the FAB stays above.",
+            "summary": "하단 안전 영역입니다. 버튼은 16 + safeAreaBottom + offsetBottom만큼 아래에서 떨어집니다.",
+            "source": "packages/native/src/fab.tsx"
+          },
+          {
+            "name": "offsetBottom",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Extra space below, e.g. a bottom navigation's height.",
+            "summary": "추가로 띄울 거리입니다. 하단 탭바가 있으면 그 높이를 넘깁니다.",
+            "source": "packages/native/src/fab.tsx"
+          },
+          {
+            "name": "onPress",
+            "type": "((event: GestureResponderEvent) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "버튼을 누를 때 호출합니다.",
+            "source": "packages/native/src/fab.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      }
+    },
     "KjunInput": {
       "vue3": {
         "props": [
@@ -24499,7 +24793,7 @@
           },
           {
             "name": "variant",
-            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\"",
+            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\"",
             "required": false,
             "default": "secondary",
             "description": "",
@@ -24609,7 +24903,7 @@
           },
           {
             "name": "variant",
-            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | undefined",
+            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\" | undefined",
             "required": false,
             "default": "secondary",
             "description": "",
@@ -24770,7 +25064,7 @@
           },
           {
             "name": "variant",
-            "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | undefined",
+            "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | \"link\" | undefined",
             "required": false,
             "default": "secondary",
             "description": "",
@@ -24926,7 +25220,7 @@
             "name": "text",
             "type": "string",
             "required": false,
-            "default": "\"새로고침\"",
+            "default": "—",
             "description": "",
             "summary": "표시할 문구입니다.",
             "source": "packages/vue3/src/actions.tsx"
@@ -24942,7 +25236,7 @@
           },
           {
             "name": "variant",
-            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\"",
+            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\"",
             "required": false,
             "default": "\"ghost\"",
             "description": "",
@@ -25067,7 +25361,7 @@
             "name": "text",
             "type": "string | undefined",
             "required": false,
-            "default": "\"새로고침\"",
+            "default": "—",
             "description": "",
             "summary": "표시할 문구입니다.",
             "source": "packages/react/src/actions.tsx"
@@ -25200,11 +25494,20 @@
           },
           {
             "name": "variant",
-            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | undefined",
+            "type": "\"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"danger-ghost\" | \"success\" | \"warning\" | \"link\" | undefined",
             "required": false,
             "default": "\"ghost\"",
             "description": "",
             "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "shape",
+            "type": "\"default\" | \"circle\" | undefined",
+            "required": false,
+            "default": "\"default\"",
+            "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius.",
+            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다.",
             "source": "packages/react/src/actions.tsx"
           },
           {
@@ -25318,7 +25621,7 @@
             "name": "text",
             "type": "string | undefined",
             "required": false,
-            "default": "\"새로고침\"",
+            "default": "—",
             "description": "",
             "summary": "표시할 문구입니다.",
             "source": "packages/native/src/actions.tsx"
@@ -25424,11 +25727,20 @@
           },
           {
             "name": "variant",
-            "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | undefined",
+            "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | \"link\" | undefined",
             "required": false,
             "default": "\"ghost\"",
             "description": "",
             "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
+            "source": "packages/native/src/actions.tsx"
+          },
+          {
+            "name": "shape",
+            "type": "\"default\" | \"circle\" | undefined",
+            "required": false,
+            "default": "\"default\"",
+            "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius.",
+            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다.",
             "source": "packages/native/src/actions.tsx"
           },
           {
@@ -25974,6 +26286,24 @@
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
             "source": "packages/vue3/src/list.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Draws dividers between rows (default true).",
+            "summary": "행 사이 구분선을 그립니다. 기본값 true이며 false면 선 없이 붙여 그립니다.",
+            "source": "packages/vue3/src/list.tsx"
+          },
+          {
+            "name": "density",
+            "type": "\"default\" | \"compact\"",
+            "required": false,
+            "default": "\"default\"",
+            "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56.",
+            "summary": "행 밀도입니다. 기본값 default는 높이 56, compact는 44(터치 최소 크기)에 위아래 여백 12이며 시작 여백 16은 같습니다.",
+            "source": "packages/vue3/src/list.tsx"
           }
         ],
         "events": [],
@@ -26089,6 +26419,24 @@
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
             "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Draws dividers between rows (default true).",
+            "summary": "행 사이 구분선을 그립니다. 기본값 true이며 false면 선 없이 붙여 그립니다.",
+            "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "density",
+            "type": "\"default\" | \"compact\" | undefined",
+            "required": false,
+            "default": "\"default\"",
+            "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56.",
+            "summary": "행 밀도입니다. 기본값 default는 높이 56, compact는 44(터치 최소 크기)에 위아래 여백 12이며 시작 여백 16은 같습니다.",
+            "source": "packages/react/src/list.tsx"
           }
         ],
         "events": [],
@@ -26166,6 +26514,24 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Draws dividers between rows (default true).",
+            "summary": "행 사이 구분선을 그립니다. 기본값 true이며 false면 선 없이 붙여 그립니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "density",
+            "type": "\"default\" | \"compact\" | undefined",
+            "required": false,
+            "default": "\"default\"",
+            "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56.",
+            "summary": "행 밀도입니다. 기본값 default는 높이 56, compact는 44(터치 최소 크기)에 위아래 여백 12이며 시작 여백 16은 같습니다.",
             "source": "packages/native/src/list.tsx"
           }
         ],
@@ -26454,7 +26820,7 @@
             "name": "ariaLabel",
             "type": "string",
             "required": false,
-            "default": "\"주요 탐색\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
             "source": "packages/vue3/src/app-navigation.tsx"
@@ -26600,7 +26966,7 @@
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
-            "default": "\"주요 탐색\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
             "source": "packages/react/src/app-navigation.tsx"
@@ -26748,7 +27114,7 @@
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
-            "default": "\"주요 탐색\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
             "source": "packages/native/src/app-navigation.tsx"
@@ -28750,7 +29116,7 @@
           },
           {
             "name": "thumbLabels",
-            "type": "{ type: PropType<[string, string]>; default: () => string[]; }",
+            "type": "{ type: PropType<[string, string]>; default: undefined; }",
             "required": false,
             "default": "[\"최솟값\", \"최댓값\"]",
             "description": "",
@@ -29298,7 +29664,7 @@
             "name": "ariaLabel",
             "type": "string",
             "required": false,
-            "default": "\"시간\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
             "source": "packages/vue3/src/date-picker.tsx"
@@ -29487,7 +29853,7 @@
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
-            "default": "\"시간\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
             "source": "packages/react/src/time-picker.tsx"
@@ -29681,7 +30047,7 @@
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
-            "default": "\"시간\"",
+            "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
             "source": "packages/native/src/time-picker.tsx"
