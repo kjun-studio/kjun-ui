@@ -72,5 +72,36 @@ for (const platform of ['react', 'vue3', 'native']) {
       });
       expect(iconColor).toBe('rgb(250, 240, 230)');
     });
+
+    test('circle progress draws the value arc and keeps progressbar semantics', async ({ page }) => {
+      const area = section(page, 'circle-progress');
+      const bar = area.getByRole('progressbar', { name: 'Weekly goal' });
+      await expect(bar).toHaveAttribute('aria-valuenow', '40');
+      // The value arc covers 40% of the circumference.
+      const drawn = await bar.evaluate(el => {
+        const arc = [...el.querySelectorAll('svg *')].find(n => n.getAttribute('stroke-dasharray'));
+        if (!arc) return -1;
+        const dash = parseFloat(arc.getAttribute('stroke-dasharray')!), offset = parseFloat(arc.getAttribute('stroke-dashoffset') || '0');
+        return Math.round(((dash - offset) / dash) * 100);
+      });
+      expect(drawn).toBe(40);
+      const circle = (await bar.boundingBox())!;
+      expect(Math.round(circle.width)).toBe(Math.round(circle.height));
+      // The percentage sits inside the circle; label and subLabel stack below it, centred.
+      const percent = (await area.getByText('40%', { exact: true }).boundingBox())!;
+      expect(percent.y).toBeGreaterThan(circle.y);
+      expect(percent.y + percent.height).toBeLessThan(circle.y + circle.height);
+      const label = (await area.getByText('Weekly goal', { exact: true }).boundingBox())!;
+      const sub = (await area.getByText('4 of 10', { exact: true }).boundingBox())!;
+      expect(label.y).toBeGreaterThanOrEqual(circle.y + circle.height);
+      expect(sub.y).toBeGreaterThanOrEqual(label.y + label.height);
+      for (const box of [percent, label, sub]) expect(Math.abs(box.x + box.width / 2 - (circle.x + circle.width / 2))).toBeLessThan(2);
+    });
+
+    test('small circles hide the centre percentage', async ({ page }) => {
+      const area = section(page, 'circle-progress');
+      await expect(area.getByRole('progressbar', { name: 'Small goal' })).toHaveAttribute('aria-valuenow', '70');
+      await expect(area.getByText('70%', { exact: true })).toHaveCount(0);
+    });
   });
 }

@@ -2,6 +2,7 @@ import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { tokens } from "@kjun-ui/tokens";
+import { progressCircle } from "../../../shared/package-runtime/progress-circle";
 import { alertActionSizes } from "../../../shared/package-runtime/alert-action-size";
 import { typeStyle } from "../../../shared/package-runtime/typography";
 import { KjunIcon } from "./button";
@@ -162,6 +163,7 @@ const kjunProgressProps = {
   showLabel: { type: Boolean, default: false },
   label: { type: String, default: undefined },
   subLabel: { type: String, default: undefined },
+  shape: { type: String as PropType<"bar" | "circle">, default: "bar" },
 } as const;
 export type KjunProgressProps = ExtractPublicPropTypes<typeof kjunProgressProps>;
 /** Slots: label, subLabel (override the matching props). */
@@ -179,6 +181,27 @@ export const KjunProgress = defineComponent({
         ? Math.min(100, Math.max(0, Math.round((props.value / props.max) * 100))) : 0;
       const label = slots.label ? slots.label() : props.label;
       const subLabel = slots.subLabel ? slots.subLabel() : props.subLabel;
+      const name = typeof props.label === "string" && !slots.label ? props.label : m.value.progress;
+      const color = role(props.variant === "primary" ? "brand" : props.variant);
+      if (props.shape === "circle") {
+        const c = progressCircle(props.size, percentage);
+        return (
+          <div class="kjun-progress" data-shape="circle" data-size={props.size}>
+            <div role="progressbar" aria-label={name} aria-valuemin={0} aria-valuemax={100} aria-valuenow={percentage}
+              class="kjun-progress-circle" style={css({ width: c.diameter, height: c.diameter })}>
+              <svg width={c.diameter} height={c.diameter} viewBox={`0 0 ${c.diameter} ${c.diameter}`} fill="none" aria-hidden="true">
+                <circle class="kjun-progress-circle-track" cx={c.centre} cy={c.centre} r={c.radius} stroke-width={c.stroke} />
+                {percentage > 0 && <circle class="kjun-progress-circle-value" cx={c.centre} cy={c.centre} r={c.radius} stroke-width={c.stroke}
+                  stroke={color} stroke-linecap="round" stroke-dasharray={c.circumference} stroke-dashoffset={c.offset}
+                  transform={`rotate(-90 ${c.centre} ${c.centre})`} />}
+              </svg>
+              {props.showLabel && c.showsPercentage && <span class="kjun-progress-circle-percent">{percentage}%</span>}
+            </div>
+            {label && <div class="kjun-progress-circle-label">{label}</div>}
+            {subLabel && <div class="kjun-progress-sub">{subLabel}</div>}
+          </div>
+        );
+      }
       return (
         <div class="kjun-progress">
           {(label || props.showLabel) && (
@@ -187,10 +210,10 @@ export const KjunProgress = defineComponent({
               {props.showLabel && <span>{percentage}%</span>}
             </div>
           )}
-          <div role="progressbar" aria-label={typeof props.label === "string" && !slots.label ? props.label : m.value.progress}
+          <div role="progressbar" aria-label={name}
             aria-valuemin={0} aria-valuemax={100} aria-valuenow={percentage} class="kjun-progress-track"
             style={css({ height: tokens.extensions.progress.heights[props.size] })}>
-            <div style={{ width: percentage + "%", background: role(props.variant === "primary" ? "brand" : props.variant) }} />
+            <div style={{ width: percentage + "%", background: color }} />
           </div>
           {subLabel && <div class="kjun-progress-sub">{subLabel}</div>}
         </div>

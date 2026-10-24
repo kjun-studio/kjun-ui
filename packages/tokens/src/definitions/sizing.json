@@ -42,6 +42,11 @@
         "sm": 4,
         "md": 8,
         "lg": 12
+      },
+      "circle": {
+        "sm": { "size": 24, "stroke": 4 },
+        "md": { "size": 48, "stroke": 4 },
+        "lg": { "size": 64, "stroke": 6 }
       }
     },
     "iconToggle": {

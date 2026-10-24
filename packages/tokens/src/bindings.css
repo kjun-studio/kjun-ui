@@ -654,6 +654,12 @@
   --_kjun-extension-progress-heights-sm: 4px;
   --_kjun-extension-progress-heights-md: 8px;
   --_kjun-extension-progress-heights-lg: 12px;
+  --_kjun-extension-progress-circle-sm-size: 24px;
+  --_kjun-extension-progress-circle-sm-stroke: 4px;
+  --_kjun-extension-progress-circle-md-size: 48px;
+  --_kjun-extension-progress-circle-md-stroke: 4px;
+  --_kjun-extension-progress-circle-lg-size: 64px;
+  --_kjun-extension-progress-circle-lg-stroke: 6px;
   --_kjun-extension-icon-toggle-compact-size: 24px;
   --_kjun-extension-icon-toggle-sizes-xs: 24px;
   --_kjun-extension-icon-toggle-sizes-sm: 24px;

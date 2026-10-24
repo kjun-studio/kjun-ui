@@ -356,8 +356,50 @@
   font-weight: var(--_kjun-type-caption-weight);
   letter-spacing: var(--_kjun-type-caption-tracking);
 }
+/* Circle progress: circle, then label and subLabel centred below it. */
+.kjun-progress[data-shape="circle"] {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.kjun-progress-circle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.kjun-progress-circle > svg { position: absolute; inset: 0; display: block; }
+.kjun-progress-circle-track { stroke: var(--_kjun-color-secondary); }
+.kjun-progress-circle-value { transition: stroke-dashoffset var(--_kjun-motion-progress) var(--_kjun-ease-out); }
+.kjun-progress-circle-percent {
+  position: relative;
+  font-family: var(--_kjun-font-numeric);
+  font-variant-numeric: tabular-nums;
+  color: var(--_kjun-color-text);
+  font-size: var(--_kjun-type-meta-size);
+  line-height: var(--_kjun-type-meta-line);
+  font-weight: var(--_kjun-type-meta-weight);
+  letter-spacing: var(--_kjun-type-meta-tracking);
+}
+.kjun-progress[data-size="lg"] .kjun-progress-circle-percent {
+  font-size: var(--_kjun-type-number-md-size);
+  line-height: var(--_kjun-type-number-md-line);
+  font-weight: var(--_kjun-type-number-md-weight);
+  letter-spacing: var(--_kjun-type-number-md-tracking);
+}
+.kjun-progress-circle-label {
+  margin-top: var(--_kjun-geometry-dimension-value8);
+  font-size: var(--_kjun-type-caption-size);
+  color: var(--_kjun-color-text-secondary);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
 @media (prefers-reduced-motion: reduce) {
   .kjun-progress-track > div,
+  .kjun-progress-circle-value,
   .kjun-card {
     transition: none;
   }

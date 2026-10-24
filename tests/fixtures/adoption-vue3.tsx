@@ -30,4 +30,8 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
     <K.KjunAvatar name="Kim" color="rgb(10, 20, 30)" textColor="rgb(250, 240, 230)" />
     <K.KjunAvatar color="rgb(10, 20, 30)" textColor="rgb(250, 240, 230)" />
   </K.KjunProvider></div>
+  <div data-testid="circle-progress"><K.KjunProvider>
+    <K.KjunProgress shape="circle" value={40} showLabel label="Weekly goal" subLabel="4 of 10" />
+    <K.KjunProgress shape="circle" size="sm" value={70} showLabel label="Small goal" />
+  </K.KjunProvider></div>
 </div>).mount('#root');

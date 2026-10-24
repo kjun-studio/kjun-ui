@@ -21,6 +21,7 @@ import { AlertActionsContext } from "./alert-actions-context";
 import { ActionSizeContext, alertActionSizes } from "../../../shared/package-runtime/action-size";
 import { KText,content,domainColor,useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
+import { progressCircle } from "../../../shared/package-runtime/progress-circle";
 
 export type DisplaySize = "xs" | "sm" | "md" | "lg" | "xl";
 export type SemanticTone =
@@ -368,6 +369,7 @@ export interface KjunProgressProps {
   showLabel?: boolean;
   label?: ReactNode;
   subLabel?: ReactNode;
+  shape?: "bar" | "circle";
 }
 export function KjunProgress({
   value = 0,
@@ -377,13 +379,37 @@ export function KjunProgress({
   showLabel = false,
   label,
   subLabel,
+  shape = "bar",
 }: KjunProgressProps) {
   const m = useKjunMessages();
-  const { colors } = useKjunStyles();
+  const { colors, numericFontFamily, fontFamily } = useKjunStyles();
   const percentage =
     Number.isFinite(value) && max > 0
       ? Math.min(100, Math.max(0, Math.round((value / max) * 100)))
       : 0;
+  const name = typeof label === "string" ? label : m.progress, color = variant === "primary" ? colors.brand : colors[variant];
+  // RN Web drops accessibilityValue, so the value also goes out as aria-value* props.
+  const semantics = { accessibilityRole: "progressbar" as const, accessibilityLabel: name, accessibilityValue: { min: 0, max: 100, now: percentage },
+    "aria-valuemin": 0, "aria-valuemax": 100, "aria-valuenow": percentage };
+  if (shape === "circle") {
+    // Like Web: circle, then label and subLabel centred below it.
+    const c = progressCircle(size, percentage);
+    return (
+      <View style={{ alignSelf: "flex-start", alignItems: "center" }}>
+        <View {...semantics} style={{ width: c.diameter, height: c.diameter, alignItems: "center", justifyContent: "center" }}>
+          <Svg width={c.diameter} height={c.diameter} viewBox={`0 0 ${c.diameter} ${c.diameter}`} style={StyleSheet.absoluteFill}>
+            <Circle cx={c.centre} cy={c.centre} r={c.radius} stroke={colors.secondary} strokeWidth={c.stroke} fill="none" />
+            {percentage > 0 && <Circle cx={c.centre} cy={c.centre} r={c.radius} stroke={color} strokeWidth={c.stroke} fill="none"
+              strokeLinecap="round" strokeDasharray={c.circumference} strokeDashoffset={c.offset} rotation={-90} origin={`${c.centre}, ${c.centre}`} />}
+          </Svg>
+          {showLabel && c.showsPercentage && <KText style={{ ...typeStyle(size === "lg" ? "numberMd" : "meta"), fontFamily: numericFontFamily || fontFamily,
+            fontVariant: ["tabular-nums"], color: colors.text }}>{percentage}%</KText>}
+        </View>
+        {content(label, { ...typeStyle("caption"), marginTop: tokens.dimension.value8, color: colors.textSecondary, textAlign: "center" })}
+        {content(subLabel, { ...typeStyle("caption"), marginTop: tokens.dimension.value4, color: colors.textTertiary, textAlign: "center" })}
+      </View>
+    );
+  }
   return (
     <View>
       {!!(label || showLabel) && (
@@ -413,9 +439,7 @@ export function KjunProgress({
         </View>
       )}
       <View
-        accessibilityRole="progressbar"
-        accessibilityLabel={typeof label === "string" ? label : m.progress}
-        accessibilityValue={{ min: 0, max: 100, now: percentage }}
+        {...semantics}
         style={{
           height: tokens.extensions.progress.heights[size],
           backgroundColor: colors.secondary,
@@ -428,8 +452,7 @@ export function KjunProgress({
             width: `${percentage}%`,
             height: "100%",
             borderRadius: tokens.radius.radius9999,
-            backgroundColor:
-              variant === "primary" ? colors.brand : colors[variant],
+            backgroundColor: color,
           }}
         />
       </View>
