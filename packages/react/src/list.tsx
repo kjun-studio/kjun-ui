@@ -14,11 +14,17 @@ export function KjunListRow({ title, description, leading, trailing, actions, hr
   const main = href ? <a className="kjun-list-main" href={disabled ? undefined : href} aria-disabled={disabled || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a> : onClick ? <button className="kjun-list-main" type="button" disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main">{contents}</div>;
   return <li className="kjun-list-row">{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{actions && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}</div>}</li>;
 }
-export interface KjunListSectionProps { title?: string; description?: string; actions?: ReactNode; children: ReactNode; ariaLabel?: string }
-export function KjunListSection({ title, description, actions, children, ariaLabel }: KjunListSectionProps) {
+export interface KjunListSectionProps {
+  title?: string; description?: string; actions?: ReactNode; children: ReactNode; ariaLabel?: string;
+  /** Draws dividers between rows (default true). */
+  divider?: boolean;
+  /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
+  density?: "default" | "compact";
+}
+export function KjunListSection({ title, description, actions, children, ariaLabel, divider = true, density = "default" }: KjunListSectionProps) {
   const id = "kjun-" + useId();
   return <section className="kjun-list-section" aria-labelledby={title ? id : undefined} aria-label={title ? undefined : ariaLabel}>
     {(title || description || actions) && <div className="kjun-list-heading"><div>{title && <h3 id={id}>{title}</h3>}{description && <p>{description}</p>}</div>{actions}</div>}
-    <ul className="kjun-list" aria-label={ariaLabel || title}>{children}</ul>
+    <ul className="kjun-list" aria-label={ariaLabel || title} data-divider={divider ? undefined : "false"} data-density={density === "compact" ? "compact" : undefined}>{children}</ul>
   </section>;
 }

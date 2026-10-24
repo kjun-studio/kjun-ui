@@ -261,6 +261,8 @@
   --_kjun-extension-list-padding: 16px;
   --_kjun-extension-list-gap: 12px;
   --_kjun-extension-list-minimum-height: 56px;
+  --_kjun-extension-list-compact-minimum-height: 44px;
+  --_kjun-extension-list-compact-padding-y: 12px;
   --_kjun-extension-list-description-gap: 4px;
   --_kjun-extension-list-actions-gap: 8px;
   --_kjun-extension-list-actions-padding: 16px;

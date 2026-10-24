@@ -33,6 +33,12 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
       <K.KjunButton shape="circle" size="sm" prefixIcon="plus" ariaLabel="Add sm" />
       <K.KjunButton shape="circle" size="md" prefixIcon="plus" ariaLabel="Add md" />
     </div></K.KjunProvider>
+    <K.KjunProvider {...providerProps}><div data-testid="compact-list">
+      <K.KjunListSection ariaLabel="Upcoming" divider={false} density="compact">
+        <K.KjunListRow title="Trip" />
+        <K.KjunListRow title="Dinner" />
+      </K.KjunListSection>
+    </div></K.KjunProvider>
     <div data-testid="optional-ko"><K.KjunProvider {...providerProps}><K.KjunFormGroup label="Nickname" optional><K.KjunInput value="" onValueChange={() => {}} /></K.KjunFormGroup></K.KjunProvider></div>
     <div data-testid="optional-en"><K.KjunProvider {...providerProps} locale="en-US"><K.KjunFormGroup label="Nickname" optional><K.KjunInput value="" onValueChange={() => {}} /></K.KjunFormGroup></K.KjunProvider></div>
   </div>;

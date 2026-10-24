@@ -44,6 +44,10 @@ const kjunListSectionProps = {
   title: { type: String, default: undefined },
   description: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
+  /** Draws dividers between rows (default true). */
+  divider: { type: Boolean, default: true },
+  /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
+  density: { type: String as PropType<"default" | "compact">, default: "default" },
 } as const;
 export type KjunListSectionProps = ExtractPublicPropTypes<typeof kjunListSectionProps>;
 /** Slots: default (KjunListRow items), actions. */
@@ -63,7 +67,7 @@ export const KjunListSection = defineComponent({
           {(props.title || props.description || hasContent(actions)) && (
             <div class="kjun-list-heading"><div>{props.title && <h3 id={id}>{props.title}</h3>}{props.description && <p>{props.description}</p>}</div>{actions}</div>
           )}
-          <ul class="kjun-list" aria-label={props.ariaLabel || props.title}>{slots.default?.()}</ul>
+          <ul class="kjun-list" aria-label={props.ariaLabel || props.title} data-divider={props.divider ? undefined : "false"} data-density={props.density === "compact" ? "compact" : undefined}>{slots.default?.()}</ul>
         </section>
       );
     };

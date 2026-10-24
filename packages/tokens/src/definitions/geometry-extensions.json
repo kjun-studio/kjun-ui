@@ -28,6 +28,8 @@
       "padding": { "$ref": "dimension.value16" },
       "gap": { "$ref": "dimension.value12" },
       "minimumHeight": 56,
+      "compactMinimumHeight": { "$ref": "native.minimumTouchTarget" },
+      "compactPaddingY": { "$ref": "dimension.value12" },
       "descriptionGap": { "$ref": "dimension.value4" },
       "actionsGap": { "$ref": "dimension.value8" },
       "actionsPadding": { "$ref": "extensions.list.padding" }

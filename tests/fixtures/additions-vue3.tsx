@@ -20,6 +20,12 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
     <K.KjunButton shape="circle" size="sm" prefixIcon="plus" ariaLabel="Add sm" />
     <K.KjunButton shape="circle" size="md" prefixIcon="plus" ariaLabel="Add md" />
   </div></K.KjunProvider>
+  <K.KjunProvider><div data-testid="compact-list">
+    <K.KjunListSection ariaLabel="Upcoming" divider={false} density="compact">
+      <K.KjunListRow title="Trip" />
+      <K.KjunListRow title="Dinner" />
+    </K.KjunListSection>
+  </div></K.KjunProvider>
   <div data-testid="optional-ko"><K.KjunProvider><K.KjunFormGroup label="Nickname" optional><K.KjunInput modelValue="" /></K.KjunFormGroup></K.KjunProvider></div>
   <div data-testid="optional-en"><K.KjunProvider locale="en-US"><K.KjunFormGroup label="Nickname" optional><K.KjunInput modelValue="" /></K.KjunFormGroup></K.KjunProvider></div>
 </div>).mount('#root');

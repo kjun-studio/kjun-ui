@@ -69,5 +69,15 @@ for (const platform of ['react', 'vue3', 'native']) {
         expect(radius).toBeGreaterThanOrEqual(height / 2);
       }
     });
+
+    test('lists without dividers draw no row borders and compact rows are 44 tall with the 16px inset', async ({ page }) => {
+      const list = section(page, 'compact-list');
+      const rows = list.locator(platform === 'native' ? '[role="listitem"]' : '.kjun-list-row');
+      await expect(rows).toHaveCount(2);
+      await expect(rows.first()).toHaveCSS('border-bottom-width', '0px');
+      expect(Math.round((await rows.first().boundingBox())!.height)).toBe(44);
+      const title = await list.getByText('Trip', { exact: true }).boundingBox();
+      expect(Math.round(title!.x - (await rows.first().boundingBox())!.x)).toBe(16);
+    });
   });
 }
