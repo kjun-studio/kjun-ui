@@ -8,4 +8,7 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
     <div style={{ '--kjun-switch-thumb-on': thumbColor }}><K.KjunProvider><K.KjunSwitch modelValue label="Themed thumb" /></K.KjunProvider></div>
     <K.KjunProvider><K.KjunSwitch modelValue label="Default thumb" /></K.KjunProvider>
   </div>
+  <K.KjunProvider><div data-testid="button-group">
+    <K.KjunButtonGroup modelValue="a" options={[{ value: 'a', label: 'Mine' }, { value: 'b', label: 'Ours' }]} />
+  </div></K.KjunProvider>
 </div>).mount('#root');

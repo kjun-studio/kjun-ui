@@ -50,18 +50,22 @@
   cursor: pointer;
   transition: color var(--_kjun-motion-indicator) var(--_kjun-ease-out);
 }
+/* The selected segment carries an inset edge so it reads apart from the track even when surface and
+   secondary are close (light palettes). Inset keeps the segment's size. */
 .kjun-button-group button[aria-pressed="true"] {
   background: var(--_kjun-color-surface);
+  box-shadow: inset 0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border);
   color: var(--_kjun-color-text);
   font-weight: var(--_kjun-type-control-weight);
 }
-.kjun-button-group[data-indicator] button[aria-pressed="true"] { background: transparent; }
+.kjun-button-group[data-indicator] button[aria-pressed="true"] { background: transparent; box-shadow: none; }
 .kjun-button-group-indicator {
   position: absolute;
   left: 0;
   pointer-events: none;
   border-radius: var(--_kjun-geometry-button-group-item-radii-md);
   background: var(--_kjun-color-surface);
+  box-shadow: inset 0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border);
 }
 .kjun-button-group-indicator[data-animate="true"] {
   transition: transform var(--_kjun-motion-indicator) var(--_kjun-ease-out), width var(--_kjun-motion-indicator) var(--_kjun-ease-out);

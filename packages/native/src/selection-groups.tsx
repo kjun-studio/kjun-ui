@@ -72,8 +72,9 @@ export function KjunButtonGroup({
           accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
           style={{ position: 'absolute', left: 0, top: motion.layout.y, height: motion.layout.height,
             width: motion.width, transform: [{ translateX: motion.x }], borderRadius: itemRadius,
-            // Disabled options dim their own labels; the selected value stays readable.
-            backgroundColor: colors.surface,
+            // Disabled options dim their own labels; the selected value stays readable. The edge keeps it
+            // apart from the track when surface and secondary are close.
+            backgroundColor: colors.surface, borderWidth: tokens.border.defaultWidth, borderColor: colors.border,
           }} />}
         {options.map((option) => {
           const active = value === option.value,

@@ -26,5 +26,15 @@ for (const platform of ['react', 'vue3', 'native']) {
       const column = await section(page, 'badge-column').boundingBox();
       expect((await pill('Column badge').boundingBox())!.width).toBeLessThan(column!.width / 2);
     });
+
+    test('selected segment has an edge in the border color role', async ({ page }) => {
+      const group = section(page, 'button-group');
+      if (platform === 'native') {
+        await expect(group.getByTestId('kjun-button-group-indicator')).toHaveCSS('border-top-width', '1px');
+      } else {
+        const shadow = await group.locator('.kjun-button-group-indicator').evaluate(el => getComputedStyle(el).boxShadow);
+        expect(shadow).toContain('inset');
+      }
+    });
   });
 }
