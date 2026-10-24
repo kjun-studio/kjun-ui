@@ -160,9 +160,9 @@ export function KjunSwitch({
     : value ? colors.brand : colors.active;
   // Off state: strong border boundary and thumb, like Checkbox/Radio and the Web track.
   const offRole = disabled ? colors.borderSecondary : colors.borderStrong;
-  const thumbColor = typeof offRole === 'string' && typeof colors.onBrand === 'string'
-    ? motion.interpolate({ inputRange: [0, 1], outputRange: [offRole, colors.onBrand] })
-    : value ? colors.onBrand : offRole;
+  const thumbColor = typeof offRole === 'string' && typeof colors.switchThumbOn === 'string'
+    ? motion.interpolate({ inputRange: [0, 1], outputRange: [offRole, colors.switchThumbOn] })
+    : value ? colors.switchThumbOn : offRole;
   return (
     <Pressable
       accessibilityRole="switch"

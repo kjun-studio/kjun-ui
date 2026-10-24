@@ -32,6 +32,7 @@ export const relatedGroups = {
   icons: [...files('icon-render', 'icon-registry', 'icon-toggle', 'menu-button', 'button-design'), ...contracts, ...visuals],
   typography: files('typography', 'layout-primitives', 'color-font', 'geometry-tokens', 'card-layout', 'visual-contract'),
   i18n: files('i18n'),
+  additions: files('additions'),
   primitives: [...files('layout-primitives', 'typography', 'geometry-tokens', 'card-layout', 'input-design'), ...visuals],
   kpi: [...files('kpi-secondary', 'loading-options', 'typography', 'geometry-tokens', 'card-layout'), ...visuals],
   quantity: [...files('quantity', 'elevation-inputs', 'interaction-states'), ...fields, ...visuals],

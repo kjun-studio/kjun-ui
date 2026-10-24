@@ -244,7 +244,7 @@
 .kjun-switch--on .kjun-switch-thumb {
   --_kjun-switch-thumb-inset: var(--_kjun-extension-switch-padding);
   margin: 0;
-  background: var(--_kjun-on-brand);
+  background: var(--_kjun-switch-thumb-on);
   transform: translateX(calc(var(--_kjun-switch-width) - var(--_kjun-switch-height)));
 }
 
