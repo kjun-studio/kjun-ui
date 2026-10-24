@@ -23,4 +23,11 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
       <K.KjunButton onClick={reopen}>reopen modal</K.KjunButton>
     </K.KjunModal>
   </K.KjunProvider></div>
+  <div data-testid="rows"><K.KjunProvider>
+    <K.KjunListSection ariaLabel="Spending">
+      <K.KjunListRow title="Coffee" description="Today" ariaLabel="Coffee, today, minus 4,500 won" onClick={() => {}}>
+        {{ default: () => <K.KjunProgress value={60} label="Budget" />, trailing: () => <K.KjunText>-4,500</K.KjunText> }}
+      </K.KjunListRow>
+    </K.KjunListSection>
+  </K.KjunProvider></div>
 </div>).mount('#root');

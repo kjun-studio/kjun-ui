@@ -1,5 +1,6 @@
 import { tokens } from "@kjun-ui/tokens";
-import { useId, type MouseEvent, type ReactNode } from "react";
+import { useEffect, useId, useRef, type MouseEvent, type ReactNode } from "react";
+import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { KjunIcon } from "./button";
 export interface KjunListRowProps {
   title: string;
@@ -14,10 +15,16 @@ export interface KjunListRowProps {
   /** Ends the row with a decorative chevron that marks it as navigation. */
   chevron?: boolean;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
+  /** Name of a pressable or link row, e.g. with the amount a screen reader should hear. */
+  ariaLabel?: string;
+  /** Display-only content under the description (a budget bar); no buttons or links inside a pressable row. */
+  children?: ReactNode;
 }
-export function KjunListRow({ title, description, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, onClick }: KjunListRowProps) {
-  const contents = <>{leading && <span className="kjun-list-leading">{leading}</span>}<span className="kjun-list-body"><span className="kjun-list-title">{title}</span>{description && <span className="kjun-list-description">{description}</span>}</span>{trailing && <span className="kjun-list-trailing">{trailing}</span>}{chevron && <KjunIcon name="chevron-right" className="kjun-list-chevron" size={tokens.iconSizes.default} />}</>;
-  const main = href ? <a className="kjun-list-main" href={disabled ? undefined : href} aria-disabled={disabled || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a> : onClick ? <button className="kjun-list-main" type="button" disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main">{contents}</div>;
+export function KjunListRow({ title, description, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, onClick, ariaLabel, children }: KjunListRowProps) {
+  const content = useRef<HTMLSpanElement>(null), pressable = !!(href || onClick);
+  useEffect(() => { if (pressable) warnNestedControls(content.current, "KJUN ListRow: a pressable row's content contains buttons or links; move them to actions."); }, [pressable]);
+  const contents = <>{leading && <span className="kjun-list-leading">{leading}</span>}<span className="kjun-list-body"><span className="kjun-list-title">{title}</span>{description && <span className="kjun-list-description">{description}</span>}{children != null && children !== false && <span ref={content} className="kjun-list-content">{children}</span>}</span>{trailing && <span className="kjun-list-trailing">{trailing}</span>}{chevron && <KjunIcon name="chevron-right" className="kjun-list-chevron" size={tokens.iconSizes.default} />}</>;
+  const main = href ? <a className="kjun-list-main" href={disabled ? undefined : href} aria-label={ariaLabel} aria-disabled={disabled || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a> : onClick ? <button className="kjun-list-main" type="button" aria-label={ariaLabel} disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main">{contents}</div>;
   return <li className="kjun-list-row" data-destructive={destructive || undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{actions && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}</div>}</li>;
 }
 export interface KjunListSectionProps {

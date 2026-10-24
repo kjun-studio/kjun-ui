@@ -23,5 +23,12 @@ export function RequestsCases({ K, native = false, providerProps = {} }: { K: an
         <K.KjunButton {...press(reopen)}>reopen modal</K.KjunButton>
       </K.KjunModal>
     </K.KjunProvider></div>
+    <div data-testid="rows"><K.KjunProvider {...providerProps}>
+      <K.KjunListSection ariaLabel="Spending">
+        <K.KjunListRow title="Coffee" description="Today" trailing={<K.KjunText>-4,500</K.KjunText>} ariaLabel="Coffee, today, minus 4,500 won" {...press(() => {})}>
+          <K.KjunProgress value={60} label="Budget" />
+        </K.KjunListRow>
+      </K.KjunListSection>
+    </K.KjunProvider></div>
   </div>;
 }

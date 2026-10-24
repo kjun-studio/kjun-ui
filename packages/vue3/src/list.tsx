@@ -1,8 +1,9 @@
-import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent, onMounted, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
+import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 
 const kjunListRowProps = {
   title: { type: String, required: true },
@@ -15,31 +16,36 @@ const kjunListRowProps = {
   chevron: { type: Boolean, default: false },
   /** Declared as a prop: a row is a button only when the app listens for clicks. */
   onClick: { type: Function as PropType<(event: MouseEvent) => void>, default: undefined },
+  /** Name of a pressable or link row, e.g. with the amount a screen reader should hear. */
+  ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunListRowProps = ExtractPublicPropTypes<typeof kjunListRowProps>;
-/** Slots: leading, trailing, actions. */
+/** Slots: default (display-only content under the description), leading, trailing, actions. */
 export const KjunListRow = defineComponent({
   name: "KjunListRow",
   props: kjunListRowProps,
   slots: Object as SlotsType<{
+    default?: () => VNodeChild;
     leading?: () => VNodeChild;
     trailing?: () => VNodeChild;
     actions?: () => VNodeChild;
   }>,
   setup(props, { slots }) {
+    const content = ref<HTMLElement | null>(null);
+    onMounted(() => { if (props.href || props.onClick) warnNestedControls(content.value, "KJUN ListRow: a pressable row's content contains buttons or links; move them to actions."); });
     return () => {
-      const leading = slots.leading?.(), trailing = slots.trailing?.(), actions = slots.actions?.();
+      const leading = slots.leading?.(), trailing = slots.trailing?.(), actions = slots.actions?.(), body = slots.default?.();
       const contents = <>
         {hasContent(leading) && <span class="kjun-list-leading">{leading}</span>}
-        <span class="kjun-list-body"><span class="kjun-list-title">{props.title}</span>{props.description && <span class="kjun-list-description">{props.description}</span>}</span>
+        <span class="kjun-list-body"><span class="kjun-list-title">{props.title}</span>{props.description && <span class="kjun-list-description">{props.description}</span>}{hasContent(body) && <span ref={content} class="kjun-list-content">{body}</span>}</span>
         {hasContent(trailing) && <span class="kjun-list-trailing">{trailing}</span>}
         {props.chevron && <KjunIcon name="chevron-right" class="kjun-list-chevron" size={tokens.iconSizes.default} />}
       </>;
       const main = props.href
-        ? <a class="kjun-list-main" href={props.disabled ? undefined : props.href} aria-disabled={props.disabled || undefined}
+        ? <a class="kjun-list-main" href={props.disabled ? undefined : props.href} aria-label={props.ariaLabel} aria-disabled={props.disabled || undefined}
             onClick={(event: MouseEvent) => { if (props.disabled) event.preventDefault(); else props.onClick?.(event); }}>{contents}</a>
         : props.onClick
-          ? <button class="kjun-list-main" type="button" disabled={props.disabled} onClick={(event: MouseEvent) => props.onClick?.(event)}>{contents}</button>
+          ? <button class="kjun-list-main" type="button" aria-label={props.ariaLabel} disabled={props.disabled} onClick={(event: MouseEvent) => props.onClick?.(event)}>{contents}</button>
           : <div class="kjun-list-main">{contents}</div>;
       // A disabled row disables its actions too, so the row never reads as partly available.
       return <li class="kjun-list-row" data-destructive={props.destructive || undefined}>{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;

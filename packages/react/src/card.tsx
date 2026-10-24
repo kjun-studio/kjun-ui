@@ -1,3 +1,4 @@
+import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import type { CardElevation, CardPadding, CardRadius, CardSurface } from "@kjun-ui/tokens";
 import { useEffect, useRef, type CSSProperties, type HTMLAttributes, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { hasContent as present } from "../../../shared/package-runtime/content-presence";
@@ -23,10 +24,6 @@ export interface KjunCardProps extends HTMLAttributes<HTMLDivElement> {
   /** Button name of a pressable card; defaults to the title. */
   ariaLabel?: string;
 }
-const interactive = 'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-function developmentMode() {
-  try { return !!process.env.NODE_ENV && process.env.NODE_ENV !== "production"; } catch { return false; }
-}
 export function KjunCard({ title, subtitle, header, headerActions, media, footer,
   padding = "md", bodyPadding = padding, radius = "md", surface = "default",
   elevation = "flat", border = false, dividers = false, pressable = false, disabled = false, ariaLabel,
@@ -34,9 +31,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, footer
 }: KjunCardProps) {
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    // Nested controls inside a button are unreachable for assistive technology.
-    if (pressable && developmentMode() && root.current?.querySelector(interactive))
-      console.warn("KJUN Card: a pressable card contains buttons or links; move them out or drop pressable.");
+    if (pressable) warnNestedControls(root.current, "KJUN Card: a pressable card contains buttons or links; move them out or drop pressable.");
   }, [pressable]);
   const press = pressable ? {
     role: "button", tabIndex: disabled ? -1 : 0, "aria-disabled": disabled || undefined, "aria-label": ariaLabel ?? title,

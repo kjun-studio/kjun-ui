@@ -1,3 +1,4 @@
+import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { defineComponent, onMounted, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import type { CardElevation, CardPadding, CardRadius, CardSurface } from "@kjun-ui/tokens";
 import { hasContent } from "./runtime/slots";
@@ -19,10 +20,6 @@ const kjunCardProps = {
   /** Button name of a pressable card; defaults to the title. */
   ariaLabel: { type: String, default: undefined },
 } as const;
-const interactive = 'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-function developmentMode() {
-  try { return !!process.env.NODE_ENV && process.env.NODE_ENV !== "production"; } catch { return false; }
-}
 export type KjunCardProps = ExtractPublicPropTypes<typeof kjunCardProps>;
 /** Slots: default (body), header (replaces title/subtitle), headerActions, media, footer. */
 export const KjunCard = defineComponent({
@@ -39,9 +36,7 @@ export const KjunCard = defineComponent({
   setup(props, { slots, emit }) {
     const root = ref<HTMLDivElement | null>(null);
     onMounted(() => {
-      // Nested controls inside a button are unreachable for assistive technology.
-      if (props.pressable && developmentMode() && root.value?.querySelector(interactive))
-        console.warn("KJUN Card: a pressable card contains buttons or links; move them out or drop pressable.");
+      if (props.pressable) warnNestedControls(root.value, "KJUN Card: a pressable card contains buttons or links; move them out or drop pressable.");
     });
     return () => {
       const press = props.pressable ? {

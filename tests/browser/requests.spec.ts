@@ -29,5 +29,18 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.waitForTimeout(600);
       await expect(area.getByText('closes: none', { exact: true })).toBeVisible();
     });
+
+    test('list rows take an accessible name that includes the amount', async ({ page }) => {
+      await expect(section(page, 'rows').getByRole('button', { name: 'Coffee, today, minus 4,500 won', exact: true })).toBeVisible();
+    });
+
+    test('row content sits below the description on the title start line', async ({ page }) => {
+      const rows = section(page, 'rows');
+      const title = (await rows.getByText('Coffee', { exact: true }).boundingBox())!;
+      const description = (await rows.getByText('Today', { exact: true }).boundingBox())!;
+      const budget = (await rows.getByText('Budget', { exact: true }).boundingBox())!;
+      expect(Math.abs(budget.x - title.x)).toBeLessThan(1);
+      expect(budget.y).toBeGreaterThanOrEqual(description.y + description.height);
+    });
   });
 }
