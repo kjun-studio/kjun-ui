@@ -58,5 +58,16 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(section(page, 'optional-ko').getByText('(선택)', { exact: true })).toBeVisible();
       await expect(section(page, 'optional-en').getByText('(optional)', { exact: true })).toBeVisible();
     });
+
+    test('circle buttons are as wide as they are tall and fully round', async ({ page }) => {
+      for (const [name, height] of [['Add sm', 32], ['Add md', 40]] as const) {
+        const button = section(page, 'circle-buttons').getByRole('button', { name });
+        const box = (await button.boundingBox())!;
+        expect(Math.round(box.width)).toBe(height);
+        expect(Math.round(box.height)).toBe(height);
+        const radius = await button.evaluate(el => parseFloat(getComputedStyle(el).borderTopLeftRadius));
+        expect(radius).toBeGreaterThanOrEqual(height / 2);
+      }
+    });
   });
 }

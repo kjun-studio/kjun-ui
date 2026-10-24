@@ -69,6 +69,8 @@ export interface KjunButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  /** "circle" makes an icon-only button round: as wide as its height with a full radius. */
+  shape?: "default" | "circle";
   loading?: boolean;
   block?: boolean;
   /** Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing. */
@@ -87,6 +89,7 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
   ) {
     const {
       variant = "primary",
+      shape = "default",
       size: declaredSize = "md",
       loading = false,
       disabled = false,
@@ -141,12 +144,12 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
         style={{
           height,
           minHeight: height,
-          width: block ? "100%" : iconOnly ? height : undefined,
+          width: block ? "100%" : iconOnly || shape === "circle" ? height : undefined,
           // A width set by the caller (fixed square controls) wins over the label minimum.
           minWidth: hasContent && !block && style?.width == null ? tokens.button.minWidths[size] : undefined,
           padding: iconOnly ? 0 : `0 ${suffixIcon ? iconSide : paddingX}px 0 ${prefixIcon ? iconSide : paddingX}px`,
           ...typeStyle(tokens.button.typography[size]),
-          borderRadius: tokens.button.radii[size],
+          borderRadius: shape === "circle" ? tokens.shape.pill : tokens.button.radii[size],
           gap: hasContent ? tokens.button.contentGaps[size] : 0,
           ...(navigation || wrap ? {
             height: 'auto', maxWidth: '100%',

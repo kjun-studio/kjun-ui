@@ -65,6 +65,8 @@ export function useActionSize(requested: () => ButtonSize | undefined, fallback:
 const kjunButtonProps = {
   variant: { type: String as PropType<ButtonVariant>, default: "primary" },
   size: { type: String as PropType<ButtonSize>, default: undefined },
+  /** "circle" makes an icon-only button round: as wide as its height with a full radius. */
+  shape: { type: String as PropType<"default" | "circle">, default: "default" },
   loading: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   block: { type: Boolean, default: false },
@@ -120,12 +122,12 @@ export const KjunButton = defineComponent({
           style={css({
             height,
             minHeight: height,
-            width: props.block ? "100%" : iconOnly ? height : undefined,
+            width: props.block ? "100%" : iconOnly || props.shape === "circle" ? height : undefined,
             // A width set by the caller (fixed square controls) wins over the label minimum.
             minWidth: content && !props.block && appWidth == null ? tokens.button.minWidths[s] : undefined,
             padding: iconOnly ? 0 : `0 ${suffixIcon ? iconSide : paddingX}px 0 ${prefixIcon ? iconSide : paddingX}px`,
             ...typeStyle(tokens.button.typography[s]),
-            borderRadius: tokens.button.radii[s],
+            borderRadius: props.shape === "circle" ? tokens.shape.pill : tokens.button.radii[s],
             gap: content ? tokens.button.contentGaps[s] : 0,
           }, (navigation || props.wrap) && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) })}
           onClick={(event: MouseEvent) => {
