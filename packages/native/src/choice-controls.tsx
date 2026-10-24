@@ -17,7 +17,7 @@ type ViewStyle
 } from "react-native";
 import { AccessiblePressable as Pressable, focusVisible } from "./a11y";
 import { KjunIcon } from "./button";
-import { content, finePointer } from "./internal";
+import { KText, content, finePointer } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useRadioKeyboard } from "./choice-accessibility";
 
@@ -131,6 +131,8 @@ export interface KjunSwitchProps {
   ariaLabel?: string;
   disabled?: boolean;
   size?: InputSize;
+  /** Supporting text under the label; screen readers hear it as the hint. */
+  description?: string;
   children?: ReactNode;
   onValueChange?: (value: boolean) => void;
   onChange?: (value: boolean) => void;
@@ -141,6 +143,7 @@ export function KjunSwitch({
   ariaLabel,
   disabled = false,
   size = "md",
+  description,
   children,
   onValueChange,
   onChange,
@@ -171,6 +174,7 @@ export function KjunSwitch({
       onHoverOut={() => setHovered(false)}
       accessibilityState={{ checked: value, disabled }}
       accessibilityLabel={ariaLabel || label}
+      accessibilityHint={description}
       disabled={disabled}
       onPress={() => {
         onValueChange?.(!value);
@@ -221,7 +225,12 @@ export function KjunSwitch({
           }}
         />
       </Animated.View>
-      {!!(children || label) &&
+      {description ? (
+        <View style={{ marginLeft: tokens.extensions.switch.labelGap, flexShrink: 1, minWidth: 0 }}>
+          {!!(children || label) && content(children || label, typeStyle('label'))}
+          <KText style={{ ...typeStyle('caption'), marginTop: tokens.dimension.value4, color: colors.textSecondary }}>{description}</KText>
+        </View>
+      ) : !!(children || label) &&
         content(children || label, {
           marginLeft: tokens.extensions.switch.labelGap,
           ...typeStyle('label'),

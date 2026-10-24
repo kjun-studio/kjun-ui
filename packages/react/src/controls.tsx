@@ -93,6 +93,8 @@ export interface KjunSwitchProps {
   ariaLabel?: string;
   disabled?: boolean;
   size?: InputSize;
+  /** Supporting text under the label; it also describes the switch to screen readers. */
+  description?: string;
   children?: ReactNode;
   onValueChange?: (value: boolean) => void;
   onChange?: (value: boolean) => void;
@@ -103,11 +105,13 @@ export function KjunSwitch({
   ariaLabel,
   disabled = false,
   size = "md",
+  description,
   children,
   onValueChange,
   onChange,
 }: KjunSwitchProps) {
   const field = useKjunField();
+  const descriptionId = "kjun-" + useId().replace(/:/g, "") + "-description";
   const invalid = !!field?.error, required = !!field?.required;
   // react-aria's Switch takes no validation props; mark the input directly (and clear stale marks).
   const markInput = useCallback((input: HTMLInputElement | null) => {
@@ -120,7 +124,7 @@ export function KjunSwitch({
       isSelected={value}
       isDisabled={disabled}
       aria-label={ariaLabel || label}
-      aria-describedby={field?.describedBy}
+      aria-describedby={[field?.describedBy, description ? descriptionId : undefined].filter(Boolean).join(" ") || undefined}
       inputRef={markInput}
       className={"kjun-choice" + (disabled ? " kjun-choice--disabled" : "")}
       onChange={(next) => {
@@ -135,7 +139,12 @@ export function KjunSwitch({
       >
         <span className="kjun-switch-thumb" />
       </span>
-      {(children || label) && (
+      {description ? (
+        <span className="kjun-choice-text">
+          {(children || label) && <span className="kjun-choice-label">{children || label}</span>}
+          <span id={descriptionId} className="kjun-choice-description">{description}</span>
+        </span>
+      ) : (children || label) && (
         <span className="kjun-choice-label">{children || label}</span>
       )}
     </AriaSwitch>

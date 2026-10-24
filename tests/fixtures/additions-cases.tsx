@@ -23,6 +23,7 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
     <div data-testid="badge-column" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', width: 300 }}>
       <K.KjunBadge>Column badge</K.KjunBadge>
     </div>
+    <div data-testid="switch-description"><K.KjunSwitch value label="Alerts" description="Sent once a day" onValueChange={() => {}} /></div>
     <div data-testid="date-clear"><DateClear K={K} /></div>
     <div data-testid="button-group">
       <K.KjunButtonGroup value="a" options={[{ value: 'a', label: 'Mine' }, { value: 'b', label: 'Ours' }]} onValueChange={() => {}} />

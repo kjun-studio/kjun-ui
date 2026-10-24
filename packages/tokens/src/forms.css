@@ -210,6 +210,11 @@
 .kjun-choice:not(.kjun-choice--disabled):active .kjun-radio,
 .kjun-choice:not(.kjun-choice--disabled) input:active + .kjun-radio { border-color: var(--_kjun-brand-active); }
 .kjun-switch + .kjun-choice-label { margin-left: var(--_kjun-extension-switch-label-gap); }
+/* A switch description sits under its label and starts where the label starts. */
+.kjun-choice-text { display: flex; flex-direction: column; min-width: 0; }
+.kjun-switch + .kjun-choice-text { margin-left: var(--_kjun-extension-switch-label-gap); }
+.kjun-choice-text > .kjun-choice-label { margin-left: 0; }
+.kjun-choice-description { margin-top: var(--_kjun-geometry-dimension-value4); font-size: var(--_kjun-type-caption-size); line-height: var(--_kjun-type-caption-line); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking); color: var(--_kjun-color-text-secondary); }
 .kjun-switch {
   position: relative;
   flex-shrink: 0;

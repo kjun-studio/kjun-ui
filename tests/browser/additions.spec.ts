@@ -44,5 +44,14 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(field.getByText('날짜 선택', { exact: true })).toBeVisible();
       await expect(field.getByRole('button', { name: '날짜 지우기', exact: true })).toHaveCount(0);
     });
+
+    test('switch description sits under the label and describes the control', async ({ page }) => {
+      const block = section(page, 'switch-description');
+      const label = await block.getByText('Alerts', { exact: true }).boundingBox();
+      const description = await block.getByText('Sent once a day', { exact: true }).boundingBox();
+      expect(Math.abs(description!.x - label!.x)).toBeLessThanOrEqual(1);
+      expect(description!.y).toBeGreaterThanOrEqual(label!.y + label!.height - 1);
+      if (platform !== 'native') await expect(block.getByRole('switch', { name: 'Alerts' })).toHaveAccessibleDescription('Sent once a day');
+    });
   });
 }
