@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { isMarketIdentity, marketGeometry, normalizeMarketColumns, webMarketLayout, type LayoutColumn } from "../../../shared/package-runtime/market-layout";
@@ -60,11 +61,12 @@ export const MarketFooter = defineComponent({
     calculatedAt: { type: String as PropType<string | null>, default: undefined },
     footerNote: { type: String, default: undefined },
     totalCount: { type: Number, default: 0 },
-    unitLabel: { type: String, default: "개" },
+    unitLabel: { type: String, default: undefined },
     formatDate: { type: Function as PropType<(value: string) => string>, default: undefined },
   },
   emits: { "page-change": (_page: number) => true },
   setup(props, { emit }) {
+    const m = useKjunMessages();
     const status = useQueryDisplay(() => queryProps(props));
     return () => {
       const state = status(), { pagination } = props;
@@ -75,8 +77,8 @@ export const MarketFooter = defineComponent({
         )}{" "}
         {props.showFooter && !state.initialLoading && props.rowCount > 0 && (
           <div class="kjun-market-footer">
-            <span>{props.calculatedAt ? "마지막 업데이트: " + (props.formatDate?.(props.calculatedAt) || props.calculatedAt) : props.footerNote}</span>
-            <span>총 {props.totalCount}{props.unitLabel}</span>
+            <span>{props.calculatedAt ? m.value.lastUpdated + (props.formatDate?.(props.calculatedAt) || props.calculatedAt) : props.footerNote}</span>
+            <span>{m.value.totalCount(props.totalCount, (props.unitLabel ?? m.value.unitLabel))}</span>
           </div>
         )}
       </>;

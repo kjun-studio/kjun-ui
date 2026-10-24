@@ -3,6 +3,8 @@ import type { KjunIconRegistry } from "@kjun-ui/icons";
 import { createPortalScope } from "../../../shared/package-runtime/portal-scope";
 import { validateKjunCssScope } from "../../../shared/package-runtime/css-contract";
 import { provideIcons } from "./runtime/icons";
+import { provideKjunMessages } from "./runtime/messages";
+import type { KjunMessages } from "../../../shared/package-runtime/messages";
 import { kjunPortalKey } from "./runtime/keys";
 import { provideLayers } from "./runtime/layers";
 
@@ -10,10 +12,15 @@ export const KjunProvider = defineComponent({
   name: "KjunProvider",
   props: {
     icons: { type: Object as PropType<KjunIconRegistry>, default: undefined },
+    /** BCP 47 tag (e.g. "en-US") for KJUN copy and Intl formats; without it KJUN stays Korean. */
+    locale: { type: String, default: undefined },
+    /** Replaces part of KJUN's copy, e.g. with the app's own translations. */
+    messages: { type: Object as PropType<Partial<KjunMessages>>, default: undefined },
   },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     provideIcons(() => props.icons);
+    provideKjunMessages(() => props.locale, () => props.messages);
     // Nested Providers share the outermost one's window order, Escape handling and focus ownership.
     provideLayers();
     // undefined: the outermost Provider, which hosts the layer portal itself.

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type VNodeChild, type SlotsType } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { webMarketLayout } from "../../../shared/package-runtime/market-layout";
@@ -37,6 +38,7 @@ export const KjunMarketTable = defineComponent({
   emits: { sort: (_key: string) => true, "toggle-interest": (_row: any) => true, "toggle-favorite": (_row: any) => true, "page-change": (_page: number) => true },
   slots: Object as SlotsType<MarketIdentitySlots & { cell?: (scope: { row: any; column: MarketColumn }) => VNodeChild }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     // Like Native and React: the trailing edge fades while columns still overflow it.
     const scroller = ref<HTMLElement | null>(null), fadeEnd = ref(false);
     let stop: (() => void) | undefined, watched: HTMLElement | null = null;
@@ -65,20 +67,20 @@ export const KjunMarketTable = defineComponent({
         ? <KjunSignedValue value={finiteNumber(value)} formatter={() => text} stale={stale} showFreshness={false} />
         : text;
     };
-    const toggleLabel = (row: any, kind: string, active: boolean) =>
-      [props.primaryLabel?.(row) || String(getValue(row, "name") || ""), kind, active ? "해제" : "등록"].filter(Boolean).join(" ");
+    const toggleLabel = (row: any, kind: "watchToggle" | "favoriteToggle", active: boolean) =>
+      m.value[kind](props.primaryLabel?.(row) || String(getValue(row, "name") || ""), active);
     return () => {
       const { rows, columns, showActions, sortKey, sortOrder } = props;
       return (
         <div class="kjun-market-table" data-embedded={String(props.embedded)} ref={domainRef(showActions && rows.length > 0 && !props.loading)}>
-          <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={props.emptyMessage}
+          <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={(props.emptyMessage ?? m.value.noItems)}
             loadingText={props.loadingText} loadingDelay={props.loadingDelay}>
             {{
               loading: props.skeleton ? () => <KjunMarketTableSkeleton columns={columns} showActions={showActions} /> : undefined,
-              empty: () => <KjunEmpty text={props.emptyMessage} description={props.emptySubMessage} />,
+              empty: () => <KjunEmpty text={(props.emptyMessage ?? m.value.noItems)} description={props.emptySubMessage} />,
               default: () => (
                 <div class="kjun-table-scroll" ref={scroller} data-fade-end={fadeEnd.value || undefined}>
-                  <table aria-label="시장 데이터" class="kjun-market-table-grid" style={webMarketLayout(columns, showActions).tableStyle}>
+                  <table aria-label={m.value.marketData} class="kjun-market-table-grid" style={webMarketLayout(columns, showActions).tableStyle}>
                     {marketColumns(columns, showActions)}
                     <thead>
                       <tr>
@@ -111,9 +113,9 @@ export const KjunMarketTable = defineComponent({
                             {showActions && (
                               <td class="kjun-market-actions">
                                 <KjunIconToggle size="xs" active={interest} activeIcon="heart" activeColor="var(--_kjun-color-interest)"
-                                  ariaLabel={toggleLabel(row, "관심", interest)} loading={props.togglingInterest === id} onToggle={() => emit("toggle-interest", row)} />
+                                  ariaLabel={toggleLabel(row, "watchToggle", interest)} loading={props.togglingInterest === id} onToggle={() => emit("toggle-interest", row)} />
                                 <KjunIconToggle size="xs" active={favorite} activeIcon="star" activeColor="var(--_kjun-color-favorite)"
-                                  ariaLabel={toggleLabel(row, "즐겨찾기", favorite)} loading={props.togglingFavorite === id} onToggle={() => emit("toggle-favorite", row)} />
+                                  ariaLabel={toggleLabel(row, "favoriteToggle", favorite)} loading={props.togglingFavorite === id} onToggle={() => emit("toggle-favorite", row)} />
                               </td>
                             )}
                             {columns.map(col => {

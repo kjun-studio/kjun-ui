@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, onBeforeUnmount, onMounted, ref, type ExtractPublicPropTypes, type PropType, type VNodeChild, type SlotsType } from "vue";
 import { isComposingKey, nextTableSort, tokens, type TableSort } from "@kjun-ui/tokens";
 import { getValue, sortTableRows, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
@@ -28,23 +29,23 @@ const kjunTableProps = {
   skeletonRows: { type: Number, default: 8 },
   /** false shows the shared spinner and loadingText instead of skeleton rows. */
   skeleton: { type: Boolean, default: true },
-  loadingText: { type: String, default: "로딩 중..." },
+  loadingText: { type: String, default: undefined },
   /** Milliseconds a first load must last before its loading display shows. */
   loadingDelay: { type: Number, default: 0 },
-  emptyText: { type: String, default: "데이터가 없습니다" },
+  emptyText: { type: String, default: undefined },
   sortable: { type: Boolean, default: true },
   /** v-model:sort; leave unset for internal sorting. */
   sort: { type: Object as PropType<TableSort | null>, default: undefined },
   sortMode: { type: String as PropType<"client" | "server">, default: "client" },
   hoverable: { type: Boolean, default: true },
   searchable: { type: Boolean, default: false },
-  searchPlaceholder: { type: String, default: "검색..." },
+  searchPlaceholder: { type: String, default: undefined },
   stickyHeader: { type: Boolean, default: false },
   maxHeight: { type: [Number, String] as PropType<number | string>, default: undefined },
   pagination: { type: Object as PropType<TablePagination | null>, default: undefined },
   compact: { type: Boolean, default: false },
   striped: { type: Boolean, default: false },
-  ariaLabel: { type: String, default: "데이터 표" },
+  ariaLabel: { type: String, default: undefined },
   responsive: { type: String as PropType<"card" | "compact" | "none" | null>, default: null },
   mobileColumns: { type: Array as PropType<string[]>, default: () => [] },
   cardTitle: { type: String as PropType<string | null>, default: undefined },
@@ -84,6 +85,7 @@ export const KjunTable = defineComponent({
     empty?: () => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     const internalSort = ref<TableSort>({ key: "", order: "asc" }), internalExpanded = ref<(string | number)[]>([]), search = ref("");
     const mobile = ref(false);
     let timer: ReturnType<typeof setTimeout> | undefined, media: MediaQueryList | undefined;
@@ -144,24 +146,25 @@ export const KjunTable = defineComponent({
         if (event.key === "Enter" || event.key === " ") { event.preventDefault(); props.onRowClick(row, index); }
       };
       const checkbox = (row: object, i: number) => (
-        <TableCheck aria-label={`행 선택 ${i + 1}`} checked={state.selectedRow(row)} {...{ onClick: (event: MouseEvent) => event.stopPropagation() }}
+        <TableCheck aria-label={m.value.selectRow(i + 1)} checked={state.selectedRow(row)} {...{ onClick: (event: MouseEvent) => event.stopPropagation() }}
           onChange={() => state.toggleRow(row)} />
       );
       const expand = (row: object, i: number) => {
         const open = state.expanded.includes(state.key(row, i));
         return (
-          <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} ariaLabel="행 확장" aria-expanded={open}
+          <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} ariaLabel={m.value.expandRow} aria-expanded={open}
             onClick={() => state.toggleExpand(row, i)}>
-            {card ? open ? "접기" : "상세 보기" : undefined}
+            {card ? open ? m.value.collapse : m.value.showDetails : undefined}
           </KjunButton>
         );
       };
       const empty = slots.empty?.();
       const context = {
+        messages: m.value,
         initialLoading: status.initialLoading, skeletonRows: props.skeletonRows, skeletonHidden: status.initialLoading && !revealed(), state, clickable: !!props.onRowClick,
         rowClick: (row: object, index: number) => props.onRowClick?.(row, index), selectable: props.selectable, expandable: props.expandable,
         checkbox, expand, cell, renderExpand: (row: object, index: number) => slots.expand?.({ row, index }),
-        empty: () => hasContent(empty) ? empty : props.emptyText, ariaLabel: props.ariaLabel, customClass, rowKeyDown,
+        empty: () => hasContent(empty) ? empty : (props.emptyText ?? m.value.noData), ariaLabel: (props.ariaLabel ?? m.value.dataTable), customClass, rowKeyDown,
       };
       const selectionToolbar = props.selectable && props.selected.length > 0 ? slots.selectionToolbar?.({ selected: props.selected }) : undefined;
       const toolbar = slots.toolbar?.();
@@ -170,25 +173,25 @@ export const KjunTable = defineComponent({
         <div class="kjun-table-state" aria-busy={props.loading}
           ref={domainRef(!status.initialLoading && state.rows.length > 0 && props.columns.some(column => column.pill))}>
           {props.selectable && props.selected.length > 0 && (
-            <div role="group" aria-label="선택 작업" class="kjun-table-selection">
-              <strong>{props.selected.length}개 선택</strong>
-              <KjunButton size="xs" variant="ghost" onClick={state.toggleAll}>전체 선택</KjunButton>
-              <KjunButton size="xs" variant="ghost" onClick={() => emit("update:selected", [])}>선택 해제</KjunButton>
+            <div role="group" aria-label={m.value.selectionActions} class="kjun-table-selection">
+              <strong>{m.value.selectedItems(props.selected.length)}</strong>
+              <KjunButton size="xs" variant="ghost" onClick={state.toggleAll}>{m.value.selectAll}</KjunButton>
+              <KjunButton size="xs" variant="ghost" onClick={() => emit("update:selected", [])}>{m.value.deselectAll}</KjunButton>
               {selectionToolbar}
             </div>
           )}
           {(props.searchable || hasContent(toolbar)) && (
             <div class="kjun-table-toolbar">
               {props.searchable && (
-                <KjunInput size="sm" style={{ width: tokens.table.searchWidth + "px", maxWidth: "100%" }} modelValue={search.value} ariaLabel="표 검색"
-                  {...{ placeholder: props.searchPlaceholder }} prefixIcon="search" clearable onUpdate:modelValue={(value: string | number) => searchChange(String(value))} />
+                <KjunInput size="sm" style={{ width: tokens.table.searchWidth + "px", maxWidth: "100%" }} modelValue={search.value} ariaLabel={m.value.searchTable}
+                  {...{ placeholder: (props.searchPlaceholder ?? m.value.search) }} prefixIcon="search" clearable onUpdate:modelValue={(value: string | number) => searchChange(String(value))} />
               )}{" "}
               {toolbar}
             </div>
           )}
           <KjunDataState queryKey={props.queryKey} resultKey={status.usesQueryState ? status.hasCurrentResult ? props.queryKey : null : undefined}
             hasLoadedOnce={props.hasLoadedOnce} error={props.error} refreshing={status.queryRefreshing} loadingPadding="none" onRetry={props.onRetry}
-            loading={props.skeleton ? undefined : props.loading} loadingText={props.loadingText} loadingDelay={props.skeleton ? 0 : props.loadingDelay}>
+            loading={props.skeleton ? undefined : props.loading} loadingText={(props.loadingText ?? m.value.loadingEllipsis)} loadingDelay={props.skeleton ? 0 : props.loadingDelay}>
             {card ? tableCards({ ...context, layout }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
               sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable })}
             {pagination && (

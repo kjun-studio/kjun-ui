@@ -1,3 +1,5 @@
+import { useKjunMessages, useKjunMessageScope } from "./runtime/messages";
+import { formatDateValue } from "../../../shared/package-runtime/messages";
 import { computed, defineComponent, provide, ref, useId, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { createTimeDomain, tokens, type InputSize, type TimePrecision } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
@@ -10,7 +12,7 @@ import { css } from "./runtime/style";
 const kjunDatePickerProps = {
   modelValue: { type: String, default: "" },
   size: { type: String as PropType<InputSize>, default: "md" },
-  placeholder: { type: String, default: "날짜 선택" },
+  placeholder: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
   error: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
@@ -28,6 +30,8 @@ export const KjunDatePicker = defineComponent({
   emits: { "update:modelValue": (_value: string) => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { attrs, emit }) {
+    const m = useKjunMessages();
+    const scope = useKjunMessageScope();
     const focused = ref(false);
     return () => {
       const spec = tokens.input[props.size];
@@ -35,7 +39,7 @@ export const KjunDatePicker = defineComponent({
         // The drawn calendar icon matches Native; the transparent browser indicator sits on top of it
         // (sized by these variables) so clicking the icon still opens the browser picker.
         <div class="kjun-date-picker" style={{ position: "relative", "--_kjun-date-icon-inset": spec.padding + "px", "--_kjun-date-icon-size": spec.iconSize + "px" }}>
-          <KjunInput {...attrs} {...{ min: props.min, max: props.max }} modelValue={props.modelValue} size={props.size} suffixIcon="calendar" ariaLabel={props.ariaLabel || props.placeholder}
+          <KjunInput {...attrs} {...{ min: props.min, max: props.max }} modelValue={props.modelValue} size={props.size} suffixIcon="calendar" ariaLabel={props.ariaLabel || (props.placeholder ?? m.value.datePlaceholder)}
             error={props.error} disabled={props.disabled} readOnly={props.readOnly} class={!focused.value ? "kjun-date-masked" : ""}
             {...{
               type: "date",
@@ -49,7 +53,7 @@ export const KjunDatePicker = defineComponent({
               color: props.disabled ? "var(--_kjun-color-text-disabled)" : props.readOnly ? "var(--_kjun-color-text-secondary)"
                 : props.modelValue ? "var(--_kjun-color-text)" : "var(--_kjun-color-input-placeholder)",
             })}>
-              {props.modelValue ? props.modelValue.replace(/-/g, ". ") + "." : props.placeholder}
+              {props.modelValue ? formatDateValue(props.modelValue, scope.value) : (props.placeholder ?? m.value.datePlaceholder)}
             </span>
           )}
         </div>
@@ -69,7 +73,7 @@ const kjunTimePickerProps = {
   error: { type: Boolean, default: false },
   clearable: { type: Boolean, default: true },
   size: { type: String as PropType<InputSize>, default: "md" },
-  ariaLabel: { type: String, default: "시간" },
+  ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunTimePickerProps = ExtractPublicPropTypes<typeof kjunTimePickerProps>;
 
@@ -91,6 +95,7 @@ export const KjunTimePicker = defineComponent({
   props: kjunTimePickerProps,
   emits: { "update:modelValue": (_value: string | null) => true, change: (_value: string | null) => true },
   setup(props, { emit }) {
+    const m = useKjunMessages();
     provide(kjunCompoundControlKey, computed(() => props.size));
     const root = ref<HTMLElement | null>(null);
     const field = useKjunField(), uid = useId().replace(/[^\w-]/g, "");
@@ -106,9 +111,9 @@ export const KjunTimePicker = defineComponent({
       const blocked = props.disabled || !valid.value;
       return (
         <div ref={root} class="kjun-time-picker" data-size={props.size} data-error={String(props.error || !!owner?.error)} data-disabled={String(blocked)}
-          role="group" aria-label={props.ariaLabel} aria-labelledby={owner?.labelId} aria-describedby={owner?.describedBy}>
+          role="group" aria-label={(props.ariaLabel ?? m.value.time)} aria-labelledby={owner?.labelId} aria-describedby={owner?.describedBy}>
           <div class="kjun-time-segments">
-            {["시", "분", "초"].slice(0, props.precision === "second" ? 3 : 2).flatMap((label, index) => {
+            {[m.value.hour, m.value.minute, m.value.second].slice(0, props.precision === "second" ? 3 : 2).flatMap((label, index) => {
               const segmentId = index === 0 ? fieldId : `${fieldId}-${index}`, labelId = `${fieldId}-segment-${index}`;
               return [
                 index > 0 && <span key={"sep" + index} class="kjun-time-separator" aria-hidden="true">:</span>,
@@ -118,7 +123,7 @@ export const KjunTimePicker = defineComponent({
                     <KjunSelect modelValue={time === null ? null : domain.value.part(time, index)}
                       options={domain.value.options(value, index).map(n => ({ value: n, label: String(n).padStart(2, "0") }))}
                       onUpdate:modelValue={next => { if (typeof next === "number") change(domain.value.select(value, index, next)); }}
-                      ariaLabel={props.ariaLabel + " " + label} placeholder={label} disabled={blocked} error={props.error} size={props.size}
+                      ariaLabel={(props.ariaLabel ?? m.value.time) + " " + label} placeholder={label} disabled={blocked} error={props.error} size={props.size}
                       clearable={false} searchable={false} />
                   </div>
                 </TimeSegment>,
@@ -126,7 +131,7 @@ export const KjunTimePicker = defineComponent({
             })}
           </div>
           {props.clearable && value !== null && (
-            <KjunButton class="kjun-time-clear" size={props.size} variant="ghost" prefixIcon="x" ariaLabel={props.ariaLabel + " 지우기"} disabled={blocked}
+            <KjunButton class="kjun-time-clear" size={props.size} variant="ghost" prefixIcon="x" ariaLabel={m.value.clearValue((props.ariaLabel ?? m.value.time))} disabled={blocked}
               onClick={() => { change(null); root.value?.querySelector<HTMLButtonElement>(".kjun-select-trigger")?.focus(); }} />
           )}
         </div>

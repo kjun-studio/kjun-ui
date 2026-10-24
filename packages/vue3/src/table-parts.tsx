@@ -1,3 +1,4 @@
+import type { KjunMessages } from "../../../shared/package-runtime/messages";
 import { Fragment, defineComponent, type PropType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
@@ -52,6 +53,7 @@ export interface TableRenderState {
   sortColumn: (column: TableColumn<any>) => void;
 }
 export interface TableRowsContext {
+  messages: KjunMessages;
   initialLoading: boolean;
   skeletonRows: number;
   /** A loadingDelay is still running: the skeleton keeps its space but stays out of sight. */
@@ -82,7 +84,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
           <tr>
             {selectable && (
               <th scope="col" class="kjun-table-action-cell">
-                <TableCheck aria-label="전체 선택" checked={state.all} indeterminate={state.some} onChange={state.toggleAll} />
+                <TableCheck aria-label={c.messages.selectAll} checked={state.all} indeterminate={state.some} onChange={state.toggleAll} />
               </th>
             )}
             {expandable && <th scope="col" class="kjun-table-action-cell" />}

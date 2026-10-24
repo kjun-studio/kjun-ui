@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, provide, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
@@ -40,7 +41,7 @@ export interface NavigationDestination { key: string; label: string; href: strin
 const kjunBottomNavigationProps = {
   items: { type: Array as PropType<NavigationDestination[]>, required: true },
   value: { type: String, required: true },
-  ariaLabel: { type: String, default: "주요 탐색" },
+  ariaLabel: { type: String, default: undefined },
   safeAreaBottom: { type: Number, default: 0 },
   keyboardVisible: { type: Boolean, default: false },
   hideOnKeyboard: { type: Boolean, default: true },
@@ -52,11 +53,12 @@ export const KjunBottomNavigation = defineComponent({
   props: kjunBottomNavigationProps,
   emits: { navigate: (_key: string, _event: MouseEvent) => true },
   setup(props, { emit }) {
+    const m = useKjunMessages();
     return () => {
       const hasIcons = props.items.some(item => item.icon);
       if (props.keyboardVisible && props.hideOnKeyboard) return null;
       return (
-        <nav class="kjun-bottom-navigation" data-icons={hasIcons || undefined} aria-label={props.ariaLabel} style={css({ paddingBottom: Math.max(0, props.safeAreaBottom) })}>
+        <nav class="kjun-bottom-navigation" data-icons={hasIcons || undefined} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={css({ paddingBottom: Math.max(0, props.safeAreaBottom) })}>
           {props.items.map(item => {
             const badge = item.badge != null && <span class="kjun-navigation-badge" aria-hidden="true">{item.badge}</span>;
             return (

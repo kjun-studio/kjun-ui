@@ -62,7 +62,9 @@ test("Vue 3 contracts come from declared emits and typed slots", () => {
   assert.deepEqual(KjunTable.slots.find((s) => s.name === "cell-<key>").data, ["value", "column", "row", "index"]);
   assert.ok(!KjunTable.slots.some((s) => s.name === "default"));
   assert.deepEqual(KjunSelect.slots.find((s) => s.name === "option").data, ["option", "selected"]);
-  assert.equal(KjunSelect.props.find((p) => p.name === "placeholder").default, '"선택"');
+  assert.equal(KjunSelect.props.find((p) => p.name === "size").default, '"md"');
+  // Copy props default to KjunProvider messages, so they carry no literal default.
+  assert.equal(KjunSelect.props.find((p) => p.name === "placeholder").default, '—');
   // A component without declared slots lists none rather than Vue's open string index.
   assert.deepEqual(KjunBottomNavigation.slots, []);
 });

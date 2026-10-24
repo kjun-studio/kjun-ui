@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { Fragment, camelize, computed, defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref, watch,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type VNode, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
@@ -49,7 +50,7 @@ const kjunTabsProps = {
   items: { type: Array as PropType<TabItem[]>, default: () => [] },
   density: { type: String as PropType<"comfortable" | "compact">, default: "comfortable" },
   variant: { type: String as PropType<"underline" | "pills">, default: "underline" },
-  ariaLabel: { type: String, default: "탭" },
+  ariaLabel: { type: String, default: undefined },
   /** Declared as a prop so the tab menu only engages when the app listens. */
   onTabMenu: { type: Function as PropType<(event: TabMenuEvent) => void>, default: undefined },
 } as const;
@@ -64,6 +65,7 @@ export const KjunTabs = defineComponent({
     actions?: () => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     const { group, indicator } = useSelectionIndicator(true);
     const listId = useKjunId("kjun-");
     const panes = ref<TabItem[]>([]);
@@ -100,7 +102,7 @@ export const KjunTabs = defineComponent({
           onFocusin={() => { within.value = true; }} onFocusout={(event: FocusEvent) => { if (!root.value?.contains(event.relatedTarget as Node)) within.value = false; }}>
           <div class="kjun-tabs-header">
             <div class="kjun-tabs-track" ref={group} tabindex={-1}>
-              <div ref={list} class="kjun-tabs-list" id={listId} role="tablist" aria-label={props.ariaLabel} aria-orientation="horizontal"
+              <div ref={list} class="kjun-tabs-list" id={listId} role="tablist" aria-label={(props.ariaLabel ?? m.value.tabs)} aria-orientation="horizontal"
                 data-orientation="horizontal" tabindex={-1}>
                 {tabList.map(tab => {
                   const selected = tab.name === props.modelValue;

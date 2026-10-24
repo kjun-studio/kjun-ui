@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { computed, defineComponent, ref, watch, type ExtractPublicPropTypes, type InjectionKey, type PropType, type Ref } from "vue";
 import { createNumberDomain, quantityKeyAction, tokens, type InputSize } from "@kjun-ui/tokens";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
@@ -29,6 +30,7 @@ export const KjunQuantityStepper = defineComponent({
   props: kjunQuantityStepperProps,
   emits: { "update:modelValue": (_value: number) => true, change: (_value: number) => true, "invalid-input": (_draft: string) => true },
   setup(props, { emit }) {
+    const m = useKjunMessages();
     provideFallbackIcons(componentIcons);
     const field = useKjunField();
     const domain = computed(() => createNumberDomain({ min: props.min, max: props.max, step: props.step, precision: props.precision }));
@@ -68,17 +70,17 @@ export const KjunQuantityStepper = defineComponent({
       const buttonStyle = css({ width: tokens.input[size].height, padding: 0 });
       return (
         <div class="kjun-quantity" data-size={size} data-block={String(props.block)} data-error={String(props.error || !!owner?.error)}>
-          <KjunButton size={size} style={buttonStyle} variant="ghost" ariaLabel="수량 줄이기" disabled={blocked.value || props.modelValue <= props.min}
+          <KjunButton size={size} style={buttonStyle} variant="ghost" ariaLabel={m.value.decreaseQuantity} disabled={blocked.value || props.modelValue <= props.min}
             {...keepFocus} onClick={() => move(-1)} prefixIcon="minus" />
           <input class="kjun-input" id={props.id || owner?.id} type="text" inputmode={props.precision ? "decimal" : "numeric"} role="spinbutton"
-            aria-label={props.ariaLabel || (owner?.labelId ? undefined : "수량")} aria-labelledby={props.ariaLabel ? undefined : owner?.labelId}
+            aria-label={props.ariaLabel || (owner?.labelId ? undefined : m.value.quantity)} aria-labelledby={props.ariaLabel ? undefined : owner?.labelId}
             aria-describedby={owner?.describedBy} aria-invalid={props.error || !!owner?.error ? "true" : undefined}
             aria-valuemin={props.min} aria-valuemax={props.max} aria-valuenow={props.modelValue} value={draft.value} disabled={blocked.value}
             onInput={(event: Event) => { dirty = true; draft.value = (event.target as HTMLInputElement).value; }} onBlur={commit}
             onCompositionstart={() => { composing = true; }}
             onCompositionend={(event: CompositionEvent) => { composing = false; dirty = true; draft.value = (event.currentTarget as HTMLInputElement).value; }}
             onKeydown={key} aria-required={owner?.required ? "true" : undefined} />
-          <KjunButton size={size} style={buttonStyle} variant="ghost" ariaLabel="수량 늘리기"
+          <KjunButton size={size} style={buttonStyle} variant="ghost" ariaLabel={m.value.increaseQuantity}
             disabled={blocked.value || (props.max !== undefined && props.modelValue >= props.max)}
             {...keepFocus} onClick={() => move(1)} prefixIcon="plus" />
         </div>

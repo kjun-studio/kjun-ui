@@ -43,3 +43,5 @@ export type { MarketColumn, MarketFormatter, MarketMetric, MarketPagination } fr
 export type { KjunMarketTableProps } from "./market-table";
 export type { KjunMarketSimpleListProps } from "./market-list";
 export type { KjunMarketCardsProps } from "./market-cards";
+
+export { kjunMessagesKo, kjunMessagesEn, type KjunMessages } from "../../../shared/package-runtime/messages";

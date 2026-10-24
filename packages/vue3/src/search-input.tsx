@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import type { InputSize } from "@kjun-ui/tokens";
 import { optionLabel, type SelectOption } from "../../../shared/package-runtime/options";
@@ -7,7 +8,7 @@ import { useSearchInputModel } from "./runtime/selection";
 
 const kjunSearchInputProps = {
   modelValue: { type: String, default: "" },
-  placeholder: { type: String, default: "검색..." },
+  placeholder: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
   disabled: { type: Boolean, default: false },
   error: { type: Boolean, default: false },
@@ -18,9 +19,9 @@ const kjunSearchInputProps = {
   itemKey: { type: String, default: "id" },
   labelField: { type: String, default: "name" },
   minChars: { type: Number, default: 2 },
-  emptyText: { type: String, default: "결과가 없습니다" },
+  emptyText: { type: String, default: undefined },
   /** Shown when loadOptions rejects, instead of the empty text. */
-  errorText: { type: String, default: "검색하지 못했습니다. 다시 시도해 주세요." },
+  errorText: { type: String, default: undefined },
 } as const;
 export type KjunSearchInputProps = ExtractPublicPropTypes<typeof kjunSearchInputProps>;
 /** v-model; with loadOptions it suggests results. Slot option({ option }); events select, enter, clear, search-error. */
@@ -33,6 +34,7 @@ export const KjunSearchInput = defineComponent({
   },
   slots: Object as SlotsType<{ option?: (scope: { option: SelectOption }) => VNodeChild }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     const open = ref(false);
     const model = useSearchInputModel(() => ({ value: props.modelValue, disabled: props.disabled, debounce: props.debounce,
       minChars: props.minChars, loadOptions: props.loadOptions }), () => open.value, {
@@ -42,13 +44,13 @@ export const KjunSearchInput = defineComponent({
     const clear = () => { open.value = false; model.clear(); emit("clear"); };
     return () => !props.loadOptions ? (
       <KjunInput error={props.error} modelValue={model.query.value} prefixIcon="search" size={props.size}
-        ariaLabel={props.ariaLabel || props.placeholder} disabled={props.disabled} clearable={props.clearable}
-        {...{ placeholder: props.placeholder, "onUpdate:modelValue": update, onClear: clear, onEnter: () => emit("enter") }} />
+        ariaLabel={props.ariaLabel || (props.placeholder ?? m.value.search)} disabled={props.disabled} clearable={props.clearable}
+        {...{ placeholder: (props.placeholder ?? m.value.search), "onUpdate:modelValue": update, onClear: clear, onEnter: () => emit("enter") }} />
     ) : (
-      <SearchField error={props.error} value={model.query.value} size={props.size} placeholder={props.placeholder} ariaLabel={props.ariaLabel}
+      <SearchField error={props.error} value={model.query.value} size={props.size} placeholder={(props.placeholder ?? m.value.search)} ariaLabel={props.ariaLabel}
         disabled={props.disabled} clearable={props.clearable} open={open.value && model.query.value.length >= props.minChars}
         onOpenChange={value => { open.value = value; }} options={model.options.value} labelKey={props.labelField} itemKey={props.itemKey}
-        emptyText={props.emptyText} loading={model.loading.value} failed={model.failed.value} errorText={props.errorText} renderOption={slots.option}
+        emptyText={(props.emptyText ?? m.value.noResults)} loading={model.loading.value} failed={model.failed.value} errorText={(props.errorText ?? m.value.searchFailed)} renderOption={slots.option}
         onValueChange={update} onSelect={option => { model.select(optionLabel(option, props.labelField)); emit("select", option); open.value = false; }}
         onClear={clear} onEnter={() => emit("enter")} />
     );

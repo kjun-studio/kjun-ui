@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { computed, defineComponent, inject, onBeforeUnmount, onUpdated, provide, ref, shallowRef, watch, nextTick,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
@@ -183,13 +184,14 @@ export const KjunMenuButton = defineComponent({
   emits: { open: () => true, close: () => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     const open = ref(false);
     return () => {
       const button = () => (
         <KjunButton class="kjun-menu-button" size={props.size} variant={props.variant} disabled={props.disabled} loading={props.loading}
           prefixIcon={props.compact || !props.label ? "dots-vertical" : undefined}
           suffixIcon={!props.compact && props.label ? open.value ? "chevron-up" : "chevron-down" : undefined}
-          ariaLabel={props.ariaLabel || props.label || props.tooltip || "메뉴"}>
+          ariaLabel={props.ariaLabel || props.label || props.tooltip || m.value.menu}>
           {{ default: () => props.compact ? undefined : props.label }}
         </KjunButton>
       );

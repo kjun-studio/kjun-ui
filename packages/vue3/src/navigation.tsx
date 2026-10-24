@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { Fragment, defineComponent, inject, onBeforeUnmount, onMounted, provide, ref, shallowRef, watch,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type VNode, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
@@ -91,7 +92,7 @@ export const KjunAccordionItem = defineComponent({
 export interface BreadcrumbItem { label: string; to?: string; icon?: string }
 const kjunBreadcrumbProps = {
   items: { type: Array as PropType<BreadcrumbItem[]>, required: true },
-  ariaLabel: { type: String, default: "현재 위치" },
+  ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunBreadcrumbProps = ExtractPublicPropTypes<typeof kjunBreadcrumbProps>;
 /** Slot link({ item, label }) renders a router link; without it, links are plain anchors. */
@@ -100,8 +101,9 @@ export const KjunBreadcrumb = defineComponent({
   props: kjunBreadcrumbProps,
   slots: Object as SlotsType<{ link?: (scope: { item: BreadcrumbItem; label: VNode }) => VNodeChild }>,
   setup(props, { slots }) {
+    const m = useKjunMessages();
     return () => (
-      <nav aria-label={props.ariaLabel} class="kjun-breadcrumb">
+      <nav aria-label={(props.ariaLabel ?? m.value.breadcrumb)} class="kjun-breadcrumb">
         {props.items.map((item, i) => {
           const label = <>{item.icon && <KjunIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} />} {item.label}</>;
           const link = item.to && i < props.items.length - 1 ? slots.link?.({ item, label }) : undefined;
@@ -140,6 +142,7 @@ export const KjunPagination = defineComponent({
   props: kjunPaginationProps,
   emits: { "update:page": (_page: number) => true, change: (_page: number) => true, "update:pageSize": (_size: number) => true },
   setup(props, { emit }) {
+    const m = useKjunMessages();
     return () => {
       const { totalPages, siblingCount, pageSize, totalRows } = props;
       const current = Math.max(1, Math.min(totalPages, props.currentPage ?? props.page ?? 1));
@@ -157,34 +160,34 @@ export const KjunPagination = defineComponent({
         </button>
       );
       return (
-        <nav aria-label="페이지 탐색" class="kjun-pagination">
+        <nav aria-label={m.value.pagination} class="kjun-pagination">
           {props.showInfo && totalRows > 0
-            ? <span>{(current - 1) * pageSize + 1} - {Math.min(current * pageSize, totalRows)} / {props.formatter(totalRows)}개</span>
+            ? <span>{m.value.pageRange((current - 1) * pageSize + 1, Math.min(current * pageSize, totalRows), props.formatter(totalRows))}</span>
             : <span />}
           <div class="kjun-pagination-controls">
             {props.showSizeSelector && (
               <div class="kjun-pagination-size">
-                <KjunSelect size="sm" ariaLabel="페이지당 항목 수" modelValue={pageSize}
-                  options={props.pageSizeOptions.map(n => ({ value: n, label: `${n}개씩` }))}
+                <KjunSelect size="sm" ariaLabel={m.value.itemsPerPage} modelValue={pageSize}
+                  options={props.pageSizeOptions.map(n => ({ value: n, label: m.value.perPage(n) }))}
                   onUpdate:modelValue={(value: unknown) => { emit("update:pageSize", Number(value)); emit("update:page", 1); emit("change", 1); }} />
               </div>
             )}
             {totalPages > 1 && (
               <div class="kjun-pagination-mobile">
-                {button(current - 1, "이전 페이지", "chevron-left")}
+                {button(current - 1, m.value.previousPage, "chevron-left")}
                 <span><strong>{current}</strong> / {totalPages}</span>
-                {button(current + 1, "다음 페이지", "chevron-right")}
+                {button(current + 1, m.value.nextPage, "chevron-right")}
               </div>
             )}
             {totalPages > 1 && (
               <div class="kjun-pagination-desktop">
-                {props.showFirstLast && button(1, "첫 페이지", "chevrons-left")}
-                {button(current - 1, "이전 페이지", "chevron-left")}
+                {props.showFirstLast && button(1, m.value.firstPage, "chevrons-left")}
+                {button(current - 1, m.value.previousPage, "chevron-left")}
                 {pages.map((n, i) => typeof n === "string"
                   ? <span key={"dots" + i}>...</span>
-                  : <button key={n} type="button" aria-label={`${n} 페이지`} aria-current={current === n ? "page" : undefined} onClick={() => change(n)}>{n}</button>)}
-                {button(current + 1, "다음 페이지", "chevron-right")}
-                {props.showFirstLast && button(totalPages, "마지막 페이지", "chevrons-right")}
+                  : <button key={n} type="button" aria-label={m.value.page(n)} aria-current={current === n ? "page" : undefined} onClick={() => change(n)}>{n}</button>)}
+                {button(current + 1, m.value.nextPage, "chevron-right")}
+                {props.showFirstLast && button(totalPages, m.value.lastPage, "chevrons-right")}
               </div>
             )}
           </div>

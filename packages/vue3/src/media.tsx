@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
@@ -62,12 +63,13 @@ export const KjunAvatar = defineComponent({
   emits: { load: () => true, error: () => true },
   slots: Object as SlotsType<{ fallback?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     return () => {
       const initial = Array.from(props.name.trim())[0];
       return (
         <span class="kjun-avatar" data-shape={props.shape} data-size={props.size}
           style={css({ width: tokens.extensions.avatar[props.size], height: tokens.extensions.avatar[props.size] })}>
-          <KjunImage src={props.src} alt={props.alt || props.name || "사용자"} decorative={props.decorative}
+          <KjunImage src={props.src} alt={props.alt || props.name || m.value.user} decorative={props.decorative}
             onLoad={() => emit("load")} onError={() => emit("error")}>
             {{ fallback: () => slots.fallback ? slots.fallback()
               : initial || <KjunIcon name="user" size={tokens.extensions.avatar.fallbackIconSizes[props.size]} /> }}

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { getValue } from "../../../shared/package-runtime/table-model";
@@ -42,6 +43,7 @@ export const KjunMarketCards = defineComponent({
     metricPrefix?: (scope: { row: any; key: string; isPrice: boolean }) => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     const model = useMarketCardsModel(props, key => emit("sort", key));
     return () => {
       const state = model(), { rows } = props;
@@ -55,7 +57,7 @@ export const KjunMarketCards = defineComponent({
       const custom = slots.list?.({ selectedKey: state.key, selectedPill: state.pill, metricDisplay: display });
       return (
         <div class="kjun-market-cards">
-          <div class="kjun-metric-pills" role="group" aria-label="표시 지표">
+          <div class="kjun-metric-pills" role="group" aria-label={m.value.metrics}>
             {state.pills.map(pill => (
               <button key={pill.key} type="button" aria-pressed={state.key === pill.key} onClick={(event: MouseEvent) => {
                 state.select(pill.key);
@@ -72,7 +74,7 @@ export const KjunMarketCards = defineComponent({
               loadingText={props.loadingText} loadingDelay={props.loadingDelay}>
               {{
                 loading: props.skeleton ? () => <KjunListSkeleton variant="compact" /> : undefined,
-                empty: () => <KjunEmpty text={props.emptyMessage} description={props.emptySubMessage} />,
+                empty: () => <KjunEmpty text={(props.emptyMessage ?? m.value.noItems)} description={props.emptySubMessage} />,
                 default: () => <div>
                   {state.pill && <div class="kjun-market-column-label">{state.pill.label}</div>}
                   {rows.map((row: any, i) => {

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, type ExtractPublicPropTypes, type PropType } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
@@ -16,12 +17,13 @@ export const KjunChip = defineComponent({
   props: kjunChipProps,
   emits: { remove: () => true },
   setup(props, { emit }) {
+    const m = useKjunMessages();
     return () => (
       <span class="kjun-chip" data-size={props.size} data-disabled={String(props.disabled)} data-removable={String(props.removable)}>
         {props.icon && <KjunIcon name={props.icon} size={tokens.extensions.chip.iconSizes[props.size]} />}
         <span>{props.label}</span>
         {props.removable && (
-          <button type="button" aria-label={props.removeLabel || props.label + " 삭제"} disabled={props.disabled} onClick={() => emit("remove")}>
+          <button type="button" aria-label={props.removeLabel || m.value.remove(props.label)} disabled={props.disabled} onClick={() => emit("remove")}>
             <KjunIcon name="x" size={tokens.extensions.chip.removeIconSizes[props.size]} />
           </button>
         )}

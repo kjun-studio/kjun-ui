@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { tokens } from "@kjun-ui/tokens";
@@ -43,7 +44,7 @@ export const KjunBadge = defineComponent({
 });
 
 const kjunEmptyProps = {
-  text: { type: String, default: "데이터가 없습니다" },
+  text: { type: String, default: undefined },
   description: { type: String, default: undefined },
   icon: { type: String, default: undefined },
 } as const;
@@ -53,12 +54,13 @@ export const KjunEmpty = defineComponent({
   props: kjunEmptyProps,
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
+    const m = useKjunMessages();
     return () => {
       const children = slots.default?.();
       return (
         <div class="kjun-empty">
           {props.icon && <KjunIcon name={props.icon} size={tokens.extensions.empty.iconSize} />}
-          <p>{props.text}</p>
+          <p>{(props.text ?? m.value.noData)}</p>
           {props.description && <small>{props.description}</small>}
           {hasContent(children) && <div>{children}</div>}
         </div>
@@ -76,12 +78,13 @@ export const KjunSpinner = defineComponent({
   name: "KjunSpinner",
   props: kjunSpinnerProps,
   setup(props) {
+    const m = useKjunMessages();
     return () => {
       const size = tokens.extensions.spinner.sizes[props.size];
       // The stroke keeps a size-specific pixel weight instead of scaling with the 24-unit viewBox.
       const stroke = (tokens.extensions.spinner.strokeWidths[props.size] * 24) / size;
       return (
-        <span role="status" aria-label={props.text || "로딩 중"} class="kjun-spinner">
+        <span role="status" aria-label={props.text || m.value.loading} class="kjun-spinner">
           <svg class="kjun-spin" width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width={stroke} opacity=".25" />
             <path d="M22 12A10 10 0 0 0 12 2" stroke="currentColor" stroke-width={stroke} />
@@ -115,6 +118,7 @@ export const KjunAlert = defineComponent({
     actions?: () => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     const visible = ref(true);
     return () => {
       if (!visible.value) return null;
@@ -140,7 +144,7 @@ export const KjunAlert = defineComponent({
             )}
           </div>
           {props.closable && (
-            <button class="kjun-alert-close" type="button" aria-label="닫기" onClick={() => { visible.value = false; emit("close"); }}>
+            <button class="kjun-alert-close" type="button" aria-label={m.value.close} onClick={() => { visible.value = false; emit("close"); }}>
               <KjunIcon name="x" size={tokens.extensions.alert.closeIconSize} />
             </button>
           )}
@@ -169,6 +173,7 @@ export const KjunProgress = defineComponent({
     subLabel?: () => VNodeChild;
   }>,
   setup(props, { slots }) {
+    const m = useKjunMessages();
     return () => {
       const percentage = Number.isFinite(props.value) && props.max > 0
         ? Math.min(100, Math.max(0, Math.round((props.value / props.max) * 100))) : 0;
@@ -182,7 +187,7 @@ export const KjunProgress = defineComponent({
               {props.showLabel && <span>{percentage}%</span>}
             </div>
           )}
-          <div role="progressbar" aria-label={typeof props.label === "string" && !slots.label ? props.label : "진행률"}
+          <div role="progressbar" aria-label={typeof props.label === "string" && !slots.label ? props.label : m.value.progress}
             aria-valuemin={0} aria-valuemax={100} aria-valuenow={percentage} class="kjun-progress-track"
             style={css({ height: tokens.extensions.progress.heights[props.size] })}>
             <div style={{ width: percentage + "%", background: role(props.variant === "primary" ? "brand" : props.variant) }} />

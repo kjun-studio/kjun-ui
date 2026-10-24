@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { computed, defineComponent, ref, watch, type PropType } from "vue";
 import { createSliderDomain, sliderKey } from "@kjun-ui/tokens";
 import { useFocusVisible } from "./runtime/focus-visible";
@@ -22,10 +23,11 @@ function defineRangeInput(name: string, range: boolean) {
     props: {
       ...sliderProps,
       modelValue: { type: (range ? Array : Number) as PropType<SliderValue>, required: true },
-      ...(range ? { thumbLabels: { type: Array as unknown as PropType<[string, string]>, default: () => ["최솟값", "최댓값"] } } : {}),
+      ...(range ? { thumbLabels: { type: Array as unknown as PropType<[string, string]>, default: undefined } } : {}),
     },
     emits: { "update:modelValue": (_value: SliderValue) => true, change: (_value: SliderValue) => true },
     setup(props, { emit }) {
+      const m = useKjunMessages();
       const domain = computed(() => createSliderDomain(props.min, props.max, props.step));
       const list = computed(() => (Array.isArray(props.modelValue) ? props.modelValue : [props.modelValue]) as number[]);
       const valid = computed(() => domain.value.valid && (!range || (Array.isArray(props.modelValue) && props.modelValue.length === 2))
@@ -78,7 +80,7 @@ function defineRangeInput(name: string, range: boolean) {
 
       return () => {
         const values = list.value;
-        const label = props.ariaLabel || props.label || "값";
+        const label = props.ariaLabel || props.label || m.value.value;
         const start = values.length === 2 ? fraction(values[0]) : 0;
         return (
           <div class="kjun-slider" data-disabled={String(blocked.value)} role="group" aria-label={label}>
@@ -96,7 +98,7 @@ function defineRangeInput(name: string, range: boolean) {
                   data-dragging={dragging.value === index || undefined}
                   data-focus-visible={(focused.value === index && focus.visible.value) || undefined}>
                   <input ref={el => { inputs[index] = el as HTMLInputElement | null; }} type="range" class="kjun-sr-only"
-                    aria-label={values.length === 2 ? (props as { thumbLabels?: [string, string] }).thumbLabels![index] : label}
+                    aria-label={values.length === 2 ? ((props as { thumbLabels?: [string, string] }).thumbLabels ?? [m.value.minimum, m.value.maximum])[index] : label}
                     min={values.length === 2 && index === 1 ? values[0] : min.value}
                     max={values.length === 2 && index === 0 ? values[1] : max.value}
                     step={valid.value ? props.step : 1} value={valid.value ? value : index * 100} disabled={blocked.value}

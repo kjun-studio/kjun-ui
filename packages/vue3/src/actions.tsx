@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { typeStyle } from "../../../shared/package-runtime/typography";
@@ -77,7 +78,7 @@ const kjunCopyButtonProps = {
   value: { type: String, required: true },
   ariaLabel: { type: String, default: undefined },
   text: { type: String, default: undefined },
-  successText: { type: String, default: "복사됨" },
+  successText: { type: String, default: undefined },
   inline: { type: Boolean, default: false },
   size: { type: String as PropType<"xs" | "sm" | "md">, default: "sm" },
   disabled: { type: Boolean, default: false },
@@ -90,6 +91,7 @@ export const KjunCopyButton = defineComponent({
   props: kjunCopyButtonProps,
   emits: { copied: (_value: string) => true, "copy-error": (_error: unknown) => true },
   setup(props, { emit }) {
+    const m = useKjunMessages();
     const feedback = useOptionalKjunFeedback();
     const copied = ref(false), failed = ref(false);
     let busy = false, mounted = true, timer: ReturnType<typeof setTimeout> | undefined;
@@ -102,14 +104,14 @@ export const KjunCopyButton = defineComponent({
         await props.copyText(props.value);
         if (mounted) {
           copied.value = true; failed.value = false;
-          feedback?.toast.success(props.successText);
+          feedback?.toast.success((props.successText ?? m.value.copied));
           emit("copied", props.value);
           timer = setTimeout(() => { copied.value = false; }, 1500);
         }
       } catch (error) {
         if (mounted) {
           failed.value = true;
-          feedback?.toast.error("복사 실패");
+          feedback?.toast.error(m.value.copyFailed);
           emit("copy-error", error);
         }
       } finally {
@@ -117,7 +119,7 @@ export const KjunCopyButton = defineComponent({
       }
     };
     return () => <>
-      <button type="button" disabled={props.disabled} aria-label={props.ariaLabel || props.text || "복사"} class="kjun-copy-button"
+      <button type="button" disabled={props.disabled} aria-label={props.ariaLabel || props.text || m.value.copy} class="kjun-copy-button"
         data-inline={String(props.inline)} onClick={copy}
         style={css({
           ...typeStyle(props.size === "xs" ? "controlSmall" : "control"),
@@ -126,10 +128,10 @@ export const KjunCopyButton = defineComponent({
         })}>
         <KjunIcon name={copied.value ? "check" : "copy"} size={tokens.button.iconSizes[props.size]}
           style={{ color: copied.value ? "var(--_kjun-color-success)" : undefined }} />
-        {props.text && !props.inline && <span>{copied.value ? props.successText : props.text}</span>}
+        {props.text && !props.inline && <span>{copied.value ? (props.successText ?? m.value.copied) : props.text}</span>}
       </button>
       <span role={feedback ? undefined : "status"} aria-hidden={feedback ? true : undefined} class="kjun-sr-only">
-        {copied.value ? props.successText : failed.value ? "복사 실패" : ""}
+        {copied.value ? (props.successText ?? m.value.copied) : failed.value ? m.value.copyFailed : ""}
       </span>
     </>;
   },
@@ -138,7 +140,7 @@ export const KjunCopyButton = defineComponent({
 const kjunRefreshButtonProps = {
   targetName: { type: String, default: "" },
   mode: { type: String as PropType<"icon" | "text">, default: "icon" },
-  text: { type: String, default: "새로고침" },
+  text: { type: String, default: undefined },
   size: { type: String as PropType<ButtonSize>, default: "sm" },
   variant: { type: String as PropType<ButtonVariant>, default: "ghost" },
   disabled: { type: Boolean, default: false },
@@ -159,16 +161,17 @@ export const KjunRefreshButton = defineComponent({
   props: kjunRefreshButtonProps,
   emits: { refresh: () => true },
   setup(props, { emit }) {
+    const m = useKjunMessages();
     const reduced = useReducedMotion();
     return () => {
       // Text mode speaks what it shows (WCAG 2.5.3); icon mode keeps the action name.
-      const label = props.ariaLabel || [props.targetName, props.mode === "text" ? props.text : "새로고침"].filter(Boolean).join(" ");
+      const label = props.ariaLabel || [props.targetName, props.mode === "text" ? (props.text ?? m.value.refresh) : m.value.refresh].filter(Boolean).join(" ");
       const hint = props.tooltip ?? props.title ?? (props.mode === "icon" ? label : "");
       return (
         <KjunTooltip content={props.disabled || props.loading ? "" : hint} placement={props.tooltipPlacement} delay={props.tooltipDelay}>
           <KjunButton size={props.size} variant={props.variant} disabled={props.disabled} loading={props.loading} block={props.block}
             prefixIcon="refresh" spinOnLoading={!reduced.value && props.spinOnLoading} ariaLabel={label} onClick={() => emit("refresh")}>
-            {props.mode === "text" ? props.text : undefined}
+            {props.mode === "text" ? (props.text ?? m.value.refresh) : undefined}
           </KjunButton>
         </KjunTooltip>
       );
@@ -196,15 +199,16 @@ export const KjunExternalLink = defineComponent({
   props: kjunExternalLinkProps,
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
+    const m = useKjunMessages();
     return () => {
-      const url = safeExternalUrl(props.href), name = props.label || (props.mode === "icon" ? "외부 링크" : undefined);
+      const url = safeExternalUrl(props.href), name = props.label || (props.mode === "icon" ? m.value.externalLink : undefined);
       const body = props.mode === "icon" ? <KjunIcon name="external-link" /> : slots.default?.();
       return url ? (
-        <a href={url} target="_blank" rel="noopener noreferrer" aria-label={name ? name + " (새 창)" : undefined} title={name}
+        <a href={url} target="_blank" rel="noopener noreferrer" aria-label={name ? name + m.value.newWindow : undefined} title={name}
           class="kjun-external-link" onClick={(event: MouseEvent) => event.stopPropagation()}>
           {body}
           {props.mode === "text" && <KjunIcon name="external-link" size={tokens.iconSizes.small} class="kjun-external-link-icon" />}
-          {!name && <span class="kjun-sr-only"> (새 창)</span>}
+          {!name && <span class="kjun-sr-only">{m.value.newWindow}</span>}
         </a>
       ) : <span aria-label={name}>{body}</span>;
     };

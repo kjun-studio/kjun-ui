@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { computed, defineComponent, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
 import type { InputSize } from "@kjun-ui/tokens";
 import { optionDisabled, optionKey, optionLabel, type OptionValue, type SelectOption } from "../../../shared/package-runtime/options";
@@ -35,6 +36,7 @@ export const SearchField = defineComponent({
     onEnter: { type: Function as PropType<() => void>, default: undefined },
   },
   setup(props) {
+    const m = useKjunMessages();
     const composition = useCompositionGuard();
     let clearing = false;
     const field = ref<{ el: HTMLInputElement | null } | null>(null);
@@ -101,7 +103,7 @@ export const SearchField = defineComponent({
             }} />
           <FloatingPanel field nonModal open={shown} onOpenChange={props.onOpenChange} trigger={input} placement="bottom-start" matchTriggerWidth panelClass="kjun-select-panel">
             <div id={id} role="listbox" aria-label={props.ariaLabel || props.placeholder} onMousedown={(event: MouseEvent) => event.preventDefault()}>
-              {props.loading ? <div class="kjun-select-empty"><KjunSpinner size="sm" text="검색 중..." /></div>
+              {props.loading ? <div class="kjun-select-empty"><KjunSpinner size="sm" text={m.value.searching} /></div>
                 : props.failed ? <div class="kjun-select-empty" role="alert">{props.errorText}</div>
                 : props.options.length ? props.options.map((option, i) => {
                     const custom = props.renderOption?.({ option }) as VNode[] | undefined;
@@ -126,7 +128,7 @@ export const SearchField = defineComponent({
 const kjunComboboxProps = {
   modelValue: { type: [String, Number, null] as PropType<OptionValue | null>, default: null },
   options: { type: Array as PropType<SelectOption[]>, default: () => [] },
-  placeholder: { type: String, default: "검색 또는 선택" },
+  placeholder: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
   labelKey: { type: String, default: "label" },
   valueKey: { type: String, default: "value" },
@@ -135,7 +137,7 @@ const kjunComboboxProps = {
   disabled: { type: Boolean, default: false },
   error: { type: Boolean, default: false },
   clearable: { type: Boolean, default: false },
-  emptyText: { type: String, default: "결과가 없습니다" },
+  emptyText: { type: String, default: undefined },
 } as const;
 export type KjunComboboxProps = ExtractPublicPropTypes<typeof kjunComboboxProps>;
 /** v-model; slot option({ option }); events change, search, clear. */
@@ -145,6 +147,7 @@ export const KjunCombobox = defineComponent({
   emits: { "update:modelValue": (_value: OptionValue | null) => true, change: (_value: OptionValue | null) => true, search: (_query: string) => true, clear: () => true },
   slots: Object as SlotsType<{ option?: (scope: { option: SelectOption }) => VNodeChild }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     const model = useComboboxModel(() => ({ value: props.modelValue, options: props.options, labelKey: props.labelKey, valueKey: props.valueKey,
       disabled: props.disabled, filterFn: props.filterFn }), {
       change: value => { emit("update:modelValue", value); emit("change", value); },
@@ -152,9 +155,9 @@ export const KjunCombobox = defineComponent({
       clear: () => emit("clear"),
     });
     return () => (
-      <SearchField error={props.error} value={model.displayValue.value} size={props.size} placeholder={props.placeholder} ariaLabel={props.ariaLabel}
+      <SearchField error={props.error} value={model.displayValue.value} size={props.size} placeholder={(props.placeholder ?? m.value.searchOrSelect)} ariaLabel={props.ariaLabel}
         disabled={props.disabled} clearable={props.clearable} open={model.open.value} onOpenChange={model.changeOpen} options={model.options.value}
-        labelKey={props.labelKey} itemKey={props.valueKey} emptyText={props.emptyText} renderOption={slots.option}
+        labelKey={props.labelKey} itemKey={props.valueKey} emptyText={(props.emptyText ?? m.value.noResults)} renderOption={slots.option}
         onValueChange={value => model.search(value, true)} onSelect={model.select} onClear={model.clear} />
     );
   },

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { Teleport, cloneVNode, computed, defineComponent, isVNode, onBeforeUnmount, onMounted, onUpdated, reactive, ref, unref, watch,
   type ExtractPublicPropTypes, type PropType, type Ref, type VNode, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
@@ -39,6 +40,7 @@ export const KjunPopover = defineComponent({
     header?: (scope: { close: () => void }) => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     const internal = ref(false);
     const open = computed(() => props.open ?? internal.value);
     const trigger = ref<HTMLElement | null>(null);
@@ -94,7 +96,7 @@ export const KjunPopover = defineComponent({
           }}>
           {{ default: () => (
             <section ref={dialog} id={id} class="kjun-popover-dialog" role="dialog" tabindex={-1}
-              aria-label={slots.header && !props.ariaLabel ? undefined : props.ariaLabel || "상세 정보"}
+              aria-label={slots.header && !props.ariaLabel ? undefined : props.ariaLabel || m.value.details}
               aria-labelledby={slots.header && !props.ariaLabel ? id + "-header" : undefined}
               onKeydown={(event: KeyboardEvent) => { if (props.modal) containTab(event.currentTarget as HTMLElement, event); }}
               style={{ maxHeight: typeof props.maxHeight === "number" ? props.maxHeight + "px" : props.maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: slots.header ? undefined : "auto" }}>

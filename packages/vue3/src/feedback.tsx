@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { computed, defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref, shallowRef, watch,
   type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { createFeedbackController, tokens, type ConfirmOptions, type FeedbackRequest, type KjunFeedback, type PromptOptions, type ToastItem } from "@kjun-ui/tokens";
@@ -57,6 +58,7 @@ export const ToastView = defineComponent({
   name: "KjunToastView",
   props: { toast: { type: Object as PropType<ToastItem>, required: true }, controller: { type: Object as PropType<Controller>, required: true } },
   setup(props) {
+    const m = useKjunMessages();
     let previous: HTMLElement | null = null;
     const reasons = { hover: Symbol("kjunToastHover"), focus: Symbol("kjunToastFocus") };
     onMounted(() => { previous = document.activeElement as HTMLElement; });
@@ -79,7 +81,7 @@ export const ToastView = defineComponent({
               <button type="button" class="kjun-toast-action" onClick={() => { try { toast.action?.onClick(); } finally { dismiss(); } }}>{toast.action.label}</button>
             )}
           </div>
-          {toast.closable !== false && <button type="button" class="kjun-toast-close" aria-label="알림 닫기" onClick={dismiss}><KjunIcon name="x" /></button>}
+          {toast.closable !== false && <button type="button" class="kjun-toast-close" aria-label={m.value.closeNotification} onClick={dismiss}><KjunIcon name="x" /></button>}
           {toast.showProgress !== false && !!toast.duration && (
             <div key={toast.startedAt + ":" + toast.paused} aria-hidden="true" class="kjun-toast-progress" style={{
               "--_kjun-toast-start": `${(toast.remaining / toast.duration) * 100}%`, animationDuration: `${toast.remaining}ms`,
@@ -158,6 +160,7 @@ const FeedbackDialog = defineComponent({
   name: "KjunFeedbackDialog",
   props: { controller: { type: Object as PropType<Controller>, required: true }, request: { type: Object as PropType<FeedbackRequest>, required: true }, open: { type: Boolean, required: true } },
   setup(props) {
+    const m = useKjunMessages();
     const options = props.request.options as PromptOptions & ConfirmOptions;
     const value = ref(options.initialValue || ""), error = ref(""), busy = ref(false);
     let working = false;
@@ -167,7 +170,7 @@ const FeedbackDialog = defineComponent({
       if (working || !active()) return;
       if (props.request.kind === "prompt") {
         const valid = options.validator?.(value.value);
-        if (valid === false || typeof valid === "string") { error.value = typeof valid === "string" ? valid : "입력 내용을 확인하세요."; return; }
+        if (valid === false || typeof valid === "string") { error.value = typeof valid === "string" ? valid : m.value.invalidInput; return; }
         props.controller.settle(value.value, undefined, props.request.id);
         return;
       }
@@ -177,12 +180,12 @@ const FeedbackDialog = defineComponent({
     };
     return () => (
       <KjunModal open={props.open} {...{ "onUpdate:open": (open: boolean) => { if (!open) cancel(); } }}
-        title={options.title || (props.request.kind === "prompt" ? "입력" : "확인")} showFooter confirmText={options.confirmText || "확인"}
-        cancelText={options.cancelText || "취소"} loading={busy.value} closable={!busy.value} closeOnEsc={!busy.value} closeOnOverlay={!busy.value}
+        title={options.title || (props.request.kind === "prompt" ? m.value.promptTitle : m.value.confirmTitle)} showFooter confirmText={options.confirmText || m.value.confirm}
+        cancelText={options.cancelText || m.value.cancel} loading={busy.value} closable={!busy.value} closeOnEsc={!busy.value} closeOnOverlay={!busy.value}
         onConfirm={submit} confirmVariant={options.type === "danger" ? "danger" : "primary"}>
         {options.message && <p>{options.message}</p>}
         {props.request.kind === "prompt" && (
-          <KjunInput modelValue={value.value} ariaLabel={options.title || "입력"} errorMessage={error.value}
+          <KjunInput modelValue={value.value} ariaLabel={options.title || m.value.promptTitle} errorMessage={error.value}
             {...{ autofocus: true, placeholder: options.placeholder, "onUpdate:modelValue": (next: string) => { value.value = next; error.value = ""; }, onEnter: submit }} />
         )}
       </KjunModal>

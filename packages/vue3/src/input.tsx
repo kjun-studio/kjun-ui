@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { computed, defineComponent, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, provide, reactive, ref, useId,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
@@ -110,6 +111,7 @@ export const KjunInput = defineComponent({
     suffix?: () => VNodeChild;
   }>,
   setup(props, { attrs, slots, emit, expose }) {
+    const m = useKjunMessages();
     const field = useKjunField();
     const uid = useKjunId("kjun-");
     const input = ref<HTMLInputElement | null>(null);
@@ -182,7 +184,7 @@ export const KjunInput = defineComponent({
             {(suffix || props.suffixIcon || props.clearable) && (
               <span ref={after} class="kjun-input-affix" style={css({ right: spec.padding })}>
                 {props.clearable && !!props.modelValue && (
-                  <KjunButton variant="ghost" size="sm" ariaLabel="입력 지우기" disabled={props.disabled || props.readOnly}
+                  <KjunButton variant="ghost" size="sm" ariaLabel={m.value.clearInput} disabled={props.disabled || props.readOnly}
                     style={css({ padding: 0, height: spec.clearSize, minHeight: spec.clearSize, width: spec.clearSize, borderRadius: "50%" })}
                     onClick={() => {
                       const el = input.value;

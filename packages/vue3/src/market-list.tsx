@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { getValue } from "../../../shared/package-runtime/table-model";
@@ -32,15 +33,16 @@ export const KjunMarketSimpleList = defineComponent({
   emits: { "page-change": (_page: number) => true },
   slots: Object as SlotsType<MarketIdentitySlots & { pricePrefix?: (scope: { row: any }) => VNodeChild }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     return () => {
       const { rows } = props;
       return (
         <div class="kjun-market-simple-list">
-          <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={props.emptyMessage}
+          <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={(props.emptyMessage ?? m.value.noItems)}
             loadingText={props.loadingText} loadingDelay={props.loadingDelay}>
             {{
               loading: props.skeleton ? () => <KjunListSkeleton /> : undefined,
-              empty: () => <KjunEmpty text={props.emptyMessage} description={props.emptySubMessage} />,
+              empty: () => <KjunEmpty text={(props.emptyMessage ?? m.value.noItems)} description={props.emptySubMessage} />,
               default: () => <div>
                 {rows.map((row: any, i) => {
                   const price = props.priceValue(row), change = props.changeValue(row), stale = !!getValue(row, "stale");
@@ -55,7 +57,7 @@ export const KjunMarketSimpleList = defineComponent({
                         <div class="kjun-market-change">
                           {price !== null && slots.pricePrefix?.({ row })}
                           {(finiteNumber(price) !== null || (!props.changeLoading(row) && finiteNumber(change) !== null)) && (props.closingPrice && !stale
-                            ? <KjunBadge variant="secondary" size="xs">종가</KjunBadge>
+                            ? <KjunBadge variant="secondary" size="xs">{m.value.closePrice}</KjunBadge>
                             : <KjunFreshness stale={stale} source={props.closingPrice ? "close" : source} fetchedAt={fetchedAt} />)}
                           {props.changeLoading(row)
                             ? <KjunSkeleton type="block" height={tokens.extensions.marketList.changeSkeletonHeight} width={tokens.extensions.marketList.changeSkeletonWidth} />

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { deviationLevel, tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
@@ -23,6 +24,7 @@ export const KjunDeviation = defineComponent({
   name: "KjunDeviation",
   props: kjunDeviationProps,
   setup(props) {
+    const m = useKjunMessages();
     return () => {
       const n = finiteNumber(props.value);
       if (n === null) return <span style={{ color: "var(--_kjun-color-text-disabled)" }}>-</span>;
@@ -35,8 +37,8 @@ export const KjunDeviation = defineComponent({
         <span class="kjun-deviation-badge">
           <KjunBadge variant={neutral ? "secondary" : n > 0 ? "price-up" : "price-down"} size="sm" style={signal ? undefined : { background: "transparent" }}>{label}</KjunBadge>
           {!signal ? <span class="kjun-deviation-signal-slot" aria-hidden="true" /> : (
-            <KjunTooltip content={`괴리율 ${props.signalThreshold}% 초과 — 차익거래 기회 가능`}>
-              <span tabindex={0} role="img" aria-label="차익거래 기회" class="kjun-deviation-signal">
+            <KjunTooltip content={m.value.deviationWarning(props.signalThreshold)}>
+              <span tabindex={0} role="img" aria-label={m.value.arbitrage} class="kjun-deviation-signal">
                 <KjunIcon name="alert-triangle" size={tokens.extensions.financial.warningIconSize} style={{ color: "var(--_kjun-color-warning)" }} />
               </span>
             </KjunTooltip>
@@ -144,14 +146,14 @@ export const KjunCollectionMark = defineComponent({
 });
 
 export const executionStates = {
-  queued: ["secondary", "대기 중"],
-  starting: ["primary", "시작 중"],
-  running: ["primary", "실행 중"],
-  stopping: ["warning", "중단 중"],
-  stopped: ["secondary", "중단됨"],
-  completed: ["success", "완료"],
-  completed_with_errors: ["warning", "완료 (오류)"],
-  failed: ["danger", "실패"],
+  queued: ["secondary", "statusQueued"],
+  starting: ["primary", "statusStarting"],
+  running: ["primary", "statusRunning"],
+  stopping: ["warning", "statusStopping"],
+  stopped: ["secondary", "statusStopped"],
+  completed: ["success", "statusCompleted"],
+  completed_with_errors: ["warning", "statusCompletedWithErrors"],
+  failed: ["danger", "statusFailed"],
 } as const;
 const kjunExecutionStatusBadgeProps = {
   status: { type: String as PropType<string | null>, default: undefined },
@@ -163,12 +165,13 @@ export const KjunExecutionStatusBadge = defineComponent({
   name: "KjunExecutionStatusBadge",
   props: kjunExecutionStatusBadgeProps,
   setup(props) {
+    const m = useKjunMessages();
     return () => {
       const state = props.status ? executionStates[props.status as keyof typeof executionStates] : undefined;
       // A running job carries a dot, so it reads apart from queued at a glance.
       return (
         <KjunBadge variant={state?.[0] || "secondary"} size={props.size} dot={props.status === "running"}>
-          {props.label || state?.[1] || (props.status ? "알 수 없음" : "실행 이력 없음")}
+          {props.label || (state && m.value[state[1]]) || (props.status ? m.value.statusUnknown : m.value.statusNoRuns)}
         </KjunBadge>
       );
     };

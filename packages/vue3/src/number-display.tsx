@@ -1,3 +1,4 @@
+import { useKjunMessageScope } from "./runtime/messages";
 import { defineComponent, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type Ref } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { createNumberMotion } from "../../../shared/package-runtime/number-motion";
@@ -65,11 +66,12 @@ export const KjunFreshness = defineComponent({
   name: "KjunFreshness",
   props: kjunFreshnessProps,
   setup(props) {
+    const scope = useKjunMessageScope();
     // A focusable tooltip target, so keyboard and touch reach when the value was fetched (not only a hover title).
     return () => props.stale ? (
-      <KjunTooltip content={(props.source === "close" ? "실시간 시세 없음 · 최근 종가 표시" : "실시간 시세 지연") +
-        (props.fetchedAt ? " · " + (props.formatter?.(props.fetchedAt) || formatRelativeTime(props.fetchedAt)) : "")}>
-        <span tabindex={0} class="kjun-freshness"><KjunBadge variant="warning" size="xs">{props.source === "close" ? "종가" : "지연"}</KjunBadge></span>
+      <KjunTooltip content={(props.source === "close" ? scope.value.messages.noRealtimeQuote : scope.value.messages.realtimeDelayed) +
+        (props.fetchedAt ? " · " + (props.formatter?.(props.fetchedAt) || formatRelativeTime(props.fetchedAt, undefined, scope.value)) : "")}>
+        <span tabindex={0} class="kjun-freshness"><KjunBadge variant="warning" size="xs">{props.source === "close" ? scope.value.messages.closePrice : scope.value.messages.delayed}</KjunBadge></span>
       </KjunTooltip>
     ) : null;
   },

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, type ExtractPublicPropTypes, type PropType } from "vue";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { KjunSkeleton, KjunSpinner } from "./display";
@@ -92,7 +93,7 @@ const chart = tokens.extensions.chartSkeleton;
 const kjunChartSkeletonProps = {
   kind: { type: String as PropType<KjunChartSkeletonKind>, default: "frame" },
   height: { type: [Number, String] as PropType<Length>, default: chart.height },
-  loadingText: { type: String, default: "차트를 불러오는 중" },
+  loadingText: { type: String, default: undefined },
   skeleton: { type: Boolean, default: true },
   loadingDelay: { type: Number, default: 0 },
   rows: { type: Number, default: 8 },
@@ -103,11 +104,12 @@ export const KjunChartSkeleton = defineComponent({
   name: "KjunChartSkeleton",
   props: kjunChartSkeletonProps,
   setup(props) {
+    const m = useKjunMessages();
     const revealed = useLoadingReveal(() => true, () => props.loadingDelay);
     return () => {
       const kind = chartSkeletonKind(props.kind),
         shown = revealed(),
-        status = shown && props.loadingText ? "status" : undefined,
+        status = shown && (props.loadingText ?? m.value.chartLoading) ? "status" : undefined,
         rowCount = chartSkeletonCount(props.rows),
         columnCount = chartSkeletonCount(props.columns);
       return (
@@ -117,7 +119,7 @@ export const KjunChartSkeleton = defineComponent({
             <div class="kjun-data-loading" data-kjun-chart-part="loading" role={status}>
               {/* The spinner's own status would announce "로딩 중" on top of (or instead of) the chart's text. */}
               <span aria-hidden="true"><KjunSpinner size="md" /></span>
-              {props.loadingText && <p>{props.loadingText}</p>}
+              {(props.loadingText ?? m.value.chartLoading) && <p>{(props.loadingText ?? m.value.chartLoading)}</p>}
             </div>
           ) : [
             kind === "donut" ? (
@@ -136,8 +138,8 @@ export const KjunChartSkeleton = defineComponent({
                 <path d={chartFramePath} fill="none" stroke="var(--_kjun-color-chart-grid)" stroke-width={tokens.border.defaultWidth} vector-effect="non-scaling-stroke" />
               </svg>
             ),
-            props.loadingText && (
-              <div key="status" class="kjun-chart-skeleton-status" data-kjun-chart-part="status" role={status}><span>{props.loadingText}</span></div>
+            (props.loadingText ?? m.value.chartLoading) && (
+              <div key="status" class="kjun-chart-skeleton-status" data-kjun-chart-part="status" role={status}><span>{(props.loadingText ?? m.value.chartLoading)}</span></div>
             ),
           ]}
         </div>

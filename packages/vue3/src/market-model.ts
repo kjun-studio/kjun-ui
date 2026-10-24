@@ -31,18 +31,18 @@ export const marketBaseProps = {
   pagination: { type: Object as PropType<MarketPagination | null>, default: undefined },
   primaryLabel: { type: Function as RowFn<string>, default: undefined },
   subMeta: { type: Function as RowFn<string>, default: undefined },
-  emptyMessage: { type: String, default: "항목이 없습니다" },
+  emptyMessage: { type: String, default: undefined },
   emptySubMessage: { type: String, default: "" },
   /** false shows the shared spinner and loadingText instead of the skeleton. */
   skeleton: { type: Boolean, default: true },
-  loadingText: { type: String, default: "로딩 중..." },
+  loadingText: { type: String, default: undefined },
   /** Milliseconds a first load must last before its loading display shows. */
   loadingDelay: { type: Number, default: 0 },
   showFooter: { type: Boolean, default: true },
   calculatedAt: { type: String as PropType<string | null>, default: undefined },
   footerNote: { type: String, default: undefined },
   totalCount: { type: Number, default: 0 },
-  unitLabel: { type: String, default: "개" },
+  unitLabel: { type: String, default: undefined },
   formatDate: { type: Function as PropType<(value: string) => string>, default: undefined },
   /** Declared as props: rows become buttons and the retry action appears only when the app listens. */
   onRowClick: { type: Function as RowFn<void>, default: undefined },

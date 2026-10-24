@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { Teleport, defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { drawerOverlayVars } from "../../../shared/package-runtime/drawer-geometry";
@@ -38,6 +39,7 @@ export const KjunDrawer = defineComponent({
     footer?: () => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     const target = usePortalTarget();
     const close = () => { if (!props.open) return; emit("update:open", false); emit("close"); };
     const { motion, layer } = useWindowLayer(() => props.open, close, () => props.closeOnEsc, tokens.motion.layerExit);
@@ -57,12 +59,12 @@ export const KjunDrawer = defineComponent({
             <div ref={drawer} class="kjun-drawer" style={css({ zIndex: layer.state.zIndex(layer.id, "content"), width: sideways ? props.width : "100%" })}>
               <DismissButton onDismiss={close} />
               <section ref={(node: unknown) => { dialog.value = node as HTMLElement | null; rootRef(node); }} class="kjun-drawer-dialog" role="dialog" tabindex={-1}
-                aria-label={props.ariaLabel || props.title || "패널"}>
+                aria-label={props.ariaLabel || props.title || m.value.panel}>
                 {(props.title || hasContent(header) || props.closable) && (
                   <div class="kjun-drawer-header">
                     <div>{hasContent(header) ? header : <h2>{props.title}</h2>}</div>
                     {props.closable && (
-                      <KjunButton size="sm" variant="ghost" ariaLabel="닫기" onClick={close} style={css({ borderRadius: tokens.extensions.drawer.closeRadius,
+                      <KjunButton size="sm" variant="ghost" ariaLabel={m.value.close} onClick={close} style={css({ borderRadius: tokens.extensions.drawer.closeRadius,
                         width: tokens.extensions.drawer.closeSize, height: tokens.extensions.drawer.closeSize, padding: 0 })}>
                         <KjunIcon name="x" size={tokens.extensions.drawer.closeIconSize} />
                       </KjunButton>

@@ -11,7 +11,7 @@ async function confirmButtons(page: Page, id: string) {
   return dialog;
 }
 
-for (const platform of ['react']) {
+for (const platform of ['react', 'vue3']) {
   test.describe(platform, () => {
     test.beforeEach(async ({ page }) => {
       await openFixture(page, platform, '', 'i18n');

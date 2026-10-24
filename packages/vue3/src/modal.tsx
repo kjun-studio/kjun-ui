@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { Teleport, defineComponent, onBeforeUnmount, onMounted, provide, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonVariant, type InputSize } from "@kjun-ui/tokens";
 import { observeFormActions } from "../../../shared/package-runtime/form-actions";
@@ -12,8 +13,8 @@ import { hasContent } from "./runtime/slots";
 
 const kjunFormActionsProps = {
   size: { type: String as PropType<InputSize>, default: "lg" },
-  cancelText: { type: String, default: "취소" },
-  confirmText: { type: String, default: "저장" },
+  cancelText: { type: String, default: undefined },
+  confirmText: { type: String, default: undefined },
   showCancel: { type: Boolean, default: true },
   showConfirm: { type: Boolean, default: true },
   cancelDisabled: { type: Boolean, default: false },
@@ -28,14 +29,15 @@ export const KjunFormActions = defineComponent({
   props: kjunFormActionsProps,
   emits: { cancel: () => true, confirm: () => true },
   setup(props, { emit }) {
+    const m = useKjunMessages();
     const root = ref<HTMLElement | null>(null);
     let stop: (() => void) | undefined;
     onMounted(() => { stop = observeFormActions(root.value!); });
     onBeforeUnmount(() => stop?.());
     return () => (
       <div class="kjun-form-actions" ref={root}>
-        {props.showCancel && <KjunButton size={props.size} variant={props.cancelVariant} disabled={props.cancelDisabled} onClick={() => emit("cancel")}>{props.cancelText}</KjunButton>}
-        {props.showConfirm && <KjunButton size={props.size} variant={props.variant} disabled={props.confirmDisabled} loading={props.loading} onClick={() => emit("confirm")}>{props.confirmText}</KjunButton>}
+        {props.showCancel && <KjunButton size={props.size} variant={props.cancelVariant} disabled={props.cancelDisabled} onClick={() => emit("cancel")}>{(props.cancelText ?? m.value.cancel)}</KjunButton>}
+        {props.showConfirm && <KjunButton size={props.size} variant={props.variant} disabled={props.confirmDisabled} loading={props.loading} onClick={() => emit("confirm")}>{(props.confirmText ?? m.value.save)}</KjunButton>}
       </div>
     );
   },
@@ -91,8 +93,8 @@ const kjunModalProps = {
   showFooter: { type: Boolean, default: false },
   showConfirmButton: { type: Boolean, default: true },
   showCancelButton: { type: Boolean, default: true },
-  confirmText: { type: String, default: "확인" },
-  cancelText: { type: String, default: "취소" },
+  confirmText: { type: String, default: undefined },
+  cancelText: { type: String, default: undefined },
   confirmDisabled: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
   noPadding: { type: Boolean, default: false },
@@ -113,6 +115,7 @@ export const KjunModal = defineComponent({
     footer?: () => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
+    const m = useKjunMessages();
     const target = usePortalTarget();
     const id = useKjunId("kjun-");
     const close = () => { if (!props.open) return; emit("update:open", false); emit("close"); };
@@ -140,11 +143,11 @@ export const KjunModal = defineComponent({
             }}>
               <DismissButton onDismiss={close} />
               <section ref={(node: unknown) => { dialog.value = node as HTMLElement | null; rootRef(node); }} class="kjun-modal-dialog" role="dialog" tabindex={-1}
-                aria-label={explicitLabel || (labelledByHeading ? undefined : props.title.trim() || "대화상자")} aria-labelledby={labelledByHeading ? id : undefined}>
+                aria-label={explicitLabel || (labelledByHeading ? undefined : props.title.trim() || m.value.dialog)} aria-labelledby={labelledByHeading ? id : undefined}>
                 {props.showHeader && (
                   <div class="kjun-modal-header">
                     <h2 id={id} class="kjun-modal-title">{hasContent(header) ? header : props.title}</h2>
-                    {props.closable && <button type="button" class="kjun-modal-close" aria-label="닫기" onClick={close}><KjunIcon name="x" size={tokens.modal.closeIconSize} /></button>}
+                    {props.closable && <button type="button" class="kjun-modal-close" aria-label={m.value.close} onClick={close}><KjunIcon name="x" size={tokens.modal.closeIconSize} /></button>}
                   </div>
                 )}
                 <div class="kjun-modal-body" style={props.noPadding ? { padding: 0 } : undefined}>{slots.default?.()}</div>
@@ -152,7 +155,7 @@ export const KjunModal = defineComponent({
                   <div class="kjun-modal-footer">
                     {hasContent(footer) ? footer : (
                       <KjunFormActions size={props.footerSize} cancelVariant="secondary" showCancel={props.showCancelButton} showConfirm={props.showConfirmButton}
-                        cancelText={props.cancelText} confirmText={props.confirmText} confirmDisabled={props.confirmDisabled} loading={props.loading}
+                        cancelText={(props.cancelText ?? m.value.cancel)} confirmText={(props.confirmText ?? m.value.confirm)} confirmDisabled={props.confirmDisabled} loading={props.loading}
                         variant={props.confirmVariant} onConfirm={() => emit("confirm")} onCancel={() => { emit("cancel"); close(); }} />
                     )}
                   </div>

@@ -1,4 +1,4 @@
-import { kjunMessagesKo } from "../../../shared/package-runtime/messages";
+import { useKjunMessages } from "./runtime/messages";
 import { computed, defineComponent, inject, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
@@ -20,7 +20,7 @@ type SelectValue = OptionValue | OptionValue[] | null;
 const kjunSelectProps = {
   modelValue: { type: [String, Number, Array, null] as PropType<SelectValue>, default: null },
   options: { type: Array as PropType<SelectOption[]>, default: () => [] },
-  placeholder: { type: String, default: "선택" },
+  placeholder: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
   /** Trigger id for an outside <label for>; defaults to the FormGroup's id. */
   id: { type: String, default: undefined },
@@ -33,7 +33,7 @@ const kjunSelectProps = {
   searchable: { type: Boolean, default: false },
   open: { type: Boolean, default: undefined },
   loading: { type: Boolean, default: false },
-  searchPlaceholder: { type: String, default: "검색..." },
+  searchPlaceholder: { type: String, default: undefined },
   optionPageSize: { type: Number, default: 0 },
   clearable: { type: Boolean, default: false },
   multiple: { type: Boolean, default: false },
@@ -61,6 +61,7 @@ export const KjunSelect = defineComponent({
     menuHeader?: () => VNodeChild;
   }>,
   setup(props, { slots, emit, expose }) {
+    const m = useKjunMessages();
     const state = useSelectState(() => props.open, () => props.disabled, () => props.optionPageSize, value => emit("update:open", value));
     const composition = useCompositionGuard();
     const trigger = ref<HTMLButtonElement | null>(null), menu = ref<HTMLElement | null>(null);
@@ -77,7 +78,7 @@ export const KjunSelect = defineComponent({
     const change = (value: SelectValue) => { emit("update:modelValue", value); emit("change", value); };
     const model = computed(() => selectOptions({ options: props.options, value: props.modelValue, labelKey: props.labelKey, valueKey: props.valueKey,
       query: state.query.value, pageSize: props.optionPageSize, limit: state.limit.value, loading: props.loading, multiple: props.multiple,
-      filterFn: props.filterFn, searchKeys: props.searchKeys, selectedCount: kjunMessagesKo.selectedCount }));
+      filterFn: props.filterFn, searchKeys: props.searchKeys, selectedCount: m.value.selectedCount }));
     const optionElements = () => [...(menu.value?.querySelectorAll<HTMLElement>('[role="option"]:not([aria-disabled="true"])') ?? [])];
     const focusOption = (element: HTMLElement | undefined) => {
       if (!element) return;
@@ -126,7 +127,7 @@ export const KjunSelect = defineComponent({
           <div class="kjun-select-shell">
             <button ref={trigger} id={props.id ?? owner?.id} type="button" class="kjun-input kjun-select-trigger" data-time-segment={segment ? "true" : undefined}
               disabled={props.disabled} aria-haspopup="listbox" aria-controls={expanded.value ? id : undefined} aria-expanded={expanded.value}
-              aria-label={props.ariaLabel || (props.id || owner ? undefined : props.placeholder)} aria-labelledby={owner?.labelId}
+              aria-label={props.ariaLabel || (props.id || owner ? undefined : (props.placeholder ?? m.value.select))} aria-labelledby={owner?.labelId}
               aria-describedby={mergeIds(props.ariaDescribedby, owner?.describedBy)}
               aria-invalid={props.error || !!owner?.error ? "true" : undefined}
               style={css({ height: spec.height, borderRadius: spec.radius, ...inputTypeStyle(props.size),
@@ -136,14 +137,14 @@ export const KjunSelect = defineComponent({
               onKeydown={(event: KeyboardEvent) => { if (["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); state.changeOpen(true); } }}>
               <span class={!label ? "kjun-placeholder" : undefined}
                 style={css({ flex: 1, paddingRight: props.clearable && label ? spec.clearSize + spec.affixGap : undefined })}>
-                {shown?.length ? shown : label || props.placeholder}
+                {shown?.length ? shown : label || (props.placeholder ?? m.value.select)}
               </span>
               <KjunIcon name="chevron-down" class="kjun-select-indicator" data-open={expanded.value || undefined}
                 size={segment ? tokens.extensions.timePicker.iconSize : spec.iconSize}
                 style={{ flexShrink: 0, color: props.disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
             </button>
             {props.clearable && !!label && (
-              <KjunButton size="sm" variant="ghost" ariaLabel="선택 지우기" disabled={props.disabled} class="kjun-select-clear"
+              <KjunButton size="sm" variant="ghost" ariaLabel={m.value.clearSelection} disabled={props.disabled} class="kjun-select-clear"
                 style={css({ padding: 0, right: spec.padding + spec.iconSize + spec.affixGap, width: spec.clearSize, height: spec.clearSize, minHeight: spec.clearSize, borderRadius: "50%" })}
                 onClick={() => { change(props.multiple ? [] : null); emit("clear"); trigger.value?.focus(); }}>
                 <KjunIcon name="x" size={spec.iconSize} />
@@ -157,9 +158,9 @@ export const KjunSelect = defineComponent({
                 {slots.menuHeader && <div class="kjun-select-header">{slots.menuHeader()}</div>}
                 {props.searchable && (
                   <div class="kjun-select-search">
-                    <KjunInput modelValue={state.query.value} ariaLabel="선택 항목 검색" size="sm" prefixIcon="search"
+                    <KjunInput modelValue={state.query.value} ariaLabel={m.value.searchOptions} size="sm" prefixIcon="search"
                       {...{
-                        placeholder: props.searchPlaceholder,
+                        placeholder: (props.searchPlaceholder ?? m.value.search),
                         "onUpdate:modelValue": (value: string) => { state.search(value); emit("search", value); },
                         onCompositionstart: composition.onCompositionstart,
                         onCompositionend: composition.onCompositionend,
@@ -174,8 +175,8 @@ export const KjunSelect = defineComponent({
                       }} />
                   </div>
                 )}
-                {props.loading && <div class="kjun-select-empty"><KjunSpinner size="sm" text="검색 중..." /></div>}
-                <div key={state.session.value} id={id} class="kjun-listbox" aria-label={props.ariaLabel || props.placeholder} role="listbox"
+                {props.loading && <div class="kjun-select-empty"><KjunSpinner size="sm" text={m.value.searching} /></div>}
+                <div key={state.session.value} id={id} class="kjun-listbox" aria-label={props.ariaLabel || (props.placeholder ?? m.value.select)} role="listbox"
                   aria-orientation="vertical" aria-multiselectable={props.multiple ? "true" : undefined} tabindex={-1} onKeydown={listKeydown}>
                   {visible.map(({ option, key }) => {
                     const isSelected = selected(option), disabled = optionDisabled(option), isFocused = focused.value === String(key);
@@ -201,9 +202,9 @@ export const KjunSelect = defineComponent({
                     );
                   })}
                 </div>
-                {!props.loading && !matching.length && <div class="kjun-select-empty">결과가 없습니다</div>}
+                {!props.loading && !matching.length && <div class="kjun-select-empty">{m.value.noResults}</div>}
                 {!props.loading && visible.length < matching.length && (
-                  <KjunButton size="sm" variant="ghost" block onClick={state.showMore}>더 보기</KjunButton>
+                  <KjunButton size="sm" variant="ghost" block onClick={state.showMore}>{m.value.loadMore}</KjunButton>
                 )}
               </div>
             </KjunFieldReset>
