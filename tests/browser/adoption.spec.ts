@@ -103,5 +103,25 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(area.getByRole('progressbar', { name: 'Small goal' })).toHaveAttribute('aria-valuenow', '70');
       await expect(area.getByText('70%', { exact: true })).toHaveCount(0);
     });
+
+    test('buttons and badges follow an explicit stack alignment', async ({ page }) => {
+      const centre = (b: { x: number; width: number }) => b.x + b.width / 2;
+      const stack = (await section(page, 'align-center').boundingBox())!;
+      for (const target of [page.getByRole('button', { name: 'Centered', exact: true }), section(page, 'align-center').getByText('Centered badge', { exact: true })]) {
+        expect(Math.abs(centre((await target.boundingBox())!) - centre(stack))).toBeLessThan(2);
+      }
+      const row = (await section(page, 'align-end').boundingBox())!;
+      const bottom = (await page.getByRole('button', { name: 'Bottom', exact: true }).boundingBox())!;
+      expect(Math.abs(bottom.y + bottom.height - (row.y + row.height))).toBeLessThan(2);
+    });
+
+    test('default stacks keep buttons at their natural width', async ({ page }) => {
+      // Web buttons already follow the parent (a default Stack stretches them); this pins the Native default.
+      test.skip(platform !== 'native', 'Native default only');
+      const stack = (await section(page, 'align-default').boundingBox())!;
+      const button = (await page.getByRole('button', { name: 'Default', exact: true }).boundingBox())!;
+      expect(Math.abs(button.x - stack.x)).toBeLessThan(1);
+      expect(button.width).toBeLessThan(stack.width / 2);
+    });
   });
 }

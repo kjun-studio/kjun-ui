@@ -34,4 +34,17 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
     <K.KjunProgress shape="circle" value={40} showLabel label="Weekly goal" subLabel="4 of 10" />
     <K.KjunProgress shape="circle" size="sm" value={70} showLabel label="Small goal" />
   </K.KjunProvider></div>
+  <div data-testid="alignment"><K.KjunProvider >
+    <div data-testid="align-center"><K.KjunStack align="center">
+      <K.KjunButton onClick={() => {}}>Centered</K.KjunButton>
+      <K.KjunBadge>Centered badge</K.KjunBadge>
+    </K.KjunStack></div>
+    <div data-testid="align-default"><K.KjunStack>
+      <K.KjunButton onClick={() => {}}>Default</K.KjunButton>
+    </K.KjunStack></div>
+    <div data-testid="align-end"><K.KjunInline align="end">
+      <K.KjunProgress shape="circle" size="lg" value={10} label="Tall" />
+      <K.KjunButton onClick={() => {}}>Bottom</K.KjunButton>
+    </K.KjunInline></div>
+  </K.KjunProvider></div>
 </div>).mount('#root');

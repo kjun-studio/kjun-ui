@@ -7,6 +7,8 @@ import {
   type TextAlign, type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
 import { KjunFormGroup } from "./input";
+import { KjunButton } from "./button";
+import { KjunBadge } from "./display-primitives";
 import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
@@ -57,16 +59,26 @@ function flatten(children: ReactNode, path = ""): [string, ReactNode][] {
       ? flatten(child.props.children, `${key}.`) : [[key, child]];
   });
 }
-function items(children: ReactNode) {
+// Native buttons and badges sit at flex-start on their own. When the app names an alignment, a direct button
+// or badge takes it as alignSelf (Web already follows the parent); the default and stretch keep flex-start,
+// and the child's own style.alignSelf still wins.
+type ChildAlign = "flex-start" | "center" | "flex-end" | "baseline";
+function items(children: ReactNode, childAlign?: ChildAlign) {
   return flatten(children).map(([key, child]) => {
     if (typeof child === "string" || typeof child === "number") return <KText key={key}>{child}</KText>;
     if (isValidElement(child) && child.type === KjunFormGroup) {
       const group = child as ReactElement<{ style?: StyleProp<ViewStyle> }>;
       return cloneElement(group, { key, style: [{ marginBottom: 0 }, group.props.style] });
     }
+    if (childAlign && isValidElement(child) && (child.type === KjunButton || child.type === KjunBadge)) {
+      const control = child as ReactElement<{ style?: StyleProp<ViewStyle> }>;
+      return cloneElement(control, { key, style: [{ alignSelf: childAlign }, control.props.style] });
+    }
     return isValidElement(child) ? cloneElement(child, { key }) : child;
   });
 }
+const followed = (align: StackAlign | InlineAlign | undefined): ChildAlign | undefined =>
+  align && align !== "stretch" ? crossAxis[align] : undefined;
 
 const stackGap: Record<StackGap, number> = {
   none: 0, sm: tokens.space.stack.sm, md: tokens.space.stack.md, lg: tokens.space.stack.lg,
@@ -85,8 +97,8 @@ export interface KjunStackProps {
   style?: StyleProp<ViewStyle>;
   children?: ReactNode;
 }
-export function KjunStack({ gap = "md", align = "stretch", style, children }: KjunStackProps) {
-  return <View style={[{ flexDirection: "column", alignItems: crossAxis[align], gap: stackGap[gap], minWidth: 0 }, style]}>{items(children)}</View>;
+export function KjunStack({ gap = "md", align, style, children }: KjunStackProps) {
+  return <View style={[{ flexDirection: "column", alignItems: crossAxis[align ?? "stretch"], gap: stackGap[gap], minWidth: 0 }, style]}>{items(children, followed(align))}</View>;
 }
 
 export interface KjunInlineProps {
@@ -99,11 +111,11 @@ export interface KjunInlineProps {
   style?: StyleProp<ViewStyle>;
   children?: ReactNode;
 }
-export function KjunInline({ gap = "sm", align = "center", justify = "start", wrap = true, style, children }: KjunInlineProps) {
+export function KjunInline({ gap = "sm", align, justify = "start", wrap = true, style, children }: KjunInlineProps) {
   return (
-    <View style={[{ flexDirection: "row", flexWrap: wrap ? "wrap" : "nowrap", alignItems: crossAxis[align],
+    <View style={[{ flexDirection: "row", flexWrap: wrap ? "wrap" : "nowrap", alignItems: crossAxis[align ?? "center"],
       justifyContent: mainAxis[justify], gap: inlineGap[gap], minWidth: 0 }, style]}>
-      {items(children)}
+      {items(children, followed(align))}
     </View>
   );
 }
