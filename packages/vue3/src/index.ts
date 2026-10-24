@@ -7,6 +7,7 @@ export type { DisplaySize, SemanticTone, KjunBadgeProps, KjunEmptyProps, KjunSpi
 export type { KjunTextProps, KjunStackProps, KjunInlineProps, TextVariant, TextTone, TextAlign, TextTag, StackGap, StackAlign, InlineGap, InlineAlign, InlineJustify } from "./layout-primitives";
 export type { KjunCardProps } from "./card";
 export type { KjunChipProps } from "./chip";
+export type { KjunFabProps } from "./fab";
 export type { KjunImageProps, KjunAvatarProps } from "./media";
 export type { KjunListSkeletonProps, KjunFormSkeletonProps, KjunChartSkeletonProps } from "./skeletons";
 export type { KjunInputProps, KjunFormGroupProps } from "./input";

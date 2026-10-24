@@ -136,6 +136,7 @@ export * from "./list";
 export * from "./app-navigation";
 export * from "./media";
 export * from "./chip";
+export * from "./fab";
 export * from "./range-input";
 export * from "./quantity-stepper";
 export * from "./time-picker";

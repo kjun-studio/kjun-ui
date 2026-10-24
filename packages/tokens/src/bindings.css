@@ -258,6 +258,9 @@
   --_kjun-extension-state-padding-sm: 24px;
   --_kjun-extension-state-padding-md: 48px;
   --_kjun-extension-state-padding-lg: 80px;
+  --_kjun-extension-fab-size: 56px;
+  --_kjun-extension-fab-inset: 16px;
+  --_kjun-extension-fab-icon-size: 24px;
   --_kjun-extension-list-padding: 16px;
   --_kjun-extension-list-gap: 12px;
   --_kjun-extension-list-minimum-height: 56px;

@@ -29,6 +29,9 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
   <K.KjunProvider><div data-testid="link-button" style={{ display: 'flex', flexDirection: 'row' }}>
     <K.KjunButton variant="link">More</K.KjunButton>
   </div></K.KjunProvider>
+  <div data-testid="fab-area" style={{ position: 'relative', height: '200px', width: '300px' }}>
+    <K.KjunProvider><K.KjunFab icon="plus" ariaLabel="Add schedule" safeAreaBottom={20} /></K.KjunProvider>
+  </div>
   <div data-testid="optional-ko"><K.KjunProvider><K.KjunFormGroup label="Nickname" optional><K.KjunInput modelValue="" /></K.KjunFormGroup></K.KjunProvider></div>
   <div data-testid="optional-en"><K.KjunProvider locale="en-US"><K.KjunFormGroup label="Nickname" optional><K.KjunInput modelValue="" /></K.KjunFormGroup></K.KjunProvider></div>
 </div>).mount('#root');

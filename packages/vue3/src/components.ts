@@ -5,6 +5,7 @@ export { KjunBadge, KjunEmpty, KjunSpinner, KjunAlert, KjunProgress, KjunSkeleto
 export { KjunText, KjunStack, KjunInline } from "./layout-primitives";
 export { KjunCard } from "./card";
 export { KjunChip } from "./chip";
+export { KjunFab } from "./fab";
 export { KjunImage, KjunAvatar } from "./media";
 export { KjunListSkeleton, KjunFormSkeleton, KjunChartSkeleton } from "./skeletons";
 export { KjunInput, KjunFormGroup } from "./input";

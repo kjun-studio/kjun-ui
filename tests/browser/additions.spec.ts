@@ -87,5 +87,17 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(box.width - text.width).toBeLessThanOrEqual(1);
       expect(Math.round(box.height)).toBe(20);
     });
+
+    test('fab is a 56 circle at the bottom end and honours the safe area', async ({ page }) => {
+      const fab = page.getByRole('button', { name: 'Add schedule' });
+      const box = (await fab.boundingBox())!;
+      expect(Math.round(box.width)).toBe(56);
+      expect(Math.round(box.height)).toBe(56);
+      expect(await fab.evaluate(el => parseFloat(getComputedStyle(el).borderTopLeftRadius))).toBeGreaterThanOrEqual(28);
+      // Web pins it to the viewport; Native places it in its parent.
+      const frame = platform === 'native' ? (await section(page, 'fab-area').boundingBox())! : { x: 0, y: 0, ...page.viewportSize()! };
+      expect(Math.round(frame.x + frame.width - (box.x + box.width))).toBe(16);
+      expect(Math.round(frame.y + frame.height - (box.y + box.height))).toBe(16 + 20);
+    });
   });
 }

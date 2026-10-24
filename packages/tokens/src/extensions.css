@@ -212,3 +212,9 @@
 .kjun-list-description { margin-top:var(--_kjun-extension-list-description-gap); }
 
 .kjun-list-heading > div { flex:1; min-width:0; overflow-wrap:anywhere; }
+
+/* KjunFab: a round action pinned to the viewport's bottom end, above page content and clear of the safe area. */
+.kjun-fab{position:fixed;right:var(--_kjun-extension-fab-inset);z-index:var(--_kjun-layer-page-navigation);display:inline-flex;align-items:center;justify-content:center;width:var(--_kjun-extension-fab-size);height:var(--_kjun-extension-fab-size);padding:0;border:0;border-radius:50%;background:var(--_kjun-color-brand);color:var(--_kjun-color-on-brand);box-shadow:var(--_kjun-elevation-floating);cursor:pointer}
+.kjun-fab:hover:not(:disabled){background:var(--_kjun-color-brand-hover)}.kjun-fab:active:not(:disabled){background:var(--_kjun-color-brand-active)}
+.kjun-fab:focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
+.kjun-fab:disabled{opacity:var(--_kjun-state-opacity-disabled);cursor:not-allowed}
