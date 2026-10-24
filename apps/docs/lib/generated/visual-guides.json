@@ -15168,6 +15168,14 @@
             "id": "default",
             "label": "기본 예제",
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunText\":{\"props\":{\"disabled\":true}}}"
+            }
           }
         ],
         "sizes": [],

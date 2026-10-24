@@ -7,7 +7,8 @@
       "disabled",
       "onClick",
       "destructive",
-      "chevron"
+      "chevron",
+      "ariaLabel"
     ],
     "react": [
       "title",
@@ -19,7 +20,9 @@
       "disabled",
       "onClick",
       "destructive",
-      "chevron"
+      "chevron",
+      "ariaLabel",
+      "children"
     ],
     "native": [
       "title",
@@ -31,7 +34,9 @@
       "disabled",
       "onPress",
       "destructive",
-      "chevron"
+      "chevron",
+      "ariaLabel",
+      "children"
     ]
   },
   "KjunListSection": {

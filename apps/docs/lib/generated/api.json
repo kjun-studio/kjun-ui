@@ -93,9 +93,28 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "default": "—",
+        "description": "v-model:open. A controlled item follows this value only and stays out of the Accordion's single-open rule."
+      },
+      {
+        "name": "keepMounted",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Keeps the body mounted after it first opens, so inputs keep their state while closed."
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "update:open",
+        "source": "packages/vue3/src/navigation.tsx"
+      }
+    ],
     "slots": [
       {
         "name": "default",
@@ -122,6 +141,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "open",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Controlled open state. A controlled item follows this value only and stays out of the Accordion's single-open rule."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "((open: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Requests a change on a controlled item; reports every change on an uncontrolled one (also when a sibling closes it)."
+      },
+      {
+        "name": "keepMounted",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Keeps the body mounted after it first opens, so inputs keep their state while closed."
       },
       {
         "name": "disabled",
@@ -159,6 +199,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "open",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Controlled open state. A controlled item follows this value only and stays out of the Accordion's single-open rule."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "((open: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Requests a change on a controlled item; reports every change on an uncontrolled one (also when a sibling closes it)."
+      },
+      {
+        "name": "keepMounted",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Keeps the body mounted after it first opens, so inputs keep their state while closed."
       },
       {
         "name": "disabled",
@@ -2977,6 +3038,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "returnFocus",
+        "type": "FocusReturn",
+        "required": false,
+        "default": "—",
+        "description": "Where focus goes after choosing an option or Escape. Closing while typing keeps focus in the input. Web only."
       }
     ],
     "events": [
@@ -3125,6 +3193,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "returnFocus",
+        "type": "import(\"/workspace/packages/react/src/floating-panel\").FocusReturn | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where focus goes after choosing an option or Escape. Closing while typing keeps focus in the input. Web only."
       }
     ],
     "native": [
@@ -4567,6 +4642,10 @@
       {
         "name": "close",
         "source": "packages/vue3/src/drawer.tsx"
+      },
+      {
+        "name": "after-close",
+        "source": "packages/vue3/src/drawer.tsx"
       }
     ],
     "slots": [
@@ -4677,6 +4756,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "onAfterClose",
+        "type": "(() => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit)."
       },
       {
         "name": "ariaLabel",
@@ -4800,6 +4886,13 @@
         "description": ""
       },
       {
+        "name": "onAfterClose",
+        "type": "(() => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit)."
+      },
+      {
         "name": "ariaLabel",
         "type": "string | undefined",
         "required": false,
@@ -4872,6 +4965,13 @@
         "required": false,
         "default": "\"\"",
         "description": ""
+      },
+      {
+        "name": "returnFocus",
+        "type": "FocusReturn",
+        "required": false,
+        "default": "—",
+        "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only."
       }
     ],
     "events": [
@@ -4959,6 +5059,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "returnFocus",
+        "type": "import(\"/workspace/packages/react/src/floating-panel\").FocusReturn | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only."
       }
     ],
     "native": [
@@ -8620,10 +8727,22 @@
         "required": false,
         "default": "—",
         "description": "Declared as a prop: a row is a button only when the app listens for clicks."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Name of a pressable or link row, e.g. with the amount a screen reader should hear."
       }
     ],
     "events": [],
     "slots": [
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      },
       {
         "name": "leading",
         "data": [],
@@ -8710,6 +8829,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Name of a pressable or link row, e.g. with the amount a screen reader should hear."
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Display-only content under the description (a budget bar); no buttons or links inside a pressable row."
       }
     ],
     "native": [
@@ -8782,6 +8915,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Name of a pressable or link row, e.g. with the amount a screen reader should hear."
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Display-only content under the description (a budget bar); no buttons or links inside a pressable row."
       }
     ]
   },
@@ -11952,6 +12099,13 @@
         "description": ""
       },
       {
+        "name": "returnFocus",
+        "type": "FocusReturn",
+        "required": false,
+        "default": "—",
+        "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only."
+      },
+      {
         "name": "label",
         "type": "string",
         "required": false,
@@ -12151,6 +12305,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "returnFocus",
+        "type": "import(\"/workspace/packages/react/src/floating-panel\").FocusReturn | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only."
       }
     ],
     "native": [
@@ -12414,6 +12575,10 @@
         "source": "packages/vue3/src/modal.tsx"
       },
       {
+        "name": "after-close",
+        "source": "packages/vue3/src/modal.tsx"
+      },
+      {
         "name": "cancel",
         "source": "packages/vue3/src/modal.tsx"
       },
@@ -12460,6 +12625,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "onAfterClose",
+        "type": "(() => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit)."
       },
       {
         "name": "onCancel",
@@ -12644,6 +12816,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "onAfterClose",
+        "type": "(() => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit)."
       },
       {
         "name": "onCancel",
@@ -15861,6 +16040,13 @@
   "KjunSelect": {
     "vue3": [
       {
+        "name": "returnFocus",
+        "type": "FocusReturn",
+        "required": false,
+        "default": "—",
+        "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only."
+      },
+      {
         "name": "modelValue",
         "type": "string | number | OptionValue[]",
         "required": false,
@@ -16241,6 +16427,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "returnFocus",
+        "type": "import(\"/workspace/packages/react/src/floating-panel\").FocusReturn | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only."
       }
     ],
     "native": [
@@ -19156,6 +19349,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Used to reference react managed views from native code."
+      },
+      {
+        "name": "onPress",
+        "type": "((event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "This function is called on press.\nText intrinsically supports press handling with a default highlight state (which can be disabled with suppressHighlighting)."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Specifies the disabled state of the text view for testing purposes."
       }
     ]
   },

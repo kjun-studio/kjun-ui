@@ -279,3 +279,19 @@ set("Card", { onPress: "pressable 카드를 누를 때 호출합니다. 비활�
 set("Progress", {
   shape: { default: "bar", summary: "bar는 막대, circle은 원형입니다. 원형 지름·선 굵기는 progress.circle 토큰(sm 24·md 48·lg 64)이고, label·subLabel은 원 아래 가운데에 둡니다. showLabel 퍼센트는 md 이상에서 원 가운데에만 표시합니다." },
 });
+// 0.15.0 additions.
+set("Drawer Modal", { onAfterClose: "닫힘 애니메이션이 끝나 화면에서 완전히 사라진 뒤 한 번 호출합니다. 다음 시트·완료 안내를 여기서 띄우세요. 처음부터 닫힌 채 마운트되거나 닫히는 도중 다시 열리면 호출하지 않습니다. 모션 줄이기에서는 닫힌 즉시 호출합니다." }, "react");
+set("Drawer Modal", { onAfterClose: "닫힘 애니메이션이 끝난 뒤 한 번 호출합니다. iOS는 시스템 창이 실제로 닫힐 때(onDismiss)까지 기다리므로 여기서 다음 Modal을 띄워도 됩니다. 기기에서는 아직 확인하지 않았습니다." }, "native");
+set("Select Combobox Dropdown MenuButton", { returnFocus: "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다." });
+set("Combobox", { returnFocus: "옵션을 고르거나 Escape로 닫을 때 초점을 옮길 요소입니다. 입력 중 목록이 닫히거나 입력에서 벗어날 때는 입력에 그대로 둡니다. 웹 전용입니다." });
+set("AccordionItem", {
+  open: "열림 상태를 앱이 제어합니다(Vue v-model:open). 넘기면 항목은 이 값만 따르고 Accordion의 하나만 펼침 규칙에 참여하지 않습니다.",
+  onOpenChange: "제어 항목에서는 제목을 누를 때 변경을 요청하고, 제어하지 않는 항목에서는 열림 상태가 실제로 바뀔 때(형제가 열려 닫힌 경우 포함) 알립니다.",
+  keepMounted: { default: "false", summary: "처음 연 뒤로는 접혀도 본문을 지우지 않고 숨깁니다. 안의 입력값·스크롤이 남고, 닫힌 동안에는 Tab과 화면 낭독기에서 빠집니다." },
+});
+set("Text", {
+  id: "React Native의 id입니다. 나머지 RN Text 속성(accessibilityLabel, testID, selectable, allowFontScaling, adjustsFontSizeToFit 등)도 그대로 전달합니다. adjustsFontSizeToFit은 글자 역할 크기를 최대값으로 두고 줄이기만 합니다.",
+  onPress: "글자를 누를 때 호출합니다(RN Text onPress). 행동이 주 목적이면 KjunButton variant=\"link\"를 쓰세요.",
+  disabled: "RN Text의 disabled입니다. onPress를 막습니다.",
+}, "native");
+

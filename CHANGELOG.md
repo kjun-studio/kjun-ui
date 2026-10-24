@@ -2,6 +2,20 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.15.0 — 2026-10-25
+
+적용 프로젝트 요청을 반영한 기능 릴리스입니다. 새 옵션을 쓰지 않으면 기존 화면과 동작은 그대로입니다.
+
+- **`KjunDrawer`·`KjunModal` `onAfterClose`**(Vue `@after-close`): 닫힘 애니메이션이 끝나 화면에서 사라진 뒤 한 번 알립니다. 다음 시트를 타이머로 추정하지 않아도 됩니다. Native iOS는 시스템 창이 닫힐 때까지 기다립니다(기기 미확인).
+- **`KjunListRow`**
+  - `ariaLabel`: 누르는 행·링크 행의 이름입니다. 금액처럼 함께 읽어야 할 값을 넣습니다.
+  - `children`(Vue 기본 슬롯): 제목·설명 아래 표시용 칸입니다(예산·진행 막대). 누르는 행 안에는 버튼·링크를 넣지 않습니다.
+- **Native `KjunText`**: React Native Text 속성(`accessibilityLabel`, `testID`, `selectable`, `allowFontScaling`, `adjustsFontSizeToFit` 등)을 그대로 넘깁니다. `style`·`numberOfLines`는 지금처럼 별도입니다.
+- **`returnFocus`**(웹): `KjunSelect`·`KjunCombobox`·`KjunDropdown`·`KjunMenuButton`이 닫힌 뒤 트리거 대신 지정한 요소로 초점을 옮깁니다(Popover와 같은 방식). Combobox는 옵션 선택·Escape일 때만 옮깁니다.
+- **`KjunAccordionItem`**
+  - `open`·`onOpenChange`(Vue `v-model:open`): 코드에서 열고 닫습니다. 제어 항목은 하나만 펼침 규칙에 참여하지 않습니다. 제어하지 않는 항목도 상태가 바뀌면 `onOpenChange`로 알립니다.
+  - `keepMounted`: 처음 연 뒤로는 접혀도 본문을 지우지 않아 안의 입력값이 남습니다.
+
 ## 0.14.0 — 2026-10-24
 
 적용 프로젝트가 화면을 KJUN으로 옮기며 직접 만들거나 덮어쓰던 부분을 KJUN에 넣은 기능 릴리스입니다. 새 옵션을 쓰지 않으면 기존 화면과 동작은 그대로입니다.

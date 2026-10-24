@@ -3,6 +3,7 @@ import { detail, event, slot, fields } from "./helpers.mjs";
 const bindings = JSON.parse(readFileSync(new URL("./extensions.json", import.meta.url), "utf8"));
 const guides = JSON.parse(readFileSync(new URL("../component-guides.json", import.meta.url), "utf8"));
 const summaries = {
+  ariaLabel: "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
   destructive: "제목을 danger 색으로 그립니다(계정 삭제 등). 설명 색과 동작은 그대로입니다.",
   chevron: "행 끝에 이동을 뜻하는 chevron-right 아이콘을 장식으로 둡니다. 화면 낭독기에는 읽히지 않으며 trailing과 함께 쓰면 맨 끝에 옵니다.",
   surface: "섹션 표면색 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경 위에 행을 그립니다.",
@@ -14,7 +15,6 @@ const summaries = {
   title: "영역이나 행의 제목입니다. 긴 문구는 줄바꿈합니다.", description: "제목 또는 행동을 보충하는 설명입니다.",
   href: "웹에서 이동할 실제 링크 주소입니다. 앱 라우터는 이동 이벤트의 기본 동작을 취소할 수 있습니다.",
   disabled: "이 컴포넌트의 사용자 입력 또는 주 행동을 막습니다. 별도 자식 컨트롤의 비활성은 직접 연결합니다.",
-  ariaLabel: "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
   safeAreaTop: "앱이 전달하는 상단 안전 영역 여백입니다. 자체 감지나 고정 배치는 하지 않습니다.",
   safeAreaBottom: "앱이 전달하는 하단 안전 영역 여백입니다. 현재 표시되는 최하단 영역에만 적용하세요.",
   keyboardVisible: "앱이 전달하는 키보드 표시 여부입니다. 실제 키보드 감지·창 크기 조절은 앱의 책임입니다.",
@@ -46,6 +46,7 @@ const childProps = {
   children: slot("영역 안에 배치할 소비자 콘텐츠입니다.", "ReactNode", "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다."),
   fallback: slot("이미지가 없거나 실패했을 때 표시할 콘텐츠입니다.", "ReactNode", "실패해도 이미지 컨테이너의 비율과 대체 텍스트를 유지합니다."),
 };
+const listRowContent = slot("제목·설명 아래 같은 시작선에 놓는 표시용 내용입니다(예산·진행 막대, 보조 수치).", "ReactNode", "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 화면 낭독기는 이 내용을 따로 읽지 않으니 금액·진행률은 ariaLabel에 넣으세요.");
 const topNavigationSlots = {
   leading: slot("뒤로 가기 등 앞쪽 탐색 행동입니다.", "ReactNode", "가용 폭의 최대 40%를 사용합니다. 내부 Button의 긴 라벨은 한 줄 말줄임하며, ariaLabel로 전체 목적을 제공하세요."),
   actions: slot("화면의 보조 행동 묶음입니다.", "ReactNode", "제목의 120px 기준 폭을 확보하기 어려우면 묶음 전체를 다음 줄로 배치합니다. 긴 Button 문구는 영역 안에서 줄바꿈합니다. Button·MenuButton·RefreshButton·IconToggle의 아이콘은 24px이며 최소 44px 컨트롤 영역을 사용합니다."),
@@ -74,6 +75,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     let entry;
     if (key.startsWith("on")) entry = callback(name, key, platform);
     else if (name === "KjunTopNavigation" && topNavigationSlots[key]) entry = topNavigationSlots[key];
+    else if (name === "KjunListRow" && key === "children") entry = listRowContent;
     else if (childProps[key]) entry = childProps[key];
     else if (key === "value" || key === "modelValue") entry = detail(valueDescription[name], { "상태 책임": guides[name].interaction });
     else if (key === "items") entry = detail("안정적인 key와 이름을 가진 목적지 목록입니다.", { "항목 필드": "key: 고유 문자열, label: 전체 이름, href: 웹 링크 주소, icon?: 아이콘 이름, badge?: 문자열·숫자, disabled?: 이동 비활성. 웹에서는 href를 제공하세요.", "권장 사용": "2~5개의 주요 목적지를 권장합니다. 항목 순서와 현재 key는 앱에서 관리합니다." });
@@ -96,9 +98,9 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (platform === "vue3") {
     const eventKeys = name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : name === "KjunBottomNavigation" ? { navigate: "onNavigate" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
-    const slotNames = { KjunListRow: ["leading", "trailing", "actions"], KjunListSection: ["actions", "default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"] }[name] || [];
+    const slotNames = { KjunListRow: ["default", "leading", "trailing", "actions"], KjunListSection: ["actions", "default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"] }[name] || [];
     for (const key of slotNames) {
-      const definition = name === "KjunTopNavigation" ? topNavigationSlots[key] : childProps[key === "default" ? "children" : key];
+      const definition = name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunListRow" && key === "default" ? listRowContent : childProps[key === "default" ? "children" : key];
       slots[key] = { ...definition, details: definition.details.map(row => row.label === "슬롯 데이터" ? { ...row, text: "제공 데이터 없음" } : row) };
     }
   }

@@ -95,6 +95,19 @@ Vue 3·React 모달은 가장 가까운 Provider 안에 렌더링되어 해당 �
 </KjunCard>
 ```
 
+### 목록 행 안의 내용
+
+`KjunListRow`의 `children`(Vue 기본 슬롯)은 제목·설명 아래 같은 시작선에 놓이는 표시용 칸입니다. 예산·진행 막대 같은 내용을 넣습니다.
+
+```tsx
+<KjunListRow title="식비" description="이번 달" trailing="-120,000원" ariaLabel="식비, 이번 달, 12만 원 사용, 예산의 60%" onClick={open}>
+  <KjunProgress value={60} size="sm" />
+</KjunListRow>
+```
+
+- 누르는 행에서는 이 칸이 행 버튼 안에 들어갑니다. 버튼·링크·입력은 넣지 말고 `actions`에 둡니다(웹 개발 모드 경고).
+- 화면 낭독기는 이 칸을 따로 읽지 않습니다. 금액·진행률처럼 들려야 하는 값은 `ariaLabel`에 넣습니다. `ariaLabel`이 없으면 이전처럼 제목과 설명을 읽습니다.
+
 ### 누르는 카드
 
 카드 전체를 하나의 버튼으로 쓰려면 `pressable`을 켭니다. 이때만 버튼 역할, 키보드 포커스(Enter·Space), hover·누름·포커스 링이 생깁니다. 웹 카드에 `onClick`만 넘기던 기존 코드는 그대로입니다.
@@ -189,6 +202,18 @@ import { KjunProvider, kjunMessagesEn } from "@kjun-ui/react";
 - React는 `locale`이 있을 때 react-aria에도 같은 언어를 넘깁니다. 웹 DatePicker의 날짜 선택 팝업은 브라우저가 그리므로 브라우저 언어를 따릅니다.
 - 개발자 콘솔 경고는 한국어로 남습니다.
 - 문구의 띄어쓰기는 문구 안에 들어 있습니다. `newWindow`는 링크 이름 뒤에 붙으므로 앞에 공백이 있고(`" (새 창)"`), `optional`은 KJUN이 라벨 뒤에 공백을 두므로 공백 없이(`"(선택)"`) 씁니다. 바꿀 때도 같은 띄어쓰기를 지키세요.
+
+## 시트를 닫은 뒤 다음 화면 띄우기
+
+`KjunDrawer`·`KjunModal`의 `onClose`는 닫기를 요청한 순간이고, 닫힘 애니메이션은 그 뒤에 진행됩니다. 다음 시트나 완료 안내는 타이머로 추정하지 말고 `onAfterClose`(Vue `@after-close`)에서 띄웁니다.
+
+```tsx
+<KjunDrawer open={step === "pick"} onOpenChange={v => !v && setStep(null)} onAfterClose={() => setStep("confirm")}>…</KjunDrawer>
+```
+
+- 화면에서 완전히 사라진 뒤 한 번 호출합니다. 모션 줄이기에서는 닫힌 즉시 호출합니다.
+- 처음부터 닫힌 채 마운트되거나, 닫히는 도중 다시 열리면 호출하지 않습니다.
+- Native iOS는 시스템 창이 실제로 닫힐 때까지 기다리므로 여기서 다음 Modal을 띄워도 됩니다(기기에서는 아직 확인하지 않았습니다).
 
 ## 컴포넌트 밖에서 확인창·토스트 부르기
 

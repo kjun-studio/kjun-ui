@@ -13845,6 +13845,15 @@
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
             "source": "packages/vue3/src/combobox.tsx"
+          },
+          {
+            "name": "returnFocus",
+            "type": "FocusReturn",
+            "required": false,
+            "default": "—",
+            "description": "Where focus goes after choosing an option or Escape. Closing while typing keeps focus in the input. Web only.",
+            "summary": "옵션을 고르거나 Escape로 닫을 때 초점을 옮길 요소입니다. 입력 중 목록이 닫히거나 입력에서 벗어날 때는 입력에 그대로 둡니다. 웹 전용입니다.",
+            "source": "packages/vue3/src/combobox.tsx"
           }
         ],
         "events": [
@@ -14040,6 +14049,15 @@
             "default": "—",
             "description": "",
             "summary": "지우기 행동을 통지합니다.",
+            "source": "packages/react/src/combobox.tsx"
+          },
+          {
+            "name": "returnFocus",
+            "type": "FocusReturn | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Where focus goes after choosing an option or Escape. Closing while typing keeps focus in the input. Web only.",
+            "summary": "옵션을 고르거나 Escape로 닫을 때 초점을 옮길 요소입니다. 입력 중 목록이 닫히거나 입력에서 벗어날 때는 입력에 그대로 둡니다. 웹 전용입니다.",
             "source": "packages/react/src/combobox.tsx"
           }
         ],
@@ -15892,6 +15910,15 @@
       "vue3": {
         "props": [
           {
+            "name": "returnFocus",
+            "type": "FocusReturn",
+            "required": false,
+            "default": "—",
+            "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only.",
+            "summary": "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다.",
+            "source": "packages/vue3/src/select-control.tsx"
+          },
+          {
             "name": "modelValue",
             "type": "string | number | OptionValue[]",
             "required": false,
@@ -16783,6 +16810,15 @@
             ],
             "source": "packages/react/src/select-control.tsx",
             "example": "/components/select#preview"
+          },
+          {
+            "name": "returnFocus",
+            "type": "FocusReturn | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only.",
+            "summary": "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다.",
+            "source": "packages/react/src/select-control.tsx"
           }
         ],
         "events": [],
@@ -18143,9 +18179,34 @@
             "description": "",
             "summary": "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
             "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "v-model:open. A controlled item follows this value only and stays out of the Accordion's single-open rule.",
+            "summary": "열림 상태를 앱이 제어합니다(Vue v-model:open). 넘기면 항목은 이 값만 따르고 Accordion의 하나만 펼침 규칙에 참여하지 않습니다.",
+            "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "keepMounted",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Keeps the body mounted after it first opens, so inputs keep their state while closed.",
+            "summary": "처음 연 뒤로는 접혀도 본문을 지우지 않고 숨깁니다. 안의 입력값·스크롤이 남고, 닫힌 동안에는 Tab과 화면 낭독기에서 빠집니다.",
+            "source": "packages/vue3/src/navigation.tsx"
           }
         ],
-        "events": [],
+        "events": [
+          {
+            "name": "update:open",
+            "source": "packages/vue3/src/navigation.tsx",
+            "type": "이벤트",
+            "summary": "update:open 이벤트를 통지합니다."
+          }
+        ],
         "slots": [
           {
             "name": "default",
@@ -18183,6 +18244,33 @@
             "default": "false",
             "description": "",
             "summary": "최초 마운트 시 펼침 여부입니다. 이후 상태를 제어하는 값은 아닙니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "open",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controlled open state. A controlled item follows this value only and stays out of the Accordion's single-open rule.",
+            "summary": "열림 상태를 앱이 제어합니다(Vue v-model:open). 넘기면 항목은 이 값만 따르고 Accordion의 하나만 펼침 규칙에 참여하지 않습니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Requests a change on a controlled item; reports every change on an uncontrolled one (also when a sibling closes it).",
+            "summary": "제어 항목에서는 제목을 누를 때 변경을 요청하고, 제어하지 않는 항목에서는 열림 상태가 실제로 바뀔 때(형제가 열려 닫힌 경우 포함) 알립니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "keepMounted",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Keeps the body mounted after it first opens, so inputs keep their state while closed.",
+            "summary": "처음 연 뒤로는 접혀도 본문을 지우지 않고 숨깁니다. 안의 입력값·스크롤이 남고, 닫힌 동안에는 Tab과 화면 낭독기에서 빠집니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -18236,6 +18324,33 @@
             "default": "false",
             "description": "",
             "summary": "최초 마운트 시 펼침 여부입니다. 이후 상태를 제어하는 값은 아닙니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "open",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controlled open state. A controlled item follows this value only and stays out of the Accordion's single-open rule.",
+            "summary": "열림 상태를 앱이 제어합니다(Vue v-model:open). 넘기면 항목은 이 값만 따르고 Accordion의 하나만 펼침 규칙에 참여하지 않습니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Requests a change on a controlled item; reports every change on an uncontrolled one (also when a sibling closes it).",
+            "summary": "제어 항목에서는 제목을 누를 때 변경을 요청하고, 제어하지 않는 항목에서는 열림 상태가 실제로 바뀔 때(형제가 열려 닫힌 경우 포함) 알립니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "keepMounted",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Keeps the body mounted after it first opens, so inputs keep their state while closed.",
+            "summary": "처음 연 뒤로는 접혀도 본문을 지우지 않고 숨깁니다. 안의 입력값·스크롤이 남고, 닫힌 동안에는 Tab과 화면 낭독기에서 빠집니다.",
             "source": "packages/native/src/navigation.tsx"
           },
           {
@@ -18981,6 +19096,12 @@
             "source": "packages/vue3/src/drawer.tsx",
             "type": "이벤트",
             "summary": "close 이벤트를 통지합니다."
+          },
+          {
+            "name": "after-close",
+            "source": "packages/vue3/src/drawer.tsx",
+            "type": "이벤트",
+            "summary": "after-close 이벤트를 통지합니다."
           }
         ],
         "slots": [
@@ -19126,6 +19247,15 @@
             "default": "—",
             "description": "",
             "summary": "닫기 행동 또는 메뉴 닫힘을 통지합니다.",
+            "source": "packages/react/src/drawer.tsx"
+          },
+          {
+            "name": "onAfterClose",
+            "type": "(() => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit).",
+            "summary": "닫힘 애니메이션이 끝나 화면에서 완전히 사라진 뒤 한 번 호출합니다. 다음 시트·완료 안내를 여기서 띄우세요. 처음부터 닫힌 채 마운트되거나 닫히는 도중 다시 열리면 호출하지 않습니다. 모션 줄이기에서는 닫힌 즉시 호출합니다.",
             "source": "packages/react/src/drawer.tsx"
           },
           {
@@ -19290,6 +19420,15 @@
             "source": "packages/native/src/drawer.tsx"
           },
           {
+            "name": "onAfterClose",
+            "type": "(() => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit).",
+            "summary": "닫힘 애니메이션이 끝난 뒤 한 번 호출합니다. iOS는 시스템 창이 실제로 닫힐 때(onDismiss)까지 기다리므로 여기서 다음 Modal을 띄워도 됩니다. 기기에서는 아직 확인하지 않았습니다.",
+            "source": "packages/native/src/drawer.tsx"
+          },
+          {
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
@@ -19387,6 +19526,15 @@
             "default": "\"\"",
             "description": "",
             "summary": "팝업 메뉴에 추가할 웹 CSS 클래스입니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "returnFocus",
+            "type": "FocusReturn",
+            "required": false,
+            "default": "—",
+            "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only.",
+            "summary": "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다.",
             "source": "packages/vue3/src/dropdown.tsx"
           }
         ],
@@ -19512,6 +19660,15 @@
             ],
             "source": "packages/react/src/dropdown.tsx",
             "example": "/components/dropdown#preview"
+          },
+          {
+            "name": "returnFocus",
+            "type": "FocusReturn | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only.",
+            "summary": "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다.",
+            "source": "packages/react/src/dropdown.tsx"
           }
         ],
         "events": [],
@@ -20118,6 +20275,12 @@
             "summary": "close 이벤트를 통지합니다."
           },
           {
+            "name": "after-close",
+            "source": "packages/vue3/src/modal.tsx",
+            "type": "이벤트",
+            "summary": "after-close 이벤트를 통지합니다."
+          },
+          {
             "name": "cancel",
             "source": "packages/vue3/src/modal.tsx",
             "type": "이벤트",
@@ -20183,6 +20346,15 @@
             "default": "—",
             "description": "",
             "summary": "닫기 행동 또는 메뉴 닫힘을 통지합니다.",
+            "source": "packages/react/src/modal.tsx"
+          },
+          {
+            "name": "onAfterClose",
+            "type": "(() => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit).",
+            "summary": "닫힘 애니메이션이 끝나 화면에서 완전히 사라진 뒤 한 번 호출합니다. 다음 시트·완료 안내를 여기서 띄우세요. 처음부터 닫힌 채 마운트되거나 닫히는 도중 다시 열리면 호출하지 않습니다. 모션 줄이기에서는 닫힌 즉시 호출합니다.",
             "source": "packages/react/src/modal.tsx"
           },
           {
@@ -20425,6 +20597,15 @@
             "default": "—",
             "description": "",
             "summary": "닫기 행동 또는 메뉴 닫힘을 통지합니다.",
+            "source": "packages/native/src/modal.tsx"
+          },
+          {
+            "name": "onAfterClose",
+            "type": "(() => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit).",
+            "summary": "닫힘 애니메이션이 끝난 뒤 한 번 호출합니다. iOS는 시스템 창이 실제로 닫힐 때(onDismiss)까지 기다리므로 여기서 다음 Modal을 띄워도 됩니다. 기기에서는 아직 확인하지 않았습니다.",
             "source": "packages/native/src/modal.tsx"
           },
           {
@@ -24898,6 +25079,15 @@
             "source": "packages/vue3/src/dropdown.tsx"
           },
           {
+            "name": "returnFocus",
+            "type": "FocusReturn",
+            "required": false,
+            "default": "—",
+            "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only.",
+            "summary": "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
             "name": "label",
             "type": "string",
             "required": false,
@@ -25158,6 +25348,15 @@
             "default": "—",
             "description": "",
             "summary": "닫기 행동 또는 메뉴 닫힘을 통지합니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "returnFocus",
+            "type": "FocusReturn | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only.",
+            "summary": "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다.",
             "source": "packages/react/src/dropdown.tsx"
           }
         ],
@@ -26063,10 +26262,37 @@
             ],
             "source": "packages/vue3/src/list.tsx",
             "example": "/components/list-row#preview"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Name of a pressable or link row, e.g. with the amount a screen reader should hear.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
+            "source": "packages/vue3/src/list.tsx"
           }
         ],
         "events": [],
         "slots": [
+          {
+            "name": "default",
+            "data": [],
+            "source": "packages/vue3/src/list.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "제목·설명 아래 같은 시작선에 놓는 표시용 내용입니다(예산·진행 막대, 보조 수치).",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 화면 낭독기는 이 내용을 따로 읽지 않으니 금액·진행률은 ariaLabel에 넣으세요."
+              }
+            ],
+            "example": "/components/list-row#preview"
+          },
           {
             "name": "leading",
             "data": [],
@@ -26271,6 +26497,35 @@
             ],
             "source": "packages/react/src/list.tsx",
             "example": "/components/list-row#preview"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Name of a pressable or link row, e.g. with the amount a screen reader should hear.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
+            "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Display-only content under the description (a budget bar); no buttons or links inside a pressable row.",
+            "summary": "제목·설명 아래 같은 시작선에 놓는 표시용 내용입니다(예산·진행 막대, 보조 수치).",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 화면 낭독기는 이 내용을 따로 읽지 않으니 금액·진행률은 ariaLabel에 넣으세요."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-row#preview"
           }
         ],
         "events": [],
@@ -26424,6 +26679,35 @@
             ],
             "source": "packages/native/src/list.tsx",
             "example": "/components/list-row#preview"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Name of a pressable or link row, e.g. with the amount a screen reader should hear.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Display-only content under the description (a budget bar); no buttons or links inside a pressable row.",
+            "summary": "제목·설명 아래 같은 시작선에 놓는 표시용 내용입니다(예산·진행 막대, 보조 수치).",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 화면 낭독기는 이 내용을 따로 읽지 않으니 금액·진행률은 ariaLabel에 넣으세요."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-row#preview"
           }
         ],
         "events": [],
@@ -26462,7 +26746,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/vue3/src/list.tsx"
           },
           {
@@ -26604,7 +26888,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/react/src/list.tsx"
           },
           {
@@ -26709,7 +26993,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/native/src/list.tsx"
           },
           {
@@ -27120,7 +27404,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/vue3/src/app-navigation.tsx"
           },
           {
@@ -27266,7 +27550,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/react/src/app-navigation.tsx"
           },
           {
@@ -27414,7 +27698,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/native/src/app-navigation.tsx"
           },
           {
@@ -28976,7 +29260,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/vue3/src/range-input.tsx"
           },
           {
@@ -29145,7 +29429,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/react/src/range-input.tsx"
           },
           {
@@ -29303,7 +29587,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/native/src/range-input.tsx"
           },
           {
@@ -29447,7 +29731,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/vue3/src/range-input.tsx"
           },
           {
@@ -29647,7 +29931,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/react/src/range-input.tsx"
           },
           {
@@ -29821,7 +30105,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/native/src/range-input.tsx"
           },
           {
@@ -30018,7 +30302,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/vue3/src/date-picker.tsx"
           }
         ],
@@ -30207,7 +30491,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/react/src/time-picker.tsx"
           },
           {
@@ -30401,7 +30685,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/native/src/time-picker.tsx"
           },
           {
@@ -30616,7 +30900,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/vue3/src/quantity-stepper.tsx"
           }
         ],
@@ -30849,7 +31133,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/react/src/quantity-stepper.tsx"
           },
           {
@@ -31090,7 +31374,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/native/src/quantity-stepper.tsx"
           },
           {
@@ -31392,6 +31676,33 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Used to reference react managed views from native code.",
+            "summary": "React Native의 id입니다. 나머지 RN Text 속성(accessibilityLabel, testID, selectable, allowFontScaling, adjustsFontSizeToFit 등)도 그대로 전달합니다. adjustsFontSizeToFit은 글자 역할 크기를 최대값으로 두고 줄이기만 합니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "onPress",
+            "type": "((event: GestureResponderEvent) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "This function is called on press.\nText intrinsically supports press handling with a default highlight state (which can be disabled with suppressHighlighting).",
+            "summary": "글자를 누를 때 호출합니다(RN Text onPress). 행동이 주 목적이면 KjunButton variant=\"link\"를 쓰세요.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Specifies the disabled state of the text view for testing purposes.",
+            "summary": "RN Text의 disabled입니다. onPress를 막습니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           }
         ],

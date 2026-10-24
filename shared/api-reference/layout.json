@@ -19,21 +19,29 @@
     "vue3": [
       "title",
       "defaultOpen",
-      "disabled"
+      "disabled",
+      "open",
+      "keepMounted"
     ],
     "react": [
       "title",
       "defaultOpen",
       "disabled",
       "header",
-      "children"
+      "children",
+      "open",
+      "onOpenChange",
+      "keepMounted"
     ],
     "native": [
       "title",
       "defaultOpen",
       "disabled",
       "header",
-      "children"
+      "children",
+      "open",
+      "onOpenChange",
+      "keepMounted"
     ]
   },
   "KjunCard": {
@@ -131,7 +139,8 @@
       "ariaLabel",
       "safeAreaTop",
       "safeAreaBottom",
-      "maxHeight"
+      "maxHeight",
+      "onAfterClose"
     ],
     "native": [
       "open",
@@ -151,7 +160,8 @@
       "safeAreaTop",
       "safeAreaBottom",
       "maxHeight",
-      "avoidKeyboard"
+      "avoidKeyboard",
+      "onAfterClose"
     ]
   },
   "KjunModal": {
@@ -202,7 +212,8 @@
       "header",
       "footer",
       "children",
-      "ariaLabel"
+      "ariaLabel",
+      "onAfterClose"
     ],
     "native": [
       "open",
@@ -230,7 +241,8 @@
       "header",
       "footer",
       "children",
-      "ariaLabel"
+      "ariaLabel",
+      "onAfterClose"
     ]
   },
   "KjunPopover": {
@@ -315,7 +327,10 @@
       "align",
       "maxLines",
       "style",
-      "children"
+      "children",
+      "id",
+      "onPress",
+      "disabled"
     ]
   },
   "KjunStack": {
