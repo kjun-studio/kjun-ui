@@ -1,4 +1,7 @@
 // Korean copy: the default when KjunProvider has no locale. Values match the strings KJUN shipped before 0.13.0.
+// Spacing for translators: a message carries exactly the spaces it needs. newWindow is appended to a link
+// name, so it starts with a space (" (새 창)"); optional is placed after the label by KJUN with its own
+// space, so it has none ("(선택)"). Keep the same spacing when you replace them.
 const relativeUnits: Record<string, string> = { year: "년", month: "개월", day: "일", hour: "시간", minute: "분", second: "초" };
 
 export const kjunMessagesKo = {

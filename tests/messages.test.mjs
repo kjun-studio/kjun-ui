@@ -43,6 +43,13 @@ test('nested provider merges same-language messages and drops outer messages on 
   assert.equal(switched.intl, 'en-US');
 });
 
+test('a nested Korean locale keeps outer messages given without a locale, since both use the Korean pack', async () => {
+  const { resolveMessageScope } = await load();
+  const outer = resolveMessageScope(undefined, undefined, { cancel: '그만' });
+  assert.equal(resolveMessageScope(outer, 'ko-KR').messages.cancel, '그만');
+  assert.equal(resolveMessageScope(outer, 'en-US').messages.cancel, 'Cancel');
+});
+
 test('invalid locales do not throw', async () => {
   const { normalizeLocale, resolveMessageScope, kjunMessagesEn } = await load();
   assert.equal(normalizeLocale('en_US').intl, 'en-US');

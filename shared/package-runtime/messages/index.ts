@@ -40,7 +40,8 @@ const packFor = (language?: string) => language === undefined || language === "k
 export function resolveMessageScope(parent: KjunMessageScope | undefined, locale?: string, messages?: Partial<KjunMessages>): KjunMessageScope {
   const base = parent ?? defaultMessageScope;
   const next = locale ? normalizeLocale(locale) : { intl: base.intl, language: base.language };
-  const sameLanguage = next.language === base.language;
+  // No locale means Korean, so a nested "ko" keeps messages written for a Provider without a locale.
+  const sameLanguage = (next.language ?? "ko") === (base.language ?? "ko");
   const overrides = { ...(sameLanguage ? base.overrides : {}), ...messages };
   return { ...next, overrides, messages: { ...packFor(next.language), ...overrides } };
 }
