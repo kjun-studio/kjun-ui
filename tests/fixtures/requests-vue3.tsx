@@ -49,6 +49,9 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
       <K.KjunAccordionItem title="Second"><K.KjunText>Second body</K.KjunText></K.KjunAccordionItem>
       <K.KjunAccordionItem title="Kept" keepMounted><Draft /></K.KjunAccordionItem>
     </K.KjunAccordion>
+    <K.KjunAccordion multiple>
+      <K.KjunAccordionItem title="Preset" defaultOpen onUpdate:open={log('preset')}><K.KjunText>Preset body</K.KjunText></K.KjunAccordionItem>
+    </K.KjunAccordion>
     <K.KjunText>{'events: ' + (events.value.join(', ') || 'none')}</K.KjunText>
   </K.KjunProvider></div>
   <div data-testid="return-focus"><K.KjunProvider>

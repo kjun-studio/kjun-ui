@@ -76,15 +76,17 @@ export const KjunAccordionItem = defineComponent({
     onMounted(() => { unregister = group?.register(id, props.defaultOpen); });
     onBeforeUnmount(() => unregister?.());
     const isOpen = () => controlled ? !!props.open : group ? group.opened().has(id) : own.value;
-    // Uncontrolled items report each real change, including a sibling closing them.
-    if (!controlled) watch(isOpen, open => emit("update:open", open));
+    // Uncontrolled items report each real change, including a sibling closing them. A defaultOpen item in an
+    // Accordion opens once it registers after mount; that is its starting state, not a change.
+    let registering = !!group && props.defaultOpen;
+    if (!controlled) watch(isOpen, open => { if (registering) { if (open) registering = false; return; } emit("update:open", open); });
     return () => {
       const open = isOpen();
       const header = slots.header?.();
       return (
         <div class="kjun-accordion-item">
           <button type="button" id={id + "-heading"} disabled={props.disabled} aria-expanded={open} aria-controls={id + "-panel"}
-            class="kjun-accordion-trigger" onClick={() => controlled ? emit("update:open", !open) : group ? group.toggle(id) : (own.value = !own.value)}>
+            class="kjun-accordion-trigger" onClick={() => { registering = false; controlled ? emit("update:open", !open) : group ? group.toggle(id) : (own.value = !own.value); }}>
             <span class="kjun-accordion-heading">{hasContent(header) ? header : props.title}</span>
             <KjunIcon name="chevron-down" class="kjun-accordion-chevron" size={tokens.extensions.accordion.iconSize}
               style={{ transform: open ? "rotate(180deg)" : undefined }} />

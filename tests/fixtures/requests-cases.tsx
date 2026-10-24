@@ -52,6 +52,9 @@ export function RequestsCases({ K, native = false, providerProps = {} }: { K: an
         <K.KjunAccordionItem title="Second"><K.KjunText>Second body</K.KjunText></K.KjunAccordionItem>
         <K.KjunAccordionItem title="Kept" keepMounted><Draft K={K} native={native} /></K.KjunAccordionItem>
       </K.KjunAccordion>
+      <K.KjunAccordion multiple>
+        <K.KjunAccordionItem title="Preset" defaultOpen onOpenChange={log('preset')}><K.KjunText>Preset body</K.KjunText></K.KjunAccordionItem>
+      </K.KjunAccordion>
       <K.KjunText>{'events: ' + (events.join(', ') || 'none')}</K.KjunText>
     </K.KjunProvider></div>
     {!native && <div data-testid="return-focus"><K.KjunProvider {...providerProps}>

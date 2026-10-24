@@ -113,5 +113,14 @@ for (const platform of ['react', 'vue3', 'native']) {
       await kept.click();
       await expect(area.getByRole('textbox', { name: 'Kept input' })).toHaveValue('draft');
     });
+
+    test('an item that starts open in an accordion does not report on mount', async ({ page }) => {
+      const area = section(page, 'accordion');
+      await expect(area.getByText('Preset body', { exact: true })).toBeVisible();
+      await page.waitForTimeout(300);
+      await expect(area.getByText('events: none', { exact: true })).toBeVisible();
+      await area.getByRole('button', { name: 'Preset', exact: true }).click();
+      await expect(area.getByText('events: preset false', { exact: true })).toBeVisible();
+    });
   });
 }

@@ -4,6 +4,7 @@ createContext,
 useContext,
 useEffect,
 useId,
+useRef,
 type ReactNode,
 } from "react";
 import { Platform,View,type ModalProps } from "react-native";
@@ -20,7 +21,11 @@ export const FeedbackOverlayContext = createContext<FeedbackOverlayHost | null>(
 export function ScopedNativeModal({ children, visible, ...props }: ModalProps) {
   const layers = useLayerState(), scope = useContext(LayerScope);
   const entry = scope ? layers.entries.get(scope) : undefined;
-  const generation = entry?.order ?? 0;
+  // Keep the last window when the layer entry is removed at the end of the exit: a new key would remount the
+  // dismissing iOS Modal and drop its onDismiss. A new opening raises order, so it still gets a new window.
+  const last = useRef(0);
+  if (entry) last.current = entry.order;
+  const generation = last.current;
   const inactive = !!scope && !layers.isActive(scope);
   const host = useContext(FeedbackOverlayContext),
     id = "kjun-" + useId(),

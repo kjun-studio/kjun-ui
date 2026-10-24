@@ -85,10 +85,12 @@ export function KjunAccordionItem({
     id = "kjun-" + useId(),
     [own, setOwn] = useState(defaultOpen),
     open = controlled ? openProp : group ? group.opened.has(id) : own;
-  // Uncontrolled items report each real change, including a sibling closing them.
-  const reported = useRef(open), notify = useRef(onOpenChange);
+  // Uncontrolled items report each real change, including a sibling closing them. A defaultOpen item in an
+  // Accordion opens once it registers after mount; that is its starting state, not a change.
+  const reported = useRef(open), notify = useRef(onOpenChange), registering = useRef(!!group && defaultOpen);
   notify.current = onOpenChange;
   useEffect(() => {
+    if (registering.current) { if (open) { registering.current = false; reported.current = open; } return; }
     if (controlled || reported.current === open) return;
     reported.current = open;
     notify.current?.(open);
@@ -111,7 +113,7 @@ export function KjunAccordionItem({
         accessibilityLabel={title}
         accessibilityState={{ expanded: open, disabled }}
         disabled={disabled}
-        onPress={() => (controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own))}
+        onPress={() => { registering.current = false; controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own); }}
         onHoverIn={() => setHovered(true)}
         onHoverOut={() => setHovered(false)}
         style={({ pressed }) => ({

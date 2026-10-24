@@ -247,10 +247,12 @@ export function KjunAccordionItem({
   useEffect(() => {
     return group?.register(id, defaultOpen);
   }, []);
-  // Uncontrolled items report each real change, including a sibling closing them.
-  const reported = useRef(open), notify = useRef(onOpenChange);
+  // Uncontrolled items report each real change, including a sibling closing them. A defaultOpen item in an
+  // Accordion opens once it registers after mount; that is its starting state, not a change.
+  const reported = useRef(open), notify = useRef(onOpenChange), registering = useRef(!!group && defaultOpen);
   notify.current = onOpenChange;
   useEffect(() => {
+    if (registering.current) { if (open) { registering.current = false; reported.current = open; } return; }
     if (controlled || reported.current === open) return;
     reported.current = open;
     notify.current?.(open);
@@ -264,7 +266,7 @@ export function KjunAccordionItem({
         aria-expanded={open}
         aria-controls={id + "-panel"}
         className="kjun-accordion-trigger"
-        onClick={() => (controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own))}
+        onClick={() => { registering.current = false; controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own); }}
       >
         <span className="kjun-accordion-heading">{header || title}</span>
         <KjunIcon
