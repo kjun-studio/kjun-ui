@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PanResponder, Platform, Pressable, View, type ViewStyle } from "react-native";
 import { tokens, createSliderDomain, sliderKey } from "@kjun-ui/tokens";
@@ -42,6 +43,7 @@ function RangeInput({
   onChangeCommit,
   ...rest
 }: KjunSliderProps | KjunRangeSliderProps) {
+  const m = useKjunMessages();
   const { colors, numericFontFamily, fontFamily } = useKjunStyles();
   const domain = createSliderDomain(min, max, step),
     values = Array.isArray(value) ? value : [value];
@@ -135,7 +137,7 @@ function RangeInput({
     [min, max, step, disabled, valid],
   );
   const thumbs =
-    "thumbLabels" in rest ? rest.thumbLabels || ["최솟값", "최댓값"] : ["최솟값", "최댓값"];
+    "thumbLabels" in rest ? rest.thumbLabels || [m.minimum, m.maximum] : [m.minimum, m.maximum];
   const percent = (n: number) =>
     valid && effectiveMax > min
       ? Math.max(0, Math.min(100, ((n - min) / (effectiveMax - min)) * 100))
@@ -233,7 +235,7 @@ function RangeInput({
           <Pressable
             key={index}
             accessibilityRole="adjustable"
-            accessibilityLabel={values.length === 2 ? thumbs[index] : ariaLabel || label || "값"}
+            accessibilityLabel={values.length === 2 ? thumbs[index] : ariaLabel || label || m.value}
             accessibilityState={{ disabled: disabled || !valid }}
             accessibilityValue={{
               min: index === 1 ? values[0] : min,
@@ -242,8 +244,8 @@ function RangeInput({
               text: String(number),
             }}
             accessibilityActions={[
-              { name: "increment", label: "늘리기" },
-              { name: "decrement", label: "줄이기" },
+              { name: "increment", label: m.increase },
+              { name: "decrement", label: m.decrease },
             ]}
             onAccessibilityAction={(event) => {
               emit(index, number + (event.nativeEvent.actionName === "increment" ? step : -step));

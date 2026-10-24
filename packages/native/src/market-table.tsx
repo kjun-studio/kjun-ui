@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { useMarketLayout, marketGeometry, marketHeaderStyle, marketRowStyle } from "./market-layout";
@@ -30,6 +31,7 @@ import { getValue } from "./table";
 export function KjunMarketTable<Row extends object = Record<string, unknown>>(
   props: KjunMarketTableProps<Row>
 ) {
+  const m = useKjunMessages();
   const {
       rows = [],
       columns,
@@ -43,7 +45,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
       priceFormatter,
       currency = "krw",
       embedded = false,
-      emptyMessage = "항목이 없습니다",
+      emptyMessage = m.noItems,
       emptySubMessage = "",
       formatMetric,
       renderCell,
@@ -260,10 +262,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
                         active={props.interestKeys?.has(id)}
                         activeIcon="heart"
                         activeColor={domainColor(domainColors, "interest")}
-                        ariaLabel={[
-                          props.primaryLabel?.(row) || String(getValue(row, "name") || ""),
-                          "관심", props.interestKeys?.has(id) ? "해제" : "등록",
-                        ].filter(Boolean).join(" ")}
+                        ariaLabel={m.watchToggle(props.primaryLabel?.(row) || String(getValue(row, "name") || ""), !!props.interestKeys?.has(id))}
                         loading={togglingInterest === id}
                         onToggle={() => props.onToggleInterest?.(row)}
                       />
@@ -272,10 +271,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
                         active={props.favoriteKeys?.has(id)}
                         activeIcon="star"
                         activeColor={domainColor(domainColors, "favorite")}
-                        ariaLabel={[
-                          props.primaryLabel?.(row) || String(getValue(row, "name") || ""),
-                          "즐겨찾기", props.favoriteKeys?.has(id) ? "해제" : "등록",
-                        ].filter(Boolean).join(" ")}
+                        ariaLabel={m.favoriteToggle(props.primaryLabel?.(row) || String(getValue(row, "name") || ""), !!props.favoriteKeys?.has(id))}
                         loading={togglingFavorite === id}
                         onToggle={() => props.onToggleFavorite?.(row)}
                       />

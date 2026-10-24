@@ -1,3 +1,5 @@
+import { useKjunMessages, KjunMessageContext } from "../../../shared/package-runtime/messages-context";
+import type { KjunMessageScope } from "../../../shared/package-runtime/messages";
 import { typeStyle } from "./typography";
 import {
 tokens,
@@ -62,15 +64,15 @@ export function KjunDataState({
   preserveContent = false,
   refreshing = false,
   refreshError,
-  refreshingText = "갱신 중...",
+  refreshingText,
   loadingPadding = "default",
   empty = false,
-  emptyText = "데이터가 없습니다",
+  emptyText,
   emptyIcon,
   emptyActionText,
-  loadingText = "로딩 중...",
+  loadingText,
   loadingDelay = 0,
-  retryText = "다시 시도",
+  retryText,
   size = "md",
   skeleton = false,
   skeletonType = "text",
@@ -83,6 +85,11 @@ export function KjunDataState({
   onEmptyAction,
   ...query
 }: KjunDataStateProps) {
+  const m = useKjunMessages();
+  refreshingText ??= m.refreshing;
+  emptyText ??= m.noData;
+  loadingText ??= m.loadingEllipsis;
+  retryText ??= m.retry;
   const state = useQueryDisplay(query),
     blockingError =
       query.error && !(state.usesQueryState && state.hasCurrentResult),
@@ -147,7 +154,7 @@ export function KjunDataState({
         <DataStateContentContext.Provider value="message">
         <View style={{ paddingVertical: padding }}>
           {errorContent || (
-            <KjunAlert type="danger" title="오류 발생" actions={onRetry && (
+            <KjunAlert type="danger" title={m.errorTitle} actions={onRetry && (
               <KjunButton variant="secondary" onPress={onRetry}>
                 {retryText}
               </KjunButton>
@@ -204,7 +211,7 @@ export function KjunDataState({
             {retryText}
           </KjunButton>
         )}>
-          {`${visibleRefreshError} · 이전 조회 결과를 표시하고 있습니다.`}
+          {m.refreshError(String(visibleRefreshError))}
         </KjunAlert>
         </View>
         </DataStateContentContext.Provider>
@@ -213,8 +220,9 @@ export function KjunDataState({
   );
 }
 function BoundaryDescription() {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles();
-  return <KText style={{ ...typeStyle({ ...tokens.typography.caption, fontSizePx: tokens.extensions.state.descriptionSize }), color:colors.textSecondary, textAlign:"center" }}>다시 시도하면 문제가 해결될 수 있습니다.</KText>;
+  return <KText style={{ ...typeStyle({ ...tokens.typography.caption, fontSizePx: tokens.extensions.state.descriptionSize }), color:colors.textSecondary, textAlign:"center" }}>{m.retryHint}</KText>;
 }
 export interface KjunErrorBoundaryProps {
   children: ReactNode;
@@ -227,6 +235,8 @@ export class KjunErrorBoundary extends Component<
   KjunErrorBoundaryProps,
   { error: boolean }
 > {
+  static contextType = KjunMessageContext;
+  declare context: KjunMessageScope;
   state = { error: false };
   static getDerivedStateFromError() {
     return { error: true };
@@ -247,7 +257,7 @@ export class KjunErrorBoundary extends Component<
           >
             <View style={{ gap:tokens.dimension.value8, alignItems:"center" }}>
             <KText style={{ ...typeStyle({ ...tokens.typography.sectionTitle, fontSizePx: tokens.extensions.state.titleSize }), textAlign:"center" }}>
-              {this.props.fallbackMessage || "문제가 발생했습니다"}
+              {this.props.fallbackMessage || this.context.messages.somethingWentWrong}
             </KText>
             <BoundaryDescription />
             </View>
@@ -260,7 +270,7 @@ export class KjunErrorBoundary extends Component<
                 this.props.onReset?.();
               }}
             >
-              다시 시도
+              {this.context.messages.retry}
             </KjunButton>
           </View>
         )

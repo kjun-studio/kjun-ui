@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useRef, useState, type ReactNode } from "react";
 import { Image, View, type ImageSourcePropType } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
@@ -19,8 +20,9 @@ export function KjunImage({ src, source, alt, decorative = false, aspectRatio = 
 }
 export interface KjunAvatarProps { src?: string; source?: ImageSourcePropType; name?: string; alt?: string; decorative?: boolean; size?: "sm" | "md" | "lg"; shape?: "circle" | "square"; fallback?: ReactNode; onLoad?: () => void; onError?: () => void }
 export function KjunAvatar({ src, source, name = "", alt, decorative = false, size = "md", shape = "circle", fallback, onLoad, onError }: KjunAvatarProps) {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles(), initial = Array.from(name.trim())[0];
-  return <View style={{ width: tokens.extensions.avatar[size], height: tokens.extensions.avatar[size], borderRadius: shape === "circle" ? tokens.radius.radius9999 : tokens.radius.radius8, overflow: "hidden", flexShrink: 0 }}><KjunImage src={src} source={source} alt={alt || name || "사용자"} decorative={decorative} fallback={fallback ?? (initial
+  return <View style={{ width: tokens.extensions.avatar[size], height: tokens.extensions.avatar[size], borderRadius: shape === "circle" ? tokens.radius.radius9999 : tokens.radius.radius8, overflow: "hidden", flexShrink: 0 }}><KjunImage src={src} source={source} alt={alt || name || m.user} decorative={decorative} fallback={fallback ?? (initial
     // Like Web: initials scale with the avatar, use control weight and the secondary text role, and capitalize Latin letters.
     ? <KText style={{ ...typeStyle(size === "sm" ? "control" : size === "lg" ? "sectionTitle" : "input"), fontWeight: typeStyle("control").fontWeight, color: colors.textSecondary }}>{initial.toLocaleUpperCase()}</KText>
     : <KjunIcon name="user" size={tokens.extensions.avatar.fallbackIconSizes[size]} />)} onLoad={onLoad} onError={onError} /></View>;

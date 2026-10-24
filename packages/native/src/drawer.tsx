@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { LayerBackdrop } from "./layer-backdrop";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
@@ -82,6 +83,7 @@ export function KjunDrawer({
   maxHeight,
   avoidKeyboard = true,
 }: KjunDrawerProps) {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles(),
     window = useWindowDimensions(),
     vertical = position === "left" || position === "right";
@@ -136,7 +138,7 @@ export function KjunDrawer({
           {...(!open ? { inert: true } : {})}
           ref={node => { const entry = layer.state.entries.get(layer.id); if (entry && node && typeof node === 'object' && 'focus' in node) entry.root = node; }}
           accessibilityViewIsModal
-          accessibilityLabel={ariaLabel || title || "패널"}
+          accessibilityLabel={ariaLabel || title || m.panel}
           {...(Platform.OS === "web"
             ? { role: "dialog", "aria-modal": true }
             : {})}
@@ -183,7 +185,7 @@ export function KjunDrawer({
                 <KjunButton
                   size="sm"
                   variant="ghost"
-                  ariaLabel="닫기"
+                  ariaLabel={m.close}
                   onPress={close}
                   style={{ borderRadius: tokens.extensions.drawer.closeRadius, width: tokens.extensions.drawer.closeSize, height: tokens.extensions.drawer.closeSize, paddingHorizontal: 0, paddingVertical: 0 }}
                 ><KjunIcon name="x" size={tokens.extensions.drawer.closeIconSize} /></KjunButton>

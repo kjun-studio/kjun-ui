@@ -6,12 +6,13 @@ const region = (page: Page, id: string) => page.getByTestId('region-' + id);
 const dateText = (locale: string) => new Intl.DateTimeFormat(locale, { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(2026, 9, 23));
 async function confirmButtons(page: Page, id: string) {
   await region(page, id).getByRole('button', { name: 'confirm ' + id }).click();
-  const dialog = page.getByRole('dialog').filter({ hasText: 'Proceed ' + id });
+  // React Native Web nests the named dialog inside the modal's own dialog root, so take the innermost match.
+  const dialog = page.getByRole('dialog').filter({ hasText: 'Proceed ' + id }).last();
   await expect(dialog).toBeVisible();
   return dialog;
 }
 
-for (const platform of ['react', 'vue3']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test.describe(platform, () => {
     test.beforeEach(async ({ page }) => {
       await openFixture(page, platform, '', 'i18n');
@@ -51,6 +52,14 @@ for (const platform of ['react', 'vue3']) {
       const dialog = await confirmButtons(page, 'invalid');
       await expect(dialog.getByRole('button', { name: 'Cancel', exact: true })).toBeVisible();
       await expect(region(page, 'invalid').getByText('No data', { exact: true })).toBeVisible();
+    });
+
+    if (platform === 'native') test('en-US: native calendar title and weekdays are English', async ({ page }) => {
+      const en = region(page, 'en');
+      await en.getByText(dateText('en-US')).click();
+      const title = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(new Date(2026, 9, 1));
+      await expect(page.getByText(title, { exact: true })).toBeVisible();
+      await expect(page.getByText('Sun', { exact: true })).toBeVisible();
     });
 
     test('no locale keeps the Korean copy and date form', async ({ page }) => {

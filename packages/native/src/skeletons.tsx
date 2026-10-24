@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useEffect,useRef,useState,type ReactNode } from "react";
@@ -154,12 +155,14 @@ const chartPart = (name: string) => (Platform.OS === "web" ? { dataSet: { kjunCh
 export function KjunChartSkeleton({
   kind: requestedKind = "frame",
   height = tokens.extensions.chartSkeleton.height,
-  loadingText = "차트를 불러오는 중",
+  loadingText,
   skeleton = true,
   loadingDelay = 0,
   rows = 8,
   columns = 14,
 }: KjunChartSkeletonProps) {
+  const m = useKjunMessages();
+  loadingText ??= m.chartLoading;
   const kind = chartSkeletonKind(requestedKind),
     { colors } = useKjunStyles(),
     reduced = useReducedMotion(),

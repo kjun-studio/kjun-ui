@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { typeStyle } from "./typography";
@@ -114,11 +115,13 @@ export interface KjunEmptyProps {
   children?: ReactNode;
 }
 export function KjunEmpty({
-  text = "데이터가 없습니다",
+  text,
   description,
   icon,
   children,
 }: KjunEmptyProps) {
+  const m = useKjunMessages();
+  text ??= m.noData;
   const { colors } = useKjunStyles();
   const spec = tokens.extensions.empty;
   const stateContent = useContext(DataStateContentContext);
@@ -162,6 +165,7 @@ export interface KjunSpinnerProps {
   text?: string;
 }
 export function KjunSpinner({ size = "md", text }: KjunSpinnerProps) {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles(),
     reduced = useReducedMotion(),
     rotation = useRef(new Animated.Value(0)).current;
@@ -188,7 +192,7 @@ export function KjunSpinner({ size = "md", text }: KjunSpinnerProps) {
     <View
       accessible
       accessibilityRole="progressbar"
-      accessibilityLabel={text || "로딩 중"}
+      accessibilityLabel={text || m.loading}
       style={{ flexDirection: "row", alignItems: "center" }}
     >
       <Animated.View
@@ -256,6 +260,7 @@ export function KjunAlert({
   actions,
   onClose,
 }: KjunAlertProps) {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles();
   const [visible, setVisible] = useState(true);
   if (!visible) return null;
@@ -319,7 +324,7 @@ export function KjunAlert({
       {closable && (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="닫기"
+          accessibilityLabel={m.close}
           hitSlop={Math.max(0, (tokens.native.minimumTouchTarget - closeSize) / 2)}
           style={({ pressed, hovered }: any) => ({
             width: closeSize, height: closeSize, flexShrink: 0,
@@ -359,6 +364,7 @@ export function KjunProgress({
   label,
   subLabel,
 }: KjunProgressProps) {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles();
   const percentage =
     Number.isFinite(value) && max > 0
@@ -394,7 +400,7 @@ export function KjunProgress({
       )}
       <View
         accessibilityRole="progressbar"
-        accessibilityLabel={typeof label === "string" ? label : "진행률"}
+        accessibilityLabel={typeof label === "string" ? label : m.progress}
         accessibilityValue={{ min: 0, max: 100, now: percentage }}
         style={{
           height: tokens.extensions.progress.heights[size],

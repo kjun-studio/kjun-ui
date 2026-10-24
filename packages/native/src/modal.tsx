@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { content } from "./internal";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { LayerBackdrop } from "./layer-backdrop";
@@ -37,8 +38,8 @@ export interface KjunFormActionsProps {
 }
 export function KjunFormActions({
   size = "lg",
-  cancelText = "취소",
-  confirmText = "저장",
+  cancelText,
+  confirmText,
   showCancel = true,
   showConfirm = true,
   cancelDisabled = false,
@@ -49,6 +50,9 @@ export function KjunFormActions({
   onCancel,
   onConfirm,
 }: KjunFormActionsProps) {
+  const m = useKjunMessages();
+  cancelText ??= m.cancel;
+  confirmText ??= m.save;
   const { fontFamily } = useKjunStyles();
   const [width, setWidth] = useState(0), [measurements, setMeasurements] = useState<Record<string, number>>({});
   const labels = [showCancel && { text: cancelText }, showConfirm && { text: confirmText }].filter(Boolean) as { text: string }[];
@@ -143,8 +147,8 @@ export function KjunModal({
   showFooter = false,
   showConfirmButton = true,
   showCancelButton = true,
-  confirmText = "확인",
-  cancelText = "취소",
+  confirmText,
+  cancelText,
   confirmDisabled = false,
   loading = false,
   noPadding = false,
@@ -156,6 +160,9 @@ export function KjunModal({
   children,
   ariaLabel,
 }: KjunModalProps) {
+  const m = useKjunMessages();
+  confirmText ??= m.confirm;
+  cancelText ??= m.cancel;
   const { colors: c, fontFamily } = useKjunStyles();
   const window = useWindowDimensions();
   const motion = useNativePresence(open, tokens.motion.layerEnter, tokens.motion.layerExit, true, 0, { fade: tokens.motion.backdropExit });
@@ -216,7 +223,7 @@ export function KjunModal({
           {...(!open ? { inert: true } : {})}
           ref={node => { const entry = layer.state.entries.get(layer.id); if (entry && node && typeof node === 'object' && 'focus' in node) entry.root = node; }}
           accessibilityViewIsModal
-          accessibilityLabel={ariaLabel || title || "대화상자"}
+          accessibilityLabel={ariaLabel || title || m.dialog}
           {...(Platform.OS === "web"
             ? { role: "dialog", "aria-modal": true }
             : {})}
@@ -266,7 +273,7 @@ export function KjunModal({
                 <KjunButton
                   variant="ghost"
                   size="sm"
-                  ariaLabel="닫기"
+                  ariaLabel={m.close}
                   onPress={close}
                   style={{ borderRadius: tokens.modal.closeRadius, width: tokens.modal.closeSize, height: tokens.modal.closeSize, paddingHorizontal: 0, paddingVertical: 0 }}
                 ><KjunIcon name="x" size={tokens.modal.closeIconSize} /></KjunButton>

@@ -9,13 +9,14 @@ export const regions = [
   { id: 'none' },
 ] as const;
 
-function Region({ K, id, cancelText }: { K: any; id: string; cancelText?: string }) {
+function Region({ K, id, cancelText, native }: { K: any; id: string; cancelText?: string; native?: boolean }) {
   const feedback = K.useKjunFeedback();
+  const press = (handler: () => void) => native ? { onPress: handler } : { onClick: handler };
   const [modal, setModal] = useState(false);
   return <div data-testid={'region-' + id}>
-    <K.KjunButton onClick={() => feedback.confirm({ message: 'Proceed ' + id, cancelText })}>{'confirm ' + id}</K.KjunButton>
-    <K.KjunButton onClick={() => setModal(true)}>{'modal ' + id}</K.KjunButton>
-    <K.KjunModal open={modal} onOpenChange={setModal} title={'Modal ' + id}><K.KjunButton onClick={() => setModal(false)}>{'done ' + id}</K.KjunButton></K.KjunModal>
+    <K.KjunButton {...press(() => feedback.confirm({ message: 'Proceed ' + id, cancelText }))}>{'confirm ' + id}</K.KjunButton>
+    <K.KjunButton {...press(() => setModal(true))}>{'modal ' + id}</K.KjunButton>
+    <K.KjunModal open={modal} onOpenChange={setModal} title={'Modal ' + id}><K.KjunButton {...press(() => setModal(false))}>{'done ' + id}</K.KjunButton></K.KjunModal>
     <K.KjunPagination totalPages={3} currentPage={2} onPageChange={() => {}} />
     <K.KjunEmpty />
     <K.KjunDatePicker value="2026-10-23" onChange={() => {}} />
@@ -25,7 +26,7 @@ function Region({ K, id, cancelText }: { K: any; id: string; cancelText?: string
 export function I18nCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, unknown> }) {
   return <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16 }} data-native={native || undefined}>
     {regions.map(({ id, cancelText, ...props }: any) => <K.KjunProvider key={id} {...providerProps} {...props}>
-      <K.KjunFeedbackProvider><Region K={K} id={id} cancelText={cancelText} /></K.KjunFeedbackProvider>
+      <K.KjunFeedbackProvider><Region K={K} id={id} cancelText={cancelText} native={native} /></K.KjunFeedbackProvider>
     </K.KjunProvider>)}
   </div>;
 }

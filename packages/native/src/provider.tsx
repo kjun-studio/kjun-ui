@@ -1,3 +1,5 @@
+import { KjunMessagesProvider } from "../../../shared/package-runtime/messages-context";
+import type { KjunMessages } from "../../../shared/package-runtime/messages";
 import { IconProvider } from "../../../shared/package-runtime/icon-context";
 import type { KjunIconRegistry } from "@kjun-ui/icons";
 import { LayerProvider } from "../../../shared/package-runtime/use-layer";
@@ -33,12 +35,18 @@ export function useKjunStyles(): KjunStyles {
 }
 export interface KjunProviderProps extends Omit<KjunStyles, "colors"> {
   icons?: KjunIconRegistry;
+  /** BCP 47 tag (e.g. "en-US") for KJUN copy and Intl formats; without it KJUN stays Korean. */
+  locale?: string;
+  /** Replaces part of KJUN's copy, e.g. with the app's own translations. */
+  messages?: Partial<KjunMessages>;
   colors: KjunColors<ColorValue>;
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
 }
 export function KjunProvider({
   icons,
+  locale,
+  messages,
   colors,
   fontFamily,
   numericFontFamily,
@@ -64,7 +72,7 @@ export function KjunProvider({
         domainColors: domainColors ?? parent?.domainColors,
       }}
     >
-      <IconProvider icons={icons}><LayerProvider escapeKeyUpFallback><View style={style}>{children}</View></LayerProvider></IconProvider>
+      <KjunMessagesProvider locale={locale} messages={messages}><IconProvider icons={icons}><LayerProvider escapeKeyUpFallback><View style={style}>{children}</View></LayerProvider></IconProvider></KjunMessagesProvider>
     </StylesContext.Provider>
   );
 }

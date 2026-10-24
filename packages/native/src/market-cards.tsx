@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { ScrollView,View } from "react-native";
@@ -21,6 +22,7 @@ import { getValue } from "./table";
 export function KjunMarketCards<Row extends object = Record<string, unknown>>(
   props: KjunMarketCardsProps<Row>
 ) {
+  const m = useKjunMessages();
   const {
       rows = [],
       rowKey = "id",
@@ -31,7 +33,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
       changeMetricKey = "change_rate",
       priceMetricKeys = ["current_price", "close_price"],
       metricLoading = () => false,
-      emptyMessage = "항목이 없습니다",
+      emptyMessage = m.noItems,
       emptySubMessage = "",
     } = props,
     { colors } = useKjunStyles();

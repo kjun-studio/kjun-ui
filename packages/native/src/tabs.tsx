@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { tokens } from '@kjun-ui/tokens';
 import { typeStyle, selectionTypeStyle } from "./typography";
@@ -43,11 +44,13 @@ export function KjunTabs({
   variant = "underline",
   actions,
   children,
-  ariaLabel = "탭",
+  ariaLabel,
   onValueChange,
   onChange,
   onTabMenu,
 }: KjunTabsProps) {
+  const m = useKjunMessages();
+  ariaLabel ??= m.tabs;
   const { colors } = useKjunStyles(),
     panes = Children.toArray(children).filter(
       isValidElement

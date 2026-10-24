@@ -36,7 +36,7 @@ function FeedbackDialog({
   open: boolean;
 }) {
   const m = useKjunMessages();
-  const { options, value, error, busy, edit, cancel, submit } = useFeedbackDialog(controller, request);
+  const { options, value, error, busy, edit, cancel, submit } = useFeedbackDialog(controller, request, m);
   return (
     <KjunModal
       open={open}

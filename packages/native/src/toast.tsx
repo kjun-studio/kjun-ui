@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
@@ -15,6 +16,7 @@ export function ToastView({
   toast: ToastItem;
   controller: ReturnType<typeof createFeedbackController>;
 }) {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles(),
     reduced = useReducedMotion(),
     progress = useRef(new Animated.Value(1)).current;
@@ -102,7 +104,7 @@ export function ToastView({
         {toast.closable !== false && (
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="알림 닫기"
+            accessibilityLabel={m.closeNotification}
             onHoverIn={() => controller.pauseToast(toast.id, reasons.closeHover)}
             onHoverOut={() => controller.resumeToast(toast.id, reasons.closeHover)}
             onFocus={() => controller.pauseToast(toast.id, reasons.focus)}

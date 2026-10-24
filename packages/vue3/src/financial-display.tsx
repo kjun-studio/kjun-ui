@@ -171,7 +171,7 @@ export const KjunExecutionStatusBadge = defineComponent({
       // A running job carries a dot, so it reads apart from queued at a glance.
       return (
         <KjunBadge variant={state?.[0] || "secondary"} size={props.size} dot={props.status === "running"}>
-          {props.label || (state && m.value[state[1]]) || (props.status ? m.value.statusUnknown : m.value.statusNoRuns)}
+          {props.label || (state ? m.value[state[1]] : undefined) || (props.status ? m.value.statusUnknown : m.value.statusNoRuns)}
         </KjunBadge>
       );
     };

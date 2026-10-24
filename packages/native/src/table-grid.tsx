@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { Fragment, useId, useState } from "react";
@@ -12,6 +13,7 @@ import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
 import type { TableColumn } from "./table-model";
 export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable }: TableGridProps<Row, number>) {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles();
   const geometry = tokens.table;
   // Like Web's scroll hint: when columns overflow, the trailing edge fades until the end is reached.
@@ -51,7 +53,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                       size="sm"
                       value={state.all}
                       ariaLabel={
-                        state.some ? "전체 선택 (일부 선택됨)" : "전체 선택"
+                        state.some ? m.selectAllPartial : m.selectAll
                       }
                       onValueChange={state.toggleAll}
                     />
@@ -66,8 +68,8 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                     accessibilityHint={
                       col.sortable && sortable !== false && state.sort.key === col.key
                         ? state.sort.order === "asc"
-                          ? "오름차순"
-                          : "내림차순"
+                          ? m.ascending
+                          : m.descending
                         : undefined
                     }
                     disabled={!col.sortable || sortable === false}

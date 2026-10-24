@@ -223,7 +223,7 @@ export function KjunExecutionStatusBadge({
   // A running job carries a dot, so it reads apart from queued at a glance.
   return (
     <KjunBadge variant={state?.[0] || "secondary"} size={size} dot={status === "running"}>
-      {label || (state && m[state[1]]) || (status ? m.statusUnknown : m.statusNoRuns)}
+      {label || (state ? m[state[1]] : undefined) || (status ? m.statusUnknown : m.statusNoRuns)}
     </KjunBadge>
   );
 }

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
 import { LayerBackdrop } from "./layer-backdrop";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
@@ -79,7 +80,7 @@ export function FloatingPanel({
   placement = "bottom",
   matchTriggerWidth = false,
   maxHeight,
-  ariaLabel = "선택",
+  ariaLabel,
   menu = false,
   field = false,
   tooltip = false,
@@ -114,6 +115,8 @@ export function FloatingPanel({
   /** Popover modal={false}: screen readers are not confined to the panel. */
   nonModal?: boolean;
 }) {
+  const m = useKjunMessages();
+  ariaLabel ??= m.select;
   const [headerHeight, setHeaderHeight] = useState(0);
   const panelRef = useRef<View>(null);
   const scroll = useRef<ScrollView>(null), viewport = useRef(0);

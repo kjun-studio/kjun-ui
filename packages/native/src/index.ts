@@ -141,3 +141,5 @@ export * from "./quantity-stepper";
 export * from "./time-picker";
 
 export type { ShadowLayer, ElevationRole, CardElevation } from "@kjun-ui/tokens";
+
+export { kjunMessagesKo, kjunMessagesEn, type KjunMessages } from "../../../shared/package-runtime/messages";

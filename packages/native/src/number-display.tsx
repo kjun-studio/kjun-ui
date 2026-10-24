@@ -1,3 +1,4 @@
+import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { useNumberMotion } from "../../../shared/package-runtime/use-number-motion";
@@ -93,15 +94,16 @@ export function KjunFreshness({
   fetchedAt,
   formatter,
 }: KjunFreshnessProps) {
-  const label = source === "close" ? "종가" : "지연";
+  const scope = useKjunMessageScope();
+  const label = source === "close" ? scope.messages.closePrice : scope.messages.delayed;
   // Like Web: a focusable tooltip target, so keyboard and touch (long press) reach when the value was fetched.
   return stale ? (
     <KjunTooltip
       content={
         (source === "close"
-          ? "실시간 시세 없음 · 최근 종가 표시"
-          : "실시간 시세 지연") +
-        (fetchedAt ? " · " + (formatter?.(fetchedAt) || formatRelativeTime(fetchedAt)) : "")
+          ? scope.messages.noRealtimeQuote
+          : scope.messages.realtimeDelayed) +
+        (fetchedAt ? " · " + (formatter?.(fetchedAt) || formatRelativeTime(fetchedAt, undefined, scope)) : "")
       }
     >
       <AccessiblePressable accessibilityLabel={label} focusRingRadius={tokens.extensions.badge.radius}>

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { deviationLevel, tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { useId,type ReactNode } from "react";
@@ -37,6 +38,7 @@ export function KjunDeviation({
   decimals = 2,
   formatter,
 }: KjunDeviationProps) {
+  const m = useKjunMessages();
   const { colors, domainColors, numericFontFamily, fontFamily } =
       useKjunStyles(),
     n = finiteNumber(value);
@@ -74,10 +76,10 @@ export function KjunDeviation({
         {/* Like Web: a 24px focusable tooltip target around the 12px icon; negative margins keep the layout.
             The outer View centres it in the row, since the tooltip wrapper hugs its trigger from the top. */}
         <View style={{ alignSelf: "center" }}>
-        <KjunTooltip content={`괴리율 ${signalThreshold}% 초과 — 차익거래 기회 가능`}>
+        <KjunTooltip content={m.deviationWarning(signalThreshold)}>
           <AccessiblePressable
             accessibilityRole="image"
-            accessibilityLabel="차익거래 기회"
+            accessibilityLabel={m.arbitrage}
             focusRingInset
             focusRingRadius={tokens.radius.radius4}
             style={{
@@ -291,14 +293,14 @@ export function KjunCollectionMark({
   );
 }
 export const executionStates = {
-  queued: ["secondary", "대기 중"],
-  starting: ["primary", "시작 중"],
-  running: ["primary", "실행 중"],
-  stopping: ["warning", "중단 중"],
-  stopped: ["secondary", "중단됨"],
-  completed: ["success", "완료"],
-  completed_with_errors: ["warning", "완료 (오류)"],
-  failed: ["danger", "실패"],
+  queued: ["secondary", "statusQueued"],
+  starting: ["primary", "statusStarting"],
+  running: ["primary", "statusRunning"],
+  stopping: ["warning", "statusStopping"],
+  stopped: ["secondary", "statusStopped"],
+  completed: ["success", "statusCompleted"],
+  completed_with_errors: ["warning", "statusCompletedWithErrors"],
+  failed: ["danger", "statusFailed"],
 } as const;
 export interface KjunExecutionStatusBadgeProps {
   status?: string | null;
@@ -310,13 +312,14 @@ export function KjunExecutionStatusBadge({
   label,
   size = "md",
 }: KjunExecutionStatusBadgeProps) {
+  const m = useKjunMessages();
   const state = status
     ? executionStates[status as keyof typeof executionStates]
     : undefined;
   // A running job carries a dot, so it reads apart from queued at a glance.
   return (
     <KjunBadge variant={state?.[0] || "secondary"} size={size} dot={status === "running"}>
-      {label || state?.[1] || (status ? "알 수 없음" : "실행 이력 없음")}
+      {label || (state ? m[state[1]] : undefined) || (status ? m.statusUnknown : m.statusNoRuns)}
     </KjunBadge>
   );
 }

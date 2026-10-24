@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
 import { tablePresentation, tableCellValue } from "../../../shared/package-runtime/table-presentation";
 import { TableToolbar } from "./table-toolbar";
@@ -23,21 +24,22 @@ useTableModel
 export function KjunTable<Row extends object = Record<string, unknown>>(
   props: KjunTableProps<Row>
 ) {
+  const m = useKjunMessages();
   const {
     skeletonRows = 8,
     skeleton = true,
-    loadingText = "로딩 중...",
+    loadingText = m.loadingEllipsis,
     loadingDelay = 0,
-    emptyText = "데이터가 없습니다",
+    emptyText = m.noData,
     hoverable = true,
     searchable = false,
-    searchPlaceholder = "검색...",
+    searchPlaceholder = m.search,
     stickyHeader = false,
     maxHeight,
     pagination,
     compact = false,
     striped = false,
-    ariaLabel = "데이터 표",
+    ariaLabel = m.dataTable,
     expandable = false,
     selectable = false,
     selected = [],
@@ -91,7 +93,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
   const checkbox = (row: Row, i: number) => (
     <KjunCheckbox
       value={state.selectedRow(row)}
-      ariaLabel={`행 선택 ${i + 1}`}
+      ariaLabel={m.selectRow(i + 1)}
       size="sm"
       onValueChange={() => state.toggleRow(row)}
     />
@@ -105,13 +107,13 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
           ? "chevron-down"
           : "chevron-right"
       }
-      ariaLabel="행 확장"
+      ariaLabel={m.expandRow}
       onPress={() => state.toggleExpand(row, i)}
     >
       {card
         ? state.expanded.includes(state.key(row, i))
-          ? "접기"
-          : "상세 보기"
+          ? m.collapse
+          : m.showDetails
         : undefined}
     </KjunButton>
   );

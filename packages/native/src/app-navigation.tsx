@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
@@ -46,7 +47,9 @@ export function KjunTopNavigation({ title, description, leading, actions, safeAr
 }
 export interface NavigationDestination { key: string; label: string; href?: string; icon?: string; badge?: string | number; disabled?: boolean }
 export interface KjunBottomNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: (key: string, event: GestureResponderEvent) => void }
-export function KjunBottomNavigation({ items, value, ariaLabel = "주요 탐색", safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = true, onNavigate }: KjunBottomNavigationProps) {
+export function KjunBottomNavigation({ items, value, ariaLabel, safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = true, onNavigate }: KjunBottomNavigationProps) {
+  const m = useKjunMessages();
+  ariaLabel ??= m.mainNavigation;
   const { colors } = useKjunStyles();
   const geometry = tokens.extensions.bottomNavigation;
   const hasIcons = items.some(item => item.icon);

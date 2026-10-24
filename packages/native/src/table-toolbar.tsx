@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
 import type { TableToolbarProps } from "../../../shared/package-runtime/table-presentation";
@@ -8,6 +9,7 @@ import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
 export function TableToolbar<Row extends object>({ selectable, selected, toggleAll, clearSelection,
   renderSelectionToolbar, searchable, search, searchChange, searchPlaceholder, toolbar }: TableToolbarProps<Row>) {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles();
   const toolbarStyle = {
     flexDirection: "row",
@@ -24,21 +26,21 @@ export function TableToolbar<Row extends object>({ selectable, selected, toggleA
       {selectable && selected.length > 0 && (
         <View
           role="group"
-          accessibilityLabel="선택 작업"
+          accessibilityLabel={m.selectionActions}
           style={[toolbarStyle, { backgroundColor: colors.selectedBg }]}
         >
           <KText style={{ fontWeight: typeStyle('control').fontWeight, color: colors.brand }}>
-            {selected.length}개 선택
+            {m.selectedItems(selected.length)}
           </KText>
           <KjunButton size="xs" variant="ghost" onPress={toggleAll}>
-            전체 선택
+            {m.selectAll}
           </KjunButton>
           <KjunButton
             size="xs"
             variant="ghost"
             onPress={clearSelection}
           >
-            선택 해제
+            {m.deselectAll}
           </KjunButton>
           {renderSelectionToolbar?.(selected)}
         </View>
@@ -51,7 +53,7 @@ export function TableToolbar<Row extends object>({ selectable, selected, toggleA
               <KjunInput
                 size="sm"
                 value={search}
-                ariaLabel="표 검색"
+                ariaLabel={m.searchTable}
                 placeholder={searchPlaceholder}
                 prefixIcon="search"
                 clearable

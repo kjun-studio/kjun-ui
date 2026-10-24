@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
 import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
@@ -121,7 +122,7 @@ export function KjunCopyButton({
   value,
   ariaLabel,
   text,
-  successText = "복사됨",
+  successText,
   inline = false,
   size = "sm",
   disabled = false,
@@ -129,6 +130,8 @@ export function KjunCopyButton({
   onCopied,
   onCopyError,
 }: KjunCopyButtonProps) {
+  const m = useKjunMessages();
+  successText ??= m.copied;
   const feedback = useOptionalKjunFeedback(),
     { colors } = useKjunStyles(),
     [copied, setCopied] = useState(false),
@@ -148,9 +151,9 @@ export function KjunCopyButton({
       <Pressable
         disabled={disabled}
         accessibilityRole="button"
-        accessibilityLabel={ariaLabel || text || "복사"}
+        accessibilityLabel={ariaLabel || text || m.copy}
         accessibilityHint={
-          feedback ? undefined : copied ? successText : failed ? "복사 실패" : undefined
+          feedback ? undefined : copied ? successText : failed ? m.copyFailed : undefined
         }
         onPress={async () => {
           if (copied || busy.current) return;
@@ -167,7 +170,7 @@ export function KjunCopyButton({
           } catch (error) {
             if (mounted.current) {
               setFailed(true);
-              feedback?.toast.error("복사 실패");
+              feedback?.toast.error(m.copyFailed);
               onCopyError?.(error);
             }
           } finally {
@@ -222,7 +225,7 @@ export interface KjunRefreshButtonProps
 export function KjunRefreshButton({
   targetName = "",
   mode = "icon",
-  text = "새로고침",
+  text,
   size = "sm",
   variant = "ghost",
   ariaLabel,
@@ -233,9 +236,11 @@ export function KjunRefreshButton({
   onRefresh,
   ...props
 }: KjunRefreshButtonProps) {
+  const m = useKjunMessages();
+  text ??= m.refresh;
   const reduced = useReducedMotion();
   // Text mode speaks what it shows (WCAG 2.5.3); icon mode keeps the action name.
-  const label = ariaLabel || [targetName, mode === "text" ? text : "새로고침"].filter(Boolean).join(" ");
+  const label = ariaLabel || [targetName, mode === "text" ? text : m.refresh].filter(Boolean).join(" ");
   const hint = tooltip ?? (mode === "icon" ? label : "");
   const button = (
     <KjunTooltip content={props.disabled || props.loading ? "" : hint} placement={tooltipPlacement} delay={tooltipDelay}>
@@ -276,9 +281,10 @@ export function KjunExternalLink({
   children,
   openUrl,
 }: KjunExternalLinkProps) {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles(),
     url = safeExternalUrl(href),
-    name = label || (mode === "icon" ? "외부 링크" : undefined),
+    name = label || (mode === "icon" ? m.externalLink : undefined),
     body =
       mode === "icon" ? (
         <KjunIcon name="external-link" color={colors.text} />
@@ -288,7 +294,7 @@ export function KjunExternalLink({
   return url ? (
     <Pressable
       accessibilityRole="link"
-      accessibilityLabel={name ? name + " (새 창)" : undefined}
+      accessibilityLabel={name ? name + m.newWindow : undefined}
       onPress={() => openUrl(url)}
       // Content width like Web; a column parent would otherwise stretch the hit area and focus ring.
       style={{ alignSelf: "flex-start", minHeight: tokens.native.minimumTouchTarget, justifyContent: "center" }}

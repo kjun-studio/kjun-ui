@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens, type ButtonSize } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { Collapse } from "./collapse";
@@ -138,8 +139,10 @@ export function KjunBreadcrumb({
   items,
   renderLink,
   onNavigate,
-  ariaLabel = "현재 위치",
+  ariaLabel,
 }: KjunBreadcrumbProps) {
+  const m = useKjunMessages();
+  ariaLabel ??= m.breadcrumb;
   const { colors } = useKjunStyles();
   return (
     <View
@@ -226,6 +229,7 @@ export function KjunPagination({
   onChange,
   onPageSizeChange,
 }: KjunPaginationProps) {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles(),
     window = useWindowDimensions(),
     current = Math.max(1, Math.min(totalPages, currentPage ?? page ?? 1));
@@ -270,7 +274,7 @@ export function KjunPagination({
   );
   return (
     <View
-      accessibilityLabel="페이지 탐색"
+      accessibilityLabel={m.pagination}
       style={{
         flexDirection: compact ? "column" : "row",
         alignItems: compact ? "stretch" : "center",
@@ -283,8 +287,7 @@ export function KjunPagination({
     >
       {showInfo && totalRows > 0 ? (
         <KText style={{ color: colors.textSecondary }}>
-          {(current - 1) * pageSize + 1} -{" "}
-          {Math.min(current * pageSize, totalRows)} / {formatter(totalRows)}개
+          {m.pageRange((current - 1) * pageSize + 1, Math.min(current * pageSize, totalRows), formatter(totalRows))}
         </KText>
       ) : (
         <View />
@@ -300,11 +303,11 @@ export function KjunPagination({
         {showSizeSelector && (
           <View style={{ minWidth: tokens.extensions.pagination.selectorMinimumWidth }}><KjunSelect
             size="sm"
-            ariaLabel="페이지당 항목 수"
+            ariaLabel={m.itemsPerPage}
             value={pageSize}
             options={pageSizeOptions.map((n) => ({
               value: n,
-              label: `${n}개씩`,
+              label: m.perPage(n),
             }))}
             onValueChange={(v) => {
               onPageSizeChange?.(Number(v));
@@ -314,8 +317,8 @@ export function KjunPagination({
           /></View>
         )}
         {totalPages > 1 && <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.pagination.itemGap, marginLeft: compact ? "auto" : undefined }}>
-        {!compact && showFirstLast && button(1, "첫 페이지", "chevrons-left")}
-        {button(current - 1, "이전 페이지", "chevron-left")}
+        {!compact && showFirstLast && button(1, m.firstPage, "chevrons-left")}
+        {button(current - 1, m.previousPage, "chevron-left")}
         {compact ? (
           <KText style={{ paddingHorizontal: tokens.extensions.pagination.labelPaddingX, color: colors.text, fontVariant: ["tabular-nums"] }}>
             <KText style={{ fontWeight: typeStyle('control').fontWeight }}>{current}</KText> / {totalPages}
@@ -330,7 +333,7 @@ export function KjunPagination({
                 style={pageButtonStyle}
                 size="sm"
                 variant={current === n ? "primary" : "ghost"}
-                ariaLabel={`${n} 페이지`}
+                ariaLabel={m.page(n)}
                 onPress={() => change(n)}
               >
                 {n}
@@ -338,10 +341,10 @@ export function KjunPagination({
             )
           )
         )}
-        {button(current + 1, "다음 페이지", "chevron-right")}
+        {button(current + 1, m.nextPage, "chevron-right")}
         {!compact &&
           showFirstLast &&
-          button(totalPages, "마지막 페이지", "chevrons-right")}
+          button(totalPages, m.lastPage, "chevrons-right")}
         </View>}
       </View>
     </View>

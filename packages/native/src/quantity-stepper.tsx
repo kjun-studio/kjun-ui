@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { joinHints } from "../../../shared/package-runtime/aria-ids";
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
@@ -13,6 +14,7 @@ import { useKjunStyles } from "./provider";
 import { useKjunField } from "./input";
 export interface KjunQuantityStepperProps { value: number; min?: number; max?: number; step?: number; precision?: number; disabled?: boolean; error?: boolean; size?: InputSize; block?: boolean; id?: string; ariaLabel?: string; onValueChange?: (value: number) => void; onChangeCommit?: (value: number) => void; onInvalidInput?: (draft: string) => void }
 export function KjunQuantityStepper({ value, min = 0, max, step = 1, precision = 0, disabled = false, error = false, size = "md", block = false, id, ariaLabel, onValueChange, onChangeCommit, onInvalidInput }: KjunQuantityStepperProps) {
+  const m = useKjunMessages();
   const { colors, fontFamily } = useKjunStyles();
   const field = useKjunField();
   const invalid = error || !!field?.error;
@@ -73,13 +75,13 @@ export function KjunQuantityStepper({ value, min = 0, max, step = 1, precision =
   const hug = Platform.OS === "web" && !block ? { width: "fit-content" as DimensionValue } : {};
   return <IconFallbacks icons={componentIcons}><View style={{ flexDirection: "row", alignItems: "center", alignSelf: block ? "stretch" : "flex-start", maxWidth: "100%", borderRadius: surface.spec.radius, ...hug }}>
     <View pointerEvents="none" aria-hidden={true} style={{ ...surfaceBox, backgroundColor: colors.inputBg }} />
-    <CompoundTarget square><KjunButton size={size} style={decreaseStyle} variant="ghost" ariaLabel="수량 줄이기" disabled={blocked || value <= min} onPress={() => move(-1)} prefixIcon="minus" /></CompoundTarget>
+    <CompoundTarget square><KjunButton size={size} style={decreaseStyle} variant="ghost" ariaLabel={m.decreaseQuantity} disabled={blocked || value <= min} onPress={() => move(-1)} prefixIcon="minus" /></CompoundTarget>
     <View style={{ flex: block ? 1 : undefined, width: block ? undefined : geometry.valueWidth, minWidth: 0, minHeight: finePointer() ? undefined : tokens.native.minimumTouchTarget, justifyContent: "center" }} {...fieldTarget(() => inputRef.current?.focus(), blocked)}>
-    <FieldTextInput {...surface.webHover} onFocus={() => surface.setFocused(true)} ref={inputRef} nativeID={id || field?.id} accessibilityLabel={ariaLabel || field?.label || "수량"} accessibilityLabelledBy={labelledBy} accessibilityHint={joinHints(field?.hint, field?.error)} role="spinbutton" accessibilityValue={{ min, max, now: value }} accessibilityState={{ disabled: blocked }} value={draft} editable={!blocked} inputMode={precision ? "decimal" : "numeric"} onChangeText={text => { dirty.current = true; setDraft(text); }} onBlur={() => { surface.setFocused(false); commit(); }} onSubmitEditing={Platform.OS === "web" ? undefined : commit}
+    <FieldTextInput {...surface.webHover} onFocus={() => surface.setFocused(true)} ref={inputRef} nativeID={id || field?.id} accessibilityLabel={ariaLabel || field?.label || m.quantity} accessibilityLabelledBy={labelledBy} accessibilityHint={joinHints(field?.hint, field?.error)} role="spinbutton" accessibilityValue={{ min, max, now: value }} accessibilityState={{ disabled: blocked }} value={draft} editable={!blocked} inputMode={precision ? "decimal" : "numeric"} onChangeText={text => { dirty.current = true; setDraft(text); }} onBlur={() => { surface.setFocused(false); commit(); }} onSubmitEditing={Platform.OS === "web" ? undefined : commit}
       {...(Platform.OS === "web" ? { "aria-valuemin": min, "aria-valuemax": max, "aria-valuenow": value, "aria-labelledby": labelledBy, "aria-describedby": field?.describedBy, "aria-invalid": invalid || undefined, "aria-required": field?.required || undefined } : { onKeyPress: key })}
       style={{ width: "100%", minWidth: 0, ...surface.style, borderRadius: 0, borderTopColor: "transparent", borderBottomColor: "transparent", borderLeftColor: "transparent", borderRightColor: "transparent", backgroundColor: !blocked && (surface.active || surface.hovered) ? colors.hover : "transparent", outlineWidth: 0, color: surface.ink, fontFamily, ...inputTypeStyle(size), textAlign: "center", paddingHorizontal: surface.spec.padding - tokens.border.controlWidth, paddingVertical: 0 }} />
     </View>
-    <CompoundTarget square><KjunButton size={size} style={increaseStyle} variant="ghost" ariaLabel="수량 늘리기" disabled={blocked || (max !== undefined && value >= max)} onPress={() => move(1)} prefixIcon="plus" /></CompoundTarget>
+    <CompoundTarget square><KjunButton size={size} style={increaseStyle} variant="ghost" ariaLabel={m.increaseQuantity} disabled={blocked || (max !== undefined && value >= max)} onPress={() => move(1)} prefixIcon="plus" /></CompoundTarget>
     {(invalid || surface.active) && <View pointerEvents="none" aria-hidden={true} style={{ ...surfaceBox, borderWidth: invalid ? tokens.border.controlWidth : tokens.states.focus.width, borderColor: invalid ? colors.danger : colors.focusRing }} />}
   </View></IconFallbacks>;
 }

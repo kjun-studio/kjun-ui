@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import {
 Children,
@@ -44,6 +45,7 @@ export function KjunDropdown({
   onOpen,
   onClose,
 }: KjunDropdownProps) {
+  const m = useKjunMessages();
   const [open, setOpen] = useState(false),
     currentOpen = useRef(false),
     ref = useRef<View>(null);
@@ -76,7 +78,7 @@ export function KjunDropdown({
         onOpenChange={change}
         triggerRef={ref}
         placement={placement}
-        ariaLabel="메뉴"
+        ariaLabel={m.menu}
         menu
       >
         <MenuIconSlotContext.Provider value={hasLeadingIcon(children)}>{children}</MenuIconSlotContext.Provider>
@@ -180,6 +182,7 @@ export function KjunMenuButton({
   onClose,
   ...props
 }: KjunMenuButtonProps) {
+  const m = useKjunMessages();
   const [open, setOpen] = useState(false);
   return (
     <KjunDropdown
@@ -200,7 +203,7 @@ export function KjunMenuButton({
             accessibilityState={{ expanded: open }}
             prefixIcon={compact || !label ? "dots-vertical" : undefined}
             suffixIcon={!compact && label ? open ? "chevron-up" : "chevron-down" : undefined}
-            ariaLabel={ariaLabel || label || tooltip || "메뉴"}
+            ariaLabel={ariaLabel || label || tooltip || m.menu}
           >
             {compact ? undefined : label}
           </KjunButton>

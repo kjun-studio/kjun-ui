@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useFeedbackDialog } from "../../../shared/package-runtime/feedback-dialog";
 import { usePresentedToasts, usePresentedRequest } from "../../../shared/package-runtime/feedback-motion";
 import { KjunFeedbackContext, useOptionalKjunFeedback } from "./feedback-context";
@@ -36,17 +37,18 @@ function FeedbackDialog({
   request: FeedbackRequest;
   open: boolean;
 }) {
-  const { options, value, error, busy, edit, cancel, submit } = useFeedbackDialog(controller, request);
+  const m = useKjunMessages();
+  const { options, value, error, busy, edit, cancel, submit } = useFeedbackDialog(controller, request, m);
   return (
     <KjunModal
       open={open}
       onOpenChange={(open) => {
         if (!open) cancel();
       }}
-      title={options.title || (request.kind === "prompt" ? "입력" : "확인")}
+      title={options.title || (request.kind === "prompt" ? m.promptTitle : m.confirmTitle)}
       showFooter
-      confirmText={options.confirmText || "확인"}
-      cancelText={options.cancelText || "취소"}
+      confirmText={options.confirmText || m.confirm}
+      cancelText={options.cancelText || m.cancel}
       loading={busy}
       closable={!busy}
       closeOnEsc={!busy}
@@ -61,7 +63,7 @@ function FeedbackDialog({
         <KjunInput
           autoFocus
           value={value}
-          ariaLabel={options.title || "입력"}
+          ariaLabel={options.title || m.promptTitle}
           placeholder={options.placeholder}
           errorMessage={error}
           onChangeText={edit}

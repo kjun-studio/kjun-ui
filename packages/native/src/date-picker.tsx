@@ -1,3 +1,5 @@
+import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
+import { calendarLabels, formatDateValue } from "../../../shared/package-runtime/messages";
 import { FieldPressable, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
@@ -31,7 +33,7 @@ export function KjunDatePicker({
   value,
   min,
   max,
-  placeholder = "날짜 선택",
+  placeholder,
   size = "md",
   disabled = false,
   ariaLabel,
@@ -39,6 +41,8 @@ export function KjunDatePicker({
   onValueChange,
   onChange,
 }: KjunDatePickerProps) {
+  const scope = useKjunMessageScope();
+  placeholder ??= scope.messages.datePlaceholder;
   const { colors } = useKjunStyles(),
     field = useKjunField(),
     [open, setOpen] = useState(false),
@@ -94,7 +98,7 @@ export function KjunDatePicker({
               color: disabled ? colors.textDisabled : value ? colors.text : colors.inputPlaceholder,
             }}
           >
-            {value ? value.replace(/-/g, ". ") + "." : placeholder}
+            {value ? formatDateValue(value, scope) : placeholder}
           </KText>
           <KjunIcon
             name="calendar"
@@ -111,7 +115,7 @@ export function KjunDatePicker({
         placement="bottom-start"
         matchTriggerWidth
         minimumWidth={tokens.extensions.calendar.minimumWidth}
-        ariaLabel="날짜 선택"
+        ariaLabel={scope.messages.datePlaceholder}
       >
         <View style={{ padding: tokens.dimension.value8 }}>
           <View
@@ -125,22 +129,22 @@ export function KjunDatePicker({
               size="sm"
               variant="ghost"
               prefixIcon="chevron-left"
-              ariaLabel="이전 달"
+              ariaLabel={scope.messages.previousMonth}
               onPress={() => setMonth(new Date(year, m - 1, 1))}
             />
             <KText>
-              {year}년 {m + 1}월
+              {calendarLabels(year, m, scope).title}
             </KText>
             <KjunButton
               size="sm"
               variant="ghost"
               prefixIcon="chevron-right"
-              ariaLabel="다음 달"
+              ariaLabel={scope.messages.nextMonth}
               onPress={() => setMonth(new Date(year, m + 1, 1))}
             />
           </View>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {["일", "월", "화", "수", "목", "금", "토"].map((day) => (
+            {calendarLabels(year, m, scope).weekdays.map((day) => (
               <KText
                 key={day}
                 style={{

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { FieldClear } from "./field-clear";
 import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
@@ -160,6 +161,7 @@ export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInpu
   },
   ref
 ) {
+  const m = useKjunMessages();
   const { colors: c, fontFamily } = useKjunStyles();
   const field = useContext(FieldContext);
   const input = useRef<TextInput | null>(null);
@@ -291,7 +293,7 @@ export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInpu
             }}
           >
             {showClear && (
-              <FieldClear size={size} label="입력 지우기" disabled={!canEdit} onPress={() => {
+              <FieldClear size={size} label={m.clearInput} disabled={!canEdit} onPress={() => {
                 if (!canEdit) return;
                 onChangeText?.("");
                 onClear?.();

@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { View,useWindowDimensions } from "react-native";
@@ -94,6 +95,7 @@ export function MarketFooter<Row extends object>({
 }: {
   props: MarketBaseProps<Row>;
 }) {
+  const m = useKjunMessages();
   const { colors } = useKjunStyles(),
     state = useQueryDisplay(props),
     {
@@ -103,7 +105,7 @@ export function MarketFooter<Row extends object>({
       calculatedAt,
       footerNote,
       totalCount = 0,
-      unitLabel = "개",
+      unitLabel = m.unitLabel,
     } = props;
   return (
     <>
@@ -131,13 +133,12 @@ export function MarketFooter<Row extends object>({
         >
           <KText style={{ ...typeStyle('caption'), color: colors.textTertiary }}>
             {calculatedAt
-              ? "마지막 업데이트: " +
+              ? m.lastUpdated +
                 (props.formatDate?.(calculatedAt) || calculatedAt)
               : footerNote}
           </KText>
           <KText style={{ ...typeStyle('caption'), color: colors.textTertiary }}>
-            총 {totalCount}
-            {unitLabel}
+            {m.totalCount(totalCount, unitLabel)}
           </KText>
         </View>
       )}
