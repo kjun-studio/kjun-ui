@@ -1,6 +1,7 @@
 import { tokens, type CardElevation, type CardPadding, type CardRadius, type CardSurface, type ColorRole } from "@kjun-ui/tokens";
 import { useId, type ReactNode } from "react";
-import { Platform, View, type StyleProp, type ViewStyle } from "react-native";
+import { Platform, View, type GestureResponderEvent, type StyleProp, type ViewStyle } from "react-native";
+import { AccessiblePressable } from "./a11y";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { typeStyle } from "./typography";
 import { KText, content } from "./internal";
@@ -24,10 +25,18 @@ export interface KjunCardProps {
   dividers?: boolean;
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
+  /** Makes the whole card one button (onPress). Do not put buttons or links inside a pressable card. */
+  pressable?: boolean;
+  /** Blocks a pressable card and dims it. */
+  disabled?: boolean;
+  /** Button name of a pressable card; defaults to the title. */
+  ariaLabel?: string;
+  onPress?: (event: GestureResponderEvent) => void;
 }
 export function KjunCard({ title, subtitle, header, headerActions, media, footer,
   padding = "md", bodyPadding = padding, radius = "md", surface = "default",
   elevation = "flat", border = false, dividers = false, children, style,
+  pressable = false, disabled = false, ariaLabel, onPress,
 }: KjunCardProps) {
   const { colors } = useKjunStyles();
   const id = "kjun-" + useId().replace(/[^a-z0-9]/gi, "");
@@ -38,7 +47,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, footer
   const hasHeading = present(header) || present(title) || present(subtitle);
   const hasHeader = hasHeading || present(headerActions);
   const hasBody = present(children), hasFooter = present(footer), hasMedia = present(media);
-  return <View style={[
+  const base: StyleProp<ViewStyle> = [
     {
       minWidth: 0,
       borderRadius: corner,
@@ -47,7 +56,8 @@ export function KjunCard({ title, subtitle, header, headerActions, media, footer
     },
     Platform.OS === "web" && surface === "glass" ? { backdropFilter: `blur(${tokens.card.glassBlur}px)` } as ViewStyle : {},
     style,
-  ]}>
+  ];
+  const parts = <>
     {paint.gradientEnd && <View pointerEvents="none" style={{ position: "absolute", inset: 0, borderRadius: corner, overflow: "hidden" }}>
       <Svg width="100%" height="100%">
         <Defs><LinearGradient id={id} x1="0%" y1="0%" x2="100%" y2="100%">
@@ -83,5 +93,10 @@ export function KjunCard({ title, subtitle, header, headerActions, media, footer
       position: "absolute", inset: 0, borderRadius: corner,
       boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: tokens.card.borderWidth, inset: true, color: borderColor }],
     }} />}
-  </View>;
+  </>;
+  // A pressable card presses in slightly, like a button, and dims when disabled.
+  return pressable
+    ? <AccessiblePressable accessibilityRole="button" accessibilityLabel={ariaLabel ?? title} accessibilityState={{ disabled }} disabled={disabled}
+        onPress={onPress} style={({ pressed }: { pressed: boolean }) => [base, pressed ? { transform: [{ scale: 0.99 }] } : null, disabled ? { opacity: tokens.states.opacity.disabled } : null]}>{parts}</AccessiblePressable>
+    : <View style={base}>{parts}</View>;
 }

@@ -70,3 +70,10 @@
 .kjun-card[data-dividers="false"] > .kjun-card-header + .kjun-card-footer { padding-top: 0; }
 .kjun-card[data-dividers="true"] > .kjun-card-header:has(+ .kjun-card-body) { border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-card-border); }
 .kjun-card[data-dividers="true"] > .kjun-card-footer:not(:first-child) { border-top: var(--_kjun-border-default-width) solid var(--_kjun-card-border); }
+/* A pressable card is one button: it lifts on hover, presses in on activation and shows the focus ring. */
+.kjun-card[data-pressable] { cursor: pointer; transition: box-shadow var(--_kjun-motion-control) var(--_kjun-ease-out), transform var(--_kjun-motion-control) var(--_kjun-ease-out); }
+.kjun-card[data-pressable]:hover:not([aria-disabled="true"]) { box-shadow: var(--_kjun-elevation-floating); }
+.kjun-card[data-pressable]:active:not([aria-disabled="true"]) { transform: scale(0.99); }
+.kjun-card[data-pressable]:focus-visible { outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset: var(--_kjun-state-focus-offset); }
+.kjun-card[data-pressable][aria-disabled="true"] { cursor: not-allowed; opacity: var(--_kjun-state-opacity-disabled); }
+@media (prefers-reduced-motion: reduce) { .kjun-card[data-pressable] { transition: none; } .kjun-card[data-pressable]:active { transform: none; } }
