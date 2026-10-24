@@ -2,6 +2,23 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.14.0 — 2026-10-24
+
+적용 프로젝트가 화면을 KJUN으로 옮기며 직접 만들거나 덮어쓰던 부분을 KJUN에 넣은 기능 릴리스입니다. 새 옵션을 쓰지 않으면 기존 화면과 동작은 그대로입니다.
+
+- **컴포넌트 밖에서 확인창·토스트**: `createKjunFeedback()`로 만든 컨트롤러를 `KjunFeedbackProvider`의 `controller`로 넘기면, API 처리·스토어 같은 일반 함수에서 `feedback.confirm()`·`feedback.toast.success()`를 부를 수 있습니다. Provider는 받은 컨트롤러를 정리하지 않고, Provider가 없는 동안 부른 요청은 다음 Provider가 보여 줍니다.
+- **누르는 카드**: `KjunCard`에 `pressable`·`disabled`·`ariaLabel`(Native는 `onPress`도)을 추가했습니다. `pressable`일 때만 카드 전체가 버튼이 되고 키보드·hover·누름·포커스 링을 갖습니다. 안에 버튼·링크를 넣으면 웹 개발 모드에서 경고합니다.
+- **`KjunText` tone**: `brand`·`danger`·`success`·`warning`·`inverse`(브랜드 바탕 위 글자, `onBrand` 역할)를 추가했습니다.
+- **목록**
+  - `KjunListRow` `destructive`(제목을 danger 색으로), `chevron`(끝에 장식 화살표).
+  - `KjunListSection` `surface={false}`: 표면색 바탕 없이 그립니다.
+  - 새 컴포넌트 `KjunListItem`: ListSection 안에서 행이 아닌 내용(테마 전환 버튼, 안내 문구)을 행과 같은 여백·구분선으로 담습니다.
+- **`KjunAvatar` `color`·`textColor`**: 이니셜·대체 아이콘의 바탕색과 글자색을 앱 색으로 정합니다. 웹은 CSS 색 문자열, Native는 `ColorValue`입니다.
+- **원형 진행률**: `KjunProgress shape="circle"`. 지름·선 굵기는 새 토큰 `progress.circle`(sm 24·md 48·lg 64)이고, `showLabel` 퍼센트는 md 이상에서 원 가운데에, `label`·`subLabel`은 원 아래에 둡니다.
+- **수정**
+  - Native `KjunButton`·`KjunBadge`가 `KjunStack align="center"` 안에서도 왼쪽에 붙던 문제를 고쳤습니다. Stack·Inline에 `align`을 명시했을 때만 그 정렬을 따르고, 기본값에서는 이전과 같습니다.
+  - Native `KjunProgress`가 React Native Web에서 `aria-valuenow`를 내보내지 않던 문제를 고쳤습니다.
+
 ## 0.13.0 — 2026-10-24
 
 다국어와 적용 프로젝트 의견을 반영한 기능 릴리스입니다. 기존 API와 기본 동작은 그대로입니다(`locale`을 넘기지 않으면 이전과 같은 한국어).

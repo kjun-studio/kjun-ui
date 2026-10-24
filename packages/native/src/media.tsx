@@ -1,14 +1,16 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useRef, useState, type ReactNode } from "react";
 import { Image, View, type ColorValue, type ImageSourcePropType } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { KText, content } from "./internal";
 import { typeStyle } from "./typography";
 import { useKjunStyles } from "./provider";
-export interface KjunImageProps { src?: string; source?: ImageSourcePropType; alt: string; /** @internal Avatar background. */ background?: ColorValue; decorative?: boolean; aspectRatio?: number; fit?: "cover" | "contain"; fallback?: ReactNode; onLoad?: () => void; onError?: () => void }
-export function KjunImage({ src, source, alt, background, decorative = false, aspectRatio = 1, fit = "cover", fallback, onLoad, onError }: KjunImageProps) {
-  const { colors } = useKjunStyles();
+export interface KjunImageProps { src?: string; source?: ImageSourcePropType; alt: string; decorative?: boolean; aspectRatio?: number; fit?: "cover" | "contain"; fallback?: ReactNode; onLoad?: () => void; onError?: () => void }
+/** Internal: KjunAvatar paints its app color behind the image and fallback. */
+const ImageBackgroundContext = createContext<ColorValue | undefined>(undefined);
+export function KjunImage({ src, source, alt, decorative = false, aspectRatio = 1, fit = "cover", fallback, onLoad, onError }: KjunImageProps) {
+  const { colors } = useKjunStyles(), background = useContext(ImageBackgroundContext);
   const request = JSON.stringify(source ?? src), current = useRef({ request, version: 0 });
   if (current.current.request !== request) current.current = { request, version: current.current.version + 1 };
   const version = current.current.version;
@@ -22,8 +24,8 @@ export interface KjunAvatarProps { src?: string; source?: ImageSourcePropType; n
 export function KjunAvatar({ src, source, name = "", alt, decorative = false, size = "md", shape = "circle", color, textColor, fallback, onLoad, onError }: KjunAvatarProps) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles(), initial = Array.from(name.trim())[0];
-  return <View style={{ width: tokens.extensions.avatar[size], height: tokens.extensions.avatar[size], borderRadius: shape === "circle" ? tokens.radius.radius9999 : tokens.radius.radius8, overflow: "hidden", flexShrink: 0 }}><KjunImage src={src} source={source} alt={alt || name || m.user} background={color} decorative={decorative} fallback={fallback ?? (initial
+  return <View style={{ width: tokens.extensions.avatar[size], height: tokens.extensions.avatar[size], borderRadius: shape === "circle" ? tokens.radius.radius9999 : tokens.radius.radius8, overflow: "hidden", flexShrink: 0 }}><ImageBackgroundContext.Provider value={color}><KjunImage src={src} source={source} alt={alt || name || m.user} decorative={decorative} fallback={fallback ?? (initial
     // Like Web: initials scale with the avatar, use control weight and the secondary text role, and capitalize Latin letters.
     ? <KText style={{ ...typeStyle(size === "sm" ? "control" : size === "lg" ? "sectionTitle" : "input"), fontWeight: typeStyle("control").fontWeight, color: textColor ?? colors.textSecondary }}>{initial.toLocaleUpperCase()}</KText>
-    : <KjunIcon name="user" size={tokens.extensions.avatar.fallbackIconSizes[size]} color={textColor} />)} onLoad={onLoad} onError={onError} /></View>;
+    : <KjunIcon name="user" size={tokens.extensions.avatar.fallbackIconSizes[size]} color={textColor} />)} onLoad={onLoad} onError={onError} /></ImageBackgroundContext.Provider></View>;
 }

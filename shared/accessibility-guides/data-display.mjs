@@ -11,6 +11,7 @@ export default [
   ['KjunTable', 'table', 'ariaLabel selectable expandable sortable', '표의 검색·행 선택·행 확장·정렬 컨트롤', {}],
   ['KjunListRow', 'action', 'title disabled', '프로필 행과 별도 공유 버튼의 이름과 실행', { button: '공유', event: 'message', separateAction: true }],
   ['KjunListSection', 'action', 'title ariaLabel', '섹션 안에 공급한 프로필 행·공유 버튼', { button: '공유', event: 'message', children: true }],
+  ['KjunListItem', 'text', '', 'KjunListSection 안의 화면 테마 안내 문구', { text: '화면 테마', children: true, parent: 'KjunListSection' }],
   ['KjunImage', 'image', 'alt decorative', '프로젝트 표지의 대체 텍스트와 장식 모드', { text: '산과 하늘을 표현한 프로젝트 표지' }],
   ['KjunAvatar', 'image', 'name alt decorative', '김하늘 아바타의 대체 이름과 장식 모드', { text: '김하늘' }],
 ];

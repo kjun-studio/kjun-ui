@@ -825,6 +825,17 @@
       ]
     },
     {
+      "name": "KjunListItem",
+      "category": "data-display",
+      "aliases": [
+        "목록 칸",
+        "목록 안 내용",
+        "List Item 내용"
+      ],
+      "useCases": [],
+      "parent": "KjunListSection"
+    },
+    {
       "name": "KjunTopNavigation",
       "category": "navigation",
       "aliases": [

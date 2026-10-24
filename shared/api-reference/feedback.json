@@ -214,7 +214,8 @@
       "variant",
       "showLabel",
       "label",
-      "subLabel"
+      "subLabel",
+      "shape"
     ],
     "react": [
       "value",
@@ -223,7 +224,8 @@
       "variant",
       "showLabel",
       "label",
-      "subLabel"
+      "subLabel",
+      "shape"
     ],
     "native": [
       "value",
@@ -232,7 +234,8 @@
       "variant",
       "showLabel",
       "label",
-      "subLabel"
+      "subLabel",
+      "shape"
     ]
   },
   "KjunSkeleton": {

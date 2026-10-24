@@ -12091,6 +12091,15 @@
             "description": "",
             "summary": "진행 표시의 보조 라벨입니다.",
             "source": "packages/vue3/src/display.tsx"
+          },
+          {
+            "name": "shape",
+            "type": "\"circle\" | \"bar\"",
+            "required": false,
+            "default": "bar",
+            "description": "",
+            "summary": "bar는 막대, circle은 원형입니다. 원형 지름·선 굵기는 progress.circle 토큰(sm 24·md 48·lg 64)이고, label·subLabel은 원 아래 가운데에 둡니다. showLabel 퍼센트는 md 이상에서 원 가운데에만 표시합니다.",
+            "source": "packages/vue3/src/display.tsx"
           }
         ],
         "events": [],
@@ -12177,6 +12186,15 @@
             "description": "",
             "summary": "진행 표시의 보조 라벨입니다.",
             "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "shape",
+            "type": "\"circle\" | \"bar\" | undefined",
+            "required": false,
+            "default": "bar",
+            "description": "",
+            "summary": "bar는 막대, circle은 원형입니다. 원형 지름·선 굵기는 progress.circle 토큰(sm 24·md 48·lg 64)이고, label·subLabel은 원 아래 가운데에 둡니다. showLabel 퍼센트는 md 이상에서 원 가운데에만 표시합니다.",
+            "source": "packages/react/src/display.tsx"
           }
         ],
         "events": [],
@@ -12247,6 +12265,15 @@
             "default": "—",
             "description": "",
             "summary": "진행 표시의 보조 라벨입니다.",
+            "source": "packages/native/src/display-primitives.tsx"
+          },
+          {
+            "name": "shape",
+            "type": "\"circle\" | \"bar\" | undefined",
+            "required": false,
+            "default": "bar",
+            "description": "",
+            "summary": "bar는 막대, circle은 원형입니다. 원형 지름·선 굵기는 progress.circle 토큰(sm 24·md 48·lg 64)이고, label·subLabel은 원 아래 가운데에 둡니다. showLabel 퍼센트는 md 이상에서 원 가운데에만 표시합니다.",
             "source": "packages/native/src/display-primitives.tsx"
           }
         ],
@@ -18295,7 +18322,7 @@
           },
           {
             "name": "surface",
-            "type": "\"default\" | \"danger\" | \"success\" | \"warning\" | \"muted\" | \"accent\" | \"subtle\" | \"brand\" | \"glass\"",
+            "type": "\"default\" | \"danger\" | \"success\" | \"warning\" | \"brand\" | \"muted\" | \"accent\" | \"subtle\" | \"glass\"",
             "required": false,
             "default": "\"default\"",
             "description": "",
@@ -18335,9 +18362,43 @@
             "description": "",
             "summary": "헤더·본문·푸터 사이 구분선을 표시합니다. 기본은 구분선 없이 16px 간격으로 나눕니다.",
             "source": "packages/vue3/src/card.tsx"
+          },
+          {
+            "name": "pressable",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Makes the whole card one button (click). Do not put buttons or links inside a pressable card.",
+            "summary": "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고).",
+            "source": "packages/vue3/src/card.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Blocks a pressable card and dims it.",
+            "summary": "pressable 카드의 누름을 막고 흐리게 표시합니다. pressable이 아니면 의미가 없습니다.",
+            "source": "packages/vue3/src/card.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Button name of a pressable card; defaults to the title.",
+            "summary": "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+            "source": "packages/vue3/src/card.tsx"
           }
         ],
-        "events": [],
+        "events": [
+          {
+            "name": "click",
+            "source": "packages/vue3/src/card.tsx",
+            "type": "이벤트",
+            "summary": "click 이벤트를 통지합니다."
+          }
+        ],
         "slots": [
           {
             "name": "default",
@@ -18502,6 +18563,33 @@
             "default": "false",
             "description": "",
             "summary": "헤더·본문·푸터 사이 구분선을 표시합니다. 기본은 구분선 없이 16px 간격으로 나눕니다.",
+            "source": "packages/react/src/card.tsx"
+          },
+          {
+            "name": "pressable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Makes the whole card one button (onClick). Do not put buttons or links inside a pressable card.",
+            "summary": "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고).",
+            "source": "packages/react/src/card.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Blocks a pressable card and dims it.",
+            "summary": "pressable 카드의 누름을 막고 흐리게 표시합니다. pressable이 아니면 의미가 없습니다.",
+            "source": "packages/react/src/card.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Button name of a pressable card; defaults to the title.",
+            "summary": "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -18724,6 +18812,42 @@
             "default": "—",
             "description": "",
             "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "pressable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Makes the whole card one button (onPress). Do not put buttons or links inside a pressable card.",
+            "summary": "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고).",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Blocks a pressable card and dims it.",
+            "summary": "pressable 카드의 누름을 막고 흐리게 표시합니다. pressable이 아니면 의미가 없습니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Button name of a pressable card; defaults to the title.",
+            "summary": "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "onPress",
+            "type": "((event: GestureResponderEvent) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "pressable 카드를 누를 때 호출합니다. 비활성 카드에서는 호출하지 않습니다.",
             "source": "packages/native/src/card.tsx"
           }
         ],
@@ -25895,6 +26019,24 @@
             "source": "packages/vue3/src/list.tsx"
           },
           {
+            "name": "destructive",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Draws the title in the danger role, for rows such as \"Delete account\".",
+            "summary": "제목을 danger 색으로 그립니다(계정 삭제 등). 설명 색과 동작은 그대로입니다.",
+            "source": "packages/vue3/src/list.tsx"
+          },
+          {
+            "name": "chevron",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Ends the row with a decorative chevron that marks it as navigation.",
+            "summary": "행 끝에 이동을 뜻하는 chevron-right 아이콘을 장식으로 둡니다. 화면 낭독기에는 읽히지 않으며 trailing과 함께 쓰면 맨 끝에 옵니다.",
+            "source": "packages/vue3/src/list.tsx"
+          },
+          {
             "name": "onClick",
             "type": "(event: MouseEvent) => void",
             "required": false,
@@ -26085,6 +26227,24 @@
             "source": "packages/react/src/list.tsx"
           },
           {
+            "name": "destructive",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Draws the title in the danger role, for rows such as \"Delete account\".",
+            "summary": "제목을 danger 색으로 그립니다(계정 삭제 등). 설명 색과 동작은 그대로입니다.",
+            "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "chevron",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Ends the row with a decorative chevron that marks it as navigation.",
+            "summary": "행 끝에 이동을 뜻하는 chevron-right 아이콘을 장식으로 둡니다. 화면 낭독기에는 읽히지 않으며 trailing과 함께 쓰면 맨 끝에 옵니다.",
+            "source": "packages/react/src/list.tsx"
+          },
+          {
             "name": "onClick",
             "type": "((event: MouseEvent<HTMLElement>) => void) | undefined",
             "required": false,
@@ -26220,6 +26380,24 @@
             "source": "packages/native/src/list.tsx"
           },
           {
+            "name": "destructive",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Draws the title in the danger role, for rows such as \"Delete account\".",
+            "summary": "제목을 danger 색으로 그립니다(계정 삭제 등). 설명 색과 동작은 그대로입니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "chevron",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Ends the row with a decorative chevron that marks it as navigation.",
+            "summary": "행 끝에 이동을 뜻하는 chevron-right 아이콘을 장식으로 둡니다. 화면 낭독기에는 읽히지 않으며 trailing과 함께 쓰면 맨 끝에 옵니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
             "name": "onPress",
             "type": "((event: GestureResponderEvent) => void) | undefined",
             "required": false,
@@ -26285,6 +26463,15 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다.",
+            "source": "packages/vue3/src/list.tsx"
+          },
+          {
+            "name": "surface",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through.",
+            "summary": "섹션 표면색 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경 위에 행을 그립니다.",
             "source": "packages/vue3/src/list.tsx"
           },
           {
@@ -26421,6 +26608,15 @@
             "source": "packages/react/src/list.tsx"
           },
           {
+            "name": "surface",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through.",
+            "summary": "섹션 표면색 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경 위에 행을 그립니다.",
+            "source": "packages/react/src/list.tsx"
+          },
+          {
             "name": "divider",
             "type": "boolean | undefined",
             "required": false,
@@ -26517,6 +26713,15 @@
             "source": "packages/native/src/list.tsx"
           },
           {
+            "name": "surface",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through.",
+            "summary": "섹션 표면색 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경 위에 행을 그립니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
             "name": "divider",
             "type": "boolean | undefined",
             "required": false,
@@ -26540,6 +26745,99 @@
         "ownership": [
           "목록 콘텐츠를 배치하며 선택·정렬·요청 상태를 소유하지 않습니다.",
           "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다."
+        ],
+        "types": []
+      }
+    },
+    "KjunListItem": {
+      "vue3": {
+        "props": [],
+        "events": [],
+        "slots": [
+          {
+            "name": "default",
+            "data": [],
+            "source": "packages/vue3/src/list.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "영역 안에 배치할 소비자 콘텐츠입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다."
+              }
+            ],
+            "example": "/components/list-item#preview"
+          }
+        ],
+        "ownership": [
+          "자체 행동·선택 상태가 없습니다. 안에 둔 버튼·Switch 같은 컨트롤의 값과 콜백은 소비자가 연결합니다.",
+          "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16과 구분선 규칙을 공유합니다."
+        ],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "영역 안에 배치할 소비자 콘텐츠입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-item#preview"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "자체 행동·선택 상태가 없습니다. 안에 둔 버튼·Switch 같은 컨트롤의 값과 콜백은 소비자가 연결합니다.",
+          "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16과 구분선 규칙을 공유합니다."
+        ],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "영역 안에 배치할 소비자 콘텐츠입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-item#preview"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "자체 행동·선택 상태가 없습니다. 안에 둔 버튼·Switch 같은 컨트롤의 값과 콜백은 소비자가 연결합니다.",
+          "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16과 구분선 규칙을 공유합니다."
         ],
         "types": []
       }
@@ -27898,6 +28196,24 @@
             "description": "",
             "summary": "프로필을 원형 또는 모서리가 둥근 사각형으로 표시합니다.",
             "source": "packages/vue3/src/media.tsx"
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "이니셜·대체 아이콘 뒤 바탕색입니다. 웹은 CSS 색 문자열(var(--kjun-...) 권장), Native는 ColorValue를 받습니다. 생략하면 secondary 역할입니다. 이미지가 보이면 가려집니다.",
+            "source": "packages/vue3/src/media.tsx"
+          },
+          {
+            "name": "textColor",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "이니셜과 대체 아이콘의 색입니다. 웹은 CSS 색 문자열, Native는 ColorValue를 받습니다. 생략하면 textSecondary 역할입니다.",
+            "source": "packages/vue3/src/media.tsx"
           }
         ],
         "events": [
@@ -28032,6 +28348,24 @@
             "default": "\"circle\"",
             "description": "",
             "summary": "프로필을 원형 또는 모서리가 둥근 사각형으로 표시합니다.",
+            "source": "packages/react/src/media.tsx"
+          },
+          {
+            "name": "color",
+            "type": "Property.Color | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "이니셜·대체 아이콘 뒤 바탕색입니다. 웹은 CSS 색 문자열(var(--kjun-...) 권장), Native는 ColorValue를 받습니다. 생략하면 secondary 역할입니다. 이미지가 보이면 가려집니다.",
+            "source": "packages/react/src/media.tsx"
+          },
+          {
+            "name": "textColor",
+            "type": "Property.Color | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "이니셜과 대체 아이콘의 색입니다. 웹은 CSS 색 문자열, Native는 ColorValue를 받습니다. 생략하면 textSecondary 역할입니다.",
             "source": "packages/react/src/media.tsx"
           },
           {
@@ -28182,6 +28516,24 @@
             "default": "\"circle\"",
             "description": "",
             "summary": "프로필을 원형 또는 모서리가 둥근 사각형으로 표시합니다.",
+            "source": "packages/native/src/media.tsx"
+          },
+          {
+            "name": "color",
+            "type": "ColorValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "이니셜·대체 아이콘 뒤 바탕색입니다. 웹은 CSS 색 문자열(var(--kjun-...) 권장), Native는 ColorValue를 받습니다. 생략하면 secondary 역할입니다. 이미지가 보이면 가려집니다.",
+            "source": "packages/native/src/media.tsx"
+          },
+          {
+            "name": "textColor",
+            "type": "ColorValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "이니셜과 대체 아이콘의 색입니다. 웹은 CSS 색 문자열, Native는 ColorValue를 받습니다. 생략하면 textSecondary 역할입니다.",
             "source": "packages/native/src/media.tsx"
           },
           {
@@ -31411,8 +31763,9 @@
       "ownership": [
         "알림·요청 대기열·진행 중 표시·입력 초안: 해당 KjunFeedbackProvider 영역이 관리합니다.",
         "실제 저장·검증·성공 후 이동: 소비자가 콜백과 반환 Promise에서 처리합니다.",
-        "Provider 해제: 미완료 Confirm은 false, Prompt는 null로 정리하고 알림 타이머와 대기열을 제거합니다.",
-        "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다."
+        "Provider 해제: 미완료 Confirm은 false, Prompt는 null로 정리하고 알림 타이머와 대기열을 제거합니다. controller로 받은 컨트롤러는 정리하지 않으며, Provider가 없는 동안 부른 요청은 다음에 마운트되는 Provider가 표시합니다.",
+        "컴포넌트 밖 호출: 모듈에서 const feedback = createKjunFeedback()을 한 번 만들고 <KjunFeedbackProvider controller={feedback}>에 넘기면 같은 confirm·prompt·toast를 일반 함수에서 부를 수 있습니다. 한 컨트롤러를 동시에 두 Provider에 넘기지 마세요(개발 모드 경고).",
+        "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다. createKjunFeedback()의 결과는 같은 메서드를 가지며 어디서든 호출합니다."
       ],
       "methods": [
         {
@@ -31903,8 +32256,9 @@
       "ownership": [
         "알림·요청 대기열·진행 중 표시·입력 초안: 해당 KjunFeedbackProvider 영역이 관리합니다.",
         "실제 저장·검증·성공 후 이동: 소비자가 콜백과 반환 Promise에서 처리합니다.",
-        "Provider 해제: 미완료 Confirm은 false, Prompt는 null로 정리하고 알림 타이머와 대기열을 제거합니다.",
-        "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다."
+        "Provider 해제: 미완료 Confirm은 false, Prompt는 null로 정리하고 알림 타이머와 대기열을 제거합니다. controller로 받은 컨트롤러는 정리하지 않으며, Provider가 없는 동안 부른 요청은 다음에 마운트되는 Provider가 표시합니다.",
+        "컴포넌트 밖 호출: 모듈에서 const feedback = createKjunFeedback()을 한 번 만들고 <KjunFeedbackProvider controller={feedback}>에 넘기면 같은 confirm·prompt·toast를 일반 함수에서 부를 수 있습니다. 한 컨트롤러를 동시에 두 Provider에 넘기지 마세요(개발 모드 경고).",
+        "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다. createKjunFeedback()의 결과는 같은 메서드를 가지며 어디서든 호출합니다."
       ],
       "methods": [
         {
@@ -32395,8 +32749,9 @@
       "ownership": [
         "알림·요청 대기열·진행 중 표시·입력 초안: 해당 KjunFeedbackProvider 영역이 관리합니다.",
         "실제 저장·검증·성공 후 이동: 소비자가 콜백과 반환 Promise에서 처리합니다.",
-        "Provider 해제: 미완료 Confirm은 false, Prompt는 null로 정리하고 알림 타이머와 대기열을 제거합니다.",
-        "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다.",
+        "Provider 해제: 미완료 Confirm은 false, Prompt는 null로 정리하고 알림 타이머와 대기열을 제거합니다. controller로 받은 컨트롤러는 정리하지 않으며, Provider가 없는 동안 부른 요청은 다음에 마운트되는 Provider가 표시합니다.",
+        "컴포넌트 밖 호출: 모듈에서 const feedback = createKjunFeedback()을 한 번 만들고 <KjunFeedbackProvider controller={feedback}>에 넘기면 같은 confirm·prompt·toast를 일반 함수에서 부를 수 있습니다. 한 컨트롤러를 동시에 두 Provider에 넘기지 마세요(개발 모드 경고).",
+        "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다. createKjunFeedback()의 결과는 같은 메서드를 가지며 어디서든 호출합니다.",
         "Native KjunFeedbackProvider는 앱 화면을 감싸는 View가 부모 크기를 그대로 이어받습니다. 레이아웃을 바꾸려면 style을 넘깁니다."
       ],
       "methods": [

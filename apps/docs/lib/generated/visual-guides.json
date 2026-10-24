@@ -7624,6 +7624,14 @@
             "id": "default",
             "label": "기본 예제",
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunCard\":{\"props\":{\"disabled\":true}}}"
+            }
           }
         ],
         "sizes": [],
@@ -7663,6 +7671,14 @@
             "id": "default",
             "label": "기본 예제",
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunCard\":{\"props\":{\"disabled\":true}}}"
+            }
           }
         ],
         "sizes": [],
@@ -7702,6 +7718,14 @@
             "id": "default",
             "label": "기본 예제",
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunCard\":{\"props\":{\"disabled\":true}}}"
+            }
           }
         ],
         "sizes": [],
@@ -12857,6 +12881,95 @@
         "sizes": [],
         "sizeDefault": "—",
         "note": "자체 선택·비활성·로딩 상태나 크기 API가 없습니다."
+      }
+    }
+  },
+  "KjunListItem": {
+    "name": "KjunListItem",
+    "path": "/components/list-item",
+    "related": "generic-lists",
+    "description": "ListSection 안에서 행이 아닌 내용(테마 전환 버튼, 안내 문구 등)을 담는 칸입니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "목록 칸",
+                "description": "행이 아닌 내용을 행과 같은 시작 여백으로 담습니다.",
+                "target": "text=화면 테마는 기기 설정을 따릅니다.",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "가로 여백 16, 위아래 여백은 섹션 density(default·compact)를 따릅니다. 섹션의 divider가 true면 다음 항목과의 사이에 구분선을 그립니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "목록 칸",
+                "description": "행이 아닌 내용을 행과 같은 시작 여백으로 담습니다.",
+                "target": "text=화면 테마는 기기 설정을 따릅니다.",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "가로 여백 16, 위아래 여백은 섹션 density(default·compact)를 따릅니다. 섹션의 divider가 true면 다음 항목과의 사이에 구분선을 그립니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "목록 칸",
+                "description": "행이 아닌 내용을 행과 같은 시작 여백으로 담습니다.",
+                "target": "text=화면 테마는 기기 설정을 따릅니다.",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "가로 여백 16, 위아래 여백은 섹션 density(default·compact)를 따릅니다. 섹션의 divider가 true면 다음 항목과의 사이에 구분선을 그립니다."
       }
     }
   },

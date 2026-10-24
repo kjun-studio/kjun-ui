@@ -11,10 +11,10 @@ test('discovery covers every public component exactly once and keeps structural 
   const entries = index.documents.filter(document => document.component);
   assert.equal(entries.length, catalog.filter(entry => entry.kind !== "internal").length);
   assert.deepEqual(new Set(entries.map(entry => entry.component)), new Set(catalog.filter(entry => entry.kind !== 'internal').map(entry => entry.name)));
-  assert.deepEqual(index.categories.map(category => category.count), [12, 16, 7, 11, 10, 14, 11]);
-  assert.equal(entries.filter(entry => entry.parent).length, 4);
+  assert.deepEqual(index.categories.map(category => category.count), [12, 16, 7, 11, 10, 15, 11]);
+  assert.equal(entries.filter(entry => entry.parent).length, 5);
   assert.deepEqual(Object.fromEntries(entries.filter(entry => entry.parent).map(entry => [entry.component, entry.parent])), {
-    KjunDropdownDivider: 'KjunDropdown', KjunDropdownItem: 'KjunDropdown', KjunTabPane: 'KjunTabs', KjunAccordionItem: 'KjunAccordion',
+    KjunDropdownDivider: 'KjunDropdown', KjunDropdownItem: 'KjunDropdown', KjunTabPane: 'KjunTabs', KjunAccordionItem: 'KjunAccordion', KjunListItem: 'KjunListSection',
   });
   for (const entry of entries.filter(entry => entry.parent)) {
     const parentIndex = entries.findIndex(parent => parent.component === entry.parent);

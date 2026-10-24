@@ -19,6 +19,7 @@ export function layout(name: string) {
     case 'KjunTabs': case 'KjunTabPane': return <K.KjunTabs value="activity" ariaLabel="프로젝트"><K.KjunTabPane name="activity" label="활동" badge={3}><div className="presentation-tab-content"><K.KjunListRow title="새 프로젝트 문서" description="김하늘 · 오늘 오전 9:30" leading={<K.KjunAvatar name="김하늘" size="sm" />} /></div></K.KjunTabPane><K.KjunTabPane name="files" label="파일" /><K.KjunTabPane name="settings" label="설정" /></K.KjunTabs>;
     case 'KjunListRow': return <K.KjunListRow title="새 프로젝트 문서" description="김하늘 · 오늘 오전 9:30" leading={<K.KjunAvatar name="김하늘" />} trailing={<K.KjunBadge variant="success">새 소식</K.KjunBadge>} />;
     case 'KjunListSection': return <ActivityList />;
+    case 'KjunListItem': return <K.KjunListSection title="화면"><K.KjunListItem><K.KjunText tone="secondary">화면 테마는 기기 설정을 따릅니다.</K.KjunText></K.KjunListItem><K.KjunListRow title="글자 크기" chevron /></K.KjunListSection>;
     case 'KjunAvatar': return row(<><K.KjunAvatar name="김하늘" size="lg" /><K.KjunAvatar name="이서준" size="lg" /><K.KjunAvatar name="박지우" size="lg" shape="square" /></>);
     case 'KjunImage': return <div className="presentation-image"><K.KjunImage src="/brand/kjun-symbol.svg" alt="KJUN 심볼" aspectRatio={16 / 9} fit="contain" lazy={false} /></div>;
   }

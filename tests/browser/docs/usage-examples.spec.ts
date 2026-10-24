@@ -38,7 +38,7 @@ for (const platform of platforms) {
 test('every component owns exactly one basic usage section between guidelines and design', async ({ request }) => {
   test.setTimeout(180000);
   const documents = discovery.documents.filter((item: any) => item.component || item.path === '/feedback');
-  expect(documents).toHaveLength(82);
+  expect(documents).toHaveLength(83);
   let index = 0;
   await Promise.all(Array.from({ length: 3 }, async () => {
     while (index < documents.length) {

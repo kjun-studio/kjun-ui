@@ -596,6 +596,20 @@
         "required": false,
         "default": "\"circle\"",
         "description": ""
+      },
+      {
+        "name": "color",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "textColor",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "events": [
@@ -654,6 +668,20 @@
       {
         "name": "shape",
         "type": "\"circle\" | \"square\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "color",
+        "type": "import(\"/workspace/node_modules/csstype/index\").Property.Color | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "textColor",
+        "type": "import(\"/workspace/node_modules/csstype/index\").Property.Color | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -726,6 +754,20 @@
       {
         "name": "shape",
         "type": "\"circle\" | \"square\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "color",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").ColorValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "textColor",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").ColorValue | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -1885,7 +1927,7 @@
       },
       {
         "name": "surface",
-        "type": "\"default\" | \"danger\" | \"success\" | \"warning\" | \"muted\" | \"accent\" | \"subtle\" | \"brand\" | \"glass\"",
+        "type": "\"default\" | \"danger\" | \"success\" | \"warning\" | \"brand\" | \"muted\" | \"accent\" | \"subtle\" | \"glass\"",
         "required": false,
         "default": "\"default\"",
         "description": ""
@@ -1910,9 +1952,35 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "pressable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Makes the whole card one button (click). Do not put buttons or links inside a pressable card."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Blocks a pressable card and dims it."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Button name of a pressable card; defaults to the title."
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "click",
+        "source": "packages/vue3/src/card.tsx"
+      }
+    ],
     "slots": [
       {
         "name": "default",
@@ -2031,6 +2099,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "pressable",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Makes the whole card one button (onClick). Do not put buttons or links inside a pressable card."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Blocks a pressable card and dims it."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Button name of a pressable card; defaults to the title."
       },
       {
         "name": "autoFocus",
@@ -2191,6 +2280,34 @@
       {
         "name": "style",
         "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "pressable",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Makes the whole card one button (onPress). Do not put buttons or links inside a pressable card."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Blocks a pressable card and dims it."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Button name of a pressable card; defaults to the title."
+      },
+      {
+        "name": "onPress",
+        "type": "((event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -8424,6 +8541,35 @@
       }
     ]
   },
+  "KjunListItem": {
+    "vue3": [],
+    "events": [],
+    "slots": [
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      }
+    ],
+    "react": [
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
   "KjunListRow": {
     "vue3": [
       {
@@ -8453,6 +8599,20 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "destructive",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draws the title in the danger role, for rows such as \"Delete account\"."
+      },
+      {
+        "name": "chevron",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Ends the row with a decorative chevron that marks it as navigation."
       },
       {
         "name": "onClick",
@@ -8531,6 +8691,20 @@
         "description": ""
       },
       {
+        "name": "destructive",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Draws the title in the danger role, for rows such as \"Delete account\"."
+      },
+      {
+        "name": "chevron",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Ends the row with a decorative chevron that marks it as navigation."
+      },
+      {
         "name": "onClick",
         "type": "((event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent<HTMLElement>) => void) | undefined",
         "required": false,
@@ -8589,6 +8763,20 @@
         "description": ""
       },
       {
+        "name": "destructive",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Draws the title in the danger role, for rows such as \"Delete account\"."
+      },
+      {
+        "name": "chevron",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Ends the row with a decorative chevron that marks it as navigation."
+      },
+      {
         "name": "onPress",
         "type": "((event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
         "required": false,
@@ -8619,6 +8807,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Paints the surface background (default true); false lets the page background show through."
       },
       {
         "name": "divider",
@@ -8685,6 +8880,13 @@
         "description": ""
       },
       {
+        "name": "surface",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Paints the surface background (default true); false lets the page background show through."
+      },
+      {
         "name": "divider",
         "type": "boolean | undefined",
         "required": false,
@@ -8734,6 +8936,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Paints the surface background (default true); false lets the page background show through."
       },
       {
         "name": "divider",
@@ -13433,6 +13642,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "shape",
+        "type": "\"circle\" | \"bar\"",
+        "required": false,
+        "default": "\"bar\"",
+        "description": ""
       }
     ],
     "events": [],
@@ -13497,6 +13713,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "shape",
+        "type": "\"circle\" | \"bar\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "native": [
@@ -13545,6 +13768,13 @@
       {
         "name": "subLabel",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "shape",
+        "type": "\"circle\" | \"bar\" | undefined",
         "required": false,
         "default": "—",
         "description": ""

@@ -2630,6 +2630,42 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunListItem",
+    "sources": {
+      "vue3": "packages/vue3/src/list.tsx",
+      "react": "packages/react/src/list.tsx",
+      "native": "packages/native/src/list.tsx"
+    },
+    "category": "data-display",
+    "kind": "component",
+    "owner": "KjunListItem",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/list-item",
+    "tests": [
+      "tests/browser/adoption.spec.ts",
+      "tests/browser/docs/catalog.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
     "name": "KjunTopNavigation",
     "sources": {
       "vue3": "packages/vue3/src/app-navigation.tsx",

@@ -4,7 +4,7 @@ const choice = (key: string, label: string, options: string[], value = options[0
 const number = (key: string, label: string, value: number, min: number, max: number): ExampleControl => ({ key, label, kind: "number", default: value, min, max });
 const size = choice("size", "크기", ["sm", "md", "lg"], "md"), disabled = bool("disabled", "비활성"), error = bool("error", "필드 오류"), long = bool("long", "긴 콘텐츠");
 export const extensionControls: Record<string, ExampleControl[]> = {
-  KjunListRow: [disabled, long], KjunListSection: [long],
+  KjunListRow: [disabled, long], KjunListSection: [long], KjunListItem: [],
   KjunTopNavigation: [long, bool("showDescription", "설명 표시", true), choice("leading", "앞쪽 탐색", ["아이콘", "긴 문구", "없음"]), choice("actions", "행동 구성", ["저장", "긴 문구", "여러 행동", "아이콘 조합", "없음"]), choice("exampleWidth", "예제 너비", ["640", "390", "320", "288"], "390"), disabled, bool("loading", "행동 로딩"), number("safeAreaTop", "상단 안전 영역", 0, 0, 80)],
   KjunBottomNavigation: [long, bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기", true), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
   KjunBottomActionBar: [long, bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기"), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
@@ -17,7 +17,7 @@ export const extensionControls: Record<string, ExampleControl[]> = {
 };
 const preset = (id: string, label: string, settings: Record<string, any>, values = {}): ExamplePreset => ({ id, label, settings, values });
 export const extensionPresets: Record<string, ExamplePreset[]> = {
-  KjunListRow: [preset("long", "긴 콘텐츠", { long: true })], KjunListSection: [preset("long", "긴 콘텐츠", { long: true })],
+  KjunListRow: [preset("long", "긴 콘텐츠", { long: true })], KjunListSection: [preset("long", "긴 콘텐츠", { long: true })], KjunListItem: [],
   KjunTopNavigation: [
     preset("safe-area", "안전 영역·긴 제목", { safeAreaTop: 24, long: true }),
     preset("title-only", "제목만", { leading: "없음", actions: "없음", showDescription: false }),

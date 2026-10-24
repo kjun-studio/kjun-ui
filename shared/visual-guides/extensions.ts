@@ -7,6 +7,9 @@ export const extensions: Record<string, GuideAuthor> = {
   KjunListSection: {
     parts: [t("섹션 제목", "목록 묶음의 목적입니다.", "설정", true), t("섹션 설명", "목록에 포함된 작업을 설명합니다.", "계정과 알림을 관리합니다.", true), p("행 목록", "소비자가 ListRow와 자식 컨트롤을 배치합니다.", 'ul.kjun-list, [role="list"]')], related: "generic-lists",
   },
+  KjunListItem: {
+    parts: [t("목록 칸", "행이 아닌 내용을 행과 같은 시작 여백으로 담습니다.", "화면 테마는 기기 설정을 따릅니다.")], related: "generic-lists",
+  },
   KjunTopNavigation: {
     parts: [p("앞쪽 탐색", "24px 아이콘과 최소 44px 영역을 사용하며 앱이 뒤로 가기 행동을 연결합니다.", '[aria-label="뒤로 가기"]', true), t("화면 제목", "20px·600 굵기의 제목입니다. 양쪽 행동과 첫 줄을 맞추며 긴 제목은 줄바꿈합니다.", "프로젝트 설정"), t("행동 영역", "제목 줄에 정렬한 ghost 저장 버튼 예시입니다. 소비자가 행동과 variant를 선택합니다.", "저장", true)], related: "app-screen",
     states: [

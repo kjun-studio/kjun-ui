@@ -475,6 +475,13 @@
     "differences": "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다.",
     "states": "자체 선택·비활성·로딩 상태나 크기 API가 없습니다."
   },
+  "KjunListItem": {
+    "slug": "list-item",
+    "description": "ListSection 안에서 행이 아닌 내용(테마 전환 버튼, 안내 문구 등)을 담는 칸입니다.",
+    "interaction": "자체 행동·선택 상태가 없습니다. 안에 둔 버튼·Switch 같은 컨트롤의 값과 콜백은 소비자가 연결합니다.",
+    "differences": "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16과 구분선 규칙을 공유합니다.",
+    "states": "가로 여백 16, 위아래 여백은 섹션 density(default·compact)를 따릅니다. 섹션의 divider가 true면 다음 항목과의 사이에 구분선을 그립니다."
+  },
   "KjunTopNavigation": {
     "slug": "top-navigation",
     "description": "화면 제목과 앞쪽 탐색·보조 행동을 배치합니다.",

@@ -15,6 +15,11 @@ export function generate(input: UsageInput) {
         }),
         b.node('KjunListRow', { title: '알림 받기', description: '중요한 변경 사항을 알려드립니다.' }, '', { actions: b.node('KjunSwitch', { value: b.state('notifications', true), onValueChange: b.update('notifications'), ariaLabel: '알림 받기' }) }),
       ].join('\n')); break;
+    case 'KjunListItem':
+      content = b.node('KjunListSection', { title: '화면' }, [
+        b.node('KjunListItem', {}, b.node('KjunText', { tone: 'secondary' }, b.text('화면 테마는 기기 설정을 따릅니다.'))),
+        b.node('KjunListRow', { title: '글자 크기', chevron: true, [action]: notify('openFontSize', '글자 크기 열기') }),
+      ].join('\n')); break;
     case 'KjunTopNavigation': {
       const leadingText = s.leading === '긴 문구' ? '프로젝트 목록으로 돌아가기' : '';
       const slots: Record<string, string> = {};

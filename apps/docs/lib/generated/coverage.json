@@ -1,11 +1,11 @@
 {
-  "total": 81,
+  "total": 82,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 81,
+      "provided": 82,
       "counts": {
-        "supported": 81,
+        "supported": 82,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 81,
+      "provided": 82,
       "counts": {
-        "supported": 81,
+        "supported": 82,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 81,
+      "provided": 82,
       "counts": {
         "supported": 0,
-        "preview": 81,
+        "preview": 82,
         "review": 0,
         "unsupported": 0
       },
@@ -1379,6 +1379,37 @@
       "recordId": "verification-v0.3.0"
     },
     {
+      "name": "KjunListItem",
+      "title": "ListItem",
+      "docs": "/components/list-item",
+      "category": "data-display",
+      "differences": "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16과 구분선 규칙을 공유합니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
       "name": "KjunListRow",
       "title": "ListRow",
       "docs": "/components/list-row",
@@ -2597,7 +2628,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 81
+      "componentCount": 82
     }
   ]
 }

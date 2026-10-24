@@ -182,7 +182,8 @@ const options = [
 const ownership = [
   "알림·요청 대기열·진행 중 표시·입력 초안: 해당 KjunFeedbackProvider 영역이 관리합니다.",
   "실제 저장·검증·성공 후 이동: 소비자가 콜백과 반환 Promise에서 처리합니다.",
-  "Provider 해제: 미완료 Confirm은 false, Prompt는 null로 정리하고 알림 타이머와 대기열을 제거합니다.",
+  "Provider 해제: 미완료 Confirm은 false, Prompt는 null로 정리하고 알림 타이머와 대기열을 제거합니다. controller로 받은 컨트롤러는 정리하지 않으며, Provider가 없는 동안 부른 요청은 다음에 마운트되는 Provider가 표시합니다.",
+  "컴포넌트 밖 호출: 모듈에서 const feedback = createKjunFeedback()을 한 번 만들고 <KjunFeedbackProvider controller={feedback}>에 넘기면 같은 confirm·prompt·toast를 일반 함수에서 부를 수 있습니다. 한 컨트롤러를 동시에 두 Provider에 넘기지 마세요(개발 모드 경고).",
 ];
 export default Object.fromEntries(
   ["vue3", "react", "native"].map((platform) => [
@@ -190,7 +191,7 @@ export default Object.fromEntries(
     {
       ownership: [
         ...ownership,
-        "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다.",
+        "useKjunFeedback()은 KjunFeedbackProvider 안에서 호출합니다. Vue는 setup에서 호출합니다. createKjunFeedback()의 결과는 같은 메서드를 가지며 어디서든 호출합니다.",
         ...(platform === "native"
           ? ["Native KjunFeedbackProvider는 앱 화면을 감싸는 View가 부모 크기를 그대로 이어받습니다. 레이아웃을 바꾸려면 style을 넘깁니다."]
           : []),

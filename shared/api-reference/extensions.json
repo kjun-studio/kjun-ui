@@ -5,7 +5,9 @@
       "description",
       "href",
       "disabled",
-      "onClick"
+      "onClick",
+      "destructive",
+      "chevron"
     ],
     "react": [
       "title",
@@ -15,7 +17,9 @@
       "actions",
       "href",
       "disabled",
-      "onClick"
+      "onClick",
+      "destructive",
+      "chevron"
     ],
     "native": [
       "title",
@@ -25,7 +29,9 @@
       "actions",
       "href",
       "disabled",
-      "onPress"
+      "onPress",
+      "destructive",
+      "chevron"
     ]
   },
   "KjunListSection": {
@@ -34,7 +40,8 @@
       "description",
       "ariaLabel",
       "divider",
-      "density"
+      "density",
+      "surface"
     ],
     "react": [
       "title",
@@ -43,7 +50,8 @@
       "children",
       "ariaLabel",
       "divider",
-      "density"
+      "density",
+      "surface"
     ],
     "native": [
       "title",
@@ -52,7 +60,17 @@
       "children",
       "ariaLabel",
       "divider",
-      "density"
+      "density",
+      "surface"
+    ]
+  },
+  "KjunListItem": {
+    "vue3": [],
+    "react": [
+      "children"
+    ],
+    "native": [
+      "children"
     ]
   },
   "KjunTopNavigation": {
@@ -165,7 +183,9 @@
       "alt",
       "decorative",
       "size",
-      "shape"
+      "shape",
+      "color",
+      "textColor"
     ],
     "react": [
       "src",
@@ -176,7 +196,9 @@
       "shape",
       "fallback",
       "onLoad",
-      "onError"
+      "onError",
+      "color",
+      "textColor"
     ],
     "native": [
       "src",
@@ -188,7 +210,9 @@
       "shape",
       "fallback",
       "onLoad",
-      "onError"
+      "onError",
+      "color",
+      "textColor"
     ]
   },
   "KjunChip": {

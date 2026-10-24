@@ -14122,6 +14122,204 @@
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
+      "id": "KjunListItem.vue3.keyboard.v1",
+      "component": "KjunListItem",
+      "platform": "vue3",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {
+        "text": "화면 테마",
+        "children": true,
+        "parent": "KjunListSection"
+      },
+      "behavior": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": false,
+      "reason": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunListItem.vue3.labeling.v1",
+      "component": "KjunListItem",
+      "platform": "vue3",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {
+        "text": "화면 테마",
+        "children": true,
+        "parent": "KjunListSection"
+      },
+      "behavior": "KjunListSection 안의 화면 테마 안내 문구. KjunListSection 안에서 사용하는 하위 구성입니다. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다. 이 항목은 문서에 명시한 하위 컨트롤을 공급한 조합을 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunListItem.vue3.focus.v1",
+      "component": "KjunListItem",
+      "platform": "vue3",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {
+        "text": "화면 테마",
+        "children": true,
+        "parent": "KjunListSection"
+      },
+      "behavior": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": false,
+      "reason": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunListItem.react.keyboard.v1",
+      "component": "KjunListItem",
+      "platform": "react",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {
+        "text": "화면 테마",
+        "children": true,
+        "parent": "KjunListSection"
+      },
+      "behavior": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": false,
+      "reason": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunListItem.react.labeling.v1",
+      "component": "KjunListItem",
+      "platform": "react",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {
+        "text": "화면 테마",
+        "children": true,
+        "parent": "KjunListSection"
+      },
+      "behavior": "KjunListSection 안의 화면 테마 안내 문구. KjunListSection 안에서 사용하는 하위 구성입니다. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다. 이 항목은 문서에 명시한 하위 컨트롤을 공급한 조합을 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunListItem.react.focus.v1",
+      "component": "KjunListItem",
+      "platform": "react",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {
+        "text": "화면 테마",
+        "children": true,
+        "parent": "KjunListSection"
+      },
+      "behavior": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": false,
+      "reason": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunListItem.native.keyboard.v1",
+      "component": "KjunListItem",
+      "platform": "native",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "text",
+      "scenario": {
+        "text": "화면 테마",
+        "children": true,
+        "parent": "KjunListSection"
+      },
+      "behavior": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [],
+      "applicable": false,
+      "reason": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunListItem.native.labeling.v1",
+      "component": "KjunListItem",
+      "platform": "native",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "text",
+      "scenario": {
+        "text": "화면 테마",
+        "children": true,
+        "parent": "KjunListSection"
+      },
+      "behavior": "KjunListSection 안의 화면 테마 안내 문구. KjunListSection 안에서 사용하는 하위 구성입니다. 지정한 수치·단위·상태 텍스트를 표시합니다. 접근성 트리에서도 해당 텍스트가 유지되는지 검사합니다. 이 항목은 문서에 명시한 하위 컨트롤을 공급한 조합을 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "예제의 의미 있는 텍스트가 접근성 트리에 포함되는지 검사합니다.",
+      "expected": "명시한 상태·수치·단위가 스냅샷에 있으며 aria-hidden으로 사라지지 않습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunListItem.native.focus.v1",
+      "component": "KjunListItem",
+      "platform": "native",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "text",
+      "scenario": {
+        "text": "화면 테마",
+        "children": true,
+        "parent": "KjunListSection"
+      },
+      "behavior": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [],
+      "applicable": false,
+      "reason": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "KjunListSection 안의 화면 테마 안내 문구. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
       "id": "KjunImage.vue3.keyboard.v1",
       "component": "KjunImage",
       "platform": "vue3",
@@ -16699,41 +16897,41 @@
   "packages": [
     {
       "name": "@kjun-ui/icons",
-      "version": "0.13.0",
-      "file": "kjun-ui-icons-0.13.0.tgz",
+      "version": "0.14.0",
+      "file": "kjun-ui-icons-0.14.0.tgz",
       "bytes": 1457074,
-      "integrity": "sha512-uOUHFEYDUqkbAEiAvMPsKJdm3loFfOLHxtefZ+pDHBTmFh3RNZrvt/8lMs3pD0GMUQ3b/yPeprmd4dWSgMgJPw=="
+      "integrity": "sha512-O2Tai4cafp7InTPzDSBLj7NBhQKdzky5QbDZYoEe5slKxuiHawCmCXTAT2A8WWUn3ai5JFCPldcSm4WTZhKRJA=="
     },
     {
       "name": "@kjun-ui/tokens",
-      "version": "0.13.0",
-      "file": "kjun-ui-tokens-0.13.0.tgz",
-      "bytes": 88272,
-      "integrity": "sha512-zC5HuYTOggMliPkZsEOxCtdDYSvQrHJkiHzM9XTFn4zPRPIn0+tmL9YzVFlF2RgDzfHW+LJ0228M3qH808o2/w=="
+      "version": "0.14.0",
+      "file": "kjun-ui-tokens-0.14.0.tgz",
+      "bytes": 90945,
+      "integrity": "sha512-FgW7y/S4xGWdcxE9KTtdSV4fZs9OuUEvUCnLtm2tSvswTmyOHMP+VToOnCMinx+/+J7dmmVgO0jaNZEih7jCyQ=="
     },
     {
       "name": "@kjun-ui/vue3",
-      "version": "0.13.0",
-      "file": "kjun-ui-vue3-0.13.0.tgz",
-      "bytes": 288009,
-      "integrity": "sha512-lFSFzetw9ZnV4nVrCWVR4Wq0ubznZYkqaNI+dvDVFXxTPByAqBx/bfAFIczvpy62SfYHysPAVPLygbcqTpLBjg=="
+      "version": "0.14.0",
+      "file": "kjun-ui-vue3-0.14.0.tgz",
+      "bytes": 292889,
+      "integrity": "sha512-hEeWvZpc9Zae25sokAm2E2oS3cZdzf91ZkOTge2/gABQBPtVET7qc3a7ZcpPAtzAsrH41V4rjj6ksjrHXnQbDQ=="
     },
     {
       "name": "@kjun-ui/react",
-      "version": "0.13.0",
-      "file": "kjun-ui-react-0.13.0.tgz",
-      "bytes": 237960,
-      "integrity": "sha512-HEySh1vRSg0xsa+XvwsMzAdz5w7hE26yLbyl5SOdWmyknxBl10dH9tstv5jK5KzXlwwtcRB8a/DJtkXqhhEnWg=="
+      "version": "0.14.0",
+      "file": "kjun-ui-react-0.14.0.tgz",
+      "bytes": 242379,
+      "integrity": "sha512-d/Ju3MamTxpfS0qsyVzGveKNc8FyPxaEybMJ0dnG/7BBEjdyDJ6IKnE9b6z2f1mYhvjhwJCGlkMCLQq9BIiKqA=="
     },
     {
       "name": "@kjun-ui/native",
-      "version": "0.13.0",
-      "file": "kjun-ui-native-0.13.0.tgz",
-      "bytes": 477201,
-      "integrity": "sha512-mBPFCTETHjypFf+w9t782vg/J6/dMO3e3Zqf2Np4VYAS8ArjwzHzFHPASuesp8z1wIfkCUMweeEZOqeox7XVXw=="
+      "version": "0.14.0",
+      "file": "kjun-ui-native-0.14.0.tgz",
+      "bytes": 484146,
+      "integrity": "sha512-7Frl1Xb0o+o+YFNvYpqtmVCPekChUVTG3HllPgUmNFUPLXxdlOtVfnKnHdx6auM+rBQ1oQ+P66wxC6s3p4Wslw=="
     }
   ],
-  "definitionHash": "sha256-c2e956f5bd7cde1d5433940aae1ff1f6ed727b8c0646bb6f0092fbd1597dac5b",
+  "definitionHash": "sha256-b9bf6ea974c85a782424641ad32afe4fb2cbd1226900964ff2eef87df558ad9b",
   "runs": [
     {
       "schemaVersion": 1,

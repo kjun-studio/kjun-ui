@@ -8,6 +8,11 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         h("KjunListRow", { title: settings.long ? "모든 기기에서 사용할 프로필과 계정 표시 이름" : "프로필 설정", description: "이름과 사진을 변경합니다.", disabled, ...action(() => set("message", "프로필 설정 열기")) }, undefined, { leading: h("KjunAvatar", { name: "김하늘", size: "sm" }), actions: h("KjunButton", { variant: "ghost", size: "sm", ...action(() => set("message", "프로필 공유")) }, "공유") }),
         h("KjunListRow", { title: "알림 받기", description: "중요한 변경 사항을 알려드립니다." }, undefined, { actions: h("KjunSwitch", { value: get("notifications", true), onValueChange: change("notifications"), ariaLabel: "알림 받기" }) }),
       ]);
+    case "KjunListItem":
+      return h("KjunListSection", { title: "화면" }, [
+        h("KjunListItem", {}, h("KjunText", { tone: "secondary" }, "화면 테마는 기기 설정을 따릅니다.")),
+        h("KjunListRow", { title: "글자 크기", chevron: true, ...action(() => set("message", "글자 크기 열기")) }),
+      ]);
     case "KjunTopNavigation": {
       const leadingText = settings.leading === "긴 문구" ? "프로젝트 목록으로 돌아가기" : "";
       const save = (text: string) => h("KjunButton", { variant: "ghost", size: "sm", disabled, loading: settings.loading, ...action(() => set("message", text + " 요청")) }, text);

@@ -3,6 +3,11 @@ import { detail, event, slot, fields } from "./helpers.mjs";
 const bindings = JSON.parse(readFileSync(new URL("./extensions.json", import.meta.url), "utf8"));
 const guides = JSON.parse(readFileSync(new URL("../component-guides.json", import.meta.url), "utf8"));
 const summaries = {
+  destructive: "제목을 danger 색으로 그립니다(계정 삭제 등). 설명 색과 동작은 그대로입니다.",
+  chevron: "행 끝에 이동을 뜻하는 chevron-right 아이콘을 장식으로 둡니다. 화면 낭독기에는 읽히지 않으며 trailing과 함께 쓰면 맨 끝에 옵니다.",
+  surface: "섹션 표면색 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경 위에 행을 그립니다.",
+  color: "이니셜·대체 아이콘 뒤 바탕색입니다. 웹은 CSS 색 문자열(var(--kjun-...) 권장), Native는 ColorValue를 받습니다. 생략하면 secondary 역할입니다. 이미지가 보이면 가려집니다.",
+  textColor: "이니셜과 대체 아이콘의 색입니다. 웹은 CSS 색 문자열, Native는 ColorValue를 받습니다. 생략하면 textSecondary 역할입니다.",
   divider: "행 사이 구분선을 그립니다. 기본값 true이며 false면 선 없이 붙여 그립니다.",
   density: "행 밀도입니다. 기본값 default는 높이 56, compact는 44(터치 최소 크기)에 위아래 여백 12이며 시작 여백 16은 같습니다.",
   block: "부모의 전체 너비를 채우고 중앙 숫자 입력을 확장합니다. 기본값 false는 80px 입력과 정사각형 증감 버튼으로 구성합니다.",
@@ -91,7 +96,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (platform === "vue3") {
     const eventKeys = name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : name === "KjunBottomNavigation" ? { navigate: "onNavigate" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
-    const slotNames = { KjunListRow: ["leading", "trailing", "actions"], KjunListSection: ["actions", "default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"] }[name] || [];
+    const slotNames = { KjunListRow: ["leading", "trailing", "actions"], KjunListSection: ["actions", "default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"] }[name] || [];
     for (const key of slotNames) {
       const definition = name === "KjunTopNavigation" ? topNavigationSlots[key] : childProps[key === "default" ? "children" : key];
       slots[key] = { ...definition, details: definition.details.map(row => row.label === "슬롯 데이터" ? { ...row, text: "제공 데이터 없음" } : row) };

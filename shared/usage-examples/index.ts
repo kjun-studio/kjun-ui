@@ -6,7 +6,7 @@ const categories = {
   controls: 'Button Input FormGroup FormActions Checkbox Switch Radio RadioGroup Textarea Select Combobox DatePicker ButtonGroup FilterGroup Tabs TabPane IconToggle Fab CopyButton RefreshButton ExternalLink Progress',
   layers: 'Text Stack Inline Card Alert Dropdown DropdownItem DropdownDivider MenuButton Accordion AccordionItem Modal Drawer Tooltip Popover Breadcrumb Pagination ScrollFade ErrorBoundary',
   data: 'Icon Badge Spinner Empty Skeleton ListSkeleton FormSkeleton ChartSkeleton MarketTableSkeleton Table DataState KpiHero KpiRow AnimatedNumber Freshness PriceCell SignedValue Deviation HeatmapCell ProgressCell CollectionMark ExecutionStatusBadge Sparkline MarketSimpleList MarketTable MarketCards MarketListPanel',
-  extensions: 'ListRow ListSection TopNavigation BottomNavigation BottomActionBar Image Avatar Chip Slider RangeSlider TimePicker QuantityStepper',
+  extensions: 'ListRow ListSection ListItem TopNavigation BottomNavigation BottomActionBar Image Avatar Chip Slider RangeSlider TimePicker QuantityStepper',
   search: 'SearchInput',
 };
 const loaders = {

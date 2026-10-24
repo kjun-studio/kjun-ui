@@ -46,7 +46,10 @@
       "surface",
       "elevation",
       "border",
-      "dividers"
+      "dividers",
+      "pressable",
+      "disabled",
+      "ariaLabel"
     ],
     "react": [
       "dividers",
@@ -69,7 +72,10 @@
       "bodyPadding",
       "radius",
       "surface",
-      "media"
+      "media",
+      "pressable",
+      "disabled",
+      "ariaLabel"
     ],
     "native": [
       "dividers",
@@ -86,7 +92,11 @@
       "bodyPadding",
       "radius",
       "surface",
-      "media"
+      "media",
+      "pressable",
+      "disabled",
+      "ariaLabel",
+      "onPress"
     ]
   },
   "KjunDrawer": {

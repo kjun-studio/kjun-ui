@@ -79,6 +79,33 @@ Vue 3·React 모달은 가장 가까운 Provider 안에 렌더링되어 해당 �
   - 기본 tone의 색은 플랫폼마다 다릅니다. 웹은 감싼 영역의 글자색을 따르고, Native는 항상 `text` 색입니다(Native 글자는 부모 View의 색을 이어받지 못합니다). 색이 다른 배경 위에 둔 글자는 웹에서는 배경을 따라가지만 Native에서는 `text` 색으로 남으니, 두 플랫폼에서 모두 확인합니다.
 - `KjunStack`(세로)·`KjunInline`(가로): `gap`으로 간격 단계를 고릅니다. 바로 안의 폼 그룹은 자체 아래 여백 없이 `gap`만 따르므로 `data-kjun-layout="form"`이 필요 없습니다.
 - Stack·Inline은 KJUN 마크업으로 취급하지 않습니다. 안에 넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받습니다.
+- `tone`은 `secondary`·`tertiary`·`disabled` 외에 `brand`·`danger`·`success`·`warning`·`inverse`도 받습니다. `inverse`는 브랜드 색 바탕 위 글자용으로 `onBrand` 역할을 씁니다.
+- Native 버튼·Badge는 혼자서는 왼쪽(flex-start)에 놓입니다. `KjunStack`·`KjunInline`에 `align`(start·center·end, Inline은 baseline도)을 **명시**하면 바로 안의 버튼·Badge가 그 정렬을 따릅니다. 기본값과 `stretch`에서는 그대로 왼쪽이고, 꽉 채우려면 버튼의 `block`을 씁니다. 앱이 만든 View 안이나 `style.alignSelf`를 준 경우에는 그 값이 우선합니다. 웹은 원래 부모 정렬을 따릅니다.
+
+### 카드 안 배치는 KjunStack으로
+
+`KjunCard`는 안쪽 여백만 정하고 내용의 배치는 정하지 않습니다. 카드 안의 제목·설명·버튼 간격과 정렬은 카드 스타일을 덮어쓰지 말고 `KjunStack`·`KjunInline`으로 둡니다.
+
+```tsx
+<KjunCard title="오늘의 질문">
+  <KjunStack gap="sm" align="center">
+    <KjunText variant="sectionTitle">무엇이 가장 즐거웠나요?</KjunText>
+    <KjunButton onClick={answer}>답하기</KjunButton>
+  </KjunStack>
+</KjunCard>
+```
+
+### 누르는 카드
+
+카드 전체를 하나의 버튼으로 쓰려면 `pressable`을 켭니다. 이때만 버튼 역할, 키보드 포커스(Enter·Space), hover·누름·포커스 링이 생깁니다. 웹 카드에 `onClick`만 넘기던 기존 코드는 그대로입니다.
+
+```tsx
+<KjunCard pressable title="오늘의 질문" onClick={openQuestion}>…</KjunCard>      {/* React, Vue는 @click */}
+<KjunCard pressable title="오늘의 질문" onPress={openQuestion}>…</KjunCard>      {/* Native */}
+```
+
+- 이름은 `ariaLabel`, 없으면 `title`입니다. `disabled`는 누름을 막고 흐리게 표시합니다.
+- 누르는 카드 안에는 버튼·링크·입력처럼 따로 누르는 요소를 넣지 않습니다. 화면 낭독기와 키보드에서 버튼 안에 버튼이 생기기 때문입니다. 웹 개발 모드에서는 이런 요소가 있으면 경고합니다. 카드 안에 따로 누르는 요소가 필요하면 `pressable` 없이 카드 푸터에 버튼을 둡니다.
 
 ## Native
 
@@ -162,6 +189,35 @@ import { KjunProvider, kjunMessagesEn } from "@kjun-ui/react";
 - React는 `locale`이 있을 때 react-aria에도 같은 언어를 넘깁니다. 웹 DatePicker의 날짜 선택 팝업은 브라우저가 그리므로 브라우저 언어를 따릅니다.
 - 개발자 콘솔 경고는 한국어로 남습니다.
 - 문구의 띄어쓰기는 문구 안에 들어 있습니다. `newWindow`는 링크 이름 뒤에 붙으므로 앞에 공백이 있고(`" (새 창)"`), `optional`은 KJUN이 라벨 뒤에 공백을 두므로 공백 없이(`"(선택)"`) 씁니다. 바꿀 때도 같은 띄어쓰기를 지키세요.
+
+## 컴포넌트 밖에서 확인창·토스트 부르기
+
+API 응답 처리나 스토어처럼 컴포넌트가 아닌 곳에서 확인창·토스트를 띄우려면 컨트롤러를 모듈에서 한 번 만들고 `KjunFeedbackProvider`에 넘깁니다. Vue 3·React·Native가 같습니다.
+
+```ts
+// feedback.ts
+import { createKjunFeedback } from "@kjun-ui/react";
+export const feedback = createKjunFeedback();
+
+// api.ts
+import { feedback } from "./feedback";
+export async function removeItem(id: string) {
+  if (!(await feedback.confirm({ message: "삭제할까요?" }))) return;
+  await api.delete(id);
+  feedback.toast.success("삭제했습니다.");
+}
+```
+
+```tsx
+<KjunProvider>
+  <KjunFeedbackProvider controller={feedback}><App /></KjunFeedbackProvider>
+</KjunProvider>
+```
+
+- `createKjunFeedback()`가 돌려주는 객체는 `useKjunFeedback()`과 같은 `confirm`·`prompt`·`toast` 메서드를 가집니다.
+- Provider는 받은 컨트롤러를 정리하지 않습니다. 화면 전환이나 핫 리로드로 Provider가 다시 마운트돼도 같은 컨트롤러를 계속 씁니다. Provider가 없는 동안 부른 요청은 기다렸다가 다음 Provider가 마운트되면 보입니다(개발 모드 경고 1회).
+- 한 컨트롤러를 동시에 두 Provider에 넘기지 않습니다(개발 모드 경고). 하나가 사라진 뒤 다른 Provider에 넘기는 것은 됩니다.
+- 문구와 언어는 그 Provider 위치의 `KjunProvider` 설정을 따릅니다.
 
 ## 선택 역할과 기존 매핑
 

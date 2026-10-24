@@ -270,3 +270,12 @@ set("Fab", {
 });
 set("Fab", { onClick: { summary:"버튼을 누를 때 호출합니다. Vue는 click 이벤트입니다." } }, "react");
 set("Fab", { onPress: { summary:"버튼을 누를 때 호출합니다." } }, "native");
+set("Card", {
+  pressable: { default: "false", summary: "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고)." },
+  disabled: { default: "false", summary: "pressable 카드의 누름을 막고 흐리게 표시합니다. pressable이 아니면 의미가 없습니다." },
+  ariaLabel: "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+});
+set("Card", { onPress: "pressable 카드를 누를 때 호출합니다. 비활성 카드에서는 호출하지 않습니다." }, "native");
+set("Progress", {
+  shape: { default: "bar", summary: "bar는 막대, circle은 원형입니다. 원형 지름·선 굵기는 progress.circle 토큰(sm 24·md 48·lg 64)이고, label·subLabel은 원 아래 가운데에 둡니다. showLabel 퍼센트는 md 이상에서 원 가운데에만 표시합니다." },
+});
