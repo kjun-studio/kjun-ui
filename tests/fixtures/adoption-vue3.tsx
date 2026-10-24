@@ -26,4 +26,8 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
       <K.KjunListRow title="Delete account" destructive onClick={() => {}} />
     </K.KjunListSection>
   </K.KjunProvider></div>
+  <div data-testid="avatars"><K.KjunProvider>
+    <K.KjunAvatar name="Kim" color="rgb(10, 20, 30)" textColor="rgb(250, 240, 230)" />
+    <K.KjunAvatar color="rgb(10, 20, 30)" textColor="rgb(250, 240, 230)" />
+  </K.KjunProvider></div>
 </div>).mount('#root');

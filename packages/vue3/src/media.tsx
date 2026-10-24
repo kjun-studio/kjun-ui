@@ -54,6 +54,8 @@ const kjunAvatarProps = {
   decorative: { type: Boolean, default: false },
   size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   shape: { type: String as PropType<"circle" | "square">, default: "circle" },
+  color: { type: String, default: undefined },
+  textColor: { type: String, default: undefined },
 } as const;
 export type KjunAvatarProps = ExtractPublicPropTypes<typeof kjunAvatarProps>;
 /** Slot: fallback (defaults to the name's first character or a user icon). */
@@ -68,7 +70,7 @@ export const KjunAvatar = defineComponent({
       const initial = Array.from(props.name.trim())[0];
       return (
         <span class="kjun-avatar" data-shape={props.shape} data-size={props.size}
-          style={css({ width: tokens.extensions.avatar[props.size], height: tokens.extensions.avatar[props.size] })}>
+          style={css({ width: tokens.extensions.avatar[props.size], height: tokens.extensions.avatar[props.size], "--_kjun-avatar-color": props.color, "--_kjun-avatar-text-color": props.textColor })}>
           <KjunImage src={props.src} alt={props.alt || props.name || m.value.user} decorative={props.decorative}
             onLoad={() => emit("load")} onError={() => emit("error")}>
             {{ fallback: () => slots.fallback ? slots.fallback()

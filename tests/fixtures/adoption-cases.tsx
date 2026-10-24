@@ -23,5 +23,9 @@ export function AdoptionCases({ K, native = false, providerProps = {}, feedback,
         <K.KjunListRow title="Delete account" destructive {...press(() => {})} />
       </K.KjunListSection>
     </K.KjunProvider></div>
+    <div data-testid="avatars"><K.KjunProvider {...providerProps}>
+      <K.KjunAvatar name="Kim" color="rgb(10, 20, 30)" textColor="rgb(250, 240, 230)" />
+      <K.KjunAvatar color="rgb(10, 20, 30)" textColor="rgb(250, 240, 230)" />
+    </K.KjunProvider></div>
   </div>;
 }

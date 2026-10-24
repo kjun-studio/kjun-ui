@@ -56,5 +56,21 @@ for (const platform of ['react', 'vue3', 'native']) {
       const sectionBox = list.locator(platform === 'native' ? ':scope > * > * > *' : '.kjun-list-section').first();
       await expect(sectionBox).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     });
+
+    test('avatar fallback uses the given background and text colors', async ({ page }) => {
+      const avatars = section(page, 'avatars');
+      const initial = avatars.getByText('K', { exact: true });
+      await expect(initial).toHaveCSS('color', 'rgb(250, 240, 230)');
+      // The background shows behind the fallback; check it on the initial's nearest painted ancestor.
+      const bg = await initial.evaluate(el => { let n: Element | null = el; while (n) { const c = getComputedStyle(n).backgroundColor; if (c !== 'rgba(0, 0, 0, 0)') return c; n = n.parentElement; } return ''; });
+      expect(bg).toBe('rgb(10, 20, 30)');
+      // The fallback icon takes the text color too.
+      const iconColor = await avatars.locator('svg').first().evaluate(svg => {
+        const stroke = [svg, ...svg.querySelectorAll('*')].map(n => n.getAttribute('stroke')).find(v => v && v !== 'none' && v !== 'currentColor');
+        if (!stroke) return getComputedStyle(svg).color;
+        const el = document.createElement('i'); el.style.color = stroke; document.body.append(el); const c = getComputedStyle(el).color; el.remove(); return c;
+      });
+      expect(iconColor).toBe('rgb(250, 240, 230)');
+    });
   });
 }
