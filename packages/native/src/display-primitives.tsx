@@ -67,13 +67,15 @@ export function BadgeView({
     : variant === "primary"
     ? colors.brandHover
     : colors[variant as keyof typeof colors];
+  // The transparent row keeps the pill at its own width in a stretching column, yet follows a row's
+  // alignItems (a pill with alignSelf: flex-start sat at the top of centred rows).
   return (
+    <View style={{ flexDirection: "row", maxWidth: "100%", minWidth: 0, flexShrink: 1 }}>
     <View
       style={[
         {
           flexDirection: "row",
           alignItems: "center",
-          alignSelf: "flex-start",
           maxWidth: "100%",
           minWidth: 0,
           flexShrink: 1,
@@ -105,6 +107,7 @@ export function BadgeView({
         color,
         ...type,
       })}
+    </View>
     </View>
   );
 }

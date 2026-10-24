@@ -17,5 +17,14 @@ for (const platform of ['react', 'vue3', 'native']) {
       // The demo palette leaves onBrand unset, so it falls back to inverse (#FFFFFF).
       await expect(thumbs.nth(1)).toHaveCSS('background-color', 'rgb(255, 255, 255)');
     });
+
+    if (platform === 'native') test('native badge centers in a row and stays narrow in a column', async ({ page }) => {
+      const pill = (text: string) => page.getByText(text, { exact: true }).locator('xpath=..');
+      const row = await section(page, 'badge-row').boundingBox();
+      const inRow = await pill('Row badge').boundingBox();
+      expect(Math.abs(inRow!.y + inRow!.height / 2 - (row!.y + row!.height / 2))).toBeLessThanOrEqual(1);
+      const column = await section(page, 'badge-column').boundingBox();
+      expect((await pill('Column badge').boundingBox())!.width).toBeLessThan(column!.width / 2);
+    });
   });
 }

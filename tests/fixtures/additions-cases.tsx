@@ -10,5 +10,13 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
       {themed}
       <K.KjunProvider {...providerProps}><K.KjunSwitch value label="Default thumb" onChange={() => {}} /></K.KjunProvider>
     </div>
+    <K.KjunProvider {...providerProps}>
+    <div data-testid="badge-row" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: 40 }}>
+      <K.KjunBadge>Row badge</K.KjunBadge>
+    </div>
+    <div data-testid="badge-column" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', width: 300 }}>
+      <K.KjunBadge>Column badge</K.KjunBadge>
+    </div>
+    </K.KjunProvider>
   </div>;
 }
