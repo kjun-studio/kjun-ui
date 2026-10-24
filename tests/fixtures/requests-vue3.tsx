@@ -30,4 +30,7 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
       </K.KjunListRow>
     </K.KjunListSection>
   </K.KjunProvider></div>
+  <div data-testid="text-props"><K.KjunProvider>
+    <K.KjunText aria-label="Balance 1,000 won" data-testid="balance">1,000</K.KjunText>
+  </K.KjunProvider></div>
 </div>).mount('#root');

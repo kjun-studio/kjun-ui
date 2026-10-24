@@ -42,5 +42,9 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(Math.abs(budget.x - title.x)).toBeLessThan(1);
       expect(budget.y).toBeGreaterThanOrEqual(description.y + description.height);
     });
+
+    test('text passes accessibility label and test id through', async ({ page }) => {
+      await expect(section(page, 'text-props').getByTestId('balance')).toHaveAttribute('aria-label', 'Balance 1,000 won');
+    });
   });
 }

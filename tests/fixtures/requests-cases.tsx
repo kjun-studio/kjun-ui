@@ -30,5 +30,8 @@ export function RequestsCases({ K, native = false, providerProps = {} }: { K: an
         </K.KjunListRow>
       </K.KjunListSection>
     </K.KjunProvider></div>
+    <div data-testid="text-props"><K.KjunProvider {...providerProps}>
+      <K.KjunText {...(native ? { accessibilityLabel: 'Balance 1,000 won', testID: 'balance' } : { 'aria-label': 'Balance 1,000 won', 'data-testid': 'balance' })}>1,000</K.KjunText>
+    </K.KjunProvider></div>
   </div>;
 }

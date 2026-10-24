@@ -1,5 +1,5 @@
 import { Children, Fragment, cloneElement, isValidElement, type ReactElement, type ReactNode } from "react";
-import { View, type StyleProp, type TextStyle, type ViewStyle } from "react-native";
+import { View, type StyleProp, type TextProps, type TextStyle, type ViewStyle } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
 import {
   isNumericVariant, titleVariants,
@@ -14,7 +14,9 @@ import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
 export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackGap, TextAlign, TextTone, TextVariant };
 
-export interface KjunTextProps {
+/** Other React Native Text props (accessibilityLabel, testID, selectable, allowFontScaling, adjustsFontSizeToFit…) pass through.
+ * adjustsFontSizeToFit only shrinks: the variant size stays the largest. */
+export interface KjunTextProps extends Omit<TextProps, "style" | "children" | "numberOfLines"> {
   /** Typography role; every size, line height and weight comes from tokens.typography. */
   variant?: TextVariant;
   /** Text color role. */
@@ -28,12 +30,13 @@ export interface KjunTextProps {
 const toneRole = { default: "text", secondary: "textSecondary", tertiary: "textTertiary", disabled: "textDisabled",
   brand: "brand", danger: "danger", success: "success", warning: "warning", inverse: "onBrand" } as const;
 const textAlign = { start: "left", center: "center", end: "right" } as const;
-export function KjunText({ variant = "body", tone = "default", align, maxLines, style, children }: KjunTextProps) {
+export function KjunText({ variant = "body", tone = "default", align, maxLines, style, children, ...rest }: KjunTextProps) {
   const { colors, fontFamily, numericFontFamily } = useKjunStyles();
   const lines = maxLines && maxLines > 0 ? Math.floor(maxLines) : undefined;
   return (
     <KText
       accessibilityRole={titleVariants.includes(variant) ? "header" : undefined}
+      {...rest}
       numberOfLines={lines}
       ellipsizeMode={lines ? "tail" : undefined}
       style={[
