@@ -29,5 +29,7 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
       <K.KjunButtonGroup value="a" options={[{ value: 'a', label: 'Mine' }, { value: 'b', label: 'Ours' }]} onValueChange={() => {}} />
     </div>
     </K.KjunProvider>
+    <div data-testid="optional-ko"><K.KjunProvider {...providerProps}><K.KjunFormGroup label="Nickname" optional><K.KjunInput value="" onValueChange={() => {}} /></K.KjunFormGroup></K.KjunProvider></div>
+    <div data-testid="optional-en"><K.KjunProvider {...providerProps} locale="en-US"><K.KjunFormGroup label="Nickname" optional><K.KjunInput value="" onValueChange={() => {}} /></K.KjunFormGroup></K.KjunProvider></div>
   </div>;
 }

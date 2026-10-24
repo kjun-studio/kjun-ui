@@ -38,6 +38,7 @@ export const kjunMessagesKo = {
   searchFailed: "검색하지 못했습니다. 다시 시도해 주세요.",
   minChars: (count: number) => `${count}자 이상 입력하세요`,
   select: "선택",
+  optional: "(선택)",
   clearSelection: "선택 지우기",
   searchOptions: "선택 항목 검색",
   selectedCount: (count: number) => `${count}개 선택됨`,

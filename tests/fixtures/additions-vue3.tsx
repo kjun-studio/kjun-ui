@@ -16,4 +16,6 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
   <K.KjunProvider><div data-testid="button-group">
     <K.KjunButtonGroup modelValue="a" options={[{ value: 'a', label: 'Mine' }, { value: 'b', label: 'Ours' }]} />
   </div></K.KjunProvider>
+  <div data-testid="optional-ko"><K.KjunProvider><K.KjunFormGroup label="Nickname" optional><K.KjunInput modelValue="" /></K.KjunFormGroup></K.KjunProvider></div>
+  <div data-testid="optional-en"><K.KjunProvider locale="en-US"><K.KjunFormGroup label="Nickname" optional><K.KjunInput modelValue="" /></K.KjunFormGroup></K.KjunProvider></div>
 </div>).mount('#root');

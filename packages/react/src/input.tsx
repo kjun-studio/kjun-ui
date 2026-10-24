@@ -32,6 +32,8 @@ export interface KjunFormGroupProps {
   label?: string;
   id?: string;
   required?: boolean;
+  /** Marks the field as optional with the "(선택)" / "(optional)" message; required wins when both are set. */
+  optional?: boolean;
   error?: string;
   hint?: string;
   /** Hides the label visually while it still names the field. */
@@ -42,11 +44,13 @@ export function KjunFormGroup({
   label,
   id,
   required = false,
+  optional = false,
   error = "",
   hint = "",
   labelHidden = false,
   children,
 }: KjunFormGroupProps) {
+  const m = useKjunMessages();
   const uid = useId().replace(/:/g, "");
   const fieldId = id || "kjun-field-" + uid;
   const labelId = label ? fieldId + "-label" : undefined;
@@ -65,6 +69,7 @@ export function KjunFormGroup({
             {required && (
               <span style={{ color: "var(--_kjun-color-danger)" }}> *</span>
             )}
+            {optional && !required && <span className="kjun-form-optional"> {m.optional}</span>}
           </label>
         )}
         {children}

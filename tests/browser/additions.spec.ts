@@ -53,5 +53,10 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(description!.y).toBeGreaterThanOrEqual(label!.y + label!.height - 1);
       if (platform !== 'native') await expect(block.getByRole('switch', { name: 'Alerts' })).toHaveAccessibleDescription('Sent once a day');
     });
+
+    test('form group optional marker follows the locale', async ({ page }) => {
+      await expect(section(page, 'optional-ko').getByText('(선택)', { exact: true })).toBeVisible();
+      await expect(section(page, 'optional-en').getByText('(optional)', { exact: true })).toBeVisible();
+    });
   });
 }

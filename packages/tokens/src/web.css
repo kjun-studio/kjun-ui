@@ -129,6 +129,7 @@
 .kjun-form-group:last-child {
   margin-bottom: 0;
 }
+.kjun-form-optional { color: var(--_kjun-color-text-tertiary); font-weight: var(--_kjun-type-caption-weight); }
 .kjun-form-label {
   display: block;
   font-size: var(--_kjun-type-label-size);

@@ -35,6 +35,8 @@ const kjunFormGroupProps = {
   label: { type: String, default: undefined },
   id: { type: String, default: undefined },
   required: { type: Boolean, default: false },
+  /** Marks the field as optional with the "(선택)" / "(optional)" message; required wins when both are set. */
+  optional: { type: Boolean, default: false },
   error: { type: String, default: "" },
   hint: { type: String, default: "" },
   /** Hides the label visually while it still names the field. */
@@ -46,6 +48,7 @@ export const KjunFormGroup = defineComponent({
   props: kjunFormGroupProps,
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
+    const m = useKjunMessages();
     const uid = useKjunId("kjun-field-");
     const controlId = ref<string>();
     const setControlId = (value: string | undefined) => { controlId.value = value; };
@@ -67,6 +70,7 @@ export const KjunFormGroup = defineComponent({
             <label class={"kjun-form-label" + (props.labelHidden ? " kjun-sr-only" : "")} id={labelId} for={controlId.value || id}>
               {props.label}
               {props.required && <span style={{ color: "var(--_kjun-color-danger)" }}> *</span>}
+              {props.optional && !props.required && <span class="kjun-form-optional"> {m.value.optional}</span>}
             </label>
           )}
           {slots.default?.()}

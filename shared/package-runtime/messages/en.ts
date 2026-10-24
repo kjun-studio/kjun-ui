@@ -38,6 +38,7 @@ export const kjunMessagesEn: KjunMessages = {
   searchFailed: "Search failed. Please try again.",
   minChars: (count: number) => `Type at least ${plural(count, "character", "characters")}`,
   select: "Select",
+  optional: "(optional)",
   clearSelection: "Clear selection",
   searchOptions: "Search options",
   selectedCount: (count: number) => `${count} selected`,
