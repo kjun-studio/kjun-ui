@@ -13,5 +13,15 @@ export function AdoptionCases({ K, native = false, providerProps = {}, feedback,
       <K.KjunCard pressable disabled title="Disabled card" {...press(() => setPresses(n => n + 1))}><K.KjunText>Disabled body</K.KjunText></K.KjunCard>
       <K.KjunText>{'presses ' + presses}</K.KjunText>
     </K.KjunProvider></div>
+    <div data-testid="tones"><K.KjunProvider {...providerProps}>
+      {['brand', 'danger', 'success', 'warning', 'inverse'].map(tone => <K.KjunText key={tone} tone={tone}>{'tone ' + tone}</K.KjunText>)}
+    </K.KjunProvider></div>
+    <div data-testid="settings-list"><K.KjunProvider {...providerProps}>
+      <K.KjunListSection ariaLabel="Settings" surface={false}>
+        <K.KjunListRow title="Profile" chevron {...press(() => {})} />
+        <K.KjunListItem><K.KjunText>Theme switcher</K.KjunText></K.KjunListItem>
+        <K.KjunListRow title="Delete account" destructive {...press(() => {})} />
+      </K.KjunListSection>
+    </K.KjunProvider></div>
   </div>;
 }

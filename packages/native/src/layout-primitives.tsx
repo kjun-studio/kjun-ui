@@ -23,7 +23,8 @@ export interface KjunTextProps {
   style?: StyleProp<TextStyle>;
   children?: ReactNode;
 }
-const toneRole = { default: "text", secondary: "textSecondary", tertiary: "textTertiary", disabled: "textDisabled" } as const;
+const toneRole = { default: "text", secondary: "textSecondary", tertiary: "textTertiary", disabled: "textDisabled",
+  brand: "brand", danger: "danger", success: "success", warning: "warning", inverse: "onBrand" } as const;
 const textAlign = { start: "left", center: "center", end: "right" } as const;
 export function KjunText({ variant = "body", tone = "default", align, maxLines, style, children }: KjunTextProps) {
   const { colors, fontFamily, numericFontFamily } = useKjunStyles();

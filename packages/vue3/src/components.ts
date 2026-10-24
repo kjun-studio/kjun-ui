@@ -24,6 +24,7 @@ export { KjunFeedbackProvider } from "./feedback";
 export { KjunTabs, KjunTabPane } from "./tabs";
 export { KjunAccordion, KjunAccordionItem, KjunBreadcrumb, KjunPagination } from "./navigation";
 export { KjunTopNavigation, KjunBottomNavigation, KjunBottomActionBar } from "./app-navigation";
+export { KjunListItem } from "./list";
 export { KjunListRow, KjunListSection } from "./list";
 export { KjunIconToggle, KjunCopyButton, KjunRefreshButton, KjunExternalLink, KjunScrollFade } from "./actions";
 export { KjunDataState, KjunErrorBoundary } from "./data-state";

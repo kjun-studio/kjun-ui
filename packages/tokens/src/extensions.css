@@ -218,3 +218,12 @@
 .kjun-fab:hover:not(:disabled){background:var(--_kjun-color-brand-hover)}.kjun-fab:active:not(:disabled){background:var(--_kjun-color-brand-active)}
 .kjun-fab:focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
 .kjun-fab:disabled{opacity:var(--_kjun-state-opacity-disabled);cursor:not-allowed}
+
+/* 0.14.0: plain sections, destructive rows, decorative chevrons and non-row list items share the row inset. */
+.kjun-list-section[data-surface="false"]{background:transparent}
+.kjun-list-row[data-destructive] .kjun-list-title{color:var(--_kjun-color-danger)}
+.kjun-list-chevron{flex-shrink:0;color:var(--_kjun-color-text-tertiary)}
+.kjun-list-item{padding:var(--_kjun-extension-list-padding);border-bottom:var(--_kjun-border-default-width) solid var(--_kjun-color-divider);min-width:0}
+.kjun-list-item:last-child{border-bottom:0}
+.kjun-list[data-divider=false]>.kjun-list-item{border-bottom:0}
+.kjun-list[data-density=compact]>.kjun-list-item{padding-block:var(--_kjun-extension-list-compact-padding-y)}

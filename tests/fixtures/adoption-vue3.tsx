@@ -16,4 +16,14 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
     <K.KjunCard pressable disabled title="Disabled card" onClick={() => { presses.value++; }}><K.KjunText>Disabled body</K.KjunText></K.KjunCard>
     <K.KjunText>{'presses ' + presses.value}</K.KjunText>
   </K.KjunProvider></div>
+  <div data-testid="tones"><K.KjunProvider>
+    {['brand', 'danger', 'success', 'warning', 'inverse'].map(tone => <K.KjunText key={tone} tone={tone as any}>{'tone ' + tone}</K.KjunText>)}
+  </K.KjunProvider></div>
+  <div data-testid="settings-list"><K.KjunProvider>
+    <K.KjunListSection ariaLabel="Settings" surface={false}>
+      <K.KjunListRow title="Profile" chevron onClick={() => {}} />
+      <K.KjunListItem><K.KjunText>Theme switcher</K.KjunText></K.KjunListItem>
+      <K.KjunListRow title="Delete account" destructive onClick={() => {}} />
+    </K.KjunListSection>
+  </K.KjunProvider></div>
 </div>).mount('#root');

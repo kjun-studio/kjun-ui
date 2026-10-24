@@ -1,4 +1,6 @@
 import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { tokens } from "@kjun-ui/tokens";
+import { KjunIcon } from "./button";
 import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
 
@@ -7,6 +9,10 @@ const kjunListRowProps = {
   description: { type: String, default: undefined },
   href: { type: String, default: undefined },
   disabled: { type: Boolean, default: false },
+  /** Draws the title in the danger role, for rows such as "Delete account". */
+  destructive: { type: Boolean, default: false },
+  /** Ends the row with a decorative chevron that marks it as navigation. */
+  chevron: { type: Boolean, default: false },
   /** Declared as a prop: a row is a button only when the app listens for clicks. */
   onClick: { type: Function as PropType<(event: MouseEvent) => void>, default: undefined },
 } as const;
@@ -27,6 +33,7 @@ export const KjunListRow = defineComponent({
         {hasContent(leading) && <span class="kjun-list-leading">{leading}</span>}
         <span class="kjun-list-body"><span class="kjun-list-title">{props.title}</span>{props.description && <span class="kjun-list-description">{props.description}</span>}</span>
         {hasContent(trailing) && <span class="kjun-list-trailing">{trailing}</span>}
+        {props.chevron && <KjunIcon name="chevron-right" class="kjun-list-chevron" size={tokens.iconSizes.default} />}
       </>;
       const main = props.href
         ? <a class="kjun-list-main" href={props.disabled ? undefined : props.href} aria-disabled={props.disabled || undefined}
@@ -35,7 +42,7 @@ export const KjunListRow = defineComponent({
           ? <button class="kjun-list-main" type="button" disabled={props.disabled} onClick={(event: MouseEvent) => props.onClick?.(event)}>{contents}</button>
           : <div class="kjun-list-main">{contents}</div>;
       // A disabled row disables its actions too, so the row never reads as partly available.
-      return <li class="kjun-list-row">{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;
+      return <li class="kjun-list-row" data-destructive={props.destructive || undefined}>{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;
     };
   },
 });
@@ -44,6 +51,8 @@ const kjunListSectionProps = {
   title: { type: String, default: undefined },
   description: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
+  /** Paints the surface background (default true); false lets the page background show through. */
+  surface: { type: Boolean, default: true },
   /** Draws dividers between rows (default true). */
   divider: { type: Boolean, default: true },
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
@@ -63,7 +72,7 @@ export const KjunListSection = defineComponent({
     return () => {
       const actions = slots.actions?.();
       return (
-        <section class="kjun-list-section" aria-labelledby={props.title ? id : undefined} aria-label={props.title ? undefined : props.ariaLabel}>
+        <section class="kjun-list-section" data-surface={props.surface ? undefined : "false"} aria-labelledby={props.title ? id : undefined} aria-label={props.title ? undefined : props.ariaLabel}>
           {(props.title || props.description || hasContent(actions)) && (
             <div class="kjun-list-heading"><div>{props.title && <h3 id={id}>{props.title}</h3>}{props.description && <p>{props.description}</p>}</div>{actions}</div>
           )}
@@ -73,3 +82,13 @@ export const KjunListSection = defineComponent({
     };
   },
 });
+
+/** Non-row content inside a KjunListSection (a theme switcher, a note) on the rows' inset and dividers. Slot: default. */
+export const KjunListItem = defineComponent({
+  name: "KjunListItem",
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
+  setup(_, { slots }) {
+    return () => <li class="kjun-list-item">{slots.default?.()}</li>;
+  },
+});
+export type KjunListItemProps = Record<string, never>;

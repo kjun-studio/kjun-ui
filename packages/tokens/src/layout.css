@@ -24,6 +24,12 @@
 .kjun-text.kjun-text[data-tone="secondary"] { color: var(--_kjun-color-text-secondary); }
 .kjun-text.kjun-text[data-tone="tertiary"] { color: var(--_kjun-color-text-tertiary); }
 .kjun-text.kjun-text[data-tone="disabled"] { color: var(--_kjun-color-text-disabled); }
+.kjun-text.kjun-text[data-tone="brand"] { color: var(--_kjun-color-brand); }
+.kjun-text.kjun-text[data-tone="danger"] { color: var(--_kjun-color-danger); }
+.kjun-text.kjun-text[data-tone="success"] { color: var(--_kjun-color-success); }
+.kjun-text.kjun-text[data-tone="warning"] { color: var(--_kjun-color-warning); }
+/* inverse is text on the brand surface. */
+.kjun-text.kjun-text[data-tone="inverse"] { color: var(--_kjun-color-on-brand); }
 .kjun-text[data-align="start"] { text-align: start; }
 .kjun-text[data-align="center"] { text-align: center; }
 .kjun-text[data-align="end"] { text-align: end; }

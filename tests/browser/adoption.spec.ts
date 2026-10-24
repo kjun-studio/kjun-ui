@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { demoPalettes } from '../../shared/demo-colors';
 
 // 0.14.0 adoption additions: one block per feature, three platforms.
 const section = (page: Page, id: string) => page.getByTestId(id);
@@ -32,6 +33,28 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(disabled).toHaveAttribute('aria-disabled', 'true');
       await disabled.click({ force: true });
       await expect(cards.getByText(platform === 'native' ? 'presses 1' : 'presses 2', { exact: true })).toBeVisible();
+    });
+
+    test('text tones map to brand, danger, success, warning and onBrand', async ({ page }) => {
+      const colors = demoPalettes.default as Record<string, string>;
+      const css = async (value: string) => page.evaluate(v => { const el = document.createElement('i'); el.style.color = v; document.body.append(el); const c = getComputedStyle(el).color; el.remove(); return c; }, value);
+      for (const [tone, role] of [['brand', 'brand'], ['danger', 'danger'], ['success', 'success'], ['warning', 'warning'], ['inverse', colors.onBrand ? 'onBrand' : 'inverse']]) {
+        await expect(section(page, 'tones').getByText('tone ' + tone, { exact: true })).toHaveCSS('color', await css(colors[role]));
+      }
+    });
+
+    test('destructive rows color the title, chevrons are decorative, list items align with rows and sections can drop their surface', async ({ page }) => {
+      const list = section(page, 'settings-list');
+      const colors = demoPalettes.default as Record<string, string>;
+      const danger = await page.evaluate(v => { const el = document.createElement('i'); el.style.color = v; document.body.append(el); const c = getComputedStyle(el).color; el.remove(); return c; }, colors.danger);
+      await expect(list.getByText('Delete account', { exact: true })).toHaveCSS('color', danger);
+      // The chevron is decorative: the row keeps its title as its name.
+      await expect(list.getByRole(platform === 'native' ? 'button' : 'button', { name: 'Profile', exact: true })).toBeVisible();
+      const profile = (await list.getByText('Profile', { exact: true }).boundingBox())!;
+      const theme = (await list.getByText('Theme switcher', { exact: true }).boundingBox())!;
+      expect(Math.round(theme.x)).toBe(Math.round(profile.x));
+      const sectionBox = list.locator(platform === 'native' ? ':scope > * > * > *' : '.kjun-list-section').first();
+      await expect(sectionBox).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     });
   });
 }
