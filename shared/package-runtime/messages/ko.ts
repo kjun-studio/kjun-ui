@@ -46,6 +46,7 @@ export const kjunMessagesKo = {
   clearValue: (label: string) => label + " 지우기",
   // Date, time and numbers
   datePlaceholder: "날짜 선택",
+  clearDate: "날짜 지우기",
   calendarTitle: (year: number, month: number) => `${year}년 ${month}월`,
   weekdays: "일,월,화,수,목,금,토",
   previousMonth: "이전 달",

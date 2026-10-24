@@ -7,11 +7,14 @@ useState,
 type InputHTMLAttributes
 } from "react";
 import { KjunInput } from "./input";
+import { KjunButton, KjunIcon } from "./button";
 
 export interface KjunDatePickerProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "value"> {
   value: string;
   size?: InputSize;
+  /** Shows a clear button while there is a value; it reports an empty string. */
+  clearable?: boolean;
   ariaLabel?: string;
   error?: boolean;
   onValueChange?: (v: string) => void;
@@ -19,6 +22,7 @@ export interface KjunDatePickerProps
 export function KjunDatePicker({
   value,
   size = "md",
+  clearable = false,
   placeholder,
   ariaLabel,
   error,
@@ -30,6 +34,7 @@ export function KjunDatePicker({
   const scope = useKjunMessageScope();
   placeholder ??= scope.messages.datePlaceholder;
   const [focus, setFocus] = useState(false);
+  const clear = clearable && !!value && !props.disabled && !props.readOnly;
   return (
     // The drawn calendar icon matches Native; the transparent browser indicator sits on top of it
     // (sized by these variables) so clicking the icon still opens the browser picker.
@@ -63,7 +68,7 @@ export function KjunDatePicker({
           className="kjun-date-overlay"
           style={{
             left: tokens.input[size].padding,
-            right: tokens.input[size].padding + tokens.input[size].iconSize + tokens.input[size].affixGap,
+            right: tokens.input[size].padding + tokens.input[size].iconSize + tokens.input[size].affixGap + (clear ? tokens.input[size].clearSize + tokens.input[size].affixGap : 0),
             ...inputTypeStyle(size),
             color: props.disabled
               ? "var(--_kjun-color-text-disabled)"
@@ -76,6 +81,12 @@ export function KjunDatePicker({
         >
           {value ? formatDateValue(value, scope) : placeholder}
         </span>
+      )}
+      {clear && (
+        <KjunButton size="sm" variant="ghost" ariaLabel={scope.messages.clearDate} className="kjun-select-clear"
+          style={{ padding: 0, right: tokens.input[size].padding + tokens.input[size].iconSize + tokens.input[size].affixGap,
+            width: tokens.input[size].clearSize, height: tokens.input[size].clearSize, minHeight: tokens.input[size].clearSize, borderRadius: "50%" }}
+          onClick={() => onValueChange?.("")}><KjunIcon name="x" size={tokens.input[size].iconSize} /></KjunButton>
       )}
     </div>
   );

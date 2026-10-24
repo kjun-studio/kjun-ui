@@ -3,7 +3,7 @@ import { formatDateValue } from "../../../shared/package-runtime/messages";
 import { computed, defineComponent, provide, ref, useId, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { createTimeDomain, tokens, type InputSize, type TimePrecision } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
-import { KjunButton } from "./button";
+import { KjunButton, KjunIcon } from "./button";
 import { KjunInput, kjunFieldKey, useKjunField } from "./input";
 import { kjunCompoundControlKey } from "./quantity-stepper";
 import { KjunSelect } from "./select-control";
@@ -11,6 +11,8 @@ import { css } from "./runtime/style";
 
 const kjunDatePickerProps = {
   modelValue: { type: String, default: "" },
+  /** Shows a clear button while there is a value; it reports an empty string. */
+  clearable: { type: Boolean, default: false },
   size: { type: String as PropType<InputSize>, default: "md" },
   placeholder: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
@@ -35,6 +37,7 @@ export const KjunDatePicker = defineComponent({
     const focused = ref(false);
     return () => {
       const spec = tokens.input[props.size];
+      const clear = props.clearable && !!props.modelValue && !props.disabled && !props.readOnly;
       return (
         // The drawn calendar icon matches Native; the transparent browser indicator sits on top of it
         // (sized by these variables) so clicking the icon still opens the browser picker.
@@ -49,12 +52,17 @@ export const KjunDatePicker = defineComponent({
             }} />
           {!focused.value && (
             <span aria-hidden="true" class="kjun-date-overlay" style={css({
-              left: spec.padding, right: spec.padding + spec.iconSize + spec.affixGap, ...inputTypeStyle(props.size),
+              left: spec.padding, right: spec.padding + spec.iconSize + spec.affixGap + (clear ? spec.clearSize + spec.affixGap : 0), ...inputTypeStyle(props.size),
               color: props.disabled ? "var(--_kjun-color-text-disabled)" : props.readOnly ? "var(--_kjun-color-text-secondary)"
                 : props.modelValue ? "var(--_kjun-color-text)" : "var(--_kjun-color-input-placeholder)",
             })}>
               {props.modelValue ? formatDateValue(props.modelValue, scope.value) : (props.placeholder ?? m.value.datePlaceholder)}
             </span>
+          )}
+          {clear && (
+            <KjunButton size="sm" variant="ghost" ariaLabel={m.value.clearDate} class="kjun-select-clear"
+              style={css({ padding: 0, right: spec.padding + spec.iconSize + spec.affixGap, width: spec.clearSize, height: spec.clearSize, minHeight: spec.clearSize, borderRadius: "50%" })}
+              onClick={() => emit("update:modelValue", "")}><KjunIcon name="x" size={spec.iconSize} /></KjunButton>
           )}
         </div>
       );

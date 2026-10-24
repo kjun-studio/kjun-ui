@@ -36,5 +36,13 @@ for (const platform of ['react', 'vue3', 'native']) {
         expect(shadow).toContain('inset');
       }
     });
+
+    test('date picker clear button empties the value', async ({ page }) => {
+      const field = section(page, 'date-clear');
+      await expect(field.getByText('2026. 10. 23.')).toBeVisible();
+      await field.getByRole('button', { name: '날짜 지우기', exact: true }).click();
+      await expect(field.getByText('날짜 선택', { exact: true })).toBeVisible();
+      await expect(field.getByRole('button', { name: '날짜 지우기', exact: true })).toHaveCount(0);
+    });
   });
 }

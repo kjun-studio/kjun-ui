@@ -45,6 +45,7 @@ export const kjunMessagesEn: KjunMessages = {
   clearInput: "Clear input",
   clearValue: (label: string) => "Clear " + label,
   datePlaceholder: "Select date",
+  clearDate: "Clear date",
   calendarTitle: (year: number, month: number) => `${months[month - 1]} ${year}`,
   weekdays: "Sun,Mon,Tue,Wed,Thu,Fri,Sat",
   previousMonth: "Previous month",

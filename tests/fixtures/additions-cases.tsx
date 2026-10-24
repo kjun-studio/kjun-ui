@@ -1,5 +1,11 @@
+import { useState } from 'react';
 // 0.13.0 additions on React and Native (Vue 3 mirrors this in additions-vue3.tsx). One section per feature.
 export const thumbColor = 'rgb(1, 2, 3)';
+
+function DateClear({ K }: { K: any }) {
+  const [value, setValue] = useState('2026-10-23');
+  return <K.KjunDatePicker value={value} clearable onValueChange={setValue} />;
+}
 
 export function AdditionCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const themed = native
@@ -17,6 +23,7 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
     <div data-testid="badge-column" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', width: 300 }}>
       <K.KjunBadge>Column badge</K.KjunBadge>
     </div>
+    <div data-testid="date-clear"><DateClear K={K} /></div>
     <div data-testid="button-group">
       <K.KjunButtonGroup value="a" options={[{ value: 'a', label: 'Mine' }, { value: 'b', label: 'Ours' }]} onValueChange={() => {}} />
     </div>

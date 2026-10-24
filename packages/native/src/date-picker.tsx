@@ -1,3 +1,4 @@
+import { FieldClear } from "./field-clear";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { calendarLabels, formatDateValue } from "../../../shared/package-runtime/messages";
 import { FieldPressable, fieldTarget, useFieldSurface } from "./field-surface";
@@ -19,6 +20,8 @@ function displayMonth(value: string) {
 
 export interface KjunDatePickerProps {
   value: string;
+  /** Shows a clear button while there is a value; it reports an empty string. */
+  clearable?: boolean;
   min?: string;
   max?: string;
   placeholder?: string;
@@ -33,6 +36,7 @@ export function KjunDatePicker({
   value,
   min,
   max,
+  clearable = false,
   placeholder,
   size = "md",
   disabled = false,
@@ -43,6 +47,7 @@ export function KjunDatePicker({
 }: KjunDatePickerProps) {
   const scope = useKjunMessageScope();
   placeholder ??= scope.messages.datePlaceholder;
+  const clear = clearable && !!value && !disabled;
   const { colors } = useKjunStyles(),
     field = useKjunField(),
     [open, setOpen] = useState(false),
@@ -93,7 +98,7 @@ export function KjunDatePicker({
             numberOfLines={1}
             style={{
               flex: 1,
-              marginRight: spec.affixGap,
+              marginRight: spec.affixGap + (clear ? spec.clearSize + spec.affixGap : 0),
               ...inputTypeStyle(size),
               color: disabled ? colors.textDisabled : value ? colors.text : colors.inputPlaceholder,
             }}
@@ -106,6 +111,11 @@ export function KjunDatePicker({
             color={surface.icon}
           />
         </FieldPressable>
+        {clear && (
+          <View style={{ position: "absolute", right: spec.padding + spec.iconSize + spec.affixGap, top: 0, bottom: 0, justifyContent: "center" }}>
+            <FieldClear size={size} label={scope.messages.clearDate} onPress={() => { onValueChange?.(""); onChange?.(""); }} />
+          </View>
+        )}
       </View>
       <FloatingPanel
         open={open && !disabled}
