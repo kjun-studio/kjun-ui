@@ -52,35 +52,44 @@ const kjunAccordionItemProps = {
   title: { type: String, default: "" },
   defaultOpen: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
+  /** v-model:open. A controlled item follows this value only and stays out of the Accordion's single-open rule. */
+  open: { type: Boolean, default: undefined },
+  /** Keeps the body mounted after it first opens, so inputs keep their state while closed. */
+  keepMounted: { type: Boolean, default: false },
 } as const;
 export type KjunAccordionItemProps = ExtractPublicPropTypes<typeof kjunAccordionItemProps>;
-/** Slots: default (panel), header (replaces the title). */
+/** Slots: default (panel), header (replaces the title). Event update:open (a request when controlled, a report otherwise). */
 export const KjunAccordionItem = defineComponent({
   name: "KjunAccordionItem",
   props: kjunAccordionItemProps,
+  emits: { "update:open": (_open: boolean) => true },
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
     header?: () => VNodeChild;
   }>,
-  setup(props, { slots }) {
-    const group = inject(kjunAccordionKey, null);
+  setup(props, { slots, emit }) {
+    const controlled = props.open !== undefined;
+    const group = controlled ? null : inject(kjunAccordionKey, null);
     const id = useKjunId("kjun-");
     const own = ref(props.defaultOpen);
     let unregister: (() => void) | undefined;
     onMounted(() => { unregister = group?.register(id, props.defaultOpen); });
     onBeforeUnmount(() => unregister?.());
+    const isOpen = () => controlled ? !!props.open : group ? group.opened().has(id) : own.value;
+    // Uncontrolled items report each real change, including a sibling closing them.
+    if (!controlled) watch(isOpen, open => emit("update:open", open));
     return () => {
-      const open = group ? group.opened().has(id) : own.value;
+      const open = isOpen();
       const header = slots.header?.();
       return (
         <div class="kjun-accordion-item">
           <button type="button" id={id + "-heading"} disabled={props.disabled} aria-expanded={open} aria-controls={id + "-panel"}
-            class="kjun-accordion-trigger" onClick={() => group ? group.toggle(id) : (own.value = !own.value)}>
+            class="kjun-accordion-trigger" onClick={() => controlled ? emit("update:open", !open) : group ? group.toggle(id) : (own.value = !own.value)}>
             <span class="kjun-accordion-heading">{hasContent(header) ? header : props.title}</span>
             <KjunIcon name="chevron-down" class="kjun-accordion-chevron" size={tokens.extensions.accordion.iconSize}
               style={{ transform: open ? "rotate(180deg)" : undefined }} />
           </button>
-          <KjunCollapse open={open}>
+          <KjunCollapse open={open} keepMounted={props.keepMounted}>
             <div role="region" id={id + "-panel"} aria-labelledby={id + "-heading"} class="kjun-accordion-panel">{slots.default?.()}</div>
           </KjunCollapse>
         </div>

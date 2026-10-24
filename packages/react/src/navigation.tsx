@@ -218,6 +218,12 @@ export function KjunAccordion({
 export interface KjunAccordionItemProps {
   title?: string;
   defaultOpen?: boolean;
+  /** Controlled open state. A controlled item follows this value only and stays out of the Accordion's single-open rule. */
+  open?: boolean;
+  /** Requests a change on a controlled item; reports every change on an uncontrolled one (also when a sibling closes it). */
+  onOpenChange?: (open: boolean) => void;
+  /** Keeps the body mounted after it first opens, so inputs keep their state while closed. */
+  keepMounted?: boolean;
   disabled?: boolean;
   header?: ReactNode;
   children: ReactNode;
@@ -227,15 +233,28 @@ export function KjunAccordionItem({
   defaultOpen = false,
   disabled = false,
   header,
+  open: openProp,
+  onOpenChange,
+  keepMounted = false,
   children,
 }: KjunAccordionItemProps) {
-  const group = useContext(AccordionContext),
+  const controlled = openProp !== undefined,
+    context = useContext(AccordionContext),
+    group = controlled ? null : context,
     id = "kjun-" + useId(),
     [own, setOwn] = useState(defaultOpen),
-    open = group ? group.opened.has(id) : own;
+    open = controlled ? openProp : group ? group.opened.has(id) : own;
   useEffect(() => {
     return group?.register(id, defaultOpen);
   }, []);
+  // Uncontrolled items report each real change, including a sibling closing them.
+  const reported = useRef(open), notify = useRef(onOpenChange);
+  notify.current = onOpenChange;
+  useEffect(() => {
+    if (controlled || reported.current === open) return;
+    reported.current = open;
+    notify.current?.(open);
+  }, [open, controlled]);
   return (
     <div className="kjun-accordion-item">
       <button
@@ -245,7 +264,7 @@ export function KjunAccordionItem({
         aria-expanded={open}
         aria-controls={id + "-panel"}
         className="kjun-accordion-trigger"
-        onClick={() => (group ? group.toggle(id) : setOwn(!own))}
+        onClick={() => (controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own))}
       >
         <span className="kjun-accordion-heading">{header || title}</span>
         <KjunIcon
@@ -255,7 +274,7 @@ export function KjunAccordionItem({
           style={{ transform: open ? "rotate(180deg)" : undefined }}
         />
       </button>
-      <Collapse open={open}>
+      <Collapse open={open} keepMounted={keepMounted}>
         <div
           role="region"
           id={id + "-panel"}

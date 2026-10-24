@@ -1,4 +1,4 @@
-import { createApp, ref } from 'vue';
+import { createApp, defineComponent, ref } from 'vue';
 import * as K from '@kjun-ui/vue3';
 import { applyDemoColors } from '../../shared/demo-colors';
 applyDemoColors('default');
@@ -9,6 +9,11 @@ const afterClose = (name: string) => () => { closes.value = [...closes.value, na
 const cell = ref<HTMLInputElement | null>(null);
 const unit = ref<string | null>('a');
 const options = [{ value: 'a', label: 'Alpha' }, { value: 'b', label: 'Beta' }];
+// Keeps its value in its own state, so it survives only while it stays mounted.
+const Draft = defineComponent({ setup() { const value = ref(''); return () => <K.KjunInput ariaLabel="Kept input" modelValue={value.value} onUpdate:modelValue={(v: string) => { value.value = v; }} />; } });
+const controlled = ref(false);
+const events = ref<string[]>([]);
+const log = (name: string) => (open: boolean) => { events.value = [...events.value, name + ' ' + open]; };
 const reopen = () => { const name = layer.value; layer.value = null; setTimeout(() => { layer.value = name; }, 30); };
 createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px' }}>
   <div data-testid="after-close"><K.KjunProvider>
@@ -35,6 +40,16 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
   </K.KjunProvider></div>
   <div data-testid="text-props"><K.KjunProvider>
     <K.KjunText aria-label="Balance 1,000 won" data-testid="balance">1,000</K.KjunText>
+  </K.KjunProvider></div>
+  <div data-testid="accordion"><K.KjunProvider>
+    <K.KjunButton onClick={() => { controlled.value = !controlled.value; }}>toggle controlled</K.KjunButton>
+    <K.KjunAccordion>
+      <K.KjunAccordionItem title="Controlled" open={controlled.value} onUpdate:open={(v: boolean) => { log('controlled')(v); controlled.value = v; }}><K.KjunText>Controlled body</K.KjunText></K.KjunAccordionItem>
+      <K.KjunAccordionItem title="First" onUpdate:open={log('first')}><K.KjunText>First body</K.KjunText></K.KjunAccordionItem>
+      <K.KjunAccordionItem title="Second"><K.KjunText>Second body</K.KjunText></K.KjunAccordionItem>
+      <K.KjunAccordionItem title="Kept" keepMounted><Draft /></K.KjunAccordionItem>
+    </K.KjunAccordion>
+    <K.KjunText>{'events: ' + (events.value.join(', ') || 'none')}</K.KjunText>
   </K.KjunProvider></div>
   <div data-testid="return-focus"><K.KjunProvider>
     <input ref={cell} aria-label="Target cell" />

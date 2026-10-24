@@ -75,5 +75,43 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.getByRole('option', { name: 'Alpha' }).click();
       await expect(area.getByRole('textbox', { name: 'Target cell' })).toBeFocused();
     });
+
+    test('controlled accordion items follow open and request changes', async ({ page }) => {
+      const area = section(page, 'accordion');
+      await area.getByRole('button', { name: 'toggle controlled', exact: true }).click();
+      await expect(area.getByText('Controlled body', { exact: true })).toBeVisible();
+      await area.getByRole('button', { name: 'Controlled', exact: true }).click();
+      await expect(area.getByText('events: controlled false', { exact: true })).toBeVisible();
+      await expect(area.getByText('Controlled body', { exact: true })).toHaveCount(0);
+    });
+
+    test('controlled items stay out of the single-open rule', async ({ page }) => {
+      const area = section(page, 'accordion');
+      await area.getByRole('button', { name: 'First', exact: true }).click();
+      await expect(area.getByText('First body', { exact: true })).toBeVisible();
+      await area.getByRole('button', { name: 'toggle controlled', exact: true }).click();
+      await expect(area.getByText('Controlled body', { exact: true })).toBeVisible();
+      await expect(area.getByText('First body', { exact: true })).toBeVisible();
+    });
+
+    test('uncontrolled items report changes, also when a sibling closes them', async ({ page }) => {
+      const area = section(page, 'accordion');
+      await area.getByRole('button', { name: 'First', exact: true }).click();
+      await area.getByRole('button', { name: 'Second', exact: true }).click();
+      await expect(area.getByText('events: first true, first false', { exact: true })).toBeVisible();
+    });
+
+    test('kept bodies keep their input value and leave the accessibility tree while closed', async ({ page }) => {
+      const area = section(page, 'accordion'), kept = area.getByRole('button', { name: 'Kept', exact: true });
+      await expect(area.getByRole('textbox', { name: 'Kept input' })).toHaveCount(0);
+      await kept.click();
+      await area.getByRole('textbox', { name: 'Kept input' }).fill('draft');
+      await kept.click();
+      await expect(area.getByRole('textbox', { name: 'Kept input' })).toHaveCount(0);
+      // Let the collapse finish; without keepMounted the body is removed at this point.
+      await page.waitForTimeout(800);
+      await kept.click();
+      await expect(area.getByRole('textbox', { name: 'Kept input' })).toHaveValue('draft');
+    });
   });
 }

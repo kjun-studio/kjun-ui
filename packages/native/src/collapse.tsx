@@ -4,12 +4,14 @@ import { Animated, View } from 'react-native';
 import { useReducedMotion } from './internal';
 import { motionOut } from './motion';
 
-export function Collapse({ open, children }: { open: boolean; children: ReactNode }) {
+/** keepMounted: once opened, the body stays mounted (height 0, hidden from assistive technology) while closed. */
+export function Collapse({ open, keepMounted = false, children }: { open: boolean; keepMounted?: boolean; children: ReactNode }) {
   const reduced = useReducedMotion();
   const [retained, setRetained] = useState(open), [height, setHeight] = useState<number | null>(null);
   const value = useRef(new Animated.Value(0)).current;
   const [settled, setSettled] = useState(open);
-  const version = useRef(0), first = useRef(open);
+  const version = useRef(0), first = useRef(open), opened = useRef(open);
+  if (open) opened.current = true;
   useLayoutEffect(() => {
     const revision = ++version.current;
     if (open) setRetained(true);
@@ -22,9 +24,9 @@ export function Collapse({ open, children }: { open: boolean; children: ReactNod
     first.current = false;
     return () => { version.current++; value.stopAnimation(); };
   }, [open, height, reduced, value]);
-  return open || retained ? <Animated.View pointerEvents={open ? 'auto' : 'none'}
+  return open || retained || (keepMounted && opened.current) ? <Animated.View pointerEvents={open ? 'auto' : 'none'}
     accessibilityElementsHidden={!open} importantForAccessibility={open ? 'auto' : 'no-hide-descendants'}
-    {...(!open ? { inert: true } : {})}
+    {...(!open ? { inert: true, 'aria-hidden': true } : {})}
     style={{ height: settled && open ? undefined : value, overflow: 'hidden' }}>
     <View onLayout={event => setHeight(event.nativeEvent.layout.height)}>{children}</View>
   </Animated.View> : null;

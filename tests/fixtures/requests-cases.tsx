@@ -1,5 +1,10 @@
 import { useRef, useState } from 'react';
 // 0.15.0 adopter requests on React and Native (Vue 3 mirrors this in requests-vue3.tsx). One section per feature.
+// Keeps its value in its own state, so it survives only while it stays mounted.
+function Draft({ K, native }: { K: any; native: boolean }) {
+  const [value, setValue] = useState('');
+  return <K.KjunInput ariaLabel="Kept input" value={value} {...(native ? { onChangeText: setValue } : { onValueChange: setValue })} />;
+}
 export function RequestsCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const press = (handler: () => void) => native ? { onPress: handler } : { onClick: handler };
   const [layer, setLayer] = useState<'drawer' | 'modal' | null>(null);
@@ -9,6 +14,9 @@ export function RequestsCases({ K, native = false, providerProps = {} }: { K: an
   const cell = useRef<HTMLInputElement>(null);
   const [unit, setUnit] = useState<string | null>('a');
   const options = [{ value: 'a', label: 'Alpha' }, { value: 'b', label: 'Beta' }];
+  const [controlled, setControlled] = useState(false);
+  const [events, setEvents] = useState<string[]>([]);
+  const log = (name: string) => (open: boolean) => setEvents(list => [...list, name + ' ' + open]);
   const reopen = () => { const name = layer; setLayer(null); setTimeout(() => setLayer(name), 30); };
   return <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16 }}>
     <div data-testid="after-close"><K.KjunProvider {...providerProps}>
@@ -35,6 +43,16 @@ export function RequestsCases({ K, native = false, providerProps = {} }: { K: an
     </K.KjunProvider></div>
     <div data-testid="text-props"><K.KjunProvider {...providerProps}>
       <K.KjunText {...(native ? { accessibilityLabel: 'Balance 1,000 won', testID: 'balance' } : { 'aria-label': 'Balance 1,000 won', 'data-testid': 'balance' })}>1,000</K.KjunText>
+    </K.KjunProvider></div>
+    <div data-testid="accordion"><K.KjunProvider {...providerProps}>
+      <K.KjunButton {...press(() => setControlled(v => !v))}>toggle controlled</K.KjunButton>
+      <K.KjunAccordion>
+        <K.KjunAccordionItem title="Controlled" open={controlled} onOpenChange={(v: boolean) => { log('controlled')(v); setControlled(v); }}><K.KjunText>Controlled body</K.KjunText></K.KjunAccordionItem>
+        <K.KjunAccordionItem title="First" onOpenChange={log('first')}><K.KjunText>First body</K.KjunText></K.KjunAccordionItem>
+        <K.KjunAccordionItem title="Second"><K.KjunText>Second body</K.KjunText></K.KjunAccordionItem>
+        <K.KjunAccordionItem title="Kept" keepMounted><Draft K={K} native={native} /></K.KjunAccordionItem>
+      </K.KjunAccordion>
+      <K.KjunText>{'events: ' + (events.join(', ') || 'none')}</K.KjunText>
     </K.KjunProvider></div>
     {!native && <div data-testid="return-focus"><K.KjunProvider {...providerProps}>
       <input ref={cell} aria-label="Target cell" />

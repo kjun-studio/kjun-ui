@@ -2,14 +2,17 @@ import { tokens } from "@kjun-ui/tokens";
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { useReducedMotion } from './use-reduced-motion';
 
-export function Collapse({ open, children }: { open: boolean; children: ReactNode }) {
+/** keepMounted: once opened, the body stays mounted (inert, hidden from assistive technology) while closed. */
+export function Collapse({ open, keepMounted = false, children }: { open: boolean; keepMounted?: boolean; children: ReactNode }) {
   const reduced = useReducedMotion();
   const [retained, setRetained] = useState(open);
   const root = useRef<HTMLDivElement>(null), body = useRef<HTMLDivElement>(null);
   const animation = useRef<Animation | null>(null);
   const previous = useRef(open);
   const interrupted = useRef<number | null>(null);
-  const present = open || retained;
+  const opened = useRef(open);
+  if (open) opened.current = true;
+  const present = open || retained || (keepMounted && opened.current);
   useLayoutEffect(() => {
     const el = root.current, inner = body.current;
     if (!el || !inner) return;

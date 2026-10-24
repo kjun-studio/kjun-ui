@@ -10,6 +10,7 @@ Fragment, createContext,
 useContext,
 useEffect,
 useId,
+useRef,
 useState,
 type ReactElement,
 type ReactNode,
@@ -57,6 +58,12 @@ export function KjunAccordion({
 export interface KjunAccordionItemProps {
   title?: string;
   defaultOpen?: boolean;
+  /** Controlled open state. A controlled item follows this value only and stays out of the Accordion's single-open rule. */
+  open?: boolean;
+  /** Requests a change on a controlled item; reports every change on an uncontrolled one (also when a sibling closes it). */
+  onOpenChange?: (open: boolean) => void;
+  /** Keeps the body mounted after it first opens, so inputs keep their state while closed. */
+  keepMounted?: boolean;
   disabled?: boolean;
   header?: ReactNode;
   children: ReactNode;
@@ -66,13 +73,26 @@ export function KjunAccordionItem({
   defaultOpen = false,
   disabled = false,
   header,
+  open: openProp,
+  onOpenChange,
+  keepMounted = false,
   children,
 }: KjunAccordionItemProps) {
-  const { colors } = useKjunStyles(),
-    group = useContext(AccordionContext),
+  const controlled = openProp !== undefined,
+    context = useContext(AccordionContext),
+    { colors } = useKjunStyles(),
+    group = controlled ? null : context,
     id = "kjun-" + useId(),
     [own, setOwn] = useState(defaultOpen),
-    open = group ? group.opened.has(id) : own;
+    open = controlled ? openProp : group ? group.opened.has(id) : own;
+  // Uncontrolled items report each real change, including a sibling closing them.
+  const reported = useRef(open), notify = useRef(onOpenChange);
+  notify.current = onOpenChange;
+  useEffect(() => {
+    if (controlled || reported.current === open) return;
+    reported.current = open;
+    notify.current?.(open);
+  }, [open, controlled]);
   const rotation = useMotionValue(open ? 1 : 0, tokens.motion.collapse, undefined, undefined, true);
   const geometry = tokens.extensions.accordion;
   const [hovered, setHovered] = useState(false);
@@ -91,7 +111,7 @@ export function KjunAccordionItem({
         accessibilityLabel={title}
         accessibilityState={{ expanded: open, disabled }}
         disabled={disabled}
-        onPress={() => (group ? group.toggle(id) : setOwn(!own))}
+        onPress={() => (controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own))}
         onHoverIn={() => setHovered(true)}
         onHoverOut={() => setHovered(false)}
         style={({ pressed }) => ({
@@ -113,7 +133,7 @@ export function KjunAccordionItem({
           <KjunIcon name="chevron-down" size={geometry.iconSize} color={colors.textSecondary} />
         </Animated.View>
       </Pressable>
-      <Collapse open={open}>
+      <Collapse open={open} keepMounted={keepMounted}>
         <View
           nativeID={id + "-panel"}
           style={{ paddingHorizontal: geometry.paddingX, paddingBottom: geometry.contentPaddingBottom }}

@@ -5,7 +5,11 @@ import { useReducedMotion } from "./runtime/presence";
 /** Height motion for disclosure content; the closed body stays mounted until its exit ends. */
 export const KjunCollapse = defineComponent({
   name: "KjunCollapse",
-  props: { open: { type: Boolean, required: true } },
+  props: {
+    open: { type: Boolean, required: true },
+    /** Once opened, the body stays mounted (inert, hidden from assistive technology) while closed. */
+    keepMounted: { type: Boolean, default: false },
+  },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     const reduced = useReducedMotion();
@@ -13,7 +17,9 @@ export const KjunCollapse = defineComponent({
     const root = ref<HTMLElement | null>(null), body = ref<HTMLElement | null>(null);
     let animation: Animation | null = null, previous = props.open, interrupted: number | null = null;
     let dispose: (() => void) | undefined;
-    const present = () => props.open || retained.value;
+    const opened = ref(props.open);
+    watch(() => props.open, open => { if (open) opened.value = true; });
+    const present = () => props.open || retained.value || (props.keepMounted && opened.value);
     const run = () => {
       dispose?.(); dispose = undefined;
       const el = root.value, inner = body.value, open = props.open;
