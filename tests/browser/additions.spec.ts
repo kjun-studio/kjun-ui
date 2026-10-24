@@ -25,6 +25,15 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(Math.abs(inRow!.y + inRow!.height / 2 - (row!.y + row!.height / 2))).toBeLessThanOrEqual(1);
       const column = await section(page, 'badge-column').boundingBox();
       expect((await pill('Column badge').boundingBox())!.width).toBeLessThan(column!.width / 2);
+      // A row with default (stretch) alignment keeps the compact pill at the top, as before.
+      const defaultRow = (await section(page, 'badge-row-default').boundingBox())!;
+      const compact = (await pill('Default row badge').boundingBox())!;
+      expect(compact.height).toBeLessThanOrEqual(24);
+      expect(Math.round(compact.y)).toBe(Math.round(defaultRow.y));
+      // Layout keys in style still place the badge.
+      const endColumn = (await section(page, 'badge-column-end').boundingBox())!;
+      const end = (await pill('End badge').boundingBox())!;
+      expect(Math.round(end.x + end.width)).toBe(Math.round(endColumn.x + endColumn.width));
     });
 
     test('selected segment has an edge in the border color role', async ({ page }) => {
@@ -108,6 +117,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       // 600 sits between 500 and 700; ties take the heavier face.
       expect(await family('Control text')).toContain('Face-Bold');
       expect(await block.getByRole('textbox').evaluate(el => getComputedStyle(el).fontFamily)).toContain('Face-Regular');
+      // A weighted span inside numeric text keeps the numeric family it inherits.
+      expect(await family('USD')).toContain('Num-');
     });
   });
 }

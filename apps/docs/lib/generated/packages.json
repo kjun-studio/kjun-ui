@@ -24,14 +24,14 @@
     "name": "@kjun-ui/react",
     "version": "0.13.0",
     "file": "kjun-ui-react-0.13.0.tgz",
-    "bytes": 237876,
-    "integrity": "sha512-kzwS6iwJXoiDqh2jDglg2rSWa26Q8Afhn6uUBx1qNC+x+QiUtUDO6+aAsfrMOK0l9w1EBzBWUB8tANSBSeflZQ=="
+    "bytes": 237937,
+    "integrity": "sha512-8ZdaZ8b+M7LEccGc9w5vaOvsvuEJgcqADiffNKaEts90coyK7UkFozJiDTL4VygSkWpQjcGaJSLO7XHgn5z+CQ=="
   },
   {
     "name": "@kjun-ui/native",
     "version": "0.13.0",
     "file": "kjun-ui-native-0.13.0.tgz",
-    "bytes": 475812,
-    "integrity": "sha512-Bb0Tet1aL3x10IPi9u8T6tjVQ0MZDWb08mhqp84lYXIO2mj17OypZQOT2tQeQA3UeDoTy3nr58lOq4makxdiDQ=="
+    "bytes": 477152,
+    "integrity": "sha512-CjXI20nH7TpODeUBKqQR48AcSR+E2hVlkeeXlwY4jh9o8OQbuS3FEELwgrDHFM7XX+/8Or/6a/5goi1YNY4/YQ=="
   }
 ]

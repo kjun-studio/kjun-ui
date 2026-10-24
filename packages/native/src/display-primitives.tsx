@@ -9,6 +9,7 @@ import {
 Animated,
 Easing,
 Platform,
+StyleSheet,
 View,
 type StyleProp,
 type ViewStyle
@@ -34,6 +35,14 @@ export interface KjunBadgeProps {
   dot?: boolean;
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
+}
+const badgeLayoutKeys = new Set(["alignSelf", "flex", "flexGrow", "flexShrink", "flexBasis", "position", "top", "right", "bottom", "left", "start", "end", "zIndex",
+  "margin", "marginTop", "marginRight", "marginBottom", "marginLeft", "marginHorizontal", "marginVertical", "marginStart", "marginEnd"]);
+/** Badge placement (alignSelf, margins, flex, position) belongs to the outer row; paint stays on the pill. */
+function splitBadgeStyle(style: StyleProp<ViewStyle>) {
+  const outer: Record<string, unknown> = {}, inner: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(StyleSheet.flatten(style) || {})) (badgeLayoutKeys.has(key) ? outer : inner)[key] = value;
+  return { outer: outer as ViewStyle, inner: inner as ViewStyle };
 }
 export function KjunBadge(props: KjunBadgeProps) {
   return <BadgeView {...props} />;
@@ -67,10 +76,12 @@ export function BadgeView({
     : variant === "primary"
     ? colors.brandHover
     : colors[variant as keyof typeof colors];
-  // The transparent row keeps the pill at its own width in a stretching column, yet follows a row's
-  // alignItems (a pill with alignSelf: flex-start sat at the top of centred rows).
+  // The transparent row keeps the pill at its own width in a stretching column and at the top of a
+  // stretching row, yet follows a row's alignItems (a pill with alignSelf: flex-start sat at the top of
+  // centred rows). Layout keys from style place this row; the rest paints the pill.
+  const { outer, inner } = splitBadgeStyle(style);
   return (
-    <View style={{ flexDirection: "row", maxWidth: "100%", minWidth: 0, flexShrink: 1 }}>
+    <View style={[{ flexDirection: "row", alignItems: "flex-start", maxWidth: "100%", minWidth: 0, flexShrink: 1 }, outer]}>
     <View
       style={[
         {
@@ -85,7 +96,7 @@ export function BadgeView({
           borderRadius: tokens.extensions.badge.radius,
           backgroundColor: background,
         },
-        style,
+        inner,
       ]}
     >
       {dot && (

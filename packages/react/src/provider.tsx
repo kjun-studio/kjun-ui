@@ -1,7 +1,7 @@
 import { IconProvider } from "../../../shared/package-runtime/icon-context";
 import { KjunMessagesProvider } from "../../../shared/package-runtime/messages-context";
 import { normalizeLocale, type KjunMessages } from "../../../shared/package-runtime/messages";
-import { I18nProvider } from "react-aria-components";
+import { I18nProvider, useLocale } from "react-aria-components";
 import type { KjunIconRegistry } from "@kjun-ui/icons";
 import { LayerProvider } from "../../../shared/package-runtime/use-layer";
 import { createPortalScope } from "../../../shared/package-runtime/portal-scope";
@@ -53,13 +53,15 @@ export function KjunProvider({
     if (!container) return;
     validateKjunCssScope(container);
   });
-  // react-aria follows the app's language only when one is given; otherwise it keeps its own default as before.
-  const intl = normalizeLocale(locale).intl;
+  // react-aria follows the app's language when one is given and otherwise keeps the locale it already had.
+  // The provider is always rendered so a locale that arrives later does not remount everything below.
+  const outerLocale = useLocale().locale;
+  const intl = normalizeLocale(locale).intl ?? outerLocale;
   const content = <>{children}{parentPortal === undefined && <div ref={setPortal} data-kjun-layer-host="" />}</>;
   return (
     <div {...props} ref={setContainer} className={"kjun-scope " + className}>
       <KjunMessagesProvider locale={locale} messages={messages}><IconProvider icons={icons}><PortalContext.Provider value={portal}>
-        <LayerProvider>{intl ? <I18nProvider locale={intl}>{content}</I18nProvider> : content}</LayerProvider>
+        <LayerProvider><I18nProvider locale={intl}>{content}</I18nProvider></LayerProvider>
       </PortalContext.Provider></IconProvider></KjunMessagesProvider>
     </div>
   );

@@ -20,6 +20,12 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
     <div data-testid="badge-row" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: 40 }}>
       <K.KjunBadge>Row badge</K.KjunBadge>
     </div>
+    <div data-testid="badge-row-default" style={{ display: 'flex', flexDirection: 'row', height: 40 }}>
+      <K.KjunBadge>Default row badge</K.KjunBadge>
+    </div>
+    <div data-testid="badge-column-end" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', width: 300 }}>
+      <K.KjunBadge style={{ alignSelf: 'flex-end' }}>End badge</K.KjunBadge>
+    </div>
     <div data-testid="badge-column" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', width: 300 }}>
       <K.KjunBadge>Column badge</K.KjunBadge>
     </div>
@@ -52,6 +58,9 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
       <K.KjunText variant="label">Label text</K.KjunText>
       <K.KjunButton onPress={() => {}}>Control text</K.KjunButton>
       <K.KjunFormGroup label="Field label"><K.KjunInput value="Typed" onChangeText={() => {}} /></K.KjunFormGroup>
+    </K.KjunProvider>
+    <K.KjunProvider {...providerProps} fontFamily={{ 400: 'Face-Regular', 700: 'Face-Bold' }} numericFontFamily={{ 400: 'Num-Regular', 700: 'Num-Bold' }}>
+      <K.KjunAnimatedNumber value={42} prefix="USD" animated={false} />
     </K.KjunProvider></div>}
     <div data-testid="optional-ko"><K.KjunProvider {...providerProps}><K.KjunFormGroup label="Nickname" optional><K.KjunInput value="" onValueChange={() => {}} /></K.KjunFormGroup></K.KjunProvider></div>
     <div data-testid="optional-en"><K.KjunProvider {...providerProps} locale="en-US"><K.KjunFormGroup label="Nickname" optional><K.KjunInput value="" onValueChange={() => {}} /></K.KjunFormGroup></K.KjunProvider></div>

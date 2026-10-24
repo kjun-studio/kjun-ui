@@ -62,6 +62,16 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(page.getByText('Sun', { exact: true })).toBeVisible();
     });
 
+    test('a locale that arrives later keeps the state under the provider', async ({ page }) => {
+      test.skip(platform === 'vue3', 'Vue fixture has no late-locale region');
+      const late = region(page, 'late');
+      await late.getByRole('button', { name: 'count 0' }).click();
+      await expect(late.getByRole('button', { name: 'count 1' })).toBeVisible();
+      await late.getByRole('button', { name: 'load locale' }).click();
+      await expect(late.getByText('No data', { exact: true })).toBeVisible();
+      await expect(late.getByRole('button', { name: 'count 1' })).toBeVisible();
+    });
+
     test('no locale keeps the Korean copy and date form', async ({ page }) => {
       const none = region(page, 'none');
       await expect(none.getByText('데이터가 없습니다', { exact: true })).toBeVisible();
