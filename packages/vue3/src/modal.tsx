@@ -1,5 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
-import { Teleport, defineComponent, onBeforeUnmount, onMounted, provide, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { Teleport, defineComponent, onBeforeUnmount, onMounted, provide, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonVariant, type InputSize } from "@kjun-ui/tokens";
 import { observeFormActions } from "../../../shared/package-runtime/form-actions";
 import { KjunButton, KjunIcon } from "./button";
@@ -55,9 +55,11 @@ export const DismissButton = defineComponent({
 });
 
 /** Shared by Modal and Drawer: the window's layer, presence and dismissal wiring. */
-export function useWindowLayer(open: () => boolean, close: () => void, closeOnEsc: () => boolean, exit?: number) {
+export function useWindowLayer(open: () => boolean, close: () => void, closeOnEsc: () => boolean, exit?: number, afterClose?: () => void) {
   const reduced = useReducedMotion();
   const motion = usePresence(open, () => reduced.value, exit);
+  // Like React useAfterClose: once when the window leaves the screen; a reopen during the exit keeps it present.
+  watch(motion.present, (now, before) => { if (before && !now) afterClose?.(); }, { flush: "post" });
   const layer = useLayer(open, motion.present, "window", () => { if (closeOnEsc()) close(); });
   provide(kjunLayerScopeKey, layer.id);
   // Without a Provider the shared Escape handling is not installed.
@@ -108,7 +110,7 @@ export type KjunModalProps = ExtractPublicPropTypes<typeof kjunModalProps>;
 export const KjunModal = defineComponent({
   name: "KjunModal",
   props: kjunModalProps,
-  emits: { "update:open": (_open: boolean) => true, close: () => true, cancel: () => true, confirm: () => true },
+  emits: { "update:open": (_open: boolean) => true, close: () => true, "after-close": () => true, cancel: () => true, confirm: () => true },
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
     header?: () => VNodeChild;
@@ -119,7 +121,7 @@ export const KjunModal = defineComponent({
     const target = usePortalTarget();
     const id = useKjunId("kjun-");
     const close = () => { if (!props.open) return; emit("update:open", false); emit("close"); };
-    const { motion, layer } = useWindowLayer(() => props.open, close, () => props.closeOnEsc);
+    const { motion, layer } = useWindowLayer(() => props.open, close, () => props.closeOnEsc, undefined, () => emit("after-close"));
     const overlay = ref<HTMLElement | null>(null), modal = ref<HTMLElement | null>(null), dialog = ref<HTMLElement | null>(null);
     useModalOverlay(overlay, dialog, () => props.open && layer.active.value);
     const press = useOutsidePress(() => modal.value, () => props.closeOnOverlay && props.open && layer.active.value, close);

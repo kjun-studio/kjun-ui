@@ -1,3 +1,4 @@
+import { useAfterClose } from "../../../shared/package-runtime/use-after-close";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { LayerBackdrop } from "./layer-backdrop";
@@ -37,6 +38,8 @@ export interface KjunDrawerProps {
   footer?: ReactNode;
   children: ReactNode;
   onClose?: () => void;
+  /** Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit). */
+  onAfterClose?: () => void;
   ariaLabel?: string;
   /** Top safe area, padded inside top and side drawers and kept clear above a bottom sheet. */
   safeAreaTop?: number;
@@ -77,6 +80,7 @@ export function KjunDrawer({
   footer,
   children,
   onClose,
+  onAfterClose,
   ariaLabel,
   safeAreaTop = 0,
   safeAreaBottom = 0,
@@ -101,10 +105,14 @@ export function KjunDrawer({
     onClose?.();
   };
   const layer = useLayer(open, motion.present, "window", () => { if (closeOnEsc) close(); });
+  // iOS keeps dismissing the native window after visible turns false; report once it is gone so the next sheet can open.
+  const iosDismiss = Platform.OS === "ios";
+  useAfterClose(motion.present, onAfterClose, !iosDismiss);
   return (
     <LayerScope.Provider value={layer.id}>
     <ScopedNativeModal
       visible={motion.present}
+      onDismiss={iosDismiss ? () => { if (!open) onAfterClose?.(); } : undefined}
       transparent
       onRequestClose={() => {
         if (closeOnEsc) close();

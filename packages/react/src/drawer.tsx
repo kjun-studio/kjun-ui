@@ -2,6 +2,7 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { tokens } from "@kjun-ui/tokens";
 import { drawerOverlayVars } from "../../../shared/package-runtime/drawer-geometry";
+import { useAfterCloseRef } from "../../../shared/package-runtime/use-after-close";
 import { usePresence } from "../../../shared/package-runtime/use-presence";
 import { useReducedMotion } from "./use-reduced-motion";
 import type { ReactNode } from "react";
@@ -23,6 +24,8 @@ export interface KjunDrawerProps {
   footer?: ReactNode;
   children: ReactNode;
   onClose?: () => void;
+  /** Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit). */
+  onAfterClose?: () => void;
   ariaLabel?: string;
   /** Top safe area in px, padded inside top and side drawers and kept clear above a bottom sheet. */
   safeAreaTop?: number;
@@ -45,6 +48,7 @@ export function KjunDrawer({
   footer,
   children,
   onClose,
+  onAfterClose,
   ariaLabel,
   safeAreaTop = 0,
   safeAreaBottom = 0,
@@ -52,6 +56,7 @@ export function KjunDrawer({
 }: KjunDrawerProps) {
   const m = useKjunMessages();
   const motion = usePresence(open, useReducedMotion(), tokens.motion.layerExit);
+  const afterCloseRef = useAfterCloseRef(open, onAfterClose);
   const container = useKjunPortalContainer();
   const close = () => {
     if (!open) return;
@@ -63,6 +68,7 @@ export function KjunDrawer({
   return (
     <LayerScope.Provider value={layer.id}>
     <ModalOverlay
+      ref={afterCloseRef}
       style={{ zIndex: layer.zIndex, ...drawerOverlayVars({ safeAreaTop, safeAreaBottom, maxHeight }) }}
       // Retain inactive content without retaining its focus trap or outside isolation.
       isOpen={motion.present && layer.active}

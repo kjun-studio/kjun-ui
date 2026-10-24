@@ -1,5 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
+import { useAfterCloseRef } from "../../../shared/package-runtime/use-after-close";
 import { usePresence } from "../../../shared/package-runtime/use-presence";
 import { useReducedMotion } from "./use-reduced-motion";
 import { tokens,type ButtonVariant,type InputSize } from "@kjun-ui/tokens";
@@ -72,6 +73,8 @@ export interface KjunModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onClose?: () => void;
+  /** Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit). */
+  onAfterClose?: () => void;
   onCancel?: () => void;
   onConfirm?: () => void;
   title?: string;
@@ -100,6 +103,7 @@ export function KjunModal({
   open,
   onOpenChange,
   onClose,
+  onAfterClose,
   onCancel,
   onConfirm,
   title = "",
@@ -128,6 +132,7 @@ export function KjunModal({
   confirmText ??= m.confirm;
   cancelText ??= m.cancel;
   const motion = usePresence(open, useReducedMotion());
+  const afterCloseRef = useAfterCloseRef(open, onAfterClose);
   const portalContainer = useKjunPortalContainer();
   const id = "kjun-" + useId();
   const explicitLabel = ariaLabel?.trim();
@@ -144,6 +149,7 @@ export function KjunModal({
   return (
     <LayerScope.Provider value={layer.id}>
     <ModalOverlay
+      ref={afterCloseRef}
       style={{ zIndex: layer.zIndex }}
       // Retain inactive content without retaining its focus trap or outside isolation.
       isOpen={motion.present && layer.active}

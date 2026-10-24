@@ -28,11 +28,11 @@ const kjunDrawerProps = {
   maxHeight: { type: Number, default: undefined },
 } as const;
 export type KjunDrawerProps = ExtractPublicPropTypes<typeof kjunDrawerProps>;
-/** v-model:open. Slots: default (body), header (replaces the title), footer. Event: close. */
+/** v-model:open. Slots: default (body), header (replaces the title), footer. Events: close, after-close. */
 export const KjunDrawer = defineComponent({
   name: "KjunDrawer",
   props: kjunDrawerProps,
-  emits: { "update:open": (_open: boolean) => true, close: () => true },
+  emits: { "update:open": (_open: boolean) => true, close: () => true, "after-close": () => true },
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
     header?: () => VNodeChild;
@@ -42,7 +42,7 @@ export const KjunDrawer = defineComponent({
     const m = useKjunMessages();
     const target = usePortalTarget();
     const close = () => { if (!props.open) return; emit("update:open", false); emit("close"); };
-    const { motion, layer } = useWindowLayer(() => props.open, close, () => props.closeOnEsc, tokens.motion.layerExit);
+    const { motion, layer } = useWindowLayer(() => props.open, close, () => props.closeOnEsc, tokens.motion.layerExit, () => emit("after-close"));
     const overlay = ref<HTMLElement | null>(null), drawer = ref<HTMLElement | null>(null), dialog = ref<HTMLElement | null>(null);
     useModalOverlay(overlay, dialog, () => props.open && layer.active.value);
     const press = useOutsidePress(() => drawer.value, () => props.closeOnOverlay && props.open && layer.active.value, close);

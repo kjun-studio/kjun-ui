@@ -34,6 +34,7 @@ export const relatedGroups = {
   i18n: files('i18n'),
   additions: files('additions'),
   adoption: files('adoption'),
+  requests: files('requests'),
   primitives: [...files('layout-primitives', 'typography', 'geometry-tokens', 'card-layout', 'input-design'), ...visuals],
   kpi: [...files('kpi-secondary', 'loading-options', 'typography', 'geometry-tokens', 'card-layout'), ...visuals],
   quantity: [...files('quantity', 'elevation-inputs', 'interaction-states'), ...fields, ...visuals],

@@ -1,3 +1,4 @@
+import { useAfterClose } from "../../../shared/package-runtime/use-after-close";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { content, FontText } from "./internal";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
@@ -107,6 +108,8 @@ export interface KjunModalProps {
   open: boolean;
   onOpenChange: (value: boolean) => void;
   onClose?: () => void;
+  /** Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit). */
+  onAfterClose?: () => void;
   onCancel?: () => void;
   onConfirm?: () => void;
   title?: string;
@@ -135,6 +138,7 @@ export function KjunModal({
   open,
   onOpenChange,
   onClose,
+  onAfterClose,
   onCancel,
   onConfirm,
   title = "",
@@ -180,10 +184,14 @@ export function KjunModal({
       ? window.width - 2 * tokens.modal.mobileInset
       : Math.min(tokens.modal.widths[size], window.width - 2 * tokens.modal.mobileInset);
   const layer = useLayer(open, motion.present, "window", () => { if (closeOnEsc) close(); });
+  // iOS keeps dismissing the native window after visible turns false; report once it is gone so the next sheet can open.
+  const iosDismiss = Platform.OS === "ios";
+  useAfterClose(motion.present, onAfterClose, !iosDismiss);
   return (
     <LayerScope.Provider value={layer.id}>
     <ScopedNativeModal
       visible={motion.present}
+      onDismiss={iosDismiss ? () => { if (!open) onAfterClose?.(); } : undefined}
       transparent
       animationType="none"
       onRequestClose={() => {
