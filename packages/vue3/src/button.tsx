@@ -129,7 +129,8 @@ export const KjunButton = defineComponent({
             ...typeStyle(tokens.button.typography[s]),
             borderRadius: props.shape === "circle" ? tokens.shape.pill : tokens.button.radii[s],
             gap: content ? tokens.button.contentGaps[s] : 0,
-          }, (navigation || props.wrap) && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) })}
+          }, (navigation || props.wrap) && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) },
+            props.variant === "link" && { height: "auto", minHeight: 0, minWidth: 0, width: "auto", padding: 0, borderRadius: 0 })}
           onClick={(event: MouseEvent) => {
             event.stopPropagation();
             if (!props.disabled && !loading) emit("click", event);

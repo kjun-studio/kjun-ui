@@ -79,5 +79,13 @@ for (const platform of ['react', 'vue3', 'native']) {
       const title = await list.getByText('Trip', { exact: true }).boundingBox();
       expect(Math.round(title!.x - (await rows.first().boundingBox())!.x)).toBe(16);
     });
+
+    test('link buttons hug their text', async ({ page }) => {
+      const button = section(page, 'link-button').getByRole(platform === 'native' ? 'button' : 'button', { name: 'More' });
+      const box = (await button.boundingBox())!;
+      const text = (await section(page, 'link-button').getByText('More', { exact: true }).boundingBox())!;
+      expect(box.width - text.width).toBeLessThanOrEqual(1);
+      expect(Math.round(box.height)).toBe(20);
+    });
   });
 }

@@ -155,6 +155,7 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
             height: 'auto', maxWidth: '100%',
             paddingBlock: Math.max(0, (height - contentHeight) / 2),
           } : {}),
+          ...(variant === "link" ? { height: "auto", minHeight: 0, minWidth: undefined, width: undefined, padding: 0, borderRadius: 0 } : {}),
           ...style,
         }}
         onClick={(e) => {

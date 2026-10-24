@@ -203,7 +203,8 @@ export function KjunButton(input: KjunButtonProps) {
   const positive = ["primary", "danger", "success", "warning"].includes(
     variant
   );
-  const ink = variant === "danger-ghost" ? c.danger : positive
+  const link = variant === "link";
+  const ink = link ? c.brand : variant === "danger-ghost" ? c.danger : positive
     ? ({ primary: c.onBrand, danger: c.onDanger, success: c.onSuccess, warning: c.onWarning } as Record<string, typeof c.inverse>)[variant]
     : variant === "secondary"
     ? c.text
@@ -227,7 +228,8 @@ export function KjunButton(input: KjunButtonProps) {
   const paint = (pressed: boolean, hovered: boolean) => {
     const expanded = props.accessibilityState?.expanded;
     // Disabled actions share one neutral paint so no variant reads as a paler tone of itself.
-    if (disabled) return { background: variant === "ghost" || variant === "danger-ghost" ? "transparent" : c.buttonSecondary, ink: c.textDisabled };
+    if (disabled) return { background: variant === "ghost" || variant === "danger-ghost" || link ? "transparent" : c.buttonSecondary, ink: c.textDisabled };
+    if (link) return { background: "transparent", ink: pressed ? c.brandActive : c.brand };
     if (busy || (!pressed && !hovered && !expanded)) return { background: base, ink };
     pressed = pressed || !!expanded;
     const background = variant === "primary" ? pressed ? c.brandActive : c.brandHover
@@ -239,7 +241,8 @@ export function KjunButton(input: KjunButtonProps) {
       : pressed ? c.warningActive : c.warningDark;
     return { background, ink: variant === "ghost" ? c.text : variant === "danger-ghost" && pressed ? c.dangerDark : ink };
   };
-  const hit = Math.max(0, (tokens.native.minimumTouchTarget - height) / 2);
+  // A link button is only as tall as its text line, so its touch area grows to the 44px minimum around it.
+  const hit = Math.max(0, (tokens.native.minimumTouchTarget - (link ? tokens.button.typography[size].lineHeightPx : height)) / 2);
   return (
     <Pressable
       {...props}
@@ -284,6 +287,7 @@ export function KjunButton(input: KjunButtonProps) {
               navigation && (prefixIcon || suffixIcon || !hasContent) ? iconSize : 0)) / 2),
             ...(formActions?.stacked ? { width: '100%' as const, alignSelf: 'stretch' as const } : {}),
           } : {}),
+          ...(link ? { height: undefined, minHeight: 0, minWidth: undefined, width: undefined, paddingHorizontal: 0, paddingLeft: 0, paddingRight: 0, borderRadius: 0 } : {}),
         },
         style,
       ]}

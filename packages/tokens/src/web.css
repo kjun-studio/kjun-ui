@@ -43,6 +43,10 @@
 .kjun-button[data-variant="secondary"]:active:not(:disabled) {
   background: var(--_kjun-color-button-secondary-active);
 }
+/* A link button hugs its text: no fill, no inset, the brand ink, underlined on hover and keyboard focus. */
+.kjun-button[data-variant="link"] { background: transparent; color: var(--_kjun-color-brand); }
+.kjun-button[data-variant="link"]:is(:hover, [data-focus-visible], :focus-visible):not(:disabled) { text-decoration: underline; }
+.kjun-button[data-variant="link"]:active:not(:disabled) { color: var(--_kjun-color-brand-active); }
 .kjun-button[data-variant="ghost"],
 .kjun-button[data-variant="danger-ghost"] {
   background: transparent;
