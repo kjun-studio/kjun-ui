@@ -35,8 +35,9 @@ export function KjunText({ variant = "body", tone = "default", align, maxLines, 
   const lines = maxLines && maxLines > 0 ? Math.floor(maxLines) : undefined;
   return (
     <KText
-      accessibilityRole={titleVariants.includes(variant) ? "header" : undefined}
       {...rest}
+      // An explicit undefined (cond ? "link" : undefined) keeps the heading role of title variants.
+      accessibilityRole={rest.accessibilityRole ?? (titleVariants.includes(variant) ? "header" : undefined)}
       numberOfLines={lines}
       ellipsizeMode={lines ? "tail" : undefined}
       style={[

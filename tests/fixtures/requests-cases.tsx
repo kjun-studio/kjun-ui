@@ -39,9 +39,11 @@ export function RequestsCases({ K, native = false, providerProps = {} }: { K: an
         <K.KjunListRow title="Coffee" description="Today" trailing={<K.KjunText>-4,500</K.KjunText>} ariaLabel="Coffee, today, minus 4,500 won" {...press(() => {})}>
           <K.KjunProgress value={60} label="Budget" />
         </K.KjunListRow>
+        <K.KjunListRow title="Empty content" {...press(() => {})}>{[]}</K.KjunListRow>
       </K.KjunListSection>
     </K.KjunProvider></div>
     <div data-testid="text-props"><K.KjunProvider {...providerProps}>
+      <K.KjunText variant="pageTitle" accessibilityRole={undefined}>Page heading</K.KjunText>
       <K.KjunText {...(native ? { accessibilityLabel: 'Balance 1,000 won', testID: 'balance' } : { 'aria-label': 'Balance 1,000 won', 'data-testid': 'balance' })}>1,000</K.KjunText>
     </K.KjunProvider></div>
     <div data-testid="accordion"><K.KjunProvider {...providerProps}>

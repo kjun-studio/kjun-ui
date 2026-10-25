@@ -6,6 +6,8 @@ const section = (page: Page, id: string) => page.getByTestId(id);
 for (const platform of ['react', 'vue3', 'native']) {
   test.describe(platform, () => {
     test.beforeEach(async ({ page }) => {
+      // Every section fits on screen, so popups open in place instead of near the viewport edge.
+      await page.setViewportSize({ width: 1280, height: 2000 });
       await openFixture(page, platform, '', 'requests');
       await expect(section(page, 'after-close')).toBeVisible();
     });
@@ -121,6 +123,39 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(area.getByText('events: none', { exact: true })).toBeVisible();
       await area.getByRole('button', { name: 'Preset', exact: true }).click();
       await expect(area.getByText('events: preset false', { exact: true })).toBeVisible();
+    });
+
+    test('combobox returns focus on Escape', async ({ page }) => {
+      test.skip(platform === 'native', 'Web only');
+      const area = section(page, 'return-focus'), input = area.getByRole('combobox', { name: 'Unit search' });
+      await input.fill('Al');
+      await expect(page.getByRole('option', { name: 'Alpha' })).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(area.getByRole('textbox', { name: 'Target cell' })).toBeFocused();
+    });
+
+    test('a kept closed body is skipped by Tab', async ({ page }) => {
+      test.skip(platform === 'native', 'Web keyboard order');
+      const area = section(page, 'accordion'), kept = area.getByRole('button', { name: 'Kept', exact: true });
+      await kept.click();
+      await expect(area.getByRole('textbox', { name: 'Kept input' })).toBeVisible();
+      await kept.click();
+      await page.waitForTimeout(800);
+      await kept.focus();
+      await page.keyboard.press('Tab');
+      await expect(area.getByRole('button', { name: 'Preset', exact: true })).toBeFocused();
+    });
+
+    test('empty row content adds no content area', async ({ page }) => {
+      const row = section(page, 'rows').getByRole('button', { name: /Empty content/ });
+      const title = (await row.getByText('Empty content', { exact: true }).boundingBox())!;
+      const box = (await row.boundingBox())!;
+      // A row without content keeps the plain row height: the title stays centred.
+      expect(Math.abs(title.y + title.height / 2 - (box.y + box.height / 2))).toBeLessThan(2);
+    });
+
+    test('title text keeps its heading role when accessibilityRole is undefined', async ({ page }) => {
+      await expect(section(page, 'text-props').getByRole('heading', { name: 'Page heading' })).toBeVisible();
     });
   });
 }

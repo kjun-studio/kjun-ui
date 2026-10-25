@@ -68,25 +68,27 @@ export const KjunAccordionItem = defineComponent({
     header?: () => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
-    const controlled = props.open !== undefined;
-    const group = controlled ? null : inject(kjunAccordionKey, null);
+    // Decided on each render like React; registration with the Accordion still happens once at mount.
+    const controlled = () => props.open !== undefined;
+    const context = inject(kjunAccordionKey, null);
+    const group = () => controlled() ? null : context;
     const id = useKjunId("kjun-");
     const own = ref(props.defaultOpen);
     let unregister: (() => void) | undefined;
-    onMounted(() => { unregister = group?.register(id, props.defaultOpen); });
+    onMounted(() => { unregister = group()?.register(id, props.defaultOpen); });
     onBeforeUnmount(() => unregister?.());
-    const isOpen = () => controlled ? !!props.open : group ? group.opened().has(id) : own.value;
+    const isOpen = () => { const g = group(); return controlled() ? !!props.open : g ? g.opened().has(id) : own.value; };
     // Uncontrolled items report each real change, including a sibling closing them. A defaultOpen item in an
     // Accordion opens once it registers after mount; that is its starting state, not a change.
-    let registering = !!group && props.defaultOpen;
-    if (!controlled) watch(isOpen, open => { if (registering) { if (open) registering = false; return; } emit("update:open", open); });
+    let registering = !!group() && props.defaultOpen;
+    watch(isOpen, open => { if (controlled()) return; if (registering) { if (open) registering = false; return; } emit("update:open", open); });
     return () => {
       const open = isOpen();
       const header = slots.header?.();
       return (
         <div class="kjun-accordion-item">
           <button type="button" id={id + "-heading"} disabled={props.disabled} aria-expanded={open} aria-controls={id + "-panel"}
-            class="kjun-accordion-trigger" onClick={() => { registering = false; controlled ? emit("update:open", !open) : group ? group.toggle(id) : (own.value = !own.value); }}>
+            class="kjun-accordion-trigger" onClick={() => { registering = false; const g = group(); controlled() ? emit("update:open", !open) : g ? g.toggle(id) : (own.value = !own.value); }}>
             <span class="kjun-accordion-heading">{hasContent(header) ? header : props.title}</span>
             <KjunIcon name="chevron-down" class="kjun-accordion-chevron" size={tokens.extensions.accordion.iconSize}
               style={{ transform: open ? "rotate(180deg)" : undefined }} />

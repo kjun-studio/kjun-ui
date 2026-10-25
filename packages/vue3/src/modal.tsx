@@ -106,7 +106,7 @@ const kjunModalProps = {
   ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunModalProps = ExtractPublicPropTypes<typeof kjunModalProps>;
-/** v-model:open. Slots: default (body), header (replaces the title), footer (replaces the actions). Events: close, cancel, confirm. */
+/** v-model:open. Slots: default (body), header (replaces the title), footer (replaces the actions). Events: close, after-close, cancel, confirm. */
 export const KjunModal = defineComponent({
   name: "KjunModal",
   props: kjunModalProps,

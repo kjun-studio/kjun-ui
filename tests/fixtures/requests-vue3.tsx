@@ -36,9 +36,11 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
       <K.KjunListRow title="Coffee" description="Today" ariaLabel="Coffee, today, minus 4,500 won" onClick={() => {}}>
         {{ default: () => <K.KjunProgress value={60} label="Budget" />, trailing: () => <K.KjunText>-4,500</K.KjunText> }}
       </K.KjunListRow>
+      <K.KjunListRow title="Empty content" onClick={() => {}}>{{ default: () => [] }}</K.KjunListRow>
     </K.KjunListSection>
   </K.KjunProvider></div>
   <div data-testid="text-props"><K.KjunProvider>
+    <K.KjunText variant="pageTitle">Page heading</K.KjunText>
     <K.KjunText aria-label="Balance 1,000 won" data-testid="balance">1,000</K.KjunText>
   </K.KjunProvider></div>
   <div data-testid="accordion"><K.KjunProvider>
