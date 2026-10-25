@@ -833,6 +833,7 @@
   --_kjun-geometry-card-radii-sm: 8px;
   --_kjun-geometry-card-radii-md: 12px;
   --_kjun-geometry-card-radii-lg: 16px;
+  --_kjun-geometry-card-radii-xl: 24px;
   --_kjun-geometry-card-subtitle-gap: 4px;
   --_kjun-geometry-card-title-gap: 8px;
   --_kjun-geometry-card-glass-blur: 10px;
@@ -882,6 +883,7 @@
   --_kjun-geometry-radius-radius9999: 9999px;
   --_kjun-geometry-radius-radius14: 14px;
   --_kjun-geometry-radius-radius20: 20px;
+  --_kjun-geometry-radius-radius24: 24px;
   --_kjun-geometry-native-minimum-touch-target: 44px;
   --_kjun-geometry-space-inline-xs: 4px;
   --_kjun-geometry-space-inline-sm: 8px;

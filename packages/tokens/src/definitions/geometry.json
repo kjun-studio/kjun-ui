@@ -255,7 +255,8 @@
       "none": { "$ref": "radius.radius0" },
       "sm": { "$ref": "radius.radius8" },
       "md": { "$ref": "radius.radius12" },
-      "lg": { "$ref": "radius.radius16" }
+      "lg": { "$ref": "radius.radius16" },
+      "xl": { "$ref": "radius.radius24" }
     },
     "subtitleGap": { "$ref": "dimension.value4" },
     "titleGap": { "$ref": "dimension.value8" },
@@ -271,6 +272,7 @@
     "radius16": 16,
     "radius9999": 9999,
     "radius14": 14,
-    "radius20": 20
+    "radius20": 20,
+    "radius24": 24
   }
 }
