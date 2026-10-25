@@ -35,6 +35,8 @@ export const FloatingPanel = defineComponent({
     dialog: { type: Boolean, default: true },
     /** Changing it places the panel again (an anchor rectangle moved without a scroll or resize). */
     repositionKey: { type: Number, default: 0 },
+    /** Another element that counts as inside (an anchored Popover's trigger area): pressing it is not an outside press. */
+    inside: { type: Function as PropType<() => HTMLElement | null>, default: undefined },
   },
   setup(props, { slots, expose }) {
     const reduced = useReducedMotion();
@@ -66,7 +68,7 @@ export const FloatingPanel = defineComponent({
     const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
     // Only the topmost layer reacts: a child menu is portaled outside this panel, so its presses look "outside".
     const topmost = () => layer.state.topPopup()?.id === layer.id;
-    const outside = (node: EventTarget | null) => node instanceof Node && !panel.value?.contains(node) && !props.trigger()?.contains(node);
+    const outside = (node: EventTarget | null) => node instanceof Node && !panel.value?.contains(node) && !props.trigger()?.contains(node) && !props.inside?.()?.contains(node);
     const onPointerDown = (event: PointerEvent) => { pressedOutside = props.open && topmost() && outside(event.target); };
     const onPointerUp = (event: PointerEvent) => {
       if (pressedOutside && props.open && topmost() && outside(event.target)) props.onOpenChange(false);

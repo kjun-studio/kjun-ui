@@ -133,5 +133,26 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(Math.round(after.x)).toBe(Math.round(before.x));
       expect(Math.round(after.y)).toBe(Math.round(before.y));
     });
+
+    test('without a trigger, focus returns to where it was when the popover opened', async ({ page }) => {
+      test.skip(platform === 'native', 'Web only');
+      const area = section(page, 'anchor'), opener = area.getByRole('button', { name: 'open palette', exact: true });
+      await opener.click();
+      await expect(page.getByRole('dialog', { name: 'Palette' })).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(page.getByRole('dialog', { name: 'Palette' })).toHaveCount(0);
+      await expect(opener).toBeFocused();
+    });
+
+    test('pressing the trigger of a modal anchored popover closes it', async ({ page }) => {
+      test.skip(platform === 'native', 'Web only');
+      const area = section(page, 'anchor'), trigger = area.getByRole('button', { name: 'palette trigger', exact: true });
+      await trigger.click();
+      await expect(page.getByText('Toggle body', { exact: true })).toBeVisible();
+      // A real press at the trigger: React's modal underlay may cover it, which is still a press on the trigger spot.
+      const box = (await trigger.boundingBox())!;
+      await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+      await expect(page.getByText('Toggle body', { exact: true })).toHaveCount(0);
+    });
   });
 }

@@ -68,8 +68,10 @@ export function KjunPopover({
   anchorSource.current = anchorRect;
   const [reposition, setReposition] = useState(0);
   const anchored = anchorRect !== undefined;
-  if (open && !opener.current && typeof document !== "undefined") opener.current = document.activeElement as HTMLElement | null;
-  if (!open) opener.current = null;
+  // Captured when it opens and kept after close: the layer reads returnFocus after the closing render.
+  const wasOpen = useRef(false);
+  if (open && !wasOpen.current && typeof document !== "undefined") opener.current = document.activeElement as HTMLElement | null;
+  wasOpen.current = open;
   useLayoutEffect(() => {
     if (!open || !anchored || !anchor.current) return;
     return followAnchor(anchor.current, () => anchorSource.current, () => setReposition(n => n + 1));
@@ -123,6 +125,7 @@ export function KjunPopover({
         open={open}
         onOpenChange={change}
         triggerRef={anchored ? anchor : ref}
+        inside={anchored ? ref : undefined}
         repositionKey={reposition}
         className={"kjun-content-popover" + (header != null ? " kjun-popover-has-header" : "")}
         placement={placement}

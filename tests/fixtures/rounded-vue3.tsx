@@ -5,7 +5,7 @@ applyDemoColors('default');
 // Same sections and DOM as rounded-cases.tsx (React/Native).
 const tip = ref<string | null>(null);
 const anchored = ref(false), point = ref({ x: 80, y: 1500 });
-const followed = ref(false);
+const followed = ref(false), palette = ref(false);
 let live: { x: number; y: number } | null = { x: 600, y: 1500 };
 createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px', width: '420px' }}>
   <div data-testid="cards"><K.KjunProvider>
@@ -40,6 +40,13 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
     <K.KjunPopover open={followed.value} onUpdate:open={(v: boolean) => { followed.value = v; }} manualTrigger modal={false} ariaLabel="Followed" anchorRect={() => live}>
       {{ trigger: () => <button type="button" onClick={() => { live = null; }}>lose anchor</button>,
          default: () => <K.KjunText>Followed list</K.KjunText> }}
+    </K.KjunPopover>
+    <K.KjunButton onClick={() => { palette.value = true; }}>open palette</K.KjunButton>
+    <K.KjunPopover open={palette.value} onUpdate:open={(v: boolean) => { palette.value = v; }} focusOnOpen ariaLabel="Palette" anchorRect={{ x: 300, y: 1500 }}>
+      {{ default: () => <K.KjunText>Palette body</K.KjunText> }}
+    </K.KjunPopover>
+    <K.KjunPopover ariaLabel="Toggle palette" anchorRect={{ x: 500, y: 1500 }}>
+      {{ trigger: () => <K.KjunButton>palette trigger</K.KjunButton>, default: () => <K.KjunText>Toggle body</K.KjunText> }}
     </K.KjunPopover>
   </K.KjunProvider></div>
   <div data-testid="filters">

@@ -28,6 +28,7 @@ export function FloatingPanel({
   ownsDismiss = false,
   returnFocus,
   repositionKey = 0,
+  inside,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
@@ -45,6 +46,8 @@ export function FloatingPanel({
   returnFocus?: () => HTMLElement | null | false | undefined;
   /** Changing it makes react-aria place the panel again (it does not watch its trigger move). */
   repositionKey?: number;
+  /** Another element that counts as inside (an anchored Popover's trigger area): pressing it is not an outside press. */
+  inside?: RefObject<HTMLElement | null>;
 }) {
   const motion = usePresence(open, useReducedMotion(), tokens.motion.popupExit);
   const layer = useLayer(open, motion.present, "popup", () => onOpenChange(false), triggerRef, returnFocus);
@@ -82,6 +85,7 @@ export function FloatingPanel({
       // Popover owns outside presses and focus moves, and with a Provider KJUN owns Escape.
       onOpenChange={ownsDismiss && layer.keyboardManaged ? (next: boolean) => { if (next) onOpenChange(next); } : onOpenChange}
       triggerRef={triggerRef}
+      shouldCloseOnInteractOutside={inside ? (element: Element) => !inside.current?.contains(element) : undefined}
       UNSTABLE_portalContainer={container}
       placement={placement.replace("-", " ") as "bottom start"}
       shouldFlip={flip}

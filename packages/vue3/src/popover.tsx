@@ -54,7 +54,8 @@ export const KjunPopover = defineComponent({
     // Anchor mode positions against an invisible fixed element on the rectangle.
     const anchor = ref<HTMLElement | null>(null), reposition = ref(0);
     let opener: HTMLElement | null = null, stopAnchor = () => {};
-    watch(open, value => { opener = value ? document.activeElement as HTMLElement | null : null; }, { flush: "sync" });
+    // Captured when it opens and kept after close: the layer reads returnFocus after open turns false.
+    watch(open, value => { if (value) opener = document.activeElement as HTMLElement | null; }, { flush: "sync" });
     watch([open, anchor, () => props.anchorRect], ([isOpen, element]) => {
       stopAnchor(); stopAnchor = () => {};
       if (!isOpen || !element || props.anchorRect === undefined) return;
@@ -100,7 +101,8 @@ export const KjunPopover = defineComponent({
           aria-haspopup="dialog" aria-expanded={expanded.value} aria-controls={expanded.value ? id : undefined}>
           {slots.trigger?.({ open: open.value })}
         </div>}
-        <FloatingPanel open={open.value} onOpenChange={change} trigger={() => props.anchorRect !== undefined ? anchor.value : trigger.value} repositionKey={reposition.value} panelClass={"kjun-content-popover" + (slots.header ? " kjun-popover-has-header" : "")} dialog={false}
+        <FloatingPanel open={open.value} onOpenChange={change} trigger={() => props.anchorRect !== undefined ? anchor.value : trigger.value} repositionKey={reposition.value}
+          inside={props.anchorRect !== undefined ? () => trigger.value : undefined} panelClass={"kjun-content-popover" + (slots.header ? " kjun-popover-has-header" : "")} dialog={false}
           placement={props.placement} matchTriggerWidth={props.matchTriggerWidth} maxHeight={props.maxHeight} flip={props.flip}
           nonModal={!props.modal}
           returnFocus={() => {

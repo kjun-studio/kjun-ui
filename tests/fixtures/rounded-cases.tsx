@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 export function RoundedCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const [tip, setTip] = useState<string | null>(null);
   const [anchored, setAnchored] = useState(false), [point, setPoint] = useState({ x: 80, y: 1500 });
+  const [palette, setPalette] = useState(false);
   const [followed, setFollowed] = useState(false), live = useRef<{ x: number; y: number } | null>({ x: 600, y: 1500 });
   const press = (handler: () => void) => native ? { onPress: handler } : { onClick: handler };
   return <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16, width: 420 }}>
@@ -38,6 +39,13 @@ export function RoundedCases({ K, native = false, providerProps = {} }: { K: any
       <K.KjunPopover open={followed} onOpenChange={setFollowed} manualTrigger modal={false} ariaLabel="Followed" anchorRect={() => live.current}
         trigger={<button type="button" onClick={() => { live.current = null; }}>lose anchor</button>}>
         <K.KjunText>Followed list</K.KjunText>
+      </K.KjunPopover>
+      <K.KjunButton onClick={() => setPalette(true)}>open palette</K.KjunButton>
+      <K.KjunPopover open={palette} onOpenChange={setPalette} focusOnOpen ariaLabel="Palette" anchorRect={{ x: 300, y: 1500 }}>
+        <K.KjunText>Palette body</K.KjunText>
+      </K.KjunPopover>
+      <K.KjunPopover ariaLabel="Toggle palette" anchorRect={{ x: 500, y: 1500 }} trigger={<K.KjunButton>palette trigger</K.KjunButton>}>
+        <K.KjunText>Toggle body</K.KjunText>
       </K.KjunPopover>
     </K.KjunProvider></div>}
     <div data-testid="filters">
