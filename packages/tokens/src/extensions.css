@@ -223,6 +223,9 @@
 
 /* 0.14.0: plain sections, destructive rows, decorative chevrons and non-row list items share the row inset. */
 .kjun-list-section[data-surface="false"]{background:transparent}
+/* A rounded section clips its rows to the corners; row focus rings move inside so the clip does not cut them. */
+.kjun-list-section[data-radius]{overflow:hidden;overflow:clip}
+.kjun-list-section[data-radius] .kjun-list-main:focus-visible{outline-offset:var(--_kjun-state-focus-inset-offset)}
 .kjun-list-row[data-destructive] .kjun-list-title{color:var(--_kjun-color-danger)}
 .kjun-list-chevron{flex-shrink:0;color:var(--_kjun-color-text-tertiary)}
 .kjun-list-item{padding:var(--_kjun-extension-list-padding);border-bottom:var(--_kjun-border-default-width) solid var(--_kjun-color-divider);min-width:0}

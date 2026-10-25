@@ -1,6 +1,6 @@
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { typeStyle } from "./typography";
-import { tokens } from "@kjun-ui/tokens";
+import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { Children, createContext, useContext, type ReactNode } from "react";
 import { View, Platform, type GestureResponderEvent } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
@@ -39,10 +39,13 @@ export interface KjunListSectionProps {
   divider?: boolean;
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
   density?: "default" | "compact";
+  /** Rounds the section on the card radius steps and clips its rows to the corners (default "none"). */
+  radius?: CardRadius;
 }
-export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default" }: KjunListSectionProps) {
+export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius = "none" }: KjunListSectionProps) {
   const { colors } = useKjunStyles();
-  return <View style={{ minWidth: 0, backgroundColor: surface ? colors.surface : "transparent" }}>
+  return <View style={{ minWidth: 0, backgroundColor: surface ? colors.surface : "transparent",
+    ...(radius === "none" ? {} : { borderRadius: tokens.card.radii[radius], overflow: "hidden" as const }) }}>
     {!!(title || description || actions) && <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.list.gap, padding: tokens.extensions.list.padding }}><View style={{ flex: 1 }}>{!!title && <KText accessibilityRole="header" style={{ ...typeStyle('cardTitle'),  }}>{title}</KText>}{!!description && <KText style={{ marginTop: tokens.extensions.list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'),  }}>{description}</KText>}</View>{content(actions)}</View>}
     <View role="list" accessibilityLabel={ariaLabel || title}>{Children.toArray(children).map((row, i, rows) => <ListRowContext.Provider key={i} value={{ divider: divider && i < rows.length - 1, compact: density === "compact" }}>{row}</ListRowContext.Provider>)}</View>
   </View>;

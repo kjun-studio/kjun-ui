@@ -1,4 +1,4 @@
-import { tokens } from "@kjun-ui/tokens";
+import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { useEffect, useId, useRef, type MouseEvent, type ReactNode } from "react";
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
@@ -36,10 +36,13 @@ export interface KjunListSectionProps {
   divider?: boolean;
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
   density?: "default" | "compact";
+  /** Rounds the section on the card radius steps and clips its rows to the corners (default "none"). */
+  radius?: CardRadius;
 }
-export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default" }: KjunListSectionProps) {
+export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius = "none" }: KjunListSectionProps) {
   const id = "kjun-" + useId();
-  return <section className="kjun-list-section" data-surface={surface ? undefined : "false"} aria-labelledby={title ? id : undefined} aria-label={title ? undefined : ariaLabel}>
+  return <section className="kjun-list-section" data-surface={surface ? undefined : "false"}
+    data-radius={radius === "none" ? undefined : radius} style={radius === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${radius})` }} aria-labelledby={title ? id : undefined} aria-label={title ? undefined : ariaLabel}>
     {(title || description || actions) && <div className="kjun-list-heading"><div>{title && <h3 id={id}>{title}</h3>}{description && <p>{description}</p>}</div>{actions}</div>}
     <ul className="kjun-list" aria-label={ariaLabel || title} data-divider={divider ? undefined : "false"} data-density={density === "compact" ? "compact" : undefined}>{children}</ul>
   </section>;

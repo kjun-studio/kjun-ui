@@ -1,5 +1,5 @@
 import { defineComponent, onMounted, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
-import { tokens } from "@kjun-ui/tokens";
+import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
@@ -63,6 +63,8 @@ const kjunListSectionProps = {
   divider: { type: Boolean, default: true },
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
   density: { type: String as PropType<"default" | "compact">, default: "default" },
+  /** Rounds the section on the card radius steps and clips its rows to the corners (default "none"). */
+  radius: { type: String as PropType<CardRadius>, default: "none" },
 } as const;
 export type KjunListSectionProps = ExtractPublicPropTypes<typeof kjunListSectionProps>;
 /** Slots: default (KjunListRow items), actions. */
@@ -78,7 +80,8 @@ export const KjunListSection = defineComponent({
     return () => {
       const actions = slots.actions?.();
       return (
-        <section class="kjun-list-section" data-surface={props.surface ? undefined : "false"} aria-labelledby={props.title ? id : undefined} aria-label={props.title ? undefined : props.ariaLabel}>
+        <section class="kjun-list-section" data-surface={props.surface ? undefined : "false"}
+          data-radius={props.radius === "none" ? undefined : props.radius} style={props.radius === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${props.radius})` }} aria-labelledby={props.title ? id : undefined} aria-label={props.title ? undefined : props.ariaLabel}>
           {(props.title || props.description || hasContent(actions)) && (
             <div class="kjun-list-heading"><div>{props.title && <h3 id={id}>{props.title}</h3>}{props.description && <p>{props.description}</p>}</div>{actions}</div>
           )}

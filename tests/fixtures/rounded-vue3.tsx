@@ -8,4 +8,14 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
     <K.KjunCard radius="xl" title="XL card"><K.KjunText>XL body</K.KjunText></K.KjunCard>
     <K.KjunCard radius="lg" title="LG card"><K.KjunText>LG body</K.KjunText></K.KjunCard>
   </K.KjunProvider></div>
+  <div data-testid="lists"><K.KjunProvider>
+    <K.KjunText>Lists start</K.KjunText>
+    <K.KjunListSection title="Rounded" radius="xl">
+      <K.KjunListRow title="First row" onClick={() => {}} />
+      <K.KjunListRow title="Second row" />
+    </K.KjunListSection>
+    <K.KjunListSection title="Square">
+      <K.KjunListRow title="Square row" onClick={() => {}} />
+    </K.KjunListSection>
+  </K.KjunProvider></div>
 </div>).mount('#root');

@@ -20,5 +20,36 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(await cornerOf(section(page, 'cards').getByText('XL body', { exact: true }))).toBe('24px');
       expect(await cornerOf(section(page, 'cards').getByText('LG body', { exact: true }))).toBe('16px');
     });
+
+    test('rounded list sections clip their rows', async ({ page }) => {
+      const result = await section(page, 'lists').getByText('Rounded', { exact: true }).evaluate(el => {
+        for (let n: Element | null = el; n; n = n.parentElement) {
+          const style = getComputedStyle(n);
+          if (style.borderTopLeftRadius !== '0px') return { radius: style.borderTopLeftRadius, overflow: style.overflow, holdsRows: n.textContent?.includes('Second row') };
+        }
+        return null;
+      });
+      expect(result).toEqual({ radius: '24px', overflow: expect.stringMatching(/hidden|clip/), holdsRows: true });
+    });
+
+    test('default sections stay square', async ({ page }) => {
+      expect(await cornerOf(section(page, 'lists').getByText('Square row', { exact: true }))).toBe('0px');
+    });
+
+    test('the focus ring stays inside a rounded section', async ({ page }) => {
+      test.skip(platform === 'native', 'Web focus outline');
+      const lists = section(page, 'lists');
+      await lists.getByText('Lists start', { exact: true }).click();
+      await page.keyboard.press('Tab');
+      const first = lists.getByRole('button', { name: 'First row' });
+      await expect(first).toBeFocused();
+      expect(parseFloat(await first.evaluate(el => getComputedStyle(el).outlineOffset))).toBeLessThan(0);
+      // The square section keeps the existing ring.
+      await lists.getByRole('button', { name: 'Square row' }).focus();
+      await page.keyboard.press('Shift+Tab'); await page.keyboard.press('Tab');
+      const square = lists.getByRole('button', { name: 'Square row' });
+      await expect(square).toBeFocused();
+      expect(parseFloat(await square.evaluate(el => getComputedStyle(el).outlineOffset))).toBeGreaterThanOrEqual(0);
+    });
   });
 }
