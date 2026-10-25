@@ -95,6 +95,18 @@ Vue 3·React 모달은 가장 가까운 Provider 안에 렌더링되어 해당 �
 </KjunCard>
 ```
 
+### 둥근 목록
+
+목록을 다른 카드처럼 둥근 틀로 자르려면 감싸개를 만들지 말고 `KjunListSection`의 `radius`를 씁니다. 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)라 옆의 카드와 모서리가 맞습니다.
+
+```tsx
+<KjunCard radius="xl">…</KjunCard>
+<KjunListSection radius="xl" title="설정">…</KjunListSection>
+```
+
+- 섹션 전체(제목 포함)를 둥글게 하고, 행을 누를 때 생기는 배경과 구분선도 모서리 안으로 잘라 냅니다.
+- 둥글 때만 행의 키보드 초점 링을 안쪽에 그려 잘리지 않게 합니다. 기본값 none은 이전과 같습니다.
+
 ### 목록 행 안의 내용
 
 `KjunListRow`의 `children`(Vue 기본 슬롯)은 제목·설명 아래 같은 시작선에 놓이는 표시용 칸입니다. 예산·진행 막대 같은 내용을 넣습니다.
@@ -244,11 +256,28 @@ export async function removeItem(id: string) {
 - 한 컨트롤러를 동시에 두 Provider에 넘기지 않습니다(개발 모드 경고). 하나가 사라진 뒤 다른 Provider에 넘기는 것은 됩니다.
 - 문구와 언어는 그 Provider 위치의 `KjunProvider` 설정을 따릅니다.
 
+## 글쓰기 커서에 팝오버 붙이기 (웹)
+
+`KjunPopover`의 `anchorRect`에 화면 좌표 사각형을 넘기면 트리거 대신 그 위치에 붙습니다. 함수로 넘기면 열려 있는 동안 매 프레임 다시 읽으므로 커서를 따라갑니다.
+
+```tsx
+<KjunPopover open={open} onOpenChange={setOpen} manualTrigger modal={false} focusOnOpen={false}
+  anchorRect={() => caretRect()} trigger={<Editor />}>
+  <Suggestions />
+</KjunPopover>
+```
+
+- 편집기를 트리거 영역에 두면 편집 중 누르거나 입력해도 비모달 팝오버가 닫히지 않습니다. `focusOnOpen={false}`로 커서를 편집기에 둡니다.
+- 함수가 `null`을 돌려주면 마지막 위치를 유지합니다. 좌표는 `getBoundingClientRect()`와 같은 화면 기준이며, `transform`이 걸린 조상 안에서는 위치가 어긋나므로 그 밖에 둡니다.
+- 트리거가 없으면 닫힌 뒤 초점은 열 때 있던 요소로 돌아갑니다.
+
 ## 선택 역할과 기존 매핑
 
 `KjunColors`는 `KjunCoreColors`의 27개 필수 역할과 `colorRoleFallbacks`에 정의된 선택 역할을 받습니다. 생략한 역할은 `colorRoleFallbacks`에 따라 프로젝트가 이미 전달한 값으로 연결합니다. 예를 들어 inputBg는 secondary, inputBorderFocus는 focusRing, chartGrid는 border를 사용합니다. 패키지에 고정 색상값을 추가하지 않습니다.
 
 웹은 기존 `--kjun-*` 변수 이름을 그대로 사용합니다. 명시적으로 제공한 선택 역할은 상속한 값도 포함하여 항상 우선합니다. Native의 `resolveKjunColors(colors)`와 Provider는 같은 역할 연결을 적용하며, `useKjunStyles().colors`는 전체 역할이 있는 `ResolvedKjunColors<ColorValue>`를 반환합니다. 모드 변경 시 생략한 역할도 새 프로젝트 값을 따라갑니다.
+
+필터 칩의 선택 색은 `filterSelectedBg`·`filterSelectedText`(웹 `--kjun-filter-selected-bg`·`--kjun-filter-selected-text`)로 따로 정합니다. 지정하지 않으면 이전처럼 `text`·`inverse`입니다. 브랜드 색으로 칠하려면 각각 브랜드 값과 `onBrand` 값을 넘깁니다.
 
 `colorRoles`에 정의된 현재 역할 이름으로 작성한 전체 매핑도 사용할 수 있습니다. 차트·카드·그라데이션 등 특정 표현이 필요할 때만 해당 선택 역할을 추가하세요. 정확한 목록과 연결 대상은 [색상·서체 가이드](https://ui.kjun.dev/styling#optional-colors)와 tokens.json에서 확인할 수 있습니다. 문서 실행 예제의 설정에는 미리보기 색상을 재현하기 위한 선택 역할도 포함됩니다.
 

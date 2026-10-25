@@ -3,6 +3,7 @@ import { detail, event, slot, fields } from "./helpers.mjs";
 const bindings = JSON.parse(readFileSync(new URL("./extensions.json", import.meta.url), "utf8"));
 const guides = JSON.parse(readFileSync(new URL("../component-guides.json", import.meta.url), "utf8"));
 const summaries = {
+  radius: "섹션 모서리를 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)로 둥글게 하고, 안의 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
   ariaLabel: "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
   destructive: "제목을 danger 색으로 그립니다(계정 삭제 등). 설명 색과 동작은 그대로입니다.",
   chevron: "행 끝에 이동을 뜻하는 chevron-right 아이콘을 장식으로 둡니다. 화면 낭독기에는 읽히지 않으며 trailing과 함께 쓰면 맨 끝에 옵니다.",

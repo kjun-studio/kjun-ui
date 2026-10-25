@@ -257,7 +257,8 @@
       "ariaLabel",
       "placement",
       "returnFocus",
-      "modal"
+      "modal",
+      "anchorRect"
     ],
     "react": [
       "noPadding",
@@ -274,7 +275,8 @@
       "children",
       "returnFocus",
       "header",
-      "modal"
+      "modal",
+      "anchorRect"
     ],
     "native": [
       "noPadding",

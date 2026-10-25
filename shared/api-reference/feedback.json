@@ -286,7 +286,10 @@
       "content",
       "placement",
       "delay",
-      "open"
+      "open",
+      "title",
+      "align",
+      "width"
     ],
     "react": [
       "content",
@@ -294,7 +297,10 @@
       "delay",
       "children",
       "open",
-      "onOpenChange"
+      "onOpenChange",
+      "title",
+      "align",
+      "width"
     ],
     "native": [
       "content",
@@ -304,7 +310,10 @@
       "onPress",
       "disabled",
       "open",
-      "onOpenChange"
+      "onOpenChange",
+      "title",
+      "align",
+      "width"
     ]
   }
 }

@@ -1981,7 +1981,7 @@
       },
       {
         "name": "radius",
-        "type": "\"sm\" | \"md\" | \"lg\" | \"none\"",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\"",
         "required": false,
         "default": "\"md\"",
         "description": ""
@@ -2128,7 +2128,7 @@
       },
       {
         "name": "radius",
-        "type": "\"sm\" | \"md\" | \"lg\" | \"none\" | undefined",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -2298,7 +2298,7 @@
       },
       {
         "name": "radius",
-        "type": "\"sm\" | \"md\" | \"lg\" | \"none\" | undefined",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -8975,6 +8975,13 @@
         "required": false,
         "default": "\"default\"",
         "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56."
+      },
+      {
+        "name": "radius",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\"",
+        "required": false,
+        "default": "\"none\"",
+        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\")."
       }
     ],
     "events": [],
@@ -9046,6 +9053,13 @@
         "required": false,
         "default": "—",
         "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56."
+      },
+      {
+        "name": "radius",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\")."
       }
     ],
     "native": [
@@ -9104,6 +9118,13 @@
         "required": false,
         "default": "—",
         "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56."
+      },
+      {
+        "name": "radius",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\")."
       }
     ]
   },
@@ -13361,6 +13382,13 @@
         "required": false,
         "default": "true",
         "description": "false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus."
+      },
+      {
+        "name": "anchorRect",
+        "type": "AnchorSource",
+        "required": false,
+        "default": "—",
+        "description": "Attach to this screen rectangle (or a function read every frame while open) instead of the trigger. Web only.\nThe trigger slot becomes optional; presses inside it still count as inside a non-modal Popover."
       }
     ],
     "events": [
@@ -13485,9 +13513,16 @@
         "description": "false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus."
       },
       {
+        "name": "anchorRect",
+        "type": "import(\"/workspace/shared/package-runtime/anchor-rect\").AnchorSource | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Attach to this screen rectangle (or a function read every frame while open) instead of the trigger. Web only.\nThe trigger becomes optional; presses inside it still count as inside a non-modal Popover."
+      },
+      {
         "name": "trigger",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((open: boolean) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
-        "required": true,
+        "required": false,
         "default": "—",
         "description": ""
       },
@@ -19998,6 +20033,27 @@
         "description": ""
       },
       {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "A bolder line above content (a file name above its path). Read together with content."
+      },
+      {
+        "name": "align",
+        "type": "\"start\" | \"center\"",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "width",
+        "type": "\"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "—",
+        "description": "Maximum width step (tooltip.maxWidths); default is md, the earlier width."
+      },
+      {
         "name": "placement",
         "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
         "required": false,
@@ -20039,6 +20095,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A bolder line above content (a file name above its path). Read together with content."
+      },
+      {
+        "name": "align",
+        "type": "\"start\" | \"center\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "width",
+        "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Maximum width step (tooltip.maxWidths); default is md, the earlier width."
       },
       {
         "name": "placement",
@@ -20083,6 +20160,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A bolder line above content (a file name above its path). Read together with content."
+      },
+      {
+        "name": "align",
+        "type": "\"start\" | \"center\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "width",
+        "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Maximum width step (tooltip.maxWidths); default is md, the earlier width."
       },
       {
         "name": "placement",

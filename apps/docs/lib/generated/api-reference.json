@@ -6016,6 +6016,15 @@
             "description": "false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus.",
             "summary": "false이면 페이지를 막지 않고, 열릴 때 초점을 가져가지 않습니다(focusOnOpen이면 가져감). 마지막 항목에서 Tab은 닫고 트리거 다음으로, 첫 항목에서 Shift+Tab은 트리거로 갑니다. 바깥을 누르거나 초점이 밖으로 나가면 닫히며 초점을 되돌리지 않고, Escape는 트리거로 돌아갑니다.",
             "source": "packages/vue3/src/popover.tsx"
+          },
+          {
+            "name": "anchorRect",
+            "type": "AnchorSource",
+            "required": false,
+            "default": "—",
+            "description": "Attach to this screen rectangle (or a function read every frame while open) instead of the trigger. Web only.\nThe trigger slot becomes optional; presses inside it still count as inside a non-modal Popover.",
+            "summary": "트리거 대신 붙을 화면(viewport) 사각형 { x, y, width?, height? }입니다. 값이 바뀌면 위치를 다시 잡고, 함수로 넘기면 열려 있는 동안 매 프레임 읽으며 null이면 마지막 위치를 유지합니다. 이때 트리거는 선택이며, 트리거 안의 누름·초점 이동은 비모달 Popover를 닫지 않습니다(편집기를 트리거로 두면 커서 위치 팝오버가 됩니다). 트리거가 없으면 닫힌 뒤 초점은 열 때 있던 요소로 돌아갑니다. 웹 전용입니다.",
+            "source": "packages/vue3/src/popover.tsx"
           }
         ],
         "events": [
@@ -6178,9 +6187,18 @@
             "source": "packages/react/src/popover.tsx"
           },
           {
+            "name": "anchorRect",
+            "type": "AnchorSource | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Attach to this screen rectangle (or a function read every frame while open) instead of the trigger. Web only.\nThe trigger becomes optional; presses inside it still count as inside a non-modal Popover.",
+            "summary": "트리거 대신 붙을 화면(viewport) 사각형 { x, y, width?, height? }입니다. 값이 바뀌면 위치를 다시 잡고, 함수로 넘기면 열려 있는 동안 매 프레임 읽으며 null이면 마지막 위치를 유지합니다. 이때 트리거는 선택이며, 트리거 안의 누름·초점 이동은 비모달 Popover를 닫지 않습니다(편집기를 트리거로 두면 커서 위치 팝오버가 됩니다). 트리거가 없으면 닫힌 뒤 초점은 열 때 있던 요소로 돌아갑니다. 웹 전용입니다.",
+            "source": "packages/react/src/popover.tsx"
+          },
+          {
             "name": "trigger",
             "type": "ReactNode | ((open: boolean) => ReactNode)",
-            "required": true,
+            "required": false,
             "default": "—",
             "description": "",
             "summary": "팝업을 열기 위한 트리거 요소 또는 렌더 함수입니다.",
@@ -10131,6 +10149,33 @@
             "source": "packages/vue3/src/popover.tsx"
           },
           {
+            "name": "title",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "A bolder line above content (a file name above its path). Read together with content.",
+            "summary": "본문 위에 굵게 보이는 제목입니다(파일 이름 위의 경로 등). 화면 낭독기는 제목과 본문을 함께 읽습니다. 제목만 있어도 툴팁이 열리고, 제목과 본문이 모두 없으면 열리지 않습니다.",
+            "source": "packages/vue3/src/popover.tsx"
+          },
+          {
+            "name": "align",
+            "type": "\"start\" | \"center\"",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "글자 정렬입니다. start 또는 center를 고르며, 생략하면 이전과 같습니다.",
+            "source": "packages/vue3/src/popover.tsx"
+          },
+          {
+            "name": "width",
+            "type": "\"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "—",
+            "description": "Maximum width step (tooltip.maxWidths); default is md, the earlier width.",
+            "summary": "최대 폭 단계입니다(tooltip.maxWidths: sm 192·md 256·lg 320). 생략하면 md(이전 폭)이고, 긴 경로는 폭 안에서 줄바꿈합니다.",
+            "source": "packages/vue3/src/popover.tsx"
+          },
+          {
             "name": "placement",
             "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
             "required": false,
@@ -10187,6 +10232,33 @@
             "default": "\"\"",
             "description": "",
             "summary": "도움말에 표시할 설명입니다.",
+            "source": "packages/react/src/popover.tsx"
+          },
+          {
+            "name": "title",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A bolder line above content (a file name above its path). Read together with content.",
+            "summary": "본문 위에 굵게 보이는 제목입니다(파일 이름 위의 경로 등). 화면 낭독기는 제목과 본문을 함께 읽습니다. 제목만 있어도 툴팁이 열리고, 제목과 본문이 모두 없으면 열리지 않습니다.",
+            "source": "packages/react/src/popover.tsx"
+          },
+          {
+            "name": "align",
+            "type": "\"start\" | \"center\" | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "글자 정렬입니다. start 또는 center를 고르며, 생략하면 이전과 같습니다.",
+            "source": "packages/react/src/popover.tsx"
+          },
+          {
+            "name": "width",
+            "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Maximum width step (tooltip.maxWidths); default is md, the earlier width.",
+            "summary": "최대 폭 단계입니다(tooltip.maxWidths: sm 192·md 256·lg 320). 생략하면 md(이전 폭)이고, 긴 경로는 폭 안에서 줄바꿈합니다.",
             "source": "packages/react/src/popover.tsx"
           },
           {
@@ -10249,6 +10321,33 @@
             "default": "\"\"",
             "description": "",
             "summary": "도움말에 표시할 설명입니다.",
+            "source": "packages/native/src/popover.tsx"
+          },
+          {
+            "name": "title",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A bolder line above content (a file name above its path). Read together with content.",
+            "summary": "본문 위에 굵게 보이는 제목입니다(파일 이름 위의 경로 등). 화면 낭독기는 제목과 본문을 함께 읽습니다. 제목만 있어도 툴팁이 열리고, 제목과 본문이 모두 없으면 열리지 않습니다.",
+            "source": "packages/native/src/popover.tsx"
+          },
+          {
+            "name": "align",
+            "type": "\"start\" | \"center\" | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "글자 정렬입니다. start 또는 center를 고르며, 생략하면 이전과 같습니다.",
+            "source": "packages/native/src/popover.tsx"
+          },
+          {
+            "name": "width",
+            "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Maximum width step (tooltip.maxWidths); default is md, the earlier width.",
+            "summary": "최대 폭 단계입니다(tooltip.maxWidths: sm 192·md 256·lg 320). 생략하면 md(이전 폭)이고, 긴 경로는 폭 안에서 줄바꿈합니다.",
             "source": "packages/native/src/popover.tsx"
           },
           {
@@ -18428,11 +18527,11 @@
           },
           {
             "name": "radius",
-            "type": "\"sm\" | \"md\" | \"lg\" | \"none\"",
+            "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\"",
             "required": false,
             "default": "\"md\"",
             "description": "",
-            "summary": "공통 모서리 스케일 none/sm/md/lg를 선택합니다. 기본값은 md이며 미디어 상단 모서리에도 적용됩니다.",
+            "summary": "공통 모서리 스케일 none/sm/md/lg/xl(0·8·12·16·24)을 선택합니다. 기본값은 md이며 미디어 상단 모서리에도 적용됩니다.",
             "source": "packages/vue3/src/card.tsx"
           },
           {
@@ -18630,11 +18729,11 @@
           },
           {
             "name": "radius",
-            "type": "\"sm\" | \"md\" | \"lg\" | \"none\" | undefined",
+            "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
             "required": false,
             "default": "\"md\"",
             "description": "",
-            "summary": "공통 모서리 스케일 none/sm/md/lg를 선택합니다. 기본값은 md이며 미디어 상단 모서리에도 적용됩니다.",
+            "summary": "공통 모서리 스케일 none/sm/md/lg/xl(0·8·12·16·24)을 선택합니다. 기본값은 md이며 미디어 상단 모서리에도 적용됩니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -18861,11 +18960,11 @@
           },
           {
             "name": "radius",
-            "type": "\"sm\" | \"md\" | \"lg\" | \"none\" | undefined",
+            "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
             "required": false,
             "default": "\"md\"",
             "description": "",
-            "summary": "공통 모서리 스케일 none/sm/md/lg를 선택합니다. 기본값은 md이며 미디어 상단 모서리에도 적용됩니다.",
+            "summary": "공통 모서리 스케일 none/sm/md/lg/xl(0·8·12·16·24)을 선택합니다. 기본값은 md이며 미디어 상단 모서리에도 적용됩니다.",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -26775,6 +26874,15 @@
             "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56.",
             "summary": "행 밀도입니다. 기본값 default는 높이 56, compact는 44(터치 최소 크기)에 위아래 여백 12이며 시작 여백 16은 같습니다.",
             "source": "packages/vue3/src/list.tsx"
+          },
+          {
+            "name": "radius",
+            "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\"",
+            "required": false,
+            "default": "\"none\"",
+            "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\").",
+            "summary": "섹션 모서리를 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)로 둥글게 하고, 안의 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
+            "source": "packages/vue3/src/list.tsx"
           }
         ],
         "events": [],
@@ -26917,6 +27025,15 @@
             "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56.",
             "summary": "행 밀도입니다. 기본값 default는 높이 56, compact는 44(터치 최소 크기)에 위아래 여백 12이며 시작 여백 16은 같습니다.",
             "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "radius",
+            "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
+            "required": false,
+            "default": "\"none\"",
+            "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\").",
+            "summary": "섹션 모서리를 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)로 둥글게 하고, 안의 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
+            "source": "packages/react/src/list.tsx"
           }
         ],
         "events": [],
@@ -27021,6 +27138,15 @@
             "default": "\"default\"",
             "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56.",
             "summary": "행 밀도입니다. 기본값 default는 높이 56, compact는 44(터치 최소 크기)에 위아래 여백 12이며 시작 여백 16은 같습니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "radius",
+            "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
+            "required": false,
+            "default": "\"none\"",
+            "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\").",
+            "summary": "섹션 모서리를 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)로 둥글게 하고, 안의 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
             "source": "packages/native/src/list.tsx"
           }
         ],

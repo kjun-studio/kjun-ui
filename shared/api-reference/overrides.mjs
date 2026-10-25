@@ -100,7 +100,7 @@ set("Card", {
   surface: "표면의 배경·전경·테두리 색상 역할을 선택합니다. default/muted는 단색, accent/success/warning/danger/subtle/brand는 두 색의 배경, glass는 반투명 배경입니다. border·elevation은 독립적으로 적용됩니다.",
   padding: "헤더·본문·푸터의 기본 여백입니다. none/sm/md/lg이며 기본값은 md입니다. 화면 폭에 따라 자동 변경되지 않습니다.",
   bodyPadding: { default: "padding 상속", summary: "본문 여백만 바꿉니다. none이면 표나 목록을 카드 가장자리까지 채우면서 헤더·푸터 여백을 유지합니다." },
-  radius: "공통 모서리 스케일 none/sm/md/lg를 선택합니다. 기본값은 md이며 미디어 상단 모서리에도 적용됩니다.",
+  radius: "공통 모서리 스케일 none/sm/md/lg/xl(0·8·12·16·24)을 선택합니다. 기본값은 md이며 미디어 상단 모서리에도 적용됩니다.",
   border: "모든 surface에서 외곽 테두리의 표시 여부를 결정합니다. 기본값 false이며 표면이 이 값을 덮어쓰지 않습니다.",
   dividers: "헤더와 본문, 본문과 푸터 사이의 구분선을 표시합니다. 각 선 양쪽에 해당 영역의 여백을 유지합니다.",
 });
@@ -294,4 +294,11 @@ set("Text", {
   onPress: "글자를 누를 때 호출합니다(RN Text onPress). 행동이 주 목적이면 KjunButton variant=\"link\"를 쓰세요.",
   disabled: "RN Text의 disabled입니다. onPress를 막습니다.",
 }, "native");
+// 0.16.0 additions.
+set("Tooltip", {
+  title: "본문 위에 굵게 보이는 제목입니다(파일 이름 위의 경로 등). 화면 낭독기는 제목과 본문을 함께 읽습니다. 제목만 있어도 툴팁이 열리고, 제목과 본문이 모두 없으면 열리지 않습니다.",
+  align: "글자 정렬입니다. start 또는 center를 고르며, 생략하면 이전과 같습니다.",
+  width: "최대 폭 단계입니다(tooltip.maxWidths: sm 192·md 256·lg 320). 생략하면 md(이전 폭)이고, 긴 경로는 폭 안에서 줄바꿈합니다.",
+});
+set("Popover", { anchorRect: "트리거 대신 붙을 화면(viewport) 사각형 { x, y, width?, height? }입니다. 값이 바뀌면 위치를 다시 잡고, 함수로 넘기면 열려 있는 동안 매 프레임 읽으며 null이면 마지막 위치를 유지합니다. 이때 트리거는 선택이며, 트리거 안의 누름·초점 이동은 비모달 Popover를 닫지 않습니다(편집기를 트리거로 두면 커서 위치 팝오버가 됩니다). 트리거가 없으면 닫힌 뒤 초점은 열 때 있던 요소로 돌아갑니다. 웹 전용입니다." });
 
