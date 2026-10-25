@@ -27,6 +27,7 @@ export function FloatingPanel({
   nonModal = false,
   ownsDismiss = false,
   returnFocus,
+  repositionKey = 0,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
@@ -42,6 +43,8 @@ export function FloatingPanel({
   /** The consumer closes the panel itself (non-modal Popover); ignore react-aria's own close requests. */
   ownsDismiss?: boolean;
   returnFocus?: () => HTMLElement | null | false | undefined;
+  /** Changing it makes react-aria place the panel again (it does not watch its trigger move). */
+  repositionKey?: number;
 }) {
   const motion = usePresence(open, useReducedMotion(), tokens.motion.popupExit);
   const layer = useLayer(open, motion.present, "popup", () => onOpenChange(false), triggerRef, returnFocus);
@@ -86,6 +89,8 @@ export function FloatingPanel({
       maxHeight={typeof maxHeight === "number" ? maxHeight : maxHeight == null ? field ? tokens.extensions.menu.listMaxHeight : tokens.extensions.floating.maxHeight : undefined}
       offset={field ? tokens.extensions.floating.fieldGap : tokens.extensions.floating.anchorGap}
       containerPadding={tokens.extensions.floating.viewportInset}
+      // A sub-pixel cross offset that flips with repositionKey: react-aria re-places on a changed dependency.
+      crossOffset={repositionKey % 2 ? 0.001 : 0}
       className={"kjun-scope kjun-floating " + className}
       data-motion="popup" data-motion-open={String(motion.active)} inert={!open}
       style={{

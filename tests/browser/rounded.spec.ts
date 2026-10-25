@@ -100,5 +100,38 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(page.getByText('Only title', { exact: true })).toHaveCount(0);
       await expect(page.locator('[role="tooltip"]')).toHaveCount(0);
     });
+
+    test('a popover follows its anchor rect and presses inside the trigger area keep it open', async ({ page }) => {
+      test.skip(platform === 'native', 'Web only');
+      const area = section(page, 'anchor');
+      await area.getByRole('button', { name: 'open anchored', exact: true }).click();
+      const dialog = page.getByRole('dialog', { name: 'Suggestions' });
+      await expect(dialog).toBeVisible();
+      const before = (await dialog.boundingBox())!;
+      // Sits under the 80,1500 point, not under the trigger area.
+      expect(Math.abs(before.y - 1500)).toBeLessThan(40);
+      await area.getByRole('textbox', { name: 'Editor' }).click();
+      await page.keyboard.type('abc');
+      await area.getByRole('button', { name: 'move anchor', exact: true }).click();
+      await expect(dialog).toBeVisible();
+      await expect.poll(async () => Math.round((await dialog.boundingBox())!.x - before.x)).toBeGreaterThan(150);
+    });
+
+    test('an anchor function that returns null keeps the last position', async ({ page }) => {
+      test.skip(platform === 'native', 'Web only');
+      const area = section(page, 'anchor');
+      await area.getByRole('button', { name: 'open followed', exact: true }).click();
+      const dialog = page.getByRole('dialog', { name: 'Followed' });
+      await expect(dialog).toBeVisible();
+      await page.waitForTimeout(200);
+      const before = (await dialog.boundingBox())!;
+      expect(Math.abs(before.y - 1500)).toBeLessThan(40);
+      await area.getByRole('button', { name: 'lose anchor', exact: true }).click();
+      await page.waitForTimeout(300);
+      await expect(dialog).toBeVisible();
+      const after = (await dialog.boundingBox())!;
+      expect(Math.round(after.x)).toBe(Math.round(before.x));
+      expect(Math.round(after.y)).toBe(Math.round(before.y));
+    });
   });
 }

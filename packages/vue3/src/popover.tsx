@@ -1,3 +1,4 @@
+import { anchorStyle, followAnchor, type AnchorSource } from "../../../shared/package-runtime/anchor-rect";
 import { useKjunMessages } from "./runtime/messages";
 import { Teleport, cloneVNode, computed, defineComponent, isVNode, onBeforeUnmount, onMounted, onUpdated, reactive, ref, unref, watch,
   type ExtractPublicPropTypes, type PropType, type Ref, type VNode, type SlotsType, type VNodeChild } from "vue";
@@ -26,6 +27,9 @@ const kjunPopoverProps = {
   returnFocus: { type: [Object, Function] as PropType<HTMLElement | Ref<HTMLElement | null> | (() => HTMLElement | null)>, default: undefined },
   /** false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus. */
   modal: { type: Boolean, default: true },
+  /** Attach to this screen rectangle (or a function read every frame while open) instead of the trigger. Web only.
+   * The trigger slot becomes optional; presses inside it still count as inside a non-modal Popover. */
+  anchorRect: { type: [Object, Function] as PropType<AnchorSource>, default: undefined },
 } as const;
 export type KjunPopoverProps = ExtractPublicPropTypes<typeof kjunPopoverProps>;
 /** v-model:open (optional). Slots: trigger({ open }), default({ close }). */
@@ -47,6 +51,16 @@ export const KjunPopover = defineComponent({
     const id = useKjunId("kjun-");
     const expanded = usePopupExpanded(() => open.value, () => trigger.value);
     const change = (value: boolean) => { internal.value = value; emit("update:open", value); };
+    // Anchor mode positions against an invisible fixed element on the rectangle.
+    const anchor = ref<HTMLElement | null>(null), reposition = ref(0);
+    let opener: HTMLElement | null = null, stopAnchor = () => {};
+    watch(open, value => { opener = value ? document.activeElement as HTMLElement | null : null; }, { flush: "sync" });
+    watch([open, anchor, () => props.anchorRect], ([isOpen, element]) => {
+      stopAnchor(); stopAnchor = () => {};
+      if (!isOpen || !element || props.anchorRect === undefined) return;
+      stopAnchor = followAnchor(element, () => props.anchorRect, () => { reposition.value++; });
+    }, { flush: "post", immediate: true, deep: true });
+    onBeforeUnmount(() => stopAnchor());
     // A non-modal Popover closed by an outside press or focus move leaves focus where the user put it.
     let skipReturn = false, release = () => {};
     watch([open, () => props.modal], ([isOpen, isModal]) => {
@@ -74,7 +88,8 @@ export const KjunPopover = defineComponent({
     };
     return () => (
       <>
-        <div ref={trigger} class="kjun-layer-trigger"
+        {props.anchorRect !== undefined && <div ref={anchor} aria-hidden="true" style={anchorStyle} />}
+        {(props.anchorRect === undefined || slots.trigger) && <div ref={trigger} class="kjun-layer-trigger"
           {...{ onClickCapture: () => { if (!props.manualTrigger) change(!open.value); } }}
           onKeydown={(event: KeyboardEvent) => {
             if (!props.manualTrigger && ["Enter", " "].includes(event.key) && event.target === event.currentTarget) {
@@ -84,15 +99,17 @@ export const KjunPopover = defineComponent({
           }}
           aria-haspopup="dialog" aria-expanded={expanded.value} aria-controls={expanded.value ? id : undefined}>
           {slots.trigger?.({ open: open.value })}
-        </div>
-        <FloatingPanel open={open.value} onOpenChange={change} trigger={() => trigger.value} panelClass={"kjun-content-popover" + (slots.header ? " kjun-popover-has-header" : "")} dialog={false}
+        </div>}
+        <FloatingPanel open={open.value} onOpenChange={change} trigger={() => props.anchorRect !== undefined ? anchor.value : trigger.value} repositionKey={reposition.value} panelClass={"kjun-content-popover" + (slots.header ? " kjun-popover-has-header" : "")} dialog={false}
           placement={props.placement} matchTriggerWidth={props.matchTriggerWidth} maxHeight={props.maxHeight} flip={props.flip}
           nonModal={!props.modal}
           returnFocus={() => {
             if (skipReturn) return false;
             // Vue does not unwrap a ref passed as a prop value, and the prop may change after mount.
             const target = props.returnFocus;
-            return typeof target === "function" ? target() : unref(target) ?? undefined;
+            const chosen = typeof target === "function" ? target() : unref(target) ?? undefined;
+            // Without a trigger, focus goes back where it was when the Popover opened.
+            return chosen ?? (props.anchorRect !== undefined && !slots.trigger ? opener ?? undefined : undefined);
           }}>
           {{ default: () => (
             <section ref={dialog} id={id} class="kjun-popover-dialog" role="dialog" tabindex={-1}

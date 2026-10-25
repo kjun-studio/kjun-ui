@@ -1,8 +1,9 @@
+import { anchorStyle, followAnchor, type AnchorSource } from "../../../shared/package-runtime/anchor-rect";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
 import { useLayer } from "../../../shared/package-runtime/use-layer";
-import { useCallback, useEffect, useId, useRef, useState, type CSSProperties, type ReactNode, type ComponentProps, type RefObject } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode, type ComponentProps, type RefObject } from "react";
 import { Dialog, Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
 import { FloatingPanel, resolveFocusReturn } from "./floating-panel";
 import { installNonModalPopover } from "../../../shared/package-runtime/popover-nonmodal";
@@ -25,7 +26,10 @@ export interface KjunPopoverProps {
   header?: ReactNode;
   /** false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus. */
   modal?: boolean;
-  trigger: ReactNode | ((open: boolean) => ReactNode);
+  /** Attach to this screen rectangle (or a function read every frame while open) instead of the trigger. Web only.
+   * The trigger becomes optional; presses inside it still count as inside a non-modal Popover. */
+  anchorRect?: AnchorSource;
+  trigger?: ReactNode | ((open: boolean) => ReactNode);
   children: ReactNode | ((close: () => void) => ReactNode);
 }
 export function KjunPopover({
@@ -42,6 +46,7 @@ export function KjunPopover({
   returnFocus,
   header,
   modal = true,
+  anchorRect,
   trigger,
   children,
 }: KjunPopoverProps) {
@@ -58,6 +63,17 @@ export function KjunPopover({
     if (node && focusOnMount.current) node.focus();
   }, []);
   const resolveReturn = resolveFocusReturn(returnFocus);
+  // Anchor mode positions against an invisible fixed element on the rectangle.
+  const anchor = useRef<HTMLDivElement>(null), anchorSource = useRef(anchorRect), opener = useRef<HTMLElement | null>(null);
+  anchorSource.current = anchorRect;
+  const [reposition, setReposition] = useState(0);
+  const anchored = anchorRect !== undefined;
+  if (open && !opener.current && typeof document !== "undefined") opener.current = document.activeElement as HTMLElement | null;
+  if (!open) opener.current = null;
+  useLayoutEffect(() => {
+    if (!open || !anchored || !anchor.current) return;
+    return followAnchor(anchor.current, () => anchorSource.current, () => setReposition(n => n + 1));
+  }, [open, anchored, typeof anchorRect === "function" ? anchorRect : anchorRect && `${anchorRect.x},${anchorRect.y},${anchorRect.width},${anchorRect.height}`]);
   const change = (v: boolean) => {
     setInternal(v);
     onOpenChange?.(v);
@@ -80,7 +96,8 @@ export function KjunPopover({
   );
   return (
     <>
-      <div
+      {anchored && <div ref={anchor} aria-hidden="true" style={anchorStyle} />}
+      {(!anchored || trigger != null) && <div
         ref={ref}
         className="kjun-layer-trigger"
         onClickCapture={() => {
@@ -101,17 +118,18 @@ export function KjunPopover({
         aria-controls={expanded ? id : undefined}
       >
         {typeof trigger === "function" ? trigger(open) : trigger}
-      </div>
+      </div>}
       <FloatingPanel
         open={open}
         onOpenChange={change}
-        triggerRef={ref}
+        triggerRef={anchored ? anchor : ref}
+        repositionKey={reposition}
         className={"kjun-content-popover" + (header != null ? " kjun-popover-has-header" : "")}
         placement={placement}
         matchTriggerWidth={matchTriggerWidth}
         maxHeight={maxHeight}
         flip={flip}
-        returnFocus={() => (skipReturn.current ? false : resolveReturn?.())}
+        returnFocus={() => (skipReturn.current ? false : resolveReturn?.() ?? (anchored && trigger == null ? opener.current : undefined))}
         nonModal={!modal}
         ownsDismiss={!modal}
       >

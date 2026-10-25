@@ -33,6 +33,8 @@ export const FloatingPanel = defineComponent({
     returnFocus: { type: Function as PropType<() => HTMLElement | null | false | undefined>, default: undefined },
     /** The panel is itself the dialog unless its content renders one (Popover). */
     dialog: { type: Boolean, default: true },
+    /** Changing it places the panel again (an anchor rectangle moved without a scroll or resize). */
+    repositionKey: { type: Number, default: 0 },
   },
   setup(props, { slots, expose }) {
     const reduced = useReducedMotion();
@@ -95,6 +97,7 @@ export const FloatingPanel = defineComponent({
       document.removeEventListener("keydown", onKeyDown);
     };
     watch(panel, element => { if (element) attach(); else detach(); }, { flush: "post" });
+    watch(() => props.repositionKey, update, { flush: "post" });
     onUpdated(update);
     onBeforeUnmount(detach);
     expose({ panel });
