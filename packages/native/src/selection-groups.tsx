@@ -209,7 +209,7 @@ export function KjunFilterGroup({
                 ],
                 // Corners follow the button scale with the height, so every size keeps the same shape.
                 borderRadius: tokens.button.radii[size],
-                backgroundColor: active ? colors.text : colors.secondary,
+                backgroundColor: active ? colors.filterSelectedBg : colors.secondary,
               }}
             >
               {option.dot && (
@@ -226,7 +226,7 @@ export function KjunFilterGroup({
                 <KjunIcon
                   name={option.icon}
                   size={tokens.extensions.selection.iconSize}
-                  color={active ? colors.inverse : colors.textSecondary}
+                  color={active ? colors.filterSelectedText : colors.textSecondary}
                 />
               )}
               <View>
@@ -237,7 +237,7 @@ export function KjunFilterGroup({
                   position: 'absolute', left: 0, right: 0, top: 0,
                   ...selectionTypeStyle(size, active),
 
-                  color: active ? colors.inverse : colors.textSecondary,
+                  color: active ? colors.filterSelectedText : colors.textSecondary,
                 }}
               >
                 {option.label}

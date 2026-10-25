@@ -15,5 +15,15 @@ export function RoundedCases({ K, native = false, providerProps = {} }: { K: any
         <K.KjunListRow title="Square row" {...(native ? { onPress: () => {} } : { onClick: () => {} })} />
       </K.KjunListSection>
     </K.KjunProvider></div>
+    <div data-testid="filters">
+      <K.KjunProvider {...providerProps}>
+        <K.KjunFilterGroup ariaLabel="Default filters" value="all" options={[{ value: 'all', label: 'All' }, { value: 'up', label: 'Up' }]} />
+      </K.KjunProvider>
+      <div style={{ ['--kjun-filter-selected-bg' as string]: 'rgb(10, 20, 200)', ['--kjun-filter-selected-text' as string]: 'rgb(250, 250, 10)' }}>
+        <K.KjunProvider {...providerProps} {...(native ? { colors: { ...providerProps.colors, filterSelectedBg: 'rgb(10, 20, 200)', filterSelectedText: 'rgb(250, 250, 10)' } } : {})}>
+          <K.KjunFilterGroup ariaLabel="Brand filters" value="all" options={[{ value: 'all', label: 'Every' }, { value: 'up', label: 'Rising' }]} />
+        </K.KjunProvider>
+      </div>
+    </div>
   </div>;
 }

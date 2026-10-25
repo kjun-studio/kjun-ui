@@ -51,5 +51,28 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(square).toBeFocused();
       expect(parseFloat(await square.evaluate(el => getComputedStyle(el).outlineOffset))).toBeGreaterThanOrEqual(0);
     });
+
+    // The painted background of the selected chip: the label's nearest ancestor with a background.
+    // Chips also render an invisible copy of the label to reserve the bold width; read the shown one.
+    const chipColors = (page: Page, label: string) => section(page, 'filters').getByText(label, { exact: true }).evaluateAll(all => {
+      const el = all.find(n => getComputedStyle(n).opacity !== '0' && getComputedStyle(n).visibility !== 'hidden')!;
+      let bg = ''; for (let n: Element | null = el; n; n = n.parentElement) { const c = getComputedStyle(n).backgroundColor; if (c !== 'rgba(0, 0, 0, 0)') { bg = c; break; } }
+      return { bg, text: getComputedStyle(el).color };
+    });
+
+    test('selected filter chips use the filter roles', async ({ page }) => {
+      expect(await chipColors(page, 'Every')).toEqual({ bg: 'rgb(10, 20, 200)', text: 'rgb(250, 250, 10)' });
+    });
+
+    test('without the roles selected chips keep text and inverse', async ({ page }) => {
+      const colors = await page.evaluate(() => {
+        const probe = document.querySelector('.kjun-scope') ?? document.body, style = getComputedStyle(probe);
+        return { text: style.getPropertyValue('--kjun-text').trim(), inverse: style.getPropertyValue('--kjun-inverse').trim() };
+      });
+      const css = (v: string) => page.evaluate(value => { const i = document.createElement('i'); i.style.color = value; document.body.append(i); const c = getComputedStyle(i).color; i.remove(); return c; }, v);
+      const chip = await chipColors(page, 'All');
+      if (colors.text) expect(chip.bg).toBe(await css(colors.text));
+      expect(chip.bg).not.toBe('rgb(10, 20, 200)');
+    });
   });
 }

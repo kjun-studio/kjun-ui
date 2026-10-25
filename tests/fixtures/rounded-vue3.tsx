@@ -18,4 +18,14 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
       <K.KjunListRow title="Square row" onClick={() => {}} />
     </K.KjunListSection>
   </K.KjunProvider></div>
+  <div data-testid="filters">
+    <K.KjunProvider>
+      <K.KjunFilterGroup ariaLabel="Default filters" modelValue="all" options={[{ value: 'all', label: 'All' }, { value: 'up', label: 'Up' }]} />
+    </K.KjunProvider>
+    <div style={{ '--kjun-filter-selected-bg': 'rgb(10, 20, 200)', '--kjun-filter-selected-text': 'rgb(250, 250, 10)' }}>
+      <K.KjunProvider>
+        <K.KjunFilterGroup ariaLabel="Brand filters" modelValue="all" options={[{ value: 'all', label: 'Every' }, { value: 'up', label: 'Rising' }]} />
+      </K.KjunProvider>
+    </div>
+  </div>
 </div>).mount('#root');

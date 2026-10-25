@@ -79,6 +79,8 @@
     "selectedBg",
     "onBrand",
     "switchThumbOn",
+    "filterSelectedBg",
+    "filterSelectedText",
     "onDanger",
     "onSuccess",
     "onWarning"
@@ -186,6 +188,8 @@
     "selected-bg": "selectedBg",
     "on-brand": "onBrand",
     "switch-thumb-on": "switchThumbOn",
+    "filter-selected-bg": "filterSelectedBg",
+    "filter-selected-text": "filterSelectedText",
     "on-danger": "onDanger",
     "on-success": "onSuccess",
     "on-warning": "onWarning"
@@ -272,6 +276,8 @@
     "selectedBg": "active",
     "onBrand": "inverse",
     "switchThumbOn": "onBrand",
+    "filterSelectedBg": "text",
+    "filterSelectedText": "inverse",
     "onDanger": "inverse",
     "onSuccess": "inverse",
     "onWarning": "inverse"

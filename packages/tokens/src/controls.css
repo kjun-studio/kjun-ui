@@ -133,8 +133,8 @@
   white-space: nowrap;
 }
 .kjun-filter-chip[aria-pressed="true"] > span {
-  background: var(--_kjun-color-text);
-  color: var(--_kjun-color-inverse);
+  background: var(--_kjun-color-filter-selected-bg);
+  color: var(--_kjun-color-filter-selected-text);
   font-weight: var(--_kjun-type-control-weight);
 }
 .kjun-filter-chip:disabled {

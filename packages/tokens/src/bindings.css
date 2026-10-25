@@ -79,6 +79,8 @@
   --_kjun-color-selected-bg: var(--kjun-selected-bg, var(--kjun-active));
   --_kjun-color-on-brand: var(--kjun-on-brand, var(--kjun-inverse));
   --_kjun-color-switch-thumb-on: var(--kjun-switch-thumb-on, var(--kjun-on-brand, var(--kjun-inverse)));
+  --_kjun-color-filter-selected-bg: var(--kjun-filter-selected-bg, var(--kjun-text));
+  --_kjun-color-filter-selected-text: var(--kjun-filter-selected-text, var(--kjun-inverse));
   --_kjun-color-on-danger: var(--kjun-on-danger, var(--kjun-inverse));
   --_kjun-color-on-success: var(--kjun-on-success, var(--kjun-inverse));
   --_kjun-color-on-warning: var(--kjun-on-warning, var(--kjun-inverse));
@@ -182,6 +184,8 @@
   --_kjun-selected-bg: var(--_kjun-color-selected-bg);
   --_kjun-on-brand: var(--_kjun-color-on-brand);
   --_kjun-switch-thumb-on: var(--_kjun-color-switch-thumb-on);
+  --_kjun-filter-selected-bg: var(--_kjun-color-filter-selected-bg);
+  --_kjun-filter-selected-text: var(--_kjun-color-filter-selected-text);
   --_kjun-on-danger: var(--_kjun-color-on-danger);
   --_kjun-on-success: var(--_kjun-color-on-success);
   --_kjun-on-warning: var(--_kjun-color-on-warning);

@@ -450,9 +450,7 @@
       "--text-inverse"
     ],
     "implementationFiles": [
-      "packages/tokens/src/controls.css",
-      "packages/native/src/button.tsx",
-      "packages/native/src/selection-groups.tsx"
+      "packages/native/src/button.tsx"
     ]
   },
   {
@@ -1336,6 +1334,34 @@
     ],
     "implementationFiles": [
       "packages/native/src/choice-controls.tsx"
+    ]
+  },
+  {
+    "role": "filterSelectedBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "text",
+    "variable": "--kjun-filter-selected-bg",
+    "upstreamAliases": [
+      "--filter-selected-bg"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/native/src/selection-groups.tsx"
+    ]
+  },
+  {
+    "role": "filterSelectedText",
+    "contract": "common",
+    "required": false,
+    "fallback": "inverse",
+    "variable": "--kjun-filter-selected-text",
+    "upstreamAliases": [
+      "--filter-selected-text"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/native/src/selection-groups.tsx"
     ]
   },
   {
