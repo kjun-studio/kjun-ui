@@ -536,6 +536,9 @@
   --_kjun-extension-switch-label-gap: 8px;
   --_kjun-extension-tooltip-padding-x: 8px;
   --_kjun-extension-tooltip-padding-y: 4px;
+  --_kjun-extension-tooltip-max-widths-sm: 192px;
+  --_kjun-extension-tooltip-max-widths-md: 256px;
+  --_kjun-extension-tooltip-max-widths-lg: 320px;
   --_kjun-extension-tooltip-max-width: 256px;
   --_kjun-extension-tooltip-arrow-size: 8px;
   --_kjun-extension-financial-affix-gap: 4px;

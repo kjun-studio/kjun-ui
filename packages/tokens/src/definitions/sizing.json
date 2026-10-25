@@ -156,7 +156,8 @@
       }
     },
     "tooltip": {
-      "maxWidth": 256,
+      "maxWidths": { "sm": 192, "md": 256, "lg": 320 },
+      "maxWidth": { "$ref": "extensions.tooltip.maxWidths.md" },
       "arrowSize": 8
     },
     "drawer": {

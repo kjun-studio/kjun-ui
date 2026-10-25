@@ -115,6 +115,11 @@ export const KjunPopover = defineComponent({
 
 const kjunTooltipProps = {
   content: { type: String, default: "" },
+  /** A bolder line above content (a file name above its path). Read together with content. */
+  title: { type: String, default: undefined },
+  align: { type: String as PropType<"start" | "center">, default: undefined },
+  /** Maximum width step (tooltip.maxWidths); default is md, the earlier width. */
+  width: { type: String as PropType<"sm" | "md" | "lg">, default: undefined },
   placement: { type: String as PropType<"top" | "bottom" | "left" | "right">, default: "top" },
   delay: { type: Number, default: 0 },
   /** Controlled visibility; omit to let hover and focus drive it. */
@@ -139,12 +144,12 @@ export const KjunTooltip = defineComponent({
     } });
     const layer = useLayer(() => open.value, () => open.value, "tooltip", () => { open.value = false; });
     const reduced = useReducedMotion();
-    const motion = usePresence(() => open.value && !layer.blocked.value, () => reduced.value, tokens.motion.tooltipExit);
+    const motion = usePresence(() => open.value && !layer.blocked.value && !!(props.content || props.title), () => reduced.value, tokens.motion.tooltipExit);
     const target = usePortalTarget();
     const id = useKjunId("kjun-tooltip-");
     const anchor = ref<HTMLElement | null>(null), tip = ref<HTMLElement | null>(null);
     const position = reactive({ top: 0, left: 0, side: props.placement as string, arrow: 0 });
-    const disabled = () => !props.content || !layer.scopeActive.value;
+    const disabled = () => (!props.content && !props.title) || !layer.scopeActive.value;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const show = (immediate: boolean) => {
       if (disabled()) return;
@@ -184,7 +189,8 @@ export const KjunTooltip = defineComponent({
     };
     return () => {
       const [child, ...rest] = ((slots.default?.() ?? []) as VNode[]).filter(node => isVNode(node));
-      const shown = open.value && !layer.blocked.value;
+      // Nothing to show (no title, no content) keeps it closed even when open is forced, like Native.
+      const shown = open.value && !layer.blocked.value && !!(props.content || props.title);
       // The tooltip joins any description the app already gave the control.
       const described = [(child as VNode | undefined)?.props?.["aria-describedby"], shown ? id : undefined].filter(Boolean).join(" ") || undefined;
       const trigger = child && cloneVNode(child as VNode, { ...handlers, "aria-describedby": described,
@@ -205,15 +211,16 @@ export const KjunTooltip = defineComponent({
           {trigger}{rest}
           {to !== null && motion.present() && (
             <Teleport to={to}>
-              <div ref={tip} id={id} role="tooltip" class="kjun-scope kjun-tooltip" data-placement={position.side}
+              <div ref={tip} id={id} role="tooltip" class="kjun-scope kjun-tooltip" data-placement={position.side} data-align={props.align}
                 data-entering={shown && !motion.active() ? "true" : undefined} data-exiting={!shown ? "true" : undefined}
-                style={{ position: "fixed", zIndex: layer.zIndex.value, top: position.top + "px", left: position.left + "px" }}>
+                style={{ position: "fixed", zIndex: layer.zIndex.value, top: position.top + "px", left: position.left + "px",
+                  ...(props.width ? { maxWidth: `var(--_kjun-extension-tooltip-max-widths-${props.width})` } : {}) }}>
                 <div style={{ position: "absolute", ...(vertical
                   ? { left: position.arrow + "px", transform: "translateX(-50%)", [position.side === "top" ? "top" : "bottom"]: "100%" }
                   : { top: position.arrow + "px", transform: "translateY(-50%)", [position.side === "left" ? "left" : "right"]: "100%" }) }}>
                   <svg width={arrowSize} height={arrowSize} viewBox="0 0 8 8"><path d="M0 0L4 4L8 0" fill="currentColor" /></svg>
                 </div>
-                {props.content}
+                {props.title ? <><span class="kjun-tooltip-title">{props.title}</span>{props.content && <span class="kjun-tooltip-body">{props.content}</span>}</> : props.content}
               </div>
             </Teleport>
           )}

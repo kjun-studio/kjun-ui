@@ -97,6 +97,11 @@ export function KjunPopover({
 export interface KjunTooltipProps
   extends Pick<PressableProps, "onPress" | "disabled"> {
   content?: string;
+  /** A bolder line above content (a file name above its path). Read together with content. */
+  title?: string;
+  align?: "start" | "center";
+  /** Maximum width step (tooltip.maxWidths); default is md, the earlier width. */
+  width?: "sm" | "md" | "lg";
   placement?: "top" | "bottom" | "left" | "right";
   delay?: number;
   /** Controlled visibility; omit to let hover and focus drive it. */
@@ -105,7 +110,10 @@ export interface KjunTooltipProps
   children: ReactNode;
 }
 export function KjunTooltip({
-  content: message = "",
+  content: body = "",
+  title,
+  align,
+  width,
   placement = "top",
   delay = 0,
   children,
@@ -114,6 +122,8 @@ export function KjunTooltip({
   open: controlled,
   onOpenChange,
 }: KjunTooltipProps) {
+  // Screen readers hear the title and body together, as on Web.
+  const message = [title, body].filter(Boolean).join(", ");
   const { colors } = useKjunStyles(),
     [internal, setInternal] = useState(false),
     open = controlled ?? internal,
@@ -210,19 +220,21 @@ export function KjunTooltip({
           style={{
             paddingVertical: tokens.extensions.tooltip.paddingY,
             paddingHorizontal: tokens.extensions.tooltip.paddingX,
-            maxWidth: tokens.extensions.tooltip.maxWidth,
+            maxWidth: width ? tokens.extensions.tooltip.maxWidths[width] : tokens.extensions.tooltip.maxWidth,
             backgroundColor: colors.chartTooltipBg,
           }}
         >
-          <KText
+          {!!title && <KText style={{ ...typeStyle('controlSmall'), color: colors.chartTooltipText, ...(align ? { textAlign: align === "center" ? "center" : "left" } : {}) }}>{title}</KText>}
+          {!!body && <KText
             style={{
               ...typeStyle('caption'),
 
               color: colors.chartTooltipText,
+              ...(align ? { textAlign: align === "center" ? "center" : "left" } : {}),
             }}
           >
-            {message}
-          </KText>
+            {body}
+          </KText>}
         </View>
       </FloatingPanel>
     </>

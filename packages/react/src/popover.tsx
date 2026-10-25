@@ -141,6 +141,11 @@ export function KjunPopover({
 }
 export interface KjunTooltipProps {
   content?: string;
+  /** A bolder line above content (a file name above its path). Read together with content. */
+  title?: string;
+  align?: "start" | "center";
+  /** Maximum width step (tooltip.maxWidths); default is md, the earlier width. */
+  width?: "sm" | "md" | "lg";
   placement?: "top" | "bottom" | "left" | "right";
   delay?: number;
   /** Controlled visibility; omit to let hover and focus drive it. */
@@ -150,6 +155,9 @@ export interface KjunTooltipProps {
 }
 export function KjunTooltip({
   content = "",
+  title,
+  align,
+  width,
   placement = "top",
   delay = 0,
   open: controlled,
@@ -162,13 +170,14 @@ export function KjunTooltip({
   const setOpen = (value: boolean) => { setInternal(value); onOpenChange?.(value); };
   const layer = useLayer(open, open, "tooltip", () => setOpen(false));
   return (
-    <TooltipTrigger isOpen={open && !layer.blocked} onOpenChange={setOpen} delay={delay} closeDelay={0} isDisabled={!content || !layer.scopeActive}>
+    <TooltipTrigger isOpen={open && !layer.blocked && !!(content || title)} onOpenChange={setOpen} delay={delay} closeDelay={0} isDisabled={(!content && !title) || !layer.scopeActive}>
       <Focusable>
         {children as ComponentProps<typeof Focusable>["children"]}
       </Focusable>
       {container !== null && (
         <Tooltip
-          style={{ zIndex: layer.zIndex }}
+          style={{ zIndex: layer.zIndex, ...(width ? { maxWidth: `var(--_kjun-extension-tooltip-max-widths-${width})` } : {}) }}
+          data-align={align}
           UNSTABLE_portalContainer={container}
           placement={placement}
           offset={tokens.extensions.floating.anchorGap}
@@ -179,7 +188,7 @@ export function KjunTooltip({
               <path d="M0 0L4 4L8 0" fill="currentColor" />
             </svg>
           </OverlayArrow>
-          {content}
+          {title ? <><span className="kjun-tooltip-title">{title}</span>{content && <span className="kjun-tooltip-body">{content}</span>}</> : content}
         </Tooltip>
       )}
     </TooltipTrigger>

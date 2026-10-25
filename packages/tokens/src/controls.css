@@ -232,6 +232,17 @@
   font-weight: var(--_kjun-type-caption-weight);
   letter-spacing: var(--_kjun-type-caption-tracking);
 }
+/* Title above the body: a bolder small role in the same tooltip text color. */
+.kjun-tooltip-title {
+  display: block;
+  font-size: var(--_kjun-type-control-small-size);
+  line-height: var(--_kjun-type-control-small-line);
+  font-weight: var(--_kjun-type-control-small-weight);
+  letter-spacing: var(--_kjun-type-control-small-tracking);
+}
+.kjun-tooltip-body { display: block; }
+.kjun-tooltip[data-align="start"] { text-align: start; }
+.kjun-tooltip[data-align="center"] { text-align: center; }
 .kjun-tooltip svg {
   display: block;
   color: var(--_kjun-color-chart-tooltip-bg);

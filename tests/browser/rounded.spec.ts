@@ -1,5 +1,6 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { tokens } from '../../packages/tokens/src/index';
 
 // 0.16.0 adopter requests: one block per feature, three platforms.
 const section = (page: Page, id: string) => page.getByTestId(id);
@@ -73,6 +74,31 @@ for (const platform of ['react', 'vue3', 'native']) {
       const chip = await chipColors(page, 'All');
       if (colors.text) expect(chip.bg).toBe(await css(colors.text));
       expect(chip.bg).not.toBe('rgb(10, 20, 200)');
+    });
+
+    const showTip = (page: Page, which: string) => section(page, 'tooltips').getByRole('button', { name: 'show ' + which, exact: true }).click();
+    const path = '/Users/me/projects/kjun/packages/react/src/components/very-long-file-name.tsx';
+
+    test('tooltip shows a bolder title above the body, capped by the width step and centred', async ({ page }) => {
+      await showTip(page, 'path');
+      const title = page.getByText('File path', { exact: true }), body = page.getByText(path, { exact: true });
+      await expect(title).toBeVisible();
+      const weight = (l: Locator) => l.evaluate(el => Number(getComputedStyle(el).fontWeight));
+      expect(await weight(title)).toBeGreaterThan(await weight(body));
+      const titleBox = (await title.boundingBox())!, bodyBox = (await body.boundingBox())!;
+      expect(titleBox.y + titleBox.height).toBeLessThanOrEqual(bodyBox.y + 1);
+      // The long path wraps inside the sm step instead of widening the tooltip.
+      expect(bodyBox.width).toBeLessThanOrEqual(tokens.extensions.tooltip.maxWidths.sm);
+      expect(bodyBox.height).toBeGreaterThan(titleBox.height * 1.5);
+      expect(await body.evaluate(el => getComputedStyle(el).textAlign)).toBe('center');
+    });
+
+    test('a title-only tooltip opens and an empty one does not', async ({ page }) => {
+      await showTip(page, 'title');
+      await expect(page.getByText('Only title', { exact: true })).toBeVisible();
+      await showTip(page, 'empty');
+      await expect(page.getByText('Only title', { exact: true })).toHaveCount(0);
+      await expect(page.locator('[role="tooltip"]')).toHaveCount(0);
     });
   });
 }
