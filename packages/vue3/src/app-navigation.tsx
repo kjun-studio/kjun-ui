@@ -10,6 +10,8 @@ const kjunTopNavigationProps = {
   title: { type: String, required: true },
   description: { type: String, default: undefined },
   safeAreaTop: { type: Number, default: 0 },
+  /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
+  surface: { type: Boolean, default: true },
 } as const;
 export type KjunTopNavigationProps = ExtractPublicPropTypes<typeof kjunTopNavigationProps>;
 /** Slots: leading, actions. Buttons inside take the navigation's control geometry. */
@@ -25,7 +27,7 @@ export const KjunTopNavigation = defineComponent({
     return () => {
       const leading = slots.leading?.(), actions = slots.actions?.();
       return (
-        <header class="kjun-top-navigation" style={css({ paddingTop: Math.max(0, props.safeAreaTop) })}>
+        <header class="kjun-top-navigation" data-surface={props.surface ? undefined : "false"} style={css({ paddingTop: Math.max(0, props.safeAreaTop) })}>
           <div class="kjun-navigation-content">
             {hasContent(leading) && <div class="kjun-navigation-leading">{leading}</div>}
             <div class="kjun-navigation-title"><strong>{props.title}</strong>{props.description && <p>{props.description}</p>}</div>
@@ -45,6 +47,8 @@ const kjunBottomNavigationProps = {
   safeAreaBottom: { type: Number, default: 0 },
   keyboardVisible: { type: Boolean, default: false },
   hideOnKeyboard: { type: Boolean, default: true },
+  /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
+  surface: { type: Boolean, default: true },
 } as const;
 export type KjunBottomNavigationProps = ExtractPublicPropTypes<typeof kjunBottomNavigationProps>;
 /** Event: navigate(key, event); prevent the event to route in the app. */
@@ -58,7 +62,7 @@ export const KjunBottomNavigation = defineComponent({
       const hasIcons = props.items.some(item => item.icon);
       if (props.keyboardVisible && props.hideOnKeyboard) return null;
       return (
-        <nav class="kjun-bottom-navigation" data-icons={hasIcons || undefined} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={css({ paddingBottom: Math.max(0, props.safeAreaBottom) })}>
+        <nav class="kjun-bottom-navigation" data-icons={hasIcons || undefined} data-surface={props.surface ? undefined : "false"} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={css({ paddingBottom: Math.max(0, props.safeAreaBottom) })}>
           {props.items.map(item => {
             const badge = item.badge != null && <span class="kjun-navigation-badge" aria-hidden="true">{item.badge}</span>;
             return (
@@ -81,6 +85,8 @@ const kjunBottomActionBarProps = {
   safeAreaBottom: { type: Number, default: 0 },
   keyboardVisible: { type: Boolean, default: false },
   hideOnKeyboard: { type: Boolean, default: false },
+  /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
+  surface: { type: Boolean, default: true },
 } as const;
 export type KjunBottomActionBarProps = ExtractPublicPropTypes<typeof kjunBottomActionBarProps>;
 export const KjunBottomActionBar = defineComponent({
@@ -89,7 +95,7 @@ export const KjunBottomActionBar = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     return () => props.keyboardVisible && props.hideOnKeyboard ? null : (
-      <div class="kjun-bottom-action-bar" style={css({ paddingBottom: tokens.extensions.navigation.padding + Math.max(0, props.safeAreaBottom) })}>
+      <div class="kjun-bottom-action-bar" data-surface={props.surface ? undefined : "false"} style={css({ paddingBottom: tokens.extensions.navigation.padding + Math.max(0, props.safeAreaBottom) })}>
         <div class="kjun-bottom-action-content">{props.description && <p>{props.description}</p>}<div class="kjun-navigation-actions">{slots.default?.()}</div></div>
       </div>
     );

@@ -10,8 +10,10 @@ import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
 import { TopNavigationContext } from "./top-navigation-context";
 import { BottomActionBarContext } from "./bottom-action-bar-context";
-export interface KjunTopNavigationProps { title: string; description?: string; leading?: ReactNode; actions?: ReactNode; safeAreaTop?: number }
-export function KjunTopNavigation({ title, description, leading, actions, safeAreaTop = 0 }: KjunTopNavigationProps) {
+export interface KjunTopNavigationProps { title: string; description?: string; leading?: ReactNode; actions?: ReactNode; safeAreaTop?: number;
+  /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
+  surface?: boolean }
+export function KjunTopNavigation({ title, description, leading, actions, safeAreaTop = 0, surface = true }: KjunTopNavigationProps) {
   const { colors } = useKjunStyles();
   const geometry = tokens.extensions.topNavigation;
   const titleInset = Math.max(0, (geometry.controlSize - tokens.typography.sectionTitle.lineHeightPx) / 2);
@@ -30,7 +32,7 @@ export function KjunTopNavigation({ title, description, leading, actions, safeAr
     isValidElement<{ children?: ReactNode }>(child) && child.type === Fragment ? flatten(child.props.children) : [child]);
   const actionList = flatten(actions);
   return <TopNavigationContext.Provider value={geometry}>
-    <View style={{ flexShrink: 0, paddingTop: Math.max(0, safeAreaTop), backgroundColor: colors.surface }}>
+    <View style={{ flexShrink: 0, paddingTop: Math.max(0, safeAreaTop), backgroundColor: surface ? colors.surface : "transparent" }}>
       <View style={{ minHeight: geometry.minimumHeight, flexDirection: "row", flexWrap: "wrap", alignItems: "flex-start", gap: geometry.gap, paddingVertical: geometry.paddingY, paddingHorizontal: geometry.paddingX }}>
         {hasContent(leading) && <TopNavigationContext.Provider value={{ ...geometry, slot: 'leading' }}><View onLayout={square("leading")} style={{ minHeight: geometry.controlSize, minWidth: 0, maxWidth: '40%', flexShrink: 1, justifyContent: "center", marginLeft: iconEdges.leading ? -edgeInset : 0 }}>{content(leading)}</View></TopNavigationContext.Provider>}
         <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: geometry.titleMinimumWidth, minWidth: 0, paddingVertical: titleInset }}>
@@ -46,15 +48,17 @@ export function KjunTopNavigation({ title, description, leading, actions, safeAr
   </TopNavigationContext.Provider>;
 }
 export interface NavigationDestination { key: string; label: string; href?: string; icon?: string; badge?: string | number; disabled?: boolean }
-export interface KjunBottomNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: (key: string, event: GestureResponderEvent) => void }
-export function KjunBottomNavigation({ items, value, ariaLabel, safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = true, onNavigate }: KjunBottomNavigationProps) {
+export interface KjunBottomNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: (key: string, event: GestureResponderEvent) => void;
+  /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
+  surface?: boolean }
+export function KjunBottomNavigation({ items, value, ariaLabel, safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = true, onNavigate, surface = true }: KjunBottomNavigationProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.mainNavigation;
   const { colors } = useKjunStyles();
   const geometry = tokens.extensions.bottomNavigation;
   const hasIcons = items.some(item => item.icon);
   if (keyboardVisible && hideOnKeyboard) return null;
-  return <View role="navigation" accessibilityLabel={ariaLabel} style={{ flexShrink: 0, flexDirection: "row", backgroundColor: colors.surface, paddingBottom: Math.max(0, safeAreaBottom) }}>
+  return <View role="navigation" accessibilityLabel={ariaLabel} style={{ flexShrink: 0, flexDirection: "row", backgroundColor: surface ? colors.surface : "transparent", paddingBottom: Math.max(0, safeAreaBottom) }}>
     {items.map(item => {
       const selected = item.key === value;
       const ink = selected ? colors.brand : colors.textSecondary;
@@ -91,8 +95,10 @@ export function KjunBottomNavigation({ items, value, ariaLabel, safeAreaBottom =
     })}
   </View>;
 }
-export interface KjunBottomActionBarProps { description?: string; children: ReactNode; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean }
-export function KjunBottomActionBar({ description, children, safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = false }: KjunBottomActionBarProps) {
+export interface KjunBottomActionBarProps { description?: string; children: ReactNode; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean;
+  /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
+  surface?: boolean }
+export function KjunBottomActionBar({ description, children, safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = false, surface = true }: KjunBottomActionBarProps) {
   const { colors } = useKjunStyles();
   const [width, setWidth] = useState(0);
   const geometry = tokens.extensions.navigation;
@@ -101,7 +107,7 @@ export function KjunBottomActionBar({ description, children, safeAreaBottom = 0,
   if (keyboardVisible && hideOnKeyboard) return null;
   return <BottomActionBarContext.Provider value={!wide}>
     <View onLayout={event => setWidth(event.nativeEvent.layout.width)} style={{
-      flexShrink: 0, minWidth: 0, maxWidth: "100%", backgroundColor: colors.surface,
+      flexShrink: 0, minWidth: 0, maxWidth: "100%", backgroundColor: surface ? colors.surface : "transparent",
       padding: geometry.padding, paddingBottom: geometry.padding + Math.max(0, safeAreaBottom),
       gap: geometry.actionGap, flexDirection: wide ? "row" : "column", alignItems: wide ? "center" : "stretch",
     }}>

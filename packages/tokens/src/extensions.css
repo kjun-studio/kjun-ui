@@ -222,7 +222,7 @@
 .kjun-fab:disabled{opacity:var(--_kjun-state-opacity-disabled);cursor:not-allowed}
 
 /* 0.14.0: plain sections, destructive rows, decorative chevrons and non-row list items share the row inset. */
-.kjun-list-section[data-surface="false"]{background:transparent}
+.kjun-list-section[data-surface="false"],.kjun-top-navigation[data-surface="false"],.kjun-bottom-navigation[data-surface="false"],.kjun-bottom-action-bar[data-surface="false"]{background:transparent}
 /* A rounded section clips its rows to the corners; row focus rings move inside so the clip does not cut them. */
 .kjun-list-section[data-radius]{overflow:hidden;overflow:clip}
 .kjun-list-section[data-radius] .kjun-list-main:focus-visible{outline-offset:var(--_kjun-state-focus-inset-offset)}
