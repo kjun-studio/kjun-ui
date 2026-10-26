@@ -7,7 +7,7 @@ const summaries = {
   ariaLabel: "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
   destructive: "제목을 danger 색으로 그립니다(계정 삭제 등). 설명 색과 동작은 그대로입니다.",
   chevron: "행 끝에 이동을 뜻하는 chevron-right 아이콘을 장식으로 둡니다. 화면 낭독기에는 읽히지 않으며 trailing과 함께 쓰면 맨 끝에 옵니다.",
-  surface: "섹션 표면색 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경 위에 행을 그립니다.",
+  surface: "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
   color: "이니셜·대체 아이콘 뒤 바탕색입니다. 웹은 CSS 색 문자열(var(--kjun-...) 권장), Native는 ColorValue를 받습니다. 생략하면 secondary 역할입니다. 이미지가 보이면 가려집니다.",
   textColor: "이니셜과 대체 아이콘의 색입니다. 웹은 CSS 색 문자열, Native는 ColorValue를 받습니다. 생략하면 textSecondary 역할입니다.",
   divider: "행 사이 구분선을 그립니다. 기본값 true이며 false면 선 없이 붙여 그립니다.",

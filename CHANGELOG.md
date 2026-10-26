@@ -2,6 +2,11 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.17.0 — 2026-10-26
+
+- **헤더·하단 영역 바탕 끄기**: `KjunTopNavigation`·`KjunBottomNavigation`·`KjunBottomActionBar`에 `surface`(기본 true)를 추가했습니다. `false`면 표면색 바탕 없이 화면 바탕이 그대로 보여, 헤더가 별도의 띠처럼 보이지 않습니다. 0.14.0 `KjunListSection` `surface`와 같은 방식입니다. 내용이 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.
+- **수정: Native `KjunButtonGroup`·`KjunFilterGroup` 라벨 줄바꿈**: 굵기별 글꼴(Android·Expo)을 쓰면 선택하지 않은 라벨이 칸보다 넓게 그려져 두 줄로 내려가고 아랫줄이 잘리던 문제를 고쳤습니다. 칸은 선택·비선택 두 굵기 중 넓은 쪽 너비를 잡고, 보이는 라벨은 한 줄로 유지합니다. RN Web에서 확인했고 기기에서는 아직 확인하지 않았습니다.
+
 ## 0.16.0 — 2026-10-25
 
 적용 프로젝트가 직접 만들던 부분을 KJUN에 넣은 기능 릴리스입니다. 새 옵션을 쓰지 않으면 기존 화면과 동작은 그대로입니다.

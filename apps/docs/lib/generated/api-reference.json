@@ -26854,7 +26854,7 @@
             "required": false,
             "default": "true",
             "description": "Paints the surface background (default true); false lets the page background show through.",
-            "summary": "섹션 표면색 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경 위에 행을 그립니다.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
             "source": "packages/vue3/src/list.tsx"
           },
           {
@@ -27005,7 +27005,7 @@
             "required": false,
             "default": "true",
             "description": "Paints the surface background (default true); false lets the page background show through.",
-            "summary": "섹션 표면색 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경 위에 행을 그립니다.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
             "source": "packages/react/src/list.tsx"
           },
           {
@@ -27119,7 +27119,7 @@
             "required": false,
             "default": "true",
             "description": "Paints the surface background (default true); false lets the page background show through.",
-            "summary": "섹션 표면색 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경 위에 행을 그립니다.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
             "source": "packages/native/src/list.tsx"
           },
           {
@@ -27281,6 +27281,15 @@
             "description": "",
             "summary": "앱이 전달하는 상단 안전 영역 여백입니다. 자체 감지나 고정 배치는 하지 않습니다.",
             "source": "packages/vue3/src/app-navigation.tsx"
+          },
+          {
+            "name": "surface",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
+            "source": "packages/vue3/src/app-navigation.tsx"
           }
         ],
         "events": [],
@@ -27396,6 +27405,15 @@
             "description": "",
             "summary": "앱이 전달하는 상단 안전 영역 여백입니다. 자체 감지나 고정 배치는 하지 않습니다.",
             "source": "packages/react/src/app-navigation.tsx"
+          },
+          {
+            "name": "surface",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
+            "source": "packages/react/src/app-navigation.tsx"
           }
         ],
         "events": [],
@@ -27473,6 +27491,15 @@
             "default": "0",
             "description": "",
             "summary": "앱이 전달하는 상단 안전 영역 여백입니다. 자체 감지나 고정 배치는 하지 않습니다.",
+            "source": "packages/native/src/app-navigation.tsx"
+          },
+          {
+            "name": "surface",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
             "source": "packages/native/src/app-navigation.tsx"
           }
         ],
@@ -27558,6 +27585,15 @@
             "default": "true",
             "description": "",
             "summary": "keyboardVisible=true일 때 이 영역을 숨길지 결정합니다.",
+            "source": "packages/vue3/src/app-navigation.tsx"
+          },
+          {
+            "name": "surface",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
             "source": "packages/vue3/src/app-navigation.tsx"
           }
         ],
@@ -27733,6 +27769,15 @@
             ],
             "source": "packages/react/src/app-navigation.tsx",
             "example": "/components/bottom-navigation#preview"
+          },
+          {
+            "name": "surface",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
+            "source": "packages/react/src/app-navigation.tsx"
           }
         ],
         "events": [],
@@ -27881,6 +27926,15 @@
             ],
             "source": "packages/native/src/app-navigation.tsx",
             "example": "/components/bottom-navigation#preview"
+          },
+          {
+            "name": "surface",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
+            "source": "packages/native/src/app-navigation.tsx"
           }
         ],
         "events": [],
@@ -27966,6 +28020,15 @@
             "default": "false",
             "description": "",
             "summary": "keyboardVisible=true일 때 이 영역을 숨길지 결정합니다.",
+            "source": "packages/vue3/src/app-navigation.tsx"
+          },
+          {
+            "name": "surface",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
             "source": "packages/vue3/src/app-navigation.tsx"
           }
         ],
@@ -28053,6 +28116,15 @@
             "description": "",
             "summary": "keyboardVisible=true일 때 이 영역을 숨길지 결정합니다.",
             "source": "packages/react/src/app-navigation.tsx"
+          },
+          {
+            "name": "surface",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
+            "source": "packages/react/src/app-navigation.tsx"
           }
         ],
         "events": [],
@@ -28119,6 +28191,15 @@
             "default": "false",
             "description": "",
             "summary": "keyboardVisible=true일 때 이 영역을 숨길지 결정합니다.",
+            "source": "packages/native/src/app-navigation.tsx"
+          },
+          {
+            "name": "surface",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
             "source": "packages/native/src/app-navigation.tsx"
           }
         ],

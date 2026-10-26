@@ -85,21 +85,24 @@
     "vue3": [
       "title",
       "description",
-      "safeAreaTop"
+      "safeAreaTop",
+      "surface"
     ],
     "react": [
       "title",
       "description",
       "leading",
       "actions",
-      "safeAreaTop"
+      "safeAreaTop",
+      "surface"
     ],
     "native": [
       "title",
       "description",
       "leading",
       "actions",
-      "safeAreaTop"
+      "safeAreaTop",
+      "surface"
     ]
   },
   "KjunBottomNavigation": {
@@ -109,7 +112,8 @@
       "ariaLabel",
       "safeAreaBottom",
       "keyboardVisible",
-      "hideOnKeyboard"
+      "hideOnKeyboard",
+      "surface"
     ],
     "react": [
       "items",
@@ -118,7 +122,8 @@
       "safeAreaBottom",
       "keyboardVisible",
       "hideOnKeyboard",
-      "onNavigate"
+      "onNavigate",
+      "surface"
     ],
     "native": [
       "items",
@@ -127,7 +132,8 @@
       "safeAreaBottom",
       "keyboardVisible",
       "hideOnKeyboard",
-      "onNavigate"
+      "onNavigate",
+      "surface"
     ]
   },
   "KjunBottomActionBar": {
@@ -135,21 +141,24 @@
       "description",
       "safeAreaBottom",
       "keyboardVisible",
-      "hideOnKeyboard"
+      "hideOnKeyboard",
+      "surface"
     ],
     "react": [
       "description",
       "children",
       "safeAreaBottom",
       "keyboardVisible",
-      "hideOnKeyboard"
+      "hideOnKeyboard",
+      "surface"
     ],
     "native": [
       "description",
       "children",
       "safeAreaBottom",
       "keyboardVisible",
-      "hideOnKeyboard"
+      "hideOnKeyboard",
+      "surface"
     ]
   },
   "KjunImage": {

@@ -1034,6 +1034,13 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
       }
     ],
     "events": [],
@@ -1079,6 +1086,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
       }
     ],
     "native": [
@@ -1116,6 +1130,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
       }
     ]
   },
@@ -1162,6 +1183,13 @@
         "required": false,
         "default": "true",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
       }
     ],
     "events": [
@@ -1220,6 +1248,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
       }
     ],
     "native": [
@@ -1271,6 +1306,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
       }
     ]
   },
@@ -20255,6 +20297,13 @@
         "required": false,
         "default": "0",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
       }
     ],
     "events": [],
@@ -20305,6 +20354,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
       }
     ],
     "native": [
@@ -20342,6 +20398,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "surface",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
       }
     ]
   }

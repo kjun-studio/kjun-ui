@@ -95,6 +95,17 @@ Vue 3·React 모달은 가장 가까운 Provider 안에 렌더링되어 해당 �
 </KjunCard>
 ```
 
+### 헤더와 하단 영역을 화면 바탕과 잇기
+
+`KjunTopNavigation`·`KjunBottomNavigation`·`KjunBottomActionBar`는 기본으로 표면색(`surface`) 바탕을 칠합니다. 화면 바탕(`background`)과 색이 다르면 별도의 띠처럼 보입니다. 화면과 이어 보이게 하려면 범위 테마로 색을 바꾸지 말고 `surface={false}`를 씁니다.
+
+```tsx
+<KjunTopNavigation title="목표" surface={false} />
+```
+
+- 글자·아이콘·버튼은 원래 화면 바탕 위의 색이라 대비가 그대로입니다.
+- 내용이 헤더 뒤로 스크롤되는 고정 헤더는 바탕이 없으면 글자가 겹칩니다. 그런 화면에서는 바탕을 둡니다.
+
 ### 둥근 목록
 
 목록을 다른 카드처럼 둥근 틀로 자르려면 감싸개를 만들지 말고 `KjunListSection`의 `radius`를 씁니다. 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)라 옆의 카드와 모서리가 맞습니다.

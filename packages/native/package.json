@@ -1,6 +1,6 @@
 {
   "name": "@kjun-ui/native",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "license": "MIT",
   "homepage": "https://ui.kjun.dev",
   "repository": {
@@ -47,8 +47,8 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@kjun-ui/tokens": "0.16.0",
-    "@kjun-ui/icons": "0.16.0"
+    "@kjun-ui/tokens": "0.17.0",
+    "@kjun-ui/icons": "0.17.0"
   },
   "peerDependencies": {
     "react": "^19.2.3",
