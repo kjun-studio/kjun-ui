@@ -54,10 +54,15 @@ export function ButtonGroupLabel({ label, active, size, reduced }: {
     return () => progress.stopAnimation();
   }, [active, reduced, interpolate, progress]);
   const resolveFont = useResolveFont();
+  // The cell takes the wider of the selected and unselected labels: with per-weight faces (Android, Expo)
+  // the lighter face can be the wider one. The height-0 copy adds its width without adding a line.
   return <View>
     <KText accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
       style={{ ...selectionTypeStyle(size, true), opacity: 0 }}>{label}</KText>
-    <Animated.Text style={{ position: 'absolute', left: 0, right: 0, top: 0, textAlign: 'center',
+    <View style={{ height: 0, overflow: 'hidden' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      <KText accessible={false} style={{ ...selectionTypeStyle(size, false), opacity: 0 }}>{label}</KText>
+    </View>
+    <Animated.Text numberOfLines={1} style={{ position: 'absolute', left: 0, right: 0, top: 0, textAlign: 'center',
       ...StyleSheet.flatten(resolveFont({ fontFamily, ...selectionTypeStyle(size, active) })),
       color: interpolate ? progress.interpolate({ inputRange: [0, 1], outputRange: [colors.textSecondary as string, colors.text as string] }) : active ? colors.text : colors.textSecondary,
     }}>{label}</Animated.Text>

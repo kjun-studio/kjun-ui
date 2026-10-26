@@ -232,7 +232,12 @@ export function KjunFilterGroup({
               <View>
               <KText accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
                 style={{ ...selectionTypeStyle(size, true), opacity: 0 }}>{option.label}</KText>
+              {/* Like ButtonGroup: reserve the wider of both weights, and keep the shown label on one line. */}
+              <View style={{ height: 0, overflow: 'hidden' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                <KText accessible={false} style={{ ...selectionTypeStyle(size, false), opacity: 0 }}>{option.label}</KText>
+              </View>
               <KText
+                numberOfLines={1}
                 style={{
                   position: 'absolute', left: 0, right: 0, top: 0,
                   ...selectionTypeStyle(size, active),
