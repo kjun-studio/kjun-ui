@@ -31,5 +31,16 @@ for (const platform of ['react', 'vue3', 'native']) {
       for (const text of ['Plain header', 'Plain home', 'Plain actions']) expect(await paintBehind(page, text)).toBe('rgb(240, 240, 240)');
       expect(await paintBehind(page, 'Card header')).not.toBe('rgb(240, 240, 240)');
     });
+
+    test('group labels keep their own width instead of being squeezed to the reserved cell', async ({ page }) => {
+      test.skip(platform !== 'native', 'Native label overlay');
+      const area = section(page, 'group-fonts');
+      // A shown label is as wide as its text, so a 1px measuring difference on a device can neither wrap nor clip it.
+      const fits = await area.getByText(/^(Wishlist 3|Achieved 1)$/).evaluateAll(all => all
+        .filter(n => getComputedStyle(n).opacity !== '0')
+        .map(n => { const range = document.createRange(); range.selectNodeContents(n); return Math.abs(n.getBoundingClientRect().width - range.getBoundingClientRect().width); }));
+      expect(fits.length).toBeGreaterThanOrEqual(4);
+      for (const gap of fits) expect(gap).toBeLessThan(1);
+    });
   });
 }
