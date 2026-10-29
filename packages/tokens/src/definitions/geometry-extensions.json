@@ -104,9 +104,11 @@
       "badgeRadius": { "$ref": "radius.radius9999" }
     },
     "avatar": {
+      "xs": 24,
       "sm": 32,
       "md": 40,
-      "lg": 56
+      "lg": 56,
+      "xl": 72
     },
     "chip": {
       "sm": 28,

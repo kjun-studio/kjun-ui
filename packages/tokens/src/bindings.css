@@ -327,12 +327,16 @@
   --_kjun-extension-bottom-navigation-badge-offset: 4px;
   --_kjun-extension-bottom-navigation-badge-overlap: 8px;
   --_kjun-extension-bottom-navigation-badge-radius: 9999px;
+  --_kjun-extension-avatar-xs: 24px;
   --_kjun-extension-avatar-sm: 32px;
   --_kjun-extension-avatar-md: 40px;
   --_kjun-extension-avatar-lg: 56px;
+  --_kjun-extension-avatar-xl: 72px;
+  --_kjun-extension-avatar-fallback-icon-sizes-xs: 12px;
   --_kjun-extension-avatar-fallback-icon-sizes-sm: 14px;
   --_kjun-extension-avatar-fallback-icon-sizes-md: 18px;
   --_kjun-extension-avatar-fallback-icon-sizes-lg: 24px;
+  --_kjun-extension-avatar-fallback-icon-sizes-xl: 32px;
   --_kjun-extension-avatar-fallback-icon-size: 18px;
   --_kjun-extension-chip-sm: 28px;
   --_kjun-extension-chip-md: 32px;

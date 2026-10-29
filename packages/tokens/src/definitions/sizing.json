@@ -94,9 +94,11 @@
     },
     "avatar": {
       "fallbackIconSizes": {
+        "xs": { "$ref": "iconSizes.compact" },
         "sm": { "$ref": "iconSizes.small" },
         "md": { "$ref": "iconSizes.medium" },
-        "lg": { "$ref": "iconSizes.feature" }
+        "lg": { "$ref": "iconSizes.feature" },
+        "xl": 32
       },
       "fallbackIconSize": {
         "$ref": "extensions.avatar.fallbackIconSizes.md"

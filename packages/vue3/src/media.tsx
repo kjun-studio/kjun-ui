@@ -52,7 +52,7 @@ const kjunAvatarProps = {
   name: { type: String, default: "" },
   alt: { type: String, default: undefined },
   decorative: { type: Boolean, default: false },
-  size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+  size: { type: String as PropType<"xs" | "sm" | "md" | "lg" | "xl">, default: "md" },
   shape: { type: String as PropType<"circle" | "square">, default: "circle" },
   color: { type: String, default: undefined },
   textColor: { type: String, default: undefined },

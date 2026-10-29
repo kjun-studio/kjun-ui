@@ -8,6 +8,11 @@ export function SurfacesCases({ K, native = false, providerProps = {} }: { K: an
       <K.KjunBottomNavigation ariaLabel="Plain tabs" surface={false} value="home" items={[{ key: 'home', label: 'Plain home', href: '#home' }]} />
       <K.KjunBottomActionBar description="Plain actions" surface={false}><K.KjunButton>Save</K.KjunButton></K.KjunBottomActionBar>
     </K.KjunProvider></div>
+    <div data-testid="avatars"><K.KjunProvider {...providerProps}>
+      <K.KjunAvatar name="Xavier" size="xs" />
+      <K.KjunAvatar name="Lee" size="xl" />
+      <K.KjunAvatar size="xl" />
+    </K.KjunProvider></div>
     {native && <div data-testid="group-fonts">
       {/* The unselected weight (500) is drawn with a wide face and the selected weight with a narrow one. */}
       <K.KjunProvider {...providerProps} fontFamily={{ 400: 'serif', 500: 'monospace', 600: 'serif', 700: 'serif' }}>

@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { tokens } from '../../packages/tokens/src/index';
 
 // 0.17.0: ButtonGroup label fit and bar surfaces, three platforms.
 const section = (page: Page, id: string) => page.getByTestId(id);
@@ -41,6 +42,21 @@ for (const platform of ['react', 'vue3', 'native']) {
         .map(n => { const range = document.createRange(); range.selectNodeContents(n); return Math.abs(n.getBoundingClientRect().width - range.getBoundingClientRect().width); }));
       expect(fits.length).toBeGreaterThanOrEqual(4);
       for (const gap of fits) expect(gap).toBeLessThan(1);
+    });
+
+    // The avatar's own box: the nearest rounded ancestor of the initial.
+    const avatarOf = (page: Page, initial: string) => section(page, 'avatars').getByText(initial, { exact: true }).evaluate(el => {
+      let box: Element | null = el;
+      while (box && getComputedStyle(box).borderTopLeftRadius === '0px') box = box.parentElement;
+      return { size: Math.round(box!.getBoundingClientRect().width), font: parseFloat(getComputedStyle(el).fontSize) };
+    });
+
+    test('avatars offer xs 24 and xl 72 with matching initials', async ({ page }) => {
+      expect(await avatarOf(page, 'X')).toEqual({ size: tokens.extensions.avatar.xs, font: tokens.typography.controlSmall.fontSizePx });
+      expect(await avatarOf(page, 'L')).toEqual({ size: tokens.extensions.avatar.xl, font: tokens.typography.pageTitle.fontSizePx });
+      // The fallback icon scales with the xl step.
+      const icon = await section(page, 'avatars').locator('svg').last().evaluate(el => Math.round(el.getBoundingClientRect().width));
+      expect(icon).toBe(tokens.extensions.avatar.fallbackIconSizes.xl);
     });
   });
 }

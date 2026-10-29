@@ -4,6 +4,11 @@ import { applyDemoColors } from '../../shared/demo-colors';
 applyDemoColors('default');
 // Same sections and DOM as surfaces-cases.tsx (React/Native).
 createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px', width: '360px', background: 'rgb(240, 240, 240)' }}>
+  <div data-testid="avatars"><K.KjunProvider>
+    <K.KjunAvatar name="Xavier" size="xs" />
+    <K.KjunAvatar name="Lee" size="xl" />
+    <K.KjunAvatar size="xl" />
+  </K.KjunProvider></div>
   <div data-testid="bars"><K.KjunProvider>
     <K.KjunTopNavigation title="Plain header" surface={false} />
     <K.KjunTopNavigation title="Card header" />
