@@ -28,7 +28,7 @@ export const relatedGroups = {
   drawer: [...layers, ...files('component-motion', 'size-contracts', 'native-layout')],
   popover: [...layers, ...files('popover-design', 'expanded')],
   dropdown: [...layers, ...files('dropdown-design', 'menu-button', 'controlled-state', 'expanded')],
-  tooltip: [...layers, ...files('expanded', 'size-contracts')],
+  tooltip: [...layers, ...files('expanded', 'size-contracts', 'refresh-button', 'menu-button', 'tooltip-lifecycle')],
   icons: [...files('icon-render', 'icon-registry', 'icon-toggle', 'menu-button', 'button-design'), ...contracts, ...visuals],
   typography: files('typography', 'layout-primitives', 'color-font', 'geometry-tokens', 'card-layout', 'visual-contract'),
   i18n: files('i18n'),

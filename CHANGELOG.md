@@ -4,6 +4,7 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 
 ## 0.17.0 — 2026-10-26
 
+- **수정: React Tooltip 종료 잔상**: 툴팁을 반복해서 열거나 다른 툴팁으로 전환한 뒤 로딩·비활성화·문구 제거 시 빈 말풍선이 화면 왼쪽 위에 남던 문제를 고쳤습니다. 즉시 닫힘은 패널의 종료 상태까지 정리하고, 일반 닫힘 애니메이션과 트리거 포커스는 유지합니다.
 - **헤더·하단 영역 바탕 끄기**: `KjunTopNavigation`·`KjunBottomNavigation`·`KjunBottomActionBar`에 `surface`(기본 true)를 추가했습니다. `false`면 표면색 바탕 없이 화면 바탕이 그대로 보여, 헤더가 별도의 띠처럼 보이지 않습니다. 0.14.0 `KjunListSection` `surface`와 같은 방식입니다. 내용이 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.
 - **수정: Native `KjunButtonGroup`·`KjunFilterGroup` 라벨 줄바꿈**: 굵기별 글꼴(Android·Expo)을 쓰면 선택하지 않은 라벨이 칸보다 넓게 그려져 두 줄로 내려가고 아랫줄이 잘리던 문제를 고쳤습니다. 칸은 선택·비선택 두 굵기 중 넓은 쪽 너비를 잡고, 보이는 라벨은 한 줄로 유지합니다. RN Web에서 확인했고 기기에서는 아직 확인하지 않았습니다.
 

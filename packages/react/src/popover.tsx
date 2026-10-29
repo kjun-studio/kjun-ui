@@ -3,8 +3,8 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { tokens } from "@kjun-ui/tokens";
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
 import { useLayer } from "../../../shared/package-runtime/use-layer";
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode, type ComponentProps, type RefObject } from "react";
-import { Dialog, Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
+import { useCallback, useContext, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode, type ComponentProps, type RefObject } from "react";
+import { Dialog, Focusable, OverlayArrow, Tooltip, TooltipTrigger, TooltipTriggerStateContext } from "react-aria-components";
 import { FloatingPanel, resolveFocusReturn } from "./floating-panel";
 import { installNonModalPopover } from "../../../shared/package-runtime/popover-nonmodal";
 import { FeedbackLayerOutlet } from "./overlay-host";
@@ -174,6 +174,14 @@ export interface KjunTooltipProps {
   onOpenChange?: (open: boolean) => void;
   children: ReactNode;
 }
+function TooltipPanel(props: ComponentProps<typeof Tooltip>) {
+  const state = useContext(TooltipTriggerStateContext);
+  // RAC 1.21 can retain its exit state when an instant close removes the DOM before
+  // the animation effect runs. Unmount the Tooltip itself for that close, while
+  // keeping the trigger mounted and normal animated exits under RAC's control.
+  if (state && !state.isOpen && state.shouldSkipAnimation) return null;
+  return <Tooltip {...props} />;
+}
 export function KjunTooltip({
   content = "",
   title,
@@ -186,17 +194,20 @@ export function KjunTooltip({
   children,
 }: KjunTooltipProps) {
   const container = useKjunPortalContainer();
+  const hasContent = !!(content || title);
   const [internal, setInternal] = useState(false),
-    open = controlled ?? internal;
+    open = (controlled ?? internal) && hasContent;
+  // Restoring content must not revive an old uncontrolled hover/focus request.
+  useEffect(() => { if (!hasContent) setInternal(false); }, [hasContent]);
   const setOpen = (value: boolean) => { setInternal(value); onOpenChange?.(value); };
   const layer = useLayer(open, open, "tooltip", () => setOpen(false));
   return (
-    <TooltipTrigger isOpen={open && !layer.blocked && !!(content || title)} onOpenChange={setOpen} delay={delay} closeDelay={0} isDisabled={(!content && !title) || !layer.scopeActive}>
+    <TooltipTrigger isOpen={open && !layer.blocked} onOpenChange={setOpen} delay={delay} closeDelay={0} isDisabled={!hasContent || !layer.scopeActive}>
       <Focusable>
         {children as ComponentProps<typeof Focusable>["children"]}
       </Focusable>
-      {container !== null && (
-        <Tooltip
+      {container !== null && hasContent && (
+        <TooltipPanel
           style={{ zIndex: layer.zIndex, ...(width ? { maxWidth: `var(--_kjun-extension-tooltip-max-widths-${width})` } : {}) }}
           data-align={align}
           UNSTABLE_portalContainer={container}
@@ -210,7 +221,7 @@ export function KjunTooltip({
             </svg>
           </OverlayArrow>
           {title ? <><span className="kjun-tooltip-title">{title}</span>{content && <span className="kjun-tooltip-body">{content}</span>}</> : content}
-        </Tooltip>
+        </TooltipPanel>
       )}
     </TooltipTrigger>
   );
