@@ -172,3 +172,32 @@ test('vue3 Slider output options preserve numeric updates, commits and accessibl
   await expect(page.locator('.kjun-slider-value').last()).toHaveText('$20 – $80');
   await expect(page.getByRole('slider').nth(1)).toHaveAttribute('aria-valuetext', '$20');
 });
+
+// Visible caption text without the slider thumbs' own text.
+const caption = (page: Page, id: string) => page.getByTestId(id).evaluate(wrapper => {
+  const root = wrapper.firstElementChild!.cloneNode(true) as HTMLElement;
+  root.querySelectorAll('input, [role=slider]').forEach(el => el.remove());
+  return root.textContent!.trim();
+});
+for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: showValue hides the visible value and formatValue formats it and the value text`, async ({ page }) => {
+    await openFixture(page, platform, '', 'slider-design');
+    const single = page.getByTestId('single').getByRole('slider'), start = page.getByTestId('range').getByRole('slider').first();
+    expect(await caption(page, 'single')).toBe('알림 음량40');
+    await configure(page, { showValue: false });
+    await expect.poll(() => caption(page, 'single')).toBe('알림 음량');
+    expect(await caption(page, 'range')).toBe('조회 범위');
+    await configure(page, { label: '' });
+    await expect.poll(() => caption(page, 'single')).toBe('');
+    expect(await valueOf(page)).toBe(40);
+    await configure(page, { label: '알림 음량', format: true });
+    await expect(single).toHaveAttribute('aria-valuetext', '40%');
+    await expect(start).toHaveAttribute('aria-valuetext', '$20');
+    await single.press('ArrowRight');
+    await expect.poll(() => valueOf(page)).toBe(41);
+    await expect(page.getByTestId('events')).toContainText('change:41');
+    await configure(page, { showValue: true });
+    await expect.poll(() => caption(page, 'single')).toBe('알림 음량41%');
+    expect(await caption(page, 'range')).toBe('조회 범위$20 – $80');
+  });
+}

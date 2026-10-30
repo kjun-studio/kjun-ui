@@ -29835,6 +29835,15 @@
             "source": "packages/react/src/range-input.tsx"
           },
           {
+            "name": "showValue",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Hides the visible value only; each thumb still reports its value to assistive technology.",
+            "summary": "값 출력을 표시합니다. false여도 숫자 값·키보드 조작·접근성 이름은 유지합니다. label도 없으면 빈 캡션 영역을 만들지 않습니다.",
+            "source": "packages/react/src/range-input.tsx"
+          },
+          {
             "name": "formatValue",
             "type": "((value: number) => string) | undefined",
             "required": false,
@@ -29848,7 +29857,7 @@
               },
               {
                 "label": "접근성",
-                "text": "화면 출력과 aria-valuetext에 같은 문자열을 사용합니다."
+                "text": "화면 출력과 aria-valuetext에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다."
               },
               {
                 "label": "상태 책임",
@@ -30015,6 +30024,39 @@
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/native/src/range-input.tsx"
+          },
+          {
+            "name": "showValue",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Hides the visible value only; each thumb still reports its value to assistive technology.",
+            "summary": "값 출력을 표시합니다. false여도 숫자 값·키보드 조작·접근성 이름은 유지합니다. label도 없으면 빈 캡션 영역을 만들지 않습니다.",
+            "source": "packages/native/src/range-input.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "((value: number) => string) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric.",
+            "summary": "각 손잡이의 숫자를 표시 문자열로 바꿉니다.",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다."
+              },
+              {
+                "label": "접근성",
+                "text": "화면 출력과 accessibilityValue.text에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "value와 onValueChange·onChangeCommit 콜백은 숫자 또는 숫자 쌍 형식을 유지합니다."
+              }
+            ],
+            "source": "packages/native/src/range-input.tsx",
+            "example": "/components/slider#preview"
           },
           {
             "name": "onValueChange",
@@ -30451,6 +30493,15 @@
             "source": "packages/react/src/range-input.tsx"
           },
           {
+            "name": "showValue",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Hides the visible value only; each thumb still reports its value to assistive technology.",
+            "summary": "값 출력을 표시합니다. false여도 숫자 값·키보드 조작·접근성 이름은 유지합니다. label도 없으면 빈 캡션 영역을 만들지 않습니다.",
+            "source": "packages/react/src/range-input.tsx"
+          },
+          {
             "name": "formatValue",
             "type": "((value: number) => string) | undefined",
             "required": false,
@@ -30464,7 +30515,7 @@
               },
               {
                 "label": "접근성",
-                "text": "화면 출력과 aria-valuetext에 같은 문자열을 사용합니다."
+                "text": "화면 출력과 aria-valuetext에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다."
               },
               {
                 "label": "상태 책임",
@@ -30643,6 +30694,39 @@
               {
                 "label": "범위",
                 "text": "min < max, step > 0이어야 합니다. max가 step에 맞지 않으면 max 이하의 마지막 단계를 사용합니다."
+              }
+            ],
+            "source": "packages/native/src/range-input.tsx",
+            "example": "/components/range-slider#preview"
+          },
+          {
+            "name": "showValue",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Hides the visible value only; each thumb still reports its value to assistive technology.",
+            "summary": "값 출력을 표시합니다. false여도 숫자 값·키보드 조작·접근성 이름은 유지합니다. label도 없으면 빈 캡션 영역을 만들지 않습니다.",
+            "source": "packages/native/src/range-input.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "((value: number) => string) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric.",
+            "summary": "각 손잡이의 숫자를 표시 문자열로 바꿉니다.",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다."
+              },
+              {
+                "label": "접근성",
+                "text": "화면 출력과 accessibilityValue.text에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "value와 onValueChange·onChangeCommit 콜백은 숫자 또는 숫자 쌍 형식을 유지합니다."
               }
             ],
             "source": "packages/native/src/range-input.tsx",

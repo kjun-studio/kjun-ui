@@ -276,6 +276,7 @@
       "modelValue"
     ],
     "react": [
+      "showValue",
       "formatValue",
       "value",
       "min",
@@ -288,6 +289,8 @@
       "onChangeCommit"
     ],
     "native": [
+      "showValue",
+      "formatValue",
       "value",
       "min",
       "max",
@@ -313,6 +316,7 @@
       "thumbLabels"
     ],
     "react": [
+      "showValue",
       "formatValue",
       "value",
       "thumbLabels",
@@ -326,6 +330,8 @@
       "label"
     ],
     "native": [
+      "showValue",
+      "formatValue",
       "value",
       "thumbLabels",
       "onValueChange",

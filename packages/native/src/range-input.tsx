@@ -16,6 +16,10 @@ export interface KjunSliderProps {
   disabled?: boolean;
   label?: string;
   ariaLabel?: string;
+  /** Hides the visible value only; each thumb still reports its value to assistive technology. */
+  showValue?: boolean;
+  /** Formats the visible value and each thumb's accessible value text. Values stay numeric. */
+  formatValue?: (value: number) => string;
   onValueChange?: (value: number) => void;
   onChangeCommit?: (value: number) => void;
 }
@@ -39,6 +43,8 @@ function RangeInput({
   disabled = false,
   label,
   ariaLabel,
+  showValue = true,
+  formatValue = String,
   onValueChange,
   onChangeCommit,
   ...rest
@@ -152,7 +158,7 @@ function RangeInput({
         opacity: blocked ? tokens.states.opacity.disabled : 1,
       }}
     >
-      <View
+      {(!!label || showValue) && <View
         style={{
           flexDirection: "row",
           alignItems: "baseline",
@@ -174,7 +180,7 @@ function RangeInput({
             {label}
           </KText>
         )}
-        <KText
+        {showValue && <KText
           style={{
             ...typeStyle("control"),
             fontFamily: numericFontFamily ?? fontFamily,
@@ -183,9 +189,9 @@ function RangeInput({
             marginLeft: "auto",
           }}
         >
-          {values.join(" – ")}
-        </KText>
-      </View>
+          {values.map(value => formatValue(value)).join(" – ")}
+        </KText>}
+      </View>}
       <View
         ref={track}
         onLayout={measure}
@@ -241,7 +247,7 @@ function RangeInput({
               min: index === 1 ? values[0] : min,
               max: values.length === 2 && index === 0 ? values[1] : max,
               now: number,
-              text: String(number),
+              text: formatValue(number),
             }}
             accessibilityActions={[
               { name: "increment", label: m.increase },
@@ -267,7 +273,7 @@ function RangeInput({
                   "aria-valuemin": index === 1 ? values[0] : min,
                   "aria-valuemax":
                     values.length === 2 && index === 0 ? values[1] : domain.snap(max),
-                  "aria-valuetext": String(number),
+                  "aria-valuetext": formatValue(number),
                   "aria-disabled": blocked,
                   onKeyDown: (event: any) => {
                     const next = sliderKey(event.key, number, min, max, step);

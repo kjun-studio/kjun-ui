@@ -10,6 +10,8 @@ export interface KjunSliderProps {
   disabled?: boolean;
   label?: string;
   ariaLabel?: string;
+  /** Hides the visible value only; each thumb still reports its value to assistive technology. */
+  showValue?: boolean;
   /** Formats the visible value and each thumb's accessible value text. Values stay numeric. */
   formatValue?: (value: number) => string;
   onValueChange?: (value: number) => void;
@@ -31,7 +33,7 @@ function RangeThumb({ index, label, formatValue }: { index: number; label: strin
   useLayoutEffect(() => { input.current?.setAttribute("aria-valuetext", text); });
   return <SliderThumb index={index} inputRef={input} className="kjun-slider-thumb" aria-label={label} />;
 }
-function RangeInput({ value, min = 0, max = 100, step = 1, disabled = false, label, ariaLabel, formatValue, onValueChange, onChangeCommit, ...rest }: KjunRangeSliderProps | KjunSliderProps) {
+function RangeInput({ value, min = 0, max = 100, step = 1, disabled = false, label, ariaLabel, showValue = true, formatValue, onValueChange, onChangeCommit, ...rest }: KjunRangeSliderProps | KjunSliderProps) {
   const m = useKjunMessages();
   const thumbLabels = "thumbLabels" in rest ? rest.thumbLabels || [m.minimum, m.maximum] : [m.minimum, m.maximum];
   const domain = createSliderDomain(min, max, step);
@@ -49,7 +51,7 @@ function RangeInput({ value, min = 0, max = 100, step = 1, disabled = false, lab
     (onValueChange as (v: typeof result) => void)?.(result);
   };
   return <Slider className="kjun-slider" data-disabled={disabled || !valid} aria-label={ariaLabel || label || m.value} value={valid ? value : Array.isArray(value) ? [0, 100] : 0} minValue={valid ? min : 0} maxValue={valid ? domain.snap(max) : 100} step={valid ? step : 1} isDisabled={disabled || !valid} onChange={change} onChangeEnd={() => { if (valid && !disabled && active.current) { active.current = false; (onChangeCommit as (v: typeof value) => void)?.(latest.current); } }}>
-    <div className="kjun-slider-caption">{label && <Label className="kjun-slider-label">{label}</Label>}<SliderOutput className="kjun-slider-value">{({ state }) => state.values.map(formatValue ?? String).join(" – ")}</SliderOutput></div>
+    {(label || showValue) && <div className="kjun-slider-caption">{label && <Label className="kjun-slider-label">{label}</Label>}{showValue && <SliderOutput className="kjun-slider-value">{({ state }) => state.values.map(formatValue ?? String).join(" – ")}</SliderOutput>}</div>}
     <SliderTrack className="kjun-slider-track">{({ state }) => <>
       <div className="kjun-slider-rail" />
       <div className="kjun-slider-fill" style={{ left: (list.length === 2 ? state.getThumbPercent(0) * 100 : 0) + "%", width: ((state.getThumbPercent(list.length - 1) - (list.length === 2 ? state.getThumbPercent(0) : 0)) * 100) + "%" }} />

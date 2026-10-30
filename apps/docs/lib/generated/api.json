@@ -15217,6 +15217,13 @@
         "description": ""
       },
       {
+        "name": "showValue",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Hides the visible value only; each thumb still reports its value to assistive technology."
+      },
+      {
         "name": "formatValue",
         "type": "((value: number) => string) | undefined",
         "required": false,
@@ -15294,6 +15301,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "showValue",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Hides the visible value only; each thumb still reports its value to assistive technology."
+      },
+      {
+        "name": "formatValue",
+        "type": "((value: number) => string) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric."
       }
     ]
   },
@@ -17337,6 +17358,13 @@
         "description": ""
       },
       {
+        "name": "showValue",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Hides the visible value only; each thumb still reports its value to assistive technology."
+      },
+      {
         "name": "formatValue",
         "type": "((value: number) => string) | undefined",
         "required": false,
@@ -17407,6 +17435,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "showValue",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Hides the visible value only; each thumb still reports its value to assistive technology."
+      },
+      {
+        "name": "formatValue",
+        "type": "((value: number) => string) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric."
       },
       {
         "name": "onValueChange",
