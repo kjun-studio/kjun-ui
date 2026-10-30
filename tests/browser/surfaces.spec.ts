@@ -22,6 +22,15 @@ for (const platform of ['react', 'vue3', 'native']) {
       for (const { height, line } of heights) expect(height).toBeLessThan(line * 1.5);
     });
 
+    test('group labels stay inside a cell narrower than the label', async ({ page }) => {
+      test.skip(platform !== 'native', 'Native reserved-width labels');
+      const boxes = await section(page, 'group-narrow').getByText(/^(Received the code|Waiting for approval)$/).evaluateAll(all => all
+        .filter(n => getComputedStyle(n).opacity !== '0')
+        .map(n => { const cell = n.closest('[role]')!.getBoundingClientRect(), r = n.getBoundingClientRect(); return { left: r.left - cell.left, right: cell.right - r.right }; }));
+      expect(boxes.length).toBeGreaterThanOrEqual(4);
+      for (const box of boxes) { expect(box.left).toBeGreaterThanOrEqual(-0.5); expect(box.right).toBeGreaterThanOrEqual(-0.5); }
+    });
+
     // The first painted background behind a text: the bar's own, or the page's when the bar is transparent.
     const paintBehind = (page: Page, text: string) => section(page, 'bars').getByText(text, { exact: true }).first().evaluate(el => {
       for (let n: Element | null = el; n; n = n.parentElement) { const c = getComputedStyle(n).backgroundColor; if (c !== 'rgba(0, 0, 0, 0)') return c; }

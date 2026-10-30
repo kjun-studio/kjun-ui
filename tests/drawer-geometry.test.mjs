@@ -44,3 +44,13 @@ test('measured against the modal root, a resized Android window does not lift tw
   // adjustResize still applies: the root already stops at the keyboard (or above it, below the status bar).
   assert.equal(keyboardOverlap(476, 500), 0);
 });
+
+test('Native Drawer and Modal windows start at the screen top, where keyboard overlap is measured from', async () => {
+  // keyboardOverlap compares the root height with a screen coordinate, so the root must begin at y=0 on Android.
+  const { readFileSync } = await import('node:fs');
+  for (const file of ['drawer.tsx', 'modal.tsx']) {
+    const source = readFileSync(new URL('../packages/native/src/' + file, import.meta.url), 'utf8');
+    const tag = source.match(/<ScopedNativeModal[\s\S]*?\n\s*>/)?.[0] ?? '';
+    assert.match(tag, /\bstatusBarTranslucent\b/, file);
+  }
+});

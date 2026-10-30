@@ -27,6 +27,10 @@ export function SurfacesCases({ K, native = false, providerProps = {} }: { K: an
       <K.KjunAvatar size="xl" />
     </K.KjunProvider></div>
     {native && <div data-testid="sheet"><FormSheet K={K} providerProps={providerProps} /></div>}
+    {native && <div data-testid="group-narrow" style={{ width: 200 }}><K.KjunProvider {...providerProps}>
+      <K.KjunButtonGroup ariaLabel="Narrow" value="a" fullWidth options={[{ value: 'a', label: 'Received the code' }, { value: 'b', label: 'Waiting for approval' }]} />
+      <K.KjunFilterGroup ariaLabel="Narrow filter" value="a" options={[{ value: 'a', label: 'Received the code' }, { value: 'b', label: 'Waiting for approval' }]} />
+    </K.KjunProvider></div>}
     {native && <div data-testid="group-fonts">
       {/* The unselected weight (500) is drawn with a wide face and the selected weight with a narrow one. */}
       <K.KjunProvider {...providerProps} fontFamily={{ 400: 'serif', 500: 'monospace', 600: 'serif', 700: 'serif' }}>

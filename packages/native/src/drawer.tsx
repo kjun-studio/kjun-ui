@@ -118,6 +118,8 @@ export function KjunDrawer({
         if (closeOnEsc) close();
       }}
       animationType="none"
+      // Like KjunModal: the window starts at the screen top, so keyboard overlap and safeAreaTop measure from y=0.
+      statusBarTranslucent
     >
       <View
         onLayout={event => setRootHeight(event.nativeEvent.layout.height)}
