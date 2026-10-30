@@ -1,6 +1,7 @@
 import { captureReview } from './review-captures';
 import { test, expect, type Page, type Locator } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { tokens } from '../../packages/tokens/src/index';
 const update = (page: Page, options: object) => page.evaluate(options => (window as any).configureDataState(options), options);
 const box = async (element: Locator) => { await expect(element).toBeVisible(); return (await element.boundingBox())!; };
 async function contained(region: Locator) {
@@ -92,7 +93,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     await retry.press('Enter'); await retry.press('Space');
     await expect(page.getByTestId('events')).toHaveText('2/0/0');
     const title = await box(region.getByText('오류 발생', { exact: true })), desc = await box(region.getByText('Connection failed', { exact: true }));
-    expect(desc.y - title.y - title.height).toBe(4);
+    // The error is an Alert: title and description sit one Alert description gap apart.
+    expect(desc.y - title.y - title.height).toBe(tokens.extensions.alert.descriptionGap);
     await update(page, { resultKey: 'a' }); await contained(region);
     const card = region.getByText('Result title').locator('xpath=ancestor::*[contains(concat(" ",normalize-space(@class)," ")," kjun-card ")][1]');
     const content = platform === 'native' ? region.locator(':scope > * > *').nth(1) : card;
