@@ -263,7 +263,7 @@ set("ChartSkeleton", {
   rows: { default:"8", summary:"matrix의 행 수입니다. 1–100 사이 정수로 내림합니다." },
   columns: { default:"14", summary:"matrix의 열 수입니다. 1–100 사이 정수로 내림합니다." },
 });
-set("Tabs", { density:"comfortable은 44px, compact는 32px 높이입니다. 두 변형 모두 14px 라벨을 사용합니다.", variant:"underline은 2px 선택선, pills는 선택 항목의 중립 배경을 제공합니다." });
+set("Tabs", { density:"underline은 comfortable 44px·compact 32px, pills는 36px·28px 높이입니다. 두 변형 모두 14px 라벨을 사용합니다.", variant:"underline은 라벨 아래 2px 선택선, pills는 둥근 칩 모양으로 선택된 칩이 글자색으로 채워집니다.", fullWidth:"탭이 가로 폭을 똑같이 나눠 갖습니다. underline 선택선도 탭 폭 전체로 그어집니다." });
 
 set("Card", { elevation: { summary: "콘텐츠 표면의 역할입니다. 기본 flat에는 그림자가 없고 raised에는 옅은 접촉 그림자가 있습니다.", details: [{ label: "행동", text: "Card 자체에는 hover 그림자·상승·pointer 효과가 없습니다. 행동은 내부 Button·Link에 연결합니다." }] } });
 set("Card", { border: { default: "false", summary: "카드 안쪽에 0.5px 외곽선을 표시합니다. 기본은 선이 없으며, 테두리를 켜도 콘텐츠의 여백과 전체 크기는 바뀌지 않습니다." } });

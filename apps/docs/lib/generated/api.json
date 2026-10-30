@@ -19380,6 +19380,13 @@
         "description": ""
       },
       {
+        "name": "fullWidth",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Tabs share the row equally; an underline then spans the whole tab."
+      },
+      {
         "name": "stickyHeader",
         "type": "boolean",
         "required": false,
@@ -19458,6 +19465,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "fullWidth",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Tabs share the row equally; an underline then spans the whole tab."
       },
       {
         "name": "actions",
@@ -19544,6 +19558,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "fullWidth",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Tabs share the row equally; an underline then spans the whole tab."
       },
       {
         "name": "actions",

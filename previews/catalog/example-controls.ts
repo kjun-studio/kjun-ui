@@ -244,10 +244,10 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
     case "KjunTabPane":
       return h(
         "KjunTabs",
-        { ariaLabel: "예제 보기", value: get("tab", "one"), onValueChange: change("tab"), variant: settings.variant, density: settings.density },
+        { ariaLabel: "예제 보기", value: get("tab", "one"), onValueChange: change("tab"), variant: settings.variant, density: settings.density, fullWidth: !!settings.fullWidth },
         [
-          h("KjunTabPane", { name: "one", label: "첫 탭" }, "첫 내용"),
-          h("KjunTabPane", { name: "two", label: "둘째 탭" }, "둘째 내용"),
+          h("KjunTabPane", { name: "one", label: "첫 탭", ...(settings.detail ? { icon: "home" } : {}) }, "첫 내용"),
+          h("KjunTabPane", { name: "two", label: "둘째 탭", ...(settings.detail ? { icon: "bell", badge: 3, badgeVariant: "danger" } : {}) }, "둘째 내용"),
           h(
             "KjunTabPane",
             { name: "blocked", label: "비활성 탭", disabled: true },

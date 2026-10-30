@@ -5,6 +5,7 @@ import { tokens } from "@kjun-ui/tokens";
 import { isFocusVisible, installFocusVisible } from "../../../shared/package-runtime/focus-visible";
 import { manageTabList, panelNeedsFocus } from "../../../shared/package-runtime/tab-keyboard";
 import { KjunIcon } from "./button";
+import { KjunBadge } from "./display";
 import { useSelectionIndicator } from "./controls";
 import { useKjunId } from "./input";
 
@@ -50,6 +51,8 @@ const kjunTabsProps = {
   items: { type: Array as PropType<TabItem[]>, default: () => [] },
   density: { type: String as PropType<"comfortable" | "compact">, default: "comfortable" },
   variant: { type: String as PropType<"underline" | "pills">, default: "underline" },
+  /** Tabs share the row equally; an underline then spans the whole tab. */
+  fullWidth: { type: Boolean, default: false },
   /** Keep the header inside its scroll container while the tab panels scroll. */
   stickyHeader: { type: Boolean, default: false },
   stickyOffset: { type: [Number, String] as PropType<number | string>, default: 0 },
@@ -100,7 +103,7 @@ export const KjunTabs = defineComponent({
       const panelNames = new Set(fromSlot.map(pane => pane.name));
       const tabList = props.items.length ? props.items : fromSlot;
       return (
-        <div ref={root} class="kjun-tabs" data-variant={props.variant} data-density={props.density} data-orientation="horizontal"
+        <div ref={root} class="kjun-tabs" data-variant={props.variant} data-density={props.density} data-full-width={props.fullWidth || undefined} data-orientation="horizontal"
           data-focused={within.value || undefined}
           onFocusin={() => { within.value = true; }} onFocusout={(event: FocusEvent) => { if (!root.value?.contains(event.relatedTarget as Node)) within.value = false; }}>
           <div class="kjun-tabs-header" data-sticky={props.stickyHeader || undefined}
@@ -148,7 +151,7 @@ export const KjunTabs = defineComponent({
                       onTouchend={clear} onTouchcancel={clear}>
                       {tab.icon && <KjunIcon name={tab.icon} size={tokens.extensions.tabs.iconSize} />} <span class="kjun-motion-label" data-label={tab.label}><span>{tab.label}</span></span>
                       {tab.badge != null && (
-                        <span class="kjun-tab-badge" style={{ color: tab.badgeVariant ? `var(--_kjun-color-${tab.badgeVariant})` : undefined }}>{tab.badge}</span>
+                        <KjunBadge class="kjun-tab-badge" size="xs" variant={tab.badgeVariant ?? "default"}>{tab.badge}</KjunBadge>
                       )}
                     </div>
                   );

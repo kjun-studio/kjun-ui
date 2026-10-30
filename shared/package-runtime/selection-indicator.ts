@@ -8,7 +8,7 @@ export function selectionIndicator(root: HTMLElement, marker: HTMLElement, tabs 
   // A hide/show within one frame can leave ResizeObserver's final size unchanged.
   const visibility = new MutationObserver(() => update());
   for (let ancestor: HTMLElement | null = root; ancestor; ancestor = ancestor.parentElement) {
-    visibility.observe(ancestor, { attributes: true, attributeFilter: ['style', 'class', 'hidden', 'data-variant', 'data-density'] });
+    visibility.observe(ancestor, { attributes: true, attributeFilter: ['style', 'class', 'hidden', 'data-variant', 'data-density', 'data-full-width'] });
   }
   // Mark which edges clip options so CSS can fade them instead of cutting a label silently.
   function edges() {
@@ -33,9 +33,11 @@ export function selectionIndicator(root: HTMLElement, marker: HTMLElement, tabs 
       selected = null; bounds = ''; return;
     }
     const underline = tabs && root.closest('[data-variant="underline"]');
+    // An underline sits under the label, or under the whole tab when tabs share the row (fullWidth).
+    const inset = underline && !root.closest('[data-full-width]');
     const style = getComputedStyle(next);
-    const left = underline ? parseFloat(style.paddingLeft) : 0;
-    const right = underline ? parseFloat(style.paddingRight) : 0;
+    const left = inset ? parseFloat(style.paddingLeft) : 0;
+    const right = inset ? parseFloat(style.paddingRight) : 0;
     const height = underline ? tokens.extensions.tabs.indicatorHeight : next.offsetHeight;
     const key = [!!underline, left, right, next.offsetLeft, next.offsetTop, next.offsetWidth, next.offsetHeight].join(',');
     if (key !== bounds) {

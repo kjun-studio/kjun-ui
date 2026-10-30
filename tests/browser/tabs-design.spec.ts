@@ -7,6 +7,12 @@ const tabs = (page: Page) => page.getByRole('tab');
 const box = async (node: Locator) => (await node.boundingBox())!;
 const label = (tab: Locator, platform: string) => platform === 'native' ? tab.locator('[dir="auto"]').nth(1) : tab.locator('.kjun-motion-label > span');
 const rgb = (hex: string) => 'rgb(' + [1, 3, 5].map(n => parseInt(hex.slice(n, n + 2), 16)).join(', ') + ')';
+// Underline tabs slide a marker; chips paint the selected tab itself and draw no marker.
+async function selected(page: Page, index: number, variant: string, palette: keyof typeof demoPalettes = 'default') {
+  if (variant === 'underline') return aligned(page, index, variant);
+  await expect(marker(page)).toBeHidden();
+  await expect(tabs(page).nth(index)).toHaveCSS('background-color', rgb(demoPalettes[palette].text));
+}
 async function aligned(page: Page, index: number, variant: string) {
   await expect(marker(page)).toBeVisible();
   await expect.poll(async () => {
@@ -26,19 +32,28 @@ for (const platform of ['react', 'vue3', 'native']) {
     for (const palette of ['default', 'dark'] as const) {
       await openFixture(page, platform, '?palette=' + palette, 'tabs-design');
       for (const variant of ['underline', 'pills']) for (const density of ['comfortable', 'compact']) {
+        const colors = demoPalettes[palette], pills = variant === 'pills';
         await configure(page, { variant, density, value: 'one' });
-        await aligned(page, 0, variant);
-        await expect(tabs(page).first()).toHaveCSS('height', density === 'compact' ? '32px' : '44px');
+        await selected(page, 0, variant, palette);
+        await expect(tabs(page).first()).toHaveCSS('height', pills ? (density === 'compact' ? '28px' : '36px') : density === 'compact' ? '32px' : '44px');
         await expect(label(tabs(page).first(), platform)).toHaveCSS('font-size', '14px');
         await expect(label(tabs(page).first(), platform)).toHaveCSS('font-weight', '600');
+        await expect(label(tabs(page).first(), platform)).toHaveCSS('color', rgb(pills ? colors.surface : colors.text));
         await expect(label(tabs(page).nth(1), platform)).toHaveCSS('font-weight', '500');
-        await expect(label(tabs(page).nth(1), platform)).toHaveCSS('color', rgb(demoPalettes[palette].textSecondary));
-        await expect(tabs(page).nth(2)).toHaveCSS('opacity', '0.5');
-        await expect(marker(page)).toHaveCSS('box-shadow', 'none');
-        await expect(marker(page)).toHaveCSS('background-color', rgb(variant === 'underline' ? demoPalettes[palette].brand : demoPalettes[palette].active));
-        if (variant === 'underline') expect((await box(label(tabs(page).first(), platform))).x).toBe((await box(page.getByTestId('content-one'))).x);
+        await expect(label(tabs(page).nth(1), platform)).toHaveCSS('color', rgb(colors.textSecondary));
+        // Disabled tabs fade their ink only, so a chip keeps its fill.
+        await expect(tabs(page).nth(2)).toHaveCSS('opacity', '1');
+        await expect(label(tabs(page).nth(2), platform)).toHaveCSS('color', rgb(colors.textDisabled));
+        if (pills) {
+          await expect(tabs(page).nth(1)).toHaveCSS('background-color', rgb(colors.secondary));
+          await expect(tabs(page).first()).toHaveCSS('border-top-left-radius', '9999px');
+        } else {
+          await expect(marker(page)).toHaveCSS('box-shadow', 'none');
+          await expect(marker(page)).toHaveCSS('background-color', rgb(colors.brand));
+          expect((await box(label(tabs(page).first(), platform))).x).toBe((await box(page.getByTestId('content-one'))).x);
+        }
         const before = await tabs(page).evaluateAll(nodes => nodes.map(el => { const r = el.getBoundingClientRect(); return { x: r.x, width: r.width }; }));
-        await tabs(page).nth(1).click(); await aligned(page, 1, variant); await page.mouse.move(0, 0);
+        await tabs(page).nth(1).click(); await selected(page, 1, variant, palette); await page.mouse.move(0, 0);
         await expect(label(tabs(page).first(), platform)).toHaveCSS('font-weight', '500');
         await expect(label(tabs(page).nth(1), platform)).toHaveCSS('font-weight', '600');
         expect(await tabs(page).evaluateAll(nodes => nodes.map(el => { const r = el.getBoundingClientRect(); return { x: r.x, width: r.width }; }))).toEqual(before);
@@ -81,11 +96,42 @@ for (const platform of ['react', 'vue3', 'native']) {
     await tabs(page).last().click(); await aligned(page, 7, 'underline');
     await expect(page.getByTestId('content-t7')).toBeVisible();
     await configure(page, { density: 'compact' }); await aligned(page, 7, 'underline');
-    await configure(page, { variant: 'pills' }); await aligned(page, 7, 'pills');
-    await configure(page, { items: items.map((item, i) => i === 7 ? { ...item, label: '이름 변경 후 긴 마지막 항목', badge: 99 } : item) }); await aligned(page, 7, 'pills');
-    await configure(page, { width: 220 }); await aligned(page, 7, 'pills');
+    await configure(page, { variant: 'pills' }); await selected(page, 7, 'pills');
+    await configure(page, { items: items.map((item, i) => i === 7 ? { ...item, label: '이름 변경 후 긴 마지막 항목', badge: 99 } : item) }); await selected(page, 7, 'pills');
+    await configure(page, { width: 220 }); await selected(page, 7, 'pills');
     await configure(page, { items: items.slice(0, 2), value: 't0', variant: 'underline', density: 'comfortable' });
     await aligned(page, 0, 'underline');
     await configure(page, { value: 'missing' }); await expect(marker(page)).toBeHidden();
+  });
+
+  test(`${platform}: fullWidth tabs share the row, the underline spans the tab and badges are soft Badges`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openFixture(page, platform, '', 'tabs-design');
+    const colors = demoPalettes.default;
+    const three = [{ name: 'one', label: '홈' }, { name: 'two', label: '차트' }, { name: 'three', label: '알림', badge: 3, badgeVariant: 'danger' }];
+    await configure(page, { items: three, value: 'one', fullWidth: true });
+    const frame = await box(page.getByTestId('frame'));
+    const widths = async () => tabs(page).evaluateAll(nodes => nodes.map(el => el.getBoundingClientRect().width));
+    for (const variant of ['underline', 'pills']) {
+      await configure(page, { variant });
+      const gap = variant === 'pills' ? 8 : 4;
+      await expect.poll(async () => {
+        const all = await widths(), total = all.reduce((a, b) => a + b, 0) + gap * (all.length - 1);
+        return all.every(w => Math.abs(w - all[0]) <= 1) && Math.abs(total - frame.width) <= 2 ? 'shared' : JSON.stringify({ all, frame: frame.width });
+      }).toBe('shared');
+    }
+    await configure(page, { variant: 'underline' });
+    await expect.poll(async () => {
+      const m = await box(marker(page)), first = await box(tabs(page).first());
+      return Math.abs(m.x - first.x) <= 1 && Math.abs(m.width - first.width) <= 1 ? 'spans' : JSON.stringify({ m, first });
+    }).toBe('spans');
+    // The badge is a soft xs Badge: tone background, dark tone text, 16px tall.
+    const badge = tabs(page).nth(2).getByText('3', { exact: true });
+    const surface = platform === 'native' ? badge.locator('xpath=..') : badge;
+    await expect(surface).toHaveCSS('background-color', rgb(colors.dangerBg));
+    await expect(badge).toHaveCSS('color', rgb(colors.dangerDark ?? colors.danger));
+    expect(Math.round((await box(surface)).height)).toBe(16);
+    await configure(page, { fullWidth: false });
+    await expect.poll(async () => (await box(label(tabs(page).first(), platform))).x).toBe((await box(page.getByTestId('content-one'))).x);
   });
 }

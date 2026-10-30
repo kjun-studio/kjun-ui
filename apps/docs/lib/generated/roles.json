@@ -130,6 +130,7 @@
       "packages/native/src/skeletons.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-toolbar.tsx",
+      "packages/native/src/tabs.tsx",
       "packages/native/src/toast.tsx"
     ]
   },
@@ -163,7 +164,8 @@
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/table-grid.tsx",
-      "packages/native/src/table-toolbar.tsx"
+      "packages/native/src/table-toolbar.tsx",
+      "packages/native/src/tabs.tsx"
     ]
   },
   {
@@ -217,8 +219,7 @@
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/display-primitives.tsx",
-      "packages/native/src/field-clear.tsx",
-      "packages/native/src/tabs.tsx"
+      "packages/native/src/field-clear.tsx"
     ]
   },
   {
@@ -427,6 +428,7 @@
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/layout.css",
+      "packages/tokens/src/navigation.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/date-picker.tsx",
       "packages/vue3/src/financial-display.tsx",
@@ -441,6 +443,7 @@
       "packages/native/src/financial-display.tsx",
       "packages/native/src/input.tsx",
       "packages/native/src/select-control.tsx",
+      "packages/native/src/tabs.tsx",
       "packages/native/src/textarea.tsx",
       "packages/native/src/time-picker.tsx"
     ]

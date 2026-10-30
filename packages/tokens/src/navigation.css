@@ -7,7 +7,14 @@
   --_kjun-tab-height:var(--_kjun-extension-tabs-compact-height);
   --_kjun-tab-padding-x:var(--_kjun-extension-tabs-compact-padding-x);
 }
-.kjun-tabs[data-variant="pills"] { --_kjun-tab-padding-x:var(--_kjun-extension-tabs-pills-padding-x); }
+.kjun-tabs[data-variant="pills"] {
+  --_kjun-tab-height:var(--_kjun-extension-tabs-pills-height);
+  --_kjun-tab-padding-x:var(--_kjun-extension-tabs-pills-padding-x);
+}
+.kjun-tabs[data-variant="pills"][data-density="compact"] {
+  --_kjun-tab-height:var(--_kjun-extension-tabs-pills-compact-height);
+  --_kjun-tab-padding-x:var(--_kjun-extension-tabs-pills-compact-padding-x);
+}
 .kjun-tabs-header { display:flex; align-items:center; min-width:0; }
 .kjun-tabs-list {
   display:flex; align-items:center; gap:var(--_kjun-extension-tabs-gap);
@@ -22,12 +29,20 @@
   font-weight:var(--_kjun-type-label-weight); letter-spacing:var(--_kjun-type-control-tracking);
   white-space:nowrap; cursor:pointer; outline:none; -webkit-tap-highlight-color:transparent;
 }
-.kjun-tabs[data-variant="underline"] .kjun-tab:first-child { padding-inline-start:0; }
+.kjun-tabs[data-variant="underline"]:not([data-full-width]) .kjun-tab:first-child { padding-inline-start:0; }
+/* fullWidth: tabs share the row equally; the underline then spans the whole tab. */
+.kjun-tabs[data-full-width] .kjun-tabs-header > :is(.kjun-tabs-track, .kjun-tabs-scroller) { flex:1; }
+.kjun-tabs[data-full-width] .kjun-tabs-list { width:auto; min-width:max-content; }
+.kjun-tabs[data-full-width] .kjun-tab { flex:1 0 0; justify-content:center; min-width:max-content; }
+/* Pills are chips: each tab carries its own fill and the selected one inverts, with no sliding marker. */
+.kjun-tabs[data-variant="pills"] .kjun-tab { border-radius:var(--_kjun-extension-tabs-pills-radius); background:var(--_kjun-color-secondary) !important; }
+.kjun-tabs[data-variant="pills"] .kjun-tab[aria-selected="true"] { background:var(--_kjun-color-text) !important; color:var(--_kjun-color-surface); }
+.kjun-tabs[data-variant="pills"] .kjun-tab-indicator { display:none; }
 .kjun-tabs[data-variant="pills"] .kjun-tabs-list {
   gap:var(--_kjun-extension-tabs-pills-gap); padding-block:var(--_kjun-extension-tabs-pills-padding-y);
 }
 .kjun-tab[aria-selected="true"] { color:var(--_kjun-color-text); font-weight:var(--_kjun-type-control-weight); }
-.kjun-tab[aria-disabled="true"], .kjun-tab:disabled { opacity:var(--_kjun-state-opacity-disabled); cursor:not-allowed; }
+.kjun-tab[aria-disabled="true"], .kjun-tab:disabled { color:var(--_kjun-color-text-disabled); cursor:not-allowed; }
 .kjun-tab[data-focus-visible], .kjun-tab:focus-visible {
   outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-inset-offset);
 }
@@ -39,16 +54,12 @@
   scroll-padding-inline:var(--_kjun-tab-ring-room);
 }
 .kjun-tabs[data-variant="underline"] .kjun-tab:is([data-focus-visible], :focus-visible) { outline-offset:var(--_kjun-state-focus-offset); }
-.kjun-tab:hover:not([aria-disabled="true"]):not(:disabled) { color:var(--_kjun-color-text); }
-/* Pills answer hover with the hover surface, like ButtonGroup; motion.css keeps tab backgrounds transparent otherwise. */
+.kjun-tab:hover:not([aria-selected="true"]):not([aria-disabled="true"]):not(:disabled) { color:var(--_kjun-color-text); }
+/* Unselected chips darken to the hover surface, like Chip and ButtonGroup. */
 .kjun-tabs[data-variant="pills"] :is(.kjun-tabs-track, .kjun-tabs-scroller) .kjun-tab:hover:not([aria-selected="true"]):not([aria-disabled="true"]):not(:disabled) {
   background:var(--_kjun-color-hover) !important;
 }
-.kjun-tab-badge {
-  font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line);
-  font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking);
-  font-variant-numeric:tabular-nums; font-family:var(--_kjun-font-numeric);
-}
+.kjun-tab-badge { font-variant-numeric:tabular-nums; }
 .kjun-tab-content { margin-top:var(--_kjun-extension-tabs-content-gap); }
 .kjun-tab-panel { outline:none; }
 .kjun-accordion {

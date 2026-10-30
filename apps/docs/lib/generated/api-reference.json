@@ -21413,7 +21413,7 @@
             "required": false,
             "default": "\"comfortable\"",
             "description": "",
-            "summary": "comfortable은 44px, compact는 32px 높이입니다. 두 변형 모두 14px 라벨을 사용합니다.",
+            "summary": "underline은 comfortable 44px·compact 32px, pills는 36px·28px 높이입니다. 두 변형 모두 14px 라벨을 사용합니다.",
             "source": "packages/vue3/src/tabs.tsx"
           },
           {
@@ -21422,7 +21422,16 @@
             "required": false,
             "default": "\"underline\"",
             "description": "",
-            "summary": "underline은 2px 선택선, pills는 선택 항목의 중립 배경을 제공합니다.",
+            "summary": "underline은 라벨 아래 2px 선택선, pills는 둥근 칩 모양으로 선택된 칩이 글자색으로 채워집니다.",
+            "source": "packages/vue3/src/tabs.tsx"
+          },
+          {
+            "name": "fullWidth",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Tabs share the row equally; an underline then spans the whole tab.",
+            "summary": "탭이 가로 폭을 똑같이 나눠 갖습니다. underline 선택선도 탭 폭 전체로 그어집니다.",
             "source": "packages/vue3/src/tabs.tsx"
           },
           {
@@ -21532,7 +21541,7 @@
             "required": false,
             "default": "\"comfortable\"",
             "description": "",
-            "summary": "comfortable은 44px, compact는 32px 높이입니다. 두 변형 모두 14px 라벨을 사용합니다.",
+            "summary": "underline은 comfortable 44px·compact 32px, pills는 36px·28px 높이입니다. 두 변형 모두 14px 라벨을 사용합니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -21541,7 +21550,16 @@
             "required": false,
             "default": "\"underline\"",
             "description": "",
-            "summary": "underline은 2px 선택선, pills는 선택 항목의 중립 배경을 제공합니다.",
+            "summary": "underline은 라벨 아래 2px 선택선, pills는 둥근 칩 모양으로 선택된 칩이 글자색으로 채워집니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "fullWidth",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Tabs share the row equally; an underline then spans the whole tab.",
+            "summary": "탭이 가로 폭을 똑같이 나눠 갖습니다. underline 선택선도 탭 폭 전체로 그어집니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -21659,7 +21677,7 @@
             "required": false,
             "default": "\"comfortable\"",
             "description": "",
-            "summary": "comfortable은 44px, compact는 32px 높이입니다. 두 변형 모두 14px 라벨을 사용합니다.",
+            "summary": "underline은 comfortable 44px·compact 32px, pills는 36px·28px 높이입니다. 두 변형 모두 14px 라벨을 사용합니다.",
             "source": "packages/native/src/tabs.tsx"
           },
           {
@@ -21668,7 +21686,16 @@
             "required": false,
             "default": "\"underline\"",
             "description": "",
-            "summary": "underline은 2px 선택선, pills는 선택 항목의 중립 배경을 제공합니다.",
+            "summary": "underline은 라벨 아래 2px 선택선, pills는 둥근 칩 모양으로 선택된 칩이 글자색으로 채워집니다.",
+            "source": "packages/native/src/tabs.tsx"
+          },
+          {
+            "name": "fullWidth",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Tabs share the row equally; an underline then spans the whole tab.",
+            "summary": "탭이 가로 폭을 똑같이 나눠 갖습니다. underline 선택선도 탭 폭 전체로 그어집니다.",
             "source": "packages/native/src/tabs.tsx"
           },
           {

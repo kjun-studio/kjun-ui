@@ -20,6 +20,7 @@ type ReactNode,
 } from "react";
 import { Tab,TabList,TabPanel,Tabs,TabListStateContext } from "react-aria-components";
 import { KjunIcon } from "./button";
+import { KjunBadge } from "./display";
 import { KjunSelect } from "./select";
 export interface TabItem {
   name: string;
@@ -34,6 +35,8 @@ export interface KjunTabsProps {
   items?: TabItem[];
   density?: "comfortable" | "compact";
   variant?: "underline" | "pills";
+  /** Tabs share the row equally; an underline then spans the whole tab. */
+  fullWidth?: boolean;
   actions?: ReactNode;
   children?: ReactNode;
   /** Keep the header inside its scroll container while the tab panels scroll. */
@@ -60,6 +63,7 @@ export function KjunTabs({
   items = [],
   density = "comfortable",
   variant = "underline",
+  fullWidth = false,
   actions,
   children,
   stickyHeader = false,
@@ -119,6 +123,7 @@ export function KjunTabs({
       className="kjun-tabs"
       data-variant={variant}
       data-density={density}
+      data-full-width={fullWidth || undefined}
     >
       <div className="kjun-tabs-header" data-sticky={stickyHeader || undefined}
         style={stickyHeader ? { position: "sticky", top: stickyOffset, zIndex: tokens.layers.page.sticky, background: "var(--_kjun-color-surface)" } : undefined}>
@@ -169,16 +174,9 @@ export function KjunTabs({
             >
               {tab.icon && <KjunIcon name={tab.icon} size={tokens.extensions.tabs.iconSize} />} <span className="kjun-motion-label" data-label={tab.label}><span>{tab.label}</span></span>
               {tab.badge != null && (
-                <span
-                  className="kjun-tab-badge"
-                  style={{
-                    color: tab.badgeVariant
-                      ? `var(--_kjun-color-${tab.badgeVariant})`
-                      : undefined,
-                  }}
-                >
+                <KjunBadge className="kjun-tab-badge" size="xs" variant={tab.badgeVariant ?? "default"}>
                   {tab.badge}
-                </span>
+                </KjunBadge>
               )}
             </Tab>
           ))}

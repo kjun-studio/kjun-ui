@@ -49,7 +49,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await configure(page, { value: 900, animated: true }); await configure(page, { show: false }); await page.waitForTimeout(650);
   });
 
-  for (const variant of ['underline', 'pills']) test(`${platform}: ${variant} tabs keep their width and retarget the indicator`, async ({ page }) => {
+  for (const variant of ['underline']) test(`${platform}: ${variant} tabs keep their width and retarget the indicator`, async ({ page }) => {
     await start(page, platform, 'tabs'); await configure(page, { variant });
     const tabs = page.getByRole('tab'); await expect(tabs).toHaveCount(3); await expect(page.locator(marker)).toBeVisible();
     const before = await tabs.evaluateAll(nodes => nodes.map(el => { const r = el.getBoundingClientRect(); return { x: r.x, width: r.width }; }));
@@ -66,11 +66,28 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByTestId('tab-value')).toHaveText('two');
     const after = await tabs.evaluateAll(nodes => nodes.map(el => { const r = el.getBoundingClientRect(); return { x: r.x, width: r.width }; }));
     after.forEach((box, i) => { expect(Math.abs(box.x - before[i].x)).toBeLessThanOrEqual(1); expect(Math.abs(box.width - before[i].width)).toBeLessThanOrEqual(1); });
-    await expect.poll(async () => Math.abs((await page.locator(marker).boundingBox())!.x - ((await tabs.nth(1).boundingBox())!.x + (variant === 'underline' ? 16 : 0)))).toBeLessThanOrEqual(1);
+    await expect.poll(async () => Math.abs((await page.locator(marker).boundingBox())!.x - ((await tabs.nth(1).boundingBox())!.x + (variant === 'underline' ? 10 : 0)))).toBeLessThanOrEqual(1);
     await configure(page, { accept: false }); await tabs.first().click(); await expect(page.getByTestId('tab-value')).toHaveText('two');
     await page.emulateMedia({ reducedMotion: 'reduce' }); await configure(page, { tab: 'three', width: 240, dir: 'rtl' });
     await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
     await configure(page, { tab: 'missing' }); await expect(page.locator(marker)).toBeHidden();
+  });
+
+  // Chips have no sliding marker: the selected chip changes its own fill and nothing moves.
+  test(`${platform}: pills tabs keep their width and repaint the selected chip`, async ({ page }) => {
+    await start(page, platform, 'tabs'); await configure(page, { variant: 'pills' });
+    const tabs = page.getByRole('tab'); await expect(tabs).toHaveCount(3); await expect(page.locator(marker)).toBeHidden();
+    const before = await tabs.evaluateAll(nodes => nodes.map(el => { const r = el.getBoundingClientRect(); return { x: r.x, width: r.width }; }));
+    const fill = (i: number) => tabs.nth(i).evaluate(el => getComputedStyle(el).backgroundColor);
+    // Let the variant switch finish its color transition before sampling the resting fills.
+    await expect.poll(() => fill(0)).toMatch(/^rgb\(/); await expect.poll(() => fill(1)).toMatch(/^rgb\(/);
+    const idle = await fill(1), chosen = await fill(0);
+    expect(idle).not.toBe(chosen);
+    await tabs.nth(1).click(); await expect(page.getByTestId('tab-value')).toHaveText('two');
+    await expect.poll(() => fill(1)).toBe(chosen); await expect.poll(() => fill(0)).toBe(idle);
+    await expect(page.locator(marker)).toBeHidden();
+    const after = await tabs.evaluateAll(nodes => nodes.map(el => { const r = el.getBoundingClientRect(); return { x: r.x, width: r.width }; }));
+    after.forEach((box, i) => { expect(Math.abs(box.x - before[i].x)).toBeLessThanOrEqual(1); expect(Math.abs(box.width - before[i].width)).toBeLessThanOrEqual(1); });
   });
 
   test(`${platform}: accordion animates height, survives reversal and removes closed content`, async ({ page }) => {

@@ -8,7 +8,7 @@ createApp(defineComponent(() => () => {
   const config = s.config;
   return <K.KjunProvider><main style={{ padding: '16px' }}>
     <div data-testid="frame" style={{ width: typeof config.width === 'number' ? config.width + 'px' : config.width, maxWidth: '100%' }}>
-      <K.KjunTabs modelValue={config.value} variant={config.variant} density={config.density} items={config.items}
+      <K.KjunTabs modelValue={config.value} variant={config.variant} density={config.density} fullWidth={config.fullWidth} items={config.items}
         onUpdate:modelValue={(value: string) => { s.events.push(value); if (s.config.accept) s.config = { ...s.config, value }; }}>
         {config.items.map((item: any) => <K.KjunTabPane key={item.name} {...item}><div data-testid={'content-' + item.name}>본문 {item.label}</div></K.KjunTabPane>)}
       </K.KjunTabs>

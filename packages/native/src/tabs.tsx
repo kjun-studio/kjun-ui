@@ -7,6 +7,7 @@ import { useInitialTab } from "../../../shared/package-runtime/navigation";
 import { Animated, Platform, ScrollView, View, type LayoutRectangle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
+import { BadgeView } from "./display-primitives";
 import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useTabKeyboard, usePanelFocus } from "./tabs-accessibility";
@@ -24,6 +25,8 @@ export interface KjunTabsProps {
   items?: TabItem[];
   density?: "comfortable" | "compact";
   variant?: "underline" | "pills";
+  /** Tabs share the row equally; an underline then spans the whole tab. */
+  fullWidth?: boolean;
   actions?: ReactNode;
   children?: ReactNode;
   ariaLabel?: string;
@@ -42,6 +45,7 @@ export function KjunTabs({
   items = [],
   density = "comfortable",
   variant = "underline",
+  fullWidth = false,
   actions,
   children,
   ariaLabel,
@@ -74,8 +78,9 @@ export function KjunTabs({
   // A zoomed browser can round the measured bold label slightly narrower than
   // the regular label. Tabs stay on one line inside their horizontal scroller.
   const singleLine = Platform.OS === 'web' ? { whiteSpace: 'nowrap' as const } : {};
-  const paddingX = !underline ? geometry.pillsPaddingX : density === 'compact' ? geometry.compactPaddingX : geometry.paddingX;
-  const height = density === 'compact' ? geometry.compactHeight : geometry.height;
+  const compact = density === 'compact';
+  const paddingX = underline ? (compact ? geometry.compactPaddingX : geometry.paddingX) : compact ? geometry.pillsCompactPaddingX : geometry.pillsPaddingX;
+  const height = underline ? (compact ? geometry.compactHeight : geometry.height) : compact ? geometry.pillsCompactHeight : geometry.pillsHeight;
   const ringRoom = tokens.states.focus.width + tokens.states.focus.offset;
   // Compact tabs stay 32px tall but answer touches across the 44px minimum target.
   const slop = Math.max(0, (tokens.native.minimumTouchTarget - height) / 2);
@@ -86,19 +91,20 @@ export function KjunTabs({
   const tabRefs = useRef(new Map<string, View>());
   const { updateLayout } = selection;
   const firstName = tabs[0]?.name;
+  // An underline sits under the label, or under the whole tab when tabs share the row. Pills have no marker.
   const measureIndicator = useCallback((name: string, box: LayoutRectangle) => {
-    const left = underline && name === firstName ? 0 : paddingX;
-    updateLayout(name, underline ? {
+    const left = fullWidth ? 0 : name === firstName ? 0 : paddingX, right = fullWidth ? 0 : paddingX;
+    if (underline) updateLayout(name, {
       x: box.x + left, y: box.y + box.height - geometry.indicatorHeight,
-      width: Math.max(0, box.width - left - paddingX), height: geometry.indicatorHeight,
-    } : box);
-  }, [underline, paddingX, firstName, updateLayout, geometry]);
+      width: Math.max(0, box.width - left - right), height: geometry.indicatorHeight,
+    });
+  }, [underline, fullWidth, paddingX, firstName, updateLayout, geometry]);
   useLayoutEffect(() => {
     // Native Web observes the content box: padding-only changes need a fresh measurement.
     for (const [name, node] of tabRefs.current) {
       node.measure((x, y, width, height) => measureIndicator(name, { x, y, width, height }));
     }
-  }, [variant, density, measureIndicator]);
+  }, [variant, density, fullWidth, measureIndicator]);
   const change = (name: string) => {
     onValueChange?.(name);
     onChange?.(name);
@@ -116,6 +122,7 @@ export function KjunTabs({
           // Underline tabs ring outside their label and indicator, and compact tabs extend their touch target.
           style={{ marginHorizontal: -roomX, marginVertical: -roomY }}
           contentContainerStyle={{
+            flexGrow: fullWidth ? 1 : undefined,
             flexDirection: "row",
             alignItems: "center",
             gap: underline ? geometry.gap : geometry.pillsGap,
@@ -123,18 +130,22 @@ export function KjunTabs({
             paddingVertical: (underline ? 0 : geometry.pillsPaddingY) + roomY,
           }}
         >
-          {selection.layout && <Animated.View testID="kjun-tab-indicator" pointerEvents="none" accessible={false}
+          {underline && selection.layout && <Animated.View testID="kjun-tab-indicator" pointerEvents="none" accessible={false}
             style={{ position: 'absolute', left: 0,
               top: selection.layout.y,
               height: selection.layout.height,
               width: selection.width,
               transform: [{ translateX: selection.x }],
-              borderRadius: underline ? geometry.indicatorHeight / 2 : geometry.radius,
-              backgroundColor: variant === 'underline' ? colors.brand : colors.active,
+              borderRadius: geometry.indicatorHeight / 2,
+              backgroundColor: colors.brand,
               opacity: selectedTab?.disabled ? tokens.states.opacity.disabled : 1,
             }} />}
           {tabs.map((tab, index) => {
             const active = value === tab.name;
+            // Selected chips invert; disabled tabs fade their ink only, so chips keep their fill.
+            const ink = tab.disabled ? colors.textDisabled : active ? (underline ? colors.text : colors.surface) : colors.textSecondary;
+            const fill = underline ? undefined : active ? colors.text
+              : !tab.disabled && hoveredTab === tab.name ? colors.hover : colors.secondary;
             return (
               <Pressable
                 key={tab.name}
@@ -173,15 +184,14 @@ export function KjunTabs({
                 onHoverOut={() => setHoveredTab(current => current === tab.name ? null : current)}
                 style={{
                   height,
+                  ...(fullWidth ? { flexGrow: 1, flexBasis: 0, justifyContent: "center" as const } : {}),
                   flexDirection: "row",
                   alignItems: "center",
                   gap: geometry.itemGap,
-                  paddingLeft: underline && index === 0 ? 0 : paddingX,
+                  paddingLeft: underline && index === 0 && !fullWidth ? 0 : paddingX,
                   paddingRight: paddingX,
-                  borderRadius: geometry.radius,
-                  // Pills answer hover with the hover surface, like ButtonGroup and Web.
-                  backgroundColor: !underline && !active && !tab.disabled && hoveredTab === tab.name ? colors.hover : undefined,
-                  opacity: tab.disabled ? tokens.states.opacity.disabled : 1,
+                  borderRadius: underline ? geometry.radius : geometry.pillsRadius,
+                  backgroundColor: fill,
                 }}
               >
 
@@ -189,29 +199,17 @@ export function KjunTabs({
                   <KjunIcon
                     name={tab.icon}
                     size={geometry.iconSize}
-                    color={active ? colors.text : colors.textSecondary}
+                    color={ink}
                   />
                 )}
                 <View>
                   <KText accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
                     style={{ opacity: 0, ...typeStyle("control"), ...singleLine }}>{tab.label}</KText>
                   <KText style={{ position: 'absolute', left: 0, right: 0, top: 0, ...selectionTypeStyle("md", active),
-                     color: active ? colors.text : colors.textSecondary, ...singleLine }}>{tab.label}</KText>
+                     color: ink, ...singleLine }}>{tab.label}</KText>
                 </View>
                 {tab.badge != null && (
-                  <KText
-                    style={{
-                      ...typeStyle('caption'),
-                      color: tab.badgeVariant
-                        ? colors[tab.badgeVariant]
-                        : active
-                        ? colors.text
-                        : colors.textSecondary,
-                      fontVariant: ["tabular-nums"],
-                    }}
-                  >
-                    {tab.badge}
-                  </KText>
+                  <BadgeView size="xs" variant={tab.badgeVariant ?? "default"}>{tab.badge}</BadgeView>
                 )}
               </Pressable>
             );
