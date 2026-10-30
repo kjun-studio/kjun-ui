@@ -82,7 +82,7 @@ test('all distributed JavaScript, styles and declarations are independent of app
 test('icon contract includes every upstream outline and filled variant', async()=>{
  const {icons,filledIcons}=await import('../packages/tokens/dist/icons.js');
  const { icons: outline, filledIcons: filled } = await import('../packages/icons/dist/defaults.js');
- assert.equal(Object.keys(icons).length,153);assert.equal(Object.keys(filledIcons).length,2);
+ assert.equal(Object.keys(icons).length,153);assert.equal(Object.keys(filledIcons).length,6);
  assert.deepEqual(icons,outline);assert.deepEqual(filledIcons,filled);
  for(const nodes of [...Object.values(icons),...Object.values(filledIcons)])assert.ok(nodes.length>0);
 });
