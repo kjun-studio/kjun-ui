@@ -6,7 +6,7 @@ import { useAccordionState } from "../../../shared/package-runtime/navigation";
 import { useMotionValue } from "./motion";
 import { useButtonGroupMotion } from "./button-group-motion";
 import {
-Fragment, createContext,
+Children, Fragment, createContext,
 useContext,
 useEffect,
 useId,
@@ -30,33 +30,51 @@ const AccordionContext = createContext<{
 export interface KjunAccordionProps {
   multiple?: boolean;
   tone?: "card" | "muted";
+  /** Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone). */
+  divider?: boolean;
+  /** Gives every item its own rounded surface with a gap between them; divider has no effect then. */
+  separated?: boolean;
   children: ReactNode;
 }
+// The container tells each item how it is laid out, like ListSection tells its rows (no line after the last).
+const AccordionLayoutContext = createContext({ divider: false, separated: false, background: undefined as string | undefined });
 export function KjunAccordion({
   multiple = false,
   tone = "card",
+  divider = false,
+  separated = false,
   children,
 }: KjunAccordionProps) {
   const { colors } = useKjunStyles(),
     state = useAccordionState(multiple);
+  const background = (tone === "muted" ? colors.secondary : colors.surface) as string;
+  const items = Children.toArray(children);
   return (
     <AccordionContext.Provider
       value={state}
     >
       <View
-        style={{
+        style={separated ? { gap: tokens.extensions.accordion.itemGap } : {
           borderRadius: tokens.extensions.accordion.radius,
           overflow: "hidden",
-          backgroundColor: tone === "muted" ? colors.secondary : colors.surface,
+          backgroundColor: background,
         }}
       >
-        {children}
+        {items.map((item, i) => (
+          <AccordionLayoutContext.Provider key={i} value={{ divider: divider && !separated && i < items.length - 1, separated, background: separated ? background : undefined }}>
+            {item}
+          </AccordionLayoutContext.Provider>
+        ))}
       </View>
     </AccordionContext.Provider>
   );
 }
 export interface KjunAccordionItemProps {
   title?: string;
+  /** A secondary line under the title (caption, secondary text). */
+  description?: string;
+  /** Icon name drawn in a 40px leading column at the list icon size; the body and divider then start at the title. */
+  icon?: string;
   defaultOpen?: boolean;
   /** Controlled open state. A controlled item follows this value only and stays out of the Accordion's single-open rule. */
   open?: boolean;
@@ -70,6 +88,8 @@ export interface KjunAccordionItemProps {
 }
 export function KjunAccordionItem({
   title = "",
+  description,
+  icon,
   defaultOpen = false,
   disabled = false,
   header,
@@ -97,26 +117,33 @@ export function KjunAccordionItem({
   }, [open, controlled]);
   const rotation = useMotionValue(open ? 1 : 0, tokens.motion.collapse, undefined, undefined, true);
   const geometry = tokens.extensions.accordion;
-  const [hovered, setHovered] = useState(false);
+  const [hovered, setHovered] = useState(false), [pressed, setPressed] = useState(false);
+  const layout = useContext(AccordionLayoutContext);
+  // With an icon the body and the divider start at the title, past the leading column.
+  const inset = geometry.paddingX + (icon ? geometry.leadingWidth + geometry.headerGap : 0);
   const wrapping = Platform.OS === 'web' ? { wordBreak: 'keep-all', overflowWrap: 'anywhere' } as TextStyle : {};
   useEffect(() => {
     return group?.register(id, defaultOpen);
   }, []);
   return (
-    <View>
+    // Hover and press paint the whole item, header and open body together, like Web.
+    <View style={{ backgroundColor: !disabled && (pressed || hovered) ? colors.hover : layout.background,
+      ...(layout.separated ? { borderRadius: geometry.radius, overflow: "hidden" as const } : {}) }}>
       <Pressable
         nativeID={id + "-heading"}
         accessibilityRole="button"
         // The accordion clips its items to rounded corners; an inset ring with the same radius stays whole.
         focusRingInset
         focusRingRadius={tokens.extensions.accordion.radius}
-        accessibilityLabel={title}
+        accessibilityLabel={description ? title + ", " + description : title}
         accessibilityState={{ expanded: open, disabled }}
         disabled={disabled}
         onPress={() => { registering.current = false; controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own); }}
+        onPressIn={() => setPressed(true)}
+        onPressOut={() => setPressed(false)}
         onHoverIn={() => setHovered(true)}
         onHoverOut={() => setHovered(false)}
-        style={({ pressed }) => ({
+        style={{
           minHeight: geometry.minimumHeight,
           flexDirection: "row",
           alignItems: "center",
@@ -124,25 +151,29 @@ export function KjunAccordionItem({
           gap: geometry.headerGap,
           paddingVertical: geometry.headerPaddingY,
           paddingHorizontal: geometry.paddingX,
-          backgroundColor: !disabled && (pressed || hovered) ? colors.hover : undefined,
           opacity: disabled ? tokens.states.opacity.disabled : 1,
-        })}
+        }}
       >
+        {!!icon && <View style={{ minWidth: geometry.leadingWidth, alignItems: "center", justifyContent: "center" }}>
+          <KjunIcon name={icon} size={geometry.leadingIconSize} color={colors.textSecondary} />
+        </View>}
         <View style={{ flex: 1, minWidth: 0 }}>
           {content(header || title, { ...typeStyle("control"), ...wrapping })}
+          {!!description && <KText style={{ ...typeStyle("caption"), ...wrapping, marginTop: geometry.descriptionGap, color: colors.textSecondary }}>{description}</KText>}
         </View>
         <Animated.View style={{ flexShrink: 0, transform: [{ rotate: rotation.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "180deg"] }) }] }}>
-          <KjunIcon name="chevron-down" size={geometry.iconSize} color={colors.textSecondary} />
+          <KjunIcon name="chevron-down" size={geometry.iconSize} color={colors.textTertiary} />
         </Animated.View>
       </Pressable>
       <Collapse open={open} keepMounted={keepMounted}>
         <View
           nativeID={id + "-panel"}
-          style={{ paddingHorizontal: geometry.paddingX, paddingBottom: geometry.contentPaddingBottom }}
+          style={{ paddingLeft: inset, paddingRight: geometry.paddingX, paddingBottom: geometry.contentPaddingBottom }}
         >
-          {content(children, { ...typeStyle("body"), ...wrapping, color: colors.textSecondary })}
+          {content(children, { ...typeStyle("body"), ...wrapping, color: colors.text })}
         </View>
       </Collapse>
+      {layout.divider && <View pointerEvents="none" style={{ position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
     </View>
   );
 }

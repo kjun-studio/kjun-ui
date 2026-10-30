@@ -8,7 +8,7 @@ const bodyText = '이 계정에서 사용할 기본 정보를 확인하고 변�
 const rgb = (hex: string) => 'rgb(' + [1, 3, 5].map(n => parseInt(hex.slice(n, n + 2), 16)).join(', ') + ')';
 
 for (const platform of ['react', 'vue3', 'native']) {
-  test(`${platform}: flat accordion geometry, title hierarchy and content spacing remain legible`, async ({ page }) => {
+  test(`${platform}: line-free accordion geometry, title hierarchy and content spacing remain legible`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: 390, height: 800 });
     for (const palette of ['default', 'dark'] as const) {
@@ -20,19 +20,23 @@ for (const platform of ['react', 'vue3', 'native']) {
         await expect(group).toHaveCSS('background-color', rgb(demoPalettes[palette][tone === 'card' ? 'surface' : 'secondary']));
         await expect(group).toHaveCSS('box-shadow', 'none');
       }
-      await expect(headers(page).first()).toHaveCSS('height', '48px');
+      await expect(headers(page).first()).toHaveCSS('height', '56px');
       const title = headers(page).first().getByText('계정 설정', { exact: true });
       await expect(title).toHaveCSS('font-size', '14px'); await expect(title).toHaveCSS('font-weight', '600');
       await expect(headers(page).first().locator('svg')).toHaveCSS('width', '16px');
-      await expect(headers(page).first().locator('svg')).toHaveCSS('stroke', rgb(demoPalettes[palette].textSecondary));
+      await expect(headers(page).first().locator('svg')).toHaveCSS('stroke', rgb(demoPalettes[palette].textTertiary));
       expect(await group.evaluate(el => [el, ...el.querySelectorAll('*')].filter(node => node.tagName.toLowerCase() !== 'svg' && !node.closest('svg')).every(node => {
         const s = getComputedStyle(node); return s.borderTopWidth === '0px' && s.borderBottomWidth === '0px';
       }))).toBe(true);
-      await headers(page).first().hover(); await expect(headers(page).first()).toHaveCSS('background-color', rgb(demoPalettes[palette].hover));
-      await headers(page).first().click(); await page.mouse.move(0, 0);
+      // Hover paints the whole item (header and open body), not the header alone.
+      const item = headers(page).first().locator('..');
+      await headers(page).first().hover(); await expect(item).toHaveCSS('background-color', rgb(demoPalettes[palette].hover));
       await expect(headers(page).first()).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+      await headers(page).first().click(); await page.mouse.move(0, 0);
+      await expect(item).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
       const body = page.getByTestId('frame').getByText(bodyText, { exact: true });
       await expect(body).toBeVisible(); await expect(body).toHaveCSS('font-size', '14px'); await expect(body).toHaveCSS('font-weight', '400');
+      await expect(body).toHaveCSS('color', rgb(demoPalettes[palette].text));
       expect(await body.evaluate(el => { const r = document.createRange(); r.selectNodeContents(el); return r.getBoundingClientRect().x; })).toBe((await box(title)).x);
       await expect(platform === 'native' ? body.locator('..') : body).toHaveCSS('padding-bottom', '20px');
       const rotated = platform === 'native' ? headers(page).first().locator('svg').locator('..').locator('..') : headers(page).first().locator('svg');
@@ -40,11 +44,42 @@ for (const platform of ['react', 'vue3', 'native']) {
       const longTitle = '작업 중인 프로젝트의 계정과 알림 환경을 함께 관리하는 설정';
       await configure(page, { title: longTitle, body: 'https://example.com/' + 'identifier'.repeat(25) });
       await page.setViewportSize({ width: 320, height: 800 });
-      expect((await box(headers(page).first())).height).toBeGreaterThan(48);
+      expect((await box(headers(page).first())).height).toBeGreaterThan(56);
       const icon = await box(headers(page).first().locator('svg'));
       expect(icon.width).toBe(16); expect(icon.x + icon.width).toBeLessThanOrEqual(304);
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
     }
+  });
+
+  test(`${platform}: divider, separated items and a leading icon with description line up with the title`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 390, height: 800 });
+    await openFixture(page, platform, '', 'accordion-design');
+    const frame = page.getByTestId('frame'), group = frame.locator(':scope > *').first();
+    const items = () => headers(page).locator('..');
+    const line = (index: number) => platform === 'native'
+      ? items().nth(index).evaluate(el => { const last = el.lastElementChild as HTMLElement; const r = last.getBoundingClientRect(); return r.height <= 1.5 ? { left: r.left - el.getBoundingClientRect().left, height: r.height } : null; })
+      : items().nth(index).evaluate(el => { const s = getComputedStyle(el, '::after'); return s.content === 'none' || s.content === 'normal' ? null : { left: parseFloat(s.left), height: parseFloat(s.height) }; });
+    expect(await line(0)).toBeNull();
+    await configure(page, { divider: true });
+    expect(await line(0)).toEqual({ left: 16, height: 1 });
+    expect(await line(1)).toBeNull();
+    await configure(page, { icon: 'bell', description: '푸시와 이메일' });
+    // Web keeps title and description in one heading span; Native draws the title as its own text.
+    const title = platform === 'native' ? frame.getByText('계정 설정', { exact: true }) : headers(page).first().locator('.kjun-accordion-heading'), row = await box(items().first());
+    expect(Math.round((await box(title)).x - row.x)).toBe(68);
+    expect(Math.round((await box(headers(page).first().locator('svg').first())).width)).toBe(20);
+    await expect(frame.getByText('푸시와 이메일', { exact: true })).toHaveCSS('font-size', '12px');
+    expect(await line(0)).toEqual({ left: 68, height: 1 });
+    await headers(page).first().click();
+    const body = frame.getByText(bodyText, { exact: true });
+    expect(await body.evaluate(el => { const r = document.createRange(); r.selectNodeContents(el); return r.getBoundingClientRect().x; })).toBe((await box(title)).x);
+    await configure(page, { separated: true, icon: '', description: '' });
+    expect(await line(0)).toBeNull();
+    const [first, second] = [await box(items().nth(0)), await box(items().nth(1))];
+    expect(Math.round(second.y - first.y - first.height)).toBe(8);
+    await expect(group).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+    await expect(items().first()).toHaveCSS('border-top-left-radius', '12px');
   });
 
   test(`${platform}: keyboard toggles, panel focus and disabled controls preserve opening rules`, async ({ page }) => {

@@ -104,7 +104,8 @@ set("DatePicker", {
   min: "선택 가능한 최소 날짜입니다.",
   max: "선택 가능한 최대 날짜입니다.",
 });
-set("AnimatedNumber PriceCell SignedValue Deviation Progress ProgressCell HeatmapCell", {
+// Progress documents its own value (null is missing data) above.
+set("AnimatedNumber PriceCell SignedValue Deviation ProgressCell HeatmapCell", {
   value: "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",
 });
 set("CopyButton", { value: "클립보드에 복사할 문자열입니다." });
@@ -304,6 +305,14 @@ set("Drawer Modal", { onAfterClose: "닫힘 애니메이션이 끝나 화면에�
 set("Drawer Modal", { onAfterClose: "닫힘 애니메이션이 끝난 뒤 한 번 호출합니다. iOS는 시스템 창이 실제로 닫힐 때(onDismiss)까지 기다리므로 여기서 다음 Modal을 띄워도 됩니다. 기기에서는 아직 확인하지 않았습니다." }, "native");
 set("Select Combobox Dropdown MenuButton", { returnFocus: "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다." });
 set("Combobox", { returnFocus: "옵션을 고르거나 Escape로 닫을 때 초점을 옮길 요소입니다. 입력 중 목록이 닫히거나 입력에서 벗어날 때는 입력에 그대로 둡니다. 웹 전용입니다." });
+set("Accordion", {
+  divider: { default: "false", summary: "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이지만 Accordion은 기본값이 false입니다." },
+  separated: { default: "false", summary: "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(흰 페이지에서는 tone=\"muted\"), divider는 적용되지 않습니다." },
+});
+set("AccordionItem", {
+  description: "제목 아래 보조 설명 한 줄입니다(caption, 보조 글자색).",
+  icon: { summary: "앞쪽 40px 열에 그릴 아이콘 이름입니다(ListRow와 같은 20px 보조색). 본문과 구분선이 제목 시작선부터 시작합니다." },
+});
 set("AccordionItem", {
   open: "열림 상태를 앱이 제어합니다(Vue v-model:open). 넘기면 항목은 이 값만 따르고 Accordion의 하나만 펼침 규칙에 참여하지 않습니다.",
   onOpenChange: "제어 항목에서는 제목을 누를 때 변경을 요청하고, 제어하지 않는 항목에서는 열림 상태가 실제로 바뀔 때(형제가 열려 닫힌 경우 포함) 알립니다.",

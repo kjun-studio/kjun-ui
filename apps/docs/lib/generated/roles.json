@@ -1079,7 +1079,9 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/extensions.css",
-      "packages/native/src/list.tsx"
+      "packages/tokens/src/navigation.css",
+      "packages/native/src/list.tsx",
+      "packages/native/src/navigation.tsx"
     ]
   },
   {

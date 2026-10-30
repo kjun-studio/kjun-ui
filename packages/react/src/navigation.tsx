@@ -211,11 +211,17 @@ const AccordionContext = createContext<{
 export interface KjunAccordionProps {
   multiple?: boolean;
   tone?: "card" | "muted";
+  /** Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone). */
+  divider?: boolean;
+  /** Gives every item its own rounded surface with a gap between them; divider has no effect then. */
+  separated?: boolean;
   children: ReactNode;
 }
 export function KjunAccordion({
   multiple = false,
   tone = "card",
+  divider = false,
+  separated = false,
   children,
 }: KjunAccordionProps) {
   const state = useAccordionState(multiple);
@@ -223,7 +229,7 @@ export function KjunAccordion({
     <AccordionContext.Provider
       value={state}
     >
-      <div className="kjun-accordion" data-tone={tone}>
+      <div className="kjun-accordion" data-tone={tone} data-divider={divider || undefined} data-separated={separated || undefined}>
         {children}
       </div>
     </AccordionContext.Provider>
@@ -231,6 +237,10 @@ export function KjunAccordion({
 }
 export interface KjunAccordionItemProps {
   title?: string;
+  /** A secondary line under the title (caption, secondary text). */
+  description?: string;
+  /** Icon name drawn in a 40px leading column at the list icon size; the body and divider then start at the title. */
+  icon?: string;
   defaultOpen?: boolean;
   /** Controlled open state. A controlled item follows this value only and stays out of the Accordion's single-open rule. */
   open?: boolean;
@@ -244,6 +254,8 @@ export interface KjunAccordionItemProps {
 }
 export function KjunAccordionItem({
   title = "",
+  description,
+  icon,
   defaultOpen = false,
   disabled = false,
   header,
@@ -272,7 +284,7 @@ export function KjunAccordionItem({
     notify.current?.(open);
   }, [open, controlled]);
   return (
-    <div className="kjun-accordion-item">
+    <div className="kjun-accordion-item" data-leading={icon ? "" : undefined}>
       <button
         type="button"
         id={id + "-heading"}
@@ -282,7 +294,8 @@ export function KjunAccordionItem({
         className="kjun-accordion-trigger"
         onClick={() => { registering.current = false; controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own); }}
       >
-        <span className="kjun-accordion-heading">{header || title}</span>
+        {icon && <span className="kjun-accordion-leading"><KjunIcon name={icon} size={tokens.extensions.accordion.leadingIconSize} /></span>}
+        <span className="kjun-accordion-heading">{header || title}{description && <span className="kjun-accordion-description">{description}</span>}</span>
         <KjunIcon
           name="chevron-down"
           className="kjun-accordion-chevron"

@@ -7,8 +7,8 @@ Object.assign(window, { configureAccordion: (next: object) => { s.config = { ...
 createApp(defineComponent(() => () => {
   const config = s.config;
   return <K.KjunProvider><main style={{ padding: '16px' }}><div data-testid="frame">
-    <K.KjunAccordion tone={config.tone} multiple={config.multiple}>
-      <K.KjunAccordionItem title={config.title} disabled={config.disabled}>
+    <K.KjunAccordion tone={config.tone} multiple={config.multiple} divider={config.divider} separated={config.separated}>
+      <K.KjunAccordionItem title={config.title} disabled={config.disabled} icon={config.icon || undefined} description={config.description || undefined}>
         {config.action ? <K.KjunButton variant="ghost" size="sm">본문 행동</K.KjunButton> : config.body}
       </K.KjunAccordionItem>
       <K.KjunAccordionItem title="알림 설정">알림을 받을 방식을 선택하세요.</K.KjunAccordionItem>

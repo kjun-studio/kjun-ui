@@ -2,22 +2,30 @@
   "KjunAccordion": {
     "vue3": [
       "multiple",
-      "tone"
+      "tone",
+      "divider",
+      "separated"
     ],
     "react": [
       "multiple",
       "tone",
+      "divider",
+      "separated",
       "children"
     ],
     "native": [
       "multiple",
       "tone",
+      "divider",
+      "separated",
       "children"
     ]
   },
   "KjunAccordionItem": {
     "vue3": [
       "title",
+      "description",
+      "icon",
       "defaultOpen",
       "disabled",
       "open",
@@ -25,6 +33,8 @@
     ],
     "react": [
       "title",
+      "description",
+      "icon",
       "defaultOpen",
       "disabled",
       "header",
@@ -35,6 +45,8 @@
     ],
     "native": [
       "title",
+      "description",
+      "icon",
       "defaultOpen",
       "disabled",
       "header",

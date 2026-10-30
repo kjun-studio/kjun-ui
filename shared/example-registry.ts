@@ -44,7 +44,7 @@ assign("RefreshButton", [choice("mode", "표현", ["icon", "text"], "icon"), cho
 assign("Textarea DatePicker Combobox", [size, disabled, error]);
 assign("Dropdown", [disabled]);
 assign("DropdownItem", [toggle("itemDisabled", "첫 항목 비활성")]);
-assign("Accordion AccordionItem", [choice("tone", "배경", ["card", "muted"]), toggle("multiple", "복수 펼침"), toggle("itemDisabled", "첫 항목 비활성")]);
+assign("Accordion AccordionItem", [choice("tone", "배경", ["card", "muted"]), toggle("multiple", "복수 펼침"), toggle("itemDisabled", "첫 항목 비활성"), toggle("divider", "구분선"), toggle("separated", "항목 분리"), toggle("detail", "아이콘·설명")]);
 assign("FormActions", [choice("comparison", "비교", ["기본", "크기", "변형", "표시"]), choice("size", "크기", ["sm", "md", "lg"], "lg"), choice("variant", "확인 표현", ["primary", "danger", "success"]), choice("cancelVariant", "취소 표현", ["ghost", "secondary"]), field("confirmText", "확인 문구", "저장"), field("cancelText", "취소 문구", "취소"), toggle("showConfirm", "확인 표시", true), toggle("showCancel", "취소 표시", true), choice("exampleWidth", "예제 폭", ["360", "288", "200"]), toggle("cancelDisabled", "취소 비활성"), toggle("disabled", "확인 비활성"), toggle("loading", "확인 로딩")]);
 assign("Modal", [choice("size", "크기", ["sm", "md", "lg", "xl", "full"], "md"), toggle("disabled", "확인 비활성"), toggle("loading", "확인 로딩")]);
 assign("Button", [choice("comparison", "비교", ["기본", "크기", "변형", "라벨·아이콘", "상태"]), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), choice("variant", "변형", ["primary", "secondary", "ghost", "danger", "danger-ghost", "success", "warning"]), disabled, loading, toggle("iconOnly", "아이콘 전용"), toggle("block", "전체 너비")]);

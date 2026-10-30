@@ -52,10 +52,21 @@
 .kjun-tab-content { margin-top:var(--_kjun-extension-tabs-content-gap); }
 .kjun-tab-panel { outline:none; }
 .kjun-accordion {
+  --_kjun-accordion-bg:var(--_kjun-color-surface);
   min-width:0; border-radius:var(--_kjun-extension-accordion-radius); overflow:hidden;
-  background:var(--_kjun-color-surface);
+  background:var(--_kjun-accordion-bg);
 }
-.kjun-accordion[data-tone="muted"] { background:var(--_kjun-color-secondary); }
+.kjun-accordion[data-tone="muted"] { --_kjun-accordion-bg:var(--_kjun-color-secondary); }
+/* separated: each item is its own rounded surface on the tone, with a gap instead of a line. */
+.kjun-accordion[data-separated] { display:flex; flex-direction:column; gap:var(--_kjun-extension-accordion-item-gap); background:transparent; border-radius:0; overflow:visible; }
+.kjun-accordion[data-separated] > .kjun-accordion-item { background:var(--_kjun-accordion-bg); border-radius:var(--_kjun-extension-accordion-radius); overflow:hidden; }
+.kjun-accordion-item { position:relative; }
+.kjun-accordion-item[data-leading] { --_kjun-accordion-inset:calc(var(--_kjun-extension-accordion-padding-x) + var(--_kjun-extension-accordion-leading-width) + var(--_kjun-extension-accordion-header-gap)); }
+/* divider: like ListRow, the line starts where the text does and never follows the last item. */
+.kjun-accordion[data-divider]:not([data-separated]) > .kjun-accordion-item:not(:last-child)::after {
+  content:""; position:absolute; inset-inline:var(--_kjun-accordion-inset, var(--_kjun-extension-accordion-padding-x)) 0; bottom:0;
+  height:var(--_kjun-border-default-width); background:var(--_kjun-color-divider); pointer-events:none;
+}
 .kjun-accordion-trigger {
   width:100%; min-height:var(--_kjun-extension-accordion-minimum-height);
   display:flex; align-items:center; justify-content:space-between; gap:var(--_kjun-extension-accordion-header-gap);
@@ -65,15 +76,25 @@
   font-weight:var(--_kjun-type-control-weight); letter-spacing:var(--_kjun-type-control-tracking);
   cursor:pointer;
 }
+.kjun-accordion-leading { flex:none; min-width:var(--_kjun-extension-accordion-leading-width); display:flex; align-items:center; justify-content:center; color:var(--_kjun-color-text-secondary); }
 .kjun-accordion-heading { flex:1; min-width:0; word-break:keep-all; overflow-wrap:anywhere; }
-.kjun-accordion-chevron { flex-shrink:0; color:var(--_kjun-color-text-secondary); }
+.kjun-accordion-description {
+  display:block; margin-top:var(--_kjun-extension-accordion-description-gap); color:var(--_kjun-color-text-secondary);
+  font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line);
+  font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking);
+}
+.kjun-accordion-chevron { flex-shrink:0; color:var(--_kjun-color-text-tertiary); }
 .kjun-accordion-trigger:disabled { opacity:var(--_kjun-state-opacity-disabled); cursor:not-allowed; }
-.kjun-accordion-trigger:hover:not(:disabled) { background:var(--_kjun-color-hover); }
+/* Hover paints the whole item, header and open body together, and only where a pointer can hover. */
+@media (hover:hover) {
+  .kjun-accordion-item:has(> .kjun-accordion-trigger:hover:not(:disabled)) { background:var(--_kjun-color-hover); }
+}
 /* The accordion clips items to its rounded corners; while focused the trigger takes the same radius so the inset ring stays whole. */
 .kjun-accordion-trigger:focus-visible { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-inset-offset); border-radius:var(--_kjun-extension-accordion-radius); }
 .kjun-accordion-panel {
   padding:0 var(--_kjun-extension-accordion-padding-x) var(--_kjun-extension-accordion-content-padding-bottom);
-  color:var(--_kjun-color-text-secondary); word-break:keep-all; overflow-wrap:anywhere;
+  padding-inline-start:var(--_kjun-accordion-inset, var(--_kjun-extension-accordion-padding-x));
+  color:var(--_kjun-color-text); word-break:keep-all; overflow-wrap:anywhere;
   font-size:var(--_kjun-type-body-size); line-height:var(--_kjun-type-body-line);
   font-weight:var(--_kjun-type-body-weight); letter-spacing:var(--_kjun-type-body-tracking);
 }

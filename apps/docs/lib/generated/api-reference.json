@@ -12193,11 +12193,11 @@
         "props": [
           {
             "name": "value",
-            "type": "number",
+            "type": "number | null",
             "required": false,
             "default": "0",
             "description": "null is missing data; omission retains the existing zero default.",
-            "summary": "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",
+            "summary": "진행 값입니다. null·유한하지 않은 값·유효하지 않은 max는 데이터 없음이며 0%로 바꾸지 않습니다. 생략 또는 undefined는 기존 기본값 0을 유지합니다.",
             "source": "packages/vue3/src/display.tsx"
           },
           {
@@ -12297,11 +12297,11 @@
         "props": [
           {
             "name": "value",
-            "type": "number | null | undefined",
+            "type": "number | null",
             "required": false,
             "default": "0",
             "description": "null is missing data; omission keeps the zero default.",
-            "summary": "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",
+            "summary": "진행 값입니다. null·유한하지 않은 값·유효하지 않은 max는 데이터 없음이며 0%로 바꾸지 않습니다. 생략 또는 undefined는 기존 기본값 0을 유지합니다.",
             "source": "packages/react/src/display.tsx"
           },
           {
@@ -12386,11 +12386,11 @@
         "props": [
           {
             "name": "value",
-            "type": "number | null | undefined",
+            "type": "number | null",
             "required": false,
             "default": "0",
             "description": "null is missing data; omission keeps the zero default.",
-            "summary": "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",
+            "summary": "진행 값입니다. null·유한하지 않은 값·유효하지 않은 max는 데이터 없음이며 0%로 바꾸지 않습니다. 생략 또는 undefined는 기존 기본값 0을 유지합니다.",
             "source": "packages/native/src/progress.tsx"
           },
           {
@@ -18258,6 +18258,24 @@
             "description": "",
             "summary": "컴포넌트의 의미·배경 강조 방식을 선택합니다.",
             "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone).",
+            "summary": "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이지만 Accordion은 기본값이 false입니다.",
+            "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "separated",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Gives every item its own rounded surface with a gap between them; divider has no effect then.",
+            "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(흰 페이지에서는 tone=\"muted\"), divider는 적용되지 않습니다.",
+            "source": "packages/vue3/src/navigation.tsx"
           }
         ],
         "events": [],
@@ -18302,6 +18320,24 @@
             "default": "\"card\"",
             "description": "",
             "summary": "컴포넌트의 의미·배경 강조 방식을 선택합니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone).",
+            "summary": "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이지만 Accordion은 기본값이 false입니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "separated",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Gives every item its own rounded surface with a gap between them; divider has no effect then.",
+            "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(흰 페이지에서는 tone=\"muted\"), divider는 적용되지 않습니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -18351,6 +18387,24 @@
             "source": "packages/native/src/navigation.tsx"
           },
           {
+            "name": "divider",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone).",
+            "summary": "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이지만 Accordion은 기본값이 false입니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "separated",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Gives every item its own rounded surface with a gap between them; divider has no effect then.",
+            "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(흰 페이지에서는 tone=\"muted\"), divider는 적용되지 않습니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
             "name": "children",
             "type": "ReactNode",
             "required": true,
@@ -18376,6 +18430,24 @@
             "default": "\"\"",
             "description": "",
             "summary": "헤더·알림·패널의 제목입니다.",
+            "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "A secondary line under the title (caption, secondary text).",
+            "summary": "제목 아래 보조 설명 한 줄입니다(caption, 보조 글자색).",
+            "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "icon",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Icon name drawn in a 40px leading column at the list icon size; the body and divider then start at the title.",
+            "summary": "앞쪽 40px 열에 그릴 아이콘 이름입니다(ListRow와 같은 20px 보조색). 본문과 구분선이 제목 시작선부터 시작합니다.",
             "source": "packages/vue3/src/navigation.tsx"
           },
           {
@@ -18451,6 +18523,24 @@
             "default": "\"\"",
             "description": "",
             "summary": "헤더·알림·패널의 제목입니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A secondary line under the title (caption, secondary text).",
+            "summary": "제목 아래 보조 설명 한 줄입니다(caption, 보조 글자색).",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "icon",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Icon name drawn in a 40px leading column at the list icon size; the body and divider then start at the title.",
+            "summary": "앞쪽 40px 열에 그릴 아이콘 이름입니다(ListRow와 같은 20px 보조색). 본문과 구분선이 제목 시작선부터 시작합니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -18531,6 +18621,24 @@
             "default": "\"\"",
             "description": "",
             "summary": "헤더·알림·패널의 제목입니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A secondary line under the title (caption, secondary text).",
+            "summary": "제목 아래 보조 설명 한 줄입니다(caption, 보조 글자색).",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "icon",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Icon name drawn in a 40px leading column at the list icon size; the body and divider then start at the title.",
+            "summary": "앞쪽 40px 열에 그릴 아이콘 이름입니다(ListRow와 같은 20px 보조색). 본문과 구분선이 제목 시작선부터 시작합니다.",
             "source": "packages/native/src/navigation.tsx"
           },
           {

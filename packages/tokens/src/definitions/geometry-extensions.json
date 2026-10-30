@@ -61,13 +61,17 @@
       "actionGap": { "$ref": "dimension.value12" }
     },
     "accordion": {
-      "minimumHeight": { "$ref": "dimension.value48" },
+      "minimumHeight": { "$ref": "dimension.value56" },
       "paddingX": { "$ref": "dimension.value16" },
-      "headerPaddingY": { "$ref": "dimension.value14" },
+      "headerPaddingY": { "$ref": "dimension.value16" },
       "headerGap": { "$ref": "dimension.value12" },
       "contentPaddingBottom": { "$ref": "dimension.value20" },
       "radius": { "$ref": "radius.radius12" },
-      "iconSize": 16
+      "iconSize": 16,
+      "leadingWidth": { "$ref": "extensions.list.leadingWidth" },
+      "leadingIconSize": { "$ref": "extensions.list.iconSize" },
+      "descriptionGap": { "$ref": "extensions.list.descriptionGap" },
+      "itemGap": { "$ref": "dimension.value8" }
     },
     "tabs": {
       "height": 44,

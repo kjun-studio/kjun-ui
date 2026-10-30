@@ -20,14 +20,14 @@ test('dimension is the single shared length scale without spacing aliases', asyn
 
 test('changing an Accordion dimension selection preserves other roles and the scale', () => {
   const changed = structuredClone(source);
-  changed.extensions.accordion.minimumHeight = { $ref: 'dimension.value56' };
+  changed.extensions.accordion.minimumHeight = { $ref: 'dimension.value64' };
   const original = compileTokens(source), compiled = compileTokens(changed);
-  assert.equal(compiled.extensions.accordion.minimumHeight, 56);
-  assert.equal(original.extensions.accordion.minimumHeight, 48);
+  assert.equal(compiled.extensions.accordion.minimumHeight, 64);
+  assert.equal(original.extensions.accordion.minimumHeight, 56);
   assert.equal(compiled.button.heights.lg, 48);
   assert.equal(compiled.extensions.state.padding.md, 48);
   assert.deepEqual(compiled.dimension, original.dimension);
-  assert.match(extensionGeometryCss(compiled, changed), /--_kjun-extension-accordion-minimum-height: 56px;/);
+  assert.match(extensionGeometryCss(compiled, changed), /--_kjun-extension-accordion-minimum-height: 64px;/);
 });
 
 test('numeric dimension names cannot drift or alias a mutable role', () => {

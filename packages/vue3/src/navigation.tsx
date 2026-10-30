@@ -36,6 +36,10 @@ function useAccordionState(multiple: () => boolean): AccordionContext {
 const kjunAccordionProps = {
   multiple: { type: Boolean, default: false },
   tone: { type: String as PropType<"card" | "muted">, default: "card" },
+  /** Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone). */
+  divider: { type: Boolean, default: false },
+  /** Gives every item its own rounded surface with a gap between them; divider has no effect then. */
+  separated: { type: Boolean, default: false },
 } as const;
 export type KjunAccordionProps = ExtractPublicPropTypes<typeof kjunAccordionProps>;
 export const KjunAccordion = defineComponent({
@@ -44,12 +48,16 @@ export const KjunAccordion = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     provide(kjunAccordionKey, useAccordionState(() => props.multiple));
-    return () => <div class="kjun-accordion" data-tone={props.tone}>{slots.default?.()}</div>;
+    return () => <div class="kjun-accordion" data-tone={props.tone} data-divider={props.divider || undefined} data-separated={props.separated || undefined}>{slots.default?.()}</div>;
   },
 });
 
 const kjunAccordionItemProps = {
   title: { type: String, default: "" },
+  /** A secondary line under the title (caption, secondary text). */
+  description: { type: String, default: undefined },
+  /** Icon name drawn in a 40px leading column at the list icon size; the body and divider then start at the title. */
+  icon: { type: String, default: undefined },
   defaultOpen: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   /** v-model:open. A controlled item follows this value only and stays out of the Accordion's single-open rule. */
@@ -86,10 +94,11 @@ export const KjunAccordionItem = defineComponent({
       const open = isOpen();
       const header = slots.header?.();
       return (
-        <div class="kjun-accordion-item">
+        <div class="kjun-accordion-item" data-leading={props.icon ? "" : undefined}>
           <button type="button" id={id + "-heading"} disabled={props.disabled} aria-expanded={open} aria-controls={id + "-panel"}
             class="kjun-accordion-trigger" onClick={() => { registering = false; const g = group(); controlled() ? emit("update:open", !open) : g ? g.toggle(id) : (own.value = !own.value); }}>
-            <span class="kjun-accordion-heading">{hasContent(header) ? header : props.title}</span>
+            {props.icon && <span class="kjun-accordion-leading"><KjunIcon name={props.icon} size={tokens.extensions.accordion.leadingIconSize} /></span>}
+            <span class="kjun-accordion-heading">{hasContent(header) ? header : props.title}{props.description && <span class="kjun-accordion-description">{props.description}</span>}</span>
             <KjunIcon name="chevron-down" class="kjun-accordion-chevron" size={tokens.extensions.accordion.iconSize}
               style={{ transform: open ? "rotate(180deg)" : undefined }} />
           </button>
