@@ -5,6 +5,7 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 ## 0.17.1 — 미배포
 
 - **수정: 바탕을 끈 `KjunBottomNavigation`의 배지 테두리**: `surface={false}`일 때 배지 둘레 테두리가 표면색(흰색)으로 남아 회색 화면 바탕 위에서 흰 고리로 보이던 문제를 고쳤습니다. 이제 테두리는 바 뒤에 보이는 화면 바탕색(`background` 색 역할)을 씁니다. 바탕이 있는 기본 바는 그대로입니다.
+- **`KjunBadge` 외형 정리(소프트)**: 크기마다 글자·모서리·점이 함께 커집니다. 글자는 xs·sm 12px, md·lg 14px, xl 16px, 높이는 16·20·24·28·**32px**(xl 36→32, 버튼 sm보다 크지 않음), 모서리는 4·6·6·8·10px입니다. md는 12px 글자에 위아래 여백만 늘던 것을 14px로 바꿨고, xs 좌우 여백은 4→6px입니다. 굵기는 600→500(`meta` 굵기)입니다. 점은 xs~md 6px, lg·xl 8px입니다. 색은 톤 배경(`*-bg`) 위에 진한 글자(`*-dark`)와 점(`*-accent`)을 씁니다. `*-dark`·`*-accent`를 정하지 않은 프로젝트는 기존처럼 톤 색(`success` 등)으로 보입니다. primary 글자·점은 `brand-hover` 대신 `brand`, default 점은 `text-tertiary`입니다. 금융 배지(price-up·down)와 KPI 행 배지는 그대로입니다. 새 토큰 `extensions.badge.radii`·`gaps`·`dotSizes`·`typography`·`fontWeight`. API는 그대로입니다.
 
 ## 0.17.0 — 2026-10-30
 

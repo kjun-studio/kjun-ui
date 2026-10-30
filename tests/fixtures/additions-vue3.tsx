@@ -26,6 +26,9 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
       <K.KjunListRow title="Dinner" />
     </K.KjunListSection>
   </div></K.KjunProvider>
+  <K.KjunProvider><div data-testid="badge-sizes" style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: '8px' }}>
+    {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map(size => <K.KjunBadge key={size} size={size} variant="success" dot>{'Badge ' + size}</K.KjunBadge>)}
+  </div></K.KjunProvider>
   <K.KjunProvider><div data-testid="icon-list">
     <K.KjunListSection title="Settings">
       <K.KjunListRow icon="bell" title="Alerts" description="Push and email" />

@@ -93,7 +93,7 @@ export function compileTokens(source) {
     if (!value || typeof value !== 'object') return;
     if ('$ref' in value) {
       const name = path.join('.'), resolved = path.reduce((v, key) => v?.[key], data);
-      if (/^(?:button|extensions\.chip)\.typography\.[^.]+$/.test(name)) {
+      if (/^(?:button|extensions\.(?:chip|badge))\.typography\.[^.]+$/.test(name)) {
         if (!resolved || Object.keys(resolved).sort().join() !== 'fontSizePx,fontWeight,letterSpacingEm,lineHeightPx')
           throw Error('Invalid typography reference: ' + name);
       } else if (name === 'buttonGroup.heights' || name === 'extensions.kpiRow.badgePadding') {

@@ -168,8 +168,7 @@
   align-items: center;
   gap: var(--_kjun-extension-badge-gap);
   border-radius: var(--_kjun-extension-badge-radius);
-  font-weight: var(--_kjun-type-label-weight);
-  line-height: 1.5;
+  font-weight: var(--_kjun-extension-badge-font-weight);
   white-space: normal;
   overflow-wrap: anywhere;
 }

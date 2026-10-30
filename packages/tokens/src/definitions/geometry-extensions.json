@@ -173,18 +173,47 @@
       "radius": { "$ref": "radius.radius6" },
       "gap": { "$ref": "dimension.value4" },
       "dotSize": 6,
+      "radii": {
+        "xs": { "$ref": "radius.radius4" },
+        "sm": { "$ref": "extensions.badge.radius" },
+        "md": { "$ref": "radius.radius6" },
+        "lg": { "$ref": "radius.radius8" },
+        "xl": { "$ref": "radius.radius10" }
+      },
+      "gaps": {
+        "xs": { "$ref": "extensions.badge.gap" },
+        "sm": { "$ref": "extensions.badge.gap" },
+        "md": { "$ref": "extensions.badge.gap" },
+        "lg": { "$ref": "dimension.value6" },
+        "xl": { "$ref": "dimension.value6" }
+      },
+      "dotSizes": {
+        "xs": { "$ref": "extensions.badge.dotSize" },
+        "sm": { "$ref": "extensions.badge.dotSize" },
+        "md": { "$ref": "extensions.badge.dotSize" },
+        "lg": { "$ref": "dimension.value8" },
+        "xl": { "$ref": "dimension.value8" }
+      },
+      "typography": {
+        "xs": { "$ref": "typography.meta" },
+        "sm": { "$ref": "typography.meta" },
+        "md": { "$ref": "typography.label" },
+        "lg": { "$ref": "typography.label" },
+        "xl": { "$ref": "typography.input" }
+      },
+      "fontWeight": { "$ref": "typography.meta.fontWeight" },
       "padding": {
         "xs": {
-          "x": { "$ref": "dimension.value4" },
+          "x": { "$ref": "dimension.value6" },
           "y": 0
         },
         "sm": {
-          "x": { "$ref": "dimension.value6" },
+          "x": { "$ref": "dimension.value8" },
           "y": { "$ref": "dimension.value2" }
         },
         "md": {
           "x": { "$ref": "dimension.value8" },
-          "y": { "$ref": "dimension.value4" }
+          "y": { "$ref": "dimension.value2" }
         },
         "lg": {
           "x": { "$ref": "dimension.value10" },
@@ -192,7 +221,7 @@
         },
         "xl": {
           "x": { "$ref": "dimension.value12" },
-          "y": { "$ref": "dimension.value6" }
+          "y": { "$ref": "dimension.value4" }
         }
       }
     },

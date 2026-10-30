@@ -113,6 +113,23 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(heading).toHaveCSS('font-size', '12px');
     });
 
+    test('badge sizes step their type, radius and dot, and paint dark text beside an accent dot', async ({ page }) => {
+      const area = section(page, 'badge-sizes');
+      const expected = { xs: [16, 4, 12, 6], sm: [20, 6, 12, 6], md: [24, 6, 14, 6], lg: [28, 8, 14, 8], xl: [32, 10, 16, 8] };
+      for (const [size, [height, radius, fontSize, dot]] of Object.entries(expected)) {
+        const text = area.getByText('Badge ' + size, { exact: true });
+        const pill = platform === 'native' ? text.locator('..') : text;
+        expect(Math.round((await pill.boundingBox())!.height), size).toBe(height);
+        await expect(pill).toHaveCSS('border-top-left-radius', radius + 'px');
+        await expect(text).toHaveCSS('font-size', fontSize + 'px');
+        await expect(text).toHaveCSS('font-weight', '500');
+        const mark = pill.locator(':scope > :empty').first();
+        await expect(mark).toHaveCSS('width', dot + 'px');
+        const [textColor, dotColor] = await Promise.all([text.evaluate(el => getComputedStyle(el).color), mark.evaluate(el => getComputedStyle(el).backgroundColor)]);
+        expect(textColor, 'dark text and accent dot are separate roles').not.toBe(dotColor);
+      }
+    });
+
     test('link buttons hug their text', async ({ page }) => {
       const button = section(page, 'link-button').getByRole(platform === 'native' ? 'button' : 'button', { name: 'More' });
       const box = (await button.boundingBox())!;

@@ -54,7 +54,6 @@
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
-      "packages/native/src/display-primitives.tsx",
       "packages/native/src/range-input.tsx"
     ]
   },
@@ -1271,9 +1270,7 @@
     "upstreamAliases": [
       "--brand-subtle-bg"
     ],
-    "implementationFiles": [
-      "packages/native/src/display-primitives.tsx"
-    ]
+    "implementationFiles": []
   },
   {
     "role": "brandLight",

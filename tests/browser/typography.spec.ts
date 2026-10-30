@@ -127,7 +127,7 @@ for(const platform of ['react','vue3','native']) {
       expect(await textStyle(summary.getByText('항목',{exact:true}))).toMatchObject({size:'12px',line:'16px',weight:'400'});
       expect(await textStyle(page.getByTestId('row-small').getByText(/9,876\s*EUR$/),true)).toMatchObject({size:'20px',line:'28px'});
       expect(await textStyle(page.getByTestId('row-small').getByText('EUR',{exact:true}))).toMatchObject({size:'12px',line:'16px'});
-      expect((await textStyle(page.getByText('작은 배지',{exact:true})))).toMatchObject({size:'12px',line:'16px',weight:'600'});
+      expect((await textStyle(page.getByText('작은 배지',{exact:true})))).toMatchObject({size:'12px',line:'16px',weight:'500'});
       expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
       const delta=page.getByTestId('hero-delta');
       for (const text of ['+EUR1,234','+2.5%']) {

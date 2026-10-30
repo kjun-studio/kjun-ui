@@ -3,7 +3,8 @@ import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
 import { typeStyle } from "./typography";
-import { tokens } from "@kjun-ui/tokens";
+import { tokens, type TypographyRole } from "@kjun-ui/tokens";
+import { badgeGeometry, badgeToneRoles, type BadgeToneRoles } from "../../../shared/package-runtime/badge-tone";
 import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
 import { DataStateContentContext } from "./data-state-context";
 import {
@@ -57,28 +58,20 @@ export function BadgeView({
   dot = false,
   children,
   style,
-  dotSize = tokens.extensions.badge.dotSize,
-}: KjunBadgeProps & { dotSize?: number }) {
+  dotSize,
+  paint = badgeToneRoles(variant),
+  typeRole,
+}: KjunBadgeProps & { dotSize?: number; paint?: BadgeToneRoles; typeRole?: TypographyRole }) {
   const { colors, domainColors } = useKjunStyles();
-  const { x, y } = tokens.extensions.badge.padding[size];
-  const type = typeStyle(size === "xl" ? "controlLarge" : size === "lg" ? "control" : "controlSmall");
-  const neutral = variant === "default" || variant === "secondary";
-  const financial = variant.startsWith("price-");
-  const key = variant === "price-up" ? "priceUp" : "priceDown";
-  const background = financial
-    ? domainColor(domainColors, key + "Bg")
-    : neutral
-    ? colors.secondary
-    : variant === "primary"
-    ? colors.brandSubtleBg
-    : colors[(variant + "Bg") as keyof typeof colors];
-  const color = financial
-    ? domainColor(domainColors, key)
-    : neutral
-    ? colors.textSecondary
-    : variant === "primary"
-    ? colors.brandHover
-    : colors[variant as keyof typeof colors];
+  const geometry = badgeGeometry(size);
+  const { x, y } = geometry.padding;
+  const type = typeStyle(typeRole ?? geometry.type);
+  dotSize ??= geometry.dotSize;
+  // Price roles are domain colors; every other role is a KjunColors key (kebab role → camelCase key).
+  const pick = (name: string) => name.startsWith("price-")
+    ? domainColor(domainColors, name.replace(/-(\w)/g, (_, c: string) => c.toUpperCase()))
+    : colors[name.replace(/-(\w)/g, (_, c: string) => c.toUpperCase()) as keyof typeof colors];
+  const background = pick(paint.bg), color = pick(paint.text), dotColor = pick(paint.dot);
   // The transparent row keeps the pill at its own width in a stretching column and at the top of a
   // stretching row, yet follows a row's alignItems (a pill with alignSelf: flex-start sat at the top of
   // centred rows). Layout keys from style place this row; the rest paints the pill.
@@ -93,10 +86,10 @@ export function BadgeView({
           maxWidth: "100%",
           minWidth: 0,
           flexShrink: 1,
-          gap: tokens.extensions.badge.gap,
+          gap: geometry.gap,
           paddingHorizontal: x,
           paddingVertical: y,
-          borderRadius: tokens.extensions.badge.radius,
+          borderRadius: geometry.radius,
           backgroundColor: background,
         },
         inner,
@@ -111,7 +104,7 @@ export function BadgeView({
             width: dotSize,
             height: dotSize,
             borderRadius: dotSize / 2,
-            backgroundColor: color,
+            backgroundColor: dotColor,
           }}
         />
       )}

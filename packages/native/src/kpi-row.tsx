@@ -10,10 +10,14 @@ type TextStyle,
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunSkeleton } from "./display";
 import { BadgeView } from "./display-primitives";
+import type { BadgeVariant } from "../../../shared/package-runtime/badge-tone";
 import { KjunAnimatedNumber } from "./financial";
 import { KText,domainColor, FontText } from "./internal";
 import { KpiValue,kpiFormat } from "./kpi-hero";
 import { useKjunStyles } from "./provider";
+const kpiBadgeVariant = (variant?: string) => (variant === "neutral" || !variant ? "secondary" : variant) as BadgeVariant;
+const kpiBadgePaint = (variant: BadgeVariant) => variant === "secondary"
+  ? { bg: "secondary", text: "text-secondary", dot: "text-secondary" } : { bg: variant + "-bg", text: variant, dot: variant };
 export interface KpiRowItem extends Omit<KpiValue, "value"> {
   /** null/undefined and non-finite numbers are missing, never zero. Loading still takes precedence. */
   value?: number | string | null;
@@ -100,13 +104,10 @@ export function KjunKpiRow({
   const badge = (item: KpiRowItem) =>
     item.badge ? (
       <BadgeView dotSize={geometry.dotSize}
-        variant={
-          item.badge.variant === "neutral"
-            ? "secondary"
-            : item.badge.variant === "info"
-            ? "info"
-            : item.badge.variant || "secondary"
-        }
+        variant={kpiBadgeVariant(item.badge.variant)}
+        // KPI badges keep their own recipe (like Web's .kjun-kpi-row__badge): tone-colored text and dot, control type.
+        paint={kpiBadgePaint(kpiBadgeVariant(item.badge.variant))}
+        typeRole="controlSmall"
         size="xs"
         style={{ borderRadius: geometry.badgeRadius, gap: geometry.badgeGap, paddingHorizontal: geometry.badgePadding.x, paddingVertical: geometry.badgePadding.y }}
         dot={[

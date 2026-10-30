@@ -3,6 +3,7 @@ import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type 
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
 import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
+import { badgeGeometry, badgeToneRoles } from "../../../shared/package-runtime/badge-tone";
 import { tokens } from "@kjun-ui/tokens";
 import { progressCircle } from "../../../shared/package-runtime/progress-circle";
 import { alertActionSizes } from "../../../shared/package-runtime/alert-action-size";
@@ -30,16 +31,18 @@ export const KjunBadge = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     return () => {
-      const { x, y } = tokens.extensions.badge.padding[props.size];
-      const neutral = props.variant === "default" || props.variant === "secondary";
+      const { padding, radius, gap, dotSize, type } = badgeGeometry(props.size);
+      const paint = badgeToneRoles(props.variant);
       return (
         <span ref={domainRef(props.variant.startsWith("price-"))} class="kjun-badge" style={css({
-          padding: `${y}px ${x}px`,
-          ...typeStyle(props.size === "xl" ? "controlLarge" : props.size === "lg" ? "control" : "controlSmall"),
-          background: role(neutral ? "secondary" : props.variant === "primary" ? "brand-subtle-bg" : props.variant + "-bg"),
-          color: role(neutral ? "text-secondary" : props.variant === "primary" ? "brand-hover" : props.variant),
+          padding: `${padding.y}px ${padding.x}px`,
+          ...typeStyle(type),
+          gap: `${gap}px`,
+          borderRadius: `${radius}px`,
+          background: role(paint.bg),
+          color: role(paint.text),
         })}>
-          {props.dot && <span class="kjun-badge-dot" />}
+          {props.dot && <span class="kjun-badge-dot" style={css({ width: `${dotSize}px`, height: `${dotSize}px`, background: role(paint.dot) })} />}
           {slots.default?.()}
         </span>
       );

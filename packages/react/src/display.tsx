@@ -2,6 +2,7 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
+import { badgeGeometry, badgeToneRoles } from "../../../shared/package-runtime/badge-tone";
 import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
 import { tokens } from "@kjun-ui/tokens";
 import { progressCircle, progressState } from "../../../shared/package-runtime/progress-circle";
@@ -38,34 +39,24 @@ export function KjunBadge({
   style,
   ...props
 }: KjunBadgeProps) {
-  const { x, y } = tokens.extensions.badge.padding[size];
-  const neutral = variant === "default" || variant === "secondary";
+  const { padding, radius, gap, dotSize, type } = badgeGeometry(size);
+  const paint = badgeToneRoles(variant);
   return (
     <span
       {...props}
       ref={domainColorRef(variant.startsWith('price-'))}
       className={"kjun-badge " + (props.className || "")}
       style={{
-        padding: `${y}px ${x}px`,
-        ...typeStyle(size === "xl" ? "controlLarge" : size === "lg" ? "control" : "controlSmall"),
-        background: role(
-          neutral
-            ? "secondary"
-            : variant === "primary"
-            ? "brand-subtle-bg"
-            : variant + "-bg"
-        ),
-        color: role(
-          neutral
-            ? "text-secondary"
-            : variant === "primary"
-            ? "brand-hover"
-            : variant
-        ),
+        padding: `${padding.y}px ${padding.x}px`,
+        ...typeStyle(type),
+        gap,
+        borderRadius: radius,
+        background: role(paint.bg),
+        color: role(paint.text),
         ...style,
       }}
     >
-      {dot && <span className="kjun-badge-dot" />}
+      {dot && <span className="kjun-badge-dot" style={{ width: dotSize, height: dotSize, background: role(paint.dot) }} />}
       {children}
     </span>
   );
