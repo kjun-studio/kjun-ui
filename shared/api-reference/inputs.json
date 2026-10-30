@@ -2,6 +2,7 @@
   "KjunCheckbox": {
     "vue3": [
       "modelValue",
+      "indeterminate",
       "val",
       "label",
       "ariaLabel",
@@ -22,6 +23,7 @@
     ],
     "native": [
       "value",
+      "indeterminate",
       "val",
       "label",
       "ariaLabel",

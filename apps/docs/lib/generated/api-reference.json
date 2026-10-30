@@ -1985,7 +1985,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "표시할 항목과 항목별 레이블·값·구성 정보입니다.",
+            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김입니다.",
             "source": "packages/react/src/kpi.tsx"
           },
           {
@@ -2056,7 +2056,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "표시할 항목과 항목별 레이블·값·구성 정보입니다.",
+            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김입니다.",
             "source": "packages/native/src/kpi-row.tsx"
           },
           {
@@ -12166,11 +12166,11 @@
         "props": [
           {
             "name": "value",
-            "type": "number | null",
+            "type": "number",
             "required": false,
             "default": "0",
             "description": "null is missing data; omission retains the existing zero default.",
-            "summary": "진행 값입니다. null·유한하지 않은 값·유효하지 않은 max는 데이터 없음이며 0%로 바꾸지 않습니다. 생략 또는 undefined는 기존 기본값 0을 유지합니다.",
+            "summary": "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",
             "source": "packages/vue3/src/display.tsx"
           },
           {
@@ -12270,11 +12270,20 @@
         "props": [
           {
             "name": "value",
-            "type": "number | undefined",
+            "type": "number | null | undefined",
             "required": false,
             "default": "0",
-            "description": "",
+            "description": "null is missing data; omission keeps the zero default.",
             "summary": "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "indeterminate",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Work is active but its completion percentage is unknown; takes precedence over null.",
+            "summary": "실행 중이지만 진행률을 모를 때 사용합니다. 수치와 aria-valuenow를 생략하고 진행 중 상태를 표시합니다. 데이터 없음(null)과 구분합니다.",
             "source": "packages/react/src/display.tsx"
           },
           {
@@ -12350,12 +12359,21 @@
         "props": [
           {
             "name": "value",
-            "type": "number | undefined",
+            "type": "number | null | undefined",
             "required": false,
             "default": "0",
-            "description": "",
+            "description": "null is missing data; omission keeps the zero default.",
             "summary": "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",
-            "source": "packages/native/src/display-primitives.tsx"
+            "source": "packages/native/src/progress.tsx"
+          },
+          {
+            "name": "indeterminate",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Work is active but its completion percentage is unknown; takes precedence over null.",
+            "summary": "실행 중이지만 진행률을 모를 때 사용합니다. 수치와 aria-valuenow를 생략하고 진행 중 상태를 표시합니다. 데이터 없음(null)과 구분합니다.",
+            "source": "packages/native/src/progress.tsx"
           },
           {
             "name": "max",
@@ -12364,7 +12382,7 @@
             "default": "100",
             "description": "",
             "summary": "값 범위의 최댓값입니다.",
-            "source": "packages/native/src/display-primitives.tsx"
+            "source": "packages/native/src/progress.tsx"
           },
           {
             "name": "size",
@@ -12373,7 +12391,7 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
-            "source": "packages/native/src/display-primitives.tsx"
+            "source": "packages/native/src/progress.tsx"
           },
           {
             "name": "variant",
@@ -12382,7 +12400,7 @@
             "default": "\"primary\"",
             "description": "",
             "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
-            "source": "packages/native/src/display-primitives.tsx"
+            "source": "packages/native/src/progress.tsx"
           },
           {
             "name": "showLabel",
@@ -12391,7 +12409,7 @@
             "default": "false",
             "description": "",
             "summary": "진행 값의 텍스트 라벨을 표시합니다.",
-            "source": "packages/native/src/display-primitives.tsx"
+            "source": "packages/native/src/progress.tsx"
           },
           {
             "name": "label",
@@ -12400,7 +12418,7 @@
             "default": "—",
             "description": "",
             "summary": "진행률의 제목입니다. showLabel과 관계없이 표시하며 showLabel은 백분율을 더합니다.",
-            "source": "packages/native/src/display-primitives.tsx"
+            "source": "packages/native/src/progress.tsx"
           },
           {
             "name": "subLabel",
@@ -12409,7 +12427,7 @@
             "default": "—",
             "description": "",
             "summary": "진행 표시의 보조 라벨입니다.",
-            "source": "packages/native/src/display-primitives.tsx"
+            "source": "packages/native/src/progress.tsx"
           },
           {
             "name": "shape",
@@ -12418,7 +12436,7 @@
             "default": "bar",
             "description": "",
             "summary": "bar는 막대, circle은 원형입니다. 원형 지름·선 굵기는 progress.circle 토큰(sm 24·md 48·lg 64)이고, label·subLabel은 원 아래 가운데에 둡니다. showLabel 퍼센트는 md 이상에서 원 가운데에만 표시합니다.",
-            "source": "packages/native/src/display-primitives.tsx"
+            "source": "packages/native/src/progress.tsx"
           }
         ],
         "events": [],
@@ -13629,6 +13647,15 @@
             "source": "packages/vue3/src/controls.tsx"
           },
           {
+            "name": "indeterminate",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Mixed selection display; v-model keeps its boolean/array shape.",
+            "summary": "일부 선택 상태를 빼기 표시와 실제 체크박스의 mixed 상태로 전달합니다. value(Vue v-model)와 콜백은 boolean 또는 배열을 유지합니다. 누르면 전체 선택(true)을 요청합니다. 전체 선택에서는 value=모두 선택됨, indeterminate=일부만 선택됨으로 설정하고 변경 요청을 반영할 때 함께 갱신하세요.",
+            "source": "packages/vue3/src/controls.tsx"
+          },
+          {
             "name": "val",
             "type": "string | number | boolean",
             "required": false,
@@ -13717,7 +13744,7 @@
             "required": false,
             "default": "false",
             "description": "Mixed selection display; value and change callbacks keep their boolean/array shape.",
-            "summary": "일부 선택 상태를 빼기 표시와 실제 체크박스의 mixed 상태로 전달합니다. value와 콜백은 boolean 또는 배열을 유지합니다. 전체 선택에서는 value=모두 선택됨, indeterminate=일부만 선택됨으로 설정하고 변경 요청을 반영할 때 함께 갱신하세요.",
+            "summary": "일부 선택 상태를 빼기 표시와 실제 체크박스의 mixed 상태로 전달합니다. value(Vue v-model)와 콜백은 boolean 또는 배열을 유지합니다. 누르면 전체 선택(true)을 요청합니다. 전체 선택에서는 value=모두 선택됨, indeterminate=일부만 선택됨으로 설정하고 변경 요청을 반영할 때 함께 갱신하세요.",
             "source": "packages/react/src/controls.tsx"
           },
           {
@@ -13807,6 +13834,15 @@
             "default": "—",
             "description": "",
             "summary": "현재 선택값입니다. Checkbox는 boolean 또는 선택값 배열, Radio는 그룹의 선택값을 사용합니다.",
+            "source": "packages/native/src/choice-controls.tsx"
+          },
+          {
+            "name": "indeterminate",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Mixed selection display; value and change callbacks keep their boolean/array shape.",
+            "summary": "일부 선택 상태를 빼기 표시와 실제 체크박스의 mixed 상태로 전달합니다. value(Vue v-model)와 콜백은 boolean 또는 배열을 유지합니다. 누르면 전체 선택(true)을 요청합니다. 전체 선택에서는 value=모두 선택됨, indeterminate=일부만 선택됨으로 설정하고 변경 요청을 반영할 때 함께 갱신하세요.",
             "source": "packages/native/src/choice-controls.tsx"
           },
           {
@@ -21389,6 +21425,24 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "stickyHeader",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Keep the header inside its scroll container while the tab panels scroll.",
+            "summary": "가장 가까운 스크롤 컨테이너에서 탭 헤더를 고정합니다. 패널은 기존 탭 안에 유지되어 키보드 이동·aria-controls 연결이 보존됩니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "stickyOffset",
+            "type": "string | number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Top gap of the sticky header: a number in px or a CSS length.",
+            "summary": "고정 헤더의 위쪽 간격입니다. 숫자는 px, 문자열은 CSS 길이이며 기본값은 0입니다. stickyHeader=true일 때 적용합니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {

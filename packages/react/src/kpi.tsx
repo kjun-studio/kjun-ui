@@ -31,7 +31,7 @@ export const kpiFormat = (item: KpiValue, value = item.value): string =>
         maximumFractionDigits: item.decimals ?? 0,
       }).format(item.semantic === "price" ? Math.abs(value) : value);
 export const kpiColor = (value: unknown, semantic?: string, neutral = "text") =>
-  semantic === "price" && Number(value) !== 0
+  semantic === "price" && Number.isFinite(Number(value)) && Number(value) !== 0
     ? `var(--_kjun-color-price-${Number(value) > 0 ? "up" : "down"})`
     : `var(--_kjun-color-${neutral})`;
 export interface KjunKpiHeroProps {
@@ -216,7 +216,11 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     </div>
   );
 }
-export interface KpiRowItem extends KpiValue {
+export interface KpiRowItem extends Omit<KpiValue, "value"> {
+  /** null/undefined and non-finite numbers are missing, never zero. Loading still takes precedence. */
+  value?: number | string | null;
+  /** Shown for a missing value; defaults to an em dash. */
+  missingText?: string;
   loading?: boolean;
   clickable?: boolean;
   mobileFull?: boolean;
@@ -240,7 +244,7 @@ export interface KpiRowItem extends KpiValue {
       | "price-down"
       | "info"
       | "neutral";
-  };
+  } | null;
   badgePlacement?: "label" | "value";
 }
 export interface KjunKpiRowProps {
@@ -315,10 +319,13 @@ export function KjunKpiRow({
       data-surface={surface === "none" ? "none" : undefined}
       aria-busy={loading || items.some((item) => item.loading)}
       ref={domainColorRef(!loading && items.some(item => !item.loading && (
-        item.semantic === 'price' && Number(item.value) !== 0 || item.badge?.variant?.startsWith('price-'))))}
+        item.semantic === 'price' && Number.isFinite(Number(item.value)) && Number(item.value) !== 0 || item.badge?.variant?.startsWith('price-'))))}
     >
       {items.map((item, i) => {
         const busy = loading || !!item.loading,
+          value = item.value,
+          present = value != null && (typeof value !== "number" || Number.isFinite(value)),
+          format = (number: number | string) => kpiFormat({ ...item, value: number }),
           click = () => {
             if (!busy && item.clickable) onItemClick?.(item, i);
           };
@@ -327,6 +334,7 @@ export function KjunKpiRow({
             key={i}
             role={item.clickable ? "button" : undefined}
             tabIndex={item.clickable && !busy ? 0 : undefined}
+            data-state={busy ? "loading" : present || item.valueSegments ? "ready" : "missing"}
             aria-disabled={(item.clickable && busy) || undefined}
             className={
               "kjun-kpi-row__item" +
@@ -371,12 +379,12 @@ export function KjunKpiRow({
                     : "")
                 }
                 title={
-                  item.valueKind === "text" ? String(item.value) : undefined
+                  item.valueKind === "text" && present ? String(value) : undefined
                 }
                 style={{
                   color: item.valueClass
                     ? undefined
-                    : kpiColor(item.value, item.semantic),
+                    : kpiColor(value, item.semantic),
                 }}
               >
                 {item.valueSegments ? (
@@ -406,21 +414,21 @@ export function KjunKpiRow({
                 ) : busy ? (
                   <KjunSkeleton type="block" height="1lh" width="5ch" />
                 ) : (
-                  renderValue?.(item, i) || (
+                  renderValue?.(item, i) || (present ? (
                     <>
                       {item.prefix && (
                         <span className="kjun-kpi-row__affix">
                           {item.prefix}
                         </span>
                       )}
-                      {item.animated && typeof item.value === "number" ? (
+                      {item.animated && typeof value === "number" ? (
                         <KjunAnimatedNumber
                           fromPrevious
-                          value={item.value}
-                          formatter={(v) => kpiFormat(item, v)}
+                          value={value}
+                          formatter={format}
                         />
                       ) : (
-                        kpiFormat(item)
+                        format(value!)
                       )}
                       {item.suffix && (
                         <span className="kjun-kpi-row__affix">
@@ -428,7 +436,7 @@ export function KjunKpiRow({
                         </span>
                       )}
                     </>
-                  )
+                  ) : item.missingText ?? "—")
                 )}
               </div>
               {!busy && item.badgePlacement === "value" && badge(item)}
@@ -439,7 +447,7 @@ export function KjunKpiRow({
                 style={{
                   color: item.descClass
                     ? undefined
-                    : kpiColor(item.value, item.semantic, "text-secondary"),
+                    : kpiColor(value, item.semantic, "text-secondary"),
                 }}
               >
                 {busy ? (

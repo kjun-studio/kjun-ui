@@ -9,6 +9,8 @@ import { KjunIcon } from "./button";
 import { useKjunField, useKjunId } from "./input";
 import { useFocusVisible } from "./runtime/focus-visible";
 import { css } from "./runtime/style";
+import { provideFallbackIcons } from "./runtime/icons";
+import { componentIcons } from "../../../shared/package-runtime/component-icons";
 
 export type ChoiceValue = string | number | boolean | null;
 export interface ChoiceOption<T = ChoiceValue> { value: T; label: string; disabled?: boolean; icon?: string; dot?: string }
@@ -20,6 +22,8 @@ const choiceLabel = (label: string | undefined, slot: (() => unknown) | undefine
 
 const kjunCheckboxProps = {
   modelValue: { type: [Boolean, Array] as PropType<boolean | ChoiceValue[]>, default: false },
+  /** Mixed selection display; v-model keeps its boolean/array shape. */
+  indeterminate: { type: Boolean, default: false },
   val: { type: [String, Number, Boolean, null] as PropType<ChoiceValue>, default: undefined },
   label: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
@@ -36,12 +40,14 @@ export const KjunCheckbox = defineComponent({
   setup(props, { slots, emit }) {
     const field = useKjunField();
     const focus = useFocusVisible();
+    // The mixed state's minus is not in every app's icon set.
+    provideFallbackIcons(componentIcons);
     return () => {
       const value = props.modelValue;
       const checked = Array.isArray(value) ? value.includes(props.val as ChoiceValue) : value;
       return (
         <label class={choiceClass(props.disabled)} data-focus-visible={focus.visible.value || undefined}>
-          <input type="checkbox" class="kjun-sr-only" checked={checked} disabled={props.disabled} aria-label={props.ariaLabel}
+          <input type="checkbox" class="kjun-sr-only" checked={checked} indeterminate={props.indeterminate} disabled={props.disabled} aria-label={props.ariaLabel}
             // Inside a FormGroup the box keeps its own label but takes the group's hint, error and required state.
             aria-describedby={field.value?.describedBy} aria-invalid={field.value?.error ? "true" : undefined} aria-required={field.value?.required || undefined}
             onFocus={focus.onFocus} onBlur={focus.onBlur}
@@ -50,11 +56,12 @@ export const KjunCheckbox = defineComponent({
               const result = Array.isArray(value) ? next ? [...value, props.val as ChoiceValue] : value.filter(v => v !== props.val) : next;
               // Stay controlled: the box shows the bound value until the parent updates it.
               (event.target as HTMLInputElement).checked = checked;
+              (event.target as HTMLInputElement).indeterminate = props.indeterminate;
               emit("update:modelValue", result);
               emit("change", result);
             }} />
-          <span class={`kjun-choice-control kjun-checkbox kjun-checkbox--${props.size}${checked ? " kjun-checkbox--checked" : ""}`}>
-            {checked && <KjunIcon name="check" size={tokens.extensions.checkbox.iconSizes[props.size]} />}
+          <span class={`kjun-choice-control kjun-checkbox kjun-checkbox--${props.size}${checked || props.indeterminate ? " kjun-checkbox--checked" : ""}`}>
+            {(checked || props.indeterminate) && <KjunIcon name={props.indeterminate ? "minus" : "check"} size={tokens.extensions.checkbox.iconSizes[props.size]} />}
           </span>
           {choiceLabel(props.label, slots.default)}
         </label>

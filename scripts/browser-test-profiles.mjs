@@ -38,6 +38,7 @@ const componentGroups = {
   requests: files('requests'),
   rounded: files('rounded'),
   surfaces: files('surfaces'),
+  parity: files('parity'),
   primitives: [...files('layout-primitives', 'typography', 'geometry-tokens', 'card-layout', 'input-design'), ...visuals],
   kpi: [...files('kpi-secondary', 'loading-options', 'typography', 'geometry-tokens', 'card-layout'), ...visuals],
   quantity: [...files('quantity', 'elevation-inputs', 'interaction-states'), ...fields, ...visuals],

@@ -14,7 +14,11 @@ import { KjunAnimatedNumber } from "./financial";
 import { KText,domainColor, FontText } from "./internal";
 import { KpiValue,kpiFormat } from "./kpi-hero";
 import { useKjunStyles } from "./provider";
-export interface KpiRowItem extends KpiValue {
+export interface KpiRowItem extends Omit<KpiValue, "value"> {
+  /** null/undefined and non-finite numbers are missing, never zero. Loading still takes precedence. */
+  value?: number | string | null;
+  /** Shown for a missing value; defaults to an em dash. */
+  missingText?: string;
   loading?: boolean;
   clickable?: boolean;
   mobileFull?: boolean;
@@ -38,7 +42,7 @@ export interface KpiRowItem extends KpiValue {
       | "price-down"
       | "info"
       | "neutral";
-  };
+  } | null;
   badgePlacement?: "label" | "value";
 }
 export interface KjunKpiRowProps {
@@ -85,9 +89,9 @@ export function KjunKpiRow({
       !secondary[i] && !item.mobileFull ? [i] : []
     ),
     lastFull = primary.length % 2 ? primary[primary.length - 1] : -1;
-  const color = (item: KpiValue) =>
+  const color = (item: KpiRowItem) =>
     item.valueColor ||
-    (item.semantic === "price" && Number(item.value) !== 0
+    (item.semantic === "price" && Number.isFinite(Number(item.value)) && Number(item.value) !== 0
       ? domainColor(
           domainColors,
           Number(item.value) > 0 ? "priceUp" : "priceDown"
@@ -138,6 +142,9 @@ export function KjunKpiRow({
     >
       {items.map((item, i) => {
         const busy = loading || !!item.loading,
+          value = item.value,
+          present = value != null && (typeof value !== "number" || Number.isFinite(value)),
+          format = (number: number | string) => kpiFormat({ ...item, value: number }),
           sub = summary && secondary[i],
           full =
             item.mobileFull ||
@@ -261,7 +268,9 @@ export function KjunKpiRow({
                 <KjunSkeleton type="block" height={valueStyle.lineHeight}
                   width={geometry.valueSkeletonWidth * (valueStyle.fontSize ?? numberSize) / typeStyle("displaySm").fontSize} />
               ) : (
-                renderValue?.(item, i) || (
+                renderValue?.(item, i) || (!present ? (
+                  <KText style={valueStyle}>{item.missingText ?? "—"}</KText>
+                ) : (
                   <KText
 
                     style={[valueStyle, { flexShrink: 1, minWidth: 0 }]}
@@ -276,15 +285,15 @@ export function KjunKpiRow({
                         {item.prefix}
                       </FontText>
                     )}
-                    {item.animated && typeof item.value === "number" ? (
+                    {item.animated && typeof value === "number" ? (
                       <KjunAnimatedNumber
                         fromPrevious
-                        value={item.value}
-                        formatter={(v) => kpiFormat(item, v)}
+                        value={value}
+                        formatter={format}
                         style={[valueStyle, { flexShrink: 1, minWidth: 0 }]}
                       />
                     ) : (
-                      kpiFormat(item)
+                      format(value!)
                     )}
                     {!!item.suffix && (
                       <FontText
@@ -297,7 +306,7 @@ export function KjunKpiRow({
                       </FontText>
                     )}
                   </KText>
-                )
+                ))
               )}
               {!busy && item.badgePlacement === "value" && badge(item)}
             </View>

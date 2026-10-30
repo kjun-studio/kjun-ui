@@ -2584,6 +2584,13 @@
         "description": ""
       },
       {
+        "name": "indeterminate",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Mixed selection display; v-model keeps its boolean/array shape."
+      },
+      {
         "name": "val",
         "type": "string | number | boolean",
         "required": false,
@@ -2715,6 +2722,13 @@
         "required": true,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "indeterminate",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Mixed selection display; value and change callbacks keep their boolean/array shape."
       },
       {
         "name": "val",
@@ -13994,10 +14008,17 @@
     "react": [
       {
         "name": "value",
-        "type": "number | undefined",
+        "type": "number | null | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "null is missing data; omission keeps the zero default."
+      },
+      {
+        "name": "indeterminate",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Work is active but its completion percentage is unknown; takes precedence over null."
       },
       {
         "name": "max",
@@ -14052,10 +14073,17 @@
     "native": [
       {
         "name": "value",
-        "type": "number | undefined",
+        "type": "number | null | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "null is missing data; omission keeps the zero default."
+      },
+      {
+        "name": "indeterminate",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Work is active but its completion percentage is unknown; takes precedence over null."
       },
       {
         "name": "max",
@@ -19339,6 +19367,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "stickyHeader",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Keep the header inside its scroll container while the tab panels scroll."
+      },
+      {
+        "name": "stickyOffset",
+        "type": "string | number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Top gap of the sticky header: a number in px or a CSS length."
       },
       {
         "name": "ariaLabel",

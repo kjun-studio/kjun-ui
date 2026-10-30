@@ -219,6 +219,7 @@
       "shape"
     ],
     "react": [
+      "indeterminate",
       "value",
       "max",
       "size",
@@ -229,6 +230,7 @@
       "shape"
     ],
     "native": [
+      "indeterminate",
       "value",
       "max",
       "size",

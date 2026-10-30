@@ -16,7 +16,7 @@
   },
   "KjunTabs": {
     "vue3": ["modelValue", "items", "density", "variant", "stickyHeader", "stickyOffset", "ariaLabel", "onTabMenu"],
-    "react": ["value", "items", "density", "variant", "actions", "children", "ariaLabel", "onValueChange", "onChange", "onTabMenu"],
+    "react": ["value", "items", "density", "variant", "actions", "children", "stickyHeader", "stickyOffset", "ariaLabel", "onValueChange", "onChange", "onTabMenu"],
     "native": ["value", "items", "density", "variant", "actions", "children", "ariaLabel", "onValueChange", "onChange", "onTabMenu"]
   },
   "KjunTabPane": {

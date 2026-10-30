@@ -17,6 +17,8 @@ type ViewStyle
 } from "react-native";
 import { AccessiblePressable as Pressable, focusVisible } from "./a11y";
 import { KjunIcon } from "./button";
+import { componentIcons } from "../../../shared/package-runtime/component-icons";
+import { IconFallbacks } from "../../../shared/package-runtime/icon-context";
 import { KText, content, finePointer } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useRadioKeyboard } from "./choice-accessibility";
@@ -31,6 +33,8 @@ export interface ChoiceOption<T = ChoiceValue> {
 }
 export interface KjunCheckboxProps<T = ChoiceValue> {
   value: boolean | T[];
+  /** Mixed selection display; value and change callbacks keep their boolean/array shape. */
+  indeterminate?: boolean;
   val?: T;
   label?: string;
   ariaLabel?: string;
@@ -42,6 +46,7 @@ export interface KjunCheckboxProps<T = ChoiceValue> {
 }
 export function KjunCheckbox<T = ChoiceValue>({
   value,
+  indeterminate = false,
   val,
   label,
   ariaLabel,
@@ -53,11 +58,12 @@ export function KjunCheckbox<T = ChoiceValue>({
 }: KjunCheckboxProps<T>) {
   const { colors } = useKjunStyles(),
     checked = Array.isArray(value) ? value.includes(val!) : value,
+    filled = checked || indeterminate,
     dimension = tokens.extensions.checkbox.sizes[size];
   return (
     <Pressable
       accessibilityRole="checkbox"
-      accessibilityState={{ checked, disabled }}
+      accessibilityState={{ checked: indeterminate ? "mixed" : checked, disabled }}
       accessibilityLabel={ariaLabel || label}
       disabled={disabled}
       onPress={() => {
@@ -88,16 +94,19 @@ export function KjunCheckbox<T = ChoiceValue>({
           borderRadius: tokens.extensions.checkbox.radii[size],
           borderWidth: tokens.border.controlWidth,
           // Same boundary roles as Radio: strong while enabled, secondary once disabled.
-          borderColor: checked ? colors.brand : disabled ? colors.borderSecondary : colors.borderStrong,
-          backgroundColor: checked ? colors.brand : colors.surface,
+          borderColor: filled ? colors.brand : disabled ? colors.borderSecondary : colors.borderStrong,
+          backgroundColor: filled ? colors.brand : colors.surface,
         }}
       >
-        {checked && (
-          <KjunIcon
-            name="check"
-            size={tokens.extensions.checkbox.iconSizes[size]}
-            color={colors.onBrand}
-          />
+        {filled && (
+          // The mixed state's minus is not in every app's icon set.
+          <IconFallbacks icons={componentIcons}>
+            <KjunIcon
+              name={indeterminate ? "minus" : "check"}
+              size={tokens.extensions.checkbox.iconSizes[size]}
+              color={colors.onBrand}
+            />
+          </IconFallbacks>
         )}
       </View>
       {!!(children || label) &&

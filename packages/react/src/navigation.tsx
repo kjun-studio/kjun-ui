@@ -36,6 +36,10 @@ export interface KjunTabsProps {
   variant?: "underline" | "pills";
   actions?: ReactNode;
   children?: ReactNode;
+  /** Keep the header inside its scroll container while the tab panels scroll. */
+  stickyHeader?: boolean;
+  /** Top gap of the sticky header: a number in px or a CSS length. */
+  stickyOffset?: number | string;
   ariaLabel?: string;
   onValueChange?: (value: string) => void;
   onChange?: (value: string) => void;
@@ -58,6 +62,8 @@ export function KjunTabs({
   variant = "underline",
   actions,
   children,
+  stickyHeader = false,
+  stickyOffset = 0,
   ariaLabel,
   onValueChange,
   onChange,
@@ -114,7 +120,8 @@ export function KjunTabs({
       data-variant={variant}
       data-density={density}
     >
-      <div className="kjun-tabs-header">
+      <div className="kjun-tabs-header" data-sticky={stickyHeader || undefined}
+        style={stickyHeader ? { position: "sticky", top: stickyOffset, zIndex: tokens.layers.page.sticky, background: "var(--_kjun-color-surface)" } : undefined}>
         <div className="kjun-tabs-track" ref={group} tabIndex={-1}>
         <TabList aria-label={ariaLabel} className="kjun-tabs-list">
           {tabs.map((tab) => (
