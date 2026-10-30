@@ -1914,7 +1914,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "표시할 항목과 항목별 레이블·값·구성 정보입니다.",
+            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김입니다.",
             "source": "packages/vue3/src/kpi.tsx"
           },
           {
@@ -5919,6 +5919,24 @@
       "vue3": {
         "props": [
           {
+            "name": "panelClass",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Class/style for the dialog content; ordinary attrs belong to the trigger wrapper.",
+            "summary": "팝업 내용에 적용할 클래스입니다. Popover는 dialog, Tooltip은 말풍선에 적용하며 트리거에는 적용하지 않습니다.",
+            "source": "packages/vue3/src/popover.tsx"
+          },
+          {
+            "name": "panelStyle",
+            "type": "string | false | CSSProperties | StyleValue[]",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "팝업 내용의 스타일입니다. Popover는 dialog, Tooltip은 말풍선에 적용합니다. 일반 class·style은 트리거 영역에 적용합니다.",
+            "source": "packages/vue3/src/popover.tsx"
+          },
+          {
             "name": "noPadding",
             "type": "boolean",
             "required": false,
@@ -6201,7 +6219,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "팝업을 열기 위한 트리거 요소 또는 렌더 함수입니다.",
+            "summary": "팝오버를 여는 단일 버튼 또는 open을 받아 버튼을 반환하는 함수입니다. aria-haspopup·aria-expanded·aria-controls를 실제 트리거에 전달합니다. KjunButton·KjunTooltip·Fragment·표시용 DOM wrapper를 지원하며 사용자 정의 버튼은 받은 DOM 속성과 ref를 실제 버튼에 전달해야 합니다.",
             "source": "packages/react/src/popover.tsx"
           },
           {
@@ -7614,7 +7632,7 @@
         "props": [
           {
             "name": "columns",
-            "type": "TableColumn<any>[]",
+            "type": "TableColumn<R>[]",
             "required": true,
             "default": "—",
             "description": "",
@@ -7634,7 +7652,7 @@
           },
           {
             "name": "data",
-            "type": "object[]",
+            "type": "R[]",
             "required": false,
             "default": "[]",
             "description": "",
@@ -8035,7 +8053,7 @@
           },
           {
             "name": "rowClass",
-            "type": "string | ((row: any, index: number) => string)",
+            "type": "string | ((row: NoInfer<R>, index: number) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -8053,10 +8071,10 @@
           },
           {
             "name": "selected",
-            "type": "object[]",
+            "type": "NoInfer<R>[]",
             "required": false,
             "default": "[]",
-            "description": "v-model:selected.",
+            "description": "",
             "summary": "현재 선택된 행 객체 배열입니다.",
             "details": [
               {
@@ -8073,7 +8091,7 @@
           },
           {
             "name": "formatValue",
-            "type": "(value: unknown, column: TableColumn<any>, row: any) => VNodeChild",
+            "type": "(value: unknown, column: TableColumn<NoInfer<R>>, row: NoInfer<R>) => VNodeChild",
             "required": false,
             "default": "—",
             "description": "",
@@ -8101,10 +8119,10 @@
           },
           {
             "name": "onRowClick",
-            "type": "(row: any, index: number) => void",
+            "type": "(row: NoInfer<R>, index: number) => void",
             "required": false,
             "default": "—",
-            "description": "Declared as props: rows become keyboard targets and the retry button appears only when the app listens.",
+            "description": "",
             "summary": "실행한 행과 표시 인덱스를 전달합니다.",
             "details": [
               {
@@ -10140,6 +10158,24 @@
       "vue3": {
         "props": [
           {
+            "name": "panelClass",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Class/style for the tooltip bubble; ordinary attrs belong to its single trigger.",
+            "summary": "팝업 내용에 적용할 클래스입니다. Popover는 dialog, Tooltip은 말풍선에 적용하며 트리거에는 적용하지 않습니다.",
+            "source": "packages/vue3/src/popover.tsx"
+          },
+          {
+            "name": "panelStyle",
+            "type": "string | false | CSSProperties | StyleValue[]",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "팝업 내용의 스타일입니다. Popover는 dialog, Tooltip은 말풍선에 적용합니다. 일반 class·style은 트리거 영역에 적용합니다.",
+            "source": "packages/vue3/src/popover.tsx"
+          },
+          {
             "name": "content",
             "type": "string",
             "required": false,
@@ -12130,11 +12166,20 @@
         "props": [
           {
             "name": "value",
-            "type": "number",
+            "type": "number | null",
             "required": false,
             "default": "0",
-            "description": "",
-            "summary": "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",
+            "description": "null is missing data; omission retains the existing zero default.",
+            "summary": "진행 값입니다. null·유한하지 않은 값·유효하지 않은 max는 데이터 없음이며 0%로 바꾸지 않습니다. 생략 또는 undefined는 기존 기본값 0을 유지합니다.",
+            "source": "packages/vue3/src/display.tsx"
+          },
+          {
+            "name": "indeterminate",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Work is active but its completion percentage is unknown.",
+            "summary": "실행 중이지만 진행률을 모를 때 사용합니다. 수치와 aria-valuenow를 생략하고 진행 중 상태를 표시합니다. 데이터 없음(null)과 구분합니다.",
             "source": "packages/vue3/src/display.tsx"
           },
           {
@@ -13664,6 +13709,15 @@
             "default": "—",
             "description": "",
             "summary": "현재 선택값입니다. Checkbox는 boolean 또는 선택값 배열, Radio는 그룹의 선택값을 사용합니다.",
+            "source": "packages/react/src/controls.tsx"
+          },
+          {
+            "name": "indeterminate",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Mixed selection display; value and change callbacks keep their boolean/array shape.",
+            "summary": "일부 선택 상태를 빼기 표시와 실제 체크박스의 mixed 상태로 전달합니다. value와 콜백은 boolean 또는 배열을 유지합니다. 전체 선택에서는 value=모두 선택됨, indeterminate=일부만 선택됨으로 설정하고 변경 요청을 반영할 때 함께 갱신하세요.",
             "source": "packages/react/src/controls.tsx"
           },
           {
@@ -19583,6 +19637,15 @@
       "vue3": {
         "props": [
           {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "v-model:open; omit for internal visibility.",
+            "summary": "v-model:open으로 표시 상태를 제어합니다. 생략하면 내부 상태를 사용합니다. update:open은 변경 요청이며 open·close는 실제 표시 전환을 알립니다. disabled 또는 로딩 중인 트리거는 열리지 않습니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean",
             "required": false,
@@ -19638,6 +19701,12 @@
           }
         ],
         "events": [
+          {
+            "name": "update:open",
+            "source": "packages/vue3/src/dropdown.tsx",
+            "type": "이벤트",
+            "summary": "update:open 이벤트를 통지합니다."
+          },
           {
             "name": "open",
             "source": "packages/vue3/src/dropdown.tsx",
@@ -20953,11 +21022,11 @@
           },
           {
             "name": "badge",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "탭 라벨 옆 배지의 내용입니다.",
+            "summary": "null·undefined는 배지를 숨기고 숫자 0은 표시합니다.",
             "source": "packages/vue3/src/tabs.tsx"
           },
           {
@@ -21186,6 +21255,24 @@
             "source": "packages/vue3/src/tabs.tsx"
           },
           {
+            "name": "stickyHeader",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Keep the header inside its scroll container while the tab panels scroll.",
+            "summary": "가장 가까운 스크롤 컨테이너에서 탭 헤더를 고정합니다. 패널은 기존 탭 안에 유지되어 키보드 이동·aria-controls 연결이 보존됩니다.",
+            "source": "packages/vue3/src/tabs.tsx"
+          },
+          {
+            "name": "stickyOffset",
+            "type": "string | number",
+            "required": false,
+            "default": "0",
+            "description": "",
+            "summary": "고정 헤더의 위쪽 간격입니다. 숫자는 px, 문자열은 CSS 길이이며 기본값은 0입니다. stickyHeader=true일 때 적용합니다.",
+            "source": "packages/vue3/src/tabs.tsx"
+          },
+          {
             "name": "ariaLabel",
             "type": "string",
             "required": false,
@@ -21292,7 +21379,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "탭 목록 끝에 배치할 추가 행동 영역입니다.",
+            "summary": "탭 헤더의 작업 영역입니다. Select·Dropdown 같은 별도 목록을 가진 컨트롤도 사용할 수 있으며 탭 선택과 독립적으로 동작합니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -25133,6 +25220,15 @@
       "vue3": {
         "props": [
           {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "v-model:open; omit for internal visibility.",
+            "summary": "v-model:open으로 표시 상태를 제어합니다. 생략하면 내부 상태를 사용합니다. update:open은 변경 요청이며 open·close는 실제 표시 전환을 알립니다. disabled 또는 로딩 중인 트리거는 열리지 않습니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean",
             "required": false,
@@ -25269,6 +25365,12 @@
           }
         ],
         "events": [
+          {
+            "name": "update:open",
+            "source": "packages/vue3/src/dropdown.tsx",
+            "type": "이벤트",
+            "summary": "update:open 이벤트를 통지합니다."
+          },
           {
             "name": "open",
             "source": "packages/vue3/src/dropdown.tsx",
@@ -26299,6 +26401,26 @@
             "source": "packages/vue3/src/list.tsx"
           },
           {
+            "name": "icon",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Icon name drawn in the leading column at the list icon size; the leading slot replaces it when both are given.",
+            "summary": "앞쪽 열에 그릴 아이콘 이름입니다.",
+            "details": [
+              {
+                "label": "크기·색",
+                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 40px 앞쪽 열 가운데에 놓습니다."
+              },
+              {
+                "label": "leading과 함께",
+                "text": "leading 슬롯이 있으면 슬롯을 그립니다."
+              }
+            ],
+            "source": "packages/vue3/src/list.tsx",
+            "example": "/components/list-row#preview"
+          },
+          {
             "name": "href",
             "type": "string",
             "required": false,
@@ -26472,6 +26594,26 @@
             "description": "",
             "summary": "제목 또는 행동을 보충하는 설명입니다.",
             "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "icon",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Icon name drawn in the leading column at the list icon size; `leading` replaces it when both are given.",
+            "summary": "앞쪽 열에 그릴 아이콘 이름입니다.",
+            "details": [
+              {
+                "label": "크기·색",
+                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 40px 앞쪽 열 가운데에 놓습니다."
+              },
+              {
+                "label": "leading과 함께",
+                "text": "leading이 있으면 leading을 그립니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-row#preview"
           },
           {
             "name": "leading",
@@ -26654,6 +26796,26 @@
             "description": "",
             "summary": "제목 또는 행동을 보충하는 설명입니다.",
             "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "icon",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Icon name drawn in the leading column at the list icon size; `leading` replaces it when both are given.",
+            "summary": "앞쪽 열에 그릴 아이콘 이름입니다.",
+            "details": [
+              {
+                "label": "크기·색",
+                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 40px 앞쪽 열 가운데에 놓습니다."
+              },
+              {
+                "label": "leading과 함께",
+                "text": "leading이 있으면 leading을 그립니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-row#preview"
           },
           {
             "name": "leading",
@@ -27185,7 +27347,7 @@
         ],
         "ownership": [
           "자체 행동·선택 상태가 없습니다. 안에 둔 버튼·Switch 같은 컨트롤의 값과 콜백은 소비자가 연결합니다.",
-          "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16과 구분선 규칙을 공유합니다."
+          "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16을 쓰고 구분선도 16에서 시작합니다."
         ],
         "types": []
       },
@@ -27216,7 +27378,7 @@
         "slots": [],
         "ownership": [
           "자체 행동·선택 상태가 없습니다. 안에 둔 버튼·Switch 같은 컨트롤의 값과 콜백은 소비자가 연결합니다.",
-          "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16과 구분선 규칙을 공유합니다."
+          "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16을 쓰고 구분선도 16에서 시작합니다."
         ],
         "types": []
       },
@@ -27247,7 +27409,7 @@
         "slots": [],
         "ownership": [
           "자체 행동·선택 상태가 없습니다. 안에 둔 버튼·Switch 같은 컨트롤의 값과 콜백은 소비자가 연결합니다.",
-          "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16과 구분선 규칙을 공유합니다."
+          "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16을 쓰고 구분선도 16에서 시작합니다."
         ],
         "types": []
       }
@@ -28672,7 +28834,7 @@
           },
           {
             "name": "size",
-            "type": "\"sm\" | \"md\" | \"lg\"",
+            "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
             "required": false,
             "default": "\"md\"",
             "description": "",
@@ -28825,7 +28987,7 @@
           },
           {
             "name": "size",
-            "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+            "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | undefined",
             "required": false,
             "default": "\"md\"",
             "description": "",
@@ -28993,7 +29155,7 @@
           },
           {
             "name": "size",
-            "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+            "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | undefined",
             "required": false,
             "default": "\"md\"",
             "description": "",
@@ -29471,6 +29633,39 @@
             "source": "packages/vue3/src/range-input.tsx"
           },
           {
+            "name": "showValue",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Hides the visual output only; the native slider value remains accessible.",
+            "summary": "값 출력을 표시합니다. false여도 숫자 값·키보드 조작·접근성 이름은 유지합니다. label도 없으면 빈 캡션 영역을 만들지 않습니다.",
+            "source": "packages/vue3/src/range-input.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "(value: number) => string",
+            "required": false,
+            "default": "—",
+            "description": "Applied to each thumb's output and aria-valuetext. Does not change numeric values.",
+            "summary": "각 손잡이의 숫자를 표시 문자열로 바꿉니다.",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다."
+              },
+              {
+                "label": "접근성",
+                "text": "화면 출력과 aria-valuetext에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "modelValue와 update:modelValue·change 이벤트는 숫자 형식을 유지합니다."
+              }
+            ],
+            "source": "packages/vue3/src/range-input.tsx",
+            "example": "/components/slider#preview"
+          },
+          {
             "name": "modelValue",
             "type": "SliderValue",
             "required": true,
@@ -29638,6 +29833,30 @@
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/react/src/range-input.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "((value: number) => string) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric.",
+            "summary": "각 손잡이의 숫자를 표시 문자열로 바꿉니다.",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다."
+              },
+              {
+                "label": "접근성",
+                "text": "화면 출력과 aria-valuetext에 같은 문자열을 사용합니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "value와 onValueChange·onChangeCommit 콜백은 숫자 또는 숫자 쌍 형식을 유지합니다."
+              }
+            ],
+            "source": "packages/react/src/range-input.tsx",
+            "example": "/components/slider#preview"
           },
           {
             "name": "onValueChange",
@@ -29942,6 +30161,39 @@
             "source": "packages/vue3/src/range-input.tsx"
           },
           {
+            "name": "showValue",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Hides the visual output only; the native slider value remains accessible.",
+            "summary": "값 출력을 표시합니다. false여도 숫자 값·키보드 조작·접근성 이름은 유지합니다. label도 없으면 빈 캡션 영역을 만들지 않습니다.",
+            "source": "packages/vue3/src/range-input.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "(value: number) => string",
+            "required": false,
+            "default": "—",
+            "description": "Applied to each thumb's output and aria-valuetext. Does not change numeric values.",
+            "summary": "각 손잡이의 숫자를 표시 문자열로 바꿉니다.",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다."
+              },
+              {
+                "label": "접근성",
+                "text": "화면 출력과 aria-valuetext에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "modelValue와 update:modelValue·change 이벤트는 숫자 형식을 유지합니다."
+              }
+            ],
+            "source": "packages/vue3/src/range-input.tsx",
+            "example": "/components/range-slider#preview"
+          },
+          {
             "name": "modelValue",
             "type": "[number, number]",
             "required": true,
@@ -30197,6 +30449,30 @@
             "description": "",
             "summary": "표시하거나 조절하는 값의 목적을 설명하는 라벨입니다.",
             "source": "packages/react/src/range-input.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "((value: number) => string) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric.",
+            "summary": "각 손잡이의 숫자를 표시 문자열로 바꿉니다.",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다."
+              },
+              {
+                "label": "접근성",
+                "text": "화면 출력과 aria-valuetext에 같은 문자열을 사용합니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "value와 onValueChange·onChangeCommit 콜백은 숫자 또는 숫자 쌍 형식을 유지합니다."
+              }
+            ],
+            "source": "packages/react/src/range-input.tsx",
+            "example": "/components/range-slider#preview"
           }
         ],
         "events": [],

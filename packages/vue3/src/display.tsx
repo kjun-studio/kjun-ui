@@ -163,7 +163,10 @@ export const KjunAlert = defineComponent({
 });
 
 const kjunProgressProps = {
-  value: { type: Number, default: 0 },
+  /** null is missing data; omission retains the existing zero default. */
+  value: { type: [Number, null] as PropType<number | null>, default: 0 },
+  /** Work is active but its completion percentage is unknown. */
+  indeterminate: { type: Boolean, default: false },
   max: { type: Number, default: 100 },
   size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   variant: { type: String as PropType<SemanticTone>, default: "primary" },
@@ -184,25 +187,36 @@ export const KjunProgress = defineComponent({
   setup(props, { slots }) {
     const m = useKjunMessages();
     return () => {
-      const percentage = Number.isFinite(props.value) && props.max > 0
-        ? Math.min(100, Math.max(0, Math.round((props.value / props.max) * 100))) : 0;
+      const missing = props.value === null || !Number.isFinite(props.value) || !Number.isFinite(props.max) || props.max <= 0;
+      const state = props.indeterminate ? "indeterminate" : missing ? "missing" : "determinate";
+      const percentage = state === "determinate" ? Math.min(100, Math.max(0, Math.round((props.value! / props.max) * 100))) : 0;
+      const text = state === "indeterminate" ? m.value.loadingEllipsis : state === "missing" ? "—" : `${percentage}%`;
       const label = slots.label ? slots.label() : props.label;
       const subLabel = slots.subLabel ? slots.subLabel() : props.subLabel;
       const name = typeof props.label === "string" && !slots.label ? props.label : m.value.progress;
+      const accessibility = {
+        role: state === "missing" ? "img" : "progressbar",
+        "aria-label": state === "missing" ? `${name}: ${m.value.noData}` : name,
+        "aria-valuemin": state === "missing" ? undefined : 0,
+        "aria-valuemax": state === "missing" ? undefined : 100,
+        "aria-valuenow": state === "determinate" ? percentage : undefined,
+        "aria-valuetext": state === "indeterminate" ? m.value.loadingEllipsis : undefined,
+        "aria-busy": state === "indeterminate" || undefined,
+      };
       const color = role(props.variant === "primary" ? "brand" : props.variant);
       if (props.shape === "circle") {
-        const c = progressCircle(props.size, percentage);
+        const c = progressCircle(props.size, state === "indeterminate" ? 25 : percentage);
         return (
-          <div class="kjun-progress" data-shape="circle" data-size={props.size}>
-            <div role="progressbar" aria-label={name} aria-valuemin={0} aria-valuemax={100} aria-valuenow={percentage}
+          <div class="kjun-progress" data-shape="circle" data-size={props.size} data-state={state}>
+            <div {...accessibility}
               class="kjun-progress-circle" style={css({ width: c.diameter, height: c.diameter })}>
-              <svg width={c.diameter} height={c.diameter} viewBox={`0 0 ${c.diameter} ${c.diameter}`} fill="none" aria-hidden="true">
+              <svg class={state === "indeterminate" ? "kjun-spin" : undefined} width={c.diameter} height={c.diameter} viewBox={`0 0 ${c.diameter} ${c.diameter}`} fill="none" aria-hidden="true">
                 <circle class="kjun-progress-circle-track" cx={c.centre} cy={c.centre} r={c.radius} stroke-width={c.stroke} />
-                {percentage > 0 && <circle class="kjun-progress-circle-value" cx={c.centre} cy={c.centre} r={c.radius} stroke-width={c.stroke}
+                {(percentage > 0 || state === "indeterminate") && <circle class="kjun-progress-circle-value" cx={c.centre} cy={c.centre} r={c.radius} stroke-width={c.stroke}
                   stroke={color} stroke-linecap="round" stroke-dasharray={c.circumference} stroke-dashoffset={c.offset}
                   transform={`rotate(-90 ${c.centre} ${c.centre})`} />}
               </svg>
-              {props.showLabel && c.showsPercentage && <span class="kjun-progress-circle-percent">{percentage}%</span>}
+              {props.showLabel && c.showsPercentage && state !== "indeterminate" && <span class="kjun-progress-circle-percent">{text}</span>}
             </div>
             {label && <div class="kjun-progress-circle-label">{label}</div>}
             {subLabel && <div class="kjun-progress-sub">{subLabel}</div>}
@@ -210,17 +224,16 @@ export const KjunProgress = defineComponent({
         );
       }
       return (
-        <div class="kjun-progress">
+        <div class="kjun-progress" data-state={state}>
           {(label || props.showLabel) && (
             <div class="kjun-progress-label">
               {label && <span>{label}</span>}
-              {props.showLabel && <span>{percentage}%</span>}
+              {props.showLabel && <span>{text}</span>}
             </div>
           )}
-          <div role="progressbar" aria-label={name}
-            aria-valuemin={0} aria-valuemax={100} aria-valuenow={percentage} class="kjun-progress-track"
+          <div {...accessibility} class="kjun-progress-track"
             style={css({ height: tokens.extensions.progress.heights[props.size] })}>
-            <div style={{ width: percentage + "%", background: color }} />
+            <div style={{ width: (state === "indeterminate" ? 30 : percentage) + "%", background: color }} />
           </div>
           {subLabel && <div class="kjun-progress-sub">{subLabel}</div>}
         </div>

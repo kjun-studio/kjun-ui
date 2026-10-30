@@ -26,7 +26,7 @@ export const kpiFormat = (item: KpiValue, value = item.value): string =>
       new Intl.NumberFormat(undefined, { minimumFractionDigits: item.decimals ?? 0, maximumFractionDigits: item.decimals ?? 0 })
         .format(item.semantic === "price" ? Math.abs(value) : value);
 export const kpiColor = (value: unknown, semantic?: string, neutral = "text") =>
-  semantic === "price" && Number(value) !== 0 ? `var(--_kjun-color-price-${Number(value) > 0 ? "up" : "down"})` : `var(--_kjun-color-${neutral})`;
+  semantic === "price" && Number.isFinite(Number(value)) && Number(value) !== 0 ? `var(--_kjun-color-price-${Number(value) > 0 ? "up" : "down"})` : `var(--_kjun-color-${neutral})`;
 const slotContent = (nodes: VNodeChild) => hasContent(nodes) ? nodes : undefined;
 
 const kjunKpiHeroProps = {
@@ -126,7 +126,10 @@ export const KjunKpiHero = defineComponent({
   },
 });
 
-export interface KpiRowItem extends KpiValue {
+export interface KpiRowItem extends Omit<KpiValue, "value"> {
+  /** null/undefined and non-finite numbers are missing, never zero. Loading still takes precedence. */
+  value?: number | string | null;
+  missingText?: string;
   loading?: boolean;
   clickable?: boolean;
   mobileFull?: boolean;
@@ -135,7 +138,7 @@ export interface KpiRowItem extends KpiValue {
   valueKind?: "text" | "number";
   animated?: boolean;
   valueSegments?: { text: string; label?: string; separator?: boolean; class?: string }[];
-  badge?: { text: string; variant?: "warning" | "success" | "danger" | "price-up" | "price-down" | "info" | "neutral" };
+  badge?: { text: string; variant?: "warning" | "success" | "danger" | "price-up" | "price-down" | "info" | "neutral" } | null;
   badgePlacement?: "label" | "value";
 }
 const kjunKpiRowProps = {
@@ -176,12 +179,16 @@ export const KjunKpiRow = defineComponent({
           (mobileSummary && size !== "sm" ? " kjun-kpi-row--mobile-summary" : "")}
           data-surface={props.surface === "none" ? "none" : undefined}
           aria-busy={loading || items.some(item => item.loading)}
-          ref={domainRef(!loading && items.some(item => !item.loading && (item.semantic === "price" && Number(item.value) !== 0 || !!item.badge?.variant?.startsWith("price-"))))}>
+          ref={domainRef(!loading && items.some(item => !item.loading && (item.semantic === "price" && Number.isFinite(Number(item.value)) && Number(item.value) !== 0 || !!item.badge?.variant?.startsWith("price-"))))}>
           {items.map((item, i) => {
             const busy = loading || !!item.loading;
+            const value = item.value;
+            const present = value != null && (typeof value !== "number" || Number.isFinite(value));
+            const format = (number: number | string) => kpiFormat({ ...item, value: number });
             const click = () => { if (!busy && item.clickable) emit("item-click", item, i); };
             return (
               <div key={i} role={item.clickable ? "button" : undefined} tabindex={item.clickable && !busy ? 0 : undefined}
+                data-state={busy ? "loading" : present || item.valueSegments ? "ready" : "missing"}
                 aria-disabled={(item.clickable && busy) || undefined}
                 class={"kjun-kpi-row__item" + (item.clickable ? " kjun-kpi-row__item--clickable" : "") + (item.mobileFull ? " kjun-kpi-row__item--full" : "") +
                   (mobileSummary && i === lastFull ? " kjun-kpi-row__item--summary-full" : "") + (secondary[i] ? " kjun-kpi-row__item--secondary" : "") +
@@ -195,19 +202,19 @@ export const KjunKpiRow = defineComponent({
                 </div>
                 <div class="kjun-kpi-row__value-row">
                   <div class={"kjun-kpi-row__value " + (item.valueClass || "") + (item.valueKind === "text" ? " kjun-kpi-row__value--text" : "") + (item.mobileNeutral ? " kjun-kpi-row__value--mobile-neutral" : "")}
-                    title={item.valueKind === "text" ? String(item.value) : undefined} style={{ color: item.valueClass ? undefined : kpiColor(item.value, item.semantic) }}>
+                    title={item.valueKind === "text" && present ? String(value) : undefined} style={{ color: item.valueClass ? undefined : kpiColor(value, item.semantic) }}>
                     {item.valueSegments ? item.valueSegments.map((seg, j) => (
                       <span key={j} class={(seg.class || "") + (seg.label ? " kjun-kpi-row__segment--labeled" : "") + (seg.separator ? " kjun-kpi-row__segment--separator" : "")}>
                         {seg.label && <span class="kjun-kpi-row__segment-label">{seg.label}</span>}
                         {busy && !seg.separator ? <KjunSkeleton type="block" height="1lh" width="3ch" /> : seg.text}
                       </span>
-                    )) : busy ? <KjunSkeleton type="block" height="1lh" width="5ch" /> : slotContent(slots.value?.({ item, index: i })) ?? <>
+                    )) : busy ? <KjunSkeleton type="block" height="1lh" width="5ch" /> : slotContent(slots.value?.({ item, index: i })) ?? (present ? <>
                       {item.prefix && <span class="kjun-kpi-row__affix">{item.prefix}</span>}
-                      {item.animated && typeof item.value === "number"
-                        ? <KjunAnimatedNumber fromPrevious value={item.value} formatter={(v: number) => kpiFormat(item, v)} />
-                        : kpiFormat(item)}
+                      {item.animated && typeof value === "number"
+                        ? <KjunAnimatedNumber fromPrevious value={value} formatter={format} />
+                        : format(value!)}
                       {item.suffix && <span class="kjun-kpi-row__affix">{item.suffix}</span>}
-                    </>}
+                    </> : item.missingText ?? "—")}
                   </div>
                   {!busy && item.badgePlacement === "value" && badge(item)}
                 </div>

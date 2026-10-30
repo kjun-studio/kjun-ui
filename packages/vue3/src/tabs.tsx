@@ -12,7 +12,7 @@ export interface TabItem {
   name: string;
   label: string;
   icon?: string;
-  badge?: string | number;
+  badge?: string | number | null;
   badgeVariant?: "danger" | "success" | "warning" | "info";
   disabled?: boolean;
 }
@@ -50,6 +50,9 @@ const kjunTabsProps = {
   items: { type: Array as PropType<TabItem[]>, default: () => [] },
   density: { type: String as PropType<"comfortable" | "compact">, default: "comfortable" },
   variant: { type: String as PropType<"underline" | "pills">, default: "underline" },
+  /** Keep the header inside its scroll container while the tab panels scroll. */
+  stickyHeader: { type: Boolean, default: false },
+  stickyOffset: { type: [Number, String] as PropType<number | string>, default: 0 },
   ariaLabel: { type: String, default: undefined },
   /** Declared as a prop so the tab menu only engages when the app listens. */
   onTabMenu: { type: Function as PropType<(event: TabMenuEvent) => void>, default: undefined },
@@ -100,7 +103,9 @@ export const KjunTabs = defineComponent({
         <div ref={root} class="kjun-tabs" data-variant={props.variant} data-density={props.density} data-orientation="horizontal"
           data-focused={within.value || undefined}
           onFocusin={() => { within.value = true; }} onFocusout={(event: FocusEvent) => { if (!root.value?.contains(event.relatedTarget as Node)) within.value = false; }}>
-          <div class="kjun-tabs-header">
+          <div class="kjun-tabs-header" data-sticky={props.stickyHeader || undefined}
+            style={props.stickyHeader ? { position: "sticky", top: typeof props.stickyOffset === "number" ? `${props.stickyOffset}px` : props.stickyOffset,
+              zIndex: tokens.layers.page.sticky, background: "var(--_kjun-color-surface)" } : undefined}>
             <div class="kjun-tabs-track" ref={group} tabindex={-1}>
               <div ref={list} class="kjun-tabs-list" id={listId} role="tablist" aria-label={(props.ariaLabel ?? m.value.tabs)} aria-orientation="horizontal"
                 data-orientation="horizontal" tabindex={-1}>
@@ -164,7 +169,7 @@ const kjunTabPaneProps = {
   name: { type: String, required: true },
   label: { type: String, required: true },
   icon: { type: String, default: undefined },
-  badge: { type: [String, Number] as PropType<string | number>, default: undefined },
+  badge: { type: [String, Number, null] as PropType<string | number | null>, default: undefined },
   badgeVariant: { type: String as PropType<TabItem["badgeVariant"]>, default: undefined },
   disabled: { type: Boolean, default: false },
 } as const;

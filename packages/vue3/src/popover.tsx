@@ -1,7 +1,8 @@
 import { anchorStyle, followAnchor, type AnchorSource } from "../../../shared/package-runtime/anchor-rect";
 import { useKjunMessages } from "./runtime/messages";
-import { Teleport, cloneVNode, computed, defineComponent, isVNode, onBeforeUnmount, onMounted, onUpdated, reactive, ref, unref, watch,
-  type ExtractPublicPropTypes, type PropType, type Ref, type VNode, type SlotsType, type VNodeChild } from "vue";
+import { Teleport, cloneVNode, computed, defineComponent, isVNode, mergeProps, onBeforeUnmount, onMounted, onUpdated, reactive, ref, unref, watch,
+  type ExtractPublicPropTypes, type PropType, type Ref, type VNode, type SlotsType, type StyleValue, type VNodeChild } from "vue";
+import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens } from "@kjun-ui/tokens";
 import { computeFloatingPosition } from "../../../shared/package-runtime/floating-position";
 import { installFocusVisible, isFocusVisible } from "../../../shared/package-runtime/focus-visible";
@@ -14,6 +15,9 @@ import { useLayer, usePopupExpanded } from "./runtime/layers";
 import { usePresence, useReducedMotion } from "./runtime/presence";
 
 const kjunPopoverProps = {
+  /** Class/style for the dialog content; ordinary attrs belong to the trigger wrapper. */
+  panelClass: { type: String, default: undefined },
+  panelStyle: { type: [String, Object, Array, Boolean] as PropType<StyleValue>, default: undefined },
   noPadding: { type: Boolean, default: false },
   open: { type: Boolean, default: undefined },
   manualTrigger: { type: Boolean, default: false },
@@ -35,6 +39,7 @@ export type KjunPopoverProps = ExtractPublicPropTypes<typeof kjunPopoverProps>;
 /** v-model:open (optional). Slots: trigger({ open }), default({ close }). */
 export const KjunPopover = defineComponent({
   name: "KjunPopover",
+  inheritAttrs: false,
   props: kjunPopoverProps,
   emits: { "update:open": (_open: boolean) => true },
   slots: Object as SlotsType<{
@@ -43,7 +48,7 @@ export const KjunPopover = defineComponent({
     /** Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel. */
     header?: (scope: { close: () => void }) => VNodeChild;
   }>,
-  setup(props, { slots, emit }) {
+  setup(props, { attrs, slots, emit }) {
     const m = useKjunMessages();
     const internal = ref(false);
     const open = computed(() => props.open ?? internal.value);
@@ -90,14 +95,15 @@ export const KjunPopover = defineComponent({
     return () => (
       <>
         {props.anchorRect !== undefined && <div ref={anchor} aria-hidden="true" style={anchorStyle} />}
-        {(props.anchorRect === undefined || slots.trigger) && <div ref={trigger} class="kjun-layer-trigger"
-          {...{ onClickCapture: () => { if (!props.manualTrigger) change(!open.value); } }}
-          onKeydown={(event: KeyboardEvent) => {
-            if (!props.manualTrigger && ["Enter", " "].includes(event.key) && event.target === event.currentTarget) {
+        {(props.anchorRect === undefined || slots.trigger) && <div {...mergeProps(attrs, { class: "kjun-layer-trigger",
+          onClickCapture: (event: MouseEvent) => { if (!event.defaultPrevented && !props.manualTrigger) change(!open.value); },
+          onKeydown: (event: KeyboardEvent) => {
+            if (!event.defaultPrevented && !props.manualTrigger && ["Enter", " "].includes(event.key) && event.target === event.currentTarget) {
               event.preventDefault();
               change(!open.value);
             }
-          }}
+          },
+          })} ref={trigger}
           aria-haspopup="dialog" aria-expanded={expanded.value} aria-controls={expanded.value ? id : undefined}>
           {slots.trigger?.({ open: open.value })}
         </div>}
@@ -114,11 +120,14 @@ export const KjunPopover = defineComponent({
             return chosen ?? (props.anchorRect !== undefined && !slots.trigger ? opener ?? undefined : undefined);
           }}>
           {{ default: () => (
-            <section ref={dialog} id={id} class="kjun-popover-dialog" role="dialog" tabindex={-1}
+            <section {...mergeProps(props.anchorRect !== undefined && !slots.trigger ? attrs : {}, {
+              onKeydown: (event: KeyboardEvent) => { if (props.modal && !event.defaultPrevented) containTab(event.currentTarget as HTMLElement, event); },
+            })} ref={dialog} id={id}
+              class={["kjun-popover-dialog", props.panelClass, props.anchorRect !== undefined && !slots.trigger ? attrs.class : undefined]} role="dialog" tabindex={-1}
               aria-label={slots.header && !props.ariaLabel ? undefined : props.ariaLabel || m.value.details}
               aria-labelledby={slots.header && !props.ariaLabel ? id + "-header" : undefined}
-              onKeydown={(event: KeyboardEvent) => { if (props.modal) containTab(event.currentTarget as HTMLElement, event); }}
-              style={{ maxHeight: typeof props.maxHeight === "number" ? props.maxHeight + "px" : props.maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: slots.header ? undefined : "auto" }}>
+              style={[{ maxHeight: typeof props.maxHeight === "number" ? props.maxHeight + "px" : props.maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: slots.header ? undefined : "auto" },
+                props.panelStyle, props.anchorRect !== undefined && !slots.trigger ? attrs.style as StyleValue : undefined]}>
               {slots.header && <div id={id + "-header"} class="kjun-popover-header">{slots.header({ close: () => change(false) })}</div>}
               {slots.header
                 ? <div class="kjun-popover-body"><div class="kjun-popover-content" data-no-padding={String(props.noPadding)}>{slots.default?.({ close: () => change(false) })}</div></div>
@@ -133,6 +142,9 @@ export const KjunPopover = defineComponent({
 });
 
 const kjunTooltipProps = {
+  /** Class/style for the tooltip bubble; ordinary attrs belong to its single trigger. */
+  panelClass: { type: String, default: undefined },
+  panelStyle: { type: [String, Object, Array, Boolean] as PropType<StyleValue>, default: undefined },
   content: { type: String, default: "" },
   /** A bolder line above content (a file name above its path). Read together with content. */
   title: { type: String, default: undefined },
@@ -150,10 +162,11 @@ export type KjunTooltipProps = ExtractPublicPropTypes<typeof kjunTooltipProps>;
 const openTooltips = new Set<() => void>();
 export const KjunTooltip = defineComponent({
   name: "KjunTooltip",
+  inheritAttrs: false,
   props: kjunTooltipProps,
   emits: { "update:open": (_open: boolean) => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
-  setup(props, { slots, emit }) {
+  setup(props, { attrs, slots, emit }) {
     const internal = ref(false);
     // v-model:open makes it controlled; otherwise hover and focus drive it.
     const open = computed({ get: () => props.open ?? internal.value, set: (next: boolean) => {
@@ -166,7 +179,7 @@ export const KjunTooltip = defineComponent({
     const motion = usePresence(() => open.value && !layer.blocked.value && !!(props.content || props.title), () => reduced.value, tokens.motion.tooltipExit);
     const target = usePortalTarget();
     const id = useKjunId("kjun-tooltip-");
-    const anchor = ref<HTMLElement | null>(null), tip = ref<HTMLElement | null>(null);
+    const anchor = ref<Element | null>(null), tip = ref<HTMLElement | null>(null);
     const position = reactive({ top: 0, left: 0, side: props.placement as string, arrow: 0 });
     const disabled = () => (!props.content && !props.title) || !layer.scopeActive.value;
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -206,34 +219,38 @@ export const KjunTooltip = defineComponent({
       onBlur: hide,
       onPointerdown: hide,
     };
+    // One callback for the component's life: a new function each render makes Vue call the old one with null,
+    // which would strip the tooltip id that the same render just added.
+    const setAnchor = (el: unknown) => {
+      const candidate = el instanceof Element ? el : (el as { $el?: unknown } | null)?.$el;
+      // Fragment/text-root components expose a Text or Comment as $el, not an anchor element.
+      const next = candidate instanceof Element ? candidate : null;
+      // A replaced or removed control keeps only the app's own description.
+      if (anchor.value && anchor.value !== next) {
+        const kept = (anchor.value.getAttribute("aria-describedby") || "").split(" ").filter(token => token && token !== id).join(" ");
+        if (kept) anchor.value.setAttribute("aria-describedby", kept); else anchor.value.removeAttribute("aria-describedby");
+      }
+      anchor.value = next;
+    };
     return () => {
       const [child, ...rest] = ((slots.default?.() ?? []) as VNode[]).filter(node => isVNode(node));
       // Nothing to show (no title, no content) keeps it closed even when open is forced, like Native.
       const shown = open.value && !layer.blocked.value && !!(props.content || props.title);
       // The tooltip joins any description the app already gave the control.
-      const described = [(child as VNode | undefined)?.props?.["aria-describedby"], shown ? id : undefined].filter(Boolean).join(" ") || undefined;
-      const trigger = child && cloneVNode(child as VNode, { ...handlers, "aria-describedby": described,
-        ref: (el: unknown) => {
-          const next = el instanceof HTMLElement ? el : (el as { $el?: HTMLElement } | null)?.$el ?? null;
-          // A replaced or removed control keeps only the app's own description.
-          if (anchor.value && anchor.value !== next) {
-            const kept = (anchor.value.getAttribute("aria-describedby") || "").split(" ").filter(token => token && token !== id).join(" ");
-            if (kept) anchor.value.setAttribute("aria-describedby", kept); else anchor.value.removeAttribute("aria-describedby");
-          }
-          anchor.value = next;
-        } }, true);
+      const described = mergeIds((child as VNode | undefined)?.props?.["aria-describedby"], attrs["aria-describedby"] as string, shown ? id : undefined);
+      const trigger = child && cloneVNode(child as VNode, mergeProps(attrs, handlers, { "aria-describedby": described, ref: setAnchor }), true);
       const to = target();
       const vertical = position.side === "top" || position.side === "bottom";
       const arrowSize = tokens.extensions.tooltip.arrowSize;
       return (
         <>
           {trigger}{rest}
-          {to !== null && motion.present() && (
+          {to !== null && anchor.value && motion.present() && (
             <Teleport to={to}>
-              <div ref={tip} id={id} role="tooltip" class="kjun-scope kjun-tooltip" data-placement={position.side} data-align={props.align}
+              <div ref={tip} id={id} role="tooltip" class={["kjun-scope kjun-tooltip", props.panelClass]} data-placement={position.side} data-align={props.align}
                 data-entering={shown && !motion.active() ? "true" : undefined} data-exiting={!shown ? "true" : undefined}
-                style={{ position: "fixed", zIndex: layer.zIndex.value, top: position.top + "px", left: position.left + "px",
-                  ...(props.width ? { maxWidth: `var(--_kjun-extension-tooltip-max-widths-${props.width})` } : {}) }}>
+                style={[{ position: "fixed", zIndex: layer.zIndex.value, top: position.top + "px", left: position.left + "px",
+                  ...(props.width ? { maxWidth: `var(--_kjun-extension-tooltip-max-widths-${props.width})` } : {}) }, props.panelStyle]}>
                 <div style={{ position: "absolute", ...(vertical
                   ? { left: position.arrow + "px", transform: "translateX(-50%)", [position.side === "top" ? "top" : "bottom"]: "100%" }
                   : { top: position.arrow + "px", transform: "translateY(-50%)", [position.side === "left" ? "left" : "right"]: "100%" }) }}>

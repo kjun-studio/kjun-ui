@@ -18,6 +18,8 @@ import { KjunIcon } from "./button";
 import { useKjunField } from "./input";
 import { useSelectionIndicator } from "./use-selection-indicator";
 import { groupKeydown } from "../../../shared/package-runtime/group-keyboard";
+import { componentIcons } from "../../../shared/package-runtime/component-icons";
+import { IconFallbacks } from "../../../shared/package-runtime/icon-context";
 export type ChoiceValue = string | number | boolean | null;
 export interface ChoiceOption<T = ChoiceValue> {
   value: T;
@@ -28,6 +30,8 @@ export interface ChoiceOption<T = ChoiceValue> {
 }
 export interface KjunCheckboxProps<T = ChoiceValue> {
   value: boolean | T[];
+  /** Mixed selection display; value and change callbacks keep their boolean/array shape. */
+  indeterminate?: boolean;
   val?: T;
   label?: string;
   ariaLabel?: string;
@@ -39,6 +43,7 @@ export interface KjunCheckboxProps<T = ChoiceValue> {
 }
 export function KjunCheckbox<T = ChoiceValue>({
   value,
+  indeterminate = false,
   val,
   label,
   ariaLabel,
@@ -54,6 +59,7 @@ export function KjunCheckbox<T = ChoiceValue>({
   return (
     <AriaCheckbox
       isSelected={checked}
+      isIndeterminate={indeterminate}
       isDisabled={disabled}
       aria-label={ariaLabel}
       aria-describedby={field?.describedBy}
@@ -74,11 +80,13 @@ export function KjunCheckbox<T = ChoiceValue>({
     >
       <span
         className={`kjun-choice-control kjun-checkbox kjun-checkbox--${size}${
-          checked ? " kjun-checkbox--checked" : ""
+          checked || indeterminate ? " kjun-checkbox--checked" : ""
         }`}
       >
-        {checked && (
-          <KjunIcon name="check" size={tokens.extensions.checkbox.iconSizes[size]} />
+        {(checked || indeterminate) && (
+          <IconFallbacks icons={componentIcons}>
+            <KjunIcon name={indeterminate ? "minus" : "check"} size={tokens.extensions.checkbox.iconSizes[size]} />
+          </IconFallbacks>
         )}
       </span>
       {(children || label) && (

@@ -1,5 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { typeStyle } from "../../../shared/package-runtime/typography";
 import { KjunButton, KjunIcon } from "./button";
@@ -88,9 +88,10 @@ export type KjunCopyButtonProps = ExtractPublicPropTypes<typeof kjunCopyButtonPr
 /** Events: copied(value), copy-error(error). Announces through the feedback toast when a provider is present. */
 export const KjunCopyButton = defineComponent({
   name: "KjunCopyButton",
+  inheritAttrs: false,
   props: kjunCopyButtonProps,
   emits: { copied: (_value: string) => true, "copy-error": (_error: unknown) => true },
-  setup(props, { emit }) {
+  setup(props, { attrs, emit }) {
     const m = useKjunMessages();
     const feedback = useOptionalKjunFeedback();
     const copied = ref(false), failed = ref(false);
@@ -119,13 +120,14 @@ export const KjunCopyButton = defineComponent({
       }
     };
     return () => <>
-      <button type="button" disabled={props.disabled} aria-label={props.ariaLabel || props.text || m.value.copy} class="kjun-copy-button"
-        data-inline={String(props.inline)} onClick={copy}
-        style={css({
+      <button {...mergeProps(attrs, { class: "kjun-copy-button", onClick: (event: MouseEvent) => { if (!event.defaultPrevented) void copy(event); } })}
+        type="button" disabled={props.disabled} aria-label={props.ariaLabel || attrs["aria-label"] as string || props.text || m.value.copy}
+        data-inline={String(props.inline)}
+        style={[css({
           ...typeStyle(props.size === "xs" ? "controlSmall" : "control"),
           minHeight: tokens.button.heights[props.size], paddingBlock: 0,
           paddingInline: { xs: tokens.dimension.value4, sm: tokens.dimension.value8, md: tokens.dimension.value12 }[props.size],
-        })}>
+        }), attrs.style as never]}>
         <KjunIcon name={copied.value ? "check" : "copy"} size={tokens.button.iconSizes[props.size]}
           style={{ color: copied.value ? "var(--_kjun-color-success)" : undefined }} />
         {props.text && !props.inline && <span>{copied.value ? (props.successText ?? m.value.copied) : props.text}</span>}

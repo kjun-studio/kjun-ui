@@ -132,6 +132,7 @@
   },
   "KjunDropdown": {
     "vue3": [
+      "open",
       "disabled",
       "placement",
       "menuId",
@@ -290,6 +291,7 @@
   },
   "KjunMenuButton": {
     "vue3": [
+      "open",
       "disabled",
       "placement",
       "menuId",

@@ -192,7 +192,7 @@ const kjunTextareaProps = {
 } as const;
 export type KjunTextareaProps = ExtractPublicPropTypes<typeof kjunTextareaProps>;
 /** v-model; other attributes reach the <textarea>. */
-export const KjunTextarea = defineComponent({
+const KjunTextareaComponent = defineComponent({
   name: "KjunTextarea",
   inheritAttrs: false,
   props: kjunTextareaProps,
@@ -228,6 +228,11 @@ export const KjunTextarea = defineComponent({
     };
   },
 });
+
+// Preserve props/events while making the existing expose() contract visible to template refs.
+export const KjunTextarea = KjunTextareaComponent as typeof KjunTextareaComponent & {
+  new(): InstanceType<typeof KjunTextareaComponent> & { focus(): void; el: HTMLTextAreaElement | null };
+};
 
 /** The decorative selected background follows the pressed button after each render. */
 function useSelectionIndicator(tabs = false) {

@@ -1,5 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
-import { computed, defineComponent, inject, onBeforeUnmount, onUpdated, provide, ref, shallowRef, watch, nextTick,
+import { cloneVNode, computed, defineComponent, inject, isVNode, mergeProps, onUpdated, provide, ref, shallowRef, watch, nextTick,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { isFocusVisible } from "../../../shared/package-runtime/focus-visible";
@@ -14,6 +14,8 @@ const kjunDropdownKey: InjectionKey<MenuContext> = Symbol("kjunDropdown");
 const items = (menu: HTMLElement) => [...menu.querySelectorAll<HTMLElement>(':is([role="menuitem"], [role="menuitemradio"]):not([data-disabled])')];
 
 const kjunDropdownProps = {
+  /** v-model:open; omit for internal visibility. */
+  open: { type: Boolean, default: undefined },
   disabled: { type: Boolean, default: false },
   placement: { type: String as PropType<"bottom-start" | "bottom-end" | "top-start" | "top-end">, default: "bottom-start" },
   menuId: { type: String, default: undefined },
@@ -29,14 +31,17 @@ export type KjunDropdownProps = ExtractPublicPropTypes<typeof kjunDropdownProps>
  */
 export const KjunDropdown = defineComponent({
   name: "KjunDropdown",
+  inheritAttrs: false,
   props: kjunDropdownProps,
-  emits: { open: () => true, close: () => true },
+  emits: { "update:open": (_open: boolean) => true, open: () => true, close: () => true },
   slots: Object as SlotsType<{
     trigger?: () => VNodeChild;
     default?: () => VNodeChild;
   }>,
-  setup(props, { slots, emit }) {
-    const open = ref(false);
+  setup(props, { attrs, slots, emit }) {
+    const internal = ref(false), unavailable = ref(false);
+    const requested = computed(() => props.open ?? internal.value);
+    const open = computed(() => requested.value && !props.disabled && !unavailable.value);
     const wrapper = ref<HTMLElement | null>(null), menu = ref<HTMLElement | null>(null);
     const uid = useKjunId("kjun-");
     const focused = shallowRef<HTMLElement | null>(null), visible = ref(false);
@@ -45,10 +50,12 @@ export const KjunDropdown = defineComponent({
     const popupId = computed(() => props.menuId || uid + "-menu");
     const change = (value: boolean) => {
       // The rendered button also covers its minimum loading interval.
-      if (value === open.value || (value && (props.disabled || button()?.disabled))) return;
-      open.value = value;
-      if (value) emit("open"); else emit("close");
+      if (value === requested.value || (value && (props.disabled || button()?.disabled))) return;
+      if (props.open === undefined) internal.value = value;
+      emit("update:open", value);
     };
+    // Lifecycle events describe accepted visibility, not a request the parent may reject.
+    watch(open, (value, previous) => { if (value) emit("open"); else if (previous) emit("close"); }, { immediate: true });
     provide(kjunDropdownKey, { close: () => change(false), focused, visible });
     // React clones the trigger with these attributes; here they go on the rendered button.
     const bindTrigger = () => {
@@ -60,13 +67,21 @@ export const KjunDropdown = defineComponent({
       node.setAttribute("aria-haspopup", "menu");
       node.setAttribute("aria-expanded", String(open.value));
       if (open.value) node.setAttribute("aria-controls", popupId.value); else node.removeAttribute("aria-controls");
-      if (props.disabled) { node.disabled = true; node.setAttribute("aria-disabled", "true"); }
       // A disabled or loading trigger closes its menu, like React's `unavailable`.
-      if (open.value && node.disabled) change(false);
+      unavailable.value = node.disabled;
     };
+    // A child's minimum loading interval can end without rerendering this component.
+    watch(wrapper, (element, _previous, onCleanup) => {
+      if (!element) return;
+      const observer = new MutationObserver(bindTrigger);
+      observer.observe(element, { subtree: true, childList: true, attributes: true, attributeFilter: ["disabled"] });
+      onCleanup(() => observer.disconnect());
+    }, { flush: "post" });
     watch(() => [open.value, props.disabled, wrapper.value], bindTrigger, { flush: "post", immediate: true });
     onUpdated(bindTrigger);
-    watch(() => props.disabled, value => { if (value) change(false); });
+    watch([requested, () => props.disabled, unavailable], ([value, disabled, blocked]) => {
+      if (value && (disabled || blocked)) change(false);
+    });
     const focusItem = (item: HTMLElement | undefined) => {
       if (!item) return;
       focused.value = item;
@@ -74,8 +89,16 @@ export const KjunDropdown = defineComponent({
       item.focus({ preventScroll: true });
     };
     // Autofocus the first item, like react-aria's autoFocus="first".
-    watch(menu, element => { if (element) nextTick(() => { if (open.value) focusItem(items(element)[0]); }); }, { flush: "post" });
+    watch([menu, open], ([element, shown], _previous, onCleanup) => {
+      if (!element || !shown) return;
+      let cancelled = false;
+      onCleanup(() => { cancelled = true; });
+      nextTick(() => { if (!cancelled && open.value && menu.value === element) focusItem(items(element)[0]); });
+    }, { flush: "post" });
     watch(open, value => { if (!value) { focused.value = null; visible.value = false; } });
+    // Let Vue restore the original disabled/aria-disabled props when the wrapper is re-enabled.
+    const disabledTrigger = (node: VNodeChild): VNodeChild => Array.isArray(node) ? node.map(disabledTrigger)
+      : isVNode(node) ? cloneVNode(node, { disabled: true, "aria-disabled": "true" }) : node;
     let typed = "", typedAt = 0;
     const onMenuKeydown = (event: KeyboardEvent) => {
       const list = items(menu.value!), current = list.indexOf(document.activeElement as HTMLElement);
@@ -97,9 +120,11 @@ export const KjunDropdown = defineComponent({
     };
     return () => (
       <>
-        <div ref={wrapper} class="kjun-layer-trigger" {...{ onClickCapture: () => change(!open.value) }}
-          onKeydown={(event: KeyboardEvent) => { if (["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); change(true); } }}>
-          <span>{slots.trigger?.()}</span>
+        <div {...mergeProps(attrs, { class: "kjun-layer-trigger",
+          onClickCapture: (event: MouseEvent) => { if (!event.defaultPrevented) change(!open.value); },
+          onKeydown: (event: KeyboardEvent) => { if (!event.defaultPrevented && ["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); change(true); } },
+        })} ref={wrapper}>
+          <span>{props.disabled ? disabledTrigger(slots.trigger?.()) : slots.trigger?.()}</span>
         </div>
         <FloatingPanel open={open.value} onOpenChange={change} trigger={() => wrapper.value} placement={props.placement} panelClass="kjun-dropdown"
           returnFocus={props.returnFocus === undefined ? undefined : () => readFocusReturn(props.returnFocus)}>
@@ -128,13 +153,13 @@ export type KjunDropdownItemProps = ExtractPublicPropTypes<typeof kjunDropdownIt
 export const KjunDropdownItem = defineComponent({
   name: "KjunDropdownItem",
   props: kjunDropdownItemProps,
-  emits: { click: () => true },
+  emits: { click: (_event: MouseEvent | KeyboardEvent) => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     const menu = inject(kjunDropdownKey, null);
     const item = ref<HTMLElement | null>(null);
     const focus = useFocusVisible();
-    const action = () => { if (props.disabled) return; emit("click"); menu?.close(); };
+    const action = (event: MouseEvent | KeyboardEvent) => { if (props.disabled) return; emit("click", event); menu?.close(); };
     return () => {
       const isFocused = !!item.value && menu?.focused.value === item.value;
       return (
@@ -146,7 +171,7 @@ export const KjunDropdownItem = defineComponent({
           data-disabled={props.disabled || undefined} data-focused={isFocused || undefined}
           data-focus-visible={(isFocused && menu?.visible.value) || undefined}
           onClick={action}
-          onKeydown={(event: KeyboardEvent) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); action(); } }}
+          onKeydown={(event: KeyboardEvent) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); if (!event.repeat) action(event); } }}
           // react-aria moves focus to the hovered item.
           onPointermove={() => { if (!props.disabled && item.value && document.activeElement !== item.value) { if (menu) { menu.focused.value = item.value; menu.visible.value = false; } item.value.focus({ preventScroll: true }); } }}
           onFocus={() => { focus.onFocus(); if (menu && item.value) { menu.focused.value = item.value; menu.visible.value = isFocusVisible(); } }}
@@ -184,7 +209,7 @@ export type KjunMenuButtonProps = ExtractPublicPropTypes<typeof kjunMenuButtonPr
 export const KjunMenuButton = defineComponent({
   name: "KjunMenuButton",
   props: kjunMenuButtonProps,
-  emits: { open: () => true, close: () => true },
+  emits: { "update:open": (_open: boolean) => true, open: () => true, close: () => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
@@ -199,7 +224,7 @@ export const KjunMenuButton = defineComponent({
         </KjunButton>
       );
       return (
-        <KjunDropdown disabled={props.disabled} placement={props.placement} menuId={props.menuId} triggerId={props.triggerId} menuClass={props.menuClass} returnFocus={props.returnFocus}
+        <KjunDropdown open={props.open} onUpdate:open={(value: boolean) => emit("update:open", value)} disabled={props.disabled} placement={props.placement} menuId={props.menuId} triggerId={props.triggerId} menuClass={props.menuClass} returnFocus={props.returnFocus}
           onOpen={() => { open.value = true; emit("open"); }} onClose={() => { open.value = false; emit("close"); }}>
           {{
             trigger: () => props.tooltip

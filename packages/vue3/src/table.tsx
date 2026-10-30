@@ -1,5 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, onBeforeUnmount, onMounted, ref, type ExtractPublicPropTypes, type PropType, type VNodeChild, type SlotsType } from "vue";
+import { defineComponent, onBeforeUnmount, onMounted, ref, type AllowedComponentProps, type ComponentCustomProps, type ExtractPublicPropTypes, type PropType, type VNodeChild, type VNodeProps, type SlotsType } from "vue";
 import { isComposingKey, nextTableSort, tokens, type TableSort } from "@kjun-ui/tokens";
 import { getValue, sortTableRows, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
 import { columnFormat, tablePresentation } from "../../../shared/package-runtime/table-presentation";
@@ -16,7 +16,15 @@ export type { TableCardSection, TableColumn, TablePagination };
 
 export { getValue };
 export type { TableSort };
-type TableCellScope = { value: unknown; column: TableColumn<any>; row: any; index: number };
+export type TableCellScope<R extends object = Record<string, unknown>> = { value: unknown; column: TableColumn<R>; row: R; index: number };
+export type KjunTableSlots<R extends object = Record<string, unknown>> = {
+  cell?: (scope: TableCellScope<R>) => VNodeChild;
+  [key: `cell-${string}`]: ((scope: TableCellScope<R>) => VNodeChild) | undefined;
+  expand?: (scope: { row: R; index: number }) => VNodeChild;
+  selectionToolbar?: (scope: { selected: R[] }) => VNodeChild;
+  toolbar?: () => VNodeChild;
+  empty?: () => VNodeChild;
+};
 const kjunTableProps = {
   columns: { type: Array as PropType<TableColumn<any>[]>, required: true },
   data: { type: Array as PropType<object[]>, default: () => [] },
@@ -64,26 +72,32 @@ const kjunTableProps = {
   onRowClick: { type: Function as PropType<(row: any, index: number) => void>, default: undefined },
   onRetry: { type: Function as PropType<() => void>, default: undefined },
 } as const;
-export type KjunTableProps = ExtractPublicPropTypes<typeof kjunTableProps>;
+export type KjunTableProps<R extends object = Record<string, unknown>> =
+  Omit<ExtractPublicPropTypes<typeof kjunTableProps>, "columns" | "data" | "selected" | "rowClass" | "formatValue" | "onRowClick"> & {
+    columns: TableColumn<R>[];
+    data?: R[];
+    selected?: NoInfer<R>[];
+    rowClass?: string | ((row: NoInfer<R>, index: number) => string);
+    formatValue?: (value: unknown, column: TableColumn<NoInfer<R>>, row: NoInfer<R>) => VNodeChild;
+    onRowClick?: (row: NoInfer<R>, index: number) => void;
+    "onUpdate:selected"?: (rows: NoInfer<R>[]) => void;
+    "onUpdate:sort"?: (sort: TableSort) => void;
+    "onUpdate:expandedRows"?: (keys: (string | number)[]) => void;
+    onPageChange?: (page: number) => void;
+    onSearch?: (query: string) => void;
+  };
 /**
  * Slots: cell-<key> and cell({ value, column, row, index }), expand({ row, index }), selectionToolbar({ selected }), toolbar, empty.
  * Events: update:sort, update:selected, update:expandedRows, page-change, search.
  */
-export const KjunTable = defineComponent({
+const KjunTableComponent = defineComponent({
   name: "KjunTable",
   props: kjunTableProps,
   emits: {
     "update:sort": (_sort: TableSort) => true, "update:selected": (_rows: any[]) => true,
     "update:expandedRows": (_keys: (string | number)[]) => true, "page-change": (_page: number) => true, search: (_query: string) => true,
   },
-  slots: Object as SlotsType<{
-    cell?: (scope: TableCellScope) => VNodeChild;
-    [key: `cell-${string}`]: ((scope: TableCellScope) => VNodeChild) | undefined;
-    expand?: (scope: { row: object; index: number }) => VNodeChild;
-    selectionToolbar?: (scope: { selected: object[] }) => VNodeChild;
-    toolbar?: () => VNodeChild;
-    empty?: () => VNodeChild;
-  }>,
+  slots: Object as SlotsType<KjunTableSlots<any>>,
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
     const internalSort = ref<TableSort>({ key: "", order: "asc" }), internalExpanded = ref<(string | number)[]>([]), search = ref("");
@@ -204,3 +218,19 @@ export const KjunTable = defineComponent({
     };
   },
 });
+
+/** Keep the row type through Vue templates, TSX, template refs, slots and update:selected. */
+export const KjunTable = KjunTableComponent as Omit<typeof KjunTableComponent, never> & {
+  new <R extends object = Record<string, unknown>>(props: KjunTableProps<R>):
+    Omit<InstanceType<typeof KjunTableComponent>, "$props" | "$slots" | "$emit"> & {
+      $props: KjunTableProps<R> & VNodeProps & AllowedComponentProps & ComponentCustomProps;
+      $slots: KjunTableSlots<R>;
+      $emit: {
+        (event: "update:selected", rows: R[]): void;
+        (event: "update:sort", sort: TableSort): void;
+        (event: "update:expandedRows", keys: (string | number)[]): void;
+        (event: "page-change", page: number): void;
+        (event: "search", query: string): void;
+      };
+    };
+};

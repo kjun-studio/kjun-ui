@@ -1,8 +1,38 @@
+import { open as openAdoption, configure as configureAdoption, events as adoptionEvents } from './adoption-fixture';
 import { test, expect, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureSlider(next), next);
 const valueOf = (page: Page, id = 'single', index = 0) => page.getByTestId(id).getByRole('slider').nth(index).evaluate((el: any) => Number(el.getAttribute('aria-valuenow') ?? el.value));
+
+test('vue3: collapsed range chooses the movable thumb for clicks and the first drag direction', async ({ page }) => {
+  await openFixture(page, 'vue3', '', 'slider-design');
+  const range = page.getByTestId('range');
+  const box = (await range.locator('.kjun-slider-track').boundingBox())!;
+  const x = (value: number) => box.x + box.width * value / 100, y = box.y + box.height / 2;
+  for (const [start, end] of [[50, 70], [50, 30], [0, 20], [100, 80]]) {
+    for (const drag of [false, true]) {
+      await configure(page, { range: [start, start] });
+      await expect.poll(() => valueOf(page, 'range')).toBe(start);
+      if (drag) {
+        await page.mouse.move(x(start), y); await page.mouse.down();
+        await page.mouse.move(x(end), y, { steps: 5 }); await page.mouse.up();
+      } else await page.mouse.click(x(end), y);
+      const expected = [Math.min(start, end), Math.max(start, end)];
+      await expect.poll(() => valueOf(page, 'range')).toBe(expected[0]);
+      await expect.poll(() => valueOf(page, 'range', 1)).toBe(expected[1]);
+      await expect(range.getByRole('slider').nth(end > start ? 1 : 0)).toBeFocused();
+      const events = (await page.getByTestId('events').innerText()).split('|');
+      expect(events.filter(event => event.startsWith('commit:'))).toEqual(['commit:' + JSON.stringify(expected)]);
+    }
+  }
+  await configure(page, { range: [50, 50] });
+  await page.mouse.click(x(50), y);
+  await expect(page.getByTestId('events')).toBeEmpty();
+  await configure(page, { range: [50, 50], disabled: true });
+  await page.mouse.click(x(80), y);
+  await expect(page.getByTestId('events')).toBeEmpty();
+});
 async function appearance(page: Page, platform: string, id = 'single') {
   return page.getByTestId(id).evaluate((wrapper, platform) => {
     const root = wrapper.firstElementChild!;
@@ -123,3 +153,22 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect.poll(() => valueOf(page, 'range', 1)).toBe(1);
   });
 }
+
+test('vue3 Slider output options preserve numeric updates, commits and accessible value text', async ({ page }) => {
+  await openAdoption(page, 'slider');
+  await expect(page.locator('.kjun-slider-value').first()).toHaveText('20');
+  await configureAdoption(page, { showValue: false });
+  await expect(page.locator('.kjun-slider-value')).toHaveCount(0);
+  await expect(page.locator('.kjun-slider').first().locator('.kjun-slider-caption')).toHaveCount(0);
+  await expect(page.locator('.kjun-slider').last().locator('.kjun-slider-label')).toHaveText('Range');
+  const slider = page.getByRole('slider', { name: 'Amount', exact: true });
+  await configureAdoption(page, { format: true });
+  await expect(slider).toHaveAttribute('aria-valuetext', '20%');
+  await slider.press('ArrowRight');
+  await expect(slider).toHaveValue('21');
+  expect(await adoptionEvents(page)).toEqual([['commit', 21]]);
+  await configureAdoption(page, { showValue: true });
+  await expect(page.locator('.kjun-slider-value').first()).toHaveText('21%');
+  await expect(page.locator('.kjun-slider-value').last()).toHaveText('$20 – $80');
+  await expect(page.getByRole('slider').nth(1)).toHaveAttribute('aria-valuetext', '$20');
+});

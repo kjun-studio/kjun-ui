@@ -646,7 +646,7 @@
       },
       {
         "name": "size",
-        "type": "\"sm\" | \"md\" | \"lg\"",
+        "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
         "required": false,
         "default": "\"md\"",
         "description": ""
@@ -721,7 +721,7 @@
       },
       {
         "name": "size",
-        "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+        "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -807,7 +807,7 @@
       },
       {
         "name": "size",
-        "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+        "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -2643,6 +2643,13 @@
         "required": true,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "indeterminate",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Mixed selection display; value and change callbacks keep their boolean/array shape."
       },
       {
         "name": "val",
@@ -4974,6 +4981,13 @@
   "KjunDropdown": {
     "vue3": [
       {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "default": "—",
+        "description": "v-model:open; omit for internal visibility."
+      },
+      {
         "name": "disabled",
         "type": "boolean",
         "required": false,
@@ -5017,6 +5031,10 @@
       }
     ],
     "events": [
+      {
+        "name": "update:open",
+        "source": "packages/vue3/src/dropdown.tsx"
+      },
       {
         "name": "open",
         "source": "packages/vue3/src/dropdown.tsx"
@@ -8736,6 +8754,13 @@
         "description": ""
       },
       {
+        "name": "icon",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Icon name drawn in the leading column at the list icon size; the leading slot replaces it when both are given."
+      },
+      {
         "name": "href",
         "type": "string",
         "required": false,
@@ -8815,6 +8840,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "icon",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Icon name drawn in the leading column at the list icon size; `leading` replaces it when both are given."
       },
       {
         "name": "leading",
@@ -8901,6 +8933,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "icon",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Icon name drawn in the leading column at the list icon size; `leading` replaces it when both are given."
       },
       {
         "name": "leading",
@@ -12127,6 +12166,13 @@
   "KjunMenuButton": {
     "vue3": [
       {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "default": "—",
+        "description": "v-model:open; omit for internal visibility."
+      },
+      {
         "name": "disabled",
         "type": "boolean",
         "required": false,
@@ -12233,6 +12279,10 @@
       }
     ],
     "events": [
+      {
+        "name": "update:open",
+        "source": "packages/vue3/src/dropdown.tsx"
+      },
       {
         "name": "open",
         "source": "packages/vue3/src/dropdown.tsx"
@@ -13349,6 +13399,20 @@
   "KjunPopover": {
     "vue3": [
       {
+        "name": "panelClass",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Class/style for the dialog content; ordinary attrs belong to the trigger wrapper."
+      },
+      {
+        "name": "panelStyle",
+        "type": "string | false | CSSProperties | StyleValue[]",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "noPadding",
         "type": "boolean",
         "required": false,
@@ -13855,7 +13919,14 @@
         "type": "number",
         "required": false,
         "default": "0",
-        "description": ""
+        "description": "null is missing data; omission retains the existing zero default."
+      },
+      {
+        "name": "indeterminate",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Work is active but its completion percentage is unknown."
       },
       {
         "name": "max",
@@ -15035,6 +15106,20 @@
         "description": ""
       },
       {
+        "name": "showValue",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Hides the visual output only; the native slider value remains accessible."
+      },
+      {
+        "name": "formatValue",
+        "type": "(value: number) => string",
+        "required": false,
+        "default": "—",
+        "description": "Applied to each thumb's output and aria-valuetext. Does not change numeric values."
+      },
+      {
         "name": "modelValue",
         "type": "SliderValue",
         "required": true,
@@ -15130,6 +15215,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "formatValue",
+        "type": "((value: number) => string) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric."
       }
     ],
     "native": [
@@ -17162,6 +17254,20 @@
         "description": ""
       },
       {
+        "name": "showValue",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Hides the visual output only; the native slider value remains accessible."
+      },
+      {
+        "name": "formatValue",
+        "type": "(value: number) => string",
+        "required": false,
+        "default": "—",
+        "description": "Applied to each thumb's output and aria-valuetext. Does not change numeric values."
+      },
+      {
         "name": "modelValue",
         "type": "SliderValue",
         "required": true,
@@ -17229,6 +17335,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "formatValue",
+        "type": "((value: number) => string) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric."
       },
       {
         "name": "onValueChange",
@@ -18029,14 +18142,14 @@
     "vue3": [
       {
         "name": "columns",
-        "type": "TableColumn<any>[]",
+        "type": "TableColumn<R>[]",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "data",
-        "type": "object[]",
+        "type": "R[]",
         "required": false,
         "default": "[]",
         "description": ""
@@ -18260,7 +18373,7 @@
       },
       {
         "name": "rowClass",
-        "type": "string | ((row: any, index: number) => string)",
+        "type": "string | ((row: NoInfer<R>, index: number) => string)",
         "required": false,
         "default": "—",
         "description": ""
@@ -18274,24 +18387,24 @@
       },
       {
         "name": "selected",
-        "type": "object[]",
+        "type": "NoInfer<R>[]",
         "required": false,
         "default": "[]",
-        "description": "v-model:selected."
+        "description": ""
       },
       {
         "name": "formatValue",
-        "type": "(value: unknown, column: TableColumn<any>, row: any) => VNodeChild",
+        "type": "(value: unknown, column: TableColumn<NoInfer<R>>, row: NoInfer<R>) => VNodeChild",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onRowClick",
-        "type": "(row: any, index: number) => void",
+        "type": "(row: NoInfer<R>, index: number) => void",
         "required": false,
         "default": "—",
-        "description": "Declared as props: rows become keyboard targets and the retry button appears only when the app listens."
+        "description": ""
       },
       {
         "name": "onRetry",
@@ -19089,6 +19202,20 @@
         "type": "\"underline\" | \"pills\"",
         "required": false,
         "default": "\"underline\"",
+        "description": ""
+      },
+      {
+        "name": "stickyHeader",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Keep the header inside its scroll container while the tab panels scroll."
+      },
+      {
+        "name": "stickyOffset",
+        "type": "string | number",
+        "required": false,
+        "default": "0",
         "description": ""
       },
       {
@@ -20067,6 +20194,20 @@
   },
   "KjunTooltip": {
     "vue3": [
+      {
+        "name": "panelClass",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Class/style for the tooltip bubble; ordinary attrs belong to its single trigger."
+      },
+      {
+        "name": "panelStyle",
+        "type": "string | false | CSSProperties | StyleValue[]",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
       {
         "name": "content",
         "type": "string",

@@ -105,7 +105,7 @@ const kjunInputProps = {
 } as const;
 export type KjunInputProps = ExtractPublicPropTypes<typeof kjunInputProps>;
 /** v-model; slots prefix and suffix override the matching props. Other attributes reach the <input>. */
-export const KjunInput = defineComponent({
+const KjunInputComponent = defineComponent({
   name: "KjunInput",
   inheritAttrs: false,
   props: kjunInputProps,
@@ -212,6 +212,11 @@ export const KjunInput = defineComponent({
     };
   },
 });
+
+// setup's render-function return does not infer expose(); Vue unwraps el on template refs.
+export const KjunInput = KjunInputComponent as typeof KjunInputComponent & {
+  new(): InstanceType<typeof KjunInputComponent> & { focus(): void; el: HTMLInputElement | null };
+};
 
 /** Hides the enclosing FormGroup from popup content, like React's FieldContext.Provider value={null}. */
 export const KjunFieldReset = defineComponent({

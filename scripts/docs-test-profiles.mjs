@@ -3,6 +3,7 @@ export const smokeFiles = files('docs-kjun', 'preview-scroll');
 
 // 파일 전체를 선택하므로 동일 컴포넌트의 플랫폼/화면 크기 사례가 제목 필터로 빠지지 않는다.
 export const relatedGroups = {
+  api: files('adoption-api'),
   alert: files('alert-examples', 'alert-runner', 'example-runner'),
   'data-state': files('data-state-examples', 'examples', 'example-runner'),
   card: files('card-examples', 'component-detail'),

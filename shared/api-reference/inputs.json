@@ -10,6 +10,7 @@
     ],
     "react": [
       "value",
+      "indeterminate",
       "val",
       "label",
       "ariaLabel",

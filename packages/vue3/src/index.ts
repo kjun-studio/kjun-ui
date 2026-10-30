@@ -37,7 +37,7 @@ export { useQueryDisplay } from "./data-state";
 export type { KjunAnimatedNumberProps, KjunFreshnessProps, KjunPriceCellProps, KjunSignedValueProps } from "./number-display";
 export { finiteNumber, useCountUp } from "./number-display";
 export type { KpiValue, KpiRowItem, KjunKpiHeroProps, KjunKpiRowProps } from "./kpi";
-export type { KjunTableProps, TableColumn, TableCardSection, TablePagination, TableSort } from "./table";
+export type { KjunTableProps, KjunTableSlots, TableCellScope, TableColumn, TableCardSection, TablePagination, TableSort } from "./table";
 export { getValue } from "./table";
 export type { KjunDeviationProps, KjunHeatmapCellProps, KjunProgressCellProps, KjunCollectionMarkProps, KjunExecutionStatusBadgeProps, KjunSparklineProps } from "./financial-display";
 export type { KjunMarketTableSkeletonProps } from "./market-parts";

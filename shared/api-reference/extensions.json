@@ -265,6 +265,8 @@
   },
   "KjunSlider": {
     "vue3": [
+      "showValue",
+      "formatValue",
       "min",
       "max",
       "step",
@@ -274,6 +276,7 @@
       "modelValue"
     ],
     "react": [
+      "formatValue",
       "value",
       "min",
       "max",
@@ -298,6 +301,8 @@
   },
   "KjunRangeSlider": {
     "vue3": [
+      "showValue",
+      "formatValue",
       "min",
       "max",
       "step",
@@ -308,6 +313,7 @@
       "thumbLabels"
     ],
     "react": [
+      "formatValue",
       "value",
       "thumbLabels",
       "onValueChange",

@@ -18,7 +18,7 @@ useState,
 type ReactElement,
 type ReactNode,
 } from "react";
-import { Tab,TabList,TabPanel,Tabs } from "react-aria-components";
+import { Tab,TabList,TabPanel,Tabs,TabListStateContext } from "react-aria-components";
 import { KjunIcon } from "./button";
 import { KjunSelect } from "./select";
 export interface TabItem {
@@ -45,6 +45,11 @@ export interface KjunTabsProps {
     y: number;
     pointer: "mouse" | "touch";
   }) => void;
+}
+function TabActions({ children }: { children?: ReactNode }) {
+  // Actions may own a collection (Select, Dropdown). Render them only after
+  // React Aria has collected this TabList, so their items cannot become tabs.
+  return useContext(TabListStateContext) ? children : null;
 }
 export function KjunTabs({
   value,
@@ -101,6 +106,7 @@ export function KjunTabs({
   };
   useInitialTab(value, tabs.find(tab => !tab.disabled)?.name, change);
   return (
+    <TabListStateContext.Provider value={null}>
     <Tabs
       selectedKey={value}
       onSelectionChange={(key) => change(String(key))}
@@ -172,10 +178,11 @@ export function KjunTabs({
         </TabList>
         <span ref={indicator} className="kjun-tab-indicator" aria-hidden="true" hidden />
         </div>
-        {actions}
+        <TabActions>{actions}</TabActions>
       </div>
       {children && <div className="kjun-tab-content">{children}</div>}
     </Tabs>
+    </TabListStateContext.Provider>
   );
 }
 export interface KjunTabPaneProps extends TabItem {

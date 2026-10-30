@@ -11,6 +11,10 @@ const sliderProps = {
   disabled: { type: Boolean, default: false },
   label: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
+  /** Hides the visual output only; the native slider value remains accessible. */
+  showValue: { type: Boolean, default: true },
+  /** Applied to each thumb's output and aria-valuetext. Does not change numeric values. */
+  formatValue: { type: Function as PropType<(value: number) => string>, default: undefined },
 } as const;
 
 /**
@@ -43,6 +47,7 @@ function defineRangeInput(name: string, range: boolean) {
       const focus = useFocusVisible();
       const track = ref<HTMLElement | null>(null);
       const inputs: (HTMLInputElement | null)[] = [];
+      let pendingDirection = false;
       const result = (values: number[]) => (range ? values : values[0]) as SliderValue;
 
       const update = (index: number, number: number) => {
@@ -69,14 +74,28 @@ function defineRangeInput(name: string, range: boolean) {
         if (blocked.value || event.button !== 0) return;
         event.preventDefault();
         const number = valueAt(event.clientX);
-        const index = latest.length === 2 && Math.abs(number - latest[1]) < Math.abs(number - latest[0]) ? 1 : 0;
+        const collapsed = latest.length === 2 && latest[0] === latest[1];
+        const index = latest.length === 2 && (collapsed ? number > latest[0]
+          : Math.abs(number - latest[1]) < Math.abs(number - latest[0])) ? 1 : 0;
+        // When both thumbs overlap, the first value-changing movement chooses which one to drag.
+        pendingDirection = collapsed && domain.value.snap(number) === latest[0];
         dragging.value = index;
         inputs[index]?.focus({ preventScroll: true });
         track.value!.setPointerCapture?.(event.pointerId);
         update(index, number);
       };
-      const pointerMove = (event: PointerEvent) => { if (dragging.value !== null) update(dragging.value, valueAt(event.clientX)); };
-      const pointerUp = () => { if (dragging.value === null) return; dragging.value = null; commit(); };
+      const pointerMove = (event: PointerEvent) => {
+        if (dragging.value === null) return;
+        const number = valueAt(event.clientX);
+        if (pendingDirection) {
+          if (domain.value.snap(number) === latest[0]) return;
+          dragging.value = number > latest[0] ? 1 : 0;
+          inputs[dragging.value]?.focus({ preventScroll: true });
+          pendingDirection = false;
+        }
+        update(dragging.value, number);
+      };
+      const pointerUp = () => { if (dragging.value === null) return; dragging.value = null; pendingDirection = false; commit(); };
 
       return () => {
         const values = list.value;
@@ -84,10 +103,10 @@ function defineRangeInput(name: string, range: boolean) {
         const start = values.length === 2 ? fraction(values[0]) : 0;
         return (
           <div class="kjun-slider" data-disabled={String(blocked.value)} role="group" aria-label={label}>
-            <div class="kjun-slider-caption">
+            {(props.label || props.showValue) && <div class="kjun-slider-caption">
               {props.label && <label class="kjun-slider-label">{props.label}</label>}
-              <output class="kjun-slider-value" aria-live="off">{values.join(" – ")}</output>
-            </div>
+              {props.showValue && <output class="kjun-slider-value" aria-live="off">{values.map(value => props.formatValue?.(value) ?? String(value)).join(" – ")}</output>}
+            </div>}
             <div ref={track} class="kjun-slider-track" style={{ position: "relative", touchAction: "none" }}
               onPointerdown={pointerDown} onPointermove={pointerMove} onPointerup={pointerUp} onPointercancel={pointerUp}>
               <div class="kjun-slider-rail" />
@@ -99,6 +118,7 @@ function defineRangeInput(name: string, range: boolean) {
                   data-focus-visible={(focused.value === index && focus.visible.value) || undefined}>
                   <input ref={el => { inputs[index] = el as HTMLInputElement | null; }} type="range" class="kjun-sr-only"
                     aria-label={values.length === 2 ? ((props as { thumbLabels?: [string, string] }).thumbLabels ?? [m.value.minimum, m.value.maximum])[index] : label}
+                    aria-valuetext={valid.value ? props.formatValue?.(value) : undefined}
                     min={values.length === 2 && index === 1 ? values[0] : min.value}
                     max={values.length === 2 && index === 0 ? values[1] : max.value}
                     step={valid.value ? props.step : 1} value={valid.value ? value : index * 100} disabled={blocked.value}
@@ -129,5 +149,5 @@ function defineRangeInput(name: string, range: boolean) {
 
 export const KjunSlider = defineRangeInput("KjunSlider", false);
 export const KjunRangeSlider = defineRangeInput("KjunRangeSlider", true);
-export interface KjunSliderProps { modelValue: number; min?: number; max?: number; step?: number; disabled?: boolean; label?: string; ariaLabel?: string }
+export interface KjunSliderProps { modelValue: number; min?: number; max?: number; step?: number; disabled?: boolean; label?: string; ariaLabel?: string; showValue?: boolean; formatValue?: (value: number) => string }
 export interface KjunRangeSliderProps extends Omit<KjunSliderProps, "modelValue"> { modelValue: [number, number]; thumbLabels?: [string, string] }

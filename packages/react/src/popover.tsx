@@ -3,7 +3,7 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { tokens } from "@kjun-ui/tokens";
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
 import { useLayer } from "../../../shared/package-runtime/use-layer";
-import { useCallback, useContext, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode, type ComponentProps, type RefObject } from "react";
+import { Children, Fragment, cloneElement, isValidElement, useCallback, useContext, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode, type ComponentProps, type RefObject, type HTMLAttributes } from "react";
 import { Dialog, Focusable, OverlayArrow, Tooltip, TooltipTrigger, TooltipTriggerStateContext } from "react-aria-components";
 import { FloatingPanel, resolveFocusReturn } from "./floating-panel";
 import { installNonModalPopover } from "../../../shared/package-runtime/popover-nonmodal";
@@ -31,6 +31,18 @@ export interface KjunPopoverProps {
   anchorRect?: AnchorSource;
   trigger?: ReactNode | ((open: boolean) => ReactNode);
   children: ReactNode | ((close: () => void) => ReactNode);
+}
+function bindPopoverTrigger(node: ReactNode, props: HTMLAttributes<HTMLElement>): ReactNode {
+  if (!isValidElement<HTMLAttributes<HTMLElement>>(node)) return node;
+  // Keep transparent wrappers and Tooltip ownership intact. Custom controls
+  // receive the same DOM attributes as a native button and must forward them.
+  if (node.type === KjunTooltip)
+    return cloneElement(node, {}, bindPopoverTrigger(node.props.children, props));
+  if (node.type === Fragment ||
+      (typeof node.type === "string" && !["button", "a", "input", "summary"].includes(node.type) && node.props.role !== "button" && node.props.tabIndex == null)) {
+    return cloneElement(node, {}, Children.map(node.props.children, child => bindPopoverTrigger(child, props)));
+  }
+  return cloneElement(node, props);
 }
 export function KjunPopover({
   noPadding = false,
@@ -102,7 +114,8 @@ export function KjunPopover({
       {(!anchored || trigger != null) && <div
         ref={ref}
         className="kjun-layer-trigger"
-        onClickCapture={() => {
+        onClickCapture={(event) => {
+          if ((event.target as HTMLElement).closest('button:disabled, [aria-disabled="true"]')) return;
           if (!manualTrigger) change(!open);
         }}
         onKeyDown={(event) => {
@@ -115,11 +128,11 @@ export function KjunPopover({
             change(!open);
           }
         }}
-        aria-haspopup="dialog"
-        aria-expanded={expanded}
-        aria-controls={expanded ? id : undefined}
       >
-        {typeof trigger === "function" ? trigger(open) : trigger}
+        {bindPopoverTrigger(typeof trigger === "function" ? trigger(open) : trigger, {
+          "aria-haspopup": "dialog", "aria-expanded": expanded,
+          "aria-controls": expanded ? id : undefined,
+        })}
       </div>}
       <FloatingPanel
         open={open}

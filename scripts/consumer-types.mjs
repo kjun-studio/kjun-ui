@@ -12,6 +12,7 @@ export async function verifyConsumerTypes(root, directory) {
     await mkdir(target, { recursive: true });
     await writeFile(target + '/package.json', JSON.stringify({ type: format === 'esm' ? 'module' : 'commonjs' }));
     let source = await readFile(resolve(root, 'tests/fixtures/consumer-types.ts'), 'utf8');
+    source += '\n' + await readFile(resolve(root, 'tests/fixtures/consumer-improvements.ts'), 'utf8');
     source += '\n' + ['R', 'N', 'V'].map(namespace => 'void [' + publicNames.map(name => namespace + '.' + name).join(', ') + '];').join('\n');
     if (format === 'cjs') source = source
       .replace(/import \* as (\w+) from ('[^']+');/g, 'import $1 = require($2);')
@@ -26,6 +27,16 @@ export async function verifyConsumerTypes(root, directory) {
         '--moduleResolution', resolution, '--module', resolution === 'Bundler' ? 'Preserve' : resolution],
       { cwd: target, stdio: 'inherit' });
       console.log(`Packed types verified: ${resolution} / ${format}`);
+    }
+    if (format === 'esm') {
+      await writeFile(target + '/table.vue', await readFile(resolve(root, 'tests/fixtures/consumer-table.vue'), 'utf8'));
+      await writeFile(target + '/table.tsx', await readFile(resolve(root, 'tests/fixtures/consumer-table.tsx'), 'utf8'));
+      await writeFile(target + '/tsconfig.json', JSON.stringify({
+        compilerOptions: { strict: true, skipLibCheck: true, target: 'ES2018', module: 'ESNext', moduleResolution: 'Bundler', jsx: 'preserve', jsxImportSource: 'vue', lib: ['ES2020', 'DOM', 'DOM.Iterable'], noEmit: true },
+        vueCompilerOptions: { strictTemplates: true }, files: ['table.vue', 'table.tsx'],
+      }));
+      execFileSync(resolve(root, 'node_modules/.bin/vue-tsc'), ['--project', 'tsconfig.json'], { cwd: target, stdio: 'inherit' });
+      console.log('Packed Vue template and TSX row inference verified');
     }
   }
 }

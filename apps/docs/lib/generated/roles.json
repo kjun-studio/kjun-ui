@@ -103,13 +103,13 @@
     "implementationFiles": [
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
-      "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
+      "packages/vue3/src/tabs.tsx",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
@@ -174,7 +174,6 @@
     "implementationFiles": [
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
-      "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
@@ -209,7 +208,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/controls.css",
-      "packages/tokens/src/display.css",
       "packages/tokens/src/motion.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx",
@@ -1278,9 +1276,7 @@
     "upstreamAliases": [
       "--brand-light"
     ],
-    "implementationFiles": [
-      "packages/native/src/display-primitives.tsx"
-    ]
+    "implementationFiles": []
   },
   {
     "role": "selectedBg",

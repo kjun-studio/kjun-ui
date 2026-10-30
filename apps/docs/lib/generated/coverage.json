@@ -1383,7 +1383,7 @@
       "title": "ListItem",
       "docs": "/components/list-item",
       "category": "data-display",
-      "differences": "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16과 구분선 규칙을 공유합니다.",
+      "differences": "웹은 li.kjun-list-item, Native는 목록 항목 의미를 가진 View입니다. 행과 같은 시작 여백 16을 쓰고 구분선도 16에서 시작합니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

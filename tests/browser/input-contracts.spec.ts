@@ -3,6 +3,33 @@ import { openFixture } from "./packed-fixture";
 // Select, Combobox, Input and TimePicker values, drafts, IME and identifiers.
 const configureInput = (page: Page, next: object) => page.evaluate(next => (window as any).configureInput(next), next);
 const inputFixture = (page: Page, platform: string, query = "") => openFixture(page, platform, query, "review-input");
+
+test('vue3 Input and Textarea template refs expose focus and the unwrapped native element', async ({ page }) => {
+  await openFixture(page, 'vue3', '', 'field-refs');
+  for (const kind of ['input', 'textarea']) {
+    expect(await page.evaluate(kind => (window as any).focusField(kind), kind)).toBe(true);
+    await expect(page.getByRole('textbox', { name: kind === 'input' ? 'Input ref' : 'Textarea ref' })).toBeFocused();
+  }
+});
+
+for (const searchable of [false, true]) test(`vue3 Select restores initial focus when reopened during exit (searchable=${searchable})`, async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await inputFixture(page, 'vue3', '?control=select');
+  await configureInput(page, { open: false, value: 'b', searchable });
+  await page.getByRole('button', { name: 'Choice' }).press('ArrowDown');
+  const initial = searchable ? page.getByRole('textbox') : page.getByRole('option', { name: 'Beta' });
+  await expect(initial).toBeFocused();
+  if (searchable) await initial.fill('Alpha');
+  else await page.keyboard.press('ArrowUp');
+  expect(await page.evaluate(() => (window as any).reopenSelect())).toEqual({ exiting: true, retained: true });
+  await expect(initial).toBeFocused();
+  if (searchable) await expect(initial).toHaveValue('');
+  else {
+    await page.keyboard.press('ArrowUp');
+    await expect(page.getByRole('option', { name: 'Alpha' })).toBeFocused();
+  }
+  await expect(page.getByTestId('events')).toHaveText('[]');
+});
 async function comboInput(page: Page, platform: string) {
   // Native keeps its popup mounted until the closing animation has finished.
   if (platform === "native") await expect(page.locator('[role="dialog"]')).toHaveCount(0);

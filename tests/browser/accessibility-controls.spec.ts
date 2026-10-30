@@ -3,6 +3,31 @@ import { openFixture } from './packed-fixture';
 const configureChoices = (page: Page, value: object) => page.evaluate(value => (window as any).configureChoices(value), value);
 const configureTooltip = (page: Page, value: object) => page.evaluate(value => (window as any).configureTooltip(value), value);
 
+test('vue3: tooltip safely ignores non-element component roots and recovers on a valid trigger', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await openFixture(page, 'vue3', '', 'accessibility-tooltip', 'development');
+  await page.locator('#root').evaluate(root => { root.style.padding = '160px'; });
+  await configureTooltip(page, { open: true });
+  await expect(page.getByRole('tooltip')).toBeVisible();
+  for (const trigger of ['fragment', 'text', 'refresh']) {
+    await configureTooltip(page, { trigger, swapped: false });
+    await configureTooltip(page, { swapped: true });
+    expect(await page.evaluate(() => (window as any).tooltipErrors)).toEqual([]);
+    await expect(page.getByRole('tooltip')).toHaveCount(0);
+  }
+  for (const trigger of ['element', 'component', 'icon', 'svg']) {
+    await configureTooltip(page, { trigger, swapped: false });
+    const button = page.getByRole('button', { name: '도움말', exact: true });
+    await expect(button).toHaveAccessibleDescription('기존 도움말 이 버튼의 도움말');
+    const bounds = (await button.boundingBox())!, tip = (await page.getByRole('tooltip').boundingBox())!;
+    expect(Math.abs(tip.x + tip.width / 2 - (bounds.x + bounds.width / 2))).toBeLessThan(1);
+  }
+  await configureTooltip(page, { mountedTooltip: false });
+  expect(await page.evaluate(() => (window as any).tooltipErrors)).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
 test('native: choice Space executes once on release and cancels on blur or disabled', async ({ page }) => {
   await openFixture(page, 'native', '', 'accessibility-choices');
   const events = page.getByTestId('events');

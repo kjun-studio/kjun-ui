@@ -359,6 +359,20 @@
   border-radius: inherit;
   transition: width var(--_kjun-motion-progress) var(--_kjun-ease-out);
 }
+.kjun-progress[data-state="indeterminate"] .kjun-progress-track > div {
+  animation: kjun-progress-indeterminate var(--_kjun-motion-spin) linear infinite;
+  transition: none;
+}
+@keyframes kjun-progress-indeterminate {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(334%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kjun-progress[data-state="indeterminate"] .kjun-progress-track > div {
+    animation: none;
+    transform: translateX(116%);
+  }
+}
 .kjun-progress-sub {
   font-size: var(--_kjun-type-caption-size);
   margin-top: var(--_kjun-geometry-dimension-value4);

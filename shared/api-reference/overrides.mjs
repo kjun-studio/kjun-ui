@@ -14,6 +14,21 @@ const set = (names, props, platform = "common") => {
     };
   }
 };
+set("Dropdown MenuButton", { open: "v-model:open으로 표시 상태를 제어합니다. 생략하면 내부 상태를 사용합니다. update:open은 변경 요청이며 open·close는 실제 표시 전환을 알립니다. disabled 또는 로딩 중인 트리거는 열리지 않습니다." }, "vue3");
+set("Popover Tooltip", {
+  panelClass: "팝업 내용에 적용할 클래스입니다. Popover는 dialog, Tooltip은 말풍선에 적용하며 트리거에는 적용하지 않습니다.",
+  panelStyle: "팝업 내용의 스타일입니다. Popover는 dialog, Tooltip은 말풍선에 적용합니다. 일반 class·style은 트리거 영역에 적용합니다.",
+}, "vue3");
+set("Tabs", {
+  stickyHeader: "가장 가까운 스크롤 컨테이너에서 탭 헤더를 고정합니다. 패널은 기존 탭 안에 유지되어 키보드 이동·aria-controls 연결이 보존됩니다.",
+  stickyOffset: "고정 헤더의 위쪽 간격입니다. 숫자는 px, 문자열은 CSS 길이이며 기본값은 0입니다. stickyHeader=true일 때 적용합니다.",
+}, "vue3");
+set("TabPane", { badge: { type: "string | number | null", summary: "null·undefined는 배지를 숨기고 숫자 0은 표시합니다." } }, "vue3");
+set("KpiRow", { items: "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김입니다." }, "vue3");
+set("Progress", {
+  value: { type: "number | null", summary: "진행 값입니다. null·유한하지 않은 값·유효하지 않은 max는 데이터 없음이며 0%로 바꾸지 않습니다. 생략 또는 undefined는 기존 기본값 0을 유지합니다." },
+  indeterminate: "실행 중이지만 진행률을 모를 때 사용합니다. 수치와 aria-valuenow를 생략하고 진행 중 상태를 표시합니다. 데이터 없음(null)과 구분합니다.",
+}, "vue3");
 set("Input Textarea Select Combobox DatePicker SearchInput", {
   error: "필드를 오류 상태로 표시합니다. 오류 설명과 검증 결과는 소비자가 별도로 제공합니다.",
 });
@@ -48,6 +63,9 @@ set("Radio Checkbox", {
 });
 set("Radio", { value: "현재 그룹의 선택값입니다. val과 같으면 이 항목을 선택 상태로 표시합니다." });
 set("Switch", { value: "현재 켜짐 여부입니다. 변경 통지 결과를 boolean 값으로 반영합니다." });
+set("Checkbox", { indeterminate: { default: "false", summary: "일부 선택 상태를 빼기 표시와 실제 체크박스의 mixed 상태로 전달합니다. value와 콜백은 boolean 또는 배열을 유지합니다. 전체 선택에서는 value=모두 선택됨, indeterminate=일부만 선택됨으로 설정하고 변경 요청을 반영할 때 함께 갱신하세요." } }, "react");
+set("Tabs", { actions: "탭 헤더의 작업 영역입니다. Select·Dropdown 같은 별도 목록을 가진 컨트롤도 사용할 수 있으며 탭 선택과 독립적으로 동작합니다." }, "react");
+set("Popover", { trigger: "팝오버를 여는 단일 버튼 또는 open을 받아 버튼을 반환하는 함수입니다. aria-haspopup·aria-expanded·aria-controls를 실제 트리거에 전달합니다. KjunButton·KjunTooltip·Fragment·표시용 DOM wrapper를 지원하며 사용자 정의 버튼은 받은 DOM 속성과 ref를 실제 버튼에 전달해야 합니다." }, "react");
 set("Input Textarea SearchInput", {
   value: "소비자가 보유한 입력값입니다. 입력 변경 통지 결과를 이 값에 반영합니다.",
 });

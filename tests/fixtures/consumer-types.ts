@@ -37,6 +37,25 @@ N.KjunTable({ data: [item], columns: [], onSelectionChange: rows => {
 const reactProps: R.KjunSelectProps<typeof item> = { value: 0, options: [item] };
 const nativeProps: N.KjunTabsProps = { value: '', items: [] };
 const vueProps: V.KjunSelectProps = { modelValue: 0, open: undefined };
+// Template refs expose native elements (Vue unwraps the refs) and preserve component contracts.
+declare const inputRef: InstanceType<typeof V.KjunInput>;
+declare const textareaRef: InstanceType<typeof V.KjunTextarea>;
+inputRef.focus();
+textareaRef.focus();
+const inputElement: HTMLInputElement | null = inputRef.el;
+const textareaElement: HTMLTextAreaElement | null = textareaRef.el;
+const inputProps: typeof inputRef.$props = { modelValue: 0, size: 'sm', 'onUpdate:modelValue': value => { const text: string = value; } };
+const textareaProps: typeof textareaRef.$props = { modelValue: '', rows: 4, resize: 'vertical' };
+inputRef.$emit('update:modelValue', 'typed');
+textareaRef.$emit('update:modelValue', 'typed');
+// @ts-expect-error The exposed input element must not become any or a Ref.
+const wrongInputElement: HTMLTextAreaElement | null = inputRef.el;
+// @ts-expect-error The exposed textarea element retains its native type.
+const wrongTextareaElement: HTMLInputElement | null = textareaRef.el;
+// @ts-expect-error Instance props must retain their size union.
+const wrongInputProps: typeof inputRef.$props = { size: 'xl' };
+// @ts-expect-error Instance events must retain their payload type.
+textareaRef.$emit('update:modelValue', 123);
 // @ts-expect-error Public interfaces must not degrade to any.
 const invalidReact: R.KjunSelectProps = { value: 0, open: 'yes' };
 // @ts-expect-error Public interfaces must not degrade to any.

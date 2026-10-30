@@ -15,7 +15,7 @@
     "native": ["currentPage", "page", "totalPages", "totalRows", "pageSize", "pageSizeOptions", "siblingCount", "showInfo", "showSizeSelector", "showFirstLast", "formatter", "onPageChange", "onChange", "onPageSizeChange"]
   },
   "KjunTabs": {
-    "vue3": ["modelValue", "items", "density", "variant", "ariaLabel", "onTabMenu"],
+    "vue3": ["modelValue", "items", "density", "variant", "stickyHeader", "stickyOffset", "ariaLabel", "onTabMenu"],
     "react": ["value", "items", "density", "variant", "actions", "children", "ariaLabel", "onValueChange", "onChange", "onTabMenu"],
     "native": ["value", "items", "density", "variant", "actions", "children", "ariaLabel", "onValueChange", "onChange", "onTabMenu"]
   },

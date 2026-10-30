@@ -247,6 +247,8 @@
   },
   "KjunPopover": {
     "vue3": [
+      "panelClass",
+      "panelStyle",
       "noPadding",
       "open",
       "manualTrigger",

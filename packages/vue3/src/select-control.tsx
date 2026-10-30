@@ -1,5 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
-import { computed, defineComponent, inject, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
+import { computed, defineComponent, inject, mergeProps, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
@@ -52,6 +52,7 @@ export type KjunSelectProps = ExtractPublicPropTypes<typeof kjunSelectProps>;
  */
 export const KjunSelect = defineComponent({
   name: "KjunSelect",
+  inheritAttrs: false,
   props: kjunSelectProps,
   emits: {
     "update:modelValue": (_value: SelectValue) => true, change: (_value: SelectValue) => true,
@@ -62,7 +63,7 @@ export const KjunSelect = defineComponent({
     selected?: (scope: { option: SelectOption | undefined }) => VNodeChild;
     menuHeader?: () => VNodeChild;
   }>,
-  setup(props, { slots, emit, expose }) {
+  setup(props, { attrs, slots, emit, expose }) {
     const m = useKjunMessages();
     const state = useSelectState(() => props.open, () => props.disabled, () => props.optionPageSize, value => emit("update:open", value));
     const composition = useCompositionGuard();
@@ -90,10 +91,12 @@ export const KjunSelect = defineComponent({
       element.scrollIntoView({ block: "nearest" });
     };
     // react-aria's autoFocus="first": the selected option, or the first one; a searchable list focuses its input.
-    watch(menu, element => {
-      if (!element) return;
+    watch([menu, state.open], ([element, open], _previous, onCleanup) => {
+      if (!element || !open) return;
+      let cancelled = false;
+      onCleanup(() => { cancelled = true; });
       nextTick(() => {
-        if (!state.open.value) return;
+        if (cancelled || !state.open.value || menu.value !== element) return;
         if (props.searchable) { element.querySelector("input")?.focus({ preventScroll: true }); return; }
         const list = optionElements();
         focusOption(list.find(option => option.getAttribute("aria-selected") === "true") ?? list[0]);
@@ -120,23 +123,26 @@ export const KjunSelect = defineComponent({
     };
     expose({ focus: () => trigger.value?.focus() });
     return () => {
+      // Layout belongs to the shell; native attributes and listeners belong to its button.
+      const { class: shellClass, style: shellStyle, ...controlAttrs } = attrs;
       const spec = tokens.input[props.size], owner = field.value;
       const { selected, matching, visible, selectedOption, label, nextValue } = model.value;
       const open = state.open.value;
       const shown = slots.selected?.({ option: selectedOption }) as VNode[] | undefined;
       return (
         <>
-          <div class="kjun-select-shell">
-            <button ref={trigger} id={props.id ?? owner?.id} type="button" class="kjun-input kjun-select-trigger" data-time-segment={segment ? "true" : undefined}
+          <div class={["kjun-select-shell", shellClass]} style={shellStyle as never}>
+            <button {...mergeProps(controlAttrs, {
+              onClick: (event: MouseEvent) => { if (!event.defaultPrevented) state.changeOpen(!open); },
+              onKeydown: (event: KeyboardEvent) => { if (!event.defaultPrevented && ["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); state.changeOpen(true); } },
+            })} ref={trigger} id={props.id ?? owner?.id} type="button" class="kjun-input kjun-select-trigger" data-time-segment={segment ? "true" : undefined}
               disabled={props.disabled} aria-haspopup="listbox" aria-controls={expanded.value ? id : undefined} aria-expanded={expanded.value}
-              aria-label={props.ariaLabel || (props.id || owner ? undefined : (props.placeholder ?? m.value.select))} aria-labelledby={owner?.labelId}
-              aria-describedby={mergeIds(props.ariaDescribedby, owner?.describedBy)}
-              aria-invalid={props.error || !!owner?.error ? "true" : undefined}
+              aria-label={props.ariaLabel || attrs["aria-label"] as string || (props.id || owner ? undefined : (props.placeholder ?? m.value.select))} aria-labelledby={attrs["aria-labelledby"] as string || owner?.labelId}
+              aria-describedby={mergeIds(props.ariaDescribedby, attrs["aria-describedby"] as string, owner?.describedBy)}
+              aria-invalid={props.error || !!owner?.error ? "true" : attrs["aria-invalid"] as never}
               style={css({ height: spec.height, borderRadius: spec.radius, ...inputTypeStyle(props.size),
                 // Time segments take their padding from compound-controls.css, which also aligns the first value.
-                ...(segment ? {} : { paddingInline: spec.padding - tokens.border.controlWidth }) })}
-              onClick={() => state.changeOpen(!open)}
-              onKeydown={(event: KeyboardEvent) => { if (["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); state.changeOpen(true); } }}>
+                ...(segment ? {} : { paddingInline: spec.padding - tokens.border.controlWidth }) })}>
               <span class={!label ? "kjun-placeholder" : undefined}
                 style={css({ flex: 1, paddingRight: props.clearable && label ? spec.clearSize + spec.affixGap : undefined })}>
                 {shown?.length ? shown : label || (props.placeholder ?? m.value.select)}
