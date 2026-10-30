@@ -1,3 +1,4 @@
+import { captureReview, captureReviewViewport } from '../review-captures';
 import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { platforms, selectMotionExample, layoutWidths, checksZoom } from './motion-docs-helpers';
@@ -64,7 +65,7 @@ for (const platform of platforms) {
     await expect(page.locator('.motion-playground iframe')).toHaveCount(1);
     await expect(page.getByRole('tablist', { name: '모션 예제', exact: true }).getByRole('tab')).toHaveCount(motionScenarios.length);
     await page.locator('#examples > h2').scrollIntoViewIfNeeded();
-    await page.screenshot({ path: `artifacts/motion-review/${platform}-${width}.png` });
+    await captureReview(page, { path: `artifacts/motion-review/${platform}-${width}.png` });
   });
 
   if (checksZoom(platform)) test(`${platform}: motion page at real 200% browser zoom`, async () => {
@@ -81,10 +82,9 @@ for (const platform of platforms) {
       await page.locator('#examples > h2').scrollIntoViewIfNeeded();
       await expect(page.locator('#examples > h2')).toBeInViewport();
       // Capture the actual zoomed viewport without Playwright's unzoomed clip calculation.
-      const session = await context.newCDPSession(page);
-      const shot = await session.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
-      await writeFile(`artifacts/motion-review/${platform}-zoom-200.png`, Buffer.from(shot.data, 'base64'));
-      await session.detach();
+
+      await captureReviewViewport(page, `artifacts/motion-review/${platform}-zoom-200.png`);
+
     } finally { await context.close(); await rm(directory, { recursive: true, force: true }); }
   });
 }

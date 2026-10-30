@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { test, expect } from '@playwright/test';
 import { tokens } from '@kjun-ui/tokens';
 
@@ -40,7 +41,7 @@ for (const width of [390, 1280, 1440]) {
     }
     await nav.getByRole('link', { name: '속도 곡선·이동 거리', exact: true }).click();
     await expect(nav.locator('[aria-current]')).toHaveText('속도 곡선·이동 거리');
-    await page.screenshot({ path: testInfo.outputPath(`motion-curves-${width}.png`) });
+    await captureReview(page, { path: testInfo.outputPath(`motion-curves-${width}.png`) });
     await expect(page.locator('.motion-demo-graph')).toHaveCount(1);
     await expect(page.locator('.motion-demo-graph path')).toHaveCount(4);
     // The 90% tick and the arrival label are separate: the track end is 100%, not 90%.

@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { icons } from '@kjun-ui/icons/defaults';
 import { expect, test, type Page } from '@playwright/test';
 import { tokens } from '../../packages/tokens/dist/index.js';
@@ -49,7 +50,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.setViewportSize({ width: 375, height: 700 });
     for (const id of ['icon', 'text', 'reference']) await expect(button(page, id)).toHaveCSS('width', '300px');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    await page.screenshot({ path: `artifacts/refresh-${platform}-geometry.png` });
+    await captureReview(page, { path: `artifacts/refresh-${platform}-geometry.png` });
   });
 
   test(`${platform}: shared icon direction and live reduced-motion changes keep loading recognizable`, async ({ page }) => {
@@ -68,7 +69,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     const reduced = await paths(page);
     await expect.poll(() => rotation(page)).toMatch(/^(none|matrix\(1, 0, 0, 1, 0, 0\))$/);
     await expect(button(page, 'text')).toHaveText('새로고침');
-    await page.screenshot({ path: `artifacts/refresh-${platform}-reduced-motion.png` });
+    await captureReview(page, { path: `artifacts/refresh-${platform}-reduced-motion.png` });
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await expect.poll(() => paths(page)).toBe(idle);
     await configure(page, { spinOnLoading: false });
@@ -139,6 +140,6 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(button(page)).toBeEnabled();
     await button(page, 'text').press('Enter');
     await expect(page.getByTestId('events')).toHaveText('3');
-    await page.screenshot({ path: `artifacts/refresh-${platform}-dark.png` });
+    await captureReview(page, { path: `artifacts/refresh-${platform}-dark.png` });
   });
 }

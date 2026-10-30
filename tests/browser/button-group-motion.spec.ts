@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { test, expect, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 const markerSelector = '.kjun-button-group-indicator, [data-testid="kjun-button-group-indicator"]';
@@ -58,7 +59,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       const before = await rects(page);
       await buttons(page).last().click(); await aligned(page, 2);
       expect(await rects(page)).toEqual(before);
-      if (size === 'md') await page.getByTestId('frame').screenshot({ path: testInfo.outputPath(`button-group-inset-${platform}.png`) });
+      if (size === 'md') await captureReview(page.getByTestId('frame'), { path: testInfo.outputPath(`button-group-inset-${platform}.png`) });
       await configure(page, { fullWidth: true, width: 280 }); await aligned(page, 2);
       await expect(track).toHaveCSS('width', '280px');
       await checkInset(padding);
@@ -86,7 +87,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(marker(page)).toHaveCSS('transition-duration', '0.2s, 0.2s');
       await expect(marker(page)).toHaveCSS('border-radius', '6px');
     }
-    await page.screenshot({ path: testInfo.outputPath(`button-group-${platform}.png`) });
+    await captureReview(page, { path: testInfo.outputPath(`button-group-${platform}.png`) });
     expect(errors).toEqual([]);
   });
 

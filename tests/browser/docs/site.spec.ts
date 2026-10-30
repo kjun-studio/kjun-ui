@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { openExampleSettings } from './example-settings';
 import { test, expect, type Page } from "@playwright/test";
 import { tokens } from "../../../packages/tokens/dist/index.js";
@@ -45,7 +46,7 @@ test("all documentation routes and mobile navigation", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("button", { name: "문서 플랫폼", exact: true })).toBeEnabled();
   await page.evaluate(() => document.fonts.ready);
-  await page.screenshot({
+  await captureReview(page, {
     path: "/private/tmp/kjun-ui-overview-desktop.png",
     fullPage: true,
   });
@@ -68,7 +69,7 @@ test("all documentation routes and mobile navigation", async ({ page }) => {
     )
   ).toBeTruthy();
   await expect(page.locator(".playground")).toHaveAttribute("data-ready", "true");
-  await page.screenshot({
+  await captureReview(page, {
     path: "/private/tmp/kjun-ui-input-mobile.png",
     fullPage: true,
   });
@@ -263,7 +264,7 @@ test("mobile platforms, reduced motion and enlarged text", async ({ page }) => {
       () => document.documentElement.scrollWidth <= innerWidth
     )
   ).toBeTruthy();
-  await page.screenshot({
+  await captureReview(page, {
     path: "/private/tmp/kjun-ui-enlarged-mobile.png",
     fullPage: true,
   });

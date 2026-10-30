@@ -1,3 +1,4 @@
+import { captureReview, captureReviewViewport } from './review-captures';
 import { test, expect, chromium } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { openFixture } from './packed-fixture';
@@ -140,8 +141,8 @@ for(const platform of ['react','vue3','native']) {
       const longText=narrow.getByText('긴 한국어와 English description that must remain fully readable in a narrow container',{exact:true});
       expect(await longText.evaluate(el=>el.scrollHeight<=el.clientHeight+1)).toBe(true);
       if(width===390 || width===1280) {
-        await page.screenshot({path: testInfo.outputPath(`${platform}-${width}.png`),fullPage:true});
-        await narrow.screenshot({path: testInfo.outputPath(`${platform}-narrow-${width}.png`)});
+        await captureReview(page, {path: testInfo.outputPath(`${platform}-${width}.png`),fullPage:true});
+        await captureReview(narrow, {path: testInfo.outputPath(`${platform}-narrow-${width}.png`)});
       }
     }
   });
@@ -162,11 +163,10 @@ test('typography stays usable at actual 200% browser zoom',async({}, testInfo)=>
       expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
       await page.getByRole('button',{name:'열기',exact:true}).click();
       await expect(page.getByRole('button',{name:'모달 버튼',exact:true})).toBeVisible();
-      const cdp=await context.newCDPSession(page);
-      const screenshot=await cdp.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+
       await mkdir(testInfo.outputDir,{recursive:true});
-      await writeFile(testInfo.outputPath(`${platform}-zoom-200.png`),Buffer.from(screenshot.data,'base64'));
-      await cdp.detach();
+      await captureReviewViewport(page, testInfo.outputPath(`${platform}-zoom-200.png`));
+
     }
   } finally {await context.close();await rm(directory,{recursive:true,force:true});}
 });

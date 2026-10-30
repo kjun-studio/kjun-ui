@@ -14,7 +14,7 @@ docker exec kjun_ui_dev npm run test:docs
 
 `build`는 토큰 생성 결과 검사, 패키지 빌드, 카탈로그·문서 검사, 타입 검사, 로컬 패키징, 독립 소비 검증, 예제 컴파일·캡처와 문서 빌드를 실행한다. 
 
-`test:browser`는 `tests/browser`의 패키지 계약 검사만 실행한다. 각 검사가 설치한 tarball을 직접 번들해 열기 때문에 문서 서버가 없어도 된다. `test:docs`는 `tests/browser/docs`의 문서 사이트·packed 미리보기·복사 코드 export 검사를 실행한다. 문서 앱을 빌드한 뒤 전용 서버 `http://127.0.0.1:4174`를 띄우므로 개발 서버는 필요하지 않다. 복사 코드 export의 전체 렌더링은 `docs/export-renders.spec.ts` 하나에서 기본 예제·사용 코드·시각 가이드를 함께 확인한다. 새 컨테이너에서는 `setup:browsers`가 Playwright 브라우저와 시스템 라이브러리를 설치한다. 브라우저 파일은 `kjun_ui_playwright` 볼륨에 남는다.
+`test:browser`는 `tests/browser`의 패키지 계약 검사만 실행한다. 각 검사가 설치한 tarball을 직접 번들해 열기 때문에 문서 서버가 없어도 된다. `test:docs`는 `tests/browser/docs`의 문서 사이트·packed 미리보기·복사 코드 export 검사를 실행한다. 문서 앱을 빌드하거나 검증된 빌드를 재사용한 뒤 전용 서버 `http://127.0.0.1:4174`를 띄우므로 개발 서버는 필요하지 않다. 복사 코드 export의 전체 렌더링은 `docs/export-renders.spec.ts` 하나에서 기본 예제·사용 코드·시각 가이드를 함께 확인한다. 새 컨테이너에서는 `setup:browsers`가 Playwright 브라우저와 시스템 라이브러리를 설치한다. 브라우저 파일은 `kjun_ui_playwright` 볼륨에 남는다.
 
 ### 작업 순서와 검사 범위
 
@@ -33,10 +33,20 @@ docker exec kjun_ui_dev npm run test:browser:related -- select --list
 
 - `test:browser`와 `test:browser:full`: 기존 전체 패키지 검사. 별도의 3종 브라우저 설정은 기존 `test:browser -- -c ...`로 실행한다.
 - `test:browser:smoke`: 기존 `expanded`, `card-contract`, `data-state-design` 파일의 17개 검사. 세 플랫폼의 기본 선택·카드·데이터 상태를 확인하며 전체 검증을 대신하지 않는다.
-- `test:browser:related`: `alert`, `data-state`, `card`, `table`, `market`, `select`, `combobox`, `search-input`, `input`, `button`, `form`, `tabs`, `accordion`, `navigation`, `feedback`, `modal`, `drawer`, `popover`, `dropdown`, `tooltip`, `icons`, `typography`, `primitives`, `kpi`, `quantity`, `slider`, `time-picker`, `radio`, `accessibility`를 쉼표로 지정한다. `all`, `tokens`, `runtime`, `layers`, `layout`, `motion`은 전체 검사로 확장한다. 매핑은 `scripts/browser-test-profiles.mjs`에서 관리하며 새 검사 파일도 관련 그룹에 등록한다. 그룹 이름은 전체 검사 범위 이름과 겹치면 안 된다(겹치면 조용히 전체 검사가 된다).
-- `test:browser:patch`: `test:browser:related`와 같은 범위 이름을 받지만, 그 범위 전용 spec과 smoke만 실행한다. 여러 범위가 함께 쓰는 시각(`visual-contract` 등)·계약·입력·레이어 묶음은 빠진다. 작은 버그 수정의 패치 릴리스에 쓰고, 기능 릴리스와 공통 코드 변경에는 `related`를 쓴다. 전체 검사 범위 이름은 받지 않는다. 부분 검증이다.
+- `test:browser:related`: `alert`, `data-state`, `card`, `table`, `market`, `select`, `combobox`, `search-input`, `input`, `button`, `form`, `tabs`, `accordion`, `navigation`, `feedback`, `modal`, `drawer`, `popover`, `dropdown`, `tooltip`, `icons`, `typography`, `primitives`, `kpi`, `quantity`, `slider`, `time-picker`, `radio`, `accessibility`를 쉼표로 지정한다. `all`, `tokens`, `runtime`, `layers`, `layout`, `motion`은 전체 검사로 확장한다. 기본 매핑은 `scripts/browser-test-profiles.mjs`, 분리한 공통 계약의 소비 관계는 `scripts/browser-contract-scopes.mjs`에서 관리하며 새 검사 파일도 관련 그룹에 등록한다. 그룹 이름은 전체 검사 범위 이름과 겹치면 안 된다(겹치면 조용히 전체 검사가 된다).
+- `test:browser:patch`: `test:browser:related`와 같은 범위 이름을 받지만, 그 범위 전용 spec과 smoke만 실행한다. 여러 범위가 함께 쓰는 시각(`visual-*-contracts`, `token-*-propagation` 등)·계약·입력·레이어 묶음은 빠진다. 작은 버그 수정의 패치 릴리스에 쓰고, 기능 릴리스와 공통 코드 변경에는 `related`를 쓴다. 전체 검사 범위 이름은 받지 않는다. 부분 검증이다.
 
 관련 검사는 변경 파일을 자동 추론하지 않는다. 호출자가 영향 범위를 지정하며 알 수 없는 범위는 실패한다. 컴포넌트가 다른 컴포넌트를 사용하는 경우 그 소비 관계도 매핑에 반영한다. 제목을 잘라 선택하지 않고 선택된 파일의 모든 플랫폼·화면 크기 사례를 실행한다. 빠른·관련 검사의 결과와 HTML 보고서는 각각 `test-results-browser-smoke`, `test-results-browser-related`, `playwright-report-browser-smoke`, `playwright-report-browser-related`에 저장한다. 기본 워커 1개, 현재 패키지 일치 검사와 기존 전체 테스트는 유지한다.
+
+저장용 스크린샷은 기본 검사에서 만들지 않는다. DOM·치수·상태·상호작용·접근성 assertion과 Card hairline의 실제 픽셀 검사는 항상 실행한다. Playwright 관리 페이지는 실패 시 스크린샷과 trace를 남기며, 수동 zoom context의 기존 clipping 실패 캡처도 유지한다. 사람의 시각 검토에 필요한 PNG는 같은 검사에 환경 변수를 켜서 만든다. 이 PNG는 기준 이미지 비교 검사가 아니다.
+
+```sh
+# 기존 artifacts 경로와 testInfo.outputPath에 검토용 PNG를 저장한다.
+docker exec -e KJUN_REVIEW_CAPTURES=1 kjun_ui_dev npm run test:browser -- tests/browser/card-layout.spec.ts
+docker exec -e KJUN_REVIEW_CAPTURES=1 kjun_ui_dev npm run test:docs -- tests/browser/docs/icons-docs-layout.spec.ts
+```
+
+`visual-contract`와 `token-propagation`의 검사는 컴포넌트별 spec으로 분리했다. 복합 구성·실제 브라우저 확대·touch 설정과 모든 플랫폼 사례를 보존하고, 복합 검사는 사용되는 모든 관련 범위에 연결한다. 원본 토큰 변경 검사는 `tokenPropagationFiles`를 사용해 분리한 토큰 spec 전체를 계속 선택한다. Slider는 독립 range-input 구현이므로 Select·Combobox·금융 표시 검사를 붙이지 않는다. 공유 입력/스타일/토큰 구현이 바뀌었다면 소비 범위를 함께 지정하거나 공통 범위를 사용한다.
 
 표 정렬 순환의 계산은 `tests/table-sort.test.mjs`에서 단위 검사한다. 실제 클릭에 따른 행 순서·제어 상태·서버 정렬은 세 플랫폼의 `table-contracts.spec.ts`에 남기고, `api-reference.spec.ts`는 중복된 전체 순환 대신 공개 이벤트 payload를 한 번 검사한다. 선택·포커스·화면 크기·IME·비동기 취소 등 브라우저가 필요한 검사는 유지한다.
 
@@ -53,7 +63,11 @@ docker exec kjun_ui_dev npm run test:docs:related -- select --list
 - `test:docs:smoke`: 문서 셸·검색·모바일 탐색과 Vue 3/React/Native Web의 데스크톱·모바일 미리보기 12개 사례. 전체 검증 완료로 기록하지 않는다.
 - `test:docs:related`: `alert`, `data-state`, `card`, `table`, `select`, `input`, `button`, `icons`, `navigation`, `accessibility`, `docs`, `overview`, `catalog`, `foundations`, `guides`, `exports` 중 하나 이상을 쉼표로 지정한다. 선택 파일의 모든 플랫폼 사례를 실행한다. `all`, `tokens`, `runtime`, `layers`, `layout`, `motion`, `shell`이 포함되면 전체 검사로 확장한다. 기본 검증은 영향 범위만 실행한다. 전역 CSS 파일을 수정하더라도 바뀐 선택자를 실제로 쓰는 페이지의 범위를 지정하고, 셸·사이드바·헤더의 배치를 바꾼 경우에만 `shell`로 전체 검사를 실행한다. 전체 검사는 요청이 있을 때나 공통 토큰·런타임·레이어 변경에만 실행한다. 모든 문서 spec은 적어도 한 그룹에 속해야 하며 `test:workflow`가 이를 확인한다. 4174 포트에 이미 응답하는 서버가 있으면 오래된 빌드를 검사하지 않도록 빌드 전과 서버 시작 직전에 실패한다. 목록에 없는 범위는 실패하므로 전체 검사 또는 명시적인 spec 파일을 선택한다. 매핑은 `scripts/docs-test-profiles.mjs`에서 관리하며 컴포넌트 소비 관계가 바뀌면 함께 갱신한다.
 
-빠른·관련 검사 결과는 각각 `test-results-docs-smoke`, `test-results-docs-related`에 저장한다. 기본 워커 1개와 기존 패키지 정합성 검사는 유지한다. 빌드 캐시나 타임아웃 완화는 적용하지 않는다.
+문서 검사 명령은 입력과 산출물의 내용 해시가 모두 일치하면 기존 빌드를 재사용한다. 문서 소스·생성 데이터·public 미리보기·공유 정의·presentation 소스·빌드 스크립트·의존성 lock·packed manifest·Node 버전·빌드 환경과 `.env` 파일을 확인한다. 테스트 파일이나 보고서 경로만 바꿨다면 재빌드하지 않는다. packed 패키지와 문서에 설치된 패키지의 일치 검사는 재사용할 때도 실행하며 서버는 매번 새로 시작한다.
+
+재사용 기록은 로컬 `artifacts/docs-test-build.json`에 저장한다. 빌드 실패·중단 또는 빌드 도중 입력 변경은 성공 기록을 남기지 않으며, 산출물 누락·변경이나 일반 문서 빌드로 덮어쓴 결과도 다음 검사에서 확인한다. 재사용 여부와 소요 시간은 `[KJUN 문서 빌드]` 로그에 표시한다. 입력 내용과 환경 값 자체는 기록하지 않고 해시만 저장한다. 강제로 재빌드하려면 이 기록 파일을 삭제한 뒤 같은 검사 명령을 실행한다. `--list`는 캐시 확인이나 빌드를 하지 않는다.
+
+빠른·관련 검사 결과는 각각 `test-results-docs-smoke`, `test-results-docs-related`에 저장한다. 기본 워커 1개와 기존 패키지 정합성 검사·타임아웃을 유지한다. 빌드 재사용은 검사 선택이나 assertion을 생략하지 않는다.
 
 새 빌드/설치 명령도 `scripts/workflow-run.mjs`를 거치게 한다. 직접 실행하는 임의 명령은 자동으로 보호되지 않는다. 예를 들어 수동 의존성 설치나 여러 단계를 하나의 작업으로 실행할 때는 아래처럼 감싼다. 기존에 실행 중이던 명령에는 잠금이 소급 적용되지 않는다.
 
@@ -181,7 +195,7 @@ React 레이어의 기존 재수출 경로는 유지하며 FloatingPanel·Popove
 
 `tests/typography-sizing-tokens.test.mjs`는 전체 패키지의 독립 굵기·자간과 반복된 기본 터치 크기를 검사한다. Checkbox·Switch 구현과 공통 폼 CSS에는 너비·높이 검사도 적용한다. 단순한 지역 상수와 크기 맵을 따라가지만 임의의 데이터 흐름 전체를 분석하지는 않는다. 그 외 컴포넌트의 모든 너비·높이를 토큰화했다는 의미는 아니다.
 
-`tests/browser/token-propagation.spec.ts`는 Empty 제목·설명, 모든 크기의 ButtonGroup·FilterGroup 표시·측정 글자, Tabs, Checkbox·Switch의 치수와 터치 영역을 packed 패키지에서 확인한다. 원본 변경 검사에는 굵기·자간·최소 터치 크기·선택 컨트롤 치수도 포함한다. Switch 손잡이의 크기와 이동 후 안쪽 여백, 선택 변경 시 글자 폭 유지, 실제 입력·선택 동작을 함께 확인한다.
+`tests/browser/token-*-propagation.spec.ts`는 Empty 제목·설명, 모든 크기의 ButtonGroup·FilterGroup 표시·측정 글자, Tabs, Checkbox·Switch의 치수와 터치 영역을 packed 패키지에서 확인한다. 원본 변경 검사에는 굵기·자간·최소 터치 크기·선택 컨트롤 치수도 포함한다. Switch 손잡이의 크기와 이동 후 안쪽 여백, 선택 변경 시 글자 폭 유지, 실제 입력·선택 동작을 함께 확인한다.
 
 Chip의 크기별 타이포그래피는 `extensions.chip.typography`를 Web과 Native가 함께 읽는다. 삭제 영역과 Toast 너비·닫기 버튼·진행선도 역할에서 읽으며, Native Chip·Toast와 해당 CSS의 치수 감사로 고정값 재도입을 검사한다. `tests/browser/chip-toast-tokens.spec.ts`는 세 크기의 글자·삭제·비활성 상태, 글자 확대, Toast 크기·진행선·실행·닫기를 검증한다. 원본 변경 실험에는 Chip 역할 재연결과 삭제 크기, Toast 네 치수 변경을 포함한다.
 

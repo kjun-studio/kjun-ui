@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 import { tokens } from '../../packages/tokens/dist/index.js';
@@ -23,7 +24,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.evaluate(() => (window as any).elevation.toast());
     await expect(page.getByRole('alert')).toHaveCSS('box-shadow', 'none');
     await page.getByRole('button', { name: '알림 행동' }).hover();
-    await page.screenshot({ path: `artifacts/elevation/${platform}-${palette}-${browserName}-surfaces.png`, fullPage: true });
+    await captureReview(page, { path: `artifacts/elevation/${platform}-${palette}-${browserName}-surfaces.png`, fullPage: true });
     await page.getByRole('button', { name: '알림 행동' }).click();
     await page.evaluate(() => (window as any).elevation.openWindow());
     const modal = page.locator(platform === 'react' || platform === 'vue3' ? '.kjun-modal' : '[aria-label="새 창"]');

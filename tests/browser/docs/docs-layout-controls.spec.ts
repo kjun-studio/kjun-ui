@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { test, expect } from '@playwright/test';
 
 test.use({ reducedMotion: 'reduce' });
@@ -70,6 +71,6 @@ for (const platform of ['vue3', 'react', 'native']) {
     }).toBe(true);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await cta.scrollIntoViewIfNeeded();
-    await page.screenshot({ path: `artifacts/docs-layout-cta-${platform}-320.png` });
+    await captureReview(page, { path: `artifacts/docs-layout-cta-${platform}-320.png` });
   });
 }

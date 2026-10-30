@@ -20,6 +20,7 @@ export default defineConfig({
     actionTimeout: 30000,
     navigationTimeout: 30000,
     trace: "retain-on-failure",
+    screenshot: "only-on-failure",
   },
   outputDir: `test-results${suffix}`,
 });

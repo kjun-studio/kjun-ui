@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { openExampleSettings } from './example-settings';
 import { test, expect, type Page } from '@playwright/test';
 const platforms = { vue3: 'Vue 3', react: 'React', native: 'React Native' } as const;
@@ -160,7 +161,7 @@ test('compact canvas, unsupported controls, failure fallback, IME, and event his
   const input = frame.getByRole('textbox', { name: '목록 이름', exact: true });
   await input.dispatchEvent('compositionstart'); await input.fill('한글 입력'); await input.dispatchEvent('compositionend', { data: '한글 입력' });
   expect(await copy(page)).not.toContain('한글 입력');
-  await page.screenshot({ path: 'artifacts/example-input.png', fullPage: true });
+  await captureReview(page, { path: 'artifacts/example-input.png', fullPage: true });
   const buttonFrame = await visit(page, 'button', 'react');
   await buttonFrame.getByRole('button', { name: '계속하기', exact: true }).evaluate(button => { for (let i = 0; i < 105; i++) (button as HTMLButtonElement).click(); });
   await expect(page.locator('.example-events summary')).toContainText('(100)');

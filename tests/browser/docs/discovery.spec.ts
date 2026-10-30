@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { test, expect, type Page } from '@playwright/test';
 import { readFileSync, writeFileSync } from 'node:fs';
 const index = JSON.parse(readFileSync('apps/docs/lib/generated/discovery.json', 'utf8'));
@@ -184,9 +185,9 @@ test('gallery columns follow available width without horizontal overflow', async
     await expect(page.locator('.gallery-grid')).toHaveCSS('grid-template-columns', new RegExp(`^(\\d+(\\.\\d+)?px\\s*){${columns}}$`));
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.locator('.gallery-thumbnail img').evaluateAll(images => Promise.all(images.map(img => { (img as HTMLImageElement).loading = 'eager'; return (img as HTMLImageElement).decode(); })));
-    await page.screenshot({ path: `artifacts/discovery-${width}.png` });
+    await captureReview(page, { path: `artifacts/discovery-${width}.png` });
     await page.locator('[data-component-card]').first().scrollIntoViewIfNeeded();
-    await page.screenshot({ path: `artifacts/thumbnail-review/gallery-${width}.png` });
+    await captureReview(page, { path: `artifacts/thumbnail-review/gallery-${width}.png` });
     await page.evaluate(() => window.scrollTo(0, 0));
   }
   writeFileSync('artifacts/thumbnail-review/gallery-layouts.json', JSON.stringify(layouts, null, 2) + '\n');

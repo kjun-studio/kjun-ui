@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { test, expect } from '@playwright/test';
 import { revealFrame } from './motion-docs-helpers';
 import { openExampleSettings } from './example-settings';
@@ -37,7 +38,7 @@ for (const platform of platforms) {
           await expect(page.locator('#states [data-guide-case]')).toHaveCount(5);
           await expect(page.locator('#states .guide-case-actions, #states details')).toHaveCount(0);
           await expect(page.locator('main .design-case')).toHaveCount(0);
-          await page.screenshot({ path: `artifacts/detail-${platform}-${width}.png` });
+          await captureReview(page, { path: `artifacts/detail-${platform}-${width}.png` });
         }
         await settings.click();
         if (slug === 'modal') await expect(playground.getByText('기본 예제', { exact: true })).toBeVisible();
@@ -174,9 +175,9 @@ for (const platform of ['react', 'vue3', 'native']) test(`${platform}: button do
     for (const [index, btn] of (await buttons.all()).entries()) await expect(btn).toHaveCSS('border-radius', `${radii[index]}px`);
     if (preset === '크기 비교') {
       await expect.poll(() => buttons.evaluateAll(items => items.map(el => el.getBoundingClientRect().height))).toEqual([24, 32, 40, 48, 56]);
-      await preview.screenshot({ path: `artifacts/button-design-${platform}-sizes.png` });
+      await captureReview(preview, { path: `artifacts/button-design-${platform}-sizes.png` });
     }
-    if (preset === '변형 비교') await preview.screenshot({ path: `artifacts/button-design-${platform}-variants.png` });
+    if (preset === '변형 비교') await captureReview(preview, { path: `artifacts/button-design-${platform}-variants.png` });
     if (preset === '상태 비교') {
       const widths = await buttons.evaluateAll(items => items.map(el => el.getBoundingClientRect().width));
       expect(new Set(widths).size).toBe(1);
@@ -187,7 +188,7 @@ for (const platform of ['react', 'vue3', 'native']) test(`${platform}: button do
   await choose('색상 예제', '어두운 배경 예제');
   await choose('프리셋', '라벨·아이콘 비교');
   await expect(buttons).toHaveCount(7);
-  await preview.screenshot({ path: `artifacts/button-design-${platform}-dark.png` });
+  await captureReview(preview, { path: `artifacts/button-design-${platform}-dark.png` });
   await choose('프리셋', '전체 너비 · 375px');
   await expect(buttons).toHaveCount(1);
   await expect(buttons.first()).toHaveCSS('height', '48px');

@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { test, expect, type Page } from '@playwright/test';
 
 async function settledScroll(page: Page) {
@@ -42,7 +43,7 @@ for (const platform of ['vue3', 'react', 'native']) {
       await page.keyboard.press('Enter');
       await expect(next).toHaveAttribute('aria-pressed', 'true');
       expect(Math.abs(await settledScroll(page) - before)).toBeLessThanOrEqual(1);
-      await page.screenshot({ path: `artifacts/preview-scroll-${platform}-${width}.png` });
+      await captureReview(page, { path: `artifacts/preview-scroll-${platform}-${width}.png` });
     });
   }
 }

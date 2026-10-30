@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { test, expect, type Locator } from '@playwright/test';
 import { tokens, type TypographyToken } from '../../packages/tokens/dist/index.js';
 import { openFixture } from './packed-fixture';
@@ -41,7 +42,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByTestId('actions')).toHaveText('0');
     await page.setViewportSize({ width: 320, height: 800 });
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    await page.screenshot({ path: testInfo.outputPath('chip-roles.png') });
+    await captureReview(page, { path: testInfo.outputPath('chip-roles.png') });
     for (const size of ['sm', 'md', 'lg'] as const) {
       const remove = page.getByRole('button', { name: `삭제 ${size}`, exact: true });
       if (size === 'md') { await remove.focus(); await page.keyboard.press('Enter'); }
@@ -67,7 +68,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     const closeSize = platform === 'native' ? Math.max(spec.closeSize, tokens.native.minimumTouchTarget) : spec.closeSize;
     await expect(close).toHaveCSS(platform === 'native' ? 'min-width' : 'width', px(closeSize));
     await expect(close).toHaveCSS(platform === 'native' ? 'min-height' : 'height', px(closeSize));
-    await toast.screenshot({ path: testInfo.outputPath('toast-roles.png') });
+    await captureReview(toast, { path: testInfo.outputPath('toast-roles.png') });
     await page.setViewportSize({ width: 320, height: 1100 });
     await expect.poll(async () => {
       const box = (await toast.boundingBox())!;

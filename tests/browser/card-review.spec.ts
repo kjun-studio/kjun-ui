@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { test, expect, chromium, type Locator } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { openFixture } from './packed-fixture';
@@ -43,7 +44,7 @@ for (const platform of platforms) {
       expect(title!.x + title!.width <= action!.x + 1 || action!.y >= title!.y + title!.height - 1).toBe(true);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }
-    await narrow.screenshot({ path: `artifacts/card-review/${platform}-narrow.png` });
+    await captureReview(narrow, { path: `artifacts/card-review/${platform}-narrow.png` });
     const action = narrow.getByRole('button', { name: '상세 보기' });
     await action.click();
     await action.press('Enter');

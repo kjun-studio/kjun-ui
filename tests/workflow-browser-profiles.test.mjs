@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { access, readdir } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import { contractScopes, contractFiles, tokenPropagationFiles } from '../scripts/browser-contract-scopes.mjs';
 import { planBrowserTests, relatedGroups, fullScopes, smokeFiles } from '../scripts/browser-test-profiles.mjs';
 
 test('package default and common changes preserve the complete suite', () => {
@@ -28,6 +29,20 @@ test('every mapped package spec exists and every package spec belongs to a relat
   for (const name of specs) assert.ok(paths.includes(`tests/browser/${name}`), `Add ${name} to its component group`);
 });
 
+test('split contracts retain every declared consumer and token mutation family', () => {
+  for (const [name, scopes] of Object.entries(contractScopes)) {
+    for (const scope of scopes) assert.ok(relatedGroups[scope]?.includes(`tests/browser/${name}.spec.ts`), `${name}: ${scope}`);
+  }
+  assert.ok(tokenPropagationFiles.length > 0);
+  assert.ok(tokenPropagationFiles.every(file => contractFiles.includes(file)));
+  for (const scope of ['popover', 'tooltip']) assert.ok(relatedGroups[scope].includes('tests/browser/visual-popover-contracts.spec.ts'));
+  for (const scope of ['table', 'kpi']) assert.ok(relatedGroups[scope].includes('tests/browser/token-table-propagation.spec.ts'));
+});
+
+test('slider scope keeps the complete platform spec without unrelated field or financial contracts', () => {
+  assert.deepEqual(planBrowserTests(['--profile', 'related', 'slider']).args.slice(3), ['tests/browser/slider-design.spec.ts', 'tests/browser/react-slider-format.spec.ts']);
+});
+
 test('related groups deduplicate files and preserve explicit Playwright arguments', () => {
   const expected = [...new Set([...relatedGroups.select, ...relatedGroups.combobox])];
   const plan = planBrowserTests(['--profile', 'related', 'select, combobox', '--', '--list']);
@@ -42,7 +57,7 @@ test('patch keeps only the scope\'s own spec files plus smoke, without the share
   assert.equal(plan.profile, 'patch');
   const selected = plan.args.slice(3);
   for (const file of ['select-scroll', 'popover-design', 'expanded']) assert.ok(selected.includes(`tests/browser/${file}.spec.ts`), file);
-  for (const file of ['visual-contract', 'api-reference', 'input-contracts', 'elevation']) assert.ok(!selected.includes(`tests/browser/${file}.spec.ts`), file);
+  for (const file of ['visual-popover-contracts', 'token-layer-propagation', 'api-reference', 'input-contracts', 'elevation']) assert.ok(!selected.includes(`tests/browser/${file}.spec.ts`), file);
   for (const file of smokeFiles) assert.ok(selected.includes(file), file);
   const related = planBrowserTests(['--profile', 'related', 'select,popover']).args.slice(3);
   assert.ok(selected.every(file => related.includes(file) || smokeFiles.includes(file)));

@@ -1,3 +1,4 @@
+import { captureReview, captureReviewViewport } from '../review-captures';
 import { test, expect, chromium } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { presentations, overviewScenes, capture, captureProfiles, captureFor } from '../../../previews/presentation/registry.mjs';
@@ -27,7 +28,7 @@ test('overview fits desktop and mobile widths and entry links preserve platform'
   await page.goto('/?platform=react'); await ready(page);
   for (const width of [1440, 900, 390, 320]) {
     await page.setViewportSize({ width, height: 1000 }); await noOverflow(page);
-    if ([1440, 390].includes(width)) await page.screenshot({ path: `artifacts/presentation-overview-${width}.png`, fullPage: true });
+    if ([1440, 390].includes(width)) await captureReview(page, { path: `artifacts/presentation-overview-${width}.png`, fullPage: true });
   }
   for (const [label, path] of [['시작하기', '/getting-started'], ['컴포넌트 보기', '/components']]) {
     const link = page.locator('.overview-actions').getByRole('link', { name: label, exact: true });
@@ -105,9 +106,8 @@ test('overview and gallery retain readable captions and links at actual 200% zoo
         await link.locator('img').evaluate(img => (img as HTMLImageElement).decode());
         await link.locator('h2').scrollIntoViewIfNeeded();
       }
-      const cdp = await context.newCDPSession(page);
-      const shot = await cdp.send('Page.captureScreenshot', { captureBeyondViewport: false });
-      await writeFile('artifacts/presentation-zoom-' + (path.startsWith('/?') ? 'overview' : 'gallery') + '.png', Buffer.from(shot.data, 'base64'));
+
+      await captureReviewViewport(page, 'artifacts/presentation-zoom-' + (path.startsWith('/?') ? 'overview' : 'gallery') + '.png');
       await page.keyboard.press('Enter');
       await expect(page).toHaveURL(path.startsWith('/?') ? /components\?platform=react$/ : /components\/button\?platform=react$/);
     }

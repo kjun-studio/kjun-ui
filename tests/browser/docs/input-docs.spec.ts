@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { demoPalettes } from '../../../shared/demo-colors';
 const roleColor = (palette: string, role: 'inputBorderFocus' | 'danger') => {
   const hex = demoPalettes[palette as keyof typeof demoPalettes][role];
@@ -46,19 +47,19 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(save).toHaveCSS('height', '48px');
       await input.fill('장기 보유 자산');
       await expect(input).toHaveCSS('border-top-color', roleColor(palette, 'inputBorderFocus'));
-      await page.screenshot({ path: `artifacts/input-design-20260920/settings-${platform}-${palette}-${width}-focus.png`, fullPage: true });
+      await captureReview(page, { path: `artifacts/input-design-20260920/settings-${platform}-${palette}-${width}-focus.png`, fullPage: true });
       await input.fill('');
       await save.click();
       await expect(input).toHaveAttribute('aria-invalid', 'true');
       await expect(input).toHaveCSS('border-top-color', roleColor(palette, 'danger'));
       await expect(page.getByText('목록 이름을 입력해 주세요.', { exact: true })).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
-      await page.screenshot({ path: `artifacts/input-design-20260920/settings-${platform}-${palette}-${width}-error.png`, fullPage: true });
+      await captureReview(page, { path: `artifacts/input-design-20260920/settings-${platform}-${palette}-${width}-error.png`, fullPage: true });
       await visit(page, platform, 'GuideSearchToolbar', palette);
       await expect(page.locator('input').first()).toHaveCSS('height', '32px');
       await expect(page.getByRole('button', { name: '필터 초기화', exact: true })).toHaveCSS('height', '32px');
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
-      await page.screenshot({ path: `artifacts/input-design-20260920/toolbar-${platform}-${palette}-${width}.png`, fullPage: true });
+      await captureReview(page, { path: `artifacts/input-design-20260920/toolbar-${platform}-${palette}-${width}.png`, fullPage: true });
     }
   });
 }

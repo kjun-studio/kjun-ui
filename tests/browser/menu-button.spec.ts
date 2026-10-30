@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { expect, test, type Page } from '@playwright/test';
 import { tokens } from '../../packages/tokens/dist/index.js';
 import { openFixture } from './packed-fixture';
@@ -130,6 +131,6 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(trigger(page)).toHaveAttribute('aria-expanded', 'false');
       await expect(menu(page, platform)).toBeHidden();
     }
-    await page.getByTestId('menu').screenshot({ path: `artifacts/menu-button-review/${platform}-fixed-compact.png` });
+    await captureReview(page.getByTestId('menu'), { path: `artifacts/menu-button-review/${platform}-fixed-compact.png` });
   });
 }

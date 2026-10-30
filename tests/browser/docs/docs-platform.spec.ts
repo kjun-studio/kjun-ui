@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { openExampleSettings } from './example-settings';
 import { test, expect, type Page } from '@playwright/test';
 const labels = { vue3: 'Vue 3', react: 'React', native: 'React Native' } as const;
@@ -173,5 +174,5 @@ for (const width of [320, 390]) test(`${width}px header platform selection suppo
   await nav.getByRole('link', { name: 'Input', exact: true }).click(); await ready(page, 'react');
   await expect(nav).not.toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.screenshot({ path: `artifacts/platform-${width}.png` });
+  await captureReview(page, { path: `artifacts/platform-${width}.png` });
 });

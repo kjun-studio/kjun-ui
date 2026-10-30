@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { test, expect, chromium, type Page, type Locator } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { openFixture } from './packed-fixture';
@@ -32,7 +33,7 @@ for (const platform of platforms) {
     await geometry(drawer,{'border-top-left-radius':px(e.drawer.bottomRadius),'border-top-right-radius':px(e.drawer.bottomRadius),'border-bottom-left-radius':px(e.drawer.radius)});
     await geometry(platform==='react'||platform==='vue3'?drawer.locator('.kjun-drawer-header'):drawer.locator(':scope > *').first(),{'padding-left':px(e.drawer.paddingX),'padding-top':px(e.drawer.paddingY)});
     await expect(drawer).toHaveCSS('box-shadow',new RegExp(`${tokens.extensions.drawer.elevation[0].blurRadius}px`));
-    await drawer.screenshot({path: testInfo.outputPath(`${platform}-drawer.png`)});
+    await captureReview(drawer, {path: testInfo.outputPath(`${platform}-drawer.png`)});
     await page.keyboard.press('Escape');await expect(drawer).toBeHidden();
     await page.getByRole('button',{name:'대화상자 열기',exact:true}).click();
     if(platform!=='native')await geometry(page.locator(platform==='react'?'.kjun-modal-overlay':'.kjun-modal-overlay'),{'padding-left':px(tokens.modal.mobileInset)});
@@ -60,9 +61,9 @@ for (const platform of platforms) {
         await expect.poll(()=>page.getByTestId(id).evaluate(el=>el.scrollWidth<=el.clientWidth+1),{message:id+' fits at '+width}).toBe(true);
     }
     await page.setViewportSize({width:390,height:1000});
-    await page.screenshot({path: testInfo.outputPath(`${platform}-long-390.png`),fullPage:true});
-    await page.getByTestId('chip').screenshot({path: testInfo.outputPath(`${platform}-chip.png`)});
-    await page.getByTestId('row-sm').screenshot({path: testInfo.outputPath(`${platform}-kpi-narrow.png`)});
+    await captureReview(page, {path: testInfo.outputPath(`${platform}-long-390.png`),fullPage:true});
+    await captureReview(page.getByTestId('chip'), {path: testInfo.outputPath(`${platform}-chip.png`)});
+    await captureReview(page.getByTestId('row-sm'), {path: testInfo.outputPath(`${platform}-kpi-narrow.png`)});
     await page.getByRole('button',{name:'칩 삭제',exact:true}).click();await expect(page.getByTestId('removable').locator(':scope > *')).toHaveCount(0);
     await page.getByRole('button',{name:'하단 실행',exact:true}).press('Enter');await expect(page.getByTestId('events')).toHaveText('2');
     await page.getByTestId('list').getByRole('button').press('Enter');
@@ -82,7 +83,7 @@ test('geometry fits at actual 200% browser zoom on all platforms',async({}, test
     expect(await page.evaluate(()=>innerWidth)).toBeLessThan(500);
     await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
     for(const id of ['card','chip','hero','row-sm'])await expect.poll(()=>page.getByTestId(id).evaluate(el=>el.scrollWidth<=el.clientWidth+1)).toBe(true);
-    await page.screenshot({path: testInfo.outputPath(`${platform}-zoom-200.png`),fullPage:true});
+    await captureReview(page, {path: testInfo.outputPath(`${platform}-zoom-200.png`),fullPage:true});
     await page.close();}
   }finally{await context.close();await rm(directory,{recursive:true,force:true});}
 });

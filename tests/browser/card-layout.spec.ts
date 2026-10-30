@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 
@@ -32,9 +33,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.locator('[data-case="long-action"]').getByRole('button').click();
     await page.locator('[data-case="two-actions"]').getByRole('button').last().press('Enter');
     await expect(page.getByTestId('actions')).toHaveText('2');
-    await page.locator('main').screenshot({ path: `artifacts/card-visual-audit/${platform}-layout-fixed.png` });
-    await page.locator('[data-case="two-actions"]').screenshot({ path: `artifacts/card-visual-audit/${platform}-header-fixed.png` });
-    await page.locator('[data-case="long-action"]').screenshot({ path: `artifacts/card-visual-audit/${platform}-long-action-fixed.png` });
+    await captureReview(page.locator('main'), { path: `artifacts/card-visual-audit/${platform}-layout-fixed.png` });
+    await captureReview(page.locator('[data-case="two-actions"]'), { path: `artifacts/card-visual-audit/${platform}-header-fixed.png` });
+    await captureReview(page.locator('[data-case="long-action"]'), { path: `artifacts/card-visual-audit/${platform}-long-action-fixed.png` });
     expect(errors).toEqual([]);
   });
 

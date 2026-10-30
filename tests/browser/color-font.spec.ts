@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { test, expect, type Locator, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 
@@ -54,7 +55,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect((await textStyle(page.getByTestId('ordinary'))).family).toBe('sans-serif');
     await expect(page.getByRole('button', { name: 'Open font dialog', exact: true })).toBeFocused();
     expect(await errors(page)).toEqual([]);
-    await page.screenshot({ path: info.outputPath(platform + '-fonts.png'), fullPage: true });
+    await captureReview(page, { path: info.outputPath(platform + '-fonts.png'), fullPage: true });
   });
 
   test(`${platform}: omitted numeric font follows the nearest body font`, async ({ page }) => {

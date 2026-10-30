@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 async function exercise(page: Page) {
@@ -73,7 +74,7 @@ test('elevation documentation preserves packed surfaces, disclosure defaults and
   for (const width of [320, 375, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await exercise(page);
-    await page.screenshot({ path: `artifacts/elevation/docs-${browserName}-${width}.png`, fullPage: true });
+    await captureReview(page, { path: `artifacts/elevation/docs-${browserName}-${width}.png`, fullPage: true });
   }
   expect(errors).toEqual([]);
 });
@@ -89,7 +90,7 @@ test('elevation documentation and windows remain usable at actual 200% browser z
     const page = context.pages()[0];
     await exercise(page);
     expect(await page.evaluate(() => ({ width: innerWidth, ratio: devicePixelRatio }))).toEqual({ width: 720, ratio: 2 });
-    await page.screenshot({ path: 'artifacts/elevation/docs-zoom200.png', fullPage: true });
+    await captureReview(page, { path: 'artifacts/elevation/docs-zoom200.png', fullPage: true });
   } finally { await context.close(); await rm(directory, { recursive: true, force: true }); }
 });
 

@@ -2,6 +2,7 @@ import { cp, readdir, mkdtemp, mkdir, symlink, readFile, writeFile, rm } from 'n
 import { resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
+import { tokenPropagationFiles } from './browser-contract-scopes.mjs';
 import { assertCurrentConsumer } from './package-state.mjs';
 
 // The original checkout, snapshots and installed consumer remain untouched.
@@ -134,7 +135,7 @@ await change('sizing', s => {
 const steps = [
   ['node',['scripts/tokens.mjs']], ['node',['scripts/build.mjs']],
   ['node',['scripts/pack.mjs']], ['node',['scripts/consumers.mjs']],
-  ['node',[root+'/node_modules/@playwright/test/cli.js','test','tests/browser/typography.spec.ts','tests/browser/card-review.spec.ts','tests/browser/geometry-tokens.spec.ts','tests/browser/elevation.spec.ts','tests/browser/token-propagation.spec.ts','tests/browser/chip-toast-tokens.spec.ts','tests/browser/size-contracts.spec.ts','--grep','packed typography|all input families|packed card roles|packed geometry roles|packed elevation roles|packed table spacing|packed remaining geometry|packed choice dimensions|packed market typography|packed responsive thresholds|packed modal|packed Chip|packed Toast|packed independent|packed size roles','--reporter=list']],
+  ['node',[root+'/node_modules/@playwright/test/cli.js','test','tests/browser/typography.spec.ts','tests/browser/card-review.spec.ts','tests/browser/geometry-tokens.spec.ts','tests/browser/elevation.spec.ts',...tokenPropagationFiles,'tests/browser/chip-toast-tokens.spec.ts','tests/browser/size-contracts.spec.ts','--grep','packed typography|all input families|packed card roles|packed geometry roles|packed elevation roles|packed table spacing|packed remaining geometry|packed choice dimensions|packed market typography|packed responsive thresholds|packed modal|packed Chip|packed Toast|packed independent|packed size roles','--reporter=list']],
 ];
 try {
   for(const [command,args] of steps) execFileSync(command,args,{cwd:directory,stdio:'inherit'});

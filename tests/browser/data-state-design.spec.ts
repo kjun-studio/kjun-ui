@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { test, expect, type Page, type Locator } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 const update = (page: Page, options: object) => page.evaluate(options => (window as any).configureDataState(options), options);
@@ -71,7 +72,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       // Shared KjunEmpty contributes no second 32px padding inside DataState.
       expect((await box(region)).y + (await box(region)).height - desc.y - desc.height).toBe(48);
       expect(desc.y - title.y - title.height).toBe(8);
-      await region.screenshot({ path: `artifacts/data-state-visual-fix/related-${platform}-${related}-empty.png` });
+      await captureReview(region, { path: `artifacts/data-state-visual-fix/related-${platform}-${related}-empty.png` });
     }
     for (const related of ['KjunTable', 'KjunMarketTable', 'KjunMarketCards', 'KjunMarketSimpleList']) {
       await update(page, { related, loading: true, empty: false });

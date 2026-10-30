@@ -1,3 +1,4 @@
+import { captureReview, captureReviewViewport } from '../review-captures';
 import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, readFile, rm } from 'node:fs/promises';
 import coverage from '../../../apps/docs/lib/generated/coverage.json' with { type: 'json' };
@@ -35,7 +36,7 @@ test('all components, fixed totals, truthful platform scopes and original record
   const used = (Object.keys(labels) as (keyof typeof labels)[]).filter(status => coverage.components.some(entry => Object.values(entry.states).includes(status)));
   await expect(page.locator('.coverage-legend dt')).toHaveText(used.map(status => labels[status]));
   await expect(page.locator('.coverage-verdict')).toContainText(`공개 컴포넌트 ${coverage.total}개`);
-  await page.screenshot({ path: 'artifacts/coverage-summary-desktop.png' });
+  await captureReview(page, { path: 'artifacts/coverage-summary-desktop.png' });
   const summary = await page.locator('#support-summary').innerText();
   await search(page).fill('loadOptions');
   await expect(rows(page)).toHaveCount(1);
@@ -124,9 +125,9 @@ test('720px content boundary and mobile cards retain expansion and expose only o
       expect(await card.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
     }
     await rows(page).first().scrollIntoViewIfNeeded();
-    await page.screenshot({ path: `artifacts/coverage-${width}.png` });
+    await captureReview(page, { path: `artifacts/coverage-${width}.png` });
     await page.locator('#services').scrollIntoViewIfNeeded();
-    await page.screenshot({ path: `artifacts/coverage-services-${width}.png` });
+    await captureReview(page, { path: `artifacts/coverage-services-${width}.png` });
   }
   await trigger().focus(); await page.keyboard.press('Enter');
   await expect(trigger()).toHaveAttribute('aria-expanded', 'false');
@@ -184,12 +185,12 @@ test('actual 200% browser zoom keeps all statuses and service names readable', a
       expect(await row.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
     }
     await noOverflow(page);
-    const cdp = await context.newCDPSession(page);
+
     const capture = async (path: string) => {
       // Capture Chrome's real zoomed viewport; Playwright's viewport:null clip is unscaled.
       await page.evaluate(async () => { await document.fonts.ready; await new Promise(requestAnimationFrame); });
-      const screenshot = await cdp.send('Page.captureScreenshot', { captureBeyondViewport: false });
-      await writeFile(path, Buffer.from(screenshot.data, 'base64'));
+
+      await captureReviewViewport(page, path);
     };
     await rows(page).first().evaluate(element => element.scrollIntoView({ behavior: 'instant', block: 'center' }));
     await capture('artifacts/coverage-zoom-200.png');

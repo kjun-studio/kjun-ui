@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { test, expect } from '@playwright/test';
 import { icons, filledIcons } from '@kjun-ui/tokens/icons';
 import { tokens } from '@kjun-ui/tokens';
@@ -141,6 +142,6 @@ test('initial controls wait for hydration and the final build keeps selected set
     await page.setViewportSize({ width, height: 1000 });
     await page.locator('.icon-detail').scrollIntoViewIfNeeded();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
-    await page.screenshot({ path: `artifacts/icons-review/final-detail-${width}.png` });
+    await captureReview(page, { path: `artifacts/icons-review/final-detail-${width}.png` });
   }
 });

@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { test, expect } from '@playwright/test';
 import { shortcutCount } from './docs-data';
 
@@ -50,7 +51,7 @@ for (const width of [1440, 1280, 390, 320]) {
     expect(await reference.evaluate(element => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await shortcuts.getByRole('link', { name: '폭·간격', exact: true }).click();
-    await page.screenshot({ path: `artifacts/docs-layout-${width}.png` });
+    await captureReview(page, { path: `artifacts/docs-layout-${width}.png` });
   });
 }
 
@@ -80,7 +81,7 @@ for (const platform of ['vue3', 'react', 'native']) {
       await expect(action).toBeHidden();
       await expect(trigger).toBeFocused();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-      if (width === 390) await page.screenshot({ path: `artifacts/docs-popover-${platform}-${width}.png` });
+      if (width === 390) await captureReview(page, { path: `artifacts/docs-popover-${platform}-${width}.png` });
     }
   });
 }

@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { test, expect, type Locator, type Page } from '@playwright/test';
 import { readdir, readFile } from 'node:fs/promises';
 import coverage from '../../../apps/docs/lib/generated/coverage.json' with { type: 'json' };
@@ -49,7 +50,7 @@ for (const width of [1440, 390, 320]) test(`${width}: accessibility cards separa
   await expect(section.locator('.accessibility-results-note')).toHaveCount(1);
   await contained(page);
   await cards.first().scrollIntoViewIfNeeded();
-  await section.locator('.accessibility-items').screenshot({ path: `artifacts/accessibility-card-fix/cards-${width}.png`, style: captureStyle });
+  await captureReview(section.locator('.accessibility-items'), { path: `artifacts/accessibility-card-fix/cards-${width}.png`, style: captureStyle });
   const link = cards.first().getByRole('link', { name: '키보드 동작 · 검증 기록 보기', exact: true });
   await link.focus(); await page.keyboard.press('Enter');
   await expect(page).toHaveURL(url => url.pathname === '/verification' && url.searchParams.get('component') === 'KjunCard' && url.hash === '#keyboard');
@@ -67,7 +68,7 @@ for (const width of [1440, 390]) test(`${width}: related coverage and verificati
   await page.getByRole('button', { name: 'Card 플랫폼 차이·근거 펼치기', exact: true }).click();
   await expect(page.getByRole('link', { name: 'Card React 검증 기록 보기', exact: true }).filter({ visible: true })).toBeVisible();
   await contained(page);
-  await page.locator('#support-summary').screenshot({ path: `artifacts/accessibility-card-fix/coverage-${width}.png`, style: captureStyle });
+  await captureReview(page.locator('#support-summary'), { path: `artifacts/accessibility-card-fix/coverage-${width}.png`, style: captureStyle });
 
   await page.goto('/verification?component=KjunCard&platform=react'); await ready(page);
   for (const card of await page.locator('.verification-check').all()) {
@@ -77,7 +78,7 @@ for (const width of [1440, 390]) test(`${width}: related coverage and verificati
   await page.locator('#verification-environment summary').click();
   await expect(page.locator('.verification-packages')).toBeVisible();
   await contained(page);
-  await page.locator('#keyboard').screenshot({ path: `artifacts/accessibility-card-fix/verification-${width}.png`, style: captureStyle });
+  await captureReview(page.locator('#keyboard'), { path: `artifacts/accessibility-card-fix/verification-${width}.png`, style: captureStyle });
 
   await page.goto(`/verification?component=KjunCard&platform=react&record=${coverage.records[0].id}`); await ready(page);
   const legacy = page.locator('.verification-legacy');
@@ -109,11 +110,11 @@ for (const width of [1440, 390]) test(`${width}: search, navigation and expanded
   await expect(option).toBeVisible();
   await expect(option).toHaveCSS('padding-top', '12px');
   await expect(option).toHaveCSS('border-top-left-radius', '8px');
-  await dialog.screenshot({ path: `artifacts/accessibility-card-fix/search-${width}.png` });
+  await captureReview(dialog, { path: `artifacts/accessibility-card-fix/search-${width}.png` });
   await page.keyboard.press('Escape'); await expect(search).toBeFocused();
   await page.locator('#preview').getByRole('button', { name: '넓게 보기', exact: true }).click();
   await expect(page.locator('.docs-dialog-content')).toHaveCSS('row-gap', '16px');
-  await page.getByRole('dialog').screenshot({ path: `artifacts/accessibility-card-fix/expanded-${width}.png` });
+  await captureReview(page.getByRole('dialog'), { path: `artifacts/accessibility-card-fix/expanded-${width}.png` });
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await contained(page);

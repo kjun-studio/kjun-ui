@@ -1,3 +1,4 @@
+import { captureReview, captureReviewViewport, reviewCapturesEnabled } from '../review-captures';
 import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { platforms, layoutWidths, checksZoom } from './motion-docs-helpers';
@@ -31,17 +32,16 @@ async function layout(page: Page, platform: string) {
       return { text: node.textContent, left: box.left, right: box.right, viewport: innerWidth,
         scrollHeight: node.scrollHeight, clientHeight: node.clientHeight };
     }));
-    if (clipped.length || (platform === 'native' && kind === 'tabs')) {
+    if (clipped.length || (reviewCapturesEnabled() && platform === 'native' && kind === 'tabs')) {
       await root.scrollIntoViewIfNeeded();
-      const session = await page.context().newCDPSession(page);
-      const shot = await session.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+
       const dimensions = await page.evaluate(() => `${innerWidth}-${devicePixelRatio}`);
       await mkdir('artifacts/interaction-review', { recursive: true });
-      await writeFile(`artifacts/interaction-review/${platform}-${kind}-${dimensions}.png`, Buffer.from(shot.data, 'base64'));
-      await session.detach();
+      await captureReviewViewport(page, `artifacts/interaction-review/${platform}-${kind}-${dimensions}.png`, { force: clipped.length > 0 });
+
     }
     expect(clipped, kind).toEqual([]);
-    if (kind === 'loading') await root.screenshot({ path: `artifacts/interaction-review/${platform}-loading-${await page.evaluate(() => innerWidth)}.png` });
+    if (kind === 'loading') await captureReview(root, { path: `artifacts/interaction-review/${platform}-loading-${await page.evaluate(() => innerWidth)}.png` });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     await expect(root.locator('.code-block, details')).toHaveCount(0);
   }
@@ -51,7 +51,7 @@ async function layout(page: Page, platform: string) {
 for (const platform of platforms) {
   for (const width of layoutWidths(platform, [320, 375, 1440])) test(`${platform}: interaction fits ${width}px`, async ({ page }) => {
     test.setTimeout(180000); await page.emulateMedia({ reducedMotion: 'reduce' }); await page.setViewportSize({ width, height: 1000 });
-    await layout(page, platform); await page.screenshot({ path: `artifacts/interaction-review/${platform}-${width}.png` });
+    await layout(page, platform); await captureReview(page, { path: `artifacts/interaction-review/${platform}-${width}.png` });
   });
   for (const scale of checksZoom(platform) ? [1.5, 2] : []) test(`${platform}: interaction real ${scale * 100}% browser zoom`, async () => {
     test.setTimeout(180000);
@@ -63,9 +63,9 @@ for (const platform of platforms) {
       const page = context.pages()[0]; await layout(page, platform);
       expect(await page.evaluate(() => innerWidth)).toBe(Math.round(1440 / scale));
       expect(await page.evaluate(() => devicePixelRatio)).toBeCloseTo(scale, 3);
-      const session = await context.newCDPSession(page), shot = await session.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+
       await mkdir('artifacts/interaction-review', { recursive: true });
-      await writeFile(`artifacts/interaction-review/${platform}-zoom-${scale * 100}.png`, Buffer.from(shot.data, 'base64')); await session.detach();
+      await captureReviewViewport(page, `artifacts/interaction-review/${platform}-zoom-${scale * 100}.png`);
     } finally { await context.close(); await rm(directory, { recursive: true, force: true }); }
   });
   test(`${platform}: coarse pointer completes all examples without hover`, async ({ browser }) => {

@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { test, expect } from '@playwright/test';
 import { createRequire } from 'node:module';
 import { openFixture } from './packed-fixture';
@@ -24,7 +25,7 @@ for (const platform of ['react', 'vue3', 'native']) test(`${platform}: all 6,220
       expect(result.nodes, expected.name).toEqual(allIcons[expected.name][expected.filled ? 'filled' : 'outline'].map(([, attrs]: any) => attrs.d));
       expect(result.nonempty, expected.name).toBe(true);
     }
-    if (!offset) await page.screenshot({ path: `artifacts/icons-review/all-shapes-${platform}.png` });
+    if (!offset) await captureReview(page, { path: `artifacts/icons-review/all-shapes-${platform}.png` });
   }
   expect(errors).toEqual([]);
 });

@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { test, expect, type Locator, type Page } from '@playwright/test';
 
 test.use({ reducedMotion: 'reduce' });
@@ -30,7 +31,7 @@ for (const platform of ['vue3', 'react', 'native']) {
     await expect(runner.frameLocator('iframe').getByRole('button', { name: '저장', exact: true }).first()).toBeEnabled();
     await choose(page, '프리셋', '기본');
     await expect(runner.getByRole('switch', { name: '아이콘 전용', exact: true })).toBeVisible();
-    if (platform === 'react') await runner.screenshot({ path: 'artifacts/runner-desktop.png' });
+    if (platform === 'react') await captureReview(runner, { path: 'artifacts/runner-desktop.png' });
   });
 
   test(`${platform}: wide inspector edits preserve input and return focus`, async ({ page }) => {
@@ -43,7 +44,7 @@ for (const platform of ['vue3', 'react', 'native']) {
     await expect(input).toHaveValue('확대해도 유지');
     await dialog.getByRole('switch', { name: '읽기 전용', exact: true }).press('Space');
     await expect(input).not.toBeEditable();
-    if (platform === 'react') await page.screenshot({ path: 'artifacts/runner-wide.png' });
+    if (platform === 'react') await captureReview(page, { path: 'artifacts/runner-wide.png' });
     await dialog.getByRole('button', { name: '닫기', exact: true }).click();
     await expect(page.getByRole('button', { name: '넓게 보기', exact: true })).toBeFocused();
     await expect(frame.getByRole('textbox', { name: '목록 이름', exact: true })).toHaveValue('확대해도 유지');
@@ -80,7 +81,7 @@ test('actual canvas width stays accurate on mobile and all tools remain reachabl
   await expect(runner.getByRole('group', { name: '동작', exact: true })).toBeVisible();
   await expect(runner.getByRole('group', { name: '상태', exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.screenshot({ path: 'artifacts/runner-mobile.png', fullPage: true });
+  await captureReview(page, { path: 'artifacts/runner-mobile.png', fullPage: true });
 });
 
 test('closed layer examples use a compact canvas and grow when opened', async ({ page }) => {

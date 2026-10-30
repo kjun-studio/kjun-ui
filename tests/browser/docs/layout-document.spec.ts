@@ -1,3 +1,4 @@
+import { captureReview, captureReviewViewport } from '../review-captures';
 import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { sectionCount } from './docs-data';
@@ -36,7 +37,7 @@ for (const width of [390, 1280, 1440]) test(`layout document: readable criteria,
   await mkdir('artifacts/layout-ux', { recursive: true });
   for (const id of ['width', 'spacing', 'columns', 'cta', 'platforms']) {
     await page.locator('#' + id).evaluate(element => element.scrollIntoView({ block: 'start', behavior: 'instant' }));
-    await page.screenshot({ path: `artifacts/layout-ux/${id}-${width}.png` });
+    await captureReview(page, { path: `artifacts/layout-ux/${id}-${width}.png` });
   }
   await page.goto('/elevation?platform=react#shadows');
   await expect(page.getByRole('button', { name: '문서 플랫폼', exact: true })).toBeEnabled();
@@ -105,9 +106,8 @@ test('layout: actual 200% zoom preserves readable document and live input', asyn
       await noOverflow(page);
     }
     await page.locator('#width').scrollIntoViewIfNeeded();
-    const session = await context.newCDPSession(page);
-    const shot = await session.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+
     await mkdir('artifacts/layout-ux', { recursive: true });
-    await writeFile('artifacts/layout-ux/zoom-200.png', Buffer.from(shot.data, 'base64'));
+    await captureReviewViewport(page, 'artifacts/layout-ux/zoom-200.png');
   } finally { await context.close(); await rm(directory, { recursive: true, force: true }); }
 });

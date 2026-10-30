@@ -1,3 +1,4 @@
+import { captureReview, captureReviewViewport } from '../review-captures';
 import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { componentSpecs } from '../../../apps/docs/components/docs/token-component-specs';
@@ -137,7 +138,7 @@ for (const width of [1280, 1440, 390]) {
       await noClipping(page);
     }
     await shortcuts(page).getByRole('link', { name: '모서리', exact: true }).click();
-    await page.screenshot({ path: testInfo.outputPath(`tokens-${width}.png`), fullPage: true });
+    await captureReview(page, { path: testInfo.outputPath(`tokens-${width}.png`), fullPage: true });
   });
 }
 
@@ -176,10 +177,9 @@ test('tokens: actual 200% browser zoom keeps content and navigation usable', asy
       await noClipping(page);
     }
     // Capture the zoomed viewport directly; Playwright's CSS-sized clip can be blank at 200%.
-    const cdp = await context.newCDPSession(page);
-    const screenshot = await cdp.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+
     await mkdir(testInfo.outputDir, { recursive: true });
-    await writeFile(testInfo.outputPath('tokens-zoom-200.png'), Buffer.from(screenshot.data, 'base64'));
-    await cdp.detach();
+    await captureReviewViewport(page, testInfo.outputPath('tokens-zoom-200.png'));
+
   } finally { await context.close(); await rm(directory, { recursive: true, force: true }); }
 });

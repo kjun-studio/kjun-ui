@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { openExampleSettings } from './example-settings';
 import { test, expect, type Page } from '@playwright/test';
 import { guideTopics } from '../../../shared/document-navigation';
@@ -151,7 +152,7 @@ test('keyboard shortcuts stay visible at mobile and desktop sizes, and platform 
     await expect(page.locator('#api .api-platform')).toContainText('Vue 3');
     await shortcuts(page).getByRole('link', { name: 'API', exact: true }).click();
     await aligned(page, 'api');
-    await page.screenshot({ path: `artifacts/document-navigation-${width}.png` });
+    await captureReview(page, { path: `artifacts/document-navigation-${width}.png` });
   }
 });
 

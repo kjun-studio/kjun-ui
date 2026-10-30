@@ -1,3 +1,4 @@
+import { captureReview } from '../review-captures';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { UsageBuilder, expr } from '../../../shared/usage-examples/builder';
@@ -112,14 +113,14 @@ for (const platform of ['vue3', 'react', 'native'] as const) {
       await expect(links.getByText('이 예제에 필요한 설정', { exact: true })).toHaveCount(Number(item.feedback || item.domain));
       await links.scrollIntoViewIfNeeded();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-      if (item.domain) await page.screenshot({ path: `artifacts/setup-links-${platform}-390.png` });
+      if (item.domain) await captureReview(page, { path: `artifacts/setup-links-${platform}-390.png` });
       const target = item.feedback ? 'feedback-setup' : item.domain ? 'domain-colors' : 'connect';
       const link = links.locator(`a[href$="#${target}"]`);
       await link.focus(); await page.keyboard.press('Enter');
       await expect(page).toHaveURL(`/getting-started?platform=${platform}#${target}`);
       await expect(page.locator(`#${target} :is(h2, h3)`).first()).toBeInViewport();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-      if (item.domain) await page.screenshot({ path: `artifacts/setup-guide-${platform}-390.png` });
+      if (item.domain) await captureReview(page, { path: `artifacts/setup-guide-${platform}-390.png` });
       await page.goBack();
       await expect(page).toHaveURL(`${item.path}?platform=${platform}`);
       await expect(page.getByRole('button', { name: '문서 플랫폼', exact: true })).toContainText(platform === 'vue3' ? 'Vue 3' : platform === 'native' ? 'React Native' : 'React');
@@ -129,7 +130,7 @@ for (const platform of ['vue3', 'react', 'native'] as const) {
       await page.goto(`/getting-started?platform=${platform}#${id}`);
       await expect(page.locator(`#${id} :is(h2, h3)`).first()).toBeInViewport();
     }
-    await page.screenshot({ path: `artifacts/setup-guide-${platform}-1440.png` });
+    await captureReview(page, { path: `artifacts/setup-guide-${platform}-1440.png` });
   });
 }
 

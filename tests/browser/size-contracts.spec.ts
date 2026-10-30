@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { test, expect, type Locator } from '@playwright/test';
 import { tokens } from '../../packages/tokens/dist/index.js';
 import { openFixture } from './packed-fixture';
@@ -45,7 +46,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await dimensions(page.getByTestId('selection'), e.selection.dotSize, e.selection.dotSize);
     await page.getByTestId('selection').getByRole('button', { name: '선택 B', exact: true }).click();
     await expect(page.getByTestId('events')).toHaveText('75/true/b');
-    await page.getByTestId('selection').screenshot({ path: info.outputPath('size-selection.png') });
+    await captureReview(page.getByTestId('selection'), { path: info.outputPath('size-selection.png') });
   });
 
   test(`${platform}: packed size roles drive base, list, form and chart skeletons`, async ({ page }, info) => {
@@ -64,7 +65,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await dimensions(page.getByTestId('form-skeleton'), e.skeleton.formLabelWidth, e.skeleton.formLabelHeight);
     await dimensions(page.getByTestId('form-skeleton'), undefined, tokens.input.md.lineHeight * 3 + tokens.input.md.textareaPaddingY * 2 + 2 * tokens.border.controlWidth);
     await dimensions(page.getByTestId('chart-skeleton'), undefined, e.chartSkeleton.height);
-    await page.getByTestId('chart-skeleton').screenshot({ path: info.outputPath('size-chart.png') });
+    await captureReview(page.getByTestId('chart-skeleton'), { path: info.outputPath('size-chart.png') });
   });
 
   test(`${platform}: packed size roles drive financial indicators`, async ({ page }) => {

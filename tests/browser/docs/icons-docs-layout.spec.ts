@@ -1,3 +1,4 @@
+import { captureReview, captureReviewViewport } from '../review-captures';
 import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { setIconFilled, setIconSize, chooseIcon, launchIcon } from './icons-docs-helpers';
@@ -19,7 +20,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     test.setTimeout(180000); await page.setViewportSize({ width, height: 1000 });
     await layout(page, platform);
     await page.locator('#catalog').scrollIntoViewIfNeeded();
-    await page.screenshot({ path: `artifacts/icons-review/${platform}-${width}.png`, fullPage: true });
+    await captureReview(page, { path: `artifacts/icons-review/${platform}-${width}.png`, fullPage: true });
   });
   if (checksZoom(platform)) test(`${platform}: actual browser 200% zoom`, async () => {
     test.setTimeout(180000);
@@ -32,10 +33,9 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.locator('.icon-detail > h3').scrollIntoViewIfNeeded();
       await expect(page.locator('.icon-detail > h3')).toBeInViewport();
       // Playwright's screenshot clip uses unzoomed coordinates; capture the real viewport.
-      const session = await context.newCDPSession(page);
-      const shot = await session.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
-      await writeFile(`artifacts/icons-review/${platform}-zoom-200.png`, Buffer.from(shot.data, 'base64'));
-      await session.detach();
+
+      await captureReviewViewport(page, `artifacts/icons-review/${platform}-zoom-200.png`);
+
     } finally { await context.close(); await rm(directory, { recursive: true, force: true }); }
   });
   test(`${platform}: touch selection and example`, async ({ browser }) => {

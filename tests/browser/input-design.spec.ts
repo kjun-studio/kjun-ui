@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { demoPalettes } from '../../shared/demo-colors';
 const roleColor = (palette: string, role: 'inputBorderFocus' | 'danger') => {
   const hex = demoPalettes[palette as keyof typeof demoPalettes][role];
@@ -109,22 +110,22 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(bounds.right).toBeGreaterThan(60);
       expect(bounds.width - bounds.left - bounds.right).toBeGreaterThan(70);
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
-      await page.screenshot({ path: `artifacts/input-design-${platform}-${palette}-${width}-default.png`, fullPage: true });
+      await captureReview(page, { path: `artifacts/input-design-${platform}-${palette}-${width}-default.png`, fullPage: true });
       await field(page, 'input').focus();
       await expect(field(page, 'input')).toHaveCSS('border-top-color', roleColor(palette, 'inputBorderFocus'));
-      await page.screenshot({ path: `artifacts/input-design-${platform}-${palette}-${width}-focus.png`, fullPage: true });
+      await captureReview(page, { path: `artifacts/input-design-${platform}-${palette}-${width}-focus.png`, fullPage: true });
       await field(page, 'select').click();
       const options = page.getByRole(platform === 'native' ? 'radio' : 'option');
       await expect(options.first()).toBeVisible();
       await expect(options.first()).toHaveCSS('border-radius', '8px');
       expect((await options.first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
       await expect(field(page, 'select')).toHaveCSS('border-top-color', roleColor(palette, 'inputBorderFocus'));
-      await page.screenshot({ path: `artifacts/input-design-${platform}-${palette}-${width}-open.png`, fullPage: true });
+      await captureReview(page, { path: `artifacts/input-design-${platform}-${palette}-${width}-open.png`, fullPage: true });
       await options.filter({ hasText: '나만 보기' }).click();
       await expect(field(page, 'select')).toContainText('나만 보기');
       await configure(page, { error: true });
       await expect(field(page, 'input')).toHaveCSS('border-top-color', roleColor(palette, 'danger'));
-      await page.screenshot({ path: `artifacts/input-design-${platform}-${palette}-${width}-error.png`, fullPage: true });
+      await captureReview(page, { path: `artifacts/input-design-${platform}-${palette}-${width}-error.png`, fullPage: true });
     }
   });
 }

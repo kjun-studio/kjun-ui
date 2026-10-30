@@ -1,6 +1,8 @@
-// Builds the docs app, serves that build on its own port and runs the docs Playwright suite
+// Verifies or builds the docs app, serves that build on its own port and runs the docs Playwright suite
 // against it, so tests never hit the on-demand compiling dev server or a stale build.
 import { spawn } from 'node:child_process';
+import { resolve } from 'node:path';
+import { ensureDocsBuild } from './docs-build-cache.mjs';
 import { assertDocsPortFree, planDocsTests } from './docs-test-profiles.mjs';
 
 const port = process.env.KJUN_DOCS_TEST_PORT || '4174';
@@ -22,7 +24,12 @@ if (plan.listOnly) {
 } else {
   await assertDocsPortFree(url);
   // Serial suites run for tens of minutes; give preview frames 30s to report ready in the test build.
-  await run('npm', ['--prefix', 'apps/docs', 'run', 'build'], { env: { ...process.env, KJUN_PREVIEW_READY_MS: '30000' } });
+  const buildEnv = { ...process.env, KJUN_PREVIEW_READY_MS: '30000' };
+  await ensureDocsBuild({
+    root: resolve(import.meta.dirname, '..'), env: buildEnv,
+    verify: () => run(process.execPath, ['scripts/docs-dependencies.mjs', '--check'], { env: buildEnv }),
+    build: () => run('npm', ['--prefix', 'apps/docs', 'run', 'build'], { env: buildEnv }),
+  });
   await assertDocsPortFree(url); // 빌드하는 동안 다른 서버가 포트를 차지했을 수 있다.
   const server = spawn('node', ['node_modules/vinext/dist/cli.js', 'start', '--port', port, '--hostname', '127.0.0.1'],
     { cwd: 'apps/docs', stdio: ['ignore', 'ignore', 'inherit'] });

@@ -1,3 +1,4 @@
+import { captureReview, captureReviewViewport } from '../review-captures';
 import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { layoutWidths, checksZoom } from './motion-docs-helpers';
@@ -14,7 +15,7 @@ async function layout(page: Page, platform: string, size: string) {
     }
     await expect(usage.locator('pre')).toHaveCSS('overflow-x', 'auto');
     await expect(usage.locator('pre')).toHaveCSS('max-height', '380px');
-    if (platform === 'react' && size !== 'zoom') await usage.screenshot({ path: `artifacts/usage-separation/${path.includes('components') ? 'basic' : 'implementation'}-${size}.png` });
+    if (platform === 'react' && size !== 'zoom') await captureReview(usage, { path: `artifacts/usage-separation/${path.includes('components') ? 'basic' : 'implementation'}-${size}.png` });
     await usage.locator('pre').focus(); await page.keyboard.press('ArrowRight');
     await expect(usage.locator('pre')).toBeFocused();
     await usage.locator('pre').evaluate(node => { node.scrollLeft = 0; (node as HTMLElement).blur(); });
@@ -34,10 +35,9 @@ for (const platform of ['vue3', 'react', 'native']) {
       const page = context.pages()[0];
       await layout(page, platform, 'zoom');
       expect(await page.evaluate(() => ({ width: innerWidth, ratio: devicePixelRatio }))).toEqual({ width: 720, ratio: 2 });
-      const session = await context.newCDPSession(page);
-      const shot = await session.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+
       await mkdir('artifacts/usage-separation', { recursive: true });
-      await writeFile(`artifacts/usage-separation/${platform}-zoom.png`, Buffer.from(shot.data, 'base64'));
+      await captureReviewViewport(page, `artifacts/usage-separation/${platform}-zoom.png`);
     } finally { await context.close(); await rm(directory, { recursive: true, force: true }); }
   });
 }

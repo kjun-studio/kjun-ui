@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { expect, test, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 import { longMenuLabel } from '../fixtures/dropdown-design-cases';
@@ -24,7 +25,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(first).toHaveCSS('outline-width', '2px');
     await expect(first).toHaveCSS('outline-offset', '-2px');
     await expect(first).toHaveCSS('background-color', 'rgb(224, 237, 255)');
-    if (trigger === 'menu-button') await page.screenshot({
+    if (trigger === 'menu-button') await captureReview(page, {
       path: `artifacts/dropdown-design-${platform}-light.png`, clip: { x: 0, y: 0, width: 600, height: 320 },
     });
     await page.keyboard.press('Enter');
@@ -61,7 +62,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(wide.width).toBeGreaterThan(240);
     await expect(panel(page, platform)).toHaveCSS('background-color', 'rgb(24, 24, 27)');
     await expect(item(page, longMenuLabel)).toHaveCSS('background-color', 'rgb(33, 58, 97)');
-    await page.screenshot({ path: `artifacts/dropdown-design-${platform}-dark.png` });
+    await captureReview(page, { path: `artifacts/dropdown-design-${platform}-dark.png` });
     await page.keyboard.press('Escape');
     await page.setViewportSize({ width: 320, height: 640 });
     await button.press('Enter');
@@ -71,7 +72,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       return rect.x >= 8 && rect.x + rect.width <= 312;
     }).toBe(true);
     expect(await item(page, longMenuLabel).evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
-    await page.screenshot({ path: `artifacts/dropdown-design-${platform}-narrow.png` });
+    await captureReview(page, { path: `artifacts/dropdown-design-${platform}-narrow.png` });
   });
 
   test(`${platform}: one current item, muted leading icons, aligned labels and a shared divider role`, async ({ page }) => {

@@ -1,3 +1,4 @@
+import { captureReview } from './review-captures';
 import { expect, test, type Page } from '@playwright/test';
 import { tokens } from '../../packages/tokens/dist/index.js';
 import { openFixture } from './packed-fixture';
@@ -17,7 +18,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     for (const label of labels) expect((await page.getByText(label, { exact: true }).boundingBox())!.height).toBeLessThanOrEqual(caption + 1);
     const amount = page.getByText(/^₩?1,234,567$/).first();
     expect((await amount.boundingBox())!.height).toBeLessThanOrEqual(tokens.typography.numberMd.lineHeightPx + 1);
-    await page.screenshot({ path: `artifacts/kpi-secondary-${platform}-320.png` });
+    await captureReview(page, { path: `artifacts/kpi-secondary-${platform}-320.png` });
     await page.setViewportSize({ width: tokens.responsive.kpiHeroSecondary + 120, height: 800 });
     await expect.poll(async () => new Set(await tops(page)).size).toBe(1);
   });

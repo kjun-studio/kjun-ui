@@ -1,3 +1,4 @@
+import { captureReview, captureReviewViewport } from '../review-captures';
 import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { platforms, layoutWidths, checksZoom } from './motion-docs-helpers';
@@ -65,7 +66,7 @@ for (const platform of platforms) {
   for (const width of layoutWidths(platform, [320, 375, 1440])) test(`${platform}: accessibility fits ${width}px`, async ({ page }) => {
     test.setTimeout(180000); await page.emulateMedia({ reducedMotion: 'reduce' }); await page.setViewportSize({ width, height: 1000 });
     await layout(page, platform); await revealFormForCapture(page);
-    await page.screenshot({ path: `artifacts/accessibility-review/${platform}-${width}.png` });
+    await captureReview(page, { path: `artifacts/accessibility-review/${platform}-${width}.png` });
   });
   for (const scale of checksZoom(platform) ? [1.5, 2] : []) test(`${platform}: accessibility real ${scale * 100}% browser zoom`, async () => {
     test.setTimeout(180000);
@@ -78,9 +79,9 @@ for (const platform of platforms) {
       expect(await page.evaluate(() => innerWidth)).toBe(Math.round(1440 / scale));
       expect(await page.evaluate(() => devicePixelRatio)).toBeCloseTo(scale, 3);
       await revealFormForCapture(page);
-      const session = await context.newCDPSession(page), shot = await session.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+
       await mkdir('artifacts/accessibility-review', { recursive: true });
-      await writeFile(`artifacts/accessibility-review/${platform}-zoom-${scale * 100}.png`, Buffer.from(shot.data, 'base64')); await session.detach();
+      await captureReviewViewport(page, `artifacts/accessibility-review/${platform}-zoom-${scale * 100}.png`);
     } finally { await context.close(); await rm(directory, { recursive: true, force: true }); }
   });
 }

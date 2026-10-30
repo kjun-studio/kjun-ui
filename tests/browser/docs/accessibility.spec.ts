@@ -1,3 +1,4 @@
+import { captureReview, captureReviewViewport } from '../review-captures';
 import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, readFile, rm } from 'node:fs/promises';
 import generated from '../../../apps/docs/lib/generated/accessibility.json' with { type: 'json' };
@@ -107,10 +108,10 @@ test('390px evidence layout contains text, selectors, observations and downloads
   await page.goto('/verification?component=KjunFeedbackProvider&platform=native'); await ready(page);
   await overflow(page); await page.getByText('검증한 패키지 버전·무결성', { exact: true }).click(); await overflow(page);
   await page.locator('#labeling').scrollIntoViewIfNeeded(); await overflow(page);
-  await page.screenshot({ path: 'artifacts/accessibility-390.png', fullPage: true });
+  await captureReview(page, { path: 'artifacts/accessibility-390.png', fullPage: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/verification?component=KjunInput&platform=react'); await ready(page);
-  await page.screenshot({ path: 'artifacts/accessibility-desktop.png', fullPage: true });
+  await captureReview(page, { path: 'artifacts/accessibility-desktop.png', fullPage: true });
 });
 
 test('actual browser 200% zoom keeps evidence controls and text readable', async () => {
@@ -122,8 +123,7 @@ test('actual browser 200% zoom keeps evidence controls and text readable', async
     const page = await context.newPage(); await page.goto((process.env.KJUN_TEST_URL || 'http://127.0.0.1:4173') + '/verification?component=KjunInput&platform=react'); await ready(page);
     expect(await page.evaluate(() => devicePixelRatio)).toBeGreaterThanOrEqual(2);
     await overflow(page); await expect(page.getByRole('button', { name: '대상', exact: true })).toBeVisible();
-    const cdp = await context.newCDPSession(page);
-    const screenshot = await cdp.send('Page.captureScreenshot', { captureBeyondViewport: false });
-    await writeFile('artifacts/accessibility-zoom-200.png', Buffer.from(screenshot.data, 'base64'));
+
+    await captureReviewViewport(page, 'artifacts/accessibility-zoom-200.png');
   } finally { await context.close(); await rm(directory, { recursive: true, force: true }); }
 });
