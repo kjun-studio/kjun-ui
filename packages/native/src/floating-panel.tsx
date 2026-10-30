@@ -90,6 +90,7 @@ export function FloatingPanel({
   focusOnOpen = false,
   reveal,
   header,
+  popoverWidth = tokens.extensions.popover.width,
   nonModal = false,
 }: {
   open: boolean;
@@ -112,6 +113,8 @@ export function FloatingPanel({
   reveal?: RefObject<{ y: number; height: number } | null>;
   /** Popover header drawn above the scroll view, so only the body scrolls. */
   header?: ReactNode;
+  /** Popover width step (popover.widths); matchTriggerWidth wins. */
+  popoverWidth?: number;
   /** Popover modal={false}: screen readers are not confined to the panel. */
   nonModal?: boolean;
 }) {
@@ -167,11 +170,12 @@ export function FloatingPanel({
     ? Math.min(tooltipWidth, panel.width || tooltipWidth)
     : Math.min(
       maximumWidth,
-      Math.max(minimumPanelWidth, contentSizedMenu ? panel.width : matchTriggerWidth ? anchor.width : tokens.extensions.popover.width)
+      Math.max(minimumPanelWidth, contentSizedMenu ? panel.width : matchTriggerWidth ? anchor.width : popoverWidth)
     );
   const available = Math.min(maxHeight ?? (field ? tokens.extensions.menu.listMaxHeight : tokens.extensions.floating.maxHeight), window.height - 2 * tokens.extensions.floating.viewportInset),
-    // The header sits outside the measured scroll content but still takes room when choosing a side.
-    height = Math.min(panel.height + (header != null ? headerHeight : 0), available),
+    // The scroll content leaves out the header and the panel border; both still take room when choosing a side.
+    frame = tooltip || contentSizedMenu ? 0 : 2 * tokens.border.defaultWidth,
+    height = Math.min(panel.height + (header != null ? headerHeight : 0) + frame, available),
     roomAbove = anchor.y - gap - tokens.extensions.floating.viewportInset,
     roomBelow = window.height - anchor.y - anchor.height - gap - tokens.extensions.floating.viewportInset,
     // Either side flips when the panel does not fit and the other side has more room, like Web.
@@ -286,7 +290,7 @@ export function FloatingPanel({
             maxWidth: tooltip ? tooltipWidth : maximumWidth,
             maxHeight: available,
             borderRadius: popover ? tokens.extensions.popover.radius : field ? tokens.radius.radius12 : tokens.extensions.menu.radius,
-            borderWidth: popover ? 0 : tokens.border.defaultWidth,
+            borderWidth: tokens.border.defaultWidth,
             borderColor: colors.border,
             backgroundColor: colors.surface,
             boxShadow: (tooltip ? tokens.extensions.tooltip.elevation : popover ? tokens.extensions.popover.elevation : tokens.extensions.menu.elevation).map(({ colorRole, ...layer }) => ({ ...layer, color: colors[colorRole] })),
@@ -300,18 +304,16 @@ export function FloatingPanel({
                 paddingTop: tokens.extensions.popover.padding,
                 paddingHorizontal: tokens.extensions.popover.padding,
                 paddingBottom: tokens.extensions.popover.headerPaddingBottom,
-                borderBottomWidth: tokens.border.defaultWidth,
-                borderBottomColor: colors.divider,
               }}
             >
-              {content(header, typeStyle("cardTitle"))}
+              {content(header, typeStyle("control"))}
             </View>
           )}
           <ScrollView
             ref={scroll}
             onLayout={(event) => { viewport.current = event.nativeEvent.layout.height; }}
             keyboardShouldPersistTaps="handled"
-            style={{ maxHeight: available - (header != null ? headerHeight : 0), flexShrink: 1 }}
+            style={{ maxHeight: available - (header != null ? headerHeight : 0) - frame, flexShrink: 1 }}
             contentContainerStyle={{ padding: menu || field ? tokens.extensions.menu.padding : 0 }}
             onContentSizeChange={(width, height) => {
               if (contentSizedMenu) return;

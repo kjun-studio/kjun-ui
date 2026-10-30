@@ -13455,6 +13455,13 @@
         "description": ""
       },
       {
+        "name": "width",
+        "type": "\"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "Width step (popover.widths): sm 192, md 240 (default), lg 320. matchTriggerWidth takes the trigger's width instead."
+      },
+      {
         "name": "maxHeight",
         "type": "string | number",
         "required": false,
@@ -13575,6 +13582,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "width",
+        "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Width step (popover.widths): sm 192, md 240 (default), lg 320. matchTriggerWidth takes the trigger's width instead."
       },
       {
         "name": "maxHeight",
@@ -13731,6 +13745,13 @@
         "required": false,
         "default": "—",
         "description": "Fixed header above the body; only the body scrolls and maxHeight covers both."
+      },
+      {
+        "name": "width",
+        "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Width step (popover.widths): sm 192, md 240 (default), lg 320. matchTriggerWidth takes the trigger's width instead."
       },
       {
         "name": "modal",

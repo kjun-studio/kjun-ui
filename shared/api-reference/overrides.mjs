@@ -252,6 +252,7 @@ set("FormGroup", { labelHidden: { default:"false", summary:"라벨을 화면에�
 set("Select", { id: { summary:"트리거 버튼 id입니다. 바깥 <label for>가 이름을 붙일 수 있고, 생략하면 FormGroup의 id를 씁니다. id나 FormGroup이 있으면 placeholder를 이름으로 쓰지 않습니다." }, ariaDescribedBy: { summary:"추가 설명 요소 id입니다. FormGroup의 안내·오류와 중복 없이 합칩니다. Vue는 ariaDescribedby입니다." }, ariaDescribedby: { summary:"추가 설명 요소 id입니다. FormGroup의 안내·오류와 중복 없이 합칩니다." } });
 set("Popover", { modal: { default:"true", summary:"false이면 페이지를 막지 않고, 열릴 때 초점을 가져가지 않습니다(focusOnOpen이면 가져감). 마지막 항목에서 Tab은 닫고 트리거 다음으로, 첫 항목에서 Shift+Tab은 트리거로 갑니다. 바깥을 누르거나 초점이 밖으로 나가면 닫히며 초점을 되돌리지 않고, Escape는 트리거로 돌아갑니다." } });
 set("Popover", { header: { summary:"고정 머리글입니다. 본문만 스크롤하며 maxHeight는 머리글을 포함한 높이입니다. 웹에서는 ariaLabel이 없으면 대화상자 이름이 되고, Native는 ariaLabel을 지정해야 합니다. Vue는 header 슬롯을 씁니다." } });
+set("Popover", { width: { default:"md", summary:"패널 너비 단계입니다. sm 192px·md 240px·lg 320px이며, matchTriggerWidth를 켜면 트리거 너비를 따릅니다." } });
 set("Popover", { returnFocus: { summary:"닫힌 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받습니다. 대상이 없거나 문서에서 사라졌으면 트리거로 돌아갑니다." } });
 set("Card", { dividers: { default:"false", summary:"헤더·본문·푸터 사이 구분선을 표시합니다. 기본은 구분선 없이 16px 간격으로 나눕니다." } });
 set("ChartSkeleton", {

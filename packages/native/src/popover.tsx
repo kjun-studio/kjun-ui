@@ -20,6 +20,7 @@ import { FloatingPanel,LayerTrigger } from "./floating-panel";
 import { KText,content } from "./internal";
 import { tokens } from "@kjun-ui/tokens";
 import { useKjunStyles } from "./provider";
+import { ActionSizeContext, popoverActionSize } from "../../../shared/package-runtime/action-size";
 export interface KjunPopoverProps {
   noPadding?: boolean;
   open?: boolean;
@@ -33,6 +34,8 @@ export interface KjunPopoverProps {
   placement?: "top" | "bottom" | "left" | "right";
   /** Fixed header above the body; only the body scrolls and maxHeight covers both. */
   header?: ReactNode;
+  /** Width step (popover.widths): sm 192, md 240 (default), lg 320. matchTriggerWidth takes the trigger's width instead. */
+  width?: "sm" | "md" | "lg";
   /** false stops confining screen readers to the panel; Native has no Tab order to release. */
   modal?: boolean;
   trigger: ReactNode | ((open: boolean) => ReactNode);
@@ -50,6 +53,7 @@ export function KjunPopover({
   ariaLabel,
   placement = "bottom",
   header,
+  width = "md",
   modal = true,
   trigger,
   children,
@@ -83,12 +87,16 @@ export function KjunPopover({
         popover
         focusOnOpen={focusOnOpen}
         ariaLabel={ariaLabel}
-        header={header != null ? content(header, { ...typeStyle("cardTitle"), color: colors.text }) : undefined}
+        header={header != null ? content(header, { ...typeStyle("control"), color: colors.text }) : undefined}
+        popoverWidth={tokens.extensions.popover.widths[width]}
         nonModal={!modal}
       >
-        <View style={{ padding: noPadding ? 0 : tokens.extensions.popover.padding, gap: noPadding ? 0 : tokens.extensions.popover.gap }}>
-          {content(typeof children === "function" ? children(() => change(false)) : children,
-            Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } as TextStyle : undefined)}
+        {/* Under a header the body starts right after the header's short gap, like Web. */}
+        <View style={{ padding: noPadding ? 0 : tokens.extensions.popover.padding, ...(header != null && !noPadding ? { paddingTop: 0 } : {}), gap: noPadding ? 0 : tokens.extensions.popover.gap }}>
+          <ActionSizeContext.Provider value={popoverActionSize}>
+            {content(typeof children === "function" ? children(() => change(false)) : children,
+              Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } as TextStyle : undefined)}
+          </ActionSizeContext.Provider>
         </View>
       </FloatingPanel>
     </>

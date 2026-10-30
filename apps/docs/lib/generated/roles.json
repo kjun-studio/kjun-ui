@@ -1078,9 +1078,7 @@
       "--divider"
     ],
     "implementationFiles": [
-      "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
-      "packages/native/src/floating-panel.tsx",
       "packages/native/src/list.tsx"
     ]
   },

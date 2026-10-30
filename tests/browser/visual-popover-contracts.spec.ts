@@ -103,6 +103,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.getByRole('button',{name:'머리글 시험 열기'}).click();
     await expect(page.locator('.kjun-popover-header')).toHaveCSS('padding-top',`${tokens.extensions.popover.padding}px`);
     await expect(page.locator('.kjun-popover-header')).toHaveCSS('padding-bottom',`${(tokens.extensions.popover as any).headerPaddingBottom}px`);
+    // A light title on the panel: control type and no divider under it.
+    await expect(page.locator('.kjun-popover-header')).toHaveCSS('font-size',`${tokens.typography.control.fontSizePx}px`);
+    await expect(page.locator('.kjun-popover-header')).toHaveCSS('border-bottom-width','0px');
     await expect(page.locator('.kjun-popover-content')).toHaveCSS('padding-top','0px');
   });
 

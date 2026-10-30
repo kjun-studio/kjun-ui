@@ -10,7 +10,7 @@ async function close(page: Page) {
   await expect(page.getByTestId('open')).toHaveText('false');
 }
 for (const platform of ['react', 'vue3', 'native']) {
-  test(`${platform}: popovers have subtle borderless surfaces and preserve placement, width and overflow`, async ({ page }) => {
+  test(`${platform}: popovers have a bordered subtle surface and preserve placement, width and overflow`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const palette of ['default', 'dark']) {
       await page.setViewportSize({ width: 1024, height: 768 });
@@ -22,11 +22,11 @@ for (const platform of ['react', 'vue3', 'native']) {
         const popup = panel(page, platform);
         await expect(popup).toBeVisible();
         if (placement === 'bottom') {
-          await expect(popup).toHaveCSS('border-width', '0px');
+          await expect(popup).toHaveCSS('border-top-width', '1px');
           await expect(popup).toHaveCSS('border-radius', '12px');
           await expect(popup).toHaveCSS('box-shadow', 'rgba(0, 0, 0, 0.04) 0px 2px 8px 0px');
           await expect(popup).toHaveCSS('width', '240px');
-          await expect(popup).toHaveCSS('height', '52px');
+          await expect(popup).toHaveCSS('height', '54px');
           const body = popup.getByText('부가 내용을 확인하세요.', { exact: true });
           await expect(body).toHaveCSS('font-size', '14px');
           await expect(body).toHaveCSS('line-height', '20px');
@@ -45,7 +45,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await trigger(page).click();
       await expect(panel(page, platform)).toBeVisible();
       await expect.poll(async () => (await rect(panel(page, platform))).width).toBeCloseTo(matchedWidth, 0);
-      await expect(panel(page, platform)).toHaveCSS('height', '20px');
+      await expect(panel(page, platform)).toHaveCSS('height', '22px');
       await close(page);
       await page.setViewportSize({ width: 320, height: 480 });
       await configure(page, { left: 180, top: 80, width: 120, matchTriggerWidth: false, noPadding: false, maxHeight: 160, text: 'https://example.com/' + 'content'.repeat(80) });
@@ -74,14 +74,27 @@ for (const platform of ['react', 'vue3', 'native']) {
     const popup = panel(page, platform, '추가 정보'), run = popup.getByRole('button', { name: '실행', exact: true });
     await expect(run).toBeVisible();
     await expect(popup.getByText('팝오버 내용', { exact: true })).toHaveCSS('line-height', '20px');
-    await expect(run).toHaveCSS('height', '40px');
+    await expect(run).toHaveCSS('height', '32px');
     const p = await rect(popup), b = await rect(run);
     expect(b.width).toBeLessThan(100);
-    expect(b.x + b.width).toBeCloseTo(p.x + p.width - 16, 0);
+    // 16px padding inside the 1px border.
+    expect(b.x + b.width).toBeCloseTo(p.x + p.width - 17, 0);
     await run.click();
     await expect(page.getByText('팝오버 실행', { exact: true })).toHaveCount(1);
     await page.mouse.click(750, 650);
     await expect(popup).not.toBeVisible();
     await open.press('Enter'); await expect(run).toBeVisible();
   });
+  test(`${platform}: Popover width steps and unsized actions default to the small button`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openFixture(page, platform, '', 'popover-design');
+    for (const [step, width] of [['sm', 192], ['md', 240], ['lg', 320]] as const) {
+      await configure(page, { panelWidth: step, action: step === 'md' });
+      await trigger(page).click();
+      await expect.poll(async () => Math.round((await rect(panel(page, platform))).width), step).toBe(width);
+      if (step === 'md') expect(Math.round((await rect(panel(page, platform).getByRole('button', { name: '실행' }))).height)).toBe(32);
+      await close(page);
+    }
+  });
+
 }

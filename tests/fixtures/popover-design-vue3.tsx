@@ -10,10 +10,10 @@ createApp(defineComponent(() => () => {
     <main>
       <div data-testid="anchor" style={{ position: 'absolute', left: c.left + 'px', top: c.top + 'px', width: c.width + 'px' }}>
         <K.KjunPopover manualTrigger open={state.open} ariaLabel="팝오버 디자인" placement={c.placement} noPadding={c.noPadding}
-          matchTriggerWidth={c.matchTriggerWidth} maxHeight={c.maxHeight} focusOnOpen onUpdate:open={(value: boolean) => { state.open = value; }}>
+          matchTriggerWidth={c.matchTriggerWidth} width={c.panelWidth} maxHeight={c.maxHeight} focusOnOpen onUpdate:open={(value: boolean) => { state.open = value; }}>
           {{
             trigger: () => <K.KjunButton block variant="ghost" onClick={() => { state.open = !state.open; }}>팝오버 열기</K.KjunButton>,
-            default: () => c.text,
+            default: () => c.action ? [c.text, <K.KjunButton>실행</K.KjunButton>] : c.text,
           }}
         </K.KjunPopover>
       </div>

@@ -13,6 +13,8 @@ import { containTab } from "./runtime/modal";
 import { installNonModalPopover } from "../../../shared/package-runtime/popover-nonmodal";
 import { useLayer, usePopupExpanded } from "./runtime/layers";
 import { usePresence, useReducedMotion } from "./runtime/presence";
+import { KjunActionSize } from "./runtime/action-size";
+import { popoverActionSize } from "../../../shared/package-runtime/alert-action-size";
 
 const kjunPopoverProps = {
   /** Class/style for the dialog content; ordinary attrs belong to the trigger wrapper. */
@@ -22,6 +24,8 @@ const kjunPopoverProps = {
   open: { type: Boolean, default: undefined },
   manualTrigger: { type: Boolean, default: false },
   matchTriggerWidth: { type: Boolean, default: false },
+  /** Width step (popover.widths): sm 192, md 240 (default), lg 320. matchTriggerWidth takes the trigger's width instead. */
+  width: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   maxHeight: { type: [Number, String] as PropType<number | string>, default: undefined },
   flip: { type: Boolean, default: true },
   focusOnOpen: { type: Boolean, default: false },
@@ -108,7 +112,7 @@ export const KjunPopover = defineComponent({
           {slots.trigger?.({ open: open.value })}
         </div>}
         <FloatingPanel open={open.value} onOpenChange={change} trigger={() => props.anchorRect !== undefined ? anchor.value : trigger.value} repositionKey={reposition.value}
-          inside={props.anchorRect !== undefined ? () => trigger.value : undefined} panelClass={"kjun-content-popover" + (slots.header ? " kjun-popover-has-header" : "")} dialog={false}
+          inside={props.anchorRect !== undefined ? () => trigger.value : undefined} panelClass={"kjun-content-popover kjun-popover-width-" + props.width + (slots.header ? " kjun-popover-has-header" : "")} dialog={false}
           placement={props.placement} matchTriggerWidth={props.matchTriggerWidth} maxHeight={props.maxHeight} flip={props.flip}
           nonModal={!props.modal}
           returnFocus={() => {
@@ -126,12 +130,12 @@ export const KjunPopover = defineComponent({
               class={["kjun-popover-dialog", props.panelClass, props.anchorRect !== undefined && !slots.trigger ? attrs.class : undefined]} role="dialog" tabindex={-1}
               aria-label={slots.header && !props.ariaLabel ? undefined : props.ariaLabel || m.value.details}
               aria-labelledby={slots.header && !props.ariaLabel ? id + "-header" : undefined}
-              style={[{ maxHeight: typeof props.maxHeight === "number" ? props.maxHeight + "px" : props.maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: slots.header ? undefined : "auto" },
+              style={[{ maxHeight: `calc(${typeof props.maxHeight === "number" ? props.maxHeight + "px" : props.maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`} - 2 * var(--_kjun-border-default-width))`, overflowY: slots.header ? undefined : "auto" },
                 props.panelStyle, props.anchorRect !== undefined && !slots.trigger ? attrs.style as StyleValue : undefined]}>
               {slots.header && <div id={id + "-header"} class="kjun-popover-header">{slots.header({ close: () => change(false) })}</div>}
               {slots.header
-                ? <div class="kjun-popover-body"><div class="kjun-popover-content" data-no-padding={String(props.noPadding)}>{slots.default?.({ close: () => change(false) })}</div></div>
-                : <div class="kjun-popover-content" data-no-padding={String(props.noPadding)}>{slots.default?.({ close: () => change(false) })}</div>}
+                ? <div class="kjun-popover-body"><div class="kjun-popover-content" data-no-padding={String(props.noPadding)}><KjunActionSize size={popoverActionSize}>{slots.default?.({ close: () => change(false) })}</KjunActionSize></div></div>
+                : <div class="kjun-popover-content" data-no-padding={String(props.noPadding)}><KjunActionSize size={popoverActionSize}>{slots.default?.({ close: () => change(false) })}</KjunActionSize></div>}
               <FeedbackLayerOutlet />
             </section>
           ) }}

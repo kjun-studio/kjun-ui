@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import type { ButtonSize } from '@kjun-ui/tokens';
 
-export { alertActionSizes } from './alert-action-size';
+export { alertActionSizes, popoverActionSize } from './alert-action-size';
 
 /** A container's default size for buttons that leave `size` unset; an explicit size always wins. */
 export const ActionSizeContext = createContext<ButtonSize | null>(null);

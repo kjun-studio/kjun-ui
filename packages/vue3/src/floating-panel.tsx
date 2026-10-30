@@ -54,7 +54,8 @@ export const FloatingPanel = defineComponent({
       const trigger = props.trigger(), element = panel.value;
       if (!trigger || !element) return;
       const rect = trigger.getBoundingClientRect();
-      const next = computeFloatingPosition(rect, { width: element.offsetWidth, height: element.scrollHeight }, {
+      // scrollHeight leaves out the panel's own border; add it back so a top or side placement keeps the gap.
+      const next = computeFloatingPosition(rect, { width: element.offsetWidth, height: element.scrollHeight + element.offsetHeight - element.clientHeight }, {
         placement: props.placement, flip: props.flip, maxHeight: cap(),
         gap: props.field ? tokens.extensions.floating.fieldGap : tokens.extensions.floating.anchorGap,
       });

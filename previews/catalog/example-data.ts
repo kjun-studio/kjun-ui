@@ -67,7 +67,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         { noPadding:settings.noPadding, manualTrigger: true, ariaLabel: "추가 정보", open: get("popoverOpen", false), onOpenChange: change("popoverOpen") },
         [
           h("Text", { style: { lineHeight: platform === "native" ? 20 : "20px" } }, "팝오버 내용"),
-          h("KjunFormActions", { size: "md", showCancel: false, confirmText: "실행", onConfirm: () => message("팝오버 실행") }),
+          h("KjunFormActions", { size: "sm", showCancel: false, confirmText: "실행", onConfirm: () => message("팝오버 실행") }),
         ],
         { trigger: h("KjunButton", { variant: "ghost", ...action(() => set("popoverOpen", !get("popoverOpen", false))) }, "추가 정보") }
       );

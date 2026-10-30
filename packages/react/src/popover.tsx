@@ -8,6 +8,7 @@ import { Dialog, Focusable, OverlayArrow, Tooltip, TooltipTrigger, TooltipTrigge
 import { FloatingPanel, resolveFocusReturn } from "./floating-panel";
 import { installNonModalPopover } from "../../../shared/package-runtime/popover-nonmodal";
 import { FeedbackLayerOutlet } from "./overlay-host";
+import { ActionSizeContext, popoverActionSize } from "../../../shared/package-runtime/action-size";
 import { useKjunPortalContainer } from "./provider";
 export interface KjunPopoverProps {
   noPadding?: boolean;
@@ -15,6 +16,8 @@ export interface KjunPopoverProps {
   onOpenChange?: (v: boolean) => void;
   manualTrigger?: boolean;
   matchTriggerWidth?: boolean;
+  /** Width step (popover.widths): sm 192, md 240 (default), lg 320. matchTriggerWidth takes the trigger's width instead. */
+  width?: "sm" | "md" | "lg";
   maxHeight?: CSSProperties["maxHeight"];
   flip?: boolean;
   focusOnOpen?: boolean;
@@ -50,6 +53,7 @@ export function KjunPopover({
   onOpenChange,
   manualTrigger = false,
   matchTriggerWidth = false,
+  width = "md",
   maxHeight,
   flip = true,
   focusOnOpen = false,
@@ -105,7 +109,9 @@ export function KjunPopover({
   });
   const content = (
     <div className="kjun-popover-content" data-no-padding={noPadding}>
-      {typeof children === "function" ? children(() => change(false)) : children}
+      <ActionSizeContext.Provider value={popoverActionSize}>
+        {typeof children === "function" ? children(() => change(false)) : children}
+      </ActionSizeContext.Provider>
     </div>
   );
   return (
@@ -140,7 +146,7 @@ export function KjunPopover({
         triggerRef={anchored ? anchor : ref}
         inside={anchored ? ref : undefined}
         repositionKey={reposition}
-        className={"kjun-content-popover" + (header != null ? " kjun-popover-has-header" : "")}
+        className={"kjun-content-popover kjun-popover-width-" + width + (header != null ? " kjun-popover-has-header" : "")}
         placement={placement}
         matchTriggerWidth={matchTriggerWidth}
         maxHeight={maxHeight}
@@ -155,7 +161,8 @@ export function KjunPopover({
             "aria-label": header != null && !ariaLabel ? undefined : ariaLabel || m.details,
             "aria-labelledby": header != null && !ariaLabel ? id + "-header" : undefined,
             className: "kjun-popover-dialog",
-            style: { maxHeight: maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`, overflowY: header != null ? undefined : "auto" } as CSSProperties,
+            // maxHeight covers the whole panel, so the dialog inside its border gets that height less the border.
+            style: { maxHeight: `calc(${typeof maxHeight === "number" ? maxHeight + "px" : maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`} - 2 * var(--_kjun-border-default-width))`, overflowY: header != null ? undefined : "auto" } as CSSProperties,
           };
           const body = (
             <>

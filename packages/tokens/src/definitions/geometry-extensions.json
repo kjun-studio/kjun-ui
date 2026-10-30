@@ -15,10 +15,15 @@
     },
     "popover": {
       "width": 240,
+      "widths": {
+        "sm": 192,
+        "md": { "$ref": "extensions.popover.width" },
+        "lg": 320
+      },
       "radius": { "$ref": "radius.radius12" },
       "padding": { "$ref": "dimension.value16" },
       "gap": { "$ref": "dimension.value12" },
-      "headerPaddingBottom": { "$ref": "dimension.value12" }
+      "headerPaddingBottom": { "$ref": "dimension.value4" }
     },
     "state": {
       "titleSize": { "$ref": "typography.sectionTitle.fontSizePx" },
