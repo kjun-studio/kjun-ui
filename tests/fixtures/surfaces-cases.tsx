@@ -1,4 +1,17 @@
+import { useState } from 'react';
 // 0.17.0 fixes and additions on React and Native (Vue 3 mirrors this in surfaces-vue3.tsx). One section per feature.
+// A tall form sheet: the panel must be measured before it can rise.
+function FormSheet({ K, providerProps }: { K: any; providerProps: Record<string, any> }) {
+  const [open, setOpen] = useState(false), [dialog, setDialog] = useState(false);
+  return <K.KjunProvider {...providerProps}>
+    <K.KjunButton onPress={() => setOpen(true)}>Open sheet</K.KjunButton>
+    <K.KjunButton onPress={() => setDialog(true)}>Open dialog</K.KjunButton>
+    <K.KjunModal open={dialog} onOpenChange={setDialog} title="Confirm record"><K.KjunText>Save?</K.KjunText></K.KjunModal>
+    <K.KjunDrawer open={open} onOpenChange={setOpen} position="bottom" title="Edit record">
+      {Array.from({ length: 12 }, (_, i) => <K.KjunInput key={i} ariaLabel={'Field ' + (i + 1)} value="" onChangeText={() => {}} />)}
+    </K.KjunDrawer>
+  </K.KjunProvider>;
+}
 export function SurfacesCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const tabs = [{ value: 'wish', label: 'Wishlist 3' }, { value: 'done', label: 'Achieved 1' }];
   return <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16, width: 360, background: 'rgb(240, 240, 240)' }}>
@@ -13,6 +26,7 @@ export function SurfacesCases({ K, native = false, providerProps = {} }: { K: an
       <K.KjunAvatar name="Lee" size="xl" />
       <K.KjunAvatar size="xl" />
     </K.KjunProvider></div>
+    {native && <div data-testid="sheet"><FormSheet K={K} providerProps={providerProps} /></div>}
     {native && <div data-testid="group-fonts">
       {/* The unselected weight (500) is drawn with a wide face and the selected weight with a narrow one. */}
       <K.KjunProvider {...providerProps} fontFamily={{ 400: 'serif', 500: 'monospace', 600: 'serif', 700: 'serif' }}>

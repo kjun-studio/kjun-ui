@@ -60,3 +60,49 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
   });
 }
+
+// Native bottom sheet entry: the backdrop waits for the measured panel and covers the whole screen.
+test.describe('native bottom sheet', () => {
+  test.beforeEach(async ({ page }) => {
+    // Android lays out a new modal root a navigation bar shorter than the screen for its first frames.
+    await page.addInitScript(() => Object.defineProperty(screen, 'height', { get: () => innerHeight + 48 }));
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await openFixture(page, 'native', '', 'surfaces');
+  });
+  const backdrop = (page: Page) => page.locator('[role=dialog][aria-label="Edit record"]').locator('xpath=preceding-sibling::*[1]');
+
+  test('the backdrop stays clear until the panel can rise with it', async ({ page }) => {
+    await page.evaluate(() => {
+      const frames: { panel: number; backdrop: number }[] = [];
+      (window as any).sheetFrames = frames;
+      const sample = () => {
+        const panel = document.querySelector('[role=dialog][aria-label="Edit record"]') as HTMLElement | null;
+        const shade = panel?.previousElementSibling as HTMLElement | null;
+        if (panel && shade) frames.push({ panel: Number(getComputedStyle(panel).opacity), backdrop: Number(getComputedStyle(shade).opacity) });
+        if (frames.length < 40) requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+    // A slow device: the panel's layout arrives frames after the window opens.
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Emulation.setCPUThrottlingRate', { rate: 20 });
+    await section(page, 'sheet').getByRole('button', { name: 'Open sheet' }).click();
+    await expect(page.locator('[role=dialog][aria-label="Edit record"]')).toBeVisible();
+    await expect.poll(() => page.evaluate(() => (window as any).sheetFrames.length)).toBe(40);
+    const frames: { panel: number; backdrop: number }[] = await page.evaluate(() => (window as any).sheetFrames);
+    await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
+    expect(frames.some(frame => frame.panel === 0)).toBe(true);
+    for (const frame of frames) if (frame.panel === 0) expect(frame.backdrop).toBe(0);
+    await expect.poll(async () => Number(await backdrop(page).evaluate(el => getComputedStyle(el).opacity))).toBe(1);
+  });
+
+  for (const [button, name] of [['Open sheet', 'Edit record'], ['Open dialog', 'Confirm record']])
+    test(`the backdrop covers the screen below a short modal root: ${name}`, async ({ page }) => {
+      await section(page, 'sheet').getByRole('button', { name: button }).click();
+      const panel = page.locator(`[role=dialog][aria-label="${name}"]`);
+      await expect(panel).toBeVisible();
+      const box = await panel.locator('xpath=preceding-sibling::*[1]').evaluate(el => { const r = el.getBoundingClientRect(); return { top: r.top, bottom: r.bottom, screen: screen.height }; });
+      expect(box.top).toBeLessThanOrEqual(0);
+      expect(box.bottom).toBeGreaterThanOrEqual(box.screen);
+    });
+});

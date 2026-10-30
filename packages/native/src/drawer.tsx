@@ -1,7 +1,7 @@
 import { useAfterClose } from "../../../shared/package-runtime/use-after-close";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
-import { LayerBackdrop } from "./layer-backdrop";
+import { LayerBackdrop, screenCover } from "./layer-backdrop";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { directionalShadow } from "../../../shared/package-runtime/elevation";
 import { typeStyle } from "./typography";
@@ -50,20 +50,19 @@ export interface KjunDrawerProps {
   /** Keeps the panel above the on-screen keyboard (devices only). */
   avoidKeyboard?: boolean;
 }
-// How much of the full-screen iOS modal the keyboard covers while enabled. Android resizes the modal
-// window itself (adjustResize), which the measured root height reflects; React Native Web has no keyboard.
-function useKeyboardOverlap(enabled: boolean, windowHeight: number) {
+// How much of the modal root the keyboard covers while enabled. React Native Web has no keyboard.
+function useKeyboardOverlap(enabled: boolean, rootHeight: number) {
   const [overlap, setOverlap] = useState(0);
   useEffect(() => {
     setOverlap(0);
     const events = keyboardEvents(Platform.OS);
     if (!enabled || !events) return;
     const metrics = Keyboard.metrics?.();
-    if (metrics) setOverlap(keyboardOverlap(windowHeight, metrics.screenY));
-    const show = Keyboard.addListener(events.show, event => setOverlap(keyboardOverlap(windowHeight, event.endCoordinates.screenY)));
+    if (metrics) setOverlap(keyboardOverlap(rootHeight, metrics.screenY));
+    const show = Keyboard.addListener(events.show, event => setOverlap(keyboardOverlap(rootHeight, event.endCoordinates.screenY)));
     const hide = Keyboard.addListener(events.hide, () => setOverlap(0));
     return () => { show.remove(); hide.remove(); };
-  }, [enabled, windowHeight]);
+  }, [enabled, rootHeight]);
   return overlap;
 }
 export function KjunDrawer({
@@ -91,14 +90,15 @@ export function KjunDrawer({
   const { colors } = useKjunStyles(),
     window = useWindowDimensions(),
     vertical = position === "left" || position === "right";
-  // The modal root's own height: Android shrinks it for the keyboard; elsewhere it equals the window.
+  // The modal root's own height: a resizing Android window shrinks it for the keyboard; elsewhere it equals the window.
   const [rootHeight, setRootHeight] = useState(0);
-  const keyboard = useKeyboardOverlap(open && avoidKeyboard, window.height);
+  const keyboard = useKeyboardOverlap(open && avoidKeyboard, rootHeight || window.height);
   const frame = drawerFrame({ position, windowHeight: rootHeight || window.height, safeAreaTop: Math.max(0, safeAreaTop), safeAreaBottom: Math.max(0, safeAreaBottom),
     gap: tokens.extensions.drawer.sheetGap, keyboard, maxHeight });
   const [panelHeight, setPanelHeight] = useState(0);
   const motion = useNativePresence(open, tokens.motion.layerEnter, tokens.motion.layerExit, vertical || panelHeight > 0, 0, { enterEasing: motionEmphasized });
-  const backdrop = useNativePresence(open, tokens.motion.backdrop, tokens.motion.backdropExit, true, 0, { fade: tokens.motion.backdropExit });
+  // The backdrop waits with the panel, so a sheet still being measured never shows a dimmed screen alone.
+  const backdrop = useNativePresence(open, tokens.motion.backdrop, tokens.motion.backdropExit, vertical || panelHeight > 0, 0, { fade: tokens.motion.backdropExit });
   const close = () => {
     if (!open) return;
     onOpenChange(false);
@@ -127,7 +127,7 @@ export function KjunDrawer({
           alignItems: position === "right" ? "flex-end" : "flex-start",
         }}
       >
-        <Animated.View pointerEvents={open ? "auto" : "none"} style={{ position: "absolute", inset: 0, opacity: backdrop.opacity }}>
+        <Animated.View pointerEvents={open ? "auto" : "none"} style={{ ...screenCover(), opacity: backdrop.opacity }}>
         <LayerBackdrop
           onPress={() => {
             if (closeOnOverlay) close();

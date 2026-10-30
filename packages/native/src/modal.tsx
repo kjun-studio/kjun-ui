@@ -2,7 +2,7 @@ import { useAfterClose } from "../../../shared/package-runtime/use-after-close";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { content, FontText } from "./internal";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
-import { LayerBackdrop } from "./layer-backdrop";
+import { LayerBackdrop, screenCover } from "./layer-backdrop";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { typeStyle } from "./typography";
 import { useLayoutEffect, useState } from "react";
@@ -208,7 +208,7 @@ export function KjunModal({
           padding: tokens.modal.mobileInset,
         }}
       >
-        <Animated.View pointerEvents={open ? "auto" : "none"} style={{ position: "absolute", inset: 0, opacity: backdrop.opacity }}>
+        <Animated.View pointerEvents={open ? "auto" : "none"} style={{ ...screenCover(), opacity: backdrop.opacity }}>
         <LayerBackdrop
           onPress={() => {
             if (closeOnOverlay) close();

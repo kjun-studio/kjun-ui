@@ -31,8 +31,16 @@ test('side drawers take the visible height and pad both safe areas', () => {
   assert.deepEqual(drawerFrame({ ...base, position: 'left', keyboard: 300 }), { maxHeight: 500, height: 500, paddingTop: 40, paddingBottom: 0, lift: 0 });
 });
 
-test('only iOS lifts the drawer itself; Android modals already resize for the keyboard', () => {
+test('iOS and Android lift the drawer for the keyboard; the web has none', () => {
   assert.deepEqual(keyboardEvents('ios'), { show: 'keyboardWillShow', hide: 'keyboardWillHide' });
-  assert.equal(keyboardEvents('android'), null);
+  // Edge-to-edge Android windows no longer resize for the keyboard, and Android only reports after it moves.
+  assert.deepEqual(keyboardEvents('android'), { show: 'keyboardDidShow', hide: 'keyboardDidHide' });
   assert.equal(keyboardEvents('web'), null);
+});
+
+test('measured against the modal root, a resized Android window does not lift twice', () => {
+  // Edge-to-edge: the root keeps the full screen and the keyboard covers its bottom.
+  assert.equal(keyboardOverlap(800, 500), 300);
+  // adjustResize still applies: the root already stops at the keyboard (or above it, below the status bar).
+  assert.equal(keyboardOverlap(476, 500), 0);
 });
