@@ -3,6 +3,7 @@
     "vue3": [
       "title",
       "description",
+      "icon",
       "href",
       "disabled",
       "onClick",
@@ -13,6 +14,7 @@
     "react": [
       "title",
       "description",
+      "icon",
       "leading",
       "trailing",
       "actions",
@@ -27,6 +29,7 @@
     "native": [
       "title",
       "description",
+      "icon",
       "leading",
       "trailing",
       "actions",

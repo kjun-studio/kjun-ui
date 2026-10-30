@@ -26,6 +26,13 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
       <K.KjunListRow title="Dinner" />
     </K.KjunListSection>
   </div></K.KjunProvider>
+  <K.KjunProvider><div data-testid="icon-list">
+    <K.KjunListSection title="Settings">
+      <K.KjunListRow icon="bell" title="Alerts" description="Push and email" />
+      <K.KjunListRow title="Kim" description="kim@example.com">{{ leading: () => <K.KjunAvatar name="Kim" size="sm" /> }}</K.KjunListRow>
+      <K.KjunListRow title="Sign out" />
+    </K.KjunListSection>
+  </div></K.KjunProvider>
   <K.KjunProvider><div data-testid="link-button" style={{ display: 'flex', flexDirection: 'row' }}>
     <K.KjunButton variant="link">More</K.KjunButton>
   </div></K.KjunProvider>

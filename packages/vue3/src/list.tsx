@@ -8,6 +8,8 @@ import { warnNestedControls } from "../../../shared/package-runtime/nested-contr
 const kjunListRowProps = {
   title: { type: String, required: true },
   description: { type: String, default: undefined },
+  /** Icon name drawn in the leading column at the list icon size; the leading slot replaces it when both are given. */
+  icon: { type: String, default: undefined },
   href: { type: String, default: undefined },
   disabled: { type: Boolean, default: false },
   /** Draws the title in the danger role, for rows such as "Delete account". */
@@ -34,9 +36,10 @@ export const KjunListRow = defineComponent({
     const content = ref<HTMLElement | null>(null);
     onMounted(() => { if (props.href || props.onClick) warnNestedControls(content.value, "KJUN ListRow: a pressable row's content contains buttons or links; move them to actions."); });
     return () => {
-      const leading = slots.leading?.(), trailing = slots.trailing?.(), actions = slots.actions?.(), body = slots.default?.();
+      const slotted = slots.leading?.(), trailing = slots.trailing?.(), actions = slots.actions?.(), body = slots.default?.();
+      const leading = hasContent(slotted) ? slotted : props.icon ? <KjunIcon name={props.icon} class="kjun-list-icon" size={tokens.extensions.list.iconSize} /> : null;
       const contents = <>
-        {hasContent(leading) && <span class="kjun-list-leading">{leading}</span>}
+        {leading && <span class="kjun-list-leading">{leading}</span>}
         <span class="kjun-list-body"><span class="kjun-list-title">{props.title}</span>{props.description && <span class="kjun-list-description">{props.description}</span>}{hasContent(body) && <span ref={content} class="kjun-list-content">{body}</span>}</span>
         {hasContent(trailing) && <span class="kjun-list-trailing">{trailing}</span>}
         {props.chevron && <KjunIcon name="chevron-right" class="kjun-list-chevron" size={tokens.iconSizes.default} />}
@@ -48,7 +51,7 @@ export const KjunListRow = defineComponent({
           ? <button class="kjun-list-main" type="button" aria-label={props.ariaLabel} disabled={props.disabled} onClick={(event: MouseEvent) => props.onClick?.(event)}>{contents}</button>
           : <div class="kjun-list-main">{contents}</div>;
       // A disabled row disables its actions too, so the row never reads as partly available.
-      return <li class="kjun-list-row" data-destructive={props.destructive || undefined}>{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;
+      return <li class="kjun-list-row" data-leading={leading ? "" : undefined} data-destructive={props.destructive || undefined}>{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;
     };
   },
 });
@@ -83,7 +86,7 @@ export const KjunListSection = defineComponent({
         <section class="kjun-list-section" data-surface={props.surface ? undefined : "false"}
           data-radius={props.radius === "none" ? undefined : props.radius} style={props.radius === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${props.radius})` }} aria-labelledby={props.title ? id : undefined} aria-label={props.title ? undefined : props.ariaLabel}>
           {(props.title || props.description || hasContent(actions)) && (
-            <div class="kjun-list-heading"><div>{props.title && <h3 id={id}>{props.title}</h3>}{props.description && <p>{props.description}</p>}</div>{actions}</div>
+            <div class="kjun-list-heading" data-bare={props.title && !props.description ? "" : undefined}><div>{props.title && <h3 id={id}>{props.title}</h3>}{props.description && <p>{props.description}</p>}</div>{actions}</div>
           )}
           <ul class="kjun-list" aria-label={props.ariaLabel || props.title} data-divider={props.divider ? undefined : "false"} data-density={props.density === "compact" ? "compact" : undefined}>{slots.default?.()}</ul>
         </section>

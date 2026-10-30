@@ -1,17 +1,21 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
+import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
+import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
 import { tokens } from "@kjun-ui/tokens";
 import { progressCircle } from "../../../shared/package-runtime/progress-circle";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import { typeStyle } from "./typography";
 import {
+useRef,
 useState,
 type CSSProperties,
 type HTMLAttributes,
 type ReactNode,
 } from "react";
 import { KjunIcon } from "./button";
+import { useReducedMotion } from "./use-reduced-motion";
 import { ActionSizeContext, alertActionSizes } from "../../../shared/package-runtime/action-size";
 export type DisplaySize = "xs" | "sm" | "md" | "lg" | "xl";
 export type SemanticTone =
@@ -153,32 +157,23 @@ export function KjunAlert({
 }: KjunAlertProps) {
   const m = useKjunMessages();
   const [visible, setVisible] = useState(true);
+  const root = useRef<HTMLDivElement>(null), closing = useRef(false);
+  const reduced = useReducedMotion();
   if (!visible) return null;
   const tone = variant || (type === "error" ? "danger" : type),
-    small = size === "sm";
+    small = size === "sm",
+    paint = alertToneRoles(tone);
   return (
     <div
+      ref={root}
       role={alertRole(tone, live)}
       className="kjun-alert"
       data-size={small ? "sm" : "md"}
-      style={{
-        background: role(tone === "primary" ? "brand-subtle-bg" : tone + "-bg"),
-        borderColor: role(tone === "primary" ? "brand-light" : tone + "-light"),
-      }}
+      data-tone={tone}
+      style={paint.bg ? { background: role(paint.bg) } : undefined}
     >
-      <span className="kjun-alert-icon" style={{ color: role(tone === "primary" ? "brand" : tone + "-accent") }}>
-        <KjunIcon
-          name={
-            {
-              info: "info-circle",
-              primary: "info-circle",
-              success: "circle-check",
-              warning: "alert-triangle",
-              danger: "alert-circle",
-            }[tone]
-          }
-          size={tokens.extensions.alert.iconSizes[small ? "sm" : "md"]}
-        />
+      <span className="kjun-alert-icon" style={{ color: role(paint.icon) }}>
+        <KjunIcon name={alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[small ? "sm" : "md"]} />
       </span>
       <div className="kjun-alert-content">
         {hasContent(title) && <div className="kjun-alert-title">{title}</div>}
@@ -195,8 +190,12 @@ export function KjunAlert({
           type="button"
           aria-label={m.close}
           onClick={() => {
-            setVisible(false);
-            onClose?.();
+            if (closing.current) return;
+            closing.current = true;
+            collapseAlert(root.current, reduced, () => {
+              setVisible(false);
+              onClose?.();
+            });
           }}
         >
           <KjunIcon name="x" size={tokens.extensions.alert.closeIconSize} />

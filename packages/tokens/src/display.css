@@ -237,18 +237,26 @@
   display: flex;
   align-items: flex-start;
   gap: var(--_kjun-extension-alert-md-gap);
-  border: var(--_kjun-border-default-width) solid;
   border-radius: var(--_kjun-extension-alert-radius);
+  word-break: keep-all;
   padding: var(--_kjun-extension-alert-md-padding-y) var(--_kjun-extension-alert-md-padding-x);
   --_kjun-alert-line: var(--_kjun-type-control-line);
   --_kjun-alert-close: var(--_kjun-extension-alert-close-size);
   --_kjun-alert-action-gap: var(--_kjun-extension-alert-md-action-gap);
+  /* Text-role tints stay readable on any fill and page background, light or dark. */
+  --_kjun-alert-tint-fill: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-tint-fill) * 100%), transparent);
+  --_kjun-alert-tint-control: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-tint-control) * 100%), transparent);
+  --_kjun-alert-tint-hover: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-tint-hover) * 100%), transparent);
+  --_kjun-alert-tint-active: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-tint-active) * 100%), transparent);
 }
+/* Info has no fill role: a translucent tint keeps its edge on white and gray pages alike. */
+.kjun-alert[data-tone="info"] { background: var(--_kjun-alert-tint-fill); }
 .kjun-alert[data-size="sm"] {
   --_kjun-alert-line: var(--_kjun-type-control-small-line);
   --_kjun-alert-close: var(--_kjun-extension-alert-sm-close-size);
   --_kjun-alert-action-gap: var(--_kjun-extension-alert-sm-action-gap);
   gap: var(--_kjun-extension-alert-sm-gap);
+  border-radius: var(--_kjun-extension-alert-sm-radius);
   padding: var(--_kjun-extension-alert-sm-padding-y) var(--_kjun-extension-alert-sm-padding-x);
 }
 .kjun-alert-icon {
@@ -257,6 +265,8 @@
   flex-shrink: 0;
   height: var(--_kjun-alert-line);
 }
+/* A triangle's optical center sits below its box center. */
+.kjun-alert[data-tone="warning"] .kjun-alert-icon svg { transform: translateY(calc(-1 * var(--_kjun-extension-alert-warning-icon-lift))); }
 .kjun-alert-content {
   min-height: var(--_kjun-alert-line);
   overflow-wrap: anywhere;
@@ -265,15 +275,16 @@
 }
 .kjun-alert-title {
   margin: 0;
-  font-size: var(--_kjun-type-control-size);
   color: var(--_kjun-color-text);
+  font-size: var(--_kjun-type-control-size);
   line-height: var(--_kjun-type-control-line);
   font-weight: var(--_kjun-type-control-weight);
   letter-spacing: var(--_kjun-type-control-tracking);
 }
+/* Body copy stays on the text role: secondary gray turns muddy on tinted fills. */
 .kjun-alert-description {
   font-size: var(--_kjun-type-body-size);
-  color: var(--_kjun-color-text-secondary);
+  color: var(--_kjun-color-text);
   line-height: var(--_kjun-type-body-line);
   font-weight: var(--_kjun-type-body-weight);
   letter-spacing: var(--_kjun-type-body-tracking);
@@ -305,7 +316,7 @@
   background: transparent;
   border: 0;
   padding: 0;
-  color: var(--_kjun-color-text-tertiary);
+  color: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-muted) * 100%), transparent);
   cursor: pointer;
 }
 .kjun-alert-actions {
@@ -315,15 +326,15 @@
   gap: var(--_kjun-extension-alert-actions-gap);
   margin-top: var(--_kjun-alert-action-gap);
 }
-/* Secondary actions sit on the surface role so they stay clean on tinted alerts. */
-.kjun-alert-actions .kjun-button[data-variant="secondary"] { background: var(--_kjun-color-surface); }
-.kjun-alert-actions .kjun-button[data-variant="secondary"]:hover:not(:disabled) { background: var(--_kjun-color-hover); }
-.kjun-alert-actions .kjun-button[data-variant="secondary"]:active:not(:disabled) { background: var(--_kjun-color-active); }
+/* Secondary actions and the close button tint the alert's own fill instead of sitting on it as gray or white. */
+.kjun-alert-actions .kjun-button[data-variant="secondary"] { background: var(--_kjun-alert-tint-control); }
+.kjun-alert-actions .kjun-button[data-variant="secondary"]:hover:not(:disabled) { background: var(--_kjun-alert-tint-hover); }
+.kjun-alert-actions .kjun-button[data-variant="secondary"]:active:not(:disabled) { background: var(--_kjun-alert-tint-active); }
 @media (hover: none), (pointer: coarse) {
-  .kjun-alert-actions .kjun-button[data-variant="secondary"]:hover:not(:disabled):not(:active) { background: var(--_kjun-color-surface); }
+  .kjun-alert-actions .kjun-button[data-variant="secondary"]:hover:not(:disabled):not(:active) { background: var(--_kjun-alert-tint-control); }
 }
-.kjun-alert-close:hover { background: var(--_kjun-color-hover); color: var(--_kjun-color-text); }
-.kjun-alert-close:active { background: var(--_kjun-color-active); color: var(--_kjun-color-text); }
+.kjun-alert-close:hover { background: var(--_kjun-alert-tint-hover); color: var(--_kjun-color-text); }
+.kjun-alert-close:active { background: var(--_kjun-alert-tint-active); color: var(--_kjun-color-text); }
 .kjun-alert-close:focus-visible {
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
   outline-offset: var(--_kjun-state-focus-offset);

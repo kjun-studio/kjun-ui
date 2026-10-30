@@ -156,6 +156,10 @@
   ],
   "filled": [
     "heart",
-    "star"
+    "star",
+    "info-circle",
+    "circle-check",
+    "alert-triangle",
+    "alert-circle"
   ]
 }

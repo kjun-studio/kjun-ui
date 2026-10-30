@@ -79,6 +79,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (name === "KjunListRow" && key === "children") entry = listRowContent;
     else if (childProps[key]) entry = childProps[key];
     else if (key === "value" || key === "modelValue") entry = detail(valueDescription[name], { "상태 책임": guides[name].interaction });
+    else if (name === "KjunListRow" && key === "icon") entry = detail("앞쪽 열에 그릴 아이콘 이름입니다.", { "크기·색": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 40px 앞쪽 열 가운데에 놓습니다.", "leading과 함께": platform === "vue3" ? "leading 슬롯이 있으면 슬롯을 그립니다." : "leading이 있으면 leading을 그립니다." });
     else if (key === "items") entry = detail("안정적인 key와 이름을 가진 목적지 목록입니다.", { "항목 필드": "key: 고유 문자열, label: 전체 이름, href: 웹 링크 주소, icon?: 아이콘 이름, badge?: 문자열·숫자, disabled?: 이동 비활성. 웹에서는 href를 제공하세요.", "권장 사용": "2~5개의 주요 목적지를 권장합니다. 항목 순서와 현재 key는 앱에서 관리합니다." });
     else if (key === "thumbLabels") entry = { default: '["최솟값", "최댓값"]', ...detail("시작·끝 손잡이의 접근성 이름 쌍입니다.", { "키보드": "Tab 순서는 시작→끝으로 고정됩니다. 손잡이는 서로 넘지 않으며 Home/End도 다른 손잡이 값으로 제한됩니다." }) };
     else if (key === "precision") entry = name === "KjunTimePicker" ? detail("minute는 시·분, second는 시·분·초를 제공합니다.", { "값 형태": "정밀도를 바꿀 때 소비자가 value 형식도 함께 바꾸거나 null로 초기화하세요." }) : detail("수량의 소수 자릿수입니다. 0~6의 정수를 받습니다.", { "반올림": "Enter·blur 시 지정 자리로 반올림합니다. 정확히 절반이면 절댓값이 커지는 방향이며 이후 min/max로 제한합니다.", "설정 제약": "value·min·max·step은 precision으로 표현 가능해야 하며 정수 스케일 값은 Number.MAX_SAFE_INTEGER 범위여야 합니다." });

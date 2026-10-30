@@ -1,6 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
+import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
 import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
@@ -8,6 +9,7 @@ import { DataStateContentContext } from "./data-state-context";
 import {
 Animated,
 Easing,
+LayoutAnimation,
 Platform,
 StyleSheet,
 View,
@@ -17,11 +19,12 @@ type ViewStyle
 import Svg,{ Circle,Path } from "react-native-svg";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
-import { AlertActionsContext } from "./alert-actions-context";
+import { AlertActionsContext, alertTint } from "./alert-actions-context";
 import { ActionSizeContext, alertActionSizes } from "../../../shared/package-runtime/action-size";
 import { KText,content,domainColor,useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
 import { progressCircle } from "../../../shared/package-runtime/progress-circle";
+import { motionOut, nativeDriver } from "./motion";
 
 export type DisplaySize = "xs" | "sm" | "md" | "lg" | "xl";
 export type SemanticTone =
@@ -278,6 +281,8 @@ export function KjunAlert({
   const m = useKjunMessages();
   const { colors } = useKjunStyles();
   const [visible, setVisible] = useState(true);
+  const reduced = useReducedMotion();
+  const fade = useRef(new Animated.Value(1)).current, closing = useRef(false);
   if (!visible) return null;
   const tone = variant || (type === "error" ? "danger" : type),
     small = size === "sm";
@@ -285,45 +290,50 @@ export function KjunAlert({
   const lineHeight = tokens.typography[small ? "controlSmall" : "control"].lineHeightPx;
   const titled = hasContent(title);
   const closeSize = small ? geometry.sm.closeSize : geometry.closeSize;
-  const pick = (suffix: string) => tone === "primary"
-    ? suffix === "Bg" ? colors.brandSubtleBg : suffix === "Light" ? colors.brandLight : colors.brand
-    : colors[(tone + suffix) as keyof typeof colors];
+  const paint = alertToneRoles(tone);
+  const pick = (name: string) => colors[name.replace(/-(\w)/g, (_, c: string) => c.toUpperCase()) as keyof typeof colors];
+  // Korean wraps between words: iOS by its line-break strategy, Native Web by CSS; Android keeps its default.
+  const words = { lineBreakStrategyIOS: "hangul-word" as const };
+  const wordStyle = Platform.OS === "web" ? ({ wordBreak: "keep-all" } as object) : null;
+  const text = (value: ReactNode, style: object) => typeof value === "string" || typeof value === "number"
+    ? <KText {...words} style={[style, wordStyle]}>{value}</KText> : content(value, style);
+  const close = () => {
+    if (closing.current) return;
+    closing.current = true;
+    const done = () => {
+      // Devices collapse the freed space; Native Web removes the faded alert.
+      if (!reduced && Platform.OS !== "web") LayoutAnimation.configureNext(LayoutAnimation.create(tokens.motion.collapse, "easeOut", "opacity"));
+      setVisible(false);
+      onClose?.();
+    };
+    if (reduced) { done(); return; }
+    Animated.timing(fade, { toValue: 0, duration: tokens.motion.collapse, easing: motionOut, useNativeDriver: nativeDriver }).start(done);
+  };
   return (
-    <View
+    <Animated.View
       role={alertRole(tone, live)}
       style={{
+        opacity: fade,
         flexDirection: "row",
         alignItems: "flex-start",
-        gap: tokens.extensions.alert[small ? "sm" : "md"].gap,
-        borderWidth: tokens.border.defaultWidth,
-        borderRadius: tokens.extensions.alert.radius,
-        paddingVertical: tokens.extensions.alert[small ? "sm" : "md"].paddingY,
-        paddingHorizontal: tokens.extensions.alert[small ? "sm" : "md"].paddingX,
-        backgroundColor: pick("Bg"),
-        borderColor: pick("Light"),
+        gap: geometry[small ? "sm" : "md"].gap,
+        borderRadius: small ? geometry.sm.radius : geometry.radius,
+        paddingVertical: geometry[small ? "sm" : "md"].paddingY,
+        paddingHorizontal: geometry[small ? "sm" : "md"].paddingX,
+        backgroundColor: paint.bg ? pick(paint.bg) : alertTint(colors.text, "tintFill", colors.secondary),
       }}
     >
-      <View style={{ height: lineHeight, justifyContent: "center", flexShrink: 0 }}>
-      <KjunIcon
-        name={
-          {
-            info: "info-circle",
-            primary: "info-circle",
-            success: "circle-check",
-            warning: "alert-triangle",
-            danger: "alert-circle",
-          }[tone]
-        }
-        size={tokens.extensions.alert.iconSizes[small ? "sm" : "md"]}
-        color={pick("Accent")}
-      />
+      <View style={{ height: lineHeight, justifyContent: "center", flexShrink: 0,
+        // A triangle's optical center sits below its box center.
+        transform: tone === "warning" ? [{ translateY: -geometry.warningIconLift }] : undefined }}>
+        <KjunIcon name={alertIcons[tone]} filled size={geometry.iconSizes[small ? "sm" : "md"]} color={pick(paint.icon)} />
       </View>
       <View style={{ flex: 1, minWidth: 0, minHeight: lineHeight }}>
-        {titled && content(title, typeStyle(small ? "controlSmall" : "control"))}
+        {titled && text(title, { ...typeStyle(small ? "controlSmall" : "control"), color: colors.text })}
         {hasContent(children) && <View style={{ marginTop: titled ? geometry.descriptionGap : 0 }}>
-          {content(children, {
+          {text(children, {
             ...typeStyle(small ? "caption" : "body"),
-            color: colors.textSecondary,
+            color: colors.text,
           })}
         </View>}
         {hasContent(actions) && (
@@ -347,18 +357,16 @@ export function KjunAlert({
             // Center on the first line and pull the glyph onto the padding edge.
             marginVertical: (lineHeight - closeSize) / 2,
             marginEnd: (geometry.closeIconSize - closeSize) / 2,
-            backgroundColor: pressed ? colors.active : hovered ? colors.hover : "transparent",
+            backgroundColor: pressed ? alertTint(colors.text, "tintActive", colors.active)
+              : hovered ? alertTint(colors.text, "tintHover", colors.hover) : "transparent",
           })}
-          onPress={() => {
-            setVisible(false);
-            onClose?.();
-          }}
+          onPress={close}
         >
           {({ pressed, hovered }: any) => <KjunIcon name="x" size={geometry.closeIconSize}
-            color={pressed || hovered ? colors.text : colors.textTertiary} />}
+            color={pressed || hovered ? colors.text : alertTint(colors.text, "muted", colors.textTertiary)} />}
         </Pressable>
       )}
-    </View>
+    </Animated.View>
   );
 }
 export interface KjunProgressProps {

@@ -109,17 +109,22 @@
         "$ref": "iconSizes.default"
       }
     },
+    "list": {
+      "iconSize": {
+        "$ref": "iconSizes.large"
+      }
+    },
     "alert": {
       "iconSizes": {
         "sm": {
-          "$ref": "iconSizes.small"
+          "$ref": "iconSizes.default"
         },
         "md": {
-          "$ref": "iconSizes.default"
+          "$ref": "iconSizes.medium"
         }
       },
       "closeIconSize": {
-        "$ref": "iconSizes.small"
+        "$ref": "iconSizes.default"
       }
     },
     "breadcrumb": {

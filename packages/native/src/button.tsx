@@ -4,7 +4,7 @@ import { TopNavigationContext } from "./top-navigation-context";
 import { BottomActionBarContext } from "./bottom-action-bar-context";
 import { FormActionsContext } from "./form-actions-context";
 import { CardActionsContext } from "./card-actions-context";
-import { AlertActionsContext } from "./alert-actions-context";
+import { AlertActionsContext, alertTint } from "./alert-actions-context";
 import { useActionSize } from "../../../shared/package-runtime/action-size";
 import { DataStateContentContext } from "./data-state-context";
 import { tokens,type ButtonSize,type ButtonVariant } from "@kjun-ui/tokens";
@@ -213,7 +213,7 @@ export function KjunButton(input: KjunButtonProps) {
     variant === "primary"
       ? c.brand
       : variant === "secondary"
-      ? alertActions ? c.surface : c.buttonSecondary
+      ? alertActions ? alertTint(c.text, "tintControl", c.surface) : c.buttonSecondary
       : variant === "danger"
       ? c.danger
       : variant === "success"
@@ -233,8 +233,9 @@ export function KjunButton(input: KjunButtonProps) {
     if (busy || (!pressed && !hovered && !expanded)) return { background: base, ink };
     pressed = pressed || !!expanded;
     const background = variant === "primary" ? pressed ? c.brandActive : c.brandHover
-      : variant === "secondary" && !alertActions ? pressed ? c.buttonSecondaryActive : c.buttonSecondaryHover
-      : variant === "secondary" || variant === "ghost" ? pressed ? c.active : c.hover
+      : variant === "secondary" && alertActions ? alertTint(c.text, pressed ? "tintActive" : "tintHover", pressed ? c.active : c.hover)
+      : variant === "secondary" ? pressed ? c.buttonSecondaryActive : c.buttonSecondaryHover
+      : variant === "ghost" ? pressed ? c.active : c.hover
       : variant === "danger-ghost" ? c.dangerBg
       : variant === "danger" ? pressed ? c.dangerActive : c.dangerDark
       : variant === "success" ? pressed ? c.successActive : c.successDark

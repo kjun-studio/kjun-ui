@@ -1,6 +1,8 @@
 import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
+import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
+import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
 import { tokens } from "@kjun-ui/tokens";
 import { progressCircle } from "../../../shared/package-runtime/progress-circle";
 import { alertActionSizes } from "../../../shared/package-runtime/alert-action-size";
@@ -9,6 +11,7 @@ import { KjunIcon } from "./button";
 import { KjunActionSize } from "./runtime/action-size";
 import { domainRef } from "./runtime/refs";
 import { hasContent } from "./runtime/slots";
+import { useReducedMotion } from "./runtime/presence";
 import { css } from "./runtime/style";
 
 export type DisplaySize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -97,7 +100,6 @@ export const KjunSpinner = defineComponent({
   },
 });
 
-const alertIcons = { info: "info-circle", primary: "info-circle", success: "circle-check", warning: "alert-triangle", danger: "alert-circle" };
 const kjunAlertProps = {
   type: { type: String as PropType<"info" | "success" | "warning" | "danger" | "error">, default: "info" },
   variant: { type: String as PropType<SemanticTone>, default: undefined },
@@ -120,19 +122,24 @@ export const KjunAlert = defineComponent({
   }>,
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
-    const visible = ref(true);
+    const visible = ref(true), root = ref<HTMLElement | null>(null), reduced = useReducedMotion();
+    let closing = false;
+    const close = () => {
+      if (closing) return;
+      closing = true;
+      collapseAlert(root.value, reduced.value, () => { visible.value = false; emit("close"); });
+    };
     return () => {
       if (!visible.value) return null;
       const tone = props.variant || (props.type === "error" ? "danger" : props.type);
-      const small = props.size === "sm";
+      const small = props.size === "sm", paint = alertToneRoles(tone);
       const title = slots.title ? slots.title() : props.title;
       const children = slots.default?.(), actions = slots.actions?.();
       return (
-        <div role={alertRole(tone, props.live)} class="kjun-alert" data-size={small ? "sm" : "md"}
-          style={{ background: role(tone === "primary" ? "brand-subtle-bg" : tone + "-bg"),
-            borderColor: role(tone === "primary" ? "brand-light" : tone + "-light") }}>
-          <span class="kjun-alert-icon" style={{ color: role(tone === "primary" ? "brand" : tone + "-accent") }}>
-            <KjunIcon name={alertIcons[tone]} size={tokens.extensions.alert.iconSizes[small ? "sm" : "md"]} />
+        <div ref={root} role={alertRole(tone, props.live)} class="kjun-alert" data-size={small ? "sm" : "md"} data-tone={tone}
+          style={paint.bg ? { background: role(paint.bg) } : undefined}>
+          <span class="kjun-alert-icon" style={{ color: role(paint.icon) }}>
+            <KjunIcon name={alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[small ? "sm" : "md"]} />
           </span>
           <div class="kjun-alert-content">
             {(slots.title ? hasContent(title as ReturnType<NonNullable<typeof slots.title>>) : props.title != null && String(props.title).trim() !== "")
@@ -145,7 +152,7 @@ export const KjunAlert = defineComponent({
             )}
           </div>
           {props.closable && (
-            <button class="kjun-alert-close" type="button" aria-label={m.value.close} onClick={() => { visible.value = false; emit("close"); }}>
+            <button class="kjun-alert-close" type="button" aria-label={m.value.close} onClick={close}>
               <KjunIcon name="x" size={tokens.extensions.alert.closeIconSize} />
             </button>
           )}

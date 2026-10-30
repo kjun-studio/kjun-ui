@@ -34,7 +34,7 @@ test('every pinned official node, name and variant is identical in ESM and Commo
 });
 test('legacy names and exports are preserved with pinned Tabler geometry', async () => {
   assert.equal(Object.keys(icons).length, 153);
-  assert.deepEqual(Object.keys(filledIcons), ['heart', 'star']);
+  assert.deepEqual(Object.keys(filledIcons), ['heart', 'star', 'info-circle', 'circle-check', 'alert-triangle', 'alert-circle']);
   const compatibility = await import('@kjun-ui/tokens/icons');
   assert.strictEqual(compatibility.icons, icons);
   assert.strictEqual(compatibility.filledIcons, filledIcons);

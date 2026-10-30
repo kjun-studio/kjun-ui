@@ -37,7 +37,9 @@
       "compactPaddingY": { "$ref": "dimension.value12" },
       "descriptionGap": { "$ref": "dimension.value4" },
       "actionsGap": { "$ref": "dimension.value8" },
-      "actionsPadding": { "$ref": "extensions.list.padding" }
+      "actionsPadding": { "$ref": "extensions.list.padding" },
+      "leadingWidth": { "$ref": "dimension.value40" },
+      "bareHeadingPaddingBottom": { "$ref": "dimension.value4" }
     },
     "navigation": {
       "minimumHeight": { "$ref": "extensions.topNavigation.minimumHeight" },
@@ -218,22 +220,24 @@
       "closeRadius": { "$ref": "radius.radius6" }
     },
     "alert": {
-      "radius": { "$ref": "card.radii.md" },
-      "descriptionGap": { "$ref": "dimension.value4" },
+      "radius": { "$ref": "card.radii.lg" },
+      "descriptionGap": { "$ref": "dimension.value2" },
       "closeSize": { "$ref": "input.md.clearSize" },
       "closeRadius": { "$ref": "button.radii.xs" },
       "actionsGap": { "$ref": "dimension.value8" },
+      "warningIconLift": { "$ref": "border.hairlineWidth" },
       "sm": {
-        "paddingX": { "$ref": "dimension.value12" },
-        "paddingY": { "$ref": "dimension.value8" },
-        "gap": { "$ref": "dimension.value8" },
+        "radius": { "$ref": "card.radii.md" },
+        "paddingX": { "$ref": "dimension.value14" },
+        "paddingY": { "$ref": "dimension.value12" },
+        "gap": { "$ref": "dimension.value10" },
         "closeSize": { "$ref": "input.sm.clearSize" },
-        "actionGap": { "$ref": "dimension.value8" }
+        "actionGap": { "$ref": "dimension.value10" }
       },
       "md": {
-        "paddingX": { "$ref": "dimension.value14" },
-        "paddingY": { "$ref": "dimension.value10" },
-        "gap": { "$ref": "dimension.value10" },
+        "paddingX": { "$ref": "dimension.value16" },
+        "paddingY": { "$ref": "dimension.value16" },
+        "gap": { "$ref": "dimension.value12" },
         "actionGap": { "$ref": "dimension.value12" }
       }
     },

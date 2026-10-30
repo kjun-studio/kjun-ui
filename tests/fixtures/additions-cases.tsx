@@ -45,6 +45,13 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
         <K.KjunListRow title="Dinner" />
       </K.KjunListSection>
     </div></K.KjunProvider>
+    <K.KjunProvider {...providerProps}><div data-testid="icon-list">
+      <K.KjunListSection title="Settings">
+        <K.KjunListRow icon="bell" title="Alerts" description="Push and email" />
+        <K.KjunListRow leading={<K.KjunAvatar name="Kim" size="sm" />} title="Kim" description="kim@example.com" />
+        <K.KjunListRow title="Sign out" />
+      </K.KjunListSection>
+    </div></K.KjunProvider>
     <K.KjunProvider {...providerProps}><div data-testid="link-button" style={{ display: 'flex', flexDirection: 'row' }}>
       <K.KjunButton variant="link" {...(native ? { onPress: () => {} } : { onClick: () => {} })}>More</K.KjunButton>
     </div></K.KjunProvider>
