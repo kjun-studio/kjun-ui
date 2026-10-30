@@ -2,6 +2,10 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.17.1 — 미배포
+
+- **수정: 바탕을 끈 `KjunBottomNavigation`의 배지 테두리**: `surface={false}`일 때 배지 둘레 테두리가 표면색(흰색)으로 남아 회색 화면 바탕 위에서 흰 고리로 보이던 문제를 고쳤습니다. 이제 테두리는 바 뒤에 보이는 화면 바탕색(`background` 색 역할)을 씁니다. 바탕이 있는 기본 바는 그대로입니다.
+
 ## 0.17.0 — 2026-10-30
 
 - **React 조합·접근성 개선**: Tabs의 `actions`에 Select·Dropdown을 넣을 때 탭 목록과 충돌하던 오류를 고치고, Popover의 접근성 상태를 실제 트리거 버튼에 연결했습니다. Checkbox에 `indeterminate`, Slider·RangeSlider에 화면 출력과 `aria-valuetext`를 함께 지정하는 `formatValue`를 추가했습니다. 선택값과 변경 콜백의 기존 자료형은 유지합니다.

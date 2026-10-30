@@ -88,6 +88,8 @@
       "--surface-background"
     ],
     "implementationFiles": [
+      "packages/tokens/src/extensions.css",
+      "packages/native/src/app-navigation.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/table-cards.tsx"
     ]

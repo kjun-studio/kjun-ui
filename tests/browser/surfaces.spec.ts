@@ -32,7 +32,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
 
     // The first painted background behind a text: the bar's own, or the page's when the bar is transparent.
-    const paintBehind = (page: Page, text: string) => section(page, 'bars').getByText(text, { exact: true }).first().evaluate(el => {
+    const paintBehind = (page: Page, text: string) => section(page, 'bars').getByText(text).first().evaluate(el => {
       for (let n: Element | null = el; n; n = n.parentElement) { const c = getComputedStyle(n).backgroundColor; if (c !== 'rgba(0, 0, 0, 0)') return c; }
       return '';
     });
@@ -40,6 +40,19 @@ for (const platform of ['react', 'vue3', 'native']) {
     test('bars without a surface show the page background, and the default bar keeps its surface', async ({ page }) => {
       for (const text of ['Plain header', 'Plain home', 'Plain actions']) expect(await paintBehind(page, text)).toBe('rgb(240, 240, 240)');
       expect(await paintBehind(page, 'Card header')).not.toBe('rgb(240, 240, 240)');
+    });
+
+    // The ring that cuts a navigation badge out of the icon: a box-shadow on the web, a border on Native.
+    const badgeRing = (page: Page, label: string) => section(page, 'bars').getByRole('link', { name: new RegExp('^' + label) })
+      .evaluate(item => {
+        const text = [...item.querySelectorAll('*')].find(n => n.children.length === 0 && /^\d+$/.test(n.textContent!))!;
+        const badge = text.closest('.kjun-navigation-badge') ?? text.parentElement!, style = getComputedStyle(badge);
+        return style.boxShadow !== 'none' ? style.boxShadow.match(/rgba?\([^)]*\)/)![0] : style.borderTopColor;
+      });
+
+    test('a navigation badge ring matches what is behind the bar', async ({ page }) => {
+      expect(await badgeRing(page, 'Plain home')).toBe('rgb(240, 240, 240)');
+      expect(await badgeRing(page, 'Card home')).toBe(await paintBehind(page, 'Card home'));
     });
 
     test('group labels keep their own width instead of being squeezed to the reserved cell', async ({ page }) => {

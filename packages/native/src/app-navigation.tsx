@@ -70,7 +70,8 @@ export function KjunBottomNavigation({ items, value, ariaLabel, safeAreaBottom =
         marginLeft: hasIcons ? 0 : geometry.badgeOffset - ring,
         minWidth: geometry.badgeMinimumSize + 2 * ring, minHeight: geometry.badgeMinimumSize + 2 * ring,
         paddingHorizontal: geometry.badgePaddingX, borderRadius: geometry.badgeRadius,
-        borderWidth: ring, borderColor: colors.surface,
+        // Without a surface the bar shows the page background, so the ring takes that colour.
+        borderWidth: ring, borderColor: surface ? colors.surface : colors.background,
         backgroundColor: colors.brand, alignItems: "center", justifyContent: "center",
       }}><KText style={{ ...typeStyle('caption'), fontWeight: typeStyle('control').fontWeight, color: colors.onBrand }}>{item.badge}</KText></View>;
       // Bottom bars meet the screen edges, so the ring stays inside the item, like tabs.

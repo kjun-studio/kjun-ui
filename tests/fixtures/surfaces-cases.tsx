@@ -15,10 +15,13 @@ function FormSheet({ K, providerProps }: { K: any; providerProps: Record<string,
 export function SurfacesCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const tabs = [{ value: 'wish', label: 'Wishlist 3' }, { value: 'done', label: 'Achieved 1' }];
   return <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16, width: 360, background: 'rgb(240, 240, 240)' }}>
-    <div data-testid="bars"><K.KjunProvider {...providerProps}>
+    {/* The page background differs from the surface here, so a bar without a surface shows which one it uses. */}
+    <div data-testid="bars" style={{ '--kjun-background': 'rgb(240, 240, 240)' } as any}><K.KjunProvider {...providerProps}
+      {...(providerProps.colors ? { colors: { ...providerProps.colors, background: 'rgb(240, 240, 240)' } } : {})}>
       <K.KjunTopNavigation title="Plain header" surface={false} />
       <K.KjunTopNavigation title="Card header" />
-      <K.KjunBottomNavigation ariaLabel="Plain tabs" surface={false} value="home" items={[{ key: 'home', label: 'Plain home', href: '#home' }]} />
+      <K.KjunBottomNavigation ariaLabel="Plain tabs" surface={false} value="home" items={[{ key: 'home', label: 'Plain home', href: '#home', badge: 3 }]} />
+      <K.KjunBottomNavigation ariaLabel="Card tabs" value="home" items={[{ key: 'home', label: 'Card home', href: '#card', badge: 2 }]} />
       <K.KjunBottomActionBar description="Plain actions" surface={false}><K.KjunButton>Save</K.KjunButton></K.KjunBottomActionBar>
     </K.KjunProvider></div>
     <div data-testid="avatars"><K.KjunProvider {...providerProps}>

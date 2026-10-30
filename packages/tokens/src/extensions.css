@@ -187,6 +187,8 @@
   box-shadow:0 0 0 var(--_kjun-border-control-width) var(--_kjun-color-surface);
   font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-control-weight);
 }
+/* Without a surface the bar shows the page background, so the ring takes that colour instead. */
+.kjun-bottom-navigation[data-surface="false"] .kjun-navigation-badge { box-shadow:0 0 0 var(--_kjun-border-control-width) var(--_kjun-color-background); }
 .kjun-navigation-label > .kjun-navigation-badge { left:100%; margin-left:var(--_kjun-extension-bottom-navigation-badge-offset); }
 /* The query measures content width; outer insets are excluded. */
 .kjun-bottom-action-bar {

@@ -9,10 +9,11 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
     <K.KjunAvatar name="Lee" size="xl" />
     <K.KjunAvatar size="xl" />
   </K.KjunProvider></div>
-  <div data-testid="bars"><K.KjunProvider>
+  <div data-testid="bars" style={{ '--kjun-background': 'rgb(240, 240, 240)' }}><K.KjunProvider>
     <K.KjunTopNavigation title="Plain header" surface={false} />
     <K.KjunTopNavigation title="Card header" />
-    <K.KjunBottomNavigation ariaLabel="Plain tabs" surface={false} value="home" items={[{ key: 'home', label: 'Plain home', href: '#home' }]} />
+    <K.KjunBottomNavigation ariaLabel="Plain tabs" surface={false} value="home" items={[{ key: 'home', label: 'Plain home', href: '#home', badge: 3 }]} />
+    <K.KjunBottomNavigation ariaLabel="Card tabs" value="home" items={[{ key: 'home', label: 'Card home', href: '#card', badge: 2 }]} />
     <K.KjunBottomActionBar description="Plain actions" surface={false}><K.KjunButton>Save</K.KjunButton></K.KjunBottomActionBar>
   </K.KjunProvider></div>
 </div>).mount('#root');
