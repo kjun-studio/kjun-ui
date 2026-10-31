@@ -153,7 +153,16 @@ set("MarketTableSkeleton", {
   columns: "MarketTable과 동일한 열 구성입니다. 기본 폭은 이름 240px·기타 160px·액션 96px이며 지정한 너비를 우선합니다.",
 });
 set("ListSkeleton Skeleton MarketTableSkeleton", { rows: "자리 표시자로 출력할 행 수입니다." });
-set("Textarea", { rows: "여러 줄 입력의 표시 행 수입니다." });
+set("Textarea", {
+  rows: { default: "3", summary: "처음 표시하는 행 수이자 최소 높이입니다." },
+  maxRows: { default: "6", summary: "내용에 맞춰 늘어나는 최대 행 수입니다. 넘으면 필드 안에서 스크롤합니다. rows와 같게 두면 높이가 고정됩니다." },
+  resize: { default: '"none"', summary: "웹에서 사용자가 크기를 직접 조절하는 방향입니다. 필드가 내용에 맞춰 늘어나므로 기본은 none입니다." },
+  maxLength: "입력할 수 있는 최대 글자 수(UTF-16 단위)입니다. showCount와 함께 쓰면 \"길이/최대\"로 표시하고, 값이 넘치면 위험 색과 오류 상태로 표시합니다.",
+  showCount: { default: "false", summary: "필드 안 오른쪽 아래에 글자 수를 표시합니다. 화면 낭독기에는 필드 설명으로 연결합니다." },
+  actions: "작성기형: 필드 안 아래 줄 앞쪽에 둘 첨부·언급 같은 컨트롤입니다(Vue는 actions 슬롯). 소비자가 기능을 연결합니다.",
+  submitLabel: "작성기형: 지정하면 필드 안 아래 줄 끝에 보내기 버튼을 두고 이 문구를 접근성 이름으로 씁니다. 내용이 비었거나 maxLength를 넘거나 비활성·읽기 전용이면 누를 수 없습니다.",
+  onSubmit: "보내기 버튼이나 웹의 Ctrl/⌘+Enter로 보내기를 요청합니다. 인자는 현재 값이며, 입력을 비우는 것은 소비자가 합니다.",
+});
 set("MarketCards MarketSimpleList MarketTable", {
   rows: "현재 표시할 시장 행 객체 배열입니다.",
   pagination: "시장 목록의 페이지 설정 { page, size, total }입니다.",

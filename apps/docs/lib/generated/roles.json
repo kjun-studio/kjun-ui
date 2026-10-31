@@ -422,6 +422,7 @@
       "packages/native/src/progress.tsx",
       "packages/native/src/select-control.tsx",
       "packages/native/src/table-cards.tsx",
+      "packages/native/src/textarea.tsx",
       "packages/native/src/time-picker.tsx",
       "packages/native/src/toast.tsx"
     ]
@@ -559,6 +560,7 @@
       "packages/native/src/input.tsx",
       "packages/native/src/list.tsx",
       "packages/native/src/quantity-stepper.tsx",
+      "packages/native/src/textarea.tsx",
       "packages/native/src/time-picker.tsx"
     ]
   },
@@ -771,6 +773,7 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/compound-controls.css",
+      "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
       "packages/native/src/field-surface.ts",
       "packages/native/src/quantity-stepper.tsx",
@@ -807,6 +810,7 @@
       "--input-border-focus"
     ],
     "implementationFiles": [
+      "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
       "packages/native/src/field-surface.ts"
     ]

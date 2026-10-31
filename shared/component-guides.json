@@ -277,7 +277,7 @@
     "description": "여러 줄의 텍스트를 입력합니다.",
     "interaction": "여러 줄 문자열을 자식 입력의 변경 통지에 연결합니다. 내용 검증·길이 제한과 오류 설명은 소비자가 관리합니다.",
     "differences": "Vue v-model·readOnly, React onValueChange·readOnly, Native onChangeText·readOnly를 구분하세요. resize는 웹에서만 사용하고 Native rows는 초기 표시 높이에 반영합니다.",
-    "states": "빈 입력·작성 중·읽기 전용·비활성·오류를 구분합니다. rows로 표시 높이를 정하며 오류 설명은 FormGroup 등으로 연결합니다."
+    "states": "빈 입력·작성 중·읽기 전용·비활성·오류를 구분합니다. rows 행으로 시작해 내용에 맞춰 maxRows(기본 6)까지 늘어나고, 그 뒤로는 필드 안에서 스크롤합니다. 크기 조절 손잡이는 기본으로 두지 않습니다. showCount는 필드 안 오른쪽 아래에 글자 수를 표시하고, maxLength를 넘으면 위험 색과 오류 테두리로 표시합니다. 작성기형은 actions와 submitLabel로 필드 안 아래 줄에 첨부 같은 컨트롤과 보내기 버튼을 둡니다. 보내기는 내용이 있고 maxLength 안일 때만 누를 수 있으며, 웹에서는 Ctrl/⌘+Enter로도 보냅니다. 오류 설명은 FormGroup 등으로 연결합니다."
   },
   "KjunAccordion": {
     "slug": "accordion",

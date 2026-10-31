@@ -578,6 +578,11 @@
   --_kjun-extension-form-message-gap: 6px;
   --_kjun-extension-form-affix-item-gap: 4px;
   --_kjun-extension-form-message-icon-size: 16px;
+  --_kjun-extension-textarea-footer-text-gap: 4px;
+  --_kjun-extension-textarea-footer-gap: 8px;
+  --_kjun-extension-textarea-footer-padding: 8px;
+  --_kjun-extension-textarea-count-padding-x: 6px;
+  --_kjun-extension-textarea-submit-radius: 9999px;
   --_kjun-extension-checkbox-sizes-sm: 20px;
   --_kjun-extension-checkbox-sizes-md: 24px;
   --_kjun-extension-checkbox-sizes-lg: 28px;

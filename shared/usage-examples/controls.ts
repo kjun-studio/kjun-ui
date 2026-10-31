@@ -67,7 +67,10 @@ export function generate(input: UsageInput) {
     case 'KjunRadioGroup':
       content = b.node(name, { value: b.state('radio', 'a'), onValueChange: b.update('radio'), options: options(), ariaLabel: '과일 라디오', }); break;
     case 'KjunTextarea':
-      content = b.node(name, { value: b.state('textarea', ''), onValueChange: b.update('textarea'), placeholder: '목록의 목적과 공유할 내용을 입력하세요.', ariaLabel: '목록 설명', rows: 3, ...b.props('size', 'disabled', 'error') }); break;
+      content = b.node(name, { value: b.state('textarea', ''), onValueChange: b.update('textarea'), placeholder: '목록의 목적과 공유할 내용을 입력하세요.', ariaLabel: '목록 설명', rows: 3, maxRows: Number(s.maxRows), ...b.props('size', 'disabled', 'error', 'readOnly'),
+        ...(s.showCount || s.composer ? { maxLength: 200, showCount: true } : {}),
+        ...(s.composer ? { submitLabel: '보내기', onSubmit: b.handler('submit', 'value', b.result('"보내기: " + value')) } : {}) },
+        '', s.composer ? { actions: b.button('', b.handler('attach', '', b.result('"파일 첨부 요청"')), { variant: 'ghost', size: 'sm', prefixIcon: 'plus', ariaLabel: '첨부 추가' }) } : undefined); break;
     case 'KjunSelect':
       content = b.node(name, { value: b.state('select', s.multiple ? [] : null), onValueChange: b.update('select'),
         open: b.state('selectOpen', false), onOpenChange: b.update('selectOpen'), options: options(), ariaLabel: '공개 범위',

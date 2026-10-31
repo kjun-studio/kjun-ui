@@ -33,6 +33,13 @@
       "messageGap": { "$ref": "dimension.value6" },
       "affixItemGap": { "$ref": "dimension.value4" }
     },
+    "textarea": {
+      "footerTextGap": { "$ref": "dimension.value4" },
+      "footerGap": { "$ref": "dimension.value8" },
+      "footerPadding": { "$ref": "dimension.value8" },
+      "countPaddingX": { "$ref": "dimension.value6" },
+      "submitRadius": { "$ref": "radius.radius9999" }
+    },
     "checkbox": {
       "sizes": { "sm": 20, "md": 24, "lg": 28 },
       "iconSizes": { "sm": 14, "md": 16, "lg": 18 },

@@ -42,6 +42,7 @@ assign("IconToggle MenuButton RefreshButton", [disabled, loading]);
 assign("IconToggle", [choice("usage", "사용 예제", ["기본", "즐겨찾기", "관심"]), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), disabled, loading]);
 assign("RefreshButton", [choice("mode", "표현", ["icon", "text"], "icon"), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "sm"), disabled, loading]);
 assign("Textarea DatePicker Combobox", [size, disabled, error]);
+assign("Textarea", [size, disabled, error, toggle("readOnly", "읽기 전용"), toggle("showCount", "글자 수"), toggle("composer", "작성기형"), choice("maxRows", "최대 행", ["6", "3", "10"])]);
 assign("Dropdown", [disabled]);
 assign("DropdownItem", [toggle("itemDisabled", "첫 항목 비활성")]);
 assign("Accordion AccordionItem", [choice("tone", "배경", ["card", "muted"]), toggle("multiple", "복수 펼침"), toggle("itemDisabled", "첫 항목 비활성"), toggle("divider", "구분선"), toggle("separated", "항목 분리"), toggle("detail", "아이콘·설명")]);

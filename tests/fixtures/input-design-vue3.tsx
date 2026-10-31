@@ -9,7 +9,7 @@ document.body.style.background = colors.background;
 document.documentElement.style.colorScheme = palette === 'dark' ? 'dark' : 'light';
 const designOptions = [{ value: 'team', label: '팀에 공개' }, { value: 'private', label: '나만 보기' }, { value: 'blocked', label: '선택 불가', disabled: true }];
 const s = reactive({ config: { size: 'md', disabled: false, readOnly: false, error: false } as Record<string, any>,
-  value: '장기 보유 자산', changes: 0, selected: 'team' as string | null, quantity: 5, time: '09:30' });
+  value: '장기 보유 자산', changes: 0, selected: 'team' as string | null, quantity: 5, time: '09:30', note: '', sent: '' });
 Object.assign(window, { configureInputDesign: (next: object) => { s.config = { ...s.config, ...next }; } });
 // React components ignore config keys they do not declare; Vue would pass them on as attributes.
 const own = (component: any) => Object.fromEntries(Object.entries(s.config).filter(([key]) => key in component.props));
@@ -24,6 +24,10 @@ createApp(defineComponent(() => () => {
       {{ prefix: () => <span style={{ fontSize: '16px' }}>합계 금액</span>, suffix: () => <span style={{ fontSize: '16px' }}>KRW</span> }}
     </K.KjunInput></div>
     <div data-testid="textarea"><K.KjunTextarea {...text(K.KjunTextarea)} rows={3} ariaLabel="목록 설명" /></div>
+    <div data-testid="composer"><K.KjunTextarea modelValue={s.note} onUpdate:modelValue={(v: string) => { s.note = v; }} size={s.config.size} disabled={s.config.disabled} rows={2} maxRows={4} maxLength={20} showCount
+      submitLabel="보내기" onSubmit={(next: string) => { s.sent = next; s.note = ''; }} ariaLabel="메모">
+      {{ actions: () => <K.KjunButton variant="ghost" size="sm" prefixIcon="plus" ariaLabel="첨부 추가" /> }}
+    </K.KjunTextarea><output data-testid="sent" style={{ display: "none" }}>{s.sent}</output></div>
     <div data-testid="select"><K.KjunSelect {...own(K.KjunSelect)} modelValue={s.selected} options={designOptions} onUpdate:modelValue={(v: any) => { s.selected = v; }} clearable ariaLabel="공개 범위" /></div>
     <div data-testid="combo"><K.KjunCombobox {...own(K.KjunCombobox)} modelValue={s.selected} options={designOptions} onUpdate:modelValue={(v: any) => { s.selected = v; }} clearable ariaLabel="범위 검색" /></div>
     <div data-testid="search"><K.KjunSearchInput {...own(K.KjunSearchInput)} modelValue="" loadOptions={async () => designOptions} ariaLabel="자산 검색" /></div>

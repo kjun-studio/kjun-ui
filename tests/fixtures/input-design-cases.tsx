@@ -15,6 +15,7 @@ export function InputDesignCases({ K, Affix = 'span', native = false }: { K: any
   const [selected, setSelected] = useState<string | null>('team');
   const [quantity, setQuantity] = useState(5);
   const [time, setTime] = useState('09:30');
+  const [note, setNote] = useState(''), [sent, setSent] = useState('');
   useLayoutEffect(() => { Object.assign(window, { configureInputDesign: (next: object) => setConfig(old => ({ ...old, ...next })) }); }, []);
   const recordChange = (next: string) => { setChanges(count => count + 1); setValue(next); };
   const change = native ? { onChangeText: recordChange } : { onValueChange: recordChange };
@@ -27,6 +28,11 @@ export function InputDesignCases({ K, Affix = 'span', native = false }: { K: any
       prefix={<Affix style={{ fontSize: 16, color: native ? inputDesignColors.textSecondary : undefined }}>합계 금액</Affix>}
       suffix={<Affix style={{ fontSize: 16, color: native ? inputDesignColors.textSecondary : undefined }}>KRW</Affix>} /></div>
     <div data-testid="textarea"><K.KjunTextarea {...text} readonly={native ? config.readOnly : undefined} rows={3} ariaLabel="목록 설명" /></div>
+    {/* A growing composer: two rows up to four, a counted limit, an action and a submit button. */}
+    <div data-testid="composer"><K.KjunTextarea value={note} {...(native ? { onChangeText: setNote } : { onValueChange: setNote })} size={config.size} disabled={config.disabled} rows={2} maxRows={4} maxLength={20} showCount
+      submitLabel="보내기" onSubmit={(next: string) => { setSent(next); setNote(''); }} actions={<K.KjunButton variant="ghost" size="sm" prefixIcon="plus" ariaLabel="첨부 추가" />} ariaLabel="메모" />
+      {/* Out of layout: an empty inline line box would put the fields below on fractional offsets. */}
+      <output data-testid="sent" style={{ display: "none" }}>{sent}</output></div>
     <div data-testid="select"><K.KjunSelect {...config} value={selected} options={designOptions} onValueChange={setSelected} clearable ariaLabel="공개 범위" /></div>
     <div data-testid="combo"><K.KjunCombobox {...config} value={selected} options={designOptions} onValueChange={setSelected} clearable ariaLabel="범위 검색" /></div>
     <div data-testid="search"><K.KjunSearchInput {...config} value="" onValueChange={() => {}} loadOptions={async () => designOptions} ariaLabel="자산 검색" /></div>

@@ -1,14 +1,11 @@
 import { typeStyle, selectionTypeStyle } from "./typography";
-import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens,type ButtonSize,type InputSize } from "@kjun-ui/tokens";
 import {
 createContext,
-forwardRef,
 useCallback,
 useContext,
 useId,
 type ReactNode,
-type TextareaHTMLAttributes,
 } from "react";
 import {
 Checkbox as AriaCheckbox,
@@ -271,64 +268,8 @@ export function KjunRadioGroup({
     </RadioContext.Provider>
   );
 }
-export interface KjunTextareaProps
-  extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "size" | "value"> {
-  value: string;
-  size?: InputSize;
-  error?: boolean;
-  resize?: "none" | "vertical" | "horizontal" | "both";
-  ariaLabel?: string;
-  onValueChange?: (value: string) => void;
-}
-export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
-  function KjunTextarea(
-    {
-      value,
-      size = "md",
-      error = false,
-      resize = "vertical",
-      rows = 3,
-      ariaLabel,
-      onValueChange,
-      onChange,
-      className = "",
-      style,
-      ...props
-    },
-    ref
-  ) {
-    const field = useKjunField();
-    const spec = tokens.input[size];
-    return (
-      <textarea
-        {...props}
-        ref={ref}
-        id={props.id || field?.id}
-        value={value}
-        rows={rows}
-        required={props.required ?? field?.required}
-        aria-label={ariaLabel || props["aria-label"]}
-        aria-labelledby={props["aria-labelledby"] || field?.labelId}
-        aria-describedby={mergeIds(props["aria-describedby"], field?.describedBy)}
-        aria-invalid={error || !!field?.error || undefined}
-        className={"kjun-input kjun-textarea " + className}
-        style={{
-          fontSize: spec.fontSize / 16 + "rem",
-          lineHeight: spec.lineHeight / 16 + "rem",
-          padding: `${spec.textareaPaddingY}px ${spec.padding - tokens.border.controlWidth}px`,
-          minHeight: Math.max(spec.height, rows * spec.lineHeight + spec.textareaPaddingY * 2 + 2 * tokens.border.controlWidth),
-          borderRadius: spec.radius,
-          resize,
-          ...style,
-        }}
-        onChange={(event) => {
-          onChange?.(event);
-          onValueChange?.(event.target.value);
-        }}
-      />
-    );
-  }
-);
+export { KjunTextarea } from "./textarea";
+export type { KjunTextareaProps } from "./textarea";
 export { groupKeydown };
 export interface KjunButtonGroupProps {
   value: ChoiceValue;

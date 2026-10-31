@@ -162,10 +162,16 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         placeholder: "목록의 목적과 공유할 내용을 입력하세요.",
         ariaLabel: "목록 설명",
         rows: 3,
+        maxRows: Number(settings.maxRows),
+        maxLength: settings.showCount || settings.composer ? 200 : undefined,
+        showCount: settings.showCount || settings.composer,
+        submitLabel: settings.composer ? "보내기" : undefined,
+        onSubmit: settings.composer ? (value: string) => { set("message", "보내기: " + value); set("textarea", ""); } : undefined,
+        readOnly: settings.readOnly,
         size: settings.size,
         disabled,
         error,
-      }), error ? "목록 설명을 입력해 주세요." : "");
+      }, undefined, settings.composer ? { actions: h("KjunButton", { variant: "ghost", size: "sm", prefixIcon: "plus", ariaLabel: "첨부 추가", disabled, ...action(() => set("message", "파일 첨부 요청")) }) } : undefined), error ? "목록 설명을 입력해 주세요." : "");
     case "KjunSelect":
       return singleField("공개 범위", "선택한 범위의 사용자만 목록을 볼 수 있습니다.", h(name, {
         value: get("select", settings.multiple ? [] : null),

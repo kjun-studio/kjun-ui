@@ -1,5 +1,4 @@
-import { mergeIds } from "../../../shared/package-runtime/aria-ids";
-import { computed, defineComponent, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, provide, ref,
+import { computed, defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type InputSize } from "@kjun-ui/tokens";
 import { selectionTypeStyle, typeStyle } from "../../../shared/package-runtime/typography";
@@ -185,61 +184,8 @@ export const KjunRadioGroup = defineComponent({
   },
 });
 
-const kjunTextareaProps = {
-  modelValue: { type: String, default: "" },
-  size: { type: String as PropType<InputSize>, default: "md" },
-  error: { type: Boolean, default: false },
-  resize: { type: String as PropType<"none" | "vertical" | "horizontal" | "both">, default: "vertical" },
-  rows: { type: Number, default: 3 },
-  ariaLabel: { type: String, default: undefined },
-  id: { type: String, default: undefined },
-  required: { type: Boolean, default: undefined },
-  disabled: { type: Boolean, default: false },
-  readOnly: { type: Boolean, default: false },
-} as const;
-export type KjunTextareaProps = ExtractPublicPropTypes<typeof kjunTextareaProps>;
-/** v-model; other attributes reach the <textarea>. */
-const KjunTextareaComponent = defineComponent({
-  name: "KjunTextarea",
-  inheritAttrs: false,
-  props: kjunTextareaProps,
-  emits: { "update:modelValue": (_value: string) => true },
-  setup(props, { attrs, emit, expose }) {
-    const field = useKjunField();
-    const textarea = ref<HTMLTextAreaElement | null>(null);
-    expose({ focus: () => textarea.value?.focus(), el: textarea });
-    return () => {
-      const spec = tokens.input[props.size], owner = field.value;
-      return (
-        <textarea {...mergeProps(attrs, { onInput: (event: Event) => emit("update:modelValue", (event.target as HTMLTextAreaElement).value) })}
-          disabled={props.disabled} readonly={props.readOnly}
-          ref={textarea}
-          id={props.id || owner?.id}
-          value={props.modelValue}
-          rows={props.rows}
-          required={props.required ?? owner?.required}
-          aria-label={props.ariaLabel || (attrs["aria-label"] as string | undefined)}
-          aria-labelledby={(attrs["aria-labelledby"] as string | undefined) || owner?.labelId}
-          aria-describedby={mergeIds(attrs["aria-describedby"] as string | undefined, owner?.describedBy)}
-          aria-invalid={props.error || !!owner?.error ? "true" : undefined}
-          class={["kjun-input kjun-textarea", attrs.class]}
-          style={[css({
-            fontSize: spec.fontSize / 16 + "rem",
-            lineHeight: spec.lineHeight / 16 + "rem",
-            padding: `${spec.textareaPaddingY}px ${spec.padding - tokens.border.controlWidth}px`,
-            minHeight: Math.max(spec.height, props.rows * spec.lineHeight + spec.textareaPaddingY * 2 + 2 * tokens.border.controlWidth),
-            borderRadius: spec.radius,
-            resize: props.resize,
-          }), attrs.style as never]} />
-      );
-    };
-  },
-});
-
-// Preserve props/events while making the existing expose() contract visible to template refs.
-export const KjunTextarea = KjunTextareaComponent as typeof KjunTextareaComponent & {
-  new(): InstanceType<typeof KjunTextareaComponent> & { focus(): void; el: HTMLTextAreaElement | null };
-};
+export { KjunTextarea } from "./textarea";
+export type { KjunTextareaProps } from "./textarea";
 
 /** The decorative selected background follows the pressed button after each render. */
 function useSelectionIndicator(tabs = false) {

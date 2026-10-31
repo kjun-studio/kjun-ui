@@ -20012,8 +20012,8 @@
         "name": "resize",
         "type": "\"none\" | \"horizontal\" | \"vertical\" | \"both\"",
         "required": false,
-        "default": "\"vertical\"",
-        "description": ""
+        "default": "\"none\"",
+        "description": "Manual resizing; the field already grows with its text (default \"none\")."
       },
       {
         "name": "rows",
@@ -20021,6 +20021,34 @@
         "required": false,
         "default": "3",
         "description": ""
+      },
+      {
+        "name": "maxRows",
+        "type": "number",
+        "required": false,
+        "default": "6",
+        "description": "The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed)."
+      },
+      {
+        "name": "maxLength",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "showCount",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Shows the character count inside the field, as \"length/maxLength\" when maxLength is set."
+      },
+      {
+        "name": "submitLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Composer: shows a submit button at the end of the bar inside the field, named by this label."
       },
       {
         "name": "ariaLabel",
@@ -20061,10 +20089,20 @@
     "events": [
       {
         "name": "update:modelValue",
-        "source": "packages/vue3/src/controls.tsx"
+        "source": "packages/vue3/src/textarea.tsx"
+      },
+      {
+        "name": "submit",
+        "source": "packages/vue3/src/textarea.tsx"
       }
     ],
-    "slots": [],
+    "slots": [
+      {
+        "name": "actions",
+        "data": [],
+        "source": "packages/vue3/src/textarea.tsx"
+      }
+    ],
     "react": [
       {
         "name": "value",
@@ -20092,7 +20130,7 @@
         "type": "\"none\" | \"horizontal\" | \"vertical\" | \"both\" | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Manual resizing; the field already grows with its text (default \"none\")."
       },
       {
         "name": "ariaLabel",
@@ -20100,6 +20138,48 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "maxRows",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed)."
+      },
+      {
+        "name": "maxLength",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Character limit (UTF-16 units, like the attribute); the count shows \"length/maxLength\" and a longer value reads as an error."
+      },
+      {
+        "name": "showCount",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shows the character count inside the field, as \"length/maxLength\" when maxLength is set."
+      },
+      {
+        "name": "actions",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Composer: controls at the start of the bar inside the field (attach, mention)."
+      },
+      {
+        "name": "submitLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Composer: shows a submit button at the end of the bar, named by this label."
+      },
+      {
+        "name": "onSubmit",
+        "type": "((value: string) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The submit button, or Ctrl/⌘+Enter, while there is text within maxLength."
       },
       {
         "name": "onValueChange",
@@ -20235,6 +20315,48 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "maxRows",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed)."
+      },
+      {
+        "name": "maxLength",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Character limit (UTF-16 units); the count shows \"length/maxLength\" and a longer value reads as an error."
+      },
+      {
+        "name": "showCount",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shows the character count inside the field, as \"length/maxLength\" when maxLength is set."
+      },
+      {
+        "name": "actions",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Composer: controls at the start of the bar inside the field (attach, mention)."
+      },
+      {
+        "name": "submitLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Composer: shows a submit button at the end of the bar, named by this label."
+      },
+      {
+        "name": "onSubmit",
+        "type": "((value: string) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The submit button, while there is text within maxLength."
       },
       {
         "name": "disabled",
