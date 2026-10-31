@@ -31,6 +31,8 @@ export {
   KjunDropdown,
   KjunDropdownItem,
   KjunDropdownDivider,
+  KjunDropdownSection,
+  KjunDropdownSubmenu,
   KjunMenuButton,
   KjunDrawer,
 } from "./layers";
@@ -39,6 +41,8 @@ export type {
   KjunTooltipProps,
   KjunDropdownProps,
   KjunDropdownItemProps,
+  KjunDropdownSectionProps,
+  KjunDropdownSubmenuProps,
   KjunMenuButtonProps,
   KjunDrawerProps,
 } from "./layers";

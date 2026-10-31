@@ -12,26 +12,39 @@ useState,
 type ReactNode
 } from "react";
 import {
+Platform,
 View
 } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunButton,KjunIcon,type KjunButtonProps } from "./button";
 import { FloatingPanel,LayerTrigger } from "./floating-panel";
-import { content } from "./internal";
+import { KText, content, finePointer } from "./internal";
+import { typeStyle } from "./typography";
+import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { KjunTooltip,type KjunTooltipProps } from "./popover";
 import { useKjunStyles } from "./provider";
 export const DropdownContext = createContext<(() => void) | null>(null);
-// True once any item in the open menu has a leading icon, so icon-less labels share its start line.
-const MenuIconSlotContext = createContext(false);
-function hasLeadingIcon(node: ReactNode): boolean {
-  return Children.toArray(node).some(child => isValidElement<{ icon?: string; children?: ReactNode }>(child) &&
-    (child.type === Fragment ? hasLeadingIcon(child.props.children) : child.type === KjunDropdownItem && !!child.props.icon));
+// Submenus open in place: the menu shows one level at a time, with a back row at the top of a submenu.
+interface MenuView { view: string; open: (key: string) => void; back: () => void; compact: boolean }
+const MenuViewContext = createContext<MenuView>({ view: "", open: () => {}, back: () => {}, compact: false });
+const MenuLevelContext = createContext("");
+const useShown = () => useContext(MenuViewContext).view === useContext(MenuLevelContext);
+// The check and icon columns each appear once any item in the open menu uses them, so every label shares one start line.
+interface LeadingSlots { check: boolean; icon: boolean }
+const MenuIconSlotContext = createContext<LeadingSlots>({ check: false, icon: false });
+type LeadingProps = { icon?: string; selected?: boolean | null; checked?: boolean | null; children?: ReactNode };
+function hasLeading(node: ReactNode, slot: (props: LeadingProps) => boolean): boolean {
+  return Children.toArray(node).some(child => isValidElement<LeadingProps>(child) &&
+    (child.type === Fragment || child.type === KjunDropdownSection ? hasLeading(child.props.children, slot)
+      : (child.type === KjunDropdownItem || child.type === KjunDropdownSubmenu) && slot(child.props)));
 }
 export interface KjunDropdownProps {
   disabled?: boolean;
   placement?: "bottom-start" | "bottom-end" | "top-start" | "top-end";
   menuId?: string;
   triggerId?: string;
+  /** compact: 32px rows on Native Web's fine pointers; touch keeps 44px. */
+  density?: "comfortable" | "compact";
   trigger: ReactNode;
   children: ReactNode;
   onOpen?: () => void;
@@ -40,6 +53,7 @@ export interface KjunDropdownProps {
 export function KjunDropdown({
   disabled = false,
   placement = "bottom-start",
+  density = "comfortable",
   trigger,
   children,
   onOpen,
@@ -47,6 +61,7 @@ export function KjunDropdown({
 }: KjunDropdownProps) {
   const m = useKjunMessages();
   const [open, setOpen] = useState(false),
+    [stack, setStack] = useState<string[]>([]),
     currentOpen = useRef(false),
     ref = useRef<View>(null);
   let control = trigger;
@@ -58,12 +73,16 @@ export function KjunDropdown({
     if (v === currentOpen.current || (v && unavailable)) return;
     currentOpen.current = v;
     setOpen(v);
+    if (!v) setStack([]);
     if (v) onOpen?.();
     else onClose?.();
   };
   useEffect(() => {
     if (unavailable) change(false);
   }, [unavailable]);
+  const view = stack[stack.length - 1] ?? "";
+  // Compact rows only where the pointer is fine; touch keeps the full target.
+  const menuView: MenuView = { view, open: key => setStack(current => [...current, key]), back: () => setStack(current => current.slice(0, -1)), compact: density === "compact" && finePointer() };
   return (
     <DropdownContext.Provider value={() => change(false)}>
       <View ref={ref} collapsable={false}>
@@ -81,7 +100,9 @@ export function KjunDropdown({
         ariaLabel={m.menu}
         menu
       >
-        <MenuIconSlotContext.Provider value={hasLeadingIcon(children)}>{children}</MenuIconSlotContext.Provider>
+        <MenuViewContext.Provider value={menuView}>
+          <MenuIconSlotContext.Provider value={{ check: hasLeading(children, p => p.selected != null || p.checked != null), icon: hasLeading(children, p => !!p.icon) }}>{children}</MenuIconSlotContext.Provider>
+        </MenuViewContext.Provider>
       </FloatingPanel>
     </DropdownContext.Provider>
   );
@@ -91,64 +112,119 @@ export interface KjunDropdownItemProps {
   variant?: "default" | "danger";
   icon?: string;
   disabled?: boolean;
+  /** Single choice: a check in the leading column, announced as a radio item. */
   selected?: boolean | null;
+  /** Independent toggle: a check in the leading column, announced as a checkbox. */
+  checked?: boolean | null;
+  /** Second line under the label. */
+  description?: string;
+  /** Keyboard hint shown at the end on Native Web, such as "⌘D". It only describes; wiring the keys is the app's job. */
+  shortcut?: string;
   children: ReactNode;
   onPress?: () => void;
+}
+function MenuRow({ variant = "default", icon, disabled = false, check = null, description, shortcut, chevron, back, accessibilityRole, accessibilityLabel, children, onPress }: {
+  variant?: "default" | "danger"; icon?: string; disabled?: boolean; check?: boolean | null; description?: string; shortcut?: string; chevron?: boolean; back?: boolean;
+  accessibilityRole: "menuitem" | "radio" | "checkbox"; accessibilityLabel?: string; children: ReactNode; onPress: () => void }) {
+  const { colors } = useKjunStyles(), menu = useContext(MenuViewContext), reserve = useContext(MenuIconSlotContext);
+  const geometry = tokens.extensions.menu;
+  const [hovered, setHovered] = useState(false);
+  const danger = variant === "danger";
+  const color = disabled ? colors.textDisabled : danger ? colors.danger : colors.text;
+  // Leading icons sit a step below the regular-weight label; danger items keep their role color.
+  const iconColor = disabled ? colors.textDisabled : danger ? colors.danger : colors.textSecondary;
+  // Danger keeps a light tint of its own colour in both themes instead of a heavy fill.
+  const dangerTint = typeof colors.danger === "string" ? tintColor(colors.danger, tokens.states.opacity.tintHover) : undefined;
+  return (
+    <Pressable
+      focusRingInset
+      accessibilityRole={accessibilityRole}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityState={{ disabled, ...(check === null ? {} : { checked: check }) }}
+      // A submenu row says it opens a menu, as on Web.
+      {...(Platform.OS === "web" && chevron ? { "aria-haspopup": "menu" } : {})}
+      disabled={disabled}
+      onHoverIn={() => setHovered(true)}
+      onHoverOut={() => setHovered(false)}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        flexDirection: "row",
+        alignItems: description ? "flex-start" : "center",
+        gap: tokens.dimension.value8,
+        paddingVertical: menu.compact ? geometry.compactOptionPaddingY : geometry.optionPaddingY,
+        paddingHorizontal: menu.compact ? geometry.compactOptionPaddingX : geometry.optionPaddingX,
+        minHeight: menu.compact ? geometry.compactOptionHeight : Math.max(geometry.itemHeight, tokens.native.minimumTouchTarget),
+        borderRadius: geometry.optionRadius,
+        backgroundColor: check && accessibilityRole === "radio" ? colors.selectedBg : !disabled && (pressed || hovered)
+          ? danger ? dangerTint ?? colors.dangerBg : colors.hover : undefined,
+      })}
+    >
+      {check != null ? <View style={{ opacity: check ? 1 : 0 }} accessible={false}><KjunIcon name="check" size={geometry.iconSize} color={disabled ? colors.textDisabled : colors.brand} /></View>
+        : reserve.check && <View style={{ width: geometry.iconSize }} accessible={false} />}
+      {icon ? <KjunIcon name={icon} size={geometry.iconSize} color={iconColor} />
+        : reserve.icon && <View style={{ width: geometry.iconSize }} accessible={false} />}
+      <View style={{ flexGrow: 1, flexShrink: 1 }}>
+        {content(children, { color, fontSize: geometry.optionFontSize, lineHeight: geometry.optionLineHeight, ...(back ? { fontWeight: typeStyle("control").fontWeight } : {}) })}
+        {!!description && <KText style={{ ...typeStyle("caption"), marginTop: geometry.descriptionGap, color: disabled ? colors.textDisabled : colors.textSecondary }}>{description}</KText>}
+      </View>
+      {!!shortcut && Platform.OS === "web" && <KText style={{ ...typeStyle("meta"), fontVariant: ["tabular-nums"], color: disabled ? colors.textDisabled : colors.textTertiary }}>{shortcut}</KText>}
+      {chevron && <KjunIcon name="chevron-right" size={geometry.iconSize} color={colors.textTertiary} />}
+    </Pressable>
+  );
 }
 export function KjunDropdownItem({
   variant = "default",
   icon,
   disabled = false,
   selected = null,
+  checked = null,
+  description,
+  shortcut,
   children,
   onPress,
 }: KjunDropdownItemProps) {
-  const { colors } = useKjunStyles(),
-    close = useContext(DropdownContext),
-    color = variant === "danger" ? colors.danger : colors.text,
-    // Leading icons sit a step below the regular-weight label; danger items keep their role color.
-    iconColor = variant === "danger" ? colors.danger : colors.textSecondary,
-    reserveIcon = useContext(MenuIconSlotContext);
-  const [hovered, setHovered] = useState(false);
-  return (
-    <Pressable
-      focusRingInset
-      accessibilityRole={selected === null ? "menuitem" : "radio"}
-      accessibilityState={{
-        disabled,
-        ...(selected === null ? {} : { checked: selected }),
-      }}
-      disabled={disabled}
-      onHoverIn={() => setHovered(true)}
-      onHoverOut={() => setHovered(false)}
-      onPress={() => {
-        onPress?.();
-        close?.();
-      }}
-      style={({ pressed }) => ({
-        flexDirection: "row",
-        alignItems: "center",
-        gap: tokens.dimension.value8,
-        paddingVertical: tokens.extensions.menu.optionPaddingY,
-        paddingHorizontal: tokens.extensions.menu.optionPaddingX,
-        minHeight: tokens.extensions.menu.optionHeight,
-        borderRadius: tokens.extensions.menu.optionRadius,
-        backgroundColor: selected ? colors.selectedBg : !disabled && (pressed || hovered)
-          ? variant === "danger" ? colors.dangerBg : colors.hover : undefined,
-        opacity: disabled ? tokens.states.opacity.disabled : 1,
-      })}
-    >
-      {icon ? <KjunIcon name={icon} size={tokens.extensions.menu.iconSize} color={iconColor} />
-        : reserveIcon && <View style={{ width: tokens.extensions.menu.iconSize }} accessible={false} />}
-      <View style={{ flexGrow: 1, flexShrink: 1 }}>{content(children, { color, fontSize: tokens.extensions.menu.optionFontSize, lineHeight: tokens.extensions.menu.optionLineHeight })}</View>
-      {selected !== null && <View style={{ opacity: selected ? 1 : 0 }} accessible={false}>
-        <KjunIcon name="check" size={tokens.extensions.menu.iconSize} color={colors.brand} />
-      </View>}
-    </Pressable>
-  );
+  const close = useContext(DropdownContext);
+  if (!useShown()) return null;
+  return <MenuRow variant={variant} icon={icon} disabled={disabled} check={selected ?? checked} description={description} shortcut={shortcut}
+    accessibilityRole={selected !== null ? "radio" : checked !== null ? "checkbox" : "menuitem"}
+    onPress={() => { onPress?.(); close?.(); }}>{children}</MenuRow>;
+}
+export interface KjunDropdownSectionProps {
+  /** Small heading over the group; it names the group for screen readers. */
+  title?: string;
+  children: ReactNode;
+}
+export function KjunDropdownSection({ title, children }: KjunDropdownSectionProps) {
+  const { colors } = useKjunStyles(), menu = useContext(MenuViewContext);
+  const geometry = tokens.extensions.menu;
+  if (!useShown()) return null;
+  return <View role="group" aria-label={title}>
+    {!!title && <KText aria-hidden={true} style={{ ...typeStyle("meta"), color: colors.textTertiary, paddingTop: geometry.sectionPaddingTop, paddingBottom: geometry.sectionPaddingBottom,
+      paddingHorizontal: menu.compact ? geometry.compactOptionPaddingX : geometry.optionPaddingX }}>{title}</KText>}
+    {content(children)}
+  </View>;
+}
+export interface KjunDropdownSubmenuProps {
+  /** Stable key for the submenu; defaults to the label. */
+  id?: string;
+  label: string;
+  icon?: string;
+  disabled?: boolean;
+  children: ReactNode;
+}
+/** An item that opens its own items in place of the menu, with a back row. */
+export function KjunDropdownSubmenu({ id, label, icon, disabled = false, children }: KjunDropdownSubmenuProps) {
+  const m = useKjunMessages(), menu = useContext(MenuViewContext), level = useContext(MenuLevelContext);
+  const key = (level ? level + "/" : "") + (id ?? label);
+  return <>
+    {menu.view === level && <MenuRow icon={icon} disabled={disabled} chevron accessibilityRole="menuitem" onPress={() => menu.open(key)}>{label}</MenuRow>}
+    {menu.view === key && <MenuRow icon="chevron-left" back accessibilityRole="menuitem" accessibilityLabel={m.back + ", " + label} onPress={menu.back}>{label}</MenuRow>}
+    <MenuLevelContext.Provider value={key}>{children}</MenuLevelContext.Provider>
+  </>;
 }
 export function KjunDropdownDivider() {
   const { colors } = useKjunStyles();
+  if (!useShown()) return null;
   return (
     <View
       role="separator"

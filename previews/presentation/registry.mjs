@@ -16,10 +16,10 @@ const groups = [
   ['control', 360, ['KjunRadio', 'KjunInput', 'KjunFormGroup', 'KjunFormActions', 'KjunTextarea', 'KjunCheckbox', 'KjunSwitch', 'KjunRadioGroup', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunDateRangePicker', 'KjunTimePicker', 'KjunQuantityStepper', 'KjunSlider', 'KjunRangeSlider', 'KjunScrollFade', 'KjunImage', 'KjunProgressCell', 'KjunSparkline', 'KjunSkeleton', 'KjunFormSkeleton', 'KjunProgress', 'KjunFreshness']],
   ['large', 480, ['KjunCard', 'KjunAccordion', 'KjunAccordionItem', 'KjunListRow', 'KjunListSection', 'KjunListItem', 'KjunBottomActionBar', 'KjunHeatmapCell', 'KjunListSkeleton', 'KjunChartSkeleton', 'KjunAlert', 'KjunEmpty', 'KjunDataState', 'KjunErrorBoundary']],
   ['large', 576, ['KjunTable', 'KjunMarketSimpleList', 'KjunMarketCards', 'KjunMarketListPanel', 'KjunKpiHero', 'KjunModal', 'KjunDrawer']],
-  ['control', 240, ['KjunDropdown', 'KjunDropdownItem', 'KjunDropdownDivider', 'KjunMenuButton', 'KjunPopover']],
+  ['control', 240, ['KjunDropdown', 'KjunDropdownItem', 'KjunDropdownDivider', 'KjunDropdownSection', 'KjunDropdownSubmenu', 'KjunMenuButton', 'KjunPopover']],
 ];
 export const presentations = groups.flatMap(([captureType, width, names]) => names.map(name => ({ name, width, captureType,
-  prepare: ['KjunDropdown', 'KjunDropdownItem', 'KjunDropdownDivider', 'KjunMenuButton'].includes(name) ? 'menu' : name === 'KjunTooltip' ? 'tooltip' : null,
+  prepare: ['KjunDropdown', 'KjunDropdownItem', 'KjunDropdownDivider', 'KjunDropdownSection', 'KjunDropdownSubmenu', 'KjunMenuButton'].includes(name) ? 'menu' : name === 'KjunTooltip' ? 'tooltip' : null,
   layer: ['KjunModal', 'KjunDrawer'].includes(name),
   highlight: name === 'KjunDropdownDivider' ? '[role="separator"]' : name === 'KjunTabPane' ? '[role="tabpanel"]' : null,
 })));

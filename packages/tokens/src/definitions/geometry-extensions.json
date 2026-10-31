@@ -172,10 +172,17 @@
       "optionRadius": { "$ref": "radius.radius8" },
       "padding": { "$ref": "dimension.value4" },
       "optionHeight": 44,
+      "itemHeight": 40,
       "optionFontSize": { "$ref": "typography.body.fontSizePx" },
       "optionLineHeight": { "$ref": "typography.body.lineHeightPx" },
       "optionPaddingY": { "$ref": "dimension.value8" },
-      "optionPaddingX": { "$ref": "dimension.value12" }
+      "optionPaddingX": { "$ref": "dimension.value12" },
+      "compactOptionHeight": 32,
+      "compactOptionPaddingY": { "$ref": "dimension.value6" },
+      "compactOptionPaddingX": { "$ref": "dimension.value10" },
+      "sectionPaddingTop": { "$ref": "dimension.value8" },
+      "sectionPaddingBottom": { "$ref": "dimension.value4" },
+      "descriptionGap": { "$ref": "dimension.value2" }
     },
     "empty": {
       "titleSize": { "$ref": "typography.cardTitle.fontSizePx" },

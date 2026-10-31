@@ -21,6 +21,24 @@
         "colorRole": "shadow"
       }
     ],
+    "overlay": [
+      {
+        "offsetX": 0,
+        "offsetY": 8,
+        "blurRadius": 24,
+        "spreadDistance": 0,
+        "inset": false,
+        "colorRole": "shadow"
+      },
+      {
+        "offsetX": 0,
+        "offsetY": 2,
+        "blurRadius": 4,
+        "spreadDistance": 0,
+        "inset": false,
+        "colorRole": "shadowSubtle"
+      }
+    ],
     "ambient": [
       {
         "offsetX": 0,
@@ -61,7 +79,7 @@
   "extensions": {
     "menu": {
       "elevation": {
-        "$ref": "elevation.floating"
+        "$ref": "shadowScale.overlay"
       }
     },
     "popover": {

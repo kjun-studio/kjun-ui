@@ -126,6 +126,26 @@
       "parent": "KjunDropdown"
     },
     {
+      "name": "KjunDropdownSection",
+      "category": "actions",
+      "aliases": [
+        "메뉴 묶음",
+        "메뉴 제목"
+      ],
+      "useCases": [],
+      "parent": "KjunDropdown"
+    },
+    {
+      "name": "KjunDropdownSubmenu",
+      "category": "actions",
+      "aliases": [
+        "하위 메뉴",
+        "서브메뉴"
+      ],
+      "useCases": [],
+      "parent": "KjunDropdown"
+    },
+    {
       "name": "KjunDropdownItem",
       "category": "actions",
       "aliases": [

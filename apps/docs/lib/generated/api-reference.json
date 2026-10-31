@@ -8775,7 +8775,7 @@
           },
           {
             "name": "responsive",
-            "type": "\"none\" | \"card\" | \"compact\" | null | undefined",
+            "type": "\"none\" | \"compact\" | \"card\" | null | undefined",
             "required": false,
             "default": "null",
             "description": "",
@@ -9606,7 +9606,7 @@
           },
           {
             "name": "responsive",
-            "type": "\"none\" | \"card\" | \"compact\" | null | undefined",
+            "type": "\"compact\" | \"none\" | \"card\" | null | undefined",
             "required": false,
             "default": "null",
             "description": "",
@@ -20363,6 +20363,15 @@
             "source": "packages/vue3/src/dropdown.tsx"
           },
           {
+            "name": "density",
+            "type": "\"compact\" | \"comfortable\"",
+            "required": false,
+            "default": "\"comfortable\"",
+            "description": "compact: 32px rows for desktop tables and toolbars (touch keeps 44px).",
+            "summary": "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
             "name": "returnFocus",
             "type": "FocusReturn",
             "required": false,
@@ -20456,6 +20465,15 @@
             "default": "\"\"",
             "description": "",
             "summary": "팝업 메뉴에 추가할 웹 CSS 클래스입니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "density",
+            "type": "\"comfortable\" | \"compact\" | undefined",
+            "required": false,
+            "default": "\"comfortable\"",
+            "description": "compact: 32px rows for desktop tables and toolbars (touch keeps 44px).",
+            "summary": "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
             "source": "packages/react/src/dropdown.tsx"
           },
           {
@@ -20555,6 +20573,15 @@
             "source": "packages/native/src/dropdown.tsx"
           },
           {
+            "name": "density",
+            "type": "\"comfortable\" | \"compact\" | undefined",
+            "required": false,
+            "default": "\"comfortable\"",
+            "description": "compact: 32px rows on Native Web's fine pointers; touch keeps 44px.",
+            "summary": "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
             "name": "trigger",
             "type": "ReactNode",
             "required": true,
@@ -20620,6 +20647,245 @@
         "types": []
       }
     },
+    "KjunDropdownSection": {
+      "vue3": {
+        "props": [
+          {
+            "name": "title",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Small heading over the group; it names the group for screen readers.",
+            "summary": "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [
+          {
+            "name": "default",
+            "data": [],
+            "source": "packages/vue3/src/dropdown.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "default 영역의 기본 내용을 교체합니다."
+          }
+        ],
+        "ownership": [],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "title",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Small heading over the group; it names the group for screen readers.",
+            "summary": "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "묶음에 넣을 KjunDropdownItem·KjunDropdownSubmenu입니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "title",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Small heading over the group; it names the group for screen readers.",
+            "summary": "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "묶음에 넣을 KjunDropdownItem·KjunDropdownSubmenu입니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      }
+    },
+    "KjunDropdownSubmenu": {
+      "vue3": {
+        "props": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Stable key for the submenu; defaults to the label.",
+            "summary": "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "하위 메뉴 행과 돌아가기 행의 라벨입니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "icon",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "하위 메뉴 행 앞쪽 열의 아이콘 이름입니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "하위 메뉴를 열 수 없게 합니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [
+          {
+            "name": "default",
+            "data": [],
+            "source": "packages/vue3/src/dropdown.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "default 영역의 기본 내용을 교체합니다."
+          }
+        ],
+        "ownership": [],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Stable key for the submenu; defaults to the label.",
+            "summary": "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "하위 메뉴 행과 돌아가기 행의 라벨입니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "icon",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "하위 메뉴 행 앞쪽 열의 아이콘 이름입니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "하위 메뉴를 열 수 없게 합니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "하위 메뉴에서 보일 KjunDropdownItem·KjunDropdownSection입니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Stable key for the submenu; defaults to the label.",
+            "summary": "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "하위 메뉴 행과 돌아가기 행의 라벨입니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "icon",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "하위 메뉴 행 앞쪽 열의 아이콘 이름입니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "하위 메뉴를 열 수 없게 합니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "하위 메뉴에서 보일 KjunDropdownItem·KjunDropdownSection입니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      }
+    },
     "KjunDropdownItem": {
       "vue3": {
         "props": [
@@ -20664,8 +20930,35 @@
             "type": "boolean",
             "required": false,
             "default": "null",
-            "description": "",
-            "summary": "메뉴 항목의 현재 선택 여부를 표시합니다.",
+            "description": "Single choice: a check in the leading column, announced as a radio item.",
+            "summary": "하나만 고르는 항목의 선택 여부입니다. 앞쪽 열에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "checked",
+            "type": "boolean",
+            "required": false,
+            "default": "null",
+            "description": "Independent toggle: a check in the leading column, announced as a checkbox item.",
+            "summary": "켜고 끄는 항목의 상태입니다. 앞쪽 열에 체크를 그리고 checkbox 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Second line under the label.",
+            "summary": "라벨 아래 둘째 줄 설명입니다. 12px 보조색으로 보입니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "shortcut",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Keyboard hint shown at the end, such as \"⌘D\". It only describes; wiring the keys is the app's job.",
+            "summary": "끝에 보이는 단축키 안내(예: ⌘D)입니다. 웹은 aria-keyshortcuts로도 알립니다. 실제 키 연결은 소비자가 합니다. Native는 Native Web에서만 보입니다.",
             "source": "packages/vue3/src/dropdown.tsx"
           },
           {
@@ -20741,8 +21034,35 @@
             "type": "boolean | null | undefined",
             "required": false,
             "default": "null",
-            "description": "",
-            "summary": "메뉴 항목의 현재 선택 여부를 표시합니다.",
+            "description": "Single choice: a check in the leading column, announced as a radio item.",
+            "summary": "하나만 고르는 항목의 선택 여부입니다. 앞쪽 열에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "checked",
+            "type": "boolean | null | undefined",
+            "required": false,
+            "default": "null",
+            "description": "Independent toggle: a check in the leading column, announced as a checkbox item.",
+            "summary": "켜고 끄는 항목의 상태입니다. 앞쪽 열에 체크를 그리고 checkbox 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Second line under the label.",
+            "summary": "라벨 아래 둘째 줄 설명입니다. 12px 보조색으로 보입니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "shortcut",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Keyboard hint shown at the end, such as \"⌘D\". It only describes; wiring the keys is the app's job.",
+            "summary": "끝에 보이는 단축키 안내(예: ⌘D)입니다. 웹은 aria-keyshortcuts로도 알립니다. 실제 키 연결은 소비자가 합니다. Native는 Native Web에서만 보입니다.",
             "source": "packages/react/src/dropdown.tsx"
           },
           {
@@ -20821,8 +21141,35 @@
             "type": "boolean | null | undefined",
             "required": false,
             "default": "null",
-            "description": "",
-            "summary": "메뉴 항목의 현재 선택 여부를 표시합니다.",
+            "description": "Single choice: a check in the leading column, announced as a radio item.",
+            "summary": "하나만 고르는 항목의 선택 여부입니다. 앞쪽 열에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "checked",
+            "type": "boolean | null | undefined",
+            "required": false,
+            "default": "null",
+            "description": "Independent toggle: a check in the leading column, announced as a checkbox.",
+            "summary": "켜고 끄는 항목의 상태입니다. 앞쪽 열에 체크를 그리고 checkbox 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Second line under the label.",
+            "summary": "라벨 아래 둘째 줄 설명입니다. 12px 보조색으로 보입니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "shortcut",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Keyboard hint shown at the end on Native Web, such as \"⌘D\". It only describes; wiring the keys is the app's job.",
+            "summary": "끝에 보이는 단축키 안내(예: ⌘D)입니다. 웹은 aria-keyshortcuts로도 알립니다. 실제 키 연결은 소비자가 합니다. Native는 Native Web에서만 보입니다.",
             "source": "packages/native/src/dropdown.tsx"
           },
           {
@@ -22038,7 +22385,7 @@
           },
           {
             "name": "density",
-            "type": "\"compact\" | \"comfortable\" | undefined",
+            "type": "\"comfortable\" | \"compact\" | undefined",
             "required": false,
             "default": "\"comfortable\"",
             "description": "",
@@ -22174,7 +22521,7 @@
           },
           {
             "name": "density",
-            "type": "\"compact\" | \"comfortable\" | undefined",
+            "type": "\"comfortable\" | \"compact\" | undefined",
             "required": false,
             "default": "\"comfortable\"",
             "description": "",
@@ -25991,6 +26338,15 @@
             "source": "packages/vue3/src/dropdown.tsx"
           },
           {
+            "name": "density",
+            "type": "\"compact\" | \"comfortable\"",
+            "required": false,
+            "default": "\"comfortable\"",
+            "description": "compact: 32px rows for desktop tables and toolbars (touch keeps 44px).",
+            "summary": "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
             "name": "returnFocus",
             "type": "FocusReturn",
             "required": false,
@@ -26251,6 +26607,15 @@
             "source": "packages/react/src/dropdown.tsx"
           },
           {
+            "name": "density",
+            "type": "\"comfortable\" | \"compact\" | undefined",
+            "required": false,
+            "default": "\"comfortable\"",
+            "description": "compact: 32px rows for desktop tables and toolbars (touch keeps 44px).",
+            "summary": "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
             "name": "onOpen",
             "type": "(() => void) | undefined",
             "required": false,
@@ -26409,6 +26774,15 @@
             "default": "—",
             "description": "",
             "summary": "메뉴와 접근성으로 연결할 트리거 식별자입니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "density",
+            "type": "\"comfortable\" | \"compact\" | undefined",
+            "required": false,
+            "default": "\"comfortable\"",
+            "description": "compact: 32px rows on Native Web's fine pointers; touch keeps 44px.",
+            "summary": "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
             "source": "packages/native/src/dropdown.tsx"
           },
           {

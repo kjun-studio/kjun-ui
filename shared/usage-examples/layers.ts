@@ -9,6 +9,17 @@ export function generate(input: UsageInput) {
     b.node('KjunDropdownItem', { disabled: !!s.itemDisabled, [action]: notify('selectFirst', '첫 항목 선택') }, b.text('첫 항목')),
     b.node('KjunDropdownDivider'), b.node('KjunDropdownItem', { disabled: true }, b.text('비활성 항목')),
     b.node('KjunDropdownItem', { variant: 'danger', [action]: notify('selectLast', '마지막 항목 선택') }, b.text('마지막 항목')),
+    ...(s.rich ? [
+      b.node('KjunDropdownDivider'),
+      b.node('KjunDropdownSection', { title: '정렬' }, [
+        b.node('KjunDropdownItem', { selected: true, [action]: notify('sortRecent', '최근 수정순') }, b.text('최근 수정순')),
+        b.node('KjunDropdownItem', { selected: false, [action]: notify('sortName', '이름순') }, b.text('이름순')),
+      ].join('\n')),
+      b.node('KjunDropdownSubmenu', { label: '공유', icon: 'send' }, [
+        b.node('KjunDropdownItem', { shortcut: '⌘L', [action]: notify('copyLink', '링크 복사') }, b.text('링크 복사')),
+        b.node('KjunDropdownItem', { description: '팀원 모두에게 보입니다', [action]: notify('shareTeam', '팀에 공유') }, b.text('팀에 공유')),
+      ].join('\n')),
+    ] : []),
   ].join('\n');
   let content: string;
   switch (name) {
@@ -21,9 +32,9 @@ export function generate(input: UsageInput) {
       content = b.node(name, { variant: s.tone, ...b.props('size', 'title', 'closable'), onClose: notify('closeAlert', '알림 닫힘') }, body.trim() ? description : '', actions);
       break;
     }
-    case 'KjunDropdown': case 'KjunDropdownItem': case 'KjunDropdownDivider':
-      content = b.node('KjunDropdown', { disabled: s.disabled }, menu(), { trigger: b.button('메뉴 열기') }); break;
-    case 'KjunMenuButton': content = b.node(name, { label: '작업 메뉴', ...b.props('size', 'variant', 'compact', 'disabled', 'loading') }, menu()); break;
+    case 'KjunDropdown': case 'KjunDropdownItem': case 'KjunDropdownDivider': case 'KjunDropdownSection': case 'KjunDropdownSubmenu':
+      content = b.node('KjunDropdown', { disabled: s.disabled, ...(s.density === 'compact' ? { density: 'compact' } : {}) }, menu(), { trigger: b.button('메뉴 열기') }); break;
+    case 'KjunMenuButton': content = b.node(name, { label: '작업 메뉴', ...b.props('size', 'variant', 'compact', 'disabled', 'loading'), ...(s.density === 'compact' ? { density: 'compact' } : {}) }, menu()); break;
     case 'KjunAccordion': case 'KjunAccordionItem':
       content = b.node('KjunAccordion', b.props('tone', 'multiple'), [b.node('KjunAccordionItem', { title: '첫 항목', disabled: !!s.itemDisabled }, b.text('첫 내용')), b.node('KjunAccordionItem', { title: '둘째 항목' }, b.text('둘째 내용'))].join('\n')); break;
     case 'KjunModal': case 'KjunDrawer': {

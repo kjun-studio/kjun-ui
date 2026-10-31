@@ -28,7 +28,7 @@ const componentGroups = {
   modal: [...layers, ...files('quantity', 'feedback-dialog', 'feedback-input', 'form-actions', 'component-motion'), ...contracts],
   drawer: [...layers, ...files('component-motion', 'size-contracts', 'native-layout')],
   popover: [...layers, ...files('popover-design', 'expanded', 'react-popover-trigger')],
-  dropdown: [...layers, ...files('dropdown-design', 'menu-button', 'controlled-state', 'expanded')],
+  dropdown: [...layers, ...files('dropdown-design', 'dropdown-structure', 'menu-button', 'controlled-state', 'expanded')],
   tooltip: [...layers, ...files('expanded', 'size-contracts', 'accessibility-controls', 'refresh-button', 'menu-button', 'tooltip-lifecycle')],
   icons: [...files('icon-render', 'icon-registry', 'icon-toggle', 'menu-button', 'button-design'), ...contracts, ...visuals],
   typography: files('typography', 'layout-primitives', 'color-font', 'geometry-tokens', 'card-layout'),

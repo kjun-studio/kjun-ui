@@ -8168,7 +8168,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "열림·닫힘·비활성과 항목별 선택 상태를 구분합니다. 항목 실행·바깥 클릭·Escape로 닫고 트리거 포커스를 복원합니다."
+        "note": "열림·닫힘·비활성과 항목별 선택 상태를 구분합니다. 마우스로 열면 아무 항목도 칠하지 않고, 키보드로 열면 첫 항목에 포커스합니다. 현재 항목은 링 없이 배경 면 하나로 표시합니다. 항목 행은 40px(density=compact는 32px, 터치는 44px)이며 메뉴는 1px 테두리와 떠 있는 그림자를 둡니다. 항목 실행·바깥 클릭·Escape로 닫고 트리거 포커스를 복원합니다."
       },
       "react": {
         "figures": [
@@ -8216,7 +8216,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "열림·닫힘·비활성과 항목별 선택 상태를 구분합니다. 항목 실행·바깥 클릭·Escape로 닫고 트리거 포커스를 복원합니다."
+        "note": "열림·닫힘·비활성과 항목별 선택 상태를 구분합니다. 마우스로 열면 아무 항목도 칠하지 않고, 키보드로 열면 첫 항목에 포커스합니다. 현재 항목은 링 없이 배경 면 하나로 표시합니다. 항목 행은 40px(density=compact는 32px, 터치는 44px)이며 메뉴는 1px 테두리와 떠 있는 그림자를 둡니다. 항목 실행·바깥 클릭·Escape로 닫고 트리거 포커스를 복원합니다."
       },
       "native": {
         "figures": [
@@ -8264,7 +8264,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "열림·닫힘·비활성과 항목별 선택 상태를 구분합니다. 항목 실행·바깥 클릭·Escape로 닫고 트리거 포커스를 복원합니다."
+        "note": "열림·닫힘·비활성과 항목별 선택 상태를 구분합니다. 마우스로 열면 아무 항목도 칠하지 않고, 키보드로 열면 첫 항목에 포커스합니다. 현재 항목은 링 없이 배경 면 하나로 표시합니다. 항목 행은 40px(density=compact는 32px, 터치는 44px)이며 메뉴는 1px 테두리와 떠 있는 그림자를 둡니다. 항목 실행·바깥 클릭·Escape로 닫고 트리거 포커스를 복원합니다."
       }
     }
   },
@@ -8378,6 +8378,250 @@
       }
     }
   },
+  "KjunDropdownSection": {
+    "name": "KjunDropdownSection",
+    "path": "/components/dropdown-section",
+    "related": "layers",
+    "description": "메뉴 항목을 작은 제목 아래로 묶습니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "묶음",
+                "description": "작은 제목 아래로 관련 항목을 모읍니다. 제목은 묶음 이름으로 읽힙니다.",
+                "target": "[role=\"group\"]",
+                "optional": false
+              }
+            ],
+            "action": "메뉴 열기"
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "open",
+            "label": "열림·내용 확인",
+            "description": "실행 비교를 연 뒤 트리거로 내용을 확인합니다. 닫기와 키보드 동작도 함께 확인하세요.",
+            "action": "메뉴 열기"
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "12px 보조색 제목 아래에 항목을 둡니다. 실행·선택·포커스 상태를 가지지 않습니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "묶음",
+                "description": "작은 제목 아래로 관련 항목을 모읍니다. 제목은 묶음 이름으로 읽힙니다.",
+                "target": "[role=\"group\"]",
+                "optional": false
+              }
+            ],
+            "action": "메뉴 열기"
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "open",
+            "label": "열림·내용 확인",
+            "description": "실행 비교를 연 뒤 트리거로 내용을 확인합니다. 닫기와 키보드 동작도 함께 확인하세요.",
+            "action": "메뉴 열기"
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "12px 보조색 제목 아래에 항목을 둡니다. 실행·선택·포커스 상태를 가지지 않습니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "묶음",
+                "description": "작은 제목 아래로 관련 항목을 모읍니다. 제목은 묶음 이름으로 읽힙니다.",
+                "target": "[role=\"group\"]",
+                "optional": false
+              }
+            ],
+            "action": "메뉴 열기"
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "open",
+            "label": "열림·내용 확인",
+            "description": "실행 비교를 연 뒤 트리거로 내용을 확인합니다. 닫기와 키보드 동작도 함께 확인하세요.",
+            "action": "메뉴 열기"
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "12px 보조색 제목 아래에 항목을 둡니다. 실행·선택·포커스 상태를 가지지 않습니다."
+      }
+    }
+  },
+  "KjunDropdownSubmenu": {
+    "name": "KjunDropdownSubmenu",
+    "path": "/components/dropdown-submenu",
+    "related": "layers",
+    "description": "자기 항목을 메뉴 자리에 펼치는 하위 메뉴 행입니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "하위 메뉴 행",
+                "description": "누르면 메뉴가 하위 항목으로 바뀝니다. 끝의 ›로 구분합니다.",
+                "target": "[aria-haspopup=\"menu\"][role=\"menuitem\"]",
+                "optional": false
+              }
+            ],
+            "action": "메뉴 열기"
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunDropdownSubmenu\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "open",
+            "label": "열림·내용 확인",
+            "description": "실행 비교를 연 뒤 트리거로 내용을 확인합니다. 닫기와 키보드 동작도 함께 확인하세요.",
+            "action": "메뉴 열기"
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "끝에 › 표시를 둡니다. 하위 메뉴의 첫 행은 ‹와 굵은 라벨의 돌아가기 행입니다. disabled면 열 수 없습니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "하위 메뉴 행",
+                "description": "누르면 메뉴가 하위 항목으로 바뀝니다. 끝의 ›로 구분합니다.",
+                "target": "[aria-haspopup=\"menu\"][role=\"menuitem\"]",
+                "optional": false
+              }
+            ],
+            "action": "메뉴 열기"
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunDropdownSubmenu\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "open",
+            "label": "열림·내용 확인",
+            "description": "실행 비교를 연 뒤 트리거로 내용을 확인합니다. 닫기와 키보드 동작도 함께 확인하세요.",
+            "action": "메뉴 열기"
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "끝에 › 표시를 둡니다. 하위 메뉴의 첫 행은 ‹와 굵은 라벨의 돌아가기 행입니다. disabled면 열 수 없습니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "하위 메뉴 행",
+                "description": "누르면 메뉴가 하위 항목으로 바뀝니다. 끝의 ›로 구분합니다.",
+                "target": "[aria-haspopup=\"menu\"][role=\"menuitem\"]",
+                "optional": false
+              }
+            ],
+            "action": "메뉴 열기"
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunDropdownSubmenu\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "open",
+            "label": "열림·내용 확인",
+            "description": "실행 비교를 연 뒤 트리거로 내용을 확인합니다. 닫기와 키보드 동작도 함께 확인하세요.",
+            "action": "메뉴 열기"
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "끝에 › 표시를 둡니다. 하위 메뉴의 첫 행은 ‹와 굵은 라벨의 돌아가기 행입니다. disabled면 열 수 없습니다."
+      }
+    }
+  },
   "KjunDropdownItem": {
     "name": "KjunDropdownItem",
     "path": "/components/dropdown-item",
@@ -8430,7 +8674,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "기본·위험 액션, 선택·미선택, 비활성 상태를 구분합니다. 활성 항목을 실행하면 액션 후 메뉴를 닫습니다."
+        "note": "기본·위험 액션, 선택·미선택, 비활성 상태를 구분합니다. 비활성은 비활성 글자색으로, 위험 항목 hover는 위험 색의 옅은 면으로 표시합니다. 아이콘이나 체크가 있는 항목이 하나라도 있으면 나머지 항목의 라벨도 같은 시작선에 맞춥니다. 활성 항목을 실행하면 액션 후 메뉴를 닫습니다."
       },
       "react": {
         "figures": [
@@ -8478,7 +8722,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "기본·위험 액션, 선택·미선택, 비활성 상태를 구분합니다. 활성 항목을 실행하면 액션 후 메뉴를 닫습니다."
+        "note": "기본·위험 액션, 선택·미선택, 비활성 상태를 구분합니다. 비활성은 비활성 글자색으로, 위험 항목 hover는 위험 색의 옅은 면으로 표시합니다. 아이콘이나 체크가 있는 항목이 하나라도 있으면 나머지 항목의 라벨도 같은 시작선에 맞춥니다. 활성 항목을 실행하면 액션 후 메뉴를 닫습니다."
       },
       "native": {
         "figures": [
@@ -8526,7 +8770,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "기본·위험 액션, 선택·미선택, 비활성 상태를 구분합니다. 활성 항목을 실행하면 액션 후 메뉴를 닫습니다."
+        "note": "기본·위험 액션, 선택·미선택, 비활성 상태를 구분합니다. 비활성은 비활성 글자색으로, 위험 항목 hover는 위험 색의 옅은 면으로 표시합니다. 아이콘이나 체크가 있는 항목이 하나라도 있으면 나머지 항목의 라벨도 같은 시작선에 맞춥니다. 활성 항목을 실행하면 액션 후 메뉴를 닫습니다."
       }
     }
   },

@@ -18,6 +18,8 @@ export const kjunMessagesKo = {
   panel: "패널",
   details: "상세 정보",
   menu: "메뉴",
+  // Names a submenu's first row, which returns to the parent menu.
+  back: "뒤로",
   remove: (label: string) => label + " 삭제",
   user: "사용자",
   // Loading and states

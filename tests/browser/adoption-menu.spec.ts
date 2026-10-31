@@ -10,7 +10,8 @@ for (const component of ['dropdown', 'menu-button']) {
     await expect(page.getByRole('menu')).toHaveCount(0);
     expect(await events(page)).toEqual([['request', true]]);
     await configure(page, { open: true });
-    await expect(page.getByRole('menuitem', { name: 'First action', exact: true })).toBeFocused();
+    // Opened without the keyboard: the menu takes focus and no item is painted until the arrows move.
+    await expect(page.getByRole('menu')).toBeFocused();
     await expect(trigger).toHaveAttribute('aria-expanded', 'true');
     await page.keyboard.press('Escape');
     await expect(page.getByRole('menu')).toBeVisible();
@@ -28,6 +29,8 @@ for (const component of ['dropdown', 'menu-button']) {
     await page.keyboard.press('End');
     await expect(page.getByRole('menuitem', { name: 'Last action', exact: true })).toBeFocused();
     await page.evaluate(() => (window as any).reopen());
+    await expect(page.getByRole('menu')).toBeFocused();
+    await page.keyboard.press('ArrowDown');
     await expect(page.getByRole('menuitem', { name: 'First action', exact: true })).toBeFocused();
     await configure(page, { disabled: true });
     await expect(page.getByRole('menu')).toHaveCount(0);
@@ -65,6 +68,8 @@ test('vue3 disabled DropdownItem emits no activation, and keyboard navigation sk
   await disabled.dispatchEvent('keydown', { key: 'Enter' });
   expect((await events(page)).filter(([name]: string[]) => name === 'item')).toEqual([]);
   await expect(page.getByRole('menu')).toBeVisible();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.getByRole('menuitem', { name: 'First action', exact: true })).toBeFocused();
   await page.keyboard.press('ArrowDown');
   await expect(page.getByRole('menuitem', { name: 'Last action', exact: true })).toBeFocused();
 });

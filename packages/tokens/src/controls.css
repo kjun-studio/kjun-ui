@@ -311,7 +311,7 @@
   display: flex;
   align-items: center;
   gap: var(--_kjun-geometry-dimension-value8);
-  min-height: var(--_kjun-extension-menu-option-height);
+  min-height: var(--_kjun-extension-menu-item-height);
   padding: var(--_kjun-extension-menu-option-padding-y) var(--_kjun-extension-menu-option-padding-x);
   border-radius: var(--_kjun-extension-menu-option-radius);
   font-size: var(--_kjun-extension-menu-option-font-size); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
@@ -320,39 +320,51 @@
   outline: none;
   color: var(--_kjun-color-text);
 }
-.kjun-menu-item > span {
+.kjun-menu-item > .kjun-menu-label {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   min-width: 0;
   overflow-wrap: anywhere;
 }
-/* Only the focused item is current; pointer hover moves focus, so a stale hover never paints a second item. */
+/* A two-line item keeps its icon and check on the label's first line. */
+.kjun-menu-item:has(.kjun-menu-description) { align-items: flex-start; }
+.kjun-menu-item:has(.kjun-menu-description) > svg { margin-top: calc((var(--_kjun-extension-menu-option-line-height) - var(--_kjun-extension-menu-icon-size)) / 2); }
+.kjun-menu-description { margin-top: var(--_kjun-extension-menu-description-gap); font-size: var(--_kjun-type-caption-size); line-height: var(--_kjun-type-caption-line); color: var(--_kjun-color-text-secondary); }
+.kjun-menu-shortcut { flex: none; font-size: var(--_kjun-type-meta-size); line-height: var(--_kjun-type-meta-line); color: var(--_kjun-color-text-tertiary); font-variant-numeric: tabular-nums; }
+.kjun-menu-chevron { flex: none; color: var(--_kjun-color-text-tertiary); }
+/* One cue for the current item: the focused (or hovered) row's fill, by mouse and keyboard alike. */
 .kjun-menu-item[data-focused]:not([data-disabled]):not([data-kjun-selected]) {
   background: var(--_kjun-color-hover);
 }
-.kjun-menu-item[data-variant="danger"][data-focused]:not([data-disabled]):not([data-kjun-selected]) {
-  background: var(--_kjun-color-danger-bg);
+/* Danger keeps a light tint of its own colour in both themes instead of a heavy fill. */
+.kjun-menu-item[data-variant="danger"][data-focused]:not([data-disabled]) {
+  background: color-mix(in srgb, var(--_kjun-color-danger) calc(var(--_kjun-state-opacity-tint-hover) * 100%), transparent);
 }
-.kjun-menu-item[data-kjun-selected] {
-  background: var(--_kjun-color-selected-bg);
-}
-.kjun-menu-item[data-focus-visible]:not([data-disabled]) {
-  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
-  outline-offset: var(--_kjun-state-focus-inset-offset);
-}
+.kjun-menu-item[data-kjun-selected] { background: var(--_kjun-color-selected-bg); }
 .kjun-menu-check { color: var(--_kjun-color-brand); }
 /* Leading icons sit a step below the regular-weight label; danger items keep their role color. */
 .kjun-menu-item:not([data-variant="danger"]) .kjun-menu-icon { color: var(--_kjun-color-text-secondary); }
-/* Once any item has a leading icon, icon-less labels start on the same line. */
-.kjun-menu:has(.kjun-menu-icon) .kjun-menu-item:not(:has(.kjun-menu-icon)) {
-  padding-left: calc(var(--_kjun-extension-menu-option-padding-x) + var(--_kjun-extension-menu-icon-size) + var(--_kjun-geometry-dimension-value8));
+/* The check and icon columns each appear once any item uses them, so every label starts on the same line. */
+.kjun-menu:has(.kjun-menu-check) .kjun-menu-item:not(:has(.kjun-menu-check)) { --_kjun-menu-check-slot: 1; }
+.kjun-menu:has(.kjun-menu-icon) .kjun-menu-item:not(:has(.kjun-menu-icon)) { --_kjun-menu-icon-slot: 1; }
+/* The check column is reserved before the row content and the icon column after the check, so both columns line up. */
+.kjun-menu .kjun-menu-item { padding-left: calc(var(--_kjun-extension-menu-option-padding-x) + var(--_kjun-menu-check-slot, 0) * (var(--_kjun-extension-menu-icon-size) + var(--_kjun-geometry-dimension-value8))); }
+.kjun-menu .kjun-menu-item > .kjun-menu-label { margin-left: calc(var(--_kjun-menu-icon-slot, 0) * (var(--_kjun-extension-menu-icon-size) + var(--_kjun-geometry-dimension-value8))); }
+.kjun-menu-item[data-disabled] { color: var(--_kjun-color-text-disabled); cursor: not-allowed; }
+.kjun-menu-item[data-disabled] :is(.kjun-menu-icon, .kjun-menu-description, .kjun-menu-shortcut, .kjun-menu-check) { color: var(--_kjun-color-text-disabled); }
+.kjun-menu-item[data-variant="danger"]:not([data-disabled]) { color: var(--_kjun-color-danger); }
+/* A submenu's first row leads back to the parent menu. */
+.kjun-menu-item.kjun-menu-back { font-weight: var(--_kjun-type-control-weight); }
+.kjun-menu-section-title {
+  padding: var(--_kjun-extension-menu-section-padding-top) var(--_kjun-extension-menu-option-padding-x) var(--_kjun-extension-menu-section-padding-bottom);
+  font-size: var(--_kjun-type-meta-size); line-height: var(--_kjun-type-meta-line); font-weight: var(--_kjun-type-meta-weight); color: var(--_kjun-color-text-tertiary);
 }
-.kjun-menu-item[data-disabled] {
-  opacity: var(--_kjun-state-opacity-disabled);
-  cursor: not-allowed;
-}
-.kjun-menu-item[data-variant="danger"] {
-  color: var(--_kjun-color-danger);
-}
+/* Compact menus for desktop tables and toolbars; touch keeps the full target. */
+.kjun-menu[data-density="compact"] .kjun-menu-item { min-height: var(--_kjun-extension-menu-compact-option-height); padding: var(--_kjun-extension-menu-compact-option-padding-y) var(--_kjun-extension-menu-compact-option-padding-x); }
+.kjun-menu[data-density="compact"] .kjun-menu-section-title { padding-left: var(--_kjun-extension-menu-compact-option-padding-x); padding-right: var(--_kjun-extension-menu-compact-option-padding-x); }
+.kjun-menu[data-density="compact"] .kjun-menu-item { padding-left: calc(var(--_kjun-extension-menu-compact-option-padding-x) + var(--_kjun-menu-check-slot, 0) * (var(--_kjun-extension-menu-icon-size) + var(--_kjun-geometry-dimension-value8))); }
+@media (pointer: coarse) { .kjun-menu .kjun-menu-item { min-height: var(--_kjun-geometry-native-minimum-touch-target); } }
 .kjun-menu-divider {
   height: var(--_kjun-extension-menu-divider-height);
   margin: var(--_kjun-geometry-dimension-value4) 0;

@@ -7,10 +7,13 @@ test('shadow prototypes propagate through semantic and component references with
   const s = structuredClone(source);
   s.shadowScale.contact[0].blurRadius = 29;
   s.shadowScale.ambient[0].blurRadius = 31;
+  s.shadowScale.overlay[0].blurRadius = 33;
   const tokens = compileTokens(s);
   assert.deepEqual(tokens.elevation.flat, []);
   assert.equal(tokens.card.elevation.raised[0].blurRadius, 29);
-  for (const surface of [tokens.modal, ...['menu','popover','drawer'].map(key => tokens.extensions[key])]) assert.equal(surface.elevation[0].blurRadius, 31);
+  for (const surface of [tokens.modal, ...['popover','drawer'].map(key => tokens.extensions[key])]) assert.equal(surface.elevation[0].blurRadius, 31);
+  // Menus sit higher than other floating panels, on the overlay scale.
+  assert.equal(tokens.extensions.menu.elevation[0].blurRadius, 33);
   assert.equal(shadowCss(tokens.elevation.flat), 'none');
   assert.doesNotMatch(extensionGeometryCss(tokens, s), /elevation/);
   assert.deepEqual(tokens.layers, { page: { content: 0, sticky: 10, navigation: 20 } });

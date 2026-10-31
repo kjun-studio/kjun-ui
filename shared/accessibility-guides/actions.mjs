@@ -6,6 +6,8 @@ export default [
   ['KjunDropdown', 'menu', 'disabled', '메뉴 열기와 첫 항목·비활성 항목·구분선', { button: '메뉴 열기' }],
   ['KjunDropdownItem', 'menu', 'disabled', 'KjunDropdown 안에서 첫 메뉴 항목 실행·선택과 닫기', { button: '메뉴 열기', parent: 'KjunDropdown' }],
   ['KjunDropdownDivider', 'divider', '', 'KjunDropdown 안의 비대화형 메뉴 구분선', { button: '메뉴 열기', parent: 'KjunDropdown' }],
+  ['KjunDropdownSection', 'menu', '', 'KjunDropdown 안에서 제목으로 묶인 항목의 실행', { button: '메뉴 열기', parent: 'KjunDropdown' }],
+  ['KjunDropdownSubmenu', 'menu', '', 'KjunDropdown 안의 하위 메뉴 열기와 항목 실행', { button: '메뉴 열기', parent: 'KjunDropdown' }],
   ['KjunFormActions', 'action', 'confirmDisabled loading confirmText', '저장·취소 버튼과 확인 콜백', { button: '저장', event: 'message', disabledKey: 'disabled' }],
   ['KjunIconToggle', 'toggle', 'active disabled ariaLabel', '좋아요 아이콘 버튼의 이름과 눌림 상태', {}],
   ['KjunFab', 'action', 'disabled ariaLabel', '일정 추가 플로팅 버튼의 이름과 실행', { button: '일정 추가', event: 'message' }],

@@ -318,8 +318,8 @@
     "slug": "dropdown",
     "description": "트리거를 기준으로 작업 메뉴를 엽니다.",
     "interaction": "트리거와 메뉴 항목을 묶고 내부 열림 상태를 관리합니다. 항목의 실제 업무는 각 DropdownItem의 행동에 연결합니다.",
-    "differences": "Vue trigger 슬롯과 React·Native trigger prop을 사용합니다. 웹은 방향키·문자 탐색을 제공하고 Native는 Modal 메뉴를 사용합니다.",
-    "states": "열림·닫힘·비활성과 항목별 선택 상태를 구분합니다. 항목 실행·바깥 클릭·Escape로 닫고 트리거 포커스를 복원합니다."
+    "differences": "Vue trigger 슬롯과 React·Native trigger prop을 사용합니다. 웹은 방향키·문자 탐색과 →(하위 메뉴 열기)·←(돌아가기)를 제공하고 Native는 Modal 메뉴를 사용합니다. Native의 density=compact는 마우스 같은 정밀한 포인터에서만 적용됩니다.",
+    "states": "열림·닫힘·비활성과 항목별 선택 상태를 구분합니다. 마우스로 열면 아무 항목도 칠하지 않고, 키보드로 열면 첫 항목에 포커스합니다. 현재 항목은 링 없이 배경 면 하나로 표시합니다. 항목 행은 40px(density=compact는 32px, 터치는 44px)이며 메뉴는 1px 테두리와 떠 있는 그림자를 둡니다. 항목 실행·바깥 클릭·Escape로 닫고 트리거 포커스를 복원합니다."
   },
   "KjunDropdownDivider": {
     "slug": "dropdown-divider",
@@ -328,12 +328,26 @@
     "differences": "세 플랫폼 모두 공개 전용 prop이 없습니다.",
     "states": "항목 그룹 사이를 구분하는 장식선입니다. 선택·포커스·입력 상태를 가지지 않습니다."
   },
+  "KjunDropdownSection": {
+    "slug": "dropdown-section",
+    "description": "메뉴 항목을 작은 제목 아래로 묶습니다.",
+    "interaction": "Dropdown 안에서 관련 항목을 하나의 묶음으로 둡니다. title은 화면에 작은 제목으로 보이고 화면 낭독기에는 묶음 이름으로 읽힙니다.",
+    "differences": "세 플랫폼 모두 title과 자식 항목만 받습니다.",
+    "states": "12px 보조색 제목 아래에 항목을 둡니다. 실행·선택·포커스 상태를 가지지 않습니다."
+  },
+  "KjunDropdownSubmenu": {
+    "slug": "dropdown-submenu",
+    "description": "자기 항목을 메뉴 자리에 펼치는 하위 메뉴 행입니다.",
+    "interaction": "행을 누르면(웹은 →도) 메뉴가 하위 항목으로 바뀌고, 맨 위의 돌아가기 행이나 ←로 이전 메뉴로 돌아갑니다. 하위 항목을 실행하면 메뉴 전체가 닫힙니다.",
+    "differences": "세 플랫폼 모두 같은 자리 바꿈 방식입니다. 옆으로 펼쳐지는 메뉴는 쓰지 않아 좁은 화면과 Native에서도 같게 동작합니다.",
+    "states": "끝에 › 표시를 둡니다. 하위 메뉴의 첫 행은 ‹와 굵은 라벨의 돌아가기 행입니다. disabled면 열 수 없습니다."
+  },
   "KjunDropdownItem": {
     "slug": "dropdown-item",
     "description": "메뉴의 실행·선택·비활성·위험 액션을 표현합니다.",
-    "interaction": "Dropdown 안에서 행동 하나를 제공합니다. disabled는 실행을 막고 selected는 현재 항목의 선택 표시만 제어합니다.",
+    "interaction": "Dropdown 안에서 행동 하나를 제공합니다. disabled는 실행을 막고, selected(하나만 고르는 항목)와 checked(켜고 끄는 항목)는 앞쪽 열의 체크 표시와 읽히는 역할만 제어합니다. description은 둘째 줄 설명, shortcut은 끝에 보이는 단축키 안내이며 키 연결은 소비자가 합니다.",
     "differences": "Vue click, React onClick, Native onPress를 사용합니다. Vue·React textValue는 문자 탐색에 사용하며 Native에는 이 prop이 없습니다.",
-    "states": "기본·위험 액션, 선택·미선택, 비활성 상태를 구분합니다. 활성 항목을 실행하면 액션 후 메뉴를 닫습니다."
+    "states": "기본·위험 액션, 선택·미선택, 비활성 상태를 구분합니다. 비활성은 비활성 글자색으로, 위험 항목 hover는 위험 색의 옅은 면으로 표시합니다. 아이콘이나 체크가 있는 항목이 하나라도 있으면 나머지 항목의 라벨도 같은 시작선에 맞춥니다. 활성 항목을 실행하면 액션 후 메뉴를 닫습니다."
   },
   "KjunMarketListPanel": {
     "slug": "market-list-panel",

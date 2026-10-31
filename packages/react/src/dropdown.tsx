@@ -1,11 +1,16 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { cloneElement, createContext, isValidElement, useCallback, useContext, useEffect, useId, useRef, useState, type ReactNode, type ReactElement } from "react";
-import { Menu, MenuItem, Separator } from "react-aria-components";
+import { Header, Menu, MenuItem, MenuSection, Separator } from "react-aria-components";
 import { KjunButton, KjunIcon, type KjunButtonProps } from "./button";
 import { FloatingPanel, resolveFocusReturn, type FocusReturn, type Placement } from "./floating-panel";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
 const DropdownContext = createContext<(() => void) | null>(null);
+// Submenus open in place: the menu shows one level at a time, with a back row at the top of a submenu.
+interface MenuView { view: string; open: (key: string) => void; back: () => void }
+const MenuViewContext = createContext<MenuView>({ view: "", open: () => {}, back: () => {} });
+const MenuLevelContext = createContext("");
+const useShown = () => useContext(MenuViewContext).view === useContext(MenuLevelContext);
 export interface KjunDropdownProps {
   disabled?: boolean;
   placement?: Extract<
@@ -15,6 +20,8 @@ export interface KjunDropdownProps {
   menuId?: string;
   triggerId?: string;
   menuClass?: string;
+  /** compact: 32px rows for desktop tables and toolbars (touch keeps 44px). */
+  density?: "comfortable" | "compact";
   trigger: ReactNode;
   children: ReactNode;
   onOpen?: () => void;
@@ -28,6 +35,7 @@ export function KjunDropdown({
   menuId,
   triggerId,
   menuClass = "",
+  density = "comfortable",
   trigger,
   children,
   onOpen,
@@ -38,6 +46,10 @@ export function KjunDropdown({
     currentOpen = useRef(false),
     ref = useRef<HTMLDivElement>(null),
     id = "kjun-" + useId();
+  const [stack, setStack] = useState<string[]>([]);
+  // A keyboard opening lands on the first item; a pointer opening paints nothing until the pointer or a key moves.
+  const byKeyboard = useRef(false);
+  const view = stack[stack.length - 1] ?? "";
   const menuFocusCleanup = useRef<() => void>(() => {});
   const bindMenu = useCallback((menu: HTMLDivElement | null) => {
     menuFocusCleanup.current();
@@ -51,9 +63,7 @@ export function KjunDropdown({
       frame = requestAnimationFrame(() => {
         if (!currentOpen.current || !menu.isConnected || menu.ownerDocument.activeElement !== menu ||
             menu.closest('[inert], [aria-hidden="true"]')) return;
-        const item = menu.querySelector<HTMLElement>('[data-focused="true"]:not([data-disabled])') ||
-          menu.querySelector<HTMLElement>(':is([role="menuitem"], [role="menuitemradio"]):not([data-disabled])');
-        item?.focus({ preventScroll: true });
+        menu.querySelector<HTMLElement>('[data-focused="true"]:not([data-disabled])')?.focus({ preventScroll: true });
       });
     };
     menu.addEventListener("focus", focusItem);
@@ -90,21 +100,25 @@ export function KjunDropdown({
       (unavailable || ref.current?.querySelector('button')?.disabled))) return;
     currentOpen.current = value;
     setOpen(value);
+    if (!value) setStack([]);
     if (value) onOpen?.();
     else onClose?.();
   };
   useEffect(() => {
     if (unavailable) change(false);
   }, [unavailable]);
+  const menuView: MenuView = { view, open: key => { byKeyboard.current = true; setStack(current => [...current, key]); }, back: () => setStack(current => current.slice(0, -1)) };
   return (
     <DropdownContext.Provider value={() => change(false)}>
       <div
         ref={ref}
         className="kjun-layer-trigger"
-        onClickCapture={() => change(!currentOpen.current)}
+        // A click from Enter or Space has no pointer detail.
+        onClickCapture={(e) => { byKeyboard.current = e.detail === 0; change(!currentOpen.current); }}
         onKeyDown={(e) => {
           if (["ArrowDown", "ArrowUp"].includes(e.key)) {
             e.preventDefault();
+            byKeyboard.current = true;
             change(true);
           }
         }}
@@ -119,16 +133,25 @@ export function KjunDropdown({
         placement={placement}
         className="kjun-dropdown"
       >
-        <Menu
-          ref={bindMenu}
-          id={popupId}
-          aria-labelledby={controlId}
-          className={"kjun-menu " + menuClass}
-          autoFocus="first"
-          onClose={() => change(false)}
-        >
-          {children}
-        </Menu>
+        <MenuViewContext.Provider value={menuView}>
+          <div onKeyDownCapture={(e) => {
+            const item = (e.target as HTMLElement).closest<HTMLElement>("[data-submenu]");
+            if (e.key === "ArrowRight" && item && !item.hasAttribute("data-disabled")) { e.preventDefault(); e.stopPropagation(); menuView.open(item.dataset.submenu!); }
+            else if (e.key === "ArrowLeft" && view) { e.preventDefault(); e.stopPropagation(); menuView.back(); }
+          }}>
+            <Menu
+              key={view}
+              ref={bindMenu}
+              id={popupId}
+              aria-labelledby={controlId}
+              className={"kjun-menu " + menuClass}
+              data-density={density === "compact" ? "compact" : undefined}
+              autoFocus={view || byKeyboard.current ? "first" : true}
+            >
+              {children}
+            </Menu>
+          </div>
+        </MenuViewContext.Provider>
       </FloatingPanel>
     </DropdownContext.Provider>
   );
@@ -138,10 +161,27 @@ export interface KjunDropdownItemProps {
   variant?: "default" | "danger";
   icon?: string;
   disabled?: boolean;
+  /** Single choice: a check in the leading column, announced as a radio item. */
   selected?: boolean | null;
+  /** Independent toggle: a check in the leading column, announced as a checkbox item. */
+  checked?: boolean | null;
+  /** Second line under the label. */
+  description?: string;
+  /** Keyboard hint shown at the end, such as "⌘D". It only describes; wiring the keys is the app's job. */
+  shortcut?: string;
   textValue?: string;
   children: ReactNode;
   onClick?: () => void;
+}
+function MenuItemBody({ icon, check, children, description, shortcut, chevron }: { icon?: string; check?: boolean | null; children: ReactNode; description?: string; shortcut?: string; chevron?: boolean }) {
+  const size = tokens.extensions.menu.iconSize;
+  return <>
+    {check != null && <KjunIcon name="check" className="kjun-menu-check" size={size} style={{ visibility: check ? "visible" : "hidden" }} />}
+    {icon && <KjunIcon name={icon} className="kjun-menu-icon" size={size} />}
+    <span className="kjun-menu-label"><span>{children}</span>{description && <span className="kjun-menu-description">{description}</span>}</span>
+    {shortcut && <kbd className="kjun-menu-shortcut">{shortcut}</kbd>}
+    {chevron && <KjunIcon name="chevron-right" className="kjun-menu-chevron" size={size} />}
+  </>;
 }
 export function KjunDropdownItem({
   id,
@@ -149,25 +189,26 @@ export function KjunDropdownItem({
   icon,
   disabled = false,
   selected = null,
+  checked = null,
+  description,
+  shortcut,
   textValue,
   children,
   onClick,
 }: KjunDropdownItemProps) {
   const close = useContext(DropdownContext);
-  // A boolean `selected` makes this a single-choice item, like Native's radio. react-aria only assigns
-  // radio roles through menu-wide selection, which would also turn plain action items into radios.
+  const shown = useShown();
+  // A boolean `selected` makes this a single-choice item and `checked` a toggle, like Native's radio and checkbox.
+  // react-aria only assigns those roles through menu-wide selection, which would also turn plain action items into them.
   // Applied whenever the rendered element attaches; react-aria keeps its own role value, so React never resets it.
-  // An item that stops being single-choice goes back to react-aria's menuitem.
   const node = useCallback((element: HTMLDivElement | null) => {
     if (!element) return;
-    if (selected === null) {
-      element.setAttribute("role", "menuitem");
-      element.removeAttribute("aria-checked");
-      return;
-    }
-    element.setAttribute("role", "menuitemradio");
-    element.setAttribute("aria-checked", String(selected));
-  }, [selected]);
+    const state = selected ?? checked;
+    element.setAttribute("role", selected !== null ? "menuitemradio" : checked !== null ? "menuitemcheckbox" : "menuitem");
+    if (state === null) element.removeAttribute("aria-checked"); else element.setAttribute("aria-checked", String(state));
+    if (shortcut) element.setAttribute("aria-keyshortcuts", shortcut); else element.removeAttribute("aria-keyshortcuts");
+  }, [selected, checked, shortcut]);
+  if (!shown) return null;
   return (
     <MenuItem
       ref={node}
@@ -184,15 +225,51 @@ export function KjunDropdownItem({
         close?.();
       }}
     >
-      {icon && <KjunIcon name={icon} className="kjun-menu-icon" size={tokens.extensions.menu.iconSize} />}
-      <span>{children}</span>
-      {selected !== null && <KjunIcon name="check" className="kjun-menu-check" size={tokens.extensions.menu.iconSize}
-        style={{ visibility: selected ? "visible" : "hidden" }} />}
+      <MenuItemBody icon={icon} check={selected ?? checked} description={description} shortcut={shortcut}>{children}</MenuItemBody>
     </MenuItem>
   );
 }
+export interface KjunDropdownSectionProps {
+  /** Small heading over the group; it names the group for screen readers. */
+  title?: string;
+  children: ReactNode;
+}
+export function KjunDropdownSection({ title, children }: KjunDropdownSectionProps) {
+  const shown = useShown();
+  if (!shown) return null;
+  return <MenuSection className="kjun-menu-section">{title && <Header className="kjun-menu-section-title">{title}</Header>}{children}</MenuSection>;
+}
+export interface KjunDropdownSubmenuProps {
+  /** Stable key for the submenu; defaults to the label. */
+  id?: string;
+  label: string;
+  icon?: string;
+  disabled?: boolean;
+  children: ReactNode;
+}
+/** An item that opens its own items in place of the menu, with a back row; → opens it and ← returns. */
+export function KjunDropdownSubmenu({ id, label, icon, disabled = false, children }: KjunDropdownSubmenuProps) {
+  const menu = useContext(MenuViewContext), level = useContext(MenuLevelContext);
+  const key = (level ? level + "/" : "") + (id ?? label);
+  const m = useKjunMessages();
+  // Set on the element: react-aria treats an aria-haspopup prop as its own submenu trigger and then skips onAction.
+  const popup = useCallback((element: HTMLDivElement | null) => element?.setAttribute("aria-haspopup", "menu"), []);
+  return <>
+    {menu.view === level && (
+      <MenuItem ref={popup} className="kjun-menu-item" textValue={label} isDisabled={disabled} data-submenu={key} onAction={() => menu.open(key)}>
+        <MenuItemBody icon={icon} chevron>{label}</MenuItemBody>
+      </MenuItem>
+    )}
+    {menu.view === key && (
+      <MenuItem className="kjun-menu-item kjun-menu-back" textValue={label} aria-label={m.back + ", " + label} onAction={menu.back}>
+        <KjunIcon name="chevron-left" className="kjun-menu-icon" size={tokens.extensions.menu.iconSize} /><span className="kjun-menu-label"><span>{label}</span></span>
+      </MenuItem>
+    )}
+    <MenuLevelContext.Provider value={key}>{children}</MenuLevelContext.Provider>
+  </>;
+}
 export function KjunDropdownDivider() {
-  return <Separator className="kjun-menu-divider" />;
+  return useShown() ? <Separator className="kjun-menu-divider" /> : null;
 }
 export interface KjunMenuButtonProps extends Omit<KjunDropdownProps, "trigger"> {
   label?: string;

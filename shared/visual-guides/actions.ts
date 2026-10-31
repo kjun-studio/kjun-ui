@@ -54,6 +54,16 @@ export const actions: Record<string, GuideAuthor> = {
     ],
     related: "layers",
   },
+  KjunDropdownSection: {
+    action: "메뉴 열기",
+    parts: [p("묶음", "작은 제목 아래로 관련 항목을 모읍니다. 제목은 묶음 이름으로 읽힙니다.", '[role="group"]')],
+    related: "layers",
+  },
+  KjunDropdownSubmenu: {
+    action: "메뉴 열기",
+    parts: [p("하위 메뉴 행", "누르면 메뉴가 하위 항목으로 바뀝니다. 끝의 ›로 구분합니다.", '[aria-haspopup="menu"][role="menuitem"]')],
+    related: "layers",
+  },
   KjunDropdownItem: {
     action: "메뉴 열기",
     parts: [

@@ -280,11 +280,13 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
     case "KjunDropdown":
     case "KjunDropdownItem":
     case "KjunDropdownDivider":
-      return h("KjunDropdown", { disabled }, menuItems(), {
+    case "KjunDropdownSection":
+    case "KjunDropdownSubmenu":
+      return h("KjunDropdown", { disabled, density: settings.density }, menuItems(), {
         trigger: button("메뉴 열기", () => {}),
       });
     case "KjunMenuButton":
-      return h(name, { label: "작업 메뉴", size: settings.size, variant: settings.variant, compact: settings.compact, disabled, loading }, menuItems());
+      return h(name, { label: "작업 메뉴", size: settings.size, variant: settings.variant, compact: settings.compact, density: settings.density, disabled, loading }, menuItems());
     case "KjunAccordion":
     case "KjunAccordionItem":
       return h("KjunAccordion", { tone: settings.tone, multiple: settings.multiple, divider: !!settings.divider, separated: !!settings.separated }, [

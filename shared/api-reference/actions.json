@@ -138,7 +138,8 @@
       "menuId",
       "triggerId",
       "menuClass",
-      "returnFocus"
+      "returnFocus",
+      "density"
     ],
     "react": [
       "disabled",
@@ -150,7 +151,8 @@
       "children",
       "onOpen",
       "onClose",
-      "returnFocus"
+      "returnFocus",
+      "density"
     ],
     "native": [
       "disabled",
@@ -160,13 +162,49 @@
       "trigger",
       "children",
       "onOpen",
-      "onClose"
+      "onClose",
+      "density"
     ]
   },
   "KjunDropdownDivider": {
     "vue3": [],
     "react": [],
     "native": []
+  },
+  "KjunDropdownSection": {
+    "vue3": [
+      "title"
+    ],
+    "react": [
+      "title",
+      "children"
+    ],
+    "native": [
+      "title",
+      "children"
+    ]
+  },
+  "KjunDropdownSubmenu": {
+    "vue3": [
+      "id",
+      "label",
+      "icon",
+      "disabled"
+    ],
+    "react": [
+      "id",
+      "label",
+      "icon",
+      "disabled",
+      "children"
+    ],
+    "native": [
+      "id",
+      "label",
+      "icon",
+      "disabled",
+      "children"
+    ]
   },
   "KjunDropdownItem": {
     "vue3": [
@@ -175,7 +213,10 @@
       "icon",
       "disabled",
       "selected",
-      "textValue"
+      "textValue",
+      "checked",
+      "description",
+      "shortcut"
     ],
     "react": [
       "id",
@@ -185,7 +226,10 @@
       "selected",
       "textValue",
       "children",
-      "onClick"
+      "onClick",
+      "checked",
+      "description",
+      "shortcut"
     ],
     "native": [
       "id",
@@ -194,7 +238,10 @@
       "disabled",
       "selected",
       "children",
-      "onPress"
+      "onPress",
+      "checked",
+      "description",
+      "shortcut"
     ]
   },
   "KjunFormActions": {
@@ -306,7 +353,8 @@
       "tooltipPlacement",
       "tooltipDelay",
       "ariaLabel",
-      "returnFocus"
+      "returnFocus",
+      "density"
     ],
     "react": [
       "label",
@@ -326,7 +374,8 @@
       "menuClass",
       "onOpen",
       "onClose",
-      "returnFocus"
+      "returnFocus",
+      "density"
     ],
     "native": [
       "label",
@@ -344,7 +393,8 @@
       "menuId",
       "triggerId",
       "onOpen",
-      "onClose"
+      "onClose",
+      "density"
     ]
   },
   "KjunRefreshButton": {

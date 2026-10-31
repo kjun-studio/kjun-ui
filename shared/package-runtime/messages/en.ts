@@ -18,6 +18,7 @@ export const kjunMessagesEn: KjunMessages = {
   panel: "Panel",
   details: "Details",
   menu: "Menu",
+  back: "Back",
   remove: (label: string) => "Remove " + label,
   user: "User",
   loading: "Loading",

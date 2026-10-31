@@ -1234,6 +1234,384 @@
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
+      "id": "KjunDropdownSection.vue3.keyboard.v1",
+      "component": "KjunDropdownSection",
+      "platform": "vue3",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안에서 제목으로 묶인 항목의 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거가 메뉴를 열고 활성 항목 실행 뒤 닫습니다. 비활성 항목은 실행되지 않습니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "트리거에서 ArrowDown으로 열고 방향키로 이동한 뒤 Enter로 실행하고, 다시 열어 Escape를 누릅니다.",
+      "expected": "활성 항목이 이동하고 실행 콜백이 발생하며 Escape로 닫힙니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSection.vue3.labeling.v1",
+      "component": "KjunDropdownSection",
+      "platform": "vue3",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안에서 제목으로 묶인 항목의 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거 버튼과 각 메뉴 항목은 표시 텍스트를 이름으로 사용합니다. 메뉴 컨테이너의 이름 연결과 열렸을 때 ID 참조를 별도로 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSection.vue3.focus.v1",
+      "component": "KjunDropdownSection",
+      "platform": "vue3",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안에서 제목으로 묶인 항목의 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 열린 메뉴로 이동하고 닫힌 뒤 트리거로 복귀하는 경로를 검사합니다. Native는 Modal 경로이며 DOM 방향키나 초기 포커스 지원을 추정하지 않습니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "키보드로 메뉴를 연 뒤 초기 포커스와 Escape 이후를 검사합니다.",
+      "expected": "메뉴 안에 포커스가 진입하고 닫힌 뒤 트리거로 돌아옵니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSection.react.keyboard.v1",
+      "component": "KjunDropdownSection",
+      "platform": "react",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안에서 제목으로 묶인 항목의 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거가 메뉴를 열고 활성 항목 실행 뒤 닫습니다. 비활성 항목은 실행되지 않습니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "트리거에서 ArrowDown으로 열고 방향키로 이동한 뒤 Enter로 실행하고, 다시 열어 Escape를 누릅니다.",
+      "expected": "활성 항목이 이동하고 실행 콜백이 발생하며 Escape로 닫힙니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSection.react.labeling.v1",
+      "component": "KjunDropdownSection",
+      "platform": "react",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안에서 제목으로 묶인 항목의 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거 버튼과 각 메뉴 항목은 표시 텍스트를 이름으로 사용합니다. 메뉴 컨테이너의 이름 연결과 열렸을 때 ID 참조를 별도로 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSection.react.focus.v1",
+      "component": "KjunDropdownSection",
+      "platform": "react",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안에서 제목으로 묶인 항목의 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 열린 메뉴로 이동하고 닫힌 뒤 트리거로 복귀하는 경로를 검사합니다. Native는 Modal 경로이며 DOM 방향키나 초기 포커스 지원을 추정하지 않습니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "키보드로 메뉴를 연 뒤 초기 포커스와 Escape 이후를 검사합니다.",
+      "expected": "메뉴 안에 포커스가 진입하고 닫힌 뒤 트리거로 돌아옵니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSection.native.keyboard.v1",
+      "component": "KjunDropdownSection",
+      "platform": "native",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안에서 제목으로 묶인 항목의 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거가 메뉴를 열고 활성 항목 실행 뒤 닫습니다. 비활성 항목은 실행되지 않습니다. Native는 Modal과 menuitem을 사용합니다. DOM menu 역할과 방향키 동작의 제공 여부는 결과에서 구분합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "트리거에서 ArrowDown으로 열고 방향키로 이동한 뒤 Enter로 실행하고, 다시 열어 Escape를 누릅니다.",
+      "expected": "활성 항목이 이동하고 실행 콜백이 발생하며 Escape로 닫힙니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSection.native.labeling.v1",
+      "component": "KjunDropdownSection",
+      "platform": "native",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안에서 제목으로 묶인 항목의 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거 버튼과 각 메뉴 항목은 표시 텍스트를 이름으로 사용합니다. 메뉴 컨테이너의 이름 연결과 열렸을 때 ID 참조를 별도로 검사합니다. Native는 Modal과 menuitem을 사용합니다. DOM menu 역할과 방향키 동작의 제공 여부는 결과에서 구분합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSection.native.focus.v1",
+      "component": "KjunDropdownSection",
+      "platform": "native",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안에서 제목으로 묶인 항목의 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 열린 메뉴로 이동하고 닫힌 뒤 트리거로 복귀하는 경로를 검사합니다. Native는 Modal 경로이며 DOM 방향키나 초기 포커스 지원을 추정하지 않습니다. Native는 Modal과 menuitem을 사용합니다. DOM menu 역할과 방향키 동작의 제공 여부는 결과에서 구분합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "키보드로 메뉴를 연 뒤 초기 포커스와 Escape 이후를 검사합니다.",
+      "expected": "메뉴 안에 포커스가 진입하고 닫힌 뒤 트리거로 돌아옵니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSubmenu.vue3.keyboard.v1",
+      "component": "KjunDropdownSubmenu",
+      "platform": "vue3",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안의 하위 메뉴 열기와 항목 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거가 메뉴를 열고 활성 항목 실행 뒤 닫습니다. 비활성 항목은 실행되지 않습니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "트리거에서 ArrowDown으로 열고 방향키로 이동한 뒤 Enter로 실행하고, 다시 열어 Escape를 누릅니다.",
+      "expected": "활성 항목이 이동하고 실행 콜백이 발생하며 Escape로 닫힙니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSubmenu.vue3.labeling.v1",
+      "component": "KjunDropdownSubmenu",
+      "platform": "vue3",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안의 하위 메뉴 열기와 항목 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거 버튼과 각 메뉴 항목은 표시 텍스트를 이름으로 사용합니다. 메뉴 컨테이너의 이름 연결과 열렸을 때 ID 참조를 별도로 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSubmenu.vue3.focus.v1",
+      "component": "KjunDropdownSubmenu",
+      "platform": "vue3",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안의 하위 메뉴 열기와 항목 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 열린 메뉴로 이동하고 닫힌 뒤 트리거로 복귀하는 경로를 검사합니다. Native는 Modal 경로이며 DOM 방향키나 초기 포커스 지원을 추정하지 않습니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "키보드로 메뉴를 연 뒤 초기 포커스와 Escape 이후를 검사합니다.",
+      "expected": "메뉴 안에 포커스가 진입하고 닫힌 뒤 트리거로 돌아옵니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSubmenu.react.keyboard.v1",
+      "component": "KjunDropdownSubmenu",
+      "platform": "react",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안의 하위 메뉴 열기와 항목 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거가 메뉴를 열고 활성 항목 실행 뒤 닫습니다. 비활성 항목은 실행되지 않습니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "트리거에서 ArrowDown으로 열고 방향키로 이동한 뒤 Enter로 실행하고, 다시 열어 Escape를 누릅니다.",
+      "expected": "활성 항목이 이동하고 실행 콜백이 발생하며 Escape로 닫힙니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSubmenu.react.labeling.v1",
+      "component": "KjunDropdownSubmenu",
+      "platform": "react",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안의 하위 메뉴 열기와 항목 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거 버튼과 각 메뉴 항목은 표시 텍스트를 이름으로 사용합니다. 메뉴 컨테이너의 이름 연결과 열렸을 때 ID 참조를 별도로 검사합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSubmenu.react.focus.v1",
+      "component": "KjunDropdownSubmenu",
+      "platform": "react",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안의 하위 메뉴 열기와 항목 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 열린 메뉴로 이동하고 닫힌 뒤 트리거로 복귀하는 경로를 검사합니다. Native는 Modal 경로이며 DOM 방향키나 초기 포커스 지원을 추정하지 않습니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "키보드로 메뉴를 연 뒤 초기 포커스와 Escape 이후를 검사합니다.",
+      "expected": "메뉴 안에 포커스가 진입하고 닫힌 뒤 트리거로 돌아옵니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSubmenu.native.keyboard.v1",
+      "component": "KjunDropdownSubmenu",
+      "platform": "native",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안의 하위 메뉴 열기와 항목 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거가 메뉴를 열고 활성 항목 실행 뒤 닫습니다. 비활성 항목은 실행되지 않습니다. Native는 Modal과 menuitem을 사용합니다. DOM menu 역할과 방향키 동작의 제공 여부는 결과에서 구분합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "트리거에서 ArrowDown으로 열고 방향키로 이동한 뒤 Enter로 실행하고, 다시 열어 Escape를 누릅니다.",
+      "expected": "활성 항목이 이동하고 실행 콜백이 발생하며 Escape로 닫힙니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSubmenu.native.labeling.v1",
+      "component": "KjunDropdownSubmenu",
+      "platform": "native",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안의 하위 메뉴 열기와 항목 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 트리거 버튼과 각 메뉴 항목은 표시 텍스트를 이름으로 사용합니다. 메뉴 컨테이너의 이름 연결과 열렸을 때 ID 참조를 별도로 검사합니다. Native는 Modal과 menuitem을 사용합니다. DOM menu 역할과 방향키 동작의 제공 여부는 결과에서 구분합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDropdownSubmenu.native.focus.v1",
+      "component": "KjunDropdownSubmenu",
+      "platform": "native",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "menu",
+      "scenario": {
+        "button": "메뉴 열기",
+        "parent": "KjunDropdown"
+      },
+      "behavior": "KjunDropdown 안의 하위 메뉴 열기와 항목 실행. KjunDropdown 안에서 사용하는 하위 구성입니다. 열린 메뉴로 이동하고 닫힌 뒤 트리거로 복귀하는 경로를 검사합니다. Native는 Modal 경로이며 DOM 방향키나 초기 포커스 지원을 추정하지 않습니다. Native는 Modal과 menuitem을 사용합니다. DOM menu 역할과 방향키 동작의 제공 여부는 결과에서 구분합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [],
+      "applicable": true,
+      "reason": null,
+      "procedure": "키보드로 메뉴를 연 뒤 초기 포커스와 Escape 이후를 검사합니다.",
+      "expected": "메뉴 안에 포커스가 진입하고 닫힌 뒤 트리거로 돌아옵니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
       "id": "KjunFormActions.vue3.keyboard.v1",
       "component": "KjunFormActions",
       "platform": "vue3",
@@ -17320,32 +17698,32 @@
       "name": "@kjun-ui/tokens",
       "version": "0.17.0",
       "file": "kjun-ui-tokens-0.17.0.tgz",
-      "bytes": 98768,
-      "integrity": "sha512-6ccCDUyjRy/TbDcqDe9u9T1K094wdgepjpPtu5g1t4jN4MfFzpHXnj8sxPw1LX+9UhAZ0iVnZV8hjWv+3AXDeA=="
+      "bytes": 99881,
+      "integrity": "sha512-NDuU5uTokX98grkV23y3RNVHt1Pyr4xxCjfxYiaiJdXbaE/FyE6f/cF/arOEnpGTPB7ai1v3tg7MiHGZV3m8dA=="
     },
     {
       "name": "@kjun-ui/vue3",
       "version": "0.17.0",
       "file": "kjun-ui-vue3-0.17.0.tgz",
-      "bytes": 335948,
-      "integrity": "sha512-r13TffjCKLNustUN1HJjW/kXAfeMiN990qFb2LSsJ2p/nZNcw5NPfNYXXqvIq4ZbreSBiwywH2xSXLOl8cvm7A=="
+      "bytes": 340459,
+      "integrity": "sha512-HCKUtuOACH+CIEediRt5fsLRTV3Yt2BVXc3bLbSF20/3VJYGyZFRNiFbADVRkGnbc8r6ILoCPlluGinWvV1Xzw=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.17.0",
       "file": "kjun-ui-react-0.17.0.tgz",
-      "bytes": 278858,
-      "integrity": "sha512-VslUNnPsRidwhpYbhKy0GkVkH2eCV4Ay83tBsDKHvaX9jfsFEj4EBXNBNI51xsEwa6D5dmAuBvg45j8kN5c9DA=="
+      "bytes": 282170,
+      "integrity": "sha512-oPfTbjKE2MH3ZGAQx5+BcVXuaLr+KA/WmXAW6F3q2Wi0DXm6NtlpuLCTAltKQPFtaxfO32FDj/vveNABvyvzVA=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.17.0",
       "file": "kjun-ui-native-0.17.0.tgz",
-      "bytes": 536644,
-      "integrity": "sha512-BYO+3T38mi0SD9B8r5MOW+mfNBiPAi9vGT7Mpz370YXW82Z1LxsGGIawCwKLVn5lLrGvbs5sGqP0nZ36NEPhFA=="
+      "bytes": 542049,
+      "integrity": "sha512-ZocFLyzjhu34esxhLWsFrLMbE/vpXvoNjEuF4vJY0J/ieephErre2rL+vqnQUf5ijTTwNuYgfynu/au59kYj5A=="
     }
   ],
-  "definitionHash": "sha256-c4e6d4131eaaa45721f5a374b55d04204ff81934c1293c38b6150397375f8643",
+  "definitionHash": "sha256-7c01b107f535cace14add715d3e9c421f4f5e28e7b195c55f554d51f09969ee6",
   "runs": [
     {
       "schemaVersion": 1,

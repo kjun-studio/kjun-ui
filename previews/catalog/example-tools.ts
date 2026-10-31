@@ -242,6 +242,18 @@ export function createExampleTools(c: ExampleContext) {
       { variant: "danger", ...action(() => message("마지막 항목 선택")) },
       "마지막 항목"
     ),
+    // The extended menu adds a titled group of single choices and an in-place submenu.
+    ...(settings.rich ? [
+      h("KjunDropdownDivider"),
+      h("KjunDropdownSection", { title: "정렬" }, [
+        h("KjunDropdownItem", { selected: get("sort", "recent") === "recent", ...action(() => set("sort", "recent")) }, "최근 수정순"),
+        h("KjunDropdownItem", { selected: get("sort", "recent") === "name", ...action(() => set("sort", "name")) }, "이름순"),
+      ]),
+      h("KjunDropdownSubmenu", { label: "공유", icon: "send" }, [
+        h("KjunDropdownItem", { shortcut: "⌘L", ...action(() => message("링크 복사")) }, "링크 복사"),
+        h("KjunDropdownItem", { description: "팀원 모두에게 보입니다", ...action(() => message("팀에 공유")) }, "팀에 공유"),
+      ]),
+    ] : []),
   ];
   const market = {
     rows,

@@ -53,13 +53,14 @@ for (const platform of ['react', 'vue3', 'native']) {
       const s = getComputedStyle(node); return { shadow: s.boxShadow, radius: s.borderRadius };
     });
     // Field popups use 12px corners; general menu panels use 8px.
-    expect(panel?.shadow).toContain('0px 2px 8px'); expect(panel?.radius).toBe('12px');
+    expect(panel?.shadow).toContain('0px 8px 24px'); expect(panel?.radius).toBe('12px');
     await captureReview(page, { path: `artifacts/component-visual-fixes-20260915/${platform}-select-open.png` });
     await page.getByRole(role, { name: '체리', exact: true }).click();
     await expect(page.getByTestId('state')).toContainText('"selected":"c"'); await expect(apple).toHaveCount(0);
     await page.getByRole('button', { name: '메뉴 열기', exact: true }).click();
     const item = page.getByRole('menuitem', { name: '메뉴 항목', exact: true }); await expect(item).toBeVisible();
-    expect((await box(item)).height).toBeGreaterThanOrEqual(44);
+    // Action menus use 40px rows on fine pointers; field options keep 44px.
+    expect((await box(item)).height).toBeGreaterThanOrEqual(40);
     await page.keyboard.press('Escape'); await expect(item).toHaveCount(0);
     await expect(page.getByRole('button', { name: '메뉴 열기', exact: true })).toBeFocused();
   });

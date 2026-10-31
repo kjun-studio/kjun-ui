@@ -1,10 +1,10 @@
 export { KjunDrawer } from "./drawer";
 export type { KjunDrawerProps } from "./drawer";
 export {
-KjunDropdown,KjunDropdownDivider,KjunDropdownItem,KjunMenuButton
+KjunDropdown,KjunDropdownDivider,KjunDropdownItem,KjunDropdownSection,KjunDropdownSubmenu,KjunMenuButton
 } from "./dropdown";
 export type {
-KjunDropdownItemProps,KjunDropdownProps,KjunMenuButtonProps
+KjunDropdownItemProps,KjunDropdownProps,KjunDropdownSectionProps,KjunDropdownSubmenuProps,KjunMenuButtonProps
 } from "./dropdown";
 export { FloatingPanel } from "./floating-panel";
 export type { Placement } from "./floating-panel";

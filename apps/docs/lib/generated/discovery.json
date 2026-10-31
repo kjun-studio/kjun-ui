@@ -9,7 +9,7 @@
         "액션",
         "버튼"
       ],
-      "count": 12
+      "count": 14
     },
     {
       "id": "inputs",
@@ -2917,6 +2917,7 @@
         "menuId",
         "triggerId",
         "menuClass",
+        "density",
         "returnFocus",
         "update:open",
         "close",
@@ -2989,6 +2990,7 @@
         "접근성 연결에 사용할 메뉴 식별자입니다.",
         "메뉴와 접근성으로 연결할 트리거 식별자입니다.",
         "팝업 메뉴에 추가할 웹 CSS 클래스입니다.",
+        "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
         "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다.",
         "update:open 이벤트를 통지합니다.",
         "open 이벤트를 통지합니다.",
@@ -3000,6 +3002,7 @@
         "접근성 연결에 사용할 메뉴 식별자입니다.",
         "실제 트리거 버튼의 id입니다. 생략하면 버튼의 기존 id 또는 자동 생성 id를 사용하며 메뉴의 접근성 이름에 연결합니다.",
         "팝업 메뉴에 추가할 웹 CSS 클래스입니다.",
+        "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
         "메뉴를 여는 단일 버튼 요소입니다. id·aria-haspopup·aria-expanded·aria-controls와 disabled를 실제 버튼에 전달합니다. 사용자 정의 버튼은 받은 속성을 DOM 버튼에 전달해야 합니다. KjunTooltip으로 감싼 버튼도 지원합니다.",
         "기본 콘텐츠 영역에 배치할 요소입니다.",
         "메뉴가 열리는 행동을 통지합니다.",
@@ -3011,13 +3014,14 @@
         "트리거에 대한 팝업·도움말의 선호 위치입니다.",
         "접근성 연결에 사용할 메뉴 식별자입니다.",
         "메뉴와 접근성으로 연결할 트리거 식별자입니다.",
+        "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
         "팝업을 열기 위한 트리거 요소 또는 렌더 함수입니다.",
         "기본 콘텐츠 영역에 배치할 요소입니다.",
         "메뉴가 열리는 행동을 통지합니다.",
         "닫기 행동 또는 메뉴 닫힘을 통지합니다.",
         "트리거와 메뉴 항목을 묶고 내부 열림 상태를 관리합니다. 항목의 실제 업무는 각 DropdownItem의 행동에 연결합니다.",
-        "열림·닫힘·비활성과 항목별 선택 상태를 구분합니다. 항목 실행·바깥 클릭·Escape로 닫고 트리거 포커스를 복원합니다.",
-        "Vue trigger 슬롯과 React·Native trigger prop을 사용합니다. 웹은 방향키·문자 탐색을 제공하고 Native는 Modal 메뉴를 사용합니다.",
+        "열림·닫힘·비활성과 항목별 선택 상태를 구분합니다. 마우스로 열면 아무 항목도 칠하지 않고, 키보드로 열면 첫 항목에 포커스합니다. 현재 항목은 링 없이 배경 면 하나로 표시합니다. 항목 행은 40px(density=compact는 32px, 터치는 44px)이며 메뉴는 1px 테두리와 떠 있는 그림자를 둡니다. 항목 실행·바깥 클릭·Escape로 닫고 트리거 포커스를 복원합니다.",
+        "Vue trigger 슬롯과 React·Native trigger prop을 사용합니다. 웹은 방향키·문자 탐색과 →(하위 메뉴 열기)·←(돌아가기)를 제공하고 Native는 Modal 메뉴를 사용합니다. Native의 density=compact는 마우스 같은 정밀한 포인터에서만 적용됩니다.",
         "Actions",
         "동작",
         "액션",
@@ -3226,6 +3230,9 @@
         "icon",
         "disabled",
         "selected",
+        "checked",
+        "description",
+        "shortcut",
         "textValue",
         "click",
         "default",
@@ -3294,7 +3301,10 @@
         "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
         "콘텐츠와 함께 표시할 아이콘 이름입니다.",
         "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
-        "메뉴 항목의 현재 선택 여부를 표시합니다.",
+        "하나만 고르는 항목의 선택 여부입니다. 앞쪽 열에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+        "켜고 끄는 항목의 상태입니다. 앞쪽 열에 체크를 그리고 checkbox 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+        "라벨 아래 둘째 줄 설명입니다. 12px 보조색으로 보입니다.",
+        "끝에 보이는 단축키 안내(예: ⌘D)입니다. 웹은 aria-keyshortcuts로도 알립니다. 실제 키 연결은 소비자가 합니다. Native는 Native Web에서만 보입니다.",
         "메뉴 항목의 문자 검색과 접근성에 사용할 문자열입니다.",
         "click 이벤트를 통지합니다.",
         "default 영역의 기본 내용을 교체합니다.",
@@ -3302,7 +3312,10 @@
         "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
         "콘텐츠와 함께 표시할 아이콘 이름입니다.",
         "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
-        "메뉴 항목의 현재 선택 여부를 표시합니다.",
+        "하나만 고르는 항목의 선택 여부입니다. 앞쪽 열에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+        "켜고 끄는 항목의 상태입니다. 앞쪽 열에 체크를 그리고 checkbox 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+        "라벨 아래 둘째 줄 설명입니다. 12px 보조색으로 보입니다.",
+        "끝에 보이는 단축키 안내(예: ⌘D)입니다. 웹은 aria-keyshortcuts로도 알립니다. 실제 키 연결은 소비자가 합니다. Native는 Native Web에서만 보입니다.",
         "메뉴 항목의 문자 검색과 접근성에 사용할 문자열입니다.",
         "기본 콘텐츠 영역에 배치할 요소입니다.",
         "기본 웹 요소의 클릭 이벤트를 전달합니다.",
@@ -3310,11 +3323,14 @@
         "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
         "콘텐츠와 함께 표시할 아이콘 이름입니다.",
         "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
-        "메뉴 항목의 현재 선택 여부를 표시합니다.",
+        "하나만 고르는 항목의 선택 여부입니다. 앞쪽 열에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+        "켜고 끄는 항목의 상태입니다. 앞쪽 열에 체크를 그리고 checkbox 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+        "라벨 아래 둘째 줄 설명입니다. 12px 보조색으로 보입니다.",
+        "끝에 보이는 단축키 안내(예: ⌘D)입니다. 웹은 aria-keyshortcuts로도 알립니다. 실제 키 연결은 소비자가 합니다. Native는 Native Web에서만 보입니다.",
         "기본 콘텐츠 영역에 배치할 요소입니다.",
         "Native 요소의 누름 이벤트를 전달합니다.",
-        "Dropdown 안에서 행동 하나를 제공합니다. disabled는 실행을 막고 selected는 현재 항목의 선택 표시만 제어합니다.",
-        "기본·위험 액션, 선택·미선택, 비활성 상태를 구분합니다. 활성 항목을 실행하면 액션 후 메뉴를 닫습니다.",
+        "Dropdown 안에서 행동 하나를 제공합니다. disabled는 실행을 막고, selected(하나만 고르는 항목)와 checked(켜고 끄는 항목)는 앞쪽 열의 체크 표시와 읽히는 역할만 제어합니다. description은 둘째 줄 설명, shortcut은 끝에 보이는 단축키 안내이며 키 연결은 소비자가 합니다.",
+        "기본·위험 액션, 선택·미선택, 비활성 상태를 구분합니다. 비활성은 비활성 글자색으로, 위험 항목 hover는 위험 색의 옅은 면으로 표시합니다. 아이콘이나 체크가 있는 항목이 하나라도 있으면 나머지 항목의 라벨도 같은 시작선에 맞춥니다. 활성 항목을 실행하면 액션 후 메뉴를 닫습니다.",
         "Vue click, React onClick, Native onPress를 사용합니다. Vue·React textValue는 문자 탐색에 사용하며 Native에는 이 prop이 없습니다.",
         "Actions",
         "동작",
@@ -3377,6 +3393,297 @@
         }
       },
       "thumbnail": "/previews/thumbnails/dropdown-item.png"
+    },
+    {
+      "id": "dropdown-section",
+      "path": "/components/dropdown-section",
+      "title": "DropdownSection",
+      "group": "Components",
+      "component": "KjunDropdownSection",
+      "description": "메뉴 항목을 작은 제목 아래로 묶습니다.",
+      "category": "actions",
+      "parent": "KjunDropdown",
+      "aliases": [
+        "메뉴 묶음",
+        "메뉴 제목"
+      ],
+      "useCases": [],
+      "api": [
+        "title",
+        "default",
+        "children"
+      ],
+      "sectionGroups": [
+        {
+          "id": "usage",
+          "title": "사용법",
+          "sections": [
+            "preview",
+            "guidelines",
+            "usage"
+          ]
+        },
+        {
+          "id": "design",
+          "title": "디자인",
+          "sections": [
+            "anatomy",
+            "states"
+          ]
+        },
+        {
+          "id": "api",
+          "title": "API",
+          "sections": [
+            "api"
+          ]
+        },
+        {
+          "id": "accessibility",
+          "title": "접근성",
+          "sections": [
+            "accessibility"
+          ]
+        }
+      ],
+      "terms": [
+        "구조 도해",
+        "Anatomy",
+        "묶음",
+        "작은 제목 아래로 관련 항목을 모읍니다. 제목은 묶음 이름으로 읽힙니다.",
+        "기본 예제",
+        "열림·내용 확인",
+        "묶음",
+        "작은 제목 아래로 관련 항목을 모읍니다. 제목은 묶음 이름으로 읽힙니다.",
+        "기본 예제",
+        "열림·내용 확인",
+        "묶음",
+        "작은 제목 아래로 관련 항목을 모읍니다. 제목은 묶음 이름으로 읽힙니다.",
+        "기본 예제",
+        "열림·내용 확인",
+        "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.",
+        "default 영역의 기본 내용을 교체합니다.",
+        "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.",
+        "묶음에 넣을 KjunDropdownItem·KjunDropdownSubmenu입니다.",
+        "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.",
+        "묶음에 넣을 KjunDropdownItem·KjunDropdownSubmenu입니다.",
+        "Dropdown 안에서 관련 항목을 하나의 묶음으로 둡니다. title은 화면에 작은 제목으로 보이고 화면 낭독기에는 묶음 이름으로 읽힙니다.",
+        "12px 보조색 제목 아래에 항목을 둡니다. 실행·선택·포커스 상태를 가지지 않습니다.",
+        "세 플랫폼 모두 title과 자식 항목만 받습니다.",
+        "Actions",
+        "동작",
+        "액션",
+        "버튼",
+        "실행 예제",
+        "동작과 책임",
+        "기본 사용법",
+        "구조",
+        "상태·크기",
+        "API",
+        "접근성·플랫폼 차이"
+      ],
+      "sections": [
+        [
+          "preview",
+          "실행 예제"
+        ],
+        [
+          "guidelines",
+          "동작과 책임"
+        ],
+        [
+          "usage",
+          "기본 사용법"
+        ],
+        [
+          "anatomy",
+          "구조"
+        ],
+        [
+          "states",
+          "상태·크기"
+        ],
+        [
+          "api",
+          "API"
+        ],
+        [
+          "accessibility",
+          "접근성·플랫폼 차이"
+        ]
+      ],
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "thumbnail": "/previews/thumbnails/dropdown-section.png"
+    },
+    {
+      "id": "dropdown-submenu",
+      "path": "/components/dropdown-submenu",
+      "title": "DropdownSubmenu",
+      "group": "Components",
+      "component": "KjunDropdownSubmenu",
+      "description": "자기 항목을 메뉴 자리에 펼치는 하위 메뉴 행입니다.",
+      "category": "actions",
+      "parent": "KjunDropdown",
+      "aliases": [
+        "하위 메뉴",
+        "서브메뉴"
+      ],
+      "useCases": [],
+      "api": [
+        "id",
+        "label",
+        "icon",
+        "disabled",
+        "default",
+        "children"
+      ],
+      "sectionGroups": [
+        {
+          "id": "usage",
+          "title": "사용법",
+          "sections": [
+            "preview",
+            "guidelines",
+            "usage"
+          ]
+        },
+        {
+          "id": "design",
+          "title": "디자인",
+          "sections": [
+            "anatomy",
+            "states"
+          ]
+        },
+        {
+          "id": "api",
+          "title": "API",
+          "sections": [
+            "api"
+          ]
+        },
+        {
+          "id": "accessibility",
+          "title": "접근성",
+          "sections": [
+            "accessibility"
+          ]
+        }
+      ],
+      "terms": [
+        "구조 도해",
+        "Anatomy",
+        "하위 메뉴 행",
+        "누르면 메뉴가 하위 항목으로 바뀝니다. 끝의 ›로 구분합니다.",
+        "기본 예제",
+        "비활성",
+        "열림·내용 확인",
+        "하위 메뉴 행",
+        "누르면 메뉴가 하위 항목으로 바뀝니다. 끝의 ›로 구분합니다.",
+        "기본 예제",
+        "비활성",
+        "열림·내용 확인",
+        "하위 메뉴 행",
+        "누르면 메뉴가 하위 항목으로 바뀝니다. 끝의 ›로 구분합니다.",
+        "기본 예제",
+        "비활성",
+        "열림·내용 확인",
+        "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
+        "하위 메뉴 행과 돌아가기 행의 라벨입니다.",
+        "하위 메뉴 행 앞쪽 열의 아이콘 이름입니다.",
+        "하위 메뉴를 열 수 없게 합니다.",
+        "default 영역의 기본 내용을 교체합니다.",
+        "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
+        "하위 메뉴 행과 돌아가기 행의 라벨입니다.",
+        "하위 메뉴 행 앞쪽 열의 아이콘 이름입니다.",
+        "하위 메뉴를 열 수 없게 합니다.",
+        "하위 메뉴에서 보일 KjunDropdownItem·KjunDropdownSection입니다.",
+        "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
+        "하위 메뉴 행과 돌아가기 행의 라벨입니다.",
+        "하위 메뉴 행 앞쪽 열의 아이콘 이름입니다.",
+        "하위 메뉴를 열 수 없게 합니다.",
+        "하위 메뉴에서 보일 KjunDropdownItem·KjunDropdownSection입니다.",
+        "행을 누르면(웹은 →도) 메뉴가 하위 항목으로 바뀌고, 맨 위의 돌아가기 행이나 ←로 이전 메뉴로 돌아갑니다. 하위 항목을 실행하면 메뉴 전체가 닫힙니다.",
+        "끝에 › 표시를 둡니다. 하위 메뉴의 첫 행은 ‹와 굵은 라벨의 돌아가기 행입니다. disabled면 열 수 없습니다.",
+        "세 플랫폼 모두 같은 자리 바꿈 방식입니다. 옆으로 펼쳐지는 메뉴는 쓰지 않아 좁은 화면과 Native에서도 같게 동작합니다.",
+        "Actions",
+        "동작",
+        "액션",
+        "버튼",
+        "실행 예제",
+        "동작과 책임",
+        "기본 사용법",
+        "구조",
+        "상태·크기",
+        "API",
+        "접근성·플랫폼 차이"
+      ],
+      "sections": [
+        [
+          "preview",
+          "실행 예제"
+        ],
+        [
+          "guidelines",
+          "동작과 책임"
+        ],
+        [
+          "usage",
+          "기본 사용법"
+        ],
+        [
+          "anatomy",
+          "구조"
+        ],
+        [
+          "states",
+          "상태·크기"
+        ],
+        [
+          "api",
+          "API"
+        ],
+        [
+          "accessibility",
+          "접근성·플랫폼 차이"
+        ]
+      ],
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "thumbnail": "/previews/thumbnails/dropdown-submenu.png"
     },
     {
       "id": "fab",
@@ -3971,6 +4278,7 @@
         "menuId",
         "triggerId",
         "menuClass",
+        "density",
         "returnFocus",
         "label",
         "size",
@@ -4060,6 +4368,7 @@
         "접근성 연결에 사용할 메뉴 식별자입니다.",
         "메뉴와 접근성으로 연결할 트리거 식별자입니다.",
         "팝업 메뉴에 추가할 웹 CSS 클래스입니다.",
+        "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
         "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다.",
         "사용자에게 표시할 주된 라벨입니다.",
         "Button과 같은 높이·모서리·아이콘 크기를 사용합니다. 기본 md는 40px이며 좁은 도구 모음에는 sm을 명시하세요.",
@@ -4089,6 +4398,7 @@
         "접근성 연결에 사용할 메뉴 식별자입니다.",
         "메뉴와 접근성으로 연결할 트리거 식별자입니다.",
         "팝업 메뉴에 추가할 웹 CSS 클래스입니다.",
+        "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
         "메뉴가 열리는 행동을 통지합니다.",
         "닫기 행동 또는 메뉴 닫힘을 통지합니다.",
         "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다.",
@@ -4106,6 +4416,7 @@
         "트리거에 대한 팝업·도움말의 선호 위치입니다.",
         "접근성 연결에 사용할 메뉴 식별자입니다.",
         "메뉴와 접근성으로 연결할 트리거 식별자입니다.",
+        "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다.",
         "메뉴가 열리는 행동을 통지합니다.",
         "닫기 행동 또는 메뉴 닫힘을 통지합니다.",
         "라벨 버튼에 Dropdown 메뉴를 연결합니다. compact일 때도 ariaLabel이나 tooltip으로 행동 목적을 제공하세요.",

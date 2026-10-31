@@ -1,11 +1,11 @@
 {
-  "total": 84,
+  "total": 86,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 84,
+      "provided": 86,
       "counts": {
-        "supported": 84,
+        "supported": 86,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 84,
+      "provided": 86,
       "counts": {
-        "supported": 84,
+        "supported": 86,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 84,
+      "provided": 86,
       "counts": {
         "supported": 0,
-        "preview": 84,
+        "preview": 86,
         "review": 0,
         "unsupported": 0
       },
@@ -763,7 +763,7 @@
       "title": "Dropdown",
       "docs": "/components/dropdown",
       "category": "actions",
-      "differences": "Vue trigger 슬롯과 React·Native trigger prop을 사용합니다. 웹은 방향키·문자 탐색을 제공하고 Native는 Modal 메뉴를 사용합니다.",
+      "differences": "Vue trigger 슬롯과 React·Native trigger prop을 사용합니다. 웹은 방향키·문자 탐색과 →(하위 메뉴 열기)·←(돌아가기)를 제공하고 Native는 Modal 메뉴를 사용합니다. Native의 density=compact는 마우스 같은 정밀한 포인터에서만 적용됩니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -826,6 +826,68 @@
       "docs": "/components/dropdown-item",
       "category": "actions",
       "differences": "Vue click, React onClick, Native onPress를 사용합니다. Vue·React textValue는 문자 탐색에 사용하며 Native에는 이 prop이 없습니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "KjunDropdownSection",
+      "title": "DropdownSection",
+      "docs": "/components/dropdown-section",
+      "category": "actions",
+      "differences": "세 플랫폼 모두 title과 자식 항목만 받습니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "KjunDropdownSubmenu",
+      "title": "DropdownSubmenu",
+      "docs": "/components/dropdown-submenu",
+      "category": "actions",
+      "differences": "세 플랫폼 모두 같은 자리 바꿈 방식입니다. 옆으로 펼쳐지는 메뉴는 쓰지 않아 좁은 화면과 Native에서도 같게 동작합니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -2690,7 +2752,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 84
+      "componentCount": 86
     }
   ]
 }

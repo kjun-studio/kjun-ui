@@ -1872,6 +1872,78 @@
     }
   },
   {
+    "name": "KjunDropdownSection",
+    "category": "layout",
+    "kind": "component",
+    "owner": "KjunDropdownSection",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/dropdown-section",
+    "tests": [
+      "tests/browser/dropdown-structure.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue3": "packages/vue3/src/dropdown.tsx",
+      "react": "packages/react/src/dropdown.tsx",
+      "native": "packages/native/src/dropdown.tsx"
+    }
+  },
+  {
+    "name": "KjunDropdownSubmenu",
+    "category": "layout",
+    "kind": "component",
+    "owner": "KjunDropdownSubmenu",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/dropdown-submenu",
+    "tests": [
+      "tests/browser/dropdown-structure.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue3": "packages/vue3/src/dropdown.tsx",
+      "react": "packages/react/src/dropdown.tsx",
+      "native": "packages/native/src/dropdown.tsx"
+    }
+  },
+  {
     "name": "KjunDropdownItem",
     "category": "layout",
     "kind": "component",

@@ -18,12 +18,18 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(panel(page, platform)).toHaveCSS('width', '160px');
     const first = item(page, '첫 항목'), second = item(page, '둘째 항목');
     await expect(first).toHaveCSS('border-radius', '8px');
-    await expect(first).toHaveCSS('height', '44px');
+    // Web rows are 40px on fine pointers; Native keeps the 44px touch target.
+    await expect(first).toHaveCSS('height', platform === 'native' ? '44px' : '40px');
     await expect(first).toHaveCSS('padding', '8px 12px');
     await expect(first).toBeFocused();
-    await expect(first).toHaveCSS('outline-style', 'solid');
-    await expect(first).toHaveCSS('outline-width', '2px');
-    await expect(first).toHaveCSS('outline-offset', '-2px');
+    if (platform === 'native') {
+      await expect(first).toHaveCSS('outline-style', 'solid');
+      await expect(first).toHaveCSS('outline-width', '2px');
+      await expect(first).toHaveCSS('outline-offset', '-2px');
+    } else {
+      // One cue for the current row on the web: its fill, without a ring on top.
+      await expect(first).toHaveCSS('outline-style', 'none');
+    }
     await expect(first).toHaveCSS('background-color', 'rgb(224, 237, 255)');
     if (trigger === 'menu-button') await captureReview(page, {
       path: `artifacts/dropdown-design-${platform}-light.png`, clip: { x: 0, y: 0, width: 600, height: 320 },
@@ -82,16 +88,17 @@ for (const platform of ['react', 'vue3', 'native']) {
     await button.click();
     const second = item(page, '둘째 항목'), remove = item(page, '삭제');
     await expect(second).toBeVisible();
-    // Leading icons use the secondary text role; danger keeps its role color.
-    await expect(second.locator('svg').first()).toHaveCSS('color', 'rgb(82, 82, 91)');
-    await expect(remove.locator('svg').first()).toHaveCSS('color', 'rgb(180, 35, 50)');
+    // Leading icons use the secondary text role; danger keeps its role color. A selected row draws its check before the icon.
+    await expect(second.locator('svg').last()).toHaveCSS('color', 'rgb(82, 82, 91)');
+    await expect(remove.locator('svg').last()).toHaveCSS('color', 'rgb(180, 35, 50)');
     const divider = panel(page, platform).locator('[role="separator"]');
     await expect(divider).toHaveCount(1);
     await expect(divider).toHaveCSS('background-color', 'rgb(212, 212, 216)');
     if (platform !== 'native') {
       // Pointer then keyboard: the item left under the pointer must not stay painted.
       await remove.hover();
-      await expect(remove).toHaveCSS('background-color', 'rgb(252, 231, 234)');
+      // Danger hover is a light tint of the danger role itself.
+      await expect(remove).toHaveCSS('background-color', 'color(srgb 0.705882 0.137255 0.196078 / 0.12)');
       await page.keyboard.press('ArrowUp');
       await expect(second).toBeFocused();
       await expect(second).toHaveCSS('background-color', 'rgb(228, 228, 231)');

@@ -50,7 +50,21 @@ set("Table", {
   columns: "열 키·라벨·정렬·셀 표현을 정의합니다. row 데이터와 열 키를 연결하세요.",
   searchable: "검색 입력과 검색어 통지를 제공합니다. 데이터 배열을 직접 필터링하지 않습니다.",
 });
-set("DropdownItem", { selected: "메뉴 항목의 현재 선택 여부를 표시합니다." });
+set("DropdownItem", {
+  selected: "하나만 고르는 항목의 선택 여부입니다. 앞쪽 열에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+  checked: "켜고 끄는 항목의 상태입니다. 앞쪽 열에 체크를 그리고 checkbox 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
+  description: "라벨 아래 둘째 줄 설명입니다. 12px 보조색으로 보입니다.",
+  shortcut: "끝에 보이는 단축키 안내(예: ⌘D)입니다. 웹은 aria-keyshortcuts로도 알립니다. 실제 키 연결은 소비자가 합니다. Native는 Native Web에서만 보입니다.",
+});
+set("Dropdown MenuButton", { density: { default: '"comfortable"', summary: "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다." } });
+set("DropdownSection", { title: "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.", children: "묶음에 넣을 KjunDropdownItem·KjunDropdownSubmenu입니다." });
+set("DropdownSubmenu", {
+  id: "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
+  label: "하위 메뉴 행과 돌아가기 행의 라벨입니다.",
+  icon: "하위 메뉴 행 앞쪽 열의 아이콘 이름입니다.",
+  disabled: "하위 메뉴를 열 수 없게 합니다.",
+  children: "하위 메뉴에서 보일 KjunDropdownItem·KjunDropdownSection입니다.",
+});
 set("MenuButton", {
   size: { default: "md", summary: "Button과 같은 높이·모서리·아이콘 크기를 사용합니다. 기본 md는 40px이며 좁은 도구 모음에는 sm을 명시하세요." },
   variant: { default: "secondary", summary: "세 플랫폼 모두 secondary가 기본입니다. 열린 동안 해당 변형의 active 색상 역할을 유지합니다." },

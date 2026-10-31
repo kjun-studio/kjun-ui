@@ -237,7 +237,7 @@
   --_kjun-card-elevation-raised: 0px 1px 2px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-modal-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-popover-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
-  --_kjun-menu-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
+  --_kjun-menu-elevation: 0px 8px 24px 0px var(--_kjun-color-shadow), 0px 2px 4px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-drawer-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-toast-elevation: none;
   --_kjun-switch-elevation: 0px 1px 3px 0px var(--_kjun-color-shadow);
@@ -412,10 +412,17 @@
   --_kjun-extension-menu-option-radius: 8px;
   --_kjun-extension-menu-padding: 4px;
   --_kjun-extension-menu-option-height: 44px;
+  --_kjun-extension-menu-item-height: 40px;
   --_kjun-extension-menu-option-font-size: 0.875rem;
   --_kjun-extension-menu-option-line-height: 1.25rem;
   --_kjun-extension-menu-option-padding-y: 8px;
   --_kjun-extension-menu-option-padding-x: 12px;
+  --_kjun-extension-menu-compact-option-height: 32px;
+  --_kjun-extension-menu-compact-option-padding-y: 6px;
+  --_kjun-extension-menu-compact-option-padding-x: 10px;
+  --_kjun-extension-menu-section-padding-top: 8px;
+  --_kjun-extension-menu-section-padding-bottom: 4px;
+  --_kjun-extension-menu-description-gap: 2px;
   --_kjun-extension-menu-minimum-width: 160px;
   --_kjun-extension-menu-list-max-height: 240px;
   --_kjun-extension-menu-icon-size: 16px;

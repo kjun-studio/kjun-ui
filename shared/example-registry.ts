@@ -45,7 +45,9 @@ assign("Textarea DatePicker Combobox", [size, disabled, error]);
 assign("DatePicker DateRangePicker", [size, disabled, error, toggle("clearable", "지우기")]);
 assign("Switch", [size, disabled, loading, toggle("description", "설명")]);
 assign("Textarea", [size, disabled, error, toggle("readOnly", "읽기 전용"), toggle("showCount", "글자 수"), toggle("composer", "작성기형"), choice("maxRows", "최대 행", ["6", "3", "10"])]);
-assign("Dropdown", [disabled]);
+const menuDensity = choice("density", "밀도", ["comfortable", "compact"]);
+assign("Dropdown", [disabled, toggle("rich", "확장 구성"), menuDensity]);
+assign("DropdownSection DropdownSubmenu", [toggle("rich", "확장 구성", true), menuDensity]);
 assign("DropdownItem", [toggle("itemDisabled", "첫 항목 비활성")]);
 assign("Accordion AccordionItem", [choice("tone", "배경", ["card", "muted"]), toggle("multiple", "복수 펼침"), toggle("itemDisabled", "첫 항목 비활성"), toggle("divider", "구분선"), toggle("separated", "항목 분리"), toggle("detail", "아이콘·설명")]);
 assign("FormActions", [choice("comparison", "비교", ["기본", "크기", "변형", "표시"]), choice("size", "크기", ["sm", "md", "lg"], "lg"), choice("variant", "확인 표현", ["primary", "danger", "success"]), choice("cancelVariant", "취소 표현", ["ghost", "secondary"]), field("confirmText", "확인 문구", "저장"), field("cancelText", "취소 문구", "취소"), toggle("showConfirm", "확인 표시", true), toggle("showCancel", "취소 표시", true), choice("exampleWidth", "예제 폭", ["360", "288", "200"]), toggle("cancelDisabled", "취소 비활성"), toggle("disabled", "확인 비활성"), toggle("loading", "확인 로딩")]);
@@ -53,7 +55,7 @@ assign("Modal", [choice("size", "크기", ["sm", "md", "lg", "xl", "full"], "md"
 assign("Button", [choice("comparison", "비교", ["기본", "크기", "변형", "라벨·아이콘", "상태"]), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), choice("variant", "변형", ["primary", "secondary", "ghost", "danger", "danger-ghost", "success", "warning"]), disabled, loading, toggle("iconOnly", "아이콘 전용"), toggle("block", "전체 너비")]);
 assign("Tabs TabPane", [choice("variant", "표현", ["underline", "pills"]), choice("density", "밀도", ["comfortable", "compact"]), toggle("fullWidth", "전체 너비"), toggle("detail", "아이콘·배지")]);
 assign("ButtonGroup", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), disabled, toggle("fullWidth", "전체 너비")]);
-assign("MenuButton", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), choice("variant", "변형", ["secondary", "ghost", "primary", "danger", "danger-ghost", "success", "warning"], "secondary"), toggle("compact", "아이콘 전용"), disabled, loading]);
+assign("MenuButton", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), choice("variant", "변형", ["secondary", "ghost", "primary", "danger", "danger-ghost", "success", "warning"], "secondary"), toggle("compact", "아이콘 전용"), disabled, loading, toggle("rich", "확장 구성"), menuDensity]);
 assign("Input", [choice("comparison", "비교", ["기본", "크기", "상태", "아이콘·단위"]), size, disabled, toggle("readOnly", "읽기 전용"), error]);
 controls.KjunCard = cardControls;
 assign("Popover", [toggle("noPadding", "기본 여백 제거")]);
@@ -136,7 +138,7 @@ for (const name of designExampleNames) {
   controls[name] = [choice("arrangement", "구성", ["after", "before"])];
   extras[name] = [preset("before", "전 · 피해야 할 구성", { arrangement: "before" })];
 }
-const layers = new Set("Select Combobox SearchInput DatePicker TimePicker Dropdown DropdownItem DropdownDivider MenuButton Tooltip Popover Modal Drawer".split(" ").map(n => "Kjun" + n));
+const layers = new Set("Select Combobox SearchInput DatePicker TimePicker Dropdown DropdownItem DropdownDivider DropdownSection DropdownSubmenu MenuButton Tooltip Popover Modal Drawer".split(" ").map(n => "Kjun" + n));
 export const exampleNames = [...catalog.filter(x => x.kind !== "internal").map(x => x.name), "KjunProvider", "KjunFeedbackProvider", "GuideSettingsForm", "GuideSearchToolbar", "GuideAssetList", ...recipeNames, ...designExampleNames, ...foundationNames, ...motionExampleNames, ...accessibilityExampleNames, ...interactionExampleNames, ...iconExampleNames];
 export function exampleDefinition(name: string) {
   if (!exampleNames.includes(name)) throw Error("존재하지 않는 예제: " + name);
