@@ -12,7 +12,7 @@ export const relatedGroups = {
   input: files('input-docs', 'examples', 'docs-http'),
   button: files('component-detail', 'preview-scroll', 'docs-kjun', 'docs-http'),
   icons: files('icons-docs', 'icons-docs-layout', 'icons-docs-lifecycle', 'icons-docs-ux', 'icons-full-catalog'),
-  navigation: files('document-navigation', 'discovery', 'docs-kjun', 'docs-layout-controls'),
+  navigation: files('document-navigation', 'docs-sidebar', 'discovery', 'docs-kjun', 'docs-layout-controls'),
   accessibility: files('accessibility', 'accessibility-docs', 'accessibility-docs-layout'),
   docs: files('docs-kjun', 'docs-layout', 'docs-spacing', 'docs-http', 'discovery'),
   overview: files('site', 'presentation', 'visual-zoom', 'discovery'),
