@@ -36,15 +36,13 @@ for (const platform of ['react', 'vue3', 'native']) {
     const toggle = page.getByRole('switch', { name: '사용 설정' });
     const track = platform === 'native' ? toggle.locator(':scope > *').first() : page.getByTestId('switch').locator('.kjun-switch');
     await expect(track).toHaveCSS('padding-top', px(tokens.extensions.switch.padding));
-    // Native draws the off boundary as an overlay before the thumb, so the thumb is the last child.
     const thumb = track.locator(':scope > *').last();
     const trackHeight = parseFloat(await track.evaluate(el => getComputedStyle(el).height));
-    const { padding } = tokens.extensions.switch, border = tokens.border.controlWidth;
-    // Rendered boxes: Native scales its thumb, Web resizes it.
+    const { padding } = tokens.extensions.switch;
     const boxes = async () => { const [trackBox, thumbBox] = await Promise.all([track.boundingBox(), thumb.boundingBox()]); return { trackBox: trackBox!, thumbBox: thumbBox! }; };
-    // Off: the thumb also clears the inset boundary, so its gap to the border matches the on-state padding.
-    await expect.poll(async () => (await boxes()).thumbBox.height).toBeCloseTo(trackHeight - 2 * (padding + border), 1);
-    await expect.poll(async () => { const { trackBox, thumbBox } = await boxes(); return thumbBox.x - trackBox.x - border; }).toBeCloseTo(padding, 1);
+    // Off: the same thumb as on, one padding in from the edge; the off track has no boundary of its own.
+    await expect.poll(async () => (await boxes()).thumbBox.height).toBeCloseTo(trackHeight - 2 * padding, 1);
+    await expect.poll(async () => { const { trackBox, thumbBox } = await boxes(); return thumbBox.x - trackBox.x; }).toBeCloseTo(padding, 1);
     await track.click(); await expect(toggle).toBeChecked();
     await expect.poll(async () => (await boxes()).thumbBox.width).toBeCloseTo(trackHeight - 2 * padding, 1);
     await expect.poll(async () => {

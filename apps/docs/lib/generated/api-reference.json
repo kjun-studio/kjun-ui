@@ -17573,6 +17573,15 @@
             "description": "Supporting text under the label; it also describes the switch to screen readers.",
             "summary": "라벨 아래 보조 설명입니다. 시작 위치는 라벨과 같고, 웹은 aria-describedby, Native는 accessibilityHint로 스위치를 설명합니다.",
             "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled.",
+            "summary": "저장 중 상태입니다. 손잡이 안에 작은 스피너를 돌리고 누름을 무시하며, disabled와 달리 흐리게 하지 않습니다. 웹은 aria-busy, Native는 accessibilityState.busy로 알립니다.",
+            "source": "packages/vue3/src/controls.tsx"
           }
         ],
         "events": [
@@ -17655,6 +17664,15 @@
             "default": "—",
             "description": "Supporting text under the label; it also describes the switch to screen readers.",
             "summary": "라벨 아래 보조 설명입니다. 시작 위치는 라벨과 같고, 웹은 aria-describedby, Native는 accessibilityHint로 스위치를 설명합니다.",
+            "source": "packages/react/src/controls.tsx"
+          },
+          {
+            "name": "loading",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled.",
+            "summary": "저장 중 상태입니다. 손잡이 안에 작은 스피너를 돌리고 누름을 무시하며, disabled와 달리 흐리게 하지 않습니다. 웹은 aria-busy, Native는 accessibilityState.busy로 알립니다.",
             "source": "packages/react/src/controls.tsx"
           },
           {
@@ -17744,6 +17762,15 @@
             "default": "—",
             "description": "Supporting text under the label; screen readers hear it as the hint.",
             "summary": "라벨 아래 보조 설명입니다. 시작 위치는 라벨과 같고, 웹은 aria-describedby, Native는 accessibilityHint로 스위치를 설명합니다.",
+            "source": "packages/native/src/choice-controls.tsx"
+          },
+          {
+            "name": "loading",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled.",
+            "summary": "저장 중 상태입니다. 손잡이 안에 작은 스피너를 돌리고 누름을 무시하며, disabled와 달리 흐리게 하지 않습니다. 웹은 aria-busy, Native는 accessibilityState.busy로 알립니다.",
             "source": "packages/native/src/choice-controls.tsx"
           },
           {

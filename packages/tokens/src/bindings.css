@@ -79,6 +79,7 @@
   --_kjun-color-selected-bg: var(--kjun-selected-bg, var(--kjun-active));
   --_kjun-color-on-brand: var(--kjun-on-brand, var(--kjun-inverse));
   --_kjun-color-switch-thumb-on: var(--kjun-switch-thumb-on, var(--kjun-on-brand, var(--kjun-inverse)));
+  --_kjun-color-switch-thumb: var(--kjun-switch-thumb, var(--kjun-switch-thumb-on, var(--kjun-on-brand, var(--kjun-inverse))));
   --_kjun-color-filter-selected-bg: var(--kjun-filter-selected-bg, var(--kjun-text));
   --_kjun-color-filter-selected-text: var(--kjun-filter-selected-text, var(--kjun-inverse));
   --_kjun-color-on-danger: var(--kjun-on-danger, var(--kjun-inverse));
@@ -184,6 +185,7 @@
   --_kjun-selected-bg: var(--_kjun-color-selected-bg);
   --_kjun-on-brand: var(--_kjun-color-on-brand);
   --_kjun-switch-thumb-on: var(--_kjun-color-switch-thumb-on);
+  --_kjun-switch-thumb: var(--_kjun-color-switch-thumb);
   --_kjun-filter-selected-bg: var(--_kjun-color-filter-selected-bg);
   --_kjun-filter-selected-text: var(--_kjun-color-filter-selected-text);
   --_kjun-on-danger: var(--_kjun-color-on-danger);
@@ -238,6 +240,7 @@
   --_kjun-menu-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-drawer-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-toast-elevation: none;
+  --_kjun-switch-elevation: 0px 1px 3px 0px var(--_kjun-color-shadow);
   --_kjun-tooltip-elevation: none;
   --_kjun-drawer-elevation-left: 2px 0px 8px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-drawer-elevation-right: -2px 0px 8px 0px var(--_kjun-color-shadow-subtle);
@@ -599,9 +602,10 @@
   --_kjun-extension-switch-heights-sm: 24px;
   --_kjun-extension-switch-heights-md: 28px;
   --_kjun-extension-switch-heights-lg: 32px;
-  --_kjun-extension-switch-padding: 3px;
+  --_kjun-extension-switch-padding: 2px;
   --_kjun-extension-switch-radius: 9999px;
-  --_kjun-extension-switch-label-gap: 8px;
+  --_kjun-extension-switch-label-gap: 12px;
+  --_kjun-extension-switch-spinner-size: 12px;
   --_kjun-extension-tooltip-padding-x: 8px;
   --_kjun-extension-tooltip-padding-y: 4px;
   --_kjun-extension-tooltip-max-widths-sm: 192px;

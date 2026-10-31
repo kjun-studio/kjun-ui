@@ -50,6 +50,7 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/extensions.css",
+      "packages/tokens/src/forms.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx",
@@ -223,7 +224,6 @@
       "packages/tokens/src/web.css",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
-      "packages/native/src/choice-controls.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/field-clear.tsx",
       "packages/native/src/select-control.tsx"
@@ -496,6 +496,7 @@
       "packages/vue3/src/market-parts.tsx",
       "packages/react/src/market-panel.tsx",
       "packages/native/src/app-navigation.tsx",
+      "packages/native/src/choice-controls.tsx",
       "packages/native/src/combobox.tsx",
       "packages/native/src/drawer.tsx",
       "packages/native/src/dropdown.tsx",
@@ -1354,6 +1355,20 @@
       "--switch-thumb-on"
     ],
     "implementationFiles": [
+      "packages/native/src/choice-controls.tsx"
+    ]
+  },
+  {
+    "role": "switchThumb",
+    "contract": "common",
+    "required": false,
+    "fallback": "switchThumbOn",
+    "variable": "--kjun-switch-thumb",
+    "upstreamAliases": [
+      "--switch-thumb"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/forms.css",
       "packages/native/src/choice-controls.tsx"
     ]
   },

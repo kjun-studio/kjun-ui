@@ -489,7 +489,8 @@
       "ariaLabel",
       "disabled",
       "size",
-      "description"
+      "description",
+      "loading"
     ],
     "react": [
       "value",
@@ -500,7 +501,8 @@
       "children",
       "onValueChange",
       "onChange",
-      "description"
+      "description",
+      "loading"
     ],
     "native": [
       "value",
@@ -511,7 +513,8 @@
       "children",
       "onValueChange",
       "onChange",
-      "description"
+      "description",
+      "loading"
     ]
   },
   "KjunTextarea": {

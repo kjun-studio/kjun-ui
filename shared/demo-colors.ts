@@ -94,6 +94,8 @@ const paletteInputs: Record<PaletteName, KjunColors> = {
     brand: "#A78BFA",
     brandHover: "#C4B5FD",
     brandActive: "#DDD6FE",
+    // A white thumb reads on both the purple and the dark track.
+    switchThumbOn: "#FFFFFF",
     background: "#111111",
     surface: "#181818",
     secondary: "#262626",

@@ -97,7 +97,9 @@ export function validateChoiceGeometry(data) {
     const { checkbox, switch: toggle } = data.extensions;
     if (checkbox.sizes[size] <= 0 || checkbox.iconSizes[size] <= 0 ||
         checkbox.iconSizes[size] > checkbox.sizes[size] - 2 * data.border.controlWidth ||
-        toggle.widths[size] < toggle.heights[size] || toggle.heights[size] <= 2 * toggle.padding)
+        toggle.widths[size] < toggle.heights[size] || toggle.heights[size] <= 2 * toggle.padding ||
+        // The thumb holds the saving spinner.
+        toggle.heights[size] - 2 * toggle.padding < toggle.spinnerSize)
       throw Error('Invalid choice geometry: ' + size);
   }
 }

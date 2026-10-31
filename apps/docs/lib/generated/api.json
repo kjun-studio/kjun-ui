@@ -18205,6 +18205,13 @@
         "required": false,
         "default": "—",
         "description": "Supporting text under the label; it also describes the switch to screen readers."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled."
       }
     ],
     "events": [
@@ -18266,6 +18273,13 @@
         "required": false,
         "default": "—",
         "description": "Supporting text under the label; it also describes the switch to screen readers."
+      },
+      {
+        "name": "loading",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled."
       },
       {
         "name": "children",
@@ -18331,6 +18345,13 @@
         "required": false,
         "default": "—",
         "description": "Supporting text under the label; screen readers hear it as the hint."
+      },
+      {
+        "name": "loading",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled."
       },
       {
         "name": "children",

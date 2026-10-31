@@ -118,6 +118,8 @@
     --kjun-danger-active: #c2424e;
     --kjun-text-disabled: #5c5c5c;
     --kjun-border: #2a2a2a;
+    /* The on thumb stays dark on the near-white brand track; the off thumb is light on the dark track. */
+    --kjun-switch-thumb: #f5f5f5;
     --kjun-success: #5cc98a;
     --kjun-success-dark: #4bb378;
     --kjun-success-active: #3e9e67;

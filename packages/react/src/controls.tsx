@@ -100,6 +100,8 @@ export interface KjunSwitchProps {
   size?: InputSize;
   /** Supporting text under the label; it also describes the switch to screen readers. */
   description?: string;
+  /** Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled. */
+  loading?: boolean;
   children?: ReactNode;
   onValueChange?: (value: boolean) => void;
   onChange?: (value: boolean) => void;
@@ -111,6 +113,7 @@ export function KjunSwitch({
   disabled = false,
   size = "md",
   description,
+  loading = false,
   children,
   onValueChange,
   onChange,
@@ -123,11 +126,14 @@ export function KjunSwitch({
     if (!input) return;
     if (invalid) input.setAttribute("aria-invalid", "true"); else input.removeAttribute("aria-invalid");
     if (required) input.setAttribute("aria-required", "true"); else input.removeAttribute("aria-required");
-  }, [invalid, required]);
+    if (loading) input.setAttribute("aria-busy", "true"); else input.removeAttribute("aria-busy");
+  }, [invalid, required, loading]);
   return (
     <AriaSwitch
       isSelected={value}
       isDisabled={disabled}
+      isReadOnly={loading}
+      data-loading={loading || undefined}
       aria-label={ariaLabel || label}
       aria-describedby={[field?.describedBy, description ? descriptionId : undefined].filter(Boolean).join(" ") || undefined}
       inputRef={markInput}
@@ -142,7 +148,7 @@ export function KjunSwitch({
           value ? " kjun-switch--on" : ""
         }`}
       >
-        <span className="kjun-switch-thumb" />
+        <span className="kjun-switch-thumb">{loading && <span className="kjun-switch-spinner" aria-hidden="true" />}</span>
       </span>
       {description ? (
         <span className="kjun-choice-text">

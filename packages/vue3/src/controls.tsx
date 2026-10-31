@@ -77,6 +77,8 @@ const kjunSwitchProps = {
   size: { type: String as PropType<InputSize>, default: "md" },
   /** Supporting text under the label; it also describes the switch to screen readers. */
   description: { type: String, default: undefined },
+  /** Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled. */
+  loading: { type: Boolean, default: false },
 } as const;
 export type KjunSwitchProps = ExtractPublicPropTypes<typeof kjunSwitchProps>;
 /** v-model; default slot: label. */
@@ -90,18 +92,19 @@ export const KjunSwitch = defineComponent({
     const focus = useFocusVisible();
     const descriptionId = useKjunId("kjun-switch-description-");
     return () => (
-      <label class={choiceClass(props.disabled)} data-focus-visible={focus.visible.value || undefined}>
+      <label class={choiceClass(props.disabled)} data-focus-visible={focus.visible.value || undefined} data-loading={props.loading || undefined}>
         <input type="checkbox" role="switch" class="kjun-sr-only" checked={props.modelValue} disabled={props.disabled}
           aria-label={props.ariaLabel || props.label} aria-describedby={[field.value?.describedBy, props.description ? descriptionId : undefined].filter(Boolean).join(" ") || undefined}
-          aria-invalid={field.value?.error ? "true" : undefined} aria-required={field.value?.required || undefined} onFocus={focus.onFocus} onBlur={focus.onBlur}
+          aria-invalid={field.value?.error ? "true" : undefined} aria-required={field.value?.required || undefined} aria-busy={props.loading || undefined} onFocus={focus.onFocus} onBlur={focus.onBlur}
           onChange={(event: Event) => {
             const next = (event.target as HTMLInputElement).checked;
             (event.target as HTMLInputElement).checked = props.modelValue;
+            if (props.loading) return;
             emit("update:modelValue", next);
             emit("change", next);
           }} />
         <span class={`kjun-switch kjun-switch--${props.size}${props.modelValue ? " kjun-switch--on" : ""}`}>
-          <span class="kjun-switch-thumb" />
+          <span class="kjun-switch-thumb">{props.loading && <span class="kjun-switch-spinner" aria-hidden="true" />}</span>
         </span>
         {props.description
           ? <span class="kjun-choice-text">{choiceLabel(props.label, slots.default)}<span id={descriptionId} class="kjun-choice-description">{props.description}</span></span>

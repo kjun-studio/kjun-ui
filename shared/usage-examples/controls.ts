@@ -58,7 +58,8 @@ export function generate(input: UsageInput) {
     }
     case 'KjunCheckbox': case 'KjunSwitch': {
       const key = name === 'KjunCheckbox' ? 'checked' : 'switch';
-      content = b.node(name, { value: b.state(key, false), onValueChange: b.update(key), disabled: s.disabled, label: name === 'KjunCheckbox' ? '알림 받기' : '자동 갱신' }); break;
+      content = b.node(name, { value: b.state(key, false), onValueChange: b.update(key), disabled: s.disabled, label: name === 'KjunCheckbox' ? '알림 받기' : '자동 갱신',
+        ...(name === 'KjunSwitch' ? { ...b.props('size', 'loading'), ...(s.description ? { description: '새 데이터가 있으면 바로 보여줍니다.' } : {}) } : {}) }); break;
     }
     case 'KjunRadio':
       content = b.node('KjunRadioGroup', { value: b.state('radio', 'a'), onValueChange: b.update('radio') }, [

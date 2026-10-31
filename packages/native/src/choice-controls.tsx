@@ -1,5 +1,5 @@
 import { typeStyle } from "./typography";
-import { Animated } from "react-native";
+import { Animated, Easing, Platform } from "react-native";
 import { useMotionValue } from "./motion";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import {
@@ -22,6 +22,7 @@ import { IconFallbacks } from "../../../shared/package-runtime/icon-context";
 import { KText, content, finePointer } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useRadioKeyboard } from "./choice-accessibility";
+import { shadowLayers } from "../../../shared/package-runtime/elevation";
 
 export type ChoiceValue = string | number | boolean | null;
 export interface ChoiceOption<T = ChoiceValue> {
@@ -142,9 +143,24 @@ export interface KjunSwitchProps {
   size?: InputSize;
   /** Supporting text under the label; screen readers hear it as the hint. */
   description?: string;
+  /** Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled. */
+  loading?: boolean;
   children?: ReactNode;
   onValueChange?: (value: boolean) => void;
   onChange?: (value: boolean) => void;
+}
+// A small ring that turns inside the thumb while a switch saves.
+function SwitchSpinner() {
+  const { colors } = useKjunStyles();
+  const turn = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    const loop = Animated.loop(Animated.timing(turn, { toValue: 1, duration: tokens.motion.spin, easing: Easing.linear, useNativeDriver: Platform.OS !== "web" }));
+    loop.start();
+    return () => loop.stop();
+  }, [turn]);
+  const size = tokens.extensions.switch.spinnerSize;
+  return <Animated.View aria-hidden={true} style={{ width: size, height: size, borderRadius: size / 2, borderWidth: tokens.border.controlWidth,
+    borderColor: colors.border, borderTopColor: colors.textSecondary, transform: [{ rotate: turn.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "360deg"] }) }] }} />;
 }
 export function KjunSwitch({
   value,
@@ -153,6 +169,7 @@ export function KjunSwitch({
   disabled = false,
   size = "md",
   description,
+  loading = false,
   children,
   onValueChange,
   onChange,
@@ -161,31 +178,32 @@ export function KjunSwitch({
   const width = tokens.extensions.switch.widths[size];
   const height = tokens.extensions.switch.heights[size];
   const thumb = height - 2 * tokens.extensions.switch.padding;
-  // The off boundary sits inside the padding, so the off thumb also clears the border width (like Web).
-  const offScale = (thumb - 2 * tokens.border.controlWidth) / thumb;
   const offset = width - height;
   const motion = useMotionValue(value ? 1 : 0);
   const focus = useControlFocus(disabled);
   const [hovered, setHovered] = useState(false);
-  const trackColor = typeof colors.active === 'string' && typeof colors.brand === 'string'
-    ? motion.interpolate({ inputRange: [0, 1], outputRange: [colors.active, colors.brand] })
-    : value ? colors.brand : colors.active;
-  // Off state: strong border boundary and thumb, like Checkbox/Radio and the Web track.
-  const offRole = disabled ? colors.borderSecondary : colors.borderStrong;
-  const thumbColor = typeof offRole === 'string' && typeof colors.switchThumbOn === 'string'
-    ? motion.interpolate({ inputRange: [0, 1], outputRange: [offRole, colors.switchThumbOn] })
-    : value ? colors.switchThumbOn : offRole;
+  // Off is a quiet track with no boundary; hover deepens whichever colour the track has.
+  const hover = hovered && !disabled && !loading;
+  const off = hover ? colors.borderStrong : colors.border, on = hover ? colors.brandHover : colors.brand;
+  const trackColor = typeof off === 'string' && typeof on === 'string'
+    ? motion.interpolate({ inputRange: [0, 1], outputRange: [off, on] })
+    : value ? on : off;
+  // switch-thumb falls back to switch-thumb-on, so the thumb keeps one colour unless a palette sets them apart.
+  const thumbColor = typeof colors.switchThumb === 'string' && typeof colors.switchThumbOn === 'string'
+    ? motion.interpolate({ inputRange: [0, 1], outputRange: [colors.switchThumb, colors.switchThumbOn] })
+    : value ? colors.switchThumbOn : colors.switchThumb;
   return (
     <Pressable
       accessibilityRole="switch"
       {...focus.handlers}
       onHoverIn={() => setHovered(true)}
       onHoverOut={() => setHovered(false)}
-      accessibilityState={{ checked: value, disabled }}
+      accessibilityState={{ checked: value, disabled, busy: loading }}
       accessibilityLabel={ariaLabel || label}
       accessibilityHint={description}
       disabled={disabled}
       onPress={() => {
+        if (loading) return;
         onValueChange?.(!value);
         onChange?.(!value);
       }}
@@ -206,33 +224,24 @@ export function KjunSwitch({
           padding: tokens.extensions.switch.padding,
           borderRadius: tokens.extensions.switch.radius,
           backgroundColor: trackColor,
+          // A disabled switch fades as one piece to 40% (inside the row's own 50%), so on and off stay told apart.
+          opacity: disabled ? tokens.states.opacity.disabledStrong / tokens.states.opacity.disabled : 1,
           ...focus.ring,
         }}
       >
-        <Animated.View
-          pointerEvents="none"
-          style={{
-            position: "absolute",
-            inset: 0,
-            borderRadius: tokens.extensions.switch.radius,
-            borderWidth: tokens.border.controlWidth,
-            // Hover turns the boundary to brand, like Checkbox on Web.
-            borderColor: hovered && !disabled ? colors.brand : offRole,
-            opacity: motion.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
-          }}
-        />
+        {/* One thumb in both states: the same size, lifted by a contact shadow, only its position changes. */}
         <Animated.View
           style={{
             width: thumb,
             height: thumb,
             borderRadius: tokens.extensions.switch.radius,
             backgroundColor: thumbColor,
-            transform: [
-              { translateX: motion.interpolate({ inputRange: [0, 1], outputRange: [0, offset] }) },
-              { scale: motion.interpolate({ inputRange: [0, 1], outputRange: [offScale, 1] }) },
-            ],
+            boxShadow: shadowLayers(tokens.extensions.switch.elevation, colors),
+            alignItems: "center",
+            justifyContent: "center",
+            transform: [{ translateX: motion.interpolate({ inputRange: [0, 1], outputRange: [0, offset] }) }],
           }}
-        />
+        >{loading && <SwitchSpinner />}</Animated.View>
       </Animated.View>
       {description ? (
         <View style={{ marginLeft: tokens.extensions.switch.labelGap, flexShrink: 1, minWidth: 0 }}>

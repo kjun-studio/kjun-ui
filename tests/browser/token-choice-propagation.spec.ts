@@ -24,17 +24,16 @@ test.describe('touch choice dimensions', () => {
         const toggle = toggleSection.getByRole('switch');
         const target = platform === 'native' ? toggle : toggleSection.locator('.kjun-choice');
         const track = platform === 'native' ? toggle.locator(':scope > *').first() : toggleSection.locator('.kjun-switch');
-        // Native draws the off boundary as an overlay before the thumb, so the thumb is the last child.
         const thumb = track.locator(':scope > *').last();
-        const geometry = tokens.extensions.switch, border = tokens.border.controlWidth;
+        const geometry = tokens.extensions.switch;
         await expect(target).toHaveCSS('min-height', px(tokens.native.minimumTouchTarget));
         await expect(track).toHaveCSS('width', px(geometry.widths[size]));
         await expect(track).toHaveCSS('height', px(geometry.heights[size]));
-        // Rendered boxes: off thumbs clear the inset boundary (Native scales, Web resizes) and grow when on.
+        // One thumb size in both states: only its position changes.
         const center = (box: { x: number; width: number }) => box.x + box.width / 2;
-        await expect.poll(async () => (await thumb.boundingBox())!.width).toBeCloseTo(geometry.heights[size] - 2 * (geometry.padding + border), 1);
+        await expect.poll(async () => (await thumb.boundingBox())!.width).toBeCloseTo(geometry.heights[size] - 2 * geometry.padding, 1);
         const initial = (await thumb.boundingBox())!;
-        expect(initial.x - (await track.boundingBox())!.x - border).toBeCloseTo(geometry.padding, 1);
+        expect(initial.x - (await track.boundingBox())!.x).toBeCloseTo(geometry.padding, 1);
         await track.click(); await expect(toggle).toBeChecked();
         await expect.poll(async () => center((await thumb.boundingBox())!) - center(initial)).toBeCloseTo(geometry.widths[size] - geometry.heights[size], 1);
         await expect.poll(async () => (await thumb.boundingBox())!.height).toBeCloseTo(geometry.heights[size] - 2 * geometry.padding, 1);

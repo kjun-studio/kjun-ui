@@ -185,7 +185,10 @@ export async function verifyKeyboard(page, d, note) {
   const settings = await page.evaluate(() => window.__a11ySnapshot.settings);
   for (const key of ['disabled', 'loading'].filter(key => key in settings && !d.scenario.children && !d.scenario.separateAction && profile !== 'market')) {
     await configure(page, { [key]: true });
-    const blocked = primary(page, d); await expect(blocked).toBeDisabled();
+    const blocked = primary(page, d);
+    // A saving switch is announced busy and ignores presses without leaving the tab order.
+    if (key === 'loading' && profile === 'checked' && d.component === 'KjunSwitch') await expect(blocked).toHaveAttribute('aria-busy', 'true');
+    else await expect(blocked).toBeDisabled();
     const count = await events(page); await page.keyboard.press('Enter'); await page.keyboard.press('Space');
     expect(await events(page)).toBe(count); note(key + ' 실행 차단');
     await configure(page, { [key]: false });

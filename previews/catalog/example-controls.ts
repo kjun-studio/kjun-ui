@@ -137,6 +137,9 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         value: get("switch", false),
         onValueChange: change("switch"),
         label: "자동 갱신",
+        description: settings.description ? "새 데이터가 있으면 바로 보여줍니다." : undefined,
+        size: settings.size,
+        loading: settings.loading,
         disabled,
       });
     case "KjunRadio":

@@ -11,6 +11,16 @@
         "colorRole": "shadowSubtle"
       }
     ],
+    "lift": [
+      {
+        "offsetX": 0,
+        "offsetY": 1,
+        "blurRadius": 3,
+        "spreadDistance": 0,
+        "inset": false,
+        "colorRole": "shadow"
+      }
+    ],
     "ambient": [
       {
         "offsetX": 0,
@@ -67,6 +77,11 @@
     "toast": {
       "elevation": {
         "$ref": "elevation.flat"
+      }
+    },
+    "switch": {
+      "elevation": {
+        "$ref": "shadowScale.lift"
       }
     },
     "tooltip": {

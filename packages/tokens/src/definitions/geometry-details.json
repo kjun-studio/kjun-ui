@@ -53,9 +53,10 @@
     "switch": {
       "widths": { "sm": 40, "md": 48, "lg": 56 },
       "heights": { "sm": 24, "md": 28, "lg": 32 },
-      "padding": { "$ref": "dimension.value3" },
+      "padding": { "$ref": "dimension.value2" },
       "radius": { "$ref": "radius.radius9999" },
-      "labelGap": { "$ref": "dimension.value8" }
+      "labelGap": { "$ref": "dimension.value12" },
+      "spinnerSize": 12
     },
     "pagination": {
       "gap": { "$ref": "dimension.value12" },

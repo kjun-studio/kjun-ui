@@ -270,7 +270,7 @@
     "description": "즉시 적용되는 켜짐·꺼짐 상태를 변경합니다.",
     "interaction": "켜짐 여부인 value를 boolean으로 연결하고 변경 통지에서 갱신합니다. 서버 저장은 소비자가 하고 중복 변경 제한이 필요하면 disabled를 지정합니다.",
     "differences": "Vue v-model·change와 React·Native onValueChange·onChange를 사용합니다. 웹 체크 동작과 Native 누름 동작은 동일한 boolean 값을 전달합니다.",
-    "states": "켜짐·꺼짐·비활성 상태를 제공합니다. 변경 이벤트를 받은 프로젝트가 value를 갱신하며 비동기 저장 중에는 disabled로 중복 변경을 막습니다."
+    "states": "켜짐·꺼짐·비활성·저장 중 상태를 제공합니다. 꺼짐은 테두리 없는 옅은 트랙, 켜짐은 강조색 트랙이며, 손잡이는 두 상태 모두 같은 크기로 얕은 그림자를 두고 위치만 바뀝니다. 마우스를 올리면 트랙 색이 한 단계 진해집니다. 비활성은 스위치 전체를 40%로 흐립니다. 비동기 저장 중에는 loading으로 손잡이 안에 스피너를 돌리고 누름을 무시합니다. 변경 이벤트를 받은 프로젝트가 value를 갱신합니다. 손잡이 색은 switch-thumb(꺼짐)·switch-thumb-on(켜짐) 색 역할이며, switch-thumb을 정하지 않으면 두 상태가 같은 색입니다."
   },
   "KjunTextarea": {
     "slug": "textarea",

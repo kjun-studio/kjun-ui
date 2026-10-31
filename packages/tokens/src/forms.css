@@ -198,15 +198,16 @@
 .kjun-radio-dot { width: var(--_kjun-extension-radio-dot); height: var(--_kjun-extension-radio-dot); border-radius: 50%; background: var(--_kjun-brand); }
 .kjun-radio + .kjun-choice-label { margin-left: var(--_kjun-extension-radio-label-gap); }
 .kjun-choice--disabled :is(.kjun-radio:not(.kjun-radio--checked), .kjun-checkbox:not(.kjun-checkbox--checked)) { border-color: var(--_kjun-border-secondary); }
-.kjun-choice--disabled .kjun-switch:not(.kjun-switch--on) { box-shadow: inset 0 0 0 var(--_kjun-border-control-width) var(--_kjun-border-secondary); }
-.kjun-choice--disabled .kjun-switch:not(.kjun-switch--on) .kjun-switch-thumb { background: var(--_kjun-border-secondary); }
+/* A disabled switch fades as one piece to 40% (inside the row's own 50%), so on and off stay told apart. */
+.kjun-choice--disabled .kjun-switch { opacity: calc(var(--_kjun-state-opacity-disabled-strong) / var(--_kjun-state-opacity-disabled)); }
 .kjun-choice input:focus-visible + .kjun-choice-control, .kjun-switch:focus-visible {
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-focus-ring);
   outline-offset: var(--_kjun-state-focus-choice-offset);
 }
 .kjun-choice:not(.kjun-choice--disabled):hover .kjun-choice-control { border-color: var(--_kjun-brand); }
 .kjun-choice:not(.kjun-choice--disabled):hover .kjun-radio { border-color: var(--_kjun-brand-hover); }
-.kjun-choice:not(.kjun-choice--disabled):hover .kjun-switch:not(.kjun-switch--on) { box-shadow: inset 0 0 0 var(--_kjun-border-control-width) var(--_kjun-brand); }
+.kjun-choice:not(.kjun-choice--disabled):not([data-loading]):hover .kjun-switch:not(.kjun-switch--on) { background: var(--_kjun-border-strong); }
+.kjun-choice:not(.kjun-choice--disabled):not([data-loading]):hover .kjun-switch--on { background: var(--_kjun-color-brand-hover); }
 .kjun-choice:not(.kjun-choice--disabled):active .kjun-radio,
 .kjun-choice:not(.kjun-choice--disabled) input:active + .kjun-radio { border-color: var(--_kjun-brand-active); }
 .kjun-switch + .kjun-choice-label { margin-left: var(--_kjun-extension-switch-label-gap); }
@@ -224,39 +225,45 @@
   height: var(--_kjun-switch-height);
   padding: var(--_kjun-extension-switch-padding);
   border-radius: var(--_kjun-extension-switch-radius);
-  background: var(--_kjun-bg-active);
-  /* Off state draws its boundary with the strong border role, like Checkbox and Radio; inset so geometry stays put. */
-  box-shadow: inset 0 0 0 var(--_kjun-border-control-width) var(--_kjun-border-strong);
-  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), box-shadow var(--_kjun-motion-control) var(--_kjun-ease-out);
+  /* Off is a quiet track with no boundary; the white thumb carries the shape. */
+  background: var(--_kjun-border);
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
 .kjun-switch--sm { --_kjun-switch-width: var(--_kjun-extension-switch-widths-sm); --_kjun-switch-height: var(--_kjun-extension-switch-heights-sm); }
 .kjun-switch--lg { --_kjun-switch-width: var(--_kjun-extension-switch-widths-lg); --_kjun-switch-height: var(--_kjun-extension-switch-heights-lg); }
-.kjun-switch--on { background: var(--_kjun-brand); box-shadow: none; }
-/* The off boundary sits inside the padding, so the off thumb also clears the border width:
-   both states keep the same gap between thumb and edge, and the thumb grows as it turns on. */
+.kjun-switch--on { background: var(--_kjun-brand); }
+/* One thumb in both states: the same size, lifted by a contact shadow, only its position changes. */
 .kjun-switch-thumb {
-  --_kjun-switch-thumb-inset: calc(var(--_kjun-extension-switch-padding) + var(--_kjun-border-control-width));
-  display: block;
-  width: calc(var(--_kjun-switch-height) - 2 * var(--_kjun-switch-thumb-inset));
-  height: calc(var(--_kjun-switch-height) - 2 * var(--_kjun-switch-thumb-inset));
-  margin: var(--_kjun-border-control-width);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--_kjun-switch-height) - 2 * var(--_kjun-extension-switch-padding));
+  height: calc(var(--_kjun-switch-height) - 2 * var(--_kjun-extension-switch-padding));
   border-radius: 50%;
-  background: var(--_kjun-border-strong);
+  background: var(--_kjun-color-switch-thumb);
+  /* A lift strong enough to part the white thumb from a pale off track. */
+  box-shadow: var(--_kjun-switch-elevation);
   transform: translateX(0);
-  transition: transform var(--_kjun-motion-control) var(--_kjun-ease-out), background-color var(--_kjun-motion-control) var(--_kjun-ease-out),
-    width var(--_kjun-motion-control) var(--_kjun-ease-out), height var(--_kjun-motion-control) var(--_kjun-ease-out), margin var(--_kjun-motion-control) var(--_kjun-ease-out);
+  transition: transform var(--_kjun-motion-control) var(--_kjun-ease-out), background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
-.kjun-switch--on .kjun-switch-thumb {
-  --_kjun-switch-thumb-inset: var(--_kjun-extension-switch-padding);
-  margin: 0;
-  background: var(--_kjun-switch-thumb-on);
-  transform: translateX(calc(var(--_kjun-switch-width) - var(--_kjun-switch-height)));
+/* switch-thumb falls back to switch-thumb-on, so the thumb keeps one colour unless a palette sets them apart. */
+.kjun-switch--on .kjun-switch-thumb { background: var(--_kjun-switch-thumb-on); transform: translateX(calc(var(--_kjun-switch-width) - var(--_kjun-switch-height))); }
+/* Saving: a small ring turns inside the thumb while the switch ignores presses. */
+.kjun-switch-spinner {
+  box-sizing: border-box;
+  width: var(--_kjun-extension-switch-spinner-size);
+  height: var(--_kjun-extension-switch-spinner-size);
+  border-radius: 50%;
+  border: var(--_kjun-border-control-width) solid var(--_kjun-border);
+  border-top-color: var(--_kjun-text-secondary);
+  animation: kjun-spin var(--_kjun-motion-spin) linear infinite;
 }
+.kjun-choice[data-loading] { cursor: progress; }
 
 @media (pointer: coarse) {
   .kjun-choice { min-height: var(--_kjun-geometry-native-minimum-touch-target); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kjun-field { transition: none; }
+  .kjun-field, .kjun-switch, .kjun-switch-thumb { transition: none; }
 }

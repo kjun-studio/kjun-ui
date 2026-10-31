@@ -291,6 +291,7 @@ set("ListSection", {
 set("DatePicker", { clearable: { default:"false", summary:"값이 있을 때 달력 아이콘 앞에 지우기 버튼을 보입니다. 누르면 빈 문자열로 바꿉니다. 버튼 이름은 KjunProvider 문구(clearDate)를 따릅니다." } });
 set("FormGroup", { optional: { default:"false", summary:"라벨 뒤에 선택 입력 표시를 붙입니다. 문구는 KjunProvider의 locale·messages(optional)를 따르며 required와 함께 주면 required가 우선합니다." } });
 set("Switch", { description: { summary:"라벨 아래 보조 설명입니다. 시작 위치는 라벨과 같고, 웹은 aria-describedby, Native는 accessibilityHint로 스위치를 설명합니다." } });
+set("Switch", { loading: { default: "false", summary: "저장 중 상태입니다. 손잡이 안에 작은 스피너를 돌리고 누름을 무시하며, disabled와 달리 흐리게 하지 않습니다. 웹은 aria-busy, Native는 accessibilityState.busy로 알립니다." } });
 set("Fab", {
   icon: { summary:"가운데 아이콘 이름입니다. 크기는 24(extensions.fab.iconSize)로 고정됩니다." },
   ariaLabel: { summary:"글자가 없으므로 반드시 넘기는 버튼 이름입니다." },
