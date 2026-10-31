@@ -31531,6 +31531,15 @@
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
             "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
+            "name": "block",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Stretches the field to its container's width (default false: the field hugs the time).",
+            "summary": "부모의 전체 너비를 채웁니다. 기본값 false는 시각 폭만 차지합니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
           }
         ],
         "events": [
@@ -31719,6 +31728,15 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
+            "source": "packages/react/src/time-picker.tsx"
+          },
+          {
+            "name": "block",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Stretches the field to its container's width (default false: the field hugs the time).",
+            "summary": "부모의 전체 너비를 채웁니다. 기본값 false는 시각 폭만 차지합니다.",
             "source": "packages/react/src/time-picker.tsx"
           },
           {
@@ -31913,6 +31931,15 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
+            "source": "packages/native/src/time-picker.tsx"
+          },
+          {
+            "name": "block",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Stretches the field to its container's width (default false: the field hugs the time).",
+            "summary": "부모의 전체 너비를 채웁니다. 기본값 false는 시각 폭만 차지합니다.",
             "source": "packages/native/src/time-picker.tsx"
           },
           {

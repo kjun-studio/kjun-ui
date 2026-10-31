@@ -249,9 +249,9 @@
   --_kjun-extension-compound-radius: 12px;
   --_kjun-extension-compound-value-width: 80px;
   --_kjun-extension-time-picker-segment-minimum-width: 44px;
-  --_kjun-extension-time-picker-separator-width: 12px;
+  --_kjun-extension-time-picker-separator-width: 6px;
   --_kjun-extension-time-picker-segment-padding: 4px;
-  --_kjun-extension-time-picker-icon-size: 12px;
+  --_kjun-extension-time-picker-options-width: 64px;
   --_kjun-extension-popover-width: 240px;
   --_kjun-extension-popover-widths-sm: 192px;
   --_kjun-extension-popover-widths-md: 240px;

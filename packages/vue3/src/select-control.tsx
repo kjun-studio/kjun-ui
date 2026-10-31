@@ -4,6 +4,7 @@ import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { isFocusVisible } from "../../../shared/package-runtime/focus-visible";
+import { centerSelectedOption } from "../../../shared/package-runtime/center-option";
 import { optionDisabled, optionLabel, selectOptions, type OptionValue, type SelectOption } from "../../../shared/package-runtime/options";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunSpinner } from "./display";
@@ -100,6 +101,8 @@ export const KjunSelect = defineComponent({
         if (props.searchable) { element.querySelector("input")?.focus({ preventScroll: true }); return; }
         const list = optionElements();
         focusOption(list.find(option => option.getAttribute("aria-selected") === "true") ?? list[0]);
+        // Time segment lists then move the selected value to the middle.
+        if (segment) centerSelectedOption(element.querySelector<HTMLElement>(".kjun-listbox"));
       });
     }, { flush: "post" });
     watch(state.open, value => { if (!value) { focused.value = null; composition.onCompositionend(); } });
@@ -147,9 +150,9 @@ export const KjunSelect = defineComponent({
                 style={css({ flex: 1, paddingRight: props.clearable && label ? spec.clearSize + spec.affixGap : undefined })}>
                 {shown?.length ? shown : label || (props.placeholder ?? m.value.select)}
               </span>
-              <KjunIcon name="chevron-down" class="kjun-select-indicator" data-open={expanded.value || undefined}
-                size={segment ? tokens.extensions.timePicker.iconSize : spec.iconSize}
-                style={{ flexShrink: 0, color: props.disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
+              {/* Time segments read as one value, so they carry no indicator of their own. */}
+              {!segment && <KjunIcon name="chevron-down" class="kjun-select-indicator" data-open={expanded.value || undefined} size={spec.iconSize}
+                style={{ flexShrink: 0, color: props.disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />}
             </button>
             {props.clearable && !!label && (
               <KjunButton size="sm" variant="ghost" ariaLabel={m.value.clearSelection} disabled={props.disabled} class="kjun-select-clear"
@@ -160,7 +163,7 @@ export const KjunSelect = defineComponent({
             )}
           </div>
           <FloatingPanel field open={open} onOpenChange={state.changeOpen} trigger={() => trigger.value} returnFocus={props.returnFocus === undefined ? undefined : () => readFocusReturn(props.returnFocus)} placement="bottom-start" matchTriggerWidth
-            panelClass="kjun-select-panel kjun-select-options-panel">
+            panelClass={"kjun-select-panel kjun-select-options-panel" + (segment ? " kjun-time-options" : "")}>
             <KjunFieldReset>
               <div ref={menu} class="kjun-select-content">
                 {slots.menuHeader && <div class="kjun-select-header">{slots.menuHeader()}</div>}
@@ -205,7 +208,7 @@ export const KjunSelect = defineComponent({
                           if (!props.multiple) state.changeOpen(false);
                         }}>
                         {(Array.isArray(content) ? content.length : content) ? content : <span>{optionLabel(option, props.labelKey)}</span>}
-                        {isSelected && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
+                        {isSelected && !segment && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
                       </div>
                     );
                   })}

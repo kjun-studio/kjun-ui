@@ -1,16 +1,18 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { Fragment, useEffect, useId, useMemo, useRef } from "react";
-import { createTimeDomain, type TimePrecision, type InputSize } from "@kjun-ui/tokens";
+import { createTimeDomain, tokens, type TimePrecision, type InputSize } from "@kjun-ui/tokens";
 import { CompoundControlContext } from "./compound-control";
 import { KjunSelect } from "./select";
-import { KjunButton } from "./button";
+import { KjunButton, KjunIcon } from "./button";
 import { FieldContext, useKjunField } from "./input";
 export interface KjunTimePickerProps {
   value: string | null; precision?: TimePrecision; min?: string; max?: string; minuteStep?: number; secondStep?: number;
   disabled?: boolean; error?: boolean; clearable?: boolean; size?: InputSize; ariaLabel?: string;
+  /** Stretches the field to its container's width (default false: the field hugs the time). */
+  block?: boolean;
   onValueChange?: (value: string | null) => void; onChangeCommit?: (value: string | null) => void;
 }
-export function KjunTimePicker({ value, precision = "minute", min, max, minuteStep = 1, secondStep = 1, disabled = false, error = false, clearable = true, size = "md", ariaLabel, onValueChange, onChangeCommit }: KjunTimePickerProps) {
+export function KjunTimePicker({ value, precision = "minute", min, max, minuteStep = 1, secondStep = 1, disabled = false, error = false, clearable = true, size = "md", ariaLabel, block = false, onValueChange, onChangeCommit }: KjunTimePickerProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.time;
   const root = useRef<HTMLDivElement>(null);
@@ -21,7 +23,8 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
   useEffect(() => { if (!valid) console.warn("KJUN TimePicker: 시각 범위·간격·값을 확인하세요."); }, [valid]);
   const change = (next: string | null) => { if (valid && !disabled && next !== value) { onValueChange?.(next); onChangeCommit?.(next); } };
   const time = value === null ? null : domain.parse(value);
-  return <div ref={root} className="kjun-time-picker" data-size={size} data-error={error || !!field?.error} data-disabled={disabled || !valid} role="group" aria-label={ariaLabel} aria-labelledby={field?.labelId} aria-describedby={field?.describedBy}>
+  const blocked = disabled || !valid;
+  return <div ref={root} className="kjun-time-picker" data-size={size} data-block={block || undefined} data-error={error || !!field?.error} data-disabled={disabled || !valid} role="group" aria-label={ariaLabel} aria-labelledby={field?.labelId} aria-describedby={field?.describedBy}>
     <CompoundControlContext.Provider value={size}><div className="kjun-time-segments">
     {[m.hour, m.minute, m.second].slice(0, precision === "second" ? 3 : 2).map((label, index) => {
       const segmentId = index === 0 ? fieldId : `${fieldId}-${index}`;
@@ -31,11 +34,13 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
           <KjunSelect value={time === null ? null : domain.part(time, index)}
             options={domain.options(value, index).map(n => ({ value: n, label: String(n).padStart(2, "0") }))}
             onValueChange={next => { if (typeof next === "number") change(domain.select(value, index, next)); }}
-            ariaLabel={ariaLabel + " " + label} placeholder={label} disabled={disabled || !valid} error={error} size={size} clearable={false} searchable={false} />
+            ariaLabel={ariaLabel + " " + label} placeholder={m.timePlaceholder} disabled={blocked} error={error} size={size} clearable={false} searchable={false} />
         </div>
       </FieldContext.Provider></Fragment>;
     })}
     </div></CompoundControlContext.Provider>
-    {clearable && value !== null && <KjunButton className="kjun-time-clear" size={size} variant="ghost" prefixIcon="x" ariaLabel={m.clearValue(ariaLabel)} disabled={disabled || !valid} onClick={() => { change(null); root.current?.querySelector<HTMLButtonElement>(".kjun-select-trigger")?.focus(); }} />}
+    {clearable && value !== null && !blocked
+      ? <KjunButton className="kjun-time-clear" size={size} variant="ghost" prefixIcon="x" ariaLabel={m.clearValue(ariaLabel)} onClick={() => { change(null); root.current?.querySelector<HTMLButtonElement>(".kjun-select-trigger")?.focus(); }} />
+      : <span className="kjun-time-icon" aria-hidden="true"><KjunIcon name="clock" size={tokens.input[size].iconSize} /></span>}
   </div>;
 }

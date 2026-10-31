@@ -59,6 +59,8 @@ export const kjunMessagesKo = {
   hour: "시",
   minute: "분",
   second: "초",
+  // An empty time segment, two characters wide like its value.
+  timePlaceholder: "--",
   value: "값",
   minimum: "최솟값",
   maximum: "최댓값",

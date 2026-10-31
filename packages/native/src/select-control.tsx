@@ -5,7 +5,7 @@ import { FieldPressable, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { selectOptions } from "../../../shared/package-runtime/options";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
-import { useContext, useEffect, useRef,type ReactNode } from "react";
+import { useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { CompoundControlContext } from "./compound-control";
 import { useSelectState } from "../../../shared/package-runtime/select";
 import { Platform, View } from "react-native";
@@ -90,6 +90,8 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
     spec = tokens.input[size];
   const trigger = useRef<View>(null);
   const compound = useContext(CompoundControlContext);
+  // Width of the two hidden digits that size a time segment.
+  const [digits, setDigits] = useState(0);
   useEffect(() => { if (compound?.focusRef) compound.focusRef.current = trigger.current; }, [compound?.focusRef]);
   const expanded = usePopupExpanded(open, ref);
   const selectedRow = useRef<{ y: number; height: number } | null>(null);
@@ -138,27 +140,25 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
             ...surface.style,
             paddingHorizontal: spec.padding - tokens.border.controlWidth,
             paddingRight: spec.padding - tokens.border.controlWidth,
-            ...(compound ? { paddingHorizontal: tokens.extensions.timePicker.segmentPadding, paddingRight: tokens.extensions.timePicker.segmentPadding, paddingLeft: compound.leading ? spec.padding - tokens.border.controlWidth : tokens.extensions.timePicker.segmentPadding, gap: tokens.extensions.timePicker.segmentPadding, backgroundColor: !disabled && (surface.active || surface.hovered) ? colors.hover : "transparent", borderColor: "transparent", outlineWidth: 0 } : {}),
+            ...(compound ? { paddingHorizontal: tokens.extensions.timePicker.segmentPadding, paddingRight: tokens.extensions.timePicker.segmentPadding, paddingLeft: compound.leading ? spec.padding - tokens.border.controlWidth : tokens.extensions.timePicker.segmentPadding,
+              // The first segment's trailing room matches the centred gap of the others, so every colon sits midway between values.
+              ...(compound.leading && digits ? { paddingRight: Math.max(tokens.extensions.timePicker.segmentPadding, (tokens.extensions.timePicker.segmentMinimumWidth - digits) / 2) } : {}), gap: tokens.extensions.timePicker.segmentPadding, backgroundColor: disabled ? "transparent" : expanded ? colors.active : surface.active || surface.hovered ? colors.hover : "transparent", borderColor: "transparent", outlineWidth: 0 } : {}),
           }}
         >
           {/* Time segments size to their content: Yoga's flex: 1 has a zero basis, which would ignore the hidden "00". */}
           <View style={{ ...(compound ? { flexGrow: 1, flexShrink: 0 } : { flex: 1, minWidth: 0 }), paddingRight: clearable && label ? tokens.native.minimumTouchTarget + spec.affixGap : 0 }}>
             {/* A hidden "00" sizes time segments, so the placeholder and the value occupy the same slot. */}
-            {compound && <KText aria-hidden={true} importantForAccessibility="no-hide-descendants" style={{ ...inputTypeStyle(size), fontVariant: ["tabular-nums"], opacity: 0 }}>00</KText>}
+            {compound && <KText aria-hidden={true} importantForAccessibility="no-hide-descendants" onLayout={event => setDigits(event.nativeEvent.layout.width)} style={{ ...inputTypeStyle(size), fontVariant: ["tabular-nums"], opacity: 0, alignSelf: "flex-start" }}>00</KText>}
             {renderSelected?.(selectedOption) || <KText numberOfLines={1} style={{
               ...inputTypeStyle(size),
               color: disabled ? colors.textDisabled : label ? colors.text : colors.inputPlaceholder,
-              ...(compound ? { position: "absolute", left: 0, right: 0, textAlign: "center", fontVariant: ["tabular-nums"] } as const : {}),
+              ...(compound ? { position: "absolute", left: 0, right: 0, textAlign: compound.leading ? "left" : "center", fontVariant: ["tabular-nums"] } as const : {}),
             }}>{label || placeholder}</KText>}
           </View>
-          {/* Like Vue and React, the indicator turns over while the list is open. */}
-          <View style={{ transform: [{ rotate: expanded ? "180deg" : "0deg" }] }}>
-            <KjunIcon
-              name="chevron-down"
-              size={compound ? tokens.extensions.timePicker.iconSize : spec.iconSize}
-              color={surface.icon}
-            />
-          </View>
+          {/* Like Vue and React, the indicator turns over while the list is open. Time segments read as one value and carry none. */}
+          {!compound && <View style={{ transform: [{ rotate: expanded ? "180deg" : "0deg" }] }}>
+            <KjunIcon name="chevron-down" size={spec.iconSize} color={surface.icon} />
+          </View>}
         </FieldPressable>
         {clearable && !!label && (
           <View
@@ -188,6 +188,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
         ariaLabel={ariaLabel || placeholder}
         menu
         reveal={selectedRow}
+        optionsWidth={compound ? tokens.extensions.timePicker.optionsWidth : undefined}
       >
         <FieldContext.Provider value={null}>
         {menuHeader}
@@ -224,6 +225,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
               selected={selected(o)}
               onLayout={index === firstSelected ? (event) => { selectedRow.current = event.nativeEvent.layout; } : undefined}
               disabled={optionDisabled(o)}
+              centered={!!compound}
               multiple={multiple}
               label={optionLabel(o, labelKey)}
               onPress={() => {

@@ -9,9 +9,9 @@
     },
     "timePicker": {
       "segmentMinimumWidth": { "$ref": "native.minimumTouchTarget" },
-      "separatorWidth": { "$ref": "dimension.value12" },
+      "separatorWidth": { "$ref": "dimension.value6" },
       "segmentPadding": { "$ref": "dimension.value4" },
-      "iconSize": 12
+      "optionsWidth": 64
     },
     "popover": {
       "width": 240,

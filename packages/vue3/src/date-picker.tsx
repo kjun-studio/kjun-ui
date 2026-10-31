@@ -82,6 +82,8 @@ const kjunTimePickerProps = {
   clearable: { type: Boolean, default: true },
   size: { type: String as PropType<InputSize>, default: "md" },
   ariaLabel: { type: String, default: undefined },
+  /** Stretches the field to its container's width (default false: the field hugs the time). */
+  block: { type: Boolean, default: false },
 } as const;
 export type KjunTimePickerProps = ExtractPublicPropTypes<typeof kjunTimePickerProps>;
 
@@ -118,7 +120,7 @@ export const KjunTimePicker = defineComponent({
       const value = props.modelValue, time = value === null ? null : domain.value.parse(value);
       const blocked = props.disabled || !valid.value;
       return (
-        <div ref={root} class="kjun-time-picker" data-size={props.size} data-error={String(props.error || !!owner?.error)} data-disabled={String(blocked)}
+        <div ref={root} class="kjun-time-picker" data-size={props.size} data-block={props.block ? "true" : undefined} data-error={String(props.error || !!owner?.error)} data-disabled={String(blocked)}
           role="group" aria-label={(props.ariaLabel ?? m.value.time)} aria-labelledby={owner?.labelId} aria-describedby={owner?.describedBy}>
           <div class="kjun-time-segments">
             {[m.value.hour, m.value.minute, m.value.second].slice(0, props.precision === "second" ? 3 : 2).flatMap((label, index) => {
@@ -131,17 +133,17 @@ export const KjunTimePicker = defineComponent({
                     <KjunSelect modelValue={time === null ? null : domain.value.part(time, index)}
                       options={domain.value.options(value, index).map(n => ({ value: n, label: String(n).padStart(2, "0") }))}
                       onUpdate:modelValue={next => { if (typeof next === "number") change(domain.value.select(value, index, next)); }}
-                      ariaLabel={(props.ariaLabel ?? m.value.time) + " " + label} placeholder={label} disabled={blocked} error={props.error} size={props.size}
+                      ariaLabel={(props.ariaLabel ?? m.value.time) + " " + label} placeholder={m.value.timePlaceholder} disabled={blocked} error={props.error} size={props.size}
                       clearable={false} searchable={false} />
                   </div>
                 </TimeSegment>,
               ];
             })}
           </div>
-          {props.clearable && value !== null && (
-            <KjunButton class="kjun-time-clear" size={props.size} variant="ghost" prefixIcon="x" ariaLabel={m.value.clearValue((props.ariaLabel ?? m.value.time))} disabled={blocked}
-              onClick={() => { change(null); root.value?.querySelector<HTMLButtonElement>(".kjun-select-trigger")?.focus(); }} />
-          )}
+          {props.clearable && value !== null && !blocked
+            ? <KjunButton class="kjun-time-clear" size={props.size} variant="ghost" prefixIcon="x" ariaLabel={m.value.clearValue((props.ariaLabel ?? m.value.time))}
+                onClick={() => { change(null); root.value?.querySelector<HTMLButtonElement>(".kjun-select-trigger")?.focus(); }} />
+            : <span class="kjun-time-icon" aria-hidden="true"><KjunIcon name="clock" size={tokens.input[props.size].iconSize} /></span>}
         </div>
       );
     };

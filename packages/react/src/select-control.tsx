@@ -13,6 +13,7 @@ type ReactNode
 } from "react";
 import { ListBox,ListBoxItem } from "react-aria-components";
 import { useSelectState } from "../../../shared/package-runtime/select";
+import { centerSelectedOption } from "../../../shared/package-runtime/center-option";
 import { useCompositionGuard } from "./composition";
 import { KjunButton,KjunIcon } from "./button";
 import { KjunSpinner } from "./display";
@@ -114,7 +115,12 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   useEffect(() => {
     if (open && searchable) menu.current?.querySelector('input')?.focus({ preventScroll: true });
     if (!open) composition.onCompositionEnd();
-  }, [open, searchable]);
+    // After the list has focused and revealed the selected option, move it to the middle.
+    if (open && segment) {
+      let frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => centerSelectedOption(menu.current?.querySelector<HTMLElement>(".kjun-listbox"))); });
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [open, searchable, segment]);
   const change = (v: OptionValue | OptionValue[] | null) => {
     onValueChange?.(v);
     onChange?.(v);
@@ -159,7 +165,8 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
           <span className={!label ? "kjun-placeholder" : undefined} style={{ flex: 1, paddingRight: clearable && label ? spec.clearSize + spec.affixGap : undefined }}>
             {renderSelected?.(selectedOption) || label || placeholder}
           </span>
-          <KjunIcon name="chevron-down" className="kjun-select-indicator" data-open={expanded || undefined} size={segment ? tokens.extensions.timePicker.iconSize : spec.iconSize} style={{ flexShrink: 0, color: disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
+          {/* Time segments read as one value, so they carry no indicator of their own. */}
+          {!segment && <KjunIcon name="chevron-down" className="kjun-select-indicator" data-open={expanded || undefined} size={spec.iconSize} style={{ flexShrink: 0, color: disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />}
         </button>
         {clearable && !!label && (
           <KjunButton
@@ -186,7 +193,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
         triggerRef={ref}
         placement="bottom-start"
         matchTriggerWidth
-        className="kjun-select-panel kjun-select-options-panel"
+        className={"kjun-select-panel kjun-select-options-panel" + (segment ? " kjun-time-options" : "")}
       >
         <FieldContext.Provider value={null}><div ref={menu} className="kjun-select-content">
           {menuHeader && <div className="kjun-select-header">{menuHeader}</div>}
@@ -264,7 +271,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
                 {renderOption?.(o, selected(o)) || (
                   <span>{optionLabel(o, labelKey)}</span>
                 )}
-                {selected(o) && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
+                {selected(o) && !segment && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
               </ListBoxItem>
             ))}
           </ListBox>

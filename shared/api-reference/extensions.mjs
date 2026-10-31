@@ -90,6 +90,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (summaries[key]) entry = { summary: summaries[key] };
     else throw Error("Missing extension prop description: " + name + "." + key);
     if (name === "KjunQuantityStepper" && key === "block") entry.default = "false";
+    if (name === "KjunTimePicker" && key === "block") entry = { summary: "부모의 전체 너비를 채웁니다. 기본값 false는 시각 폭만 차지합니다.", default: "false" };
     if (name === "KjunQuantityStepper" && (key === "value" || key === "modelValue")) entry = detail(valueDescription[name], {
       "상태 책임": guides[name].interaction,
       "키보드": "Enter·blur는 변경값을 확정합니다. 편집 중 첫 Escape는 초안을 되돌리고 상위 창에 전달하지 않습니다. 편집이 끝난 뒤 Escape는 상위 창이 처리합니다. IME 조합 중 키와 조합 확정 keyCode=229는 수량을 확정하거나 증감하지 않습니다.",

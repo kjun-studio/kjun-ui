@@ -92,6 +92,7 @@ export function FloatingPanel({
   header,
   popoverWidth = tokens.extensions.popover.width,
   nonModal = false,
+  optionsWidth,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
@@ -117,6 +118,8 @@ export function FloatingPanel({
   popoverWidth?: number;
   /** Popover modal={false}: screen readers are not confined to the panel. */
   nonModal?: boolean;
+  /** Time segment lists: this narrow width replaces the menu minimum, and the selected row opens in the middle. */
+  optionsWidth?: number;
 }) {
   const m = useKjunMessages();
   ariaLabel ??= m.select;
@@ -146,9 +149,10 @@ export function FloatingPanel({
     // Like Web listboxes, an opened list starts with the selected row in view.
     const row = reveal?.current;
     if (!open || !anchored || !sized || !row || !viewport.current) return;
-    const offset = row.y + row.height + (menu || field ? tokens.extensions.menu.padding : 0) - viewport.current;
+    const padding = menu || field ? tokens.extensions.menu.padding : 0;
+    const offset = optionsWidth != null ? row.y + padding - (viewport.current - row.height) / 2 : row.y + row.height + padding - viewport.current;
     if (offset > 0) scroll.current?.scrollTo({ y: offset, animated: false });
-  }, [open, anchored, sized, reveal, menu, field]);
+  }, [open, anchored, sized, reveal, menu, field, optionsWidth]);
   useEffect(() => {
     if (!open || !anchored || !sized || !focusOnOpen || !panelRef.current) return;
     if (Platform.OS === 'web') {
@@ -165,7 +169,7 @@ export function FloatingPanel({
   const tooltipWidth = Math.min(Math.max(0, window.width - 2 * tokens.extensions.floating.viewportInset), tokens.extensions.tooltip.maxWidth);
   const maximumWidth = Math.max(0, window.width - 2 * tokens.extensions.floating.viewportInset);
   const minimumPanelWidth = Math.min(maximumWidth,
-    Math.max(minimumWidth, menu || field ? tokens.extensions.menu.minimumWidth : 0));
+    Math.max(minimumWidth, optionsWidth ?? (menu || field ? tokens.extensions.menu.minimumWidth : 0)));
   const width = tooltip
     ? Math.min(tooltipWidth, panel.width || tooltipWidth)
     : Math.min(

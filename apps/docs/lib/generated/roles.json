@@ -103,6 +103,7 @@
       "--card-bg"
     ],
     "implementationFiles": [
+      "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/extensions.css",
@@ -126,6 +127,7 @@
       "packages/native/src/modal.tsx",
       "packages/native/src/navigation.tsx",
       "packages/native/src/range-input.tsx",
+      "packages/native/src/select-options.tsx",
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/table-grid.tsx",
@@ -214,6 +216,7 @@
       "--bg-active"
     ],
     "implementationFiles": [
+      "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/motion.css",
@@ -222,7 +225,8 @@
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/display-primitives.tsx",
-      "packages/native/src/field-clear.tsx"
+      "packages/native/src/field-clear.tsx",
+      "packages/native/src/select-control.tsx"
     ]
   },
   {
@@ -305,6 +309,7 @@
       "packages/native/src/progress.tsx",
       "packages/native/src/range-input.tsx",
       "packages/native/src/select-control.tsx",
+      "packages/native/src/select-options.tsx",
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/table-grid.tsx",
@@ -376,6 +381,7 @@
       "--text-tertiary"
     ],
     "implementationFiles": [
+      "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
@@ -416,6 +422,7 @@
       "packages/native/src/progress.tsx",
       "packages/native/src/select-control.tsx",
       "packages/native/src/table-cards.tsx",
+      "packages/native/src/time-picker.tsx",
       "packages/native/src/toast.tsx"
     ]
   },

@@ -384,7 +384,8 @@
       "error",
       "clearable",
       "size",
-      "ariaLabel"
+      "ariaLabel",
+      "block"
     ],
     "react": [
       "value",
@@ -398,6 +399,7 @@
       "clearable",
       "size",
       "ariaLabel",
+      "block",
       "onValueChange",
       "onChangeCommit"
     ],
@@ -413,6 +415,7 @@
       "clearable",
       "size",
       "ariaLabel",
+      "block",
       "onValueChange",
       "onChangeCommit"
     ]

@@ -55,6 +55,7 @@ export const kjunMessagesEn: KjunMessages = {
   hour: "Hour",
   minute: "Minute",
   second: "Second",
+  timePlaceholder: "--",
   value: "Value",
   minimum: "Minimum",
   maximum: "Maximum",
