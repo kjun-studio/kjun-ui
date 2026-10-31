@@ -27,6 +27,7 @@ const hints: Record<string, string> = {
   KjunCombobox: '자산 이름을 입력하고 검색된 후보를 선택해 보세요.',
   KjunSearchInput: 'AAA를 검색해 보세요. 예제를 바꾸면 지연·빈 결과·요청 실패를 확인할 수 있습니다.',
   KjunDatePicker: '날짜를 열어 2026년 9월 안에서 선택해 보세요.',
+  KjunDateRangePicker: '달력을 열어 시작일과 종료일을 차례로 고른 뒤 적용해 보세요.',
   KjunTimePicker: '시각을 선택해 보세요. 설정에서 초 단위와 허용 범위를 바꿀 수 있습니다.',
   KjunTable: '열 제목으로 정렬하고 행을 선택하거나 펼쳐 보세요.',
   KjunModal: '모달을 열어 입력·저장·닫기를 확인하세요. 레이어는 이 미리보기 안에서 열립니다.',

@@ -1,11 +1,11 @@
 {
-  "total": 83,
+  "total": 84,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 83,
+      "provided": 84,
       "counts": {
-        "supported": 83,
+        "supported": 84,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 83,
+      "provided": 84,
       "counts": {
-        "supported": 83,
+        "supported": 84,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 83,
+      "provided": 84,
       "counts": {
         "supported": 0,
-        "preview": 83,
+        "preview": 84,
         "review": 0,
         "unsupported": 0
       },
@@ -639,7 +639,38 @@
       "title": "DatePicker",
       "docs": "/components/date-picker",
       "category": "inputs",
-      "differences": "웹은 날짜 input의 브라우저 선택기를 사용합니다. 평소에는 YYYY. MM. DD. 형식으로 표시하지만, 키보드로 편집하는 동안에는 브라우저 언어의 날짜 형식(예: 영어 브라우저의 MM/DD/YYYY)이 보입니다. Native는 달력 팝업에서 선택하며 React의 HTML type은 구현에서 date로 고정됩니다.",
+      "differences": "세 플랫폼 모두 같은 KJUN 달력을 엽니다. 웹은 필드를 누르거나 ↓ 키로 열고, 달력 안에서 방향키(하루·한 주), Home·End(주의 처음·끝), PageUp·PageDown(한 달, Shift와 함께 한 해)으로 이동한 뒤 Enter로 고릅니다. 날짜를 직접 타이핑하지는 않습니다. Vue v-model·change와 React·Native onValueChange·onChange를 사용합니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "KjunDateRangePicker",
+      "title": "DateRangePicker",
+      "docs": "/components/date-range-picker",
+      "category": "inputs",
+      "differences": "달력과 키보드 동작은 DatePicker와 같습니다. Vue는 v-model·change, React·Native는 onValueChange·onChange로 { start, end }를 받습니다. 웹의 name은 'start/end' 문자열로 제출합니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -2659,7 +2690,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 83
+      "componentCount": 84
     }
   ]
 }

@@ -5453,7 +5453,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "빈 값·선택 날짜·비활성·오류 상태를 구분합니다. min/max 바깥 날짜를 선택하지 않으며 Native는 달력 팝업에서 선택합니다."
+        "note": "빈 값·선택 날짜·비활성·읽기 전용·오류 상태를 구분합니다. 달력은 16px 제목과 40px 원형 날짜를 쓰고, 오늘은 테두리 링, 선택한 날은 강조색 원으로 표시합니다. 앞뒤 달 날짜는 흐리게, min·max 밖 날짜는 흐린 취소선으로 보이며 고를 수 없고, 범위 끝에서는 이전·다음 달 버튼이 비활성입니다. 제목을 누르면 월 격자와 연도 칩으로 바뀌어 먼 날짜로 빠르게 이동합니다. 아래 줄의 '오늘'은 오늘이 범위 안일 때만 누를 수 있고, clearable이면 '날짜 지우기'를 함께 둡니다. 날짜 이름은 '2026년 9월 12일 토요일'처럼 읽습니다."
       },
       "react": {
         "figures": [
@@ -5520,8 +5520,8 @@
             }
           }
         ],
-        "sizeDefault": "\"md\"",
-        "note": "빈 값·선택 날짜·비활성·오류 상태를 구분합니다. min/max 바깥 날짜를 선택하지 않으며 Native는 달력 팝업에서 선택합니다."
+        "sizeDefault": "—",
+        "note": "빈 값·선택 날짜·비활성·읽기 전용·오류 상태를 구분합니다. 달력은 16px 제목과 40px 원형 날짜를 쓰고, 오늘은 테두리 링, 선택한 날은 강조색 원으로 표시합니다. 앞뒤 달 날짜는 흐리게, min·max 밖 날짜는 흐린 취소선으로 보이며 고를 수 없고, 범위 끝에서는 이전·다음 달 버튼이 비활성입니다. 제목을 누르면 월 격자와 연도 칩으로 바뀌어 먼 날짜로 빠르게 이동합니다. 아래 줄의 '오늘'은 오늘이 범위 안일 때만 누를 수 있고, clearable이면 '날짜 지우기'를 함께 둡니다. 날짜 이름은 '2026년 9월 12일 토요일'처럼 읽습니다."
       },
       "native": {
         "figures": [
@@ -5588,8 +5588,220 @@
             }
           }
         ],
+        "sizeDefault": "—",
+        "note": "빈 값·선택 날짜·비활성·읽기 전용·오류 상태를 구분합니다. 달력은 16px 제목과 40px 원형 날짜를 쓰고, 오늘은 테두리 링, 선택한 날은 강조색 원으로 표시합니다. 앞뒤 달 날짜는 흐리게, min·max 밖 날짜는 흐린 취소선으로 보이며 고를 수 없고, 범위 끝에서는 이전·다음 달 버튼이 비활성입니다. 제목을 누르면 월 격자와 연도 칩으로 바뀌어 먼 날짜로 빠르게 이동합니다. 아래 줄의 '오늘'은 오늘이 범위 안일 때만 누를 수 있고, clearable이면 '날짜 지우기'를 함께 둡니다. 날짜 이름은 '2026년 9월 12일 토요일'처럼 읽습니다."
+      }
+    }
+  },
+  "KjunDateRangePicker": {
+    "name": "KjunDateRangePicker",
+    "path": "/components/date-range-picker",
+    "related": "form",
+    "description": "하나의 달력에서 시작일과 종료일을 골라 기간을 입력합니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "기간 컨트롤",
+                "description": "선택한 시작일과 종료일, 달력을 여는 진입점을 표시합니다.",
+                "target": "button, [role=\"button\"]",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "공개 error 속성이 담당하는 오류 상태입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
         "sizeDefault": "\"md\"",
-        "note": "빈 값·선택 날짜·비활성·오류 상태를 구분합니다. min/max 바깥 날짜를 선택하지 않으며 Native는 달력 팝업에서 선택합니다."
+        "note": "빈 값·기간 선택·비활성·읽기 전용·오류 상태를 구분합니다. 시작·종료일은 강조색 원, 그 사이는 옅은 강조 띠로 잇습니다. 필드는 '2026. 09. 08. – 09. 16.'처럼 같은 해의 연도를 한 번만 씁니다. 아래 줄은 '날짜 지우기'와 '적용'이며, 시작일과 종료일이 모두 있어야 적용할 수 있습니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "기간 컨트롤",
+                "description": "선택한 시작일과 종료일, 달력을 여는 진입점을 표시합니다.",
+                "target": "button, [role=\"button\"]",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "공개 error 속성이 담당하는 오류 상태입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "—",
+        "note": "빈 값·기간 선택·비활성·읽기 전용·오류 상태를 구분합니다. 시작·종료일은 강조색 원, 그 사이는 옅은 강조 띠로 잇습니다. 필드는 '2026. 09. 08. – 09. 16.'처럼 같은 해의 연도를 한 번만 씁니다. 아래 줄은 '날짜 지우기'와 '적용'이며, 시작일과 종료일이 모두 있어야 적용할 수 있습니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "기간 컨트롤",
+                "description": "선택한 시작일과 종료일, 달력을 여는 진입점을 표시합니다.",
+                "target": "button, [role=\"button\"]",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "공개 error 속성이 담당하는 오류 상태입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunDateRangePicker\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "—",
+        "note": "빈 값·기간 선택·비활성·읽기 전용·오류 상태를 구분합니다. 시작·종료일은 강조색 원, 그 사이는 옅은 강조 띠로 잇습니다. 필드는 '2026. 09. 08. – 09. 16.'처럼 같은 해의 연도를 한 번만 씁니다. 아래 줄은 '날짜 지우기'와 '적용'이며, 시작일과 종료일이 모두 있어야 적용할 수 있습니다."
       }
     }
   },

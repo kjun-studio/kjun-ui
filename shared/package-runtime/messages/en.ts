@@ -2,6 +2,7 @@ import type { KjunMessages } from "./ko";
 
 // English copy: used for locale "en-*" and for every other language the app does not translate itself.
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const plural = (count: number, one: string, many: string) => `${count} ${count === 1 ? one : many}`;
 
 export const kjunMessagesEn: KjunMessages = {
@@ -51,6 +52,15 @@ export const kjunMessagesEn: KjunMessages = {
   weekdays: "Sun,Mon,Tue,Wed,Thu,Fri,Sat",
   previousMonth: "Previous month",
   nextMonth: "Next month",
+  previousYear: "Previous year",
+  nextYear: "Next year",
+  chooseMonth: "Choose month",
+  today: "Today",
+  apply: "Apply",
+  rangePlaceholder: "Select dates",
+  yearTitle: (year: number) => String(year),
+  monthName: (month: number) => months[month - 1].slice(0, 3),
+  dateLabel: (year: number, month: number, day: number, weekday: number) => `${weekdayNames[weekday]}, ${months[month - 1]} ${day}, ${year}`,
   time: "Time",
   hour: "Hour",
   minute: "Minute",

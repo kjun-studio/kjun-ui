@@ -227,9 +227,22 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         max: "2026-09-30",
         ariaLabel: "시작일",
         size: settings.size,
+        clearable: settings.clearable,
         disabled,
         error,
       }), error ? "시작일을 선택해 주세요." : "");
+    case "KjunDateRangePicker":
+      return singleField("사용 기간", "목록을 공유할 기간을 선택하세요.", h(name, {
+        value: get("range", { start: "2026-09-08", end: "2026-09-16" }),
+        onValueChange: change("range"),
+        min: "2026-09-01",
+        max: "2026-10-31",
+        ariaLabel: "사용 기간",
+        size: settings.size,
+        clearable: settings.clearable,
+        disabled,
+        error,
+      }), error ? "사용 기간을 선택해 주세요." : "");
     case "KjunButtonGroup":
       return h(name, {
         size: settings.size,

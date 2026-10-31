@@ -11,6 +11,7 @@ import { verifyLabeling } from '../../scripts/a11y/labeling.mjs';
 import { verifyFocus } from '../../scripts/a11y/focus.mjs';
 const cases = ['KjunTabs', 'KjunTabPane', 'KjunModal', 'KjunInput', 'KjunFormGroup', 'KjunButton', 'KjunTextarea', 'KjunCheckbox', 'KjunSwitch', 'KjunRadioGroup']
   .flatMap(component => ['react', 'vue3', 'native'].map(platform => ({ component, platform })));
+cases.push(...['KjunDatePicker', 'KjunDateRangePicker'].flatMap(component => ['react', 'vue3', 'native'].map(platform => ({ component, platform }))));
 cases.push({ component: 'KjunTimePicker', platform: 'react' }, { component: 'KjunTimePicker', platform: 'vue3' }, { component: 'KjunTooltip', platform: 'vue3' });
 for (const { component, platform } of cases) {
     test(`${platform}: ${component} keyboard, name and focus contracts`, async ({ page }) => {

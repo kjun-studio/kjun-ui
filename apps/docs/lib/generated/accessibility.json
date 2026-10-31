@@ -3178,6 +3178,222 @@
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
+      "id": "KjunDateRangePicker.vue3.keyboard.v1",
+      "component": "KjunDateRangePicker",
+      "platform": "vue3",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "date",
+      "scenario": {},
+      "behavior": "시작·종료일 선택과 적용. 웹 패키지는 브라우저 date 입력을 사용하고 Native는 날짜 버튼과 달력 Modal을 사용합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "날짜 필드에 키보드로 진입하고 열린 달력의 방향키·Escape를 검사합니다.",
+      "expected": "활성 날짜가 방향키에 반응하고 Escape로 닫힙니다. 브라우저 기본 date 입력은 키보드 편집을 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDateRangePicker.vue3.labeling.v1",
+      "component": "KjunDateRangePicker",
+      "platform": "vue3",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "date",
+      "scenario": {},
+      "behavior": "시작·종료일 선택과 적용. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDateRangePicker.vue3.focus.v1",
+      "component": "KjunDateRangePicker",
+      "platform": "vue3",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "date",
+      "scenario": {},
+      "behavior": "시작·종료일 선택과 적용. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDateRangePicker.react.keyboard.v1",
+      "component": "KjunDateRangePicker",
+      "platform": "react",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "date",
+      "scenario": {},
+      "behavior": "시작·종료일 선택과 적용. 웹 패키지는 브라우저 date 입력을 사용하고 Native는 날짜 버튼과 달력 Modal을 사용합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "날짜 필드에 키보드로 진입하고 열린 달력의 방향키·Escape를 검사합니다.",
+      "expected": "활성 날짜가 방향키에 반응하고 Escape로 닫힙니다. 브라우저 기본 date 입력은 키보드 편집을 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDateRangePicker.react.labeling.v1",
+      "component": "KjunDateRangePicker",
+      "platform": "react",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "date",
+      "scenario": {},
+      "behavior": "시작·종료일 선택과 적용. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDateRangePicker.react.focus.v1",
+      "component": "KjunDateRangePicker",
+      "platform": "react",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "date",
+      "scenario": {},
+      "behavior": "시작·종료일 선택과 적용. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDateRangePicker.native.keyboard.v1",
+      "component": "KjunDateRangePicker",
+      "platform": "native",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "date",
+      "scenario": {},
+      "behavior": "시작·종료일 선택과 적용. 웹 패키지는 브라우저 date 입력을 사용하고 Native는 날짜 버튼과 달력 Modal을 사용합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "날짜 필드에 키보드로 진입하고 열린 달력의 방향키·Escape를 검사합니다.",
+      "expected": "활성 날짜가 방향키에 반응하고 Escape로 닫힙니다. 브라우저 기본 date 입력은 키보드 편집을 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDateRangePicker.native.labeling.v1",
+      "component": "KjunDateRangePicker",
+      "platform": "native",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "date",
+      "scenario": {},
+      "behavior": "시작·종료일 선택과 적용. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunDateRangePicker.native.focus.v1",
+      "component": "KjunDateRangePicker",
+      "platform": "native",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "date",
+      "scenario": {},
+      "behavior": "시작·종료일 선택과 적용. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
       "id": "KjunFilterGroup.vue3.keyboard.v1",
       "component": "KjunFilterGroup",
       "platform": "vue3",
@@ -17104,32 +17320,32 @@
       "name": "@kjun-ui/tokens",
       "version": "0.17.0",
       "file": "kjun-ui-tokens-0.17.0.tgz",
-      "bytes": 97435,
-      "integrity": "sha512-92U0v1sWi/aZK8JiFqcO1lHwXoTeedpP68Si6VbHEjGgKkOvSaGtTYrFSZyufAnrq1cQezsnMC4LnRv4gpp2uw=="
+      "bytes": 98768,
+      "integrity": "sha512-6ccCDUyjRy/TbDcqDe9u9T1K094wdgepjpPtu5g1t4jN4MfFzpHXnj8sxPw1LX+9UhAZ0iVnZV8hjWv+3AXDeA=="
     },
     {
       "name": "@kjun-ui/vue3",
       "version": "0.17.0",
       "file": "kjun-ui-vue3-0.17.0.tgz",
-      "bytes": 323508,
-      "integrity": "sha512-Jh/UkxqRfuPpNk+l2mNg8w5RhS6GC5M8OAyTebDhz5pBR0B7UTvp3BkyrTFkIwLgZ92OiNnvkzDI49OmiDQ8hw=="
+      "bytes": 335948,
+      "integrity": "sha512-r13TffjCKLNustUN1HJjW/kXAfeMiN990qFb2LSsJ2p/nZNcw5NPfNYXXqvIq4ZbreSBiwywH2xSXLOl8cvm7A=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.17.0",
       "file": "kjun-ui-react-0.17.0.tgz",
-      "bytes": 267399,
-      "integrity": "sha512-M88Yl0MJaMsUbNcq0UGz60JaoHKEuImH92dvu4DryBPcZhjgzcn7xzbd/7Ll4EExeQFSggveR8okuEHrKqloow=="
+      "bytes": 278858,
+      "integrity": "sha512-VslUNnPsRidwhpYbhKy0GkVkH2eCV4Ay83tBsDKHvaX9jfsFEj4EBXNBNI51xsEwa6D5dmAuBvg45j8kN5c9DA=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.17.0",
       "file": "kjun-ui-native-0.17.0.tgz",
-      "bytes": 520375,
-      "integrity": "sha512-5iM5RTx3+/9ujSrRCKqIb10VG0WAS9ACx6Y4gnByFFPFrR9jpRz7iOevsoopK6Zvjj9EUT0b7zTNI3OeKHMv8A=="
+      "bytes": 536644,
+      "integrity": "sha512-BYO+3T38mi0SD9B8r5MOW+mfNBiPAi9vGT7Mpz370YXW82Z1LxsGGIawCwKLVn5lLrGvbs5sGqP0nZ36NEPhFA=="
     }
   ],
-  "definitionHash": "sha256-ee82ac360e2775f24ac40c050651c35cedf7cc9fac33bf2f5cdd349ccf6d4893",
+  "definitionHash": "sha256-c4e6d4131eaaa45721f5a374b55d04204ff81934c1293c38b6150397375f8643",
   "runs": [
     {
       "schemaVersion": 1,

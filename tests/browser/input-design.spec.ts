@@ -118,7 +118,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       const options = page.getByRole(platform === 'native' ? 'radio' : 'option');
       await expect(options.first()).toBeVisible();
       await expect(options.first()).toHaveCSS('border-radius', '8px');
-      expect((await options.first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      // Measured once the popup's entrance scale has settled.
+      await expect.poll(async () => (await options.first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
       await expect(field(page, 'select')).toHaveCSS('border-top-color', roleColor(palette, 'inputBorderFocus'));
       await captureReview(page, { path: `artifacts/input-design-${platform}-${palette}-${width}-open.png`, fullPage: true });
       await options.filter({ hasText: '나만 보기' }).click();

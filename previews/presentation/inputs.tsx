@@ -14,6 +14,7 @@ export function inputs(name: string) {
     case 'KjunCombobox': return field(<K.KjunCombobox value="team" options={options} onValueChange={noop} ariaLabel="공개 범위 검색" />, '공개 범위');
     case 'KjunSearchInput': return field(<K.KjunSearchInput value="" placeholder="이름이나 종목 코드" loadOptions={async () => []} onValueChange={noop} ariaLabel="자산 검색" />, '자산 검색');
     case 'KjunDatePicker': return field(<K.KjunDatePicker value="2026-09-14" onValueChange={noop} ariaLabel="시작일" />, '시작일');
+    case 'KjunDateRangePicker': return field(<K.KjunDateRangePicker value={{ start: '2026-09-08', end: '2026-09-16' }} onValueChange={noop} ariaLabel="사용 기간" />, '사용 기간');
     case 'KjunTimePicker': return field(<K.KjunTimePicker value="09:30" onValueChange={noop} ariaLabel="알림 시각" />, '알림 시각');
     case 'KjunQuantityStepper': return field(<K.KjunQuantityStepper value={5} min={1} max={20} onValueChange={noop} ariaLabel="요청 수량" />, '요청 수량');
     case 'KjunSlider': return <K.KjunSlider value={65} label="알림 음량" onValueChange={noop} />;

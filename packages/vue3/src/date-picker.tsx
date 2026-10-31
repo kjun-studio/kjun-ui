@@ -1,17 +1,19 @@
 import { useKjunMessages, useKjunMessageScope } from "./runtime/messages";
+import { dateLabel, formatRange, pickRange, type DateRange } from "../../../shared/package-runtime/calendar";
+import { CalendarView } from "./calendar";
+import { FloatingPanel } from "./floating-panel";
 import { formatDateValue } from "../../../shared/package-runtime/messages";
-import { computed, defineComponent, provide, ref, useId, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { computed, defineComponent, provide, ref, useId, watch, type ExtractPublicPropTypes, type PropType, type Ref, type SlotsType, type VNodeChild } from "vue";
 import { createTimeDomain, tokens, type InputSize, type TimePrecision } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { KjunButton, KjunIcon } from "./button";
-import { KjunInput, kjunFieldKey, useKjunField } from "./input";
+import { kjunFieldKey, useKjunField } from "./input";
 import { kjunCompoundControlKey } from "./quantity-stepper";
 import { KjunSelect } from "./select-control";
 import { css } from "./runtime/style";
 
-const kjunDatePickerProps = {
-  modelValue: { type: String, default: "" },
-  /** Shows a clear button while there is a value; it reports an empty string. */
+const dateFieldProps = {
+  /** Shows a clear button while there is a value. */
   clearable: { type: Boolean, default: false },
   size: { type: String as PropType<InputSize>, default: "md" },
   placeholder: { type: String, default: undefined },
@@ -22,50 +24,108 @@ const kjunDatePickerProps = {
   /** Earliest and latest selectable dates (YYYY-MM-DD). */
   min: { type: String, default: undefined },
   max: { type: String, default: undefined },
+  /** Trigger id for an outside <label for>; defaults to the FormGroup's id. */
+  id: { type: String, default: undefined },
+  /** Submits the value with a form through a hidden input. */
+  name: { type: String, default: undefined },
+} as const;
+type DateFieldOptions = ExtractPublicPropTypes<typeof dateFieldProps>;
+/** The Select-style field that opens a calendar; both pickers share it. */
+function useDateField(props: Readonly<DateFieldOptions & { placeholder?: string }>, open: Ref<boolean>) {
+  const field = useKjunField(), scope = useKjunMessageScope();
+  const trigger = ref<HTMLButtonElement | null>(null), valueId = useId().replace(/[^\w-]/g, "") + "-date";
+  return (state: { text: string; spoken: string; submitted: string; placeholder: string; onClear: () => void }, calendar: () => VNodeChild) => {
+    const spec = tokens.input[props.size ?? "md"], owner = field.value, label = props.ariaLabel || state.placeholder;
+    const clear = !!props.clearable && !!state.text && !props.disabled && !props.readOnly;
+    return (
+      <>
+        <div class="kjun-select-shell kjun-date-picker">
+          <button ref={trigger} id={props.id ?? owner?.id} type="button" class="kjun-input kjun-select-trigger kjun-date-trigger"
+            disabled={props.disabled} aria-haspopup="dialog" aria-expanded={open.value && !props.disabled}
+            // A FormGroup label names the field and the shown date follows it; otherwise the label and spoken date do.
+            aria-label={owner?.labelId ? undefined : state.spoken ? label + ", " + state.spoken : label}
+            aria-labelledby={owner?.labelId ? owner.labelId + " " + valueId : undefined}
+            aria-describedby={owner?.describedBy} aria-invalid={props.error || !!owner?.error ? "true" : undefined} aria-required={owner?.required || undefined}
+            aria-readonly={props.readOnly || undefined}
+            style={css({ height: spec.height, borderRadius: spec.radius, ...inputTypeStyle(props.size ?? "md"), paddingInline: spec.padding - tokens.border.controlWidth })}
+            onClick={() => { if (!props.readOnly) open.value = !open.value; }}
+            onKeydown={(event: KeyboardEvent) => { if (!props.readOnly && (event.key === "ArrowDown" || event.key === "ArrowUp")) { event.preventDefault(); open.value = true; } }}>
+            <span id={valueId} class={!state.text ? "kjun-placeholder" : undefined} style={css({ paddingRight: clear ? spec.clearSize + spec.affixGap : undefined })}>
+              {state.text ? <span aria-hidden="true">{state.text}</span> : state.placeholder}
+              {state.spoken && <span class="kjun-sr-only">{state.spoken}</span>}
+            </span>
+            <KjunIcon name="calendar" size={spec.iconSize} style={{ flexShrink: 0, color: props.disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
+          </button>
+          {clear && (
+            <KjunButton size="sm" variant="ghost" ariaLabel={scope.value.messages.clearDate} class="kjun-select-clear"
+              style={css({ padding: 0, right: spec.padding + spec.iconSize + spec.affixGap, width: spec.clearSize, height: spec.clearSize, minHeight: spec.clearSize, borderRadius: "50%" })}
+              onClick={() => { state.onClear(); trigger.value?.focus(); }}><KjunIcon name="x" size={spec.iconSize} /></KjunButton>
+          )}
+          {props.name && <input type="hidden" name={props.name} value={state.submitted} />}
+        </div>
+        <FloatingPanel field open={open.value && !props.disabled} onOpenChange={(next: boolean) => { open.value = next; }} trigger={() => trigger.value} placement="bottom-start" panelClass="kjun-calendar-panel"
+          // A month of days with its footer is taller than a field list, so it takes the general popup height.
+          maxHeight={tokens.extensions.floating.maxHeight}>
+          {open.value && calendar()}
+        </FloatingPanel>
+      </>
+    );
+  };
+}
+
+const kjunDatePickerProps = {
+  ...dateFieldProps,
+  /** YYYY-MM-DD, or an empty string. */
+  modelValue: { type: String, default: "" },
 } as const;
 export type KjunDatePickerProps = ExtractPublicPropTypes<typeof kjunDatePickerProps>;
-/** v-model holds YYYY-MM-DD; other attributes reach the date <input>. */
+/** v-model holds YYYY-MM-DD; choosing a day commits and closes. */
 export const KjunDatePicker = defineComponent({
   name: "KjunDatePicker",
-  inheritAttrs: false,
   props: kjunDatePickerProps,
-  emits: { "update:modelValue": (_value: string) => true },
-  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
-  setup(props, { attrs, emit }) {
-    const m = useKjunMessages();
+  emits: { "update:modelValue": (_value: string) => true, change: (_value: string) => true },
+  setup(props, { emit }) {
     const scope = useKjunMessageScope();
-    const focused = ref(false);
+    const open = ref(false);
+    const render = useDateField(props, open);
+    const commit = (next: string) => { if (next !== props.modelValue) { emit("update:modelValue", next); emit("change", next); } open.value = false; };
+    return () => render({
+      text: props.modelValue ? formatDateValue(props.modelValue, scope.value) : "",
+      spoken: props.modelValue ? dateLabel(props.modelValue, scope.value) : "", submitted: props.modelValue,
+      placeholder: props.placeholder ?? scope.value.messages.datePlaceholder, onClear: () => commit(""),
+    }, () => <CalendarView value={props.modelValue} min={props.min} max={props.max} clearable={props.clearable} onSelect={commit} onClear={() => commit("")} />);
+  },
+});
+
+const kjunDateRangePickerProps = {
+  ...dateFieldProps,
+  /** Start and end as YYYY-MM-DD; empty strings while unset. */
+  modelValue: { type: Object as PropType<DateRange>, default: () => ({ start: "", end: "" }) },
+} as const;
+export type KjunDateRangePickerProps = ExtractPublicPropTypes<typeof kjunDateRangePickerProps>;
+/** v-model holds { start, end }: the first pick starts the range, the second ends it, and Apply commits it. */
+export const KjunDateRangePicker = defineComponent({
+  name: "KjunDateRangePicker",
+  props: kjunDateRangePickerProps,
+  emits: { "update:modelValue": (_value: DateRange) => true, change: (_value: DateRange) => true },
+  setup(props, { emit }) {
+    const scope = useKjunMessageScope();
+    const open = ref(false), draft = ref<DateRange>({ ...props.modelValue });
+    watch(open, value => { if (value) draft.value = { ...props.modelValue }; });
+    const render = useDateField(props, open);
+    const commit = (next: DateRange) => {
+      if (next.start !== props.modelValue.start || next.end !== props.modelValue.end) { emit("update:modelValue", next); emit("change", next); }
+      open.value = false;
+    };
     return () => {
-      const spec = tokens.input[props.size];
-      const clear = props.clearable && !!props.modelValue && !props.disabled && !props.readOnly;
-      return (
-        // The drawn calendar icon matches Native; the transparent browser indicator sits on top of it
-        // (sized by these variables) so clicking the icon still opens the browser picker.
-        <div class="kjun-date-picker" style={{ position: "relative", "--_kjun-date-icon-inset": spec.padding + "px", "--_kjun-date-icon-size": spec.iconSize + "px" }}>
-          <KjunInput {...attrs} {...{ min: props.min, max: props.max }} modelValue={props.modelValue} size={props.size} suffixIcon="calendar" ariaLabel={props.ariaLabel || (props.placeholder ?? m.value.datePlaceholder)}
-            error={props.error} disabled={props.disabled} readOnly={props.readOnly} class={!focused.value ? "kjun-date-masked" : ""}
-            {...{
-              type: "date",
-              "onUpdate:modelValue": (value: string) => emit("update:modelValue", value),
-              onFocus: () => { focused.value = true; },
-              onBlur: () => { focused.value = false; },
-            }} />
-          {!focused.value && (
-            <span aria-hidden="true" class="kjun-date-overlay" style={css({
-              left: spec.padding, right: spec.padding + spec.iconSize + spec.affixGap + (clear ? spec.clearSize + spec.affixGap : 0), ...inputTypeStyle(props.size),
-              color: props.disabled ? "var(--_kjun-color-text-disabled)" : props.readOnly ? "var(--_kjun-color-text-secondary)"
-                : props.modelValue ? "var(--_kjun-color-text)" : "var(--_kjun-color-input-placeholder)",
-            })}>
-              {props.modelValue ? formatDateValue(props.modelValue, scope.value) : (props.placeholder ?? m.value.datePlaceholder)}
-            </span>
-          )}
-          {clear && (
-            <KjunButton size="sm" variant="ghost" ariaLabel={m.value.clearDate} class="kjun-select-clear"
-              style={css({ padding: 0, right: spec.padding + spec.iconSize + spec.affixGap, width: spec.clearSize, height: spec.clearSize, minHeight: spec.clearSize, borderRadius: "50%" })}
-              onClick={() => emit("update:modelValue", "")}><KjunIcon name="x" size={spec.iconSize} /></KjunButton>
-          )}
-        </div>
-      );
+      const value = props.modelValue, format = (iso: string) => formatDateValue(iso, scope.value);
+      return render({
+        text: formatRange(value, format),
+        spoken: value.start ? dateLabel(value.start, scope.value) + (value.end ? " – " + dateLabel(value.end, scope.value) : "") : "",
+        submitted: value.start && value.end ? value.start + "/" + value.end : "",
+        placeholder: props.placeholder ?? scope.value.messages.rangePlaceholder, onClear: () => commit({ start: "", end: "" }),
+      }, () => <CalendarView range={draft.value} min={props.min} max={props.max} onSelect={(iso: string) => { draft.value = pickRange(draft.value, iso); }}
+        onClear={() => { draft.value = { start: "", end: "" }; }} onApply={() => commit(draft.value)} />);
     };
   },
 });

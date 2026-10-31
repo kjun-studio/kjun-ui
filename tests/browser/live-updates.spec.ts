@@ -80,7 +80,8 @@ test("Native Select isolates popup search and DatePicker consumes live field fee
   await configureFollowup(page, { error: "" });
   await expect(date).not.toHaveAttribute("aria-invalid");
   await date.click();
-  await page.getByRole("button", { name: "2026-09-15", exact: true }).click();
+  // Days are named the way they are read, not as the stored YYYY-MM-DD value.
+  await page.getByRole("button", { name: "2026년 9월 15일 화요일", exact: true }).click();
   await expect(page.getByTestId("date")).toHaveText("2026-09-15");
   await uniqueIds(page);
 });

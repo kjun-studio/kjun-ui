@@ -1,7 +1,7 @@
 export { KjunCombobox } from "./combobox";
 export type { KjunComboboxProps } from "./combobox";
-export { KjunDatePicker } from "./date-picker";
-export type { KjunDatePickerProps } from "./date-picker";
+export { KjunDatePicker, KjunDateRangePicker } from "./date-picker";
+export type { KjunDatePickerProps, KjunDateRangePickerProps, DateRange } from "./date-picker";
 export { KjunSearchInput } from "./search-input";
 export type { KjunSearchInputProps } from "./search-input";
 export { KjunSelect } from "./select-control";

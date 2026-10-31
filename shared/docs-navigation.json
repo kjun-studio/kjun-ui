@@ -225,6 +225,17 @@
       "useCases": []
     },
     {
+      "name": "KjunDateRangePicker",
+      "category": "inputs",
+      "aliases": [
+        "기간",
+        "기간 선택",
+        "날짜 범위",
+        "시작일 종료일"
+      ],
+      "useCases": []
+    },
+    {
       "name": "KjunFilterGroup",
       "category": "inputs",
       "aliases": [

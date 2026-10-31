@@ -1356,6 +1356,43 @@
     "docs": "/components/date-picker",
     "tests": [
       "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs",
+      "tests/browser/date-picker-design.spec.ts"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue3": "packages/vue3/src/date-picker.tsx",
+      "react": "packages/react/src/date-picker.tsx",
+      "native": "packages/native/src/date-picker.tsx"
+    }
+  },
+  {
+    "name": "KjunDateRangePicker",
+    "category": "form",
+    "kind": "component",
+    "owner": "KjunDateRangePicker",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/date-range-picker",
+    "tests": [
+      "tests/browser/date-picker-design.spec.ts",
       "tests/contracts.test.mjs"
     ],
     "example": "previews/catalog/examples.ts",

@@ -10,7 +10,7 @@ import { platformBehavior } from './behavior.mjs';
 export const platforms = ['vue3', 'react', 'native'];
 // Vue 3 components whose value is v-model (modelValue); keep in step with shared/usage-examples/builder.ts.
 const vueModelComponents = new Set(['KjunInput', 'KjunTextarea', 'KjunCheckbox', 'KjunSwitch', 'KjunRadio', 'KjunRadioGroup', 'KjunButtonGroup', 'KjunFilterGroup',
-  'KjunSlider', 'KjunRangeSlider', 'KjunQuantityStepper', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunTimePicker', 'KjunTabs']);
+  'KjunSlider', 'KjunRangeSlider', 'KjunQuantityStepper', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunDateRangePicker', 'KjunTimePicker', 'KjunTabs']);
 export const items = ['keyboard', 'labeling', 'focus'];
 export const itemLabels = { keyboard: '키보드 동작', labeling: '라벨·오류 연결', focus: '포커스 이동·복귀' };
 const rows = [...actions, ...inputs, ...navigation, ...layout, ...feedback, ...display, ...finance];

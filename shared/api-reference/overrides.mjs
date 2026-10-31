@@ -30,7 +30,7 @@ set("Progress", {
   value: { type: "number | null", summary: "진행 값입니다. null·유한하지 않은 값·유효하지 않은 max는 데이터 없음이며 0%로 바꾸지 않습니다. 생략 또는 undefined는 기존 기본값 0을 유지합니다." },
   indeterminate: "실행 중이지만 진행률을 모를 때 사용합니다. 수치와 aria-valuenow를 생략하고 진행 중 상태를 표시합니다. 데이터 없음(null)과 구분합니다.",
 });
-set("Input Textarea Select Combobox DatePicker SearchInput", {
+set("Input Textarea Select Combobox DatePicker DateRangePicker SearchInput", {
   error: "필드를 오류 상태로 표시합니다. 오류 설명과 검증 결과는 소비자가 별도로 제공합니다.",
 });
 set("Alert", {
@@ -100,9 +100,18 @@ set("Pagination", {
   showInfo: "전체 행이 있으면 현재 표시 범위와 전체 행 수를 표시합니다. 한 페이지일 때도 유지합니다.",
 });
 set("DatePicker", {
-  value: "현재 선택 날짜 문자열입니다. 웹 날짜 입력의 YYYY-MM-DD 형식을 사용합니다.",
-  min: "선택 가능한 최소 날짜입니다.",
-  max: "선택 가능한 최대 날짜입니다.",
+  value: "현재 선택 날짜입니다. YYYY-MM-DD 문자열이며 비어 있으면 빈 문자열입니다.",
+});
+set("DateRangePicker", {
+  value: { type: "{ start: string; end: string }", summary: "현재 기간입니다. 시작일·종료일을 YYYY-MM-DD 문자열로 담고, 비어 있으면 빈 문자열입니다." },
+  modelValue: { type: "{ start: string; end: string }", summary: "현재 기간입니다. 시작일·종료일을 YYYY-MM-DD 문자열로 담고, 비어 있으면 빈 문자열입니다." },
+});
+set("DatePicker DateRangePicker", {
+  min: "선택 가능한 가장 이른 날짜(YYYY-MM-DD)입니다. 그보다 앞선 날짜는 흐린 취소선으로 보이고 고를 수 없습니다.",
+  max: "선택 가능한 가장 늦은 날짜(YYYY-MM-DD)입니다. 그보다 뒤의 날짜는 흐린 취소선으로 보이고 고를 수 없습니다.",
+  readOnly: "값을 보여 주기만 하고 달력을 열지 않습니다.",
+  id: "트리거 버튼의 id입니다. 바깥 <label for>와 연결할 때 쓰며, 생략하면 FormGroup의 id를 씁니다.",
+  name: "폼 제출용 숨은 input의 이름입니다. DatePicker는 날짜, DateRangePicker는 'start/end' 문자열을 제출합니다.",
 });
 // Progress documents its own value (null is missing data) above.
 set("AnimatedNumber PriceCell SignedValue Deviation ProgressCell HeatmapCell", {
@@ -222,13 +231,6 @@ set("PriceCell", {
   flashClass:
     "소비자가 지정한 웹 강조 클래스입니다. 가격 변화를 감지해 자동으로 넣고 빼지 않습니다.",
 });
-set(
-  "DatePicker",
-  {
-    type: "상속된 HTML 입력 속성입니다. 실제 구현은 date로 고정하므로 이 값으로 종류를 바꿀 수 없습니다.",
-  },
-  "react",
-);
 set("Freshness", { formatter: "수집 시각 문자열을 설명에 표시할 문자열로 변환합니다." });
 set("Progress", { label: "진행률의 제목입니다. showLabel과 관계없이 표시하며 showLabel은 백분율을 더합니다." });
 set("MarketTableSkeleton", {
@@ -288,7 +290,7 @@ set("ListSection", {
   divider: { default:"true", summary:"행 사이 구분선을 그립니다. false면 선 없이 붙여 그립니다." },
   density: { default:'"default"', summary:'"compact"는 행 높이를 56에서 44(터치 최소 크기)로 줄이고 위아래 여백을 12로 둡니다. 시작 여백 16은 그대로라 다른 목록과 글자 위치가 맞습니다.' },
 });
-set("DatePicker", { clearable: { default:"false", summary:"값이 있을 때 달력 아이콘 앞에 지우기 버튼을 보입니다. 누르면 빈 문자열로 바꿉니다. 버튼 이름은 KjunProvider 문구(clearDate)를 따릅니다." } });
+set("DatePicker DateRangePicker", { clearable: { default:"false", summary:"값이 있을 때 달력 아이콘 앞에 지우기 버튼을 보입니다. 누르면 빈 문자열로 바꿉니다. 버튼 이름은 KjunProvider 문구(clearDate)를 따릅니다." } });
 set("FormGroup", { optional: { default:"false", summary:"라벨 뒤에 선택 입력 표시를 붙입니다. 문구는 KjunProvider의 locale·messages(optional)를 따르며 required와 함께 주면 required가 우선합니다." } });
 set("Switch", { description: { summary:"라벨 아래 보조 설명입니다. 시작 위치는 라벨과 같고, 웹은 aria-describedby, Native는 accessibilityHint로 스위치를 설명합니다." } });
 set("Switch", { loading: { default: "false", summary: "저장 중 상태입니다. 손잡이 안에 작은 스피너를 돌리고 누름을 무시하며, disabled와 달리 흐리게 하지 않습니다. 웹은 aria-busy, Native는 accessibilityState.busy로 알립니다." } });

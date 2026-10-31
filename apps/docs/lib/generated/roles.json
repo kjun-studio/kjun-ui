@@ -24,8 +24,8 @@
       "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/choice-controls.tsx",
-      "packages/native/src/date-picker.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/fab.tsx",
@@ -117,6 +117,7 @@
       "packages/react/src/navigation.tsx",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/data-state.tsx",
       "packages/native/src/drawer.tsx",
@@ -157,6 +158,7 @@
       "packages/tokens/src/web.css",
       "packages/vue3/src/financial-display.tsx",
       "packages/react/src/financial-display.tsx",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/chip.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/financial-display.tsx",
@@ -190,6 +192,7 @@
       "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/field-clear.tsx",
@@ -287,12 +290,11 @@
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue3/src/date-picker.tsx",
-      "packages/react/src/date-picker.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button-group-motion.tsx",
       "packages/native/src/button.tsx",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/date-picker.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
@@ -340,12 +342,11 @@
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue3/src/date-picker.tsx",
-      "packages/react/src/date-picker.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button-group-motion.tsx",
       "packages/native/src/button.tsx",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/data-state.tsx",
       "packages/native/src/display-primitives.tsx",
@@ -392,19 +393,21 @@
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/actions.tsx",
+      "packages/vue3/src/date-picker.tsx",
       "packages/vue3/src/financial-display.tsx",
       "packages/vue3/src/kpi.tsx",
       "packages/vue3/src/number-display.tsx",
       "packages/vue3/src/select-control.tsx",
       "packages/react/src/actions.tsx",
+      "packages/react/src/date-picker.tsx",
       "packages/react/src/financial-display.tsx",
       "packages/react/src/kpi.tsx",
       "packages/react/src/number-display.tsx",
       "packages/react/src/select-control.tsx",
       "packages/native/src/actions.tsx",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/combobox.tsx",
       "packages/native/src/data-state.tsx",
-      "packages/native/src/date-picker.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/field-surface.ts",
       "packages/native/src/financial-display.tsx",
@@ -449,6 +452,7 @@
       "packages/react/src/financial-display.tsx",
       "packages/react/src/select-control.tsx",
       "packages/native/src/button.tsx",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/date-picker.tsx",
       "packages/native/src/field-clear.tsx",
       "packages/native/src/field-surface.ts",
@@ -554,6 +558,7 @@
       "packages/react/src/input.tsx",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/combobox.tsx",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/field-surface.ts",
@@ -759,7 +764,9 @@
       "--border-strong"
     ],
     "implementationFiles": [
+      "packages/tokens/src/controls.css",
       "packages/tokens/src/table.css",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/choice-controls.tsx"
     ]
   },
@@ -793,8 +800,6 @@
     "implementationFiles": [
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
-      "packages/vue3/src/date-picker.tsx",
-      "packages/react/src/date-picker.tsx",
       "packages/native/src/date-picker.tsx",
       "packages/native/src/input.tsx",
       "packages/native/src/select-control.tsx",
@@ -1099,9 +1104,11 @@
       "--divider"
     ],
     "implementationFiles": [
+      "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/navigation.css",
       "packages/native/src/app-navigation.tsx",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/list.tsx",
       "packages/native/src/navigation.tsx"
     ]
@@ -1292,7 +1299,10 @@
     "upstreamAliases": [
       "--brand-subtle-bg"
     ],
-    "implementationFiles": []
+    "implementationFiles": [
+      "packages/tokens/src/controls.css",
+      "packages/native/src/calendar.tsx"
+    ]
   },
   {
     "role": "brandLight",
@@ -1332,6 +1342,7 @@
       "--on-brand"
     ],
     "implementationFiles": [
+      "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/layout.css",
       "packages/tokens/src/market.css",
@@ -1339,8 +1350,8 @@
       "packages/tokens/src/table.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx",
+      "packages/native/src/calendar.tsx",
       "packages/native/src/choice-controls.tsx",
-      "packages/native/src/date-picker.tsx",
       "packages/native/src/fab.tsx",
       "packages/native/src/market-cards.tsx"
     ]

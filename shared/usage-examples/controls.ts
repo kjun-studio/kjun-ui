@@ -80,6 +80,8 @@ export function generate(input: UsageInput) {
       content = b.node(name, { value: b.state('combo', null), onValueChange: b.update('combo'), options: options(), ariaLabel: '자산 선택', clearable: true, ...b.props('size', 'disabled', 'error') }); break;
     case 'KjunDatePicker':
       content = b.node(name, { value: b.state('date', '2026-09-12'), onValueChange: b.update('date'), min: '2026-09-01', max: '2026-09-30', ariaLabel: '시작일', ...b.props('size', 'disabled', 'error') }); break;
+    case 'KjunDateRangePicker':
+      content = b.node(name, { value: b.state('range', { start: '2026-09-08', end: '2026-09-16' }), onValueChange: b.update('range'), min: '2026-09-01', max: '2026-10-31', ariaLabel: '사용 기간', ...b.props('size', 'disabled', 'error') }); break;
     case 'KjunButtonGroup': case 'KjunFilterGroup': {
       const key = name === 'KjunButtonGroup' ? 'group' : 'filters';
       content = b.node(name, { value: b.state(key, key === 'group' ? 'a' : ['a']), onValueChange: b.update(key), options: options(), multiple: key === 'filters', disabled: s.disabled, ariaLabel: '과일 보기', ...(key === 'group' ? b.props('size', 'fullWidth') : {}) }); break;
@@ -111,9 +113,10 @@ export function generate(input: UsageInput) {
     KjunSelect: ['공개 범위', '선택한 범위의 사용자만 목록을 볼 수 있습니다.', '공개 범위를 선택해 주세요.'],
     KjunCombobox: ['자산 선택', '자산 이름을 입력해 후보를 찾아보세요.', '목록에 있는 자산을 선택해 주세요.'],
     KjunDatePicker: ['시작일', '목록을 사용하기 시작할 날짜를 선택하세요.', '시작일을 선택해 주세요.'],
+    KjunDateRangePicker: ['사용 기간', '목록을 공유할 기간을 선택하세요.', '사용 기간을 선택해 주세요.'],
   };
   if (fieldLabels[name]) content = b.node('KjunFormGroup', { label: fieldLabels[name][0], hint: fieldLabels[name][1], error: s.error ? fieldLabels[name][2] : '' }, content);
-  if (['KjunTextarea', 'KjunSelect', 'KjunCombobox', 'KjunDatePicker', 'KjunFormGroup'].includes(name)) {
+  if (['KjunTextarea', 'KjunSelect', 'KjunCombobox', 'KjunDatePicker', 'KjunDateRangePicker', 'KjunFormGroup'].includes(name)) {
     content = b.node(b.native ? 'View' : 'div', { style: { width: b.native ? 360 : '360px', maxWidth: '100%' } }, content);
   }
   return b.finish(content);

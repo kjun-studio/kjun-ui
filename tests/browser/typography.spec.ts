@@ -87,7 +87,7 @@ for(const platform of ['react','vue3','native']) {
     if(platform==='native') {
       expect(await textStyle(pagination.getByText('20개씩',{exact:true}))).toMatchObject({size:'16px',line:'24px'});
       await page.getByRole('button',{name:'날짜 sm',exact:true}).click();
-      await expect.poll(async()=>(await textStyle(page.getByRole('button',{name:'2026-09-16',exact:true}))).color).toBe('rgb(170, 187, 204)');
+      await expect.poll(async()=>(await textStyle(page.getByRole('button',{name:'2026년 9월 16일 수요일',exact:true}))).color).toBe('rgb(170, 187, 204)');
     } else {
       const select=pagination.getByRole('button',{name:'페이지당 항목 수'});
       await expect(select).toHaveCSS('font-size','16px');
@@ -101,7 +101,7 @@ for(const platform of ['react','vue3','native']) {
     await page.evaluate(()=>(window as any).updateTokenPalette());
     for(const node of selected) await expect.poll(async()=>(await textStyle(node)).color).toBe('rgb(255, 255, 255)');
     if(platform==='native') {
-      await expect.poll(async()=>(await textStyle(page.getByRole('button',{name:'2026-09-16',exact:true}))).color).toBe('rgb(255, 255, 255)');
+      await expect.poll(async()=>(await textStyle(page.getByRole('button',{name:'2026년 9월 16일 수요일',exact:true}))).color).toBe('rgb(255, 255, 255)');
       await page.keyboard.press('Escape');
     } else {
       await page.evaluate(()=>document.documentElement.style.fontSize='20px');

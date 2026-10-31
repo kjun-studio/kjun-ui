@@ -18,7 +18,7 @@ export const platformSpecific = {
   ...Object.fromEntries(['gap', 'dotSize'].map(key => ['extensions.badge.' + key, {
     excludes: ['native'], reason: 'Base badge role for the Web CSS fallback and the per-size gaps/dotSizes aliases; Native reads the per-size roles.',
   }])),
-  'extensions.calendar.minimumWidth': { excludes: ['react', 'vue3'], reason: 'Native seven-column calendar panel; Web uses the browser date picker.' },
+  'extensions.calendar.radius': { excludes: ['native'], reason: 'Native calendars open in the shared FloatingPanel, which keeps its own field-popup radius.' },
   ...Object.fromEntries(['identityWidth', 'identityHeight'].map(key => ['extensions.skeleton.' + key, {
     excludes: ['react', 'vue3', 'native'], reason: 'Retired Vue 2 AssetIdentity loading adapter; current platforms render the supplied identity slot. Kept for token compatibility.',
   }])),

@@ -18,7 +18,7 @@ const componentGroups = {
   select: [...files('select-scroll', 'expanded', 'elevation-inputs', 'popup-escape', 'react-tabs-actions'), ...fields, ...contracts, ...visuals],
   combobox: [...files('select-scroll', 'popup-escape', 'elevation-inputs'), ...fields, ...contracts, ...visuals],
   'search-input': [...files('search-input', 'elevation-inputs'), ...fields, ...contracts],
-  input: [...files('input-design', 'textarea-design', 'interaction-states', 'search-input', 'quantity', 'feedback-input', 'elevation-inputs'), ...fields, ...contracts, ...visuals],
+  input: [...files('input-design', 'textarea-design', 'date-picker-design', 'interaction-states', 'search-input', 'quantity', 'feedback-input', 'elevation-inputs'), ...fields, ...contracts, ...visuals],
   button: [...files('button-design', 'interaction-states', 'button-group-motion', 'form-actions', 'bottom-action-bar-design', 'menu-button', 'refresh-button', 'copy-button-feedback', 'icon-toggle', 'accessibility-components'), ...visuals],
   form: [...files('form-actions', 'layout-primitives', 'input-design', 'interaction-states', 'feedback-input', 'quantity', 'bottom-action-bar-design'), ...fields, ...contracts],
   tabs: [...files('tabs-contract', 'tabs-design', 'accessibility-tabs', 'controlled-state', 'live-updates', 'component-motion', 'expanded', 'react-tabs-actions'), ...visuals],
@@ -48,6 +48,7 @@ const componentGroups = {
   progress: files('adoption-values', 'adoption', 'size-contracts', 'token-display-propagation'),
   'time-picker': [...files('elevation-inputs'), ...fields, ...visuals],
   switch: [...files('token-choice-propagation', 'token-form-propagation', 'accessibility-components', 'additions', 'layer-motion-edges'), ...fields, ...visuals],
+  'date-picker': [...files('date-picker-design', 'input-design', 'additions', 'i18n'), ...fields, ...visuals],
   radio: [...files('radio-design', 'expanded'), ...fields, ...visuals],
   accessibility: files('accessibility-tabs', 'accessibility-components', 'accessibility-controls', 'elevation-keyboard', 'input-contracts'),
 };

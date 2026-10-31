@@ -2,6 +2,7 @@ export default [
   ['KjunCheckbox', 'checked', 'label disabled value', '알림 받기의 체크 상태', { role: 'checkbox' }],
   ['KjunCombobox', 'select', 'ariaLabel options disabled', '과일 검색의 입력·옵션 선택·팝업 닫기', { role: 'combobox' }],
   ['KjunDatePicker', 'date', 'ariaLabel min max disabled error', '날짜 입력과 달력의 범위 제한', {}],
+  ['KjunDateRangePicker', 'date', 'ariaLabel min max disabled error', '시작·종료일 선택과 적용', {}],
   ['KjunFilterGroup', 'choice', 'options disabled', '과일 필터의 복수 선택과 비활성 옵션', {}],
   ['KjunFormGroup', 'field', 'label hint error required', 'KjunInput과 조합한 자동 라벨·도움말·오류 연결 및 두 인스턴스 ID', { field: 'KjunInput', parent: 'KjunFormGroup' }],
   ['KjunInput', 'field', 'ariaLabel error errorMessage disabled', '문자 입력과 FormGroup의 라벨·도움말·오류 전환', { field: 'KjunInput' }],

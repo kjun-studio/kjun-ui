@@ -16,7 +16,7 @@ export const snapshotFixtures = {
   KjunTable: { selected: [{ id: 'a', name: '긴 한국어 자산 이름', symbol: 'AAA', price: 1234567, change: 2.35 }], expanded: ['a'] },
   KjunCard: {}, KjunProgress: { progress: 0 }, KjunCheckbox: { checked: true }, KjunSwitch: { switch: false },
   KjunRadio: { radio: 'c' }, KjunRadioGroup: { radio: 'c' }, KjunTextarea: { textarea: '첫 줄\n한글 "인용" </script>' },
-  KjunCombobox: { combo: 'a' }, KjunDatePicker: { date: '2026-09-20' }, KjunButtonGroup: { group: 'c' }, KjunFilterGroup: { filters: [] },
+  KjunCombobox: { combo: 'a' }, KjunDatePicker: { date: '2026-09-20' }, KjunDateRangePicker: { range: { start: '2026-09-10', end: '2026-09-20' } }, KjunButtonGroup: { group: 'c' }, KjunFilterGroup: { filters: [] },
   KjunTabs: { tab: 'two' }, KjunTabPane: { tab: 'two' }, KjunDrawer: { open: true, input: '' }, KjunPopover: { popoverOpen: true },
   KjunPagination: { page: 2, pageSize: 50 }, KjunIconToggle: { active: true }, KjunAnimatedNumber: { number: 0 },
   KjunDataState: { queryKey: 'b', resultKey: 'b', queryLoading: false, queryError: null },

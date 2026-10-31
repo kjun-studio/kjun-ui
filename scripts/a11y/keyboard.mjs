@@ -110,9 +110,22 @@ export async function verifyKeyboard(page, d, note) {
     }
     const trigger = primary(page, d); await activate(page, trigger);
     if (profile === 'date') {
-      const date = page.getByRole('button', { name: '2026-09-12', exact: true });
-      await tabTo(page, date); await page.keyboard.press('ArrowRight'); await expect(date).not.toBeFocused();
-      await page.keyboard.press('Enter'); await stateChanged(page, { date: '2026-09-12' });
+      const range = d.component === 'KjunDateRangePicker', before = await snapshot(page);
+      const day = name => page.getByRole('button', { name, exact: true });
+      if (d.platform === 'native') {
+        // Native calendars take Tab and Enter; arrow movement is a Web grid feature.
+        for (const name of range ? ['2026년 9월 20일 일요일', '2026년 9월 25일 금요일'] : ['2026년 9월 13일 일요일']) { await tabTo(page, day(name)); await page.keyboard.press('Enter'); }
+      } else {
+        // The calendar opens on the selected day (a range on its start); arrows move a day and Enter picks it.
+        const first = day(range ? '2026년 9월 8일 화요일' : '2026년 9월 12일 토요일');
+        await expect(first).toBeFocused(); await page.keyboard.press('ArrowRight'); await expect(first).not.toBeFocused();
+        await expect(day(range ? '2026년 9월 9일 수요일' : '2026년 9월 13일 일요일')).toBeFocused();
+        await page.keyboard.press('Enter');
+        if (range) { await page.keyboard.press('ArrowRight'); await page.keyboard.press('Enter'); }
+      }
+      // A range commits with Apply; a single date commits at once.
+      if (range) await page.getByRole('button', { name: '적용' }).click();
+      await stateChanged(page, before); note('달력 키보드 선택'); return;
     } else {
       const option = page.getByRole('option').first(); await expect(option).toBeVisible();
       // React and Vue 3 move DOM focus into the listbox.

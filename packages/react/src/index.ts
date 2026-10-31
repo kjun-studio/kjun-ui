@@ -43,12 +43,14 @@ export type {
   KjunDrawerProps,
 } from "./layers";
 
-export { KjunSelect, KjunCombobox, KjunSearchInput, KjunDatePicker } from "./select";
+export { KjunSelect, KjunCombobox, KjunSearchInput, KjunDatePicker, KjunDateRangePicker } from "./select";
 export type {
   KjunSelectProps,
   KjunComboboxProps,
   KjunSearchInputProps,
   KjunDatePickerProps,
+  KjunDateRangePickerProps,
+  DateRange,
   OptionValue,
   SelectOption,
 } from "./select";

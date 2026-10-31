@@ -34,6 +34,16 @@ export const inputs: Record<string, GuideAuthor> = {
     ],
     related: "form",
   },
+  KjunDateRangePicker: {
+    parts: [
+      p(
+        "기간 컨트롤",
+        "선택한 시작일과 종료일, 달력을 여는 진입점을 표시합니다.",
+        'button, [role="button"]',
+      ),
+    ],
+    related: "form",
+  },
   KjunFilterGroup: {
     parts: [
       c("필터 항목", "현재 적용한 필터 조건을 표시합니다."),

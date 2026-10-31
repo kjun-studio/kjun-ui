@@ -186,7 +186,23 @@
       "minimumWidth": 100
     },
     "calendar": {
-      "minimumWidth": 326
+      "width": 312,
+      "padding": { "$ref": "dimension.value12" },
+      "headerHeight": 36,
+      "navSize": 36,
+      "titleGap": { "$ref": "dimension.value4" },
+      "daySize": 40,
+      "rowGap": { "$ref": "dimension.value2" },
+      "weekdayHeight": 32,
+      "monthHeight": 52,
+      "monthGap": { "$ref": "dimension.value8" },
+      "yearHeight": 32,
+      "yearGap": { "$ref": "dimension.value6" },
+      "footerGap": { "$ref": "dimension.value8" },
+      "radius": { "$ref": "radius.radius16" },
+      "monthRadius": { "$ref": "radius.radius12" },
+      "todayRing": 1.5,
+      "rangeBleed": 3
     },
     "financial": {
       "warningIconSize": {
