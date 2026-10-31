@@ -1,4 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
 import { tokens } from "@kjun-ui/tokens";
 import type { MouseEvent, ReactNode } from "react";
 import { KjunIcon } from "./button";
@@ -17,7 +18,13 @@ export function KjunTopNavigation({ title, description, leading, actions, safeAr
     </header>
   </TopNavigationContext.Provider>;
 }
-export interface NavigationDestination { key: string; label: string; href: string; icon?: string; badge?: string | number; disabled?: boolean }
+export interface NavigationDestination { key: string; label: string; href: string; icon?: string;
+  /** A count or short text; true draws a dot. Numbers over 99 show 99+, and the accessible name keeps the value. */
+  badge?: NavigationBadge; disabled?: boolean }
+function NavigationBadgeMark({ badge }: { badge: NavigationDestination["badge"] }) {
+  const mark = navigationBadge(badge);
+  return mark && <span className="kjun-navigation-badge" data-dot={mark.dot || undefined} aria-hidden="true">{mark.text}</span>;
+}
 export interface KjunBottomNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: (key: string, event: MouseEvent<HTMLAnchorElement>) => void;
   /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
   surface?: boolean }
@@ -28,10 +35,30 @@ export function KjunBottomNavigation({ items, value, ariaLabel, safeAreaBottom =
   if (keyboardVisible && hideOnKeyboard) return null;
   return <nav className="kjun-bottom-navigation" data-icons={hasIcons || undefined} data-surface={surface ? undefined : "false"} aria-label={ariaLabel} style={{ paddingBottom: Math.max(0, safeAreaBottom) }}>
     {items.map(item => {
-      const badge = item.badge != null && <span className="kjun-navigation-badge" aria-hidden="true">{item.badge}</span>;
-      return <a key={item.key} href={item.disabled ? undefined : item.href} aria-label={item.label + (item.badge != null ? ", " + item.badge : "")} aria-disabled={item.disabled || undefined} aria-current={value === item.key ? "page" : undefined} onClick={event => { if (item.disabled) event.preventDefault(); else onNavigate?.(item.key, event); }}>
-        {hasIcons && <span className="kjun-navigation-icon">{item.icon && <KjunIcon name={item.icon} size={tokens.extensions.bottomNavigation.iconSize} />}{badge}</span>}
+      const selected = value === item.key;
+      const badge = <NavigationBadgeMark badge={item.badge} />;
+      return <a key={item.key} href={item.disabled ? undefined : item.href} aria-label={navigationLabel(item.label, item.badge, m.newContent)} aria-disabled={item.disabled || undefined} aria-current={selected ? "page" : undefined} onClick={event => { if (item.disabled) event.preventDefault(); else onNavigate?.(item.key, event); }}>
+        {hasIcons && <span className="kjun-navigation-icon">{item.icon && <KjunIcon name={item.icon} filled={selected} size={tokens.extensions.bottomNavigation.iconSize} />}{badge}</span>}
         <span className="kjun-navigation-label">{item.label}{!hasIcons && badge}</span>
+      </a>;
+    })}
+  </nav>;
+}
+export interface KjunFloatingNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: (key: string, event: MouseEvent<HTMLAnchorElement>) => void }
+/** A capsule detached from the screen edge. Destinations with an icon show only the icon; the label stays their accessible name. */
+export function KjunFloatingNavigation({ items, value, ariaLabel, safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = true, onNavigate }: KjunFloatingNavigationProps) {
+  const m = useKjunMessages();
+  ariaLabel ??= m.mainNavigation;
+  const geometry = tokens.extensions.floatingNavigation;
+  if (keyboardVisible && hideOnKeyboard) return null;
+  return <nav className="kjun-floating-navigation" aria-label={ariaLabel} style={{ marginBottom: geometry.offset + Math.max(0, safeAreaBottom) }}>
+    {items.map(item => {
+      const selected = value === item.key;
+      const badge = <NavigationBadgeMark badge={item.badge} />;
+      return <a key={item.key} href={item.disabled ? undefined : item.href} aria-label={navigationLabel(item.label, item.badge, m.newContent)} aria-disabled={item.disabled || undefined} aria-current={selected ? "page" : undefined} onClick={event => { if (item.disabled) event.preventDefault(); else onNavigate?.(item.key, event); }}>
+        {item.icon
+          ? <span className="kjun-navigation-icon"><KjunIcon name={item.icon} filled={selected} size={geometry.iconSize} />{badge}</span>
+          : <span className="kjun-navigation-label">{item.label}{badge}</span>}
       </a>;
     })}
   </nav>;

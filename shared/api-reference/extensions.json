@@ -139,6 +139,34 @@
       "surface"
     ]
   },
+  "KjunFloatingNavigation": {
+    "vue3": [
+      "items",
+      "value",
+      "ariaLabel",
+      "safeAreaBottom",
+      "keyboardVisible",
+      "hideOnKeyboard"
+    ],
+    "react": [
+      "items",
+      "value",
+      "ariaLabel",
+      "safeAreaBottom",
+      "keyboardVisible",
+      "hideOnKeyboard",
+      "onNavigate"
+    ],
+    "native": [
+      "items",
+      "value",
+      "ariaLabel",
+      "safeAreaBottom",
+      "keyboardVisible",
+      "hideOnKeyboard",
+      "onNavigate"
+    ]
+  },
   "KjunBottomActionBar": {
     "vue3": [
       "description",

@@ -93,6 +93,8 @@ export const kjunMessagesKo = {
   tabs: "탭",
   breadcrumb: "현재 위치",
   mainNavigation: "주요 탐색",
+  // Read after a destination name for a dot badge that has no count.
+  newContent: "새 소식",
   pagination: "페이지 탐색",
   itemsPerPage: "페이지당 항목 수",
   perPage: (count: number) => `${count}개씩`,

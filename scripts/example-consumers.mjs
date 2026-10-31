@@ -20,7 +20,7 @@ export const snapshotFixtures = {
   KjunTabs: { tab: 'two' }, KjunTabPane: { tab: 'two' }, KjunDrawer: { open: true, input: '' }, KjunPopover: { popoverOpen: true },
   KjunPagination: { page: 2, pageSize: 50 }, KjunIconToggle: { active: true }, KjunAnimatedNumber: { number: 0 },
   KjunDataState: { queryKey: 'b', resultKey: 'b', queryLoading: false, queryError: null },
-  KjunListRow: { notifications: false }, KjunListSection: { notifications: false }, KjunBottomNavigation: { destination: 'activity' },
+  KjunListRow: { notifications: false }, KjunListSection: { notifications: false }, KjunBottomNavigation: { destination: 'activity' }, KjunFloatingNavigation: { destination: 'activity' },
   KjunImage: { imageReady: true, imageVersion: 1 }, KjunChip: { removed: true }, KjunSlider: { slider: 0 },
   KjunRangeSlider: { range: [0, 100] }, KjunTimePicker: { time: null }, KjunQuantityStepper: { quantity: 0 },
 };

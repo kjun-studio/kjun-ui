@@ -89,6 +89,7 @@ export const kjunMessagesEn: KjunMessages = {
   tabs: "Tabs",
   breadcrumb: "Breadcrumb",
   mainNavigation: "Main navigation",
+  newContent: "New",
   pagination: "Pagination",
   itemsPerPage: "Items per page",
   perPage: (count: number) => `${count} per page`,

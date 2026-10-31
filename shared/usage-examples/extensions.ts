@@ -37,6 +37,11 @@ export function generate(input: UsageInput) {
         items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: s.long ? '모든 프로젝트 활동 내역' : '활동', href: '#activity', icon: 'list', badge: 3 }, { key: 'settings', label: '설정', href: '#settings', icon: 'settings' }]),
         onNavigate: b.handler('navigate', 'key, event', 'if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;\nevent.preventDefault();\n' + b.set('destination', 'key')),
       }), b.text(expr('"현재 위치: " + state.destination'))]); break;
+    case 'KjunFloatingNavigation':
+      content = b.group([b.node(name, { value: b.state('destination', 'home'), ...b.props('safeAreaBottom', 'keyboardVisible', 'hideOnKeyboard'),
+        items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'search', label: '검색', href: '#search', icon: 'search', ...(s.badges ? { badge: true } : {}) }, { key: 'activity', label: '알림', href: '#activity', icon: 'bell', ...(s.badges ? { badge: 3 } : {}) }, { key: 'profile', label: '내 정보', href: '#profile', icon: 'user' }]),
+        onNavigate: b.handler('navigate', 'key, event', 'if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;\nevent.preventDefault();\n' + b.set('destination', 'key')),
+      }), b.text(expr('"현재 위치: " + state.destination'))]); break;
     case 'KjunBottomActionBar':
       content = b.node(name, { description: s.long ? '변경한 설정은 저장한 뒤 모든 기기에 적용됩니다. 저장이 완료될 때까지 화면을 유지해 주세요.' : '저장하면 모든 기기에 적용됩니다.', ...b.props('safeAreaBottom', 'keyboardVisible', 'hideOnKeyboard') },
         b.node('KjunFormActions', { confirmText: '변경 사항 저장', onConfirm: notify('save', '저장 요청'), onCancel: notify('cancel', '취소 요청') })); break;

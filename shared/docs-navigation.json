@@ -860,6 +860,18 @@
       ]
     },
     {
+      "name": "KjunFloatingNavigation",
+      "category": "navigation",
+      "aliases": [
+        "플로팅 탐색",
+        "플로팅 탭바",
+        "캡슐 내비게이션"
+      ],
+      "useCases": [
+        "모바일 화면 구성"
+      ]
+    },
+    {
       "name": "KjunBottomActionBar",
       "category": "layout",
       "aliases": [

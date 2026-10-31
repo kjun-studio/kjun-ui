@@ -28,7 +28,7 @@ export { createKjunFeedback } from "@kjun-ui/tokens";
 export type { ConfirmOptions, KjunFeedback, PromptOptions, ToastOptions } from "./feedback";
 export type { KjunTabsProps, KjunTabPaneProps, TabItem, TabMenuEvent } from "./tabs";
 export type { KjunAccordionProps, KjunAccordionItemProps, BreadcrumbItem, KjunBreadcrumbProps, KjunPaginationProps } from "./navigation";
-export type { KjunTopNavigationProps, NavigationDestination, KjunBottomNavigationProps, KjunBottomActionBarProps } from "./app-navigation";
+export type { KjunTopNavigationProps, NavigationDestination, KjunBottomNavigationProps, KjunFloatingNavigationProps, KjunBottomActionBarProps } from "./app-navigation";
 export type { KjunListItemProps, KjunListRowProps, KjunListSectionProps } from "./list";
 export type { KjunIconToggleProps, KjunCopyButtonProps, KjunRefreshButtonProps, KjunExternalLinkProps } from "./actions";
 export { safeExternalUrl } from "./actions";

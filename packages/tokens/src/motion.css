@@ -11,6 +11,7 @@
 .kjun-tabs-track .kjun-tab, .kjun-vue-tabs .kjun-tab { z-index: 1; background: transparent !important; }
 .kjun-tabs-track .kjun-tab::after, .kjun-vue-tabs .kjun-tab::after { display: none; }
 .kjun-tabs[data-variant="pills"] .kjun-tab { transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out); }
+.kjun-bottom-navigation :is(.kjun-navigation-icon, .kjun-navigation-label)::before, .kjun-floating-navigation > a { transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out); }
 .kjun-accordion-trigger svg { transition: transform var(--_kjun-motion-collapse) var(--_kjun-ease-out); }
 .kjun-motion-collapse { overflow: hidden; }
 .kjun-scope[data-motion] { animation: none; }
@@ -38,7 +39,8 @@
 @keyframes kjun-tooltip-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes kjun-tooltip-out { from { opacity: 1; } to { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .kjun-tab-indicator[data-animate="true"], .kjun-tabs[data-variant="pills"] .kjun-tab, .kjun-accordion-trigger svg { transition: none; }
+  .kjun-tab-indicator[data-animate="true"], .kjun-tabs[data-variant="pills"] .kjun-tab, .kjun-accordion-trigger svg,
+  .kjun-bottom-navigation :is(.kjun-navigation-icon, .kjun-navigation-label)::before, .kjun-floating-navigation > a { transition: none; }
   .kjun-scope[data-motion], .kjun-scope[data-motion]::before, .kjun-scope[data-motion] .kjun-modal, .kjun-scope[data-motion] .kjun-drawer { transition: none !important; }
   .kjun-tooltip[data-entering], .kjun-tooltip[data-exiting] { animation-duration: 0s; }
 }

@@ -185,6 +185,7 @@
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/web.css",
       "packages/native/src/actions.tsx",
+      "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
@@ -214,8 +215,10 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/controls.css",
+      "packages/tokens/src/extensions.css",
       "packages/tokens/src/motion.css",
       "packages/tokens/src/web.css",
+      "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/display-primitives.tsx",
@@ -283,6 +286,7 @@
       "packages/vue3/src/date-picker.tsx",
       "packages/react/src/date-picker.tsx",
       "packages/native/src/actions.tsx",
+      "packages/native/src/app-navigation.tsx",
       "packages/native/src/button-group-motion.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/date-picker.tsx",
@@ -483,6 +487,7 @@
       "packages/tokens/src/web.css",
       "packages/vue3/src/market-parts.tsx",
       "packages/react/src/market-panel.tsx",
+      "packages/native/src/app-navigation.tsx",
       "packages/native/src/combobox.tsx",
       "packages/native/src/drawer.tsx",
       "packages/native/src/dropdown.tsx",
@@ -538,6 +543,7 @@
       "packages/tokens/src/web.css",
       "packages/vue3/src/input.tsx",
       "packages/react/src/input.tsx",
+      "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/combobox.tsx",
       "packages/native/src/dropdown.tsx",
@@ -1083,6 +1089,7 @@
     "implementationFiles": [
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/navigation.css",
+      "packages/native/src/app-navigation.tsx",
       "packages/native/src/list.tsx",
       "packages/native/src/navigation.tsx"
     ]
@@ -1319,7 +1326,6 @@
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/web.css",
-      "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/date-picker.tsx",
@@ -1378,7 +1384,9 @@
       "--on-danger"
     ],
     "implementationFiles": [
+      "packages/tokens/src/extensions.css",
       "packages/tokens/src/web.css",
+      "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx"
     ]
   },

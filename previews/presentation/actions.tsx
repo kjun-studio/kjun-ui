@@ -20,6 +20,7 @@ export function actions(name: string) {
     case 'KjunPagination': return <K.KjunPagination currentPage={2} totalPages={5} showFirstLast={false} />;
     case 'KjunTopNavigation': return <K.KjunTopNavigation title="프로젝트" leading={<K.KjunButton variant="ghost" size="sm" prefixIcon="arrow-left" ariaLabel="뒤로 가기" />} actions={<K.KjunButton variant="ghost" size="sm">편집</K.KjunButton>} />;
     case 'KjunBottomNavigation': return <K.KjunBottomNavigation value="home" items={[{ key: 'home', label: '홈', icon: 'home', href: '#' }, { key: 'activity', label: '활동', icon: 'list', href: '#' }, { key: 'settings', label: '설정', icon: 'settings', href: '#' }]} />;
+    case 'KjunFloatingNavigation': return <K.KjunFloatingNavigation value="home" items={[{ key: 'home', label: '홈', icon: 'home', href: '#' }, { key: 'search', label: '검색', icon: 'search', href: '#', badge: true }, { key: 'activity', label: '알림', icon: 'bell', href: '#', badge: 3 }, { key: 'profile', label: '내 정보', icon: 'user', href: '#' }]} />;
     case 'KjunBottomActionBar': return <K.KjunBottomActionBar description="변경 사항을 저장하세요."><K.KjunButton size="lg">변경 사항 저장</K.KjunButton></K.KjunBottomActionBar>;
   }
 }

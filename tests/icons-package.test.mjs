@@ -34,14 +34,14 @@ test('every pinned official node, name and variant is identical in ESM and Commo
 });
 test('legacy names and exports are preserved with pinned Tabler geometry', async () => {
   assert.equal(Object.keys(icons).length, 153);
-  assert.deepEqual(Object.keys(filledIcons), ['heart', 'star', 'info-circle', 'circle-check', 'alert-triangle', 'alert-circle']);
+  assert.deepEqual(Object.keys(filledIcons), ['heart', 'star', 'info-circle', 'circle-check', 'alert-triangle', 'alert-circle', 'home', 'search', 'bell', 'user', 'settings', 'list']);
   const compatibility = await import('@kjun-ui/tokens/icons');
   assert.strictEqual(compatibility.icons, icons);
   assert.strictEqual(compatibility.filledIcons, filledIcons);
   for (const [name, nodes] of Object.entries(icons)) assert.deepEqual(nodes, source.outline[name]);
   for (const name of ['refresh', 'server']) assert.deepEqual(icons[name], source.outline[name]);
   assert.strictEqual(resolveIcon(defaultIcons, 'missing', true).nodes, icons['help-circle']);
-  assert.strictEqual(resolveIcon(defaultIcons, 'search', true).nodes, icons.search);
+  assert.strictEqual(resolveIcon(defaultIcons, 'check', true).nodes, icons.check);
   assert.strictEqual(resolveIcon(defaultIcons, 'constructor').nodes, icons['help-circle']);
 });
 test('registries merge per shape without mutating defaults, parents or siblings', () => {

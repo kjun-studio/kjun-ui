@@ -1,10 +1,29 @@
 import { expect, test, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { demoPalettes } from '../../shared/demo-colors';
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureNavigation(next), next);
 const nav = (page: Page) => page.getByRole('navigation', { name: '주요 탐색' });
 const label = (page: Page, text: string) => nav(page).getByText(text, { exact: true });
 const icon = (page: Page, text: string) => nav(page).getByRole('link', { name: new RegExp('^' + text) }).locator('svg');
 const rect = async (item: ReturnType<typeof label>) => (await item.boundingBox())!;
+const palettes = demoPalettes as Record<string, Record<string, string>>;
+const rgb = (hex: string) => { const n = parseInt(hex.slice(1), 16); return `rgb(${n >> 16 & 255}, ${n >> 8 & 255}, ${n & 255})`; };
+const navigationDivider = (palette: string) => rgb(palettes[palette].divider ?? palettes[palette].border);
+// The fill a destination icon paints: a colour for the filled glyph, none for the outline one.
+const iconFill = (page: Page, text: string) => icon(page, text).evaluate(svg => getComputedStyle(svg.querySelector('path')!).fill);
+// The first full-width, 1px-tall paint on the bar's top edge: an inset shadow on the web, an overlay View on Native.
+const topLine = (page: Page) => nav(page).evaluate(bar => {
+  const shadow = getComputedStyle(bar).boxShadow.match(/^(rgba?\([^)]*\)) 0px (\d+)px 0px 0px inset$/);
+  if (shadow) return { height: Number(shadow[2]), color: shadow[1] };
+  const box = bar.getBoundingClientRect();
+  const line = [...bar.children].find(n => { const r = n.getBoundingClientRect(); return r.top === box.top && r.width === box.width && r.height <= 1; });
+  return line ? { height: line.getBoundingClientRect().height, color: getComputedStyle(line).backgroundColor } : null;
+});
+// The painted badge box around a count: its own element on the web, the bordered View on Native.
+const badgeBox = (page: Page, text: string) => label(page, text).evaluate(el => {
+  const box = el.closest('.kjun-navigation-badge') ?? el.parentElement!, css = getComputedStyle(box);
+  return { height: Math.round(box.getBoundingClientRect().height - (css.boxShadow === 'none' ? 2 * parseFloat(css.borderTopWidth) : 0)), background: css.backgroundColor, color: getComputedStyle(el).color };
+});
 
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: badges do not move icons or labels and selection uses ink and weight`, async ({ page }) => {
@@ -13,14 +32,19 @@ for (const platform of ['react', 'vue3', 'native']) {
       await openFixture(page, platform, '?palette=' + palette, 'bottom-navigation-design');
       await expect(nav(page)).toHaveCSS('height', '64px');
       await expect(nav(page)).toHaveCSS('border-top-width', '0px');
-      await expect(nav(page)).toHaveCSS('box-shadow', 'none');
+      // A 1px divider on the bar's top edge that adds no height.
+      expect(await topLine(page)).toEqual({ height: 1, color: navigationDivider(palette) });
       await expect(page.locator('.kjun-navigation-indicator')).toHaveCount(0);
+      expect(await iconFill(page, '홈')).not.toBe('none');
+      expect(await iconFill(page, '활동')).toBe('none');
       const home = await rect(icon(page, '홈')), activity = await rect(icon(page, '활동'));
       expect(home.width).toBe(24); expect(home.height).toBe(24); expect(activity.y).toBe(home.y);
       expect((await rect(label(page, '홈'))).y).toBe((await rect(label(page, '활동'))).y);
       expect((await rect(label(page, '활동'))).y - activity.y - activity.height).toBe(4);
       const badge = await rect(label(page, '3'));
       expect(badge.y).toBeLessThan(activity.y); expect(badge.x).toBeGreaterThan(activity.x + 12);
+      // An alert fill apart from the selection colour.
+      expect(await badgeBox(page, '3')).toMatchObject({ height: 18, background: rgb(palettes[palette].danger), color: rgb(palettes[palette].onDanger ?? palettes[palette].inverse) });
       await expect(label(page, '홈')).toHaveCSS('font-size', '12px');
       await expect(label(page, '홈')).toHaveCSS('font-weight', '600');
       await expect(label(page, '활동')).toHaveCSS('font-weight', '500');
@@ -33,6 +57,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(label(page, '활동')).toHaveCSS('color', selectedInk);
       await expect(label(page, '홈')).toHaveCSS('font-weight', '500');
       await expect(label(page, '홈')).toHaveCSS('color', unselectedInk);
+      await expect.poll(() => iconFill(page, '홈')).toBe('none');
       expect(await rect(icon(page, '활동'))).toEqual(activity);
       await expect(page.getByTestId('events')).toHaveText('activity');
       await configure(page, { badge: null });

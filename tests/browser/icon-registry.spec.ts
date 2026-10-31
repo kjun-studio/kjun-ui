@@ -12,7 +12,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     for (const [id, definition] of [['extra', alien.outline], ['extra-filled', alien.filled], ['prefix', alien.outline],
       ['nested-outline', rocket.outline], ['nested-filled', alien.filled], ['nested-inherit', alien.outline],
       ['isolated', defaultIcons['help-circle'].outline], ['unknown', defaultIcons['help-circle'].outline],
-      ['fallback', defaultIcons.search.outline], ['default-heart', defaultIcons.heart.filled]] as const)
+      ['fallback', defaultIcons.check.outline], ['default-heart', defaultIcons.heart.filled]] as const)
       await expect.poll(() => rendered(page.getByTestId(id))).toEqual(paths(definition));
     await expect(page.getByTestId('colored-node').locator('path[fill="currentColor"]')).toHaveCSS('fill', 'rgb(182, 29, 216)');
     await page.evaluate(() => (window as any).updateIcons(true));

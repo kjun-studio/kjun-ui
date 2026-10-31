@@ -16,7 +16,7 @@ export function RegistryCases({ K, native = false }: { K: any; native?: boolean 
   }
   return <>
     <K.KjunProvider {...colors} icons={registration}><K.KjunFeedbackProvider>
-      <div data-testid="colored-node"><K.KjunIcon name="accessible" size={24} color="#b61dd8" /></div>{icon('extra', 'alien')}{icon('extra-filled', 'alien', true)}{icon('unknown', 'missing')}{icon('fallback', 'search', true)}
+      <div data-testid="colored-node"><K.KjunIcon name="accessible" size={24} color="#b61dd8" /></div>{icon('extra', 'alien')}{icon('extra-filled', 'alien', true)}{icon('unknown', 'missing')}{icon('fallback', 'check', true)}
       <div data-testid="prefix"><K.KjunButton prefixIcon="alien">내부 아이콘</K.KjunButton></div>
       <K.KjunProvider {...colors} icons={{ custom: { outline: rocket.outline } }}>
         {icon('nested-outline', 'custom')}{icon('nested-filled', 'custom', true)}{icon('nested-inherit', 'alien')}

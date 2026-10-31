@@ -1,4 +1,4 @@
-.kjun-list-section,.kjun-top-navigation,.kjun-bottom-navigation,.kjun-bottom-action-bar{min-width:0;max-width:100%;color:var(--_kjun-color-text);background:var(--_kjun-color-surface)}
+.kjun-list-section,.kjun-top-navigation,.kjun-bottom-navigation,.kjun-floating-navigation,.kjun-bottom-action-bar{min-width:0;max-width:100%;color:var(--_kjun-color-text);background:var(--_kjun-color-surface)}
 .kjun-list-heading{display:flex;align-items:center;justify-content:space-between;gap:var(--_kjun-extension-list-gap);padding:var(--_kjun-extension-list-padding)}.kjun-list-heading h3{font-size:var(--_kjun-type-card-title-size);margin:0;line-height:var(--_kjun-type-card-title-line);font-weight:var(--_kjun-type-card-title-weight);letter-spacing:var(--_kjun-type-card-title-tracking)}.kjun-list-heading p{margin:var(--_kjun-geometry-dimension-value4) 0 0;font-size:var(--_kjun-type-caption-size);color:var(--_kjun-color-text-secondary);overflow-wrap:anywhere;line-height:var(--_kjun-type-caption-line);font-weight:var(--_kjun-type-caption-weight);letter-spacing:var(--_kjun-type-caption-tracking)}
 .kjun-list{list-style:none;padding:0;margin:0}.kjun-list-row{display:flex;align-items:center;gap:var(--_kjun-extension-list-gap);position:relative;min-width:0}/* Dividers start where the text does: the row inset, or past the fixed leading column. */
 .kjun-list-row:not(:last-child)::after,.kjun-list-item:not(:last-child)::after{content:"";position:absolute;inset-inline:var(--_kjun-list-divider-inset,var(--_kjun-extension-list-padding)) 0;bottom:0;height:var(--_kjun-border-default-width);background:var(--_kjun-color-divider);pointer-events:none}
@@ -26,7 +26,7 @@
 .kjun-chip button:hover{background:var(--_kjun-color-hover)}
 .kjun-chip[data-disabled=true]{opacity:var(--_kjun-state-opacity-disabled)}
 /* Links and page buttons use the system ring instead of the browser default; Vue Breadcrumb and Pagination use their own ds- classes. */
-.kjun-scope :is(.kjun-list-main,.kjun-bottom-navigation a,.kjun-chip button,.kjun-breadcrumb a,.kjun-breadcrumb-link,.kjun-external-link,.kjun-pagination-button):focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
+.kjun-scope :is(.kjun-list-main,.kjun-bottom-navigation a,.kjun-floating-navigation a,.kjun-chip button,.kjun-breadcrumb a,.kjun-breadcrumb-link,.kjun-external-link,.kjun-pagination-button):focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
 /* Kept out of the :is() above: its :not() would raise that whole rule over the inset overrides below. */
 .kjun-scope .kjun-pagination button:not(.kjun-select-trigger):focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
 /* Inline text links round the ring so it does not box the glyphs. */
@@ -35,7 +35,7 @@
 .kjun-scope .kjun-chip button:focus-visible{outline-offset:var(--_kjun-state-focus-inset-offset)}
 /* Bottom bars meet the screen edges, so their items draw the ring inside, like tabs. */
 .kjun-scope .kjun-bottom-navigation a:focus-visible{outline-offset:var(--_kjun-state-focus-inset-offset)}
-.kjun-scope :is(.kjun-list-main[aria-disabled=true],.kjun-bottom-navigation a[aria-disabled=true],.kjun-list-main:disabled){opacity:var(--_kjun-state-opacity-disabled);cursor:default}
+.kjun-scope :is(.kjun-list-main[aria-disabled=true],.kjun-bottom-navigation a[aria-disabled=true],.kjun-floating-navigation a[aria-disabled=true],.kjun-list-main:disabled){opacity:var(--_kjun-state-opacity-disabled);cursor:default}
 .kjun-slider {
   width:100%; min-width:var(--_kjun-extension-slider-minimum-width); display:grid; gap:var(--_kjun-geometry-dimension-value4);
 }
@@ -152,6 +152,8 @@
 .kjun-navigation-leading .kjun-button-label { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
 .kjun-bottom-navigation { display:flex; flex-shrink:0; }
+/* A hairline on the surface keeps the bar apart from content scrolling under it; a bar without a surface stays seamless. */
+.kjun-bottom-navigation:not([data-surface="false"]) { box-shadow:inset 0 var(--_kjun-border-default-width) 0 var(--_kjun-color-divider); }
 .kjun-bottom-navigation > a {
   position:relative;
   display:flex; flex:1; min-width:0; min-height:var(--_kjun-extension-bottom-navigation-minimum-height);
@@ -163,33 +165,65 @@
   font-weight:var(--_kjun-type-label-weight); letter-spacing:var(--_kjun-type-caption-tracking);
 }
 .kjun-bottom-navigation[data-icons] > a { justify-content:flex-start; }
+/* The selected destination swaps to the filled icon; colour and weight carry it without a separate marker. */
 .kjun-bottom-navigation > a[aria-current] { color:var(--_kjun-color-brand); font-weight:var(--_kjun-type-control-weight); }
-/* The indicator hangs under the label, so a neighbour's wrapped label does not pull it away. */
-.kjun-bottom-navigation > a[aria-current] .kjun-navigation-label::after {
-  content:""; position:absolute; top:calc(100% + var(--_kjun-extension-bottom-navigation-indicator-offset));
-  left:50%; transform:translateX(-50%); width:var(--_kjun-extension-bottom-navigation-indicator-width);
-  height:var(--_kjun-extension-bottom-navigation-indicator-height); border-radius:var(--_kjun-geometry-radius-radius9999);
-  background:currentColor; pointer-events:none;
-}
 .kjun-navigation-icon {
   position:relative; display:block; flex-shrink:0;
   width:var(--_kjun-extension-bottom-navigation-icon-size); height:var(--_kjun-extension-bottom-navigation-icon-size);
 }
 .kjun-navigation-label { position:relative; max-width:100%; overflow-wrap:anywhere; }
+/* Press feedback: a circle behind the icon, or a pill behind a text-only label. isolation keeps it above the bar. */
+.kjun-bottom-navigation[data-icons] .kjun-navigation-icon, .kjun-bottom-navigation:not([data-icons]) .kjun-navigation-label { isolation:isolate; }
+.kjun-bottom-navigation[data-icons] .kjun-navigation-icon::before, .kjun-bottom-navigation:not([data-icons]) .kjun-navigation-label::before {
+  content:""; position:absolute; z-index:-1; top:50%; height:var(--_kjun-extension-bottom-navigation-press-size);
+  transform:translateY(-50%); border-radius:var(--_kjun-geometry-radius-radius9999); background:transparent; pointer-events:none;
+}
+.kjun-bottom-navigation[data-icons] .kjun-navigation-icon::before { left:50%; width:var(--_kjun-extension-bottom-navigation-press-size); transform:translate(-50%, -50%); }
+.kjun-bottom-navigation:not([data-icons]) .kjun-navigation-label::before { left:calc(0px - var(--_kjun-extension-bottom-navigation-press-padding-x)); right:calc(0px - var(--_kjun-extension-bottom-navigation-press-padding-x)); }
+@media (hover:hover) {
+  .kjun-bottom-navigation > a:not([aria-disabled="true"]):hover :is(.kjun-navigation-icon, .kjun-navigation-label)::before { background:var(--_kjun-color-hover); }
+  .kjun-floating-navigation > a:not([aria-current]):not([aria-disabled="true"]):hover { background:var(--_kjun-color-hover); }
+}
+.kjun-bottom-navigation > a:not([aria-disabled="true"]):active :is(.kjun-navigation-icon, .kjun-navigation-label)::before { background:var(--_kjun-color-active); }
 .kjun-navigation-badge {
   position:absolute; top:calc(0px - var(--_kjun-extension-bottom-navigation-badge-offset));
   left:calc(100% - var(--_kjun-extension-bottom-navigation-badge-overlap));
   display:flex; align-items:center; justify-content:center; pointer-events:none; white-space:nowrap;
   min-width:var(--_kjun-extension-bottom-navigation-badge-minimum-size); min-height:var(--_kjun-extension-bottom-navigation-badge-minimum-size);
   padding:0 var(--_kjun-extension-bottom-navigation-badge-padding-x); border-radius:var(--_kjun-extension-bottom-navigation-badge-radius);
-  /* A filled count reads against the bar; the surface ring cuts it out of the icon strokes it overlaps. */
-  background:var(--_kjun-color-brand); color:var(--_kjun-color-on-brand);
+  /* An alert colour apart from the selection; the surface ring cuts it out of the icon strokes it overlaps. */
+  background:var(--_kjun-color-danger); color:var(--_kjun-color-on-danger);
   box-shadow:0 0 0 var(--_kjun-border-control-width) var(--_kjun-color-surface);
   font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-control-weight);
+  font-variant-numeric:tabular-nums;
+}
+/* A dot sits on the icon's top-right corner. */
+.kjun-navigation-badge[data-dot] {
+  top:0; left:calc(100% - var(--_kjun-extension-bottom-navigation-dot-size) + var(--_kjun-border-control-width));
+  min-width:0; min-height:0; width:var(--_kjun-extension-bottom-navigation-dot-size); height:var(--_kjun-extension-bottom-navigation-dot-size); padding:0;
 }
 /* Without a surface the bar shows the page background, so the ring takes that colour instead. */
 .kjun-bottom-navigation[data-surface="false"] .kjun-navigation-badge { box-shadow:0 0 0 var(--_kjun-border-control-width) var(--_kjun-color-background); }
 .kjun-navigation-label > .kjun-navigation-badge { left:100%; margin-left:var(--_kjun-extension-bottom-navigation-badge-offset); }
+.kjun-navigation-label > .kjun-navigation-badge[data-dot] { top:0; }
+/* A capsule detached from the screen edge: icons only, the selected destination inverted. */
+.kjun-floating-navigation {
+  display:flex; flex-shrink:0; width:max-content; max-width:calc(100% - 2 * var(--_kjun-extension-floating-navigation-offset)); box-sizing:border-box;
+  margin:0 auto var(--_kjun-extension-floating-navigation-offset); padding:var(--_kjun-extension-floating-navigation-padding);
+  gap:var(--_kjun-extension-floating-navigation-gap); border-radius:var(--_kjun-extension-floating-navigation-radius);
+  background:var(--_kjun-color-surface); box-shadow:0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border), var(--_kjun-elevation-floating);
+}
+.kjun-floating-navigation > a {
+  position:relative; display:flex; flex:none; align-items:center; justify-content:center; box-sizing:border-box;
+  min-width:var(--_kjun-extension-floating-navigation-item-size); height:var(--_kjun-extension-floating-navigation-item-size);
+  border-radius:var(--_kjun-extension-floating-navigation-radius); color:var(--_kjun-color-text-secondary); text-decoration:none; white-space:nowrap;
+  font-size:var(--_kjun-type-control-size); line-height:var(--_kjun-type-control-line); font-weight:var(--_kjun-type-control-weight); letter-spacing:var(--_kjun-type-control-tracking);
+}
+.kjun-floating-navigation > a:has(> .kjun-navigation-label) { padding:0 var(--_kjun-extension-floating-navigation-text-padding-x); }
+.kjun-floating-navigation .kjun-navigation-icon { width:var(--_kjun-extension-floating-navigation-icon-size); height:var(--_kjun-extension-floating-navigation-icon-size); }
+.kjun-floating-navigation > a[aria-current] { background:var(--_kjun-color-text); color:var(--_kjun-color-surface); }
+.kjun-floating-navigation > a:not([aria-current]):not([aria-disabled="true"]):active { background:var(--_kjun-color-active); }
+.kjun-floating-navigation > a[aria-current] .kjun-navigation-badge { box-shadow:0 0 0 var(--_kjun-border-control-width) var(--_kjun-color-text); }
 /* The query measures content width; outer insets are excluded. */
 .kjun-bottom-action-bar {
   container:kjun-bottom-action / inline-size; flex-shrink:0;

@@ -1,11 +1,11 @@
 {
-  "total": 82,
+  "total": 83,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 82,
+      "provided": 83,
       "counts": {
-        "supported": 82,
+        "supported": 83,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 82,
+      "provided": 83,
       "counts": {
-        "supported": 82,
+        "supported": 83,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 82,
+      "provided": 83,
       "counts": {
         "supported": 0,
-        "preview": 82,
+        "preview": 83,
         "review": 0,
         "unsupported": 0
       },
@@ -981,6 +981,37 @@
       "docs": "/components/filter-group",
       "category": "inputs",
       "differences": "Vue v-model·change와 React·Native onValueChange·onChange를 사용합니다. scroll은 필터의 가로 배치이며 데이터 요청과 무관합니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "KjunFloatingNavigation",
+      "title": "FloatingNavigation",
+      "docs": "/components/floating-navigation",
+      "category": "navigation",
+      "differences": "웹의 href는 실제 링크입니다. Native는 이동 요청 콜백을 사용하며 Native Web에서는 href도 연결합니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -2628,7 +2659,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 82
+      "componentCount": 83
     }
   ]
 }

@@ -20,8 +20,12 @@ export const extensions: Record<string, GuideAuthor> = {
     ],
   },
   KjunBottomNavigation: {
-    parts: [t("현재 목적지", "앱의 value가 현재 목적지를 결정합니다. 강조색과 라벨 굵기, 하단 선택 표시선으로 구분합니다.", "홈"), t("다른 목적지", "웹에서는 링크, Native에서는 앱 이동 요청입니다.", "활동"), t("보조 수치", "아이콘 오른쪽 위에 표시하며 아이콘·라벨의 정렬에 영향을 주지 않습니다.", "3", true)], related: "app-screen",
+    parts: [t("현재 목적지", "앱의 value가 현재 목적지를 결정합니다. 채운 아이콘과 강조색, 라벨 굵기로 구분합니다.", "홈"), t("다른 목적지", "웹에서는 링크, Native에서는 앱 이동 요청입니다.", "활동"), t("보조 수치", "위험 색으로 아이콘 오른쪽 위에 표시하며 아이콘·라벨의 정렬에 영향을 주지 않습니다. 99보다 크면 99+로 줄입니다.", "3", true)], related: "app-screen",
     states: [{ id: "current", label: "목적지 변경", description: "소비자가 활동을 현재 위치로 제공합니다.", values: { destination: "activity" } }, { id: "keyboard", label: "키보드 표시", description: "기본 hideOnKeyboard=true로 탐색 영역을 숨깁니다.", settings: { keyboardVisible: true } }],
+  },
+  KjunFloatingNavigation: {
+    parts: [p("현재 목적지", "앱의 value가 현재 목적지를 결정합니다. 글자색 면에 채운 아이콘으로 반전합니다.", '[aria-current="page"]'), p("다른 목적지", "아이콘만 보이며 label을 접근성 이름으로 읽습니다.", '[aria-label="내 정보"]'), t("보조 수치", "위험 색 배지입니다. true는 점으로 표시합니다.", "3", true)], related: "app-screen",
+    states: [{ id: "current", label: "목적지 변경", description: "소비자가 알림을 현재 위치로 제공합니다.", values: { destination: "activity" } }, { id: "keyboard", label: "키보드 표시", description: "기본 hideOnKeyboard=true로 탐색 영역을 숨깁니다.", settings: { keyboardVisible: true } }],
   },
   KjunBottomActionBar: {
     parts: [t("보조 설명", "14px·줄 높이 20px의 보조 설명입니다. 긴 설명은 줄바꿈합니다.", "저장하면 모든 기기에 적용됩니다.", true), t("주요 행동", "좁은 영역에서 확인 버튼이 남는 폭을 채웁니다. 저장 요청은 앱이 처리합니다.", "변경 사항 저장")], related: "app-screen",

@@ -2740,6 +2740,42 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunFloatingNavigation",
+    "sources": {
+      "vue3": "packages/vue3/src/app-navigation.tsx",
+      "react": "packages/react/src/app-navigation.tsx",
+      "native": "packages/native/src/app-navigation.tsx"
+    },
+    "category": "navigation",
+    "kind": "component",
+    "owner": "KjunFloatingNavigation",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/floating-navigation",
+    "tests": [
+      "tests/extensions.test.mjs",
+      "tests/browser/floating-navigation-design.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
     "name": "KjunBottomActionBar",
     "sources": {
       "vue3": "packages/vue3/src/app-navigation.tsx",

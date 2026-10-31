@@ -36,8 +36,8 @@ test('selection preserves size and only supported current shape, never restores 
   assert.deepEqual(selected, { name: 'heart', size: 16, filled: false });
   selected = selectIcon({ ...selected, size: 24, filled: true }, entry('star'));
   assert.deepEqual(selected, { name: 'star', size: 24, filled: true });
-  selected = selectIcon(selected, entry('search'));
-  assert.deepEqual(selected, { name: 'search', size: 24, filled: false });
+  selected = selectIcon(selected, entry('check'));
+  assert.deepEqual(selected, { name: 'check', size: 24, filled: false });
   assert.equal(selectIcon(selected, entry('heart')).filled, false);
 });
 test('registered configurations cover every packed name, size and filled shape', () => {

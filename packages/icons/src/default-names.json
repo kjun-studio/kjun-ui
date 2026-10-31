@@ -160,6 +160,12 @@
     "info-circle",
     "circle-check",
     "alert-triangle",
-    "alert-circle"
+    "alert-circle",
+    "home",
+    "search",
+    "bell",
+    "user",
+    "settings",
+    "list"
   ]
 }

@@ -22,7 +22,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await nav.scrollIntoViewIfNeeded();const r=await box(home);await activity.click();await expect(activity).toHaveAttribute('aria-current','page');expect(await box(home)).toEqual(r);
   });
 
-  test(`${platform}: bottom navigation indicator follows selection without covering long labels`, async ({ page }) => {
+  test(`${platform}: bottom navigation selection fills the icon without marks under long labels`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 500 });
     await visit(page, platform, 'KjunBottomNavigation');
     await configure(page, 'KjunBottomNavigation', { long: true });
@@ -31,18 +31,14 @@ for (const platform of ['react', 'vue3', 'native']) {
     await activity.click();
     await expect(activity).toHaveAttribute('aria-current', 'page');
     await expect(nav.locator('[aria-current="page"]')).toHaveCount(1);
-    // The indicator hangs 4px under the selected label (not the item bottom), centered on it.
-    const marker = await activity.evaluate((el, native) => {
-      if (native) {
-        const label = el.lastElementChild!, text = label.firstElementChild!, indicator = label.lastElementChild!;
-        const css = getComputedStyle(indicator), box = indicator.getBoundingClientRect(), textBox = text.getBoundingClientRect();
-        return { width: css.width, height: css.height, gap: Math.round(box.top - textBox.bottom), offCenter: Math.abs(Math.round(box.left + box.width / 2 - textBox.left - textBox.width / 2)), background: css.backgroundColor };
-      }
-      const label = el.querySelector('.kjun-navigation-label')!, css = getComputedStyle(label, '::after');
-      return { width: css.width, height: css.height, gap: Math.round(parseFloat(css.top) - label.getBoundingClientRect().height), offCenter: 0, background: css.backgroundColor };
-    }, platform === 'native');
-    expect(marker).toMatchObject({ width: '20px', height: '3px', gap: 4, offCenter: 0 });
-    expect(marker.background).not.toBe('rgba(0, 0, 0, 0)');
+    // Selection swaps to the filled icon; nothing hangs under the long label.
+    const fills = await nav.locator('svg').evaluateAll(all => all.map(svg => getComputedStyle(svg.querySelector('path')!).fill));
+    expect(fills[0]).toBe('none');
+    const label = activity.getByText(/모든 프로젝트 활동 내역/);
+    const below = await activity.evaluate((el, text) => { const t = [...el.querySelectorAll('*')].find(n => n.textContent === text && !n.children.length)!.getBoundingClientRect();
+      return [...el.querySelectorAll('*')].filter(n => { const r = n.getBoundingClientRect(); return r.top >= t.bottom && r.height > 0 && r.height <= 4; }).length; }, '모든 프로젝트 활동 내역');
+    expect(below).toBe(0);
+    await expect(label).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
     await captureReview(page, { path: `${output}/${platform}-bottom-long.png` });
     // CSS zoom exercises the same layout at twice its visual scale.

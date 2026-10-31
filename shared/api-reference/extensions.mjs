@@ -55,6 +55,7 @@ const topNavigationSlots = {
 };
 const valueDescription = {
   KjunBottomNavigation: "현재 목적지의 key입니다. 실제 라우팅 결과에 따라 앱이 갱신합니다.",
+  KjunFloatingNavigation: "현재 목적지의 key입니다. 실제 라우팅 결과에 따라 앱이 갱신합니다.",
   KjunSlider: "현재 숫자 값입니다. min~max 범위의 유한한 값을 전달합니다.",
   KjunRangeSlider: "순서가 있는 [시작 값, 끝 값] 숫자 쌍입니다. 시작 값은 끝 값보다 클 수 없습니다.",
   KjunTimePicker: "분 단위는 HH:mm, 초 단위는 HH:mm:ss이며 비어 있으면 null입니다. 날짜·시간대는 포함하지 않습니다.",
@@ -82,7 +83,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (name === "KjunListRow" && key === "icon") entry = detail("앞쪽 열에 그릴 아이콘 이름입니다.", { "크기·색": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 40px 앞쪽 열 가운데에 놓습니다.", "leading과 함께": platform === "vue3" ? "leading 슬롯이 있으면 슬롯을 그립니다." : "leading이 있으면 leading을 그립니다." });
     else if (childProps[key]) entry = childProps[key];
     else if (key === "value" || key === "modelValue") entry = detail(valueDescription[name], { "상태 책임": guides[name].interaction });
-    else if (key === "items") entry = detail("안정적인 key와 이름을 가진 목적지 목록입니다.", { "항목 필드": "key: 고유 문자열, label: 전체 이름, href: 웹 링크 주소, icon?: 아이콘 이름, badge?: 문자열·숫자, disabled?: 이동 비활성. 웹에서는 href를 제공하세요.", "권장 사용": "2~5개의 주요 목적지를 권장합니다. 항목 순서와 현재 key는 앱에서 관리합니다." });
+    else if (key === "items") entry = detail("안정적인 key와 이름을 가진 목적지 목록입니다.", { "항목 필드": "key: 고유 문자열, label: 전체 이름, href: 웹 링크 주소, icon?: 아이콘 이름, badge?: 문자열·숫자·true(점), disabled?: 이동 비활성. 99보다 큰 숫자는 99+로 표시하고 접근성 이름에는 실제 값을 읽습니다. 웹에서는 href를 제공하세요.", "권장 사용": "2~5개의 주요 목적지를 권장합니다. 항목 순서와 현재 key는 앱에서 관리합니다." });
     else if (key === "thumbLabels") entry = { default: '["최솟값", "최댓값"]', ...detail("시작·끝 손잡이의 접근성 이름 쌍입니다.", { "키보드": "Tab 순서는 시작→끝으로 고정됩니다. 손잡이는 서로 넘지 않으며 Home/End도 다른 손잡이 값으로 제한됩니다." }) };
     else if (key === "precision") entry = name === "KjunTimePicker" ? detail("minute는 시·분, second는 시·분·초를 제공합니다.", { "값 형태": "정밀도를 바꿀 때 소비자가 value 형식도 함께 바꾸거나 null로 초기화하세요." }) : detail("수량의 소수 자릿수입니다. 0~6의 정수를 받습니다.", { "반올림": "Enter·blur 시 지정 자리로 반올림합니다. 정확히 절반이면 절댓값이 커지는 방향이며 이후 min/max로 제한합니다.", "설정 제약": "value·min·max·step은 precision으로 표현 가능해야 하며 정수 스케일 값은 Number.MAX_SAFE_INTEGER 범위여야 합니다." });
     else if (["min", "max", "step"].includes(key)) entry = detail(name === "KjunTimePicker" ? (key === "min" ? "선택할 수 있는 가장 이른 시각입니다." : "선택할 수 있는 가장 늦은 시각입니다.") : key === "step" ? (name === "KjunQuantityStepper" ? "버튼과 방향키의 증감 단위입니다. 직접 입력은 배수로 강제하지 않습니다." : "최솟값부터 시작하는 선택 간격입니다. 소수 여섯 자리까지 지원합니다.") : key === "min" ? "허용하는 최솟값입니다." : "허용하는 최댓값입니다.", { "범위": name === "KjunTimePicker" ? "precision과 같은 형식으로 전달하고 min ≤ max여야 합니다. 자정을 넘는 범위는 지원하지 않습니다." : name === "KjunQuantityStepper" ? "min ≤ max이고 step > 0이어야 합니다. 범위를 벗어난 직접 입력은 확정할 때 제한합니다." : "min < max, step > 0이어야 합니다. max가 step에 맞지 않으면 max 이하의 마지막 단계를 사용합니다." });
@@ -100,7 +101,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (name === "KjunRangeSlider" && platform === "vue3") props.modelValue.type = "[number, number]";
   const events = {}, slots = {};
   if (platform === "vue3") {
-    const eventKeys = name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : name === "KjunBottomNavigation" ? { navigate: "onNavigate" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : {};
+    const eventKeys = name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
     const slotNames = { KjunListRow: ["default", "leading", "trailing", "actions"], KjunListSection: ["actions", "default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"] }[name] || [];
     for (const key of slotNames) {
@@ -108,5 +109,5 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
       slots[key] = { ...definition, details: definition.details.map(row => row.label === "슬롯 데이터" ? { ...row, text: "제공 데이터 없음" } : row) };
     }
   }
-  return [platform, { props, events, slots, ownership: [guides[name].interaction, guides[name].differences], types: name === "KjunBottomNavigation" ? [fields("NavigationDestination", "목적지 목록의 항목입니다.", [["key", "string", "고유한 목적지 key"], ["label", "string", "전체 목적지 이름"], ["href", platform === "native" ? "string | undefined" : "string", "웹 이동 주소. Native에서는 앱 콜백으로 이동합니다."], ["icon", "string | undefined", "보조 아이콘"], ["badge", "string | number | undefined", "보조 수치 또는 짧은 라벨"], ["disabled", "boolean | undefined", "이 목적지 이동 비활성"]])] : [] }];
+  return [platform, { props, events, slots, ownership: [guides[name].interaction, guides[name].differences], types: ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? [fields("NavigationDestination", "목적지 목록의 항목입니다.", [["key", "string", "고유한 목적지 key"], ["label", "string", "전체 목적지 이름"], ["href", platform === "native" ? "string | undefined" : "string", "웹 이동 주소. Native에서는 앱 콜백으로 이동합니다."], ["icon", "string | undefined", "보조 아이콘"], ["badge", "string | number | boolean | undefined", "보조 수치 또는 짧은 라벨. true는 점으로 표시하고 99보다 큰 숫자는 99+로 줄입니다."], ["disabled", "boolean | undefined", "이 목적지 이동 비활성"]])] : [] }];
 }))]));

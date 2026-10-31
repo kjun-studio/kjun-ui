@@ -104,19 +104,28 @@
       "actionsGap": { "$ref": "dimension.value8" }
     },
     "bottomNavigation": {
-      "indicatorWidth": 20,
-      "indicatorHeight": 3,
-      "indicatorOffset": { "$ref": "dimension.value4" },
       "minimumHeight": { "$ref": "dimension.value64" },
       "iconSize": 24,
       "itemGap": { "$ref": "dimension.value4" },
       "itemPaddingX": { "$ref": "dimension.value4" },
       "itemPaddingY": { "$ref": "dimension.value10" },
-      "badgeMinimumSize": 16,
+      "badgeMinimumSize": 18,
       "badgePaddingX": { "$ref": "dimension.value4" },
       "badgeOffset": { "$ref": "dimension.value4" },
-      "badgeOverlap": { "$ref": "dimension.value8" },
-      "badgeRadius": { "$ref": "radius.radius9999" }
+      "badgeOverlap": { "$ref": "dimension.value10" },
+      "badgeRadius": { "$ref": "radius.radius9999" },
+      "dotSize": { "$ref": "dimension.value8" },
+      "pressSize": { "$ref": "dimension.value40" },
+      "pressPaddingX": { "$ref": "dimension.value12" }
+    },
+    "floatingNavigation": {
+      "itemSize": 52,
+      "iconSize": { "$ref": "extensions.bottomNavigation.iconSize" },
+      "padding": { "$ref": "dimension.value6" },
+      "gap": { "$ref": "dimension.value4" },
+      "offset": { "$ref": "dimension.value16" },
+      "radius": { "$ref": "radius.radius9999" },
+      "textPaddingX": { "$ref": "dimension.value16" }
     },
     "avatar": {
       "xs": 24,

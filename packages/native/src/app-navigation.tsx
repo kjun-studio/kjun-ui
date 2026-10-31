@@ -1,9 +1,11 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
+import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
+import { shadowLayers } from "../../../shared/package-runtime/elevation";
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
 import { Children, Fragment, isValidElement, useState, type ReactNode } from "react";
-import { View, Platform, type TextStyle, type GestureResponderEvent, type LayoutChangeEvent } from "react-native";
+import { View, Platform, type ColorValue, type TextStyle, type GestureResponderEvent, type LayoutChangeEvent } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
 import { KText, content } from "./internal";
@@ -47,7 +49,27 @@ export function KjunTopNavigation({ title, description, leading, actions, safeAr
     </View>
   </TopNavigationContext.Provider>;
 }
-export interface NavigationDestination { key: string; label: string; href?: string; icon?: string; badge?: string | number; disabled?: boolean }
+export interface NavigationDestination { key: string; label: string; href?: string; icon?: string;
+  /** A count or short text; true draws a dot. Numbers over 99 show 99+, and the accessible name keeps the value. */
+  badge?: NavigationBadge; disabled?: boolean }
+// The ring that cuts a badge out of the icon is a border here (a box-shadow outside the box on Web), so the box grows by it.
+function NavigationBadgeMark({ badge, ring, onIcon }: { badge: NavigationDestination["badge"]; ring: ColorValue; onIcon: boolean }) {
+  const { colors } = useKjunStyles();
+  const geometry = tokens.extensions.bottomNavigation;
+  const width = tokens.border.controlWidth;
+  const mark = navigationBadge(badge);
+  if (!mark) return null;
+  const size = mark.dot ? geometry.dotSize : geometry.badgeMinimumSize;
+  return <View pointerEvents="none" aria-hidden={true} style={{
+    position: "absolute", top: (mark.dot ? 0 : -geometry.badgeOffset) - width,
+    left: onIcon ? (mark.dot ? geometry.iconSize - geometry.dotSize : geometry.iconSize - geometry.badgeOverlap - width) : "100%",
+    marginLeft: onIcon ? 0 : geometry.badgeOffset - width,
+    minWidth: size + 2 * width, minHeight: size + 2 * width,
+    paddingHorizontal: mark.dot ? 0 : geometry.badgePaddingX, borderRadius: geometry.badgeRadius,
+    borderWidth: width, borderColor: ring, backgroundColor: colors.danger, alignItems: "center", justifyContent: "center",
+  }}>{!mark.dot && <KText style={{ ...typeStyle('caption'), fontWeight: typeStyle('control').fontWeight, fontVariant: ["tabular-nums"], color: colors.onDanger }}>{mark.text}</KText>}</View>;
+}
+type PressState = { pressed: boolean; hovered?: boolean };
 export interface KjunBottomNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: (key: string, event: GestureResponderEvent) => void;
   /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
   surface?: boolean }
@@ -58,40 +80,75 @@ export function KjunBottomNavigation({ items, value, ariaLabel, safeAreaBottom =
   const geometry = tokens.extensions.bottomNavigation;
   const hasIcons = items.some(item => item.icon);
   if (keyboardVisible && hideOnKeyboard) return null;
+  // Without a surface the bar shows the page background, so the badge ring takes that colour.
+  const ring = surface ? colors.surface : colors.background;
+  const label = typeStyle('caption');
   return <View role="navigation" accessibilityLabel={ariaLabel} style={{ flexShrink: 0, flexDirection: "row", backgroundColor: surface ? colors.surface : "transparent", paddingBottom: Math.max(0, safeAreaBottom) }}>
+    {/* A hairline on the surface keeps the bar apart from content scrolling under it, without adding height. */}
+    {surface && <View pointerEvents="none" aria-hidden={true} style={{ position: "absolute", top: 0, left: 0, right: 0, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
     {items.map(item => {
       const selected = item.key === value;
       const ink = selected ? colors.brand : colors.textSecondary;
-      // A filled count reads against the bar; the surface ring (drawn as a border outside the Web box) cuts it out of the icon.
-      const ring = tokens.border.controlWidth;
-      const badge = item.badge != null && <View pointerEvents="none" aria-hidden={true} style={{
-        position: "absolute", top: -geometry.badgeOffset - ring,
-        left: hasIcons ? geometry.iconSize - geometry.badgeOverlap - ring : "100%",
-        marginLeft: hasIcons ? 0 : geometry.badgeOffset - ring,
-        minWidth: geometry.badgeMinimumSize + 2 * ring, minHeight: geometry.badgeMinimumSize + 2 * ring,
-        paddingHorizontal: geometry.badgePaddingX, borderRadius: geometry.badgeRadius,
-        // Without a surface the bar shows the page background, so the ring takes that colour.
-        borderWidth: ring, borderColor: surface ? colors.surface : colors.background,
-        backgroundColor: colors.brand, alignItems: "center", justifyContent: "center",
-      }}><KText style={{ ...typeStyle('caption'), fontWeight: typeStyle('control').fontWeight, color: colors.onBrand }}>{item.badge}</KText></View>;
+      const badge = <NavigationBadgeMark badge={item.badge} ring={ring} onIcon={hasIcons} />;
+      // Press feedback: a circle behind the icon, or a pill behind a text-only label.
+      const press = ({ pressed, hovered }: PressState) => !item.disabled && (pressed || hovered) ? (pressed ? colors.active : colors.hover) : "transparent";
       // Bottom bars meet the screen edges, so the ring stays inside the item, like tabs.
       return <Pressable key={item.key} focusRingInset
         {...(Platform.OS === "web" ? { href: item.disabled ? undefined : item.href, "aria-current": selected ? "page" : undefined } : {})}
         accessibilityRole={Platform.OS === "web" && item.href ? "link" : "button"}
-        accessibilityLabel={item.label + (item.badge != null ? ", " + item.badge : "")}
+        accessibilityLabel={navigationLabel(item.label, item.badge, m.newContent)}
         accessibilityState={{ selected, disabled: !!item.disabled }} disabled={item.disabled}
         onPress={event => onNavigate?.(item.key, event)}
         style={{ flex: 1, minWidth: 0, minHeight: geometry.minimumHeight, alignItems: "center",
           justifyContent: hasIcons ? "flex-start" : "center", gap: geometry.itemGap,
           paddingHorizontal: geometry.itemPaddingX, paddingVertical: geometry.itemPaddingY,
           opacity: item.disabled ? tokens.states.opacity.disabled : 1 }}>
-        {hasIcons && <View style={{ width: geometry.iconSize, height: geometry.iconSize, flexShrink: 0 }}>
-          {!!item.icon && <KjunIcon name={item.icon} size={geometry.iconSize} color={ink} />}{badge}
-        </View>}
-        <View style={{ maxWidth: "100%" }}><KText style={{ ...typeStyle('caption'), textAlign: "center", fontWeight: selected ? typeStyle('control').fontWeight : typeStyle('label').fontWeight, color: ink }}>{item.label}</KText>{!hasIcons && badge}
-          {/* Under the label, so a neighbour's wrapped label does not pull it away. */}
-          {selected && <View pointerEvents="none" aria-hidden={true} style={{ position: "absolute", top: "100%", marginTop: geometry.indicatorOffset, left: "50%", marginLeft: -geometry.indicatorWidth / 2, width: geometry.indicatorWidth, height: geometry.indicatorHeight, borderRadius: geometry.indicatorHeight, backgroundColor: ink }} />}
-        </View>
+        {(state: PressState) => <>
+          {hasIcons && <View style={{ width: geometry.iconSize, height: geometry.iconSize, flexShrink: 0 }}>
+            <View pointerEvents="none" style={{ position: "absolute", top: (geometry.iconSize - geometry.pressSize) / 2, left: (geometry.iconSize - geometry.pressSize) / 2, width: geometry.pressSize, height: geometry.pressSize, borderRadius: geometry.pressSize / 2, backgroundColor: press(state) }} />
+            {!!item.icon && <KjunIcon name={item.icon} filled={selected} size={geometry.iconSize} color={ink} />}{badge}
+          </View>}
+          <View style={{ maxWidth: "100%" }}>
+            {!hasIcons && <View pointerEvents="none" style={{ position: "absolute", top: (label.lineHeight - geometry.pressSize) / 2, left: -geometry.pressPaddingX, right: -geometry.pressPaddingX, height: geometry.pressSize, borderRadius: geometry.pressSize / 2, backgroundColor: press(state) }} />}
+            <KText style={{ ...label, textAlign: "center", fontWeight: selected ? typeStyle('control').fontWeight : typeStyle('label').fontWeight, color: ink }}>{item.label}</KText>{!hasIcons && badge}
+          </View>
+        </>}
+      </Pressable>;
+    })}
+  </View>;
+}
+export interface KjunFloatingNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string; safeAreaBottom?: number; keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: (key: string, event: GestureResponderEvent) => void }
+/** A capsule detached from the screen edge. Destinations with an icon show only the icon; the label stays their accessible name. */
+export function KjunFloatingNavigation({ items, value, ariaLabel, safeAreaBottom = 0, keyboardVisible = false, hideOnKeyboard = true, onNavigate }: KjunFloatingNavigationProps) {
+  const m = useKjunMessages();
+  ariaLabel ??= m.mainNavigation;
+  const { colors } = useKjunStyles();
+  const geometry = tokens.extensions.floatingNavigation;
+  const border = tokens.border.defaultWidth;
+  if (keyboardVisible && hideOnKeyboard) return null;
+  // The outline is a border inside the box (a ring outside it on Web), so the padding gives it back.
+  return <View role="navigation" accessibilityLabel={ariaLabel} style={{
+    flexShrink: 0, alignSelf: "center", flexDirection: "row", maxWidth: "100%", marginBottom: geometry.offset + Math.max(0, safeAreaBottom),
+    padding: geometry.padding - border, gap: geometry.gap, borderRadius: geometry.radius, borderWidth: border, borderColor: colors.border,
+    backgroundColor: colors.surface, boxShadow: shadowLayers(tokens.elevation.floating, colors),
+  }}>
+    {items.map(item => {
+      const selected = item.key === value;
+      const ink = selected ? colors.surface : colors.textSecondary;
+      const badge = <NavigationBadgeMark badge={item.badge} ring={selected ? colors.text : colors.surface} onIcon={!!item.icon} />;
+      return <Pressable key={item.key}
+        {...(Platform.OS === "web" ? { href: item.disabled ? undefined : item.href, "aria-current": selected ? "page" : undefined } : {})}
+        accessibilityRole={Platform.OS === "web" && item.href ? "link" : "button"}
+        accessibilityLabel={navigationLabel(item.label, item.badge, m.newContent)}
+        accessibilityState={{ selected, disabled: !!item.disabled }} disabled={item.disabled}
+        onPress={event => onNavigate?.(item.key, event)}
+        style={({ pressed, hovered }: PressState) => ({ minWidth: geometry.itemSize, height: geometry.itemSize, borderRadius: geometry.radius,
+          alignItems: "center", justifyContent: "center", paddingHorizontal: item.icon ? 0 : geometry.textPaddingX,
+          backgroundColor: selected ? colors.text : !item.disabled && pressed ? colors.active : !item.disabled && hovered ? colors.hover : "transparent",
+          opacity: item.disabled ? tokens.states.opacity.disabled : 1 })}>
+        {item.icon
+          ? <View style={{ width: geometry.iconSize, height: geometry.iconSize }}><KjunIcon name={item.icon} filled={selected} size={geometry.iconSize} color={ink} />{badge}</View>
+          : <View><KText style={{ ...typeStyle('control'), color: ink }}>{item.label}</KText>{badge}</View>}
       </Pressable>;
     })}
   </View>;

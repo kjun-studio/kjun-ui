@@ -23,7 +23,7 @@ const componentGroups = {
   form: [...files('form-actions', 'layout-primitives', 'input-design', 'interaction-states', 'feedback-input', 'quantity', 'bottom-action-bar-design'), ...fields, ...contracts],
   tabs: [...files('tabs-contract', 'tabs-design', 'accessibility-tabs', 'controlled-state', 'live-updates', 'component-motion', 'expanded', 'react-tabs-actions'), ...visuals],
   accordion: [...files('accordion-design', 'controlled-state', 'component-motion', 'expanded', 'accessibility-components'), ...visuals],
-  navigation: [...files('top-navigation-design', 'bottom-navigation-design', 'bottom-action-bar-design', 'accessibility-components'), ...visuals],
+  navigation: [...files('top-navigation-design', 'bottom-navigation-design', 'floating-navigation-design', 'bottom-action-bar-design', 'accessibility-components'), ...visuals],
   feedback: [...files('feedback-dialog', 'feedback-input', 'feedback-motion', 'copy-button-feedback', 'chip-toast-tokens', 'component-motion', 'native-layout'), ...layers, ...contracts],
   modal: [...layers, ...files('quantity', 'feedback-dialog', 'feedback-input', 'form-actions', 'component-motion'), ...contracts],
   drawer: [...layers, ...files('component-motion', 'size-contracts', 'native-layout')],

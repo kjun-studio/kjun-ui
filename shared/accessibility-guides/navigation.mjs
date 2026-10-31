@@ -6,4 +6,5 @@ export default [
   ['KjunTabPane', 'tabs', 'name label disabled', 'KjunTabs 안에서 선택된 패널만 노출되는 조건', { parent: 'KjunTabs' }],
   ['KjunTopNavigation', 'action', 'title', '상단 탐색에 공급한 뒤로 가기·저장 버튼', { button: '저장', event: 'message', children: true }],
   ['KjunBottomNavigation', 'bottom-nav', 'items value ariaLabel', '주요 탐색의 홈·활동·설정 목적지와 현재 위치', {}],
+  ['KjunFloatingNavigation', 'bottom-nav', 'items value ariaLabel', '아이콘만 보이는 목적지의 접근성 이름과 현재 위치', {}],
 ];

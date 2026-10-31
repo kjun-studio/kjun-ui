@@ -10,7 +10,7 @@ export const captureFor = scene => captureProfiles[scene.captureType];
 // Explicit public-component coverage. Widths belong to the consuming canvas.
 const groups = [
   ['control', 456, ['KjunTabPane']],
-  ['control', 464, ['KjunTopNavigation', 'KjunBottomNavigation', 'KjunPagination', 'KjunTabs']],
+  ['control', 464, ['KjunTopNavigation', 'KjunBottomNavigation', 'KjunFloatingNavigation', 'KjunPagination', 'KjunTabs']],
   ['desktop', 736, ['KjunKpiRow', 'KjunMarketTable', 'KjunMarketTableSkeleton']],
   ['small', null, ['KjunButton', 'KjunIcon', 'KjunButtonGroup', 'KjunFilterGroup', 'KjunIconToggle', 'KjunFab', 'KjunCopyButton', 'KjunRefreshButton', 'KjunExternalLink', 'KjunBadge', 'KjunChip', 'KjunBreadcrumb', 'KjunAvatar', 'KjunAnimatedNumber', 'KjunPriceCell', 'KjunSignedValue', 'KjunDeviation', 'KjunCollectionMark', 'KjunExecutionStatusBadge', 'KjunSpinner', 'KjunTooltip', 'KjunText', 'KjunStack', 'KjunInline']],
   ['control', 360, ['KjunRadio', 'KjunInput', 'KjunFormGroup', 'KjunFormActions', 'KjunTextarea', 'KjunCheckbox', 'KjunSwitch', 'KjunRadioGroup', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunTimePicker', 'KjunQuantityStepper', 'KjunSlider', 'KjunRangeSlider', 'KjunScrollFade', 'KjunImage', 'KjunProgressCell', 'KjunSparkline', 'KjunSkeleton', 'KjunFormSkeleton', 'KjunProgress', 'KjunFreshness']],
