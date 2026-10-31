@@ -12483,7 +12483,7 @@
     "name": "KjunScrollFade",
     "path": "/components/scroll-fade",
     "related": "toolbar",
-    "description": "가로 콘텐츠의 스크롤 영역을 구성합니다.",
+    "description": "가로나 세로로 긴 콘텐츠의 스크롤 영역을 구성합니다.",
     "platforms": {
       "vue3": {
         "figures": [

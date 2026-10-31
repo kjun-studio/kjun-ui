@@ -16070,7 +16070,15 @@
     ]
   },
   "KjunScrollFade": {
-    "vue3": [],
+    "vue3": [
+      {
+        "name": "direction",
+        "type": "ScrollFadeDirection",
+        "required": false,
+        "default": "\"horizontal\"",
+        "description": "Which way the content scrolls; vertical needs a height (style or class) to scroll within."
+      }
+    ],
     "events": [],
     "slots": [
       {
@@ -16083,7 +16091,28 @@
       {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
-        "required": true,
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "direction",
+        "type": "import(\"/workspace/shared/package-runtime/scroll-fade\").ScrollFadeDirection | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Which way the content scrolls; vertical needs a height (style or class) to scroll within."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
         "default": "—",
         "description": ""
       }
@@ -16092,7 +16121,21 @@
       {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
-        "required": true,
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "direction",
+        "type": "\"horizontal\" | \"vertical\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Which way the content scrolls; vertical needs a height (style) to scroll within."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
         "default": "—",
         "description": ""
       }

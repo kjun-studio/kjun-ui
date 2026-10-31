@@ -359,7 +359,7 @@
   "KjunBreadcrumb": {
     "slug": "breadcrumb",
     "description": "현재 위치와 상위 경로를 표시합니다.",
-    "interaction": "items로 상위 경로와 현재 위치를 전달합니다. 프로젝트 라우터를 사용하면 이동 콜백이나 렌더 링크를 직접 연결합니다.",
+    "interaction": "items로 상위 경로와 현재 위치를 전달합니다. to가 없는 마지막 항목이 현재 위치이고, 마지막 항목에도 to를 주면 링크가 됩니다. 프로젝트 라우터를 사용하면 이동 콜백이나 렌더 링크를 직접 연결합니다.",
     "differences": "Vue는 link 슬롯, React·Native는 renderLink로 라우터 링크를 주입합니다. Native는 onNavigate도 제공합니다.",
     "states": "이동 가능한 경로와 현재 위치를 구분합니다. 웹에서 포인터를 올린 경로는 색과 밑줄로 표시합니다. 현재 항목은 이동 동작을 갖지 않으며 라우터 연결은 프로젝트에서 처리합니다."
   },
@@ -456,9 +456,9 @@
   },
   "KjunScrollFade": {
     "slug": "scroll-fade",
-    "description": "가로 콘텐츠의 스크롤 영역을 구성합니다.",
-    "interaction": "가로로 긴 콘텐츠의 스크롤 영역을 제공합니다. 자식 콘텐츠의 선택값이나 조회 상태는 관리하지 않습니다.",
-    "differences": "웹은 가장자리 페이드를 계산하고 Native는 가로 ScrollView·스크롤 표시기를 사용합니다. 웹의 페이드와 같은 그림을 Native에 보장하지 않습니다.",
+    "description": "가로나 세로로 긴 콘텐츠의 스크롤 영역을 구성합니다.",
+    "interaction": "기본은 가로 스크롤입니다. direction=\"vertical\"이면 위아래로 스크롤하며, 이때는 style이나 class로 높이를 정해야 합니다. 자식 콘텐츠의 선택값이나 조회 상태는 관리하지 않습니다.",
+    "differences": "웹은 가장자리 페이드를 계산하고 Native는 방향에 맞는 ScrollView·스크롤 표시기를 사용합니다. 웹의 페이드와 같은 그림을 Native에 보장하지 않습니다.",
     "states": "가로 콘텐츠의 스크롤 위치를 유지합니다. 웹은 가장자리 페이드와 가로 넘침을 처리하고 Native는 ScrollView로 터치 스크롤을 제공합니다."
   },
   "KjunListRow": {

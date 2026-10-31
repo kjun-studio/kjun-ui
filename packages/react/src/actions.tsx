@@ -15,6 +15,7 @@ import { useOptionalKjunFeedback } from "./feedback-context";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
 import { useReducedMotion } from "./use-reduced-motion";
 import { TopNavigationContext } from "./top-navigation-context";
+import { scrollEdges, scrollFadeMask, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
 export interface KjunIconToggleProps {
   active?: boolean;
   activeIcon: string;
@@ -283,20 +284,23 @@ export function KjunExternalLink({
     <span aria-label={name}>{body}</span>
   );
 }
-export function KjunScrollFade({ children }: { children: ReactNode }) {
+export interface KjunScrollFadeProps {
+  children?: ReactNode;
+  /** Which way the content scrolls; vertical needs a height (style or class) to scroll within. */
+  direction?: ScrollFadeDirection;
+  className?: string;
+  style?: CSSProperties;
+}
+/** Fades whichever edge along `direction` still has content to scroll to. */
+export function KjunScrollFade({ children, direction = "horizontal", className, style }: KjunScrollFadeProps) {
   const ref = useRef<HTMLDivElement>(null),
-    [edges, setEdges] = useState({ left: false, right: false });
+    [edges, setEdges] = useState<ScrollEdges>({ start: false, end: false });
   const update = () => {
     const el = ref.current;
     if (el)
       setEdges((prev) => {
-        const next = {
-          left: el.scrollLeft > 1,
-          right: el.scrollLeft + el.clientWidth < el.scrollWidth - 1,
-        };
-        return prev.left === next.left && prev.right === next.right
-          ? prev
-          : next;
+        const next = scrollEdges(el, direction);
+        return prev.start === next.start && prev.end === next.end ? prev : next;
       });
   };
   useEffect(() => {
@@ -307,23 +311,15 @@ export function KjunScrollFade({ children }: { children: ReactNode }) {
       Array.from(ref.current.children).forEach((el) => observer.observe(el));
     }
     return () => observer.disconnect();
-  }, [children]);
-  const mask =
-    edges.left || edges.right
-      ? `linear-gradient(to right, ${
-          edges.left ? `transparent, currentColor ${tokens.extensions.scrollFade.width}px` : "currentColor"
-        }, ${
-          edges.right
-            ? `currentColor calc(100% - ${tokens.extensions.scrollFade.width}px), transparent`
-            : "currentColor"
-        })`
-      : undefined;
+  }, [children, direction]);
+  const mask = scrollFadeMask(edges, tokens.extensions.scrollFade.width, direction);
   return (
     <div
       ref={ref}
       onScroll={update}
-      className="kjun-scroll-fade"
-      style={{ maskImage: mask, WebkitMaskImage: mask }}
+      className={className ? `kjun-scroll-fade ${className}` : "kjun-scroll-fade"}
+      data-direction={direction}
+      style={{ ...style, maskImage: mask, WebkitMaskImage: mask }}
     >
       {children}
     </div>

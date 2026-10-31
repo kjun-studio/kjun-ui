@@ -26546,7 +26546,17 @@
     },
     "KjunScrollFade": {
       "vue3": {
-        "props": [],
+        "props": [
+          {
+            "name": "direction",
+            "type": "ScrollFadeDirection",
+            "required": false,
+            "default": "\"horizontal\"",
+            "description": "Which way the content scrolls; vertical needs a height (style or class) to scroll within.",
+            "summary": "항목을 가로 또는 세로로 배치합니다.",
+            "source": "packages/vue3/src/actions.tsx"
+          }
+        ],
         "events": [],
         "slots": [
           {
@@ -26565,10 +26575,37 @@
           {
             "name": "children",
             "type": "ReactNode",
-            "required": true,
+            "required": false,
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "direction",
+            "type": "ScrollFadeDirection | undefined",
+            "required": false,
+            "default": "\"horizontal\"",
+            "description": "Which way the content scrolls; vertical needs a height (style or class) to scroll within.",
+            "summary": "항목을 가로 또는 세로로 배치합니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소에 추가할 CSS 클래스입니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
             "source": "packages/react/src/actions.tsx"
           }
         ],
@@ -26582,10 +26619,28 @@
           {
             "name": "children",
             "type": "ReactNode",
-            "required": true,
+            "required": false,
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/native/src/actions.tsx"
+          },
+          {
+            "name": "direction",
+            "type": "\"horizontal\" | \"vertical\" | undefined",
+            "required": false,
+            "default": "\"horizontal\"",
+            "description": "Which way the content scrolls; vertical needs a height (style) to scroll within.",
+            "summary": "항목을 가로 또는 세로로 배치합니다.",
+            "source": "packages/native/src/actions.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
             "source": "packages/native/src/actions.tsx"
           }
         ],

@@ -208,6 +208,8 @@ export function KjunBreadcrumb({
       }}
     >
       {items.map((item, i) => {
+        // A last item with `to` is a link too, so only a last item without one reads as the current page.
+        const current = i === items.length - 1 && !item.to;
         const label = (
           <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.dimension.value4 }}>
             {!!item.icon && (
@@ -215,9 +217,8 @@ export function KjunBreadcrumb({
             )}
             <KText
               style={{
-                color:
-                  i === items.length - 1 ? colors.text : colors.textSecondary,
-                fontWeight: i === items.length - 1 ? typeStyle('label').fontWeight : typeStyle('body').fontWeight,
+                color: current ? colors.text : colors.textSecondary,
+                fontWeight: current ? typeStyle('label').fontWeight : typeStyle('body').fontWeight,
               }}
             >
               {item.label}
@@ -233,7 +234,7 @@ export function KjunBreadcrumb({
                 color={colors.textTertiary}
               />
             )}{" "}
-            {item.to && i < items.length - 1
+            {item.to
               ? renderLink?.(item, label) || (
                   <Pressable
                     accessibilityRole="link"

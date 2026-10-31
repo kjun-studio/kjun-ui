@@ -117,7 +117,7 @@ const kjunBreadcrumbProps = {
   ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunBreadcrumbProps = ExtractPublicPropTypes<typeof kjunBreadcrumbProps>;
-/** Slot link({ item, label }) renders a router link; without it, links are plain anchors. */
+/** Slot link({ item, label }) renders a router link; without it, links are plain anchors. A last item with `to` is a link too. */
 export const KjunBreadcrumb = defineComponent({
   name: "KjunBreadcrumb",
   props: kjunBreadcrumbProps,
@@ -128,11 +128,11 @@ export const KjunBreadcrumb = defineComponent({
       <nav aria-label={(props.ariaLabel ?? m.value.breadcrumb)} class="kjun-breadcrumb">
         {props.items.map((item, i) => {
           const label = <>{item.icon && <KjunIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} />} {item.label}</>;
-          const link = item.to && i < props.items.length - 1 ? slots.link?.({ item, label }) : undefined;
+          const link = item.to ? slots.link?.({ item, label }) : undefined;
           return (
             <Fragment key={i}>
               {i > 0 && <KjunIcon name="chevron-right" size={tokens.extensions.breadcrumb.separatorSize} />}{" "}
-              {item.to && i < props.items.length - 1
+              {item.to
                 ? hasContent(link as VNode[] | undefined) ? link : <a href={item.to}>{label}</a>
                 : <span aria-current={i === props.items.length - 1 ? "page" : undefined}>{label}</span>}
             </Fragment>

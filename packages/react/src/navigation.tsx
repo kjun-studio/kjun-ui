@@ -342,7 +342,8 @@ export function KjunBreadcrumb({
         return (
           <Fragment key={i}>
             {i > 0 && <KjunIcon name="chevron-right" size={tokens.extensions.breadcrumb.separatorSize} />}{" "}
-            {item.to && i < items.length - 1 ? (
+            {/* A last item with `to` is a link too: apps that title the page elsewhere end the trail at its parent. */}
+            {item.to ? (
               renderLink?.(item, label) || <a href={item.to}>{label}</a>
             ) : (
               <span aria-current={i === items.length - 1 ? "page" : undefined}>

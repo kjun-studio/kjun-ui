@@ -313,12 +313,19 @@
     ]
   },
   "KjunScrollFade": {
-    "vue3": [],
+    "vue3": [
+      "direction"
+    ],
     "react": [
-      "children"
+      "children",
+      "direction",
+      "className",
+      "style"
     ],
     "native": [
-      "children"
+      "children",
+      "direction",
+      "style"
     ]
   },
   "KjunText": {

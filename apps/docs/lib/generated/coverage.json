@@ -2065,7 +2065,7 @@
       "title": "ScrollFade",
       "docs": "/components/scroll-fade",
       "category": "layout",
-      "differences": "웹은 가장자리 페이드를 계산하고 Native는 가로 ScrollView·스크롤 표시기를 사용합니다. 웹의 페이드와 같은 그림을 Native에 보장하지 않습니다.",
+      "differences": "웹은 가장자리 페이드를 계산하고 Native는 방향에 맞는 ScrollView·스크롤 표시기를 사용합니다. 웹의 페이드와 같은 그림을 Native에 보장하지 않습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

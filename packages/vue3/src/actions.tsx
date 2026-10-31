@@ -5,6 +5,7 @@ import { typeStyle } from "../../../shared/package-runtime/typography";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunSpinner } from "./display";
 import { useOptionalKjunFeedback } from "./feedback";
+import { scrollEdges, scrollFadeMask, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
 import { kjunTopNavigationKey } from "./runtime/keys";
 import { useReducedMotion } from "./runtime/presence";
@@ -217,17 +218,23 @@ export const KjunExternalLink = defineComponent({
   },
 });
 
-/** Fades whichever horizontal edge still has content to scroll to. */
+const kjunScrollFadeProps = {
+  /** Which way the content scrolls; vertical needs a height (style or class) to scroll within. */
+  direction: { type: String as PropType<ScrollFadeDirection>, default: "horizontal" },
+} as const;
+export type KjunScrollFadeProps = ExtractPublicPropTypes<typeof kjunScrollFadeProps>;
+/** Fades whichever edge along `direction` still has content to scroll to. */
 export const KjunScrollFade = defineComponent({
   name: "KjunScrollFade",
+  props: kjunScrollFadeProps,
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
-  setup(_, { slots }) {
-    const root = ref<HTMLElement | null>(null), edges = ref({ left: false, right: false });
+  setup(props, { slots }) {
+    const root = ref<HTMLElement | null>(null), edges = ref<ScrollEdges>({ start: false, end: false });
     const update = () => {
       const el = root.value;
       if (!el) return;
-      const next = { left: el.scrollLeft > 1, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 1 };
-      if (next.left !== edges.value.left || next.right !== edges.value.right) edges.value = next;
+      const next = scrollEdges(el, props.direction);
+      if (next.start !== edges.value.start || next.end !== edges.value.end) edges.value = next;
     };
     let observer: ResizeObserver | undefined;
     const observe = () => {
@@ -243,11 +250,8 @@ export const KjunScrollFade = defineComponent({
     onUpdated(observe);
     onBeforeUnmount(() => observer?.disconnect());
     return () => {
-      const { left, right } = edges.value, width = tokens.extensions.scrollFade.width;
-      const mask = left || right
-        ? `linear-gradient(to right, ${left ? `transparent, currentColor ${width}px` : "currentColor"}, ${right ? `currentColor calc(100% - ${width}px), transparent` : "currentColor"})`
-        : undefined;
-      return <div ref={root} onScroll={update} class="kjun-scroll-fade" style={{ maskImage: mask, WebkitMaskImage: mask }}>{slots.default?.()}</div>;
+      const mask = scrollFadeMask(edges.value, tokens.extensions.scrollFade.width, props.direction);
+      return <div ref={root} onScroll={update} class="kjun-scroll-fade" data-direction={props.direction} style={{ maskImage: mask, WebkitMaskImage: mask }}>{slots.default?.()}</div>;
     };
   },
 });

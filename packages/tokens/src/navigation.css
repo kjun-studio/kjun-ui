@@ -298,6 +298,11 @@
   max-width: 100%;
   scrollbar-width: none;
 }
+.kjun-scroll-fade[data-direction="vertical"] {
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 0;
+}
 @media (prefers-reduced-motion: reduce) {
   .kjun-icon-toggle svg {
     transition: none;

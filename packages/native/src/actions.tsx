@@ -2,7 +2,7 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { typeStyle } from "./typography";
 import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
-import { Platform,ScrollView,View,type ColorValue } from "react-native";
+import { Platform,ScrollView,View,type ColorValue,type StyleProp,type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunButton,KjunIcon,type KjunButtonProps } from "./button";
 import { KjunSpinner } from "./display";
@@ -311,12 +311,20 @@ export function KjunExternalLink({
     <View>{body}</View>
   );
 }
-export function KjunScrollFade({ children }: { children: ReactNode }) {
+export interface KjunScrollFadeProps {
+  children?: ReactNode;
+  /** Which way the content scrolls; vertical needs a height (style) to scroll within. */
+  direction?: "horizontal" | "vertical";
+  style?: StyleProp<ViewStyle>;
+}
+export function KjunScrollFade({ children, direction = "horizontal", style }: KjunScrollFadeProps) {
+  const horizontal = direction === "horizontal";
   return (
     <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator
-      style={{ flexGrow: 0, maxWidth: "100%" }}
+      horizontal={horizontal}
+      showsHorizontalScrollIndicator={horizontal}
+      showsVerticalScrollIndicator={!horizontal}
+      style={[{ flexGrow: 0 }, horizontal ? { maxWidth: "100%" } : { maxHeight: "100%" }, style]}
     >
       {children}
     </ScrollView>
