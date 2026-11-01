@@ -271,5 +271,16 @@
 .kjun-list-section[data-radius] .kjun-list-main:focus-visible{outline-offset:var(--_kjun-state-focus-inset-offset)}
 .kjun-list-row[data-destructive] .kjun-list-title{color:var(--_kjun-color-danger)}
 .kjun-list-chevron{flex-shrink:0;color:var(--_kjun-color-text-tertiary)}
+/* A value at the row's end reads one step below the title. */
+.kjun-list-trailing { color:var(--_kjun-color-text-secondary); }
+/* Korean wraps between words, never inside one. */
+.kjun-list-title, .kjun-list-description { word-break:keep-all; overflow-wrap:anywhere; }
+/* With a description the leading column covers the first two lines, so a long row keeps its icon beside the title. */
+.kjun-list-main:has(.kjun-list-description) > .kjun-list-leading { align-self:flex-start; height:calc(var(--_kjun-type-control-line) + var(--_kjun-extension-list-description-gap) + var(--_kjun-type-caption-line)); }
+.kjun-list-row[data-destructive] .kjun-list-icon { color:var(--_kjun-color-danger); }
+/* Pressable rows dim through :disabled; a static row (a switch or text) dims here so nothing in it reads as available. */
+.kjun-list-row[data-disabled] > div.kjun-list-main { opacity:var(--_kjun-state-opacity-disabled); }
+.kjun-list-check { flex-shrink:0; color:var(--_kjun-color-brand); }
+.kjun-list-main > .kjun-switch { flex-shrink:0; }
 .kjun-list-item{padding:var(--_kjun-extension-list-padding);position:relative;min-width:0}
 .kjun-list[data-density=compact]>.kjun-list-item{padding-block:var(--_kjun-extension-list-compact-padding-y)}

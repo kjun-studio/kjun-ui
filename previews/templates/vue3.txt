@@ -23,6 +23,7 @@ function vueProps(name, props) {
     else if (key === "onSortChange") mapped["onUpdate:sort"] = value;
     else if (key === "onPageChange" && name === "KjunPagination") mapped["onUpdate:page"] = value;
     else if (key === "onPageSizeChange") mapped["onUpdate:pageSize"] = value;
+    else if (key === "onCheckedChange") mapped["onUpdate:checked"] = value;
     else if (key === "style") mapped.style = css(value);
     else mapped[key] = value;
   }

@@ -9767,6 +9767,20 @@
         "description": "Ends the row with a decorative chevron that marks it as navigation."
       },
       {
+        "name": "selected",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks the chosen row of a single-choice list with a check at the end (announced as current)."
+      },
+      {
+        "name": "checked",
+        "type": "boolean",
+        "required": false,
+        "default": "—",
+        "description": "v-model:checked makes the whole row a switch: it draws one at the end and toggles on any press."
+      },
+      {
         "name": "onClick",
         "type": "(event: MouseEvent) => void",
         "required": false,
@@ -9781,7 +9795,12 @@
         "description": "Name of a pressable or link row, e.g. with the amount a screen reader should hear."
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "update:checked",
+        "source": "packages/vue3/src/list.tsx"
+      }
+    ],
     "slots": [
       {
         "name": "default",
@@ -9874,6 +9893,27 @@
         "required": false,
         "default": "—",
         "description": "Ends the row with a decorative chevron that marks it as navigation."
+      },
+      {
+        "name": "selected",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Marks the chosen row of a single-choice list with a check at the end (announced as current)."
+      },
+      {
+        "name": "checked",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Makes the whole row a switch: it draws one at the end and toggles on any press."
+      },
+      {
+        "name": "onCheckedChange",
+        "type": "((checked: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       },
       {
         "name": "onClick",
@@ -9969,6 +10009,27 @@
         "description": "Ends the row with a decorative chevron that marks it as navigation."
       },
       {
+        "name": "selected",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Marks the chosen row of a single-choice list with a check at the end (announced as selected)."
+      },
+      {
+        "name": "checked",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Makes the whole row a switch: it draws one at the end and toggles on any press."
+      },
+      {
+        "name": "onCheckedChange",
+        "type": "((checked: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "onPress",
         "type": "((event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
         "required": false,
@@ -10041,6 +10102,13 @@
         "required": false,
         "default": "\"none\"",
         "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\")."
+      },
+      {
+        "name": "titleVariant",
+        "type": "\"title\" | \"label\"",
+        "required": false,
+        "default": "—",
+        "description": "\"title\" is the 16px heading, \"label\" the small caption above the rows; by default a title with a description is a heading and one without is a label."
       }
     ],
     "events": [],
@@ -10119,6 +10187,13 @@
         "required": false,
         "default": "—",
         "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\")."
+      },
+      {
+        "name": "titleVariant",
+        "type": "\"title\" | \"label\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"title\" is the 16px heading, \"label\" the small caption above the rows; by default a title with a description is a heading and one without is a label."
       }
     ],
     "native": [
@@ -10184,6 +10259,13 @@
         "required": false,
         "default": "—",
         "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\")."
+      },
+      {
+        "name": "titleVariant",
+        "type": "\"label\" | \"title\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"title\" is the 16px heading, \"label\" the small caption above the rows; by default a title with a description is a heading and one without is a label."
       }
     ]
   },

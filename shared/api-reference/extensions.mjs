@@ -90,6 +90,7 @@ const callback = (name, key, platform) => {
   if (key === "onRemove") return event("라벨 삭제를 요청합니다.", "활성 삭제 버튼을 실행할 때", "없음", "반환값을 사용하지 않습니다.", "소비자가 항목을 제거합니다. 제거 후 다음 항목이나 입력으로 초점을 옮기세요.");
   if (key === "onLoad" || key === "onError") return event(key === "onLoad" ? "현재 이미지의 로드 완료를 알립니다." : "현재 이미지의 로드 실패를 알립니다.", "현재 요청 이미지에서 " + (key === "onLoad" ? "load" : "error") + "가 발생했을 때. 이전 주소·이전 요청의 응답은 무시합니다.", "없음", "반환값을 사용하지 않습니다.", "실패 대체 표현은 내부에서 표시합니다. 다른 주소로 재시도하려면 src/source를 갱신하세요.");
   if (key === "onClick" || key === "onPress") return event("목록 행의 주 행동을 실행합니다.", "비활성 행을 제외한 주 행동 영역을 실행할 때. actions의 버튼 실행과 독립적입니다.", platform === "native" ? "GestureResponderEvent" : "MouseEvent<HTMLElement>", "웹 링크의 기본 이동을 취소하려면 event.preventDefault()를 호출합니다.", "소비자가 이동·선택·실행을 처리합니다.");
+  if (key === "onCheckedChange") return event("스위치 행의 다음 켜짐 값을 알립니다.", "비활성 행을 제외하고 행 어디든 누를 때", "boolean: 반대로 바뀐 값", "반환값을 사용하지 않습니다.", "소비자가 checked를 갱신합니다. 갱신하지 않으면 스위치 표시는 그대로입니다.");
   if (key === "onIndexChange") return event("현재 슬라이드가 바뀌었음을 알립니다.", "스크롤이 멈춘 위치, 화살표 키, 이전·다음 버튼, 표시 점으로 다른 슬라이드에 도착할 때", "새 슬라이드 번호(0부터)", "반환값을 사용하지 않습니다.", "제어할 때는 소비자가 index를 갱신합니다. 갱신하지 않으면 표시 점은 index를 따르고 스크롤 위치는 사용자가 놓은 자리에 둡니다.");
   throw Error("Missing extension callback: " + name + "." + key);
 };
@@ -102,6 +103,9 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (key.startsWith("on")) entry = callback(name, key, platform);
     else if (name === "KjunTopNavigation" && topNavigationSlots[key]) entry = topNavigationSlots[key];
     else if (name === "KjunListRow" && key === "children") entry = listRowContent;
+    else if (name === "KjunListRow" && key === "selected") entry = detail("하나를 고르는 목록에서 고른 행을 표시합니다.", { "표시": "행 끝에 강조색 체크를 그리고 웹은 aria-current, Native는 선택 상태로 알립니다. 고른 값은 앱이 관리합니다." });
+    else if (name === "KjunListRow" && key === "checked") entry = detail("행 전체를 스위치로 만듭니다.", { "동작": platform === "vue3" ? "v-model:checked로 연결합니다. 행 어디를 눌러도 update:checked로 반대 값을 알리고, 행 끝 스위치는 장식입니다. 행이 switch 역할과 checked 상태를 가집니다." : "행 어디를 눌러도 onCheckedChange로 반대 값을 알리고, 행 끝 스위치는 장식입니다. 행이 switch 역할과 checked 상태를 가집니다." });
+    else if (name === "KjunListSection" && key === "titleVariant") entry = detail("섹션 제목 모양을 고릅니다.", { "값": "title은 16px 제목, label은 행 위의 작은 라벨입니다. 생략하면 설명이 있는 제목은 title, 없는 제목은 label입니다." });
     else if (name === "KjunListRow" && key === "icon") entry = detail("앞쪽 열에 그릴 아이콘 이름입니다.", { "크기·색": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 40px 앞쪽 열 가운데에 놓습니다.", "leading과 함께": platform === "vue3" ? "leading 슬롯이 있으면 슬롯을 그립니다." : "leading이 있으면 leading을 그립니다." });
     else if (childProps[key]) entry = childProps[key];
     else if (key === "value" || key === "modelValue") entry = detail(valueDescription[name], { "상태 책임": guides[name].interaction });
@@ -124,7 +128,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (name === "KjunRangeSlider" && platform === "vue3") props.modelValue.type = "[number, number]";
   const events = {}, slots = {};
   if (platform === "vue3") {
-    const eventKeys = name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : {};
+    const eventKeys = name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
     const slotNames = { KjunListRow: ["default", "leading", "trailing", "actions"], KjunListSection: ["actions", "default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"] }[name] || [];
     for (const key of slotNames) {

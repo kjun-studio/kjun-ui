@@ -29,6 +29,7 @@
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/fab.tsx",
+      "packages/native/src/list.tsx",
       "packages/native/src/market-cards.tsx",
       "packages/native/src/market-table.tsx",
       "packages/native/src/progress.tsx",

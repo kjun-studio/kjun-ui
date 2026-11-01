@@ -9,6 +9,8 @@
       "onClick",
       "destructive",
       "chevron",
+      "selected",
+      "checked",
       "ariaLabel"
     ],
     "react": [
@@ -23,6 +25,9 @@
       "onClick",
       "destructive",
       "chevron",
+      "selected",
+      "checked",
+      "onCheckedChange",
       "ariaLabel",
       "children"
     ],
@@ -38,6 +43,9 @@
       "onPress",
       "destructive",
       "chevron",
+      "selected",
+      "checked",
+      "onCheckedChange",
       "ariaLabel",
       "children"
     ]
@@ -50,7 +58,8 @@
       "divider",
       "density",
       "surface",
-      "radius"
+      "radius",
+      "titleVariant"
     ],
     "react": [
       "title",
@@ -61,7 +70,8 @@
       "divider",
       "density",
       "surface",
-      "radius"
+      "radius",
+      "titleVariant"
     ],
     "native": [
       "title",
@@ -72,7 +82,8 @@
       "divider",
       "density",
       "surface",
-      "radius"
+      "radius",
+      "titleVariant"
     ]
   },
   "KjunListItem": {

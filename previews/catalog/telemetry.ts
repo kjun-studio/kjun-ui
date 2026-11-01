@@ -47,7 +47,7 @@ export function eventName(component: string, key: string, platform: string) {
   if (platform === 'vue3') {
     // Vue 3 names the events its components emit; v-model updates read as update:<prop>.
     const names: Record<string, string> = { onValueChange: 'update:modelValue', onOpenChange: 'update:open', onChangeCommit: 'change', onSelectionChange: 'update:selected',
-      onExpandedRowsChange: 'update:expandedRows', onSortChange: 'update:sort', onPageSizeChange: 'update:pageSize', ...(component === 'KjunPagination' ? { onPageChange: 'update:page' } : {}) };
+      onExpandedRowsChange: 'update:expandedRows', onCheckedChange: 'update:checked', onSortChange: 'update:sort', onPageSizeChange: 'update:pageSize', ...(component === 'KjunPagination' ? { onPageChange: 'update:page' } : {}) };
     if (!/^on[A-Z]/.test(key)) return key;
     return names[key] || key.slice(2).replace(/^[A-Z]/, c => c.toLowerCase()).replace(/[A-Z]/g, c => '-' + c.toLowerCase());
   }

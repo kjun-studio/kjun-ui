@@ -5,8 +5,9 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
     case "KjunListRow":
     case "KjunListSection":
       return h("KjunListSection", { title: "설정", description: "계정과 알림을 관리합니다." }, [
-        h("KjunListRow", { title: settings.long ? "모든 기기에서 사용할 프로필과 계정 표시 이름" : "프로필 설정", description: "이름과 사진을 변경합니다.", disabled, ...action(() => set("message", "프로필 설정 열기")) }, undefined, { leading: h("KjunAvatar", { name: "김하늘", size: "sm" }), actions: h("KjunButton", { variant: "ghost", size: "sm", ...action(() => set("message", "프로필 공유")) }, "공유") }),
-        h("KjunListRow", { icon: "bell", title: "알림 받기", description: "중요한 변경 사항을 알려드립니다." }, undefined, { actions: h("KjunSwitch", { value: get("notifications", true), onValueChange: change("notifications"), ariaLabel: "알림 받기" }) }),
+        h("KjunListRow", { title: settings.long ? "모든 기기에서 사용할 프로필과 계정 표시 이름" : "프로필 설정", description: "이름과 사진을 변경합니다.", disabled, ...action(() => set("message", "프로필 설정 열기")) }, undefined, { leading: h("KjunAvatar", { name: "김하늘", size: "sm" }), actions: h("KjunButton", { variant: "secondary", size: "sm", ...action(() => set("message", "프로필 공유")) }, "공유") }),
+        h("KjunListRow", { icon: "bell", title: "알림 받기", description: "행 어디를 눌러도 켜고 끕니다.", disabled, checked: get("notifications", true), onCheckedChange: change("notifications") }),
+        h("KjunListRow", { icon: "lock", title: "비밀번호", chevron: true, disabled, ...action(() => set("message", "비밀번호 열기")) }, undefined, { trailing: "3개월 전 변경" }),
       ]);
     case "KjunListItem":
       return h("KjunListSection", { title: "화면" }, [
