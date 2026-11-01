@@ -3,6 +3,8 @@ import { tokens, type ButtonSize } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { Collapse } from "./collapse";
 import { useAccordionState } from "../../../shared/package-runtime/navigation";
+import { breadcrumbCurrent, collapseBreadcrumb, type BreadcrumbItem } from "../../../shared/package-runtime/breadcrumb";
+import { KjunDropdown, KjunDropdownItem } from "./dropdown";
 import { useMotionValue } from "./motion";
 import { useButtonGroupMotion } from "./button-group-motion";
 import {
@@ -23,7 +25,7 @@ import { useKjunStyles } from "./provider";
 import { KjunSelect } from "./select";
 export { KjunTabs, KjunTabPane, type TabItem, type KjunTabsProps, type KjunTabPaneProps } from "./tabs";
 const AccordionContext = createContext<{
-  opened: Set<string>;
+  opened: ReadonlySet<string>;
   toggle: (id: string) => void;
   register: (id: string, defaultOpen: boolean) => () => void;
 } | null>(null);
@@ -83,7 +85,10 @@ export interface KjunAccordionItemProps {
   /** Keeps the body mounted after it first opens, so inputs keep their state while closed. */
   keepMounted?: boolean;
   disabled?: boolean;
+  /** Replaces the title in the header; pass ariaLabel when it is not plain text. */
   header?: ReactNode;
+  /** The header's accessible name when header is not plain text. */
+  ariaLabel?: string;
   children: ReactNode;
 }
 export function KjunAccordionItem({
@@ -93,6 +98,7 @@ export function KjunAccordionItem({
   defaultOpen = false,
   disabled = false,
   header,
+  ariaLabel,
   open: openProp,
   onOpenChange,
   keepMounted = false,
@@ -135,7 +141,9 @@ export function KjunAccordionItem({
         // The accordion clips its items to rounded corners; an inset ring with the same radius stays whole.
         focusRingInset
         focusRingRadius={tokens.extensions.accordion.radius}
-        accessibilityLabel={description ? title + ", " + description : title}
+        // A custom header is read as rendered unless ariaLabel names it; the title stands in only without one.
+        accessibilityLabel={ariaLabel ?? (header ? undefined : description ? title + ", " + description : title)}
+        {...(Platform.OS === "web" ? { "aria-controls": id + "-panel" } : {})}
         accessibilityState={{ expanded: open, disabled }}
         disabled={disabled}
         onPress={() => { registering.current = false; controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own); }}
@@ -168,6 +176,8 @@ export function KjunAccordionItem({
       <Collapse open={open} keepMounted={keepMounted}>
         <View
           nativeID={id + "-panel"}
+          // On Native Web the open body is a region named by its header, as on Web.
+          {...(Platform.OS === "web" ? { role: "region" as const, "aria-labelledby": id + "-heading" } : {})}
           style={{ paddingLeft: inset, paddingRight: geometry.paddingX, paddingBottom: geometry.contentPaddingBottom }}
         >
           {content(children, { ...typeStyle("body"), ...wrapping, color: colors.text })}
@@ -177,70 +187,61 @@ export function KjunAccordionItem({
     </View>
   );
 }
-export interface BreadcrumbItem {
-  label: string;
-  to?: string;
-  icon?: string;
-}
+export type { BreadcrumbItem };
 export interface KjunBreadcrumbProps {
   items: BreadcrumbItem[];
   renderLink?: (item: BreadcrumbItem, children: ReactNode) => ReactNode;
   onNavigate?: (item: BreadcrumbItem) => void;
   ariaLabel?: string;
+  /** Folds a long trail: the first step and the last maxItems - 1 stay, and the steps between open from a "…" menu. */
+  maxItems?: number;
 }
 export function KjunBreadcrumb({
   items,
   renderLink,
   onNavigate,
   ariaLabel,
+  maxItems,
 }: KjunBreadcrumbProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.breadcrumb;
   const { colors } = useKjunStyles();
+  const geometry = tokens.extensions.breadcrumb;
+  if (!items.length) return null;
+  const { shown, hidden, at } = collapseBreadcrumb(items, maxItems);
+  const separator = <KjunIcon name="chevron-right" size={geometry.separatorSize} color={colors.textTertiary} />;
   return (
     <View
       accessibilityLabel={ariaLabel}
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: tokens.dimension.value8,
-      }}
+      // Native Web reads the trail as navigation, as on Web.
+      {...(Platform.OS === "web" ? { role: "navigation" as const } : {})}
+      style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: geometry.gap }}
     >
-      {items.map((item, i) => {
-        // A last item with `to` is a link too, so only a last item without one reads as the current page.
-        const current = i === items.length - 1 && !item.to;
+      {shown.map(({ item, index }, position) => {
+        const current = breadcrumbCurrent(item, index, items.length);
         const label = (
-          <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.dimension.value4 }}>
-            {!!item.icon && (
-              <KjunIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} color={colors.textSecondary} />
-            )}
-            <KText
-              style={{
-                color: current ? colors.text : colors.textSecondary,
-                fontWeight: current ? typeStyle('label').fontWeight : typeStyle('body').fontWeight,
-              }}
-            >
-              {item.label}
-            </KText>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: geometry.iconGap, maxWidth: geometry.labelMaxWidth }}
+            {...(Platform.OS === "web" && current ? { "aria-current": "page" } : {})}>
+            {!!item.icon && <KjunIcon name={item.icon} size={geometry.iconSize} color={colors.textSecondary} />}
+            <KText numberOfLines={1} style={{ flexShrink: 1, color: current ? colors.text : colors.textSecondary,
+              fontWeight: current ? typeStyle('label').fontWeight : typeStyle('body').fontWeight }}>{item.label}</KText>
           </View>
         );
         return (
-          <Fragment key={i}>
-            {i > 0 && (
-              <KjunIcon
-                name="chevron-right"
-                size={tokens.extensions.breadcrumb.separatorSize}
-                color={colors.textTertiary}
-              />
-            )}
+          <Fragment key={index}>
+            {position === at ? (
+              <>
+                {separator}
+                <KjunDropdown trigger={<KjunButton size="xs" variant="ghost" prefixIcon="dots" ariaLabel={m.showPath} />}>
+                  {hidden.map(({ item: folded, index: key }) => <KjunDropdownItem key={key} icon={folded.icon} onPress={() => onNavigate?.(folded)}>{folded.label}</KjunDropdownItem>)}
+                </KjunDropdown>
+              </>
+            ) : null}
+            {position > 0 ? separator : null}
             {item.to
               ? renderLink?.(item, label) || (
-                  <Pressable
-                    accessibilityRole="link"
-                    onPress={() => onNavigate?.(item)}
-                    style={{ minHeight: tokens.native.minimumTouchTarget, justifyContent: "center" }}
-                  >
+                  <Pressable accessibilityRole="link" onPress={() => onNavigate?.(item)}
+                    style={{ minHeight: tokens.native.minimumTouchTarget, justifyContent: "center" }}>
                     {label}
                   </Pressable>
                 )

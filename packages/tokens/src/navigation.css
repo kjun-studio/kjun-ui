@@ -78,6 +78,8 @@
   content:""; position:absolute; inset-inline:var(--_kjun-accordion-inset, var(--_kjun-extension-accordion-padding-x)) 0; bottom:0;
   height:var(--_kjun-border-default-width); background:var(--_kjun-color-divider); pointer-events:none;
 }
+/* The heading around each header only carries its level; the header button keeps its own type. */
+.kjun-accordion-title { margin: 0; font: inherit; }
 .kjun-accordion-trigger {
   width:100%; min-height:var(--_kjun-extension-accordion-minimum-height);
   display:flex; align-items:center; justify-content:space-between; gap:var(--_kjun-extension-accordion-header-gap);
@@ -98,7 +100,7 @@
 .kjun-accordion-trigger:disabled { opacity:var(--_kjun-state-opacity-disabled); cursor:not-allowed; }
 /* Hover paints the whole item, header and open body together, and only where a pointer can hover. */
 @media (hover:hover) {
-  .kjun-accordion-item:has(> .kjun-accordion-trigger:hover:not(:disabled)) { background:var(--_kjun-color-hover); }
+  .kjun-accordion-item:has(> .kjun-accordion-trigger:hover:not(:disabled), > .kjun-accordion-title > .kjun-accordion-trigger:hover:not(:disabled)) { background:var(--_kjun-color-hover); }
 }
 /* The accordion clips items to its rounded corners; while focused the trigger takes the same radius so the inset ring stays whole. */
 .kjun-accordion-trigger:focus-visible { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-inset-offset); border-radius:var(--_kjun-extension-accordion-radius); }
@@ -109,27 +111,52 @@
   font-size:var(--_kjun-type-body-size); line-height:var(--_kjun-type-body-line);
   font-weight:var(--_kjun-type-body-weight); letter-spacing:var(--_kjun-type-body-tracking);
 }
+/* A trail is a list (ol > li), so screen readers announce how many steps it has. */
 .kjun-breadcrumb {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--_kjun-geometry-dimension-value8);
   font-size: var(--_kjun-type-body-size);
   color: var(--_kjun-color-text-secondary);
   line-height: var(--_kjun-type-body-line);
   font-weight: var(--_kjun-type-body-weight);
   letter-spacing: var(--_kjun-type-body-tracking);
 }
-.kjun-breadcrumb > svg {
+.kjun-breadcrumb-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--_kjun-extension-breadcrumb-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kjun-breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--_kjun-extension-breadcrumb-gap);
+  min-width: 0;
+}
+.kjun-breadcrumb-item > svg {
+  flex: none;
   color: var(--_kjun-color-text-tertiary);
+}
+/* Each step keeps one line; a long label ends in an ellipsis at the label width. */
+.kjun-breadcrumb-item > :is(a, span) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--_kjun-extension-breadcrumb-icon-gap);
+  max-width: var(--_kjun-extension-breadcrumb-label-max-width);
+  min-width: 0;
+}
+.kjun-breadcrumb-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .kjun-breadcrumb a {
   color: inherit;
   text-decoration: none;
 }
 /* Underlined as well as recolored: with a near-text brand color, hover would otherwise look like the current page. */
-.kjun-breadcrumb a:hover,
-.kjun-breadcrumb-link:hover {
+.kjun-breadcrumb a:hover {
   color: var(--_kjun-color-brand);
   text-decoration: underline;
   text-underline-offset: var(--_kjun-geometry-dimension-value2);
@@ -293,16 +320,31 @@
   vertical-align: middle;
 }
 .kjun-scroll-fade {
+  --_kjun-fade-to: to right;
   overflow-x: auto;
   min-width: 0;
   max-width: 100%;
   scrollbar-width: none;
 }
 .kjun-scroll-fade[data-direction="vertical"] {
+  --_kjun-fade-to: to bottom;
   overflow-x: hidden;
   overflow-y: auto;
   min-height: 0;
 }
+/* The start edge is on the right in a right-to-left layout. */
+.kjun-scroll-fade[data-direction="horizontal"]:dir(rtl) { --_kjun-fade-to: to left; }
+/* An edge fades while content remains past it; the app's own mask-image style still wins. */
+.kjun-scroll-fade:is([data-fade-start], [data-fade-end]) {
+  --_kjun-fade-start: currentColor;
+  --_kjun-fade-end: currentColor;
+  -webkit-mask-image: linear-gradient(var(--_kjun-fade-to), var(--_kjun-fade-start), currentColor var(--_kjun-extension-scroll-fade-width), currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), var(--_kjun-fade-end));
+  mask-image: linear-gradient(var(--_kjun-fade-to), var(--_kjun-fade-start), currentColor var(--_kjun-extension-scroll-fade-width), currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), var(--_kjun-fade-end));
+}
+.kjun-scroll-fade[data-fade-start] { --_kjun-fade-start: transparent; }
+.kjun-scroll-fade[data-fade-end] { --_kjun-fade-end: transparent; }
+/* A named scroller is a focusable region, so keyboard users can scroll it even when nothing inside takes focus. */
+.kjun-scroll-fade[tabindex]:focus-visible { outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset: var(--_kjun-state-focus-offset); }
 @media (prefers-reduced-motion: reduce) {
   .kjun-icon-toggle svg {
     transition: none;

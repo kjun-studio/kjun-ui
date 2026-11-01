@@ -7,9 +7,13 @@ Object.assign(window, { configureAccordion: (next: object) => { s.config = { ...
 createApp(defineComponent(() => () => {
   const config = s.config;
   return <K.KjunProvider><main style={{ padding: '16px' }}><div data-testid="frame">
-    <K.KjunAccordion tone={config.tone} multiple={config.multiple} divider={config.divider} separated={config.separated}>
-      <K.KjunAccordionItem title={config.title} disabled={config.disabled} icon={config.icon || undefined} description={config.description || undefined}>
-        {config.action ? <K.KjunButton variant="ghost" size="sm">본문 행동</K.KjunButton> : config.body}
+    <K.KjunAccordion tone={config.tone} multiple={config.multiple} divider={config.divider} separated={config.separated} headingLevel={config.headingLevel} region={config.region}>
+      <K.KjunAccordionItem title={config.title} disabled={config.disabled} icon={config.icon || undefined} description={config.description || undefined}
+        ariaLabel={config.custom ? '계정 설정 열기' : undefined}>
+        {{
+          default: () => config.action ? <K.KjunButton variant="ghost" size="sm">본문 행동</K.KjunButton> : config.body,
+          ...(config.custom ? { header: () => <span>⚙︎</span> } : {}),
+        }}
       </K.KjunAccordionItem>
       <K.KjunAccordionItem title="알림 설정">알림을 받을 방식을 선택하세요.</K.KjunAccordionItem>
     </K.KjunAccordion>

@@ -121,6 +121,8 @@ export const kjunMessagesKo = {
   descending: "내림차순",
   // Navigation
   tabs: "탭",
+  // The "…" button that opens the steps a long breadcrumb folds away.
+  showPath: "숨긴 경로 보기",
   breadcrumb: "현재 위치",
   mainNavigation: "주요 탐색",
   // Read after a destination name for a dot badge that has no count.

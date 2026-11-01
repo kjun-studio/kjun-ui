@@ -136,7 +136,14 @@
       },
       "separatorSize": {
         "$ref": "iconSizes.compact"
-      }
+      },
+      "gap": {
+        "$ref": "dimension.value8"
+      },
+      "iconGap": {
+        "$ref": "dimension.value4"
+      },
+      "labelMaxWidth": 200
     },
     "pagination": {
       "iconSize": {

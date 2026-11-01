@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { registerOpened, toggleOpened, trimToSingle, unregisterOpened } from "./accordion-state";
 
 export function useInitialTab(value: string, candidate: string | undefined, change: (name: string) => void) {
   const requested = useRef(new Set<string>());
@@ -11,26 +12,16 @@ export function useInitialTab(value: string, candidate: string | undefined, chan
 }
 
 export function useAccordionState(multiple: boolean) {
-  const [opened, setOpened] = useState(new Set<string>());
+  const [opened, setOpened] = useState<ReadonlySet<string>>(new Set<string>());
   useEffect(() => {
-    if (!multiple) setOpened(previous => previous.size > 1 ? new Set([...previous].slice(-1)) : previous);
+    if (!multiple) setOpened(trimToSingle);
   }, [multiple]);
   return {
     opened,
-    toggle: (id: string) => setOpened(previous => {
-      const next = new Set(multiple ? previous : []);
-      if (previous.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    }),
+    toggle: (id: string) => setOpened(previous => toggleOpened(previous, id, multiple)),
     register: (id: string, defaultOpen: boolean) => {
-      if (defaultOpen) setOpened(previous => multiple || !previous.size ? new Set([...previous, id]) : previous);
-      return () => setOpened(previous => {
-        if (!previous.has(id)) return previous;
-        const next = new Set(previous);
-        next.delete(id);
-        return next;
-      });
+      setOpened(previous => registerOpened(previous, id, defaultOpen, multiple));
+      return () => setOpened(previous => unregisterOpened(previous, id));
     },
   };
 }

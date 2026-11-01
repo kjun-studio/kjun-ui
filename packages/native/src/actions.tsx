@@ -1,7 +1,9 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
 import { tokens,type ButtonSize } from "@kjun-ui/tokens";
-import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
+import { useContext,useEffect,useId,useRef,useState,type ReactNode } from "react";
+import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
+import { sameEdges, scrollEdges, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
 import { Platform,ScrollView,View,type ColorValue,type StyleProp,type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunButton,KjunIcon,type KjunButtonProps } from "./button";
@@ -314,19 +316,57 @@ export function KjunExternalLink({
 export interface KjunScrollFadeProps {
   children?: ReactNode;
   /** Which way the content scrolls; vertical needs a height (style) to scroll within. */
-  direction?: "horizontal" | "vertical";
+  direction?: ScrollFadeDirection;
+  /** The colour the edges fade into: the surface behind the scroller (default surface). */
+  fadeColor?: ColorValue;
+  /** Names the scroller for screen readers. */
+  ariaLabel?: string;
   style?: StyleProp<ViewStyle>;
 }
-export function KjunScrollFade({ children, direction = "horizontal", style }: KjunScrollFadeProps) {
-  const horizontal = direction === "horizontal";
+/** Fades whichever edge along `direction` still has content to scroll to, like Web, with a gradient into fadeColor. */
+export function KjunScrollFade({ children, direction = "horizontal", fadeColor, ariaLabel, style }: KjunScrollFadeProps) {
+  const { colors } = useKjunStyles(), color = fadeColor ?? colors.surface;
+  const horizontal = direction === "horizontal", width = tokens.extensions.scrollFade.width;
+  const box = useRef({ scrollLeft: 0, scrollTop: 0, clientWidth: 0, clientHeight: 0, scrollWidth: 0, scrollHeight: 0 });
+  const [edges, setEdges] = useState<ScrollEdges>({ start: false, end: false });
+  const id = "kjun-scroll-fade-" + useId().replace(/:/g, "");
+  const update = (next: Partial<typeof box.current>) => {
+    box.current = { ...box.current, ...next };
+    const found = scrollEdges(box.current, direction);
+    setEdges(previous => sameEdges(previous, found) ? previous : found);
+  };
+  const fade = (edge: "start" | "end") => (
+    <View pointerEvents="none" style={{ position: "absolute", ...(horizontal
+      ? { top: 0, bottom: 0, width, ...(edge === "start" ? { left: 0 } : { right: 0 }) }
+      : { left: 0, right: 0, height: width, ...(edge === "start" ? { top: 0 } : { bottom: 0 }) }) }}>
+      <Svg width="100%" height="100%">
+        <Defs><LinearGradient id={id + edge} x1="0%" y1="0%" x2={horizontal ? "100%" : "0%"} y2={horizontal ? "0%" : "100%"}>
+          <Stop offset="0" stopColor={color} stopOpacity={edge === "start" ? 1 : 0} />
+          <Stop offset="1" stopColor={color} stopOpacity={edge === "start" ? 0 : 1} />
+        </LinearGradient></Defs>
+        <Rect width="100%" height="100%" fill={`url(#${id + edge})`} />
+      </Svg>
+    </View>
+  );
   return (
-    <ScrollView
-      horizontal={horizontal}
-      showsHorizontalScrollIndicator={horizontal}
-      showsVerticalScrollIndicator={!horizontal}
-      style={[{ flexGrow: 0 }, horizontal ? { maxWidth: "100%" } : { maxHeight: "100%" }, style]}
-    >
-      {children}
-    </ScrollView>
+    <View style={[{ flexGrow: 0, position: "relative" }, horizontal ? { maxWidth: "100%" } : { maxHeight: "100%" }, style]} accessibilityLabel={ariaLabel}
+      {...(Platform.OS === "web" && ariaLabel ? { role: "region" as const } : {})}>
+      <ScrollView
+        horizontal={horizontal}
+        // Shrinks to the wrapper's max size (the app's style), so it scrolls inside it instead of growing past it.
+        style={{ flexGrow: 0, flexShrink: 1 }}
+        // The fade shows where content continues, so the bars stay hidden as on Web.
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
+        onLayout={event => update({ clientWidth: event.nativeEvent.layout.width, clientHeight: event.nativeEvent.layout.height })}
+        onContentSizeChange={(scrollWidth, scrollHeight) => update({ scrollWidth, scrollHeight })}
+        onScroll={event => update({ scrollLeft: event.nativeEvent.contentOffset.x, scrollTop: event.nativeEvent.contentOffset.y })}
+      >
+        {children}
+      </ScrollView>
+      {edges.start ? fade("start") : null}
+      {edges.end ? fade("end") : null}
+    </View>
   );
 }

@@ -2,33 +2,29 @@ import { useKjunMessages } from "./runtime/messages";
 import { Fragment, defineComponent, inject, onBeforeUnmount, onMounted, provide, ref, shallowRef, watch,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type VNode, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
-import { KjunIcon } from "./button";
+import { KjunButton, KjunIcon } from "./button";
 import { KjunCollapse } from "./collapse";
 import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
+import { accordionKeyTarget, registerOpened, toggleOpened, trimToSingle, unregisterOpened } from "../../../shared/package-runtime/accordion-state";
+import { breadcrumbCurrent, collapseBreadcrumb, type BreadcrumbItem } from "../../../shared/package-runtime/breadcrumb";
+import { KjunDropdown, KjunDropdownItem } from "./dropdown";
 import { KjunSelect } from "./select-control";
 
-interface AccordionContext { opened: () => Set<string>; toggle: (id: string) => void; register: (id: string, defaultOpen: boolean) => () => void }
+interface AccordionContext { opened: () => ReadonlySet<string>; toggle: (id: string) => void; register: (id: string, defaultOpen: boolean) => () => void }
 const kjunAccordionKey: InjectionKey<AccordionContext> = Symbol("kjunAccordion");
+export type AccordionHeadingLevel = 2 | 3 | 4 | 5 | 6 | false;
+const kjunAccordionLayoutKey: InjectionKey<{ headingLevel: () => AccordionHeadingLevel; region: () => boolean }> = Symbol("kjunAccordionLayout");
 
 function useAccordionState(multiple: () => boolean): AccordionContext {
-  const opened = shallowRef(new Set<string>());
-  watch(multiple, value => { if (!value && opened.value.size > 1) opened.value = new Set([...opened.value].slice(-1)); });
+  const opened = shallowRef<ReadonlySet<string>>(new Set<string>());
+  watch(multiple, value => { if (!value) opened.value = trimToSingle(opened.value); });
   return {
     opened: () => opened.value,
-    toggle: id => {
-      const next = new Set(multiple() ? opened.value : []);
-      if (opened.value.has(id)) next.delete(id); else next.add(id);
-      opened.value = next;
-    },
+    toggle: id => { opened.value = toggleOpened(opened.value, id, multiple()); },
     register: (id, defaultOpen) => {
-      if (defaultOpen && (multiple() || !opened.value.size)) opened.value = new Set([...opened.value, id]);
-      return () => {
-        if (!opened.value.has(id)) return;
-        const next = new Set(opened.value);
-        next.delete(id);
-        opened.value = next;
-      };
+      opened.value = registerOpened(opened.value, id, defaultOpen, multiple());
+      return () => { opened.value = unregisterOpened(opened.value, id); };
     },
   };
 }
@@ -40,6 +36,10 @@ const kjunAccordionProps = {
   divider: { type: Boolean, default: false },
   /** Gives every item its own rounded surface with a gap between them; divider has no effect then. */
   separated: { type: Boolean, default: false },
+  /** The heading level wrapping each header (default 3), or false for none, so headers join the page's outline. */
+  headingLevel: { type: [Number, Boolean] as PropType<AccordionHeadingLevel>, default: 3 },
+  /** Open panels are labelled regions (default true). Turn off for long lists, where many landmarks crowd a screen reader. */
+  region: { type: Boolean, default: true },
 } as const;
 export type KjunAccordionProps = ExtractPublicPropTypes<typeof kjunAccordionProps>;
 export const KjunAccordion = defineComponent({
@@ -48,7 +48,17 @@ export const KjunAccordion = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     provide(kjunAccordionKey, useAccordionState(() => props.multiple));
-    return () => <div class="kjun-accordion" data-tone={props.tone} data-divider={props.divider || undefined} data-separated={props.separated || undefined}>{slots.default?.()}</div>;
+    provide(kjunAccordionLayoutKey, { headingLevel: () => props.headingLevel, region: () => props.region });
+    // ↑↓ Home End move between headers, as in the WAI-ARIA accordion pattern.
+    const keydown = (event: KeyboardEvent) => {
+      const root = event.currentTarget as HTMLElement;
+      const triggers = Array.from(root.querySelectorAll<HTMLButtonElement>(":scope > .kjun-accordion-item > .kjun-accordion-trigger:not(:disabled), :scope > .kjun-accordion-item > .kjun-accordion-title > .kjun-accordion-trigger:not(:disabled)"));
+      const next = accordionKeyTarget(event.key, triggers.indexOf(event.target as HTMLButtonElement), triggers.length);
+      if (next === null) return;
+      event.preventDefault();
+      triggers[next].focus();
+    };
+    return () => <div class="kjun-accordion" data-tone={props.tone} data-divider={props.divider || undefined} data-separated={props.separated || undefined} onKeydown={keydown}>{slots.default?.()}</div>;
   },
 });
 
@@ -64,6 +74,8 @@ const kjunAccordionItemProps = {
   open: { type: Boolean, default: undefined },
   /** Keeps the body mounted after it first opens, so inputs keep their state while closed. */
   keepMounted: { type: Boolean, default: false },
+  /** The header's accessible name when the header slot is not plain text. */
+  ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunAccordionItemProps = ExtractPublicPropTypes<typeof kjunAccordionItemProps>;
 /** Slots: default (panel), header (replaces the title). Event update:open (a request when controlled, a report otherwise). */
@@ -79,6 +91,7 @@ export const KjunAccordionItem = defineComponent({
     // Decided on each render like React; registration with the Accordion still happens once at mount.
     const controlled = () => props.open !== undefined;
     const context = inject(kjunAccordionKey, null);
+    const layout = inject(kjunAccordionLayoutKey, { headingLevel: () => 3, region: () => true });
     const group = () => controlled() ? null : context;
     const id = useKjunId("kjun-");
     const own = ref(props.defaultOpen);
@@ -93,17 +106,22 @@ export const KjunAccordionItem = defineComponent({
     return () => {
       const open = isOpen();
       const header = slots.header?.();
-      return (
-        <div class="kjun-accordion-item" data-leading={props.icon ? "" : undefined}>
-          <button type="button" id={id + "-heading"} disabled={props.disabled} aria-expanded={open} aria-controls={id + "-panel"}
+      const level = layout.headingLevel(), region = layout.region();
+      const trigger = (
+          <button type="button" id={id + "-heading"} disabled={props.disabled} aria-expanded={open} aria-controls={id + "-panel"} aria-label={props.ariaLabel}
             class="kjun-accordion-trigger" onClick={() => { registering = false; const g = group(); controlled() ? emit("update:open", !open) : g ? g.toggle(id) : (own.value = !own.value); }}>
             {props.icon && <span class="kjun-accordion-leading"><KjunIcon name={props.icon} size={tokens.extensions.accordion.leadingIconSize} /></span>}
             <span class="kjun-accordion-heading">{hasContent(header) ? header : props.title}{props.description && <span class="kjun-accordion-description">{props.description}</span>}</span>
             <KjunIcon name="chevron-down" class="kjun-accordion-chevron" size={tokens.extensions.accordion.iconSize}
               style={{ transform: open ? "rotate(180deg)" : undefined }} />
           </button>
+      );
+      const Heading = level ? (`h${level}` as const) : undefined;
+      return (
+        <div class="kjun-accordion-item" data-leading={props.icon ? "" : undefined}>
+          {Heading ? <Heading class="kjun-accordion-title">{trigger}</Heading> : trigger}
           <KjunCollapse open={open} keepMounted={props.keepMounted}>
-            <div role="region" id={id + "-panel"} aria-labelledby={id + "-heading"} class="kjun-accordion-panel">{slots.default?.()}</div>
+            <div role={region ? "region" : undefined} id={id + "-panel"} aria-labelledby={region ? id + "-heading" : undefined} class="kjun-accordion-panel">{slots.default?.()}</div>
           </KjunCollapse>
         </div>
       );
@@ -111,10 +129,12 @@ export const KjunAccordionItem = defineComponent({
   },
 });
 
-export interface BreadcrumbItem { label: string; to?: string; icon?: string }
+export type { BreadcrumbItem };
 const kjunBreadcrumbProps = {
   items: { type: Array as PropType<BreadcrumbItem[]>, required: true },
   ariaLabel: { type: String, default: undefined },
+  /** Folds a long trail: the first step and the last maxItems - 1 stay, and the steps between open from a "…" menu. */
+  maxItems: { type: Number, default: undefined },
 } as const;
 export type KjunBreadcrumbProps = ExtractPublicPropTypes<typeof kjunBreadcrumbProps>;
 /** Slot link({ item, label }) renders a router link; without it, links are plain anchors. A last item with `to` is a link too. */
@@ -124,22 +144,41 @@ export const KjunBreadcrumb = defineComponent({
   slots: Object as SlotsType<{ link?: (scope: { item: BreadcrumbItem; label: VNode }) => VNodeChild }>,
   setup(props, { slots }) {
     const m = useKjunMessages();
-    return () => (
-      <nav aria-label={(props.ariaLabel ?? m.value.breadcrumb)} class="kjun-breadcrumb">
-        {props.items.map((item, i) => {
-          const label = <>{item.icon && <KjunIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} />} {item.label}</>;
-          const link = item.to ? slots.link?.({ item, label }) : undefined;
-          return (
-            <Fragment key={i}>
-              {i > 0 && <KjunIcon name="chevron-right" size={tokens.extensions.breadcrumb.separatorSize} />}{" "}
-              {item.to
-                ? hasContent(link as VNode[] | undefined) ? link : <a href={item.to}>{label}</a>
-                : <span aria-current={i === props.items.length - 1 ? "page" : undefined}>{label}</span>}
-            </Fragment>
-          );
-        })}
-      </nav>
-    );
+    return () => {
+      if (!props.items.length) return null;
+      const { shown, hidden, at } = collapseBreadcrumb(props.items, props.maxItems);
+      const separator = () => <KjunIcon name="chevron-right" size={tokens.extensions.breadcrumb.separatorSize} />;
+      return (
+        <nav aria-label={(props.ariaLabel ?? m.value.breadcrumb)} class="kjun-breadcrumb">
+          <ol class="kjun-breadcrumb-list">
+            {shown.map(({ item, index }, position) => {
+              const current = breadcrumbCurrent(item, index, props.items.length);
+              const label = <>{item.icon && <KjunIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} />}<span class="kjun-breadcrumb-label">{item.label}</span></>;
+              const link = item.to ? slots.link?.({ item, label }) : undefined;
+              return (
+                <Fragment key={index}>
+                  {position === at && (
+                    <li class="kjun-breadcrumb-item">
+                      {separator()}
+                      <KjunDropdown>{{
+                        trigger: () => <KjunButton size="xs" variant="ghost" prefixIcon="dots" ariaLabel={m.value.showPath} />,
+                        default: () => hidden.map(({ item: folded, index: key }) => <KjunDropdownItem key={key} href={folded.to} icon={folded.icon}>{folded.label}</KjunDropdownItem>),
+                      }}</KjunDropdown>
+                    </li>
+                  )}
+                  <li class="kjun-breadcrumb-item">
+                    {position > 0 && separator()}
+                    {item.to
+                      ? hasContent(link as VNode[] | undefined) ? link : <a href={item.to} aria-current={current ? "page" : undefined}>{label}</a>
+                      : <span aria-current={current ? "page" : undefined}>{label}</span>}
+                  </li>
+                </Fragment>
+              );
+            })}
+          </ol>
+        </nav>
+      );
+    };
   },
 });
 

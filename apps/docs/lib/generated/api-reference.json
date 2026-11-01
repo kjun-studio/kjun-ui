@@ -19285,6 +19285,24 @@
             "description": "Gives every item its own rounded surface with a gap between them; divider has no effect then.",
             "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(흰 페이지에서는 tone=\"muted\"), divider는 적용되지 않습니다.",
             "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "headingLevel",
+            "type": "2 | 3 | 4 | 5 | 6 | false",
+            "required": false,
+            "default": "3",
+            "description": "The heading level wrapping each header (default 3), or false for none, so headers join the page's outline.",
+            "summary": "각 헤더를 감쌀 제목 수준입니다. 화면 낭독기의 제목 탐색에 헤더가 들어갑니다. false면 제목으로 감싸지 않습니다.",
+            "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "region",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Open panels are labelled regions (default true). Turn off for long lists, where many landmarks crowd a screen reader.",
+            "summary": "펼친 본문을 헤더 이름의 영역(region)으로 알립니다. 항목이 많아 영역 목록이 길어지면 false로 끄세요.",
+            "source": "packages/vue3/src/navigation.tsx"
           }
         ],
         "events": [],
@@ -19347,6 +19365,24 @@
             "default": "false",
             "description": "Gives every item its own rounded surface with a gap between them; divider has no effect then.",
             "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(흰 페이지에서는 tone=\"muted\"), divider는 적용되지 않습니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "headingLevel",
+            "type": "2 | 3 | 4 | 5 | 6 | false",
+            "required": false,
+            "default": "3",
+            "description": "The heading level wrapping each header (default 3), or false for none, so headers join the page's outline.",
+            "summary": "각 헤더를 감쌀 제목 수준입니다. 화면 낭독기의 제목 탐색에 헤더가 들어갑니다. false면 제목으로 감싸지 않습니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "region",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Open panels are labelled regions (default true). Turn off for long lists, where many landmarks crowd a screen reader.",
+            "summary": "펼친 본문을 헤더 이름의 영역(region)으로 알립니다. 항목이 많아 영역 목록이 길어지면 false로 끄세요.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -19494,6 +19530,15 @@
             "description": "Keeps the body mounted after it first opens, so inputs keep their state while closed.",
             "summary": "처음 연 뒤로는 접혀도 본문을 지우지 않고 숨깁니다. 안의 입력값·스크롤이 남고, 닫힌 동안에는 Tab과 화면 낭독기에서 빠집니다.",
             "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The header's accessible name when the header slot is not plain text.",
+            "summary": "헤더의 접근성 이름입니다. header에 글자가 아닌 내용을 넣을 때 주세요. 생략하면 보이는 헤더를 읽습니다.",
+            "source": "packages/vue3/src/navigation.tsx"
           }
         ],
         "events": [
@@ -19602,8 +19647,17 @@
             "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "",
+            "description": "Replaces the title in the header; pass ariaLabel when it is not plain text.",
             "summary": "기본 헤더 대신 배치할 콘텐츠입니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The header's accessible name when header is not plain text.",
+            "summary": "헤더의 접근성 이름입니다. header에 글자가 아닌 내용을 넣을 때 주세요. 생략하면 보이는 헤더를 읽습니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -19700,8 +19754,17 @@
             "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "",
+            "description": "Replaces the title in the header; pass ariaLabel when it is not plain text.",
             "summary": "기본 헤더 대신 배치할 콘텐츠입니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The header's accessible name when header is not plain text.",
+            "summary": "헤더의 접근성 이름입니다. header에 글자가 아닌 내용을 넣을 때 주세요. 생략하면 보이는 헤더를 읽습니다.",
             "source": "packages/native/src/navigation.tsx"
           },
           {
@@ -23210,11 +23273,11 @@
         "props": [
           {
             "name": "items",
-            "type": "BreadcrumbItem[]",
+            "type": "{ label: string; to?: string; icon?: string; current?: boolean }[]",
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "표시할 항목과 항목별 레이블·값·구성 정보입니다.",
+            "summary": "경로 단계입니다. to가 있으면 링크입니다. 현재 페이지는 기본으로 to가 없는 마지막 단계이며, current로 직접 정할 수 있습니다(링크인 현재 단계도 aria-current로 알립니다). 빈 배열이면 아무것도 그리지 않습니다.",
             "source": "packages/vue3/src/navigation.tsx"
           },
           {
@@ -23224,6 +23287,15 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
+            "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "maxItems",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "Folds a long trail: the first step and the last maxItems - 1 stay, and the steps between open from a \"…\" menu.",
+            "summary": "긴 경로를 접습니다. 첫 단계와 마지막 maxItems - 1개 단계만 보이고, 사이 단계는 \"…\" 버튼의 메뉴로 엽니다. 2 이상일 때 적용합니다.",
             "source": "packages/vue3/src/navigation.tsx"
           }
         ],
@@ -23247,11 +23319,11 @@
         "props": [
           {
             "name": "items",
-            "type": "BreadcrumbItem[]",
+            "type": "{ label: string; to?: string; icon?: string; current?: boolean }[]",
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "표시할 항목과 항목별 레이블·값·구성 정보입니다.",
+            "summary": "경로 단계입니다. to가 있으면 링크입니다. 현재 페이지는 기본으로 to가 없는 마지막 단계이며, current로 직접 정할 수 있습니다(링크인 현재 단계도 aria-current로 알립니다). 빈 배열이면 아무것도 그리지 않습니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -23271,6 +23343,15 @@
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "maxItems",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Folds a long trail: the first step and the last maxItems - 1 stay, and the steps between open from a \"…\" menu.",
+            "summary": "긴 경로를 접습니다. 첫 단계와 마지막 maxItems - 1개 단계만 보이고, 사이 단계는 \"…\" 버튼의 메뉴로 엽니다. 2 이상일 때 적용합니다.",
+            "source": "packages/react/src/navigation.tsx"
           }
         ],
         "events": [],
@@ -23282,11 +23363,11 @@
         "props": [
           {
             "name": "items",
-            "type": "BreadcrumbItem[]",
+            "type": "{ label: string; to?: string; icon?: string; current?: boolean }[]",
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "표시할 항목과 항목별 레이블·값·구성 정보입니다.",
+            "summary": "경로 단계입니다. to가 있으면 링크입니다. 현재 페이지는 기본으로 to가 없는 마지막 단계이며, current로 직접 정할 수 있습니다(링크인 현재 단계도 aria-current로 알립니다). 빈 배열이면 아무것도 그리지 않습니다.",
             "source": "packages/native/src/navigation.tsx"
           },
           {
@@ -23314,6 +23395,15 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "maxItems",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Folds a long trail: the first step and the last maxItems - 1 stay, and the steps between open from a \"…\" menu.",
+            "summary": "긴 경로를 접습니다. 첫 단계와 마지막 maxItems - 1개 단계만 보이고, 사이 단계는 \"…\" 버튼의 메뉴로 엽니다. 2 이상일 때 적용합니다.",
             "source": "packages/native/src/navigation.tsx"
           }
         ],
@@ -28028,6 +28118,15 @@
             "description": "Which way the content scrolls; vertical needs a height (style or class) to scroll within.",
             "summary": "항목을 가로 또는 세로로 배치합니다.",
             "source": "packages/vue3/src/actions.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Names the scroller; it then becomes a focusable region so the keyboard can scroll it.",
+            "summary": "스크롤 영역의 이름입니다. 주면 웹은 초점을 받는 영역(region)이 되어 안에 초점 받을 요소가 없어도 키보드로 스크롤할 수 있습니다.",
+            "source": "packages/vue3/src/actions.tsx"
           }
         ],
         "events": [],
@@ -28061,6 +28160,15 @@
             "default": "\"horizontal\"",
             "description": "Which way the content scrolls; vertical needs a height (style or class) to scroll within.",
             "summary": "항목을 가로 또는 세로로 배치합니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Names the scroller; it then becomes a focusable region so the keyboard can scroll it.",
+            "summary": "스크롤 영역의 이름입니다. 주면 웹은 초점을 받는 영역(region)이 되어 안에 초점 받을 요소가 없어도 키보드로 스크롤할 수 있습니다.",
             "source": "packages/react/src/actions.tsx"
           },
           {
@@ -28100,11 +28208,29 @@
           },
           {
             "name": "direction",
-            "type": "\"horizontal\" | \"vertical\" | undefined",
+            "type": "ScrollFadeDirection | undefined",
             "required": false,
             "default": "\"horizontal\"",
             "description": "Which way the content scrolls; vertical needs a height (style) to scroll within.",
             "summary": "항목을 가로 또는 세로로 배치합니다.",
+            "source": "packages/native/src/actions.tsx"
+          },
+          {
+            "name": "fadeColor",
+            "type": "ColorValue",
+            "required": false,
+            "default": "colors.surface",
+            "description": "The colour the edges fade into: the surface behind the scroller (default surface).",
+            "summary": "가장자리가 흐려지며 섞일 색입니다. 스크롤 영역 뒤의 바탕색을 주세요.",
+            "source": "packages/native/src/actions.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Names the scroller for screen readers.",
+            "summary": "스크롤 영역의 이름입니다. 주면 웹은 초점을 받는 영역(region)이 되어 안에 초점 받을 요소가 없어도 키보드로 스크롤할 수 있습니다.",
             "source": "packages/native/src/actions.tsx"
           },
           {

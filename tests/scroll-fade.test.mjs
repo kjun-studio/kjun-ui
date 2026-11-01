@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { scrollEdges, scrollFadeMask } from '../shared/package-runtime/scroll-fade.ts';
+import { sameEdges, scrollEdges } from '../shared/package-runtime/scroll-fade.ts';
 
 const box = (over) => ({ scrollLeft: 0, scrollTop: 0, clientWidth: 100, clientHeight: 100, scrollWidth: 100, scrollHeight: 100, ...over });
 
@@ -13,10 +13,14 @@ test('scrollEdges reads the scroll axis the fade follows', () => {
   assert.deepEqual(scrollEdges(box({ scrollHeight: 300, scrollTop: 50 }), 'vertical'), { start: true, end: true });
 });
 
-test('scrollFadeMask fades only the edges that still have content', () => {
-  assert.equal(scrollFadeMask({ start: false, end: false }, 24, 'vertical'), undefined);
-  assert.equal(scrollFadeMask({ start: false, end: true }, 24, 'horizontal'),
-    'linear-gradient(to right, currentColor, currentColor calc(100% - 24px), transparent)');
-  assert.equal(scrollFadeMask({ start: true, end: true }, 24, 'vertical'),
-    'linear-gradient(to bottom, transparent, currentColor 24px, currentColor calc(100% - 24px), transparent)');
+test('a right-to-left scroller reads its negative scrollLeft from the start edge', () => {
+  assert.deepEqual(scrollEdges(box({ scrollWidth: 300, scrollLeft: 0 }), 'horizontal', true), { start: false, end: true });
+  assert.deepEqual(scrollEdges(box({ scrollWidth: 300, scrollLeft: -200 }), 'horizontal', true), { start: true, end: false });
+});
+
+test('the edge check allows a pixel of rounding and compares by value', () => {
+  assert.deepEqual(scrollEdges(box({ scrollWidth: 300, scrollLeft: 1 }), 'horizontal'), { start: false, end: true });
+  assert.deepEqual(scrollEdges(box({ scrollWidth: 300, scrollLeft: 199.5 }), 'horizontal'), { start: true, end: false });
+  assert.equal(sameEdges({ start: true, end: false }, { start: true, end: false }), true);
+  assert.equal(sameEdges({ start: true, end: false }, { start: false, end: false }), false);
 });

@@ -4,14 +4,18 @@
       "multiple",
       "tone",
       "divider",
-      "separated"
+      "separated",
+      "headingLevel",
+      "region"
     ],
     "react": [
       "multiple",
       "tone",
       "divider",
       "separated",
-      "children"
+      "children",
+      "headingLevel",
+      "region"
     ],
     "native": [
       "multiple",
@@ -29,7 +33,8 @@
       "defaultOpen",
       "disabled",
       "open",
-      "keepMounted"
+      "keepMounted",
+      "ariaLabel"
     ],
     "react": [
       "title",
@@ -41,7 +46,8 @@
       "children",
       "open",
       "onOpenChange",
-      "keepMounted"
+      "keepMounted",
+      "ariaLabel"
     ],
     "native": [
       "title",
@@ -53,7 +59,8 @@
       "children",
       "open",
       "onOpenChange",
-      "keepMounted"
+      "keepMounted",
+      "ariaLabel"
     ]
   },
   "KjunCard": {
@@ -314,18 +321,22 @@
   },
   "KjunScrollFade": {
     "vue3": [
-      "direction"
+      "direction",
+      "ariaLabel"
     ],
     "react": [
       "children",
       "direction",
       "className",
-      "style"
+      "style",
+      "ariaLabel"
     ],
     "native": [
       "children",
       "direction",
-      "style"
+      "style",
+      "ariaLabel",
+      "fadeColor"
     ]
   },
   "KjunText": {

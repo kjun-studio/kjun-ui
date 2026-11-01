@@ -776,6 +776,9 @@
   --_kjun-extension-image-fallback-icon-size: 24px;
   --_kjun-extension-breadcrumb-icon-size: 14px;
   --_kjun-extension-breadcrumb-separator-size: 12px;
+  --_kjun-extension-breadcrumb-gap: 8px;
+  --_kjun-extension-breadcrumb-icon-gap: 4px;
+  --_kjun-extension-breadcrumb-label-max-width: 200px;
   --_kjun-extension-floating-max-height: 480px;
   --_kjun-extension-floating-viewport-inset: 8px;
   --_kjun-extension-floating-anchor-gap: 8px;

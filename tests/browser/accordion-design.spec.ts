@@ -4,6 +4,8 @@ import { demoPalettes } from '../../shared/demo-colors';
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureAccordion(next), next);
 const headers = (page: Page) => page.getByTestId('frame').locator('button[aria-expanded], [role="button"][aria-expanded]');
 const box = async (node: Locator) => (await node.boundingBox())!;
+// The item around a header: on the web the header sits inside its heading (h3), on Native directly in the item.
+const itemOf = (header: Locator, platform: string) => platform === 'native' ? header.locator('..') : header.locator('xpath=ancestor::*[contains(concat(" ", @class, " "), " kjun-accordion-item ")][1]');
 const bodyText = '이 계정에서 사용할 기본 정보를 확인하고 변경할 수 있습니다.';
 const rgb = (hex: string) => 'rgb(' + [1, 3, 5].map(n => parseInt(hex.slice(n, n + 2), 16)).join(', ') + ')';
 
@@ -29,7 +31,7 @@ for (const platform of ['react', 'vue3', 'native']) {
         const s = getComputedStyle(node); return s.borderTopWidth === '0px' && s.borderBottomWidth === '0px';
       }))).toBe(true);
       // Hover paints the whole item (header and open body), not the header alone.
-      const item = headers(page).first().locator('..');
+      const item = itemOf(headers(page).first(), platform);
       await headers(page).first().hover(); await expect(item).toHaveCSS('background-color', rgb(demoPalettes[palette].hover));
       await expect(headers(page).first()).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
       await headers(page).first().click(); await page.mouse.move(0, 0);
@@ -56,7 +58,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.setViewportSize({ width: 390, height: 800 });
     await openFixture(page, platform, '', 'accordion-design');
     const frame = page.getByTestId('frame'), group = frame.locator(':scope > *').first();
-    const items = () => headers(page).locator('..');
+    const items = () => platform === 'native' ? headers(page).locator('..') : page.getByTestId('frame').locator('.kjun-accordion-item');
     const line = (index: number) => platform === 'native'
       ? items().nth(index).evaluate(el => { const last = el.lastElementChild as HTMLElement; const r = last.getBoundingClientRect(); return r.height <= 1.5 ? { left: r.left - el.getBoundingClientRect().left, height: r.height } : null; })
       : items().nth(index).evaluate(el => { const s = getComputedStyle(el, '::after'); return s.content === 'none' || s.content === 'normal' ? null : { left: parseFloat(s.left), height: parseFloat(s.height) }; });
@@ -80,6 +82,31 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(Math.round(second.y - first.y - first.height)).toBe(8);
     await expect(group).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     await expect(items().first()).toHaveCSS('border-top-left-radius', '12px');
+  });
+
+  test(`${platform}: headers sit in headings, arrows move between them, regions can be turned off and a custom header keeps a name`, async ({ page }) => {
+    await openFixture(page, platform, '', 'accordion-design');
+    await configure(page, { custom: true });
+    await expect(page.getByRole('button', { name: '계정 설정 열기' })).toBeVisible();
+    if (platform === 'native') {
+      await page.getByRole('button', { name: '계정 설정 열기' }).click();
+      await expect(page.getByRole('region', { name: '계정 설정 열기' })).toBeVisible();
+      return;
+    }
+    await configure(page, { custom: false });
+    await expect(page.getByRole('heading', { level: 3, name: '계정 설정' }).getByRole('button')).toHaveCount(1);
+    await configure(page, { headingLevel: false });
+    await expect(page.getByRole('heading', { name: '계정 설정' })).toHaveCount(0);
+    await headers(page).first().focus();
+    await page.keyboard.press('ArrowDown'); await expect(headers(page).nth(1)).toBeFocused();
+    await page.keyboard.press('ArrowDown'); await expect(headers(page).first()).toBeFocused();
+    await page.keyboard.press('End'); await expect(headers(page).nth(1)).toBeFocused();
+    await page.keyboard.press('Home'); await expect(headers(page).first()).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(page.getByRole('region', { name: '계정 설정' })).toBeVisible();
+    await configure(page, { region: false });
+    await expect(page.getByRole('region')).toHaveCount(0);
+    await expect(page.getByText(bodyText, { exact: true })).toBeVisible();
   });
 
   test(`${platform}: keyboard toggles, panel focus and disabled controls preserve opening rules`, async ({ page }) => {

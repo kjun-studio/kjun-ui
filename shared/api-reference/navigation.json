@@ -1,27 +1,158 @@
 {
   "KjunBreadcrumb": {
-    "vue3": ["items", "ariaLabel"],
-    "react": ["items", "renderLink", "ariaLabel"],
-    "native": ["items", "renderLink", "onNavigate", "ariaLabel"]
+    "vue3": [
+      "items",
+      "ariaLabel",
+      "maxItems"
+    ],
+    "react": [
+      "items",
+      "renderLink",
+      "ariaLabel",
+      "maxItems"
+    ],
+    "native": [
+      "items",
+      "renderLink",
+      "onNavigate",
+      "ariaLabel",
+      "maxItems"
+    ]
   },
   "KjunExternalLink": {
-    "vue3": ["href", "mode", "label"],
-    "react": ["href", "mode", "label", "children"],
-    "native": ["href", "mode", "label", "children", "openUrl"]
+    "vue3": [
+      "href",
+      "mode",
+      "label"
+    ],
+    "react": [
+      "href",
+      "mode",
+      "label",
+      "children"
+    ],
+    "native": [
+      "href",
+      "mode",
+      "label",
+      "children",
+      "openUrl"
+    ]
   },
   "KjunPagination": {
-    "vue3": ["page", "currentPage", "totalPages", "totalRows", "pageSize", "pageSizeOptions", "siblingCount", "showInfo", "showSizeSelector", "showFirstLast", "formatter"],
-    "react": ["currentPage", "page", "totalPages", "totalRows", "pageSize", "pageSizeOptions", "siblingCount", "showInfo", "showSizeSelector", "showFirstLast", "formatter", "onPageChange", "onChange", "onPageSizeChange"],
-    "native": ["currentPage", "page", "totalPages", "totalRows", "pageSize", "pageSizeOptions", "siblingCount", "showInfo", "showSizeSelector", "showFirstLast", "formatter", "onPageChange", "onChange", "onPageSizeChange"]
+    "vue3": [
+      "page",
+      "currentPage",
+      "totalPages",
+      "totalRows",
+      "pageSize",
+      "pageSizeOptions",
+      "siblingCount",
+      "showInfo",
+      "showSizeSelector",
+      "showFirstLast",
+      "formatter"
+    ],
+    "react": [
+      "currentPage",
+      "page",
+      "totalPages",
+      "totalRows",
+      "pageSize",
+      "pageSizeOptions",
+      "siblingCount",
+      "showInfo",
+      "showSizeSelector",
+      "showFirstLast",
+      "formatter",
+      "onPageChange",
+      "onChange",
+      "onPageSizeChange"
+    ],
+    "native": [
+      "currentPage",
+      "page",
+      "totalPages",
+      "totalRows",
+      "pageSize",
+      "pageSizeOptions",
+      "siblingCount",
+      "showInfo",
+      "showSizeSelector",
+      "showFirstLast",
+      "formatter",
+      "onPageChange",
+      "onChange",
+      "onPageSizeChange"
+    ]
   },
   "KjunTabs": {
-    "vue3": ["modelValue", "items", "density", "variant", "fullWidth", "stickyHeader", "stickyOffset", "ariaLabel", "onTabMenu"],
-    "react": ["value", "items", "density", "variant", "fullWidth", "actions", "children", "stickyHeader", "stickyOffset", "ariaLabel", "onValueChange", "onChange", "onTabMenu"],
-    "native": ["value", "items", "density", "variant", "fullWidth", "actions", "children", "ariaLabel", "onValueChange", "onChange", "onTabMenu"]
+    "vue3": [
+      "modelValue",
+      "items",
+      "density",
+      "variant",
+      "fullWidth",
+      "stickyHeader",
+      "stickyOffset",
+      "ariaLabel",
+      "onTabMenu"
+    ],
+    "react": [
+      "value",
+      "items",
+      "density",
+      "variant",
+      "fullWidth",
+      "actions",
+      "children",
+      "stickyHeader",
+      "stickyOffset",
+      "ariaLabel",
+      "onValueChange",
+      "onChange",
+      "onTabMenu"
+    ],
+    "native": [
+      "value",
+      "items",
+      "density",
+      "variant",
+      "fullWidth",
+      "actions",
+      "children",
+      "ariaLabel",
+      "onValueChange",
+      "onChange",
+      "onTabMenu"
+    ]
   },
   "KjunTabPane": {
-    "vue3": ["name", "label", "icon", "badge", "badgeVariant", "disabled"],
-    "react": ["children", "name", "label", "icon", "badge", "badgeVariant", "disabled"],
-    "native": ["children", "name", "label", "icon", "badge", "badgeVariant", "disabled"]
+    "vue3": [
+      "name",
+      "label",
+      "icon",
+      "badge",
+      "badgeVariant",
+      "disabled"
+    ],
+    "react": [
+      "children",
+      "name",
+      "label",
+      "icon",
+      "badge",
+      "badgeVariant",
+      "disabled"
+    ],
+    "native": [
+      "children",
+      "name",
+      "label",
+      "icon",
+      "badge",
+      "badgeVariant",
+      "disabled"
+    ]
   }
 }

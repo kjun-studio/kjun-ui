@@ -15,7 +15,7 @@ import { useOptionalKjunFeedback } from "./feedback-context";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
 import { useReducedMotion } from "./use-reduced-motion";
 import { TopNavigationContext } from "./top-navigation-context";
-import { scrollEdges, scrollFadeMask, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
+import { trackScrollFade, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
 export interface KjunIconToggleProps {
   active?: boolean;
   activeIcon: string;
@@ -288,38 +288,35 @@ export interface KjunScrollFadeProps {
   children?: ReactNode;
   /** Which way the content scrolls; vertical needs a height (style or class) to scroll within. */
   direction?: ScrollFadeDirection;
+  /** Names the scroller; it then becomes a focusable region so the keyboard can scroll it. */
+  ariaLabel?: string;
   className?: string;
   style?: CSSProperties;
 }
 /** Fades whichever edge along `direction` still has content to scroll to. */
-export function KjunScrollFade({ children, direction = "horizontal", className, style }: KjunScrollFadeProps) {
+export function KjunScrollFade({ children, direction = "horizontal", ariaLabel, className, style }: KjunScrollFadeProps) {
   const ref = useRef<HTMLDivElement>(null),
     [edges, setEdges] = useState<ScrollEdges>({ start: false, end: false });
-  const update = () => {
-    const el = ref.current;
-    if (el)
-      setEdges((prev) => {
-        const next = scrollEdges(el, direction);
-        return prev.start === next.start && prev.end === next.end ? prev : next;
-      });
-  };
+  // One tracker for the scroller's life; it watches size, children, late images and fonts itself.
+  const latest = useRef(direction);
+  latest.current = direction;
+  const tracker = useRef<ReturnType<typeof trackScrollFade>>(undefined);
   useEffect(() => {
-    update();
-    const observer = new ResizeObserver(update);
-    if (ref.current) {
-      observer.observe(ref.current);
-      Array.from(ref.current.children).forEach((el) => observer.observe(el));
-    }
-    return () => observer.disconnect();
-  }, [children, direction]);
-  const mask = scrollFadeMask(edges, tokens.extensions.scrollFade.width, direction);
+    const instance = trackScrollFade(ref.current!, () => latest.current, setEdges);
+    tracker.current = instance;
+    return () => instance.destroy();
+  }, []);
+  useEffect(() => tracker.current?.update(), [direction]);
   return (
     <div
       ref={ref}
-      onScroll={update}
       className={className ? `kjun-scroll-fade ${className}` : "kjun-scroll-fade"}
       data-direction={direction}
-      style={{ ...style, maskImage: mask, WebkitMaskImage: mask }}
+      data-fade-start={edges.start || undefined}
+      data-fade-end={edges.end || undefined}
+      // A named scroller is a focusable region, so the keyboard can scroll content that takes no focus itself.
+      {...(ariaLabel ? { role: "region", "aria-label": ariaLabel, tabIndex: 0 } : {})}
+      style={style}
     >
       {children}
     </div>

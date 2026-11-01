@@ -1,11 +1,11 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent, inject, mergeProps, onBeforeUnmount, onMounted, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { typeStyle } from "../../../shared/package-runtime/typography";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunSpinner } from "./display";
 import { useOptionalKjunFeedback } from "./feedback";
-import { scrollEdges, scrollFadeMask, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
+import { trackScrollFade, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
 import { kjunTopNavigationKey } from "./runtime/keys";
 import { useReducedMotion } from "./runtime/presence";
@@ -221,6 +221,8 @@ export const KjunExternalLink = defineComponent({
 const kjunScrollFadeProps = {
   /** Which way the content scrolls; vertical needs a height (style or class) to scroll within. */
   direction: { type: String as PropType<ScrollFadeDirection>, default: "horizontal" },
+  /** Names the scroller; it then becomes a focusable region so the keyboard can scroll it. */
+  ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunScrollFadeProps = ExtractPublicPropTypes<typeof kjunScrollFadeProps>;
 /** Fades whichever edge along `direction` still has content to scroll to. */
@@ -230,28 +232,17 @@ export const KjunScrollFade = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     const root = ref<HTMLElement | null>(null), edges = ref<ScrollEdges>({ start: false, end: false });
-    const update = () => {
-      const el = root.value;
-      if (!el) return;
-      const next = scrollEdges(el, props.direction);
-      if (next.start !== edges.value.start || next.end !== edges.value.end) edges.value = next;
-    };
-    let observer: ResizeObserver | undefined;
-    const observe = () => {
-      observer?.disconnect();
-      update();
-      observer = new ResizeObserver(update);
-      if (root.value) {
-        observer.observe(root.value);
-        Array.from(root.value.children).forEach(el => observer!.observe(el));
-      }
-    };
-    onMounted(observe);
-    onUpdated(observe);
-    onBeforeUnmount(() => observer?.disconnect());
-    return () => {
-      const mask = scrollFadeMask(edges.value, tokens.extensions.scrollFade.width, props.direction);
-      return <div ref={root} onScroll={update} class="kjun-scroll-fade" data-direction={props.direction} style={{ maskImage: mask, WebkitMaskImage: mask }}>{slots.default?.()}</div>;
-    };
+    let tracker: ReturnType<typeof trackScrollFade> | undefined;
+    onMounted(() => { tracker = trackScrollFade(root.value!, () => props.direction, next => { edges.value = next; }); });
+    watch(() => props.direction, () => tracker?.update(), { flush: "post" });
+    onBeforeUnmount(() => tracker?.destroy());
+    return () => (
+      <div ref={root} class="kjun-scroll-fade" data-direction={props.direction}
+        data-fade-start={edges.value.start || undefined} data-fade-end={edges.value.end || undefined}
+        // A named scroller is a focusable region, so the keyboard can scroll content that takes no focus itself.
+        {...(props.ariaLabel ? { role: "region", "aria-label": props.ariaLabel, tabindex: 0 } : {})}>
+        {slots.default?.()}
+      </div>
+    );
   },
 });

@@ -17896,29 +17896,29 @@
       "name": "@kjun-ui/tokens",
       "version": "0.17.0",
       "file": "kjun-ui-tokens-0.17.0.tgz",
-      "bytes": 105716,
-      "integrity": "sha512-UIjya9jayBCz0+SC106q77mRhzpQ+N0Q0eWPtIbdqPhj5M9Jxt2ZBHvcTselUwEj6k1P5VCIqUbTpiTc+g2oiQ=="
+      "bytes": 106261,
+      "integrity": "sha512-1jod7aVIetU3B8q3Tqqs/GHlm90iSH7VFwFfL8k5+zVPeQl6WIOpEtjY+rUsO9EhT1H70QLLFmAJld7zEWWyBQ=="
     },
     {
       "name": "@kjun-ui/vue3",
       "version": "0.17.0",
       "file": "kjun-ui-vue3-0.17.0.tgz",
-      "bytes": 386336,
-      "integrity": "sha512-lqvIg0gIbgfPj2I/0L0yy7USotNv5vRrRet4xRfU5BlV4h6a+Gzn8dF1LvlLFqmnrchW58fqDpEeQ8qscnwqvQ=="
+      "bytes": 391605,
+      "integrity": "sha512-kujeXTjHJxsK19E2/WwleMkktoqawZCi3PLuEOLoQYsM7yAoZkSB3V7F9oRFlZ4+Z6/3QigfhsnkWQrXRIaCRw=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.17.0",
       "file": "kjun-ui-react-0.17.0.tgz",
-      "bytes": 321525,
-      "integrity": "sha512-sMvtO9M4ex0z5RFCjP2Wlrj8Dhnqn74FxSWwWCv0vuB16gaHiOpcexOIXJ6CgazxeBmXAnAzzhq3JU2RXW5ePA=="
+      "bytes": 326022,
+      "integrity": "sha512-ZlnZQjuN7ZDZfub8/+xAcGBGfXaKJoNdPgNyREkcwrYWn/j+OW25Tf4eR5p3uryMMesmr8sO13d3DysLL+EkvQ=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.17.0",
       "file": "kjun-ui-native-0.17.0.tgz",
-      "bytes": 601518,
-      "integrity": "sha512-omeXv/if4FHh3dQ37bZeV7SCNSdlguVmWW9LDEM+/BTeg0BYCA1Dx5Bc80IoWs0XXgSU2uUiUuwVDjPcRWnneA=="
+      "bytes": 609805,
+      "integrity": "sha512-2XwcmaYJCCOpVCrqQxDYq9gDUAuQ4QNd2MnPEYgu6OZugTSC4rVqihQ6EeypONwYi/fd8Hq9dLyRNSgyn9CB2w=="
     }
   ],
   "definitionHash": "sha256-05b966b9d9a74498b45c1f39a5562eaf76cb985cf0413cdb0933d1cf5e2afa6b",

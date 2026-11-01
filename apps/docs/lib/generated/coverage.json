@@ -50,7 +50,7 @@
       "title": "Accordion",
       "docs": "/components/accordion",
       "category": "layout",
-      "differences": "Vue provide/inject와 React·Native Context가 부모 규칙을 전달합니다. Native도 헤더 누름으로 열고 닫으며 웹의 DOM 키보드 처리는 별도입니다.",
+      "differences": "Vue provide/inject와 React·Native Context가 부모 규칙을 전달합니다. 웹은 헤더를 headingLevel(기본 3) 제목으로 감싸고 펼친 본문을 region으로 알리며, region={false}로 끌 수 있습니다. Native는 헤더 누름으로 열고 닫고, 제목 수준과 화살표 키 이동은 없습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -81,7 +81,7 @@
       "title": "AccordionItem",
       "docs": "/components/accordion-item",
       "category": "layout",
-      "differences": "Vue header 슬롯과 React·Native header prop으로 제목 영역을 바꿉니다. disabled는 이 항목의 토글을 막고 부모 multiple 규칙은 유지합니다.",
+      "differences": "Vue header 슬롯과 React·Native header prop으로 제목 영역을 바꿉니다. 글자가 아닌 header에는 ariaLabel로 이름을 주세요. disabled는 이 항목의 토글을 막고 부모 multiple 규칙은 유지합니다. keepMounted는 처음 연 뒤 본문을 남겨 입력 상태를 지킵니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

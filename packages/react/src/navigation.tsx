@@ -2,6 +2,8 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { tokens } from '@kjun-ui/tokens';
 import { Collapse } from "./collapse";
 import { useInitialTab, useAccordionState } from "../../../shared/package-runtime/navigation";
+import { accordionKeyTarget } from "../../../shared/package-runtime/accordion-state";
+import { breadcrumbCurrent, collapseBreadcrumb, type BreadcrumbItem } from "../../../shared/package-runtime/breadcrumb";
 import { useSelectionIndicator } from "./use-selection-indicator";
 import { manageTabList } from "../../../shared/package-runtime/tab-keyboard";
 import {
@@ -19,7 +21,8 @@ type ReactElement,
 type ReactNode,
 } from "react";
 import { Tab,TabList,TabPanel,Tabs,TabListStateContext } from "react-aria-components";
-import { KjunIcon } from "./button";
+import { KjunButton, KjunIcon } from "./button";
+import { KjunDropdown, KjunDropdownItem } from "./dropdown";
 import { KjunBadge } from "./display";
 import { KjunSelect } from "./select";
 export interface TabItem {
@@ -202,7 +205,7 @@ export function KjunTabPane({ name, children }: KjunTabPaneProps) {
   );
 }
 const AccordionContext = createContext<{
-  opened: Set<string>;
+  opened: ReadonlySet<string>;
   toggle: (id: string) => void;
   register: (id: string, defaultOpen: boolean) => () => void;
 } | null>(null);
@@ -213,13 +216,21 @@ export interface KjunAccordionProps {
   divider?: boolean;
   /** Gives every item its own rounded surface with a gap between them; divider has no effect then. */
   separated?: boolean;
+  /** The heading level wrapping each header (default 3), or false for none, so headers join the page's outline. */
+  headingLevel?: AccordionHeadingLevel;
+  /** Open panels are labelled regions (default true). Turn off for long lists, where many landmarks crowd a screen reader. */
+  region?: boolean;
   children: ReactNode;
 }
+export type AccordionHeadingLevel = 2 | 3 | 4 | 5 | 6 | false;
+const AccordionLayoutContext = createContext<{ headingLevel: AccordionHeadingLevel; region: boolean }>({ headingLevel: 3, region: true });
 export function KjunAccordion({
   multiple = false,
   tone = "card",
   divider = false,
   separated = false,
+  headingLevel = 3,
+  region = true,
   children,
 }: KjunAccordionProps) {
   const state = useAccordionState(multiple);
@@ -227,9 +238,19 @@ export function KjunAccordion({
     <AccordionContext.Provider
       value={state}
     >
-      <div className="kjun-accordion" data-tone={tone} data-divider={divider || undefined} data-separated={separated || undefined}>
+      <AccordionLayoutContext.Provider value={{ headingLevel, region }}>
+      <div className="kjun-accordion" data-tone={tone} data-divider={divider || undefined} data-separated={separated || undefined}
+        // ↑↓ Home End move between headers, as in the WAI-ARIA accordion pattern.
+        onKeyDown={event => {
+          const triggers = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>(":scope > .kjun-accordion-item > .kjun-accordion-trigger:not(:disabled), :scope > .kjun-accordion-item > .kjun-accordion-title > .kjun-accordion-trigger:not(:disabled)"));
+          const next = accordionKeyTarget(event.key, triggers.indexOf(event.target as HTMLButtonElement), triggers.length);
+          if (next === null) return;
+          event.preventDefault();
+          triggers[next].focus();
+        }}>
         {children}
       </div>
+      </AccordionLayoutContext.Provider>
     </AccordionContext.Provider>
   );
 }
@@ -247,7 +268,10 @@ export interface KjunAccordionItemProps {
   /** Keeps the body mounted after it first opens, so inputs keep their state while closed. */
   keepMounted?: boolean;
   disabled?: boolean;
+  /** Replaces the title in the header; pass ariaLabel when it is not plain text. */
   header?: ReactNode;
+  /** The header's accessible name when header is not plain text. */
+  ariaLabel?: string;
   children: ReactNode;
 }
 export function KjunAccordionItem({
@@ -257,11 +281,14 @@ export function KjunAccordionItem({
   defaultOpen = false,
   disabled = false,
   header,
+  ariaLabel,
   open: openProp,
   onOpenChange,
   keepMounted = false,
   children,
 }: KjunAccordionItemProps) {
+  const layout = useContext(AccordionLayoutContext);
+  const Heading = layout.headingLevel ? (`h${layout.headingLevel}` as const) : Fragment;
   const controlled = openProp !== undefined,
     context = useContext(AccordionContext),
     group = controlled ? null : context,
@@ -283,12 +310,14 @@ export function KjunAccordionItem({
   }, [open, controlled]);
   return (
     <div className="kjun-accordion-item" data-leading={icon ? "" : undefined}>
+      <Heading {...(layout.headingLevel ? { className: "kjun-accordion-title" } : {})}>
       <button
         type="button"
         id={id + "-heading"}
         disabled={disabled}
         aria-expanded={open}
         aria-controls={id + "-panel"}
+        aria-label={ariaLabel}
         className="kjun-accordion-trigger"
         onClick={() => { registering.current = false; controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own); }}
       >
@@ -301,11 +330,12 @@ export function KjunAccordionItem({
           style={{ transform: open ? "rotate(180deg)" : undefined }}
         />
       </button>
+      </Heading>
       <Collapse open={open} keepMounted={keepMounted}>
         <div
-          role="region"
+          role={layout.region ? "region" : undefined}
           id={id + "-panel"}
-          aria-labelledby={id + "-heading"}
+          aria-labelledby={layout.region ? id + "-heading" : undefined}
           className="kjun-accordion-panel"
         >
           {children}
@@ -314,45 +344,50 @@ export function KjunAccordionItem({
     </div>
   );
 }
-export interface BreadcrumbItem {
-  label: string;
-  to?: string;
-  icon?: string;
-}
+export type { BreadcrumbItem };
 export interface KjunBreadcrumbProps {
   items: BreadcrumbItem[];
   renderLink?: (item: BreadcrumbItem, children: ReactNode) => ReactNode;
   ariaLabel?: string;
+  /** Folds a long trail: the first step and the last maxItems - 1 stay, and the steps between open from a "…" menu. */
+  maxItems?: number;
 }
 export function KjunBreadcrumb({
   items,
   renderLink,
   ariaLabel,
+  maxItems,
 }: KjunBreadcrumbProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.breadcrumb;
+  if (!items.length) return null;
+  const { shown, hidden, at } = collapseBreadcrumb(items, maxItems);
+  const separator = <KjunIcon name="chevron-right" size={tokens.extensions.breadcrumb.separatorSize} />;
+  const step = ({ item, index }: { item: BreadcrumbItem; index: number }, position: number) => {
+    const current = breadcrumbCurrent(item, index, items.length);
+    const label = <>{item.icon && <KjunIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} />}<span className="kjun-breadcrumb-label">{item.label}</span></>;
+    // A last item with `to` is a link too: apps that title the page elsewhere end the trail at its parent.
+    const link = item.to ? renderLink?.(item, label) || <a href={item.to} aria-current={current ? "page" : undefined}>{label}</a> : null;
+    return (
+      <Fragment key={index}>
+        {position === at && (
+          <li className="kjun-breadcrumb-item">
+            {separator}
+            <KjunDropdown trigger={<KjunButton size="xs" variant="ghost" prefixIcon="dots" ariaLabel={m.showPath} />}>
+              {hidden.map(({ item: folded, index: key }) => <KjunDropdownItem key={key} href={folded.to} icon={folded.icon}>{folded.label}</KjunDropdownItem>)}
+            </KjunDropdown>
+          </li>
+        )}
+        <li className="kjun-breadcrumb-item">
+          {position > 0 && separator}
+          {link ?? <span aria-current={current ? "page" : undefined}>{label}</span>}
+        </li>
+      </Fragment>
+    );
+  };
   return (
     <nav aria-label={ariaLabel} className="kjun-breadcrumb">
-      {items.map((item, i) => {
-        const label = (
-          <>
-            {item.icon && <KjunIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} />} {item.label}
-          </>
-        );
-        return (
-          <Fragment key={i}>
-            {i > 0 && <KjunIcon name="chevron-right" size={tokens.extensions.breadcrumb.separatorSize} />}{" "}
-            {/* A last item with `to` is a link too: apps that title the page elsewhere end the trail at its parent. */}
-            {item.to ? (
-              renderLink?.(item, label) || <a href={item.to}>{label}</a>
-            ) : (
-              <span aria-current={i === items.length - 1 ? "page" : undefined}>
-                {label}
-              </span>
-            )}
-          </Fragment>
-        );
-      })}
+      <ol className="kjun-breadcrumb-list">{shown.map(step)}</ol>
     </nav>
   );
 }

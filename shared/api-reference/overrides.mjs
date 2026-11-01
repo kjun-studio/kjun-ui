@@ -142,6 +142,14 @@ for (const platform of ["vue3", "react"]) set("DropdownItem", {
   href: "항목을 링크로 만듭니다. 고르면 브라우저가 이 주소로 이동하고 메뉴는 닫힙니다.",
   target: "href 링크를 열 대상입니다(예: _blank).",
 }, platform);
+set("Accordion", {
+  headingLevel: { type: "2 | 3 | 4 | 5 | 6 | false", default: "3", summary: "각 헤더를 감쌀 제목 수준입니다. 화면 낭독기의 제목 탐색에 헤더가 들어갑니다. false면 제목으로 감싸지 않습니다." },
+  region: { default: "true", summary: "펼친 본문을 헤더 이름의 영역(region)으로 알립니다. 항목이 많아 영역 목록이 길어지면 false로 끄세요." },
+});
+set("AccordionItem", { ariaLabel: "헤더의 접근성 이름입니다. header에 글자가 아닌 내용을 넣을 때 주세요. 생략하면 보이는 헤더를 읽습니다." });
+set("Breadcrumb", { items: { type: "{ label: string; to?: string; icon?: string; current?: boolean }[]", summary: "경로 단계입니다. to가 있으면 링크입니다. 현재 페이지는 기본으로 to가 없는 마지막 단계이며, current로 직접 정할 수 있습니다(링크인 현재 단계도 aria-current로 알립니다). 빈 배열이면 아무것도 그리지 않습니다." }, maxItems: "긴 경로를 접습니다. 첫 단계와 마지막 maxItems - 1개 단계만 보이고, 사이 단계는 \"…\" 버튼의 메뉴로 엽니다. 2 이상일 때 적용합니다." });
+set("ScrollFade", { ariaLabel: "스크롤 영역의 이름입니다. 주면 웹은 초점을 받는 영역(region)이 되어 안에 초점 받을 요소가 없어도 키보드로 스크롤할 수 있습니다." });
+set("ScrollFade", { fadeColor: { type: "ColorValue", default: "colors.surface", summary: "가장자리가 흐려지며 섞일 색입니다. 스크롤 영역 뒤의 바탕색을 주세요." } }, "native");
 // Progress documents its own value (null is missing data) above.
 set("AnimatedNumber PriceCell SignedValue Deviation ProgressCell HeatmapCell", {
   value: "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",

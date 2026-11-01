@@ -119,6 +119,7 @@
       "packages/tokens/src/web.css",
       "packages/vue3/src/tabs.tsx",
       "packages/react/src/navigation.tsx",
+      "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/calendar.tsx",

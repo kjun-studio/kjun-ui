@@ -114,6 +114,8 @@ export const kjunMessagesEn: KjunMessages = {
   ascending: "Ascending",
   descending: "Descending",
   tabs: "Tabs",
+  // The "…" button that opens the steps a long breadcrumb folds away.
+  showPath: "Show hidden path",
   breadcrumb: "Breadcrumb",
   mainNavigation: "Main navigation",
   newContent: "New",
