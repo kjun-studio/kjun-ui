@@ -966,6 +966,9 @@
   --_kjun-geometry-table-expanded-padding-y: 12px;
   --_kjun-geometry-table-action-column-width: 48px;
   --_kjun-geometry-table-toolbar-minimum-height: 48px;
+  --_kjun-geometry-table-group-padding-x: 8px;
+  --_kjun-geometry-table-group-padding-y: 4px;
+  --_kjun-geometry-table-group-gap: 6px;
   --_kjun-geometry-table-column-width: 160px;
   --_kjun-geometry-table-skeleton-height: 20px;
   --_kjun-geometry-table-selection-size: 16px;

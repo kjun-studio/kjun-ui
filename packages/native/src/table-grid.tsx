@@ -4,7 +4,7 @@ import { typeStyle } from "./typography";
 import { Fragment, useId, useState } from "react";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import type { TableGridProps } from "../../../shared/package-runtime/table-presentation";
-import { KjunIcon } from "./button";
+import { KjunButton, KjunIcon } from "./button";
 import { KjunSkeleton } from "./display";
 import { ScrollView, View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
@@ -13,7 +13,7 @@ import { KText, content } from "./internal";
 import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { useKjunStyles } from "./provider";
 import type { TableColumn } from "./table-model";
-export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable }: TableGridProps<Row, number>) {
+export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, groups, collapsed, toggleGroup, groupLabel, summary }: TableGridProps<Row, number>) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles();
   const geometry = tokens.table;
@@ -33,6 +33,106 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
   const fade = totalWidth - scroll.viewport - scroll.x > 1;
   // Like Web: stripes are a faint text tint, distinct from the header and expanded rows.
   const stripe = (typeof colors.text === "string" && tintColor(colors.text, tokens.states.opacity.stripe)) || colors.secondary;
+  const bodyRow = (row: Row, i: number) => (
+    <Fragment key={state.key(row, i)}>
+      <Pressable
+        accessible={false}
+        onPress={() => onRowClick?.(row, i)}
+        style={({ pressed }) => ({
+          flexDirection: "row",
+          borderBottomWidth: tokens.border.defaultWidth,
+          borderBottomColor: colors.divider,
+          backgroundColor:
+            pressed && hoverable
+              ? colors.tableRowHover
+              : state.selectedRow(row)
+              ? colors.selectedBg
+              : striped && i % 2
+              ? stripe
+              : undefined,
+        })}
+      >
+        {selectable && (
+          <View
+            style={{
+              width: geometry.actionColumnWidth,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {checkbox(row, i)}
+          </View>
+        )}
+        {visible.map((col) => (
+          <View
+            key={col.key}
+            style={{
+              width: width(col),
+              paddingVertical: cellPadding.y,
+              paddingHorizontal: cellPadding.x,
+              justifyContent: "center",
+            }}
+          >
+            {cell(col, row, i)}
+          </View>
+        ))}
+        {expandable && (
+          <View
+            style={{
+              width: geometry.actionColumnWidth,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {expand(row, i)}
+          </View>
+        )}
+      </Pressable>
+      {expandable &&
+        state.expanded.includes(state.key(row, i)) && (
+          <View
+            style={{
+              paddingVertical: geometry.expandedPadding.y,
+              paddingHorizontal: geometry.expandedPadding.x,
+              backgroundColor: colors.secondary,
+            }}
+          >
+            {content(renderExpand?.(row, i))}
+          </View>
+        )}
+    </Fragment>
+  );
+  // Like Web: subtotals read quieter than rows, and the total closes the table under a strong text-colored rule.
+  const summaryRow = (rows: Row[], kind: "subtotal" | "total", key: string) => summary && (
+    <View key={key} style={{ flexDirection: "row", ...(kind === "total" ? { borderTopWidth: tokens.border.controlWidth, borderTopColor: colors.text } : null) }}>
+      {selectable && <View style={{ width: geometry.actionColumnWidth }} />}
+      {visible.map((col, c) => (
+        <View key={col.key} style={{ width: width(col), paddingVertical: cellPadding.y, paddingHorizontal: cellPadding.x, justifyContent: "center",
+          alignItems: col.align === "right" ? "flex-end" : col.align === "center" ? "center" : "flex-start" }}>
+          {content(summary(col, rows) ?? (c === 0 ? (kind === "total" ? m.tableTotal : m.tableSubtotal) : null),
+            kind === "total" ? { ...typeStyle("control"), color: colors.text } : { ...typeStyle("caption"), color: colors.textSecondary })}
+        </View>
+      ))}
+      {expandable && <View style={{ width: geometry.actionColumnWidth }} />}
+    </View>
+  );
+  const body = () => [
+    ...(groups ? groups.flatMap((group) => {
+      const open = !collapsed.includes(group.key);
+      return [
+        <View key={"group:" + group.key} style={{ flexDirection: "row", alignItems: "center", gap: geometry.groupGap, width: totalWidth,
+          paddingVertical: geometry.groupPadding.y, paddingHorizontal: geometry.groupPadding.x, backgroundColor: colors.secondary }}>
+          <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} accessibilityState={{ expanded: open }}
+            ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} onPress={() => toggleGroup(group.key)} />
+          {content(groupLabel(group), { ...typeStyle("control"), color: colors.text })}
+          <KText style={{ ...typeStyle("body"), color: colors.textTertiary }}>{m.groupCount(group.rows.length)}</KText>
+        </View>,
+        ...(open ? group.rows.map((row) => bodyRow(row, state.rows.indexOf(row))) : []),
+        summaryRow(group.rows, "subtotal", "subtotal:" + group.key),
+      ];
+    }) : state.rows.map(bodyRow)),
+    summaryRow(state.rows, "total", "total"),
+  ];
   return (
         <View style={{ position: "relative", minWidth: 0, opacity: skeletonHidden ? 0 : undefined }} aria-hidden={skeletonHidden || undefined}>
           <ScrollView horizontal style={{ maxHeight }} scrollEventThrottle={16}
@@ -151,75 +251,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                   })}
                 </View>
               ) : (
-                state.rows.map((row, i) => (
-                  <Fragment key={state.key(row, i)}>
-                    <Pressable
-                      accessible={false}
-                      onPress={() => onRowClick?.(row, i)}
-                      style={({ pressed }) => ({
-                        flexDirection: "row",
-                        borderBottomWidth: tokens.border.defaultWidth,
-                        borderBottomColor: colors.divider,
-                        backgroundColor:
-                          pressed && hoverable
-                            ? colors.tableRowHover
-                            : state.selectedRow(row)
-                            ? colors.selectedBg
-                            : striped && i % 2
-                            ? stripe
-                            : undefined,
-                      })}
-                    >
-                      {selectable && (
-                        <View
-                          style={{
-                            width: geometry.actionColumnWidth,
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          {checkbox(row, i)}
-                        </View>
-                      )}
-                      {visible.map((col) => (
-                        <View
-                          key={col.key}
-                          style={{
-                            width: width(col),
-                            paddingVertical: cellPadding.y,
-                            paddingHorizontal: cellPadding.x,
-                            justifyContent: "center",
-                          }}
-                        >
-                          {cell(col, row, i)}
-                        </View>
-                      ))}
-                      {expandable && (
-                        <View
-                          style={{
-                            width: geometry.actionColumnWidth,
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          {expand(row, i)}
-                        </View>
-                      )}
-                    </Pressable>
-                    {expandable &&
-                      state.expanded.includes(state.key(row, i)) && (
-                        <View
-                          style={{
-                            paddingVertical: geometry.expandedPadding.y,
-                            paddingHorizontal: geometry.expandedPadding.x,
-                            backgroundColor: colors.secondary,
-                          }}
-                        >
-                          {content(renderExpand?.(row, i))}
-                        </View>
-                      )}
-                  </Fragment>
-                ))
+                body()
               )}
             </ScrollView>
           </ScrollView>

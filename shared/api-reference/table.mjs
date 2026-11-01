@@ -54,6 +54,14 @@ const common = {
     "적용 조건":
       "세 플랫폼 모두 화면 너비가 768px 미만일 때 모바일 표현으로 전환하고, 768px부터 표를 표시합니다. card에서는 cardTitle·cardSubtitle·cardSections와 열별 카드 표시 규칙을 적용합니다. mobileColumns는 compact 모드에서 표시할 열을 고릅니다. 전환 시 선택·확장 상태를 유지합니다.",
   }),
+  groupBy: detail("행을 묶을 필드(점 경로)입니다.", {
+    "묶음 규칙": "값마다 묶음 머리(접기 버튼·이름·개수)를 두고, 묶음은 그 값의 첫 행이 나온 순서를 따릅니다. 정렬은 묶음 안에서 적용됩니다. 접힌 묶음은 내부 상태이며 행·선택·확장 상태는 그대로입니다.",
+    "표시 범위": "표 형태에만 적용합니다. 좁은 화면의 카드 표현은 묶지 않습니다.",
+  }),
+  summary: detail("열 key별 소계·합계 방식입니다.", {
+    "값": '"sum" | "count" | "average" | "min" | "max" 또는 (rows, column) → 표시 내용. count는 행 수, 나머지는 유한한 숫자만 계산합니다.',
+    "표시": "groupBy가 있으면 묶음마다 소계 행을, 항상 맨 아래에 합계 행을 둡니다. 계산값은 열의 format으로 표시하고, 값이 없는 첫 열에는 '소계'·'합계'를 씁니다.",
+  }),
   formatValue: event(
     "기본 셀 표시를 포맷합니다.",
     "기본 셀을 렌더링할 때",
@@ -142,6 +150,7 @@ export default {
     },
     slots: {
       selectionToolbar: slot("선택된 행에 대한 행동을 배치합니다.", "{ selected: Row[] }"),
+      group: slot("묶음 머리의 이름을 교체합니다.", "{ value: 묶음 값, rows: Row[] }"),
       toolbar: slot("검색 입력 옆 도구를 배치합니다."),
       empty: slot("행이 없을 때 기본 안내를 교체합니다."),
       cell: slot(
@@ -191,6 +200,10 @@ export default {
       renderSelectionToolbar: slot(
         "선택 행에 대한 도구 영역을 반환합니다.",
         "(selected: Row[]) → ReactNode",
+      ),
+      renderGroupLabel: slot(
+        "묶음 머리의 이름을 반환합니다.",
+        "(value, rows: Row[]) → ReactNode",
       ),
     },
   },

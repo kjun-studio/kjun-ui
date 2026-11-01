@@ -164,6 +164,8 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           onExpandedRowsChange: change("expanded"),
           renderExpand: detail,
           renderSelectionToolbar: selectionAction,
+          groupBy: settings.grouped && example.project ? 'status' : undefined,
+          summary: settings.grouped ? (example.project ? { budget: 'sum' } : example.metrics ? { orders: 'sum', revenue: 'sum' } : undefined) : undefined,
           renderCell: (value: any, column: any, row: any) => {
             if (example.project && column.key === 'status') return status(row);
             if (example.project && column.key === 'actions') return view(row);

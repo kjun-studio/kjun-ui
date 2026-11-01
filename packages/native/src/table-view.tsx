@@ -1,6 +1,8 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
-import { tablePresentation, tableCellValue } from "../../../shared/package-runtime/table-presentation";
+import { tablePresentation, tableCellValue, tableSummaryValue } from "../../../shared/package-runtime/table-presentation";
+import { groupTableRows, type TableRowGroup } from "../../../shared/package-runtime/table-groups";
+import { useState } from "react";
 import { TableToolbar } from "./table-toolbar";
 import { TableGrid } from "./table-grid";
 import { tokens } from "@kjun-ui/tokens";
@@ -55,8 +57,17 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     query = useQueryDisplay(props),
     // Skeleton rows wait out loadingDelay here; the spinner waits inside KjunDataState.
     revealed = useLoadingReveal(query.initialLoading, skeleton ? loadingDelay : 0),
-    mobile = useWindowDimensions().width < tokens.table.mobileBreakpoint;
+    mobile = useWindowDimensions().width < tokens.table.mobileBreakpoint,
+    [collapsed, setCollapsed] = useState<string[]>([]);
   const layout = tablePresentation(props, mobile);
+  // Like Web: groups keep their collapsed keys here; summaries come from the shared rules.
+  const grouping = {
+    groups: groupTableRows(state.rows, props.groupBy),
+    collapsed,
+    toggleGroup: (key: string) => setCollapsed((keys) => keys.includes(key) ? keys.filter((k) => k !== key) : [...keys, key]),
+    groupLabel: (group: TableRowGroup<Row>) => props.renderGroupLabel ? props.renderGroupLabel(group.value, group.rows) : group.value == null || group.value === "" ? "-" : String(group.value),
+    summary: props.summary ? (col: TableColumn<Row>, rows: Row[]) => tableSummaryValue(props, col, rows) : null,
+  };
   const { card, visible } = layout;
   const cell = (col: TableColumn<Row>, row: Row, index: number, role?: "title") => {
     const { value, body } = tableCellValue(props, col, row, index);
@@ -146,7 +157,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         {card ? (
           <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} />
         ) : (
-          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable }} sortable={props.sortable} />
+          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ...grouping }} sortable={props.sortable} />
         )}
         {pagination && (
           <KjunPagination

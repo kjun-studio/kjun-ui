@@ -3,6 +3,7 @@ import { defineComponent, onBeforeUnmount, onMounted, ref, type AllowedComponent
 import { isComposingKey, nextTableSort, tokens, type TableSort } from "@kjun-ui/tokens";
 import { getValue, sortTableRows, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
 import { columnFormat, tablePresentation } from "../../../shared/package-runtime/table-presentation";
+import { formatSummary, groupTableRows, summarizeColumn, type TableRowGroup, type TableSummaryKind } from "../../../shared/package-runtime/table-groups";
 import { KjunButton } from "./button";
 import { KjunDataState, useQueryDisplay } from "./data-state";
 import { KjunInput } from "./input";
@@ -22,6 +23,7 @@ export type KjunTableSlots<R extends object = Record<string, unknown>> = {
   [key: `cell-${string}`]: ((scope: TableCellScope<R>) => VNodeChild) | undefined;
   expand?: (scope: { row: R; index: number }) => VNodeChild;
   selectionToolbar?: (scope: { selected: R[] }) => VNodeChild;
+  group?: (scope: { value: unknown; rows: R[] }) => VNodeChild;
   toolbar?: () => VNodeChild;
   empty?: () => VNodeChild;
 };
@@ -67,14 +69,19 @@ const kjunTableProps = {
   selectable: { type: Boolean, default: false },
   /** v-model:selected. */
   selected: { type: Array as PropType<object[]>, default: () => [] },
+  /** Row field (dot path) whose values split the rows into collapsible groups. */
+  groupBy: { type: String, default: undefined },
+  /** Per column key: a subtotal under each group and a total row at the end. */
+  summary: { type: Object as PropType<Partial<Record<string, TableSummaryKind | ((rows: any[], column: TableColumn<any>) => VNodeChild)>>>, default: undefined },
   formatValue: { type: Function as PropType<(value: unknown, column: TableColumn<any>, row: any) => VNodeChild>, default: undefined },
   /** Declared as props: rows become keyboard targets and the retry button appears only when the app listens. */
   onRowClick: { type: Function as PropType<(row: any, index: number) => void>, default: undefined },
   onRetry: { type: Function as PropType<() => void>, default: undefined },
 } as const;
 export type KjunTableProps<R extends object = Record<string, unknown>> =
-  Omit<ExtractPublicPropTypes<typeof kjunTableProps>, "columns" | "data" | "selected" | "rowClass" | "formatValue" | "onRowClick"> & {
+  Omit<ExtractPublicPropTypes<typeof kjunTableProps>, "columns" | "data" | "selected" | "rowClass" | "formatValue" | "onRowClick" | "summary"> & {
     columns: TableColumn<R>[];
+    summary?: Partial<Record<string, TableSummaryKind | ((rows: NoInfer<R>[], column: TableColumn<NoInfer<R>>) => VNodeChild)>>;
     data?: R[];
     selected?: NoInfer<R>[];
     rowClass?: string | ((row: NoInfer<R>, index: number) => string);
@@ -87,7 +94,7 @@ export type KjunTableProps<R extends object = Record<string, unknown>> =
     onSearch?: (query: string) => void;
   };
 /**
- * Slots: cell-<key> and cell({ value, column, row, index }), expand({ row, index }), selectionToolbar({ selected }), toolbar, empty.
+ * Slots: cell-<key> and cell({ value, column, row, index }), expand({ row, index }), selectionToolbar({ selected }), group({ value, rows }), toolbar, empty.
  * Events: update:sort, update:selected, update:expandedRows, page-change, search.
  */
 const KjunTableComponent = defineComponent({
@@ -101,7 +108,7 @@ const KjunTableComponent = defineComponent({
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
     const internalSort = ref<TableSort>({ key: "", order: "asc" }), internalExpanded = ref<(string | number)[]>([]), search = ref("");
-    const mobile = ref(false), stuck = ref(false);
+    const mobile = ref(false), stuck = ref(false), collapsed = ref<string[]>([]);
     let timer: ReturnType<typeof setTimeout> | undefined, media: MediaQueryList | undefined;
     const updateMobile = () => { mobile.value = !!media?.matches; };
     onMounted(() => { media = matchMedia(`(width < ${tokens.table.mobileBreakpoint}px)`); updateMobile(); media.addEventListener("change", updateMobile); });
@@ -172,6 +179,14 @@ const KjunTableComponent = defineComponent({
           </KjunButton>
         );
       };
+      // Like React: the app's function, or the kind computed and shown through the column's format.
+      const summaryValue = (col: TableColumn<any>, rows: object[]): VNodeChild => {
+        const spec = props.summary?.[col.key];
+        if (!spec) return null;
+        if (typeof spec === "function") return spec(rows, col);
+        const value = summarizeColumn(rows, col.key, spec), format = columnFormat(col);
+        return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec);
+      };
       const empty = slots.empty?.();
       const context = {
         messages: m.value,
@@ -207,7 +222,11 @@ const KjunTableComponent = defineComponent({
             hasLoadedOnce={props.hasLoadedOnce} error={props.error} refreshing={status.queryRefreshing} loadingPadding="none" onRetry={props.onRetry}
             loading={props.skeleton ? undefined : props.loading} loadingText={(props.loadingText ?? m.value.loadingEllipsis)} loadingDelay={props.skeleton ? 0 : props.loadingDelay}>
             {card ? tableCards({ ...context, layout }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
-              sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable, stuck })}
+              sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable, stuck,
+              groups: groupTableRows(state.rows, props.groupBy), collapsed: collapsed.value,
+              toggleGroup: (key: string) => { collapsed.value = collapsed.value.includes(key) ? collapsed.value.filter(k => k !== key) : [...collapsed.value, key]; },
+              groupLabel: (group: TableRowGroup<object>) => slots.group ? slots.group({ value: group.value, rows: group.rows }) : group.value == null || group.value === "" ? "-" : String(group.value),
+              summary: props.summary ? summaryValue : null })}
             {pagination && (
               <KjunPagination currentPage={pagination.page} totalPages={Math.ceil(pagination.total / (pagination.pageSize || 20))} totalRows={pagination.total}
                 pageSize={pagination.pageSize || 20} showInfo onUpdate:page={(page: number) => emit("page-change", page)} />

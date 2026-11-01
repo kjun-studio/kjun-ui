@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { getValue } from "./table-model";
 import type { TableColumn, TableCardSection, TableProps, useTableModel } from "./table";
+import { formatSummary, summarizeColumn, type TableRowGroup } from "./table-groups";
 
 export function tablePresentation<Row extends object>(props: TableProps<Row, unknown>, mobile: boolean) {
   const { columns, responsive = null, mobileColumns = [], cardTitle, cardSubtitle, cardSections = [] } = props;
@@ -51,6 +52,23 @@ export function tableCellValue<Row extends object>(props: TableProps<Row, unknow
   return { value, body };
 }
 
+/** A summary cell: the app's function, or the kind computed and shown through the column's format. */
+export function tableSummaryValue<Row extends object>(props: TableProps<Row, unknown>, column: TableColumn<Row>, rows: Row[]): ReactNode {
+  const spec = props.summary?.[column.key];
+  if (!spec) return null;
+  if (typeof spec === "function") return spec(rows, column);
+  const value = summarizeColumn(rows, column.key, spec), format = columnFormat(column);
+  return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec);
+}
+
+export interface TableGroupingProps<Row extends object> {
+  groups: TableRowGroup<Row>[] | null;
+  collapsed: string[];
+  toggleGroup: (key: string) => void;
+  groupLabel: (group: TableRowGroup<Row>) => ReactNode;
+  summary: ((column: TableColumn<Row>, rows: Row[]) => ReactNode) | null;
+}
+
 export interface TableRowsProps<Row extends object> {
   initialLoading: boolean;
   skeletonRows: number;
@@ -71,7 +89,7 @@ export interface TableRowsProps<Row extends object> {
 export interface TableCardsProps<Row extends object> extends TableRowsProps<Row> {
   layout: ReturnType<typeof tablePresentation<Row>>;
 }
-export interface TableGridProps<Row extends object, Height> extends TableRowsProps<Row> {
+export interface TableGridProps<Row extends object, Height> extends TableRowsProps<Row>, TableGroupingProps<Row> {
   state: TableRowsProps<Row>["state"] & Pick<ReturnType<typeof useTableModel<Row>>, "all" | "some" | "toggleAll" | "sort" | "sortColumn">;
   visible: TableColumn<Row>[];
   maxHeight?: Height;

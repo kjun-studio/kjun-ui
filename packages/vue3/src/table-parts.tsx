@@ -3,7 +3,8 @@ import { Fragment, defineComponent, type PropType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
 import type { TableCardSection, TableColumn } from "./table-types";
-import { KjunIcon } from "./button";
+import { KjunButton, KjunIcon } from "./button";
+import type { TableRowGroup } from "../../../shared/package-runtime/table-groups";
 import { KjunSkeleton } from "./display";
 import { provideFallbackIcons } from "./runtime/icons";
 import { css } from "./runtime/style";
@@ -74,8 +75,63 @@ export interface TableRowsContext {
 }
 
 export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; maxHeight?: number | string; stickyHeader: boolean;
-  sortable?: boolean; compact: boolean; striped: boolean; hoverable: boolean; stuck: { value: boolean } }) {
-  const { state, visible, selectable, expandable } = c;
+  sortable?: boolean; compact: boolean; striped: boolean; hoverable: boolean; stuck: { value: boolean };
+  groups: TableRowGroup<Row>[] | null; collapsed: string[]; toggleGroup: (key: string) => void;
+  groupLabel: (group: TableRowGroup<Row>) => VNodeChild; summary: ((column: TableColumn<any>, rows: Row[]) => VNodeChild) | null }) {
+  const { state, visible, selectable, expandable } = c, m = c.messages;
+  const span = visible.length + Number(selectable) + Number(expandable);
+  const bodyRow = (row: Row, i: number) => (
+    <Fragment key={state.key(row, i)}>
+      <tr class={"kjun-table-row-action " + c.customClass(row, i)} tabindex={c.clickable ? 0 : undefined}
+        onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} data-selected={state.selectedRow(row) || undefined}
+        onClick={() => c.rowClick(row, i)}>
+        {selectable && <td class="kjun-table-action-cell">{c.checkbox(row, i)}</td>}
+        {visible.map(col => (
+          <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined}
+            class={(col.secondary ? "kjun-table-secondary " : "") + (col.className || "")}>
+            {c.cell(col, row, i)}
+          </td>
+        ))}
+        {expandable && <td class="kjun-table-action-cell">{c.expand(row, i)}</td>}
+      </tr>
+      {expandable && state.expanded.includes(state.key(row, i)) && (
+        <tr class="kjun-table-expanded"><td colspan={visible.length + Number(selectable) + 1}>{c.renderExpand(row, i)}</td></tr>
+      )}
+    </Fragment>
+  );
+  // Like React: the first column names a summary row unless it carries a value of its own.
+  const summaryRow = (rows: Row[], kind: "subtotal" | "total", key: string) => c.summary && (
+    <tr key={key} class="kjun-table-summary" data-kind={kind}>
+      {selectable && <td class="kjun-table-action-cell" />}
+      {visible.map((col, index) => {
+        const value = c.summary!(col, rows);
+        return <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined}>
+          {value ?? (index === 0 ? (kind === "total" ? m.tableTotal : m.tableSubtotal) : null)}
+        </td>;
+      })}
+      {expandable && <td class="kjun-table-action-cell" />}
+    </tr>
+  );
+  const body = () => [
+    ...(c.groups ? c.groups.flatMap(group => {
+      const open = !c.collapsed.includes(group.key);
+      return [
+        <tr key={"group:" + group.key} class="kjun-table-group">
+          <td colspan={span}>
+            <span class="kjun-table-group-label">
+              <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} aria-expanded={open}
+                ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} onClick={() => c.toggleGroup(group.key)} />
+              <span class="kjun-table-group-name">{c.groupLabel(group)}</span>
+              <span class="kjun-table-group-count">{m.groupCount(group.rows.length)}</span>
+            </span>
+          </td>
+        </tr>,
+        ...(open ? group.rows.map(row => bodyRow(row, state.rows.indexOf(row))) : []),
+        summaryRow(group.rows, "subtotal", "subtotal:" + group.key),
+      ];
+    }) : state.rows.map(bodyRow)),
+    summaryRow(state.rows, "total", "total"),
+  ];
   const sorting = (col: TableColumn<any>) => col.sortable && c.sortable !== false;
   return (
     <div class="kjun-table-scroll" style={css({ maxHeight: c.maxHeight, visibility: c.skeletonHidden ? "hidden" : undefined })} aria-hidden={c.skeletonHidden ? "true" : undefined}
@@ -115,25 +171,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
             </tr>
           )) : !state.rows.length ? (
             <tr><td colspan={visible.length + Number(selectable) + Number(expandable)} class="kjun-table-empty">{c.empty()}</td></tr>
-          ) : state.rows.map((row, i) => (
-            <Fragment key={state.key(row, i)}>
-              <tr class={"kjun-table-row-action " + c.customClass(row, i)} tabindex={c.clickable ? 0 : undefined}
-                onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} data-selected={state.selectedRow(row) || undefined}
-                onClick={() => c.rowClick(row, i)}>
-                {selectable && <td class="kjun-table-action-cell">{c.checkbox(row, i)}</td>}
-                {visible.map(col => (
-                  <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined}
-                    class={(col.secondary ? "kjun-table-secondary " : "") + (col.className || "")}>
-                    {c.cell(col, row, i)}
-                  </td>
-                ))}
-                {expandable && <td class="kjun-table-action-cell">{c.expand(row, i)}</td>}
-              </tr>
-              {expandable && state.expanded.includes(state.key(row, i)) && (
-                <tr class="kjun-table-expanded"><td colspan={visible.length + Number(selectable) + 1}>{c.renderExpand(row, i)}</td></tr>
-              )}
-            </Fragment>
-          ))}
+          ) : body()}
         </tbody>
       </table>
     </div>

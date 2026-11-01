@@ -1,6 +1,8 @@
 import { nextTableSort, type TableSort, type QueryDisplayProps } from "@kjun-ui/tokens";
 export type { TableSort } from "@kjun-ui/tokens";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { TableSummaryKind } from "./table-groups";
+export type { TableSummaryKind } from "./table-groups";
 import { sortTableRows, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "./table-model";
 export { getValue } from "./table-model";
 
@@ -70,6 +72,11 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   rowClass?: string | ((row: Row, index: number) => string);
   selectable?: boolean;
   selected?: Row[];
+  /** Row field (dot path) whose values split the rows into collapsible groups. */
+  groupBy?: string;
+  renderGroupLabel?: (value: unknown, rows: Row[]) => ReactNode;
+  /** Per column key: a subtotal under each group and a total row at the end. */
+  summary?: Partial<Record<string, TableSummaryKind | ((rows: Row[], column: TableColumn<Row>) => ReactNode)>>;
   toolbar?: ReactNode;
   emptyContent?: ReactNode;
   renderCell?: (

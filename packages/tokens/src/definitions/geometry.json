@@ -160,6 +160,11 @@
     },
     "actionColumnWidth": 48,
     "toolbarMinimumHeight": { "$ref": "dimension.value48" },
+    "groupPadding": {
+      "x": { "$ref": "dimension.value8" },
+      "y": { "$ref": "dimension.value4" }
+    },
+    "groupGap": { "$ref": "dimension.value6" },
     "columnWidth": 160,
     "skeletonHeight": 20
   },

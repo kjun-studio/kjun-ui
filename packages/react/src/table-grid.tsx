@@ -2,7 +2,7 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { tokens } from "@kjun-ui/tokens";
 import { Fragment, useState, type CSSProperties, type KeyboardEvent } from "react";
 import type { TableGridProps } from "../../../shared/package-runtime/table-presentation";
-import { KjunIcon } from "./button";
+import { KjunButton, KjunIcon } from "./button";
 import { KjunSkeleton } from "./display";
 import { TableCheck } from "./table-check";
 interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["maxHeight"]> {
@@ -10,8 +10,78 @@ interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["m
   customClass: (row: Row, index: number) => string;
   rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
 }
-export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown }: Props<Row>) {
+export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary }: Props<Row>) {
   const m = useKjunMessages();
+  const span = visible.length + Number(selectable) + Number(expandable);
+  const bodyRow = (row: Row, i: number) => (
+    <Fragment key={state.key(row, i)}>
+      <tr
+        className={"kjun-table-row-action " + customClass(row, i)}
+        tabIndex={onRowClick ? 0 : undefined}
+        onKeyDown={event => rowKeyDown(event, row, i)}
+        data-selected={state.selectedRow(row) || undefined}
+        onClick={() => onRowClick?.(row, i)}
+      >
+        {selectable && <td className="kjun-table-action-cell">{checkbox(row, i)}</td>}
+        {visible.map((col) => (
+          <td
+            key={col.key}
+            style={{ textAlign: col.align }}
+            data-numeric={col.type === "number" || col.align === "right" || undefined}
+            className={
+              (col.secondary ? "kjun-table-secondary " : "") +
+              (col.className || "")
+            }
+          >
+            {cell(col, row, i)}
+          </td>
+        ))}
+        {expandable && <td className="kjun-table-action-cell">{expand(row, i)}</td>}
+      </tr>
+      {expandable &&
+        state.expanded.includes(state.key(row, i)) && (
+          <tr className="kjun-table-expanded">
+            <td
+              colSpan={visible.length + Number(selectable) + 1}
+            >
+              {renderExpand?.(row, i)}
+            </td>
+          </tr>
+        )}
+    </Fragment>
+  );
+  // The first column names a summary row unless it carries a value of its own.
+  const summaryRow = (rows: Row[], kind: "subtotal" | "total", key: string) => summary && (
+    <tr key={key} className="kjun-table-summary" data-kind={kind}>
+      {selectable && <td className="kjun-table-action-cell" />}
+      {visible.map((col, c) => (
+        <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined}>
+          {summary(col, rows) ?? (c === 0 ? (kind === "total" ? m.tableTotal : m.tableSubtotal) : null)}
+        </td>
+      ))}
+      {expandable && <td className="kjun-table-action-cell" />}
+    </tr>
+  );
+  const body = () => {
+    const rows = groups ? groups.flatMap((group) => {
+      const open = !collapsed.includes(group.key);
+      return [
+        <tr key={"group:" + group.key} className="kjun-table-group">
+          <td colSpan={span}>
+            <span className="kjun-table-group-label">
+              <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} aria-expanded={open}
+                ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} onClick={() => toggleGroup(group.key)} />
+              <span className="kjun-table-group-name">{groupLabel(group)}</span>
+              <span className="kjun-table-group-count">{m.groupCount(group.rows.length)}</span>
+            </span>
+          </td>
+        </tr>,
+        ...(open ? group.rows.map((row) => bodyRow(row, state.rows.indexOf(row))) : []),
+        summaryRow(group.rows, "subtotal", "subtotal:" + group.key),
+      ];
+    }) : state.rows.map(bodyRow);
+    return [...rows, summaryRow(state.rows, "total", "total")];
+  };
   // A sticky header marks itself once rows have scrolled under it.
   const [stuck, setStuck] = useState(false);
   return (
@@ -120,43 +190,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                     </td>
                   </tr>
                 ) : (
-                  state.rows.map((row, i) => (
-                    <Fragment key={state.key(row, i)}>
-                      <tr
-                        className={"kjun-table-row-action " + customClass(row, i)}
-                        tabIndex={onRowClick ? 0 : undefined}
-                        onKeyDown={event => rowKeyDown(event, row, i)}
-                        data-selected={state.selectedRow(row) || undefined}
-                        onClick={() => onRowClick?.(row, i)}
-                      >
-                        {selectable && <td className="kjun-table-action-cell">{checkbox(row, i)}</td>}
-                        {visible.map((col) => (
-                          <td
-                            key={col.key}
-                            style={{ textAlign: col.align }}
-                            data-numeric={col.type === "number" || col.align === "right" || undefined}
-                            className={
-                              (col.secondary ? "kjun-table-secondary " : "") +
-                              (col.className || "")
-                            }
-                          >
-                            {cell(col, row, i)}
-                          </td>
-                        ))}
-                        {expandable && <td className="kjun-table-action-cell">{expand(row, i)}</td>}
-                      </tr>
-                      {expandable &&
-                        state.expanded.includes(state.key(row, i)) && (
-                          <tr className="kjun-table-expanded">
-                            <td
-                              colSpan={visible.length + Number(selectable) + 1}
-                            >
-                              {renderExpand?.(row, i)}
-                            </td>
-                          </tr>
-                        )}
-                    </Fragment>
-                  ))
+                  body()
                 )}
               </tbody>
             </table>
