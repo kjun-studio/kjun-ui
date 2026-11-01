@@ -18723,6 +18723,13 @@
         "description": ""
       },
       {
+        "name": "variant",
+        "type": "\"bar\" | \"line\"",
+        "required": false,
+        "default": "\"line\"",
+        "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color."
+      },
+      {
         "name": "fill",
         "type": "boolean",
         "required": false,
@@ -18742,6 +18749,34 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "baseline",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": "Reference value (a previous close): a dotted line, the direction color and the area are measured from it."
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": "Fixed vertical range, so small moves stay small and rows share one scale."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "endDot",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Marks the last value with a dot (line variant)."
       },
       {
         "name": "ariaLabel",
@@ -18790,6 +18825,13 @@
         "description": ""
       },
       {
+        "name": "variant",
+        "type": "\"line\" | \"bar\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color."
+      },
+      {
         "name": "fill",
         "type": "boolean | undefined",
         "required": false,
@@ -18809,6 +18851,34 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "baseline",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Reference value (a previous close): a dotted line, the direction color and the area are measured from it."
+      },
+      {
+        "name": "min",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Fixed vertical range, so small moves stay small and rows share one scale."
+      },
+      {
+        "name": "max",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "endDot",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Marks the last value with a dot (line variant; default true)."
       },
       {
         "name": "ariaLabel",
@@ -18855,6 +18925,13 @@
         "description": ""
       },
       {
+        "name": "variant",
+        "type": "\"line\" | \"bar\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color."
+      },
+      {
         "name": "fill",
         "type": "boolean | undefined",
         "required": false,
@@ -18874,6 +18951,34 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "baseline",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Reference value (a previous close): a dotted line, the direction color and the area are measured from it."
+      },
+      {
+        "name": "min",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Fixed vertical range, so small moves stay small and rows share one scale."
+      },
+      {
+        "name": "max",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "endDot",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Marks the last value with a dot (line variant; default true)."
       },
       {
         "name": "ariaLabel",

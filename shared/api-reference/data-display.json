@@ -40,9 +40,9 @@
     "native": ["value", "max", "showLabel", "color", "customColor", "height"]
   },
   "KjunSparkline": {
-    "vue3": ["data", "width", "height", "color", "semantic", "fill", "strokeWidth", "stretch", "ariaLabel"],
-    "react": ["data", "width", "height", "color", "semantic", "fill", "strokeWidth", "stretch", "ariaLabel"],
-    "native": ["data", "width", "height", "color", "semantic", "fill", "strokeWidth", "stretch", "ariaLabel"]
+    "vue3": ["data", "width", "height", "color", "semantic", "variant", "fill", "strokeWidth", "stretch", "baseline", "min", "max", "endDot", "ariaLabel"],
+    "react": ["data", "width", "height", "color", "semantic", "variant", "fill", "strokeWidth", "stretch", "baseline", "min", "max", "endDot", "ariaLabel"],
+    "native": ["data", "width", "height", "color", "semantic", "variant", "fill", "strokeWidth", "stretch", "baseline", "min", "max", "endDot", "ariaLabel"]
   },
   "KjunTable": {
     "vue3": ["columns", "data", "rowKey", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce", "skeletonRows", "skeleton", "loadingText", "loadingDelay", "emptyText", "sortable", "sort", "sortMode", "hoverable", "searchable", "searchPlaceholder", "stickyHeader", "stickyOffset", "maxHeight", "pagination", "compact", "striped", "ariaLabel", "responsive", "mobileColumns", "cardTitle", "cardSubtitle", "cardSections", "expandable", "expandedRows", "expandSingle", "rowClass", "selectable", "selected", "groupBy", "summary", "summaryFormat", "formatValue", "onRowClick", "onRetry"],

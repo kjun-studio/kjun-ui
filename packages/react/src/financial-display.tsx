@@ -1,3 +1,4 @@
+import { sparklineGeometry, type SparkPoint } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { deviationLevel, tokens } from "@kjun-ui/tokens";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
@@ -233,9 +234,18 @@ export interface KjunSparklineProps {
   height?: number;
   color?: string;
   semantic?: "price" | "status";
+  /** "line" (default) draws the trend; "bar" draws each value as a bar from zero, the last one in the direction color. */
+  variant?: "line" | "bar";
   fill?: boolean;
   strokeWidth?: number;
   stretch?: boolean;
+  /** Reference value (a previous close): a dotted line, the direction color and the area are measured from it. */
+  baseline?: number;
+  /** Fixed vertical range, so small moves stay small and rows share one scale. */
+  min?: number;
+  max?: number;
+  /** Marks the last value with a dot (line variant; default true). */
+  endDot?: boolean;
   ariaLabel?: string;
 }
 export function KjunSparkline({
@@ -244,41 +254,24 @@ export function KjunSparkline({
   height = tokens.extensions.financial.sparklineHeight,
   color,
   semantic = "price",
+  variant = "line",
   fill = true,
-  strokeWidth = 1.5,
+  strokeWidth = tokens.extensions.financial.sparklineStrokeWidth,
   stretch = false,
+  baseline,
+  min,
+  max,
+  endDot = true,
   ariaLabel,
 }: KjunSparklineProps) {
-  const id = "kjun-" + useId().replace(/:/g, ""),
-    values = data.filter(Number.isFinite),
-    min = Math.min(...values),
-    max = Math.max(...values),
-    range = max - min || 1,
-    points = values
-      .map(
-        (v, i) =>
-          `${2 + (i / Math.max(1, values.length - 1)) * (width - 4)},${
-            2 + height - 4 - ((v - min) / range) * (height - 4)
-          }`
-      )
-      .join(" "),
-    change = values.length > 1 ? values[values.length - 1] - values[0] : 0,
-    line =
-      color ||
-      `var(--_kjun-color-${
-        change === 0
-          ? "text-tertiary"
-          : semantic === "status"
-          ? change > 0
-            ? "success"
-            : "danger"
-          : change > 0
-          ? "price-up"
-          : "price-down"
-      })`;
+  const id = "kjun-" + useId().replace(/:/g, ""), spec = tokens.extensions.financial;
+  const g = sparklineGeometry(data, { width, height, strokeWidth, dotRadius: spec.sparklineDotSize / 2, barGap: spec.sparklineBarGap, variant, baseline, min, max, endDot });
+  const tone = g.direction === 0 ? "text-tertiary" : semantic === "status" ? (g.direction > 0 ? "success" : "danger") : g.direction > 0 ? "price-up" : "price-down";
+  const line = color || `var(--_kjun-color-${tone})`;
+  const points = (run: SparkPoint[]) => run.map((p) => `${p.x},${p.y}`).join(" ");
   return (
     <svg
-      ref={domainColorRef(!color && semantic === 'price' && change !== 0)}
+      ref={domainColorRef(!color && semantic === 'price' && g.direction !== 0)}
       width={stretch ? "100%" : width}
       height={height}
       viewBox={`0 0 ${width} ${height}`}
@@ -287,34 +280,27 @@ export function KjunSparkline({
       aria-label={ariaLabel}
       aria-hidden={!ariaLabel || undefined}
       className="kjun-sparkline"
+      data-variant={variant}
     >
-      {fill && values.length > 1 && (
+      {/* No data reads as a quiet dotted line rather than an empty box. */}
+      {g.empty && <line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke="var(--_kjun-color-border)" strokeWidth={strokeWidth} strokeDasharray={`${spec.sparklineDash} ${spec.sparklineDashGap}`} strokeLinecap="round" />}
+      {g.bars.map((bar, i) => <rect key={i} x={bar.x} y={bar.y} width={bar.width} height={bar.height} rx={Math.min(spec.sparklineBarGap, bar.width / 2)} fill={bar.last ? line : "var(--_kjun-color-border-strong)"} />)}
+      {fill && g.areas.length > 0 && (
         <>
           <defs>
             <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={line} stopOpacity={0.3} />
-              <stop offset="100%" stopColor={line} stopOpacity={0.05} />
+              <stop offset="0%" stopColor={line} stopOpacity={tokens.states.opacity.sparklineFill} />
+              <stop offset="100%" stopColor={line} stopOpacity={0} />
             </linearGradient>
           </defs>
-          <polygon
-            points={`2,${height - 2} ${points} ${width - 2},${height - 2}`}
-            fill={`url(#${id})`}
-          />
+          {g.areas.map((area, i) => <polygon key={i} points={area} fill={`url(#${id})`} />)}
         </>
       )}
-      {values.length > 1 ? (
-        <polyline
-          points={points}
-          fill="none"
-          stroke={line}
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          vectorEffect={stretch ? "non-scaling-stroke" : undefined}
-        />
-      ) : values.length === 1 ? (
-        <circle cx={width / 2} cy={height / 2} r={2} fill={line} />
-      ) : null}
+      {g.baselineY != null && <line x1={0} x2={width} y1={g.baselineY} y2={g.baselineY} stroke="var(--_kjun-color-border-strong)" strokeWidth={1} strokeDasharray={`${spec.sparklineDash} ${spec.sparklineDashGap}`} vectorEffect={stretch ? "non-scaling-stroke" : undefined} />}
+      {g.segments.map((run, i) => run.length > 1
+        ? <polyline key={i} points={points(run)} fill="none" stroke={line} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" vectorEffect={stretch ? "non-scaling-stroke" : undefined} />
+        : <circle key={i} cx={run[0].x} cy={run[0].y} r={spec.sparklineDotSize / 2 - 0.5} fill={line} />)}
+      {endDot && g.end && g.segments.some((run) => run.length > 1) && <circle cx={g.end.x} cy={g.end.y} r={spec.sparklineDotSize / 2} fill={line} stroke="var(--_kjun-color-surface)" strokeWidth={1.5} />}
     </svg>
   );
 }

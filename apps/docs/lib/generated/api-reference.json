@@ -7245,6 +7245,15 @@
             "source": "packages/vue3/src/financial-display.tsx"
           },
           {
+            "name": "variant",
+            "type": "\"bar\" | \"line\"",
+            "required": false,
+            "default": "\"line\"",
+            "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color.",
+            "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
+            "source": "packages/vue3/src/financial-display.tsx"
+          },
+          {
             "name": "fill",
             "type": "boolean",
             "required": false,
@@ -7269,6 +7278,42 @@
             "default": "false",
             "description": "",
             "summary": "스파크라인을 가용 너비에 맞게 늘립니다.",
+            "source": "packages/vue3/src/financial-display.tsx"
+          },
+          {
+            "name": "baseline",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "Reference value (a previous close): a dotted line, the direction color and the area are measured from it.",
+            "summary": "기준값(예: 전일 종가)입니다. 점선으로 그리고 등락색과 채움의 기준이 됩니다.",
+            "source": "packages/vue3/src/financial-display.tsx"
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "Fixed vertical range, so small moves stay small and rows share one scale.",
+            "summary": "값 범위의 최솟값입니다.",
+            "source": "packages/vue3/src/financial-display.tsx"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값 범위의 최댓값입니다.",
+            "source": "packages/vue3/src/financial-display.tsx"
+          },
+          {
+            "name": "endDot",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Marks the last value with a dot (line variant).",
+            "summary": "마지막 값에 점을 표시합니다.",
             "source": "packages/vue3/src/financial-display.tsx"
           },
           {
@@ -7334,6 +7379,15 @@
             "source": "packages/react/src/financial-display.tsx"
           },
           {
+            "name": "variant",
+            "type": "\"line\" | \"bar\" | undefined",
+            "required": false,
+            "default": "\"line\"",
+            "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color.",
+            "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
+            "source": "packages/react/src/financial-display.tsx"
+          },
+          {
             "name": "fill",
             "type": "boolean | undefined",
             "required": false,
@@ -7346,7 +7400,7 @@
             "name": "strokeWidth",
             "type": "number | undefined",
             "required": false,
-            "default": "1.5",
+            "default": "—",
             "description": "",
             "summary": "스파크라인 선의 두께입니다.",
             "source": "packages/react/src/financial-display.tsx"
@@ -7358,6 +7412,42 @@
             "default": "false",
             "description": "",
             "summary": "스파크라인을 가용 너비에 맞게 늘립니다.",
+            "source": "packages/react/src/financial-display.tsx"
+          },
+          {
+            "name": "baseline",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Reference value (a previous close): a dotted line, the direction color and the area are measured from it.",
+            "summary": "기준값(예: 전일 종가)입니다. 점선으로 그리고 등락색과 채움의 기준이 됩니다.",
+            "source": "packages/react/src/financial-display.tsx"
+          },
+          {
+            "name": "min",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Fixed vertical range, so small moves stay small and rows share one scale.",
+            "summary": "값 범위의 최솟값입니다.",
+            "source": "packages/react/src/financial-display.tsx"
+          },
+          {
+            "name": "max",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값 범위의 최댓값입니다.",
+            "source": "packages/react/src/financial-display.tsx"
+          },
+          {
+            "name": "endDot",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Marks the last value with a dot (line variant; default true).",
+            "summary": "마지막 값에 점을 표시합니다.",
             "source": "packages/react/src/financial-display.tsx"
           },
           {
@@ -7423,6 +7513,15 @@
             "source": "packages/native/src/financial-display.tsx"
           },
           {
+            "name": "variant",
+            "type": "\"line\" | \"bar\" | undefined",
+            "required": false,
+            "default": "\"line\"",
+            "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color.",
+            "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
+            "source": "packages/native/src/financial-display.tsx"
+          },
+          {
             "name": "fill",
             "type": "boolean | undefined",
             "required": false,
@@ -7435,7 +7534,7 @@
             "name": "strokeWidth",
             "type": "number | undefined",
             "required": false,
-            "default": "1.5",
+            "default": "—",
             "description": "",
             "summary": "스파크라인 선의 두께입니다.",
             "source": "packages/native/src/financial-display.tsx"
@@ -7447,6 +7546,42 @@
             "default": "false",
             "description": "",
             "summary": "스파크라인을 가용 너비에 맞게 늘립니다.",
+            "source": "packages/native/src/financial-display.tsx"
+          },
+          {
+            "name": "baseline",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Reference value (a previous close): a dotted line, the direction color and the area are measured from it.",
+            "summary": "기준값(예: 전일 종가)입니다. 점선으로 그리고 등락색과 채움의 기준이 됩니다.",
+            "source": "packages/native/src/financial-display.tsx"
+          },
+          {
+            "name": "min",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Fixed vertical range, so small moves stay small and rows share one scale.",
+            "summary": "값 범위의 최솟값입니다.",
+            "source": "packages/native/src/financial-display.tsx"
+          },
+          {
+            "name": "max",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값 범위의 최댓값입니다.",
+            "source": "packages/native/src/financial-display.tsx"
+          },
+          {
+            "name": "endDot",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Marks the last value with a dot (line variant; default true).",
+            "summary": "마지막 값에 점을 표시합니다.",
             "source": "packages/native/src/financial-display.tsx"
           },
           {

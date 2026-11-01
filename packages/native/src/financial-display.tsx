@@ -1,3 +1,4 @@
+import { sparklineGeometry } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { deviationLevel, tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
@@ -9,9 +10,11 @@ type ColorValue
 import Svg,{
 Circle,
 Defs,
+Line,
 LinearGradient,
 Polygon,
 Polyline,
+Rect,
 Stop,
 } from "react-native-svg";
 import { KjunIcon } from "./button";
@@ -330,9 +333,18 @@ export interface KjunSparklineProps {
   height?: number;
   color?: ColorValue;
   semantic?: "price" | "status";
+  /** "line" (default) draws the trend; "bar" draws each value as a bar from zero, the last one in the direction color. */
+  variant?: "line" | "bar";
   fill?: boolean;
   strokeWidth?: number;
   stretch?: boolean;
+  /** Reference value (a previous close): a dotted line, the direction color and the area are measured from it. */
+  baseline?: number;
+  /** Fixed vertical range, so small moves stay small and rows share one scale. */
+  min?: number;
+  max?: number;
+  /** Marks the last value with a dot (line variant; default true). */
+  endDot?: boolean;
   ariaLabel?: string;
 }
 export function KjunSparkline({
@@ -341,72 +353,41 @@ export function KjunSparkline({
   height = tokens.extensions.financial.sparklineHeight,
   color,
   semantic = "price",
+  variant = "line",
   fill = true,
-  strokeWidth = 1.5,
+  strokeWidth = tokens.extensions.financial.sparklineStrokeWidth,
   stretch = false,
+  baseline,
+  min,
+  max,
+  endDot = true,
   ariaLabel,
 }: KjunSparklineProps) {
-  const { colors, domainColors } = useKjunStyles(),
-    id = "kjun-" + useId().replace(/:/g, ""),
-    values = data.filter(Number.isFinite),
-    min = Math.min(...values),
-    max = Math.max(...values),
-    range = max - min || 1,
-    points = values
-      .map(
-        (v, i) =>
-          `${2 + (i / Math.max(1, values.length - 1)) * (width - 4)},${
-            2 + height - 4 - ((v - min) / range) * (height - 4)
-          }`
-      )
-      .join(" "),
-    change = values.length > 1 ? values[values.length - 1] - values[0] : 0,
-    line =
-      color ||
-      (change === 0
-        ? colors.textTertiary
-        : semantic === "status"
-        ? change > 0
-          ? colors.success
-          : colors.danger
-        : domainColor(domainColors, change > 0 ? "priceUp" : "priceDown"));
+  const { colors, domainColors } = useKjunStyles(), id = "kjun-" + useId().replace(/:/g, ""), spec = tokens.extensions.financial;
+  const g = sparklineGeometry(data, { width, height, strokeWidth, dotRadius: spec.sparklineDotSize / 2, barGap: spec.sparklineBarGap, variant, baseline, min, max, endDot });
+  const line = color || (g.direction === 0 ? colors.textTertiary : semantic === "status" ? (g.direction > 0 ? colors.success : colors.danger)
+    : domainColor(domainColors, g.direction > 0 ? "priceUp" : "priceDown"));
+  const dash = `${spec.sparklineDash} ${spec.sparklineDashGap}`, scale = stretch ? "non-scaling-stroke" : undefined;
+  // Like Web: an empty series is a quiet dotted line; bars grow from zero; runs break at missing values.
   return (
-    <Svg
-      width={stretch ? "100%" : width}
-      height={height}
-      viewBox={`0 0 ${width} ${height}`}
-      preserveAspectRatio={stretch ? "none" : "xMidYMid meet"}
-      accessibilityRole={ariaLabel ? "image" : undefined}
-      accessibilityLabel={ariaLabel}
-      accessible={!!ariaLabel}
-    >
-      {fill && values.length > 1 && (
-        <>
-          <Defs>
-            <LinearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-              <Stop offset="0%" stopColor={line} stopOpacity={0.3} />
-              <Stop offset="100%" stopColor={line} stopOpacity={0.05} />
-            </LinearGradient>
-          </Defs>
-          <Polygon
-            points={`2,${height - 2} ${points} ${width - 2},${height - 2}`}
-            fill={`url(#${id})`}
-          />
-        </>
-      )}
-      {values.length > 1 ? (
-        <Polyline
-          points={points}
-          fill="none"
-          stroke={line}
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          vectorEffect={stretch ? "non-scaling-stroke" : undefined}
-        />
-      ) : values.length === 1 ? (
-        <Circle cx={width / 2} cy={height / 2} r={2} fill={line} />
-      ) : null}
+    <Svg width={stretch ? "100%" : width} height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio={stretch ? "none" : "xMidYMid meet"}
+      accessibilityRole={ariaLabel ? "image" : undefined} accessibilityLabel={ariaLabel} accessible={!!ariaLabel}>
+      {g.empty && <Line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke={colors.border} strokeWidth={strokeWidth} strokeDasharray={dash} strokeLinecap="round" />}
+      {g.bars.map((bar, i) => <Rect key={i} x={bar.x} y={bar.y} width={bar.width} height={bar.height} rx={Math.min(spec.sparklineBarGap, bar.width / 2)} fill={bar.last ? line : colors.borderStrong} />)}
+      {fill && g.areas.length > 0 && <>
+        <Defs>
+          <LinearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+            <Stop offset="0%" stopColor={line} stopOpacity={tokens.states.opacity.sparklineFill} />
+            <Stop offset="100%" stopColor={line} stopOpacity={0} />
+          </LinearGradient>
+        </Defs>
+        {g.areas.map((area, i) => <Polygon key={i} points={area} fill={`url(#${id})`} />)}
+      </>}
+      {g.baselineY != null && <Line x1={0} x2={width} y1={g.baselineY} y2={g.baselineY} stroke={colors.borderStrong} strokeWidth={1} strokeDasharray={dash} vectorEffect={scale} />}
+      {g.segments.map((run, i) => run.length > 1
+        ? <Polyline key={i} points={run.map((p) => `${p.x},${p.y}`).join(" ")} fill="none" stroke={line} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" vectorEffect={scale} />
+        : <Circle key={i} cx={run[0].x} cy={run[0].y} r={spec.sparklineDotSize / 2 - 0.5} fill={line} />)}
+      {endDot && g.end && g.segments.some((run) => run.length > 1) && <Circle cx={g.end.x} cy={g.end.y} r={spec.sparklineDotSize / 2} fill={line} stroke={colors.surface} strokeWidth={1.5} />}
     </Svg>
   );
 }

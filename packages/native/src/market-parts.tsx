@@ -118,7 +118,7 @@ export function MarketFooter<Row extends object>({
           showInfo
           onPageChange={props.onPageChange}
         />
-      )}{" "}
+      )}
       {showFooter && !state.initialLoading && rows.length > 0 && (
         <View
           style={{

@@ -1,3 +1,4 @@
+import { sparklineGeometry } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { deviationLevel, tokens } from "@kjun-ui/tokens";
@@ -184,9 +185,18 @@ const kjunSparklineProps = {
   height: { type: Number, default: tokens.extensions.financial.sparklineHeight },
   color: { type: String, default: undefined },
   semantic: { type: String as PropType<"price" | "status">, default: "price" },
+  /** "line" (default) draws the trend; "bar" draws each value as a bar from zero, the last one in the direction color. */
+  variant: { type: String as PropType<"line" | "bar">, default: "line" },
   fill: { type: Boolean, default: true },
-  strokeWidth: { type: Number, default: 1.5 },
+  strokeWidth: { type: Number, default: tokens.extensions.financial.sparklineStrokeWidth },
   stretch: { type: Boolean, default: false },
+  /** Reference value (a previous close): a dotted line, the direction color and the area are measured from it. */
+  baseline: { type: Number, default: undefined },
+  /** Fixed vertical range, so small moves stay small and rows share one scale. */
+  min: { type: Number, default: undefined },
+  max: { type: Number, default: undefined },
+  /** Marks the last value with a dot (line variant). */
+  endDot: { type: Boolean, default: true },
   ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunSparklineProps = ExtractPublicPropTypes<typeof kjunSparklineProps>;
@@ -196,28 +206,33 @@ export const KjunSparkline = defineComponent({
   setup(props) {
     const id = useKjunId("kjun-");
     return () => {
-      const { width, height } = props, values = props.data.filter(Number.isFinite);
-      const min = Math.min(...values), max = Math.max(...values), range = max - min || 1;
-      const points = values.map((v, i) => `${2 + (i / Math.max(1, values.length - 1)) * (width - 4)},${2 + height - 4 - ((v - min) / range) * (height - 4)}`).join(" ");
-      const change = values.length > 1 ? values[values.length - 1] - values[0] : 0;
-      const line = props.color || `var(--_kjun-color-${change === 0 ? "text-tertiary" : props.semantic === "status" ? change > 0 ? "success" : "danger" : change > 0 ? "price-up" : "price-down"})`;
+      const { width, height, strokeWidth, stretch } = props, spec = tokens.extensions.financial;
+      const g = sparklineGeometry(props.data, { width, height, strokeWidth, dotRadius: spec.sparklineDotSize / 2, barGap: spec.sparklineBarGap,
+        variant: props.variant, baseline: props.baseline, min: props.min, max: props.max, endDot: props.endDot });
+      const tone = g.direction === 0 ? "text-tertiary" : props.semantic === "status" ? g.direction > 0 ? "success" : "danger" : g.direction > 0 ? "price-up" : "price-down";
+      const line = props.color || `var(--_kjun-color-${tone})`, dash = `${spec.sparklineDash} ${spec.sparklineDashGap}`;
+      const scale = stretch ? "non-scaling-stroke" : undefined;
+      // Like React: an empty series is a quiet dotted line; bars grow from zero; runs break at missing values.
       return (
-        <svg ref={domainRef(!props.color && props.semantic === "price" && change !== 0)} width={props.stretch ? "100%" : width} height={height}
-          viewBox={`0 0 ${width} ${height}`} preserveAspectRatio={props.stretch ? "none" : "xMidYMid meet"} role={props.ariaLabel ? "img" : undefined}
-          aria-label={props.ariaLabel} aria-hidden={!props.ariaLabel || undefined} class="kjun-sparkline">
-          {props.fill && values.length > 1 && <>
+        <svg ref={domainRef(!props.color && props.semantic === "price" && g.direction !== 0)} width={stretch ? "100%" : width} height={height}
+          viewBox={`0 0 ${width} ${height}`} preserveAspectRatio={stretch ? "none" : "xMidYMid meet"} role={props.ariaLabel ? "img" : undefined}
+          aria-label={props.ariaLabel} aria-hidden={!props.ariaLabel || undefined} class="kjun-sparkline" data-variant={props.variant}>
+          {g.empty && <line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke="var(--_kjun-color-border)" stroke-width={strokeWidth} stroke-dasharray={dash} stroke-linecap="round" />}
+          {g.bars.map((bar, i) => <rect key={i} x={bar.x} y={bar.y} width={bar.width} height={bar.height} rx={Math.min(spec.sparklineBarGap, bar.width / 2)} fill={bar.last ? line : "var(--_kjun-color-border-strong)"} />)}
+          {props.fill && g.areas.length > 0 && <>
             <defs>
               <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color={line} stop-opacity={0.3} />
-                <stop offset="100%" stop-color={line} stop-opacity={0.05} />
+                <stop offset="0%" stop-color={line} stop-opacity={tokens.states.opacity.sparklineFill} />
+                <stop offset="100%" stop-color={line} stop-opacity={0} />
               </linearGradient>
             </defs>
-            <polygon points={`2,${height - 2} ${points} ${width - 2},${height - 2}`} fill={`url(#${id})`} />
+            {g.areas.map((area, i) => <polygon key={i} points={area} fill={`url(#${id})`} />)}
           </>}
-          {values.length > 1
-            ? <polyline points={points} fill="none" stroke={line} stroke-width={props.strokeWidth} stroke-linecap="round" stroke-linejoin="round"
-                vector-effect={props.stretch ? "non-scaling-stroke" : undefined} />
-            : values.length === 1 ? <circle cx={width / 2} cy={height / 2} r={2} fill={line} /> : null}
+          {g.baselineY != null && <line x1={0} x2={width} y1={g.baselineY} y2={g.baselineY} stroke="var(--_kjun-color-border-strong)" stroke-width={1} stroke-dasharray={dash} vector-effect={scale} />}
+          {g.segments.map((run, i) => run.length > 1
+            ? <polyline key={i} points={run.map(p => `${p.x},${p.y}`).join(" ")} fill="none" stroke={line} stroke-width={strokeWidth} stroke-linecap="round" stroke-linejoin="round" vector-effect={scale} />
+            : <circle key={i} cx={run[0].x} cy={run[0].y} r={spec.sparklineDotSize / 2 - 0.5} fill={line} />)}
+          {props.endDot && g.end && g.segments.some(run => run.length > 1) && <circle cx={g.end.x} cy={g.end.y} r={spec.sparklineDotSize / 2} fill={line} stroke="var(--_kjun-color-surface)" stroke-width={1.5} />}
         </svg>
       );
     };

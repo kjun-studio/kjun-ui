@@ -295,7 +295,8 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         height: 64,
         fill: true,
         semantic: "price",
-        ariaLabel: "추세",
+        baseline: 3,
+        ariaLabel: "추세, 기준 3에서 8로 상승",
       });
     case "KjunMarketSimpleList":
       return h(name, {

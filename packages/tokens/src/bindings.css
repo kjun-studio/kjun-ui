@@ -646,6 +646,11 @@
   --_kjun-extension-financial-progress-label-width: 32px;
   --_kjun-extension-financial-sparkline-width: 80px;
   --_kjun-extension-financial-sparkline-height: 24px;
+  --_kjun-extension-financial-sparkline-stroke-width: 1.5px;
+  --_kjun-extension-financial-sparkline-dot-size: 5px;
+  --_kjun-extension-financial-sparkline-bar-gap: 2px;
+  --_kjun-extension-financial-sparkline-dash: 2px;
+  --_kjun-extension-financial-sparkline-dash-gap: 3px;
   --_kjun-extension-financial-price-skeleton-width: 64px;
   --_kjun-extension-financial-price-skeleton-height: 16px;
   --_kjun-extension-financial-signed-skeleton-width: 48px;
@@ -818,6 +823,7 @@
   --_kjun-state-opacity-deviation-medium: 0.14;
   --_kjun-state-opacity-deviation-strong: 0.22;
   --_kjun-state-opacity-stripe: 0.03;
+  --_kjun-state-opacity-sparkline-fill: 0.18;
   --_kjun-state-opacity-group-fill: 0.04;
   --_kjun-state-opacity-tint-fill: 0.06;
   --_kjun-state-opacity-tint-control: 0.08;

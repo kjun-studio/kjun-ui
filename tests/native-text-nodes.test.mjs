@@ -65,3 +65,17 @@ test('Native text renders through the font resolver (KText, FontText, FieldTextI
   }
   assert.deepEqual(offences, []);
 });
+
+// A literal space between JSX children is a string child too; React Native throws on it inside a View on devices,
+// while React Native Web renders it, so the browser tests never see it.
+test('Native JSX never places a literal space such as {" "} between children', () => {
+  const dir = new URL('../packages/native/src/', import.meta.url), offences = [];
+  for (const file of readdirSync(dir).filter(name => name.endsWith('.tsx'))) {
+    const source = readFileSync(new URL(file, dir), 'utf8');
+    for (const match of source.matchAll(/\{\s*(["'`])\s*\1\s*\}/g)) {
+      if (source.slice(0, match.index).trimEnd().endsWith('=')) continue;
+      offences.push(`${file}:${source.slice(0, match.index).split('\n').length} ${match[0]}`);
+    }
+  }
+  assert.deepEqual(offences, []);
+});

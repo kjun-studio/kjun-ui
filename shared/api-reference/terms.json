@@ -1,4 +1,6 @@
 {
+  "endDot": "마지막 값에 점을 표시합니다.",
+  "baseline": "기준값(예: 전일 종가)입니다. 점선으로 그리고 등락색과 채움의 기준이 됩니다.",
   "titleVariant": "섹션 제목 모양입니다.",
   "onCheckedChange": "스위치 행의 다음 켜짐 값을 알립니다.",
   "stickyOffset": "maxHeight 없이 페이지 스크롤에 고정할 때 화면 위에서 띄울 거리(px)입니다.",

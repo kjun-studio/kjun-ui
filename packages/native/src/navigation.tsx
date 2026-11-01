@@ -233,7 +233,7 @@ export function KjunBreadcrumb({
                 size={tokens.extensions.breadcrumb.separatorSize}
                 color={colors.textTertiary}
               />
-            )}{" "}
+            )}
             {item.to
               ? renderLink?.(item, label) || (
                   <Pressable
