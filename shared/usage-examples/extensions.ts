@@ -46,7 +46,9 @@ export function generate(input: UsageInput) {
       content = b.node(name, { description: s.long ? '변경한 설정은 저장한 뒤 모든 기기에 적용됩니다. 저장이 완료될 때까지 화면을 유지해 주세요.' : '저장하면 모든 기기에 적용됩니다.', ...b.props('safeAreaBottom', 'keyboardVisible', 'hideOnKeyboard') },
         b.node('KjunFormActions', { confirmText: '변경 사항 저장', onConfirm: notify('save', '저장 요청'), onCancel: notify('cancel', '취소 요청') })); break;
     case 'KjunCarousel': {
-      const cards = [['이번 주 추천', '새로 나온 템플릿을 확인하세요'], ['팀 공간', '동료와 문서를 함께 정리합니다'], ['알림 정리', '중요한 소식만 받아 보세요'], ['보관함', '지난 작업을 다시 찾습니다']].map(([title, subtitle]) => b.node('KjunCard', { title, subtitle }));
+      const cards = [['이번 주 추천', '새로 나온 템플릿을 확인하세요'], ['팀 공간', '동료와 문서를 함께 정리합니다'], ['알림 정리', '중요한 소식만 받아 보세요'], ['보관함', '지난 작업을 다시 찾습니다']].map(([title, subtitle], i) =>
+        b.node('KjunCard', { title, subtitle, border: true, media: b.node('KjunImage', { src: expr(`images[${i % 2}]`), decorative: true, aspectRatio: 2 }) }));
+      b.data('images', [sampleImage(0), sampleImage(1)]);
       const slides = s.slideSize === 'auto' ? cards.map(card => b.node(b.native ? 'View' : 'div', { style: { width: 240 } }, card)) : cards;
       content = b.group([b.node(name, { ...(s.title ? { title: '추천 콘텐츠' } : { ariaLabel: '추천 콘텐츠' }), ...b.props('slideSize', 'gap', 'indicators', 'controls'), index: b.state('slide', 0), onIndexChange: b.update('slide') }, slides.join('\n')),
         b.text(expr('"현재 슬라이드: " + (state.slide + 1)'))]); break;

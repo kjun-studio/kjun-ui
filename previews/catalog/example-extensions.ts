@@ -32,7 +32,8 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
     case "KjunBottomActionBar":
       return h(name, { description: settings.long ? "변경한 설정은 저장한 뒤 모든 기기에 적용됩니다. 저장이 완료될 때까지 화면을 유지해 주세요." : "저장하면 모든 기기에 적용됩니다.", safeAreaBottom: settings.safeAreaBottom, keyboardVisible: settings.keyboardVisible, hideOnKeyboard: settings.hideOnKeyboard }, h("KjunFormActions", { confirmText: "변경 사항 저장", onConfirm: () => set("message", "저장 요청"), onCancel: () => set("message", "취소 요청") }));
     case "KjunCarousel": {
-      const cards = [["이번 주 추천", "새로 나온 템플릿을 확인하세요"], ["팀 공간", "동료와 문서를 함께 정리합니다"], ["알림 정리", "중요한 소식만 받아 보세요"], ["보관함", "지난 작업을 다시 찾습니다"]].map(([title, subtitle]) => h("KjunCard", { title, subtitle }));
+      const cards = [["이번 주 추천", "새로 나온 템플릿을 확인하세요"], ["팀 공간", "동료와 문서를 함께 정리합니다"], ["알림 정리", "중요한 소식만 받아 보세요"], ["보관함", "지난 작업을 다시 찾습니다"]].map(([title, subtitle], i) =>
+        h("KjunCard", { title, subtitle, border: true, media: h("KjunImage", { src: sampleImage(i), decorative: true, aspectRatio: 2 }) }));
       return h("Stack", {}, [h(name, { ...(settings.title ? { title: "추천 콘텐츠" } : { ariaLabel: "추천 콘텐츠" }), slideSize: settings.slideSize, gap: settings.gap, indicators: settings.indicators, controls: settings.controls,
         index: get("slide", 0), onIndexChange: change("slide") }, settings.slideSize === "auto" ? cards.map(card => h("Box", { width: 240 }, card)) : cards),
         h("Text", {}, `현재 슬라이드: ${get("slide", 0) + 1}`)]);
