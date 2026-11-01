@@ -7744,7 +7744,27 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "표 헤더를 스크롤 영역 상단에 고정합니다.",
+            "summary": "머리 행을 고정합니다.",
+            "details": [
+              {
+                "label": "고정 기준",
+                "text": "maxHeight가 있으면 표 안 스크롤 영역 위에, 없으면 페이지 스크롤에서 화면 위 stickyOffset(px, 기본 0) 위치에 고정합니다. 페이지 고정에서는 표 바깥 래퍼가 스크롤 영역이 되지 않으므로 넓은 표의 가로 스크롤은 앱이 감싸야 합니다."
+              },
+              {
+                "label": "표시",
+                "text": "행이 머리 아래로 지나가면 그림자 대신 머리 아래 선이 border-strong으로 진해집니다. Native는 표 안 스크롤에서만 고정하며, 화면 스크롤 고정은 앱의 ScrollView stickyHeaderIndices를 사용하세요."
+              }
+            ],
+            "source": "packages/vue3/src/table.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "stickyOffset",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Without maxHeight a sticky header sticks under the page scroll; this is its distance from the viewport top (px).",
+            "summary": "maxHeight 없이 페이지 스크롤에 고정할 때 화면 위에서 띄울 거리(px)입니다.",
             "source": "packages/vue3/src/table.tsx"
           },
           {
@@ -8610,7 +8630,27 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "표 헤더를 스크롤 영역 상단에 고정합니다.",
+            "summary": "머리 행을 고정합니다.",
+            "details": [
+              {
+                "label": "고정 기준",
+                "text": "maxHeight가 있으면 표 안 스크롤 영역 위에, 없으면 페이지 스크롤에서 화면 위 stickyOffset(px, 기본 0) 위치에 고정합니다. 페이지 고정에서는 표 바깥 래퍼가 스크롤 영역이 되지 않으므로 넓은 표의 가로 스크롤은 앱이 감싸야 합니다."
+              },
+              {
+                "label": "표시",
+                "text": "행이 머리 아래로 지나가면 그림자 대신 머리 아래 선이 border-strong으로 진해집니다. Native는 표 안 스크롤에서만 고정하며, 화면 스크롤 고정은 앱의 ScrollView stickyHeaderIndices를 사용하세요."
+              }
+            ],
+            "source": "packages/react/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "stickyOffset",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Without maxHeight a sticky header sticks under the page scroll; this is its distance from the viewport top (px).",
+            "summary": "maxHeight 없이 페이지 스크롤에 고정할 때 화면 위에서 띄울 거리(px)입니다.",
             "source": "packages/react/src/table-view.tsx"
           },
           {
@@ -9521,7 +9561,27 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "표 헤더를 스크롤 영역 상단에 고정합니다.",
+            "summary": "머리 행을 고정합니다.",
+            "details": [
+              {
+                "label": "고정 기준",
+                "text": "maxHeight가 있으면 표 안 스크롤 영역 위에, 없으면 페이지 스크롤에서 화면 위 stickyOffset(px, 기본 0) 위치에 고정합니다. 페이지 고정에서는 표 바깥 래퍼가 스크롤 영역이 되지 않으므로 넓은 표의 가로 스크롤은 앱이 감싸야 합니다."
+              },
+              {
+                "label": "표시",
+                "text": "행이 머리 아래로 지나가면 그림자 대신 머리 아래 선이 border-strong으로 진해집니다. Native는 표 안 스크롤에서만 고정하며, 화면 스크롤 고정은 앱의 ScrollView stickyHeaderIndices를 사용하세요."
+              }
+            ],
+            "source": "packages/native/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "stickyOffset",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Without maxHeight a sticky header sticks under the page scroll; this is its distance from the viewport top (px).",
+            "summary": "maxHeight 없이 페이지 스크롤에 고정할 때 화면 위에서 띄울 거리(px)입니다.",
             "source": "packages/native/src/table-view.tsx"
           },
           {

@@ -56,6 +56,8 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   searchable?: boolean;
   searchPlaceholder?: string;
   stickyHeader?: boolean;
+  /** Without maxHeight a sticky header sticks under the page scroll; this is its distance from the viewport top (px). */
+  stickyOffset?: number;
   maxHeight?: MaxHeight;
   pagination?: TablePagination | null;
   compact?: boolean;

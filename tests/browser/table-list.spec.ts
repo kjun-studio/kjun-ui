@@ -20,5 +20,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     // Expansion opens beneath its row.
     await page.getByRole('button', { name: /행 확장|상세 보기/ }).first().click();
     await expect(page.getByText('상세 브랜드 웹사이트', { exact: true })).toBeVisible();
+    // The summary closes the list as one block with each summarized column's total.
+    await expect(page.getByRole('group', { name: '합계' })).toContainText('8,000,000원');
   });
 }

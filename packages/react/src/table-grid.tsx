@@ -1,6 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
-import { Fragment, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { Fragment, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import type { TableGridProps } from "../../../shared/package-runtime/table-presentation";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunSkeleton } from "./display";
@@ -10,7 +10,7 @@ interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["m
   customClass: (row: Row, index: number) => string;
   rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
 }
-export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary }: Props<Row>) {
+export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary, stickyOffset = 0 }: Props<Row>) {
   const m = useKjunMessages();
   const span = visible.length + Number(selectable) + Number(expandable);
   const bodyRow = (row: Row, i: number) => (
@@ -62,33 +62,46 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
       {expandable && <td className="kjun-table-action-cell" />}
     </tr>
   );
-  const body = () => {
-    const rows = groups ? groups.flatMap((group) => {
-      const open = !collapsed.includes(group.key);
-      return [
-        <tr key={"group:" + group.key} className="kjun-table-group">
-          <td colSpan={span}>
+  // Each group is its own row group: a rowgroup header, its rows and (with two or more rows) a subtotal.
+  const groupBodies = () => groups!.map((group) => {
+    const open = !collapsed.includes(group.key);
+    return (
+      <tbody key={"group:" + group.key}>
+        <tr className="kjun-table-group">
+          <th scope="rowgroup" colSpan={span}>
             <span className="kjun-table-group-label">
               <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} aria-expanded={open}
                 ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} onClick={() => toggleGroup(group.key)} />
               <span className="kjun-table-group-name">{groupLabel(group)}</span>
               <span className="kjun-table-group-count">{m.groupCount(group.rows.length)}</span>
             </span>
-          </td>
-        </tr>,
-        ...(open ? group.rows.map((row) => bodyRow(row, state.rows.indexOf(row))) : []),
-        // A one-row group's subtotal would only repeat that row.
-        group.rows.length > 1 ? summaryRow(group.rows, "subtotal", "subtotal:" + group.key) : null,
-      ];
-    }) : state.rows.map(bodyRow);
-    return [...rows, summaryRow(state.rows, "total", "total")];
-  };
-  // A sticky header marks itself once rows have scrolled under it.
-  const [stuck, setStuck] = useState(false);
+          </th>
+        </tr>
+        {open && group.rows.map((row) => bodyRow(row, state.rows.indexOf(row)))}
+        {/* A one-row group's subtotal would only repeat that row. */}
+        {group.rows.length > 1 && summaryRow(group.rows, "subtotal", "subtotal")}
+      </tbody>
+    );
+  });
+  // A sticky header marks itself once rows have scrolled under it: inside maxHeight, or under the page's own scroll.
+  const [stuck, setStuck] = useState(false), table = useRef<HTMLTableElement>(null);
+  const pageSticky = stickyHeader && maxHeight == null;
+  useEffect(() => {
+    if (!pageSticky) return;
+    const update = () => {
+      const rect = table.current?.getBoundingClientRect();
+      setStuck(!!rect && rect.top < stickyOffset && rect.bottom > stickyOffset);
+    };
+    update();
+    addEventListener("scroll", update, { passive: true, capture: true });
+    return () => removeEventListener("scroll", update, { capture: true });
+  }, [pageSticky, stickyOffset]);
   return (
           <div className="kjun-table-scroll" style={{ maxHeight, visibility: skeletonHidden ? "hidden" : undefined }} aria-hidden={skeletonHidden || undefined}
-            data-stuck={(stickyHeader && stuck) || undefined} onScroll={stickyHeader ? (event) => setStuck(event.currentTarget.scrollTop > 0) : undefined}>
+            data-stuck={(stickyHeader && stuck) || undefined} data-page-sticky={pageSticky || undefined}
+            onScroll={stickyHeader && !pageSticky ? (event) => setStuck(event.currentTarget.scrollTop > 0) : undefined}>
             <table
+              ref={table}
               className="kjun-table"
               aria-label={ariaLabel}
               data-compact={compact}
@@ -98,7 +111,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
               <thead
                 style={
                   stickyHeader
-                    ? { position: "sticky", top: 0, zIndex: 2 }
+                    ? { position: "sticky", top: pageSticky ? stickyOffset : 0, zIndex: 2 }
                     : undefined
                 }
               >
@@ -158,7 +171,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                   {expandable && <th scope="col" className="kjun-table-action-cell" />}
                 </tr>
               </thead>
-              <tbody>
+              {groups && !initialLoading && state.rows.length > 0 ? groupBodies() : <tbody>
                 {initialLoading ? (
                   Array.from({ length: skeletonRows }, (_, i) => (
                     <tr key={i} aria-hidden="true">
@@ -191,9 +204,10 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                     </td>
                   </tr>
                 ) : (
-                  body()
+                  state.rows.map(bodyRow)
                 )}
-              </tbody>
+              </tbody>}
+              {summary && !initialLoading && state.rows.length > 0 && <tfoot>{summaryRow(state.rows, "total", "total")}</tfoot>}
             </table>
           </div>
   );

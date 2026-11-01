@@ -1,5 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { tablePresentation, tableCellValue, tableSummaryValue } from "../../../shared/package-runtime/table-presentation";
+import { tablePresentation, tableCellValue, tableSummaryValue, tableTotals } from "../../../shared/package-runtime/table-presentation";
 import { groupTableRows, type TableRowGroup } from "../../../shared/package-runtime/table-groups";
 import { TableToolbar } from "./table-toolbar";
 import { TableGrid } from "./table-grid";
@@ -146,11 +146,11 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         loadingDelay={skeleton ? 0 : loadingDelay}
       >
         {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} />
+          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} totals={tableTotals(props, state.rows)} />
         ) : layout.list ? (
-          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} />
+          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} totals={tableTotals(props, state.rows)} />
         ) : (
-          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, ...grouping }} sortable={props.sortable} />
+          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, ...grouping }} stickyOffset={props.stickyOffset} sortable={props.sortable} />
         )}
         {pagination && (
           <KjunPagination

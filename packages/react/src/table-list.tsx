@@ -1,5 +1,6 @@
 import type { KeyboardEvent } from "react";
-import type { TableCardsProps } from "../../../shared/package-runtime/table-presentation";
+import type { TableCardsProps, TableTotal } from "../../../shared/package-runtime/table-presentation";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { KjunSkeleton } from "./display";
 interface Props<Row extends object> extends TableCardsProps<Row> {
   ariaLabel: string;
@@ -8,7 +9,7 @@ interface Props<Row extends object> extends TableCardsProps<Row> {
 }
 /** responsive="list": no header row; each row is a title over one meta line with its value and badges at the end. */
 export function TableList<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable,
-  checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }: Props<Row>) {
+  checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown, totals }: Props<Row>) {
   const { title, listMeta, listValue, badges } = layout;
   return (
     <div className="kjun-table-list" role="list" aria-label={ariaLabel}
@@ -45,6 +46,23 @@ export function TableList<Row extends object>({ initialLoading, skeletonRows, sk
             </div>
           ))}
       {!initialLoading && !state.rows.length && <div className="kjun-table-card-empty">{emptyContent || emptyText}</div>}
+      {!initialLoading && state.rows.length > 0 && <TableTotals totals={totals} />}
     </div>
   );
+}
+
+/** The summary on narrow layouts: one closing block with each summarized column's total. */
+export function TableTotals({ totals }: { totals?: TableTotal[] }) {
+  const m = useKjunMessages();
+  return totals?.length ? (
+    <div className="kjun-table-totals" role="group" aria-label={m.tableTotal}>
+      <span className="kjun-table-totals-title">{m.tableTotal}</span>
+      {totals.map((total) => (
+        <div key={total.key} className="kjun-table-totals-row">
+          <span>{total.label}</span>
+          <span className="kjun-table-totals-value">{total.value}</span>
+        </div>
+      ))}
+    </div>
+  ) : null;
 }

@@ -11,6 +11,6 @@ export const listColumns = [
 ];
 export function TableListCases({ K }: { K: any }) {
   return <div style={{ padding: 8 }}>
-    <K.KjunTable ariaLabel="목록형 표" columns={listColumns} data={listRows} responsive="list" expandable renderExpand={(row: any) => '상세 ' + row.name} />
+    <K.KjunTable ariaLabel="목록형 표" columns={listColumns} data={listRows} responsive="list" summary={{ amount: 'sum' }} expandable renderExpand={(row: any) => '상세 ' + row.name} />
   </div>;
 }

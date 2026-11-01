@@ -2,12 +2,14 @@ import { tokens } from "@kjun-ui/tokens";
 import { View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunSkeleton } from "./display";
-import { content } from "./internal";
+import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
-import type { TableCardsProps } from "../../../shared/package-runtime/table-presentation";
+import type { TableCardsProps, TableTotal } from "../../../shared/package-runtime/table-presentation";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { typeStyle } from "./typography";
 /** Like Web responsive="list": a title over one meta line with the value and badges at the end, no header row. */
 export function TableList<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable,
-  checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }: TableCardsProps<Row>) {
+  checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, totals }: TableCardsProps<Row>) {
   const { colors } = useKjunStyles();
   const geometry = tokens.table.list;
   const { title, listMeta, listValue, badges } = layout;
@@ -18,7 +20,7 @@ export function TableList<Row extends object>({ initialLoading, skeletonRows, sk
             <View key={i} style={{ paddingVertical: geometry.paddingY, paddingHorizontal: geometry.paddingX }}><KjunSkeleton type="text" rows={2} /></View>
           ))
         : state.rows.map((row, i) => (
-            <View key={state.key(row, i)}>
+            <View key={state.key(row, i)} role="listitem">
               <Pressable
                 accessible={false}
                 onPress={() => onRowClick?.(row, i)}
@@ -57,6 +59,24 @@ export function TableList<Row extends object>({ initialLoading, skeletonRows, sk
           {content(emptyContent || emptyText, { color: colors.textSecondary })}
         </View>
       )}
+      {!initialLoading && state.rows.length > 0 && <TableTotals totals={totals} />}
     </View>
   );
+}
+
+/** Like Web: the summary on narrow layouts as one closing block under a strong text-colored rule. */
+export function TableTotals({ totals }: { totals?: TableTotal[] }) {
+  const m = useKjunMessages(), { colors } = useKjunStyles(), geometry = tokens.table.list;
+  return totals?.length ? (
+    <View role="group" accessibilityLabel={m.tableTotal} style={{ gap: geometry.metaGap, marginTop: geometry.metaGap, paddingVertical: geometry.paddingY,
+      paddingHorizontal: geometry.paddingX, borderTopWidth: tokens.border.controlWidth, borderTopColor: colors.text }}>
+      <KText style={{ ...typeStyle("control"), color: colors.text }}>{m.tableTotal}</KText>
+      {totals.map((total) => (
+        <View key={total.key} style={{ flexDirection: "row", justifyContent: "space-between", gap: geometry.gap }}>
+          <KText style={{ ...typeStyle("body"), color: colors.textSecondary }}>{total.label}</KText>
+          {content(total.value, { ...typeStyle("control"), color: colors.text, fontVariant: ["tabular-nums"] })}
+        </View>
+      ))}
+    </View>
+  ) : null;
 }

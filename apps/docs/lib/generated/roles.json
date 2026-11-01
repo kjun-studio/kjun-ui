@@ -322,6 +322,7 @@
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/table-grid.tsx",
+      "packages/native/src/table-list.tsx",
       "packages/native/src/table-view.tsx",
       "packages/native/src/tabs.tsx"
     ]

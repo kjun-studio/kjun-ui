@@ -1,5 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, onBeforeUnmount, onMounted, ref, type AllowedComponentProps, type ComponentCustomProps, type ExtractPublicPropTypes, type PropType, type VNodeChild, type VNodeProps, type SlotsType } from "vue";
+import { defineComponent, getCurrentInstance, onBeforeUnmount, onMounted, ref, type AllowedComponentProps, type ComponentCustomProps, type ExtractPublicPropTypes, type PropType, type VNodeChild, type VNodeProps, type SlotsType } from "vue";
 import { isComposingKey, nextTableSort, tokens, type TableSort } from "@kjun-ui/tokens";
 import { getValue, sortTableRows, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
 import { columnFormat, tablePresentation } from "../../../shared/package-runtime/table-presentation";
@@ -51,6 +51,8 @@ const kjunTableProps = {
   searchable: { type: Boolean, default: false },
   searchPlaceholder: { type: String, default: undefined },
   stickyHeader: { type: Boolean, default: false },
+  /** Without maxHeight a sticky header sticks under the page scroll; this is its distance from the viewport top (px). */
+  stickyOffset: { type: Number, default: 0 },
   maxHeight: { type: [Number, String] as PropType<number | string>, default: undefined },
   pagination: { type: Object as PropType<TablePagination | null>, default: undefined },
   compact: { type: Boolean, default: false },
@@ -114,7 +116,15 @@ const KjunTableComponent = defineComponent({
     let timer: ReturnType<typeof setTimeout> | undefined, media: MediaQueryList | undefined;
     const updateMobile = () => { mobile.value = !!media?.matches; };
     onMounted(() => { media = matchMedia(`(width < ${tokens.table.mobileBreakpoint}px)`); updateMobile(); media.addEventListener("change", updateMobile); });
-    onBeforeUnmount(() => { clearTimeout(timer); media?.removeEventListener("change", updateMobile); });
+    // Like React: under the page's own scroll, the sticky header marks itself once the table passes under it.
+    const instance = getCurrentInstance();
+    const updateStuck = () => {
+      if (!props.stickyHeader || props.maxHeight != null) return;
+      const rect = (instance?.proxy?.$el as HTMLElement | undefined)?.querySelector?.(".kjun-table")?.getBoundingClientRect();
+      stuck.value = !!rect && rect.top < props.stickyOffset && rect.bottom > props.stickyOffset;
+    };
+    onMounted(() => addEventListener("scroll", updateStuck, { passive: true, capture: true }));
+    onBeforeUnmount(() => { clearTimeout(timer); media?.removeEventListener("change", updateMobile); removeEventListener("scroll", updateStuck, { capture: true }); });
     const query = useQueryDisplay(() => props);
     // Skeleton rows wait out loadingDelay here; the spinner waits inside KjunDataState.
     const revealed = useLoadingReveal(() => query().initialLoading, () => props.skeleton ? props.loadingDelay : 0);
@@ -190,6 +200,7 @@ const KjunTableComponent = defineComponent({
         if (props.summaryFormat) return props.summaryFormat(value, col, spec);
         return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec);
       };
+      const totals = props.summary ? props.columns.filter(col => props.summary?.[col.key]).map(col => ({ key: col.key, label: col.label, value: summaryValue(col, state.rows) })) : [];
       const empty = slots.empty?.();
       const context = {
         messages: m.value,
@@ -224,8 +235,8 @@ const KjunTableComponent = defineComponent({
           <KjunDataState queryKey={props.queryKey} resultKey={status.usesQueryState ? status.hasCurrentResult ? props.queryKey : null : undefined}
             hasLoadedOnce={props.hasLoadedOnce} error={props.error} refreshing={status.queryRefreshing} loadingPadding="none" onRetry={props.onRetry}
             loading={props.skeleton ? undefined : props.loading} loadingText={(props.loadingText ?? m.value.loadingEllipsis)} loadingDelay={props.skeleton ? 0 : props.loadingDelay}>
-            {card ? tableCards({ ...context, layout }) : layout.list ? tableList({ ...context, layout }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
-              sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable, stuck,
+            {card ? tableCards({ ...context, layout, totals }) : layout.list ? tableList({ ...context, layout, totals }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
+              sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable, stuck, stickyOffset: props.stickyOffset,
               groups: groupTableRows(state.rows, props.groupBy), collapsed: collapsed.value,
               toggleGroup: (key: string) => { collapsed.value = collapsed.value.includes(key) ? collapsed.value.filter(k => k !== key) : [...collapsed.value, key]; },
               groupLabel: (group: TableRowGroup<object>) => slots.group ? slots.group({ value: group.value, rows: group.rows }) : group.value == null || group.value === "" ? "-" : String(group.value),

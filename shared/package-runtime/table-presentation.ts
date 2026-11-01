@@ -66,6 +66,12 @@ export function tableSummaryValue<Row extends object>(props: TableProps<Row, unk
   return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec);
 }
 
+/** Narrow layouts keep the summary as one closing block: each summarized column's label and total. */
+export interface TableTotal { key: string; label: string; value: ReactNode }
+export function tableTotals<Row extends object>(props: TableProps<Row, unknown>, rows: Row[]): TableTotal[] {
+  return props.summary ? props.columns.filter((column) => props.summary?.[column.key]).map((column) => ({ key: column.key, label: column.label, value: tableSummaryValue(props, column, rows) })) : [];
+}
+
 export interface TableGroupingProps<Row extends object> {
   groups: TableRowGroup<Row>[] | null;
   collapsed: string[];
@@ -95,12 +101,14 @@ export interface TableRowsProps<Row extends object> {
 }
 export interface TableCardsProps<Row extends object> extends TableRowsProps<Row> {
   layout: ReturnType<typeof tablePresentation<Row>>;
+  totals?: TableTotal[];
 }
 export interface TableGridProps<Row extends object, Height> extends TableRowsProps<Row>, TableGroupingProps<Row> {
   state: TableRowsProps<Row>["state"] & Pick<ReturnType<typeof useTableModel<Row>>, "all" | "some" | "toggleAll" | "sort" | "sortColumn">;
   visible: TableColumn<Row>[];
   maxHeight?: Height;
   stickyHeader: boolean;
+  stickyOffset?: number;
   sortable?: boolean;
   compact: boolean;
   striped: boolean;

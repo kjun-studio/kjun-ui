@@ -31,6 +31,15 @@ export const TableCheck = defineComponent({
   },
 });
 
+export interface TableTotal { key: string; label: string; value: VNodeChild }
+/** Like React: the summary on narrow layouts as one closing block. */
+export const tableTotals = (totals: TableTotal[], title: string) => totals.length ? (
+  <div class="kjun-table-totals" role="group" aria-label={title}>
+    <span class="kjun-table-totals-title">{title}</span>
+    {totals.map(total => <div key={total.key} class="kjun-table-totals-row"><span>{total.label}</span><span class="kjun-table-totals-value">{total.value}</span></div>)}
+  </div>
+) : null;
+
 export interface TableLayout {
   card: boolean;
   list: boolean;
@@ -78,7 +87,7 @@ export interface TableRowsContext {
 }
 
 export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; maxHeight?: number | string; stickyHeader: boolean;
-  sortable?: boolean; compact: boolean; striped: boolean; hoverable: boolean; stuck: { value: boolean };
+  sortable?: boolean; compact: boolean; striped: boolean; hoverable: boolean; stuck: { value: boolean }; stickyOffset: number;
   groups: TableRowGroup<Row>[] | null; collapsed: string[]; toggleGroup: (key: string) => void;
   groupLabel: (group: TableRowGroup<Row>) => VNodeChild; summary: ((column: TableColumn<any>, rows: Row[]) => VNodeChild) | null }) {
   const { state, visible, selectable, expandable } = c, m = c.messages;
@@ -115,33 +124,34 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
       {expandable && <td class="kjun-table-action-cell" />}
     </tr>
   );
-  const body = () => [
-    ...(c.groups ? c.groups.flatMap(group => {
-      const open = !c.collapsed.includes(group.key);
-      return [
-        <tr key={"group:" + group.key} class="kjun-table-group">
-          <td colspan={span}>
+  // Like React: each group is its own row group with a rowgroup header, its rows and (two or more rows) a subtotal.
+  const groupBodies = () => c.groups!.map(group => {
+    const open = !c.collapsed.includes(group.key);
+    return (
+      <tbody key={"group:" + group.key}>
+        <tr class="kjun-table-group">
+          <th scope="rowgroup" colspan={span}>
             <span class="kjun-table-group-label">
               <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} aria-expanded={open}
                 ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} onClick={() => c.toggleGroup(group.key)} />
               <span class="kjun-table-group-name">{c.groupLabel(group)}</span>
               <span class="kjun-table-group-count">{m.groupCount(group.rows.length)}</span>
             </span>
-          </td>
-        </tr>,
-        ...(open ? group.rows.map(row => bodyRow(row, state.rows.indexOf(row))) : []),
-        group.rows.length > 1 ? summaryRow(group.rows, "subtotal", "subtotal:" + group.key) : null,
-      ];
-    }) : state.rows.map(bodyRow)),
-    summaryRow(state.rows, "total", "total"),
-  ];
+          </th>
+        </tr>
+        {open && group.rows.map(row => bodyRow(row, state.rows.indexOf(row)))}
+        {group.rows.length > 1 && summaryRow(group.rows, "subtotal", "subtotal")}
+      </tbody>
+    );
+  });
+  const pageSticky = c.stickyHeader && c.maxHeight == null;
   const sorting = (col: TableColumn<any>) => col.sortable && c.sortable !== false;
   return (
     <div class="kjun-table-scroll" style={css({ maxHeight: c.maxHeight, visibility: c.skeletonHidden ? "hidden" : undefined })} aria-hidden={c.skeletonHidden ? "true" : undefined}
-      data-stuck={c.stickyHeader && c.stuck.value ? "" : undefined}
-      onScroll={c.stickyHeader ? (event: Event) => { c.stuck.value = (event.currentTarget as HTMLElement).scrollTop > 0; } : undefined}>
+      data-stuck={c.stickyHeader && c.stuck.value ? "" : undefined} data-page-sticky={pageSticky ? "" : undefined}
+      onScroll={c.stickyHeader && !pageSticky ? (event: Event) => { c.stuck.value = (event.currentTarget as HTMLElement).scrollTop > 0; } : undefined}>
       <table class="kjun-table" aria-label={c.ariaLabel} data-compact={String(c.compact)} data-hoverable={String(c.hoverable)} data-striped={String(c.striped)}>
-        <thead style={c.stickyHeader ? { position: "sticky", top: 0, zIndex: 2 } : undefined}>
+        <thead style={c.stickyHeader ? { position: "sticky", top: (pageSticky ? c.stickyOffset : 0) + "px", zIndex: 2 } : undefined}>
           <tr>
             {selectable && (
               <th scope="col" class="kjun-table-action-cell">
@@ -163,7 +173,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
             {expandable && <th scope="col" class="kjun-table-action-cell" />}
           </tr>
         </thead>
-        <tbody>
+        {c.groups && !c.initialLoading && state.rows.length ? groupBodies() : <tbody>
           {c.initialLoading ? Array.from({ length: c.skeletonRows }, (_, i) => (
             <tr key={i} aria-hidden="true">
               {selectable && <td class="kjun-table-action-cell"><KjunSkeleton type="block" height={tokens.table.selectionSize} width={tokens.table.selectionSize} /></td>}
@@ -174,14 +184,15 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
             </tr>
           )) : !state.rows.length ? (
             <tr><td colspan={visible.length + Number(selectable) + Number(expandable)} class="kjun-table-empty">{c.empty()}</td></tr>
-          ) : body()}
-        </tbody>
+          ) : state.rows.map(bodyRow)}
+        </tbody>}
+        {c.summary && !c.initialLoading && state.rows.length > 0 && <tfoot>{summaryRow(state.rows, "total", "total")}</tfoot>}
       </table>
     </div>
   );
 }
 
-export function tableCards(c: TableRowsContext & { layout: TableLayout }) {
+export function tableCards(c: TableRowsContext & { layout: TableLayout; totals: TableTotal[] }) {
   const { title, subtitle, badges, inline, sections, actions, columnsForSection } = c.layout;
   const { state } = c;
   const stop = (event: MouseEvent) => event.stopPropagation();
@@ -228,12 +239,13 @@ export function tableCards(c: TableRowsContext & { layout: TableLayout }) {
           </div>
         ))}
       {!c.initialLoading && !state.rows.length && <div class="kjun-table-card-empty">{c.empty()}</div>}
+      {!c.initialLoading && state.rows.length > 0 && tableTotals(c.totals, c.messages.tableTotal)}
     </div>
   );
 }
 
 /** Like React: responsive="list" rows are a title over one meta line with the value and badges at the end. */
-export function tableList(c: TableRowsContext & { layout: TableLayout }) {
+export function tableList(c: TableRowsContext & { layout: TableLayout; totals: TableTotal[] }) {
   const { title, listMeta, listValue, badges } = c.layout;
   const { state } = c;
   return (
@@ -262,6 +274,7 @@ export function tableList(c: TableRowsContext & { layout: TableLayout }) {
           </div>
         ))}
       {!c.initialLoading && !state.rows.length && <div class="kjun-table-card-empty">{c.empty()}</div>}
+      {!c.initialLoading && state.rows.length > 0 && tableTotals(c.totals, c.messages.tableTotal)}
     </div>
   );
 }

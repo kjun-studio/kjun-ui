@@ -56,9 +56,9 @@ for (const platform of ["react", "native", "vue3"]) {
     await openFixture(page, platform, "?table", "review-contract");
     await configure(page, { controlled: true, sortable: false, sort: { key: "amount", order: "asc" } });
     await expect.poll(() => order(page)).toEqual(["Three", "One", "Two"]);
-    if (platform === "native") await expect(header(page)).toBeDisabled();
-    // Disabled Native headers still receive the pointer attempt; skip Playwright's enabled wait.
-    await page.getByText("Amount", { exact: true }).click({ force: platform === "native" });
+    // With sorting off, Native headers are plain labels rather than disabled buttons (0.18.0).
+    if (platform === "native") await expect(header(page)).toHaveCount(0);
+    await page.getByText("Amount", { exact: true }).click();
     await expect(events(page)).toHaveText("[]");
     await configure(page, { sortable: true });
     await expect.poll(() => order(page)).toEqual(["One", "Two", "Three"]);

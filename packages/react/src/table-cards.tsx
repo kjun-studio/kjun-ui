@@ -2,13 +2,14 @@ import type { KeyboardEvent } from "react";
 import type { TableCardSection } from "./table-model";
 import type { TableCardsProps } from "../../../shared/package-runtime/table-presentation";
 import { KjunSkeleton } from "./display";
+import { TableTotals } from "./table-list";
 interface Props<Row extends object> extends TableCardsProps<Row> {
   ariaLabel: string;
   customClass: (row: Row, index: number) => string;
   rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
 }
 export function TableCards<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable,
-  checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }: Props<Row>) {
+  checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown, totals }: Props<Row>) {
   const { title, subtitle, badges, inline, sections, actions, columnsForSection } = layout;
   return (
           <div className="kjun-table-cards" role="list" aria-label={ariaLabel}
@@ -126,6 +127,7 @@ export function TableCards<Row extends object>({ initialLoading, skeletonRows, s
                 {emptyContent || emptyText}
               </div>
             )}
+            {!initialLoading && state.rows.length > 0 && <TableTotals totals={totals} />}
           </div>
   );
 }

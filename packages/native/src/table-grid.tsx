@@ -29,9 +29,15 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
   const utilityWidth = (selectable ? geometry.actionColumnWidth : 0) + (expandable ? geometry.actionColumnWidth : 0);
   const naturalTotal = visible.reduce((sum, col) => sum + naturalWidth(col), 0) + utilityWidth;
   // Like Web's 100% table: narrower columns share the spare width so the grid always fills its container.
-  const stretch = scroll.viewport > naturalTotal ? (scroll.viewport - utilityWidth) / (naturalTotal - utilityWidth || 1) : 1;
-  const width = (col: TableColumn<Row>) => naturalWidth(col) * stretch;
-  const totalWidth = stretch > 1 ? scroll.viewport : naturalTotal;
+  // Columns the app sized keep their width; the spare width goes to the rest (to every column when all are sized).
+  const flexible = visible.filter((col) => col.width == null);
+  const shared = (flexible.length ? flexible : visible).reduce((sum, col) => sum + naturalWidth(col), 0);
+  const spare = Math.max(0, scroll.viewport - naturalTotal);
+  const width = (col: TableColumn<Row>) => {
+    const base = naturalWidth(col);
+    return spare && (!flexible.length || col.width == null) ? base + spare * (base / (shared || 1)) : base;
+  };
+  const totalWidth = naturalTotal + spare;
   const fade = totalWidth - scroll.viewport - scroll.x > 1;
   // Like Web: stripes are a faint text tint, distinct from the header and expanded rows.
   const stripe = (typeof colors.text === "string" && tintColor(colors.text, tokens.states.opacity.stripe)) || colors.secondary;
@@ -122,7 +128,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
     ...(groups ? groups.flatMap((group) => {
       const open = !collapsed.includes(group.key);
       return [
-        <View key={"group:" + group.key} style={{ flexDirection: "row", alignItems: "center", gap: geometry.groupGap, width: totalWidth,
+        <View key={"group:" + group.key} role="heading" style={{ flexDirection: "row", alignItems: "center", gap: geometry.groupGap, width: totalWidth,
           paddingVertical: geometry.groupPadding.y, paddingHorizontal: geometry.groupPadding.x, backgroundColor: colors.secondary }}>
           <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"}
             ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} onPress={() => toggleGroup(group.key)} />
@@ -169,10 +175,12 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                   </View>
                 )}
                 {visible.map((col) => (
+                  // Only sortable columns are buttons; other headers read as their plain label.
                   <Pressable
                     key={col.key}
-                    accessibilityRole="button"
-                    accessibilityLabel={col.label}
+                    accessible={!!col.sortable && sortable !== false}
+                    accessibilityRole={col.sortable && sortable !== false ? "button" : undefined}
+                    accessibilityLabel={col.sortable && sortable !== false ? col.label : undefined}
                     accessibilityHint={
                       col.sortable && sortable !== false && state.sort.key === col.key
                         ? state.sort.order === "asc"

@@ -257,6 +257,10 @@
 .kjun-table-scroll {
   overflow: auto;
 }
+/* A sticky header without maxHeight sticks to the page, so this wrapper must not become a scroll container. */
+.kjun-table-scroll[data-page-sticky] {
+  overflow: visible;
+}
 .kjun-table {
   width: 100%;
   border-collapse: collapse;
@@ -391,8 +395,13 @@
   color: var(--_kjun-color-text-secondary);
 }
 /* Group headers: a faint text-tinted band with the collapse button, the app's label and the row count. */
-.kjun-table tbody > tr.kjun-table-group > td {
+.kjun-table tbody > tr.kjun-table-group > th {
   padding: var(--_kjun-geometry-table-group-padding-y) var(--_kjun-geometry-table-group-padding-x);
+  text-align: start;
+  color: var(--_kjun-color-text);
+  font-size: var(--_kjun-type-body-size);
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
   background: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-group-fill) * 100%), transparent);
   border-bottom: 0;
 }
@@ -407,12 +416,12 @@
   font-weight: var(--_kjun-type-body-weight);
 }
 /* Subtotals read quieter than rows; the total closes the table under a strong text-colored rule. */
-.kjun-table tbody > tr.kjun-table-summary > td {
+.kjun-table :is(tbody, tfoot) > tr.kjun-table-summary > td {
   color: var(--_kjun-color-text-secondary);
   font-size: var(--_kjun-type-caption-size);
   line-height: var(--_kjun-type-caption-line);
 }
-.kjun-table tbody > tr.kjun-table-summary[data-kind="total"] > td {
+.kjun-table tfoot > tr.kjun-table-summary[data-kind="total"] > td {
   color: var(--_kjun-color-text);
   font-size: var(--_kjun-type-body-size);
   line-height: var(--_kjun-type-body-line);
@@ -512,4 +521,31 @@
   padding: var(--_kjun-geometry-table-expanded-padding-y) var(--_kjun-geometry-table-expanded-padding-x);
   border-radius: var(--_kjun-geometry-table-list-radius);
   background: var(--_kjun-color-secondary);
+}
+/* The summary on narrow layouts: a closing block under a strong text-colored rule. */
+.kjun-table-totals {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_kjun-geometry-table-list-meta-gap);
+  margin-top: var(--_kjun-geometry-table-list-meta-gap);
+  padding: var(--_kjun-geometry-table-list-padding-y) var(--_kjun-geometry-table-list-padding-x);
+  border-top: var(--_kjun-border-control-width) solid var(--_kjun-color-text);
+}
+.kjun-table-totals-title {
+  font-size: var(--_kjun-type-control-size);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+}
+.kjun-table-totals-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--_kjun-geometry-table-list-gap);
+  font-size: var(--_kjun-type-body-size);
+  line-height: var(--_kjun-type-body-line);
+  color: var(--_kjun-color-text-secondary);
+}
+.kjun-table-totals-value {
+  color: var(--_kjun-color-text);
+  font-weight: var(--_kjun-type-control-weight);
+  font-variant-numeric: tabular-nums;
 }

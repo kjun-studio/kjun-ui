@@ -19378,6 +19378,13 @@
         "description": ""
       },
       {
+        "name": "stickyOffset",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Without maxHeight a sticky header sticks under the page scroll; this is its distance from the viewport top (px)."
+      },
+      {
         "name": "maxHeight",
         "type": "string | number",
         "required": false,
@@ -19714,6 +19721,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "stickyOffset",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Without maxHeight a sticky header sticks under the page scroll; this is its distance from the viewport top (px)."
       },
       {
         "name": "maxHeight",
@@ -20087,6 +20101,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "stickyOffset",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Without maxHeight a sticky header sticks under the page scroll; this is its distance from the viewport top (px)."
       },
       {
         "name": "maxHeight",

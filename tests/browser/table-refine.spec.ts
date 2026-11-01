@@ -19,6 +19,14 @@ for (const platform of ['react', 'vue3', 'native']) {
       const quiet = await page.locator('th', { hasText: '이름' }).locator('button').evaluate(el => getComputedStyle(el).color);
       expect(sorted).not.toBe(quiet);
     }
+    // Only sortable headers are buttons; the plain column reads as text on every platform.
+    await expect(page.getByRole('button', { name: '담당자', exact: true })).toHaveCount(0);
+    if (!web) {
+      // Native spreads the spare width over unsized columns, so the grid reaches the container's edge.
+      const name = (await page.getByText('항목 1', { exact: true }).first().boundingBox())!;
+      const button = (await page.getByRole('button', { name: /행 확장|상세 보기/ }).first().boundingBox())!;
+      expect(button.x + button.width).toBeGreaterThan(name.x + 500);
+    }
     // The expand control is the row's last cell, after every data column.
     const amount = (await page.getByText('1,000', { exact: true }).first().boundingBox())!;
     const expand = (await page.getByRole('button', { name: /행 확장|상세 보기/ }).first().boundingBox())!;
@@ -37,6 +45,17 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.getByRole('button', { name: '선택 해제', exact: true }).click();
     await expect(page.getByRole('textbox')).toHaveCount(1);
     expect(Math.abs((await top(page, '항목 1')) - before)).toBeLessThanOrEqual(1);
+  });
+
+  if (web) test(`${platform}: without maxHeight the header sticks to the page and marks when rows pass under it`, async ({ page }) => {
+    await page.setViewportSize({ width: 900, height: 500 });
+    await openFixture(page, platform, '?page', 'table-refine');
+    const scroller = page.locator('.kjun-table-scroll');
+    await expect(scroller).toHaveAttribute('data-page-sticky', /.*/);
+    await expect(scroller).not.toHaveAttribute('data-stuck', /.*/);
+    await page.mouse.wheel(0, 260);
+    await expect(scroller).toHaveAttribute('data-stuck', /.*/);
+    expect(Math.round((await page.locator('thead').boundingBox())!.y)).toBe(0);
   });
 
   if (web) test(`${platform}: a sticky header strengthens its line once rows pass under it`, async ({ page }) => {

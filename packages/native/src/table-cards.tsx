@@ -5,11 +5,12 @@ View
 } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunSkeleton } from "./display";
+import { TableTotals } from "./table-list";
 import { KText,content } from "./internal";
 import { useKjunStyles } from "./provider";
 import type { TableCardsProps } from "../../../shared/package-runtime/table-presentation";
 export function TableCards<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable,
-  checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }: TableCardsProps<Row>) {
+  checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, totals }: TableCardsProps<Row>) {
   const { colors } = useKjunStyles();
   const { title, subtitle, badges, inline, sections, actions, columnsForSection } = layout;
   return (
@@ -167,6 +168,7 @@ export function TableCards<Row extends object>({ initialLoading, skeletonRows, s
           })}
         </View>
       )}
+      {!initialLoading && state.rows.length > 0 && <TableTotals totals={totals} />}
     </View>
   );
 }

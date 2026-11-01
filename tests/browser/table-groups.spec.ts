@@ -23,6 +23,12 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByText('7,200,000원', { exact: true })).toBeVisible();
     await page.getByRole('button', { name: '진행 중 묶음 펼치기' }).click();
     await expect(page.getByText('브랜드 웹사이트', { exact: true })).toBeVisible();
-    if (platform !== 'native') await expect(page.getByRole('button', { name: '진행 중 묶음 접기' })).toHaveAttribute('aria-expanded', 'true');
+    if (platform !== 'native') {
+      await expect(page.getByRole('button', { name: '진행 중 묶음 접기' })).toHaveAttribute('aria-expanded', 'true');
+      // Each group is a row group headed by a rowgroup header; the total sits in the table foot.
+      await expect(page.locator('table > tbody')).toHaveCount(3);
+      await expect(page.locator('th[scope="rowgroup"]')).toHaveCount(3);
+      await expect(page.locator('tfoot')).toContainText('12,000,000원');
+    }
   });
 }
