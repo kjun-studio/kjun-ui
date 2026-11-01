@@ -451,3 +451,62 @@
   padding-inline-start: var(--_kjun-geometry-dimension-value8);
 }
 .kjun-table-selection > strong { margin-inline-end: auto; }
+/* responsive="list": rows without a header, a title over one meta line and the value with badges at the end. */
+.kjun-table-list {
+  display: flex;
+  flex-direction: column;
+}
+.kjun-table-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-geometry-table-list-gap);
+  padding: var(--_kjun-geometry-table-list-padding-y) var(--_kjun-geometry-table-list-padding-x);
+  border-radius: var(--_kjun-geometry-table-list-radius);
+}
+.kjun-table-list-item[tabindex] { cursor: pointer; }
+.kjun-table-list-item[data-selected] { background: var(--_kjun-color-selected-bg); }
+@media (hover: hover) {
+  .kjun-table-list-item[tabindex]:not([data-selected]):hover { background: var(--_kjun-color-hover); }
+}
+.kjun-table-list-item:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-inset-offset);
+}
+.kjun-table-list-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_kjun-geometry-table-list-meta-gap);
+  flex: 1;
+  min-width: 0;
+}
+.kjun-table-list-title {
+  font-size: var(--_kjun-type-control-size);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+  overflow-wrap: anywhere;
+}
+.kjun-table-list-meta {
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  color: var(--_kjun-color-text-tertiary);
+}
+.kjun-table-list-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--_kjun-geometry-table-list-meta-gap);
+  flex-shrink: 0;
+  text-align: right;
+}
+.kjun-table-list-value {
+  font-size: var(--_kjun-type-control-size);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.kjun-table-list-expand {
+  padding: var(--_kjun-geometry-table-expanded-padding-y) var(--_kjun-geometry-table-expanded-padding-x);
+  border-radius: var(--_kjun-geometry-table-list-radius);
+  background: var(--_kjun-color-secondary);
+}

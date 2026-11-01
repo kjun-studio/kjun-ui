@@ -165,6 +165,13 @@
       "y": { "$ref": "dimension.value4" }
     },
     "groupGap": { "$ref": "dimension.value6" },
+    "list": {
+      "paddingX": { "$ref": "dimension.value8" },
+      "paddingY": { "$ref": "dimension.value12" },
+      "gap": { "$ref": "dimension.value12" },
+      "metaGap": { "$ref": "dimension.value2" },
+      "radius": { "$ref": "radius.radius12" }
+    },
     "columnWidth": 160,
     "skeletonHeight": 20
   },

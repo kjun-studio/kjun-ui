@@ -50,7 +50,8 @@ const common = {
     전달값:
       "{ page, total, pageSize? }. total은 전체 행 수이며 pageSize로 전체 페이지 수를 계산합니다. 이동 시 다음 페이지 번호를 통지하며 서버 요청과 data 교체는 소비자가 합니다.",
   }),
-  responsive: detail("좁은 화면에서 card·compact 또는 전환 없음을 선택합니다.", {
+  responsive: detail("좁은 화면에서 card·list·compact 또는 전환 없음을 선택합니다.", {
+    list: "머리 행 없이 행마다 제목(cardTitle, 기본 첫 열)과 한 줄 보조 정보(cardSubtitle, 없으면 다음 일반 열)를 두 줄로 쓰고, 첫 오른쪽 정렬·숫자 열 값과 badge 열을 끝에 둡니다. 선택 체크박스는 앞, 펼침 버튼은 끝에 둡니다.",
     "적용 조건":
       "세 플랫폼 모두 화면 너비가 768px 미만일 때 모바일 표현으로 전환하고, 768px부터 표를 표시합니다. card에서는 cardTitle·cardSubtitle·cardSections와 열별 카드 표시 규칙을 적용합니다. mobileColumns는 compact 모드에서 표시할 열을 고릅니다. 전환 시 선택·확장 상태를 유지합니다.",
   }),

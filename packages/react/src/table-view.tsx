@@ -4,6 +4,7 @@ import { groupTableRows, type TableRowGroup } from "../../../shared/package-runt
 import { TableToolbar } from "./table-toolbar";
 import { TableGrid } from "./table-grid";
 import { TableCards } from "./table-cards";
+import { TableList } from "./table-list";
 import { useEffect, useState, type KeyboardEvent } from "react";
 import { isComposingKey, tokens } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
@@ -146,6 +147,8 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
       >
         {card ? (
           <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} />
+        ) : layout.list ? (
+          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} />
         ) : (
           <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, ...grouping }} sortable={props.sortable} />
         )}

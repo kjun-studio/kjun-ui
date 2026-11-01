@@ -11,7 +11,7 @@ import { KjunPagination } from "./navigation";
 import { domainRef } from "./runtime/refs";
 import { useLoadingReveal } from "./runtime/loading-reveal";
 import { hasContent } from "./runtime/slots";
-import { TableCheck, tableCards, tableGrid, type TableLayout, type TableRenderState } from "./table-parts";
+import { TableCheck, tableCards, tableGrid, tableList, type TableLayout, type TableRenderState } from "./table-parts";
 import type { TableCardSection, TableColumn, TablePagination } from "./table-types";
 export type { TableCardSection, TableColumn, TablePagination };
 
@@ -56,7 +56,7 @@ const kjunTableProps = {
   compact: { type: Boolean, default: false },
   striped: { type: Boolean, default: false },
   ariaLabel: { type: String, default: undefined },
-  responsive: { type: String as PropType<"card" | "compact" | "none" | null>, default: null },
+  responsive: { type: String as PropType<"card" | "list" | "compact" | "none" | null>, default: null },
   mobileColumns: { type: Array as PropType<string[]>, default: () => [] },
   cardTitle: { type: String as PropType<string | null>, default: undefined },
   cardSubtitle: { type: String as PropType<string | null>, default: undefined },
@@ -221,7 +221,7 @@ const KjunTableComponent = defineComponent({
           <KjunDataState queryKey={props.queryKey} resultKey={status.usesQueryState ? status.hasCurrentResult ? props.queryKey : null : undefined}
             hasLoadedOnce={props.hasLoadedOnce} error={props.error} refreshing={status.queryRefreshing} loadingPadding="none" onRetry={props.onRetry}
             loading={props.skeleton ? undefined : props.loading} loadingText={(props.loadingText ?? m.value.loadingEllipsis)} loadingDelay={props.skeleton ? 0 : props.loadingDelay}>
-            {card ? tableCards({ ...context, layout }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
+            {card ? tableCards({ ...context, layout }) : layout.list ? tableList({ ...context, layout }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
               sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable, stuck,
               groups: groupTableRows(state.rows, props.groupBy), collapsed: collapsed.value,
               toggleGroup: (key: string) => { collapsed.value = collapsed.value.includes(key) ? collapsed.value.filter(k => k !== key) : [...collapsed.value, key]; },

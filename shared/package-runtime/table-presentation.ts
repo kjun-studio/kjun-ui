@@ -6,6 +6,8 @@ import { formatSummary, summarizeColumn, type TableRowGroup } from "./table-grou
 export function tablePresentation<Row extends object>(props: TableProps<Row, unknown>, mobile: boolean) {
   const { columns, responsive = null, mobileColumns = [], cardTitle, cardSubtitle, cardSections = [] } = props;
   const card = mobile && (responsive === "card" || (!responsive && columns.length >= 4));
+  // The two-line list: title over one meta line, the first right-aligned value and badges at the end.
+  const list = mobile && responsive === "list";
   const visible = mobile && responsive === "compact" && mobileColumns.length
     ? columns.filter(column => mobileColumns.includes(column.key)) : columns;
   const titleKey = cardTitle || columns[0]?.key;
@@ -21,8 +23,10 @@ export function tablePresentation<Row extends object>(props: TableProps<Row, unk
   const sections: TableCardSection[] = cardSections.length
     ? [...cardSections, { key: "remaining", columns: bodyColumns.filter(column => !used.has(column.key)).map(column => column.key) }]
     : [{ columns: bodyColumns.map(column => column.key) }];
+  const listValue = columns.find(column => column.key !== titleKey && !column.badge && column.key !== "actions" && (column.align === "right" || column.type === "number"));
+  const listMeta = subtitle ?? columns.find(column => column.key !== titleKey && !column.badge && column.key !== "actions" && column !== listValue && !column.hideInCard);
   return {
-    card, visible, title, subtitle, badges, actions, inline, sections,
+    card, list, listValue, listMeta, visible, title, subtitle, badges, actions, inline, sections,
     columnsForSection(row: Row, section: TableCardSection) {
       return bodyColumns.filter(column => section.columns.includes(column.key)
         && !(column.hideEmptyInCard && [null, undefined, ""].includes(getValue(row, column.key) as null | undefined | string)));
@@ -69,6 +73,8 @@ export interface TableGroupingProps<Row extends object> {
   summary: ((column: TableColumn<Row>, rows: Row[]) => ReactNode) | null;
 }
 
+export type TableCellRole = "title" | "listTitle" | "listMeta" | "listValue";
+
 export interface TableRowsProps<Row extends object> {
   initialLoading: boolean;
   skeletonRows: number;
@@ -80,8 +86,8 @@ export interface TableRowsProps<Row extends object> {
   expandable: boolean;
   checkbox: (row: Row, index: number) => ReactNode;
   expand: (row: Row, index: number) => ReactNode;
-  // "title" asks for the card title type role where text styles do not inherit (Native).
-  cell: (column: TableColumn<Row>, row: Row, index: number, role?: "title") => ReactNode;
+  // A text role where text styles do not inherit (Native): the card title, or the list's title, meta line and value.
+  cell: (column: TableColumn<Row>, row: Row, index: number, role?: TableCellRole) => ReactNode;
   renderExpand: TableProps<Row>["renderExpand"];
   emptyContent: ReactNode;
   emptyText: string;

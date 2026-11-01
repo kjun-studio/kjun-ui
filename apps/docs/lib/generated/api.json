@@ -19323,7 +19323,7 @@
       },
       {
         "name": "responsive",
-        "type": "\"card\" | \"none\" | \"compact\"",
+        "type": "\"card\" | \"none\" | \"compact\" | \"list\"",
         "required": false,
         "default": "null",
         "description": ""
@@ -19654,7 +19654,7 @@
       },
       {
         "name": "responsive",
-        "type": "\"none\" | \"compact\" | \"card\" | null | undefined",
+        "type": "\"list\" | \"none\" | \"compact\" | \"card\" | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -20020,7 +20020,7 @@
       },
       {
         "name": "responsive",
-        "type": "\"compact\" | \"none\" | \"card\" | null | undefined",
+        "type": "\"compact\" | \"none\" | \"card\" | \"list\" | null | undefined",
         "required": false,
         "default": "—",
         "description": ""

@@ -61,7 +61,7 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   compact?: boolean;
   striped?: boolean;
   ariaLabel?: string;
-  responsive?: "card" | "compact" | "none" | null;
+  responsive?: "card" | "list" | "compact" | "none" | null;
   mobileColumns?: string[];
   cardTitle?: string | null;
   cardSubtitle?: string | null;

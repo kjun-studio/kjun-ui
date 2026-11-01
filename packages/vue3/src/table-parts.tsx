@@ -33,6 +33,9 @@ export const TableCheck = defineComponent({
 
 export interface TableLayout {
   card: boolean;
+  list: boolean;
+  listValue?: TableColumn<any>;
+  listMeta?: TableColumn<any>;
   visible: TableColumn<any>[];
   title?: TableColumn<any>;
   subtitle?: TableColumn<any>;
@@ -222,6 +225,40 @@ export function tableCards(c: TableRowsContext & { layout: TableLayout }) {
             {c.expandable && <div class="kjun-table-card-expand-toggle">{c.expand(row, i)}</div>}
             {c.expandable && state.expanded.includes(state.key(row, i)) && <div class="kjun-table-card-expand-content">{c.renderExpand(row, i)}</div>}
             {actions && !actions.inlineInCard && <div class="kjun-table-card-actions" onClick={stop}>{c.cell(actions, row, i)}</div>}
+          </div>
+        ))}
+      {!c.initialLoading && !state.rows.length && <div class="kjun-table-card-empty">{c.empty()}</div>}
+    </div>
+  );
+}
+
+/** Like React: responsive="list" rows are a title over one meta line with the value and badges at the end. */
+export function tableList(c: TableRowsContext & { layout: TableLayout }) {
+  const { title, listMeta, listValue, badges } = c.layout;
+  const { state } = c;
+  return (
+    <div class="kjun-table-list" role="list" aria-label={c.ariaLabel}
+      style={c.skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={c.skeletonHidden ? "true" : undefined}>
+      {c.initialLoading
+        ? Array.from({ length: c.skeletonRows }, (_, i) => <div key={i} class="kjun-table-list-item"><KjunSkeleton type="text" rows={2} /></div>)
+        : state.rows.map((row, i) => (
+          <div key={state.key(row, i)} role="listitem">
+            <div class={"kjun-table-list-item kjun-table-row-action " + c.customClass(row, i)} data-selected={state.selectedRow(row) || undefined}
+              tabindex={c.clickable ? 0 : undefined} onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} onClick={() => c.rowClick(row, i)}>
+              {c.selectable && c.checkbox(row, i)}
+              <div class="kjun-table-list-main">
+                <span class="kjun-table-list-title">{title && c.cell(title, row, i)}</span>
+                {listMeta && <span class="kjun-table-list-meta">{c.cell(listMeta, row, i)}</span>}
+              </div>
+              {(listValue || badges.length > 0) && (
+                <div class="kjun-table-list-side">
+                  {listValue && <span class="kjun-table-list-value">{c.cell(listValue, row, i)}</span>}
+                  {badges.map(col => <span key={col.key}>{c.cell(col, row, i)}</span>)}
+                </div>
+              )}
+              {c.expandable && <span onClick={(event: MouseEvent) => event.stopPropagation()}>{c.expand(row, i)}</span>}
+            </div>
+            {c.expandable && state.expanded.includes(state.key(row, i)) && <div class="kjun-table-list-expand">{c.renderExpand(row, i)}</div>}
           </div>
         ))}
       {!c.initialLoading && !state.rows.length && <div class="kjun-table-card-empty">{c.empty()}</div>}

@@ -1,6 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
-import { tablePresentation, tableCellValue, tableSummaryValue } from "../../../shared/package-runtime/table-presentation";
+import { tablePresentation, tableCellValue, tableSummaryValue, type TableCellRole } from "../../../shared/package-runtime/table-presentation";
 import { groupTableRows, type TableRowGroup } from "../../../shared/package-runtime/table-groups";
 import { useState } from "react";
 import { TableToolbar } from "./table-toolbar";
@@ -18,6 +18,7 @@ import { content,domainColor } from "./internal";
 import { KjunPagination } from "./navigation";
 import { useKjunStyles } from "./provider";
 import { TableCards } from "./table-cards";
+import { TableList } from "./table-list";
 import {
 KjunTableProps,
 TableColumn,
@@ -69,7 +70,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     summary: props.summary ? (col: TableColumn<Row>, rows: Row[]) => tableSummaryValue(props, col, rows) : null,
   };
   const { card, visible } = layout;
-  const cell = (col: TableColumn<Row>, row: Row, index: number, role?: "title") => {
+  const cell = (col: TableColumn<Row>, row: Row, index: number, role?: TableCellRole) => {
     const { value, body } = tableCellValue(props, col, row, index);
     if (col.pill) {
       const role =
@@ -94,7 +95,10 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         </View>
       );
     }
-    // A card title takes the card title role, like Web's .kjun-table-card-title.
+    // A card title takes the card title role, like Web's .kjun-table-card-title; list parts match .kjun-table-list-*.
+    if (role === "listTitle" || role === "listValue")
+      return content(body, { ...typeStyle("control"), color: colors.text, ...(role === "listValue" ? { fontVariant: ["tabular-nums"] as const } : null) });
+    if (role === "listMeta") return content(body, { ...typeStyle("caption"), color: colors.textTertiary });
     return content(body, {
       ...typeStyle(role === "title" ? "cardTitle" : col.secondary ? "caption" : "body"),
       color: col.secondary && role !== "title" ? colors.textSecondary : colors.text,
@@ -156,6 +160,8 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
       >
         {card ? (
           <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} />
+        ) : layout.list ? (
+          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} />
         ) : (
           <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ...grouping }} sortable={props.sortable} />
         )}

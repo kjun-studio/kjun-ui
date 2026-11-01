@@ -170,6 +170,7 @@
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/table-grid.tsx",
+      "packages/native/src/table-list.tsx",
       "packages/native/src/table-toolbar.tsx",
       "packages/native/src/tabs.tsx"
     ]
@@ -190,6 +191,7 @@
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
       "packages/tokens/src/web.css",
       "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
@@ -209,6 +211,7 @@
       "packages/native/src/select-options.tsx",
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/table-cards.tsx",
+      "packages/native/src/table-list.tsx",
       "packages/native/src/tabs.tsx"
     ]
   },
@@ -370,6 +373,7 @@
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/table-grid.tsx",
+      "packages/native/src/table-list.tsx",
       "packages/native/src/table-view.tsx",
       "packages/native/src/tabs.tsx",
       "packages/native/src/time-picker.tsx",
@@ -432,6 +436,7 @@
       "packages/native/src/select-control.tsx",
       "packages/native/src/table-cards.tsx",
       "packages/native/src/table-grid.tsx",
+      "packages/native/src/table-view.tsx",
       "packages/native/src/textarea.tsx",
       "packages/native/src/time-picker.tsx",
       "packages/native/src/toast.tsx"
@@ -1346,7 +1351,8 @@
       "packages/tokens/src/table.css",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/select-options.tsx",
-      "packages/native/src/table-grid.tsx"
+      "packages/native/src/table-grid.tsx",
+      "packages/native/src/table-list.tsx"
     ]
   },
   {

@@ -73,7 +73,7 @@ assign("MarketSimpleList MarketTable MarketCards MarketListPanel", [loading, err
 assign("Select", [size, toggle("multiple", "복수 선택"), toggle("searchable", "검색", true), toggle("clearable", "지우기", true), disabled, loading, error]);
 assign("SearchInput", [size, number("minChars", "최소 글자 수", 1, 10), number("debounce", "검색 대기 시간(ms)", 0, 2000), toggle("clearable", "지우기", true), disabled, toggle("error", "필드 오류"), choice("response", "검색 응답", ["정상", "빈 결과", "느린 응답", "요청 실패", "긴 결과"])]);
 assign("FormGroup", [field("label", "라벨", "내용"), field("hint", "도움말", "도움말을 입력에 연결합니다."), toggle("required", "필수 입력", true), field("errorMessage", "오류 메시지", ""), toggle("childDisabled", "입력 필드 비활성")]);
-assign("Table", [toggle("sortable", "정렬 허용", true), toggle("selectable", "행 선택", true), toggle("expandable", "행 확장", true), toggle("searchable", "검색", true), choice("responsive", "모바일 표현", ["card", "compact", "none"]), loading, error]);
+assign("Table", [toggle("sortable", "정렬 허용", true), toggle("selectable", "행 선택", true), toggle("expandable", "행 확장", true), toggle("searchable", "검색", true), choice("responsive", "모바일 표현", ["card", "list", "compact", "none"]), loading, error]);
 controls.KjunTable.unshift(...tableControls);
 assign("DataState", [size, toggle("preserveContent", "이전 콘텐츠 유지", true), toggle("skeleton", "스켈레톤", true), toggle("empty", "빈 상태"), choice("queryState", "조회 상태", ["정상", "최초 로딩", "최초 실패", "조건 변경", "동일 조건 갱신", "갱신 실패"]), field("loadingText", "로딩 문구", "로딩 중..."), field("refreshingText", "갱신 문구", "갱신 중..."), field("emptyText", "빈 상태 문구", "데이터가 없습니다"), field("emptyIcon", "빈 상태 아이콘", ""), field("emptyActionText", "빈 상태 행동", ""), field("retryText", "재시도 문구", "다시 시도")]);
 controls.KjunFeedbackProvider = [
