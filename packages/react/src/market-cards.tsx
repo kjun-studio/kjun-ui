@@ -1,3 +1,4 @@
+import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunDataState } from "./data-state";
@@ -114,7 +115,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
                   <div className="kjun-market-quote">
                     {state.pill?.format === "sparkline" ? (
                       <KjunSparkline
-                        data={(getValue(row, state.key) as number[]) || []}
+                        {...sparklineCell(rows, row, props.columns.find((c) => c.key === state.key) ?? { key: state.key }, getValue)}
                         width={tokens.extensions.marketTable.sparklineWidth}
                         height={tokens.extensions.marketTable.sparklineHeight}
                       />

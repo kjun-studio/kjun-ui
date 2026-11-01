@@ -1,3 +1,4 @@
+import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
@@ -62,7 +63,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
     if (col.type === "sparkline")
       return (
         <KjunSparkline
-          data={Array.isArray(value) ? (value as number[]) : []}
+          {...sparklineCell(rows, row, col, getValue)}
           width={tokens.extensions.marketTable.sparklineWidth}
           height={tokens.extensions.marketTable.sparklineHeight}
         />

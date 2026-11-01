@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { sparklineGeometry } from '../shared/package-runtime/sparkline.ts';
+import { sparklineCell, sparklineGeometry, sparklineRange, sparklineTone } from '../shared/package-runtime/sparkline.ts';
 
 const base = { width: 72, height: 22, strokeWidth: 1.5, dotRadius: 2.5, barGap: 2 };
 
@@ -41,6 +41,41 @@ test('bars grow from zero, skip gaps and mark the last one', () => {
   assert.equal(g.bars[0].height, 22 / 4);
   assert.deepEqual(g.bars.map(b => b.last), [false, false, true]);
   assert.equal(g.direction, 1);
+});
+
+test('negative bars hang below a zero line instead of growing from the minimum', () => {
+  const g = sparklineGeometry([-5, 3], { ...base, variant: 'bar' });
+  const zero = 22 * 3 / 8;
+  assert.equal(g.baselineY, zero);
+  assert.equal(g.bars[0].y, zero);
+  assert.equal(g.bars[0].height, 22 * 5 / 8);
+  assert.equal(g.bars[1].y + g.bars[1].height, zero);
+  // All-positive bars draw no zero line; a baseline moves the origin and always draws one.
+  assert.equal(sparklineGeometry([1, 2], { ...base, variant: 'bar' }).baselineY, undefined);
+  const ref = sparklineGeometry([99, 102], { ...base, variant: 'bar', baseline: 100 });
+  assert.equal(ref.bars[0].y, ref.baselineY);
+  assert.equal(ref.bars[1].y + ref.bars[1].height, ref.baselineY);
+});
+
+test('a column shares one range and reads each row baseline', () => {
+  assert.deepEqual(sparklineRange([[1, 5], [3, NaN, 9], null], [0, 'x']), { min: 0, max: 9 });
+  assert.deepEqual(sparklineRange([]), {});
+  const rows = [{ s: [1, 2], prev: 1.5 }, { s: [4, 8], prev: 5 }];
+  const read = (row, key) => row[key];
+  assert.deepEqual(sparklineCell(rows, rows[0], { key: 's', baselineKey: 'prev', sharedRange: true }, read), { data: [1, 2], baseline: 1.5, min: 1, max: 8 });
+  assert.deepEqual(sparklineCell(rows, rows[1], { key: 's' }, read), { data: [4, 8], baseline: undefined });
+  assert.deepEqual(sparklineCell(rows, { s: 'bad' }, { key: 's' }, read).data, []);
+});
+
+test('one tone mapping serves every renderer', () => {
+  assert.deepEqual([1, -1, 0].map(d => sparklineTone(d)), ['price-up', 'price-down', 'text-tertiary']);
+  assert.deepEqual([1, -1, 0].map(d => sparklineTone(d, 'status')), ['success', 'danger', 'text-tertiary']);
+});
+
+test('long series stay within the call stack', () => {
+  const data = Array.from({ length: 300000 }, (_, i) => Math.sin(i / 100));
+  assert.equal(sparklineGeometry(data, base).segments[0].length, 300000);
+  assert.equal(sparklineGeometry(data, { ...base, variant: 'bar' }).bars.length, 300000);
 });
 
 test('empty data reports empty', () => {

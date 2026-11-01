@@ -10447,7 +10447,7 @@
       },
       {
         "name": "headingLevel",
-        "type": "3 | 2 | 4 | undefined",
+        "type": "2 | 3 | 4 | undefined",
         "required": false,
         "default": "—",
         "description": "Heading level of the title (default 3)."
@@ -18930,7 +18930,7 @@
         "type": "\"bar\" | \"line\"",
         "required": false,
         "default": "\"line\"",
-        "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color."
+        "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color."
       },
       {
         "name": "fill",
@@ -19032,7 +19032,7 @@
         "type": "\"line\" | \"bar\" | undefined",
         "required": false,
         "default": "—",
-        "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color."
+        "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color."
       },
       {
         "name": "fill",
@@ -19132,7 +19132,7 @@
         "type": "\"line\" | \"bar\" | undefined",
         "required": false,
         "default": "—",
-        "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color."
+        "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color."
       },
       {
         "name": "fill",

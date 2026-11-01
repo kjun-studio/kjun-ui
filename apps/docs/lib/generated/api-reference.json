@@ -7249,7 +7249,7 @@
             "type": "\"bar\" | \"line\"",
             "required": false,
             "default": "\"line\"",
-            "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color.",
+            "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color.",
             "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
             "source": "packages/vue3/src/financial-display.tsx"
           },
@@ -7383,7 +7383,7 @@
             "type": "\"line\" | \"bar\" | undefined",
             "required": false,
             "default": "\"line\"",
-            "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color.",
+            "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color.",
             "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
             "source": "packages/react/src/financial-display.tsx"
           },
@@ -7517,7 +7517,7 @@
             "type": "\"line\" | \"bar\" | undefined",
             "required": false,
             "default": "\"line\"",
-            "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from zero, the last one in the direction color.",
+            "description": "\"line\" (default) draws the trend; \"bar\" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color.",
             "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
             "source": "packages/native/src/financial-display.tsx"
           },
@@ -29115,7 +29115,7 @@
           },
           {
             "name": "headingLevel",
-            "type": "3 | 2 | 4 | undefined",
+            "type": "2 | 3 | 4 | undefined",
             "required": false,
             "default": "3",
             "description": "Heading level of the title (default 3).",

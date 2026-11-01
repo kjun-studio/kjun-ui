@@ -47,6 +47,10 @@ export interface MarketColumn {
   defaultSort?: boolean;
   flash?: "price" | "change";
   weight?: string;
+  /** Sparkline columns: the row field with the reference value (a previous close), drawn as a dotted baseline. */
+  baselineKey?: string;
+  /** Sparkline columns: every row shares one vertical range, for series on a common scale (such as percent changes). */
+  sharedRange?: boolean;
 }
 export type MarketFormatter<Row extends object> = (
   value: unknown,

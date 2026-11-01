@@ -1,4 +1,4 @@
-import { sparklineGeometry } from "../../../shared/package-runtime/sparkline";
+import { sparklineDash, sparklineGeometry, sparklineTone, type SparkPoint } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { deviationLevel, tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
@@ -11,6 +11,7 @@ import Svg,{
 Circle,
 Defs,
 Line,
+Path,
 LinearGradient,
 Polygon,
 Polyline,
@@ -333,7 +334,7 @@ export interface KjunSparklineProps {
   height?: number;
   color?: ColorValue;
   semantic?: "price" | "status";
-  /** "line" (default) draws the trend; "bar" draws each value as a bar from zero, the last one in the direction color. */
+  /** "line" (default) draws the trend; "bar" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color. */
   variant?: "line" | "bar";
   fill?: boolean;
   strokeWidth?: number;
@@ -364,11 +365,15 @@ export function KjunSparkline({
   ariaLabel,
 }: KjunSparklineProps) {
   const { colors, domainColors } = useKjunStyles(), id = "kjun-" + useId().replace(/:/g, ""), spec = tokens.extensions.financial;
-  const g = sparklineGeometry(data, { width, height, strokeWidth, dotRadius: spec.sparklineDotSize / 2, barGap: spec.sparklineBarGap, variant, baseline, min, max, endDot });
-  const line = color || (g.direction === 0 ? colors.textTertiary : semantic === "status" ? (g.direction > 0 ? colors.success : colors.danger)
-    : domainColor(domainColors, g.direction > 0 ? "priceUp" : "priceDown"));
-  const dash = `${spec.sparklineDash} ${spec.sparklineDashGap}`, scale = stretch ? "non-scaling-stroke" : undefined;
-  // Like Web: an empty series is a quiet dotted line; bars grow from zero; runs break at missing values.
+  const g = sparklineGeometry(data, { width, height, strokeWidth, variant, baseline, min, max, endDot });
+  const tone = sparklineTone(g.direction, semantic);
+  const line = color || (tone === "price-up" ? domainColor(domainColors, "priceUp") : tone === "price-down" ? domainColor(domainColors, "priceDown")
+    : { "text-tertiary": colors.textTertiary, success: colors.success, danger: colors.danger }[tone]);
+  const dash = sparklineDash(), scale = stretch ? "non-scaling-stroke" : undefined;
+  const dot = (p: SparkPoint, size: number, key?: number) => stretch
+    ? <Path key={key} d={`M${p.x} ${p.y}h0`} stroke={line} strokeWidth={size} strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+    : <Circle key={key} cx={p.x} cy={p.y} r={size / 2} fill={line} />;
+  // Like Web: an empty series is a quiet dotted line; bars grow from the baseline or zero; stretched dots stay round.
   return (
     <Svg width={stretch ? "100%" : width} height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio={stretch ? "none" : "xMidYMid meet"}
       accessibilityRole={ariaLabel ? "image" : undefined} accessibilityLabel={ariaLabel} accessible={!!ariaLabel}>
@@ -383,11 +388,11 @@ export function KjunSparkline({
         </Defs>
         {g.areas.map((area, i) => <Polygon key={i} points={area} fill={`url(#${id})`} />)}
       </>}
-      {g.baselineY != null && <Line x1={0} x2={width} y1={g.baselineY} y2={g.baselineY} stroke={colors.borderStrong} strokeWidth={1} strokeDasharray={dash} vectorEffect={scale} />}
+      {g.baselineY != null && <Line x1={0} x2={width} y1={g.baselineY} y2={g.baselineY} stroke={colors.borderStrong} strokeWidth={spec.sparklineBaselineWidth} strokeDasharray={dash} vectorEffect={scale} />}
       {g.segments.map((run, i) => run.length > 1
         ? <Polyline key={i} points={run.map((p) => `${p.x},${p.y}`).join(" ")} fill="none" stroke={line} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" vectorEffect={scale} />
-        : <Circle key={i} cx={run[0].x} cy={run[0].y} r={spec.sparklineDotSize / 2 - 0.5} fill={line} />)}
-      {endDot && g.end && g.segments.some((run) => run.length > 1) && <Circle cx={g.end.x} cy={g.end.y} r={spec.sparklineDotSize / 2} fill={line} stroke={colors.surface} strokeWidth={1.5} />}
+        : dot(run[0], spec.sparklineLoneDotSize, i))}
+      {endDot && g.end && g.segments.some((run) => run.length > 1) && dot(g.end, spec.sparklineDotSize)}
     </Svg>
   );
 }

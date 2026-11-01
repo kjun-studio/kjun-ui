@@ -1,3 +1,4 @@
+import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { tokens } from "@kjun-ui/tokens";
@@ -55,7 +56,7 @@ export const KjunMarketTable = defineComponent({
       if (slots.cell) return slots.cell({ row, column: col });
       if (["stock_name", "name", "symbol"].includes(col.key)) return marketIdentity(row, props, slots);
       if (col.type === "sparkline")
-        return <KjunSparkline data={Array.isArray(value) ? (value as number[]) : []} width={tokens.extensions.marketTable.sparklineWidth} height={tokens.extensions.marketTable.sparklineHeight} />;
+        return <KjunSparkline {...sparklineCell(props.rows, row, col, getValue)} width={tokens.extensions.marketTable.sparklineWidth} height={tokens.extensions.marketTable.sparklineHeight} />;
       if (col.type === "price") return <KjunPriceCell value={finiteNumber(value)} formatter={props.priceFormatter} stale={stale} />;
       const context = { currency: props.currency, row, column: col };
       if (col.type === "percent") return value == null ? "-" : (

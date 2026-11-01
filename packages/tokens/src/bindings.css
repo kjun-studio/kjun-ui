@@ -648,6 +648,9 @@
   --_kjun-extension-financial-sparkline-height: 24px;
   --_kjun-extension-financial-sparkline-stroke-width: 1.5px;
   --_kjun-extension-financial-sparkline-dot-size: 5px;
+  --_kjun-extension-financial-sparkline-lone-dot-size: 4px;
+  --_kjun-extension-financial-sparkline-baseline-width: 1px;
+  --_kjun-extension-financial-sparkline-bar-min-height: 2px;
   --_kjun-extension-financial-sparkline-bar-gap: 2px;
   --_kjun-extension-financial-sparkline-dash: 2px;
   --_kjun-extension-financial-sparkline-dash-gap: 3px;

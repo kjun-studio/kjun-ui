@@ -1,3 +1,4 @@
+import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
@@ -86,7 +87,7 @@ export const KjunMarketCards = defineComponent({
                         {marketIdentity(row, props, slots)}
                         <div class="kjun-market-quote">
                           {state.pill?.format === "sparkline"
-                            ? <KjunSparkline data={(value as number[]) || []} width={tokens.extensions.marketTable.sparklineWidth} height={tokens.extensions.marketTable.sparklineHeight} />
+                            ? <KjunSparkline {...sparklineCell(rows, row, props.columns.find(c => c.key === state.key) ?? { key: state.key }, getValue)} width={tokens.extensions.marketTable.sparklineWidth} height={tokens.extensions.marketTable.sparklineHeight} />
                             : state.pill ? props.metricLoading(row, state.key)
                               ? <KjunSkeleton type="block" height={tokens.extensions.marketTable.valueSkeletonHeight} width={tokens.extensions.marketTable.valueSkeletonWidth} />
                               : isChange && value != null

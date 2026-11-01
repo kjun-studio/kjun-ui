@@ -22,5 +22,26 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(Math.abs(range[0] - range[1])).toBeLessThan(2);
     // The bar variant draws one bar per value.
     await expect(svg('bars').locator('rect')).toHaveCount(4);
+    // The end dot has no ring, so it never shows a surface-colored halo on a tinted row.
+    expect(await svg('baseline').locator('circle').getAttribute('stroke')).toBeNull();
+    // Stretched, the dots become round caps of a zero-length path that keep their screen size.
+    await expect(svg('stretch').locator('circle')).toHaveCount(0);
+    const caps = svg('stretch').locator('path');
+    await expect(caps).toHaveCount(2);
+    for (const cap of await caps.all()) {
+      expect(await cap.getAttribute('stroke-linecap')).toBe('round');
+      expect(await cap.getAttribute('vector-effect')).toBe('non-scaling-stroke');
+    }
+    // Negative bars hang from a dashed zero line instead of growing from the minimum.
+    const zero = Number(await svg('negative').locator('line').getAttribute('y1'));
+    const [down, up] = await svg('negative').locator('rect').all();
+    expect(Number(await down.getAttribute('y'))).toBeCloseTo(zero, 2);
+    expect(Number(await up.getAttribute('y')) + Number(await up.getAttribute('height'))).toBeCloseTo(zero, 2);
+    // A market sparkline column reads each row's baseline field and shares one range.
+    const market = page.getByTestId('market').locator('svg.kjun-sparkline, svg').filter({ has: page.locator('polyline') });
+    await expect(market).toHaveCount(2);
+    for (const chart of await market.all()) await expect(chart.locator('line')).toHaveCount(1);
+    const tops = await Promise.all((await market.all()).map(async chart => Math.min(...(await chart.locator('polyline').getAttribute('points'))!.split(' ').map(p => Number(p.split(',')[1])))));
+    expect(tops[0]).toBeGreaterThan(tops[1] + 4);
   });
 }
