@@ -69,6 +69,11 @@
 .kjun-time-picker [data-time-segment]:is(:hover,:focus-visible):not(:disabled) { background:var(--_kjun-color-hover); }
 /* The segment whose list is open stays marked while the pointer moves into the list. */
 .kjun-time-picker [data-time-segment][aria-expanded="true"]:not(:disabled) { background:var(--_kjun-color-active); }
+/* A read-only time shows its value without the hover of a control that opens. */
+.kjun-time-picker[data-readonly] [data-time-segment] { cursor:default; }
+.kjun-time-picker[data-readonly] [data-time-segment]:is(:hover,:focus-visible):not(:disabled) { background:transparent; }
+/* The AM/PM word sits a separator's width from the hour instead of a ":". */
+.kjun-time-segment[data-period] + .kjun-time-segment, .kjun-time-segment + .kjun-time-segment[data-period] { margin-inline-start:var(--_kjun-extension-time-picker-separator-width); }
 /* Scoped like the Vue field ring it replaces (.kjun-scope .kjun-field:focus-visible); the group ring above is the only outline. */
 .kjun-scope .kjun-time-picker [data-time-segment]:is(:focus,:focus-visible,[aria-invalid="true"]) { outline:none; border-color:transparent; box-shadow:none; }
 .kjun-time-clear { flex:0 0 var(--_kjun-geometry-native-minimum-touch-target); width:var(--_kjun-geometry-native-minimum-touch-target); padding:0; }

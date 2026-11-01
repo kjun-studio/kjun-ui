@@ -9,6 +9,7 @@
       "--brand"
     ],
     "implementationFiles": [
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
@@ -105,6 +106,7 @@
       "--card-bg"
     ],
     "implementationFiles": [
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/carousel.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
@@ -153,6 +155,7 @@
       "--bg-secondary"
     ],
     "implementationFiles": [
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
@@ -189,6 +192,7 @@
       "--bg-hover"
     ],
     "implementationFiles": [
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/carousel.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
@@ -288,6 +292,7 @@
       "--text-primary"
     ],
     "implementationFiles": [
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/carousel.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
@@ -341,6 +346,7 @@
       "--text-secondary"
     ],
     "implementationFiles": [
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/carousel.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
@@ -397,6 +403,7 @@
       "--text-tertiary"
     ],
     "implementationFiles": [
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
@@ -459,6 +466,7 @@
       "--text-disabled"
     ],
     "implementationFiles": [
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/layout.css",
@@ -575,6 +583,7 @@
       "--danger"
     ],
     "implementationFiles": [
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
@@ -792,8 +801,8 @@
       "--border-strong"
     ],
     "implementationFiles": [
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/carousel.css",
-      "packages/tokens/src/controls.css",
       "packages/tokens/src/table.css",
       "packages/vue3/src/financial-display.tsx",
       "packages/react/src/financial-display.tsx",
@@ -1008,6 +1017,7 @@
       "--focus-ring"
     ],
     "implementationFiles": [
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/cards.css",
       "packages/tokens/src/carousel.css",
       "packages/tokens/src/compound-controls.css",
@@ -1139,7 +1149,7 @@
       "--divider"
     ],
     "implementationFiles": [
-      "packages/tokens/src/controls.css",
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/table.css",
@@ -1337,7 +1347,7 @@
       "--brand-subtle-bg"
     ],
     "implementationFiles": [
-      "packages/tokens/src/controls.css",
+      "packages/tokens/src/calendar.css",
       "packages/native/src/calendar.tsx",
       "packages/native/src/table-toolbar.tsx"
     ]
@@ -1381,7 +1391,7 @@
       "--on-brand"
     ],
     "implementationFiles": [
-      "packages/tokens/src/controls.css",
+      "packages/tokens/src/calendar.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/layout.css",
       "packages/tokens/src/market.css",

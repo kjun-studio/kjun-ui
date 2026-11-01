@@ -40,6 +40,8 @@ export interface KjunSelectProps<T extends SelectOption = SelectOption> {
   valueKey?: string;
   size?: InputSize;
   disabled?: boolean;
+  /** Shows the value without opening the list or clearing it. */
+  readOnly?: boolean;
   searchable?: boolean;
   open?: boolean;
   loading?: boolean;
@@ -74,6 +76,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   valueKey = "value",
   size = "md",
   disabled = false,
+  readOnly = false,
   searchable = false,
   open: controlled,
   loading = false,
@@ -147,6 +150,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
           aria-labelledby={field?.labelId}
           aria-describedby={mergeIds(ariaDescribedBy, field?.describedBy)}
           aria-invalid={error || !!field?.error || undefined}
+          aria-readonly={readOnly || undefined}
           style={{
             height: spec.height,
             borderRadius: spec.radius,
@@ -154,21 +158,21 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
             // Time segments take their padding from compound-controls.css, which also aligns the first value.
             ...(segment ? {} : { paddingInline: spec.padding - tokens.border.controlWidth }),
           }}
-          onClick={() => changeOpen(!open)}
+          onClick={() => { if (!readOnly) changeOpen(!open); }}
           onKeyDown={(e) => {
-            if (["ArrowDown", "ArrowUp"].includes(e.key)) {
+            if (!readOnly && ["ArrowDown", "ArrowUp"].includes(e.key)) {
               e.preventDefault();
               changeOpen(true);
             }
           }}
         >
-          <span className={!label ? "kjun-placeholder" : undefined} style={{ flex: 1, paddingRight: clearable && label ? spec.clearSize + spec.affixGap : undefined }}>
+          <span className={!label ? "kjun-placeholder" : undefined} style={{ flex: 1, paddingRight: clearable && !readOnly && label ? spec.clearSize + spec.affixGap : undefined }}>
             {renderSelected?.(selectedOption) || label || placeholder}
           </span>
           {/* Time segments read as one value, so they carry no indicator of their own. */}
           {!segment && <KjunIcon name="chevron-down" className="kjun-select-indicator" data-open={expanded || undefined} size={spec.iconSize} style={{ flexShrink: 0, color: disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />}
         </button>
-        {clearable && !!label && (
+        {clearable && !readOnly && !!label && (
           <KjunButton
             size="sm"
             variant="ghost"

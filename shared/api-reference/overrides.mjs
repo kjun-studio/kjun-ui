@@ -127,6 +127,16 @@ set("DatePicker DateRangePicker", {
   id: "트리거 버튼의 id입니다. 바깥 <label for>와 연결할 때 쓰며, 생략하면 FormGroup의 id를 씁니다.",
   name: "폼 제출용 숨은 input의 이름입니다. DatePicker는 날짜, DateRangePicker는 'start/end' 문자열을 제출합니다.",
 });
+set("DatePicker DateRangePicker", {
+  weekStart: { type: "0 | 1 | 2 | 3 | 4 | 5 | 6", default: "0", summary: "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 머리글과 Home·End 이동이 함께 바뀝니다." },
+  markSunday: { default: "true", summary: "일요일을 danger 역할로 칠합니다. 한국 달력 관례를 따르는 기본값이며, 끄면 일요일도 다른 요일과 같은 색입니다." },
+  isDateUnavailable: { type: "(iso: string) => boolean", summary: "min·max 안에서 고를 수 없는 날짜(휴일·마감일 등)를 앱이 알려 줍니다. 그런 날은 흐린 취소선으로 보이고, 방향키로는 지나갈 수 있지만 고를 수 없습니다. 기간은 이런 날을 가로지를 수 없어 그 너머를 고르면 거기서 새 기간을 시작합니다." },
+});
+set("DateRangePicker", {
+  presets: { type: "{ label: string; value: { start: string; end: string } }[]", summary: "날짜 위에 칩으로 보이는 미리 정한 기간입니다(예: 최근 7일). 누르면 초안 기간이 바뀌고 적용으로 확정합니다. 순서가 뒤집히거나 범위를 벗어난 값은 정리해서 씁니다." },
+  autoApply: { default: "false", summary: "두 번째 날짜를 고르는 즉시 확정하고 닫습니다. 적용 버튼은 보이지 않습니다." },
+});
+set("Select", { readOnly: { default: "false", summary: "값을 보여 주기만 하고 목록을 열거나 지우지 않습니다. 트리거는 초점을 받고 aria-readonly로 알립니다." } });
 // Progress documents its own value (null is missing data) above.
 set("AnimatedNumber PriceCell SignedValue Deviation ProgressCell HeatmapCell", {
   value: "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",

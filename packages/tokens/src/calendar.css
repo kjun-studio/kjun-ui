@@ -1,0 +1,76 @@
+/* Date fields open KJUN's calendar on every platform; the trigger is a Select-style field. */
+.kjun-date-trigger > span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; font-variant-numeric: tabular-nums; }
+.kjun-calendar-panel { width: var(--_kjun-extension-calendar-width); max-width: calc(100vw - 2 * var(--_kjun-extension-floating-viewport-inset)); border-radius: var(--_kjun-extension-calendar-radius); padding: var(--_kjun-extension-calendar-padding); box-sizing: border-box; }
+.kjun-calendar { display: flex; flex-direction: column; color: var(--_kjun-color-text); }
+.kjun-calendar-head { display: flex; align-items: center; gap: var(--_kjun-extension-calendar-title-gap); min-height: var(--_kjun-extension-calendar-header-height); }
+/* The heading opens the month view; it reads larger than the days so the month leads. */
+.kjun-calendar-title {
+  display: inline-flex; align-items: center; gap: var(--_kjun-extension-calendar-title-gap); margin-right: auto;
+  height: var(--_kjun-extension-calendar-nav-size); padding: 0 var(--_kjun-geometry-dimension-value8); border: 0; border-radius: var(--_kjun-geometry-radius-radius10);
+  background: transparent; color: var(--_kjun-color-text); cursor: pointer;
+  font-size: var(--_kjun-type-card-title-size); line-height: var(--_kjun-type-card-title-line); font-weight: var(--_kjun-type-card-title-weight);
+}
+.kjun-calendar-title svg { color: var(--_kjun-color-text-tertiary); }
+.kjun-calendar-title:hover, .kjun-calendar-nav:hover:not(:disabled) { background: var(--_kjun-color-hover); }
+.kjun-calendar-nav {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: var(--_kjun-extension-calendar-nav-size); height: var(--_kjun-extension-calendar-nav-size); padding: 0; border: 0;
+  border-radius: var(--_kjun-geometry-radius-radius10); background: transparent; color: var(--_kjun-color-text); cursor: pointer;
+}
+.kjun-calendar-nav:disabled { color: var(--_kjun-color-text-disabled); cursor: default; }
+.kjun-calendar-grid { display: grid; grid-template-columns: repeat(7, var(--_kjun-extension-calendar-day-size)); justify-content: space-between; row-gap: var(--_kjun-extension-calendar-row-gap); isolation: isolate; }
+.kjun-calendar-weekday {
+  display: flex; align-items: center; justify-content: center; height: var(--_kjun-extension-calendar-weekday-height);
+  font-size: var(--_kjun-type-meta-size); line-height: var(--_kjun-type-meta-line); font-weight: var(--_kjun-type-meta-weight); color: var(--_kjun-color-text-tertiary);
+}
+.kjun-calendar-weekday[data-sunday] { color: var(--_kjun-color-danger); }
+.kjun-calendar-day {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: var(--_kjun-extension-calendar-day-size); height: var(--_kjun-extension-calendar-day-size); padding: 0; border: 0;
+  border-radius: var(--_kjun-geometry-radius-radius9999); background: transparent; color: var(--_kjun-color-text); cursor: pointer;
+  font-size: var(--_kjun-type-body-size); line-height: var(--_kjun-type-body-line); font-variant-numeric: tabular-nums;
+}
+.kjun-calendar-day[data-sunday]:not([data-outside]):not(:disabled, [aria-disabled="true"]) { color: var(--_kjun-color-danger); }
+.kjun-calendar-day[data-outside] { color: var(--_kjun-color-text-disabled); }
+.kjun-calendar-day:is(:disabled, [aria-disabled="true"]) { color: var(--_kjun-color-text-disabled); text-decoration: line-through; text-decoration-color: var(--_kjun-color-border-strong); cursor: default; }
+.kjun-calendar-day:hover:not(:disabled, [aria-disabled="true"]):not([data-selected]) { background: var(--_kjun-color-hover); }
+.kjun-calendar-day[data-today]:not([data-selected]) { box-shadow: inset 0 0 0 var(--_kjun-extension-calendar-today-ring) var(--_kjun-color-border-strong); font-weight: var(--_kjun-type-control-weight); }
+.kjun-calendar-day[data-selected] { background: var(--_kjun-color-brand); color: var(--_kjun-color-on-brand); font-weight: var(--_kjun-type-control-weight); }
+.kjun-calendar-day:focus-visible { outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset: var(--_kjun-state-focus-offset); }
+/* A range joins its ends with a quiet band that runs under the days between them. */
+.kjun-calendar-day:is([data-in-range], [data-range-start], [data-range-end])::before {
+  content: ""; position: absolute; z-index: -1; top: 0; bottom: 0;
+  left: calc(0px - var(--_kjun-extension-calendar-range-bleed)); right: calc(0px - var(--_kjun-extension-calendar-range-bleed));
+  background: var(--_kjun-color-brand-subtle-bg);
+}
+.kjun-calendar-day[data-range-start]::before { left: 50%; }
+.kjun-calendar-day[data-range-end]::before { right: 50%; }
+.kjun-calendar-day[data-range-start][data-range-end]::before { display: none; }
+.kjun-calendar-months { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--_kjun-extension-calendar-month-gap); margin-top: var(--_kjun-extension-calendar-month-gap); }
+.kjun-calendar-month {
+  height: var(--_kjun-extension-calendar-month-height); border: 0; border-radius: var(--_kjun-extension-calendar-month-radius);
+  background: transparent; color: var(--_kjun-color-text); cursor: pointer;
+  font-size: var(--_kjun-type-label-size); line-height: var(--_kjun-type-label-line); font-weight: var(--_kjun-type-label-weight);
+}
+.kjun-calendar-month:hover:not(:disabled):not([data-selected]) { background: var(--_kjun-color-hover); }
+.kjun-calendar-month[data-current]:not([data-selected]) { box-shadow: inset 0 0 0 var(--_kjun-extension-calendar-today-ring) var(--_kjun-color-border-strong); }
+.kjun-calendar-month[data-selected] { background: var(--_kjun-color-brand); color: var(--_kjun-color-on-brand); font-weight: var(--_kjun-type-control-weight); }
+.kjun-calendar-month:disabled { color: var(--_kjun-color-text-disabled); cursor: default; }
+/* The year view reuses the month grid. */
+.kjun-calendar-month[data-year] { font-variant-numeric: tabular-nums; }
+/* Range presets are year-style chips that wrap above the days. */
+.kjun-calendar-presets { display: flex; flex-wrap: wrap; gap: var(--_kjun-extension-calendar-year-gap); margin-bottom: var(--_kjun-extension-calendar-footer-gap); }
+.kjun-calendar-presets .kjun-calendar-year { flex: none; padding: 0 var(--_kjun-geometry-dimension-value12); }
+.kjun-calendar-years { display: flex; gap: var(--_kjun-extension-calendar-year-gap); margin-top: var(--_kjun-extension-calendar-footer-gap); }
+.kjun-calendar-year {
+  flex: 1; height: var(--_kjun-extension-calendar-year-height); padding: 0; border: 0; border-radius: var(--_kjun-geometry-radius-radius9999);
+  background: var(--_kjun-color-secondary); color: var(--_kjun-color-text-secondary); cursor: pointer;
+  font-size: var(--_kjun-type-label-size); line-height: var(--_kjun-type-label-line); font-weight: var(--_kjun-type-label-weight); font-variant-numeric: tabular-nums;
+}
+.kjun-calendar-year[aria-pressed="true"] { background: var(--_kjun-color-text); color: var(--_kjun-color-surface); }
+:is(.kjun-calendar-title, .kjun-calendar-nav, .kjun-calendar-month, .kjun-calendar-year):focus-visible { outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset: var(--_kjun-state-focus-offset); }
+.kjun-calendar-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--_kjun-extension-calendar-footer-gap);
+  margin-top: var(--_kjun-extension-calendar-footer-gap); padding-top: var(--_kjun-extension-calendar-footer-gap);
+  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-divider);
+}

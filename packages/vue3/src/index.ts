@@ -20,7 +20,8 @@ export type { KjunDropdownProps, KjunDropdownItemProps, KjunDropdownSectionProps
 export type { KjunSelectProps, OptionValue, SelectOption } from "./select-control";
 export type { KjunComboboxProps } from "./combobox";
 export type { KjunSearchInputProps } from "./search-input";
-export type { KjunDatePickerProps, KjunDateRangePickerProps, KjunTimePickerProps } from "./date-picker";
+export type { KjunDatePickerProps, KjunDateRangePickerProps, DateRangePreset } from "./date-picker";
+export type { KjunTimePickerProps } from "./time-picker";
 export type { DateRange } from "../../../shared/package-runtime/calendar";
 export type { KjunModalProps, KjunFormActionsProps } from "./modal";
 export type { KjunDrawerProps } from "./drawer";

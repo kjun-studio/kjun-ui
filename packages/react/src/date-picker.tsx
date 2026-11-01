@@ -1,16 +1,16 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { formatDateValue } from "../../../shared/package-runtime/messages";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
-import { dateLabel, formatRange, pickRange, type DateRange } from "../../../shared/package-runtime/calendar";
+import { dateLabel, formatRange, normalizeRange, pickRange, rangeSpoken, rangeSubmitted, type DateRange } from "../../../shared/package-runtime/calendar";
 import { inputTypeStyle } from "./typography";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useId, useRef, useState, type ReactNode } from "react";
 import { KjunButton, KjunIcon } from "./button";
 import { useKjunField } from "./input";
 import { FloatingPanel } from "./layers";
-import { CalendarView } from "./calendar";
+import { CalendarView, type CalendarOptions, type DateRangePreset } from "./calendar";
 
-interface DateFieldProps {
+interface DateFieldProps extends CalendarOptions {
   size?: InputSize;
   /** Shows a clear button while there is a value. */
   clearable?: boolean;
@@ -28,8 +28,8 @@ interface DateFieldProps {
   name?: string;
 }
 /** The Select-style field that opens a calendar; both pickers share it. */
-function DateField({ size = "md", clearable, placeholder, ariaLabel, error, disabled, readOnly, id, name, text, spoken, submitted, open, setOpen, onClear, children }:
-  DateFieldProps & { text: string; spoken: string; submitted: string; open: boolean; setOpen: (open: boolean) => void; onClear: () => void; children: ReactNode }) {
+function DateField({ size = "md", clearable, placeholder, ariaLabel, error, disabled, readOnly, id, name, text, spoken, submitted, clearLabel, open, setOpen, onClear, children }:
+  Omit<DateFieldProps, keyof CalendarOptions | "min" | "max"> & { text: string; spoken: string; submitted: string; clearLabel: string; open: boolean; setOpen: (open: boolean) => void; onClear: () => void; children: ReactNode }) {
   const scope = useKjunMessageScope(), field = useKjunField(), spec = tokens.input[size];
   const trigger = useRef<HTMLButtonElement>(null), valueId = "kjun-date-" + useId();
   const label = ariaLabel || placeholder!;
@@ -54,7 +54,7 @@ function DateField({ size = "md", clearable, placeholder, ariaLabel, error, disa
           <KjunIcon name="calendar" size={spec.iconSize} style={{ flexShrink: 0, color: disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
         </button>
         {clear && (
-          <KjunButton size="sm" variant="ghost" ariaLabel={scope.messages.clearDate} className="kjun-select-clear"
+          <KjunButton size="sm" variant="ghost" ariaLabel={clearLabel} className="kjun-select-clear"
             style={{ padding: 0, right: spec.padding + spec.iconSize + spec.affixGap, width: spec.clearSize, height: spec.clearSize, minHeight: spec.clearSize, borderRadius: "50%" }}
             onClick={() => { onClear(); trigger.current?.focus(); }}><KjunIcon name="x" size={spec.iconSize} /></KjunButton>
         )}
@@ -75,39 +75,51 @@ export interface KjunDatePickerProps extends DateFieldProps {
   onValueChange?: (value: string) => void;
   onChange?: (value: string) => void;
 }
-export function KjunDatePicker({ value, placeholder, clearable = false, min, max, onValueChange, onChange, ...field }: KjunDatePickerProps) {
+export function KjunDatePicker({ value, placeholder, clearable = false, min, max, weekStart, markSunday, isDateUnavailable, onValueChange, onChange, ...field }: KjunDatePickerProps) {
   const scope = useKjunMessageScope();
   const [open, setOpen] = useState(false);
   const commit = (next: string) => { if (next !== value) { onValueChange?.(next); onChange?.(next); } setOpen(false); };
   return (
-    <DateField {...field} clearable={clearable} min={min} max={max} placeholder={placeholder ?? scope.messages.datePlaceholder}
+    <DateField {...field} clearable={clearable} placeholder={placeholder ?? scope.messages.datePlaceholder} clearLabel={scope.messages.clearDate}
       text={value ? formatDateValue(value, scope) : ""} spoken={value ? dateLabel(value, scope) : ""} submitted={value}
       open={open} setOpen={setOpen} onClear={() => commit("")}>
-      <CalendarView value={value} min={min} max={max} clearable={clearable} onSelect={commit} onClear={() => commit("")} />
+      <CalendarView value={value} min={min} max={max} clearable={clearable} weekStart={weekStart} markSunday={markSunday} isDateUnavailable={isDateUnavailable}
+        onSelect={commit} onClear={() => commit("")} />
     </DateField>
   );
 }
 
 export interface KjunDateRangePickerProps extends DateFieldProps {
-  /** Start and end as YYYY-MM-DD; empty strings while unset. */
+  /** Start and end as YYYY-MM-DD; empty strings while unset. A reversed or out-of-bounds range is shown in order and inside the bounds. */
   value: DateRange;
   onValueChange?: (value: DateRange) => void;
   onChange?: (value: DateRange) => void;
+  /** Ready-made ranges shown as chips above the days, such as "최근 7일". */
+  presets?: readonly DateRangePreset[];
+  /** Commits as soon as the second day is picked, without Apply. */
+  autoApply?: boolean;
 }
 /** Two dates picked in one calendar: the first pick starts the range, the second ends it, and Apply commits it. */
-export function KjunDateRangePicker({ value, placeholder, clearable = false, min, max, onValueChange, onChange, ...field }: KjunDateRangePickerProps) {
+export function KjunDateRangePicker({ value: given, placeholder, clearable = false, min, max, weekStart, markSunday, isDateUnavailable, presets, autoApply = false,
+  onValueChange, onChange, ...field }: KjunDateRangePickerProps) {
   const scope = useKjunMessageScope();
+  const value = normalizeRange(given, min, max);
   const [open, setOpen] = useState(false), [draft, setDraft] = useState(value);
   const commit = (next: DateRange) => { if (next.start !== value.start || next.end !== value.end) { onValueChange?.(next); onChange?.(next); } setOpen(false); };
   const format = (iso: string) => formatDateValue(iso, scope);
-  const spoken = value.start ? dateLabel(value.start, scope) + (value.end ? " – " + dateLabel(value.end, scope) : "") : "";
+  const pick = (iso: string) => {
+    const next = pickRange(draft, iso, isDateUnavailable);
+    setDraft(next);
+    if (autoApply && next.end) commit(next);
+  };
   return (
-    <DateField {...field} clearable={clearable} min={min} max={max} placeholder={placeholder ?? scope.messages.rangePlaceholder}
-      text={formatRange(value, format)} spoken={spoken} submitted={value.start && value.end ? value.start + "/" + value.end : ""}
+    <DateField {...field} clearable={clearable} placeholder={placeholder ?? scope.messages.rangePlaceholder} clearLabel={scope.messages.clearDates}
+      text={formatRange(value, format)} spoken={rangeSpoken(value, scope)} submitted={rangeSubmitted(value)}
       open={open} setOpen={next => { if (next) setDraft(value); setOpen(next); }} onClear={() => commit({ start: "", end: "" })}>
-      <CalendarView range={draft} min={min} max={max} onSelect={iso => setDraft(current => pickRange(current, iso))}
-        onClear={() => setDraft({ start: "", end: "" })} onApply={() => commit(draft)} />
+      <CalendarView range={draft} min={min} max={max} clearable={clearable} weekStart={weekStart} markSunday={markSunday} isDateUnavailable={isDateUnavailable}
+        presets={presets} onPreset={next => { const range = normalizeRange(next, min, max); setDraft(range); if (autoApply) commit(range); }}
+        onSelect={pick} onClear={() => setDraft({ start: "", end: "" })} onApply={autoApply ? undefined : () => commit(draft)} />
     </DateField>
   );
 }
-export type { DateRange };
+export type { DateRange, DateRangePreset };

@@ -455,7 +455,10 @@
       "clearable",
       "size",
       "ariaLabel",
-      "block"
+      "block",
+      "hourCycle",
+      "readOnly",
+      "name"
     ],
     "react": [
       "value",
@@ -471,7 +474,10 @@
       "ariaLabel",
       "block",
       "onValueChange",
-      "onChangeCommit"
+      "onChangeCommit",
+      "hourCycle",
+      "readOnly",
+      "name"
     ],
     "native": [
       "value",
@@ -487,7 +493,9 @@
       "ariaLabel",
       "block",
       "onValueChange",
-      "onChangeCommit"
+      "onChangeCommit",
+      "hourCycle",
+      "readOnly"
     ]
   },
   "KjunQuantityStepper": {

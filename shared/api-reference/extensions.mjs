@@ -3,6 +3,9 @@ import { detail, event, slot, fields } from "./helpers.mjs";
 const bindings = JSON.parse(readFileSync(new URL("./extensions.json", import.meta.url), "utf8"));
 const guides = JSON.parse(readFileSync(new URL("../component-guides.json", import.meta.url), "utf8"));
 const summaries = {
+  // TimePicker refines these two below.
+  hourCycle: "시계 방식입니다. 24는 00~23시, 12는 오전/오후와 1~12시를 보입니다.",
+  readOnly: "값을 보여 주기만 하고 바꾸지 않습니다.",
   showValue: "값 출력을 표시합니다. false여도 숫자 값·키보드 조작·접근성 이름은 유지합니다. label도 없으면 빈 캡션 영역을 만들지 않습니다.",
   radius: "섹션 모서리를 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)로 둥글게 하고, 안의 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
   ariaLabel: "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
@@ -121,6 +124,9 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else throw Error("Missing extension prop description: " + name + "." + key);
     if (name === "KjunQuantityStepper" && key === "block") entry.default = "false";
     if (name === "KjunTimePicker" && key === "block") entry = { summary: "부모의 전체 너비를 채웁니다. 기본값 false는 시각 폭만 차지합니다.", default: "false" };
+    if (name === "KjunTimePicker" && key === "hourCycle") entry = { type: "12 | 24", default: "24", ...detail("시계 방식입니다. 24는 00~23시, 12는 오전/오후 칸과 1~12시를 보입니다.", { "값 형태": "어느 쪽이든 값은 HH:mm(또는 HH:mm:ss) 24시간 문자열입니다.", "칸 순서": "한국어·일본어·중국어는 오전/오후를 시 앞에, 그 밖의 언어는 뒤에 둡니다." }) };
+    if (name === "KjunTimePicker" && key === "readOnly") entry = { default: "false", summary: "시각을 보여 주기만 하고 바꾸지 않습니다. 칸은 초점을 받지만 목록을 열지 않고 지우기 버튼도 숨깁니다." };
+    if (name === "KjunTimePicker" && key === "name") entry = { summary: "폼 제출용 숨은 input의 이름입니다. 비어 있으면 빈 문자열을 제출합니다." };
     if (name === "KjunQuantityStepper" && (key === "value" || key === "modelValue")) entry = detail(valueDescription[name], {
       "상태 책임": guides[name].interaction,
       "키보드": "Enter·blur는 변경값을 확정합니다. 편집 중 첫 Escape는 초안을 되돌리고 상위 창에 전달하지 않습니다. 편집이 끝난 뒤 Escape는 상위 창이 처리합니다. IME 조합 중 키와 조합 확정 keyCode=229는 수량을 확정하거나 증감하지 않습니다.",

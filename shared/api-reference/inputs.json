@@ -103,7 +103,10 @@
       "max",
       "readOnly",
       "id",
-      "name"
+      "name",
+      "weekStart",
+      "markSunday",
+      "isDateUnavailable"
     ],
     "react": [
       "value",
@@ -119,7 +122,10 @@
       "id",
       "name",
       "onValueChange",
-      "onChange"
+      "onChange",
+      "weekStart",
+      "markSunday",
+      "isDateUnavailable"
     ],
     "native": [
       "value",
@@ -132,7 +138,11 @@
       "min",
       "max",
       "onValueChange",
-      "onChange"
+      "onChange",
+      "weekStart",
+      "markSunday",
+      "isDateUnavailable",
+      "readOnly"
     ]
   },
   "KjunDateRangePicker": {
@@ -148,7 +158,12 @@
       "max",
       "readOnly",
       "id",
-      "name"
+      "name",
+      "weekStart",
+      "markSunday",
+      "isDateUnavailable",
+      "presets",
+      "autoApply"
     ],
     "react": [
       "value",
@@ -164,7 +179,12 @@
       "id",
       "name",
       "onValueChange",
-      "onChange"
+      "onChange",
+      "weekStart",
+      "markSunday",
+      "isDateUnavailable",
+      "presets",
+      "autoApply"
     ],
     "native": [
       "value",
@@ -177,7 +197,13 @@
       "min",
       "max",
       "onValueChange",
-      "onChange"
+      "onChange",
+      "weekStart",
+      "markSunday",
+      "isDateUnavailable",
+      "presets",
+      "autoApply",
+      "readOnly"
     ]
   },
   "KjunFilterGroup": {
@@ -459,7 +485,8 @@
       "searchKeys",
       "id",
       "ariaDescribedby",
-      "returnFocus"
+      "returnFocus",
+      "readOnly"
     ],
     "react": [
       "value",
@@ -490,7 +517,8 @@
       "searchKeys",
       "id",
       "ariaDescribedBy",
-      "returnFocus"
+      "returnFocus",
+      "readOnly"
     ],
     "native": [
       "value",
@@ -518,7 +546,8 @@
       "onSearch",
       "onClear",
       "filterFn",
-      "searchKeys"
+      "searchKeys",
+      "readOnly"
     ]
   },
   "KjunSwitch": {

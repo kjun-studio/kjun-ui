@@ -55,6 +55,7 @@ export type {
   KjunDatePickerProps,
   KjunDateRangePickerProps,
   DateRange,
+  DateRangePreset,
   OptionValue,
   SelectOption,
 } from "./select";

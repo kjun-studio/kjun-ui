@@ -31,6 +31,8 @@ export interface KjunSelectProps<T extends SelectOption = SelectOption> {
   valueKey?: string;
   size?: InputSize;
   disabled?: boolean;
+  /** Shows the value without opening the list or clearing it. */
+  readOnly?: boolean;
   searchable?: boolean;
   open?: boolean;
   loading?: boolean;
@@ -61,6 +63,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   valueKey = "value",
   size = "md",
   disabled = false,
+  readOnly = false,
   searchable = false,
   open: controlled,
   loading = false,
@@ -109,7 +112,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   if (firstSelected < 0) selectedRow.current = null;
   return (
     <>
-      <View ref={ref} collapsable={false} {...fieldTarget(() => changeOpen(!open), disabled)} style={{ position: "relative", minHeight: tokens.native.minimumTouchTarget, justifyContent: "center",
+      <View ref={ref} collapsable={false} {...fieldTarget(() => { if (!readOnly) changeOpen(!open); }, disabled)} style={{ position: "relative", minHeight: tokens.native.minimumTouchTarget, justifyContent: "center",
         // Inside a compound field the touch target overflows so the shared surface keeps its size height.
         ...(compound ? { marginVertical: Math.min(0, (spec.height - tokens.native.minimumTouchTarget) / 2) } : {}) }}>
         <FieldPressable
@@ -128,10 +131,11 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
             "aria-invalid": error || !!field?.error || undefined,
             "aria-describedby": field?.describedBy,
             "aria-required": field?.required || undefined,
+            "aria-readonly": readOnly || undefined,
           } : {})}
           disabled={disabled}
           hitSlop={{ top: surface.hit, bottom: surface.hit, left: 0, right: 0 }}
-          onPress={() => changeOpen(!open)}
+          onPress={() => { if (!readOnly) changeOpen(!open); }}
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -146,7 +150,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
           }}
         >
           {/* Time segments size to their content: Yoga's flex: 1 has a zero basis, which would ignore the hidden "00". */}
-          <View style={{ ...(compound ? { flexGrow: 1, flexShrink: 0 } : { flex: 1, minWidth: 0 }), paddingRight: clearable && label ? tokens.native.minimumTouchTarget + spec.affixGap : 0 }}>
+          <View style={{ ...(compound ? { flexGrow: 1, flexShrink: 0 } : { flex: 1, minWidth: 0 }), paddingRight: clearable && !readOnly && label ? tokens.native.minimumTouchTarget + spec.affixGap : 0 }}>
             {/* A hidden "00" sizes time segments, so the placeholder and the value occupy the same slot. */}
             {compound && <KText aria-hidden={true} importantForAccessibility="no-hide-descendants" onLayout={event => setDigits(event.nativeEvent.layout.width)} style={{ ...inputTypeStyle(size), fontVariant: ["tabular-nums"], opacity: 0, alignSelf: "flex-start" }}>00</KText>}
             {renderSelected?.(selectedOption) || <KText numberOfLines={1} style={{
@@ -160,7 +164,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
             <KjunIcon name="chevron-down" size={spec.iconSize} color={surface.icon} />
           </View>}
         </FieldPressable>
-        {clearable && !!label && (
+        {clearable && !readOnly && !!label && (
           <View
             style={{
               position: "absolute",

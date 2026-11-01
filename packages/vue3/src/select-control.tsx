@@ -33,6 +33,8 @@ const kjunSelectProps = {
   valueKey: { type: String, default: "value" },
   size: { type: String as PropType<InputSize>, default: "md" },
   disabled: { type: Boolean, default: false },
+  /** Shows the value without opening the list or clearing it. */
+  readOnly: { type: Boolean, default: false },
   searchable: { type: Boolean, default: false },
   open: { type: Boolean, default: undefined },
   loading: { type: Boolean, default: false },
@@ -136,10 +138,10 @@ export const KjunSelect = defineComponent({
         <>
           <div class={["kjun-select-shell", shellClass]} style={shellStyle as never}>
             <button {...mergeProps(controlAttrs, {
-              onClick: (event: MouseEvent) => { if (!event.defaultPrevented) state.changeOpen(!open); },
-              onKeydown: (event: KeyboardEvent) => { if (!event.defaultPrevented && ["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); state.changeOpen(true); } },
+              onClick: (event: MouseEvent) => { if (!event.defaultPrevented && !props.readOnly) state.changeOpen(!open); },
+              onKeydown: (event: KeyboardEvent) => { if (!event.defaultPrevented && !props.readOnly && ["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); state.changeOpen(true); } },
             })} ref={trigger} id={props.id ?? owner?.id} type="button" class="kjun-input kjun-select-trigger" data-time-segment={segment ? "true" : undefined}
-              disabled={props.disabled} aria-haspopup="listbox" aria-controls={expanded.value ? id : undefined} aria-expanded={expanded.value}
+              disabled={props.disabled} aria-readonly={props.readOnly || undefined} aria-haspopup="listbox" aria-controls={expanded.value ? id : undefined} aria-expanded={expanded.value}
               aria-label={props.ariaLabel || attrs["aria-label"] as string || (props.id || owner ? undefined : (props.placeholder ?? m.value.select))} aria-labelledby={attrs["aria-labelledby"] as string || owner?.labelId}
               aria-describedby={mergeIds(props.ariaDescribedby, attrs["aria-describedby"] as string, owner?.describedBy)}
               aria-invalid={props.error || !!owner?.error ? "true" : attrs["aria-invalid"] as never}
@@ -147,14 +149,14 @@ export const KjunSelect = defineComponent({
                 // Time segments take their padding from compound-controls.css, which also aligns the first value.
                 ...(segment ? {} : { paddingInline: spec.padding - tokens.border.controlWidth }) })}>
               <span class={!label ? "kjun-placeholder" : undefined}
-                style={css({ flex: 1, paddingRight: props.clearable && label ? spec.clearSize + spec.affixGap : undefined })}>
+                style={css({ flex: 1, paddingRight: props.clearable && !props.readOnly && label ? spec.clearSize + spec.affixGap : undefined })}>
                 {shown?.length ? shown : label || (props.placeholder ?? m.value.select)}
               </span>
               {/* Time segments read as one value, so they carry no indicator of their own. */}
               {!segment && <KjunIcon name="chevron-down" class="kjun-select-indicator" data-open={expanded.value || undefined} size={spec.iconSize}
                 style={{ flexShrink: 0, color: props.disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />}
             </button>
-            {props.clearable && !!label && (
+            {props.clearable && !props.readOnly && !!label && (
               <KjunButton size="sm" variant="ghost" ariaLabel={m.value.clearSelection} disabled={props.disabled} class="kjun-select-clear"
                 style={css({ padding: 0, right: spec.padding + spec.iconSize + spec.affixGap, width: spec.clearSize, height: spec.clearSize, minHeight: spec.clearSize, borderRadius: "50%" })}
                 onClick={() => { change(props.multiple ? [] : null); emit("clear"); trigger.value?.focus(); }}>

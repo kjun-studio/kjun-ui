@@ -14695,6 +14695,33 @@
       "vue3": {
         "props": [
           {
+            "name": "weekStart",
+            "type": "0 | 1 | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "0",
+            "description": "The first column of the week: 0 Sunday (default), 1 Monday.",
+            "summary": "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 머리글과 Home·End 이동이 함께 바뀝니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
+            "name": "markSunday",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints Sundays with the danger role, as Korean calendars do (default true).",
+            "summary": "일요일을 danger 역할로 칠합니다. 한국 달력 관례를 따르는 기본값이며, 끄면 일요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
+            "name": "isDateUnavailable",
+            "type": "(iso: string) => boolean",
+            "required": false,
+            "default": "—",
+            "description": "Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one.",
+            "summary": "min·max 안에서 고를 수 없는 날짜(휴일·마감일 등)를 앱이 알려 줍니다. 그런 날은 흐린 취소선으로 보이고, 방향키로는 지나갈 수 있지만 고를 수 없습니다. 기간은 이런 날을 가로지를 수 없어 그 너머를 고르면 거기서 새 기간을 시작합니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
             "name": "clearable",
             "type": "boolean",
             "required": false,
@@ -14948,6 +14975,33 @@
             "description": "Submits the value with a form through a hidden input.",
             "summary": "폼 제출용 숨은 input의 이름입니다. DatePicker는 날짜, DateRangePicker는 'start/end' 문자열을 제출합니다.",
             "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "weekStart",
+            "type": "0 | 1 | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "0",
+            "description": "The first column of the week: 0 Sunday (default), 1 Monday.",
+            "summary": "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 머리글과 Home·End 이동이 함께 바뀝니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "markSunday",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints Sundays with the danger role, as Korean calendars do (default true).",
+            "summary": "일요일을 danger 역할로 칠합니다. 한국 달력 관례를 따르는 기본값이며, 끄면 일요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "isDateUnavailable",
+            "type": "(iso: string) => boolean",
+            "required": false,
+            "default": "—",
+            "description": "Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one.",
+            "summary": "min·max 안에서 고를 수 없는 날짜(휴일·마감일 등)를 앱이 알려 줍니다. 그런 날은 흐린 취소선으로 보이고, 방향키로는 지나갈 수 있지만 고를 수 없습니다. 기간은 이런 날을 가로지를 수 없어 그 너머를 고르면 거기서 새 기간을 시작합니다.",
+            "source": "packages/react/src/date-picker.tsx"
           }
         ],
         "events": [],
@@ -14991,6 +15045,15 @@
             "default": "false",
             "description": "Shows a clear button while there is a value.",
             "summary": "값이 있을 때 달력 아이콘 앞에 지우기 버튼을 보입니다. 누르면 빈 문자열로 바꿉니다. 버튼 이름은 KjunProvider 문구(clearDate)를 따릅니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Shows the date without opening the calendar.",
+            "summary": "값을 보여 주기만 하고 달력을 열지 않습니다.",
             "source": "packages/native/src/date-picker.tsx"
           },
           {
@@ -15055,6 +15118,33 @@
             "description": "",
             "summary": "필드를 오류 상태로 표시합니다. 오류 설명과 검증 결과는 소비자가 별도로 제공합니다.",
             "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "weekStart",
+            "type": "0 | 1 | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "0",
+            "description": "The first column of the week: 0 Sunday (default), 1 Monday.",
+            "summary": "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 머리글과 Home·End 이동이 함께 바뀝니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "markSunday",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints Sundays with the danger role, as Korean calendars do (default true).",
+            "summary": "일요일을 danger 역할로 칠합니다. 한국 달력 관례를 따르는 기본값이며, 끄면 일요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "isDateUnavailable",
+            "type": "(iso: string) => boolean",
+            "required": false,
+            "default": "—",
+            "description": "Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one.",
+            "summary": "min·max 안에서 고를 수 없는 날짜(휴일·마감일 등)를 앱이 알려 줍니다. 그런 날은 흐린 취소선으로 보이고, 방향키로는 지나갈 수 있지만 고를 수 없습니다. 기간은 이런 날을 가로지를 수 없어 그 너머를 고르면 거기서 새 기간을 시작합니다.",
+            "source": "packages/native/src/date-picker.tsx"
           }
         ],
         "events": [],
@@ -15066,6 +15156,33 @@
     "KjunDateRangePicker": {
       "vue3": {
         "props": [
+          {
+            "name": "weekStart",
+            "type": "0 | 1 | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "0",
+            "description": "The first column of the week: 0 Sunday (default), 1 Monday.",
+            "summary": "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 머리글과 Home·End 이동이 함께 바뀝니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
+            "name": "markSunday",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints Sundays with the danger role, as Korean calendars do (default true).",
+            "summary": "일요일을 danger 역할로 칠합니다. 한국 달력 관례를 따르는 기본값이며, 끄면 일요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
+            "name": "isDateUnavailable",
+            "type": "(iso: string) => boolean",
+            "required": false,
+            "default": "—",
+            "description": "Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one.",
+            "summary": "min·max 안에서 고를 수 없는 날짜(휴일·마감일 등)를 앱이 알려 줍니다. 그런 날은 흐린 취소선으로 보이고, 방향키로는 지나갈 수 있지만 고를 수 없습니다. 기간은 이런 날을 가로지를 수 없어 그 너머를 고르면 거기서 새 기간을 시작합니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
           {
             "name": "clearable",
             "type": "boolean",
@@ -15170,8 +15287,26 @@
             "type": "{ start: string; end: string }",
             "required": false,
             "default": "{\"start\":\"\",\"end\":\"\"}",
-            "description": "Start and end as YYYY-MM-DD; empty strings while unset.",
+            "description": "Start and end as YYYY-MM-DD; empty strings while unset. A reversed or out-of-bounds range is shown in order and inside the bounds.",
             "summary": "현재 기간입니다. 시작일·종료일을 YYYY-MM-DD 문자열로 담고, 비어 있으면 빈 문자열입니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
+            "name": "presets",
+            "type": "{ label: string; value: { start: string; end: string } }[]",
+            "required": false,
+            "default": "—",
+            "description": "Ready-made ranges shown as chips above the days, such as \"최근 7일\".",
+            "summary": "날짜 위에 칩으로 보이는 미리 정한 기간입니다(예: 최근 7일). 누르면 초안 기간이 바뀌고 적용으로 확정합니다. 순서가 뒤집히거나 범위를 벗어난 값은 정리해서 씁니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
+            "name": "autoApply",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Commits as soon as the second day is picked, without Apply.",
+            "summary": "두 번째 날짜를 고르는 즉시 확정하고 닫습니다. 적용 버튼은 보이지 않습니다.",
             "source": "packages/vue3/src/date-picker.tsx"
           }
         ],
@@ -15200,7 +15335,7 @@
             "type": "{ start: string; end: string }",
             "required": true,
             "default": "—",
-            "description": "Start and end as YYYY-MM-DD; empty strings while unset.",
+            "description": "Start and end as YYYY-MM-DD; empty strings while unset. A reversed or out-of-bounds range is shown in order and inside the bounds.",
             "summary": "현재 기간입니다. 시작일·종료일을 YYYY-MM-DD 문자열로 담고, 비어 있으면 빈 문자열입니다.",
             "source": "packages/react/src/date-picker.tsx"
           },
@@ -15220,6 +15355,24 @@
             "default": "—",
             "description": "",
             "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "presets",
+            "type": "{ label: string; value: { start: string; end: string } }[]",
+            "required": false,
+            "default": "—",
+            "description": "Ready-made ranges shown as chips above the days, such as \"최근 7일\".",
+            "summary": "날짜 위에 칩으로 보이는 미리 정한 기간입니다(예: 최근 7일). 누르면 초안 기간이 바뀌고 적용으로 확정합니다. 순서가 뒤집히거나 범위를 벗어난 값은 정리해서 씁니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "autoApply",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Commits as soon as the second day is picked, without Apply.",
+            "summary": "두 번째 날짜를 고르는 즉시 확정하고 닫습니다. 적용 버튼은 보이지 않습니다.",
             "source": "packages/react/src/date-picker.tsx"
           },
           {
@@ -15320,6 +15473,33 @@
             "description": "Submits the value with a form through a hidden input.",
             "summary": "폼 제출용 숨은 input의 이름입니다. DatePicker는 날짜, DateRangePicker는 'start/end' 문자열을 제출합니다.",
             "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "weekStart",
+            "type": "0 | 1 | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "0",
+            "description": "The first column of the week: 0 Sunday (default), 1 Monday.",
+            "summary": "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 머리글과 Home·End 이동이 함께 바뀝니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "markSunday",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints Sundays with the danger role, as Korean calendars do (default true).",
+            "summary": "일요일을 danger 역할로 칠합니다. 한국 달력 관례를 따르는 기본값이며, 끄면 일요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "isDateUnavailable",
+            "type": "(iso: string) => boolean",
+            "required": false,
+            "default": "—",
+            "description": "Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one.",
+            "summary": "min·max 안에서 고를 수 없는 날짜(휴일·마감일 등)를 앱이 알려 줍니다. 그런 날은 흐린 취소선으로 보이고, 방향키로는 지나갈 수 있지만 고를 수 없습니다. 기간은 이런 날을 가로지를 수 없어 그 너머를 고르면 거기서 새 기간을 시작합니다.",
+            "source": "packages/react/src/date-picker.tsx"
           }
         ],
         "events": [],
@@ -15334,7 +15514,7 @@
             "type": "{ start: string; end: string }",
             "required": true,
             "default": "—",
-            "description": "Start and end as YYYY-MM-DD; empty strings while unset.",
+            "description": "Start and end as YYYY-MM-DD; empty strings while unset. A reversed or out-of-bounds range is shown in order and inside the bounds.",
             "summary": "현재 기간입니다. 시작일·종료일을 YYYY-MM-DD 문자열로 담고, 비어 있으면 빈 문자열입니다.",
             "source": "packages/native/src/date-picker.tsx"
           },
@@ -15357,12 +15537,39 @@
             "source": "packages/native/src/date-picker.tsx"
           },
           {
+            "name": "presets",
+            "type": "{ label: string; value: { start: string; end: string } }[]",
+            "required": false,
+            "default": "—",
+            "description": "Ready-made ranges shown as chips above the days, such as \"최근 7일\".",
+            "summary": "날짜 위에 칩으로 보이는 미리 정한 기간입니다(예: 최근 7일). 누르면 초안 기간이 바뀌고 적용으로 확정합니다. 순서가 뒤집히거나 범위를 벗어난 값은 정리해서 씁니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "autoApply",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Commits as soon as the second day is picked, without Apply.",
+            "summary": "두 번째 날짜를 고르는 즉시 확정하고 닫습니다. 적용 버튼은 보이지 않습니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
             "name": "clearable",
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
             "description": "Shows a clear button while there is a value.",
             "summary": "값이 있을 때 달력 아이콘 앞에 지우기 버튼을 보입니다. 누르면 빈 문자열로 바꿉니다. 버튼 이름은 KjunProvider 문구(clearDate)를 따릅니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Shows the date without opening the calendar.",
+            "summary": "값을 보여 주기만 하고 달력을 열지 않습니다.",
             "source": "packages/native/src/date-picker.tsx"
           },
           {
@@ -15426,6 +15633,33 @@
             "default": "—",
             "description": "",
             "summary": "필드를 오류 상태로 표시합니다. 오류 설명과 검증 결과는 소비자가 별도로 제공합니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "weekStart",
+            "type": "0 | 1 | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "0",
+            "description": "The first column of the week: 0 Sunday (default), 1 Monday.",
+            "summary": "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 머리글과 Home·End 이동이 함께 바뀝니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "markSunday",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints Sundays with the danger role, as Korean calendars do (default true).",
+            "summary": "일요일을 danger 역할로 칠합니다. 한국 달력 관례를 따르는 기본값이며, 끄면 일요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "isDateUnavailable",
+            "type": "(iso: string) => boolean",
+            "required": false,
+            "default": "—",
+            "description": "Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one.",
+            "summary": "min·max 안에서 고를 수 없는 날짜(휴일·마감일 등)를 앱이 알려 줍니다. 그런 날은 흐린 취소선으로 보이고, 방향키로는 지나갈 수 있지만 고를 수 없습니다. 기간은 이런 날을 가로지를 수 없어 그 너머를 고르면 거기서 새 기간을 시작합니다.",
             "source": "packages/native/src/date-picker.tsx"
           }
         ],
@@ -16810,6 +17044,15 @@
             "source": "packages/vue3/src/select-control.tsx"
           },
           {
+            "name": "readOnly",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Shows the value without opening the list or clearing it.",
+            "summary": "값을 보여 주기만 하고 목록을 열거나 지우지 않습니다. 트리거는 초점을 받고 aria-readonly로 알립니다.",
+            "source": "packages/vue3/src/select-control.tsx"
+          },
+          {
             "name": "searchable",
             "type": "boolean",
             "required": false,
@@ -17272,6 +17515,15 @@
             "source": "packages/react/src/select-control.tsx"
           },
           {
+            "name": "readOnly",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Shows the value without opening the list or clearing it.",
+            "summary": "값을 보여 주기만 하고 목록을 열거나 지우지 않습니다. 트리거는 초점을 받고 aria-readonly로 알립니다.",
+            "source": "packages/react/src/select-control.tsx"
+          },
+          {
             "name": "searchable",
             "type": "boolean | undefined",
             "required": false,
@@ -17725,6 +17977,15 @@
             "default": "false",
             "description": "",
             "summary": "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
+            "source": "packages/native/src/select-control.tsx"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Shows the value without opening the list or clearing it.",
+            "summary": "값을 보여 주기만 하고 목록을 열거나 지우지 않습니다. 트리거는 초점을 받고 aria-readonly로 알립니다.",
             "source": "packages/native/src/select-control.tsx"
           },
           {
@@ -33783,6 +34044,44 @@
             "source": "packages/vue3/src/date-picker.tsx"
           },
           {
+            "name": "hourCycle",
+            "type": "12 | 24",
+            "required": false,
+            "default": "24",
+            "description": "24 (default) shows 00–23; 12 adds an AM/PM segment and shows 1–12. The value stays \"HH:mm\".",
+            "summary": "시계 방식입니다. 24는 00~23시, 12는 오전/오후 칸과 1~12시를 보입니다.",
+            "details": [
+              {
+                "label": "값 형태",
+                "text": "어느 쪽이든 값은 HH:mm(또는 HH:mm:ss) 24시간 문자열입니다."
+              },
+              {
+                "label": "칸 순서",
+                "text": "한국어·일본어·중국어는 오전/오후를 시 앞에, 그 밖의 언어는 뒤에 둡니다."
+              }
+            ],
+            "source": "packages/vue3/src/date-picker.tsx",
+            "example": "/components/time-picker#preview"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Shows the time without changing it.",
+            "summary": "시각을 보여 주기만 하고 바꾸지 않습니다. 칸은 초점을 받지만 목록을 열지 않고 지우기 버튼도 숨깁니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Submits the value with a form through a hidden input.",
+            "summary": "폼 제출용 숨은 input의 이름입니다. 비어 있으면 빈 문자열을 제출합니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
             "name": "block",
             "type": "boolean",
             "required": false,
@@ -33795,7 +34094,7 @@
         "events": [
           {
             "name": "update:modelValue",
-            "source": "packages/vue3/src/date-picker.tsx",
+            "source": "packages/vue3/src/time-picker.tsx",
             "type": "이벤트",
             "summary": "값 변경을 소비자에게 요청합니다.",
             "details": [
@@ -33820,7 +34119,7 @@
           },
           {
             "name": "change",
-            "source": "packages/vue3/src/date-picker.tsx",
+            "source": "packages/vue3/src/time-picker.tsx",
             "type": "이벤트",
             "summary": "변경 조작이 완료됐음을 알립니다.",
             "details": [
@@ -33978,6 +34277,44 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
+            "source": "packages/react/src/time-picker.tsx"
+          },
+          {
+            "name": "hourCycle",
+            "type": "12 | 24",
+            "required": false,
+            "default": "24",
+            "description": "24 (default) shows 00–23; 12 adds an AM/PM segment and shows 1–12. The value stays \"HH:mm\".",
+            "summary": "시계 방식입니다. 24는 00~23시, 12는 오전/오후 칸과 1~12시를 보입니다.",
+            "details": [
+              {
+                "label": "값 형태",
+                "text": "어느 쪽이든 값은 HH:mm(또는 HH:mm:ss) 24시간 문자열입니다."
+              },
+              {
+                "label": "칸 순서",
+                "text": "한국어·일본어·중국어는 오전/오후를 시 앞에, 그 밖의 언어는 뒤에 둡니다."
+              }
+            ],
+            "source": "packages/react/src/time-picker.tsx",
+            "example": "/components/time-picker#preview"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Shows the time without changing it.",
+            "summary": "시각을 보여 주기만 하고 바꾸지 않습니다. 칸은 초점을 받지만 목록을 열지 않고 지우기 버튼도 숨깁니다.",
+            "source": "packages/react/src/time-picker.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Submits the value with a form through a hidden input.",
+            "summary": "폼 제출용 숨은 input의 이름입니다. 비어 있으면 빈 문자열을 제출합니다.",
             "source": "packages/react/src/time-picker.tsx"
           },
           {
@@ -34181,6 +34518,35 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
+            "source": "packages/native/src/time-picker.tsx"
+          },
+          {
+            "name": "hourCycle",
+            "type": "12 | 24",
+            "required": false,
+            "default": "24",
+            "description": "24 (default) shows 00–23; 12 adds an AM/PM segment and shows 1–12. The value stays \"HH:mm\".",
+            "summary": "시계 방식입니다. 24는 00~23시, 12는 오전/오후 칸과 1~12시를 보입니다.",
+            "details": [
+              {
+                "label": "값 형태",
+                "text": "어느 쪽이든 값은 HH:mm(또는 HH:mm:ss) 24시간 문자열입니다."
+              },
+              {
+                "label": "칸 순서",
+                "text": "한국어·일본어·중국어는 오전/오후를 시 앞에, 그 밖의 언어는 뒤에 둡니다."
+              }
+            ],
+            "source": "packages/native/src/time-picker.tsx",
+            "example": "/components/time-picker#preview"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Shows the time without changing it.",
+            "summary": "시각을 보여 주기만 하고 바꾸지 않습니다. 칸은 초점을 받지만 목록을 열지 않고 지우기 버튼도 숨깁니다.",
             "source": "packages/native/src/time-picker.tsx"
           },
           {

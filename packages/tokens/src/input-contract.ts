@@ -93,8 +93,10 @@ export function formatTime(value: number, precision: TimePrecision) {
   return parts.slice(0, precision === "second" ? 3 : 2).map(n => String(n).padStart(2, "0")).join(":");
 }
 export function createTimeDomain({ precision = "minute", minuteStep = 1, secondStep = 1, min, max }: TimeDomainOptions = {}) {
-  const lower = min === undefined ? 0 : parseTime(min, precision);
-  const upper = max === undefined ? (precision === "second" ? 86399 : 86340) : parseTime(max, precision);
+  // Bounds may leave out the seconds ("09:00") at second precision; an upper bound then covers its whole minute.
+  const bound = (value: string, end: boolean) => parseTime(value, precision) ?? (precision === "second" ? (parseTime(value, "minute") ?? NaN) + (end ? 59 : 0) : NaN);
+  const lowerBound = min === undefined ? 0 : bound(min, false), upperBound = max === undefined ? (precision === "second" ? 86399 : 86340) : bound(max, true);
+  const lower = Number.isNaN(lowerBound) ? null : lowerBound, upper = Number.isNaN(upperBound) ? null : upperBound;
   const valid = ["minute", "second"].includes(precision) && [minuteStep, secondStep].every(n => Number.isInteger(n) && n >= 1 && n <= 59) && lower !== null && upper !== null && lower <= upper;
   const times: number[] = [];
   if (valid) for (let hour = 0; hour < 24; hour++) for (let minute = 0; minute < 60; minute += minuteStep) for (let second = 0; second < (precision === "second" ? 60 : 1); second += secondStep) {
@@ -102,16 +104,30 @@ export function createTimeDomain({ precision = "minute", minuteStep = 1, secondS
     if (time >= lower! && time <= upper!) times.push(time);
   }
   const part = (time: number, index: number) => index === 0 ? Math.floor(time / 3600) : index === 1 ? Math.floor(time / 60) % 60 : time % 60;
+  // Second precision holds up to 86,400 times, so the lists for each segment are built once per earlier-segment choice.
+  const accepted = new Set(times);
+  const prefix = (current: number | null, index: number) => current === null ? "*" : index + "|" + Array.from({ length: index }, (_, i) => part(current, i)).join(":");
+  const matches = new Map<string, number[]>(), choices = new Map<string, number[]>();
+  const matching = (current: number | null, index: number) => {
+    if (current === null || index === 0) return times;
+    const key = prefix(current, index);
+    let list = matches.get(key);
+    if (!list) matches.set(key, list = times.filter(time => Array.from({ length: index }, (_, i) => i).every(i => part(time, i) === part(current, i))));
+    return list;
+  };
   const options = (value: string | null, index: number) => {
     const current = value === null ? null : parseTime(value, precision);
-    return Array.from(new Set(times.filter(time => current === null || Array.from({ length: index }, (_, i) => i).every(i => part(time, i) === part(current, i))).map(time => part(time, index))));
+    const key = index + "/" + prefix(current, index);
+    let list = choices.get(key);
+    if (!list) choices.set(key, list = Array.from(new Set(matching(current, index).map(time => part(time, index)))));
+    return list;
   };
   const select = (value: string | null, index: number, selected: number) => {
     const current = value === null ? null : parseTime(value, precision);
-    const candidates = times.filter(time => part(time, index) === selected && (current === null || Array.from({ length: index }, (_, i) => i).every(i => part(time, i) === part(current, i))));
+    const candidates = matching(current, index).filter(time => part(time, index) === selected);
     if (!candidates.length) return value;
     const exact = current === null ? undefined : candidates.find(time => [0, 1, 2].every(i => i === index || part(time, i) === part(current, i)));
     return formatTime(exact ?? candidates[0], precision);
   };
-  return { valid: valid && times.length > 0, options, select, part, parse: (value: string) => parseTime(value, precision), accepts: (value: string | null) => value === null || times.includes(parseTime(value, precision) ?? -1) };
+  return { valid: valid && times.length > 0, options, select, part, parse: (value: string) => parseTime(value, precision), accepts: (value: string | null) => value === null || accepted.has(parseTime(value, precision) ?? -1) };
 }
