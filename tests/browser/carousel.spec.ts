@@ -86,7 +86,87 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(counted.getByText('2 / 4', { exact: true })).toBeVisible();
     });
 
+    test('dots on a card rail mark the places it can stop, and the last one stays put', async ({ page }) => {
+      const dots = section(page, 'rail').getByRole('button', { name: /번 슬라이드/ });
+      await expect(dots).toHaveCount(3);
+      await dots.nth(2).click();
+      await expect.poll(async () => (await scroller(page, 'rail')).left).toBeGreaterThan(0);
+      await page.waitForTimeout(400);
+      await expect(page.getByTestId('rail-changes')).toHaveText('[2]');
+      if (web) await expect(dots.nth(2)).toHaveAttribute('aria-current', 'true');
+    });
+
+    test('a carousel drawn while hidden opens on its starting slide', async ({ page }) => {
+      await page.getByRole('button', { name: 'Reveal' }).click();
+      await expect.poll(async () => (await scroller(page, 'hidden')).left).toBe(2 * (await scroller(page, 'hidden')).width + 2 * 12);
+    });
+
+    test('snapAlign center keeps the current slide centred with a neighbour on each side', async ({ page }) => {
+      const { width } = await scroller(page, 'centered');
+      const view = await section(page, 'centered').locator('*').evaluateAll(nodes =>
+        Math.round((nodes.find(node => ['auto', 'scroll'].includes(getComputedStyle(node).overflowX)) as HTMLElement).getBoundingClientRect().left));
+      const first = await slideBox(page, 'centered', 'Alpha');
+      expect(first.width).toBe(width - 2 * (24 + 12));
+      expect(first.left - view).toBe(24 + 12);
+      await dot(page, 'centered', 2).click();
+      await expect.poll(async () => (await slideBox(page, 'centered', 'Bravo')).left - view).toBe(24 + 12);
+    });
+
+    test('bleed reaches into the page gutter while the first slide lines up with the content', async ({ page }) => {
+      const box = (await section(page, 'bled').boundingBox())!;
+      const view = await section(page, 'bled').locator('*').evaluateAll(nodes => {
+        const rect = (nodes.find(node => ['auto', 'scroll'].includes(getComputedStyle(node).overflowX)) as HTMLElement).getBoundingClientRect();
+        return { left: Math.round(rect.left), right: Math.round(rect.right) };
+      });
+      expect(view.left).toBe(Math.round(box.x));
+      expect(view.right).toBe(Math.round(box.x + box.width));
+      expect((await slideBox(page, 'bled', 'Alpha')).left).toBe(Math.round(box.x) + 16);
+    });
+
+    test('overlay indicators sit on the slides', async ({ page }) => {
+      const slides = await section(page, 'overlay').getByText('Alpha', { exact: true }).boundingBox();
+      const count = await section(page, 'overlay').getByText('1 / 4', { exact: true }).boundingBox();
+      expect(count!.y + count!.height).toBeLessThanOrEqual(slides!.y + slides!.height);
+      expect(count!.y).toBeGreaterThan(slides!.y);
+      const dotsBox = await dot(page, 'overlay-dots', 1).boundingBox();
+      const dotsSlide = await section(page, 'overlay-dots').getByText('Alpha', { exact: true }).boundingBox();
+      expect(dotsBox!.y + dotsBox!.height).toBeLessThanOrEqual(dotsSlide!.y + dotsSlide!.height);
+    });
+
     if (web) {
+      test('slides out of view are inert, so Tab does not jump back to them', async ({ page }) => {
+        const form = section(page, 'form');
+        const input = form.getByRole('textbox', { name: 'Name' });
+        expect(await input.evaluate(el => !!el.closest('[inert]'))).toBe(false);
+        await dot(page, 'form', 2).click();
+        await expect.poll(() => input.evaluate(el => !!el.closest('[inert]'))).toBe(true);
+      });
+
+      test('a header button that reaches an end hands focus to the other one', async ({ page }) => {
+        const header = section(page, 'titled').locator('.kjun-carousel-header');
+        const next = header.getByRole('button', { name: '다음 슬라이드' });
+        await next.focus();
+        await page.keyboard.press('Enter');
+        await page.keyboard.press('Enter');
+        await page.keyboard.press('Enter');
+        await expect(next).toBeDisabled();
+        await expect(header.getByRole('button', { name: '이전 슬라이드' })).toBeFocused();
+      });
+
+      test('a cancelled drag returns to where it started', async ({ page }) => {
+        const viewport = section(page, 'banner').locator('.kjun-carousel-viewport');
+        const box = (await viewport.boundingBox())!;
+        await viewport.evaluate((el, { x, y }) => {
+          const fire = (type: string, clientX: number) => el.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: 7, pointerType: 'mouse', button: 0, clientX, clientY: y }));
+          fire('pointerdown', x);
+          fire('pointermove', x - 60);
+          fire('pointermove', x - 200);
+          fire('pointercancel', 0);
+        }, { x: box.x + box.width / 2, y: box.y + box.height / 2 });
+        await expect.poll(async () => (await scroller(page, 'banner')).left).toBe(0);
+        await expect(page.getByTestId('changes')).toHaveText('[]');
+      });
+
       test('slides are named groups inside a carousel region', async ({ page }) => {
         const region = page.getByRole('region', { name: 'Banner' });
         await expect(region).toHaveAttribute('aria-roledescription', '캐러셀');

@@ -489,7 +489,9 @@
       "--text-inverse"
     ],
     "implementationFiles": [
-      "packages/native/src/button.tsx"
+      "packages/tokens/src/carousel.css",
+      "packages/native/src/button.tsx",
+      "packages/native/src/carousel.tsx"
     ]
   },
   {
@@ -732,8 +734,10 @@
       "--overlay"
     ],
     "implementationFiles": [
+      "packages/tokens/src/carousel.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
+      "packages/native/src/carousel.tsx",
       "packages/native/src/drawer.tsx",
       "packages/native/src/modal.tsx"
     ]

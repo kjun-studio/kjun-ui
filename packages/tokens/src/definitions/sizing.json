@@ -195,7 +195,8 @@
       "controlInset": { "$ref": "dimension.value8" },
       "focusRadius": { "$ref": "radius.radius12" },
       "headerGap": { "$ref": "dimension.value12" },
-      "headerControlsGap": { "$ref": "dimension.value8" }
+      "headerControlsGap": { "$ref": "dimension.value8" },
+      "overlayPaddingX": { "$ref": "dimension.value8" }
     },
     "slider": {
       "minimumWidth": 100

@@ -30527,6 +30527,33 @@
             "description": "A mouse can drag the slides; a drag past a fifth of the view moves one slide. A mouse wheel does not move a carousel.",
             "summary": "마우스로 슬라이드를 끌어 넘깁니다. 기본값 true이며 화면 폭의 1/5보다 길게 끌면 한 장 넘어가고, 짧으면 제자리로 돌아갑니다. 입력창 안에서 시작한 드래그는 글자 선택으로 남습니다. 마우스 휠로는 넘어가지 않습니다. Native에는 없습니다.",
             "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
+            "name": "snapAlign",
+            "type": "CarouselSnapAlign",
+            "required": false,
+            "default": "\"start\"",
+            "description": "start lines each slide up with the start edge; center keeps the current slide centred (with peek, a neighbour shows on each side).",
+            "summary": "슬라이드가 멈추는 기준입니다. start(기본)는 시작 가장자리, center는 가운데입니다. slideSize=\"peek\"와 함께 쓰면 현재 슬라이드를 가운데 두고 양옆 슬라이드가 24px씩 보입니다.",
+            "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
+            "name": "bleed",
+            "type": "CarouselBleed",
+            "required": false,
+            "default": "\"none\"",
+            "description": "Reaches past the page's side padding by this inset (12, 16 or 24) while the first slide lines up with the content.",
+            "summary": "화면 여백 밖까지 슬라이드를 펼칩니다. none(기본)·sm·md·lg = 0·12·16·24px만큼 양옆으로 넓어지고, 첫 슬라이드는 원래 콘텐츠 시작선에 맞춰 멈춥니다. 부모의 좌우 여백과 같은 값을 고르세요.",
+            "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
+            "name": "indicatorPlacement",
+            "type": "CarouselIndicatorPlacement",
+            "required": false,
+            "default": "\"below\"",
+            "description": "below: under the slides; overlay: on the slides, in a scrim pill that stays legible over images.",
+            "summary": "위치 표시를 놓는 곳입니다. below(기본)는 슬라이드 아래, overlay는 슬라이드 위에 반투명 바탕(overlay 색 역할)의 둥근 띠로 겹칩니다. 점은 아래 가운데, 숫자는 아래 끝에 놓여 사진 위에서도 읽힙니다.",
+            "source": "packages/vue3/src/carousel.tsx"
           }
         ],
         "events": [
@@ -30714,6 +30741,33 @@
             "source": "packages/react/src/carousel.tsx"
           },
           {
+            "name": "snapAlign",
+            "type": "CarouselSnapAlign | undefined",
+            "required": false,
+            "default": "\"start\"",
+            "description": "start lines each slide up with the start edge; center keeps the current slide centred (with peek, a neighbour shows on each side).",
+            "summary": "슬라이드가 멈추는 기준입니다. start(기본)는 시작 가장자리, center는 가운데입니다. slideSize=\"peek\"와 함께 쓰면 현재 슬라이드를 가운데 두고 양옆 슬라이드가 24px씩 보입니다.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "bleed",
+            "type": "CarouselBleed | undefined",
+            "required": false,
+            "default": "\"none\"",
+            "description": "Reaches past the page's side padding by this inset (12, 16 or 24) while the first slide lines up with the content.",
+            "summary": "화면 여백 밖까지 슬라이드를 펼칩니다. none(기본)·sm·md·lg = 0·12·16·24px만큼 양옆으로 넓어지고, 첫 슬라이드는 원래 콘텐츠 시작선에 맞춰 멈춥니다. 부모의 좌우 여백과 같은 값을 고르세요.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "indicatorPlacement",
+            "type": "CarouselIndicatorPlacement | undefined",
+            "required": false,
+            "default": "\"below\"",
+            "description": "below: under the slides; overlay: on the slides, in a scrim pill that stays legible over images.",
+            "summary": "위치 표시를 놓는 곳입니다. below(기본)는 슬라이드 아래, overlay는 슬라이드 위에 반투명 바탕(overlay 색 역할)의 둥근 띠로 겹칩니다. 점은 아래 가운데, 숫자는 아래 끝에 놓여 사진 위에서도 읽힙니다.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
             "name": "mouseDrag",
             "type": "boolean | undefined",
             "required": false,
@@ -30869,6 +30923,33 @@
             "default": "true",
             "description": "Dots under the slides (true or \"dots\"), the position as \"3 / 24\" text (\"count\") for many slides, or none (false).\nScreen readers meet them as one adjustable control that swipes up and down through the slides.",
             "summary": "슬라이드 아래 표시입니다. true 또는 \"dots\"는 표시 점, \"count\"는 \"3 / 24\" 같은 숫자 표시(슬라이드가 많을 때), false는 없음입니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다. Native 스크린리더에는 하나의 조절 컨트롤로 보여, 위·아래로 쓸어 슬라이드를 옮깁니다.",
+            "source": "packages/native/src/carousel.tsx"
+          },
+          {
+            "name": "snapAlign",
+            "type": "CarouselSnapAlign | undefined",
+            "required": false,
+            "default": "\"start\"",
+            "description": "start lines each slide up with the start edge; center keeps the current slide centred (with peek, a neighbour shows on each side).",
+            "summary": "슬라이드가 멈추는 기준입니다. start(기본)는 시작 가장자리, center는 가운데입니다. slideSize=\"peek\"와 함께 쓰면 현재 슬라이드를 가운데 두고 양옆 슬라이드가 24px씩 보입니다.",
+            "source": "packages/native/src/carousel.tsx"
+          },
+          {
+            "name": "bleed",
+            "type": "CarouselBleed | undefined",
+            "required": false,
+            "default": "\"none\"",
+            "description": "Reaches past the screen's side padding by this inset (12, 16 or 24) while the first slide lines up with the content.",
+            "summary": "화면 여백 밖까지 슬라이드를 펼칩니다. none(기본)·sm·md·lg = 0·12·16·24px만큼 양옆으로 넓어지고, 첫 슬라이드는 원래 콘텐츠 시작선에 맞춰 멈춥니다. 부모의 좌우 여백과 같은 값을 고르세요.",
+            "source": "packages/native/src/carousel.tsx"
+          },
+          {
+            "name": "indicatorPlacement",
+            "type": "CarouselIndicatorPlacement | undefined",
+            "required": false,
+            "default": "\"below\"",
+            "description": "below: under the slides; overlay: on the slides, in a scrim pill that stays legible over images.",
+            "summary": "위치 표시를 놓는 곳입니다. below(기본)는 슬라이드 아래, overlay는 슬라이드 위에 반투명 바탕(overlay 색 역할)의 둥근 띠로 겹칩니다. 점은 아래 가운데, 숫자는 아래 끝에 놓여 사진 위에서도 읽힙니다.",
             "source": "packages/native/src/carousel.tsx"
           },
           {

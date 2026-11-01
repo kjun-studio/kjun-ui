@@ -1,8 +1,8 @@
 import { useKjunMessages } from "./runtime/messages";
 import { Comment, Fragment, Text, computed, defineComponent, onBeforeUnmount, onMounted, onUpdated, ref, watch,
   type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
-import { carouselKey, carouselTarget, clampSlide, indicatorMode, warnCarouselSetup,
-  type CarouselGap, type CarouselIndicators, type CarouselSlideSize, type CarouselTitleTag } from "../../../shared/package-runtime/carousel";
+import { carouselKey, carouselTarget, clampSlide, indicatorMode, stepFocus, stopDots, warnCarouselSetup, type CarouselBleed,
+  type CarouselGap, type CarouselIndicatorPlacement, type CarouselIndicators, type CarouselSlideSize, type CarouselSnapAlign, type CarouselTitleTag } from "../../../shared/package-runtime/carousel";
 import { createCarouselScroller, type CarouselScroller } from "../../../shared/package-runtime/carousel-scroll";
 import { KjunButton } from "./button";
 import { useKjunId } from "./input";
@@ -36,6 +36,12 @@ const kjunCarouselProps = {
   controls: { type: Boolean, default: true },
   /** A mouse can drag the slides; a drag past a fifth of the view moves one slide. A mouse wheel does not move a carousel. */
   mouseDrag: { type: Boolean, default: true },
+  /** start lines each slide up with the start edge; center keeps the current slide centred (with peek, a neighbour shows on each side). */
+  snapAlign: { type: String as PropType<CarouselSnapAlign>, default: "start" },
+  /** Reaches past the page's side padding by this inset (12, 16 or 24) while the first slide lines up with the content. */
+  bleed: { type: String as PropType<CarouselBleed>, default: "none" },
+  /** below: under the slides; overlay: on the slides, in a scrim pill that stays legible over images. */
+  indicatorPlacement: { type: String as PropType<CarouselIndicatorPlacement>, default: "below" },
 } as const;
 export type KjunCarouselProps = ExtractPublicPropTypes<typeof kjunCarouselProps>;
 /** A row of slides moved by swipe, drag, keyboard, buttons or dots. It never moves on its own. Each default-slot child is one slide. */
@@ -47,7 +53,8 @@ export const KjunCarousel = defineComponent({
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
     const reduced = useReducedMotion();
-    const viewport = ref<HTMLElement | null>(null);
+    const viewport = ref<HTMLElement | null>(null), root = ref<HTMLElement | null>(null);
+    const stops = ref<number[]>();
     // The slide count the last render drew; kept in sync after rendering, never during it.
     const count = ref(0);
     let rendered = 0;
@@ -70,17 +77,19 @@ export const KjunCarousel = defineComponent({
       emit("update:index", next);
     };
     const go = (target: number) => { scroller?.scrollTo(target, !reduced.value); change(target); };
-    // A side button disappears at the end it leads to; keep focus in the carousel instead of dropping it to the page.
+    // At an end a side button disappears and a header button turns off; focus stays in the carousel instead of dropping to the page.
     const step = (target: number) => {
-      const leaving = !props.title && (target === 0 || target === count.value - 1);
+      const next = stepFocus(target, count.value, !!props.title);
       go(target);
-      if (leaving) viewport.value?.focus({ preventScroll: true });
+      // After the render that enables the other header button.
+      if (next) requestAnimationFrame(() => (next === "viewport" ? viewport.value
+        : root.value?.querySelector<HTMLElement>(`.kjun-carousel-header-controls [data-direction="${next}"]`))?.focus({ preventScroll: true }));
     };
 
     // Follow a controlled index, and keep a removed slide from leaving the view past the end.
     watch([current, count], () => {
       settled = current.value;
-      if (scroller && scroller.nearest() !== current.value) scroller.scrollTo(current.value, !reduced.value);
+      if (scroller && scroller.heading() !== current.value && scroller.nearest() !== current.value) scroller.scrollTo(current.value, !reduced.value);
     }, { flush: "post" });
 
     const syncCount = () => { if (count.value !== rendered) count.value = rendered; };
@@ -89,13 +98,15 @@ export const KjunCarousel = defineComponent({
       scroller = createCarouselScroller(viewport.value!, {
         onSettle: change,
         onDragEnd: go,
+        onStops: next => { stops.value = next; },
         current: () => current.value,
         mouseDrag: () => props.mouseDrag,
+        align: () => props.snapAlign,
       });
       settled = current.value;
       if (current.value) scroller.scrollTo(current.value, false);
     });
-    onUpdated(syncCount);
+    onUpdated(() => { syncCount(); scroller?.refresh(); });
     onBeforeUnmount(() => scroller?.destroy());
 
     const keyDown = (event: KeyboardEvent) => {
@@ -117,11 +128,20 @@ export const KjunCarousel = defineComponent({
       };
       const buttons = props.controls && total > 1;
       const Title = props.titleAs;
+      const marker = total < 2 ? null : marks.value === "dots" ? (
+        <div class="kjun-carousel-indicators" role="group" aria-label={m.value.slides}>
+          {stopDots(stops.value, total, index).map((dot, i) => (
+            <button key={i} type="button" class="kjun-carousel-indicator" aria-label={m.value.goToSlide(dot.target + 1)}
+              aria-current={dot.current ? "true" : undefined} onClick={() => go(dot.target)} />
+          ))}
+        </div>
+      ) : marks.value === "count" ? <div class="kjun-carousel-count" aria-hidden="true">{index + 1} / {total}</div> : null;
       return (
-        <section class="kjun-carousel" aria-roledescription={m.value.carousel} aria-label={props.ariaLabel}
+        <section ref={root} class="kjun-carousel" aria-roledescription={m.value.carousel} aria-label={props.ariaLabel}
           aria-labelledby={props.ariaLabel || !props.title ? undefined : titleId}
           data-size={props.slideSize} data-gap={props.gap} data-controls={buttons ? (props.title ? "header" : "sides") : undefined}
-          data-mouse-drag={props.mouseDrag && total > 1 ? "" : undefined}>
+          data-mouse-drag={props.mouseDrag && total > 1 ? "" : undefined} data-align={props.snapAlign}
+          data-bleed={props.bleed === "none" ? undefined : props.bleed} data-placement={props.indicatorPlacement}>
           {props.title && (
             <div class="kjun-carousel-header">
               <Title id={titleId} class="kjun-carousel-title kjun-type-section-title">{props.title}</Title>
@@ -136,16 +156,9 @@ export const KjunCarousel = defineComponent({
               ))}
             </div>
             {buttons && !props.title && <>{index > 0 && button("previous")}{index < total - 1 && button("next")}</>}
+            {props.indicatorPlacement === "overlay" && marker}
           </div>
-          {marks.value === "dots" && total > 1 && (
-            <div class="kjun-carousel-indicators" role="group" aria-label={m.value.slides}>
-              {slides.map((_, i) => (
-                <button key={i} type="button" class="kjun-carousel-indicator" aria-label={m.value.goToSlide(i + 1)}
-                  aria-current={i === index ? "true" : undefined} onClick={() => go(i)} />
-              ))}
-            </div>
-          )}
-          {marks.value === "count" && total > 1 && <div class="kjun-carousel-count" aria-hidden="true">{index + 1} / {total}</div>}
+          {props.indicatorPlacement === "below" && marker}
           <div class="kjun-sr-only" aria-live="polite">{moved.value ? m.value.slideOf(index + 1, total) : ""}</div>
         </section>
       );

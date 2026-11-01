@@ -2572,6 +2572,27 @@
         "required": false,
         "default": "true",
         "description": "A mouse can drag the slides; a drag past a fifth of the view moves one slide. A mouse wheel does not move a carousel."
+      },
+      {
+        "name": "snapAlign",
+        "type": "CarouselSnapAlign",
+        "required": false,
+        "default": "\"start\"",
+        "description": "start lines each slide up with the start edge; center keeps the current slide centred (with peek, a neighbour shows on each side)."
+      },
+      {
+        "name": "bleed",
+        "type": "CarouselBleed",
+        "required": false,
+        "default": "\"none\"",
+        "description": "Reaches past the page's side padding by this inset (12, 16 or 24) while the first slide lines up with the content."
+      },
+      {
+        "name": "indicatorPlacement",
+        "type": "CarouselIndicatorPlacement",
+        "required": false,
+        "default": "\"below\"",
+        "description": "below: under the slides; overlay: on the slides, in a scrim pill that stays legible over images."
       }
     ],
     "events": [
@@ -2666,6 +2687,27 @@
         "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists."
       },
       {
+        "name": "snapAlign",
+        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselSnapAlign | undefined",
+        "required": false,
+        "default": "—",
+        "description": "start lines each slide up with the start edge; center keeps the current slide centred (with peek, a neighbour shows on each side)."
+      },
+      {
+        "name": "bleed",
+        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselBleed | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Reaches past the page's side padding by this inset (12, 16 or 24) while the first slide lines up with the content."
+      },
+      {
+        "name": "indicatorPlacement",
+        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselIndicatorPlacement | undefined",
+        "required": false,
+        "default": "—",
+        "description": "below: under the slides; overlay: on the slides, in a scrim pill that stays legible over images."
+      },
+      {
         "name": "mouseDrag",
         "type": "boolean | undefined",
         "required": false,
@@ -2757,6 +2799,27 @@
         "required": false,
         "default": "—",
         "description": "Dots under the slides (true or \"dots\"), the position as \"3 / 24\" text (\"count\") for many slides, or none (false).\nScreen readers meet them as one adjustable control that swipes up and down through the slides."
+      },
+      {
+        "name": "snapAlign",
+        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselSnapAlign | undefined",
+        "required": false,
+        "default": "—",
+        "description": "start lines each slide up with the start edge; center keeps the current slide centred (with peek, a neighbour shows on each side)."
+      },
+      {
+        "name": "bleed",
+        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselBleed | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Reaches past the screen's side padding by this inset (12, 16 or 24) while the first slide lines up with the content."
+      },
+      {
+        "name": "indicatorPlacement",
+        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselIndicatorPlacement | undefined",
+        "required": false,
+        "default": "—",
+        "description": "below: under the slides; overlay: on the slides, in a scrim pill that stays legible over images."
       },
       {
         "name": "controls",

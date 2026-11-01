@@ -34,7 +34,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
     case "KjunCarousel": {
       const cards = [["이번 주 추천", "새로 나온 템플릿을 확인하세요"], ["팀 공간", "동료와 문서를 함께 정리합니다"], ["알림 정리", "중요한 소식만 받아 보세요"], ["보관함", "지난 작업을 다시 찾습니다"]].map(([title, subtitle], i) =>
         h("KjunCard", { title, subtitle, border: true, media: h("KjunImage", { src: sampleImage(i), decorative: true, aspectRatio: 2 }) }));
-      return h("Stack", {}, [h(name, { ...(settings.title ? { title: "추천 콘텐츠" } : { ariaLabel: "추천 콘텐츠" }), slideSize: settings.slideSize, gap: settings.gap, indicators: settings.indicators === "none" ? false : settings.indicators, controls: settings.controls, ...(platform === "native" ? {} : { mouseDrag: settings.mouseDrag }),
+      return h("Stack", {}, [h(name, { ...(settings.title ? { title: "추천 콘텐츠" } : { ariaLabel: "추천 콘텐츠" }), slideSize: settings.slideSize, gap: settings.gap, indicators: settings.indicators === "none" ? false : settings.indicators, controls: settings.controls, snapAlign: settings.snapAlign, bleed: settings.bleed, indicatorPlacement: settings.indicatorPlacement, ...(platform === "native" ? {} : { mouseDrag: settings.mouseDrag }),
         index: get("slide", 0), onIndexChange: change("slide") }, settings.slideSize === "auto" ? cards.map(card => h("Box", { width: 240 }, card)) : cards),
         h("Text", {}, `현재 슬라이드: ${get("slide", 0) + 1}`)]);
     }

@@ -1,6 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { carouselKey, carouselTarget, clampSlide, indicatorMode, warnCarouselSetup,
-  type CarouselGap, type CarouselIndicators, type CarouselSlideSize, type CarouselTitleTag } from "../../../shared/package-runtime/carousel";
+import { carouselKey, carouselTarget, clampSlide, indicatorMode, stepFocus, stopDots, warnCarouselSetup, type CarouselBleed,
+  type CarouselGap, type CarouselIndicatorPlacement, type CarouselIndicators, type CarouselSlideSize, type CarouselSnapAlign, type CarouselTitleTag } from "../../../shared/package-runtime/carousel";
 import { createCarouselScroller, type CarouselScroller } from "../../../shared/package-runtime/carousel-scroll";
 import { Children, isValidElement, useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
 import { KjunButton } from "./button";
@@ -29,6 +29,12 @@ export interface KjunCarouselProps {
    * the slide edges while the pointer or focus is inside, and only toward a slide that exists.
    */
   controls?: boolean;
+  /** start lines each slide up with the start edge; center keeps the current slide centred (with peek, a neighbour shows on each side). */
+  snapAlign?: CarouselSnapAlign;
+  /** Reaches past the page's side padding by this inset (12, 16 or 24) while the first slide lines up with the content. */
+  bleed?: CarouselBleed;
+  /** below: under the slides; overlay: on the slides, in a scrim pill that stays legible over images. */
+  indicatorPlacement?: CarouselIndicatorPlacement;
   /** A mouse can drag the slides; a drag past a fifth of the view moves one slide. A mouse wheel does not move a carousel. */
   mouseDrag?: boolean;
   className?: string;
@@ -38,7 +44,7 @@ export interface KjunCarouselProps {
 
 /** A row of slides moved by swipe, drag, keyboard, buttons or dots. It never moves on its own. */
 export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", children, slideSize = "full", gap = "md", index, defaultIndex = 0,
-  onIndexChange, indicators = true, controls = true, mouseDrag = true, className, style, id }: KjunCarouselProps) {
+  onIndexChange, indicators = true, controls = true, mouseDrag = true, snapAlign = "start", bleed = "none", indicatorPlacement = "below", className, style, id }: KjunCarouselProps) {
   const m = useKjunMessages();
   const reduced = useReducedMotion();
   const slides = Children.toArray(children);
@@ -52,6 +58,8 @@ export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", children
   const settled = useRef(current);
   const titleId = "kjun-carousel-" + useId().replace(/:/g, "");
   const marks = indicatorMode(indicators);
+  const root = useRef<HTMLElement>(null);
+  const [stops, setStops] = useState<number[]>();
   useEffect(() => warnCarouselSetup({ controls, dots: marks === "dots", mouseDrag, named: !!(ariaLabel || title) }), [controls, marks, mouseDrag, ariaLabel, title]);
 
   const change = (next: number) => {
@@ -62,32 +70,39 @@ export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", children
     onIndexChange?.(next);
   };
   const go = (target: number) => { scroller.current?.scrollTo(target, !reduced); change(target); };
-  // A side button disappears at the end it leads to; keep focus in the carousel instead of dropping it to the page.
+  // At an end a side button disappears and a header button turns off; focus stays in the carousel instead of dropping to the page.
   const step = (target: number) => {
-    const leaving = !title && (target === 0 || target === count - 1);
+    const next = stepFocus(target, count, !!title);
     go(target);
-    if (leaving) viewport.current?.focus({ preventScroll: true });
+    // After the render that enables the other header button.
+    if (next) requestAnimationFrame(() => (next === "viewport" ? viewport.current
+      : root.current?.querySelector<HTMLElement>(`.kjun-carousel-header-controls [data-direction="${next}"]`))?.focus({ preventScroll: true }));
   };
 
   // The scroller lives as long as the viewport and reads the latest render through this ref.
-  const latest = useRef({ change, go, current, mouseDrag });
-  latest.current = { change, go, current, mouseDrag };
+  const latest = useRef({ change, go, current, mouseDrag, snapAlign });
+  latest.current = { change, go, current, mouseDrag, snapAlign };
   useEffect(() => {
     const instance = createCarouselScroller(viewport.current!, {
       onSettle: next => latest.current.change(next),
       onDragEnd: target => latest.current.go(target),
+      onStops: next => setStops(next),
       current: () => latest.current.current,
       mouseDrag: () => latest.current.mouseDrag,
+      align: () => latest.current.snapAlign,
     });
     scroller.current = instance;
     return () => { instance.destroy(); scroller.current = undefined; };
   }, []);
 
+  useEffect(() => scroller.current?.refresh());
+
   // Follow a controlled index, and keep a removed slide from leaving the view past the end. The first slide shown jumps.
   const mounted = useRef(false);
   useEffect(() => {
     settled.current = current;
-    if (scroller.current && scroller.current.nearest() !== current) scroller.current.scrollTo(current, mounted.current && !reduced);
+    const instance = scroller.current;
+    if (instance && instance.heading() !== current && instance.nearest() !== current) instance.scrollTo(current, mounted.current && !reduced);
     mounted.current = true;
   }, [current, count]);
 
@@ -105,12 +120,21 @@ export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", children
       disabled={target < 0 || target >= count} onClick={() => step(target)} />;
   };
   const buttons = controls && count > 1;
+  const marker = count < 2 ? null : marks === "dots" ? (
+    <div className="kjun-carousel-indicators" role="group" aria-label={m.slides}>
+      {stopDots(stops, count, current).map((dot, i) => (
+        <button key={i} type="button" className="kjun-carousel-indicator" aria-label={m.goToSlide(dot.target + 1)}
+          aria-current={dot.current ? "true" : undefined} onClick={() => go(dot.target)} />
+      ))}
+    </div>
+  ) : marks === "count" ? <div className="kjun-carousel-count" aria-hidden="true">{current + 1} / {count}</div> : null;
 
   return (
-    <section id={id} className={className ? `kjun-carousel ${className}` : "kjun-carousel"} style={style}
+    <section ref={root} id={id} className={className ? `kjun-carousel ${className}` : "kjun-carousel"} style={style}
       aria-roledescription={m.carousel} aria-label={ariaLabel} aria-labelledby={ariaLabel || !title ? undefined : titleId}
       data-size={slideSize} data-gap={gap} data-controls={buttons ? (title ? "header" : "sides") : undefined}
-      data-mouse-drag={mouseDrag && count > 1 ? "" : undefined}>
+      data-mouse-drag={mouseDrag && count > 1 ? "" : undefined} data-align={snapAlign} data-bleed={bleed === "none" ? undefined : bleed}
+      data-placement={indicatorPlacement}>
       {title && (
         <div className="kjun-carousel-header">
           <Title id={titleId} className="kjun-carousel-title kjun-type-section-title">{title}</Title>
@@ -125,16 +149,9 @@ export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", children
           ))}
         </div>
         {buttons && !title && <>{current > 0 && button("previous")}{current < count - 1 && button("next")}</>}
+        {indicatorPlacement === "overlay" && marker}
       </div>
-      {marks === "dots" && count > 1 && (
-        <div className="kjun-carousel-indicators" role="group" aria-label={m.slides}>
-          {slides.map((_, i) => (
-            <button key={i} type="button" className="kjun-carousel-indicator" aria-label={m.goToSlide(i + 1)}
-              aria-current={i === current ? "true" : undefined} onClick={() => go(i)} />
-          ))}
-        </div>
-      )}
-      {marks === "count" && count > 1 && <div className="kjun-carousel-count" aria-hidden="true">{current + 1} / {count}</div>}
+      {indicatorPlacement === "below" && marker}
       <div className="kjun-sr-only" aria-live="polite">{moved ? m.slideOf(current + 1, count) : ""}</div>
     </section>
   );

@@ -56,3 +56,27 @@ test('dragTarget moves one slide once a drag passes a fifth of the view, and set
   assert.equal(dragTarget({ start: 0, nearest: 2, distance: -650, width: 300, count: 4 }), 2);
   assert.equal(dragTarget({ start: 3, nearest: 3, distance: -90, width: 300, count: 4 }), 3);
 });
+
+test('settleSlide keeps the current slide when it already sits at the settled position', async () => {
+  const { settleSlide } = await import('../shared/package-runtime/carousel.ts');
+  // Narrow cards: slides 2 and 3 both stop at the end of the range.
+  assert.equal(settleSlide([0, 212, 268, 268], 268, 268, 2), 2);
+  assert.equal(settleSlide([0, 212, 268, 268], 268, 268, 0), 3);
+  assert.equal(settleSlide([0, 212, 268, 268], 212, 268, 3), 1);
+});
+
+test('slideStops numbers the distinct places the slides can stop', async () => {
+  const { slideStops } = await import('../shared/package-runtime/carousel.ts');
+  assert.deepEqual(slideStops([0, 212, 268, 268]), [0, 1, 2, 2]);
+  assert.deepEqual(slideStops([0, 312, 624, 912]), [0, 1, 2, 3]);
+  assert.deepEqual(slideStops([0, 0.5, 300]), [0, 0, 1]);
+});
+
+test('stepFocus keeps focus in the carousel when a button reaches an end', async () => {
+  const { stepFocus } = await import('../shared/package-runtime/carousel.ts');
+  assert.equal(stepFocus(3, 4, false), 'viewport');
+  assert.equal(stepFocus(0, 4, false), 'viewport');
+  assert.equal(stepFocus(3, 4, true), 'previous');
+  assert.equal(stepFocus(0, 4, true), 'next');
+  assert.equal(stepFocus(2, 4, true), undefined);
+});

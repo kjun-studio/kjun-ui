@@ -6,6 +6,8 @@ export function CarouselCases({ K, native = false, providerProps = {} }: { K: an
   const [index, setIndex] = useState(0);
   const [controlled, setControlled] = useState(carouselSlides);
   const [notes, setNotes] = useState(['Bravo', 'Charlie']);
+  const [railChanges, setRailChanges] = useState<number[]>([]);
+  const [revealed, setRevealed] = useState(false);
   const press = (action: () => void) => ({ [native ? 'onPress' : 'onClick']: action });
   const slide = (label: string, width?: number) => native
     ? <K.KjunText key={label} style={{ height: 120, width }}>{label}</K.KjunText>
@@ -25,6 +27,14 @@ export function CarouselCases({ K, native = false, providerProps = {} }: { K: an
     <div data-testid="auto"><K.KjunCarousel ariaLabel="Auto" slideSize="auto" indicators={false}>{carouselSlides.map(label => slide(label, 200))}</K.KjunCarousel></div>
     <div data-testid="titled"><K.KjunCarousel title="추천 상품" titleAs="h3" slideSize="auto" indicators={false}>{carouselSlides.map(label => slide(label, 200))}</K.KjunCarousel></div>
     <div data-testid="counted"><K.KjunCarousel ariaLabel="Counted" indicators="count">{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
+    <div data-testid="rail"><K.KjunCarousel ariaLabel="Rail" slideSize="auto" onIndexChange={(i: number) => setRailChanges(old => [...old, i])}>{carouselSlides.map(label => slide(label, 200))}</K.KjunCarousel></div>
+    <output data-testid="rail-changes">{JSON.stringify(railChanges)}</output>
+    <div data-testid="hidden" style={{ display: revealed ? 'flex' : 'none', flexDirection: 'column' }}><K.KjunCarousel ariaLabel="Hidden" defaultIndex={2}>{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
+    <K.KjunButton variant="secondary" {...press(() => setRevealed(true))}>Reveal</K.KjunButton>
+    <div data-testid="centered"><K.KjunCarousel ariaLabel="Centered" slideSize="peek" snapAlign="center">{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
+    <div data-testid="bled" style={{ paddingLeft: 16, paddingRight: 16 }}><K.KjunCarousel ariaLabel="Bled" slideSize="peek" bleed="md">{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
+    <div data-testid="overlay"><K.KjunCarousel ariaLabel="Overlay" indicators="count" indicatorPlacement="overlay">{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
+    <div data-testid="overlay-dots"><K.KjunCarousel ariaLabel="Overlay dots" indicatorPlacement="overlay">{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
     <div data-testid="single"><K.KjunCarousel ariaLabel="Single">{slide('Only')}</K.KjunCarousel></div>
     {!native && <div data-testid="form"><K.KjunCarousel ariaLabel="Form">
       <div style={{ height: 120 }}><input aria-label="Name" defaultValue="Kim" /></div>

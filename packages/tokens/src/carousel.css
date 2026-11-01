@@ -1,8 +1,26 @@
 /* KjunCarousel: native horizontal scrolling that snaps to each slide's start edge. */
 .kjun-carousel {
   --_kjun-carousel-gap: var(--_kjun-geometry-space-inline-md);
+  --_kjun-carousel-bleed: 0px;
   min-width: 0;
   max-width: 100%;
+}
+/* bleed: the scroller reaches into the page's side padding, and its own padding keeps the first slide on the content edge. */
+.kjun-carousel[data-bleed] {
+  max-width: none;
+  margin-inline: calc(-1 * var(--_kjun-carousel-bleed));
+}
+.kjun-carousel[data-bleed="sm"] {
+  --_kjun-carousel-bleed: var(--_kjun-geometry-space-inset-sm);
+}
+.kjun-carousel[data-bleed="md"] {
+  --_kjun-carousel-bleed: var(--_kjun-geometry-space-inset-md);
+}
+.kjun-carousel[data-bleed="lg"] {
+  --_kjun-carousel-bleed: var(--_kjun-geometry-space-inset-lg);
+}
+.kjun-carousel[data-bleed] > :not(.kjun-carousel-frame, .kjun-sr-only) {
+  padding-inline: var(--_kjun-carousel-bleed);
 }
 .kjun-carousel[data-gap="none"] {
   --_kjun-carousel-gap: 0px;
@@ -26,6 +44,18 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   border-radius: inherit;
+  padding-inline: var(--_kjun-carousel-bleed);
+  scroll-padding-inline: var(--_kjun-carousel-bleed);
+}
+/* center: the current slide sits in the middle; with peek, the viewport padding shows a neighbour on each side. */
+.kjun-carousel[data-align="center"] .kjun-carousel-slide {
+  scroll-snap-align: center;
+}
+.kjun-carousel[data-align="center"][data-size="peek"] .kjun-carousel-viewport {
+  padding-inline: calc(var(--_kjun-carousel-bleed) + var(--_kjun-extension-carousel-peek) + var(--_kjun-carousel-gap));
+}
+.kjun-carousel[data-align="center"][data-size="peek"] .kjun-carousel-slide {
+  flex-basis: 100%;
 }
 .kjun-carousel-viewport::-webkit-scrollbar {
   display: none;
@@ -89,10 +119,10 @@
   transform: translateY(-50%) scale(0.98);
 }
 .kjun-carousel-control[data-direction="previous"] {
-  inset-inline-start: var(--_kjun-extension-carousel-control-inset);
+  inset-inline-start: calc(var(--_kjun-carousel-bleed) + var(--_kjun-extension-carousel-control-inset));
 }
 .kjun-carousel-control[data-direction="next"] {
-  inset-inline-end: var(--_kjun-extension-carousel-control-inset);
+  inset-inline-end: calc(var(--_kjun-carousel-bleed) + var(--_kjun-extension-carousel-control-inset));
 }
 /* Touch screens swipe; buttons are for pointers that can hover. */
 @media (hover: hover) and (pointer: fine) {
@@ -165,4 +195,32 @@
 .kjun-carousel-viewport[data-dragging] {
   cursor: grabbing;
   user-select: none;
+}
+/* overlay: the position sits on the slides in a scrim pill, legible over any image. */
+.kjun-carousel-frame > :is(.kjun-carousel-indicators, .kjun-carousel-count) {
+  position: absolute;
+  bottom: var(--_kjun-extension-carousel-control-inset);
+  height: var(--_kjun-extension-carousel-indicator-press);
+  margin: 0;
+  padding-inline: var(--_kjun-extension-carousel-overlay-padding-x);
+  border-radius: var(--_kjun-geometry-radius-radius9999);
+  background: var(--_kjun-color-overlay);
+  color: var(--_kjun-color-inverse);
+}
+.kjun-carousel-frame > .kjun-carousel-indicators {
+  left: 50%;
+  transform: translateX(-50%);
+}
+.kjun-carousel-frame > .kjun-carousel-count {
+  inset-inline-end: calc(var(--_kjun-carousel-bleed) + var(--_kjun-extension-carousel-control-inset));
+}
+.kjun-carousel-frame > .kjun-carousel-indicators .kjun-carousel-indicator::before {
+  background: color-mix(in srgb, var(--_kjun-color-inverse) 50%, transparent);
+}
+.kjun-carousel-frame > .kjun-carousel-indicators .kjun-carousel-indicator[aria-current="true"]::before {
+  background: var(--_kjun-color-inverse);
+}
+/* Elements that act like buttons keep a pointer over a draggable carousel. */
+.kjun-carousel[data-mouse-drag] .kjun-carousel-viewport [role="button"] {
+  cursor: pointer;
 }
