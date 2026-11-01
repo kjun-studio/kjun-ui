@@ -5912,10 +5912,10 @@
           },
           {
             "name": "placement",
-            "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
+            "type": "\"top\" | \"bottom\" | \"left\" | \"right\" | \"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\"",
             "required": false,
             "default": "\"bottom\"",
-            "description": "",
+            "description": "A side, or a side with an aligned edge: \"bottom-start\" lines the panel up with the trigger's start edge.",
             "summary": "트리거에 대한 팝업·도움말의 선호 위치입니다.",
             "source": "packages/vue3/src/popover.tsx"
           },
@@ -6081,10 +6081,10 @@
           },
           {
             "name": "placement",
-            "type": "\"top\" | \"bottom\" | \"left\" | \"right\" | undefined",
+            "type": "PopoverPlacement | undefined",
             "required": false,
             "default": "\"bottom\"",
-            "description": "",
+            "description": "A side, or a side with an aligned edge: \"bottom-start\" lines the panel up with the trigger's start edge.",
             "summary": "트리거에 대한 팝업·도움말의 선호 위치입니다.",
             "source": "packages/react/src/popover.tsx"
           },
@@ -6099,10 +6099,10 @@
           },
           {
             "name": "header",
-            "type": "ReactNode",
+            "type": "ReactNode | ((close: () => void) => ReactNode)",
             "required": false,
             "default": "—",
-            "description": "Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel.",
+            "description": "Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel.\nA function receives close, for a close button in the header.",
             "summary": "고정 머리글입니다. 본문만 스크롤하며 maxHeight는 머리글을 포함한 높이입니다. 웹에서는 ariaLabel이 없으면 대화상자 이름이 되고, Native는 ariaLabel을 지정해야 합니다. Vue는 header 슬롯을 씁니다.",
             "source": "packages/react/src/popover.tsx"
           },
@@ -6233,19 +6233,19 @@
           },
           {
             "name": "placement",
-            "type": "\"top\" | \"bottom\" | \"left\" | \"right\" | undefined",
+            "type": "\"top\" | \"bottom\" | \"left\" | \"right\" | \"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
             "required": false,
             "default": "\"bottom\"",
-            "description": "",
+            "description": "A side, or a side with an aligned edge: \"bottom-start\" lines the panel up with the trigger's start edge.",
             "summary": "트리거에 대한 팝업·도움말의 선호 위치입니다.",
             "source": "packages/native/src/popover.tsx"
           },
           {
             "name": "header",
-            "type": "ReactNode",
+            "type": "ReactNode | ((close: () => void) => ReactNode)",
             "required": false,
             "default": "—",
-            "description": "Fixed header above the body; only the body scrolls and maxHeight covers both.",
+            "description": "Fixed header above the body; only the body scrolls and maxHeight covers both. A function receives close.",
             "summary": "고정 머리글입니다. 본문만 스크롤하며 maxHeight는 머리글을 포함한 높이입니다. 웹에서는 ariaLabel이 없으면 대화상자 이름이 되고, Native는 ariaLabel을 지정해야 합니다. Vue는 header 슬롯을 씁니다.",
             "source": "packages/native/src/popover.tsx"
           },
@@ -21166,6 +21166,15 @@
             "description": "Small heading over the group; it names the group for screen readers.",
             "summary": "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.",
             "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Names the group for screen readers when it has no visible title.",
+            "summary": "제목 없이 묶을 때 화면 낭독기에 알릴 묶음 이름입니다. title이 있으면 title이 이름이 됩니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
           }
         ],
         "events": [],
@@ -21193,6 +21202,15 @@
             "source": "packages/react/src/dropdown.tsx"
           },
           {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Names the group for screen readers when it has no visible title.",
+            "summary": "제목 없이 묶을 때 화면 낭독기에 알릴 묶음 이름입니다. title이 있으면 title이 이름이 됩니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
             "name": "children",
             "type": "ReactNode",
             "required": true,
@@ -21216,6 +21234,15 @@
             "default": "—",
             "description": "Small heading over the group; it names the group for screen readers.",
             "summary": "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Names the group for screen readers when it has no visible title.",
+            "summary": "제목 없이 묶을 때 화면 낭독기에 알릴 묶음 이름입니다. title이 있으면 title이 이름이 됩니다.",
             "source": "packages/native/src/dropdown.tsx"
           },
           {
@@ -21477,6 +21504,33 @@
             "description": "",
             "summary": "메뉴 항목의 문자 검색과 접근성에 사용할 문자열입니다.",
             "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "keepOpen",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Keeps the menu open after choosing, for toggles the user flips several times.",
+            "summary": "고른 뒤에도 메뉴를 닫지 않습니다. 여러 번 켜고 끄는 checked 항목에 씁니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "href",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Makes the item a link; the browser follows it.",
+            "summary": "항목을 링크로 만듭니다. 고르면 브라우저가 이 주소로 이동하고 메뉴는 닫힙니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "target",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "href 링크를 열 대상입니다(예: _blank).",
+            "source": "packages/vue3/src/dropdown.tsx"
           }
         ],
         "events": [
@@ -21583,6 +21637,33 @@
             "source": "packages/react/src/dropdown.tsx"
           },
           {
+            "name": "keepOpen",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Keeps the menu open after choosing, for toggles the user flips several times.",
+            "summary": "고른 뒤에도 메뉴를 닫지 않습니다. 여러 번 켜고 끄는 checked 항목에 씁니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "href",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Makes the item a link; the browser follows it.",
+            "summary": "항목을 링크로 만듭니다. 고르면 브라우저가 이 주소로 이동하고 메뉴는 닫힙니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "target",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "href 링크를 열 대상입니다(예: _blank).",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
             "name": "children",
             "type": "ReactNode",
             "required": true,
@@ -21678,6 +21759,15 @@
             "default": "—",
             "description": "Keyboard hint shown at the end on Native Web, such as \"⌘D\". It only describes; wiring the keys is the app's job.",
             "summary": "끝에 보이는 단축키 안내(예: ⌘D)입니다. 웹은 aria-keyshortcuts로도 알립니다. 실제 키 연결은 소비자가 합니다. Native는 Native Web에서만 보입니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "keepOpen",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Keeps the menu open after choosing, for toggles the user flips several times.",
+            "summary": "고른 뒤에도 메뉴를 닫지 않습니다. 여러 번 켜고 끄는 checked 항목에 씁니다.",
             "source": "packages/native/src/dropdown.tsx"
           },
           {

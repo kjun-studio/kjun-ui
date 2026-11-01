@@ -8,12 +8,17 @@ import { FloatingPanel, focusReturnProp, readFocusReturn } from "./floating-pane
 import { useKjunId } from "./input";
 import { KjunTooltip } from "./popover";
 import { useFocusVisible } from "./runtime/focus-visible";
+import { createTypeahead } from "../../../shared/package-runtime/typeahead";
 
 // Submenus open in place: the menu shows one level at a time, with a back row at the top of a submenu.
 interface MenuContext { close: () => void; focused: { value: HTMLElement | null }; visible: { value: boolean }; view: { value: string }; open: (key: string) => void; back: () => void }
 const kjunDropdownKey: InjectionKey<MenuContext> = Symbol("kjunDropdown");
-const kjunMenuLevelKey: InjectionKey<string> = Symbol("kjunMenuLevel");
+// A ref, so a submenu whose label (and so its key) changes keeps its items in step.
+const kjunMenuLevelKey: InjectionKey<{ value: string }> = Symbol("kjunMenuLevel");
+const topLevel = { value: "" };
 const items = (menu: HTMLElement) => [...menu.querySelectorAll<HTMLElement>(':is([role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"]):not([data-disabled])')];
+// Typeahead reads the label only, not its description or shortcut.
+const itemText = (item: HTMLElement) => item.dataset.textValue || item.querySelector(".kjun-menu-label > span")?.textContent || item.textContent || "";
 
 const kjunDropdownProps = {
   /** v-model:open; omit for internal visibility. */
@@ -50,8 +55,10 @@ export const KjunDropdown = defineComponent({
     const uid = useKjunId("kjun-");
     const focused = shallowRef<HTMLElement | null>(null), visible = ref(false);
     const stack = ref<string[]>([]), view = computed(() => stack.value[stack.value.length - 1] ?? "");
-    // A keyboard opening lands on the first item; a pointer opening paints nothing until the pointer or a key moves.
-    let byKeyboard = false;
+    // A keyboard opening lands on the first item (the last for ↑); a pointer opening paints nothing until the pointer or a key moves.
+    let byKeyboard: false | "first" | "last" = false;
+    // Going back from a submenu returns focus to the row that opened it.
+    let returnTo = "";
     const button = () => wrapper.value?.querySelector<HTMLButtonElement>("button") ?? null;
     const controlId = () => props.triggerId || button()?.id || uid;
     const popupId = computed(() => props.menuId || uid + "-menu");
@@ -63,8 +70,8 @@ export const KjunDropdown = defineComponent({
     };
     // Lifecycle events describe accepted visibility, not a request the parent may reject.
     watch(open, (value, previous) => { if (value) emit("open"); else if (previous) emit("close"); }, { immediate: true });
-    const openSubmenu = (key: string) => { byKeyboard = true; focused.value = null; stack.value = [...stack.value, key]; };
-    const back = () => { focused.value = null; stack.value = stack.value.slice(0, -1); };
+    const openSubmenu = (key: string) => { byKeyboard = "first"; returnTo = ""; focused.value = null; stack.value = [...stack.value, key]; };
+    const back = () => { returnTo = view.value; byKeyboard = "first"; focused.value = null; stack.value = stack.value.slice(0, -1); };
     provide(kjunDropdownKey, { close: () => change(false), focused, visible, view, open: openSubmenu, back });
     // React clones the trigger with these attributes; here they go on the rendered button.
     const bindTrigger = () => {
@@ -104,41 +111,42 @@ export const KjunDropdown = defineComponent({
       onCleanup(() => { cancelled = true; });
       nextTick(() => {
         if (cancelled || !open.value || menu.value !== element) return;
-        if (byKeyboard) focusItem(items(element)[0]); else element.focus({ preventScroll: true });
+        const list = items(element), row = returnTo && list.find(item => item.dataset.submenu === returnTo);
+        returnTo = "";
+        if (row) focusItem(row);
+        else if (byKeyboard) focusItem(byKeyboard === "last" ? list[list.length - 1] : list[0]);
+        else element.focus({ preventScroll: true });
       });
     }, { flush: "post" });
     watch(open, value => { if (!value) { focused.value = null; visible.value = false; stack.value = []; } });
     // Let Vue restore the original disabled/aria-disabled props when the wrapper is re-enabled.
     const disabledTrigger = (node: VNodeChild): VNodeChild => Array.isArray(node) ? node.map(disabledTrigger)
       : isVNode(node) ? cloneVNode(node, { disabled: true, "aria-disabled": "true" }) : node;
-    let typed = "", typedAt = 0;
+    const typeahead = createTypeahead();
     const onMenuKeydown = (event: KeyboardEvent) => {
       const list = items(menu.value!), current = list.indexOf(document.activeElement as HTMLElement);
       const go = (index: number) => { event.preventDefault(); focusItem(list[index]); };
       const submenu = (document.activeElement as HTMLElement | null)?.dataset.submenu;
       if (event.key === "ArrowRight" && submenu) { event.preventDefault(); openSubmenu(submenu); return; }
       if (event.key === "ArrowLeft" && view.value) { event.preventDefault(); back(); return; }
+      // Escape in a submenu steps back one level; at the top it closes the menu.
+      if (event.key === "Escape" && view.value) { event.preventDefault(); event.stopPropagation(); back(); return; }
       if (event.key === "ArrowDown") go(current < 0 ? 0 : Math.min(list.length - 1, current + 1));
       else if (event.key === "ArrowUp") go(current < 0 ? list.length - 1 : Math.max(0, current - 1));
       else if (event.key === "Home" || event.key === "PageUp") go(0);
       else if (event.key === "End" || event.key === "PageDown") go(list.length - 1);
       else if (event.key === "Tab") change(false);
-      else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey && event.key !== " ") {
-        const now = Date.now();
-        typed = (now - typedAt > 1000 ? "" : typed) + event.key.toLocaleLowerCase();
-        typedAt = now;
-        const start = Math.max(0, current);
-        const order = [...list.slice(start), ...list.slice(0, start)];
-        const match = order.find(item => (item.dataset.textValue || item.textContent || "").trim().toLocaleLowerCase().startsWith(typed));
-        if (match) go(list.indexOf(match));
+      else if (!event.ctrlKey && !event.metaKey && !event.altKey && event.key !== " ") {
+        const match = typeahead(event.key, list.map(itemText), current);
+        if (match >= 0) go(match);
       }
     };
     return () => (
       <>
         <div {...mergeProps(attrs, { class: "kjun-layer-trigger",
           // A click from Enter or Space has no pointer detail.
-          onClickCapture: (event: MouseEvent) => { if (!event.defaultPrevented) { byKeyboard = event.detail === 0; change(!open.value); } },
-          onKeydown: (event: KeyboardEvent) => { if (!event.defaultPrevented && ["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); byKeyboard = true; change(true); } },
+          onClickCapture: (event: MouseEvent) => { if (!event.defaultPrevented) { byKeyboard = event.detail === 0 && "first"; change(!open.value); } },
+          onKeydown: (event: KeyboardEvent) => { if (!event.defaultPrevented && ["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); byKeyboard = event.key === "ArrowUp" ? "last" : "first"; change(true); } },
         })} ref={wrapper}>
           <span>{props.disabled ? disabledTrigger(slots.trigger?.()) : slots.trigger?.()}</span>
         </div>
@@ -171,6 +179,11 @@ const kjunDropdownItemProps = {
   /** Keyboard hint shown at the end, such as "⌘D". It only describes; wiring the keys is the app's job. */
   shortcut: { type: String, default: undefined },
   textValue: { type: String, default: undefined },
+  /** Keeps the menu open after choosing, for toggles the user flips several times. */
+  keepOpen: { type: Boolean, default: false },
+  /** Makes the item a link; the browser follows it. */
+  href: { type: String, default: undefined },
+  target: { type: String, default: undefined },
 } as const;
 export type KjunDropdownItemProps = ExtractPublicPropTypes<typeof kjunDropdownItemProps>;
 const itemBody = (props: { icon?: string; check?: boolean | null; description?: string; shortcut?: string; chevron?: boolean }, label: VNodeChild) => {
@@ -213,18 +226,28 @@ export const KjunDropdownItem = defineComponent({
   emits: { click: (_event: MouseEvent | KeyboardEvent) => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
-    const level = inject(kjunMenuLevelKey, "");
-    const row = useMenuRow(() => props.disabled, event => { emit("click", event); row.menu?.close(); });
+    const level = inject(kjunMenuLevelKey, topLevel);
+    const row = useMenuRow(() => props.disabled, event => {
+      emit("click", event);
+      // A link row follows its href on click; a key press follows it here.
+      if (props.href && event instanceof KeyboardEvent) (row.item.value as HTMLAnchorElement | null)?.click();
+      if (!props.keepOpen) row.menu?.close();
+    });
     return () => {
-      if ((row.menu?.view.value ?? "") !== level) return null;
+      if ((row.menu?.view.value ?? "") !== level.value) return null;
       const state = props.selected ?? props.checked;
+      const Tag = props.href ? "a" : "div";
+      const label = slots.default?.();
+      // A plain-text label is its own typeahead text; anything else falls back to the rendered label.
+      const only = Array.isArray(label) && label.length === 1 ? label[0] : undefined;
+      const text = props.textValue ?? (isVNode(only) && typeof only.children === "string" ? only.children : undefined);
       return (
-        <div ref={row.item} id={props.id} class="kjun-menu-item" data-variant={props.variant}
+        <Tag ref={row.item} id={props.id} class="kjun-menu-item" data-variant={props.variant} href={props.disabled ? undefined : props.href} target={props.target}
           // A boolean `selected` makes this a single-choice item and `checked` a toggle, like Native's radio and checkbox.
           role={props.selected !== null ? "menuitemradio" : props.checked !== null ? "menuitemcheckbox" : "menuitem"} aria-checked={state === null ? undefined : state}
-          aria-keyshortcuts={props.shortcut} data-kjun-selected={props.selected === true || undefined} data-text-value={props.textValue} {...row.attrs()}>
-          {itemBody({ icon: props.icon, check: state, description: props.description, shortcut: props.shortcut }, slots.default?.())}
-        </div>
+          aria-keyshortcuts={props.shortcut} data-kjun-selected={props.selected === true || undefined} data-text-value={text} {...row.attrs()}>
+          {itemBody({ icon: props.icon, check: state, description: props.description, shortcut: props.shortcut }, label)}
+        </Tag>
       );
     };
   },
@@ -233,6 +256,8 @@ export const KjunDropdownItem = defineComponent({
 const kjunDropdownSectionProps = {
   /** Small heading over the group; it names the group for screen readers. */
   title: { type: String, default: undefined },
+  /** Names the group for screen readers when it has no visible title. */
+  ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunDropdownSectionProps = ExtractPublicPropTypes<typeof kjunDropdownSectionProps>;
 /** Default slot: items of the group. */
@@ -241,10 +266,11 @@ export const KjunDropdownSection = defineComponent({
   props: kjunDropdownSectionProps,
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
-    const menu = inject(kjunDropdownKey, null), level = inject(kjunMenuLevelKey, "");
+    const menu = inject(kjunDropdownKey, null), level = inject(kjunMenuLevelKey, topLevel);
     const titleId = useKjunId("kjun-menu-section-");
-    return () => (menu?.view.value ?? "") !== level ? null : (
-      <div class="kjun-menu-section" role="group" aria-labelledby={props.title ? titleId : undefined}>
+    // Outside its own level the group draws nothing itself, but a submenu inside it may be the level shown.
+    return () => (menu?.view.value ?? "") !== level.value ? slots.default?.() : (
+      <div class="kjun-menu-section" role="group" aria-labelledby={props.title ? titleId : undefined} aria-label={props.title ? undefined : props.ariaLabel}>
         {props.title && <div id={titleId} class="kjun-menu-section-title" aria-hidden="true">{props.title}</div>}
         {slots.default?.()}
       </div>
@@ -267,15 +293,15 @@ export const KjunDropdownSubmenu = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     const m = useKjunMessages();
-    const level = inject(kjunMenuLevelKey, "");
-    const key = computed(() => (level ? level + "/" : "") + (props.id ?? props.label));
-    provide(kjunMenuLevelKey, key.value);
+    const level = inject(kjunMenuLevelKey, topLevel);
+    const key = computed(() => (level.value ? level.value + "/" : "") + (props.id ?? props.label));
+    provide(kjunMenuLevelKey, key);
     const trigger = useMenuRow(() => props.disabled, () => trigger.menu?.open(key.value));
     const back = useMenuRow(() => false, () => back.menu?.back());
     return () => {
       const view = trigger.menu?.view.value ?? "";
       return [
-        view === level && (
+        view === level.value && (
           <div ref={trigger.item} class="kjun-menu-item" role="menuitem" aria-haspopup="menu" data-submenu={key.value} data-text-value={props.label} {...trigger.attrs()}>
             {itemBody({ icon: props.icon, chevron: true }, props.label)}
           </div>
@@ -294,8 +320,8 @@ export const KjunDropdownSubmenu = defineComponent({
 export const KjunDropdownDivider = defineComponent({
   name: "KjunDropdownDivider",
   setup() {
-    const menu = inject(kjunDropdownKey, null), level = inject(kjunMenuLevelKey, "");
-    return () => (menu?.view.value ?? "") !== level ? null : <div role="separator" class="kjun-menu-divider" />;
+    const menu = inject(kjunDropdownKey, null), level = inject(kjunMenuLevelKey, topLevel);
+    return () => (menu?.view.value ?? "") !== level.value ? null : <div role="separator" class="kjun-menu-divider" />;
   },
 });
 

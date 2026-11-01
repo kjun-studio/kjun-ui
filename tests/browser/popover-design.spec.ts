@@ -10,6 +10,26 @@ async function close(page: Page) {
   await expect(page.getByTestId('open')).toHaveText('false');
 }
 for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: an aligned placement lines up an edge, the trigger reports its state and an unnamed popover reads as details`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 1024, height: 768 });
+    await openFixture(page, platform, '', 'popover-design');
+    await configure(page, { placement: 'bottom-end' });
+    const anchor = await rect(page.getByTestId('anchor'));
+    await expect(trigger(page)).toHaveAttribute('aria-expanded', 'false');
+    await trigger(page).click();
+    await expect(trigger(page)).toHaveAttribute('aria-expanded', 'true');
+    await expect(trigger(page)).toHaveAttribute('aria-haspopup', 'dialog');
+    const popup = panel(page, platform);
+    const end = await rect(trigger(page));
+    await expect.poll(async () => { const r = await rect(popup); return Math.abs(r.x + r.width - (end.x + end.width)); }).toBeLessThan(1);
+    await close(page);
+    await configure(page, { placement: 'bottom', noLabel: true });
+    await trigger(page).click();
+    await expect(panel(page, platform, '상세 정보')).toBeVisible();
+    await close(page);
+  });
+
   test(`${platform}: popovers have a bordered subtle surface and preserve placement, width and overflow`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const palette of ['default', 'dark']) {

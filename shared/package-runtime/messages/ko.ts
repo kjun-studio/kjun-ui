@@ -17,6 +17,9 @@ export const kjunMessagesKo = {
   dialog: "대화상자",
   panel: "패널",
   details: "상세 정보",
+  // A hidden button that closes a layer for screen reader users who cannot press Escape.
+  // Matches react-aria's Korean label, so it never shares a name with a visible close button.
+  dismiss: "무시",
   menu: "메뉴",
   // Names a submenu's first row, which returns to the parent menu.
   back: "뒤로",

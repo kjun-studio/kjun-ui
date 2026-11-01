@@ -16,6 +16,8 @@ export const kjunMessagesEn: KjunMessages = {
   invalidInput: "Please check your input.",
   dialog: "Dialog",
   panel: "Panel",
+  // A hidden button that closes a layer for screen reader users who cannot press Escape.
+  dismiss: "Dismiss",
   details: "Details",
   menu: "Menu",
   back: "Back",

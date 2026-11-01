@@ -342,6 +342,8 @@
   background: color-mix(in srgb, var(--_kjun-color-danger) calc(var(--_kjun-state-opacity-tint-hover) * 100%), transparent);
 }
 .kjun-menu-item[data-kjun-selected] { background: var(--_kjun-color-selected-bg); }
+/* The selected row keeps its fill under the hover, so keyboard focus there shows as an inset ring, as on Native. */
+.kjun-menu-item[data-kjun-selected][data-focus-visible]:not([data-disabled]) { box-shadow: inset 0 0 0 var(--_kjun-state-focus-width) var(--_kjun-color-focus-ring); }
 .kjun-menu-check { color: var(--_kjun-color-brand); }
 /* Leading icons sit a step below the regular-weight label; danger items keep their role color. */
 .kjun-menu-item:not([data-variant="danger"]) .kjun-menu-icon { color: var(--_kjun-color-text-secondary); }
@@ -364,7 +366,8 @@
 .kjun-menu[data-density="compact"] .kjun-menu-item { min-height: var(--_kjun-extension-menu-compact-option-height); padding: var(--_kjun-extension-menu-compact-option-padding-y) var(--_kjun-extension-menu-compact-option-padding-x); }
 .kjun-menu[data-density="compact"] .kjun-menu-section-title { padding-left: var(--_kjun-extension-menu-compact-option-padding-x); padding-right: var(--_kjun-extension-menu-compact-option-padding-x); }
 .kjun-menu[data-density="compact"] .kjun-menu-item { padding-left: calc(var(--_kjun-extension-menu-compact-option-padding-x) + var(--_kjun-menu-check-slot, 0) * (var(--_kjun-extension-menu-icon-size) + var(--_kjun-geometry-dimension-value8))); }
-@media (pointer: coarse) { .kjun-menu .kjun-menu-item { min-height: var(--_kjun-geometry-native-minimum-touch-target); } }
+/* Touch keeps the full target even in a compact menu, so this outranks the compact rows above. */
+@media (pointer: coarse) { .kjun-menu .kjun-menu-item, .kjun-menu[data-density="compact"] .kjun-menu-item { min-height: var(--_kjun-geometry-native-minimum-touch-target); } }
 .kjun-menu-divider {
   height: var(--_kjun-extension-menu-divider-height);
   margin: var(--_kjun-geometry-dimension-value4) 0;

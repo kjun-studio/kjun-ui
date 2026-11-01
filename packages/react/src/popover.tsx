@@ -22,11 +22,13 @@ export interface KjunPopoverProps {
   flip?: boolean;
   focusOnOpen?: boolean;
   ariaLabel?: string;
-  placement?: "top" | "bottom" | "left" | "right";
+  /** A side, or a side with an aligned edge: "bottom-start" lines the panel up with the trigger's start edge. */
+  placement?: PopoverPlacement;
   /** Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone. */
   returnFocus?: HTMLElement | RefObject<HTMLElement | null> | (() => HTMLElement | null);
-  /** Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel. */
-  header?: ReactNode;
+  /** Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel.
+   * A function receives close, for a close button in the header. */
+  header?: ReactNode | ((close: () => void) => ReactNode);
   /** false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus. */
   modal?: boolean;
   /** Attach to this screen rectangle (or a function read every frame while open) instead of the trigger. Web only.
@@ -47,6 +49,7 @@ function bindPopoverTrigger(node: ReactNode, props: HTMLAttributes<HTMLElement>)
   }
   return cloneElement(node, props);
 }
+export type PopoverPlacement = "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";
 export function KjunPopover({
   noPadding = false,
   open: controlled,
@@ -166,7 +169,7 @@ export function KjunPopover({
           };
           const body = (
             <>
-              {header != null && <div id={id + "-header"} className="kjun-popover-header">{header}</div>}
+              {header != null && <div id={id + "-header"} className="kjun-popover-header">{typeof header === "function" ? header(() => change(false)) : header}</div>}
               {header != null ? <div className="kjun-popover-body">{content}</div> : content}
               <FeedbackLayerOutlet />
             </>

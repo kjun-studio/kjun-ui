@@ -2,13 +2,14 @@ import { expect, test, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureStructure(next), next);
-const menu = (page: Page, platform: string) => page.locator(platform === 'native' ? '[aria-label="메뉴"]' : '.kjun-dropdown');
-const row = (page: Page, text: string) => page.locator('[role^="menuitem"], [role="radio"], [role="checkbox"]').filter({ hasText: text });
+const menu = (page: Page, platform: string) => page.locator(platform === 'native' ? '[role="menu"]' : '.kjun-dropdown');
+const row = (page: Page, text: string) => page.locator('[role^="menuitem"]').filter({ hasText: text });
 const trigger = (page: Page) => page.getByRole('button', { name: '구조 메뉴', exact: true });
 
 for (const platform of ['react', 'vue3', 'native']) {
   const web = platform !== 'native';
-  const radio = web ? 'menuitemradio' : 'radio', checkbox = web ? 'menuitemcheckbox' : 'checkbox';
+  // Native Web reads its rows as a menu too, with menu radio and checkbox items.
+  const radio = 'menuitemradio', checkbox = 'menuitemcheckbox';
 
   test(`${platform}: sections, single choices, toggles, descriptions and shortcuts`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -65,6 +66,23 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(row(page, '이름순')).toBeVisible();
   });
 
+  test(`${platform}: a toggle can keep the menu open, and a submenu inside a section opens`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openFixture(page, platform, '', 'dropdown-structure');
+    await trigger(page).click();
+    await expect(page.getByRole('menu')).toHaveAccessibleName('구조 메뉴');
+    await page.getByRole(checkbox, { name: '알림 받기' }).click();
+    await expect(page.getByRole(checkbox, { name: '알림 받기' })).toHaveAttribute('aria-checked', 'true');
+    await expect(page.getByTestId('last')).toHaveText('알림 받기');
+    await expect(page.getByRole('group', { name: '더 보기' })).toBeVisible();
+    await row(page, '내보내기').click();
+    await expect(row(page, 'PDF')).toBeVisible();
+    await row(page, 'PDF').click();
+    await expect(menu(page, platform)).toBeHidden();
+    await expect(page.getByTestId('last')).toHaveText('PDF');
+    await expect(trigger(page)).toHaveAttribute('aria-expanded', 'false');
+  });
+
   test(`${platform}: compact density tightens rows for fine pointers`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'dropdown-structure');
@@ -98,8 +116,18 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.keyboard.press('ArrowLeft');
     await expect(row(page, '이름순')).toBeVisible();
     await expect(row(page, '링크 복사')).toHaveCount(0);
+    // Back returns to the row that opened the submenu.
+    await expect(row(page, '공유')).toBeFocused();
+    // Escape inside a submenu steps back one level instead of closing.
+    await page.keyboard.press('ArrowRight');
+    await expect(row(page, '링크 복사')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(row(page, '공유')).toBeFocused();
     await page.keyboard.press('Escape');
     await expect(menu(page, platform)).toBeHidden();
     await expect(trigger(page)).toBeFocused();
+    // ↑ opens on the last row. (Typeahead is covered by tests/typeahead.test.mjs: Playwright types Hangul without key events.)
+    await page.keyboard.press('ArrowUp');
+    await expect(row(page, '삭제')).toBeFocused();
   });
 }

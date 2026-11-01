@@ -3,7 +3,7 @@ import * as K from '@kjun-ui/vue3';
 import { setDropdownColors } from './dropdown-design-cases';
 import { structureConfig } from './dropdown-structure-cases';
 setDropdownColors();
-const state = reactive({ config: { ...structureConfig }, sort: 'name', hidden: true, last: '' });
+const state = reactive({ config: { ...structureConfig }, sort: 'name', hidden: true, alerts: false, last: '' });
 Object.assign(window, { configureStructure: (next: object) => { state.config = { ...state.config, ...next }; } });
 const press = (label: string, run = () => {}) => ({ onClick: () => { run(); state.last = label; } });
 createApp(defineComponent(() => () => (
@@ -18,6 +18,10 @@ createApp(defineComponent(() => () => (
           ] }}</K.KjunDropdownSection>,
           <K.KjunDropdownDivider />,
           <K.KjunDropdownItem checked={state.hidden} description="보관한 항목 포함" shortcut="⌘H" {...press('숨긴 항목 보기', () => { state.hidden = !state.hidden; })}>숨긴 항목 보기</K.KjunDropdownItem>,
+          <K.KjunDropdownItem checked={state.alerts} keepOpen {...press('알림 받기', () => { state.alerts = !state.alerts; })}>알림 받기</K.KjunDropdownItem>,
+          <K.KjunDropdownSection ariaLabel="더 보기">{{ default: () => [
+            <K.KjunDropdownSubmenu label="내보내기">{{ default: () => [<K.KjunDropdownItem {...press('PDF')}>PDF</K.KjunDropdownItem>] }}</K.KjunDropdownSubmenu>,
+          ] }}</K.KjunDropdownSection>,
           <K.KjunDropdownSubmenu label="공유" icon="send">{{ default: () => [
             <K.KjunDropdownItem icon="link" shortcut="⌘L" {...press('링크 복사')}>링크 복사</K.KjunDropdownItem>,
             <K.KjunDropdownItem icon="mail" {...press('이메일로 보내기')}>이메일로 보내기</K.KjunDropdownItem>,

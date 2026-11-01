@@ -173,15 +173,18 @@
   },
   "KjunDropdownSection": {
     "vue3": [
-      "title"
+      "title",
+      "ariaLabel"
     ],
     "react": [
       "title",
-      "children"
+      "children",
+      "ariaLabel"
     ],
     "native": [
       "title",
-      "children"
+      "children",
+      "ariaLabel"
     ]
   },
   "KjunDropdownSubmenu": {
@@ -216,7 +219,10 @@
       "textValue",
       "checked",
       "description",
-      "shortcut"
+      "shortcut",
+      "keepOpen",
+      "href",
+      "target"
     ],
     "react": [
       "id",
@@ -229,7 +235,10 @@
       "onClick",
       "checked",
       "description",
-      "shortcut"
+      "shortcut",
+      "keepOpen",
+      "href",
+      "target"
     ],
     "native": [
       "id",
@@ -241,7 +250,8 @@
       "onPress",
       "checked",
       "description",
-      "shortcut"
+      "shortcut",
+      "keepOpen"
     ]
   },
   "KjunFormActions": {

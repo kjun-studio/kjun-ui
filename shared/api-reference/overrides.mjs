@@ -51,13 +51,14 @@ set("Table", {
   searchable: "검색 입력과 검색어 통지를 제공합니다. 데이터 배열을 직접 필터링하지 않습니다.",
 });
 set("DropdownItem", {
+  keepOpen: { default: "false", summary: "고른 뒤에도 메뉴를 닫지 않습니다. 여러 번 켜고 끄는 checked 항목에 씁니다." },
   selected: "하나만 고르는 항목의 선택 여부입니다. 앞쪽 열에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
   checked: "켜고 끄는 항목의 상태입니다. 앞쪽 열에 체크를 그리고 checkbox 메뉴 항목으로 읽힙니다. null이면 일반 행동 항목입니다.",
   description: "라벨 아래 둘째 줄 설명입니다. 12px 보조색으로 보입니다.",
   shortcut: "끝에 보이는 단축키 안내(예: ⌘D)입니다. 웹은 aria-keyshortcuts로도 알립니다. 실제 키 연결은 소비자가 합니다. Native는 Native Web에서만 보입니다.",
 });
 set("Dropdown MenuButton", { density: { default: '"comfortable"', summary: "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다." } });
-set("DropdownSection", { title: "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.", children: "묶음에 넣을 KjunDropdownItem·KjunDropdownSubmenu입니다." });
+set("DropdownSection", { ariaLabel: "제목 없이 묶을 때 화면 낭독기에 알릴 묶음 이름입니다. title이 있으면 title이 이름이 됩니다.", title: "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.", children: "묶음에 넣을 KjunDropdownItem·KjunDropdownSubmenu입니다." });
 set("DropdownSubmenu", {
   id: "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
   label: "하위 메뉴 행과 돌아가기 행의 라벨입니다.",
@@ -137,6 +138,10 @@ set("DateRangePicker", {
   autoApply: { default: "false", summary: "두 번째 날짜를 고르는 즉시 확정하고 닫습니다. 적용 버튼은 보이지 않습니다." },
 });
 set("Select", { readOnly: { default: "false", summary: "값을 보여 주기만 하고 목록을 열거나 지우지 않습니다. 트리거는 초점을 받고 aria-readonly로 알립니다." } });
+for (const platform of ["vue3", "react"]) set("DropdownItem", {
+  href: "항목을 링크로 만듭니다. 고르면 브라우저가 이 주소로 이동하고 메뉴는 닫힙니다.",
+  target: "href 링크를 열 대상입니다(예: _blank).",
+}, platform);
 // Progress documents its own value (null is missing data) above.
 set("AnimatedNumber PriceCell SignedValue Deviation ProgressCell HeatmapCell", {
   value: "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",

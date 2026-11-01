@@ -47,8 +47,10 @@ export function KjunDropdown({
     ref = useRef<HTMLDivElement>(null),
     id = "kjun-" + useId();
   const [stack, setStack] = useState<string[]>([]);
-  // A keyboard opening lands on the first item; a pointer opening paints nothing until the pointer or a key moves.
-  const byKeyboard = useRef(false);
+  // A keyboard opening lands on the first item (the last for ↑); a pointer opening paints nothing until the pointer or a key moves.
+  const byKeyboard = useRef<false | "first" | "last">(false);
+  // Going back from a submenu returns focus to the row that opened it.
+  const returnTo = useRef("");
   const view = stack[stack.length - 1] ?? "";
   const menuFocusCleanup = useRef<() => void>(() => {});
   const bindMenu = useCallback((menu: HTMLDivElement | null) => {
@@ -68,8 +70,15 @@ export function KjunDropdown({
     };
     menu.addEventListener("focus", focusItem);
     focusItem();
+    const row = returnTo.current;
+    returnTo.current = "";
+    // After react-aria's own first-item focus has landed; a frame of its own so focusItem cannot cancel it.
+    let back = 0;
+    if (row) back = requestAnimationFrame(() => { back = requestAnimationFrame(() =>
+      Array.from(menu.querySelectorAll<HTMLElement>("[data-submenu]")).find(item => item.dataset.submenu === row)?.focus({ preventScroll: true })); });
     menuFocusCleanup.current = () => {
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(back);
       menu.removeEventListener("focus", focusItem);
     };
   }, []);
@@ -107,18 +116,19 @@ export function KjunDropdown({
   useEffect(() => {
     if (unavailable) change(false);
   }, [unavailable]);
-  const menuView: MenuView = { view, open: key => { byKeyboard.current = true; setStack(current => [...current, key]); }, back: () => setStack(current => current.slice(0, -1)) };
+  const menuView: MenuView = { view, open: key => { byKeyboard.current = "first"; returnTo.current = ""; setStack(current => [...current, key]); },
+    back: () => { returnTo.current = view; setStack(current => current.slice(0, -1)); } };
   return (
     <DropdownContext.Provider value={() => change(false)}>
       <div
         ref={ref}
         className="kjun-layer-trigger"
         // A click from Enter or Space has no pointer detail.
-        onClickCapture={(e) => { byKeyboard.current = e.detail === 0; change(!currentOpen.current); }}
+        onClickCapture={(e) => { byKeyboard.current = e.detail === 0 && "first"; change(!currentOpen.current); }}
         onKeyDown={(e) => {
           if (["ArrowDown", "ArrowUp"].includes(e.key)) {
             e.preventDefault();
-            byKeyboard.current = true;
+            byKeyboard.current = e.key === "ArrowUp" ? "last" : "first";
             change(true);
           }
         }}
@@ -138,6 +148,8 @@ export function KjunDropdown({
             const item = (e.target as HTMLElement).closest<HTMLElement>("[data-submenu]");
             if (e.key === "ArrowRight" && item && !item.hasAttribute("data-disabled")) { e.preventDefault(); e.stopPropagation(); menuView.open(item.dataset.submenu!); }
             else if (e.key === "ArrowLeft" && view) { e.preventDefault(); e.stopPropagation(); menuView.back(); }
+            // Escape in a submenu steps back one level; at the top it closes the menu.
+            else if (e.key === "Escape" && view) { e.preventDefault(); e.stopPropagation(); menuView.back(); }
           }}>
             <Menu
               key={view}
@@ -146,7 +158,7 @@ export function KjunDropdown({
               aria-labelledby={controlId}
               className={"kjun-menu " + menuClass}
               data-density={density === "compact" ? "compact" : undefined}
-              autoFocus={view || byKeyboard.current ? "first" : true}
+              autoFocus={view ? "first" : byKeyboard.current || true}
             >
               {children}
             </Menu>
@@ -170,6 +182,11 @@ export interface KjunDropdownItemProps {
   /** Keyboard hint shown at the end, such as "⌘D". It only describes; wiring the keys is the app's job. */
   shortcut?: string;
   textValue?: string;
+  /** Keeps the menu open after choosing, for toggles the user flips several times. */
+  keepOpen?: boolean;
+  /** Makes the item a link; the browser follows it. */
+  href?: string;
+  target?: string;
   children: ReactNode;
   onClick?: () => void;
 }
@@ -193,6 +210,9 @@ export function KjunDropdownItem({
   description,
   shortcut,
   textValue,
+  keepOpen = false,
+  href,
+  target,
   children,
   onClick,
 }: KjunDropdownItemProps) {
@@ -217,12 +237,14 @@ export function KjunDropdownItem({
         textValue || (typeof children === "string" ? children : undefined)
       }
       isDisabled={disabled}
+      href={href}
+      target={target}
       className="kjun-menu-item"
       data-variant={variant}
       data-kjun-selected={selected === true || undefined}
       onAction={() => {
         onClick?.();
-        close?.();
+        if (!keepOpen) close?.();
       }}
     >
       <MenuItemBody icon={icon} check={selected ?? checked} description={description} shortcut={shortcut}>{children}</MenuItemBody>
@@ -232,12 +254,15 @@ export function KjunDropdownItem({
 export interface KjunDropdownSectionProps {
   /** Small heading over the group; it names the group for screen readers. */
   title?: string;
+  /** Names the group for screen readers when it has no visible title. */
+  ariaLabel?: string;
   children: ReactNode;
 }
-export function KjunDropdownSection({ title, children }: KjunDropdownSectionProps) {
+export function KjunDropdownSection({ title, ariaLabel, children }: KjunDropdownSectionProps) {
   const shown = useShown();
-  if (!shown) return null;
-  return <MenuSection className="kjun-menu-section">{title && <Header className="kjun-menu-section-title">{title}</Header>}{children}</MenuSection>;
+  // Outside its own level the group draws nothing itself, but a submenu inside it may be the level shown.
+  if (!shown) return <>{children}</>;
+  return <MenuSection className="kjun-menu-section" aria-label={title ? undefined : ariaLabel}>{title && <Header className="kjun-menu-section-title">{title}</Header>}{children}</MenuSection>;
 }
 export interface KjunDropdownSubmenuProps {
   /** Stable key for the submenu; defaults to the label. */

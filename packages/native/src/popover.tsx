@@ -1,3 +1,4 @@
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useActiveLayerScope } from "../../../shared/package-runtime/use-layer";
 import { typeStyle } from "./typography";
 import {
@@ -31,9 +32,10 @@ export interface KjunPopoverProps {
   flip?: boolean;
   focusOnOpen?: boolean;
   ariaLabel?: string;
-  placement?: "top" | "bottom" | "left" | "right";
-  /** Fixed header above the body; only the body scrolls and maxHeight covers both. */
-  header?: ReactNode;
+  /** A side, or a side with an aligned edge: "bottom-start" lines the panel up with the trigger's start edge. */
+  placement?: "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";
+  /** Fixed header above the body; only the body scrolls and maxHeight covers both. A function receives close. */
+  header?: ReactNode | ((close: () => void) => ReactNode);
   /** Width step (popover.widths): sm 192, md 240 (default), lg 320. matchTriggerWidth takes the trigger's width instead. */
   width?: "sm" | "md" | "lg";
   /** false stops confining screen readers to the panel; Native has no Tab order to release. */
@@ -58,7 +60,7 @@ export function KjunPopover({
   trigger,
   children,
 }: KjunPopoverProps) {
-  const { colors } = useKjunStyles();
+  const { colors } = useKjunStyles(), m = useKjunMessages();
   const [internal, setInternal] = useState(false),
     open = controlled ?? internal,
     ref = useRef<View>(null);
@@ -71,6 +73,8 @@ export function KjunPopover({
       <View ref={ref} collapsable={false}>
         <LayerTrigger
           trigger={typeof trigger === "function" ? trigger(open) : trigger}
+          expanded={open}
+          popup="dialog"
           onPress={() => {
             if (!manualTrigger) change(!open);
           }}
@@ -86,8 +90,9 @@ export function KjunPopover({
         flip={flip}
         popover
         focusOnOpen={focusOnOpen}
-        ariaLabel={ariaLabel}
-        header={header != null ? content(header, { ...typeStyle("control"), color: colors.text }) : undefined}
+        // Named like the web dialog: the label, else a text header, else "details" (never the select default).
+        ariaLabel={ariaLabel ?? (typeof header === "string" ? header : m.details)}
+        header={header != null ? content(typeof header === "function" ? header(() => change(false)) : header, { ...typeStyle("control"), color: colors.text }) : undefined}
         popoverWidth={tokens.extensions.popover.widths[width]}
         nonModal={!modal}
       >

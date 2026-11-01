@@ -1,4 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
+import { createTypeahead } from "../../../shared/package-runtime/typeahead";
 import { computed, defineComponent, inject, mergeProps, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
@@ -108,7 +109,7 @@ export const KjunSelect = defineComponent({
       });
     }, { flush: "post" });
     watch(state.open, value => { if (!value) { focused.value = null; composition.onCompositionend(); } });
-    let typed = "", typedAt = 0;
+    const typeahead = createTypeahead();
     const listKeydown = (event: KeyboardEvent) => {
       const list = optionElements(), current = list.indexOf(document.activeElement as HTMLElement);
       const go = (index: number) => { event.preventDefault(); focusOption(list[index]); };
@@ -117,13 +118,9 @@ export const KjunSelect = defineComponent({
       else if (event.key === "Home" || event.key === "PageUp") go(0);
       else if (event.key === "End" || event.key === "PageDown") go(list.length - 1);
       else if (event.key === "Enter" || event.key === " ") { if (current >= 0) { event.preventDefault(); list[current].click(); } }
-      else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
-        const now = Date.now();
-        typed = (now - typedAt > 1000 ? "" : typed) + event.key.toLocaleLowerCase();
-        typedAt = now;
-        const start = Math.max(0, current), order = [...list.slice(start), ...list.slice(0, start)];
-        const match = order.find(option => (option.textContent || "").trim().toLocaleLowerCase().startsWith(typed));
-        if (match) go(list.indexOf(match));
+      else if (!event.ctrlKey && !event.metaKey && !event.altKey) {
+        const match = typeahead(event.key, list.map(option => option.textContent || ""), current);
+        if (match >= 0) go(match);
       }
     };
     expose({ focus: () => trigger.value?.focus() });

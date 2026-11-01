@@ -2,6 +2,7 @@ import { Teleport, defineComponent, inject, onBeforeUnmount, onUpdated, provide,
 import { tokens } from "@kjun-ui/tokens";
 import { computeFloatingPosition, type Placement } from "../../../shared/package-runtime/floating-position";
 import { kjunPortalKey } from "./runtime/keys";
+import { useKjunMessages } from "./runtime/messages";
 import { kjunLayerScopeKey, useLayer } from "./runtime/layers";
 import { usePresence, useReducedMotion } from "./runtime/presence";
 
@@ -39,6 +40,7 @@ export const FloatingPanel = defineComponent({
     inside: { type: Function as PropType<() => HTMLElement | null>, default: undefined },
   },
   setup(props, { slots, expose }) {
+    const m = useKjunMessages();
     const reduced = useReducedMotion();
     const motion = usePresence(() => props.open, () => reduced.value, tokens.motion.popupExit);
     // Read returnFocus at close time so a prop set or cleared after mount is honoured.
@@ -105,7 +107,7 @@ export const FloatingPanel = defineComponent({
     onBeforeUnmount(detach);
     expose({ panel });
     const dismiss = () => (
-      <div class="kjun-sr-only"><button aria-label="Dismiss" tabindex={-1} onClick={() => props.onOpenChange(false)} /></div>
+      <div class="kjun-sr-only"><button aria-label={m.value.dismiss} tabindex={-1} onClick={() => props.onOpenChange(false)} /></div>
     );
     return () => {
       const to = target();

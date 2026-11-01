@@ -6,7 +6,7 @@ export function PopoverDesignCases({ K }: { K: any }) {
   useLayoutEffect(() => { Object.assign(window, { configurePopover: (next: object) => flushSync(() => setConfig(old => ({ ...old, ...next }))) }); }, []);
   return <main>
     <div data-testid="anchor" style={{ position: 'absolute', left: config.left, top: config.top, width: config.width }}>
-      <K.KjunPopover open={open} onOpenChange={setOpen} ariaLabel="팝오버 디자인" placement={config.placement} noPadding={config.noPadding} matchTriggerWidth={config.matchTriggerWidth} width={config.panelWidth} maxHeight={config.maxHeight} focusOnOpen
+      <K.KjunPopover open={open} onOpenChange={setOpen} ariaLabel={config.noLabel ? undefined : "팝오버 디자인"} placement={config.placement} noPadding={config.noPadding} matchTriggerWidth={config.matchTriggerWidth} width={config.panelWidth} maxHeight={config.maxHeight} focusOnOpen
         trigger={<K.KjunButton block variant="ghost">팝오버 열기</K.KjunButton>}>{config.action ? <>{config.text}<K.KjunButton>실행</K.KjunButton></> : config.text}</K.KjunPopover>
     </div>
     <output data-testid="open">{String(open)}</output>

@@ -30,7 +30,8 @@ const kjunPopoverProps = {
   flip: { type: Boolean, default: true },
   focusOnOpen: { type: Boolean, default: false },
   ariaLabel: { type: String, default: undefined },
-  placement: { type: String as PropType<"top" | "bottom" | "left" | "right">, default: "bottom" },
+  /** A side, or a side with an aligned edge: "bottom-start" lines the panel up with the trigger's start edge. */
+  placement: { type: String as PropType<"top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end">, default: "bottom" },
   /** Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone. */
   returnFocus: { type: [Object, Function] as PropType<HTMLElement | Ref<HTMLElement | null> | (() => HTMLElement | null)>, default: undefined },
   /** false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus. */
@@ -60,6 +61,18 @@ export const KjunPopover = defineComponent({
     const id = useKjunId("kjun-");
     const expanded = usePopupExpanded(() => open.value, () => trigger.value);
     const change = (value: boolean) => { internal.value = value; emit("update:open", value); };
+    // Like React, the trigger's own control carries the dialog state; the wrapper keeps it only when nothing inside can.
+    const control = () => trigger.value?.querySelector<HTMLElement>('button, a[href], input, summary, [role="button"], [tabindex]:not([tabindex="-1"])') ?? null;
+    const bindTrigger = () => {
+      const node = control();
+      if (!node) return;
+      node.setAttribute("aria-haspopup", "dialog");
+      node.setAttribute("aria-expanded", String(expanded.value));
+      if (expanded.value) node.setAttribute("aria-controls", id); else node.removeAttribute("aria-controls");
+    };
+    watch([expanded, trigger], bindTrigger, { flush: "post" });
+    onMounted(bindTrigger);
+    onUpdated(bindTrigger);
     // Anchor mode positions against an invisible fixed element on the rectangle.
     const anchor = ref<HTMLElement | null>(null), reposition = ref(0);
     let opener: HTMLElement | null = null, stopAnchor = () => {};
@@ -100,7 +113,10 @@ export const KjunPopover = defineComponent({
       <>
         {props.anchorRect !== undefined && <div ref={anchor} aria-hidden="true" style={anchorStyle} />}
         {(props.anchorRect === undefined || slots.trigger) && <div {...mergeProps(attrs, { class: "kjun-layer-trigger",
-          onClickCapture: (event: MouseEvent) => { if (!event.defaultPrevented && !props.manualTrigger) change(!open.value); },
+          onClickCapture: (event: MouseEvent) => {
+            if ((event.target as HTMLElement).closest('button:disabled, [aria-disabled="true"]')) return;
+            if (!event.defaultPrevented && !props.manualTrigger) change(!open.value);
+          },
           onKeydown: (event: KeyboardEvent) => {
             if (!event.defaultPrevented && !props.manualTrigger && ["Enter", " "].includes(event.key) && event.target === event.currentTarget) {
               event.preventDefault();
@@ -108,7 +124,7 @@ export const KjunPopover = defineComponent({
             }
           },
           })} ref={trigger}
-          aria-haspopup="dialog" aria-expanded={expanded.value} aria-controls={expanded.value ? id : undefined}>
+          aria-haspopup={control() ? undefined : "dialog"} aria-expanded={control() ? undefined : expanded.value} aria-controls={!control() && expanded.value ? id : undefined}>
           {slots.trigger?.({ open: open.value })}
         </div>}
         <FloatingPanel open={open.value} onOpenChange={change} trigger={() => props.anchorRect !== undefined ? anchor.value : trigger.value} repositionKey={reposition.value}

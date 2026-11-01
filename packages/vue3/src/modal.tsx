@@ -47,11 +47,14 @@ export const KjunFormActions = defineComponent({
 export const DismissButton = defineComponent({
   name: "KjunDismissButton",
   props: { onDismiss: { type: Function as PropType<() => void>, required: true } },
-  setup: props => () => (
+  setup: props => {
+    const m = useKjunMessages();
+    return () => (
     <div class="kjun-sr-only">
-      <button aria-label="Dismiss" tabindex={-1} onClick={() => props.onDismiss()} />
+      <button aria-label={m.value.dismiss} tabindex={-1} onClick={() => props.onDismiss()} />
     </div>
-  ),
+    );
+  },
 });
 
 /** Shared by Modal and Drawer: the window's layer, presence and dismissal wiring. */

@@ -32,11 +32,30 @@ const useShown = () => useContext(MenuViewContext).view === useContext(MenuLevel
 // The check and icon columns each appear once any item in the open menu uses them, so every label shares one start line.
 interface LeadingSlots { check: boolean; icon: boolean }
 const MenuIconSlotContext = createContext<LeadingSlots>({ check: false, icon: false });
-type LeadingProps = { icon?: string; selected?: boolean | null; checked?: boolean | null; children?: ReactNode };
+type LeadingProps = { icon?: string; selected?: boolean | null; checked?: boolean | null; id?: string; label?: string; children?: ReactNode };
 function hasLeading(node: ReactNode, slot: (props: LeadingProps) => boolean): boolean {
   return Children.toArray(node).some(child => isValidElement<LeadingProps>(child) &&
     (child.type === Fragment || child.type === KjunDropdownSection ? hasLeading(child.props.children, slot)
       : (child.type === KjunDropdownItem || child.type === KjunDropdownSubmenu) && slot(child.props)));
+}
+/** The children of the level the menu shows: the top level, or the open submenu's items. */
+function levelChildren(node: ReactNode, view: string, level = ""): ReactNode | undefined {
+  if (view === level) return node;
+  for (const child of Children.toArray(node)) {
+    if (!isValidElement<LeadingProps>(child)) continue;
+    const key = child.type === KjunDropdownSubmenu ? (level ? level + "/" : "") + (child.props.id ?? child.props.label) : level;
+    if (child.type === Fragment || child.type === KjunDropdownSection || child.type === KjunDropdownSubmenu) {
+      const found = levelChildren(child.props.children, view, key);
+      if (found !== undefined) return found;
+    }
+  }
+  return undefined;
+}
+/** A trigger's own name, so the menu is named after it like the web menu (aria-labelledby). */
+function triggerName(node: ReactNode): string | undefined {
+  if (!isValidElement<{ ariaLabel?: string; accessibilityLabel?: string; children?: ReactNode }>(node)) return undefined;
+  if (node.type === KjunTooltip) return triggerName(node.props.children);
+  return node.props.ariaLabel || node.props.accessibilityLabel || (typeof node.props.children === "string" ? node.props.children : undefined);
 }
 export interface KjunDropdownProps {
   disabled?: boolean;
@@ -53,6 +72,7 @@ export interface KjunDropdownProps {
 export function KjunDropdown({
   disabled = false,
   placement = "bottom-start",
+  menuId,
   density = "comfortable",
   trigger,
   children,
@@ -81,6 +101,7 @@ export function KjunDropdown({
     if (unavailable) change(false);
   }, [unavailable]);
   const view = stack[stack.length - 1] ?? "";
+  const shownChildren = levelChildren(children, view) ?? children;
   // Compact rows only where the pointer is fine; touch keeps the full target.
   const menuView: MenuView = { view, open: key => setStack(current => [...current, key]), back: () => setStack(current => current.slice(0, -1)), compact: density === "compact" && finePointer() };
   return (
@@ -89,6 +110,8 @@ export function KjunDropdown({
         <LayerTrigger
           trigger={trigger}
           disabled={disabled}
+          expanded={open}
+          popup="menu"
           onPress={() => change(!currentOpen.current)}
         />
       </View>
@@ -101,7 +124,11 @@ export function KjunDropdown({
         menu
       >
         <MenuViewContext.Provider value={menuView}>
-          <MenuIconSlotContext.Provider value={{ check: hasLeading(children, p => p.selected != null || p.checked != null), icon: hasLeading(children, p => !!p.icon) }}>{children}</MenuIconSlotContext.Provider>
+          {/* Leading columns are reserved for the level on show, as on Web. */}
+          <MenuIconSlotContext.Provider value={{ check: hasLeading(shownChildren, p => p.selected != null || p.checked != null), icon: hasLeading(shownChildren, p => !!p.icon) }}>
+            {/* Native Web reads the rows as a menu, like the web packages. */}
+            <View nativeID={menuId} {...(Platform.OS === "web" ? { role: "menu" as const, "aria-label": triggerName(control) ?? m.menu } : {})}>{children}</View>
+          </MenuIconSlotContext.Provider>
         </MenuViewContext.Provider>
       </FloatingPanel>
     </DropdownContext.Provider>
@@ -120,12 +147,14 @@ export interface KjunDropdownItemProps {
   description?: string;
   /** Keyboard hint shown at the end on Native Web, such as "⌘D". It only describes; wiring the keys is the app's job. */
   shortcut?: string;
+  /** Keeps the menu open after choosing, for toggles the user flips several times. */
+  keepOpen?: boolean;
   children: ReactNode;
   onPress?: () => void;
 }
-function MenuRow({ variant = "default", icon, disabled = false, check = null, description, shortcut, chevron, back, accessibilityRole, accessibilityLabel, children, onPress }: {
+function MenuRow({ variant = "default", icon, disabled = false, check = null, description, shortcut, chevron, back, accessibilityRole, accessibilityLabel, nativeID, children, onPress }: {
   variant?: "default" | "danger"; icon?: string; disabled?: boolean; check?: boolean | null; description?: string; shortcut?: string; chevron?: boolean; back?: boolean;
-  accessibilityRole: "menuitem" | "radio" | "checkbox"; accessibilityLabel?: string; children: ReactNode; onPress: () => void }) {
+  accessibilityRole: "menuitem" | "radio" | "checkbox"; accessibilityLabel?: string; nativeID?: string; children: ReactNode; onPress: () => void }) {
   const { colors } = useKjunStyles(), menu = useContext(MenuViewContext), reserve = useContext(MenuIconSlotContext);
   const geometry = tokens.extensions.menu;
   const [hovered, setHovered] = useState(false);
@@ -141,8 +170,14 @@ function MenuRow({ variant = "default", icon, disabled = false, check = null, de
       accessibilityRole={accessibilityRole}
       accessibilityLabel={accessibilityLabel}
       accessibilityState={{ disabled, ...(check === null ? {} : { checked: check }) }}
-      // A submenu row says it opens a menu, as on Web.
-      {...(Platform.OS === "web" && chevron ? { "aria-haspopup": "menu" } : {})}
+      nativeID={nativeID}
+      // A submenu row says it opens a menu, as on Web. Inside role="menu", choices are menu radio and checkbox items.
+      {...(Platform.OS === "web" ? {
+        ...(chevron ? { "aria-haspopup": "menu" } : {}),
+        // React Native's Role type has no menu radio or checkbox items; React Native Web passes the role through.
+        role: (accessibilityRole === "radio" ? "menuitemradio" : accessibilityRole === "checkbox" ? "menuitemcheckbox" : "menuitem") as "menuitem",
+        ...(check === null ? {} : { "aria-checked": check }),
+      } : {})}
       disabled={disabled}
       onHoverIn={() => setHovered(true)}
       onHoverOut={() => setHovered(false)}
@@ -173,6 +208,7 @@ function MenuRow({ variant = "default", icon, disabled = false, check = null, de
   );
 }
 export function KjunDropdownItem({
+  id,
   variant = "default",
   icon,
   disabled = false,
@@ -180,25 +216,29 @@ export function KjunDropdownItem({
   checked = null,
   description,
   shortcut,
+  keepOpen = false,
   children,
   onPress,
 }: KjunDropdownItemProps) {
   const close = useContext(DropdownContext);
   if (!useShown()) return null;
-  return <MenuRow variant={variant} icon={icon} disabled={disabled} check={selected ?? checked} description={description} shortcut={shortcut}
+  return <MenuRow variant={variant} icon={icon} disabled={disabled} check={selected ?? checked} description={description} shortcut={shortcut} nativeID={id}
     accessibilityRole={selected !== null ? "radio" : checked !== null ? "checkbox" : "menuitem"}
-    onPress={() => { onPress?.(); close?.(); }}>{children}</MenuRow>;
+    onPress={() => { onPress?.(); if (!keepOpen) close?.(); }}>{children}</MenuRow>;
 }
 export interface KjunDropdownSectionProps {
   /** Small heading over the group; it names the group for screen readers. */
   title?: string;
+  /** Names the group for screen readers when it has no visible title. */
+  ariaLabel?: string;
   children: ReactNode;
 }
-export function KjunDropdownSection({ title, children }: KjunDropdownSectionProps) {
+export function KjunDropdownSection({ title, ariaLabel, children }: KjunDropdownSectionProps) {
   const { colors } = useKjunStyles(), menu = useContext(MenuViewContext);
   const geometry = tokens.extensions.menu;
-  if (!useShown()) return null;
-  return <View role="group" aria-label={title}>
+  // Outside its own level the group draws nothing itself, but a submenu inside it may be the level shown.
+  if (!useShown()) return <>{children}</>;
+  return <View role="group" aria-label={title || ariaLabel}>
     {!!title && <KText aria-hidden={true} style={{ ...typeStyle("meta"), color: colors.textTertiary, paddingTop: geometry.sectionPaddingTop, paddingBottom: geometry.sectionPaddingBottom,
       paddingHorizontal: menu.compact ? geometry.compactOptionPaddingX : geometry.optionPaddingX }}>{title}</KText>}
     {content(children)}

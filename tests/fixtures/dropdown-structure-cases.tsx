@@ -6,7 +6,7 @@ export const structureConfig = { density: 'comfortable' };
 export function DropdownStructureCases({ K, native = false }: { K: any; native?: boolean }) {
   const [config, setConfig] = useState(structureConfig);
   const [sort, setSort] = useState('name');
-  const [hidden, setHidden] = useState(true);
+  const [hidden, setHidden] = useState(true), [alerts, setAlerts] = useState(false);
   const [last, setLast] = useState('');
   useLayoutEffect(() => {
     Object.assign(window, { configureStructure: (next: object) => setConfig(c => ({ ...c, ...next })) });
@@ -22,6 +22,12 @@ export function DropdownStructureCases({ K, native = false }: { K: any; native?:
         </K.KjunDropdownSection>
         <K.KjunDropdownDivider />
         <K.KjunDropdownItem checked={hidden} description="보관한 항목 포함" shortcut="⌘H" {...press('숨긴 항목 보기', () => setHidden(v => !v))}>숨긴 항목 보기</K.KjunDropdownItem>
+        <K.KjunDropdownItem checked={alerts} keepOpen {...press('알림 받기', () => setAlerts(v => !v))}>알림 받기</K.KjunDropdownItem>
+        <K.KjunDropdownSection ariaLabel="더 보기">
+          <K.KjunDropdownSubmenu label="내보내기">
+            <K.KjunDropdownItem {...press('PDF')}>PDF</K.KjunDropdownItem>
+          </K.KjunDropdownSubmenu>
+        </K.KjunDropdownSection>
         <K.KjunDropdownSubmenu label="공유" icon="send">
           <K.KjunDropdownItem icon="link" shortcut="⌘L" {...press('링크 복사')}>링크 복사</K.KjunDropdownItem>
           <K.KjunDropdownItem icon="mail" {...press('이메일로 보내기')}>이메일로 보내기</K.KjunDropdownItem>
