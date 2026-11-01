@@ -845,6 +845,17 @@
       ]
     },
     {
+      "name": "KjunListGroup",
+      "category": "data-display",
+      "aliases": [
+        "목록 묶음",
+        "섹션 묶음"
+      ],
+      "useCases": [
+        "설정 화면"
+      ]
+    },
+    {
       "name": "KjunListItem",
       "category": "data-display",
       "aliases": [

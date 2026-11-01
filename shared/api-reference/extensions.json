@@ -59,7 +59,8 @@
       "density",
       "surface",
       "radius",
-      "titleVariant"
+      "titleVariant",
+      "headingLevel"
     ],
     "react": [
       "title",
@@ -71,7 +72,10 @@
       "density",
       "surface",
       "radius",
-      "titleVariant"
+      "titleVariant",
+      "headingLevel",
+      "empty",
+      "footer"
     ],
     "native": [
       "title",
@@ -83,7 +87,9 @@
       "density",
       "surface",
       "radius",
-      "titleVariant"
+      "titleVariant",
+      "empty",
+      "footer"
     ]
   },
   "KjunListItem": {
@@ -529,6 +535,19 @@
       "onValueChange",
       "onChangeCommit",
       "onInvalidInput"
+    ]
+  },
+  "KjunListGroup": {
+    "vue3": [
+      "variant"
+    ],
+    "react": [
+      "variant",
+      "children"
+    ],
+    "native": [
+      "variant",
+      "children"
     ]
   }
 }

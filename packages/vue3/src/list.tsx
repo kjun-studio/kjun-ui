@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent, inject, onMounted, provide, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { useKjunId } from "./input";
@@ -77,34 +77,65 @@ const kjunListSectionProps = {
   divider: { type: Boolean, default: true },
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
   density: { type: String as PropType<"default" | "compact">, default: "default" },
-  /** Rounds the section on the card radius steps and clips its rows to the corners (default "none"). */
-  radius: { type: String as PropType<CardRadius>, default: "none" },
+  /** Rounds the section on the card radius steps and clips its rows to the corners (default "none", or the KjunListGroup's). */
+  radius: { type: String as PropType<CardRadius>, default: undefined },
   /** "title" is the 16px heading, "label" the small caption above the rows; by default a title with a description is a heading and one without is a label. */
   titleVariant: { type: String as PropType<"title" | "label">, default: undefined },
+  /** Heading level of the title (default 3). */
+  headingLevel: { type: Number as PropType<2 | 3 | 4>, default: 3 },
 } as const;
 export type KjunListSectionProps = ExtractPublicPropTypes<typeof kjunListSectionProps>;
-/** Slots: default (KjunListRow items), actions. */
+const kjunListGroupKey = Symbol("kjunListGroup");
+/** Slots: default (KjunListRow items), actions, empty (in place of no rows), footer (supporting text under the rows). */
 export const KjunListSection = defineComponent({
   name: "KjunListSection",
   props: kjunListSectionProps,
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
     actions?: () => VNodeChild;
+    empty?: () => VNodeChild;
+    footer?: () => VNodeChild;
   }>,
   setup(props, { slots }) {
-    const id = useKjunId("kjun-");
+    const id = useKjunId("kjun-"), group = inject<"inset" | "flush" | null>(kjunListGroupKey, null);
     return () => {
-      const actions = slots.actions?.();
+      const actions = slots.actions?.(), children = slots.default?.(), empty = slots.empty?.(), footer = slots.footer?.();
+      const corner = props.radius ?? (group === "inset" ? "lg" : "none");
+      const label = props.titleVariant ? props.titleVariant === "label" : !!props.title && !props.description;
+      // Like React: a rounded section with a label title keeps the label and footer on the page, around its card.
+      const outside = corner !== "none" && !!props.title && label;
+      const rounded = corner === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${corner})` };
+      const Heading = `h${props.headingLevel}` as "h3";
+      const rows = hasContent(children)
+        ? <ul class="kjun-list" aria-label={props.ariaLabel || props.title} data-divider={props.divider ? undefined : "false"} data-density={props.density === "compact" ? "compact" : undefined}>{children}</ul>
+        : hasContent(empty) ? <div class="kjun-list-empty">{empty}</div> : null;
       return (
-        <section class="kjun-list-section" data-surface={props.surface ? undefined : "false"}
-          data-radius={props.radius === "none" ? undefined : props.radius} style={props.radius === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${props.radius})` }} aria-labelledby={props.title ? id : undefined} aria-label={props.title ? undefined : props.ariaLabel}>
+        <section class="kjun-list-section" data-surface={props.surface ? undefined : "false"} data-outside={outside || undefined}
+          data-radius={corner === "none" || outside ? undefined : corner} style={outside ? undefined : rounded} aria-labelledby={props.title ? id : undefined} aria-label={props.title ? undefined : props.ariaLabel}>
           {(props.title || props.description || hasContent(actions)) && (
-            <div class="kjun-list-heading" data-bare={props.title && (props.titleVariant ? props.titleVariant === "label" : !props.description) ? "" : undefined}><div>{props.title && <h3 id={id}>{props.title}</h3>}{props.description && <p>{props.description}</p>}</div>{actions}</div>
+            <div class="kjun-list-heading" data-bare={props.title && label ? "" : undefined}><div>{props.title && <Heading id={id}>{props.title}</Heading>}{props.description && <p>{props.description}</p>}</div>{hasContent(actions) && <div class="kjun-list-heading-actions">{actions}</div>}</div>
           )}
-          <ul class="kjun-list" aria-label={props.ariaLabel || props.title} data-divider={props.divider ? undefined : "false"} data-density={props.density === "compact" ? "compact" : undefined}>{slots.default?.()}</ul>
+          {outside ? <div class="kjun-list-panel" data-surface={props.surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
+          {hasContent(footer) && <div class="kjun-list-footer">{footer}</div>}
         </section>
       );
     };
+  },
+});
+
+const kjunListGroupProps = {
+  /** "inset" (default) rounds every section and keeps them 24px apart; "flush" keeps square sections 8px apart. */
+  variant: { type: String as PropType<"inset" | "flush">, default: "inset" },
+} as const;
+export type KjunListGroupProps = ExtractPublicPropTypes<typeof kjunListGroupProps>;
+/** Stacks KjunListSections with one spacing and corner rule. Slot: default (KjunListSection items). */
+export const KjunListGroup = defineComponent({
+  name: "KjunListGroup",
+  props: kjunListGroupProps,
+  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
+  setup(props, { slots }) {
+    provide(kjunListGroupKey, props.variant);
+    return () => <div class="kjun-list-group" data-variant={props.variant}>{slots.default?.()}</div>;
   },
 });
 

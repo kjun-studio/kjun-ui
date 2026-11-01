@@ -13251,6 +13251,113 @@
       }
     }
   },
+  "KjunListGroup": {
+    "name": "KjunListGroup",
+    "path": "/components/list-group",
+    "related": "generic-lists",
+    "description": "목록 섹션 여러 개를 같은 간격과 모서리 규칙으로 쌓는 묶음입니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "섹션 라벨",
+                "description": "둥근 묶음에서는 카드 밖 위에 놓는 작은 라벨입니다.",
+                "target": "text=계정",
+                "optional": true
+              },
+              {
+                "label": "안내문",
+                "description": "카드 밖 아래 12px 3차색 footer입니다.",
+                "target": "text=푸시 알림은 이 기기에서만 적용됩니다.",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "inset은 섹션을 둥글게(lg) 하고 24px 띄우며, 라벨형 제목과 footer는 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다. 섹션의 radius를 직접 주면 그 값을 따릅니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "섹션 라벨",
+                "description": "둥근 묶음에서는 카드 밖 위에 놓는 작은 라벨입니다.",
+                "target": "text=계정",
+                "optional": true
+              },
+              {
+                "label": "안내문",
+                "description": "카드 밖 아래 12px 3차색 footer입니다.",
+                "target": "text=푸시 알림은 이 기기에서만 적용됩니다.",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "inset은 섹션을 둥글게(lg) 하고 24px 띄우며, 라벨형 제목과 footer는 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다. 섹션의 radius를 직접 주면 그 값을 따릅니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "섹션 라벨",
+                "description": "둥근 묶음에서는 카드 밖 위에 놓는 작은 라벨입니다.",
+                "target": "text=계정",
+                "optional": true
+              },
+              {
+                "label": "안내문",
+                "description": "카드 밖 아래 12px 3차색 footer입니다.",
+                "target": "text=푸시 알림은 이 기기에서만 적용됩니다.",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "inset은 섹션을 둥글게(lg) 하고 24px 띄우며, 라벨형 제목과 footer는 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다. 섹션의 radius를 직접 주면 그 값을 따릅니다."
+      }
+    }
+  },
   "KjunListItem": {
     "name": "KjunListItem",
     "path": "/components/list-item",

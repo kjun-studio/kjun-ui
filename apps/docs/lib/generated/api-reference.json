@@ -28477,8 +28477,8 @@
             "name": "radius",
             "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\"",
             "required": false,
-            "default": "\"none\"",
-            "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\").",
+            "default": "—",
+            "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\", or the KjunListGroup's).",
             "summary": "섹션 모서리를 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)로 둥글게 하고, 안의 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
             "source": "packages/vue3/src/list.tsx"
           },
@@ -28493,6 +28493,22 @@
               {
                 "label": "값",
                 "text": "title은 16px 제목, label은 행 위의 작은 라벨입니다. 생략하면 설명이 있는 제목은 title, 없는 제목은 label입니다."
+              }
+            ],
+            "source": "packages/vue3/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "headingLevel",
+            "type": "2 | 3 | 4",
+            "required": false,
+            "default": "3",
+            "description": "Heading level of the title (default 3).",
+            "summary": "섹션 제목의 제목 수준입니다.",
+            "details": [
+              {
+                "label": "값",
+                "text": "2·3·4 중 하나이며 기본 3입니다. 페이지의 제목 구조에 맞춰 화면 낭독기의 제목 탐색 순서를 정합니다. Native는 제목 역할만 있고 수준은 없습니다."
               }
             ],
             "source": "packages/vue3/src/list.tsx",
@@ -28533,6 +28549,42 @@
               {
                 "label": "사용 계약",
                 "text": "버튼·Switch·Checkbox 등의 값과 콜백을 소비자가 연결합니다."
+              }
+            ],
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "empty",
+            "data": [],
+            "source": "packages/vue3/src/list.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "행이 없을 때 행 자리에 표시할 내용입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "KjunEmpty 등 빈 상태를 넣습니다. 행이 하나라도 있으면 표시하지 않습니다."
+              }
+            ],
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "footer",
+            "data": [],
+            "source": "packages/vue3/src/list.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "행 아래 둘 보조 안내문입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "12px 3차 글자색으로 표시합니다. 둥근 섹션의 라벨형 제목과 함께 쓰면 카드 밖 아래에 놓입니다."
               }
             ],
             "example": "/components/list-section#preview"
@@ -28587,7 +28639,7 @@
           {
             "name": "children",
             "type": "ReactNode",
-            "required": true,
+            "required": false,
             "default": "—",
             "description": "",
             "summary": "영역 안에 배치할 소비자 콘텐츠입니다.",
@@ -28644,8 +28696,8 @@
             "name": "radius",
             "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
             "required": false,
-            "default": "\"none\"",
-            "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\").",
+            "default": "—",
+            "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\", or the KjunListGroup's).",
             "summary": "섹션 모서리를 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)로 둥글게 하고, 안의 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
             "source": "packages/react/src/list.tsx"
           },
@@ -28660,6 +28712,62 @@
               {
                 "label": "값",
                 "text": "title은 16px 제목, label은 행 위의 작은 라벨입니다. 생략하면 설명이 있는 제목은 title, 없는 제목은 label입니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "headingLevel",
+            "type": "3 | 2 | 4 | undefined",
+            "required": false,
+            "default": "3",
+            "description": "Heading level of the title (default 3).",
+            "summary": "섹션 제목의 제목 수준입니다.",
+            "details": [
+              {
+                "label": "값",
+                "text": "2·3·4 중 하나이며 기본 3입니다. 페이지의 제목 구조에 맞춰 화면 낭독기의 제목 탐색 순서를 정합니다. Native는 제목 역할만 있고 수준은 없습니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "empty",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Shown in place of the rows when the section has none, such as a KjunEmpty.",
+            "summary": "행이 없을 때 행 자리에 표시할 내용입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "KjunEmpty 등 빈 상태를 넣습니다. 행이 하나라도 있으면 표시하지 않습니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "footer",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Supporting text under the rows, such as what a setting applies to.",
+            "summary": "행 아래 둘 보조 안내문입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "12px 3차 글자색으로 표시합니다. 둥근 섹션의 라벨형 제목과 함께 쓰면 카드 밖 아래에 놓입니다."
               }
             ],
             "source": "packages/react/src/list.tsx",
@@ -28717,7 +28825,7 @@
           {
             "name": "children",
             "type": "ReactNode",
-            "required": true,
+            "required": false,
             "default": "—",
             "description": "",
             "summary": "영역 안에 배치할 소비자 콘텐츠입니다.",
@@ -28774,8 +28882,8 @@
             "name": "radius",
             "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
             "required": false,
-            "default": "\"none\"",
-            "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\").",
+            "default": "—",
+            "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\", or the KjunListGroup's).",
             "summary": "섹션 모서리를 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)로 둥글게 하고, 안의 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
             "source": "packages/native/src/list.tsx"
           },
@@ -28794,6 +28902,46 @@
             ],
             "source": "packages/native/src/list.tsx",
             "example": "/components/list-section#preview"
+          },
+          {
+            "name": "empty",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Shown in place of the rows when the section has none, such as a KjunEmpty.",
+            "summary": "행이 없을 때 행 자리에 표시할 내용입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "KjunEmpty 등 빈 상태를 넣습니다. 행이 하나라도 있으면 표시하지 않습니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "footer",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Supporting text under the rows, such as what a setting applies to.",
+            "summary": "행 아래 둘 보조 안내문입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "12px 3차 글자색으로 표시합니다. 둥근 섹션의 라벨형 제목과 함께 쓰면 카드 밖 아래에 놓입니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-section#preview"
           }
         ],
         "events": [],
@@ -28801,6 +28949,160 @@
         "ownership": [
           "목록 콘텐츠를 배치하며 선택·정렬·요청 상태를 소유하지 않습니다.",
           "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다."
+        ],
+        "types": []
+      }
+    },
+    "KjunListGroup": {
+      "vue3": {
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"inset\" | \"flush\"",
+            "required": false,
+            "default": "\"inset\"",
+            "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart.",
+            "summary": "섹션을 쌓는 모양입니다.",
+            "details": [
+              {
+                "label": "값",
+                "text": "inset(기본)은 섹션을 lg 모서리로 둥글게 하고 24px 띄우며, 라벨형 제목과 footer를 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다."
+              },
+              {
+                "label": "섹션 설정",
+                "text": "섹션에 radius를 직접 주면 그 값이 우선합니다."
+              }
+            ],
+            "source": "packages/vue3/src/list.tsx",
+            "example": "/components/list-group#preview"
+          }
+        ],
+        "events": [],
+        "slots": [
+          {
+            "name": "default",
+            "data": [],
+            "source": "packages/vue3/src/list.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "영역 안에 배치할 소비자 콘텐츠입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다."
+              }
+            ],
+            "example": "/components/list-group#preview"
+          }
+        ],
+        "ownership": [
+          "섹션 배치만 맡으며 선택·정렬·요청 상태를 소유하지 않습니다.",
+          "웹은 div, Native는 View로 구성하고 같은 간격 토큰을 씁니다."
+        ],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"inset\" | \"flush\" | undefined",
+            "required": false,
+            "default": "\"inset\"",
+            "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart.",
+            "summary": "섹션을 쌓는 모양입니다.",
+            "details": [
+              {
+                "label": "값",
+                "text": "inset(기본)은 섹션을 lg 모서리로 둥글게 하고 24px 띄우며, 라벨형 제목과 footer를 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다."
+              },
+              {
+                "label": "섹션 설정",
+                "text": "섹션에 radius를 직접 주면 그 값이 우선합니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-group#preview"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "영역 안에 배치할 소비자 콘텐츠입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-group#preview"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "섹션 배치만 맡으며 선택·정렬·요청 상태를 소유하지 않습니다.",
+          "웹은 div, Native는 View로 구성하고 같은 간격 토큰을 씁니다."
+        ],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"inset\" | \"flush\" | undefined",
+            "required": false,
+            "default": "\"inset\"",
+            "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart.",
+            "summary": "섹션을 쌓는 모양입니다.",
+            "details": [
+              {
+                "label": "값",
+                "text": "inset(기본)은 섹션을 lg 모서리로 둥글게 하고 24px 띄우며, 라벨형 제목과 footer를 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다."
+              },
+              {
+                "label": "섹션 설정",
+                "text": "섹션에 radius를 직접 주면 그 값이 우선합니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-group#preview"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "영역 안에 배치할 소비자 콘텐츠입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-group#preview"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "섹션 배치만 맡으며 선택·정렬·요청 상태를 소유하지 않습니다.",
+          "웹은 div, Native는 View로 구성하고 같은 간격 토큰을 씁니다."
         ],
         "types": []
       }

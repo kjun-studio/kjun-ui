@@ -44,7 +44,11 @@
       "actionsGap": { "$ref": "dimension.value8" },
       "actionsPadding": { "$ref": "extensions.list.padding" },
       "leadingWidth": { "$ref": "dimension.value40" },
-      "bareHeadingPaddingBottom": { "$ref": "dimension.value4" }
+      "bareHeadingPaddingBottom": { "$ref": "dimension.value4" },
+      "outsideLabelGap": { "$ref": "dimension.value8" },
+      "footerGap": { "$ref": "dimension.value8" },
+      "groupGap": { "$ref": "dimension.value24" },
+      "flushGroupGap": { "$ref": "dimension.value8" }
     },
     "navigation": {
       "minimumHeight": { "$ref": "extensions.topNavigation.minimumHeight" },

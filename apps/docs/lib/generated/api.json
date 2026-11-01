@@ -9686,6 +9686,57 @@
       }
     ]
   },
+  "KjunListGroup": {
+    "vue3": [
+      {
+        "name": "variant",
+        "type": "\"inset\" | \"flush\"",
+        "required": false,
+        "default": "\"inset\"",
+        "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart."
+      }
+    ],
+    "events": [],
+    "slots": [
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      }
+    ],
+    "react": [
+      {
+        "name": "variant",
+        "type": "\"inset\" | \"flush\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart."
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "variant",
+        "type": "\"inset\" | \"flush\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart."
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
   "KjunListItem": {
     "vue3": [],
     "events": [],
@@ -10100,8 +10151,8 @@
         "name": "radius",
         "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\"",
         "required": false,
-        "default": "\"none\"",
-        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\")."
+        "default": "—",
+        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\", or the KjunListGroup's)."
       },
       {
         "name": "titleVariant",
@@ -10109,6 +10160,13 @@
         "required": false,
         "default": "—",
         "description": "\"title\" is the 16px heading, \"label\" the small caption above the rows; by default a title with a description is a heading and one without is a label."
+      },
+      {
+        "name": "headingLevel",
+        "type": "2 | 3 | 4",
+        "required": false,
+        "default": "3",
+        "description": "Heading level of the title (default 3)."
       }
     ],
     "events": [],
@@ -10120,6 +10178,16 @@
       },
       {
         "name": "actions",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      },
+      {
+        "name": "empty",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      },
+      {
+        "name": "footer",
         "data": [],
         "source": "packages/vue3/src/list.tsx"
       }
@@ -10149,7 +10217,7 @@
       {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
-        "required": true,
+        "required": false,
         "default": "—",
         "description": ""
       },
@@ -10186,7 +10254,7 @@
         "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
         "required": false,
         "default": "—",
-        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\")."
+        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\", or the KjunListGroup's)."
       },
       {
         "name": "titleVariant",
@@ -10194,6 +10262,27 @@
         "required": false,
         "default": "—",
         "description": "\"title\" is the 16px heading, \"label\" the small caption above the rows; by default a title with a description is a heading and one without is a label."
+      },
+      {
+        "name": "headingLevel",
+        "type": "3 | 2 | 4 | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Heading level of the title (default 3)."
+      },
+      {
+        "name": "empty",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Shown in place of the rows when the section has none, such as a KjunEmpty."
+      },
+      {
+        "name": "footer",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Supporting text under the rows, such as what a setting applies to."
       }
     ],
     "native": [
@@ -10221,7 +10310,7 @@
       {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
-        "required": true,
+        "required": false,
         "default": "—",
         "description": ""
       },
@@ -10258,7 +10347,7 @@
         "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
         "required": false,
         "default": "—",
-        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\")."
+        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\", or the KjunListGroup's)."
       },
       {
         "name": "titleVariant",
@@ -10266,6 +10355,20 @@
         "required": false,
         "default": "—",
         "description": "\"title\" is the 16px heading, \"label\" the small caption above the rows; by default a title with a description is a heading and one without is a label."
+      },
+      {
+        "name": "empty",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Shown in place of the rows when the section has none, such as a KjunEmpty."
+      },
+      {
+        "name": "footer",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Supporting text under the rows, such as what a setting applies to."
       }
     ]
   },

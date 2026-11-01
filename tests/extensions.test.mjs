@@ -3,11 +3,11 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { createNumberDomain, createSliderDomain, createTimeDomain, scaledDecimal, sliderKey } from "../packages/tokens/src/input-contract.ts";
 const json = file => JSON.parse(readFileSync(new URL("../" + file, import.meta.url), "utf8"));
-test("fourteen KJUN contracts extend the public catalog without duplicate recipe exports", () => {
+test("fifteen KJUN contracts extend the public catalog without duplicate recipe exports", () => {
   const catalog = json("shared/component-catalog.json"),
-    names = ["Avatar", "BottomActionBar", "BottomNavigation", "Carousel", "Chip", "FloatingNavigation", "Image", "ListRow", "ListSection", "QuantityStepper", "RangeSlider", "Slider", "TimePicker", "TopNavigation"].map(n => "Kjun" + n),
+    names = ["Avatar", "BottomActionBar", "BottomNavigation", "Carousel", "Chip", "FloatingNavigation", "Image", "ListGroup", "ListRow", "ListSection", "QuantityStepper", "RangeSlider", "Slider", "TimePicker", "TopNavigation"].map(n => "Kjun" + n),
     additions = catalog.filter(entry => names.includes(entry.name));
-  assert.equal(catalog.filter(entry => entry.kind !== "internal").length, 86);
+  assert.equal(catalog.filter(entry => entry.kind !== "internal").length, 87);
   assert.deepEqual(additions.map(e => e.name).sort(), [...names].sort());
   assert.equal(new Set(catalog.map(e => e.name)).size, catalog.length);
   for (const item of additions) for (const platform of ["vue3", "react", "native"]) assert.ok(readFileSync(item.sources[platform], "utf8").length);

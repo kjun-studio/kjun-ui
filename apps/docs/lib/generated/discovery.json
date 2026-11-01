@@ -64,7 +64,7 @@
         "표시",
         "시각화"
       ],
-      "count": 16
+      "count": 17
     },
     {
       "id": "finance",
@@ -16923,6 +16923,178 @@
       "thumbnail": "/previews/thumbnails/kpi-row.png"
     },
     {
+      "id": "list-group",
+      "path": "/components/list-group",
+      "title": "ListGroup",
+      "group": "Components",
+      "component": "KjunListGroup",
+      "description": "목록 섹션 여러 개를 같은 간격과 모서리 규칙으로 쌓는 묶음입니다.",
+      "category": "data-display",
+      "aliases": [
+        "목록 묶음",
+        "섹션 묶음"
+      ],
+      "useCases": [
+        "설정 화면"
+      ],
+      "api": [
+        "variant",
+        "default",
+        "children"
+      ],
+      "sectionGroups": [
+        {
+          "id": "usage",
+          "title": "사용법",
+          "sections": [
+            "preview",
+            "guidelines",
+            "usage"
+          ]
+        },
+        {
+          "id": "design",
+          "title": "디자인",
+          "sections": [
+            "anatomy",
+            "states"
+          ]
+        },
+        {
+          "id": "api",
+          "title": "API",
+          "sections": [
+            "api"
+          ]
+        },
+        {
+          "id": "accessibility",
+          "title": "접근성",
+          "sections": [
+            "accessibility"
+          ]
+        }
+      ],
+      "terms": [
+        "구조 도해",
+        "Anatomy",
+        "섹션 라벨",
+        "둥근 묶음에서는 카드 밖 위에 놓는 작은 라벨입니다.",
+        "안내문",
+        "카드 밖 아래 12px 3차색 footer입니다.",
+        "기본 예제",
+        "섹션 라벨",
+        "둥근 묶음에서는 카드 밖 위에 놓는 작은 라벨입니다.",
+        "안내문",
+        "카드 밖 아래 12px 3차색 footer입니다.",
+        "기본 예제",
+        "섹션 라벨",
+        "둥근 묶음에서는 카드 밖 위에 놓는 작은 라벨입니다.",
+        "안내문",
+        "카드 밖 아래 12px 3차색 footer입니다.",
+        "기본 예제",
+        "섹션을 쌓는 모양입니다.",
+        "값",
+        "inset(기본)은 섹션을 lg 모서리로 둥글게 하고 24px 띄우며, 라벨형 제목과 footer를 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다.",
+        "섹션 설정",
+        "섹션에 radius를 직접 주면 그 값이 우선합니다.",
+        "영역 안에 배치할 소비자 콘텐츠입니다.",
+        "슬롯 데이터",
+        "제공 데이터 없음",
+        "사용 계약",
+        "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다.",
+        "섹션을 쌓는 모양입니다.",
+        "값",
+        "inset(기본)은 섹션을 lg 모서리로 둥글게 하고 24px 띄우며, 라벨형 제목과 footer를 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다.",
+        "섹션 설정",
+        "섹션에 radius를 직접 주면 그 값이 우선합니다.",
+        "영역 안에 배치할 소비자 콘텐츠입니다.",
+        "슬롯 데이터",
+        "ReactNode",
+        "사용 계약",
+        "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다.",
+        "섹션을 쌓는 모양입니다.",
+        "값",
+        "inset(기본)은 섹션을 lg 모서리로 둥글게 하고 24px 띄우며, 라벨형 제목과 footer를 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다.",
+        "섹션 설정",
+        "섹션에 radius를 직접 주면 그 값이 우선합니다.",
+        "영역 안에 배치할 소비자 콘텐츠입니다.",
+        "슬롯 데이터",
+        "ReactNode",
+        "사용 계약",
+        "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다.",
+        "섹션 배치만 맡으며 선택·정렬·요청 상태를 소유하지 않습니다.",
+        "웹은 div, Native는 View로 구성하고 같은 간격 토큰을 씁니다.",
+        "섹션 배치만 맡으며 선택·정렬·요청 상태를 소유하지 않습니다.",
+        "웹은 div, Native는 View로 구성하고 같은 간격 토큰을 씁니다.",
+        "섹션 배치만 맡으며 선택·정렬·요청 상태를 소유하지 않습니다.",
+        "웹은 div, Native는 View로 구성하고 같은 간격 토큰을 씁니다.",
+        "섹션 배치만 맡으며 선택·정렬·요청 상태를 소유하지 않습니다.",
+        "inset은 섹션을 둥글게(lg) 하고 24px 띄우며, 라벨형 제목과 footer는 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다. 섹션의 radius를 직접 주면 그 값을 따릅니다.",
+        "웹은 div, Native는 View로 구성하고 같은 간격 토큰을 씁니다.",
+        "Data Display",
+        "데이터",
+        "표시",
+        "시각화",
+        "실행 예제",
+        "동작과 책임",
+        "기본 사용법",
+        "구조",
+        "상태·크기",
+        "API",
+        "접근성·플랫폼 차이"
+      ],
+      "sections": [
+        [
+          "preview",
+          "실행 예제"
+        ],
+        [
+          "guidelines",
+          "동작과 책임"
+        ],
+        [
+          "usage",
+          "기본 사용법"
+        ],
+        [
+          "anatomy",
+          "구조"
+        ],
+        [
+          "states",
+          "상태·크기"
+        ],
+        [
+          "api",
+          "API"
+        ],
+        [
+          "accessibility",
+          "접근성·플랫폼 차이"
+        ]
+      ],
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "thumbnail": "/previews/thumbnails/list-group.png"
+    },
+    {
       "id": "list-row",
       "path": "/components/list-row",
       "title": "ListRow",
@@ -17304,8 +17476,11 @@
         "density",
         "radius",
         "titleVariant",
+        "headingLevel",
         "default",
         "actions",
+        "empty",
+        "footer",
         "children"
       ],
       "sectionGroups": [
@@ -17388,6 +17563,9 @@
         "섹션 제목 모양을 고릅니다.",
         "값",
         "title은 16px 제목, label은 행 위의 작은 라벨입니다. 생략하면 설명이 있는 제목은 title, 없는 제목은 label입니다.",
+        "섹션 제목의 제목 수준입니다.",
+        "값",
+        "2·3·4 중 하나이며 기본 3입니다. 페이지의 제목 구조에 맞춰 화면 낭독기의 제목 탐색 순서를 정합니다. Native는 제목 역할만 있고 수준은 없습니다.",
         "영역 안에 배치할 소비자 콘텐츠입니다.",
         "슬롯 데이터",
         "제공 데이터 없음",
@@ -17398,6 +17576,16 @@
         "제공 데이터 없음",
         "사용 계약",
         "버튼·Switch·Checkbox 등의 값과 콜백을 소비자가 연결합니다.",
+        "행이 없을 때 행 자리에 표시할 내용입니다.",
+        "슬롯 데이터",
+        "제공 데이터 없음",
+        "사용 계약",
+        "KjunEmpty 등 빈 상태를 넣습니다. 행이 하나라도 있으면 표시하지 않습니다.",
+        "행 아래 둘 보조 안내문입니다.",
+        "슬롯 데이터",
+        "제공 데이터 없음",
+        "사용 계약",
+        "12px 3차 글자색으로 표시합니다. 둥근 섹션의 라벨형 제목과 함께 쓰면 카드 밖 아래에 놓입니다.",
         "영역이나 행의 제목입니다. 긴 문구는 줄바꿈합니다.",
         "제목 또는 행동을 보충하는 설명입니다.",
         "주 콘텐츠와 분리된 보조 행동입니다.",
@@ -17418,6 +17606,19 @@
         "섹션 제목 모양을 고릅니다.",
         "값",
         "title은 16px 제목, label은 행 위의 작은 라벨입니다. 생략하면 설명이 있는 제목은 title, 없는 제목은 label입니다.",
+        "섹션 제목의 제목 수준입니다.",
+        "값",
+        "2·3·4 중 하나이며 기본 3입니다. 페이지의 제목 구조에 맞춰 화면 낭독기의 제목 탐색 순서를 정합니다. Native는 제목 역할만 있고 수준은 없습니다.",
+        "행이 없을 때 행 자리에 표시할 내용입니다.",
+        "슬롯 데이터",
+        "ReactNode",
+        "사용 계약",
+        "KjunEmpty 등 빈 상태를 넣습니다. 행이 하나라도 있으면 표시하지 않습니다.",
+        "행 아래 둘 보조 안내문입니다.",
+        "슬롯 데이터",
+        "ReactNode",
+        "사용 계약",
+        "12px 3차 글자색으로 표시합니다. 둥근 섹션의 라벨형 제목과 함께 쓰면 카드 밖 아래에 놓입니다.",
         "영역이나 행의 제목입니다. 긴 문구는 줄바꿈합니다.",
         "제목 또는 행동을 보충하는 설명입니다.",
         "주 콘텐츠와 분리된 보조 행동입니다.",
@@ -17438,6 +17639,16 @@
         "섹션 제목 모양을 고릅니다.",
         "값",
         "title은 16px 제목, label은 행 위의 작은 라벨입니다. 생략하면 설명이 있는 제목은 title, 없는 제목은 label입니다.",
+        "행이 없을 때 행 자리에 표시할 내용입니다.",
+        "슬롯 데이터",
+        "ReactNode",
+        "사용 계약",
+        "KjunEmpty 등 빈 상태를 넣습니다. 행이 하나라도 있으면 표시하지 않습니다.",
+        "행 아래 둘 보조 안내문입니다.",
+        "슬롯 데이터",
+        "ReactNode",
+        "사용 계약",
+        "12px 3차 글자색으로 표시합니다. 둥근 섹션의 라벨형 제목과 함께 쓰면 카드 밖 아래에 놓입니다.",
         "목록 콘텐츠를 배치하며 선택·정렬·요청 상태를 소유하지 않습니다.",
         "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다.",
         "목록 콘텐츠를 배치하며 선택·정렬·요청 상태를 소유하지 않습니다.",

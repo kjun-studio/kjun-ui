@@ -15,6 +15,11 @@ export function generate(input: UsageInput) {
         }),
         b.node('KjunListRow', { title: '알림 받기', description: '중요한 변경 사항을 알려드립니다.' }, '', { actions: b.node('KjunSwitch', { value: b.state('notifications', true), onValueChange: b.update('notifications'), ariaLabel: '알림 받기' }) }),
       ].join('\n')); break;
+    case 'KjunListGroup':
+      content = b.node('KjunListGroup', {}, [
+        b.node('KjunListSection', { title: '계정' }, b.node('KjunListRow', { title: '프로필', chevron: true, [action]: notify('openProfile', '프로필 열기') }, '', { trailing: b.text('김하늘') })),
+        b.node('KjunListSection', { title: '알림' }, b.node('KjunListRow', { title: '푸시 알림', checked: b.state('push', true), onCheckedChange: b.update('push') }), { footer: b.text('푸시 알림은 이 기기에서만 적용됩니다.') }),
+      ].join('\n')); break;
     case 'KjunListItem':
       content = b.node('KjunListSection', { title: '화면' }, [
         b.node('KjunListItem', {}, b.node('KjunText', { tone: 'secondary' }, b.text('화면 테마는 기기 설정을 따릅니다.'))),

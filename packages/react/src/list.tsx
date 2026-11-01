@@ -1,5 +1,5 @@
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
-import { useEffect, useId, useRef, type MouseEvent, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useId, useRef, type MouseEvent, type ReactNode } from "react";
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { KjunIcon } from "./button";
@@ -41,26 +41,50 @@ export function KjunListRow({ title, description, icon, leading, trailing, actio
   return <li className="kjun-list-row" data-leading={front ? "" : undefined} data-destructive={destructive || undefined} data-disabled={disabled || undefined} data-icon={!leading && icon ? "" : undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{actions && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}</div>}</li>;
 }
 export interface KjunListSectionProps {
-  title?: string; description?: string; actions?: ReactNode; children: ReactNode; ariaLabel?: string;
+  title?: string; description?: string; actions?: ReactNode; children?: ReactNode; ariaLabel?: string;
   /** Paints the surface background (default true); false lets the page background show through. */
   surface?: boolean;
   /** Draws dividers between rows (default true). */
   divider?: boolean;
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
   density?: "default" | "compact";
-  /** Rounds the section on the card radius steps and clips its rows to the corners (default "none"). */
+  /** Rounds the section on the card radius steps and clips its rows to the corners (default "none", or the KjunListGroup's). */
   radius?: CardRadius;
   /** "title" is the 16px heading, "label" the small caption above the rows; by default a title with a description is a heading and one without is a label. */
   titleVariant?: "title" | "label";
+  /** Heading level of the title (default 3). */
+  headingLevel?: 2 | 3 | 4;
+  /** Shown in place of the rows when the section has none, such as a KjunEmpty. */
+  empty?: ReactNode;
+  /** Supporting text under the rows, such as what a setting applies to. */
+  footer?: ReactNode;
 }
-export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius = "none", titleVariant }: KjunListSectionProps) {
+const ListGroupContext = createContext<"inset" | "flush" | null>(null);
+export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius, titleVariant, headingLevel = 3, empty, footer }: KjunListSectionProps) {
+  const group = useContext(ListGroupContext), corner = radius ?? (group === "inset" ? "lg" : "none");
   const label = titleVariant ? titleVariant === "label" : !!title && !description;
-  const id = "kjun-" + useId();
-  return <section className="kjun-list-section" data-surface={surface ? undefined : "false"}
-    data-radius={radius === "none" ? undefined : radius} style={radius === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${radius})` }} aria-labelledby={title ? id : undefined} aria-label={title ? undefined : ariaLabel}>
-    {(title || description || actions) && <div className="kjun-list-heading" data-bare={title && label ? "" : undefined}><div>{title && <h3 id={id}>{title}</h3>}{description && <p>{description}</p>}</div>{actions}</div>}
-    <ul className="kjun-list" aria-label={ariaLabel || title} data-divider={divider ? undefined : "false"} data-density={density === "compact" ? "compact" : undefined}>{children}</ul>
+  // A rounded section with a label title keeps the label and footer on the page, above and below its card.
+  const outside = corner !== "none" && !!title && label;
+  const id = "kjun-" + useId(), Heading = `h${headingLevel}` as "h3";
+  const rounded = corner === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${corner})` };
+  const rows = hasContent(children)
+    ? <ul className="kjun-list" aria-label={ariaLabel || title} data-divider={divider ? undefined : "false"} data-density={density === "compact" ? "compact" : undefined}>{children}</ul>
+    : hasContent(empty) ? <div className="kjun-list-empty">{empty}</div> : null;
+  return <section className="kjun-list-section" data-surface={surface ? undefined : "false"} data-outside={outside || undefined}
+    data-radius={corner === "none" || outside ? undefined : corner} style={outside ? undefined : rounded} aria-labelledby={title ? id : undefined} aria-label={title ? undefined : ariaLabel}>
+    {(title || description || actions) && <div className="kjun-list-heading" data-bare={title && label ? "" : undefined}><div>{title && <Heading id={id}>{title}</Heading>}{description && <p>{description}</p>}</div>{actions && <div className="kjun-list-heading-actions">{actions}</div>}</div>}
+    {outside ? <div className="kjun-list-panel" data-surface={surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
+    {hasContent(footer) && <div className="kjun-list-footer">{footer}</div>}
   </section>;
+}
+export interface KjunListGroupProps {
+  /** "inset" (default) rounds every section and keeps them 24px apart; "flush" keeps square sections 8px apart. */
+  variant?: "inset" | "flush";
+  children: ReactNode;
+}
+/** Stacks KjunListSections with one spacing and corner rule, so sections never set radius or gaps one by one. */
+export function KjunListGroup({ variant = "inset", children }: KjunListGroupProps) {
+  return <ListGroupContext.Provider value={variant}><div className="kjun-list-group" data-variant={variant}>{children}</div></ListGroupContext.Provider>;
 }
 export interface KjunListItemProps { children: ReactNode }
 /** Non-row content inside a KjunListSection (a theme switcher, a note) on the rows' inset and dividers. */

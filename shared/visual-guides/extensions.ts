@@ -7,6 +7,9 @@ export const extensions: Record<string, GuideAuthor> = {
   KjunListSection: {
     parts: [t("섹션 제목", "목록 묶음의 목적입니다.", "설정", true), t("섹션 설명", "목록에 포함된 작업을 설명합니다.", "계정과 알림을 관리합니다.", true), p("행 목록", "소비자가 ListRow와 자식 컨트롤을 배치합니다.", 'ul.kjun-list, [role="list"]')], related: "generic-lists",
   },
+  KjunListGroup: {
+    parts: [t("섹션 라벨", "둥근 묶음에서는 카드 밖 위에 놓는 작은 라벨입니다.", "계정", true), t("안내문", "카드 밖 아래 12px 3차색 footer입니다.", "푸시 알림은 이 기기에서만 적용됩니다.", true)], related: "generic-lists",
+  },
   KjunListItem: {
     parts: [t("목록 칸", "행이 아닌 내용을 행과 같은 시작 여백으로 담습니다.", "화면 테마는 기기 설정을 따릅니다.")], related: "generic-lists",
   },

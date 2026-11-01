@@ -281,6 +281,10 @@
   --_kjun-extension-list-actions-padding: 16px;
   --_kjun-extension-list-leading-width: 40px;
   --_kjun-extension-list-bare-heading-padding-bottom: 4px;
+  --_kjun-extension-list-outside-label-gap: 8px;
+  --_kjun-extension-list-footer-gap: 8px;
+  --_kjun-extension-list-group-gap: 24px;
+  --_kjun-extension-list-flush-group-gap: 8px;
   --_kjun-extension-list-icon-size: 20px;
   --_kjun-extension-navigation-minimum-height: 56px;
   --_kjun-extension-navigation-padding: 16px;

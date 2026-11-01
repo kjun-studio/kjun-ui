@@ -65,6 +65,8 @@ const childProps = {
   trailing: slot("행 뒤쪽의 보조 정보입니다.", "ReactNode", "수치·배지 등 표시용 콘텐츠만 넣으세요. 버튼은 actions로 분리합니다."),
   actions: slot("주 콘텐츠와 분리된 보조 행동입니다.", "ReactNode", "버튼·Switch·Checkbox 등의 값과 콜백을 소비자가 연결합니다."),
   children: slot("영역 안에 배치할 소비자 콘텐츠입니다.", "ReactNode", "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다."),
+  empty: slot("행이 없을 때 행 자리에 표시할 내용입니다.", "ReactNode", "KjunEmpty 등 빈 상태를 넣습니다. 행이 하나라도 있으면 표시하지 않습니다."),
+  footer: slot("행 아래 둘 보조 안내문입니다.", "ReactNode", "12px 3차 글자색으로 표시합니다. 둥근 섹션의 라벨형 제목과 함께 쓰면 카드 밖 아래에 놓입니다."),
   fallback: slot("이미지가 없거나 실패했을 때 표시할 콘텐츠입니다.", "ReactNode", "실패해도 이미지 컨테이너의 비율과 대체 텍스트를 유지합니다."),
 };
 const listRowContent = slot("제목·설명 아래 같은 시작선에 놓는 표시용 내용입니다(예산·진행 막대, 보조 수치).", "ReactNode", "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 화면 낭독기는 이 내용을 따로 읽지 않으니 금액·진행률은 ariaLabel에 넣으세요.");
@@ -105,6 +107,8 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (name === "KjunListRow" && key === "children") entry = listRowContent;
     else if (name === "KjunListRow" && key === "selected") entry = detail("하나를 고르는 목록에서 고른 행을 표시합니다.", { "표시": "행 끝에 강조색 체크를 그리고 웹은 aria-current, Native는 선택 상태로 알립니다. 고른 값은 앱이 관리합니다." });
     else if (name === "KjunListRow" && key === "checked") entry = detail("행 전체를 스위치로 만듭니다.", { "동작": platform === "vue3" ? "v-model:checked로 연결합니다. 행 어디를 눌러도 update:checked로 반대 값을 알리고, 행 끝 스위치는 장식입니다. 행이 switch 역할과 checked 상태를 가집니다." : "행 어디를 눌러도 onCheckedChange로 반대 값을 알리고, 행 끝 스위치는 장식입니다. 행이 switch 역할과 checked 상태를 가집니다." });
+    else if (name === "KjunListSection" && key === "headingLevel") entry = detail("섹션 제목의 제목 수준입니다.", { "값": "2·3·4 중 하나이며 기본 3입니다. 페이지의 제목 구조에 맞춰 화면 낭독기의 제목 탐색 순서를 정합니다. Native는 제목 역할만 있고 수준은 없습니다." });
+    else if (name === "KjunListGroup" && key === "variant") entry = detail("섹션을 쌓는 모양입니다.", { "값": "inset(기본)은 섹션을 lg 모서리로 둥글게 하고 24px 띄우며, 라벨형 제목과 footer를 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다.", "섹션 설정": "섹션에 radius를 직접 주면 그 값이 우선합니다." });
     else if (name === "KjunListSection" && key === "titleVariant") entry = detail("섹션 제목 모양을 고릅니다.", { "값": "title은 16px 제목, label은 행 위의 작은 라벨입니다. 생략하면 설명이 있는 제목은 title, 없는 제목은 label입니다." });
     else if (name === "KjunListRow" && key === "icon") entry = detail("앞쪽 열에 그릴 아이콘 이름입니다.", { "크기·색": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 40px 앞쪽 열 가운데에 놓습니다.", "leading과 함께": platform === "vue3" ? "leading 슬롯이 있으면 슬롯을 그립니다." : "leading이 있으면 leading을 그립니다." });
     else if (childProps[key]) entry = childProps[key];
@@ -130,7 +134,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (platform === "vue3") {
     const eventKeys = name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
-    const slotNames = { KjunListRow: ["default", "leading", "trailing", "actions"], KjunListSection: ["actions", "default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"] }[name] || [];
+    const slotNames = { KjunListRow: ["default", "leading", "trailing", "actions"], KjunListSection: ["actions", "default", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"] }[name] || [];
     for (const key of slotNames) {
       const definition = name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunCarousel" ? carouselSlides : name === "KjunListRow" && key === "default" ? listRowContent : childProps[key === "default" ? "children" : key];
       slots[key] = { ...definition, details: definition.details.map(row => row.label === "슬롯 데이터" ? { ...row, text: "제공 데이터 없음" } : row) };

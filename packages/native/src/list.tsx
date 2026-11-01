@@ -55,7 +55,9 @@ export function KjunListRow({ title, description, icon, leading, trailing, actio
     {hasContent(trailing) && <View style={{ maxWidth: "35%" }}>{content(trailing, { ...typeStyle("body"), color: colors.textSecondary })}</View>}
     {selected && <KjunIcon name="check" size={tokens.iconSizes.default} color={colors.brand} />}
     {/* A switch row is one switch control: the drawn switch is decoration and the row carries role and state. */}
-    {toggle && <View pointerEvents="none" accessible={false} aria-hidden importantForAccessibility="no-hide-descendants" accessibilityElementsHidden><KjunSwitch value={!!checked} ariaLabel={title} /></View>}
+    {toggle && <View pointerEvents="none" accessible={false} aria-hidden importantForAccessibility="no-hide-descendants" accessibilityElementsHidden
+      // The row is the touch target, so the drawn switch keeps only its own height, like Web.
+      style={{ height: tokens.extensions.switch.heights.md, justifyContent: "center" }}><KjunSwitch value={!!checked} ariaLabel={title} /></View>}
     {chevron && <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden><KjunIcon name="chevron-right" size={tokens.iconSizes.default} color={colors.textTertiary} /></View>}
   </>;
   const style = { flex: 1, minWidth: 0, minHeight: compact ? list.compactMinimumHeight : list.minimumHeight, flexDirection: "row" as const, alignItems: "center" as const, gap: list.gap, padding: list.padding, ...(compact ? { paddingVertical: list.compactPaddingY } : {}) };
@@ -74,27 +76,53 @@ export function KjunListRow({ title, description, icon, leading, trailing, actio
   </View>;
 }
 export interface KjunListSectionProps {
-  title?: string; description?: string; actions?: ReactNode; children: ReactNode; ariaLabel?: string;
+  title?: string; description?: string; actions?: ReactNode; children?: ReactNode; ariaLabel?: string;
   /** Paints the surface background (default true); false lets the page background show through. */
   surface?: boolean;
   /** Draws dividers between rows (default true). */
   divider?: boolean;
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
   density?: "default" | "compact";
-  /** Rounds the section on the card radius steps and clips its rows to the corners (default "none"). */
+  /** Rounds the section on the card radius steps and clips its rows to the corners (default "none", or the KjunListGroup's). */
   radius?: CardRadius;
   /** "title" is the 16px heading, "label" the small caption above the rows; by default a title with a description is a heading and one without is a label. */
   titleVariant?: "title" | "label";
+  /** Shown in place of the rows when the section has none, such as a KjunEmpty. */
+  empty?: ReactNode;
+  /** Supporting text under the rows, such as what a setting applies to. */
+  footer?: ReactNode;
 }
-export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius = "none", titleVariant }: KjunListSectionProps) {
-  const { colors } = useKjunStyles(), bare = !!title && (titleVariant ? titleVariant === "label" : !description);
-  return <View style={{ minWidth: 0, backgroundColor: surface ? colors.surface : "transparent",
-    ...(radius === "none" ? {} : { borderRadius: tokens.card.radii[radius], overflow: "hidden" as const }) }}>
-    {!!(title || description || actions) && <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.list.gap, padding: tokens.extensions.list.padding,
-      // A title without a description is a small group header that sits close to its rows.
-      ...(bare ? { paddingBottom: list.bareHeadingPaddingBottom } : {}) }}><View style={{ flex: 1 }}>{!!title && <KText accessibilityRole="header" style={bare ? { ...typeStyle('controlSmall'), color: colors.textSecondary } : typeStyle('cardTitle')}>{title}</KText>}{!!description && <KText style={{ marginTop: tokens.extensions.list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'),  }}>{description}</KText>}</View>{content(actions)}</View>}
-    <View role="list" accessibilityLabel={ariaLabel || title}>{Children.toArray(children).map((row, i, rows) => <ListRowContext.Provider key={i} value={{ divider: divider && i < rows.length - 1, compact: density === "compact" }}>{row}</ListRowContext.Provider>)}</View>
+const ListGroupContext = createContext<"inset" | "flush" | null>(null);
+export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius, titleVariant, empty, footer }: KjunListSectionProps) {
+  const { colors } = useKjunStyles(), group = useContext(ListGroupContext), corner = radius ?? (group === "inset" ? "lg" : "none");
+  const bare = !!title && (titleVariant ? titleVariant === "label" : !description);
+  // Like Web: a rounded section with a label title keeps the label and footer on the page, around its card.
+  const outside = corner !== "none" && bare;
+  const items = Children.toArray(children);
+  const rows = items.length
+    ? <View role="list" accessibilityLabel={ariaLabel || title}>{items.map((row, i) => <ListRowContext.Provider key={i} value={{ divider: divider && i < items.length - 1, compact: density === "compact" }}>{row}</ListRowContext.Provider>)}</View>
+    : hasContent(empty) ? <View style={{ padding: list.padding }}>{content(empty)}</View> : null;
+  const card = { backgroundColor: surface ? colors.surface : "transparent", ...(corner === "none" ? {} : { borderRadius: tokens.card.radii[corner], overflow: "hidden" as const }) };
+  return <View style={{ minWidth: 0, ...(outside ? {} : card) }}>
+    {!!(title || description || actions) && <View style={{ flexDirection: "row", alignItems: "flex-start", gap: list.gap, padding: list.padding,
+      // A title without a description is a small group header that sits close to its rows; outside a card it starts at the top.
+      ...(bare ? { paddingBottom: list.bareHeadingPaddingBottom } : {}), ...(outside ? { paddingTop: 0, paddingBottom: list.outsideLabelGap } : {}) }}>
+      <View style={{ flex: 1 }}>{!!title && <KText accessibilityRole="header" style={bare ? { ...typeStyle('controlSmall'), color: colors.textSecondary } : typeStyle('cardTitle')}>{title}</KText>}{!!description && <KText style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption') }}>{description}</KText>}</View>
+      {/* Like Web: heading actions sit on the title line. */}
+      {hasContent(actions) && <View style={{ minHeight: typeStyle(bare ? "controlSmall" : "cardTitle").lineHeight, justifyContent: "center" }}>{content(actions)}</View>}
+    </View>}
+    {outside ? <View style={card}>{rows}</View> : rows}
+    {hasContent(footer) && <View style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside ? 0 : list.padding }}>{content(footer, { ...typeStyle("caption"), color: colors.textTertiary })}</View>}
   </View>;
+}
+export interface KjunListGroupProps {
+  /** "inset" (default) rounds every section and keeps them 24px apart; "flush" keeps square sections 8px apart. */
+  variant?: "inset" | "flush";
+  children: ReactNode;
+}
+/** Like Web: stacks KjunListSections with one spacing and corner rule. */
+export function KjunListGroup({ variant = "inset", children }: KjunListGroupProps) {
+  return <ListGroupContext.Provider value={variant}><View style={{ minWidth: 0, gap: variant === "flush" ? list.flushGroupGap : list.groupGap }}>{content(children)}</View></ListGroupContext.Provider>;
 }
 export interface KjunListItemProps { children: ReactNode }
 /** Non-row content inside a KjunListSection (a theme switcher, a note) on the rows' inset and dividers. */

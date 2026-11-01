@@ -489,6 +489,13 @@
     "differences": "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다.",
     "states": "자체 선택·비활성·로딩 상태나 크기 API가 없습니다. 설명 없이 제목만 있으면 제목을 작은 보조색 그룹 라벨로 표시하고 첫 행과의 간격을 줄입니다."
   },
+  "KjunListGroup": {
+    "slug": "list-group",
+    "description": "목록 섹션 여러 개를 같은 간격과 모서리 규칙으로 쌓는 묶음입니다.",
+    "interaction": "섹션 배치만 맡으며 선택·정렬·요청 상태를 소유하지 않습니다.",
+    "differences": "웹은 div, Native는 View로 구성하고 같은 간격 토큰을 씁니다.",
+    "states": "inset은 섹션을 둥글게(lg) 하고 24px 띄우며, 라벨형 제목과 footer는 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다. 섹션의 radius를 직접 주면 그 값을 따릅니다."
+  },
   "KjunListItem": {
     "slug": "list-item",
     "description": "ListSection 안에서 행이 아닌 내용(테마 전환 버튼, 안내 문구 등)을 담는 칸입니다.",

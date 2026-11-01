@@ -9,6 +9,11 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         h("KjunListRow", { icon: "bell", title: "알림 받기", description: "행 어디를 눌러도 켜고 끕니다.", disabled, checked: get("notifications", true), onCheckedChange: change("notifications") }),
         h("KjunListRow", { icon: "lock", title: "비밀번호", chevron: true, disabled, ...action(() => set("message", "비밀번호 열기")) }, undefined, { trailing: "3개월 전 변경" }),
       ]);
+    case "KjunListGroup":
+      return h("KjunListGroup", {}, [
+        h("KjunListSection", { title: "계정" }, [h("KjunListRow", { title: "프로필", chevron: true, ...action(() => set("message", "프로필 열기")) }, undefined, { trailing: "김하늘" })]),
+        h("KjunListSection", { title: "알림" }, [h("KjunListRow", { title: "푸시 알림", checked: get("push", true), onCheckedChange: change("push") })], { footer: "푸시 알림은 이 기기에서만 적용됩니다." }),
+      ]);
     case "KjunListItem":
       return h("KjunListSection", { title: "화면" }, [
         h("KjunListItem", {}, h("KjunText", { tone: "secondary" }, "화면 테마는 기기 설정을 따릅니다.")),
