@@ -2506,9 +2506,16 @@
       {
         "name": "ariaLabel",
         "type": "string",
-        "required": true,
+        "required": false,
         "default": "—",
-        "description": "Names the region, e.g. \"추천 상품\"."
+        "description": "Names the region, e.g. \"추천 상품\". Required unless title names it."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "A section title above the slides; the region takes its name, and previous and next buttons move beside it."
       },
       {
         "name": "slideSize",
@@ -2550,7 +2557,7 @@
         "type": "boolean",
         "required": false,
         "default": "true",
-        "description": "Previous and next buttons, shown only to pointers that can hover."
+        "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists. A mouse wheel does not\nmove a carousel, so keep these or the indicators on."
       }
     ],
     "events": [
@@ -2569,10 +2576,17 @@
     "react": [
       {
         "name": "ariaLabel",
-        "type": "string",
-        "required": true,
+        "type": "string | undefined",
+        "required": false,
         "default": "—",
-        "description": "Names the region, e.g. \"추천 상품\"."
+        "description": "Names the region, e.g. \"추천 상품\". Required unless title names it."
+      },
+      {
+        "name": "title",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A section title above the slides; the region takes its name, and previous and next buttons move beside it."
       },
       {
         "name": "children",
@@ -2628,7 +2642,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Previous and next buttons, shown only to pointers that can hover."
+        "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists. A mouse wheel does not\nmove a carousel, so keep these or the indicators on."
       },
       {
         "name": "className",
@@ -2655,10 +2669,17 @@
     "native": [
       {
         "name": "ariaLabel",
-        "type": "string",
-        "required": true,
+        "type": "string | undefined",
+        "required": false,
         "default": "—",
-        "description": "Names the region, e.g. \"추천 상품\"."
+        "description": "Names the region, e.g. \"추천 상품\". Required unless title names it."
+      },
+      {
+        "name": "title",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A section title above the slides; it also names the region."
       },
       {
         "name": "children",

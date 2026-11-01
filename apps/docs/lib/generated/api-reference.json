@@ -30381,10 +30381,19 @@
           {
             "name": "ariaLabel",
             "type": "string",
-            "required": true,
+            "required": false,
             "default": "—",
-            "description": "Names the region, e.g. \"추천 상품\".",
-            "summary": "캐러셀 영역의 이름입니다(예: 추천 상품). 영역은 ‘캐러셀’, 슬라이드는 ‘2 / 4’처럼 순서를 함께 읽습니다.",
+            "description": "Names the region, e.g. \"추천 상품\". Required unless title names it.",
+            "summary": "캐러셀 영역의 이름입니다(예: 추천 상품). title이 없으면 필요합니다. 영역은 ‘캐러셀’, 슬라이드는 ‘2 / 4’처럼 순서를 함께 읽습니다.",
+            "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "A section title above the slides; the region takes its name, and previous and next buttons move beside it.",
+            "summary": "슬라이드 위에 놓는 섹션 제목(h2)입니다. 영역 이름이 되고, 웹의 이전·다음 버튼은 슬라이드 양쪽 대신 제목 오른쪽에 항상 보이며 처음·끝에서 비활성입니다. 작은 카드 여러 장을 보여 주는 카드 줄에 씁니다.",
             "source": "packages/vue3/src/carousel.tsx"
           },
           {
@@ -30437,8 +30446,8 @@
             "type": "boolean",
             "required": false,
             "default": "true",
-            "description": "Previous and next buttons, shown only to pointers that can hover.",
-            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 보입니다. Native는 버튼 없이 넘깁니다.",
+            "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists. A mouse wheel does not\nmove a carousel, so keep these or the indicators on.",
+            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 씁니다. title이 없으면 슬라이드 양쪽에 떠 있는 원 버튼으로, 캐러셀에 마우스를 올리거나 키보드 포커스가 있을 때만 보이고 갈 슬라이드가 있는 쪽만 그립니다. 마우스 휠로는 넘어가지 않으므로 끌 때는 indicators를 켜 두세요(둘 다 끄면 개발 모드에서 경고합니다). Native는 버튼 없이 넘깁니다.",
             "source": "packages/vue3/src/carousel.tsx"
           }
         ],
@@ -30490,8 +30499,8 @@
           }
         ],
         "ownership": [
-          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다.",
-          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 표시합니다. Native는 ScrollView의 snap으로 넘기며 이전·다음 버튼을 그리지 않습니다."
+          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다. 섹션 제목이 필요하면 title을 쓰고, 이때 버튼은 제목 오른쪽으로 옮겨집니다.",
+          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 씁니다. 마우스 휠과 드래그로는 넘어가지 않습니다. Native는 ScrollView의 snap으로 넘기며 버튼을 그리지 않고 title은 제목만 표시합니다."
         ],
         "types": []
       },
@@ -30499,11 +30508,20 @@
         "props": [
           {
             "name": "ariaLabel",
-            "type": "string",
-            "required": true,
+            "type": "string | undefined",
+            "required": false,
             "default": "—",
-            "description": "Names the region, e.g. \"추천 상품\".",
-            "summary": "캐러셀 영역의 이름입니다(예: 추천 상품). 영역은 ‘캐러셀’, 슬라이드는 ‘2 / 4’처럼 순서를 함께 읽습니다.",
+            "description": "Names the region, e.g. \"추천 상품\". Required unless title names it.",
+            "summary": "캐러셀 영역의 이름입니다(예: 추천 상품). title이 없으면 필요합니다. 영역은 ‘캐러셀’, 슬라이드는 ‘2 / 4’처럼 순서를 함께 읽습니다.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "title",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A section title above the slides; the region takes its name, and previous and next buttons move beside it.",
+            "summary": "슬라이드 위에 놓는 섹션 제목(h2)입니다. 영역 이름이 되고, 웹의 이전·다음 버튼은 슬라이드 양쪽 대신 제목 오른쪽에 항상 보이며 처음·끝에서 비활성입니다. 작은 카드 여러 장을 보여 주는 카드 줄에 씁니다.",
             "source": "packages/react/src/carousel.tsx"
           },
           {
@@ -30604,8 +30622,8 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
-            "description": "Previous and next buttons, shown only to pointers that can hover.",
-            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 보입니다. Native는 버튼 없이 넘깁니다.",
+            "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists. A mouse wheel does not\nmove a carousel, so keep these or the indicators on.",
+            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 씁니다. title이 없으면 슬라이드 양쪽에 떠 있는 원 버튼으로, 캐러셀에 마우스를 올리거나 키보드 포커스가 있을 때만 보이고 갈 슬라이드가 있는 쪽만 그립니다. 마우스 휠로는 넘어가지 않으므로 끌 때는 indicators를 켜 두세요(둘 다 끄면 개발 모드에서 경고합니다). Native는 버튼 없이 넘깁니다.",
             "source": "packages/react/src/carousel.tsx"
           },
           {
@@ -30639,8 +30657,8 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다.",
-          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 표시합니다. Native는 ScrollView의 snap으로 넘기며 이전·다음 버튼을 그리지 않습니다."
+          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다. 섹션 제목이 필요하면 title을 쓰고, 이때 버튼은 제목 오른쪽으로 옮겨집니다.",
+          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 씁니다. 마우스 휠과 드래그로는 넘어가지 않습니다. Native는 ScrollView의 snap으로 넘기며 버튼을 그리지 않고 title은 제목만 표시합니다."
         ],
         "types": []
       },
@@ -30648,11 +30666,20 @@
         "props": [
           {
             "name": "ariaLabel",
-            "type": "string",
-            "required": true,
+            "type": "string | undefined",
+            "required": false,
             "default": "—",
-            "description": "Names the region, e.g. \"추천 상품\".",
-            "summary": "캐러셀 영역의 이름입니다(예: 추천 상품). 영역은 ‘캐러셀’, 슬라이드는 ‘2 / 4’처럼 순서를 함께 읽습니다.",
+            "description": "Names the region, e.g. \"추천 상품\". Required unless title names it.",
+            "summary": "캐러셀 영역의 이름입니다(예: 추천 상품). title이 없으면 필요합니다. 영역은 ‘캐러셀’, 슬라이드는 ‘2 / 4’처럼 순서를 함께 읽습니다.",
+            "source": "packages/native/src/carousel.tsx"
+          },
+          {
+            "name": "title",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A section title above the slides; it also names the region.",
+            "summary": "슬라이드 위에 놓는 섹션 제목(h2)입니다. 영역 이름이 되고, 웹의 이전·다음 버튼은 슬라이드 양쪽 대신 제목 오른쪽에 항상 보이며 처음·끝에서 비활성입니다. 작은 카드 여러 장을 보여 주는 카드 줄에 씁니다.",
             "source": "packages/native/src/carousel.tsx"
           },
           {
@@ -30754,7 +30781,7 @@
             "required": false,
             "default": "—",
             "description": "Accepted for parity with the web packages; Native draws no previous and next buttons, slides move by swipe.",
-            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 보입니다. Native는 버튼 없이 넘깁니다.",
+            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 씁니다. title이 없으면 슬라이드 양쪽에 떠 있는 원 버튼으로, 캐러셀에 마우스를 올리거나 키보드 포커스가 있을 때만 보이고 갈 슬라이드가 있는 쪽만 그립니다. 마우스 휠로는 넘어가지 않으므로 끌 때는 indicators를 켜 두세요(둘 다 끄면 개발 모드에서 경고합니다). Native는 버튼 없이 넘깁니다.",
             "source": "packages/native/src/carousel.tsx"
           },
           {
@@ -30770,8 +30797,8 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다.",
-          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 표시합니다. Native는 ScrollView의 snap으로 넘기며 이전·다음 버튼을 그리지 않습니다."
+          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다. 섹션 제목이 필요하면 title을 쓰고, 이때 버튼은 제목 오른쪽으로 옮겨집니다.",
+          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 씁니다. 마우스 휠과 드래그로는 넘어가지 않습니다. Native는 ScrollView의 snap으로 넘기며 버튼을 그리지 않고 title은 제목만 표시합니다."
         ],
         "types": []
       }

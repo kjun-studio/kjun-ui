@@ -48,7 +48,7 @@ export function generate(input: UsageInput) {
     case 'KjunCarousel': {
       const cards = [['이번 주 추천', '새로 나온 템플릿을 확인하세요'], ['팀 공간', '동료와 문서를 함께 정리합니다'], ['알림 정리', '중요한 소식만 받아 보세요'], ['보관함', '지난 작업을 다시 찾습니다']].map(([title, subtitle]) => b.node('KjunCard', { title, subtitle }));
       const slides = s.slideSize === 'auto' ? cards.map(card => b.node(b.native ? 'View' : 'div', { style: { width: 240 } }, card)) : cards;
-      content = b.group([b.node(name, { ariaLabel: '추천 콘텐츠', ...b.props('slideSize', 'gap', 'indicators', 'controls'), index: b.state('slide', 0), onIndexChange: b.update('slide') }, slides.join('\n')),
+      content = b.group([b.node(name, { ...(s.title ? { title: '추천 콘텐츠' } : { ariaLabel: '추천 콘텐츠' }), ...b.props('slideSize', 'gap', 'indicators', 'controls'), index: b.state('slide', 0), onIndexChange: b.update('slide') }, slides.join('\n')),
         b.text(expr('"현재 슬라이드: " + (state.slide + 1)'))]); break;
     }
     case 'KjunImage': {

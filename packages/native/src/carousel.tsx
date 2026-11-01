@@ -1,15 +1,18 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { clampSlide, nearestSlide, type CarouselGap, type CarouselSlideSize } from "../../../shared/package-runtime/carousel";
+import { clampSlide, nearestSlide, warnCarouselSetup, type CarouselGap, type CarouselSlideSize } from "../../../shared/package-runtime/carousel";
 import { tokens } from "@kjun-ui/tokens";
 import { Children, useEffect, useRef, useState, type ReactNode } from "react";
 import { ScrollView, View, type LayoutChangeEvent, type NativeScrollEvent, type NativeSyntheticEvent, type StyleProp, type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { useReducedMotion } from "./internal";
+import { KText, useReducedMotion } from "./internal";
+import { typeStyle } from "./typography";
 import { useKjunStyles } from "./provider";
 
 export interface KjunCarouselProps {
-  /** Names the region, e.g. "추천 상품". */
-  ariaLabel: string;
+  /** Names the region, e.g. "추천 상품". Required unless title names it. */
+  ariaLabel?: string;
+  /** A section title above the slides; it also names the region. */
+  title?: string;
   /** Each direct child is one slide. */
   children?: ReactNode;
   /** full: as wide as the carousel; peek: the next slide shows at the edge; auto: each slide keeps its own width. */
@@ -28,7 +31,7 @@ export interface KjunCarouselProps {
 const gaps: Record<CarouselGap, number> = { none: 0, sm: tokens.space.inline.sm, md: tokens.space.inline.md, lg: tokens.space.inline.lg };
 
 /** A row of slides moved by swipe or dots. It never moves on its own. */
-export function KjunCarousel({ ariaLabel, children, slideSize = "full", gap = "md", index, defaultIndex = 0, onIndexChange,
+export function KjunCarousel({ ariaLabel, title, children, slideSize = "full", gap = "md", index, defaultIndex = 0, onIndexChange,
   indicators = true, style }: KjunCarouselProps) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles();
@@ -43,6 +46,8 @@ export function KjunCarousel({ ariaLabel, children, slideSize = "full", gap = "m
   const current = clampSlide(index ?? own, count);
   const settled = useRef(current), position = useRef(0), content = useRef(0), mounted = useRef(false);
   const space = gaps[gap];
+  // Native always swipes, so only a missing name is worth a warning.
+  useEffect(() => warnCarouselSetup({ controls: true, indicators: true, named: !!(ariaLabel || title) }), [ariaLabel, title]);
   const slideWidth = slideSize === "full" ? width : slideSize === "peek" ? Math.max(0, width - geometry.peek - space) : undefined;
 
   const scrollTo = (target: number, animated: boolean) => scroller.current?.scrollTo({ x: offsets[target] ?? 0, animated: animated && !reduced });
@@ -80,8 +85,9 @@ export function KjunCarousel({ ariaLabel, children, slideSize = "full", gap = "m
   };
 
   return (
-    <View accessibilityLabel={ariaLabel} style={[{ minWidth: 0, maxWidth: "100%" }, style]}
+    <View accessibilityLabel={ariaLabel ?? title} style={[{ minWidth: 0, maxWidth: "100%" }, style]}
       onLayout={event => setWidth(event.nativeEvent.layout.width)}>
+      {title ? <KText accessibilityRole="header" style={[typeStyle("sectionTitle"), { color: colors.text, marginBottom: geometry.headerGap }]}>{title}</KText> : null}
       <ScrollView ref={scroller} horizontal showsHorizontalScrollIndicator={false} decelerationRate="fast"
         snapToOffsets={offsets.length === count ? offsets : undefined} disableIntervalMomentum={slideSize !== "auto"}
         onScroll={scroll} scrollEventThrottle={16} onMomentumScrollEnd={settle}
@@ -92,14 +98,14 @@ export function KjunCarousel({ ariaLabel, children, slideSize = "full", gap = "m
         ))}
       </ScrollView>
       {indicators && count > 1 && (
-        <View accessibilityLabel={m.slides} style={{ flexDirection: "row", justifyContent: "center", gap: geometry.indicatorGap,
+        <View accessibilityLabel={m.slides} style={{ flexDirection: "row", justifyContent: "center",
           marginTop: geometry.indicatorOffset - (geometry.indicatorPress - geometry.indicatorSize) / 2 }}>
           {slides.map((_, i) => {
             const selected = i === current;
             return (
               <Pressable key={i} accessibilityRole="button" accessibilityLabel={m.goToSlide(i + 1)} accessibilityState={{ selected }}
                 focusRingRadius={geometry.indicatorSize / 2} onPress={() => { scrollTo(i, true); change(i); }}
-                style={{ height: geometry.indicatorPress, justifyContent: "center" }}>
+                style={{ width: geometry.indicatorPressWidth, height: geometry.indicatorPress, alignItems: "center", justifyContent: "center" }}>
                 <View style={{ width: selected ? geometry.indicatorActiveWidth : geometry.indicatorSize, height: geometry.indicatorSize,
                   borderRadius: geometry.indicatorSize / 2, backgroundColor: selected ? colors.text : colors.borderStrong }} />
               </Pressable>

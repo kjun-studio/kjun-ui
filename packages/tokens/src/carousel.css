@@ -30,9 +30,14 @@
 .kjun-carousel-viewport::-webkit-scrollbar {
   display: none;
 }
+/* The ring goes on the frame, rounded like a card, so the scroller's clipping does not cut it square. */
 .kjun-carousel-viewport:focus-visible {
+  outline: none;
+}
+.kjun-carousel-frame:has(> .kjun-carousel-viewport:focus-visible) {
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
   outline-offset: var(--_kjun-state-focus-offset);
+  border-radius: var(--_kjun-extension-carousel-focus-radius);
 }
 .kjun-carousel-slide {
   flex: 0 0 100%;
@@ -47,13 +52,40 @@
   flex: 0 0 auto;
   scroll-snap-stop: normal;
 }
-.kjun-carousel-control.kjun-button {
+.kjun-carousel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_kjun-extension-carousel-header-gap);
+  margin-bottom: var(--_kjun-extension-carousel-header-gap);
+}
+.kjun-carousel-title {
+  min-width: 0;
+  margin: 0;
+  color: var(--_kjun-color-text);
+}
+.kjun-carousel-header-controls {
+  display: none;
+  flex: none;
+  gap: var(--_kjun-extension-carousel-header-controls-gap);
+}
+/* Side buttons float over the slide edges: a surface circle lifted by the floating elevation. */
+.kjun-carousel-frame > .kjun-carousel-control.kjun-button {
   position: absolute;
   top: 50%;
   display: none;
+  background: var(--_kjun-color-surface);
+  color: var(--_kjun-color-text);
+  box-shadow: 0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border), var(--_kjun-elevation-floating);
   transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--_kjun-motion-control) var(--_kjun-ease-out), background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
-.kjun-carousel-control.kjun-button:active:not(:disabled) {
+.kjun-carousel-frame > .kjun-carousel-control.kjun-button:hover:not(:disabled) {
+  background: var(--_kjun-color-hover);
+}
+.kjun-carousel-frame > .kjun-carousel-control.kjun-button:active:not(:disabled) {
   transform: translateY(-50%) scale(0.98);
 }
 .kjun-carousel-control[data-direction="previous"] {
@@ -62,21 +94,27 @@
 .kjun-carousel-control[data-direction="next"] {
   inset-inline-end: var(--_kjun-extension-carousel-control-inset);
 }
+/* Touch screens swipe; buttons are for pointers that can hover. */
 @media (hover: hover) and (pointer: fine) {
-  .kjun-carousel-control.kjun-button {
-    display: inline-flex;
+  .kjun-carousel-header-controls,
+  .kjun-carousel-frame > .kjun-carousel-control.kjun-button {
+    display: flex;
+  }
+  .kjun-carousel-frame:is(:hover, :focus-within) > .kjun-carousel-control.kjun-button {
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 .kjun-carousel-indicators {
   display: flex;
   justify-content: center;
-  gap: var(--_kjun-extension-carousel-indicator-gap);
   margin-top: calc(var(--_kjun-extension-carousel-indicator-offset) - (var(--_kjun-extension-carousel-indicator-press) - var(--_kjun-extension-carousel-indicator-size)) / 2);
 }
 .kjun-carousel-indicator {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: var(--_kjun-extension-carousel-indicator-press-width);
   height: var(--_kjun-extension-carousel-indicator-press);
   padding: 0;
   border: 0;
@@ -101,7 +139,8 @@
   border-radius: var(--_kjun-geometry-radius-radius9999);
 }
 @media (prefers-reduced-motion: reduce) {
-  .kjun-carousel-indicator::before {
+  .kjun-carousel-indicator::before,
+  .kjun-carousel-frame > .kjun-carousel-control.kjun-button {
     transition: none;
   }
 }

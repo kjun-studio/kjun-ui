@@ -29,6 +29,14 @@ for (const platform of ['react', 'vue3', 'native']) {
       if (web) await expect(dot(page, 'banner', 3)).toHaveAttribute('aria-current', 'true');
     });
 
+    test('a title sits above the slides', async ({ page }) => {
+      const title = section(page, 'titled').getByText('추천 상품', { exact: true });
+      const first = await slideBox(page, 'titled', 'Alpha');
+      const heading = await title.boundingBox();
+      expect(heading!.y + heading!.height).toBeLessThanOrEqual((await section(page, 'titled').getByText('Alpha', { exact: true }).boundingBox())!.y);
+      expect(first.width).toBe(200);
+    });
+
     test('a single slide draws no dots', async ({ page }) => {
       await expect(section(page, 'single').getByRole('button')).toHaveCount(0);
       await expect(dot(page, 'banner', 1)).toBeVisible();
@@ -67,12 +75,44 @@ for (const platform of ['react', 'vue3', 'native']) {
         await expect(region.getByRole('group', { name: '슬라이드 선택' }).getByRole('button')).toHaveCount(4);
       });
 
-      test('the previous button is off on the first slide and next moves one slide', async ({ page }) => {
+      test('side buttons float only toward a slide that exists and keep focus at the end', async ({ page }) => {
         const region = page.getByRole('region', { name: 'Banner' });
-        await expect(region.getByRole('button', { name: '이전 슬라이드' })).toBeDisabled();
-        await region.getByRole('button', { name: '다음 슬라이드' }).click();
+        const previous = region.getByRole('button', { name: '이전 슬라이드' }), next = region.getByRole('button', { name: '다음 슬라이드' });
+        await expect(previous).toHaveCount(0);
+        await expect(next).toHaveCSS('opacity', '0');
+        await region.locator('.kjun-carousel-frame').hover();
+        await expect(next).toHaveCSS('opacity', '1');
+        expect(await next.evaluate(el => getComputedStyle(el).boxShadow)).not.toBe('none');
+        await next.click();
         await expect(page.getByTestId('changes')).toHaveText('[1]');
-        await expect(region.getByRole('button', { name: '이전 슬라이드' })).toBeEnabled();
+        await expect(previous).toBeVisible();
+        await next.click();
+        await next.click();
+        await expect(page.getByTestId('changes')).toHaveText('[1,2,3]');
+        await expect(next).toHaveCount(0);
+        await expect(region.locator('.kjun-carousel-viewport')).toBeFocused();
+      });
+
+      test('a title names the region and holds the buttons, which stay and turn off at the ends', async ({ page }) => {
+        const region = page.getByRole('region', { name: '추천 상품' });
+        await expect(region.getByRole('heading', { name: '추천 상품' })).toBeVisible();
+        const header = region.locator('.kjun-carousel-header');
+        await expect(header.getByRole('button', { name: '이전 슬라이드' })).toBeDisabled();
+        await expect(header.getByRole('button', { name: '다음 슬라이드' })).toHaveCSS('opacity', '1');
+        await expect(region.locator('.kjun-carousel-frame > .kjun-carousel-control')).toHaveCount(0);
+        await header.getByRole('button', { name: '다음 슬라이드' }).click();
+        await expect(header.getByRole('button', { name: '이전 슬라이드' })).toBeEnabled();
+      });
+
+      test('dots are 20px wide targets and the focus ring follows the card radius', async ({ page }) => {
+        const box = await dot(page, 'banner', 2).boundingBox();
+        expect([box?.width, box?.height]).toEqual([20, 24]);
+        await section(page, 'banner').locator('.kjun-carousel-viewport').focus();
+        await page.keyboard.press('Shift+Tab');
+        await page.keyboard.press('Tab');
+        const frame = section(page, 'banner').locator('.kjun-carousel-frame');
+        await expect(frame).toHaveCSS('outline-style', 'solid');
+        await expect(frame).toHaveCSS('border-radius', '12px');
       });
 
       test('arrow keys, End and Home move the focused carousel', async ({ page }) => {

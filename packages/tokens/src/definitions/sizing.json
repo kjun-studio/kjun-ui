@@ -186,10 +186,13 @@
       "peek": { "$ref": "dimension.value24" },
       "indicatorSize": { "$ref": "dimension.value6" },
       "indicatorActiveWidth": { "$ref": "dimension.value16" },
-      "indicatorGap": { "$ref": "dimension.value6" },
       "indicatorPress": { "$ref": "dimension.value24" },
+      "indicatorPressWidth": { "$ref": "dimension.value20" },
       "indicatorOffset": { "$ref": "dimension.value12" },
-      "controlInset": { "$ref": "dimension.value8" }
+      "controlInset": { "$ref": "dimension.value8" },
+      "focusRadius": { "$ref": "radius.radius12" },
+      "headerGap": { "$ref": "dimension.value12" },
+      "headerControlsGap": { "$ref": "dimension.value8" }
     },
     "slider": {
       "minimumWidth": 100

@@ -19,6 +19,7 @@ const App = defineComponent(() => {
     <output data-testid="index">{index.value}</output>
     <div data-testid="peek"><K.KjunCarousel ariaLabel="Peek" slideSize="peek" gap="sm">{{ default: () => carouselSlides.map(label => slide(label)) }}</K.KjunCarousel></div>
     <div data-testid="auto"><K.KjunCarousel ariaLabel="Auto" slideSize="auto" indicators={false}>{{ default: () => carouselSlides.map(label => slide(label, 200)) }}</K.KjunCarousel></div>
+    <div data-testid="titled"><K.KjunCarousel title="추천 상품" slideSize="auto" indicators={false}>{{ default: () => carouselSlides.map(label => slide(label, 200)) }}</K.KjunCarousel></div>
     <div data-testid="single"><K.KjunCarousel ariaLabel="Single">{{ default: () => slide('Only') }}</K.KjunCarousel></div>
     <div data-testid="form"><K.KjunCarousel ariaLabel="Form">{{ default: () => [
       <div style={{ height: '120px' }}><input aria-label="Name" value="Kim" /></div>, slide('After')] }}</K.KjunCarousel></div>

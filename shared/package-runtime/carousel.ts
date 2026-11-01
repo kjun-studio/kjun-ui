@@ -27,3 +27,20 @@ export function carouselKey(key: string): CarouselMove | undefined {
 export function carouselTarget(move: CarouselMove, index: number, count: number): number {
   return clampSlide(move === "previous" ? index - 1 : move === "next" ? index + 1 : move === "first" ? 0 : count - 1, count);
 }
+
+function developmentMode() {
+  try { return !!process.env.NODE_ENV && process.env.NODE_ENV !== "production"; } catch { return false; }
+}
+let warnedUnreachable = false, warnedUnnamed = false;
+/** Development-only hints for setups that leave some people unable to move or name the carousel. */
+export function warnCarouselSetup({ controls, indicators, named }: { controls: boolean; indicators: boolean; named: boolean }) {
+  if (!developmentMode()) return;
+  if (!controls && !indicators && !warnedUnreachable) {
+    warnedUnreachable = true;
+    console.warn("[KJUN] KjunCarousel: with controls and indicators off, a mouse cannot reach other slides (the wheel scrolls vertically and dragging is not supported). Keep one of them on.");
+  }
+  if (!named && !warnedUnnamed) {
+    warnedUnnamed = true;
+    console.warn("[KJUN] KjunCarousel needs ariaLabel or title to name its region.");
+  }
+}

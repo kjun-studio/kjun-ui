@@ -19,6 +19,7 @@ export function CarouselCases({ K, native = false, providerProps = {} }: { K: an
     <output data-testid="index">{index}</output>
     <div data-testid="peek"><K.KjunCarousel ariaLabel="Peek" slideSize="peek" gap="sm">{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
     <div data-testid="auto"><K.KjunCarousel ariaLabel="Auto" slideSize="auto" indicators={false}>{carouselSlides.map(label => slide(label, 200))}</K.KjunCarousel></div>
+    <div data-testid="titled"><K.KjunCarousel title="추천 상품" slideSize="auto" indicators={false}>{carouselSlides.map(label => slide(label, 200))}</K.KjunCarousel></div>
     <div data-testid="single"><K.KjunCarousel ariaLabel="Single">{slide('Only')}</K.KjunCarousel></div>
     {!native && <div data-testid="form"><K.KjunCarousel ariaLabel="Form">
       <div style={{ height: 120 }}><input aria-label="Name" defaultValue="Kim" /></div>

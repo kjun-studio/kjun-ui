@@ -227,6 +227,7 @@
   "KjunCarousel": {
     "vue3": [
       "ariaLabel",
+      "title",
       "slideSize",
       "gap",
       "index",
@@ -236,6 +237,7 @@
     ],
     "react": [
       "ariaLabel",
+      "title",
       "slideSize",
       "gap",
       "index",
@@ -250,6 +252,7 @@
     ],
     "native": [
       "ariaLabel",
+      "title",
       "slideSize",
       "gap",
       "index",

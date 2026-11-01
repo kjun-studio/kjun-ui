@@ -104,6 +104,7 @@
       "--card-bg"
     ],
     "implementationFiles": [
+      "packages/tokens/src/carousel.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
@@ -183,6 +184,7 @@
       "--bg-hover"
     ],
     "implementationFiles": [
+      "packages/tokens/src/carousel.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
@@ -494,6 +496,7 @@
       "--border"
     ],
     "implementationFiles": [
+      "packages/tokens/src/carousel.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/extensions.css",
