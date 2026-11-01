@@ -15079,7 +15079,7 @@
       },
       {
         "name": "color",
-        "type": "\"danger\" | \"success\" | \"warning\" | \"brand\" | \"auto\" | \"custom\" | undefined",
+        "type": "\"danger\" | \"success\" | \"warning\" | \"auto\" | \"brand\" | \"custom\" | undefined",
         "required": false,
         "default": "—",
         "description": ""

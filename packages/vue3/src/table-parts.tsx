@@ -74,11 +74,13 @@ export interface TableRowsContext {
 }
 
 export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; maxHeight?: number | string; stickyHeader: boolean;
-  sortable?: boolean; compact: boolean; striped: boolean; hoverable: boolean }) {
+  sortable?: boolean; compact: boolean; striped: boolean; hoverable: boolean; stuck: { value: boolean } }) {
   const { state, visible, selectable, expandable } = c;
   const sorting = (col: TableColumn<any>) => col.sortable && c.sortable !== false;
   return (
-    <div class="kjun-table-scroll" style={css({ maxHeight: c.maxHeight, visibility: c.skeletonHidden ? "hidden" : undefined })} aria-hidden={c.skeletonHidden ? "true" : undefined}>
+    <div class="kjun-table-scroll" style={css({ maxHeight: c.maxHeight, visibility: c.skeletonHidden ? "hidden" : undefined })} aria-hidden={c.skeletonHidden ? "true" : undefined}
+      data-stuck={c.stickyHeader && c.stuck.value ? "" : undefined}
+      onScroll={c.stickyHeader ? (event: Event) => { c.stuck.value = (event.currentTarget as HTMLElement).scrollTop > 0; } : undefined}>
       <table class="kjun-table" aria-label={c.ariaLabel} data-compact={String(c.compact)} data-hoverable={String(c.hoverable)} data-striped={String(c.striped)}>
         <thead style={c.stickyHeader ? { position: "sticky", top: 0, zIndex: 2 } : undefined}>
           <tr>
@@ -87,28 +89,29 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
                 <TableCheck aria-label={c.messages.selectAll} checked={state.all} indeterminate={state.some} onChange={state.toggleAll} />
               </th>
             )}
-            {expandable && <th scope="col" class="kjun-table-action-cell" />}
             {visible.map(col => (
               <th key={col.key} scope="col" style={css({ width: col.width, textAlign: col.align })} class={col.headerClass}
                 aria-sort={sorting(col) ? state.sort.key === col.key ? state.sort.order === "asc" ? "ascending" : "descending" : "none" : undefined}>
                 {sorting(col) ? (
                   <button type="button" onClick={() => state.sortColumn(col)}>
                     {col.label}
-                    {state.sort.key === col.key && <KjunIcon name={state.sort.order === "asc" ? "sort-ascending" : "sort-descending"} size={tokens.table.sortIconSize} />}
+                    <KjunIcon name={state.sort.key !== col.key ? "arrows-sort" : state.sort.order === "asc" ? "sort-ascending" : "sort-descending"} size={tokens.table.sortIconSize} class="kjun-table-sort-icon" />
                   </button>
                 ) : col.label}
               </th>
             ))}
+            {/* Expansion sits at the row's end, so the checkbox is the only leading utility column. */}
+            {expandable && <th scope="col" class="kjun-table-action-cell" />}
           </tr>
         </thead>
         <tbody>
           {c.initialLoading ? Array.from({ length: c.skeletonRows }, (_, i) => (
             <tr key={i} aria-hidden="true">
               {selectable && <td class="kjun-table-action-cell"><KjunSkeleton type="block" height={tokens.table.selectionSize} width={tokens.table.selectionSize} /></td>}
-              {expandable && <td class="kjun-table-action-cell" />}
               {visible.map(col => (
                 <td key={col.key}><KjunSkeleton type="block" height={tokens.table.skeletonHeight} width={col.key === "actions" ? tokens.table.actionColumnWidth : "75%"} /></td>
               ))}
+              {expandable && <td class="kjun-table-action-cell" />}
             </tr>
           )) : !state.rows.length ? (
             <tr><td colspan={visible.length + Number(selectable) + Number(expandable)} class="kjun-table-empty">{c.empty()}</td></tr>
@@ -118,13 +121,13 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
                 onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} data-selected={state.selectedRow(row) || undefined}
                 onClick={() => c.rowClick(row, i)}>
                 {selectable && <td class="kjun-table-action-cell">{c.checkbox(row, i)}</td>}
-                {expandable && <td class="kjun-table-action-cell">{c.expand(row, i)}</td>}
                 {visible.map(col => (
                   <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined}
                     class={(col.secondary ? "kjun-table-secondary " : "") + (col.className || "")}>
                     {c.cell(col, row, i)}
                   </td>
                 ))}
+                {expandable && <td class="kjun-table-action-cell">{c.expand(row, i)}</td>}
               </tr>
               {expandable && state.expanded.includes(state.key(row, i)) && (
                 <tr class="kjun-table-expanded"><td colspan={visible.length + Number(selectable) + 1}>{c.renderExpand(row, i)}</td></tr>

@@ -147,7 +147,7 @@
       },
       "compact": {
         "x": { "$ref": "dimension.value16" },
-        "y": { "$ref": "dimension.value6" }
+        "y": { "$ref": "dimension.value8" }
       }
     },
     "emptyPadding": {
@@ -159,6 +159,7 @@
       "y": { "$ref": "dimension.value12" }
     },
     "actionColumnWidth": 48,
+    "toolbarMinimumHeight": { "$ref": "dimension.value48" },
     "columnWidth": 160,
     "skeletonHeight": 20
   },

@@ -10,6 +10,7 @@ import { ScrollView, View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunCheckbox } from "./controls";
 import { KText, content } from "./internal";
+import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { useKjunStyles } from "./provider";
 import type { TableColumn } from "./table-model";
 export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable }: TableGridProps<Row, number>) {
@@ -17,7 +18,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
   const { colors } = useKjunStyles();
   const geometry = tokens.table;
   // Like Web's scroll hint: when columns overflow, the trailing edge fades until the end is reached.
-  const [scroll, setScroll] = useState({ viewport: 0, x: 0 }), fadeId = "kjun-table-fade-" + useId().replace(/[^a-z0-9]/gi, "");
+  const [scroll, setScroll] = useState({ viewport: 0, x: 0 }), [stuck, setStuck] = useState(false), fadeId = "kjun-table-fade-" + useId().replace(/[^a-z0-9]/gi, "");
   const cellPadding = geometry.cellPadding[compact ? "compact" : "regular"];
   const width = (col: TableColumn<Row>) =>
     typeof col.width === "number"
@@ -30,6 +31,8 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
     (selectable ? geometry.actionColumnWidth : 0) +
     (expandable ? geometry.actionColumnWidth : 0);
   const fade = totalWidth - scroll.viewport - scroll.x > 1;
+  // Like Web: stripes are a faint text tint, distinct from the header and expanded rows.
+  const stripe = (typeof colors.text === "string" && tintColor(colors.text, tokens.states.opacity.stripe)) || colors.secondary;
   return (
         <View style={{ position: "relative", minWidth: 0, opacity: skeletonHidden ? 0 : undefined }} aria-hidden={skeletonHidden || undefined}>
           <ScrollView horizontal style={{ maxHeight }} scrollEventThrottle={16}
@@ -38,13 +41,16 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
             <ScrollView
               stickyHeaderIndices={stickyHeader ? [0] : undefined}
               style={{ width: totalWidth, maxHeight }}
+              scrollEventThrottle={16}
+              onScroll={stickyHeader ? (event) => setStuck(event.nativeEvent.contentOffset.y > 0) : undefined}
             >
+              {/* Like Web: once rows pass under the sticky header, its line turns strong instead of casting a shadow. */}
               <View
                 style={{
                   flexDirection: "row",
                   backgroundColor: colors.tableHeaderBg,
                   borderBottomWidth: tokens.border.defaultWidth,
-                  borderBottomColor: colors.border,
+                  borderBottomColor: stickyHeader && stuck ? colors.borderStrong : colors.border,
                 }}
               >
                 {selectable && (
@@ -59,7 +65,6 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                     />
                   </View>
                 )}
-                {expandable && <View style={{ width: geometry.actionColumnWidth }} />}
                 {visible.map((col) => (
                   <Pressable
                     key={col.key}
@@ -93,30 +98,33 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                     <KText
                       style={{
                         ...typeStyle('controlSmall'),
-                        color: colors.textSecondary,
+                        color: col.sortable && sortable !== false && state.sort.key === col.key ? colors.text : colors.textSecondary,
                       }}
                     >
                       {col.label}
                     </KText>
-                    {sortable !== false && state.sort.key === col.key && (
+                    {/* Like Web: a sortable column shows a quiet two-way arrow until it is the sorted one. */}
+                    {col.sortable && sortable !== false && (
                       <KjunIcon
                         name={
-                          state.sort.order === "asc"
+                          state.sort.key !== col.key
+                            ? "arrows-sort"
+                            : state.sort.order === "asc"
                             ? "sort-ascending"
                             : "sort-descending"
                         }
                         size={tokens.table.sortIconSize}
-                        color={colors.text}
+                        color={state.sort.key === col.key ? colors.text : colors.textTertiary}
                       />
                     )}
                   </Pressable>
                 ))}
+                {expandable && <View style={{ width: geometry.actionColumnWidth }} />}
               </View>
               {initialLoading ? (
                 Array.from({ length: skeletonRows }, (_, i) => (
                   <View key={i} style={{ flexDirection: "row" }}>
                     {selectable && <View style={{ width: geometry.actionColumnWidth }} />}
-                    {expandable && <View style={{ width: geometry.actionColumnWidth }} />}
                     {visible.map((col) => (
                       <View
                         key={col.key}
@@ -133,6 +141,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                         />
                       </View>
                     ))}
+                    {expandable && <View style={{ width: geometry.actionColumnWidth }} />}
                   </View>
                 ))
               ) : !state.rows.length ? (
@@ -150,12 +159,14 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                       style={({ pressed }) => ({
                         flexDirection: "row",
                         borderBottomWidth: tokens.border.defaultWidth,
-                        borderBottomColor: colors.border,
+                        borderBottomColor: colors.divider,
                         backgroundColor:
                           pressed && hoverable
                             ? colors.tableRowHover
+                            : state.selectedRow(row)
+                            ? colors.selectedBg
                             : striped && i % 2
-                            ? colors.secondary
+                            ? stripe
                             : undefined,
                       })}
                     >
@@ -168,17 +179,6 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                           }}
                         >
                           {checkbox(row, i)}
-                        </View>
-                      )}
-                      {expandable && (
-                        <View
-                          style={{
-                            width: geometry.actionColumnWidth,
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          {expand(row, i)}
                         </View>
                       )}
                       {visible.map((col) => (
@@ -194,6 +194,17 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                           {cell(col, row, i)}
                         </View>
                       ))}
+                      {expandable && (
+                        <View
+                          style={{
+                            width: geometry.actionColumnWidth,
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          {expand(row, i)}
+                        </View>
+                      )}
                     </Pressable>
                     {expandable &&
                       state.expanded.includes(state.key(row, i)) && (

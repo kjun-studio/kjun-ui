@@ -122,7 +122,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
       accessibilityLabel={ariaLabel}
       accessibilityState={{ busy: !!props.loading }}
     >
-      <TableToolbar {...{ selectable, selected, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }}
+      <TableToolbar {...{ selectable, selected, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }} allSelected={state.all}
         toggleAll={state.toggleAll} clearSelection={() => props.onSelectionChange?.([])}
         search={state.search} searchChange={state.searchChange} />
       <KjunDataState

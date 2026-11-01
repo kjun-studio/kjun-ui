@@ -284,14 +284,28 @@
   align-items: center;
   gap: var(--_kjun-geometry-dimension-value4);
   border: 0;
+  padding: 0;
   background: transparent;
   color: inherit;
   cursor: pointer;
   font: inherit;
 }
+/* A sortable column shows a quiet two-way arrow; the sorted column reads in the text color with its direction. */
+.kjun-table th button .kjun-table-sort-icon { color: var(--_kjun-color-text-tertiary); }
+.kjun-table th[aria-sort="ascending"] button,
+.kjun-table th[aria-sort="descending"] button,
+.kjun-table th[aria-sort="ascending"] button .kjun-table-sort-icon,
+.kjun-table th[aria-sort="descending"] button .kjun-table-sort-icon { color: var(--_kjun-color-text); }
+.kjun-table th button:hover .kjun-table-sort-icon { color: var(--_kjun-color-text-secondary); }
+.kjun-table th button:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-offset);
+  border-radius: var(--_kjun-geometry-radius-radius4);
+}
+/* Rows part with the lighter divider; the header keeps the border line. */
 .kjun-table td {
   padding: var(--_kjun-geometry-table-cell-padding-regular-y) var(--_kjun-geometry-table-cell-padding-regular-x);
-  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-divider);
   overflow-wrap: anywhere;
 }
 /* Numbers read as one unit: a numeric column keeps its content width instead of breaking between digits. */
@@ -302,11 +316,20 @@
 .kjun-table[data-compact="true"] td {
   padding: var(--_kjun-geometry-table-cell-padding-compact-y) var(--_kjun-geometry-table-cell-padding-compact-x);
 }
+/* Stripes are a faint text tint so they never match the header or an expanded row. */
 .kjun-table[data-striped="true"] tbody > tr:nth-child(even) {
-  background: var(--_kjun-color-secondary);
+  background: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-stripe) * 100%), transparent);
 }
 .kjun-table[data-hoverable="true"] tbody > tr:hover {
   background: var(--_kjun-color-table-row-hover);
+}
+.kjun-table tbody > tr[data-selected]:nth-child(n),
+.kjun-table[data-hoverable="true"] tbody > tr[data-selected]:hover {
+  background: var(--_kjun-color-selected-bg);
+}
+/* A sticky header covers the rows beneath it; once rows pass under it, its line turns strong instead of casting a shadow. */
+.kjun-table-scroll[data-stuck] .kjun-table thead th {
+  border-bottom-color: var(--_kjun-color-border-strong);
 }
 /* Selection and expansion share one fixed utility column width. */
 .kjun-table .kjun-table-action-cell {
@@ -369,12 +392,15 @@
 .kjun-table-expanded {
   background: var(--_kjun-color-secondary);
 }
+/* The selection bar takes the toolbar's place at the same height, so selecting never moves the table. */
 .kjun-table-selection,
 .kjun-table-toolbar {
   display: flex;
   align-items: center;
   gap: var(--_kjun-geometry-dimension-value8);
   flex-wrap: wrap;
+  box-sizing: border-box;
+  min-height: var(--_kjun-geometry-table-toolbar-minimum-height);
   padding: var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-dimension-value12);
   background: var(--_kjun-color-secondary);
   border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
@@ -388,6 +414,8 @@
   background: var(--_kjun-color-surface);
 }
 .kjun-table-selection {
-  background: var(--_kjun-color-selected-bg);
+  background: var(--_kjun-color-brand-subtle-bg);
   color: var(--_kjun-color-brand);
+  padding-inline-start: var(--_kjun-geometry-dimension-value8);
 }
+.kjun-table-selection > strong { margin-inline-end: auto; }

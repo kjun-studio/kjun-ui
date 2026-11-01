@@ -252,7 +252,7 @@
     "cardBorder": "border",
     "cardBgHover": "hover",
     "inputBorder": "border",
-    "tableHeaderBg": "secondary",
+    "tableHeaderBg": "surface",
     "tableRowHover": "hover",
     "tableBorder": "border",
     "skeleton": "active",

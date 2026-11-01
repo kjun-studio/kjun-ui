@@ -1,6 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
-import { Fragment, type CSSProperties, type KeyboardEvent } from "react";
+import { Fragment, useState, type CSSProperties, type KeyboardEvent } from "react";
 import type { TableGridProps } from "../../../shared/package-runtime/table-presentation";
 import { KjunIcon } from "./button";
 import { KjunSkeleton } from "./display";
@@ -12,8 +12,11 @@ interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["m
 }
 export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown }: Props<Row>) {
   const m = useKjunMessages();
+  // A sticky header marks itself once rows have scrolled under it.
+  const [stuck, setStuck] = useState(false);
   return (
-          <div className="kjun-table-scroll" style={{ maxHeight, visibility: skeletonHidden ? "hidden" : undefined }} aria-hidden={skeletonHidden || undefined}>
+          <div className="kjun-table-scroll" style={{ maxHeight, visibility: skeletonHidden ? "hidden" : undefined }} aria-hidden={skeletonHidden || undefined}
+            data-stuck={(stickyHeader && stuck) || undefined} onScroll={stickyHeader ? (event) => setStuck(event.currentTarget.scrollTop > 0) : undefined}>
             <table
               className="kjun-table"
               aria-label={ariaLabel}
@@ -41,7 +44,6 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                       />
                     </th>
                   )}
-                  {expandable && <th scope="col" className="kjun-table-action-cell" />}
                   {visible.map((col) => (
                     <th
                       key={col.key}
@@ -64,22 +66,25 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                           onClick={() => state.sortColumn(col)}
                         >
                           {col.label}
-                          {state.sort.key === col.key && (
-                            <KjunIcon
-                              name={
-                                state.sort.order === "asc"
-                                  ? "sort-ascending"
-                                  : "sort-descending"
-                              }
-                              size={tokens.table.sortIconSize}
-                            />
-                          )}
+                          <KjunIcon
+                            name={
+                              state.sort.key !== col.key
+                                ? "arrows-sort"
+                                : state.sort.order === "asc"
+                                ? "sort-ascending"
+                                : "sort-descending"
+                            }
+                            size={tokens.table.sortIconSize}
+                            className="kjun-table-sort-icon"
+                          />
                         </button>
                       ) : (
                         col.label
                       )}
                     </th>
                   ))}
+                  {/* Expansion sits at the row's end, so the checkbox is the only leading utility column. */}
+                  {expandable && <th scope="col" className="kjun-table-action-cell" />}
                 </tr>
               </thead>
               <tbody>
@@ -91,7 +96,6 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                           <KjunSkeleton type="block" height={tokens.table.selectionSize} width={tokens.table.selectionSize} />
                         </td>
                       )}
-                      {expandable && <td className="kjun-table-action-cell" />}
                       {visible.map((col) => (
                         <td key={col.key}>
                           <KjunSkeleton
@@ -101,6 +105,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                           />
                         </td>
                       ))}
+                      {expandable && <td className="kjun-table-action-cell" />}
                     </tr>
                   ))
                 ) : !state.rows.length ? (
@@ -125,7 +130,6 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                         onClick={() => onRowClick?.(row, i)}
                       >
                         {selectable && <td className="kjun-table-action-cell">{checkbox(row, i)}</td>}
-                        {expandable && <td className="kjun-table-action-cell">{expand(row, i)}</td>}
                         {visible.map((col) => (
                           <td
                             key={col.key}
@@ -139,6 +143,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                             {cell(col, row, i)}
                           </td>
                         ))}
+                        {expandable && <td className="kjun-table-action-cell">{expand(row, i)}</td>}
                       </tr>
                       {expandable &&
                         state.expanded.includes(state.key(row, i)) && (

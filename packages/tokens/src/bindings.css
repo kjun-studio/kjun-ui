@@ -53,7 +53,7 @@
   --_kjun-color-card-border: var(--kjun-card-border, var(--kjun-border));
   --_kjun-color-card-bg-hover: var(--kjun-card-bg-hover, var(--kjun-hover));
   --_kjun-color-input-border: var(--kjun-input-border, var(--kjun-border));
-  --_kjun-color-table-header-bg: var(--kjun-table-header-bg, var(--kjun-secondary));
+  --_kjun-color-table-header-bg: var(--kjun-table-header-bg, var(--kjun-surface));
   --_kjun-color-table-row-hover: var(--kjun-table-row-hover, var(--kjun-hover));
   --_kjun-color-table-border: var(--kjun-table-border, var(--kjun-border));
   --_kjun-color-skeleton: var(--kjun-skeleton, var(--kjun-active));
@@ -809,6 +809,7 @@
   --_kjun-state-opacity-deviation-low: 0.08;
   --_kjun-state-opacity-deviation-medium: 0.14;
   --_kjun-state-opacity-deviation-strong: 0.22;
+  --_kjun-state-opacity-stripe: 0.03;
   --_kjun-state-opacity-tint-fill: 0.06;
   --_kjun-state-opacity-tint-control: 0.08;
   --_kjun-state-opacity-tint-hover: 0.12;
@@ -958,12 +959,13 @@
   --_kjun-geometry-table-cell-padding-regular-x: 16px;
   --_kjun-geometry-table-cell-padding-regular-y: 10px;
   --_kjun-geometry-table-cell-padding-compact-x: 16px;
-  --_kjun-geometry-table-cell-padding-compact-y: 6px;
+  --_kjun-geometry-table-cell-padding-compact-y: 8px;
   --_kjun-geometry-table-empty-padding-x: 16px;
   --_kjun-geometry-table-empty-padding-y: 32px;
   --_kjun-geometry-table-expanded-padding-x: 16px;
   --_kjun-geometry-table-expanded-padding-y: 12px;
   --_kjun-geometry-table-action-column-width: 48px;
+  --_kjun-geometry-table-toolbar-minimum-height: 48px;
   --_kjun-geometry-table-column-width: 160px;
   --_kjun-geometry-table-skeleton-height: 20px;
   --_kjun-geometry-table-selection-size: 16px;

@@ -392,6 +392,7 @@
       "packages/tokens/src/layout.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/actions.tsx",
@@ -428,6 +429,7 @@
       "packages/native/src/progress.tsx",
       "packages/native/src/select-control.tsx",
       "packages/native/src/table-cards.tsx",
+      "packages/native/src/table-grid.tsx",
       "packages/native/src/textarea.tsx",
       "packages/native/src/time-picker.tsx",
       "packages/native/src/toast.tsx"
@@ -773,7 +775,8 @@
       "packages/tokens/src/table.css",
       "packages/native/src/calendar.tsx",
       "packages/native/src/carousel.tsx",
-      "packages/native/src/choice-controls.tsx"
+      "packages/native/src/choice-controls.tsx",
+      "packages/native/src/table-grid.tsx"
     ]
   },
   {
@@ -1038,7 +1041,7 @@
     "role": "tableHeaderBg",
     "contract": "common",
     "required": false,
-    "fallback": "secondary",
+    "fallback": "surface",
     "variable": "--kjun-table-header-bg",
     "upstreamAliases": [
       "--table-header-bg"
@@ -1114,10 +1117,12 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/navigation.css",
+      "packages/tokens/src/table.css",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/calendar.tsx",
       "packages/native/src/list.tsx",
-      "packages/native/src/navigation.tsx"
+      "packages/native/src/navigation.tsx",
+      "packages/native/src/table-grid.tsx"
     ]
   },
   {
@@ -1308,7 +1313,9 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/controls.css",
-      "packages/native/src/calendar.tsx"
+      "packages/tokens/src/table.css",
+      "packages/native/src/calendar.tsx",
+      "packages/native/src/table-toolbar.tsx"
     ]
   },
   {
@@ -1336,7 +1343,7 @@
       "packages/tokens/src/table.css",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/select-options.tsx",
-      "packages/native/src/table-toolbar.tsx"
+      "packages/native/src/table-grid.tsx"
     ]
   },
   {

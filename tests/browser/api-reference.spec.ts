@@ -51,6 +51,10 @@ for (const platform of platforms) {
     await expect.poll(async () => (await events(page)).filter(e => e.name === 'sort')).toEqual([
       { name: 'sort', value: { key: 'amount', order: 'asc' } },
     ]);
+    // While rows are selected the selection bar holds the toolbar's place; clearing the selection brings search back.
+    await expect(page.getByRole('textbox')).toHaveCount(0);
+    await page.getByRole('button', { name: '선택 해제', exact: true }).click();
+    await expect.poll(async () => (await events(page)).filter(e => e.name === 'selected').at(-1)?.value).toEqual([]);
     await page.getByRole('textbox').fill('no-match');
     await expect.poll(() => events(page)).toContainEqual({ name: 'search', value: 'no-match' });
     await expect(page.getByText('Alpha', { exact: true })).toBeVisible();

@@ -84,6 +84,8 @@ export interface TableGridProps<Row extends object, Height> extends TableRowsPro
 export interface TableToolbarProps<Row extends object> {
   selectable: boolean;
   selected: Row[];
+  /** Every visible row is selected: the bar drops its select-all action. */
+  allSelected: boolean;
   toggleAll: () => void;
   clearSelection: () => void;
   renderSelectionToolbar: TableProps<Row>["renderSelectionToolbar"];

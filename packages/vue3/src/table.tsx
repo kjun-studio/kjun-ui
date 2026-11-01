@@ -101,7 +101,7 @@ const KjunTableComponent = defineComponent({
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
     const internalSort = ref<TableSort>({ key: "", order: "asc" }), internalExpanded = ref<(string | number)[]>([]), search = ref("");
-    const mobile = ref(false);
+    const mobile = ref(false), stuck = ref(false);
     let timer: ReturnType<typeof setTimeout> | undefined, media: MediaQueryList | undefined;
     const updateMobile = () => { mobile.value = !!media?.matches; };
     onMounted(() => { media = matchMedia(`(width < ${tokens.table.mobileBreakpoint}px)`); updateMobile(); media.addEventListener("change", updateMobile); });
@@ -186,15 +186,15 @@ const KjunTableComponent = defineComponent({
       return (
         <div class="kjun-table-state" aria-busy={props.loading}
           ref={domainRef(!status.initialLoading && state.rows.length > 0 && props.columns.some(column => column.pill))}>
-          {props.selectable && props.selected.length > 0 && (
+          {/* The selection bar takes the toolbar's place at the same height, so selecting never moves the table. */}
+          {props.selectable && props.selected.length > 0 ? (
             <div role="group" aria-label={m.value.selectionActions} class="kjun-table-selection">
+              <KjunButton size="sm" variant="ghost" prefixIcon="x" ariaLabel={m.value.deselectAll} onClick={() => emit("update:selected", [])} />
               <strong>{m.value.selectedItems(props.selected.length)}</strong>
-              <KjunButton size="xs" variant="ghost" onClick={state.toggleAll}>{m.value.selectAll}</KjunButton>
-              <KjunButton size="xs" variant="ghost" onClick={() => emit("update:selected", [])}>{m.value.deselectAll}</KjunButton>
+              {!state.all && <KjunButton size="sm" variant="ghost" onClick={state.toggleAll}>{m.value.selectAll}</KjunButton>}
               {selectionToolbar}
             </div>
-          )}
-          {(props.searchable || hasContent(toolbar)) && (
+          ) : (props.searchable || hasContent(toolbar)) && (
             <div class="kjun-table-toolbar">
               {props.searchable && (
                 <KjunInput size="sm" style={{ width: tokens.table.searchWidth + "px", maxWidth: "100%" }} modelValue={search.value} ariaLabel={m.value.searchTable}
@@ -207,7 +207,7 @@ const KjunTableComponent = defineComponent({
             hasLoadedOnce={props.hasLoadedOnce} error={props.error} refreshing={status.queryRefreshing} loadingPadding="none" onRetry={props.onRetry}
             loading={props.skeleton ? undefined : props.loading} loadingText={(props.loadingText ?? m.value.loadingEllipsis)} loadingDelay={props.skeleton ? 0 : props.loadingDelay}>
             {card ? tableCards({ ...context, layout }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
-              sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable })}
+              sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable, stuck })}
             {pagination && (
               <KjunPagination currentPage={pagination.page} totalPages={Math.ceil(pagination.total / (pagination.pageSize || 20))} totalRows={pagination.total}
                 pageSize={pagination.pageSize || 20} showInfo onUpdate:page={(page: number) => emit("page-change", page)} />
