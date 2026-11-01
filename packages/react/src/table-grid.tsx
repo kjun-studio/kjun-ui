@@ -77,7 +77,8 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
           </td>
         </tr>,
         ...(open ? group.rows.map((row) => bodyRow(row, state.rows.indexOf(row))) : []),
-        summaryRow(group.rows, "subtotal", "subtotal:" + group.key),
+        // A one-row group's subtotal would only repeat that row.
+        group.rows.length > 1 ? summaryRow(group.rows, "subtotal", "subtotal:" + group.key) : null,
       ];
     }) : state.rows.map(bodyRow);
     return [...rows, summaryRow(state.rows, "total", "total")];
@@ -144,7 +145,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                                 ? "sort-ascending"
                                 : "sort-descending"
                             }
-                            size={tokens.table.sortIconSize}
+                            size={state.sort.key === col.key ? tokens.table.sortedIconSize : tokens.table.sortIconSize}
                             className="kjun-table-sort-icon"
                           />
                         </button>

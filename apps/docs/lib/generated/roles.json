@@ -1323,7 +1323,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/controls.css",
-      "packages/tokens/src/table.css",
       "packages/native/src/calendar.tsx",
       "packages/native/src/table-toolbar.tsx"
     ]

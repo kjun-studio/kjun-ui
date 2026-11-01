@@ -61,7 +61,10 @@ const common = {
   }),
   summary: detail("열 key별 소계·합계 방식입니다.", {
     "값": '"sum" | "count" | "average" | "min" | "max" 또는 (rows, column) → 표시 내용. count는 행 수, 나머지는 유한한 숫자만 계산합니다.',
-    "표시": "groupBy가 있으면 묶음마다 소계 행을, 항상 맨 아래에 합계 행을 둡니다. 계산값은 열의 format으로 표시하고, 값이 없는 첫 열에는 '소계'·'합계'를 씁니다.",
+    "표시": "groupBy가 있으면 행이 둘 이상인 묶음마다 소계 행을, 항상 맨 아래에 합계 행을 둡니다. 계산값은 summaryFormat, 없으면 열의 format으로 표시하고, 값이 없는 첫 열에는 '소계'·'합계'를 씁니다.",
+  }),
+  summaryFormat: detail("계산한 소계·합계 값을 표시합니다.", {
+    "사용": "셀을 renderCell·cell 슬롯으로 그려 열 format이 없는 열도 행과 같은 단위로 보이게 합니다. (value: number | null, column, kind)를 받아 표시 내용을 반환합니다.",
   }),
   formatValue: event(
     "기본 셀 표시를 포맷합니다.",

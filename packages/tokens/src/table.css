@@ -293,6 +293,8 @@
 /* A sortable column shows a quiet two-way arrow; the sorted column reads in the text color with its direction. */
 .kjun-table th button .kjun-table-sort-icon { color: var(--_kjun-color-text-tertiary); }
 .kjun-table th[aria-sort="ascending"] button,
+.kjun-table th[aria-sort="descending"] button { font-weight: var(--_kjun-type-section-title-weight); }
+.kjun-table th[aria-sort="ascending"] button,
 .kjun-table th[aria-sort="descending"] button,
 .kjun-table th[aria-sort="ascending"] button .kjun-table-sort-icon,
 .kjun-table th[aria-sort="descending"] button .kjun-table-sort-icon { color: var(--_kjun-color-text); }
@@ -388,10 +390,10 @@
   padding: var(--_kjun-geometry-table-empty-padding-y) var(--_kjun-geometry-table-empty-padding-x) !important;
   color: var(--_kjun-color-text-secondary);
 }
-/* Group headers: a secondary band with the collapse button, the app's label and the row count. */
+/* Group headers: a faint text-tinted band with the collapse button, the app's label and the row count. */
 .kjun-table tbody > tr.kjun-table-group > td {
   padding: var(--_kjun-geometry-table-group-padding-y) var(--_kjun-geometry-table-group-padding-x);
-  background: var(--_kjun-color-secondary);
+  background: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-group-fill) * 100%), transparent);
   border-bottom: 0;
 }
 .kjun-table-group-label {
@@ -445,8 +447,9 @@
 .kjun-table-toolbar {
   background: var(--_kjun-color-surface);
 }
+/* The selection bar shares the selected rows' fill. */
 .kjun-table-selection {
-  background: var(--_kjun-color-brand-subtle-bg);
+  background: var(--_kjun-color-selected-bg);
   color: var(--_kjun-color-brand);
   padding-inline-start: var(--_kjun-geometry-dimension-value8);
 }

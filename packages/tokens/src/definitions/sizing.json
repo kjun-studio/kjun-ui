@@ -18,6 +18,9 @@
     "sortIconSize": {
       "$ref": "iconSizes.compact"
     },
+    "sortedIconSize": {
+      "$ref": "iconSizes.small"
+    },
     "searchWidth": 200
   },
   "extensions": {

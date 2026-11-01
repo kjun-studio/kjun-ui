@@ -19441,6 +19441,13 @@
         "description": ""
       },
       {
+        "name": "summaryFormat",
+        "type": "(value: number | null, column: TableColumn<any>, kind: TableSummaryKind) => VNodeChild",
+        "required": false,
+        "default": "—",
+        "description": "Shows computed summaries, for columns whose cells come from a cell slot rather than a column format."
+      },
+      {
         "name": "formatValue",
         "type": "(value: unknown, column: TableColumn<NoInfer<R>>, row: NoInfer<R>) => VNodeChild",
         "required": false,
@@ -19777,6 +19784,13 @@
         "required": false,
         "default": "—",
         "description": "Per column key: a subtotal under each group and a total row at the end."
+      },
+      {
+        "name": "summaryFormat",
+        "type": "((value: number | null, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>, kind: import(\"/workspace/shared/package-runtime/table-groups\").TableSummaryKind) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shows computed summaries, for columns whose cells are drawn by renderCell rather than a column format."
       },
       {
         "name": "toolbar",
@@ -20143,6 +20157,13 @@
         "required": false,
         "default": "—",
         "description": "Per column key: a subtotal under each group and a total row at the end."
+      },
+      {
+        "name": "summaryFormat",
+        "type": "((value: number | null, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>, kind: import(\"/workspace/shared/package-runtime/table-groups\").TableSummaryKind) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shows computed summaries, for columns whose cells are drawn by renderCell rather than a column format."
       },
       {
         "name": "toolbar",

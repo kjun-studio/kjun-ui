@@ -130,7 +130,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
           </td>
         </tr>,
         ...(open ? group.rows.map(row => bodyRow(row, state.rows.indexOf(row))) : []),
-        summaryRow(group.rows, "subtotal", "subtotal:" + group.key),
+        group.rows.length > 1 ? summaryRow(group.rows, "subtotal", "subtotal:" + group.key) : null,
       ];
     }) : state.rows.map(bodyRow)),
     summaryRow(state.rows, "total", "total"),
@@ -154,7 +154,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
                 {sorting(col) ? (
                   <button type="button" onClick={() => state.sortColumn(col)}>
                     {col.label}
-                    <KjunIcon name={state.sort.key !== col.key ? "arrows-sort" : state.sort.order === "asc" ? "sort-ascending" : "sort-descending"} size={tokens.table.sortIconSize} class="kjun-table-sort-icon" />
+                    <KjunIcon name={state.sort.key !== col.key ? "arrows-sort" : state.sort.order === "asc" ? "sort-ascending" : "sort-descending"} size={state.sort.key === col.key ? tokens.table.sortedIconSize : tokens.table.sortIconSize} class="kjun-table-sort-icon" />
                   </button>
                 ) : col.label}
               </th>

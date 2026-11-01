@@ -813,6 +813,7 @@
   --_kjun-state-opacity-deviation-medium: 0.14;
   --_kjun-state-opacity-deviation-strong: 0.22;
   --_kjun-state-opacity-stripe: 0.03;
+  --_kjun-state-opacity-group-fill: 0.04;
   --_kjun-state-opacity-tint-fill: 0.06;
   --_kjun-state-opacity-tint-control: 0.08;
   --_kjun-state-opacity-tint-hover: 0.12;
@@ -981,6 +982,7 @@
   --_kjun-geometry-table-skeleton-height: 20px;
   --_kjun-geometry-table-selection-size: 16px;
   --_kjun-geometry-table-sort-icon-size: 12px;
+  --_kjun-geometry-table-sorted-icon-size: 14px;
   --_kjun-geometry-table-search-width: 200px;
   --_kjun-geometry-dimension-value2: 2px;
   --_kjun-geometry-dimension-value4: 4px;

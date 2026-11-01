@@ -13,7 +13,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     // Subtotals use the column's format; the total sums every row.
     await expect(page.getByText('7,200,000원', { exact: true })).toBeVisible();
     await expect(page.getByText('12,000,000원', { exact: true })).toBeVisible();
-    await expect(page.getByText('소계', { exact: true })).toHaveCount(3);
+    // One-row groups skip their subtotal, which would only repeat the row.
+    await expect(page.getByText('소계', { exact: true })).toHaveCount(1);
     await expect(page.getByText('합계', { exact: true })).toHaveCount(1);
     // Collapsing a group hides its rows but keeps its header and subtotal.
     const toggle = page.getByRole('button', { name: '진행 중 묶음 접기' });

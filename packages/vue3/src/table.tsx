@@ -73,6 +73,8 @@ const kjunTableProps = {
   groupBy: { type: String, default: undefined },
   /** Per column key: a subtotal under each group and a total row at the end. */
   summary: { type: Object as PropType<Partial<Record<string, TableSummaryKind | ((rows: any[], column: TableColumn<any>) => VNodeChild)>>>, default: undefined },
+  /** Shows computed summaries, for columns whose cells come from a cell slot rather than a column format. */
+  summaryFormat: { type: Function as PropType<(value: number | null, column: TableColumn<any>, kind: TableSummaryKind) => VNodeChild>, default: undefined },
   formatValue: { type: Function as PropType<(value: unknown, column: TableColumn<any>, row: any) => VNodeChild>, default: undefined },
   /** Declared as props: rows become keyboard targets and the retry button appears only when the app listens. */
   onRowClick: { type: Function as PropType<(row: any, index: number) => void>, default: undefined },
@@ -185,6 +187,7 @@ const KjunTableComponent = defineComponent({
         if (!spec) return null;
         if (typeof spec === "function") return spec(rows, col);
         const value = summarizeColumn(rows, col.key, spec), format = columnFormat(col);
+        if (props.summaryFormat) return props.summaryFormat(value, col, spec);
         return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec);
       };
       const empty = slots.empty?.();

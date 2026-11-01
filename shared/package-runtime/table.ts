@@ -77,6 +77,8 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   renderGroupLabel?: (value: unknown, rows: Row[]) => ReactNode;
   /** Per column key: a subtotal under each group and a total row at the end. */
   summary?: Partial<Record<string, TableSummaryKind | ((rows: Row[], column: TableColumn<Row>) => ReactNode)>>;
+  /** Shows computed summaries, for columns whose cells are drawn by renderCell rather than a column format. */
+  summaryFormat?: (value: number | null, column: TableColumn<Row>, kind: TableSummaryKind) => ReactNode;
   toolbar?: ReactNode;
   emptyContent?: ReactNode;
   renderCell?: (

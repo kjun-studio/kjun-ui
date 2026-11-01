@@ -20,16 +20,18 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
   // Like Web's scroll hint: when columns overflow, the trailing edge fades until the end is reached.
   const [scroll, setScroll] = useState({ viewport: 0, x: 0 }), [stuck, setStuck] = useState(false), fadeId = "kjun-table-fade-" + useId().replace(/[^a-z0-9]/gi, "");
   const cellPadding = geometry.cellPadding[compact ? "compact" : "regular"];
-  const width = (col: TableColumn<Row>) =>
+  const naturalWidth = (col: TableColumn<Row>) =>
     typeof col.width === "number"
       ? col.width
       : typeof col.width === "string" && /^\d+(px)?$/.test(col.width)
       ? parseFloat(col.width)
       : geometry.columnWidth;
-  const totalWidth =
-    visible.reduce((sum, col) => sum + width(col), 0) +
-    (selectable ? geometry.actionColumnWidth : 0) +
-    (expandable ? geometry.actionColumnWidth : 0);
+  const utilityWidth = (selectable ? geometry.actionColumnWidth : 0) + (expandable ? geometry.actionColumnWidth : 0);
+  const naturalTotal = visible.reduce((sum, col) => sum + naturalWidth(col), 0) + utilityWidth;
+  // Like Web's 100% table: narrower columns share the spare width so the grid always fills its container.
+  const stretch = scroll.viewport > naturalTotal ? (scroll.viewport - utilityWidth) / (naturalTotal - utilityWidth || 1) : 1;
+  const width = (col: TableColumn<Row>) => naturalWidth(col) * stretch;
+  const totalWidth = stretch > 1 ? scroll.viewport : naturalTotal;
   const fade = totalWidth - scroll.viewport - scroll.x > 1;
   // Like Web: stripes are a faint text tint, distinct from the header and expanded rows.
   const stripe = (typeof colors.text === "string" && tintColor(colors.text, tokens.states.opacity.stripe)) || colors.secondary;
@@ -122,13 +124,13 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
       return [
         <View key={"group:" + group.key} style={{ flexDirection: "row", alignItems: "center", gap: geometry.groupGap, width: totalWidth,
           paddingVertical: geometry.groupPadding.y, paddingHorizontal: geometry.groupPadding.x, backgroundColor: colors.secondary }}>
-          <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} accessibilityState={{ expanded: open }}
+          <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"}
             ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} onPress={() => toggleGroup(group.key)} />
           {content(groupLabel(group), { ...typeStyle("control"), color: colors.text })}
           <KText style={{ ...typeStyle("body"), color: colors.textTertiary }}>{m.groupCount(group.rows.length)}</KText>
         </View>,
         ...(open ? group.rows.map((row) => bodyRow(row, state.rows.indexOf(row))) : []),
-        summaryRow(group.rows, "subtotal", "subtotal:" + group.key),
+        group.rows.length > 1 ? summaryRow(group.rows, "subtotal", "subtotal:" + group.key) : null,
       ];
     }) : state.rows.map(bodyRow)),
     summaryRow(state.rows, "total", "total"),
@@ -158,6 +160,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                     <KjunCheckbox
                       size="sm"
                       value={state.all}
+                      indeterminate={state.some}
                       ariaLabel={
                         state.some ? m.selectAllPartial : m.selectAll
                       }
@@ -199,6 +202,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                       style={{
                         ...typeStyle('controlSmall'),
                         color: col.sortable && sortable !== false && state.sort.key === col.key ? colors.text : colors.textSecondary,
+                        ...(col.sortable && sortable !== false && state.sort.key === col.key ? { fontWeight: typeStyle("sectionTitle").fontWeight } : null),
                       }}
                     >
                       {col.label}
@@ -213,7 +217,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                             ? "sort-ascending"
                             : "sort-descending"
                         }
-                        size={tokens.table.sortIconSize}
+                        size={state.sort.key === col.key ? tokens.table.sortedIconSize : tokens.table.sortIconSize}
                         color={state.sort.key === col.key ? colors.text : colors.textTertiary}
                       />
                     )}

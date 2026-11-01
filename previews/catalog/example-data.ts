@@ -144,7 +144,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
       const delta = (row: any) => h('KjunSignedValue', { value: row.change, format: 'percent', isRaw: true });
       const view = (row: any) => h('KjunButton', { size: 'xs', variant: 'ghost', ariaLabel: row.name + ' 보기', ...action(() => message(row.name + ' 상세 보기')) }, '보기');
       const detail = (row: any) => example.project ? h('KjunAlert', { type: 'info' }, row.summary + ' 담당자 ' + row.owner + ' · 마감 ' + row.due) : '상세: ' + row.name;
-      const selectionAction = () => h('KjunButton', { size: 'xs', variant: 'secondary', ...action(() => message(get('selected', []).map((row: any) => row.name).join(', ') + ' 선택 확인')) }, '선택 항목 확인');
+      const selectionAction = () => h('KjunButton', { size: 'sm', variant: 'primary', ...action(() => message(get('selected', []).map((row: any) => row.name).join(', ') + ' 선택 확인')) }, '선택 항목 확인');
       return h(
         name,
         {
@@ -166,6 +166,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           renderSelectionToolbar: selectionAction,
           groupBy: settings.grouped && example.project ? 'status' : undefined,
           summary: settings.grouped ? (example.project ? { budget: 'sum' } : example.metrics ? { orders: 'sum', revenue: 'sum' } : undefined) : undefined,
+          summaryFormat: settings.grouped ? (value: number | null, column: any) => value == null ? '' : ['budget', 'revenue'].includes(column.key) ? priceFormat(value) : new Intl.NumberFormat('ko-KR').format(value) : undefined,
           renderCell: (value: any, column: any, row: any) => {
             if (example.project && column.key === 'status') return status(row);
             if (example.project && column.key === 'actions') return view(row);

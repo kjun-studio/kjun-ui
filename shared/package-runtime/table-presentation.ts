@@ -62,6 +62,7 @@ export function tableSummaryValue<Row extends object>(props: TableProps<Row, unk
   if (!spec) return null;
   if (typeof spec === "function") return spec(rows, column);
   const value = summarizeColumn(rows, column.key, spec), format = columnFormat(column);
+  if (props.summaryFormat) return props.summaryFormat(value, column, spec);
   return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec);
 }
 

@@ -256,7 +256,8 @@ export function KjunProgressCell({
             ...typeStyle('caption'),
             color: colors.textSecondary,
             minWidth: tokens.extensions.financial.progressLabelWidth,
-            textAlign: "right",
+            // Like Web: the value sits beside its bar; the fixed width keeps every bar the same length.
+            textAlign: "left",
             fontFamily: numericFontFamily || fontFamily,
             fontVariant: ["tabular-nums"],
           }}

@@ -7965,7 +7965,23 @@
               },
               {
                 "label": "표시",
-                "text": "groupBy가 있으면 묶음마다 소계 행을, 항상 맨 아래에 합계 행을 둡니다. 계산값은 열의 format으로 표시하고, 값이 없는 첫 열에는 '소계'·'합계'를 씁니다."
+                "text": "groupBy가 있으면 행이 둘 이상인 묶음마다 소계 행을, 항상 맨 아래에 합계 행을 둡니다. 계산값은 summaryFormat, 없으면 열의 format으로 표시하고, 값이 없는 첫 열에는 '소계'·'합계'를 씁니다."
+              }
+            ],
+            "source": "packages/vue3/src/table.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "summaryFormat",
+            "type": "(value: number | null, column: TableColumn<any>, kind: TableSummaryKind) => VNodeChild",
+            "required": false,
+            "default": "—",
+            "description": "Shows computed summaries, for columns whose cells come from a cell slot rather than a column format.",
+            "summary": "계산한 소계·합계 값을 표시합니다.",
+            "details": [
+              {
+                "label": "사용",
+                "text": "셀을 renderCell·cell 슬롯으로 그려 열 format이 없는 열도 행과 같은 단위로 보이게 합니다. (value: number | null, column, kind)를 받아 표시 내용을 반환합니다."
               }
             ],
             "source": "packages/vue3/src/table.tsx",
@@ -8835,7 +8851,23 @@
               },
               {
                 "label": "표시",
-                "text": "groupBy가 있으면 묶음마다 소계 행을, 항상 맨 아래에 합계 행을 둡니다. 계산값은 열의 format으로 표시하고, 값이 없는 첫 열에는 '소계'·'합계'를 씁니다."
+                "text": "groupBy가 있으면 행이 둘 이상인 묶음마다 소계 행을, 항상 맨 아래에 합계 행을 둡니다. 계산값은 summaryFormat, 없으면 열의 format으로 표시하고, 값이 없는 첫 열에는 '소계'·'합계'를 씁니다."
+              }
+            ],
+            "source": "packages/react/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "summaryFormat",
+            "type": "((value: number | null, column: TableColumn<Row>, kind: TableSummaryKind) => ReactNode) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Shows computed summaries, for columns whose cells are drawn by renderCell rather than a column format.",
+            "summary": "계산한 소계·합계 값을 표시합니다.",
+            "details": [
+              {
+                "label": "사용",
+                "text": "셀을 renderCell·cell 슬롯으로 그려 열 format이 없는 열도 행과 같은 단위로 보이게 합니다. (value: number | null, column, kind)를 받아 표시 내용을 반환합니다."
               }
             ],
             "source": "packages/react/src/table-view.tsx",
@@ -9730,7 +9762,23 @@
               },
               {
                 "label": "표시",
-                "text": "groupBy가 있으면 묶음마다 소계 행을, 항상 맨 아래에 합계 행을 둡니다. 계산값은 열의 format으로 표시하고, 값이 없는 첫 열에는 '소계'·'합계'를 씁니다."
+                "text": "groupBy가 있으면 행이 둘 이상인 묶음마다 소계 행을, 항상 맨 아래에 합계 행을 둡니다. 계산값은 summaryFormat, 없으면 열의 format으로 표시하고, 값이 없는 첫 열에는 '소계'·'합계'를 씁니다."
+              }
+            ],
+            "source": "packages/native/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "summaryFormat",
+            "type": "((value: number | null, column: TableColumn<Row>, kind: TableSummaryKind) => ReactNode) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Shows computed summaries, for columns whose cells are drawn by renderCell rather than a column format.",
+            "summary": "계산한 소계·합계 값을 표시합니다.",
+            "details": [
+              {
+                "label": "사용",
+                "text": "셀을 renderCell·cell 슬롯으로 그려 열 format이 없는 열도 행과 같은 단위로 보이게 합니다. (value: number | null, column, kind)를 받아 표시 내용을 반환합니다."
               }
             ],
             "source": "packages/native/src/table-view.tsx",
