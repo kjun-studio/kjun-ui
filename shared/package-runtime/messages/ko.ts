@@ -128,7 +128,7 @@ export const kjunMessagesKo = {
   previousSlide: "이전 슬라이드",
   nextSlide: "다음 슬라이드",
   goToSlide: (slide: number) => `${slide}번 슬라이드`,
-  slideOf: (slide: number, total: number) => `${slide} / ${total}`,
+  slideOf: (slide: number, total: number) => `${total}개 중 ${slide}번째`,
   // Market and financial
   marketData: "시장 데이터",
   metrics: "표시 지표",

@@ -2,6 +2,13 @@
 export type CarouselSlideSize = "full" | "peek" | "auto";
 export type CarouselGap = "none" | "sm" | "md" | "lg";
 export type CarouselMove = "previous" | "next" | "first" | "last";
+export type CarouselIndicators = boolean | "dots" | "count";
+export type CarouselTitleTag = "h2" | "h3" | "h4" | "h5" | "h6";
+
+/** true means dots; false means none. */
+export function indicatorMode(indicators: CarouselIndicators): "dots" | "count" | undefined {
+  return indicators === true ? "dots" : indicators || undefined;
+}
 
 export function clampSlide(index: number, count: number): number {
   if (count <= 0 || !Number.isFinite(index)) return 0;
@@ -20,6 +27,18 @@ export function nearestSlide(offsets: readonly number[], position: number, max?:
   return best;
 }
 
+/** Slide starts as scroll positions the scroller can actually reach; starts past the end stop at the end. */
+export function reachableOffsets(offsets: readonly number[], max: number): number[] {
+  return offsets.map(offset => Math.max(0, Math.min(offset, Math.max(0, max))));
+}
+
+/** Where a mouse drag lands: wherever the position is nearest, or one slide on once the drag passes a fifth of the view. */
+export function dragTarget({ start, nearest, distance, width, count }: { start: number; nearest: number; distance: number; width: number; count: number }): number {
+  if (nearest !== start) return clampSlide(nearest, count);
+  if (Math.abs(distance) < width / 5) return start;
+  return clampSlide(start + (distance < 0 ? 1 : -1), count);
+}
+
 export function carouselKey(key: string): CarouselMove | undefined {
   return key === "ArrowLeft" ? "previous" : key === "ArrowRight" ? "next" : key === "Home" ? "first" : key === "End" ? "last" : undefined;
 }
@@ -33,11 +52,11 @@ function developmentMode() {
 }
 let warnedUnreachable = false, warnedUnnamed = false;
 /** Development-only hints for setups that leave some people unable to move or name the carousel. */
-export function warnCarouselSetup({ controls, indicators, named }: { controls: boolean; indicators: boolean; named: boolean }) {
+export function warnCarouselSetup({ controls, dots, mouseDrag, named }: { controls: boolean; dots: boolean; mouseDrag: boolean; named: boolean }) {
   if (!developmentMode()) return;
-  if (!controls && !indicators && !warnedUnreachable) {
+  if (!controls && !dots && !mouseDrag && !warnedUnreachable) {
     warnedUnreachable = true;
-    console.warn("[KJUN] KjunCarousel: with controls and indicators off, a mouse cannot reach other slides (the wheel scrolls vertically and dragging is not supported). Keep one of them on.");
+    console.warn("[KJUN] KjunCarousel: with controls, dot indicators and mouseDrag off, a mouse cannot reach other slides (the wheel scrolls vertically). Keep one of them on.");
   }
   if (!named && !warnedUnnamed) {
     warnedUnnamed = true;

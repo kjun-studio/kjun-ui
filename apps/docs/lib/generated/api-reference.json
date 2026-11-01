@@ -30409,6 +30409,15 @@
             "source": "packages/vue3/src/carousel.tsx"
           },
           {
+            "name": "titleAs",
+            "type": "CarouselTitleTag",
+            "required": false,
+            "default": "\"h2\"",
+            "description": "The title's heading level (default h2).",
+            "summary": "title의 제목 수준입니다(h2~h6, 기본값 h2). 화면의 문서 구조에 맞춥니다. Native에는 없습니다.",
+            "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
             "name": "slideSize",
             "type": "CarouselSlideSize",
             "required": false,
@@ -30446,11 +30455,11 @@
           },
           {
             "name": "indicators",
-            "type": "boolean",
+            "type": "CarouselIndicators",
             "required": false,
             "default": "true",
-            "description": "",
-            "summary": "아래쪽 표시 점을 그립니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다.",
+            "description": "Dots under the slides (true or \"dots\"), the position as \"3 / 24\" text (\"count\") for many slides, or none (false).",
+            "summary": "슬라이드 아래 표시입니다. true 또는 \"dots\"는 표시 점, \"count\"는 \"3 / 24\" 같은 숫자 표시(슬라이드가 많을 때), false는 없음입니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다. Native 스크린리더에는 하나의 조절 컨트롤로 보여, 위·아래로 쓸어 슬라이드를 옮깁니다.",
             "source": "packages/vue3/src/carousel.tsx"
           },
           {
@@ -30458,8 +30467,17 @@
             "type": "boolean",
             "required": false,
             "default": "true",
-            "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists. A mouse wheel does not\nmove a carousel, so keep these or the indicators on.",
-            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 씁니다. title이 없으면 슬라이드 양쪽에 떠 있는 원 버튼으로, 캐러셀에 마우스를 올리거나 키보드 포커스가 있을 때만 보이고 갈 슬라이드가 있는 쪽만 그립니다. 마우스 휠로는 넘어가지 않으므로 끌 때는 indicators를 켜 두세요(둘 다 끄면 개발 모드에서 경고합니다). Native는 버튼 없이 넘깁니다.",
+            "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists.",
+            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 씁니다. title이 없으면 슬라이드 양쪽에 떠 있는 원 버튼으로, 캐러셀에 마우스를 올리거나 키보드 포커스가 있을 때만 보이고 갈 슬라이드가 있는 쪽만 그립니다. 버튼·표시 점·mouseDrag를 모두 끄면 마우스로 넘길 수 없어 개발 모드에서 경고합니다. Native는 버튼 없이 넘깁니다.",
+            "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
+            "name": "mouseDrag",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "A mouse can drag the slides; a drag past a fifth of the view moves one slide. A mouse wheel does not move a carousel.",
+            "summary": "마우스로 슬라이드를 끌어 넘깁니다. 기본값 true이며 화면 폭의 1/5보다 길게 끌면 한 장 넘어가고, 짧으면 제자리로 돌아갑니다. 입력창 안에서 시작한 드래그는 글자 선택으로 남습니다. 마우스 휠로는 넘어가지 않습니다. Native에는 없습니다.",
             "source": "packages/vue3/src/carousel.tsx"
           }
         ],
@@ -30511,8 +30529,8 @@
           }
         ],
         "ownership": [
-          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다. 섹션 제목이 필요하면 title을 쓰고, 이때 버튼은 제목 오른쪽으로 옮겨집니다.",
-          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 씁니다. 마우스 휠과 드래그로는 넘어가지 않습니다. Native는 ScrollView의 snap으로 넘기며 버튼을 그리지 않고 title은 제목만 표시합니다."
+          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 마우스 드래그, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 버튼·점·키로 옮기면 스크린리더가 ‘4개 중 2번째’처럼 위치를 읽습니다. 자동 넘김과 무한 반복은 제공하지 않습니다. 섹션 제목이 필요하면 title(수준은 titleAs)을 쓰고, 이때 버튼은 제목 오른쪽으로 옮겨집니다. 오른쪽에서 왼쪽으로 쓰는 문서(RTL)는 아직 지원하지 않습니다.",
+          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼과 드래그를 씁니다. 마우스 휠로는 넘어가지 않습니다. Native는 ScrollView의 snap으로 넘기며 버튼을 그리지 않고, title은 제목만 표시합니다. 기기 스크린리더에서는 표시 영역이 하나의 조절 컨트롤이 되어 위·아래로 쓸어 슬라이드를 옮깁니다."
         ],
         "types": []
       },
@@ -30534,6 +30552,15 @@
             "default": "—",
             "description": "A section title above the slides; the region takes its name, and previous and next buttons move beside it.",
             "summary": "슬라이드 위에 놓는 섹션 제목(h2)입니다. 영역 이름이 되고, 웹의 이전·다음 버튼은 슬라이드 양쪽 대신 제목 오른쪽에 항상 보이며 처음·끝에서 비활성입니다. 작은 카드 여러 장을 보여 주는 카드 줄에 씁니다.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "titleAs",
+            "type": "CarouselTitleTag | undefined",
+            "required": false,
+            "default": "\"h2\"",
+            "description": "The title's heading level (default h2).",
+            "summary": "title의 제목 수준입니다(h2~h6, 기본값 h2). 화면의 문서 구조에 맞춥니다. Native에는 없습니다.",
             "source": "packages/react/src/carousel.tsx"
           },
           {
@@ -30622,11 +30649,11 @@
           },
           {
             "name": "indicators",
-            "type": "boolean | undefined",
+            "type": "CarouselIndicators | undefined",
             "required": false,
             "default": "true",
-            "description": "",
-            "summary": "아래쪽 표시 점을 그립니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다.",
+            "description": "Dots under the slides (true or \"dots\"), the position as \"3 / 24\" text (\"count\") for many slides, or none (false).",
+            "summary": "슬라이드 아래 표시입니다. true 또는 \"dots\"는 표시 점, \"count\"는 \"3 / 24\" 같은 숫자 표시(슬라이드가 많을 때), false는 없음입니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다. Native 스크린리더에는 하나의 조절 컨트롤로 보여, 위·아래로 쓸어 슬라이드를 옮깁니다.",
             "source": "packages/react/src/carousel.tsx"
           },
           {
@@ -30634,8 +30661,17 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
-            "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists. A mouse wheel does not\nmove a carousel, so keep these or the indicators on.",
-            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 씁니다. title이 없으면 슬라이드 양쪽에 떠 있는 원 버튼으로, 캐러셀에 마우스를 올리거나 키보드 포커스가 있을 때만 보이고 갈 슬라이드가 있는 쪽만 그립니다. 마우스 휠로는 넘어가지 않으므로 끌 때는 indicators를 켜 두세요(둘 다 끄면 개발 모드에서 경고합니다). Native는 버튼 없이 넘깁니다.",
+            "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists.",
+            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 씁니다. title이 없으면 슬라이드 양쪽에 떠 있는 원 버튼으로, 캐러셀에 마우스를 올리거나 키보드 포커스가 있을 때만 보이고 갈 슬라이드가 있는 쪽만 그립니다. 버튼·표시 점·mouseDrag를 모두 끄면 마우스로 넘길 수 없어 개발 모드에서 경고합니다. Native는 버튼 없이 넘깁니다.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "mouseDrag",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "A mouse can drag the slides; a drag past a fifth of the view moves one slide. A mouse wheel does not move a carousel.",
+            "summary": "마우스로 슬라이드를 끌어 넘깁니다. 기본값 true이며 화면 폭의 1/5보다 길게 끌면 한 장 넘어가고, 짧으면 제자리로 돌아갑니다. 입력창 안에서 시작한 드래그는 글자 선택으로 남습니다. 마우스 휠로는 넘어가지 않습니다. Native에는 없습니다.",
             "source": "packages/react/src/carousel.tsx"
           },
           {
@@ -30669,8 +30705,8 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다. 섹션 제목이 필요하면 title을 쓰고, 이때 버튼은 제목 오른쪽으로 옮겨집니다.",
-          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 씁니다. 마우스 휠과 드래그로는 넘어가지 않습니다. Native는 ScrollView의 snap으로 넘기며 버튼을 그리지 않고 title은 제목만 표시합니다."
+          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 마우스 드래그, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 버튼·점·키로 옮기면 스크린리더가 ‘4개 중 2번째’처럼 위치를 읽습니다. 자동 넘김과 무한 반복은 제공하지 않습니다. 섹션 제목이 필요하면 title(수준은 titleAs)을 쓰고, 이때 버튼은 제목 오른쪽으로 옮겨집니다. 오른쪽에서 왼쪽으로 쓰는 문서(RTL)는 아직 지원하지 않습니다.",
+          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼과 드래그를 씁니다. 마우스 휠로는 넘어가지 않습니다. Native는 ScrollView의 snap으로 넘기며 버튼을 그리지 않고, title은 제목만 표시합니다. 기기 스크린리더에서는 표시 영역이 하나의 조절 컨트롤이 되어 위·아래로 쓸어 슬라이드를 옮깁니다."
         ],
         "types": []
       },
@@ -30780,11 +30816,11 @@
           },
           {
             "name": "indicators",
-            "type": "boolean | undefined",
+            "type": "CarouselIndicators | undefined",
             "required": false,
             "default": "true",
-            "description": "",
-            "summary": "아래쪽 표시 점을 그립니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다.",
+            "description": "Dots under the slides (true or \"dots\"), the position as \"3 / 24\" text (\"count\") for many slides, or none (false).\nScreen readers meet them as one adjustable control that swipes up and down through the slides.",
+            "summary": "슬라이드 아래 표시입니다. true 또는 \"dots\"는 표시 점, \"count\"는 \"3 / 24\" 같은 숫자 표시(슬라이드가 많을 때), false는 없음입니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다. Native 스크린리더에는 하나의 조절 컨트롤로 보여, 위·아래로 쓸어 슬라이드를 옮깁니다.",
             "source": "packages/native/src/carousel.tsx"
           },
           {
@@ -30793,7 +30829,7 @@
             "required": false,
             "default": "—",
             "description": "Accepted for parity with the web packages; Native draws no previous and next buttons, slides move by swipe.",
-            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 씁니다. title이 없으면 슬라이드 양쪽에 떠 있는 원 버튼으로, 캐러셀에 마우스를 올리거나 키보드 포커스가 있을 때만 보이고 갈 슬라이드가 있는 쪽만 그립니다. 마우스 휠로는 넘어가지 않으므로 끌 때는 indicators를 켜 두세요(둘 다 끄면 개발 모드에서 경고합니다). Native는 버튼 없이 넘깁니다.",
+            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 씁니다. title이 없으면 슬라이드 양쪽에 떠 있는 원 버튼으로, 캐러셀에 마우스를 올리거나 키보드 포커스가 있을 때만 보이고 갈 슬라이드가 있는 쪽만 그립니다. 버튼·표시 점·mouseDrag를 모두 끄면 마우스로 넘길 수 없어 개발 모드에서 경고합니다. Native는 버튼 없이 넘깁니다.",
             "source": "packages/native/src/carousel.tsx"
           },
           {
@@ -30809,8 +30845,8 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다. 섹션 제목이 필요하면 title을 쓰고, 이때 버튼은 제목 오른쪽으로 옮겨집니다.",
-          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 씁니다. 마우스 휠과 드래그로는 넘어가지 않습니다. Native는 ScrollView의 snap으로 넘기며 버튼을 그리지 않고 title은 제목만 표시합니다."
+          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 마우스 드래그, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 버튼·점·키로 옮기면 스크린리더가 ‘4개 중 2번째’처럼 위치를 읽습니다. 자동 넘김과 무한 반복은 제공하지 않습니다. 섹션 제목이 필요하면 title(수준은 titleAs)을 쓰고, 이때 버튼은 제목 오른쪽으로 옮겨집니다. 오른쪽에서 왼쪽으로 쓰는 문서(RTL)는 아직 지원하지 않습니다.",
+          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼과 드래그를 씁니다. 마우스 휠로는 넘어가지 않습니다. Native는 ScrollView의 snap으로 넘기며 버튼을 그리지 않고, title은 제목만 표시합니다. 기기 스크린리더에서는 표시 영역이 하나의 조절 컨트롤이 되어 위·아래로 쓸어 슬라이드를 옮깁니다."
         ],
         "types": []
       }

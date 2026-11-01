@@ -2518,6 +2518,13 @@
         "description": "A section title above the slides; the region takes its name, and previous and next buttons move beside it."
       },
       {
+        "name": "titleAs",
+        "type": "CarouselTitleTag",
+        "required": false,
+        "default": "\"h2\"",
+        "description": "The title's heading level (default h2)."
+      },
+      {
         "name": "slideSize",
         "type": "CarouselSlideSize",
         "required": false,
@@ -2547,17 +2554,24 @@
       },
       {
         "name": "indicators",
-        "type": "boolean",
+        "type": "CarouselIndicators",
         "required": false,
         "default": "true",
-        "description": ""
+        "description": "Dots under the slides (true or \"dots\"), the position as \"3 / 24\" text (\"count\") for many slides, or none (false)."
       },
       {
         "name": "controls",
         "type": "boolean",
         "required": false,
         "default": "true",
-        "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists. A mouse wheel does not\nmove a carousel, so keep these or the indicators on."
+        "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists."
+      },
+      {
+        "name": "mouseDrag",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "A mouse can drag the slides; a drag past a fifth of the view moves one slide. A mouse wheel does not move a carousel."
       }
     ],
     "events": [
@@ -2587,6 +2601,13 @@
         "required": false,
         "default": "—",
         "description": "A section title above the slides; the region takes its name, and previous and next buttons move beside it."
+      },
+      {
+        "name": "titleAs",
+        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselTitleTag | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The title's heading level (default h2)."
       },
       {
         "name": "children",
@@ -2632,17 +2653,24 @@
       },
       {
         "name": "indicators",
-        "type": "boolean | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselIndicators | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Dots under the slides (true or \"dots\"), the position as \"3 / 24\" text (\"count\") for many slides, or none (false)."
       },
       {
         "name": "controls",
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists. A mouse wheel does not\nmove a carousel, so keep these or the indicators on."
+        "description": "Previous and next buttons for pointers that can hover; touch screens swipe instead. Without a title they float at\nthe slide edges while the pointer or focus is inside, and only toward a slide that exists."
+      },
+      {
+        "name": "mouseDrag",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A mouse can drag the slides; a drag past a fifth of the view moves one slide. A mouse wheel does not move a carousel."
       },
       {
         "name": "className",
@@ -2725,10 +2753,10 @@
       },
       {
         "name": "indicators",
-        "type": "boolean | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselIndicators | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Dots under the slides (true or \"dots\"), the position as \"3 / 24\" text (\"count\") for many slides, or none (false).\nScreen readers meet them as one adjustable control that swipes up and down through the slides."
       },
       {
         "name": "controls",

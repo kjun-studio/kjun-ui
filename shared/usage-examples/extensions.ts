@@ -50,7 +50,7 @@ export function generate(input: UsageInput) {
         b.node('KjunCard', { title, subtitle, border: true, media: b.node('KjunImage', { src: expr(`images[${i % 2}]`), decorative: true, aspectRatio: 2 }) }));
       b.data('images', [sampleImage(0), sampleImage(1)]);
       const slides = s.slideSize === 'auto' ? cards.map(card => b.node(b.native ? 'View' : 'div', { style: { width: 240 } }, card)) : cards;
-      content = b.group([b.node(name, { ...(s.title ? { title: '추천 콘텐츠' } : { ariaLabel: '추천 콘텐츠' }), ...b.props('slideSize', 'gap', 'indicators', 'controls'), index: b.state('slide', 0), onIndexChange: b.update('slide') }, slides.join('\n')),
+      content = b.group([b.node(name, { ...(s.title ? { title: '추천 콘텐츠' } : { ariaLabel: '추천 콘텐츠' }), ...b.props('slideSize', 'gap', 'controls', ...(b.native ? [] : ['mouseDrag'])), ...(s.indicators === 'dots' ? {} : { indicators: s.indicators === 'none' ? false : s.indicators }), index: b.state('slide', 0), onIndexChange: b.update('slide') }, slides.join('\n')),
         b.text(expr('"현재 슬라이드: " + (state.slide + 1)'))]); break;
     }
     case 'KjunImage': {

@@ -37,9 +37,9 @@ export const extensions: Record<string, GuideAuthor> = {
     states: [{ id: "failure", label: "로드 실패", description: "잘못된 이미지 데이터를 실제로 로드하여 실패를 재현합니다.", settings: { imageState: "실패" } }, { id: "contain", label: "원본 비율 유지", description: "전체 이미지를 보여주고 남는 영역을 유지합니다.", settings: { fit: "contain", aspectRatio: 1 } }],
   },
   KjunCarousel: {
-    parts: [p("슬라이드 영역", "가로로 스크롤하며 각 슬라이드의 시작 가장자리에 맞춰 멈춥니다. 슬라이드마다 몇 번째인지 읽습니다.", ".kjun-carousel-viewport, [aria-label=\"1 / 4\"]"), p("표시 점", "현재 슬라이드를 넓은 점으로 표시하고, 누르면 그 슬라이드로 이동합니다.", '[aria-label="1번 슬라이드"]')],
+    parts: [p("슬라이드 영역", "가로로 스크롤하며 각 슬라이드의 시작 가장자리에 맞춰 멈춥니다. 슬라이드마다 몇 번째인지 읽습니다.", ".kjun-carousel-viewport, img"), p("표시 점", "현재 슬라이드를 넓은 점으로 표시하고, 누르면 그 슬라이드로 이동합니다.", '[aria-label="1번 슬라이드"]')],
     related: "app-screen",
-    states: [{ id: "peek", label: "다음 카드 보이기", description: "다음 슬라이드를 24px 보여 넘길 수 있음을 알립니다.", settings: { slideSize: "peek", gap: "sm" } }, { id: "cards", label: "카드 줄", description: "섹션 제목 오른쪽에 이전·다음 버튼을 둡니다.", settings: { slideSize: "auto", indicators: false, title: true } }, { id: "second", label: "두 번째 슬라이드", description: "앱이 index로 두 번째 슬라이드를 엽니다.", values: { slide: 1 } }],
+    states: [{ id: "peek", label: "다음 카드 보이기", description: "다음 슬라이드를 24px 보여 넘길 수 있음을 알립니다.", settings: { slideSize: "peek", gap: "sm" } }, { id: "cards", label: "카드 줄", description: "섹션 제목 오른쪽에 이전·다음 버튼을 둡니다.", settings: { slideSize: "auto", indicators: "none", title: true } }, { id: "second", label: "두 번째 슬라이드", description: "앱이 index로 두 번째 슬라이드를 엽니다.", values: { slide: 1 } }],
   },
   KjunAvatar: {
     parts: [p("프로필 영역", "이미지가 없으면 이름의 첫 글자를 표시하며 접근성 이름은 전체 이름을 유지합니다.", '[aria-label="김하늘"]')], related: "generic-lists",

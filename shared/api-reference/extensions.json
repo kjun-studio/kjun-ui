@@ -228,16 +228,19 @@
     "vue3": [
       "ariaLabel",
       "title",
+      "titleAs",
       "slideSize",
       "gap",
       "index",
       "defaultIndex",
       "indicators",
-      "controls"
+      "controls",
+      "mouseDrag"
     ],
     "react": [
       "ariaLabel",
       "title",
+      "titleAs",
       "slideSize",
       "gap",
       "index",
@@ -245,6 +248,7 @@
       "onIndexChange",
       "indicators",
       "controls",
+      "mouseDrag",
       "children",
       "className",
       "style",

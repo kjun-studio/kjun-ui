@@ -4,6 +4,9 @@ export const carouselSlides = ['Alpha', 'Bravo', 'Charlie', 'Delta'];
 export function CarouselCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const [changes, setChanges] = useState<number[]>([]);
   const [index, setIndex] = useState(0);
+  const [controlled, setControlled] = useState(carouselSlides);
+  const [notes, setNotes] = useState(['Bravo', 'Charlie']);
+  const press = (action: () => void) => ({ [native ? 'onPress' : 'onClick']: action });
   const slide = (label: string, width?: number) => native
     ? <K.KjunText key={label} style={{ height: 120, width }}>{label}</K.KjunText>
     : <div key={label} style={{ height: 120, width, background: 'var(--kjun-secondary)' }}>{label}</div>;
@@ -13,17 +16,22 @@ export function CarouselCases({ K, native = false, providerProps = {} }: { K: an
     </K.KjunCarousel></div>
     <output data-testid="changes">{JSON.stringify(changes)}</output>
     <div data-testid="controlled"><K.KjunCarousel ariaLabel="Controlled" index={index} onIndexChange={setIndex}>
-      {carouselSlides.map(label => slide(label))}
+      {controlled.map(label => slide(label))}
     </K.KjunCarousel></div>
-    <K.KjunButton variant="secondary" {...{ [native ? 'onPress' : 'onClick']: () => setIndex(2) }}>Show Charlie</K.KjunButton>
+    <K.KjunButton variant="secondary" {...press(() => setIndex(2))}>Show Charlie</K.KjunButton>
+    <K.KjunButton variant="secondary" {...press(() => setControlled(old => old.slice(0, -1)))}>Remove last</K.KjunButton>
     <output data-testid="index">{index}</output>
     <div data-testid="peek"><K.KjunCarousel ariaLabel="Peek" slideSize="peek" gap="sm">{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
     <div data-testid="auto"><K.KjunCarousel ariaLabel="Auto" slideSize="auto" indicators={false}>{carouselSlides.map(label => slide(label, 200))}</K.KjunCarousel></div>
-    <div data-testid="titled"><K.KjunCarousel title="추천 상품" slideSize="auto" indicators={false}>{carouselSlides.map(label => slide(label, 200))}</K.KjunCarousel></div>
+    <div data-testid="titled"><K.KjunCarousel title="추천 상품" titleAs="h3" slideSize="auto" indicators={false}>{carouselSlides.map(label => slide(label, 200))}</K.KjunCarousel></div>
+    <div data-testid="counted"><K.KjunCarousel ariaLabel="Counted" indicators="count">{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
     <div data-testid="single"><K.KjunCarousel ariaLabel="Single">{slide('Only')}</K.KjunCarousel></div>
     {!native && <div data-testid="form"><K.KjunCarousel ariaLabel="Form">
       <div style={{ height: 120 }}><input aria-label="Name" defaultValue="Kim" /></div>
       {slide('After')}
     </K.KjunCarousel></div>}
+    {!native && <div data-testid="notes"><K.KjunCarousel ariaLabel="Notes" slideSize="auto">
+      {notes.map(label => <label key={label} style={{ display: 'block', width: 200, height: 80 }}>{label}<input aria-label={'Note ' + label} /></label>)}
+    </K.KjunCarousel><button type="button" onClick={() => setNotes(old => ['Alpha', ...old])}>Prepend</button></div>}
   </div></K.KjunProvider>;
 }

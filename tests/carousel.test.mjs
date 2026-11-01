@@ -37,3 +37,22 @@ test('carousel keys move one slide or to either end', () => {
   assert.equal(carouselTarget('last', 0, 4), 3);
   assert.equal(carouselTarget('first', 2, 4), 0);
 });
+
+test('reachableOffsets stops every slide at the end of the scroll range', async () => {
+  const { reachableOffsets } = await import('../shared/package-runtime/carousel.ts');
+  // peek: four 300px slides with a 12px gap in a 336px view can scroll 912px at most.
+  assert.deepEqual(reachableOffsets([0, 312, 624, 936], 912), [0, 312, 624, 912]);
+  // auto: narrow cards whose last two starts lie past the end collapse onto it.
+  assert.deepEqual(reachableOffsets([0, 200, 400, 600], 380), [0, 200, 380, 380]);
+  assert.deepEqual(reachableOffsets([0, 100], 0), [0, 0]);
+});
+
+test('dragTarget moves one slide once a drag passes a fifth of the view, and settles otherwise', async () => {
+  const { dragTarget } = await import('../shared/package-runtime/carousel.ts');
+  assert.equal(dragTarget({ start: 1, nearest: 1, distance: -70, width: 300, count: 4 }), 2);
+  assert.equal(dragTarget({ start: 1, nearest: 1, distance: 70, width: 300, count: 4 }), 0);
+  assert.equal(dragTarget({ start: 1, nearest: 1, distance: -40, width: 300, count: 4 }), 1);
+  // A long drag lands wherever the position is nearest.
+  assert.equal(dragTarget({ start: 0, nearest: 2, distance: -650, width: 300, count: 4 }), 2);
+  assert.equal(dragTarget({ start: 3, nearest: 3, distance: -90, width: 300, count: 4 }), 3);
+});

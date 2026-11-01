@@ -67,12 +67,68 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(page.getByTestId('changes')).toHaveText('[1]');
     });
 
+    test('removing the last slide still lets a controlled index scroll', async ({ page }) => {
+      await page.getByRole('button', { name: 'Remove last' }).click();
+      await page.getByRole('button', { name: 'Show Charlie' }).click();
+      await expect(page.getByTestId('index')).toHaveText('2');
+      await expect.poll(async () => (await scroller(page, 'controlled')).left).toBe(2 * (await scroller(page, 'controlled')).width + 2 * 12);
+    });
+
+    test('indicators="count" shows the position as text', async ({ page }) => {
+      const counted = section(page, 'counted');
+      await expect(counted.getByText('1 / 4', { exact: true })).toBeVisible();
+      await expect(counted.getByRole('button', { name: /번 슬라이드/ })).toHaveCount(0);
+      const { width } = await scroller(page, 'counted');
+      await counted.locator('*').evaluateAll((nodes, x) => {
+        const el = nodes.find(node => ['auto', 'scroll'].includes(getComputedStyle(node).overflowX)) as HTMLElement;
+        el.scrollLeft = x;
+      }, width + 12);
+      await expect(counted.getByText('2 / 4', { exact: true })).toBeVisible();
+    });
+
     if (web) {
       test('slides are named groups inside a carousel region', async ({ page }) => {
         const region = page.getByRole('region', { name: 'Banner' });
         await expect(region).toHaveAttribute('aria-roledescription', '캐러셀');
-        await expect(region.getByRole('group', { name: '2 / 4' })).toHaveAttribute('aria-roledescription', '슬라이드');
+        await expect(region.getByRole('group', { name: '4개 중 2번째' })).toHaveAttribute('aria-roledescription', '슬라이드');
         await expect(region.getByRole('group', { name: '슬라이드 선택' }).getByRole('button')).toHaveCount(4);
+      });
+
+      test('a moved carousel announces its position politely, and not on load', async ({ page }) => {
+        const status = section(page, 'banner').locator('[aria-live="polite"]');
+        await expect(status).toHaveText('');
+        await dot(page, 'banner', 2).click();
+        await expect(status).toHaveText('4개 중 2번째');
+      });
+
+      test('titleAs sets the heading level', async ({ page }) => {
+        await expect(section(page, 'titled').getByRole('heading', { level: 3, name: '추천 상품' })).toBeVisible();
+      });
+
+      test('slides keep their state when one is added before them', async ({ page }) => {
+        const notes = section(page, 'notes');
+        await notes.getByRole('textbox', { name: 'Note Bravo' }).fill('kept');
+        await notes.getByRole('button', { name: 'Prepend' }).click();
+        await expect(notes.getByRole('textbox', { name: 'Note Alpha' })).toBeVisible();
+        await expect(notes.getByRole('textbox', { name: 'Note Bravo' })).toHaveValue('kept');
+      });
+
+      test('a mouse drag past a fifth of the view moves one slide, and a short one springs back', async ({ page }) => {
+        const viewport = section(page, 'banner').locator('.kjun-carousel-viewport');
+        const box = (await viewport.boundingBox())!;
+        const drag = async (distance: number) => {
+          await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+          await page.mouse.down();
+          await page.mouse.move(box.x + box.width / 2 + distance / 2, box.y + box.height / 2, { steps: 4 });
+          await page.mouse.move(box.x + box.width / 2 + distance, box.y + box.height / 2, { steps: 4 });
+          await page.mouse.up();
+        };
+        await drag(-40);
+        await expect.poll(async () => (await scroller(page, 'banner')).left).toBe(0);
+        await expect(page.getByTestId('changes')).toHaveText('[]');
+        await drag(-box.width / 4);
+        await expect(page.getByTestId('changes')).toHaveText('[1]');
+        await expect.poll(async () => (await scroller(page, 'banner')).left).toBe(box.width + 12);
       });
 
       test('side buttons float only toward a slide that exists and keep focus at the end', async ({ page }) => {

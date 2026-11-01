@@ -336,6 +336,7 @@
       "--text-secondary"
     ],
     "implementationFiles": [
+      "packages/tokens/src/carousel.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
@@ -354,6 +355,7 @@
       "packages/native/src/button-group-motion.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/calendar.tsx",
+      "packages/native/src/carousel.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/data-state.tsx",
       "packages/native/src/display-primitives.tsx",
