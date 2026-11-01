@@ -917,6 +917,20 @@
       ]
     },
     {
+      "name": "KjunCarousel",
+      "category": "data-display",
+      "aliases": [
+        "캐러셀",
+        "슬라이더 배너",
+        "배너",
+        "카드 줄",
+        "Carousel"
+      ],
+      "useCases": [
+        "모바일 화면 구성"
+      ]
+    },
+    {
       "name": "KjunAvatar",
       "category": "data-display",
       "aliases": [

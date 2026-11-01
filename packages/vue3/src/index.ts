@@ -33,6 +33,7 @@ export type { KjunTopNavigationProps, NavigationDestination, KjunBottomNavigatio
 export type { KjunListItemProps, KjunListRowProps, KjunListSectionProps } from "./list";
 export type { KjunIconToggleProps, KjunCopyButtonProps, KjunRefreshButtonProps, KjunExternalLinkProps } from "./actions";
 export { safeExternalUrl } from "./actions";
+export type { KjunCarouselProps } from "./carousel";
 export type { KjunDataStateProps, KjunErrorBoundaryProps } from "./data-state";
 export { useQueryDisplay } from "./data-state";
 export type { KjunAnimatedNumberProps, KjunPriceCellProps, KjunSignedValueProps } from "./number-display";

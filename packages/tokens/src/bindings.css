@@ -770,6 +770,13 @@
   --_kjun-extension-floating-field-gap: 4px;
   --_kjun-extension-scrollbar-width: 6px;
   --_kjun-extension-scroll-fade-width: 24px;
+  --_kjun-extension-carousel-peek: 24px;
+  --_kjun-extension-carousel-indicator-size: 6px;
+  --_kjun-extension-carousel-indicator-active-width: 16px;
+  --_kjun-extension-carousel-indicator-gap: 6px;
+  --_kjun-extension-carousel-indicator-press: 24px;
+  --_kjun-extension-carousel-indicator-offset: 12px;
+  --_kjun-extension-carousel-control-inset: 8px;
   --_kjun-extension-calendar-width: 312px;
   --_kjun-extension-calendar-padding: 12px;
   --_kjun-extension-calendar-header-height: 36px;

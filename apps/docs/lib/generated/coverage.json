@@ -1,11 +1,11 @@
 {
-  "total": 85,
+  "total": 86,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 85,
+      "provided": 86,
       "counts": {
-        "supported": 85,
+        "supported": 86,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 85,
+      "provided": 86,
       "counts": {
-        "supported": 85,
+        "supported": 86,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 85,
+      "provided": 86,
       "counts": {
         "supported": 0,
-        "preview": 85,
+        "preview": 86,
         "review": 0,
         "unsupported": 0
       },
@@ -392,6 +392,37 @@
       "docs": "/components/card",
       "category": "layout",
       "differences": "Vue의 header·headerActions·media·footer 슬롯은 React·Native의 해당 콘텐츠 prop에 대응합니다. 웹 CSS 길이와 Native style의 값 형식을 구분합니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "KjunCarousel",
+      "title": "Carousel",
+      "docs": "/components/carousel",
+      "category": "data-display",
+      "differences": "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 표시합니다. Native는 ScrollView의 snap으로 넘기며 이전·다음 버튼을 그리지 않습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -2721,7 +2752,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 85
+      "componentCount": 86
     }
   ]
 }

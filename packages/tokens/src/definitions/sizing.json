@@ -182,6 +182,15 @@
     "scrollFade": {
       "width": 24
     },
+    "carousel": {
+      "peek": { "$ref": "dimension.value24" },
+      "indicatorSize": { "$ref": "dimension.value6" },
+      "indicatorActiveWidth": { "$ref": "dimension.value16" },
+      "indicatorGap": { "$ref": "dimension.value6" },
+      "indicatorPress": { "$ref": "dimension.value24" },
+      "indicatorOffset": { "$ref": "dimension.value12" },
+      "controlInset": { "$ref": "dimension.value8" }
+    },
     "slider": {
       "minimumWidth": 100
     },

@@ -41,6 +41,19 @@ const summaries = {
   secondStep: "초 선택지의 간격입니다. 1~59의 정수이며 0초부터 시작합니다.",
   id: "실제 숫자 입력의 ID입니다. 외부 라벨과 명시적으로 연결할 때 사용합니다.",
 };
+const carouselSummaries = {
+  ariaLabel: "캐러셀 영역의 이름입니다(예: 추천 상품). 영역은 ‘캐러셀’, 슬라이드는 ‘2 / 4’처럼 순서를 함께 읽습니다.",
+  slideSize: "full은 슬라이드를 영역 폭에 맞추고, peek은 다음 슬라이드를 24px 보이게 하며, auto는 슬라이드 내용이 폭을 정합니다(카드 줄).",
+  gap: "슬라이드 사이 간격입니다. none·sm·md·lg = 0·8·12·16px이며 기본값은 md입니다.",
+  index: "제어할 때의 현재 슬라이드 번호(0부터)입니다. 바꾸면 그 슬라이드로 스크롤하며 범위를 벗어나면 처음·끝으로 맞춥니다.",
+  defaultIndex: "제어하지 않을 때 처음 보여 줄 슬라이드 번호(0부터)입니다. 애니메이션 없이 바로 그 위치에서 시작합니다.",
+  indicators: "아래쪽 표시 점을 그립니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다.",
+  controls: "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 보입니다. Native는 버튼 없이 넘깁니다.",
+  className: "루트 section에 더할 클래스입니다. 크기·간격은 slideSize·gap으로 정하세요.",
+  style: "루트에 더할 스타일입니다. 바깥 여백이나 폭 제한에 사용하세요.",
+  id: "루트 section의 ID입니다.",
+};
+const carouselSlides = slot("슬라이드 목록입니다. 직접 자식 하나가 슬라이드 하나입니다.", "ReactNode", "슬라이드 안의 버튼·입력도 Tab으로 이동할 수 있습니다. 안의 입력에서는 화살표 키를 가로채지 않습니다.");
 const childProps = {
   leading: slot("주 콘텐츠 앞쪽에 배치할 아이콘·이미지입니다.", "ReactNode", "ListRow의 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."),
   trailing: slot("행 뒤쪽의 보조 정보입니다.", "ReactNode", "수치·배지 등 표시용 콘텐츠만 넣으세요. 버튼은 actions로 분리합니다."),
@@ -71,12 +84,15 @@ const callback = (name, key, platform) => {
   if (key === "onRemove") return event("라벨 삭제를 요청합니다.", "활성 삭제 버튼을 실행할 때", "없음", "반환값을 사용하지 않습니다.", "소비자가 항목을 제거합니다. 제거 후 다음 항목이나 입력으로 초점을 옮기세요.");
   if (key === "onLoad" || key === "onError") return event(key === "onLoad" ? "현재 이미지의 로드 완료를 알립니다." : "현재 이미지의 로드 실패를 알립니다.", "현재 요청 이미지에서 " + (key === "onLoad" ? "load" : "error") + "가 발생했을 때. 이전 주소·이전 요청의 응답은 무시합니다.", "없음", "반환값을 사용하지 않습니다.", "실패 대체 표현은 내부에서 표시합니다. 다른 주소로 재시도하려면 src/source를 갱신하세요.");
   if (key === "onClick" || key === "onPress") return event("목록 행의 주 행동을 실행합니다.", "비활성 행을 제외한 주 행동 영역을 실행할 때. actions의 버튼 실행과 독립적입니다.", platform === "native" ? "GestureResponderEvent" : "MouseEvent<HTMLElement>", "웹 링크의 기본 이동을 취소하려면 event.preventDefault()를 호출합니다.", "소비자가 이동·선택·실행을 처리합니다.");
+  if (key === "onIndexChange") return event("현재 슬라이드가 바뀌었음을 알립니다.", "스크롤이 멈춘 위치, 화살표 키, 이전·다음 버튼, 표시 점으로 다른 슬라이드에 도착할 때", "새 슬라이드 번호(0부터)", "반환값을 사용하지 않습니다.", "제어할 때는 소비자가 index를 갱신합니다. 갱신하지 않으면 표시 점은 index를 따르고 스크롤 위치는 사용자가 놓은 자리에 둡니다.");
   throw Error("Missing extension callback: " + name + "." + key);
 };
 export const extensionContracts = Object.fromEntries(Object.entries(bindings).map(([name, platforms]) => [name, Object.fromEntries(Object.entries(platforms).map(([platform, keys]) => {
   const props = Object.fromEntries(keys.map(key => {
     let entry;
-    if (key === "formatValue") entry = detail("각 손잡이의 숫자를 표시 문자열로 바꿉니다.", { "인자와 반환": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다.", "접근성": "화면 출력과 " + (platform === "native" ? "accessibilityValue.text" : "aria-valuetext") + "에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다.", "상태 책임": platform === "vue3" ? "modelValue와 update:modelValue·change 이벤트는 숫자 형식을 유지합니다." : "value와 onValueChange·onChangeCommit 콜백은 숫자 또는 숫자 쌍 형식을 유지합니다." });
+    if (name === "KjunCarousel" && carouselSummaries[key]) entry = { summary: carouselSummaries[key] };
+    else if (name === "KjunCarousel" && key === "children") entry = carouselSlides;
+    else if (key === "formatValue") entry = detail("각 손잡이의 숫자를 표시 문자열로 바꿉니다.", { "인자와 반환": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다.", "접근성": "화면 출력과 " + (platform === "native" ? "accessibilityValue.text" : "aria-valuetext") + "에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다.", "상태 책임": platform === "vue3" ? "modelValue와 update:modelValue·change 이벤트는 숫자 형식을 유지합니다." : "value와 onValueChange·onChangeCommit 콜백은 숫자 또는 숫자 쌍 형식을 유지합니다." });
     else if (key.startsWith("on")) entry = callback(name, key, platform);
     else if (name === "KjunTopNavigation" && topNavigationSlots[key]) entry = topNavigationSlots[key];
     else if (name === "KjunListRow" && key === "children") entry = listRowContent;
@@ -102,11 +118,11 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (name === "KjunRangeSlider" && platform === "vue3") props.modelValue.type = "[number, number]";
   const events = {}, slots = {};
   if (platform === "vue3") {
-    const eventKeys = name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : {};
+    const eventKeys = name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
-    const slotNames = { KjunListRow: ["default", "leading", "trailing", "actions"], KjunListSection: ["actions", "default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"] }[name] || [];
+    const slotNames = { KjunListRow: ["default", "leading", "trailing", "actions"], KjunListSection: ["actions", "default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"] }[name] || [];
     for (const key of slotNames) {
-      const definition = name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunListRow" && key === "default" ? listRowContent : childProps[key === "default" ? "children" : key];
+      const definition = name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunCarousel" ? carouselSlides : name === "KjunListRow" && key === "default" ? listRowContent : childProps[key === "default" ? "children" : key];
       slots[key] = { ...definition, details: definition.details.map(row => row.label === "슬롯 데이터" ? { ...row, text: "제공 데이터 없음" } : row) };
     }
   }

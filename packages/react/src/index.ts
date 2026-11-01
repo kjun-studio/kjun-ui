@@ -75,6 +75,9 @@ export type {
   KjunExternalLinkProps,
 } from "./actions";
 
+export { KjunCarousel } from "./carousel";
+export type { KjunCarouselProps } from "./carousel";
+
 export { KjunDataState, KjunErrorBoundary } from "./data-state";
 export type { KjunDataStateProps, KjunErrorBoundaryProps } from "./data-state";
 

@@ -2923,6 +2923,42 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunCarousel",
+    "sources": {
+      "vue3": "packages/vue3/src/carousel.tsx",
+      "react": "packages/react/src/carousel.tsx",
+      "native": "packages/native/src/carousel.tsx"
+    },
+    "category": "data-display",
+    "kind": "component",
+    "owner": "KjunCarousel",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/carousel",
+    "tests": [
+      "tests/carousel.test.mjs",
+      "tests/browser/carousel.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
     "name": "KjunAvatar",
     "sources": {
       "vue3": "packages/vue3/src/media.tsx",

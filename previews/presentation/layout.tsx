@@ -25,6 +25,7 @@ export function layout(name: string) {
     case 'KjunListSection': return <ActivityList />;
     case 'KjunListItem': return <K.KjunListSection title="화면"><K.KjunListItem><K.KjunText tone="secondary">화면 테마는 기기 설정을 따릅니다.</K.KjunText></K.KjunListItem><K.KjunListRow title="글자 크기" chevron /></K.KjunListSection>;
     case 'KjunAvatar': return row(<><K.KjunAvatar name="김하늘" size="lg" /><K.KjunAvatar name="이서준" size="lg" /><K.KjunAvatar name="박지우" size="lg" shape="square" /></>);
+    case 'KjunCarousel': return <K.KjunCarousel ariaLabel="추천 콘텐츠" slideSize="peek" gap="sm">{['이번 주 추천', '팀 공간', '알림 정리'].map(title => <K.KjunCard key={title} title={title} subtitle="새 소식을 확인하세요" />)}</K.KjunCarousel>;
     case 'KjunImage': return <div className="presentation-image"><K.KjunImage src="/brand/kjun-symbol.svg" alt="KJUN 심볼" aspectRatio={16 / 9} fit="contain" lazy={false} /></div>;
   }
 }

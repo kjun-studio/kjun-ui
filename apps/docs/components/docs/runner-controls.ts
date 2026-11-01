@@ -40,6 +40,7 @@ const hints: Record<string, string> = {
   KjunCopyButton: '콜백 연결을 보여주는 모의 복사입니다. 실제 클립보드는 변경하지 않습니다.',
   KjunExternalLink: '링크 열기 콜백을 확인하는 예제입니다. 외부 페이지로 이동하지 않습니다.',
   KjunBottomNavigation: '목적지를 선택해 보세요. 안전 영역과 키보드는 설정으로 모의 적용합니다.',
+  KjunCarousel: '옆으로 넘기거나 점을 눌러 보세요. 영역에 포커스를 두면 화살표 키로도 넘어갑니다.',
   KjunFloatingNavigation: '목적지를 선택해 보세요. 아이콘만 보이는 목적지도 이름으로 읽힙니다.',
   KjunBottomActionBar: '긴 안내 문구와 안전 영역을 바꿔 하단 행동의 배치를 확인하세요.',
   KjunTopNavigation: '긴 제목과 안전 영역을 바꿔 탐색·저장 버튼의 배치를 확인하세요.',

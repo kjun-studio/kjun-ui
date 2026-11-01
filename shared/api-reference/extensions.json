@@ -224,6 +224,43 @@
       "onError"
     ]
   },
+  "KjunCarousel": {
+    "vue3": [
+      "ariaLabel",
+      "slideSize",
+      "gap",
+      "index",
+      "defaultIndex",
+      "indicators",
+      "controls"
+    ],
+    "react": [
+      "ariaLabel",
+      "slideSize",
+      "gap",
+      "index",
+      "defaultIndex",
+      "onIndexChange",
+      "indicators",
+      "controls",
+      "children",
+      "className",
+      "style",
+      "id"
+    ],
+    "native": [
+      "ariaLabel",
+      "slideSize",
+      "gap",
+      "index",
+      "defaultIndex",
+      "onIndexChange",
+      "indicators",
+      "controls",
+      "children",
+      "style"
+    ]
+  },
   "KjunAvatar": {
     "vue3": [
       "src",

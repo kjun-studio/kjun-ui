@@ -17,5 +17,6 @@
   "compound-controls.css",
   "motion.css",
   "kpi-typography.css",
-  "layout.css"
+  "layout.css",
+  "carousel.css"
 ]

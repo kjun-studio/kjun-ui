@@ -30194,6 +30194,407 @@
         "types": []
       }
     },
+    "KjunCarousel": {
+      "vue3": {
+        "props": [
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "Names the region, e.g. \"추천 상품\".",
+            "summary": "캐러셀 영역의 이름입니다(예: 추천 상품). 영역은 ‘캐러셀’, 슬라이드는 ‘2 / 4’처럼 순서를 함께 읽습니다.",
+            "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
+            "name": "slideSize",
+            "type": "CarouselSlideSize",
+            "required": false,
+            "default": "\"full\"",
+            "description": "full: as wide as the carousel; peek: the next slide shows at the edge; auto: each slide keeps its own width.",
+            "summary": "full은 슬라이드를 영역 폭에 맞추고, peek은 다음 슬라이드를 24px 보이게 하며, auto는 슬라이드 내용이 폭을 정합니다(카드 줄).",
+            "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
+            "name": "gap",
+            "type": "CarouselGap",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "슬라이드 사이 간격입니다. none·sm·md·lg = 0·8·12·16px이며 기본값은 md입니다.",
+            "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
+            "name": "index",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "v-model:index. Without it the carousel keeps its own current slide, starting at defaultIndex.",
+            "summary": "제어할 때의 현재 슬라이드 번호(0부터)입니다. 바꾸면 그 슬라이드로 스크롤하며 범위를 벗어나면 처음·끝으로 맞춥니다.",
+            "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
+            "name": "defaultIndex",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "",
+            "summary": "제어하지 않을 때 처음 보여 줄 슬라이드 번호(0부터)입니다. 애니메이션 없이 바로 그 위치에서 시작합니다.",
+            "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
+            "name": "indicators",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "",
+            "summary": "아래쪽 표시 점을 그립니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다.",
+            "source": "packages/vue3/src/carousel.tsx"
+          },
+          {
+            "name": "controls",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Previous and next buttons, shown only to pointers that can hover.",
+            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 보입니다. Native는 버튼 없이 넘깁니다.",
+            "source": "packages/vue3/src/carousel.tsx"
+          }
+        ],
+        "events": [
+          {
+            "name": "update:index",
+            "source": "packages/vue3/src/carousel.tsx",
+            "type": "이벤트",
+            "summary": "현재 슬라이드가 바뀌었음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "스크롤이 멈춘 위치, 화살표 키, 이전·다음 버튼, 표시 점으로 다른 슬라이드에 도착할 때"
+              },
+              {
+                "label": "전달값",
+                "text": "새 슬라이드 번호(0부터)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "제어할 때는 소비자가 index를 갱신합니다. 갱신하지 않으면 표시 점은 index를 따르고 스크롤 위치는 사용자가 놓은 자리에 둡니다."
+              }
+            ],
+            "example": "/components/carousel#preview"
+          }
+        ],
+        "slots": [
+          {
+            "name": "default",
+            "data": [],
+            "source": "packages/vue3/src/carousel.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "슬라이드 목록입니다. 직접 자식 하나가 슬라이드 하나입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "슬라이드 안의 버튼·입력도 Tab으로 이동할 수 있습니다. 안의 입력에서는 화살표 키를 가로채지 않습니다."
+              }
+            ],
+            "example": "/components/carousel#preview"
+          }
+        ],
+        "ownership": [
+          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다.",
+          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 표시합니다. Native는 ScrollView의 snap으로 넘기며 이전·다음 버튼을 그리지 않습니다."
+        ],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "Names the region, e.g. \"추천 상품\".",
+            "summary": "캐러셀 영역의 이름입니다(예: 추천 상품). 영역은 ‘캐러셀’, 슬라이드는 ‘2 / 4’처럼 순서를 함께 읽습니다.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Each direct child is one slide.",
+            "summary": "슬라이드 목록입니다. 직접 자식 하나가 슬라이드 하나입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "슬라이드 안의 버튼·입력도 Tab으로 이동할 수 있습니다. 안의 입력에서는 화살표 키를 가로채지 않습니다."
+              }
+            ],
+            "source": "packages/react/src/carousel.tsx",
+            "example": "/components/carousel#preview"
+          },
+          {
+            "name": "slideSize",
+            "type": "CarouselSlideSize | undefined",
+            "required": false,
+            "default": "\"full\"",
+            "description": "full: as wide as the carousel; peek: the next slide shows at the edge; auto: each slide keeps its own width.",
+            "summary": "full은 슬라이드를 영역 폭에 맞추고, peek은 다음 슬라이드를 24px 보이게 하며, auto는 슬라이드 내용이 폭을 정합니다(카드 줄).",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "gap",
+            "type": "CarouselGap | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "슬라이드 사이 간격입니다. none·sm·md·lg = 0·8·12·16px이며 기본값은 md입니다.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "index",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controlled current slide; pair with onIndexChange.",
+            "summary": "제어할 때의 현재 슬라이드 번호(0부터)입니다. 바꾸면 그 슬라이드로 스크롤하며 범위를 벗어나면 처음·끝으로 맞춥니다.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "defaultIndex",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "",
+            "summary": "제어하지 않을 때 처음 보여 줄 슬라이드 번호(0부터)입니다. 애니메이션 없이 바로 그 위치에서 시작합니다.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "onIndexChange",
+            "type": "((index: number) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "현재 슬라이드가 바뀌었음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "스크롤이 멈춘 위치, 화살표 키, 이전·다음 버튼, 표시 점으로 다른 슬라이드에 도착할 때"
+              },
+              {
+                "label": "전달값",
+                "text": "새 슬라이드 번호(0부터)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "제어할 때는 소비자가 index를 갱신합니다. 갱신하지 않으면 표시 점은 index를 따르고 스크롤 위치는 사용자가 놓은 자리에 둡니다."
+              }
+            ],
+            "source": "packages/react/src/carousel.tsx",
+            "example": "/components/carousel#preview"
+          },
+          {
+            "name": "indicators",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "",
+            "summary": "아래쪽 표시 점을 그립니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "controls",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Previous and next buttons, shown only to pointers that can hover.",
+            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 보입니다. Native는 버튼 없이 넘깁니다.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트 section에 더할 클래스입니다. 크기·간격은 slideSize·gap으로 정하세요.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 스타일입니다. 바깥 여백이나 폭 제한에 사용하세요.",
+            "source": "packages/react/src/carousel.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트 section의 ID입니다.",
+            "source": "packages/react/src/carousel.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다.",
+          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 표시합니다. Native는 ScrollView의 snap으로 넘기며 이전·다음 버튼을 그리지 않습니다."
+        ],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "Names the region, e.g. \"추천 상품\".",
+            "summary": "캐러셀 영역의 이름입니다(예: 추천 상품). 영역은 ‘캐러셀’, 슬라이드는 ‘2 / 4’처럼 순서를 함께 읽습니다.",
+            "source": "packages/native/src/carousel.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Each direct child is one slide.",
+            "summary": "슬라이드 목록입니다. 직접 자식 하나가 슬라이드 하나입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "슬라이드 안의 버튼·입력도 Tab으로 이동할 수 있습니다. 안의 입력에서는 화살표 키를 가로채지 않습니다."
+              }
+            ],
+            "source": "packages/native/src/carousel.tsx",
+            "example": "/components/carousel#preview"
+          },
+          {
+            "name": "slideSize",
+            "type": "CarouselSlideSize | undefined",
+            "required": false,
+            "default": "\"full\"",
+            "description": "full: as wide as the carousel; peek: the next slide shows at the edge; auto: each slide keeps its own width.",
+            "summary": "full은 슬라이드를 영역 폭에 맞추고, peek은 다음 슬라이드를 24px 보이게 하며, auto는 슬라이드 내용이 폭을 정합니다(카드 줄).",
+            "source": "packages/native/src/carousel.tsx"
+          },
+          {
+            "name": "gap",
+            "type": "CarouselGap | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "슬라이드 사이 간격입니다. none·sm·md·lg = 0·8·12·16px이며 기본값은 md입니다.",
+            "source": "packages/native/src/carousel.tsx"
+          },
+          {
+            "name": "index",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controlled current slide; pair with onIndexChange.",
+            "summary": "제어할 때의 현재 슬라이드 번호(0부터)입니다. 바꾸면 그 슬라이드로 스크롤하며 범위를 벗어나면 처음·끝으로 맞춥니다.",
+            "source": "packages/native/src/carousel.tsx"
+          },
+          {
+            "name": "defaultIndex",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "",
+            "summary": "제어하지 않을 때 처음 보여 줄 슬라이드 번호(0부터)입니다. 애니메이션 없이 바로 그 위치에서 시작합니다.",
+            "source": "packages/native/src/carousel.tsx"
+          },
+          {
+            "name": "onIndexChange",
+            "type": "((index: number) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "현재 슬라이드가 바뀌었음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "스크롤이 멈춘 위치, 화살표 키, 이전·다음 버튼, 표시 점으로 다른 슬라이드에 도착할 때"
+              },
+              {
+                "label": "전달값",
+                "text": "새 슬라이드 번호(0부터)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "제어할 때는 소비자가 index를 갱신합니다. 갱신하지 않으면 표시 점은 index를 따르고 스크롤 위치는 사용자가 놓은 자리에 둡니다."
+              }
+            ],
+            "source": "packages/native/src/carousel.tsx",
+            "example": "/components/carousel#preview"
+          },
+          {
+            "name": "indicators",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "",
+            "summary": "아래쪽 표시 점을 그립니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다.",
+            "source": "packages/native/src/carousel.tsx"
+          },
+          {
+            "name": "controls",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Accepted for parity with the web packages; Native draws no previous and next buttons, slides move by swipe.",
+            "summary": "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 보입니다. Native는 버튼 없이 넘깁니다.",
+            "source": "packages/native/src/carousel.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 스타일입니다. 바깥 여백이나 폭 제한에 사용하세요.",
+            "source": "packages/native/src/carousel.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "현재 슬라이드는 직접 관리하거나 index와 onIndexChange(Vue v-model:index)로 앱이 관리합니다. 넘기기는 손가락·트랙패드 스크롤, 화살표 키, 이전·다음 버튼, 표시 점으로 합니다. 자동 넘김과 무한 반복은 제공하지 않습니다.",
+          "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼을 표시합니다. Native는 ScrollView의 snap으로 넘기며 이전·다음 버튼을 그리지 않습니다."
+        ],
+        "types": []
+      }
+    },
     "KjunAvatar": {
       "vue3": {
         "props": [

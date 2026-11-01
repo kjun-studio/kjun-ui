@@ -279,6 +279,7 @@
       "--text-primary"
     ],
     "implementationFiles": [
+      "packages/tokens/src/carousel.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
@@ -295,6 +296,7 @@
       "packages/native/src/button-group-motion.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/calendar.tsx",
+      "packages/native/src/carousel.tsx",
       "packages/native/src/date-picker.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
@@ -766,9 +768,11 @@
       "--border-strong"
     ],
     "implementationFiles": [
+      "packages/tokens/src/carousel.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/table.css",
       "packages/native/src/calendar.tsx",
+      "packages/native/src/carousel.tsx",
       "packages/native/src/choice-controls.tsx"
     ]
   },
@@ -977,6 +981,7 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/cards.css",
+      "packages/tokens/src/carousel.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/display.css",

@@ -14,6 +14,7 @@ export const platformSpecific = {
   'table.selectionSize': { excludes: ['native'], reason: 'HTML checkbox footprint; Native composes the size-specific Checkbox and minimum touch target.' },
   'extensions.tooltip.arrowSize': { excludes: ['native'], reason: 'Tooltip arrow; Web and Native Web draw it, Native device tooltips use the modal panel without one.' },
   'extensions.scrollbar.width': { excludes: ['react', 'vue3', 'native'], reason: 'Retired Vue 2 window scrollbar skin; every current platform keeps the system scrollbar. Kept for token compatibility.' },
+  'extensions.carousel.controlInset': { excludes: ['native'], reason: 'Previous and next buttons show only to hovering pointers; Native KjunCarousel moves by swipe and dots.' },
   'extensions.scrollFade.width': { excludes: ['native'], reason: 'CSS edge mask; Native draws it only for the overflowing table grid, and KjunScrollFade keeps the platform ScrollView.' },
   ...Object.fromEntries(['radius', 'gap', 'dotSize'].map(key => ['extensions.badge.' + key, {
     excludes: ['native'], reason: 'Base badge role for the Web CSS fallback and the per-size radii/gaps/dotSizes aliases; Native reads the per-size roles.',

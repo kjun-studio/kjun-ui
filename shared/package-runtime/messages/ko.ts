@@ -118,6 +118,13 @@ export const kjunMessagesKo = {
   previousPage: "이전 페이지",
   nextPage: "다음 페이지",
   lastPage: "마지막 페이지",
+  carousel: "캐러셀",
+  slide: "슬라이드",
+  slides: "슬라이드 선택",
+  previousSlide: "이전 슬라이드",
+  nextSlide: "다음 슬라이드",
+  goToSlide: (slide: number) => `${slide}번 슬라이드`,
+  slideOf: (slide: number, total: number) => `${slide} / ${total}`,
   // Market and financial
   marketData: "시장 데이터",
   metrics: "표시 지표",

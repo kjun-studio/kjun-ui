@@ -27,6 +27,7 @@ export { KjunTopNavigation, KjunBottomNavigation, KjunFloatingNavigation, KjunBo
 export { KjunListItem } from "./list";
 export { KjunListRow, KjunListSection } from "./list";
 export { KjunIconToggle, KjunCopyButton, KjunRefreshButton, KjunExternalLink, KjunScrollFade } from "./actions";
+export { KjunCarousel } from "./carousel";
 export { KjunDataState, KjunErrorBoundary } from "./data-state";
 export { KjunAnimatedNumber, KjunPriceCell, KjunSignedValue } from "./number-display";
 export { KjunKpiHero, KjunKpiRow } from "./kpi";
