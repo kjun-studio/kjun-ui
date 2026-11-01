@@ -1,5 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type VNodeChild, type SlotsType } from "vue";
+import { defineComponent, onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { webMarketLayout } from "../../../shared/package-runtime/market-layout";
 import { getValue } from "../../../shared/package-runtime/table-model";
@@ -11,7 +11,7 @@ import { KjunEmpty, KjunSkeleton } from "./display";
 import { KjunCollectionMark, KjunSparkline } from "./financial-display";
 import { marketBaseProps, queryProps, type MarketColumn, type MarketFormatter } from "./market-model";
 import { KjunMarketTableSkeleton, MarketFooter, marketColumns, marketIdentity, type MarketIdentitySlots } from "./market-parts";
-import { KjunFreshness, KjunPriceCell, KjunSignedValue, finiteNumber } from "./number-display";
+import { KjunPriceCell, KjunSignedValue, finiteNumber, priceStatus } from "./number-display";
 import { domainRef } from "./runtime/refs";
 
 const kjunMarketTableProps = {
@@ -30,13 +30,13 @@ const kjunMarketTableProps = {
 } as const;
 export type KjunMarketTableProps = ExtractPublicPropTypes<typeof kjunMarketTableProps>;
 /**
- * Slots: cell({ row, column }) plus the identity slots. Events: sort(key), toggle-interest(row), toggle-favorite(row), page-change(page).
+ * Slots: cell({ row, column }), status({ row }) — the row's quote status after the price column's value — plus the identity slots. Events: sort(key), toggle-interest(row), toggle-favorite(row), page-change(page).
  */
 export const KjunMarketTable = defineComponent({
   name: "KjunMarketTable",
   props: kjunMarketTableProps,
   emits: { sort: (_key: string) => true, "toggle-interest": (_row: any) => true, "toggle-favorite": (_row: any) => true, "page-change": (_page: number) => true },
-  slots: Object as SlotsType<MarketIdentitySlots & { cell?: (scope: { row: any; column: MarketColumn }) => VNodeChild }>,
+  slots: Object as SlotsType<MarketIdentitySlots & { cell?: (scope: { row: any; column: MarketColumn }) => VNodeChild; status?: (scope: { row: any }) => VNode[] }>,
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
     // Like Native and React: the trailing edge fades while columns still overflow it.
@@ -56,15 +56,15 @@ export const KjunMarketTable = defineComponent({
       if (["stock_name", "name", "symbol"].includes(col.key)) return marketIdentity(row, props, slots);
       if (col.type === "sparkline")
         return <KjunSparkline data={Array.isArray(value) ? (value as number[]) : []} width={tokens.extensions.marketTable.sparklineWidth} height={tokens.extensions.marketTable.sparklineHeight} />;
-      if (col.type === "price") return <KjunPriceCell value={finiteNumber(value)} formatter={props.priceFormatter} stale={stale} showFreshness={false} />;
+      if (col.type === "price") return <KjunPriceCell value={finiteNumber(value)} formatter={props.priceFormatter} stale={stale} />;
       const context = { currency: props.currency, row, column: col };
       if (col.type === "percent") return value == null ? "-" : (
-        <KjunSignedValue value={finiteNumber(value)} format="percent" isRaw stale={stale} showFreshness={false}
+        <KjunSignedValue value={finiteNumber(value)} format="percent" isRaw stale={stale}
           formatter={props.formatMetric ? (number: number) => props.formatMetric!(number, col.type!, context) : undefined} />
       );
       const text = props.formatMetric ? props.formatMetric(value, col.type || "text", context) : value == null ? "-" : String(value);
       return ["investor", "net_amount", "net_volume"].includes(col.type || "")
-        ? <KjunSignedValue value={finiteNumber(value)} formatter={() => text} stale={stale} showFreshness={false} />
+        ? <KjunSignedValue value={finiteNumber(value)} formatter={() => text} stale={stale} />
         : text;
     };
     const toggleLabel = (row: any, kind: "watchToggle" | "favoriteToggle", active: boolean) =>
@@ -122,9 +122,7 @@ export const KjunMarketTable = defineComponent({
                               return (
                                 <td key={col.key} style={{ textAlign: col.align, fontWeight: col.weight === "bold" ? tokens.typography.control.fontWeight : undefined }}>
                                   {render(row, col)}
-                                  {col.key === priceCol?.key && (
-                                    <KjunFreshness stale={!!getValue(row, "stale")} source={String(getValue(row, "source") || "")} fetchedAt={String(getValue(row, "fetched_at") || "")} />
-                                  )}
+                                  {col.key === priceCol?.key && priceStatus(slots.status?.({ row }))}
                                 </td>
                               );
                             })}

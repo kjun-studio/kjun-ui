@@ -14,11 +14,6 @@
     "react": ["status", "label", "size"],
     "native": ["status", "label", "size"]
   },
-  "KjunFreshness": {
-    "vue3": ["stale", "source", "fetchedAt", "formatter"],
-    "react": ["stale", "source", "fetchedAt", "formatter"],
-    "native": ["stale", "source", "fetchedAt", "formatter"]
-  },
   "KjunMarketCards": {
     "vue3": ["rows", "rowKey", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "onRowClick", "onRetry", "columns", "metricConfig", "excludeKeys", "storageNamespace", "storage", "sortKey", "sortOrder", "emitSortOnMount", "currency", "changeMetricKey", "priceMetricKeys", "metricLoading", "formatMetric"],
     "react": ["columns", "metricConfig", "excludeKeys", "storageNamespace", "storage", "sortKey", "sortOrder", "emitSortOnMount", "currency", "changeMetricKey", "priceMetricKeys", "metricLoading", "formatMetric", "renderMetricPrefix", "renderList", "onSort", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"],
@@ -30,14 +25,14 @@
     "native": ["controls", "children"]
   },
   "KjunMarketSimpleList": {
-    "vue3": ["rows", "rowKey", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "onRowClick", "onRetry", "priceValue", "changeValue", "changeLoading", "priceFormatter", "closingPrice"],
-    "react": ["priceValue", "changeValue", "changeLoading", "priceFormatter", "closingPrice", "renderPricePrefix", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"],
-    "native": ["priceValue", "changeValue", "changeLoading", "priceFormatter", "closingPrice", "renderPricePrefix", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"]
+    "vue3": ["rows", "rowKey", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "onRowClick", "onRetry", "priceValue", "changeValue", "changeLoading", "priceFormatter"],
+    "react": ["priceValue", "changeValue", "changeLoading", "priceFormatter", "renderPricePrefix", "renderStatus", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"],
+    "native": ["priceValue", "changeValue", "changeLoading", "priceFormatter", "renderPricePrefix", "renderStatus", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"]
   },
   "KjunMarketTable": {
     "vue3": ["rows", "rowKey", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "onRowClick", "onRetry", "columns", "cellLoading", "showActions", "togglingInterest", "togglingFavorite", "sortKey", "sortOrder", "priceFormatter", "currency", "embedded", "formatMetric"],
-    "react": ["columns", "cellLoading", "showActions", "togglingInterest", "togglingFavorite", "sortKey", "sortOrder", "priceFormatter", "currency", "embedded", "formatMetric", "renderCell", "onSort", "onToggleInterest", "onToggleFavorite", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"],
-    "native": ["columns", "cellLoading", "showActions", "togglingInterest", "togglingFavorite", "sortKey", "sortOrder", "priceFormatter", "currency", "embedded", "formatMetric", "renderCell", "onSort", "onToggleInterest", "onToggleFavorite", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"]
+    "react": ["columns", "cellLoading", "showActions", "togglingInterest", "togglingFavorite", "sortKey", "sortOrder", "priceFormatter", "currency", "embedded", "formatMetric", "renderCell", "renderStatus", "onSort", "onToggleInterest", "onToggleFavorite", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"],
+    "native": ["columns", "cellLoading", "showActions", "togglingInterest", "togglingFavorite", "sortKey", "sortOrder", "priceFormatter", "currency", "embedded", "formatMetric", "renderCell", "renderStatus", "onSort", "onToggleInterest", "onToggleFavorite", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"]
   },
   "KjunMarketTableSkeleton": {
     "vue3": ["columns", "rows", "showActions", "alignClass", "widthClass"],
@@ -45,13 +40,13 @@
     "native": ["columns", "rows", "showActions"]
   },
   "KjunPriceCell": {
-    "vue3": ["value", "formatter", "stale", "showFreshness", "source", "fetchedAt", "flashClass", "fromPrevious"],
-    "react": ["value", "formatter", "flashClass", "fromPrevious", "showFreshness", "stale", "source", "fetchedAt"],
-    "native": ["value", "formatter", "fromPrevious", "showFreshness", "stale", "source", "fetchedAt"]
+    "vue3": ["value", "formatter", "stale", "flashClass", "fromPrevious"],
+    "react": ["value", "formatter", "flashClass", "fromPrevious", "stale", "status"],
+    "native": ["value", "formatter", "fromPrevious", "stale", "status"]
   },
   "KjunSignedValue": {
-    "vue3": ["value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "showFreshness", "formatter"],
-    "react": ["value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "showFreshness", "formatter"],
-    "native": ["value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "showFreshness", "formatter"]
+    "vue3": ["value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "formatter"],
+    "react": ["value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "formatter"],
+    "native": ["value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "formatter"]
   }
 }

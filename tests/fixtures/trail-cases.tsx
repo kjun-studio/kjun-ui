@@ -1,5 +1,5 @@
 import { useState } from 'react';
-// 0.17.1: Breadcrumb links a last item that has `to`; ScrollFade fades vertically (Vue 3 mirrors this in trail-vue3.tsx).
+// 0.18.0: Breadcrumb links a last item that has `to`; ScrollFade fades vertically (Vue 3 mirrors this in trail-vue3.tsx).
 export const trailRows = Array.from({ length: 12 }, (_, i) => `Row ${i + 1}`);
 export function TrailCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const [visited, setVisited] = useState<string[]>([]);

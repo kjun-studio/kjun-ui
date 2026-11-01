@@ -1090,140 +1090,6 @@
         "types": []
       }
     },
-    "KjunFreshness": {
-      "vue3": {
-        "props": [
-          {
-            "name": "stale",
-            "type": "boolean",
-            "required": false,
-            "default": "false",
-            "description": "",
-            "summary": "현재 값이 오래된 상태임을 표시합니다. 시간 판정은 소비자가 담당합니다.",
-            "source": "packages/vue3/src/number-display.tsx"
-          },
-          {
-            "name": "source",
-            "type": "string",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "가격·갱신 시각의 데이터 출처 설명입니다.",
-            "source": "packages/vue3/src/number-display.tsx"
-          },
-          {
-            "name": "fetchedAt",
-            "type": "string",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "표시 값의 수집 시각입니다.",
-            "source": "packages/vue3/src/number-display.tsx"
-          },
-          {
-            "name": "formatter",
-            "type": "(time: string) => string",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "수집 시각 문자열을 설명에 표시할 문자열로 변환합니다.",
-            "source": "packages/vue3/src/number-display.tsx"
-          }
-        ],
-        "events": [],
-        "slots": [],
-        "ownership": [],
-        "types": []
-      },
-      "react": {
-        "props": [
-          {
-            "name": "stale",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "false",
-            "description": "",
-            "summary": "현재 값이 오래된 상태임을 표시합니다. 시간 판정은 소비자가 담당합니다.",
-            "source": "packages/react/src/number-display.tsx"
-          },
-          {
-            "name": "source",
-            "type": "string | null | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "가격·갱신 시각의 데이터 출처 설명입니다.",
-            "source": "packages/react/src/number-display.tsx"
-          },
-          {
-            "name": "fetchedAt",
-            "type": "string | null | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "표시 값의 수집 시각입니다.",
-            "source": "packages/react/src/number-display.tsx"
-          },
-          {
-            "name": "formatter",
-            "type": "((time: string) => string) | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "수집 시각 문자열을 설명에 표시할 문자열로 변환합니다.",
-            "source": "packages/react/src/number-display.tsx"
-          }
-        ],
-        "events": [],
-        "slots": [],
-        "ownership": [],
-        "types": []
-      },
-      "native": {
-        "props": [
-          {
-            "name": "stale",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "false",
-            "description": "",
-            "summary": "현재 값이 오래된 상태임을 표시합니다. 시간 판정은 소비자가 담당합니다.",
-            "source": "packages/native/src/number-display.tsx"
-          },
-          {
-            "name": "source",
-            "type": "string | null | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "가격·갱신 시각의 데이터 출처 설명입니다.",
-            "source": "packages/native/src/number-display.tsx"
-          },
-          {
-            "name": "fetchedAt",
-            "type": "string | null | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "표시 값의 수집 시각입니다.",
-            "source": "packages/native/src/number-display.tsx"
-          },
-          {
-            "name": "formatter",
-            "type": "((time: string) => string) | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "수집 시각 문자열을 설명에 표시할 문자열로 변환합니다.",
-            "source": "packages/native/src/number-display.tsx"
-          }
-        ],
-        "events": [],
-        "slots": [],
-        "ownership": [],
-        "types": []
-      }
-    },
     "KjunHeatmapCell": {
       "vue3": {
         "props": [
@@ -3804,15 +3670,6 @@
             "description": "",
             "summary": "가격을 표시 문자열로 변환하는 함수입니다.",
             "source": "packages/vue3/src/market-list.tsx"
-          },
-          {
-            "name": "closingPrice",
-            "type": "boolean",
-            "required": false,
-            "default": "false",
-            "description": "",
-            "summary": "현재 가격 대신 종가임을 나타내는 표시를 사용합니다.",
-            "source": "packages/vue3/src/market-list.tsx"
           }
         ],
         "events": [
@@ -3869,6 +3726,15 @@
             "source": "packages/vue3/src/market-list.tsx",
             "type": "{ row }",
             "summary": "pricePrefix 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "status",
+            "data": [
+              "row"
+            ],
+            "source": "packages/vue3/src/market-list.tsx",
+            "type": "{ row }",
+            "summary": "status 영역의 기본 내용을 교체합니다."
           }
         ],
         "ownership": [],
@@ -3913,21 +3779,21 @@
             "source": "packages/react/src/market-list.tsx"
           },
           {
-            "name": "closingPrice",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "false",
-            "description": "",
-            "summary": "현재 가격 대신 종가임을 나타내는 표시를 사용합니다.",
-            "source": "packages/react/src/market-list.tsx"
-          },
-          {
             "name": "renderPricePrefix",
             "type": "((row: Row) => ReactNode) | undefined",
             "required": false,
             "default": "—",
             "description": "",
             "summary": "가격 앞에 표시할 내용을 반환합니다.",
+            "source": "packages/react/src/market-list.tsx"
+          },
+          {
+            "name": "renderStatus",
+            "type": "((row: Row) => ReactNode) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The row's quote status (a KjunBadge or text) before the change; the wording and tone belong to the app.",
+            "summary": "행의 시세 상태(종가·지연 등)를 반환합니다. 목록은 등락률 앞, 표는 가격 칸 값 뒤에 둡니다. 문구와 배지 색은 앱이 정합니다.",
             "source": "packages/react/src/market-list.tsx"
           },
           {
@@ -4245,21 +4111,21 @@
             "source": "packages/native/src/market-list.tsx"
           },
           {
-            "name": "closingPrice",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "false",
-            "description": "",
-            "summary": "현재 가격 대신 종가임을 나타내는 표시를 사용합니다.",
-            "source": "packages/native/src/market-list.tsx"
-          },
-          {
             "name": "renderPricePrefix",
             "type": "((row: Row) => ReactNode) | undefined",
             "required": false,
             "default": "—",
             "description": "",
             "summary": "가격 앞에 표시할 내용을 반환합니다.",
+            "source": "packages/native/src/market-list.tsx"
+          },
+          {
+            "name": "renderStatus",
+            "type": "((row: Row) => ReactNode) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The row's quote status (a KjunBadge or text) before the change; the wording and tone belong to the app.",
+            "summary": "행의 시세 상태(종가·지연 등)를 반환합니다. 목록은 등락률 앞, 표는 가격 칸 값 뒤에 둡니다. 문구와 배지 색은 앱이 정합니다.",
             "source": "packages/native/src/market-list.tsx"
           },
           {
@@ -4940,6 +4806,15 @@
             "source": "packages/vue3/src/market-table.tsx",
             "type": "{ row, column }",
             "summary": "cell 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "status",
+            "data": [
+              "row"
+            ],
+            "source": "packages/vue3/src/market-table.tsx",
+            "type": "{ row }",
+            "summary": "status 영역의 기본 내용을 교체합니다."
           }
         ],
         "ownership": [],
@@ -5053,6 +4928,15 @@
             "default": "—",
             "description": "",
             "summary": "기본 셀 대신 표시할 내용을 반환합니다. 전달 인자는 컴포넌트 타입을 따릅니다.",
+            "source": "packages/react/src/market-table.tsx"
+          },
+          {
+            "name": "renderStatus",
+            "type": "((row: Row) => ReactNode) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The row's quote status after the price column's value.",
+            "summary": "행의 시세 상태(종가·지연 등)를 반환합니다. 목록은 등락률 앞, 표는 가격 칸 값 뒤에 둡니다. 문구와 배지 색은 앱이 정합니다.",
             "source": "packages/react/src/market-table.tsx"
           },
           {
@@ -5466,6 +5350,15 @@
             "default": "—",
             "description": "",
             "summary": "기본 셀 대신 표시할 내용을 반환합니다. 전달 인자는 컴포넌트 타입을 따릅니다.",
+            "source": "packages/native/src/market-table.tsx"
+          },
+          {
+            "name": "renderStatus",
+            "type": "((row: Row) => ReactNode) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The row's quote status after the price column's value.",
+            "summary": "행의 시세 상태(종가·지연 등)를 반환합니다. 목록은 등락률 앞, 표는 가격 칸 값 뒤에 둡니다. 문구와 배지 색은 앱이 정합니다.",
             "source": "packages/native/src/market-table.tsx"
           },
           {
@@ -6430,33 +6323,6 @@
             "source": "packages/vue3/src/number-display.tsx"
           },
           {
-            "name": "showFreshness",
-            "type": "boolean",
-            "required": false,
-            "default": "true",
-            "description": "",
-            "summary": "오래된 값 또는 갱신 시점에 대한 표시를 제공합니다.",
-            "source": "packages/vue3/src/number-display.tsx"
-          },
-          {
-            "name": "source",
-            "type": "string",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "가격·갱신 시각의 데이터 출처 설명입니다.",
-            "source": "packages/vue3/src/number-display.tsx"
-          },
-          {
-            "name": "fetchedAt",
-            "type": "string",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "표시 값의 수집 시각입니다.",
-            "source": "packages/vue3/src/number-display.tsx"
-          },
-          {
             "name": "flashClass",
             "type": "string",
             "required": false,
@@ -6476,7 +6342,15 @@
           }
         ],
         "events": [],
-        "slots": [],
+        "slots": [
+          {
+            "name": "status",
+            "data": [],
+            "source": "packages/vue3/src/number-display.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "status 영역의 기본 내용을 교체합니다."
+          }
+        ],
         "ownership": [],
         "types": []
       },
@@ -6501,6 +6375,24 @@
             "source": "packages/react/src/number-display.tsx"
           },
           {
+            "name": "stale",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "현재 값이 오래된 상태임을 표시합니다. 시간 판정은 소비자가 담당합니다.",
+            "source": "packages/react/src/number-display.tsx"
+          },
+          {
+            "name": "status",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment.",
+            "summary": "가격 뒤에 둘 상태 표시입니다. 문구와 배지 색은 앱이 정하고, KJUN은 가격 셀 뒤 6px 간격과 세로 가운데 정렬만 맡습니다(단독 가격 셀은 강조 배경용 좌우 8px 여백이 있어 숫자에서 14px, 시세 목록·표에서는 6px). 목록·표에는 xs KjunBadge를 권장합니다.",
+            "source": "packages/react/src/number-display.tsx"
+          },
+          {
             "name": "flashClass",
             "type": "string | undefined",
             "required": false,
@@ -6516,42 +6408,6 @@
             "default": "true",
             "description": "",
             "summary": "값이 바뀌면 이전 값에서 새 값으로 애니메이션을 시작합니다.",
-            "source": "packages/react/src/number-display.tsx"
-          },
-          {
-            "name": "showFreshness",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "true",
-            "description": "",
-            "summary": "오래된 값 또는 갱신 시점에 대한 표시를 제공합니다.",
-            "source": "packages/react/src/number-display.tsx"
-          },
-          {
-            "name": "stale",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "false",
-            "description": "",
-            "summary": "현재 값이 오래된 상태임을 표시합니다. 시간 판정은 소비자가 담당합니다.",
-            "source": "packages/react/src/number-display.tsx"
-          },
-          {
-            "name": "source",
-            "type": "string | null | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "가격·갱신 시각의 데이터 출처 설명입니다.",
-            "source": "packages/react/src/number-display.tsx"
-          },
-          {
-            "name": "fetchedAt",
-            "type": "string | null | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "표시 값의 수집 시각입니다.",
             "source": "packages/react/src/number-display.tsx"
           }
         ],
@@ -6581,24 +6437,6 @@
             "source": "packages/native/src/number-display.tsx"
           },
           {
-            "name": "fromPrevious",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "true",
-            "description": "",
-            "summary": "값이 바뀌면 이전 값에서 새 값으로 애니메이션을 시작합니다.",
-            "source": "packages/native/src/number-display.tsx"
-          },
-          {
-            "name": "showFreshness",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "true",
-            "description": "",
-            "summary": "오래된 값 또는 갱신 시점에 대한 표시를 제공합니다.",
-            "source": "packages/native/src/number-display.tsx"
-          },
-          {
             "name": "stale",
             "type": "boolean | undefined",
             "required": false,
@@ -6608,21 +6446,21 @@
             "source": "packages/native/src/number-display.tsx"
           },
           {
-            "name": "source",
-            "type": "string | null | undefined",
+            "name": "status",
+            "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "가격·갱신 시각의 데이터 출처 설명입니다.",
+            "description": "The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment.",
+            "summary": "가격 뒤에 둘 상태 표시입니다. 문구와 배지 색은 앱이 정하고, KJUN은 가격 셀 뒤 6px 간격과 세로 가운데 정렬만 맡습니다(단독 가격 셀은 강조 배경용 좌우 8px 여백이 있어 숫자에서 14px, 시세 목록·표에서는 6px). 목록·표에는 xs KjunBadge를 권장합니다.",
             "source": "packages/native/src/number-display.tsx"
           },
           {
-            "name": "fetchedAt",
-            "type": "string | null | undefined",
+            "name": "fromPrevious",
+            "type": "boolean | undefined",
             "required": false,
-            "default": "—",
+            "default": "true",
             "description": "",
-            "summary": "표시 값의 수집 시각입니다.",
+            "summary": "값이 바뀌면 이전 값에서 새 값으로 애니메이션을 시작합니다.",
             "source": "packages/native/src/number-display.tsx"
           }
         ],
@@ -6914,15 +6752,6 @@
             "source": "packages/vue3/src/number-display.tsx"
           },
           {
-            "name": "showFreshness",
-            "type": "boolean",
-            "required": false,
-            "default": "true",
-            "description": "",
-            "summary": "오래된 값 또는 갱신 시점에 대한 표시를 제공합니다.",
-            "source": "packages/vue3/src/number-display.tsx"
-          },
-          {
             "name": "formatter",
             "type": "(value: number) => string",
             "required": false,
@@ -7030,15 +6859,6 @@
             "source": "packages/react/src/number-display.tsx"
           },
           {
-            "name": "showFreshness",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "true",
-            "description": "",
-            "summary": "오래된 값 또는 갱신 시점에 대한 표시를 제공합니다.",
-            "source": "packages/react/src/number-display.tsx"
-          },
-          {
             "name": "formatter",
             "type": "((value: number) => string) | undefined",
             "required": false,
@@ -7143,15 +6963,6 @@
             "default": "false",
             "description": "",
             "summary": "현재 값이 오래된 상태임을 표시합니다. 시간 판정은 소비자가 담당합니다.",
-            "source": "packages/native/src/number-display.tsx"
-          },
-          {
-            "name": "showFreshness",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "true",
-            "description": "",
-            "summary": "오래된 값 또는 갱신 시점에 대한 표시를 제공합니다.",
             "source": "packages/native/src/number-display.tsx"
           },
           {
@@ -7426,7 +7237,7 @@
           },
           {
             "name": "semantic",
-            "type": "\"price\" | \"status\"",
+            "type": "\"status\" | \"price\"",
             "required": false,
             "default": "\"price\"",
             "description": "",

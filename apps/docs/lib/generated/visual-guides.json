@@ -955,119 +955,6 @@
       }
     }
   },
-  "KjunFreshness": {
-    "name": "KjunFreshness",
-    "path": "/components/freshness",
-    "related": "assets",
-    "description": "이전 값 또는 종가임을 표시하고 조회 시각을 설명합니다.",
-    "platforms": {
-      "vue3": {
-        "figures": [
-          {
-            "id": "default",
-            "label": "구성 영역",
-            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
-            "parts": [
-              {
-                "label": "신선도 표시",
-                "description": "가격의 시점이나 출처에 관한 보조 정보입니다.",
-                "target": "text=종가",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "states": [
-          {
-            "id": "default",
-            "label": "기본 예제",
-            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
-          },
-          {
-            "id": "stale",
-            "label": "오래된 값",
-            "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
-            "settings": {
-              "visual": "{\"KjunFreshness\":{\"props\":{\"stale\":true}}}"
-            }
-          }
-        ],
-        "sizes": [],
-        "sizeDefault": "—",
-        "note": "stale=false이면 표시하지 않습니다. stale=true에서 source=close이면 종가, 그 외에는 지연으로 표시합니다. fetchedAt은 최신 여부 설명에 사용합니다."
-      },
-      "react": {
-        "figures": [
-          {
-            "id": "default",
-            "label": "구성 영역",
-            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
-            "parts": [
-              {
-                "label": "신선도 표시",
-                "description": "가격의 시점이나 출처에 관한 보조 정보입니다.",
-                "target": "text=종가",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "states": [
-          {
-            "id": "default",
-            "label": "기본 예제",
-            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
-          },
-          {
-            "id": "stale",
-            "label": "오래된 값",
-            "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
-            "settings": {
-              "visual": "{\"KjunFreshness\":{\"props\":{\"stale\":true}}}"
-            }
-          }
-        ],
-        "sizes": [],
-        "sizeDefault": "—",
-        "note": "stale=false이면 표시하지 않습니다. stale=true에서 source=close이면 종가, 그 외에는 지연으로 표시합니다. fetchedAt은 최신 여부 설명에 사용합니다."
-      },
-      "native": {
-        "figures": [
-          {
-            "id": "default",
-            "label": "구성 영역",
-            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
-            "parts": [
-              {
-                "label": "신선도 표시",
-                "description": "가격의 시점이나 출처에 관한 보조 정보입니다.",
-                "target": "text=종가",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "states": [
-          {
-            "id": "default",
-            "label": "기본 예제",
-            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
-          },
-          {
-            "id": "stale",
-            "label": "오래된 값",
-            "description": "값의 신선도 표현입니다. 요청 실패나 입력 오류와 구분합니다.",
-            "settings": {
-              "visual": "{\"KjunFreshness\":{\"props\":{\"stale\":true}}}"
-            }
-          }
-        ],
-        "sizes": [],
-        "sizeDefault": "—",
-        "note": "stale=false이면 표시하지 않습니다. stale=true에서 source=close이면 종가, 그 외에는 지연으로 표시합니다. fetchedAt은 최신 여부 설명에 사용합니다."
-      }
-    }
-  },
   "KjunHeatmapCell": {
     "name": "KjunHeatmapCell",
     "path": "/components/heatmap-cell",
@@ -2457,7 +2344,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "값이 없으면 Skeleton을 표시합니다. stale은 가격을 약하게 표시하고 showFreshness는 최신 여부 배지 표시를 제어합니다. formatter는 가격 표시만 담당합니다."
+        "note": "값이 없으면 Skeleton을 표시합니다. stale은 가격을 약하게 표시합니다. status에 넣은 앱의 상태 표시(xs KjunBadge 권장)는 가격 셀 뒤 6px에 세로 가운데로 놓입니다. formatter는 가격 표시만 담당합니다."
       },
       "react": {
         "figures": [
@@ -2492,7 +2379,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "값이 없으면 Skeleton을 표시합니다. stale은 가격을 약하게 표시하고 showFreshness는 최신 여부 배지 표시를 제어합니다. formatter는 가격 표시만 담당합니다."
+        "note": "값이 없으면 Skeleton을 표시합니다. stale은 가격을 약하게 표시합니다. status에 넣은 앱의 상태 표시(xs KjunBadge 권장)는 가격 셀 뒤 6px에 세로 가운데로 놓입니다. formatter는 가격 표시만 담당합니다."
       },
       "native": {
         "figures": [
@@ -2527,7 +2414,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "값이 없으면 Skeleton을 표시합니다. stale은 가격을 약하게 표시하고 showFreshness는 최신 여부 배지 표시를 제어합니다. formatter는 가격 표시만 담당합니다."
+        "note": "값이 없으면 Skeleton을 표시합니다. stale은 가격을 약하게 표시합니다. status에 넣은 앱의 상태 표시(xs KjunBadge 권장)는 가격 셀 뒤 6px에 세로 가운데로 놓입니다. formatter는 가격 표시만 담당합니다."
       }
     }
   },

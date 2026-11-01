@@ -44,7 +44,7 @@
 | 입력·메뉴 (`control`) | 512×320 | 2.5 | 24px | 28 |
 | 목록·표·큰 구성 (`large`) | 640×400 | 2 | 32px | 28 |
 
-너비가 없는 작은 요소, 240·360px 입력·메뉴, 480·576px 큰 구성을 명시적으로 배정합니다. 복합 가격 행인 Freshness는 360px 입력·메뉴 구성입니다. 배경은 문서 기본 팔레트의 `tertiary` 역할을 사용하고 컴포넌트 색상·크기·간격·반경은 packed 패키지 값을 유지합니다. ButtonGroup은 `md`의 일간·주간·월간 중 주간을 선택하며, Chip은 기본·삭제 가능·비활성 상태를 보여줍니다. AccordionItem은 열린 한 항목, DropdownItem은 선택 항목을 부모 안에 배치합니다. MenuButton은 `compact` 점 세 개 트리거로 Dropdown과 구별합니다. DropdownDivider와 TabPane의 점선은 촬영기가 별도 요소로 추가합니다.
+너비가 없는 작은 요소, 240·360px 입력·메뉴, 480·576px 큰 구성을 명시적으로 배정합니다. 배경은 문서 기본 팔레트의 `tertiary` 역할을 사용하고 컴포넌트 색상·크기·간격·반경은 packed 패키지 값을 유지합니다. ButtonGroup은 `md`의 일간·주간·월간 중 주간을 선택하며, Chip은 기본·삭제 가능·비활성 상태를 보여줍니다. AccordionItem은 열린 한 항목, DropdownItem은 선택 항목을 부모 안에 배치합니다. MenuButton은 `compact` 점 세 개 트리거로 Dropdown과 구별합니다. DropdownDivider와 TabPane의 점선은 촬영기가 별도 요소로 추가합니다.
 
 `captureFor(scene)`을 화면·촬영·경계 검사가 공유합니다. 메뉴·툴팁과 촬영 표시선도 같은 안전 여백으로 검사합니다. Modal·Drawer는 실제 소비자 iframe의 위치·크기를 측정해 바깥 여백과 안쪽 대화상자 경계를 각각 검사합니다. 소개 이미지 3개는 기존 640×400·2배·32px 규칙과 배경을 유지합니다.
 

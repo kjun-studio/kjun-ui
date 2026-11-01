@@ -1,11 +1,11 @@
 {
-  "total": 86,
+  "total": 85,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 86,
+      "provided": 85,
       "counts": {
-        "supported": 86,
+        "supported": 85,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 86,
+      "provided": 85,
       "counts": {
-        "supported": 86,
+        "supported": 85,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 86,
+      "provided": 85,
       "counts": {
         "supported": 0,
-        "preview": 86,
+        "preview": 85,
         "review": 0,
         "unsupported": 0
       },
@@ -1198,37 +1198,6 @@
       "docs": "/components/form-skeleton",
       "category": "feedback",
       "differences": "세 플랫폼 모두 같은 필드 구성 prop을 사용합니다. 자체 animated 조절기는 없으며 기본 Skeleton 표현을 사용합니다.",
-      "platforms": {
-        "vue3": {
-          "status": "implemented",
-          "verification": "passed",
-          "runtime": "chromium"
-        },
-        "react": {
-          "status": "implemented",
-          "verification": "passed",
-          "runtime": "chromium"
-        },
-        "native": {
-          "status": "implemented",
-          "verification": "passed",
-          "runtime": "react-native-web",
-          "deviceVerification": "not-run"
-        }
-      },
-      "states": {
-        "vue3": "supported",
-        "react": "supported",
-        "native": "preview"
-      },
-      "recordId": "verification-v0.3.0"
-    },
-    {
-      "name": "KjunFreshness",
-      "title": "Freshness",
-      "docs": "/components/freshness",
-      "category": "finance",
-      "differences": "세 플랫폼 모두 formatter로 조회 시각 표시를 바꿀 수 있습니다. 웹 도움말과 Native 접근성 설명의 표시 방식은 다릅니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -2752,7 +2721,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 86
+      "componentCount": 85
     }
   ]
 }

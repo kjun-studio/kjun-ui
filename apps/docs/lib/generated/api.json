@@ -7394,100 +7394,6 @@
       }
     ]
   },
-  "KjunFreshness": {
-    "vue3": [
-      {
-        "name": "stale",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
-        "name": "source",
-        "type": "string",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "fetchedAt",
-        "type": "string",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "formatter",
-        "type": "(time: string) => string",
-        "required": false,
-        "default": "—",
-        "description": ""
-      }
-    ],
-    "events": [],
-    "slots": [],
-    "react": [
-      {
-        "name": "stale",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "source",
-        "type": "string | null | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "fetchedAt",
-        "type": "string | null | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "formatter",
-        "type": "((time: string) => string) | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      }
-    ],
-    "native": [
-      {
-        "name": "stale",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "source",
-        "type": "string | null | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "fetchedAt",
-        "type": "string | null | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "formatter",
-        "type": "((time: string) => string) | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      }
-    ]
-  },
   "KjunHeatmapCell": {
     "vue3": [
       {
@@ -11289,13 +11195,6 @@
         "required": true,
         "default": "—",
         "description": ""
-      },
-      {
-        "name": "closingPrice",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
       }
     ],
     "events": [
@@ -11340,6 +11239,13 @@
           "row"
         ],
         "source": "packages/vue3/src/market-list.tsx"
+      },
+      {
+        "name": "status",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-list.tsx"
       }
     ],
     "react": [
@@ -11372,18 +11278,18 @@
         "description": ""
       },
       {
-        "name": "closingPrice",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
         "name": "renderPricePrefix",
         "type": "((row: Row) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "renderStatus",
+        "type": "((row: Row) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The row's quote status (a KjunBadge or text) before the change; the wording and tone belong to the app."
       },
       {
         "name": "rows",
@@ -11626,18 +11532,18 @@
         "description": ""
       },
       {
-        "name": "closingPrice",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
         "name": "renderPricePrefix",
         "type": "((row: Row) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "renderStatus",
+        "type": "((row: Row) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The row's quote status (a KjunBadge or text) before the change; the wording and tone belong to the app."
       },
       {
         "name": "rows",
@@ -12161,6 +12067,13 @@
           "column"
         ],
         "source": "packages/vue3/src/market-table.tsx"
+      },
+      {
+        "name": "status",
+        "data": [
+          "row"
+        ],
+        "source": "packages/vue3/src/market-table.tsx"
       }
     ],
     "react": [
@@ -12247,6 +12160,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "renderStatus",
+        "type": "((row: Row) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The row's quote status after the price column's value."
       },
       {
         "name": "onSort",
@@ -12564,6 +12484,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "renderStatus",
+        "type": "((row: Row) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The row's quote status after the price column's value."
       },
       {
         "name": "onSort",
@@ -14543,27 +14470,6 @@
         "description": ""
       },
       {
-        "name": "showFreshness",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
-        "description": ""
-      },
-      {
-        "name": "source",
-        "type": "string",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "fetchedAt",
-        "type": "string",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
         "name": "flashClass",
         "type": "string",
         "required": false,
@@ -14579,7 +14485,13 @@
       }
     ],
     "events": [],
-    "slots": [],
+    "slots": [
+      {
+        "name": "status",
+        "data": [],
+        "source": "packages/vue3/src/number-display.tsx"
+      }
+    ],
     "react": [
       {
         "name": "value",
@@ -14596,6 +14508,20 @@
         "description": ""
       },
       {
+        "name": "stale",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "status",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment."
+      },
+      {
         "name": "flashClass",
         "type": "string | undefined",
         "required": false,
@@ -14605,34 +14531,6 @@
       {
         "name": "fromPrevious",
         "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "showFreshness",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "stale",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "source",
-        "type": "string | null | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "fetchedAt",
-        "type": "string | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -14654,20 +14552,6 @@
         "description": ""
       },
       {
-        "name": "fromPrevious",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "showFreshness",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
         "name": "stale",
         "type": "boolean | undefined",
         "required": false,
@@ -14675,15 +14559,15 @@
         "description": ""
       },
       {
-        "name": "source",
-        "type": "string | null | undefined",
+        "name": "status",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment."
       },
       {
-        "name": "fetchedAt",
-        "type": "string | null | undefined",
+        "name": "fromPrevious",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -15054,7 +14938,7 @@
       },
       {
         "name": "messages",
-        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; confirmTitle: string; promptTitle: string; invalidInput: string; dialog: string; panel: string; details: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; descending: string; tabs: string; breadcrumb: string; mainNavigation: string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; closePrice: string; delayed: string; noRealtimeQuote: string; realtimeDelayed: string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }>",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; confirmTitle: string; promptTitle: string; invalidInput: string; dialog: string; panel: string; details: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; descending: string; tabs: string; breadcrumb: string; mainNavigation: string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }>",
         "required": false,
         "default": "—",
         "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
@@ -15092,7 +14976,7 @@
       },
       {
         "name": "messages",
-        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; confirmTitle: string; promptTitle: string; invalidInput: string; dialog: string; panel: string; details: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; descending: string; tabs: string; breadcrumb: string; mainNavigation: string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; closePrice: string; delayed: string; noRealtimeQuote: string; realtimeDelayed: string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; confirmTitle: string; promptTitle: string; invalidInput: string; dialog: string; panel: string; details: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; descending: string; tabs: string; breadcrumb: string; mainNavigation: string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
         "required": false,
         "default": "—",
         "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
@@ -15178,7 +15062,7 @@
       },
       {
         "name": "messages",
-        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; confirmTitle: string; promptTitle: string; invalidInput: string; dialog: string; panel: string; details: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; descending: string; tabs: string; breadcrumb: string; mainNavigation: string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; closePrice: string; delayed: string; noRealtimeQuote: string; realtimeDelayed: string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; confirmTitle: string; promptTitle: string; invalidInput: string; dialog: string; panel: string; details: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; descending: string; tabs: string; breadcrumb: string; mainNavigation: string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
         "required": false,
         "default": "—",
         "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
@@ -17719,13 +17603,6 @@
         "description": ""
       },
       {
-        "name": "showFreshness",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
-        "description": ""
-      },
-      {
         "name": "formatter",
         "type": "(value: number) => string",
         "required": false,
@@ -17807,13 +17684,6 @@
         "description": ""
       },
       {
-        "name": "showFreshness",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
         "name": "formatter",
         "type": "((value: number) => string) | undefined",
         "required": false,
@@ -17887,13 +17757,6 @@
       },
       {
         "name": "stale",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "showFreshness",
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
@@ -18333,7 +18196,7 @@
       },
       {
         "name": "semantic",
-        "type": "\"price\" | \"status\"",
+        "type": "\"status\" | \"price\"",
         "required": false,
         "default": "\"price\"",
         "description": ""

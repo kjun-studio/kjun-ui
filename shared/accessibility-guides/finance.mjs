@@ -2,7 +2,6 @@ export default [
   ['KjunCollectionMark', 'decorative', 'kind active', '즐겨찾기·관심 상태의 장식 마크: 의미는 부모의 텍스트로 제공', {}],
   ['KjunDeviation', 'text', 'value', '편차의 부호와 수치 텍스트', { text: '1.25' }],
   ['KjunExecutionStatusBadge', 'text', 'status label', '실행 상태의 텍스트 배지', { text: '대기' }],
-  ['KjunFreshness', 'text', 'stale source', '오래된 데이터의 기준 시점 설명', { text: '종가' }],
   ['KjunMarketCards', 'market', 'rows sortKey', '시세 카드의 정렬 선택과 행 컨트롤', {}],
   ['KjunMarketListPanel', 'market', '', '패널에 공급한 필터와 시세 목록', { children: true }],
   ['KjunMarketSimpleList', 'market', 'rows', '시세 목록의 행 실행과 페이지 컨트롤', {}],

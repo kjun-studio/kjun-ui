@@ -81,7 +81,6 @@ export * from "./skeletons";
 
 export {
   KjunAnimatedNumber,
-  KjunFreshness,
   KjunPriceCell,
   KjunSignedValue,
   KjunDeviation,
@@ -93,7 +92,6 @@ export {
 } from "./financial";
 export type {
   KjunAnimatedNumberProps,
-  KjunFreshnessProps,
   KjunPriceCellProps,
   KjunSignedValueProps,
   KjunDeviationProps,

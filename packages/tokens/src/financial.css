@@ -68,15 +68,14 @@
 .kjun-deviation-badge > .kjun-tooltip-wrapper {
   display: flex;
 }
-/* Freshness badges are tooltip targets: focusable, with the system ring around the badge. */
-.kjun-freshness {
+/* The status slot after a price: the app's badge or text, set off from the number and centred on its line. */
+.kjun-price-status {
   display: inline-flex;
-  border-radius: var(--_kjun-extension-badge-radius);
-  outline: none;
+  align-items: center;
+  vertical-align: middle;
 }
-.kjun-freshness:focus-visible {
-  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
-  outline-offset: var(--_kjun-state-focus-offset);
+.kjun-price-cell + .kjun-price-status {
+  margin-inline-start: var(--_kjun-extension-financial-status-gap);
 }
 .kjun-deviation-signal-slot {
   width: var(--_kjun-extension-financial-warning-icon-size);

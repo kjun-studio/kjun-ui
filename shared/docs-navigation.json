@@ -743,17 +743,6 @@
       ]
     },
     {
-      "name": "KjunFreshness",
-      "category": "finance",
-      "aliases": [
-        "최신 상태",
-        "데이터 신선도"
-      ],
-      "useCases": [
-        "데이터 갱신"
-      ]
-    },
-    {
       "name": "KjunMarketCards",
       "category": "finance",
       "aliases": [

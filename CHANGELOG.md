@@ -2,7 +2,7 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
-## 0.17.1 — 미배포
+## 0.18.0 — 미배포
 
 - **수정: 바탕을 끈 `KjunBottomNavigation`의 배지 테두리**: `surface={false}`일 때 배지 둘레 테두리가 표면색(흰색)으로 남아 회색 화면 바탕 위에서 흰 고리로 보이던 문제를 고쳤습니다. 이제 테두리는 바 뒤에 보이는 화면 바탕색(`background` 색 역할)을 씁니다. 바탕이 있는 기본 바는 그대로입니다.
 - **`KjunBreadcrumb` 마지막 항목 링크**: 마지막 항목에도 `to`가 있으면 링크로 그립니다(Native는 `onNavigate`·`renderLink`). 페이지 제목을 따로 보여 주는 화면에서 경로를 상위 폴더까지만 두고 그 폴더로 돌아갈 수 있습니다. 현재 위치 표시(웹 `aria-current="page"`, 진한 글자)는 `to`가 없는 마지막 항목에만 붙습니다. **동작 변경**: 마지막 항목에 `to`를 넣고 글자로만 보이길 기대하던 화면은 그 항목에서 `to`를 빼세요.
@@ -20,6 +20,7 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 - **새 컴포넌트 `KjunDateRangePicker`**: 하나의 달력에서 시작일과 종료일을 골라 기간을 입력합니다. 값은 `{ start, end }`(YYYY-MM-DD, 비어 있으면 빈 문자열)입니다. 첫 번째로 고른 날이 시작일, 두 번째가 종료일이고, '적용'을 눌러야 값이 바뀝니다. 시작·종료일은 강조색 원, 사이는 옅은 강조 띠(`brand-subtle-bg`)로 잇고, 필드는 '2026. 09. 08. – 09. 16.'처럼 같은 해의 연도를 한 번만 씁니다. 달력·키보드·`min`·`max`·`clearable`은 DatePicker와 같습니다(새 메시지 `rangePlaceholder`·`apply`).
 - **`KjunDropdown` 정리·확장**: 마우스로 열면 아무 항목도 칠하지 않고, 키보드로 열 때만 첫 항목에 포커스합니다. 현재 항목은 배경 면과 2px 링을 겹치지 않고 배경 면 하나로 표시합니다. 항목 행은 44에서 40px(터치는 44px, Select·Combobox 목록은 44px 그대로)이고, 메뉴 그림자를 떠 있는 층답게 키웠습니다(`extensions.menu.elevation`이 새 `shadowScale.overlay`를 씁니다. 같은 그림자를 쓰는 Select·Combobox 목록도 함께 바뀝니다). 비활성 항목은 50% 투명도 대신 `text-disabled` 글자색이고, 위험 항목 hover는 짙은 `danger-bg` 대신 위험 색의 옅은 면입니다. `KjunDropdownItem`에 `checked`(켜고 끄는 항목, `menuitemcheckbox`), `description`(둘째 줄 설명), `shortcut`(끝에 보이는 단축키 안내, 키 연결은 소비자)을 추가했고, `selected`·`checked`의 체크는 끝이 아니라 앞쪽 열에 그립니다. 아이콘이나 체크가 있는 항목이 하나라도 있으면 나머지 라벨도 같은 시작선에 맞춥니다. `KjunDropdown`·`KjunMenuButton`에 `density`(`comfortable`·`compact`, compact는 32px 행)를 추가했습니다.
 - **새 컴포넌트 `KjunDropdownSection`·`KjunDropdownSubmenu`**: Section은 항목을 12px 보조색 제목 아래로 묶고 제목을 묶음 이름으로 읽힙니다. Submenu는 끝에 ›가 있는 행으로, 누르면(웹은 →도) 메뉴가 하위 항목으로 바뀌고 맨 위 돌아가기 행이나 ←로 돌아갑니다. 옆으로 펼치는 메뉴 대신 자리 바꿈 방식이라 좁은 화면과 Native에서도 같게 동작합니다(새 메시지 `back`). 새 토큰 `extensions.menu.compactOptionHeight`·`compactOptionPaddingY`·`compactOptionPaddingX`·`sectionPaddingTop`·`sectionPaddingBottom`·`descriptionGap`·`itemHeight`(40).
+- **`KjunFreshness` 제거, 가격 뒤 상태 자리 추가 (호환성 깨짐)**: 시세의 종가·지연 같은 상태는 앱마다 문구와 기준(데이터 제공처, 지연 시간, 장 운영 상태)이 달라 KJUN이 문구와 판단을 정하지 않습니다. KJUN은 상태가 놓일 자리와 간격·정렬만 맡고, 내용은 앱이 `KjunBadge` 등으로 넣습니다. **제거**: `KjunFreshness`·`KjunFreshnessProps`, `KjunPriceCell`의 `showFreshness`·`source`·`fetchedAt`, `KjunSignedValue`의 `showFreshness`, `KjunMarketSimpleList`의 `closingPrice`, 행 데이터의 `source`·`fetched_at`로 배지를 그리던 동작, 메시지 `closePrice`·`delayed`·`noRealtimeQuote`·`realtimeDelayed`. **추가**: `KjunPriceCell`의 `status`(Vue `status` 슬롯)는 가격 셀 뒤 6px(새 토큰 `extensions.financial.statusGap`)에 세로 가운데로 놓입니다. 단독 가격 셀은 강조 배경용 좌우 8px 여백이 있어 숫자에서 14px, 시세 목록·표에서는 6px입니다. `KjunMarketSimpleList`·`KjunMarketTable`의 `renderStatus(row)`(Vue `status` 슬롯, `{ row }`)는 목록에서는 등락률 앞, 표에서는 가격 칸 값 뒤에 놓입니다. 목록·표·가격 셀에는 `KjunBadge size="xs"`를 권장하며(등락률 줄과 같은 16px 높이라 행 높이가 그대로), 큰 가격 옆에는 sm 이상을 쓰세요. 행 데이터의 `stale`은 그대로 가격·등락률을 3차 글자색으로 흐립니다. **옮기는 방법**: `closingPrice`나 `stale`·`source`로 보이던 배지는 `renderStatus={(row) => row.stale ? <KjunBadge variant="warning" size="xs">지연</KjunBadge> : null}`처럼 직접 넣으세요. 툴팁이 필요하면 앱이 배지를 `KjunTooltip`으로 감싸고 포커스 가능한 대상을 두세요.
 
 ## 0.17.0 — 2026-10-30
 

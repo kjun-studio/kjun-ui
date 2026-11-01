@@ -28,7 +28,7 @@ export { KjunListItem } from "./list";
 export { KjunListRow, KjunListSection } from "./list";
 export { KjunIconToggle, KjunCopyButton, KjunRefreshButton, KjunExternalLink, KjunScrollFade } from "./actions";
 export { KjunDataState, KjunErrorBoundary } from "./data-state";
-export { KjunAnimatedNumber, KjunFreshness, KjunPriceCell, KjunSignedValue } from "./number-display";
+export { KjunAnimatedNumber, KjunPriceCell, KjunSignedValue } from "./number-display";
 export { KjunKpiHero, KjunKpiRow } from "./kpi";
 export { KjunTable } from "./table";
 export { KjunDeviation, KjunHeatmapCell, KjunProgressCell, KjunCollectionMark, KjunExecutionStatusBadge, KjunSparkline } from "./financial-display";

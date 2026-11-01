@@ -22,7 +22,6 @@ export function data(name: string) {
     case 'KjunProgressCell': return surface(stack(<><K.KjunProgressCell value={72} /><K.KjunProgressCell value={38} /></>));
     case 'KjunCollectionMark': return row(<><K.KjunCollectionMark kind="favorite" active size="lg" /><K.KjunCollectionMark kind="interest" active size="lg" /><K.KjunCollectionMark kind="favorite" size="lg" /></>);
     case 'KjunExecutionStatusBadge': return row(<><K.KjunExecutionStatusBadge status="completed" label="완료" size="lg" /><K.KjunExecutionStatusBadge status="running" label="실행 중" size="lg" /><K.KjunExecutionStatusBadge status="failed" label="실패" size="lg" /></>);
-    case 'KjunFreshness': return stack(<><div className="presentation-quote"><span>한빛테크</span>{row(<><K.KjunPriceCell value={84200} formatter={price} /><K.KjunFreshness stale source="거래소" fetchedAt="2026-09-14T00:20:00Z" formatter={() => '09:20 갱신'} /></>)}</div><div className="presentation-quote"><span>새봄에너지</span><K.KjunPriceCell value={36850} formatter={price} /></div></>);
     case 'KjunSparkline': return <K.KjunSparkline data={[18, 24, 21, 30, 26, 39, 35, 43, 40, 49]} width={320} height={100} fill ariaLabel="자산 가격 추이" />;
     case 'KjunSkeleton': return <K.KjunSkeleton type="card" height={200} />;
     case 'KjunListSkeleton': return surface(<K.KjunListSkeleton rows={3} variant="notification" avatar />, false);

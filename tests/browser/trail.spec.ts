@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 
-// 0.17.1: a Breadcrumb whose last item has `to` ends in a link, and ScrollFade scrolls and fades vertically.
+// 0.18.0: a Breadcrumb whose last item has `to` ends in a link, and ScrollFade scrolls and fades vertically.
 const scroller = (page: Page) => page.getByTestId('vertical').locator('div').filter({ hasText: 'Row 1' }).first();
 const box = (page: Page) => scroller(page).evaluate(el => {
   let node = el as HTMLElement;

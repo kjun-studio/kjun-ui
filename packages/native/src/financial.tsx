@@ -8,14 +8,12 @@ KjunProgressCellProps,KjunSparklineProps
 } from "./financial-display";
 export {
 KjunAnimatedNumber,
-KjunFreshness,
 KjunPriceCell,
 KjunSignedValue,finiteNumber,
 useCountUp
 } from "./number-display";
 export type {
 KjunAnimatedNumberProps,
-KjunFreshnessProps,
 KjunPriceCellProps,
 KjunSignedValueProps
 } from "./number-display";

@@ -25,6 +25,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
     input,
     menuItems,
     market,
+    marketStatus,
     query,
     settings, rows, options,
   } = tools;
@@ -235,19 +236,12 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         }),
         button("숫자 변경", () => set("number", get("number", 1234567) + 123)),
       ]);
-    case "KjunFreshness":
-      return h(name, {
-        stale: true,
-        source: "close",
-        fetchedAt: "2026-09-12T03:00:00Z",
-      });
     case "KjunPriceCell":
       return h(name, {
         value: 1234567,
         formatter: priceFormat,
         stale: settings.stale,
-        showFreshness: true,
-      });
+      }, undefined, { status: settings.stale ? h("KjunBadge", { variant: "warning", size: "xs" }, "지연") : null });
     case "KjunSignedValue":
       return h(
         "Group",
@@ -305,14 +299,14 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         ...market,
         priceValue: (r: any) => r.price,
         changeValue: (r: any) => r.change,
-      });
+      }, undefined, marketStatus);
     case "KjunMarketTable":
       return h(name, {
         ...market,
         onToggleFavorite: (r: any) => message("즐겨찾기 " + r.name),
         onToggleInterest: (r: any) => message("관심 " + r.name),
         onSort: (key: string) => message((market.columns.find(column => column.key === key)?.label || "선택한 항목") + " 기준으로 정렬했습니다."),
-      });
+      }, undefined, marketStatus);
     case "KjunMarketCards":
       return h(name, {
         ...market,

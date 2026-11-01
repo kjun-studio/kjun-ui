@@ -18,10 +18,6 @@ export const finance: Record<string, GuideAuthor> = {
     parts: [t("실행 상태", "작업의 대기·진행·완료·실패를 명시적인 문구로 표시합니다.", "실행 중")],
     related: "assets",
   },
-  KjunFreshness: {
-    parts: [t("신선도 표시", "가격의 시점이나 출처에 관한 보조 정보입니다.", "종가")],
-    related: "assets",
-  },
   KjunMarketCards: {
     parts: [
       t("자산 이름", "카드가 나타내는 자산을 식별합니다.", "긴 한국어 자산 이름"),

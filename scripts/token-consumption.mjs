@@ -15,8 +15,8 @@ export const platformSpecific = {
   'extensions.tooltip.arrowSize': { excludes: ['native'], reason: 'Tooltip arrow; Web and Native Web draw it, Native device tooltips use the modal panel without one.' },
   'extensions.scrollbar.width': { excludes: ['react', 'vue3', 'native'], reason: 'Retired Vue 2 window scrollbar skin; every current platform keeps the system scrollbar. Kept for token compatibility.' },
   'extensions.scrollFade.width': { excludes: ['native'], reason: 'CSS edge mask; Native draws it only for the overflowing table grid, and KjunScrollFade keeps the platform ScrollView.' },
-  ...Object.fromEntries(['gap', 'dotSize'].map(key => ['extensions.badge.' + key, {
-    excludes: ['native'], reason: 'Base badge role for the Web CSS fallback and the per-size gaps/dotSizes aliases; Native reads the per-size roles.',
+  ...Object.fromEntries(['radius', 'gap', 'dotSize'].map(key => ['extensions.badge.' + key, {
+    excludes: ['native'], reason: 'Base badge role for the Web CSS fallback and the per-size radii/gaps/dotSizes aliases; Native reads the per-size roles.',
   }])),
   'extensions.calendar.radius': { excludes: ['native'], reason: 'Native calendars open in the shared FloatingPanel, which keeps its own field-popup radius.' },
   ...Object.fromEntries(['identityWidth', 'identityHeight'].map(key => ['extensions.skeleton.' + key, {

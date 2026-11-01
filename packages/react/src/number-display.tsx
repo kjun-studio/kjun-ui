@@ -1,15 +1,13 @@
-import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { useReducedMotion } from "./use-reduced-motion";
 import { useNumberMotion } from "../../../shared/package-runtime/use-number-motion";
 import {
 useEffect,
 useRef,
-useState
+useState,
+type ReactNode
 } from "react";
-import { KjunBadge,KjunSkeleton } from "./display";
-import { KjunTooltip } from "./popover";
-import { formatRelativeTime } from "../../../shared/package-runtime/relative-time";
+import { KjunSkeleton } from "./display";
 
 export const finiteNumber = (value: unknown): number | null =>
   value == null ||
@@ -67,51 +65,24 @@ export function KjunAnimatedNumber({
     </span>
   );
 }
-export interface KjunFreshnessProps {
-  stale?: boolean;
-  source?: string | null;
-  fetchedAt?: string | null;
-  formatter?: (time: string) => string;
+/** The status slot after a price; nothing when the app gives no status. */
+export function PriceStatus({ status }: { status?: ReactNode }) {
+  return status == null || status === false ? null : <span className="kjun-price-status">{status}</span>;
 }
-export function KjunFreshness({
-  stale = false,
-  source,
-  fetchedAt,
-  formatter,
-}: KjunFreshnessProps) {
-  const scope = useKjunMessageScope();
-  // A focusable tooltip target, so keyboard and touch reach when the value was fetched (not only a hover title).
-  return stale ? (
-    <KjunTooltip
-      content={
-        (source === "close"
-          ? scope.messages.noRealtimeQuote
-          : scope.messages.realtimeDelayed) +
-        (fetchedAt ? " · " + (formatter?.(fetchedAt) || formatRelativeTime(fetchedAt, undefined, scope)) : "")
-      }
-    >
-      <span tabIndex={0} className="kjun-freshness">
-        <KjunBadge variant="warning" size="xs">
-          {source === "close" ? scope.messages.closePrice : scope.messages.delayed}
-        </KjunBadge>
-      </span>
-    </KjunTooltip>
-  ) : null;
-}
-export interface KjunPriceCellProps extends Omit<KjunFreshnessProps, "formatter"> {
+export interface KjunPriceCellProps {
   value?: number | null;
   formatter?: (value: number) => string;
+  stale?: boolean;
+  /** The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment. */
+  status?: ReactNode;
   flashClass?: string;
   fromPrevious?: boolean;
-  showFreshness?: boolean;
 }
 export function KjunPriceCell({
   value,
   formatter,
   stale = false,
-  showFreshness = true,
-  source,
-  fetchedAt,
+  status,
   flashClass = "",
   fromPrevious = true,
 }: KjunPriceCellProps) {
@@ -130,9 +101,7 @@ export function KjunPriceCell({
           fromPrevious={fromPrevious}
         />
       </span>
-      {showFreshness && (
-        <KjunFreshness stale={stale} source={source} fetchedAt={fetchedAt} />
-      )}
+      <PriceStatus status={status} />
     </>
   );
 }
@@ -147,7 +116,6 @@ export interface KjunSignedValueProps {
   tone?: "plain" | "pill";
   loading?: boolean;
   stale?: boolean;
-  showFreshness?: boolean;
   formatter?: (value: number) => string;
 }
 export function KjunSignedValue({
@@ -161,7 +129,6 @@ export function KjunSignedValue({
   tone = "plain",
   loading = false,
   stale = false,
-  showFreshness = true,
   formatter,
 }: KjunSignedValueProps) {
   const n = finiteNumber(value),
@@ -200,9 +167,6 @@ export function KjunSignedValue({
       }}
     >
       {loading ? <KjunSkeleton type="block" width={tokens.extensions.financial.signedSkeletonWidth} height="1lh" /> : display}
-      {!loading && showFreshness && stale && n !== null && (
-        <KjunFreshness stale />
-      )}
     </span>
   );
 }

@@ -5,7 +5,7 @@ import { useMarketLayout, marketGeometry, marketHeaderStyle, marketRowStyle } fr
 import { useId, useState } from "react";
 import { ScrollView,View } from "react-native";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
-import { MarketQuoteTypeContext } from "./number-display";
+import { MarketQuoteTypeContext, PriceStatus } from "./number-display";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIconToggle } from "./actions";
 import { KjunIcon } from "./button";
@@ -13,7 +13,6 @@ import { KjunDataState } from "./data-state";
 import { KjunEmpty,KjunSkeleton } from "./display";
 import {
 KjunCollectionMark,
-KjunFreshness,
 KjunPriceCell,
 KjunSignedValue,
 KjunSparkline,
@@ -49,6 +48,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
       emptySubMessage = "",
       formatMetric,
       renderCell,
+      renderStatus,
     } = props,
     { colors, domainColors } = useKjunStyles();
   const render = (row: Row, col: MarketColumn) => {
@@ -73,7 +73,6 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
           value={finiteNumber(value)}
           formatter={priceFormatter}
           stale={stale}
-          showFreshness={false}
         />
       );
     if (col.type === "percent")
@@ -85,7 +84,6 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
           format="percent"
           isRaw
           stale={stale}
-          showFreshness={false}
           formatter={
             formatMetric
               ? (number) =>
@@ -108,7 +106,6 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
         value={finiteNumber(value)}
         formatter={() => text}
         stale={stale}
-        showFreshness={false}
       />
     ) : (
       <KText
@@ -295,16 +292,12 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
                     >
                       {/* The wrapper takes the column alignment; content-hugging values (KjunSignedValue) would
                           otherwise pull themselves to the start of a right-aligned cell. */}
-                      <View style={{ alignSelf: col.align === "right" ? "flex-end" : col.align === "center" ? "center" : undefined }}>
+                      {/* Like Web, the price column's status sits after the value on the same line. */}
+                      <View style={{ alignSelf: col.align === "right" ? "flex-end" : col.align === "center" ? "center" : undefined,
+                        flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.statusGap }}>
                         {render(row, col)}
+                        {col.key === priceCol?.key && <PriceStatus status={renderStatus?.(row)} />}
                       </View>
-                      {col.key === priceCol?.key && (
-                        <KjunFreshness
-                          stale={!!getValue(row, "stale")}
-                          source={String(getValue(row, "source") || "")}
-                          fetchedAt={String(getValue(row, "fetched_at") || "")}
-                        />
-                      )}
                     </View>
                   ))}
                 </Pressable>

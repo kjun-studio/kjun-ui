@@ -60,8 +60,9 @@ export interface KjunMarketSimpleListProps<
   changeValue: (row: Row) => number | null;
   changeLoading?: (row: Row) => boolean;
   priceFormatter: (value: number) => string;
-  closingPrice?: boolean;
   renderPricePrefix?: (row: Row) => ReactNode;
+  /** The row's quote status (a KjunBadge or text) before the change; the wording and tone belong to the app. */
+  renderStatus?: (row: Row) => ReactNode;
 }
 export interface KjunMarketTableProps<
   Row extends object = Record<string, unknown>
@@ -78,6 +79,8 @@ export interface KjunMarketTableProps<
   embedded?: boolean;
   formatMetric?: MarketFormatter<Row>;
   renderCell?: (row: Row, column: MarketColumn) => ReactNode;
+  /** The row's quote status after the price column's value. */
+  renderStatus?: (row: Row) => ReactNode;
   onSort?: (key: string) => void;
   onToggleInterest?: (row: Row) => void;
   onToggleFavorite?: (row: Row) => void;

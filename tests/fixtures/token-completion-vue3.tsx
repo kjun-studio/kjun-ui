@@ -16,7 +16,7 @@ const Cases = defineComponent(() => {
     {box('disabled', <api.KjunButton disabled>실행 불가</api.KjunButton>)}
     {box('checkbox', <api.KjunCheckbox modelValue={state.checked} onUpdate:modelValue={(value: any) => { state.checked = value; }} size="sm" label="작은 선택" />)}
     {box('switch', <api.KjunSwitch modelValue={state.enabled} onUpdate:modelValue={(value: boolean) => { state.enabled = value; }} label="사용 설정" />)}
-    {box('signed', <api.KjunSignedValue value={12} tone="pill" showFreshness={false} />)}
+    {box('signed', <api.KjunSignedValue value={12} tone="pill" />)}
     {box('progress', <api.KjunProgressCell value={30} />)}
     {box('pagination', <api.KjunPagination currentPage={state.page} totalPages={3} onUpdate:page={(page: number) => { state.page = page; }} />)}
     <output data-testid="values">{`${state.checked}/${state.enabled}/${state.page}`}</output>

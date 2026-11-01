@@ -7,8 +7,8 @@ import { latestRun, resultFor, verificationHref, apiAnchor } from '../shared/acc
 const defs = definitions();
 const [catalog, api, navigation] = await Promise.all(['shared/component-catalog.json', 'apps/docs/lib/generated/api-reference.json', 'shared/docs-navigation.json'].map(json));
 
-test('all 86 public components and feedback have explicit platform/item/check/API mappings', () => {
-  assert.equal(targets.length, 87); assert.equal(defs.length, 783);
+test('all 85 public components and feedback have explicit platform/item/check/API mappings', () => {
+  assert.equal(targets.length, 86); assert.equal(defs.length, 774);
   validateDefinitions(defs, catalog, api, navigation);
   for (const def of defs) {
     if (!def.applicable) assert.ok(def.reason.length > 20);

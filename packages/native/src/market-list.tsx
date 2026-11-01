@@ -4,15 +4,14 @@ import { typeStyle } from "./typography";
 import { View,useWindowDimensions } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunDataState } from "./data-state";
-import { KjunBadge,KjunEmpty,KjunSkeleton } from "./display";
+import { KjunEmpty,KjunSkeleton } from "./display";
 import {
-KjunFreshness,
 KjunPriceCell,
 KjunSignedValue,
 finiteNumber
 } from "./financial";
 import { KText } from "./internal";
-import { MarketQuoteTypeContext } from "./number-display";
+import { MarketQuoteTypeContext, PriceStatus } from "./number-display";
 const changeWeight = { fontWeight: typeStyle("label").fontWeight };
 const quoteDesktop = { price: typeStyle("control"), change: { ...typeStyle("caption"), ...changeWeight } };
 const quoteMobile = { price: typeStyle("input"), change: { ...typeStyle("body"), ...changeWeight } };
@@ -32,7 +31,6 @@ export function KjunMarketSimpleList<
       changeValue,
       changeLoading = () => false,
       priceFormatter,
-      closingPrice = false,
       emptyMessage = m.noItems,
       emptySubMessage = "",
     } = props,
@@ -54,9 +52,7 @@ export function KjunMarketSimpleList<
           {rows.map((row, i) => {
             const price = priceValue(row),
               change = changeValue(row),
-              stale = !!getValue(row, "stale"),
-              source = String(getValue(row, "source") || ""),
-              fetchedAt = String(getValue(row, "fetched_at") || "");
+              stale = !!getValue(row, "stale");
             return (
               <Pressable
                 key={String(getValue(row, rowKey) ?? i)}
@@ -90,7 +86,6 @@ export function KjunMarketSimpleList<
                     value={price}
                     formatter={priceFormatter}
                     stale={stale}
-                    showFreshness={false}
                   />
                   <View
                     style={{
@@ -105,24 +100,13 @@ export function KjunMarketSimpleList<
                     {price !== null && props.renderPricePrefix?.(row)}
                     {(finiteNumber(price) !== null ||
                       (!changeLoading(row) && finiteNumber(change) !== null)) &&
-                      (closingPrice && !stale ? (
-                        <KjunBadge variant="secondary" size="xs">
-                          {m.closePrice}
-                        </KjunBadge>
-                      ) : (
-                        <KjunFreshness
-                          stale={stale}
-                          source={closingPrice ? "close" : source}
-                          fetchedAt={fetchedAt}
-                        />
-                      ))}
+                      <PriceStatus status={props.renderStatus?.(row)} />}
                     {changeLoading(row) ? (
                       <KjunSkeleton type="block" height={tokens.extensions.marketList.changeSkeletonHeight} width={tokens.extensions.marketList.changeSkeletonWidth} />
                     ) : change !== null ? (
                       <KjunSignedValue
                         value={change}
                         stale={stale}
-                        showFreshness={false}
                         format="percent"
                         isRaw
                       />

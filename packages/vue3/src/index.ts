@@ -35,7 +35,7 @@ export type { KjunIconToggleProps, KjunCopyButtonProps, KjunRefreshButtonProps, 
 export { safeExternalUrl } from "./actions";
 export type { KjunDataStateProps, KjunErrorBoundaryProps } from "./data-state";
 export { useQueryDisplay } from "./data-state";
-export type { KjunAnimatedNumberProps, KjunFreshnessProps, KjunPriceCellProps, KjunSignedValueProps } from "./number-display";
+export type { KjunAnimatedNumberProps, KjunPriceCellProps, KjunSignedValueProps } from "./number-display";
 export { finiteNumber, useCountUp } from "./number-display";
 export type { KpiValue, KpiRowItem, KjunKpiHeroProps, KjunKpiRowProps } from "./kpi";
 export type { KjunTableProps, KjunTableSlots, TableCellScope, TableColumn, TableCardSection, TablePagination, TableSort } from "./table";

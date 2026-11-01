@@ -10,12 +10,12 @@ import { KjunDataState } from "./data-state";
 import { KjunEmpty,KjunSkeleton } from "./display";
 import {
 KjunCollectionMark,
-KjunFreshness,
 KjunPriceCell,
 KjunSignedValue,
 KjunSparkline,
 finiteNumber,
 } from "./financial";
+import { PriceStatus } from "./number-display";
 import {
 KjunMarketTableProps,
 MarketColumn
@@ -70,7 +70,6 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
           value={finiteNumber(value)}
           formatter={priceFormatter}
           stale={stale}
-          showFreshness={false}
         />
       );
     if (col.type === "percent")
@@ -82,7 +81,6 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
           format="percent"
           isRaw
           stale={stale}
-          showFreshness={false}
           formatter={
             formatMetric
               ? (number) =>
@@ -105,7 +103,6 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
         value={finiteNumber(value)}
         formatter={() => text}
         stale={stale}
-        showFreshness={false}
       />
     ) : (
       text
@@ -221,13 +218,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
                       >
                         {render(row, col)}
                         {col.key === priceCol?.key && (
-                          <KjunFreshness
-                            stale={!!getValue(row, "stale")}
-                            source={String(getValue(row, "source") || "")}
-                            fetchedAt={String(
-                              getValue(row, "fetched_at") || ""
-                            )}
-                          />
+                          <PriceStatus status={props.renderStatus?.(row)} />
                         )}
                       </td>
                     ))}

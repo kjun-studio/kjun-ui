@@ -14,7 +14,7 @@ const componentGroups = {
   'data-state': [...files('data-state-design', 'loading-options', 'table-contracts', 'runtime-cards', 'runtime-market'), ...contracts],
   card: [...files('card-contract', 'card-review', 'card-layout', 'card-colors', 'card-hairline', 'geometry-tokens'), ...visuals],
   table: [...files('table-contracts', 'loading-options', 'runtime-cards', 'data-state-design', 'accessibility-components'), ...contracts, ...visuals],
-  market: [...files('runtime-market', 'loading-options', 'data-state-design', 'geometry-tokens'), ...visuals],
+  market: [...files('runtime-market', 'price-status', 'loading-options', 'data-state-design', 'geometry-tokens'), ...visuals],
   select: [...files('select-scroll', 'expanded', 'elevation-inputs', 'popup-escape', 'react-tabs-actions'), ...fields, ...contracts, ...visuals],
   combobox: [...files('select-scroll', 'popup-escape', 'elevation-inputs'), ...fields, ...contracts, ...visuals],
   'search-input': [...files('search-input', 'elevation-inputs'), ...fields, ...contracts],

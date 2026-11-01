@@ -1,10 +1,7 @@
-import { useKjunMessageScope } from "./runtime/messages";
-import { defineComponent, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type Ref } from "vue";
+import { Comment, defineComponent, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type Ref, type SlotsType, type VNode } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { createNumberMotion } from "../../../shared/package-runtime/number-motion";
-import { formatRelativeTime } from "../../../shared/package-runtime/relative-time";
-import { KjunBadge, KjunSkeleton } from "./display";
-import { KjunTooltip } from "./popover";
+import { KjunSkeleton } from "./display";
 import { useReducedMotion } from "./runtime/presence";
 import { domainRef } from "./runtime/refs";
 
@@ -55,43 +52,24 @@ export const KjunAnimatedNumber = defineComponent({
   },
 });
 
-const kjunFreshnessProps = {
-  stale: { type: Boolean, default: false },
-  source: { type: String as PropType<string | null>, default: undefined },
-  fetchedAt: { type: String as PropType<string | null>, default: undefined },
-  formatter: { type: Function as PropType<(time: string) => string>, default: undefined },
-} as const;
-export type KjunFreshnessProps = ExtractPublicPropTypes<typeof kjunFreshnessProps>;
-export const KjunFreshness = defineComponent({
-  name: "KjunFreshness",
-  props: kjunFreshnessProps,
-  setup(props) {
-    const scope = useKjunMessageScope();
-    // A focusable tooltip target, so keyboard and touch reach when the value was fetched (not only a hover title).
-    return () => props.stale ? (
-      <KjunTooltip content={(props.source === "close" ? scope.value.messages.noRealtimeQuote : scope.value.messages.realtimeDelayed) +
-        (props.fetchedAt ? " · " + (props.formatter?.(props.fetchedAt) || formatRelativeTime(props.fetchedAt, undefined, scope.value)) : "")}>
-        <span tabindex={0} class="kjun-freshness"><KjunBadge variant="warning" size="xs">{props.source === "close" ? scope.value.messages.closePrice : scope.value.messages.delayed}</KjunBadge></span>
-      </KjunTooltip>
-    ) : null;
-  },
-});
+/** The status slot after a price; nothing when the app's slot renders nothing. */
+export const priceStatus = (nodes: VNode[] | undefined) =>
+  nodes?.some((node) => node.type !== Comment) ? <span class="kjun-price-status">{nodes}</span> : null;
 
 const kjunPriceCellProps = {
   value: { type: Number as PropType<number | null>, default: undefined },
   formatter: { type: Function as PropType<(value: number) => string>, default: undefined },
   stale: { type: Boolean, default: false },
-  showFreshness: { type: Boolean, default: true },
-  source: { type: String as PropType<string | null>, default: undefined },
-  fetchedAt: { type: String as PropType<string | null>, default: undefined },
   flashClass: { type: String, default: "" },
   fromPrevious: { type: Boolean, default: true },
 } as const;
 export type KjunPriceCellProps = ExtractPublicPropTypes<typeof kjunPriceCellProps>;
+/** Slot: status — the app's badge or text after the price; KJUN owns only its spacing and alignment. */
 export const KjunPriceCell = defineComponent({
   name: "KjunPriceCell",
   props: kjunPriceCellProps,
-  setup(props) {
+  slots: Object as SlotsType<{ status?: () => VNode[] }>,
+  setup(props, { slots }) {
     return () => props.value == null
       ? <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
       : <>
@@ -99,7 +77,7 @@ export const KjunPriceCell = defineComponent({
           style={{ color: props.stale ? "var(--_kjun-color-text-tertiary)" : undefined }}>
           <KjunAnimatedNumber value={props.value} formatter={props.formatter} fromPrevious={props.fromPrevious} />
         </span>
-        {props.showFreshness && <KjunFreshness stale={props.stale} source={props.source} fetchedAt={props.fetchedAt} />}
+        {priceStatus(slots.status?.())}
       </>;
   },
 });
@@ -115,7 +93,6 @@ const kjunSignedValueProps = {
   tone: { type: String as PropType<"plain" | "pill">, default: "plain" },
   loading: { type: Boolean, default: false },
   stale: { type: Boolean, default: false },
-  showFreshness: { type: Boolean, default: true },
   formatter: { type: Function as PropType<(value: number) => string>, default: undefined },
 } as const;
 export type KjunSignedValueProps = ExtractPublicPropTypes<typeof kjunSignedValueProps>;
@@ -133,7 +110,6 @@ export const KjunSignedValue = defineComponent({
         <span class="kjun-signed-value" ref={domainRef(role.startsWith("price-"))} data-tone={props.tone} aria-busy={props.loading}
           style={{ color: `var(--_kjun-color-${role})`, background: props.tone === "pill" && !props.stale && n !== null ? `var(--_kjun-color-${role}-bg)` : undefined }}>
           {props.loading ? <KjunSkeleton type="block" width={tokens.extensions.financial.signedSkeletonWidth} height="1lh" /> : display}
-          {!props.loading && props.showFreshness && props.stale && n !== null && <KjunFreshness stale />}
         </span>
       );
     };

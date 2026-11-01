@@ -252,42 +252,6 @@
     }
   },
   {
-    "name": "KjunFreshness",
-    "category": "data-display",
-    "kind": "domain",
-    "owner": "KjunFreshness",
-    "platforms": {
-      "vue3": {
-        "status": "implemented",
-        "verification": "passed",
-        "runtime": "chromium"
-      },
-      "react": {
-        "status": "implemented",
-        "verification": "passed",
-        "runtime": "chromium"
-      },
-      "native": {
-        "status": "implemented",
-        "verification": "passed",
-        "runtime": "react-native-web",
-        "deviceVerification": "not-run"
-      }
-    },
-    "docs": "/components/freshness",
-    "tests": [
-      "tests/browser/docs/catalog.spec.ts",
-      "tests/contracts.test.mjs"
-    ],
-    "example": "previews/catalog/examples.ts",
-    "verificationEvidence": "docs/verification-v0.3.0.md",
-    "sources": {
-      "vue3": "packages/vue3/src/number-display.tsx",
-      "react": "packages/react/src/number-display.tsx",
-      "native": "packages/native/src/number-display.tsx"
-    }
-  },
-  {
     "name": "KjunHeatmapCell",
     "category": "data-display",
     "kind": "component",

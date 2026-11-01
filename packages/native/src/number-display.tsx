@@ -1,19 +1,15 @@
-import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { useNumberMotion } from "../../../shared/package-runtime/use-number-motion";
-import { createContext,useContext,useEffect,useRef,useState } from "react";
+import { createContext,useContext,useEffect,useRef,useState,type ReactNode } from "react";
 import {
 Text,
 View,
 type StyleProp,
 type TextStyle
 } from "react-native";
-import { KjunBadge,KjunSkeleton } from "./display";
-import { AccessiblePressable } from "./a11y";
-import { KjunTooltip } from "./popover";
-import { formatRelativeTime } from "../../../shared/package-runtime/relative-time";
-import { KText,domainColor,useReducedMotion, FontText } from "./internal";
+import { KjunSkeleton } from "./display";
+import { KText,content,domainColor,useReducedMotion, FontText } from "./internal";
 import { useKjunStyles } from "./provider";
 
 export const finiteNumber = (value: unknown): number | null =>
@@ -82,56 +78,30 @@ export function KjunAnimatedNumber({
     </KText>
   );
 }
-export interface KjunFreshnessProps {
-  stale?: boolean;
-  source?: string | null;
-  fetchedAt?: string | null;
-  formatter?: (time: string) => string;
+/** The status slot after a price; nothing when the app gives no status. Text statuses get the system text. */
+export function PriceStatus({ status }: { status?: ReactNode }) {
+  return status == null || status === false ? null : <View style={{ alignSelf: "center" }}>{content(status)}</View>;
 }
-export function KjunFreshness({
-  stale = false,
-  source,
-  fetchedAt,
-  formatter,
-}: KjunFreshnessProps) {
-  const scope = useKjunMessageScope();
-  const label = source === "close" ? scope.messages.closePrice : scope.messages.delayed;
-  // Like Web: a focusable tooltip target, so keyboard and touch (long press) reach when the value was fetched.
-  return stale ? (
-    <KjunTooltip
-      content={
-        (source === "close"
-          ? scope.messages.noRealtimeQuote
-          : scope.messages.realtimeDelayed) +
-        (fetchedAt ? " · " + (formatter?.(fetchedAt) || formatRelativeTime(fetchedAt, undefined, scope)) : "")
-      }
-    >
-      <AccessiblePressable accessibilityLabel={label} focusRingRadius={tokens.extensions.badge.radius}>
-        <KjunBadge variant="warning" size="xs">{label}</KjunBadge>
-      </AccessiblePressable>
-    </KjunTooltip>
-  ) : null;
-}
-export interface KjunPriceCellProps extends Omit<KjunFreshnessProps, "formatter"> {
+export interface KjunPriceCellProps {
   value?: number | null;
   formatter?: (value: number) => string;
+  stale?: boolean;
+  /** The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment. */
+  status?: ReactNode;
   fromPrevious?: boolean;
-  showFreshness?: boolean;
 }
 export function KjunPriceCell({
   value,
   formatter,
   stale = false,
-  showFreshness = true,
-  source,
-  fetchedAt,
+  status,
   fromPrevious = true,
 }: KjunPriceCellProps) {
   const { colors } = useKjunStyles(), quoteType = useContext(MarketQuoteTypeContext);
   return value == null ? (
     <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
   ) : (
-    <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.affixGap }}>
+    <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.statusGap }}>
       <View
         style={quoteType ? undefined : { paddingVertical: tokens.extensions.financial.pillPaddingY, paddingHorizontal: tokens.extensions.financial.pillPaddingX, borderRadius: tokens.radius.radius9999 }}
       >
@@ -142,12 +112,7 @@ export function KjunPriceCell({
           style={{ ...quoteType?.price, color: stale ? colors.textTertiary : colors.text }}
         />
       </View>
-      {/* The tooltip wrapper hugs its trigger from the top; this View centres the badge on the value line. */}
-      {showFreshness && (
-        <View style={{ alignSelf: "center" }}>
-          <KjunFreshness stale={stale} source={source} fetchedAt={fetchedAt} />
-        </View>
-      )}
+      <PriceStatus status={status} />
     </View>
   );
 }
@@ -162,7 +127,6 @@ export interface KjunSignedValueProps {
   tone?: "plain" | "pill";
   loading?: boolean;
   stale?: boolean;
-  showFreshness?: boolean;
   formatter?: (value: number) => string;
 }
 export function KjunSignedValue({
@@ -176,7 +140,6 @@ export function KjunSignedValue({
   tone = "plain",
   loading = false,
   stale = false,
-  showFreshness = true,
   formatter,
 }: KjunSignedValueProps) {
   const { colors, domainColors, numericFontFamily, fontFamily } =
@@ -234,11 +197,6 @@ export function KjunSignedValue({
         >
           {display}
         </KText>
-      )}
-      {!loading && showFreshness && stale && n !== null && (
-        <View style={{ alignSelf: "center" }}>
-          <KjunFreshness stale />
-        </View>
       )}
     </View>
   );

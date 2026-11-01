@@ -244,8 +244,9 @@ set("SignedValue", {
 set("PriceCell", {
   flashClass:
     "소비자가 지정한 웹 강조 클래스입니다. 가격 변화를 감지해 자동으로 넣고 빼지 않습니다.",
+  status: "가격 뒤에 둘 상태 표시입니다. 문구와 배지 색은 앱이 정하고, KJUN은 가격 셀 뒤 6px 간격과 세로 가운데 정렬만 맡습니다(단독 가격 셀은 강조 배경용 좌우 8px 여백이 있어 숫자에서 14px, 시세 목록·표에서는 6px). 목록·표에는 xs KjunBadge를 권장합니다.",
 });
-set("Freshness", { formatter: "수집 시각 문자열을 설명에 표시할 문자열로 변환합니다." });
+set("MarketSimpleList MarketTable", { renderStatus: "행의 시세 상태(종가·지연 등)를 반환합니다. 목록은 등락률 앞, 표는 가격 칸 값 뒤에 둡니다. 문구와 배지 색은 앱이 정합니다." });
 set("Progress", { label: "진행률의 제목입니다. showLabel과 관계없이 표시하며 showLabel은 백분율을 더합니다." });
 set("MarketTableSkeleton", {
   alignClass: "선택적 웹 정렬 클래스 콜백입니다. 생략하면 columns[].align을 사용합니다.",

@@ -27,7 +27,6 @@ const dataNames = new Set([
   "KjunKpiHero",
   "KjunKpiRow",
   "KjunAnimatedNumber",
-  "KjunFreshness",
   "KjunPriceCell",
   "KjunSignedValue",
   "KjunDeviation",

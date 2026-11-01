@@ -73,6 +73,7 @@
     "financial": {
       "affixGap": { "$ref": "dimension.value4" },
       "badgeGap": { "$ref": "dimension.value6" },
+      "statusGap": { "$ref": "dimension.value6" },
       "pillPaddingX": { "$ref": "dimension.value8" },
       "pillPaddingY": { "$ref": "dimension.value2" },
       "pillRadius": { "$ref": "radius.radius6" },

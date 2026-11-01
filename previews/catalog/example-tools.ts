@@ -273,6 +273,9 @@ export function createExampleTools(c: ExampleContext) {
     onRowClick: (r: any) => message(r.name),
     showActions: true,
   };
+  // The app owns the status wording and tone: the second row shows a delayed quote as an xs KjunBadge.
+  const quoteStatus = (row: any) => row === rows[1] ? h("KjunBadge", { variant: "warning", size: "xs" }, "지연") : null;
+  const marketStatus = platform === "vue3" ? { status: ({ row }: any) => quoteStatus(row) } : { renderStatus: quoteStatus };
   const query = {
     queryKey: get("queryKey", settings.queryState === "조건 변경" ? "b" : "a"),
     resultKey: get("resultKey", ["최초 로딩", "최초 실패"].includes(settings.queryState) ? null : "a"),
@@ -300,6 +303,7 @@ export function createExampleTools(c: ExampleContext) {
     menuItems,
     singleField,
     market,
+    marketStatus,
     query,
     settings,
     rows,
