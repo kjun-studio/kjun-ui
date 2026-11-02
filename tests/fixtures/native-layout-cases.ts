@@ -43,9 +43,10 @@ export function renderCases(h: (name:string, props:any, children?:any, slots?:an
     section('feedback-fill', h('KjunFeedbackProvider', {}, h('Box', { testId:'feedback-child', style:{ flex:1 } })), { height:120, display:'flex', flexDirection:'column' }),
     section('drawers', [
       button('아래 시트 열기', ()=>set('drawer','bottom')), button('위 시트 열기', ()=>set('drawer','top')), button('오른쪽 시트 열기', ()=>set('drawer','right')),
-      drawer('bottom', { safeAreaTop:20, safeAreaBottom:34, ...(query.has('max') ? { maxHeight:300 } : {}) }),
-      drawer('top', { safeAreaTop:20 }),
-      drawer('right', { safeAreaTop:20, safeAreaBottom:34 }),
+      // Safe areas come from KjunProvider; each drawer reads the provider around it.
+      h('KjunProvider', { safeArea:{ top:20, bottom:34 } }, drawer('bottom', { ...(query.has('max') ? { maxHeight:300 } : {}) })),
+      h('KjunProvider', { safeArea:{ top:20, bottom:0 } }, drawer('top', {})),
+      h('KjunProvider', { safeArea:{ top:20, bottom:34 } }, drawer('right', {})),
     ]),
   ];
 }

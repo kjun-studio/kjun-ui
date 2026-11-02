@@ -1225,11 +1225,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number",
+        "name": "safeArea",
+        "type": "boolean",
         "required": false,
-        "default": "0",
-        "description": ""
+        "default": "true",
+        "description": "Keeps clear of the screen's safe area from KjunProvider; false where the app already reserved it."
       },
       {
         "name": "keyboardVisible",
@@ -1277,11 +1277,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it."
       },
       {
         "name": "keyboardVisible",
@@ -1321,11 +1321,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it."
       },
       {
         "name": "keyboardVisible",
@@ -1374,11 +1374,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number",
+        "name": "safeArea",
+        "type": "boolean",
         "required": false,
-        "default": "0",
-        "description": ""
+        "default": "true",
+        "description": "Keeps clear of the screen's safe area from KjunProvider; false where the app already reserved it."
       },
       {
         "name": "keyboardVisible",
@@ -1436,11 +1436,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it."
       },
       {
         "name": "keyboardVisible",
@@ -1501,11 +1501,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it."
       },
       {
         "name": "keyboardVisible",
@@ -5740,18 +5740,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaTop",
-        "type": "number",
+        "name": "safeArea",
+        "type": "boolean",
         "required": false,
-        "default": "0",
-        "description": "Top safe area in px, padded inside top and side drawers and kept clear above a bottom sheet."
-      },
-      {
-        "name": "safeAreaBottom",
-        "type": "number",
-        "required": false,
-        "default": "0",
-        "description": "Bottom safe area in px, padded inside bottom and side drawers and kept clear below a top sheet."
+        "default": "true",
+        "description": "Keeps clear of KjunProvider's safe area: padded inside the panel and kept clear beyond a sheet."
       },
       {
         "name": "maxHeight",
@@ -5899,18 +5892,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaTop",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Top safe area in px, padded inside top and side drawers and kept clear above a bottom sheet."
-      },
-      {
-        "name": "safeAreaBottom",
-        "type": "number | undefined",
-        "required": false,
-        "default": "—",
-        "description": "Bottom safe area in px, padded inside bottom and side drawers and kept clear below a top sheet."
+        "description": "Keeps clear of KjunProvider's safe area (default true): padded inside the panel and kept clear beyond a sheet."
       },
       {
         "name": "maxHeight",
@@ -6027,18 +6013,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaTop",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Top safe area, padded inside top and side drawers and kept clear above a bottom sheet."
-      },
-      {
-        "name": "safeAreaBottom",
-        "type": "number | undefined",
-        "required": false,
-        "default": "—",
-        "description": "Bottom safe area, padded inside bottom and side drawers and kept clear below a top sheet."
+        "description": "Keeps clear of KjunProvider's safe area (default true): padded inside the panel and kept clear beyond a sheet."
       },
       {
         "name": "maxHeight",
@@ -7158,11 +7137,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number",
+        "name": "safeArea",
+        "type": "boolean",
         "required": false,
-        "default": "0",
-        "description": "Bottom safe area (px) the FAB stays above."
+        "default": "true",
+        "description": "Stays above the bottom safe area from KjunProvider."
       },
       {
         "name": "offsetBottom",
@@ -7202,11 +7181,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Bottom safe area (px) the FAB stays above."
+        "description": "Stays above the bottom safe area from KjunProvider (default true)."
       },
       {
         "name": "offsetBottom",
@@ -7246,11 +7225,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Bottom safe area (pt) the FAB stays above."
+        "description": "Stays above the bottom safe area from KjunProvider (default true)."
       },
       {
         "name": "offsetBottom",
@@ -7276,6 +7255,20 @@
         "required": false,
         "default": "—",
         "description": "A feedback API from createKjunFeedback(), for calls outside components."
+      },
+      {
+        "name": "placement",
+        "type": "ToastPlacement",
+        "required": false,
+        "default": "\"top\"",
+        "description": "Stacks toasts at the top or the bottom of the screen, right-aligned on wide screens; both keep clear of the safe area."
+      },
+      {
+        "name": "offset",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Extra px between the toasts and their edge, e.g. a bottom navigation's height."
       }
     ],
     "events": [],
@@ -7299,7 +7292,21 @@
         "type": "import(\"/workspace/packages/tokens/dist/feedback\").KjunFeedback | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "A feedback API from createKjunFeedback(), for calls outside components."
+      },
+      {
+        "name": "placement",
+        "type": "import(\"/workspace/shared/package-runtime/toast-placement\").ToastPlacement | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Stacks toasts at the top (default) or the bottom of the screen, right-aligned on wide screens; both keep clear of the safe area."
+      },
+      {
+        "name": "offset",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra px between the toasts and their edge, e.g. a bottom navigation's height."
       }
     ],
     "native": [
@@ -7323,6 +7330,20 @@
         "required": false,
         "default": "—",
         "description": "A feedback API from createKjunFeedback(), for calls outside components."
+      },
+      {
+        "name": "placement",
+        "type": "import(\"/workspace/shared/package-runtime/toast-placement\").ToastPlacement | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Stacks toasts at the top (default) or the bottom of the screen; both keep clear of KjunProvider's safe area."
+      },
+      {
+        "name": "offset",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra space between the toasts and their edge, e.g. a bottom navigation's height."
       }
     ]
   },
@@ -7544,11 +7565,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number",
+        "name": "safeArea",
+        "type": "boolean",
         "required": false,
-        "default": "0",
-        "description": ""
+        "default": "true",
+        "description": "Keeps clear of the screen's safe area from KjunProvider; false where the app already reserved it."
       },
       {
         "name": "keyboardVisible",
@@ -7599,11 +7620,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it."
       },
       {
         "name": "keyboardVisible",
@@ -7657,11 +7678,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaBottom",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it."
       },
       {
         "name": "keyboardVisible",
@@ -16094,6 +16115,13 @@
         "required": false,
         "default": "—",
         "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
+      },
+      {
+        "name": "safeArea",
+        "type": "KjunSafeArea",
+        "required": false,
+        "default": "—",
+        "description": "Screen insets in px for toasts, modals, menus and edge components; without it the browser's env(safe-area-inset-*) applies."
       }
     ],
     "events": [],
@@ -16132,6 +16160,13 @@
         "required": false,
         "default": "—",
         "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
+      },
+      {
+        "name": "safeArea",
+        "type": "import(\"/workspace/shared/package-runtime/safe-area\").KjunSafeArea | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Screen insets in px for toasts, modals, menus and edge components; without it the browser's env(safe-area-inset-*) applies."
       },
       {
         "name": "autoFocus",
@@ -16221,10 +16256,17 @@
       },
       {
         "name": "colors",
-        "type": "import(\"/workspace/packages/tokens/dist/colors\").KjunColors<import(\"/workspace/node_modules/react-native/types/index\").ColorValue>",
-        "required": true,
+        "type": "import(\"/workspace/packages/tokens/dist/colors\").KjunColors<import(\"/workspace/node_modules/react-native/types/index\").ColorValue> | undefined",
+        "required": false,
         "default": "—",
-        "description": ""
+        "description": "Project colors; a nested provider may leave them out to inherit its parent's (e.g. to change only safeArea)."
+      },
+      {
+        "name": "safeArea",
+        "type": "import(\"/workspace/shared/package-runtime/safe-area\").KjunSafeArea | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Screen insets in px (e.g. from react-native-safe-area-context) for toasts, modals, menus and edge components."
       },
       {
         "name": "children",
@@ -22980,11 +23022,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaTop",
-        "type": "number",
+        "name": "safeArea",
+        "type": "boolean",
         "required": false,
-        "default": "0",
-        "description": ""
+        "default": "true",
+        "description": "Keeps clear of the screen's safe area from KjunProvider; false where the app already reserved it."
       },
       {
         "name": "surface",
@@ -23037,11 +23079,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaTop",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it."
       },
       {
         "name": "surface",
@@ -23081,11 +23123,11 @@
         "description": ""
       },
       {
-        "name": "safeAreaTop",
-        "type": "number | undefined",
+        "name": "safeArea",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it."
       },
       {
         "name": "surface",

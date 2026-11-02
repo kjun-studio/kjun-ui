@@ -27,10 +27,8 @@ export interface KjunDrawerProps {
   /** Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit). */
   onAfterClose?: () => void;
   ariaLabel?: string;
-  /** Top safe area in px, padded inside top and side drawers and kept clear above a bottom sheet. */
-  safeAreaTop?: number;
-  /** Bottom safe area in px, padded inside bottom and side drawers and kept clear below a top sheet. */
-  safeAreaBottom?: number;
+  /** Keeps clear of KjunProvider's safe area (default true): padded inside the panel and kept clear beyond a sheet. */
+  safeArea?: boolean;
   /** Height limit in px for top and bottom drawers; by default they stop a sheet gap short of the opposite edge. */
   maxHeight?: number;
 }
@@ -50,8 +48,7 @@ export function KjunDrawer({
   onClose,
   onAfterClose,
   ariaLabel,
-  safeAreaTop = 0,
-  safeAreaBottom = 0,
+  safeArea = true,
   maxHeight,
 }: KjunDrawerProps) {
   const m = useKjunMessages();
@@ -69,7 +66,7 @@ export function KjunDrawer({
     <LayerScope.Provider value={layer.id}>
     <ModalOverlay
       ref={afterCloseRef}
-      style={{ zIndex: layer.zIndex, ...drawerOverlayVars({ safeAreaTop, safeAreaBottom, maxHeight }) }}
+      style={{ zIndex: layer.zIndex, ...drawerOverlayVars({ safeArea, maxHeight }) }}
       // Retain inactive content without retaining its focus trap or outside isolation.
       isOpen={motion.present && layer.active}
       isExiting={motion.present && !layer.active}

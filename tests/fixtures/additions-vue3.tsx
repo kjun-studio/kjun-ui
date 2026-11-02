@@ -48,7 +48,7 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
     <K.KjunButton variant="link">More</K.KjunButton>
   </div></K.KjunProvider>
   <div data-testid="fab-area" style={{ position: 'relative', height: '200px', width: '300px' }}>
-    <K.KjunProvider><K.KjunFab icon="plus" ariaLabel="Add schedule" safeAreaBottom={20} /></K.KjunProvider>
+    <K.KjunProvider safeArea={{ bottom: 20 }}><K.KjunFab icon="plus" ariaLabel="Add schedule" /></K.KjunProvider>
   </div>
   <div data-testid="optional-ko"><K.KjunProvider><K.KjunFormGroup label="Nickname" optional><K.KjunInput modelValue="" /></K.KjunFormGroup></K.KjunProvider></div>
   <div data-testid="optional-en"><K.KjunProvider locale="en-US"><K.KjunFormGroup label="Nickname" optional><K.KjunInput modelValue="" /></K.KjunFormGroup></K.KjunProvider></div>

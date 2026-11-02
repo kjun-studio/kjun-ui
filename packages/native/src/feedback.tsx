@@ -1,3 +1,4 @@
+import type { ToastPlacement } from "../../../shared/package-runtime/toast-placement";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useFeedbackDialog } from "../../../shared/package-runtime/feedback-dialog";
 import { usePresentedToasts, usePresentedRequest } from "../../../shared/package-runtime/feedback-motion";
@@ -78,8 +79,12 @@ export interface KjunFeedbackProviderProps {
   children: ReactNode; style?: StyleProp<ViewStyle>;
   /** A feedback API from createKjunFeedback(), for calls outside components. */
   controller?: KjunFeedback;
+  /** Stacks toasts at the top (default) or the bottom of the screen; both keep clear of KjunProvider's safe area. */
+  placement?: ToastPlacement;
+  /** Extra space between the toasts and their edge, e.g. a bottom navigation's height. */
+  offset?: number;
 }
-export function KjunFeedbackProvider({ children, style, controller: controllerProp }: KjunFeedbackProviderProps) {
+export function KjunFeedbackProvider({ children, style, controller: controllerProp, placement = "top", offset = 0 }: KjunFeedbackProviderProps) {
   // An app-made controller (createKjunFeedback) outlives this Provider; only one the Provider made is disposed.
   const [owned] = useState(() => controllerProp ? undefined : createFeedbackController());
   const controller = controllerProp ? feedbackControllerOf(controllerProp) : owned!;
@@ -107,7 +112,7 @@ export function KjunFeedbackProvider({ children, style, controller: controllerPr
     return () =>
       setLayers((previous) => previous.filter((item) => item !== id));
   }, []);
-  const renderToasts = () => <ToastStack items={toasts} controller={controller} />;
+  const renderToasts = () => <ToastStack items={toasts} controller={controller} placement={placement} offset={offset} />;
 
   return (
     <FeedbackOverlayContext.Provider

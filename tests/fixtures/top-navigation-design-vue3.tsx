@@ -16,8 +16,8 @@ createApp(defineComponent(() => () => {
     <K.KjunButton variant={config.variant} size="sm" disabled={config.disabled} loading={config.loading} onClick={push('save')}>{config.actionText}</K.KjunButton>
     {config.multiple && <K.KjunButton variant="ghost" size="sm" onClick={push('cancel')}>취소</K.KjunButton>}
   </> : undefined;
-  return <K.KjunProvider><main style={{ padding: '16px' }}>
-    <div data-testid="header"><K.KjunTopNavigation title={config.title} description={config.description} safeAreaTop={config.safeAreaTop}>
+  return <K.KjunProvider safeArea={{ top: config.safeAreaTop }}><main style={{ padding: '16px' }}>
+    <div data-testid="header"><K.KjunTopNavigation title={config.title} description={config.description}>
       {{
         ...(config.leading ? { leading: () => <K.KjunButton variant="ghost" size="sm" prefixIcon="arrow-left" ariaLabel={config.leadingText || '뒤로 가기'} disabled={config.disabled}
           onClick={push('back')}>{config.leadingText || undefined}</K.KjunButton> } : {}),

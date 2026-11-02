@@ -1,7 +1,9 @@
 import { tokens } from '@kjun-ui/tokens';
 
 const properties = [...tokens.colorRoles, ...tokens.domainColorRoles, 'font', 'fontNumeric']
-  .map(role => '--kjun-' + role.replace(/[A-Z]/g, letter => '-' + letter.toLowerCase()));
+  .map(role => '--kjun-' + role.replace(/[A-Z]/g, letter => '-' + letter.toLowerCase()))
+  // A nested provider's safe area travels with its overlays too (see safe-area.ts).
+  .concat('--_kjun-safe-top', '--_kjun-safe-bottom');
 
 /** Keep nested overlays outside inert/clipped windows without losing their project styling. */
 export function createPortalScope(source: HTMLElement, parent: HTMLElement) {

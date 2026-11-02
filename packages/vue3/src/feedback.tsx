@@ -1,3 +1,4 @@
+import { toastEdgeShift, type ToastPlacement } from "../../../shared/package-runtime/toast-placement";
 import { useKjunMessages } from "./runtime/messages";
 import { computed, defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref, shallowRef, watch,
   type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
@@ -96,7 +97,8 @@ export const ToastView = defineComponent({
 
 const ToastSurface = defineComponent({
   name: "KjunToastSurface",
-  props: { item: { type: Object as PropType<PresentedToast>, required: true }, controller: { type: Object as PropType<Controller>, required: true } },
+  props: { item: { type: Object as PropType<PresentedToast>, required: true }, controller: { type: Object as PropType<Controller>, required: true },
+    placement: { type: String as PropType<ToastPlacement>, default: "top" } },
   setup(props) {
     const el = ref<HTMLElement | null>(null), reduced = useReducedMotion();
     let current: { opacity: string; transform: string } | null = null, entryFinished = false, animations: Animation[] = [];
@@ -106,7 +108,7 @@ const ToastSurface = defineComponent({
       if (reduced.value) { entryFinished = true; return; }
       const { exiting, born } = props.item, elapsed = Date.now() - born;
       if (!exiting && (elapsed >= tokens.motion.toastEnter || entryFinished)) return;
-      const hidden = `translateY(${-tokens.motionDistance.toast}px)`, from = current;
+      const hidden = `translateY(${toastEdgeShift(props.placement)}px)`, from = current;
       // Exit opacity fades linearly and ends before the movement, matching layer exits.
       animations = exiting ? [
         node.animate([{ opacity: from?.opacity ?? "1" }, { opacity: 0 }], { duration: tokens.motion.fadeExit, easing: tokens.motion.easeLinear, fill: "both" }),
@@ -133,7 +135,8 @@ const ToastSurface = defineComponent({
 
 const ToastStack = defineComponent({
   name: "KjunToastStack",
-  props: { items: { type: Array as PropType<PresentedToast[]>, required: true }, controller: { type: Object as PropType<Controller>, required: true } },
+  props: { items: { type: Array as PropType<PresentedToast[]>, required: true }, controller: { type: Object as PropType<Controller>, required: true },
+    placement: { type: String as PropType<ToastPlacement>, default: "top" }, offset: { type: Number, default: 0 } },
   setup(props) {
     const { state, version } = useLayerContext();
     const root = ref<HTMLElement | null>(null), layout = createToastLayout(), reduced = useReducedMotion();
@@ -144,10 +147,11 @@ const ToastStack = defineComponent({
     return () => {
       void version.value;
       return (
-        <div ref={root} class="kjun-toast-stack" style={{ zIndex: state.zIndex(state.topWindow()?.id, "toast") }}>
+        <div ref={root} class="kjun-toast-stack" data-placement={props.placement}
+          style={{ zIndex: state.zIndex(state.topWindow()?.id, "toast"), "--_kjun-toast-offset": `${Math.max(0, props.offset)}px` }}>
           {props.items.map(item => (
             <div key={item.toast.id} data-toast-id={item.toast.id} data-exiting={String(item.exiting)} class="kjun-toast-slot">
-              <ToastSurface item={item} controller={props.controller} />
+              <ToastSurface item={item} controller={props.controller} placement={props.placement} />
             </div>
           ))}
         </div>
@@ -199,6 +203,10 @@ export const KjunFeedbackProvider = defineComponent({
   props: {
     /** A feedback API from createKjunFeedback(), for calls outside components. */
     controller: { type: Object as PropType<KjunFeedback>, default: undefined },
+    /** Stacks toasts at the top or the bottom of the screen, right-aligned on wide screens; both keep clear of the safe area. */
+    placement: { type: String as PropType<ToastPlacement>, default: "top" },
+    /** Extra px between the toasts and their edge, e.g. a bottom navigation's height. */
+    offset: { type: Number, default: 0 },
   },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
@@ -215,7 +223,7 @@ export const KjunFeedbackProvider = defineComponent({
     const dialog = usePresentedRequest(() => snapshot.value.current, () => reduced.value);
     const layers = shallowRef<{ id: string; order: number }[]>([]);
     const top = computed(() => [...layers.value].sort((a, b) => a.order - b.order).at(-1)?.id);
-    const renderToasts = () => <ToastStack items={toasts.value} controller={controller} />;
+    const renderToasts = () => <ToastStack items={toasts.value} controller={controller} placement={props.placement} offset={props.offset} />;
     provide(kjunFeedbackOverlayKey, {
       top,
       register: (id, order) => {

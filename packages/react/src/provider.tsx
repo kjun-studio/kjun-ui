@@ -5,6 +5,7 @@ import { I18nProvider, useLocale } from "react-aria-components";
 import type { KjunIconRegistry } from "@kjun-ui/icons";
 import { LayerProvider } from "../../../shared/package-runtime/use-layer";
 import { createPortalScope } from "../../../shared/package-runtime/portal-scope";
+import { safeAreaVars, type KjunSafeArea } from "../../../shared/package-runtime/safe-area";
 import { validateKjunCssScope } from "../../../shared/package-runtime/css-contract";
 import {
 createContext,
@@ -25,6 +26,8 @@ export interface KjunProviderProps extends HTMLAttributes<HTMLDivElement> {
   locale?: string;
   /** Replaces part of KJUN's copy, e.g. with the app's own translations. */
   messages?: Partial<KjunMessages>;
+  /** Screen insets in px for toasts, modals, menus and edge components; without it the browser's env(safe-area-inset-*) applies. */
+  safeArea?: KjunSafeArea;
 }
 export function KjunProvider({
   icons,
@@ -32,6 +35,8 @@ export function KjunProvider({
   messages,
   children,
   className = "",
+  safeArea,
+  style,
   ...props
 }: KjunProviderProps) {
   const [portal, setPortal] = useState<HTMLDivElement | null>(null);
@@ -59,7 +64,7 @@ export function KjunProvider({
   const intl = normalizeLocale(locale).intl ?? outerLocale;
   const content = <>{children}{parentPortal === undefined && <div ref={setPortal} data-kjun-layer-host="" />}</>;
   return (
-    <div {...props} ref={setContainer} className={"kjun-scope " + className}>
+    <div {...props} ref={setContainer} className={"kjun-scope " + className} style={{ ...safeAreaVars(safeArea), ...style }}>
       <KjunMessagesProvider locale={locale} messages={messages}><IconProvider icons={icons}><PortalContext.Provider value={portal}>
         <LayerProvider><I18nProvider locale={intl}>{content}</I18nProvider></LayerProvider>
       </PortalContext.Provider></IconProvider></KjunMessagesProvider>

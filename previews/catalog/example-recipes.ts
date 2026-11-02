@@ -10,12 +10,12 @@ export function renderRecipeExample(name: string, tools: ExampleTools): any {
       ]);
     case "GuideAppScreen": {
       const keyboard = get("keyboard", settings.keyboardVisible), current = get("destination", "home");
-      return h("Stack", {}, [h("KjunButton", { variant: "secondary", ...action(() => set("keyboard", !keyboard)) }, "키보드 상태 전환"), h("Text", {}, "문서에서는 키보드 상태를 수동으로 재현합니다. 실제 화면에서는 앱의 키보드 높이와 안전 영역 값을 사용하세요."), h("Screen", { height: keyboard ? 400 : 520 }, [
-        h("KjunTopNavigation", { title: settings.content === "긴 콘텐츠" ? "팀과 함께 관리하는 프로젝트의 상세 설정과 활동" : "프로젝트", safeAreaTop: settings.safeAreaTop }, undefined, { leading: h("KjunButton", { variant: "ghost", size: "sm", ariaLabel: "뒤로 가기", prefixIcon: "arrow-left", ...action(() => set("message", "뒤로 가기 요청")) }) }),
+      return h("Stack", {}, [h("KjunButton", { variant: "secondary", ...action(() => set("keyboard", !keyboard)) }, "키보드 상태 전환"), h("Text", {}, "문서에서는 키보드 상태를 수동으로 재현합니다. 실제 화면에서는 앱의 키보드 높이와 안전 영역 값을 사용하세요."), h("KjunProvider", { safeArea: { top: settings.safeAreaTop, bottom: settings.safeAreaBottom } }, h("Screen", { height: keyboard ? 400 : 520 }, [
+        h("KjunTopNavigation", { title: settings.content === "긴 콘텐츠" ? "팀과 함께 관리하는 프로젝트의 상세 설정과 활동" : "프로젝트" }, undefined, { leading: h("KjunButton", { variant: "ghost", size: "sm", ariaLabel: "뒤로 가기", prefixIcon: "arrow-left", ...action(() => set("message", "뒤로 가기 요청")) }) }),
         h("Scroll", {}, [h("Inset", {}, h("KjunFormGroup", { label: "프로젝트 이름", hint: "입력에 초점을 두면 앱에서 키보드 상태를 전달합니다." }, h("KjunInput", { value: get("project", "함께 만드는 프로젝트"), onValueChange: change("project"), ariaLabel: "프로젝트 이름", onFocus: () => set("keyboard", true) }))), h("KjunListSection", {}, Array.from({ length: 8 }, (_, index) => h("KjunListRow", { title: "활동 " + (index + 1), description: settings.content === "긴 콘텐츠" ? "여러 줄로 표시되는 긴 한국어 설명도 하단 영역 뒤로 가려지지 않습니다." : "본문만 스크롤합니다." }))), h("Inset", {}, h("Text", {}, "마지막 콘텐츠"))]),
-        h("KjunBottomActionBar", { description: "변경한 내용을 확인한 뒤 저장하세요.", keyboardVisible: keyboard, safeAreaBottom: keyboard ? settings.safeAreaBottom : 0 }, h("KjunButton", { ...action(() => set("message", "변경 사항 저장")) }, "변경 사항 저장")),
-        h("KjunBottomNavigation", { value: current, keyboardVisible: keyboard, safeAreaBottom: settings.safeAreaBottom, items: [{ key: "home", label: "홈", href: "#home", icon: "home" }, { key: "activity", label: "활동", href: "#activity", icon: "list" }, { key: "settings", label: "설정", href: "#settings", icon: "settings" }], onNavigate: (key: string, event: any) => { event.preventDefault(); set("destination", key); } }),
-      ])]);
+        h("KjunBottomActionBar", { description: "변경한 내용을 확인한 뒤 저장하세요.", keyboardVisible: keyboard, safeArea: keyboard }, h("KjunButton", { ...action(() => set("message", "변경 사항 저장")) }, "변경 사항 저장")),
+        h("KjunBottomNavigation", { value: current, keyboardVisible: keyboard, items: [{ key: "home", label: "홈", href: "#home", icon: "home" }, { key: "activity", label: "활동", href: "#activity", icon: "list" }, { key: "settings", label: "설정", href: "#settings", icon: "settings" }], onNavigate: (key: string, event: any) => { event.preventDefault(); set("destination", key); } }),
+      ]))]);
     }
     case "GuideInputSettings":
       return h("Stack", {}, [

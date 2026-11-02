@@ -126,8 +126,8 @@ const ${namespace}InvalidSort: ${namespace}.KjunTableProps = {columns:[],sort:{k
   .join("\n")}
 // @ts-expect-error Product names are not a styling API.
 const oldWeb=<KjunProvider theme="product">Body</KjunProvider>;
-// @ts-expect-error Native requires project-owned colors.
-const missingColors=<NativeProvider>Body</NativeProvider>;
+// A nested Native provider may leave colors out to inherit its parent's (the root one throws at runtime without them).
+const nestedSafeArea=<NativeProvider safeArea={{ top: 24 }}>Body</NativeProvider>;
 // @ts-expect-error Every core color role is required.
 const partialColors=<NativeProvider colors={{brand: "red"}}>Body</NativeProvider>;
 if(tokens.button.heights.md!==40)throw new Error('Invalid token output');

@@ -181,6 +181,7 @@ const options = [
 ];
 const ownership = [
   "알림·요청 대기열·진행 중 표시·입력 초안: 해당 KjunFeedbackProvider 영역이 관리합니다.",
+  "토스트 위치: KjunFeedbackProvider의 placement(\"top\" 기본·\"bottom\")로 화면 위나 아래에 쌓습니다. 넓은 웹 화면은 오른쪽, 좁은 화면과 Native는 전체 폭입니다. 토스트는 KjunProvider의 safeArea(웹은 없으면 env(safe-area-inset-*))만큼 가장자리에서 더 떨어지고, offset으로 하단 내비게이션 높이처럼 거리를 더 둘 수 있습니다.",
   "실제 저장·검증·성공 후 이동: 소비자가 콜백과 반환 Promise에서 처리합니다.",
   "Provider 해제: 미완료 Confirm은 false, Prompt는 null로 정리하고 알림 타이머와 대기열을 제거합니다. controller로 받은 컨트롤러는 정리하지 않으며, Provider가 없는 동안 부른 요청은 다음에 마운트되는 Provider가 표시합니다.",
   "컴포넌트 밖 호출: 모듈에서 const feedback = createKjunFeedback()을 한 번 만들고 <KjunFeedbackProvider controller={feedback}>에 넘기면 같은 confirm·prompt·toast를 일반 함수에서 부를 수 있습니다. 한 컨트롤러를 동시에 두 Provider에 넘기지 마세요(개발 모드 경고).",

@@ -26,21 +26,23 @@ export function screens(b: RecipeBuilder): string | undefined {
   const footer = [b.node('KjunBottomActionBar', {
     description: '변경한 내용을 확인한 뒤 저장하세요.',
     keyboardVisible: app || keyboardCase ? keyboard : false,
-    safeAreaBottom: keyboardCase ? expr('state.keyboard ? 0 : 24') : app ? expr('state.keyboard ? 24 : 0') : 0,
+    // The bar sits under the app's bottom safe area only while it is the lowest element on screen.
+    safeArea: keyboardCase ? expr('!state.keyboard') : app ? expr('state.keyboard') : false,
   }, b.button('변경 사항 저장', save))];
   if (!keyboardCase) footer.push(b.node('KjunBottomNavigation', {
-    value: b.state('destination', app ? 'home' : 'docs'), safeAreaBottom: 24, keyboardVisible: app ? keyboard : false,
+    value: b.state('destination', app ? 'home' : 'docs'), keyboardVisible: app ? keyboard : false,
     items: app ? [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: '활동', href: '#activity', icon: 'list' }, { key: 'settings', label: '설정', href: '#settings', icon: 'settings' }]
       : [{ key: 'docs', label: '문서', href: '#docs', icon: 'file' }, { key: 'activity', label: '활동', href: '#activity', icon: 'list' }],
     onNavigate: b.handler('navigate', 'key, event', 'event?.preventDefault();\n' + b.set('destination', 'key')),
   }));
   const viewport = b.node(box, { style: keyboardCase ? expr('{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0, marginBottom: state.keyboard ? ' + (b.vue ? '"220px"' : '220') + ' : 0 }') : { display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 } }, [scroll, b.node(box, { style: { flexShrink: 0 } }, footer.join('\n'))].join('\n'));
   const screenContent = [];
-  if (app) screenContent.push(b.node('KjunTopNavigation', { title: '프로젝트', safeAreaTop: 24 }, '', {
+  if (app) screenContent.push(b.node('KjunTopNavigation', { title: '프로젝트' }, '', {
     leading: b.button('', b.message('goBack', '뒤로 가기 요청'), { variant: 'ghost', size: 'sm', ariaLabel: '뒤로 가기', prefixIcon: 'arrow-left' }),
   }));
   screenContent.push(viewport);
   if (keyboardCase) screenContent.push(b.when('state.keyboard', b.node(box, { style: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 220, padding: 16, borderTopWidth: 1, ...(b.native ? {} : { borderTopStyle: 'solid' }) } }, b.text('키보드 예시 영역 · 220px'))));
+  // The app passes its safe area once to the root KjunProvider (setup); the edge components below read it.
   const screen = b.node(box, { style: { display: 'flex', flexDirection: 'column', position: 'relative', height: 520, overflow: 'hidden' } }, screenContent.join('\n'));
   return app || keyboardCase ? b.stack([
     b.button('키보드 상태 전환', toggle, { variant: 'secondary' }),

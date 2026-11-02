@@ -47,10 +47,11 @@ export function drawerFrame({ position, windowHeight, safeAreaTop, safeAreaBotto
 }
 
 /** Web overlay variables read by the drawer CSS (tokens controls.css). */
-export function drawerOverlayVars({ safeAreaTop = 0, safeAreaBottom = 0, maxHeight }: { safeAreaTop?: number; safeAreaBottom?: number; maxHeight?: number }) {
+export function drawerOverlayVars({ safeArea = true, maxHeight }: { safeArea?: boolean; maxHeight?: number }) {
   return {
-    "--_kjun-drawer-safe-top": Math.max(0, safeAreaTop) + "px",
-    "--_kjun-drawer-safe-bottom": Math.max(0, safeAreaBottom) + "px",
+    // The scope's safe area (see safe-area.ts), or none where the app already reserved it.
+    "--_kjun-drawer-safe-top": safeArea ? "var(--_kjun-safe-area-top)" : "0px",
+    "--_kjun-drawer-safe-bottom": safeArea ? "var(--_kjun-safe-area-bottom)" : "0px",
     ...(maxHeight === undefined ? {} : { "--_kjun-drawer-max-height": `min(${maxHeight}px, 100dvh)` }),
   } as Record<string, string>;
 }

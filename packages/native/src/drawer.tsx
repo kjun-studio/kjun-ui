@@ -22,7 +22,7 @@ useWindowDimensions
 import { KjunButton, KjunIcon } from "./button";
 import { KText,content } from "./internal";
 import { ScopedNativeModal } from "./overlay-host";
-import { useKjunStyles } from "./provider";
+import { useKjunSafeArea, useKjunStyles } from "./provider";
 
 export interface KjunDrawerProps {
   open: boolean;
@@ -41,10 +41,8 @@ export interface KjunDrawerProps {
   /** Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit). */
   onAfterClose?: () => void;
   ariaLabel?: string;
-  /** Top safe area, padded inside top and side drawers and kept clear above a bottom sheet. */
-  safeAreaTop?: number;
-  /** Bottom safe area, padded inside bottom and side drawers and kept clear below a top sheet. */
-  safeAreaBottom?: number;
+  /** Keeps clear of KjunProvider's safe area (default true): padded inside the panel and kept clear beyond a sheet. */
+  safeArea?: boolean;
   /** Height limit for top and bottom drawers; by default they stop a sheet gap short of the opposite edge. */
   maxHeight?: number;
   /** Keeps the panel above the on-screen keyboard (devices only). */
@@ -81,19 +79,21 @@ export function KjunDrawer({
   onClose,
   onAfterClose,
   ariaLabel,
-  safeAreaTop = 0,
-  safeAreaBottom = 0,
+  safeArea = true,
   maxHeight,
   avoidKeyboard = true,
 }: KjunDrawerProps) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles(),
+    insets = useKjunSafeArea(),
+    safeAreaTop = safeArea ? insets.top : 0,
+    safeAreaBottom = safeArea ? insets.bottom : 0,
     window = useWindowDimensions(),
     vertical = position === "left" || position === "right";
   // The modal root's own height: a resizing Android window shrinks it for the keyboard; elsewhere it equals the window.
   const [rootHeight, setRootHeight] = useState(0);
   const keyboard = useKeyboardOverlap(open && avoidKeyboard, rootHeight || window.height);
-  const frame = drawerFrame({ position, windowHeight: rootHeight || window.height, safeAreaTop: Math.max(0, safeAreaTop), safeAreaBottom: Math.max(0, safeAreaBottom),
+  const frame = drawerFrame({ position, windowHeight: rootHeight || window.height, safeAreaTop, safeAreaBottom,
     gap: tokens.extensions.drawer.sheetGap, keyboard, maxHeight });
   const [panelHeight, setPanelHeight] = useState(0);
   const motion = useNativePresence(open, tokens.motion.layerEnter, tokens.motion.layerExit, vertical || panelHeight > 0, 0, { enterEasing: motionEmphasized });

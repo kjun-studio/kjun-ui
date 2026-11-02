@@ -19,7 +19,7 @@ export function mountGeometry(api: any, native: boolean) {
       box('removable', !removed && h(api.KjunChip,{removable:true,label,removeLabel:'칩 삭제',onRemove:()=>{setRemoved(true);event();}})),
       box('navigation',h(api.KjunTopNavigation,{title:label,description:label})),
       box('list',h(api.KjunListSection,{title:label,description:label},h(api.KjunListRow,{title:label,description:label,[native?'onPress':'onClick']:event}))),
-      box('actionbar',h(api.KjunBottomActionBar,{description:label,safeAreaBottom:7},button('하단 실행',event))),
+      box('actionbar',h(api.KjunProvider,{safeArea:{bottom:7}},h(api.KjunBottomActionBar,{description:label},button('하단 실행',event)))),
       box('card',h(api.KjunCard,{title:label,subtitle:label,footer:label,dividers:true},label),true),
       box('hero',h(api.KjunKpiHero,{label,value:long?'12345678901234567890':12345,prefix:long?'대한민국원InternationalCurrencyDenominationKoreanWon':'KRW',suffix:long?'원/장기정산통화단위':'원',secondary:[{label,value:987,desc:label,prefix:long?'미국달러InternationalSettlementCurrencyUnit':undefined,suffix:long?'정산 단위':undefined}],animated:false})),
       box('hero-sm',h(api.KjunKpiHero,{size:'sm',label,value:123,secondary:[{label,value:987,desc:label,prefix:long?'미국달러InternationalSettlementCurrencyUnit':undefined,suffix:long?'정산 단위':undefined}],animated:false}),true),

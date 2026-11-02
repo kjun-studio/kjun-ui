@@ -23,7 +23,7 @@ const Cases = defineComponent(() => {
       {box('removable', !state.removed && <api.KjunChip removable label={text} removeLabel="칩 삭제" onRemove={() => { state.removed = true; event(); }} />)}
       {box('navigation', <api.KjunTopNavigation title={text} description={text} />)}
       {box('list', <api.KjunListSection title={text} description={text}><api.KjunListRow title={text} description={text} onClick={event} /></api.KjunListSection>)}
-      {box('actionbar', <api.KjunBottomActionBar description={text} safeAreaBottom={7}>{button('하단 실행', event)}</api.KjunBottomActionBar>)}
+      {box('actionbar', <api.KjunProvider safeArea={{ bottom: 7 }}><api.KjunBottomActionBar description={text}>{button('하단 실행', event)}</api.KjunBottomActionBar></api.KjunProvider>)}
       {box('card', <api.KjunCard title={text} subtitle={text} dividers>{{ default: () => text, footer: () => text }}</api.KjunCard>, true)}
       {box('hero', <api.KjunKpiHero label={text} value={long ? '12345678901234567890' : 12345} prefix={long ? '대한민국원InternationalCurrencyDenominationKoreanWon' : 'KRW'}
         suffix={long ? '원/장기정산통화단위' : '원'} secondary={secondary} animated={false} />)}

@@ -76,8 +76,8 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
       <K.KjunButton variant="link" {...(native ? { onPress: () => {} } : { onClick: () => {} })}>More</K.KjunButton>
     </div></K.KjunProvider>
     <div data-testid="fab-area" style={{ position: 'relative', height: 200, width: 300 }}>
-      <K.KjunProvider {...providerProps} {...(native ? { style: { height: 200 } } : {})}>
-        <K.KjunFab icon="plus" ariaLabel="Add schedule" safeAreaBottom={20} {...(native ? { onPress: () => {} } : { onClick: () => {} })} />
+      <K.KjunProvider {...providerProps} safeArea={{ bottom: 20 }} {...(native ? { style: { height: 200 } } : {})}>
+        <K.KjunFab icon="plus" ariaLabel="Add schedule" {...(native ? { onPress: () => {} } : { onClick: () => {} })} />
       </K.KjunProvider>
     </div>
     {native && <div data-testid="font-weights"><K.KjunProvider {...providerProps} fontFamily={{ 400: 'Face-Regular', 500: 'Face-Medium', 700: 'Face-Bold' }}>

@@ -5,8 +5,8 @@ setupNavigationColors();
 const s = reactive({ config: { ...navigationConfig } as typeof navigationConfig, events: [] as string[] });
 Object.assign(window, { configureNavigation: (next: object) => { s.config = { ...s.config, ...next }; s.events = []; } });
 // The same destinations drive both navigation components.
-createApp(defineComponent(() => () => { const Navigation = s.config.floating ? K.KjunFloatingNavigation : K.KjunBottomNavigation; return <K.KjunProvider><main style={{ padding: '16px' }}>
-  <Navigation value={s.config.value} safeAreaBottom={s.config.safeAreaBottom} keyboardVisible={s.config.keyboardVisible}
+createApp(defineComponent(() => () => { const Navigation = s.config.floating ? K.KjunFloatingNavigation : K.KjunBottomNavigation; return <K.KjunProvider safeArea={{ bottom: s.config.safeAreaBottom }}><main style={{ padding: '16px' }}>
+  <Navigation value={s.config.value} keyboardVisible={s.config.keyboardVisible}
     hideOnKeyboard={s.config.hideOnKeyboard} items={navigationItems(s.config)} onNavigate={(key: string, event: MouseEvent) => {
     event.preventDefault(); s.events.push(key);
     if (s.config.acceptNavigation) s.config = { ...s.config, value: key };

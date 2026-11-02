@@ -484,14 +484,14 @@
       "icon",
       "ariaLabel",
       "disabled",
-      "safeAreaBottom",
+      "safeArea",
       "offsetBottom"
     ],
     "react": [
       "icon",
       "ariaLabel",
       "disabled",
-      "safeAreaBottom",
+      "safeArea",
       "offsetBottom",
       "onClick"
     ],
@@ -499,7 +499,7 @@
       "icon",
       "ariaLabel",
       "disabled",
-      "safeAreaBottom",
+      "safeArea",
       "offsetBottom",
       "onPress"
     ]

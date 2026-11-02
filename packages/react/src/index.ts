@@ -153,3 +153,5 @@ export * from "./time-picker";
 export type { ShadowLayer, ElevationRole, CardElevation } from "@kjun-ui/tokens";
 
 export { kjunMessagesKo, kjunMessagesEn, type KjunMessages } from "../../../shared/package-runtime/messages";
+export type { KjunSafeArea } from "../../../shared/package-runtime/safe-area";
+export type { ToastPlacement } from "../../../shared/package-runtime/toast-placement";

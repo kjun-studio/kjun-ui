@@ -151,12 +151,12 @@ export function renderDesignExample(name: string, tools: ExampleTools): any {
             h("CasePart", { id: "last-content" }, h("KjunListRow", { title: "마지막 검토 항목", description: "이 문장까지 읽은 뒤 저장하세요." })),
           ]),
           h("CaseFooter", { overlay: !after }, [
-            h("KjunBottomActionBar", { safeAreaBottom: 0 }, h("KjunButton", { ...action(() => set("message", "검토 내용을 저장했습니다.")) }, "검토 내용 저장")),
-            h("KjunBottomNavigation", {
-              value: get("destination", "documents"), safeAreaBottom: 24,
+            h("KjunBottomActionBar", { safeArea: false }, h("KjunButton", { ...action(() => set("message", "검토 내용을 저장했습니다.")) }, "검토 내용 저장")),
+            h("KjunProvider", { safeArea: { bottom: 24 } }, h("KjunBottomNavigation", {
+              value: get("destination", "documents"),
               items: [{ key: "documents", label: "문서", icon: "list", href: "#documents" }, { key: "activity", label: "활동", icon: "list", href: "#activity" }],
               onNavigate: (key: string, event: any) => { event?.preventDefault(); set("destination", key); },
-            }),
+            })),
           ]),
         ])),
       ]);
@@ -174,8 +174,8 @@ export function renderDesignExample(name: string, tools: ExampleTools): any {
                 id: "design-keyboard-project", ariaLabel: "프로젝트 이름", value: get("project", "함께 만드는 프로젝트"), onValueChange: change("project"),
               })),
             ]),
-            h("CaseFooter", { overlay: !after }, h("KjunBottomActionBar", { keyboardVisible: keyboard, safeAreaBottom: keyboard ? 0 : 24 },
-              h("KjunButton", { ...action(() => set("message", "변경 사항을 저장했습니다.")) }, "변경 사항 저장"))),
+            h("CaseFooter", { overlay: !after }, h("KjunProvider", { safeArea: { bottom: 24 } }, h("KjunBottomActionBar", { keyboardVisible: keyboard, safeArea: !keyboard },
+              h("KjunButton", { ...action(() => set("message", "변경 사항을 저장했습니다.")) }, "변경 사항 저장")))),
           ]),
           ...(keyboard ? [h("CaseKeyboard", {}, h("Text", {}, "키보드 모의 영역 · 220px"))] : []),
         ]),

@@ -50,3 +50,5 @@ export type { KjunMarketSimpleListProps } from "./market-list";
 export type { KjunMarketCardsProps } from "./market-cards";
 
 export { kjunMessagesKo, kjunMessagesEn, type KjunMessages } from "../../../shared/package-runtime/messages";
+export type { KjunSafeArea } from "../../../shared/package-runtime/safe-area";
+export type { ToastPlacement } from "../../../shared/package-runtime/toast-placement";

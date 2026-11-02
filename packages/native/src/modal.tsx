@@ -21,7 +21,7 @@ View
 } from "react-native";
 import { KjunButton, KjunIcon } from "./button";
 import { ScopedNativeModal } from "./overlay-host";
-import { useKjunStyles } from "./provider";
+import { useKjunSafeArea, useKjunStyles } from "./provider";
 export interface KjunFormActionsProps {
   size?: InputSize;
   cancelText?: string;
@@ -167,7 +167,9 @@ export function KjunModal({
   confirmText ??= m.confirm;
   cancelText ??= m.cancel;
   const { colors: c, fontFamily } = useKjunStyles();
-  const window = useWindowDimensions();
+  const window = useWindowDimensions(), insets = useKjunSafeArea();
+  // Height left for the dialog between the safe areas and the modal inset.
+  const room = Math.max(0, window.height - 2 * tokens.modal.mobileInset - insets.top - insets.bottom);
   const motion = useNativePresence(open, tokens.motion.layerEnter, tokens.motion.layerExit, true, 0, { fade: tokens.motion.backdropExit });
   const offset = useMotionValue(open ? 0 : tokens.motionDistance.modalExit, open ? tokens.motion.layerEnter : tokens.motion.layerExit, tokens.motionDistance.modalEnter, open ? motionOut : motionIn, true);
   const backdrop = useNativePresence(open, tokens.motion.backdrop, tokens.motion.backdropExit, true, 0, { fade: tokens.motion.backdropExit });
@@ -206,6 +208,9 @@ export function KjunModal({
           justifyContent: "center",
           alignItems: "center",
           padding: tokens.modal.mobileInset,
+          // The window starts at the screen top, so the dialog keeps clear of the status bar and home indicator.
+          paddingTop: tokens.modal.mobileInset + insets.top,
+          paddingBottom: tokens.modal.mobileInset + insets.bottom,
         }}
       >
         <Animated.View pointerEvents={open ? "auto" : "none"} style={{ ...screenCover(), opacity: backdrop.opacity }}>
@@ -240,10 +245,10 @@ export function KjunModal({
             width,
             maxHeight:
               window.width <= tokens.responsive.modal && size !== "full"
-                ? window.height * 0.85
-                : window.height - 2 * tokens.modal.mobileInset,
+                ? Math.min(window.height * 0.85, room)
+                : room,
             height:
-              height || (size === "full" ? window.height - 2 * tokens.modal.mobileInset : undefined),
+              height || (size === "full" ? room : undefined),
             backgroundColor: c.surface,
             borderRadius: tokens.modal.radius,
             overflow: "hidden",

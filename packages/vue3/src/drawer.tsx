@@ -20,10 +20,8 @@ const kjunDrawerProps = {
   closeOnEsc: { type: Boolean, default: true },
   noPadding: { type: Boolean, default: false },
   ariaLabel: { type: String, default: undefined },
-  /** Top safe area in px, padded inside top and side drawers and kept clear above a bottom sheet. */
-  safeAreaTop: { type: Number, default: 0 },
-  /** Bottom safe area in px, padded inside bottom and side drawers and kept clear below a top sheet. */
-  safeAreaBottom: { type: Number, default: 0 },
+  /** Keeps clear of KjunProvider's safe area: padded inside the panel and kept clear beyond a sheet. */
+  safeArea: { type: Boolean, default: true },
   /** Height limit in px for top and bottom drawers; by default they stop a sheet gap short of the opposite edge. */
   maxHeight: { type: Number, default: undefined },
 } as const;

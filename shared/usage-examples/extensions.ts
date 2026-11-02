@@ -35,21 +35,25 @@ export function generate(input: UsageInput) {
         b.node('KjunIconToggle', { activeIcon: 'heart', active: b.state('favorite', false), ariaLabel: '즐겨찾기', ...b.props('disabled', 'loading'), onToggle: b.handler('toggleFavorite', '', b.set('favorite', '!' + b.read('favorite')) + '\n' + b.result('"즐겨찾기 변경"')) }),
       ].join('\n');
       else if (s.actions !== '없음') slots.actions = (s.actions === '여러 행동' ? ['저장', '공유', '설정'] : [s.actions === '긴 문구' ? 'Save changes and continue' : '저장']).map((text, i) => b.button(text, notify('action' + i, text + ' 요청'), { variant: 'ghost', size: 'sm', ...b.props('disabled', 'loading') })).join('\n');
-      content = b.node(b.native ? 'View' : 'div', { style: { width: b.vue ? s.exampleWidth + 'px' : Number(s.exampleWidth), maxWidth: '100%' } }, b.node(name, { title: s.long ? '팀과 함께 관리하는 프로젝트의 상세 설정' : '프로젝트 설정', description: s.showDescription ? '변경할 내용을 선택하세요.' : undefined, safeAreaTop: s.safeAreaTop }, '', slots)); break;
+      content = b.node(b.native ? 'View' : 'div', { style: { width: b.vue ? s.exampleWidth + 'px' : Number(s.exampleWidth), maxWidth: '100%' } }, b.node(name, { title: s.long ? '팀과 함께 관리하는 프로젝트의 상세 설정' : '프로젝트 설정', description: s.showDescription ? '변경할 내용을 선택하세요.' : undefined }, '', slots));
+      break;
     }
     case 'KjunBottomNavigation':
-      content = b.group([b.node(name, { value: b.state('destination', 'home'), ...b.props('safeAreaBottom', 'keyboardVisible', 'hideOnKeyboard'),
+      content = b.group([b.node(name, { value: b.state('destination', 'home'), ...b.props('keyboardVisible', 'hideOnKeyboard'),
         items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: s.long ? '모든 프로젝트 활동 내역' : '활동', href: '#activity', icon: 'list', badge: 3 }, { key: 'settings', label: '설정', href: '#settings', icon: 'settings' }]),
         onNavigate: b.handler('navigate', 'key, event', 'if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;\nevent.preventDefault();\n' + b.set('destination', 'key')),
-      }), b.text(expr('"현재 위치: " + state.destination'))]); break;
+      }), b.text(expr('"현재 위치: " + state.destination'))]);
+      break;
     case 'KjunFloatingNavigation':
-      content = b.group([b.node(name, { value: b.state('destination', 'home'), ...b.props('safeAreaBottom', 'keyboardVisible', 'hideOnKeyboard'),
+      content = b.group([b.node(name, { value: b.state('destination', 'home'), ...b.props('keyboardVisible', 'hideOnKeyboard'),
         items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'search', label: '검색', href: '#search', icon: 'search', ...(s.badges ? { badge: true } : {}) }, { key: 'activity', label: '알림', href: '#activity', icon: 'bell', ...(s.badges ? { badge: 3 } : {}) }, { key: 'profile', label: '내 정보', href: '#profile', icon: 'user' }]),
         onNavigate: b.handler('navigate', 'key, event', 'if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;\nevent.preventDefault();\n' + b.set('destination', 'key')),
-      }), b.text(expr('"현재 위치: " + state.destination'))]); break;
+      }), b.text(expr('"현재 위치: " + state.destination'))]);
+      break;
     case 'KjunBottomActionBar':
-      content = b.node(name, { description: s.long ? '변경한 설정은 저장한 뒤 모든 기기에 적용됩니다. 저장이 완료될 때까지 화면을 유지해 주세요.' : '저장하면 모든 기기에 적용됩니다.', ...b.props('safeAreaBottom', 'keyboardVisible', 'hideOnKeyboard') },
-        b.node('KjunFormActions', { confirmText: '변경 사항 저장', onConfirm: notify('save', '저장 요청'), onCancel: notify('cancel', '취소 요청') })); break;
+      content = b.node(name, { description: s.long ? '변경한 설정은 저장한 뒤 모든 기기에 적용됩니다. 저장이 완료될 때까지 화면을 유지해 주세요.' : '저장하면 모든 기기에 적용됩니다.', ...b.props('keyboardVisible', 'hideOnKeyboard') },
+        b.node('KjunFormActions', { confirmText: '변경 사항 저장', onConfirm: notify('save', '저장 요청'), onCancel: notify('cancel', '취소 요청') }));
+      break;
     case 'KjunCarousel': {
       const cards = [['이번 주 추천', '새로 나온 템플릿을 확인하세요'], ['팀 공간', '동료와 문서를 함께 정리합니다'], ['알림 정리', '중요한 소식만 받아 보세요'], ['보관함', '지난 작업을 다시 찾습니다']].map(([title, subtitle], i) =>
         b.node('KjunCard', { title, subtitle, border: true, media: b.node('KjunImage', { src: expr(`images[${i % 2}]`), decorative: true, aspectRatio: 2 }) }));

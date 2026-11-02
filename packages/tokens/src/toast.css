@@ -1,13 +1,18 @@
+/* Toasts keep clear of the safe area at their edge, plus the app's offset (KjunFeedbackProvider placement / offset). */
 .kjun-toast-stack {
   position: fixed;
-  top: var(--_kjun-extension-toast-inset);
+  top: calc(var(--_kjun-extension-toast-inset) + var(--_kjun-safe-area-top) + var(--_kjun-toast-offset, 0px));
   right: var(--_kjun-extension-toast-inset);
   display: flex;
   flex-direction: column;
   gap: var(--_kjun-extension-toast-stack-gap);
-  max-height: calc(100dvh - 2 * var(--_kjun-extension-toast-inset));
+  max-height: calc(100dvh - 2 * var(--_kjun-extension-toast-inset) - var(--_kjun-safe-area-top) - var(--_kjun-safe-area-bottom) - var(--_kjun-toast-offset, 0px));
   overflow: hidden;
   pointer-events: none;
+}
+.kjun-toast-stack[data-placement="bottom"] {
+  top: auto;
+  bottom: calc(var(--_kjun-extension-toast-inset) + var(--_kjun-safe-area-bottom) + var(--_kjun-toast-offset, 0px));
 }
 .kjun-toast {
   box-shadow: var(--_kjun-toast-elevation);

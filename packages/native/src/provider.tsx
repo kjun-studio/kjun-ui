@@ -1,3 +1,4 @@
+import { resolveSafeArea, type KjunSafeArea, type ResolvedSafeArea } from "../../../shared/package-runtime/safe-area";
 import { baseFontFamily, fontFacesOf, type KjunFontFaces, type KjunFontFamily } from "./fonts";
 import { KjunMessagesProvider } from "../../../shared/package-runtime/messages-context";
 import type { KjunMessages } from "../../../shared/package-runtime/messages";
@@ -26,6 +27,7 @@ interface KjunStyles {
   /** Weight maps by face name, from fontFamily / numericFontFamily maps. */
   fontFaces?: KjunFontFaces;
   domainColors?: KjunDomainColors<ColorValue>;
+  safeArea?: ResolvedSafeArea;
 }
 const StylesContext = createContext<KjunStyles | null>(null);
 export function useKjunStyles(): KjunStyles {
@@ -36,7 +38,7 @@ export function useKjunStyles(): KjunStyles {
     );
   return value;
 }
-export interface KjunProviderProps extends Omit<KjunStyles, "colors" | "fontFamily" | "numericFontFamily" | "fontFaces"> {
+export interface KjunProviderProps extends Omit<KjunStyles, "colors" | "fontFamily" | "numericFontFamily" | "fontFaces" | "safeArea"> {
   /** A family name, or names by weight ({ 400: "Pretendard-Regular", 700: "Pretendard-Bold" }) for Android and Expo. */
   fontFamily?: KjunFontFamily;
   /** Same as fontFamily, for numbers. */
@@ -46,7 +48,10 @@ export interface KjunProviderProps extends Omit<KjunStyles, "colors" | "fontFami
   locale?: string;
   /** Replaces part of KJUN's copy, e.g. with the app's own translations. */
   messages?: Partial<KjunMessages>;
-  colors: KjunColors<ColorValue>;
+  /** Project colors; a nested provider may leave them out to inherit its parent's (e.g. to change only safeArea). */
+  colors?: KjunColors<ColorValue>;
+  /** Screen insets in px (e.g. from react-native-safe-area-context) for toasts, modals, menus and edge components. */
+  safeArea?: KjunSafeArea;
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
 }
@@ -58,11 +63,13 @@ export function KjunProvider({
   fontFamily,
   numericFontFamily,
   domainColors,
+  safeArea,
   children,
   style,
 }: KjunProviderProps) {
   const parent = useContext(StylesContext);
-  const resolvedColors = resolveKjunColors(colors);
+  if (!colors && !parent) throw new Error("KJUN Native requires KjunProvider with project-owned colors.");
+  const resolvedColors = colors ? resolveKjunColors(colors) : parent!.colors;
   const domainMissing =
     domainColors &&
     domainColorRoles.filter(
@@ -78,11 +85,17 @@ export function KjunProvider({
         numericFontFamily: baseFontFamily(numericFontFamily) ?? parent?.numericFontFamily,
         fontFaces: { ...parent?.fontFaces, ...fontFacesOf(fontFamily), ...fontFacesOf(numericFontFamily) },
         domainColors: domainColors ?? parent?.domainColors,
+        safeArea: resolveSafeArea(safeArea, parent?.safeArea),
       }}
     >
       <KjunMessagesProvider locale={locale} messages={messages}><IconProvider icons={icons}><LayerProvider escapeKeyUpFallback><View style={style}>{children}</View></LayerProvider></IconProvider></KjunMessagesProvider>
     </StylesContext.Provider>
   );
+}
+
+/** The app's screen insets from KjunProvider (0 when none were given). */
+export function useKjunSafeArea(): ResolvedSafeArea {
+  return useContext(StylesContext)?.safeArea ?? { top: 0, bottom: 0 };
 }
 
 export function useKjunDomainColors() {

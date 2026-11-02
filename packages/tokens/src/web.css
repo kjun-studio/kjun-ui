@@ -1,4 +1,10 @@
 /* KJUN 공통 구조. 색상과 서체는 프로젝트가 제공한 CSS 변수를 사용한다. */
+/* Safe area: KjunProvider's safeArea, else the browser's env(safe-area-inset-*). Toasts, modals, menus and edge
+   components all read these two values. */
+.kjun-scope {
+  --_kjun-safe-area-top: var(--_kjun-safe-top, env(safe-area-inset-top, 0px));
+  --_kjun-safe-area-bottom: var(--_kjun-safe-bottom, env(safe-area-inset-bottom, 0px));
+}
 .kjun-button {
   position: relative;
   display: inline-flex;
@@ -235,6 +241,9 @@
   align-items: center;
   justify-content: center;
   padding: var(--_kjun-geometry-modal-mobile-inset);
+  /* Like Native: the dialog keeps clear of the safe area on edge-to-edge mobile pages. */
+  padding-top: calc(var(--_kjun-geometry-modal-mobile-inset) + var(--_kjun-safe-area-top));
+  padding-bottom: calc(var(--_kjun-geometry-modal-mobile-inset) + var(--_kjun-safe-area-bottom));
 }
 .kjun-modal {
   display: flex;
@@ -242,7 +251,7 @@
   background: var(--_kjun-color-surface);
   border-radius: var(--_kjun-geometry-modal-radius);
   box-shadow: var(--_kjun-modal-elevation);
-  max-height: calc(100dvh - 2 * var(--_kjun-geometry-modal-mobile-inset));
+  max-height: calc(100dvh - 2 * var(--_kjun-geometry-modal-mobile-inset) - var(--_kjun-safe-area-top) - var(--_kjun-safe-area-bottom));
   max-width: 100%;
   overflow: hidden;
   outline: none;

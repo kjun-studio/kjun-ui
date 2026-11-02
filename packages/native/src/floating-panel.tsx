@@ -31,7 +31,7 @@ import { AccessiblePressable as Pressable } from "./a11y";
 import { content } from "./internal";
 import { ScopedNativeModal } from "./overlay-host";
 import Svg, { Path } from "react-native-svg";
-import { useKjunStyles } from "./provider";
+import { useKjunSafeArea, useKjunStyles } from "./provider";
 
 export function LayerTrigger({
   trigger,
@@ -141,6 +141,7 @@ export function FloatingPanel({
   const scroll = useRef<ScrollView>(null), viewport = useRef(0);
   const { colors } = useKjunStyles(),
     window = useWindowDimensions(),
+    insets = useKjunSafeArea(),
     [anchored, setAnchored] = useState(false),
     [sized, setSized] = useState(false),
     [anchor, setAnchor] = useState({ x: 0, y: 0, width: 0, height: 0 }),
@@ -189,12 +190,14 @@ export function FloatingPanel({
       maximumWidth,
       Math.max(minimumPanelWidth, contentSizedMenu ? panel.width : matchTriggerWidth ? anchor.width : popoverWidth)
     );
-  const available = Math.min(maxHeight ?? (field ? tokens.extensions.menu.listMaxHeight : tokens.extensions.floating.maxHeight), window.height - 2 * tokens.extensions.floating.viewportInset),
+  // The screen edges, past the safe area: a panel never covers the status bar or the home indicator.
+  const edgeTop = tokens.extensions.floating.viewportInset + insets.top, edgeBottom = tokens.extensions.floating.viewportInset + insets.bottom;
+  const available = Math.min(maxHeight ?? (field ? tokens.extensions.menu.listMaxHeight : tokens.extensions.floating.maxHeight), Math.max(0, window.height - edgeTop - edgeBottom)),
     // The scroll content leaves out the header and the panel border; both still take room when choosing a side.
     frame = tooltip || contentSizedMenu ? 0 : 2 * tokens.border.defaultWidth,
     height = Math.min(panel.height + (header != null ? headerHeight : 0) + frame, available),
-    roomAbove = anchor.y - gap - tokens.extensions.floating.viewportInset,
-    roomBelow = window.height - anchor.y - anchor.height - gap - tokens.extensions.floating.viewportInset,
+    roomAbove = anchor.y - gap - edgeTop,
+    roomBelow = window.height - anchor.y - anchor.height - gap - edgeBottom,
     // Either side flips when the panel does not fit and the other side has more room, like Web.
     above = placement.startsWith("top")
       ? !(flip && height > roomAbove && roomBelow > roomAbove)
@@ -212,7 +215,7 @@ export function FloatingPanel({
     top = anchor.y + (anchor.height - height) / 2;
   }
   left = Math.max(tokens.extensions.floating.viewportInset, Math.min(window.width - width - tokens.extensions.floating.viewportInset, left));
-  top = Math.max(tokens.extensions.floating.viewportInset, Math.min(window.height - height - tokens.extensions.floating.viewportInset, top));
+  top = Math.max(edgeTop, Math.min(window.height - height - edgeBottom, top));
   if (layer.blocked) return null;
   // A web tooltip must not capture focus or intercept its trigger's pointer.
   if (tooltip && Platform.OS === "web") {

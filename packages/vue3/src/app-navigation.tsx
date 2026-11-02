@@ -1,3 +1,4 @@
+import { webSafeBottom, webSafeTop } from "../../../shared/package-runtime/safe-area";
 import { useKjunMessages } from "./runtime/messages";
 import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
 import type { KjunMessages } from "../../../shared/package-runtime/messages";
@@ -6,12 +7,12 @@ import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { kjunTopNavigationKey } from "./runtime/keys";
 import { hasContent } from "./runtime/slots";
-import { css } from "./runtime/style";
 
 const kjunTopNavigationProps = {
   title: { type: String, required: true },
   description: { type: String, default: undefined },
-  safeAreaTop: { type: Number, default: 0 },
+  /** Keeps clear of the screen's safe area from KjunProvider; false where the app already reserved it. */
+  safeArea: { type: Boolean, default: true },
   /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
   surface: { type: Boolean, default: true },
 } as const;
@@ -29,7 +30,7 @@ export const KjunTopNavigation = defineComponent({
     return () => {
       const leading = slots.leading?.(), actions = slots.actions?.();
       return (
-        <header class="kjun-top-navigation" data-surface={props.surface ? undefined : "false"} style={css({ paddingTop: Math.max(0, props.safeAreaTop) })}>
+        <header class="kjun-top-navigation" data-surface={props.surface ? undefined : "false"} style={{ paddingTop: webSafeTop(props.safeArea) }}>
           <div class="kjun-navigation-content">
             {hasContent(leading) && <div class="kjun-navigation-leading">{leading}</div>}
             <div class="kjun-navigation-title"><strong>{props.title}</strong>{props.description && <p>{props.description}</p>}</div>
@@ -52,7 +53,8 @@ const kjunBottomNavigationProps = {
   items: { type: Array as PropType<NavigationDestination[]>, required: true },
   value: { type: String, required: true },
   ariaLabel: { type: String, default: undefined },
-  safeAreaBottom: { type: Number, default: 0 },
+  /** Keeps clear of the screen's safe area from KjunProvider; false where the app already reserved it. */
+  safeArea: { type: Boolean, default: true },
   keyboardVisible: { type: Boolean, default: false },
   hideOnKeyboard: { type: Boolean, default: true },
   /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
@@ -84,7 +86,7 @@ export const KjunBottomNavigation = defineComponent({
       const hasIcons = props.items.some(item => item.icon);
       if (props.keyboardVisible && props.hideOnKeyboard) return null;
       return (
-        <nav class="kjun-bottom-navigation" data-icons={hasIcons || undefined} data-surface={props.surface ? undefined : "false"} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={css({ paddingBottom: Math.max(0, props.safeAreaBottom) })}>
+        <nav class="kjun-bottom-navigation" data-icons={hasIcons || undefined} data-surface={props.surface ? undefined : "false"} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ paddingBottom: webSafeBottom(props.safeArea) }}>
           {props.items.map(item => {
             const selected = props.value === item.key;
             const badge = badgeMark(item.badge);
@@ -105,7 +107,8 @@ const kjunFloatingNavigationProps = {
   items: { type: Array as PropType<NavigationDestination[]>, required: true },
   value: { type: String, required: true },
   ariaLabel: { type: String, default: undefined },
-  safeAreaBottom: { type: Number, default: 0 },
+  /** Keeps clear of the screen's safe area from KjunProvider; false where the app already reserved it. */
+  safeArea: { type: Boolean, default: true },
   keyboardVisible: { type: Boolean, default: false },
   hideOnKeyboard: { type: Boolean, default: true },
 } as const;
@@ -122,7 +125,7 @@ export const KjunFloatingNavigation = defineComponent({
       const geometry = tokens.extensions.floatingNavigation;
       if (props.keyboardVisible && props.hideOnKeyboard) return null;
       return (
-        <nav class="kjun-floating-navigation" aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={css({ marginBottom: geometry.offset + Math.max(0, props.safeAreaBottom) })}>
+        <nav class="kjun-floating-navigation" aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ marginBottom: `calc(${geometry.offset}px + ${webSafeBottom(props.safeArea)})` }}>
           {props.items.map(item => {
             const selected = props.value === item.key;
             const badge = badgeMark(item.badge);
@@ -142,7 +145,8 @@ export const KjunFloatingNavigation = defineComponent({
 
 const kjunBottomActionBarProps = {
   description: { type: String, default: undefined },
-  safeAreaBottom: { type: Number, default: 0 },
+  /** Keeps clear of the screen's safe area from KjunProvider; false where the app already reserved it. */
+  safeArea: { type: Boolean, default: true },
   keyboardVisible: { type: Boolean, default: false },
   hideOnKeyboard: { type: Boolean, default: false },
   /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
@@ -155,7 +159,7 @@ export const KjunBottomActionBar = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     return () => props.keyboardVisible && props.hideOnKeyboard ? null : (
-      <div class="kjun-bottom-action-bar" data-surface={props.surface ? undefined : "false"} style={css({ paddingBottom: tokens.extensions.navigation.padding + Math.max(0, props.safeAreaBottom) })}>
+      <div class="kjun-bottom-action-bar" data-surface={props.surface ? undefined : "false"} style={{ paddingBottom: `calc(${tokens.extensions.navigation.padding}px + ${webSafeBottom(props.safeArea)})` }}>
         <div class="kjun-bottom-action-content">{props.description && <p>{props.description}</p>}<div class="kjun-navigation-actions">{slots.default?.()}</div></div>
       </div>
     );

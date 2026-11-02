@@ -7,9 +7,9 @@ Object.assign(window, { configureActionBar: (next: object) => { s.config = { ...
 const action = (name: string) => () => s.events.push(name);
 createApp(defineComponent(() => () => {
   const config = s.config;
-  return <K.KjunProvider><main style={{ padding: '16px' }}>
+  return <K.KjunProvider safeArea={{ bottom: config.safeAreaBottom }}><main style={{ padding: '16px' }}>
     <div data-testid="bar" style={{ width: typeof config.width === 'number' ? config.width + 'px' : config.width, maxWidth: '100%' }}>
-      <K.KjunBottomActionBar description={config.description} safeAreaBottom={config.safeAreaBottom} keyboardVisible={config.keyboardVisible} hideOnKeyboard={config.hideOnKeyboard}>
+      <K.KjunBottomActionBar description={config.description} keyboardVisible={config.keyboardVisible} hideOnKeyboard={config.hideOnKeyboard}>
         {config.direct ? <>
           {config.showCancel && <K.KjunButton size="lg" variant="ghost" disabled={config.disabled} onClick={action('cancel')}>취소</K.KjunButton>}
           {config.showConfirm && <K.KjunButton size="lg" variant={config.variant} disabled={config.disabled} loading={config.loading} onClick={action('save')}>변경 사항 저장</K.KjunButton>}

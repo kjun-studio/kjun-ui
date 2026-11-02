@@ -5,9 +5,9 @@ export function BottomActionBarDesignCases({ K, native = false }: { K: any; nati
   const [config, setConfig] = useState(actionBarConfig), [events, setEvents] = useState<string[]>([]);
   useLayoutEffect(() => { Object.assign(window, { configureActionBar: (next: object) => flushSync(() => { setConfig(old => ({ ...old, ...next })); setEvents([]); }) }); }, []);
   const action = (name: string) => ({ [native ? 'onPress' : 'onClick']: () => setEvents(old => [...old, name]) });
-  return <main style={{ padding: 16 }}>
+  return <K.KjunProvider safeArea={{ bottom: config.safeAreaBottom }}><main style={{ padding: 16 }}>
     <div data-testid="bar" style={{ width: config.width, maxWidth: '100%' }}>
-      <K.KjunBottomActionBar description={config.description} safeAreaBottom={config.safeAreaBottom} keyboardVisible={config.keyboardVisible} hideOnKeyboard={config.hideOnKeyboard}>
+      <K.KjunBottomActionBar description={config.description} keyboardVisible={config.keyboardVisible} hideOnKeyboard={config.hideOnKeyboard}>
         {config.direct ? <>
           {config.showCancel && <K.KjunButton size="lg" variant="ghost" disabled={config.disabled} {...action('cancel')}>취소</K.KjunButton>}
           {config.showConfirm && <K.KjunButton size="lg" variant={config.variant} disabled={config.disabled} loading={config.loading} {...action('save')}>변경 사항 저장</K.KjunButton>}
@@ -16,5 +16,5 @@ export function BottomActionBarDesignCases({ K, native = false }: { K: any; nati
     </div>
     <div data-testid="outside" style={{ width: 320 }}><K.KjunFormActions confirmText="일반 저장" /></div>
     <output data-testid="events">{events.join('|')}</output>
-  </main>;
+  </main></K.KjunProvider>;
 }

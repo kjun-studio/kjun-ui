@@ -1,13 +1,14 @@
 import { useLayerState } from "../../../shared/package-runtime/use-layer";
 import { tokens } from "@kjun-ui/tokens";
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, type CSSProperties } from 'react';
 import type { createFeedbackController } from '@kjun-ui/tokens';
 import { type PresentedToast } from '../../../shared/package-runtime/feedback-motion';
 import { createToastLayout } from '../../../shared/package-runtime/toast-layout';
+import { toastEdgeShift, type ToastPlacement } from '../../../shared/package-runtime/toast-placement';
 import { ToastView } from './toast';
 import { useReducedMotion } from './use-reduced-motion';
 
-function ToastSurface({ item, controller }: { item: PresentedToast; controller: ReturnType<typeof createFeedbackController> }) {
+function ToastSurface({ item, controller, placement }: { item: PresentedToast; controller: ReturnType<typeof createFeedbackController>; placement: ToastPlacement }) {
   const ref = useRef<HTMLDivElement>(null), reduced = useReducedMotion();
   const current = useRef<{ opacity: string; transform: string } | null>(null);
   const entryFinished = useRef(false);
@@ -17,7 +18,7 @@ function ToastSurface({ item, controller }: { item: PresentedToast; controller: 
     if (reduced) { entryFinished.current = true; return; }
     const elapsed = Date.now() - item.born;
     if (!item.exiting && (elapsed >= tokens.motion.toastEnter || entryFinished.current)) return;
-    const hidden = `translateY(${-tokens.motionDistance.toast}px)`, from = current.current;
+    const hidden = `translateY(${toastEdgeShift(placement)}px)`, from = current.current;
     // Exit opacity fades linearly and ends before the movement, matching layer exits.
     const animations = item.exiting ? [
       el.animate([{ opacity: from?.opacity ?? '1' }, { opacity: 0 }], { duration: tokens.motion.fadeExit, easing: tokens.motion.easeLinear, fill: 'both' }),
@@ -31,19 +32,20 @@ function ToastSurface({ item, controller }: { item: PresentedToast; controller: 
       current.current = { opacity: style.opacity, transform: style.transform };
       for (const animation of animations) animation.cancel();
     };
-  }, [item.exiting, item.born, reduced]);
+  }, [item.exiting, item.born, reduced, placement]);
   return <div ref={ref} inert={item.exiting} aria-hidden={item.exiting || undefined}>
     <ToastView toast={item.toast} controller={controller} />
   </div>;
 }
-export function ToastStack({ items, controller }: { items: PresentedToast[]; controller: ReturnType<typeof createFeedbackController> }) {
+export function ToastStack({ items, controller, placement = "top", offset = 0 }: { items: PresentedToast[]; controller: ReturnType<typeof createFeedbackController>; placement?: ToastPlacement; offset?: number }) {
   const layers = useLayerState();
   const root = useRef<HTMLDivElement>(null), layout = useRef(createToastLayout());
   const reduced = useReducedMotion();
   useLayoutEffect(() => { if (root.current) layout.current.update(root.current, reduced); });
   useLayoutEffect(() => () => layout.current.destroy(), []);
-  return <div ref={root} className="kjun-toast-stack" style={{ zIndex: layers.zIndex(layers.topWindow()?.id, "toast") }}>{items.map(item => <div key={item.toast.id}
+  return <div ref={root} className="kjun-toast-stack" data-placement={placement}
+    style={{ zIndex: layers.zIndex(layers.topWindow()?.id, "toast"), "--_kjun-toast-offset": `${Math.max(0, offset)}px` } as CSSProperties}>{items.map(item => <div key={item.toast.id}
     data-toast-id={item.toast.id} data-exiting={item.exiting} className="kjun-toast-slot">
-    <ToastSurface item={item} controller={controller} />
+    <ToastSurface item={item} controller={controller} placement={placement} />
   </div>)}</div>;
 }

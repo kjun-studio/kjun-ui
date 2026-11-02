@@ -1,6 +1,7 @@
 import { defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, shallowRef, watch, type PropType, type SlotsType, type VNodeChild } from "vue";
 import type { KjunIconRegistry } from "@kjun-ui/icons";
 import { createPortalScope } from "../../../shared/package-runtime/portal-scope";
+import { safeAreaVars, type KjunSafeArea } from "../../../shared/package-runtime/safe-area";
 import { validateKjunCssScope } from "../../../shared/package-runtime/css-contract";
 import { provideIcons } from "./runtime/icons";
 import { provideKjunMessages } from "./runtime/messages";
@@ -16,6 +17,8 @@ export const KjunProvider = defineComponent({
     locale: { type: String, default: undefined },
     /** Replaces part of KJUN's copy, e.g. with the app's own translations. */
     messages: { type: Object as PropType<Partial<KjunMessages>>, default: undefined },
+    /** Screen insets in px for toasts, modals, menus and edge components; without it the browser's env(safe-area-inset-*) applies. */
+    safeArea: { type: Object as PropType<KjunSafeArea>, default: undefined },
   },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
@@ -47,7 +50,7 @@ export const KjunProvider = defineComponent({
     onMounted(validate);
     onUpdated(validate);
     return () => (
-      <div ref={container} class="kjun-scope">
+      <div ref={container} class="kjun-scope" style={safeAreaVars(props.safeArea)}>
         {slots.default?.()}
         {parentPortal === undefined && <div ref={el => { portal.value = el as HTMLElement | null; }} data-kjun-layer-host="" />}
       </div>

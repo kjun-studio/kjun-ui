@@ -3,6 +3,7 @@ import { useFeedbackDialog } from "../../../shared/package-runtime/feedback-dial
 import { usePresentedToasts, usePresentedRequest } from "../../../shared/package-runtime/feedback-motion";
 import { KjunFeedbackContext, useOptionalKjunFeedback } from "./feedback-context";
 import { ToastStack } from "./toast-stack";
+import type { ToastPlacement } from "../../../shared/package-runtime/toast-placement";
 import {
 createFeedbackController,
 feedbackControllerOf,
@@ -70,7 +71,16 @@ function FeedbackDialog({
     </KjunModal>
   );
 }
-export function KjunFeedbackProvider({ children, controller: controllerProp }: { children: ReactNode; /** A feedback API from createKjunFeedback(), for calls outside components. */ controller?: KjunFeedback }) {
+export interface KjunFeedbackProviderProps {
+  children: ReactNode;
+  /** A feedback API from createKjunFeedback(), for calls outside components. */
+  controller?: KjunFeedback;
+  /** Stacks toasts at the top (default) or the bottom of the screen, right-aligned on wide screens; both keep clear of the safe area. */
+  placement?: ToastPlacement;
+  /** Extra px between the toasts and their edge, e.g. a bottom navigation's height. */
+  offset?: number;
+}
+export function KjunFeedbackProvider({ children, controller: controllerProp, placement = "top", offset = 0 }: KjunFeedbackProviderProps) {
   // An app-made controller (createKjunFeedback) outlives this Provider; only one the Provider made is disposed.
   const [owned] = useState(() => controllerProp ? undefined : createFeedbackController());
   const controller = controllerProp ? feedbackControllerOf(controllerProp) : owned!;
@@ -99,7 +109,7 @@ export function KjunFeedbackProvider({ children, controller: controllerProp }: {
       setLayers((current) => current.filter((value) => value.id !== id));
   }, []);
   const top = [...layers].sort((a, b) => a.order - b.order).at(-1)?.id;
-  const renderToasts = () => <ToastStack items={toasts} controller={controller} />;
+  const renderToasts = () => <ToastStack items={toasts} controller={controller} placement={placement} offset={offset} />;
 
   return (
     <KjunFeedbackContext.Provider value={controller.api}>

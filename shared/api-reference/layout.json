@@ -137,8 +137,7 @@
       "closeOnEsc",
       "noPadding",
       "ariaLabel",
-      "safeAreaTop",
-      "safeAreaBottom",
+      "safeArea",
       "maxHeight"
     ],
     "react": [
@@ -156,8 +155,7 @@
       "children",
       "onClose",
       "ariaLabel",
-      "safeAreaTop",
-      "safeAreaBottom",
+      "safeArea",
       "maxHeight",
       "onAfterClose"
     ],
@@ -176,8 +174,7 @@
       "children",
       "onClose",
       "ariaLabel",
-      "safeAreaTop",
-      "safeAreaBottom",
+      "safeArea",
       "maxHeight",
       "avoidKeyboard",
       "onAfterClose"

@@ -20,11 +20,11 @@ export function renderFoundationExample(name: string, tools: ExampleTools): any 
       const layers = name === "GuideLayerStack";
       const keyboard = layers ? false : get("keyboard", settings.keyboardVisible);
       const long = get("long", settings.long);
-      const header = h("KjunTopNavigation", { title: "프로젝트 설정", safeAreaTop: 24 });
+      const header = h("KjunTopNavigation", { title: "프로젝트 설정" });
       const dock = [
-        h("KjunBottomActionBar", { description: long ? "팀원이 함께 사용하는 프로젝트입니다. 변경 내용을 충분히 검토한 뒤 저장해 주세요. 저장한 설정은 다음 활동부터 적용됩니다." : "변경한 내용을 확인한 뒤 저장하세요.", safeAreaBottom: keyboard ? settings.safeAreaBottom : 0, keyboardVisible: keyboard },
+        h("KjunBottomActionBar", { description: long ? "팀원이 함께 사용하는 프로젝트입니다. 변경 내용을 충분히 검토한 뒤 저장해 주세요. 저장한 설정은 다음 활동부터 적용됩니다." : "변경한 내용을 확인한 뒤 저장하세요.", safeArea: keyboard, keyboardVisible: keyboard },
           h("KjunButton", { size: "lg", block: true, ...action(() => layers ? set("open", true) : set("message", "변경 사항 저장")) }, layers ? "변경 내용 확인" : "변경 사항 저장")),
-        h("KjunBottomNavigation", { value: get("destination", "home"), safeAreaBottom: settings.safeAreaBottom, keyboardVisible: keyboard,
+        h("KjunBottomNavigation", { value: get("destination", "home"), keyboardVisible: keyboard,
           items: [{ key: "home", label: "홈", href: "#home", icon: "home" }, { key: "activity", label: "활동", href: "#activity", icon: "list" }],
           onNavigate: (key: string, event: any) => { event.preventDefault(); set("destination", key); },
         }),
@@ -34,7 +34,7 @@ export function renderFoundationExample(name: string, tools: ExampleTools): any 
         h("KjunListSection", {}, Array.from({ length: 10 }, (_, index) => h("KjunListRow", { title: "활동 " + (index + 1), description: long ? "길어진 한국어 설명과 여러 줄의 본문도 마지막까지 스크롤해서 확인할 수 있습니다." : "본문만 스크롤하는 영역입니다." }))),
         h("Inset", {}, h("Text", {}, "마지막 콘텐츠")),
       ]);
-      return h("Stack", {}, [
+      return h("KjunProvider", { safeArea: { top: 24, bottom: settings.safeAreaBottom } }, h("Stack", {}, [
         ...(!layers ? [h("Group", {}, [
           // Demo controls stay secondary so the screen's own CTA remains the only primary action.
           h("KjunButton", { variant: "secondary", ...action(() => set("long", !long)) }, long ? "짧은 CTA 문구" : "긴 CTA 문구"),
@@ -63,7 +63,7 @@ export function renderFoundationExample(name: string, tools: ExampleTools): any 
           ...Array.from({ length: settings.long ? 16 : 6 }, (_, index) => h("Text", {}, "검토 항목 " + (index + 1) + " · 모달 본문만 스크롤합니다.")),
           h("Text", {}, "모달 마지막 콘텐츠"),
         ]), { footer: h("KjunButton", { size: "lg", ...action(() => set("open", false)) }, "검토 완료") })] : []),
-      ]);
+      ]));
     }
   }
 }
