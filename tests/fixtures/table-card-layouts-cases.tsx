@@ -1,4 +1,6 @@
-// cardLayout (0.19.0): "stacked", "rows" and "tiles" cards, grouped, with a highlight, subtitle and totals. ?layout= picks one.
+import { useState } from 'react';
+// cardLayout (0.19.0): "stacked", "rows" and "tiles" cards, grouped, with a highlight, subtitle and totals. ?layout= picks one;
+// ?responsive=list shows the same grouped rows as the two-line list.
 export const layoutRows = [
   { id: 'p1', team: '디자인', name: '브랜드 웹사이트', owner: '김서연', status: '진행 중', amount: 4800000, progress: 72, due: '09.30' },
   { id: 'p2', team: '디자인', name: '고객센터 개편', owner: '이도윤', status: '검토 대기', amount: 3200000, progress: 45, due: '10.12' },
@@ -8,15 +10,17 @@ export const layoutColumns = [
   { key: 'name', label: '프로젝트' },
   { key: 'owner', label: '담당자' },
   { key: 'status', label: '상태', badge: true },
-  { key: 'amount', label: '예산', align: 'right', format: (value: unknown) => Number(value).toLocaleString('ko-KR') + '원' },
+  { key: 'amount', label: '예산', align: 'right', sortable: true, format: (value: unknown) => Number(value).toLocaleString('ko-KR') + '원' },
   { key: 'progress', label: '진행률', align: 'right', format: (value: unknown) => value + '%' },
   { key: 'due', label: '마감' },
 ];
 export const cardLayout = (new URLSearchParams(location.search).get('layout') || 'stacked') as 'stacked' | 'rows' | 'tiles';
-export const layoutProps = { ariaLabel: '카드형 표', data: layoutRows, responsive: 'card', groupBy: 'team', cardSubtitle: 'owner', cardHighlight: 'amount',
+const responsive = new URLSearchParams(location.search).get('responsive') || 'card';
+export const layoutProps = { ariaLabel: '카드형 표', data: layoutRows, responsive, groupBy: 'team', cardSubtitle: 'owner', cardHighlight: 'amount',
   cardLayout, summary: { amount: 'sum' }, selectable: true, expandable: true };
 export function TableCardLayoutCases({ K }: { K: any }) {
+  const [selected, setSelected] = useState<object[]>([]);
   return <div style={{ padding: 8 }}>
-    <K.KjunTable {...layoutProps} columns={layoutColumns} renderExpand={(row: any) => '상세 ' + row.name} onRowClick={() => undefined} />
+    <K.KjunTable {...layoutProps} columns={layoutColumns} selected={selected} onSelectionChange={setSelected} renderExpand={(row: any) => '상세 ' + row.name} onRowClick={() => undefined} />
   </div>;
 }

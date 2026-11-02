@@ -326,6 +326,7 @@
     },
     "tableCard": {
       "titleSkeletonWidth": 96,
+      "tileMinWidth": 160,
       "titleSkeletonHeight": 20,
       "badgeSkeletonWidth": 64,
       "fieldSkeletonHeight": 18,

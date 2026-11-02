@@ -4,12 +4,14 @@ import { tokens } from "@kjun-ui/tokens";
 import type { TableToolbarProps } from "../../../shared/package-runtime/table-presentation";
 import { KjunButton } from "./button";
 import { KjunInput } from "./input";
+import { KjunSelect } from "./select-control";
 import { View } from "react-native";
 import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
 export function TableToolbar<Row extends object>({ selectable, selected, allSelected, toggleAll, clearSelection,
-  renderSelectionToolbar, searchable, search, searchChange, searchPlaceholder, toolbar }: TableToolbarProps<Row>) {
+  renderSelectionToolbar, searchable, search, searchChange, searchPlaceholder, toolbar, sortOptions = [], sortValue, sortChange }: TableToolbarProps<Row>) {
   const m = useKjunMessages();
+  const sorting = sortOptions.length > 0;
   const { colors } = useKjunStyles();
   const toolbarStyle = {
     flexDirection: "row",
@@ -43,7 +45,7 @@ export function TableToolbar<Row extends object>({ selectable, selected, allSele
           )}
           {renderSelectionToolbar?.(selected)}
         </View>
-      ) : (searchable || toolbar) && (
+      ) : (searchable || sorting || toolbar) && (
         // Like Web: the search toolbar sits on the surface so the filled search field stands out from it.
         <View style={{ ...toolbarStyle, backgroundColor: colors.surface }}>
           {searchable && (
@@ -59,6 +61,12 @@ export function TableToolbar<Row extends object>({ selectable, selected, allSele
               />
             </View>
           )}
+          {/* Like Web: narrow layouts have no header row to sort by, so the choice sits beside the search. */}
+          {sorting ? (
+            <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, minWidth: 0, maxWidth: tokens.table.searchWidth }}>
+              <KjunSelect size="sm" ariaLabel={m.sortBy} options={sortOptions} value={sortValue ?? ""} onValueChange={(value) => sortChange?.(String(value ?? ""))} />
+            </View>
+          ) : null}
           {toolbar}
         </View>
       )}

@@ -3,9 +3,11 @@ import { tokens } from "@kjun-ui/tokens";
 import type { TableToolbarProps } from "../../../shared/package-runtime/table-presentation";
 import { KjunButton } from "./button";
 import { KjunInput } from "./input";
+import { KjunSelect } from "./select-control";
 export function TableToolbar<Row extends object>({ selectable, selected, allSelected, toggleAll, clearSelection,
-  renderSelectionToolbar, searchable, search, searchChange, searchPlaceholder, toolbar }: TableToolbarProps<Row>) {
+  renderSelectionToolbar, searchable, search, searchChange, searchPlaceholder, toolbar, sortOptions = [], sortValue, sortChange }: TableToolbarProps<Row>) {
   const m = useKjunMessages();
+  const sorting = sortOptions.length > 0;
   return <>
       {selectable && selected.length > 0 ? (
         <div
@@ -23,7 +25,7 @@ export function TableToolbar<Row extends object>({ selectable, selected, allSele
           )}
           {renderSelectionToolbar?.(selected)}
         </div>
-      ) : (searchable || toolbar) && (
+      ) : (searchable || sorting || toolbar) && (
         <div className="kjun-table-toolbar">
           {searchable && (
             <KjunInput
@@ -37,6 +39,12 @@ export function TableToolbar<Row extends object>({ selectable, selected, allSele
               onValueChange={searchChange}
             />
           )}{" "}
+          {/* Narrow layouts have no header row to sort by; the choice sits beside the search. */}
+          {sorting && (
+            <div className="kjun-table-sort">
+              <KjunSelect size="sm" ariaLabel={m.sortBy} options={sortOptions} value={sortValue ?? ""} onValueChange={(value) => sortChange?.(String(value ?? ""))} />
+            </div>
+          )}
           {toolbar}
         </div>
       )}

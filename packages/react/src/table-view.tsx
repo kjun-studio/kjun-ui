@@ -1,6 +1,6 @@
 import { useKjunMessageScope, useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tableRowLabel } from "../../../shared/package-runtime/table-model";
-import { tablePresentation, tableCellValue, tableSummaryValue, tableTotals } from "../../../shared/package-runtime/table-presentation";
+import { tablePresentation, tableCellValue, tableSortFromValue, tableSortOptions, tableSortValue, tableSummaryValue, tableTotals } from "../../../shared/package-runtime/table-presentation";
 import { groupTableRows, type TableRowGroup } from "../../../shared/package-runtime/table-groups";
 import { TableToolbar } from "./table-toolbar";
 import { TableGrid } from "./table-grid";
@@ -127,7 +127,8 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
       ref={domainColorRef(!query.initialLoading && state.rows.length > 0 && props.columns.some(column => column.pill))}>
       <TableToolbar {...{ selectable, selected, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }} allSelected={state.all}
         toggleAll={state.toggleAll} clearSelection={() => props.onSelectionChange?.([])}
-        search={state.search} searchChange={state.searchChange} />
+        search={state.search} searchChange={state.searchChange}
+        sortOptions={card || layout.list ? tableSortOptions(props, m) : undefined} sortValue={tableSortValue(state.sort)} sortChange={(value) => state.sortTo(tableSortFromValue(value))} />
       <KjunDataState
         queryKey={props.queryKey}
         resultKey={
@@ -147,9 +148,9 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         loadingDelay={skeleton ? 0 : loadingDelay}
       >
         {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} groups={grouping.groups} groupLabel={grouping.groupLabel} totals={tableTotals(props, state.rows, locale)} />
+          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} groups={grouping.groups} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : layout.list ? (
-          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} groups={grouping.groups} groupLabel={grouping.groupLabel} totals={tableTotals(props, state.rows, locale)} />
+          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} groups={grouping.groups} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : (
           <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, ...grouping }} stickyOffset={props.stickyOffset} sortable={props.sortable} />
         )}

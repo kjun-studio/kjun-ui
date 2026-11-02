@@ -44,6 +44,6 @@ test('Native skeletons share one animation and scale their line boxes with the f
 });
 
 test('table loading states never nest a card skeleton inside a table card', () => {
-  for (const path of ['packages/react/src/table-cards.tsx', 'packages/vue3/src/table-parts.tsx', 'packages/native/src/table-cards.tsx'])
+  for (const path of ['packages/react/src/table-cards.tsx', 'packages/vue3/src/table-narrow.tsx', 'packages/native/src/table-cards.tsx'])
     assert.doesNotMatch(read(path), /type="card"/, path);
 });

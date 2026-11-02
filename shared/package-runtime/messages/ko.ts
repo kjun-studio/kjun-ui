@@ -124,6 +124,8 @@ export const kjunMessagesKo = {
   collapse: "접기",
   showDetails: "상세 보기",
   ascending: "오름차순",
+  sortBy: "정렬",
+  defaultOrder: "기본 순서",
   descending: "내림차순",
   // Navigation
   tabs: "탭",

@@ -161,6 +161,12 @@ export function useTableModel<Row extends object>(props: TableProps<Row, unknown
       if (props.sort === undefined) setSort(next);
       props.onSortChange?.(next);
     },
+    /** The narrow-screen sort choice: an exact key and order, or { key: "" } for the data's own order. */
+    sortTo: (next: TableSort) => {
+      if (!sortable) return;
+      if (props.sort === undefined) setSort(next);
+      props.onSortChange?.(next);
+    },
     toggleRow: (row: Row) => onSelectionChange?.(toggleSelectedRow(selected, row, rowKey)),
     toggleAll: () => onSelectionChange?.(toggleAllRows(rows, selected, rowKey, all)),
     toggleExpand: (row: Row, index: number) => {

@@ -118,6 +118,8 @@ export const kjunMessagesEn: KjunMessages = {
   collapse: "Collapse",
   showDetails: "Show details",
   ascending: "Ascending",
+  sortBy: "Sort",
+  defaultOrder: "Default order",
   descending: "Descending",
   tabs: "Tabs",
   // The "…" button that opens the steps a long breadcrumb folds away.

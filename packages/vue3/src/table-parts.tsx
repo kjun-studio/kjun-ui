@@ -55,6 +55,9 @@ export interface TableLayout {
   actions?: TableColumn<any>;
   inline: TableColumn<any>[];
   sections: TableCardSection[];
+  footerActions?: TableColumn<any>;
+  cardFooter: boolean;
+  cardBody: (section: TableCardSection) => string;
   columnsForSection: (row: object, section: TableCardSection) => TableColumn<any>[];
 }
 export interface TableRenderState {
@@ -195,142 +198,6 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
         </tbody>}
         {c.summary && !c.initialLoading && state.rows.length > 0 && <tfoot>{summaryRow(state.rows, "total", "total")}</tfoot>}
       </table>
-    </div>
-  );
-}
-
-export function tableCards(c: TableRowsContext & { layout: TableLayout; totals: TableTotal[]; groups: TableRowGroup<Row>[] | null; groupLabel: (group: TableRowGroup<Row>) => VNodeChild }) {
-  const { title, subtitle, highlight, badges, inline, sections, actions, columnsForSection, cardLayout, tiles } = c.layout;
-  const { state } = c;
-  const stop = (event: MouseEvent) => event.stopPropagation();
-  const footerActions = !tiles && actions && !actions.inlineInCard ? actions : null;
-  const badgeList = (row: Row, i: number) => badges.length
-    ? <div class="kjun-table-card-badges">{badges.map(col => <span key={col.key}>{c.cell(col, row, i)}</span>)}</div> : null;
-  // Like React: tiles keep the title, subtitle, badges and highlight; the other layouts add fields and one footer row.
-  const card = (row: Row, i: number) => (
-    <div key={state.key(row, i)} role="listitem" class={"kjun-table-card kjun-table-row-action " + c.customClass(row, i)} data-selectable={c.selectable || undefined}
-      tabindex={c.clickable ? 0 : undefined} onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} onClick={() => c.rowClick(row, i)}>
-      {tiles ? [
-        (c.selectable || badges.length > 0) && <div class="kjun-table-card-header">{c.selectable && c.checkbox(row, i)}{badgeList(row, i)}</div>,
-        <div class="kjun-table-card-title">{title && c.cell(title, row, i)}</div>,
-        subtitle && <div class="kjun-table-card-subtitle">{c.cell(subtitle, row, i)}</div>,
-        highlight && <div class="kjun-table-card-highlight"><span class="kjun-table-card-value">{c.cell(highlight, row, i)}</span></div>,
-      ] : [
-        <div class="kjun-table-card-header">
-          <div class="kjun-table-card-header-left">
-            {c.selectable && c.checkbox(row, i)}
-            <span class="kjun-table-card-title">{title && c.cell(title, row, i)}</span>
-            {subtitle && <div class="kjun-table-card-subtitle">{c.cell(subtitle, row, i)}</div>}
-          </div>
-          {badgeList(row, i)}
-          {inline.length > 0 && (
-            <div class="kjun-table-card-header-actions" onClick={stop}>{inline.map(col => <span key={col.key}>{c.cell(col, row, i)}</span>)}</div>
-          )}
-        </div>,
-        highlight && (
-          <div class="kjun-table-card-highlight">
-            <span class="kjun-table-card-label">{highlight.label}</span>
-            <span class="kjun-table-card-value">{c.cell(highlight, row, i)}</span>
-          </div>
-        ),
-        ...sections.map((section: TableCardSection, index) => {
-          const cols = columnsForSection(row, section);
-          return cols.length ? (
-            <section key={section.key || index} class="kjun-table-card-section" aria-label={section.label || undefined}>
-              <div class={"kjun-table-card-body " + (cardLayout === "rows" ? "kjun-table-card-body--rows" : "kjun-table-card-body--" + (section.layout || "grid"))}>
-                {cols.map(col => (
-                  <div key={col.key} class={"kjun-table-card-field" + (col.fullWidthInCard ? " kjun-table-card-field--full" : "") +
-                    (section.labelAlign === "right" ? " kjun-table-card-field--label-right" : "")}>
-                    <span class="kjun-table-card-label">{col.label}</span>
-                    <span class="kjun-table-card-value">{c.cell(col, row, i)}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-          ) : null;
-        }),
-        (c.expandable || footerActions) && (
-          <div class="kjun-table-card-footer">
-            {c.expandable && <div class="kjun-table-card-expand-toggle">{c.expand(row, i)}</div>}
-            {footerActions && <div class="kjun-table-card-actions" onClick={stop}>{c.cell(footerActions, row, i)}</div>}
-          </div>
-        ),
-        c.expandable && state.expanded.includes(state.key(row, i)) && <div class="kjun-table-card-expand-content">{c.renderExpand(row, i)}</div>,
-      ]}
-    </div>
-  );
-  const grouped = !!c.groups && !c.initialLoading && state.rows.length > 0;
-  return (
-    <div class="kjun-table-cards" data-layout={cardLayout} data-grouped={grouped || undefined} role={grouped ? "group" : "list"} aria-label={c.ariaLabel}
-      style={c.skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={c.skeletonHidden ? "true" : undefined}>
-      {c.initialLoading
-        // Like React: the card's own header and fields, so loading never nests a card inside the card.
-        ? Array.from({ length: c.skeletonRows }, (_, i) => (
-          <div key={i} class="kjun-table-card">
-            <div class="kjun-table-card-header"><div class="kjun-table-card-header-left"><KjunSkeleton type="line" role={tiles ? "control" : "cardTitle"} width={tokens.extensions.tableCard.titleSkeletonWidth} /></div></div>
-            {tiles ? <div class="kjun-table-card-highlight"><KjunSkeleton type="line" role="control" width="50%" /></div> : (
-              <div class="kjun-table-card-section"><div class="kjun-table-card-body">
-                {[0, 1, 2, 3].map(field => (
-                  <div key={field} class="kjun-table-card-field">
-                    <KjunSkeleton type="line" role="caption" width="50%" />
-                    <KjunSkeleton type="line" role="body" width={field % 2 ? "60%" : "75%"} />
-                  </div>
-                ))}
-              </div></div>
-            )}
-          </div>
-        ))
-        : grouped ? c.groups!.map(group => (
-          <section key={group.key} class="kjun-table-card-group-section" aria-label={String(group.value ?? "-")}>
-            <div class="kjun-table-card-group"><span>{c.groupLabel(group)}</span><span class="kjun-table-card-group-count">{c.messages.groupCount(group.rows.length)}</span></div>
-            <div class="kjun-table-card-items" role="list">{group.rows.map(row => card(row, state.rowIndex(row)))}</div>
-          </section>
-        )) : state.rows.map(card)}
-      {!c.initialLoading && !state.rows.length && <div class="kjun-table-card-empty">{c.empty()}</div>}
-      {!c.initialLoading && state.rows.length > 0 && tableTotals(c.totals, c.messages.tableTotal)}
-    </div>
-  );
-}
-
-/** Like React: responsive="list" rows are a title over one meta line with the value and badges at the end. */
-export function tableList(c: TableRowsContext & { layout: TableLayout; totals: TableTotal[] }) {
-  const { title, listMeta, listValue, badges } = c.layout;
-  const { state } = c;
-  return (
-    <div class="kjun-table-list" role="list" aria-label={c.ariaLabel}
-      style={c.skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={c.skeletonHidden ? "true" : undefined}>
-      {c.initialLoading
-        ? Array.from({ length: c.skeletonRows }, (_, i) => (
-          <div key={i} class="kjun-table-list-item">
-            <div class="kjun-table-list-main">
-              <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
-              <KjunSkeleton type="line" role="caption" width="30%" />
-            </div>
-            <div class="kjun-table-list-side"><KjunSkeleton type="line" role="control" width={tokens.extensions.skeleton.detailWidth} /></div>
-          </div>
-        ))
-        : state.rows.map((row, i) => (
-          <div key={state.key(row, i)} role="listitem">
-            <div class={"kjun-table-list-item kjun-table-row-action " + c.customClass(row, i)} data-selected={state.selectedRow(row) || undefined}
-              tabindex={c.clickable ? 0 : undefined} onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} onClick={() => c.rowClick(row, i)}>
-              {c.selectable && c.checkbox(row, i)}
-              <div class="kjun-table-list-main">
-                <span class="kjun-table-list-title">{title && c.cell(title, row, i)}</span>
-                {listMeta && <span class="kjun-table-list-meta">{c.cell(listMeta, row, i)}</span>}
-              </div>
-              {(listValue || badges.length > 0) && (
-                <div class="kjun-table-list-side">
-                  {listValue && <span class="kjun-table-list-value">{c.cell(listValue, row, i)}</span>}
-                  {badges.map(col => <span key={col.key}>{c.cell(col, row, i)}</span>)}
-                </div>
-              )}
-              {c.expandable && <span onClick={(event: MouseEvent) => event.stopPropagation()}>{c.expand(row, i)}</span>}
-            </div>
-            {c.expandable && state.expanded.includes(state.key(row, i)) && <div class="kjun-table-list-expand">{c.renderExpand(row, i)}</div>}
-          </div>
-        ))}
-      {!c.initialLoading && !state.rows.length && <div class="kjun-table-card-empty">{c.empty()}</div>}
-      {!c.initialLoading && state.rows.length > 0 && tableTotals(c.totals, c.messages.tableTotal)}
     </div>
   );
 }

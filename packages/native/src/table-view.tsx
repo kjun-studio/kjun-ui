@@ -1,7 +1,7 @@
 import { useKjunMessageScope, useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tableRowLabel } from "../../../shared/package-runtime/table-model";
 import { typeStyle } from "./typography";
-import { tablePresentation, tableCellValue, tableSummaryValue, tableTotals, type TableCellRole } from "../../../shared/package-runtime/table-presentation";
+import { tablePresentation, tableCellValue, tableSortFromValue, tableSortOptions, tableSortValue, tableSummaryValue, tableTotals, type TableCellRole } from "../../../shared/package-runtime/table-presentation";
 import { groupTableRows, type TableRowGroup } from "../../../shared/package-runtime/table-groups";
 import { useState } from "react";
 import { TableToolbar } from "./table-toolbar";
@@ -111,6 +111,11 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
       textAlign: role === "cardValue" ? "left" : role === "cardRowValue" ? "right" : col.align,
     });
   };
+  // Plain text of a cell, for a value read out with a label the card does not draw.
+  const cellText = (col: TableColumn<Row>, row: Row, index: number) => {
+    const { body } = tableCellValue(props, col, row, index, locale);
+    return typeof body === "string" || typeof body === "number" ? String(body) : undefined;
+  };
   const checkbox = (row: Row, i: number) => (
     <KjunCheckbox
       value={state.selectedRow(row)}
@@ -146,7 +151,8 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     >
       <TableToolbar {...{ selectable, selected, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }} allSelected={state.all}
         toggleAll={state.toggleAll} clearSelection={() => props.onSelectionChange?.([])}
-        search={state.search} searchChange={state.searchChange} />
+        search={state.search} searchChange={state.searchChange}
+        sortOptions={card || layout.list ? tableSortOptions(props, m) : undefined} sortValue={tableSortValue(state.sort)} sortChange={(value) => state.sortTo(tableSortFromValue(value))} />
       <KjunDataState
         queryKey={props.queryKey}
         resultKey={
@@ -166,9 +172,9 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         loadingDelay={skeleton ? 0 : loadingDelay}
       >
         {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} groups={grouping.groups} groupLabel={grouping.groupLabel} totals={tableTotals(props, state.rows, locale)} />
+          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, cellText }} groups={grouping.groups} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : layout.list ? (
-          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} totals={tableTotals(props, state.rows, locale)} />
+          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} groups={grouping.groups} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : (
           <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ...grouping }} sortable={props.sortable} />
         )}

@@ -1,0 +1,294 @@
+/* Narrow-screen table layouts: cards (responsive="card") and two-line rows (responsive="list"), with their totals. */
+/* Cards: one row per card on narrow screens. "stacked" is a field grid, "rows" label-value lines, "tiles" small cards,
+   at least two a row and more as the width allows. Header (selection, title, badges), subtitle, highlight, fields, then one footer row (expand, actions). */
+.kjun-table-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_kjun-extension-table-card-card-gap);
+  padding: var(--_kjun-extension-table-card-list-padding);
+}
+.kjun-table-card-items, .kjun-table-card-group-section, .kjun-table-list-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_kjun-extension-table-card-card-gap);
+}
+/* Tiles: the ungrouped list, or each group's own list, is the grid. Two columns at least, more where each keeps tileMinWidth. */
+.kjun-table-cards[data-layout="tiles"]:not([data-grouped]), .kjun-table-cards[data-layout="tiles"] .kjun-table-card-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--_kjun-extension-table-card-tile-min-width), calc(50% - var(--_kjun-extension-table-card-card-gap) / 2)), 1fr));
+}
+.kjun-table-cards[data-layout="tiles"] > :is(.kjun-table-card-empty, .kjun-table-totals) { grid-column: 1 / -1; }
+/* A list group stacks its header and rows without the card gap; its header starts at the rows' text. */
+.kjun-table-list-group { gap: 0; }
+.kjun-table-list-group > .kjun-table-card-group { padding: var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-table-list-padding-x) var(--_kjun-geometry-dimension-value4); }
+.kjun-table-card-group {
+  padding: var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-dimension-value4) 0;
+  display: flex;
+  align-items: baseline;
+  color: var(--_kjun-text-secondary);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-control-weight);
+}
+.kjun-table-card-group-total { margin-inline-start: auto; color: var(--_kjun-text-secondary); font-variant-numeric: tabular-nums; text-align: end; }
+.kjun-table-card-group-total > span + span::before { content: " · "; }
+.kjun-table-card-group-count { margin-inline-start: var(--_kjun-geometry-dimension-value4); color: var(--_kjun-text-tertiary); font-weight: var(--_kjun-type-caption-weight); }
+
+.kjun-table-card {
+  min-width: 0;
+  background: var(--_kjun-color-surface);
+  border: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
+  border-radius: var(--_kjun-extension-table-card-radius);
+  padding: var(--_kjun-extension-table-card-padding);
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
+}
+/* Only a card that opens something looks pressable; a selected card takes the selection fill. */
+.kjun-table-card[tabindex] { cursor: pointer; }
+.kjun-table-card[data-selected] { background: var(--_kjun-color-selected-bg); }
+.kjun-table-cards[data-layout="tiles"] .kjun-table-card { padding: var(--_kjun-extension-table-card-tile-padding); }
+@media (hover: hover) {
+  .kjun-table-card[tabindex]:not([data-selected]):hover { background: var(--_kjun-bg-hover); }
+}
+/* The title opens the row for screen readers; it looks like the title and the card keeps the keyboard stop. */
+.kjun-table-card-open {
+  all: unset;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+/* justify-between 대신 left에 flex:1 — 인라인 액션이 있어도 배지/버튼이 항상 우측에 정렬된다.
+   The left side is a grid: the selection box and title share the first line, the subtitle starts under the title. */
+.kjun-table-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--_kjun-extension-table-card-gap);
+}
+.kjun-table-card-header-left {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--_kjun-extension-table-card-gap);
+  min-width: 0;
+}
+.kjun-table-card[data-selectable] .kjun-table-card-header-left { grid-template-columns: auto minmax(0, 1fr); }
+.kjun-table-card-header-left > .kjun-table-card-subtitle { grid-column: -2 / -1; }
+.kjun-table-card-header-actions, .kjun-table-card-badges { min-height: var(--_kjun-type-card-title-line); align-items: center; }
+.kjun-table-card-header-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--_kjun-extension-table-card-field-gap);
+}
+.kjun-table-card-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--_kjun-text-primary);
+  font-size: var(--_kjun-type-card-title-size);
+  line-height: var(--_kjun-type-card-title-line);
+  font-weight: var(--_kjun-type-card-title-weight);
+  letter-spacing: var(--_kjun-type-card-title-tracking);
+}
+.kjun-table-cards[data-layout="tiles"] .kjun-table-card-title {
+  font-size: var(--_kjun-type-control-size);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+}
+.kjun-table-card-subtitle {
+  margin-top: var(--_kjun-extension-table-card-value-gap);
+  color: var(--_kjun-text-secondary);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+  overflow-wrap: anywhere;
+}
+.kjun-table-card-highlight { margin-top: var(--_kjun-extension-table-card-section-gap); }
+.kjun-table-card-highlight > .kjun-table-card-value {
+  display: block;
+  margin-top: var(--_kjun-extension-table-card-value-gap);
+  font-size: var(--_kjun-type-section-title-size);
+  line-height: var(--_kjun-type-section-title-line);
+  font-weight: var(--_kjun-type-section-title-weight);
+  font-variant-numeric: tabular-nums;
+}
+.kjun-table-cards[data-layout="tiles"] .kjun-table-card-highlight > .kjun-table-card-value {
+  font-size: var(--_kjun-type-control-size);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+}
+
+/* Sections no longer carry labels or rules in a card; a gap separates them. */
+.kjun-table-card-section { margin-top: var(--_kjun-extension-table-card-section-gap); }
+.kjun-table-card-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--_kjun-extension-table-card-section-gap) var(--_kjun-extension-table-card-section-gap);
+}
+.kjun-table-card-body--stack { grid-template-columns: 1fr; }
+.kjun-table-card-body--metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.kjun-table-card-body--metrics .kjun-table-card-field { align-items: center; text-align: center; }
+.kjun-table-card-body--metrics .kjun-table-card-value { width: 100%; }
+/* rows: one label-value line per field. */
+.kjun-table-card-body--rows { grid-template-columns: 1fr; gap: var(--_kjun-extension-table-card-metric-gap); }
+.kjun-table-card-body--rows .kjun-table-card-field { flex-direction: row; align-items: baseline; justify-content: space-between; gap: var(--_kjun-extension-table-card-gap); }
+.kjun-table-card-body--rows .kjun-table-card-value { text-align: end; }
+.kjun-table-card-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_kjun-extension-table-card-value-gap);
+  /* grid 자식의 기본 min-width:auto는 긴 콘텐츠(JSON 등)가 truncate를 무력화하고
+     셀을 카드 밖까지 밀어내게 한다 — 0으로 풀어야 슬롯의 truncate가 동작한다 */
+  min-width: 0;
+}
+/* Card values start at their label whatever the column's table alignment. */
+.kjun-table-card-field .kjun-table-card-value { text-align: start; }
+.kjun-table-card-body--rows .kjun-table-card-field .kjun-table-card-value { text-align: end; }
+.kjun-table-card-field--full { grid-column: 1 / -1; }
+.kjun-table-card-field--label-right .kjun-table-card-label { display: block; width: 100%; text-align: right; }
+.kjun-table-card-label {
+  flex: none;
+  color: var(--_kjun-text-tertiary);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+.kjun-table-card-value {
+  color: var(--_kjun-text-primary);
+  font-size: var(--_kjun-type-body-size);
+  min-width: 0;
+  line-height: var(--_kjun-type-body-line);
+  font-weight: var(--_kjun-type-body-weight);
+  letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-table-card-badges {
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-extension-table-card-field-gap);
+  flex-shrink: 0;
+}
+.kjun-table-cards[data-layout="tiles"] .kjun-table-card-header { flex-wrap: wrap; }
+/* One footer row: expand on the start side, row actions on the end side. */
+.kjun-table-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_kjun-extension-table-card-gap);
+  margin-top: var(--_kjun-extension-table-card-footer-gap);
+  padding-top: var(--_kjun-extension-table-card-footer-gap);
+  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-divider);
+}
+.kjun-table-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--_kjun-extension-table-card-gap);
+  margin-inline-start: auto;
+}
+.kjun-table-card-expand-toggle {
+  display: flex;
+  align-items: center;
+  font-size: var(--_kjun-type-caption-size);
+  color: var(--_kjun-text-secondary);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-control-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+}
+.kjun-table-card-expand-content {
+  margin-top: var(--_kjun-extension-table-card-section-gap);
+  padding: var(--_kjun-geometry-table-expanded-padding-y) var(--_kjun-geometry-table-expanded-padding-x);
+  border-radius: var(--_kjun-geometry-radius-radius12);
+  background: var(--_kjun-color-secondary);
+}
+
+.kjun-table-card-empty {
+  text-align: center;
+  padding: var(--_kjun-extension-table-card-empty-padding);
+  color: var(--_kjun-text-tertiary);
+}
+
+/* responsive="list": rows without a header, a title over one meta line and the value with badges at the end. */
+.kjun-table-list {
+  display: flex;
+  flex-direction: column;
+}
+.kjun-table-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-geometry-table-list-gap);
+  padding: var(--_kjun-geometry-table-list-padding-y) var(--_kjun-geometry-table-list-padding-x);
+  border-radius: var(--_kjun-geometry-table-list-radius);
+}
+.kjun-table-list-item[tabindex] { cursor: pointer; }
+.kjun-table-list-item[data-selected] { background: var(--_kjun-color-selected-bg); }
+@media (hover: hover) {
+  .kjun-table-list-item[tabindex]:not([data-selected]):hover { background: var(--_kjun-color-hover); }
+}
+.kjun-table-list-item:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-inset-offset);
+}
+.kjun-table-list-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_kjun-geometry-table-list-meta-gap);
+  flex: 1;
+  min-width: 0;
+}
+.kjun-table-list-title {
+  font-size: var(--_kjun-type-control-size);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+  overflow-wrap: anywhere;
+}
+.kjun-table-list-meta {
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  color: var(--_kjun-color-text-tertiary);
+}
+.kjun-table-list-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--_kjun-geometry-table-list-meta-gap);
+  flex-shrink: 0;
+  text-align: right;
+}
+.kjun-table-list-value {
+  font-size: var(--_kjun-type-control-size);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.kjun-table-list-expand {
+  padding: var(--_kjun-geometry-table-expanded-padding-y) var(--_kjun-geometry-table-expanded-padding-x);
+  border-radius: var(--_kjun-geometry-table-list-radius);
+  background: var(--_kjun-color-secondary);
+}
+/* The summary on narrow layouts: a closing block under a strong text-colored rule. */
+.kjun-table-totals {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_kjun-geometry-table-list-meta-gap);
+  margin-top: var(--_kjun-geometry-table-list-meta-gap);
+  padding: var(--_kjun-geometry-table-list-padding-y) var(--_kjun-geometry-table-list-padding-x);
+  border-top: var(--_kjun-border-control-width) solid var(--_kjun-color-text);
+}
+.kjun-table-totals-title {
+  font-size: var(--_kjun-type-control-size);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+}
+.kjun-table-totals-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--_kjun-geometry-table-list-gap);
+  font-size: var(--_kjun-type-body-size);
+  line-height: var(--_kjun-type-body-line);
+  color: var(--_kjun-color-text-secondary);
+}
+.kjun-table-totals-value {
+  color: var(--_kjun-color-text);
+  font-weight: var(--_kjun-type-control-weight);
+  font-variant-numeric: tabular-nums;
+}

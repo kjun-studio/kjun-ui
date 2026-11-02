@@ -2,16 +2,18 @@ import { useKjunMessageScope, useKjunMessages } from "./runtime/messages";
 import { defineComponent, getCurrentInstance, onBeforeUnmount, onMounted, ref, type AllowedComponentProps, type ComponentCustomProps, type ExtractPublicPropTypes, type PropType, type VNodeChild, type VNodeProps, type SlotsType } from "vue";
 import { isComposingKey, nextTableSort, tokens, type TableSort } from "@kjun-ui/tokens";
 import { getValue, sortTableRows, stickyHeaderStuck, tableRowIndex, tableRowKey, tableRowLabel, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
-import { columnFormat, tablePresentation } from "../../../shared/package-runtime/table-presentation";
+import { columnFormat, tablePresentation, tableSortFromValue, tableSortOptions, tableSortValue } from "../../../shared/package-runtime/table-presentation";
 import { formatSummary, groupTableRows, summarizeColumn, type TableRowGroup, type TableSummaryKind } from "../../../shared/package-runtime/table-groups";
 import { KjunButton } from "./button";
 import { KjunDataState, useQueryDisplay } from "./data-state";
 import { KjunInput } from "./input";
+import { KjunSelect } from "./select-control";
 import { KjunPagination } from "./navigation";
 import { domainRef } from "./runtime/refs";
 import { useLoadingReveal } from "./runtime/loading-reveal";
 import { hasContent } from "./runtime/slots";
-import { TableCheck, tableCards, tableGrid, tableList, type TableLayout, type TableRenderState } from "./table-parts";
+import { TableCheck, tableGrid, type TableLayout, type TableRenderState } from "./table-parts";
+import { tableCards, tableList } from "./table-narrow";
 import type { TableCardSection, TableColumn, TablePagination } from "./table-types";
 export type { TableCardSection, TableColumn, TablePagination };
 
@@ -207,7 +209,16 @@ const KjunTableComponent = defineComponent({
       };
       const groups = groupTableRows(state.rows, props.groupBy);
       const groupLabel = (group: TableRowGroup<object>) => slots.group ? slots.group({ value: group.value, rows: group.rows }) : group.value == null || group.value === "" ? "-" : String(group.value);
-      const totals = props.summary ? props.columns.filter(col => props.summary?.[col.key]).map(col => ({ key: col.key, label: col.label, value: summaryValue(col, state.rows) })) : [];
+      const groupTotals = (rows: object[]) => props.summary ? props.columns.filter(col => props.summary?.[col.key]).map(col => ({ key: col.key, label: col.label, value: summaryValue(col, rows) })) : [];
+      const totals = groupTotals(state.rows);
+      // Narrow layouts have no header row to sort by; the toolbar offers each sortable column in both orders.
+      const sortOptions = card || layout.list ? tableSortOptions(props as never, m.value) : [];
+      const sortTo = (value: unknown) => {
+        if (!props.sortable) return;
+        const next = tableSortFromValue(value);
+        if (props.sort === undefined) internalSort.value = next;
+        emit("update:sort", next);
+      };
       const empty = slots.empty?.();
       const context = {
         messages: m.value,
@@ -230,19 +241,24 @@ const KjunTableComponent = defineComponent({
               {!state.all && <KjunButton size="sm" variant="ghost" onClick={state.toggleAll}>{m.value.selectAll}</KjunButton>}
               {selectionToolbar}
             </div>
-          ) : (props.searchable || hasContent(toolbar)) && (
+          ) : (props.searchable || sortOptions.length > 0 || hasContent(toolbar)) && (
             <div class="kjun-table-toolbar">
               {props.searchable && (
                 <KjunInput size="sm" style={{ width: tokens.table.searchWidth + "px", maxWidth: "100%" }} modelValue={search.value} ariaLabel={m.value.searchTable}
                   {...{ placeholder: (props.searchPlaceholder ?? m.value.search) }} prefixIcon="search" clearable onUpdate:modelValue={(value: string | number) => searchChange(String(value))} />
               )}{" "}
+              {sortOptions.length > 0 && (
+                <div class="kjun-table-sort">
+                  <KjunSelect size="sm" ariaLabel={m.value.sortBy} options={sortOptions} modelValue={tableSortValue(state.sort)} onUpdate:modelValue={sortTo} />
+                </div>
+              )}
               {toolbar}
             </div>
           )}
           <KjunDataState queryKey={props.queryKey} resultKey={status.usesQueryState ? status.hasCurrentResult ? props.queryKey : null : undefined}
             hasLoadedOnce={props.hasLoadedOnce} error={props.error} refreshing={status.queryRefreshing} loadingPadding="none" onRetry={props.onRetry}
             loading={props.skeleton ? undefined : props.loading} loadingText={(props.loadingText ?? m.value.loadingEllipsis)} loadingDelay={props.skeleton ? 0 : props.loadingDelay}>
-            {card ? tableCards({ ...context, layout, totals, groups, groupLabel }) : layout.list ? tableList({ ...context, layout, totals }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
+            {card ? tableCards({ ...context, layout, totals, groups, groupLabel, groupTotals }) : layout.list ? tableList({ ...context, layout, totals, groups, groupLabel, groupTotals }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
               sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable, stuck, stickyOffset: props.stickyOffset,
               groups, collapsed: collapsed.value,
               toggleGroup: (key: string) => { collapsed.value = collapsed.value.includes(key) ? collapsed.value.filter(k => k !== key) : [...collapsed.value, key]; },

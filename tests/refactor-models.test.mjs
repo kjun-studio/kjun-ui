@@ -4,7 +4,7 @@ import { build } from 'esbuild';
 
 const output = await build({ entryPoints: ['shared/package-runtime/table-presentation.ts'], bundle: true,
   write: false, format: 'esm', platform: 'node', define: { 'process.env.NODE_ENV': '"production"' } });
-const { tablePresentation, tableCellValue } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
+const { tablePresentation, tableCellValue, tableSortOptions, tableSortValue, tableSortFromValue } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 
 test('Table cell precedence respects deliberate empty, zero and false render results', () => {
   const row = { metric: 0 }, calls = [];
@@ -46,8 +46,23 @@ test('Table card sections preserve subtitle data behind badges, unassigned field
   assert.equal(highlighted.tiles, true);
   assert.deepEqual(highlighted.columnsForSection(row, highlighted.sections[0]).map(column => column.key), ['flag']);
   assert.equal(tablePresentation({ ...props, cardHighlight: 'title' }, true).highlight, undefined);
+  // A badge, the actions, a column hidden in cards or the subtitle itself never becomes another card part.
+  for (const key of ['badge', 'actions', 'hidden', 'subtitle']) assert.equal(tablePresentation({ ...props, cardHighlight: key }, true).highlight, undefined, key);
+  assert.equal(tablePresentation({ ...props, cardSubtitle: 'title' }, true).subtitle, undefined);
+  assert.equal(highlighted.footerActions, undefined);
+  assert.equal(highlighted.cardFooter, false);
+  assert.equal(tablePresentation({ ...props, cardLayout: 'rows' }, true).cardBody({ columns: [], layout: 'metrics' }), 'rows');
   const compact = tablePresentation({ ...props, responsive: 'compact', mobileColumns: ['zero', 'title'] }, true);
   assert.equal(compact.card, false);
   assert.deepEqual(compact.visible.map(column => column.key), ['title', 'zero']);
   assert.equal(tablePresentation(props, false).card, false);
+});
+
+test('narrow-screen sort choices cover each sortable column in both orders and round-trip', () => {
+  const messages = { defaultOrder: 'Default', ascending: 'Up', descending: 'Down' };
+  const columns = [{ key: 'name', label: 'Name' }, { key: 'a:b', label: 'Amount', sortable: true }];
+  assert.deepEqual(tableSortOptions({ columns }, messages).map(option => option.value), ['', 'a:b:asc', 'a:b:desc']);
+  assert.deepEqual(tableSortOptions({ columns, sortable: false }, messages), []);
+  assert.deepEqual(tableSortFromValue(tableSortValue({ key: 'a:b', order: 'desc' })), { key: 'a:b', order: 'desc' });
+  assert.deepEqual(tableSortFromValue(''), { key: '', order: 'asc' });
 });
