@@ -426,7 +426,9 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         ...(["전체", "Prompt"].includes(settings.service) ? [button("Prompt 요청", async () => {
           const result = await feedback.prompt({ title: settings.promptTitle, message: settings.promptMessage,
             type: settings.tone, confirmText: settings.confirmText, cancelText: settings.cancelText,
-            initialValue: settings.initialValue,
+            initialValue: settings.initialValue, label: "목록 이름", maxLength: 20,
+            // A danger prompt asks for the exact name before its confirm button turns on.
+            requiredValue: settings.tone === "danger" ? "주말 장보기" : undefined,
             validator: settings.validate ? value => value.trim().length > 1 || "두 글자 이상 입력하세요." : undefined,
           });
           message(String(result));

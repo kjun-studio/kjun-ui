@@ -1,6 +1,11 @@
 import type { ToastPlacement } from "../../../shared/package-runtime/toast-placement";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useFeedbackDialog } from "../../../shared/package-runtime/feedback-dialog";
+import { splitAround } from "../../../shared/package-runtime/feedback-prompt";
+import { alertTint } from "./alert-actions-context";
+import { KjunButton, KjunIcon } from "./button";
+import { useKjunStyles } from "./provider";
+import { typeStyle } from "./typography";
 import { usePresentedToasts, usePresentedRequest } from "../../../shared/package-runtime/feedback-motion";
 import { KjunFeedbackContext, useOptionalKjunFeedback } from "./feedback-context";
 import { ToastStack } from "./toast-stack";
@@ -18,7 +23,7 @@ useState,
 useSyncExternalStore,
 type ReactNode,
 } from "react";
-import { View, type StyleProp, type ViewStyle } from "react-native";
+import { View, useWindowDimensions, type StyleProp, type ViewStyle } from "react-native";
 import { KjunInput } from "./input";
 import { KText } from "./internal";
 import { KjunModal } from "./modal";
@@ -40,38 +45,74 @@ function FeedbackDialog({
   open: boolean;
 }) {
   const m = useKjunMessages();
-  const { options, value, error, busy, edit, cancel, submit } = useFeedbackDialog(controller, request, m);
+  const { colors } = useKjunStyles(), window = useWindowDimensions();
+  const { options, value, error, busy, ready, edit, cancel, submit } = useFeedbackDialog(controller, request, m);
+  const prompt = request.kind === "prompt", danger = options.type === "danger";
+  const title = options.title || (prompt ? m.promptTitle : m.confirmTitle);
+  // Phones: the two choices split the width with large targets (like Web).
+  const narrow = window.width <= tokens.responsive.modal, buttonSize = narrow ? "lg" : "md";
+  const required = options.requiredValue != null ? splitAround(m.typeToConfirm(options.requiredValue), options.requiredValue) : null;
+  const label = { ...typeStyle("label"), color: colors.text };
   return (
     <KjunModal
       open={open}
       onOpenChange={(open) => {
         if (!open) cancel();
       }}
-      title={options.title || (request.kind === "prompt" ? m.promptTitle : m.confirmTitle)}
-      showFooter
-      confirmText={options.confirmText || m.confirm}
-      cancelText={options.cancelText || m.cancel}
-      loading={busy}
-      closable={!busy}
+      // Like Web: one small surface, no header or footer bands and no close button.
+      size="sm"
+      ariaLabel={title}
+      showHeader={false}
       closeOnEsc={!busy}
       closeOnOverlay={!busy}
-      onConfirm={submit}
-      confirmVariant={options.type === "danger" ? "danger" : "primary"}
     >
-      {!!options.message && (
-        <KText style={{ marginBottom: tokens.dimension.value16 }}>{options.message}</KText>
+      <KText accessibilityRole="header" style={{ ...typeStyle("sectionTitle"), color: colors.text }}>{title}</KText>
+      {!!options.message && (danger ? (
+        <View style={{ flexDirection: "row", gap: tokens.dimension.value8, marginTop: tokens.dimension.value12, padding: tokens.dimension.value12,
+          borderRadius: tokens.radius.radius12, backgroundColor: alertTint(colors.danger, "tintControl", colors.dangerBg) }}>
+          <View style={{ height: typeStyle("body").lineHeight, justifyContent: "center" }}>
+            <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} color={colors.danger} filled />
+          </View>
+          <KText style={{ ...typeStyle("body"), color: colors.text, flex: 1 }}>{options.message}</KText>
+        </View>
+      ) : (
+        <KText style={{ ...typeStyle("body"), color: colors.textSecondary, marginTop: tokens.dimension.value4 }}>{options.message}</KText>
+      ))}
+      {prompt && (
+        <View style={{ marginTop: tokens.dimension.value20 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "baseline", gap: tokens.dimension.value8, marginBottom: tokens.extensions.form.labelGap }}>
+            <KText style={{ ...label, flexShrink: 1 }}>
+              {required ? <>{required[0]}<KText style={{ ...label, fontWeight: typeStyle("control").fontWeight }}>{required[1]}</KText>{required[2]}</> : options.label || title}
+            </KText>
+            {options.maxLength != null ? (
+              <KText aria-hidden importantForAccessibility="no" style={{ ...typeStyle("caption"), color: colors.textTertiary, fontVariant: ["tabular-nums"] }}>
+                {value.length} / {options.maxLength}
+              </KText>
+            ) : null}
+          </View>
+          <KjunInput
+            autoFocus
+            value={value}
+            ariaLabel={required ? m.typeToConfirm(options.requiredValue!) : options.label || title}
+            accessibilityHint={options.message || undefined}
+            maxLength={options.maxLength}
+            // Renaming: the starting text opens selected, so typing replaces it.
+            selectTextOnFocus={!!options.initialValue}
+            placeholder={options.placeholder}
+            errorMessage={error}
+            onChangeText={edit}
+            onSubmitEditing={submit}
+          />
+        </View>
       )}
-      {request.kind === "prompt" && (
-        <KjunInput
-          autoFocus
-          value={value}
-          ariaLabel={options.title || m.promptTitle}
-          placeholder={options.placeholder}
-          errorMessage={error}
-          onChangeText={edit}
-          onSubmitEditing={submit}
-        />
-      )}
+      <View style={{ flexDirection: "row", justifyContent: "flex-end", gap: tokens.dimension.value8, marginTop: tokens.dimension.value24 }}>
+        <View style={narrow ? { flex: 1 } : undefined}>
+          <KjunButton variant="secondary" size={buttonSize} block={narrow} disabled={busy} onPress={cancel}>{options.cancelText || m.cancel}</KjunButton>
+        </View>
+        <View style={narrow ? { flex: 1 } : undefined}>
+          <KjunButton variant={danger ? "danger" : "primary"} size={buttonSize} block={narrow} loading={busy} disabled={!ready} onPress={submit}>{options.confirmText || m.confirm}</KjunButton>
+        </View>
+      </View>
     </KjunModal>
   );
 }

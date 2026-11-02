@@ -309,6 +309,7 @@
       "packages/native/src/date-picker.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
+      "packages/native/src/feedback.tsx",
       "packages/native/src/field-surface.ts",
       "packages/native/src/input.tsx",
       "packages/native/src/internal.tsx",
@@ -367,6 +368,7 @@
       "packages/native/src/data-state.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
+      "packages/native/src/feedback.tsx",
       "packages/native/src/field-clear.tsx",
       "packages/native/src/field-surface.ts",
       "packages/native/src/financial-display.tsx",
@@ -429,6 +431,7 @@
       "packages/native/src/data-state.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
+      "packages/native/src/feedback.tsx",
       "packages/native/src/field-surface.ts",
       "packages/native/src/financial-display.tsx",
       "packages/native/src/input.tsx",
@@ -594,6 +597,7 @@
       "packages/native/src/calendar.tsx",
       "packages/native/src/combobox.tsx",
       "packages/native/src/dropdown.tsx",
+      "packages/native/src/feedback.tsx",
       "packages/native/src/field-surface.ts",
       "packages/native/src/financial-display.tsx",
       "packages/native/src/input.tsx",
@@ -645,7 +649,8 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx",
-      "packages/native/src/dropdown.tsx"
+      "packages/native/src/dropdown.tsx",
+      "packages/native/src/feedback.tsx"
     ]
   },
   {

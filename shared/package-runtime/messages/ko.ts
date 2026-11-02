@@ -14,6 +14,7 @@ export const kjunMessagesKo = {
   confirmTitle: "확인",
   promptTitle: "입력",
   invalidInput: "입력 내용을 확인하세요.",
+  typeToConfirm: (value: string) => `확인을 위해 ${value} 입력`,
   dialog: "대화상자",
   panel: "패널",
   details: "상세 정보",

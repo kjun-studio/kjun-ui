@@ -14,6 +14,7 @@ export const kjunMessagesEn: KjunMessages = {
   confirmTitle: "Confirm",
   promptTitle: "Input",
   invalidInput: "Please check your input.",
+  typeToConfirm: (value: string) => `Type ${value} to confirm`,
   dialog: "Dialog",
   panel: "Panel",
   // A hidden button that closes a layer for screen reader users who cannot press Escape.

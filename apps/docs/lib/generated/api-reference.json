@@ -37303,7 +37303,7 @@
           "details": [
             {
               "label": "사용",
-              "text": "danger이면 danger 버튼, 나머지 종류와 생략은 primary 버튼을 사용합니다. 모든 종류를 각각 다른 창 색상으로 표시하지 않습니다."
+              "text": "danger이면 danger 버튼을 쓰고, message를 옅은 danger 면과 경고 표시가 있는 경고 상자로 보여 줍니다. 나머지 종류와 생략은 primary 버튼과 2차 글자색 설명입니다."
             }
           ],
           "example": "/feedback#preview"
@@ -37376,6 +37376,82 @@
             {
               "label": "상태 책임",
               "text": "현재 창의 입력 초안은 내부에서 관리합니다. 외부 제어형 value가 아닙니다."
+            },
+            {
+              "label": "사용",
+              "text": "창이 열리면 전체 선택되어 바로 덮어쓸 수 있습니다(이름 바꾸기)."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.label",
+          "type": "string",
+          "default": "title",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "입력칸 위 라벨입니다.",
+          "details": [
+            {
+              "label": "사용",
+              "text": "생략하면 제목이 입력칸의 이름이 됩니다. message는 입력칸 설명으로 연결되어 화면 낭독기가 함께 읽습니다."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.maxLength",
+          "type": "number",
+          "default": "—",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "최대 글자 수입니다.",
+          "details": [
+            {
+              "label": "사용",
+              "text": "라벨 오른쪽에 \"3 / 20\"처럼 글자 수를 표시하고, 그보다 길게 입력되지 않습니다. 글자 수는 화면 낭독기 이름에 섞지 않습니다."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.requiredValue",
+          "type": "string",
+          "default": "—",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "정확히 이 값을 입력해야 확인할 수 있습니다.",
+          "details": [
+            {
+              "label": "사용",
+              "text": "삭제할 대상의 이름처럼 위험한 동작을 한 번 더 확인할 때 씁니다. 라벨은 \"확인을 위해 이름 입력\"(메시지 typeToConfirm)이 되고, 입력이 같아질 때까지 확인 버튼이 꺼져 있습니다."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.onConfirm",
+          "type": "(value: string) => void | Promise<void>",
+          "default": "—",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "입력을 확정하기 전에 실행할 작업입니다.",
+          "details": [
+            {
+              "label": "발생 시점",
+              "text": "validator를 통과한 뒤 확인 실행 시 호출합니다."
+            },
+            {
+              "label": "전달값",
+              "text": "현재 입력 문자열"
+            },
+            {
+              "label": "반환값",
+              "text": "Promise이면 완료를 기다린 뒤 prompt가 그 값으로 끝납니다. throw·reject하면 창을 닫지 않고 오류 메시지(없으면 invalidInput)를 입력칸 오류로 보여 줍니다."
+            },
+            {
+              "label": "상태 책임",
+              "text": "진행 중에는 확인 버튼이 로딩이고 취소·바깥 누름·Escape로 닫히지 않습니다."
             }
           ],
           "example": "/feedback#preview"
@@ -37898,7 +37974,7 @@
           "details": [
             {
               "label": "사용",
-              "text": "danger이면 danger 버튼, 나머지 종류와 생략은 primary 버튼을 사용합니다. 모든 종류를 각각 다른 창 색상으로 표시하지 않습니다."
+              "text": "danger이면 danger 버튼을 쓰고, message를 옅은 danger 면과 경고 표시가 있는 경고 상자로 보여 줍니다. 나머지 종류와 생략은 primary 버튼과 2차 글자색 설명입니다."
             }
           ],
           "example": "/feedback#preview"
@@ -37971,6 +38047,82 @@
             {
               "label": "상태 책임",
               "text": "현재 창의 입력 초안은 내부에서 관리합니다. 외부 제어형 value가 아닙니다."
+            },
+            {
+              "label": "사용",
+              "text": "창이 열리면 전체 선택되어 바로 덮어쓸 수 있습니다(이름 바꾸기)."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.label",
+          "type": "string",
+          "default": "title",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "입력칸 위 라벨입니다.",
+          "details": [
+            {
+              "label": "사용",
+              "text": "생략하면 제목이 입력칸의 이름이 됩니다. message는 입력칸 설명으로 연결되어 화면 낭독기가 함께 읽습니다."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.maxLength",
+          "type": "number",
+          "default": "—",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "최대 글자 수입니다.",
+          "details": [
+            {
+              "label": "사용",
+              "text": "라벨 오른쪽에 \"3 / 20\"처럼 글자 수를 표시하고, 그보다 길게 입력되지 않습니다. 글자 수는 화면 낭독기 이름에 섞지 않습니다."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.requiredValue",
+          "type": "string",
+          "default": "—",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "정확히 이 값을 입력해야 확인할 수 있습니다.",
+          "details": [
+            {
+              "label": "사용",
+              "text": "삭제할 대상의 이름처럼 위험한 동작을 한 번 더 확인할 때 씁니다. 라벨은 \"확인을 위해 이름 입력\"(메시지 typeToConfirm)이 되고, 입력이 같아질 때까지 확인 버튼이 꺼져 있습니다."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.onConfirm",
+          "type": "(value: string) => void | Promise<void>",
+          "default": "—",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "입력을 확정하기 전에 실행할 작업입니다.",
+          "details": [
+            {
+              "label": "발생 시점",
+              "text": "validator를 통과한 뒤 확인 실행 시 호출합니다."
+            },
+            {
+              "label": "전달값",
+              "text": "현재 입력 문자열"
+            },
+            {
+              "label": "반환값",
+              "text": "Promise이면 완료를 기다린 뒤 prompt가 그 값으로 끝납니다. throw·reject하면 창을 닫지 않고 오류 메시지(없으면 invalidInput)를 입력칸 오류로 보여 줍니다."
+            },
+            {
+              "label": "상태 책임",
+              "text": "진행 중에는 확인 버튼이 로딩이고 취소·바깥 누름·Escape로 닫히지 않습니다."
             }
           ],
           "example": "/feedback#preview"
@@ -38494,7 +38646,7 @@
           "details": [
             {
               "label": "사용",
-              "text": "danger이면 danger 버튼, 나머지 종류와 생략은 primary 버튼을 사용합니다. 모든 종류를 각각 다른 창 색상으로 표시하지 않습니다."
+              "text": "danger이면 danger 버튼을 쓰고, message를 옅은 danger 면과 경고 표시가 있는 경고 상자로 보여 줍니다. 나머지 종류와 생략은 primary 버튼과 2차 글자색 설명입니다."
             }
           ],
           "example": "/feedback#preview"
@@ -38567,6 +38719,82 @@
             {
               "label": "상태 책임",
               "text": "현재 창의 입력 초안은 내부에서 관리합니다. 외부 제어형 value가 아닙니다."
+            },
+            {
+              "label": "사용",
+              "text": "창이 열리면 전체 선택되어 바로 덮어쓸 수 있습니다(이름 바꾸기)."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.label",
+          "type": "string",
+          "default": "title",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "입력칸 위 라벨입니다.",
+          "details": [
+            {
+              "label": "사용",
+              "text": "생략하면 제목이 입력칸의 이름이 됩니다. message는 입력칸 설명으로 연결되어 화면 낭독기가 함께 읽습니다."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.maxLength",
+          "type": "number",
+          "default": "—",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "최대 글자 수입니다.",
+          "details": [
+            {
+              "label": "사용",
+              "text": "라벨 오른쪽에 \"3 / 20\"처럼 글자 수를 표시하고, 그보다 길게 입력되지 않습니다. 글자 수는 화면 낭독기 이름에 섞지 않습니다."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.requiredValue",
+          "type": "string",
+          "default": "—",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "정확히 이 값을 입력해야 확인할 수 있습니다.",
+          "details": [
+            {
+              "label": "사용",
+              "text": "삭제할 대상의 이름처럼 위험한 동작을 한 번 더 확인할 때 씁니다. 라벨은 \"확인을 위해 이름 입력\"(메시지 typeToConfirm)이 되고, 입력이 같아질 때까지 확인 버튼이 꺼져 있습니다."
+            }
+          ],
+          "example": "/feedback#preview"
+        },
+        {
+          "name": "PromptOptions.onConfirm",
+          "type": "(value: string) => void | Promise<void>",
+          "default": "—",
+          "required": false,
+          "source": "packages/tokens/src/feedback.ts",
+          "summary": "입력을 확정하기 전에 실행할 작업입니다.",
+          "details": [
+            {
+              "label": "발생 시점",
+              "text": "validator를 통과한 뒤 확인 실행 시 호출합니다."
+            },
+            {
+              "label": "전달값",
+              "text": "현재 입력 문자열"
+            },
+            {
+              "label": "반환값",
+              "text": "Promise이면 완료를 기다린 뒤 prompt가 그 값으로 끝납니다. throw·reject하면 창을 닫지 않고 오류 메시지(없으면 invalidInput)를 입력칸 오류로 보여 줍니다."
+            },
+            {
+              "label": "상태 책임",
+              "text": "진행 중에는 확인 버튼이 로딩이고 취소·바깥 누름·Escape로 닫히지 않습니다."
             }
           ],
           "example": "/feedback#preview"

@@ -28,9 +28,18 @@ export interface ConfirmOptions {
   onConfirm?: () => void | Promise<void>;
 }
 export interface PromptOptions extends Omit<ConfirmOptions, "onConfirm"> {
+  /** Starting text; it opens fully selected so typing replaces it (renaming). */
   initialValue?: string;
   placeholder?: string;
   validator?: (value: string) => boolean | string;
+  /** Field label above the input; without it the title names the field. */
+  label?: string;
+  /** Character limit; a count shows beside the label. */
+  maxLength?: number;
+  /** Confirm stays off until the value equals this exactly, e.g. the name of what will be deleted. */
+  requiredValue?: string;
+  /** Runs with the value before the dialog closes; an error it throws stays in the dialog as the field error. */
+  onConfirm?: (value: string) => void | Promise<void>;
 }
 export interface ToastItem extends ToastOptions {
   id: number;

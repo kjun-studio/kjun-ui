@@ -1,5 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useFeedbackDialog } from "../../../shared/package-runtime/feedback-dialog";
+import { splitAround } from "../../../shared/package-runtime/feedback-prompt";
 import { usePresentedToasts, usePresentedRequest } from "../../../shared/package-runtime/feedback-motion";
 import { KjunFeedbackContext, useOptionalKjunFeedback } from "./feedback-context";
 import { ToastStack } from "./toast-stack";
@@ -7,17 +8,20 @@ import type { ToastPlacement } from "../../../shared/package-runtime/toast-place
 import {
 createFeedbackController,
 feedbackControllerOf,
+tokens,
 type FeedbackRequest,
 type KjunFeedback,
 } from "@kjun-ui/tokens";
 import {
 useCallback,
 useEffect,
+useId,
 useRef,
 useState,
 useSyncExternalStore,
 type ReactNode,
 } from "react";
+import { KjunButton, KjunIcon } from "./button";
 import { KjunInput } from "./input";
 import { KjunModal } from "./modal";
 import { FeedbackOverlayContext } from "./overlay-host";
@@ -28,6 +32,10 @@ export function useKjunFeedback(): KjunFeedback {
   return value;
 }
 type Controller = ReturnType<typeof createFeedbackController>;
+function RequiredLabel({ text, value }: { text: string; value: string }) {
+  const [before, quoted, after] = splitAround(text, value);
+  return <>{before}<strong>{quoted}</strong>{after}</>;
+}
 function FeedbackDialog({
   controller,
   request,
@@ -38,36 +46,61 @@ function FeedbackDialog({
   open: boolean;
 }) {
   const m = useKjunMessages();
-  const { options, value, error, busy, edit, cancel, submit } = useFeedbackDialog(controller, request, m);
+  const { options, value, error, busy, ready, edit, cancel, submit } = useFeedbackDialog(controller, request, m);
+  const prompt = request.kind === "prompt", danger = options.type === "danger";
+  const title = options.title || (prompt ? m.promptTitle : m.confirmTitle);
+  const ids = "kjun-feedback-" + useId().replace(/:/g, ""), input = useRef<HTMLInputElement>(null);
+  // Renaming: the starting text opens selected, so typing replaces it.
+  useEffect(() => { if (open && prompt && options.initialValue) input.current?.select(); }, [open, prompt, options.initialValue]);
   return (
     <KjunModal
       open={open}
       onOpenChange={(open) => {
         if (!open) cancel();
       }}
-      title={options.title || (request.kind === "prompt" ? m.promptTitle : m.confirmTitle)}
-      showFooter
-      confirmText={options.confirmText || m.confirm}
-      cancelText={options.cancelText || m.cancel}
-      loading={busy}
-      closable={!busy}
+      // One small surface: no header or footer bands and no close button; Cancel and Escape dismiss it.
+      size="sm"
+      ariaLabel={title}
+      showHeader={false}
       closeOnEsc={!busy}
       closeOnOverlay={!busy}
-      onConfirm={submit}
-      confirmVariant={options.type === "danger" ? "danger" : "primary"}
     >
-      {options.message && <p>{options.message}</p>}
-      {request.kind === "prompt" && (
-        <KjunInput
-          autoFocus
-          value={value}
-          ariaLabel={options.title || m.promptTitle}
-          placeholder={options.placeholder}
-          errorMessage={error}
-          onValueChange={edit}
-          onEnter={submit}
-        />
-      )}
+      <div className="kjun-feedback-dialog">
+        <h2>{title}</h2>
+        {options.message && (
+          <p id={ids + "-message"} className="kjun-feedback-dialog-message" data-tone={danger ? "danger" : undefined}>
+            {danger && <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} filled />}
+            <span>{options.message}</span>
+          </p>
+        )}
+        {prompt && (
+          <div className="kjun-feedback-dialog-field">
+            {/* The count stays out of the label, so the field's name does not change while typing. */}
+            <div className="kjun-feedback-dialog-label">
+              <label htmlFor={ids + "-input"}>
+                {options.requiredValue != null ? <RequiredLabel text={m.typeToConfirm(options.requiredValue)} value={options.requiredValue} /> : options.label || title}
+              </label>
+              {options.maxLength != null && <span className="kjun-feedback-dialog-count" aria-hidden="true">{value.length} / {options.maxLength}</span>}
+            </div>
+            <KjunInput
+              ref={input}
+              id={ids + "-input"}
+              autoFocus
+              value={value}
+              maxLength={options.maxLength}
+              aria-describedby={options.message ? ids + "-message" : undefined}
+              placeholder={options.placeholder}
+              errorMessage={error}
+              onValueChange={edit}
+              onEnter={submit}
+            />
+          </div>
+        )}
+        <div className="kjun-feedback-dialog-actions">
+          <KjunButton variant="secondary" disabled={busy} onClick={cancel}>{options.cancelText || m.cancel}</KjunButton>
+          <KjunButton variant={danger ? "danger" : "primary"} loading={busy} disabled={!ready} onClick={submit}>{options.confirmText || m.confirm}</KjunButton>
+        </div>
+      </div>
     </KjunModal>
   );
 }
