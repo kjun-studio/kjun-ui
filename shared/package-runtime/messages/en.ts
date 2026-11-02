@@ -120,6 +120,10 @@ export const kjunMessagesEn: KjunMessages = {
   mainNavigation: "Main navigation",
   // A numeric badge read in full, e.g. "120 new" even when it shows 99+.
   newCount: (count: number) => `${count} new`,
+  // A switch that is saving its new state.
+  saving: "Saving",
+  // Characters left near a textarea's limit.
+  charactersLeft: (count: number) => `${count} characters left`,
   newContent: "New",
   pagination: "Pagination",
   itemsPerPage: "Items per page",

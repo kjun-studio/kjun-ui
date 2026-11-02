@@ -25,7 +25,8 @@ createApp(defineComponent(() => () => {
     </K.KjunInput></div>
     <div data-testid="textarea"><K.KjunTextarea {...text(K.KjunTextarea)} rows={3} ariaLabel="목록 설명" /></div>
     <div data-testid="composer"><K.KjunTextarea modelValue={s.note} onUpdate:modelValue={(v: string) => { s.note = v; }} size={s.config.size} disabled={s.config.disabled} rows={2} maxRows={4} maxLength={20} showCount
-      submitLabel="보내기" onSubmit={(next: string) => { s.sent = next; s.note = ''; }} ariaLabel="메모">
+      submitLabel="보내기" submitOn={(s.config as any).submitOn} submitting={(s.config as any).submitting} resize={(s.config as any).resize ?? 'none'}
+      onSubmit={(next: string) => { s.sent = next; s.note = ''; }} ariaLabel="메모">
       {{ actions: () => <K.KjunButton variant="ghost" size="sm" prefixIcon="plus" ariaLabel="첨부 추가" /> }}
     </K.KjunTextarea><output data-testid="sent" style={{ display: "none" }}>{s.sent}</output></div>
     <div data-testid="select"><K.KjunSelect {...own(K.KjunSelect)} modelValue={s.selected} options={designOptions} onUpdate:modelValue={(v: any) => { s.selected = v; }} clearable ariaLabel="공개 범위" /></div>

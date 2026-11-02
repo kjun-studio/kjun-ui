@@ -1,17 +1,28 @@
 import { useState } from 'react';
 // 0.13.0 additions on React and Native (Vue 3 mirrors this in additions-vue3.tsx). One section per feature.
 export const thumbColor = 'rgb(1, 2, 3)';
+export const trackColor = 'rgb(128, 128, 128)';
 
 function DateClear({ K }: { K: any }) {
   const [value, setValue] = useState('2026-10-23');
   return <K.KjunDatePicker value={value} clearable onValueChange={setValue} />;
 }
 
+// A switch that is saving: presses change nothing until it ends.
+function SavingSwitch({ K }: { K: any }) {
+  const [value, setValue] = useState(false), [presses, setPresses] = useState(0);
+  return <><K.KjunSwitch value={value} label="Sync" loading onValueChange={(next: boolean) => { setValue(next); setPresses(n => n + 1); }} /><output data-testid="saving-presses">{presses}</output></>;
+}
+
 export function AdditionCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const themed = native
     ? <K.KjunProvider {...providerProps} colors={{ ...providerProps.colors, switchThumbOn: thumbColor }}><K.KjunSwitch value label="Themed thumb" onChange={() => {}} /></K.KjunProvider>
     : <div style={{ ['--kjun-switch-thumb-on' as string]: thumbColor }}><K.KjunProvider><K.KjunSwitch value label="Themed thumb" onChange={() => {}} /></K.KjunProvider></div>;
+  const track = native
+    ? <K.KjunProvider {...providerProps} colors={{ ...providerProps.colors, switchTrack: trackColor }}><K.KjunSwitch value={false} label="Track" onChange={() => {}} /></K.KjunProvider>
+    : <div style={{ ['--kjun-switch-track' as string]: trackColor }}><K.KjunProvider><K.KjunSwitch value={false} label="Track" onChange={() => {}} /></K.KjunProvider></div>;
   return <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16 }}>
+    <div data-testid="switch-track">{track}</div>
     <div data-testid="switch-thumb">
       {themed}
       <K.KjunProvider {...providerProps}><K.KjunSwitch value label="Default thumb" onChange={() => {}} /></K.KjunProvider>
@@ -33,6 +44,12 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
       {['xs', 'sm', 'md', 'lg', 'xl'].map(size => <K.KjunBadge key={size} size={size} variant="success" dot>{'Badge ' + size}</K.KjunBadge>)}
     </div>
     <div data-testid="switch-description"><K.KjunSwitch value label="Alerts" description="Sent once a day" onValueChange={() => {}} /></div>
+    <div data-testid="switch-saving"><SavingSwitch K={K} /></div>
+    <div data-testid="badge-count" style={{ display: 'flex', gap: 8 }}>
+      <K.KjunBadge count={0} variant="danger">zero</K.KjunBadge>
+      <K.KjunBadge count={120} variant="danger" label="읽지 않은 알림 120개" />
+      <K.KjunBadge dot label="새 소식" />
+    </div>
     <div data-testid="date-clear"><DateClear K={K} /></div>
     <div data-testid="button-group">
       <K.KjunButtonGroup value="a" options={[{ value: 'a', label: 'Mine' }, { value: 'b', label: 'Ours' }]} onValueChange={() => {}} />

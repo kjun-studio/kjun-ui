@@ -128,6 +128,10 @@ export const kjunMessagesKo = {
   // Read after a destination name for a dot badge that has no count.
   // A numeric badge read in full, e.g. "새 항목 120개" even when it shows 99+.
   newCount: (count: number) => `새 항목 ${count}개`,
+  // A switch that is saving its new state.
+  saving: "저장 중",
+  // Characters left near a textarea's limit.
+  charactersLeft: (count: number) => `${count}자 남음`,
   newContent: "새 소식",
   pagination: "페이지 탐색",
   itemsPerPage: "페이지당 항목 수",

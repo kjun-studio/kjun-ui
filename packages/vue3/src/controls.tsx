@@ -1,3 +1,4 @@
+import { useKjunMessages } from "./runtime/messages";
 import { computed, defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type ButtonSize, type InputSize } from "@kjun-ui/tokens";
@@ -79,6 +80,10 @@ const kjunSwitchProps = {
   description: { type: String, default: undefined },
   /** Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled. */
   loading: { type: Boolean, default: false },
+  /** Submits with a form under this name while the switch is on. */
+  name: { type: String, default: undefined },
+  /** The value a form submits while on (default "on"). */
+  formValue: { type: String, default: undefined },
 } as const;
 export type KjunSwitchProps = ExtractPublicPropTypes<typeof kjunSwitchProps>;
 /** v-model; default slot: label. */
@@ -90,11 +95,15 @@ export const KjunSwitch = defineComponent({
   setup(props, { slots, emit }) {
     const field = useKjunField();
     const focus = useFocusVisible();
-    const descriptionId = useKjunId("kjun-switch-description-");
+    const descriptionId = useKjunId("kjun-switch-description-"), savingId = useKjunId("kjun-switch-saving-");
+    const m = useKjunMessages();
     return () => (
       <label class={choiceClass(props.disabled)} data-focus-visible={focus.visible.value || undefined} data-loading={props.loading || undefined}>
-        <input type="checkbox" role="switch" class="kjun-sr-only" checked={props.modelValue} disabled={props.disabled}
-          aria-label={props.ariaLabel || props.label} aria-describedby={[field.value?.describedBy, props.description ? descriptionId : undefined].filter(Boolean).join(" ") || undefined}
+        {props.loading && <span id={savingId} hidden>{m.value.saving}</span>}
+        <input type="checkbox" role="switch" class="kjun-sr-only" checked={props.modelValue} disabled={props.disabled} name={props.name} value={props.formValue}
+          aria-label={props.ariaLabel || props.label}
+          // aria-busy alone is not read on form controls, so the saving state is also a description.
+          aria-describedby={[field.value?.describedBy, props.description ? descriptionId : undefined, props.loading ? savingId : undefined].filter(Boolean).join(" ") || undefined}
           aria-invalid={field.value?.error ? "true" : undefined} aria-required={field.value?.required || undefined} aria-busy={props.loading || undefined} onFocus={focus.onFocus} onBlur={focus.onBlur}
           onChange={(event: Event) => {
             const next = (event.target as HTMLInputElement).checked;

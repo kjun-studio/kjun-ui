@@ -208,7 +208,7 @@ set("ListSkeleton Skeleton MarketTableSkeleton", { rows: "자리 표시자로 �
 set("Textarea", {
   rows: { default: "3", summary: "처음 표시하는 행 수이자 최소 높이입니다." },
   maxRows: { default: "6", summary: "내용에 맞춰 늘어나는 최대 행 수입니다. 넘으면 필드 안에서 스크롤합니다. rows와 같게 두면 높이가 고정됩니다." },
-  resize: { default: '"none"', summary: "웹에서 사용자가 크기를 직접 조절하는 방향입니다. 필드가 내용에 맞춰 늘어나므로 기본은 none입니다." },
+  resize: { default: '"none"', summary: "웹에서 사용자가 크기를 직접 조절하는 방향입니다. 필드가 내용에 맞춰 늘어나므로 기본은 none입니다. vertical·both면 사용자가 끈 높이를 지키도록 내용에 맞춰 늘어나지 않습니다." },
   maxLength: "입력할 수 있는 최대 글자 수(UTF-16 단위)입니다. showCount와 함께 쓰면 \"길이/최대\"로 표시하고, 값이 넘치면 위험 색과 오류 상태로 표시합니다.",
   showCount: { default: "false", summary: "필드 안 오른쪽 아래에 글자 수를 표시합니다. 화면 낭독기에는 필드 설명으로 연결합니다." },
   actions: "작성기형: 필드 안 아래 줄 앞쪽에 둘 첨부·언급 같은 컨트롤입니다(Vue는 actions 슬롯). 소비자가 기능을 연결합니다.",
@@ -337,7 +337,22 @@ set("ListSection", {
 set("DatePicker DateRangePicker", { clearable: { default:"false", summary:"값이 있을 때 달력 아이콘 앞에 지우기 버튼을 보입니다. 누르면 빈 문자열로 바꿉니다. 버튼 이름은 KjunProvider 문구(clearDate)를 따릅니다." } });
 set("FormGroup", { optional: { default:"false", summary:"라벨 뒤에 선택 입력 표시를 붙입니다. 문구는 KjunProvider의 locale·messages(optional)를 따르며 required와 함께 주면 required가 우선합니다." } });
 set("Switch", { description: { summary:"라벨 아래 보조 설명입니다. 시작 위치는 라벨과 같고, 웹은 aria-describedby, Native는 accessibilityHint로 스위치를 설명합니다." } });
-set("Switch", { loading: { default: "false", summary: "저장 중 상태입니다. 손잡이 안에 작은 스피너를 돌리고 누름을 무시하며, disabled와 달리 흐리게 하지 않습니다. 웹은 aria-busy, Native는 accessibilityState.busy로 알립니다." } });
+set("Switch", { loading: { default: "false", summary: "저장 중 상태입니다. 손잡이 안에 작은 스피너를 돌리고 누름을 무시하며, disabled와 달리 흐리게 하지 않습니다. 화면 낭독기에는 \"저장 중\"(KjunProvider 문구 saving)을 설명으로 알리고, 웹은 aria-busy, Native는 accessibilityState.busy도 둡니다. 동작 줄이기에서는 스피너가 멈춥니다." } });
+for (const platform of ["vue3", "react"]) set("Switch", {
+  name: "폼 제출 이름입니다. 켜져 있을 때 formValue를 제출합니다.",
+  formValue: { default: '"on"', summary: "켜져 있을 때 폼이 제출할 값입니다." },
+}, platform);
+set("Switch", {
+  id: "스위치 입력의 id입니다. 바깥 <label for>와 연결할 때 씁니다.",
+  autoFocus: "처음 그릴 때 스위치에 초점을 둡니다.",
+  onFocus: "스위치가 초점을 받을 때 알립니다.",
+  onBlur: "스위치가 초점을 잃을 때 알립니다.",
+  inputRef: { type: "Ref<HTMLInputElement>", summary: "스위치 입력 요소입니다. 저장이 실패한 뒤 초점을 되돌릴 때 씁니다." },
+}, "react");
+for (const platform of ["vue3", "react"]) set("Textarea", {
+  submitOn: { type: '"mod-enter" | "enter"', default: '"mod-enter"', summary: "보내기 키입니다. mod-enter는 Ctrl/⌘+Enter, enter는 Enter로 보내고 Shift+Enter로 줄을 바꿉니다. 한글처럼 조합 중인 Enter로는 보내지 않습니다. submit을 받으면 보내기 버튼이 없어도 동작합니다." },
+}, platform);
+set("Textarea", { submitting: { default: "false", summary: "보내는 중입니다. 보내기 버튼이 돌고, 끝날 때까지 다시 보내지 않습니다. 웹은 필드에 aria-busy를 둡니다." } });
 set("Fab", {
   icon: { summary:"가운데 아이콘 이름입니다. 크기는 24(extensions.fab.iconSize)로 고정됩니다." },
   ariaLabel: { summary:"글자가 없으므로 반드시 넘기는 버튼 이름입니다." },

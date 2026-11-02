@@ -19,7 +19,10 @@ import { AccessiblePressable as Pressable, focusVisible } from "./a11y";
 import { KjunIcon } from "./button";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
 import { IconFallbacks } from "../../../shared/package-runtime/icon-context";
-import { KText, content, finePointer } from "./internal";
+import { KText, content, finePointer, useReducedMotion } from "./internal";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { joinHints } from "../../../shared/package-runtime/aria-ids";
+import { useKjunField } from "./input";
 import { useKjunStyles } from "./provider";
 import { useRadioKeyboard } from "./choice-accessibility";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
@@ -153,11 +156,14 @@ export interface KjunSwitchProps {
 function SwitchSpinner() {
   const { colors } = useKjunStyles();
   const turn = useRef(new Animated.Value(0)).current;
+  const reduced = useReducedMotion();
   useEffect(() => {
+    // Without motion the ring holds still; the saving state is still announced.
+    if (reduced) return;
     const loop = Animated.loop(Animated.timing(turn, { toValue: 1, duration: tokens.motion.spin, easing: Easing.linear, useNativeDriver: Platform.OS !== "web" }));
     loop.start();
     return () => loop.stop();
-  }, [turn]);
+  }, [turn, reduced]);
   const size = tokens.extensions.switch.spinnerSize;
   return <Animated.View aria-hidden={true} style={{ width: size, height: size, borderRadius: size / 2, borderWidth: tokens.border.controlWidth,
     borderColor: colors.border, borderTopColor: colors.textSecondary, transform: [{ rotate: turn.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "360deg"] }) }] }} />;
@@ -174,7 +180,7 @@ export function KjunSwitch({
   onValueChange,
   onChange,
 }: KjunSwitchProps) {
-  const { colors } = useKjunStyles();
+  const { colors } = useKjunStyles(), m = useKjunMessages(), field = useKjunField();
   const width = tokens.extensions.switch.widths[size];
   const height = tokens.extensions.switch.heights[size];
   const thumb = height - 2 * tokens.extensions.switch.padding;
@@ -184,7 +190,8 @@ export function KjunSwitch({
   const [hovered, setHovered] = useState(false);
   // Off is a quiet track with no boundary; hover deepens whichever colour the track has.
   const hover = hovered && !disabled && !loading;
-  const off = hover ? colors.borderStrong : colors.border, on = hover ? colors.brandHover : colors.brand;
+  // The switch-track role (default border) lets a palette darken the off track to a 3:1 boundary.
+  const off = hover ? colors.borderStrong : colors.switchTrack ?? colors.border, on = hover ? colors.brandHover : colors.brand;
   const trackColor = typeof off === 'string' && typeof on === 'string'
     ? motion.interpolate({ inputRange: [0, 1], outputRange: [off, on] })
     : value ? on : off;
@@ -199,8 +206,14 @@ export function KjunSwitch({
       onHoverIn={() => setHovered(true)}
       onHoverOut={() => setHovered(false)}
       accessibilityState={{ checked: value, disabled, busy: loading }}
-      accessibilityLabel={ariaLabel || label}
-      accessibilityHint={description}
+      accessibilityLabel={ariaLabel || label || field?.label}
+      // Like the web: the field's hint and error, the description, and "saving" while it saves.
+      accessibilityHint={joinHints(field?.hint, field?.error, description, loading ? m.saving : undefined)}
+      {...(Platform.OS === "web" ? {
+        "aria-describedby": field?.describedBy,
+        "aria-invalid": field?.error ? true : undefined,
+        "aria-required": field?.required || undefined,
+      } : {})}
       disabled={disabled}
       onPress={() => {
         if (loading) return;

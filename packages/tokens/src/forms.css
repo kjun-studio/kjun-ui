@@ -225,8 +225,9 @@
   height: var(--_kjun-switch-height);
   padding: var(--_kjun-extension-switch-padding);
   border-radius: var(--_kjun-extension-switch-radius);
-  /* Off is a quiet track with no boundary; the white thumb carries the shape. */
-  background: var(--_kjun-border);
+  /* Off is a quiet track with no boundary; the white thumb carries the shape. The switch-track role (default border) lets a
+     palette darken it to the 3:1 a control boundary needs without changing every border. */
+  background: var(--_kjun-color-switch-track);
   transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
 .kjun-switch--sm { --_kjun-switch-width: var(--_kjun-extension-switch-widths-sm); --_kjun-switch-height: var(--_kjun-extension-switch-heights-sm); }
@@ -258,6 +259,8 @@
   border-top-color: var(--_kjun-text-secondary);
   animation: kjun-spin var(--_kjun-motion-spin) linear infinite;
 }
+/* Without motion the ring holds still; the saving state is still announced. */
+@media (prefers-reduced-motion: reduce) { .kjun-switch-spinner { animation: none; } }
 .kjun-choice[data-loading] { cursor: progress; }
 
 @media (pointer: coarse) {

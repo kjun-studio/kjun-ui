@@ -1,14 +1,22 @@
 import { createApp, ref } from 'vue';
 import * as K from '@kjun-ui/vue3';
 import { applyDemoColors } from '../../shared/demo-colors';
-import { thumbColor } from './additions-cases';
+import { thumbColor, trackColor } from './additions-cases';
 applyDemoColors('default');
-const date = ref('2026-10-23');
+const date = ref('2026-10-23'), saving = ref(false), presses = ref(0);
 createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px' }}>
   <div data-testid="switch-thumb">
     <div style={{ '--kjun-switch-thumb-on': thumbColor }}><K.KjunProvider><K.KjunSwitch modelValue label="Themed thumb" /></K.KjunProvider></div>
     <K.KjunProvider><K.KjunSwitch modelValue label="Default thumb" /></K.KjunProvider>
   </div>
+  <div data-testid="switch-track"><div style={{ '--kjun-switch-track': trackColor }}><K.KjunProvider><K.KjunSwitch modelValue={false} label="Track" /></K.KjunProvider></div></div>
+  <K.KjunProvider><div data-testid="switch-saving"><K.KjunSwitch modelValue={saving.value} label="Sync" loading onUpdate:modelValue={(v: boolean) => { saving.value = v; presses.value++; }} />
+    <output data-testid="saving-presses">{presses.value}</output></div></K.KjunProvider>
+  <K.KjunProvider><div data-testid="badge-count" style={{ display: 'flex', gap: '8px' }}>
+    <K.KjunBadge count={0} variant="danger">zero</K.KjunBadge>
+    <K.KjunBadge count={120} variant="danger" label="읽지 않은 알림 120개" />
+    <K.KjunBadge dot label="새 소식" />
+  </div></K.KjunProvider>
   <K.KjunProvider><div data-testid="switch-description"><K.KjunSwitch modelValue label="Alerts" description="Sent once a day" /></div></K.KjunProvider>
   <K.KjunProvider><div data-testid="date-clear">
     <K.KjunDatePicker modelValue={date.value} clearable onUpdate:modelValue={(v: string) => { date.value = v; }} />

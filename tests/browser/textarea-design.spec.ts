@@ -52,4 +52,38 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.evaluate(() => (window as any).configureInputDesign({ disabled: true }));
     await expect(submit).toBeDisabled();
   });
+
+  test(`${platform}: sending blocks repeats, the count describes the field and is announced near the limit`, async ({ page }) => {
+    await openFixture(page, platform, '', 'input-design');
+    await expect(area(page)).toHaveAccessibleDescription(/0\/20/);
+    await area(page).fill('보낼 메모');
+    await page.evaluate(() => (window as any).configureInputDesign({ submitting: true }));
+    const submit = composer(page).getByRole('button', { name: '보내기' });
+    await submit.click({ force: true });
+    await expect(page.getByTestId('sent')).toHaveText('');
+    if (platform !== 'native') {
+      await area(page).press('Control+Enter');
+      await expect(page.getByTestId('sent')).toHaveText('');
+      await expect(area(page)).toHaveAttribute('aria-busy', 'true');
+      await area(page).fill('가나다라마바사아자차카타파하가나다라마');
+      await expect(composer(page).locator('[aria-live="polite"]')).toHaveText('1자 남음');
+    }
+    await page.evaluate(() => (window as any).configureInputDesign({ submitting: false }));
+    await submit.click();
+    await expect(page.getByTestId('sent')).not.toHaveText('');
+  });
+}
+
+for (const platform of ['react', 'vue3']) {
+  test(`${platform}: Enter mode sends on Enter and keeps Shift+Enter for a new line; a draggable field stops growing`, async ({ page }) => {
+    await openFixture(page, platform, '', 'input-design');
+    await page.evaluate(() => (window as any).configureInputDesign({ submitOn: 'enter' }));
+    await area(page).fill('첫 줄');
+    await area(page).press('Shift+Enter');
+    await expect(area(page)).toHaveValue('첫 줄\n');
+    await area(page).press('Enter');
+    await expect(page.getByTestId('sent')).toHaveText('첫 줄');
+    await page.evaluate(() => (window as any).configureInputDesign({ resize: 'vertical' }));
+    await expect(area(page)).not.toHaveAttribute('data-grow');
+  });
 }

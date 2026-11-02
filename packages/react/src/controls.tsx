@@ -6,6 +6,7 @@ useCallback,
 useContext,
 useId,
 type ReactNode,
+type Ref,
 } from "react";
 import {
 Checkbox as AriaCheckbox,
@@ -13,6 +14,7 @@ Switch as AriaSwitch,
 } from "react-aria-components";
 import { KjunIcon } from "./button";
 import { useKjunField } from "./input";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useSelectionIndicator } from "./use-selection-indicator";
 import { groupKeydown } from "../../../shared/package-runtime/group-keyboard";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
@@ -103,6 +105,16 @@ export interface KjunSwitchProps {
   /** Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled. */
   loading?: boolean;
   children?: ReactNode;
+  /** Submits with a form under this name while the switch is on. */
+  name?: string;
+  /** The value a form submits while on (default "on"). */
+  formValue?: string;
+  id?: string;
+  autoFocus?: boolean;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  /** The switch's input, e.g. to move focus back after a failed save. */
+  inputRef?: Ref<HTMLInputElement>;
   onValueChange?: (value: boolean) => void;
   onChange?: (value: boolean) => void;
 }
@@ -115,11 +127,18 @@ export function KjunSwitch({
   description,
   loading = false,
   children,
+  name,
+  formValue,
+  id,
+  autoFocus,
+  onFocus,
+  onBlur,
+  inputRef,
   onValueChange,
   onChange,
 }: KjunSwitchProps) {
-  const field = useKjunField();
-  const descriptionId = "kjun-" + useId().replace(/:/g, "") + "-description";
+  const field = useKjunField(), m = useKjunMessages();
+  const descriptionId = "kjun-" + useId().replace(/:/g, "") + "-description", savingId = descriptionId.replace(/-description$/, "-saving");
   const invalid = !!field?.error, required = !!field?.required;
   // react-aria's Switch takes no validation props; mark the input directly (and clear stale marks).
   const markInput = useCallback((input: HTMLInputElement | null) => {
@@ -127,22 +146,32 @@ export function KjunSwitch({
     if (invalid) input.setAttribute("aria-invalid", "true"); else input.removeAttribute("aria-invalid");
     if (required) input.setAttribute("aria-required", "true"); else input.removeAttribute("aria-required");
     if (loading) input.setAttribute("aria-busy", "true"); else input.removeAttribute("aria-busy");
-  }, [invalid, required, loading]);
+    if (typeof inputRef === "function") inputRef(input); else if (inputRef) (inputRef as { current: HTMLInputElement | null }).current = input;
+  }, [invalid, required, loading, inputRef]);
   return (
     <AriaSwitch
       isSelected={value}
       isDisabled={disabled}
-      isReadOnly={loading}
       data-loading={loading || undefined}
+      name={name}
+      value={formValue}
+      id={id}
+      autoFocus={autoFocus}
+      onFocus={onFocus}
+      onBlur={onBlur}
       aria-label={ariaLabel || label}
-      aria-describedby={[field?.describedBy, description ? descriptionId : undefined].filter(Boolean).join(" ") || undefined}
+      // aria-busy alone is not read on form controls, so the saving state is also a description.
+      aria-describedby={[field?.describedBy, description ? descriptionId : undefined, loading ? savingId : undefined].filter(Boolean).join(" ") || undefined}
       inputRef={markInput}
       className={"kjun-choice" + (disabled ? " kjun-choice--disabled" : "")}
       onChange={(next) => {
+        // While saving, presses change nothing (like Vue and Native); the switch is not announced as read-only.
+        if (loading) return;
         onValueChange?.(next);
         onChange?.(next);
       }}
     >
+      {loading && <span id={savingId} hidden>{m.saving}</span>}
       <span
         className={`kjun-switch kjun-switch--${size}${
           value ? " kjun-switch--on" : ""

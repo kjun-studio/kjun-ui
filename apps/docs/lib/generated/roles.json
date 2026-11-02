@@ -1431,6 +1431,20 @@
     ]
   },
   {
+    "role": "switchTrack",
+    "contract": "common",
+    "required": false,
+    "fallback": "border",
+    "variable": "--kjun-switch-track",
+    "upstreamAliases": [
+      "--switch-track"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/forms.css",
+      "packages/native/src/choice-controls.tsx"
+    ]
+  },
+  {
     "role": "filterSelectedBg",
     "contract": "common",
     "required": false,

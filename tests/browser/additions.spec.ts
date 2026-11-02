@@ -54,6 +54,27 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(field.getByRole('button', { name: '날짜 지우기', exact: true })).toHaveCount(0);
     });
 
+    test('a saving switch ignores presses and says it is saving; the off track takes the switch-track role', async ({ page }) => {
+      const sync = section(page, 'switch-saving').getByRole('switch', { name: 'Sync' });
+      await sync.click({ force: true });
+      await expect(page.getByTestId('saving-presses')).toHaveText('0');
+      if (platform !== 'native') {
+        await expect(sync).toHaveAccessibleDescription('저장 중');
+        await expect(sync).not.toHaveAttribute('aria-readonly', 'true');
+        await expect(section(page, 'switch-track').locator('.kjun-switch')).toHaveCSS('background-color', 'rgb(128, 128, 128)');
+      } else {
+        await expect(section(page, 'switch-track').locator('[role="switch"] > div').first()).toHaveCSS('background-color', 'rgb(128, 128, 128)');
+      }
+    });
+
+    test('count badges cap at 99+, draw nothing for zero and carry a spoken label', async ({ page }) => {
+      const badges = section(page, 'badge-count');
+      await expect(badges.getByText('zero')).toHaveCount(0);
+      await expect(badges.getByText('99+', { exact: true })).toBeVisible();
+      if (platform !== 'native') await expect(badges.getByText('읽지 않은 알림 120개')).toHaveCount(1);
+      else await expect(badges.getByLabel('읽지 않은 알림 120개')).toBeVisible();
+    });
+
     test('switch description sits under the label and describes the control', async ({ page }) => {
       const block = section(page, 'switch-description');
       const label = await block.getByText('Alerts', { exact: true }).boundingBox();

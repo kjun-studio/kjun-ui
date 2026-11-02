@@ -1,5 +1,6 @@
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
-import { textareaBounds, textareaCount, textareaMaxRows } from "../../../shared/package-runtime/textarea";
+import { textareaBounds, textareaCanSubmit, textareaCount, textareaGrows, textareaMaxRows, textareaPadding, textareaRemaining, textareaSubmitKey, type TextareaSubmitKey } from "../../../shared/package-runtime/textarea";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { growTextarea } from "../../../shared/package-runtime/textarea-grow";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { forwardRef, useCallback, useId, useLayoutEffect, useRef, type ReactNode, type TextareaHTMLAttributes } from "react";
@@ -10,7 +11,7 @@ export interface KjunTextareaProps
   value: string;
   size?: InputSize;
   error?: boolean;
-  /** Manual resizing; the field already grows with its text (default "none"). */
+  /** Manual resizing (default "none"). A field the user can drag taller keeps that height instead of growing with its text. */
   resize?: "none" | "vertical" | "horizontal" | "both";
   ariaLabel?: string;
   /** The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). */
@@ -23,8 +24,12 @@ export interface KjunTextareaProps
   actions?: ReactNode;
   /** Composer: shows a submit button at the end of the bar, named by this label. */
   submitLabel?: string;
-  /** The submit button, or Ctrl/⌘+Enter, while there is text within maxLength. */
+  /** Sends the text: the submit button or the submit key, while there is text within maxLength and nothing is sending. */
   onSubmit?: (value: string) => void;
+  /** "mod-enter" (default) sends on Ctrl/⌘+Enter; "enter" sends on Enter, and Shift+Enter starts a new line. */
+  submitOn?: TextareaSubmitKey;
+  /** Sending: the submit button spins and the field ignores further sends until it ends. */
+  submitting?: boolean;
   onValueChange?: (value: string) => void;
 }
 export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
@@ -41,6 +46,8 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
       submitLabel,
       ariaLabel,
       onSubmit,
+      submitOn = "mod-enter",
+      submitting = false,
       onValueChange,
       onChange,
       onKeyDown,
@@ -50,7 +57,7 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
     },
     ref
   ) {
-    const field = useKjunField();
+    const field = useKjunField(), m = useKjunMessages();
     const spec = tokens.input[size];
     const countId = "kjun-count-" + useId();
     const element = useRef<HTMLTextAreaElement | null>(null);
@@ -61,12 +68,13 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
     }, [ref]);
     const footer = showCount || actions != null || submitLabel != null;
     const [minimum, maximum] = textareaBounds(size, rows, maxRows, footer);
-    const grows = maximum > minimum;
+    const grows = textareaGrows(minimum, maximum, resize);
     // Apps sometimes leave a field uncontrolled at first; count and submit treat that as empty.
     const count = textareaCount(value ?? "", props.maxLength);
     const invalid = error || !!field?.error || count.over;
-    const blocked = !!props.disabled || !!props.readOnly;
-    const canSubmit = submitLabel != null && !blocked && !!value?.trim() && !count.over;
+    const canSubmit = textareaCanSubmit({ value, maxLength: props.maxLength, disabled: props.disabled, readOnly: props.readOnly, submitting });
+    const remaining = showCount ? textareaRemaining(value ?? "", props.maxLength) : null;
+    const padding = textareaPadding(size, footer);
     // Growth follows the text and the width it wraps in.
     useLayoutEffect(() => { if (grows) growTextarea(element.current, minimum, maximum); }, [value, grows, minimum, maximum]);
     useLayoutEffect(() => {
@@ -75,6 +83,8 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
       let width = node.clientWidth;
       const observer = new ResizeObserver(() => { if (node.clientWidth !== width) { width = node.clientWidth; growTextarea(node, minimum, maximum); } });
       observer.observe(node);
+      // A web font that arrives late can rewrap the text without changing the width.
+      document.fonts?.ready.then(() => { if (node.isConnected) growTextarea(node, minimum, maximum); });
       return () => observer.disconnect();
     }, [grows, minimum, maximum]);
     const textarea = (
@@ -89,15 +99,13 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
         aria-labelledby={props["aria-labelledby"] || field?.labelId}
         aria-describedby={mergeIds(props["aria-describedby"], field?.describedBy, showCount ? countId : undefined)}
         aria-invalid={invalid || undefined}
+        aria-busy={submitting || undefined}
         data-grow={grows || undefined}
         className={"kjun-input kjun-textarea " + className}
         style={{
           fontSize: spec.fontSize / 16 + "rem",
           lineHeight: spec.lineHeight / 16 + "rem",
-          // With a footer the wrapper carries the border, so the text keeps the field's own inset.
-          padding: footer
-            ? `${spec.textareaPaddingY}px ${spec.padding}px ${tokens.extensions.textarea.footerTextGap}px`
-            : `${spec.textareaPaddingY}px ${spec.padding - tokens.border.controlWidth}px`,
+          padding: `${padding.top}px ${padding.x}px ${padding.bottom}px`,
           minHeight: minimum,
           ...(grows ? { height: minimum } : {}),
           borderRadius: footer ? 0 : spec.radius,
@@ -110,10 +118,10 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
         }}
         onKeyDown={(event) => {
           onKeyDown?.(event);
-          if (!event.defaultPrevented && canSubmit && event.key === "Enter" && (event.metaKey || event.ctrlKey) && !event.nativeEvent.isComposing) {
-            event.preventDefault();
-            onSubmit?.(value);
-          }
+          if (event.defaultPrevented || !onSubmit || !textareaSubmitKey({ ...event, isComposing: event.nativeEvent.isComposing, keyCode: event.keyCode }, submitOn)) return;
+          // The send key never types a line break, even while there is nothing to send.
+          event.preventDefault();
+          if (canSubmit) onSubmit(value);
         }}
       />
     );
@@ -124,7 +132,9 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
         <div className="kjun-textarea-footer">
           {actions}
           {showCount && <span id={countId} className="kjun-textarea-count" data-over={count.over || undefined}>{count.text}</span>}
-          {submitLabel != null && <KjunButton className="kjun-textarea-submit" size="sm" prefixIcon="arrow-up" ariaLabel={submitLabel} disabled={!canSubmit} onClick={() => onSubmit?.(value)} />}
+          {/* Near the limit, what is left is announced as it changes; the count itself is read only on focus. */}
+          {showCount && <span className="kjun-sr-only" aria-live="polite">{remaining == null ? "" : m.charactersLeft(remaining)}</span>}
+          {submitLabel != null && <KjunButton className="kjun-textarea-submit" size="sm" prefixIcon="arrow-up" ariaLabel={submitLabel} loading={submitting} disabled={!canSubmit && !submitting} onClick={() => { if (canSubmit) onSubmit?.(value); }} />}
         </div>
       </div>
     );

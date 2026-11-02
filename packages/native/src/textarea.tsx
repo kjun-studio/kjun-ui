@@ -1,11 +1,12 @@
-import { joinHints } from "../../../shared/package-runtime/aria-ids";
-import { textareaBounds, textareaCount, textareaMaxRows } from "../../../shared/package-runtime/textarea";
+import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
+import { textareaBounds, textareaCanSubmit, textareaCount, textareaMaxRows, textareaPadding } from "../../../shared/package-runtime/textarea";
 import { inputTypeStyle, typeStyle } from "./typography";
 import { FieldTextInput, useFieldSurface } from "./field-surface";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
 import {
 forwardRef,
 useCallback,
+useId,
 useLayoutEffect,
 useRef,
 useState,
@@ -38,8 +39,10 @@ export interface KjunTextareaProps extends TextInputProps {
   actions?: ReactNode;
   /** Composer: shows a submit button at the end of the bar, named by this label. */
   submitLabel?: string;
-  /** The submit button, while there is text within maxLength. */
+  /** The submit button, while there is text within maxLength and nothing is sending. */
   onSubmit?: (value: string) => void;
+  /** Sending: the submit button spins and further sends are ignored until it ends. */
+  submitting?: boolean;
   disabled?: boolean;
   readonly?: boolean;
   ariaLabel?: string;
@@ -56,6 +59,7 @@ export const KjunTextarea = forwardRef<TextInput, KjunTextareaProps>(
       actions,
       submitLabel,
       onSubmit,
+      submitting = false,
       disabled = false,
       readonly = false,
       ariaLabel,
@@ -81,6 +85,9 @@ export const KjunTextarea = forwardRef<TextInput, KjunTextareaProps>(
     // The measurement includes the padding, so it only counts for the size and layout it was taken at.
     const layout = size + (footer ? ":footer" : "");
     const [measured, setMeasured] = useState({ layout, height: 0 });
+    // Native Web has no ResizeObserver here, so a width change (rotation, a sidebar) re-measures through onLayout.
+    const [width, setWidth] = useState(0);
+    const countId = "kjun-count-" + useId().replace(/:/g, "");
     const textHeight = measured.layout === layout ? measured.height : 0;
     const height = grows ? Math.min(maximum, Math.max(minimum, textHeight + (footer ? 0 : 2 * tokens.border.controlWidth))) : undefined;
     const element = useRef<TextInput | null>(null);
@@ -99,8 +106,9 @@ export const KjunTextarea = forwardRef<TextInput, KjunTextareaProps>(
       const next = node.scrollHeight;
       node.style.height = previous;
       setMeasured(current => current.layout === layout && current.height === next ? current : { layout, height: next });
-    }, [value, grows, layout]);
-    const canSubmit = submitLabel != null && !disabled && !readOnly && !!value?.trim() && !count.over;
+    }, [value, grows, layout, width]);
+    const canSubmit = textareaCanSubmit({ value, maxLength: props.maxLength, disabled, readOnly, submitting });
+    const padding = textareaPadding(size, footer);
     const input = (
       <FieldTextInput
         {...props}
@@ -115,14 +123,15 @@ export const KjunTextarea = forwardRef<TextInput, KjunTextareaProps>(
         accessibilityLabel={
           ariaLabel || props.accessibilityLabel || field?.label
         }
-        accessibilityHint={
-          joinHints(field?.hint, field?.error, showCount ? count.text : undefined) || props.accessibilityHint
-        }
+        // The app's own hint joins the field's hint, error and count instead of being dropped.
+        accessibilityHint={joinHints(props.accessibilityHint, field?.hint, field?.error, showCount ? count.text : undefined)}
+        onLayout={(event) => { setWidth(event.nativeEvent.layout.width); props.onLayout?.(event); }}
         accessibilityState={{ disabled }}
         {...(Platform.OS === "web" ? {
           "aria-disabled": disabled,
           "aria-invalid": invalid || undefined,
-          "aria-describedby": field?.describedBy,
+          "aria-describedby": mergeIds(field?.describedBy, showCount ? countId : undefined),
+          "aria-busy": submitting || undefined,
           "aria-labelledby": field?.label && !field.labelHidden ? field.id + "-label" : undefined,
           "aria-required": field?.required || undefined,
         } : {})}
@@ -151,10 +160,9 @@ export const KjunTextarea = forwardRef<TextInput, KjunTextareaProps>(
             height,
             minHeight: minimum,
             maxHeight: grows ? maximum : undefined,
-            // With a footer the wrapper carries the border, so the text keeps the field's own inset.
-            paddingHorizontal: footer ? spec.padding : spec.padding - tokens.border.controlWidth,
-            paddingTop: spec.textareaPaddingY,
-            paddingBottom: footer ? tokens.extensions.textarea.footerTextGap : spec.textareaPaddingY,
+            paddingHorizontal: padding.x,
+            paddingTop: padding.top,
+            paddingBottom: padding.bottom,
             textAlignVertical: "top",
             color: surface.ink,
           },
@@ -168,10 +176,11 @@ export const KjunTextarea = forwardRef<TextInput, KjunTextareaProps>(
         {input}
         <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.textarea.footerGap, paddingHorizontal: tokens.extensions.textarea.footerPadding, paddingBottom: tokens.extensions.textarea.footerPadding }}>
           {content(actions)}
-          {showCount && <KText aria-hidden={true} style={{ ...typeStyle("caption"), marginLeft: "auto", paddingHorizontal: tokens.extensions.textarea.countPaddingX, fontVariant: ["tabular-nums"],
+          {/* Hidden from swiping (the hint already reads it) but still referenced by aria-describedby on Native Web. */}
+          {showCount && <KText aria-hidden={true} nativeID={countId} style={{ ...typeStyle("caption"), marginLeft: "auto", paddingHorizontal: tokens.extensions.textarea.countPaddingX, fontVariant: ["tabular-nums"],
             color: disabled ? colors.textDisabled : count.over ? colors.danger : colors.textTertiary, ...(count.over ? { fontWeight: typeStyle("control").fontWeight } : {}) }}>{count.text}</KText>}
           {submitLabel != null && <View style={{ marginLeft: showCount ? 0 : "auto", borderRadius: tokens.extensions.textarea.submitRadius, overflow: "hidden" }}>
-            <KjunButton size="sm" prefixIcon="arrow-up" ariaLabel={submitLabel} disabled={!canSubmit} onPress={() => onSubmit?.(value)} />
+            <KjunButton size="sm" prefixIcon="arrow-up" ariaLabel={submitLabel} loading={submitting} disabled={!canSubmit && !submitting} onPress={() => { if (canSubmit) onSubmit?.(value); }} />
           </View>}
         </View>
       </Animated.View>

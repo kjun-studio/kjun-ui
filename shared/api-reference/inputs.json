@@ -558,7 +558,9 @@
       "disabled",
       "size",
       "description",
-      "loading"
+      "loading",
+      "name",
+      "formValue"
     ],
     "react": [
       "value",
@@ -570,7 +572,14 @@
       "onValueChange",
       "onChange",
       "description",
-      "loading"
+      "loading",
+      "name",
+      "formValue",
+      "id",
+      "autoFocus",
+      "onFocus",
+      "onBlur",
+      "inputRef"
     ],
     "native": [
       "value",
@@ -600,7 +609,9 @@
       "id",
       "required",
       "disabled",
-      "readOnly"
+      "readOnly",
+      "submitOn",
+      "submitting"
     ],
     "react": [
       "value",
@@ -628,7 +639,9 @@
       "showCount",
       "actions",
       "submitLabel",
-      "onSubmit"
+      "onSubmit",
+      "submitOn",
+      "submitting"
     ],
     "native": [
       "size",
@@ -652,7 +665,8 @@
       "readOnly",
       "style",
       "children",
-      "id"
+      "id",
+      "submitting"
     ]
   }
 }

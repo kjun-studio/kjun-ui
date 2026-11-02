@@ -30,7 +30,8 @@ export function InputDesignCases({ K, Affix = 'span', native = false }: { K: any
     <div data-testid="textarea"><K.KjunTextarea {...text} readonly={native ? config.readOnly : undefined} rows={3} ariaLabel="목록 설명" /></div>
     {/* A growing composer: two rows up to four, a counted limit, an action and a submit button. */}
     <div data-testid="composer"><K.KjunTextarea value={note} {...(native ? { onChangeText: setNote } : { onValueChange: setNote })} size={config.size} disabled={config.disabled} rows={2} maxRows={4} maxLength={20} showCount
-      submitLabel="보내기" onSubmit={(next: string) => { setSent(next); setNote(''); }} actions={<K.KjunButton variant="ghost" size="sm" prefixIcon="plus" ariaLabel="첨부 추가" />} ariaLabel="메모" />
+      submitLabel="보내기" submitOn={(config as any).submitOn} submitting={(config as any).submitting} resize={(config as any).resize}
+      onSubmit={(next: string) => { setSent(next); setNote(''); }} actions={<K.KjunButton variant="ghost" size="sm" prefixIcon="plus" ariaLabel="첨부 추가" />} ariaLabel="메모" />
       {/* Out of layout: an empty inline line box would put the fields below on fractional offsets. */}
       <output data-testid="sent" style={{ display: "none" }}>{sent}</output></div>
     <div data-testid="select"><K.KjunSelect {...config} value={selected} options={designOptions} onValueChange={setSelected} clearable ariaLabel="공개 범위" /></div>

@@ -56,7 +56,7 @@
       "padding": { "$ref": "dimension.value2" },
       "radius": { "$ref": "radius.radius9999" },
       "labelGap": { "$ref": "dimension.value12" },
-      "spinnerSize": 12
+      "spinnerSize": { "$ref": "dimension.value12" }
     },
     "pagination": {
       "gap": { "$ref": "dimension.value12" },
