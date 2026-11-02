@@ -1,4 +1,5 @@
 import { tokens } from "@kjun-ui/tokens";
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { useReducedMotion } from "./use-reduced-motion";
 import { useNumberMotion } from "../../../shared/package-runtime/use-number-motion";
 import {
@@ -67,13 +68,14 @@ export function KjunAnimatedNumber({
 }
 /** The status slot after a price; nothing when the app gives no status. */
 export function PriceStatus({ status }: { status?: ReactNode }) {
-  return status == null || status === false ? null : <span className="kjun-price-status">{status}</span>;
+  return hasContent(status) ? <span className="kjun-price-status">{status}</span> : null;
 }
 export interface KjunPriceCellProps {
   value?: number | null;
   formatter?: (value: number) => string;
   stale?: boolean;
-  /** The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment. */
+  /** The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment.
+   * With no price (value null) a status still shows after a dash, for states such as "거래정지"; without one null is loading. */
   status?: ReactNode;
   flashClass?: string;
   fromPrevious?: boolean;
@@ -86,9 +88,10 @@ export function KjunPriceCell({
   flashClass = "",
   fromPrevious = true,
 }: KjunPriceCellProps) {
-  return value == null ? (
-    <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
-  ) : (
+  if (value == null) return hasContent(status)
+    ? <><span className="kjun-price-cell" data-missing="">—</span><PriceStatus status={status} /></>
+    : <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />;
+  return (
     <>
       <span
         className={"kjun-price-cell " + flashClass}

@@ -72,7 +72,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--_kjun-geometry-dimension-value6);
+  /* The status sits one status gap from the change, like a status after a price. */
+  gap: var(--_kjun-extension-financial-status-gap);
   margin-top: var(--_kjun-geometry-dimension-value2);
   font-size: var(--_kjun-type-caption-size);
   line-height: var(--_kjun-type-caption-line);

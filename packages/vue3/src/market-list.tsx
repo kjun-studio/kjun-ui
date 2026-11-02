@@ -54,7 +54,8 @@ export const KjunMarketSimpleList = defineComponent({
                         <div class="kjun-market-price"><KjunPriceCell value={price} formatter={props.priceFormatter} stale={stale} /></div>
                         <div class="kjun-market-change">
                           {price !== null && slots.pricePrefix?.({ row })}
-                          {(finiteNumber(price) !== null || (!props.changeLoading(row) && finiteNumber(change) !== null)) && priceStatus(slots.status?.({ row }))}
+                          {/* A status shows whenever the app gives one, also with no price (trading halted, no quote). */}
+                          {priceStatus(slots.status?.({ row }))}
                           {props.changeLoading(row)
                             ? <KjunSkeleton type="block" height={tokens.extensions.marketList.changeSkeletonHeight} width={tokens.extensions.marketList.changeSkeletonWidth} />
                             : change !== null ? <KjunSignedValue value={change} stale={stale} format="percent" isRaw /> : <span>-</span>}

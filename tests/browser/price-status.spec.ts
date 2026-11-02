@@ -7,6 +7,19 @@ const centre = (b: { y: number; height: number }) => b.y + b.height / 2;
 for (const platform of ['react', 'vue3', 'native']) {
   // The badge's own box: Native Web nests the label text inside the padded badge view.
   const badge = (scope: Locator, text: string) => platform === 'native' ? scope.getByText(text, { exact: true }).locator('..') : scope.getByText(text, { exact: true });
+  test(`${platform}: a status shows without a price, and a long status stays inside its column`, async ({ page }) => {
+    await openFixture(page, platform, '', 'price-status');
+    const halted = page.getByTestId('halted');
+    await expect(halted.getByText('거래정지', { exact: true })).toBeVisible();
+    await expect(halted.getByText('—', { exact: true })).toBeVisible();
+    const long = page.getByTestId('long'), column = await box(long);
+    // The status box (which clips its text with an ellipsis) ends inside the column.
+    if (platform !== 'native') {
+      const status = await box(long.locator('.kjun-price-status'));
+      expect(status.x + status.width).toBeLessThanOrEqual(column.x + column.width + 1);
+    }
+  });
+
   test(`${platform}: the app's status sits after a price, before a list row's change and after a table price`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'price-status');

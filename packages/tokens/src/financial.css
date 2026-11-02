@@ -69,11 +69,18 @@
   display: flex;
 }
 /* The status slot after a price: the app's badge or text, set off from the number and centred on its line. */
+/* A long status ends in an ellipsis instead of widening the quote column and squeezing the name. */
 .kjun-price-status {
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
+.kjun-price-cell[data-missing] { color: var(--_kjun-color-text-tertiary); }
 .kjun-price-cell + .kjun-price-status {
   margin-inline-start: var(--_kjun-extension-financial-status-gap);
 }

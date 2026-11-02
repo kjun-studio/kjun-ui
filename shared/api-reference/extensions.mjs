@@ -109,9 +109,10 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (key.startsWith("on")) entry = callback(name, key, platform);
     else if (name === "KjunTopNavigation" && topNavigationSlots[key]) entry = topNavigationSlots[key];
     else if (name === "KjunListRow" && key === "children") entry = listRowContent;
-    else if (name === "KjunListRow" && key === "selected") entry = detail("하나를 고르는 목록에서 고른 행을 표시합니다.", { "표시": "행 끝에 강조색 체크를 그리고 웹은 aria-current, Native는 선택 상태로 알립니다. 고른 값은 앱이 관리합니다." });
+    else if (name === "KjunListRow" && key === "selected") entry = detail("하나를 고르는 목록의 선택지입니다.", { "표시": "true면 행 끝에 강조색 체크를 그립니다. 누를 수 있는 행에 selected(true·false)를 주면 모든 플랫폼에서 radio로 읽히고 고른 행이 checked입니다. 고른 값은 앱이 관리합니다." });
+    else if (name === "KjunListRow" && (key === "titleLines" || key === "descriptionLines")) entry = { summary: (key === "titleLines" ? "제목" : "설명") + "을 이 줄 수까지만 보이고 넘치면 말줄임표로 줄입니다. 생략하면 모두 줄바꿈합니다." };
     else if (name === "KjunListRow" && key === "checked") entry = detail("행 전체를 스위치로 만듭니다.", { "동작": platform === "vue3" ? "v-model:checked로 연결합니다. 행 어디를 눌러도 update:checked로 반대 값을 알리고, 행 끝 스위치는 장식입니다. 행이 switch 역할과 checked 상태를 가집니다." : "행 어디를 눌러도 onCheckedChange로 반대 값을 알리고, 행 끝 스위치는 장식입니다. 행이 switch 역할과 checked 상태를 가집니다." });
-    else if (name === "KjunListSection" && key === "headingLevel") entry = detail("섹션 제목의 제목 수준입니다.", { "값": "2·3·4 중 하나이며 기본 3입니다. 페이지의 제목 구조에 맞춰 화면 낭독기의 제목 탐색 순서를 정합니다. Native는 제목 역할만 있고 수준은 없습니다." });
+    else if (name === "KjunListSection" && key === "headingLevel") entry = detail("섹션 제목의 제목 수준입니다.", { "값": "2·3·4 중 하나이며 기본 3입니다. 페이지의 제목 구조에 맞춰 화면 낭독기의 제목 탐색 순서를 정합니다. Native는 Native Web에서 aria-level로 알리고, 기기에는 제목 역할만 있습니다." });
     else if (name === "KjunListGroup" && key === "variant") entry = detail("섹션을 쌓는 모양입니다.", { "값": "inset(기본)은 섹션을 lg 모서리로 둥글게 하고 24px 띄우며, 라벨형 제목과 footer를 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다.", "섹션 설정": "섹션에 radius를 직접 주면 그 값이 우선합니다." });
     else if (name === "KjunListSection" && key === "titleVariant") entry = detail("섹션 제목 모양을 고릅니다.", { "값": "title은 16px 제목, label은 행 위의 작은 라벨입니다. 생략하면 설명이 있는 제목은 title, 없는 제목은 label입니다." });
     else if (name === "KjunListRow" && key === "icon") entry = detail("앞쪽 열에 그릴 아이콘 이름입니다.", { "크기·색": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 40px 앞쪽 열 가운데에 놓습니다.", "leading과 함께": platform === "vue3" ? "leading 슬롯이 있으면 슬롯을 그립니다." : "leading이 있으면 leading을 그립니다." });

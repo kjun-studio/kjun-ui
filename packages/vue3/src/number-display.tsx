@@ -1,4 +1,5 @@
-import { Comment, defineComponent, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type Ref, type SlotsType, type VNode } from "vue";
+import { defineComponent, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type Ref, type SlotsType, type VNode } from "vue";
+import { hasContent } from "./runtime/slots";
 import { tokens } from "@kjun-ui/tokens";
 import { createNumberMotion } from "../../../shared/package-runtime/number-motion";
 import { KjunSkeleton } from "./display";
@@ -54,7 +55,7 @@ export const KjunAnimatedNumber = defineComponent({
 
 /** The status slot after a price; nothing when the app's slot renders nothing. */
 export const priceStatus = (nodes: VNode[] | undefined) =>
-  nodes?.some((node) => node.type !== Comment) ? <span class="kjun-price-status">{nodes}</span> : null;
+  hasContent(nodes) ? <span class="kjun-price-status">{nodes}</span> : null;
 
 const kjunPriceCellProps = {
   value: { type: Number as PropType<number | null>, default: undefined },
@@ -70,8 +71,10 @@ export const KjunPriceCell = defineComponent({
   props: kjunPriceCellProps,
   slots: Object as SlotsType<{ status?: () => VNode[] }>,
   setup(props, { slots }) {
+    // With no price a status still shows after a dash, for states such as "거래정지"; without one null is loading.
     return () => props.value == null
-      ? <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
+      ? hasContent(slots.status?.()) ? <><span class="kjun-price-cell" data-missing="">—</span>{priceStatus(slots.status?.())}</>
+        : <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
       : <>
         <span class={"kjun-price-cell " + props.flashClass} ref={domainRef(/\bkjun-price-flash-(up|down)/.test(props.flashClass))}
           style={{ color: props.stale ? "var(--_kjun-color-text-tertiary)" : undefined }}>

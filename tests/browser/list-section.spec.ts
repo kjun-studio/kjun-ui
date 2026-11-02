@@ -21,6 +21,12 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(label.y + label.height).toBeLessThanOrEqual(panel.y);
       expect(footer.y).toBeGreaterThanOrEqual(panel.y + panel.height);
       await expect(page.getByRole('heading', { level: 2, name: '최근 문서' })).toBeVisible();
+      // Sections are not landmarks; the list is named by the title instead.
+      await expect(page.getByRole('region')).toHaveCount(0);
+      await expect(page.getByRole('list', { name: '최근 문서' })).toBeVisible();
+    } else {
+      // Native Web headings carry the level too.
+      await expect(page.getByRole('heading', { name: '최근 문서' })).toHaveAttribute('aria-level', /\d/);
     }
     // A section without rows shows the app's empty content in their place.
     await expect(page.getByText('아직 즐겨찾기한 문서가 없습니다', { exact: true })).toBeVisible();

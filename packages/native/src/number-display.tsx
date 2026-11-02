@@ -1,4 +1,5 @@
 import { tokens } from "@kjun-ui/tokens";
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { typeStyle } from "./typography";
 import { useNumberMotion } from "../../../shared/package-runtime/use-number-motion";
 import { createContext,useContext,useEffect,useRef,useState,type ReactNode } from "react";
@@ -80,7 +81,7 @@ export function KjunAnimatedNumber({
 }
 /** The status slot after a price; nothing when the app gives no status. Text statuses get the system text. */
 export function PriceStatus({ status }: { status?: ReactNode }) {
-  return status == null || status === false ? null : <View style={{ alignSelf: "center" }}>{content(status)}</View>;
+  return hasContent(status) ? <View style={{ alignSelf: "center", flexShrink: 1, minWidth: 0 }}>{content(status)}</View> : null;
 }
 export interface KjunPriceCellProps {
   value?: number | null;
@@ -98,9 +99,11 @@ export function KjunPriceCell({
   fromPrevious = true,
 }: KjunPriceCellProps) {
   const { colors } = useKjunStyles(), quoteType = useContext(MarketQuoteTypeContext);
-  return value == null ? (
-    <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
-  ) : (
+  // With no price a status still shows after a dash, for states such as "거래정지"; without one null is loading.
+  if (value == null) return hasContent(status)
+    ? <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.statusGap }}><KText style={{ ...quoteType?.price, color: colors.textTertiary }}>—</KText><PriceStatus status={status} /></View>
+    : <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />;
+  return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.statusGap }}>
       <View
         style={quoteType ? undefined : { paddingVertical: tokens.extensions.financial.pillPaddingY, paddingHorizontal: tokens.extensions.financial.pillPaddingX, borderRadius: tokens.radius.radius9999 }}

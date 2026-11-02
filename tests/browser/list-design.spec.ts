@@ -36,12 +36,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(row).toHaveAttribute('aria-checked', 'false');
     await page.getByText('English', { exact: true }).click();
     await expect(page.getByTestId('state')).toContainText('"lang":"en"');
-    if (web) {
-      await expect(page.getByRole('button', { name: 'English' })).toHaveAttribute('aria-current', 'true');
-      await expect(page.getByRole('button', { name: '한국어' })).not.toHaveAttribute('aria-current', /.*/);
-    } else {
-      // Native Web maps a selected button to aria-pressed (KJUN's AccessiblePressable convention).
-      await expect(page.getByRole('button', { name: 'English' })).toHaveAttribute('aria-pressed', 'true');
-    }
+    // Every platform reads a choice row as a radio, checked when selected.
+    await expect(page.getByRole('radio', { name: 'English' })).toHaveAttribute('aria-checked', 'true');
+    await expect(page.getByRole('radio', { name: '한국어' })).toHaveAttribute('aria-checked', 'false');
+    // The switch drawn in a switch row is decoration: one switch control per row, and one tab stop.
+    await expect(page.getByRole('switch')).toHaveCount(await page.locator('[role="switch"]').count());
+    await expect(page.locator('[role="switch"] [role="switch"], [role="switch"] [tabindex="0"]')).toHaveCount(0);
   });
 }

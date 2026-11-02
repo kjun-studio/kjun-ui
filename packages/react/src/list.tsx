@@ -1,8 +1,9 @@
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
-import { createContext, useContext, useEffect, useId, useRef, type MouseEvent, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useId, useRef, type CSSProperties, type MouseEvent, type ReactNode } from "react";
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { KjunIcon } from "./button";
+import { listRowKind, warnListRowProps } from "../../../shared/package-runtime/list-row";
 export interface KjunListRowProps {
   title: string;
   description?: string;
@@ -17,7 +18,7 @@ export interface KjunListRowProps {
   destructive?: boolean;
   /** Ends the row with a decorative chevron that marks it as navigation. */
   chevron?: boolean;
-  /** Marks the chosen row of a single-choice list with a check at the end (announced as current). */
+  /** One choice in a single-choice list: true draws a check at the end. A pressable row given it (true or false) reads as a radio. */
   selected?: boolean;
   /** Makes the whole row a switch: it draws one at the end and toggles on any press. */
   checked?: boolean;
@@ -27,18 +28,25 @@ export interface KjunListRowProps {
   ariaLabel?: string;
   /** Display-only content under the description (a budget bar); no buttons or links inside a pressable row. */
   children?: ReactNode;
+  /** Clamps the title (and the description) to this many lines, ending in an ellipsis. */
+  titleLines?: number;
+  descriptionLines?: number;
 }
-export function KjunListRow({ title, description, icon, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected = false, checked, onCheckedChange, onClick, ariaLabel, children }: KjunListRowProps) {
-  const toggle = checked !== undefined;
-  const content = useRef<HTMLSpanElement>(null), pressable = !!(href || onClick || toggle);
+export function KjunListRow({ title, description, icon, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected, checked, onCheckedChange, onClick, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
+  const kind = listRowKind({ checked, selected, href, pressable: !!(href || onClick) }), toggle = kind === "switch";
+  const content = useRef<HTMLSpanElement>(null), pressable = kind !== "static";
   useEffect(() => { if (pressable) warnNestedControls(content.current, "KJUN ListRow: a pressable row's content contains buttons or links; move them to actions."); }, [pressable]);
+  useEffect(() => warnListRowProps({ checked, selected, href, chevron }), [checked !== undefined, selected !== undefined, !!href, chevron]);
+  const clamp = (lines?: number) => lines ? { WebkitLineClamp: lines } as CSSProperties : undefined;
   const front = leading || (icon ? <KjunIcon name={icon} className="kjun-list-icon" size={tokens.extensions.list.iconSize} /> : null);
-  const contents = <>{front && <span className="kjun-list-leading">{front}</span>}<span className="kjun-list-body"><span className="kjun-list-title">{title}</span>{description && <span className="kjun-list-description">{description}</span>}{hasContent(children) && <span ref={content} className="kjun-list-content">{children}</span>}</span>{trailing && <span className="kjun-list-trailing">{trailing}</span>}{selected && <KjunIcon name="check" className="kjun-list-check" size={tokens.iconSizes.default} />}{toggle && <span className={"kjun-switch kjun-switch--md" + (checked ? " kjun-switch--on" : "")} aria-hidden="true"><span className="kjun-switch-thumb" /></span>}{chevron && <KjunIcon name="chevron-right" className="kjun-list-chevron" size={tokens.iconSizes.default} />}</>;
+  const contents = <>{front && <span className="kjun-list-leading">{front}</span>}<span className="kjun-list-body"><span className="kjun-list-title" data-clamp={titleLines ? "" : undefined} style={clamp(titleLines)}>{title}</span>{description && <span className="kjun-list-description" data-clamp={descriptionLines ? "" : undefined} style={clamp(descriptionLines)}>{description}</span>}{hasContent(children) && <span ref={content} className="kjun-list-content">{children}</span>}</span>{hasContent(trailing) && <span className="kjun-list-trailing">{trailing}</span>}{selected && <KjunIcon name="check" className="kjun-list-check" size={tokens.iconSizes.default} />}{toggle && <span className={"kjun-switch kjun-switch--md" + (checked ? " kjun-switch--on" : "")} aria-hidden="true"><span className="kjun-switch-thumb" /></span>}{chevron && <KjunIcon name="chevron-right" className="kjun-list-chevron" size={tokens.iconSizes.default} />}</>;
   // A switch row is one switch control: the drawn switch is decoration and the row carries role and state.
-  const main = href ? <a className="kjun-list-main" href={disabled ? undefined : href} aria-label={ariaLabel} aria-disabled={disabled || undefined} aria-current={selected || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a>
-    : toggle ? <button className="kjun-list-main" type="button" role="switch" aria-checked={checked} aria-label={ariaLabel} disabled={disabled} onClick={(event) => { onCheckedChange?.(!checked); onClick?.(event); }}>{contents}</button>
-    : onClick ? <button className="kjun-list-main" type="button" aria-label={ariaLabel} aria-current={selected || undefined} disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main" aria-current={selected || undefined}>{contents}</div>;
-  return <li className="kjun-list-row" data-leading={front ? "" : undefined} data-destructive={destructive || undefined} data-disabled={disabled || undefined} data-icon={!leading && icon ? "" : undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{actions && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}</div>}</li>;
+  // A choice row is a radio (checked when selected); the check is its drawing.
+  const main = toggle ? <button className="kjun-list-main" type="button" role="switch" aria-checked={checked} aria-label={ariaLabel} disabled={disabled} onClick={(event) => { onCheckedChange?.(!checked); onClick?.(event); }}>{contents}</button>
+    : kind === "radio" ? <button className="kjun-list-main" type="button" role="radio" aria-checked={!!selected} aria-label={ariaLabel} disabled={disabled} onClick={onClick}>{contents}</button>
+    : href ? <a className="kjun-list-main" href={disabled ? undefined : href} aria-label={ariaLabel} aria-disabled={disabled || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a>
+    : onClick ? <button className="kjun-list-main" type="button" aria-label={ariaLabel} disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main">{contents}</div>;
+  return <li className="kjun-list-row" data-leading={front ? "" : undefined} data-destructive={destructive || undefined} data-disabled={disabled || undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{hasContent(actions) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}</div>}</li>;
 }
 export interface KjunListSectionProps {
   title?: string; description?: string; actions?: ReactNode; children?: ReactNode; ariaLabel?: string;
@@ -68,11 +76,12 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   const id = "kjun-" + useId(), Heading = `h${headingLevel}` as "h3";
   const rounded = corner === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${corner})` };
   const rows = hasContent(children)
-    ? <ul className="kjun-list" aria-label={ariaLabel || title} data-divider={divider ? undefined : "false"} data-density={density === "compact" ? "compact" : undefined}>{children}</ul>
+    ? <ul className="kjun-list" aria-label={ariaLabel || undefined} aria-labelledby={ariaLabel || !title ? undefined : id} data-divider={divider ? undefined : "false"} data-density={density === "compact" ? "compact" : undefined}>{children}</ul>
     : hasContent(empty) ? <div className="kjun-list-empty">{empty}</div> : null;
   return <section className="kjun-list-section" data-surface={surface ? undefined : "false"} data-outside={outside || undefined}
-    data-radius={corner === "none" || outside ? undefined : corner} style={outside ? undefined : rounded} aria-labelledby={title ? id : undefined} aria-label={title ? undefined : ariaLabel}>
-    {(title || description || actions) && <div className="kjun-list-heading" data-bare={title && label ? "" : undefined}><div>{title && <Heading id={id}>{title}</Heading>}{description && <p>{description}</p>}</div>{actions && <div className="kjun-list-heading-actions">{actions}</div>}</div>}
+    // The list carries the name; a named section would make every settings group a page landmark.
+    data-radius={corner === "none" || outside ? undefined : corner} style={outside ? undefined : rounded}>
+    {(title || description || hasContent(actions)) && <div className="kjun-list-heading" data-bare={title && label ? "" : undefined}><div>{title && <Heading id={id}>{title}</Heading>}{description && <p>{description}</p>}</div>{hasContent(actions) && <div className="kjun-list-heading-actions">{actions}</div>}</div>}
     {outside ? <div className="kjun-list-panel" data-surface={surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
     {hasContent(footer) && <div className="kjun-list-footer">{footer}</div>}
   </section>;

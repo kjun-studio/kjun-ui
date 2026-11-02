@@ -10256,8 +10256,8 @@
         "name": "selected",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": "Marks the chosen row of a single-choice list with a check at the end (announced as current)."
+        "default": "—",
+        "description": "One choice in a single-choice list: true draws a check at the end. A pressable row given it (true or false) reads as a radio."
       },
       {
         "name": "checked",
@@ -10279,6 +10279,20 @@
         "required": false,
         "default": "—",
         "description": "Name of a pressable or link row, e.g. with the amount a screen reader should hear."
+      },
+      {
+        "name": "titleLines",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": "Clamps the title (and the description) to this many lines, ending in an ellipsis."
+      },
+      {
+        "name": "descriptionLines",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "events": [
@@ -10385,7 +10399,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Marks the chosen row of a single-choice list with a check at the end (announced as current)."
+        "description": "One choice in a single-choice list: true draws a check at the end. A pressable row given it (true or false) reads as a radio."
       },
       {
         "name": "checked",
@@ -10421,6 +10435,20 @@
         "required": false,
         "default": "—",
         "description": "Display-only content under the description (a budget bar); no buttons or links inside a pressable row."
+      },
+      {
+        "name": "titleLines",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Clamps the title (and the description) to this many lines, ending in an ellipsis."
+      },
+      {
+        "name": "descriptionLines",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "native": [
@@ -10499,7 +10527,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Marks the chosen row of a single-choice list with a check at the end (announced as selected)."
+        "description": "One choice in a single-choice list: true draws a check at the end. A pressable row given it (true or false) reads as a radio."
       },
       {
         "name": "checked",
@@ -10535,6 +10563,20 @@
         "required": false,
         "default": "—",
         "description": "Display-only content under the description (a budget bar); no buttons or links inside a pressable row."
+      },
+      {
+        "name": "titleLines",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Clamps the title (and the description) to this many lines, ending in an ellipsis."
+      },
+      {
+        "name": "descriptionLines",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ]
   },
@@ -10790,6 +10832,13 @@
         "required": false,
         "default": "—",
         "description": "\"title\" is the 16px heading, \"label\" the small caption above the rows; by default a title with a description is a heading and one without is a label."
+      },
+      {
+        "name": "headingLevel",
+        "type": "2 | 3 | 4 | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Heading level of the title on Native Web (default 3); devices have a heading role without levels."
       },
       {
         "name": "empty",
@@ -15475,7 +15524,7 @@
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": "The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment."
+        "description": "The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment.\nWith no price (value null) a status still shows after a dash, for states such as \"거래정지\"; without one null is loading."
       },
       {
         "name": "flashClass",

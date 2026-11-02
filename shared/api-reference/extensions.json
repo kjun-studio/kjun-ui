@@ -11,7 +11,9 @@
       "chevron",
       "selected",
       "checked",
-      "ariaLabel"
+      "ariaLabel",
+      "titleLines",
+      "descriptionLines"
     ],
     "react": [
       "title",
@@ -29,7 +31,9 @@
       "checked",
       "onCheckedChange",
       "ariaLabel",
-      "children"
+      "children",
+      "titleLines",
+      "descriptionLines"
     ],
     "native": [
       "title",
@@ -47,7 +51,9 @@
       "checked",
       "onCheckedChange",
       "ariaLabel",
-      "children"
+      "children",
+      "titleLines",
+      "descriptionLines"
     ]
   },
   "KjunListSection": {
@@ -89,7 +95,8 @@
       "radius",
       "titleVariant",
       "empty",
-      "footer"
+      "footer",
+      "headingLevel"
     ]
   },
   "KjunListItem": {

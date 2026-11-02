@@ -69,9 +69,8 @@ export function KjunMarketSimpleList<
                   </div>
                   <div className="kjun-market-change">
                     {price !== null && props.renderPricePrefix?.(row)}
-                    {(finiteNumber(price) !== null ||
-                      (!changeLoading(row) && finiteNumber(change) !== null)) &&
-                      <PriceStatus status={props.renderStatus?.(row)} />}
+                    {/* A status shows whenever the app gives one, also with no price (trading halted, no quote). */}
+                    <PriceStatus status={props.renderStatus?.(row)} />
                     {changeLoading(row) ? (
                       <KjunSkeleton type="block" height={tokens.extensions.marketList.changeSkeletonHeight} width={tokens.extensions.marketList.changeSkeletonWidth} />
                     ) : change !== null ? (
