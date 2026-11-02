@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { toasts } from './toast-locators';
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: a menu action opens a persistent modal and returns to the menu trigger`, async ({ page }) => {
     await openFixture(page, platform, '', 'elevation');
@@ -58,11 +59,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     // Assert elapsed lifetime independently of browser startup and CI rendering speed.
     await page.clock.pauseAt(new Date('2026-09-22T01:00:00Z'));
     await page.evaluate(() => (window as any).elevation.toast(1600));
-    await expect(page.getByRole('alert')).toBeVisible();
+    await expect(toasts(page)).toBeVisible();
     await page.clock.runFor(700);
     await page.evaluate(() => (window as any).elevation.openWindow());
     await expect(page.getByText('짧은 도움말', { exact: true })).toHaveCount(0);
-    await expect(page.getByRole('alert')).toBeVisible();
+    await expect(toasts(page)).toBeVisible();
     // Flush deferred initial focus before checking that Toast did not capture it.
     await page.clock.runFor(16);
     await expect.poll(() => page.evaluate(() =>
@@ -70,6 +71,6 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.clock.runFor(650);
     await page.evaluate(() => (window as any).elevation.closeWindow());
     await page.clock.runFor(300);
-    await expect(page.getByRole('alert')).toHaveCount(0, { timeout: 900 });
+    await expect(toasts(page)).toHaveCount(0, { timeout: 900 });
   });
 }

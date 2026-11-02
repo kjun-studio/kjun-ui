@@ -14,33 +14,37 @@
   top: auto;
   bottom: calc(var(--_kjun-extension-toast-inset) + var(--_kjun-safe-area-bottom) + var(--_kjun-toast-offset, 0px));
 }
+/* A toast is one neutral card for every tone: colour lives in the status icon, and a danger toast also colours its
+   heading. Width follows the content between minWidth and maxWidth; the slot lets it hug the stack's edge. */
+.kjun-toast-slot { display: flex; justify-content: flex-end; }
+.kjun-toast-slot > * { min-width: 0; max-width: 100%; }
 .kjun-toast {
   box-shadow: var(--_kjun-toast-elevation);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--_kjun-extension-toast-gap);
-  padding: var(--_kjun-extension-toast-padding);
+  padding: var(--_kjun-extension-toast-padding-y) var(--_kjun-extension-toast-padding-end) var(--_kjun-extension-toast-padding-y) var(--_kjun-extension-toast-padding-start);
   background: var(--_kjun-color-surface);
   border-radius: var(--_kjun-extension-toast-radius);
   border: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
   min-width: var(--_kjun-extension-toast-min-width);
   max-width: var(--_kjun-extension-toast-max-width);
-  position: relative;
-  overflow: hidden;
+  box-sizing: border-box;
   pointer-events: auto;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  /* Vertical drags still scroll the page; sideways ones are the swipe that closes the toast. */
+  touch-action: pan-y;
 }
-.kjun-toast[data-title="true"] {
-  align-items: flex-start;
-}
+.kjun-toast[data-side="false"] { padding-inline-end: var(--_kjun-extension-toast-padding-start); }
+/* The icon sits in a box one text line tall, so it centres on the first line with or without a heading. */
 .kjun-toast-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: var(--_kjun-type-input-size);
-  line-height: var(--_kjun-type-input-line);
-  font-weight: var(--_kjun-type-input-weight);
-  letter-spacing: var(--_kjun-type-input-tracking);
+  height: var(--_kjun-type-control-line);
+  font-size: var(--_kjun-extension-toast-icon-size);
 }
 .kjun-toast-content {
   flex: 1;
@@ -50,38 +54,61 @@
   display: block;
   font-size: var(--_kjun-type-control-size);
   color: var(--_kjun-color-text);
-  margin-bottom: var(--_kjun-extension-toast-title-gap);
   line-height: var(--_kjun-type-control-line);
   font-weight: var(--_kjun-type-control-weight);
   letter-spacing: var(--_kjun-type-control-tracking);
 }
 .kjun-toast-message {
+  display: block;
   font-size: var(--_kjun-type-body-size);
   color: var(--_kjun-color-text-secondary);
-  overflow-wrap: anywhere;
   line-height: var(--_kjun-type-body-line);
   font-weight: var(--_kjun-type-body-weight);
   letter-spacing: var(--_kjun-type-body-tracking);
 }
-.kjun-toast-action {
-  display: block;
-  margin-top: var(--_kjun-extension-toast-action-gap);
-  padding: 0;
-  background: none;
-  border: none;
-  font: inherit;
+.kjun-toast strong + .kjun-toast-message { margin-top: var(--_kjun-extension-toast-title-gap); }
+/* Without a heading the message is the toast's one line: label weight in the text colour. */
+.kjun-toast[data-title="false"] .kjun-toast-message {
+  color: var(--_kjun-color-text);
   font-size: var(--_kjun-type-label-size);
-  color: var(--_kjun-color-brand);
-  cursor: pointer;
-  transition: color var(--_kjun-motion-control) var(--_kjun-ease-out);
   line-height: var(--_kjun-type-label-line);
   font-weight: var(--_kjun-type-label-weight);
   letter-spacing: var(--_kjun-type-label-tracking);
 }
-.kjun-toast-action:hover {
-  color: var(--_kjun-color-brand-hover);
-  text-decoration: underline;
+.kjun-toast[data-tone="danger"] strong,
+.kjun-toast[data-tone="danger"][data-title="false"] .kjun-toast-message { color: var(--_kjun-color-danger); }
+.kjun-toast-actions { display: flex; margin-top: var(--_kjun-extension-toast-action-gap); }
+/* Actions read as text in every tone; the side column centres them and the close button on the first line. */
+.kjun-toast-side {
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-extension-toast-side-gap);
+  flex-shrink: 0;
+  margin-block: calc((var(--_kjun-type-control-line) - var(--_kjun-extension-toast-close-size)) / 2);
 }
+.kjun-toast-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--_kjun-type-control-line);
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: var(--_kjun-extension-toast-close-radius);
+  font: inherit;
+  font-size: var(--_kjun-type-control-size);
+  color: var(--_kjun-color-text);
+  text-decoration: underline;
+  text-decoration-thickness: var(--_kjun-border-default-width);
+  text-underline-offset: var(--_kjun-geometry-dimension-value3);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--_kjun-motion-control) var(--_kjun-ease-out);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+  letter-spacing: var(--_kjun-type-control-tracking);
+}
+.kjun-toast-side .kjun-toast-action { min-height: var(--_kjun-extension-toast-close-size); }
+.kjun-toast-action:hover { color: var(--_kjun-color-text-secondary); }
 .kjun-toast-close {
   display: flex;
   align-items: center;
@@ -93,7 +120,8 @@
   border: none;
   border-radius: var(--_kjun-extension-toast-close-radius);
   cursor: pointer;
-  color: var(--_kjun-color-text-tertiary);
+  color: var(--_kjun-color-text-secondary);
+  font-size: var(--_kjun-extension-toast-close-icon-size);
   transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out);
   flex-shrink: 0;
 }
@@ -106,46 +134,38 @@
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
   outline-offset: var(--_kjun-state-focus-offset);
 }
-.kjun-toast-progress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: var(--_kjun-extension-toast-progress-height);
-  border-radius: 0 0 var(--_kjun-extension-toast-radius) var(--_kjun-extension-toast-radius);
-  animation: kjun-toast-progress linear forwards;
+/* Compact: one short line in a capsule that only holds the icon, the message and an optional action. */
+.kjun-toast[data-compact="true"] {
+  align-items: center;
+  min-width: 0;
+  min-height: var(--_kjun-extension-toast-compact-height);
+  padding: 0 var(--_kjun-extension-toast-compact-padding-end) 0 var(--_kjun-extension-toast-compact-padding-start);
+  gap: var(--_kjun-extension-toast-compact-gap);
+  border-radius: var(--_kjun-extension-toast-compact-radius);
+  white-space: nowrap;
 }
-@keyframes kjun-toast-progress {
-  from {
-    width: var(--_kjun-toast-start);
-  }
-  to {
-    width: 0;
-  }
-}
+.kjun-toast[data-compact="true"] .kjun-toast-side { margin-block: 0; }
 @media (width <= token(responsive.toast)) {
   .kjun-toast-stack {
     left: var(--_kjun-extension-toast-inset);
     right: var(--_kjun-extension-toast-inset);
   }
-  .kjun-toast {
-  box-shadow: var(--_kjun-toast-elevation);
+  .kjun-toast-slot { display: block; }
+  .kjun-toast-slot:has(.kjun-toast[data-compact="true"]) { display: flex; justify-content: center; }
+  .kjun-toast:not([data-compact="true"]) {
     min-width: 0;
     max-width: 100%;
     width: 100%;
-    box-sizing: border-box;
   }
   .kjun-toast-close {
     min-width: var(--_kjun-geometry-native-minimum-touch-target);
     min-height: var(--_kjun-geometry-native-minimum-touch-target);
   }
+  .kjun-toast-side { margin-block: calc((var(--_kjun-type-control-line) - var(--_kjun-geometry-native-minimum-touch-target)) / 2); }
 }
 @media (prefers-reduced-motion: reduce) {
   .kjun-toast-action,
   .kjun-toast-close {
     transition: none;
-  }
-  .kjun-toast-progress {
-    animation: none;
-    width: 100%;
   }
 }

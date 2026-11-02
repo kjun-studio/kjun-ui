@@ -22,8 +22,8 @@ test('toast dismissal and persistence respect duration zero',async()=>{
 });
 test('toast defaults, capacity and hover pause follow upstream behavior',async()=>{
  const c=createFeedbackController();c.api.toast.info('info');c.api.toast.error('error');c.api.toast.warning('warning');
- assert.deepEqual(c.getSnapshot().toasts.map(t=>t.duration),[3000,5000,4000]);
- for(let i=0;i<5;i++)c.api.toast.info(String(i),{duration:0});assert.equal(c.getSnapshot().toasts.length,5);assert.equal(c.getSnapshot().toasts[0].message,'0');
+ assert.deepEqual(c.getSnapshot().toasts.map(t=>t.duration),[3000,0,4000]);
+ c.api.toast.clearAll();for(let i=0;i<5;i++)c.api.toast.info(String(i),{duration:0});assert.equal(c.getSnapshot().toasts.length,3);assert.equal(c.getSnapshot().toasts[0].message,'2');
  c.api.toast.clearAll();const id=c.api.toast.info('pause',{duration:40});c.pauseToast(id);await new Promise(resolve=>setTimeout(resolve,65));assert.equal(c.getSnapshot().toasts.length,1);c.resumeToast(id);await new Promise(resolve=>setTimeout(resolve,65));assert.equal(c.getSnapshot().toasts.length,0);c.dispose();
 });
 test('toast resumes only when every interaction owner releases its pause',()=>{
@@ -100,4 +100,10 @@ test('toasts made while no provider is attached wait with their full duration', 
     assert.equal(controller.getSnapshot().toasts.length, 0, 'runs its timer once shown');
     detach();
   } finally { console.warn = warn; }
+});
+
+test('a full stack makes room by closing the oldest toast that closes itself, keeping a lasting error',()=>{
+ const c=createFeedbackController();const error=c.api.toast.error('lasting');c.api.toast.info('first');c.api.toast.info('second');c.api.toast.success('third');
+ assert.deepEqual(c.getSnapshot().toasts.map(t=>t.message),['lasting','second','third']);assert.equal(c.getSnapshot().toasts[0].id,error);
+ c.api.toast.success('compact',{compact:true});assert.equal(c.getSnapshot().toasts.at(-1).compact,true);assert.equal('showProgress' in c.getSnapshot().toasts.at(-1),false);c.dispose();
 });

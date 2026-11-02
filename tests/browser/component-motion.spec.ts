@@ -177,7 +177,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     await start(page, platform, 'feedback');
     const ids = await page.evaluate(() => ['First toast', 'Second toast', 'Third toast'].map(message => (window as any).feedback.toast.info(message, { duration: 0 })));
     await expect(page.getByText('Third toast', { exact: true })).toBeVisible(); await page.waitForTimeout(250);
-    const before = (await page.getByText('Third toast', { exact: true }).boundingBox())!.y;
+    // The newest toast is on top, so the oldest one sits below the dismissed toast and moves up.
+    const before = (await page.getByText('First toast', { exact: true }).boundingBox())!.y;
     // Measure retention inside the page so protocol latency cannot skip the exit interval.
     const retainedFor = await page.getByText('Second toast', { exact: true }).evaluate((element, id) => new Promise<number>(resolve => {
       const started = performance.now();
@@ -189,15 +190,15 @@ for (const platform of ['react', 'vue3', 'native']) {
     }), ids[1]);
     expect(retainedFor).toBeGreaterThanOrEqual(tokens.motion.toastExit - 20);
     await expect(page.getByText('Second toast', { exact: true })).toHaveCount(0);
-    await expect.poll(async () => (await page.getByText('Third toast', { exact: true }).boundingBox())!.y).toBeLessThan(before - 10);
+    await expect.poll(async () => (await page.getByText('First toast', { exact: true }).boundingBox())!.y).toBeLessThan(before - 10);
     await page.evaluate(() => (window as any).feedback.toast.clearAll());
-    await expect(page.getByText('Third toast', { exact: true })).toHaveCount(0);
+    await expect(page.getByText('First toast', { exact: true })).toHaveCount(0);
     // Observe the short lifetime in the browser; a busy test runner can miss 350ms.
     const timed = await page.evaluate(() => new Promise<{ appeared: boolean; elapsed: number }>(resolve => {
       let appeared = false;
       const started = performance.now();
       const observer = new MutationObserver(() => {
-        const toast = [...document.querySelectorAll('[role="alert"]')].find(node => node.textContent?.includes('Timed toast'));
+        const toast = [...document.querySelectorAll('.kjun-toast, [data-kjun-toast]')].find(node => node.textContent?.includes('Timed toast'));
         if (toast?.getClientRects().length) appeared = true;
         else if (appeared) { observer.disconnect(); resolve({ appeared, elapsed: performance.now() - started }); }
       });

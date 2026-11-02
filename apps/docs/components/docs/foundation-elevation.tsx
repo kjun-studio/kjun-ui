@@ -20,9 +20,9 @@ export function FoundationElevationGuide() {
     <section id="shadows">
       <h2>표면 역할 선택</h2>
       <DataTable headings={['역할', '사용 상황', '표현']} rows={[
-        ['flat', '일반 콘텐츠·기본 Card·Toast·Tooltip', '그림자 없음. 간격·표면색·필요한 테두리로 구분'],
+        ['flat', '일반 콘텐츠·기본 Card·Tooltip', '그림자 없음. 간격·표면색·필요한 테두리로 구분'],
         ['raised', '배경에서 살짝 분리할 Card', '작고 옅은 접촉 그림자'],
-        ['floating', 'Select·메뉴·Popover·Modal·Drawer', '옅은 주변 그림자. 차단 창은 배경 차단과 활성 영역으로 구분'],
+        ['floating', 'Select·메뉴·Popover·Modal·Drawer·Toast', '옅은 주변 그림자. 차단 창은 배경 차단과 활성 영역으로 구분'],
       ]} />
       <p className="body-copy">Card는 내용을 묶는 컨테이너입니다. 행동은 내부 Button·Link에 연결합니다. 마우스를 올리거나 내부 버튼에 포커스를 옮겨도 카드 전체가 떠오르지 않습니다.</p>
     </section>

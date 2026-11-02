@@ -16,7 +16,7 @@ test('control dimensions reject empty controls and content that cannot fit', () 
     [t => { t.extensions.chip.removeSize = 0; }, /positive dimension/],
     [t => { t.extensions.chip.nativeRemoveSize = 24; }, /Native Chip removal target/],
     [t => { t.extensions.toast.minWidth = 500; }, /Toast minWidth exceeds maxWidth/],
-    [t => { t.extensions.toast.progressHeight = 0; }, /positive dimension/],
+    [t => { t.extensions.toast.iconSize = 0; }, /positive dimension/],
     [t => { t.extensions.slider.thumb = 0; }, /positive dimension/],
     [t => { t.extensions.pagination.itemSize = 0; }, /positive dimension/],
     [t => { t.extensions.spinner.sizes.md = 0; }, /positive dimension/],
@@ -49,7 +49,7 @@ test('valid boundary geometry and intentional zero resets remain supported', () 
   const changed = structuredClone(source);
   changed.extensions.checkbox.iconSizes.sm = 16; // 20 - 2 * 2 border
   changed.extensions.radio.dot = 16; // 20 - 2 * 2 border
-  changed.extensions.toast.minWidth = 420;
+  changed.extensions.toast.minWidth = 400; // exactly maxWidth
   changed.button.heights.xs = 16; // exactly the label and icon content
   changed.buttonGroup.padding.xs = 0; // the shared height leaves no room for an inset
   changed.input.sm.height = 28; // 24px text plus two 2px borders

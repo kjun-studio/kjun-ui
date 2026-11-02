@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { cssPalette, palette } from './typography-values';
 
 export const chipSizes = ['sm', 'md', 'lg'] as const;
-export const toastMessage = '공통 토큰의 너비와 진행선을 확인하는 긴 알림 메시지입니다. '.repeat(4);
+export const toastMessage = '공통 토큰의 너비와 줄바꿈을 확인하는 긴 알림 메시지입니다. '.repeat(4);
 
 export function mountChipToastTokens(api: any, native: boolean) {
   cssPalette();
@@ -18,6 +18,8 @@ export function mountChipToastTokens(api: any, native: boolean) {
         disabled: true, removeLabel: '비활성 삭제', onRemove: () => setActions(old => old + 100) })),
       h('button', { key: 'toast', onClick: () => feedback.toast.info(toastMessage, { title: '토큰 알림',
         duration: 60000, action: { label: '알림 실행', onClick: () => setActions(old => old + 1) } }) }, '알림 열기'),
+      h('button', { key: 'compact', onClick: () => feedback.toast.success('짧은 알림', { compact: true, duration: 60000 }) }, '짧은 알림 열기'),
+      h('button', { key: 'error', onClick: () => feedback.toast.error('남는 오류') }, '오류 알림 열기'),
       h('output', { key: 'removed', 'data-testid': 'removed' }, removed.join(',')),
       h('output', { key: 'actions', 'data-testid': 'actions' }, actions),
     ]);

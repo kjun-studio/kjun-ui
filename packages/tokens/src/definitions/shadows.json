@@ -94,7 +94,7 @@
     },
     "toast": {
       "elevation": {
-        "$ref": "elevation.flat"
+        "$ref": "elevation.floating"
       }
     },
     "switch": {

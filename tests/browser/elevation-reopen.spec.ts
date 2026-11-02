@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { toasts } from './toast-locators';
 
 async function start(page: Page, kind: string, nested = false) {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -33,7 +34,7 @@ for (const kind of ['modal', 'drawer']) {
       await expect(first.getByRole('textbox')).toHaveValue('Keep this draft');
       await first.getByRole('button', { name: 'Edit count 1', exact: true }).click();
       await expect(first.getByRole('button', { name: 'Edit count 2', exact: true })).toBeVisible();
-      await expect(first.getByRole('alert')).toHaveCount(1);
+      await expect(toasts(first)).toHaveCount(1);
       for (let i = 0; i < 8; i++) {
         await page.keyboard.press('Tab');
         expect(await first.evaluate(el => el.contains(document.activeElement))).toBe(true);
@@ -42,7 +43,7 @@ for (const kind of ['modal', 'drawer']) {
       await page.keyboard.press('Enter');
       await expect(page.getByTestId('actions')).toHaveText('1');
       await page.clock.runFor(300);
-      await expect(page.getByRole('alert')).toHaveCount(0);
+      await expect(toasts(page)).toHaveCount(0);
 
       // Reactivate the retained lower window, then release page input after both close.
       await page.evaluate(() => (window as any).elevationReopen.toast());
@@ -50,7 +51,7 @@ for (const kind of ['modal', 'drawer']) {
       await page.clock.runFor(300);
       await expect(first).toHaveCount(0);
       await expect(second).toBeVisible();
-      await expect(second.getByRole('alert')).toHaveCount(1);
+      await expect(toasts(second)).toHaveCount(1);
       await second.getByRole('button', { name: 'Second action', exact: true }).click();
       await page.keyboard.press('Tab');
       expect(await second.evaluate(el => el.contains(document.activeElement))).toBe(true);
@@ -58,7 +59,7 @@ for (const kind of ['modal', 'drawer']) {
       await page.clock.runFor(300);
       await page.getByRole('button', { name: 'Page action', exact: true }).click();
       await expect(page.getByTestId('actions')).toHaveText('3');
-      await expect(page.getByRole('alert')).toHaveCount(1);
+      await expect(toasts(page)).toHaveCount(1);
       expect(await page.evaluate(() => document.body.style.overflow)).not.toBe('hidden');
     });
   }
@@ -70,10 +71,10 @@ for (const kind of ['modal', 'drawer']) {
     await page.clock.runFor(700);
     await reopen(page);
     const first = page.getByRole('dialog', { name: 'First window', exact: true });
-    await expect(first.getByRole('alert')).toHaveCount(1);
+    await expect(toasts(first)).toHaveCount(1);
     await page.clock.runFor(650);
-    await expect(first.getByRole('alert')).toHaveCount(1);
+    await expect(toasts(first)).toHaveCount(1);
     await page.clock.runFor(600);
-    await expect(page.getByRole('alert')).toHaveCount(0);
+    await expect(toasts(page)).toHaveCount(0);
   });
 }

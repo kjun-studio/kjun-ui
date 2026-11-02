@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { openFixture } from "./packed-fixture";
+import { toasts } from './toast-locators';
 // Remote search races are covered by runtime-search/state-contracts and feedback queues by api-reference.
 for (const platform of ["react", "vue3", "native"]) {
   test(`${platform} packed controls and menu support selection and disabled options`, async ({
@@ -53,7 +54,7 @@ for (const platform of ["react", "vue3"]) test(`${platform === "react" ? "React"
   await page.keyboard.press("Escape");
   await expect(page.getByRole("button", { name: "메뉴 열기" })).toBeFocused();
   await page.getByRole("button", { name: "알림 표시" }).click();
-  const toast = page.getByRole("alert").filter({ hasText: "영역 알림" });
+  const toast = toasts(page).filter({ hasText: "영역 알림" });
   await expect(toast).toHaveCSS("background-color", "rgb(227, 249, 238)");
   await page.getByRole("button", { name: "영역 색상 변경" }).click();
   await expect(toast).toHaveCSS("background-color", "rgb(249, 227, 238)");

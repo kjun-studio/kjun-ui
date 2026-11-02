@@ -2,6 +2,7 @@ import { captureReview } from './review-captures';
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 import { tokens } from '../../packages/tokens/dist/index.js';
+import { toasts } from './toast-locators';
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: packed elevation roles preserve quiet cards and floating surfaces`, async ({ page, browserName }) => {
     for (const palette of ['default', 'dark']) {
@@ -22,7 +23,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(surface).toHaveCSS('box-shadow', new RegExp(`${tokens.extensions.popover.elevation[0].blurRadius}px`));
     await page.keyboard.press('Escape');
     await page.evaluate(() => (window as any).elevation.toast());
-    await expect(page.getByRole('alert')).toHaveCSS('box-shadow', 'none');
+    // A toast floats over the page like other floating surfaces.
+    await expect(toasts(page)).toHaveCSS('box-shadow', new RegExp(`${tokens.extensions.toast.elevation[0].blurRadius}px`));
     await page.getByRole('button', { name: '알림 행동' }).hover();
     await captureReview(page, { path: `artifacts/elevation/${platform}-${palette}-${browserName}-surfaces.png`, fullPage: true });
     await page.getByRole('button', { name: '알림 행동' }).click();

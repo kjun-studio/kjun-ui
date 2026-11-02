@@ -1,15 +1,16 @@
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { toasts } from './toast-locators';
 
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: CopyButton reports success and failure through the optional feedback provider`, async ({ page }) => {
     await openFixture(page, platform, '?scenario=copy', 'api-contracts');
 
     await page.getByRole('button', { name: '복사 성공' }).click();
-    await expect(page.getByRole('alert').filter({ hasText: '복사 완료' })).toBeVisible();
+    await expect(toasts(page).filter({ hasText: '복사 완료' })).toBeVisible();
 
     await page.getByRole('button', { name: '복사 실패' }).click();
-    await expect(page.getByRole('alert').filter({ hasText: '복사 실패' })).toBeVisible();
+    await expect(toasts(page).filter({ hasText: '복사 실패' })).toBeVisible();
   });
 
   test(`${platform}: CopyButton remains usable outside the feedback provider`, async ({ page }) => {
@@ -20,6 +21,6 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(success).toContainText('복사 완료');
 
     await page.getByRole('button', { name: '복사 실패' }).click();
-    await expect(page.getByRole('alert')).toHaveCount(0);
+    await expect(toasts(page)).toHaveCount(0);
   });
 }

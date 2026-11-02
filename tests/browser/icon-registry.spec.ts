@@ -1,6 +1,7 @@
 import { test, expect, type Locator } from '@playwright/test';
 import { createRequire } from 'node:module';
 import { openFixture } from './packed-fixture';
+import { toasts } from './toast-locators';
 const require = createRequire(import.meta.url);
 const alien = require('@kjun-ui/icons/icons/alien'), rocket = require('@kjun-ui/icons/icons/rocket');
 const { defaultIcons } = require('@kjun-ui/icons/defaults');
@@ -29,7 +30,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.evaluate(() => (window as any).updateIcons(true));
     }
     await page.getByRole('button', { name: '피드백 표시', exact: true }).click();
-    const toast = page.getByRole('alert').filter({ hasText: '등록된 피드백 아이콘' });
+    const toast = toasts(page).filter({ hasText: '등록된 피드백 아이콘' });
     await expect(toast).toBeVisible();
     expect(await rendered(toast)).toEqual(expect.arrayContaining(paths(alien.outline)));
     await page.evaluate(() => (window as any).updateIcons(false, true));

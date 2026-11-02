@@ -1,6 +1,7 @@
 import { captureReview } from '../review-captures';
 import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { toasts } from '../toast-locators';
 async function exercise(page: Page) {
   await page.goto('/elevation?platform=react', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('레이어·Elevation');
@@ -50,7 +51,7 @@ async function exercise(page: Page) {
   await expect(page.getByRole('dialog', { name: '배경을 차단하는 패널' })).toBeVisible();
   await page.keyboard.press('Escape');
   await page.getByRole('button', { name: 'Toast 표시', exact: true }).click();
-  await expect(page.getByRole('alert').filter({ hasText: '그림자 없이' })).toHaveCSS('box-shadow', 'none');
+  await expect(toasts(page).filter({ hasText: '페이지 위에 띄워' })).toHaveCSS('box-shadow', /8px/);
   await expect(preview).toHaveAttribute('data-ready', 'true');
   const frame = preview.frameLocator('iframe');
   await expect(frame.getByRole('button').first()).toHaveText('팝업 메뉴');
@@ -113,7 +114,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     const confirm = frame.getByRole('button', { name: '변경 내용 확인', exact: true });
     await confirm.click();
     await frame.getByRole('button', { name: 'Toast 표시', exact: true }).click();
-    const toast = frame.getByRole('alert').filter({ hasText: '변경 내용을 확인했습니다' });
+    const toast = toasts(frame).filter({ hasText: '변경 내용을 확인했습니다' });
     await expect(toast).toBeVisible();
     await toast.getByRole('button', { name: '기록 보기', exact: true }).click();
     await frame.getByRole('button', { name: '검토 완료', exact: true }).click();

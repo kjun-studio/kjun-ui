@@ -1,11 +1,22 @@
 export type FeedbackTone = "success" | "warning" | "danger" | "info";
+/** Why a toast left: its time ran out, its close button or a swipe, its action, or the API
+ * (dismiss, clearAll, a full stack or the Provider going away). */
+export type ToastDismissReason = "timeout" | "close" | "action" | "api";
 export interface ToastOptions {
   title?: string;
   message: string;
   type?: FeedbackTone | "error";
+  /** ms before the toast closes itself; 0 keeps it until dismissed. Errors stay by default. */
   duration?: number;
+  /** @deprecated Toasts no longer draw a countdown; the option is ignored. */
   showProgress?: boolean;
   closable?: boolean;
+  /** One short line in a capsule with no close button; ignored when the toast has a title. */
+  compact?: boolean;
+  /** A toast with the same key replaces the one on screen instead of stacking another. */
+  key?: string;
+  /** Runs once when the toast leaves, with the reason; replacing it by key or update does not count. */
+  onDismiss?: (reason: ToastDismissReason) => void;
   action?: { label: string; onClick: () => void };
 }
 export interface ConfirmOptions {
@@ -26,6 +37,14 @@ export interface ToastItem extends ToastOptions {
   remaining: number;
   startedAt: number;
   paused: boolean;
+  /** Shown by toast.promise while it waits: a spinning icon and no timer. */
+  loading?: boolean;
+}
+export type ToastPatch = Partial<Omit<ToastOptions, "key">> & { loading?: boolean };
+export interface ToastPromiseMessages<T> {
+  loading: string;
+  success: string | ((value: T) => string);
+  error: string | ((error: unknown) => string);
 }
 export interface FeedbackRequest {
   id: number;
@@ -40,6 +59,10 @@ export interface KjunFeedback {
     info(message: string, options?: Partial<ToastOptions>): number;
     dismiss(id: number): void;
     clearAll(): void;
+    /** Changes a shown toast in place and restarts its time; a new type without a duration takes that type's default. */
+    update(id: number, patch: ToastPatch): void;
+    /** Shows a loading toast, then turns it into a success or an error toast; returns the same promise. */
+    promise<T>(promise: Promise<T> | (() => Promise<T>), messages: ToastPromiseMessages<T>, options?: Partial<ToastOptions>): Promise<T>;
   };
   confirm(options: string | ConfirmOptions): Promise<boolean>;
   prompt(options: string | PromptOptions): Promise<string | null>;
@@ -49,8 +72,12 @@ function developmentMode() {
 }
 /** external: an app-made controller (createKjunFeedback) may have no Provider for a while, so it warns and holds toasts then.
  * A Provider's own controller is always drawn by that Provider and keeps the earlier behavior. */
+const defaultDuration = (type: ToastOptions["type"]) =>
+  type === "danger" || type === "error" ? 0 : type === "warning" ? 4000 : 3000;
 export function createFeedbackController({ external = false } = {}) {
   let sequence = 0,
+    // How many toasts stay on screen; KjunFeedbackProvider's maxToasts sets it.
+    limit = 3,
     disposed = false,
     // Providers currently drawing this controller; an app-made controller may have none for a while.
     attached = 0,
@@ -85,12 +112,32 @@ export function createFeedbackController({ external = false } = {}) {
     snapshot = { current, toasts: [...toasts] };
     listeners.forEach((listener) => listener());
   };
-  const dismiss = (id: number) => {
+  const remove = (id: number, reason: ToastDismissReason) => {
+    const toast = toasts.find((t) => t.id === id);
+    if (!toast) return;
     clearTimeout(timers.get(id));
     timers.delete(id);
     pauseReasons.delete(id);
     toasts = toasts.filter((t) => t.id !== id);
     emit();
+    toast.onDismiss?.(reason);
+  };
+  const dismiss = (id: number) => remove(id, "api");
+  // Starts a toast's time from now; a toast hovered or waiting for a Provider stays paused with its full time.
+  const schedule = (id: number, duration: number) => {
+    clearTimeout(timers.get(id));
+    timers.delete(id);
+    if (duration <= 0 || pauseReasons.get(id)?.size) return;
+    if (attached || !external) { timers.set(id, setTimeout(() => remove(id, "timeout"), duration)); return; }
+    // No Provider shows it yet: it waits with its whole time, none of it spent.
+    pauseReasons.set(id, new Set([unattached]));
+    toasts = toasts.map((t) => (t.id === id ? { ...t, paused: true, remaining: duration } : t));
+    emit();
+  };
+  // At most `limit`: the oldest toast that closes itself makes room first, so a lasting error stays.
+  const trim = (room = 0) => {
+    while (toasts.length > Math.max(0, limit - room))
+      remove((toasts.find((t) => (t.duration ?? 0) > 0) ?? toasts[0]).id, "api");
   };
   const add = (
     type: ToastOptions["type"],
@@ -99,19 +146,17 @@ export function createFeedbackController({ external = false } = {}) {
   ) => {
     if (disposed) return -1;
     warnUnattached();
+    const same = options.key === undefined ? undefined : toasts.find((t) => t.key === options.key);
+    if (same) {
+      update(same.id, { ...options, type, message });
+      return same.id;
+    }
     const id = ++sequence;
-    const duration =
-      options.duration ??
-      (type === "danger" || type === "error"
-        ? 5000
-        : type === "warning"
-        ? 4000
-        : 3000);
-    if (toasts.length >= 5) dismiss(toasts[0].id);
+    const duration = options.duration ?? defaultDuration(type);
+    trim(1);
     toasts = [
       ...toasts,
       {
-        showProgress: true,
         ...options,
         duration,
         id,
@@ -123,11 +168,21 @@ export function createFeedbackController({ external = false } = {}) {
       },
     ];
     emit();
-    if (duration > 0) {
-      if (attached || !external) timers.set(id, setTimeout(() => dismiss(id), duration));
-      else pauseToast(id, unattached);
-    }
+    schedule(id, duration);
     return id;
+  };
+  const update = (id: number, patch: ToastPatch) => {
+    const toast = toasts.find((t) => t.id === id);
+    if (!toast || disposed) return;
+    const type = patch.type === "error" ? "danger" : patch.type ?? toast.type;
+    const duration = patch.duration ?? (type !== toast.type ? defaultDuration(type) : toast.duration ?? 0);
+    const held = duration > 0 && !!pauseReasons.get(id)?.size;
+    if (!duration) pauseReasons.delete(id);
+    toasts = toasts.map((t) => t.id === id
+      ? { ...t, ...patch, type, duration, remaining: duration, startedAt: Date.now(), paused: held }
+      : t);
+    schedule(id, duration);
+    emit();
   };
   const pauseToast = (id: number, reason: string | symbol = "manual") => {
     const toast = toasts.find((item) => item.id === id);
@@ -163,7 +218,7 @@ export function createFeedbackController({ external = false } = {}) {
     );
     timers.set(
       id,
-      setTimeout(() => dismiss(id), toast.remaining)
+      setTimeout(() => remove(id, "timeout"), toast.remaining)
     );
     emit();
   };
@@ -207,7 +262,23 @@ export function createFeedbackController({ external = false } = {}) {
       info: (message, options) => add("info", message, options),
       dismiss,
       clearAll: () => {
-        [...toasts].forEach((t) => dismiss(t.id));
+        const cleared = toasts;
+        if (!cleared.length) return;
+        for (const t of cleared) { clearTimeout(timers.get(t.id)); timers.delete(t.id); pauseReasons.delete(t.id); }
+        toasts = [];
+        emit();
+        for (const t of cleared) t.onDismiss?.("api");
+      },
+      update,
+      promise: (value, messages, options = {}) => {
+        const running = Promise.resolve(typeof value === "function" ? value() : value);
+        const id = add("info", messages.loading, { ...options, duration: 0, loading: true } as Partial<ToastOptions>);
+        const text = <V>(message: string | ((value: V) => string), result: V) => typeof message === "function" ? message(result) : message;
+        running.then(
+          (result) => update(id, { type: "success", message: text(messages.success, result), loading: false, duration: options.duration }),
+          (error) => update(id, { type: "danger", message: text(messages.error, error), loading: false, duration: options.duration }),
+        );
+        return running;
       },
     },
     confirm: (value) => enqueue<boolean>("confirm", value),
@@ -218,6 +289,13 @@ export function createFeedbackController({ external = false } = {}) {
     settle,
     pauseToast,
     resumeToast,
+    /** Closes a toast from its own controls: the close button or a swipe ("close"), or its action ("action"). */
+    closeToast: (id: number, reason: "close" | "action") => remove(id, reason),
+    /** KjunFeedbackProvider's maxToasts: how many toasts stay on screen at once. */
+    setToastLimit(value: number) {
+      limit = Math.max(1, Math.floor(value) || 1);
+      trim();
+    },
     getSnapshot: () => snapshot,
     /** Marks a mounted Provider; returns the detach call. Two at once share one queue, which KJUN does not support. */
     attach() {
@@ -250,9 +328,11 @@ export function createFeedbackController({ external = false } = {}) {
       timers.forEach(clearTimeout);
       timers.clear();
       pauseReasons.clear();
+      const cleared = toasts;
       toasts = [];
       emit();
       listeners.clear();
+      for (const t of cleared) t.onDismiss?.("api");
     },
   };
 }

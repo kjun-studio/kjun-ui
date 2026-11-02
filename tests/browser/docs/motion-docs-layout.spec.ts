@@ -3,6 +3,7 @@ import { test, expect, chromium, type Page } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { platforms, selectMotionExample, layoutWidths, checksZoom } from './motion-docs-helpers';
 import { motionScenarios } from './docs-data';
+import { toasts } from '../toast-locators';
 
 async function checkLayout(page: Page, platform: string) {
   const base = process.env.KJUN_TEST_URL || 'http://127.0.0.1:4173';
@@ -36,7 +37,7 @@ async function checkLayout(page: Page, platform: string) {
     if (kind === 'toast') {
       await frame.getByRole('button', { name: '알림 3개 표시' }).click();
       await expect(frame.getByText('알림 3', { exact: true })).toBeVisible();
-      const bounds = await frame.getByRole('alert').evaluateAll(nodes => nodes.map(node => {
+      const bounds = await toasts(frame).evaluateAll(nodes => nodes.map(node => {
         const box = node.getBoundingClientRect();
         return { fits: box.left >= -1 && box.right <= innerWidth + 1 && box.top >= -1 && box.bottom <= innerHeight + 1, bottom: box.bottom };
       }));

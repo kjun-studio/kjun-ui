@@ -1,16 +1,13 @@
-import { toastEdgeShift, type ToastPlacement } from "../../../shared/package-runtime/toast-placement";
+import type { ToastPlacement } from "../../../shared/package-runtime/toast-placement";
+import { ToastStack, usePresentedToasts } from "./toast-stack";
 import { useKjunMessages } from "./runtime/messages";
-import { computed, defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref, shallowRef, watch,
+import { computed, defineComponent, inject, onBeforeUnmount, provide, ref, shallowRef, watch,
   type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
-import { createFeedbackController, feedbackControllerOf, tokens, type ConfirmOptions, type FeedbackRequest, type KjunFeedback, type PromptOptions, type ToastItem } from "@kjun-ui/tokens";
-import { createToastLayout } from "../../../shared/package-runtime/toast-layout";
-import { KjunIcon } from "./button";
+import { createFeedbackController, feedbackControllerOf, tokens, type ConfirmOptions, type FeedbackRequest, type KjunFeedback, type PromptOptions } from "@kjun-ui/tokens";
 import { KjunInput } from "./input";
 import { KjunModal } from "./modal";
 import { kjunFeedbackOverlayKey } from "./overlay-host";
-import { useLayerContext } from "./runtime/layers";
 import { useReducedMotion } from "./runtime/presence";
-import { css } from "./runtime/style";
 
 type Controller = ReturnType<typeof createFeedbackController>;
 const kjunFeedbackKey: InjectionKey<KjunFeedback> = Symbol("kjunFeedback");
@@ -21,27 +18,6 @@ export function useKjunFeedback(): KjunFeedback {
 }
 export const useOptionalKjunFeedback = () => inject(kjunFeedbackKey, null);
 
-interface PresentedToast { toast: ToastItem; exiting: boolean; born: number }
-function usePresentedToasts(toasts: () => ToastItem[], reduced: () => boolean) {
-  const items = shallowRef<PresentedToast[]>([]);
-  const removals = new Map<number, ReturnType<typeof setTimeout>>();
-  watch([toasts, reduced], ([current, isReduced]) => {
-    const ids = new Set(current.map(toast => toast.id));
-    const old = new Map(items.value.map(item => [item.toast.id, item]));
-    const next = current.map(toast => ({ toast, exiting: false, born: old.get(toast.id)?.born ?? Date.now() }));
-    for (const item of items.value) if (!ids.has(item.toast.id) && !isReduced) {
-      next.push({ ...item, exiting: true });
-      if (!removals.has(item.toast.id)) removals.set(item.toast.id, setTimeout(() => {
-        removals.delete(item.toast.id);
-        items.value = items.value.filter(value => value.toast.id !== item.toast.id);
-      }, tokens.motion.toastExit));
-    }
-    items.value = next;
-    if (isReduced) { for (const timer of removals.values()) clearTimeout(timer); removals.clear(); }
-  }, { immediate: true });
-  onBeforeUnmount(() => { for (const timer of removals.values()) clearTimeout(timer); removals.clear(); });
-  return items;
-}
 // Retain the request being painted without postponing controller.settle or its Promise.
 function usePresentedRequest(current: () => FeedbackRequest | null, reduced: () => boolean) {
   const request = shallowRef(current());
@@ -54,111 +30,6 @@ function usePresentedRequest(current: () => FeedbackRequest | null, reduced: () 
   onBeforeUnmount(() => clearTimeout(timer));
   return computed(() => ({ request: request.value, open: !!request.value && current()?.id === request.value.id }));
 }
-
-export const ToastView = defineComponent({
-  name: "KjunToastView",
-  props: { toast: { type: Object as PropType<ToastItem>, required: true }, controller: { type: Object as PropType<Controller>, required: true } },
-  setup(props) {
-    const m = useKjunMessages();
-    let previous: HTMLElement | null = null;
-    const reasons = { hover: Symbol("kjunToastHover"), focus: Symbol("kjunToastFocus") };
-    onMounted(() => { previous = document.activeElement as HTMLElement; });
-    onBeforeUnmount(() => { props.controller.resumeToast(props.toast.id, reasons.hover); props.controller.resumeToast(props.toast.id, reasons.focus); });
-    const dismiss = () => { if (previous?.isConnected) previous.focus(); props.controller.api.toast.dismiss(props.toast.id); };
-    return () => {
-      const toast = props.toast, tone = toast.type === "error" ? "danger" : toast.type || "info";
-      const icon = { success: "circle-check", danger: "alert-circle", warning: "alert-triangle", info: "info-circle" }[tone];
-      return (
-        <div class="kjun-toast" data-tone={tone} data-title={String(!!toast.title)} role="alert" aria-live={tone === "danger" ? "assertive" : "polite"}
-          onMouseenter={() => props.controller.pauseToast(toast.id, reasons.hover)}
-          onMouseleave={() => props.controller.resumeToast(toast.id, reasons.hover)}
-          onFocusin={() => props.controller.pauseToast(toast.id, reasons.focus)}
-          onFocusout={(event: FocusEvent) => { if (!(event.currentTarget as HTMLElement).contains(event.relatedTarget as Node | null)) props.controller.resumeToast(toast.id, reasons.focus); }}>
-          <span class="kjun-toast-icon" style={{ color: `var(--_kjun-color-${tone}-accent)` }}><KjunIcon name={icon} /></span>
-          <div class="kjun-toast-content">
-            {toast.title && <strong>{toast.title}</strong>}
-            <span class="kjun-toast-message">{toast.message}</span>
-            {toast.action && (
-              <button type="button" class="kjun-toast-action" onClick={() => { try { toast.action?.onClick(); } finally { dismiss(); } }}>{toast.action.label}</button>
-            )}
-          </div>
-          {toast.closable !== false && <button type="button" class="kjun-toast-close" aria-label={m.value.closeNotification} onClick={dismiss}><KjunIcon name="x" /></button>}
-          {toast.showProgress !== false && !!toast.duration && (
-            <div key={toast.startedAt + ":" + toast.paused} aria-hidden="true" class="kjun-toast-progress" style={{
-              "--_kjun-toast-start": `${(toast.remaining / toast.duration) * 100}%`, animationDuration: `${toast.remaining}ms`,
-              animationPlayState: toast.paused ? "paused" : "running", background: `var(--_kjun-color-${tone})`,
-            }} />
-          )}
-        </div>
-      );
-    };
-  },
-});
-
-const ToastSurface = defineComponent({
-  name: "KjunToastSurface",
-  props: { item: { type: Object as PropType<PresentedToast>, required: true }, controller: { type: Object as PropType<Controller>, required: true },
-    placement: { type: String as PropType<ToastPlacement>, default: "top" } },
-  setup(props) {
-    const el = ref<HTMLElement | null>(null), reduced = useReducedMotion();
-    let current: { opacity: string; transform: string } | null = null, entryFinished = false, animations: Animation[] = [];
-    const run = () => {
-      const node = el.value;
-      if (!node) return;
-      if (reduced.value) { entryFinished = true; return; }
-      const { exiting, born } = props.item, elapsed = Date.now() - born;
-      if (!exiting && (elapsed >= tokens.motion.toastEnter || entryFinished)) return;
-      const hidden = `translateY(${toastEdgeShift(props.placement)}px)`, from = current;
-      // Exit opacity fades linearly and ends before the movement, matching layer exits.
-      animations = exiting ? [
-        node.animate([{ opacity: from?.opacity ?? "1" }, { opacity: 0 }], { duration: tokens.motion.fadeExit, easing: tokens.motion.easeLinear, fill: "both" }),
-        node.animate([{ transform: from?.transform ?? "translateY(0)" }, { transform: hidden }], { duration: tokens.motion.toastExit, easing: tokens.motion.easeIn, fill: "both" }),
-      ] : [node.animate([{ opacity: 0, transform: hidden }, { opacity: 1, transform: "translateY(0)" }], {
-        duration: tokens.motion.toastEnter, delay: -elapsed, easing: tokens.motion.easeOut, fill: "both" })];
-      animations[0].onfinish = () => { if (!props.item.exiting) entryFinished = true; };
-    };
-    const cleanup = () => {
-      if (el.value && animations.length) { const style = getComputedStyle(el.value); current = { opacity: style.opacity, transform: style.transform }; }
-      for (const animation of animations) animation.cancel();
-      animations = [];
-    };
-    watch(() => [props.item.exiting, props.item.born, reduced.value], () => { cleanup(); run(); }, { flush: "post" });
-    onMounted(run);
-    onBeforeUnmount(cleanup);
-    return () => (
-      <div ref={el} inert={props.item.exiting} aria-hidden={props.item.exiting ? "true" : undefined}>
-        <ToastView toast={props.item.toast} controller={props.controller} />
-      </div>
-    );
-  },
-});
-
-const ToastStack = defineComponent({
-  name: "KjunToastStack",
-  props: { items: { type: Array as PropType<PresentedToast[]>, required: true }, controller: { type: Object as PropType<Controller>, required: true },
-    placement: { type: String as PropType<ToastPlacement>, default: "top" }, offset: { type: Number, default: 0 } },
-  setup(props) {
-    const { state, version } = useLayerContext();
-    const root = ref<HTMLElement | null>(null), layout = createToastLayout(), reduced = useReducedMotion();
-    const update = () => { if (root.value) layout.update(root.value, reduced.value); };
-    onMounted(update);
-    onUpdated(update);
-    onBeforeUnmount(() => layout.destroy());
-    return () => {
-      void version.value;
-      return (
-        <div ref={root} class="kjun-toast-stack" data-placement={props.placement}
-          style={{ zIndex: state.zIndex(state.topWindow()?.id, "toast"), "--_kjun-toast-offset": `${Math.max(0, props.offset)}px` }}>
-          {props.items.map(item => (
-            <div key={item.toast.id} data-toast-id={item.toast.id} data-exiting={String(item.exiting)} class="kjun-toast-slot">
-              <ToastSurface item={item} controller={props.controller} placement={props.placement} />
-            </div>
-          ))}
-        </div>
-      );
-    };
-  },
-});
 
 const FeedbackDialog = defineComponent({
   name: "KjunFeedbackDialog",
@@ -207,6 +78,8 @@ export const KjunFeedbackProvider = defineComponent({
     placement: { type: String as PropType<ToastPlacement>, default: "top" },
     /** Extra px between the toasts and their edge, e.g. a bottom navigation's height. */
     offset: { type: Number, default: 0 },
+    /** How many toasts stay on screen at once (default 3); a fuller stack closes the oldest self-closing toast first. */
+    maxToasts: { type: Number, default: 3 },
   },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
@@ -214,6 +87,7 @@ export const KjunFeedbackProvider = defineComponent({
     const external = props.controller;
     const controller = external ? feedbackControllerOf(external) : createFeedbackController();
     const detach = controller.attach();
+    watch(() => props.maxToasts, value => controller.setToastLimit(value), { immediate: true });
     const snapshot = shallowRef(controller.getSnapshot());
     const unsubscribe = controller.subscribe(() => { snapshot.value = controller.getSnapshot(); });
     onBeforeUnmount(() => { unsubscribe(); detach(); if (!external) controller.dispose(); });
@@ -241,4 +115,4 @@ export const KjunFeedbackProvider = defineComponent({
     );
   },
 });
-export type { ConfirmOptions, KjunFeedback, PromptOptions, ToastOptions } from "@kjun-ui/tokens";
+export type { ConfirmOptions, KjunFeedback, PromptOptions, ToastOptions, ToastDismissReason, ToastPromiseMessages } from "@kjun-ui/tokens";

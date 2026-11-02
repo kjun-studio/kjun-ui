@@ -9,6 +9,7 @@ import { useReducedMotion } from './internal';
 import { useToastReflow } from './toast-reflow';
 import { useKjunSafeArea } from './provider';
 import { toastEdgeShift, type ToastPlacement } from '../../../shared/package-runtime/toast-placement';
+import { orderToasts } from '../../../shared/package-runtime/toast-presentation';
 
 function ToastSlot({ item, controller, boxes, placement }: { item: PresentedToast; controller: ReturnType<typeof createFeedbackController>; boxes: Map<number, LayoutRectangle>; placement: ToastPlacement }) {
   const born = useRef(Math.min(tokens.motion.toastEnter, Date.now() - item.born)).current;
@@ -48,5 +49,5 @@ export function ToastStack({ items, controller, placement = "top", offset = 0 }:
   return <View ref={root} pointerEvents="box-none" style={{ position: 'absolute', ...(placement === "bottom" ? { bottom: edge } : { top: edge }), right: tokens.extensions.toast.inset, left: tokens.extensions.toast.inset, gap: tokens.extensions.toast.stackGap,
     minHeight: items.some(item => item.exiting) ? Math.max(0, ...[...boxes.values()].map(box => box.y + box.height)) : undefined,
     zIndex: layers.zIndex(layers.topWindow()?.id, "toast"),
-  }}>{items.map(item => <ToastSlot key={item.toast.id} item={item} controller={controller} boxes={boxes} placement={placement} />)}</View>;
+  }}>{orderToasts(items, placement).map(item => <ToastSlot key={item.toast.id} item={item} controller={controller} boxes={boxes} placement={placement} />)}</View>;
 }

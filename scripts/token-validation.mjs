@@ -140,7 +140,7 @@ export function validateTokenRelationships(data) {
   for (const size of ['sm', 'md', 'lg', 'removeSize', 'nativeRemoveSize']) positive(chip[size], 'extensions.chip.' + size);
   if (chip.nativeRemoveSize < Math.max(chip.removeSize, data.native.minimumTouchTarget))
     throw Error('Native Chip removal target is smaller than its control or minimum touch target');
-  for (const key of ['minWidth', 'maxWidth', 'closeSize', 'progressHeight']) positive(toast[key], 'extensions.toast.' + key);
+  for (const key of ['minWidth', 'maxWidth', 'closeSize', 'iconSize']) positive(toast[key], 'extensions.toast.' + key);
   if (toast.minWidth > toast.maxWidth) throw Error('Toast minWidth exceeds maxWidth');
   positive(radio.dot, 'extensions.radio.dot');
   if (radio.dot > radio.size - 2 * radio.borderWidth) throw Error('Radio dot exceeds inner size');

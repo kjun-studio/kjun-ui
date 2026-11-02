@@ -2,6 +2,7 @@ import { captureReview } from './review-captures';
 import { test, expect, type Locator } from '@playwright/test';
 import { tokens, type TypographyToken } from '../../packages/tokens/dist/index.js';
 import { openFixture } from './packed-fixture';
+import { toasts } from './toast-locators';
 
 const px = (value: number) => value + 'px';
 async function typography(node: Locator, spec: TypographyToken, scale: number) {
@@ -58,13 +59,21 @@ for (const platform of ['react', 'vue3', 'native']) {
     await openFixture(page, platform, '', 'chip-toast-tokens');
     await page.getByRole('button', { name: '알림 열기', exact: true }).click();
     const spec = tokens.extensions.toast;
-    const toast = page.getByRole('alert').filter({ hasText: '토큰 알림' });
+    const toast = toasts(page).filter({ hasText: '토큰 알림' });
+    // Only danger interrupts: an info toast is a polite status.
+    await expect(page.getByRole('status').filter({ hasText: '토큰 알림' })).toHaveCount(1);
     const widthOwner = platform === 'native' ? toast.locator('..') : toast;
     await expect(widthOwner).toHaveCSS('max-width', px(spec.maxWidth));
     if (platform !== 'native') await expect(toast).toHaveCSS('min-width', px(spec.minWidth));
-    const progress = platform === 'native' ? toast.locator(':scope > *').last() : toast.locator('.kjun-toast-progress');
-    await expect(progress).toHaveCSS('height', px(spec.progressHeight));
+    // No countdown is drawn; the icon, the heading and the close button share the first line's centre.
+    if (platform !== 'native') await expect(toast.locator('.kjun-toast-progress')).toHaveCount(0);
     const close = toast.getByRole('button', { name: '알림 닫기', exact: true });
+    const icon = toast.locator('svg').first(), heading = toast.getByText('토큰 알림', { exact: true });
+    await expect(icon).toHaveCSS('width', px(spec.iconSize));
+    await expect(close.locator('svg')).toHaveCSS('width', px(spec.closeIconSize));
+    const middle = async (node: Locator) => { const box = (await node.boundingBox())!; return box.y + box.height / 2; };
+    expect(Math.abs(await middle(icon) - await middle(heading))).toBeLessThanOrEqual(1);
+    expect(Math.abs(await middle(close) - await middle(heading))).toBeLessThanOrEqual(1);
     const closeSize = platform === 'native' ? Math.max(spec.closeSize, tokens.native.minimumTouchTarget) : spec.closeSize;
     await expect(close).toHaveCSS(platform === 'native' ? 'min-width' : 'width', px(closeSize));
     await expect(close).toHaveCSS(platform === 'native' ? 'min-height' : 'height', px(closeSize));
@@ -80,5 +89,58 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.getByRole('button', { name: '알림 열기', exact: true }).click();
     await close.focus(); await page.keyboard.press('Enter');
     await expect(toast).toHaveCount(0);
+  });
+
+  test(`${platform}: a compact toast is a content-wide capsule and an error stays until closed`, async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openFixture(page, platform, '', 'chip-toast-tokens');
+    const spec = tokens.extensions.toast;
+    await page.getByRole('button', { name: '짧은 알림 열기', exact: true }).click();
+    const compact = page.getByRole('status').filter({ hasText: '짧은 알림' });
+    await expect(compact).toBeVisible();
+    await expect(compact.getByRole('button')).toHaveCount(0);
+    const box = (await compact.boundingBox())!;
+    expect(box.height).toBe(spec.compact.height);
+    expect(box.width).toBeLessThan(spec.minWidth);
+    await page.getByRole('button', { name: '오류 알림 열기', exact: true }).click();
+    const error = page.getByRole('alert').filter({ hasText: '남는 오류' });
+    await expect(error).toBeVisible();
+    // Errors default to staying: well past the old five seconds the toast is still there.
+    await page.waitForTimeout(5600);
+    await expect(error).toBeVisible();
+    await error.getByRole('button', { name: '알림 닫기', exact: true }).click();
+    await expect(error).toHaveCount(0);
+  });
+
+  test(`${platform}: focus returns from a leaving toast, and a sideways swipe closes it`, async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openFixture(page, platform, '', 'chip-toast-tokens');
+    const opener = page.getByRole('button', { name: '오류 알림 열기', exact: true });
+    await opener.focus();
+    await page.keyboard.press('Enter');
+    const error = page.getByRole('alert').filter({ hasText: '남는 오류' });
+    const close = error.getByRole('button', { name: '알림 닫기', exact: true });
+    await close.focus();
+    await page.keyboard.press('Enter');
+    await expect(error).toHaveCount(0);
+    // Native Web has no focus handoff; the web packages return focus to the opener.
+    if (platform !== 'native') await expect(opener).toBeFocused();
+    if (platform === 'native') return;
+    await opener.click();
+    const card = toasts(page).filter({ hasText: '남는 오류' });
+    const box = (await card.boundingBox())!, y = box.y + box.height / 2;
+    const swipe = async (distance: number) => card.evaluate((node, { y, x, distance }) => {
+      const fire = (type: string, clientX: number) => node.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: 7, pointerType: 'touch', clientX, clientY: y }));
+      fire('pointerdown', x);
+      for (let step = 1; step <= 4; step++) fire('pointermove', x + distance * step / 4);
+      fire('pointerup', x + distance);
+    }, { y, x: box.x + 40, distance });
+    // A short swipe springs back; one past the distance closes the toast.
+    await swipe(tokens.extensions.toast.swipeDistance / 2);
+    await expect(card).toHaveCount(1);
+    await swipe(tokens.extensions.toast.swipeDistance + 8);
+    await expect(card).toHaveCount(0);
   });
 }

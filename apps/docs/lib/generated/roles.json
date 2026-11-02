@@ -18,7 +18,6 @@
       "packages/tokens/src/motion.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/table.css",
-      "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/actions.tsx",
       "packages/react/src/actions.tsx",
@@ -37,8 +36,7 @@
       "packages/native/src/range-input.tsx",
       "packages/native/src/select-options.tsx",
       "packages/native/src/table-toolbar.tsx",
-      "packages/native/src/tabs.tsx",
-      "packages/native/src/toast.tsx"
+      "packages/native/src/tabs.tsx"
     ]
   },
   {
@@ -53,7 +51,6 @@
     "implementationFiles": [
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/forms.css",
-      "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx",
       "packages/native/src/choice-controls.tsx",
@@ -331,7 +328,8 @@
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-list.tsx",
       "packages/native/src/table-view.tsx",
-      "packages/native/src/tabs.tsx"
+      "packages/native/src/tabs.tsx",
+      "packages/native/src/toast.tsx"
     ]
   },
   {
@@ -412,7 +410,6 @@
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/table.css",
-      "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/actions.tsx",
       "packages/vue3/src/date-picker.tsx",
@@ -452,8 +449,7 @@
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-view.tsx",
       "packages/native/src/textarea.tsx",
-      "packages/native/src/time-picker.tsx",
-      "packages/native/src/toast.tsx"
+      "packages/native/src/time-picker.tsx"
     ]
   },
   {
@@ -589,6 +585,7 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/layout.css",
+      "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/input.tsx",
       "packages/react/src/input.tsx",
@@ -603,7 +600,8 @@
       "packages/native/src/list.tsx",
       "packages/native/src/quantity-stepper.tsx",
       "packages/native/src/textarea.tsx",
-      "packages/native/src/time-picker.tsx"
+      "packages/native/src/time-picker.tsx",
+      "packages/native/src/toast.tsx"
     ]
   },
   {

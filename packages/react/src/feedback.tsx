@@ -79,12 +79,15 @@ export interface KjunFeedbackProviderProps {
   placement?: ToastPlacement;
   /** Extra px between the toasts and their edge, e.g. a bottom navigation's height. */
   offset?: number;
+  /** How many toasts stay on screen at once (default 3); a fuller stack closes the oldest self-closing toast first. */
+  maxToasts?: number;
 }
-export function KjunFeedbackProvider({ children, controller: controllerProp, placement = "top", offset = 0 }: KjunFeedbackProviderProps) {
+export function KjunFeedbackProvider({ children, controller: controllerProp, placement = "top", offset = 0, maxToasts = 3 }: KjunFeedbackProviderProps) {
   // An app-made controller (createKjunFeedback) outlives this Provider; only one the Provider made is disposed.
   const [owned] = useState(() => controllerProp ? undefined : createFeedbackController());
   const controller = controllerProp ? feedbackControllerOf(controllerProp) : owned!;
   useEffect(() => controller.attach(), [controller]);
+  useEffect(() => controller.setToastLimit(maxToasts), [controller, maxToasts]);
   const life = useRef(0);
   const snapshot = useSyncExternalStore(
     controller.subscribe,

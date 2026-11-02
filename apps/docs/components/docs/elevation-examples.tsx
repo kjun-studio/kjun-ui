@@ -48,7 +48,7 @@ function SurfaceExamples() {
           <KjunButton onClick={() => setModal(true)}>팝업에서 새 모달 열기</KjunButton>
         </KjunPopover>
         <KjunButton variant="secondary" onClick={() => setDrawer(true)}>Drawer 열기</KjunButton>
-        <KjunButton variant="secondary" onClick={() => feedback.toast.info('그림자 없이 작업 결과를 전달합니다.', { duration: 6000, action: { label: '확인', onClick: () => {} } })}>Toast 표시</KjunButton>
+        <KjunButton variant="secondary" onClick={() => feedback.toast.info('작업 결과를 페이지 위에 띄워 전달합니다.', { duration: 6000, action: { label: '확인', onClick: () => {} } })}>Toast 표시</KjunButton>
         <KjunTooltip content="그림자 없이 대비와 배치로 구분합니다."><KjunButton variant="secondary">Tooltip 보기</KjunButton></KjunTooltip>
       </div>
     </KjunCard>

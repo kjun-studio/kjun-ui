@@ -1,6 +1,8 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { toastPresentation } from "../../../shared/package-runtime/toast-presentation";
+import { attachToastSwipe } from "../../../shared/package-runtime/toast-swipe";
 import { createFeedbackController,type ToastItem } from "@kjun-ui/tokens";
-import { useEffect,useRef,type CSSProperties } from "react";
+import { useEffect,useRef } from "react";
 import { KjunIcon } from "./button";
 export function ToastView({
   toast,
@@ -10,33 +12,43 @@ export function ToastView({
   controller: ReturnType<typeof createFeedbackController>;
 }) {
   const m = useKjunMessages();
-  const previous = useRef<HTMLElement | null>(null);
-  const reasons = useRef({ hover: Symbol("hover"), focus: Symbol("focus") }).current;
-  useEffect(() => {
-    previous.current = document.activeElement as HTMLElement;
-    return () => {
-      controller.resumeToast(toast.id, reasons.hover);
-      controller.resumeToast(toast.id, reasons.focus);
-    };
+  const card = useRef<HTMLDivElement>(null);
+  const reasons = useRef({ hover: Symbol("hover"), focus: Symbol("focus"), swipe: Symbol("swipe") }).current;
+  useEffect(() => () => {
+    for (const reason of Object.values(reasons)) controller.resumeToast(toast.id, reason);
   }, [controller, toast.id, reasons]);
-  const dismiss = () => {
-    if (previous.current?.isConnected) previous.current.focus();
-    controller.api.toast.dismiss(toast.id);
-  };
-  const tone = toast.type === "error" ? "danger" : toast.type || "info";
-  const icon = {
-    success: "circle-check",
-    danger: "alert-circle",
-    warning: "alert-triangle",
-    info: "info-circle",
-  }[tone];
+  useEffect(() => card.current ? attachToastSwipe(card.current, {
+    hold: () => controller.pauseToast(toast.id, reasons.swipe),
+    release: () => controller.resumeToast(toast.id, reasons.swipe),
+    close: () => controller.closeToast(toast.id, "close"),
+  }) : undefined, [controller, toast.id, reasons]);
+  const { tone, icon, compact, closable, sideAction, role, live } = toastPresentation(toast);
+  const action = toast.action && (
+    <button
+      type="button"
+      className="kjun-toast-action"
+      onClick={() => {
+        try {
+          toast.action?.onClick();
+        } finally {
+          controller.closeToast(toast.id, "action");
+        }
+      }}
+    >
+      {toast.action.label}
+    </button>
+  );
   return (
     <div
+      ref={card}
       className="kjun-toast"
       data-tone={tone}
       data-title={!!toast.title}
-      role="alert"
-      aria-live={tone === "danger" ? "assertive" : "polite"}
+      data-compact={compact || undefined}
+      data-loading={toast.loading || undefined}
+      data-side={sideAction || closable}
+      role={role}
+      aria-live={live}
       onMouseEnter={() => controller.pauseToast(toast.id, reasons.hover)}
       onMouseLeave={() => controller.resumeToast(toast.id, reasons.hover)}
       onFocus={() => controller.pauseToast(toast.id, reasons.focus)}
@@ -49,51 +61,27 @@ export function ToastView({
         className="kjun-toast-icon"
         style={{ color: `var(--_kjun-color-${tone}-accent)` }}
       >
-        <KjunIcon name={icon} />
+        <KjunIcon name={icon} spin={!!toast.loading} />
       </span>
       <div className="kjun-toast-content">
         {toast.title && <strong>{toast.title}</strong>}
         <span className="kjun-toast-message">{toast.message}</span>
-        {toast.action && (
-          <button
-            type="button"
-            className="kjun-toast-action"
-            onClick={() => {
-              try {
-                toast.action?.onClick();
-              } finally {
-                dismiss();
-              }
-            }}
-          >
-            {toast.action.label}
-          </button>
-        )}
+        {toast.action && !sideAction && <div className="kjun-toast-actions">{action}</div>}
       </div>
-      {toast.closable !== false && (
-        <button
-          type="button"
-          className="kjun-toast-close"
-          aria-label={m.closeNotification}
-          onClick={() => dismiss()}
-        >
-          <KjunIcon name="x" />
-        </button>
-      )}
-      {toast.showProgress !== false && !!toast.duration && (
-        <div
-          key={toast.startedAt + ":" + toast.paused}
-          aria-hidden="true"
-          className="kjun-toast-progress"
-          style={
-            {
-              "--_kjun-toast-start": `${(toast.remaining / toast.duration) * 100}%`,
-              animationDuration: `${toast.remaining}ms`,
-              animationPlayState: toast.paused ? "paused" : "running",
-              background: `var(--_kjun-color-${tone})`,
-            } as CSSProperties
-          }
-        />
+      {(sideAction || closable) && (
+        <div className="kjun-toast-side">
+          {sideAction && action}
+          {closable && (
+            <button
+              type="button"
+              className="kjun-toast-close"
+              aria-label={m.closeNotification}
+              onClick={() => controller.closeToast(toast.id, "close")}
+            >
+              <KjunIcon name="x" />
+            </button>
+          )}
+        </div>
       )}
     </div>
   );

@@ -83,9 +83,10 @@ export const componentSpecs: ComponentSpec[] = [
       ['헤더·푸터 여백', `상하 ${tokens.modal.headerPaddingY}px · 좌우 ${tokens.modal.padding}px`]],
   },
   {
-    name: 'KjunFeedbackProvider', label: 'Toast', path: '/feedback', group: '레이어·피드백', summary: '너비·진행선·닫기',
-    rows: [['Web 데스크톱 너비', `최소 ${ext.toast.minWidth}px · 최대 ${ext.toast.maxWidth}px`],
-      ['진행선 높이', `${ext.toast.progressHeight}px`],
+    name: 'KjunFeedbackProvider', label: 'Toast', path: '/feedback', group: '레이어·피드백', summary: '너비·아이콘·닫기·compact',
+    rows: [['Web 데스크톱 너비', `내용에 맞춰 최소 ${ext.toast.minWidth}px · 최대 ${ext.toast.maxWidth}px`],
+      ['상태 아이콘', `${ext.toast.iconSize}px · 첫 줄 중심에 맞춤`],
+      ['compact 캡슐', `높이 ${ext.toast.compact.height}px · 내용 폭`],
       ['닫기 버튼', `시각 영역 ${ext.toast.closeSize}px · Native와 좁은 Web에서는 최소 ${tokens.native.minimumTouchTarget}px 터치 영역을 확보합니다.`]],
   },
   {

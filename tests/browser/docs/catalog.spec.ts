@@ -92,7 +92,7 @@ for (const platform of ["vue3", "react", "native"]) {
           const box = node.getBoundingClientRect();
           return !!document
             .elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)
-            ?.closest('[role="alert"]');
+            ?.closest('[data-kjun-toast]');
         })
       ).toBe(true);
     await page.evaluate(() =>

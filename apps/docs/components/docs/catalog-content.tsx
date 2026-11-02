@@ -50,9 +50,10 @@ export function FeedbackGuide() {
           Toast·Confirm·Prompt는 이 영역의 값을 사용하며, 열린 동안의 모드
           변경도 반영합니다. 여러 확인·입력 요청은 순서대로 처리합니다. 영역이
           해제되면 미완료 Confirm은 false, Prompt는 null로 정리합니다. Toast는
-          성공·정보 3초, 경고 4초, 오류 5초 동안 최대 5개를 표시합니다. 마우스나
-          키보드 포커스가 머무는 동안 시간을 멈추며 showProgress로 진행 표시를
-          제어합니다.
+          성공·정보 3초, 경고 4초 동안 표시하고 오류는 직접 닫을 때까지 남기며,
+          최대 3개를 쌓습니다. 넘치면 자동으로 닫히는 가장 오래된 알림부터
+          닫습니다. 마우스나 키보드 포커스가 머무는 동안 시간을 멈춥니다. 제목
+          없는 짧은 한 줄은 compact로 캡슐 모양을 씁니다.
         </p>
       </section>
       <BasicUsage name="KjunFeedbackProvider" />

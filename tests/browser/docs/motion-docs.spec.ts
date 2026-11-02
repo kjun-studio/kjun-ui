@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { platforms, example, selectMotionExample, resetMotionExample, changePlatform, revealFrame } from './motion-docs-helpers';
 import { motionScenarios, shortcutCount } from './docs-data';
+import { toasts } from '../toast-locators';
 
 test('motion selector waits for hydration and supports keyboard selection', async ({ page }) => {
   let release!: () => void;
@@ -79,12 +80,12 @@ for (const platform of platforms) {
     await expect(sf.getByText('알림 2', { exact: true })).toHaveCount(0);
     await expect(sf.getByText('알림 3', { exact: true })).toBeVisible();
     await resetMotionExample(toast);
-    await expect(sf.getByRole('alert')).toHaveCount(0);
+    await expect(toasts(sf)).toHaveCount(0);
     await sf.getByRole('button', { name: '알림 3개 표시' }).click();
     await selectMotionExample(page, 'tabs');
     await expect(toast).toHaveCount(0);
     await selectMotionExample(page, 'toast');
-    await expect(sf.getByRole('alert')).toHaveCount(0);
+    await expect(toasts(sf)).toHaveCount(0);
 
     const number = await selectMotionExample(page, 'number'), nf = number.frameLocator('iframe');
     await expect(nf.getByText('100', { exact: true })).toBeVisible();
@@ -112,14 +113,14 @@ for (const platform of platforms) {
       await expect(root.locator('.guide-running')).toHaveAttribute('data-platform', current);
       await expect(root.locator('.guide-running')).toHaveAttribute('data-ready', 'true');
       await expect(frame.getByRole('dialog')).toHaveCount(0);
-      await expect(frame.getByRole('alert')).toHaveCount(0);
+      await expect(toasts(frame)).toHaveCount(0);
       // Switching the selected example also discards an open layer or notification.
       await frame.getByRole('button', { name: kind === 'modal' ? '모달 열기' : kind === 'drawer' ? '패널 열기' : '알림 3개 표시', exact: true }).click();
       await selectMotionExample(page, 'tabs');
       await expect(root).toHaveCount(0);
       await selectMotionExample(page, kind);
       await expect(frame.getByRole('dialog')).toHaveCount(0);
-      await expect(frame.getByRole('alert')).toHaveCount(0);
+      await expect(toasts(frame)).toHaveCount(0);
     }
     await page.locator('.page-navigation a').first().click();
     await expect(page).toHaveURL(new RegExp('/tokens\\?platform=' + current));

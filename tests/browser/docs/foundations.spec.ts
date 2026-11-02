@@ -5,6 +5,7 @@ import { presetConfig } from '../../../shared/example-registry';
 import { prepareExample, compileEntries } from '../../../scripts/example-consumers.mjs';
 // @ts-ignore Fresh packed previews, independent of the running docs production build.
 import { servePreviews } from '../../../scripts/guide-capture.mjs';
+import { toasts } from '../toast-locators';
 
 let previewServer: { url: string; close: () => Promise<void> };
 test.beforeAll(async () => { previewServer = await servePreviews(); });
@@ -133,7 +134,7 @@ for (const platform of ['vue3', 'react', 'native']) {
     const background = page.getByTestId('foundation-scroll');
     const backgroundBefore = await background.evaluate(el => el.scrollTop);
     await page.getByRole('button', { name: 'Toast 표시', exact: true }).click();
-    const toast = page.getByRole('alert').filter({ hasText: '변경 내용을 확인했습니다' });
+    const toast = toasts(page).filter({ hasText: '변경 내용을 확인했습니다' });
     await expect(toast).toBeVisible();
     const toastBox = (await toast.boundingBox())!;
     expect(toastBox.y + toastBox.height).toBeLessThanOrEqual((await dialog.boundingBox())!.y);
@@ -160,7 +161,7 @@ for (const platform of ['vue3', 'react', 'native']) {
     await page.getByRole('button', { name: '검토 완료', exact: true }).click();
     await expect(page.getByRole('dialog')).toHaveCount(0);
     // The persistent Toast returns to the page when its Modal closes; dismiss it before using what it covers.
-    const persistent = page.getByRole('alert').filter({ hasText: '변경 내용을 확인했습니다' });
+    const persistent = toasts(page).filter({ hasText: '변경 내용을 확인했습니다' });
     await persistent.getByRole('button', { name: '알림 닫기', exact: true }).click();
     await expect(persistent).toHaveCount(0);
     const popupTrigger = page.getByRole('button', { name: '팝업 메뉴', exact: true });

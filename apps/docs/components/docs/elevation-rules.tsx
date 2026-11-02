@@ -36,7 +36,7 @@ const rules = [
     title: 'Toast',
     summary: '활성 창이 바뀌어도 알림의 남은 시간과 행동을 유지합니다.',
     detailTitle: 'Toast의 표시 위치와 그림자',
-    detail: 'Toast는 활성 창으로 이동합니다. flat 역할을 유지하며, 앞에 표시하기 위해 그림자를 추가하지 않습니다.',
+    detail: 'Toast는 활성 창으로 이동합니다. 페이지 위에 떠 있는 알림이라 floating 역할을 사용하며, 활성 창이 바뀌어도 그림자를 더 키우지 않습니다.',
   },
 ];
 

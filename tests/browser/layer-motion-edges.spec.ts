@@ -1,6 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { tokens } from '@kjun-ui/tokens';
 import { openFixture } from './packed-fixture';
+import { toasts } from './toast-locators';
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureMotion(next), next);
 const start = (page: Page, platform: string, scenario: string) => openFixture(page, platform, '?scenario=' + scenario, 'motion');
 const label = (platform: string) => platform === 'react' ? 'React' : platform;
@@ -70,7 +71,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.evaluate(() => (window as any).feedback.toast.info('Last toast', { duration: 0 }));
     await expect(page.getByText('Last toast', { exact: true })).toBeVisible(); await page.waitForTimeout(250);
     const positions = await page.evaluate(async () => {
-      const read = () => document.querySelector('[role="alert"]')!.getBoundingClientRect().x;
+      const read = () => document.querySelector('.kjun-toast, [data-kjun-toast]')!.getBoundingClientRect().x;
       const before = read(); (window as any).feedback.toast.clearAll();
       await new Promise(requestAnimationFrame); return { before, after: read() };
     });
@@ -108,7 +109,7 @@ for (const platform of ['react', 'vue3']) test(`${label(platform)} layer motion 
       (window as any).feedback.toast.info('Viewport toast', { duration: 0,
         action: { label: 'Toast action', onClick: () => { (window as any).toastActions++; } } });
     });
-    const toast = page.getByRole('alert');
+    const toast = toasts(page);
     await expect(toast).toBeVisible();
     await expect.poll(async () => {
       const box = (await toast.boundingBox())!;

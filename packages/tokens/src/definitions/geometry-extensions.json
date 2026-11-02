@@ -268,18 +268,30 @@
       "sheetGap": { "$ref": "dimension.value48" }
     },
     "toast": {
-      "minWidth": 320,
-      "maxWidth": 420,
-      "closeSize": 24,
-      "progressHeight": 3,
-      "padding": { "$ref": "dimension.value16" },
+      "minWidth": 280,
+      "maxWidth": 400,
+      "closeSize": { "$ref": "dimension.value32" },
+      "closeIconSize": { "$ref": "dimension.value16" },
+      "iconSize": { "$ref": "dimension.value20" },
+      "paddingY": { "$ref": "dimension.value14" },
+      "paddingStart": { "$ref": "dimension.value16" },
+      "paddingEnd": { "$ref": "dimension.value8" },
       "gap": { "$ref": "dimension.value12" },
+      "sideGap": { "$ref": "dimension.value8" },
       "inset": { "$ref": "dimension.value16" },
-      "stackGap": { "$ref": "dimension.value16" },
-      "titleGap": { "$ref": "dimension.value4" },
+      "stackGap": { "$ref": "dimension.value8" },
+      "titleGap": { "$ref": "dimension.value2" },
       "actionGap": { "$ref": "dimension.value8" },
       "radius": { "$ref": "radius.radius12" },
-      "closeRadius": { "$ref": "radius.radius6" }
+      "closeRadius": { "$ref": "radius.radius8" },
+      "swipeDistance": { "$ref": "dimension.value64" },
+      "compact": {
+        "height": { "$ref": "native.minimumTouchTarget" },
+        "paddingStart": { "$ref": "dimension.value14" },
+        "paddingEnd": { "$ref": "dimension.value16" },
+        "gap": { "$ref": "dimension.value8" },
+        "radius": { "$ref": "radius.radius9999" }
+      }
     },
     "alert": {
       "radius": { "$ref": "card.radii.lg" },

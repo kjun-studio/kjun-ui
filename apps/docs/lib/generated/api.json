@@ -7269,6 +7269,13 @@
         "required": false,
         "default": "0",
         "description": "Extra px between the toasts and their edge, e.g. a bottom navigation's height."
+      },
+      {
+        "name": "maxToasts",
+        "type": "number",
+        "required": false,
+        "default": "3",
+        "description": "How many toasts stay on screen at once (default 3); a fuller stack closes the oldest self-closing toast first."
       }
     ],
     "events": [],
@@ -7307,6 +7314,13 @@
         "required": false,
         "default": "—",
         "description": "Extra px between the toasts and their edge, e.g. a bottom navigation's height."
+      },
+      {
+        "name": "maxToasts",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "How many toasts stay on screen at once (default 3); a fuller stack closes the oldest self-closing toast first."
       }
     ],
     "native": [
@@ -7344,6 +7358,13 @@
         "required": false,
         "default": "—",
         "description": "Extra space between the toasts and their edge, e.g. a bottom navigation's height."
+      },
+      {
+        "name": "maxToasts",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "How many toasts stay on screen at once (default 3); a fuller stack closes the oldest self-closing toast first."
       }
     ]
   },

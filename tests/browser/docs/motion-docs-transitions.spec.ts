@@ -77,7 +77,7 @@ for (const platform of platforms) {
         const text = (label: string) => [...body.querySelectorAll('*')].find(node => node.textContent === label && ![...node.children].some(child => child.textContent === label));
         const panel = () => body.querySelector(kind === 'modal' ? '.kjun-modal,.kjun-modal-container' : '.kjun-drawer,.kjun-drawer-panel') || body.querySelector('[aria-label="작업 확인"]');
         const read = () => {
-          const node = kind === 'tabs' ? marker() : kind === 'accordion' ? body.querySelector('.catalog-render') : kind === 'toast' ? text('알림 3') : panel();
+          const node = kind === 'tabs' ? marker() : kind === 'accordion' ? body.querySelector('.catalog-render') : kind === 'toast' ? text('알림 1') : panel();
           if (!node) return null;
           const box = node.getBoundingClientRect();
           return kind === 'accordion' ? box.height : kind === 'modal' || kind === 'toast' ? box.y : box.x;
