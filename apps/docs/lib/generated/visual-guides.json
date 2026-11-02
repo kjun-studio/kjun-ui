@@ -11213,7 +11213,7 @@
           }
         ],
         "sizeDefault": "\"1em\"",
-        "note": "outline·filled·spin과 크기·색상을 설정합니다. 기본 채움형은 heart·star이며 등록한 아이콘의 채움형도 사용할 수 있습니다. 채움형이 없는 유효한 이름은 해당 선형으로 표시하고, 존재하지 않는 이름은 help-circle로 대체합니다."
+        "note": "outline·filled·spin과 크기·색상을 설정합니다. 기본 채움형은 heart·star·home·search 등 12개이며 등록한 아이콘의 채움형도 사용할 수 있습니다. 채움형이 없는 유효한 이름은 해당 선형으로 표시하고, 존재하지 않는 이름은 help-circle로 대체합니다."
       },
       "react": {
         "figures": [
@@ -11265,7 +11265,7 @@
           }
         ],
         "sizeDefault": "\"1em\"",
-        "note": "outline·filled·spin과 크기·색상을 설정합니다. 기본 채움형은 heart·star이며 등록한 아이콘의 채움형도 사용할 수 있습니다. 채움형이 없는 유효한 이름은 해당 선형으로 표시하고, 존재하지 않는 이름은 help-circle로 대체합니다."
+        "note": "outline·filled·spin과 크기·색상을 설정합니다. 기본 채움형은 heart·star·home·search 등 12개이며 등록한 아이콘의 채움형도 사용할 수 있습니다. 채움형이 없는 유효한 이름은 해당 선형으로 표시하고, 존재하지 않는 이름은 help-circle로 대체합니다."
       },
       "native": {
         "figures": [
@@ -11317,7 +11317,7 @@
           }
         ],
         "sizeDefault": "—",
-        "note": "outline·filled·spin과 크기·색상을 설정합니다. 기본 채움형은 heart·star이며 등록한 아이콘의 채움형도 사용할 수 있습니다. 채움형이 없는 유효한 이름은 해당 선형으로 표시하고, 존재하지 않는 이름은 help-circle로 대체합니다."
+        "note": "outline·filled·spin과 크기·색상을 설정합니다. 기본 채움형은 heart·star·home·search 등 12개이며 등록한 아이콘의 채움형도 사용할 수 있습니다. 채움형이 없는 유효한 이름은 해당 선형으로 표시하고, 존재하지 않는 이름은 help-circle로 대체합니다."
       }
     }
   },

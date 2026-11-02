@@ -32,7 +32,7 @@ export function FoundationIconsGuide() {
     </section>
     <section id="variants" className="icon-guide">
       <h2>형태 선택</h2>
-      <p className="body-copy">선형을 기본으로 사용합니다. 전체 1,054개 채움형은 개별 import 후 Provider에 등록해 사용합니다. 기본 제공되는 heart·star로 두 형태를 비교해 보세요.</p>
+      <p className="body-copy">선형을 기본으로 사용합니다. 전체 1,054개 채움형은 개별 import 후 Provider에 등록해 사용합니다. 기본 제공되는 채움형 12개(heart·star·home·search 등)로 두 형태를 비교해 보세요.</p>
       <GuideExample {...iconScenarios[1]} />
       <div className="icon-principles">
         <article><h3>채움형과 선택 상태는 별개</h3><p>채움형은 도형만 바꿉니다. 지속적인 선택에는 <Link href="/components/icon-toggle">IconToggle</Link>의 active와 상태 변경 요청을 연결하세요.</p></article>
