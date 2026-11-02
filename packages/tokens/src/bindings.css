@@ -525,6 +525,8 @@
   --_kjun-extension-toast-radius: 12px;
   --_kjun-extension-toast-close-radius: 8px;
   --_kjun-extension-toast-swipe-distance: 64px;
+  --_kjun-extension-toast-peek-offset: 8px;
+  --_kjun-extension-toast-peek-inset: 8px;
   --_kjun-extension-toast-compact-height: 44px;
   --_kjun-extension-toast-compact-padding-start: 14px;
   --_kjun-extension-toast-compact-padding-end: 16px;

@@ -23,7 +23,7 @@ test('toast dismissal and persistence respect duration zero',async()=>{
 test('toast defaults, capacity and hover pause follow upstream behavior',async()=>{
  const c=createFeedbackController();c.api.toast.info('info');c.api.toast.error('error');c.api.toast.warning('warning');
  assert.deepEqual(c.getSnapshot().toasts.map(t=>t.duration),[3000,0,4000]);
- c.api.toast.clearAll();for(let i=0;i<5;i++)c.api.toast.info(String(i),{duration:0});assert.equal(c.getSnapshot().toasts.length,3);assert.equal(c.getSnapshot().toasts[0].message,'2');
+ c.api.toast.clearAll();for(let i=0;i<5;i++)c.api.toast.info(String(i),{duration:0});assert.equal(c.getSnapshot().toasts.length,5);assert.deepEqual(c.getSnapshot().toasts.map(t=>!!t.hidden),[true,true,false,false,false]);
  c.api.toast.clearAll();const id=c.api.toast.info('pause',{duration:40});c.pauseToast(id);await new Promise(resolve=>setTimeout(resolve,65));assert.equal(c.getSnapshot().toasts.length,1);c.resumeToast(id);await new Promise(resolve=>setTimeout(resolve,65));assert.equal(c.getSnapshot().toasts.length,0);c.dispose();
 });
 test('toast resumes only when every interaction owner releases its pause',()=>{
@@ -102,8 +102,14 @@ test('toasts made while no provider is attached wait with their full duration', 
   } finally { console.warn = warn; }
 });
 
-test('a full stack makes room by closing the oldest toast that closes itself, keeping a lasting error',()=>{
- const c=createFeedbackController();const error=c.api.toast.error('lasting');c.api.toast.info('first');c.api.toast.info('second');c.api.toast.success('third');
- assert.deepEqual(c.getSnapshot().toasts.map(t=>t.message),['lasting','second','third']);assert.equal(c.getSnapshot().toasts[0].id,error);
+test('toasts beyond the limit wait behind the shown ones with their time paused, and come forward as room frees up',async()=>{
+ const c=createFeedbackController();const error=c.api.toast.error('lasting');c.api.toast.info('first',{duration:200});c.api.toast.info('second');c.api.toast.success('third');
+ const shown=()=>c.getSnapshot().toasts.filter(t=>!t.hidden).map(t=>t.message);
+ // Danger is shown first, so the oldest info waits instead of the error.
+ assert.deepEqual(shown(),['lasting','second','third']);assert.equal(c.getSnapshot().toasts[0].id,error);
+ c.api.toast.info('fourth',{duration:30});assert.deepEqual(shown(),['lasting','third','fourth']);
+ const waiting=c.getSnapshot().toasts.find(t=>t.message==='first');assert.equal(waiting.paused,true);
+ await new Promise(resolve=>setTimeout(resolve,60));
+ assert.deepEqual(c.getSnapshot().toasts.map(t=>t.message),['lasting','first','second','third'],'a waiting toast keeps its time; the shown fourth expired');
  c.api.toast.success('compact',{compact:true});assert.equal(c.getSnapshot().toasts.at(-1).compact,true);assert.equal('showProgress' in c.getSnapshot().toasts.at(-1),false);c.dispose();
 });

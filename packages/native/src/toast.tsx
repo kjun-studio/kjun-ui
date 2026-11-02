@@ -13,16 +13,20 @@ import { useKjunStyles } from "./provider";
 export function ToastView({
   toast,
   controller,
+  narrow = true,
 }: {
   toast: ToastItem;
   controller: ReturnType<typeof createFeedbackController>;
+  /** Below the toast breakpoint; ToastStack passes it from the window width. */
+  narrow?: boolean;
 }) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles(), spec = tokens.extensions.toast;
   const reasons = useRef({ hover: Symbol("hover"), actionHover: Symbol("actionHover"),
     closeHover: Symbol("closeHover"), focus: Symbol("focus"), swipe: Symbol("swipe") }).current;
   useEffect(() => () => {
-    for (const reason of Object.values(reasons)) controller.resumeToast(toast.id, reason);
+    // Pointer and focus hold the whole stack, so a card leaving under the pointer releases its holds.
+    for (const reason of Object.values(reasons)) { controller.releaseAll(reason); controller.resumeToast(toast.id, reason); }
   }, [controller, toast.id, reasons]);
   const { tone, icon, compact, closable, sideAction, role, live, spoken } = toastPresentation(toast);
   // iOS has no live regions, so VoiceOver hears a toast only when it is announced; Android uses the region below.
@@ -37,7 +41,12 @@ export function ToastView({
     onPanResponderGrant: () => controller.pauseToast(toast.id, reasons.swipe),
     onPanResponderMove: (_, g) => drag.setValue(g.dx),
     onPanResponderRelease: (_, g) => {
-      if (Math.abs(g.dx) >= toastSwipeDistance()) { dismiss("close"); return; }
+      if (Math.abs(g.dx) >= toastSwipeDistance()) {
+        // A closing swipe carries the card on in its direction instead of the usual exit toward the edge.
+        Animated.timing(drag, { toValue: Math.sign(g.dx) * (spec.maxWidth + spec.inset), duration: tokens.motion.toastExit, useNativeDriver: Platform.OS !== "web" }).start();
+        dismiss("close");
+        return;
+      }
       Animated.timing(drag, { toValue: 0, duration: tokens.motion.toastMove, useNativeDriver: Platform.OS !== "web" }).start();
       controller.resumeToast(toast.id, reasons.swipe);
     },
@@ -56,10 +65,10 @@ export function ToastView({
     <Pressable
       accessibilityRole="button"
       // Nested Pressables own their hover gesture in Native Web.
-      onHoverIn={() => controller.pauseToast(toast.id, reasons.actionHover)}
-      onHoverOut={() => controller.resumeToast(toast.id, reasons.actionHover)}
-      onFocus={() => controller.pauseToast(toast.id, reasons.focus)}
-      onBlur={() => controller.resumeToast(toast.id, reasons.focus)}
+      onHoverIn={() => controller.holdAll(reasons.actionHover)}
+      onHoverOut={() => controller.releaseAll(reasons.actionHover)}
+      onFocus={() => controller.holdAll(reasons.focus)}
+      onBlur={() => controller.releaseAll(reasons.focus)}
       onPress={() => {
         try {
           toast.action?.onClick();
@@ -77,9 +86,10 @@ export function ToastView({
   return (
     <Pressable
       accessible={false}
-      onHoverIn={() => controller.pauseToast(toast.id, reasons.hover)}
-      onHoverOut={() => controller.resumeToast(toast.id, reasons.hover)}
-      style={compact ? { alignSelf: "center", maxWidth: "100%" } : { width: "100%", maxWidth: spec.maxWidth, alignSelf: "flex-end" }}
+      onHoverIn={() => controller.holdAll(reasons.hover)}
+      onHoverOut={() => controller.releaseAll(reasons.hover)}
+      // Like the web: capsules centre on a narrow screen and share the cards' end edge on a wide one.
+      style={compact ? { alignSelf: narrow ? "center" : "flex-end", maxWidth: "100%" } : { width: "100%", maxWidth: spec.maxWidth, alignSelf: "flex-end" }}
     >
       <Animated.View
         {...swipe.panHandlers}
@@ -134,10 +144,10 @@ export function ToastView({
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={m.closeNotification}
-                onHoverIn={() => controller.pauseToast(toast.id, reasons.closeHover)}
-                onHoverOut={() => controller.resumeToast(toast.id, reasons.closeHover)}
-                onFocus={() => controller.pauseToast(toast.id, reasons.focus)}
-                onBlur={() => controller.resumeToast(toast.id, reasons.focus)}
+                onHoverIn={() => controller.holdAll(reasons.closeHover)}
+                onHoverOut={() => controller.releaseAll(reasons.closeHover)}
+                onFocus={() => controller.holdAll(reasons.focus)}
+                onBlur={() => controller.releaseAll(reasons.focus)}
                 onPress={() => dismiss("close")}
                 style={{
                   minWidth: target,

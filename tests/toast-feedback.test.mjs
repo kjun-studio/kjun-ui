@@ -5,7 +5,7 @@ import { createFeedbackController } from '../packages/tokens/dist/index.js';
 
 // toast-presentation.ts is shared TypeScript, so the test bundles it.
 const output = await build({ entryPoints: ['shared/package-runtime/toast-presentation.ts'], bundle: true, write: false, format: 'esm', platform: 'node' });
-const { toastPresentation, orderToasts, toastSwipeOpacity, toastSwipeDistance } =
+const { toastPresentation, orderToasts, toastSwipeOpacity, toastSwipeDistance, toastStackLayout, toastPeekDepth } =
   await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 const toast = (options) => ({ id: 1, message: 'm', remaining: 0, startedAt: 0, paused: false, duration: 3000, type: 'info', ...options });
 
@@ -27,8 +27,12 @@ test('only danger interrupts; loading swaps the icon; the spoken text joins head
 });
 
 test('the newest toast sits nearest the edge it enters from, and a swipe fades toward its closing distance', () => {
-  assert.deepEqual(orderToasts([1, 2, 3]), [3, 2, 1]);
-  assert.deepEqual(orderToasts([1, 2, 3], 'bottom'), [1, 2, 3]);
+  const item = (id, extra = {}) => ({ toast: toast({ id, ...extra }), exiting: false });
+  const ids = list => list.map(entry => entry.toast.id);
+  assert.deepEqual(ids(orderToasts([item(1), item(2), item(3)])), [3, 2, 1]);
+  assert.deepEqual(ids(orderToasts([item(1), item(2), item(3)], 'bottom')), [1, 2, 3]);
+  // Capsules sit nearest the edge, ahead of cards.
+  assert.deepEqual(ids(orderToasts([item(1, { compact: true }), item(2), item(3, { compact: true })])), [3, 1, 2]);
   assert.equal(toastSwipeOpacity(0), 1);
   assert.equal(toastSwipeOpacity(-toastSwipeDistance()), 0.5);
 });
@@ -99,14 +103,44 @@ test('promise shows a loading toast and turns it into success or error, returnin
   c.dispose();
 });
 
-test('the toast limit follows the Provider, closing the oldest self-closing toast first', () => {
+test('the shown count follows the Provider; a stack-wide hold pauses every toast, new ones included', () => {
   const c = createFeedbackController();
-  c.api.toast.error('lasting');
-  for (let i = 0; i < 3; i++) c.api.toast.info(String(i));
+  for (let i = 0; i < 4; i++) c.api.toast.info(String(i));
   c.setToastLimit(2);
-  assert.deepEqual(c.getSnapshot().toasts.map(t => t.message), ['lasting', '2']);
+  assert.deepEqual(c.getSnapshot().toasts.map(t => !!t.hidden), [true, true, false, false]);
   c.setToastLimit(5);
-  for (let i = 3; i < 7; i++) c.api.toast.info(String(i));
-  assert.equal(c.getSnapshot().toasts.length, 5);
+  assert.equal(c.getSnapshot().toasts.some(t => t.hidden || t.paused), false);
+  c.holdAll('pointer');
+  c.api.toast.info('arrives while held');
+  assert.equal(c.getSnapshot().toasts.every(t => t.paused), true);
+  c.releaseAll('pointer');
+  assert.equal(c.getSnapshot().toasts.some(t => t.paused), false);
+  c.dispose();
+});
+
+test('a narrow stack folds behind its newest danger toast, counting folded and waiting toasts', () => {
+  const item = (id, extra = {}) => ({ toast: toast({ id, ...extra }), exiting: false });
+  const items = [item(1, { hidden: true }), item(2, { type: 'danger' }), item(3), item(4)];
+  const wide = toastStackLayout(items, {});
+  assert.deepEqual([wide.items.map(entry => entry.toast.id), wide.behind, wide.folded, wide.uniform], [[4, 3, 2], 1, false, true]);
+  const folded = toastStackLayout(items, { narrow: true });
+  assert.deepEqual([folded.items.map(entry => entry.toast.id), folded.behind, folded.folded], [[2], 3, true]);
+  // Expanded shows everything, waiting toasts included, and keeps its toggle to fold again.
+  const open = toastStackLayout(items, { narrow: true, expanded: true });
+  assert.deepEqual([open.items.length, open.behind, open.folded, open.toggle], [4, 0, false, true]);
+  assert.deepEqual(folded.unseen.map(entry => entry.toast.id).sort(), [1, 3, 4]);
+  assert.deepEqual([toastPeekDepth(0), toastPeekDepth(1), toastPeekDepth(5)], [0, 1, 2]);
+  assert.equal(toastStackLayout([item(1)], {}).uniform, false);
+});
+
+test('one call notifies listeners once, even when it pauses, queues and rebalances several toasts', () => {
+  const c = createFeedbackController();
+  for (let i = 0; i < 3; i++) c.api.toast.info(String(i));
+  let calls = 0;
+  c.subscribe(() => calls++);
+  c.api.toast.info('fourth');
+  assert.equal(calls, 1);
+  c.holdAll('pointer');
+  assert.equal(calls, 2);
   c.dispose();
 });

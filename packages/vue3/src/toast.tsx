@@ -12,7 +12,8 @@ export const ToastView = defineComponent({
   setup(props) {
     const m = useKjunMessages();
     const card = ref<HTMLElement | null>(null);
-    const reasons = { hover: Symbol("kjunToastHover"), focus: Symbol("kjunToastFocus"), swipe: Symbol("kjunToastSwipe") };
+    // Pointer and focus pauses belong to the whole stack (ToastStack); a swipe pauses only this toast.
+    const reasons = { swipe: Symbol("kjunToastSwipe") };
     let detach: (() => void) | undefined;
     onMounted(() => {
       if (card.value) detach = attachToastSwipe(card.value, {
@@ -32,11 +33,7 @@ export const ToastView = defineComponent({
       );
       return (
         <div ref={card} class="kjun-toast" data-tone={tone} data-title={String(!!toast.title)} data-compact={compact ? "true" : undefined}
-          data-loading={toast.loading ? "true" : undefined} data-side={String(sideAction || closable)} role={role} aria-live={live}
-          onMouseenter={() => props.controller.pauseToast(toast.id, reasons.hover)}
-          onMouseleave={() => props.controller.resumeToast(toast.id, reasons.hover)}
-          onFocusin={() => props.controller.pauseToast(toast.id, reasons.focus)}
-          onFocusout={(event: FocusEvent) => { if (!(event.currentTarget as HTMLElement).contains(event.relatedTarget as Node | null)) props.controller.resumeToast(toast.id, reasons.focus); }}>
+          data-loading={toast.loading ? "true" : undefined} data-side={String(sideAction || closable)} role={role} aria-live={live}>
           <span class="kjun-toast-icon" style={{ color: `var(--_kjun-color-${tone}-accent)` }}><KjunIcon name={icon} spin={!!toast.loading} /></span>
           <div class="kjun-toast-content">
             {toast.title && <strong>{toast.title}</strong>}

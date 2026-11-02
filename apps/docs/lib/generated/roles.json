@@ -137,6 +137,7 @@
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-toolbar.tsx",
       "packages/native/src/tabs.tsx",
+      "packages/native/src/toast-stack.tsx",
       "packages/native/src/toast.tsx"
     ]
   },
@@ -331,6 +332,7 @@
       "packages/native/src/table-list.tsx",
       "packages/native/src/table-view.tsx",
       "packages/native/src/tabs.tsx",
+      "packages/native/src/toast-stack.tsx",
       "packages/native/src/toast.tsx"
     ]
   },
@@ -558,6 +560,7 @@
       "packages/native/src/table-cards.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-toolbar.tsx",
+      "packages/native/src/toast-stack.tsx",
       "packages/native/src/toast.tsx"
     ]
   },

@@ -26,7 +26,9 @@ test('toasts enter from their own edge', () => {
   assert.equal(toastEdgeShift(), -tokens.motionDistance.toast);
   assert.equal(toastEdgeShift('bottom'), tokens.motionDistance.toast);
   const css = read('packages/tokens/src/toast.css');
-  assert.match(css, /top: calc\(var\(--_kjun-extension-toast-inset\) \+ var\(--_kjun-safe-area-top\) \+ var\(--_kjun-toast-offset, 0px\)\)/);
+  // The inset is the stack's padding (so card shadows are not clipped); the position adds the safe area and offset.
+  assert.match(css, /top: calc\(var\(--_kjun-safe-area-top\) \+ var\(--_kjun-toast-offset, 0px\)\)/);
+  assert.match(css, /padding: var\(--_kjun-extension-toast-inset\);/);
   assert.match(css, /\[data-placement="bottom"\] \{\n  top: auto;\n  bottom: calc\(/);
 });
 

@@ -1,16 +1,19 @@
 import { useLayerState } from "../../../shared/package-runtime/use-layer";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
-import { useLayoutEffect, useRef, type CSSProperties } from 'react';
+import { useEffect, useLayoutEffect, useRef, useSyncExternalStore, type CSSProperties } from 'react';
 import type { createFeedbackController } from '@kjun-ui/tokens';
 import { type PresentedToast } from '../../../shared/package-runtime/feedback-motion';
 import { createToastLayout } from '../../../shared/package-runtime/toast-layout';
 import { toastEdgeShift, type ToastPlacement } from '../../../shared/package-runtime/toast-placement';
-import { orderToasts } from '../../../shared/package-runtime/toast-presentation';
-import { restoreToastFocus } from '../../../shared/package-runtime/toast-swipe';
+import { toastPeekDepth } from '../../../shared/package-runtime/toast-presentation';
+import { useToastStack } from '../../../shared/package-runtime/use-toast-stack';
+import { attachToastStack, restoreToastFocus } from '../../../shared/package-runtime/toast-swipe';
 import { ToastView } from './toast';
 import { useReducedMotion } from './use-reduced-motion';
 
-function ToastSurface({ item, controller, placement }: { item: PresentedToast; controller: ReturnType<typeof createFeedbackController>; placement: ToastPlacement }) {
+type Controller = ReturnType<typeof createFeedbackController>;
+function ToastSurface({ item, controller, placement }: { item: PresentedToast; controller: Controller; placement: ToastPlacement }) {
   const ref = useRef<HTMLDivElement>(null), reduced = useReducedMotion();
   const current = useRef<{ opacity: string; transform: string } | null>(null);
   const entryFinished = useRef(false);
@@ -48,15 +51,50 @@ function ToastSurface({ item, controller, placement }: { item: PresentedToast; c
     <ToastView toast={item.toast} controller={controller} />
   </div>;
 }
-export function ToastStack({ items, controller, placement = "top", offset = 0 }: { items: PresentedToast[]; controller: ReturnType<typeof createFeedbackController>; placement?: ToastPlacement; offset?: number }) {
-  const layers = useLayerState();
-  const root = useRef<HTMLDivElement>(null), layout = useRef(createToastLayout());
+// One media query list for every stack, read on each render without creating a new one.
+let narrowMedia: MediaQueryList | undefined;
+const narrowList = () => (narrowMedia ??= matchMedia(`(width <= ${tokens.responsive.toast}px)`));
+const subscribeNarrow = (notify: () => void) => {
+  narrowList().addEventListener("change", notify);
+  return () => narrowList().removeEventListener("change", notify);
+};
+export function ToastStack({ items, controller, placement = "top", offset = 0 }: { items: PresentedToast[]; controller: Controller; placement?: ToastPlacement; offset?: number }) {
+  const layers = useLayerState(), m = useKjunMessages();
+  const root = useRef<HTMLDivElement>(null), toggle = useRef<HTMLButtonElement>(null), layout = useRef(createToastLayout());
   const reduced = useReducedMotion();
+  const narrow = useSyncExternalStore(subscribeNarrow, () => narrowList().matches, () => false);
+  const { stack, expanded, setExpanded, announcement } = useToastStack(items, controller, { placement, narrow });
+  const live = useRef({ expanded }); live.current.expanded = expanded;
+  useEffect(() => root.current ? attachToastStack(root.current, {
+    hold: reason => controller.holdAll(reason),
+    release: reason => controller.releaseAll(reason),
+    outside: () => setExpanded(false),
+    // Escape folds an expanded stack and leaves focus on its toggle, which stays in place.
+    escape: () => {
+      if (!live.current.expanded) return false;
+      setExpanded(false);
+      toggle.current?.focus();
+      return true;
+    },
+  }) : undefined, [controller, setExpanded]);
   useLayoutEffect(() => { if (root.current) layout.current.update(root.current, reduced); });
   useLayoutEffect(() => () => layout.current.destroy(), []);
-  return <div ref={root} className="kjun-toast-stack" data-placement={placement}
-    style={{ zIndex: layers.zIndex(layers.topWindow()?.id, "toast"), "--_kjun-toast-offset": `${Math.max(0, offset)}px` } as CSSProperties}>{orderToasts(items, placement).map(item => <div key={item.toast.id}
+  const depth = expanded ? 0 : toastPeekDepth(stack.behind);
+  const more = stack.toggle && <button key="more" ref={toggle} type="button" className="kjun-toast-more" data-toast-more=""
+    data-depth={depth} data-expanded={expanded || undefined} aria-expanded={expanded}
+    aria-label={expanded ? m.collapseNotifications : `${m.showNotifications}, ${m.moreNotifications(stack.behind)}`}
+    onClick={() => setExpanded(!expanded)} style={{ "--_kjun-toast-peek-depth": Math.max(1, depth) } as CSSProperties}>
+    <span className="kjun-toast-more-count" aria-hidden="true">{expanded ? m.collapseNotifications : `+${stack.behind}`}</span>
+  </button>;
+  const slots = stack.items.map(item => <div key={item.toast.id}
     data-toast-id={item.toast.id} data-exiting={item.exiting} className="kjun-toast-slot">
     <ToastSurface item={item} controller={controller} placement={placement} />
-  </div>)}</div>;
+  </div>);
+  return <div ref={root} className="kjun-toast-stack" data-placement={placement} data-uniform={stack.uniform}
+    data-folded={stack.folded || undefined} data-expanded={expanded || undefined}
+    {...(items.length ? { role: "region", "aria-label": m.notifications } : {})}
+    style={{ zIndex: layers.zIndex(layers.topWindow()?.id, "toast"), "--_kjun-toast-offset": `${Math.max(0, offset)}px` } as CSSProperties}>
+    {placement === "bottom" && more}{slots}{placement !== "bottom" && more}
+    {!!items.length && <div className="kjun-sr-only" role="status" aria-live="polite">{announcement}</div>}
+  </div>;
 }

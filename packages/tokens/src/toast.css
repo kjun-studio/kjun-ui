@@ -1,23 +1,93 @@
-/* Toasts keep clear of the safe area at their edge, plus the app's offset (KjunFeedbackProvider placement / offset). */
+/* Toasts keep clear of the safe area at their edge, plus the app's offset (KjunFeedbackProvider placement / offset).
+   The inset is padding inside the stack rather than its position, so the cards' shadows are never clipped, and
+   inset-inline-end keeps the stack on the reading end in right-to-left pages. */
 .kjun-toast-stack {
   position: fixed;
-  top: calc(var(--_kjun-extension-toast-inset) + var(--_kjun-safe-area-top) + var(--_kjun-toast-offset, 0px));
-  right: var(--_kjun-extension-toast-inset);
+  top: calc(var(--_kjun-safe-area-top) + var(--_kjun-toast-offset, 0px));
+  inset-inline-end: 0;
   display: flex;
   flex-direction: column;
   gap: var(--_kjun-extension-toast-stack-gap);
-  max-height: calc(100dvh - 2 * var(--_kjun-extension-toast-inset) - var(--_kjun-safe-area-top) - var(--_kjun-safe-area-bottom) - var(--_kjun-toast-offset, 0px));
+  padding: var(--_kjun-extension-toast-inset);
+  max-height: calc(100dvh - var(--_kjun-safe-area-top) - var(--_kjun-safe-area-bottom) - var(--_kjun-toast-offset, 0px));
+  box-sizing: border-box;
   overflow: hidden;
   pointer-events: none;
 }
 .kjun-toast-stack[data-placement="bottom"] {
   top: auto;
-  bottom: calc(var(--_kjun-extension-toast-inset) + var(--_kjun-safe-area-bottom) + var(--_kjun-toast-offset, 0px));
+  bottom: calc(var(--_kjun-safe-area-bottom) + var(--_kjun-toast-offset, 0px));
 }
+.kjun-toast-stack:empty { display: none; }
 /* A toast is one neutral card for every tone: colour lives in the status icon, and a danger toast also colours its
    heading. Width follows the content between minWidth and maxWidth; the slot lets it hug the stack's edge. */
-.kjun-toast-slot { display: flex; justify-content: flex-end; }
+.kjun-toast-slot { position: relative; z-index: 1; display: flex; justify-content: flex-end; }
 .kjun-toast-slot > * { min-width: 0; max-width: 100%; }
+/* Several cards share the widest card's width so the stack's far edge stays straight; capsules keep hugging. */
+.kjun-toast-stack[data-uniform="true"] .kjun-toast-slot:not(:has(.kjun-toast[data-compact="true"])) > * { flex: 1; }
+.kjun-toast-stack[data-uniform="true"] .kjun-toast:not([data-compact="true"]) { width: 100%; max-width: none; }
+/* Toasts not drawn as cards show as card edges behind the far card, with their count. On a narrow screen the
+   folded stack's edges are a button that unfolds it. */
+.kjun-toast-more {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  height: calc(var(--_kjun-extension-toast-peek-offset) * var(--_kjun-toast-peek-depth, 1));
+  margin-top: calc(-1 * var(--_kjun-extension-toast-stack-gap));
+  --_kjun-toast-peek-reach: calc(var(--_kjun-extension-toast-peek-offset) * var(--_kjun-toast-peek-depth, 1));
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  pointer-events: none;
+}
+.kjun-toast-stack[data-placement="bottom"] .kjun-toast-more { margin-top: 0; margin-bottom: calc(-1 * var(--_kjun-extension-toast-stack-gap)); align-items: flex-start; }
+.kjun-toast-more::before,
+.kjun-toast-more::after {
+  content: "";
+  position: absolute;
+  inset-inline: var(--_kjun-extension-toast-peek-inset);
+  /* Each edge starts behind the far card's rounded bottom and shows one peek offset below the one in front. */
+  top: calc(-1 * var(--_kjun-extension-toast-radius));
+  height: calc(var(--_kjun-extension-toast-radius) + var(--_kjun-extension-toast-peek-offset));
+  border: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  border-radius: var(--_kjun-extension-toast-radius);
+  background: var(--_kjun-color-surface);
+  box-shadow: var(--_kjun-toast-elevation);
+}
+.kjun-toast-more::after { display: none; }
+.kjun-toast-more[data-depth="2"]::after {
+  display: block;
+  inset-inline: calc(2 * var(--_kjun-extension-toast-peek-inset));
+  height: calc(var(--_kjun-extension-toast-radius) + 2 * var(--_kjun-extension-toast-peek-offset));
+  z-index: -1;
+}
+.kjun-toast-stack[data-placement="bottom"] .kjun-toast-more::before,
+.kjun-toast-stack[data-placement="bottom"] .kjun-toast-more::after { top: auto; bottom: calc(-1 * var(--_kjun-extension-toast-radius)); }
+.kjun-toast-more-count {
+  position: absolute;
+  z-index: 2;
+  top: var(--_kjun-toast-peek-reach);
+  inset-inline-end: var(--_kjun-extension-toast-peek-inset);
+  transform: translateY(-50%);
+  padding: var(--_kjun-geometry-dimension-value2) var(--_kjun-geometry-dimension-value8);
+  border-radius: var(--_kjun-extension-toast-compact-radius);
+  background: var(--_kjun-color-text);
+  color: var(--_kjun-color-surface);
+  font-size: var(--_kjun-type-meta-size);
+  line-height: var(--_kjun-type-meta-line);
+  font-weight: var(--_kjun-type-control-weight);
+  letter-spacing: var(--_kjun-type-meta-tracking);
+}
+.kjun-toast-stack[data-placement="bottom"] .kjun-toast-more-count { top: auto; bottom: var(--_kjun-toast-peek-reach); transform: translateY(50%); }
+/* An expanded stack shows every toast, so it scrolls when they outgrow the screen; its toggle folds it again. */
+.kjun-toast-stack[data-expanded] { overflow-y: auto; overscroll-behavior: contain; }
+.kjun-toast-more[data-expanded]::before,
+.kjun-toast-more[data-expanded]::after { display: none; }
+button.kjun-toast-more { pointer-events: auto; cursor: pointer; height: calc(var(--_kjun-extension-toast-peek-offset) * var(--_kjun-toast-peek-depth, 1) + var(--_kjun-geometry-native-minimum-touch-target) / 2); }
+button.kjun-toast-more:focus-visible { outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset: var(--_kjun-state-focus-offset); border-radius: var(--_kjun-extension-toast-radius); }
 .kjun-toast {
   box-shadow: var(--_kjun-toast-elevation);
   display: flex;
@@ -147,8 +217,7 @@
 .kjun-toast[data-compact="true"] .kjun-toast-side { margin-block: 0; }
 @media (width <= token(responsive.toast)) {
   .kjun-toast-stack {
-    left: var(--_kjun-extension-toast-inset);
-    right: var(--_kjun-extension-toast-inset);
+    inset-inline: 0;
   }
   .kjun-toast-slot { display: block; }
   .kjun-toast-slot:has(.kjun-toast[data-compact="true"]) { display: flex; justify-content: center; }

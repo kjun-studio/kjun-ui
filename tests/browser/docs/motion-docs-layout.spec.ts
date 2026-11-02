@@ -41,7 +41,9 @@ async function checkLayout(page: Page, platform: string) {
         const box = node.getBoundingClientRect();
         return { fits: box.left >= -1 && box.right <= innerWidth + 1 && box.top >= -1 && box.bottom <= innerHeight + 1, bottom: box.bottom };
       }));
-      expect(bounds).toHaveLength(3);
+      // A preview narrower than the toast breakpoint folds the stack behind one card.
+      const folded = await frame.locator('body').evaluate(() => innerWidth <= 640);
+      expect(bounds).toHaveLength(folded ? 1 : 3);
       expect(bounds.every(box => box.fits), platform + '/toast').toBe(true);
       const triggerTop = await frame.getByRole('button', { name: '알림 3개 표시' }).evaluate(node => node.getBoundingClientRect().top);
       expect(Math.max(...bounds.map(box => box.bottom))).toBeLessThanOrEqual(triggerTop);

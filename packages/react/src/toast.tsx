@@ -13,7 +13,8 @@ export function ToastView({
 }) {
   const m = useKjunMessages();
   const card = useRef<HTMLDivElement>(null);
-  const reasons = useRef({ hover: Symbol("hover"), focus: Symbol("focus"), swipe: Symbol("swipe") }).current;
+  // Pointer and focus pauses belong to the whole stack (ToastStack); a swipe pauses only this toast.
+  const reasons = useRef({ swipe: Symbol("swipe") }).current;
   useEffect(() => () => {
     for (const reason of Object.values(reasons)) controller.resumeToast(toast.id, reason);
   }, [controller, toast.id, reasons]);
@@ -49,13 +50,6 @@ export function ToastView({
       data-side={sideAction || closable}
       role={role}
       aria-live={live}
-      onMouseEnter={() => controller.pauseToast(toast.id, reasons.hover)}
-      onMouseLeave={() => controller.resumeToast(toast.id, reasons.hover)}
-      onFocus={() => controller.pauseToast(toast.id, reasons.focus)}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget))
-          controller.resumeToast(toast.id, reasons.focus);
-      }}
     >
       <span
         className="kjun-toast-icon"

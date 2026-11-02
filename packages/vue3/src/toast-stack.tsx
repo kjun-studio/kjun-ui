@@ -1,33 +1,22 @@
 import { toastEdgeShift, type ToastPlacement } from "../../../shared/package-runtime/toast-placement";
-import { orderToasts } from "../../../shared/package-runtime/toast-presentation";
-import { restoreToastFocus } from "../../../shared/package-runtime/toast-swipe";
+import { toastPeekDepth, toastPresentation, toastStackLayout } from "../../../shared/package-runtime/toast-presentation";
+import { attachToastStack, restoreToastFocus } from "../../../shared/package-runtime/toast-swipe";
+import { createToastPresence, type PresentedToast } from "../../../shared/package-runtime/toast-presence";
 import { createToastLayout } from "../../../shared/package-runtime/toast-layout";
-import { defineComponent, onBeforeUnmount, onMounted, onUpdated, ref, shallowRef, watch, type PropType } from "vue";
+import { computed, defineComponent, onBeforeUnmount, onMounted, onUpdated, ref, shallowRef, watch, type PropType } from "vue";
 import { createFeedbackController, tokens, type ToastItem } from "@kjun-ui/tokens";
 import { useLayerContext } from "./runtime/layers";
 import { useReducedMotion } from "./runtime/presence";
+import { useKjunMessages } from "./runtime/messages";
 import { ToastView } from "./toast";
 
 type Controller = ReturnType<typeof createFeedbackController>;
-export interface PresentedToast { toast: ToastItem; exiting: boolean; born: number }
+export type { PresentedToast };
 export function usePresentedToasts(toasts: () => ToastItem[], reduced: () => boolean) {
   const items = shallowRef<PresentedToast[]>([]);
-  const removals = new Map<number, ReturnType<typeof setTimeout>>();
-  watch([toasts, reduced], ([current, isReduced]) => {
-    const ids = new Set(current.map(toast => toast.id));
-    const old = new Map(items.value.map(item => [item.toast.id, item]));
-    const next = current.map(toast => ({ toast, exiting: false, born: old.get(toast.id)?.born ?? Date.now() }));
-    for (const item of items.value) if (!ids.has(item.toast.id) && !isReduced) {
-      next.push({ ...item, exiting: true });
-      if (!removals.has(item.toast.id)) removals.set(item.toast.id, setTimeout(() => {
-        removals.delete(item.toast.id);
-        items.value = items.value.filter(value => value.toast.id !== item.toast.id);
-      }, tokens.motion.toastExit));
-    }
-    items.value = next;
-    if (isReduced) { for (const timer of removals.values()) clearTimeout(timer); removals.clear(); }
-  }, { immediate: true });
-  onBeforeUnmount(() => { for (const timer of removals.values()) clearTimeout(timer); removals.clear(); });
+  const presence = createToastPresence(next => { items.value = next; });
+  watch([toasts, reduced], ([current, isReduced]) => presence.sync(current, isReduced), { immediate: true });
+  onBeforeUnmount(() => presence.destroy());
   return items;
 }
 const ToastSurface = defineComponent({
@@ -72,27 +61,74 @@ const ToastSurface = defineComponent({
   },
 });
 
+const narrowQuery = `(width <= ${tokens.responsive.toast}px)`;
+const expandedHold = Symbol("kjunToastExpanded");
 export const ToastStack = defineComponent({
   name: "KjunToastStack",
   props: { items: { type: Array as PropType<PresentedToast[]>, required: true }, controller: { type: Object as PropType<Controller>, required: true },
     placement: { type: String as PropType<ToastPlacement>, default: "top" }, offset: { type: Number, default: 0 } },
   setup(props) {
-    const { state, version } = useLayerContext();
-    const root = ref<HTMLElement | null>(null), layout = createToastLayout(), reduced = useReducedMotion();
+    const { state, version } = useLayerContext(), m = useKjunMessages();
+    const root = ref<HTMLElement | null>(null), toggle = ref<HTMLButtonElement | null>(null), layout = createToastLayout(), reduced = useReducedMotion();
+    const narrow = ref(false), expanded = ref(false), announcement = ref("");
+    const media = typeof matchMedia === "function" ? matchMedia(narrowQuery) : null;
+    const syncNarrow = () => { narrow.value = !!media?.matches; };
+    syncNarrow();
+    media?.addEventListener("change", syncNarrow);
+    const stack = computed(() => toastStackLayout(props.items, { placement: props.placement, narrow: narrow.value, expanded: expanded.value }));
+    let detach: (() => void) | undefined;
     const update = () => { if (root.value) layout.update(root.value, reduced.value); };
-    onMounted(update);
+    onMounted(() => {
+      update();
+      if (root.value) detach = attachToastStack(root.value, {
+        hold: reason => props.controller.holdAll(reason),
+        release: reason => props.controller.releaseAll(reason),
+        outside: () => { expanded.value = false; },
+        // Escape folds an expanded stack and leaves focus on its toggle, which stays in place.
+        escape: () => {
+          if (!expanded.value) return false;
+          expanded.value = false;
+          toggle.value?.focus();
+          return true;
+        },
+      });
+    });
     onUpdated(update);
-    onBeforeUnmount(() => layout.destroy());
+    onBeforeUnmount(() => { layout.destroy(); detach?.(); media?.removeEventListener("change", syncNarrow); props.controller.releaseAll(expandedHold); });
+    // An expanded stack folds again once a single toast is left; while open, every toast holds still.
+    watch(() => props.items.filter(item => !item.exiting).length, total => { if (total <= 1) expanded.value = false; });
+    watch(expanded, open => { if (open) props.controller.holdAll(expandedHold); else props.controller.releaseAll(expandedHold); });
+    // A drawn card announces itself; an unseen (folded or waiting) toast is spoken once, the first time it arrives unseen.
+    const heard = new Set<number>();
+    watch(stack, current => {
+      const fresh = current.unseen.filter(item => !heard.has(item.toast.id));
+      for (const item of [...current.items, ...current.unseen]) heard.add(item.toast.id);
+      const ids = new Set(props.items.map(item => item.toast.id));
+      for (const id of heard) if (!ids.has(id)) heard.delete(id);
+      if (fresh.length) announcement.value = fresh.map(item => toastPresentation(item.toast).spoken).join(" ");
+    }, { immediate: true });
     return () => {
       void version.value;
+      const layoutNow = stack.value, open = expanded.value, depth = open ? 0 : toastPeekDepth(layoutNow.behind);
+      const more = layoutNow.toggle && (
+        <button key="more" ref={toggle} type="button" class="kjun-toast-more" data-toast-more="" data-depth={depth} data-expanded={open ? "true" : undefined}
+          aria-expanded={open} aria-label={open ? m.value.collapseNotifications : `${m.value.showNotifications}, ${m.value.moreNotifications(layoutNow.behind)}`}
+          onClick={() => { expanded.value = !open; }} style={{ "--_kjun-toast-peek-depth": Math.max(1, depth) }}>
+          <span class="kjun-toast-more-count" aria-hidden="true">{open ? m.value.collapseNotifications : `+${layoutNow.behind}`}</span>
+        </button>
+      );
+      const slots = layoutNow.items.map(item => (
+        <div key={item.toast.id} data-toast-id={item.toast.id} data-exiting={String(item.exiting)} class="kjun-toast-slot">
+          <ToastSurface item={item} controller={props.controller} placement={props.placement} />
+        </div>
+      ));
       return (
-        <div ref={root} class="kjun-toast-stack" data-placement={props.placement}
+        <div ref={root} class="kjun-toast-stack" data-placement={props.placement} data-uniform={String(layoutNow.uniform)}
+          data-folded={layoutNow.folded ? "true" : undefined} data-expanded={open ? "true" : undefined}
+          {...(props.items.length ? { role: "region", "aria-label": m.value.notifications } : {})}
           style={{ zIndex: state.zIndex(state.topWindow()?.id, "toast"), "--_kjun-toast-offset": `${Math.max(0, props.offset)}px` }}>
-          {orderToasts(props.items, props.placement).map(item => (
-            <div key={item.toast.id} data-toast-id={item.toast.id} data-exiting={String(item.exiting)} class="kjun-toast-slot">
-              <ToastSurface item={item} controller={props.controller} placement={props.placement} />
-            </div>
-          ))}
+          {props.placement === "bottom" && more}{slots}{props.placement !== "bottom" && more}
+          {!!props.items.length && <div class="kjun-sr-only" role="status" aria-live="polite">{announcement.value}</div>}
         </div>
       );
     };

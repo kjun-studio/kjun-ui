@@ -285,6 +285,8 @@
       "radius": { "$ref": "radius.radius12" },
       "closeRadius": { "$ref": "radius.radius8" },
       "swipeDistance": { "$ref": "dimension.value64" },
+      "peekOffset": { "$ref": "dimension.value8" },
+      "peekInset": { "$ref": "dimension.value8" },
       "compact": {
         "height": { "$ref": "native.minimumTouchTarget" },
         "paddingStart": { "$ref": "dimension.value14" },
