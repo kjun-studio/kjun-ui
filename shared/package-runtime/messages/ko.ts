@@ -126,6 +126,8 @@ export const kjunMessagesKo = {
   breadcrumb: "현재 위치",
   mainNavigation: "주요 탐색",
   // Read after a destination name for a dot badge that has no count.
+  // A numeric badge read in full, e.g. "새 항목 120개" even when it shows 99+.
+  newCount: (count: number) => `새 항목 ${count}개`,
   newContent: "새 소식",
   pagination: "페이지 탐색",
   itemsPerPage: "페이지당 항목 수",

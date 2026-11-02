@@ -1,4 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
@@ -37,6 +38,15 @@ export interface KjunBadgeProps {
   variant?: "default" | "secondary" | SemanticTone | "price-up" | "price-down";
   size?: DisplaySize;
   dot?: boolean;
+  /** Shows this number instead of children; over max it shows "99+", and 0 or less draws no badge at all. */
+  count?: number;
+  /** The largest count shown in full (default 99). */
+  max?: number;
+  /** What the badge means to a screen reader, e.g. "읽지 않은 알림 3개". Give it to a dot-only badge. */
+  label?: string;
+  /** A screen reader name that replaces the drawn text; label is the shorter way to set it. */
+  accessibilityLabel?: string;
+  testID?: string;
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
 }
@@ -56,12 +66,18 @@ export function BadgeView({
   variant = "default",
   size = "sm",
   dot = false,
+  count,
+  max,
+  label,
+  accessibilityLabel,
+  testID,
   children,
   style,
   dotSize,
   paint = badgeToneRoles(variant),
   typeRole,
 }: KjunBadgeProps & { dotSize?: number; paint?: BadgeToneRoles; typeRole?: TypographyRole }) {
+  const counted = count === undefined ? undefined : badgeCount(count, max);
   const { colors, domainColors } = useKjunStyles();
   const geometry = badgeGeometry(size);
   const { x, y } = geometry.padding;
@@ -76,8 +92,11 @@ export function BadgeView({
   // stretching row, yet follows a row's alignItems (a pill with alignSelf: flex-start sat at the top of
   // centred rows). Layout keys from style place this row; the rest paints the pill.
   const { outer, inner } = splitBadgeStyle(style);
+  if (counted === null) return null;
+  const name = accessibilityLabel ?? label;
   return (
-    <View style={[{ flexDirection: "row", alignItems: "flex-start", maxWidth: "100%", minWidth: 0, flexShrink: 1 }, outer]}>
+    <View testID={testID} accessible={!!name} accessibilityLabel={name}
+      style={[{ flexDirection: "row", alignItems: "flex-start", maxWidth: "100%", minWidth: 0, flexShrink: 1 }, outer]}>
     <View
       style={[
         {
@@ -108,7 +127,7 @@ export function BadgeView({
           }}
         />
       )}
-      {content(children, {
+      {content(counted ?? children, {
         flexShrink: 1,
         minWidth: 0,
         color,

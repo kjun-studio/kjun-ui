@@ -1,4 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
@@ -30,23 +31,36 @@ export interface KjunBadgeProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: "default" | "secondary" | SemanticTone | "price-up" | "price-down";
   size?: DisplaySize;
   dot?: boolean;
+  /** Shows this number instead of children; over max it shows "99+", and 0 or less draws no badge at all. */
+  count?: number;
+  /** The largest count shown in full (default 99). */
+  max?: number;
+  /** What the badge means to a screen reader, e.g. "읽지 않은 알림 3개"; the drawn text is then hidden from it. Give it to a dot-only badge. */
+  label?: string;
 }
 export function KjunBadge({
   variant = "default",
   size = "sm",
   dot = false,
+  count,
+  max,
+  label,
   children,
   style,
   ...props
 }: KjunBadgeProps) {
   const { padding, radius, gap, dotSize, type } = badgeGeometry(size);
   const paint = badgeToneRoles(variant);
+  const counted = count === undefined ? undefined : badgeCount(count, max);
+  if (counted === null) return null;
   return (
     <span
       {...props}
       ref={domainColorRef(variant.startsWith('price-'))}
       className={"kjun-badge " + (props.className || "")}
+      data-variant={variant}
       style={{
+        ["--_kjun-badge-dot" as string]: dotSize + "px",
         padding: `${padding.y}px ${padding.x}px`,
         ...typeStyle(type),
         gap,
@@ -56,8 +70,8 @@ export function KjunBadge({
         ...style,
       }}
     >
-      {dot && <span className="kjun-badge-dot" style={{ width: dotSize, height: dotSize, background: role(paint.dot) }} />}
-      {children}
+      {dot && <span className="kjun-badge-dot" style={{ background: role(paint.dot) }} />}
+      {label ? <><span className="kjun-sr-only">{label}</span><span aria-hidden="true">{counted ?? children}</span></> : counted ?? children}
     </span>
   );
 }

@@ -38,6 +38,12 @@
 .kjun-tabs[data-variant="pills"] .kjun-tab { border-radius:var(--_kjun-extension-tabs-pills-radius); background:var(--_kjun-color-secondary) !important; }
 .kjun-tabs[data-variant="pills"] .kjun-tab[aria-selected="true"] { background:var(--_kjun-color-text) !important; color:var(--_kjun-color-surface); }
 .kjun-tabs[data-variant="pills"] .kjun-tab-indicator { display:none; }
+/* A selected chip that is disabled keeps its inverted fill but dims its ink, as on Native. */
+.kjun-tabs[data-variant="pills"] .kjun-tab[aria-selected="true"]:is([aria-disabled="true"], :disabled) { color:var(--_kjun-color-text-disabled); }
+/* On an unselected chip a default badge takes the surface, so it does not vanish into the chip's own fill. */
+.kjun-tabs[data-variant="pills"] .kjun-tab:not([aria-selected="true"]) .kjun-tab-badge[data-variant="default"] { background:var(--_kjun-color-surface) !important; }
+/* A disabled tab dims its badge with its label. */
+.kjun-tab:is([aria-disabled="true"], :disabled) .kjun-tab-badge { opacity:var(--_kjun-state-opacity-disabled); }
 .kjun-tabs[data-variant="pills"] .kjun-tabs-list {
   gap:var(--_kjun-extension-tabs-pills-gap); padding-block:var(--_kjun-extension-tabs-pills-padding-y);
 }

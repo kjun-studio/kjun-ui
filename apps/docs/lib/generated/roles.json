@@ -118,7 +118,7 @@
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/tabs.tsx",
-      "packages/react/src/navigation.tsx",
+      "packages/react/src/tabs.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",

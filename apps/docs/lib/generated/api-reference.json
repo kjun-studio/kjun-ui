@@ -22711,7 +22711,7 @@
           },
           {
             "name": "badgeVariant",
-            "type": "\"danger\" | \"success\" | \"warning\" | \"info\"",
+            "type": "\"default\" | \"primary\" | \"secondary\" | \"danger\" | \"success\" | \"warning\" | \"info\"",
             "required": false,
             "default": "—",
             "description": "",
@@ -22750,7 +22750,7 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "name",
@@ -22759,7 +22759,7 @@
             "default": "—",
             "description": "",
             "summary": "폼 제출 또는 항목 식별에 사용하는 이름입니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "label",
@@ -22768,7 +22768,7 @@
             "default": "—",
             "description": "",
             "summary": "사용자에게 표시할 주된 라벨입니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "icon",
@@ -22777,25 +22777,25 @@
             "default": "—",
             "description": "",
             "summary": "콘텐츠와 함께 표시할 아이콘 이름입니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "badge",
             "type": "string | number | undefined",
             "required": false,
             "default": "—",
-            "description": "",
+            "description": "A count or short text after the label; numbers over 99 show 99+, and 0 or \"\" draws nothing.",
             "summary": "탭 라벨 옆 배지의 내용입니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "badgeVariant",
-            "type": "\"danger\" | \"success\" | \"warning\" | \"info\" | undefined",
+            "type": "\"primary\" | \"secondary\" | \"danger\" | \"success\" | \"warning\" | \"default\" | \"info\" | undefined",
             "required": false,
             "default": "—",
             "description": "",
             "summary": "탭 배지의 강조 스타일입니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "disabled",
@@ -22804,7 +22804,7 @@
             "default": "—",
             "description": "",
             "summary": "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           }
         ],
         "events": [],
@@ -22861,7 +22861,7 @@
           },
           {
             "name": "badgeVariant",
-            "type": "\"danger\" | \"success\" | \"warning\" | \"info\" | undefined",
+            "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"info\" | \"primary\" | \"default\" | undefined",
             "required": false,
             "default": "—",
             "description": "",
@@ -23032,7 +23032,7 @@
                 "text": "초기 선택과 사용자 선택 모두 Vue update:modelValue → change, React·Native onValueChange → onChange 순서입니다. 부모가 비어 있지 않은 값을 지정한 뒤 다시 빈 값으로 초기화하면 초기 선택을 다시 요청할 수 있습니다."
               }
             ],
-            "source": "packages/react/src/navigation.tsx",
+            "source": "packages/react/src/tabs.tsx",
             "example": "/components/tabs#preview"
           },
           {
@@ -23042,7 +23042,7 @@
             "default": "[]",
             "description": "",
             "summary": "표시할 항목과 항목별 레이블·값·구성 정보입니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "density",
@@ -23051,7 +23051,7 @@
             "default": "\"comfortable\"",
             "description": "",
             "summary": "underline은 comfortable 44px·compact 32px, pills는 36px·28px 높이입니다. 두 변형 모두 14px 라벨을 사용합니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "variant",
@@ -23060,7 +23060,7 @@
             "default": "\"underline\"",
             "description": "",
             "summary": "underline은 라벨 아래 2px 선택선, pills는 둥근 칩 모양으로 선택된 칩이 글자색으로 채워집니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "fullWidth",
@@ -23069,7 +23069,7 @@
             "default": "false",
             "description": "Tabs share the row equally; an underline then spans the whole tab.",
             "summary": "탭이 가로 폭을 똑같이 나눠 갖습니다. underline 선택선도 탭 폭 전체로 그어집니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "actions",
@@ -23078,7 +23078,7 @@
             "default": "—",
             "description": "",
             "summary": "탭 헤더의 작업 영역입니다. Select·Dropdown 같은 별도 목록을 가진 컨트롤도 사용할 수 있으며 탭 선택과 독립적으로 동작합니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "children",
@@ -23087,7 +23087,7 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "stickyHeader",
@@ -23096,7 +23096,7 @@
             "default": "false",
             "description": "Keep the header inside its scroll container while the tab panels scroll.",
             "summary": "가장 가까운 스크롤 컨테이너에서 탭 헤더를 고정합니다. 패널은 기존 탭 안에 유지되어 키보드 이동·aria-controls 연결이 보존됩니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "stickyOffset",
@@ -23105,7 +23105,7 @@
             "default": "0",
             "description": "Top gap of the sticky header: a number in px or a CSS length.",
             "summary": "고정 헤더의 위쪽 간격입니다. 숫자는 px, 문자열은 CSS 길이이며 기본값은 0입니다. stickyHeader=true일 때 적용합니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "ariaLabel",
@@ -23114,7 +23114,7 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "onValueChange",
@@ -23123,7 +23123,7 @@
             "default": "—",
             "description": "",
             "summary": "다음 입력·선택값을 전달합니다. 제어값에 반영해야 화면 값이 유지됩니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "onChange",
@@ -23132,7 +23132,7 @@
             "default": "—",
             "description": "",
             "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           },
           {
             "name": "onTabMenu",
@@ -23141,7 +23141,7 @@
             "default": "—",
             "description": "",
             "summary": "탭의 보조 메뉴 행동을 전달합니다.",
-            "source": "packages/react/src/navigation.tsx"
+            "source": "packages/react/src/tabs.tsx"
           }
         ],
         "events": [],
@@ -23838,6 +23838,33 @@
             "description": "",
             "summary": "배지에 상태 점을 표시합니다.",
             "source": "packages/vue3/src/display.tsx"
+          },
+          {
+            "name": "count",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "Shows this number instead of the slot; over max it shows \"99+\", and 0 or less draws no badge at all.",
+            "summary": "children 대신 보일 숫자입니다. max보다 크면 \"99+\"처럼 보이고, 0 이하면 배지를 그리지 않습니다.",
+            "source": "packages/vue3/src/display.tsx"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "99",
+            "description": "The largest count shown in full (default 99).",
+            "summary": "전부 보여 줄 가장 큰 숫자입니다. 넘으면 max+로 보입니다.",
+            "source": "packages/vue3/src/display.tsx"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "What the badge means to a screen reader, e.g. \"읽지 않은 알림 3개\"; the drawn text is then hidden from it. Give it to a dot-only badge.",
+            "summary": "화면 낭독기가 읽을 배지의 뜻입니다(예: 읽지 않은 알림 3개). 주면 그린 글자는 낭독기에서 숨깁니다. 점만 있는 배지에는 꼭 주세요.",
+            "source": "packages/vue3/src/display.tsx"
           }
         ],
         "events": [],
@@ -23880,6 +23907,33 @@
             "default": "false",
             "description": "",
             "summary": "배지에 상태 점을 표시합니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "count",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Shows this number instead of children; over max it shows \"99+\", and 0 or less draws no badge at all.",
+            "summary": "children 대신 보일 숫자입니다. max보다 크면 \"99+\"처럼 보이고, 0 이하면 배지를 그리지 않습니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "max",
+            "type": "number | undefined",
+            "required": false,
+            "default": "99",
+            "description": "The largest count shown in full (default 99).",
+            "summary": "전부 보여 줄 가장 큰 숫자입니다. 넘으면 max+로 보입니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "label",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "What the badge means to a screen reader, e.g. \"읽지 않은 알림 3개\"; the drawn text is then hidden from it. Give it to a dot-only badge.",
+            "summary": "화면 낭독기가 읽을 배지의 뜻입니다(예: 읽지 않은 알림 3개). 주면 그린 글자는 낭독기에서 숨깁니다. 점만 있는 배지에는 꼭 주세요.",
             "source": "packages/react/src/display.tsx"
           },
           {
@@ -23987,6 +24041,51 @@
             "default": "—",
             "description": "",
             "summary": "배지에 상태 점을 표시합니다.",
+            "source": "packages/native/src/display-primitives.tsx"
+          },
+          {
+            "name": "count",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Shows this number instead of children; over max it shows \"99+\", and 0 or less draws no badge at all.",
+            "summary": "children 대신 보일 숫자입니다. max보다 크면 \"99+\"처럼 보이고, 0 이하면 배지를 그리지 않습니다.",
+            "source": "packages/native/src/display-primitives.tsx"
+          },
+          {
+            "name": "max",
+            "type": "number | undefined",
+            "required": false,
+            "default": "99",
+            "description": "The largest count shown in full (default 99).",
+            "summary": "전부 보여 줄 가장 큰 숫자입니다. 넘으면 max+로 보입니다.",
+            "source": "packages/native/src/display-primitives.tsx"
+          },
+          {
+            "name": "label",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "What the badge means to a screen reader, e.g. \"읽지 않은 알림 3개\". Give it to a dot-only badge.",
+            "summary": "화면 낭독기가 읽을 배지의 뜻입니다(예: 읽지 않은 알림 3개). 주면 그린 글자는 낭독기에서 숨깁니다. 점만 있는 배지에는 꼭 주세요.",
+            "source": "packages/native/src/display-primitives.tsx"
+          },
+          {
+            "name": "accessibilityLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A screen reader name that replaces the drawn text; label is the shorter way to set it.",
+            "summary": "그린 글자 대신 화면 낭독기가 읽을 이름입니다. label과 같은 일을 하며 label보다 우선합니다.",
+            "source": "packages/native/src/display-primitives.tsx"
+          },
+          {
+            "name": "testID",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "테스트에서 배지를 찾는 ID입니다.",
             "source": "packages/native/src/display-primitives.tsx"
           },
           {
@@ -30182,6 +30281,31 @@
               }
             ],
             "example": "/components/bottom-navigation#preview"
+          },
+          {
+            "name": "reselect",
+            "source": "packages/vue3/src/app-navigation.tsx",
+            "type": "이벤트",
+            "summary": "현재 목적지를 다시 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "선택된 목적지를 다시 누를 때(onNavigate 다음)"
+              },
+              {
+                "label": "전달값",
+                "text": "(key, event): 목적지 key와 MouseEvent<HTMLAnchorElement>"
+              },
+              {
+                "label": "반환값",
+                "text": "목록을 맨 위로 올리거나 새로 고치는 데 씁니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 어떤 동작을 할지 정합니다."
+              }
+            ],
+            "example": "/components/bottom-navigation#preview"
           }
         ],
         "slots": [],
@@ -30325,6 +30449,34 @@
               {
                 "label": "상태 책임",
                 "text": "앱이 이동과 value 갱신을 담당합니다. 수정키·가운데 클릭은 일반 링크 동작을 유지하도록 앱에서 구분하세요."
+              }
+            ],
+            "source": "packages/react/src/app-navigation.tsx",
+            "example": "/components/bottom-navigation#preview"
+          },
+          {
+            "name": "onReselect",
+            "type": "((key: string, event: MouseEvent<HTMLAnchorElement>) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The current destination was pressed again, e.g. to scroll its page back to the top.",
+            "summary": "현재 목적지를 다시 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "선택된 목적지를 다시 누를 때(onNavigate 다음)"
+              },
+              {
+                "label": "전달값",
+                "text": "(key, event): 목적지 key와 MouseEvent<HTMLAnchorElement>"
+              },
+              {
+                "label": "반환값",
+                "text": "목록을 맨 위로 올리거나 새로 고치는 데 씁니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 어떤 동작을 할지 정합니다."
               }
             ],
             "source": "packages/react/src/app-navigation.tsx",
@@ -30482,6 +30634,34 @@
               {
                 "label": "상태 책임",
                 "text": "앱이 이동과 value 갱신을 담당합니다. 수정키·가운데 클릭은 일반 링크 동작을 유지하도록 앱에서 구분하세요."
+              }
+            ],
+            "source": "packages/native/src/app-navigation.tsx",
+            "example": "/components/bottom-navigation#preview"
+          },
+          {
+            "name": "onReselect",
+            "type": "((key: string, event: GestureResponderEvent) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The current destination was pressed again, e.g. to scroll its page back to the top.",
+            "summary": "현재 목적지를 다시 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "선택된 목적지를 다시 누를 때(onNavigate 다음)"
+              },
+              {
+                "label": "전달값",
+                "text": "(key, event): 목적지 key와 GestureResponderEvent"
+              },
+              {
+                "label": "반환값",
+                "text": "목록을 맨 위로 올리거나 새로 고치는 데 씁니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 어떤 동작을 할지 정합니다."
               }
             ],
             "source": "packages/native/src/app-navigation.tsx",
@@ -30644,6 +30824,31 @@
               }
             ],
             "example": "/components/floating-navigation#preview"
+          },
+          {
+            "name": "reselect",
+            "source": "packages/vue3/src/app-navigation.tsx",
+            "type": "이벤트",
+            "summary": "현재 목적지를 다시 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "선택된 목적지를 다시 누를 때(onNavigate 다음)"
+              },
+              {
+                "label": "전달값",
+                "text": "(key, event): 목적지 key와 MouseEvent<HTMLAnchorElement>"
+              },
+              {
+                "label": "반환값",
+                "text": "목록을 맨 위로 올리거나 새로 고치는 데 씁니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 어떤 동작을 할지 정합니다."
+              }
+            ],
+            "example": "/components/floating-navigation#preview"
           }
         ],
         "slots": [],
@@ -30787,6 +30992,34 @@
               {
                 "label": "상태 책임",
                 "text": "앱이 이동과 value 갱신을 담당합니다. 수정키·가운데 클릭은 일반 링크 동작을 유지하도록 앱에서 구분하세요."
+              }
+            ],
+            "source": "packages/react/src/app-navigation.tsx",
+            "example": "/components/floating-navigation#preview"
+          },
+          {
+            "name": "onReselect",
+            "type": "((key: string, event: MouseEvent<HTMLAnchorElement>) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The current destination was pressed again, e.g. to scroll its page back to the top.",
+            "summary": "현재 목적지를 다시 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "선택된 목적지를 다시 누를 때(onNavigate 다음)"
+              },
+              {
+                "label": "전달값",
+                "text": "(key, event): 목적지 key와 MouseEvent<HTMLAnchorElement>"
+              },
+              {
+                "label": "반환값",
+                "text": "목록을 맨 위로 올리거나 새로 고치는 데 씁니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 어떤 동작을 할지 정합니다."
               }
             ],
             "source": "packages/react/src/app-navigation.tsx",
@@ -30935,6 +31168,34 @@
               {
                 "label": "상태 책임",
                 "text": "앱이 이동과 value 갱신을 담당합니다. 수정키·가운데 클릭은 일반 링크 동작을 유지하도록 앱에서 구분하세요."
+              }
+            ],
+            "source": "packages/native/src/app-navigation.tsx",
+            "example": "/components/floating-navigation#preview"
+          },
+          {
+            "name": "onReselect",
+            "type": "((key: string, event: GestureResponderEvent) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The current destination was pressed again, e.g. to scroll its page back to the top.",
+            "summary": "현재 목적지를 다시 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "선택된 목적지를 다시 누를 때(onNavigate 다음)"
+              },
+              {
+                "label": "전달값",
+                "text": "(key, event): 목적지 key와 GestureResponderEvent"
+              },
+              {
+                "label": "반환값",
+                "text": "목록을 맨 위로 올리거나 새로 고치는 데 씁니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 어떤 동작을 할지 정합니다."
               }
             ],
             "source": "packages/native/src/app-navigation.tsx",

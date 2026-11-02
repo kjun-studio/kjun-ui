@@ -118,6 +118,8 @@ export const kjunMessagesEn: KjunMessages = {
   showPath: "Show hidden path",
   breadcrumb: "Breadcrumb",
   mainNavigation: "Main navigation",
+  // A numeric badge read in full, e.g. "120 new" even when it shows 99+.
+  newCount: (count: number) => `${count} new`,
   newContent: "New",
   pagination: "Pagination",
   itemsPerPage: "Items per page",

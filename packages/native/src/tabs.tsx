@@ -8,6 +8,8 @@ import { Animated, Platform, ScrollView, View, type LayoutRectangle } from "reac
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
 import { BadgeView } from "./display-primitives";
+import { badgeToneRoles } from "../../../shared/package-runtime/badge-tone";
+import { navigationBadge, navigationLabel } from "../../../shared/package-runtime/navigation-badge";
 import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useTabKeyboard, usePanelFocus } from "./tabs-accessibility";
@@ -17,7 +19,7 @@ export interface TabItem {
   label: string;
   icon?: string;
   badge?: string | number;
-  badgeVariant?: "danger" | "success" | "warning" | "info";
+  badgeVariant?: "default" | "secondary" | "primary" | "danger" | "success" | "warning" | "info";
   disabled?: boolean;
 }
 export interface KjunTabsProps {
@@ -114,13 +116,15 @@ export function KjunTabs({
   return (
     <TabContext.Provider value={{ value, id, names: tabs.map(tab => tab.name) }}>
       <View ref={root}>
+        {/* Actions sit beside the tab list, not inside it, so they neither scroll away nor read as tabs. */}
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
         <ScrollView
           horizontal
           accessibilityRole="tablist"
           accessibilityLabel={ariaLabel}
           showsHorizontalScrollIndicator={false}
           // Underline tabs ring outside their label and indicator, and compact tabs extend their touch target.
-          style={{ marginHorizontal: -roomX, marginVertical: -roomY }}
+          style={{ flexGrow: 1, flexShrink: 1, marginHorizontal: -roomX, marginVertical: -roomY }}
           contentContainerStyle={{
             flexGrow: fullWidth ? 1 : undefined,
             flexDirection: "row",
@@ -159,7 +163,7 @@ export function KjunTabs({
                 accessibilityRole="tab"
                 focusRingInset={!underline}
                 hitSlop={slop ? { top: slop, bottom: slop } : undefined}
-                accessibilityLabel={tab.label}
+                accessibilityLabel={navigationLabel(tab.label, tab.badge, m.newContent, m.newCount)}
                 accessibilityState={{
                   selected: active,
                   disabled: !!tab.disabled,
@@ -208,14 +212,21 @@ export function KjunTabs({
                   <KText style={{ position: 'absolute', left: 0, right: 0, top: 0, ...selectionTypeStyle("md", active),
                      color: ink, ...singleLine }}>{tab.label}</KText>
                 </View>
-                {tab.badge != null && (
-                  <BadgeView size="xs" variant={tab.badgeVariant ?? "default"}>{tab.badge}</BadgeView>
-                )}
+                {navigationBadge(tab.badge) ? (
+                  // A disabled tab dims its badge too; an unselected chip gives a default badge the surface so it stands off the chip.
+                  <View style={{ opacity: tab.disabled ? tokens.states.opacity.disabled : 1 }}>
+                    <BadgeView size="xs" variant={tab.badgeVariant ?? "default"}
+                      paint={!underline && !active && (tab.badgeVariant ?? "default") === "default" ? { ...badgeToneRoles("default"), bg: "surface" } : undefined}>
+                      {navigationBadge(tab.badge)!.text}
+                    </BadgeView>
+                  </View>
+                ) : null}
               </Pressable>
             );
           })}
-          {content(actions)}
         </ScrollView>
+        {hasContent(actions) ? <View style={{ flexShrink: 0, flexDirection: "row", alignItems: "center" }}>{content(actions)}</View> : null}
+        </View>
         {hasContent(children) && <View style={{ marginTop: geometry.contentGap }}>{content(children)}</View>}
       </View>
     </TabContext.Provider>

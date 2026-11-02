@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
 import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
+import type { KjunMessages } from "../../../shared/package-runtime/messages";
 import { defineComponent, provide, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
@@ -58,11 +59,25 @@ const kjunBottomNavigationProps = {
   surface: { type: Boolean, default: true },
 } as const;
 export type KjunBottomNavigationProps = ExtractPublicPropTypes<typeof kjunBottomNavigationProps>;
+/** One destination link's attributes, shared by the bottom and floating bars. Event reselect: the current destination was pressed again. */
+function destination(item: NavigationDestination, selected: boolean, m: KjunMessages,
+  emit: { (event: "navigate", key: string, mouse: MouseEvent): void; (event: "reselect", key: string, mouse: MouseEvent): void }) {
+  // A disabled destination keeps its link role and name (an <a> without href has neither) but leaves the tab order.
+  return {
+    href: item.disabled ? undefined : item.href, role: item.disabled ? "link" : undefined, tabindex: item.disabled ? -1 : undefined,
+    "aria-label": navigationLabel(item.label, item.badge, m.newContent, m.newCount), "aria-disabled": item.disabled || undefined, "aria-current": selected ? ("page" as const) : undefined,
+    onClick: (event: MouseEvent) => {
+      if (item.disabled) { event.preventDefault(); return; }
+      emit("navigate", item.key, event);
+      if (selected) emit("reselect", item.key, event);
+    },
+  };
+}
 /** Event: navigate(key, event); prevent the event to route in the app. */
 export const KjunBottomNavigation = defineComponent({
   name: "KjunBottomNavigation",
   props: kjunBottomNavigationProps,
-  emits: { navigate: (_key: string, _event: MouseEvent) => true },
+  emits: { navigate: (_key: string, _event: MouseEvent) => true, reselect: (_key: string, _event: MouseEvent) => true },
   setup(props, { emit }) {
     const m = useKjunMessages();
     return () => {
@@ -74,9 +89,7 @@ export const KjunBottomNavigation = defineComponent({
             const selected = props.value === item.key;
             const badge = badgeMark(item.badge);
             return (
-              <a key={item.key} href={item.disabled ? undefined : item.href} aria-label={navigationLabel(item.label, item.badge, m.value.newContent)}
-                aria-disabled={item.disabled || undefined} aria-current={selected ? "page" : undefined}
-                onClick={(event: MouseEvent) => { if (item.disabled) event.preventDefault(); else emit("navigate", item.key, event); }}>
+              <a key={item.key} {...destination(item, selected, m.value, emit)}>
                 {hasIcons && <span class="kjun-navigation-icon">{item.icon && <KjunIcon name={item.icon} filled={selected} size={tokens.extensions.bottomNavigation.iconSize} />}{badge}</span>}
                 <span class="kjun-navigation-label">{item.label}{!hasIcons && badge}</span>
               </a>
@@ -102,7 +115,7 @@ export type KjunFloatingNavigationProps = ExtractPublicPropTypes<typeof kjunFloa
 export const KjunFloatingNavigation = defineComponent({
   name: "KjunFloatingNavigation",
   props: kjunFloatingNavigationProps,
-  emits: { navigate: (_key: string, _event: MouseEvent) => true },
+  emits: { navigate: (_key: string, _event: MouseEvent) => true, reselect: (_key: string, _event: MouseEvent) => true },
   setup(props, { emit }) {
     const m = useKjunMessages();
     return () => {
@@ -114,9 +127,7 @@ export const KjunFloatingNavigation = defineComponent({
             const selected = props.value === item.key;
             const badge = badgeMark(item.badge);
             return (
-              <a key={item.key} href={item.disabled ? undefined : item.href} aria-label={navigationLabel(item.label, item.badge, m.value.newContent)}
-                aria-disabled={item.disabled || undefined} aria-current={selected ? "page" : undefined}
-                onClick={(event: MouseEvent) => { if (item.disabled) event.preventDefault(); else emit("navigate", item.key, event); }}>
+              <a key={item.key} {...destination(item, selected, m.value, emit)}>
                 {item.icon
                   ? <span class="kjun-navigation-icon"><KjunIcon name={item.icon} filled={selected} size={geometry.iconSize} />{badge}</span>
                   : <span class="kjun-navigation-label">{item.label}{badge}</span>}

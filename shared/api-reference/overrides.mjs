@@ -150,6 +150,12 @@ set("AccordionItem", { ariaLabel: "헤더의 접근성 이름입니다. header�
 set("Breadcrumb", { items: { type: "{ label: string; to?: string; icon?: string; current?: boolean }[]", summary: "경로 단계입니다. to가 있으면 링크입니다. 현재 페이지는 기본으로 to가 없는 마지막 단계이며, current로 직접 정할 수 있습니다(링크인 현재 단계도 aria-current로 알립니다). 빈 배열이면 아무것도 그리지 않습니다." }, maxItems: "긴 경로를 접습니다. 첫 단계와 마지막 maxItems - 1개 단계만 보이고, 사이 단계는 \"…\" 버튼의 메뉴로 엽니다. 2 이상일 때 적용합니다." });
 set("ScrollFade", { ariaLabel: "스크롤 영역의 이름입니다. 주면 웹은 초점을 받는 영역(region)이 되어 안에 초점 받을 요소가 없어도 키보드로 스크롤할 수 있습니다." });
 set("ScrollFade", { fadeColor: { type: "ColorValue", default: "colors.surface", summary: "가장자리가 흐려지며 섞일 색입니다. 스크롤 영역 뒤의 바탕색을 주세요." } }, "native");
+set("Badge", {
+  count: "children 대신 보일 숫자입니다. max보다 크면 \"99+\"처럼 보이고, 0 이하면 배지를 그리지 않습니다.",
+  max: { default: "99", summary: "전부 보여 줄 가장 큰 숫자입니다. 넘으면 max+로 보입니다." },
+  label: "화면 낭독기가 읽을 배지의 뜻입니다(예: 읽지 않은 알림 3개). 주면 그린 글자는 낭독기에서 숨깁니다. 점만 있는 배지에는 꼭 주세요.",
+});
+set("Badge", { accessibilityLabel: "그린 글자 대신 화면 낭독기가 읽을 이름입니다. label과 같은 일을 하며 label보다 우선합니다.", testID: "테스트에서 배지를 찾는 ID입니다." }, "native");
 // Progress documents its own value (null is missing data) above.
 set("AnimatedNumber PriceCell SignedValue Deviation ProgressCell HeatmapCell", {
   value: "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",

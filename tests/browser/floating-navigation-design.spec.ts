@@ -42,17 +42,33 @@ for (const platform of ['react', 'vue3', 'native']) {
     }
   });
 
+  test(`${platform}: empty badges draw nothing, the current destination reports a reselect and many destinations stay in the capsule`, async ({ page }) => {
+    await openFixture(page, platform, '', 'bottom-navigation-design');
+    for (const floating of [false, true]) {
+      await configure(page, { floating, badge: '' });
+      await expect(link(page, /^활동$/)).toBeVisible();
+      await link(page, /^홈$/).click();
+      await expect(page.getByTestId('events')).toHaveText('home|re:home');
+    }
+    await page.setViewportSize({ width: 320, height: 700 });
+    await configure(page, { floating: true, count: 5, icons: false });
+    const capsule = await nav(page).boundingBox();
+    expect(capsule!.x).toBeGreaterThanOrEqual(15);
+    expect(capsule!.x + capsule!.width).toBeLessThanOrEqual(305);
+  });
+
   test(`${platform}: floating navigation keeps names, badges, disabled destinations and the safe area`, async ({ page }) => {
     await openFixture(page, platform, '', 'bottom-navigation-design');
     await configure(page, { floating: true, badge: 128 });
-    await expect(link(page, /^활동, 128$/)).toBeVisible();
+    await expect(link(page, /^활동, 새 항목 128개$/)).toBeVisible();
     await expect(nav(page).getByText('99+', { exact: true })).toBeVisible();
     await configure(page, { badge: true });
     await expect(link(page, /^활동, 새 소식$/)).toBeVisible();
     // A dot carries no text.
     await expect(nav(page).getByText('99+', { exact: true })).toHaveCount(0);
-    // A disabled destination has no href, so it is found by name rather than link role.
-    const settings = nav(page).locator('[aria-label="설정"]'), before = (await settings.boundingBox())!;
+    // A disabled destination keeps its link role and name.
+    const settings = nav(page).getByRole('link', { name: '설정' }), before = (await settings.boundingBox())!;
+    await expect(settings).toHaveAttribute('aria-disabled', 'true');
     await page.mouse.click(before.x + before.width / 2, before.y + before.height / 2);
     await expect(page.getByTestId('events')).toHaveText('');
     await expect(settings).not.toHaveAttribute('aria-current', 'page');

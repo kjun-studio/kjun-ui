@@ -173,12 +173,13 @@
   overflow-wrap: anywhere;
 }
 /* The dot centres on the first line, so a wrapped label still starts beside it. */
+/* Each size sets --_kjun-badge-dot (8px at lg and xl), so the dot and its centring use the same size. */
 .kjun-badge-dot {
-  width: var(--_kjun-extension-badge-dot-size);
-  height: var(--_kjun-extension-badge-dot-size);
+  width: var(--_kjun-badge-dot, var(--_kjun-extension-badge-dot-size));
+  height: var(--_kjun-badge-dot, var(--_kjun-extension-badge-dot-size));
   flex-shrink: 0;
   align-self: flex-start;
-  margin-top: calc((1lh - var(--_kjun-extension-badge-dot-size)) / 2);
+  margin-top: calc((1lh - var(--_kjun-badge-dot, var(--_kjun-extension-badge-dot-size))) / 2);
   border-radius: 50%;
   background: currentColor;
 }

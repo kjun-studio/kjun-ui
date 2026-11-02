@@ -1,4 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
+import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
@@ -23,6 +24,12 @@ const kjunBadgeProps = {
   variant: { type: String as PropType<"default" | "secondary" | SemanticTone | "price-up" | "price-down">, default: "default" },
   size: { type: String as PropType<DisplaySize>, default: "sm" },
   dot: { type: Boolean, default: false },
+  /** Shows this number instead of the slot; over max it shows "99+", and 0 or less draws no badge at all. */
+  count: { type: Number, default: undefined },
+  /** The largest count shown in full (default 99). */
+  max: { type: Number, default: undefined },
+  /** What the badge means to a screen reader, e.g. "읽지 않은 알림 3개"; the drawn text is then hidden from it. Give it to a dot-only badge. */
+  label: { type: String, default: undefined },
 } as const;
 export type KjunBadgeProps = ExtractPublicPropTypes<typeof kjunBadgeProps>;
 export const KjunBadge = defineComponent({
@@ -33,8 +40,12 @@ export const KjunBadge = defineComponent({
     return () => {
       const { padding, radius, gap, dotSize, type } = badgeGeometry(props.size);
       const paint = badgeToneRoles(props.variant);
+      const counted = props.count === undefined ? undefined : badgeCount(props.count, props.max);
+      if (counted === null) return null;
+      const body = counted ?? slots.default?.();
       return (
-        <span ref={domainRef(props.variant.startsWith("price-"))} class="kjun-badge" style={css({
+        <span ref={domainRef(props.variant.startsWith("price-"))} class="kjun-badge" data-variant={props.variant} style={css({
+          ...({ "--_kjun-badge-dot": `${dotSize}px` } as Record<string, string>),
           padding: `${padding.y}px ${padding.x}px`,
           ...typeStyle(type),
           gap: `${gap}px`,
@@ -42,8 +53,8 @@ export const KjunBadge = defineComponent({
           background: role(paint.bg),
           color: role(paint.text),
         })}>
-          {props.dot && <span class="kjun-badge-dot" style={css({ width: `${dotSize}px`, height: `${dotSize}px`, background: role(paint.dot) })} />}
-          {slots.default?.()}
+          {props.dot && <span class="kjun-badge-dot" style={css({ background: role(paint.dot) })} />}
+          {props.label ? [<span class="kjun-sr-only">{props.label}</span>, <span aria-hidden="true">{body}</span>] : body}
         </span>
       );
     };

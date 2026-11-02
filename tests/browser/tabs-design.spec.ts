@@ -133,5 +133,12 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(Math.round((await box(surface)).height)).toBe(16);
     await configure(page, { fullWidth: false });
     await expect.poll(async () => (await box(label(tabs(page).first(), platform))).x).toBe((await box(page.getByTestId('content-one'))).x);
+    // The count joins the tab's name; a big count shows 99+ and empty text draws nothing.
+    await expect(page.getByRole('tab', { name: '알림, 새 항목 3개' })).toBeVisible();
+    await configure(page, { items: three.map((item, i) => i === 2 ? { ...item, badge: 120 } : item) });
+    await expect(tabs(page).nth(2).getByText('99+', { exact: true })).toBeVisible();
+    await expect(page.getByRole('tab', { name: '알림, 새 항목 120개' })).toBeVisible();
+    await configure(page, { items: three.map((item, i) => i === 2 ? { ...item, badge: '' } : item) });
+    await expect(page.getByRole('tab', { name: '알림', exact: true })).toBeVisible();
   });
 }

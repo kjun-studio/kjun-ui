@@ -10,6 +10,6 @@ createApp(defineComponent(() => () => { const Navigation = s.config.floating ? K
     hideOnKeyboard={s.config.hideOnKeyboard} items={navigationItems(s.config)} onNavigate={(key: string, event: MouseEvent) => {
     event.preventDefault(); s.events.push(key);
     if (s.config.acceptNavigation) s.config = { ...s.config, value: key };
-  }} />
+  }} onReselect={(key: string) => { s.events.push('re:' + key); }} />
   <output data-testid="events">{s.events.join('|')}</output>
 </main></K.KjunProvider>; })).mount('#root');

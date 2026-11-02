@@ -10,7 +10,7 @@ export function NavigationDesignCases({ K }: { K: any }) {
     <Navigation {...config} items={navigationItems(config)} onNavigate={(key: string, event: any) => {
       event.preventDefault(); setEvents(old => [...old, key]);
       if (config.acceptNavigation) setConfig(old => ({ ...old, value: key }));
-    }} />
+    }} onReselect={(key: string) => setEvents(old => [...old, 're:' + key])} />
     <output data-testid="events">{events.join('|')}</output>
   </main>;
 }

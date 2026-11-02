@@ -6,6 +6,7 @@ import { isFocusVisible, installFocusVisible } from "../../../shared/package-run
 import { manageTabList, panelNeedsFocus } from "../../../shared/package-runtime/tab-keyboard";
 import { KjunIcon } from "./button";
 import { KjunBadge } from "./display";
+import { navigationBadge, navigationLabel } from "../../../shared/package-runtime/navigation-badge";
 import { useSelectionIndicator } from "./controls";
 import { useKjunId } from "./input";
 
@@ -13,8 +14,9 @@ export interface TabItem {
   name: string;
   label: string;
   icon?: string;
+  /** A count or short text after the label; numbers over 99 show 99+, and 0 or "" draws nothing. */
   badge?: string | number | null;
-  badgeVariant?: "danger" | "success" | "warning" | "info";
+  badgeVariant?: "default" | "secondary" | "primary" | "danger" | "success" | "warning" | "info";
   disabled?: boolean;
 }
 export interface TabMenuEvent { name: string; x: number; y: number; pointer: "mouse" | "touch" }
@@ -116,6 +118,8 @@ export const KjunTabs = defineComponent({
                   const selected = tab.name === props.modelValue;
                   return (
                     <div key={tab.name} id={`${listId}-tab-${tab.name}`} data-tab-name={tab.name} class="kjun-tab" role="tab"
+                      // The count joins the tab's name as "알림, 새 항목 3개"; the drawn badge is hidden from screen readers.
+                      aria-label={navigationBadge(tab.badge) ? navigationLabel(tab.label, tab.badge, m.value.newContent, m.value.newCount) : undefined}
                       tabindex={selected && !tab.disabled ? 0 : -1} aria-selected={selected ? "true" : "false"}
                       aria-controls={selected && panelNames.has(tab.name) ? `${listId}-tabpanel-${tab.name}` : undefined}
                       aria-disabled={tab.disabled ? "true" : undefined} data-disabled={tab.disabled || undefined}
@@ -150,8 +154,8 @@ export const KjunTabs = defineComponent({
                       }}
                       onTouchend={clear} onTouchcancel={clear}>
                       {tab.icon && <KjunIcon name={tab.icon} size={tokens.extensions.tabs.iconSize} />} <span class="kjun-motion-label" data-label={tab.label}><span>{tab.label}</span></span>
-                      {tab.badge != null && (
-                        <KjunBadge class="kjun-tab-badge" size="xs" variant={tab.badgeVariant ?? "default"}>{tab.badge}</KjunBadge>
+                      {navigationBadge(tab.badge) && (
+                        <KjunBadge class="kjun-tab-badge" size="xs" variant={tab.badgeVariant ?? "default"} aria-hidden="true">{navigationBadge(tab.badge)!.text}</KjunBadge>
                       )}
                     </div>
                   );
