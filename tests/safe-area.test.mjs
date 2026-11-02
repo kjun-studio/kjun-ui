@@ -40,3 +40,18 @@ test('Native modals and floating panels keep clear of the safe area', () => {
   assert.match(read('packages/native/src/modal.tsx'), /paddingTop: tokens\.modal\.mobileInset \+ insets\.top/);
   assert.match(read('packages/native/src/floating-panel.tsx'), /edgeTop = tokens\.extensions\.floating\.viewportInset \+ insets\.top/);
 });
+
+test('nested providers add no box and keep equal inline values', async () => {
+  const { shallowEqual, stableValue } = await import('../shared/package-runtime/stable-value.ts');
+  assert.equal(shallowEqual({ a: 1 }, { a: 1 }), true);
+  assert.equal(shallowEqual({ a: 1 }, { a: 2 }), false);
+  assert.equal(shallowEqual({ a: 1 }, { a: 1, b: undefined }), false);
+  const keep = stableValue(), first = keep({ save: '저장' });
+  assert.equal(keep({ save: '저장' }), first);
+  assert.notEqual(keep({ save: '보관' }), first);
+  for (const platform of ['react', 'vue3']) assert.match(read(`packages/${platform}/src/provider.tsx`), /display: "contents"/);
+  assert.match(read('packages/native/src/provider.tsx'), /parent && style == null \? children : <View style=\{style\}>/);
+  // The CSS contract is checked once per mount, not on every app render.
+  assert.match(read('packages/react/src/provider.tsx'), /validateKjunCssScope\(container\);\n  \}, \[container\]\);/);
+  assert.doesNotMatch(read('packages/vue3/src/provider.tsx'), /onUpdated/);
+});

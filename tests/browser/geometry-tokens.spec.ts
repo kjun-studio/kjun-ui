@@ -18,8 +18,8 @@ for (const platform of platforms) {
     await geometry(outer(page,'chip'),{'border-radius':px(e.chip.radius),'padding-top':px(e.chip.paddingY),'padding-left':px(e.chip.paddingX)});
     await geometry(outer(page,'navigation').locator(':scope > *').first(),{'padding-left':px(e.topNavigation.paddingX),'gap':px(e.topNavigation.gap)});
     await geometry(outer(page,'list').locator(':scope > *').first(),{'padding-top':px(e.list.padding),'gap':px(e.list.gap)});
-    // The 7px bottom inset comes from a nested KjunProvider safeArea; the bar sits inside that provider.
-    await geometry(page.getByTestId('actionbar').locator(':scope > * > *').first(),{'padding-left':px(e.navigation.padding),'padding-bottom':px(e.navigation.padding+7)});
+    // The 7px bottom inset comes from a nested KjunProvider safeArea, which adds no box of its own.
+    await geometry(platform==='native'?outer(page,'actionbar'):page.getByTestId('actionbar').locator('.kjun-bottom-action-bar'),{'padding-left':px(e.navigation.padding),'padding-bottom':px(e.navigation.padding+7)});
     await geometry(outer(page,'card').locator(':scope > *').first(),{'padding-left':px(tokens.card.padding.md),'padding-bottom':px(tokens.card.padding.md)});
     await geometry(outer(page,'hero'),{'padding-left':px(e.kpiHero.md.paddingX),'padding-top':px(e.kpiHero.md.paddingY),'border-radius':px(e.kpiHero.radius)});
     await geometry(outer(page,'hero-sm'),{'padding-left':px(e.kpiHero.sm.paddingX),'padding-top':px(e.kpiHero.sm.paddingY)});

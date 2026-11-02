@@ -1,4 +1,4 @@
-import { defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, shallowRef, watch, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent, inject, onBeforeUnmount, onMounted, provide, shallowRef, watch, type PropType, type SlotsType, type VNodeChild } from "vue";
 import type { KjunIconRegistry } from "@kjun-ui/icons";
 import { createPortalScope } from "../../../shared/package-runtime/portal-scope";
 import { safeAreaVars, type KjunSafeArea } from "../../../shared/package-runtime/safe-area";
@@ -46,11 +46,11 @@ export const KjunProvider = defineComponent({
       }, { immediate: true });
     });
     onBeforeUnmount(() => destroyScope?.());
-    const validate = () => { if (container.value) validateKjunCssScope(container.value); };
-    onMounted(validate);
-    onUpdated(validate);
+    // Like React: the app's CSS contract is checked once the scope is in the document, not on every update.
+    onMounted(() => { if (container.value) validateKjunCssScope(container.value); });
     return () => (
-      <div ref={container} class="kjun-scope" style={safeAreaVars(props.safeArea)}>
+      // Like React: a nested provider only changes values, so it adds no box of its own.
+      <div ref={container} class="kjun-scope" style={{ ...(parentPortal === undefined ? {} : { display: "contents" }), ...safeAreaVars(props.safeArea) }}>
         {slots.default?.()}
         {parentPortal === undefined && <div ref={el => { portal.value = el as HTMLElement | null; }} data-kjun-layer-host="" />}
       </div>
