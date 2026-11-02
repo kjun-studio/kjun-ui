@@ -98,6 +98,8 @@ export interface KjunModalProps {
   footer?: ReactNode;
   children: ReactNode;
   ariaLabel?: string;
+  /** Id of the element that describes the dialog (e.g. its message), read after its name. */
+  ariaDescribedBy?: string;
 }
 export function KjunModal({
   open,
@@ -127,6 +129,7 @@ export function KjunModal({
   footer,
   children,
   ariaLabel,
+  ariaDescribedBy,
 }: KjunModalProps) {
   const m = useKjunMessages();
   confirmText ??= m.confirm;
@@ -182,6 +185,7 @@ export function KjunModal({
           ref={node => { const entry = layer.state.entries.get(layer.id); if (entry) entry.root = node; }}
           aria-label={explicitLabel || (labelledByHeading ? undefined : title.trim() || m.dialog)}
           aria-labelledby={labelledByHeading ? id : undefined}
+          aria-describedby={ariaDescribedBy}
         >
           {showHeader && (
             <div className="kjun-modal-header">

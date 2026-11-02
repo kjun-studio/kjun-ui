@@ -1,12 +1,13 @@
 import type { ToastPlacement } from "../../../shared/package-runtime/toast-placement";
 import { ToastStack, usePresentedToasts } from "./toast-stack";
 import { useKjunMessages } from "./runtime/messages";
-import { computed, defineComponent, inject, nextTick, onBeforeUnmount, provide, ref, shallowRef, watch,
+import { computed, defineComponent, inject, nextTick, onBeforeUnmount, provide, reactive, ref, shallowRef, watch,
   type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { createFeedbackController, feedbackControllerOf, tokens, type ConfirmOptions, type FeedbackRequest, type KjunFeedback, type PromptOptions } from "@kjun-ui/tokens";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunInput, useKjunId } from "./input";
-import { feedbackErrorText, splitAround } from "../../../shared/package-runtime/feedback-prompt";
+import { createFeedbackSession, graphemeCount, splitAround, type FeedbackDialogState } from "../../../shared/package-runtime/feedback-prompt";
+import { KjunTextarea } from "./textarea";
 import { KjunModal } from "./modal";
 import { kjunFeedbackOverlayKey } from "./overlay-host";
 import { useReducedMotion } from "./runtime/presence";
@@ -39,60 +40,54 @@ const FeedbackDialog = defineComponent({
   setup(props) {
     const m = useKjunMessages();
     const options = props.request.options as PromptOptions & Omit<ConfirmOptions, "onConfirm">;
-    const value = ref(options.initialValue || ""), error = ref(""), busy = ref(false);
+    const state = reactive<FeedbackDialogState>({ value: options.initialValue || "", error: "", busy: false });
+    // Like React and Native: the behaviour is the shared framework-free session; Vue only keeps the state.
+    const session = createFeedbackSession({ kind: props.request.kind, id: props.request.id, options: options as never, controller: props.controller,
+      messages: m.value, get: () => state, set: (patch) => Object.assign(state, patch) });
+    onBeforeUnmount(session.dispose);
     const prompt = props.request.kind === "prompt", ids = useKjunId("kjun-feedback-");
-    const input = ref<{ el?: HTMLInputElement | null } | null>(null);
-    let working = false;
-    const active = () => props.controller.getSnapshot().current?.id === props.request.id;
-    // Like React: a required value keeps confirm off until it matches exactly.
-    const ready = () => !prompt || options.requiredValue == null || value.value === options.requiredValue;
-    const cancel = () => { if (!working && active()) props.controller.settle(props.request.kind === "confirm" ? false : null, undefined, props.request.id); };
-    const submit = async () => {
-      if (working || !active() || !ready()) return;
-      if (prompt) {
-        const valid = options.validator?.(value.value);
-        if (valid === false || typeof valid === "string") { error.value = typeof valid === "string" ? valid : m.value.invalidInput; return; }
-        if (!options.onConfirm) { props.controller.settle(value.value, undefined, props.request.id); return; }
-        working = true; busy.value = true;
-        try { await options.onConfirm(value.value); props.controller.settle(value.value, undefined, props.request.id); }
-        catch (reason) { error.value = feedbackErrorText(reason, m.value); working = false; busy.value = false; }
-        return;
-      }
-      working = true; busy.value = true;
-      try { await (options.onConfirm as ConfirmOptions["onConfirm"])?.(); props.controller.settle(true, undefined, props.request.id); }
-      catch (reason) { props.controller.settle(false, reason, props.request.id); }
-    };
+    const field = ref<{ el?: HTMLInputElement | HTMLTextAreaElement | null } | null>(null);
     // Renaming: the starting text opens selected, so typing replaces it.
-    watch(() => props.open, open => { if (open && prompt && options.initialValue) nextTick(() => input.value?.el?.select()); }, { immediate: true });
+    watch(() => props.open, open => { if (open && prompt && options.initialValue) nextTick(() => field.value?.el?.select()); }, { immediate: true });
     return () => {
       const title = options.title || (prompt ? m.value.promptTitle : m.value.confirmTitle), danger = options.type === "danger";
       const required = options.requiredValue != null ? splitAround(m.value.typeToConfirm(options.requiredValue), options.requiredValue) : null;
-      // Like React: one small surface, no header or footer bands and no close button.
+      const messageId = options.message ? ids + "-message" : undefined, errorId = ids + "-error";
+      const describe = (...list: (string | false | undefined)[]) => list.filter(Boolean).join(" ") || undefined;
+      const shared = { id: ids + "-input", autofocus: true, maxlength: options.maxLength, placeholder: options.placeholder,
+        inputmode: options.inputMode, autocomplete: options.autoComplete, "onUpdate:modelValue": session.edit };
       return (
-        <KjunModal open={props.open} {...{ "onUpdate:open": (open: boolean) => { if (!open) cancel(); } }}
-          size="sm" ariaLabel={title} showHeader={false} closeOnEsc={!busy.value} closeOnOverlay={!busy.value}>
+        <KjunModal open={props.open} {...{ "onUpdate:open": (open: boolean) => { if (!open) session.cancel(); } }}
+          size="sm" ariaLabel={title} ariaDescribedBy={prompt ? undefined : describe(messageId, !!state.error && errorId)}
+          showHeader={false} closeOnEsc={!state.busy} closeOnOverlay={!state.busy}>
           <div class="kjun-feedback-dialog">
             <h2>{title}</h2>
             {options.message && (
-              <p id={ids + "-message"} class="kjun-feedback-dialog-message" data-tone={danger ? "danger" : undefined}>
+              <p id={messageId} class="kjun-feedback-dialog-message" data-tone={danger ? "danger" : undefined}>
                 {danger && <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} filled />}
                 <span>{options.message}</span>
               </p>
             )}
+            {!prompt && state.error && <p id={errorId} class="kjun-feedback-dialog-error" role="alert">{state.error}</p>}
             {prompt && (
               <div class="kjun-feedback-dialog-field">
                 <div class="kjun-feedback-dialog-label">
                   <label for={ids + "-input"}>{required ? <>{required[0]}<strong>{required[1]}</strong>{required[2]}</> : options.label || title}</label>
-                  {options.maxLength != null && <span class="kjun-feedback-dialog-count" aria-hidden="true">{value.value.length} / {options.maxLength}</span>}
+                  {options.maxLength != null && <span class="kjun-feedback-dialog-count" aria-hidden="true">{graphemeCount(state.value)} / {options.maxLength}</span>}
                 </div>
-                <KjunInput ref={input} id={ids + "-input"} modelValue={value.value} errorMessage={error.value}
-                  {...{ autofocus: true, maxlength: options.maxLength, "aria-describedby": options.message ? ids + "-message" : undefined, placeholder: options.placeholder,
-                    "onUpdate:modelValue": (next: string) => { value.value = next; error.value = ""; }, onEnter: submit }} />
+                {options.multiline ? <>
+                  <KjunTextarea ref={field} modelValue={state.value} error={!!state.error} maxLength={options.maxLength}
+                    {...{ ...shared, "aria-describedby": describe(messageId, !!state.error && errorId), onSubmit: session.submit }} />
+                  {state.error && <p id={errorId} class="kjun-feedback-dialog-error" role="alert">{state.error}</p>}
+                </> : (
+                  <KjunInput ref={field} modelValue={state.value} errorMessage={state.error}
+                    {...{ ...shared, "aria-describedby": messageId, onEnter: session.submit }} />
+                )}
               </div>
             )}
             <div class="kjun-feedback-dialog-actions">
-              <KjunButton variant="secondary" disabled={busy.value} onClick={cancel}>{options.cancelText || m.value.cancel}</KjunButton>
-              <KjunButton variant={danger ? "danger" : "primary"} loading={busy.value} disabled={!ready()} onClick={submit}>{options.confirmText || m.value.confirm}</KjunButton>
+              <KjunButton variant="secondary" disabled={state.busy} onClick={session.cancel}>{options.cancelText || m.value.cancel}</KjunButton>
+              <KjunButton variant={danger ? "danger" : "primary"} loading={state.busy} disabled={!session.ready(state)} onClick={session.submit}>{options.confirmText || m.value.confirm}</KjunButton>
             </div>
           </div>
         </KjunModal>

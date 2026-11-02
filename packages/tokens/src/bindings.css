@@ -818,6 +818,12 @@
   --_kjun-extension-market-list-minimum-height: 72px;
   --_kjun-extension-market-list-mobile-quote-minimum-width: 102px;
   --_kjun-extension-market-list-change-skeleton-width: 56px;
+  --_kjun-extension-feedback-dialog-message-gap: 4px;
+  --_kjun-extension-feedback-dialog-field-gap: 20px;
+  --_kjun-extension-feedback-dialog-actions-gap: 24px;
+  --_kjun-extension-feedback-dialog-warning-gap: 8px;
+  --_kjun-extension-feedback-dialog-warning-padding: 12px;
+  --_kjun-extension-feedback-dialog-warning-radius: 12px;
   --_kjun-extension-chart-skeleton-height: 240px;
   --_kjun-extension-chart-skeleton-donut-thickness: 22px;
   --_kjun-extension-chart-skeleton-axis-width: 40px;

@@ -317,7 +317,7 @@
   word-break: keep-all;
 }
 .kjun-feedback-dialog-message {
-  margin: var(--_kjun-geometry-dimension-value4) 0 0;
+  margin: var(--_kjun-extension-feedback-dialog-message-gap) 0 0;
   color: var(--_kjun-color-text-secondary);
   font-size: var(--_kjun-type-body-size);
   line-height: var(--_kjun-type-body-line);
@@ -327,15 +327,17 @@
 /* A danger dialog's message is a warning: a faint danger surface with the alert mark. */
 .kjun-feedback-dialog-message[data-tone="danger"] {
   display: flex;
-  gap: var(--_kjun-geometry-dimension-value8);
-  margin-top: var(--_kjun-geometry-dimension-value12);
-  padding: var(--_kjun-geometry-dimension-value12);
-  border-radius: var(--_kjun-geometry-radius-radius12);
+  gap: var(--_kjun-extension-feedback-dialog-warning-gap);
+  margin-top: var(--_kjun-extension-feedback-dialog-warning-padding);
+  padding: var(--_kjun-extension-feedback-dialog-warning-padding);
+  border-radius: var(--_kjun-extension-feedback-dialog-warning-radius);
   background: color-mix(in srgb, var(--_kjun-color-danger) calc(var(--_kjun-state-opacity-tint-control) * 100%), transparent);
   color: var(--_kjun-color-text);
 }
 .kjun-feedback-dialog-message[data-tone="danger"] > svg { flex: none; margin-top: calc((var(--_kjun-type-body-line) - var(--_kjun-extension-form-message-icon-size)) / 2); color: var(--_kjun-color-danger); }
-.kjun-feedback-dialog-field { margin-top: var(--_kjun-geometry-dimension-value20); }
+.kjun-feedback-dialog-field { margin-top: var(--_kjun-extension-feedback-dialog-field-gap); }
+/* A confirm's own failure (onConfirm threw) reads under its message. */
+.kjun-feedback-dialog-error { margin: var(--_kjun-extension-feedback-dialog-message-gap) 0 0; color: var(--_kjun-color-danger); font-size: var(--_kjun-type-caption-size); line-height: var(--_kjun-type-caption-line); overflow-wrap: anywhere; }
 .kjun-feedback-dialog-label {
   display: flex;
   align-items: baseline;
@@ -359,11 +361,12 @@
   display: flex;
   justify-content: flex-end;
   gap: var(--_kjun-geometry-dimension-value8);
-  margin-top: var(--_kjun-geometry-dimension-value24);
+  margin-top: var(--_kjun-extension-feedback-dialog-actions-gap);
 }
 /* Phones: the two choices split the width with large targets. */
 @media (width <= token(responsive.modal)) {
-  .kjun-feedback-dialog-actions > .kjun-button { flex: 1; height: var(--_kjun-geometry-button-heights-lg); }
+  /* Buttons set their height inline, so the large target needs to win over it. */
+  .kjun-feedback-dialog-actions > .kjun-button { flex: 1; height: var(--_kjun-geometry-button-heights-lg) !important; }
 }
 .kjun-modal-footer {
   padding: var(--_kjun-geometry-modal-header-padding-y) var(--_kjun-geometry-modal-padding);

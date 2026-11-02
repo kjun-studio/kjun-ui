@@ -94,14 +94,20 @@ for (const platform of platforms) {
     await fixture(page, platform, 'feedback'); await expect(page.getByRole('button', { name: '서비스 준비' })).toBeVisible();
     await page.evaluate(() => {
       const w = window as any; w.results = [];
-      w.feedbackContract.confirm({ title: '실패 확인', onConfirm: async () => { throw new Error('저장 실패'); } }).catch((e: Error) => w.results.push(e.message));
+      w.feedbackContract.confirm({ title: '실패 확인', onConfirm: async () => { throw new Error('저장 실패'); } }).then((v: unknown) => w.results.push(v));
       w.feedbackContract.prompt({ title: '입력 검증', validator: (v: string) => v.length > 1 || '두 글자 이상' }).then((v: unknown) => w.results.push(v));
     });
+    // A failed confirm stays open with its error; cancelling then resolves false.
     await page.getByRole('dialog').getByRole('button', { name: '확인', exact: true }).click();
+    await expect(page.getByRole('dialog').getByText('저장 실패', { exact: true })).toBeVisible();
+    await page.getByRole('dialog').getByRole('button', { name: '취소', exact: true }).click();
     await expect(page.getByRole('dialog', { name: '입력 검증', exact: true })).toBeVisible();
+    // An empty prompt keeps confirm off; a short value shows the validator's error.
+    await expect(page.getByRole('dialog').getByRole('button', { name: '확인', exact: true })).toBeDisabled();
+    await page.getByRole('dialog').getByRole('textbox').fill('a');
     await page.getByRole('dialog').getByRole('button', { name: '확인', exact: true }).click(); await expect(page.getByText('두 글자 이상', { exact: true })).toBeVisible();
     await page.getByRole('dialog').getByRole('textbox').fill('완료'); await page.getByRole('dialog').getByRole('button', { name: '확인', exact: true }).click();
-    await expect.poll(() => page.evaluate(() => (window as any).results)).toEqual(['저장 실패', '완료']);
+    await expect.poll(() => page.evaluate(() => (window as any).results)).toEqual([false, '완료']);
     await page.evaluate(() => {
       const w = window as any, f = w.feedbackContract; w.results = [];
       f.confirm('대기 확인').then((v: unknown) => w.results.push(v)); f.prompt('대기 입력').then((v: unknown) => w.results.push(v));

@@ -25,18 +25,30 @@ export interface ConfirmOptions {
   type?: FeedbackTone;
   confirmText?: string;
   cancelText?: string;
+  /** Runs before the dialog closes; an error it throws stays in the dialog, so the user can retry or cancel. */
   onConfirm?: () => void | Promise<void>;
 }
 export interface PromptOptions extends Omit<ConfirmOptions, "onConfirm"> {
   /** Starting text; it opens fully selected so typing replaces it (renaming). */
   initialValue?: string;
   placeholder?: string;
-  validator?: (value: string) => boolean | string;
+  /** Checks the value: true passes, false shows the generic error, a string shows that error; it may be async. */
+  validator?: (value: string) => boolean | string | Promise<boolean | string>;
+  /** "submit" (default) checks on confirm; "change" also checks once typing pauses, and an error keeps confirm off. */
+  validateOn?: "submit" | "change";
+  /** Lets confirm run with an empty value (default false: an empty prompt keeps confirm off). */
+  allowEmpty?: boolean;
+  /** The on-screen keyboard and browser hint for the value. */
+  inputMode?: "text" | "numeric" | "decimal" | "email" | "url" | "tel" | "search";
+  /** Browser/OS autofill hint, e.g. "name" or "email". */
+  autoComplete?: string;
+  /** A multi-line field (Textarea); Enter adds a line and confirm is the button. */
+  multiline?: boolean;
   /** Field label above the input; without it the title names the field. */
   label?: string;
   /** Character limit; a count shows beside the label. */
   maxLength?: number;
-  /** Confirm stays off until the value equals this exactly, e.g. the name of what will be deleted. */
+  /** Confirm stays off until the value matches this (ignoring surrounding spaces and Hangul composition), e.g. the name of what will be deleted. */
   requiredValue?: string;
   /** Runs with the value before the dialog closes; an error it throws stays in the dialog as the field error. */
   onConfirm?: (value: string) => void | Promise<void>;

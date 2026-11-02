@@ -1,6 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useFeedbackDialog } from "../../../shared/package-runtime/feedback-dialog";
-import { splitAround } from "../../../shared/package-runtime/feedback-prompt";
+import { graphemeCount, splitAround } from "../../../shared/package-runtime/feedback-prompt";
 import { usePresentedToasts, usePresentedRequest } from "../../../shared/package-runtime/feedback-motion";
 import { KjunFeedbackContext, useOptionalKjunFeedback } from "./feedback-context";
 import { ToastStack } from "./toast-stack";
@@ -23,6 +23,7 @@ type ReactNode,
 } from "react";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunInput } from "./input";
+import { KjunTextarea } from "./textarea";
 import { KjunModal } from "./modal";
 import { FeedbackOverlayContext } from "./overlay-host";
 import { useReducedMotion } from "./use-reduced-motion";
@@ -49,9 +50,14 @@ function FeedbackDialog({
   const { options, value, error, busy, ready, edit, cancel, submit } = useFeedbackDialog(controller, request, m);
   const prompt = request.kind === "prompt", danger = options.type === "danger";
   const title = options.title || (prompt ? m.promptTitle : m.confirmTitle);
-  const ids = "kjun-feedback-" + useId().replace(/:/g, ""), input = useRef<HTMLInputElement>(null);
+  const ids = "kjun-feedback-" + useId().replace(/:/g, ""), field = useRef<HTMLInputElement & HTMLTextAreaElement>(null);
   // Renaming: the starting text opens selected, so typing replaces it.
-  useEffect(() => { if (open && prompt && options.initialValue) input.current?.select(); }, [open, prompt, options.initialValue]);
+  useEffect(() => { if (open && prompt && options.initialValue) field.current?.select(); }, [open, prompt, options.initialValue]);
+  const messageId = options.message ? ids + "-message" : undefined, errorId = ids + "-error";
+  const shared = {
+    id: ids + "-input", autoFocus: true, value, maxLength: options.maxLength, placeholder: options.placeholder,
+    inputMode: options.inputMode, autoComplete: options.autoComplete, onValueChange: edit,
+  };
   return (
     <KjunModal
       open={open}
@@ -61,6 +67,8 @@ function FeedbackDialog({
       // One small surface: no header or footer bands and no close button; Cancel and Escape dismiss it.
       size="sm"
       ariaLabel={title}
+      // A confirm's message describes the dialog; a prompt's describes its field instead.
+      ariaDescribedBy={prompt ? undefined : [messageId, error ? errorId : undefined].filter(Boolean).join(" ") || undefined}
       showHeader={false}
       closeOnEsc={!busy}
       closeOnOverlay={!busy}
@@ -68,11 +76,12 @@ function FeedbackDialog({
       <div className="kjun-feedback-dialog">
         <h2>{title}</h2>
         {options.message && (
-          <p id={ids + "-message"} className="kjun-feedback-dialog-message" data-tone={danger ? "danger" : undefined}>
+          <p id={messageId} className="kjun-feedback-dialog-message" data-tone={danger ? "danger" : undefined}>
             {danger && <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} filled />}
             <span>{options.message}</span>
           </p>
         )}
+        {!prompt && error && <p id={errorId} className="kjun-feedback-dialog-error" role="alert">{error}</p>}
         {prompt && (
           <div className="kjun-feedback-dialog-field">
             {/* The count stays out of the label, so the field's name does not change while typing. */}
@@ -80,20 +89,18 @@ function FeedbackDialog({
               <label htmlFor={ids + "-input"}>
                 {options.requiredValue != null ? <RequiredLabel text={m.typeToConfirm(options.requiredValue)} value={options.requiredValue} /> : options.label || title}
               </label>
-              {options.maxLength != null && <span className="kjun-feedback-dialog-count" aria-hidden="true">{value.length} / {options.maxLength}</span>}
+              {options.maxLength != null && <span className="kjun-feedback-dialog-count" aria-hidden="true">{graphemeCount(value)} / {options.maxLength}</span>}
             </div>
-            <KjunInput
-              ref={input}
-              id={ids + "-input"}
-              autoFocus
-              value={value}
-              maxLength={options.maxLength}
-              aria-describedby={options.message ? ids + "-message" : undefined}
-              placeholder={options.placeholder}
-              errorMessage={error}
-              onValueChange={edit}
-              onEnter={submit}
-            />
+            {options.multiline ? (
+              <>
+                {/* Enter adds a line; Ctrl/⌘+Enter or the button confirms. */}
+                <KjunTextarea {...shared} ref={field} error={!!error} onSubmit={submit}
+                  aria-describedby={[messageId, error ? errorId : undefined].filter(Boolean).join(" ") || undefined} />
+                {error && <p id={errorId} className="kjun-feedback-dialog-error" role="alert">{error}</p>}
+              </>
+            ) : (
+              <KjunInput {...shared} ref={field} aria-describedby={messageId} errorMessage={error} onEnter={submit} />
+            )}
           </div>
         )}
         <div className="kjun-feedback-dialog-actions">

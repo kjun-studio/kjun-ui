@@ -14554,6 +14554,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaDescribedBy",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Id of the element that describes the dialog (e.g. its message), read after its name."
       }
     ],
     "events": [
@@ -14784,6 +14791,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaDescribedBy",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Id of the element that describes the dialog (e.g. its message), read after its name."
       }
     ],
     "native": [
@@ -14975,6 +14989,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaDescription",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Text that describes the dialog (e.g. its message), read after its name (accessibilityHint)."
       }
     ]
   },

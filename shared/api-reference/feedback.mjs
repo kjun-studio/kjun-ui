@@ -185,7 +185,7 @@ const options = [
       "발생 시점": "확인 버튼 실행 시 호출합니다.",
       전달값: "없음",
       반환값:
-        "Promise이면 완료를 기다립니다. 완료 후 confirm은 true, throw·reject이면 confirm Promise도 reject합니다.",
+        "Promise이면 완료를 기다립니다. 완료 후 confirm은 true로 끝납니다. throw·reject하면 창을 닫지 않고 설명 아래에 오류 메시지(없으면 invalidInput)를 보여 주며, 사용자가 다시 확인하거나 취소(false)할 때까지 confirm Promise는 끝나지 않습니다.",
       "상태 책임":
         "진행 중에는 닫기·취소를 제한합니다. Provider 해제 시에는 false로 정리하고 늦게 끝난 이전 요청이 다음 요청을 종료하지 않게 합니다.",
     },
@@ -194,14 +194,29 @@ const options = [
     "상태 책임": "현재 창의 입력 초안은 내부에서 관리합니다. 외부 제어형 value가 아닙니다.",
     사용: "창이 열리면 전체 선택되어 바로 덮어쓸 수 있습니다(이름 바꾸기).",
   }),
+  option("PromptOptions.validateOn", '"submit" | "change"', '"submit"', "검증 시점입니다.", {
+    사용: "change면 입력을 멈춘 뒤(0.4초) validator를 돌려 오류를 바로 보여 주고, 오류가 있는 동안 확인 버튼을 끕니다. 늦게 끝난 이전 검사는 무시합니다.",
+  }),
+  option("PromptOptions.allowEmpty", "boolean", "false", "빈 값으로 확인할 수 있게 합니다.", {
+    사용: "기본은 빈 값(공백만 있는 값 포함)이면 확인 버튼이 꺼져 있습니다.",
+  }),
+  option("PromptOptions.inputMode", '"text" | "numeric" | "decimal" | "email" | "url" | "tel" | "search"', '"text"', "화면 키보드 종류입니다.", {
+    사용: "웹은 inputmode, Native는 keyboardType으로 바꿉니다.",
+  }),
+  option("PromptOptions.autoComplete", "string", "—", "자동 완성 힌트입니다.", {
+    사용: "\"name\"·\"email\"처럼 브라우저·OS 자동 완성에 넘깁니다.",
+  }),
+  option("PromptOptions.multiline", "boolean", "false", "여러 줄 입력(Textarea)으로 엽니다.", {
+    사용: "Enter는 줄바꿈이고, Ctrl/⌘+Enter나 확인 버튼으로 확정합니다.",
+  }),
   option("PromptOptions.label", "string", "title", "입력칸 위 라벨입니다.", {
     사용: "생략하면 제목이 입력칸의 이름이 됩니다. message는 입력칸 설명으로 연결되어 화면 낭독기가 함께 읽습니다.",
   }),
   option("PromptOptions.maxLength", "number", "—", "최대 글자 수입니다.", {
-    사용: "라벨 오른쪽에 \"3 / 20\"처럼 글자 수를 표시하고, 그보다 길게 입력되지 않습니다. 글자 수는 화면 낭독기 이름에 섞지 않습니다.",
+    사용: "라벨 오른쪽에 \"3 / 20\"처럼 글자 수를 표시하고, 그보다 길게 입력되지 않습니다. 표시는 사용자가 보는 글자 단위(이모지 하나 = 1)이고 입력 제한은 브라우저·OS 기준(UTF-16)입니다. 글자 수는 화면 낭독기 이름에 섞지 않습니다.",
   }),
   option("PromptOptions.requiredValue", "string", "—", "정확히 이 값을 입력해야 확인할 수 있습니다.", {
-    사용: "삭제할 대상의 이름처럼 위험한 동작을 한 번 더 확인할 때 씁니다. 라벨은 \"확인을 위해 이름 입력\"(메시지 typeToConfirm)이 되고, 입력이 같아질 때까지 확인 버튼이 꺼져 있습니다.",
+    사용: "삭제할 대상의 이름처럼 위험한 동작을 한 번 더 확인할 때 씁니다. 라벨은 \"확인을 위해 이름 입력\"(메시지 typeToConfirm)이 되고, 입력이 같아질 때까지 확인 버튼이 꺼져 있습니다. 앞뒤 공백과 한글 조합 방식(NFC/NFD) 차이는 같은 값으로 봅니다.",
   }),
   option("PromptOptions.onConfirm", "(value: string) => void | Promise<void>", "—", "입력을 확정하기 전에 실행할 작업입니다.", {
     "발생 시점": "validator를 통과한 뒤 확인 실행 시 호출합니다.",
@@ -214,14 +229,14 @@ const options = [
   }),
   option(
     "PromptOptions.validator",
-    "(value: string) => boolean | string",
+    "(value: string) => boolean | string | Promise<boolean | string>",
     "—",
-    "입력 확정 시 동기 검증을 수행합니다.",
+    "입력 값을 검증합니다.",
     {
       "발생 시점": "Prompt 확인 실행 시 호출합니다.",
       전달값: "현재 입력 문자열",
       반환값:
-        "true이면 확정, false이면 기본 오류, 문자열이면 해당 오류를 표시합니다. 비동기 Promise 검증은 지원하지 않습니다.",
+        "true이면 확정, false이면 기본 오류, 문자열이면 해당 오류를 표시합니다. Promise도 받으며, 확인 중에는 확인 버튼이 로딩입니다.",
       "상태 책임":
         "소비자가 true·false·메시지를 반환하도록 구현하세요. validator가 throw하는 경우의 복구를 서비스 계약으로 보장하지 않습니다.",
     },

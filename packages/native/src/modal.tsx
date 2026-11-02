@@ -133,6 +133,8 @@ export interface KjunModalProps {
   footer?: ReactNode;
   children: ReactNode;
   ariaLabel?: string;
+  /** Text that describes the dialog (e.g. its message), read after its name (accessibilityHint). */
+  ariaDescription?: string;
 }
 export function KjunModal({
   open,
@@ -162,6 +164,7 @@ export function KjunModal({
   footer,
   children,
   ariaLabel,
+  ariaDescription,
 }: KjunModalProps) {
   const m = useKjunMessages();
   confirmText ??= m.confirm;
@@ -236,6 +239,7 @@ export function KjunModal({
           ref={node => { const entry = layer.state.entries.get(layer.id); if (entry && node && typeof node === 'object' && 'focus' in node) entry.root = node; }}
           accessibilityViewIsModal
           accessibilityLabel={ariaLabel || title || m.dialog}
+          accessibilityHint={ariaDescription}
           {...(Platform.OS === "web"
             ? { role: "dialog", "aria-modal": true }
             : {})}

@@ -107,6 +107,8 @@ const kjunModalProps = {
   confirmVariant: { type: String as PropType<"primary" | "danger" | "success">, default: "primary" },
   footerSize: { type: String as PropType<InputSize>, default: "md" },
   ariaLabel: { type: String, default: undefined },
+  /** Id of the element that describes the dialog (e.g. its message), read after its name. */
+  ariaDescribedBy: { type: String, default: undefined },
 } as const;
 export type KjunModalProps = ExtractPublicPropTypes<typeof kjunModalProps>;
 /** v-model:open. Slots: default (body), header (replaces the title), footer (replaces the actions). Events: close, after-close, cancel, confirm. */
@@ -148,7 +150,7 @@ export const KjunModal = defineComponent({
             }}>
               <DismissButton onDismiss={close} />
               <section ref={(node: unknown) => { dialog.value = node as HTMLElement | null; rootRef(node); }} class="kjun-modal-dialog" role="dialog" tabindex={-1}
-                aria-label={explicitLabel || (labelledByHeading ? undefined : props.title.trim() || m.value.dialog)} aria-labelledby={labelledByHeading ? id : undefined}>
+                aria-label={explicitLabel || (labelledByHeading ? undefined : props.title.trim() || m.value.dialog)} aria-labelledby={labelledByHeading ? id : undefined} aria-describedby={props.ariaDescribedBy}>
                 {props.showHeader && (
                   <div class="kjun-modal-header">
                     <h2 id={id} class="kjun-modal-title">{hasContent(header) ? header : props.title}</h2>

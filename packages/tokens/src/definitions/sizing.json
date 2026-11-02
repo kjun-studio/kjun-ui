@@ -309,6 +309,14 @@
       "identityHeight": 20,
       "listAvatarSize": 36
     },
+    "feedbackDialog": {
+      "messageGap": { "$ref": "dimension.value4" },
+      "fieldGap": { "$ref": "dimension.value20" },
+      "actionsGap": { "$ref": "dimension.value24" },
+      "warningGap": { "$ref": "dimension.value8" },
+      "warningPadding": { "$ref": "dimension.value12" },
+      "warningRadius": { "$ref": "radius.radius12" }
+    },
     "chartSkeleton": {
       "height": 240,
       "donutThickness": 22,

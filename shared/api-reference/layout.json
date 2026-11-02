@@ -200,7 +200,8 @@
       "height",
       "confirmVariant",
       "footerSize",
-      "ariaLabel"
+      "ariaLabel",
+      "ariaDescribedBy"
     ],
     "react": [
       "open",
@@ -229,6 +230,7 @@
       "footer",
       "children",
       "ariaLabel",
+      "ariaDescribedBy",
       "onAfterClose"
     ],
     "native": [
@@ -258,6 +260,7 @@
       "footer",
       "children",
       "ariaLabel",
+      "ariaDescription",
       "onAfterClose"
     ]
   },

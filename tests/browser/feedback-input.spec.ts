@@ -36,6 +36,47 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect.poll(() => results(page)).toEqual(['주말 장보기']);
   });
 
+  test(`${platform}: a failed confirm stays open with its error, describes the dialog and can be retried`, async ({ page }) => {
+    await start(page, platform);
+    await page.evaluate(() => {
+      const w = window as any; w.attempts = 0;
+      w.feedbackContract.confirm({ title: '동기화', message: '서버와 맞춥니다.', onConfirm: async () => { if (++w.attempts === 1) throw new Error('연결이 끊겼습니다'); } })
+        .then((value: unknown) => w.feedbackResults.push(value), (error: unknown) => w.feedbackResults.push('rejected'));
+    });
+    const dialog = page.getByRole('dialog', { name: '동기화' });
+    if (platform !== 'native') await expect(dialog).toHaveAccessibleDescription('서버와 맞춥니다.');
+    await dialog.getByRole('button', { name: '확인' }).click();
+    await expect(dialog.getByText('연결이 끊겼습니다')).toBeVisible();
+    expect(await results(page)).toEqual([]);
+    await dialog.getByRole('button', { name: '확인' }).click();
+    await expect.poll(() => results(page)).toEqual([true]);
+  });
+
+  test(`${platform}: a multiline prompt keeps Enter for new lines and checks as typing pauses`, async ({ page }) => {
+    await start(page, platform);
+    await page.evaluate(() => {
+      const w = window as any;
+      w.feedbackContract.prompt({ title: '메모', multiline: true, validateOn: 'change', validator: async (value: string) => value.length <= 5 || '다섯 글자까지' })
+        .then((value: unknown) => w.feedbackResults.push(value));
+    });
+    const field = page.getByRole('textbox', { name: '메모' });
+    await field.fill('여섯 글자 넘음');
+    await expect(page.getByText('다섯 글자까지')).toBeVisible();
+    await expect(page.getByRole('button', { name: '확인' })).toBeDisabled();
+    await field.fill('짧게');
+    await expect(page.getByText('다섯 글자까지')).toHaveCount(0);
+    await page.getByRole('button', { name: '확인' }).click();
+    await expect.poll(() => results(page)).toEqual(['짧게']);
+  });
+
+  test(`${platform}: on phones the dialog's two buttons split the width at the large height`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 800 });
+    await start(page, platform);
+    await page.evaluate(() => { (window as any).feedbackContract.confirm({ title: '저장할까요?' }); });
+    const dialog = page.getByRole('dialog', { name: '저장할까요?' });
+    for (const name of ['취소', '확인']) expect(Math.round((await dialog.getByRole('button', { name }).boundingBox())!.height)).toBe(48);
+  });
+
   test(`${platform}: a prompt onConfirm failure stays in the dialog as the field error`, async ({ page }) => {
     await start(page, platform);
     await page.evaluate(() => {
@@ -63,6 +104,10 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
     const input = page.getByRole('textbox', { name: '이름 입력' });
     await expect(input).toBeFocused();
+    // An empty prompt keeps confirm off, so Enter does nothing until there is text to check.
+    await input.press('Enter');
+    await expect(input).not.toHaveAttribute('aria-invalid', 'true');
+    await input.fill('a');
     await input.press('Enter');
     await expect(input).toHaveAttribute('aria-invalid', 'true');
     await expect(input).toHaveAccessibleDescription('두 글자 이상 입력하세요');
