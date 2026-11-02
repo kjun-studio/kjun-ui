@@ -27,9 +27,9 @@ export function KjunMarketTableSkeleton({ columns = [], rows = 8, showActions = 
         {showActions && <View style={actions}><KjunSkeleton type="block" width={tokens.extensions.marketTable.actionSkeletonWidth} height={tokens.extensions.financial.priceSkeletonHeight} /></View>}
         {cols.map((col, i) => <View key={col.key || i} style={{ width: layout.widths[i], paddingVertical: tokens.dimension.value14, paddingHorizontal: tokens.dimension.value12, justifyContent: "center", alignItems: isMarketIdentity(col.key) ? undefined : col.align === "right" ? "flex-end" : col.align === "center" ? "center" : "flex-start" }}>
           {isMarketIdentity(col.key) ? <View style={{ gap: tokens.dimension.value2 }}>
-            <View style={{ height: tokens.typography.body.lineHeightPx, justifyContent: "center" }}><KjunSkeleton type="block" width="80%" height={tokens.extensions.skeleton.lineHeights.md} /></View>
-            <View style={{ height: tokens.typography.caption.lineHeightPx, justifyContent: "center" }}><KjunSkeleton type="block" width="60%" height={tokens.extensions.skeleton.lineHeights.sm} /></View>
-          </View> : <KjunSkeleton type="block" width={tokens.extensions.financial.priceSkeletonWidth} height={tokens.extensions.financial.priceSkeletonHeight} />}
+            <KjunSkeleton type="line" role="body" width="80%" />
+            <KjunSkeleton type="line" role="caption" width="60%" />
+          </View> : <KjunSkeleton type="line" role="numberSm" width={tokens.extensions.financial.priceSkeletonWidth} />}
         </View>)}
       </View>)}
     </View>

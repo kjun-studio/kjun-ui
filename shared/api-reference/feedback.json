@@ -177,19 +177,22 @@
       "fields",
       "columns",
       "multiline",
-      "size"
+      "size",
+      "loadingText"
     ],
     "react": [
       "fields",
       "columns",
       "multiline",
-      "size"
+      "size",
+      "loadingText"
     ],
     "native": [
       "fields",
       "columns",
       "multiline",
-      "size"
+      "size",
+      "loadingText"
     ]
   },
   "KjunListSkeleton": {
@@ -198,21 +201,30 @@
       "variant",
       "avatar",
       "avatarSize",
-      "quote"
+      "quote",
+      "description",
+      "trailing",
+      "loadingText"
     ],
     "react": [
       "rows",
       "variant",
       "avatar",
       "avatarSize",
-      "quote"
+      "quote",
+      "description",
+      "trailing",
+      "loadingText"
     ],
     "native": [
       "rows",
       "variant",
       "avatar",
       "avatarSize",
-      "quote"
+      "quote",
+      "description",
+      "trailing",
+      "loadingText"
     ]
   },
   "KjunProgress": {
@@ -253,6 +265,8 @@
   "KjunSkeleton": {
     "vue3": [
       "type",
+      "role",
+      "loadingText",
       "rows",
       "columns",
       "height",
@@ -262,6 +276,8 @@
     ],
     "react": [
       "type",
+      "role",
+      "loadingText",
       "rows",
       "columns",
       "height",
@@ -271,6 +287,8 @@
     ],
     "native": [
       "type",
+      "role",
+      "loadingText",
       "rows",
       "columns",
       "height",

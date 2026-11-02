@@ -2,6 +2,7 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { type CSSProperties } from "react";
 import { KjunSkeleton, KjunSpinner } from "./display";
+import { useSkeletonPhase } from "./skeleton-phase";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import {
   chartFrameDefaults,
@@ -21,6 +22,12 @@ export interface KjunListSkeletonProps {
   avatar?: boolean;
   avatarSize?: CSSProperties["width"];
   quote?: boolean;
+  /** Row variant: draws the description line (default true). */
+  description?: boolean;
+  /** Row variant: what ends the row, a value (default), a switch or a chevron; quote={false} leaves it empty. */
+  trailing?: "value" | "switch" | "chevron";
+  /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
+  loadingText?: string;
 }
 export function KjunListSkeleton({
   rows = 8,
@@ -28,55 +35,47 @@ export function KjunListSkeleton({
   avatar,
   avatarSize = tokens.extensions.skeleton.listAvatarSize,
   quote = true,
+  description = true,
+  trailing = "value",
+  loadingText,
 }: KjunListSkeletonProps) {
-  if (variant === "row") return <ListRowSkeleton rows={rows} avatar={avatar ?? false} avatarSize={avatarSize} trailing={quote} />;
-  avatar ??= true;
+  const sk = tokens.extensions.skeleton;
   return (
-    <div aria-hidden="true">
-      {Array.from({ length: rows }, (_, i) => (
-        <div key={i} className="kjun-list-skeleton-row" data-variant={variant}>
-          {avatar && (
-            <KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} />
-          )}
-          <div className="kjun-list-skeleton-label">
-            <KjunSkeleton
-              type="block"
-              height={tokens.extensions.skeleton.lineHeights.md}
-              width={i % 2 ? "80%" : "65%"}
-            />
-            <KjunSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width="50%" />
-          </div>
-          {quote && (
-            <div className="kjun-list-skeleton-quote">
-              <KjunSkeleton type="block" height={tokens.extensions.skeleton.quoteHeight} width={tokens.extensions.skeleton.quoteWidth} />
-              <KjunSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width={tokens.extensions.skeleton.detailWidth} />
+    <div aria-hidden={loadingText ? undefined : true} role={loadingText ? "status" : undefined}>
+      {loadingText && <span className="kjun-sr-only">{loadingText}</span>}
+      {variant === "row"
+        ? Array.from({ length: rows }, (_, i) => (
+            // KjunListRow's own geometry: bars sit in the title and description line boxes.
+            <div key={i} className="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined}>
+              {avatar && <div className="kjun-list-skeleton-leading"><KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} /></div>}
+              <div className="kjun-list-skeleton-label">
+                <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
+                {description && <KjunSkeleton type="line" role="caption" width="30%" />}
+              </div>
+              {quote && (
+                <div className="kjun-list-skeleton-trailing" data-kind={trailing}>
+                  {trailing === "switch" ? <KjunSkeleton type="avatar" width={tokens.extensions.switch.widths.md} height={tokens.extensions.switch.heights.md} />
+                    : <KjunSkeleton type="line" role="control" width={trailing === "chevron" ? tokens.iconSizes.default : sk.detailWidth} />}
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-// KjunListRow's own geometry: bars sit in the title and description line boxes, so the list keeps its height.
-function ListRowSkeleton({ rows, avatar, avatarSize, trailing }: { rows: number; avatar: boolean; avatarSize: CSSProperties["width"]; trailing: boolean }) {
-  const type = tokens.typography;
-  const slot = (role: "control" | "caption", w: CSSProperties["width"]) => (
-    <div className="kjun-list-skeleton-slot" data-role={role}>
-      <KjunSkeleton type="block" height={type[role].lineHeightPx / 2} width={w} />
-    </div>
-  );
-  return (
-    <div aria-hidden="true">
-      {Array.from({ length: rows }, (_, i) => (
-        <div key={i} className="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined}>
-          {avatar && <div className="kjun-list-skeleton-leading"><KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} /></div>}
-          <div className="kjun-list-skeleton-label">
-            {slot("control", i % 2 ? "55%" : "40%")}
-            {slot("caption", "30%")}
-          </div>
-          {trailing && <div className="kjun-list-skeleton-trailing">{slot("control", tokens.extensions.skeleton.detailWidth)}</div>}
-        </div>
-      ))}
+          ))
+        : Array.from({ length: rows }, (_, i) => (
+            // Bars take each slot's line height from CSS (name, then meta), like the list rows they stand in for.
+            <div key={i} className="kjun-list-skeleton-row" data-variant={variant}>
+              {(avatar ?? true) && <KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} />}
+              <div className="kjun-list-skeleton-label">
+                <KjunSkeleton type="line" width={i % 2 ? "80%" : "65%"} />
+                <KjunSkeleton type="line" width="50%" />
+              </div>
+              {quote && (
+                <div className="kjun-list-skeleton-quote">
+                  <KjunSkeleton type="line" width={sk.quoteWidth} />
+                  <KjunSkeleton type="line" width={sk.detailWidth} />
+                </div>
+              )}
+            </div>
+          ))}
     </div>
   );
 }
@@ -85,20 +84,25 @@ export interface KjunFormSkeletonProps {
   columns?: number;
   multiline?: boolean;
   size?: InputSize;
+  /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
+  loadingText?: string;
 }
 export function KjunFormSkeleton({
   fields = ["", "", "", ""],
   columns = 1,
   multiline = false,
   size = "md",
+  loadingText,
 }: KjunFormSkeletonProps) {
   return (
     <div
-      aria-hidden="true"
+      aria-hidden={loadingText ? undefined : true}
+      role={loadingText ? "status" : undefined}
       className="kjun-form-skeleton"
       data-columns={columns}
       style={{ "--_kjun-form-skeleton-radius": `${tokens.input[size].radius}px` } as CSSProperties}
     >
+      {loadingText && <span className="kjun-sr-only">{loadingText}</span>}
       {fields.map((field, i) => (
         <div key={i}>
           {field ? (
@@ -106,10 +110,8 @@ export function KjunFormSkeleton({
               {typeof field === "string" ? field : field.label}
             </div>
           ) : (
-            // The bar sits in a label-line slot so the field starts where the real input will.
-            <div className="kjun-form-skeleton-label-slot">
-              <KjunSkeleton type="block" height={tokens.extensions.skeleton.formLabelHeight} width={tokens.extensions.skeleton.formLabelWidth} />
-            </div>
+            // The bar sits in the label's line box so the field starts where the real input will.
+            <KjunSkeleton type="line" role="label" width={tokens.extensions.skeleton.formLabelWidth} />
           )}
           <KjunSkeleton
             type="block"
@@ -155,6 +157,7 @@ export function KjunChartSkeleton({
 }: KjunChartSkeletonProps) {
   const m = useKjunMessages();
   loadingText ??= m.chartLoading;
+  const phase = useSkeletonPhase(skeleton);
   const kind = chartSkeletonKind(requestedKind),
     revealed = useLoadingReveal(true, loadingDelay),
     status = revealed && loadingText ? "status" : undefined,
@@ -162,6 +165,7 @@ export function KjunChartSkeleton({
     columnCount = chartSkeletonCount(columns);
   return (
     <div
+      ref={phase}
       className="kjun-chart-skeleton"
       data-kjun-chart-kind={kind}
       data-skeleton={skeleton ? undefined : "false"}

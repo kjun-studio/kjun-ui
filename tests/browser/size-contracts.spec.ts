@@ -10,6 +10,13 @@ async function dimensions(box: Locator, width: number | undefined, height: numbe
     return rect.width > 0 && rect.height > 0 && (values.width == null || Math.abs(parseFloat(style.width) - values.width) < 0.1) && Math.abs(parseFloat(style.height) - values.height) < 0.1;
   }), { width, height })).toBe(true);
 }
+// A text skeleton: a bar of the given width that is half the height of the line box around it.
+async function halfLine(box: Locator, width: number) {
+  await expect.poll(() => box.evaluate((el, w) => [...el.querySelectorAll('*')].some(node => {
+    const own = node.getBoundingClientRect(), parent = node.parentElement!.getBoundingClientRect();
+    return own.height > 0 && Math.abs(own.width - w) < 0.6 && Math.abs(own.height * 2 - parent.height) < 0.6;
+  }), width)).toBe(true);
+}
 async function cappedScroll(child: Locator, maximum: number) {
   await expect.poll(() => child.evaluate((el, limit) => {
     for (let node = el.parentElement; node && node !== document.body; node = node.parentElement) {
@@ -64,9 +71,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     await dimensions(page.getByTestId('skeleton-stat'), undefined, type.caption.lineHeightPx * 2 + type.displaySm.lineHeightPx + e.kpiRow.md.labelGap + e.kpiRow.md.descriptionGap);
     await dimensions(page.getByTestId('skeleton-block'), undefined, e.skeleton.blockHeight);
     await dimensions(page.getByTestId('list-skeleton'), e.skeleton.listAvatarSize, e.skeleton.listAvatarSize);
-    await dimensions(page.getByTestId('list-skeleton'), e.skeleton.quoteWidth, e.skeleton.quoteHeight);
-    await dimensions(page.getByTestId('list-skeleton'), e.skeleton.detailWidth, e.skeleton.lineHeights.sm);
-    await dimensions(page.getByTestId('form-skeleton'), e.skeleton.formLabelWidth, e.skeleton.formLabelHeight);
+    await halfLine(page.getByTestId('list-skeleton'), e.skeleton.quoteWidth);
+    await halfLine(page.getByTestId('list-skeleton'), e.skeleton.detailWidth);
+    await halfLine(page.getByTestId('form-skeleton'), e.skeleton.formLabelWidth);
     await dimensions(page.getByTestId('form-skeleton'), undefined, tokens.input.md.lineHeight * 3 + tokens.input.md.textareaPaddingY * 2 + 2 * tokens.border.controlWidth);
     await dimensions(page.getByTestId('chart-skeleton'), undefined, e.chartSkeleton.height);
     await captureReview(page.getByTestId('chart-skeleton'), { path: info.outputPath('size-chart.png') });
@@ -74,9 +81,8 @@ for (const platform of ['react', 'vue3', 'native']) {
 
   test(`${platform}: packed size roles drive financial indicators`, async ({ page }) => {
     await openFixture(page, platform, '', 'size-contracts');
-    await dimensions(page.getByTestId('price'), e.financial.priceSkeletonWidth, e.financial.priceSkeletonHeight);
-    if (platform === 'native') await dimensions(page.getByTestId('signed'), e.financial.signedSkeletonWidth, e.financial.signedSkeletonHeight);
-    else await expect.poll(() => page.getByTestId('signed').evaluate((el, width) => [...el.querySelectorAll('*')].some(node => getComputedStyle(node).width === width + 'px'), e.financial.signedSkeletonWidth)).toBe(true);
+    await halfLine(page.getByTestId('price'), e.financial.priceSkeletonWidth);
+    await halfLine(page.getByTestId('signed'), e.financial.signedSkeletonWidth);
     await expect(page.getByTestId('sparkline').locator('svg')).toHaveCSS('width', px(e.financial.sparklineWidth));
     await expect(page.getByTestId('sparkline').locator('svg')).toHaveCSS('height', px(e.financial.sparklineHeight));
     await dimensions(page.getByTestId('progress-cell'), undefined, e.financial.progressHeight);
@@ -85,12 +91,12 @@ for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: packed size roles drive market and KPI placeholders`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 1000 });
     await openFixture(page, platform, '', 'size-contracts');
-    await dimensions(page.getByTestId('market-card'), e.financial.priceSkeletonWidth, e.financial.priceSkeletonHeight);
+    await halfLine(page.getByTestId('market-card'), e.financial.priceSkeletonWidth);
     const market = page.getByTestId('market-skeleton');
-    await dimensions(market, e.financial.priceSkeletonWidth, e.financial.priceSkeletonHeight);
+    await halfLine(market, e.financial.priceSkeletonWidth);
     await dimensions(market, e.marketTable.actionSkeletonWidth, e.marketTable.headerSkeletonHeight);
     await dimensions(market, e.marketTable.actionSkeletonWidth, e.financial.priceSkeletonHeight);
-    await dimensions(page.getByTestId('kpi-row'), e.kpiRow.labelSkeletonWidth, e.kpiRow.labelSkeletonHeight);
+    await halfLine(page.getByTestId('kpi-row'), e.kpiRow.labelSkeletonWidth);
     await dimensions(page.getByTestId('kpi-dot'), e.kpiRow.dotSize, e.kpiRow.dotSize);
     if (platform === 'native') {
       const hero = page.getByTestId('kpi-hero');

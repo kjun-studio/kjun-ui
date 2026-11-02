@@ -22,9 +22,9 @@ export function KjunMarketTableSkeleton({ columns = [], rows = 8, showActions = 
         {showActions && <td className="kjun-market-actions"><span className="kjun-market-skeleton-value"><KjunSkeleton type="block" width={tokens.extensions.marketTable.actionSkeletonWidth} height={tokens.extensions.financial.priceSkeletonHeight} /></span></td>}
         {cols.map((col, i) => <td key={col.key || i} className={alignClass?.(col.align)} style={{ textAlign: col.align }}>
           {isMarketIdentity(col.key) ? <div className="kjun-market-skeleton-identity">
-            <KjunSkeleton type="block" width="80%" height={tokens.extensions.skeleton.lineHeights.md} />
-            <KjunSkeleton type="block" width="60%" height={tokens.extensions.skeleton.lineHeights.sm} />
-          </div> : <span className="kjun-market-skeleton-value"><KjunSkeleton type="block" width={tokens.extensions.financial.priceSkeletonWidth} height={tokens.extensions.financial.priceSkeletonHeight} /></span>}
+            <KjunSkeleton type="line" width="80%" />
+            <KjunSkeleton type="line" width="60%" />
+          </div> : <span className="kjun-market-skeleton-value"><KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth} /></span>}
         </td>)}
       </tr>)}</tbody>
     </table>

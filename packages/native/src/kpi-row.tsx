@@ -156,10 +156,11 @@ export function KjunKpiRow({
               items.length % 2 === 1),
           numberRole = sub ? "numberSm" : small ? "numberLg" : mobile && !summary ? "numberLg" : "displaySm",
           numberSize = typeStyle(numberRole).fontSize;
+        const valueRole = item.valueKind === "text" ? "body" : numberRole;
         const valueStyle: TextStyle = {
           fontFamily: item.valueKind === "text" ? fontFamily : numericFontFamily || fontFamily,
           fontVariant: item.valueKind === "text" ? [] : ["tabular-nums"],
-          ...typeStyle(item.valueKind === "text" ? "body" : numberRole),
+          ...typeStyle(valueRole),
           color: summary && item.mobileNeutral ? colors.text : color(item),
         };
         return (
@@ -213,7 +214,7 @@ export function KjunKpiRow({
               }}
             >
               {busy && !item.label ? (
-                <KjunSkeleton type="block" width={geometry.labelSkeletonWidth} height={geometry.labelSkeletonHeight} />
+                <KjunSkeleton type="line" role="caption" width={geometry.labelSkeletonWidth} />
               ) : (
                 <KText style={{ minWidth: 0, flexShrink: 1, color: colors.textSecondary, ...typeStyle('caption') }}>
                   {item.label}
@@ -245,11 +246,7 @@ export function KjunKpiRow({
                         </KText>
                       )}
                       {busy && !seg.separator ? (
-                        <KjunSkeleton
-                          type="block"
-                          height={valueStyle.lineHeight}
-                          width={geometry.segmentSkeletonWidth}
-                        />
+                        <KjunSkeleton type="line" role={valueRole} width={geometry.segmentSkeletonWidth} />
                       ) : (
                         <KText
                           style={[
@@ -266,7 +263,7 @@ export function KjunKpiRow({
               ) : busy ? (
                 // Like Web's 1lh × 5ch: the placeholder fills the value line, and its width (set for the display
                 // number) scales with the value's font so a text value gets a text-sized bar.
-                <KjunSkeleton type="block" height={valueStyle.lineHeight}
+                <KjunSkeleton type="line" role={valueRole}
                   width={geometry.valueSkeletonWidth * (valueStyle.fontSize ?? numberSize) / typeStyle("displaySm").fontSize} />
               ) : (
                 renderValue?.(item, i) || (!present ? (
@@ -313,7 +310,7 @@ export function KjunKpiRow({
             </View>
             {!!item.desc &&
               (busy ? (
-                <KjunSkeleton type="block" height={typeStyle("caption").lineHeight} width={geometry.descriptionSkeletonWidth} />
+                <KjunSkeleton type="line" role="caption" width={geometry.descriptionSkeletonWidth} />
               ) : (
                 <KText
                   style={{

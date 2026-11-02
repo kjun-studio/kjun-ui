@@ -101,7 +101,7 @@ export function KjunMarketSimpleList<
                     {/* A status shows whenever the app gives one, also with no price (trading halted, no quote). */}
                     <PriceStatus status={props.renderStatus?.(row)} />
                     {changeLoading(row) ? (
-                      <KjunSkeleton type="block" height={tokens.extensions.marketList.changeSkeletonHeight} width={tokens.extensions.marketList.changeSkeletonWidth} />
+                      <KjunSkeleton type="line" role="numberSm" width={tokens.extensions.marketList.changeSkeletonWidth} />
                     ) : change !== null ? (
                       <KjunSignedValue
                         value={change}

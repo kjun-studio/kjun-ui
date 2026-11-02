@@ -200,7 +200,18 @@ set("FormSkeleton", {
   fields: "필드 라벨 또는 { label, height } 배열입니다. 개별 height가 size와 multiline보다 우선합니다.",
   multiline: "개별 높이를 지정하지 않은 필드를 3줄 Textarea와 같은 높이(sm 92px, md 100px, lg 108px)로 표시합니다.",
 });
-set("Skeleton", { columns: "표 형태 스켈레톤의 열 수입니다." });
+set("Skeleton", {
+  columns: "표 형태 스켈레톤의 열 수입니다.",
+  type: { default: '"text"', summary: "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목, table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다." },
+  role: { summary: "type=\"line\"의 글자 역할입니다(예: caption, numberSm, displaySm). 웹에서 생략하면 주변 글자의 줄 높이를 따르고, Native는 기본 body입니다." },
+  loadingText: { summary: "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다." },
+});
+set("FormSkeleton ListSkeleton", { loadingText: { summary: "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다." } });
+set("ListSkeleton", {
+  variant: { default: '"market"', summary: "market·compact·notification은 시세 목록 행, row는 KjunListRow 행(제목·설명 줄, 글자 시작선부터 긋는 구분선)입니다." },
+  description: { default: "true", summary: "row 변형에서 설명 줄을 그립니다." },
+  trailing: { default: '"value"', summary: "row 변형의 행 끝 자리입니다. value는 값, switch는 스위치, chevron은 화살표 자리이며 quote=false면 비웁니다." },
+});
 set("MarketTableSkeleton", {
   columns: "MarketTable과 동일한 열 구성입니다. 기본 폭은 이름 240px·기타 160px·액션 96px이며 지정한 너비를 우선합니다.",
 });
@@ -312,8 +323,8 @@ set("Popover", { width: { default:"md", summary:"패널 너비 단계입니다. 
 set("Popover", { returnFocus: { summary:"닫힌 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받습니다. 대상이 없거나 문서에서 사라졌으면 트리거로 돌아갑니다." } });
 set("Card", { dividers: { default:"false", summary:"헤더·본문·푸터 사이 구분선을 표시합니다. 기본은 구분선 없이 16px 간격으로 나눕니다." } });
 set("ChartSkeleton", {
-  kind: { default:'"frame"', summary:"frame은 축과 격자만, donut은 링만, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다." },
-  loadingText: { default:'"차트를 불러오는 중"', summary:"표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다." },
+  kind: { default:'"frame"', summary:"frame은 격자선과 축 라벨 자리, donut은 글자 없는 고리, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다." },
+  loadingText: { default:'"차트를 불러오는 중"', summary:"그림 아래 12px 캡션으로 표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다." },
   skeleton: { default:"true", summary:"false이면 자리 표시 대신 같은 높이 안에 스피너와 loadingText를 표시합니다." },
   rows: { default:"8", summary:"matrix의 행 수입니다. 1–100 사이 정수로 내림합니다." },
   columns: { default:"14", summary:"matrix의 열 수입니다. 1–100 사이 정수로 내림합니다." },

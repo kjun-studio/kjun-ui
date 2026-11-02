@@ -24,11 +24,10 @@ export const platformSpecific = {
   ...Object.fromEntries(['identityWidth', 'identityHeight'].map(key => ['extensions.skeleton.' + key, {
     excludes: ['react', 'vue3', 'native'], reason: 'Retired Vue 2 AssetIdentity loading adapter; current platforms render the supplied identity slot. Kept for token compatibility.',
   }])),
-  ...Object.fromEntries(['titleSkeletonWidth', 'titleSkeletonHeight', 'badgeSkeletonWidth', 'fieldSkeletonHeight', 'actionSkeletonWidth', 'actionSkeletonHeight'].map(key => ['extensions.tableCard.' + key, {
+  ...Object.fromEntries(['titleSkeletonHeight', 'badgeSkeletonWidth', 'fieldSkeletonHeight', 'actionSkeletonWidth', 'actionSkeletonHeight'].map(key => ['extensions.tableCard.' + key, {
     excludes: ['react', 'vue3', 'native'], reason: 'Retired Vue 2 section-aware table loading cards; current platforms compose the general Card skeleton. Kept for token compatibility.',
   }])),
   ...Object.fromEntries([
-    'financial.signedSkeletonHeight',
     'kpiHero.secondarySkeletonWidth', 'kpiHero.descriptionSkeletonWidth',
     ...['value', 'segment', 'description'].map(part => 'kpiRow.' + part + 'SkeletonWidth'),
   ].map(path => ['extensions.' + path, {

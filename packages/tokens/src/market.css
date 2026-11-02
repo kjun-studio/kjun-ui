@@ -284,6 +284,8 @@
   letter-spacing: var(--_kjun-type-body-tracking);
 }
 .kjun-market-skeleton-identity { display: grid; grid-template-rows: var(--_kjun-type-body-line) var(--_kjun-type-caption-line); gap: var(--_kjun-geometry-dimension-value2); align-items: center; }
+.kjun-market-skeleton-identity > .kjun-skeleton { display: block; line-height: var(--_kjun-type-body-line); }
+.kjun-market-skeleton-identity > .kjun-skeleton + .kjun-skeleton { line-height: var(--_kjun-type-caption-line); }
 .kjun-market-skeleton-value { display: inline-block; max-width: 100%; vertical-align: middle; }
 
 /* Market tables fade their trailing edge while columns still overflow it, like the Native grid. */

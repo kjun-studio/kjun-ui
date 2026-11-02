@@ -105,7 +105,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
           <div className="kjun-kpi-hero__label">{label}</div>
           <div className="kjun-kpi-hero__value">
             {loading ? (
-              <KjunSkeleton type="block" height="1lh" width="7ch" />
+              <KjunSkeleton type="line" width="7ch" />
             ) : (
               <>
                 {prefix && (
@@ -127,7 +127,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
             <div className="kjun-kpi-hero__delta-line">
               {loading ? (
                 // The placeholder takes the delta numbers' line height, like Vue, so the hero keeps its loaded height.
-                <span className="kjun-kpi-hero__delta-abs"><KjunSkeleton type="block" height="1lh" width={tokens.extensions.kpiHero.deltaSkeletonWidth} /></span>
+                <span className="kjun-kpi-hero__delta-abs"><KjunSkeleton type="line" width={tokens.extensions.kpiHero.deltaSkeletonWidth} /></span>
               ) : (
                 <>
                   {deltaAbsolute !== null && (
@@ -176,7 +176,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                 style={{ color: kpiColor(item.value, item.semantic) }}
               >
                 {loading ? (
-                  <KjunSkeleton type="block" height="1lh" width="5ch" />
+                  <KjunSkeleton type="line" width="5ch" />
                 ) : (
                   renderSecondary?.(item, i) || (
                     <>
@@ -203,7 +203,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                   style={{ color: "var(--_kjun-color-text-tertiary)" }}
                 >
                   {loading ? (
-                    <KjunSkeleton type="block" width="7ch" height="1lh" />
+                    <KjunSkeleton type="line" width="7ch" />
                   ) : (
                     item.desc
                   )}
@@ -359,7 +359,7 @@ export function KjunKpiRow({
             <div className="kjun-kpi-row__label-row">
               <div className="kjun-kpi-row__label">
                 {busy && !item.label ? (
-                  <KjunSkeleton type="block" width={tokens.extensions.kpiRow.labelSkeletonWidth} height={tokens.extensions.kpiRow.labelSkeletonHeight} />
+                  <KjunSkeleton type="line" width={tokens.extensions.kpiRow.labelSkeletonWidth} />
                 ) : (
                   item.label
                 )}
@@ -405,14 +405,14 @@ export function KjunKpiRow({
                         </span>
                       )}
                       {busy && !seg.separator ? (
-                        <KjunSkeleton type="block" height="1lh" width="3ch" />
+                        <KjunSkeleton type="line" width="3ch" />
                       ) : (
                         seg.text
                       )}
                     </span>
                   ))
                 ) : busy ? (
-                  <KjunSkeleton type="block" height="1lh" width="5ch" />
+                  <KjunSkeleton type="line" width="5ch" />
                 ) : (
                   renderValue?.(item, i) || (present ? (
                     <>
@@ -451,7 +451,7 @@ export function KjunKpiRow({
                 }}
               >
                 {busy ? (
-                  <KjunSkeleton type="block" height="1lh" width="7ch" />
+                  <KjunSkeleton type="line" width="7ch" />
                 ) : (
                   item.desc
                 )}

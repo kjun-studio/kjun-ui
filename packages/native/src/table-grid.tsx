@@ -252,8 +252,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                         }}
                       >
                         <KjunSkeleton
-                          type="block"
-                          height={geometry.skeletonHeight}
+                          type="line"
                           width={col.key === "actions" ? tokens.table.actionColumnWidth : "75%"}
                         />
                       </View>

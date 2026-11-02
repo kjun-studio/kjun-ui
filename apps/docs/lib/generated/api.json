@@ -4387,7 +4387,7 @@
       },
       {
         "name": "skeletonType",
-        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
+        "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
         "required": false,
         "default": "\"text\"",
         "description": ""
@@ -4539,7 +4539,7 @@
       },
       {
         "name": "skeletonType",
-        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+        "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -4730,7 +4730,7 @@
       },
       {
         "name": "skeletonType",
-        "type": "\"text\" | \"block\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+        "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -8163,6 +8163,13 @@
         "required": false,
         "default": "\"md\"",
         "description": ""
+      },
+      {
+        "name": "loadingText",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
       }
     ],
     "events": [],
@@ -8195,6 +8202,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
       }
     ],
     "native": [
@@ -8225,6 +8239,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
       }
     ]
   },
@@ -10955,6 +10976,27 @@
         "required": false,
         "default": "true",
         "description": ""
+      },
+      {
+        "name": "description",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Row variant: draws the description line."
+      },
+      {
+        "name": "trailing",
+        "type": "\"value\" | \"switch\" | \"chevron\"",
+        "required": false,
+        "default": "\"value\"",
+        "description": "Row variant: what ends the row, a value, a switch or a chevron; quote={false} leaves it empty."
+      },
+      {
+        "name": "loadingText",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
       }
     ],
     "events": [],
@@ -10994,6 +11036,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "description",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Row variant: draws the description line (default true)."
+      },
+      {
+        "name": "trailing",
+        "type": "\"value\" | \"switch\" | \"chevron\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Row variant: what ends the row, a value (default), a switch or a chevron; quote={false} leaves it empty."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
       }
     ],
     "native": [
@@ -11031,6 +11094,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "description",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Row variant: draws the description line (default true)."
+      },
+      {
+        "name": "trailing",
+        "type": "\"value\" | \"switch\" | \"chevron\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Row variant: what ends the row, a value (default), a switch or a chevron; quote={false} leaves it empty."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
       }
     ]
   },
@@ -18892,10 +18976,24 @@
     "vue3": [
       {
         "name": "type",
-        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
+        "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
         "required": false,
         "default": "\"text\"",
-        "description": ""
+        "description": "\"line\" is one line of text: a bar in the line box of `role`, or of the surrounding text when no role is given."
+      },
+      {
+        "name": "role",
+        "type": "\"label\" | \"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\"",
+        "required": false,
+        "default": "—",
+        "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height."
+      },
+      {
+        "name": "loadingText",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
       },
       {
         "name": "rows",
@@ -18945,10 +19043,24 @@
     "react": [
       {
         "name": "type",
-        "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+        "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "\"line\" is one line of text: a bar in the line box of `role`, or of the surrounding text when no role is given."
+      },
+      {
+        "name": "role",
+        "type": "\"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"label\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
       },
       {
         "name": "rows",
@@ -18996,10 +19108,24 @@
     "native": [
       {
         "name": "type",
-        "type": "\"text\" | \"block\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+        "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "\"line\" is one line of text: a bar in the line box of `role` (default body)."
+      },
+      {
+        "name": "role",
+        "type": "\"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"label\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Typography role for type=\"line\"."
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
       },
       {
         "name": "rows",

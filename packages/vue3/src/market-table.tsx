@@ -52,7 +52,7 @@ export const KjunMarketTable = defineComponent({
     const render = (row: any, col: MarketColumn): VNodeChild => {
       const value = getValue(row, col.key), stale = !!getValue(row, "stale");
       if (props.cellLoading(row, col))
-        return <KjunSkeleton type="block" height={tokens.extensions.marketTable.valueSkeletonHeight} width={tokens.extensions.marketTable.valueSkeletonWidth} />;
+        return <KjunSkeleton type="line" width={tokens.extensions.marketTable.valueSkeletonWidth} />;
       if (slots.cell) return slots.cell({ row, column: col });
       if (["stock_name", "name", "symbol"].includes(col.key)) return marketIdentity(row, props, slots);
       if (col.type === "sparkline")

@@ -242,7 +242,7 @@
             "required": false,
             "default": "\"frame\"",
             "description": "",
-            "summary": "frame은 축과 격자만, donut은 링만, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다.",
+            "summary": "frame은 격자선과 축 라벨 자리, donut은 글자 없는 고리, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           },
           {
@@ -260,7 +260,7 @@
             "required": false,
             "default": "\"차트를 불러오는 중\"",
             "description": "",
-            "summary": "표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
+            "summary": "그림 아래 12px 캡션으로 표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           },
           {
@@ -340,7 +340,7 @@
             "required": false,
             "default": "\"frame\"",
             "description": "",
-            "summary": "frame은 축과 격자만, donut은 링만, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다.",
+            "summary": "frame은 격자선과 축 라벨 자리, donut은 글자 없는 고리, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다.",
             "source": "packages/react/src/skeletons.tsx"
           },
           {
@@ -358,7 +358,7 @@
             "required": false,
             "default": "\"차트를 불러오는 중\"",
             "description": "",
-            "summary": "표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
+            "summary": "그림 아래 12px 캡션으로 표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
             "source": "packages/react/src/skeletons.tsx"
           },
           {
@@ -438,7 +438,7 @@
             "required": false,
             "default": "\"frame\"",
             "description": "",
-            "summary": "frame은 축과 격자만, donut은 링만, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다.",
+            "summary": "frame은 격자선과 축 라벨 자리, donut은 글자 없는 고리, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다.",
             "source": "packages/native/src/skeletons.tsx"
           },
           {
@@ -456,7 +456,7 @@
             "required": false,
             "default": "\"차트를 불러오는 중\"",
             "description": "",
-            "summary": "표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
+            "summary": "그림 아래 12px 캡션으로 표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
             "source": "packages/native/src/skeletons.tsx"
           },
           {
@@ -1075,6 +1075,15 @@
             "description": "",
             "summary": "대상 Input과 같은 크기입니다. sm 32px, md 40px, lg 48px이며 모서리도 공유합니다.",
             "source": "packages/vue3/src/skeletons.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
+            "source": "packages/vue3/src/skeletons.tsx"
           }
         ],
         "events": [],
@@ -1119,6 +1128,15 @@
             "description": "",
             "summary": "대상 Input과 같은 크기입니다. sm 32px, md 40px, lg 48px이며 모서리도 공유합니다.",
             "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
+            "source": "packages/react/src/skeletons.tsx"
           }
         ],
         "events": [],
@@ -1162,6 +1180,15 @@
             "default": "md",
             "description": "",
             "summary": "대상 Input과 같은 크기입니다. sm 32px, md 40px, lg 48px이며 모서리도 공유합니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
             "source": "packages/native/src/skeletons.tsx"
           }
         ],
@@ -2076,7 +2103,7 @@
             "required": false,
             "default": "\"market\"",
             "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked.",
-            "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
+            "summary": "market·compact·notification은 시세 목록 행, row는 KjunListRow 행(제목·설명 줄, 글자 시작선부터 긋는 구분선)입니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           },
           {
@@ -2105,6 +2132,33 @@
             "description": "",
             "summary": "목록 스켈레톤에 시세 영역(row 변형은 행 끝 값 자리)을 표시합니다.",
             "source": "packages/vue3/src/skeletons.tsx"
+          },
+          {
+            "name": "description",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Row variant: draws the description line.",
+            "summary": "row 변형에서 설명 줄을 그립니다.",
+            "source": "packages/vue3/src/skeletons.tsx"
+          },
+          {
+            "name": "trailing",
+            "type": "\"value\" | \"switch\" | \"chevron\"",
+            "required": false,
+            "default": "\"value\"",
+            "description": "Row variant: what ends the row, a value, a switch or a chevron; quote={false} leaves it empty.",
+            "summary": "row 변형의 행 끝 자리입니다. value는 값, switch는 스위치, chevron은 화살표 자리이며 quote=false면 비웁니다.",
+            "source": "packages/vue3/src/skeletons.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
+            "source": "packages/vue3/src/skeletons.tsx"
           }
         ],
         "events": [],
@@ -2129,7 +2183,7 @@
             "required": false,
             "default": "\"market\"",
             "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked.",
-            "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
+            "summary": "market·compact·notification은 시세 목록 행, row는 KjunListRow 행(제목·설명 줄, 글자 시작선부터 긋는 구분선)입니다.",
             "source": "packages/react/src/skeletons.tsx"
           },
           {
@@ -2158,6 +2212,33 @@
             "description": "",
             "summary": "목록 스켈레톤에 시세 영역(row 변형은 행 끝 값 자리)을 표시합니다.",
             "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "description",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Row variant: draws the description line (default true).",
+            "summary": "row 변형에서 설명 줄을 그립니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "trailing",
+            "type": "\"value\" | \"switch\" | \"chevron\" | undefined",
+            "required": false,
+            "default": "\"value\"",
+            "description": "Row variant: what ends the row, a value (default), a switch or a chevron; quote={false} leaves it empty.",
+            "summary": "row 변형의 행 끝 자리입니다. value는 값, switch는 스위치, chevron은 화살표 자리이며 quote=false면 비웁니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
+            "source": "packages/react/src/skeletons.tsx"
           }
         ],
         "events": [],
@@ -2182,7 +2263,7 @@
             "required": false,
             "default": "\"market\"",
             "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked.",
-            "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
+            "summary": "market·compact·notification은 시세 목록 행, row는 KjunListRow 행(제목·설명 줄, 글자 시작선부터 긋는 구분선)입니다.",
             "source": "packages/native/src/skeletons.tsx"
           },
           {
@@ -2210,6 +2291,33 @@
             "default": "true",
             "description": "",
             "summary": "목록 스켈레톤에 시세 영역(row 변형은 행 끝 값 자리)을 표시합니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "description",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Row variant: draws the description line (default true).",
+            "summary": "row 변형에서 설명 줄을 그립니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "trailing",
+            "type": "\"value\" | \"switch\" | \"chevron\" | undefined",
+            "required": false,
+            "default": "\"value\"",
+            "description": "Row variant: what ends the row, a value (default), a switch or a chevron; quote={false} leaves it empty.",
+            "summary": "row 변형의 행 끝 자리입니다. value는 값, switch는 스위치, chevron은 화살표 자리이며 quote=false면 비웁니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
             "source": "packages/native/src/skeletons.tsx"
           }
         ],
@@ -7067,11 +7175,29 @@
         "props": [
           {
             "name": "type",
-            "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
+            "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
             "required": false,
             "default": "\"text\"",
-            "description": "",
-            "summary": "기본 요소 또는 표시 종류입니다. 허용값은 해당 타입을 따릅니다.",
+            "description": "\"line\" is one line of text: a bar in the line box of `role`, or of the surrounding text when no role is given.",
+            "summary": "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목, table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다.",
+            "source": "packages/vue3/src/display.tsx"
+          },
+          {
+            "name": "role",
+            "type": "\"label\" | \"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\"",
+            "required": false,
+            "default": "—",
+            "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height.",
+            "summary": "type=\"line\"의 글자 역할입니다(예: caption, numberSm, displaySm). 웹에서 생략하면 주변 글자의 줄 높이를 따르고, Native는 기본 body입니다.",
+            "source": "packages/vue3/src/display.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
             "source": "packages/vue3/src/display.tsx"
           },
           {
@@ -7138,11 +7264,29 @@
         "props": [
           {
             "name": "type",
-            "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+            "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
             "required": false,
             "default": "\"text\"",
-            "description": "",
-            "summary": "기본 요소 또는 표시 종류입니다. 허용값은 해당 타입을 따릅니다.",
+            "description": "\"line\" is one line of text: a bar in the line box of `role`, or of the surrounding text when no role is given.",
+            "summary": "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목, table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "role",
+            "type": "\"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"label\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height.",
+            "summary": "type=\"line\"의 글자 역할입니다(예: caption, numberSm, displaySm). 웹에서 생략하면 주변 글자의 줄 높이를 따르고, Native는 기본 body입니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
             "source": "packages/react/src/display.tsx"
           },
           {
@@ -7209,11 +7353,29 @@
         "props": [
           {
             "name": "type",
-            "type": "\"text\" | \"block\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+            "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
             "required": false,
             "default": "\"text\"",
-            "description": "",
-            "summary": "기본 요소 또는 표시 종류입니다. 허용값은 해당 타입을 따릅니다.",
+            "description": "\"line\" is one line of text: a bar in the line box of `role` (default body).",
+            "summary": "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목, table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다.",
+            "source": "packages/native/src/skeleton-base.tsx"
+          },
+          {
+            "name": "role",
+            "type": "\"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"label\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
+            "required": false,
+            "default": "\"body\"",
+            "description": "Typography role for type=\"line\".",
+            "summary": "type=\"line\"의 글자 역할입니다(예: caption, numberSm, displaySm). 웹에서 생략하면 주변 글자의 줄 높이를 따르고, Native는 기본 body입니다.",
+            "source": "packages/native/src/skeleton-base.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
             "source": "packages/native/src/skeleton-base.tsx"
           },
           {
@@ -11352,7 +11514,7 @@
           },
           {
             "name": "skeletonType",
-            "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
+            "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
             "required": false,
             "default": "\"text\"",
             "description": "",
@@ -11677,7 +11839,7 @@
           },
           {
             "name": "skeletonType",
-            "type": "\"block\" | \"text\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+            "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
             "required": false,
             "default": "\"text\"",
             "description": "",
@@ -12108,7 +12270,7 @@
           },
           {
             "name": "skeletonType",
-            "type": "\"text\" | \"block\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+            "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
             "required": false,
             "default": "\"text\"",
             "description": "",

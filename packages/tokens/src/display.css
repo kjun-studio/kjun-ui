@@ -35,9 +35,11 @@
   height: 50%;
   margin-bottom: 0;
 }
-.kjun-skeleton-slot[data-role="card-title"] { --_kjun-skeleton-slot: var(--_kjun-type-card-title-line); }
-.kjun-skeleton-slot[data-role="caption"] { --_kjun-skeleton-slot: var(--_kjun-type-caption-line); }
-.kjun-skeleton-slot[data-role="display-sm"] { --_kjun-skeleton-slot: var(--_kjun-type-display-sm-line); }
+/* A line skeleton stands in for one line of text and is as wide as its width prop. It stays a block, so a
+   role's line box is never stretched by the surrounding text's line height. */
+.kjun-skeleton[data-type="line"] {
+  max-width: 100%;
+}
 
 /* Card: the silhouette of a default KjunCard (surface, no border) with a title, a subtitle and body lines. */
 .kjun-skeleton-card {
@@ -85,7 +87,7 @@
 }
 
 /* Stat: one KpiRow item, label, value and description on their own line boxes. */
-.kjun-skeleton-stat > .kjun-skeleton-slot[data-role="display-sm"] {
+.kjun-skeleton-stat > .kjun-skeleton-slot:nth-child(2) {
   margin-top: var(--_kjun-extension-kpi-row-md-label-gap);
 }
 .kjun-skeleton-stat > .kjun-skeleton-slot:last-child {
@@ -103,6 +105,7 @@
 .kjun-skeleton-animated .kjun-skeleton-avatar,
 .kjun-skeleton-animated .kjun-skeleton-block {
   animation: kjun-skeleton-pulse var(--_kjun-motion-shimmer) ease-in-out infinite;
+  animation-delay: var(--_kjun-skeleton-delay, 0ms);
 }
 @keyframes kjun-skeleton-pulse {
   50% {

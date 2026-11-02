@@ -102,7 +102,7 @@ export function KjunPriceCell({
   // With no price a status still shows after a dash, for states such as "거래정지"; without one null is loading.
   if (value == null) return hasContent(status)
     ? <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.statusGap }}><KText style={{ ...quoteType?.price, color: colors.textTertiary }}>—</KText><PriceStatus status={status} /></View>
-    : <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />;
+    : <KjunSkeleton type="line" role="numberSm" width={tokens.extensions.financial.priceSkeletonWidth} />;
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.statusGap }}>
       <View
@@ -185,7 +185,7 @@ export function KjunSignedValue({
       }}
     >
       {loading ? (
-        <KjunSkeleton type="block" width={tokens.extensions.financial.signedSkeletonWidth} height={tokens.extensions.financial.signedSkeletonHeight} />
+        <KjunSkeleton type="line" role="numberSm" width={tokens.extensions.financial.signedSkeletonWidth} />
       ) : (
         <KText
           style={{

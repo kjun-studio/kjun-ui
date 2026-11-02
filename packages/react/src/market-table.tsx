@@ -53,7 +53,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
     const value = getValue(row, col.key),
       stale = !!getValue(row, "stale");
     if (cellLoading(row, col))
-      return <KjunSkeleton type="block" height={tokens.extensions.marketTable.valueSkeletonHeight} width={tokens.extensions.marketTable.valueSkeletonWidth} />;
+      return <KjunSkeleton type="line" width={tokens.extensions.marketTable.valueSkeletonWidth} />;
     if (renderCell) return renderCell(row, col);
     if (["stock_name", "name", "symbol"].includes(col.key))
       return <MarketIdentity row={row} props={props} />;

@@ -411,7 +411,6 @@
   --_kjun-extension-market-table-sparkline-width: 72px;
   --_kjun-extension-market-table-sparkline-height: 22px;
   --_kjun-extension-market-table-value-skeleton-width: 56px;
-  --_kjun-extension-market-table-value-skeleton-height: 16px;
   --_kjun-extension-market-table-action-skeleton-width: 32px;
   --_kjun-extension-market-table-header-skeleton-height: 14px;
   --_kjun-extension-menu-radius: 12px;
@@ -568,7 +567,6 @@
   --_kjun-extension-skeleton-list-compact-padding-x: 16px;
   --_kjun-extension-skeleton-list-notification-padding-y: 12px;
   --_kjun-extension-skeleton-list-notification-padding-x: 12px;
-  --_kjun-extension-skeleton-line-heights-sm: 12px;
   --_kjun-extension-skeleton-line-heights-md: 16px;
   --_kjun-extension-skeleton-avatar-size: 48px;
   --_kjun-extension-skeleton-table-line-height: 14px;
@@ -577,10 +575,8 @@
   --_kjun-extension-skeleton-list-heights-compact: 56px;
   --_kjun-extension-skeleton-list-heights-notification: 64px;
   --_kjun-extension-skeleton-quote-width: 88px;
-  --_kjun-extension-skeleton-quote-height: 18px;
   --_kjun-extension-skeleton-detail-width: 56px;
   --_kjun-extension-skeleton-form-label-width: 96px;
-  --_kjun-extension-skeleton-form-label-height: 14px;
   --_kjun-extension-skeleton-identity-width: 128px;
   --_kjun-extension-skeleton-identity-height: 20px;
   --_kjun-extension-skeleton-list-avatar-size: 36px;
@@ -655,7 +651,6 @@
   --_kjun-extension-financial-price-skeleton-width: 64px;
   --_kjun-extension-financial-price-skeleton-height: 16px;
   --_kjun-extension-financial-signed-skeleton-width: 48px;
-  --_kjun-extension-financial-signed-skeleton-height: 1.25rem;
   --_kjun-extension-kpi-hero-radius: 12px;
   --_kjun-extension-kpi-hero-layout-gap: 24px;
   --_kjun-extension-kpi-hero-prefix-gap: 2px;
@@ -734,7 +729,6 @@
   --_kjun-extension-kpi-row-summary-secondary-gap: 4px;
   --_kjun-extension-kpi-row-dot-size: 4px;
   --_kjun-extension-kpi-row-label-skeleton-width: 80px;
-  --_kjun-extension-kpi-row-label-skeleton-height: 13px;
   --_kjun-extension-kpi-row-value-skeleton-width: 80px;
   --_kjun-extension-kpi-row-segment-skeleton-width: 48px;
   --_kjun-extension-kpi-row-description-skeleton-width: 90px;
@@ -814,7 +808,6 @@
   --_kjun-extension-market-list-minimum-height: 72px;
   --_kjun-extension-market-list-mobile-quote-minimum-width: 102px;
   --_kjun-extension-market-list-change-skeleton-width: 56px;
-  --_kjun-extension-market-list-change-skeleton-height: 14px;
   --_kjun-extension-chart-skeleton-height: 240px;
   --_kjun-extension-chart-skeleton-donut-thickness: 22px;
   --_kjun-extension-chart-skeleton-axis-width: 40px;
@@ -997,7 +990,6 @@
   --_kjun-geometry-table-list-meta-gap: 2px;
   --_kjun-geometry-table-list-radius: 12px;
   --_kjun-geometry-table-column-width: 160px;
-  --_kjun-geometry-table-skeleton-height: 20px;
   --_kjun-geometry-table-selection-size: 16px;
   --_kjun-geometry-table-sort-icon-size: 12px;
   --_kjun-geometry-table-sorted-icon-size: 14px;

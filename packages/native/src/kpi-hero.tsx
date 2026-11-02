@@ -160,7 +160,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
           </KText>
           {loading ? (
             // Placeholders fill each line's height, like Web's 1lh; the value width approximates Web's 7ch.
-            <KjunSkeleton type="block" height={typeStyle(numberRole).lineHeight} width={font * 4.8} />
+            <KjunSkeleton type="line" role={numberRole} width={font * 4.8} />
           ) : (
             <KpiNumberLine prefix={prefix} suffix={suffix} prefixGap={geometry.prefixGap} suffixGap={geometry.suffixGap}
               style={{ ...numeric, ...typeStyle(numberRole) }} unitStyle={unitStyle}>
@@ -178,7 +178,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
               }}
             >
               {loading ? (
-                <KjunSkeleton type="block" height={typeStyle("numberMd").lineHeight} width={geometry.deltaSkeletonWidth} />
+                <KjunSkeleton type="line" role="numberMd" width={geometry.deltaSkeletonWidth} />
               ) : (
                 <>
                   {deltaAbsolute !== null &&
@@ -246,11 +246,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                 {item.label}
               </KText>
               {loading ? (
-                <KjunSkeleton
-                  type="block"
-                  height={typeStyle("numberMd").lineHeight}
-                  width={geometry.secondarySkeletonWidth}
-                />
+                <KjunSkeleton type="line" role="numberMd" width={geometry.secondarySkeletonWidth} />
               ) : (
                 renderSecondary?.(item, i) || (
                   <KpiNumberLine prefix={item.prefix} suffix={item.suffix}
@@ -264,11 +260,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
               )}
               {!!item.desc &&
                 (loading ? (
-                  <KjunSkeleton
-                    type="block"
-                    width={geometry.descriptionSkeletonWidth}
-                    height={typeStyle("caption").lineHeight}
-                  />
+                  <KjunSkeleton type="line" role="caption" width={geometry.descriptionSkeletonWidth} />
                 ) : (
                   <KText
                     style={{

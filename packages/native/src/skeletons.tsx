@@ -1,11 +1,12 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
-import { useEffect,useRef,useState,type ReactNode } from "react";
+import { useState } from "react";
 import { Animated,Platform,View,useWindowDimensions,type DimensionValue } from "react-native";
 import Svg,{ Path } from "react-native-svg";
 import { KjunSkeleton,KjunSpinner } from "./display";
 import { KText,useReducedMotion } from "./internal";
+import { useSkeletonPulse } from "./skeleton-clock";
 import { useKjunStyles } from "./provider";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import {
@@ -27,57 +28,65 @@ export interface KjunListSkeletonProps {
   avatar?: boolean;
   avatarSize?: DimensionValue;
   quote?: boolean;
+  /** Row variant: draws the description line (default true). */
+  description?: boolean;
+  /** Row variant: what ends the row, a value (default), a switch or a chevron; quote={false} leaves it empty. */
+  trailing?: "value" | "switch" | "chevron";
+  /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
+  loadingText?: string;
 }
+// A skeleton is hidden from assistive technology unless it carries loading text, which it then announces politely.
+const skeletonStatus = (loadingText?: string) => loadingText
+  ? { role: "status" as const, accessible: true, accessibilityLabel: loadingText, accessibilityLiveRegion: "polite" as const }
+  : { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants" as const };
 export function KjunListSkeleton({
   rows = 8,
   variant = "market",
   avatar,
   avatarSize = tokens.extensions.skeleton.listAvatarSize,
   quote = true,
+  description = true,
+  trailing = "value",
+  loadingText,
 }: KjunListSkeletonProps) {
   const { colors } = useKjunStyles();
   const window = useWindowDimensions();
-  if (variant === "row") return <ListRowSkeleton rows={rows} avatar={avatar ?? false} avatarSize={avatarSize} trailing={quote} divider={colors.divider} />;
-  avatar ??= true;
-  // Market rows follow simple-list market rows (like Web): 16px all round, 14/20 with a minimum height on
-  // narrow screens, and bars centred in the name and meta line slots.
-  const market = variant === "market", narrow = window.width < tokens.responsive.market;
-  const slots = market ? [typeStyle(narrow ? "input" : "label").lineHeight, typeStyle(narrow ? "body" : "caption").lineHeight] : null;
-  const slot = (index: number, child: ReactNode) => slots ? <View style={{ height: slots[index], justifyContent: "center" }}>{child}</View> : child;
+  if (variant === "row") return (
+    <View {...skeletonStatus(loadingText)}>
+      <ListRowSkeleton rows={rows} avatar={avatar ?? false} avatarSize={avatarSize} description={description}
+        trailing={quote ? trailing : undefined} divider={colors.divider} />
+    </View>
+  );
+  const sk = tokens.extensions.skeleton;
+  // Market rows follow simple-list market rows (like Web): 16px all round, 14/20 with a minimum height on narrow
+  // screens. Every variant puts its bars in the name and meta line boxes.
+  const market = variant === "market", narrow = market && window.width < tokens.responsive.market;
+  const roles = narrow ? (["input", "body"] as const) : (["label", "caption"] as const);
   return (
-    <View
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
-    >
+    <View {...skeletonStatus(loadingText)}>
       {Array.from({ length: rows }, (_, i) => (
         <View
           key={i}
           style={{
             flexDirection: "row",
             alignItems: "center",
-            gap: tokens.extensions.skeleton.gap,
-            minHeight: market ? (narrow ? tokens.extensions.marketList.minimumHeight : undefined) : tokens.extensions.skeleton.listHeights[variant],
-            paddingVertical: market ? (narrow ? tokens.dimension.value14 : tokens.dimension.value16) : tokens.extensions.skeleton.list[variant].paddingY,
-            paddingHorizontal: market ? (narrow ? tokens.dimension.value20 : tokens.dimension.value16) : tokens.extensions.skeleton.list[variant].paddingX,
+            gap: sk.gap,
+            minHeight: market ? (narrow ? tokens.extensions.marketList.minimumHeight : undefined) : sk.listHeights[variant],
+            paddingVertical: market ? (narrow ? tokens.dimension.value14 : tokens.dimension.value16) : sk.list[variant].paddingY,
+            paddingHorizontal: market ? (narrow ? tokens.dimension.value20 : tokens.dimension.value16) : sk.list[variant].paddingX,
             borderBottomWidth: tokens.border.defaultWidth,
             borderBottomColor: colors.border,
           }}
         >
-          {avatar && (
-            <KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} />
-          )}
-          <View style={{ flex: 1, minWidth: 0, gap: market ? tokens.dimension.value2 : tokens.extensions.skeleton.detailGap }}>
-            {slot(0, <KjunSkeleton
-              type="block"
-              height={tokens.extensions.skeleton.lineHeights.md}
-              width={i % 2 ? "80%" : "65%"}
-            />)}
-            {slot(1, <KjunSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width="50%" />)}
+          {(avatar ?? true) && <KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} />}
+          <View style={{ flex: 1, minWidth: 0, gap: market ? tokens.dimension.value2 : sk.detailGap }}>
+            <KjunSkeleton type="line" role={roles[0]} width={i % 2 ? "80%" : "65%"} />
+            <KjunSkeleton type="line" role={roles[1]} width="50%" />
           </View>
           {quote && (
-            <View style={{ alignItems: "flex-end", gap: market ? tokens.dimension.value2 : tokens.extensions.skeleton.detailGap }}>
-              {slot(0, <KjunSkeleton type="block" height={tokens.extensions.skeleton.quoteHeight} width={tokens.extensions.skeleton.quoteWidth} />)}
-              {slot(1, <KjunSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width={tokens.extensions.skeleton.detailWidth} />)}
+            <View style={{ alignItems: "flex-end", gap: market ? tokens.dimension.value2 : sk.detailGap }}>
+              <KjunSkeleton type="line" role={roles[0]} width={sk.quoteWidth} />
+              <KjunSkeleton type="line" role={roles[1]} width={sk.detailWidth} />
             </View>
           )}
         </View>
@@ -86,28 +95,27 @@ export function KjunListSkeleton({
   );
 }
 // Like Web: KjunListRow's own geometry, bars in the title and description line boxes, a text-start divider.
-function ListRowSkeleton({ rows, avatar, avatarSize, trailing, divider }: { rows: number; avatar: boolean; avatarSize: DimensionValue; trailing: boolean; divider: KjunListDivider }) {
-  const list = tokens.extensions.list, type = tokens.typography;
-  const slot = (role: "control" | "caption", w: DimensionValue, marginTop = 0) => (
-    <View style={{ height: type[role].lineHeightPx, justifyContent: "center", marginTop }}>
-      <KjunSkeleton type="block" height={type[role].lineHeightPx / 2} width={w} />
-    </View>
-  );
+function ListRowSkeleton({ rows, avatar, avatarSize, description, trailing, divider }: {
+  rows: number; avatar: boolean; avatarSize: DimensionValue; description: boolean; trailing?: "value" | "switch" | "chevron"; divider: KjunListDivider;
+}) {
+  const list = tokens.extensions.list;
   const inset = list.padding + (avatar ? list.leadingWidth + list.gap : 0);
   return (
-    <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+    <>
       {Array.from({ length: rows }, (_, i) => (
         <View key={i} style={{ flexDirection: "row", alignItems: "center", gap: list.gap, minHeight: list.minimumHeight, padding: list.padding }}>
-          {avatar && <View style={{ width: list.leadingWidth, alignItems: "center" }}><KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} /></View>}
-          <View style={{ flex: 1, minWidth: 0 }}>
-            {slot("control", i % 2 ? "55%" : "40%")}
-            {slot("caption", "30%", list.descriptionGap)}
+          {avatar ? <View style={{ width: list.leadingWidth, alignItems: "center" }}><KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} /></View> : null}
+          <View style={{ flex: 1, minWidth: 0, gap: list.descriptionGap }}>
+            <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
+            {description ? <KjunSkeleton type="line" role="caption" width="30%" /> : null}
           </View>
-          {trailing ? <View style={{ width: tokens.extensions.skeleton.detailWidth }}>{slot("control", "100%")}</View> : null}
-          {i < rows - 1 && <View style={{ position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: divider }} />}
+          {trailing === "switch" ? <KjunSkeleton type="avatar" width={tokens.extensions.switch.widths.md} height={tokens.extensions.switch.heights.md} />
+            : trailing ? <KjunSkeleton type="line" role="control" width={trailing === "chevron" ? tokens.iconSizes.default : tokens.extensions.skeleton.detailWidth} />
+            : null}
+          {i < rows - 1 ? <View style={{ position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: divider }} /> : null}
         </View>
       ))}
-    </View>
+    </>
   );
 }
 type KjunListDivider = ReturnType<typeof useKjunStyles>["colors"]["divider"];
@@ -116,20 +124,22 @@ export interface KjunFormSkeletonProps {
   columns?: number;
   multiline?: boolean;
   size?: InputSize;
+  /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
+  loadingText?: string;
 }
 export function KjunFormSkeleton({
   fields = ["", "", "", ""],
   columns = 1,
   multiline = false,
   size = "md",
+  loadingText,
 }: KjunFormSkeletonProps) {
   const { colors } = useKjunStyles();
   const window = useWindowDimensions();
   const twoColumns = columns === 2 && window.width >= tokens.responsive.formColumns;
   return (
     <View
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
+      {...skeletonStatus(loadingText)}
       style={{
         flexDirection: twoColumns ? "row" : "column",
         flexWrap: twoColumns ? "wrap" : "nowrap",
@@ -151,10 +161,8 @@ export function KjunFormSkeleton({
               {typeof field === "string" ? field : field.label}
             </KText>
           ) : (
-            // The bar sits in a label-line slot so the field starts where the real input will.
-            <View style={{ height: typeStyle('label').lineHeight, justifyContent: "center" }}>
-              <KjunSkeleton type="block" height={tokens.extensions.skeleton.formLabelHeight} width={tokens.extensions.skeleton.formLabelWidth} />
-            </View>
+            // The bar sits in the label's line box so the field starts where the real input will.
+            <KjunSkeleton type="line" role="label" width={tokens.extensions.skeleton.formLabelWidth} />
           )}
           <View style={{ borderRadius: tokens.input[size].radius, overflow: "hidden" }}>
             <KjunSkeleton
@@ -207,7 +215,6 @@ export function KjunChartSkeleton({
   const kind = chartSkeletonKind(requestedKind),
     { colors } = useKjunStyles(),
     reduced = useReducedMotion(),
-    opacity = useRef(new Animated.Value(1)).current,
     revealed = useLoadingReveal(true, loadingDelay),
     spec = tokens.extensions.chartSkeleton,
     caption = tokens.typography.caption.lineHeightPx,
@@ -220,20 +227,9 @@ export function KjunChartSkeleton({
     // Like Web: tick bars narrow when ticks crowd the plot, so an end bar keeps a label gap from its neighbour.
     step = frameWidth > 0 ? (frameWidth - axis) / (chartFrameStops(xTicks).length - 1) : Infinity,
     tickWidth = Math.max(0, Math.min(spec.tickLabelWidth, ((step - spec.labelGap) * 2) / 3));
-  useEffect(() => {
-    if (reduced || !skeleton) return;
-    const loop = Animated.loop(
-      Animated.sequence([
-        Animated.timing(opacity, { toValue: 0.55, duration: tokens.motion.shimmer / 2, useNativeDriver: true }),
-        Animated.timing(opacity, { toValue: 1, duration: tokens.motion.shimmer / 2, useNativeDriver: true }),
-      ])
-    );
-    loop.start();
-    return () => {
-      loop.stop();
-      opacity.setValue(1);
-    };
-  }, [opacity, reduced, skeleton]);
+  // The shared skeleton pulse (1 → 0.6) dims the chart's skeleton parts to 0.55, like Web.
+  const pulse = useSkeletonPulse(!reduced && skeleton),
+    opacity = pulse ? pulse.interpolate({ inputRange: [0.6, 1], outputRange: [tokens.states.opacity.pending, 1] }) : 1;
   // Like Web: only the skeleton-coloured parts pulse; the grid holds still.
   const label = (style: object, key: string) => (
     <Animated.View key={key} {...chartPart("label")}

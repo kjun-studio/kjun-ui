@@ -122,7 +122,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
                     ) : state.pill ? (
                       <>
                         {metricLoading(row, state.key) ? (
-                          <KjunSkeleton type="block" height={tokens.extensions.marketTable.valueSkeletonHeight} width={tokens.extensions.marketTable.valueSkeletonWidth} />
+                          <KjunSkeleton type="line" width={tokens.extensions.marketTable.valueSkeletonWidth} />
                         ) : isChange && getValue(row, state.key) != null ? (
                           <KjunSignedValue
                             value={finiteNumber(getValue(row, state.key))}
@@ -131,7 +131,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
                             tone="pill"
                           />
                         ) : isPrice && getValue(row, state.key) == null ? (
-                          <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
+                          <KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth} />
                         ) : (
                           <div className="kjun-market-metric">
                             {props.renderMetricPrefix?.(

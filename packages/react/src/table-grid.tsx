@@ -184,10 +184,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                       )}
                       {visible.map((col) => (
                         <td key={col.key}>
-                          <KjunSkeleton
-                            type="block"
-                            height={tokens.table.skeletonHeight}
-                            width={col.key === "actions" ? tokens.table.actionColumnWidth : "75%"}
+                          <KjunSkeleton type="line" width={col.key === "actions" ? tokens.table.actionColumnWidth : "75%"}
                           />
                         </td>
                       ))}

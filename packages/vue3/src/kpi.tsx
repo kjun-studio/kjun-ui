@@ -78,7 +78,7 @@ export const KjunKpiHero = defineComponent({
             <div class="kjun-kpi-hero__main">
               <div class="kjun-kpi-hero__label">{props.label}</div>
               <div class="kjun-kpi-hero__value">
-                {loading ? <KjunSkeleton type="block" height="1lh" width="7ch" /> : <>
+                {loading ? <KjunSkeleton type="line" width="7ch" /> : <>
                   {prefix && <span class="kjun-kpi-hero__affix">{prefix}</span>}
                   <KjunAnimatedNumber value={props.value} decimals={decimals} animated={props.animated} formatter={props.formatter} />
                   {props.suffix && <span class="kjun-kpi-hero__affix">{props.suffix}</span>}
@@ -88,7 +88,7 @@ export const KjunKpiHero = defineComponent({
                 <div class="kjun-kpi-hero__delta-line">
                   {loading ? (
                     // The placeholder takes the delta numbers' line height so the hero keeps its loaded height.
-                    <span class="kjun-kpi-hero__delta-abs"><KjunSkeleton type="block" height="1lh" width={tokens.extensions.kpiHero.deltaSkeletonWidth} /></span>
+                    <span class="kjun-kpi-hero__delta-abs"><KjunSkeleton type="line" width={tokens.extensions.kpiHero.deltaSkeletonWidth} /></span>
                   ) : <>
                     {deltaAbsolute !== null && <span class="kjun-kpi-hero__delta-abs" style={{ color: kpiColor(deltaAbsolute, "price", "text-tertiary") }}>{delta(deltaAbsolute, "absolute")}</span>}
                     {deltaPercent !== null && <span class="kjun-kpi-hero__delta-pct" style={{ color: kpiColor(deltaPercent, "price", "text-tertiary") }}>{delta(deltaPercent, "percent")}</span>}
@@ -105,7 +105,7 @@ export const KjunKpiHero = defineComponent({
                 <div key={i} class="kjun-kpi-hero__sec-item">
                   <div class="kjun-kpi-hero__sec-label">{item.label}</div>
                   <div class="kjun-kpi-hero__sec-value" style={{ color: kpiColor(item.value, item.semantic) }}>
-                    {loading ? <KjunSkeleton type="block" height="1lh" width="5ch" /> : slotContent(slots.secondary?.({ item, index: i })) ?? <>
+                    {loading ? <KjunSkeleton type="line" width="5ch" /> : slotContent(slots.secondary?.({ item, index: i })) ?? <>
                       {item.prefix && <span class="kjun-kpi-hero__sec-affix">{item.prefix}</span>}
                       <span>{kpiFormat(item)}</span>
                       {item.suffix && <span class="kjun-kpi-hero__sec-affix">{item.suffix}</span>}
@@ -113,7 +113,7 @@ export const KjunKpiHero = defineComponent({
                   </div>
                   {item.desc && (
                     <div class={"kjun-kpi-hero__sec-desc " + (item.descClass || "")} style={{ color: "var(--_kjun-color-text-tertiary)" }}>
-                      {loading ? <KjunSkeleton type="block" width="7ch" height="1lh" /> : item.desc}
+                      {loading ? <KjunSkeleton type="line" width="7ch" /> : item.desc}
                     </div>
                   )}
                 </div>
@@ -196,7 +196,7 @@ export const KjunKpiRow = defineComponent({
                 onClick={click} onKeydown={(event: KeyboardEvent) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); click(); } }}>
                 <div class="kjun-kpi-row__label-row">
                   <div class="kjun-kpi-row__label">
-                    {busy && !item.label ? <KjunSkeleton type="block" width={tokens.extensions.kpiRow.labelSkeletonWidth} height={tokens.extensions.kpiRow.labelSkeletonHeight} /> : item.label}
+                    {busy && !item.label ? <KjunSkeleton type="line" width={tokens.extensions.kpiRow.labelSkeletonWidth} /> : item.label}
                   </div>
                   {!busy && item.badgePlacement !== "value" && badge(item)}
                 </div>
@@ -206,9 +206,9 @@ export const KjunKpiRow = defineComponent({
                     {item.valueSegments ? item.valueSegments.map((seg, j) => (
                       <span key={j} class={(seg.class || "") + (seg.label ? " kjun-kpi-row__segment--labeled" : "") + (seg.separator ? " kjun-kpi-row__segment--separator" : "")}>
                         {seg.label && <span class="kjun-kpi-row__segment-label">{seg.label}</span>}
-                        {busy && !seg.separator ? <KjunSkeleton type="block" height="1lh" width="3ch" /> : seg.text}
+                        {busy && !seg.separator ? <KjunSkeleton type="line" width="3ch" /> : seg.text}
                       </span>
-                    )) : busy ? <KjunSkeleton type="block" height="1lh" width="5ch" /> : slotContent(slots.value?.({ item, index: i })) ?? (present ? <>
+                    )) : busy ? <KjunSkeleton type="line" width="5ch" /> : slotContent(slots.value?.({ item, index: i })) ?? (present ? <>
                       {item.prefix && <span class="kjun-kpi-row__affix">{item.prefix}</span>}
                       {item.animated && typeof value === "number"
                         ? <KjunAnimatedNumber fromPrevious value={value} formatter={format} />
@@ -220,7 +220,7 @@ export const KjunKpiRow = defineComponent({
                 </div>
                 {item.desc && (
                   <div class={"kjun-kpi-row__desc " + (item.descClass || "")} style={{ color: item.descClass ? undefined : kpiColor(item.value, item.semantic, "text-secondary") }}>
-                    {busy ? <KjunSkeleton type="block" height="1lh" width="7ch" /> : item.desc}
+                    {busy ? <KjunSkeleton type="line" width="7ch" /> : item.desc}
                   </div>
                 )}
               </div>

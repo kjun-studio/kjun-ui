@@ -89,11 +89,11 @@ export const KjunMarketCards = defineComponent({
                           {state.pill?.format === "sparkline"
                             ? <KjunSparkline {...sparklineCell(rows, row, props.columns.find(c => c.key === state.key) ?? { key: state.key }, getValue)} width={tokens.extensions.marketTable.sparklineWidth} height={tokens.extensions.marketTable.sparklineHeight} />
                             : state.pill ? props.metricLoading(row, state.key)
-                              ? <KjunSkeleton type="block" height={tokens.extensions.marketTable.valueSkeletonHeight} width={tokens.extensions.marketTable.valueSkeletonWidth} />
+                              ? <KjunSkeleton type="line" width={tokens.extensions.marketTable.valueSkeletonWidth} />
                               : isChange && value != null
                                 ? <KjunSignedValue value={finiteNumber(value)} formatter={() => display(row)} stale={!!getValue(row, "stale")} tone="pill" />
                                 : isPrice && value == null
-                                  ? <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
+                                  ? <KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth} />
                                   : <div class="kjun-market-metric">{slots.metricPrefix?.({ row, key: state.key, isPrice })}{display(row)}</div>
                             : null}
                         </div>

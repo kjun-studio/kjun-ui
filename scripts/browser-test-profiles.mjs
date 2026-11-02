@@ -11,7 +11,7 @@ const layers = files('elevation', 'elevation-edges', 'elevation-inputs', 'elevat
 // 제목 필터 대신 파일 전체를 선택해 플랫폼별 사례와 함께 쓰이는 컴포넌트를 보존한다.
 const componentGroups = {
   alert: [...files('alert-design', 'accessibility-components', 'chip-toast-tokens'), ...visuals],
-  'data-state': [...files('data-state-design', 'loading-options', 'table-contracts', 'runtime-cards', 'runtime-market'), ...contracts],
+  'data-state': [...files('data-state-design', 'skeleton-design', 'loading-options', 'table-contracts', 'runtime-cards', 'runtime-market'), ...contracts],
   card: [...files('card-contract', 'card-review', 'card-layout', 'card-colors', 'card-hairline', 'geometry-tokens'), ...visuals],
   table: [...files('table-contracts', 'table-refine', 'table-groups', 'table-list', 'loading-options', 'runtime-cards', 'data-state-design', 'accessibility-components'), ...contracts, ...visuals],
   market: [...files('runtime-market', 'price-status', 'loading-options', 'data-state-design', 'geometry-tokens'), ...visuals],

@@ -1,12 +1,12 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
-import { skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
+import { skeletonLineBox, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
 import { badgeGeometry, badgeToneRoles } from "../../../shared/package-runtime/badge-tone";
 import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
-import { tokens } from "@kjun-ui/tokens";
+import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { progressCircle, progressState } from "../../../shared/package-runtime/progress-circle";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import { typeStyle } from "./typography";
@@ -18,6 +18,7 @@ type HTMLAttributes,
 type ReactNode,
 } from "react";
 import { KjunIcon } from "./button";
+import { useSkeletonPhase } from "./skeleton-phase";
 import { useReducedMotion } from "./use-reduced-motion";
 import { ActionSizeContext, alertActionSizes } from "../../../shared/package-runtime/action-size";
 export type DisplaySize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -282,7 +283,12 @@ export function KjunProgress({
   );
 }
 export interface KjunSkeletonProps {
-  type?: "text" | "avatar" | "card" | "table" | "stat" | "block";
+  /** "line" is one line of text: a bar in the line box of `role`, or of the surrounding text when no role is given. */
+  type?: "text" | "line" | "avatar" | "card" | "table" | "stat" | "block";
+  /** Typography role for type="line"; omit it to take the surrounding text's line height. */
+  role?: TypographyRole;
+  /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
+  loadingText?: string;
   rows?: number;
   columns?: number;
   height?: CSSProperties["height"];
@@ -298,7 +304,10 @@ export function KjunSkeleton({
   width,
   animated = true,
   rounded = true,
+  role,
+  loadingText,
 }: KjunSkeletonProps) {
+  const root = useSkeletonPhase(animated);
   const line = (w: CSSProperties["width"], key?: number, h?: number) => (
     <div
       key={key}
@@ -307,8 +316,11 @@ export function KjunSkeleton({
     />
   );
   // A bar inside a line box of a type role, so the skeleton is as tall as that text.
-  const slot = (w: CSSProperties["width"], role?: "card-title" | "caption" | "display-sm", key?: number) => (
-    <div key={key} className="kjun-skeleton-slot" data-role={role}>{line(w)}</div>
+  const slot = (w: CSSProperties["width"], lineRole?: TypographyRole | "inherit", key?: number) => (
+    <div key={key} className="kjun-skeleton-slot"
+      style={lineRole ? { "--_kjun-skeleton-slot": skeletonLineBox(lineRole === "inherit" ? undefined : lineRole) } as CSSProperties : undefined}>
+      {line(w)}
+    </div>
   );
   const avatar = () => (
     <div
@@ -316,7 +328,7 @@ export function KjunSkeleton({
       style={{
         width: width || tokens.extensions.skeleton.avatarSize,
         height: height || tokens.extensions.skeleton.avatarSize,
-        borderRadius: rounded ? "50%" : tokens.radius.radius8,
+        borderRadius: rounded ? tokens.radius.radius9999 : tokens.radius.radius8,
       }}
     />
   );
@@ -324,16 +336,21 @@ export function KjunSkeleton({
     Array.from({ length: Math.max(0, Math.floor(n)) }, (_, i) => i + 1);
   return (
     <div
-      aria-hidden="true"
+      ref={root}
+      aria-hidden={loadingText ? undefined : true}
+      role={loadingText ? "status" : undefined}
       className={"kjun-skeleton" + (animated ? " kjun-skeleton-animated" : "")}
+      data-type={type}
       style={{ width }}
     >
+      {loadingText && <span className="kjun-sr-only">{loadingText}</span>}
       {type === "text" && skeletonTextWidths(rows).map((w, i) => slot(w, undefined, i))}
+      {type === "line" && slot("100%", role ?? "inherit")}
       {type === "avatar" && avatar()}
       {type === "card" && (
         <div className="kjun-skeleton-card">
           <div className="kjun-skeleton-card-header">
-            {slot("40%", "card-title")}
+            {slot("40%", "cardTitle")}
             {slot("28%", "caption")}
           </div>
           {rows > 0 && <div className="kjun-skeleton-card-body">{skeletonTextWidths(rows).map((w, i) => slot(w, undefined, i))}</div>}
@@ -366,7 +383,7 @@ export function KjunSkeleton({
       {type === "stat" && (
         <div className="kjun-skeleton-stat">
           {slot("40%", "caption")}
-          {slot("64%", "display-sm")}
+          {slot("64%", "displaySm")}
           {slot("30%", "caption")}
         </div>
       )}
@@ -379,3 +396,4 @@ export function KjunSkeleton({
     </div>
   );
 }
+

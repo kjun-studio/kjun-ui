@@ -1,3 +1,4 @@
+import { tokens } from "@kjun-ui/tokens";
 import type { KeyboardEvent } from "react";
 import type { TableCardSection } from "./table-model";
 import type { TableCardsProps } from "../../../shared/package-runtime/table-presentation";
@@ -17,7 +18,18 @@ export function TableCards<Row extends object>({ initialLoading, skeletonRows, s
             {initialLoading
               ? Array.from({ length: skeletonRows }, (_, i) => (
                   <div key={i} className="kjun-table-card">
-                    <KjunSkeleton type="card" />
+                    {/* The card's own header and fields, so loading never nests a card inside the card. */}
+                    <div className="kjun-table-card-header">
+                      <div className="kjun-table-card-header-left"><KjunSkeleton type="line" role="cardTitle" width={tokens.extensions.tableCard.titleSkeletonWidth} /></div>
+                    </div>
+                    <div className="kjun-table-card-body">
+                      {[0, 1, 2, 3].map((field) => (
+                        <div key={field} className="kjun-table-card-field">
+                          <KjunSkeleton type="line" role="caption" width="50%" />
+                          <KjunSkeleton type="line" role="body" width={field % 2 ? "60%" : "75%"} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))
               : state.rows.map((row, i) => (

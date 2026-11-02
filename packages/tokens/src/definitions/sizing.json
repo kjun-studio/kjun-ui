@@ -271,8 +271,7 @@
       "sparklineDashGap": { "$ref": "dimension.value3" },
       "priceSkeletonWidth": 64,
       "priceSkeletonHeight": 16,
-      "signedSkeletonWidth": 48,
-      "signedSkeletonHeight": { "$ref": "typography.numberSm.lineHeightPx" }
+      "signedSkeletonWidth": 48
     },
     "marketTable": {
       "sortIconSize": {
@@ -281,19 +280,16 @@
       "sparklineWidth": 72,
       "sparklineHeight": 22,
       "valueSkeletonWidth": 56,
-      "valueSkeletonHeight": 16,
       "actionSkeletonWidth": 32,
       "headerSkeletonHeight": 14
     },
     "marketList": {
       "minimumHeight": 72,
       "mobileQuoteMinimumWidth": 102,
-      "changeSkeletonWidth": 56,
-      "changeSkeletonHeight": 14
+      "changeSkeletonWidth": 56
     },
     "skeleton": {
       "lineHeights": {
-        "sm": 12,
         "md": 16
       },
       "avatarSize": 48,
@@ -307,10 +303,8 @@
         "notification": 64
       },
       "quoteWidth": 88,
-      "quoteHeight": 18,
       "detailWidth": 56,
       "formLabelWidth": 96,
-      "formLabelHeight": 14,
       "identityWidth": 128,
       "identityHeight": 20,
       "listAvatarSize": 36
@@ -338,7 +332,6 @@
     "kpiRow": {
       "dotSize": 4,
       "labelSkeletonWidth": 80,
-      "labelSkeletonHeight": 13,
       "valueSkeletonWidth": 80,
       "segmentSkeletonWidth": 48,
       "descriptionSkeletonWidth": 90

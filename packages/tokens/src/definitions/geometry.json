@@ -172,8 +172,7 @@
       "metaGap": { "$ref": "dimension.value2" },
       "radius": { "$ref": "radius.radius12" }
     },
-    "columnWidth": 160,
-    "skeletonHeight": 20
+    "columnWidth": 160
   },
   "modal": {
     "widths": {

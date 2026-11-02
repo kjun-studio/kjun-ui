@@ -90,7 +90,7 @@ export function KjunPriceCell({
 }: KjunPriceCellProps) {
   if (value == null) return hasContent(status)
     ? <><span className="kjun-price-cell" data-missing="">—</span><PriceStatus status={status} /></>
-    : <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />;
+    : <KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth} />;
   return (
     <>
       <span
@@ -169,7 +169,7 @@ export function KjunSignedValue({
             : undefined,
       }}
     >
-      {loading ? <KjunSkeleton type="block" width={tokens.extensions.financial.signedSkeletonWidth} height="1lh" /> : display}
+      {loading ? <KjunSkeleton type="line" width={tokens.extensions.financial.signedSkeletonWidth} /> : display}
     </span>
   );
 }

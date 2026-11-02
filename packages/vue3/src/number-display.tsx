@@ -74,7 +74,7 @@ export const KjunPriceCell = defineComponent({
     // With no price a status still shows after a dash, for states such as "거래정지"; without one null is loading.
     return () => props.value == null
       ? hasContent(slots.status?.()) ? <><span class="kjun-price-cell" data-missing="">—</span>{priceStatus(slots.status?.())}</>
-        : <KjunSkeleton type="block" height={tokens.extensions.financial.priceSkeletonHeight} width={tokens.extensions.financial.priceSkeletonWidth} />
+        : <KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth} />
       : <>
         <span class={"kjun-price-cell " + props.flashClass} ref={domainRef(/\bkjun-price-flash-(up|down)/.test(props.flashClass))}
           style={{ color: props.stale ? "var(--_kjun-color-text-tertiary)" : undefined }}>
@@ -112,7 +112,7 @@ export const KjunSignedValue = defineComponent({
       return (
         <span class="kjun-signed-value" ref={domainRef(role.startsWith("price-"))} data-tone={props.tone} aria-busy={props.loading}
           style={{ color: `var(--_kjun-color-${role})`, background: props.tone === "pill" && !props.stale && n !== null ? `var(--_kjun-color-${role}-bg)` : undefined }}>
-          {props.loading ? <KjunSkeleton type="block" width={tokens.extensions.financial.signedSkeletonWidth} height="1lh" /> : display}
+          {props.loading ? <KjunSkeleton type="line" width={tokens.extensions.financial.signedSkeletonWidth} /> : display}
         </span>
       );
     };

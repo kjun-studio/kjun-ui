@@ -18,7 +18,14 @@ export function TableList<Row extends object>({ initialLoading, skeletonRows, sk
     <View role="list" style={{ opacity: skeletonHidden ? 0 : undefined }} aria-hidden={skeletonHidden || undefined}>
       {initialLoading
         ? Array.from({ length: skeletonRows }, (_, i) => (
-            <View key={i} style={{ paddingVertical: geometry.paddingY, paddingHorizontal: geometry.paddingX }}><KjunSkeleton type="text" rows={2} /></View>
+            // Like Web: a title over one meta line with a value at the end, like the loaded row.
+            <View key={i} style={{ flexDirection: "row", alignItems: "center", gap: geometry.gap, paddingVertical: geometry.paddingY, paddingHorizontal: geometry.paddingX }}>
+              <View style={{ flex: 1, minWidth: 0, gap: geometry.metaGap }}>
+                <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
+                <KjunSkeleton type="line" role="caption" width="30%" />
+              </View>
+              <KjunSkeleton type="line" role="control" width={tokens.extensions.skeleton.detailWidth} />
+            </View>
           ))
         : state.rows.map((row, i) => (
             <View key={state.key(row, i)} role="listitem">

@@ -1,3 +1,4 @@
+import { tokens } from "@kjun-ui/tokens";
 import type { KeyboardEvent } from "react";
 import type { TableCardsProps, TableTotal } from "../../../shared/package-runtime/table-presentation";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
@@ -16,7 +17,14 @@ export function TableList<Row extends object>({ initialLoading, skeletonRows, sk
       style={skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={skeletonHidden || undefined}>
       {initialLoading
         ? Array.from({ length: skeletonRows }, (_, i) => (
-            <div key={i} className="kjun-table-list-item"><KjunSkeleton type="text" rows={2} /></div>
+            // A title over one meta line with a value at the end, like the loaded row.
+            <div key={i} className="kjun-table-list-item">
+              <div className="kjun-table-list-main">
+                <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
+                <KjunSkeleton type="line" role="caption" width="30%" />
+              </div>
+              <div className="kjun-table-list-side"><KjunSkeleton type="line" role="control" width={tokens.extensions.skeleton.detailWidth} /></div>
+            </div>
           ))
         : state.rows.map((row, i) => (
             <div key={state.key(row, i)} role="listitem">

@@ -72,7 +72,7 @@
   "KjunListSkeleton": {
     "slug": "list-skeleton",
     "description": "목록의 자산 식별 영역과 숫자 영역, 또는 KjunListRow 행의 자리를 유지합니다.",
-    "interaction": "rows·variant·avatar·quote로 목록의 자리를 구성합니다. market·compact·notification은 시세 목록 행, row는 KjunListRow 행(제목·설명 줄, 글자 시작선부터 긋는 구분선, 아바타는 avatar로 켤 때만)을 따릅니다. 조회 완료 후 실제 목록으로 교체하는 책임은 소비자에게 있습니다.",
+    "interaction": "rows·variant·avatar·quote로 목록의 자리를 구성합니다. market·compact·notification은 시세 목록 행, row는 KjunListRow 행(제목·설명 줄, 글자 시작선부터 긋는 구분선, 아바타는 avatar로 켤 때만)을 따르며, description으로 설명 줄을, trailing으로 행 끝 자리(value·switch·chevron)를 고릅니다. 단독으로 쓸 때는 loadingText로 화면 낭독기에 로딩을 알립니다. 조회 완료 후 실제 목록으로 교체하는 책임은 소비자에게 있습니다.",
     "differences": "세 플랫폼에서 목록 구성은 같은 prop을 사용합니다. 별도 animated prop은 없으므로 이를 로딩 on/off 조절기로 사용하지 마세요.",
     "states": "rows·variant·avatar·quote로 반복 항목 모양을 설정합니다. 입력·선택 상태는 없습니다."
   },
@@ -135,7 +135,7 @@
   "KjunSkeleton": {
     "slug": "skeleton",
     "description": "텍스트·카드·표·통계·아바타·블록의 조회 대기 모양을 표시합니다.",
-    "interaction": "type별 자리 표시자의 크기와 반복 수를 구성합니다. text는 본문 줄 높이, card는 기본 KjunCard(제목·부제·본문 줄), stat은 KpiRow 항목(라벨·값·설명)과 같은 높이라 로딩 후 화면이 움직이지 않습니다. 막대는 해당 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다. 로딩 판단과 실제 콘텐츠 교체는 소비자가 합니다.",
+    "interaction": "type별 자리 표시자의 크기와 반복 수를 구성합니다. text는 본문 줄 높이, line은 role 글자 역할(웹에서 생략하면 주변 글자)의 한 줄, card는 기본 KjunCard(제목·부제·본문 줄), stat은 KpiRow 항목(라벨·값·설명)과 같은 높이라 로딩 후 화면이 움직이지 않습니다. 막대는 해당 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다. KJUN 컴포넌트의 로딩 자리(KPI·표·시세 값)도 같은 line 규칙을 씁니다. DataState 밖에서 단독으로 쓸 때는 loadingText로 화면 낭독기에 로딩을 알립니다. 로딩 판단과 실제 콘텐츠 교체는 소비자가 합니다.",
     "differences": "웹의 width·height는 CSS 길이, Native는 Native 크기 타입을 따릅니다. 크기를 지정할 때 선택 플랫폼의 API를 확인하세요.",
     "states": "지정한 행·열·크기와 슬롯 영역을 로딩 모양으로 유지합니다. 움직임은 animated 설정과 동작 줄이기 환경을 따릅니다. 입력·선택 이벤트는 없습니다."
   },

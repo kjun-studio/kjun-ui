@@ -1,17 +1,23 @@
-import { tokens } from "@kjun-ui/tokens";
-import { useEffect,useRef } from "react";
+import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import {
 Animated,
 View,
+useWindowDimensions,
 type DimensionValue,
 type ViewStyle
 } from "react-native";
 import { skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
 import { useReducedMotion } from "./internal";
+import { useSkeletonPulse } from "./skeleton-clock";
 import { useKjunStyles } from "./provider";
 
 export interface KjunSkeletonProps {
-  type?: "text" | "avatar" | "card" | "table" | "stat" | "block";
+  /** "line" is one line of text: a bar in the line box of `role` (default body). */
+  type?: "text" | "line" | "avatar" | "card" | "table" | "stat" | "block";
+  /** Typography role for type="line". */
+  role?: TypographyRole;
+  /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
+  loadingText?: string;
   rows?: number;
   columns?: number;
   height?: DimensionValue;
@@ -27,38 +33,20 @@ export function KjunSkeleton({
   width,
   animated = true,
   rounded = true,
+  role = "body",
+  loadingText,
 }: KjunSkeletonProps) {
   const { colors } = useKjunStyles(),
     reduced = useReducedMotion(),
-    opacity = useRef(new Animated.Value(1)).current;
-  useEffect(() => {
-    if (!animated || reduced) return;
-    const loop = Animated.loop(
-      Animated.sequence([
-        Animated.timing(opacity, {
-          toValue: 0.6,
-          duration: tokens.motion.shimmer / 2,
-          useNativeDriver: false,
-        }),
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: tokens.motion.shimmer / 2,
-          useNativeDriver: false,
-        }),
-      ])
-    );
-    loop.start();
-    return () => {
-      loop.stop();
-      opacity.setValue(1);
-    };
-  }, [animated, reduced, opacity]);
-  const shimmer = typeof colors.skeletonShine === "string" && typeof colors.skeleton === "string"
+    // Text scales with the device's font size, so the line boxes that stand in for it scale too.
+    { fontScale } = useWindowDimensions(),
+    opacity = useSkeletonPulse(animated && !reduced);
+  const shimmer = opacity && typeof colors.skeletonShine === "string" && typeof colors.skeleton === "string"
     ? opacity.interpolate({ inputRange: [0.6, 1], outputRange: [colors.skeletonShine, colors.skeleton] })
     : colors.skeleton;
   const block = (
     w: DimensionValue,
-    h: DimensionValue = 16,
+    h: DimensionValue = tokens.extensions.skeleton.lineHeights.md,
     extra: ViewStyle = {}
   ) => (
     <Animated.View
@@ -74,18 +62,21 @@ export function KjunSkeleton({
   const count = (n: number) =>
     Array.from({ length: Math.max(0, Math.floor(n)) }, (_, i) => i + 1);
   // Like Web: a bar half a type role's line height, centred in that line box, so the skeleton is as tall as the text.
-  const slot = (w: DimensionValue, role: "body" | "caption" | "cardTitle" | "displaySm" = "body", key?: number, marginTop = 0) => {
-    const lineHeight = tokens.typography[role].lineHeightPx;
+  const slot = (w: DimensionValue, lineRole: TypographyRole = "body", key?: number, marginTop = 0) => {
+    const lineHeight = tokens.typography[lineRole].lineHeightPx * fontScale;
     return <View key={key} style={{ height: lineHeight, justifyContent: "center", marginTop }}>{block(w, lineHeight / 2)}</View>;
   };
   const paragraph = () => skeletonTextWidths(rows).map((w, i) => slot(w, "body", i));
   return (
-    <Animated.View
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
+    <View
+      {...(loadingText
+        // The status carries the text; iOS and Android need the label and an explicit live region.
+        ? { role: "status" as const, accessible: true, accessibilityLabel: loadingText, accessibilityLiveRegion: "polite" as const }
+        : { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants" as const })}
       style={{ width: width || "100%", overflow: "hidden" }}
     >
       {type === "text" && paragraph()}
+      {type === "line" && slot("100%", role)}
       {type === "avatar" &&
         block(width || tokens.extensions.skeleton.avatarSize, height || tokens.extensions.skeleton.avatarSize, { borderRadius: rounded ? tokens.radius.radius9999 : tokens.extensions.skeleton.blockRadius })}
       {type === "card" && (
@@ -152,6 +143,6 @@ export function KjunSkeleton({
       )}
       {type === "block" &&
         block(width || "100%", height ?? tokens.extensions.skeleton.blockHeight, { borderRadius: tokens.extensions.skeleton.blockRadius })}
-    </Animated.View>
+    </View>
   );
 }

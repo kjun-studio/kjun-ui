@@ -18,7 +18,19 @@ export function TableCards<Row extends object>({ initialLoading, skeletonRows, s
       aria-hidden={skeletonHidden || undefined}>
       {initialLoading
         ? Array.from({ length: skeletonRows }, (_, i) => (
-            <KjunSkeleton key={i} type="card" />
+            // Like Web: the card's own frame, header and fields, so loading never nests a card inside the card.
+            <View key={i} style={{ padding: tokens.extensions.tableCard.padding, borderWidth: tokens.border.defaultWidth, borderColor: colors.border,
+              borderRadius: tokens.extensions.tableCard.radius, backgroundColor: colors.background, gap: tokens.extensions.tableCard.gap }}>
+              <KjunSkeleton type="line" role="cardTitle" width={tokens.extensions.tableCard.titleSkeletonWidth} />
+              <View style={{ flexDirection: "row", flexWrap: "wrap", rowGap: tokens.extensions.tableCard.metricGap }}>
+                {[0, 1, 2, 3].map((field) => (
+                  <View key={field} style={{ width: "50%", gap: tokens.extensions.tableCard.valueGap }}>
+                    <KjunSkeleton type="line" role="caption" width="50%" />
+                    <KjunSkeleton type="line" role="body" width={field % 2 ? "60%" : "75%"} />
+                  </View>
+                ))}
+              </View>
+            </View>
           ))
         : state.rows.map((row, i) => (
             <Pressable

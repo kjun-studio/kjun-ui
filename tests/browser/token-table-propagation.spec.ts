@@ -30,8 +30,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'token-connections');
     const table = page.getByTestId('table');
-    const dimensions = await table.evaluate(el => [...el.querySelectorAll('*')].map(node => ({ w: getComputedStyle(node).width, h: getComputedStyle(node).height })));
-    expect(dimensions.some(value => value.w === px(tokens.table.actionColumnWidth) && value.h === px(tokens.table.skeletonHeight))).toBe(true);
+    // The actions column's loading bar keeps the column width and is half its cell's line box.
+    expect(await table.evaluate((el, width) => [...el.querySelectorAll('*')].some(node => {
+      const own = node.getBoundingClientRect(), parent = node.parentElement!.getBoundingClientRect();
+      return Math.abs(own.width - width) < 0.6 && own.height > 0 && Math.abs(own.height * 2 - parent.height) < 0.6;
+    }), tokens.table.actionColumnWidth)).toBe(true);
     const next = page.getByTestId('pagination').getByRole('button', { name: '다음 페이지', exact: true });
     const size = platform === 'native' ? Math.max(tokens.extensions.pagination.itemSize, tokens.native.minimumTouchTarget) : tokens.extensions.pagination.itemSize;
     await expect(next).toHaveCSS('width', px(size));

@@ -110,8 +110,8 @@ export const KjunMarketTableSkeleton = defineComponent({
   setup(props) {
     return () => {
       const cols = normalizeMarketColumns(props.columns), geometry = tokens.extensions.marketTable;
-      const valueSkeleton = (height: number) => (
-        <span class="kjun-market-skeleton-value"><KjunSkeleton type="block" width={tokens.extensions.financial.priceSkeletonWidth} height={height} /></span>
+      const valueSkeleton = () => (
+        <span class="kjun-market-skeleton-value"><KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth} /></span>
       );
       return (
         <div aria-hidden="true" class="kjun-table-scroll">
@@ -128,10 +128,10 @@ export const KjunMarketTableSkeleton = defineComponent({
                   <td key={col.key || i} class={props.alignClass?.(col.align)} style={{ textAlign: col.align }}>
                     {isMarketIdentity(col.key) ? (
                       <div class="kjun-market-skeleton-identity">
-                        <KjunSkeleton type="block" width="80%" height={tokens.extensions.skeleton.lineHeights.md} />
-                        <KjunSkeleton type="block" width="60%" height={tokens.extensions.skeleton.lineHeights.sm} />
+                        <KjunSkeleton type="line" width="80%" />
+                        <KjunSkeleton type="line" width="60%" />
                       </div>
-                    ) : valueSkeleton(tokens.extensions.financial.priceSkeletonHeight)}
+                    ) : valueSkeleton()}
                   </td>
                 ))}
               </tr>

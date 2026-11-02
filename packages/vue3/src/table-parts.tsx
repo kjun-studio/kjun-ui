@@ -182,7 +182,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
             <tr key={i} aria-hidden="true">
               {selectable && <td class="kjun-table-action-cell"><KjunSkeleton type="block" height={tokens.table.selectionSize} width={tokens.table.selectionSize} /></td>}
               {visible.map(col => (
-                <td key={col.key}><KjunSkeleton type="block" height={tokens.table.skeletonHeight} width={col.key === "actions" ? tokens.table.actionColumnWidth : "75%"} /></td>
+                <td key={col.key}><KjunSkeleton type="line" width={col.key === "actions" ? tokens.table.actionColumnWidth : "75%"} /></td>
               ))}
               {expandable && <td class="kjun-table-action-cell" />}
             </tr>
@@ -204,7 +204,20 @@ export function tableCards(c: TableRowsContext & { layout: TableLayout; totals: 
     <div class="kjun-table-cards" role="list" aria-label={c.ariaLabel}
       style={c.skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={c.skeletonHidden ? "true" : undefined}>
       {c.initialLoading
-        ? Array.from({ length: c.skeletonRows }, (_, i) => <div key={i} class="kjun-table-card"><KjunSkeleton type="card" /></div>)
+        // Like React: the card's own header and fields, so loading never nests a card inside the card.
+        ? Array.from({ length: c.skeletonRows }, (_, i) => (
+          <div key={i} class="kjun-table-card">
+            <div class="kjun-table-card-header"><div class="kjun-table-card-header-left"><KjunSkeleton type="line" role="cardTitle" width={tokens.extensions.tableCard.titleSkeletonWidth} /></div></div>
+            <div class="kjun-table-card-body">
+              {[0, 1, 2, 3].map(field => (
+                <div key={field} class="kjun-table-card-field">
+                  <KjunSkeleton type="line" role="caption" width="50%" />
+                  <KjunSkeleton type="line" role="body" width={field % 2 ? "60%" : "75%"} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
         : state.rows.map((row, i) => (
           <div key={state.key(row, i)} role="listitem" class={"kjun-table-card kjun-table-row-action " + c.customClass(row, i)}
             tabindex={c.clickable ? 0 : undefined} onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} onClick={() => c.rowClick(row, i)}>
@@ -256,7 +269,15 @@ export function tableList(c: TableRowsContext & { layout: TableLayout; totals: T
     <div class="kjun-table-list" role="list" aria-label={c.ariaLabel}
       style={c.skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={c.skeletonHidden ? "true" : undefined}>
       {c.initialLoading
-        ? Array.from({ length: c.skeletonRows }, (_, i) => <div key={i} class="kjun-table-list-item"><KjunSkeleton type="text" rows={2} /></div>)
+        ? Array.from({ length: c.skeletonRows }, (_, i) => (
+          <div key={i} class="kjun-table-list-item">
+            <div class="kjun-table-list-main">
+              <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
+              <KjunSkeleton type="line" role="caption" width="30%" />
+            </div>
+            <div class="kjun-table-list-side"><KjunSkeleton type="line" role="control" width={tokens.extensions.skeleton.detailWidth} /></div>
+          </div>
+        ))
         : state.rows.map((row, i) => (
           <div key={state.key(row, i)} role="listitem">
             <div class={"kjun-table-list-item kjun-table-row-action " + c.customClass(row, i)} data-selected={state.selectedRow(row) || undefined}

@@ -2,6 +2,7 @@ import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, type ExtractPublicPropTypes, type PropType } from "vue";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { KjunSkeleton, KjunSpinner } from "./display";
+import { useSkeletonPhase } from "./skeleton-phase";
 import { useLoadingReveal } from "./runtime/loading-reveal";
 import {
   chartFrameDefaults,
@@ -27,46 +28,56 @@ const kjunListSkeletonProps = {
   avatar: { type: Boolean, default: undefined },
   avatarSize: { type: [Number, String] as PropType<Length>, default: sizes.listAvatarSize },
   quote: { type: Boolean, default: true },
+  /** Row variant: draws the description line. */
+  description: { type: Boolean, default: true },
+  /** Row variant: what ends the row, a value, a switch or a chevron; quote={false} leaves it empty. */
+  trailing: { type: String as PropType<"value" | "switch" | "chevron">, default: "value" },
+  /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
+  loadingText: { type: String, default: undefined },
 } as const;
 export type KjunListSkeletonProps = ExtractPublicPropTypes<typeof kjunListSkeletonProps>;
 export const KjunListSkeleton = defineComponent({
   name: "KjunListSkeleton",
   props: kjunListSkeletonProps,
   setup(props) {
-    // Like React: the row variant uses KjunListRow's line boxes and text-start divider.
-    const slot = (role: "control" | "caption", w: Length) => (
-      <div class="kjun-list-skeleton-slot" data-role={role}>
-        <KjunSkeleton type="block" height={tokens.typography[role].lineHeightPx / 2} width={w} />
-      </div>
-    );
-    const listRows = (avatar: boolean) => (
-      <div aria-hidden="true">
-        {Array.from({ length: props.rows }, (_, i) => (
-          <div key={i} class="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined}>
-            {avatar && <div class="kjun-list-skeleton-leading"><KjunSkeleton type="avatar" width={props.avatarSize} height={props.avatarSize} /></div>}
-            <div class="kjun-list-skeleton-label">{slot("control", i % 2 ? "55%" : "40%")}{slot("caption", "30%")}</div>
-            {props.quote && <div class="kjun-list-skeleton-trailing">{slot("control", sizes.detailWidth)}</div>}
+    // Like React: the row variant uses KjunListRow's line boxes; other variants take each slot's line height from CSS.
+    const row = (i: number) => {
+      const avatar = props.avatar ?? false;
+      return (
+        <div key={i} class="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined}>
+          {avatar && <div class="kjun-list-skeleton-leading"><KjunSkeleton type="avatar" width={props.avatarSize} height={props.avatarSize} /></div>}
+          <div class="kjun-list-skeleton-label">
+            <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
+            {props.description && <KjunSkeleton type="line" role="caption" width="30%" />}
           </div>
-        ))}
-      </div>
-    );
-    return () => props.variant === "row" ? listRows(props.avatar ?? false) : (
-      <div aria-hidden="true">
-        {Array.from({ length: props.rows }, (_, i) => (
-          <div key={i} class="kjun-list-skeleton-row" data-variant={props.variant}>
-            {(props.avatar ?? true) && <KjunSkeleton type="avatar" width={props.avatarSize} height={props.avatarSize} />}
-            <div class="kjun-list-skeleton-label">
-              <KjunSkeleton type="block" height={sizes.lineHeights.md} width={i % 2 ? "80%" : "65%"} />
-              <KjunSkeleton type="block" height={sizes.lineHeights.sm} width="50%" />
+          {props.quote && (
+            <div class="kjun-list-skeleton-trailing" data-kind={props.trailing}>
+              {props.trailing === "switch" ? <KjunSkeleton type="avatar" width={tokens.extensions.switch.widths.md} height={tokens.extensions.switch.heights.md} />
+                : <KjunSkeleton type="line" role="control" width={props.trailing === "chevron" ? tokens.iconSizes.default : sizes.detailWidth} />}
             </div>
-            {props.quote && (
-              <div class="kjun-list-skeleton-quote">
-                <KjunSkeleton type="block" height={sizes.quoteHeight} width={sizes.quoteWidth} />
-                <KjunSkeleton type="block" height={sizes.lineHeights.sm} width={sizes.detailWidth} />
-              </div>
-            )}
+          )}
+        </div>
+      );
+    };
+    const quoteRow = (i: number) => (
+      <div key={i} class="kjun-list-skeleton-row" data-variant={props.variant}>
+        {(props.avatar ?? true) && <KjunSkeleton type="avatar" width={props.avatarSize} height={props.avatarSize} />}
+        <div class="kjun-list-skeleton-label">
+          <KjunSkeleton type="line" width={i % 2 ? "80%" : "65%"} />
+          <KjunSkeleton type="line" width="50%" />
+        </div>
+        {props.quote && (
+          <div class="kjun-list-skeleton-quote">
+            <KjunSkeleton type="line" width={sizes.quoteWidth} />
+            <KjunSkeleton type="line" width={sizes.detailWidth} />
           </div>
-        ))}
+        )}
+      </div>
+    );
+    return () => (
+      <div aria-hidden={props.loadingText ? undefined : "true"} role={props.loadingText ? "status" : undefined}>
+        {props.loadingText && <span class="kjun-sr-only">{props.loadingText}</span>}
+        {Array.from({ length: props.rows }, (_, i) => props.variant === "row" ? row(i) : quoteRow(i))}
       </div>
     );
   },
@@ -78,6 +89,8 @@ const kjunFormSkeletonProps = {
   columns: { type: Number, default: 1 },
   multiline: { type: Boolean, default: false },
   size: { type: String as PropType<InputSize>, default: "md" },
+  /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
+  loadingText: { type: String, default: undefined },
 } as const;
 export type KjunFormSkeletonProps = ExtractPublicPropTypes<typeof kjunFormSkeletonProps>;
 export const KjunFormSkeleton = defineComponent({
@@ -87,17 +100,16 @@ export const KjunFormSkeleton = defineComponent({
     return () => {
       const input = tokens.input[props.size];
       return (
-        <div aria-hidden="true" class="kjun-form-skeleton" data-columns={props.columns}
+        <div aria-hidden={props.loadingText ? undefined : "true"} role={props.loadingText ? "status" : undefined} class="kjun-form-skeleton" data-columns={props.columns}
           style={{ "--_kjun-form-skeleton-radius": `${input.radius}px` }}>
+          {props.loadingText && <span class="kjun-sr-only">{props.loadingText}</span>}
           {props.fields.map((field, i) => (
             <div key={i}>
               {field ? (
                 <div class="kjun-form-skeleton-label">{typeof field === "string" ? field : field.label}</div>
               ) : (
-                // The bar sits in a label-line slot so the field starts where the real input will.
-                <div class="kjun-form-skeleton-label-slot">
-                  <KjunSkeleton type="block" height={sizes.formLabelHeight} width={sizes.formLabelWidth} />
-                </div>
+                // The bar sits in the label's line box so the field starts where the real input will.
+                <KjunSkeleton type="line" role="label" width={sizes.formLabelWidth} />
               )}
               <KjunSkeleton type="block" height={
                 typeof field === "object" && field.height != null ? field.height
@@ -134,6 +146,7 @@ export const KjunChartSkeleton = defineComponent({
   setup(props) {
     const m = useKjunMessages();
     const revealed = useLoadingReveal(() => true, () => props.loadingDelay);
+    const phase = useSkeletonPhase(() => props.skeleton);
     return () => {
       const kind = chartSkeletonKind(props.kind),
         shown = revealed(),
@@ -141,7 +154,7 @@ export const KjunChartSkeleton = defineComponent({
         rowCount = chartSkeletonCount(props.rows),
         columnCount = chartSkeletonCount(props.columns);
       return (
-        <div class="kjun-chart-skeleton" data-kjun-chart-kind={kind} data-skeleton={props.skeleton ? undefined : "false"}
+        <div ref={phase} class="kjun-chart-skeleton" data-kjun-chart-kind={kind} data-skeleton={props.skeleton ? undefined : "false"}
           aria-hidden={shown ? undefined : "true"} style={css({ height: props.height, visibility: shown ? undefined : "hidden" })}>
           {!props.skeleton ? (
             <div class="kjun-data-loading" data-kjun-chart-part="loading" role={status}>
