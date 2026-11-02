@@ -71,6 +71,10 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   cardTitle?: string | null;
   cardSubtitle?: string | null;
   cardSections?: TableCardSection[];
+  /** Card shape on narrow screens: "stacked" (default) field grid, "rows" label-value lines, or "tiles" two small cards a row. */
+  cardLayout?: "stacked" | "rows" | "tiles";
+  /** Column shown large under the card's title (a total, a balance); tiles show it as their main value. */
+  cardHighlight?: string | null;
   expandable?: boolean;
   expandedRows?: (string | number)[];
   expandSingle?: boolean;

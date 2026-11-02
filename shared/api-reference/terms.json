@@ -32,6 +32,8 @@
   "cancelDisabled": "취소 버튼의 실행을 막습니다.",
   "cancelText": "취소 버튼 문구입니다.",
   "cancelVariant": "취소 버튼의 강조 스타일입니다.",
+  "cardHighlight": "모바일 카드 제목 아래에 크게 보여 줄 열 키입니다.",
+  "cardLayout": "모바일 카드 모양(stacked·rows·tiles)입니다.",
   "cardSections": "모바일 카드에서 열을 묶을 섹션·배치 규칙입니다.",
   "cardSubtitle": "모바일 카드 부제목으로 사용할 열 키입니다.",
   "cardTitle": "모바일 카드 제목으로 사용할 열 키입니다.",

@@ -136,7 +136,8 @@ for (const platform of Object.keys(platforms) as (keyof typeof platforms)[]) {
     await choose(page, '프리셋', '비동기 실패');
     await requestConfirm();
     await frame.getByRole('dialog').getByRole('button', { name: '확인', exact: true }).click();
-    await expect(page.locator('.example-events')).toContainText('실패');
+    // A failed onConfirm keeps the dialog open with its error (0.19.0) instead of rejecting.
+    await expect(frame.getByRole('dialog').last()).toContainText('실패');
   });
 }
 test('compact canvas, unsupported controls, failure fallback, IME, and event history cap', async ({ page }) => {

@@ -41,47 +41,73 @@
   background: var(--_kjun-price-down-bg);
 }
 
+/* Cards: one row per card on narrow screens. "stacked" is a field grid, "rows" label-value lines, "tiles" two small cards
+   a row. Header (selection, title, badges), subtitle, highlight, fields, then one footer row (expand, actions). */
 .kjun-table-cards {
   display: flex;
   flex-direction: column;
-  gap: var(--_kjun-extension-table-card-gap);
+  gap: var(--_kjun-extension-table-card-card-gap);
   padding: var(--_kjun-extension-table-card-list-padding);
 }
+.kjun-table-card-items, .kjun-table-card-group-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_kjun-extension-table-card-card-gap);
+}
+/* Tiles: the ungrouped list, or each group's own list, is the two-column grid. */
+.kjun-table-cards[data-layout="tiles"]:not([data-grouped]), .kjun-table-cards[data-layout="tiles"] .kjun-table-card-items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.kjun-table-cards[data-layout="tiles"] > :is(.kjun-table-card-group, .kjun-table-card-empty, .kjun-table-totals) { grid-column: 1 / -1; }
+.kjun-table-card-group {
+  padding: var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-dimension-value4) 0;
+  display: flex;
+  align-items: baseline;
+  color: var(--_kjun-text-secondary);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-control-weight);
+}
+.kjun-table-card-group-count { margin-inline-start: var(--_kjun-geometry-dimension-value4); color: var(--_kjun-text-tertiary); font-weight: var(--_kjun-type-caption-weight); }
 
 .kjun-table-card {
-  background: var(--_kjun-bg-primary);
+  min-width: 0;
+  background: var(--_kjun-color-surface);
   border: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
   border-radius: var(--_kjun-extension-table-card-radius);
   padding: var(--_kjun-extension-table-card-padding);
   cursor: pointer;
   transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
-
+.kjun-table-cards[data-layout="tiles"] .kjun-table-card { padding: var(--_kjun-extension-table-card-tile-padding); }
 .kjun-table-card:hover {
   background: var(--_kjun-bg-hover);
 }
 
-/* justify-between 대신 left에 flex:1 — 인라인 액션이 있어도 배지/버튼이 항상 우측에 정렬된다 */
+/* justify-between 대신 left에 flex:1 — 인라인 액션이 있어도 배지/버튼이 항상 우측에 정렬된다.
+   The left side is a grid: the selection box and title share the first line, the subtitle starts under the title. */
 .kjun-table-card-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--_kjun-extension-table-card-gap);
-  margin-bottom: var(--_kjun-extension-table-card-gap);
 }
-
 .kjun-table-card-header-left {
-  display: flex;
+  display: grid;
   flex: 1;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
+  column-gap: var(--_kjun-extension-table-card-gap);
   min-width: 0;
 }
-
+.kjun-table-card[data-selectable] .kjun-table-card-header-left { grid-template-columns: auto minmax(0, 1fr); }
+.kjun-table-card-header-left > .kjun-table-card-subtitle { grid-column: -2 / -1; }
+.kjun-table-card-header-actions, .kjun-table-card-badges { min-height: var(--_kjun-type-card-title-line); align-items: center; }
 .kjun-table-card-header-actions {
   display: flex;
   flex-shrink: 0;
   gap: var(--_kjun-extension-table-card-field-gap);
 }
-
 .kjun-table-card-title {
   min-width: 0;
   overflow-wrap: anywhere;
@@ -91,61 +117,50 @@
   font-weight: var(--_kjun-type-card-title-weight);
   letter-spacing: var(--_kjun-type-card-title-tracking);
 }
-
+.kjun-table-cards[data-layout="tiles"] .kjun-table-card-title {
+  font-size: var(--_kjun-type-control-size);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
+}
 .kjun-table-card-subtitle {
+  margin-top: var(--_kjun-extension-table-card-value-gap);
   color: var(--_kjun-text-secondary);
   font-size: var(--_kjun-type-caption-size);
   line-height: var(--_kjun-type-caption-line);
   font-weight: var(--_kjun-type-caption-weight);
   letter-spacing: var(--_kjun-type-caption-tracking);
+  overflow-wrap: anywhere;
+}
+.kjun-table-card-highlight { margin-top: var(--_kjun-extension-table-card-section-gap); }
+.kjun-table-card-highlight > .kjun-table-card-value {
+  display: block;
+  margin-top: var(--_kjun-extension-table-card-value-gap);
+  font-size: var(--_kjun-type-section-title-size);
+  line-height: var(--_kjun-type-section-title-line);
+  font-weight: var(--_kjun-type-section-title-weight);
+  font-variant-numeric: tabular-nums;
+}
+.kjun-table-cards[data-layout="tiles"] .kjun-table-card-highlight > .kjun-table-card-value {
+  font-size: var(--_kjun-type-control-size);
+  line-height: var(--_kjun-type-control-line);
+  font-weight: var(--_kjun-type-control-weight);
 }
 
+/* Sections no longer carry labels or rules in a card; a gap separates them. */
+.kjun-table-card-section { margin-top: var(--_kjun-extension-table-card-section-gap); }
 .kjun-table-card-body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--_kjun-extension-table-card-metric-gap);
+  gap: var(--_kjun-extension-table-card-section-gap) var(--_kjun-extension-table-card-section-gap);
 }
-
-.kjun-table-card-section + .kjun-table-card-section {
-  border-top: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
-  margin-top: var(--_kjun-geometry-dimension-value12);
-  padding-top: var(--_kjun-geometry-dimension-value12);
-}
-
-.kjun-table-card-section-label {
-  margin-bottom: var(--_kjun-extension-table-card-metric-gap);
-  color: var(--_kjun-text-tertiary);
-  font-size: var(--_kjun-type-control-small-size);
-  line-height: var(--_kjun-type-control-small-line);
-  font-weight: var(--_kjun-type-control-small-weight);
-  letter-spacing: var(--_kjun-type-control-small-tracking);
-}
-
-.kjun-table-card-body--stack {
-  grid-template-columns: 1fr;
-}
-
-.kjun-table-card-body--metrics {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--_kjun-extension-table-card-gap);
-}
-
-.kjun-table-card-body--metrics .kjun-table-card-field {
-  align-items: center;
-  text-align: center;
-}
-
-.kjun-table-card-body--metrics .kjun-table-card-label {
-  font-size: var(--_kjun-type-caption-size);
-  line-height: var(--_kjun-type-caption-line);
-  font-weight: var(--_kjun-type-caption-weight);
-  letter-spacing: var(--_kjun-type-caption-tracking);
-}
-
-.kjun-table-card-body--metrics .kjun-table-card-value {
-  width: 100%;
-}
-
+.kjun-table-card-body--stack { grid-template-columns: 1fr; }
+.kjun-table-card-body--metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.kjun-table-card-body--metrics .kjun-table-card-field { align-items: center; text-align: center; }
+.kjun-table-card-body--metrics .kjun-table-card-value { width: 100%; }
+/* rows: one label-value line per field. */
+.kjun-table-card-body--rows { grid-template-columns: 1fr; gap: var(--_kjun-extension-table-card-metric-gap); }
+.kjun-table-card-body--rows .kjun-table-card-field { flex-direction: row; align-items: baseline; justify-content: space-between; gap: var(--_kjun-extension-table-card-gap); }
+.kjun-table-card-body--rows .kjun-table-card-value { text-align: end; }
 .kjun-table-card-field {
   display: flex;
   flex-direction: column;
@@ -154,25 +169,19 @@
      셀을 카드 밖까지 밀어내게 한다 — 0으로 풀어야 슬롯의 truncate가 동작한다 */
   min-width: 0;
 }
-
-.kjun-table-card-field--full {
-  grid-column: 1 / -1;
-}
-
-.kjun-table-card-field--label-right .kjun-table-card-label {
-  display: block;
-  width: 100%;
-  text-align: right;
-}
-
+/* Card values start at their label whatever the column's table alignment. */
+.kjun-table-card-field .kjun-table-card-value { text-align: start; }
+.kjun-table-card-body--rows .kjun-table-card-field .kjun-table-card-value { text-align: end; }
+.kjun-table-card-field--full { grid-column: 1 / -1; }
+.kjun-table-card-field--label-right .kjun-table-card-label { display: block; width: 100%; text-align: right; }
 .kjun-table-card-label {
+  flex: none;
   color: var(--_kjun-text-tertiary);
   font-size: var(--_kjun-type-caption-size);
   line-height: var(--_kjun-type-caption-line);
   font-weight: var(--_kjun-type-caption-weight);
   letter-spacing: var(--_kjun-type-caption-tracking);
 }
-
 .kjun-table-card-value {
   color: var(--_kjun-text-primary);
   font-size: var(--_kjun-type-body-size);
@@ -181,48 +190,43 @@
   font-weight: var(--_kjun-type-body-weight);
   letter-spacing: var(--_kjun-type-body-tracking);
 }
-
 .kjun-table-card-badges {
   display: flex;
   align-items: center;
   gap: var(--_kjun-extension-table-card-field-gap);
   flex-shrink: 0;
 }
-
+.kjun-table-cards[data-layout="tiles"] .kjun-table-card-header { flex-wrap: wrap; }
+/* One footer row: expand on the start side, row actions on the end side. */
+.kjun-table-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_kjun-extension-table-card-gap);
+  margin-top: var(--_kjun-extension-table-card-footer-gap);
+  padding-top: var(--_kjun-extension-table-card-footer-gap);
+  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-divider);
+}
 .kjun-table-card-actions {
-  border-top: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
-  padding-top: var(--_kjun-extension-table-card-gap);
-  margin-top: var(--_kjun-extension-table-card-gap);
   display: flex;
   justify-content: flex-end;
   gap: var(--_kjun-extension-table-card-gap);
+  margin-inline-start: auto;
 }
-
 .kjun-table-card-expand-toggle {
   display: flex;
   align-items: center;
-  width: 100%;
-  padding: var(--_kjun-extension-table-card-metric-gap) 0;
-  margin-top: var(--_kjun-extension-table-card-field-gap);
   font-size: var(--_kjun-type-caption-size);
-  color: var(--_kjun-text-tertiary);
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color var(--_kjun-motion-control) var(--_kjun-ease-out);
+  color: var(--_kjun-text-secondary);
   line-height: var(--_kjun-type-caption-line);
-  font-weight: var(--_kjun-type-caption-weight);
+  font-weight: var(--_kjun-type-control-weight);
   letter-spacing: var(--_kjun-type-caption-tracking);
 }
-
-.kjun-table-card-expand-toggle:hover {
-  color: var(--_kjun-text-secondary);
-}
-
 .kjun-table-card-expand-content {
-  border-top: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
-  padding-top: var(--_kjun-extension-table-card-gap);
-  margin-top: var(--_kjun-extension-table-card-field-gap);
+  margin-top: var(--_kjun-extension-table-card-section-gap);
+  padding: var(--_kjun-geometry-table-expanded-padding-y) var(--_kjun-geometry-table-expanded-padding-x);
+  border-radius: var(--_kjun-geometry-radius-radius12);
+  background: var(--_kjun-color-secondary);
 }
 
 .kjun-table-card-empty {

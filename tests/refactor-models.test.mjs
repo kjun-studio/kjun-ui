@@ -38,9 +38,14 @@ test('Table card sections preserve subtitle data behind badges, unassigned field
   const layout = tablePresentation(props, true);
   assert.equal(layout.card, true);
   assert.deepEqual(layout.columnsForSection(row, layout.sections[0]).map(column => column.key), ['zero', 'flag']);
-  assert.deepEqual(layout.columnsForSection(row, layout.sections[1]).map(column => column.key), ['subtitle']);
-  const withoutBadge = tablePresentation({ ...props, columns: columns.filter(column => !column.badge) }, true);
-  assert.deepEqual(withoutBadge.columnsForSection(row, withoutBadge.sections[1]), []);
+  // The subtitle reads under the title even beside badges, so it never repeats among the fields.
+  assert.deepEqual(layout.columnsForSection(row, layout.sections[1]), []);
+  assert.equal(layout.cardLayout, 'stacked');
+  const highlighted = tablePresentation({ ...props, cardHighlight: 'zero', cardLayout: 'tiles' }, true);
+  assert.equal(highlighted.highlight?.key, 'zero');
+  assert.equal(highlighted.tiles, true);
+  assert.deepEqual(highlighted.columnsForSection(row, highlighted.sections[0]).map(column => column.key), ['flag']);
+  assert.equal(tablePresentation({ ...props, cardHighlight: 'title' }, true).highlight, undefined);
   const compact = tablePresentation({ ...props, responsive: 'compact', mobileColumns: ['zero', 'title'] }, true);
   assert.equal(compact.card, false);
   assert.deepEqual(compact.visible.map(column => column.key), ['title', 'zero']);

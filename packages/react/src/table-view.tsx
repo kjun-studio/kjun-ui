@@ -147,9 +147,9 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         loadingDelay={skeleton ? 0 : loadingDelay}
       >
         {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} totals={tableTotals(props, state.rows, locale)} />
+          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} groups={grouping.groups} groupLabel={grouping.groupLabel} totals={tableTotals(props, state.rows, locale)} />
         ) : layout.list ? (
-          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} totals={tableTotals(props, state.rows, locale)} />
+          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} groups={grouping.groups} groupLabel={grouping.groupLabel} totals={tableTotals(props, state.rows, locale)} />
         ) : (
           <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, ...grouping }} stickyOffset={props.stickyOffset} sortable={props.sortable} />
         )}

@@ -100,10 +100,15 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     if (role === "listTitle" || role === "listValue")
       return content(body, { ...typeStyle("control"), color: colors.text, ...(role === "listValue" ? { fontVariant: ["tabular-nums"] as const } : null) });
     if (role === "listMeta") return content(body, { ...typeStyle("caption"), color: colors.textTertiary });
+    if (role === "cardSubtitle") return content(body, { ...typeStyle("caption"), color: colors.textSecondary });
+    if (role === "tileTitle") return content(body, { ...typeStyle("control"), color: colors.text });
+    if (role === "cardHighlight" || role === "tileHighlight")
+      return content(body, { ...typeStyle(role === "cardHighlight" ? "sectionTitle" : "control"), color: colors.text, fontVariant: ["tabular-nums"] as const });
     return content(body, {
       ...typeStyle(role === "title" ? "cardTitle" : col.secondary ? "caption" : "body"),
       color: col.secondary && role !== "title" ? colors.textSecondary : colors.text,
-      textAlign: col.align,
+      // Card values start at their label (or end a label-value line) whatever the column's table alignment.
+      textAlign: role === "cardValue" ? "left" : role === "cardRowValue" ? "right" : col.align,
     });
   };
   const checkbox = (row: Row, i: number) => (
@@ -161,7 +166,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         loadingDelay={skeleton ? 0 : loadingDelay}
       >
         {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} totals={tableTotals(props, state.rows, locale)} />
+          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} groups={grouping.groups} groupLabel={grouping.groupLabel} totals={tableTotals(props, state.rows, locale)} />
         ) : layout.list ? (
           <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} totals={tableTotals(props, state.rows, locale)} />
         ) : (

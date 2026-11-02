@@ -316,9 +316,13 @@
       }
     },
     "tableCard": {
-      "padding": { "$ref": "card.padding.sm" },
-      "radius": { "$ref": "card.radii.md" },
+      "padding": { "$ref": "card.padding.md" },
+      "radius": { "$ref": "card.radii.lg" },
       "gap": { "$ref": "dimension.value8" },
+      "cardGap": { "$ref": "dimension.value12" },
+      "sectionGap": { "$ref": "dimension.value12" },
+      "footerGap": { "$ref": "dimension.value12" },
+      "tilePadding": { "$ref": "card.padding.sm" },
       "listPadding": { "$ref": "dimension.value8" },
       "fieldGap": { "$ref": "dimension.value4" },
       "metricGap": { "$ref": "dimension.value6" },

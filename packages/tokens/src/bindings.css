@@ -549,9 +549,13 @@
   --_kjun-extension-alert-icon-sizes-sm: 16px;
   --_kjun-extension-alert-icon-sizes-md: 18px;
   --_kjun-extension-alert-close-icon-size: 16px;
-  --_kjun-extension-table-card-padding: 12px;
-  --_kjun-extension-table-card-radius: 12px;
+  --_kjun-extension-table-card-padding: 16px;
+  --_kjun-extension-table-card-radius: 16px;
   --_kjun-extension-table-card-gap: 8px;
+  --_kjun-extension-table-card-card-gap: 12px;
+  --_kjun-extension-table-card-section-gap: 12px;
+  --_kjun-extension-table-card-footer-gap: 12px;
+  --_kjun-extension-table-card-tile-padding: 12px;
   --_kjun-extension-table-card-list-padding: 8px;
   --_kjun-extension-table-card-field-gap: 4px;
   --_kjun-extension-table-card-metric-gap: 6px;

@@ -63,6 +63,8 @@ const kjunTableProps = {
   cardTitle: { type: String as PropType<string | null>, default: undefined },
   cardSubtitle: { type: String as PropType<string | null>, default: undefined },
   cardSections: { type: Array as PropType<TableCardSection[]>, default: () => [] },
+  cardLayout: { type: String as PropType<"stacked" | "rows" | "tiles">, default: "stacked" },
+  cardHighlight: { type: String as PropType<string | null>, default: undefined },
   expandable: { type: Boolean, default: false },
   /** v-model:expandedRows; leave unset for internal expansion. */
   expandedRows: { type: Array as PropType<(string | number)[]>, default: undefined },
@@ -203,6 +205,8 @@ const KjunTableComponent = defineComponent({
         if (props.summaryFormat) return props.summaryFormat(value, col, spec);
         return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec, scope.value.intl);
       };
+      const groups = groupTableRows(state.rows, props.groupBy);
+      const groupLabel = (group: TableRowGroup<object>) => slots.group ? slots.group({ value: group.value, rows: group.rows }) : group.value == null || group.value === "" ? "-" : String(group.value);
       const totals = props.summary ? props.columns.filter(col => props.summary?.[col.key]).map(col => ({ key: col.key, label: col.label, value: summaryValue(col, state.rows) })) : [];
       const empty = slots.empty?.();
       const context = {
@@ -238,12 +242,11 @@ const KjunTableComponent = defineComponent({
           <KjunDataState queryKey={props.queryKey} resultKey={status.usesQueryState ? status.hasCurrentResult ? props.queryKey : null : undefined}
             hasLoadedOnce={props.hasLoadedOnce} error={props.error} refreshing={status.queryRefreshing} loadingPadding="none" onRetry={props.onRetry}
             loading={props.skeleton ? undefined : props.loading} loadingText={(props.loadingText ?? m.value.loadingEllipsis)} loadingDelay={props.skeleton ? 0 : props.loadingDelay}>
-            {card ? tableCards({ ...context, layout, totals }) : layout.list ? tableList({ ...context, layout, totals }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
+            {card ? tableCards({ ...context, layout, totals, groups, groupLabel }) : layout.list ? tableList({ ...context, layout, totals }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
               sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable, stuck, stickyOffset: props.stickyOffset,
-              groups: groupTableRows(state.rows, props.groupBy), collapsed: collapsed.value,
+              groups, collapsed: collapsed.value,
               toggleGroup: (key: string) => { collapsed.value = collapsed.value.includes(key) ? collapsed.value.filter(k => k !== key) : [...collapsed.value, key]; },
-              groupLabel: (group: TableRowGroup<object>) => slots.group ? slots.group({ value: group.value, rows: group.rows }) : group.value == null || group.value === "" ? "-" : String(group.value),
-              summary: props.summary ? summaryValue : null })}
+              groupLabel, summary: props.summary ? summaryValue : null })}
             {pagination && (
               <KjunPagination currentPage={pagination.page} totalPages={Math.ceil(pagination.total / (pagination.pageSize || 20))} totalRows={pagination.total}
                 pageSize={pagination.pageSize || 20} showInfo onUpdate:page={(page: number) => emit("page-change", page)} />

@@ -20614,6 +20614,20 @@
         "description": ""
       },
       {
+        "name": "cardLayout",
+        "type": "\"rows\" | \"stacked\" | \"tiles\"",
+        "required": false,
+        "default": "\"stacked\"",
+        "description": ""
+      },
+      {
+        "name": "cardHighlight",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "expandable",
         "type": "boolean",
         "required": false,
@@ -20957,6 +20971,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "cardLayout",
+        "type": "\"stacked\" | \"rows\" | \"tiles\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Card shape on narrow screens: \"stacked\" (default) field grid, \"rows\" label-value lines, or \"tiles\" two small cards a row."
+      },
+      {
+        "name": "cardHighlight",
+        "type": "string | null | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Column shown large under the card's title (a total, a balance); tiles show it as their main value."
       },
       {
         "name": "expandable",
@@ -21337,6 +21365,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "cardLayout",
+        "type": "\"stacked\" | \"rows\" | \"tiles\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Card shape on narrow screens: \"stacked\" (default) field grid, \"rows\" label-value lines, or \"tiles\" two small cards a row."
+      },
+      {
+        "name": "cardHighlight",
+        "type": "string | null | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Column shown large under the card's title (a total, a balance); tiles show it as their main value."
       },
       {
         "name": "expandable",

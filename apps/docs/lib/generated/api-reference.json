@@ -8211,7 +8211,7 @@
               },
               {
                 "label": "적용 조건",
-                "text": "세 플랫폼 모두 화면 너비가 768px 미만일 때 모바일 표현으로 전환하고, 768px부터 표를 표시합니다. card에서는 cardTitle·cardSubtitle·cardSections와 열별 카드 표시 규칙을 적용합니다. mobileColumns는 compact 모드에서 표시할 열을 고릅니다. 전환 시 선택·확장 상태를 유지합니다."
+                "text": "세 플랫폼 모두 화면 너비가 768px 미만일 때 모바일 표현으로 전환하고, 768px부터 표를 표시합니다. card에서는 cardLayout·cardTitle·cardSubtitle·cardHighlight·cardSections와 열별 카드 표시 규칙을 적용합니다. mobileColumns는 compact 모드에서 표시할 열을 고릅니다. 전환 시 선택·확장 상태를 유지합니다."
               }
             ],
             "source": "packages/vue3/src/table.tsx",
@@ -8252,6 +8252,46 @@
             "description": "",
             "summary": "모바일 카드에서 열을 묶을 섹션·배치 규칙입니다.",
             "source": "packages/vue3/src/table.tsx"
+          },
+          {
+            "name": "cardLayout",
+            "type": "\"rows\" | \"stacked\" | \"tiles\"",
+            "required": false,
+            "default": "\"stacked\"",
+            "description": "",
+            "summary": "좁은 화면 카드의 모양을 고릅니다.",
+            "details": [
+              {
+                "label": "stacked",
+                "text": "기본값. 제목 줄(선택·제목·배지) 아래 부제(cardSubtitle), 핵심 값(cardHighlight), 두 칸 필드 격자를 두고, 펼치기와 행 작업은 맨 아래 한 줄에 둡니다. cardSections는 필드 묶음 간격으로만 나뉘고 섹션 이름·구분선은 그리지 않습니다."
+              },
+              {
+                "label": "rows",
+                "text": "stacked와 같고 필드를 라벨 왼쪽·값 오른쪽의 한 줄씩 씁니다. 열이 많아도 한 줄씩 읽힙니다."
+              },
+              {
+                "label": "tiles",
+                "text": "작은 카드 두 개씩 한 줄에 놓습니다. 선택·배지, 제목, 부제, 핵심 값만 보여 주고 다른 필드·펼치기·행 작업은 그리지 않습니다. 카드 전체를 눌러 onRowClick으로 상세를 여세요. 합계와 묶음 머리줄은 전체 폭입니다."
+              }
+            ],
+            "source": "packages/vue3/src/table.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "cardHighlight",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "카드에서 크게 보여 줄 열 key입니다.",
+            "details": [
+              {
+                "label": "표시",
+                "text": "stacked·rows는 부제 아래 라벨과 20px 굵은 값으로, tiles는 제목 아래 14px 굵은 값으로 씁니다. 이 열은 필드 격자에서 빠지며, cardTitle과 같은 열이면 무시합니다."
+              }
+            ],
+            "source": "packages/vue3/src/table.tsx",
+            "example": "/components/table#preview"
           },
           {
             "name": "expandable",
@@ -8343,7 +8383,7 @@
               },
               {
                 "label": "표시 범위",
-                "text": "표 형태에만 적용합니다. 좁은 화면의 카드 표현은 묶지 않습니다."
+                "text": "표와 카드 형태에 적용합니다. 카드는 묶음마다 이름·개수 머리줄을 두고 그 아래에 카드를 놓으며 접지 않습니다. list 형태는 묶지 않습니다."
               }
             ],
             "source": "packages/vue3/src/table.tsx",
@@ -9097,7 +9137,7 @@
               },
               {
                 "label": "적용 조건",
-                "text": "세 플랫폼 모두 화면 너비가 768px 미만일 때 모바일 표현으로 전환하고, 768px부터 표를 표시합니다. card에서는 cardTitle·cardSubtitle·cardSections와 열별 카드 표시 규칙을 적용합니다. mobileColumns는 compact 모드에서 표시할 열을 고릅니다. 전환 시 선택·확장 상태를 유지합니다."
+                "text": "세 플랫폼 모두 화면 너비가 768px 미만일 때 모바일 표현으로 전환하고, 768px부터 표를 표시합니다. card에서는 cardLayout·cardTitle·cardSubtitle·cardHighlight·cardSections와 열별 카드 표시 규칙을 적용합니다. mobileColumns는 compact 모드에서 표시할 열을 고릅니다. 전환 시 선택·확장 상태를 유지합니다."
               }
             ],
             "source": "packages/react/src/table-view.tsx",
@@ -9138,6 +9178,46 @@
             "description": "",
             "summary": "모바일 카드에서 열을 묶을 섹션·배치 규칙입니다.",
             "source": "packages/react/src/table-view.tsx"
+          },
+          {
+            "name": "cardLayout",
+            "type": "\"stacked\" | \"rows\" | \"tiles\" | undefined",
+            "required": false,
+            "default": "\"stacked\"",
+            "description": "Card shape on narrow screens: \"stacked\" (default) field grid, \"rows\" label-value lines, or \"tiles\" two small cards a row.",
+            "summary": "좁은 화면 카드의 모양을 고릅니다.",
+            "details": [
+              {
+                "label": "stacked",
+                "text": "기본값. 제목 줄(선택·제목·배지) 아래 부제(cardSubtitle), 핵심 값(cardHighlight), 두 칸 필드 격자를 두고, 펼치기와 행 작업은 맨 아래 한 줄에 둡니다. cardSections는 필드 묶음 간격으로만 나뉘고 섹션 이름·구분선은 그리지 않습니다."
+              },
+              {
+                "label": "rows",
+                "text": "stacked와 같고 필드를 라벨 왼쪽·값 오른쪽의 한 줄씩 씁니다. 열이 많아도 한 줄씩 읽힙니다."
+              },
+              {
+                "label": "tiles",
+                "text": "작은 카드 두 개씩 한 줄에 놓습니다. 선택·배지, 제목, 부제, 핵심 값만 보여 주고 다른 필드·펼치기·행 작업은 그리지 않습니다. 카드 전체를 눌러 onRowClick으로 상세를 여세요. 합계와 묶음 머리줄은 전체 폭입니다."
+              }
+            ],
+            "source": "packages/react/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "cardHighlight",
+            "type": "string | null | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Column shown large under the card's title (a total, a balance); tiles show it as their main value.",
+            "summary": "카드에서 크게 보여 줄 열 key입니다.",
+            "details": [
+              {
+                "label": "표시",
+                "text": "stacked·rows는 부제 아래 라벨과 20px 굵은 값으로, tiles는 제목 아래 14px 굵은 값으로 씁니다. 이 열은 필드 격자에서 빠지며, cardTitle과 같은 열이면 무시합니다."
+              }
+            ],
+            "source": "packages/react/src/table-view.tsx",
+            "example": "/components/table#preview"
           },
           {
             "name": "expandable",
@@ -9229,7 +9309,7 @@
               },
               {
                 "label": "표시 범위",
-                "text": "표 형태에만 적용합니다. 좁은 화면의 카드 표현은 묶지 않습니다."
+                "text": "표와 카드 형태에 적용합니다. 카드는 묶음마다 이름·개수 머리줄을 두고 그 아래에 카드를 놓으며 접지 않습니다. list 형태는 묶지 않습니다."
               }
             ],
             "source": "packages/react/src/table-view.tsx",
@@ -10028,7 +10108,7 @@
               },
               {
                 "label": "적용 조건",
-                "text": "세 플랫폼 모두 화면 너비가 768px 미만일 때 모바일 표현으로 전환하고, 768px부터 표를 표시합니다. card에서는 cardTitle·cardSubtitle·cardSections와 열별 카드 표시 규칙을 적용합니다. mobileColumns는 compact 모드에서 표시할 열을 고릅니다. 전환 시 선택·확장 상태를 유지합니다."
+                "text": "세 플랫폼 모두 화면 너비가 768px 미만일 때 모바일 표현으로 전환하고, 768px부터 표를 표시합니다. card에서는 cardLayout·cardTitle·cardSubtitle·cardHighlight·cardSections와 열별 카드 표시 규칙을 적용합니다. mobileColumns는 compact 모드에서 표시할 열을 고릅니다. 전환 시 선택·확장 상태를 유지합니다."
               }
             ],
             "source": "packages/native/src/table-view.tsx",
@@ -10069,6 +10149,46 @@
             "description": "",
             "summary": "모바일 카드에서 열을 묶을 섹션·배치 규칙입니다.",
             "source": "packages/native/src/table-view.tsx"
+          },
+          {
+            "name": "cardLayout",
+            "type": "\"stacked\" | \"rows\" | \"tiles\" | undefined",
+            "required": false,
+            "default": "\"stacked\"",
+            "description": "Card shape on narrow screens: \"stacked\" (default) field grid, \"rows\" label-value lines, or \"tiles\" two small cards a row.",
+            "summary": "좁은 화면 카드의 모양을 고릅니다.",
+            "details": [
+              {
+                "label": "stacked",
+                "text": "기본값. 제목 줄(선택·제목·배지) 아래 부제(cardSubtitle), 핵심 값(cardHighlight), 두 칸 필드 격자를 두고, 펼치기와 행 작업은 맨 아래 한 줄에 둡니다. cardSections는 필드 묶음 간격으로만 나뉘고 섹션 이름·구분선은 그리지 않습니다."
+              },
+              {
+                "label": "rows",
+                "text": "stacked와 같고 필드를 라벨 왼쪽·값 오른쪽의 한 줄씩 씁니다. 열이 많아도 한 줄씩 읽힙니다."
+              },
+              {
+                "label": "tiles",
+                "text": "작은 카드 두 개씩 한 줄에 놓습니다. 선택·배지, 제목, 부제, 핵심 값만 보여 주고 다른 필드·펼치기·행 작업은 그리지 않습니다. 카드 전체를 눌러 onRowClick으로 상세를 여세요. 합계와 묶음 머리줄은 전체 폭입니다."
+              }
+            ],
+            "source": "packages/native/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "cardHighlight",
+            "type": "string | null | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Column shown large under the card's title (a total, a balance); tiles show it as their main value.",
+            "summary": "카드에서 크게 보여 줄 열 key입니다.",
+            "details": [
+              {
+                "label": "표시",
+                "text": "stacked·rows는 부제 아래 라벨과 20px 굵은 값으로, tiles는 제목 아래 14px 굵은 값으로 씁니다. 이 열은 필드 격자에서 빠지며, cardTitle과 같은 열이면 무시합니다."
+              }
+            ],
+            "source": "packages/native/src/table-view.tsx",
+            "example": "/components/table#preview"
           },
           {
             "name": "expandable",
@@ -10160,7 +10280,7 @@
               },
               {
                 "label": "표시 범위",
-                "text": "표 형태에만 적용합니다. 좁은 화면의 카드 표현은 묶지 않습니다."
+                "text": "표와 카드 형태에 적용합니다. 카드는 묶음마다 이름·개수 머리줄을 두고 그 아래에 카드를 놓으며 접지 않습니다. list 형태는 묶지 않습니다."
               }
             ],
             "source": "packages/native/src/table-view.tsx",

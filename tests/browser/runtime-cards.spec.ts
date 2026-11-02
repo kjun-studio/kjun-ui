@@ -8,7 +8,10 @@ for (const platform of ['vue3']) test(`${platform}: TableCards preserves grouped
   await expect(card).toHaveClass(/custom-row/);
   await expect(card.getByTestId('slot-Zero')).toHaveText('Zero:0:0');
   await expect(card.locator('.kjun-table-card-badges')).toHaveText('Badge:0:0');
-  await expect(card.getByText('Code', { exact: true })).toBeVisible();
+  // The subtitle sits under the title beside the badges, not among the fields.
+  await expect(card.locator('.kjun-table-card-subtitle')).toHaveText('Z:0:0');
+  await expect(card.getByText('Code', { exact: true })).toHaveCount(0);
+  await expect(card.getByText('Metrics', { exact: true })).toHaveCount(0);
   await expect(card.locator('.kjun-table-card-body--metrics')).toHaveText(/Amount\s*10:0:0/);
   await expect(card.getByText('Blank', { exact: true })).toHaveCount(0);
   await card.getByRole('button', { name: 'Toggle', exact: true }).click();

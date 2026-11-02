@@ -22,7 +22,7 @@ test('component geometry resolves from the shared scales with additive paths', (
   const value = compileTokens(altered);
   assert.equal(value.extensions.navigation.padding, 24);
   assert.equal(value.extensions.list.padding, 24);
-  assert.equal(value.extensions.tableCard.radius, value.card.radii.md);
+  assert.equal(value.extensions.tableCard.radius, value.card.radii.lg);
   assert.equal(value.extensions.skeleton.padding, value.card.padding.md);
   assert.equal(value.extensions.kpiRow.badgeRadius, value.extensions.badge.radius);
   const css = extensionGeometryCss(value, altered);

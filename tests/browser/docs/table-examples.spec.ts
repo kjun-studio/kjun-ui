@@ -79,8 +79,9 @@ for (const platform of ['vue3', 'react', 'native'] as const) {
           await expect(page.getByText(/문의 분류와 검색 화면/)).toBeVisible();
         }
         if (scenario.id === 'table-cards') {
-          await expect(page.getByText('진행 현황', { exact: true })).toHaveCount(3);
-          await expect(page.getByText('담당', { exact: true })).toHaveCount(3);
+          // Section names are no longer drawn in cards (0.19.0); a gap separates the field groups.
+          await expect(page.getByText('진행 현황', { exact: true })).toHaveCount(0);
+          await expect(page.getByText('담당', { exact: true })).toHaveCount(0);
           expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
         }
       }
