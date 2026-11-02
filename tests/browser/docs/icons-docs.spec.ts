@@ -70,9 +70,11 @@ for (const platform of ['react', 'vue3', 'native']) test(`${platform}: selection
   await expect(svg.locator('g[transform="matrix(-1 0 0 1 24 0)"]')).toHaveCount(0);
   await expect(svg.locator('path').first()).toHaveAttribute('d', icons.refresh[0][1].d);
   const variants = await launchIcon(page, 'variants'), shapes = variants.frameLocator('iframe').locator('svg');
-  await expect(shapes).toHaveCount(6);
-  await expect(shapes.nth(4).locator('path').first()).toHaveAttribute('d', icons.search.find(([tag]) => tag === 'path')![1].d);
-  await expect(shapes.nth(5).locator('path').first()).toHaveAttribute('d', icons['help-circle'].find(([tag]) => tag === 'path')![1].d);
+  // Each default filled icon shows both shapes, then an outline-only fallback and an unknown name.
+  const pairs = 2 * Object.keys(filledIcons).length;
+  await expect(shapes).toHaveCount(pairs + 2);
+  await expect(shapes.nth(pairs).locator('path').first()).toHaveAttribute('d', icons['arrow-left'].find(([tag]) => tag === 'path')![1].d);
+  await expect(shapes.nth(pairs + 1).locator('path').first()).toHaveAttribute('d', icons['help-circle'].find(([tag]) => tag === 'path')![1].d);
   const align = await launchIcon(page, 'alignment'), af = align.frameLocator('iframe'), sizes = af.locator('svg');
   for (const [i, size] of Object.values(tokens.iconSizes).entries()) await expect(sizes.nth(i)).toHaveAttribute('width', String(size));
   if (platform !== 'native') {

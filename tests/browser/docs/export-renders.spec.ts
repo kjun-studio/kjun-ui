@@ -13,8 +13,9 @@ const rendered: Check = async (page, id) => {
 };
 // Usage code runs with only the common setup, so no unregistered DS-* element may remain.
 const usageRendered = (platform: string): Check => async (page, id) => {
+  // Fixed-position components such as KjunFab leave the root wrapper zero-sized, so look for any visible node.
   const root = page.locator('#root > *');
-  await expect(root, id).toBeVisible();
+  await expect(page.locator('#root *').locator('visible=true').first(), id).toBeVisible();
   await expect.poll(() => root.evaluate(root => root.querySelectorAll('*').length), { message: id }).toBeGreaterThan(0);
   expect(await root.evaluate(root => [...root.querySelectorAll('*')].some(node => node.tagName.startsWith('DS-'))), id).toBe(false);
 };

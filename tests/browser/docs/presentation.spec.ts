@@ -6,14 +6,14 @@ import { preparePresentation } from '../../../scripts/presentation-capture.mjs';
 const ready = (page: import('@playwright/test').Page) => expect(page.getByRole('button', { name: '문서 플랫폼', exact: true })).toBeEnabled();
 const noOverflow = async (page: import('@playwright/test').Page) => expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 
-test('80 packed presentation images share dimensions, definitions and unclipped capture evidence', async ({ request }) => {
+test('90 packed presentation images share dimensions, definitions and unclipped capture evidence', async ({ request }) => {
   const manifest = await (await request.get('/previews/thumbnails/manifest.json')).json();
   expect(manifest.renderer).toBe('@kjun-ui/react'); expect(manifest.capture).toEqual(capture);
   expect(manifest.captureProfiles).toEqual(captureProfiles);
-  expect(Object.keys(manifest.images)).toHaveLength(77); expect(Object.keys(manifest.overviewImages)).toHaveLength(3);
-  expect(new Set(Object.values(manifest.images)).size).toBe(77);
+  expect(Object.keys(manifest.images)).toHaveLength(87); expect(Object.keys(manifest.overviewImages)).toHaveLength(3);
+  expect(new Set(Object.values(manifest.images)).size).toBe(87);
   expect(Object.keys(manifest.scenes).sort()).toEqual([...presentations, ...overviewScenes].map(s => s.name).sort());
-  expect(new Set(Object.values(manifest.scenes).map((s: any) => s.url)).size).toBe(80);
+  expect(new Set(Object.values(manifest.scenes).map((s: any) => s.url)).size).toBe(90);
   for (const definition of [...presentations, ...overviewScenes]) {
     const scene = manifest.scenes[definition.name], profile = captureFor(definition);
     expect(scene.captureType).toBe(definition.captureType); expect(scene.capture).toEqual(profile);
@@ -80,7 +80,7 @@ test('representative capture scenes omit demo instructions and retain real packa
       }
       if (scene.highlight) await expect(page.locator('.presentation-highlight')).toBeVisible();
       if (name === 'KjunAccordionItem') { await expect(page.locator('.kjun-accordion-item')).toHaveCount(1); await expect(page.getByRole('button')).toHaveAttribute('aria-expanded', 'true'); }
-      if (name === 'KjunDropdownItem') await expect(page.getByRole('menuitem').first().locator('svg')).toHaveCount(2);
+      if (name === 'KjunDropdownItem') await expect(page.getByRole('menuitemradio').first().locator('svg')).toHaveCount(2);
       if (name === 'KjunMenuButton') { await expect(page.getByRole('button', { name: '목록 관리' })).toHaveText(''); await expect(page.getByRole('menu')).toBeVisible(); }
     } finally { await context.close(); }
   }

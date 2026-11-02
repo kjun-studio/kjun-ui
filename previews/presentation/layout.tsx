@@ -27,7 +27,7 @@ export function layout(name: string) {
     case 'KjunListGroup': return <K.KjunListGroup><K.KjunListSection title="계정"><K.KjunListRow title="프로필" trailing="김하늘" chevron /></K.KjunListSection><K.KjunListSection title="알림" footer="이 기기에서만 적용됩니다."><K.KjunListRow title="푸시 알림" checked onCheckedChange={() => {}} /></K.KjunListSection></K.KjunListGroup>;
     case 'KjunListItem': return <K.KjunListSection title="화면"><K.KjunListItem><K.KjunText tone="secondary">화면 테마는 기기 설정을 따릅니다.</K.KjunText></K.KjunListItem><K.KjunListRow title="글자 크기" chevron /></K.KjunListSection>;
     case 'KjunAvatar': return row(<><K.KjunAvatar name="김하늘" size="lg" /><K.KjunAvatar name="이서준" size="lg" /><K.KjunAvatar name="박지우" size="lg" shape="square" /></>);
-    case 'KjunCarousel': return <K.KjunCarousel ariaLabel="추천 콘텐츠" slideSize="peek" gap="sm">{['이번 주 추천', '팀 공간', '알림 정리'].map((title, i) => <K.KjunCard key={title} title={title} subtitle="새 소식을 확인하세요" border media={<K.KjunImage src={sampleImage(i)} decorative aspectRatio={2} lazy={false} />} />)}</K.KjunCarousel>;
+    case 'KjunCarousel': return <K.KjunCarousel ariaLabel="추천 콘텐츠" slideSize="peek" gap="sm">{['이번 주 추천', '팀 공간', '알림 정리'].map((title, i) => <K.KjunCard key={title} title={title} subtitle="새 소식을 확인하세요" border media={<K.KjunImage src={sampleImage(i)} alt="" decorative aspectRatio={2} lazy={false} />} />)}</K.KjunCarousel>;
     case 'KjunImage': return <div className="presentation-image"><K.KjunImage src="/brand/kjun-symbol.svg" alt="KJUN 심볼" aspectRatio={16 / 9} fit="contain" lazy={false} /></div>;
   }
 }

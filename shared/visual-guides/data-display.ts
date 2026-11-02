@@ -67,7 +67,7 @@ export const dataDisplay: Record<string, GuideAuthor> = {
       p(
         "행 선택",
         "선택 작업에 포함할 행을 표시합니다.",
-        '[aria-label="행 선택 1"], tbody input[type="checkbox"]',
+        '[aria-label^="행 선택"], tbody input[type="checkbox"]',
         true,
       ),
     ],

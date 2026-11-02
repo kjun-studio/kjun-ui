@@ -32,7 +32,7 @@ export function renderIconExample(name: string, tools: ExampleTools): any {
     case 'GuideIconVariants':
       return h('Stack', {}, [
         ...Object.keys(filledIcons).map(icon => h('Group', {}, [h('Text', {}, icon), h('KjunIcon', { name: icon }), h('Text', {}, '선형'), h('KjunIcon', { name: icon, filled: true }), h('Text', {}, '채움형')])),
-        h('Group', {}, [h('KjunIcon', { name: 'search', filled: true }), h('Text', {}, 'search + filled → search 선형')]),
+        h('Group', {}, [h('KjunIcon', { name: 'arrow-left', filled: true }), h('Text', {}, 'arrow-left + filled → arrow-left 선형')]),
         h('Group', {}, [h('KjunIcon', { name: 'not-a-kjun-icon' }), h('Text', {}, '없는 이름 → help-circle')]),
       ]);
   }

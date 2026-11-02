@@ -2850,7 +2850,7 @@
               {
                 "label": "행 선택",
                 "description": "선택 작업에 포함할 행을 표시합니다.",
-                "target": "[aria-label=\"행 선택 1\"], tbody input[type=\"checkbox\"]",
+                "target": "[aria-label^=\"행 선택\"], tbody input[type=\"checkbox\"]",
                 "optional": true
               }
             ]
@@ -2924,7 +2924,7 @@
               {
                 "label": "행 선택",
                 "description": "선택 작업에 포함할 행을 표시합니다.",
-                "target": "[aria-label=\"행 선택 1\"], tbody input[type=\"checkbox\"]",
+                "target": "[aria-label^=\"행 선택\"], tbody input[type=\"checkbox\"]",
                 "optional": true
               }
             ]
@@ -2998,7 +2998,7 @@
               {
                 "label": "행 선택",
                 "description": "선택 작업에 포함할 행을 표시합니다.",
-                "target": "[aria-label=\"행 선택 1\"], tbody input[type=\"checkbox\"]",
+                "target": "[aria-label^=\"행 선택\"], tbody input[type=\"checkbox\"]",
                 "optional": true
               }
             ]
