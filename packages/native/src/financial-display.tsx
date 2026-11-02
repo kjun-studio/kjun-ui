@@ -225,7 +225,11 @@ export function KjunProgressCell({
           : "success"
         : color;
   return (
+    // One progressbar with its value, so screen readers hear it also without the visible label.
     <View
+      accessible
+      accessibilityRole="progressbar"
+      accessibilityValue={{ min: 0, max: 100, now: Math.round(percent) }}
       style={{
         flexDirection: "row",
         alignItems: "center",

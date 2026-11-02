@@ -1,4 +1,5 @@
 import { tokens } from "@kjun-ui/tokens";
+import { tableRowLabel } from "../../../shared/package-runtime/table-model";
 import { View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunSkeleton } from "./display";
@@ -22,7 +23,10 @@ export function TableList<Row extends object>({ initialLoading, skeletonRows, sk
         : state.rows.map((row, i) => (
             <View key={state.key(row, i)} role="listitem">
               <Pressable
-                accessible={false}
+                // A pressable list row is one button named by its title, as on the web.
+                accessible={!!onRowClick}
+                accessibilityRole={onRowClick ? "button" : undefined}
+                accessibilityLabel={onRowClick ? String(tableRowLabel(row, title?.key, i)) : undefined}
                 onPress={() => onRowClick?.(row, i)}
                 style={({ pressed }) => ({
                   flexDirection: "row",

@@ -1,7 +1,7 @@
-import { useKjunMessages } from "./runtime/messages";
+import { useKjunMessageScope, useKjunMessages } from "./runtime/messages";
 import { defineComponent, getCurrentInstance, onBeforeUnmount, onMounted, ref, type AllowedComponentProps, type ComponentCustomProps, type ExtractPublicPropTypes, type PropType, type VNodeChild, type VNodeProps, type SlotsType } from "vue";
 import { isComposingKey, nextTableSort, tokens, type TableSort } from "@kjun-ui/tokens";
-import { getValue, sortTableRows, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
+import { getValue, sortTableRows, stickyHeaderStuck, tableRowIndex, tableRowKey, tableRowLabel, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
 import { columnFormat, tablePresentation } from "../../../shared/package-runtime/table-presentation";
 import { formatSummary, groupTableRows, summarizeColumn, type TableRowGroup, type TableSummaryKind } from "../../../shared/package-runtime/table-groups";
 import { KjunButton } from "./button";
@@ -110,7 +110,7 @@ const KjunTableComponent = defineComponent({
   },
   slots: Object as SlotsType<KjunTableSlots<any>>,
   setup(props, { slots, emit }) {
-    const m = useKjunMessages();
+    const m = useKjunMessages(), scope = useKjunMessageScope();
     const internalSort = ref<TableSort>({ key: "", order: "asc" }), internalExpanded = ref<(string | number)[]>([]), search = ref("");
     const mobile = ref(false), stuck = ref(false), collapsed = ref<string[]>([]);
     let timer: ReturnType<typeof setTimeout> | undefined, media: MediaQueryList | undefined;
@@ -120,10 +120,11 @@ const KjunTableComponent = defineComponent({
     const instance = getCurrentInstance();
     const updateStuck = () => {
       if (!props.stickyHeader || props.maxHeight != null) return;
-      const rect = (instance?.proxy?.$el as HTMLElement | undefined)?.querySelector?.(".kjun-table")?.getBoundingClientRect();
-      stuck.value = !!rect && rect.top < props.stickyOffset && rect.bottom > props.stickyOffset;
+      // Measured against the scroller the page actually scrolls in (an app shell), not only the viewport.
+      stuck.value = stickyHeaderStuck((instance?.proxy?.$el as HTMLElement | undefined)?.querySelector?.(".kjun-table") ?? null, props.stickyOffset);
     };
-    onMounted(() => addEventListener("scroll", updateStuck, { passive: true, capture: true }));
+    // Like React, a table that mounts already scrolled under its header marks itself at once.
+    onMounted(() => { addEventListener("scroll", updateStuck, { passive: true, capture: true }); updateStuck(); });
     onBeforeUnmount(() => { clearTimeout(timer); media?.removeEventListener("change", updateMobile); removeEventListener("scroll", updateStuck, { capture: true }); });
     const query = useQueryDisplay(() => props);
     // Skeleton rows wait out loadingDelay here; the spinner waits inside KjunDataState.
@@ -131,12 +132,14 @@ const KjunTableComponent = defineComponent({
 
     const model = (): TableRenderState & { toggleRow: (row: object) => void; toggleExpand: (row: object, index: number) => void } => {
       const sort = props.sort === undefined ? internalSort.value : props.sort ?? { key: "", order: "asc" as const };
-      const rows = sortTableRows(props.data, sort, { sortable: props.sortable, sortMode: props.sortMode }) as object[];
+      const compare = props.columns.find(column => column.key === sort.key)?.compare;
+      const rows = sortTableRows(props.data, sort, { sortable: props.sortable, sortMode: props.sortMode, compare, locale: scope.value.intl }) as object[];
+      const rowIndex = tableRowIndex(rows);
       const key = (row: object, index = 0) => tableRowKey(row, props.rowKey, index);
       const { isSelected, all, some } = tableSelection(rows, props.selected, props.rowKey);
       const expanded = props.expandedRows ?? internalExpanded.value;
       return {
-        rows, key, sort, all, some, selectedRow: isSelected, expanded,
+        rows, rowIndex, key, sort, all, some, selectedRow: isSelected, expanded,
         sortColumn: column => {
           if (!props.sortable || !column.sortable) return;
           const next = nextTableSort(sort, column.key);
@@ -144,7 +147,7 @@ const KjunTableComponent = defineComponent({
           emit("update:sort", next);
         },
         toggleRow: row => emit("update:selected", toggleSelectedRow(props.selected, row, props.rowKey)),
-        toggleAll: () => emit("update:selected", toggleAllRows(rows, all)),
+        toggleAll: () => emit("update:selected", toggleAllRows(rows, props.selected, props.rowKey, all)),
         toggleExpand: (row, index) => {
           const next = toggleExpandedRow(expanded, key(row, index), props.expandSingle);
           internalExpanded.value = next;
@@ -168,7 +171,7 @@ const KjunTableComponent = defineComponent({
         const slot = slots[`cell-${col.key}`] ?? slots.cell;
         const body = slot ? slot({ value, column: col, row, index }) : col.render ? col.render(value, row, index) : columnFormat(col) ? columnFormat(col)!(value, row)
           : props.formatValue ? props.formatValue(value, col, row) : value == null ? "-"
-          : typeof value === "number" && col.type === "number" ? new Intl.NumberFormat().format(value) : String(value);
+          : typeof value === "number" && col.type === "number" ? new Intl.NumberFormat(scope.value.intl).format(value) : String(value);
         return col.pill
           ? <span class={"kjun-table-pill " + (Number(value) > 0 ? "kjun-table-pill-up" : Number(value) < 0 ? "kjun-table-pill-down" : "")}>{body}</span>
           : body;
@@ -179,7 +182,7 @@ const KjunTableComponent = defineComponent({
         if (event.key === "Enter" || event.key === " ") { event.preventDefault(); props.onRowClick(row, index); }
       };
       const checkbox = (row: object, i: number) => (
-        <TableCheck aria-label={m.value.selectRow(i + 1)} checked={state.selectedRow(row)} {...{ onClick: (event: MouseEvent) => event.stopPropagation() }}
+        <TableCheck aria-label={m.value.selectRow(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))} checked={state.selectedRow(row)} {...{ onClick: (event: MouseEvent) => event.stopPropagation() }}
           onChange={() => state.toggleRow(row)} />
       );
       const expand = (row: object, i: number) => {
@@ -198,7 +201,7 @@ const KjunTableComponent = defineComponent({
         if (typeof spec === "function") return spec(rows, col);
         const value = summarizeColumn(rows, col.key, spec), format = columnFormat(col);
         if (props.summaryFormat) return props.summaryFormat(value, col, spec);
-        return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec);
+        return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec, scope.value.intl);
       };
       const totals = props.summary ? props.columns.filter(col => props.summary?.[col.key]).map(col => ({ key: col.key, label: col.label, value: summaryValue(col, state.rows) })) : [];
       const empty = slots.empty?.();

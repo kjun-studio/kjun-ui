@@ -8,6 +8,8 @@ export interface TableColumn<R extends object = Row> {
   width?: number | string;
   align?: "left" | "center" | "right";
   type?: "number" | "date" | "datetime" | "text";
+  /** The column's own sort order for two cell values (ascending); by default dates, numbers and text compare naturally. */
+  compare?: (a: unknown, b: unknown) => number;
   format?: (value: unknown, row: R) => VNodeChild;
   render?: (value: unknown, row: R, index: number) => VNodeChild;
   pill?: boolean;

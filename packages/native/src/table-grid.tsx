@@ -1,4 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { tableRowLabel } from "../../../shared/package-runtime/table-model";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { Fragment, useId, useState } from "react";
@@ -44,7 +45,11 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
   const bodyRow = (row: Row, i: number) => (
     <Fragment key={state.key(row, i)}>
       <Pressable
-        accessible={false}
+        // A pressable row with no controls of its own is one button named by its first column; with a checkbox or an
+        // expand button it stays a plain row, so those controls stay reachable (a device would merge them into the row).
+        accessible={!!onRowClick && !selectable && !expandable}
+        accessibilityRole={onRowClick && !selectable && !expandable ? "button" : undefined}
+        accessibilityLabel={onRowClick && !selectable && !expandable ? String(tableRowLabel(row, visible[0]?.key, i)) : undefined}
         onPress={() => onRowClick?.(row, i)}
         style={({ pressed }) => ({
           flexDirection: "row",
@@ -131,11 +136,11 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
         <View key={"group:" + group.key} role="heading" style={{ flexDirection: "row", alignItems: "center", gap: geometry.groupGap, width: totalWidth,
           paddingVertical: geometry.groupPadding.y, paddingHorizontal: geometry.groupPadding.x, backgroundColor: colors.secondary }}>
           <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"}
-            ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} onPress={() => toggleGroup(group.key)} />
+            ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} accessibilityState={{ expanded: open }} onPress={() => toggleGroup(group.key)} />
           {content(groupLabel(group), { ...typeStyle("control"), color: colors.text })}
           <KText style={{ ...typeStyle("body"), color: colors.textTertiary }}>{m.groupCount(group.rows.length)}</KText>
         </View>,
-        ...(open ? group.rows.map((row) => bodyRow(row, state.rows.indexOf(row))) : []),
+        ...(open ? group.rows.map((row) => bodyRow(row, state.rowIndex(row))) : []),
         group.rows.length > 1 ? summaryRow(group.rows, "subtotal", "subtotal:" + group.key) : null,
       ];
     }) : state.rows.map(bodyRow)),

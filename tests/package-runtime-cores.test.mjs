@@ -27,8 +27,9 @@ test('table core selection follows row keys, including nested keys', async () =>
   assert.deepEqual([partial.all, partial.some], [false, true]);
   assert.deepEqual(toggleSelectedRow([rows[0]], rows[0], 'meta.id'), []);
   assert.deepEqual(toggleSelectedRow([rows[0]], rows[1], 'meta.id'), rows);
-  assert.deepEqual(toggleAllRows(rows, true), []);
-  assert.deepEqual(toggleAllRows(rows, false), rows);
+  // The header checkbox clears or adds the shown rows only.
+  assert.deepEqual(toggleAllRows(rows, rows, 'meta.id', true), []);
+  assert.deepEqual(toggleAllRows(rows, [], 'meta.id', false), rows);
   const empty = tableSelection([], [], 'id');
   assert.deepEqual([empty.all, empty.some], [false, false]);
 });

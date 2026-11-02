@@ -5,6 +5,7 @@ import type { TableGridProps } from "../../../shared/package-runtime/table-prese
 import { KjunButton, KjunIcon } from "./button";
 import { KjunSkeleton } from "./display";
 import { TableCheck } from "./table-check";
+import { stickyHeaderStuck } from "../../../shared/package-runtime/table-model";
 interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["maxHeight"]> {
   ariaLabel: string;
   customClass: (row: Row, index: number) => string;
@@ -20,6 +21,8 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
         tabIndex={onRowClick ? 0 : undefined}
         onKeyDown={event => rowKeyDown(event, row, i)}
         data-selected={state.selectedRow(row) || undefined}
+        // Stripes follow the data rows only, so expanded rows and group headers do not flip them.
+        data-stripe={i % 2 === 1 || undefined}
         onClick={() => onRowClick?.(row, i)}
       >
         {selectable && <td className="kjun-table-action-cell">{checkbox(row, i)}</td>}
@@ -50,15 +53,16 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
         )}
     </Fragment>
   );
-  // The first column names a summary row unless it carries a value of its own.
+  // The first cell always names a summary row; a first column with a value of its own shows both.
   const summaryRow = (rows: Row[], kind: "subtotal" | "total", key: string) => summary && (
     <tr key={key} className="kjun-table-summary" data-kind={kind}>
       {selectable && <td className="kjun-table-action-cell" />}
-      {visible.map((col, c) => (
-        <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined}>
-          {summary(col, rows) ?? (c === 0 ? (kind === "total" ? m.tableTotal : m.tableSubtotal) : null)}
-        </td>
-      ))}
+      {visible.map((col, c) => {
+        const value = summary(col, rows), shown = value !== null && value !== undefined && value !== "" && value !== false;
+        return <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined}>
+          {c === 0 ? <><span className="kjun-table-summary-label">{kind === "total" ? m.tableTotal : m.tableSubtotal}</span>{shown && <> {value}</>}</> : shown ? value : null}
+        </td>;
+      })}
       {expandable && <td className="kjun-table-action-cell" />}
     </tr>
   );
@@ -77,7 +81,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
             </span>
           </th>
         </tr>
-        {open && group.rows.map((row) => bodyRow(row, state.rows.indexOf(row)))}
+        {open && group.rows.map((row) => bodyRow(row, state.rowIndex(row)))}
         {/* A one-row group's subtotal would only repeat that row. */}
         {group.rows.length > 1 && summaryRow(group.rows, "subtotal", "subtotal")}
       </tbody>
@@ -88,10 +92,8 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
   const pageSticky = stickyHeader && maxHeight == null;
   useEffect(() => {
     if (!pageSticky) return;
-    const update = () => {
-      const rect = table.current?.getBoundingClientRect();
-      setStuck(!!rect && rect.top < stickyOffset && rect.bottom > stickyOffset);
-    };
+    // Measured against the scroller the page actually scrolls in (an app shell), not only the viewport.
+    const update = () => setStuck(stickyHeaderStuck(table.current, stickyOffset));
     update();
     addEventListener("scroll", update, { passive: true, capture: true });
     return () => removeEventListener("scroll", update, { capture: true });

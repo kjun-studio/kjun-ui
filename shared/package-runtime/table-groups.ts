@@ -13,7 +13,8 @@ export function groupTableRows<Row extends object>(rows: readonly Row[], groupBy
   if (!groupBy) return null;
   const groups = new Map<string, TableRowGroup<Row>>();
   for (const row of rows) {
-    const value = getValue(row, groupBy), key = String(value ?? "");
+    // The key carries the value's type, so 1 and "1", or a missing value and "", stay separate groups.
+    const value = getValue(row, groupBy), key = value == null ? "null:" : typeof value + ":" + String(value);
     let group = groups.get(key);
     if (!group) groups.set(key, (group = { key, value, rows: [] }));
     group.rows.push(row);
@@ -32,6 +33,6 @@ export function summarizeColumn<Row extends object>(rows: readonly Row[], key: s
   return kind === "average" ? sum / values.length : sum;
 }
 
-export function formatSummary(value: number | null, kind: TableSummaryKind): string {
-  return value == null ? "" : new Intl.NumberFormat(undefined, kind === "average" ? { maximumFractionDigits: 2 } : undefined).format(value);
+export function formatSummary(value: number | null, kind: TableSummaryKind, locale?: string): string {
+  return value == null ? "" : new Intl.NumberFormat(locale, kind === "average" ? { maximumFractionDigits: 2 } : undefined).format(value);
 }

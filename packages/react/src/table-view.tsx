@@ -1,4 +1,5 @@
-import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { useKjunMessageScope, useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { tableRowLabel } from "../../../shared/package-runtime/table-model";
 import { tablePresentation, tableCellValue, tableSummaryValue, tableTotals } from "../../../shared/package-runtime/table-presentation";
 import { groupTableRows, type TableRowGroup } from "../../../shared/package-runtime/table-groups";
 import { TableToolbar } from "./table-toolbar";
@@ -16,7 +17,7 @@ import { KjunTableProps, TableColumn, useTableModel } from "./table-model";
 export function KjunTable<Row extends object = Record<string, unknown>>(
   props: KjunTableProps<Row>
 ) {
-  const m = useKjunMessages();
+  const m = useKjunMessages(), locale = useKjunMessageScope().intl;
   const {
     skeletonRows = 8,
     skeleton = true,
@@ -62,11 +63,11 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     collapsed,
     toggleGroup: (key: string) => setCollapsed((keys) => keys.includes(key) ? keys.filter((k) => k !== key) : [...keys, key]),
     groupLabel: (group: TableRowGroup<Row>) => props.renderGroupLabel ? props.renderGroupLabel(group.value, group.rows) : group.value == null || group.value === "" ? "-" : String(group.value),
-    summary: props.summary ? (col: TableColumn<Row>, rows: Row[]) => tableSummaryValue(props, col, rows) : null,
+    summary: props.summary ? (col: TableColumn<Row>, rows: Row[]) => tableSummaryValue(props, col, rows, locale) : null,
   };
   const { card, visible } = layout;
   const cell = (col: TableColumn<Row>, row: Row, index: number) => {
-    const { value, body } = tableCellValue(props, col, row, index);
+    const { value, body } = tableCellValue(props, col, row, index, locale);
     return col.pill ? (
       <span
         className={
@@ -95,7 +96,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
   };
   const checkbox = (row: Row, i: number) => (
     <TableCheck
-      aria-label={m.selectRow(i + 1)}
+      aria-label={m.selectRow(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))}
       checked={state.selectedRow(row)}
       onClick={(e) => e.stopPropagation()}
       onChange={() => state.toggleRow(row)}
@@ -146,9 +147,9 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         loadingDelay={skeleton ? 0 : loadingDelay}
       >
         {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} totals={tableTotals(props, state.rows)} />
+          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} totals={tableTotals(props, state.rows, locale)} />
         ) : layout.list ? (
-          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} totals={tableTotals(props, state.rows)} />
+          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} totals={tableTotals(props, state.rows, locale)} />
         ) : (
           <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, ...grouping }} stickyOffset={props.stickyOffset} sortable={props.sortable} />
         )}

@@ -103,7 +103,8 @@ export const kjunMessagesKo = {
   newWindow: " (새 창)",
   // Table
   dataTable: "데이터 표",
-  selectRow: (row: number) => `행 선택 ${row}`,
+  // A row is named by its title text when it has one, else by its position.
+  selectRow: (row: number | string) => `행 선택 ${row}`,
   selectAll: "전체 선택",
   selectAllPartial: "전체 선택 (일부 선택됨)",
   deselectAll: "선택 해제",

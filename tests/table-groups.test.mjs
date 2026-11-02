@@ -15,7 +15,8 @@ const rows = [
 
 test('groupTableRows keeps first-appearance order and the row order inside each group', () => {
   const groups = groupTableRows(rows, 'status');
-  assert.deepEqual(groups.map(g => g.key), ['진행 중', '검토', '']);
+  // Keys carry the value's type, so 1 and "1" (or null and "") never merge.
+  assert.deepEqual(groups.map(g => g.key), ['string:진행 중', 'string:검토', 'null:']);
   assert.deepEqual(groups[0].rows.map(r => r.id), [1, 3]);
   assert.equal(groups[2].value, null);
   assert.deepEqual(groupTableRows(rows, 'meta.team').map(g => g.rows.length), [2, 2]);

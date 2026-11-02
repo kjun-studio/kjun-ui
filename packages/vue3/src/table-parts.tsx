@@ -56,6 +56,8 @@ export interface TableLayout {
 }
 export interface TableRenderState {
   rows: Row[];
+  /** Each row's position in rows, without searching for it. */
+  rowIndex: (row: Row) => number;
   key: (row: Row, index?: number) => string | number;
   expanded: (string | number)[];
   selectedRow: (row: Row) => boolean;
@@ -96,6 +98,8 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
     <Fragment key={state.key(row, i)}>
       <tr class={"kjun-table-row-action " + c.customClass(row, i)} tabindex={c.clickable ? 0 : undefined}
         onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} data-selected={state.selectedRow(row) || undefined}
+        // Stripes follow the data rows only, so expanded rows and group headers do not flip them.
+        data-stripe={i % 2 === 1 || undefined}
         onClick={() => c.rowClick(row, i)}>
         {selectable && <td class="kjun-table-action-cell">{c.checkbox(row, i)}</td>}
         {visible.map(col => (
@@ -111,14 +115,14 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
       )}
     </Fragment>
   );
-  // Like React: the first column names a summary row unless it carries a value of its own.
+  // Like React: the first cell always names a summary row; a first column with a value of its own shows both.
   const summaryRow = (rows: Row[], kind: "subtotal" | "total", key: string) => c.summary && (
     <tr key={key} class="kjun-table-summary" data-kind={kind}>
       {selectable && <td class="kjun-table-action-cell" />}
       {visible.map((col, index) => {
-        const value = c.summary!(col, rows);
+        const value = c.summary!(col, rows), shown = value !== null && value !== undefined && value !== "" && value !== false;
         return <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined}>
-          {value ?? (index === 0 ? (kind === "total" ? m.tableTotal : m.tableSubtotal) : null)}
+          {index === 0 ? <><span class="kjun-table-summary-label">{kind === "total" ? m.tableTotal : m.tableSubtotal}</span>{shown && <> {value}</>}</> : shown ? value : null}
         </td>;
       })}
       {expandable && <td class="kjun-table-action-cell" />}
@@ -139,7 +143,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
             </span>
           </th>
         </tr>
-        {open && group.rows.map(row => bodyRow(row, state.rows.indexOf(row)))}
+        {open && group.rows.map(row => bodyRow(row, state.rowIndex(row)))}
         {group.rows.length > 1 && summaryRow(group.rows, "subtotal", "subtotal")}
       </tbody>
     );

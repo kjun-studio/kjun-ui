@@ -112,10 +112,11 @@ export const KjunProgressCell = defineComponent({
       const role = props.color === "auto" ? percent < 30 ? "danger" : percent < 70 ? "warning" : "success" : props.color;
       return (
         <div class="kjun-progress-cell">
-          <div style={css({ height: props.height })}>
+          {/* The bar is a progressbar, so its value reaches screen readers also without the visible label. */}
+          <div style={css({ height: props.height })} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(percent)}>
             <span style={{ width: percent + "%", background: props.color === "custom" ? props.customColor : `var(--_kjun-color-${role})` }} />
           </div>
-          {props.showLabel && <span>{Math.round(percent)}%</span>}
+          {props.showLabel && <span aria-hidden="true">{Math.round(percent)}%</span>}
         </div>
       );
     };

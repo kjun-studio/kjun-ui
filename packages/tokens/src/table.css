@@ -231,29 +231,6 @@
   color: var(--_kjun-text-tertiary);
 }
 
-/* 스크롤 힌트는 스크롤 콘텐츠 안이 아니라 뷰포트 셸에 둬야, 가로 스크롤을 따라 움직이지 않는다. */
-.kjun-table-scroll-shell {
-  position: relative;
-  min-width: 0;
-}
-
-.kjun-table-scroll-fade {
-  display: none;
-  pointer-events: none;
-}
-
-@media (width <= token(responsive.table)) {
-  .kjun-table-scroll-fade {
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: var(--_kjun-extension-scroll-fade-width);
-    z-index: 1;
-    background: linear-gradient(to right, transparent, var(--_kjun-card-bg));
-  }
-}
 .kjun-table-scroll {
   overflow: auto;
 }
@@ -322,8 +299,9 @@
 .kjun-table[data-compact="true"] td {
   padding: var(--_kjun-geometry-table-cell-padding-compact-y) var(--_kjun-geometry-table-cell-padding-compact-x);
 }
-/* Stripes are a faint text tint so they never match the header or an expanded row. */
-.kjun-table[data-striped="true"] tbody > tr:nth-child(even) {
+/* Stripes are a faint text tint so they never match the header or an expanded row. They follow the data rows
+   (data-stripe), so an expanded row or a group header does not flip the pattern. */
+.kjun-table[data-striped="true"] tbody > tr[data-stripe] {
   background: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-stripe) * 100%), transparent);
 }
 .kjun-table[data-hoverable="true"] tbody > tr:hover {

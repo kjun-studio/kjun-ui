@@ -97,7 +97,8 @@ export const kjunMessagesEn: KjunMessages = {
   externalLink: "External link",
   newWindow: " (opens in a new window)",
   dataTable: "Data table",
-  selectRow: (row: number) => `Select row ${row}`,
+  // A row is named by its title text when it has one, else by its position.
+  selectRow: (row: number | string) => `Select row ${row}`,
   selectAll: "Select all",
   selectAllPartial: "Select all (some selected)",
   deselectAll: "Deselect all",

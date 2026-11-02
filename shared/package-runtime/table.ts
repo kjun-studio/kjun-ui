@@ -3,7 +3,8 @@ export type { TableSort } from "@kjun-ui/tokens";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { TableSummaryKind } from "./table-groups";
 export type { TableSummaryKind } from "./table-groups";
-import { sortTableRows, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "./table-model";
+import { sortTableRows, tableRowIndex, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow, type TableCompare } from "./table-model";
+import { useMemo } from "react";
 export { getValue } from "./table-model";
 
 export interface TableColumn<Row extends object = Record<string, unknown>> {
@@ -13,6 +14,8 @@ export interface TableColumn<Row extends object = Record<string, unknown>> {
   width?: number | string;
   align?: "left" | "center" | "right";
   type?: "number" | "date" | "datetime" | "text";
+  /** The column's own sort order for two cell values (ascending); by default dates, numbers and text compare naturally. */
+  compare?: TableCompare;
   format?: (value: unknown, row: Row) => ReactNode;
   render?: (value: unknown, row: Row, index: number) => ReactNode;
   pill?: boolean;
@@ -104,7 +107,8 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   onSearch?: (query: string) => void;
   onRetry?: () => void;
 }
-export function useTableModel<Row extends object>(props: TableProps<Row, unknown>) {
+/** locale is the KjunProvider locale for text order; the platform wrapper passes it. */
+export function useTableModel<Row extends object>(props: TableProps<Row, unknown>, locale?: string) {
   const {
     data = [],
     rowKey = "id",
@@ -125,12 +129,16 @@ export function useTableModel<Row extends object>(props: TableProps<Row, unknown
     timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
   const sort = props.sort === undefined ? internalSort : props.sort ?? { key: "", order: "asc" as const };
-  const rows = sortTableRows(data, sort, { sortable, sortMode }) as Row[];
+  const compare = props.columns.find(column => column.key === sort.key)?.compare;
+  // Sorting runs when the data or the sort changes, not on every keystroke in the search box.
+  const rows = useMemo(() => sortTableRows(data, sort, { sortable, sortMode, compare, locale }) as Row[], [data, sort.key, sort.order, sortable, sortMode, compare, locale]);
+  const rowIndex = useMemo(() => tableRowIndex(rows), [rows]);
   const key = (row: Row, index = 0) => tableRowKey(row, rowKey, index);
   const { isSelected: selectedRow, all, some } = tableSelection(rows, selected, rowKey),
     expanded = expandedRows ?? internalExpanded;
   return {
     rows,
+    rowIndex,
     key,
     sort,
     search,
@@ -150,7 +158,7 @@ export function useTableModel<Row extends object>(props: TableProps<Row, unknown
       props.onSortChange?.(next);
     },
     toggleRow: (row: Row) => onSelectionChange?.(toggleSelectedRow(selected, row, rowKey)),
-    toggleAll: () => onSelectionChange?.(toggleAllRows(rows, all)),
+    toggleAll: () => onSelectionChange?.(toggleAllRows(rows, selected, rowKey, all)),
     toggleExpand: (row: Row, index: number) => {
       const next = toggleExpandedRow(expanded, key(row, index), expandSingle);
       setExpanded(next);

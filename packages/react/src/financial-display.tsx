@@ -158,7 +158,8 @@ export function KjunProgressCell({
         : color;
   return (
     <div className="kjun-progress-cell">
-      <div style={{ height }}>
+      {/* The bar is a progressbar, so its value reaches screen readers also without the visible label. */}
+      <div style={{ height }} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(percent)}>
         <span
           style={{
             width: percent + "%",
@@ -167,7 +168,7 @@ export function KjunProgressCell({
           }}
         />
       </div>
-      {showLabel && <span>{Math.round(percent)}%</span>}
+      {showLabel && <span aria-hidden="true">{Math.round(percent)}%</span>}
     </div>
   );
 }

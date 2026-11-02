@@ -45,31 +45,32 @@ export function columnFormat<Format>(column: { key: string; format?: Format }): 
   return undefined;
 }
 
-export function tableCellValue<Row extends object>(props: TableProps<Row, unknown>, column: TableColumn<Row>, row: Row, index: number) {
+/** locale is the KjunProvider locale, so numbers group the way the app's language does. */
+export function tableCellValue<Row extends object>(props: TableProps<Row, unknown>, column: TableColumn<Row>, row: Row, index: number, locale?: string) {
   const value = getValue(row, column.key);
   const body = props.renderCell ? props.renderCell(value, column, row, index)
     : column.render ? column.render(value, row, index)
     : columnFormat(column) ? columnFormat(column)!(value, row)
     : props.formatValue ? props.formatValue(value, column, row)
     : value == null ? "-"
-    : typeof value === "number" && column.type === "number" ? new Intl.NumberFormat().format(value) : String(value);
+    : typeof value === "number" && column.type === "number" ? new Intl.NumberFormat(locale).format(value) : String(value);
   return { value, body };
 }
 
 /** A summary cell: the app's function, or the kind computed and shown through the column's format. */
-export function tableSummaryValue<Row extends object>(props: TableProps<Row, unknown>, column: TableColumn<Row>, rows: Row[]): ReactNode {
+export function tableSummaryValue<Row extends object>(props: TableProps<Row, unknown>, column: TableColumn<Row>, rows: Row[], locale?: string): ReactNode {
   const spec = props.summary?.[column.key];
   if (!spec) return null;
   if (typeof spec === "function") return spec(rows, column);
   const value = summarizeColumn(rows, column.key, spec), format = columnFormat(column);
   if (props.summaryFormat) return props.summaryFormat(value, column, spec);
-  return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec);
+  return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec, locale);
 }
 
 /** Narrow layouts keep the summary as one closing block: each summarized column's label and total. */
 export interface TableTotal { key: string; label: string; value: ReactNode }
-export function tableTotals<Row extends object>(props: TableProps<Row, unknown>, rows: Row[]): TableTotal[] {
-  return props.summary ? props.columns.filter((column) => props.summary?.[column.key]).map((column) => ({ key: column.key, label: column.label, value: tableSummaryValue(props, column, rows) })) : [];
+export function tableTotals<Row extends object>(props: TableProps<Row, unknown>, rows: Row[], locale?: string): TableTotal[] {
+  return props.summary ? props.columns.filter((column) => props.summary?.[column.key]).map((column) => ({ key: column.key, label: column.label, value: tableSummaryValue(props, column, rows, locale) })) : [];
 }
 
 export interface TableGroupingProps<Row extends object> {
@@ -87,7 +88,7 @@ export interface TableRowsProps<Row extends object> {
   skeletonRows: number;
   /** A loadingDelay is still running: the skeleton keeps its space but stays out of sight. */
   skeletonHidden?: boolean;
-  state: Pick<ReturnType<typeof useTableModel<Row>>, "rows" | "key" | "expanded" | "selectedRow">;
+  state: Pick<ReturnType<typeof useTableModel<Row>>, "rows" | "rowIndex" | "key" | "expanded" | "selectedRow">;
   onRowClick: TableProps<Row>["onRowClick"];
   selectable: boolean;
   expandable: boolean;
