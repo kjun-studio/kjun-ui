@@ -96,6 +96,10 @@ for (const platform of ['react', 'vue3', 'native']) {
       const first = await box(page, '브랜드 웹사이트'), second = await box(page, '고객센터 개편');
       expect(second.x - first.x).toBeLessThan(720 / 2 - 20);
       expect(narrow.x).toBeLessThan(40);
+      // Web and Native share one rule: as many tiles as keep tileMinWidth, each an equal share of the row.
+      const row = (await page.getByRole('group', { name: '합계' }).boundingBox())!.width;
+      const perRow = Math.max(2, Math.floor((row + 12) / (160 + 12)));
+      expect(Math.abs((second.x - first.x) - (row + 12) / perRow)).toBeLessThanOrEqual(2);
     });
   });
 }
