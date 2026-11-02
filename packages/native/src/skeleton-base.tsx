@@ -6,6 +6,7 @@ View,
 type DimensionValue,
 type ViewStyle
 } from "react-native";
+import { skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
 import { useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
 
@@ -72,58 +73,26 @@ export function KjunSkeleton({
   );
   const count = (n: number) =>
     Array.from({ length: Math.max(0, Math.floor(n)) }, (_, i) => i + 1);
-  const line = (w: DimensionValue, key: number, h = tokens.extensions.skeleton.lineHeights.md) => (
-    <View key={key} style={{ marginBottom: key === rows ? 0 : tokens.extensions.skeleton.gap }}>
-      {block(w, h)}
-    </View>
-  );
-  const frame: ViewStyle = {
-    padding: tokens.extensions.skeleton.padding,
-    borderWidth: tokens.border.defaultWidth,
-    borderColor: colors.border,
-    borderRadius: tokens.extensions.skeleton.radius,
-    backgroundColor: colors.background,
+  // Like Web: a bar half a type role's line height, centred in that line box, so the skeleton is as tall as the text.
+  const slot = (w: DimensionValue, role: "body" | "caption" | "cardTitle" | "displaySm" = "body", key?: number, marginTop = 0) => {
+    const lineHeight = tokens.typography[role].lineHeightPx;
+    return <View key={key} style={{ height: lineHeight, justifyContent: "center", marginTop }}>{block(w, lineHeight / 2)}</View>;
   };
+  const paragraph = () => skeletonTextWidths(rows).map((w, i) => slot(w, "body", i));
   return (
     <Animated.View
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
       style={{ width: width || "100%", overflow: "hidden" }}
     >
-      {type === "text" &&
-        count(rows).map((i) =>
-          line(
-            i === rows
-              ? "60%"
-              : (["100%", "90%", "80%", "70%", "60%"] as DimensionValue[])[
-                  i % 5
-                ],
-            i
-          )
-        )}
+      {type === "text" && paragraph()}
       {type === "avatar" &&
         block(width || tokens.extensions.skeleton.avatarSize, height || tokens.extensions.skeleton.avatarSize, { borderRadius: rounded ? tokens.radius.radius9999 : tokens.extensions.skeleton.blockRadius })}
       {type === "card" && (
-        <View style={frame}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: tokens.extensions.skeleton.gap,
-              marginBottom: tokens.dimension.value16,
-            }}
-          >
-            {block(tokens.extensions.skeleton.cardAvatarSize, tokens.extensions.skeleton.cardAvatarSize, { borderRadius: tokens.radius.radius9999 })}
-            <View style={{ flex: 1, gap: tokens.dimension.value8 }}>
-              {block("60%")}
-              {block("40%", tokens.extensions.skeleton.lineHeights.sm)}
-            </View>
-          </View>
-          <View style={{ gap: tokens.dimension.value10 }}>
-            {block("100%")}
-            {block("80%")}
-            {block("60%")}
-          </View>
+        <View style={{ padding: tokens.extensions.skeleton.padding, borderRadius: tokens.extensions.skeleton.radius, backgroundColor: colors.surface }}>
+          {slot("40%", "cardTitle")}
+          {slot("28%", "caption", undefined, tokens.card.subtitleGap)}
+          {rows > 0 && <View style={{ marginTop: tokens.extensions.skeleton.padding }}>{paragraph()}</View>}
         </View>
       )}
       {type === "table" && (
@@ -175,22 +144,10 @@ export function KjunSkeleton({
         </View>
       )}
       {type === "stat" && (
-        <View
-          style={[
-            frame,
-            {
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            },
-          ]}
-        >
-          <View style={{ flex: 1, gap: tokens.dimension.value8 }}>
-            {block("40%", tokens.extensions.skeleton.lineHeights.sm)}
-            {block("60%", tokens.extensions.skeleton.lineHeights.lg)}
-            {block("30%", tokens.extensions.skeleton.lineHeights.sm)}
-          </View>
-          {block(tokens.extensions.skeleton.statWidth, tokens.extensions.skeleton.statHeight)}
+        <View>
+          {slot("40%", "caption")}
+          {slot("64%", "displaySm", undefined, tokens.extensions.kpiRow.md.labelGap)}
+          {slot("30%", "caption", undefined, tokens.extensions.kpiRow.md.descriptionGap)}
         </View>
       )}
       {type === "block" &&

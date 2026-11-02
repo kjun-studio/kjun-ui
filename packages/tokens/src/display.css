@@ -18,51 +18,38 @@
   margin-bottom: 0;
 }
 
-.kjun-skeleton-line-sm {
-  height: var(--_kjun-extension-skeleton-line-heights-sm);
-}
-
-.kjun-skeleton-line-lg {
-  height: var(--_kjun-extension-skeleton-line-heights-lg);
-}
-
 /* Avatar */
 .kjun-skeleton-avatar {
   background: var(--_kjun-skeleton);
   flex-shrink: 0;
 }
 
-.kjun-skeleton-avatar-sm {
-  width: var(--_kjun-extension-skeleton-card-avatar-size);
-  height: var(--_kjun-extension-skeleton-card-avatar-size);
-  border-radius: 50%;
-}
-
-/* Card */
-.kjun-skeleton-card {
-  padding: var(--_kjun-extension-skeleton-padding);
-  border: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
-  border-radius: var(--_kjun-extension-skeleton-radius);
-  background: var(--_kjun-bg-primary);
-}
-
-.kjun-skeleton-card-header {
+/* Text slots: each bar is half its role's line height, centred in a full line box, so a skeleton is as tall as the text
+   it stands in for. */
+.kjun-skeleton-slot {
   display: flex;
   align-items: center;
-  gap: var(--_kjun-extension-skeleton-gap);
-  margin-bottom: var(--_kjun-extension-skeleton-form-gap);
+  height: var(--_kjun-skeleton-slot, var(--_kjun-type-body-line));
 }
-
-.kjun-skeleton-card-header-text {
-  flex: 1;
+.kjun-skeleton-slot > .kjun-skeleton-line {
+  height: 50%;
+  margin-bottom: 0;
 }
+.kjun-skeleton-slot[data-role="card-title"] { --_kjun-skeleton-slot: var(--_kjun-type-card-title-line); }
+.kjun-skeleton-slot[data-role="caption"] { --_kjun-skeleton-slot: var(--_kjun-type-caption-line); }
+.kjun-skeleton-slot[data-role="display-sm"] { --_kjun-skeleton-slot: var(--_kjun-type-display-sm-line); }
 
-.kjun-skeleton-card-header-text .kjun-skeleton-line {
-  margin-bottom: var(--_kjun-extension-skeleton-field-gap);
+/* Card: the silhouette of a default KjunCard (surface, no border) with a title, a subtitle and body lines. */
+.kjun-skeleton-card {
+  padding: var(--_kjun-extension-skeleton-padding);
+  border-radius: var(--_kjun-extension-skeleton-radius);
+  background: var(--_kjun-color-surface);
 }
-
-.kjun-skeleton-card-body .kjun-skeleton-line {
-  margin-bottom: var(--_kjun-geometry-dimension-value10);
+.kjun-skeleton-card-header > .kjun-skeleton-slot + .kjun-skeleton-slot {
+  margin-top: var(--_kjun-geometry-card-subtitle-gap);
+}
+.kjun-skeleton-card-body {
+  margin-top: var(--_kjun-extension-skeleton-padding);
 }
 
 /* Table */
@@ -97,35 +84,12 @@
   height: var(--_kjun-extension-skeleton-table-line-height);
 }
 
-/* Stat Card */
-.kjun-skeleton-stat {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--_kjun-extension-skeleton-padding);
-  border: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
-  border-radius: var(--_kjun-extension-skeleton-radius);
-  background: var(--_kjun-bg-primary);
+/* Stat: one KpiRow item, label, value and description on their own line boxes. */
+.kjun-skeleton-stat > .kjun-skeleton-slot[data-role="display-sm"] {
+  margin-top: var(--_kjun-extension-kpi-row-md-label-gap);
 }
-
-.kjun-skeleton-stat-content {
-  flex: 1;
-}
-
-.kjun-skeleton-stat-content .kjun-skeleton-line {
-  margin-bottom: var(--_kjun-extension-skeleton-field-gap);
-}
-
-.kjun-skeleton-stat-chart {
-  width: var(--_kjun-extension-skeleton-stat-width);
-  height: var(--_kjun-extension-skeleton-stat-height);
-}
-
-.kjun-skeleton-sparkline {
-  width: 100%;
-  height: 100%;
-  background: var(--_kjun-skeleton);
-  border-radius: var(--_kjun-extension-skeleton-line-radius);
+.kjun-skeleton-stat > .kjun-skeleton-slot:last-child {
+  margin-top: var(--_kjun-extension-kpi-row-md-description-gap);
 }
 
 /* Block */
@@ -134,30 +98,17 @@
   border-radius: var(--_kjun-extension-skeleton-block-radius);
 }
 
-/* Animation */
+/* Animation: every bar brightens and dims together (as on Native), so a group of skeletons moves as one. */
 .kjun-skeleton-animated .kjun-skeleton-line,
 .kjun-skeleton-animated .kjun-skeleton-avatar,
-.kjun-skeleton-animated .kjun-skeleton-sparkline,
 .kjun-skeleton-animated .kjun-skeleton-block {
-  background: linear-gradient(
-    90deg,
-    var(--_kjun-skeleton) 25%,
-    var(--_kjun-skeleton-shine) 50%,
-    var(--_kjun-skeleton) 75%
-  );
-  background-size: 200% 100%;
-  animation: kjun-skeleton-shimmer var(--_kjun-motion-shimmer) ease-in-out infinite;
+  animation: kjun-skeleton-pulse var(--_kjun-motion-shimmer) ease-in-out infinite;
 }
-
-@keyframes kjun-skeleton-shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
+@keyframes kjun-skeleton-pulse {
+  50% {
+    background-color: var(--_kjun-skeleton-shine);
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .kjun-skeleton-animated * {
     animation: none !important;

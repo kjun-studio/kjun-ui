@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
-  chartFramePath, chartFrameViewBox, chartSkeletonCount, chartMatrixMuted, chartDonutHole, chartDonutRatio, chartSkeletonKind,
+  chartFramePath, chartFrameStops, chartFrameViewBox, chartTickShift, chartSkeletonCount, chartMatrixMuted, chartDonutHole, chartDonutRatio, chartSkeletonKind,
 } from '../shared/package-runtime/chart-skeleton.ts';
 
 const read = (path) => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
@@ -17,8 +17,13 @@ test('chart skeleton counts normalize to positive integers', () => {
 });
 
 test('chart skeleton frame, matrix pattern and donut hole', () => {
-  assert.equal(chartFrameViewBox, '0 0 600 240');
-  assert.equal(chartFramePath, 'M20 10V220H590 M20 65H590 M20 120H590 M20 175H590');
+  // The frame follows the app's grid: evenly spaced lines from the top to the baseline, at least two.
+  assert.equal(chartFrameViewBox, '0 0 100 100');
+  assert.equal(chartFramePath(5), 'M0 0H100 M0 25H100 M0 50H100 M0 75H100 M0 100H100');
+  assert.deepEqual(chartFrameStops(3), [0, 0.5, 1]);
+  for (const count of [0, 1, NaN]) assert.deepEqual(chartFrameStops(count), [0, 1]);
+  // Tick labels centre on their tick but stay inside the plot at both ends.
+  assert.deepEqual([0, 0.4, 1].map(chartTickShift), [0, -50, -100]);
   assert.equal(chartMatrixMuted(0, 1), true);
   assert.equal(chartMatrixMuted(0, 0), false);
   assert.equal(chartDonutHole(180, 22), 100);
@@ -60,9 +65,9 @@ test('the donut ratio is shared by the helper, the web CSS and Native', () => {
   const css = read('packages/tokens/src/data-state.css'), percent = chartDonutRatio * 100;
   const donut = css.slice(css.indexOf('.kjun-chart-skeleton-donut {'), css.indexOf('}', css.indexOf('.kjun-chart-skeleton-donut {')));
   assert.match(donut, new RegExp(`height: ${percent}%;`));
-  assert.match(css, new RegExp(`max-width:calc\\(${percent}cqh - 2 \\*`));
   assert.match(read('packages/native/src/skeletons.tsx'), /chartDonutRatio \* 100/);
   // The hole formula assumes border-box; it must not depend on the provider's reset.
   assert.match(donut, /box-sizing: border-box;/);
-  assert.match(css, /data-kjun-chart-kind="donut"\] \.kjun-chart-skeleton-status>span \{[^}]*box-sizing:border-box/);
+  // The donut carries no text; the loading text is a caption under the drawing.
+  assert.doesNotMatch(css, /kjun-chart-skeleton-status>span/);
 });

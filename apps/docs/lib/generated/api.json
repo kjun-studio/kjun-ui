@@ -3052,6 +3052,27 @@
         "required": false,
         "default": "14",
         "description": ""
+      },
+      {
+        "name": "gridLines",
+        "type": "number",
+        "required": false,
+        "default": "5",
+        "description": "Frame: horizontal grid lines of the app's chart, top to baseline."
+      },
+      {
+        "name": "xTicks",
+        "type": "number",
+        "required": false,
+        "default": "6",
+        "description": "Frame: x-axis tick labels."
+      },
+      {
+        "name": "axisWidth",
+        "type": "number",
+        "required": false,
+        "default": "40",
+        "description": "Frame: y-axis label width in px; label bars fill it, less the label gap."
       }
     ],
     "events": [],
@@ -3105,6 +3126,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "gridLines",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Frame: horizontal grid lines of the app's chart, top to baseline (default 5)."
+      },
+      {
+        "name": "xTicks",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Frame: x-axis tick labels (default 6)."
+      },
+      {
+        "name": "axisWidth",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Frame: y-axis label width in px (default 40); label bars fill it, less the label gap."
       }
     ],
     "native": [
@@ -3156,6 +3198,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "gridLines",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Frame: horizontal grid lines of the app's chart, top to baseline (default 5)."
+      },
+      {
+        "name": "xTicks",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Frame: x-axis tick labels (default 6)."
+      },
+      {
+        "name": "axisWidth",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Frame: y-axis label width (default 40); label bars fill it, less the label gap."
       }
     ]
   },
@@ -6011,7 +6074,7 @@
       },
       {
         "name": "placement",
-        "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\"",
+        "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\"",
         "required": false,
         "default": "\"bottom-start\"",
         "description": ""
@@ -6088,7 +6151,7 @@
       },
       {
         "name": "placement",
-        "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\" | undefined",
+        "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -6167,7 +6230,7 @@
       },
       {
         "name": "placement",
-        "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\" | undefined",
+        "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -10633,7 +10696,7 @@
       },
       {
         "name": "titleVariant",
-        "type": "\"title\" | \"label\"",
+        "type": "\"label\" | \"title\"",
         "required": false,
         "default": "—",
         "description": "\"title\" is the 16px heading, \"label\" the small caption above the rows; by default a title with a description is a heading and one without is a label."
@@ -10867,17 +10930,17 @@
       },
       {
         "name": "variant",
-        "type": "\"market\" | \"compact\" | \"notification\"",
+        "type": "\"market\" | \"compact\" | \"notification\" | \"row\"",
         "required": false,
         "default": "\"market\"",
-        "description": ""
+        "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked."
       },
       {
         "name": "avatar",
         "type": "boolean",
         "required": false,
-        "default": "true",
-        "description": ""
+        "default": "—",
+        "description": "Defaults to true, or false for the row variant."
       },
       {
         "name": "avatarSize",
@@ -10906,10 +10969,10 @@
       },
       {
         "name": "variant",
-        "type": "\"compact\" | \"market\" | \"notification\" | undefined",
+        "type": "\"compact\" | \"market\" | \"notification\" | \"row\" | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked."
       },
       {
         "name": "avatar",
@@ -10943,10 +11006,10 @@
       },
       {
         "name": "variant",
-        "type": "\"compact\" | \"market\" | \"notification\" | undefined",
+        "type": "\"compact\" | \"market\" | \"notification\" | \"row\" | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked."
       },
       {
         "name": "avatar",
@@ -13849,7 +13912,7 @@
       },
       {
         "name": "placement",
-        "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\"",
+        "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\"",
         "required": false,
         "default": "\"bottom-start\"",
         "description": ""
@@ -14054,7 +14117,7 @@
       },
       {
         "name": "placement",
-        "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\" | undefined",
+        "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -14189,7 +14252,7 @@
       },
       {
         "name": "placement",
-        "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\" | undefined",
+        "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
         "required": false,
         "default": "—",
         "description": ""

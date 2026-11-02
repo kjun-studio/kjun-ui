@@ -294,14 +294,10 @@
     "skeleton": {
       "lineHeights": {
         "sm": 12,
-        "md": 16,
-        "lg": 24
+        "md": 16
       },
       "avatarSize": 48,
-      "cardAvatarSize": 40,
       "tableLineHeight": 14,
-      "statWidth": 80,
-      "statHeight": 40,
       "blockHeight": 100,
       "listHeights": {
         "market": {
@@ -321,7 +317,10 @@
     },
     "chartSkeleton": {
       "height": 240,
-      "donutThickness": 22
+      "donutThickness": 22,
+      "axisWidth": 40,
+      "tickLabelWidth": 28,
+      "labelGap": { "$ref": "dimension.value8" }
     },
     "tableCard": {
       "titleSkeletonWidth": 96,

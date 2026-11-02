@@ -62,16 +62,40 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(chartPart(page,'cell')).toHaveCount(2);
   });
 
-  test(`${platform}: chart skeleton donut keeps its label inside the hole`,async({page})=>{
+  test(`${platform}: chart skeleton donut is a bare ring and the loading text is a caption under it`,async({page})=>{
     await page.emulateMedia({reducedMotion:'reduce'});
     await openFixture(page,platform,'?kind=donut','visual-contract');
     const donut=chartPart(page,'donut');
     await expect(donut.locator('*')).toHaveCount(0);
-    const ring=await box(donut), label=await box(chartPart(page,'status').getByText('차트를 불러오는 중',{exact:true}));
-    const hole=ring.height-2*tokens.extensions.chartSkeleton.donutThickness;
-    expect(label.width).toBeLessThanOrEqual(hole+1);
-    expect(label.height).toBeLessThanOrEqual(hole+1);
-    expect(Math.abs(label.x+label.width/2-(ring.x+ring.width/2))).toBeLessThanOrEqual(1);
+    const ring=await box(donut), caption=await box(chartPart(page,'status'));
+    expect(caption.y).toBeGreaterThanOrEqual(ring.y+ring.height-1);
+    // The caption stays inside the reserved height.
+    const root=await box(chartRoot(page));
+    expect(caption.y+caption.height).toBeLessThanOrEqual(root.y+root.height+1);
+    expect(root.height).toBe(180);
+  });
+
+  test(`${platform}: chart skeleton frame puts axis label bars on the app's grid lines and ticks`,async({page})=>{
+    await page.emulateMedia({reducedMotion:'reduce'});
+    await openFixture(page,platform,'?kind=frame&no-text&grid=4&ticks=7&axis=64&chart-width=600','visual-contract');
+    const labels=chartPart(page,'label');
+    await expect(labels).toHaveCount(11);
+    const plot=await box(chartPart(page,'plot')), bars=await Promise.all((await labels.all()).map(box));
+    const ys=bars.filter(b=>b.x<plot.x), xs=bars.filter(b=>b.x>=plot.x-1);
+    expect(ys).toHaveLength(4);
+    expect(xs).toHaveLength(7);
+    // y bars sit in the 64px axis, centred on each grid line from the top to the baseline.
+    ys.forEach((bar,i)=>{
+      expect(bar.x+bar.width).toBeLessThanOrEqual(plot.x+1);
+      expect(Math.abs(bar.y+bar.height/2-(plot.y+plot.height*i/3))).toBeLessThanOrEqual(1);
+    });
+    expect(Math.round(plot.x-ys[0].x)).toBe(64);
+    // x bars run under the plot, the first and last flush with its ends.
+    expect(Math.abs(xs[0].x-plot.x)).toBeLessThanOrEqual(1);
+    expect(Math.abs(xs[6].x+xs[6].width-(plot.x+plot.width))).toBeLessThanOrEqual(1);
+    xs.forEach(bar=>expect(bar.y).toBeGreaterThanOrEqual(plot.y+plot.height));
+    // Without loading text the plot and its labels fill the whole height.
+    expect(Math.round(xs[0].y+xs[0].height+tokens.typography.caption.lineHeightPx/4)).toBe(Math.round((await box(chartRoot(page))).y+180));
   });
 
   test(`${platform}: chart skeleton spinner mode and loading delay keep the height`,async({page})=>{

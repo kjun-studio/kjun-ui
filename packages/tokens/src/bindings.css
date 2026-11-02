@@ -570,12 +570,8 @@
   --_kjun-extension-skeleton-list-notification-padding-x: 12px;
   --_kjun-extension-skeleton-line-heights-sm: 12px;
   --_kjun-extension-skeleton-line-heights-md: 16px;
-  --_kjun-extension-skeleton-line-heights-lg: 24px;
   --_kjun-extension-skeleton-avatar-size: 48px;
-  --_kjun-extension-skeleton-card-avatar-size: 40px;
   --_kjun-extension-skeleton-table-line-height: 14px;
-  --_kjun-extension-skeleton-stat-width: 80px;
-  --_kjun-extension-skeleton-stat-height: 40px;
   --_kjun-extension-skeleton-block-height: 100px;
   --_kjun-extension-skeleton-list-heights-market: 72px;
   --_kjun-extension-skeleton-list-heights-compact: 56px;
@@ -821,6 +817,9 @@
   --_kjun-extension-market-list-change-skeleton-height: 14px;
   --_kjun-extension-chart-skeleton-height: 240px;
   --_kjun-extension-chart-skeleton-donut-thickness: 22px;
+  --_kjun-extension-chart-skeleton-axis-width: 40px;
+  --_kjun-extension-chart-skeleton-tick-label-width: 28px;
+  --_kjun-extension-chart-skeleton-label-gap: 8px;
   --_kjun-state-opacity-disabled: 0.5;
   --_kjun-state-opacity-disabled-strong: 0.4;
   --_kjun-state-opacity-pressed: 0.8;

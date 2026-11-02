@@ -2,6 +2,10 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.19.0 — 미배포
+
+- **스켈레톤을 실제 컴포넌트의 윤곽으로**: 로딩이 끝나도 화면이 움직이지 않도록 각 스켈레톤이 대신하는 컴포넌트와 같은 높이를 씁니다. 막대는 해당 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다. `KjunSkeleton` `type="text"`는 본문(14/20) 줄 높이를 따르고(3줄 72→60px), 줄 폭이 조금씩 달라 문단마다 똑같이 보이지 않습니다. `type="card"`는 아바타와 테두리 없이 기본 `KjunCard`처럼 표면색 면에 제목·부제·본문 줄(`rows`, 기본 3)을 그립니다. `type="stat"`은 오른쪽 차트 칸과 테두리 상자 없이 KpiRow 항목처럼 라벨·큰 값·설명 세 줄이고, 세 플랫폼 높이가 같습니다(웹 106·Native 98px → 76px). `KjunListSkeleton`에 `variant="row"`를 추가했습니다. `KjunListRow`처럼 16px 여백·최소 56px 행에 제목·설명 줄과 행 끝 값 자리(`quote`)를 두고, 구분선은 글자 시작선부터 긋습니다. 아바타는 `avatar`를 켤 때만 그립니다(다른 변형은 이전처럼 기본 켜짐). **움직임 통일**: 웹도 Native처럼 막대마다 따로 훑는 반짝임 대신 모든 막대가 함께 밝아졌다 어두워집니다(`kjun-skeleton-pulse`, `skeleton`↔`skeleton-shine`). **`KjunChartSkeleton`**: 안내 문구를 그림 가운데 칩 대신 아래 12px 캡션으로 옮겼습니다. 도넛은 글자 없이 고리만 그립니다. 프레임형은 격자선과 축 라벨 자리(세로축·가로축 막대)를 그려 빈 차트와 구분되며, 격자와 라벨 위치는 새 prop `gridLines`(가로 격자선 수, 기본 5)·`xTicks`(가로축 눈금 수, 기본 6)·`axisWidth`(세로축 라벨 폭, 기본 40px)로 앱 차트에 맞춥니다. 캡션도 `height` 안에 들어가므로 격자를 정확히 맞추려면 `loadingText=""`로 끕니다. 라벨 막대·고리·칸만 깜빡이고 격자는 움직이지 않습니다. 새 토큰 `extensions.chartSkeleton.axisWidth`·`tickLabelWidth`·`labelGap`, 없앤 토큰 `extensions.skeleton.cardAvatarSize`·`statWidth`·`statHeight`. 문서 데모 팔레트는 스켈레톤 색을 글자색 8%(다크 13%) 반투명으로 바꿔 바탕·카드·선택 면 어디서나 같은 대비가 나도록 했습니다. 패키지의 `skeleton`·`skeletonShine` 색 역할과 기본값은 그대로이며, 앱도 같은 방식의 반투명 값을 쓸 수 있습니다.
+
 ## 0.18.0 — 2026-11-02
 
 - **수정: 바탕을 끈 `KjunBottomNavigation`의 배지 테두리**: `surface={false}`일 때 배지 둘레 테두리가 표면색(흰색)으로 남아 회색 화면 바탕 위에서 흰 고리로 보이던 문제를 고쳤습니다. 이제 테두리는 바 뒤에 보이는 화면 바탕색(`background` 색 역할)을 씁니다. 바탕이 있는 기본 바는 그대로입니다.

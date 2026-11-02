@@ -1,9 +1,28 @@
 // Platform-free geometry for KjunChartSkeleton; rendering stays in each package.
 export type KjunChartSkeletonKind = "frame" | "donut" | "matrix";
 
-/** Axes plus three horizontal grid lines in the frame's 600×240 viewBox. */
-export const chartFrameViewBox = "0 0 600 240";
-export const chartFramePath = "M20 10V220H590 M20 65H590 M20 120H590 M20 175H590";
+/**
+ * The frame follows the app's chart layout: horizontal grid lines, x-axis ticks and the y-axis label width.
+ * KJUN cannot know where the real chart puts them, so the app passes its own values; these are common defaults.
+ */
+export const chartFrameDefaults = { gridLines: 5, xTicks: 6 };
+
+/** Evenly spaced positions from 0 to 1 for at least two marks (grid lines or ticks). */
+export function chartFrameStops(count: number) {
+  const n = Math.max(2, chartSkeletonCount(count));
+  return Array.from({ length: n }, (_, i) => i / (n - 1));
+}
+
+/** A tick label centres on its tick, except at the ends where it stays inside the plot (percent of its width). */
+export function chartTickShift(stop: number) {
+  return stop <= 0 ? 0 : stop >= 1 ? -100 : -50;
+}
+
+/** Grid lines in a 0 0 100 100 viewBox, drawn with non-scaling strokes over the plot area. */
+export const chartFrameViewBox = "0 0 100 100";
+export function chartFramePath(gridLines: number) {
+  return chartFrameStops(gridLines).map((f) => `M0 ${f * 100}H100`).join(" ");
+}
 
 /** Upper bound for matrix rows and columns, so counts derived from data never render an unbounded grid. */
 export const chartSkeletonMaxCount = 100;

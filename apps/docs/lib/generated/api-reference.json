@@ -298,6 +298,33 @@
             "description": "",
             "summary": "matrix의 열 수입니다. 1–100 사이 정수로 내림합니다.",
             "source": "packages/vue3/src/skeletons.tsx"
+          },
+          {
+            "name": "gridLines",
+            "type": "number",
+            "required": false,
+            "default": "5",
+            "description": "Frame: horizontal grid lines of the app's chart, top to baseline.",
+            "summary": "프레임 스켈레톤의 가로 격자선 수(위에서 기준선까지)입니다. 앱 차트와 같은 값을 넘기면 로딩 전후 위치가 맞습니다.",
+            "source": "packages/vue3/src/skeletons.tsx"
+          },
+          {
+            "name": "xTicks",
+            "type": "number",
+            "required": false,
+            "default": "6",
+            "description": "Frame: x-axis tick labels.",
+            "summary": "프레임 스켈레톤의 가로축 눈금 라벨 수입니다.",
+            "source": "packages/vue3/src/skeletons.tsx"
+          },
+          {
+            "name": "axisWidth",
+            "type": "number",
+            "required": false,
+            "default": "40",
+            "description": "Frame: y-axis label width in px; label bars fill it, less the label gap.",
+            "summary": "프레임 스켈레톤의 세로축 라벨 폭(px)입니다. 라벨 막대는 이 폭에서 라벨 간격을 뺀 길이입니다.",
+            "source": "packages/vue3/src/skeletons.tsx"
           }
         ],
         "events": [],
@@ -369,6 +396,33 @@
             "description": "",
             "summary": "matrix의 열 수입니다. 1–100 사이 정수로 내림합니다.",
             "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "gridLines",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Frame: horizontal grid lines of the app's chart, top to baseline (default 5).",
+            "summary": "프레임 스켈레톤의 가로 격자선 수(위에서 기준선까지)입니다. 앱 차트와 같은 값을 넘기면 로딩 전후 위치가 맞습니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "xTicks",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Frame: x-axis tick labels (default 6).",
+            "summary": "프레임 스켈레톤의 가로축 눈금 라벨 수입니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "axisWidth",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Frame: y-axis label width in px (default 40); label bars fill it, less the label gap.",
+            "summary": "프레임 스켈레톤의 세로축 라벨 폭(px)입니다. 라벨 막대는 이 폭에서 라벨 간격을 뺀 길이입니다.",
+            "source": "packages/react/src/skeletons.tsx"
           }
         ],
         "events": [],
@@ -439,6 +493,33 @@
             "default": "14",
             "description": "",
             "summary": "matrix의 열 수입니다. 1–100 사이 정수로 내림합니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "gridLines",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Frame: horizontal grid lines of the app's chart, top to baseline (default 5).",
+            "summary": "프레임 스켈레톤의 가로 격자선 수(위에서 기준선까지)입니다. 앱 차트와 같은 값을 넘기면 로딩 전후 위치가 맞습니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "xTicks",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Frame: x-axis tick labels (default 6).",
+            "summary": "프레임 스켈레톤의 가로축 눈금 라벨 수입니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "axisWidth",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Frame: y-axis label width (default 40); label bars fill it, less the label gap.",
+            "summary": "프레임 스켈레톤의 세로축 라벨 폭(px)입니다. 라벨 막대는 이 폭에서 라벨 간격을 뺀 길이입니다.",
             "source": "packages/native/src/skeletons.tsx"
           }
         ],
@@ -1991,10 +2072,10 @@
           },
           {
             "name": "variant",
-            "type": "\"market\" | \"compact\" | \"notification\"",
+            "type": "\"market\" | \"compact\" | \"notification\" | \"row\"",
             "required": false,
             "default": "\"market\"",
-            "description": "",
+            "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked.",
             "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           },
@@ -2002,9 +2083,9 @@
             "name": "avatar",
             "type": "boolean",
             "required": false,
-            "default": "true",
-            "description": "",
-            "summary": "목록 스켈레톤에 아바타 자리 표시자를 추가합니다.",
+            "default": "—",
+            "description": "Defaults to true, or false for the row variant.",
+            "summary": "목록 스켈레톤에 아바타 자리 표시자를 추가합니다. 기본값은 true이고 row 변형만 false입니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           },
           {
@@ -2022,7 +2103,7 @@
             "required": false,
             "default": "true",
             "description": "",
-            "summary": "목록 스켈레톤에 시세 영역을 표시합니다.",
+            "summary": "목록 스켈레톤에 시세 영역(row 변형은 행 끝 값 자리)을 표시합니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           }
         ],
@@ -2044,10 +2125,10 @@
           },
           {
             "name": "variant",
-            "type": "\"compact\" | \"market\" | \"notification\" | undefined",
+            "type": "\"compact\" | \"market\" | \"notification\" | \"row\" | undefined",
             "required": false,
             "default": "\"market\"",
-            "description": "",
+            "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked.",
             "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
             "source": "packages/react/src/skeletons.tsx"
           },
@@ -2055,9 +2136,9 @@
             "name": "avatar",
             "type": "boolean | undefined",
             "required": false,
-            "default": "true",
+            "default": "—",
             "description": "",
-            "summary": "목록 스켈레톤에 아바타 자리 표시자를 추가합니다.",
+            "summary": "목록 스켈레톤에 아바타 자리 표시자를 추가합니다. 기본값은 true이고 row 변형만 false입니다.",
             "source": "packages/react/src/skeletons.tsx"
           },
           {
@@ -2075,7 +2156,7 @@
             "required": false,
             "default": "true",
             "description": "",
-            "summary": "목록 스켈레톤에 시세 영역을 표시합니다.",
+            "summary": "목록 스켈레톤에 시세 영역(row 변형은 행 끝 값 자리)을 표시합니다.",
             "source": "packages/react/src/skeletons.tsx"
           }
         ],
@@ -2097,10 +2178,10 @@
           },
           {
             "name": "variant",
-            "type": "\"compact\" | \"market\" | \"notification\" | undefined",
+            "type": "\"compact\" | \"market\" | \"notification\" | \"row\" | undefined",
             "required": false,
             "default": "\"market\"",
-            "description": "",
+            "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked.",
             "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
             "source": "packages/native/src/skeletons.tsx"
           },
@@ -2108,9 +2189,9 @@
             "name": "avatar",
             "type": "boolean | undefined",
             "required": false,
-            "default": "true",
+            "default": "—",
             "description": "",
-            "summary": "목록 스켈레톤에 아바타 자리 표시자를 추가합니다.",
+            "summary": "목록 스켈레톤에 아바타 자리 표시자를 추가합니다. 기본값은 true이고 row 변형만 false입니다.",
             "source": "packages/native/src/skeletons.tsx"
           },
           {
@@ -2128,7 +2209,7 @@
             "required": false,
             "default": "true",
             "description": "",
-            "summary": "목록 스켈레톤에 시세 영역을 표시합니다.",
+            "summary": "목록 스켈레톤에 시세 영역(row 변형은 행 끝 값 자리)을 표시합니다.",
             "source": "packages/native/src/skeletons.tsx"
           }
         ],
@@ -21025,7 +21106,7 @@
           },
           {
             "name": "placement",
-            "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\"",
+            "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\"",
             "required": false,
             "default": "\"bottom-start\"",
             "description": "",
@@ -21130,7 +21211,7 @@
           },
           {
             "name": "placement",
-            "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\" | undefined",
+            "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
             "required": false,
             "default": "\"bottom-start\"",
             "description": "",
@@ -21244,7 +21325,7 @@
           },
           {
             "name": "placement",
-            "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\" | undefined",
+            "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
             "required": false,
             "default": "\"bottom-start\"",
             "description": "",
@@ -27216,7 +27297,7 @@
           },
           {
             "name": "placement",
-            "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\"",
+            "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\"",
             "required": false,
             "default": "\"bottom-start\"",
             "description": "",
@@ -27485,7 +27566,7 @@
           },
           {
             "name": "placement",
-            "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\" | undefined",
+            "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
             "required": false,
             "default": "—",
             "description": "",
@@ -27664,7 +27745,7 @@
           },
           {
             "name": "placement",
-            "type": "\"bottom-start\" | \"bottom-end\" | \"top-start\" | \"top-end\" | undefined",
+            "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
             "required": false,
             "default": "—",
             "description": "",

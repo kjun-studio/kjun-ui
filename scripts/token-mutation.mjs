@@ -122,9 +122,9 @@ await change('sizing', s => {
   Object.assign(e.financial,{progressHeight:7,progressMinimumWidth:72,progressLabelWidth:38,
     sparklineWidth:96,sparklineHeight:32,priceSkeletonWidth:76,priceSkeletonHeight:20,
     signedSkeletonWidth:60,signedSkeletonHeight:22});
-  Object.assign(e.skeleton,{lineHeights:{sm:10,md:18,lg:26},avatarSize:52,cardAvatarSize:44,
-    tableLineHeight:17,statWidth:92,
-    statHeight:44,blockHeight:116,listAvatarSize:38,quoteWidth:96,quoteHeight:20,
+  Object.assign(e.skeleton,{lineHeights:{sm:10,md:18},avatarSize:52,
+    tableLineHeight:17,
+    blockHeight:116,listAvatarSize:38,quoteWidth:96,quoteHeight:20,
     detailWidth:62,formLabelWidth:104,formLabelHeight:15});
   Object.assign(e.chartSkeleton,{height:260,donutThickness:26});
   Object.assign(e.marketTable,{actionSkeletonWidth:36,headerSkeletonHeight:17});
@@ -139,7 +139,7 @@ const steps = [
 ];
 try {
   for(const [command,args] of steps) execFileSync(command,args,{cwd:directory,stdio:'inherit'});
-  await writeFile(root+'/artifacts/token-mutation.json',JSON.stringify({passed:true,verifiedAt:new Date().toISOString(),source:original.source,packages:original.manifest,platforms:['react','vue3','native-web'],changes:{sizeRoles:{spinner:[14,20,28,36,52],progress:[5,9,13],iconScale:[13,15,18,20,22,28],drawerWidth:440,modalClose:40,skeletonLine:[10,18,26],skeletonAvatar:52,sparkline:[96,32],menuMaxHeight:180,tooltipMaxWidth:288},independentConnections:{emptyIcon:48,badgeDot:10,tooltipPadding:[20,12],modalWidths:[420,600,760,960],drawerCloseRadius:16,alertDescriptionGap:12,fieldTypography:['caption','sectionTitle','pageTitle'],affixGap:20,tableSkeleton:[60,28],paginationItemSize:52,controlDuration:340},chipTypography:{sm:'meta',md:'controlLarge',lg:'cardTitle'},chipRemoveSize:40,toast:{minWidth:360,maxWidth:480,closeSize:64,progressHeight:6},indirectMenuTypography:true,captionLineHeight:20,breakpoints:{compact:700,medium:820,actionContent:500},kpiHeroThreshold:680,motionDistance:{modalEnter:40,modalExit:24,popup:12,toast:20},body:16,button:16,cardRadius:16,cardPadding:20,cardPaddingLg:40,cardBlur:30,floatingBlur:32,disabledOpacity:0.31,focusWidth:4,controlBorder:3,selectionWeight:700,selectionTrackingEm:0.03,quietWeight:400,emptyTitleWeight:700,minimumTouchTarget:60,checkboxSizes:{sm:20,md:24,lg:30},switchWidths:{sm:40,md:52,lg:64},switchHeights:{sm:24,md:32,lg:36},geometryFamilies:['navigation','list','badge','chip','drawer','card','kpiHero','kpiRow','modal','toast','alert','tableCard','skeleton','form','checkbox','switch','pagination','financial']}},null,2)+'\n');
+  await writeFile(root+'/artifacts/token-mutation.json',JSON.stringify({passed:true,verifiedAt:new Date().toISOString(),source:original.source,packages:original.manifest,platforms:['react','vue3','native-web'],changes:{sizeRoles:{spinner:[14,20,28,36,52],progress:[5,9,13],iconScale:[13,15,18,20,22,28],drawerWidth:440,modalClose:40,skeletonLine:[10,18],skeletonAvatar:52,sparkline:[96,32],menuMaxHeight:180,tooltipMaxWidth:288},independentConnections:{emptyIcon:48,badgeDot:10,tooltipPadding:[20,12],modalWidths:[420,600,760,960],drawerCloseRadius:16,alertDescriptionGap:12,fieldTypography:['caption','sectionTitle','pageTitle'],affixGap:20,tableSkeleton:[60,28],paginationItemSize:52,controlDuration:340},chipTypography:{sm:'meta',md:'controlLarge',lg:'cardTitle'},chipRemoveSize:40,toast:{minWidth:360,maxWidth:480,closeSize:64,progressHeight:6},indirectMenuTypography:true,captionLineHeight:20,breakpoints:{compact:700,medium:820,actionContent:500},kpiHeroThreshold:680,motionDistance:{modalEnter:40,modalExit:24,popup:12,toast:20},body:16,button:16,cardRadius:16,cardPadding:20,cardPaddingLg:40,cardBlur:30,floatingBlur:32,disabledOpacity:0.31,focusWidth:4,controlBorder:3,selectionWeight:700,selectionTrackingEm:0.03,quietWeight:400,emptyTitleWeight:700,minimumTouchTarget:60,checkboxSizes:{sm:20,md:24,lg:30},switchWidths:{sm:40,md:52,lg:64},switchHeights:{sm:24,md:32,lg:36},geometryFamilies:['navigation','list','badge','chip','drawer','card','kpiHero','kpiRow','modal','toast','alert','tableCard','skeleton','form','checkbox','switch','pagination','financial']}},null,2)+'\n');
   await rm(directory,{recursive:true,force:true});
   console.log('Token changes propagated through generated, packed and rendered packages on all three platforms.');
 } catch(error) {

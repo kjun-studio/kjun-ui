@@ -52,12 +52,16 @@ for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: packed size roles drive base, list, form and chart skeletons`, async ({ page }, info) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'size-contracts');
-    await dimensions(page.getByTestId('skeleton-text'), undefined, e.skeleton.lineHeights.md);
+    // Text, card and stat bars are half their type role's line height, in a full line box.
+    const type = tokens.typography;
+    await dimensions(page.getByTestId('skeleton-text'), undefined, type.body.lineHeightPx / 2);
+    await dimensions(page.getByTestId('skeleton-text'), undefined, type.body.lineHeightPx);
     await dimensions(page.getByTestId('skeleton-avatar'), e.skeleton.avatarSize, e.skeleton.avatarSize);
-    await dimensions(page.getByTestId('skeleton-card'), e.skeleton.cardAvatarSize, e.skeleton.cardAvatarSize);
-    await dimensions(page.getByTestId('skeleton-card'), undefined, e.skeleton.lineHeights.sm);
+    await dimensions(page.getByTestId('skeleton-card'), undefined, type.cardTitle.lineHeightPx / 2);
+    await dimensions(page.getByTestId('skeleton-card'), undefined, type.caption.lineHeightPx / 2);
     await dimensions(page.getByTestId('skeleton-table'), undefined, e.skeleton.tableLineHeight);
-    await dimensions(page.getByTestId('skeleton-stat'), e.skeleton.statWidth, e.skeleton.statHeight);
+    await dimensions(page.getByTestId('skeleton-stat'), undefined, type.displaySm.lineHeightPx / 2);
+    await dimensions(page.getByTestId('skeleton-stat'), undefined, type.caption.lineHeightPx * 2 + type.displaySm.lineHeightPx + e.kpiRow.md.labelGap + e.kpiRow.md.descriptionGap);
     await dimensions(page.getByTestId('skeleton-block'), undefined, e.skeleton.blockHeight);
     await dimensions(page.getByTestId('list-skeleton'), e.skeleton.listAvatarSize, e.skeleton.listAvatarSize);
     await dimensions(page.getByTestId('list-skeleton'), e.skeleton.quoteWidth, e.skeleton.quoteHeight);

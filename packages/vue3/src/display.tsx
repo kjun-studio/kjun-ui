@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
+import { skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
 import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
@@ -273,9 +274,12 @@ export const KjunSkeleton = defineComponent({
   setup(props) {
     const line = (w: Length | undefined, key?: number, lineHeight?: number) =>
       <div key={key} class="kjun-skeleton-line" style={css({ width: w, height: lineHeight })} />;
-    const avatar = (sm = false) => (
-      <div class={"kjun-skeleton-avatar" + (sm ? " kjun-skeleton-avatar-sm" : "")}
-        style={sm ? undefined : css({
+    // Like React: a bar inside a line box of a type role, so the skeleton is as tall as that text.
+    const slot = (w: Length, role?: "card-title" | "caption" | "display-sm", key?: number) =>
+      <div key={key} class="kjun-skeleton-slot" data-role={role}>{line(w)}</div>;
+    const avatar = () => (
+      <div class="kjun-skeleton-avatar"
+        style={css({
           width: props.width || tokens.extensions.skeleton.avatarSize,
           height: props.height || tokens.extensions.skeleton.avatarSize,
           borderRadius: props.rounded ? "50%" : tokens.radius.radius8,
@@ -287,15 +291,12 @@ export const KjunSkeleton = defineComponent({
       const sizes = tokens.extensions.skeleton;
       return (
         <div aria-hidden="true" class={"kjun-skeleton" + (props.animated ? " kjun-skeleton-animated" : "")} style={css({ width })}>
-          {type === "text" && count(rows).map(i => line(i === rows ? "60%" : ["100%", "90%", "80%", "70%", "60%"][i % 5], i))}
+          {type === "text" && skeletonTextWidths(rows).map((w, i) => slot(w, undefined, i))}
           {type === "avatar" && avatar()}
           {type === "card" && (
             <div class="kjun-skeleton-card">
-              <div class="kjun-skeleton-card-header">
-                {avatar(true)}
-                <div class="kjun-skeleton-card-header-text">{line("60%")}{line("40%", undefined, sizes.lineHeights.sm)}</div>
-              </div>
-              <div class="kjun-skeleton-card-body">{line("100%")} {line("80%")} {line("60%")}</div>
+              <div class="kjun-skeleton-card-header">{slot("40%", "card-title")}{slot("28%", "caption")}</div>
+              {rows > 0 && <div class="kjun-skeleton-card-body">{skeletonTextWidths(rows).map((w, i) => slot(w, undefined, i))}</div>}
             </div>
           )}
           {type === "table" && (
@@ -311,14 +312,7 @@ export const KjunSkeleton = defineComponent({
               ))}
             </div>
           )}
-          {type === "stat" && (
-            <div class="kjun-skeleton-stat">
-              <div class="kjun-skeleton-stat-content">
-                {line("40%", 0, sizes.lineHeights.sm)}{line("60%", 1, sizes.lineHeights.lg)}{line("30%", 2, sizes.lineHeights.sm)}
-              </div>
-              <div class="kjun-skeleton-stat-chart"><div class="kjun-skeleton-sparkline" /></div>
-            </div>
-          )}
+          {type === "stat" && <div class="kjun-skeleton-stat">{slot("40%", "caption")}{slot("64%", "display-sm")}{slot("30%", "caption")}</div>}
           {type === "block" && <div class="kjun-skeleton-block" style={css({ width: width || "100%", height: height ?? sizes.blockHeight })} />}
         </div>
       );

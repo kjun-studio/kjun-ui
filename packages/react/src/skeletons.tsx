@@ -4,16 +4,20 @@ import { type CSSProperties } from "react";
 import { KjunSkeleton, KjunSpinner } from "./display";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import {
+  chartFrameDefaults,
   chartFramePath,
+  chartFrameStops,
   chartFrameViewBox,
   chartMatrixMuted,
   chartSkeletonCount,
   chartSkeletonKind,
+  chartTickShift,
   type KjunChartSkeletonKind,
 } from "../../../shared/package-runtime/chart-skeleton";
 export interface KjunListSkeletonProps {
   rows?: number;
-  variant?: "market" | "compact" | "notification";
+  /** "row" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked. */
+  variant?: "market" | "compact" | "notification" | "row";
   avatar?: boolean;
   avatarSize?: CSSProperties["width"];
   quote?: boolean;
@@ -21,10 +25,12 @@ export interface KjunListSkeletonProps {
 export function KjunListSkeleton({
   rows = 8,
   variant = "market",
-  avatar = true,
+  avatar,
   avatarSize = tokens.extensions.skeleton.listAvatarSize,
   quote = true,
 }: KjunListSkeletonProps) {
+  if (variant === "row") return <ListRowSkeleton rows={rows} avatar={avatar ?? false} avatarSize={avatarSize} trailing={quote} />;
+  avatar ??= true;
   return (
     <div aria-hidden="true">
       {Array.from({ length: rows }, (_, i) => (
@@ -46,6 +52,29 @@ export function KjunListSkeleton({
               <KjunSkeleton type="block" height={tokens.extensions.skeleton.lineHeights.sm} width={tokens.extensions.skeleton.detailWidth} />
             </div>
           )}
+        </div>
+      ))}
+    </div>
+  );
+}
+// KjunListRow's own geometry: bars sit in the title and description line boxes, so the list keeps its height.
+function ListRowSkeleton({ rows, avatar, avatarSize, trailing }: { rows: number; avatar: boolean; avatarSize: CSSProperties["width"]; trailing: boolean }) {
+  const type = tokens.typography;
+  const slot = (role: "control" | "caption", w: CSSProperties["width"]) => (
+    <div className="kjun-list-skeleton-slot" data-role={role}>
+      <KjunSkeleton type="block" height={type[role].lineHeightPx / 2} width={w} />
+    </div>
+  );
+  return (
+    <div aria-hidden="true">
+      {Array.from({ length: rows }, (_, i) => (
+        <div key={i} className="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined}>
+          {avatar && <div className="kjun-list-skeleton-leading"><KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} /></div>}
+          <div className="kjun-list-skeleton-label">
+            {slot("control", i % 2 ? "55%" : "40%")}
+            {slot("caption", "30%")}
+          </div>
+          {trailing && <div className="kjun-list-skeleton-trailing">{slot("control", tokens.extensions.skeleton.detailWidth)}</div>}
         </div>
       ))}
     </div>
@@ -105,6 +134,12 @@ export interface KjunChartSkeletonProps {
   loadingDelay?: number;
   rows?: number;
   columns?: number;
+  /** Frame: horizontal grid lines of the app's chart, top to baseline (default 5). */
+  gridLines?: number;
+  /** Frame: x-axis tick labels (default 6). */
+  xTicks?: number;
+  /** Frame: y-axis label width in px (default 40); label bars fill it, less the label gap. */
+  axisWidth?: number;
 }
 export function KjunChartSkeleton({
   kind: requestedKind = "frame",
@@ -114,6 +149,9 @@ export function KjunChartSkeleton({
   loadingDelay = 0,
   rows = 8,
   columns = 14,
+  gridLines = chartFrameDefaults.gridLines,
+  xTicks = chartFrameDefaults.xTicks,
+  axisWidth = tokens.extensions.chartSkeleton.axisWidth,
 }: KjunChartSkeletonProps) {
   const m = useKjunMessages();
   loadingText ??= m.chartLoading;
@@ -140,48 +178,46 @@ export function KjunChartSkeleton({
         </div>
       ) : (
         <>
-          {kind === "donut" ? (
-            <div className="kjun-chart-skeleton-donut" data-kjun-chart-part="donut" aria-hidden="true" />
-          ) : kind === "matrix" ? (
-            <div
-              className="kjun-chart-skeleton-matrix"
-              data-kjun-chart-part="matrix"
-              aria-hidden="true"
-              style={{
-                gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
-                gridTemplateRows: `repeat(${rowCount}, minmax(0, 1fr))`,
-              }}
-            >
-              {Array.from({ length: rowCount * columnCount }, (_, i) => (
-                <div
-                  key={i}
-                  className="kjun-chart-skeleton-cell"
-                  data-kjun-chart-part="cell"
-                  data-muted={chartMatrixMuted(Math.floor(i / columnCount), i % columnCount) ? "" : undefined}
-                />
-              ))}
-            </div>
-          ) : (
-            <svg
-              viewBox={chartFrameViewBox}
-              preserveAspectRatio="none"
-              className="kjun-chart-skeleton-plot"
-              data-kjun-chart-part="plot"
-              aria-hidden="true"
-            >
-              {/* Only the frame is honest before data arrives; any series shape would be invented. */}
-              <path
-                d={chartFramePath}
-                fill="none"
-                stroke="var(--_kjun-color-chart-grid)"
-                strokeWidth={tokens.border.defaultWidth}
-                vectorEffect="non-scaling-stroke"
-              />
-            </svg>
-          )}
+          <div className="kjun-chart-skeleton-area" aria-hidden="true">
+            {kind === "donut" ? (
+              <div className="kjun-chart-skeleton-donut" data-kjun-chart-part="donut" />
+            ) : kind === "matrix" ? (
+              <div
+                className="kjun-chart-skeleton-matrix"
+                data-kjun-chart-part="matrix"
+                style={{
+                  gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+                  gridTemplateRows: `repeat(${rowCount}, minmax(0, 1fr))`,
+                }}
+              >
+                {Array.from({ length: rowCount * columnCount }, (_, i) => (
+                  <div
+                    key={i}
+                    className="kjun-chart-skeleton-cell"
+                    data-kjun-chart-part="cell"
+                    data-muted={chartMatrixMuted(Math.floor(i / columnCount), i % columnCount) ? "" : undefined}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="kjun-chart-skeleton-frame" style={{ "--_kjun-chart-axis": `${Math.max(0, axisWidth)}px`, "--_kjun-chart-steps": chartFrameStops(xTicks).length - 1 } as CSSProperties}>
+                {/* Only the app's frame is honest before data arrives; any series shape would be invented. */}
+                <svg viewBox={chartFrameViewBox} preserveAspectRatio="none" className="kjun-chart-skeleton-plot" data-kjun-chart-part="plot" aria-hidden="true">
+                  <path d={chartFramePath(gridLines)} fill="none" stroke="var(--_kjun-color-chart-grid)" strokeWidth={tokens.border.defaultWidth} vectorEffect="non-scaling-stroke" />
+                </svg>
+                {axisWidth > 0 && chartFrameStops(gridLines).map((stop) => (
+                  <div key={"y" + stop} className="kjun-chart-skeleton-label" data-axis="y" data-kjun-chart-part="label" style={{ "--_kjun-stop": stop } as CSSProperties} />
+                ))}
+                {chartFrameStops(xTicks).map((stop) => (
+                  <div key={"x" + stop} className="kjun-chart-skeleton-label" data-axis="x" data-kjun-chart-part="label"
+                    style={{ "--_kjun-stop": stop, "--_kjun-shift": `${chartTickShift(stop)}%` } as CSSProperties} />
+                ))}
+              </div>
+            )}
+          </div>
           {loadingText && (
             <div className="kjun-chart-skeleton-status" data-kjun-chart-part="status" role={status}>
-              <span>{loadingText}</span>
+              {loadingText}
             </div>
           )}
         </>

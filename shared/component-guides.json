@@ -9,9 +9,9 @@
   "KjunChartSkeleton": {
     "slug": "chart-skeleton",
     "description": "차트 영역의 높이를 유지하며 조회 중인 상태를 표시합니다.",
-    "interaction": "데이터가 오기 전에도 변하지 않는 부분만 그립니다. 선·막대·캔들 차트는 kind=\"frame\"으로 축과 격자만, 원형 차트는 donut, 히트맵은 matrix를 씁니다. 표시 여부는 소비자가 요청 상태에 따라 정합니다.",
-    "differences": "세 플랫폼 모두 kind·height·loadingText·skeleton·loadingDelay·rows·columns를 받습니다.",
-    "states": "skeleton=false이면 스피너와 문구를, loadingDelay 동안은 높이만 유지한 빈 영역을 표시합니다. 문구가 있으면 status 역할로 알립니다."
+    "interaction": "데이터 모양은 그리지 않습니다. 선·막대·캔들 차트는 kind=\"frame\"으로 격자선과 축 라벨 자리만, 원형 차트는 donut(글자 없는 고리), 히트맵은 matrix를 씁니다. 격자와 라벨 위치는 KJUN이 알 수 없으므로 앱 차트와 같은 gridLines·xTicks·axisWidth를 넘기면 로딩 전후 자리가 맞습니다(기본 5·6·40px). 표시 여부는 소비자가 요청 상태에 따라 정합니다.",
+    "differences": "세 플랫폼 모두 kind·height·loadingText·skeleton·loadingDelay·rows·columns·gridLines·xTicks·axisWidth를 받습니다.",
+    "states": "문구는 그림 위가 아니라 아래 12px 캡션으로 놓이고 status 역할로 알립니다. 캡션도 height 안에 들어가므로 격자를 앱 차트와 정확히 맞추려면 loadingText=\"\"로 끕니다. 라벨 막대·고리·칸만 깜빡이고 격자는 움직이지 않습니다. skeleton=false이면 스피너와 문구를, loadingDelay 동안은 높이만 유지한 빈 영역을 표시합니다."
   },
   "KjunCollectionMark": {
     "slug": "collection-mark",
@@ -71,8 +71,8 @@
   },
   "KjunListSkeleton": {
     "slug": "list-skeleton",
-    "description": "목록의 자산 식별 영역과 숫자 영역을 유지합니다.",
-    "interaction": "rows·variant·avatar·quote로 목록의 자리를 구성합니다. 조회 완료 후 실제 목록으로 교체하는 책임은 소비자에게 있습니다.",
+    "description": "목록의 자산 식별 영역과 숫자 영역, 또는 KjunListRow 행의 자리를 유지합니다.",
+    "interaction": "rows·variant·avatar·quote로 목록의 자리를 구성합니다. market·compact·notification은 시세 목록 행, row는 KjunListRow 행(제목·설명 줄, 글자 시작선부터 긋는 구분선, 아바타는 avatar로 켤 때만)을 따릅니다. 조회 완료 후 실제 목록으로 교체하는 책임은 소비자에게 있습니다.",
     "differences": "세 플랫폼에서 목록 구성은 같은 prop을 사용합니다. 별도 animated prop은 없으므로 이를 로딩 on/off 조절기로 사용하지 마세요.",
     "states": "rows·variant·avatar·quote로 반복 항목 모양을 설정합니다. 입력·선택 상태는 없습니다."
   },
@@ -134,8 +134,8 @@
   },
   "KjunSkeleton": {
     "slug": "skeleton",
-    "description": "텍스트·카드·표·차트·통계·블록의 조회 대기 모양을 표시합니다.",
-    "interaction": "type별 자리 표시자의 크기와 반복 수를 구성합니다. 로딩 판단과 실제 콘텐츠 교체는 소비자가 합니다.",
+    "description": "텍스트·카드·표·통계·아바타·블록의 조회 대기 모양을 표시합니다.",
+    "interaction": "type별 자리 표시자의 크기와 반복 수를 구성합니다. text는 본문 줄 높이, card는 기본 KjunCard(제목·부제·본문 줄), stat은 KpiRow 항목(라벨·값·설명)과 같은 높이라 로딩 후 화면이 움직이지 않습니다. 막대는 해당 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다. 로딩 판단과 실제 콘텐츠 교체는 소비자가 합니다.",
     "differences": "웹의 width·height는 CSS 길이, Native는 Native 크기 타입을 따릅니다. 크기를 지정할 때 선택 플랫폼의 API를 확인하세요.",
     "states": "지정한 행·열·크기와 슬롯 영역을 로딩 모양으로 유지합니다. 움직임은 animated 설정과 동작 줄이기 환경을 따릅니다. 입력·선택 이벤트는 없습니다."
   },

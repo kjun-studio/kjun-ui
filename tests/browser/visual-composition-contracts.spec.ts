@@ -98,11 +98,9 @@ for (const platform of ['react', 'vue3', 'native']) {
       const field = page.getByTestId('form-md').locator(platform === 'native' ? ':scope > div > div > div:last-child' : '.kjun-skeleton-block, .kjun-skeleton-block');
       expect((await box(field)).width).toBeCloseTo((await box(page.getByTestId('form-md'))).width, 0);
       const shape = page.getByTestId('skeleton').locator(platform === 'native' ? ':scope > div > div' : '.kjun-skeleton-block, .kjun-skeleton-block');
-      if (platform === 'native') await expect(shape).toHaveCSS('background-color', 'rgb(120, 154, 188)');
-      else {
-        const background = await shape.evaluate(el => getComputedStyle(el).backgroundImage);
-        expect(background).toContain('rgb(120, 154, 188)'); expect(background).toContain('rgb(171, 205, 239)');
-      }
+      // Every platform pulses a flat skeleton colour (no per-bar gradient); with reduced motion it rests on that colour.
+      await expect(shape).toHaveCSS('background-color', 'rgb(120, 154, 188)');
+      if (platform !== 'native') expect(await shape.evaluate(el => getComputedStyle(el).backgroundImage)).toBe('none');
       const empty = page.getByTestId('empty'), title = empty.getByText('항목이 없습니다', { exact: true });
       await expect(title).toHaveCSS('font-size', '16px'); await expect(title).toHaveCSS('font-weight', '600');
       const description = empty.getByText('조건을 바꾸거나 새 항목을 추가하세요.', { exact: true });
