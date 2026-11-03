@@ -145,7 +145,9 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
       const view = (row: any) => h('KjunButton', { size: 'xs', variant: 'ghost', ariaLabel: row.name + ' 보기', ...action(() => message(row.name + ' 상세 보기')) }, '보기');
       const detail = (row: any) => example.project ? h('KjunAlert', { type: 'info' }, row.summary + ' 담당자 ' + row.owner + ' · 마감 ' + row.due) : '상세: ' + row.name;
       const selectionAction = () => h('KjunButton', { size: 'sm', variant: 'primary', ...action(() => message(get('selected', []).map((row: any) => row.name).join(', ') + ' 선택 확인')) }, '선택 항목 확인');
-      return h(
+      const grouped = !!settings.grouped && example.project;
+      const groupValues = [...new Set(example.data.map((row: any) => row.status))];
+      const table = h(
         name,
         {
           columns: example.columns,
@@ -165,6 +167,8 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           renderExpand: detail,
           renderSelectionToolbar: selectionAction,
           groupBy: settings.grouped && example.project ? 'status' : undefined,
+          expandedGroups: grouped ? get('expandedGroups', groupValues) : undefined,
+          onExpandedGroupsChange: grouped ? change('expandedGroups') : undefined,
           summary: settings.grouped ? (example.project ? { budget: 'sum' } : example.metrics ? { orders: 'sum', revenue: 'sum' } : undefined) : undefined,
           summaryFormat: settings.grouped ? (value: number | null, column: any) => value == null ? '' : ['budget', 'revenue'].includes(column.key) ? priceFormat(value) : new Intl.NumberFormat('ko-KR').format(value) : undefined,
           renderCell: (value: any, column: any, row: any) => {
@@ -188,6 +192,10 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           onSortChange: (s: any) => message("정렬 " + s.key + " " + s.order),
         },
       );
+      return grouped ? h('Stack', {}, [
+        h('KjunButton', { size: 'sm', ...action(() => set('expandedGroups', groupValues)) }, '전체 펼치기'),
+        h('KjunButton', { size: 'sm', ...action(() => set('expandedGroups', [])) }, '전체 접기'), table,
+      ]) : table;
     }
     case "KjunKpiHero":
       return h(name, {

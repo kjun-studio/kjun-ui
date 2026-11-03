@@ -83,6 +83,8 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   selected?: Row[];
   /** Row field (dot path) whose values split the rows into collapsible groups. */
   groupBy?: string;
+  /** Original groupBy values of open groups. undefined: internal state, initially all open; []: all closed. */
+  expandedGroups?: unknown[];
   renderGroupLabel?: (value: unknown, rows: Row[]) => ReactNode;
   /** Per column key: a subtotal under each group and a total row at the end. */
   summary?: Partial<Record<string, TableSummaryKind | ((rows: Row[], column: TableColumn<Row>) => ReactNode)>>;
@@ -106,6 +108,7 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   onSortChange?: (value: { key: string; order: "asc" | "desc" }) => void;
   onSelectionChange?: (selected: Row[]) => void;
   onExpandedRowsChange?: (keys: (string | number)[]) => void;
+  onExpandedGroupsChange?: (values: unknown[]) => void;
   onPageChange?: (page: number) => void;
   onRowClick?: (row: Row, index: number) => void;
   onSearch?: (query: string) => void;

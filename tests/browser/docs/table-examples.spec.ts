@@ -11,6 +11,27 @@ let server: { url: string; close: () => Promise<void> };
 test.beforeAll(async () => { server = await servePreviews(); });
 test.afterAll(async () => { await server.close(); });
 
+test('Table API distinguishes controlled group values from row-detail keys on all platforms', async ({ page }) => {
+  test.setTimeout(120000);
+  for (const width of [320, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    for (const platform of ['react', 'vue3', 'native']) {
+      await page.goto('/components/table?platform=' + platform);
+      const api = page.locator('#api');
+      const group = api.getByRole('table', { name: '속성', exact: true }).getByRole('row').filter({
+        has: page.locator('code.api-member-anchor', { hasText: /^expandedGroups$/ }),
+      });
+      await expect(group).toContainText('unknown[]');
+      await expect(group).toContainText('undefined');
+      await expect(group).toContainText('원래 값');
+      const name = platform === 'vue3' ? 'update:expandedGroups' : 'onExpandedGroupsChange';
+      await expect(api.locator('code.api-member-anchor').filter({ hasText: new RegExp('^' + name + '$') })).toHaveCount(1);
+      await expect(page.locator('#guidelines')).toContainText('행 상세 확장(expandedRows)은 행 키 배열');
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    }
+  }
+});
+
 test('Table documentation exposes the design examples and runs the selected scenario', async ({ page }) => {
   await page.goto('/components/table?platform=react');
   await expect(page.getByRole('link', { name: '디자인', exact: true })).toHaveAttribute('href', '#table-designs');
@@ -48,6 +69,15 @@ for (const platform of ['vue3', 'react', 'native'] as const) {
         const text = scenario.settings?.design === '문서 목록' ? (scenario.id === 'table-sticky' ? '서비스 소개서 · 1' : '서비스 소개서')
           : scenario.settings?.design === '수치 비교' ? '온라인 스토어' : '브랜드 웹사이트';
         await expect(page.getByText(text, { exact: true })).toBeVisible();
+        if (scenario.id === 'table-groups') {
+          await expect(page.getByText('고객센터 개편', { exact: true })).toHaveCount(0);
+          await page.getByRole('button', { name: '전체 접기', exact: true }).click();
+          await expect(page.getByText('브랜드 웹사이트', { exact: true })).toHaveCount(0);
+          await page.getByRole('button', { name: '전체 펼치기', exact: true }).click();
+          await expect(page.getByText('고객센터 개편', { exact: true })).toBeVisible();
+          await page.getByRole('button', { name: '진행 중 묶음 접기', exact: true }).click();
+          await expect(page.getByText('브랜드 웹사이트', { exact: true })).toHaveCount(0);
+        }
         if (scenario.id === 'table-projects' || scenario.id === 'table-cards') {
           await expect(page.getByText('진행 중', { exact: true })).toBeVisible();
           await expect(page.getByText('72%', { exact: true })).toBeVisible();

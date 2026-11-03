@@ -376,6 +376,8 @@
     "vue3": [
       "showValue",
       "formatValue",
+      "marks",
+      "size",
       "min",
       "max",
       "step",
@@ -387,6 +389,8 @@
     "react": [
       "showValue",
       "formatValue",
+      "marks",
+      "size",
       "value",
       "min",
       "max",
@@ -400,6 +404,8 @@
     "native": [
       "showValue",
       "formatValue",
+      "marks",
+      "size",
       "value",
       "min",
       "max",
@@ -415,6 +421,8 @@
     "vue3": [
       "showValue",
       "formatValue",
+      "marks",
+      "size",
       "min",
       "max",
       "step",
@@ -427,6 +435,8 @@
     "react": [
       "showValue",
       "formatValue",
+      "marks",
+      "size",
       "value",
       "thumbLabels",
       "onValueChange",
@@ -441,6 +451,8 @@
     "native": [
       "showValue",
       "formatValue",
+      "marks",
+      "size",
       "value",
       "thumbLabels",
       "onValueChange",

@@ -20,6 +20,7 @@ function vueProps(name, props) {
     else if (key === "onChangeCommit") mapped.onChange = value;
     else if (key === "onSelectionChange") mapped["onUpdate:selected"] = value;
     else if (key === "onExpandedRowsChange") mapped["onUpdate:expandedRows"] = value;
+    else if (key === "onExpandedGroupsChange") mapped["onUpdate:expandedGroups"] = value;
     else if (key === "onSortChange") mapped["onUpdate:sort"] = value;
     else if (key === "onPageChange" && name === "KjunPagination") mapped["onUpdate:page"] = value;
     else if (key === "onPageSizeChange") mapped["onUpdate:pageSize"] = value;

@@ -104,7 +104,9 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     let entry;
     if (name === "KjunCarousel" && carouselSummaries[key]) entry = { summary: carouselSummaries[key] };
     else if (name === "KjunCarousel" && key === "children") entry = carouselSlides;
-    else if (key === "formatValue") entry = detail("각 손잡이의 숫자를 표시 문자열로 바꿉니다.", { "인자와 반환": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다.", "접근성": "화면 출력과 " + (platform === "native" ? "accessibilityValue.text" : "aria-valuetext") + "에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다.", "상태 책임": platform === "vue3" ? "modelValue와 update:modelValue·change 이벤트는 숫자 형식을 유지합니다." : "value와 onValueChange·onChangeCommit 콜백은 숫자 또는 숫자 쌍 형식을 유지합니다." });
+    else if (name.endsWith("Slider") && key === "marks") entry = { type: "boolean | { value: number; label?: string }[]", ...detail("트랙 위 눈금입니다.", { "값": "true면 step마다 4px 점을 찍습니다(24개 이하일 때). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래에 12px 라벨을 둡니다. 최솟값·최댓값 라벨은 트랙 끝에 맞춥니다.", "표시": "채움 구간 위의 점은 손잡이 색, 나머지는 3차 글자색입니다. 눈금은 장식이며 값과 조작은 그대로입니다." }) };
+    else if (name.endsWith("Slider") && key === "size") entry = { type: '"sm" | "md"', default: '"md"', summary: "sm은 12px 라벨·값, 4px 트랙, 16px 손잡이입니다. 누름 영역은 크기와 상관없이 44px입니다." };
+    else if (key === "formatValue") entry = detail("각 손잡이의 숫자를 표시 문자열로 바꿉니다.", { "인자와 반환": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)을 씁니다.", "접근성": "화면 출력과 " + (platform === "native" ? "accessibilityValue.text" : "aria-valuetext") + "에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다.", "상태 책임": platform === "vue3" ? "modelValue와 update:modelValue·change 이벤트는 숫자 형식을 유지합니다." : "value와 onValueChange·onChangeCommit 콜백은 숫자 또는 숫자 쌍 형식을 유지합니다." });
     else if (key.startsWith("on")) entry = callback(name, key, platform);
     else if (name === "KjunTopNavigation" && topNavigationSlots[key]) entry = topNavigationSlots[key];
     else if (name === "KjunListRow" && key === "children") entry = listRowContent;

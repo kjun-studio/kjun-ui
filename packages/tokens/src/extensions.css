@@ -36,8 +36,19 @@
 /* Bottom bars meet the screen edges, so their items draw the ring inside, like tabs. */
 .kjun-scope .kjun-bottom-navigation a:focus-visible{outline-offset:var(--_kjun-state-focus-inset-offset)}
 .kjun-scope :is(.kjun-list-main[aria-disabled=true],.kjun-bottom-navigation a[aria-disabled=true],.kjun-floating-navigation a[aria-disabled=true],.kjun-list-main:disabled){opacity:var(--_kjun-state-opacity-disabled);cursor:default}
+/* Slider: the rail runs the full width under the label and value; thumbs travel inside it, so the track keeps half a thumb of
+   margin and the rail reaches back out to the edges. The touch area stays 44px while the visible band sits captionGap under the
+   caption. */
 .kjun-slider {
-  width:100%; min-width:var(--_kjun-extension-slider-minimum-width); display:grid; gap:var(--_kjun-geometry-dimension-value4);
+  --_kjun-slider-track:var(--_kjun-extension-slider-track); --_kjun-slider-thumb:var(--_kjun-extension-slider-thumb);
+  --_kjun-slider-band:var(--_kjun-extension-slider-track-height); --_kjun-slider-pressed:var(--_kjun-extension-slider-pressed-thumb);
+  /* The lift plus a hairline in the border role, so a white thumb still reads on a white surface. */
+  --_kjun-slider-thumb-shadow:0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border), var(--_kjun-slider-elevation);
+  width:100%; min-width:var(--_kjun-extension-slider-minimum-width); display:grid;
+}
+.kjun-slider[data-size=sm] {
+  --_kjun-slider-track:var(--_kjun-extension-slider-small-track); --_kjun-slider-thumb:var(--_kjun-extension-slider-small-thumb);
+  --_kjun-slider-band:var(--_kjun-extension-slider-small-track-height); --_kjun-slider-pressed:var(--_kjun-extension-slider-small-pressed-thumb);
 }
 .kjun-slider-caption {
   display:flex; align-items:baseline; justify-content:space-between;
@@ -55,55 +66,57 @@
   font-size:var(--_kjun-type-control-size); line-height:var(--_kjun-type-control-line);
   font-weight:var(--_kjun-type-control-weight); letter-spacing:var(--_kjun-type-control-tracking);
 }
+.kjun-slider[data-size=sm] :is(.kjun-slider-label, .kjun-slider-value) {
+  font-size:var(--_kjun-type-control-small-size); line-height:var(--_kjun-type-control-small-line); letter-spacing:var(--_kjun-type-control-small-tracking);
+}
 .kjun-slider-track {
-  height:var(--_kjun-geometry-native-minimum-touch-target); position:relative; margin-inline:calc(var(--_kjun-extension-slider-thumb) / 2);
+  height:var(--_kjun-geometry-native-minimum-touch-target); position:relative; margin-inline:calc(var(--_kjun-slider-thumb) / 2);
+}
+.kjun-slider-caption + .kjun-slider-track {
+  margin-top:calc(var(--_kjun-extension-slider-caption-gap) - (var(--_kjun-geometry-native-minimum-touch-target) - var(--_kjun-slider-band)) / 2);
 }
 .kjun-slider-rail, .kjun-slider-fill {
-  position:absolute; top:calc(50% - var(--_kjun-extension-slider-track) / 2);
-  height:var(--_kjun-extension-slider-track); border-radius:var(--_kjun-geometry-radius-radius9999);
-  left:0; right:0; background:var(--_kjun-color-border);
+  position:absolute; top:calc(50% - var(--_kjun-slider-track) / 2);
+  height:var(--_kjun-slider-track); border-radius:var(--_kjun-geometry-radius-radius9999);
 }
-.kjun-slider-fill { background:var(--_kjun-color-brand); right:auto; }
+.kjun-slider-rail {
+  left:calc(var(--_kjun-slider-thumb) / -2); right:calc(var(--_kjun-slider-thumb) / -2);
+  background:color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-tint-active) * 100%), transparent);
+}
+.kjun-slider-fill { background:var(--_kjun-color-brand); }
+/* One white thumb lifted by a contact shadow, like the switch thumb; pressing adds a brand halo and grows it to pressedThumb. */
 .kjun-slider-thumb {
-  top:50%; width:var(--_kjun-extension-slider-thumb); height:var(--_kjun-extension-slider-thumb);
-  border-radius:50%; border:var(--_kjun-border-control-width) solid var(--_kjun-color-brand);
-  background:var(--_kjun-color-surface); touch-action:none; cursor:grab;
+  top:50%; width:var(--_kjun-slider-thumb); height:var(--_kjun-slider-thumb); border-radius:50%;
+  background:var(--_kjun-color-switch-thumb); box-shadow:var(--_kjun-slider-thumb-shadow); touch-action:none; cursor:grab;
+  transition:box-shadow var(--_kjun-motion-control) var(--_kjun-ease-out), width var(--_kjun-motion-control) var(--_kjun-ease-out), height var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
-.kjun-slider:not([data-disabled=true]) .kjun-slider-thumb:hover { border-color:var(--_kjun-color-brand-hover); }
-.kjun-slider:not([data-disabled=true]) .kjun-slider-thumb[data-dragging] { border-color:var(--_kjun-color-brand-active); cursor:grabbing; }
-.kjun-slider-thumb[data-focus-visible] { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-choice-offset); z-index:1; }
+.kjun-slider-thumb[data-front] { z-index:1; }
+@media (hover: hover) {
+  .kjun-slider:not([data-disabled=true]) .kjun-slider-thumb:hover {
+    box-shadow:0 0 0 var(--_kjun-extension-slider-halo-size) color-mix(in srgb, var(--_kjun-color-brand) calc(var(--_kjun-state-opacity-tint-control) * 100%), transparent), var(--_kjun-slider-thumb-shadow);
+  }
+}
+.kjun-slider:not([data-disabled=true]) .kjun-slider-thumb[data-dragging] {
+  box-shadow:0 0 0 var(--_kjun-extension-slider-halo-size) color-mix(in srgb, var(--_kjun-color-brand) calc(var(--_kjun-state-opacity-tint-active) * 100%), transparent), var(--_kjun-slider-thumb-shadow);
+  width:var(--_kjun-slider-pressed); height:var(--_kjun-slider-pressed); cursor:grabbing;
+}
+.kjun-slider-thumb[data-focus-visible] { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-choice-offset); z-index:2; }
 .kjun-slider[data-disabled=true] { opacity:var(--_kjun-state-opacity-disabled); }
 .kjun-slider[data-disabled=true] .kjun-slider-thumb { cursor:default; }
-/* Native range inputs travel one thumb width less than their box. Extend the
-   input half a thumb past each rail end so both centers use the same geometry. */
-.kjun-vue-range input[type=range] {
-  position:absolute; top:0; left:calc(0px - var(--_kjun-extension-slider-thumb) / 2);
-  width:calc(100% + var(--_kjun-extension-slider-thumb)); height:100%; margin:0; padding:0;
-  border:0; appearance:none; background:transparent; pointer-events:none;
+/* marks: a dot at each mark on the rail (light on the fill), and its label under the band. Edge labels align to the rail ends. */
+.kjun-slider-mark {
+  position:absolute; top:calc(50% - var(--_kjun-extension-slider-mark-size) / 2); width:var(--_kjun-extension-slider-mark-size); height:var(--_kjun-extension-slider-mark-size);
+  margin-inline-start:calc(var(--_kjun-extension-slider-mark-size) / -2); border-radius:50%; background:var(--_kjun-color-text-tertiary); pointer-events:none;
 }
-.kjun-vue-range input.kjun-vue-single { pointer-events:auto; cursor:pointer; }
-.kjun-vue-range input:focus-visible { outline:none; z-index:1; }
-.kjun-vue-range input::-webkit-slider-runnable-track { background:transparent; height:var(--_kjun-extension-slider-track); }
-.kjun-vue-range input::-webkit-slider-thumb {
-  appearance:none; pointer-events:auto; box-sizing:border-box;
-  width:var(--_kjun-extension-slider-thumb); height:var(--_kjun-extension-slider-thumb);
-  margin-top:calc((var(--_kjun-extension-slider-track) - var(--_kjun-extension-slider-thumb)) / 2);
-  border:var(--_kjun-border-control-width) solid var(--_kjun-color-brand); border-radius:50%; background:var(--_kjun-color-surface); cursor:grab;
+.kjun-slider-mark[data-active] { background:var(--_kjun-color-switch-thumb); }
+.kjun-slider-marks {
+  position:relative; margin-inline:calc(var(--_kjun-slider-thumb) / 2); height:var(--_kjun-type-caption-line);
+  margin-top:calc(var(--_kjun-extension-slider-mark-label-gap) - (var(--_kjun-geometry-native-minimum-touch-target) - var(--_kjun-slider-band)) / 2);
+  color:var(--_kjun-color-text-tertiary); font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line);
 }
-.kjun-vue-range input::-moz-range-track { background:transparent; height:var(--_kjun-extension-slider-track); }
-.kjun-vue-range input::-moz-range-progress { background:transparent; }
-.kjun-vue-range input::-moz-range-thumb {
-  pointer-events:auto; box-sizing:border-box; width:var(--_kjun-extension-slider-thumb); height:var(--_kjun-extension-slider-thumb);
-  border:var(--_kjun-border-control-width) solid var(--_kjun-color-brand); border-radius:50%; background:var(--_kjun-color-surface); cursor:grab;
-}
-.kjun-vue-range input:not(:disabled):hover::-webkit-slider-thumb { border-color:var(--_kjun-color-brand-hover); }
-.kjun-vue-range input:not(:disabled):hover::-moz-range-thumb { border-color:var(--_kjun-color-brand-hover); }
-.kjun-vue-range input:not(:disabled):active::-webkit-slider-thumb { border-color:var(--_kjun-color-brand-active); cursor:grabbing; }
-.kjun-vue-range input:not(:disabled):active::-moz-range-thumb { border-color:var(--_kjun-color-brand-active); cursor:grabbing; }
-.kjun-vue-range input:focus-visible::-webkit-slider-thumb { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-choice-offset); }
-.kjun-vue-range input:focus-visible::-moz-range-thumb { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-choice-offset); }
-.kjun-vue-range input:disabled, .kjun-vue-range input:disabled::-webkit-slider-thumb { cursor:default; }
-.kjun-vue-range input:disabled::-moz-range-thumb { cursor:default; }
+.kjun-slider-mark-label { position:absolute; top:0; transform:translateX(-50%); white-space:nowrap; }
+.kjun-slider-mark-label[data-edge=start] { transform:translateX(calc(var(--_kjun-slider-thumb) / -2)); }
+.kjun-slider-mark-label[data-edge=end] { transform:translateX(calc(var(--_kjun-slider-thumb) / 2 - 100%)); }
 
 .kjun-top-navigation { flex-shrink:0; }
 .kjun-navigation-content {

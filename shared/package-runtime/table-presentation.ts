@@ -147,6 +147,8 @@ export interface TableCardsProps<Row extends object> extends TableRowsProps<Row>
   totals?: TableTotal[];
   /** groupBy groups: each one opens with a header line (label, count and, with two or more rows, its subtotals) above its cards. */
   groups?: TableRowGroup<Row>[] | null;
+  collapsed?: string[];
+  toggleGroup?: (key: string) => void;
   groupLabel?: (group: TableRowGroup<Row>) => ReactNode;
   groupTotals?: (rows: Row[]) => TableTotal[];
   /** The cell's plain text, for a value read out with its label where the label is not drawn (tile highlight on Native). */

@@ -5,6 +5,9 @@ export function tableUsageExample(input: UsageInput) {
   const b = new UsageBuilder(input), s = input.settings, example = tableExample(s);
   b.domainColors = example.metrics;
   const selected = b.state('selected', []), expanded = b.state('expanded', []);
+  const grouped = !!s.grouped && example.project;
+  const groupValues = grouped ? b.data('groupValues', [...new Set(example.data.map((row: any) => row.status))]) : undefined;
+  const expandedGroups = grouped ? b.state('expandedGroups', [...new Set(example.data.map((row: any) => row.status))]) : undefined;
   const report = (name: string, args: string, value: string) => b.handler(name, args, b.result(value));
   const slots: Record<string, string> = {};
   const cases: string[] = [];
@@ -33,11 +36,14 @@ export function tableUsageExample(input: UsageInput) {
     : b.text(expr('"상세: " + row.name'));
   const selection = b.button('선택 항목 확인', report('confirmSelection', '', b.read('selected') + '.map(row => row.name).join(", ") + " 선택 확인"'), { size: 'xs', variant: 'secondary' });
   const vueCells = Object.entries(slots).map(([key, body]) => `<template #${key}="{ row }">\n${body}\n</template>`).join('\n');
-  return b.finish(b.node('KjunTable', {
+  const table = b.node('KjunTable', {
     columns: b.data('columns', example.columns), data: b.data('rows', example.data),
     ...b.props('selectable', 'sortable', 'expandable', 'responsive', 'loading', 'searchable', 'compact', 'striped', 'hoverable', 'stickyHeader'),
     maxHeight: s.stickyHeader ? 240 : undefined,
     selected, onSelectionChange: b.update('selected'), expandedRows: expanded, onExpandedRowsChange: b.update('expanded'),
+    groupBy: grouped ? 'status' : undefined, expandedGroups, onExpandedGroupsChange: grouped ? b.update('expandedGroups') : undefined,
+    summary: grouped ? { budget: 'sum' } : undefined,
+    summaryFormat: grouped ? expr('(value) => value == null ? "" : formatPrice(value)') : undefined,
     renderExpand: b.vue ? undefined : expr(`row => ${example.project ? '(' + detail + ')' : '"상세: " + row.name'}`),
     renderCell: !b.vue && cases.length ? expr(`(value, column, row) => {\n${cases.join('\n')}\nreturn column.type === "number" ? new Intl.NumberFormat("ko-KR").format(Number(value)) : value;\n}`) : undefined,
     renderSelectionToolbar: b.vue ? undefined : expr(`() => (${selection})`),
@@ -45,5 +51,9 @@ export function tableUsageExample(input: UsageInput) {
     error: s.error ? '조회 오류' : null, hasLoadedOnce: true,
     onSearch: report('search', 'query', '"프로젝트 검색: " + query'),
     onSortChange: report('sort', 'sort', '"정렬 " + sort.key + " " + sort.order'),
-  }, b.vue ? vueCells : '', b.vue ? { expand: detail, selectionToolbar: selection } : {}));
+  }, b.vue ? vueCells : '', b.vue ? { expand: detail, selectionToolbar: selection } : {});
+  return b.finish(grouped ? b.group([
+    b.button('전체 펼치기', b.handler('expandAllGroups', '', b.set('expandedGroups', groupValues!.code)), { size: 'sm' }),
+    b.button('전체 접기', b.handler('collapseAllGroups', '', b.set('expandedGroups', '[]')), { size: 'sm' }), table,
+  ]) : table);
 }

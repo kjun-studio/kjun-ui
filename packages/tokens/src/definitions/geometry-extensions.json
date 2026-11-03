@@ -156,7 +156,14 @@
     },
     "slider": {
       "track": 6,
-      "thumb": 20
+      "thumb": 20,
+      "trackHeight": 28,
+      "captionGap": { "$ref": "dimension.value4" },
+      "haloSize": 8,
+      "pressedThumb": 22,
+      "markSize": 4,
+      "markLabelGap": { "$ref": "dimension.value2" },
+      "small": { "track": 4, "thumb": 16, "pressedThumb": 18, "trackHeight": 24 }
     },
     "radio": {
       "size": 20,

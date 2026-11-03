@@ -4,6 +4,7 @@ import type { TableCardSection } from "./table-types";
 import type { TableRowGroup } from "../../../shared/package-runtime/table-groups";
 import { tableGroupName } from "../../../shared/package-runtime/table-presentation";
 import { KjunSkeleton } from "./display";
+import { KjunButton } from "./button";
 import { tableTotals, type TableLayout, type TableRowsContext, type TableTotal } from "./table-parts";
 
 type Row = object;
@@ -13,15 +14,20 @@ export interface TableNarrowContext extends TableRowsContext {
   groups: TableRowGroup<Row>[] | null;
   groupLabel: (group: TableRowGroup<Row>) => VNodeChild;
   groupTotals: (rows: Row[]) => TableTotal[];
+  collapsed: string[];
+  toggleGroup: (key: string) => void;
 }
 
 /** Like React: each group is a labelled group, a header line (name, count, subtotals with two or more rows) over its own list. */
 function groupSections(c: TableNarrowContext, className: string, itemsClass: string | undefined, item: (row: Row, index: number) => VNodeChild) {
   return c.groups!.map(group => {
     const label = c.groupLabel(group), totals = group.rows.length > 1 ? c.groupTotals(group.rows) : [];
+    const open = !c.collapsed.includes(group.key);
     return (
       <div key={group.key} role="group" aria-label={tableGroupName(label, group)} class={className}>
         <div class="kjun-table-card-group">
+          <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} aria-expanded={open}
+            ariaLabel={c.messages.toggleGroup(String(group.value ?? ""), open)} onClick={() => c.toggleGroup(group.key)} />
           <span>{label}</span>
           <span class="kjun-table-card-group-count">{c.messages.groupCount(group.rows.length)}</span>
           {totals.length > 0 && (
@@ -30,7 +36,7 @@ function groupSections(c: TableNarrowContext, className: string, itemsClass: str
             </span>
           )}
         </div>
-        <div class={itemsClass} role="list">{group.rows.map(row => item(row, c.state.rowIndex(row)))}</div>
+        {open && <div class={itemsClass} role="list">{group.rows.map(row => item(row, c.state.rowIndex(row)))}</div>}
       </div>
     );
   });

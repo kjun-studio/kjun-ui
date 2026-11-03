@@ -239,6 +239,7 @@
   --_kjun-card-elevation-raised: 0px 1px 2px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-modal-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-popover-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
+  --_kjun-slider-elevation: 0px 1px 3px 0px var(--_kjun-color-shadow);
   --_kjun-menu-elevation: 0px 8px 24px 0px var(--_kjun-color-shadow), 0px 2px 4px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-drawer-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-toast-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
@@ -397,6 +398,16 @@
   --_kjun-extension-chip-remove-icon-sizes-lg: 16px;
   --_kjun-extension-slider-track: 6px;
   --_kjun-extension-slider-thumb: 20px;
+  --_kjun-extension-slider-track-height: 28px;
+  --_kjun-extension-slider-caption-gap: 4px;
+  --_kjun-extension-slider-halo-size: 8px;
+  --_kjun-extension-slider-pressed-thumb: 22px;
+  --_kjun-extension-slider-mark-size: 4px;
+  --_kjun-extension-slider-mark-label-gap: 2px;
+  --_kjun-extension-slider-small-track: 4px;
+  --_kjun-extension-slider-small-thumb: 16px;
+  --_kjun-extension-slider-small-pressed-thumb: 18px;
+  --_kjun-extension-slider-small-track-height: 24px;
   --_kjun-extension-slider-minimum-width: 100px;
   --_kjun-extension-radio-size: 20px;
   --_kjun-extension-radio-dot: 8px;

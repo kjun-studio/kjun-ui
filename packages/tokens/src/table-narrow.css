@@ -24,12 +24,13 @@
 .kjun-table-card-group {
   padding: var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-dimension-value4) 0;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   color: var(--_kjun-text-secondary);
   font-size: var(--_kjun-type-caption-size);
   line-height: var(--_kjun-type-caption-line);
   font-weight: var(--_kjun-type-control-weight);
 }
+.kjun-table-card-group > .kjun-button { flex-shrink: 0; margin-inline-end: var(--_kjun-geometry-dimension-value4); }
 .kjun-table-card-group-total { margin-inline-start: auto; color: var(--_kjun-text-secondary); font-variant-numeric: tabular-nums; text-align: end; }
 .kjun-table-card-group-total > span + span::before { content: " · "; }
 .kjun-table-card-group-count { margin-inline-start: var(--_kjun-geometry-dimension-value4); color: var(--_kjun-text-tertiary); font-weight: var(--_kjun-type-caption-weight); }

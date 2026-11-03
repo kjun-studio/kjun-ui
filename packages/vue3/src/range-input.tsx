@@ -1,4 +1,5 @@
-import { useKjunMessages } from "./runtime/messages";
+import { useKjunMessageScope, useKjunMessages } from "./runtime/messages";
+import { sliderFormatter, sliderFrontThumb, sliderMarks, sliderPick, sliderValueText, type KjunSliderMark, type SliderMarks } from "../../../shared/package-runtime/slider-view";
 import { computed, defineComponent, ref, watch, type PropType } from "vue";
 import { createSliderDomain, sliderKey } from "@kjun-ui/tokens";
 import { useFocusVisible } from "./runtime/focus-visible";
@@ -15,6 +16,9 @@ const sliderProps = {
   showValue: { type: Boolean, default: true },
   /** Applied to each thumb's output and aria-valuetext. Does not change numeric values. */
   formatValue: { type: Function as PropType<(value: number) => string>, default: undefined },
+  /** Like React: true for a dot on every step (up to 24), or values with optional labels under the rail. */
+  marks: { type: [Boolean, Array] as PropType<SliderMarks>, default: undefined },
+  size: { type: String as PropType<"sm" | "md">, default: "md" },
 } as const;
 
 /**
@@ -31,7 +35,7 @@ function defineRangeInput(name: string, range: boolean) {
     },
     emits: { "update:modelValue": (_value: SliderValue) => true, change: (_value: SliderValue) => true },
     setup(props, { emit }) {
-      const m = useKjunMessages();
+      const m = useKjunMessages(), scope = useKjunMessageScope();
       const domain = computed(() => createSliderDomain(props.min, props.max, props.step));
       const list = computed(() => (Array.isArray(props.modelValue) ? props.modelValue : [props.modelValue]) as number[]);
       const valid = computed(() => domain.value.valid && (!range || (Array.isArray(props.modelValue) && props.modelValue.length === 2))
@@ -74,11 +78,9 @@ function defineRangeInput(name: string, range: boolean) {
         if (blocked.value || event.button !== 0) return;
         event.preventDefault();
         const number = valueAt(event.clientX);
-        const collapsed = latest.length === 2 && latest[0] === latest[1];
-        const index = latest.length === 2 && (collapsed ? number > latest[0]
-          : Math.abs(number - latest[1]) < Math.abs(number - latest[0])) ? 1 : 0;
         // When both thumbs overlap, the first value-changing movement chooses which one to drag.
-        pendingDirection = collapsed && domain.value.snap(number) === latest[0];
+        const { index, pending } = sliderPick(latest, number, domain.value.snap(number));
+        pendingDirection = pending;
         dragging.value = index;
         inputs[index]?.focus({ preventScroll: true });
         track.value!.setPointerCapture?.(event.pointerId);
@@ -100,25 +102,31 @@ function defineRangeInput(name: string, range: boolean) {
       return () => {
         const values = list.value;
         const label = props.ariaLabel || props.label || m.value.value;
-        const start = values.length === 2 ? fraction(values[0]) : 0;
+        const format = sliderFormatter(props.formatValue, scope.value.intl);
+        const front = valid.value ? sliderFrontThumb(values, min.value, max.value) : null;
+        const dots = valid.value ? sliderMarks(props.marks, min.value, max.value, props.step, values) : [];
         return (
-          <div class="kjun-slider" data-disabled={String(blocked.value)} role="group" aria-label={label}>
+          <div class="kjun-slider" data-size={props.size} data-disabled={String(blocked.value)} role="group" aria-label={label}>
             {(props.label || props.showValue) && <div class="kjun-slider-caption">
               {props.label && <label class="kjun-slider-label">{props.label}</label>}
-              {props.showValue && <output class="kjun-slider-value" aria-live="off">{values.map(value => props.formatValue?.(value) ?? String(value)).join(" – ")}</output>}
+              {props.showValue && <output class="kjun-slider-value" aria-live="off">{sliderValueText(values, format)}</output>}
             </div>}
             <div ref={track} class="kjun-slider-track" style={{ position: "relative", touchAction: "none" }}
               onPointerdown={pointerDown} onPointermove={pointerMove} onPointerup={pointerUp} onPointercancel={pointerUp}>
               <div class="kjun-slider-rail" />
-              <div class="kjun-slider-fill" style={{ left: start * 100 + "%", width: (fraction(values[values.length - 1]) - start) * 100 + "%" }} />
+              {/* Like React: a single slider fills from the rail's own start, half a thumb before the track. */}
+              <div class="kjun-slider-fill" style={values.length === 2
+                ? { left: fraction(values[0]) * 100 + "%", width: (fraction(values[1]) - fraction(values[0])) * 100 + "%" }
+                : { left: "calc(var(--_kjun-slider-thumb) / -2)", width: `calc(${fraction(values[0]) * 100}% + var(--_kjun-slider-thumb) / 2)` }} />
+              {dots.map(dot => <span key={dot.value} class="kjun-slider-mark" data-active={dot.active || undefined} style={{ left: dot.fraction * 100 + "%" }} />)}
               {values.map((value, index) => (
                 <div key={index} class="kjun-slider-thumb"
                   style={{ position: "absolute", left: fraction(value) * 100 + "%", transform: "translate(-50%, -50%)" }}
-                  data-dragging={dragging.value === index || undefined}
+                  data-dragging={dragging.value === index || undefined} data-front={front === index || undefined}
                   data-focus-visible={(focused.value === index && focus.visible.value) || undefined}>
                   <input ref={el => { inputs[index] = el as HTMLInputElement | null; }} type="range" class="kjun-sr-only"
                     aria-label={values.length === 2 ? ((props as { thumbLabels?: [string, string] }).thumbLabels ?? [m.value.minimum, m.value.maximum])[index] : label}
-                    aria-valuetext={valid.value ? props.formatValue?.(value) : undefined}
+                    aria-valuetext={valid.value ? format(value) : undefined}
                     min={values.length === 2 && index === 1 ? values[0] : min.value}
                     max={values.length === 2 && index === 0 ? values[1] : max.value}
                     step={valid.value ? props.step : 1} value={valid.value ? value : index * 100} disabled={blocked.value}
@@ -140,6 +148,9 @@ function defineRangeInput(name: string, range: boolean) {
                 </div>
               ))}
             </div>
+            {dots.some(dot => dot.label) && <div class="kjun-slider-marks" aria-hidden="true">
+              {dots.filter(dot => dot.label).map(dot => <span key={dot.value} class="kjun-slider-mark-label" data-edge={dot.edge} style={{ left: dot.fraction * 100 + "%" }}>{dot.label}</span>)}
+            </div>}
           </div>
         );
       };
@@ -149,5 +160,6 @@ function defineRangeInput(name: string, range: boolean) {
 
 export const KjunSlider = defineRangeInput("KjunSlider", false);
 export const KjunRangeSlider = defineRangeInput("KjunRangeSlider", true);
-export interface KjunSliderProps { modelValue: number; min?: number; max?: number; step?: number; disabled?: boolean; label?: string; ariaLabel?: string; showValue?: boolean; formatValue?: (value: number) => string }
+export type { KjunSliderMark };
+export interface KjunSliderProps { modelValue: number; min?: number; max?: number; step?: number; disabled?: boolean; label?: string; ariaLabel?: string; showValue?: boolean; formatValue?: (value: number) => string; marks?: SliderMarks; size?: "sm" | "md" }
 export interface KjunRangeSliderProps extends Omit<KjunSliderProps, "modelValue"> { modelValue: [number, number]; thumbLabels?: [string, string] }

@@ -31,6 +31,10 @@ const inferredTable = new V.KjunTable({ data: [item], columns: [],
 });
 type InferredRow = Parameters<NonNullable<typeof inferredTable.$slots.expand>>[0]['row'];
 const inferredRow: InferredRow = item;
+const reactGroups: R.KjunTableProps = { columns: [], groupBy: 'status', expandedGroups: ['진행 중', 1, true, null], onExpandedGroupsChange: values => { const groups: unknown[] = values; } };
+const nativeGroups: N.KjunTableProps = { columns: [], expandedGroups: [], onExpandedGroupsChange: values => { const groups: unknown[] = values; } };
+// @ts-expect-error Group expansion is an array, separate from a single row key.
+const invalidGroups: R.KjunTableProps = { columns: [], expandedGroups: '진행 중' };
 // @ts-expect-error Expanded rows retain the concrete shape inferred from data.
 const wrongExpandedRow: InferredRow = { amount: 'wrong' };
 type RowTable = InstanceType<typeof V.KjunTable<typeof item>>;

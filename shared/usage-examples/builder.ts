@@ -122,7 +122,7 @@ export class UsageBuilder {
         if (key === 'value' && vueModelComponents.has(name)) key = 'modelValue';
         if (value instanceof Handler) {
           const events: Record<string, string> = { onValueChange: vueModelComponents.has(name) ? 'update:model-value' : 'update:value', onOpenChange: 'update:open', onChangeCommit: 'change',
-            onSelectionChange: 'update:selected', onExpandedRowsChange: 'update:expanded-rows', onSortChange: 'update:sort', onPageSizeChange: 'update:page-size' };
+            onSelectionChange: 'update:selected', onExpandedRowsChange: 'update:expanded-rows', onExpandedGroupsChange: 'update:expanded-groups', onSortChange: 'update:sort', onPageSizeChange: 'update:page-size' };
           if (name === 'KjunPagination') events.onPageChange = 'update:page';
           attributes.push(`@${events[key] || kebab(key.slice(2)).slice(1)}="${attribute(vueCode(value.code))}"`);
         } else if (typeof value === 'string' && !/[\n\r]/.test(value)) attributes.push(`${kebab(key)}="${attribute(value)}"`);

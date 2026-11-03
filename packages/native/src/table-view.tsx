@@ -3,7 +3,7 @@ import { tableRowLabel } from "../../../shared/package-runtime/table-model";
 import { typeStyle } from "./typography";
 import { tablePresentation, tableCellValue, tableSortFromValue, tableSortOptions, tableSortValue, tableSummaryValue, tableTotals, type TableCellRole } from "../../../shared/package-runtime/table-presentation";
 import { groupTableRows, type TableRowGroup } from "../../../shared/package-runtime/table-groups";
-import { useState } from "react";
+import { useTableGroupExpansion } from "../../../shared/package-runtime/use-table-group-expansion";
 import { TableToolbar } from "./table-toolbar";
 import { TableGrid } from "./table-grid";
 import { tokens } from "@kjun-ui/tokens";
@@ -59,14 +59,14 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     query = useQueryDisplay(props),
     // Skeleton rows wait out loadingDelay here; the spinner waits inside KjunDataState.
     revealed = useLoadingReveal(query.initialLoading, skeleton ? loadingDelay : 0),
-    mobile = useWindowDimensions().width < tokens.table.mobileBreakpoint,
-    [collapsed, setCollapsed] = useState<string[]>([]);
+    mobile = useWindowDimensions().width < tokens.table.mobileBreakpoint;
+  const groups = groupTableRows(state.rows, props.groupBy);
+  const expansion = useTableGroupExpansion(groups, props.groupBy, props.expandedGroups, props.onExpandedGroupsChange);
   const layout = tablePresentation(props, mobile);
   // Like Web: groups keep their collapsed keys here; summaries come from the shared rules.
   const grouping = {
-    groups: groupTableRows(state.rows, props.groupBy),
-    collapsed,
-    toggleGroup: (key: string) => setCollapsed((keys) => keys.includes(key) ? keys.filter((k) => k !== key) : [...keys, key]),
+    groups,
+    ...expansion,
     groupLabel: (group: TableRowGroup<Row>) => props.renderGroupLabel ? props.renderGroupLabel(group.value, group.rows) : group.value == null || group.value === "" ? "-" : String(group.value),
     summary: props.summary ? (col: TableColumn<Row>, rows: Row[]) => tableSummaryValue(props, col, rows, locale) : null,
   };
@@ -172,9 +172,9 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         loadingDelay={skeleton ? 0 : loadingDelay}
       >
         {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, cellText }} groups={grouping.groups} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
+          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, cellText }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : layout.list ? (
-          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} groups={grouping.groups} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
+          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : (
           <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ...grouping }} sortable={props.sortable} />
         )}

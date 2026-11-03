@@ -45,8 +45,9 @@ async function appearance(page: Page, platform: string, id = 'single') {
       const el = platform === 'native' ? slider.firstElementChild : slider.closest('.kjun-slider-thumb');
       const style = getComputedStyle(el);
       const box = rect(el);
-      const result = { ...box, border: style.borderTopWidth, color: style.borderTopColor, background: style.backgroundColor, shadow: style.boxShadow, outline: style.outlineStyle, outlineWidth: style.outlineWidth, outlineOffset: style.outlineOffset };
-      return result;
+      // The press halo: a box-shadow ring on the web, a circle behind the thumb on Native.
+      const halo = platform === 'native' ? (slider.children[1] ? getComputedStyle(slider.children[1]).backgroundColor : 'none') : style.boxShadow;
+      return { ...box, border: style.borderTopWidth, color: style.borderTopColor, background: style.backgroundColor, shadow: style.boxShadow, halo, outline: style.outlineStyle, outlineWidth: style.outlineWidth, outlineOffset: style.outlineOffset };
     });
     const caption = root.firstElementChild!;
     const label = caption.children.length > 1 ? caption.firstElementChild! : null;
@@ -66,11 +67,17 @@ for (const platform of ['react', 'vue3', 'native']) {
       const a = await appearance(page, platform), thumb = a.thumbs[0];
       expect(a.rail.height).toBe(6);
       expect(a.track.height).toBe(44);
-      expect(a.rail.x - a.root.x).toBeCloseTo(10);
-      expect(a.root.width - a.rail.width).toBeCloseTo(20);
-      expect(thumb.width).toBe(20); expect(thumb.height).toBe(20); expect(thumb.border).toBe('2px');
-      expect(thumb.shadow).toBe('none');
+      // The rail runs the caption's full width; thumbs travel inside it, so the thumb edge meets the rail end.
+      expect(a.rail.x).toBeCloseTo(a.root.x, 0);
+      expect(a.rail.width).toBeCloseTo(a.root.width, 0);
+      expect(thumb.width).toBe(20); expect(thumb.height).toBe(20);
+      // A hairline outlines the white thumb: a box-shadow ring on the web, a 1px border on Native.
+      expect(thumb.border).toBe(platform === 'native' ? '1px' : '0px');
+      expect(thumb.shadow).not.toBe('none');
+      expect(a.fill.x).toBeCloseTo(a.rail.x, 0);
       expect(a.fill.x + a.fill.width).toBeCloseTo(thumb.x + thumb.width / 2, 0);
+      if (value === 0) expect(thumb.x).toBeCloseTo(a.rail.x, 0);
+      if (value === 100) expect(thumb.x + thumb.width).toBeCloseTo(a.rail.x + a.rail.width, 0);
       expect(a.rail.y + a.rail.height / 2).toBeCloseTo(thumb.y + thumb.height / 2, 0);
     }
     for (const range of [[0, 100], [20, 80], [50, 50]]) {
@@ -84,22 +91,24 @@ for (const platform of ['react', 'vue3', 'native']) {
     await configure(page, { min: 0, max: 1, step: .3, value: .9, range: [.3, .9] });
     await expect.poll(() => valueOf(page)).toBe(.9);
     const end = await appearance(page, platform);
-    expect(end.fill.width).toBeCloseTo(end.rail.width, 0);
-    expect(end.thumbs[0].x + 10).toBeCloseTo(end.rail.x + end.rail.width, 0);
+    expect(end.fill.width).toBeCloseTo(end.rail.width - 10, 0);
+    expect(end.thumbs[0].x + 20).toBeCloseTo(end.rail.x + end.rail.width, 0);
   });
 
-  test(`${platform}: slider colors stay flat through hover, drag, focus and disabled`, async ({ page }) => {
+  test(`${platform}: the white thumb gains a halo on hover, a stronger one and 22px while pressed, and stays put when disabled`, async ({ page }) => {
     await openFixture(page, platform, '', 'slider-design');
     await page.mouse.move(0, 0);
     const normal = (await appearance(page, platform)).thumbs[0];
     const center = { x: normal.x + 10, y: normal.y + 10 };
     await page.mouse.move(center.x, center.y);
-    await expect.poll(async () => (await appearance(page, platform)).thumbs[0].color).not.toBe(normal.color);
+    await expect.poll(async () => (await appearance(page, platform)).thumbs[0].halo).not.toBe(normal.halo);
     const hover = (await appearance(page, platform)).thumbs[0];
     await page.mouse.down();
-    await expect.poll(async () => (await appearance(page, platform)).thumbs[0].color).not.toBe(hover.color);
+    await expect.poll(async () => (await appearance(page, platform)).thumbs[0].halo).not.toBe(hover.halo);
     const pressed = (await appearance(page, platform)).thumbs[0];
-    expect(pressed.background).toBe(normal.background); expect(pressed.shadow).toBe('none'); expect(pressed.width).toBe(20);
+    expect(pressed.background).toBe(normal.background);
+    // The growth to pressedThumb eases in with the control motion.
+    await expect.poll(async () => Math.round((await appearance(page, platform)).thumbs[0].width)).toBe(22);
     await page.mouse.move(center.x + 40, center.y); await page.mouse.up();
     await expect.poll(() => valueOf(page)).toBeGreaterThan(40);
     await expect(page.getByTestId('events')).toContainText('commit:');
@@ -113,7 +122,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect.poll(async () => (await appearance(page, platform)).opacity).toBe('0.5');
     await page.mouse.move(center.x, center.y); await page.mouse.down();
     const disabled = (await appearance(page, platform)).thumbs[0];
-    expect(disabled.color).toBe(normal.color);
+    // The halo fades out with the control motion once the slider is disabled.
+    await expect.poll(async () => (await appearance(page, platform)).thumbs[0].halo).toBe(normal.halo);
+    expect(Math.round((await appearance(page, platform)).thumbs[0].width)).toBe(20);
     await page.mouse.move(center.x + 80, center.y); await page.mouse.up();
     expect(await valueOf(page)).toBe(40);
     await expect(page.getByTestId('events')).toBeEmpty();
@@ -141,7 +152,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await openFixture(page, platform, '', 'slider-design');
     const range = page.getByTestId('range'), first = range.getByRole('slider').nth(0), last = range.getByRole('slider').nth(1);
     const a = await appearance(page, platform, 'range');
-    await page.mouse.click(a.rail.x + a.rail.width * .9, a.rail.y + 3);
+    await page.mouse.click(a.track.x + a.track.width * .9, a.rail.y + 3);
     await expect.poll(() => valueOf(page, 'range', 1)).toBe(90);
     await expect(page.getByTestId('events')).toHaveText('change:[20,90]|commit:[20,90]');
     await first.focus(); await first.press('End');
@@ -199,5 +210,45 @@ for (const platform of ['react', 'vue3', 'native']) {
     await configure(page, { showValue: true });
     await expect.poll(() => caption(page, 'single')).toBe('알림 음량41%');
     expect(await caption(page, 'range')).toBe('조회 범위$20 – $80');
+  });
+}
+
+for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: overlapping range thumbs at either end still open, values use the locale format and equal values read once`, async ({ page }) => {
+    await openFixture(page, platform, '', 'slider-design');
+    const range = page.getByTestId('range');
+    for (const [start, end] of [[0, 20], [100, 80]]) {
+      await configure(page, { range: [start, start] });
+      await expect.poll(() => valueOf(page, 'range')).toBe(start);
+      const a = await appearance(page, platform, 'range');
+      const x = (value: number) => a.track.x + a.track.width * value / 100, y = a.rail.y + a.rail.height / 2;
+      await page.mouse.move(x(start), y); await page.mouse.down();
+      await page.mouse.move(x(end), y, { steps: 6 }); await page.mouse.up();
+      await expect.poll(() => valueOf(page, 'range', end > start ? 1 : 0)).toBe(end);
+    }
+    await configure(page, { min: 0, max: 1000000, step: 100, range: [500000, 500000], value: 980000 });
+    await expect.poll(() => caption(page, 'range')).toBe('조회 범위500,000');
+    expect(await caption(page, 'single')).toBe('알림 음량980,000');
+    await expect(page.getByTestId('single').getByRole('slider')).toHaveAttribute('aria-valuetext', '980,000');
+  });
+
+  test(`${platform}: marks put dots on the rail and labels under it, and size sm shrinks rail, thumb and text`, async ({ page }) => {
+    await openFixture(page, platform, '', 'slider-design');
+    await configure(page, { marks: [{ value: 0, label: '작게' }, { value: 50, label: '보통' }, { value: 100, label: '크게' }], step: 25, value: 50, range: [25, 75] });
+    const single = page.getByTestId('single');
+    for (const text of ['작게', '보통', '크게']) await expect(single.getByText(text, { exact: true })).toBeVisible();
+    const a = await appearance(page, platform);
+    const box = async (text: string) => (await single.getByText(text, { exact: true }).boundingBox())!;
+    const first = await box('작게'), middle = await box('보통'), last = await box('크게');
+    // Edge labels align to the rail ends; the middle label centers on its mark under the band.
+    expect(first.x).toBeCloseTo(a.rail.x, 0);
+    expect(last.x + last.width).toBeCloseTo(a.rail.x + a.rail.width, 0);
+    expect(middle.x + middle.width / 2).toBeCloseTo(a.thumbs[0].x + 10, 0);
+    expect(first.y).toBeGreaterThan(a.rail.y + a.rail.height);
+    expect(first.y - (a.rail.y + a.rail.height)).toBeLessThan(24);
+    await configure(page, { size: 'sm', marks: false });
+    await expect.poll(async () => (await appearance(page, platform)).thumbs[0].width).toBe(16);
+    const sm = await appearance(page, platform);
+    expect(sm.rail.height).toBe(4); expect(sm.fontSize).toBe('12px'); expect(sm.track.height).toBe(44);
   });
 }

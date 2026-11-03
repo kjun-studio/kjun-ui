@@ -2900,7 +2900,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "loading·빈 데이터·정렬 없음/오름/내림·행 선택·확장을 구분합니다. 768px 미만의 카드 표현에서도 열의 셀 렌더 함수와 행 선택을 유지합니다."
+        "note": "loading·빈 데이터·정렬·행 선택·행 상세 확장·그룹 펼침을 구분합니다. expandedGroups를 생략하면 처음에는 모두 펼치고 내부에서 관리합니다. 표·카드·list 전환 시 그룹 상태를 유지하며 닫아도 소계·합계는 남습니다."
       },
       "react": {
         "figures": [
@@ -2974,7 +2974,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "loading·빈 데이터·정렬 없음/오름/내림·행 선택·확장을 구분합니다. 768px 미만의 카드 표현에서도 열의 셀 렌더 함수와 행 선택을 유지합니다."
+        "note": "loading·빈 데이터·정렬·행 선택·행 상세 확장·그룹 펼침을 구분합니다. expandedGroups를 생략하면 처음에는 모두 펼치고 내부에서 관리합니다. 표·카드·list 전환 시 그룹 상태를 유지하며 닫아도 소계·합계는 남습니다."
       },
       "native": {
         "figures": [
@@ -3048,7 +3048,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "loading·빈 데이터·정렬 없음/오름/내림·행 선택·확장을 구분합니다. 768px 미만의 카드 표현에서도 열의 셀 렌더 함수와 행 선택을 유지합니다."
+        "note": "loading·빈 데이터·정렬·행 선택·행 상세 확장·그룹 펼침을 구분합니다. expandedGroups를 생략하면 처음에는 모두 펼치고 내부에서 관리합니다. 표·카드·list 전환 시 그룹 상태를 유지하며 닫아도 소계·합계는 남습니다."
       }
     }
   },
@@ -4820,7 +4820,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "선택·해제·비활성 상태를 표시합니다. 중간 선택 prop은 없으며 배열의 갱신은 소비자가 관리합니다."
+        "note": "선택·해제·일부 선택·비활성 상태를 표시합니다. indeterminate의 기본값은 false이며 true이면 빼기 표시와 접근성 mixed 상태를 제공합니다. 전체 선택에서는 선택값과 indeterminate를 소비자가 함께 갱신합니다."
       },
       "react": {
         "figures": [
@@ -4894,7 +4894,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "선택·해제·비활성 상태를 표시합니다. 중간 선택 prop은 없으며 배열의 갱신은 소비자가 관리합니다."
+        "note": "선택·해제·일부 선택·비활성 상태를 표시합니다. indeterminate의 기본값은 false이며 true이면 빼기 표시와 접근성 mixed 상태를 제공합니다. 전체 선택에서는 선택값과 indeterminate를 소비자가 함께 갱신합니다."
       },
       "native": {
         "figures": [
@@ -4968,7 +4968,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "선택·해제·비활성 상태를 표시합니다. 중간 선택 prop은 없으며 배열의 갱신은 소비자가 관리합니다."
+        "note": "선택·해제·일부 선택·비활성 상태를 표시합니다. indeterminate의 기본값은 false이며 true이면 빼기 표시와 접근성 mixed 상태를 제공합니다. 전체 선택에서는 선택값과 indeterminate를 소비자가 함께 갱신합니다."
       }
     }
   },
@@ -15071,8 +15071,25 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunSlider\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunSlider\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "6px 트랙과 20px 테두리 손잡이를 사용하며 현재 값까지 구간을 채웁니다. 호버·드래그는 테두리 색, 키보드 포커스는 손잡이 바깥 링으로 표시합니다. min·max·step과 disabled를 지원합니다."
       },
       "react": {
@@ -15123,8 +15140,25 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunSlider\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunSlider\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "6px 트랙과 20px 테두리 손잡이를 사용하며 현재 값까지 구간을 채웁니다. 호버·드래그는 테두리 색, 키보드 포커스는 손잡이 바깥 링으로 표시합니다. min·max·step과 disabled를 지원합니다."
       },
       "native": {
@@ -15175,8 +15209,25 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunSlider\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunSlider\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "6px 트랙과 20px 테두리 손잡이를 사용하며 현재 값까지 구간을 채웁니다. 호버·드래그는 테두리 색, 키보드 포커스는 손잡이 바깥 링으로 표시합니다. min·max·step과 disabled를 지원합니다."
       }
     }
@@ -15238,8 +15289,25 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRangeSlider\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRangeSlider\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "6px 트랙과 20px 테두리 손잡이를 사용하며 두 손잡이 사이를 채웁니다. min·max·소수 step과 disabled를 지원하고, 손잡이별 최소·최대는 다른 손잡이 값으로 제한됩니다."
       },
       "react": {
@@ -15293,8 +15361,25 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRangeSlider\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRangeSlider\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "6px 트랙과 20px 테두리 손잡이를 사용하며 두 손잡이 사이를 채웁니다. min·max·소수 step과 disabled를 지원하고, 손잡이별 최소·최대는 다른 손잡이 값으로 제한됩니다."
       },
       "native": {
@@ -15348,8 +15433,25 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRangeSlider\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRangeSlider\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "6px 트랙과 20px 테두리 손잡이를 사용하며 두 손잡이 사이를 채웁니다. min·max·소수 step과 disabled를 지원하고, 손잡이별 최소·최대는 다른 손잡이 값으로 제한됩니다."
       }
     }

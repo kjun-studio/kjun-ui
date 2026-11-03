@@ -1,4 +1,7 @@
-import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
+import { sliderFormatter, sliderFrontThumb, sliderMarks, sliderPick, sliderValueText, type SliderMarks } from "../../../shared/package-runtime/slider-view";
+import { shadowLayers } from "../../../shared/package-runtime/elevation";
+import { alertTint } from "./alert-actions-context";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PanResponder, Platform, Pressable, View, type ViewStyle } from "react-native";
 import { tokens, createSliderDomain, sliderKey } from "@kjun-ui/tokens";
@@ -6,7 +9,8 @@ import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
 import { focusVisible } from "./a11y";
-const geometry = tokens.extensions.slider;
+export type { KjunSliderMark } from "../../../shared/package-runtime/slider-view";
+const slider = tokens.extensions.slider;
 const targetSize = tokens.native.minimumTouchTarget;
 export interface KjunSliderProps {
   value: number;
@@ -18,8 +22,12 @@ export interface KjunSliderProps {
   ariaLabel?: string;
   /** Hides the visible value only; each thumb still reports its value to assistive technology. */
   showValue?: boolean;
-  /** Formats the visible value and each thumb's accessible value text. Values stay numeric. */
+  /** Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format. */
   formatValue?: (value: number) => string;
+  /** Like Web: true for a dot on every step (up to 24), or values with optional labels under the rail. */
+  marks?: SliderMarks;
+  /** sm: 12px text, 4px rail, 16px thumb. The touch area stays 44pt. */
+  size?: "sm" | "md";
   onValueChange?: (value: number) => void;
   onChangeCommit?: (value: number) => void;
 }
@@ -44,13 +52,18 @@ function RangeInput({
   label,
   ariaLabel,
   showValue = true,
-  formatValue = String,
+  formatValue: formatter,
+  marks,
+  size = "md",
   onValueChange,
   onChangeCommit,
   ...rest
 }: KjunSliderProps | KjunRangeSliderProps) {
-  const m = useKjunMessages();
+  const scope = useKjunMessageScope(), m = scope.messages;
+  const formatValue = sliderFormatter(formatter, scope.intl);
   const { colors, numericFontFamily, fontFamily } = useKjunStyles();
+  const geometry = size === "sm" ? slider.small : slider;
+  const [labelWidths, setLabelWidths] = useState<Record<number, number>>({});
   const domain = createSliderDomain(min, max, step),
     values = Array.isArray(value) ? value : [value];
   const valid =
@@ -66,6 +79,7 @@ function RangeInput({
   const track = useRef<View>(null),
     measured = useRef({ x: 0, width: 1 }),
     selected = useRef(0),
+    pending = useRef(false),
     dirty = useRef(false);
   const latest = useRef(values);
   latest.current = values;
@@ -122,15 +136,23 @@ function RangeInput({
           Math.abs(gesture.dx) > Math.abs(gesture.dy),
         onPanResponderGrant: (event) => {
           const number = position(event.nativeEvent.pageX);
-          selected.current =
-            latest.current.length === 2 &&
-            Math.abs(number - latest.current[1]) < Math.abs(number - latest.current[0])
-              ? 1
-              : 0;
+          // With both thumbs on one value, the first move that changes it picks the thumb that can follow it.
+          const pick = sliderPick(latest.current, number, domain.snap(number));
+          selected.current = pick.index;
+          pending.current = pick.pending;
           setDragging(selected.current);
           emit(selected.current, number);
         },
-        onPanResponderMove: (event) => emit(selected.current, position(event.nativeEvent.pageX)),
+        onPanResponderMove: (event) => {
+          const number = position(event.nativeEvent.pageX);
+          if (pending.current) {
+            if (domain.snap(number) === latest.current[0]) return;
+            selected.current = number > latest.current[0] ? 1 : 0;
+            pending.current = false;
+            setDragging(selected.current);
+          }
+          emit(selected.current, number);
+        },
         onPanResponderRelease: () => {
           setDragging(null);
           commit();
@@ -149,56 +171,35 @@ function RangeInput({
       ? Math.max(0, Math.min(100, ((n - min) / (effectiveMax - min)) * 100))
       : 0;
   const pct = (n: number): `${number}%` => `${n}%`;
+  const front = valid ? sliderFrontThumb(values, min, effectiveMax) : null;
+  const dots = valid ? sliderMarks(marks, min, effectiveMax, step, values) : [];
+  const half = geometry.thumb / 2, captioned = !!label || showValue;
+  // Like Web: the touch area stays 44pt while the visible band sits captionGap under the caption.
+  const pull = (targetSize - geometry.trackHeight) / 2;
+  const textRole = size === "sm" ? "controlSmall" : undefined;
   return (
-    <View
-      style={{
-        minWidth: tokens.extensions.slider.minimumWidth,
-        width: "100%",
-        gap: tokens.dimension.value4,
-        opacity: blocked ? tokens.states.opacity.disabled : 1,
-      }}
-    >
-      {(!!label || showValue) && <View
-        style={{
-          flexDirection: "row",
-          alignItems: "baseline",
-          justifyContent: "space-between",
-          gap: tokens.dimension.value12,
-          minWidth: 0,
-        }}
-      >
-        {!!label && (
-          <KText
-            style={{
-              ...typeStyle("label"),
-              // Same color as field labels in a form, like Web .kjun-slider-label.
-              color: colors.text,
-              flexShrink: 1,
-              minWidth: 0,
-            }}
-          >
-            {label}
-          </KText>
-        )}
-        {showValue && <KText
-          style={{
-            ...typeStyle("control"),
-            fontFamily: numericFontFamily ?? fontFamily,
-            fontVariant: ["tabular-nums"],
-            flexShrink: 0,
-            marginLeft: "auto",
-          }}
-        >
-          {values.map(value => formatValue(value)).join(" – ")}
-        </KText>}
-      </View>}
+    <View style={{ minWidth: slider.minimumWidth, width: "100%", opacity: blocked ? tokens.states.opacity.disabled : 1 }}>
+      {captioned ? (
+        <View style={{ flexDirection: "row", alignItems: "baseline", justifyContent: "space-between", gap: tokens.dimension.value12, minWidth: 0 }}>
+          {label ? (
+            // Same color as field labels in a form, like Web .kjun-slider-label.
+            <KText style={{ ...typeStyle(textRole ?? "label"), ...(textRole ? { fontWeight: typeStyle("label").fontWeight } : null), color: colors.text, flexShrink: 1, minWidth: 0 }}>{label}</KText>
+          ) : null}
+          {showValue ? (
+            <KText style={{ ...typeStyle(textRole ?? "control"), fontFamily: numericFontFamily ?? fontFamily, fontVariant: ["tabular-nums"], flexShrink: 0, marginLeft: "auto" }}>
+              {sliderValueText(values, formatValue)}
+            </KText>
+          ) : null}
+        </View>
+      ) : null}
       <View
         ref={track}
         onLayout={measure}
         onTouchStart={measure}
         {...responder.panHandlers}
-        style={{ height: targetSize, marginHorizontal: geometry.thumb / 2 }}
+        style={{ height: targetSize, marginHorizontal: half, marginTop: captioned ? slider.captionGap - pull : 0 }}
       >
+        {/* The rail reaches half a thumb past the track on both sides, so it lines up with the caption. */}
         <Pressable
           accessible={false}
           focusable={false}
@@ -206,22 +207,12 @@ function RangeInput({
           disabled={blocked}
           onPress={(event) => {
             const number = position(event.nativeEvent.pageX);
-            const index =
-              values.length === 2 && Math.abs(number - values[1]) < Math.abs(number - values[0])
-                ? 1
-                : 0;
-            emit(index, number);
+            emit(sliderPick(values, number, domain.snap(number)).index, number);
             commit();
           }}
-          style={{ position: "absolute", inset: 0, justifyContent: "center" }}
+          style={{ position: "absolute", top: 0, bottom: 0, left: -half, right: -half, justifyContent: "center" }}
         >
-          <View
-            style={{
-              height: geometry.track,
-              borderRadius: tokens.radius.radius9999,
-              backgroundColor: colors.border,
-            }}
-          />
+          <View style={{ height: geometry.track, borderRadius: tokens.radius.radius9999, backgroundColor: alertTint(colors.text, "tintActive", colors.border) }} />
         </Pressable>
         <View
           pointerEvents="none"
@@ -230,13 +221,17 @@ function RangeInput({
             top: (targetSize - geometry.track) / 2,
             height: geometry.track,
             borderRadius: tokens.radius.radius9999,
-            left: pct(values.length === 2 ? percent(values[0]) : 0),
-            width: pct(
-              percent(values[values.length - 1]) - (values.length === 2 ? percent(values[0]) : 0),
-            ),
+            // A single slider fills from the rail's own start; a range fills between its thumbs.
+            left: values.length === 2 ? pct(percent(values[0])) : -half,
+            right: pct(100 - percent(values[values.length - 1])),
             backgroundColor: colors.brand,
           }}
         />
+        {dots.map((dot) => (
+          <View key={dot.value} pointerEvents="none" style={{ position: "absolute", top: (targetSize - slider.markSize) / 2, left: pct(dot.fraction * 100),
+            marginLeft: -slider.markSize / 2, width: slider.markSize, height: slider.markSize, borderRadius: tokens.radius.radius9999,
+            backgroundColor: dot.active ? colors.switchThumb : colors.textTertiary }} />
+        ))}
         {values.map((number, index) => (
           <Pressable
             key={index}
@@ -293,7 +288,8 @@ function RangeInput({
               marginLeft: -targetSize / 2,
               alignItems: "center",
               justifyContent: "center",
-              zIndex: focused === index || dragging === index ? 1 : 0,
+              // The focused or dragged thumb, else the overlapping thumb that can still move, sits on top.
+              zIndex: focused === index || dragging === index ? 2 : front === index ? 1 : 0,
               ...(Platform.OS === "web"
                 ? ({
                     outlineStyle: "solid",
@@ -306,17 +302,14 @@ function RangeInput({
             <View
               pointerEvents="none"
               style={{
-                width: geometry.thumb,
-                height: geometry.thumb,
+                width: !blocked && dragging === index ? geometry.pressedThumb : geometry.thumb,
+                height: !blocked && dragging === index ? geometry.pressedThumb : geometry.thumb,
                 borderRadius: tokens.radius.radius9999,
-                borderWidth: tokens.border.controlWidth,
-                borderColor:
-                  !blocked && dragging === index
-                    ? colors.brandActive
-                    : !blocked && hovered === index
-                      ? colors.brandHover
-                      : colors.brand,
-                backgroundColor: colors.surface,
+                backgroundColor: colors.switchThumb,
+                // Like Web: the lift plus a hairline in the border role, so a white thumb reads on a white surface.
+                borderWidth: tokens.border.defaultWidth,
+                borderColor: colors.border,
+                boxShadow: shadowLayers(tokens.extensions.slider.elevation, colors),
                 ...(Platform.OS === "web" && !blocked && focused === index
                   ? ({
                       outlineStyle: "solid",
@@ -327,9 +320,29 @@ function RangeInput({
                   : {}),
               }}
             />
+            {/* Like Web: pressing adds a brand halo (hover a lighter one) around the lifted white thumb, which grows slightly. */}
+            {!blocked && (dragging === index || hovered === index) ? (
+              <View pointerEvents="none" style={{ position: "absolute", zIndex: -1, width: geometry.thumb + slider.haloSize * 2, height: geometry.thumb + slider.haloSize * 2,
+                borderRadius: tokens.radius.radius9999, backgroundColor: alertTint(colors.brand, dragging === index ? "tintActive" : "tintControl", "transparent") }} />
+            ) : null}
           </Pressable>
         ))}
       </View>
+      {dots.some((dot) => dot.label) ? (
+        // Labels center on their mark once measured; the first and last align to the rail ends.
+        <View aria-hidden style={{ height: tokens.typography.caption.lineHeightPx, marginHorizontal: half, marginTop: slider.markLabelGap - pull }}>
+          {dots.filter((dot) => dot.label).map((dot) => (
+            <KText
+              key={dot.value}
+              onLayout={(event) => { const width = event.nativeEvent.layout.width; setLabelWidths((old) => old[dot.value] === width ? old : { ...old, [dot.value]: width }); }}
+              style={{ ...typeStyle("caption"), color: colors.textTertiary, position: "absolute", top: 0, ...(dot.edge === "end" ? { right: -half } : { left: dot.edge === "start" ? -half : pct(dot.fraction * 100) }),
+                ...(dot.edge ? null : { transform: [{ translateX: -(labelWidths[dot.value] ?? 0) / 2 }] }) }}
+            >
+              {dot.label}
+            </KText>
+          ))}
+        </View>
+      ) : null}
     </View>
   );
 }

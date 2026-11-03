@@ -4,7 +4,7 @@ import { build } from 'esbuild';
 
 // table-groups imports table-model without an extension, so bundle it like package-runtime-cores.test.mjs.
 const output = await build({ entryPoints: ['shared/package-runtime/table-groups.ts'], bundle: true, write: false, format: 'esm', platform: 'node' });
-const { formatSummary, groupTableRows, summarizeColumn } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
+const { formatSummary, groupTableRows, summarizeColumn, tableGroupExpansion } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 
 const rows = [
   { id: 1, status: '진행 중', amount: 4800, meta: { team: 'a' } },
@@ -32,4 +32,30 @@ test('summarizeColumn counts rows and reads only finite numbers for the other ki
   assert.equal(summarizeColumn(rows, 'status', 'sum'), null);
   assert.equal(formatSummary(null, 'sum'), '');
   assert.equal(formatSummary(3466.6666, 'average'), new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 }).format(3466.6666));
+});
+
+test('controlled expansion uses original typed group values and preserves groups outside the current data', () => {
+  const groups = groupTableRows([1, '1', true, null, undefined, ''].map(status => ({ status })), 'status');
+  const values = [1, 'off-page'];
+  const state = tableGroupExpansion(groups, values, []);
+  assert.deepEqual(state.collapsed, ['string:1', 'boolean:true', 'null:', 'string:']);
+  assert.deepEqual(state.toggle('string:1').expanded, [1, 'off-page', '1']);
+  assert.deepEqual(state.toggle('number:1').expanded, ['off-page']);
+  assert.deepEqual(state.toggle('null:').expanded, [1, 'off-page', null]);
+  assert.deepEqual(values, [1, 'off-page']);
+  assert.deepEqual(tableGroupExpansion(groups, [], []).collapsed, groups.map(g => g.key));
+  assert.deepEqual(tableGroupExpansion(groups, [undefined], []).collapsed, groups.filter(g => g.key !== 'null:').map(g => g.key));
+});
+
+test('uncontrolled groups start open, retain hidden keys and open newly received groups', () => {
+  const groups = groupTableRows(rows, 'status');
+  const first = tableGroupExpansion(groups, undefined, []);
+  const closed = first.toggle('string:진행 중');
+  assert.deepEqual(closed.expanded, ['검토', null]);
+  const reopened = tableGroupExpansion(groups, undefined, closed.collapsed).toggle('string:진행 중');
+  assert.deepEqual(reopened.collapsed, []);
+  const changed = groupTableRows([{ status: '신규' }], 'status');
+  assert.deepEqual(tableGroupExpansion(changed, undefined, closed.collapsed).collapsed, ['string:진행 중']);
+  assert.equal(first.toggle('missing'), null);
+  assert.equal(tableGroupExpansion(null, [], []).toggle('missing'), null);
 });

@@ -3,6 +3,7 @@ const ownership = [
   "data·selected·페이지 데이터: 소비자가 소유합니다. selected는 행 객체 배열이며 rowKey로 선택을 비교합니다.",
   "정렬: sort를 생략하면 내부 상태, 객체 또는 null을 전달하면 소비자 제어 상태입니다. sortMode=client는 받은 data를 정렬하고 server는 소비자가 전달한 순서를 유지합니다. 검색어는 내부 상태이며 검색 결과는 소비자가 제공합니다.",
   "행 확장: expandedRows를 제공하면 소비자가 제어하고, 생략하면 내부에서 관리합니다. 선택 배열과 달리 행의 키 배열을 사용합니다.",
+  "그룹 확장: expandedGroups는 groupBy 필드의 원래 값 배열입니다. 행 상세용 expandedRows와 독립적이며 표·카드·list에서 같은 상태를 사용합니다.",
 ];
 const common = {
   columns: detail("표시 열과 정렬·셀 렌더링을 정의합니다.", {
@@ -51,6 +52,13 @@ const common = {
     "상태 책임":
       "제어형으로 사용할 때는 update:expandedRows 또는 onExpandedRowsChange의 다음 배열을 expandedRows에 반영하세요. 통지를 무시하면 표시 상태는 바뀌지 않습니다. 내부 토글만 필요하면 prop을 생략하세요.",
   }),
+  expandedGroups: { default: "undefined", ...detail("펼친 그룹의 원래 값 배열입니다. 행 상세 확장용 expandedRows와 구분합니다.", {
+    "제어 방식": "생략하면 처음에는 모든 그룹을 펼치고 이후 내부 상태로 관리합니다. 배열을 전달하면 외부 제어이며 []는 모두 닫힘입니다. 예: groupBy=\"status\", expandedGroups=[\"진행 중\"].",
+    "값 비교": "행 키나 라벨이 아니라 groupBy 필드의 원래 값을 사용합니다. 숫자 1과 문자열 \"1\"은 다르고 null·undefined는 같은 묶음입니다. 객체는 기존 문자열 분류 규칙을 따르므로 원시 값 필드를 권장합니다.",
+    "상태 연결": "Vue는 v-model:expandedGroups 또는 update:expandedGroups, React·Native는 onExpandedGroupsChange의 다음 배열을 반영합니다. 반영하지 않으면 표시 상태는 바뀌지 않습니다. 현재 data에 없는 제어 값도 토글 통지에 유지됩니다.",
+    "데이터 변경": "제어 모드에서 새 그룹은 목록에 있을 때만 펼칩니다. 내부 모드에서는 새 그룹을 펼치고 기존 그룹의 접힘을 유지합니다. groupBy 변경 시 내부 접힘은 초기화하며 외부 배열은 소비자가 갱신합니다. 외부 변경 자체는 이벤트를 발생시키지 않습니다.",
+    "표시 범위": "표·카드(stacked·rows·tiles)·list에서 동일하게 접고 펼칩니다. 그룹을 닫아도 머리·개수·소계와 전체 합계는 유지하며 행 선택·행 상세 확장 상태를 바꾸지 않습니다.",
+  }) },
   pagination: detail("페이지 표시와 이동 통지를 연결합니다.", {
     전달값:
       "{ page, total, pageSize? }. total은 전체 행 수이며 pageSize로 전체 페이지 수를 계산합니다. 이동 시 다음 페이지 번호를 통지하며 서버 요청과 data 교체는 소비자가 합니다.",
@@ -69,8 +77,8 @@ const common = {
     표시: "stacked·rows는 부제 아래 라벨과 20px 굵은 값으로, tiles는 제목 아래 14px 굵은 값으로 씁니다(라벨은 화면 낭독기만 읽음). 이 열은 필드 격자에서 빠지며, cardTitle·cardSubtitle·badge 열·actions 열·hideInCard 열이면 무시합니다.",
   }),
   groupBy: detail("행을 묶을 필드(점 경로)입니다.", {
-    "묶음 규칙": "값마다 묶음 머리(접기 버튼·이름·개수)를 두고, 묶음은 그 값의 첫 행이 나온 순서를 따릅니다. 정렬은 묶음 안에서 적용됩니다. 접힌 묶음은 내부 상태이며 행·선택·확장 상태는 그대로입니다.",
-    "표시 범위": "표·카드·list 형태 모두에 적용합니다. 카드와 list는 묶음마다 이름·개수 머리줄을 두고(행이 둘 이상이면 summary 소계를 머리줄 끝에) 그 아래에 행을 놓으며 접지 않습니다.",
+    "묶음 규칙": "값마다 묶음 머리(접기 버튼·이름·개수)를 두고, 묶음은 그 값의 첫 행이 나온 순서를 따릅니다. 정렬은 묶음 안에서 적용됩니다. 펼침은 expandedGroups로 외부 제어하거나 생략해 내부에서 관리하며 행·선택·상세 확장 상태와 독립적입니다.",
+    "표시 범위": "표·카드·list 형태 모두에 적용합니다. 카드와 list도 머리의 버튼으로 접고 펼치며, 행이 둘 이상이면 summary 소계를 머리줄 끝에 유지합니다.",
   }),
   summary: detail("열 key별 소계·합계 방식입니다.", {
     "값": '"sum" | "count" | "average" | "min" | "max" 또는 (rows, column) → 표시 내용. count는 행 수, 나머지는 유한한 숫자만 계산합니다.',
@@ -115,6 +123,13 @@ const expanded = event(
   "반환값은 사용하지 않습니다.",
   "제어형에서는 expandedRows에 반영합니다. []를 전달하면 모든 행을 닫습니다.",
 );
+const expandedGroups = event(
+  "다음에 펼칠 그룹의 원래 값 배열을 전달합니다.",
+  "표·카드·list에서 그룹 펼침 버튼을 실행할 때 한 번",
+  "unknown[] — groupBy 필드 값 목록이며 행 키 배열이 아닙니다.",
+  "반환값은 사용하지 않습니다.",
+  "제어 모드에서는 expandedGroups에 반영하세요. 생략한 내부 모드에서도 통지합니다. 외부 prop·data·groupBy 변경 자체는 통지하지 않습니다.",
+);
 const retry = event(
   "데이터 재조회를 요청합니다.",
   "오류 표시의 재시도 버튼 실행 시",
@@ -157,6 +172,7 @@ export default {
       "update:sort": sort,
       search,
       "update:expandedRows": expanded,
+      "update:expandedGroups": expandedGroups,
       "page-change": event(
         "이동할 페이지 번호를 전달합니다.",
         "페이지 이동 행동 시",
@@ -192,6 +208,7 @@ export default {
       onSortChange: sort,
       onSearch: search,
       onExpandedRowsChange: expanded,
+      onExpandedGroupsChange: expandedGroups,
       onRetry: retry,
       onRowClick: event(
         "실행한 행과 표시 인덱스를 전달합니다.",

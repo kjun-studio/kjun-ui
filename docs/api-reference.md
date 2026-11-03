@@ -40,11 +40,12 @@ docker exec -w /workspace kjun_ui_dev npm run build
 - React Dropdown은 `항목 action → onClose 1회` 순서로 통지하며 중복 닫힘 요청과 퇴장 애니메이션 완료는 추가 통지를 만들지 않는다.
 - SearchInput의 자동 완성 요청은 고정 300ms이며 `debounce`는 일반 입력 통지에만 적용한다. 세 플랫폼 모두 외부 값·비활성화·지연 시간·입력 모드 변경과 해제 시 예약된 입력 통지를 취소한다. Vue의 키보드 선택은 IME 조합이 끝난 뒤 처리한다. `itemKey`는 세 플랫폼 모두 결과의 안정된 식별자로 읽으며 숫자 0과 문자열 키를 구분한다. 지우기는 대기 중인 통지·요청을 취소하고 빈 값 변경 한 번 → clear 한 번 순서로 즉시 알린다. 소비자가 AbortSignal을 요청에 연결하고 결과 배열로 변환한다.
 - Table 선택은 행 객체 배열, 확장은 키 배열이다. 정렬 해제는 `{ key: '', order: 'asc' }`이며 검색은 data를 필터링하지 않는다. 세 플랫폼 모두 `expandedRows=[]`는 제어형 전체 닫힘이고, prop을 생략하면 내부 상태를 사용한다. 기존 Vue 코드에서 빈 배열을 전달한 채 내부 토글에 의존했다면 prop을 생략하거나 변경 이벤트의 배열을 반영해야 한다. `cell-*`와 전달 슬롯을 `default`로 오인하지 않는다.
+- Table 그룹 펼침은 expandedGroups에 groupBy 필드의 원래 값 배열을 연결한다. []는 모두 닫힘, 생략은 내부 관리이며 초기에는 모두 펼친다. Vue v-model:expandedGroups와 React·Native onExpandedGroupsChange로 연결하며 표·카드·list가 같은 상태를 사용한다. expandedRows는 행 상세 확장만 제어한다.
 - React Modal은 명시적 ariaLabel, 표시 제목, 기본 이름 순서로 접근성 이름을 정한다. React Dropdown은 실제 트리거 버튼에 메뉴·펼침 상태를 연결하며, 사용자 정의 버튼은 받은 id·aria 속성과 disabled를 DOM 버튼에 전달해야 한다.
 - 세 플랫폼 DataState는 생략한 resultKey와 null을 구분한다. 현재 조건과 다른 결과 키는 해당 조건의 성공 결과가 아니다. 요청 취소·응답 커밋은 소비자 책임이다. Vue 오류 슬롯의 `{ error, retry }`와 React·Native의 ReactNode인 errorContent를 구분한다.
 - FormGroup은 값·비활성 상태를 소유하지 않는다. 필수 표시가 제출 검증을 대신하지 않으며 error가 hint보다 우선한다. Native 접근성 연결을 HTML label 클릭과 동일하게 설명하지 않는다.
 - 피드백은 공개 Provider 서비스와 tokens의 대기열 계약을 기준으로 한다. 내부 원본 모달의 API로 설명하지 않는다. Confirm 실패는 reject, 취소·해제는 false, Prompt 취소·해제는 null이다.
-- 가이드의 무조건적인 loading·disabled·value 연결 문구를 제거했다. Vue RadioGroup만 그룹 disabled를 제공하며 Vue ButtonGroup은 옵션별 disabled를 읽지 않는다. Progress에 무한 진행 모드, Checkbox에 중간 선택 prop, ProgressCell에 formatter를 안내하지 않는다.
+- 가이드의 무조건적인 loading·disabled·value 연결 문구를 제거했다. Vue RadioGroup만 그룹 disabled를 제공하며 Vue ButtonGroup은 옵션별 disabled를 읽지 않는다. Progress에 무한 진행 모드, ProgressCell에 formatter를 안내하지 않는다. Checkbox는 indeterminate로 일부 선택 상태를 표시하며 값과 변경 통지의 boolean·배열 형식을 유지한다.
 
 브라우저 테스트의 `api-contracts-*` fixture는 `artifacts/consumer.json`의 독립 소비 환경에 설치된 `.tgz` 패키지를 사용한다. 문서 UI 테스트는 설명 펼침·키보드·플랫폼 전환·320px 스크롤을 확인한다. 기존 예제 상태 복사·갤러리·검색·전체 카탈로그 검증을 함께 유지한다. Native 검증은 Web에 한정하며 실제 기기 검증으로 표시하지 않는다.
 

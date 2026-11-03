@@ -58,7 +58,7 @@ test("core docs cover every extracted event, slot and callback with ownership", 
 });
 test("Vue 3 contracts come from declared emits and typed slots", () => {
   const { KjunTable, KjunSelect, KjunBottomNavigation } = vue3Contracts(["KjunTable", "KjunSelect", "KjunBottomNavigation"]);
-  assert.deepEqual(KjunTable.events.map((e) => e.name), ["update:sort", "update:selected", "update:expandedRows", "page-change", "search"]);
+  assert.deepEqual(KjunTable.events.map((e) => e.name), ["update:sort", "update:selected", "update:expandedRows", "page-change", "search", "update:expandedGroups"]);
   assert.deepEqual(KjunTable.slots.find((s) => s.name === "cell-<key>").data, ["value", "column", "row", "index"]);
   assert.ok(!KjunTable.slots.some((s) => s.name === "default"));
   assert.deepEqual(KjunSelect.slots.find((s) => s.name === "option").data, ["option", "selected"]);

@@ -102,6 +102,11 @@
         "$ref": "shadowScale.lift"
       }
     },
+    "slider": {
+      "elevation": {
+        "$ref": "shadowScale.lift"
+      }
+    },
     "tooltip": {
       "elevation": {
         "$ref": "elevation.flat"

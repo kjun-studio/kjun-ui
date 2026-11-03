@@ -9,4 +9,8 @@ const table = <KjunTable data={rows} columns={[]} rowClass={row => {
 }} onRowClick={row => {
   // @ts-expect-error Unknown fields cannot be accepted by TSX listeners.
   row.missing;
-}} onUpdate:selected={selected => selected[0].amount.toFixed()} />;
+}} onUpdate:selected={selected => selected[0].amount.toFixed()} expandedGroups={['진행 중']} onUpdate:expandedGroups={values => {
+  const groups: unknown[] = values;
+  // @ts-expect-error Group values are not row objects or inferred as any.
+  values[0].amount;
+}} />;

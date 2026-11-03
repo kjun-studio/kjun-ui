@@ -17032,6 +17032,20 @@
         "description": "Applied to each thumb's output and aria-valuetext. Does not change numeric values."
       },
       {
+        "name": "marks",
+        "type": "SliderMarks",
+        "required": false,
+        "default": "—",
+        "description": "Like React: true for a dot on every step (up to 24), or values with optional labels under the rail."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
         "name": "modelValue",
         "type": "SliderValue",
         "required": true,
@@ -17087,6 +17101,13 @@
         "description": ""
       },
       {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "sm: 12px text, 4px rail, 16px thumb. The touch area stays 44px."
+      },
+      {
         "name": "disabled",
         "type": "boolean | undefined",
         "required": false,
@@ -17140,7 +17161,14 @@
         "type": "((value: number) => string) | undefined",
         "required": false,
         "default": "—",
-        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric."
+        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format."
+      },
+      {
+        "name": "marks",
+        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Dots on the rail: true for every step (up to 24), or values with optional labels drawn under the rail."
       }
     ],
     "native": [
@@ -17180,6 +17208,13 @@
         "description": ""
       },
       {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "sm: 12px text, 4px rail, 16px thumb. The touch area stays 44pt."
+      },
+      {
         "name": "ariaLabel",
         "type": "string | undefined",
         "required": false,
@@ -17226,7 +17261,14 @@
         "type": "((value: number) => string) | undefined",
         "required": false,
         "default": "—",
-        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric."
+        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format."
+      },
+      {
+        "name": "marks",
+        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels under the rail."
       }
     ]
   },
@@ -19314,6 +19356,20 @@
         "description": "Applied to each thumb's output and aria-valuetext. Does not change numeric values."
       },
       {
+        "name": "marks",
+        "type": "SliderMarks",
+        "required": false,
+        "default": "—",
+        "description": "Like React: true for a dot on every step (up to 24), or values with optional labels under the rail."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
         "name": "modelValue",
         "type": "SliderValue",
         "required": true,
@@ -19394,7 +19450,21 @@
         "type": "((value: number) => string) | undefined",
         "required": false,
         "default": "—",
-        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric."
+        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format."
+      },
+      {
+        "name": "marks",
+        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Dots on the rail: true for every step (up to 24), or values with optional labels drawn under the rail."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "sm: 12px text, 4px rail, 16px thumb. The touch area stays 44px."
       },
       {
         "name": "onValueChange",
@@ -19473,7 +19543,21 @@
         "type": "((value: number) => string) | undefined",
         "required": false,
         "default": "—",
-        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric."
+        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format."
+      },
+      {
+        "name": "marks",
+        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels under the rail."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "sm: 12px text, 4px rail, 16px thumb. The touch area stays 44pt."
       },
       {
         "name": "onValueChange",
@@ -20677,6 +20761,13 @@
         "description": "Row field (dot path) whose values split the rows into collapsible groups."
       },
       {
+        "name": "expandedGroups",
+        "type": "unknown[]",
+        "required": false,
+        "default": "—",
+        "description": "Original groupBy values; undefined uses internal expansion, [] closes all groups."
+      },
+      {
         "name": "summary",
         "type": "Partial<Record<string, TableSummaryKind | ((rows: NoInfer<R>[], column: TableColumn<NoInfer<R>>) => VNodeChild)>>",
         "required": false,
@@ -20731,6 +20822,10 @@
       },
       {
         "name": "search",
+        "source": "packages/vue3/src/table.tsx"
+      },
+      {
+        "name": "update:expandedGroups",
         "source": "packages/vue3/src/table.tsx"
       }
     ],
@@ -21036,6 +21131,13 @@
         "description": "Row field (dot path) whose values split the rows into collapsible groups."
       },
       {
+        "name": "expandedGroups",
+        "type": "unknown[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Original groupBy values of open groups. undefined: internal state, initially all open; []: all closed."
+      },
+      {
         "name": "renderGroupLabel",
         "type": "((value: unknown, rows: Row[]) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
@@ -21115,6 +21217,13 @@
       {
         "name": "onExpandedRowsChange",
         "type": "((keys: (string | number)[]) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onExpandedGroupsChange",
+        "type": "((values: unknown[]) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -21430,6 +21539,13 @@
         "description": "Row field (dot path) whose values split the rows into collapsible groups."
       },
       {
+        "name": "expandedGroups",
+        "type": "unknown[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Original groupBy values of open groups. undefined: internal state, initially all open; []: all closed."
+      },
+      {
         "name": "renderGroupLabel",
         "type": "((value: unknown, rows: Row[]) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
@@ -21509,6 +21625,13 @@
       {
         "name": "onExpandedRowsChange",
         "type": "((keys: (string | number)[]) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onExpandedGroupsChange",
+        "type": "((values: unknown[]) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""

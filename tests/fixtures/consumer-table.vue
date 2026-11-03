@@ -4,13 +4,14 @@ import { KjunTable, type TableColumn } from '@kjun-ui/vue3';
 interface Row { id: string; amount: number }
 const rows = ref<Row[]>([{ id: 'first', amount: 7 }]);
 const selected = ref<Row[]>([]);
+const expandedGroups = ref<unknown[]>(['진행 중']);
 const columns: TableColumn<Row>[] = [{ key: 'amount', label: 'Amount', render: (_value, row) => row.amount.toFixed() }];
 const rowClass = (row: Row) => row.id;
 const rowClick = (row: Row, index: number) => row.amount + index;
 const format = (_value: unknown, _column: TableColumn<Row>, row: Row) => row.amount.toFixed();
 </script>
 <template>
-  <KjunTable :data="rows" :columns="columns" v-model:selected="selected" :row-class="rowClass" :format-value="format" @row-click="rowClick" selectable expandable>
+  <KjunTable :data="rows" :columns="columns" v-model:selected="selected" v-model:expandedGroups="expandedGroups" :row-class="rowClass" :format-value="format" @row-click="rowClick" selectable expandable>
     <template #cell="{ row, column }">{{ row.amount.toFixed() }}{{ column.format?.(row.amount, row) }}</template>
     <template #cell-amount="{ row }">{{ row.amount.toFixed() }}</template>
     <template #expand="{ row }">

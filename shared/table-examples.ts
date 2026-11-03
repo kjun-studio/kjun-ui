@@ -19,7 +19,7 @@ export const tableDesignExamples: GuideCase[] = [
   { id: 'table-selection', label: '일괄 선택', description: '선택한 행에 대한 작업을 표 위에 모읍니다. 체크박스로 항목을 추가하거나 선택을 해제해 보세요.', settings: { ...base, design: '프로젝트', selectable: true }, values: { selected: [tableProjectRows[0]] } },
   { id: 'table-expansion', label: '행 안에서 상세 펼치기', description: '요약은 표에 남기고 일정과 작업 메모를 펼쳐 봅니다. 첫 번째 행을 펼친 상태로 시작합니다.', settings: { ...base, design: '프로젝트', expandable: true }, values: { expanded: ['p1'] } },
   { id: 'table-sticky', label: '고정 헤더와 긴 목록', description: '높이가 정해진 영역에서 목록만 스크롤합니다. 열 제목은 위에 남아 각 값의 의미를 확인할 수 있습니다.', settings: { ...base, design: '문서 목록', compact: true, striped: true, stickyHeader: true } },
-  { id: 'table-groups', label: '상태별 묶음과 합계', description: '프로젝트를 상태별로 묶고 묶음마다 예산 소계를, 맨 아래에 합계를 둡니다. 묶음 머리의 화살표로 접어 보세요.', settings: { ...base, design: '프로젝트', grouped: true } },
+  { id: 'table-groups', label: '상태별 묶음과 합계', description: 'expandedGroups로 진행 중 그룹만 펼쳐 시작합니다. 전체 펼치기·접기와 묶음 머리의 화살표가 같은 상태를 갱신하며, 소계·합계는 유지합니다.', settings: { ...base, design: '프로젝트', grouped: true }, values: { expandedGroups: ['진행 중'] } },
   { id: 'table-list', label: '모바일 두 줄 목록 · 375px', description: '머리 행 없이 프로젝트 이름 아래 담당자를, 오른쪽에 예산과 상태를 둡니다. 좁은 화면에서 열을 비교하기보다 훑어보기에 맞습니다.', settings: { ...base, design: '프로젝트', responsive: 'list' }, viewportWidth: 375 },
   { id: 'table-cards', label: '모바일 카드 · 375px', description: '같은 프로젝트 데이터를 제목·상태·담당자·진행 현황으로 나눕니다. 행별 작업은 카드 하단에 둡니다.', settings: { ...base, design: '프로젝트', responsive: 'card' }, viewportWidth: 375 },
 ];
