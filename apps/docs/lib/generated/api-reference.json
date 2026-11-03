@@ -34050,7 +34050,7 @@
             "details": [
               {
                 "label": "인자와 반환",
-                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)을 씁니다."
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)에 min·step의 소수 자릿수를 맞춰 씁니다(step 0.5면 1.0·1.5)."
               },
               {
                 "label": "접근성",
@@ -34069,12 +34069,12 @@
             "type": "boolean | { value: number; label?: string }[]",
             "required": false,
             "default": "—",
-            "description": "Like React: true for a dot on every step (up to 24), or values with optional labels under the rail.",
+            "description": "Like React: true for a dot on every step (up to 24), or values with optional labels beside the rail.",
             "summary": "트랙 위 눈금입니다.",
             "details": [
               {
                 "label": "값",
-                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래에 12px 라벨을 둡니다. 최솟값·최댓값 라벨은 트랙 끝에 맞춥니다."
+                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때, 넘으면 개발 콘솔에 한 번 경고). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래(세로는 오른쪽)에 12px 라벨을 둡니다. 최솟값·최댓값은 트랙 끝이라 점 없이 라벨만 두고, 라벨은 트랙 끝에 맞춥니다. 라벨을 누르면 가까운 손잡이가 그 값으로 이동하고 확정됩니다."
               },
               {
                 "label": "표시",
@@ -34091,6 +34091,31 @@
             "default": "\"md\"",
             "description": "",
             "summary": "sm은 12px 라벨·값, 4px 트랙, 16px 손잡이입니다. 누름 영역은 크기와 상관없이 44px입니다.",
+            "source": "packages/vue3/src/range-input.tsx"
+          },
+          {
+            "name": "orientation",
+            "type": "\"horizontal\" | \"vertical\"",
+            "required": false,
+            "default": "\"horizontal\"",
+            "description": "vertical: the rail runs bottom (min) to top (max), `length` px long.",
+            "summary": "트랙 방향입니다.",
+            "details": [
+              {
+                "label": "세로",
+                "text": "아래가 최솟값, 위가 최댓값이며 위아래 화살표로 조절합니다. 라벨·값은 트랙 위에 가운데 정렬하고, 눈금 라벨은 트랙 오른쪽에 둡니다. 길이는 length(기본 160px)입니다."
+              }
+            ],
+            "source": "packages/vue3/src/range-input.tsx",
+            "example": "/components/slider#preview"
+          },
+          {
+            "name": "length",
+            "type": "number",
+            "required": false,
+            "default": "160",
+            "description": "",
+            "summary": "세로 슬라이더의 트랙 길이(px)입니다. 가로 슬라이더는 부모 폭을 채우므로 무시합니다.",
             "source": "packages/vue3/src/range-input.tsx"
           },
           {
@@ -34276,12 +34301,12 @@
             "type": "((value: number) => string) | undefined",
             "required": false,
             "default": "—",
-            "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format.",
+            "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format with the step's decimals.",
             "summary": "각 손잡이의 숫자를 표시 문자열로 바꿉니다.",
             "details": [
               {
                 "label": "인자와 반환",
-                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)을 씁니다."
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)에 min·step의 소수 자릿수를 맞춰 씁니다(step 0.5면 1.0·1.5)."
               },
               {
                 "label": "접근성",
@@ -34300,12 +34325,12 @@
             "type": "boolean | { value: number; label?: string }[]",
             "required": false,
             "default": "—",
-            "description": "Dots on the rail: true for every step (up to 24), or values with optional labels drawn under the rail.",
+            "description": "Dots on the rail: true for every step (up to 24), or values with optional labels beside the rail. Pressing a label moves the nearer thumb there.",
             "summary": "트랙 위 눈금입니다.",
             "details": [
               {
                 "label": "값",
-                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래에 12px 라벨을 둡니다. 최솟값·최댓값 라벨은 트랙 끝에 맞춥니다."
+                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때, 넘으면 개발 콘솔에 한 번 경고). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래(세로는 오른쪽)에 12px 라벨을 둡니다. 최솟값·최댓값은 트랙 끝이라 점 없이 라벨만 두고, 라벨은 트랙 끝에 맞춥니다. 라벨을 누르면 가까운 손잡이가 그 값으로 이동하고 확정됩니다."
               },
               {
                 "label": "표시",
@@ -34322,6 +34347,31 @@
             "default": "\"md\"",
             "description": "sm: 12px text, 4px rail, 16px thumb. The touch area stays 44px.",
             "summary": "sm은 12px 라벨·값, 4px 트랙, 16px 손잡이입니다. 누름 영역은 크기와 상관없이 44px입니다.",
+            "source": "packages/react/src/range-input.tsx"
+          },
+          {
+            "name": "orientation",
+            "type": "\"horizontal\" | \"vertical\"",
+            "required": false,
+            "default": "\"horizontal\"",
+            "description": "vertical: the rail runs bottom (min) to top (max), `length` px long.",
+            "summary": "트랙 방향입니다.",
+            "details": [
+              {
+                "label": "세로",
+                "text": "아래가 최솟값, 위가 최댓값이며 위아래 화살표로 조절합니다. 라벨·값은 트랙 위에 가운데 정렬하고, 눈금 라벨은 트랙 오른쪽에 둡니다. 길이는 length(기본 160px)입니다."
+              }
+            ],
+            "source": "packages/react/src/range-input.tsx",
+            "example": "/components/slider#preview"
+          },
+          {
+            "name": "length",
+            "type": "number",
+            "required": false,
+            "default": "160",
+            "description": "",
+            "summary": "세로 슬라이더의 트랙 길이(px)입니다. 가로 슬라이더는 부모 폭을 채우므로 무시합니다.",
             "source": "packages/react/src/range-input.tsx"
           },
           {
@@ -34501,7 +34551,7 @@
             "details": [
               {
                 "label": "인자와 반환",
-                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)을 씁니다."
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)에 min·step의 소수 자릿수를 맞춰 씁니다(step 0.5면 1.0·1.5)."
               },
               {
                 "label": "접근성",
@@ -34520,12 +34570,12 @@
             "type": "boolean | { value: number; label?: string }[]",
             "required": false,
             "default": "—",
-            "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels under the rail.",
+            "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels beside the rail.",
             "summary": "트랙 위 눈금입니다.",
             "details": [
               {
                 "label": "값",
-                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래에 12px 라벨을 둡니다. 최솟값·최댓값 라벨은 트랙 끝에 맞춥니다."
+                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때, 넘으면 개발 콘솔에 한 번 경고). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래(세로는 오른쪽)에 12px 라벨을 둡니다. 최솟값·최댓값은 트랙 끝이라 점 없이 라벨만 두고, 라벨은 트랙 끝에 맞춥니다. 라벨을 누르면 가까운 손잡이가 그 값으로 이동하고 확정됩니다."
               },
               {
                 "label": "표시",
@@ -34542,6 +34592,31 @@
             "default": "\"md\"",
             "description": "sm: 12px text, 4px rail, 16px thumb. The touch area stays 44pt.",
             "summary": "sm은 12px 라벨·값, 4px 트랙, 16px 손잡이입니다. 누름 영역은 크기와 상관없이 44px입니다.",
+            "source": "packages/native/src/range-input.tsx"
+          },
+          {
+            "name": "orientation",
+            "type": "\"horizontal\" | \"vertical\"",
+            "required": false,
+            "default": "\"horizontal\"",
+            "description": "vertical: the rail runs bottom (min) to top (max), `length` pt long.",
+            "summary": "트랙 방향입니다.",
+            "details": [
+              {
+                "label": "세로",
+                "text": "아래가 최솟값, 위가 최댓값이며 위아래 화살표로 조절합니다. 라벨·값은 트랙 위에 가운데 정렬하고, 눈금 라벨은 트랙 오른쪽에 둡니다. 길이는 length(기본 160px)입니다."
+              }
+            ],
+            "source": "packages/native/src/range-input.tsx",
+            "example": "/components/slider#preview"
+          },
+          {
+            "name": "length",
+            "type": "number",
+            "required": false,
+            "default": "160",
+            "description": "",
+            "summary": "세로 슬라이더의 트랙 길이(px)입니다. 가로 슬라이더는 부모 폭을 채우므로 무시합니다.",
             "source": "packages/native/src/range-input.tsx"
           },
           {
@@ -34707,7 +34782,7 @@
             "details": [
               {
                 "label": "인자와 반환",
-                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)을 씁니다."
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)에 min·step의 소수 자릿수를 맞춰 씁니다(step 0.5면 1.0·1.5)."
               },
               {
                 "label": "접근성",
@@ -34726,12 +34801,12 @@
             "type": "boolean | { value: number; label?: string }[]",
             "required": false,
             "default": "—",
-            "description": "Like React: true for a dot on every step (up to 24), or values with optional labels under the rail.",
+            "description": "Like React: true for a dot on every step (up to 24), or values with optional labels beside the rail.",
             "summary": "트랙 위 눈금입니다.",
             "details": [
               {
                 "label": "값",
-                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래에 12px 라벨을 둡니다. 최솟값·최댓값 라벨은 트랙 끝에 맞춥니다."
+                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때, 넘으면 개발 콘솔에 한 번 경고). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래(세로는 오른쪽)에 12px 라벨을 둡니다. 최솟값·최댓값은 트랙 끝이라 점 없이 라벨만 두고, 라벨은 트랙 끝에 맞춥니다. 라벨을 누르면 가까운 손잡이가 그 값으로 이동하고 확정됩니다."
               },
               {
                 "label": "표시",
@@ -34748,6 +34823,31 @@
             "default": "\"md\"",
             "description": "",
             "summary": "sm은 12px 라벨·값, 4px 트랙, 16px 손잡이입니다. 누름 영역은 크기와 상관없이 44px입니다.",
+            "source": "packages/vue3/src/range-input.tsx"
+          },
+          {
+            "name": "orientation",
+            "type": "\"horizontal\" | \"vertical\"",
+            "required": false,
+            "default": "\"horizontal\"",
+            "description": "vertical: the rail runs bottom (min) to top (max), `length` px long.",
+            "summary": "트랙 방향입니다.",
+            "details": [
+              {
+                "label": "세로",
+                "text": "아래가 최솟값, 위가 최댓값이며 위아래 화살표로 조절합니다. 라벨·값은 트랙 위에 가운데 정렬하고, 눈금 라벨은 트랙 오른쪽에 둡니다. 길이는 length(기본 160px)입니다."
+              }
+            ],
+            "source": "packages/vue3/src/range-input.tsx",
+            "example": "/components/range-slider#preview"
+          },
+          {
+            "name": "length",
+            "type": "number",
+            "required": false,
+            "default": "160",
+            "description": "",
+            "summary": "세로 슬라이더의 트랙 길이(px)입니다. 가로 슬라이더는 부모 폭을 채우므로 무시합니다.",
             "source": "packages/vue3/src/range-input.tsx"
           },
           {
@@ -34777,6 +34877,26 @@
               {
                 "label": "키보드",
                 "text": "Tab 순서는 시작→끝으로 고정됩니다. 손잡이는 서로 넘지 않으며 Home/End도 다른 손잡이 값으로 제한됩니다."
+              }
+            ],
+            "source": "packages/vue3/src/range-input.tsx",
+            "example": "/components/range-slider#preview"
+          },
+          {
+            "name": "formatRange",
+            "type": "(start: number, end: number) => string",
+            "required": false,
+            "default": "—",
+            "description": "The visible text for the whole range, e.g. \"20만~80만 원\". Each thumb keeps formatValue.",
+            "summary": "범위 전체의 표시 문구를 만듭니다.",
+            "details": [
+              {
+                "label": "예",
+                "text": "(s, e) => `${s / 10000}만~${e / 10000}만 원`처럼 단위를 한 번만 쓰거나 최댓값일 때 \"이상\"을 붙입니다."
+              },
+              {
+                "label": "접근성",
+                "text": "각 손잡이가 읽는 값은 formatValue(또는 기본 숫자 서식)를 그대로 씁니다."
               }
             ],
             "source": "packages/vue3/src/range-input.tsx",
@@ -34871,6 +34991,26 @@
               {
                 "label": "키보드",
                 "text": "Tab 순서는 시작→끝으로 고정됩니다. 손잡이는 서로 넘지 않으며 Home/End도 다른 손잡이 값으로 제한됩니다."
+              }
+            ],
+            "source": "packages/react/src/range-input.tsx",
+            "example": "/components/range-slider#preview"
+          },
+          {
+            "name": "formatRange",
+            "type": "(start: number, end: number) => string",
+            "required": false,
+            "default": "—",
+            "description": "The visible text for the whole range, e.g. \"20만~80만 원\". Each thumb keeps formatValue.",
+            "summary": "범위 전체의 표시 문구를 만듭니다.",
+            "details": [
+              {
+                "label": "예",
+                "text": "(s, e) => `${s / 10000}만~${e / 10000}만 원`처럼 단위를 한 번만 쓰거나 최댓값일 때 \"이상\"을 붙입니다."
+              },
+              {
+                "label": "접근성",
+                "text": "각 손잡이가 읽는 값은 formatValue(또는 기본 숫자 서식)를 그대로 씁니다."
               }
             ],
             "source": "packages/react/src/range-input.tsx",
@@ -35030,12 +35170,12 @@
             "type": "((value: number) => string) | undefined",
             "required": false,
             "default": "—",
-            "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format.",
+            "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format with the step's decimals.",
             "summary": "각 손잡이의 숫자를 표시 문자열로 바꿉니다.",
             "details": [
               {
                 "label": "인자와 반환",
-                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)을 씁니다."
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)에 min·step의 소수 자릿수를 맞춰 씁니다(step 0.5면 1.0·1.5)."
               },
               {
                 "label": "접근성",
@@ -35054,12 +35194,12 @@
             "type": "boolean | { value: number; label?: string }[]",
             "required": false,
             "default": "—",
-            "description": "Dots on the rail: true for every step (up to 24), or values with optional labels drawn under the rail.",
+            "description": "Dots on the rail: true for every step (up to 24), or values with optional labels beside the rail. Pressing a label moves the nearer thumb there.",
             "summary": "트랙 위 눈금입니다.",
             "details": [
               {
                 "label": "값",
-                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래에 12px 라벨을 둡니다. 최솟값·최댓값 라벨은 트랙 끝에 맞춥니다."
+                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때, 넘으면 개발 콘솔에 한 번 경고). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래(세로는 오른쪽)에 12px 라벨을 둡니다. 최솟값·최댓값은 트랙 끝이라 점 없이 라벨만 두고, 라벨은 트랙 끝에 맞춥니다. 라벨을 누르면 가까운 손잡이가 그 값으로 이동하고 확정됩니다."
               },
               {
                 "label": "표시",
@@ -35068,6 +35208,31 @@
             ],
             "source": "packages/react/src/range-input.tsx",
             "example": "/components/range-slider#preview"
+          },
+          {
+            "name": "orientation",
+            "type": "\"horizontal\" | \"vertical\"",
+            "required": false,
+            "default": "\"horizontal\"",
+            "description": "vertical: the rail runs bottom (min) to top (max), `length` px long.",
+            "summary": "트랙 방향입니다.",
+            "details": [
+              {
+                "label": "세로",
+                "text": "아래가 최솟값, 위가 최댓값이며 위아래 화살표로 조절합니다. 라벨·값은 트랙 위에 가운데 정렬하고, 눈금 라벨은 트랙 오른쪽에 둡니다. 길이는 length(기본 160px)입니다."
+              }
+            ],
+            "source": "packages/react/src/range-input.tsx",
+            "example": "/components/range-slider#preview"
+          },
+          {
+            "name": "length",
+            "type": "number",
+            "required": false,
+            "default": "160",
+            "description": "",
+            "summary": "세로 슬라이더의 트랙 길이(px)입니다. 가로 슬라이더는 부모 폭을 채우므로 무시합니다.",
+            "source": "packages/react/src/range-input.tsx"
           }
         ],
         "events": [],
@@ -35107,6 +35272,26 @@
               {
                 "label": "키보드",
                 "text": "Tab 순서는 시작→끝으로 고정됩니다. 손잡이는 서로 넘지 않으며 Home/End도 다른 손잡이 값으로 제한됩니다."
+              }
+            ],
+            "source": "packages/native/src/range-input.tsx",
+            "example": "/components/range-slider#preview"
+          },
+          {
+            "name": "formatRange",
+            "type": "(start: number, end: number) => string",
+            "required": false,
+            "default": "—",
+            "description": "The visible text for the whole range, e.g. \"20만~80만 원\". Each thumb keeps formatValue.",
+            "summary": "범위 전체의 표시 문구를 만듭니다.",
+            "details": [
+              {
+                "label": "예",
+                "text": "(s, e) => `${s / 10000}만~${e / 10000}만 원`처럼 단위를 한 번만 쓰거나 최댓값일 때 \"이상\"을 붙입니다."
+              },
+              {
+                "label": "접근성",
+                "text": "각 손잡이가 읽는 값은 formatValue(또는 기본 숫자 서식)를 그대로 씁니다."
               }
             ],
             "source": "packages/native/src/range-input.tsx",
@@ -35271,7 +35456,7 @@
             "details": [
               {
                 "label": "인자와 반환",
-                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)을 씁니다."
+                "text": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)에 min·step의 소수 자릿수를 맞춰 씁니다(step 0.5면 1.0·1.5)."
               },
               {
                 "label": "접근성",
@@ -35290,12 +35475,12 @@
             "type": "boolean | { value: number; label?: string }[]",
             "required": false,
             "default": "—",
-            "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels under the rail.",
+            "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels beside the rail.",
             "summary": "트랙 위 눈금입니다.",
             "details": [
               {
                 "label": "값",
-                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래에 12px 라벨을 둡니다. 최솟값·최댓값 라벨은 트랙 끝에 맞춥니다."
+                "text": "true면 step마다 4px 점을 찍습니다(24개 이하일 때, 넘으면 개발 콘솔에 한 번 경고). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래(세로는 오른쪽)에 12px 라벨을 둡니다. 최솟값·최댓값은 트랙 끝이라 점 없이 라벨만 두고, 라벨은 트랙 끝에 맞춥니다. 라벨을 누르면 가까운 손잡이가 그 값으로 이동하고 확정됩니다."
               },
               {
                 "label": "표시",
@@ -35304,6 +35489,31 @@
             ],
             "source": "packages/native/src/range-input.tsx",
             "example": "/components/range-slider#preview"
+          },
+          {
+            "name": "orientation",
+            "type": "\"horizontal\" | \"vertical\"",
+            "required": false,
+            "default": "\"horizontal\"",
+            "description": "vertical: the rail runs bottom (min) to top (max), `length` pt long.",
+            "summary": "트랙 방향입니다.",
+            "details": [
+              {
+                "label": "세로",
+                "text": "아래가 최솟값, 위가 최댓값이며 위아래 화살표로 조절합니다. 라벨·값은 트랙 위에 가운데 정렬하고, 눈금 라벨은 트랙 오른쪽에 둡니다. 길이는 length(기본 160px)입니다."
+              }
+            ],
+            "source": "packages/native/src/range-input.tsx",
+            "example": "/components/range-slider#preview"
+          },
+          {
+            "name": "length",
+            "type": "number",
+            "required": false,
+            "default": "160",
+            "description": "",
+            "summary": "세로 슬라이더의 트랙 길이(px)입니다. 가로 슬라이더는 부모 폭을 채우므로 무시합니다.",
+            "source": "packages/native/src/range-input.tsx"
           }
         ],
         "events": [],

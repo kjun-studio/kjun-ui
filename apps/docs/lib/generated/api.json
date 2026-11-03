@@ -17036,13 +17036,27 @@
         "type": "SliderMarks",
         "required": false,
         "default": "—",
-        "description": "Like React: true for a dot on every step (up to 24), or values with optional labels under the rail."
+        "description": "Like React: true for a dot on every step (up to 24), or values with optional labels beside the rail."
       },
       {
         "name": "size",
         "type": "\"sm\" | \"md\"",
         "required": false,
         "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "orientation",
+        "type": "SliderOrientation",
+        "required": false,
+        "default": "\"horizontal\"",
+        "description": "vertical: the rail runs bottom (min) to top (max), `length` px long."
+      },
+      {
+        "name": "length",
+        "type": "number",
+        "required": false,
+        "default": "—",
         "description": ""
       },
       {
@@ -17058,6 +17072,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "formatRange",
+        "type": "{ type: PropType<(start: number, end: number) => string>; default: undefined; }",
+        "required": false,
+        "default": "—",
+        "description": "The visible text for the whole range, e.g. \"20만~80만 원\". Each thumb keeps formatValue."
       }
     ],
     "events": [
@@ -17085,6 +17106,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "formatRange",
+        "type": "((start: number, end: number) => string) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The visible text for the whole range, e.g. \"20만~80만 원\". Each thumb keeps formatValue."
       },
       {
         "name": "onValueChange",
@@ -17161,14 +17189,28 @@
         "type": "((value: number) => string) | undefined",
         "required": false,
         "default": "—",
-        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format."
+        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format with the step's decimals."
       },
       {
         "name": "marks",
         "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
         "required": false,
         "default": "—",
-        "description": "Dots on the rail: true for every step (up to 24), or values with optional labels drawn under the rail."
+        "description": "Dots on the rail: true for every step (up to 24), or values with optional labels beside the rail. Pressing a label moves the nearer thumb there."
+      },
+      {
+        "name": "orientation",
+        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderOrientation | undefined",
+        "required": false,
+        "default": "—",
+        "description": "vertical: the rail runs bottom (min) to top (max), `length` px long."
+      },
+      {
+        "name": "length",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "native": [
@@ -17185,6 +17227,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "formatRange",
+        "type": "((start: number, end: number) => string) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The visible text for the whole range, e.g. \"20만~80만 원\". Each thumb keeps formatValue."
       },
       {
         "name": "onValueChange",
@@ -17268,7 +17317,21 @@
         "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
         "required": false,
         "default": "—",
-        "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels under the rail."
+        "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels beside the rail."
+      },
+      {
+        "name": "orientation",
+        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderOrientation | undefined",
+        "required": false,
+        "default": "—",
+        "description": "vertical: the rail runs bottom (min) to top (max), `length` pt long."
+      },
+      {
+        "name": "length",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ]
   },
@@ -19360,13 +19423,27 @@
         "type": "SliderMarks",
         "required": false,
         "default": "—",
-        "description": "Like React: true for a dot on every step (up to 24), or values with optional labels under the rail."
+        "description": "Like React: true for a dot on every step (up to 24), or values with optional labels beside the rail."
       },
       {
         "name": "size",
         "type": "\"sm\" | \"md\"",
         "required": false,
         "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "orientation",
+        "type": "SliderOrientation",
+        "required": false,
+        "default": "\"horizontal\"",
+        "description": "vertical: the rail runs bottom (min) to top (max), `length` px long."
+      },
+      {
+        "name": "length",
+        "type": "number",
+        "required": false,
+        "default": "—",
         "description": ""
       },
       {
@@ -19450,14 +19527,14 @@
         "type": "((value: number) => string) | undefined",
         "required": false,
         "default": "—",
-        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format."
+        "description": "Formats the visible value and each thumb's accessible value text. Values stay numeric. Defaults to the locale's number format with the step's decimals."
       },
       {
         "name": "marks",
         "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
         "required": false,
         "default": "—",
-        "description": "Dots on the rail: true for every step (up to 24), or values with optional labels drawn under the rail."
+        "description": "Dots on the rail: true for every step (up to 24), or values with optional labels beside the rail. Pressing a label moves the nearer thumb there."
       },
       {
         "name": "size",
@@ -19465,6 +19542,20 @@
         "required": false,
         "default": "—",
         "description": "sm: 12px text, 4px rail, 16px thumb. The touch area stays 44px."
+      },
+      {
+        "name": "orientation",
+        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderOrientation | undefined",
+        "required": false,
+        "default": "—",
+        "description": "vertical: the rail runs bottom (min) to top (max), `length` px long."
+      },
+      {
+        "name": "length",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       },
       {
         "name": "onValueChange",
@@ -19550,7 +19641,7 @@
         "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
         "required": false,
         "default": "—",
-        "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels under the rail."
+        "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels beside the rail."
       },
       {
         "name": "size",
@@ -19558,6 +19649,20 @@
         "required": false,
         "default": "—",
         "description": "sm: 12px text, 4px rail, 16px thumb. The touch area stays 44pt."
+      },
+      {
+        "name": "orientation",
+        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderOrientation | undefined",
+        "required": false,
+        "default": "—",
+        "description": "vertical: the rail runs bottom (min) to top (max), `length` pt long."
+      },
+      {
+        "name": "length",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       },
       {
         "name": "onValueChange",

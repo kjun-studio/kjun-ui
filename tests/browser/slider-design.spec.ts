@@ -46,7 +46,7 @@ async function appearance(page: Page, platform: string, id = 'single') {
       const style = getComputedStyle(el);
       const box = rect(el);
       // The press halo: a box-shadow ring on the web, a circle behind the thumb on Native.
-      const halo = platform === 'native' ? (slider.children[1] ? getComputedStyle(slider.children[1]).backgroundColor : 'none') : style.boxShadow;
+      const halo = platform === 'native' ? (slider.children[1] ? getComputedStyle(slider.children[1]).backgroundColor + ' ' + getComputedStyle(slider.children[1]).opacity : 'none') : style.boxShadow;
       return { ...box, border: style.borderTopWidth, color: style.borderTopColor, background: style.backgroundColor, shadow: style.boxShadow, halo, outline: style.outlineStyle, outlineWidth: style.outlineWidth, outlineOffset: style.outlineOffset };
     });
     const caption = root.firstElementChild!;
@@ -250,5 +250,69 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect.poll(async () => (await appearance(page, platform)).thumbs[0].width).toBe(16);
     const sm = await appearance(page, platform);
     expect(sm.rail.height).toBe(4); expect(sm.fontSize).toBe('12px'); expect(sm.track.height).toBe(44);
+  });
+}
+
+for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: PageUp moves a tenth of the range and collapsed thumbs in the middle follow the first drag direction`, async ({ page }) => {
+    await openFixture(page, platform, '', 'slider-design');
+    await configure(page, { min: 0, max: 1000000, step: 100, value: 500000 });
+    const single = page.getByTestId('single').getByRole('slider');
+    await expect.poll(() => valueOf(page)).toBe(500000);
+    await single.focus(); await single.press('PageUp');
+    await expect.poll(() => valueOf(page)).toBe(600000);
+    await configure(page, { min: 0, max: 100, step: 1 });
+    for (const end of [70, 30]) {
+      await configure(page, { range: [50, 50] });
+      await expect.poll(() => valueOf(page, 'range')).toBe(50);
+      const a = await appearance(page, platform, 'range');
+      const x = (value: number) => a.track.x + a.track.width * value / 100, y = a.rail.y + a.rail.height / 2;
+      await page.mouse.move(x(50), y); await page.mouse.down();
+      await page.mouse.move(x(end), y, { steps: 6 }); await page.mouse.up();
+      await expect.poll(() => valueOf(page, 'range', end > 50 ? 1 : 0)).toBe(end);
+      await expect.poll(() => valueOf(page, 'range', end > 50 ? 0 : 1)).toBe(50);
+    }
+  });
+
+  test(`${platform}: invalid settings keep the app's value, step decimals stay steady, formatRange and mark labels work`, async ({ page }) => {
+    await openFixture(page, platform, '', 'slider-design');
+    await configure(page, { min: 50, max: 10 });
+    await expect.poll(() => caption(page, 'single')).toBe('알림 음량40');
+    await configure(page, { min: 0, max: 2, step: .5, value: 1, range: [.5, 1.5] });
+    await expect.poll(() => caption(page, 'single')).toBe('알림 음량1.0');
+    await configure(page, { formatRange: true });
+    await expect.poll(() => caption(page, 'range')).toBe('조회 범위0.5~1.5');
+    await configure(page, { min: 0, max: 100, step: 25, value: 50, marks: [{ value: 0, label: '작게' }, { value: 50, label: '보통' }, { value: 100, label: '크게' }] });
+    await expect.poll(() => valueOf(page)).toBe(50);
+    await page.getByTestId('single').getByText('크게', { exact: true }).click();
+    await expect.poll(() => valueOf(page)).toBe(100);
+    await expect(page.getByTestId('events')).toContainText('commit:100');
+  });
+
+  test(`${platform}: a vertical slider runs bottom to top with up and down keys`, async ({ page }) => {
+    await openFixture(page, platform, '', 'slider-design');
+    await configure(page, { orientation: 'vertical', length: 160, value: 40 });
+    const a = await appearance(page, platform), thumb = a.thumbs[0];
+    expect(a.track.height).toBeCloseTo(160, 0);
+    expect(thumb.y + thumb.height / 2).toBeCloseTo(a.track.y + 160 * .6, 0);
+    expect(a.fill.y + a.fill.height).toBeCloseTo(a.rail.y + a.rail.height, 0);
+    const single = page.getByTestId('single').getByRole('slider');
+    await single.focus(); await single.press('ArrowUp');
+    await expect.poll(() => valueOf(page)).toBe(41);
+    await page.mouse.click(a.track.x + a.track.width / 2, a.track.y + 160 * .1);
+    await expect.poll(() => valueOf(page)).toBe(90);
+  });
+}
+
+for (const platform of ['react', 'vue3']) {
+  test(`${platform}: a right-to-left locale runs the rail from the right and swaps the horizontal arrows`, async ({ page }) => {
+    await openFixture(page, platform, '?locale=ar', 'slider-design');
+    await configure(page, { value: 40 });
+    const a = await appearance(page, platform), thumb = a.thumbs[0];
+    expect(thumb.x + thumb.width / 2).toBeCloseTo(a.track.x + a.track.width * .6, 0);
+    expect(a.fill.x + a.fill.width).toBeCloseTo(a.rail.x + a.rail.width, 0);
+    const single = page.getByTestId('single').getByRole('slider');
+    await single.focus(); await single.press('ArrowRight');
+    await expect.poll(() => valueOf(page)).toBe(39);
   });
 }
