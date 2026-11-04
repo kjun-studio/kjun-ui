@@ -29055,12 +29055,12 @@
             "type": "string",
             "required": false,
             "default": "—",
-            "description": "Icon name drawn in the leading column at the list icon size; the leading slot replaces it when both are given.",
+            "description": "Icon name drawn in a 24px column; custom leading slot content uses a minimum 40px column and takes priority.",
             "summary": "앞쪽 열에 그릴 아이콘 이름입니다.",
             "details": [
               {
                 "label": "크기·색",
-                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 40px 앞쪽 열 가운데에 놓습니다."
+                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 24px 앞쪽 열 가운데에 놓습니다. 본문과의 간격은 12px입니다."
               },
               {
                 "label": "leading과 함께",
@@ -29253,7 +29253,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "ListRow의 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
+                "text": "ListRow에서는 최소 40px 영역과 본문 간격 12px를 사용합니다. 24px 영역의 기본 아이콘은 icon으로 지정하세요. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
               }
             ],
             "example": "/components/list-row#preview"
@@ -29326,12 +29326,12 @@
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "Icon name drawn in the leading column at the list icon size; `leading` replaces it when both are given.",
+            "description": "Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority.",
             "summary": "앞쪽 열에 그릴 아이콘 이름입니다.",
             "details": [
               {
                 "label": "크기·색",
-                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 40px 앞쪽 열 가운데에 놓습니다."
+                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 24px 앞쪽 열 가운데에 놓습니다. 본문과의 간격은 12px입니다."
               },
               {
                 "label": "leading과 함께",
@@ -29355,7 +29355,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "ListRow의 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
+                "text": "ListRow에서는 최소 40px 영역과 본문 간격 12px를 사용합니다. 24px 영역의 기본 아이콘은 icon으로 지정하세요. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
               }
             ],
             "source": "packages/react/src/list.tsx",
@@ -29606,12 +29606,12 @@
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "Icon name drawn in the leading column at the list icon size; `leading` replaces it when both are given.",
+            "description": "Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority.",
             "summary": "앞쪽 열에 그릴 아이콘 이름입니다.",
             "details": [
               {
                 "label": "크기·색",
-                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 40px 앞쪽 열 가운데에 놓습니다."
+                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 24px 앞쪽 열 가운데에 놓습니다. 본문과의 간격은 12px입니다."
               },
               {
                 "label": "leading과 함께",
@@ -29635,7 +29635,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "ListRow의 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
+                "text": "ListRow에서는 최소 40px 영역과 본문 간격 12px를 사용합니다. 24px 영역의 기본 아이콘은 icon으로 지정하세요. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
               }
             ],
             "source": "packages/native/src/list.tsx",

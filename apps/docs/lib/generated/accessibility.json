@@ -17887,38 +17887,38 @@
   "packages": [
     {
       "name": "@kjun-ui/icons",
-      "version": "0.19.0",
-      "file": "kjun-ui-icons-0.19.0.tgz",
-      "bytes": 1459667,
-      "integrity": "sha512-BZW19VQw/HlK3IhhOi74zD3oaDMkZzgvrnZ0rvuYuuw1vBRsZswYQ47HmkorKUUhUk5IepAdR4HgHn/dodN2Mw=="
+      "version": "0.20.0",
+      "file": "kjun-ui-icons-0.20.0.tgz",
+      "bytes": 1459666,
+      "integrity": "sha512-8CNCLl7suRfeWvw/4JGlMag5c9jlLSMKov+oZlx8Au4x98sknFJr+TDvdyP1crygSr2ZuN8QkFjOWnYEyU4JNg=="
     },
     {
       "name": "@kjun-ui/tokens",
-      "version": "0.19.0",
-      "file": "kjun-ui-tokens-0.19.0.tgz",
-      "bytes": 117431,
-      "integrity": "sha512-YJEl/yuavcjF9IIHUqJ8fzrxAK6fOFZSxa3edtseDhJg7ZlzEUcvTbqSpGXCrBQUFeOGdPcagSXxOeMwVuAcWg=="
+      "version": "0.20.0",
+      "file": "kjun-ui-tokens-0.20.0.tgz",
+      "bytes": 117575,
+      "integrity": "sha512-TLG/QqY93g4qP2wke6PNzMPJ//IQVnXACz+jNOlhmLJBSKt/uBVEJYfK78FYh9UVdiYr9+Xm7s8LvEhI8kcm0w=="
     },
     {
       "name": "@kjun-ui/vue3",
-      "version": "0.19.0",
-      "file": "kjun-ui-vue3-0.19.0.tgz",
-      "bytes": 448217,
-      "integrity": "sha512-7x+NtlNMVDvX880jYMrhElla9xWqK2dPerE7fd5BMkPgGKfd3scYnb1R5emglHUfz5aPzkv9wn/gmiHKzxnb3g=="
+      "version": "0.20.0",
+      "file": "kjun-ui-vue3-0.20.0.tgz",
+      "bytes": 448459,
+      "integrity": "sha512-9T4hpL+CZAjZlqvVxByf9qiRhenbrHzCbS/J4hkwCYe2U+YWV7icVwqwTsyGxnsSi+UUJb5yk4Hj5mgJ7Ei6BQ=="
     },
     {
       "name": "@kjun-ui/react",
-      "version": "0.19.0",
-      "file": "kjun-ui-react-0.19.0.tgz",
-      "bytes": 381076,
-      "integrity": "sha512-VW71dyEBieDYuZ8VgkimL2npi8RyleMho5T5finSZt49eD3lM+jFW7EieKeXHH8z067X1ncfcPAoBF/Fg+k9kA=="
+      "version": "0.20.0",
+      "file": "kjun-ui-react-0.20.0.tgz",
+      "bytes": 381250,
+      "integrity": "sha512-oTQbsJcqZVyFnjGRg6IJG99dpauKmRkyjyGUs3taYtAfck/+m+VmDTSYabkipUVPgU2RZr8nRFDxRkoZmbjYAg=="
     },
     {
       "name": "@kjun-ui/native",
-      "version": "0.19.0",
-      "file": "kjun-ui-native-0.19.0.tgz",
-      "bytes": 698376,
-      "integrity": "sha512-E3pT8kJ0Hq1rTDNCRXu2Aer9sm4dtK/+c9iGKGt78cUB0fRuB6RgZ1eEwAJ6kqXYUaqknRmtLBLCHglZtTrOow=="
+      "version": "0.20.0",
+      "file": "kjun-ui-native-0.20.0.tgz",
+      "bytes": 699694,
+      "integrity": "sha512-8FpoJviPMKcedHplaEvyvy7nWX1RZZsHm4k6dN7r4QeWO7qvaC+Bj4lwmOXsSzAjFt5TX6xExJGQg2dzOE0bGA=="
     }
   ],
   "definitionHash": "sha256-f0ffdd7963a9ec8489e32c66378dd8408df009c3ff230613276d06bbab1b149a",

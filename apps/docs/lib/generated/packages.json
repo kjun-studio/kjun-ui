@@ -1,37 +1,37 @@
 [
   {
     "name": "@kjun-ui/icons",
-    "version": "0.19.0",
-    "file": "kjun-ui-icons-0.19.0.tgz",
-    "bytes": 1459667,
-    "integrity": "sha512-BZW19VQw/HlK3IhhOi74zD3oaDMkZzgvrnZ0rvuYuuw1vBRsZswYQ47HmkorKUUhUk5IepAdR4HgHn/dodN2Mw=="
+    "version": "0.20.0",
+    "file": "kjun-ui-icons-0.20.0.tgz",
+    "bytes": 1459666,
+    "integrity": "sha512-8CNCLl7suRfeWvw/4JGlMag5c9jlLSMKov+oZlx8Au4x98sknFJr+TDvdyP1crygSr2ZuN8QkFjOWnYEyU4JNg=="
   },
   {
     "name": "@kjun-ui/tokens",
-    "version": "0.19.0",
-    "file": "kjun-ui-tokens-0.19.0.tgz",
-    "bytes": 117576,
-    "integrity": "sha512-5X6CNUGrLK7dxm+dD0GS7cX9RhmEnFAXSMJfgEASYtL8Qf8GGqFu9ozR9SiSfbT4mAeXU79EobmKHi1rbXwU1w=="
+    "version": "0.20.0",
+    "file": "kjun-ui-tokens-0.20.0.tgz",
+    "bytes": 117575,
+    "integrity": "sha512-TLG/QqY93g4qP2wke6PNzMPJ//IQVnXACz+jNOlhmLJBSKt/uBVEJYfK78FYh9UVdiYr9+Xm7s8LvEhI8kcm0w=="
   },
   {
     "name": "@kjun-ui/vue3",
-    "version": "0.19.0",
-    "file": "kjun-ui-vue3-0.19.0.tgz",
-    "bytes": 448460,
-    "integrity": "sha512-9EjP5FtOO0qKA+ZtpkhQCPFMSoIYJkZhSG67I1pvt2zRSwtZwOu4JKoykfHEbxJTBCLADzkww6hvAJDbYbCKww=="
+    "version": "0.20.0",
+    "file": "kjun-ui-vue3-0.20.0.tgz",
+    "bytes": 448459,
+    "integrity": "sha512-9T4hpL+CZAjZlqvVxByf9qiRhenbrHzCbS/J4hkwCYe2U+YWV7icVwqwTsyGxnsSi+UUJb5yk4Hj5mgJ7Ei6BQ=="
   },
   {
     "name": "@kjun-ui/react",
-    "version": "0.19.0",
-    "file": "kjun-ui-react-0.19.0.tgz",
+    "version": "0.20.0",
+    "file": "kjun-ui-react-0.20.0.tgz",
     "bytes": 381250,
-    "integrity": "sha512-GWb27eizIHHlyVgsyz2JySZ7MEevakL4LhK2Nxph7ALc2IxcufZAFwcUX4l9eKMFEbza3sNBkZq6twYB4G54dg=="
+    "integrity": "sha512-oTQbsJcqZVyFnjGRg6IJG99dpauKmRkyjyGUs3taYtAfck/+m+VmDTSYabkipUVPgU2RZr8nRFDxRkoZmbjYAg=="
   },
   {
     "name": "@kjun-ui/native",
-    "version": "0.19.0",
-    "file": "kjun-ui-native-0.19.0.tgz",
+    "version": "0.20.0",
+    "file": "kjun-ui-native-0.20.0.tgz",
     "bytes": 699694,
-    "integrity": "sha512-l8nWt5XOkGUqb1XjzVX+IbghQM17xwKKMlQ9+rmCrPKEuEUq4AAukBvG8zT5UzmMRoBnQCkC0lNfVAG/U4Nqvg=="
+    "integrity": "sha512-8FpoJviPMKcedHplaEvyvy7nWX1RZZsHm4k6dN7r4QeWO7qvaC+Bj4lwmOXsSzAjFt5TX6xExJGQg2dzOE0bGA=="
   }
 ]
