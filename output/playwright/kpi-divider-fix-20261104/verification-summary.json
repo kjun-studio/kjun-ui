@@ -1,0 +1,25 @@
+{
+  "matrixCases": 54,
+  "remainingFailures": [],
+  "pageErrors": [],
+  "hoverChecksAfterTransition": 32,
+  "initialHoverSamplingFailures": 31,
+  "implementationFiles": [
+    "packages/tokens/src/kpi-row.css",
+    "packages/native/src/kpi-row.tsx"
+  ],
+  "viewports": [
+    1000,
+    390,
+    320
+  ],
+  "relatedBrowserTests": {
+    "scope": "kpi",
+    "passed": 108,
+    "failed": 3,
+    "failure": "Existing geometry-tokens Toast assertion references missing extensions.toast.padding; expected undefinedpx."
+  },
+  "build": "passed",
+  "typecheck": "passed",
+  "packedConsumers": "passed"
+}

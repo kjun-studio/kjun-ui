@@ -128,7 +128,8 @@ export const KjunModal = defineComponent({
     const close = () => { if (!props.open) return; emit("update:open", false); emit("close"); };
     const { motion, layer } = useWindowLayer(() => props.open, close, () => props.closeOnEsc, undefined, () => emit("after-close"));
     const overlay = ref<HTMLElement | null>(null), modal = ref<HTMLElement | null>(null), dialog = ref<HTMLElement | null>(null);
-    useModalOverlay(overlay, dialog, () => props.open && layer.active.value);
+    // Keep the page isolated until the exit finishes; only the dialog content becomes inert on close.
+    useModalOverlay(overlay, dialog, () => motion.present() && layer.active.value);
     const press = useOutsidePress(() => modal.value, () => props.closeOnOverlay && props.open && layer.active.value, close);
     const rootRef = bindWindowRoot(layer);
     return () => {
@@ -142,8 +143,8 @@ export const KjunModal = defineComponent({
         <Teleport to={to}>
           <div ref={overlay} data-motion="modal" data-motion-open={String(motion.active())} data-entering={props.open && !motion.active() ? "true" : undefined}
             class="kjun-scope kjun-modal-overlay"
-            style={{ zIndex: layer.zIndex.value }} inert={!props.open || !layer.active.value} {...press}>
-            <div ref={modal} class="kjun-modal" data-size={props.size} data-fixed={String(!!props.height)} style={{
+            style={{ zIndex: layer.zIndex.value }} inert={!layer.active.value} {...press}>
+            <div ref={modal} class="kjun-modal" inert={!props.open} data-size={props.size} data-fixed={String(!!props.height)} style={{
               zIndex: layer.state.zIndex(layer.id, "content"),
               width: props.size === "full" ? "calc(100vw - 2 * var(--_kjun-geometry-modal-mobile-inset))" : tokens.modal.widths[props.size] + "px",
               height: props.height || (props.size === "full" ? "calc(100dvh - 2 * var(--_kjun-geometry-modal-mobile-inset))" : undefined),

@@ -47,7 +47,7 @@ for (const platform of platforms) {
     await page.keyboard.press('Escape');
     await page.evaluate(()=>(window as any).geometryToast());
     const toast=platform==='native'?toasts(page).filter({hasText:'검사 토스트'}):page.locator('.kjun-toast');
-    await geometry(toast,{'padding-left':px(e.toast.padding),'gap':px(e.toast.gap),'border-radius':px(e.toast.radius)});
+    await geometry(toast,{'padding-left':px(e.toast.paddingStart),'gap':px(e.toast.gap),'border-radius':px(e.toast.radius)});
     await toast.getByRole('button',{name:'토스트 실행',exact:true}).click();
     await expect(page.getByTestId('events')).toHaveText('1'); await expect(toast).toBeHidden();
     await page.evaluate(()=>(window as any).geometryToast());

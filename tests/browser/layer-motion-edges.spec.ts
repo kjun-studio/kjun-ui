@@ -5,6 +5,72 @@ import { toasts } from './toast-locators';
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureMotion(next), next);
 const start = (page: Page, platform: string, scenario: string) => openFixture(page, platform, '?scenario=' + scenario, 'motion');
 const label = (platform: string) => platform === 'react' ? 'React' : platform;
+
+for (const kind of ['modal', 'drawer']) for (const dismiss of ['backdrop', 'Escape', 'close button']) {
+  test(`vue3: exiting ${kind} blocks page and panel actions after ${dismiss}, then releases input`, async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.clock.install({ time: new Date('2026-11-04T00:00:00Z') });
+    await openFixture(page, 'vue3', '?kind=' + kind, 'elevation-retention');
+    const trigger = page.getByRole('button', { name: 'Open first', exact: true });
+    const pageAction = page.getByRole('button', { name: 'Page action', exact: true });
+    const background = (await pageAction.boundingBox())!;
+    const clickBackground = () => page.mouse.click(background.x + background.width / 2, background.y + background.height / 2);
+    await trigger.click();
+    const edit = page.getByRole('button', { name: 'Edit count 0', exact: true, includeHidden: true });
+    const panelAction = (await edit.boundingBox())!;
+    await page.clock.pauseAt(new Date('2026-11-04T01:00:00Z'));
+    if (dismiss === 'backdrop') await clickBackground();
+    else if (dismiss === 'Escape') await page.keyboard.press('Escape');
+    else await page.getByRole('button', { name: '닫기', exact: true }).click();
+    const overlay = page.locator('.kjun-' + kind + '-overlay');
+    await expect(overlay).toHaveAttribute('data-motion-open', 'false');
+    await page.clock.runFor(50);
+    // Actual pointer hits, not locator.click(), which would wait until the overlay disappears.
+    await clickBackground();
+    await page.mouse.click(panelAction.x + panelAction.width / 2, panelAction.y + panelAction.height / 2);
+    await page.keyboard.press('Tab'); await page.keyboard.press('Enter');
+    await expect(page.getByTestId('actions')).toHaveText('0');
+    await expect(edit).toHaveCount(1);
+    await expect(pageAction).not.toBeFocused();
+    expect(await page.evaluate(() => document.documentElement.style.overflow)).toBe('hidden');
+    await page.clock.runFor(tokens.motion.layerExit - 51);
+    await expect(overlay).toHaveCount(1);
+    await clickBackground();
+    await expect(page.getByTestId('actions')).toHaveText('0');
+    await page.clock.runFor(33);
+    await expect(overlay).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+    expect(await page.evaluate(() => document.documentElement.style.overflow)).not.toBe('hidden');
+    await pageAction.click();
+    await expect(page.getByTestId('actions')).toHaveText('1');
+    expect(errors).toEqual([]);
+  });
+}
+
+for (const kind of ['inner', 'drawer']) {
+  test(`vue3: exiting nested ${kind} blocks the lower modal backdrop until it leaves`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.clock.install({ time: new Date('2026-11-04T00:00:00Z') });
+    await openFixture(page, 'vue3', '', 'provider-layers');
+    await page.getByRole('button', { name: 'Open outer', exact: true }).click();
+    const trigger = page.getByRole('button', { name: 'Open ' + kind, exact: true });
+    await trigger.click();
+    await page.clock.pauseAt(new Date('2026-11-04T01:00:00Z'));
+    await page.mouse.click(5, 5);
+    await page.clock.runFor(50);
+    await page.mouse.click(5, 5);
+    await expect(page.getByTestId('events')).toHaveText(kind);
+    await page.clock.runFor(tokens.motion.layerExit);
+    await expect(trigger).toBeFocused();
+    await page.mouse.click(5, 5);
+    await page.clock.runFor(tokens.motion.layerExit + 32);
+    await expect(page.getByTestId('events')).toHaveText(kind + ',outer');
+    await expect(page.getByRole('button', { name: 'Open outer', exact: true })).toBeFocused();
+  });
+}
+
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: Switch moves through intermediate positions and reduction snaps`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' }); await start(page, platform, 'switch');

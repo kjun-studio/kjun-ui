@@ -19,7 +19,7 @@ function Divider({ inset }: { inset: number }) {
 }
 export interface KjunListRowProps {
   title: string; description?: string;
-  /** Icon name drawn in the leading column at the list icon size; `leading` replaces it when both are given. */
+  /** Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority. */
   icon?: string;
   leading?: ReactNode; trailing?: ReactNode; actions?: ReactNode; href?: string; disabled?: boolean;
   /** Draws the title in the danger role, for rows such as "Delete account". */
@@ -55,11 +55,12 @@ export function KjunListRow({ title, description, icon, leading, trailing, actio
   const { colors } = useKjunStyles(), { divider, compact } = useContext(ListRowContext);
   const kind = listRowKind({ checked, selected, href, pressable: !!(onPress || href) }), toggle = kind === "switch";
   useEffect(() => warnListRowProps({ checked, selected, href, chevron }), [checked !== undefined, selected !== undefined, !!href, chevron]);
-  const front = hasContent(leading) ? content(leading) : icon ? <KjunIcon name={icon} size={list.iconSize} color={destructive ? colors.danger : colors.textSecondary} /> : null;
+  const hasLeading = hasContent(leading), leadingWidth = hasLeading ? list.leadingWidth : tokens.dimension.value24;
+  const front = hasLeading ? content(leading) : icon ? <KjunIcon name={icon} size={list.iconSize} color={destructive ? colors.danger : colors.textSecondary} /> : null;
   // Like Web: with a description the leading column covers the first two lines, so a long row keeps its icon beside the title.
   const leadingHeight = description ? typeStyle("control").lineHeight + list.descriptionGap + typeStyle("caption").lineHeight : undefined;
   const parts = <>
-    {front && <View style={{ minWidth: list.leadingWidth, alignItems: "center", justifyContent: "center", ...(leadingHeight ? { alignSelf: "flex-start", height: leadingHeight } : {}) }}>{front}</View>}
+    {front && <View style={{ minWidth: leadingWidth, alignItems: "center", justifyContent: "center", ...(leadingHeight ? { alignSelf: "flex-start", height: leadingHeight } : {}) }}>{front}</View>}
     <View style={{ flex: 1, minWidth: 0 }}>
       <KText {...wordProps} numberOfLines={titleLines} style={{ ...typeStyle('control'), ...words, ...(destructive ? { color: colors.danger } : {}) }}>{title}</KText>
       {!!description && <KText {...wordProps} numberOfLines={descriptionLines} style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'), ...words }}>{description}</KText>}
@@ -89,7 +90,7 @@ export function KjunListRow({ title, description, icon, leading, trailing, actio
       : <View style={{ ...style, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{parts}</View>}
     {/* A disabled row disables its actions too, so the row never reads as partly available. */}
     {hasContent(actions) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: "45%", flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: list.actionsPadding, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}</View>}
-    {divider && <Divider inset={list.padding + (front ? list.leadingWidth + list.gap : 0)} />}
+    {divider && <Divider inset={list.padding + (front ? leadingWidth + list.gap : 0)} />}
   </View>;
 }
 export interface KjunListSectionProps {

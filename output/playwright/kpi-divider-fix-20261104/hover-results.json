@@ -1,0 +1,197 @@
+{
+  "cases": 32,
+  "results": [
+    {
+      "name": "react-1000-grid",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-1000-summary",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-1000-small",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-1000-flat",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-390-grid",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-390-summary",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-390-small",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-390-flat",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-390-odd",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-390-hero-first",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-320-grid",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-320-summary",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-320-small",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-320-flat",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-320-odd",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "react-320-hero-first",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-1000-grid",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-1000-summary",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-1000-small",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-1000-flat",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-390-grid",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-390-summary",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-390-small",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-390-flat",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-390-odd",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-390-hero-first",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-320-grid",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-320-summary",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-320-small",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-320-flat",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-320-odd",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    },
+    {
+      "name": "vue3-320-hero-first",
+      "radius": "8px",
+      "color": "rgb(235, 235, 235)",
+      "dividerRadius": "0px"
+    }
+  ]
+}

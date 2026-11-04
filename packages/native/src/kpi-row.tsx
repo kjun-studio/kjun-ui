@@ -157,6 +157,12 @@ export function KjunKpiRow({
           numberRole = sub ? "numberSm" : small ? "numberLg" : mobile && !summary ? "numberLg" : "displaySm",
           numberSize = typeStyle(numberRole).fontSize;
         const valueRole = item.valueKind === "text" ? "body" : numberRole;
+        const dividerLeft = summary
+          ? 0
+          : mobile && !small
+          ? i % 2 && !full ? tokens.border.defaultWidth : 0
+          : i ? tokens.border.defaultWidth : 0;
+        const dividerTop = mobile && !small && !summary && i >= 2 ? tokens.border.defaultWidth : 0;
         const valueStyle: TextStyle = {
           fontFamily: item.valueKind === "text" ? fontFamily : numericFontFamily || fontFamily,
           fontVariant: item.valueKind === "text" ? [] : ["tabular-nums"],
@@ -187,23 +193,34 @@ export function KjunKpiRow({
               minWidth: 0,
               paddingVertical: summary ? 0 : small && mobile ? geometry.smallMobile.itemPaddingY : spec.itemPaddingY,
               paddingHorizontal: summary ? 0 : small && mobile ? geometry.smallMobile.itemPaddingX : spec.itemPaddingX,
-              borderLeftWidth: summary
-                ? 0
-                : mobile && !small
-                ? i % 2 && !full
-                  ? tokens.border.defaultWidth
-                  : 0
-                : i
-                ? tokens.border.defaultWidth
-                : 0,
-              borderTopWidth: mobile && !small && !summary && i >= 2 ? tokens.border.defaultWidth : 0,
-              borderColor: colors.border,
+              // Keep the separator's space; its straight paint lives outside the rounded background.
+              borderLeftWidth: dividerLeft,
+              borderTopWidth: dividerTop,
+              borderColor: "transparent",
               borderRadius: item.clickable ? geometry.itemRadius : 0,
               flexDirection: sub ? "row" : "column",
               alignItems: sub ? "baseline" : undefined,
               gap: sub ? geometry.summary.secondaryGap : 0,
             }}
           >
+            {!!(dividerLeft || dividerTop) && (
+              <View
+                pointerEvents="none"
+                accessible={false}
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                style={{
+                  position: "absolute",
+                  top: -dividerTop,
+                  left: -dividerLeft,
+                  right: 0,
+                  bottom: 0,
+                  borderLeftWidth: dividerLeft,
+                  borderTopWidth: dividerTop,
+                  borderColor: colors.border,
+                }}
+              />
+            )}
             <View
               style={{
                 flexDirection: "row",

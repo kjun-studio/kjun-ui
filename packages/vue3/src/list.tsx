@@ -9,7 +9,7 @@ import { listRowKind, warnListRowProps } from "../../../shared/package-runtime/l
 const kjunListRowProps = {
   title: { type: String, required: true },
   description: { type: String, default: undefined },
-  /** Icon name drawn in the leading column at the list icon size; the leading slot replaces it when both are given. */
+  /** Icon name drawn in a 24px column; custom leading slot content uses a minimum 40px column and takes priority. */
   icon: { type: String, default: undefined },
   href: { type: String, default: undefined },
   disabled: { type: Boolean, default: false },
@@ -50,7 +50,8 @@ export const KjunListRow = defineComponent({
     });
     return () => {
       const slotted = slots.leading?.(), trailing = slots.trailing?.(), actions = slots.actions?.(), body = slots.default?.();
-      const leading = hasContent(slotted) ? slotted : props.icon ? <KjunIcon name={props.icon} class="kjun-list-icon" size={tokens.extensions.list.iconSize} /> : null;
+      const hasLeading = hasContent(slotted);
+      const leading = hasLeading ? slotted : props.icon ? <KjunIcon name={props.icon} class="kjun-list-icon" size={tokens.extensions.list.iconSize} /> : null;
       const contents = <>
         {leading && <span class="kjun-list-leading">{leading}</span>}
         <span class="kjun-list-body"><span class="kjun-list-title" data-clamp={props.titleLines ? "" : undefined} style={props.titleLines ? { WebkitLineClamp: props.titleLines } : undefined}>{props.title}</span>{props.description && <span class="kjun-list-description" data-clamp={props.descriptionLines ? "" : undefined} style={props.descriptionLines ? { WebkitLineClamp: props.descriptionLines } : undefined}>{props.description}</span>}{hasContent(body) && <span ref={content} class="kjun-list-content">{body}</span>}</span>
@@ -73,7 +74,7 @@ export const KjunListRow = defineComponent({
           ? <button class="kjun-list-main" type="button" aria-label={props.ariaLabel} disabled={props.disabled} onClick={(event: MouseEvent) => props.onClick?.(event)}>{contents}</button>
           : <div class="kjun-list-main">{contents}</div>;
       // A disabled row disables its actions too, so the row never reads as partly available.
-      return <li class="kjun-list-row" data-leading={leading ? "" : undefined} data-destructive={props.destructive || undefined} data-disabled={props.disabled || undefined}>{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;
+      return <li class="kjun-list-row" data-leading={leading ? (hasLeading ? "" : "icon") : undefined} data-destructive={props.destructive || undefined} data-disabled={props.disabled || undefined}>{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;
     };
   },
 });

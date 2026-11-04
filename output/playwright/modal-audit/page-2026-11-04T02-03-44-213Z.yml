@@ -1,0 +1,185 @@
+- generic [ref=e3]:
+  - link "본문으로 건너뛰기" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - complementary [ref=e5]:
+    - generic [ref=e6]:
+      - link "KJUN UI 홈" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - strong [ref=e10]: KJUN
+        - generic [ref=e11]: UI
+      - navigation "문서 탐색" [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]: GET STARTED
+          - link "소개" [ref=e17] [cursor=pointer]:
+            - /url: /
+          - link "디자인 원칙" [ref=e19] [cursor=pointer]:
+            - /url: /principles
+          - link "시작하기" [ref=e21] [cursor=pointer]:
+            - /url: /getting-started
+          - link "전체 지원 현황" [ref=e23] [cursor=pointer]:
+            - /url: /catalog
+        - generic [ref=e24]:
+          - generic [ref=e25]: FOUNDATIONS
+          - link "디자인 토큰" [ref=e27] [cursor=pointer]:
+            - /url: /tokens
+          - link "모션·애니메이션" [ref=e29] [cursor=pointer]:
+            - /url: /motion
+          - link "화면 배치" [ref=e31] [cursor=pointer]:
+            - /url: /layout
+          - link "레이어·Elevation" [ref=e33] [cursor=pointer]:
+            - /url: /elevation
+          - link "색상·서체 연결" [ref=e35] [cursor=pointer]:
+            - /url: /styling
+          - link "접근성" [ref=e37] [cursor=pointer]:
+            - /url: /accessibility
+          - link "상태·상호작용" [ref=e39] [cursor=pointer]:
+            - /url: /interaction
+          - link "아이콘" [ref=e41] [cursor=pointer]:
+            - /url: /icons
+          - generic [ref=e43]:
+            - link "사용 가이드" [ref=e44] [cursor=pointer]:
+              - /url: /usage-guide
+            - button "사용 가이드 주제" [ref=e45] [cursor=pointer]
+          - link "피드백 서비스" [ref=e49] [cursor=pointer]:
+            - /url: /feedback
+        - generic [ref=e50]:
+          - generic [ref=e51]: COMPONENTS
+          - link "전체 컴포넌트" [ref=e52] [cursor=pointer]:
+            - /url: /components
+          - button "Actions 분류" [ref=e54] [cursor=pointer]:
+            - generic [ref=e55]:
+              - generic [ref=e56]: Actions
+              - generic [ref=e57]: "12"
+          - button "Inputs 분류" [ref=e61] [cursor=pointer]:
+            - generic [ref=e62]:
+              - generic [ref=e63]: Inputs
+              - generic [ref=e64]: "16"
+          - button "Navigation 분류" [ref=e68] [cursor=pointer]:
+            - generic [ref=e69]:
+              - generic [ref=e70]: Navigation
+              - generic [ref=e71]: "7"
+          - generic [ref=e74]:
+            - button "Layout 분류" [expanded] [ref=e75] [cursor=pointer]:
+              - generic [ref=e76]:
+                - generic [ref=e77]: Layout
+                - generic [ref=e78]: "11"
+            - generic [ref=e81]:
+              - generic [ref=e83]:
+                - link "Accordion" [ref=e84] [cursor=pointer]:
+                  - /url: /components/accordion
+                - button "Accordion 하위 구성" [ref=e85] [cursor=pointer]
+              - link "BottomActionBar" [ref=e89] [cursor=pointer]:
+                - /url: /components/bottom-action-bar
+              - link "Card" [ref=e91] [cursor=pointer]:
+                - /url: /components/card
+              - link "Drawer" [ref=e93] [cursor=pointer]:
+                - /url: /components/drawer
+              - link "Inline" [ref=e95] [cursor=pointer]:
+                - /url: /components/inline
+              - link "Modal" [ref=e97] [cursor=pointer]:
+                - /url: /components/modal
+              - link "Popover" [ref=e99] [cursor=pointer]:
+                - /url: /components/popover
+              - link "ScrollFade" [ref=e101] [cursor=pointer]:
+                - /url: /components/scroll-fade
+              - link "Stack" [ref=e103] [cursor=pointer]:
+                - /url: /components/stack
+              - link "Text" [ref=e105] [cursor=pointer]:
+                - /url: /components/text
+          - button "Feedback 분류" [ref=e107] [cursor=pointer]:
+            - generic [ref=e108]:
+              - generic [ref=e109]: Feedback
+              - generic [ref=e110]: "10"
+          - button "Data Display 분류" [ref=e114] [cursor=pointer]:
+            - generic [ref=e115]:
+              - generic [ref=e116]: Data Display
+              - generic [ref=e117]: "15"
+          - button "Finance 분류" [ref=e121] [cursor=pointer]:
+            - generic [ref=e122]:
+              - generic [ref=e123]: Finance
+              - generic [ref=e124]: "11"
+  - generic [ref=e127]:
+    - banner [ref=e128]:
+      - button "탐색 메뉴" [expanded] [ref=e129] [cursor=pointer]
+      - generic [ref=e131]:
+        - generic [ref=e132]: Components
+        - link "Layout" [ref=e135] [cursor=pointer]:
+          - /url: /components?category=layout
+        - generic [ref=e138]: Modal
+      - button "문서 플랫폼" [disabled] [ref=e141]:
+        - generic [ref=e142]: 플랫폼 확인 중…
+      - button "문서 검색" [disabled] [ref=e145]:
+        - generic [ref=e149]:
+          - generic [ref=e150]: 문서 검색
+          - generic [ref=e151]: ⌘ / Ctrl K
+    - main [ref=e153]:
+      - generic [ref=e154]:
+        - paragraph [ref=e155]: COMPONENTS
+        - heading "Modal" [level=1] [ref=e156]
+        - paragraph [ref=e157]: 현재 흐름에서 확인이나 입력을 수행하고 이전 포커스로 돌아갑니다.
+      - navigation "상세 문서 바로가기" [ref=e158]:
+        - generic [ref=e159]:
+          - link "사용법" [ref=e160] [cursor=pointer]:
+            - /url: "#preview"
+          - link "디자인" [ref=e161] [cursor=pointer]:
+            - /url: "#anatomy"
+          - link "API" [ref=e162] [cursor=pointer]:
+            - /url: "#api"
+          - link "접근성" [ref=e163] [cursor=pointer]:
+            - /url: "#accessibility"
+      - generic [ref=e164]:
+        - heading "미리보기" [level=2] [ref=e165]
+        - status [ref=e166]: 문서 플랫폼을 확인하는 중…
+      - generic [ref=e167]:
+        - heading "완료와 닫기의 의미를 구분하세요." [level=2] [ref=e168]
+        - paragraph [ref=e169]: confirm은 확인 이벤트만 전달합니다. 작업 완료 후 닫기는 소비 코드에서 결정합니다. 취소는 cancel → 닫힘 상태 변경 → close 순서로 처리하며, 닫은 뒤에는 이전 포커스로 돌아갑니다.
+        - paragraph [ref=e170]: confirm은 확인 요청을 전달합니다. 성공 후 소비자가 열림 값을 바꾸고 취소·닫기 요청에도 외부 열림 상태를 반영합니다.
+        - generic [ref=e171]:
+          - generic [ref=e172]:
+            - generic [ref=e173]:
+              - heading "권장" [level=3] [ref=e174]
+              - paragraph [ref=e175]: 저장 폼에서는 입력 md와 푸터 버튼 lg를 함께 사용합니다.
+            - generic [ref=e176]:
+              - heading "피하기" [level=3] [ref=e177]
+              - paragraph [ref=e178]: 비동기 저장을 시작하자마자 성공으로 간주해 모달을 닫지 않습니다.
+          - link "관련 선택 기준·배치 사례 보기 →" [ref=e179] [cursor=pointer]:
+            - /url: /usage-guide/feedback#layers
+        - paragraph [ref=e180]:
+          - link "Modal·Toast·하단 CTA의 겹침 규칙" [ref=e181] [cursor=pointer]:
+            - /url: /elevation#overlap
+          - text: 을 함께 확인하세요.
+      - generic [ref=e182]:
+        - heading "기본 사용법" [level=2] [ref=e183]
+        - paragraph [ref=e184]: 컴포넌트의 기본 연결 예제입니다. 위 미리보기에서 변경한 설정과 입력값은 이 코드에 반영되지 않습니다.
+        - status [ref=e185]: 문서 플랫폼을 확인하는 중…
+      - generic [ref=e186]:
+        - heading "구조" [level=2] [ref=e187]
+        - status [ref=e188]: 문서 플랫폼을 확인하는 중…
+      - generic [ref=e189]:
+        - heading "상태·크기" [level=2] [ref=e190]
+        - status [ref=e191]: 문서 플랫폼을 확인하는 중…
+      - generic [ref=e192]:
+        - heading "API" [level=2] [ref=e193]
+        - status [ref=e194]: 문서 플랫폼을 확인하는 중…
+      - generic [ref=e195]:
+        - heading "접근성·플랫폼 차이" [level=2] [ref=e196]
+        - paragraph [ref=e197]:
+          - link "접근성 공통 가이드" [ref=e198] [cursor=pointer]:
+            - /url: /accessibility
+          - text: 에서 키보드·포커스·이름·글자 확대와 적용 프로젝트의 책임을 확인하세요.
+        - paragraph [ref=e199]: Vue v-model:open과 React·Native open·onOpenChange를 사용합니다. 웹은 포커스 제한·복귀, Native는 Modal·뒤로 가기를 처리하며 HTML 폼 제출은 별도로 연결합니다.
+        - status [ref=e200]: 문서 플랫폼을 확인하는 중…
+      - generic [ref=e201]:
+        - link "이전 Inline" [ref=e202] [cursor=pointer]:
+          - /url: /components/inline
+          - generic [ref=e206]:
+            - generic [ref=e207]: 이전
+            - text: Inline
+        - link "다음 Popover" [ref=e208] [cursor=pointer]:
+          - /url: /components/popover
+          - generic [ref=e209]:
+            - generic [ref=e210]: 다음
+            - text: Popover
+      - generic [ref=e214]:
+        - generic [ref=e215]: KJUN UI · v0.17.0
+        - generic [ref=e216]: Small apps. Thoughtfully made.

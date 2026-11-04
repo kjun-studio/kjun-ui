@@ -1,0 +1,711 @@
+- generic [ref=e3]:
+  - link "본문으로 건너뛰기" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - complementary [ref=e5]:
+    - generic [ref=e6]:
+      - link "KJUN UI 홈" [ref=e8] [cursor=pointer]:
+        - /url: /?platform=vue3
+        - strong [ref=e10]: KJUN
+        - generic [ref=e11]: UI
+      - navigation "문서 탐색" [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]: GET STARTED
+          - link "소개" [ref=e17] [cursor=pointer]:
+            - /url: /?platform=vue3
+          - link "디자인 원칙" [ref=e19] [cursor=pointer]:
+            - /url: /principles?platform=vue3
+          - link "시작하기" [ref=e21] [cursor=pointer]:
+            - /url: /getting-started?platform=vue3
+          - link "전체 지원 현황" [ref=e23] [cursor=pointer]:
+            - /url: /catalog?platform=vue3
+        - generic [ref=e24]:
+          - generic [ref=e25]: FOUNDATIONS
+          - link "디자인 토큰" [ref=e27] [cursor=pointer]:
+            - /url: /tokens?platform=vue3
+          - link "모션·애니메이션" [ref=e29] [cursor=pointer]:
+            - /url: /motion?platform=vue3
+          - link "화면 배치" [ref=e31] [cursor=pointer]:
+            - /url: /layout?platform=vue3
+          - link "레이어·Elevation" [ref=e33] [cursor=pointer]:
+            - /url: /elevation?platform=vue3
+          - link "색상·서체 연결" [ref=e35] [cursor=pointer]:
+            - /url: /styling?platform=vue3
+          - link "접근성" [ref=e37] [cursor=pointer]:
+            - /url: /accessibility?platform=vue3
+          - link "상태·상호작용" [ref=e39] [cursor=pointer]:
+            - /url: /interaction?platform=vue3
+          - link "아이콘" [ref=e41] [cursor=pointer]:
+            - /url: /icons?platform=vue3
+          - generic [ref=e43]:
+            - link "사용 가이드" [ref=e44] [cursor=pointer]:
+              - /url: /usage-guide?platform=vue3
+            - button "사용 가이드 주제" [ref=e45] [cursor=pointer]
+          - link "피드백 서비스" [ref=e49] [cursor=pointer]:
+            - /url: /feedback?platform=vue3
+        - generic [ref=e50]:
+          - generic [ref=e51]: COMPONENTS
+          - link "전체 컴포넌트" [ref=e52] [cursor=pointer]:
+            - /url: /components?platform=vue3
+          - button "Actions 분류" [ref=e54] [cursor=pointer]:
+            - generic [ref=e55]:
+              - generic [ref=e56]: Actions
+              - generic [ref=e57]: "12"
+          - button "Inputs 분류" [ref=e61] [cursor=pointer]:
+            - generic [ref=e62]:
+              - generic [ref=e63]: Inputs
+              - generic [ref=e64]: "16"
+          - button "Navigation 분류" [ref=e68] [cursor=pointer]:
+            - generic [ref=e69]:
+              - generic [ref=e70]: Navigation
+              - generic [ref=e71]: "7"
+          - generic [ref=e74]:
+            - button "Layout 분류" [expanded] [ref=e75] [cursor=pointer]:
+              - generic [ref=e76]:
+                - generic [ref=e77]: Layout
+                - generic [ref=e78]: "11"
+            - generic [ref=e81]:
+              - generic [ref=e83]:
+                - link "Accordion" [ref=e84] [cursor=pointer]:
+                  - /url: /components/accordion?platform=vue3
+                - button "Accordion 하위 구성" [ref=e85] [cursor=pointer]
+              - link "BottomActionBar" [ref=e89] [cursor=pointer]:
+                - /url: /components/bottom-action-bar?platform=vue3
+              - link "Card" [ref=e91] [cursor=pointer]:
+                - /url: /components/card?platform=vue3
+              - link "Drawer" [ref=e93] [cursor=pointer]:
+                - /url: /components/drawer?platform=vue3
+              - link "Inline" [ref=e95] [cursor=pointer]:
+                - /url: /components/inline?platform=vue3
+              - link "Modal" [ref=e97] [cursor=pointer]:
+                - /url: /components/modal?platform=vue3
+              - link "Popover" [ref=e99] [cursor=pointer]:
+                - /url: /components/popover?platform=vue3
+              - link "ScrollFade" [ref=e101] [cursor=pointer]:
+                - /url: /components/scroll-fade?platform=vue3
+              - link "Stack" [ref=e103] [cursor=pointer]:
+                - /url: /components/stack?platform=vue3
+              - link "Text" [ref=e105] [cursor=pointer]:
+                - /url: /components/text?platform=vue3
+          - button "Feedback 분류" [ref=e107] [cursor=pointer]:
+            - generic [ref=e108]:
+              - generic [ref=e109]: Feedback
+              - generic [ref=e110]: "10"
+          - button "Data Display 분류" [ref=e114] [cursor=pointer]:
+            - generic [ref=e115]:
+              - generic [ref=e116]: Data Display
+              - generic [ref=e117]: "15"
+          - button "Finance 분류" [ref=e121] [cursor=pointer]:
+            - generic [ref=e122]:
+              - generic [ref=e123]: Finance
+              - generic [ref=e124]: "11"
+  - generic [ref=e127]:
+    - banner [ref=e128]:
+      - button "탐색 메뉴" [expanded] [ref=e129] [cursor=pointer]
+      - generic [ref=e131]:
+        - generic [ref=e132]: Components
+        - link "Layout" [ref=e135] [cursor=pointer]:
+          - /url: /components?category=layout&platform=vue3
+        - generic [ref=e138]: Modal
+      - button "문서 플랫폼" [ref=e141] [cursor=pointer]:
+        - generic [ref=e142]: Vue 3
+      - button "문서 검색" [ref=e145] [cursor=pointer]:
+        - generic [ref=e149]:
+          - generic [ref=e150]: 문서 검색
+          - generic [ref=e151]: Ctrl K
+    - main [ref=e153]:
+      - generic [ref=e154]:
+        - paragraph [ref=e155]: COMPONENTS
+        - heading "Modal" [level=1] [ref=e156]
+        - paragraph [ref=e157]: 현재 흐름에서 확인이나 입력을 수행하고 이전 포커스로 돌아갑니다.
+      - navigation "상세 문서 바로가기" [ref=e158]:
+        - generic [ref=e159]:
+          - link "사용법" [ref=e160] [cursor=pointer]:
+            - /url: "#preview"
+          - link "디자인" [ref=e161] [cursor=pointer]:
+            - /url: "#anatomy"
+          - link "API" [ref=e162] [cursor=pointer]:
+            - /url: "#api"
+          - link "접근성" [ref=e163] [cursor=pointer]:
+            - /url: "#accessibility"
+      - generic [ref=e164]:
+        - heading "미리보기" [level=2] [ref=e165]
+        - generic [ref=e218]:
+          - generic [ref=e220]:
+            - strong [ref=e222]: 미리보기
+            - generic "@kjun-ui/vue3" [ref=e223]: Vue 3
+          - generic [ref=e224]:
+            - generic [ref=e225]: 기본 예제
+            - generic [ref=e227]:
+              - generic [ref=e228]:
+                - button "375px 좁은 화면" [ref=e229] [cursor=pointer]:
+                  - generic [ref=e230]: 자동 너비
+                - status "실제 미리보기 너비" [ref=e232]: 920px
+              - button "예제 초기화" [ref=e233] [cursor=pointer]:
+                - generic [ref=e234]: 초기화
+              - button "넓게 보기" [ref=e235] [cursor=pointer]
+          - generic [ref=e237]:
+            - iframe [active] [ref=e239]:
+              - main [ref=f1e3]:
+                - generic [ref=f1e4]:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - button:
+                          - generic: 모달 열기
+                  - generic [ref=f1e11]:
+                    - generic [ref=f1e12]:
+                      - button "무시"
+                    - dialog [active] [ref=f1e13]:
+                      - generic [ref=f1e14]:
+                        - heading "변경 사항 저장" [level=2] [ref=f1e15]
+                        - button "닫기" [ref=f1e16] [cursor=pointer]
+                      - generic [ref=f1e21]:
+                        - textbox "입력 예제" [ref=f1e24]:
+                          - /placeholder: 내용을 입력하세요
+                        - button "알림 표시" [ref=f1e25] [cursor=pointer]
+                      - generic [ref=f1e28]:
+                        - button "취소" [ref=f1e29] [cursor=pointer]
+                        - button "저장" [ref=f1e31] [cursor=pointer]
+            - paragraph [ref=e240]: 모달을 열어 입력·저장·닫기를 확인하세요. 레이어는 이 미리보기 안에서 열립니다.
+          - generic [ref=e242]:
+            - button "예제 설정" [ref=e243] [cursor=pointer]
+            - generic [ref=e247]: 5개 옵션
+          - group [ref=e248]:
+            - generic "이벤트 기록 (1) KjunButton.click +" [ref=e782] [cursor=pointer]:
+              - generic [ref=e250]:
+                - text: 이벤트 기록
+                - generic [ref=e251]: (1)
+              - generic [ref=e783]: KjunButton.click
+              - text: +
+      - generic [ref=e167]:
+        - heading "완료와 닫기의 의미를 구분하세요." [level=2] [ref=e168]
+        - paragraph [ref=e169]: confirm은 확인 이벤트만 전달합니다. 작업 완료 후 닫기는 소비 코드에서 결정합니다. 취소는 cancel → 닫힘 상태 변경 → close 순서로 처리하며, 닫은 뒤에는 이전 포커스로 돌아갑니다.
+        - paragraph [ref=e170]: confirm은 확인 요청을 전달합니다. 성공 후 소비자가 열림 값을 바꾸고 취소·닫기 요청에도 외부 열림 상태를 반영합니다.
+        - generic [ref=e171]:
+          - generic [ref=e172]:
+            - generic [ref=e173]:
+              - heading "권장" [level=3] [ref=e174]
+              - paragraph [ref=e175]: 저장 폼에서는 입력 md와 푸터 버튼 lg를 함께 사용합니다.
+            - generic [ref=e176]:
+              - heading "피하기" [level=3] [ref=e177]
+              - paragraph [ref=e178]: 비동기 저장을 시작하자마자 성공으로 간주해 모달을 닫지 않습니다.
+          - link "관련 선택 기준·배치 사례 보기 →" [ref=e179] [cursor=pointer]:
+            - /url: /usage-guide/feedback?platform=vue3#layers
+        - paragraph [ref=e180]:
+          - link "Modal·Toast·하단 CTA의 겹침 규칙" [ref=e181] [cursor=pointer]:
+            - /url: /elevation?platform=vue3#overlap
+          - text: 을 함께 확인하세요.
+      - generic [ref=e182]:
+        - heading "기본 사용법" [level=2] [ref=e183]
+        - paragraph [ref=e184]: 컴포넌트의 기본 연결 예제입니다. 위 미리보기에서 변경한 설정과 입력값은 이 코드에 반영되지 않습니다.
+        - generic [ref=e252]:
+          - generic [ref=e254]:
+            - generic [ref=e255]:
+              - generic [ref=e256]: Vue 3 · 기본 사용법
+              - button "기본 코드 복사" [ref=e257] [cursor=pointer]
+            - code [ref=e262]: "<template> <div> <div> <KjunButton @click=\"openDialog\"> 모달 열기 </KjunButton> <KjunModal v-model:open=\"state.open\" title=\"작업 확인\" size=\"md\" confirm-text=\"확인\" :show-footer=\"true\" :loading=\"false\" :confirm-disabled=\"false\" @confirm=\"confirm\"> <KjunInput v-model=\"state.input\" aria-label=\"입력 예제\" :clearable=\"true\" /> <KjunButton @click=\"showToast\"> 알림 표시 </KjunButton> </KjunModal> </div> <output> {{ state.result }} </output> </div> </template> <script setup> import { reactive } from \"vue\"; import { KjunButton, KjunInput, KjunModal, useKjunFeedback } from \"@kjun-ui/vue3\"; const state = reactive({ \"open\": false, \"result\": \"\", \"input\": \"\" }); const feedback = useKjunFeedback(); function openDialog() { state.open = true; } function confirm() { state.open = false; state.result = \"저장했습니다\"; } function showToast() { feedback.toast.info(\"열린 레이어의 영역 알림\", { duration: 0 }); } </script>"
+            - status [ref=e263]
+          - generic [ref=e264]:
+            - paragraph [ref=e265]:
+              - 'link "공통 설정: 시작하기" [ref=e266] [cursor=pointer]':
+                - /url: /getting-started?platform=vue3#connect
+            - paragraph [ref=e267]:
+              - generic [ref=e268]: 이 예제에 필요한 설정
+              - link "피드백 Provider 설정" [ref=e269] [cursor=pointer]:
+                - /url: /getting-started?platform=vue3#feedback-setup
+      - generic [ref=e270]:
+        - heading "구조" [level=2] [ref=e271]
+        - figure [ref=e272]:
+          - heading "구성 영역" [level=3] [ref=e274]
+          - generic [ref=e275]:
+            - img "Modal 구성 영역. 번호별 영역 설명은 아래 목록을 참고하세요." [ref=e276]
+            - img [aria-hidden]:
+              - generic: "1"
+              - generic: "2"
+              - generic: "3"
+              - generic: "4"
+          - list [ref=e277]:
+            - listitem [ref=e278]:
+              - generic [ref=e279]: "1"
+              - generic [ref=e280]:
+                - strong [ref=e281]: 제목
+                - text: 예제 구성
+                - paragraph [ref=e282]: 현재 수행할 작업을 설명합니다.
+            - listitem [ref=e283]:
+              - generic [ref=e284]: "2"
+              - generic [ref=e285]:
+                - strong [ref=e286]: 닫기
+                - text: 선택 영역
+                - paragraph [ref=e287]: 취소 또는 닫기 요청을 전달합니다.
+            - listitem [ref=e288]:
+              - generic [ref=e289]: "3"
+              - generic [ref=e290]:
+                - strong [ref=e291]: 본문
+                - text: 예제 구성
+                - paragraph [ref=e292]: 입력이나 확인에 필요한 소비자 콘텐츠입니다.
+            - listitem [ref=e293]:
+              - generic [ref=e294]: "4"
+              - generic [ref=e295]:
+                - strong [ref=e296]: 확인 행동
+                - text: 선택 영역
+                - paragraph [ref=e297]: 작업을 요청합니다. 완료 후 닫기는 소비자 책임입니다.
+      - generic [ref=e298]:
+        - heading "상태·크기" [level=2] [ref=e299]
+        - paragraph [ref=e300]: 열림·확인 중·확인 비활성·헤더/푸터 표시를 조합합니다. closable·closeOnEsc·closeOnOverlay로 닫힘 경로를 제어합니다.
+        - generic [ref=e301]:
+          - heading "기본 규격" [level=3] [ref=e302]
+          - table "항목 · 규격" [ref=e308]:
+            - rowgroup [ref=e309]:
+              - row [ref=e310]:
+                - columnheader "항목" [ref=e311]
+                - columnheader "규격" [ref=e312]
+            - rowgroup [ref=e313]:
+              - row [ref=e314]:
+                - cell "모서리 반경" [ref=e315]
+                - cell "12px" [ref=e316]
+              - row [ref=e317]:
+                - cell "본문 여백" [ref=e318]
+                - cell "20px" [ref=e319]
+              - row [ref=e320]:
+                - cell "헤더·푸터 여백" [ref=e321]
+                - cell "상하 16px · 좌우 20px" [ref=e322]
+        - paragraph [ref=e323]: 아래는 비교용 설정입니다. 속성을 생략했을 때의 기본값은 API에서 확인하세요.
+        - heading "상태 비교" [level=3] [ref=e324]
+        - generic [ref=e325]:
+          - article [ref=e326]:
+            - generic [ref=e328]:
+              - heading "기본 예제" [level=4] [ref=e330]
+              - button "실행 비교 열기" [ref=e332] [cursor=pointer]
+              - generic [ref=e334]: 위의 실행 버튼으로 예제를 열어 주세요.
+          - article [ref=e335]:
+            - generic [ref=e337]:
+              - heading "로딩" [level=4] [ref=e339]
+              - button "실행 비교 열기" [ref=e341] [cursor=pointer]
+              - generic [ref=e343]: 위의 실행 버튼으로 예제를 열어 주세요.
+          - article [ref=e344]:
+            - generic [ref=e346]:
+              - generic [ref=e347]:
+                - heading "확인 비활성" [level=4] [ref=e348]
+                - paragraph [ref=e349]: 푸터 확인 행동에만 적용됩니다.
+              - button "실행 비교 열기" [ref=e351] [cursor=pointer]
+              - generic [ref=e353]: 위의 실행 버튼으로 예제를 열어 주세요.
+          - article [ref=e354]:
+            - generic [ref=e356]:
+              - heading "열림·내용 확인" [level=4] [ref=e358]
+              - button "실행 비교 열기" [ref=e360] [cursor=pointer]
+              - generic [ref=e362]: 위의 실행 버튼으로 예제를 열어 주세요.
+        - heading "크기 비교" [level=3] [ref=e363]
+        - paragraph [ref=e364]:
+          - text: "패키지 size 기본값:"
+          - code [ref=e365]: "\"md\""
+          - text: . 가용 폭 안에서 실제 크기로 표시합니다.
+        - generic [ref=e366]:
+          - article [ref=e367]:
+            - generic [ref=e369]:
+              - heading "sm" [level=4] [ref=e371]
+              - button "실행 비교 열기" [ref=e373] [cursor=pointer]
+              - generic [ref=e375]: 위의 실행 버튼으로 예제를 열어 주세요.
+          - article [ref=e376]:
+            - generic [ref=e378]:
+              - heading "md" [level=4] [ref=e380]
+              - button "실행 비교 열기" [ref=e382] [cursor=pointer]
+              - generic [ref=e384]: 위의 실행 버튼으로 예제를 열어 주세요.
+          - article [ref=e385]:
+            - generic [ref=e387]:
+              - heading "lg" [level=4] [ref=e389]
+              - button "실행 비교 열기" [ref=e391] [cursor=pointer]
+              - generic [ref=e393]: 위의 실행 버튼으로 예제를 열어 주세요.
+          - article [ref=e394]:
+            - generic [ref=e396]:
+              - heading "xl" [level=4] [ref=e398]
+              - button "실행 비교 열기" [ref=e400] [cursor=pointer]
+              - generic [ref=e402]: 위의 실행 버튼으로 예제를 열어 주세요.
+          - article [ref=e403]:
+            - generic [ref=e405]:
+              - heading "full" [level=4] [ref=e407]
+              - button "실행 비교 열기" [ref=e409] [cursor=pointer]
+              - generic [ref=e411]: 위의 실행 버튼으로 예제를 열어 주세요.
+      - generic [ref=e412]:
+        - heading "관련 사용 가이드" [level=3] [ref=e413]
+        - link "삭제할 대상과 되돌릴 수 없는 결과를 알리세요" [ref=e415] [cursor=pointer]:
+          - /url: /usage-guide/feedback?platform=vue3#delete-confirmation
+          - text: 삭제할 대상과 되돌릴 수 없는 결과를 알리세요 →
+      - generic [ref=e192]:
+        - heading "API" [level=2] [ref=e193]
+        - generic [ref=e416]:
+          - paragraph [ref=e417]: 기본값은 속성을 생략했을 때의 값입니다. —는 기본값을 따로 표시하지 않은 항목입니다. 표준 요소의 추가 속성은 플랫폼 타입 선언을 참고하세요.
+          - paragraph [ref=e418]: Vue 3 · @kjun-ui/vue3
+          - table "속성" [ref=e424]:
+            - rowgroup [ref=e425]:
+              - row [ref=e426]:
+                - columnheader "속성" [ref=e427]
+                - columnheader "타입 / 데이터" [ref=e428]
+                - columnheader "필수" [ref=e429]
+                - columnheader "기본값" [ref=e430]
+                - columnheader "설명" [ref=e431]
+            - rowgroup [ref=e432]:
+              - row [ref=e433]:
+                - cell [ref=e434]:
+                  - code [ref=e435]: open
+                - cell [ref=e436]:
+                  - code [ref=e437]: boolean
+                - cell "필수" [ref=e438]
+                - cell [ref=e439]:
+                  - code [ref=e440]: —
+                - cell [ref=e441]:
+                  - paragraph [ref=e442]: 현재 열림 여부입니다. 생략 시 내부 상태를 사용하는지는 개별 계약을 따릅니다.
+              - row [ref=e443]:
+                - cell [ref=e444]:
+                  - code [ref=e445]: title
+                - cell [ref=e446]:
+                  - code [ref=e447]: string
+                - cell "선택" [ref=e448]
+                - cell [ref=e449]:
+                  - code [ref=e450]: "\"\""
+                - cell [ref=e451]:
+                  - paragraph [ref=e452]: 헤더·알림·패널의 제목입니다.
+              - row [ref=e453]:
+                - cell [ref=e454]:
+                  - code [ref=e455]: size
+                - cell [ref=e456]:
+                  - code [ref=e457]: "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+                - cell "선택" [ref=e458]
+                - cell [ref=e459]:
+                  - code [ref=e460]: "\"md\""
+                - cell [ref=e461]:
+                  - paragraph [ref=e462]: 이 컴포넌트의 크기 규격을 선택합니다.
+              - row [ref=e463]:
+                - cell [ref=e464]:
+                  - code [ref=e465]: closable
+                - cell [ref=e466]:
+                  - code [ref=e467]: boolean
+                - cell "선택" [ref=e468]
+                - cell [ref=e469]:
+                  - code [ref=e470]: "true"
+                - cell [ref=e471]:
+                  - paragraph [ref=e472]: 닫기 버튼을 표시합니다.
+              - row [ref=e473]:
+                - cell [ref=e474]:
+                  - code [ref=e475]: closeOnOverlay
+                - cell [ref=e476]:
+                  - code [ref=e477]: boolean
+                - cell "선택" [ref=e478]
+                - cell [ref=e479]:
+                  - code [ref=e480]: "true"
+                - cell [ref=e481]:
+                  - paragraph [ref=e482]: 배경 오버레이 클릭·누름으로 닫기를 허용합니다.
+              - row [ref=e483]:
+                - cell [ref=e484]:
+                  - code [ref=e485]: closeOnEsc
+                - cell [ref=e486]:
+                  - code [ref=e487]: boolean
+                - cell "선택" [ref=e488]
+                - cell [ref=e489]:
+                  - code [ref=e490]: "true"
+                - cell [ref=e491]:
+                  - paragraph [ref=e492]: 웹 Escape 또는 지원 플랫폼의 뒤로 가기로 닫기를 허용합니다.
+              - row [ref=e493]:
+                - cell [ref=e494]:
+                  - code [ref=e495]: showHeader
+                - cell [ref=e496]:
+                  - code [ref=e497]: boolean
+                - cell "선택" [ref=e498]
+                - cell [ref=e499]:
+                  - code [ref=e500]: "true"
+                - cell [ref=e501]:
+                  - paragraph [ref=e502]: 모달 기본 헤더를 표시합니다.
+              - row [ref=e503]:
+                - cell [ref=e504]:
+                  - code [ref=e505]: showFooter
+                - cell [ref=e506]:
+                  - code [ref=e507]: boolean
+                - cell "선택" [ref=e508]
+                - cell [ref=e509]:
+                  - code [ref=e510]: "false"
+                - cell [ref=e511]:
+                  - paragraph [ref=e512]: 기본 푸터 영역을 표시합니다.
+              - row [ref=e513]:
+                - cell [ref=e514]:
+                  - code [ref=e515]: showConfirmButton
+                - cell [ref=e516]:
+                  - code [ref=e517]: boolean
+                - cell "선택" [ref=e518]
+                - cell [ref=e519]:
+                  - code [ref=e520]: "true"
+                - cell [ref=e521]:
+                  - paragraph [ref=e522]: 모달 기본 푸터의 확인 버튼을 표시합니다.
+              - row [ref=e523]:
+                - cell [ref=e524]:
+                  - code [ref=e525]: showCancelButton
+                - cell [ref=e526]:
+                  - code [ref=e527]: boolean
+                - cell "선택" [ref=e528]
+                - cell [ref=e529]:
+                  - code [ref=e530]: "true"
+                - cell [ref=e531]:
+                  - paragraph [ref=e532]: 모달 기본 푸터의 취소 버튼을 표시합니다.
+              - row [ref=e533]:
+                - cell [ref=e534]:
+                  - code [ref=e535]: confirmText
+                - cell [ref=e536]:
+                  - code [ref=e537]: string
+                - cell "선택" [ref=e538]
+                - cell [ref=e539]:
+                  - code [ref=e540]: —
+                - cell [ref=e541]:
+                  - paragraph [ref=e542]: 확인 버튼 문구입니다.
+              - row [ref=e543]:
+                - cell [ref=e544]:
+                  - code [ref=e545]: cancelText
+                - cell [ref=e546]:
+                  - code [ref=e547]: string
+                - cell "선택" [ref=e548]
+                - cell [ref=e549]:
+                  - code [ref=e550]: —
+                - cell [ref=e551]:
+                  - paragraph [ref=e552]: 취소 버튼 문구입니다.
+              - row [ref=e553]:
+                - cell [ref=e554]:
+                  - code [ref=e555]: confirmDisabled
+                - cell [ref=e556]:
+                  - code [ref=e557]: boolean
+                - cell "선택" [ref=e558]
+                - cell [ref=e559]:
+                  - code [ref=e560]: "false"
+                - cell [ref=e561]:
+                  - paragraph [ref=e562]: 확인 버튼의 실행을 막습니다.
+              - row [ref=e563]:
+                - cell [ref=e564]:
+                  - code [ref=e565]: loading
+                - cell [ref=e566]:
+                  - code [ref=e567]: boolean
+                - cell "선택" [ref=e568]
+                - cell [ref=e569]:
+                  - code [ref=e570]: "false"
+                - cell [ref=e571]:
+                  - paragraph [ref=e572]: 진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.
+              - row [ref=e573]:
+                - cell [ref=e574]:
+                  - code [ref=e575]: noPadding
+                - cell [ref=e576]:
+                  - code [ref=e577]: boolean
+                - cell "선택" [ref=e578]
+                - cell [ref=e579]:
+                  - code [ref=e580]: "false"
+                - cell [ref=e581]:
+                  - paragraph [ref=e582]: 컨테이너 본문의 기본 안쪽 여백을 제거합니다.
+              - row [ref=e583]:
+                - cell [ref=e584]:
+                  - code [ref=e585]: height
+                - cell [ref=e586]:
+                  - code [ref=e587]: string
+                - cell "선택" [ref=e588]
+                - cell [ref=e589]:
+                  - code [ref=e590]: —
+                - cell [ref=e591]:
+                  - paragraph [ref=e592]: 콘텐츠 또는 표시 영역의 높이입니다. 플랫폼별 타입의 단위를 따릅니다.
+              - row [ref=e593]:
+                - cell [ref=e594]:
+                  - code [ref=e595]: confirmVariant
+                - cell [ref=e596]:
+                  - code [ref=e597]: "\"primary\" | \"danger\" | \"success\""
+                - cell "선택" [ref=e598]
+                - cell [ref=e599]:
+                  - code [ref=e600]: "\"primary\""
+                - cell [ref=e601]:
+                  - paragraph [ref=e602]: 확인 버튼의 강조 스타일입니다.
+              - row [ref=e603]:
+                - cell [ref=e604]:
+                  - code [ref=e605]: footerSize
+                - cell [ref=e606]:
+                  - code [ref=e607]: "\"sm\" | \"md\" | \"lg\""
+                - cell "선택" [ref=e608]
+                - cell [ref=e609]:
+                  - code [ref=e610]: "\"md\""
+                - cell [ref=e611]:
+                  - paragraph [ref=e612]: 모달 푸터 버튼의 크기 규격입니다.
+              - row [ref=e613]:
+                - cell [ref=e614]:
+                  - code [ref=e615]: ariaLabel
+                - cell [ref=e616]:
+                  - code [ref=e617]: string
+                - cell "선택" [ref=e618]
+                - cell [ref=e619]:
+                  - code [ref=e620]: —
+                - cell [ref=e621]:
+                  - paragraph [ref=e622]: 대화상자의 접근성 이름입니다. 명시하면 시각적 제목보다 우선합니다. 헤더를 숨겨도 이름 또는 title을 유지하며, 둘 다 없으면 '대화상자'를 사용합니다.
+          - heading "이벤트 · 슬롯" [level=3] [ref=e623]
+          - heading "이벤트" [level=4] [ref=e624]
+          - table "이벤트" [ref=e630]:
+            - rowgroup [ref=e631]:
+              - row [ref=e632]:
+                - columnheader "항목" [ref=e633]
+                - columnheader "타입 / 데이터" [ref=e634]
+                - columnheader "설명" [ref=e635]
+            - rowgroup [ref=e636]:
+              - row [ref=e637]:
+                - cell [ref=e638]:
+                  - code [ref=e639]: update:open
+                - cell [ref=e640]:
+                  - code [ref=e641]: 이벤트
+                - cell [ref=e642]:
+                  - paragraph [ref=e643]: update:open 이벤트를 통지합니다.
+              - row [ref=e644]:
+                - cell [ref=e645]:
+                  - code [ref=e646]: close
+                - cell [ref=e647]:
+                  - code [ref=e648]: 이벤트
+                - cell [ref=e649]:
+                  - paragraph [ref=e650]: close 이벤트를 통지합니다.
+              - row [ref=e651]:
+                - cell [ref=e652]:
+                  - code [ref=e653]: after-close
+                - cell [ref=e654]:
+                  - code [ref=e655]: 이벤트
+                - cell [ref=e656]:
+                  - paragraph [ref=e657]: after-close 이벤트를 통지합니다.
+              - row [ref=e658]:
+                - cell [ref=e659]:
+                  - code [ref=e660]: cancel
+                - cell [ref=e661]:
+                  - code [ref=e662]: 이벤트
+                - cell [ref=e663]:
+                  - paragraph [ref=e664]: cancel 이벤트를 통지합니다.
+              - row [ref=e665]:
+                - cell [ref=e666]:
+                  - code [ref=e667]: confirm
+                - cell [ref=e668]:
+                  - code [ref=e669]: 이벤트
+                - cell [ref=e670]:
+                  - paragraph [ref=e671]: confirm 이벤트를 통지합니다.
+          - heading "슬롯" [level=4] [ref=e672]
+          - table "슬롯" [ref=e678]:
+            - rowgroup [ref=e679]:
+              - row [ref=e680]:
+                - columnheader "항목" [ref=e681]
+                - columnheader "타입 / 데이터" [ref=e682]
+                - columnheader "설명" [ref=e683]
+            - rowgroup [ref=e684]:
+              - row [ref=e685]:
+                - cell [ref=e686]:
+                  - code [ref=e687]: default
+                - cell [ref=e688]:
+                  - code [ref=e689]: 제공 데이터 없음
+                - cell [ref=e690]:
+                  - paragraph [ref=e691]: default 영역의 기본 내용을 교체합니다.
+              - row [ref=e692]:
+                - cell [ref=e693]:
+                  - code [ref=e694]: header
+                - cell [ref=e695]:
+                  - code [ref=e696]: 제공 데이터 없음
+                - cell [ref=e697]:
+                  - paragraph [ref=e698]: header 영역의 기본 내용을 교체합니다.
+              - row [ref=e699]:
+                - cell [ref=e700]:
+                  - code [ref=e701]: footer
+                - cell [ref=e702]:
+                  - code [ref=e703]: 제공 데이터 없음
+                - cell [ref=e704]:
+                  - paragraph [ref=e705]: footer 영역의 기본 내용을 교체합니다.
+      - generic [ref=e195]:
+        - heading "접근성·플랫폼 차이" [level=2] [ref=e196]
+        - paragraph [ref=e197]:
+          - link "접근성 공통 가이드" [ref=e198] [cursor=pointer]:
+            - /url: /accessibility?platform=vue3
+          - text: 에서 키보드·포커스·이름·글자 확대와 적용 프로젝트의 책임을 확인하세요.
+        - paragraph [ref=e199]: Vue v-model:open과 React·Native open·onOpenChange를 사용합니다. 웹은 포커스 제한·복귀, Native는 Modal·뒤로 가기를 처리하며 HTML 폼 제출은 별도로 연결합니다.
+        - paragraph [ref=e707]: Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.
+        - paragraph [ref=e708]: 현재 패키지 또는 검사 정의가 기록과 달라 재검증이 필요합니다. 배지는 이전 검사 조건에서의 결과입니다.
+        - generic [ref=e709]:
+          - generic [ref=e710]:
+            - generic [ref=e711]:
+              - heading "키보드 동작" [level=3] [ref=e713]
+              - generic [ref=e715]:
+                - generic [ref=e716]: 재검증 필요 ·
+                - text: 이전 통과
+            - generic [ref=e719]:
+              - paragraph [ref=e720]: 모달 열기 이후 초기 포커스·Tab 제한·닫기. 열림 상태와 닫기 이벤트를 연결합니다. 제목 또는 이름 속성으로 창의 목적을 지정합니다. 모달과 팝오버의 초기 포커스 설정은 서로 다릅니다.
+              - paragraph [ref=e721]:
+                - strong [ref=e722]: 적용 프로젝트의 책임
+                - text: 실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.
+            - generic [ref=e724]:
+              - paragraph [ref=e725]:
+                - generic [ref=e726]: 관련 API
+                - link [ref=e727] [cursor=pointer]:
+                  - /url: /components/modal?platform=vue3#api-vue3-props-title
+                  - code [ref=e728]: title
+                - link [ref=e729] [cursor=pointer]:
+                  - /url: /components/modal?platform=vue3#api-vue3-props-closable
+                  - code [ref=e730]: closable
+                - link [ref=e731] [cursor=pointer]:
+                  - /url: /components/modal?platform=vue3#api-vue3-props-closeOnEsc
+                  - code [ref=e732]: closeOnEsc
+              - link "키보드 동작 · 검증 기록 보기" [ref=e733] [cursor=pointer]:
+                - /url: /verification?component=KjunModal&platform=vue3&record=a11y-20261015T103039398Z-7202f5e4#keyboard
+                - text: 검증 기록 보기
+          - generic [ref=e734]:
+            - generic [ref=e735]:
+              - heading "라벨·오류 연결" [level=3] [ref=e737]
+              - generic [ref=e739]:
+                - generic [ref=e740]: 재검증 필요 ·
+                - text: 이전 통과
+            - generic [ref=e743]:
+              - paragraph [ref=e744]: 모달 열기 이후 초기 포커스·Tab 제한·닫기. 창의 제목과 ariaLabel로 이름을 구성합니다. Native Web에서는 Modal 호스트와 내용의 역할이 중첩될 수 있어 실제 dialog 이름을 확인합니다.
+              - paragraph [ref=e745]:
+                - strong [ref=e746]: 적용 프로젝트의 책임
+                - text: 사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.
+            - generic [ref=e748]:
+              - paragraph [ref=e749]:
+                - generic [ref=e750]: 관련 API
+                - link [ref=e751] [cursor=pointer]:
+                  - /url: /components/modal?platform=vue3#api-vue3-props-title
+                  - code [ref=e752]: title
+                - link [ref=e753] [cursor=pointer]:
+                  - /url: /components/modal?platform=vue3#api-vue3-props-closable
+                  - code [ref=e754]: closable
+                - link [ref=e755] [cursor=pointer]:
+                  - /url: /components/modal?platform=vue3#api-vue3-props-closeOnEsc
+                  - code [ref=e756]: closeOnEsc
+              - link "라벨·오류 연결 · 검증 기록 보기" [ref=e757] [cursor=pointer]:
+                - /url: /verification?component=KjunModal&platform=vue3&record=a11y-20261015T103039398Z-7202f5e4#labeling
+                - text: 검증 기록 보기
+          - generic [ref=e758]:
+            - generic [ref=e759]:
+              - heading "포커스 이동·복귀" [level=3] [ref=e761]
+              - generic [ref=e763]:
+                - generic [ref=e764]: 재검증 필요 ·
+                - text: 이전 통과
+            - generic [ref=e767]:
+              - paragraph [ref=e768]: 모달 열기 이후 초기 포커스·Tab 제한·닫기. Modal·Drawer는 창 내부 포커스를, Popover는 focusOnOpen과 트리거 조합을 사용합니다. 초기 포커스·Tab 이동·닫힌 뒤 복귀 결과를 각각 검사합니다.
+              - paragraph [ref=e769]:
+                - strong [ref=e770]: 적용 프로젝트의 책임
+                - text: 열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.
+            - generic [ref=e772]:
+              - paragraph [ref=e773]:
+                - generic [ref=e774]: 관련 API
+                - link [ref=e775] [cursor=pointer]:
+                  - /url: /components/modal?platform=vue3#api-vue3-props-title
+                  - code [ref=e776]: title
+                - link [ref=e777] [cursor=pointer]:
+                  - /url: /components/modal?platform=vue3#api-vue3-props-closable
+                  - code [ref=e778]: closable
+                - link [ref=e779] [cursor=pointer]:
+                  - /url: /components/modal?platform=vue3#api-vue3-props-closeOnEsc
+                  - code [ref=e780]: closeOnEsc
+              - link "포커스 이동·복귀 · 검증 기록 보기" [ref=e781] [cursor=pointer]:
+                - /url: /verification?component=KjunModal&platform=vue3&record=a11y-20261015T103039398Z-7202f5e4#focus
+                - text: 검증 기록 보기
+      - generic [ref=e201]:
+        - link "이전 Inline" [ref=e202] [cursor=pointer]:
+          - /url: /components/inline?platform=vue3
+          - generic [ref=e206]:
+            - generic [ref=e207]: 이전
+            - text: Inline
+        - link "다음 Popover" [ref=e208] [cursor=pointer]:
+          - /url: /components/popover?platform=vue3
+          - generic [ref=e209]:
+            - generic [ref=e210]: 다음
+            - text: Popover
+      - generic [ref=e214]:
+        - generic [ref=e215]: KJUN UI · v0.17.0
+        - generic [ref=e216]: Small apps. Thoughtfully made.

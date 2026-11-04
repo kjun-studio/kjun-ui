@@ -1,0 +1,707 @@
+{
+  "results": [
+    {
+      "platform": "react",
+      "name": "desktop",
+      "width": 1000,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "react",
+      "name": "mobile-grid",
+      "width": 390,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "react",
+      "name": "mobile-summary",
+      "width": 390,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "react",
+      "name": "mobile-small",
+      "width": 390,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "react",
+      "name": "desktop-static",
+      "width": 1000,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "0px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "react",
+      "name": "desktop-flat",
+      "width": 1000,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "vue3",
+      "name": "desktop",
+      "width": 1000,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "vue3",
+      "name": "mobile-grid",
+      "width": 390,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "vue3",
+      "name": "mobile-summary",
+      "width": 390,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "vue3",
+      "name": "mobile-small",
+      "width": 390,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "vue3",
+      "name": "desktop-static",
+      "width": 1000,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "0px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "vue3",
+      "name": "desktop-flat",
+      "width": 1000,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(17, 17, 17)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "native",
+      "name": "desktop",
+      "width": 1000,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "native",
+      "name": "mobile-grid",
+      "width": 390,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "native",
+      "name": "mobile-summary",
+      "width": 390,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "native",
+      "name": "mobile-small",
+      "width": 390,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "native",
+      "name": "desktop-static",
+      "width": 1000,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "0px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "platform": "native",
+      "name": "desktop-flat",
+      "width": 1000,
+      "styles": [
+        {
+          "text": "Metric A1,234",
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric B2,468",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric C3,702",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "text": "Metric D4,936",
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "border": "rgb(222, 222, 222)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

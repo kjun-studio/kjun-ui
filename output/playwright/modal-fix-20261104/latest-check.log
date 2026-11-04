@@ -1,0 +1,227 @@
+
+> kjun-ui@0.19.0 workflow
+> node scripts/workflow-run.mjs manual sh -lc (npm run verify:current || (npm run build:packages && npm run pack:local && npm run verify:consumers && npm run verify:current)) && npm run test:browser -- tests/browser/layer-motion-edges.spec.ts --grep "vue3: exiting" && npm run docs:install && npm run build:previews && npm run test:docs:smoke && npm run test:docs -- tests/browser/docs/site.spec.ts --grep modal && npm run verify:current && npm run docs:verify
+
+[KJUN 대기] manual ← manual · 52초 경과
+[KJUN 대기] manual ← manual · 68초 경과
+[KJUN 대기] manual ← manual · 83초 경과
+[KJUN 대기] manual ← manual · 98초 경과
+[KJUN 대기] manual ← manual · 113초 경과
+[KJUN 대기] manual ← manual · 128초 경과
+[KJUN 대기] manual ← manual · 144초 경과
+[KJUN 대기] manual ← manual · 159초 경과
+[KJUN 대기] manual ← manual · 174초 경과
+[KJUN 대기] manual ← manual · 189초 경과
+[KJUN 대기] manual ← manual · 204초 경과
+[KJUN 대기] manual ← manual · 220초 경과
+[KJUN 대기] manual ← manual · 235초 경과
+[KJUN 대기] manual ← manual · 250초 경과
+[KJUN 대기] manual ← manual · 265초 경과
+[KJUN 대기] manual ← manual · 281초 경과
+[KJUN 대기] manual ← manual · 296초 경과
+[KJUN 대기] manual ← manual · 311초 경과
+[KJUN 대기] manual ← manual · 326초 경과
+[KJUN 대기] manual ← manual · 342초 경과
+[KJUN 대기] manual ← manual · 357초 경과
+[KJUN 대기] manual ← manual · 372초 경과
+[KJUN 대기] manual ← manual · 387초 경과
+[KJUN 대기] manual ← manual · 402초 경과
+[KJUN 대기] manual ← manual · 418초 경과
+[KJUN 대기] manual ← manual · 433초 경과
+[KJUN 대기] manual ← manual · 448초 경과
+[KJUN 대기] manual ← manual · 464초 경과
+[KJUN 대기] manual ← manual · 479초 경과
+[KJUN 대기] manual ← manual · 494초 경과
+[KJUN 대기] manual ← manual · 509초 경과
+[KJUN 대기] manual ← manual · 524초 경과
+[KJUN 대기] manual ← manual · 540초 경과
+[KJUN 대기] manual ← manual · 555초 경과
+[KJUN 대기] manual ← manual · 570초 경과
+[KJUN 대기] manual ← manual · 585초 경과
+[KJUN 대기] manual ← manual · 600초 경과
+[KJUN 대기] manual ← manual · 616초 경과
+[KJUN 대기] manual ← manual · 631초 경과
+[KJUN 대기] manual ← manual · 646초 경과
+[KJUN 대기] manual ← manual · 662초 경과
+[KJUN 실행] manual
+
+> kjun-ui@0.19.0 verify:current
+> node scripts/workflow-run.mjs verify:current sh -c 'node scripts/package-state.mjs "$@"' --
+
+Current source, built files, tarballs and installed packages match.
+
+> kjun-ui@0.19.0 test:browser
+> node scripts/workflow-run.mjs test:browser sh -c 'playwright test "$@"' -- tests/browser/layer-motion-edges.spec.ts --grep vue3: exiting
+
+
+Running 8 tests using 1 worker
+
+  ✓  1 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting modal blocks page and panel actions after backdrop, then releases input (9.0s)
+  ✓  2 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting modal blocks page and panel actions after Escape, then releases input (837ms)
+  ✓  3 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting modal blocks page and panel actions after close button, then releases input (1.2s)
+  ✓  4 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting drawer blocks page and panel actions after backdrop, then releases input (916ms)
+  ✓  5 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting drawer blocks page and panel actions after Escape, then releases input (780ms)
+  ✓  6 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting drawer blocks page and panel actions after close button, then releases input (1.2s)
+  ✓  7 tests/browser/layer-motion-edges.spec.ts:53:3 › vue3: exiting nested inner blocks the lower modal backdrop until it leaves (1.4s)
+  ✓  8 tests/browser/layer-motion-edges.spec.ts:53:3 › vue3: exiting nested drawer blocks the lower modal backdrop until it leaves (1.2s)
+
+  8 passed (26.3s)
+
+> kjun-ui@0.19.0 docs:install
+> node scripts/workflow-run.mjs docs:install sh -c 'node scripts/docs-dependencies.mjs "$@"' --
+
+
+added 2 packages in 3s
+npm warn install-scripts 3 packages have install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.27.3 (postinstall: node install.js)
+npm warn install-scripts   sharp@0.34.5 (install: node install/check.js || npm run build)
+npm warn install-scripts   workerd@1.20260515.1 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+Docs consumes verified packed @kjun-ui/react, @kjun-ui/tokens and @kjun-ui/icons.
+
+> kjun-ui@0.19.0 build:previews
+> node scripts/workflow-run.mjs build:previews sh -c 'node scripts/previews.mjs "$@"' --
+
+Generated 120 example definitions for the packed platforms.
+Built 7 independently retryable usage generator categories.
+All catalog previews built from installed tarballs.
+
+> kjun-ui@0.19.0 test:docs:smoke
+> node scripts/workflow-run.mjs test:docs:smoke sh -c 'node scripts/docs-test.mjs --profile smoke "$@"' --
+
+[KJUN 검사] 문서 셸·검색·모바일 탐색·세 플랫폼 미리보기 빠른 검사
+Docs consumes verified packed @kjun-ui/react, @kjun-ui/tokens and @kjun-ui/icons.
+[KJUN 문서 빌드] 새 빌드 · 입력 변경
+
+> kjun-ui-docs@0.1.0 build
+> node ../../scripts/workflow-run.mjs docs:build sh -c 'node ../../scripts/docs-dependencies.mjs --check && vinext build "$@"' --
+
+Docs consumes verified packed @kjun-ui/react, @kjun-ui/tokens and @kjun-ui/icons.
+
+  vinext build  (Vite 8.0.13)
+
+[1/5] analyze client references...
+[2Ktransforming...✓ 257 modules transformed.
+rendering chunks...
+[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+  - alias (23%)
+  - rsc:virtual-client-package (13%)
+  - vinext:og-inline-fetch-assets (10%)
+  - vinext:middleware-server-only (10%)
+  - vinext:css-data-url (9%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+
+✓ built in 5.12s
+[2/5] analyze server references...
+[2Ktransforming...✓ 1604 modules transformed.
+rendering chunks...
+[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+  - vinext:og-inline-fetch-assets (21%)
+  - vinext:css-data-url (20%)
+  - alias (9%)
+  - vinext:middleware-server-only (9%)
+  - vinext:validate-middleware-exports (8%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+
+✓ built in 8.91s
+[3/5] build rsc environment...
+[2Ktransforming...✓ 254 modules transformed.
+rendering chunks...
+computing gzip size...
+[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+  - vinext:middleware-server-only (36%)
+  - rsc:virtual-client-package (12%)
+  - vinext:og-inline-fetch-assets (8%)
+  - vinext:css-data-url (8%)
+  - alias (6%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+
+✓ built in 3.17s
+[4/5] build client environment...
+[2Ktransforming...✓ 1617 modules transformed.
+rendering chunks...
+computing gzip size...
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+  - rsc:virtual-client-package (17%)
+  - alias (14%)
+  - vinext:middleware-server-only (14%)
+  - vinext:og-inline-fetch-assets (13%)
+  - vinext:css-data-url (12%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+
+✓ built in 13.59s
+[5/5] build ssr environment...
+[2Ktransforming...✓ 1610 modules transformed.
+rendering chunks...
+computing gzip size...
+[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+  - vinext:og-inline-fetch-assets (28%)
+  - alias (13%)
+  - vinext:css-data-url (12%)
+  - vinext:middleware-server-only (10%)
+  - rsc:virtual-client-package (9%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+
+✓ built in 4.62s
+[0m
+  Route (app)
+  ┌ ? /      
+  └ ƒ /:slug+
+
+  ƒ Dynamic  ? Unknown
+
+  ? Some routes could not be classified. vinext currently uses static analysis
+    and cannot detect dynamic API usage (headers(), cookies(), etc.) at build time.
+    Automatic classification will be improved in a future release.
+
+  Build complete. Run `vinext start` to start the production server.
+
+[KJUN 문서 빌드] 빌드 완료 · 재사용 기록 저장 (58149ms)
+
+Running 12 tests using 1 worker
+
+  ✓   1 tests/browser/docs/docs-kjun.spec.ts:5:1 › the docs shell renders packed KJUN geometry and keeps platform previews independent (3.1s)
+  ✓   2 tests/browser/docs/docs-kjun.spec.ts:39:1 › mobile navigation uses KJUN Drawer and restores focus after closing (1.1s)
+  ✓   3 tests/browser/docs/docs-kjun.spec.ts:54:1 › changing a search query reveals the newly selected first result (1.5s)
+  ✓   4 tests/browser/docs/docs-kjun.spec.ts:71:1 › search opened above the mobile drawer accepts typing and restores the drawer focus (1.8s)
+  ✓   5 tests/browser/docs/docs-kjun.spec.ts:97:1 › the platform popup closes on Escape before autofocus finishes (1.6s)
+  ✓   6 tests/browser/docs/docs-kjun.spec.ts:114:1 › styling documentation starts with core roles and lists optional connections (1.0s)
+  ✓   7 tests/browser/docs/preview-scroll.spec.ts:13:5 › vue3 1440: visible ButtonGroup interactions preserve document scroll (1.6s)
+  ✓   8 tests/browser/docs/preview-scroll.spec.ts:13:5 › vue3 390: visible ButtonGroup interactions preserve document scroll (1.7s)
+  ✓   9 tests/browser/docs/preview-scroll.spec.ts:13:5 › react 1440: visible ButtonGroup interactions preserve document scroll (1.6s)
+  ✓  10 tests/browser/docs/preview-scroll.spec.ts:13:5 › react 390: visible ButtonGroup interactions preserve document scroll (1.5s)
+  ✓  11 tests/browser/docs/preview-scroll.spec.ts:13:5 › native 1440: visible ButtonGroup interactions preserve document scroll (2.0s)
+  ✓  12 tests/browser/docs/preview-scroll.spec.ts:13:5 › native 390: visible ButtonGroup interactions preserve document scroll (1.7s)
+
+  12 passed (30.9s)
+
+> kjun-ui@0.19.0 test:docs
+> node scripts/workflow-run.mjs test:docs sh -c 'node scripts/docs-test.mjs "$@"' -- tests/browser/docs/site.spec.ts --grep modal
+
+[KJUN 검사] 전체 문서 검사
+Docs consumes verified packed @kjun-ui/react, @kjun-ui/tokens and @kjun-ui/icons.
+[KJUN 문서 빌드] 재사용 · 입력·산출물 일치 (9588ms)
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/browser/docs/site.spec.ts:184:3 › Vue 3 modal: confirm, cancel, Escape, focus and project colors (2.5s)
+  ✓  2 tests/browser/docs/site.spec.ts:184:3 › React modal: confirm, cancel, Escape, focus and project colors (2.1s)
+  ✓  3 tests/browser/docs/site.spec.ts:184:3 › React Native modal: confirm, cancel, Escape, focus and project colors (1.8s)
+
+  3 passed (11.6s)
+
+> kjun-ui@0.19.0 verify:current
+> node scripts/workflow-run.mjs verify:current sh -c 'node scripts/package-state.mjs "$@"' --
+
+Current source, built files, tarballs and installed packages match.
+
+> kjun-ui@0.19.0 docs:verify
+> node scripts/workflow-run.mjs docs:verify sh -c 'node scripts/docs-dependencies.mjs --check "$@"' --
+
+Docs consumes verified packed @kjun-ui/react, @kjun-ui/tokens and @kjun-ui/icons.

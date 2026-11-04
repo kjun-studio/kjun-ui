@@ -42,7 +42,8 @@ export const KjunDrawer = defineComponent({
     const close = () => { if (!props.open) return; emit("update:open", false); emit("close"); };
     const { motion, layer } = useWindowLayer(() => props.open, close, () => props.closeOnEsc, tokens.motion.layerExit, () => emit("after-close"));
     const overlay = ref<HTMLElement | null>(null), drawer = ref<HTMLElement | null>(null), dialog = ref<HTMLElement | null>(null);
-    useModalOverlay(overlay, dialog, () => props.open && layer.active.value);
+    // Keep the page isolated until the exit finishes; only the panel content becomes inert on close.
+    useModalOverlay(overlay, dialog, () => motion.present() && layer.active.value);
     const press = useOutsidePress(() => drawer.value, () => props.closeOnOverlay && props.open && layer.active.value, close);
     const rootRef = bindWindowRoot(layer);
     return () => {
@@ -53,8 +54,8 @@ export const KjunDrawer = defineComponent({
       return (
         <Teleport to={to}>
           <div ref={overlay} class="kjun-scope kjun-drawer-overlay" data-motion="drawer" data-motion-open={String(motion.active())}
-            inert={!props.open || !layer.active.value} data-position={props.position} style={{ zIndex: layer.zIndex.value, ...drawerOverlayVars(props) }} {...press}>
-            <div ref={drawer} class="kjun-drawer" style={css({ zIndex: layer.state.zIndex(layer.id, "content"), width: sideways ? props.width : "100%" })}>
+            inert={!layer.active.value} data-position={props.position} style={{ zIndex: layer.zIndex.value, ...drawerOverlayVars(props) }} {...press}>
+            <div ref={drawer} class="kjun-drawer" inert={!props.open} style={css({ zIndex: layer.state.zIndex(layer.id, "content"), width: sideways ? props.width : "100%" })}>
               <DismissButton onDismiss={close} />
               <section ref={(node: unknown) => { dialog.value = node as HTMLElement | null; rootRef(node); }} class="kjun-drawer-dialog" role="dialog" tabindex={-1}
                 aria-label={props.ariaLabel || props.title || m.value.panel}>

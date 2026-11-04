@@ -1,0 +1,6 @@
+### Result
+[{"radius":"8px","left":"0px","top":"0px"},{"radius":"8px","left":"1px","top":"0px"},{"radius":"8px","left":"0px","top":"1px"},{"radius":"8px","left":"1px","top":"1px"},{"radius":"0px","left":"0px","top":"0px"},{"radius":"0px","left":"1px","top":"0px"},{"radius":"0px","left":"0px","top":"1px"},{"radius":"0px","left":"1px","top":"1px"}]
+### Ran Playwright code
+```js
+await (async (page) => { await page.evaluate(() => { const original = document.querySelector("#kpi-audit"); const copy = document.querySelector("#radius-zero-comparison"); original.parentElement.append(copy.previousElementSibling, copy); }); await page.locator("#root").screenshot({path:"/workspace/output/playwright/kpi-radius-audit-20261104/comparison.png"}); return await page.locator(".kjun-kpi-row__item").evaluateAll(nodes => nodes.map(node => ({radius:getComputedStyle(node).borderRadius,left:getComputedStyle(node).borderLeftWidth,top:getComputedStyle(node).borderTopWidth}))); })(page);
+```

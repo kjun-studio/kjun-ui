@@ -1,0 +1,53 @@
+### Result
+{"results":[{"platform":"react","name":"desktop","width":1000,"styles":[{"text":"Metric A1,234","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"react","name":"mobile-grid","width":390,"styles":[{"text":"Metric A1,234","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"8px","left":"0px","top":"1px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"8px","left":"1px","top":"1px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"react","name":"mobile-summary","width":390,"styles":[{"text":"Metric A1,234","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"react","name":"mobile-small","width":390,"styles":[{"text":"Metric A1,234","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"8px","left":"0px","top":"1px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"8px","left":"0px","top":"1px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"react","name":"desktop-static","width":1000,"styles":[{"text":"Metric A1,234","radius":"0px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"0px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"0px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"0px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"react","name":"desktop-flat","width":1000,"styles":[{"text":"Metric A1,234","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"vue3","name":"desktop","width":1000,"styles":[{"text":"Metric A1,234","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"vue3","name":"mobile-grid","width":390,"styles":[{"text":"Metric A1,234","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"8px","left":"0px","top":"1px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"8px","left":"1px","top":"1px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"vue3","name":"mobile-summary","width":390,"styles":[{"text":"Metric A1,234","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"vue3","name":"mobile-small","width":390,"styles":[{"text":"Metric A1,234","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"8px","left":"0px","top":"1px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"8px","left":"0px","top":"1px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"vue3","name":"desktop-static","width":1000,"styles":[{"text":"Metric A1,234","radius":"0px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"0px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"0px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"0px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"vue3","name":"desktop-flat","width":1000,"styles":[{"text":"Metric A1,234","radius":"8px","left":"0px","top":"0px","border":"rgb(17, 17, 17)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"8px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"native","name":"desktop","width":1000,"styles":[]},{"platform":"native","name":"mobile-grid","width":390,"styles":[]},{"platform":"native","name":"mobile-summary","width":390,"styles":[]},{"platform":"native","name":"mobile-small","width":390,"styles":[]},{"platform":"native","name":"desktop-static","width":1000,"styles":[{"text":"Metric A1,234","radius":"0px","left":"0px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric B2,468","radius":"0px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric C3,702","radius":"0px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"},{"text":"Metric D4,936","radius":"0px","left":"1px","top":"0px","border":"rgb(222, 222, 222)","background":"rgba(0, 0, 0, 0)"}]},{"platform":"native","name":"desktop-flat","width":1000,"styles":[]}],"errors":[]}
+### Ran Playwright code
+```js
+await (async (page) => {
+  const results = [];
+  const errors = [];
+  page.on('pageerror', error => errors.push(String(error)));
+  const folder = '/workspace/output/playwright/kpi-radius-audit-20261104';
+  for (const platform of ['react', 'vue3', 'native']) {
+    for (const [name, width, query] of [
+      ['desktop', 1000, ''], ['mobile-grid', 390, ''],
+      ['mobile-summary', 390, '?summary=1'], ['mobile-small', 390, '?small=1'],
+      ['desktop-static', 1000, '?click=0'], ['desktop-flat', 1000, '?flat=1'],
+    ]) {
+      await page.setViewportSize({ width, height: 500 });
+      await page.goto('http://127.0.0.1:4197/' + platform + query);
+      await page.getByText('Metric D', { exact: true }).waitFor();
+      const items = platform === 'native'
+        ? page.locator('#kpi-audit > div > div')
+        : page.locator('.kjun-kpi-row__item');
+      const styles = await items.evaluateAll(nodes => nodes.map(node => {
+        const s = getComputedStyle(node);
+        return { text: node.textContent, radius: s.borderRadius, left: s.borderLeftWidth, top: s.borderTopWidth, border: s.borderLeftColor, background: s.backgroundColor };
+      }));
+      results.push({ platform, name, width, styles });
+      if (['desktop', 'mobile-grid'].includes(name)) {
+        await page.locator('#kpi-audit').screenshot({ path: folder + '/' + platform + '-' + name + '-before.png' });
+        await items.evaluateAll(nodes => nodes.forEach(node => node.style.borderRadius = '0px'));
+        await page.locator('#kpi-audit').screenshot({ path: folder + '/' + platform + '-' + name + '-radius-zero.png' });
+      }
+    }
+  }
+  await page.setViewportSize({ width: 390, height: 620 });
+  await page.goto('http://127.0.0.1:4197/react');
+  await page.getByText('Metric D', { exact: true }).waitFor();
+  await page.evaluate(() => {
+    const original = document.querySelector('#kpi-audit');
+    const copy = original.cloneNode(true);
+    copy.id = 'radius-zero-comparison';
+    copy.querySelectorAll('.kjun-kpi-row__item').forEach(node => node.style.borderRadius = '0');
+    for (const [label, node] of [['Current: radius 8px + dividers', original], ['Diagnostic override: radius 0px', copy]]) {
+      const title = document.createElement('p');
+      title.textContent = label;
+      title.style.cssText = 'font:14px sans-serif;margin:16px 0 12px;color:#333';
+      if (node === original) node.before(title); else { original.parentElement.append(title, node); }
+    }
+  });
+  await page.locator('#root').screenshot({ path: folder + '/comparison.png' });
+  return { results, errors };
+}
+)(page);
+```

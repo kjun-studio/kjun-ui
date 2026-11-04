@@ -1,0 +1,68 @@
+
+> kjun-ui@0.19.0 workflow
+> node scripts/workflow-run.mjs manual sh -lc npm run build:packages && npm run pack:local && npm run verify:consumers && npm run verify:current && npm run typecheck && npm run test:browser -- tests/browser/layer-motion-edges.spec.ts --grep "vue3: exiting"
+
+[KJUN 실행] manual
+
+> kjun-ui@0.19.0 build:packages
+> node scripts/workflow-run.mjs build:packages sh -c 'node scripts/build.mjs "$@"' --
+
+Generated 5166 icon modules and 1054 filled variants from verified Tabler 3.48.0.
+Recorded role bindings and implementation sites: 99 roles.
+Generated actual API contracts: 89 exports across three platforms.
+Built five independent packages: ESM, CJS, types and scoped CSS.
+
+> kjun-ui@0.19.0 pack:local
+> node scripts/workflow-run.mjs pack:local sh -c 'node scripts/pack.mjs "$@"' --
+
+kjun-ui-icons-0.19.0.tgz
+kjun-ui-tokens-0.19.0.tgz
+kjun-ui-vue3-0.19.0.tgz
+kjun-ui-react-0.19.0.tgz
+kjun-ui-native-0.19.0.tgz
+
+> kjun-ui@0.19.0 verify:consumers
+> node scripts/workflow-run.mjs verify:consumers sh -c 'node scripts/consumers.mjs "$@"' --
+
+
+added 300 packages in 39s
+Packed types verified: Bundler / esm
+Packed types verified: Node16 / esm
+Packed types verified: NodeNext / esm
+Packed Vue template and TSX row inference verified
+Packed types verified: Bundler / cjs
+Packed types verified: Node16 / cjs
+Packed types verified: NodeNext / cjs
+[KJUN 정리] /tmp/kjun-consumer-c52ddf65534b7b46-1SSo7g
+Packed package consumer verified: /tmp/kjun-consumer-c52ddf65534b7b46-jmHE14
+
+> kjun-ui@0.19.0 verify:current
+> node scripts/workflow-run.mjs verify:current sh -c 'node scripts/package-state.mjs "$@"' --
+
+Current source, built files, tarballs and installed packages match.
+
+> kjun-ui@0.19.0 typecheck
+> node scripts/workflow-run.mjs typecheck sh -c 'npm run examples:generate && tsc --noEmit && tsc -p previews/tsconfig.vue3.json --noEmit && tsc -p apps/docs/tsconfig.json --noEmit "$@"' --
+
+
+> kjun-ui@0.19.0 examples:generate
+> node scripts/workflow-run.mjs examples:generate sh -c 'node scripts/examples.mjs "$@"' --
+
+Generated 120 example definitions for the packed platforms.
+
+> kjun-ui@0.19.0 test:browser
+> node scripts/workflow-run.mjs test:browser sh -c 'playwright test "$@"' -- tests/browser/layer-motion-edges.spec.ts --grep vue3: exiting
+
+
+Running 8 tests using 1 worker
+
+  ✓  1 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting modal blocks page and panel actions after backdrop, then releases input (16.6s)
+  ✓  2 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting modal blocks page and panel actions after Escape, then releases input (1.6s)
+  ✓  3 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting modal blocks page and panel actions after close button, then releases input (3.5s)
+  ✓  4 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting drawer blocks page and panel actions after backdrop, then releases input (1.3s)
+  ✓  5 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting drawer blocks page and panel actions after Escape, then releases input (3.2s)
+  ✓  6 tests/browser/layer-motion-edges.spec.ts:10:3 › vue3: exiting drawer blocks page and panel actions after close button, then releases input (3.2s)
+  ✓  7 tests/browser/layer-motion-edges.spec.ts:53:3 › vue3: exiting nested inner blocks the lower modal backdrop until it leaves (2.7s)
+  ✓  8 tests/browser/layer-motion-edges.spec.ts:53:3 › vue3: exiting nested drawer blocks the lower modal backdrop until it leaves (1.4s)
+
+  8 passed (44.0s)

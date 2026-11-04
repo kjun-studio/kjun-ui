@@ -7,7 +7,7 @@ import { listRowKind, warnListRowProps } from "../../../shared/package-runtime/l
 export interface KjunListRowProps {
   title: string;
   description?: string;
-  /** Icon name drawn in the leading column at the list icon size; `leading` replaces it when both are given. */
+  /** Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority. */
   icon?: string;
   leading?: ReactNode;
   trailing?: ReactNode;
@@ -46,7 +46,7 @@ export function KjunListRow({ title, description, icon, leading, trailing, actio
     : kind === "radio" ? <button className="kjun-list-main" type="button" role="radio" aria-checked={!!selected} aria-label={ariaLabel} disabled={disabled} onClick={onClick}>{contents}</button>
     : href ? <a className="kjun-list-main" href={disabled ? undefined : href} aria-label={ariaLabel} aria-disabled={disabled || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a>
     : onClick ? <button className="kjun-list-main" type="button" aria-label={ariaLabel} disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main">{contents}</div>;
-  return <li className="kjun-list-row" data-leading={front ? "" : undefined} data-destructive={destructive || undefined} data-disabled={disabled || undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{hasContent(actions) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}</div>}</li>;
+  return <li className="kjun-list-row" data-leading={front ? (leading ? "" : "icon") : undefined} data-destructive={destructive || undefined} data-disabled={disabled || undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{hasContent(actions) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}</div>}</li>;
 }
 export interface KjunListSectionProps {
   title?: string; description?: string; actions?: ReactNode; children?: ReactNode; ariaLabel?: string;

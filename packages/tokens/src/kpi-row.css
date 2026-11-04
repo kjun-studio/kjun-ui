@@ -5,13 +5,27 @@
   border-radius: var(--_kjun-extension-kpi-row-radius);
 }
 .kjun-kpi-row__item {
+  --_kjun-kpi-row-divider-left: var(--_kjun-border-default-width);
+  --_kjun-kpi-row-divider-top: 0px;
+  position: relative;
   flex: 1;
   padding: var(--_kjun-extension-kpi-row-md-item-padding-y) var(--_kjun-extension-kpi-row-md-item-padding-x);
-  border-left: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
+  /* Reserve the separator space without rounding its paint with the click target. */
+  border-left: var(--_kjun-kpi-row-divider-left) solid transparent;
+  border-top: var(--_kjun-kpi-row-divider-top) solid transparent;
   min-width: 0;
 }
+.kjun-kpi-row__item::before {
+  content: "";
+  position: absolute;
+  inset: calc(-1 * var(--_kjun-kpi-row-divider-top)) 0 0 calc(-1 * var(--_kjun-kpi-row-divider-left));
+  border-left: var(--_kjun-kpi-row-divider-left) solid var(--_kjun-border-primary);
+  border-top: var(--_kjun-kpi-row-divider-top) solid var(--_kjun-border-primary);
+  border-radius: 0;
+  pointer-events: none;
+}
 .kjun-kpi-row__item:first-child {
-  border-left: none;
+  --_kjun-kpi-row-divider-left: 0px;
 }
 .kjun-kpi-row__item--clickable {
   cursor: pointer;
@@ -92,20 +106,20 @@
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item {
     padding: var(--_kjun-extension-kpi-row-mobile-item-padding-y) var(--_kjun-extension-kpi-row-mobile-item-padding-x);
-    border-left: none;
-    border-top: none;
+    --_kjun-kpi-row-divider-left: 0px;
+    --_kjun-kpi-row-divider-top: 0px;
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item:nth-child(even) {
-    border-left: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
+    --_kjun-kpi-row-divider-left: var(--_kjun-border-default-width);
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item:nth-child(n + 3) {
-    border-top: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
+    --_kjun-kpi-row-divider-top: var(--_kjun-border-default-width);
   }
   /* 홀수 개수의 마지막 항목은 전폭으로 마감해 빈 반쪽 셀을 남기지 않는다. */
   .kjun-kpi-row:not(.kjun-kpi-row--sm):not(.kjun-kpi-row--hero-first)
     .kjun-kpi-row__item:last-child:nth-child(odd) {
     grid-column: 1 / -1;
-    border-left: none;
+    --_kjun-kpi-row-divider-left: 0px;
   }
   /* hero-first는 전폭 헤드라인 아래에 나머지 항목을 2열로 배치한다. */
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item--full {
@@ -113,12 +127,12 @@
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm).kjun-kpi-row--hero-first
     .kjun-kpi-row__item:nth-child(2) {
-    border-left: none;
-    border-top: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
+    --_kjun-kpi-row-divider-left: 0px;
+    --_kjun-kpi-row-divider-top: var(--_kjun-border-default-width);
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm).kjun-kpi-row--hero-first
     .kjun-kpi-row__item:nth-child(3) {
-    border-left: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
+    --_kjun-kpi-row-divider-left: var(--_kjun-border-default-width);
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__label-row {
     gap: var(--_kjun-extension-kpi-row-mobile-label-gap);
@@ -149,7 +163,8 @@
     .kjun-kpi-row__item:nth-child(n) {
     flex: 0 0 calc((100% - var(--_kjun-extension-kpi-row-summary-gap-x)) / 2);
     padding: 0;
-    border: 0;
+    --_kjun-kpi-row-divider-left: 0px;
+    --_kjun-kpi-row-divider-top: 0px;
   }
   .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm)
     .kjun-kpi-row__item--full:nth-child(n),
@@ -269,20 +284,20 @@
   .kjun-kpi-row--sm .kjun-kpi-row__item {
     flex: 1 1 50%;
     padding: var(--_kjun-extension-kpi-row-small-mobile-item-padding-y) var(--_kjun-extension-kpi-row-small-mobile-item-padding-x);
-    border-left: none;
-    border-top: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
+    --_kjun-kpi-row-divider-left: 0px;
+    --_kjun-kpi-row-divider-top: var(--_kjun-border-default-width);
   }
   .kjun-kpi-row--sm:not(.kjun-kpi-row--hero-first)
     .kjun-kpi-row__item:first-child,
   .kjun-kpi-row--sm:not(.kjun-kpi-row--hero-first)
     .kjun-kpi-row__item:nth-child(2) {
-    border-top: none;
+    --_kjun-kpi-row-divider-top: 0px;
   }
   .kjun-kpi-row--sm .kjun-kpi-row__item--full {
     flex-basis: 100%;
   }
   .kjun-kpi-row--sm.kjun-kpi-row--hero-first .kjun-kpi-row__item:first-child {
-    border-top: none;
+    --_kjun-kpi-row-divider-top: 0px;
   }
   .kjun-kpi-row--sm .kjun-kpi-row__value {
   }

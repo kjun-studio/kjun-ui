@@ -10348,7 +10348,7 @@
         "type": "string",
         "required": false,
         "default": "—",
-        "description": "Icon name drawn in the leading column at the list icon size; the leading slot replaces it when both are given."
+        "description": "Icon name drawn in a 24px column; custom leading slot content uses a minimum 40px column and takes priority."
       },
       {
         "name": "href",
@@ -10469,7 +10469,7 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": "Icon name drawn in the leading column at the list icon size; `leading` replaces it when both are given."
+        "description": "Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority."
       },
       {
         "name": "leading",
@@ -10597,7 +10597,7 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": "Icon name drawn in the leading column at the list icon size; `leading` replaces it when both are given."
+        "description": "Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority."
       },
       {
         "name": "leading",

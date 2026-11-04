@@ -1,0 +1,3081 @@
+{
+  "cases": 54,
+  "failures": [
+    "react-1000-grid: hover background retained",
+    "react-1000-summary: hover background retained",
+    "react-1000-small: hover background retained",
+    "react-1000-flat: hover background retained",
+    "react-390-grid: hover background retained",
+    "react-390-summary: hover background retained",
+    "react-390-small: hover background retained",
+    "react-390-flat: hover background retained",
+    "react-390-odd: hover background retained",
+    "react-390-hero-first: hover background retained",
+    "react-320-grid: hover background retained",
+    "react-320-summary: hover background retained",
+    "react-320-small: hover background retained",
+    "react-320-flat: hover background retained",
+    "react-320-odd: hover background retained",
+    "react-320-hero-first: hover background retained",
+    "vue3-1000-grid: hover background retained",
+    "vue3-1000-summary: hover background retained",
+    "vue3-1000-small: hover background retained",
+    "vue3-1000-flat: hover background retained",
+    "vue3-390-summary: hover background retained",
+    "vue3-390-small: hover background retained",
+    "vue3-390-flat: hover background retained",
+    "vue3-390-odd: hover background retained",
+    "vue3-390-hero-first: hover background retained",
+    "vue3-320-grid: hover background retained",
+    "vue3-320-summary: hover background retained",
+    "vue3-320-small: hover background retained",
+    "vue3-320-flat: hover background retained",
+    "vue3-320-odd: hover background retained",
+    "vue3-320-hero-first: hover background retained"
+  ],
+  "errors": [],
+  "results": [
+    {
+      "name": "react-1000-grid",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 233.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "react-1000-summary",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 233.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "react-1000-small",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 235.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 236.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 236.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 236.25
+        }
+      ]
+    },
+    {
+      "name": "react-1000-flat",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 237.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 238.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 238.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 238.25
+        }
+      ]
+    },
+    {
+      "name": "react-1000-static",
+      "styles": [
+        {
+          "radius": "0px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 233.25
+        },
+        {
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "react-1000-loading",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 233.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "react-390-grid",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        }
+      ]
+    },
+    {
+      "name": "react-390-summary",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 143
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 143
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 85.40625
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 85.890625
+        }
+      ]
+    },
+    {
+      "name": "react-390-small",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 167
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 167
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 167
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 167
+        }
+      ]
+    },
+    {
+      "name": "react-390-flat",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 171
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 171
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 171
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 171
+        }
+      ]
+    },
+    {
+      "name": "react-390-odd",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 326
+        }
+      ]
+    },
+    {
+      "name": "react-390-hero-first",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 326
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        }
+      ]
+    },
+    {
+      "name": "react-320-grid",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        }
+      ]
+    },
+    {
+      "name": "react-320-summary",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 108
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 108
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 85.40625
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 85.890625
+        }
+      ]
+    },
+    {
+      "name": "react-320-small",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 132
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 132
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 132
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 132
+        }
+      ]
+    },
+    {
+      "name": "react-320-flat",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 136
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 136
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 136
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 136
+        }
+      ]
+    },
+    {
+      "name": "react-320-odd",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 256
+        }
+      ]
+    },
+    {
+      "name": "react-320-hero-first",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 256
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        }
+      ]
+    },
+    {
+      "name": "vue3-1000-grid",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 233.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "vue3-1000-summary",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 233.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "vue3-1000-small",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 235.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 236.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 236.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 236.25
+        }
+      ]
+    },
+    {
+      "name": "vue3-1000-flat",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 237.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 238.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 238.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 238.25
+        }
+      ]
+    },
+    {
+      "name": "vue3-1000-static",
+      "styles": [
+        {
+          "radius": "0px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 233.25
+        },
+        {
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "vue3-1000-loading",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 233.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "vue3-390-grid",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        }
+      ]
+    },
+    {
+      "name": "vue3-390-summary",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 143
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 143
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 85.40625
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 85.890625
+        }
+      ]
+    },
+    {
+      "name": "vue3-390-small",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 167
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 167
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 167
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 167
+        }
+      ]
+    },
+    {
+      "name": "vue3-390-flat",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 171
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 171
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 171
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 171
+        }
+      ]
+    },
+    {
+      "name": "vue3-390-odd",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 326
+        }
+      ]
+    },
+    {
+      "name": "vue3-390-hero-first",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 326
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        }
+      ]
+    },
+    {
+      "name": "vue3-320-grid",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        }
+      ]
+    },
+    {
+      "name": "vue3-320-summary",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 108
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 108
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 85.40625
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 85.890625
+        }
+      ]
+    },
+    {
+      "name": "vue3-320-small",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 132
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 132
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 132
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 132
+        }
+      ]
+    },
+    {
+      "name": "vue3-320-flat",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 136
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 136
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 136
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 136
+        }
+      ]
+    },
+    {
+      "name": "vue3-320-odd",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 256
+        }
+      ]
+    },
+    {
+      "name": "vue3-320-hero-first",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 256
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        }
+      ]
+    },
+    {
+      "name": "native-1000-grid",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 233.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "native-1000-summary",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 233.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "native-1000-small",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 235.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 236.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 236.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 236.25
+        }
+      ]
+    },
+    {
+      "name": "native-1000-flat",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 237.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 238.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 238.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 238.25
+        }
+      ]
+    },
+    {
+      "name": "native-1000-static",
+      "styles": [
+        {
+          "radius": "0px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 233.25
+        },
+        {
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "0px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "native-1000-loading",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 233.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 234.25
+        }
+      ]
+    },
+    {
+      "name": "native-390-grid",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        }
+      ]
+    },
+    {
+      "name": "native-390-summary",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 143
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 143
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 85.40625
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 85.890625
+        }
+      ]
+    },
+    {
+      "name": "native-390-small",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 167
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 167
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 167
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 167
+        }
+      ]
+    },
+    {
+      "name": "native-390-flat",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 171
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 171
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 171
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 171
+        }
+      ]
+    },
+    {
+      "name": "native-390-odd",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 326
+        }
+      ]
+    },
+    {
+      "name": "native-390-hero-first",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 326
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 163
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 326
+        }
+      ]
+    },
+    {
+      "name": "native-320-grid",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        }
+      ]
+    },
+    {
+      "name": "native-320-summary",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 108
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 108
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 85.40625
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 85.890625
+        }
+      ]
+    },
+    {
+      "name": "native-320-small",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 132
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 132
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 132
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 132
+        }
+      ]
+    },
+    {
+      "name": "native-320-flat",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 136
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 136
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 136
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 136
+        }
+      ]
+    },
+    {
+      "name": "native-320-odd",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 256
+        }
+      ]
+    },
+    {
+      "name": "native-320-hero-first",
+      "styles": [
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "width": 256
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "0px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "0px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "0px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "0px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 128
+        },
+        {
+          "radius": "8px",
+          "left": "1px",
+          "top": "1px",
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "divider": {
+            "radius": "0px",
+            "left": "1px",
+            "top": "1px",
+            "color": "rgb(222, 222, 222)",
+            "events": "none"
+          },
+          "width": 256
+        }
+      ]
+    }
+  ]
+}

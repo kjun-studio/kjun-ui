@@ -1,0 +1,13 @@
+- generic [ref=e5]:
+  - button "Metric A 1,234" [ref=e6] [cursor=pointer]:
+    - generic [ref=e7]: Metric A
+    - generic [ref=e9]: 1,234
+  - button "Metric B 2,468" [ref=e11] [cursor=pointer]:
+    - generic [ref=e12]: Metric B
+    - generic [ref=e14]: 2,468
+  - button "Metric C 3,702" [ref=e16] [cursor=pointer]:
+    - generic [ref=e17]: Metric C
+    - generic [ref=e19]: 3,702
+  - button "Metric D 4,936" [ref=e21] [cursor=pointer]:
+    - generic [ref=e22]: Metric D
+    - generic [ref=e24]: 4,936
