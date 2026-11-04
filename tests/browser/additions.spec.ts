@@ -110,7 +110,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(Math.round(title!.x - (await rows.first().boundingBox())!.x)).toBe(16);
     });
 
-    test('list rows share a 40px leading column, start dividers at the text and label a bare section title', async ({ page }) => {
+    test('list rows use 24px icon and 40px custom leading columns, start dividers at the text and label a bare section title', async ({ page }) => {
       const list = section(page, 'icon-list');
       const rows = list.locator(platform === 'native' ? '[role="listitem"]' : '.kjun-list-row');
       await expect(rows).toHaveCount(3);
@@ -119,15 +119,15 @@ for (const platform of ['react', 'vue3', 'native']) {
       const row = (await rows.nth(0).boundingBox())!;
       const alerts = (await list.getByText('Alerts', { exact: true }).boundingBox())!;
       const kim = (await list.getByText('Kim', { exact: true }).boundingBox())!;
-      // Icon and avatar rows put their titles on one line: 16 inset + 40 column + 12 gap.
-      expect(Math.round(alerts.x - row.x)).toBe(68);
+      // Titles follow the 16px inset, a 24px icon or 40px custom leading column, and a 12px gap.
+      expect(Math.round(alerts.x - row.x)).toBe(52);
       expect(Math.round(kim.x - row.x)).toBe(68);
-      expect(Math.round(icon.x + icon.width / 2 - row.x)).toBe(36);
+      expect(Math.round(icon.x + icon.width / 2 - row.x)).toBe(28);
       await expect(list.getByText('Alerts', { exact: true })).toHaveCSS('font-weight', '600');
       const dividerStart = (index: number) => platform === 'native'
         ? rows.nth(index).evaluate(el => { const line = el.lastElementChild!.getBoundingClientRect(); return { left: line.left - el.getBoundingClientRect().left, height: line.height }; })
         : rows.nth(index).evaluate(el => { const line = getComputedStyle(el, '::after'); return { left: parseFloat(line.left), height: parseFloat(line.height) }; });
-      expect(await dividerStart(0)).toEqual({ left: 68, height: 1 });
+      expect(await dividerStart(0)).toEqual({ left: 52, height: 1 });
       expect(await dividerStart(1)).toEqual({ left: 68, height: 1 });
       if (platform !== 'native') expect(await rows.nth(2).evaluate(el => getComputedStyle(el, '::after').content)).toBe('none');
       const heading = list.getByText('Settings', { exact: true });
