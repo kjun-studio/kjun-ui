@@ -10755,7 +10755,7 @@
         "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\"",
         "required": false,
         "default": "—",
-        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\", or the KjunListGroup's)."
+        "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's)."
       },
       {
         "name": "titleVariant",
@@ -10857,7 +10857,7 @@
         "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
         "required": false,
         "default": "—",
-        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\", or the KjunListGroup's)."
+        "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's)."
       },
       {
         "name": "titleVariant",

@@ -6,7 +6,7 @@ import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/aler
 import { typeStyle } from "./typography";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { badgeGeometry, badgeToneRoles, type BadgeToneRoles } from "../../../shared/package-runtime/badge-tone";
-import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
+import { createContext,useContext,useEffect,useRef,useState,type ReactNode } from "react";
 import { DataStateContentContext } from "./data-state-context";
 import {
 Animated,
@@ -143,6 +143,8 @@ export interface KjunEmptyProps {
   icon?: string;
   children?: ReactNode;
 }
+/** Set by KjunListSection: the empty note stays one row tall in the secondary body type, like Web's .kjun-list-empty. */
+export const ListEmptyContext = createContext(false);
 export function KjunEmpty({
   text,
   description,
@@ -153,13 +155,13 @@ export function KjunEmpty({
   text ??= m.noData;
   const { colors } = useKjunStyles();
   const spec = tokens.extensions.empty;
-  const stateContent = useContext(DataStateContentContext);
+  const stateContent = useContext(DataStateContentContext), inList = useContext(ListEmptyContext);
   return (
     <View
       style={{
         alignItems: "center",
         justifyContent: "center",
-        paddingVertical: stateContent === 'empty' ? 0 : tokens.dimension.value32,
+        paddingVertical: inList ? tokens.extensions.list.compactPaddingY : stateContent === 'empty' ? 0 : tokens.dimension.value32,
       }}
     >
       {!!icon && (
@@ -167,7 +169,7 @@ export function KjunEmpty({
           <KjunIcon name={icon} size={spec.iconSize} color={colors.textSecondary} />
         </View>
       )}
-      <KText style={{ ...typeStyle('cardTitle'), color: colors.text, fontSize: spec.titleSize, lineHeight: spec.titleLineHeight, textAlign: "center", maxWidth: spec.textMaxWidth }}>
+      <KText style={{ ...(inList ? { ...typeStyle('body'), color: colors.textSecondary } : { ...typeStyle('cardTitle'), color: colors.text, fontSize: spec.titleSize, lineHeight: spec.titleLineHeight }), textAlign: "center", maxWidth: spec.textMaxWidth }}>
         {text}
       </KText>
       {!!description && (

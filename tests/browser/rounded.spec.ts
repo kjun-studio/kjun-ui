@@ -23,11 +23,12 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
 
     test('rounded list sections clip their rows', async ({ page }) => {
-      // A label title sits outside the rounded card (0.18.0), so the corner is found from the rows.
+      // A title sits outside the rounded card, so the corner is found from the rows: the rounded element that clips them
+      // (the first row only inherits the corner for its focus ring).
       const result = await section(page, 'lists').getByText('First row', { exact: true }).evaluate(el => {
         for (let n: Element | null = el; n; n = n.parentElement) {
           const style = getComputedStyle(n);
-          if (style.borderTopLeftRadius !== '0px') return { radius: style.borderTopLeftRadius, overflow: style.overflow, holdsRows: n.textContent?.includes('Second row') };
+          if (style.borderTopLeftRadius !== '0px' && style.overflow !== 'visible') return { radius: style.borderTopLeftRadius, overflow: style.overflow, holdsRows: n.textContent?.includes('Second row') };
         }
         return null;
       });

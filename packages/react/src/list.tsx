@@ -56,7 +56,7 @@ export interface KjunListSectionProps {
   divider?: boolean;
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
   density?: "default" | "compact";
-  /** Rounds the section on the card radius steps and clips its rows to the corners (default "none", or the KjunListGroup's). */
+  /** Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default "none", or the KjunListGroup's). */
   radius?: CardRadius;
   /** "title" is the 16px heading, "label" the small caption above the rows; by default a title with a description is a heading and one without is a label. */
   titleVariant?: "title" | "label";
@@ -71,8 +71,8 @@ const ListGroupContext = createContext<"inset" | "flush" | null>(null);
 export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius, titleVariant, headingLevel = 3, empty, footer }: KjunListSectionProps) {
   const group = useContext(ListGroupContext), corner = radius ?? (group === "inset" ? "lg" : "none");
   const label = titleVariant ? titleVariant === "label" : !!title && !description;
-  // A rounded section with a label title keeps the label and footer on the page, above and below its card.
-  const outside = corner !== "none" && !!title && label;
+  // A rounded section is a card of rows only: its title, actions and footer stay on the page, above and below it.
+  const outside = corner !== "none";
   const id = "kjun-" + useId(), Heading = `h${headingLevel}` as "h3";
   const rounded = corner === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${corner})` };
   const rows = hasContent(children)
@@ -80,7 +80,7 @@ export function KjunListSection({ title, description, actions, children, ariaLab
     : hasContent(empty) ? <div className="kjun-list-empty">{empty}</div> : null;
   return <section className="kjun-list-section" data-surface={surface ? undefined : "false"} data-outside={outside || undefined}
     // The list carries the name; a named section would make every settings group a page landmark.
-    data-radius={corner === "none" || outside ? undefined : corner} style={outside ? undefined : rounded}>
+    >
     {(title || description || hasContent(actions)) && <div className="kjun-list-heading" data-bare={title && label ? "" : undefined}><div>{title && <Heading id={id}>{title}</Heading>}{description && <p>{description}</p>}</div>{hasContent(actions) && <div className="kjun-list-heading-actions">{actions}</div>}</div>}
     {outside ? <div className="kjun-list-panel" data-surface={surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
     {hasContent(footer) && <div className="kjun-list-footer">{footer}</div>}

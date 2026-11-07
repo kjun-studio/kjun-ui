@@ -7,10 +7,12 @@ import { View, Platform, type GestureResponderEvent, type TextStyle } from "reac
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KText, content } from "./internal";
 import { KjunIcon } from "./button";
+import { ListEmptyContext } from "./display-primitives";
 import { useKjunStyles } from "./provider";
 
 // A section tells its rows whether to draw a divider (never after the last, like Web's :last-child) and how dense they are.
-const ListRowContext = createContext({ divider: true, compact: false });
+// In a rounded card the card clips the row, so its focus ring moves inside and the first and last rows follow the corners.
+const ListRowContext = createContext<{ divider: boolean; compact: boolean; insetRing?: boolean; ringRadius?: number }>({ divider: true, compact: false });
 const list = tokens.extensions.list;
 // Like Web's ::after divider: it starts where the text does, past the leading column when there is one.
 function Divider({ inset }: { inset: number }) {
@@ -52,7 +54,7 @@ function SwitchMark({ on }: { on: boolean }) {
 const words = (Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } : {}) as unknown as TextStyle;
 const wordProps = { lineBreakStrategyIOS: "hangul-word" as const };
 export function KjunListRow({ title, description, icon, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected, checked, onCheckedChange, onPress, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
-  const { colors } = useKjunStyles(), { divider, compact } = useContext(ListRowContext);
+  const { colors } = useKjunStyles(), { divider, compact, insetRing, ringRadius } = useContext(ListRowContext);
   const kind = listRowKind({ checked, selected, href, pressable: !!(onPress || href) }), toggle = kind === "switch";
   useEffect(() => warnListRowProps({ checked, selected, href, chevron }), [checked !== undefined, selected !== undefined, !!href, chevron]);
   const hasLeading = hasContent(leading), leadingWidth = hasLeading ? list.leadingWidth : tokens.dimension.value24;
@@ -80,7 +82,7 @@ export function KjunListRow({ title, description, icon, leading, trailing, actio
   // The default name reads the title, description and a text value at the row's end, as the web row's content does.
   const spoken = [title, description, typeof trailing === "string" || typeof trailing === "number" ? String(trailing) : undefined].filter(Boolean).join(", ");
   return <View role="listitem" style={{ flexDirection: "row", alignItems: "center", gap: list.gap }}>
-    {pressable ? <Pressable {...(Platform.OS === "web" && kind === "link" && !disabled ? { href } : {})}
+    {pressable ? <Pressable focusRingInset={insetRing} focusRingRadius={ringRadius} {...(Platform.OS === "web" && kind === "link" && !disabled ? { href } : {})}
       accessibilityRole={toggle ? "switch" : kind === "radio" ? "radio" : kind === "link" ? "link" : "button"}
       accessibilityLabel={ariaLabel ?? spoken} disabled={disabled}
       accessibilityState={{ disabled, ...(toggle ? { checked: !!checked } : {}), ...(kind === "radio" ? { checked: !!selected } : {}) }}
@@ -113,6 +115,12 @@ export interface KjunListSectionProps {
   footer?: ReactNode;
 }
 /** The rows of a section, with fragments opened up so each row (not each fragment) decides its divider. */
+// Native has no selector for this: a heading action that is a ghost KjunButton pulls its label out to the rows' end line.
+function ghostInset(actions: ReactNode) {
+  if (!isValidElement(actions)) return 0;
+  const { variant, size = "md" } = actions.props as { variant?: string; size?: keyof typeof tokens.button.paddingX };
+  return variant === "ghost" ? -tokens.button.paddingX[size] : 0;
+}
 function sectionRows(children: ReactNode): ReactElement[] {
   return Children.toArray(children).flatMap(child => isValidElement<{ children?: ReactNode }>(child) && child.type === Fragment
     ? sectionRows(child.props.children) : isValidElement(child) ? [child] : []);
@@ -121,24 +129,25 @@ const ListGroupContext = createContext<"inset" | "flush" | null>(null);
 export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius, titleVariant, headingLevel = 3, empty, footer }: KjunListSectionProps) {
   const { colors } = useKjunStyles(), group = useContext(ListGroupContext), corner = radius ?? (group === "inset" ? "lg" : "none");
   const bare = !!title && (titleVariant ? titleVariant === "label" : !description);
-  // Like Web: a rounded section with a label title keeps the label and footer on the page, around its card.
-  const outside = corner !== "none" && bare;
+  // Like Web: a rounded section is a card of rows only; its title, actions and footer stay on the page around it.
+  const outside = corner !== "none";
+  const radiusValue = corner === "none" ? undefined : tokens.card.radii[corner];
   const items = sectionRows(children);
   // Each row keeps its own key, so reordering or filtering rows moves them instead of remounting them.
   const rows = items.length
-    ? <View role="list" accessibilityLabel={ariaLabel || title}>{items.map((row, i) => <ListRowContext.Provider key={row.key ?? i} value={{ divider: divider && i < items.length - 1, compact: density === "compact" }}>{row}</ListRowContext.Provider>)}</View>
-    : hasContent(empty) ? <View style={{ padding: list.padding }}>{content(empty)}</View> : null;
+    ? <View role="list" accessibilityLabel={ariaLabel || title}>{items.map((row, i) => <ListRowContext.Provider key={row.key ?? i} value={{ divider: divider && i < items.length - 1, compact: density === "compact", insetRing: outside, ringRadius: i === 0 || i === items.length - 1 ? radiusValue : undefined }}>{row}</ListRowContext.Provider>)}</View>
+    : hasContent(empty) ? <View style={{ minHeight: list.minimumHeight, justifyContent: "center", paddingHorizontal: list.padding }}><ListEmptyContext.Provider value>{content(empty)}</ListEmptyContext.Provider></View> : null;
   const card = { backgroundColor: surface ? colors.surface : "transparent", ...(corner === "none" ? {} : { borderRadius: tokens.card.radii[corner], overflow: "hidden" as const }) };
   return <View style={{ minWidth: 0, ...(outside ? {} : card) }}>
     {!!(title || description || actions) && <View style={{ flexDirection: "row", alignItems: "flex-start", gap: list.gap, padding: list.padding,
       // A title without a description is a small group header that sits close to its rows; outside a card it starts at the top.
       ...(bare ? { paddingBottom: list.bareHeadingPaddingBottom } : {}), ...(outside ? { paddingTop: 0, paddingBottom: list.outsideLabelGap } : {}) }}>
-      <View style={{ flex: 1 }}>{!!title && <KText accessibilityRole="header" {...(Platform.OS === "web" ? { "aria-level": headingLevel } : {})} style={bare ? { ...typeStyle('controlSmall'), color: colors.textSecondary } : typeStyle('cardTitle')}>{title}</KText>}{!!description && <KText style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption') }}>{description}</KText>}</View>
-      {/* Like Web: heading actions sit on the title line. */}
-      {hasContent(actions) && <View style={{ minHeight: typeStyle(bare ? "controlSmall" : "cardTitle").lineHeight, justifyContent: "center" }}>{content(actions)}</View>}
+      <View style={{ flex: 1 }}>{!!title && <KText {...wordProps} accessibilityRole="header" {...(Platform.OS === "web" ? { "aria-level": headingLevel } : {})} style={{ ...(bare ? { ...typeStyle('controlSmall'), color: colors.textSecondary } : typeStyle('cardTitle')), ...words }}>{title}</KText>}{!!description && <KText {...wordProps} style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'), ...words }}>{description}</KText>}</View>
+      {/* Like Web: actions center on the title's first line and overflow it, so a button never makes the heading taller; a ghost button's label ends on the rows' end line. */}
+      {hasContent(actions) && <View style={{ flexShrink: 0, height: typeStyle(bare ? "controlSmall" : "cardTitle").lineHeight, justifyContent: "center", marginEnd: ghostInset(actions) }}>{content(actions)}</View>}
     </View>}
     {outside ? <View style={card}>{rows}</View> : rows}
-    {hasContent(footer) && <View style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside ? 0 : list.padding }}>{content(footer, { ...typeStyle("caption"), color: colors.textTertiary })}</View>}
+    {hasContent(footer) && <View style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside ? 0 : list.padding }}>{typeof footer === "string" ? <KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{String(footer)}</KText> : content(footer, { ...typeStyle("caption"), color: colors.textTertiary })}</View>}
   </View>;
 }
 export interface KjunListGroupProps {

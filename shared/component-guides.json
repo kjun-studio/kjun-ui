@@ -487,14 +487,14 @@
     "description": "제목과 설명이 있는 범용 목록 묶음입니다.",
     "interaction": "목록 콘텐츠를 배치하며 선택·정렬·요청 상태를 소유하지 않습니다.",
     "differences": "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다.",
-    "states": "자체 선택·비활성·로딩 상태나 크기 API가 없습니다. 설명 없이 제목만 있으면 제목을 작은 보조색 그룹 라벨로 표시하고 첫 행과의 간격을 줄입니다."
+    "states": "자체 선택·비활성·로딩 상태나 크기 API가 없습니다. 설명 없이 제목만 있으면 제목을 작은 보조색 그룹 라벨로 표시하고 첫 행과의 간격을 줄입니다. 둥근 섹션은 행만 카드로 묶고 제목·설명·actions·footer는 카드 밖에 둡니다. actions 버튼은 제목 첫 줄 가운데에 놓여 머리글 높이를 키우지 않습니다. 비어 있을 때 KjunEmpty는 행 한 개 높이의 본문 보조색 안내로 줄어듭니다."
   },
   "KjunListGroup": {
     "slug": "list-group",
     "description": "목록 섹션 여러 개를 같은 간격과 모서리 규칙으로 쌓는 묶음입니다.",
     "interaction": "섹션 배치만 맡으며 선택·정렬·요청 상태를 소유하지 않습니다.",
     "differences": "웹은 div, Native는 View로 구성하고 같은 간격 토큰을 씁니다.",
-    "states": "inset은 섹션을 둥글게(lg) 하고 24px 띄우며, 라벨형 제목과 footer는 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다. 섹션의 radius를 직접 주면 그 값을 따릅니다."
+    "states": "inset은 행을 둥근(lg) 카드로 묶고 24px 띄우며, 제목·설명·actions·footer는 카드 밖에 둡니다. 카드는 윤곽선 없이 면 색만 쓰므로 카드 경계를 보이려면 앱이 background와 surface를 다르게 주세요. flush는 직각 섹션을 8px 간격으로 쌓습니다. 섹션의 radius를 직접 주면 그 값을 따릅니다."
   },
   "KjunListItem": {
     "slug": "list-item",

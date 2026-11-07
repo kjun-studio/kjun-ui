@@ -7,7 +7,7 @@ const summaries = {
   hourCycle: "시계 방식입니다. 24는 00~23시, 12는 오전/오후와 1~12시를 보입니다.",
   readOnly: "값을 보여 주기만 하고 바꾸지 않습니다.",
   showValue: "값 출력을 표시합니다. false여도 숫자 값·키보드 조작·접근성 이름은 유지합니다. label도 없으면 빈 캡션 영역을 만들지 않습니다.",
-  radius: "섹션 모서리를 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)로 둥글게 하고, 안의 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
+  radius: "행을 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)의 둥근 카드로 묶고, 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 제목·설명·actions·footer는 카드 밖에 둡니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
   ariaLabel: "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
   destructive: "제목을 danger 색으로 그립니다(계정 삭제 등). 설명 색과 동작은 그대로입니다.",
   chevron: "행 끝에 이동을 뜻하는 chevron-right 아이콘을 장식으로 둡니다. 화면 낭독기에는 읽히지 않으며 trailing과 함께 쓰면 맨 끝에 옵니다.",
@@ -68,7 +68,7 @@ const childProps = {
   actions: slot("주 콘텐츠와 분리된 보조 행동입니다.", "ReactNode", "버튼·Switch·Checkbox 등의 값과 콜백을 소비자가 연결합니다."),
   children: slot("영역 안에 배치할 소비자 콘텐츠입니다.", "ReactNode", "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다."),
   empty: slot("행이 없을 때 행 자리에 표시할 내용입니다.", "ReactNode", "KjunEmpty 등 빈 상태를 넣습니다. 행이 하나라도 있으면 표시하지 않습니다."),
-  footer: slot("행 아래 둘 보조 안내문입니다.", "ReactNode", "12px 3차 글자색으로 표시합니다. 둥근 섹션의 라벨형 제목과 함께 쓰면 카드 밖 아래에 놓입니다."),
+  footer: slot("행 아래 둘 보조 안내문입니다.", "ReactNode", "12px 3차 글자색으로 표시합니다. 둥근 섹션에서는 카드 밖 아래에 놓입니다."),
   fallback: slot("이미지가 없거나 실패했을 때 표시할 콘텐츠입니다.", "ReactNode", "실패해도 이미지 컨테이너의 비율과 대체 텍스트를 유지합니다."),
 };
 const listRowContent = slot("제목·설명 아래 같은 시작선에 놓는 표시용 내용입니다(예산·진행 막대, 보조 수치).", "ReactNode", "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 화면 낭독기는 이 내용을 따로 읽지 않으니 금액·진행률은 ariaLabel에 넣으세요.");
@@ -117,7 +117,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (name === "KjunListRow" && (key === "titleLines" || key === "descriptionLines")) entry = { summary: (key === "titleLines" ? "제목" : "설명") + "을 이 줄 수까지만 보이고 넘치면 말줄임표로 줄입니다. 생략하면 모두 줄바꿈합니다." };
     else if (name === "KjunListRow" && key === "checked") entry = detail("행 전체를 스위치로 만듭니다.", { "동작": platform === "vue3" ? "v-model:checked로 연결합니다. 행 어디를 눌러도 update:checked로 반대 값을 알리고, 행 끝 스위치는 장식입니다. 행이 switch 역할과 checked 상태를 가집니다." : "행 어디를 눌러도 onCheckedChange로 반대 값을 알리고, 행 끝 스위치는 장식입니다. 행이 switch 역할과 checked 상태를 가집니다." });
     else if (name === "KjunListSection" && key === "headingLevel") entry = detail("섹션 제목의 제목 수준입니다.", { "값": "2·3·4 중 하나이며 기본 3입니다. 페이지의 제목 구조에 맞춰 화면 낭독기의 제목 탐색 순서를 정합니다. Native는 Native Web에서 aria-level로 알리고, 기기에는 제목 역할만 있습니다." });
-    else if (name === "KjunListGroup" && key === "variant") entry = detail("섹션을 쌓는 모양입니다.", { "값": "inset(기본)은 섹션을 lg 모서리로 둥글게 하고 24px 띄우며, 라벨형 제목과 footer를 카드 밖에 둡니다. flush는 직각 섹션을 8px 간격으로 쌓습니다.", "섹션 설정": "섹션에 radius를 직접 주면 그 값이 우선합니다." });
+    else if (name === "KjunListGroup" && key === "variant") entry = detail("섹션을 쌓는 모양입니다.", { "값": "inset(기본)은 행을 lg 모서리 카드로 묶고 24px 띄우며, 제목·설명·actions·footer는 카드 밖에 둡니다. 카드는 면 색만 쓰므로 앱이 background와 surface를 다르게 줄 때 경계가 보입니다. flush는 직각 섹션을 8px 간격으로 쌓습니다.", "섹션 설정": "섹션에 radius를 직접 주면 그 값이 우선합니다." });
     else if (name === "KjunListSection" && key === "titleVariant") entry = detail("섹션 제목 모양을 고릅니다.", { "값": "title은 16px 제목, label은 행 위의 작은 라벨입니다. 생략하면 설명이 있는 제목은 title, 없는 제목은 label입니다." });
     else if (name === "KjunListRow" && key === "icon") entry = detail("앞쪽 열에 그릴 아이콘 이름입니다.", { "크기·색": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 24px 앞쪽 열 가운데에 놓습니다. 본문과의 간격은 12px입니다.", "leading과 함께": platform === "vue3" ? "leading 슬롯이 있으면 슬롯을 그립니다." : "leading이 있으면 leading을 그립니다." });
     else if (childProps[key]) entry = childProps[key];
