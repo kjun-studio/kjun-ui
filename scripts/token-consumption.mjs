@@ -9,6 +9,9 @@ import { readbackAliases } from './token-aliases.mjs';
 export const platformSpecific = {
   'table.columnWidth': { excludes: ['react', 'vue3'], reason: 'Native numeric column fallback; HTML tables use content layout and explicit column widths.' },
   'extensions.chip.nativeRemoveSize': { excludes: ['react', 'vue3'], reason: 'Native removal touch target; Web consumes removeSize.' },
+  'extensions.chip.typography.sm.fontWeight': { excludes: ['react', 'vue3'], reason: 'The size role supplies size and line; Web labels take chip.fontWeight at every size.' },
+  'extensions.chip.typography.md.fontWeight': { excludes: ['react', 'vue3'], reason: 'The size role supplies size and line; Web labels take chip.fontWeight at every size.' },
+  'extensions.chip.typography.lg.fontWeight': { excludes: ['react', 'vue3'], reason: 'The size role supplies size and line; Web labels take chip.fontWeight at every size.' },
   'extensions.toast.minWidth': { excludes: ['native'], reason: 'Desktop Web minimum width; Native and narrow Web must fit the viewport.' },
   'extensions.choice.minimumHeight': { excludes: ['native'], reason: 'Desktop choice row; Native uses native.minimumTouchTarget.' },
   'table.selectionSize': { excludes: ['native'], reason: 'HTML checkbox footprint; Native composes the size-specific Checkbox and minimum touch target.' },

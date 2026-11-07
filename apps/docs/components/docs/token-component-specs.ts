@@ -45,8 +45,8 @@ export const componentSpecs: ComponentSpec[] = [
   },
   {
     name: 'KjunChip', label: 'Chip', path: '/components/chip', group: '표시·로딩', summary: '여백과 삭제 영역',
-    rows: [['모서리와 내부 여백', `알약 형태 · 반경 ${ext.chip.radius}px · 상하 ${ext.chip.paddingY}px · 좌우 ${ext.chip.paddingX}px`],
-      ['삭제 영역', `Web 최소 ${ext.chip.removeSize}px · Native ${ext.chip.nativeRemoveSize}px`]],
+    rows: [['모서리와 내부 여백', `알약 형태 · 반경 ${ext.chip.radius}px · 상하 ${ext.chip.paddingY}px · 좌우 ${scale(ext.chip.paddingX)}`],
+      ['삭제 영역', `보이는 원 ${ext.chip.removeSize}px · Native 누름 영역 ${ext.chip.nativeRemoveSize}px`]],
   },
   {
     name: 'KjunCard', label: 'Card', path: '/components/card', group: '표시·로딩', summary: '모서리와 기본 여백',

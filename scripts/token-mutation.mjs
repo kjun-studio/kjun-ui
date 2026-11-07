@@ -63,7 +63,7 @@ await change('geometry-extensions', ({ extensions:e }) => {
   e.menu.radius={$ref:'radius.radius16'};
   e.navigation.padding={$ref:'dimension.value24'}; e.topNavigation.gap={$ref:'dimension.value20'};
   e.list.padding={$ref:'dimension.value24'}; e.list.gap={$ref:'dimension.value20'};
-  e.badge.padding.xs.y={$ref:'dimension.value4'}; e.chip.radius={$ref:'radius.radius16'}; e.chip.paddingX={$ref:'dimension.value12'};
+  e.badge.padding.xs.y={$ref:'dimension.value4'}; e.chip.radius={$ref:'radius.radius16'}; e.chip.paddingX={sm:{$ref:'dimension.value12'},md:{$ref:'dimension.value12'},lg:{$ref:'dimension.value12'}};
   e.chip.typography={sm:{$ref:'typography.meta'},md:{$ref:'typography.controlLarge'},lg:{$ref:'typography.cardTitle'}};
   e.chip.removeSize=40;
   e.drawer.bottomRadius={$ref:'radius.radius20'}; e.drawer.paddingX={$ref:'dimension.value24'};

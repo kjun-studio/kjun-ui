@@ -385,9 +385,14 @@
   --_kjun-extension-chip-typography-lg-font-weight: 400;
   --_kjun-extension-chip-typography-lg-letter-spacing-em: 0em;
   --_kjun-extension-chip-radius: 9999px;
-  --_kjun-extension-chip-padding-x: 10px;
+  --_kjun-extension-chip-font-weight: 500;
+  --_kjun-extension-chip-padding-x-sm: 8px;
+  --_kjun-extension-chip-padding-x-md: 12px;
+  --_kjun-extension-chip-padding-x-lg: 16px;
   --_kjun-extension-chip-padding-y: 4px;
-  --_kjun-extension-chip-gap: 6px;
+  --_kjun-extension-chip-gaps-sm: 4px;
+  --_kjun-extension-chip-gaps-md: 6px;
+  --_kjun-extension-chip-gaps-lg: 8px;
   --_kjun-extension-chip-remove-size: 24px;
   --_kjun-extension-chip-native-remove-size: 44px;
   --_kjun-extension-chip-icon-sizes-sm: 14px;

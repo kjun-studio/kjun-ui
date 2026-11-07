@@ -22,16 +22,21 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.evaluate(scale => { document.documentElement.style.fontSize = scale * 16 + 'px'; }, scale);
       for (const size of ['sm', 'md', 'lg'] as const) {
         const box = page.getByTestId(`chip-${size}`);
-        await typography(box.getByText(`칩 ${size}`, { exact: true }), chip.typography[size], scale);
+        // Every size keeps its text role's size and line, at the one label weight.
+        await typography(box.getByText(`칩 ${size}`, { exact: true }), { ...chip.typography[size], fontWeight: chip.fontWeight }, scale);
         const remove = box.getByRole('button', { name: `삭제 ${size}`, exact: true });
-        const dimension = platform === 'native' ? chip.nativeRemoveSize : chip.removeSize;
-        await expect(remove).toHaveCSS(platform === 'native' ? 'width' : 'min-width', px(dimension));
-        await expect(remove).toHaveCSS(platform === 'native' ? 'height' : 'min-height', px(dimension));
+        // The drawn target is the same everywhere; Native reaches 44px through hitSlop, outside the chip's own height.
+        await expect(remove).toHaveCSS(platform === 'native' ? 'width' : 'min-width', px(chip.removeSize));
+        await expect(remove).toHaveCSS(platform === 'native' ? 'height' : 'min-height', px(chip.removeSize));
         if (scale === 1) {
           await expect(remove.locator('svg')).toHaveCSS('width', px(chip.removeIconSizes[size]));
           // The Web removal target overlaps the chip padding instead of stretching sm to md height.
-          if (platform !== 'native') expect((await remove.locator('..').boundingBox())!.height)
-            .toBe(Math.max(chip[size], chip.typography[size].lineHeightPx + 2 * chip.paddingY, chip.removeSize));
+          const body = remove.locator('..');
+          expect((await body.boundingBox())!.height).toBe(Math.max(chip[size], chip.typography[size].lineHeightPx + 2 * chip.paddingY, chip.removeSize));
+          // Padding and gaps grow with the size; the trailing side trims until the x glyph's inset matches the leading padding.
+          await expect(body).toHaveCSS('padding-left', px(chip.paddingX[size]));
+          await expect(body).toHaveCSS('padding-right', px(chip.paddingX[size] - (chip.removeSize - chip.removeIconSizes[size]) / 2));
+          await expect(body).toHaveCSS('column-gap', px(chip.gaps[size]));
         }
       }
     }
@@ -41,6 +46,26 @@ for (const platform of ['react', 'vue3', 'native']) {
     // Send an actual pointer click while bypassing Playwright's disabled wait.
     await disabled.click({ force: true });
     await expect(page.getByTestId('actions')).toHaveText('0');
+    // A long label stays on one line and ends in an ellipsis, its full text still in the DOM.
+    const long = page.getByTestId('chip-long');
+    const longLabel = long.getByText('아주 긴 라벨이', { exact: false });
+    expect((await long.getByRole('button').locator('..').boundingBox())!.height).toBe(chip.md);
+    expect(await longLabel.evaluate(node => node.scrollWidth > node.clientWidth)).toBe(true);
+    if (platform !== 'native') await expect(longLabel).toHaveAttribute('title', /말줄임으로 끝납니다$/);
+    // The x is quieter than the label; hover and press tint it, and a disabled one does not react.
+    const live = page.getByRole('button', { name: '삭제 md', exact: true });
+    const fill = () => live.evaluate(node => getComputedStyle(node).backgroundColor);
+    const rest = await fill();
+    await live.hover();
+    await expect.poll(fill).not.toBe(rest);
+    const hovered = await fill();
+    await page.mouse.down();
+    await expect.poll(fill).not.toBe(hovered);
+    await page.mouse.move(0, 0);
+    await page.mouse.up();
+    await disabled.hover({ force: true });
+    expect(await disabled.evaluate(node => getComputedStyle(node).backgroundColor)).toBe(rest);
+    await page.mouse.move(0, 0);
     await page.setViewportSize({ width: 320, height: 800 });
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await captureReview(page, { path: testInfo.outputPath('chip-roles.png') });

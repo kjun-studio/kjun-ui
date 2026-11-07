@@ -515,7 +515,7 @@
       "title": "Chip",
       "docs": "/components/chip",
       "category": "actions",
-      "differences": "Native 삭제 버튼은 최소 44px 터치 영역을 확보합니다.",
+      "differences": "Native는 칩 높이를 크기대로 두고 삭제 버튼의 누르는 영역만 44px로 넓힙니다. 웹은 라벨에 전체 문구를 title로 둡니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

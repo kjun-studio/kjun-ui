@@ -21,7 +21,7 @@ export const KjunChip = defineComponent({
     return () => (
       <span class="kjun-chip" data-size={props.size} data-disabled={String(props.disabled)} data-removable={String(props.removable)}>
         {props.icon && <KjunIcon name={props.icon} size={tokens.extensions.chip.iconSizes[props.size]} />}
-        <span>{props.label}</span>
+        <span title={props.label}>{props.label}</span>
         {props.removable && (
           <button type="button" aria-label={props.removeLabel || m.value.remove(props.label)} disabled={props.disabled} onClick={() => emit("remove")}>
             <KjunIcon name="x" size={tokens.extensions.chip.removeIconSizes[props.size]} />

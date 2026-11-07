@@ -14,6 +14,7 @@ const Cases = defineComponent(() => {
     <div data-testid="disabled-chip" style={{ display: 'flex', alignItems: 'flex-start' }}>
       <K.KjunChip label="비활성 칩" removable disabled removeLabel="비활성 삭제" onRemove={() => s.actions += 100} />
     </div>
+    <div data-testid="chip-long" style={{ display: 'flex', alignItems: 'flex-start', width: '220px' }}><K.KjunChip label="아주 긴 라벨이 들어가도 칩은 한 줄을 지키고 말줄임으로 끝납니다" removable removeLabel="긴 칩 삭제" /></div>
     <button onClick={() => feedback.toast.info(toastMessage, { title: '토큰 알림', duration: 60000, action: { label: '알림 실행', onClick: () => s.actions++ } })}>알림 열기</button>
     <button onClick={() => feedback.toast.success('짧은 알림', { compact: true, duration: 60000 })}>짧은 알림 열기</button>
     <button onClick={() => feedback.toast.error('남는 오류')}>오류 알림 열기</button>

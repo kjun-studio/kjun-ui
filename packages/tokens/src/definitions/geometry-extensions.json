@@ -148,9 +148,18 @@
         "lg": { "$ref": "typography.input" }
       },
       "radius": { "$ref": "radius.radius9999" },
-      "paddingX": { "$ref": "dimension.value10" },
+      "fontWeight": { "$ref": "typography.label.fontWeight" },
+      "paddingX": {
+        "sm": { "$ref": "dimension.value8" },
+        "md": { "$ref": "dimension.value12" },
+        "lg": { "$ref": "dimension.value16" }
+      },
       "paddingY": { "$ref": "dimension.value4" },
-      "gap": { "$ref": "dimension.value6" },
+      "gaps": {
+        "sm": { "$ref": "dimension.value4" },
+        "md": { "$ref": "dimension.value6" },
+        "lg": { "$ref": "dimension.value8" }
+      },
       "removeSize": 24,
       "nativeRemoveSize": { "$ref": "native.minimumTouchTarget" }
     },

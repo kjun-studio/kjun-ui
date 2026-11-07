@@ -14791,7 +14791,7 @@
     "name": "KjunChip",
     "path": "/components/chip",
     "related": "input-settings",
-    "description": "선택된 항목의 라벨과 선택적인 삭제 행동을 표시합니다.",
+    "description": "고른 값의 라벨과 선택적인 삭제 행동을 표시합니다.",
     "platforms": {
       "vue3": {
         "figures": [
@@ -14865,7 +14865,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "removable로 삭제 버튼을 표시하고 disabled로 삭제 요청을 막습니다. 필터 선택은 FilterGroup을 사용합니다."
+        "note": "Chip은 고른 값을 보여 주는 라벨이라 알약 모양입니다. 고르는 동작은 모서리가 있는 FilterGroup, 표시 전용은 Badge를 사용합니다. 긴 라벨은 한 줄 말줄임으로 끝납니다. removable로 삭제 버튼을 표시하고 disabled로 삭제 요청을 막습니다."
       },
       "react": {
         "figures": [
@@ -14939,7 +14939,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "removable로 삭제 버튼을 표시하고 disabled로 삭제 요청을 막습니다. 필터 선택은 FilterGroup을 사용합니다."
+        "note": "Chip은 고른 값을 보여 주는 라벨이라 알약 모양입니다. 고르는 동작은 모서리가 있는 FilterGroup, 표시 전용은 Badge를 사용합니다. 긴 라벨은 한 줄 말줄임으로 끝납니다. removable로 삭제 버튼을 표시하고 disabled로 삭제 요청을 막습니다."
       },
       "native": {
         "figures": [
@@ -15013,7 +15013,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "removable로 삭제 버튼을 표시하고 disabled로 삭제 요청을 막습니다. 필터 선택은 FilterGroup을 사용합니다."
+        "note": "Chip은 고른 값을 보여 주는 라벨이라 알약 모양입니다. 고르는 동작은 모서리가 있는 FilterGroup, 표시 전용은 Badge를 사용합니다. 긴 라벨은 한 줄 말줄임으로 끝납니다. removable로 삭제 버튼을 표시하고 disabled로 삭제 요청을 막습니다."
       }
     }
   },
