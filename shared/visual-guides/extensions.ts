@@ -2,7 +2,11 @@ import { part as p, textPart as t, type GuideAuthor } from "./types.ts";
 export const extensions: Record<string, GuideAuthor> = {
   KjunListRow: {
     parts: [t("주 행동 영역", "제목과 설명을 누르면 프로필 설정을 엽니다.", "프로필 설정"), t("설명", "주 행동의 목적을 보충합니다.", "이름과 사진을 변경합니다.", true), t("보조 행동", "주 행동과 분리된 공유 버튼입니다. 함께 실행되지 않습니다.", "공유", true)],
-    related: "generic-lists", states: [{ id: "long", label: "긴 라벨", description: "행 높이를 늘려 제목과 설명을 모두 표시합니다.", settings: { long: true } }],
+    related: "generic-lists", states: [
+      { id: "xs", label: "xs 원형 배경", description: "지름 24px 배경과 16px 아이콘입니다. 색상은 적용 프로젝트가 지정합니다.", settings: { leadingSize: "xs", iconBackground: true } },
+      { id: "lg", label: "lg 원형 배경", description: "지름 56px 배경과 28px 아이콘입니다. 앞 영역 크기에 맞춰 구분선과 본문 시작선을 옮깁니다.", settings: { leadingSize: "lg", iconBackground: true } },
+      { id: "long", label: "긴 라벨", description: "행 높이를 늘려 제목과 설명을 모두 표시합니다. 큰 앞 영역도 잘리지 않습니다.", settings: { long: true, leadingSize: "lg" } },
+    ],
   },
   KjunListSection: {
     parts: [t("섹션 제목", "목록 묶음의 목적입니다.", "설정", true), t("섹션 설명", "목록에 포함된 작업을 설명합니다.", "계정과 알림을 관리합니다.", true), p("행 목록", "소비자가 ListRow와 자식 컨트롤을 배치합니다.", 'ul.kjun-list, [role="list"]')], related: "generic-lists",

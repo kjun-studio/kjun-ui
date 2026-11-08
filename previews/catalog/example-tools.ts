@@ -13,6 +13,7 @@ export interface ExampleContext {
   set: (key: string, value: any) => void;
   feedback: KjunFeedback;
   domainColors?: Record<string, string>;
+  colors?: Record<string, string>;
   disabled?: boolean;
   loading?: boolean;
   error?: boolean;
@@ -287,6 +288,7 @@ export function createExampleTools(c: ExampleContext) {
   return {
     h,
     domainColors: c.domainColors || {},
+    colors: c.colors || {},
     platform,
     values,
     set,

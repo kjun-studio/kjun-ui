@@ -1,14 +1,18 @@
 import { sampleImage, type ExampleTools } from "./example-tools";
 export function renderExtensionExample(name: string, tools: ExampleTools): any {
-  const { h, get, set, change, action, button, settings, disabled, error, platform } = tools;
+  const { h, get, set, change, action, button, settings, disabled, error, platform, colors } = tools;
   switch (name) {
     case "KjunListRow":
-    case "KjunListSection":
+    case "KjunListSection": {
+      const leadingSize = ['xs', 'sm', 'md', 'lg'].includes(settings.leadingSize) ? settings.leadingSize : undefined;
+      const iconColor = settings.iconColor ? platform === 'native' ? colors.brand : 'var(--kjun-brand)' : undefined;
+      const iconBackground = settings.iconBackground ? platform === 'native' ? colors.secondary : 'var(--kjun-secondary)' : undefined;
       return h("KjunListSection", { title: "설정", description: "계정과 알림을 관리합니다." }, [
-        h("KjunListRow", { title: settings.long ? "모든 기기에서 사용할 프로필과 계정 표시 이름" : "프로필 설정", description: "이름과 사진을 변경합니다.", disabled, ...action(() => set("message", "프로필 설정 열기")) }, undefined, { leading: h("KjunAvatar", { name: "김하늘", size: "sm" }), actions: h("KjunButton", { variant: "secondary", size: "sm", ...action(() => set("message", "프로필 공유")) }, "공유") }),
-        h("KjunListRow", { icon: "bell", title: "알림 받기", description: "행 어디를 눌러도 켜고 끕니다.", disabled, checked: get("notifications", true), onCheckedChange: change("notifications") }),
-        h("KjunListRow", { icon: "lock", title: "비밀번호", chevron: true, disabled, ...action(() => set("message", "비밀번호 열기")) }, undefined, { trailing: "3개월 전 변경" }),
+        h("KjunListRow", { title: settings.long ? "모든 기기에서 사용할 프로필과 계정 표시 이름" : "프로필 설정", description: "이름과 사진을 변경합니다.", leadingSize, disabled, ...action(() => set("message", "프로필 설정 열기")) }, undefined, { leading: h("KjunAvatar", { name: "김하늘", size: leadingSize ?? "sm" }), actions: h("KjunButton", { variant: "secondary", size: "sm", ...action(() => set("message", "프로필 공유")) }, "공유") }),
+        h("KjunListRow", { icon: "bell", leadingSize, iconColor, iconBackground, title: "알림 받기", description: "행 어디를 눌러도 켜고 끕니다.", disabled, checked: get("notifications", true), onCheckedChange: change("notifications") }),
+        h("KjunListRow", { icon: "lock", leadingSize, iconColor, iconBackground, title: "비밀번호", chevron: true, disabled, ...action(() => set("message", "비밀번호 열기")) }, undefined, { trailing: "3개월 전 변경" }),
       ]);
+    }
     case "KjunListGroup":
       return h("KjunListGroup", {}, [
         h("KjunListSection", { title: "계정" }, [h("KjunListRow", { title: "프로필", chevron: true, ...action(() => set("message", "프로필 열기")) }, undefined, { trailing: "김하늘" })]),

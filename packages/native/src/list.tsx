@@ -3,7 +3,8 @@ import { typeStyle } from "./typography";
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { Children, Fragment, cloneElement, createContext, isValidElement, useContext, useEffect, useId, useLayoutEffect, useState, type ReactElement, type ReactNode } from "react";
 import { listRowChoice, listRowKind, listSectionShape, warnListRowProps, type ListChoiceValue, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
-import { View, Platform, type GestureResponderEvent, type TextStyle } from "react-native";
+import { View, Platform, type ColorValue, type GestureResponderEvent, type TextStyle } from "react-native";
+import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 import { AccessiblePressable as Pressable, type FocusRingRadius } from "./a11y";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { KText, content } from "./internal";
@@ -16,6 +17,7 @@ import { useKjunStyles } from "./provider";
 // row's ring follows.
 const ListRowContext = createContext<{ divider: boolean; compact: boolean; selection: ListSelection; ringRadius?: FocusRingRadius }>({ divider: true, compact: false, selection: { mode: "none" } });
 export type { ListChoiceValue } from "../../../shared/package-runtime/list-row";
+export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 const list = tokens.extensions.list;
 // Like Web's ::after divider: it starts where the text does, past the leading column when there is one.
 function Divider({ inset }: { inset: number }) {
@@ -26,6 +28,12 @@ export interface KjunListRowProps {
   title: string; description?: string;
   /** Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority. */
   icon?: string;
+  /** Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28. Custom content keeps its own size. */
+  leadingSize?: ListLeadingSize;
+  /** App-owned color for the built-in icon; overrides its default/destructive color. */
+  iconColor?: ColorValue;
+  /** App-owned circular background color for the built-in icon; defaults leadingSize to sm. */
+  iconBackground?: ColorValue;
   leading?: ReactNode; trailing?: ReactNode; actions?: ReactNode;
   /** Web link address (Native Web only); on a device pass onPress and navigate with the app's router. */
   href?: string;
@@ -61,7 +69,7 @@ function SwitchMark({ on }: { on: boolean }) {
 // Like Web's keep-all: Korean wraps between words (iOS through its Hangul word strategy, a Text prop).
 const words = (Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } : {}) as unknown as TextStyle;
 const wordProps = { lineBreakStrategyIOS: "hangul-word" as const };
-export function KjunListRow({ title, description, icon, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, value, onPress: ownPress, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
+export function KjunListRow({ title, description, icon, leadingSize, iconColor, iconBackground, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, value, onPress: ownPress, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
   const { colors } = useKjunStyles(), { divider, compact, selection, ringRadius } = useContext(ListRowContext);
   const choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   const onPress = choice.press ? (event: GestureResponderEvent) => { choice.press(); ownPress?.(event); } : ownPress;
@@ -69,12 +77,13 @@ export function KjunListRow({ title, description, icon, leading, trailing, actio
   const deviceLink = Platform.OS !== "web" && !!href && !onPress;
   const looseChoice = (kind === "radio" || kind === "checkbox") && selection.mode === "none";
   useEffect(() => warnListRowProps({ checked, selected, href, chevron, deviceLink, looseChoice }), [checked !== undefined, selected !== undefined, !!href, chevron, deviceLink, looseChoice]);
-  const hasLeading = hasContent(leading), leadingWidth = hasLeading ? list.leadingWidth : tokens.dimension.value24;
-  const front = hasLeading ? content(leading) : icon ? <KjunIcon name={icon} size={list.iconSize} color={destructive ? colors.danger : colors.textSecondary} /> : null;
+  const hasLeading = hasContent(leading), geometry = listLeadingGeometry({ size: leadingSize, custom: hasLeading, background: iconBackground != null }), leadingWidth = geometry.width;
+  const glyph = icon ? <KjunIcon name={icon} size={geometry.iconSize} color={iconColor ?? (destructive ? colors.danger : colors.textSecondary)} /> : null;
+  const front = hasLeading ? content(leading) : glyph && iconBackground != null ? <View accessible={false} style={{ width: leadingWidth, height: leadingWidth, borderRadius: list.iconBackgroundRadius, alignItems: "center", justifyContent: "center", backgroundColor: iconBackground }}>{glyph}</View> : glyph;
   // Like Web: with a description the leading column covers the first two lines, so a long row keeps its icon beside the title.
-  const leadingHeight = description ? typeStyle("control").lineHeight + list.descriptionGap + typeStyle("caption").lineHeight : undefined;
+  const leadingHeight = Math.max(geometry.size ? leadingWidth : 0, description ? typeStyle("control").lineHeight + list.descriptionGap + typeStyle("caption").lineHeight : 0);
   const parts = <>
-    {front && <View style={{ minWidth: leadingWidth, alignItems: "center", justifyContent: "center", ...(leadingHeight ? { alignSelf: "flex-start", height: leadingHeight } : {}) }}>{front}</View>}
+    {front && <View style={{ minWidth: leadingWidth, ...(geometry.size ? { width: leadingWidth } : {}), flexShrink: 0, minHeight: leadingHeight, alignItems: "center", justifyContent: "center", ...(description ? { alignSelf: "flex-start" } : {}) }}>{front}</View>}
     <View style={{ flex: 1, minWidth: 0 }}>
       <KText {...wordProps} numberOfLines={titleLines} style={{ ...typeStyle('control'), ...words, ...(destructive ? { color: colors.danger } : {}) }}>{title}</KText>
       {!!description && <KText {...wordProps} numberOfLines={descriptionLines} style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'), ...words }}>{description}</KText>}

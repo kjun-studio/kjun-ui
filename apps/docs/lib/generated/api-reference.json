@@ -29059,12 +29059,77 @@
             "summary": "앞쪽 열에 그릴 아이콘 이름입니다.",
             "details": [
               {
+                "label": "기본",
+                "text": "leadingSize·iconBackground를 생략하면 24px 열에 20px 아이콘을 그립니다. 본문 간격은 12px입니다. 기본색은 textSecondary이고 destructive면 danger입니다."
+              },
+              {
                 "label": "크기·색",
-                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 24px 앞쪽 열 가운데에 놓습니다. 본문과의 간격은 12px입니다."
+                "text": "leadingSize로 영역과 아이콘 크기를 함께 고르고 iconColor·iconBackground로 앱의 색상을 지정합니다."
               },
               {
                 "label": "leading과 함께",
                 "text": "leading 슬롯이 있으면 슬롯을 그립니다."
+              }
+            ],
+            "source": "packages/vue3/src/list.tsx",
+            "example": "/components/list-row#preview"
+          },
+          {
+            "name": "leadingSize",
+            "type": "\"xs\" | \"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "—",
+            "description": "Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28.",
+            "summary": "앞쪽 정사각형 영역과 기본 아이콘의 크기입니다.",
+            "details": [
+              {
+                "label": "크기",
+                "text": "xs 24/16px, sm 32/20px, md 40/24px, lg 56/28px(영역/아이콘). 구분선은 크기에 맞춘 본문 시작선에서 시작합니다."
+              },
+              {
+                "label": "생략",
+                "text": "배경이 있는 기본 아이콘은 sm, 배경 없는 아이콘은 기존 24px 열·20px 아이콘, 커스텀 leading은 최소 40px입니다. 명시한 xs는 24/16px로 기존 기본값과 다릅니다."
+              },
+              {
+                "label": "커스텀 leading",
+                "text": "배치 영역만 정합니다. 콘텐츠 자체 크기는 소비자가 맞추고, 아이콘 색상·배경은 적용하지 않습니다."
+              },
+              {
+                "label": "높이",
+                "text": "행은 콘텐츠에 맞춰 커집니다. 설명이 길어도 앞 영역을 첫 제목·설명 줄에 맞추며 큰 leading이 잘리지 않습니다."
+              }
+            ],
+            "source": "packages/vue3/src/list.tsx",
+            "example": "/components/list-row#preview"
+          },
+          {
+            "name": "iconColor",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "App-owned CSS color for the built-in icon; overrides its default/destructive color.",
+            "summary": "기본 아이콘의 앱 소유 색상입니다. 지정하면 기본 textSecondary·destructive의 danger보다 우선하며 제목 색상은 바꾸지 않습니다. 생략하면 기존 색상 규칙을 유지합니다. 커스텀 leading에는 적용하지 않습니다.",
+            "source": "packages/vue3/src/list.tsx"
+          },
+          {
+            "name": "iconBackground",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "App-owned circular background color for the built-in icon; defaults leadingSize to sm.",
+            "summary": "기본 아이콘 뒤의 원형 배경 색상입니다.",
+            "details": [
+              {
+                "label": "기본",
+                "text": "생략하면 배경이 없습니다. 색상을 지정하고 leadingSize를 생략하면 sm(지름 32px·아이콘 20px)을 사용합니다."
+              },
+              {
+                "label": "색상",
+                "text": "색상은 앱이 제공합니다. 패키지가 팔레트나 색상 대비를 자동으로 선택하지 않으므로 iconColor와 함께 읽기 좋은 조합을 지정하세요."
+              },
+              {
+                "label": "범위",
+                "text": "icon이 없거나 커스텀 leading이 있으면 적용하지 않습니다. 배경은 장식이며 행의 클릭·키보드·접근성 동작은 같습니다."
               }
             ],
             "source": "packages/vue3/src/list.tsx",
@@ -29262,7 +29327,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "ListRow에서는 최소 40px 영역과 본문 간격 12px를 사용합니다. 24px 영역의 기본 아이콘은 icon으로 지정하세요. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
+                "text": "ListRow에서는 기본 최소 40px 영역과 본문 간격 12px를 사용합니다. leadingSize를 지정하면 해당 정사각형 영역을 예약합니다. 아바타·이미지 자체 크기는 소비자가 지정하며 icon·iconColor·iconBackground는 무시합니다. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
               }
             ],
             "example": "/components/list-row#preview"
@@ -29339,12 +29404,77 @@
             "summary": "앞쪽 열에 그릴 아이콘 이름입니다.",
             "details": [
               {
+                "label": "기본",
+                "text": "leadingSize·iconBackground를 생략하면 24px 열에 20px 아이콘을 그립니다. 본문 간격은 12px입니다. 기본색은 textSecondary이고 destructive면 danger입니다."
+              },
+              {
                 "label": "크기·색",
-                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 24px 앞쪽 열 가운데에 놓습니다. 본문과의 간격은 12px입니다."
+                "text": "leadingSize로 영역과 아이콘 크기를 함께 고르고 iconColor·iconBackground로 앱의 색상을 지정합니다."
               },
               {
                 "label": "leading과 함께",
                 "text": "leading이 있으면 leading을 그립니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-row#preview"
+          },
+          {
+            "name": "leadingSize",
+            "type": "\"xs\" | \"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "—",
+            "description": "Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28. Custom content keeps its own size.",
+            "summary": "앞쪽 정사각형 영역과 기본 아이콘의 크기입니다.",
+            "details": [
+              {
+                "label": "크기",
+                "text": "xs 24/16px, sm 32/20px, md 40/24px, lg 56/28px(영역/아이콘). 구분선은 크기에 맞춘 본문 시작선에서 시작합니다."
+              },
+              {
+                "label": "생략",
+                "text": "배경이 있는 기본 아이콘은 sm, 배경 없는 아이콘은 기존 24px 열·20px 아이콘, 커스텀 leading은 최소 40px입니다. 명시한 xs는 24/16px로 기존 기본값과 다릅니다."
+              },
+              {
+                "label": "커스텀 leading",
+                "text": "배치 영역만 정합니다. 콘텐츠 자체 크기는 소비자가 맞추고, 아이콘 색상·배경은 적용하지 않습니다."
+              },
+              {
+                "label": "높이",
+                "text": "행은 콘텐츠에 맞춰 커집니다. 설명이 길어도 앞 영역을 첫 제목·설명 줄에 맞추며 큰 leading이 잘리지 않습니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-row#preview"
+          },
+          {
+            "name": "iconColor",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "App-owned CSS color for the built-in icon; overrides its default/destructive color.",
+            "summary": "기본 아이콘의 앱 소유 색상입니다. 지정하면 기본 textSecondary·destructive의 danger보다 우선하며 제목 색상은 바꾸지 않습니다. 생략하면 기존 색상 규칙을 유지합니다. 커스텀 leading에는 적용하지 않습니다.",
+            "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "iconBackground",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "App-owned circular background color for the built-in icon; defaults leadingSize to sm.",
+            "summary": "기본 아이콘 뒤의 원형 배경 색상입니다.",
+            "details": [
+              {
+                "label": "기본",
+                "text": "생략하면 배경이 없습니다. 색상을 지정하고 leadingSize를 생략하면 sm(지름 32px·아이콘 20px)을 사용합니다."
+              },
+              {
+                "label": "색상",
+                "text": "색상은 앱이 제공합니다. 패키지가 팔레트나 색상 대비를 자동으로 선택하지 않으므로 iconColor와 함께 읽기 좋은 조합을 지정하세요."
+              },
+              {
+                "label": "범위",
+                "text": "icon이 없거나 커스텀 leading이 있으면 적용하지 않습니다. 배경은 장식이며 행의 클릭·키보드·접근성 동작은 같습니다."
               }
             ],
             "source": "packages/react/src/list.tsx",
@@ -29364,7 +29494,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "ListRow에서는 최소 40px 영역과 본문 간격 12px를 사용합니다. 24px 영역의 기본 아이콘은 icon으로 지정하세요. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
+                "text": "ListRow에서는 기본 최소 40px 영역과 본문 간격 12px를 사용합니다. leadingSize를 지정하면 해당 정사각형 영역을 예약합니다. 아바타·이미지 자체 크기는 소비자가 지정하며 icon·iconColor·iconBackground는 무시합니다. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
               }
             ],
             "source": "packages/react/src/list.tsx",
@@ -29628,12 +29758,77 @@
             "summary": "앞쪽 열에 그릴 아이콘 이름입니다.",
             "details": [
               {
+                "label": "기본",
+                "text": "leadingSize·iconBackground를 생략하면 24px 열에 20px 아이콘을 그립니다. 본문 간격은 12px입니다. 기본색은 textSecondary이고 destructive면 danger입니다."
+              },
+              {
                 "label": "크기·색",
-                "text": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 24px 앞쪽 열 가운데에 놓습니다. 본문과의 간격은 12px입니다."
+                "text": "leadingSize로 영역과 아이콘 크기를 함께 고르고 iconColor·iconBackground로 앱의 색상을 지정합니다."
               },
               {
                 "label": "leading과 함께",
                 "text": "leading이 있으면 leading을 그립니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-row#preview"
+          },
+          {
+            "name": "leadingSize",
+            "type": "\"xs\" | \"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "—",
+            "description": "Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28. Custom content keeps its own size.",
+            "summary": "앞쪽 정사각형 영역과 기본 아이콘의 크기입니다.",
+            "details": [
+              {
+                "label": "크기",
+                "text": "xs 24/16px, sm 32/20px, md 40/24px, lg 56/28px(영역/아이콘). 구분선은 크기에 맞춘 본문 시작선에서 시작합니다."
+              },
+              {
+                "label": "생략",
+                "text": "배경이 있는 기본 아이콘은 sm, 배경 없는 아이콘은 기존 24px 열·20px 아이콘, 커스텀 leading은 최소 40px입니다. 명시한 xs는 24/16px로 기존 기본값과 다릅니다."
+              },
+              {
+                "label": "커스텀 leading",
+                "text": "배치 영역만 정합니다. 콘텐츠 자체 크기는 소비자가 맞추고, 아이콘 색상·배경은 적용하지 않습니다."
+              },
+              {
+                "label": "높이",
+                "text": "행은 콘텐츠에 맞춰 커집니다. 설명이 길어도 앞 영역을 첫 제목·설명 줄에 맞추며 큰 leading이 잘리지 않습니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-row#preview"
+          },
+          {
+            "name": "iconColor",
+            "type": "ColorValue",
+            "required": false,
+            "default": "—",
+            "description": "App-owned color for the built-in icon; overrides its default/destructive color.",
+            "summary": "기본 아이콘의 앱 소유 색상입니다. 지정하면 기본 textSecondary·destructive의 danger보다 우선하며 제목 색상은 바꾸지 않습니다. 생략하면 기존 색상 규칙을 유지합니다. 커스텀 leading에는 적용하지 않습니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "iconBackground",
+            "type": "ColorValue",
+            "required": false,
+            "default": "—",
+            "description": "App-owned circular background color for the built-in icon; defaults leadingSize to sm.",
+            "summary": "기본 아이콘 뒤의 원형 배경 색상입니다.",
+            "details": [
+              {
+                "label": "기본",
+                "text": "생략하면 배경이 없습니다. 색상을 지정하고 leadingSize를 생략하면 sm(지름 32px·아이콘 20px)을 사용합니다."
+              },
+              {
+                "label": "색상",
+                "text": "색상은 앱이 제공합니다. 패키지가 팔레트나 색상 대비를 자동으로 선택하지 않으므로 iconColor와 함께 읽기 좋은 조합을 지정하세요."
+              },
+              {
+                "label": "범위",
+                "text": "icon이 없거나 커스텀 leading이 있으면 적용하지 않습니다. 배경은 장식이며 행의 클릭·키보드·접근성 동작은 같습니다."
               }
             ],
             "source": "packages/native/src/list.tsx",
@@ -29653,7 +29848,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "ListRow에서는 최소 40px 영역과 본문 간격 12px를 사용합니다. 24px 영역의 기본 아이콘은 icon으로 지정하세요. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
+                "text": "ListRow에서는 기본 최소 40px 영역과 본문 간격 12px를 사용합니다. leadingSize를 지정하면 해당 정사각형 영역을 예약합니다. 아바타·이미지 자체 크기는 소비자가 지정하며 icon·iconColor·iconBackground는 무시합니다. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."
               }
             ],
             "source": "packages/native/src/list.tsx",

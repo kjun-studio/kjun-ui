@@ -44,6 +44,19 @@
       "actionsGap": { "$ref": "dimension.value8" },
       "actionsPadding": { "$ref": "extensions.list.padding" },
       "leadingWidth": { "$ref": "dimension.value40" },
+      "leadingSizes": {
+        "xs": { "$ref": "dimension.value24" },
+        "sm": { "$ref": "dimension.value32" },
+        "md": { "$ref": "dimension.value40" },
+        "lg": { "$ref": "dimension.value56" }
+      },
+      "leadingIconSizes": {
+        "xs": { "$ref": "dimension.value16" },
+        "sm": { "$ref": "dimension.value20" },
+        "md": { "$ref": "dimension.value24" },
+        "lg": { "$ref": "dimension.value28" }
+      },
+      "iconBackgroundRadius": { "$ref": "radius.radius9999" },
       "bareHeadingPaddingBottom": { "$ref": "dimension.value4" },
       "outsideLabelGap": { "$ref": "dimension.value8" },
       "footerGap": { "$ref": "dimension.value8" },

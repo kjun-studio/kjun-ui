@@ -57,7 +57,7 @@ function Example(/* PARAMS */) {
     };
     const h = visualH;
   return <View testID="__KJUN_NAME__" style={{ gap: 12 }}>
-    {renderExample(h, values, set, feedback, settings, domainColors)}
+    {renderExample(h, values, set, feedback, settings, domainColors, colors)}
     {!!values.message && <Text style={{ color: colors.text, fontFamily }}>{values.message}</Text>}
   </View>;
 }

@@ -283,6 +283,15 @@
   --_kjun-extension-list-actions-gap: 8px;
   --_kjun-extension-list-actions-padding: 16px;
   --_kjun-extension-list-leading-width: 40px;
+  --_kjun-extension-list-leading-sizes-xs: 24px;
+  --_kjun-extension-list-leading-sizes-sm: 32px;
+  --_kjun-extension-list-leading-sizes-md: 40px;
+  --_kjun-extension-list-leading-sizes-lg: 56px;
+  --_kjun-extension-list-leading-icon-sizes-xs: 16px;
+  --_kjun-extension-list-leading-icon-sizes-sm: 20px;
+  --_kjun-extension-list-leading-icon-sizes-md: 24px;
+  --_kjun-extension-list-leading-icon-sizes-lg: 28px;
+  --_kjun-extension-list-icon-background-radius: 9999px;
   --_kjun-extension-list-bare-heading-padding-bottom: 4px;
   --_kjun-extension-list-outside-label-gap: 8px;
   --_kjun-extension-list-footer-gap: 8px;

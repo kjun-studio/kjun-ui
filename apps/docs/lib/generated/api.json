@@ -10414,6 +10414,27 @@
         "description": "Icon name drawn in a 24px column; custom leading slot content uses a minimum 40px column and takes priority."
       },
       {
+        "name": "leadingSize",
+        "type": "ListLeadingSize",
+        "required": false,
+        "default": "—",
+        "description": "Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28."
+      },
+      {
+        "name": "iconColor",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "App-owned CSS color for the built-in icon; overrides its default/destructive color."
+      },
+      {
+        "name": "iconBackground",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "App-owned circular background color for the built-in icon; defaults leadingSize to sm."
+      },
+      {
         "name": "href",
         "type": "string",
         "required": false,
@@ -10540,6 +10561,27 @@
         "required": false,
         "default": "—",
         "description": "Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority."
+      },
+      {
+        "name": "leadingSize",
+        "type": "import(\"/workspace/shared/package-runtime/list-leading\").ListLeadingSize | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28. Custom content keeps its own size."
+      },
+      {
+        "name": "iconColor",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "App-owned CSS color for the built-in icon; overrides its default/destructive color."
+      },
+      {
+        "name": "iconBackground",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "App-owned circular background color for the built-in icon; defaults leadingSize to sm."
       },
       {
         "name": "leading",
@@ -10675,6 +10717,27 @@
         "required": false,
         "default": "—",
         "description": "Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority."
+      },
+      {
+        "name": "leadingSize",
+        "type": "import(\"/workspace/shared/package-runtime/list-leading\").ListLeadingSize | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28. Custom content keeps its own size."
+      },
+      {
+        "name": "iconColor",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").ColorValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "App-owned color for the built-in icon; overrides its default/destructive color."
+      },
+      {
+        "name": "iconBackground",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").ColorValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "App-owned circular background color for the built-in icon; defaults leadingSize to sm."
       },
       {
         "name": "leading",

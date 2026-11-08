@@ -3,10 +3,12 @@ import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
+import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { listRowChoice, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, type ListChoiceValue, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 export type { ListChoiceValue } from "../../../shared/package-runtime/list-row";
+export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 
 // The section's selection mode and, when it owns the value, that value; a single-choice list is a radiogroup.
 const kjunListSelectionKey = Symbol("kjunListSelection");
@@ -17,6 +19,12 @@ const kjunListRowProps = {
   description: { type: String, default: undefined },
   /** Icon name drawn in a 24px column; custom leading slot content uses a minimum 40px column and takes priority. */
   icon: { type: String, default: undefined },
+  /** Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28. */
+  leadingSize: { type: String as PropType<ListLeadingSize>, default: undefined },
+  /** App-owned CSS color for the built-in icon; overrides its default/destructive color. */
+  iconColor: { type: String, default: undefined },
+  /** App-owned circular background color for the built-in icon; defaults leadingSize to sm. */
+  iconBackground: { type: String, default: undefined },
   href: { type: String, default: undefined },
   disabled: { type: Boolean, default: false },
   /** Draws the title in the danger role, for rows such as "Delete account". */
@@ -71,7 +79,10 @@ export const KjunListRow = defineComponent({
       const { selected, onClick, kind, mode } = state.value;
       const slotted = slots.leading?.(), trailing = slots.trailing?.(), actions = slots.actions?.(), body = slots.default?.();
       const hasLeading = hasContent(slotted);
-      const leading = hasLeading ? slotted : props.icon ? <KjunIcon name={props.icon} class="kjun-list-icon" size={tokens.extensions.list.iconSize} /> : null;
+      const geometry = listLeadingGeometry({ size: props.leadingSize, custom: hasLeading, background: props.iconBackground != null });
+      const glyph = props.icon ? <KjunIcon name={props.icon} class="kjun-list-icon" size={geometry.iconSize} style={{ color: props.iconColor }} /> : null;
+      const leading = hasLeading ? slotted : glyph && props.iconBackground != null ? <span class="kjun-list-icon-background" style={{ backgroundColor: props.iconBackground }} aria-hidden="true">{glyph}</span> : glyph;
+      const leadingStyle = leading && geometry.size ? { "--_kjun-list-leading-width": `${geometry.width}px`, "--_kjun-list-leading-height": `${geometry.width}px` } : undefined;
       const contents = <>
         {leading && <span class="kjun-list-leading">{leading}</span>}
         <span class="kjun-list-body"><span class="kjun-list-title" data-clamp={props.titleLines ? "" : undefined} style={props.titleLines ? { WebkitLineClamp: props.titleLines } : undefined}>{props.title}</span>{props.description && <span class="kjun-list-description" data-clamp={props.descriptionLines ? "" : undefined} style={props.descriptionLines ? { WebkitLineClamp: props.descriptionLines } : undefined}>{props.description}</span>}{hasContent(body) && <span ref={content} class="kjun-list-content">{body}</span>}</span>
@@ -95,7 +106,7 @@ export const KjunListRow = defineComponent({
           : <div class="kjun-list-main">{contents}</div>;
       // A disabled row disables its actions too, so the row never reads as partly available.
       // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
-      return <li class="kjun-list-row" role={mode === "single" ? "none" : undefined} data-leading={leading ? (hasLeading ? "" : "icon") : undefined} data-destructive={props.destructive || undefined} data-disabled={props.disabled || undefined}>{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;
+      return <li class="kjun-list-row" role={mode === "single" ? "none" : undefined} data-leading={leading ? (hasLeading ? "" : "icon") : undefined} data-leading-size={leading ? geometry.size : undefined} style={leadingStyle} data-destructive={props.destructive || undefined} data-disabled={props.disabled || undefined}>{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;
     };
   },
 });

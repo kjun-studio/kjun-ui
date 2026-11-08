@@ -25,7 +25,7 @@ async function visit(page: Page, platform: string, name: string, settings = {}, 
   await configure(page, name, settings, values);
 }
 async function snapshot(page: Page) { return page.evaluate(() => (window as any).extensionSnapshot); }
-async function replay(page: Page, platform: string, name: string) {
+async function replay(page: Page, platform: string, name: string, mode: 'full' | 'usage' = 'full') {
   const state: any = await page.evaluate(() => new Promise(resolve => {
     const receive = (event: MessageEvent) => {
       if (event.data?.type !== "kjun:catalog-copy-result" || event.data.requestId !== "extensions-copy") return;
@@ -35,7 +35,7 @@ async function replay(page: Page, platform: string, name: string) {
     window.postMessage({ type: "kjun:catalog-copy", requestId: "extensions-copy" }, location.origin);
   }));
   const id = name + "-extensions-copy";
-  const entry = await prepareExample(platform, name, "extensions-copy", state.settings, state.values);
+  const entry = await prepareExample(platform, name, "extensions-copy", state.settings, state.values, 'default', undefined, mode);
   await compileEntries(platform, { [id]: entry });
   await page.route("**/previews/export-checks/**", async route => {
     const path = new URL(route.request().url()).pathname.split("/export-checks/")[1];
@@ -50,6 +50,29 @@ async function chooseTime(page: Page, label: string, option: string) {
   await expect(page.getByRole("combobox", { name: label, exact: true }).or(page.getByRole("button", { name: label, exact: true }))).toHaveAttribute("aria-expanded", "false");
 }
 for (const platform of platforms) {
+  for (const mode of ['full', 'usage'] as const) test(`${platform} list leading size and icon background controls survive ${mode} copied code`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await visit(page, platform, "KjunListRow", { leadingSize: "xs", iconBackground: true, iconColor: true });
+    const notificationIcon = () => page.getByRole('listitem').filter({ has: page.getByText('알림 받기', { exact: true }) }).locator('svg').first();
+    // Native's icon has its own animation wrapper inside the background.
+    const notificationBackground = () => platform === 'native' ? notificationIcon().locator('..').locator('..') : notificationIcon().locator('..');
+    let revision = 1;
+    for (const [size, diameter, glyph] of [['xs', 24, 16], ['sm', 32, 20], ['md', 40, 24], ['lg', 56, 28]] as const) {
+      await configure(page, "KjunListRow", { leadingSize: size, iconBackground: true, iconColor: true }, {}, ++revision);
+      await expect.poll(async () => (await notificationIcon().boundingBox())?.width).toBe(glyph);
+      expect((await notificationBackground().boundingBox())?.width).toBe(diameter);
+    }
+    const decoration = async () => ({
+      color: await notificationIcon().evaluate(el => getComputedStyle(el).stroke),
+      background: await notificationBackground().evaluate(el => getComputedStyle(el).backgroundColor),
+    });
+    const expectedDecoration = await decoration();
+    expect(expectedDecoration.background).not.toBe('rgba(0, 0, 0, 0)');
+    await replay(page, platform, "KjunListRow", mode);
+    expect((await notificationIcon().boundingBox())?.width).toBe(28);
+    expect((await notificationBackground().boundingBox())?.width).toBe(56);
+    expect(await decoration()).toEqual(expectedDecoration);
+  });
   test(`${platform} generic rows isolate secondary actions and preserve consumer selection`, async ({ page }) => {
     await visit(page, platform, "KjunListRow");
     await page.getByRole("button", { name: "공유", exact: true }).click();

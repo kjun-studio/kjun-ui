@@ -78,7 +78,7 @@ const chipNative = {
 };
 const carouselSlides = slot("슬라이드 목록입니다. 직접 자식 하나가 슬라이드 하나입니다.", "ReactNode", "슬라이드 안의 버튼·입력도 Tab으로 이동할 수 있습니다. 안의 입력에서는 화살표 키를 가로채지 않습니다.");
 const childProps = {
-  leading: slot("주 콘텐츠 앞쪽에 배치할 아이콘·이미지입니다.", "ReactNode", "ListRow에서는 최소 40px 영역과 본문 간격 12px를 사용합니다. 24px 영역의 기본 아이콘은 icon으로 지정하세요. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."),
+  leading: slot("주 콘텐츠 앞쪽에 배치할 아이콘·이미지입니다.", "ReactNode", "ListRow에서는 기본 최소 40px 영역과 본문 간격 12px를 사용합니다. leadingSize를 지정하면 해당 정사각형 영역을 예약합니다. 아바타·이미지 자체 크기는 소비자가 지정하며 icon·iconColor·iconBackground는 무시합니다. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."),
   trailing: slot("행 뒤쪽의 보조 정보입니다.", "ReactNode", "수치·배지 등 표시용 콘텐츠만 넣으세요. 버튼은 actions로 분리합니다."),
   actions: slot("주 콘텐츠와 분리된 보조 행동입니다.", "ReactNode", "버튼·Switch·Checkbox 등의 값과 콜백을 소비자가 연결합니다."),
   children: slot("영역 안에 배치할 소비자 콘텐츠입니다.", "ReactNode", "ListSection에는 ListRow를, BottomActionBar에는 Button·FormActions를 배치합니다."),
@@ -142,7 +142,10 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (name === "KjunListRow" && key === "value") entry = { type: "string | number", summary: "선택을 소유한 섹션(" + (platform === "vue3" ? "v-model" : "value") + ") 안에서 이 행이 나타내는 값입니다. 섹션 값에 들어 있으면 selected로 그리고, 누르면 섹션이 다음 값을 알립니다." };
     else if (name === "KjunListRow" && key === "href" && platform === "native") entry = { summary: "Native Web에서 이동할 링크 주소입니다. 기기에서는 href로 이동하지 않으므로 onPress에서 앱 라우터로 이동하세요. 기기에서 onPress 없이 href만 주면 개발 모드에서 경고합니다." };
     else if (name === "KjunListSection" && key === "titleVariant") entry = detail("섹션 제목 모양을 고릅니다.", { "값": "title은 16px 제목, label은 행 위의 작은 라벨입니다. 생략하면 설명이 있는 제목은 title, 없는 제목은 label입니다." });
-    else if (name === "KjunListRow" && key === "icon") entry = detail("앞쪽 열에 그릴 아이콘 이름입니다.", { "크기·색": "목록 아이콘 크기(20px)와 보조 텍스트 색으로 그리고, 24px 앞쪽 열 가운데에 놓습니다. 본문과의 간격은 12px입니다.", "leading과 함께": platform === "vue3" ? "leading 슬롯이 있으면 슬롯을 그립니다." : "leading이 있으면 leading을 그립니다." });
+    else if (name === "KjunListRow" && key === "icon") entry = detail("앞쪽 열에 그릴 아이콘 이름입니다.", { "기본": "leadingSize·iconBackground를 생략하면 24px 열에 20px 아이콘을 그립니다. 본문 간격은 12px입니다. 기본색은 textSecondary이고 destructive면 danger입니다.", "크기·색": "leadingSize로 영역과 아이콘 크기를 함께 고르고 iconColor·iconBackground로 앱의 색상을 지정합니다.", "leading과 함께": platform === "vue3" ? "leading 슬롯이 있으면 슬롯을 그립니다." : "leading이 있으면 leading을 그립니다." });
+    else if (name === "KjunListRow" && key === "leadingSize") entry = { type: '"xs" | "sm" | "md" | "lg"', ...detail("앞쪽 정사각형 영역과 기본 아이콘의 크기입니다.", { "크기": "xs 24/16px, sm 32/20px, md 40/24px, lg 56/28px(영역/아이콘). 구분선은 크기에 맞춘 본문 시작선에서 시작합니다.", "생략": "배경이 있는 기본 아이콘은 sm, 배경 없는 아이콘은 기존 24px 열·20px 아이콘, 커스텀 leading은 최소 40px입니다. 명시한 xs는 24/16px로 기존 기본값과 다릅니다.", "커스텀 leading": "배치 영역만 정합니다. 콘텐츠 자체 크기는 소비자가 맞추고, 아이콘 색상·배경은 적용하지 않습니다.", "높이": "행은 콘텐츠에 맞춰 커집니다. 설명이 길어도 앞 영역을 첫 제목·설명 줄에 맞추며 큰 leading이 잘리지 않습니다." }) };
+    else if (name === "KjunListRow" && key === "iconColor") entry = { type: platform === "native" ? "ColorValue" : "string", summary: "기본 아이콘의 앱 소유 색상입니다. 지정하면 기본 textSecondary·destructive의 danger보다 우선하며 제목 색상은 바꾸지 않습니다. 생략하면 기존 색상 규칙을 유지합니다. 커스텀 leading에는 적용하지 않습니다." };
+    else if (name === "KjunListRow" && key === "iconBackground") entry = { type: platform === "native" ? "ColorValue" : "string", ...detail("기본 아이콘 뒤의 원형 배경 색상입니다.", { "기본": "생략하면 배경이 없습니다. 색상을 지정하고 leadingSize를 생략하면 sm(지름 32px·아이콘 20px)을 사용합니다.", "색상": "색상은 앱이 제공합니다. 패키지가 팔레트나 색상 대비를 자동으로 선택하지 않으므로 iconColor와 함께 읽기 좋은 조합을 지정하세요.", "범위": "icon이 없거나 커스텀 leading이 있으면 적용하지 않습니다. 배경은 장식이며 행의 클릭·키보드·접근성 동작은 같습니다." }) };
     else if (childProps[key]) entry = childProps[key];
     else if (key === "value" || key === "modelValue") entry = detail(valueDescription[name], { "상태 책임": guides[name].interaction });
     else if (key === "items") entry = detail("안정적인 key와 이름을 가진 목적지 목록입니다.", { "항목 필드": "key: 고유 문자열, label: 전체 이름, href: 웹 링크 주소, icon?: 아이콘 이름, badge?: 문자열·숫자·true(점), disabled?: 이동 비활성. 99보다 큰 숫자는 99+로 표시하고 접근성 이름에는 실제 값을 읽습니다. 웹에서는 href를 제공하세요.", "권장 사용": "2~5개의 주요 목적지를 권장합니다. 항목 순서와 현재 key는 앱에서 관리합니다." });

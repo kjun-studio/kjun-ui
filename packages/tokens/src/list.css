@@ -52,7 +52,7 @@
 
 /* Rows. */
 .kjun-list{list-style:none;padding:0;margin:0}
-.kjun-list-row{--_kjun-list-leading-width:var(--_kjun-extension-list-leading-width);display:flex;align-items:center;gap:var(--_kjun-extension-list-gap);position:relative;min-width:0}
+.kjun-list-row{--_kjun-list-leading-width:var(--_kjun-extension-list-leading-width);--_kjun-list-leading-height:0px;display:flex;align-items:center;gap:var(--_kjun-extension-list-gap);position:relative;min-width:0}
 .kjun-list-row[data-leading=icon]{--_kjun-list-leading-width:var(--_kjun-geometry-dimension-value24)}
 /* Dividers start where the text does, after the icon or custom leading column. */
 .kjun-list-row[data-leading]{--_kjun-list-divider-inset:calc(var(--_kjun-extension-list-padding) + var(--_kjun-list-leading-width) + var(--_kjun-extension-list-gap))}
@@ -77,9 +77,11 @@
 /* titleLines / descriptionLines clamp a row's text to a few lines with an ellipsis. */
 .kjun-list-title[data-clamp],.kjun-list-description[data-clamp]{display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
 /* Icons use 24px; custom leading content, including avatars and images, keeps a 40px minimum. */
-.kjun-list-leading{flex-shrink:0;display:flex;align-items:center;justify-content:center;min-width:var(--_kjun-list-leading-width)}
+.kjun-list-leading{flex-shrink:0;display:flex;align-items:center;justify-content:center;min-width:var(--_kjun-list-leading-width);min-height:var(--_kjun-list-leading-height,0px)}
+.kjun-list-row[data-leading-size] > .kjun-list-main > .kjun-list-leading{width:var(--_kjun-list-leading-width)}
 /* With a description the leading column covers the first two lines, so a long row keeps its icon beside the title. */
-.kjun-list-main:has(.kjun-list-description) > .kjun-list-leading{align-self:flex-start;height:calc(var(--_kjun-type-control-line) + var(--_kjun-extension-list-description-gap) + var(--_kjun-type-caption-line))}
+.kjun-list-main:has(.kjun-list-description) > .kjun-list-leading{align-self:flex-start;min-height:max(var(--_kjun-list-leading-height,0px),calc(var(--_kjun-type-control-line) + var(--_kjun-extension-list-description-gap) + var(--_kjun-type-caption-line)))}
+.kjun-list-icon-background{display:flex;flex-shrink:0;align-items:center;justify-content:center;width:var(--_kjun-list-leading-width);height:var(--_kjun-list-leading-width);border-radius:var(--_kjun-extension-list-icon-background-radius)}
 .kjun-list-icon{color:var(--_kjun-color-text-secondary)}
 .kjun-list-row[data-destructive] .kjun-list-icon{color:var(--_kjun-color-danger)}
 /* A value at the row's end reads one step below the title. */

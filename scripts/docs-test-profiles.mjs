@@ -8,6 +8,7 @@ export const relatedGroups = {
   'data-state': files('data-state-examples', 'examples', 'example-runner'),
   card: files('card-examples', 'component-detail'),
   table: files('table-examples', 'examples'),
+  list: files('extensions'),
   select: files('input-docs', 'docs-platform', 'examples', 'example-runner'),
   input: files('input-docs', 'examples', 'docs-http'),
   button: files('component-detail', 'preview-scroll', 'docs-kjun', 'docs-http'),

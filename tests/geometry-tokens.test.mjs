@@ -14,6 +14,8 @@ test('component geometry resolves from the shared scales with additive paths', (
   assert.equal(data.extensions.drawer.bottomRadius, 16);
   assert.equal(data.extensions.kpiHero.md.secondaryMargin, 24);
   assert.equal(data.extensions.kpiHero.md.secondaryPadding, 16);
+  assert.deepEqual(data.extensions.list.leadingSizes, { xs: 24, sm: 32, md: 40, lg: 56 });
+  assert.deepEqual(data.extensions.list.leadingIconSizes, { xs: 16, sm: 20, md: 24, lg: 28 });
   const altered = structuredClone(definitions);
   altered.extensions.navigation.padding = { $ref: 'dimension.value24' };
   altered.extensions.list.padding = { $ref: 'dimension.value24' };

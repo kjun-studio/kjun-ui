@@ -80,7 +80,7 @@ function moduleFor(name, platform) {
     for (const key of selected) if (!local.has(key) && [...identifiers(helpers.get(key))].some(ref => ref !== key && local.has(ref))) { local.add(key); changed = true; }
   }
   return `${selected.filter(key => !local.has(key)).map(key => helpers.get(key)).join('\n')}
-function renderExample(h, values, set, feedback, settings, domainColors = {}) {
+function renderExample(h, values, set, feedback, settings, domainColors = {}, colors = {}) {
  const name = ${JSON.stringify(name)}, platform = ${JSON.stringify(platform)};
  const { disabled = false, loading = false, error = false } = settings;
  ${selected.filter(key => local.has(key)).map(key => helpers.get(key)).join('\n')}
