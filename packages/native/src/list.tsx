@@ -1,19 +1,21 @@
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { typeStyle } from "./typography";
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
-import { Children, Fragment, cloneElement, createContext, isValidElement, useContext, useEffect, useId, useLayoutEffect, useRef, useState, type ReactElement, type ReactNode } from "react";
-import { listRowKind, listSectionShape, warnListRowProps } from "../../../shared/package-runtime/list-row";
+import { Children, Fragment, cloneElement, createContext, isValidElement, useContext, useEffect, useId, useLayoutEffect, useState, type ReactElement, type ReactNode } from "react";
+import { listRowChoice, listRowKind, listSectionShape, warnListRowProps, type ListChoiceValue, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { View, Platform, type GestureResponderEvent, type TextStyle } from "react-native";
 import { AccessiblePressable as Pressable, type FocusRingRadius } from "./a11y";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { KText, content } from "./internal";
-import { KjunIcon } from "./button";
+import { KjunButton, KjunIcon } from "./button";
 import { ListEmptyContext } from "./display-primitives";
 import { useKjunStyles } from "./provider";
 
 // A section tells its rows whether to draw a divider (never after the last, like Web's :last-child), how dense they are,
-// whether the list is a single-choice radiogroup, and in a rounded card which of the card's corners the row's ring follows.
-const ListRowContext = createContext<{ divider: boolean; compact: boolean; choice?: boolean; ringRadius?: FocusRingRadius }>({ divider: true, compact: false });
+// the section's selection (a single-choice list is a radiogroup), and in a rounded card which of the card's corners the
+// row's ring follows.
+const ListRowContext = createContext<{ divider: boolean; compact: boolean; selection: ListSelection; ringRadius?: FocusRingRadius }>({ divider: true, compact: false, selection: { mode: "none" } });
+export type { ListChoiceValue } from "../../../shared/package-runtime/list-row";
 const list = tokens.extensions.list;
 // Like Web's ::after divider: it starts where the text does, past the leading column when there is one.
 function Divider({ inset }: { inset: number }) {
@@ -37,6 +39,8 @@ export interface KjunListRowProps {
   /** Makes the whole row a switch: it draws one at the end and toggles on any press. */
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
+  /** This row's value in a section that owns its selection (`value` on the section): it is selected when the section's value holds it. */
+  value?: ListChoiceValue;
   onPress?: (event: GestureResponderEvent) => void;
   /** Name of a pressable or link row, e.g. with the amount a screen reader should hear. */
   ariaLabel?: string;
@@ -57,11 +61,14 @@ function SwitchMark({ on }: { on: boolean }) {
 // Like Web's keep-all: Korean wraps between words (iOS through its Hangul word strategy, a Text prop).
 const words = (Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } : {}) as unknown as TextStyle;
 const wordProps = { lineBreakStrategyIOS: "hangul-word" as const };
-export function KjunListRow({ title, description, icon, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected, checked, onCheckedChange, onPress, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
-  const { colors } = useKjunStyles(), { divider, compact, choice, ringRadius } = useContext(ListRowContext);
-  const kind = listRowKind({ checked, selected, href, pressable: !!(onPress || href) }), toggle = kind === "switch";
+export function KjunListRow({ title, description, icon, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, value, onPress: ownPress, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
+  const { colors } = useKjunStyles(), { divider, compact, selection, ringRadius } = useContext(ListRowContext);
+  const choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
+  const onPress = choice.press ? (event: GestureResponderEvent) => { choice.press(); ownPress?.(event); } : ownPress;
+  const kind = listRowKind({ checked, selected, href, pressable: !!(onPress || href), mode: selection.mode }), toggle = kind === "switch";
   const deviceLink = Platform.OS !== "web" && !!href && !onPress;
-  useEffect(() => warnListRowProps({ checked, selected, href, chevron, deviceLink }), [checked !== undefined, selected !== undefined, !!href, chevron, deviceLink]);
+  const looseChoice = (kind === "radio" || kind === "checkbox") && selection.mode === "none";
+  useEffect(() => warnListRowProps({ checked, selected, href, chevron, deviceLink, looseChoice }), [checked !== undefined, selected !== undefined, !!href, chevron, deviceLink, looseChoice]);
   const hasLeading = hasContent(leading), leadingWidth = hasLeading ? list.leadingWidth : tokens.dimension.value24;
   const front = hasLeading ? content(leading) : icon ? <KjunIcon name={icon} size={list.iconSize} color={destructive ? colors.danger : colors.textSecondary} /> : null;
   // Like Web: with a description the leading column covers the first two lines, so a long row keeps its icon beside the title.
@@ -87,12 +94,12 @@ export function KjunListRow({ title, description, icon, leading, trailing, actio
   // The default name reads the title, description and a text value at the row's end, as the web row's content does.
   const spoken = [title, description, typeof trailing === "string" || typeof trailing === "number" ? String(trailing) : undefined].filter(Boolean).join(", ");
   // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
-  return <View role={choice ? undefined : "listitem"} style={{ flexDirection: "row", alignItems: "center", gap: list.gap }}>
+  return <View role={selection.mode === "single" ? undefined : "listitem"} style={{ flexDirection: "row", alignItems: "center", gap: list.gap }}>
     {/* Rows run edge to edge, so like Web the keyboard ring draws inside them. */}
     {pressable ? <Pressable focusRingInset focusRingRadius={ringRadius} {...(Platform.OS === "web" && kind === "link" && !disabled ? { href } : {})}
-      accessibilityRole={toggle ? "switch" : kind === "radio" ? "radio" : kind === "link" ? "link" : "button"}
+      accessibilityRole={toggle ? "switch" : kind === "radio" || kind === "checkbox" || kind === "link" ? kind : "button"}
       accessibilityLabel={ariaLabel ?? spoken} disabled={disabled}
-      accessibilityState={{ disabled, ...(toggle ? { checked: !!checked } : {}), ...(kind === "radio" ? { checked: !!selected } : {}) }}
+      accessibilityState={{ disabled, ...(toggle ? { checked: !!checked } : {}), ...(kind === "radio" || kind === "checkbox" ? { checked: !!selected } : {}) }}
       onPress={(event) => { if (toggle) onCheckedChange?.(!checked); onPress?.(event); }}
       style={({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => ({ ...style, opacity: disabled ? tokens.states.opacity.disabled : 1, backgroundColor: disabled ? "transparent" : pressed ? colors.active : hovered ? colors.hover : "transparent" })}>{parts}</Pressable>
       // Like Web: a static row dims as a whole when disabled, so nothing in it reads as available.
@@ -122,8 +129,12 @@ export interface KjunListSectionProps {
   footer?: ReactNode;
   /** Shown in place of the rows (and the empty content) while they load, such as a KjunListSkeleton with variant "row". */
   loading?: ReactNode;
-  /** "single": the rows are one choice (rows given `selected`); the list becomes a radio group (with arrow keys on Native Web). */
-  selectionMode?: "none" | "single";
+  /** "single": the rows are one choice and the list a radio group (with arrow keys on Native Web); "multiple": each row is a checkbox. Rows are choices when given `selected`, or a `value` with the section's `value`. */
+  selectionMode?: ListSelectionMode;
+  /** The chosen rows' values, owned by the app: one value (null for none) with "single", a list with "multiple". */
+  value?: ListChoiceValue | null | ListChoiceValue[];
+  /** Called with the next value (a list with "multiple") when a row with a `value` is pressed. */
+  onValueChange?: (value: ListChoiceValue | ListChoiceValue[]) => void;
 }
 /** Elements inside fragments, opened up, with keys made unique by their fragment's key. */
 function elements(children: ReactNode, prefix = ""): ReactElement[] {
@@ -140,31 +151,42 @@ function ghostInset(actions: ReactNode) {
   if (variant !== "ghost" || !(size in tokens.button.paddingX)) return 0;
   return !hasContent(children) && (prefixIcon || suffixIcon) ? (tokens.button.iconSizes[size] - tokens.button.heights[size]) / 2 : -tokens.button.paddingX[size];
 }
+// The tallest heading action known before layout (KjunButtons by their size), so the first frame already keeps a tall
+// button clear of the rows; layout then measures any other control.
+function actionsHeight(actions: ReactNode, line: number) {
+  return elements(actions).reduce((tallest, action) => {
+    const size = (action.props as { size?: keyof typeof tokens.button.heights }).size ?? "md";
+    return action.type === KjunButton && size in tokens.button.heights ? Math.max(tallest, tokens.button.heights[size]) : tallest;
+  }, line);
+}
 const ListGroupContext = createContext<"inset" | "flush" | null>(null);
-export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none" }: KjunListSectionProps) {
+export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange }: KjunListSectionProps) {
   const { colors } = useKjunStyles();
   // Like Web: a rounded section is a card of rows only; its title, actions and footer stay on the page around it.
   const { corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), title, description, titleVariant });
   const radiusValue = corner === "none" ? undefined : tokens.card.radii[corner];
-  const choice = selectionMode === "single", group = useRef<View>(null), descriptionId = "kjun-" + useId().replace(/[^\w-]/g, "") + "-description";
+  const choice = selectionMode === "single", [group, setGroup] = useState<View | null>(null), id = "kjun-" + useId().replace(/[^\w-]/g, "");
+  const hasFooter = hasContent(footer), describedBy = [description && id + "-description", hasFooter && id + "-footer"].filter(Boolean).join(" ") || undefined;
   // Like Web: heading actions center on the title's first line; a taller button grows the heading only by what it
   // reaches past that line, so it never covers the rows (or, outside a card, the space above the title).
   const titleLine = typeStyle(bare ? "controlSmall" : "cardTitle").lineHeight;
-  const [actionHeight, setActionHeight] = useState(titleLine);
+  const [measured, setActionHeight] = useState<number>(), actionHeight = measured ?? actionsHeight(actions, titleLine);
   const overflow = Math.max(0, (actionHeight - titleLine) / 2);
   const items = elements(children);
   // Native Web: like RadioGroup, a single-choice list has one Tab stop and arrow keys; devices move by their own gestures.
-  useLayoutEffect(() => Platform.OS === "web" && choice && group.current ? bindRadioKeyboard(group.current as unknown as HTMLElement) : undefined, [choice, items.length > 0]);
+  // The list is tracked by a callback ref, so a list drawn again (after loading or an empty state) is bound again.
+  useLayoutEffect(() => Platform.OS === "web" && choice && group ? bindRadioKeyboard(group as unknown as HTMLElement) : undefined, [choice, group]);
   const compact = density === "compact";
   // Each row keeps its own key, so reordering or filtering rows moves them instead of remounting them.
-  const rows = hasContent(loading) ? <View accessibilityState={{ busy: true }}>{content(loading)}</View>
+  // Loading content announces itself (a skeleton's loadingText is a status), so the wrapper only places it.
+  const rows = hasContent(loading) ? <View>{content(loading)}</View>
     : items.length
-    ? <View ref={group} role={choice ? "radiogroup" : "list"} accessibilityLabel={ariaLabel || title}
-        {...(Platform.OS === "web" && description ? { "aria-describedby": descriptionId } : {})}>
+    ? <View ref={setGroup} role={choice ? "radiogroup" : "list"} accessibilityLabel={ariaLabel || title}
+        {...(Platform.OS === "web" && describedBy ? { "aria-describedby": describedBy } : {})}>
       {items.map((row, i) => {
         const first = i === 0, last = i === items.length - 1;
         const ringRadius = radiusValue === undefined ? undefined : first && last ? radiusValue : first ? { top: radiusValue } : last ? { bottom: radiusValue } : undefined;
-        return <ListRowContext.Provider key={row.key ?? i} value={{ divider: divider && !last, compact, choice, ringRadius }}>{row}</ListRowContext.Provider>;
+        return <ListRowContext.Provider key={row.key ?? i} value={{ divider: divider && !last, compact, selection: { mode: selectionMode, value, onValueChange }, ringRadius }}>{row}</ListRowContext.Provider>;
       })}
     </View>
     : hasContent(empty) ? <View style={{ minHeight: compact ? list.compactMinimumHeight : list.minimumHeight, justifyContent: "center", paddingHorizontal: list.padding }}><ListEmptyContext.Provider value={density}>{content(empty)}</ListEmptyContext.Provider></View> : null;
@@ -173,13 +195,13 @@ export function KjunListSection({ title, description, actions, children, ariaLab
     {!!(title || description || hasContent(actions)) && <View style={{ flexDirection: "row", alignItems: "flex-start", gap: list.gap, padding: list.padding,
       // A title without a description is a small group header that sits close to its rows; outside a card it starts at the top.
       ...(bare ? { paddingBottom: list.bareHeadingPaddingBottom } : {}), ...(outside ? { paddingTop: overflow, paddingBottom: list.outsideLabelGap } : {}) }}>
-      <View style={{ flex: 1 }}>{!!title && <KText {...wordProps} accessibilityRole="header" {...(Platform.OS === "web" ? { "aria-level": headingLevel } : {})} style={{ ...(bare ? { ...typeStyle('controlSmall'), color: colors.textSecondary } : typeStyle('cardTitle')), ...words }}>{title}</KText>}{!!description && <KText {...wordProps} nativeID={descriptionId} style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'), ...words }}>{description}</KText>}</View>
+      <View style={{ flex: 1 }}>{!!title && <KText {...wordProps} accessibilityRole="header" {...(Platform.OS === "web" ? { "aria-level": headingLevel } : {})} style={{ ...(bare ? { ...typeStyle('controlSmall'), color: colors.textSecondary } : typeStyle('cardTitle')), ...words }}>{title}</KText>}{!!description && <KText {...wordProps} nativeID={id + "-description"} style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'), ...words }}>{description}</KText>}</View>
       {hasContent(actions) && <View style={{ flexShrink: 0, height: titleLine, marginBottom: overflow, justifyContent: "center", marginEnd: ghostInset(actions) }}>
         <View onLayout={event => setActionHeight(event.nativeEvent.layout.height)} style={{ flexDirection: "row", alignItems: "center", gap: list.actionsGap }}>{content(actions)}</View>
       </View>}
     </View>}
     {outside ? <View style={card}>{rows}</View> : rows}
-    {hasContent(footer) && <View style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside ? 0 : list.padding }}>{typeof footer === "string" ? <KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{String(footer)}</KText> : content(footer, { ...typeStyle("caption"), color: colors.textTertiary })}</View>}
+    {hasFooter && <View nativeID={id + "-footer"} style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside ? 0 : list.padding }}>{typeof footer === "string" ? <KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{String(footer)}</KText> : content(footer, { ...typeStyle("caption"), color: colors.textTertiary })}</View>}
   </View>;
 }
 export interface KjunListGroupProps {
@@ -194,7 +216,7 @@ export function KjunListGroup({ variant = "inset", children }: KjunListGroupProp
 export interface KjunListItemProps { children: ReactNode }
 /** Non-row content inside a KjunListSection (a theme switcher, a note) on the rows' inset and dividers. */
 export function KjunListItem({ children }: KjunListItemProps) {
-  const { divider, compact, choice } = useContext(ListRowContext);
-  return <View role={choice ? undefined : "listitem"} style={{ padding: tokens.extensions.list.padding, ...(compact ? { paddingVertical: tokens.extensions.list.compactPaddingY } : {}),
+  const { divider, compact, selection } = useContext(ListRowContext);
+  return <View role={selection.mode === "single" ? undefined : "listitem"} style={{ padding: tokens.extensions.list.padding, ...(compact ? { paddingVertical: tokens.extensions.list.compactPaddingY } : {}),
     minWidth: 0 }}>{content(children)}{divider && <Divider inset={list.padding} />}</View>;
 }

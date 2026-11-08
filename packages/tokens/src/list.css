@@ -6,8 +6,8 @@
 .kjun-list-heading{
   --_kjun-list-title-line:var(--_kjun-type-card-title-line);
   --_kjun-list-action-height:var(--_kjun-list-title-line);
-  /* How far a button taller than the title line reaches above and below it. */
-  --_kjun-list-action-overflow:calc((var(--_kjun-list-action-height) - var(--_kjun-list-title-line)) / 2);
+  /* How far an action taller than the title line reaches above and below it. */
+  --_kjun-list-action-overflow:max(0px, (var(--_kjun-list-action-height) - var(--_kjun-list-title-line)) / 2);
   display:flex;align-items:flex-start;justify-content:space-between;gap:var(--_kjun-extension-list-gap);padding:var(--_kjun-extension-list-padding);
 }
 .kjun-list-heading > div:first-child{flex:1;min-width:0;word-break:keep-all;overflow-wrap:anywhere}
@@ -16,15 +16,16 @@
 /* A title without a description labels the rows below as a small group header instead of floating above them. */
 .kjun-list-heading[data-bare]{--_kjun-list-title-line:var(--_kjun-type-control-small-line);padding-bottom:var(--_kjun-extension-list-bare-heading-padding-bottom)}
 .kjun-list-heading[data-bare] :is(h2,h3,h4){font-size:var(--_kjun-type-control-small-size);line-height:var(--_kjun-type-control-small-line);font-weight:var(--_kjun-type-control-small-weight);letter-spacing:var(--_kjun-type-control-small-tracking);color:var(--_kjun-color-text-secondary)}
-/* Heading buttons, smallest to largest so the tallest one sets the height. */
+/* Heading buttons, smallest to largest so the tallest one sets the height before the page measures the actions (it
+   then sets the height inline for any control). */
 .kjun-list-heading:has(> .kjun-list-heading-actions .kjun-button[data-size="xs"]){--_kjun-list-action-height:var(--_kjun-geometry-button-heights-xs)}
 .kjun-list-heading:has(> .kjun-list-heading-actions .kjun-button[data-size="sm"]){--_kjun-list-action-height:var(--_kjun-geometry-button-heights-sm)}
 .kjun-list-heading:has(> .kjun-list-heading-actions .kjun-button[data-size="md"]){--_kjun-list-action-height:var(--_kjun-geometry-button-heights-md)}
 .kjun-list-heading:has(> .kjun-list-heading-actions .kjun-button[data-size="lg"]){--_kjun-list-action-height:var(--_kjun-geometry-button-heights-lg)}
 .kjun-list-heading:has(> .kjun-list-heading-actions .kjun-button[data-size="xl"]){--_kjun-list-action-height:var(--_kjun-geometry-button-heights-xl)}
-/* The actions box is one title line tall, so a button centers on that line; its bottom margin keeps a taller button
-   clear of the rows, growing the heading only by what the button reaches below the line. */
-.kjun-list-heading-actions{display:flex;align-items:center;gap:var(--_kjun-extension-list-actions-gap);flex:none;height:var(--_kjun-list-title-line);margin-bottom:var(--_kjun-list-action-overflow)}
+/* The actions box keeps its own height in the flow, so no control in it can cover the rows; raised by what a taller
+   action reaches above the title line, it centers on that line and grows the heading only by what reaches below. */
+.kjun-list-heading-actions{display:flex;align-items:center;gap:var(--_kjun-extension-list-actions-gap);flex:none;min-height:var(--_kjun-list-title-line);margin-top:calc(-1 * var(--_kjun-list-action-overflow))}
 /* A ghost button's label (or an icon-only button's glyph) ends on the rows' end line rather than inside its own padding. */
 .kjun-list-heading-actions > .kjun-button[data-variant="ghost"]:last-child[data-size="xs"]{margin-inline-end:calc(-1 * var(--_kjun-geometry-button-padding-x-xs))}
 .kjun-list-heading-actions > .kjun-button[data-variant="ghost"]:last-child[data-size="sm"]{margin-inline-end:calc(-1 * var(--_kjun-geometry-button-padding-x-sm))}

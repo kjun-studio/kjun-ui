@@ -1,8 +1,9 @@
-import { createApp, defineComponent } from 'vue';
+import { createApp, defineComponent, ref } from 'vue';
 import * as K from '@kjun-ui/vue3';
 import { applyDemoColors } from '../../shared/demo-colors';
 applyDemoColors('default');
 const noop = () => {};
+const fruit = ref<string | null>('apple'), tags = ref<string[]>(['work']), mode = ref<'single' | 'none'>('single'), loading = ref(false);
 createApp(defineComponent(() => () => <K.KjunProvider>
   <div style={{ padding: '16px', width: '360px', background: '#F4F4F4' }}>
     <K.KjunListGroup>{{ default: () => [
@@ -20,5 +21,13 @@ createApp(defineComponent(() => () => <K.KjunProvider>
     <K.KjunListSection radius="lg" title="최근 항목" description="불러오는 중">{{ loading: () => <K.KjunListSkeleton variant="row" rows={1} />, default: () => [<K.KjunListRow title="불러온 행" onClick={noop} />] }}</K.KjunListSection>
     <K.KjunListSection radius="lg" title="보관함" description="보관한 문서" density="compact">{{ empty: () => <K.KjunEmpty text="보관한 문서가 없습니다" /> }}</K.KjunListSection>
     <K.KjunListSection radius="lg" title="묶음" description="조건부 행">{{ default: () => [<K.KjunListRow title="묶음 1" />, <K.KjunListRow title="묶음 2" />, <K.KjunListRow title="묶음 3" />] }}</K.KjunListSection>
+  </div>
+  <div style={{ padding: '16px', width: '360px', background: '#F4F4F4', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <K.KjunListSection radius="lg" title="과일 고르기" description="하나를 고릅니다" selectionMode="single" modelValue={fruit.value} {...{ 'onUpdate:modelValue': (value: string) => { fruit.value = value; } }}>{{ default: () => [<K.KjunListRow title="사과" value="apple" />, <K.KjunListRow title="배" value="pear" />], footer: () => '고른 과일은 오늘만 적용됩니다.' }}</K.KjunListSection>
+    <K.KjunListSection radius="lg" title="태그 고르기" selectionMode="multiple" modelValue={tags.value} {...{ 'onUpdate:modelValue': (value: string[]) => { tags.value = value; } }}>{{ default: () => [<K.KjunListRow title="업무 태그" value="work" />, <K.KjunListRow title="개인 태그" value="home" />] }}</K.KjunListSection>
+    <K.KjunButton variant="secondary" onClick={() => { mode.value = mode.value === 'single' ? 'none' : 'single'; }}>선택 모드 전환</K.KjunButton>
+    <K.KjunButton variant="secondary" onClick={() => { loading.value = !loading.value; }}>다시 불러오기</K.KjunButton>
+    <K.KjunListSection radius="lg" title="정렬" selectionMode={mode.value}>{{ ...(loading.value ? { loading: () => <K.KjunListSkeleton variant="row" rows={1} /> } : {}), default: () => [<K.KjunListRow title="이름순" selected onClick={noop} />, <K.KjunListRow title="날짜순" selected={false} onClick={noop} />] }}</K.KjunListSection>
+    <K.KjunListSection radius="lg" title="동기화" description="다른 기기와 맞춥니다">{{ actions: () => <button type="button" style={{ height: '48px', padding: '0 12px' }}>설정</button>, default: () => [<K.KjunListRow title="동기화 기록" onClick={noop} />] }}</K.KjunListSection>
   </div>
 </K.KjunProvider>)).mount('#root');

@@ -8,7 +8,14 @@ export function generate(input: UsageInput) {
   const commit = () => b.handler('commit', 'value', b.result('"확정: " + value'));
   let content: string;
   switch (name) {
-    case 'KjunListRow': case 'KjunListSection':
+    case 'KjunListSection':
+      // A single choice the section owns: rows carry values, the section the chosen one.
+      content = b.node('KjunListSection', { title: '화면 테마', description: '앱의 색 모드를 고릅니다.', selectionMode: 'single', value: b.state('theme', 'system'), onValueChange: b.update('theme') }, [
+        b.node('KjunListRow', { title: '밝게', value: 'light' }),
+        b.node('KjunListRow', { title: '어둡게', value: 'dark' }),
+        b.node('KjunListRow', { title: '시스템 설정', description: '기기의 화면 모드를 따릅니다.', value: 'system', disabled: s.disabled }),
+      ].join('\n'), { footer: b.text('바꾼 테마는 이 기기에만 적용됩니다.') }); break;
+    case 'KjunListRow':
       content = b.node('KjunListSection', { title: '설정', description: '계정과 알림을 관리합니다.' }, [
         b.node('KjunListRow', { title: s.long ? '모든 기기에서 사용할 프로필과 계정 표시 이름' : '프로필 설정', description: '이름과 사진을 변경합니다.', disabled: s.disabled, [action]: notify('openProfile', '프로필 설정 열기') }, '', {
           leading: b.node('KjunAvatar', { name: '김하늘', size: 'sm' }), actions: b.button('공유', notify('share', '프로필 공유'), { variant: 'ghost', size: 'sm' }),

@@ -8,12 +8,25 @@ export function bindRadioKeyboard(group: HTMLElement) {
   const radios = () => Array.from(group.querySelectorAll<HTMLElement>('[role="radio"]'))
     .filter(node => node.closest('[role="radiogroup"]') === group);
   let previous = radios(), focused: HTMLElement | null = null;
-  group.tabIndex = -1;
+  // Each element's own tabindex before the group took it over, restored on cleanup so a list that stops being a
+  // group (or a radio that leaves it) is reachable by Tab again.
+  const original = new Map<HTMLElement, string | null>();
+  const setTabIndex = (node: HTMLElement, value: number) => {
+    if (!original.has(node)) original.set(node, node.getAttribute('tabindex'));
+    node.tabIndex = value;
+  };
+  const restore = (node: HTMLElement) => {
+    const value = original.get(node);
+    if (value === null) node.removeAttribute('tabindex'); else if (value !== undefined) node.setAttribute('tabindex', value);
+    original.delete(node);
+  };
+  setTabIndex(group, -1);
   const sync = () => {
     const current = radios(), available = current.filter(enabled);
     const entry = available.find(node => node === doc.activeElement) ||
       available.find(node => node.getAttribute('aria-checked') === 'true') || available[0];
-    current.forEach(node => { node.tabIndex = node === entry ? 0 : -1; });
+    original.forEach((_, node) => { if (node !== group && !current.includes(node)) restore(node); });
+    current.forEach(node => setTabIndex(node, node === entry ? 0 : -1));
     if (focused && (!current.includes(focused) || !enabled(focused))) {
       const index = previous.indexOf(focused);
       const next = previous.slice(index + 1).find(node => current.includes(node) && enabled(node)) ||
@@ -41,5 +54,8 @@ export function bindRadioKeyboard(group: HTMLElement) {
   doc.addEventListener('focusin', focus);
   group.addEventListener('keydown', keydown);
   sync();
-  return () => { observer.disconnect(); doc.removeEventListener('focusin', focus); group.removeEventListener('keydown', keydown); };
+  return () => {
+    observer.disconnect(); doc.removeEventListener('focusin', focus); group.removeEventListener('keydown', keydown);
+    Array.from(original.keys()).forEach(restore);
+  };
 }

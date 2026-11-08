@@ -485,9 +485,9 @@
   "KjunListSection": {
     "slug": "list-section",
     "description": "제목과 설명이 있는 범용 목록 묶음입니다.",
-    "interaction": "목록 콘텐츠를 배치하며 선택·정렬·요청 상태를 소유하지 않습니다.",
+    "interaction": "목록 콘텐츠를 배치하며 정렬·요청 상태를 소유하지 않습니다. 선택 값은 앱이 value·onValueChange(Vue는 v-model)로 넘기면 행의 value와 맞춰 그리고 바뀔 값을 알립니다.",
     "differences": "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다.",
-    "states": "선택 값·비활성·요청 상태는 앱이 소유합니다. 설명 없이 제목만 있으면 제목을 작은 보조색 그룹 라벨로 표시하고 첫 행과의 간격을 줄입니다. 둥근 섹션은 행만 카드로 묶고 제목·설명·actions·footer는 카드 밖에 둡니다. actions 버튼은 제목 첫 줄 가운데에 놓이고, 버튼이 그 줄보다 커 행에 닿을 때만 닿는 만큼 머리글이 늘어납니다. 비어 있을 때 KjunEmpty는 행 한 개 높이(compact는 44px)의 본문 보조색 안내로 줄어들고, loading을 주면 행 대신 그 내용(예: 행 스켈레톤)을 보입니다. selectionMode=\"single\"이면 목록이 radiogroup이 되어 화살표 키로 고릅니다."
+    "states": "선택 값·비활성·요청 상태는 앱이 소유합니다. 설명 없이 제목만 있으면 제목을 작은 보조색 그룹 라벨로 표시하고 첫 행과의 간격을 줄입니다. 둥근 섹션은 행만 카드로 묶고 제목·설명·actions·footer는 카드 밖에 둡니다. actions는 버튼이든 다른 컨트롤이든 제목 첫 줄 가운데에 놓이고, 그 줄보다 커 행에 닿을 때만 닿는 만큼 머리글이 늘어납니다. 설명과 footer는 목록의 접근성 설명으로 읽습니다. 비어 있을 때 KjunEmpty는 행 한 개 높이(compact는 44px)의 본문 보조색 안내로 줄어들고, loading을 주면 행 대신 그 내용(예: 행 스켈레톤)을 보입니다. selectionMode=\"single\"이면 목록이 radiogroup이 되어 화살표 키로 고르고, \"multiple\"이면 행마다 checkbox로 읽고 고른 행에 체크를 그립니다."
   },
   "KjunListGroup": {
     "slug": "list-group",

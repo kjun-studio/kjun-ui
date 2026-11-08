@@ -101,6 +101,47 @@ for (const platform of ['react', 'vue3', 'native']) {
   });
 }
 
+for (const platform of ['react', 'vue3', 'native']) {
+  const web = platform !== 'native';
+  test(`${platform}: a section owns single and multiple selections and gives back Tab when choice ends`, async ({ page }) => {
+    await openFixture(page, platform, '', 'list-section');
+    // Single: the section's value picks the row, and the footer joins the description.
+    const fruits = page.getByRole('radiogroup', { name: '과일 고르기' });
+    await expect(fruits).toHaveAccessibleDescription('하나를 고릅니다 고른 과일은 오늘만 적용됩니다.');
+    const apple = page.getByRole('radio', { name: '사과' }), pear = page.getByRole('radio', { name: '배' });
+    await expect(apple).toBeChecked(); await expect(pear).not.toBeChecked();
+    await pear.click();
+    await expect(pear).toBeChecked(); await expect(apple).not.toBeChecked();
+    // Multiple: each row is a checkbox that adds or removes its value.
+    const work = page.getByRole('checkbox', { name: '업무 태그' }), home = page.getByRole('checkbox', { name: '개인 태그' });
+    await expect(work).toBeChecked(); await expect(home).not.toBeChecked();
+    await home.click(); await expect(home).toBeChecked(); await expect(work).toBeChecked();
+    await work.click(); await expect(work).not.toBeChecked(); await expect(home).toBeChecked();
+    // Ending the single choice gives every row its Tab stop back.
+    const byName = page.getByRole('radio', { name: '이름순' }), byDate = page.getByRole('radio', { name: '날짜순' });
+    await expect(byDate).toHaveAttribute('tabindex', '-1');
+    await page.getByRole('button', { name: '선택 모드 전환' }).click();
+    await expect(page.getByRole('radiogroup', { name: '정렬' })).toHaveCount(0);
+    await expect(byDate).not.toHaveAttribute('tabindex', '-1');
+    await expect(page.getByRole('list', { name: '정렬' })).not.toHaveAttribute('tabindex', '-1');
+    await page.getByRole('button', { name: '선택 모드 전환' }).click();
+    // A list drawn again after loading still moves by arrow keys.
+    const reload = page.getByRole('button', { name: '다시 불러오기' });
+    await reload.click(); await expect(byName).toHaveCount(0);
+    await reload.click(); await expect(byName).toBeVisible();
+    await byName.focus(); await page.keyboard.press('ArrowDown');
+    await expect(byDate).toBeFocused();
+    if (web) {
+      // Any heading control, not only a KjunButton, centers on the title line and keeps clear of the rows.
+      const title = await box(page.getByRole('heading', { name: '동기화' })), action = await box(page.getByRole('button', { name: '설정' }));
+      const row = await box(page.getByRole('button', { name: '동기화 기록' }));
+      expect(action.height).toBeCloseTo(48, 0);
+      expect(Math.abs((action.y + action.height / 2) - (title.y + title.height / 2))).toBeLessThanOrEqual(1);
+      expect(action.y + action.height).toBeLessThanOrEqual(row.y + 0.5);
+    }
+  });
+}
+
 test('native: rows in sibling fragments keep unique keys', async ({ page }) => {
   const errors: string[] = [];
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });

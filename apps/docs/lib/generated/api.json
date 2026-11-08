@@ -10442,6 +10442,13 @@
         "description": "v-model:checked makes the whole row a switch: it draws one at the end and toggles on any press."
       },
       {
+        "name": "value",
+        "type": "ListChoiceValue",
+        "required": false,
+        "default": "—",
+        "description": "This row's value in a section that owns its selection (v-model on the section): it is selected when the section's value holds it."
+      },
+      {
         "name": "onClick",
         "type": "(event: MouseEvent) => void",
         "required": false,
@@ -10591,6 +10598,13 @@
         "description": ""
       },
       {
+        "name": "value",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "This row's value in a section that owns its selection (`value` on the section): it is selected when the section's value holds it."
+      },
+      {
         "name": "onClick",
         "type": "((event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent<HTMLElement>) => void) | undefined",
         "required": false,
@@ -10719,6 +10733,13 @@
         "description": ""
       },
       {
+        "name": "value",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "This row's value in a section that owns its selection (`value` on the section): it is selected when the section's value holds it."
+      },
+      {
         "name": "onPress",
         "type": "((event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
         "required": false,
@@ -10822,13 +10843,25 @@
       },
       {
         "name": "selectionMode",
-        "type": "\"none\" | \"single\"",
+        "type": "ListSelectionMode",
         "required": false,
         "default": "\"none\"",
-        "description": "\"single\": the rows are one choice (rows given `selected`); the list becomes a radio group with one Tab stop and arrow keys."
+        "description": "\"single\": the rows are one choice and the list a radio group with one Tab stop and arrow keys; \"multiple\": each row is a checkbox. Rows are choices when given `selected`, or a `value` with the section's v-model."
+      },
+      {
+        "name": "modelValue",
+        "type": "ListChoiceValue | ListChoiceValue[]",
+        "required": false,
+        "default": "—",
+        "description": "v-model: the chosen rows' values, owned by the app: one value (null for none) with \"single\", a list with \"multiple\"."
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/list.tsx"
+      }
+    ],
     "slots": [
       {
         "name": "default",
@@ -10957,10 +10990,24 @@
       },
       {
         "name": "selectionMode",
-        "type": "\"none\" | \"single\" | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSelectionMode | undefined",
         "required": false,
         "default": "—",
-        "description": "\"single\": the rows are one choice (rows given `selected`); the list becomes a radio group with one Tab stop and arrow keys."
+        "description": "\"single\": the rows are one choice and the list a radio group with one Tab stop and arrow keys; \"multiple\": each row is a checkbox. Rows are choices when given `selected`, or a `value` with the section's `value`."
+      },
+      {
+        "name": "value",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[] | null | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The chosen rows' values, owned by the app: one value (null for none) with \"single\", a list with \"multiple\"."
+      },
+      {
+        "name": "onValueChange",
+        "type": "((value: import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[]) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called with the next value (a list with \"multiple\") when a row with a `value` is pressed."
       }
     ],
     "native": [
@@ -11064,10 +11111,24 @@
       },
       {
         "name": "selectionMode",
-        "type": "\"none\" | \"single\" | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSelectionMode | undefined",
         "required": false,
         "default": "—",
-        "description": "\"single\": the rows are one choice (rows given `selected`); the list becomes a radio group (with arrow keys on Native Web)."
+        "description": "\"single\": the rows are one choice and the list a radio group (with arrow keys on Native Web); \"multiple\": each row is a checkbox. Rows are choices when given `selected`, or a `value` with the section's `value`."
+      },
+      {
+        "name": "value",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[] | null | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The chosen rows' values, owned by the app: one value (null for none) with \"single\", a list with \"multiple\"."
+      },
+      {
+        "name": "onValueChange",
+        "type": "((value: import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[]) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called with the next value (a list with \"multiple\") when a row with a `value` is pressed."
       }
     ]
   },
