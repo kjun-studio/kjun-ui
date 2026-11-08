@@ -42,3 +42,12 @@ export function hsvToRgb({ h, s, v }: Hsv, a = 1): Rgba {
   const f = (n: number) => { const k = (n + h / 60) % 6; return Math.round((v - v * s * Math.max(0, Math.min(k, 4 - k, 1))) * 255); };
   return { r: f(5), g: f(3), b: f(1), a };
 }
+
+/** Which ink reads on a color: dark on light colors, light on dark ones (WCAG relative luminance). Mostly transparent colors take dark ink over the light checkerboard. */
+export function readableInk(value: string): "light" | "dark" {
+  const c = parseColor(value);
+  if (!c) return "dark";
+  const lin = (n: number) => { const x = n / 255; return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; };
+  const l = 0.2126 * lin(c.r) + 0.7152 * lin(c.g) + 0.0722 * lin(c.b);
+  return c.a < 0.5 || l > 0.4 ? "dark" : "light";
+}

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
-import { formatColor, hsvToRgb, normalizeColor, parseColor, rgbToHsv, sameColor } from '../shared/package-runtime/color.ts';
+import { formatColor, hsvToRgb, normalizeColor, parseColor, readableInk, rgbToHsv, sameColor } from '../shared/package-runtime/color.ts';
 
 // color-picker.ts imports ./color without an extension, which Node cannot resolve directly, so the test bundles it.
 const output = await build({ entryPoints: ['shared/package-runtime/color-picker.ts'], bundle: true, write: false, format: 'esm', platform: 'node' });
@@ -114,4 +114,12 @@ test('colorPicker tokens and messages exist with the spec values', async () => {
   assert.equal(ko.colorValue('#3B82F6', 80), '#3B82F6, 투명도 80%');
   assert.equal(ko.colorValue('#3B82F6'), '#3B82F6');
   assert.equal(ko.colorNone, '색 없음');
+});
+
+test('readableInk picks dark ink on light colors and light ink on dark ones', () => {
+  assert.equal(readableInk('#FFFFFF'), 'dark');
+  assert.equal(readableInk('#EAB308'), 'dark');
+  assert.equal(readableInk('#111111'), 'light');
+  assert.equal(readableInk('#3B82F6'), 'light');
+  assert.equal(readableInk('#11111120'), 'dark');
 });

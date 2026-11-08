@@ -77,6 +77,7 @@ export type {
 } from "./actions";
 
 export { KjunCarousel } from "./carousel";
+export { KjunColorPicker, type KjunColorPickerProps, type KjunColorSwatch } from "./color-picker";
 export type { KjunCarouselProps } from "./carousel";
 
 export { KjunDataState, KjunErrorBoundary } from "./data-state";

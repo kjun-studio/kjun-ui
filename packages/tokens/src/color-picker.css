@@ -23,7 +23,8 @@
 
 .kjun-color-panel {
   width: var(--_kjun-extension-color-picker-width); max-width: calc(100vw - 2 * var(--_kjun-extension-floating-viewport-inset));
-  padding: var(--_kjun-extension-color-picker-padding); box-sizing: border-box;
+  /* The floating border sits inside the width, so the content keeps width - 2 × padding (seven swatches a row). */
+  padding: calc(var(--_kjun-extension-color-picker-padding) - var(--_kjun-border-default-width)); box-sizing: border-box;
   display: flex; flex-direction: column; gap: var(--_kjun-extension-color-picker-gap);
 }
 
