@@ -1003,6 +1003,20 @@
       ]
     },
     {
+      "name": "KjunColorPicker",
+      "category": "inputs",
+      "aliases": [
+        "색 선택",
+        "컬러 피커",
+        "색상 선택",
+        "견본 색",
+        "Color picker"
+      ],
+      "useCases": [
+        "설정 폼"
+      ]
+    },
+    {
       "name": "KjunQuantityStepper",
       "category": "inputs",
       "aliases": [

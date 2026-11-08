@@ -22,7 +22,7 @@ export const snapshotFixtures = {
   KjunDataState: { queryKey: 'b', resultKey: 'b', queryLoading: false, queryError: null },
   KjunListRow: { notifications: false }, KjunListSection: { notifications: false }, KjunBottomNavigation: { destination: 'activity' }, KjunFloatingNavigation: { destination: 'activity' },
   KjunImage: { imageReady: true, imageVersion: 1 }, KjunChip: { removed: true }, KjunSlider: { slider: 0 }, KjunCarousel: { slide: 1 },
-  KjunRangeSlider: { range: [0, 100] }, KjunTimePicker: { time: null }, KjunQuantityStepper: { quantity: 0 },
+  KjunRangeSlider: { range: [0, 100] }, KjunTimePicker: { time: null }, KjunColorPicker: { color: null }, KjunQuantityStepper: { quantity: 0 },
 };
 export async function prepareExample(platform, name, id, settings, values, palette = 'default', suppliedCode, mode = 'full', suppliedSetup) {
   const directory = resolve(consumer.directory, 'example-checks', platform, (mode === 'usage' ? 'usage-' : '') + name + '-' + id);

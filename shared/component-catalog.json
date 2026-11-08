@@ -3181,6 +3181,42 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunColorPicker",
+    "sources": {
+      "vue3": "packages/vue3/src/color-picker.tsx",
+      "react": "packages/react/src/color-picker.tsx",
+      "native": "packages/native/src/color-picker.tsx"
+    },
+    "category": "inputs",
+    "kind": "component",
+    "owner": "KjunColorPicker",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/color-picker",
+    "tests": [
+      "tests/color-picker.test.mjs",
+      "tests/browser/color-picker.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
     "name": "KjunQuantityStepper",
     "sources": {
       "vue3": "packages/vue3/src/quantity-stepper.tsx",

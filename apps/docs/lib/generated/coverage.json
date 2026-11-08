@@ -1,11 +1,11 @@
 {
-  "total": 87,
+  "total": 88,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 87,
+      "provided": 88,
       "counts": {
-        "supported": 87,
+        "supported": 88,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 87,
+      "provided": 88,
       "counts": {
-        "supported": 87,
+        "supported": 88,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 87,
+      "provided": 88,
       "counts": {
         "supported": 0,
-        "preview": 87,
+        "preview": 88,
         "review": 0,
         "unsupported": 0
       },
@@ -547,6 +547,37 @@
       "docs": "/components/collection-mark",
       "category": "finance",
       "differences": "세 플랫폼 모두 kind·active·size를 받습니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "KjunColorPicker",
+      "title": "ColorPicker",
+      "docs": "/components/color-picker",
+      "category": "inputs",
+      "differences": "세 플랫폼 모두 DatePicker처럼 필드 아래 떠 있는 패널로 엽니다. 웹은 포인터 캡처로, Native는 PanResponder로 끌고 그라데이션과 체크무늬는 react-native-svg로 그립니다. Native 기기에서는 화살표 키 대신 스크린리더의 조절 동작(채도는 사용자 지정 동작)으로 바꿉니다. Native는 RN Web에서만 확인했습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -2783,7 +2814,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 87
+      "componentCount": 88
     }
   ]
 }

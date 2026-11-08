@@ -14,6 +14,7 @@ export const extensionControls: Record<string, ExampleControl[]> = {
   KjunAvatar: [size, choice("shape", "형태", ["circle", "square"]), choice("imageState", "이미지 상태", ["이름", "사진", "실패"]), bool("decorative", "장식 이미지")],
   KjunChip: [size, disabled, bool("removable", "삭제 버튼", true), long],
   KjunSlider: [disabled, bool("decimal", "소수 step")], KjunRangeSlider: [disabled, bool("decimal", "소수 step")],
+  KjunColorPicker: [size, disabled, error, bool("swatches", "견본", true), bool("custom", "자유 선택"), bool("alpha", "투명도"), bool("input", "HEX 입력"), bool("clearable", "색 없음", true)],
   KjunTimePicker: [size, disabled, error, choice("precision", "시간 정밀도", ["minute", "second"]), number("minuteStep", "분 간격", 1, 1, 59), { ...number("secondStep", "초 간격", 1, 1, 59), when: { precision: ["second"] } }, bool("bounded", "시각 범위 제한"), bool("clearable", "지우기", true), bool("block", "전체 너비")],
   KjunQuantityStepper: [size, disabled, error, bool("block", "전체 너비"), bool("decimal", "소수 수량"), bool("negative", "음수 허용")],
 };
@@ -39,6 +40,7 @@ export const extensionPresets: Record<string, ExamplePreset[]> = {
   KjunAvatar: [preset("photo", "사진", { imageState: "사진" }), preset("failure", "사진 실패", { imageState: "실패" })],
   KjunChip: [preset("long", "긴 라벨", { long: true }), preset("disabled", "삭제 비활성", { disabled: true })],
   KjunSlider: [preset("decimal", "소수 단위", { decimal: true }, { slider: .5 })], KjunRangeSlider: [preset("decimal", "소수 구간", { decimal: true }, { range: [.2, .8] })],
+  KjunColorPicker: [preset("all", "전체 옵션", { custom: true, alpha: true, input: true }, { color: "#3B82F6CC" }), preset("free", "자유 선택만", { swatches: false, clearable: false, custom: true, input: true })],
   KjunTimePicker: [preset("seconds", "초 단위", { precision: "second" }, { time: "09:30:15" }), preset("bounded", "시각 범위", { precision: "second", bounded: true }), preset("error", "오류", { error: true })],
   KjunQuantityStepper: [preset("block", "전체 너비", { block:true }), preset("decimal", "소수 수량", { decimal: true }, { quantity: 1.25 }), preset("negative", "음수와 반올림", { decimal: true, negative: true }, { quantity: -1.25 }), preset("error", "오류", { error: true })],
 };

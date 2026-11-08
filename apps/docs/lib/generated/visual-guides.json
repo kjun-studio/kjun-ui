@@ -15846,6 +15846,284 @@
       }
     }
   },
+  "KjunColorPicker": {
+    "name": "KjunColorPicker",
+    "path": "/components/color-picker",
+    "related": "input-settings",
+    "description": "색 버튼을 눌러 여는 패널에서 견본, 채도·명도 영역, 색상·투명도 슬라이더, HEX 입력으로 색을 고릅니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "색 버튼",
+                "description": "현재 색 칸과 HEX 값을 보여 주고 누르면 패널을 엽니다.",
+                "target": "[aria-haspopup=\"dialog\"]",
+                "optional": false
+              },
+              {
+                "label": "값",
+                "description": "현재 색의 HEX 값입니다. 투명도가 100% 미만이면 %를 붙이고, 색이 없으면 ‘색 선택’을 보입니다.",
+                "target": "text=#3B82F6",
+                "optional": true
+              }
+            ],
+            "values": {
+              "color": "#3B82F6"
+            }
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "공개 error 속성이 담당하는 오류 상태입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+            }
+          },
+          {
+            "id": "all",
+            "label": "전체 옵션",
+            "description": "채도·명도 영역, 색상·투명도 슬라이더, HEX와 % 입력을 함께 엽니다.",
+            "settings": {
+              "custom": true,
+              "alpha": true,
+              "input": true
+            },
+            "values": {
+              "color": "#3B82F6CC"
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "옵션 swatches·custom·alpha·input·clearable을 섞어 씁니다. 패널은 240px, 안쪽 여백 12px, 영역 높이 160px, 견본 24px 칸·8px 간격(한 줄 7칸)입니다. 견본 색과 값은 앱이 정하고, 패키지가 직접 그리는 색은 영역·색상·투명도 그라데이션뿐입니다. 체크무늬는 surface·border 역할 색입니다. 선택된 견본과 키보드 초점은 같은 brand 링 하나로 그리고, 선택된 견본에는 체크를 더합니다. 영역·슬라이더의 초점은 손잡이 둘레 링입니다. 트리거 크기는 Input과 같은 sm·md·lg입니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "색 버튼",
+                "description": "현재 색 칸과 HEX 값을 보여 주고 누르면 패널을 엽니다.",
+                "target": "[aria-haspopup=\"dialog\"]",
+                "optional": false
+              },
+              {
+                "label": "값",
+                "description": "현재 색의 HEX 값입니다. 투명도가 100% 미만이면 %를 붙이고, 색이 없으면 ‘색 선택’을 보입니다.",
+                "target": "text=#3B82F6",
+                "optional": true
+              }
+            ],
+            "values": {
+              "color": "#3B82F6"
+            }
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "공개 error 속성이 담당하는 오류 상태입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+            }
+          },
+          {
+            "id": "all",
+            "label": "전체 옵션",
+            "description": "채도·명도 영역, 색상·투명도 슬라이더, HEX와 % 입력을 함께 엽니다.",
+            "settings": {
+              "custom": true,
+              "alpha": true,
+              "input": true
+            },
+            "values": {
+              "color": "#3B82F6CC"
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "옵션 swatches·custom·alpha·input·clearable을 섞어 씁니다. 패널은 240px, 안쪽 여백 12px, 영역 높이 160px, 견본 24px 칸·8px 간격(한 줄 7칸)입니다. 견본 색과 값은 앱이 정하고, 패키지가 직접 그리는 색은 영역·색상·투명도 그라데이션뿐입니다. 체크무늬는 surface·border 역할 색입니다. 선택된 견본과 키보드 초점은 같은 brand 링 하나로 그리고, 선택된 견본에는 체크를 더합니다. 영역·슬라이더의 초점은 손잡이 둘레 링입니다. 트리거 크기는 Input과 같은 sm·md·lg입니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "색 버튼",
+                "description": "현재 색 칸과 HEX 값을 보여 주고 누르면 패널을 엽니다.",
+                "target": "[aria-haspopup=\"dialog\"]",
+                "optional": false
+              },
+              {
+                "label": "값",
+                "description": "현재 색의 HEX 값입니다. 투명도가 100% 미만이면 %를 붙이고, 색이 없으면 ‘색 선택’을 보입니다.",
+                "target": "text=#3B82F6",
+                "optional": true
+              }
+            ],
+            "values": {
+              "color": "#3B82F6"
+            }
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "공개 error 속성이 담당하는 오류 상태입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+            }
+          },
+          {
+            "id": "all",
+            "label": "전체 옵션",
+            "description": "채도·명도 영역, 색상·투명도 슬라이더, HEX와 % 입력을 함께 엽니다.",
+            "settings": {
+              "custom": true,
+              "alpha": true,
+              "input": true
+            },
+            "values": {
+              "color": "#3B82F6CC"
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunColorPicker\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "옵션 swatches·custom·alpha·input·clearable을 섞어 씁니다. 패널은 240px, 안쪽 여백 12px, 영역 높이 160px, 견본 24px 칸·8px 간격(한 줄 7칸)입니다. 견본 색과 값은 앱이 정하고, 패키지가 직접 그리는 색은 영역·색상·투명도 그라데이션뿐입니다. 체크무늬는 surface·border 역할 색입니다. 선택된 견본과 키보드 초점은 같은 brand 링 하나로 그리고, 선택된 견본에는 체크를 더합니다. 영역·슬라이더의 초점은 손잡이 둘레 링입니다. 트리거 크기는 Input과 같은 sm·md·lg입니다."
+      }
+    }
+  },
   "KjunQuantityStepper": {
     "name": "KjunQuantityStepper",
     "path": "/components/quantity-stepper",
