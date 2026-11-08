@@ -1,0 +1,77 @@
+/* KjunColorPicker. The trigger reuses the select field; the panel opens in the field FloatingPanel.
+   Computed colors are the only literal colors: the area fades to white and black over the hue, the hue track is the hue circle,
+   and the alpha track fades to the current color. The checkerboard under transparent colors uses the surface and border roles. */
+.kjun-color-trigger > span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; font-variant-numeric: tabular-nums; }
+.kjun-color-trigger .kjun-color-chip { flex: none; }
+.kjun-color-trigger-alpha { color: var(--_kjun-color-text-secondary); margin-left: var(--_kjun-geometry-dimension-value4); }
+
+.kjun-color-checker {
+  background-color: var(--_kjun-color-surface);
+  background-image: linear-gradient(45deg, var(--_kjun-color-border) 25%, transparent 25%, transparent 75%, var(--_kjun-color-border) 75%),
+    linear-gradient(45deg, var(--_kjun-color-border) 25%, transparent 25%, transparent 75%, var(--_kjun-color-border) 75%);
+  background-size: var(--_kjun-extension-color-picker-checker-size) var(--_kjun-extension-color-picker-checker-size);
+  background-position: 0 0, calc(var(--_kjun-extension-color-picker-checker-size) / 2) calc(var(--_kjun-extension-color-picker-checker-size) / 2);
+}
+/* A color chip: the color sits on the checkerboard and keeps a faint inner edge so a color equal to the page still shows. */
+.kjun-color-chip { position: relative; display: inline-block; overflow: hidden; border-radius: var(--_kjun-extension-color-picker-swatch-radius); }
+.kjun-color-chip > span { position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 var(--_kjun-border-default-width) color-mix(in srgb, var(--_kjun-color-text) 12%, transparent); }
+.kjun-color-chip[data-none] { background: var(--_kjun-color-surface); }
+.kjun-color-chip[data-none] > span {
+  background: linear-gradient(135deg, transparent calc(50% - var(--_kjun-border-default-width)), var(--_kjun-color-danger) calc(50% - var(--_kjun-border-default-width)),
+    var(--_kjun-color-danger) calc(50% + var(--_kjun-border-default-width)), transparent calc(50% + var(--_kjun-border-default-width)));
+}
+
+.kjun-color-panel {
+  width: var(--_kjun-extension-color-picker-width); max-width: calc(100vw - 2 * var(--_kjun-extension-floating-viewport-inset));
+  padding: var(--_kjun-extension-color-picker-padding); box-sizing: border-box;
+  display: flex; flex-direction: column; gap: var(--_kjun-extension-color-picker-gap);
+}
+
+.kjun-color-area {
+  position: relative; height: var(--_kjun-extension-color-picker-area-height); border-radius: var(--_kjun-extension-color-picker-area-radius);
+  background: linear-gradient(to top, black, transparent), linear-gradient(to right, white, transparent), var(--_kjun-color-picker-hue);
+  touch-action: none; cursor: crosshair; outline: none; user-select: none;
+}
+.kjun-color-channel {
+  position: relative; height: var(--_kjun-extension-color-picker-channel-height); border-radius: var(--_kjun-extension-color-picker-channel-radius);
+  margin-inline: calc(var(--_kjun-extension-color-picker-thumb-size) / 2);
+  touch-action: none; cursor: pointer; outline: none; user-select: none;
+}
+.kjun-color-channel[data-channel="hue"] {
+  background: linear-gradient(to right, hsl(0 100% 50%), hsl(60 100% 50%), hsl(120 100% 50%), hsl(180 100% 50%), hsl(240 100% 50%), hsl(300 100% 50%), hsl(360 100% 50%));
+}
+.kjun-color-channel[data-channel="alpha"] > i { position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(to right, transparent, var(--_kjun-color-picker-current)); }
+
+.kjun-color-thumb {
+  position: absolute; z-index: 1; width: var(--_kjun-extension-color-picker-thumb-size); height: var(--_kjun-extension-color-picker-thumb-size);
+  border-radius: 50%; transform: translate(-50%, -50%); background: var(--_kjun-color-switch-thumb); box-shadow: var(--_kjun-slider-elevation);
+  display: flex; align-items: center; justify-content: center; pointer-events: none;
+}
+.kjun-color-channel .kjun-color-thumb { top: 50%; }
+.kjun-color-thumb > span { width: calc(var(--_kjun-extension-color-picker-thumb-size) - 2 * var(--_kjun-extension-color-picker-ring-width) - 2 * var(--_kjun-extension-color-picker-ring-gap)); height: calc(var(--_kjun-extension-color-picker-thumb-size) - 2 * var(--_kjun-extension-color-picker-ring-width) - 2 * var(--_kjun-extension-color-picker-ring-gap)); border-radius: 50%; }
+/* Keyboard focus rings the thumb, not the whole track. */
+.kjun-color-area:focus-visible .kjun-color-thumb, .kjun-color-channel:focus-visible .kjun-color-thumb {
+  box-shadow: 0 0 0 var(--_kjun-extension-color-picker-ring-gap) var(--_kjun-color-surface),
+    0 0 0 calc(var(--_kjun-extension-color-picker-ring-gap) + var(--_kjun-extension-color-picker-ring-width)) var(--_kjun-color-brand), var(--_kjun-slider-elevation);
+}
+
+.kjun-color-inputs { display: flex; gap: var(--_kjun-extension-color-picker-swatch-gap); }
+.kjun-color-inputs .kjun-input-wrap { flex: 1; min-width: 0; }
+.kjun-color-inputs .kjun-color-alpha { flex: none; width: var(--_kjun-extension-color-picker-alpha-input-width); }
+.kjun-color-inputs input { font-variant-numeric: tabular-nums; text-transform: uppercase; }
+
+.kjun-color-swatches { display: grid; grid-template-columns: repeat(auto-fill, var(--_kjun-extension-color-picker-swatch-size)); gap: var(--_kjun-extension-color-picker-swatch-gap); }
+.kjun-color-swatch {
+  width: var(--_kjun-extension-color-picker-swatch-size); height: var(--_kjun-extension-color-picker-swatch-size);
+  padding: 0; border: 0; border-radius: var(--_kjun-extension-color-picker-swatch-radius); cursor: pointer; outline: none;
+  position: relative; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent;
+}
+.kjun-color-swatch > .kjun-color-chip { position: absolute; inset: 0; }
+.kjun-color-swatch > svg { position: relative; }
+.kjun-color-swatch[data-ink="light"] > svg { color: white; }
+.kjun-color-swatch[data-ink="dark"] > svg { color: black; }
+.kjun-color-swatch:hover:not([data-selected]) { box-shadow: 0 0 0 var(--_kjun-extension-color-picker-ring-gap) var(--_kjun-color-surface), 0 0 0 calc(var(--_kjun-extension-color-picker-ring-gap) + var(--_kjun-extension-color-picker-ring-width)) var(--_kjun-color-border-strong); }
+/* One ring: the selected swatch and the keyboard-focused swatch share it; the selected one also carries a check. */
+.kjun-color-swatch[data-selected], .kjun-color-swatch:focus-visible {
+  box-shadow: 0 0 0 var(--_kjun-extension-color-picker-ring-gap) var(--_kjun-color-surface), 0 0 0 calc(var(--_kjun-extension-color-picker-ring-gap) + var(--_kjun-extension-color-picker-ring-width)) var(--_kjun-color-brand);
+}

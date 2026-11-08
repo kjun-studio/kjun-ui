@@ -211,6 +211,28 @@
     "slider": {
       "minimumWidth": 100
     },
+    "colorPicker": {
+      "width": { "$ref": "extensions.popover.width" },
+      "padding": { "$ref": "dimension.value12" },
+      "gap": { "$ref": "dimension.value12" },
+      "areaHeight": 160,
+      "areaRadius": { "$ref": "radius.radius8" },
+      "thumbSize": { "$ref": "dimension.value20" },
+      "channelHeight": { "$ref": "dimension.value12" },
+      "channelRadius": { "$ref": "radius.radius6" },
+      "swatchSize": { "$ref": "dimension.value24" },
+      "swatchGap": { "$ref": "dimension.value8" },
+      "swatchRadius": { "$ref": "radius.radius6" },
+      "ringWidth": { "$ref": "dimension.value2" },
+      "ringGap": { "$ref": "dimension.value2" },
+      "checkerSize": { "$ref": "dimension.value8" },
+      "alphaInputWidth": { "$ref": "dimension.value64" },
+      "triggerSwatch": {
+        "sm": { "$ref": "dimension.value16" },
+        "md": { "$ref": "dimension.value20" },
+        "lg": { "$ref": "dimension.value24" }
+      }
+    },
     "calendar": {
       "width": 312,
       "padding": { "$ref": "dimension.value12" },

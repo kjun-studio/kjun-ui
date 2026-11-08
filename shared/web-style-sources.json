@@ -21,5 +21,6 @@
   "kpi-typography.css",
   "layout.css",
   "carousel.css",
-  "calendar.css"
+  "calendar.css",
+  "color-picker.css"
 ]

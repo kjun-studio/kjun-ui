@@ -99,3 +99,19 @@ test('initialFocus picks the selected swatch, then the area, then hex, then the 
   assert.equal(initialFocus({ selectedSwatch: false, custom: false, input: true }), 'hex');
   assert.equal(initialFocus({ selectedSwatch: false, custom: false, input: false }), 'first-swatch');
 });
+
+test('colorPicker tokens and messages exist with the spec values', async () => {
+  const bundle = async entry => { const r = await build({ entryPoints: [entry], bundle: true, write: false, format: 'esm', platform: 'node' }); return import('data:text/javascript;base64,' + Buffer.from(r.outputFiles[0].contents).toString('base64')); };
+  const { tokens } = await bundle('packages/tokens/src/index.ts');
+  const p = tokens.extensions.colorPicker;
+  assert.equal(p.width, 240); assert.equal(p.padding, 12); assert.equal(p.areaHeight, 160);
+  assert.equal(p.swatchSize, 24); assert.equal(p.swatchGap, 8); assert.equal(p.thumbSize, 20);
+  assert.deepEqual(p.triggerSwatch, { sm: 16, md: 20, lg: 24 });
+  const out = await build({ entryPoints: ['shared/package-runtime/messages/index.ts'], bundle: true, write: false, format: 'esm', platform: 'node' });
+  const { kjunMessagesKo: ko, kjunMessagesEn: en } = await import('data:text/javascript;base64,' + Buffer.from(out.outputFiles[0].contents).toString('base64'));
+  assert.equal(ko.colorAreaValue(60, 80), '채도 60%, 명도 80%');
+  assert.equal(en.hueValue(210), '210 degrees');
+  assert.equal(ko.colorValue('#3B82F6', 80), '#3B82F6, 투명도 80%');
+  assert.equal(ko.colorValue('#3B82F6'), '#3B82F6');
+  assert.equal(ko.colorNone, '색 없음');
+});
