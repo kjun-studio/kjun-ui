@@ -72,6 +72,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     test('the area and hue slider move by keys and keep the hue through gray', async ({ page }) => {
       await trigger(page, 'cp-gray', '회색 확인').click();
       await expect(area(page)).toHaveAttribute('aria-valuetext', '채도 76%, 명도 96%');
+      // The panel moves focus to the area on open; keys go there once it lands.
+      await expect(area(page)).toBeFocused();
       await page.keyboard.press('ArrowRight');
       await expect(area(page)).toHaveAttribute('aria-valuetext', '채도 77%, 명도 96%');
       await page.keyboard.press('Shift+ArrowUp');
@@ -126,6 +128,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(hex(page)).toHaveValue('FF0000');
       expect(await list(page, 'cp-controlled', 'changes')).toEqual([]);
       await page.keyboard.press('Escape');
+      // Wait out the closing motion so only the next panel's field is on the page.
+      await expect(hex(page)).toHaveCount(0);
       await expect(trigger(page, 'cp-alpha-off', '알파 끔')).toHaveAccessibleName(/#3B82F6$/);
       await trigger(page, 'cp-alpha-off', '알파 끔').click();
       await expect(hex(page)).toHaveValue('3B82F6');
