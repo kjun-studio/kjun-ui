@@ -53,3 +53,58 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(label.y - (first.y + first.height)).toBeGreaterThan(24);
   });
 }
+
+for (const platform of ['react', 'vue3', 'native']) {
+  const web = platform !== 'native';
+  test(`${platform}: heading buttons keep clear of the rows, choice sections are radio groups and loading replaces the rows`, async ({ page }) => {
+    await openFixture(page, platform, '', 'list-section');
+    // A button taller than the label line still centers on it, and grows the heading instead of covering the first row.
+    const label = await box(page.getByText('계정', { exact: true })), edit = await box(page.getByRole('button', { name: '편집' }));
+    const profile = await box(page.getByRole('button', { name: '프로필' }));
+    expect(Math.abs((edit.y + edit.height / 2) - (label.y + label.height / 2))).toBeLessThanOrEqual(1);
+    expect(edit.y + edit.height).toBeLessThanOrEqual(profile.y - 8 + 0.5);
+    // Several heading buttons sit side by side, 8px apart.
+    const invite = await box(page.getByRole('button', { name: '초대' })), link = await box(page.getByRole('button', { name: '링크' }));
+    expect(Math.abs(invite.y - link.y)).toBeLessThanOrEqual(0.5);
+    expect(link.x - (invite.x + invite.width)).toBeCloseTo(8, 0);
+    // An icon-only ghost button ends its glyph on the rows' end line.
+    const glyph = await box(page.getByRole('button', { name: '태그 추가' }).locator('svg').first()), tagRow = await box(page.getByRole('button', { name: '업무' }));
+    expect(glyph.x + glyph.width).toBeCloseTo(tagRow.x + tagRow.width - 16, 0);
+    // Korean headings wrap between words.
+    await expect(page.getByText('함께 보는 사람', { exact: true })).toHaveCSS('word-break', 'keep-all');
+    // A single-choice section is a radio group named and described by its heading, with one Tab stop and arrow keys.
+    const group = page.getByRole('radiogroup', { name: '테마' });
+    await expect(group).toHaveAccessibleDescription('화면 색을 고릅니다');
+    await expect(group.getByRole('listitem')).toHaveCount(0);
+    const light = page.getByRole('radio', { name: '밝게' }), dark = page.getByRole('radio', { name: '어둡게' });
+    await expect(light).toHaveAttribute('tabindex', '0');
+    await expect(dark).toHaveAttribute('tabindex', '-1');
+    await light.focus();
+    await page.keyboard.press('ArrowDown');
+    await expect(dark).toBeFocused();
+    // Loading content replaces the rows and runs edge to edge like them.
+    await expect(page.getByText('불러온 행', { exact: true })).toHaveCount(0);
+    if (web) {
+      const skeleton = await box(page.locator('.kjun-list-skeleton-row').first());
+      expect(skeleton.x).toBeCloseTo(profile.x, 0);
+      expect(skeleton.width).toBeCloseTo(profile.width, 0);
+    }
+    // A compact section's empty note is one compact row tall.
+    const emptyHeight = await page.getByText('보관한 문서가 없습니다', { exact: true }).evaluate(el => {
+      let node: HTMLElement | null = el as HTMLElement;
+      while (node && node.getBoundingClientRect().height < 44) node = node.parentElement;
+      return node?.getBoundingClientRect().height;
+    });
+    expect(emptyHeight).toBeCloseTo(44, 0);
+    // Rows in sibling fragments all render.
+    for (const name of ['묶음 1', '묶음 2', '묶음 3']) await expect(page.getByText(name, { exact: true })).toBeVisible();
+  });
+}
+
+test('native: rows in sibling fragments keep unique keys', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await openFixture(page, 'native', '', 'list-section', 'development');
+  await expect(page.getByText('묶음 3', { exact: true })).toBeVisible();
+  expect(errors.filter(text => text.includes('same key'))).toEqual([]);
+});

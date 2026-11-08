@@ -39,7 +39,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(await cornerOf(section(page, 'lists').getByText('Square row', { exact: true }))).toBe('0px');
     });
 
-    test('the focus ring stays inside a rounded section', async ({ page }) => {
+    test('row focus rings stay inside rounded and square sections', async ({ page }) => {
       test.skip(platform === 'native', 'Web focus outline');
       const lists = section(page, 'lists');
       await lists.getByText('Lists start', { exact: true }).click();
@@ -47,12 +47,12 @@ for (const platform of ['react', 'vue3', 'native']) {
       const first = lists.getByRole('button', { name: 'First row' });
       await expect(first).toBeFocused();
       expect(parseFloat(await first.evaluate(el => getComputedStyle(el).outlineOffset))).toBeLessThan(0);
-      // The square section keeps the existing ring.
+      // Rows run edge to edge, so a square section's ring draws inside too (never cut by the screen edge or the next row).
       await lists.getByRole('button', { name: 'Square row' }).focus();
       await page.keyboard.press('Shift+Tab'); await page.keyboard.press('Tab');
       const square = lists.getByRole('button', { name: 'Square row' });
       await expect(square).toBeFocused();
-      expect(parseFloat(await square.evaluate(el => getComputedStyle(el).outlineOffset))).toBeGreaterThanOrEqual(0);
+      expect(parseFloat(await square.evaluate(el => getComputedStyle(el).outlineOffset))).toBeLessThan(0);
     });
 
     // The painted background of the selected chip: the label's nearest ancestor with a background.

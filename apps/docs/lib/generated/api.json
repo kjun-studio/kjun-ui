@@ -10625,7 +10625,7 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Web link address (Native Web only); on a device pass onPress and navigate with the app's router."
       },
       {
         "name": "disabled",
@@ -10770,6 +10770,13 @@
         "required": false,
         "default": "3",
         "description": "Heading level of the title (default 3)."
+      },
+      {
+        "name": "selectionMode",
+        "type": "\"none\" | \"single\"",
+        "required": false,
+        "default": "\"none\"",
+        "description": "\"single\": the rows are one choice (rows given `selected`); the list becomes a radio group with one Tab stop and arrow keys."
       }
     ],
     "events": [],
@@ -10781,6 +10788,11 @@
       },
       {
         "name": "actions",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      },
+      {
+        "name": "loading",
         "data": [],
         "source": "packages/vue3/src/list.tsx"
       },
@@ -10886,6 +10898,20 @@
         "required": false,
         "default": "—",
         "description": "Supporting text under the rows, such as what a setting applies to."
+      },
+      {
+        "name": "loading",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Shown in place of the rows (and the empty content) while they load, such as a KjunListSkeleton with variant \"row\"."
+      },
+      {
+        "name": "selectionMode",
+        "type": "\"none\" | \"single\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"single\": the rows are one choice (rows given `selected`); the list becomes a radio group with one Tab stop and arrow keys."
       }
     ],
     "native": [
@@ -10950,7 +10976,7 @@
         "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
         "required": false,
         "default": "—",
-        "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\", or the KjunListGroup's)."
+        "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's)."
       },
       {
         "name": "titleVariant",
@@ -10979,6 +11005,20 @@
         "required": false,
         "default": "—",
         "description": "Supporting text under the rows, such as what a setting applies to."
+      },
+      {
+        "name": "loading",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Shown in place of the rows (and the empty content) while they load, such as a KjunListSkeleton with variant \"row\"."
+      },
+      {
+        "name": "selectionMode",
+        "type": "\"none\" | \"single\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"single\": the rows are one choice (rows given `selected`); the list becomes a radio group (with arrow keys on Native Web)."
       }
     ]
   },

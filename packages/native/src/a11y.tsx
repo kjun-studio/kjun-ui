@@ -21,7 +21,11 @@ export function focusVisible(target: unknown) {
     && !!(target as { matches?: (selector: string) => boolean }).matches?.(":focus-visible");
 }
 // Native Web consumes the aria aliases; native runtimes consume accessibilityState.
-export const AccessiblePressable = forwardRef<View, PressableProps & { focusRingInset?: boolean; focusRing?: boolean; focusRingRadius?: number }>(
+/** A radius for the whole ring, or for its top and bottom corners only (a first or last row in a rounded card). */
+export type FocusRingRadius = number | { top?: number; bottom?: number };
+const ringCorners = (radius: FocusRingRadius) => typeof radius === "number" ? { borderRadius: radius }
+  : { borderTopLeftRadius: radius.top ?? 0, borderTopRightRadius: radius.top ?? 0, borderBottomLeftRadius: radius.bottom ?? 0, borderBottomRightRadius: radius.bottom ?? 0 };
+export const AccessiblePressable = forwardRef<View, PressableProps & { focusRingInset?: boolean; focusRing?: boolean; focusRingRadius?: FocusRingRadius }>(
   // focusRing=false: a parent surface draws the ring (compound fields).
   // focusRingRadius: while focused, round the target so an inset ring follows a clipping parent's corners.
   function AccessiblePressable({ focusRingInset, focusRing = true, focusRingRadius, ...props }, ref) {
@@ -50,7 +54,7 @@ export const AccessiblePressable = forwardRef<View, PressableProps & { focusRing
     // Without its own ring the target still suppresses the browser default one.
     const ring = (!focusRing
       ? Platform.OS === 'web' ? { outlineStyle: 'none' } : undefined
-      : focused ? { outlineStyle: 'solid', outlineWidth: tokens.states.focus.width, outlineOffset: (focusRingInset ?? props.accessibilityRole === 'tab') ? tokens.states.focus.insetOffset : tokens.states.focus.offset, outlineColor: colors.focusRing, ...(focusRingRadius != null ? { borderRadius: focusRingRadius } : {}) } : undefined) as ViewStyle | undefined;
+      : focused ? { outlineStyle: 'solid', outlineWidth: tokens.states.focus.width, outlineOffset: (focusRingInset ?? props.accessibilityRole === 'tab') ? tokens.states.focus.insetOffset : tokens.states.focus.offset, outlineColor: colors.focusRing, ...(focusRingRadius != null ? ringCorners(focusRingRadius) : {}) } : undefined) as ViewStyle | undefined;
     return <Pressable {...props} {...web} ref={setRef}
       onFocus={event => {
         setFocused(focusVisible(event.currentTarget));

@@ -1,10 +1,14 @@
-import { computed, defineComponent, inject, onMounted, provide, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { computed, defineComponent, inject, onMounted, provide, ref, watchEffect, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
-import { listRowKind, warnListRowProps } from "../../../shared/package-runtime/list-row";
+import { listRowKind, listSectionShape, warnListRowProps } from "../../../shared/package-runtime/list-row";
+import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
+
+// True inside a single-choice section, whose list is a radiogroup.
+const kjunListChoiceKey = Symbol("kjunListChoice");
 
 const kjunListRowProps = {
   title: { type: String, required: true },
@@ -42,7 +46,7 @@ export const KjunListRow = defineComponent({
     actions?: () => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
-    const content = ref<HTMLElement | null>(null);
+    const content = ref<HTMLElement | null>(null), choice = inject<{ value: boolean } | null>(kjunListChoiceKey, null);
     // Like React: a switch row (checked) counts as pressable too.
     onMounted(() => {
       if (props.href || props.onClick || props.checked !== undefined) warnNestedControls(content.value, "KJUN ListRow: a pressable row's content contains buttons or links; move them to actions.");
@@ -74,7 +78,8 @@ export const KjunListRow = defineComponent({
           ? <button class="kjun-list-main" type="button" aria-label={props.ariaLabel} disabled={props.disabled} onClick={(event: MouseEvent) => props.onClick?.(event)}>{contents}</button>
           : <div class="kjun-list-main">{contents}</div>;
       // A disabled row disables its actions too, so the row never reads as partly available.
-      return <li class="kjun-list-row" data-leading={leading ? (hasLeading ? "" : "icon") : undefined} data-destructive={props.destructive || undefined} data-disabled={props.disabled || undefined}>{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;
+      // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
+      return <li class="kjun-list-row" role={choice?.value ? "none" : undefined} data-leading={leading ? (hasLeading ? "" : "icon") : undefined} data-destructive={props.destructive || undefined} data-disabled={props.disabled || undefined}>{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;
     };
   },
 });
@@ -95,39 +100,43 @@ const kjunListSectionProps = {
   titleVariant: { type: String as PropType<"title" | "label">, default: undefined },
   /** Heading level of the title (default 3). */
   headingLevel: { type: Number as PropType<2 | 3 | 4>, default: 3 },
+  /** "single": the rows are one choice (rows given `selected`); the list becomes a radio group with one Tab stop and arrow keys. */
+  selectionMode: { type: String as PropType<"none" | "single">, default: "none" },
 } as const;
 export type KjunListSectionProps = ExtractPublicPropTypes<typeof kjunListSectionProps>;
 // A ref, so a group whose variant changes updates its sections' corners too.
 const kjunListGroupKey = Symbol("kjunListGroup");
-/** Slots: default (KjunListRow items), actions, empty (in place of no rows), footer (supporting text under the rows). */
+/** Slots: default (KjunListRow items), actions, loading (in place of the rows while they load), empty (in place of no rows), footer. */
 export const KjunListSection = defineComponent({
   name: "KjunListSection",
   props: kjunListSectionProps,
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
     actions?: () => VNodeChild;
+    loading?: () => VNodeChild;
     empty?: () => VNodeChild;
     footer?: () => VNodeChild;
   }>,
   setup(props, { slots }) {
     const id = useKjunId("kjun-"), group = inject<{ value: "inset" | "flush" } | null>(kjunListGroupKey, null);
+    const choice = computed(() => props.selectionMode === "single"), list = ref<HTMLElement | null>(null);
+    provide(kjunListChoiceKey, choice);
+    watchEffect(onCleanup => { if (choice.value && list.value) onCleanup(bindRadioKeyboard(list.value)); }, { flush: "post" });
     return () => {
-      const actions = slots.actions?.(), children = slots.default?.(), empty = slots.empty?.(), footer = slots.footer?.();
-      const corner = props.radius ?? (group?.value === "inset" ? "lg" : "none");
-      const label = props.titleVariant ? props.titleVariant === "label" : !!props.title && !props.description;
+      const actions = slots.actions?.(), children = slots.default?.(), loading = slots.loading?.(), empty = slots.empty?.(), footer = slots.footer?.();
       // Like React: a rounded section is a card of rows only; its title, actions and footer stay on the page around it.
-      const outside = corner !== "none";
+      const { corner, bare, outside } = listSectionShape({ radius: props.radius, group: group?.value, title: props.title, description: props.description, titleVariant: props.titleVariant });
       const rounded = corner === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${corner})` };
-      const Heading = `h${props.headingLevel}` as "h3";
-      const rows = hasContent(children)
-        ? <ul class="kjun-list" aria-label={props.ariaLabel || undefined} aria-labelledby={props.ariaLabel || !props.title ? undefined : id} data-divider={props.divider ? undefined : "false"} data-density={props.density === "compact" ? "compact" : undefined}>{children}</ul>
-        : hasContent(empty) ? <div class="kjun-list-empty">{empty}</div> : null;
+      const Heading = `h${props.headingLevel}` as "h3", compact = props.density === "compact" ? "compact" : undefined;
+      // The list carries the name and the description; a named section would make every settings group a page landmark.
+      const rows = hasContent(loading) ? <div class="kjun-list-loading" aria-busy="true">{loading}</div>
+        : hasContent(children)
+        ? <ul ref={list} class="kjun-list" role={choice.value ? "radiogroup" : undefined} aria-label={props.ariaLabel || undefined} aria-labelledby={props.ariaLabel || !props.title ? undefined : id} aria-describedby={props.description ? id + "-description" : undefined} data-divider={props.divider ? undefined : "false"} data-density={compact}>{children}</ul>
+        : hasContent(empty) ? <div class="kjun-list-empty" data-density={compact}>{empty}</div> : null;
       return (
-        <section class="kjun-list-section" data-surface={props.surface ? undefined : "false"} data-outside={outside || undefined}
-          // The list carries the name; a named section would make every settings group a page landmark.
-          >
+        <section class="kjun-list-section" data-surface={props.surface ? undefined : "false"} data-outside={outside || undefined}>
           {(props.title || props.description || hasContent(actions)) && (
-            <div class="kjun-list-heading" data-bare={props.title && label ? "" : undefined}><div>{props.title && <Heading id={id}>{props.title}</Heading>}{props.description && <p>{props.description}</p>}</div>{hasContent(actions) && <div class="kjun-list-heading-actions">{actions}</div>}</div>
+            <div class="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{props.title && <Heading id={id}>{props.title}</Heading>}{props.description && <p id={id + "-description"}>{props.description}</p>}</div>{hasContent(actions) && <div class="kjun-list-heading-actions">{actions}</div>}</div>
           )}
           {outside ? <div class="kjun-list-panel" data-surface={props.surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
           {hasContent(footer) && <div class="kjun-list-footer">{footer}</div>}
@@ -158,7 +167,8 @@ export const KjunListItem = defineComponent({
   name: "KjunListItem",
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(_, { slots }) {
-    return () => <li class="kjun-list-item">{slots.default?.()}</li>;
+    const choice = inject<{ value: boolean } | null>(kjunListChoiceKey, null);
+    return () => <li class="kjun-list-item" role={choice?.value ? "none" : undefined}>{slots.default?.()}</li>;
   },
 });
 export type KjunListItemProps = Record<string, never>;

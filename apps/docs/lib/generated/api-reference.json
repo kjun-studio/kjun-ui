@@ -29686,8 +29686,8 @@
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "웹에서 이동할 실제 링크 주소입니다. 앱 라우터는 이동 이벤트의 기본 동작을 취소할 수 있습니다.",
+            "description": "Web link address (Native Web only); on a device pass onPress and navigate with the app's router.",
+            "summary": "Native Web에서 이동할 링크 주소입니다. 기기에서는 href로 이동하지 않으므로 onPress에서 앱 라우터로 이동하세요. 기기에서 onPress 없이 href만 주면 개발 모드에서 경고합니다.",
             "source": "packages/native/src/list.tsx"
           },
           {
@@ -29925,7 +29925,7 @@
             "required": false,
             "default": "—",
             "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's).",
-            "summary": "행을 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)의 둥근 카드로 묶고, 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 제목·설명·actions·footer는 카드 밖에 둡니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
+            "summary": "행을 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)의 둥근 카드로 묶고, 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 제목·설명·actions·footer는 카드 밖에 둡니다. 기본값 none은 이전처럼 각진 모양입니다. 첫 행과 마지막 행의 누름 배경·키보드 초점 링은 카드 모서리를 따릅니다.",
             "source": "packages/vue3/src/list.tsx"
           },
           {
@@ -29955,6 +29955,26 @@
               {
                 "label": "값",
                 "text": "2·3·4 중 하나이며 기본 3입니다. 페이지의 제목 구조에 맞춰 화면 낭독기의 제목 탐색 순서를 정합니다. Native는 Native Web에서 aria-level로 알리고, 기기에는 제목 역할만 있습니다."
+              }
+            ],
+            "source": "packages/vue3/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "selectionMode",
+            "type": "\"none\" | \"single\"",
+            "required": false,
+            "default": "\"none\"",
+            "description": "\"single\": the rows are one choice (rows given `selected`); the list becomes a radio group with one Tab stop and arrow keys.",
+            "summary": "행이 하나를 고르는 선택지인지 정합니다.",
+            "details": [
+              {
+                "label": "single",
+                "text": "selected를 준 행들이 한 묶음의 선택지가 됩니다. 목록이 radiogroup이 되어 섹션 제목·설명을 묶음 이름·설명으로 읽고, 웹에서는 Tab 정지가 선택된 행 하나이고 화살표 키로 다음 행으로 옮기며 고릅니다(비활성 행은 건너뜀)."
+              },
+              {
+                "label": "상태 책임",
+                "text": "선택 값은 앱이 소유합니다. 행의 onClick·onPress로 바꾸고 selected로 돌려주세요."
               }
             ],
             "source": "packages/vue3/src/list.tsx",
@@ -29995,6 +30015,24 @@
               {
                 "label": "사용 계약",
                 "text": "버튼·Switch·Checkbox 등의 값과 콜백을 소비자가 연결합니다."
+              }
+            ],
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "loading",
+            "data": [],
+            "source": "packages/vue3/src/list.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "행을 불러오는 동안 행(과 empty) 자리에 표시할 내용입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "KjunListSkeleton variant=\"row\"처럼 행 시작 여백을 스스로 가진 내용을 넣습니다. 감싸는 영역은 여백 없이 행처럼 가장자리까지 차지하며 aria-busy(Native는 accessibilityState.busy)를 둡니다. 비우면 행이나 empty를 표시합니다."
               }
             ],
             "example": "/components/list-section#preview"
@@ -30144,7 +30182,7 @@
             "required": false,
             "default": "—",
             "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's).",
-            "summary": "행을 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)의 둥근 카드로 묶고, 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 제목·설명·actions·footer는 카드 밖에 둡니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
+            "summary": "행을 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)의 둥근 카드로 묶고, 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 제목·설명·actions·footer는 카드 밖에 둡니다. 기본값 none은 이전처럼 각진 모양입니다. 첫 행과 마지막 행의 누름 배경·키보드 초점 링은 카드 모서리를 따릅니다.",
             "source": "packages/react/src/list.tsx"
           },
           {
@@ -30214,6 +30252,46 @@
               {
                 "label": "사용 계약",
                 "text": "12px 3차 글자색으로 표시합니다. 둥근 섹션에서는 카드 밖 아래에 놓입니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "loading",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Shown in place of the rows (and the empty content) while they load, such as a KjunListSkeleton with variant \"row\".",
+            "summary": "행을 불러오는 동안 행(과 empty) 자리에 표시할 내용입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "KjunListSkeleton variant=\"row\"처럼 행 시작 여백을 스스로 가진 내용을 넣습니다. 감싸는 영역은 여백 없이 행처럼 가장자리까지 차지하며 aria-busy(Native는 accessibilityState.busy)를 둡니다. 비우면 행이나 empty를 표시합니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "selectionMode",
+            "type": "\"none\" | \"single\"",
+            "required": false,
+            "default": "\"none\"",
+            "description": "\"single\": the rows are one choice (rows given `selected`); the list becomes a radio group with one Tab stop and arrow keys.",
+            "summary": "행이 하나를 고르는 선택지인지 정합니다.",
+            "details": [
+              {
+                "label": "single",
+                "text": "selected를 준 행들이 한 묶음의 선택지가 됩니다. 목록이 radiogroup이 되어 섹션 제목·설명을 묶음 이름·설명으로 읽고, 웹에서는 Tab 정지가 선택된 행 하나이고 화살표 키로 다음 행으로 옮기며 고릅니다(비활성 행은 건너뜀)."
+              },
+              {
+                "label": "상태 책임",
+                "text": "선택 값은 앱이 소유합니다. 행의 onClick·onPress로 바꾸고 selected로 돌려주세요."
               }
             ],
             "source": "packages/react/src/list.tsx",
@@ -30329,8 +30407,8 @@
             "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
             "required": false,
             "default": "—",
-            "description": "Rounds the section on the card radius steps and clips its rows to the corners (default \"none\", or the KjunListGroup's).",
-            "summary": "행을 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)의 둥근 카드로 묶고, 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 제목·설명·actions·footer는 카드 밖에 둡니다. 기본값 none은 이전처럼 각진 모양입니다. 둥글 때만 행의 키보드 초점 링을 안쪽에 그립니다.",
+            "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's).",
+            "summary": "행을 카드와 같은 단계(none·sm·md·lg·xl = 0·8·12·16·24)의 둥근 카드로 묶고, 행 누름 배경·구분선을 그 모서리로 잘라 냅니다. 제목·설명·actions·footer는 카드 밖에 둡니다. 기본값 none은 이전처럼 각진 모양입니다. 첫 행과 마지막 행의 누름 배경·키보드 초점 링은 카드 모서리를 따릅니다.",
             "source": "packages/native/src/list.tsx"
           },
           {
@@ -30400,6 +30478,46 @@
               {
                 "label": "사용 계약",
                 "text": "12px 3차 글자색으로 표시합니다. 둥근 섹션에서는 카드 밖 아래에 놓입니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "loading",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Shown in place of the rows (and the empty content) while they load, such as a KjunListSkeleton with variant \"row\".",
+            "summary": "행을 불러오는 동안 행(과 empty) 자리에 표시할 내용입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "KjunListSkeleton variant=\"row\"처럼 행 시작 여백을 스스로 가진 내용을 넣습니다. 감싸는 영역은 여백 없이 행처럼 가장자리까지 차지하며 aria-busy(Native는 accessibilityState.busy)를 둡니다. 비우면 행이나 empty를 표시합니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "selectionMode",
+            "type": "\"none\" | \"single\"",
+            "required": false,
+            "default": "\"none\"",
+            "description": "\"single\": the rows are one choice (rows given `selected`); the list becomes a radio group (with arrow keys on Native Web).",
+            "summary": "행이 하나를 고르는 선택지인지 정합니다.",
+            "details": [
+              {
+                "label": "single",
+                "text": "selected를 준 행들이 한 묶음의 선택지가 됩니다. 목록이 radiogroup이 되어 섹션 제목·설명을 묶음 이름·설명으로 읽고, 웹(Native Web)에서는 Tab 정지가 선택된 행 하나이고 화살표 키로 다음 행으로 옮기며 고릅니다(비활성 행은 건너뜀)."
+              },
+              {
+                "label": "상태 책임",
+                "text": "선택 값은 앱이 소유합니다. 행의 onClick·onPress로 바꾸고 selected로 돌려주세요."
               }
             ],
             "source": "packages/native/src/list.tsx",

@@ -143,8 +143,8 @@ export interface KjunEmptyProps {
   icon?: string;
   children?: ReactNode;
 }
-/** Set by KjunListSection: the empty note stays one row tall in the secondary body type, like Web's .kjun-list-empty. */
-export const ListEmptyContext = createContext(false);
+/** Set by KjunListSection to its density: the empty note stays one row tall in the secondary body type, like Web's .kjun-list-empty. */
+export const ListEmptyContext = createContext<false | "default" | "compact">(false);
 export function KjunEmpty({
   text,
   description,
@@ -161,7 +161,7 @@ export function KjunEmpty({
       style={{
         alignItems: "center",
         justifyContent: "center",
-        paddingVertical: inList ? tokens.extensions.list.compactPaddingY : stateContent === 'empty' ? 0 : tokens.dimension.value32,
+        paddingVertical: inList === "compact" ? 0 : inList ? tokens.extensions.list.compactPaddingY : stateContent === 'empty' ? 0 : tokens.dimension.value32,
       }}
     >
       {!!icon && (
