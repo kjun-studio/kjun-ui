@@ -2,7 +2,7 @@ import type { ToastPlacement } from "../../../shared/package-runtime/toast-place
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useFeedbackDialog } from "../../../shared/package-runtime/feedback-dialog";
 import { graphemeCount, splitAround } from "../../../shared/package-runtime/feedback-prompt";
-import { alertTint } from "./alert-actions-context";
+import { textTint } from "./text-tint";
 import { KjunButton, KjunIcon } from "./button";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
@@ -85,7 +85,7 @@ function FeedbackDialog({
       <KText accessibilityRole="header" style={{ ...typeStyle("sectionTitle"), color: colors.text }}>{title}</KText>
       {!!options.message && (danger ? (
         <View style={{ flexDirection: "row", gap: spec.warningGap, marginTop: spec.warningPadding, padding: spec.warningPadding,
-          borderRadius: spec.warningRadius, backgroundColor: alertTint(colors.danger, "tintControl", colors.dangerBg) }}>
+          borderRadius: spec.warningRadius, backgroundColor: textTint(colors.danger, "tintControl", colors.dangerBg) }}>
           <View style={{ height: typeStyle("body").lineHeight, justifyContent: "center" }}>
             <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} color={colors.danger} filled />
           </View>

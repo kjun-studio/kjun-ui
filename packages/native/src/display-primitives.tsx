@@ -21,7 +21,8 @@ type ViewStyle
 import Svg,{ Circle,Path } from "react-native-svg";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
-import { AlertActionsContext, alertTint } from "./alert-actions-context";
+import { AlertActionsContext } from "./alert-actions-context";
+import { textTint } from "./text-tint";
 import { ActionSizeContext, alertActionSizes } from "../../../shared/package-runtime/action-size";
 import { KText,content,domainColor,useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
@@ -333,7 +334,7 @@ export function KjunAlert({
         borderRadius: small ? geometry.sm.radius : geometry.radius,
         paddingVertical: geometry[small ? "sm" : "md"].paddingY,
         paddingHorizontal: geometry[small ? "sm" : "md"].paddingX,
-        backgroundColor: paint.bg ? pick(paint.bg) : alertTint(colors.text, "tintFill", colors.secondary),
+        backgroundColor: paint.bg ? pick(paint.bg) : textTint(colors.text, "tintFill", colors.secondary),
       }}
     >
       <View style={{ height: lineHeight, justifyContent: "center", flexShrink: 0,
@@ -370,13 +371,13 @@ export function KjunAlert({
             // Center on the first line and pull the glyph onto the padding edge.
             marginVertical: (lineHeight - closeSize) / 2,
             marginEnd: (geometry.closeIconSize - closeSize) / 2,
-            backgroundColor: pressed ? alertTint(colors.text, "tintActive", colors.active)
-              : hovered ? alertTint(colors.text, "tintHover", colors.hover) : "transparent",
+            backgroundColor: pressed ? textTint(colors.text, "tintActive", colors.active)
+              : hovered ? textTint(colors.text, "tintHover", colors.hover) : "transparent",
           })}
           onPress={close}
         >
           {({ pressed, hovered }: any) => <KjunIcon name="x" size={geometry.closeIconSize}
-            color={pressed || hovered ? colors.text : alertTint(colors.text, "muted", colors.textTertiary)} />}
+            color={pressed || hovered ? colors.text : textTint(colors.text, "muted", colors.textTertiary)} />}
         </Pressable>
       )}
     </Animated.View>

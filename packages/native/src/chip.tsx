@@ -3,7 +3,7 @@ import { typeStyle } from "./typography";
 import { View } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { alertTint } from "./alert-actions-context";
+import { textTint } from "./text-tint";
 import { KjunIcon } from "./button";
 import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
@@ -18,11 +18,12 @@ export function KjunChip({ label, icon, removable = false, disabled = false, siz
     paddingRight: removable ? spec.paddingX[size] - (spec.removeSize - spec.removeIconSizes[size]) / 2 : spec.paddingX[size],
     borderRadius: spec.radius, backgroundColor: colors.secondary, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>
     {!!icon && <KjunIcon name={icon} size={spec.iconSizes[size]} />}
-    <KText numberOfLines={1} style={{ ...typeStyle(spec.typography[size]), fontWeight: `${spec.fontWeight}` as "500", flexShrink: 1, minWidth: 0 }}>{label}</KText>
-    {removable && <Pressable accessibilityRole="button" accessibilityLabel={removeLabel || m.remove(label)} disabled={disabled} accessibilityState={{ disabled }} onPress={onRemove} hitSlop={slop}
+    <KText numberOfLines={1} style={{ ...typeStyle({ ...spec.typography[size], fontWeight: spec.fontWeight }), flexShrink: 1, minWidth: 0 }}>{label}</KText>
+    {removable && <Pressable accessibilityRole="button" accessibilityLabel={removeLabel || m.remove(label)} disabled={disabled} accessibilityState={{ disabled }} onPress={() => onRemove?.()} hitSlop={slop}
       style={({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => ({ width: spec.removeSize, height: spec.removeSize, marginVertical: -spec.paddingY, borderRadius: spec.radius, alignItems: "center", justifyContent: "center",
-        backgroundColor: disabled ? "transparent" : pressed ? alertTint(colors.text, "tintActive", colors.active) : hovered ? alertTint(colors.text, "tintHover", colors.hover) : "transparent" })}>
-      <KjunIcon name="x" size={spec.removeIconSizes[size]} color={colors.textSecondary} />
+        backgroundColor: disabled ? "transparent" : pressed ? textTint(colors.text, "tintActive", colors.active) : hovered ? textTint(colors.text, "tintHover", colors.hover) : "transparent" })}>
+      {/* Like Web, hover and press lift the x from the secondary text role to the label's own. */}
+      {({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => <KjunIcon name="x" size={spec.removeIconSizes[size]} color={!disabled && (pressed || hovered) ? colors.text : colors.textSecondary} />}
     </Pressable>}
   </View>;
 }

@@ -365,7 +365,14 @@
       "disabled",
       "size",
       "removeLabel",
-      "onRemove"
+      "onRemove",
+      "autoFocus",
+      "className",
+      "id",
+      "style",
+      "onChange",
+      "onKeyDown",
+      "onClick"
     ],
     "native": [
       "label",

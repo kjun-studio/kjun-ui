@@ -51,13 +51,22 @@ for (const platform of ['react', 'vue3', 'native']) {
     const longLabel = long.getByText('아주 긴 라벨이', { exact: false });
     expect((await long.getByRole('button').locator('..').boundingBox())!.height).toBe(chip.md);
     expect(await longLabel.evaluate(node => node.scrollWidth > node.clientWidth)).toBe(true);
-    if (platform !== 'native') await expect(longLabel).toHaveAttribute('title', /말줄임으로 끝납니다$/);
+    if (platform !== 'native') {
+      await expect(longLabel).toHaveAttribute('title', /말줄임으로 끝납니다$/);
+      // Consumer attributes reach the chip root next to its own class.
+      const root = page.getByTestId('chip-attrs');
+      await expect(root).toHaveAttribute('id', 'chip-long-root');
+      await expect(root).toHaveClass('kjun-chip consumer-chip');
+    }
     // The x is quieter than the label; hover and press tint it, and a disabled one does not react.
     const live = page.getByRole('button', { name: '삭제 md', exact: true });
     const fill = () => live.evaluate(node => getComputedStyle(node).backgroundColor);
-    const rest = await fill();
+    const ink = () => live.evaluate(node => getComputedStyle(node.querySelector('svg [stroke], svg path') ?? node.querySelector('svg')!).stroke);
+    const rest = await fill(), restInk = await ink();
     await live.hover();
     await expect.poll(fill).not.toBe(rest);
+    // Hover also lifts the x from the secondary text role to the label's own.
+    await expect.poll(ink).not.toBe(restInk);
     const hovered = await fill();
     await page.mouse.down();
     await expect.poll(fill).not.toBe(hovered);
@@ -76,6 +85,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(page.getByTestId(`chip-${size}`).locator(':scope > *')).toHaveCount(0);
     }
     await expect(page.getByTestId('removed')).toHaveText('sm,md,lg');
+    // onRemove is a request with no arguments on every platform, so a handler that takes its own arguments is safe.
+    await expect(page.getByTestId('remove-args')).toHaveText('0,0,0');
   });
 
   test(`${platform}: packed Toast dimensions preserve actions and narrow layouts`, async ({ page }, testInfo) => {

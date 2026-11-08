@@ -33967,6 +33967,126 @@
             ],
             "source": "packages/react/src/chip.tsx",
             "example": "/components/chip#preview"
+          },
+          {
+            "name": "autoFocus",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 span에 그대로 전달합니다. span은 초점을 받지 않으므로 삭제 버튼에는 영향이 없습니다.",
+            "source": "packages/react/src/chip.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 span에 더할 클래스입니다. 크기·여백은 size로 정하세요.",
+            "source": "packages/react/src/chip.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 span의 ID입니다.",
+            "source": "packages/react/src/chip.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 span에 더할 스타일입니다. 바깥 여백이나 폭 제한에 쓰세요.",
+            "source": "packages/react/src/chip.tsx"
+          },
+          {
+            "name": "onChange",
+            "type": "ChangeEventHandler<HTMLSpanElement, Element> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 span에 그대로 전달합니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "칩에는 값을 바꾸는 입력이 없어 직접 발생하지 않습니다"
+              },
+              {
+                "label": "전달값",
+                "text": "FormEvent<HTMLSpanElement>"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "별도의 값 갱신이 필요하지 않습니다."
+              }
+            ],
+            "source": "packages/react/src/chip.tsx",
+            "example": "/components/chip#preview"
+          },
+          {
+            "name": "onKeyDown",
+            "type": "KeyboardEventHandler<HTMLSpanElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 span으로 올라오는 키 입력을 받습니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "삭제 버튼에 초점이 있을 때 키를 누르면"
+              },
+              {
+                "label": "전달값",
+                "text": "KeyboardEvent<HTMLSpanElement>"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "별도의 값 갱신이 필요하지 않습니다."
+              }
+            ],
+            "source": "packages/react/src/chip.tsx",
+            "example": "/components/chip#preview"
+          },
+          {
+            "name": "onClick",
+            "type": "MouseEventHandler<HTMLSpanElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 span의 클릭을 받습니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "칩 안 어디든 누를 때. 삭제 버튼 클릭도 여기까지 올라옵니다."
+              },
+              {
+                "label": "전달값",
+                "text": "MouseEvent<HTMLSpanElement>"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "라벨은 버튼이 아니므로 값을 고르는 동작은 KjunFilterGroup을 쓰세요."
+              }
+            ],
+            "source": "packages/react/src/chip.tsx",
+            "example": "/components/chip#preview"
           }
         ],
         "events": [],

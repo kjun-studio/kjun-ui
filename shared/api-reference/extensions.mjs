@@ -61,6 +61,16 @@ const carouselSummaries = {
   style: "루트에 더할 스타일입니다. 바깥 여백이나 폭 제한에 사용하세요.",
   id: "루트 section의 ID입니다.",
 };
+// React Chip passes the attributes it does not use to its root span, like Vue.
+const chipRoot = {
+  className: { summary: "바깥 span에 더할 클래스입니다. 크기·여백은 size로 정하세요." },
+  id: { summary: "바깥 span의 ID입니다." },
+  style: { summary: "바깥 span에 더할 스타일입니다. 바깥 여백이나 폭 제한에 쓰세요." },
+  autoFocus: { summary: "바깥 span에 그대로 전달합니다. span은 초점을 받지 않으므로 삭제 버튼에는 영향이 없습니다." },
+  onClick: event("바깥 span의 클릭을 받습니다.", "칩 안 어디든 누를 때. 삭제 버튼 클릭도 여기까지 올라옵니다.", "MouseEvent<HTMLSpanElement>", "반환값을 사용하지 않습니다.", "라벨은 버튼이 아니므로 값을 고르는 동작은 KjunFilterGroup을 쓰세요."),
+  onKeyDown: event("바깥 span으로 올라오는 키 입력을 받습니다.", "삭제 버튼에 초점이 있을 때 키를 누르면", "KeyboardEvent<HTMLSpanElement>", "반환값을 사용하지 않습니다."),
+  onChange: event("바깥 span에 그대로 전달합니다.", "칩에는 값을 바꾸는 입력이 없어 직접 발생하지 않습니다", "FormEvent<HTMLSpanElement>", "반환값을 사용하지 않습니다."),
+};
 const carouselSlides = slot("슬라이드 목록입니다. 직접 자식 하나가 슬라이드 하나입니다.", "ReactNode", "슬라이드 안의 버튼·입력도 Tab으로 이동할 수 있습니다. 안의 입력에서는 화살표 키를 가로채지 않습니다.");
 const childProps = {
   leading: slot("주 콘텐츠 앞쪽에 배치할 아이콘·이미지입니다.", "ReactNode", "ListRow에서는 최소 40px 영역과 본문 간격 12px를 사용합니다. 24px 영역의 기본 아이콘은 icon으로 지정하세요. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."),
@@ -111,6 +121,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (key === "formatRange") entry = { type: "(start: number, end: number) => string", ...detail("범위 전체의 표시 문구를 만듭니다.", { "예": "(s, e) => `${s / 10000}만~${e / 10000}만 원`처럼 단위를 한 번만 쓰거나 최댓값일 때 \"이상\"을 붙입니다.", "접근성": "각 손잡이가 읽는 값은 formatValue(또는 기본 숫자 서식)를 그대로 씁니다." }) };
     else if (name.endsWith("Slider") && key === "size") entry = { type: '"sm" | "md"', default: '"md"', summary: "sm은 12px 라벨·값, 4px 트랙, 16px 손잡이입니다. 누름 영역은 크기와 상관없이 44px입니다." };
     else if (key === "formatValue") entry = detail("각 손잡이의 숫자를 표시 문자열로 바꿉니다.", { "인자와 반환": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)에 min·step의 소수 자릿수를 맞춰 씁니다(step 0.5면 1.0·1.5).", "접근성": "화면 출력과 " + (platform === "native" ? "accessibilityValue.text" : "aria-valuetext") + "에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다.", "상태 책임": platform === "vue3" ? "modelValue와 update:modelValue·change 이벤트는 숫자 형식을 유지합니다." : "value와 onValueChange·onChangeCommit 콜백은 숫자 또는 숫자 쌍 형식을 유지합니다." });
+    else if (name === "KjunChip" && chipRoot[key]) entry = { ...chipRoot[key] };
     else if (key.startsWith("on")) entry = callback(name, key, platform);
     else if (name === "KjunTopNavigation" && topNavigationSlots[key]) entry = topNavigationSlots[key];
     else if (name === "KjunListRow" && key === "children") entry = listRowContent;

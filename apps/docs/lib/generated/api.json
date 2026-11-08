@@ -3537,6 +3537,55 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "autoFocus",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ChangeEventHandler<HTMLSpanElement, Element> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").KeyboardEventHandler<HTMLSpanElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").MouseEventHandler<HTMLSpanElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "native": [
