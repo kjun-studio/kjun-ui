@@ -71,6 +71,11 @@ const chipRoot = {
   onKeyDown: event("바깥 span으로 올라오는 키 입력을 받습니다.", "삭제 버튼에 초점이 있을 때 키를 누르면", "KeyboardEvent<HTMLSpanElement>", "반환값을 사용하지 않습니다."),
   onChange: event("바깥 span에 그대로 전달합니다.", "칩에는 값을 바꾸는 입력이 없어 직접 발생하지 않습니다", "FormEvent<HTMLSpanElement>", "반환값을 사용하지 않습니다."),
 };
+// Native has no DOM attributes; like Badge it takes a test id and an outer style.
+const chipNative = {
+  testID: { summary: "테스트에서 칩을 찾는 ID입니다." },
+  style: { summary: "칩 바깥 View에 더할 스타일입니다. 바깥 여백이나 정렬에 쓰고, 크기·여백은 size로 정하세요." },
+};
 const carouselSlides = slot("슬라이드 목록입니다. 직접 자식 하나가 슬라이드 하나입니다.", "ReactNode", "슬라이드 안의 버튼·입력도 Tab으로 이동할 수 있습니다. 안의 입력에서는 화살표 키를 가로채지 않습니다.");
 const childProps = {
   leading: slot("주 콘텐츠 앞쪽에 배치할 아이콘·이미지입니다.", "ReactNode", "ListRow에서는 최소 40px 영역과 본문 간격 12px를 사용합니다. 24px 영역의 기본 아이콘은 icon으로 지정하세요. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."),
@@ -104,7 +109,7 @@ const callback = (name, key, platform) => {
   if (key === "onInvalidInput") return event("숫자로 확정할 수 없는 입력을 알립니다.", "Enter·blur 시 공백·잘못된 문자열·안전한 숫자 범위 초과를 발견했을 때", "입력했던 원본 문자열", "반환값을 사용하지 않습니다.", "초안은 마지막 확정값으로 복원합니다. 오류 메시지는 소비자가 표시합니다.");
   if (key === "onReselect") return event("현재 목적지를 다시 눌렀음을 알립니다.", "선택된 목적지를 다시 누를 때(onNavigate 다음)", "(key, event): 목적지 key와 " + (platform === "native" ? "GestureResponderEvent" : "MouseEvent<HTMLAnchorElement>"), "목록을 맨 위로 올리거나 새로 고치는 데 씁니다.", "앱이 어떤 동작을 할지 정합니다.");
   if (key === "onNavigate") return event("목적지 이동을 요청합니다.", "비활성 목적지를 제외한 링크·탐색 항목을 실행할 때", "(key, event): 목적지 key와 " + (platform === "native" ? "GestureResponderEvent" : "MouseEvent<HTMLAnchorElement>"), "웹 라우터는 event.preventDefault()로 링크의 기본 이동을 취소할 수 있습니다.", "앱이 이동과 value 갱신을 담당합니다. 수정키·가운데 클릭은 일반 링크 동작을 유지하도록 앱에서 구분하세요.");
-  if (key === "onRemove") return event("라벨 삭제를 요청합니다.", "활성 삭제 버튼을 실행할 때", "없음", "반환값을 사용하지 않습니다.", "소비자가 항목을 제거합니다. 제거 후 다음 항목이나 입력으로 초점을 옮기세요.");
+  if (key === "onRemove") return event("라벨 삭제를 요청합니다.", "활성 삭제 버튼을 실행할 때", "없음", "반환값을 사용하지 않습니다.", "소비자가 항목을 제거합니다. 제거 후 다음 칩의 ref로 focus()를 부르거나 입력으로 초점을 옮기세요.");
   if (key === "onLoad" || key === "onError") return event(key === "onLoad" ? "현재 이미지의 로드 완료를 알립니다." : "현재 이미지의 로드 실패를 알립니다.", "현재 요청 이미지에서 " + (key === "onLoad" ? "load" : "error") + "가 발생했을 때. 이전 주소·이전 요청의 응답은 무시합니다.", "없음", "반환값을 사용하지 않습니다.", "실패 대체 표현은 내부에서 표시합니다. 다른 주소로 재시도하려면 src/source를 갱신하세요.");
   if (key === "onClick" || key === "onPress") return event("목록 행의 주 행동을 실행합니다.", "비활성 행을 제외한 주 행동 영역을 실행할 때. actions의 버튼 실행과 독립적입니다.", platform === "native" ? "GestureResponderEvent" : "MouseEvent<HTMLElement>", "웹 링크의 기본 이동을 취소하려면 event.preventDefault()를 호출합니다.", "소비자가 이동·선택·실행을 처리합니다.");
   if (key === "onCheckedChange") return event("스위치 행의 다음 켜짐 값을 알립니다.", "비활성 행을 제외하고 행 어디든 누를 때", "boolean: 반대로 바뀐 값", "반환값을 사용하지 않습니다.", "소비자가 checked를 갱신합니다. 갱신하지 않으면 스위치 표시는 그대로입니다.");
@@ -122,6 +127,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (key === "formatRange") entry = { type: "(start: number, end: number) => string", ...detail("범위 전체의 표시 문구를 만듭니다.", { "예": "(s, e) => `${s / 10000}만~${e / 10000}만 원`처럼 단위를 한 번만 쓰거나 최댓값일 때 \"이상\"을 붙입니다.", "접근성": "각 손잡이가 읽는 값은 formatValue(또는 기본 숫자 서식)를 그대로 씁니다." }) };
     else if (name.endsWith("Slider") && key === "size") entry = { type: '"sm" | "md"', default: '"md"', summary: "sm은 12px 라벨·값, 4px 트랙, 16px 손잡이입니다. 누름 영역은 크기와 상관없이 44px입니다." };
     else if (key === "formatValue") entry = detail("각 손잡이의 숫자를 표시 문자열로 바꿉니다.", { "인자와 반환": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)에 min·step의 소수 자릿수를 맞춰 씁니다(step 0.5면 1.0·1.5).", "접근성": "화면 출력과 " + (platform === "native" ? "accessibilityValue.text" : "aria-valuetext") + "에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다.", "상태 책임": platform === "vue3" ? "modelValue와 update:modelValue·change 이벤트는 숫자 형식을 유지합니다." : "value와 onValueChange·onChangeCommit 콜백은 숫자 또는 숫자 쌍 형식을 유지합니다." });
+    else if (name === "KjunChip" && platform === "native" && chipNative[key]) entry = { ...chipNative[key] };
     else if (name === "KjunChip" && chipRoot[key]) entry = { ...chipRoot[key] };
     else if (key.startsWith("on")) entry = callback(name, key, platform);
     else if (name === "KjunTopNavigation" && topNavigationSlots[key]) entry = topNavigationSlots[key];

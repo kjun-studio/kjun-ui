@@ -34064,7 +34064,7 @@
               },
               {
                 "label": "상태 책임",
-                "text": "소비자가 항목을 제거합니다. 제거 후 다음 항목이나 입력으로 초점을 옮기세요."
+                "text": "소비자가 항목을 제거합니다. 제거 후 다음 칩의 ref로 focus()를 부르거나 입력으로 초점을 옮기세요."
               }
             ],
             "example": "/components/chip#preview"
@@ -34072,7 +34072,7 @@
         ],
         "slots": [],
         "ownership": [
-          "라벨은 눌리지 않고 삭제 버튼만 동작합니다. remove는 삭제 요청이며 실제 항목 제거는 소비자가 수행하고 선택값은 소유하지 않습니다.",
+          "라벨은 눌리지 않고 삭제 버튼만 동작합니다. remove는 삭제 요청이며 실제 항목 제거는 소비자가 수행하고 선택값은 소유하지 않습니다. 칩의 ref(Vue는 노출된 focus())는 삭제 버튼을 가리키므로, 칩을 지운 뒤 이웃 칩의 삭제 버튼으로 초점을 옮길 수 있습니다. 삭제할 수 없는 칩에서는 비어 있습니다.",
           "Native는 칩 높이를 크기대로 두고 삭제 버튼의 누르는 영역만 44px로 넓힙니다. 웹은 라벨에 전체 문구를 title로 둡니다."
         ],
         "types": []
@@ -34155,7 +34155,7 @@
               },
               {
                 "label": "상태 책임",
-                "text": "소비자가 항목을 제거합니다. 제거 후 다음 항목이나 입력으로 초점을 옮기세요."
+                "text": "소비자가 항목을 제거합니다. 제거 후 다음 칩의 ref로 focus()를 부르거나 입력으로 초점을 옮기세요."
               }
             ],
             "source": "packages/react/src/chip.tsx",
@@ -34285,7 +34285,7 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "라벨은 눌리지 않고 삭제 버튼만 동작합니다. remove는 삭제 요청이며 실제 항목 제거는 소비자가 수행하고 선택값은 소유하지 않습니다.",
+          "라벨은 눌리지 않고 삭제 버튼만 동작합니다. remove는 삭제 요청이며 실제 항목 제거는 소비자가 수행하고 선택값은 소유하지 않습니다. 칩의 ref(Vue는 노출된 focus())는 삭제 버튼을 가리키므로, 칩을 지운 뒤 이웃 칩의 삭제 버튼으로 초점을 옮길 수 있습니다. 삭제할 수 없는 칩에서는 비어 있습니다.",
           "Native는 칩 높이를 크기대로 두고 삭제 버튼의 누르는 영역만 44px로 넓힙니다. 웹은 라벨에 전체 문구를 title로 둡니다."
         ],
         "types": []
@@ -34368,17 +34368,35 @@
               },
               {
                 "label": "상태 책임",
-                "text": "소비자가 항목을 제거합니다. 제거 후 다음 항목이나 입력으로 초점을 옮기세요."
+                "text": "소비자가 항목을 제거합니다. 제거 후 다음 칩의 ref로 focus()를 부르거나 입력으로 초점을 옮기세요."
               }
             ],
             "source": "packages/native/src/chip.tsx",
             "example": "/components/chip#preview"
+          },
+          {
+            "name": "testID",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Like Badge, a test id and outer style for the chip root (margins, alignment).",
+            "summary": "테스트에서 칩을 찾는 ID입니다.",
+            "source": "packages/native/src/chip.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "칩 바깥 View에 더할 스타일입니다. 바깥 여백이나 정렬에 쓰고, 크기·여백은 size로 정하세요.",
+            "source": "packages/native/src/chip.tsx"
           }
         ],
         "events": [],
         "slots": [],
         "ownership": [
-          "라벨은 눌리지 않고 삭제 버튼만 동작합니다. remove는 삭제 요청이며 실제 항목 제거는 소비자가 수행하고 선택값은 소유하지 않습니다.",
+          "라벨은 눌리지 않고 삭제 버튼만 동작합니다. remove는 삭제 요청이며 실제 항목 제거는 소비자가 수행하고 선택값은 소유하지 않습니다. 칩의 ref(Vue는 노출된 focus())는 삭제 버튼을 가리키므로, 칩을 지운 뒤 이웃 칩의 삭제 버튼으로 초점을 옮길 수 있습니다. 삭제할 수 없는 칩에서는 비어 있습니다.",
           "Native는 칩 높이를 크기대로 두고 삭제 버튼의 누르는 영역만 44px로 넓힙니다. 웹은 라벨에 전체 문구를 title로 둡니다."
         ],
         "types": []

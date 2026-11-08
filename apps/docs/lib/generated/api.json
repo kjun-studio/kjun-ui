@@ -3637,6 +3637,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "testID",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Like Badge, a test id and outer style for the chip root (margins, alignment)."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ]
   },

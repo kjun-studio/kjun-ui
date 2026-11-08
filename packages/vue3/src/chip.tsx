@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent, ref, type ExtractPublicPropTypes, type PropType } from "vue";
+import { chipSize } from "../../../shared/package-runtime/chip-size";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 
@@ -12,22 +13,33 @@ const kjunChipProps = {
   removeLabel: { type: String, default: undefined },
 } as const;
 export type KjunChipProps = ExtractPublicPropTypes<typeof kjunChipProps>;
-export const KjunChip = defineComponent({
+const KjunChipComponent = defineComponent({
   name: "KjunChip",
   props: kjunChipProps,
   emits: { remove: () => true },
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const m = useKjunMessages();
-    return () => (
-      <span class="kjun-chip" data-size={props.size} data-disabled={String(props.disabled)} data-removable={String(props.removable)}>
-        {props.icon && <KjunIcon name={props.icon} size={tokens.extensions.chip.iconSizes[props.size]} />}
+    // Like Input, the chip exposes its only focus target: the removal button, null when the chip is not removable.
+    const remove = ref<HTMLButtonElement | null>(null);
+    expose({ focus: () => remove.value?.focus(), el: remove });
+    return () => {
+      const size = chipSize(props.size);
+      return (
+      <span class="kjun-chip" data-size={size} data-disabled={String(props.disabled)} data-removable={String(props.removable)}>
+        {props.icon && <KjunIcon name={props.icon} size={tokens.extensions.chip.iconSizes[size]} />}
         <span title={props.label}>{props.label}</span>
         {props.removable && (
-          <button type="button" aria-label={props.removeLabel || m.value.remove(props.label)} disabled={props.disabled} onClick={() => emit("remove")}>
-            <KjunIcon name="x" size={tokens.extensions.chip.removeIconSizes[props.size]} />
+          <button ref={remove} type="button" aria-label={props.removeLabel || m.value.remove(props.label)} disabled={props.disabled} onClick={() => emit("remove")}>
+            <KjunIcon name="x" size={tokens.extensions.chip.removeIconSizes[size]} />
           </button>
         )}
       </span>
-    );
+      );
+    };
   },
 });
+
+// Make the expose() contract visible to template refs; Vue unwraps el there.
+export const KjunChip = KjunChipComponent as typeof KjunChipComponent & {
+  new(): InstanceType<typeof KjunChipComponent> & { focus(): void; el: HTMLButtonElement | null };
+};

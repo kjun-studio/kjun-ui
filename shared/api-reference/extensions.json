@@ -389,7 +389,9 @@
       "disabled",
       "size",
       "removeLabel",
-      "onRemove"
+      "onRemove",
+      "testID",
+      "style"
     ]
   },
   "KjunSlider": {

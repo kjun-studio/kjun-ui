@@ -58,6 +58,17 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(root).toHaveAttribute('id', 'chip-long-root');
       await expect(root).toHaveClass('kjun-chip consumer-chip');
     }
+    // Every platform takes the consumer's style on the chip root (Native also takes testID).
+    await expect(page.getByTestId('chip-attrs')).toHaveCSS('margin-top', '4px');
+    // A chip ref moves focus to its removal button, so an app can keep focus after removing a neighbour.
+    await page.getByRole('button', { name: '칩 삭제로 이동', exact: true }).click();
+    await expect(page.getByRole('button', { name: '긴 칩 삭제', exact: true })).toBeFocused();
+    // An unknown size draws as md instead of losing its icon and spacing.
+    const xl = page.getByRole('button', { name: '삭제 xl', exact: true });
+    await expect(xl.locator('svg')).toHaveCSS('width', px(chip.removeIconSizes.md));
+    await expect(xl.locator('..')).toHaveCSS('padding-left', px(chip.paddingX.md));
+    await expect(xl.locator('..')).toHaveCSS('column-gap', px(chip.gaps.md));
+    await typography(page.getByText('칩 xl', { exact: true }), { ...chip.typography.md, fontWeight: chip.fontWeight }, 1);
     // The x is quieter than the label; hover and press tint it, and a disabled one does not react.
     const live = page.getByRole('button', { name: '삭제 md', exact: true });
     const fill = () => live.evaluate(node => getComputedStyle(node).backgroundColor);
