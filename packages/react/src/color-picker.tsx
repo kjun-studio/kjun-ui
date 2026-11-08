@@ -110,6 +110,8 @@ export function KjunColorPicker({
   useEffect(() => {
     if (!open) return;
     const frame = requestAnimationFrame(() => {
+      // Someone already put focus on a control (clicked a field in the panel): leave it there.
+      if (trigger.current?.ownerDocument.activeElement?.matches('input, textarea, [role="slider"], [role="radio"]')) return;
       const t = focusTargets.current;
       const where = initialFocus({ selectedSwatch: selected >= 0, custom, input: showInput });
       const target = where === "swatch" ? t.swatches[selected] : where === "area" ? t.area : where === "hex" ? t.hex : t.swatches[0];

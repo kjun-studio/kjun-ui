@@ -108,6 +108,8 @@ export function KjunColorPicker({
     if (!open || Platform.OS !== "web") return;
     // Native Web moves keyboard focus into the panel like the web packages; devices leave focus to the screen reader.
     const frame = requestAnimationFrame(() => requestAnimationFrame(() => {
+      // Someone already put focus on a control (clicked a field in the panel): leave it there.
+      if (typeof document !== "undefined" && document.activeElement?.matches('input, textarea, [role="slider"], [role="radio"]')) return;
       const t = targets.current, where = initialFocus({ selectedSwatch: selected >= 0, custom, input: showInput });
       const target = where === "swatch" ? t.swatches[selected] : where === "area" ? t.area : where === "hex" ? t.hex : t.swatches[0];
       (target as unknown as { focus?: () => void } | null)?.focus?.();

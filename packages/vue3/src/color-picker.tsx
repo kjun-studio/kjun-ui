@@ -109,6 +109,8 @@ export const KjunColorPicker = defineComponent({
       cancelAnimationFrame(frame);
       if (!next) return;
       frame = requestAnimationFrame(() => requestAnimationFrame(() => {
+        // Someone already put focus on a control (clicked a field in the panel): leave it there.
+        if (trigger.value?.ownerDocument.activeElement?.matches('input, textarea, [role="slider"], [role="radio"]')) return;
         const where = initialFocus({ selectedSwatch: selected.value >= 0, custom: props.custom, input: props.input || nothing.value });
         const target = where === "swatch" ? targets.swatches[selected.value] : where === "area" ? targets.area : where === "hex" ? targets.hex : targets.swatches[0];
         target?.focus({ preventScroll: true });
