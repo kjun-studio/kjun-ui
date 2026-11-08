@@ -35,6 +35,7 @@ export type { KjunListGroupProps, KjunListItemProps, KjunListRowProps, KjunListS
 export type { KjunIconToggleProps, KjunCopyButtonProps, KjunRefreshButtonProps, KjunExternalLinkProps } from "./actions";
 export { safeExternalUrl } from "./actions";
 export type { KjunCarouselProps } from "./carousel";
+export type { KjunColorPickerProps, KjunColorSwatch } from "./color-picker";
 export type { KjunDataStateProps, KjunErrorBoundaryProps } from "./data-state";
 export { useQueryDisplay } from "./data-state";
 export type { KjunAnimatedNumberProps, KjunPriceCellProps, KjunSignedValueProps } from "./number-display";
