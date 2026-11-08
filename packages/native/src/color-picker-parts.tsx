@@ -1,5 +1,5 @@
 import { useId, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { PanResponder, Platform, TextInput, View, type ColorValue, type ViewStyle } from "react-native";
+import { PanResponder, Platform, View, type ColorValue, type TextInput, type ViewStyle } from "react-native";
 import Svg, { Defs, LinearGradient, Pattern, Rect, Stop } from "react-native-svg";
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
@@ -8,6 +8,7 @@ import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboar
 import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
 import { AccessiblePressable as Pressable, focusVisible } from "./a11y";
+import { FieldTextInput } from "./field-surface";
 import { KjunIcon } from "./button";
 import { inputTypeStyle } from "./typography";
 import { useKjunStyles } from "./provider";
@@ -243,7 +244,7 @@ export function HexInputs({ value, alpha, alphaPercent, clearable, hexLabel, alp
     ...(Platform.OS === "web" ? ({ outlineStyle: "none", textTransform: "uppercase" } as object) : null) };
   return (
     <View style={{ flexDirection: "row", gap: picker.swatchGap }}>
-      <TextInput ref={hexRef} accessibilityLabel={hexLabel} value={text} maxLength={alpha ? 9 : 7} autoCapitalize="characters" autoCorrect={false} spellCheck={false}
+      <FieldTextInput ref={hexRef} accessibilityLabel={hexLabel} value={text} maxLength={alpha ? 9 : 7} autoCapitalize="characters" autoCorrect={false} spellCheck={false}
         style={{ ...style, flex: 1, minWidth: 0 }}
         onChangeText={next => {
           editing.current = "hex";
@@ -254,7 +255,7 @@ export function HexInputs({ value, alpha, alphaPercent, clearable, hexLabel, alp
         }}
         onSubmitEditing={commitHex} onBlur={commitHex} />
       {alpha && (
-        <TextInput accessibilityLabel={alphaLabel} value={pct} maxLength={3} keyboardType="number-pad" style={{ ...style, width: picker.alphaInputWidth }}
+        <FieldTextInput accessibilityLabel={alphaLabel} value={pct} maxLength={3} keyboardType="number-pad" style={{ ...style, width: picker.alphaInputWidth }}
           onChangeText={next => {
             editing.current = "alpha";
             setPct(next);
