@@ -76,6 +76,20 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.getByText('프로필 행', { exact: true }).hover();
     await expect.poll(() => fill(profile)).not.toBe(clear);
     if (web) expect(await page.locator('.kjun-list-main').first().evaluate(el => getComputedStyle(el).backgroundColor)).toBe(clear);
+    // An app's own avatar, with no leadingSize, keeps a one-line row at 56 too.
+    expect(await height(page.getByRole('button', { name: /아바타 행/ }))).toBe(56);
+    // A busy switch row reads as busy and ignores presses.
+    const saving = page.getByRole('switch', { name: /저장 중 행/ });
+    await expect(saving).toHaveAttribute('aria-busy', 'true');
+    await page.getByText('저장 중 행', { exact: true }).click();
+    await expect(page.getByTestId('open-state')).toContainText('"presses":0');
+    await expect(saving).toHaveAttribute('aria-checked', 'true');
+    // A default multiple-choice list shows every row can be picked.
+    const blue = page.getByRole('checkbox', { name: /파랑 태그/ });
+    await expect(blue).toHaveAttribute('aria-checked', 'false');
+    if (web) await expect(page.locator('.kjun-list-row', { hasText: '파랑 태그' }).locator('.kjun-list-mark')).toHaveCount(1);
+    await page.getByText('파랑 태그', { exact: true }).click();
+    await expect(page.getByTestId('open-state')).toContainText('"plain":["red","blue"]');
   });
 
   test(`${platform}: an open list draws larger rows with marks for its choices and fills the chosen row`, async ({ page }) => {
@@ -97,10 +111,17 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.getByText('여행 태그', { exact: true }).click();
     await expect(page.getByTestId('open-state')).toContainText('"tags":["work","trip"]');
     await expect(trip).toHaveAttribute('aria-checked', 'true');
+    // A disabled chosen row keeps its fill, and a list item's text starts where the rows' text does.
+    expect(await fill(rowOf(page.getByRole('radio', { name: /잠긴 선택/ })))).not.toBe(clear);
+    expect(Math.round((await box(page.getByText('안내 항목', { exact: true }))).x)).toBe(Math.round((await box(page.getByText('업무 태그', { exact: true }))).x));
     if (web) {
+      // A row skeleton in an open section's loading slot takes the open row's shape: a described open row is 72 tall.
+      const skeleton = page.locator('.kjun-list-skeleton-row[data-open]');
+      expect(Math.round((await box(skeleton)).height)).toBe(12 + 24 + 4 + 20 + 12);
+      expect(Math.round((await box(skeleton.locator('.kjun-list-skeleton-leading'))).width)).toBe(40);
       // Every choice draws a mark (rounded squares for multiple choice), filled when chosen; the open list has no dividers.
-      await expect(page.locator('.kjun-list-mark')).toHaveCount(5);
-      await expect(page.locator('.kjun-list-mark[data-checked]')).toHaveCount(3);
+      await expect(page.locator('.kjun-list-mark')).toHaveCount(8);
+      await expect(page.locator('.kjun-list-mark[data-checked]')).toHaveCount(5);
       expect(await page.locator('.kjun-list-mark[data-kind="checkbox"]').first().evaluate(el => getComputedStyle(el).borderRadius)).toBe('6px');
       expect(await rowOf(dark).evaluate(el => getComputedStyle(el, '::after').content)).toBe('none');
       // A built-in icon sits on a 40px rounded square, in the danger fill on a destructive row.

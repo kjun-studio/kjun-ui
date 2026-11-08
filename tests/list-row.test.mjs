@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { listRowChoice, listRowKind, listSectionShape } from '../shared/package-runtime/list-row.ts';
+import { listRowChoice, listRowEnd, listRowKind, listSectionShape, warnListSectionProps } from '../shared/package-runtime/list-row.ts';
 import { listLeadingGeometry, listRowBleed } from '../shared/package-runtime/list-leading.ts';
 
 test('a switch row wins, a row given selected is a radio, then link, button and static', () => {
@@ -43,10 +43,32 @@ test('open rows put built-in icons on a 40px square, and tall leading content re
   // An explicit size and custom content keep their own geometry in an open section.
   assert.equal(listLeadingGeometry({ size: 'sm', custom: false, background: false, open: true }).width, 32);
   assert.equal(listLeadingGeometry({ custom: true, background: false, open: true }).tile, false);
-  // A 32px square in a 16px-padded row with a 20px title line moves 6px into the padding (the row stays 56); a 56px
-  // square stops 6px from the edge; anything no taller than the line stays put.
-  assert.equal(listRowBleed(32, 20, 16), -6);
-  assert.equal(listRowBleed(56, 20, 16), -10);
-  assert.equal(listRowBleed(28, 20, 12), -4);
-  assert.equal(listRowBleed(16, 20, 16), 0);
+  // Leading content and switches may reach into the padding up to 6px from the row's edge, whatever their size.
+  assert.equal(listRowBleed(16), -10);
+  assert.equal(listRowBleed(12), -6);
+  assert.equal(listRowBleed(4), 0);
+});
+
+test('choice rows draw a mark in open and multiple-choice lists, other chosen rows a check', () => {
+  assert.equal(listRowEnd({ kind: 'radio', selected: false, mode: 'single', open: true }), 'mark');
+  assert.equal(listRowEnd({ kind: 'checkbox', selected: false, mode: 'multiple', open: false }), 'mark');
+  assert.equal(listRowEnd({ kind: 'radio', selected: true, mode: 'single', open: false }), 'check');
+  assert.equal(listRowEnd({ kind: 'radio', selected: false, mode: 'single', open: false }), null);
+  assert.equal(listRowEnd({ kind: 'static', selected: true, mode: 'none', open: true }), 'check');
+});
+
+test('an explicit divider on an open section warns once in development', t => {
+  const env = process.env.NODE_ENV, warnings = [];
+  process.env.NODE_ENV = 'development';
+  t.mock.method(console, 'warn', message => warnings.push(message));
+  try {
+    warnListSectionProps({ open: false, divider: true });
+    warnListSectionProps({ open: true });
+    warnListSectionProps({ open: true, divider: false });
+    assert.deepEqual(warnings, []);
+    warnListSectionProps({ open: true, divider: true });
+    warnListSectionProps({ open: true, divider: true });
+    assert.equal(warnings.length, 1);
+    assert.match(warnings[0], /^KJUN ListSection: divider has no effect in an open section/);
+  } finally { if (env === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = env; }
 });

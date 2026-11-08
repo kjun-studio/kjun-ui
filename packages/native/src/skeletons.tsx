@@ -1,7 +1,8 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ListOpenContext } from "./list-context";
 import { Animated,Platform,View,useWindowDimensions,type DimensionValue } from "react-native";
 import Svg,{ Path } from "react-native-svg";
 import { KjunSkeleton,KjunSpinner } from "./display";
@@ -98,21 +99,25 @@ export function KjunListSkeleton({
 function ListRowSkeleton({ rows, avatar, avatarSize, description, trailing, divider }: {
   rows: number; avatar: boolean; avatarSize: DimensionValue; description: boolean; trailing?: "value" | "switch" | "chevron"; divider: KjunListDivider;
 }) {
-  const list = tokens.extensions.list;
+  const list = tokens.extensions.list, o = list.open, open = useContext(ListOpenContext);
   const inset = list.padding + (avatar ? list.leadingWidth + list.gap : 0);
+  // Like Web: in an open KjunListSection the rows take the open row's shape (larger lines, a rounded leading square,
+  // inset from the edges, no dividers).
+  const shape = open ? { gap: o.gap, minHeight: o.minimumHeight, paddingVertical: o.paddingY, paddingHorizontal: o.paddingX, marginHorizontal: o.rowInset } : { gap: list.gap, minHeight: list.minimumHeight, padding: list.padding };
   return (
     <>
       {Array.from({ length: rows }, (_, i) => (
-        <View key={i} style={{ flexDirection: "row", alignItems: "center", gap: list.gap, minHeight: list.minimumHeight, padding: list.padding }}>
-          {avatar ? <View style={{ width: list.leadingWidth, alignItems: "center" }}><KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} /></View> : null}
+        <View key={i} style={{ flexDirection: "row", alignItems: "center", ...shape }}>
+          {avatar ? open ? <View style={{ width: o.leadingSize, height: o.leadingSize, borderRadius: o.leadingRadius, overflow: "hidden" }}><KjunSkeleton type="block" width={o.leadingSize} height={o.leadingSize} /></View>
+            : <View style={{ width: list.leadingWidth, alignItems: "center" }}><KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} /></View> : null}
           <View style={{ flex: 1, minWidth: 0, gap: list.descriptionGap }}>
-            <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
-            {description ? <KjunSkeleton type="line" role="caption" width="30%" /> : null}
+            <KjunSkeleton type="line" role={open ? "input" : "control"} width={i % 2 ? "55%" : "40%"} />
+            {description ? <KjunSkeleton type="line" role={open ? "body" : "caption"} width="30%" /> : null}
           </View>
           {trailing === "switch" ? <KjunSkeleton type="avatar" width={tokens.extensions.switch.widths.md} height={tokens.extensions.switch.heights.md} />
             : trailing ? <KjunSkeleton type="line" role="control" width={trailing === "chevron" ? tokens.iconSizes.default : tokens.extensions.skeleton.detailWidth} />
             : null}
-          {i < rows - 1 ? <View style={{ position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: divider }} /> : null}
+          {i < rows - 1 && !open ? <View style={{ position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: divider }} /> : null}
         </View>
       ))}
     </>

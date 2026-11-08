@@ -152,8 +152,8 @@ export interface KjunSwitchProps {
   onValueChange?: (value: boolean) => void;
   onChange?: (value: boolean) => void;
 }
-// A small ring that turns inside the thumb while a switch saves.
-function SwitchSpinner() {
+// A small ring that turns inside the thumb while a switch saves (also a busy KjunListRow's switch).
+export function SwitchSpinner() {
   const { colors } = useKjunStyles();
   const turn = useRef(new Animated.Value(0)).current;
   const reduced = useReducedMotion();

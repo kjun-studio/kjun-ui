@@ -10467,7 +10467,7 @@
         "type": "boolean",
         "required": false,
         "default": "—",
-        "description": "One choice in a single-choice list: true draws a check at the end (in an open section, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio."
+        "description": "One choice in a single-choice list: true draws a check at the end (in an open section or a multiple-choice list, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio."
       },
       {
         "name": "checked",
@@ -10475,6 +10475,13 @@
         "required": false,
         "default": "—",
         "description": "v-model:checked makes the whole row a switch: it draws one at the end and toggles on any press."
+      },
+      {
+        "name": "busy",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The row's last press is still being handled (such as a switch saving): presses are ignored, the row reads as busy and a switch row draws a spinner in its thumb."
       },
       {
         "name": "value",
@@ -10637,7 +10644,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "One choice in a single-choice list: true draws a check at the end (in an open section, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio."
+        "description": "One choice in a single-choice list: true draws a check at the end (in an open section or a multiple-choice list, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio."
       },
       {
         "name": "checked",
@@ -10652,6 +10659,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "busy",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The row's last press is still being handled (such as a switch saving): presses are ignored, the row reads as busy and a switch row draws a spinner in its thumb."
       },
       {
         "name": "value",
@@ -10793,7 +10807,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "One choice in a single-choice list: true draws a check at the end (in an open section, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio."
+        "description": "One choice in a single-choice list: true draws a check at the end (in an open section or a multiple-choice list, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio."
       },
       {
         "name": "checked",
@@ -10808,6 +10822,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "busy",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The row's last press is still being handled (such as a switch saving): presses are ignored, the row reads as busy and a switch row draws a spinner in its thumb."
       },
       {
         "name": "value",
@@ -10887,8 +10908,8 @@
         "name": "divider",
         "type": "boolean",
         "required": false,
-        "default": "true",
-        "description": "Draws dividers between rows (default true)."
+        "default": "—",
+        "description": "Draws dividers between rows (default true). An open section draws none; giving it true warns in development."
       },
       {
         "name": "density",
@@ -11021,7 +11042,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Draws dividers between rows (default true)."
+        "description": "Draws dividers between rows (default true). An open section draws none; giving it true warns in development."
       },
       {
         "name": "density",
@@ -11149,7 +11170,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Draws dividers between rows (default true)."
+        "description": "Draws dividers between rows (default true). An open section draws none; giving it true warns in development."
       },
       {
         "name": "density",

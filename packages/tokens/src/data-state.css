@@ -248,3 +248,17 @@
 .kjun-state-actions .kjun-button[data-size="lg"] { --_kjun-data-action-height: var(--_kjun-geometry-button-heights-lg); }
 .kjun-state-actions .kjun-button[data-size="xl"] { --_kjun-data-action-height: var(--_kjun-geometry-button-heights-xl); }
 .kjun-state-actions .kjun-button > .kjun-button-label { min-width: 0; }
+/* Row in an open KjunListSection: the open row's padding, height and inset, a rounded leading square, no dividers. */
+.kjun-list-skeleton-row[data-variant="row"][data-open] {
+  gap: var(--_kjun-extension-list-open-gap);
+  min-height: var(--_kjun-extension-list-open-minimum-height);
+  padding: var(--_kjun-extension-list-open-padding-y) var(--_kjun-extension-list-open-padding-x);
+  margin-inline: var(--_kjun-extension-list-open-row-inset);
+}
+.kjun-list-skeleton-row[data-variant="row"][data-open]::after { content: none; }
+.kjun-list-skeleton-row[data-open] .kjun-list-skeleton-leading {
+  width: var(--_kjun-extension-list-open-leading-size);
+  height: var(--_kjun-extension-list-open-leading-size);
+  border-radius: var(--_kjun-extension-list-open-leading-radius);
+  overflow: hidden;
+}

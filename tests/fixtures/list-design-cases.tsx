@@ -24,6 +24,7 @@ export function ListDesignCases({ K, native = false }: { K: any; native?: boolea
 // end-align, the whole row takes the hover fill, and the open variant with its choice marks.
 export function ListOpenCases({ K, native = false }: { K: any; native?: boolean }) {
   const [theme, setTheme] = useState<string | number | null>('light'), [tags, setTags] = useState<(string | number)[]>(['work']);
+  const [plain, setPlain] = useState<(string | number)[]>(['red']), [presses, setPresses] = useState(0);
   const press = { [native ? 'onPress' : 'onClick']: () => {} }, tile = native ? '#EEEEEE' : 'var(--kjun-secondary)';
   return <div style={{ padding: 16, width: 360, background: '#F4F4F4', display: 'flex', flexDirection: 'column', gap: 24 }}>
     <K.KjunListSection radius="lg" title="높이">
@@ -32,6 +33,11 @@ export function ListOpenCases({ K, native = false }: { K: any; native?: boolean 
       <K.KjunListRow title="프로필 행" description="이름과 사진" {...press} actions={<K.KjunButton variant="secondary" size="sm" {...press}>공유</K.KjunButton>} />
       <K.KjunListRow icon="receipt" iconBackground={tile} title="11월 카드 결제 예정 금액과 할부 내역 전체 보기" description="결제일 전에 잔액이 부족하면 알림을 보냅니다." trailing="1,234,567원" chevron {...press} />
       <K.KjunListRow title="저장 위치" trailing="내 파일 / 다운로드 / 문서 보관함" />
+      <K.KjunListRow title="아바타 행" leading={<K.KjunAvatar name="김하늘" size="sm" />} {...press} />
+      <K.KjunListRow icon="cloud" title="저장 중 행" checked busy onCheckedChange={() => setPresses(n => n + 1)} />
+    </K.KjunListSection>
+    <K.KjunListSection radius="lg" title="기본 여러 개" selectionMode="multiple" value={plain} onValueChange={setPlain}>
+      <K.KjunListRow title="빨강 태그" value="red" /><K.KjunListRow title="파랑 태그" value="blue" />
     </K.KjunListSection>
     <K.KjunListSection radius="lg" title="촘촘하게" density="compact">
       <K.KjunListRow icon="wifi" title="와이파이 행" checked onCheckedChange={() => {}} />
@@ -46,10 +52,15 @@ export function ListOpenCases({ K, native = false }: { K: any; native?: boolean 
       <K.KjunListSection title="관심 태그" selectionMode="multiple" value={tags} onValueChange={setTags}>
         <K.KjunListRow title="업무 태그" value="work" /><K.KjunListRow title="여행 태그" value="trip" />
       </K.KjunListSection>
+      <K.KjunListSection selectionMode="single">
+        <K.KjunListRow title="잠긴 선택" selected disabled {...press} />
+        <K.KjunListItem><K.KjunText>안내 항목</K.KjunText></K.KjunListItem>
+      </K.KjunListSection>
       <K.KjunListSection>
         <K.KjunListRow icon="trash" title="탈퇴하기 행" destructive {...press} />
       </K.KjunListSection>
+      <K.KjunListSection title="불러오는 중" loading={<K.KjunListSkeleton variant="row" rows={1} avatar />} />
     </K.KjunListGroup>
-    <output data-testid="open-state">{JSON.stringify({ theme, tags })}</output>
+    <output data-testid="open-state">{JSON.stringify({ theme, tags, plain, presses })}</output>
   </div>;
 }

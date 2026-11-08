@@ -19,10 +19,11 @@ export function listLeadingGeometry({ size, custom, background, open = false }: 
 }
 
 /**
- * Native: how far a leading square or a switch taller than the title line reaches into the row's vertical padding (a
- * negative margin), so it never grows a one-line row past its minimum height while keeping `minimumInset` to the row's
- * edge. Web does the same in list.css.
+ * How far a leading box, switch or mark may reach into a one-line row's vertical padding (a negative margin, the same
+ * on every platform; Web's --_kjun-list-bleed-limit). Anything up to the title line plus twice this fits without
+ * growing the row past its minimum height, and taller content still keeps `minimumInset` to the row's edge, whatever
+ * its size: an avatar, a leading square or a switch.
  */
-export function listRowBleed(height: number, line: number, paddingY: number) {
-  return Math.min(0, Math.max(tokens.extensions.list.minimumInset - paddingY, (line - height) / 2));
+export function listRowBleed(paddingY: number) {
+  return Math.min(0, tokens.extensions.list.minimumInset - paddingY);
 }

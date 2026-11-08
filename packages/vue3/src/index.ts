@@ -31,7 +31,7 @@ export type { ConfirmOptions, KjunFeedback, PromptOptions, ToastOptions, ToastDi
 export type { KjunTabsProps, KjunTabPaneProps, TabItem, TabMenuEvent } from "./tabs";
 export type { KjunAccordionProps, KjunAccordionItemProps, BreadcrumbItem, KjunBreadcrumbProps, KjunPaginationProps } from "./navigation";
 export type { KjunTopNavigationProps, NavigationDestination, KjunBottomNavigationProps, KjunFloatingNavigationProps, KjunBottomActionBarProps } from "./app-navigation";
-export type { KjunListGroupProps, KjunListItemProps, KjunListRowProps, KjunListSectionProps, ListLeadingSize } from "./list";
+export type { KjunListGroupProps, KjunListItemProps, KjunListRowProps, KjunListSectionProps, ListChoiceValue, ListGroupVariant, ListLeadingSize, ListSectionVariant } from "./list";
 export type { KjunIconToggleProps, KjunCopyButtonProps, KjunRefreshButtonProps, KjunExternalLinkProps } from "./actions";
 export { safeExternalUrl } from "./actions";
 export type { KjunCarouselProps } from "./carousel";

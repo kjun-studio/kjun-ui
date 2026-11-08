@@ -9,6 +9,15 @@ export function listRowKind({ checked, selected, href, pressable, mode = "none" 
   return pressable ? "button" : "static";
 }
 
+/**
+ * What a row draws at its end for its choice: a mark (an empty ring or box, filled when chosen) in an open section or a
+ * multiple-choice list, so every choice shows it can be picked; otherwise a check on the chosen row only.
+ */
+export function listRowEnd({ kind, selected, mode, open }: { kind: ListRowKind; selected?: boolean; mode: ListSelectionMode; open: boolean }) {
+  if ((kind === "radio" || kind === "checkbox") && (open || mode === "multiple")) return "mark" as const;
+  return selected ? "check" as const : null;
+}
+
 export type ListChoiceValue = string | number;
 /** A section's selection: its mode and, when the section owns the value, that value and its change handler. */
 export interface ListSelection {
@@ -33,10 +42,10 @@ export function listRowChoice(selection: ListSelection | undefined, rowValue: Li
 
 const developmentMode = () => { try { return !!process.env.NODE_ENV && process.env.NODE_ENV !== "production"; } catch { return false; } };
 const warned = new Set<string>();
-const warnOnce = (key: string, when: unknown, message: string) => {
+const warnOnce = (key: string, when: unknown, message: string, component = "ListRow") => {
   if (!when || warned.has(key)) return;
   warned.add(key);
-  console.warn("KJUN ListRow: " + message);
+  console.warn("KJUN " + component + ": " + message);
 };
 /**
  * Development warnings, once each, for props that cannot apply together. `deviceLink` (Native on a device: an href with
@@ -49,6 +58,12 @@ export function warnListRowProps({ checked, selected, href, chevron, deviceLink,
   warnOnce("switch", checked !== undefined && (href || selected !== undefined || chevron), "a switch row (checked) ignores href, selected and chevron; give each row one role.");
   warnOnce("choice-link", checked === undefined && selected !== undefined && href, "a choice row (selected) is a button and ignores href; navigate in the press handler instead.");
   warnOnce("loose-choice", looseChoice, "a choice row (selected) is outside a section with selectionMode; set selectionMode on its KjunListSection so the rows read as one group.");
+}
+
+/** Development warning, once: an open section draws no dividers, so an explicit `divider` does nothing there. */
+export function warnListSectionProps({ open, divider }: { open: boolean; divider?: boolean }) {
+  if (!developmentMode()) return;
+  warnOnce("open-divider", open && divider === true, "divider has no effect in an open section; open rows are set apart by space. Use the default variant for divided rows.", "ListSection");
 }
 
 export type ListSectionCorner = "none" | "sm" | "md" | "lg" | "xl";

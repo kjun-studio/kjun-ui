@@ -73,8 +73,9 @@
 .kjun-list-row:not(:last-child)::after,.kjun-list-item:not(:last-child)::after{content:"";position:absolute;inset-inline:var(--_kjun-list-divider-inset,var(--_kjun-extension-list-padding)) 0;bottom:0;height:var(--_kjun-border-default-width);background:var(--_kjun-color-divider);pointer-events:none}
 .kjun-list[data-divider=false]>:is(.kjun-list-row,.kjun-list-item)::after{content:none}
 .kjun-list-main{display:flex;align-items:center;gap:var(--_kjun-list-gap);flex:1;min-width:0;min-height:var(--_kjun-list-minimum-height);padding:var(--_kjun-list-padding-y) var(--_kjun-list-padding-x);text-align:start;color:inherit;text-decoration:none;background:transparent;border:0;font:inherit;-webkit-tap-highlight-color:transparent}
-/* The whole row (its actions too) takes the hover and pressed fill, so a row with buttons never reads as two parts. */
-.kjun-list-row:has(> .kjun-list-main:is(button,a):not(:disabled,[aria-disabled=true]):hover){background:var(--_kjun-color-hover)}
+/* The whole row (its actions too) takes the hover and pressed fill, so a row with buttons never reads as two parts.
+   Hover only where a pointer hovers, so a tapped row on a touch screen does not keep the fill. */
+@media (hover: hover){.kjun-list-row:has(> .kjun-list-main:is(button,a):not(:disabled,[aria-disabled=true]):hover){background:var(--_kjun-color-hover)}}
 .kjun-list-row:has(> .kjun-list-main:is(button,a):not(:disabled,[aria-disabled=true]):active){background:var(--_kjun-color-active)}
 @media (prefers-reduced-motion: reduce){.kjun-list-row{transition:none}}
 /* Rows run edge to edge, so the keyboard ring draws inside them: never cut by a card, the screen edge or the next row. */
@@ -95,17 +96,17 @@
 /* Icons use 24px; custom leading content, including avatars and images, keeps a 40px minimum. */
 .kjun-list-leading{flex-shrink:0;display:flex;align-items:center;justify-content:center;min-width:var(--_kjun-list-leading-width);min-height:var(--_kjun-list-leading-height,0px)}
 .kjun-list-row[data-leading-size] > .kjun-list-main > .kjun-list-leading{width:var(--_kjun-list-leading-width)}
-/* A one-line row stays at its minimum height: a leading square or a switch taller than the title line reaches into the
-   vertical padding instead of growing the row, keeping the minimum inset to the row's edge. */
-.kjun-list-main:not(:has(.kjun-list-description)) > .kjun-list-leading{margin-block:clamp(var(--_kjun-list-bleed-limit), calc((var(--_kjun-list-title-line) - var(--_kjun-list-leading-height)) / 2), 0px)}
-.kjun-list-main:not(:has(.kjun-list-description)) > .kjun-switch{margin-block:clamp(var(--_kjun-list-bleed-limit), calc((var(--_kjun-list-title-line) - var(--_kjun-extension-switch-heights-md)) / 2), 0px)}
+/* A one-line row stays at its minimum height: its leading content (an icon, a square or an app's avatar), switch or mark
+   reaches into the vertical padding instead of growing the row, and anything taller still keeps the minimum inset to
+   the row's edge. One margin works for every size, so custom leading content needs no leadingSize. */
+.kjun-list-main:not(:has(.kjun-list-description)) > :is(.kjun-list-leading,.kjun-switch,.kjun-list-mark){margin-block:var(--_kjun-list-bleed-limit)}
 /* With a description, both ends of the row center on the band of the title and first description line, so a long row
    keeps its icon, value, check, switch and chevron beside the title. */
 .kjun-list-main:has(.kjun-list-description) > .kjun-list-leading{align-self:flex-start;min-height:max(var(--_kjun-list-leading-height,0px),var(--_kjun-list-band))}
 .kjun-list-main:has(.kjun-list-description) > :is(.kjun-list-trailing,.kjun-list-check,.kjun-list-chevron,.kjun-list-mark,.kjun-switch){align-self:flex-start}
 .kjun-list-main:has(.kjun-list-description) > .kjun-list-trailing{display:flex;align-items:center;justify-content:flex-end;min-height:var(--_kjun-list-band)}
 .kjun-list-main:has(.kjun-list-description) > :is(.kjun-list-check,.kjun-list-chevron){margin-top:calc((var(--_kjun-list-band) - var(--_kjun-extension-list-end-icon-size)) / 2)}
-.kjun-list-main:has(.kjun-list-description) > .kjun-list-mark{margin-top:calc((var(--_kjun-list-band) - var(--_kjun-extension-list-open-mark-size)) / 2)}
+.kjun-list-main:has(.kjun-list-description) > .kjun-list-mark{margin-top:calc((var(--_kjun-list-band) - var(--_kjun-extension-list-mark-size)) / 2)}
 .kjun-list-main:has(.kjun-list-description) > .kjun-switch{margin-top:calc((var(--_kjun-list-band) - var(--_kjun-extension-switch-heights-md)) / 2)}
 .kjun-list-icon-background{display:flex;flex-shrink:0;align-items:center;justify-content:center;width:var(--_kjun-list-leading-width);height:var(--_kjun-list-leading-width);border-radius:var(--_kjun-extension-list-icon-background-radius)}
 .kjun-list-icon{color:var(--_kjun-color-text-secondary)}
@@ -119,12 +120,15 @@
 /* A disabled row disables its actions too, so the row never reads as partly available. */
 .kjun-list-actions[data-disabled]{opacity:var(--_kjun-state-opacity-disabled)}
 .kjun-list-item{padding:var(--_kjun-extension-list-padding);position:relative;min-width:0}
+/* A busy row (its last press still being handled) ignores presses; a switch row draws a spinner in its thumb. */
+.kjun-list-main[aria-busy=true]{cursor:progress}
 .kjun-list[data-density=compact]>.kjun-list-item{padding-block:var(--_kjun-extension-list-compact-padding-y)}
 
 /* Open variant: rows sit on the page with no card or dividers, set apart by space; hover, press and the chosen row fill
    a rounded shape inset from the edges. Titles are larger, icons sit on a rounded square, and choices draw a mark. */
 .kjun-list[data-variant=open]>:is(.kjun-list-row,.kjun-list-item){margin-inline:var(--_kjun-extension-list-open-row-inset);border-radius:var(--_kjun-extension-list-open-row-radius)}
 .kjun-list[data-variant=open]>:is(.kjun-list-row,.kjun-list-item)::after{content:none}
+.kjun-list[data-variant=open]>.kjun-list-item{padding-inline:var(--_kjun-extension-list-open-padding-x)}
 .kjun-list[data-variant=open]>.kjun-list-row{
   --_kjun-list-title-line:var(--_kjun-type-input-line);
   --_kjun-list-band:calc(var(--_kjun-list-title-line) + var(--_kjun-extension-list-description-gap) + var(--_kjun-type-body-line));
@@ -142,11 +146,12 @@
 .kjun-list[data-variant=open]>.kjun-list-row[data-destructive] .kjun-list-icon-background{background-color:var(--_kjun-color-danger-bg)}
 .kjun-list[data-variant=open]>.kjun-list-row[data-destructive] .kjun-list-icon{color:var(--_kjun-color-danger)}
 .kjun-list[data-variant=open]>.kjun-list-row:has(> .kjun-list-main:is([role=radio],[role=checkbox])[aria-checked=true]){background:var(--_kjun-color-selected-bg)}
-.kjun-list[data-variant=open]>.kjun-list-row:has(> .kjun-list-main:is(button,a):not(:disabled,[aria-disabled=true]):hover){background:var(--_kjun-color-hover)}
+@media (hover: hover){.kjun-list[data-variant=open]>.kjun-list-row:has(> .kjun-list-main:is(button,a):not(:disabled,[aria-disabled=true]):hover){background:var(--_kjun-color-hover)}}
 .kjun-list[data-variant=open]>.kjun-list-row:has(> .kjun-list-main:is(button,a):not(:disabled,[aria-disabled=true]):active){background:var(--_kjun-color-active)}
-/* A choice's mark: an empty ring (a rounded square in a multiple-choice list), filled with a check when chosen. */
-.kjun-list-mark{flex:none;display:flex;align-items:center;justify-content:center;width:var(--_kjun-extension-list-open-mark-size);height:var(--_kjun-extension-list-open-mark-size);border-radius:50%;box-shadow:inset 0 0 0 var(--_kjun-border-control-width) var(--_kjun-color-border-strong);color:var(--_kjun-color-on-brand)}
-.kjun-list-mark[data-kind=checkbox]{border-radius:var(--_kjun-extension-list-open-checkbox-radius)}
+/* A choice's mark, in an open section or a multiple-choice list: an empty ring (a rounded square for multiple choice),
+   filled with a check when chosen. */
+.kjun-list-mark{flex:none;display:flex;align-items:center;justify-content:center;width:var(--_kjun-extension-list-mark-size);height:var(--_kjun-extension-list-mark-size);border-radius:50%;box-shadow:inset 0 0 0 var(--_kjun-border-control-width) var(--_kjun-color-border-strong);color:var(--_kjun-color-on-brand)}
+.kjun-list-mark[data-kind=checkbox]{border-radius:var(--_kjun-extension-list-checkbox-radius)}
 .kjun-list-mark[data-checked]{background:var(--_kjun-color-brand);box-shadow:none}
 .kjun-list-group[data-variant=open]{gap:var(--_kjun-extension-list-open-group-gap)}
 
