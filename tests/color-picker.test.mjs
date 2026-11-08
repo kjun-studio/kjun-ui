@@ -5,7 +5,7 @@ import { formatColor, hsvToRgb, normalizeColor, parseColor, readableInk, rgbToHs
 
 // color-picker.ts imports ./color without an extension, which Node cannot resolve directly, so the test bundles it.
 const output = await build({ entryPoints: ['shared/package-runtime/color-picker.ts'], bundle: true, write: false, format: 'esm', platform: 'node' });
-const { channelKey, colorAreaKey, hexDraft, initialFocus, normalizeSwatches, stateToValue, syncHsv } =
+const { channelKey, colorAreaKey, hexDraft, hexWithAlpha, initialFocus, invalidSwatchCount, normalizeSwatches, stateToValue, syncHsv } =
   await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 
 test('parseColor reads short, long and alpha hex with or without #', () => {
@@ -88,7 +88,9 @@ test('normalizeSwatches drops invalid entries and labels with hex', () => {
   try {
     assert.deepEqual(normalizeSwatches(['#f00', { value: '#00ff00', label: 'Green' }, 'nope', 7], false),
       [{ value: '#FF0000', label: '#FF0000' }, { value: '#00FF00', label: 'Green' }]);
-    assert.equal(warned, 1);
+    // The component warns once from an effect; normalizing (every render) stays quiet.
+    assert.equal(warned, 0);
+    assert.equal(invalidSwatchCount(['#f00', 'nope', 7, { value: 'x' }]), 3);
     assert.deepEqual(normalizeSwatches(['#f00'], true), [{ value: '#FF0000FF', label: '#FF0000FF' }]);
   } finally { console.warn = warn; if (env === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = env; }
 });
@@ -122,4 +124,19 @@ test('readableInk picks dark ink on light colors and light ink on dark ones', ()
   assert.equal(readableInk('#111111'), 'light');
   assert.equal(readableInk('#3B82F6'), 'light');
   assert.equal(readableInk('#11111120'), 'dark');
+});
+
+test('syncHsv keeps hue and saturation when only alpha changes', () => {
+  const gray = { hsv: { h: 200, s: 0, v: 0.5 }, a: 1 };
+  const next = syncHsv(gray, stateToValue(gray, false) + '80', true);
+  assert.deepEqual(next.hsv, gray.hsv);
+  assert.equal(next.a.toFixed(2), '0.50');
+});
+
+test('hexWithAlpha expands a short code and keeps the current opacity', () => {
+  assert.equal(hexWithAlpha('3B8', true, '80'), '33BB8880');
+  assert.equal(hexWithAlpha('#3b82f6', true, '80'), '3B82F680');
+  assert.equal(hexWithAlpha('3B82F6CC', true, '80'), '3B82F6CC');
+  assert.equal(hexWithAlpha('3B8', false, '80'), '3B8');
+  assert.equal(hexWithAlpha('xyz', true, '80'), 'xyz');
 });

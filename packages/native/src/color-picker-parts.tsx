@@ -3,7 +3,7 @@ import { PanResponder, Platform, View, type ColorValue, type TextInput, type Vie
 import Svg, { Defs, LinearGradient, Pattern, Rect, Stop } from "react-native-svg";
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
-import { channelKey, colorAreaKey, hexDraft } from "../../../shared/package-runtime/color-picker";
+import { channelKey, colorAreaKey, hexDraft, hexWithAlpha } from "../../../shared/package-runtime/color-picker";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
@@ -68,7 +68,7 @@ export function ColorChip({ value, size, opacity = 1 }: { value: string | null; 
 /** PanResponder drag over a measured box: moves report each step, release or termination ends once. */
 function useDrag(onMove: (x: number, y: number) => void, onStart: () => void, onEnd: () => void) {
   const target = useRef<View>(null), box = useRef<{ x: number; y: number; width: number; height: number } | null>(null);
-  const latest = useRef({ onMove, onStart, onEnd });
+  const latest = useRef({ onMove, onStart, onEnd }), released = useRef(false);
   latest.current = { onMove, onStart, onEnd };
   const at = (pageX: number, pageY: number) => { const b = box.current; if (b) latest.current.onMove(fraction(pageX, b.x, b.width), fraction(pageY, b.y, b.height)); };
   const responder = useMemo(() => PanResponder.create({
@@ -77,12 +77,19 @@ function useDrag(onMove: (x: number, y: number) => void, onStart: () => void, on
     onPanResponderTerminationRequest: () => false,
     onPanResponderGrant: event => {
       const { pageX, pageY } = event.nativeEvent;
+      // measure answers later (bridge, Native Web timers): moves wait for this gesture's box, and a quick tap's release
+      // ends the drag once the first point has been reported, so the commit sees the change.
+      box.current = null; released.current = false;
       latest.current.onStart();
-      target.current?.measure((_x, _y, width, height, x, y) => { box.current = { x, y, width, height }; at(pageX, pageY); });
+      target.current?.measure((_x, _y, width, height, x, y) => {
+        box.current = { x, y, width, height };
+        at(pageX, pageY);
+        if (released.current) latest.current.onEnd();
+      });
     },
     onPanResponderMove: event => at(event.nativeEvent.pageX, event.nativeEvent.pageY),
-    onPanResponderRelease: () => latest.current.onEnd(),
-    onPanResponderTerminate: () => latest.current.onEnd(),
+    onPanResponderRelease: () => { if (box.current) latest.current.onEnd(); else released.current = true; },
+    onPanResponderTerminate: () => { if (box.current) latest.current.onEnd(); else released.current = true; },
   }), []);
   return { ref: target, handlers: responder.panHandlers };
 }
@@ -226,7 +233,7 @@ export function HexInputs({ value, alpha, alphaPercent, clearable, hexLabel, alp
   const withAlpha = (six: string) => alpha ? six + (value ? value.slice(7, 9) : "FF") : six;
   const commitHex = () => {
     editing.current = null;
-    const draft = hexDraft(text.length === 6 ? withAlpha(text) : text, alpha);
+    const draft = hexDraft(hexWithAlpha(text, alpha, value ? value.slice(7, 9) || "FF" : "FF"), alpha);
     if (draft.commit === "revert" || (draft.commit === null && !clearable)) { setText(shown); return; }
     onPick(draft.commit);
     setText(draft.commit ? draft.commit.slice(1, 7) : "");

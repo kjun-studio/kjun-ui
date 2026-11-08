@@ -111,6 +111,26 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(await list(page, 'cp-custom', 'commits')).toEqual(['#33BB88', '#3B82F6']);
     });
 
+    test('a quick tap on the area changes and commits once', async ({ page }) => {
+      await trigger(page, 'cp-gray', '회색 확인').click();
+      await area(page).click({ position: { x: 20, y: 20 } });
+      await expect.poll(() => list(page, 'cp-gray', 'commits')).toHaveLength(1);
+      expect(await list(page, 'cp-gray', 'changes')).toHaveLength(1);
+    });
+
+    test('a custom trigger in a form group still reads the label and value', async ({ page }) => {
+      const t = section(page, 'cp-custom-trigger').getByRole('button');
+      await expect(t).toHaveAccessibleName(/커스텀 색/);
+      await expect(t).toHaveAccessibleName(/#3B82F6/);
+    });
+
+    test('a short hex code keeps the current opacity', async ({ page }) => {
+      await trigger(page, 'cp-full', '라벨 색').click();
+      await hex(page).fill('3B8');
+      await hex(page).press('Enter');
+      await expect.poll(async () => (await list(page, 'cp-full', 'commits')).at(-1)).toBe('#33BB8880');
+    });
+
     test('alpha keeps eight digits and the % field sets it', async ({ page }) => {
       await trigger(page, 'cp-full', '라벨 색').click();
       await expect(page.getByRole('slider', { name: '투명도' })).toHaveAttribute('aria-valuenow', '50');

@@ -22,6 +22,8 @@ export function syncHsv(prev: PickerState, value: string | null, alpha: boolean)
   const v = normalizeColor(value, alpha);
   if (v === null || v === stateToValue(prev, alpha)) return prev;
   const c = parseColor(v)!;
+  // Only the opacity moved (the % field, or a parent changing AA): keep hue and saturation, which a gray or black would lose.
+  if (formatColor({ ...c, a: 1 }, false) === stateToValue(prev, false)) return { hsv: prev.hsv, a: alpha ? c.a : 1 };
   return { hsv: rgbToHsv(c), a: alpha ? c.a : 1 };
 }
 
@@ -56,6 +58,14 @@ export function channelKey(key: string, shift: boolean, value: number, max: numb
   }
 }
 
+/** With alpha on, a 3- or 6-digit code keeps the current opacity (AA) instead of resetting it to 100%. Other text passes through. */
+export function hexWithAlpha(text: string, alpha: boolean, currentAlpha: string): string {
+  const t = text.trim().replace(/^#/, "");
+  if (!alpha || (t.length !== 3 && t.length !== 6)) return t;
+  const six = normalizeColor(t, false);
+  return six ? six.slice(1) + currentAlpha : t;
+}
+
 /** The hex field: live only once all 6 (or 8 with alpha) digits are typed, so "3B8" never jumps to #33BB88 mid-typing; commit expands short forms. */
 export function hexDraft(text: string, alpha: boolean): { live: string | null; commit: string | null | "revert" } {
   const t = text.trim().replace(/^#/, "");
@@ -66,17 +76,19 @@ export function hexDraft(text: string, alpha: boolean): { live: string | null; c
 }
 
 export type ColorSwatchInput = string | { value: string; label?: string };
+const swatchValue = (item: unknown) => typeof item === "object" && item ? (item as { value?: unknown }).value : item;
+/** How many swatches are not hex colors; the picker warns once about them (normalizing runs on every render and stays quiet). */
+export function invalidSwatchCount(list: unknown[]): number {
+  return (list ?? []).filter(item => normalizeColor(swatchValue(item), false) === null).length;
+}
 export function normalizeSwatches(list: unknown[], alpha: boolean): { value: string; label: string }[] {
   const out: { value: string; label: string }[] = [];
-  let dropped = false;
   for (const item of list ?? []) {
-    const raw = typeof item === "object" && item ? (item as { value?: unknown }).value : item;
-    const value = normalizeColor(raw, alpha);
-    if (value === null) { dropped = true; continue; }
+    const value = normalizeColor(swatchValue(item), alpha);
+    if (value === null) continue;
     const label = typeof item === "object" && item && typeof (item as { label?: unknown }).label === "string" ? (item as { label: string }).label : value;
     out.push({ value, label });
   }
-  if (dropped) warnColorPicker("swatches has entries that are not hex colors; they are left out.");
   return out;
 }
 

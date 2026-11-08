@@ -3,7 +3,7 @@ import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useKjunMessageScope } from "./runtime/messages";
 import { normalizeColor, parseColor } from "../../../shared/package-runtime/color";
 import {
-  initialFocus, initialPickerState, normalizeSwatches, stateToValue, syncHsv, warnColorPicker, type ColorSwatchInput, type PickerState,
+  initialFocus, initialPickerState, invalidSwatchCount, normalizeSwatches, stateToValue, syncHsv, warnColorPicker, type ColorSwatchInput, type PickerState,
 } from "../../../shared/package-runtime/color-picker";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { FloatingPanel } from "./floating-panel";
@@ -67,6 +67,10 @@ export const KjunColorPicker = defineComponent({
       if (parseColor(raw) && /^#?([0-9a-f]{4}|[0-9a-f]{8})$/i.test(raw.trim())) { warned = true; warnColorPicker("the value has alpha but alpha is off; it is drawn and reported without it."); }
     }, { immediate: true });
     const swatches = computed(() => normalizeSwatches(props.swatches ?? [], props.alpha));
+    let warnedSwatches = false;
+    watch(() => invalidSwatchCount(props.swatches ?? []) > 0, invalid => {
+      if (invalid && !warnedSwatches) { warnedSwatches = true; warnColorPicker("swatches has entries that are not hex colors; they are left out."); }
+    }, { immediate: true });
     const nothing = computed(() => !props.custom && !props.input && !swatches.value.length && !props.clearable);
     watch(nothing, none => { if (none) warnColorPicker("turn on custom, input or clearable, or give swatches; showing the hex field."); }, { immediate: true });
 
@@ -132,7 +136,7 @@ export const KjunColorPicker = defineComponent({
               style={css({ height: spec.height, borderRadius: spec.radius, ...inputTypeStyle(size), paddingInline: spec.padding - tokens.border.controlWidth, gap: spec.affixGap })}
               onClick={() => { if (!props.readOnly) setOpen(!open.value); }}
               onKeydown={(event: KeyboardEvent) => { if (!props.readOnly && (event.key === "ArrowDown" || event.key === "ArrowUp")) { event.preventDefault(); setOpen(true); } }}>
-              {slots.trigger ? slots.trigger({ value: v, open: open.value }) : <>
+              {slots.trigger ? <>{slots.trigger({ value: v, open: open.value })}<span id={valueId} class="kjun-sr-only">{spoken}</span></> : <>
                 <span class={"kjun-color-chip" + (v ? " kjun-color-checker" : "")} data-none={v ? undefined : ""} aria-hidden="true" style={css({ width: chip, height: chip })}>
                   <span style={v ? { background: v.slice(0, 7), opacity: props.alpha ? parseColor(v)!.a : 1 } : undefined} />
                 </span>

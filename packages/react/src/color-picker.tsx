@@ -4,7 +4,7 @@ import { useKjunMessageScope } from "../../../shared/package-runtime/messages-co
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { normalizeColor, parseColor } from "../../../shared/package-runtime/color";
 import {
-  initialFocus, initialPickerState, normalizeSwatches, stateToValue, syncHsv, warnColorPicker, type ColorSwatchInput, type PickerState,
+  initialFocus, initialPickerState, invalidSwatchCount, normalizeSwatches, stateToValue, syncHsv, warnColorPicker, type ColorSwatchInput, type PickerState,
 } from "../../../shared/package-runtime/color-picker";
 import { inputTypeStyle } from "./typography";
 import { KjunIcon } from "./button";
@@ -67,7 +67,8 @@ export function KjunColorPicker({
     const c = parseColor(raw);
     if (c && /^#?([0-9a-f]{4}|[0-9a-f]{8})$/i.test(raw.trim())) { warned.current = true; warnColorPicker("the value has alpha but alpha is off; it is drawn and reported without it."); }
   }, [raw, alpha]);
-  const swatches = normalizeSwatches(rawSwatches ?? [], alpha);
+  const swatches = normalizeSwatches(rawSwatches ?? [], alpha), invalid = invalidSwatchCount(rawSwatches ?? []) > 0, warnedSwatches = useRef(false);
+  useEffect(() => { if (invalid && !warnedSwatches.current) { warnedSwatches.current = true; warnColorPicker("swatches has entries that are not hex colors; they are left out."); } }, [invalid]);
   const nothing = !custom && !input && !swatches.length && !clearable;
   useEffect(() => { if (nothing) warnColorPicker("turn on custom, input or clearable, or give swatches; showing the hex field."); }, [nothing]);
   const showInput = input || nothing;
@@ -131,7 +132,7 @@ export function KjunColorPicker({
           style={{ height: spec.height, borderRadius: spec.radius, ...inputTypeStyle(size), paddingInline: spec.padding - tokens.border.controlWidth, gap: spec.affixGap }}
           onClick={() => { if (!readOnly) setOpen(!open); }}
           onKeyDown={event => { if (!readOnly && (event.key === "ArrowDown" || event.key === "ArrowUp")) { event.preventDefault(); setOpen(true); } }}>
-          {renderTrigger ? renderTrigger({ value, open }) : <>
+          {renderTrigger ? <>{renderTrigger({ value, open })}<span id={valueId} className="kjun-sr-only">{spoken}</span></> : <>
             <span className={"kjun-color-chip" + (value ? " kjun-color-checker" : "")} data-none={value ? undefined : ""} aria-hidden="true" style={{ width: chip, height: chip }}>
               <span style={value ? { background: value.slice(0, 7), opacity: alpha ? parseColor(value)!.a : 1 } : undefined} />
             </span>

@@ -1,7 +1,7 @@
 import { defineComponent, ref, watch, watchEffect, type PropType } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
-import { channelKey, colorAreaKey, hexDraft } from "../../../shared/package-runtime/color-picker";
+import { channelKey, colorAreaKey, hexDraft, hexWithAlpha } from "../../../shared/package-runtime/color-picker";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { KjunIcon } from "./button";
@@ -168,7 +168,7 @@ export const HexInputs = defineComponent({
     const withAlpha = (six: string) => props.alpha ? six + (props.value ? props.value.slice(7, 9) : "FF") : six;
     const commitHex = () => {
       editing = null;
-      const draft = hexDraft(text.value.length === 6 ? withAlpha(text.value) : text.value, props.alpha);
+      const draft = hexDraft(hexWithAlpha(text.value, props.alpha, props.value ? props.value.slice(7, 9) || "FF" : "FF"), props.alpha);
       if (draft.commit === "revert" || (draft.commit === null && !props.clearable)) { text.value = shown(); return; }
       props.onPick(draft.commit);
       text.value = draft.commit ? draft.commit.slice(1, 7) : "";

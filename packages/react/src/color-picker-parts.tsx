@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
-import { channelKey, colorAreaKey, hexDraft } from "../../../shared/package-runtime/color-picker";
+import { channelKey, colorAreaKey, hexDraft, hexWithAlpha } from "../../../shared/package-runtime/color-picker";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { inputTypeStyle } from "./typography";
 import { KjunIcon } from "./button";
@@ -132,7 +132,7 @@ export function HexInputs({ value, alpha, alphaPercent, clearable, hexLabel, alp
   const withAlpha = (six: string) => alpha ? six + (value ? value.slice(7, 9) : "FF") : six;
   const commitHex = () => {
     editing.current = null;
-    const draft = hexDraft(text.length === 6 ? withAlpha(text) : text, alpha);
+    const draft = hexDraft(hexWithAlpha(text, alpha, value ? value.slice(7, 9) || "FF" : "FF"), alpha);
     if (draft.commit === "revert" || (draft.commit === null && !clearable)) { setText(shown); return; }
     onPick(draft.commit);
     setText(draft.commit ? draft.commit.slice(1, 7) : "");

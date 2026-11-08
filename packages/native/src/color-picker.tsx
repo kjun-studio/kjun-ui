@@ -4,7 +4,7 @@ import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { normalizeColor, parseColor } from "../../../shared/package-runtime/color";
 import {
-  initialFocus, initialPickerState, normalizeSwatches, stateToValue, syncHsv, warnColorPicker, type ColorSwatchInput, type PickerState,
+  initialFocus, initialPickerState, invalidSwatchCount, normalizeSwatches, stateToValue, syncHsv, warnColorPicker, type ColorSwatchInput, type PickerState,
 } from "../../../shared/package-runtime/color-picker";
 import { FieldPressable, fieldTarget, useFieldSurface } from "./field-surface";
 import { inputTypeStyle } from "./typography";
@@ -65,7 +65,8 @@ export function KjunColorPicker({
     if (warned.current || alpha || typeof raw !== "string") return;
     if (parseColor(raw) && /^#?([0-9a-f]{4}|[0-9a-f]{8})$/i.test(raw.trim())) { warned.current = true; warnColorPicker("the value has alpha but alpha is off; it is drawn and reported without it."); }
   }, [raw, alpha]);
-  const swatches = normalizeSwatches(rawSwatches ?? [], alpha);
+  const swatches = normalizeSwatches(rawSwatches ?? [], alpha), invalid = invalidSwatchCount(rawSwatches ?? []) > 0, warnedSwatches = useRef(false);
+  useEffect(() => { if (invalid && !warnedSwatches.current) { warnedSwatches.current = true; warnColorPicker("swatches has entries that are not hex colors; they are left out."); } }, [invalid]);
   const nothing = !custom && !input && !swatches.length && !clearable;
   useEffect(() => { if (nothing) warnColorPicker("turn on custom, input or clearable, or give swatches; showing the hex field."); }, [nothing]);
   const showInput = input || nothing;

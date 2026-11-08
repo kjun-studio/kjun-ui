@@ -37,6 +37,9 @@ export function ColorPickerCases({ K, native = false, providerProps = {} }: { K:
         </form>}
       <output data-testid="cp-submitted">{submitted}</output>
     </div>
+    <div data-testid="cp-custom-trigger"><K.KjunFormGroup label="커스텀 색">
+      <K.KjunColorPicker defaultValue="#3B82F6" swatches={cpSwatches} renderTrigger={() => native ? <K.KjunText>칩 보기</K.KjunText> : <span>칩 보기</span>} />
+    </K.KjunFormGroup></div>
     <div data-testid="cp-sizes" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       {(['sm', 'md', 'lg'] as const).map(size => <K.KjunColorPicker key={size} size={size} ariaLabel={'크기 ' + size} defaultValue="#3B82F6" swatches={cpSwatches} />)}
     </div>
