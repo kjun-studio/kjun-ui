@@ -3,17 +3,18 @@ import { createContext, useContext, useEffect, useId, useRef, useState, type CSS
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { KjunIcon } from "./button";
-import { listRowChoice, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, type ListChoiceValue, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
+import { listRowChoice, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 export type { ListChoiceValue } from "../../../shared/package-runtime/list-row";
 export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
-// The section's selection mode and, when it owns the value, that value; a single-choice list is a radiogroup.
-const ListSelectionContext = createContext<ListSelection>({ mode: "none" });
+// The section's selection mode and, when it owns the value, that value (a single-choice list is a radiogroup), and
+// whether the section is open, which changes how a row draws its icon and its choice.
+const ListSelectionContext = createContext<ListSelection & { open?: boolean }>({ mode: "none" });
 export interface KjunListRowProps {
   title: string;
   description?: string;
-  /** Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority. */
+  /** Icon name drawn in a 24px column (on a 40px rounded square in an open section); custom `leading` content uses a minimum 40px column and takes priority. */
   icon?: string;
   /** Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28. Custom content keeps its own size. */
   leadingSize?: ListLeadingSize;
@@ -30,7 +31,7 @@ export interface KjunListRowProps {
   destructive?: boolean;
   /** Ends the row with a decorative chevron that marks it as navigation. */
   chevron?: boolean;
-  /** One choice in a single-choice list: true draws a check at the end. A pressable row given it (true or false) reads as a radio. */
+  /** One choice in a single-choice list: true draws a check at the end (in an open section, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio. */
   selected?: boolean;
   /** Makes the whole row a switch: it draws one at the end and toggles on any press. */
   checked?: boolean;
@@ -47,7 +48,7 @@ export interface KjunListRowProps {
   descriptionLines?: number;
 }
 export function KjunListRow({ title, description, icon, leadingSize, iconColor, iconBackground, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, value, onClick: ownClick, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
-  const selection = useContext(ListSelectionContext), choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
+  const selection = useContext(ListSelectionContext), open = !!selection.open, choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   const onClick = choice.press ? (event: MouseEvent<HTMLElement>) => { choice.press(); ownClick?.(event); } : ownClick;
   const kind = listRowKind({ checked, selected, href, pressable: !!(href || onClick), mode: selection.mode }), toggle = kind === "switch";
   const content = useRef<HTMLSpanElement>(null), pressable = kind !== "static";
@@ -55,15 +56,19 @@ export function KjunListRow({ title, description, icon, leadingSize, iconColor, 
   useEffect(() => { if (pressable) warnNestedControls(content.current, "KJUN ListRow: a pressable row's content contains buttons or links; move them to actions."); }, [pressable]);
   useEffect(() => warnListRowProps({ checked, selected, href, chevron, looseChoice }), [checked !== undefined, selected !== undefined, !!href, chevron, looseChoice]);
   const clamp = (lines?: number) => lines ? { WebkitLineClamp: lines } as CSSProperties : undefined;
-  const custom = hasContent(leading), geometry = listLeadingGeometry({ size: leadingSize, custom, background: iconBackground != null });
+  const custom = hasContent(leading), geometry = listLeadingGeometry({ size: leadingSize, custom, background: iconBackground != null, open });
   const glyph = icon ? <KjunIcon name={icon} className="kjun-list-icon" size={geometry.iconSize} style={{ color: iconColor }} /> : null;
-  const front = custom ? leading : glyph && iconBackground != null ? <span className="kjun-list-icon-background" style={{ backgroundColor: iconBackground }} aria-hidden="true">{glyph}</span> : glyph;
+  const front = custom ? leading : glyph && geometry.tile ? <span className="kjun-list-icon-background" style={iconBackground != null ? { backgroundColor: iconBackground } : undefined} aria-hidden="true">{glyph}</span> : glyph;
+  // An open section's choice rows draw a mark, empty until chosen; other rows draw a check when selected.
+  const choiceRow = kind === "radio" || kind === "checkbox";
+  const mark = open && choiceRow ? <span className="kjun-list-mark" data-kind={kind} data-checked={selected ? "" : undefined} aria-hidden="true">{selected && <KjunIcon name="check" size={tokens.extensions.list.open.markIconSize} />}</span>
+    : selected && <KjunIcon name="check" className="kjun-list-check" size={tokens.iconSizes.default} />;
   const leadingStyle = front && geometry.size ? { "--_kjun-list-leading-width": `${geometry.width}px`, "--_kjun-list-leading-height": `${geometry.width}px` } as CSSProperties : undefined;
-  const contents = <>{front && <span className="kjun-list-leading">{front}</span>}<span className="kjun-list-body"><span className="kjun-list-title" data-clamp={titleLines ? "" : undefined} style={clamp(titleLines)}>{title}</span>{description && <span className="kjun-list-description" data-clamp={descriptionLines ? "" : undefined} style={clamp(descriptionLines)}>{description}</span>}{hasContent(children) && <span ref={content} className="kjun-list-content">{children}</span>}</span>{hasContent(trailing) && <span className="kjun-list-trailing">{trailing}</span>}{selected && <KjunIcon name="check" className="kjun-list-check" size={tokens.iconSizes.default} />}{toggle && <span className={"kjun-switch kjun-switch--md" + (checked ? " kjun-switch--on" : "")} aria-hidden="true"><span className="kjun-switch-thumb" /></span>}{chevron && <KjunIcon name="chevron-right" className="kjun-list-chevron" size={tokens.iconSizes.default} />}</>;
+  const contents = <>{front && <span className="kjun-list-leading">{front}</span>}<span className="kjun-list-body"><span className="kjun-list-title" data-clamp={titleLines ? "" : undefined} style={clamp(titleLines)}>{title}</span>{description && <span className="kjun-list-description" data-clamp={descriptionLines ? "" : undefined} style={clamp(descriptionLines)}>{description}</span>}{hasContent(children) && <span ref={content} className="kjun-list-content">{children}</span>}</span>{hasContent(trailing) && <span className="kjun-list-trailing">{trailing}</span>}{mark}{toggle && <span className={"kjun-switch kjun-switch--md" + (checked ? " kjun-switch--on" : "")} aria-hidden="true"><span className="kjun-switch-thumb" /></span>}{chevron && <KjunIcon name="chevron-right" className="kjun-list-chevron" size={tokens.iconSizes.default} />}</>;
   // A switch row is one switch control: the drawn switch is decoration and the row carries role and state.
   // A choice row is a radio (a checkbox in a multiple-choice section), checked when selected; the check is its drawing.
   const main = toggle ? <button className="kjun-list-main" type="button" role="switch" aria-checked={checked} aria-label={ariaLabel} disabled={disabled} onClick={(event) => { onCheckedChange?.(!checked); onClick?.(event); }}>{contents}</button>
-    : kind === "radio" || kind === "checkbox" ? <button className="kjun-list-main" type="button" role={kind} aria-checked={!!selected} aria-label={ariaLabel} disabled={disabled} onClick={onClick}>{contents}</button>
+    : choiceRow ? <button className="kjun-list-main" type="button" role={kind} aria-checked={!!selected} aria-label={ariaLabel} disabled={disabled} onClick={onClick}>{contents}</button>
     : href ? <a className="kjun-list-main" href={disabled ? undefined : href} aria-label={ariaLabel} aria-disabled={disabled || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a>
     : onClick ? <button className="kjun-list-main" type="button" aria-label={ariaLabel} disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main">{contents}</div>;
   // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
@@ -77,8 +82,10 @@ export interface KjunListSectionProps {
   divider?: boolean;
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
   density?: "default" | "compact";
-  /** Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default "none", or the KjunListGroup's). */
+  /** Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default "none", or the KjunListGroup's). An open section has no card. */
   radius?: CardRadius;
+  /** "open" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default "default", or "open" in an open KjunListGroup). */
+  variant?: ListSectionVariant;
   /** "title" is the 16px heading, "label" the small caption above the rows; by default a title with a description is a heading and one without is a label. */
   titleVariant?: "title" | "label";
   /** Heading level of the title (default 3). */
@@ -96,10 +103,10 @@ export interface KjunListSectionProps {
   /** Called with the next value (a list with "multiple") when a row with a `value` is pressed. */
   onValueChange?: (value: ListChoiceValue | ListChoiceValue[]) => void;
 }
-const ListGroupContext = createContext<"inset" | "flush" | null>(null);
-export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange }: KjunListSectionProps) {
+const ListGroupContext = createContext<ListGroupVariant | null>(null);
+export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant }: KjunListSectionProps) {
   // A rounded section is a card of rows only: its title, actions and footer stay on the page, above and below it.
-  const { corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), title, description, titleVariant });
+  const { open, corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), variant, title, description, titleVariant });
   const id = "kjun-" + useId(), Heading = `h${headingLevel}` as "h3";
   const choice = selectionMode === "single", [list, setList] = useState<HTMLUListElement | null>(null), [actionsBox, setActionsBox] = useState<HTMLDivElement | null>(null);
   useEffect(() => choice && list ? bindRadioKeyboard(list) : undefined, [choice, list]);
@@ -111,17 +118,17 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   // Loading content announces itself (a skeleton's loadingText is a status), so the wrapper only places it.
   const rows = hasContent(loading) ? <div className="kjun-list-loading">{loading}</div>
     : hasContent(children)
-    ? <ul ref={setList} className="kjun-list" role={choice ? "radiogroup" : undefined} aria-label={ariaLabel || undefined} aria-labelledby={ariaLabel || !title ? undefined : id} aria-describedby={describedBy} data-divider={divider ? undefined : "false"} data-density={compact}><ListSelectionContext.Provider value={{ mode: selectionMode, value, onValueChange }}>{children}</ListSelectionContext.Provider></ul>
+    ? <ul ref={setList} className="kjun-list" role={choice ? "radiogroup" : undefined} aria-label={ariaLabel || undefined} aria-labelledby={ariaLabel || !title ? undefined : id} aria-describedby={describedBy} data-divider={divider ? undefined : "false"} data-density={compact} data-variant={open ? "open" : undefined}><ListSelectionContext.Provider value={{ mode: selectionMode, value, onValueChange, open }}>{children}</ListSelectionContext.Provider></ul>
     : hasContent(empty) ? <div className="kjun-list-empty" data-density={compact}>{empty}</div> : null;
-  return <section className="kjun-list-section" data-surface={surface ? undefined : "false"} data-outside={outside || undefined}>
+  return <section className="kjun-list-section" data-surface={surface ? undefined : "false"} data-outside={outside || undefined} data-variant={open ? "open" : undefined}>
     {(title || description || hasContent(actions)) && <div className="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{title && <Heading id={id}>{title}</Heading>}{description && <p id={id + "-description"}>{description}</p>}</div>{hasContent(actions) && <div ref={setActionsBox} className="kjun-list-heading-actions">{actions}</div>}</div>}
     {outside ? <div className="kjun-list-panel" data-surface={surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
     {hasFooter && <div id={id + "-footer"} className="kjun-list-footer">{footer}</div>}
   </section>;
 }
 export interface KjunListGroupProps {
-  /** "inset" (default) rounds every section and keeps them 24px apart; "flush" keeps square sections 8px apart. */
-  variant?: "inset" | "flush";
+  /** "inset" (default) rounds every section and keeps them 24px apart; "flush" keeps square sections 8px apart; "open" puts every section's rows on the page with no card or dividers, 20px apart. */
+  variant?: ListGroupVariant;
   children: ReactNode;
 }
 /** Stacks KjunListSections with one spacing and corner rule, so sections never set radius or gaps one by one. */

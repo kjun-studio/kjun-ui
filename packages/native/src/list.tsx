@@ -2,9 +2,9 @@ import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { typeStyle } from "./typography";
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { Children, Fragment, cloneElement, createContext, isValidElement, useContext, useEffect, useId, useLayoutEffect, useState, type ReactElement, type ReactNode } from "react";
-import { listRowChoice, listRowKind, listSectionShape, warnListRowProps, type ListChoiceValue, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
+import { listRowChoice, listRowKind, listSectionShape, warnListRowProps, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { View, Platform, type ColorValue, type GestureResponderEvent, type TextStyle } from "react-native";
-import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
+import { listLeadingGeometry, listRowBleed, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 import { AccessiblePressable as Pressable, type FocusRingRadius } from "./a11y";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { KText, content } from "./internal";
@@ -13,9 +13,9 @@ import { ListEmptyContext } from "./display-primitives";
 import { useKjunStyles } from "./provider";
 
 // A section tells its rows whether to draw a divider (never after the last, like Web's :last-child), how dense they are,
-// the section's selection (a single-choice list is a radiogroup), and in a rounded card which of the card's corners the
-// row's ring follows.
-const ListRowContext = createContext<{ divider: boolean; compact: boolean; selection: ListSelection; ringRadius?: FocusRingRadius }>({ divider: true, compact: false, selection: { mode: "none" } });
+// the section's selection (a single-choice list is a radiogroup), whether it is open, and in a rounded card which of the
+// card's corners the row's ring follows.
+const ListRowContext = createContext<{ divider: boolean; compact: boolean; open: boolean; selection: ListSelection; ringRadius?: FocusRingRadius }>({ divider: true, compact: false, open: false, selection: { mode: "none" } });
 export type { ListChoiceValue } from "../../../shared/package-runtime/list-row";
 export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 const list = tokens.extensions.list;
@@ -26,7 +26,7 @@ function Divider({ inset }: { inset: number }) {
 }
 export interface KjunListRowProps {
   title: string; description?: string;
-  /** Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority. */
+  /** Icon name drawn in a 24px column (on a 40px rounded square in an open section); custom `leading` content uses a minimum 40px column and takes priority. */
   icon?: string;
   /** Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28. Custom content keeps its own size. */
   leadingSize?: ListLeadingSize;
@@ -42,7 +42,7 @@ export interface KjunListRowProps {
   destructive?: boolean;
   /** Ends the row with a decorative chevron that marks it as navigation. */
   chevron?: boolean;
-  /** One choice in a single-choice list: true draws a check at the end. A pressable row given it (true or false) reads as a radio. */
+  /** One choice in a single-choice list: true draws a check at the end (in an open section, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio. */
   selected?: boolean;
   /** Makes the whole row a switch: it draws one at the end and toggles on any press. */
   checked?: boolean;
@@ -69,53 +69,81 @@ function SwitchMark({ on }: { on: boolean }) {
 // Like Web's keep-all: Korean wraps between words (iOS through its Hangul word strategy, a Text prop).
 const words = (Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } : {}) as unknown as TextStyle;
 const wordProps = { lineBreakStrategyIOS: "hangul-word" as const };
+// A choice's mark in an open section: an empty ring (a rounded square in a multiple-choice list), filled with a check
+// when chosen, like Web's .kjun-list-mark.
+function ChoiceMark({ checkbox, on }: { checkbox: boolean; on: boolean }) {
+  const { colors } = useKjunStyles(), size = list.open.markSize;
+  return <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ width: size, height: size, borderRadius: checkbox ? list.open.checkboxRadius : size / 2, alignItems: "center", justifyContent: "center",
+    ...(on ? { backgroundColor: colors.brand } : { borderWidth: tokens.border.controlWidth, borderColor: colors.borderStrong }) }}>
+    {on && <KjunIcon name="check" size={list.open.markIconSize} color={colors.onBrand} />}
+  </View>;
+}
 export function KjunListRow({ title, description, icon, leadingSize, iconColor, iconBackground, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, value, onPress: ownPress, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
-  const { colors } = useKjunStyles(), { divider, compact, selection, ringRadius } = useContext(ListRowContext);
+  const { colors } = useKjunStyles(), { divider, compact, selection, ringRadius, open } = useContext(ListRowContext);
   const choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   const onPress = choice.press ? (event: GestureResponderEvent) => { choice.press(); ownPress?.(event); } : ownPress;
   const kind = listRowKind({ checked, selected, href, pressable: !!(onPress || href), mode: selection.mode }), toggle = kind === "switch";
+  const choiceRow = kind === "radio" || kind === "checkbox";
   const deviceLink = Platform.OS !== "web" && !!href && !onPress;
-  const looseChoice = (kind === "radio" || kind === "checkbox") && selection.mode === "none";
+  const looseChoice = choiceRow && selection.mode === "none";
   useEffect(() => warnListRowProps({ checked, selected, href, chevron, deviceLink, looseChoice }), [checked !== undefined, selected !== undefined, !!href, chevron, deviceLink, looseChoice]);
-  const hasLeading = hasContent(leading), geometry = listLeadingGeometry({ size: leadingSize, custom: hasLeading, background: iconBackground != null }), leadingWidth = geometry.width;
-  const glyph = icon ? <KjunIcon name={icon} size={geometry.iconSize} color={iconColor ?? (destructive ? colors.danger : colors.textSecondary)} /> : null;
-  const front = hasLeading ? content(leading) : glyph && iconBackground != null ? <View accessible={false} style={{ width: leadingWidth, height: leadingWidth, borderRadius: list.iconBackgroundRadius, alignItems: "center", justifyContent: "center", backgroundColor: iconBackground }}>{glyph}</View> : glyph;
-  // Like Web: with a description the leading column covers the first two lines, so a long row keeps its icon beside the title.
-  const leadingHeight = Math.max(geometry.size ? leadingWidth : 0, description ? typeStyle("control").lineHeight + list.descriptionGap + typeStyle("caption").lineHeight : 0);
+  // Like Web's row variables: an open row has a larger title, body description, and its own padding and height.
+  const titleType = open ? { ...typeStyle("input"), fontWeight: typeStyle("label").fontWeight } : typeStyle("label");
+  const descriptionType = typeStyle(open ? "body" : "caption"), trailingType = typeStyle(open ? "label" : "body");
+  const band = titleType.lineHeight + list.descriptionGap + descriptionType.lineHeight;
+  const paddingY = open ? (compact ? list.open.compactPaddingY : list.open.paddingY) : compact ? list.compactPaddingY : list.padding;
+  const paddingX = open ? list.open.paddingX : list.padding, gap = open ? list.open.gap : list.gap;
+  const minHeight = open ? (compact ? list.open.compactMinimumHeight : list.open.minimumHeight) : compact ? list.compactMinimumHeight : list.minimumHeight;
+  // Like Web: without a description a tall leading square or switch reaches into the padding instead of growing the row;
+  // with one, the row's ends center on the band of the title and first description line.
+  const end = (height: number) => description ? { alignSelf: "flex-start" as const, marginTop: (band - height) / 2 } : { marginVertical: listRowBleed(height, titleType.lineHeight, paddingY) };
+  const hasLeading = hasContent(leading), geometry = listLeadingGeometry({ size: leadingSize, custom: hasLeading, background: iconBackground != null, open }), leadingWidth = geometry.width;
+  const glyph = icon ? <KjunIcon name={icon} size={geometry.iconSize} color={iconColor ?? (destructive ? colors.danger : open ? colors.text : colors.textSecondary)} /> : null;
+  const tileColor = iconBackground ?? (open ? (destructive ? colors.dangerBg : colors.secondary) : undefined);
+  const front = hasLeading ? content(leading) : glyph && geometry.tile ? <View accessible={false} style={{ width: leadingWidth, height: leadingWidth, borderRadius: open ? list.open.leadingRadius : list.iconBackgroundRadius, alignItems: "center", justifyContent: "center", backgroundColor: tileColor }}>{glyph}</View> : glyph;
+  const leadingHeight = Math.max(geometry.size ? leadingWidth : 0, description ? band : 0);
+  const switchHeight = tokens.extensions.switch.heights.md, endIcon = list.endIconSize;
   const parts = <>
-    {front && <View style={{ minWidth: leadingWidth, ...(geometry.size ? { width: leadingWidth } : {}), flexShrink: 0, minHeight: leadingHeight, alignItems: "center", justifyContent: "center", ...(description ? { alignSelf: "flex-start" } : {}) }}>{front}</View>}
+    {front && <View style={{ minWidth: leadingWidth, ...(geometry.size ? { width: leadingWidth } : {}), flexShrink: 0, minHeight: leadingHeight, alignItems: "center", justifyContent: "center",
+      ...(description ? { alignSelf: "flex-start" } : geometry.size ? { marginVertical: listRowBleed(leadingWidth, titleType.lineHeight, paddingY) } : {}) }}>{front}</View>}
     <View style={{ flex: 1, minWidth: 0 }}>
-      <KText {...wordProps} numberOfLines={titleLines} style={{ ...typeStyle('control'), ...words, ...(destructive ? { color: colors.danger } : {}) }}>{title}</KText>
-      {!!description && <KText {...wordProps} numberOfLines={descriptionLines} style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'), ...words }}>{description}</KText>}
+      <KText {...wordProps} numberOfLines={titleLines} style={{ ...titleType, ...words, ...(destructive ? { color: colors.danger } : {}) }}>{title}</KText>
+      {!!description && <KText {...wordProps} numberOfLines={descriptionLines} style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...descriptionType, ...words }}>{description}</KText>}
       {hasContent(children) && <View style={{ marginTop: list.descriptionGap }}>{content(children)}</View>}
     </View>
-    {/* A value at the row's end reads one step below the title. */}
-    {hasContent(trailing) && <View style={{ maxWidth: "35%" }}>{content(trailing, { ...typeStyle("body"), color: colors.textSecondary })}</View>}
-    {selected && <KjunIcon name="check" size={tokens.iconSizes.default} color={colors.brand} />}
+    {/* A value at the row's end reads one step below the title and keeps the row's end line when it wraps. */}
+    {hasContent(trailing) && <View style={{ maxWidth: "35%", alignItems: "flex-end", justifyContent: "center", ...(description ? { alignSelf: "flex-start", minHeight: band } : {}) }}>{content(trailing, { ...trailingType, color: colors.textSecondary, textAlign: "right" })}</View>}
+    {open && choiceRow ? <View style={end(list.open.markSize)}><ChoiceMark checkbox={kind === "checkbox"} on={!!selected} /></View>
+      : selected && <View style={description ? end(endIcon) : undefined}><KjunIcon name="check" size={endIcon} color={colors.brand} /></View>}
     {/* A switch row is one switch control: the drawn switch is decoration and the row carries role and state. */}
     {toggle && <View pointerEvents="none" accessible={false} aria-hidden importantForAccessibility="no-hide-descendants" accessibilityElementsHidden
       // The row is the touch target, so the drawn switch keeps only its own height, like Web.
-      style={{ height: tokens.extensions.switch.heights.md, justifyContent: "center" }}><SwitchMark on={!!checked} /></View>}
-    {chevron && <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden><KjunIcon name="chevron-right" size={tokens.iconSizes.default} color={colors.textTertiary} /></View>}
+      style={{ height: switchHeight, justifyContent: "center", ...end(switchHeight) }}><SwitchMark on={!!checked} /></View>}
+    {chevron && <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={description ? end(endIcon) : undefined}><KjunIcon name="chevron-right" size={endIcon} color={colors.textTertiary} /></View>}
   </>;
-  const style = { flex: 1, minWidth: 0, minHeight: compact ? list.compactMinimumHeight : list.minimumHeight, flexDirection: "row" as const, alignItems: "center" as const, gap: list.gap, padding: list.padding, ...(compact ? { paddingVertical: list.compactPaddingY } : {}) };
+  const style = { flex: 1, minWidth: 0, minHeight, flexDirection: "row" as const, alignItems: "center" as const, gap, paddingVertical: paddingY, paddingHorizontal: paddingX };
   const pressable = kind !== "static";
+  // Like Web, the whole row (its actions too) takes the hover and pressed fill, and an open section's chosen row its own.
+  const [hovered, setHovered] = useState(false), [pressed, setPressed] = useState(false);
+  const fill = disabled || !pressable ? undefined : pressed ? colors.active : hovered ? colors.hover : open && choiceRow && selected ? colors.selectedBg : undefined;
   // The default name reads the title, description and a text value at the row's end, as the web row's content does.
   const spoken = [title, description, typeof trailing === "string" || typeof trailing === "number" ? String(trailing) : undefined].filter(Boolean).join(", ");
   // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
-  return <View role={selection.mode === "single" ? undefined : "listitem"} style={{ flexDirection: "row", alignItems: "center", gap: list.gap }}>
+  return <View role={selection.mode === "single" ? undefined : "listitem"} style={{ flexDirection: "row", alignItems: "center", gap, backgroundColor: fill,
+    ...(open ? { marginHorizontal: list.open.rowInset, borderRadius: list.open.rowRadius } : {}) }}>
     {/* Rows run edge to edge, so like Web the keyboard ring draws inside them. */}
-    {pressable ? <Pressable focusRingInset focusRingRadius={ringRadius} {...(Platform.OS === "web" && kind === "link" && !disabled ? { href } : {})}
-      accessibilityRole={toggle ? "switch" : kind === "radio" || kind === "checkbox" || kind === "link" ? kind : "button"}
+    {pressable ? <Pressable focusRingInset focusRingRadius={open ? list.open.rowRadius : ringRadius} {...(Platform.OS === "web" && kind === "link" && !disabled ? { href } : {})}
+      accessibilityRole={toggle ? "switch" : choiceRow || kind === "link" ? kind : "button"}
       accessibilityLabel={ariaLabel ?? spoken} disabled={disabled}
-      accessibilityState={{ disabled, ...(toggle ? { checked: !!checked } : {}), ...(kind === "radio" || kind === "checkbox" ? { checked: !!selected } : {}) }}
+      accessibilityState={{ disabled, ...(toggle ? { checked: !!checked } : {}), ...(choiceRow ? { checked: !!selected } : {}) }}
+      onHoverIn={() => setHovered(true)} onHoverOut={() => setHovered(false)} onPressIn={() => setPressed(true)} onPressOut={() => setPressed(false)}
       onPress={(event) => { if (toggle) onCheckedChange?.(!checked); onPress?.(event); }}
-      style={({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => ({ ...style, opacity: disabled ? tokens.states.opacity.disabled : 1, backgroundColor: disabled ? "transparent" : pressed ? colors.active : hovered ? colors.hover : "transparent" })}>{parts}</Pressable>
+      style={{ ...style, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{parts}</Pressable>
       // Like Web: a static row dims as a whole when disabled, so nothing in it reads as available.
       : <View style={{ ...style, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{parts}</View>}
     {/* A disabled row disables its actions too, so the row never reads as partly available. */}
-    {hasContent(actions) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: "45%", flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: list.actionsPadding, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}</View>}
-    {divider && <Divider inset={list.padding + (front ? leadingWidth + list.gap : 0)} />}
+    {hasContent(actions) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: "45%", flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: open ? list.open.paddingX : list.actionsPadding, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}</View>}
+    {divider && <Divider inset={paddingX + (front ? leadingWidth + gap : 0)} />}
   </View>;
 }
 export interface KjunListSectionProps {
@@ -126,8 +154,10 @@ export interface KjunListSectionProps {
   divider?: boolean;
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
   density?: "default" | "compact";
-  /** Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default "none", or the KjunListGroup's). */
+  /** Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default "none", or the KjunListGroup's). An open section has no card. */
   radius?: CardRadius;
+  /** "open" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default "default", or "open" in an open KjunListGroup). */
+  variant?: ListSectionVariant;
   /** "title" is the 16px heading, "label" the small caption above the rows; by default a title with a description is a heading and one without is a label. */
   titleVariant?: "title" | "label";
   /** Heading level of the title on Native Web (default 3); devices have a heading role without levels. */
@@ -168,11 +198,11 @@ function actionsHeight(actions: ReactNode, line: number) {
     return action.type === KjunButton && size in tokens.button.heights ? Math.max(tallest, tokens.button.heights[size]) : tallest;
   }, line);
 }
-const ListGroupContext = createContext<"inset" | "flush" | null>(null);
-export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange }: KjunListSectionProps) {
+const ListGroupContext = createContext<ListGroupVariant | null>(null);
+export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider = true, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant }: KjunListSectionProps) {
   const { colors } = useKjunStyles();
   // Like Web: a rounded section is a card of rows only; its title, actions and footer stay on the page around it.
-  const { corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), title, description, titleVariant });
+  const { open, corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), variant, title, description, titleVariant });
   const radiusValue = corner === "none" ? undefined : tokens.card.radii[corner];
   const choice = selectionMode === "single", [group, setGroup] = useState<View | null>(null), id = "kjun-" + useId().replace(/[^\w-]/g, "");
   const hasFooter = hasContent(footer), describedBy = [description && id + "-description", hasFooter && id + "-footer"].filter(Boolean).join(" ") || undefined;
@@ -195,7 +225,7 @@ export function KjunListSection({ title, description, actions, children, ariaLab
       {items.map((row, i) => {
         const first = i === 0, last = i === items.length - 1;
         const ringRadius = radiusValue === undefined ? undefined : first && last ? radiusValue : first ? { top: radiusValue } : last ? { bottom: radiusValue } : undefined;
-        return <ListRowContext.Provider key={row.key ?? i} value={{ divider: divider && !last, compact, selection: { mode: selectionMode, value, onValueChange }, ringRadius }}>{row}</ListRowContext.Provider>;
+        return <ListRowContext.Provider key={row.key ?? i} value={{ divider: divider && !last && !open, compact, open, selection: { mode: selectionMode, value, onValueChange }, ringRadius }}>{row}</ListRowContext.Provider>;
       })}
     </View>
     : hasContent(empty) ? <View style={{ minHeight: compact ? list.compactMinimumHeight : list.minimumHeight, justifyContent: "center", paddingHorizontal: list.padding }}><ListEmptyContext.Provider value={density}>{content(empty)}</ListEmptyContext.Provider></View> : null;
@@ -214,18 +244,18 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   </View>;
 }
 export interface KjunListGroupProps {
-  /** "inset" (default) rounds every section and keeps them 24px apart; "flush" keeps square sections 8px apart. */
-  variant?: "inset" | "flush";
+  /** "inset" (default) rounds every section and keeps them 24px apart; "flush" keeps square sections 8px apart; "open" puts every section's rows on the page with no card or dividers, 20px apart. */
+  variant?: ListGroupVariant;
   children: ReactNode;
 }
 /** Like Web: stacks KjunListSections with one spacing and corner rule. */
 export function KjunListGroup({ variant = "inset", children }: KjunListGroupProps) {
-  return <ListGroupContext.Provider value={variant}><View style={{ minWidth: 0, gap: variant === "flush" ? list.flushGroupGap : list.groupGap }}>{content(children)}</View></ListGroupContext.Provider>;
+  return <ListGroupContext.Provider value={variant}><View style={{ minWidth: 0, gap: variant === "flush" ? list.flushGroupGap : variant === "open" ? list.open.groupGap : list.groupGap }}>{content(children)}</View></ListGroupContext.Provider>;
 }
 export interface KjunListItemProps { children: ReactNode }
 /** Non-row content inside a KjunListSection (a theme switcher, a note) on the rows' inset and dividers. */
 export function KjunListItem({ children }: KjunListItemProps) {
-  const { divider, compact, selection } = useContext(ListRowContext);
+  const { divider, compact, selection, open } = useContext(ListRowContext);
   return <View role={selection.mode === "single" ? undefined : "listitem"} style={{ padding: tokens.extensions.list.padding, ...(compact ? { paddingVertical: tokens.extensions.list.compactPaddingY } : {}),
-    minWidth: 0 }}>{content(children)}{divider && <Divider inset={list.padding} />}</View>;
+    ...(open ? { marginHorizontal: list.open.rowInset } : {}), minWidth: 0 }}>{content(children)}{divider && <Divider inset={list.padding} />}</View>;
 }

@@ -44,3 +44,73 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.locator('[role="switch"] [role="switch"], [role="switch"] [tabindex="0"]')).toHaveCount(0);
   });
 }
+
+// Visual review (0.21.0). A row is the element around its pressable part: the li on the web, the row View on Native.
+const rowOf = (l: Locator) => l.locator('xpath=..');
+const fill = (l: Locator) => l.evaluate(el => getComputedStyle(el).backgroundColor);
+const clear = 'rgba(0, 0, 0, 0)';
+for (const platform of ['react', 'vue3', 'native']) {
+  const web = platform !== 'native';
+  test(`${platform}: one-line rows keep their minimum height, described rows center their ends and the whole row takes the hover`, async ({ page }) => {
+    await openFixture(page, platform, '', 'list-design');
+    const height = async (l: Locator) => Math.round((await box(rowOf(l))).height);
+    // A 32px icon background or a switch reaches into the padding instead of growing a one-line row.
+    expect(await height(page.getByRole('button', { name: /비밀번호 행/ }))).toBe(56);
+    expect(await height(page.getByRole('switch', { name: /다크 모드 행/ }))).toBe(56);
+    expect(await height(page.getByRole('switch', { name: /와이파이 행/ }))).toBe(44);
+    expect(await height(page.getByRole('button', { name: /영수증 행/ }))).toBe(44);
+    // Row titles are one weight below section titles.
+    expect(await page.getByText('비밀번호 행', { exact: true }).evaluate(el => getComputedStyle(el).fontWeight)).toBe('500');
+    // A described row's value centers on the band of the title and first description line, like its icon.
+    const title = await box(page.getByText('11월 카드 결제 예정 금액과 할부 내역 전체 보기', { exact: true }));
+    const value = await box(page.getByText('1,234,567원', { exact: true }));
+    expect(Math.abs(value.y + value.height / 2 - (title.y + (20 + 4 + 16) / 2))).toBeLessThanOrEqual(2);
+    // A value that wraps keeps the row's end line.
+    const wrapped = page.getByText('내 파일 / 다운로드 / 문서 보관함', { exact: true });
+    expect((await box(wrapped)).height).toBeGreaterThan(24);
+    expect(['end', 'right']).toContain(await wrapped.evaluate(el => getComputedStyle(el).textAlign));
+    // Hovering a row with a button fills the whole row, the button's part too.
+    const profile = rowOf(page.getByRole('button', { name: /프로필 행/ }));
+    await expect(profile.getByRole('button', { name: '공유' })).toHaveCount(1);
+    expect(await fill(profile)).toBe(clear);
+    await page.getByText('프로필 행', { exact: true }).hover();
+    await expect.poll(() => fill(profile)).not.toBe(clear);
+    if (web) expect(await page.locator('.kjun-list-main').first().evaluate(el => getComputedStyle(el).backgroundColor)).toBe(clear);
+  });
+
+  test(`${platform}: an open list draws larger rows with marks for its choices and fills the chosen row`, async ({ page }) => {
+    await openFixture(page, platform, '', 'list-design');
+    const light = page.getByRole('radio', { name: /밝게/ }), dark = page.getByRole('radio', { name: /어둡게/ });
+    await expect(light).toHaveAttribute('aria-checked', 'true');
+    expect(await fill(rowOf(light))).not.toBe(clear);
+    expect(await fill(rowOf(dark))).toBe(clear);
+    expect(Math.round((await box(rowOf(dark))).height)).toBe(64);
+    expect(await page.getByText('어둡게', { exact: true }).evaluate(el => getComputedStyle(el).fontSize)).toBe('16px');
+    // Rows sit 4px in from the section's edges, rounded.
+    expect(await rowOf(dark).evaluate(el => getComputedStyle(el).borderTopLeftRadius)).toBe('16px');
+    await page.getByText('어둡게', { exact: true }).click();
+    await expect(page.getByTestId('open-state')).toContainText('"theme":"dark"');
+    await expect(dark).toHaveAttribute('aria-checked', 'true');
+    await expect.poll(() => fill(rowOf(light))).toBe(clear);
+    const trip = page.getByRole('checkbox', { name: /여행 태그/ });
+    await expect(trip).toHaveAttribute('aria-checked', 'false');
+    await page.getByText('여행 태그', { exact: true }).click();
+    await expect(page.getByTestId('open-state')).toContainText('"tags":["work","trip"]');
+    await expect(trip).toHaveAttribute('aria-checked', 'true');
+    if (web) {
+      // Every choice draws a mark (rounded squares for multiple choice), filled when chosen; the open list has no dividers.
+      await expect(page.locator('.kjun-list-mark')).toHaveCount(5);
+      await expect(page.locator('.kjun-list-mark[data-checked]')).toHaveCount(3);
+      expect(await page.locator('.kjun-list-mark[data-kind="checkbox"]').first().evaluate(el => getComputedStyle(el).borderRadius)).toBe('6px');
+      expect(await rowOf(dark).evaluate(el => getComputedStyle(el, '::after').content)).toBe('none');
+      // A built-in icon sits on a 40px rounded square, in the danger fill on a destructive row.
+      const tile = page.locator('.kjun-list-row', { hasText: '어둡게' }).locator('.kjun-list-icon-background');
+      expect(Math.round((await box(tile)).width)).toBe(40);
+      expect(await tile.evaluate(el => getComputedStyle(el).borderRadius)).toBe('12px');
+      const danger = page.locator('.kjun-list-row', { hasText: '탈퇴하기 행' }).locator('.kjun-list-icon-background');
+      expect(await fill(danger)).not.toBe(await fill(tile));
+      // The default variant keeps its end check.
+      await expect(page.locator('.kjun-list-row', { hasText: 'English' }).locator('.kjun-list-mark')).toHaveCount(0);
+    }
+  });
+}

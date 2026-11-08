@@ -22,7 +22,9 @@ async function checkGeometry(page: Page, title: string, native: boolean, width: 
     expect(iconBox.y + iconBox.height / 2).toBeCloseTo(tileBox.y + width / 2);
     expect(await tile.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(224, 234, 250)');
     expect(await tile.evaluate(el => parseFloat(getComputedStyle(el).borderTopLeftRadius))).toBeGreaterThanOrEqual(width / 2);
-    expect(rowBox.height).toBeGreaterThanOrEqual(width + 32);
+    // A one-line row keeps its 56px minimum; a taller square reaches into the padding but stays 6px from the edges.
+    expect(rowBox.height).toBeGreaterThanOrEqual(Math.max(56, width + 2 * 6));
+    expect(tileBox.y - rowBox.y).toBeGreaterThanOrEqual(6);
   } else {
     expect(await tile.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgba(0, 0, 0, 0)');
   }

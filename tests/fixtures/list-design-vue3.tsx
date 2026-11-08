@@ -2,7 +2,8 @@ import { createApp, defineComponent, reactive } from 'vue';
 import * as K from '@kjun-ui/vue3';
 import { applyDemoColors } from '../../shared/demo-colors';
 applyDemoColors('default');
-const s = reactive({ on: true, lang: 'ko' });
+const s = reactive({ on: true, lang: 'ko', theme: 'light' as string | number | null, tags: ['work'] as (string | number)[] });
+const noop = () => {}, tile = 'var(--kjun-secondary)';
 createApp(defineComponent(() => () => <K.KjunProvider>
   <div style={{ padding: '16px', width: '360px' }}>
     <K.KjunListSection title="계정" description="프로필과 보안">{{ default: () => [
@@ -17,5 +18,30 @@ createApp(defineComponent(() => () => <K.KjunProvider>
       <K.KjunListRow title="English" selected={s.lang === 'en'} onClick={() => { s.lang = 'en'; }} />,
     ] }}</K.KjunListSection>
     <output data-testid="state">{JSON.stringify({ on: s.on, lang: s.lang })}</output>
+  </div>
+  <div style={{ padding: '16px', width: '360px', background: '#F4F4F4', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <K.KjunListSection radius="lg" title="높이">{{ default: () => [
+      <K.KjunListRow icon="lock" iconBackground={tile} title="비밀번호 행" chevron onClick={noop}>{{ trailing: () => '3개월' }}</K.KjunListRow>,
+      <K.KjunListRow icon="moon" title="다크 모드 행" checked onUpdate:checked={noop} />,
+      <K.KjunListRow title="프로필 행" description="이름과 사진" onClick={noop}>{{ actions: () => <K.KjunButton variant="secondary" size="sm" onClick={noop}>공유</K.KjunButton> }}</K.KjunListRow>,
+      <K.KjunListRow icon="receipt" iconBackground={tile} title="11월 카드 결제 예정 금액과 할부 내역 전체 보기" description="결제일 전에 잔액이 부족하면 알림을 보냅니다." chevron onClick={noop}>{{ trailing: () => '1,234,567원' }}</K.KjunListRow>,
+      <K.KjunListRow title="저장 위치">{{ trailing: () => '내 파일 / 다운로드 / 문서 보관함' }}</K.KjunListRow>,
+    ] }}</K.KjunListSection>
+    <K.KjunListSection radius="lg" title="촘촘하게" density="compact">{{ default: () => [
+      <K.KjunListRow icon="wifi" title="와이파이 행" checked onUpdate:checked={noop} />,
+      <K.KjunListRow icon="receipt" iconBackground={tile} title="영수증 행" chevron onClick={noop} />,
+    ] }}</K.KjunListSection>
+    <K.KjunListGroup variant="open">{{ default: () => [
+      <K.KjunListSection title="화면 테마" selectionMode="single" modelValue={s.theme} onUpdate:modelValue={(v: any) => { s.theme = v; }}>{{ default: () => [
+        <K.KjunListRow icon="sun" title="밝게" value="light" />,
+        <K.KjunListRow icon="moon" title="어둡게" value="dark" />,
+        <K.KjunListRow icon="device-desktop" title="시스템 설정" description="기기 설정을 따릅니다." value="system" />,
+      ] }}</K.KjunListSection>,
+      <K.KjunListSection title="관심 태그" selectionMode="multiple" modelValue={s.tags} onUpdate:modelValue={(v: any) => { s.tags = v; }}>{{ default: () => [
+        <K.KjunListRow title="업무 태그" value="work" />, <K.KjunListRow title="여행 태그" value="trip" />,
+      ] }}</K.KjunListSection>,
+      <K.KjunListSection>{{ default: () => [<K.KjunListRow icon="trash" title="탈퇴하기 행" destructive onClick={noop} />] }}</K.KjunListSection>,
+    ] }}</K.KjunListGroup>
+    <output data-testid="open-state">{JSON.stringify({ theme: s.theme, tags: s.tags })}</output>
   </div>
 </K.KjunProvider>)).mount('#root');

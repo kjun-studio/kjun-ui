@@ -52,17 +52,21 @@ export function warnListRowProps({ checked, selected, href, chevron, deviceLink,
 }
 
 export type ListSectionCorner = "none" | "sm" | "md" | "lg" | "xl";
+export type ListGroupVariant = "inset" | "flush" | "open";
+export type ListSectionVariant = "default" | "open";
 /**
- * How a section draws, the same on every platform: its card corner (the KjunListGroup's when unset), whether its title is
- * the small label (a title without a description, unless titleVariant says otherwise) and whether its rows form a card
+ * How a section draws, the same on every platform: whether it is open (rows on the page with no card or dividers; the
+ * section's variant, or the KjunListGroup's), its card corner (the group's when unset; none when open), whether its title
+ * is the small label (a title without a description, unless titleVariant says otherwise) and whether its rows form a card
  * with the heading and footer outside it.
  */
-export function listSectionShape<R extends ListSectionCorner>({ radius, group, title, description, titleVariant }: {
-  radius?: R; group?: "inset" | "flush" | null; title?: string; description?: string; titleVariant?: "title" | "label";
+export function listSectionShape<R extends ListSectionCorner>({ radius, group, variant, title, description, titleVariant }: {
+  radius?: R; group?: ListGroupVariant | null; variant?: ListSectionVariant; title?: string; description?: string; titleVariant?: "title" | "label";
 }) {
-  const corner: R | "lg" | "none" = radius ?? (group === "inset" ? "lg" : "none");
+  const open = (variant ?? (group === "open" ? "open" : "default")) === "open";
+  const corner: R | "lg" | "none" = open ? "none" : radius ?? (group === "inset" ? "lg" : "none");
   const bare = !!title && (titleVariant ? titleVariant === "label" : !description);
-  return { corner, bare, outside: corner !== "none" };
+  return { open, corner, bare, outside: corner !== "none" };
 }
 
 /**

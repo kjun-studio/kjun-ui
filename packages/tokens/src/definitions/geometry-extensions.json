@@ -61,7 +61,25 @@
       "outsideLabelGap": { "$ref": "dimension.value8" },
       "footerGap": { "$ref": "dimension.value8" },
       "groupGap": { "$ref": "dimension.value24" },
-      "flushGroupGap": { "$ref": "dimension.value8" }
+      "flushGroupGap": { "$ref": "dimension.value8" },
+      "minimumInset": { "$ref": "dimension.value6" },
+      "open": {
+        "minimumHeight": { "$ref": "dimension.value64" },
+        "compactMinimumHeight": { "$ref": "dimension.value56" },
+        "paddingX": { "$ref": "dimension.value12" },
+        "paddingY": { "$ref": "dimension.value12" },
+        "compactPaddingY": { "$ref": "dimension.value8" },
+        "gap": { "$ref": "dimension.value14" },
+        "rowInset": { "$ref": "dimension.value4" },
+        "rowRadius": { "$ref": "radius.radius16" },
+        "leadingSize": { "$ref": "dimension.value40" },
+        "leadingRadius": { "$ref": "radius.radius12" },
+        "leadingIconSize": { "$ref": "dimension.value20" },
+        "markSize": { "$ref": "dimension.value20" },
+        "markIconSize": { "$ref": "dimension.value14" },
+        "checkboxRadius": { "$ref": "radius.radius6" },
+        "groupGap": { "$ref": "dimension.value20" }
+      }
     },
     "navigation": {
       "minimumHeight": { "$ref": "extensions.topNavigation.minimumHeight" },

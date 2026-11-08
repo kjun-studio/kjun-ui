@@ -115,6 +115,9 @@
     "list": {
       "iconSize": {
         "$ref": "iconSizes.large"
+      },
+      "endIconSize": {
+        "$ref": "iconSizes.default"
       }
     },
     "alert": {

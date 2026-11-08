@@ -10314,10 +10314,10 @@
     "vue3": [
       {
         "name": "variant",
-        "type": "\"inset\" | \"flush\"",
+        "type": "ListGroupVariant",
         "required": false,
         "default": "\"inset\"",
-        "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart."
+        "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart; \"open\" puts every section's rows on the page with no card or dividers, 20px apart."
       }
     ],
     "events": [],
@@ -10331,10 +10331,10 @@
     "react": [
       {
         "name": "variant",
-        "type": "\"inset\" | \"flush\" | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListGroupVariant | undefined",
         "required": false,
         "default": "—",
-        "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart."
+        "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart; \"open\" puts every section's rows on the page with no card or dividers, 20px apart."
       },
       {
         "name": "children",
@@ -10347,10 +10347,10 @@
     "native": [
       {
         "name": "variant",
-        "type": "\"inset\" | \"flush\" | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListGroupVariant | undefined",
         "required": false,
         "default": "—",
-        "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart."
+        "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart; \"open\" puts every section's rows on the page with no card or dividers, 20px apart."
       },
       {
         "name": "children",
@@ -10411,7 +10411,7 @@
         "type": "string",
         "required": false,
         "default": "—",
-        "description": "Icon name drawn in a 24px column; custom leading slot content uses a minimum 40px column and takes priority."
+        "description": "Icon name drawn in a 24px column (on a 40px rounded square in an open section); custom leading slot content uses a minimum 40px column and takes priority."
       },
       {
         "name": "leadingSize",
@@ -10467,7 +10467,7 @@
         "type": "boolean",
         "required": false,
         "default": "—",
-        "description": "One choice in a single-choice list: true draws a check at the end. A pressable row given it (true or false) reads as a radio."
+        "description": "One choice in a single-choice list: true draws a check at the end (in an open section, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio."
       },
       {
         "name": "checked",
@@ -10560,7 +10560,7 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": "Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority."
+        "description": "Icon name drawn in a 24px column (on a 40px rounded square in an open section); custom `leading` content uses a minimum 40px column and takes priority."
       },
       {
         "name": "leadingSize",
@@ -10637,7 +10637,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "One choice in a single-choice list: true draws a check at the end. A pressable row given it (true or false) reads as a radio."
+        "description": "One choice in a single-choice list: true draws a check at the end (in an open section, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio."
       },
       {
         "name": "checked",
@@ -10716,7 +10716,7 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": "Icon name drawn in a 24px column; custom `leading` content uses a minimum 40px column and takes priority."
+        "description": "Icon name drawn in a 24px column (on a 40px rounded square in an open section); custom `leading` content uses a minimum 40px column and takes priority."
       },
       {
         "name": "leadingSize",
@@ -10793,7 +10793,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "One choice in a single-choice list: true draws a check at the end. A pressable row given it (true or false) reads as a radio."
+        "description": "One choice in a single-choice list: true draws a check at the end (in an open section, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio."
       },
       {
         "name": "checked",
@@ -10902,7 +10902,14 @@
         "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\"",
         "required": false,
         "default": "—",
-        "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's)."
+        "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's). An open section has no card."
+      },
+      {
+        "name": "variant",
+        "type": "ListSectionVariant",
+        "required": false,
+        "default": "—",
+        "description": "\"open\" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default \"default\", or \"open\" in an open KjunListGroup)."
       },
       {
         "name": "titleVariant",
@@ -11028,7 +11035,14 @@
         "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
         "required": false,
         "default": "—",
-        "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's)."
+        "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's). An open section has no card."
+      },
+      {
+        "name": "variant",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSectionVariant | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"open\" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default \"default\", or \"open\" in an open KjunListGroup)."
       },
       {
         "name": "titleVariant",
@@ -11149,7 +11163,14 @@
         "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"none\" | undefined",
         "required": false,
         "default": "—",
-        "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's)."
+        "description": "Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default \"none\", or the KjunListGroup's). An open section has no card."
+      },
+      {
+        "name": "variant",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSectionVariant | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"open\" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default \"default\", or \"open\" in an open KjunListGroup)."
       },
       {
         "name": "titleVariant",
@@ -21282,7 +21303,7 @@
       },
       {
         "name": "sort",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableSort | null | undefined",
+        "type": "import(\"/workspace/packages/tokens/dist/table-contract\").TableSort | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -21690,7 +21711,7 @@
       },
       {
         "name": "sort",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableSort | null | undefined",
+        "type": "import(\"/workspace/packages/tokens/dist/table-contract\").TableSort | null | undefined",
         "required": false,
         "default": "—",
         "description": ""

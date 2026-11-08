@@ -123,7 +123,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(Math.round(alerts.x - row.x)).toBe(52);
       expect(Math.round(kim.x - row.x)).toBe(68);
       expect(Math.round(icon.x + icon.width / 2 - row.x)).toBe(28);
-      await expect(list.getByText('Alerts', { exact: true })).toHaveCSS('font-weight', '600');
+      // Row titles use the label role, one weight below section titles (0.21.0).
+      await expect(list.getByText('Alerts', { exact: true })).toHaveCSS('font-weight', '500');
       const dividerStart = (index: number) => platform === 'native'
         ? rows.nth(index).evaluate(el => { const line = el.lastElementChild!.getBoundingClientRect(); return { left: line.left - el.getBoundingClientRect().left, height: line.height }; })
         : rows.nth(index).evaluate(el => { const line = getComputedStyle(el, '::after'); return { left: parseFloat(line.left), height: parseFloat(line.height) }; });

@@ -10,10 +10,10 @@ export function generate(input: UsageInput) {
   switch (name) {
     case 'KjunListSection':
       // A single choice the section owns: rows carry values, the section the chosen one.
-      content = b.node('KjunListSection', { title: '화면 테마', description: '앱의 색 모드를 고릅니다.', selectionMode: 'single', value: b.state('theme', 'system'), onValueChange: b.update('theme') }, [
-        b.node('KjunListRow', { title: '밝게', value: 'light' }),
-        b.node('KjunListRow', { title: '어둡게', value: 'dark' }),
-        b.node('KjunListRow', { title: '시스템 설정', description: '기기의 화면 모드를 따릅니다.', value: 'system', disabled: s.disabled }),
+      content = b.node('KjunListSection', { title: '화면 테마', description: '앱의 색 모드를 고릅니다.', variant: s.variant === 'open' ? 'open' : undefined, selectionMode: 'single', value: b.state('theme', 'system'), onValueChange: b.update('theme') }, [
+        b.node('KjunListRow', { title: '밝게', icon: s.variant === 'open' ? 'sun' : undefined, value: 'light' }),
+        b.node('KjunListRow', { title: '어둡게', icon: s.variant === 'open' ? 'moon' : undefined, value: 'dark' }),
+        b.node('KjunListRow', { title: '시스템 설정', description: '기기의 화면 모드를 따릅니다.', icon: s.variant === 'open' ? 'device-desktop' : undefined, value: 'system', disabled: s.disabled }),
       ].join('\n'), { footer: b.text('바꾼 테마는 이 기기에만 적용됩니다.') }); break;
     case 'KjunListRow': {
       const leadingSize = typeof s.leadingSize === 'string' && ['xs', 'sm', 'md', 'lg'].includes(s.leadingSize) ? s.leadingSize : undefined;
@@ -21,14 +21,14 @@ export function generate(input: UsageInput) {
       const iconColor = s.iconColor ? b.native ? expr('appColors.brand') : 'var(--kjun-brand)' : undefined;
       const iconBackground = s.iconBackground ? b.native ? expr('appColors.secondary') : 'var(--kjun-secondary)' : undefined;
       content = b.node('KjunListSection', { title: '설정', description: '계정과 알림을 관리합니다.' }, [
-        b.node('KjunListRow', { title: s.long ? '모든 기기에서 사용할 프로필과 계정 표시 이름' : '프로필 설정', description: '이름과 사진을 변경합니다.', leadingSize, disabled: s.disabled, [action]: notify('openProfile', '프로필 설정 열기') }, '', {
+        b.node('KjunListRow', { title: s.long ? '모든 기기에서 사용할 프로필과 계정 표시 이름' : '프로필 설정', description: '이름과 사진을 변경합니다.', leadingSize: leadingSize ?? 'sm', disabled: s.disabled, [action]: notify('openProfile', '프로필 설정 열기') }, '', {
           leading: b.node('KjunAvatar', { name: '김하늘', size: leadingSize ?? 'sm' }), actions: b.button('공유', notify('share', '프로필 공유'), { variant: 'ghost', size: 'sm' }),
         }),
         b.node('KjunListRow', { title: '알림 받기', description: '중요한 변경 사항을 알려드립니다.', icon: 'bell', leadingSize, iconColor, iconBackground, disabled: s.disabled }, '', { actions: b.node('KjunSwitch', { value: b.state('notifications', true), onValueChange: b.update('notifications'), ariaLabel: '알림 받기', disabled: s.disabled }) }),
       ].join('\n')); break;
     }
     case 'KjunListGroup':
-      content = b.node('KjunListGroup', {}, [
+      content = b.node('KjunListGroup', { variant: s.variant === 'inset' ? undefined : s.variant }, [
         b.node('KjunListSection', { title: '계정' }, b.node('KjunListRow', { title: '프로필', chevron: true, [action]: notify('openProfile', '프로필 열기') }, '', { trailing: b.text('김하늘') })),
         b.node('KjunListSection', { title: '알림' }, b.node('KjunListRow', { title: '푸시 알림', checked: b.state('push', true), onCheckedChange: b.update('push') }), { footer: b.text('푸시 알림은 이 기기에서만 적용됩니다.') }),
       ].join('\n')); break;
