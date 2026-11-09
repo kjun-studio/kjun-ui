@@ -5,8 +5,14 @@ import { formatColor, hsvToRgb, normalizeColor, parseColor, readableInk, rgbToHs
 
 // color-picker.ts imports ./color without an extension, which Node cannot resolve directly, so the test bundles it.
 const output = await build({ entryPoints: ['shared/package-runtime/color-picker.ts'], bundle: true, write: false, format: 'esm', platform: 'node' });
-const { channelKey, colorAreaKey, hexDraft, hexWithAlpha, initialFocus, invalidSwatchCount, normalizeSwatches, stateToValue, syncHsv } =
+const { channelKey, colorAreaKey, colorSwatchColumns, colorSwatchSize, hexDraft, hexWithAlpha, initialFocus, invalidSwatchCount, normalizeSwatches, stateToValue, syncHsv } =
   await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
+
+test('swatches take eight fixed columns: 216px content with 8px gaps gives 20px squares', () => {
+  assert.equal(colorSwatchColumns, 8);
+  assert.equal(colorSwatchSize(216, 8), 20);
+  assert.equal(colorSwatchSize(176, 8), 15);
+});
 
 test('parseColor reads short, long and alpha hex with or without #', () => {
   assert.deepEqual(parseColor('#3b8'), { r: 0x33, g: 0xbb, b: 0x88, a: 1 });
@@ -107,7 +113,8 @@ test('colorPicker tokens and messages exist with the spec values', async () => {
   const { tokens } = await bundle('packages/tokens/src/index.ts');
   const p = tokens.extensions.colorPicker;
   assert.equal(p.width, 240); assert.equal(p.padding, 12); assert.equal(p.areaHeight, 160);
-  assert.equal(p.swatchSize, 24); assert.equal(p.swatchGap, 8); assert.equal(p.thumbSize, 20);
+  // Swatches take eight fixed columns (CSS repeat(8) / Native measured width), so there is no fixed swatch size; only the check icon is fixed.
+  assert.equal(p.swatchSize, undefined); assert.equal(p.swatchIconSize, 14); assert.equal(p.swatchGap, 8); assert.equal(p.thumbSize, 20);
   assert.deepEqual(p.triggerSwatch, { sm: 16, md: 20, lg: 24 });
   const out = await build({ entryPoints: ['shared/package-runtime/messages/index.ts'], bundle: true, write: false, format: 'esm', platform: 'node' });
   const { kjunMessagesKo: ko, kjunMessagesEn: en } = await import('data:text/javascript;base64,' + Buffer.from(out.outputFiles[0].contents).toString('base64'));

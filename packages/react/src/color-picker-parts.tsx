@@ -98,7 +98,7 @@ export function SwatchGrid({ swatches, clearable, selected, label, noneLabel, on
   const [group, setGroup] = useState<HTMLDivElement | null>(null);
   useEffect(() => group ? bindRadioKeyboard(group) : undefined, [group]);
   const items = [...(clearable ? [{ value: null as string | null, label: noneLabel }] : []), ...swatches];
-  const size = tokens.extensions.colorPicker.swatchSize, icon = size * 2 / 3;
+  const icon = tokens.extensions.colorPicker.swatchIconSize;
   return (
     <div ref={setGroup} className="kjun-color-swatches" role="radiogroup" aria-label={label}>
       {items.map((item, index) => {

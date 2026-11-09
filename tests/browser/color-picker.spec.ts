@@ -175,10 +175,16 @@ for (const platform of ['react', 'vue3', 'native']) {
       const areaBox = (await area(page).boundingBox())!;
       expect(Math.round(areaBox.height)).toBe(160);
       expect(Math.round(areaBox.width)).toBe(240 - 2 * 12);
+      // Eight fixed columns fill the content width: (216 - 7 × 8) / 8 = 20px a swatch, so 'none' + 7 colors make one row.
       const radios = swatches(page).getByRole('radio');
-      const [a, b] = [(await radios.nth(0).boundingBox())!, (await radios.nth(1).boundingBox())!];
-      expect(Math.round(a.width)).toBe(24);
+      const boxes = await Promise.all([...Array(8).keys()].map(async i => (await radios.nth(i).boundingBox())!));
+      const [a, b] = boxes;
+      expect(Math.round(a.width)).toBe(20);
+      expect(Math.round(a.height)).toBe(20);
       expect(Math.round(b.x - a.x - a.width)).toBe(8);
+      expect(new Set(boxes.map(box => Math.round(box.y))).size).toBe(1);
+      expect(Math.round(a.x)).toBe(Math.round(areaBox.x));
+      expect(Math.round(boxes[7].x + boxes[7].width)).toBe(Math.round(areaBox.x + areaBox.width));
       if (web) {
         await radios.nth(2).focus();
         await page.keyboard.press('ArrowLeft');
@@ -186,6 +192,17 @@ for (const platform of ['react', 'vue3', 'native']) {
         expect(ring[0]).not.toBe('none');
         expect(ring[1]).toBe('none');
       }
+      await page.keyboard.press('Escape');
+      await expect(area(page)).toHaveCount(0);
+      // Nine choices: the ninth starts the second row in the first column.
+      await trigger(page, 'cp-swatches', '태그 색').click();
+      // Native Web scales the panel in, so read the rows once its opening motion has settled.
+      const nine = swatches(page).getByRole('radio');
+      const rows = async () => {
+        const [first, eighth, ninth] = [(await nine.nth(0).boundingBox())!, (await nine.nth(7).boundingBox())!, (await nine.nth(8).boundingBox())!];
+        return [Math.round(eighth.y - first.y), Math.round(ninth.x - first.x), Math.round(ninth.y - first.y - first.height)];
+      };
+      await expect.poll(rows).toEqual([0, 0, 8]);
     });
   });
 }

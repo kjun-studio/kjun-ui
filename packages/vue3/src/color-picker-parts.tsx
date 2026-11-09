@@ -128,7 +128,7 @@ export const SwatchGrid = defineComponent({
     watchEffect(onCleanup => { if (group.value) onCleanup(bindRadioKeyboard(group.value)); }, { flush: "post" });
     return () => {
       const items = [...(props.clearable ? [{ value: null as string | null, label: props.noneLabel }] : []), ...props.swatches];
-      const icon = tokens.extensions.colorPicker.swatchSize * 2 / 3;
+      const icon = tokens.extensions.colorPicker.swatchIconSize;
       return (
         <div ref={group} class="kjun-color-swatches" role="radiogroup" aria-label={props.label}>
           {items.map((item, index) => {

@@ -3,6 +3,10 @@ import { formatColor, hsvToRgb, normalizeColor, parseColor, rgbToHsv, type Hsv }
 // KjunColorPicker state shared by every platform: the HSV the user is moving, key steps, the hex field and swatches.
 export type PickerState = { hsv: Hsv; a: number };
 export const initialPickerState: PickerState = { hsv: { h: 0, s: 1, v: 1 }, a: 1 };
+/** Swatches take this many fixed columns (web CSS repeat(8); Native divides the measured width). */
+export const colorSwatchColumns = 8;
+/** Square swatch size for a row of `width` with `gap` between the fixed columns. */
+export const colorSwatchSize = (width: number, gap: number) => (width - (colorSwatchColumns - 1) * gap) / colorSwatchColumns;
 
 declare const process: { env: { NODE_ENV?: string } };
 const developmentMode = () => { try { return !!process.env.NODE_ENV && process.env.NODE_ENV !== "production"; } catch { return false; } };

@@ -23,7 +23,7 @@
 
 .kjun-color-panel {
   width: var(--_kjun-extension-color-picker-width); max-width: calc(100vw - 2 * var(--_kjun-extension-floating-viewport-inset));
-  /* The floating border sits inside the width, so the content keeps width - 2 × padding (seven swatches a row). */
+  /* The floating border sits inside the width, so the content keeps width - 2 × padding (eight 20px swatches a row). */
   padding: calc(var(--_kjun-extension-color-picker-padding) - var(--_kjun-border-default-width)); box-sizing: border-box;
   display: flex; flex-direction: column; gap: var(--_kjun-extension-color-picker-gap);
 }
@@ -61,9 +61,10 @@
 .kjun-color-inputs .kjun-color-alpha { flex: none; width: var(--_kjun-extension-color-picker-alpha-input-width); }
 .kjun-color-inputs input { font-variant-numeric: tabular-nums; text-transform: uppercase; }
 
-.kjun-color-swatches { display: grid; grid-template-columns: repeat(auto-fill, var(--_kjun-extension-color-picker-swatch-size)); gap: var(--_kjun-extension-color-picker-swatch-gap); }
+/* Eight fixed columns, so 'none' + seven colors fill one row; swatches stay square at whatever width the columns get. */
+.kjun-color-swatches { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: var(--_kjun-extension-color-picker-swatch-gap); }
 .kjun-color-swatch {
-  width: var(--_kjun-extension-color-picker-swatch-size); height: var(--_kjun-extension-color-picker-swatch-size);
+  width: 100%; aspect-ratio: 1;
   padding: 0; border: 0; border-radius: var(--_kjun-extension-color-picker-swatch-radius); cursor: pointer; outline: none;
   position: relative; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent;
 }

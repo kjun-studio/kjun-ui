@@ -220,7 +220,7 @@
       "thumbSize": { "$ref": "dimension.value20" },
       "channelHeight": { "$ref": "dimension.value12" },
       "channelRadius": { "$ref": "radius.radius6" },
-      "swatchSize": { "$ref": "dimension.value24" },
+      "swatchIconSize": { "$ref": "dimension.value14" },
       "swatchGap": { "$ref": "dimension.value8" },
       "swatchRadius": { "$ref": "radius.radius6" },
       "ringWidth": { "$ref": "dimension.value2" },

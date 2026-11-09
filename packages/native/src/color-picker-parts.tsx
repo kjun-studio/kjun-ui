@@ -3,7 +3,7 @@ import { PanResponder, Platform, View, type ColorValue, type TextInput, type Vie
 import Svg, { Defs, LinearGradient, Pattern, Rect, Stop } from "react-native-svg";
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
-import { channelKey, colorAreaKey, hexDraft, hexWithAlpha } from "../../../shared/package-runtime/color-picker";
+import { channelKey, colorAreaKey, colorSwatchSize, hexDraft, hexWithAlpha } from "../../../shared/package-runtime/color-picker";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
@@ -197,9 +197,12 @@ export function SwatchGrid({ swatches, clearable, selected, label, noneLabel, on
   const [group, setGroup] = useState<View | null>(null), [focused, setFocused] = useState(-1);
   useLayoutEffect(() => Platform.OS === "web" && group ? bindRadioKeyboard(group as unknown as HTMLElement) : undefined, [group]);
   const items = [...(clearable ? [{ value: null as string | null, label: noneLabel }] : []), ...swatches];
-  const size = picker.swatchSize, ring = ringShadow(colors.surface, colors.brand);
+  // Eight fixed columns: start from the panel's content width, then follow the measured row (a narrow screen shrinks the panel).
+  const [width, setWidth] = useState(picker.width - 2 * picker.padding);
+  const size = colorSwatchSize(width, picker.swatchGap), ring = ringShadow(colors.surface, colors.brand);
   return (
     <View ref={setGroup} accessibilityRole="radiogroup" accessibilityLabel={label}
+      onLayout={event => { const next = event.nativeEvent.layout.width; if (next > 0 && Math.abs(next - width) > 0.5) setWidth(next); }}
       style={{ flexDirection: "row", flexWrap: "wrap", gap: picker.swatchGap }}>
       {items.map((item, index) => {
         const checked = index === selected;
@@ -211,7 +214,7 @@ export function SwatchGrid({ swatches, clearable, selected, label, noneLabel, on
             style={{ width: size, height: size, borderRadius: picker.swatchRadius, alignItems: "center", justifyContent: "center",
               boxShadow: checked || focused === index ? ring : undefined } as ViewStyle}>
             <View style={{ position: "absolute", top: 0, left: 0 }}><ColorChip value={item.value} size={size} /></View>
-            {checked && item.value && <KjunIcon name="check" size={size * 2 / 3} color={readableInk(item.value) === "light" ? "white" : "black"} />}
+            {checked && item.value && <KjunIcon name="check" size={picker.swatchIconSize} color={readableInk(item.value) === "light" ? "white" : "black"} />}
           </Pressable>
         );
       })}
