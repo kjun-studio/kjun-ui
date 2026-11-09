@@ -3,14 +3,16 @@ import { PanResponder, Platform, View, type ColorValue, type TextInput, type Vie
 import Svg, { Defs, LinearGradient, Pattern, Rect, Stop } from "react-native-svg";
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
-import { channelKey, colorAreaKey, colorSwatchSize, hexDraft, hexWithAlpha } from "../../../shared/package-runtime/color-picker";
+import { channelKey, colorAreaKey, colorSwatchSize } from "../../../shared/package-runtime/color-picker";
+import { alphaFieldLive, colorAreaActionKey, hexFieldCommit, hexFieldLive, hexFieldText } from "../../../shared/package-runtime/color-picker-model";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
 import { AccessiblePressable as Pressable, focusVisible } from "./a11y";
 import { FieldTextInput } from "./field-surface";
 import { KjunIcon } from "./button";
-import { inputTypeStyle } from "./typography";
+import { inputTypeStyle, typeStyle } from "./typography";
+import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
 
 // Mirrors the web parts (packages/react/src/color-picker-parts.tsx); drawing uses react-native-svg and dragging PanResponder.
@@ -131,17 +133,17 @@ function Adjustable({ adjust, focusRef, onFocusChange, style, drag, children }: 
   );
 }
 
-export function ColorArea({ hsv, label, valueText, increase, decrease, areaRef, onMove, onPick, onStart, onEnd }: {
-  hsv: Hsv; label: string; valueText: string; increase: string; decrease: string; areaRef: (el: View | null) => void;
+export function ColorArea({ hsv, label, valueText, actions, areaRef, onMove, onPick, onStart, onEnd }: {
+  hsv: Hsv; label: string; valueText: string; actions: { name: string; label: string }[]; areaRef: (el: View | null) => void;
 } & DragHandlers<Hsv>) {
   const [focused, setFocused] = useState(false), id = "kjun-area-" + useId().replace(/[^\w-]/g, "");
   const drag = useDrag((x, y) => onMove({ ...hsv, s: x, v: 1 - y }), onStart, onEnd);
   const key = (k: string, shift: boolean) => { const next = colorAreaKey(k, shift, hsv); if (next) onPick(next); return !!next; };
   return (
     <Adjustable drag={drag} focusRef={areaRef} onFocusChange={setFocused}
-      adjust={{ label, valueText, now: percent(hsv.s), max: 100, keys: key,
-        actions: [{ name: "increment", label: increase }, { name: "decrement", label: decrease }],
-        onAction: name => key(name === "increment" ? "ArrowRight" : "ArrowLeft", false) }}
+      // Swipe up/down moves saturation; the named actions move brightness, which a device screen reader has no other way to reach.
+      adjust={{ label, valueText, now: percent(hsv.s), max: 100, keys: key, actions,
+        onAction: name => { const k = colorAreaActionKey(name); if (k) key(k, false); } }}
       style={{ height: picker.areaHeight, borderRadius: picker.areaRadius, backgroundColor: rgb({ h: hsv.h, s: 1, v: 1 }) }}>
       <Svg pointerEvents="none" style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }} width="100%" height="100%">
         <Defs>
@@ -189,14 +191,14 @@ export function ColorChannel({ channel, value, max, label, valueText, color, inc
   );
 }
 
-export function SwatchGrid({ swatches, clearable, selected, label, noneLabel, onPick, swatchRef }: {
-  swatches: { value: string; label: string }[]; clearable: boolean; selected: number; label: string; noneLabel: string;
-  onPick: (value: string | null) => void; swatchRef: (index: number, el: View | null) => void;
+/** One radio group of color items; "no color" is the item whose value is null. */
+export function SwatchGrid({ items, selected, label, onPick, swatchRef }: {
+  items: { value: string | null; label: string }[]; selected: number; label: string;
+  onPick: (value: string | null) => void; swatchRef?: (index: number, el: View | null) => void;
 }) {
   const { colors } = useKjunStyles();
   const [group, setGroup] = useState<View | null>(null), [focused, setFocused] = useState(-1);
   useLayoutEffect(() => Platform.OS === "web" && group ? bindRadioKeyboard(group as unknown as HTMLElement) : undefined, [group]);
-  const items = [...(clearable ? [{ value: null as string | null, label: noneLabel }] : []), ...swatches];
   // Eight fixed columns: start from the panel's content width, then follow the measured row (a narrow screen shrinks the panel).
   const [width, setWidth] = useState(picker.width - 2 * picker.padding);
   const size = colorSwatchSize(width, picker.swatchGap), ring = ringShadow(colors.surface, colors.brand);
@@ -207,7 +209,7 @@ export function SwatchGrid({ swatches, clearable, selected, label, noneLabel, on
       {items.map((item, index) => {
         const checked = index === selected;
         return (
-          <Pressable key={index} ref={el => swatchRef(index, el)} focusRing={false} accessibilityRole="radio" accessibilityLabel={item.label}
+          <Pressable key={index} ref={el => swatchRef?.(index, el)} focusRing={false} accessibilityRole="radio" accessibilityLabel={item.label}
             accessibilityState={{ checked }} {...(Platform.OS === "web" ? { "aria-checked": checked } : null)}
             onFocus={event => setFocused(focusVisible(event.currentTarget) ? index : -1)} onBlur={() => setFocused(-1)}
             onPress={() => onPick(item.value)}
@@ -222,31 +224,52 @@ export function SwatchGrid({ swatches, clearable, selected, label, noneLabel, on
   );
 }
 
-/** The hex field and, with alpha, the % field. A complete code picks at once; Enter or leaving picks a short code or reverts. */
-export function HexInputs({ value, alpha, alphaPercent, clearable, hexLabel, alphaLabel, onPick, hexRef }: {
-  value: string | null; alpha: boolean; alphaPercent: number; clearable: boolean; hexLabel: string; alphaLabel: string;
-  onPick: (value: string | null) => void; hexRef: (el: TextInput | null) => void;
+/** Recent colors under the swatches: a caption and one more radio group. */
+export function RecentColors({ items, selected, label, onPick }: { items: { value: string; label: string }[]; selected: number; label: string; onPick: (value: string | null) => void }) {
+  const { colors } = useKjunStyles();
+  return (
+    <View style={{ gap: tokens.dimension.value4 }}>
+      <KText accessible={false} importantForAccessibility="no" {...(Platform.OS === "web" ? { "aria-hidden": true } : null)}
+        style={{ ...typeStyle("caption"), color: colors.textTertiary }}>{label}</KText>
+      <SwatchGrid items={items} selected={selected} label={label} onPick={onPick} />
+    </View>
+  );
+}
+
+/** The eyedropper button (Native Web only) and the hex and % fields. Typing changes the value once a code is complete;
+ * submitting or leaving a field commits it (a short code expands, a bad one reverts). */
+export function ColorInputs({ fields, value, alpha, alphaPercent, clearable, hexLabel, alphaLabel, eyeDropper, onEdit, onCommit, hexRef }: {
+  fields: boolean; value: string | null; alpha: boolean; alphaPercent: number; clearable: boolean; hexLabel: string; alphaLabel: string;
+  eyeDropper: { label: string; onPick: () => void } | null;
+  onEdit: (live: string | null) => void; onCommit: (next: string | null | "revert") => void; hexRef: (el: TextInput | null) => void;
 }) {
   const { colors } = useKjunStyles();
-  const shown = value ? value.slice(1, 7) : "";
+  const shown = hexFieldText(value);
   const [text, setText] = useState(shown), [pct, setPct] = useState(String(alphaPercent));
-  const editing = useRef<"hex" | "alpha" | null>(null);
-  useLayoutEffect(() => { if (editing.current !== "hex") setText(shown); }, [shown]);
-  useLayoutEffect(() => { if (editing.current !== "alpha") setPct(String(alphaPercent)); }, [alphaPercent]);
-  const withAlpha = (six: string) => alpha ? six + (value ? value.slice(7, 9) : "FF") : six;
+  // editing: the field being typed in; reported: the last value the fields changed. A value from anywhere else (a swatch,
+  // a drag, the app) ends the edit: a tap on a device does not blur the field, so a late blur must not write stale text over it.
+  const editing = useRef<"hex" | "alpha" | null>(null), reported = useRef(value);
+  useLayoutEffect(() => {
+    if (value !== reported.current) { editing.current = null; reported.current = value; }
+    if (editing.current !== "hex") setText(shown);
+    if (editing.current !== "alpha") setPct(String(alphaPercent));
+  }, [value, alphaPercent]);
+  const edit = (field: "hex" | "alpha", live: string | null) => { editing.current = field; if (live !== null) reported.current = live; onEdit(live); };
   const commitHex = () => {
+    // Nothing typed (or already committed by submitting): leaving the field changes nothing.
+    if (editing.current !== "hex") return;
     editing.current = null;
-    const draft = hexDraft(hexWithAlpha(text, alpha, value ? value.slice(7, 9) || "FF" : "FF"), alpha);
-    if (draft.commit === "revert" || (draft.commit === null && !clearable)) { setText(shown); return; }
-    onPick(draft.commit);
-    setText(draft.commit ? draft.commit.slice(1, 7) : "");
+    const next = hexFieldCommit(text, alpha, value, clearable);
+    setText(next === "revert" ? shown : hexFieldText(next));
+    if (next !== "revert") reported.current = next;
+    onCommit(next);
   };
-  const alphaHex = (n: number) => Math.round(n / 100 * 255).toString(16).toUpperCase().padStart(2, "0");
-  const validPct = (t: string) => /^\d{1,3}$/.test(t) && Number(t) <= 100;
   const commitPct = () => {
+    if (editing.current !== "alpha") return;
     editing.current = null;
-    if (!validPct(pct) || !value) { setPct(String(alphaPercent)); return; }
-    onPick(value.slice(0, 7) + alphaHex(Number(pct)));
+    const next = alphaFieldLive(pct, value);
+    if (next === null) setPct(String(alphaPercent)); else reported.current = next;
+    onCommit(next ?? "revert");
   };
   const field = tokens.input.sm;
   const style = { height: field.height, borderRadius: field.radius, paddingHorizontal: field.padding - tokens.border.controlWidth, backgroundColor: colors.inputBg,
@@ -254,22 +277,27 @@ export function HexInputs({ value, alpha, alphaPercent, clearable, hexLabel, alp
     ...(Platform.OS === "web" ? ({ outlineStyle: "none", textTransform: "uppercase" } as object) : null) };
   return (
     <View style={{ flexDirection: "row", gap: picker.swatchGap }}>
-      <FieldTextInput ref={hexRef} accessibilityLabel={hexLabel} value={text} maxLength={alpha ? 9 : 7} autoCapitalize="characters" autoCorrect={false} spellCheck={false}
-        style={{ ...style, flex: 1, minWidth: 0 }}
-        onChangeText={next => {
-          editing.current = "hex";
-          const clean = next.replace(/^#/, "");
-          setText(clean);
-          const live = hexDraft(clean.length === 6 ? withAlpha(clean) : clean, alpha).live;
-          if (live) onPick(live);
-        }}
-        onSubmitEditing={commitHex} onBlur={commitHex} />
-      {alpha && (
+      {eyeDropper && (
+        <Pressable accessibilityRole="button" accessibilityLabel={eyeDropper.label} onPress={eyeDropper.onPick}
+          style={{ width: field.height, height: field.height, borderRadius: field.radius, backgroundColor: colors.inputBg, alignItems: "center", justifyContent: "center" }}>
+          <KjunIcon name="color-picker" size={field.iconSize} color={colors.textSecondary} />
+        </Pressable>
+      )}
+      {fields && (
+        <FieldTextInput ref={hexRef} accessibilityLabel={hexLabel} value={text} maxLength={alpha ? 9 : 7} autoCapitalize="characters" autoCorrect={false} spellCheck={false}
+          style={{ ...style, flex: 1, minWidth: 0 }}
+          onChangeText={next => {
+            const clean = next.replace(/^#/, "");
+            setText(clean);
+            edit("hex", hexFieldLive(clean, alpha, value));
+          }}
+          onSubmitEditing={commitHex} onBlur={commitHex} />
+      )}
+      {fields && alpha && (
         <FieldTextInput accessibilityLabel={alphaLabel} value={pct} maxLength={3} keyboardType="number-pad" style={{ ...style, width: picker.alphaInputWidth }}
           onChangeText={next => {
-            editing.current = "alpha";
             setPct(next);
-            if (validPct(next) && value) onPick(value.slice(0, 7) + alphaHex(Number(next)));
+            edit("alpha", alphaFieldLive(next, value));
           }}
           onSubmitEditing={commitPct} onBlur={commitPct} />
       )}

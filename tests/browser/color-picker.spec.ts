@@ -101,6 +101,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(hex(page)).toHaveValue('33BB88');
       await hex(page).fill('3b82f6');
       await expect.poll(() => list(page, 'cp-custom', 'changes')).toEqual(['#33BB88', '#3B82F6']);
+      // A complete code changes the value at once but commits only on Enter or leaving the field.
+      expect(await list(page, 'cp-custom', 'commits')).toEqual(['#33BB88']);
       await hex(page).fill('xyz');
       await hex(page).press('Enter');
       await expect(hex(page)).toHaveValue('3B82F6');
@@ -139,6 +141,88 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.getByRole('textbox', { name: '투명도' }).press('Enter');
       await expect.poll(async () => (await list(page, 'cp-full', 'commits')).at(-1)).toBe('#3B82F6CC');
       await expect(trigger(page, 'cp-full', '라벨 색')).toHaveAccessibleName(/투명도 80%/);
+    });
+
+    test('typing a % changes on every whole number and commits once on Enter', async ({ page }) => {
+      await trigger(page, 'cp-full', '라벨 색').click();
+      const percent = page.getByRole('textbox', { name: '투명도' });
+      await percent.fill('');
+      await percent.pressSequentially('80');
+      await expect.poll(() => list(page, 'cp-full', 'changes')).toEqual(['#3B82F614', '#3B82F6CC']);
+      expect(await list(page, 'cp-full', 'commits')).toEqual([]);
+      await percent.press('Enter');
+      await expect.poll(() => list(page, 'cp-full', 'commits')).toEqual(['#3B82F6CC']);
+      // Leaving the field after Enter commits nothing more.
+      await hex(page).focus();
+      await page.waitForTimeout(100);
+      expect(await list(page, 'cp-full', 'commits')).toEqual(['#3B82F6CC']);
+    });
+
+    test('passing through the fields without typing changes nothing', async ({ page }) => {
+      // AA 81 is 50.6%: the field shows 51, which would write back 82 if leaving it committed the shown text.
+      await trigger(page, 'cp-alpha-round', '반올림').click();
+      await page.getByRole('textbox', { name: '투명도' }).focus();
+      await hex(page).focus();
+      await page.getByRole('textbox', { name: '투명도' }).focus();
+      await page.keyboard.press('Escape');
+      await expect(hex(page)).toHaveCount(0);
+      expect(await list(page, 'cp-alpha-round', 'changes')).toEqual([]);
+      expect(await list(page, 'cp-alpha-round', 'commits')).toEqual([]);
+    });
+
+    test('closing the panel while typing commits the typed color once', async ({ page }) => {
+      await trigger(page, 'cp-custom', '강조색').click();
+      await hex(page).fill('ff0000');
+      await expect.poll(() => list(page, 'cp-custom', 'changes')).toEqual(['#FF0000']);
+      expect(await list(page, 'cp-custom', 'commits')).toEqual([]);
+      await page.keyboard.press('Escape');
+      await expect.poll(() => list(page, 'cp-custom', 'commits')).toEqual(['#FF0000']);
+      await expect(hex(page)).toHaveCount(0);
+      expect(await list(page, 'cp-custom', 'commits')).toEqual(['#FF0000']);
+    });
+
+    test('recent colors show under the swatches and take the new value first when the panel closes', async ({ page }) => {
+      const recentList = async () => JSON.parse(await page.getByTestId('cp-recent-list').textContent() || '[]');
+      await trigger(page, 'cp-recent', '최근 색').click();
+      const recent = page.getByRole('radiogroup', { name: '최근 사용 색' });
+      await expect(recent.getByRole('radio')).toHaveCount(2);
+      await swatches(page).getByRole('radio', { name: '#22C55E' }).click();
+      // The row stays put while the panel is open.
+      expect(await recentList()).toEqual(['#111111', '#EF4444']);
+      await page.keyboard.press('Escape');
+      await expect.poll(recentList).toEqual(['#22C55E', '#111111', '#EF4444']);
+      await expect(swatches(page)).toHaveCount(0);
+      await trigger(page, 'cp-recent', '최근 색').click();
+      await expect(recent.getByRole('radio')).toHaveCount(3);
+      await expect(recent.getByRole('radio').first()).toHaveAccessibleName('#22C55E');
+      await expect(recent.getByRole('radio').first()).toHaveAttribute('aria-checked', 'true');
+      // Picking a recent color is a pick like any swatch; closing without a new value leaves the list alone.
+      await recent.getByRole('radio', { name: '#EF4444' }).click();
+      await page.keyboard.press('Escape');
+      await expect.poll(recentList).toEqual(['#EF4444', '#22C55E', '#111111']);
+      await expect(swatches(page)).toHaveCount(0);
+      await trigger(page, 'cp-recent', '최근 색').click();
+      await page.keyboard.press('Escape');
+      await expect(swatches(page)).toHaveCount(0);
+      expect(await recentList()).toEqual(['#EF4444', '#22C55E', '#111111']);
+    });
+
+    test('the eyedropper picks a screen color once and keeps the opacity', async ({ page }) => {
+      await page.addInitScript(() => { (window as any).EyeDropper = class { open() { return Promise.resolve({ sRGBHex: '#0ea5e9' }); } }; });
+      await openFixture(page, platform, '', 'color-picker');
+      await trigger(page, 'cp-eyedropper', '스포이드').click();
+      await page.getByRole('button', { name: '화면에서 색 고르기' }).click();
+      await expect.poll(() => list(page, 'cp-eyedropper', 'commits')).toEqual(['#0EA5E980']);
+      expect(await list(page, 'cp-eyedropper', 'changes')).toEqual(['#0EA5E980']);
+      await expect(hex(page)).toHaveValue('0EA5E9');
+    });
+
+    test('without a browser eyedropper the button is not drawn', async ({ page }) => {
+      await page.addInitScript(() => { delete (window as any).EyeDropper; });
+      await openFixture(page, platform, '', 'color-picker');
+      await trigger(page, 'cp-eyedropper', '스포이드').click();
+      await expect(hex(page)).toBeVisible();
+      await expect(page.getByRole('button', { name: '화면에서 색 고르기' })).toHaveCount(0);
     });
 
     test('an outside value is followed without echo, and alpha is dropped when the picker has none', async ({ page }) => {

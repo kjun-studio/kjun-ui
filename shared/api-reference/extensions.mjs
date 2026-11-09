@@ -81,8 +81,10 @@ const colorPickerSummaries = {
   swatches: "앱이 고를 수 있게 내놓는 색 목록입니다. 문자열 또는 { value, label }이며 label이 없으면 HEX를 읽습니다. 형식이 틀린 항목은 빼고 개발 모드에서 한 번 경고합니다.",
   custom: "채도·명도 영역과 색상 슬라이더를 켭니다. 회색까지 내려도 색상(hue)을 잃지 않습니다.",
   alpha: "투명도 슬라이더와 % 입력을 켭니다. 켜면 값은 항상 #RRGGBBAA이고, 끄면 들어온 값의 투명도를 버립니다.",
-  input: "HEX 입력을 켭니다. 6자리(alpha면 8자리)가 다 차면 바로 반영하고, #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 틀린 값은 되돌립니다.",
+  input: "HEX 입력을 켭니다. 6자리(alpha면 8자리)가 다 차면 값에 바로 반영하고, 확정은 Enter나 포커스 이탈 때 한 번 알립니다. #3B8 같은 짧은 형식은 그때 펼치고, 틀린 값은 되돌립니다.",
   clearable: "견본 맨 앞에 ‘색 없음’ 칸을 둡니다. 고르면 값이 null이 됩니다. HEX 칸을 비우고 확정해도 같습니다.",
+  recentColors: "앱이 보관하는 최근 사용 색입니다. 문자열 또는 { value, label }이며, 주면 견본 아래 ‘최근 사용 색’ 줄(최대 8칸)을 그립니다. 비어 있으면 줄을 그리지 않습니다. 새 값으로 패널을 닫을 때 다음 목록을 알리므로 앱이 저장해서 다시 넘겨 주세요. Vue는 v-model:recentColors입니다.",
+  eyeDropper: "HEX 칸 앞에 화면에서 색을 고르는 스포이드 버튼을 둡니다. 브라우저에 EyeDropper가 있을 때(Chromium 데스크톱, Native는 RN Web)만 그리고 다른 곳에서는 그리지 않습니다. 고른 색은 바로 확정하고, alpha면 현재 투명도를 유지합니다.",
   open: "제어할 때의 패널 열림 상태입니다.",
   defaultOpen: "제어하지 않을 때 처음부터 패널을 열어 둡니다.",
   size: "트리거 크기입니다. Input과 같은 sm·md·lg(32·40·48px)입니다.",
@@ -98,11 +100,13 @@ const colorPickerSummaries = {
   testID: "테스트에서 바깥 View를 찾는 ID입니다.",
   renderTrigger: "트리거 안 내용을 직접 그립니다. ({ value, open })를 받습니다. 버튼과 접근성 이름은 KJUN이 계속 맡습니다.",
 };
-const colorPickerCallback = (key) => key === "onOpenChange"
+const colorPickerCallback = (key) => key === "onRecentColorsChange"
+  ? event("다음 최근 사용 색 목록을 알립니다.", "recentColors를 준 피커가 새 값으로 패널을 닫을 때. 그 값이 이미 맨 앞이거나 색 없음(null)이면 알리지 않습니다", "string[]: 새 값을 맨 앞에 둔 최대 8개의 #RRGGBB(alpha면 #RRGGBBAA)", "반환값을 사용하지 않습니다.", "앱이 목록을 저장하고 recentColors로 다시 넘깁니다. 여러 피커가 같은 목록을 함께 써도 됩니다.")
+  : key === "onOpenChange"
   ? event("패널 열림 상태의 변경을 알립니다.", "트리거를 누르거나 바깥을 누르거나 Escape로 닫을 때", "boolean: 다음 열림 상태", "반환값을 사용하지 않습니다.", "제어할 때는 소비자가 open을 갱신합니다.")
   : key === "onValueChange"
     ? event("값 변경을 알립니다.", "드래그 중 움직일 때마다, 견본·키·HEX로 값이 바뀔 때. 값이 같으면 알리지 않습니다", "#RRGGBB(alpha면 #RRGGBBAA) 문자열 / null", "반환값을 사용하지 않습니다.", "제어할 때는 소비자가 value를 갱신합니다.")
-    : event("한 번의 선택이 끝났음을 알립니다.", "드래그를 놓을 때, 견본·색 없음을 고를 때, 영역·슬라이더 키를 누를 때, HEX가 완성되거나 확정될 때. 값이 바뀐 경우만, 값 변경 알림 다음", "#RRGGBB(alpha면 #RRGGBBAA) 문자열 / null", "반환값을 사용하지 않습니다.", "저장처럼 한 번만 할 일을 여기서 하세요.");
+    : event("한 번의 선택이 끝났음을 알립니다.", "드래그를 놓을 때, 견본·색 없음·최근 색을 고를 때, 영역·슬라이더 키를 누를 때, 스포이드로 고를 때, HEX·% 칸에서 Enter를 누르거나 칸을 떠날 때(입력 도중에는 알리지 않음). 값이 바뀐 경우만, 값 변경 알림 다음", "#RRGGBB(alpha면 #RRGGBBAA) 문자열 / null", "반환값을 사용하지 않습니다.", "저장처럼 한 번만 할 일을 여기서 하세요.");
 const colorTriggerSlot = slot("트리거 안 내용을 직접 그립니다. 버튼과 접근성 이름은 KJUN이 맡습니다.", "{ value: string | null; open: boolean }");
 const carouselSlides = slot("슬라이드 목록입니다. 직접 자식 하나가 슬라이드 하나입니다.", "ReactNode", "슬라이드 안의 버튼·입력도 Tab으로 이동할 수 있습니다. 안의 입력에서는 화살표 키를 가로채지 않습니다.");
 const childProps = {
@@ -206,7 +210,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (name === "KjunRangeSlider" && platform === "vue3") props.modelValue.type = "[number, number]";
   const events = {}, slots = {};
   if (platform === "vue3") {
-    const eventKeys = name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange" } : {};
+    const eventKeys = name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
     const slotNames = { KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions"], KjunListSection: ["actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"] }[name] || [];
     for (const key of slotNames) {

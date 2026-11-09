@@ -14,7 +14,7 @@ export const extensionControls: Record<string, ExampleControl[]> = {
   KjunAvatar: [size, choice("shape", "형태", ["circle", "square"]), choice("imageState", "이미지 상태", ["이름", "사진", "실패"]), bool("decorative", "장식 이미지")],
   KjunChip: [size, disabled, bool("removable", "삭제 버튼", true), long],
   KjunSlider: [disabled, bool("decimal", "소수 step")], KjunRangeSlider: [disabled, bool("decimal", "소수 step")],
-  KjunColorPicker: [size, disabled, error, bool("swatches", "견본", true), bool("custom", "자유 선택"), bool("alpha", "투명도"), bool("input", "HEX 입력"), bool("clearable", "색 없음", true)],
+  KjunColorPicker: [size, disabled, error, bool("swatches", "견본", true), bool("custom", "자유 선택"), bool("alpha", "투명도"), bool("input", "HEX 입력"), bool("clearable", "색 없음", true), bool("recent", "최근 사용 색"), bool("eyeDropper", "스포이드")],
   KjunTimePicker: [size, disabled, error, choice("precision", "시간 정밀도", ["minute", "second"]), number("minuteStep", "분 간격", 1, 1, 59), { ...number("secondStep", "초 간격", 1, 1, 59), when: { precision: ["second"] } }, bool("bounded", "시각 범위 제한"), bool("clearable", "지우기", true), bool("block", "전체 너비")],
   KjunQuantityStepper: [size, disabled, error, bool("block", "전체 너비"), bool("decimal", "소수 수량"), bool("negative", "음수 허용")],
 };

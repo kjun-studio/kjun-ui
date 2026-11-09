@@ -583,8 +583,8 @@
   "KjunColorPicker": {
     "slug": "color-picker",
     "description": "색 버튼을 눌러 여는 패널에서 견본, 채도·명도 영역, 색상·투명도 슬라이더, HEX 입력으로 색을 고릅니다.",
-    "interaction": "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·HEX를 확정할 때 한 번 알립니다. 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다.",
-    "differences": "세 플랫폼 모두 DatePicker처럼 필드 아래 떠 있는 패널로 엽니다. 웹은 포인터 캡처로, Native는 PanResponder로 끌고 그라데이션과 체크무늬는 react-native-svg로 그립니다. Native 기기에서는 화살표 키 대신 스크린리더의 조절 동작(채도는 사용자 지정 동작)으로 바꿉니다. Native는 RN Web에서만 확인했습니다.",
+    "interaction": "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다.",
+    "differences": "세 플랫폼 모두 DatePicker처럼 필드 아래 떠 있는 패널로 엽니다. 웹은 포인터 캡처로, Native는 PanResponder로 끌고 그라데이션과 체크무늬는 react-native-svg로 그립니다. Native 기기에서는 화살표 키 대신 스크린리더 동작으로 바꿉니다. 영역은 위아래 쓸기로 채도, 동작 메뉴의 ‘명도 올리기·내리기’로 명도를 바꿉니다. 스포이드(eyeDropper)는 브라우저 EyeDropper가 있을 때만 그리므로 웹은 Chromium 데스크톱, Native는 RN Web에서만 보이고 기기에서는 그리지 않습니다. Native는 RN Web에서만 확인했습니다.",
     "states": "옵션 swatches·custom·alpha·input·clearable을 섞어 씁니다. 패널은 240px, 안쪽 여백 12px, 영역 높이 160px, 견본은 한 줄 8칸 고정·8px 간격(칸은 20px 정사각형, 체크 14px)입니다. 견본 색과 값은 앱이 정하고, 패키지가 직접 그리는 색은 영역·색상·투명도 그라데이션뿐입니다. 체크무늬는 surface·border 역할 색입니다. 선택된 견본과 키보드 초점은 같은 brand 링 하나로 그리고, 선택된 견본에는 체크를 더합니다. 영역·슬라이더의 초점은 손잡이 둘레 링입니다. 트리거 크기는 Input과 같은 sm·md·lg입니다."
   },
   "KjunQuantityStepper": {

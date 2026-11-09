@@ -1,16 +1,18 @@
-import { computed, defineComponent, onBeforeUnmount, ref, useId, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { computed, defineComponent, onBeforeUnmount, onBeforeUpdate, onMounted, ref, useId, watch, watchEffect, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useKjunMessageScope } from "./runtime/messages";
-import { normalizeColor, parseColor } from "../../../shared/package-runtime/color";
+import { normalizeColor } from "../../../shared/package-runtime/color";
 import {
-  initialFocus, initialPickerState, invalidSwatchCount, normalizeSwatches, stateToValue, syncHsv, warnColorPicker, type ColorSwatchInput, type PickerState,
+  createPickerWarnings, initialFocusTarget, initialPickerState, normalizeSwatches, pickerSummary, selectedSwatchIndex, stateToValue, swatchItems, syncHsv,
+  type ColorSwatchInput, type PickerState,
 } from "../../../shared/package-runtime/color-picker";
+import { createCommitSession, eyeDropperSupported, nextRecentColors, pickScreenColor, recentColorItems } from "../../../shared/package-runtime/color-picker-model";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { FloatingPanel } from "./floating-panel";
 import { KjunIcon } from "./button";
 import { useKjunField } from "./input";
 import { css } from "./runtime/style";
-import { ColorArea, ColorChannel, HexInputs, SwatchGrid } from "./color-picker-parts";
+import { ColorArea, ColorChannel, ColorInputs, RecentColors, SwatchGrid } from "./color-picker-parts";
 
 // Mirrors packages/react/src/color-picker.tsx: same DOM, classes and aria; v-model for the value and v-model:open.
 export type KjunColorSwatch = ColorSwatchInput;
@@ -28,6 +30,11 @@ const kjunColorPickerProps = {
   input: { type: Boolean, default: false },
   /** A "no color" swatch that sets the value to null. */
   clearable: { type: Boolean, default: false },
+  /** v-model:recentColors: recent colors the app keeps (strings or { value, label }); giving it shows a "recent" row of up to 8 under the swatches.
+   * When the panel closes on a new value, update:recentColors brings the next list: that value first, at most 8. */
+  recentColors: { type: Array as PropType<KjunColorSwatch[]>, default: undefined },
+  /** A button that picks a color from the screen, where the browser has an EyeDropper (Chromium desktop); hidden elsewhere. */
+  eyeDropper: { type: Boolean, default: false },
   /** v-model:open. */
   open: { type: Boolean, default: undefined },
   defaultOpen: { type: Boolean, default: false },
@@ -46,7 +53,7 @@ export type KjunColorPickerProps = ExtractPublicPropTypes<typeof kjunColorPicker
 const pct = (a: number) => Math.round(a * 100);
 
 /** A field trigger that opens a panel of swatches, a saturation/brightness area, hue and alpha sliders and a hex field.
- * update:modelValue reports every change, also while dragging; change reports once per finished pick. */
+ * update:modelValue reports every change, also while dragging; change reports once per finished pick (a hex or % field on Enter or leaving it). */
 export const KjunColorPicker = defineComponent({
   name: "KjunColorPicker",
   inheritAttrs: false,
@@ -55,24 +62,18 @@ export const KjunColorPicker = defineComponent({
     "update:modelValue": (_value: string | null) => true,
     change: (_value: string | null) => true,
     "update:open": (_open: boolean) => true,
+    "update:recentColors": (_colors: string[]) => true,
   },
   slots: Object as SlotsType<{ trigger: (state: { value: string | null; open: boolean }) => VNodeChild }>,
   setup(props, { emit, slots, attrs }) {
     const scope = useKjunMessageScope(), field = useKjunField();
     const inner = ref(normalizeColor(props.defaultValue, props.alpha));
     const value = computed(() => props.modelValue !== undefined ? normalizeColor(props.modelValue, props.alpha) : inner.value);
-    let warned = false;
-    watch(() => [props.modelValue !== undefined ? props.modelValue : props.defaultValue, props.alpha] as const, ([raw, alpha]) => {
-      if (warned || alpha || typeof raw !== "string") return;
-      if (parseColor(raw) && /^#?([0-9a-f]{4}|[0-9a-f]{8})$/i.test(raw.trim())) { warned = true; warnColorPicker("the value has alpha but alpha is off; it is drawn and reported without it."); }
-    }, { immediate: true });
     const swatches = computed(() => normalizeSwatches(props.swatches ?? [], props.alpha));
-    let warnedSwatches = false;
-    watch(() => invalidSwatchCount(props.swatches ?? []) > 0, invalid => {
-      if (invalid && !warnedSwatches) { warnedSwatches = true; warnColorPicker("swatches has entries that are not hex colors; they are left out."); }
-    }, { immediate: true });
+    const recent = computed(() => props.recentColors === undefined ? null : recentColorItems(props.recentColors, props.alpha));
     const nothing = computed(() => !props.custom && !props.input && !swatches.value.length && !props.clearable);
-    watch(nothing, none => { if (none) warnColorPicker("turn on custom, input or clearable, or give swatches; showing the hex field."); }, { immediate: true });
+    const warn = createPickerWarnings();
+    watchEffect(() => warn({ raw: props.modelValue !== undefined ? props.modelValue : props.defaultValue, alpha: props.alpha, swatches: props.swatches, nothing: nothing.value }));
 
     const openInner = ref(props.defaultOpen);
     const open = computed(() => (props.open ?? openInner.value) && !props.disabled && !props.readOnly);
@@ -80,9 +81,12 @@ export const KjunColorPicker = defineComponent({
 
     const state = ref<PickerState>(syncHsv(initialPickerState, value.value, props.alpha));
     watch([value, () => props.alpha], ([next, alpha]) => { state.value = syncHsv(state.value, next, alpha); }, { flush: "sync" });
-    // The latest value, so a drag's moves compare against what they reported, not against a render behind.
-    let latest = value.value, dragStart: string | null = null;
+    // The latest value, so moves within one pick compare against what they reported, not against a render behind.
+    let latest = value.value;
     watch(value, next => { latest = next; }, { flush: "sync" });
+    // Like React: a controlled parent that keeps its value pulls latest back on the next render.
+    onBeforeUpdate(() => { latest = value.value; });
+    const session = createCommitSession(() => latest);
     const change = (next: string | null) => {
       if (next === latest) return false;
       latest = next;
@@ -91,37 +95,49 @@ export const KjunColorPicker = defineComponent({
       return true;
     };
     const pick = (next: string | null) => { if (change(next)) emit("change", next); };
+    const endSession = () => { if (session.end()) emit("change", latest); };
     const moveTo = (next: PickerState) => { state.value = next; change(stateToValue(next, props.alpha)); };
     const pickState = (next: PickerState) => { state.value = next; pick(stateToValue(next, props.alpha)); };
-    const drag = {
-      onStart: () => { dragStart = latest; },
-      onEnd: () => { if (latest !== dragStart) emit("change", latest); },
-    };
-    const selected = computed(() => {
-      const at = value.value === null ? -1 : swatches.value.findIndex(s => s.value === value.value);
-      return props.clearable ? (value.value === null ? 0 : at < 0 ? -1 : at + 1) : at;
-    });
+    const drag = { onStart: () => session.begin(), onEnd: endSession };
+    const onEdit = (live: string | null) => { session.begin(); if (live !== null) change(live); };
+    const onCommit = (next: string | null | "revert") => { if (next !== "revert") change(next); endSession(); };
+    const selected = computed(() => selectedSwatchIndex(value.value, swatches.value, props.clearable));
+
+    const canPickScreen = ref(false);
+    onMounted(() => { canPickScreen.value = props.eyeDropper && eyeDropperSupported(); });
+    watch(() => props.eyeDropper, on => { canPickScreen.value = on && eyeDropperSupported(); });
+    let unmounted = false;
+    onBeforeUnmount(() => { unmounted = true; });
+    const pickFromScreen = async () => { const next = await pickScreenColor(props.alpha, latest); if (next && !unmounted) pick(next); };
 
     const trigger = ref<HTMLButtonElement | null>(null), valueId = useId().replace(/[^\w-]/g, "") + "-color";
     const targets = { swatches: [] as (HTMLButtonElement | null)[], area: null as HTMLElement | null, hex: null as HTMLInputElement | null };
-    let frame = 0;
+    let frame = 0, openedWith: string | null | undefined;
     watch(open, next => {
       cancelAnimationFrame(frame);
-      if (!next) return;
+      if (!next) {
+        // Closing ends an edit a field had not committed yet (Escape while typing): the change commits once, before recent colors move.
+        endSession();
+        // Recent colors move when the panel closes on a new value, so the row never reorders under the pointer.
+        const start = openedWith;
+        openedWith = undefined;
+        if (start === undefined || props.recentColors === undefined || latest === start) return;
+        const list = nextRecentColors(props.recentColors, latest, props.alpha);
+        if (list) emit("update:recentColors", list);
+        return;
+      }
+      openedWith = latest;
       frame = requestAnimationFrame(() => requestAnimationFrame(() => {
         // Someone already put focus on a control (clicked a field in the panel): leave it there.
         if (trigger.value?.ownerDocument.activeElement?.matches('input, textarea, [role="slider"], [role="radio"]')) return;
-        const where = initialFocus({ selectedSwatch: selected.value >= 0, custom: props.custom, input: props.input || nothing.value });
-        const target = where === "swatch" ? targets.swatches[selected.value] : where === "area" ? targets.area : where === "hex" ? targets.hex : targets.swatches[0];
-        target?.focus({ preventScroll: true });
+        initialFocusTarget(targets, { selected: selected.value, custom: props.custom, input: props.input || nothing.value })?.focus({ preventScroll: true });
       }));
     }, { immediate: true });
     onBeforeUnmount(() => cancelAnimationFrame(frame));
 
     return () => {
       const m = scope.value.messages, size = props.size ?? "md", spec = tokens.input[size], owner = field.value, v = value.value, s = state.value;
-      const shownHex = v ? v.slice(0, 7) : "", shownAlpha = v && props.alpha ? pct(parseColor(v)!.a) : undefined;
-      const spoken = v ? m.colorValue(shownHex, shownAlpha) : m.colorNone;
+      const summary = pickerSummary(v, props.alpha, m), spoken = summary.spoken;
       const label = props.ariaLabel || props.placeholder || m.colorPlaceholder;
       const chip = tokens.extensions.colorPicker.triggerSwatch[size];
       const showInput = props.input || nothing.value;
@@ -140,10 +156,10 @@ export const KjunColorPicker = defineComponent({
               onKeydown={(event: KeyboardEvent) => { if (!props.readOnly && (event.key === "ArrowDown" || event.key === "ArrowUp")) { event.preventDefault(); setOpen(true); } }}>
               {slots.trigger ? <>{slots.trigger({ value: v, open: open.value })}<span id={valueId} class="kjun-sr-only">{spoken}</span></> : <>
                 <span class={"kjun-color-chip" + (v ? " kjun-color-checker" : "")} data-none={v ? undefined : ""} aria-hidden="true" style={css({ width: chip, height: chip })}>
-                  <span style={v ? { background: v.slice(0, 7), opacity: props.alpha ? parseColor(v)!.a : 1 } : undefined} />
+                  <span style={v ? { background: summary.hex, opacity: summary.opacity } : undefined} />
                 </span>
                 <span id={valueId} class={v ? undefined : "kjun-placeholder"}>
-                  {v ? <span aria-hidden="true">{shownHex}{shownAlpha !== undefined && shownAlpha < 100 && <span class="kjun-color-trigger-alpha">{shownAlpha}%</span>}</span> : props.placeholder ?? m.colorPlaceholder}
+                  {v ? <span aria-hidden="true">{summary.hex}{summary.percent !== undefined && summary.percent < 100 && <span class="kjun-color-trigger-alpha">{summary.percent}%</span>}</span> : props.placeholder ?? m.colorPlaceholder}
                   <span class="kjun-sr-only">{spoken}</span>
                 </span>
                 <KjunIcon name="chevron-down" size={spec.iconSize} style={{ flexShrink: 0, color: props.disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
@@ -160,10 +176,13 @@ export const KjunColorPicker = defineComponent({
               onMove={hue => moveTo({ ...state.value, hsv: { ...state.value.hsv, h: hue } })} onPick={hue => pickState({ ...state.value, hsv: { ...state.value.hsv, h: hue } })} {...drag} />}
             {props.alpha && <ColorChannel channel="alpha" value={pct(s.a)} max={100} label={m.alpha} valueText={pct(s.a) + "%"} color={stateToValue(s, false)}
               onMove={a => moveTo({ ...state.value, a: a / 100 })} onPick={a => pickState({ ...state.value, a: a / 100 })} {...drag} />}
-            {showInput && <HexInputs value={v} alpha={props.alpha} alphaPercent={pct(s.a)} clearable={props.clearable} hexLabel={m.hex} alphaLabel={m.alpha}
-              onPick={pick} hexRef={el => { targets.hex = el; }} />}
-            {(swatches.value.length > 0 || props.clearable) && <SwatchGrid swatches={swatches.value} clearable={props.clearable} selected={selected.value}
-              label={m.swatches} noneLabel={m.colorNone} onPick={pick} swatchRef={(index, el) => { targets.swatches[index] = el; }} />}
+            {(showInput || canPickScreen.value) && <ColorInputs fields={showInput} value={v} alpha={props.alpha} alphaPercent={pct(s.a)} clearable={props.clearable}
+              hexLabel={m.hex} alphaLabel={m.alpha} eyeDropper={canPickScreen.value ? { label: m.eyeDropper, onPick: pickFromScreen } : null}
+              onEdit={onEdit} onCommit={onCommit} hexRef={el => { targets.hex = el; }} />}
+            {(swatches.value.length > 0 || props.clearable) && <SwatchGrid items={swatchItems(swatches.value, props.clearable, m.colorNone)} selected={selected.value}
+              label={m.swatches} onPick={pick} swatchRef={(index, el) => { targets.swatches[index] = el; }} />}
+            {recent.value && recent.value.length > 0 && <RecentColors items={recent.value} selected={recent.value.findIndex(item => item.value === v)}
+              label={m.recentColors} onPick={pick} />}
           </FloatingPanel>
         </>
       );

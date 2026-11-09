@@ -21,6 +21,14 @@ const Case = defineComponent({
     </div>;
   },
 });
+const RecentCase = defineComponent(() => {
+  const recent = ref<string[]>(['#111111', '#EF4444']);
+  return () => <div data-testid="cp-recent" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <K.KjunColorPicker ariaLabel="최근 색" defaultValue="#3B82F6" swatches={cpSwatches} recentColors={recent.value}
+      {...{ 'onUpdate:recentColors': (list: string[]) => { recent.value = list; } }} />
+    <output data-testid="cp-recent-list">{JSON.stringify(recent.value)}</output>
+  </div>;
+});
 const App = defineComponent(() => {
   const submitted = ref('');
   return () => <K.KjunProvider>{{ default: () => <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '16px', width: '360px', paddingBottom: '480px' }}>
@@ -30,6 +38,9 @@ const App = defineComponent(() => {
     <Case caseId="cp-gray" initial="#3B82F6" options={{ ariaLabel: '회색 확인', custom: true }} />
     <Case caseId="cp-controlled" initial="#3B82F6" controlled options={{ ariaLabel: '제어 색', custom: true, input: true }} />
     <Case caseId="cp-alpha-off" initial="#3B82F680" controlled options={{ ariaLabel: '알파 끔', input: true }} />
+    <RecentCase />
+    <Case caseId="cp-alpha-round" initial="#11223381" options={{ ariaLabel: '반올림', alpha: true, input: true }} />
+    <Case caseId="cp-eyedropper" initial="#3B82F680" options={{ ariaLabel: '스포이드', eyeDropper: true, alpha: true, input: true }} />
     <div data-testid="cp-states" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       <K.KjunColorPicker ariaLabel="비활성" defaultValue="#3B82F6" disabled swatches={cpSwatches} />
       <K.KjunColorPicker ariaLabel="오류" defaultValue="#3B82F6" error swatches={cpSwatches} />

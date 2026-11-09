@@ -1,7 +1,8 @@
 import { defineComponent, ref, watch, watchEffect, type PropType } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
-import { channelKey, colorAreaKey, hexDraft, hexWithAlpha } from "../../../shared/package-runtime/color-picker";
+import { channelKey, colorAreaKey } from "../../../shared/package-runtime/color-picker";
+import { alphaFieldLive, hexFieldCommit, hexFieldLive, hexFieldText } from "../../../shared/package-runtime/color-picker-model";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { KjunIcon } from "./button";
@@ -115,26 +116,26 @@ export const ColorChannel = defineComponent({
   },
 });
 
+type Item = { value: string | null; label: string };
+/** One radio group of color items; "no color" is the item whose value is null. */
 export const SwatchGrid = defineComponent({
   name: "KjunColorSwatchGrid",
   props: {
-    swatches: { type: Array as PropType<{ value: string; label: string }[]>, required: true }, clearable: { type: Boolean, required: true },
-    selected: { type: Number, required: true }, label: { type: String, required: true }, noneLabel: { type: String, required: true },
+    items: { type: Array as PropType<Item[]>, required: true }, selected: { type: Number, required: true }, label: { type: String, required: true },
     onPick: { type: Function as PropType<(value: string | null) => void>, required: true },
-    swatchRef: { type: Function as PropType<(index: number, el: HTMLButtonElement | null) => void>, required: true },
+    swatchRef: { type: Function as PropType<(index: number, el: HTMLButtonElement | null) => void>, default: undefined },
   },
   setup(props) {
     const group = ref<HTMLDivElement | null>(null);
     watchEffect(onCleanup => { if (group.value) onCleanup(bindRadioKeyboard(group.value)); }, { flush: "post" });
     return () => {
-      const items = [...(props.clearable ? [{ value: null as string | null, label: props.noneLabel }] : []), ...props.swatches];
       const icon = tokens.extensions.colorPicker.swatchIconSize;
       return (
         <div ref={group} class="kjun-color-swatches" role="radiogroup" aria-label={props.label}>
-          {items.map((item, index) => {
+          {props.items.map((item, index) => {
             const checked = index === props.selected;
             return (
-              <button key={index} ref={el => props.swatchRef(index, el as HTMLButtonElement | null)} type="button" role="radio" aria-checked={checked ? "true" : "false"}
+              <button key={index} ref={el => props.swatchRef?.(index, el as HTMLButtonElement | null)} type="button" role="radio" aria-checked={checked ? "true" : "false"}
                 aria-label={item.label} class="kjun-color-swatch" data-selected={checked ? "true" : undefined} data-ink={item.value ? readableInk(item.value) : undefined}
                 onClick={() => props.onPick(item.value)}>
                 <span class={"kjun-color-chip" + (item.value ? " kjun-color-checker" : "")} data-none={item.value ? undefined : ""}>
@@ -150,35 +151,62 @@ export const SwatchGrid = defineComponent({
   },
 });
 
-/** The hex field and, with alpha, the % field. A complete code picks at once; Enter or leaving picks a short code or reverts. */
-export const HexInputs = defineComponent({
-  name: "KjunColorHexInputs",
+/** Recent colors under the swatches: a caption and one more radio group. */
+export const RecentColors = defineComponent({
+  name: "KjunColorRecent",
   props: {
-    value: { type: String as PropType<string | null>, default: null }, alpha: { type: Boolean, required: true }, alphaPercent: { type: Number, required: true },
-    clearable: { type: Boolean, required: true }, hexLabel: { type: String, required: true }, alphaLabel: { type: String, required: true },
+    items: { type: Array as PropType<Item[]>, required: true }, selected: { type: Number, required: true }, label: { type: String, required: true },
     onPick: { type: Function as PropType<(value: string | null) => void>, required: true },
+  },
+  setup(props) {
+    return () => (
+      <div class="kjun-color-recent">
+        <span class="kjun-type-caption kjun-color-recent-label" aria-hidden="true">{props.label}</span>
+        <SwatchGrid items={props.items} selected={props.selected} label={props.label} onPick={props.onPick} />
+      </div>
+    );
+  },
+});
+
+/** The eyedropper button and the hex and % fields. Typing changes the value once a code is complete;
+ * Enter or leaving a field commits it (a short code expands, a bad one reverts). */
+export const ColorInputs = defineComponent({
+  name: "KjunColorInputs",
+  props: {
+    fields: { type: Boolean, required: true }, value: { type: String as PropType<string | null>, default: null }, alpha: { type: Boolean, required: true },
+    alphaPercent: { type: Number, required: true }, clearable: { type: Boolean, required: true }, hexLabel: { type: String, required: true },
+    alphaLabel: { type: String, required: true }, eyeDropper: { type: Object as PropType<{ label: string; onPick: () => void } | null>, default: null },
+    onEdit: { type: Function as PropType<(live: string | null) => void>, required: true },
+    onCommit: { type: Function as PropType<(next: string | null | "revert") => void>, required: true },
     hexRef: { type: Function as PropType<(el: HTMLInputElement | null) => void>, required: true },
   },
   setup(props) {
-    const shown = () => props.value ? props.value.slice(1, 7) : "";
+    const shown = () => hexFieldText(props.value);
     const text = ref(shown()), pct = ref(String(props.alphaPercent));
-    let editing: "hex" | "alpha" | null = null;
-    watch(shown, next => { if (editing !== "hex") text.value = next; });
-    watch(() => props.alphaPercent, next => { if (editing !== "alpha") pct.value = String(next); });
-    const withAlpha = (six: string) => props.alpha ? six + (props.value ? props.value.slice(7, 9) : "FF") : six;
+    // editing: the field being typed in; reported: the last value the fields changed. A value from anywhere else (a swatch,
+    // a drag, the app) ends the edit, so a late blur cannot write stale text over it.
+    let editing: "hex" | "alpha" | null = null, reported = props.value;
+    watch(() => [props.value, props.alphaPercent] as const, ([value, percent]) => {
+      if (value !== reported) { editing = null; reported = value; }
+      if (editing !== "hex") text.value = shown();
+      if (editing !== "alpha") pct.value = String(percent);
+    });
+    const edit = (field: "hex" | "alpha", live: string | null) => { editing = field; if (live !== null) reported = live; props.onEdit(live); };
     const commitHex = () => {
+      // Nothing typed (or already committed by Enter): leaving the field changes nothing.
+      if (editing !== "hex") return;
       editing = null;
-      const draft = hexDraft(hexWithAlpha(text.value, props.alpha, props.value ? props.value.slice(7, 9) || "FF" : "FF"), props.alpha);
-      if (draft.commit === "revert" || (draft.commit === null && !props.clearable)) { text.value = shown(); return; }
-      props.onPick(draft.commit);
-      text.value = draft.commit ? draft.commit.slice(1, 7) : "";
+      const next = hexFieldCommit(text.value, props.alpha, props.value, props.clearable);
+      text.value = next === "revert" ? shown() : hexFieldText(next);
+      if (next !== "revert") reported = next;
+      props.onCommit(next);
     };
-    const alphaHex = (n: number) => Math.round(n / 100 * 255).toString(16).toUpperCase().padStart(2, "0");
-    const validPct = (t: string) => /^\d{1,3}$/.test(t) && Number(t) <= 100;
     const commitPct = () => {
+      if (editing !== "alpha") return;
       editing = null;
-      if (!validPct(pct.value) || !props.value) { pct.value = String(props.alphaPercent); return; }
-      props.onPick(props.value.slice(0, 7) + alphaHex(Number(pct.value)));
+      const next = alphaFieldLive(pct.value, props.value);
+      if (next === null) pct.value = String(props.alphaPercent); else reported = next;
+      props.onCommit(next ?? "revert");
     };
     const keys = (commit: () => void) => (event: KeyboardEvent) => { if (event.key === "Enter") { event.preventDefault(); commit(); } };
     return () => {
@@ -186,26 +214,31 @@ export const HexInputs = defineComponent({
       const style = css({ height: field.height, borderRadius: field.radius, paddingInline: field.padding - tokens.border.controlWidth, ...inputTypeStyle("sm") });
       return (
         <div class="kjun-color-inputs">
-          <div class="kjun-input-wrap">
-            <input ref={el => props.hexRef(el as HTMLInputElement | null)} class="kjun-input kjun-input-native kjun-color-hex" aria-label={props.hexLabel} value={text.value}
-              maxlength={props.alpha ? 9 : 7} spellcheck={false} autocomplete="off" style={style}
-              onInput={(event: Event) => {
-                editing = "hex";
-                const next = (event.target as HTMLInputElement).value.replace(/^#/, "");
-                text.value = next;
-                const live = hexDraft(next.length === 6 ? withAlpha(next) : next, props.alpha).live;
-                if (live) props.onPick(live);
-              }}
-              onKeydown={keys(commitHex)} onBlur={commitHex} />
-          </div>
-          {props.alpha && (
+          {props.eyeDropper && (
+            <button type="button" class="kjun-input kjun-color-eyedropper" aria-label={props.eyeDropper.label} onClick={props.eyeDropper.onPick}
+              style={css({ width: field.height, height: field.height, borderRadius: field.radius })}>
+              <KjunIcon name="color-picker" size={field.iconSize} />
+            </button>
+          )}
+          {props.fields && (
+            <div class="kjun-input-wrap">
+              <input ref={el => props.hexRef(el as HTMLInputElement | null)} class="kjun-input kjun-input-native kjun-color-hex" aria-label={props.hexLabel} value={text.value}
+                maxlength={props.alpha ? 9 : 7} spellcheck={false} autocomplete="off" style={style}
+                onInput={(event: Event) => {
+                  const next = (event.target as HTMLInputElement).value.replace(/^#/, "");
+                  text.value = next;
+                  edit("hex", hexFieldLive(next, props.alpha, props.value));
+                }}
+                onKeydown={keys(commitHex)} onBlur={commitHex} />
+            </div>
+          )}
+          {props.fields && props.alpha && (
             <input class="kjun-input kjun-input-native kjun-color-alpha" aria-label={props.alphaLabel} value={pct.value} inputmode="numeric" maxlength={3}
               autocomplete="off" style={style}
               onInput={(event: Event) => {
-                editing = "alpha";
                 const next = (event.target as HTMLInputElement).value;
                 pct.value = next;
-                if (validPct(next) && props.value) props.onPick(props.value.slice(0, 7) + alphaHex(Number(next)));
+                edit("alpha", alphaFieldLive(next, props.value));
               }}
               onKeydown={keys(commitPct)} onBlur={commitPct} />
           )}

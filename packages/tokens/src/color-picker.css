@@ -60,6 +60,12 @@
 .kjun-color-inputs .kjun-input-wrap { flex: 1; min-width: 0; }
 .kjun-color-inputs .kjun-color-alpha { flex: none; width: var(--_kjun-extension-color-picker-alpha-input-width); }
 .kjun-color-inputs input { font-variant-numeric: tabular-nums; text-transform: uppercase; }
+/* The eyedropper is a square field-sized button that fills like the fields next to it. */
+.kjun-color-eyedropper { flex: none; display: inline-flex; align-items: center; justify-content: center; padding: 0; cursor: pointer; color: var(--_kjun-color-text-secondary); }
+
+/* Recent colors: a caption over one more swatch row. */
+.kjun-color-recent { display: flex; flex-direction: column; gap: var(--_kjun-geometry-dimension-value4); }
+.kjun-color-recent-label { color: var(--_kjun-color-text-tertiary); }
 
 /* Eight fixed columns, so 'none' + seven colors fill one row; swatches stay square at whatever width the columns get. */
 .kjun-color-swatches { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: var(--_kjun-extension-color-picker-swatch-gap); }

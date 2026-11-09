@@ -99,3 +99,35 @@ export function normalizeSwatches(list: unknown[], alpha: boolean): { value: str
 export function initialFocus(o: { selectedSwatch: boolean; custom: boolean; input: boolean }): "swatch" | "area" | "hex" | "first-swatch" {
   return o.selectedSwatch ? "swatch" : o.custom ? "area" : o.input ? "hex" : "first-swatch";
 }
+/** The control the panel focuses when it opens, from the elements each platform registered. */
+export function initialFocusTarget<T>(targets: { swatches: (T | null)[]; area: T | null; hex: T | null }, o: { selected: number; custom: boolean; input: boolean }): T | null {
+  const where = initialFocus({ selectedSwatch: o.selected >= 0, custom: o.custom, input: o.input });
+  return (where === "swatch" ? targets.swatches[o.selected] : where === "area" ? targets.area : where === "hex" ? targets.hex : targets.swatches[0]) ?? null;
+}
+
+/** The swatch row's items: "no color" first when clearable. */
+export const swatchItems = (swatches: { value: string; label: string }[], clearable: boolean, noneLabel: string) =>
+  [...(clearable ? [{ value: null as string | null, label: noneLabel }] : []), ...swatches];
+/** Which item of swatchItems the value selects, or -1. */
+export function selectedSwatchIndex(value: string | null, swatches: { value: string }[], clearable: boolean): number {
+  const at = value === null ? -1 : swatches.findIndex(s => s.value === value);
+  return clearable ? (value === null ? 0 : at < 0 ? -1 : at + 1) : at;
+}
+
+/** What the trigger shows and says: #RRGGBB, the opacity % with alpha, and the spoken value. */
+export function pickerSummary(value: string | null, alpha: boolean, m: { colorValue: (hex: string, alpha?: number) => string; colorNone: string }) {
+  const hex = value ? value.slice(0, 7) : "", percent = value && alpha ? Math.round(parseColor(value)!.a * 100) : undefined;
+  return { hex, percent, opacity: percent === undefined ? 1 : percent / 100, spoken: value ? m.colorValue(hex, percent) : m.colorNone };
+}
+
+/** Development warnings, each said once per picker. */
+export function createPickerWarnings() {
+  const said = new Set<string>();
+  const once = (key: string, message: string) => { if (!said.has(key)) { said.add(key); warnColorPicker(message); } };
+  return (o: { raw: unknown; alpha: boolean; swatches: unknown[] | undefined; nothing: boolean }) => {
+    if (!o.alpha && typeof o.raw === "string" && parseColor(o.raw) && /^#?([0-9a-f]{4}|[0-9a-f]{8})$/i.test(o.raw.trim()))
+      once("alpha", "the value has alpha but alpha is off; it is drawn and reported without it.");
+    if (invalidSwatchCount(o.swatches ?? []) > 0) once("swatches", "swatches has entries that are not hex colors; they are left out.");
+    if (o.nothing) once("nothing", "turn on custom, input or clearable, or give swatches; showing the hex field.");
+  };
+}

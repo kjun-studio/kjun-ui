@@ -3,6 +3,15 @@ import { useState } from 'react';
 export const cpSwatches = ['#EF4444', '#F97316', '#22C55E', '#3B82F6', '#8B5CF6', '#111111', '#FFFFFF'];
 export const cpBadSwatches = ['nope', '#22C55E', ...cpSwatches];
 
+/** Recent colors kept by the app, the way an app would store them. */
+function RecentCase({ K }: { K: any }) {
+  const [recent, setRecent] = useState<string[]>(['#111111', '#EF4444']);
+  return <div data-testid="cp-recent" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+    <K.KjunColorPicker ariaLabel="최근 색" defaultValue="#3B82F6" swatches={cpSwatches} recentColors={recent} onRecentColorsChange={setRecent} />
+    <output data-testid="cp-recent-list">{JSON.stringify(recent)}</output>
+  </div>;
+}
+
 function Case({ K, id, initial, controlled, native, props }: { K: any; id: string; initial: string | null; controlled?: boolean; native?: boolean; props: Record<string, any> }) {
   const [value, setValue] = useState<string | null>(initial);
   const [changes, setChanges] = useState<(string | null)[]>([]);
@@ -27,6 +36,9 @@ export function ColorPickerCases({ K, native = false, providerProps = {} }: { K:
     <Case K={K} id="cp-gray" initial="#3B82F6" props={{ ariaLabel: '회색 확인', custom: true }} />
     <Case K={K} id="cp-controlled" initial="#3B82F6" controlled native={native} props={{ ariaLabel: '제어 색', custom: true, input: true }} />
     <Case K={K} id="cp-alpha-off" initial="#3B82F680" controlled native={native} props={{ ariaLabel: '알파 끔', input: true }} />
+    <RecentCase K={K} />
+    <Case K={K} id="cp-alpha-round" initial="#11223381" props={{ ariaLabel: '반올림', alpha: true, input: true }} />
+    <Case K={K} id="cp-eyedropper" initial="#3B82F680" props={{ ariaLabel: '스포이드', eyeDropper: true, alpha: true, input: true }} />
     <div data-testid="cp-states" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       <K.KjunColorPicker ariaLabel="비활성" defaultValue="#3B82F6" disabled swatches={cpSwatches} />
       <K.KjunColorPicker ariaLabel="오류" defaultValue="#3B82F6" error swatches={cpSwatches} />
