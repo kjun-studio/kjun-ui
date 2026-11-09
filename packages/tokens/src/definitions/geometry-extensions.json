@@ -66,6 +66,7 @@
       "markSize": { "$ref": "dimension.value20" },
       "markIconSize": { "$ref": "dimension.value14" },
       "checkboxRadius": { "$ref": "radius.radius6" },
+      "badgeGap": { "$ref": "dimension.value6" },
       "open": {
         "minimumHeight": { "$ref": "dimension.value64" },
         "compactMinimumHeight": { "$ref": "dimension.value56" },

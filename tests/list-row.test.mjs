@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { listRowChoice, listRowEnd, listRowKind, listSectionShape, warnListSectionProps } from '../shared/package-runtime/list-row.ts';
+import { listRowChoice, listRowEnd, listRowKind, listRowMetrics, listSectionShape, warnListSectionProps, warnListSelection } from '../shared/package-runtime/list-row.ts';
 import { listLeadingGeometry, listRowBleed } from '../shared/package-runtime/list-leading.ts';
 
 test('a switch row wins, a row given selected is a radio, then link, button and static', () => {
@@ -70,5 +70,44 @@ test('an explicit divider on an open section warns once in development', t => {
     warnListSectionProps({ open: true, divider: true });
     assert.equal(warnings.length, 1);
     assert.match(warnings[0], /^KJUN ListSection: divider has no effect in an open section/);
+  } finally { if (env === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = env; }
+});
+
+test('a busy pressable row spins in place of its end, a switch row and a static row do not', () => {
+  assert.equal(listRowEnd({ kind: 'radio', selected: true, mode: 'single', open: true, busy: true }), 'spinner');
+  assert.equal(listRowEnd({ kind: 'button', mode: 'none', open: false, busy: true }), 'spinner');
+  assert.equal(listRowEnd({ kind: 'link', mode: 'none', open: false, busy: true }), 'spinner');
+  assert.equal(listRowEnd({ kind: 'switch', mode: 'none', open: false, busy: true }), null);
+  assert.equal(listRowEnd({ kind: 'static', selected: true, mode: 'none', open: false, busy: true }), 'check');
+});
+
+test('row metrics follow the section variant and density, like the web row variables', () => {
+  assert.deepEqual(listRowMetrics({ open: false, compact: false }), { paddingY: 16, paddingX: 16, gap: 12, minimumHeight: 56, actionsPadding: 16, title: 'label', description: 'caption', trailing: 'body' });
+  assert.equal(listRowMetrics({ open: false, compact: true }).minimumHeight, 44);
+  assert.equal(listRowMetrics({ open: false, compact: true }).paddingY, 12);
+  assert.deepEqual(listRowMetrics({ open: true, compact: false }), { paddingY: 12, paddingX: 12, gap: 14, minimumHeight: 64, actionsPadding: 12, title: 'input', description: 'body', trailing: 'label' });
+  assert.equal(listRowMetrics({ open: true, compact: true }).minimumHeight, 56);
+  assert.equal(listRowMetrics({ open: true, compact: true }).paddingY, 8);
+});
+
+test('a section value that would be ignored warns once in development', t => {
+  const env = process.env.NODE_ENV, warnings = [];
+  process.env.NODE_ENV = 'development';
+  t.mock.method(console, 'warn', message => warnings.push(message));
+  try {
+    warnListSelection({ mode: 'single', value: 'a', handled: true });
+    warnListSelection({ mode: 'multiple', value: ['a'], handled: true });
+    warnListSelection({ mode: 'single', value: undefined, handled: false });
+    assert.deepEqual(warnings, []);
+    warnListSelection({ mode: 'none', value: 'a', handled: true });
+    warnListSelection({ mode: 'multiple', value: 'a', handled: true });
+    warnListSelection({ mode: 'single', value: ['a'], handled: true });
+    warnListSelection({ mode: 'single', value: 'a', handled: false });
+    warnListSelection({ mode: 'single', value: 'a', handled: false });
+    assert.equal(warnings.length, 4);
+    assert.match(warnings[0], /^KJUN ListSection: value has no effect without selectionMode/);
+    assert.match(warnings[1], /"multiple" takes a list/);
+    assert.match(warnings[2], /"single" takes one value/);
+    assert.match(warnings[3], /without onValueChange/);
   } finally { if (env === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = env; }
 });

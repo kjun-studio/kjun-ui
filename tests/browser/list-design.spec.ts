@@ -134,4 +134,35 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(page.locator('.kjun-list-row', { hasText: 'English' }).locator('.kjun-list-mark')).toHaveCount(0);
     }
   });
+
+  test(`${platform}: busy rows spin and ignore presses, compact skeletons keep the row height and badges follow the title`, async ({ page }) => {
+    await openFixture(page, platform, '', 'list-design');
+    // A busy button row spins in place of its chevron, ignores presses and takes no pressed fill.
+    const sending = page.getByRole('button', { name: /보내는 중 행/ });
+    await expect(sending).toHaveAttribute('aria-busy', 'true');
+    await page.getByText('보내는 중 행', { exact: true }).hover();
+    if (web) {
+      await expect(rowOf(sending).locator('.kjun-list-busy')).toHaveCount(1);
+      await expect(rowOf(sending).locator('.kjun-list-chevron')).toHaveCount(0);
+      expect(await fill(rowOf(sending))).toBe(clear);
+    }
+    await page.mouse.down();
+    expect(await fill(rowOf(sending))).toBe(clear);
+    await page.mouse.up();
+    await expect(page.getByTestId('open-state')).toContainText('"presses":0');
+    // A busy link row does not navigate.
+    await page.getByText('이동 중 행', { exact: true }).click();
+    expect(new URL(page.url()).hash).toBe('');
+    // A compact section's loading row skeleton is as tall as its compact rows.
+    if (web) expect(Math.round((await box(page.locator('.kjun-list-skeleton-row[data-density="compact"]'))).height)).toBe(44);
+    // A badge sits after the title, centered on its first line; the row is named by its title, badge and value, and
+    // described by its description (Native reads a text badge only).
+    const badge = await box(page.getByText('새 기능', { exact: true })), title = await box(page.getByText('배지 행', { exact: true }));
+    expect(badge.x).toBeGreaterThan(title.x + title.width);
+    expect(Math.abs(badge.y + badge.height / 2 - (title.y + title.height / 2))).toBeLessThanOrEqual(1);
+    if (web) {
+      const row = page.getByRole('button', { name: '배지 행 새 기능 3개', exact: true });
+      await expect(row).toHaveAccessibleDescription('배지 설명');
+    } else await expect(page.getByRole('button', { name: '배지 행, 배지 설명, 3개', exact: true })).toHaveCount(1);
+  });
 }

@@ -29208,12 +29208,12 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "The row's last press is still being handled (such as a switch saving): presses are ignored, the row reads as busy and a switch row draws a spinner in its thumb.",
+            "description": "The row's last press is still being handled (such as a switch saving): presses (and a link's navigation) are ignored, the row reads as busy and draws a spinner, in a switch row's thumb or in place of its mark, check or chevron.",
             "summary": "행의 마지막 누름을 아직 처리하는 중입니다.",
             "details": [
               {
                 "label": "동작",
-                "text": "true인 동안 누름을 무시하고, 화면 낭독기에 처리 중(aria-busy)으로 알립니다. 포커스와 역할은 그대로 남아 Tab으로 닿습니다. 스위치 행은 KjunSwitch의 loading처럼 손잡이 안에 스피너를 그립니다."
+                "text": "true인 동안 누름을 무시하고, 화면 낭독기에 처리 중(aria-busy)으로 알립니다. 포커스와 역할은 그대로 남아 Tab으로 닿습니다. 스위치 행은 KjunSwitch의 loading처럼 손잡이 안에 스피너를 그리고, 다른 누르는 행은 선택 표시·체크·chevron 자리에 같은 크기의 스피너를 그립니다. 링크 행은 이동하지 않으며 hover·눌림 면도 칠하지 않습니다."
               },
               {
                 "label": "사용",
@@ -29329,7 +29329,25 @@
               },
               {
                 "label": "사용 계약",
-                "text": "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 화면 낭독기는 이 내용을 따로 읽지 않으니 금액·진행률은 ariaLabel에 넣으세요."
+                "text": "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 웹에서는 행의 설명(aria-describedby)으로 함께 읽지만 Native는 읽지 않으니, 꼭 들려야 할 금액·진행률은 ariaLabel에 넣으세요."
+              }
+            ],
+            "example": "/components/list-row#preview"
+          },
+          {
+            "name": "badge",
+            "data": [],
+            "source": "packages/vue3/src/list.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "제목 바로 뒤에 붙이는 짧은 표시입니다(새 기능·베타·개수).",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "KjunBadge 같은 표시용 콘텐츠를 넣고, 제목 첫 줄 가운데에 맞춰 6px 뒤에 놓습니다. 긴 제목은 배지 앞에서 줄바꿈합니다. 화면 낭독기는 행 이름에서 제목 다음에 읽습니다(Native는 문자열·숫자일 때)."
               }
             ],
             "example": "/components/list-row#preview"
@@ -29414,6 +29432,26 @@
             "description": "",
             "summary": "제목 또는 행동을 보충하는 설명입니다.",
             "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "badge",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Content after the title, centered on its first line, such as a KjunBadge (\"New\", a count); a screen reader hears it with the title.",
+            "summary": "제목 바로 뒤에 붙이는 짧은 표시입니다(새 기능·베타·개수).",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "KjunBadge 같은 표시용 콘텐츠를 넣고, 제목 첫 줄 가운데에 맞춰 6px 뒤에 놓습니다. 긴 제목은 배지 앞에서 줄바꿈합니다. 화면 낭독기는 행 이름에서 제목 다음에 읽습니다(Native는 문자열·숫자일 때)."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-row#preview"
           },
           {
             "name": "icon",
@@ -29661,12 +29699,12 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "The row's last press is still being handled (such as a switch saving): presses are ignored, the row reads as busy and a switch row draws a spinner in its thumb.",
+            "description": "The row's last press is still being handled (such as a switch saving): presses (and a link's navigation) are ignored, the row reads as busy and draws a spinner, in a switch row's thumb or in place of its mark, check or chevron.",
             "summary": "행의 마지막 누름을 아직 처리하는 중입니다.",
             "details": [
               {
                 "label": "동작",
-                "text": "true인 동안 누름을 무시하고, 화면 낭독기에 처리 중(aria-busy)으로 알립니다. 포커스와 역할은 그대로 남아 Tab으로 닿습니다. 스위치 행은 KjunSwitch의 loading처럼 손잡이 안에 스피너를 그립니다."
+                "text": "true인 동안 누름을 무시하고, 화면 낭독기에 처리 중(aria-busy)으로 알립니다. 포커스와 역할은 그대로 남아 Tab으로 닿습니다. 스위치 행은 KjunSwitch의 loading처럼 손잡이 안에 스피너를 그리고, 다른 누르는 행은 선택 표시·체크·chevron 자리에 같은 크기의 스피너를 그립니다. 링크 행은 이동하지 않으며 hover·눌림 면도 칠하지 않습니다."
               },
               {
                 "label": "사용",
@@ -29736,7 +29774,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 화면 낭독기는 이 내용을 따로 읽지 않으니 금액·진행률은 ariaLabel에 넣으세요."
+                "text": "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 웹에서는 행의 설명(aria-describedby)으로 함께 읽지만 Native는 읽지 않으니, 꼭 들려야 할 금액·진행률은 ariaLabel에 넣으세요."
               }
             ],
             "source": "packages/react/src/list.tsx",
@@ -29788,6 +29826,26 @@
             "description": "",
             "summary": "제목 또는 행동을 보충하는 설명입니다.",
             "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "badge",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Content after the title, centered on its first line, such as a KjunBadge (\"New\", a count); a string or number is heard with the title.",
+            "summary": "제목 바로 뒤에 붙이는 짧은 표시입니다(새 기능·베타·개수).",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "ReactNode"
+              },
+              {
+                "label": "사용 계약",
+                "text": "KjunBadge 같은 표시용 콘텐츠를 넣고, 제목 첫 줄 가운데에 맞춰 6px 뒤에 놓습니다. 긴 제목은 배지 앞에서 줄바꿈합니다. 화면 낭독기는 행 이름에서 제목 다음에 읽습니다(Native는 문자열·숫자일 때)."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-row#preview"
           },
           {
             "name": "icon",
@@ -30035,12 +30093,12 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "The row's last press is still being handled (such as a switch saving): presses are ignored, the row reads as busy and a switch row draws a spinner in its thumb.",
+            "description": "The row's last press is still being handled (such as a switch saving): presses (and a Native Web link's navigation) are ignored, the row reads as busy and draws a spinner, in a switch row's thumb or in place of its mark, check or chevron.",
             "summary": "행의 마지막 누름을 아직 처리하는 중입니다.",
             "details": [
               {
                 "label": "동작",
-                "text": "true인 동안 누름을 무시하고, 화면 낭독기에 처리 중(busy 상태)으로 알립니다. 포커스와 역할은 그대로 남아 Tab으로 닿습니다. 스위치 행은 KjunSwitch의 loading처럼 손잡이 안에 스피너를 그립니다."
+                "text": "true인 동안 누름을 무시하고, 화면 낭독기에 처리 중(busy 상태)으로 알립니다. 포커스와 역할은 그대로 남아 Tab으로 닿습니다. 스위치 행은 KjunSwitch의 loading처럼 손잡이 안에 스피너를 그리고, 다른 누르는 행은 선택 표시·체크·chevron 자리에 같은 크기의 스피너를 그립니다. 링크 행은 이동하지 않으며 hover·눌림 면도 칠하지 않습니다."
               },
               {
                 "label": "사용",
@@ -30110,7 +30168,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 화면 낭독기는 이 내용을 따로 읽지 않으니 금액·진행률은 ariaLabel에 넣으세요."
+                "text": "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 웹에서는 행의 설명(aria-describedby)으로 함께 읽지만 Native는 읽지 않으니, 꼭 들려야 할 금액·진행률은 ariaLabel에 넣으세요."
               }
             ],
             "source": "packages/native/src/list.tsx",

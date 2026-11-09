@@ -1,3 +1,5 @@
+import { tokens } from "@kjun-ui/tokens";
+
 // What a list row is, shared by every platform. A switch row (checked given) wins over href and onClick; a row given
 // `selected` (true or false) is one choice: a radio, or a checkbox in a multiple-choice section.
 export type ListRowKind = "switch" | "radio" | "checkbox" | "link" | "button" | "static";
@@ -11,11 +13,26 @@ export function listRowKind({ checked, selected, href, pressable, mode = "none" 
 
 /**
  * What a row draws at its end for its choice: a mark (an empty ring or box, filled when chosen) in an open section or a
- * multiple-choice list, so every choice shows it can be picked; otherwise a check on the chosen row only.
+ * multiple-choice list, so every choice shows it can be picked; otherwise a check on the chosen row only. A busy
+ * pressable row (not a switch, whose thumb spins) draws a spinner in place of its mark, check and chevron.
  */
-export function listRowEnd({ kind, selected, mode, open }: { kind: ListRowKind; selected?: boolean; mode: ListSelectionMode; open: boolean }) {
+export function listRowEnd({ kind, selected, mode, open, busy = false }: { kind: ListRowKind; selected?: boolean; mode: ListSelectionMode; open: boolean; busy?: boolean }) {
+  if (busy && kind !== "switch" && kind !== "static") return "spinner" as const;
   if ((kind === "radio" || kind === "checkbox") && (open || mode === "multiple")) return "mark" as const;
   return selected ? "check" as const : null;
+}
+
+export type ListTypeRole = "label" | "input" | "caption" | "body";
+/**
+ * A row's metrics for its section's variant and density, the numbers Web's row variables hold, for Native rows and
+ * row skeletons: vertical and horizontal padding, gap, minimum height, actions padding and the title, description and
+ * end value type roles.
+ */
+export function listRowMetrics({ open, compact }: { open: boolean; compact: boolean }) {
+  const list = tokens.extensions.list, o = list.open;
+  return open
+    ? { paddingY: compact ? o.compactPaddingY : o.paddingY, paddingX: o.paddingX, gap: o.gap, minimumHeight: compact ? o.compactMinimumHeight : o.minimumHeight, actionsPadding: o.paddingX, title: "input" as ListTypeRole, description: "body" as ListTypeRole, trailing: "label" as ListTypeRole }
+    : { paddingY: compact ? list.compactPaddingY : list.padding, paddingX: list.padding, gap: list.gap, minimumHeight: compact ? list.compactMinimumHeight : list.minimumHeight, actionsPadding: list.actionsPadding, title: "label" as ListTypeRole, description: "caption" as ListTypeRole, trailing: "body" as ListTypeRole };
 }
 
 export type ListChoiceValue = string | number;
@@ -64,6 +81,19 @@ export function warnListRowProps({ checked, selected, href, chevron, deviceLink,
 export function warnListSectionProps({ open, divider }: { open: boolean; divider?: boolean }) {
   if (!developmentMode()) return;
   warnOnce("open-divider", open && divider === true, "divider has no effect in an open section; open rows are set apart by space. Use the default variant for divided rows.", "ListSection");
+}
+/**
+ * Development warnings, once each, for a section selection that would otherwise be ignored without a word: a value
+ * with no selection mode, a single value for "multiple" (read as none chosen), a list for "single", and a value with
+ * no change handler, whose rows look pressable but never change. Vue always has its update event, so it passes
+ * `handled`.
+ */
+export function warnListSelection({ mode, value, handled }: { mode: ListSelectionMode; value: unknown; handled: boolean }) {
+  if (!developmentMode() || value === undefined) return;
+  warnOnce("selection-none", mode === "none", "value has no effect without selectionMode; set selectionMode to \"single\" or \"multiple\".", "ListSection");
+  warnOnce("selection-multiple", mode === "multiple" && !Array.isArray(value), "selectionMode \"multiple\" takes a list of values; a single value reads as nothing chosen.", "ListSection");
+  warnOnce("selection-single", mode === "single" && Array.isArray(value), "selectionMode \"single\" takes one value (or null); a list reads as nothing chosen.", "ListSection");
+  warnOnce("selection-handler", mode !== "none" && !handled, "value is given without onValueChange, so pressing a row never changes the choice; pass onValueChange.", "ListSection");
 }
 
 export type ListSectionCorner = "none" | "sm" | "md" | "lg" | "xl";

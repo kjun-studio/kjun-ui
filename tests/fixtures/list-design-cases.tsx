@@ -43,6 +43,12 @@ export function ListOpenCases({ K, native = false }: { K: any; native?: boolean 
       <K.KjunListRow icon="wifi" title="와이파이 행" checked onCheckedChange={() => {}} />
       <K.KjunListRow icon="receipt" iconBackground={tile} title="영수증 행" chevron {...press} />
     </K.KjunListSection>
+    <K.KjunListSection radius="lg" title="촘촘한 로딩" density="compact" loading={<K.KjunListSkeleton variant="row" rows={1} description={false} />} />
+    <K.KjunListSection radius="lg" title="처리 중">
+      <K.KjunListRow icon="send" title="보내는 중 행" chevron busy {...{ [native ? 'onPress' : 'onClick']: () => setPresses(n => n + 1) }} />
+      <K.KjunListRow title="이동 중 행" href="#moved" busy chevron />
+      <K.KjunListRow title="배지 행" badge={<K.KjunBadge>새 기능</K.KjunBadge>} description="배지 설명" trailing="3개" {...press} />
+    </K.KjunListSection>
     <K.KjunListGroup variant="open">
       <K.KjunListSection title="화면 테마" selectionMode="single" value={theme} onValueChange={setTheme}>
         <K.KjunListRow icon="sun" title="밝게" value="light" />

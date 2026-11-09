@@ -256,6 +256,15 @@
   margin-inline: var(--_kjun-extension-list-open-row-inset);
 }
 .kjun-list-skeleton-row[data-variant="row"][data-open]::after { content: none; }
+/* Row in a compact KjunListSection: the compact row's padding and height, default or open. */
+.kjun-list-skeleton-row[data-variant="row"][data-density="compact"] {
+  min-height: var(--_kjun-extension-list-compact-minimum-height);
+  padding-block: var(--_kjun-extension-list-compact-padding-y);
+}
+.kjun-list-skeleton-row[data-variant="row"][data-open][data-density="compact"] {
+  min-height: var(--_kjun-extension-list-open-compact-minimum-height);
+  padding-block: var(--_kjun-extension-list-open-compact-padding-y);
+}
 .kjun-list-skeleton-row[data-open] .kjun-list-skeleton-leading {
   width: var(--_kjun-extension-list-open-leading-size);
   height: var(--_kjun-extension-list-open-leading-size);

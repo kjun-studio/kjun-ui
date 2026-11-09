@@ -1,7 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useContext, type CSSProperties } from "react";
-import { ListOpenContext } from "./list-context";
+import { ListShapeContext } from "./list-context";
 import { KjunSkeleton, KjunSpinner } from "./display";
 import { useSkeletonPhase } from "./skeleton-phase";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
@@ -42,15 +42,15 @@ export function KjunListSkeleton({
 }: KjunListSkeletonProps) {
   const sk = tokens.extensions.skeleton;
   // In an open KjunListSection a row skeleton takes the open row's shape: larger title and description lines and a
-  // rounded leading square in place of the avatar.
-  const open = useContext(ListOpenContext) && variant === "row", leadingSize = tokens.extensions.list.open.leadingSize;
+  // rounded leading square in place of the avatar; in a compact one, the compact row's height.
+  const shape = useContext(ListShapeContext), open = shape.open && variant === "row", leadingSize = tokens.extensions.list.open.leadingSize;
   return (
     <div aria-hidden={loadingText ? undefined : true} role={loadingText ? "status" : undefined}>
       {loadingText && <span className="kjun-sr-only">{loadingText}</span>}
       {variant === "row"
         ? Array.from({ length: rows }, (_, i) => (
             // KjunListRow's own geometry: bars sit in the title and description line boxes.
-            <div key={i} className="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined} data-open={open || undefined}>
+            <div key={i} className="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined} data-open={open || undefined} data-density={shape.compact ? "compact" : undefined}>
               {avatar && <div className="kjun-list-skeleton-leading">{open ? <KjunSkeleton type="block" width={leadingSize} height={leadingSize} /> : <KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} />}</div>}
               <div className="kjun-list-skeleton-label">
                 <KjunSkeleton type="line" role={open ? "input" : "control"} width={i % 2 ? "55%" : "40%"} />

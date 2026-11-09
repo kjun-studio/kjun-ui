@@ -1,6 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
 import { defineComponent, inject, type ExtractPublicPropTypes, type PropType } from "vue";
-import { kjunListOpenKey } from "./runtime/list-context";
+import { kjunListShapeKey } from "./runtime/list-context";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { KjunSkeleton, KjunSpinner } from "./display";
 import { useSkeletonPhase } from "./skeleton-phase";
@@ -41,13 +41,13 @@ export const KjunListSkeleton = defineComponent({
   name: "KjunListSkeleton",
   props: kjunListSkeletonProps,
   setup(props) {
-    const inOpenList = inject(kjunListOpenKey, null), leadingSize = tokens.extensions.list.open.leadingSize;
+    const shape = inject(kjunListShapeKey, null), leadingSize = tokens.extensions.list.open.leadingSize;
     // Like React: the row variant uses KjunListRow's line boxes (an open section's larger ones, with a rounded leading
-    // square); other variants take each slot's line height from CSS.
+    // square) and a compact section's height; other variants take each slot's line height from CSS.
     const row = (i: number) => {
-      const avatar = props.avatar ?? false, open = !!inOpenList?.value;
+      const avatar = props.avatar ?? false, open = !!shape?.value.open, compact = !!shape?.value.compact;
       return (
-        <div key={i} class="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined} data-open={open || undefined}>
+        <div key={i} class="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined} data-open={open || undefined} data-density={compact ? "compact" : undefined}>
           {avatar && <div class="kjun-list-skeleton-leading">{open ? <KjunSkeleton type="block" width={leadingSize} height={leadingSize} /> : <KjunSkeleton type="avatar" width={props.avatarSize} height={props.avatarSize} />}</div>}
           <div class="kjun-list-skeleton-label">
             <KjunSkeleton type="line" role={open ? "input" : "control"} width={i % 2 ? "55%" : "40%"} />

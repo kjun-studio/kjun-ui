@@ -32,6 +32,12 @@ createApp(defineComponent(() => () => <K.KjunProvider>
     <K.KjunListSection radius="lg" title="기본 여러 개" selectionMode="multiple" modelValue={s.plain} onUpdate:modelValue={(v: any) => { s.plain = v; }}>{{ default: () => [
       <K.KjunListRow title="빨강 태그" value="red" />, <K.KjunListRow title="파랑 태그" value="blue" />,
     ] }}</K.KjunListSection>
+    <K.KjunListSection radius="lg" title="촘촘한 로딩" density="compact">{{ loading: () => <K.KjunListSkeleton variant="row" rows={1} description={false} /> }}</K.KjunListSection>
+    <K.KjunListSection radius="lg" title="처리 중">{{ default: () => [
+      <K.KjunListRow icon="send" title="보내는 중 행" chevron busy onClick={() => { s.presses++; }} />,
+      <K.KjunListRow title="이동 중 행" href="#moved" busy chevron />,
+      <K.KjunListRow title="배지 행" description="배지 설명" onClick={noop}>{{ badge: () => <K.KjunBadge>새 기능</K.KjunBadge>, trailing: () => '3개' }}</K.KjunListRow>,
+    ] }}</K.KjunListSection>
     <K.KjunListSection radius="lg" title="촘촘하게" density="compact">{{ default: () => [
       <K.KjunListRow icon="wifi" title="와이파이 행" checked onUpdate:checked={noop} />,
       <K.KjunListRow icon="receipt" iconBackground={tile} title="영수증 행" chevron onClick={noop} />,

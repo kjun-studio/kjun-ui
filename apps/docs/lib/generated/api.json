@@ -10940,7 +10940,7 @@
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "The row's last press is still being handled (such as a switch saving): presses are ignored, the row reads as busy and a switch row draws a spinner in its thumb."
+        "description": "The row's last press is still being handled (such as a switch saving): presses (and a link's navigation) are ignored, the row reads as busy and draws a spinner, in a switch row's thumb or in place of its mark, check or chevron."
       },
       {
         "name": "value",
@@ -10991,6 +10991,11 @@
         "source": "packages/vue3/src/list.tsx"
       },
       {
+        "name": "badge",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      },
+      {
         "name": "leading",
         "data": [],
         "source": "packages/vue3/src/list.tsx"
@@ -11020,6 +11025,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "badge",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Content after the title, centered on its first line, such as a KjunBadge (\"New\", a count); a screen reader hears it with the title."
       },
       {
         "name": "icon",
@@ -11124,7 +11136,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "The row's last press is still being handled (such as a switch saving): presses are ignored, the row reads as busy and a switch row draws a spinner in its thumb."
+        "description": "The row's last press is still being handled (such as a switch saving): presses (and a link's navigation) are ignored, the row reads as busy and draws a spinner, in a switch row's thumb or in place of its mark, check or chevron."
       },
       {
         "name": "value",
@@ -11183,6 +11195,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "badge",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Content after the title, centered on its first line, such as a KjunBadge (\"New\", a count); a string or number is heard with the title."
       },
       {
         "name": "icon",
@@ -11287,7 +11306,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "The row's last press is still being handled (such as a switch saving): presses are ignored, the row reads as busy and a switch row draws a spinner in its thumb."
+        "description": "The row's last press is still being handled (such as a switch saving): presses (and a Native Web link's navigation) are ignored, the row reads as busy and draws a spinner, in a switch row's thumb or in place of its mark, check or chevron."
       },
       {
         "name": "value",

@@ -23,6 +23,7 @@
     "react": [
       "title",
       "description",
+      "badge",
       "icon",
       "leadingSize",
       "iconColor",
@@ -48,6 +49,7 @@
     "native": [
       "title",
       "description",
+      "badge",
       "icon",
       "leadingSize",
       "iconColor",

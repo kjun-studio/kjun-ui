@@ -1,4 +1,7 @@
 import { createContext } from "react";
 
-/** Whether the enclosing KjunListSection is open, so a row skeleton in its loading slot draws the open row's shape. */
-export const ListOpenContext = createContext(false);
+/**
+ * The enclosing KjunListSection's shape: whether it is open and compact, so its rows and a row skeleton in its loading
+ * slot draw the same row (open rows' larger lines, compact rows' height).
+ */
+export const ListShapeContext = createContext<{ open: boolean; compact: boolean }>({ open: false, compact: false });

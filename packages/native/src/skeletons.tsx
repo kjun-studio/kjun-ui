@@ -2,7 +2,8 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { typeStyle } from "./typography";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useContext, useState } from "react";
-import { ListOpenContext } from "./list-context";
+import { ListShapeContext } from "./list-context";
+import { listRowMetrics } from "../../../shared/package-runtime/list-row";
 import { Animated,Platform,View,useWindowDimensions,type DimensionValue } from "react-native";
 import Svg,{ Path } from "react-native-svg";
 import { KjunSkeleton,KjunSpinner } from "./display";
@@ -99,11 +100,11 @@ export function KjunListSkeleton({
 function ListRowSkeleton({ rows, avatar, avatarSize, description, trailing, divider }: {
   rows: number; avatar: boolean; avatarSize: DimensionValue; description: boolean; trailing?: "value" | "switch" | "chevron"; divider: KjunListDivider;
 }) {
-  const list = tokens.extensions.list, o = list.open, open = useContext(ListOpenContext);
+  const list = tokens.extensions.list, o = list.open, { open, compact } = useContext(ListShapeContext), m = listRowMetrics({ open, compact });
   const inset = list.padding + (avatar ? list.leadingWidth + list.gap : 0);
   // Like Web: in an open KjunListSection the rows take the open row's shape (larger lines, a rounded leading square,
-  // inset from the edges, no dividers).
-  const shape = open ? { gap: o.gap, minHeight: o.minimumHeight, paddingVertical: o.paddingY, paddingHorizontal: o.paddingX, marginHorizontal: o.rowInset } : { gap: list.gap, minHeight: list.minimumHeight, padding: list.padding };
+  // inset from the edges, no dividers), and in a compact one the compact row's height.
+  const shape = { gap: m.gap, minHeight: m.minimumHeight, paddingVertical: m.paddingY, paddingHorizontal: m.paddingX, ...(open ? { marginHorizontal: o.rowInset } : {}) };
   return (
     <>
       {Array.from({ length: rows }, (_, i) => (
@@ -111,8 +112,8 @@ function ListRowSkeleton({ rows, avatar, avatarSize, description, trailing, divi
           {avatar ? open ? <View style={{ width: o.leadingSize, height: o.leadingSize, borderRadius: o.leadingRadius, overflow: "hidden" }}><KjunSkeleton type="block" width={o.leadingSize} height={o.leadingSize} /></View>
             : <View style={{ width: list.leadingWidth, alignItems: "center" }}><KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} /></View> : null}
           <View style={{ flex: 1, minWidth: 0, gap: list.descriptionGap }}>
-            <KjunSkeleton type="line" role={open ? "input" : "control"} width={i % 2 ? "55%" : "40%"} />
-            {description ? <KjunSkeleton type="line" role={open ? "body" : "caption"} width="30%" /> : null}
+            <KjunSkeleton type="line" role={open ? m.title : "control"} width={i % 2 ? "55%" : "40%"} />
+            {description ? <KjunSkeleton type="line" role={m.description} width="30%" /> : null}
           </View>
           {trailing === "switch" ? <KjunSkeleton type="avatar" width={tokens.extensions.switch.widths.md} height={tokens.extensions.switch.heights.md} />
             : trailing ? <KjunSkeleton type="line" role="control" width={trailing === "chevron" ? tokens.iconSizes.default : tokens.extensions.skeleton.detailWidth} />

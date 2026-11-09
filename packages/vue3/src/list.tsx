@@ -5,15 +5,15 @@ import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
 import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
-import { listRowChoice, listRowEnd, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
-import { kjunListOpenKey } from "./runtime/list-context";
+import { listRowChoice, listRowEnd, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
+import { kjunListShapeKey } from "./runtime/list-context";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 export type { ListChoiceValue, ListGroupVariant, ListSectionVariant } from "../../../shared/package-runtime/list-row";
 export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 
-// The section's selection mode and, when it owns the value, that value (a single-choice list is a radiogroup), and
-// whether the section is open, which changes how a row draws its icon and its choice.
-type ListRowSelection = ListSelection & { open?: boolean };
+// The section's selection mode and, when it owns the value, that value (a single-choice list is a radiogroup). Whether
+// the section is open, which changes how a row draws its icon and its choice, comes from kjunListShapeKey.
+type ListRowSelection = ListSelection;
 const kjunListSelectionKey = Symbol("kjunListSelection");
 const noSelection: ListRowSelection = { mode: "none" };
 
@@ -38,7 +38,7 @@ const kjunListRowProps = {
   selected: { type: Boolean, default: undefined },
   /** v-model:checked makes the whole row a switch: it draws one at the end and toggles on any press. */
   checked: { type: Boolean, default: undefined },
-  /** The row's last press is still being handled (such as a switch saving): presses are ignored, the row reads as busy and a switch row draws a spinner in its thumb. */
+  /** The row's last press is still being handled (such as a switch saving): presses (and a link's navigation) are ignored, the row reads as busy and draws a spinner, in a switch row's thumb or in place of its mark, check or chevron. */
   busy: { type: Boolean, default: false },
   /** This row's value in a section that owns its selection (v-model on the section): it is selected when the section's value holds it. */
   value: { type: [String, Number] as PropType<ListChoiceValue>, default: undefined },
@@ -51,27 +51,29 @@ const kjunListRowProps = {
   descriptionLines: { type: Number, default: undefined },
 } as const;
 export type KjunListRowProps = ExtractPublicPropTypes<typeof kjunListRowProps>;
-/** Slots: default (display-only content under the description), leading, trailing, actions. Event: update:checked. */
+/** Slots: default (display-only content under the description), badge (after the title, centered on its first line; heard with the title), leading, trailing, actions. Event: update:checked. */
 export const KjunListRow = defineComponent({
   name: "KjunListRow",
   props: kjunListRowProps,
   emits: { "update:checked": (_checked: boolean) => true },
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
+    badge?: () => VNodeChild;
     leading?: () => VNodeChild;
     trailing?: () => VNodeChild;
     actions?: () => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
     const content = ref<HTMLElement | null>(null), selection = inject<{ value: ListRowSelection } | null>(kjunListSelectionKey, null);
+    const shape = inject(kjunListShapeKey, null), id = useKjunId("kjun-");
     // Like React: the row's choice comes from the section when the section owns the value.
     const state = computed(() => {
       const current = selection?.value ?? noSelection, choice = listRowChoice(current, props.value, props.selected);
       const press = choice.press, handle = press ? (event: MouseEvent) => { press(); props.onClick?.(event); } : props.onClick;
-      // Like React: a busy row ignores presses but keeps its focus and role.
-      const onClick = handle && props.busy ? (event: MouseEvent) => event.preventDefault() : handle;
+      // Like React: a busy row ignores presses (a link its navigation too) but keeps its focus and role.
+      const onClick = props.busy && (handle || props.href) ? (event: MouseEvent) => event.preventDefault() : handle;
       const kind = listRowKind({ checked: props.checked, selected: choice.selected, href: props.href, pressable: !!(props.href || onClick), mode: current.mode });
-      return { mode: current.mode, open: !!current.open, selected: choice.selected, onClick, kind };
+      return { mode: current.mode, open: !!shape?.value.open, selected: choice.selected, onClick, kind };
     });
     // Like React: a switch row (checked) counts as pressable too, and the check runs again when the row becomes pressable.
     watch(() => state.value.kind !== "static", pressable => {
@@ -84,37 +86,44 @@ export const KjunListRow = defineComponent({
     });
     return () => {
       const { selected, onClick, kind, mode, open } = state.value;
-      const slotted = slots.leading?.(), trailing = slots.trailing?.(), actions = slots.actions?.(), body = slots.default?.();
+      const slotted = slots.leading?.(), trailing = slots.trailing?.(), actions = slots.actions?.(), body = slots.default?.(), badge = slots.badge?.();
       const hasLeading = hasContent(slotted);
       const geometry = listLeadingGeometry({ size: props.leadingSize, custom: hasLeading, background: props.iconBackground != null, open });
       const glyph = props.icon ? <KjunIcon name={props.icon} class="kjun-list-icon" size={geometry.iconSize} style={{ color: props.iconColor }} /> : null;
       const leading = hasLeading ? slotted : glyph && geometry.tile ? <span class="kjun-list-icon-background" style={props.iconBackground != null ? { backgroundColor: props.iconBackground } : undefined} aria-hidden="true">{glyph}</span> : glyph;
       // Like React: choice rows in an open section or a multiple-choice list draw a mark, empty until chosen; other rows
       // draw a check when selected.
-      const choiceRow = kind === "radio" || kind === "checkbox", end = listRowEnd({ kind, selected, mode, open });
-      const mark = end === "mark" ? <span class="kjun-list-mark" data-kind={kind} data-checked={selected ? "" : undefined} aria-hidden="true">{selected && <KjunIcon name="check" size={tokens.extensions.list.markIconSize} />}</span>
+      const choiceRow = kind === "radio" || kind === "checkbox", end = listRowEnd({ kind, selected, mode, open, busy: props.busy });
+      const mark = end === "spinner" ? <KjunIcon name="loader-2" spin class="kjun-list-busy" size={tokens.extensions.list.endIconSize} />
+        : end === "mark" ? <span class="kjun-list-mark" data-kind={kind} data-checked={selected ? "" : undefined} aria-hidden="true">{selected && <KjunIcon name="check" size={tokens.extensions.list.markIconSize} />}</span>
         : end === "check" && <KjunIcon name="check" class="kjun-list-check" size={tokens.iconSizes.default} />;
       const leadingStyle = leading && geometry.size ? { "--_kjun-list-leading-width": `${geometry.width}px`, "--_kjun-list-leading-height": `${geometry.width}px` } : undefined;
+      // Like React: a pressable row is named by its title, badge and end value and described by its description and content.
+      const hasBadge = hasContent(badge), hasTrailing = hasContent(trailing), hasBody = hasContent(body);
+      const names = props.ariaLabel ? undefined : [id + "-title", hasBadge && id + "-badge", hasTrailing && id + "-trailing"].filter(Boolean).join(" ");
+      const notes = [props.description && id + "-description", hasBody && id + "-content"].filter(Boolean).join(" ") || undefined;
+      const label = { "aria-label": props.ariaLabel, "aria-labelledby": names, "aria-describedby": notes };
+      const titleText = <span id={id + "-title"} class="kjun-list-title" data-clamp={props.titleLines ? "" : undefined} style={props.titleLines ? { WebkitLineClamp: props.titleLines } : undefined}>{props.title}</span>;
       const contents = <>
         {leading && <span class="kjun-list-leading">{leading}</span>}
-        <span class="kjun-list-body"><span class="kjun-list-title" data-clamp={props.titleLines ? "" : undefined} style={props.titleLines ? { WebkitLineClamp: props.titleLines } : undefined}>{props.title}</span>{props.description && <span class="kjun-list-description" data-clamp={props.descriptionLines ? "" : undefined} style={props.descriptionLines ? { WebkitLineClamp: props.descriptionLines } : undefined}>{props.description}</span>}{hasContent(body) && <span ref={content} class="kjun-list-content">{body}</span>}</span>
-        {hasContent(trailing) && <span class="kjun-list-trailing">{trailing}</span>}
+        <span class="kjun-list-body">{hasBadge ? <span class="kjun-list-title-row">{titleText}<span id={id + "-badge"} class="kjun-list-badge">{badge}</span></span> : titleText}{props.description && <span id={id + "-description"} class="kjun-list-description" data-clamp={props.descriptionLines ? "" : undefined} style={props.descriptionLines ? { WebkitLineClamp: props.descriptionLines } : undefined}>{props.description}</span>}{hasBody && <span ref={content} id={id + "-content"} class="kjun-list-content">{body}</span>}</span>
+        {hasTrailing && <span id={id + "-trailing"} class="kjun-list-trailing">{trailing}</span>}
         {mark}
         {props.checked !== undefined && <span class={"kjun-switch kjun-switch--md" + (props.checked ? " kjun-switch--on" : "")} aria-hidden="true"><span class="kjun-switch-thumb">{props.busy && <span class="kjun-switch-spinner" />}</span></span>}
-        {props.chevron && <KjunIcon name="chevron-right" class="kjun-list-chevron" size={tokens.iconSizes.default} />}
+        {props.chevron && end !== "spinner" && <KjunIcon name="chevron-right" class="kjun-list-chevron" size={tokens.iconSizes.default} />}
       </>;
       // Like React: a switch row is one switch control and the drawn switch is decoration; a choice row is a radio (a
       // checkbox in a multiple-choice section).
       const main = kind === "switch"
-        ? <button class="kjun-list-main" type="button" role="switch" aria-checked={props.checked} aria-label={props.ariaLabel} aria-busy={props.busy || undefined} disabled={props.disabled}
+        ? <button class="kjun-list-main" type="button" role="switch" aria-checked={props.checked} {...label} aria-busy={props.busy || undefined} disabled={props.disabled}
             onClick={(event: MouseEvent) => { if (props.busy) return; emit("update:checked", !props.checked); onClick?.(event); }}>{contents}</button>
         : choiceRow
-          ? <button class="kjun-list-main" type="button" role={kind} aria-checked={!!selected} aria-label={props.ariaLabel} aria-busy={props.busy || undefined} disabled={props.disabled} onClick={(event: MouseEvent) => onClick?.(event)}>{contents}</button>
+          ? <button class="kjun-list-main" type="button" role={kind} aria-checked={!!selected} {...label} aria-busy={props.busy || undefined} disabled={props.disabled} onClick={(event: MouseEvent) => onClick?.(event)}>{contents}</button>
         : props.href
-          ? <a class="kjun-list-main" href={props.disabled ? undefined : props.href} aria-label={props.ariaLabel} aria-disabled={props.disabled || undefined} aria-busy={props.busy || undefined}
+          ? <a class="kjun-list-main" href={props.disabled ? undefined : props.href} {...label} aria-disabled={props.disabled || undefined} aria-busy={props.busy || undefined}
               onClick={(event: MouseEvent) => { if (props.disabled) event.preventDefault(); else onClick?.(event); }}>{contents}</a>
         : onClick
-          ? <button class="kjun-list-main" type="button" aria-label={props.ariaLabel} aria-busy={props.busy || undefined} disabled={props.disabled} onClick={(event: MouseEvent) => onClick?.(event)}>{contents}</button>
+          ? <button class="kjun-list-main" type="button" {...label} aria-busy={props.busy || undefined} disabled={props.disabled} onClick={(event: MouseEvent) => onClick?.(event)}>{contents}</button>
           : <div class="kjun-list-main">{contents}</div>;
       // A disabled row disables its actions too, so the row never reads as partly available.
       // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
@@ -165,10 +174,12 @@ export const KjunListSection = defineComponent({
     const id = useKjunId("kjun-"), group = inject<{ value: ListGroupVariant } | null>(kjunListGroupKey, null);
     const choice = computed(() => props.selectionMode === "single"), list = ref<HTMLElement | null>(null), actionsBox = ref<HTMLElement | null>(null);
     const shape = computed(() => listSectionShape({ radius: props.radius, group: group?.value, variant: props.variant, title: props.title, description: props.description, titleVariant: props.titleVariant }));
-    provide(kjunListSelectionKey, computed<ListRowSelection>(() => ({ mode: props.selectionMode, value: props.modelValue, open: shape.value.open, onValueChange: ((value: ListChoiceValue | ListChoiceValue[]) => emit("update:modelValue", value)) as ListSelection["onValueChange"] })));
+    provide(kjunListSelectionKey, computed<ListRowSelection>(() => ({ mode: props.selectionMode, value: props.modelValue, onValueChange: ((value: ListChoiceValue | ListChoiceValue[]) => emit("update:modelValue", value)) as ListSelection["onValueChange"] })));
     watchEffect(onCleanup => { if (choice.value && list.value) onCleanup(bindRadioKeyboard(list.value)); }, { flush: "post" });
     watchEffect(() => warnListSectionProps({ open: shape.value.open, divider: props.divider }));
-    provide(kjunListOpenKey, computed(() => shape.value.open));
+    // v-model always has its update event, so only the value's form is checked.
+    watchEffect(() => warnListSelection({ mode: props.selectionMode, value: props.modelValue, handled: true }));
+    provide(kjunListShapeKey, computed(() => ({ open: shape.value.open, compact: props.density === "compact" })));
     watchEffect(onCleanup => { if (actionsBox.value) onCleanup(observeListHeadingActions(actionsBox.value)); }, { flush: "post" });
     return () => {
       const actions = slots.actions?.(), children = slots.default?.(), loading = slots.loading?.(), empty = slots.empty?.(), footer = slots.footer?.();
