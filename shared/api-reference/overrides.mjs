@@ -25,7 +25,7 @@ for (const platform of ["vue3", "react"]) set("Tabs", {
   stickyOffset: "고정 헤더의 위쪽 간격입니다. 숫자는 px, 문자열은 CSS 길이이며 기본값은 0입니다. stickyHeader=true일 때 적용합니다.",
 }, platform);
 set("TabPane", { badge: { type: "string | number | null", summary: "null·undefined는 배지를 숨기고 숫자 0은 표시합니다." } }, "vue3");
-set("KpiRow", { items: "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김입니다." });
+set("KpiRow", { items: "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 항목은 값 줄 끝에 chevron을 그립니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다." });
 set("Progress", {
   value: { type: "number | null", summary: "진행 값입니다. null·유한하지 않은 값·유효하지 않은 max는 데이터 없음이며 0%로 바꾸지 않습니다. 생략 또는 undefined는 기존 기본값 0을 유지합니다." },
   indeterminate: "실행 중이지만 진행률을 모를 때 사용합니다. 수치와 aria-valuenow를 생략하고 진행 중 상태를 표시합니다. 데이터 없음(null)과 구분합니다.",
@@ -276,6 +276,12 @@ set("Inline", {
   justify: { default: '"start"', summary: "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다." },
   wrap: { default: "true", summary: "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다." },
 });
+set("KpiHero", {
+  asideMobile: { default: '"below"', summary: "좁은 화면(640px 이하)에서 aside를 변동선 아래 전폭으로 내립니다. hidden이면 숨깁니다." },
+  deltaIcon: { default: "false", summary: "첫 번째 증감 숫자(deltaAbsolute, 없으면 deltaPercent) 앞에 방향 삼각형을 그리고 그 숫자의 부호를 뺍니다. 부호는 스크린 리더에 그대로 읽힙니다. deltaFormatter의 글자는 바꾸지 않습니다." },
+  deltaPercent: "기준 대비 증감률입니다. 상승·하락 방향의 옅은 면을 깐 칩으로 표시하고, 0이면 중립 면을 씁니다.",
+});
+set("KpiRow", { mobileSummary: { default: "true", summary: "좁은 화면에서 항목을 2열 요약으로 흐르게 합니다. mobileSecondary: true로 표시한 항목만 끝의 작은 인라인 줄로 내려가고, 홀수 개의 마지막 일반 항목은 전폭으로 마감합니다." } });
 set("KpiHero KpiRow", { surface: { default: '"card"', summary: "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다." } });
 set("Table MarketCards MarketSimpleList MarketTable", { skeleton: { default: "true", summary: "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다." } });
 set("SignedValue", {

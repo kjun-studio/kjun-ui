@@ -36,7 +36,7 @@ const Cases = defineComponent(() => {
     {box('market-skeleton', <K.KjunMarketTableSkeleton rows={1} showActions columns={[{ key: 'price', label: '가격' }]} />)}
     {box('kpi-hero', <K.KjunKpiHero label="로딩 요약" value={10} deltaAbsolute={1} loading secondary={[{ label: '보조 값', value: 2, desc: '보조 설명' }]} />)}
     {box('kpi-row', <K.KjunKpiRow loading items={[{ value: 10, desc: '설명' }, { value: 2, valueSegments: [{ text: '값' }] }] as any} />)}
-    {box('kpi-dot', <K.KjunKpiRow items={[{ label: '점 규격', value: 10, badge: { text: '표식', variant: 'success' } }]} />)}
+    {box('kpi-chevron', <K.KjunKpiRow items={[{ label: '누르는 칸', value: 10, clickable: true }]} />)}
     {box('tooltip', <K.KjunTooltip content="크기 도움말" delay={0}>{button('크기 도움말 열기')}</K.KjunTooltip>)}
     {box('menu', <K.KjunMenuButton label="크기 메뉴">{Array.from({ length: 18 }, (_, i) => <K.KjunDropdownItem key={i} icon="check">{'항목 ' + i}</K.KjunDropdownItem>)}</K.KjunMenuButton>)}
     {box('select', <K.KjunSelect ariaLabel="크기 선택" modelValue={state.selection} options={Array.from({ length: 18 }, (_, i) => ({ value: i ? String(i) : 'a', label: '선택 항목 ' + i }))}

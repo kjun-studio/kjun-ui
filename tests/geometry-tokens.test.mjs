@@ -26,7 +26,7 @@ test('component geometry resolves from the shared scales with additive paths', (
   assert.equal(value.extensions.list.padding, 24);
   assert.equal(value.extensions.tableCard.radius, value.card.radii.lg);
   assert.equal(value.extensions.skeleton.padding, value.card.padding.md);
-  assert.equal(value.extensions.kpiRow.badgeRadius, value.extensions.badge.radius);
+  assert.equal(value.extensions.kpiRow.badgeRadius, value.extensions.badge.radii.xs);
   const css = extensionGeometryCss(value, altered);
   assert.match(css, /--_kjun-extension-badge-padding-xs-y: 0px;/);
   assert.match(css, /--_kjun-extension-menu-option-font-size: 0.875rem;/);
@@ -36,7 +36,7 @@ test('component geometry resolves from the shared scales with additive paths', (
 test('definition fragments reject collisions and recursive aliases', () => {
   assert.throws(() => mergeTokenDefinitions({ x: { y: 1 } }, { x: { y: 2 } }), /Duplicate token definition: x.y/);
   const cyclic = structuredClone(definitions);
-  cyclic.extensions.badge.radius = { $ref: 'extensions.kpiRow.badgeRadius' };
+  cyclic.extensions.badge.radii.xs = { $ref: 'extensions.kpiRow.badgeRadius' };
   assert.throws(() => compileTokens(cyclic), /Cyclic token reference/);
   const literal = structuredClone(definitions);
   literal.extensions.kpiHero.md.secondaryMargin = 22;

@@ -11,7 +11,7 @@
         "$ref": "dimension.value2"
       },
       "suffixGap": {
-        "$ref": "dimension.value4"
+        "$ref": "dimension.value2"
       },
       "secondaryAffixGap": {
         "$ref": "dimension.value2"
@@ -27,7 +27,7 @@
           "$ref": "dimension.value24"
         },
         "labelGap": {
-          "$ref": "dimension.value8"
+          "$ref": "dimension.value4"
         },
         "deltaGap": {
           "$ref": "dimension.value10"
@@ -112,6 +112,15 @@
       },
       "smallMobileGap": {
         "$ref": "dimension.value16"
+      },
+      "asideGap": {
+        "$ref": "dimension.value12"
+      },
+      "deltaChipPaddingX": {
+        "$ref": "dimension.value6"
+      },
+      "deltaChipRadius": {
+        "$ref": "extensions.badge.radii.sm"
       }
     },
     "kpiRow": {
@@ -131,7 +140,7 @@
         "$ref": "dimension.value6"
       },
       "badgeRadius": {
-        "$ref": "extensions.badge.radius"
+        "$ref": "extensions.badge.radii.xs"
       },
       "badgeGap": {
         "$ref": "extensions.badge.gap"
@@ -144,14 +153,16 @@
           "$ref": "dimension.value8"
         },
         "paddingY": {
-          "$ref": "dimension.value20"
+          "$ref": "dimension.value10"
         },
         "itemPaddingX": {
           "$ref": "dimension.value20"
         },
-        "itemPaddingY": 0,
+        "itemPaddingY": {
+          "$ref": "dimension.value10"
+        },
         "labelGap": {
-          "$ref": "dimension.value8"
+          "$ref": "dimension.value6"
         },
         "labelMargin": {
           "$ref": "dimension.value8"
@@ -165,12 +176,14 @@
           "$ref": "dimension.value4"
         },
         "paddingY": {
-          "$ref": "dimension.value12"
+          "$ref": "dimension.value6"
         },
         "itemPaddingX": {
           "$ref": "dimension.value12"
         },
-        "itemPaddingY": 0,
+        "itemPaddingY": {
+          "$ref": "dimension.value6"
+        },
         "labelGap": {
           "$ref": "dimension.value6"
         },
@@ -228,6 +241,9 @@
         "secondaryGap": {
           "$ref": "dimension.value4"
         }
+      },
+      "affixGap": {
+        "$ref": "dimension.value2"
       }
     }
   }

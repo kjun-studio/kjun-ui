@@ -110,6 +110,8 @@ for(const platform of ['react','vue3','native']) {
     }
   });
   test(`${platform}: KPI stages and narrow layouts`,async({page}, testInfo)=>{
+    // A value with its unit: Web keeps the number as the value's own text; Native draws the number and each unit as separate Texts.
+    const value=(scope:import('@playwright/test').Locator,whole:RegExp,number:string)=>platform==='native'?textStyle(scope.getByText(number,{exact:true})):textStyle(scope.getByText(whole),true);
     for(const width of [320,390,768,1280]) {
       await page.setViewportSize({width,height:1100});await openFixture(page,platform,'','typography');
       const hero=page.getByTestId('hero').getByText('1,234,567,890',{exact:true});
@@ -119,21 +121,22 @@ for(const platform of ['react','vue3','native']) {
       expect((await textStyle(page.getByTestId('hero-small').getByText('23,456',{exact:true}))).size).toBe('24px');
       expect((await textStyle(page.getByTestId('row').getByText('12,345',{exact:true}))).size).toBe(width<=768?'20px':'24px');
       const summary=page.getByTestId('row-summary');
-      expect(await textStyle(summary.getByText(/USD\s*54,321$/),true)).toMatchObject({size:'24px',line:'32px',weight:'700'});
+      expect(await value(summary,/USD\s*54,321$/,'54,321')).toMatchObject({size:'24px',line:'32px',weight:'700'});
       expect(await textStyle(summary.getByText('USD',{exact:true}))).toMatchObject({size:'14px',line:'20px',weight:'500'});
-      expect(await textStyle(summary.getByText(/678\s*개$/),true)).toMatchObject({size:width<=768?'14px':'24px',line:width<=768?'20px':'32px'});
+      expect(await value(summary,/678\s*개$/,'678')).toMatchObject({size:width<=768?'14px':'24px',line:width<=768?'20px':'32px'});
       expect(await textStyle(summary.getByText('개',{exact:true}))).toMatchObject({size:width<=768?'12px':'14px',line:width<=768?'16px':'20px'});
-      expect(await textStyle(summary.getByText(/항목\s*전체 내역$/),true)).toMatchObject({size:'14px',line:'20px',weight:'400'});
-      expect(await textStyle(summary.getByText('항목',{exact:true}))).toMatchObject({size:'12px',line:'16px',weight:'400'});
-      expect(await textStyle(page.getByTestId('row-small').getByText(/9,876\s*EUR$/),true)).toMatchObject({size:'20px',line:'28px'});
+      // A text value is a card title beside number cells and body text in the narrow summary footnote; its unit is the 500 unit weight.
+      expect(await value(summary,/항목\s*전체 내역$/,'전체 내역')).toMatchObject(width<=768?{size:'14px',line:'20px',weight:'400'}:{size:'16px',line:'24px',weight:'600'});
+      expect(await textStyle(summary.getByText('항목',{exact:true}))).toMatchObject({size:'12px',line:'16px',weight:'500'});
+      expect(await value(page.getByTestId('row-small'),/9,876\s*EUR$/,'9,876')).toMatchObject({size:'20px',line:'28px'});
       expect(await textStyle(page.getByTestId('row-small').getByText('EUR',{exact:true}))).toMatchObject({size:'12px',line:'16px'});
       expect((await textStyle(page.getByText('작은 배지',{exact:true})))).toMatchObject({size:'12px',line:'16px',weight:'500'});
       expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
       const delta=page.getByTestId('hero-delta');
-      for (const text of ['+EUR1,234','+2.5%']) {
-        await expect(delta.getByText(text,{exact:true})).toBeVisible();
-        expect(await textStyle(delta.getByText(text,{exact:true}))).toMatchObject({size:'16px',line:'24px',weight:'600'});
-      }
+      await expect(delta.getByText('+EUR1,234',{exact:true})).toBeVisible();
+      expect(await textStyle(delta.getByText('+EUR1,234',{exact:true}))).toMatchObject({size:'16px',line:'24px',weight:'600'});
+      // The percent is a chip one size down at the same weight.
+      expect(await textStyle(delta.getByText('+2.5%',{exact:true}))).toMatchObject({size:'14px',line:'20px',weight:'600'});
       for (const unit of ['%','JPY']) expect(await textStyle(delta.getByText(unit,{exact:true}))).toMatchObject({size:'12px',line:'16px'});
       expect(await textStyle(delta.getByText('+EUR1,234',{exact:true}).getByText('EUR',{exact:true}))).toMatchObject({size:'12px',line:'16px'});
       const narrow=page.getByTestId('narrow');

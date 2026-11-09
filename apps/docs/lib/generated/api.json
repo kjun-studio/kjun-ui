@@ -10399,6 +10399,20 @@
         "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list."
       },
       {
+        "name": "asideMobile",
+        "type": "\"below\" | \"hidden\"",
+        "required": false,
+        "default": "\"below\"",
+        "description": "Narrow screens: \"below\" (default) moves the aside under the delta line at full width; \"hidden\" drops it."
+      },
+      {
+        "name": "deltaIcon",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draws the direction as a filled caret before the first delta number, in place of its sign."
+      },
+      {
         "name": "formatter",
         "type": "(value: number) => string",
         "required": false,
@@ -10529,6 +10543,20 @@
         "description": ""
       },
       {
+        "name": "asideMobile",
+        "type": "\"hidden\" | \"below\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Narrow screens: \"below\" (default) moves the aside under the delta line at full width; \"hidden\" drops it."
+      },
+      {
+        "name": "deltaIcon",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Draws the direction as a filled caret before the first delta number, in place of its sign."
+      },
+      {
         "name": "formatter",
         "type": "((value: number) => string) | undefined",
         "required": false,
@@ -10648,6 +10676,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "asideMobile",
+        "type": "\"below\" | \"hidden\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Narrow screens: \"below\" (default) moves the aside under the delta line at full width; \"hidden\" drops it."
+      },
+      {
+        "name": "deltaIcon",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Draws the direction as a filled caret before the first delta number, in place of its sign."
       },
       {
         "name": "formatter",
@@ -21862,7 +21904,7 @@
       },
       {
         "name": "sort",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableSort | null | undefined",
+        "type": "import(\"/workspace/packages/tokens/dist/table-contract\").TableSort | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -22270,7 +22312,7 @@
       },
       {
         "name": "sort",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableSort | null | undefined",
+        "type": "import(\"/workspace/packages/tokens/dist/table-contract\").TableSort | null | undefined",
         "required": false,
         "default": "—",
         "description": ""

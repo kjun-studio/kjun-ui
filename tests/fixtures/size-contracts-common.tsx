@@ -36,7 +36,7 @@ export function mountSizeContracts(K: any, native: boolean) {
       box('market-skeleton', h(K.KjunMarketTableSkeleton, { rows: 1, showActions: true, columns: [{ key: 'price', label: '가격' }] })),
       box('kpi-hero', h(K.KjunKpiHero, { label: '로딩 요약', value: 10, deltaAbsolute: 1, loading: true, secondary: [{ label: '보조 값', value: 2, desc: '보조 설명' }] })),
       box('kpi-row', h(K.KjunKpiRow, { loading: true, items: [{ value: 10, desc: '설명' }, { value: 2, valueSegments: [{ text: '값' }] }] })),
-      box('kpi-dot', h(K.KjunKpiRow, { items: [{ label: '점 규격', value: 10, badge: { text: '표식', variant: 'success' } }] })),
+      box('kpi-chevron', h(K.KjunKpiRow, { items: [{ label: '누르는 칸', value: 10, clickable: true }] })),
       box('tooltip', h(K.KjunTooltip, { content: '크기 도움말', delay: 0 }, button('크기 도움말 열기'))),
       box('menu', h(K.KjunMenuButton, { label: '크기 메뉴' }, Array.from({ length: 18 }, (_, i) => h(K.KjunDropdownItem, { key: i, icon: 'check' }, '항목 ' + i)))),
       box('select', h(K.KjunSelect, { ariaLabel: '크기 선택', value: selection, options: Array.from({ length: 18 }, (_, i) => ({ value: i ? String(i) : 'a', label: '선택 항목 ' + i })), onValueChange: setSelection })),

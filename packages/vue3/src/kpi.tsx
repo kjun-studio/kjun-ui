@@ -2,6 +2,7 @@ import { defineComponent, getCurrentInstance, type ExtractPublicPropTypes, type 
 import { tokens } from "@kjun-ui/tokens";
 import { KjunSkeleton } from "./display";
 import { KjunAnimatedNumber } from "./number-display";
+import { KjunIcon } from "./button";
 import { domainRef } from "./runtime/refs";
 import { hasContent } from "./runtime/slots";
 import type { VNode } from "vue";
@@ -27,6 +28,9 @@ export const kpiFormat = (item: KpiValue, value = item.value): string =>
         .format(item.semantic === "price" ? Math.abs(value) : value);
 export const kpiColor = (value: unknown, semantic?: string, neutral = "text") =>
   semantic === "price" && Number.isFinite(Number(value)) && Number(value) !== 0 ? `var(--_kjun-color-price-${Number(value) > 0 ? "up" : "down"})` : `var(--_kjun-color-${neutral})`;
+/** The percent chip's tint: the price direction's soft fill, or the neutral fill at zero. */
+export const kpiTint = (value: number) =>
+  value === 0 ? "var(--_kjun-color-secondary)" : `var(--_kjun-color-price-${value > 0 ? "up" : "down"}-bg)`;
 const slotContent = (nodes: VNodeChild) => hasContent(nodes) ? nodes : undefined;
 
 const kjunKpiHeroProps = {
@@ -44,6 +48,10 @@ const kjunKpiHeroProps = {
   size: { type: String as PropType<"md" | "sm">, default: "md" },
   /** "none" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list. */
   surface: { type: String as PropType<"card" | "none">, default: "card" },
+  /** Narrow screens: "below" (default) moves the aside under the delta line at full width; "hidden" drops it. */
+  asideMobile: { type: String as PropType<"below" | "hidden">, default: "below" },
+  /** Draws the direction as a filled caret before the first delta number, in place of its sign. */
+  deltaIcon: { type: Boolean, default: false },
   formatter: { type: Function as PropType<(value: number) => string>, default: undefined },
   deltaFormatter: { type: Function as PropType<(value: number, kind: "absolute" | "percent") => string>, default: undefined },
 } as const;
@@ -64,15 +72,25 @@ export const KjunKpiHero = defineComponent({
     return () => {
       const { loading, prefix, decimals, deltaAbsolute, deltaPercent, deltaDescription, secondary } = props;
       const showDelta = deltaAbsolute !== null || deltaPercent !== null || !!deltaDescription || (loading && deltaPassed());
-      const delta = (v: number, kind: "absolute" | "percent"): VNodeChild => props.deltaFormatter ? props.deltaFormatter(v, kind) : <>
-        {v > 0 ? "+" : v < 0 ? "−" : ""}
-        {kind === "absolute" && prefix && <span class="kjun-number-affix" data-side="prefix">{prefix}</span>}
-        {new Intl.NumberFormat(undefined, { minimumFractionDigits: kind === "absolute" ? decimals : 1, maximumFractionDigits: kind === "absolute" ? decimals : 1 }).format(Math.abs(v))}
-        {kind === "percent" && <span class="kjun-number-affix" data-side="suffix">%</span>}
-      </>;
+      const delta = (v: number, kind: "absolute" | "percent"): VNodeChild => {
+        // The caret marks the first delta number shown; screen readers still hear its sign.
+        const icon = props.deltaIcon && v !== 0 && (kind === "absolute" || deltaAbsolute === null), sign = v > 0 ? "+" : v < 0 ? "−" : "";
+        return <>
+          {icon && <KjunIcon name="caret-up" filled class="kjun-kpi-hero__delta-icon" data-direction={v > 0 ? "up" : "down"} aria-hidden="true" />}
+          {icon && !props.deltaFormatter && <span class="kjun-sr-only">{sign}</span>}
+          {props.deltaFormatter ? props.deltaFormatter(v, kind) : <>
+            {!icon && sign}
+            {kind === "absolute" && prefix && <span class="kjun-number-affix" data-side="prefix">{prefix}</span>}
+            {new Intl.NumberFormat(undefined, { minimumFractionDigits: kind === "absolute" ? decimals : 1, maximumFractionDigits: kind === "absolute" ? decimals : 1 }).format(Math.abs(v))}
+            {kind === "absolute" && props.suffix && <span class="kjun-number-affix" data-side="suffix">{props.suffix}</span>}
+            {kind === "percent" && <span class="kjun-number-affix" data-side="suffix">%</span>}
+          </>}
+        </>;
+      };
       const aside = slots.aside?.();
       return (
-        <div class={"kjun-kpi-hero" + (props.size === "sm" ? " kjun-kpi-hero--sm" : "")} data-surface={props.surface === "none" ? "none" : undefined} aria-busy={loading}
+        <div class={"kjun-kpi-hero" + (props.size === "sm" ? " kjun-kpi-hero--sm" : "")} data-surface={props.surface === "none" ? "none" : undefined}
+          data-aside-mobile={props.asideMobile === "hidden" ? "hidden" : undefined} aria-busy={loading}
           ref={domainRef(!loading && (Number(deltaAbsolute) !== 0 || Number(deltaPercent) !== 0 || secondary.some(item => item.semantic === "price" && Number(item.value) !== 0)))}>
           <div class="kjun-kpi-hero__layout">
             <div class="kjun-kpi-hero__main">
@@ -91,7 +109,7 @@ export const KjunKpiHero = defineComponent({
                     <span class="kjun-kpi-hero__delta-abs"><KjunSkeleton type="line" width={tokens.extensions.kpiHero.deltaSkeletonWidth} /></span>
                   ) : <>
                     {deltaAbsolute !== null && <span class="kjun-kpi-hero__delta-abs" style={{ color: kpiColor(deltaAbsolute, "price", "text-tertiary") }}>{delta(deltaAbsolute, "absolute")}</span>}
-                    {deltaPercent !== null && <span class="kjun-kpi-hero__delta-pct" style={{ color: kpiColor(deltaPercent, "price", "text-tertiary") }}>{delta(deltaPercent, "percent")}</span>}
+                    {deltaPercent !== null && <span class="kjun-kpi-hero__delta-pct" style={{ color: kpiColor(deltaPercent, "price", "text-tertiary"), background: kpiTint(deltaPercent) }}>{delta(deltaPercent, "percent")}</span>}
                     {deltaDescription && <span class="kjun-kpi-hero__delta-desc">{deltaDescription}</span>}
                   </>}
                 </div>
@@ -159,19 +177,18 @@ export const KjunKpiRow = defineComponent({
   setup(props, { slots, emit }) {
     const badge = (item: KpiRowItem) => {
       if (!item.badge) return null;
-      const v = item.badge.variant || "neutral", dot = ["warning", "success", "danger", "price-up", "price-down"].includes(v);
+      const v = item.badge.variant || "neutral";
       const role = v === "neutral" ? "text-secondary" : v === "info" ? "brand" : v;
       return (
         <span class="kjun-kpi-row__badge" style={{ color: `var(--_kjun-color-${role})`, background: `var(--_kjun-color-${v === "neutral" ? "secondary" : v === "info" ? "info-bg" : v + "-bg"})` }}>
-          {dot && <span class="kjun-kpi-row__badge-dot" style={{ background: "currentColor" }} />}
           {item.badge.text}
         </span>
       );
     };
     return () => {
       const { items, loading, mobileSummary, size } = props;
-      const explicit = items.some(item => typeof item.mobileSecondary === "boolean"), hasFull = items.some(item => item.mobileFull);
-      const secondary = items.map((item, i) => explicit ? item.mobileSecondary === true : hasFull ? !item.mobileFull : i >= 2);
+      // Only items marked mobileSecondary fold into the summary's inline footnote; the rest keep their two-column cells.
+      const secondary = items.map(item => item.mobileSecondary === true);
       const primary = items.flatMap((item, i) => !secondary[i] && !item.mobileFull ? [i] : []);
       const lastFull = primary.length % 2 ? primary[primary.length - 1] : -1;
       return (
@@ -209,14 +226,15 @@ export const KjunKpiRow = defineComponent({
                         {busy && !seg.separator ? <KjunSkeleton type="line" width="3ch" /> : seg.text}
                       </span>
                     )) : busy ? <KjunSkeleton type="line" width="5ch" /> : slotContent(slots.value?.({ item, index: i })) ?? (present ? <>
-                      {item.prefix && <span class="kjun-kpi-row__affix">{item.prefix}</span>}
+                      {item.prefix && <span class="kjun-kpi-row__affix" data-side="prefix">{item.prefix}</span>}
                       {item.animated && typeof value === "number"
                         ? <KjunAnimatedNumber fromPrevious value={value} formatter={format} />
                         : format(value!)}
-                      {item.suffix && <span class="kjun-kpi-row__affix">{item.suffix}</span>}
+                      {item.suffix && <span class="kjun-kpi-row__affix" data-side="suffix">{item.suffix}</span>}
                     </> : item.missingText ?? "—")}
                   </div>
                   {!busy && item.badgePlacement === "value" && badge(item)}
+                  {item.clickable && <KjunIcon name="chevron-right" class="kjun-kpi-row__chevron" aria-hidden="true" />}
                 </div>
                 {item.desc && (
                   <div class={"kjun-kpi-row__desc " + (item.descClass || "")} style={{ color: item.descClass ? undefined : kpiColor(item.value, item.semantic, "text-secondary") }}>

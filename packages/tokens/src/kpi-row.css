@@ -1,4 +1,6 @@
 .kjun-kpi-row {
+  /* Every value line is as tall as this size's number line, so a text value or a missing dash keeps the row even. */
+  --_kjun-kpi-row-value-line: var(--_kjun-type-display-sm-line);
   display: flex;
   padding: var(--_kjun-extension-kpi-row-md-padding-y) var(--_kjun-extension-kpi-row-md-padding-x);
   background: var(--_kjun-card-bg);
@@ -42,7 +44,8 @@
 .kjun-kpi-row__label-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* A label badge sits right after its label, as that label's state, not at the far edge of the cell. */
+  justify-content: flex-start;
   gap: var(--_kjun-extension-kpi-row-md-label-gap);
   margin-bottom: var(--_kjun-extension-kpi-row-md-label-margin);
 }
@@ -62,18 +65,27 @@
   min-width: 0;
   flex-shrink: 1;
 }
-.kjun-kpi-row__badge-dot {
-  display: inline-block;
-  width: var(--_kjun-extension-kpi-row-dot-size);
-  height: var(--_kjun-extension-kpi-row-dot-size);
-  border-radius: 50%;
-}
 /* 값과 배지를 같은 행에 배치하고 긴 콘텐츠는 가용 폭 안에서 줄바꿈한다. */
 .kjun-kpi-row__value-row {
   display: flex;
   align-items: center;
   gap: var(--_kjun-extension-kpi-row-value-gap);
   min-width: 0;
+  min-height: var(--_kjun-kpi-row-value-line);
+}
+.kjun-kpi-row__affix[data-side="prefix"] {
+  margin-right: var(--_kjun-extension-kpi-row-affix-gap);
+}
+.kjun-kpi-row__affix[data-side="suffix"] {
+  margin-left: var(--_kjun-extension-kpi-row-affix-gap);
+}
+/* A clickable cell ends its value line with a chevron, so it reads as pressable without a pointer. */
+.kjun-kpi-row__chevron {
+  flex-shrink: 0;
+  width: var(--_kjun-extension-kpi-row-chevron-size);
+  height: var(--_kjun-extension-kpi-row-chevron-size);
+  margin-left: auto;
+  color: var(--_kjun-text-tertiary);
 }
 .kjun-kpi-row__value {
   font-family: var(--_kjun-font-numeric);
@@ -103,6 +115,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     padding: var(--_kjun-extension-kpi-row-mobile-padding-y) var(--_kjun-extension-kpi-row-mobile-padding-x);
     overflow: hidden;
+    --_kjun-kpi-row-value-line: var(--_kjun-type-number-lg-line);
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item {
     padding: var(--_kjun-extension-kpi-row-mobile-item-padding-y) var(--_kjun-extension-kpi-row-mobile-item-padding-x);
@@ -138,10 +151,6 @@
     gap: var(--_kjun-extension-kpi-row-mobile-label-gap);
     margin-bottom: var(--_kjun-extension-kpi-row-mobile-label-margin);
   }
-  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__value {
-  }
-  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__value--text {
-  }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__desc {
     margin-top: var(--_kjun-extension-kpi-row-mobile-description-gap);
   }
@@ -158,6 +167,7 @@
     gap: var(--_kjun-extension-kpi-row-summary-gap-y) var(--_kjun-extension-kpi-row-summary-gap-x);
     padding: var(--_kjun-extension-kpi-row-summary-padding-y) var(--_kjun-extension-kpi-row-summary-padding-x);
     overflow: visible;
+    --_kjun-kpi-row-value-line: var(--_kjun-type-display-sm-line);
   }
   .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm)
     .kjun-kpi-row__item:nth-child(n) {
@@ -172,16 +182,9 @@
     .kjun-kpi-row__item--summary-full:nth-child(n) {
     flex-basis: 100%;
   }
-  .kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__value {
-  }
-  .kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm)
-    .kjun-kpi-row__value--text {
-  }
   .kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm)
     .kjun-kpi-row__value--mobile-neutral {
     color: var(--_kjun-text-primary);
-  }
-  .kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) .kjun-kpi-row__desc {
   }
   .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm)
     .kjun-kpi-row__item--secondary:nth-child(n) {
@@ -191,6 +194,10 @@
     align-items: baseline;
     gap: var(--_kjun-extension-kpi-row-segment-gap);
     max-width: 100%;
+    --_kjun-kpi-row-value-line: auto;
+  }
+  .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary .kjun-kpi-row__chevron {
+    display: none;
   }
   .kjun-kpi-row--mobile-summary .kjun-kpi-row__item--secondary:last-child {
     margin-left: auto;
@@ -218,10 +225,6 @@
     overflow-wrap: anywhere;
     /* Korean labels and values wrap at spaces, not between syllables; anywhere stays the last resort. */
     word-break: keep-all;
-  }
-  .kjun-kpi-row--mobile-summary
-    .kjun-kpi-row__item--secondary
-    .kjun-kpi-row__value {
   }
   .kjun-kpi-row--mobile-summary
     .kjun-kpi-row__item--secondary
@@ -256,6 +259,7 @@
 /* size=sm — 모달, 컴팩트 카드 내부용 */
 .kjun-kpi-row--sm {
   padding: var(--_kjun-extension-kpi-row-sm-padding-y) var(--_kjun-extension-kpi-row-sm-padding-x);
+  --_kjun-kpi-row-value-line: var(--_kjun-type-number-lg-line);
 }
 .kjun-kpi-row--sm .kjun-kpi-row__item {
   padding: var(--_kjun-extension-kpi-row-sm-item-padding-y) var(--_kjun-extension-kpi-row-sm-item-padding-x);
@@ -263,12 +267,6 @@
 .kjun-kpi-row--sm .kjun-kpi-row__label-row {
   margin-bottom: var(--_kjun-extension-kpi-row-sm-label-margin);
   gap: var(--_kjun-extension-kpi-row-sm-label-gap);
-}
-.kjun-kpi-row--sm .kjun-kpi-row__label {
-}
-.kjun-kpi-row--sm .kjun-kpi-row__value {
-}
-.kjun-kpi-row--sm .kjun-kpi-row__value--text {
 }
 .kjun-kpi-row--sm .kjun-kpi-row__desc {
   margin-top: var(--_kjun-extension-kpi-row-sm-description-gap);
@@ -298,8 +296,6 @@
   }
   .kjun-kpi-row--sm.kjun-kpi-row--hero-first .kjun-kpi-row__item:first-child {
     --_kjun-kpi-row-divider-top: 0px;
-  }
-  .kjun-kpi-row--sm .kjun-kpi-row__value {
   }
 }
 

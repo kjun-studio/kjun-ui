@@ -97,12 +97,12 @@ for (const platform of ['react', 'vue3', 'native']) {
     await dimensions(market, e.marketTable.actionSkeletonWidth, e.marketTable.headerSkeletonHeight);
     await dimensions(market, e.marketTable.actionSkeletonWidth, e.financial.priceSkeletonHeight);
     await halfLine(page.getByTestId('kpi-row'), e.kpiRow.labelSkeletonWidth);
-    await dimensions(page.getByTestId('kpi-dot'), e.kpiRow.dotSize, e.kpiRow.dotSize);
+    await dimensions(page.getByTestId('kpi-chevron'), e.kpiRow.chevronSize, e.kpiRow.chevronSize);
     if (platform === 'native') {
       const hero = page.getByTestId('kpi-hero');
       // Placeholders keep their line's height so the loaded hero does not move.
       await dimensions(hero, e.kpiHero.deltaSkeletonWidth, tokens.typography.numberMd.lineHeightPx);
-      await dimensions(hero, e.kpiHero.secondarySkeletonWidth, tokens.typography.numberMd.lineHeightPx);
+      await dimensions(hero, e.kpiHero.secondarySkeletonWidth, tokens.typography.numberSm.lineHeightPx);
       await dimensions(hero, e.kpiHero.descriptionSkeletonWidth, tokens.typography.caption.lineHeightPx);
     }
   });

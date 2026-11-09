@@ -359,12 +359,17 @@
       "actionSkeletonHeight": 24
     },
     "kpiHero": {
+      "deltaIconSize": {
+        "$ref": "iconSizes.default"
+      },
       "deltaSkeletonWidth": 220,
       "secondarySkeletonWidth": 55,
       "descriptionSkeletonWidth": 58
     },
     "kpiRow": {
-      "dotSize": 4,
+      "chevronSize": {
+        "$ref": "iconSizes.default"
+      },
       "labelSkeletonWidth": 80,
       "valueSkeletonWidth": 80,
       "segmentSkeletonWidth": 48,

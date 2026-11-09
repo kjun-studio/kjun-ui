@@ -12,6 +12,8 @@ type TextStyle,
 } from "react-native";
 import { KjunSkeleton } from "./display";
 import { KjunAnimatedNumber } from "./financial";
+import Svg, { Path } from "react-native-svg";
+import { useIcon } from "../../../shared/package-runtime/icon-context";
 import { KText,domainColor } from "./internal";
 import { useKjunStyles } from "./provider";
 
@@ -42,6 +44,15 @@ export const kpiFormat = (item: KpiValue, value = item.value): string =>
         minimumFractionDigits: item.decimals ?? 0,
         maximumFractionDigits: item.decimals ?? 0,
       }).format(item.semantic === "price" ? Math.abs(value) : value);
+/** The direction caret: the caret icon's closed outline, filled and stroked in the text colour, like Web. */
+function DeltaCaret({ size, color }: { size: number; color: ColorValue | undefined }) {
+  const { nodes } = useIcon("caret-up", false);
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill={color} stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      {nodes.map(([tag, attrs], i) => tag === "path" ? <Path key={i} {...(attrs as { d: string })} /> : null)}
+    </Svg>
+  );
+}
 export interface KjunKpiHeroProps {
   loading?: boolean;
   label: string;
@@ -58,6 +69,10 @@ export interface KjunKpiHeroProps {
   /** "none" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list. */
   surface?: "card" | "none";
   aside?: ReactNode;
+  /** Narrow screens: "below" (default) moves the aside under the delta line at full width; "hidden" drops it. */
+  asideMobile?: "below" | "hidden";
+  /** Draws the direction as a filled caret before the first delta number, in place of its sign. */
+  deltaIcon?: boolean;
   formatter?: (value: number) => string;
   deltaFormatter?: (value: number, kind: "absolute" | "percent") => string;
   renderSecondary?: (item: KpiValue, index: number) => ReactNode;
@@ -78,6 +93,8 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     size = "md",
     surface = "card",
     aside,
+    asideMobile = "below",
+    deltaIcon = false,
     formatter,
     deltaFormatter,
     renderSecondary,
@@ -89,7 +106,8 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     small = size === "sm",
     numberRole = small ? "displaySm" : mobile ? "displayMd" : "displayLg",
     font = typeStyle(numberRole).fontSize,
-    unitStyle = typeStyle(small ? "numberSm" : mobile ? "numberMd" : "numberLg");
+    // Units sit one weight below their number.
+    unitStyle = { ...typeStyle(small ? "numberSm" : mobile ? "numberMd" : "numberLg"), fontWeight: typeStyle("numberSm").fontWeight };
   const geometry = tokens.extensions.kpiHero;
   const spec = small ? geometry.sm : mobile ? geometry.mobile : geometry.md;
   const numeric: TextStyle = {
@@ -108,22 +126,38 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
       ["deltaAbsolute", "deltaPercent", "deltaDescription"].some((key) =>
         Object.prototype.hasOwnProperty.call(props, key)
       ));
-  // Units sit apart from their number by the financial affix gap, like Web; nested Text cannot take a margin.
+  const tint = (v: number) =>
+    v === 0 ? colors.secondary : domainColor(domainColors, v > 0 ? "priceUpBg" : "priceDownBg");
+  // Units sit 2px from their number, like Web; nested Text cannot take a margin, so each unit is its own Text.
   const delta = (v: number, kind: "absolute" | "percent", style: TextStyle) => {
-    if (deltaFormatter) return <KText style={style}>{deltaFormatter(v, kind)}</KText>;
-    const sign = v > 0 ? "+" : v < 0 ? "−" : "",
-      gap = tokens.extensions.financial.affixGap,
+    // The caret marks the first delta number shown, in place of its sign; the spoken label keeps the sign.
+    const icon = deltaIcon && v !== 0 && (kind === "absolute" || deltaAbsolute === null),
+      signText = v > 0 ? "+" : v < 0 ? "−" : "",
+      sign = icon ? "" : signText,
+      gap = geometry.secondaryAffixGap,
+      unit = typeStyle("meta"),
       number = new Intl.NumberFormat(undefined, {
         minimumFractionDigits: kind === "absolute" ? decimals : 1,
         maximumFractionDigits: kind === "absolute" ? decimals : 1,
       }).format(Math.abs(v));
-    if (kind === "percent")
-      return <KpiNumberLine suffix="%" prefixGap={gap} suffixGap={gap} style={style} unitStyle={typeStyle("caption")}>{sign + number}</KpiNumberLine>;
-    if (!prefix) return <KText style={style}>{sign + number}</KText>;
+    const body = deltaFormatter ? <KText style={style}>{deltaFormatter(v, kind)}</KText>
+      : kind === "percent" ? <KpiNumberLine suffix="%" prefixGap={gap} suffixGap={gap} style={style} unitStyle={unit}>{sign + number}</KpiNumberLine>
+      : !prefix && !suffix ? <KText style={style}>{sign + number}</KText>
+      : (
+        <View style={{ flexDirection: "row", alignItems: "baseline", minWidth: 0, maxWidth: "100%" }}>
+          {!!sign && <KText style={style}>{sign}</KText>}
+          <KpiNumberLine prefix={prefix} suffix={suffix} prefixGap={gap} suffixGap={gap} style={style} unitStyle={unit}>{number}</KpiNumberLine>
+        </View>
+      );
+    if (!icon) return body;
+    const spoken = deltaFormatter ? deltaFormatter(v, kind)
+      : signText + (kind === "percent" ? number + "%" : prefix + number + suffix);
     return (
-      <View style={{ flexDirection: "row", alignItems: "baseline", minWidth: 0, maxWidth: "100%" }}>
-        {!!sign && <KText style={style}>{sign}</KText>}
-        <KpiNumberLine prefix={prefix} prefixGap={gap} suffixGap={gap} style={style} unitStyle={typeStyle("caption")}>{number}</KpiNumberLine>
+      <View accessible accessibilityLabel={spoken} style={{ flexDirection: "row", alignItems: "center", minWidth: 0, maxWidth: "100%" }}>
+        <View style={{ marginRight: geometry.prefixGap, transform: [{ rotate: v > 0 ? "0deg" : "180deg" }] }}>
+          <DeltaCaret size={geometry.deltaIconSize} color={style.color} />
+        </View>
+        {body}
       </View>
     );
   };
@@ -142,17 +176,18 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     >
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
+          // Like Web, a narrow screen moves the aside under the delta line at full width.
+          flexDirection: mobile ? "column" : "row",
+          alignItems: mobile ? "stretch" : "center",
           justifyContent: "space-between",
-          gap: geometry.layoutGap,
+          gap: mobile ? geometry.asideGap : geometry.layoutGap,
         }}
       >
         <View style={{ minWidth: 0, flexShrink: 1 }}>
           <KText
             style={{
               color: colors.textSecondary,
-              ...typeStyle("caption"),
+              ...typeStyle("label"),
               marginBottom: spec.labelGap,
             }}
           >
@@ -184,7 +219,11 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                   {deltaAbsolute !== null &&
                     delta(deltaAbsolute, "absolute", { ...numeric, color: direction(deltaAbsolute), ...typeStyle("numberMd") })}
                   {deltaPercent !== null &&
-                    delta(deltaPercent, "percent", { ...numeric, color: direction(deltaPercent), ...typeStyle("numberMd"), opacity: 0.9 })}
+                    // The percent is a tinted chip, so amount and rate read as two values without dimming either. A View has no text
+                    // baseline, so the chip centres on the line, which lands its text within a pixel of Web's baseline.
+                    <View style={{ alignSelf: "center", backgroundColor: tint(deltaPercent), paddingHorizontal: geometry.deltaChipPaddingX, borderRadius: geometry.deltaChipRadius }}>
+                      {delta(deltaPercent, "percent", { ...numeric, color: direction(deltaPercent), ...typeStyle("numberSm"), fontWeight: typeStyle("numberMd").fontWeight })}
+                    </View>}
                   {!!deltaDescription && (
                     <KText
                       style={{
@@ -200,7 +239,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
             </View>
           )}
         </View>
-        {hasContent(aside) && !mobile && <View>{content(aside)}</View>}
+        {hasContent(aside) && !(mobile && asideMobile === "hidden") && <View>{content(aside)}</View>}
       </View>
       {secondary.length > 0 && (
         <View
@@ -246,13 +285,13 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                 {item.label}
               </KText>
               {loading ? (
-                <KjunSkeleton type="line" role="numberMd" width={geometry.secondarySkeletonWidth} />
+                <KjunSkeleton type="line" role="numberSm" width={geometry.secondarySkeletonWidth} />
               ) : (
                 renderSecondary?.(item, i) || (
                   <KpiNumberLine prefix={item.prefix} suffix={item.suffix}
                     prefixGap={geometry.secondaryAffixGap} suffixGap={geometry.secondaryAffixGap}
-                    unitStyle={typeStyle("caption")}
-                    style={{ ...numeric, ...typeStyle("numberMd"), color: item.valueColor ||
+                    unitStyle={typeStyle("meta")}
+                    style={{ ...numeric, ...typeStyle("numberSm"), color: item.valueColor ||
                       (item.semantic === "price" && Number(item.value) !== 0 ? direction(Number(item.value)) : colors.text) }}>
                     {kpiFormat(item)}
                   </KpiNumberLine>

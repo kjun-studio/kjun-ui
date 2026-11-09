@@ -12,7 +12,9 @@ import { KjunSkeleton } from "./display";
 import { BadgeView } from "./display-primitives";
 import type { BadgeVariant } from "../../../shared/package-runtime/badge-tone";
 import { KjunAnimatedNumber } from "./financial";
-import { KText,domainColor, FontText } from "./internal";
+import { KjunIcon } from "./button";
+import { KpiNumberLine } from "./kpi-number-line";
+import { KText,domainColor } from "./internal";
 import { KpiValue,kpiFormat } from "./kpi-hero";
 import { useKjunStyles } from "./provider";
 const kpiBadgeVariant = (variant?: string) => (variant === "neutral" || !variant ? "secondary" : variant) as BadgeVariant;
@@ -78,17 +80,8 @@ export function KjunKpiRow({
   const [width, setWidth] = useState(0);
   const paddingX = summary ? geometry.summary.paddingX : spec.paddingX;
   const gapX = summary ? geometry.summary.gapX : 0;
-  const explicit = items.some(
-      (item) => typeof item.mobileSecondary === "boolean"
-    ),
-    hasFull = items.some((item) => item.mobileFull),
-    secondary = items.map((item, i) =>
-      explicit
-        ? item.mobileSecondary === true
-        : hasFull
-        ? !item.mobileFull
-        : i >= 2
-    ),
+  // Only items marked mobileSecondary fold into the summary's inline footnote; the rest keep their two-column cells.
+  const secondary = items.map((item) => item.mobileSecondary === true),
     primary = items.flatMap((item, i) =>
       !secondary[i] && !item.mobileFull ? [i] : []
     ),
@@ -103,20 +96,13 @@ export function KjunKpiRow({
       : colors.text);
   const badge = (item: KpiRowItem) =>
     item.badge ? (
-      <BadgeView dotSize={geometry.dotSize}
+      <BadgeView
         variant={kpiBadgeVariant(item.badge.variant)}
-        // KPI badges keep their own recipe (like Web's .kjun-kpi-row__badge): tone-colored text and dot, control type.
+        // Like Web's .kjun-kpi-row__badge: the xs badge's geometry and type, painted in its tone, with no dot.
         paint={kpiBadgePaint(kpiBadgeVariant(item.badge.variant))}
-        typeRole="controlSmall"
+        typeRole="meta"
         size="xs"
         style={{ borderRadius: geometry.badgeRadius, gap: geometry.badgeGap, paddingHorizontal: geometry.badgePadding.x, paddingVertical: geometry.badgePadding.y }}
-        dot={[
-          "warning",
-          "success",
-          "danger",
-          "price-up",
-          "price-down",
-        ].includes(item.badge.variant || "")}
       >
         {item.badge.text}
       </BadgeView>
@@ -156,7 +142,9 @@ export function KjunKpiRow({
               items.length % 2 === 1),
           numberRole = sub ? "numberSm" : small ? "numberLg" : mobile && !summary ? "numberLg" : "displaySm",
           numberSize = typeStyle(numberRole).fontSize;
-        const valueRole = item.valueKind === "text" ? "body" : numberRole;
+        // A text value is a card title beside number cells; in a summary footnote it stays body text.
+        const valueRole = item.valueKind === "text" ? (sub ? "body" : "cardTitle") : numberRole;
+        const unitRole = item.valueKind !== "text" && numberRole === "displaySm" ? "numberSm" : "meta";
         const dividerLeft = summary
           ? 0
           : mobile && !small
@@ -225,7 +213,8 @@ export function KjunKpiRow({
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "space-between",
+                // A label badge sits right after its label, as that label's state.
+                justifyContent: "flex-start",
                 gap: spec.labelGap,
                 marginBottom: sub ? 0 : spec.labelMargin,
               }}
@@ -245,6 +234,8 @@ export function KjunKpiRow({
                 alignItems: "center",
                 gap: sub ? geometry.summary.secondaryGap : geometry.valueGap,
                 minWidth: 0,
+                // Every value line is as tall as this size's number line, so text values and dashes keep the row even.
+                minHeight: sub ? undefined : typeStyle(numberRole).lineHeight,
               }}
             >
               {item.valueSegments ? (
@@ -286,20 +277,9 @@ export function KjunKpiRow({
                 renderValue?.(item, i) || (!present ? (
                   <KText style={valueStyle}>{item.missingText ?? "—"}</KText>
                 ) : (
-                  <KText
-
-                    style={[valueStyle, { flexShrink: 1, minWidth: 0 }]}
-                  >
-                    {!!item.prefix && (
-                      <FontText
-                        style={{
-
-                          ...typeStyle(item.valueKind !== "text" && numberRole === "displaySm" ? "numberSm" : "caption"),
-                        }}
-                      >
-                        {item.prefix}
-                      </FontText>
-                    )}
+                  // Units sit 2px from their number, like Web; each is its own Text so it can take the gap.
+                  <KpiNumberLine prefix={item.prefix} suffix={item.suffix} prefixGap={geometry.affixGap} suffixGap={geometry.affixGap}
+                    style={{ ...valueStyle, flexShrink: 1, minWidth: 0 }} unitStyle={typeStyle(unitRole)}>
                     {item.animated && typeof value === "number" ? (
                       <KjunAnimatedNumber
                         fromPrevious
@@ -310,20 +290,15 @@ export function KjunKpiRow({
                     ) : (
                       format(value!)
                     )}
-                    {!!item.suffix && (
-                      <FontText
-                        style={{
-
-                          ...typeStyle(item.valueKind !== "text" && numberRole === "displaySm" ? "numberSm" : "caption"),
-                        }}
-                      >
-                        {item.suffix}
-                      </FontText>
-                    )}
-                  </KText>
+                  </KpiNumberLine>
                 ))
               )}
               {!busy && item.badgePlacement === "value" && badge(item)}
+              {item.clickable && !sub && (
+                <View style={{ marginLeft: "auto" }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                  <KjunIcon name="chevron-right" size={geometry.chevronSize} color={colors.textTertiary} />
+                </View>
+              )}
             </View>
             {!!item.desc &&
               (busy ? (

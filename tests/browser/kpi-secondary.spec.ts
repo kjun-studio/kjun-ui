@@ -17,7 +17,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     const caption = tokens.typography.caption.lineHeightPx;
     for (const label of labels) expect((await page.getByText(label, { exact: true }).boundingBox())!.height).toBeLessThanOrEqual(caption + 1);
     const amount = page.getByText(/^₩?1,234,567$/).first();
-    expect((await amount.boundingBox())!.height).toBeLessThanOrEqual(tokens.typography.numberMd.lineHeightPx + 1);
+    expect((await amount.boundingBox())!.height).toBeLessThanOrEqual(tokens.typography.numberSm.lineHeightPx + 1);
     await captureReview(page, { path: `artifacts/kpi-secondary-${platform}-320.png` });
     await page.setViewportSize({ width: tokens.responsive.kpiHeroSecondary + 120, height: 800 });
     await expect.poll(async () => new Set(await tops(page)).size).toBe(1);

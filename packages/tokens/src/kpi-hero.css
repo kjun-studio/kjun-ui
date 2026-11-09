@@ -27,8 +27,7 @@
 .kjun-kpi-hero__affix {
   color: var(--_kjun-text-primary);
 }
-/* prefix는 전 소비처가 통화 기호(₩/$)라 숫자에 붙여 읽히는 게 맞다. 4px은 큰 폰트에서
-   "$ 8,798.69"처럼 기호가 떨어져 보였다. 보조 지표(sec-affix)와 같은 2px로 맞춘다. */
+/* A unit reads with its number: prefix and suffix both sit 2px away, like every other KPI unit. */
 .kjun-kpi-hero__affix:first-child {
   margin-right: var(--_kjun-extension-kpi-hero-prefix-gap);
 }
@@ -44,10 +43,27 @@
   font-family: var(--_kjun-font-numeric);
   font-variant-numeric: tabular-nums;
 }
-.kjun-kpi-hero__delta-abs {
-}
+/* The percent change is a tinted chip, so the amount and the rate read as two values without dimming either. */
 .kjun-kpi-hero__delta-pct {
-  opacity: 0.9;
+  padding: 0 var(--_kjun-extension-kpi-hero-delta-chip-padding-x);
+  border-radius: var(--_kjun-extension-kpi-hero-delta-chip-radius);
+}
+/* The default caret is a closed outline; filling it with the text colour draws a solid, round-cornered triangle. */
+.kjun-kpi-hero__delta-icon {
+  fill: currentColor;
+  width: var(--_kjun-extension-kpi-hero-delta-icon-size);
+  height: var(--_kjun-extension-kpi-hero-delta-icon-size);
+  margin-right: var(--_kjun-extension-kpi-hero-prefix-gap);
+  vertical-align: middle;
+}
+.kjun-kpi-hero__delta-icon[data-direction="down"] {
+  transform: rotate(180deg);
+}
+.kjun-kpi-hero__delta-line .kjun-number-affix[data-side="prefix"] {
+  margin-right: var(--_kjun-extension-kpi-hero-secondary-affix-gap);
+}
+.kjun-kpi-hero__delta-line .kjun-number-affix[data-side="suffix"] {
+  margin-left: var(--_kjun-extension-kpi-hero-secondary-affix-gap);
 }
 .kjun-kpi-hero__delta-desc {
   color: var(--_kjun-text-tertiary);
@@ -62,17 +78,13 @@
 }
 .kjun-kpi-hero__sec-label {
   color: var(--_kjun-text-tertiary);
-  text-transform: uppercase;
   margin-bottom: var(--_kjun-extension-kpi-hero-md-secondary-label-gap);
 }
 .kjun-kpi-hero__sec-value {
   font-family: var(--_kjun-font-numeric);
   font-variant-numeric: tabular-nums;
 }
-/* Like the delta percent and Native, a unit takes its value's colour at the caption weight. */
-.kjun-kpi-hero__sec-affix {
-  font-weight: var(--_kjun-type-caption-weight);
-}
+/* Like the delta units and Native, a unit takes its value's colour at the unit weight. */
 .kjun-kpi-hero__sec-affix:first-child {
   margin-right: var(--_kjun-extension-kpi-hero-secondary-affix-gap);
 }
@@ -88,21 +100,22 @@
   .kjun-kpi-hero:not(.kjun-kpi-hero--sm) {
     padding: var(--_kjun-extension-kpi-hero-mobile-padding-y) var(--_kjun-extension-kpi-hero-mobile-padding-x);
   }
-  /* 좁은 화면에서 aside가 핵심 금액의 폭을 잠식하지 않도록 숨긴다. */
-  .kjun-kpi-hero__aside {
+  /* 좁은 화면에서는 aside가 핵심 금액의 폭을 잠식하지 않도록 변동선 아래 전폭으로 내려간다. */
+  .kjun-kpi-hero__layout {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--_kjun-extension-kpi-hero-aside-gap);
+  }
+  .kjun-kpi-hero[data-aside-mobile="hidden"] .kjun-kpi-hero__aside {
     display: none;
   }
   .kjun-kpi-hero:not(.kjun-kpi-hero--sm) .kjun-kpi-hero__label {
     margin-bottom: var(--_kjun-extension-kpi-hero-mobile-label-gap);
   }
-  .kjun-kpi-hero:not(.kjun-kpi-hero--sm) .kjun-kpi-hero__value {
-  }
   .kjun-kpi-hero:not(.kjun-kpi-hero--sm) .kjun-kpi-hero__delta-line {
     flex-wrap: wrap;
     gap: var(--_kjun-extension-kpi-hero-mobile-delta-gap);
     margin-top: var(--_kjun-extension-kpi-hero-mobile-delta-margin);
-  }
-  .kjun-kpi-hero:not(.kjun-kpi-hero--sm) .kjun-kpi-hero__delta-abs {
   }
   .kjun-kpi-hero:not(.kjun-kpi-hero--sm) .kjun-kpi-hero__secondary {
     flex-wrap: nowrap;
@@ -126,10 +139,7 @@
   .kjun-kpi-hero:not(.kjun-kpi-hero--sm) .kjun-kpi-hero__sec-label {
     margin-bottom: var(--_kjun-extension-kpi-hero-mobile-secondary-label-gap);
     overflow: visible;
-    text-transform: none;
     white-space: normal;
-  }
-  .kjun-kpi-hero:not(.kjun-kpi-hero--sm) .kjun-kpi-hero__sec-value {
   }
 }
 
@@ -156,17 +166,9 @@
 .kjun-kpi-hero--sm .kjun-kpi-hero__label {
   margin-bottom: var(--_kjun-extension-kpi-hero-sm-label-gap);
 }
-.kjun-kpi-hero--sm .kjun-kpi-hero__value {
-}
 .kjun-kpi-hero--sm .kjun-kpi-hero__delta-line {
   margin-top: var(--_kjun-extension-kpi-hero-sm-delta-margin);
   gap: var(--_kjun-extension-kpi-hero-sm-delta-gap);
-}
-.kjun-kpi-hero--sm .kjun-kpi-hero__delta-abs {
-}
-.kjun-kpi-hero--sm .kjun-kpi-hero__delta-pct {
-}
-.kjun-kpi-hero--sm .kjun-kpi-hero__delta-desc {
 }
 .kjun-kpi-hero--sm .kjun-kpi-hero__secondary {
   gap: var(--_kjun-extension-kpi-hero-sm-secondary-gap);
@@ -176,8 +178,6 @@
 .kjun-kpi-hero--sm .kjun-kpi-hero__sec-label {
   margin-bottom: var(--_kjun-extension-kpi-hero-sm-secondary-label-gap);
 }
-.kjun-kpi-hero--sm .kjun-kpi-hero__sec-value {
-}
 .kjun-kpi-hero--sm .kjun-kpi-hero__sec-desc {
   margin-top: var(--_kjun-extension-kpi-hero-sm-description-gap);
 }
@@ -185,8 +185,6 @@
 @media (width <= token(responsive.kpiHero)) {
   .kjun-kpi-hero--sm .kjun-kpi-hero__secondary {
     gap: var(--_kjun-extension-kpi-hero-small-mobile-gap);
-  }
-  .kjun-kpi-hero--sm .kjun-kpi-hero__value {
   }
 }
 
