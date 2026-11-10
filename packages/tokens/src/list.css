@@ -138,6 +138,8 @@
 /* With a description, actions center on the band of the title and first description line like the row's other ends,
    so a long row keeps its button beside the title rather than at its middle. */
 .kjun-list-row:has(> .kjun-list-main .kjun-list-description) > .kjun-list-actions{align-self:flex-start;align-items:center;min-height:var(--_kjun-list-band);margin-top:var(--_kjun-list-padding-y)}
+/* Move buttons of a reorderable section sit after the row's own actions and never wrap apart. */
+.kjun-list-reorder{display:inline-flex;align-items:center;flex:0 0 auto;gap:var(--_kjun-extension-list-actions-gap)}
 /* A disabled row disables its actions too, so the row never reads as partly available. */
 .kjun-list-actions[data-disabled]{opacity:var(--_kjun-state-opacity-disabled)}
 .kjun-list-item{padding:var(--_kjun-extension-list-padding);position:relative;min-width:0}

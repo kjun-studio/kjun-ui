@@ -8,9 +8,13 @@ import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/packa
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { listRowChoice, listRowEnd, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { kjunListShapeKey } from "./runtime/list-context";
+import { kjunListReorderKey, listReorderControls, useListReorder, type KjunListReorderMove } from "./list-reorder";
+import { reorderPlace } from "../../../shared/package-runtime/reorder";
+import { useKjunMessages } from "./runtime/messages";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 export type { ListChoiceValue, ListGroupVariant, ListSectionVariant } from "../../../shared/package-runtime/list-row";
 export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
+export type { KjunListReorderMove } from "./list-reorder";
 
 // The section's selection mode and, when it owns the value, that value (a single-choice list is a radiogroup). Whether
 // the section is open, which changes how a row draws its icon and its choice, comes from kjunListShapeKey.
@@ -67,6 +71,8 @@ export const KjunListRow = defineComponent({
   setup(props, { slots, emit }) {
     const content = ref<HTMLElement | null>(null), selection = inject<{ value: ListRowSelection } | null>(kjunListSelectionKey, null);
     const shape = inject(kjunListShapeKey, null), id = useKjunId("kjun-");
+    // In a reorderable section a row its order lists draws move buttons after its own actions.
+    const reorder = inject(kjunListReorderKey, null), messages = useKjunMessages();
     // Like React: the row's choice comes from the section when the section owns the value.
     const state = computed(() => {
       const current = selection?.value ?? noSelection, choice = listRowChoice(current, props.value, props.selected);
@@ -128,7 +134,8 @@ export const KjunListRow = defineComponent({
           : <div class="kjun-list-main">{contents}</div>;
       // A disabled row disables its actions too, so the row never reads as partly available.
       // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
-      return <li class="kjun-list-row" role={mode === "single" ? "none" : undefined} data-leading={leading ? (hasLeading ? "" : "icon") : undefined} data-leading-size={leading ? geometry.size : undefined} style={leadingStyle} data-destructive={props.destructive || undefined} data-disabled={props.disabled || undefined}>{main}{hasContent(actions) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}</div>}</li>;
+      const place = reorder?.value ? reorderPlace(reorder.value.order, props.value) : null;
+      return <li class="kjun-list-row" role={mode === "single" ? "none" : undefined} data-leading={leading ? (hasLeading ? "" : "icon") : undefined} data-leading-size={leading ? geometry.size : undefined} style={leadingStyle} data-destructive={props.destructive || undefined} data-disabled={props.disabled || undefined}>{main}{(hasContent(actions) || place) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}{place && listReorderControls(reorder!.value!, place, props.value!, props.title, messages.value)}</div>}</li>;
     };
   },
 });
@@ -155,15 +162,27 @@ const kjunListSectionProps = {
   selectionMode: { type: String as PropType<ListSelectionMode>, default: "none" },
   /** v-model: the chosen rows' values, owned by the app: one value (null for none) with "single", a list with "multiple". */
   modelValue: { type: [String, Number, Array] as PropType<ListChoiceValue | null | ListChoiceValue[]>, default: undefined },
+  /** Rows listed in `order` get up and down buttons. The app keeps the order, renders its rows in it and saves it. */
+  reorderable: { type: Boolean, default: false },
+  /** v-model:order. The row values in the order shown; a row whose value is not listed cannot move. */
+  order: { type: Array as PropType<readonly ListChoiceValue[]>, default: undefined },
+  /** Turns the move buttons off, such as while the list is sorted by a rule. */
+  reorderDisabled: { type: Boolean, default: false },
+  /** Why moving is off, shown under the rows and read with the buttons. */
+  reorderDisabledText: { type: String, default: undefined },
 } as const;
 export type KjunListSectionProps = ExtractPublicPropTypes<typeof kjunListSectionProps>;
 // A ref, so a group whose variant changes updates its sections' corners too.
 const kjunListGroupKey = Symbol("kjunListGroup");
-/** Slots: default (KjunListRow items), actions, loading (in place of the rows while they load), empty (in place of no rows), footer. Event: update:modelValue. */
+/** Slots: default (KjunListRow items), actions, loading (in place of the rows while they load), empty (in place of no rows), footer. Events: update:modelValue, update:order (the next order when a row moves), reorder (the move in detail). */
 export const KjunListSection = defineComponent({
   name: "KjunListSection",
   props: kjunListSectionProps,
-  emits: { "update:modelValue": (_value: ListChoiceValue | ListChoiceValue[]) => true },
+  emits: {
+    "update:modelValue": (_value: ListChoiceValue | ListChoiceValue[]) => true,
+    "update:order": (_order: ListChoiceValue[]) => true,
+    reorder: (_move: KjunListReorderMove) => true,
+  },
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
     actions?: () => VNodeChild;
@@ -174,6 +193,9 @@ export const KjunListSection = defineComponent({
   setup(props, { slots, emit }) {
     const id = useKjunId("kjun-"), group = inject<{ value: ListGroupVariant } | null>(kjunListGroupKey, null);
     const choice = computed(() => props.selectionMode === "single"), list = ref<HTMLElement | null>(null), actionsBox = ref<HTMLElement | null>(null);
+    const note = () => props.reorderable && props.reorderDisabled && props.reorderDisabledText ? id + "-reorder" : undefined;
+    const reorder = useListReorder({ reorderable: () => props.reorderable, order: () => props.order, disabled: () => props.reorderDisabled, noteId: note, list: () => list.value,
+      onOrderChange: order => emit("update:order", order), onReorder: move => emit("reorder", move) });
     const shape = computed(() => listSectionShape({ radius: props.radius, group: group?.value, variant: props.variant, title: props.title, description: props.description, titleVariant: props.titleVariant }));
     provide(kjunListSelectionKey, computed<ListRowSelection>(() => ({ mode: props.selectionMode, value: props.modelValue, onValueChange: ((value: ListChoiceValue | ListChoiceValue[]) => emit("update:modelValue", value)) as ListSelection["onValueChange"] })));
     watchEffect(onCleanup => { if (choice.value && list.value) onCleanup(bindRadioKeyboard(list.value)); }, { flush: "post" });
@@ -201,7 +223,10 @@ export const KjunListSection = defineComponent({
             <div class="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{props.title && <Heading id={id}>{props.title}</Heading>}{props.description && <p id={id + "-description"}>{props.description}</p>}</div>{hasContent(actions) && <div ref={actionsBox} class="kjun-list-heading-actions">{actions}</div>}</div>
           )}
           {outside ? <div class="kjun-list-panel" data-surface={props.surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
+          {note() && <div id={note()} class="kjun-list-footer">{props.reorderDisabledText}</div>}
           {hasFooter && <div id={id + "-footer"} class="kjun-list-footer">{footer}</div>}
+          {/* Each move is announced: the row and its new place. */}
+          {props.reorderable && <span class="kjun-sr-only" role="status">{reorder.said.value}</span>}
         </section>
       );
     };

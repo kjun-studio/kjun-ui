@@ -45,7 +45,7 @@ const componentGroups = {
   distribution: files('distribution'),
   'color-picker': files('color-picker'),
   sparkline: files('sparkline-design', 'runtime-market', 'runtime-cards', 'size-contracts'),
-  list: files('list-design', 'list-leading', 'list-section', 'additions', 'adoption', 'requests', 'rounded'),
+  list: files('list-design', 'list-leading', 'list-section', 'list-reorder', 'additions', 'adoption', 'requests', 'rounded'),
   primitives: [...files('layout-primitives', 'typography', 'geometry-tokens', 'card-layout', 'input-design'), ...visuals],
   kpi: [...files('kpi-design', 'kpi-behavior', 'kpi-secondary', 'size-contracts', 'loading-options', 'typography', 'geometry-tokens', 'card-layout'), ...visuals],
   quantity: [...files('quantity', 'elevation-inputs', 'interaction-states'), ...fields, ...visuals],

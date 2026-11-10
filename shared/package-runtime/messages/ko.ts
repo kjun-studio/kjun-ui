@@ -159,6 +159,10 @@ export const kjunMessagesKo = {
   nextSlide: "다음 슬라이드",
   goToSlide: (slide: number) => `${slide}번 슬라이드`,
   slideOf: (slide: number, total: number) => `${total}개 중 ${slide}번째`,
+  // List reorder
+  moveUp: (name: string) => `${name} 위로 이동`,
+  moveDown: (name: string) => `${name} 아래로 이동`,
+  reorderMoved: (name: string, position: number, total: number) => `${name}, ${total}개 중 ${position}번째로 이동`,
   // Color picker
   colorPlaceholder: "색 선택",
   colorPicker: "색 선택기",

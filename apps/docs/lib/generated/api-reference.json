@@ -30559,6 +30559,42 @@
             ],
             "source": "packages/vue3/src/list.tsx",
             "example": "/components/list-section#preview"
+          },
+          {
+            "name": "reorderable",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Rows listed in `order` get up and down buttons. The app keeps the order, renders its rows in it and saves it.",
+            "summary": "행 순서를 사용자가 바꿀 수 있게 합니다. order에 있는 value를 가진 행마다 위·아래 이동 버튼을 행의 actions 뒤에 그립니다. 순서는 앱이 관리하며 KJUN은 행을 직접 옮기지 않습니다. 기본값 false입니다.",
+            "source": "packages/vue3/src/list.tsx"
+          },
+          {
+            "name": "order",
+            "type": "readonly ListChoiceValue[]",
+            "required": false,
+            "default": "—",
+            "description": "v-model:order. The row values in the order shown; a row whose value is not listed cannot move.",
+            "summary": "보이는 순서대로 나열한 행 value 배열입니다. 앱이 이 순서로 행을 그립니다. 배열에 없는 value의 행과 value가 없는 행은 이동 버튼이 없습니다. reorderable에 필요합니다.",
+            "source": "packages/vue3/src/list.tsx"
+          },
+          {
+            "name": "reorderDisabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Turns the move buttons off, such as while the list is sorted by a rule.",
+            "summary": "이동 버튼을 모두 끕니다. 가격순처럼 자동 정렬 중일 때 켜세요. 기본값 false입니다.",
+            "source": "packages/vue3/src/list.tsx"
+          },
+          {
+            "name": "reorderDisabledText",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Why moving is off, shown under the rows and read with the buttons.",
+            "summary": "이동을 끈 이유입니다. reorderDisabled일 때 행 아래에 보이고 이동 버튼의 설명으로 함께 읽습니다.",
+            "source": "packages/vue3/src/list.tsx"
           }
         ],
         "events": [
@@ -30583,6 +30619,56 @@
               {
                 "label": "상태 책임",
                 "text": "소비자가 섹션의 value를 갱신합니다. 갱신하지 않으면 선택 표시도 바뀌지 않습니다."
+              }
+            ],
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "update:order",
+            "source": "packages/vue3/src/list.tsx",
+            "type": "이벤트",
+            "summary": "행을 옮긴 뒤의 새 순서를 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "행의 위·아래 이동 버튼을 누를 때. 맨 위·맨 아래에서 더 갈 수 없는 방향과 reorderDisabled일 때는 발생하지 않습니다."
+              },
+              {
+                "label": "전달값",
+                "text": "(string | number)[]: 옮긴 뒤의 행 value 배열"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "소비자가 order를 갱신하고 그 순서로 행을 다시 그립니다. 갱신하지 않으면 행은 움직이지 않습니다. 저장도 소비자가 맡습니다."
+              }
+            ],
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "reorder",
+            "source": "packages/vue3/src/list.tsx",
+            "type": "이벤트",
+            "summary": "같은 이동을 자세히 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "onOrderChange와 같은 시점"
+              },
+              {
+                "label": "전달값",
+                "text": "{ value, from, to, order }: 옮긴 행의 value, 원래 위치와 새 위치(0부터), 새 순서"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "서버에 한 건의 이동만 보내는 식으로 쓸 때 사용합니다. order 갱신은 onOrderChange에서 합니다."
               }
             ],
             "example": "/components/list-section#preview"
@@ -30681,8 +30767,8 @@
           }
         ],
         "ownership": [
-          "목록 콘텐츠를 배치하며 정렬·요청 상태를 소유하지 않습니다. 선택 값은 앱이 value·onValueChange(Vue는 v-model)로 넘기면 행의 value와 맞춰 그리고 바뀔 값을 알립니다.",
-          "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다."
+          "목록 콘텐츠를 배치하며 정렬·요청 상태를 소유하지 않습니다. 선택 값은 앱이 value·onValueChange(Vue는 v-model)로 넘기면 행의 value와 맞춰 그리고 바뀔 값을 알립니다. reorderable이면 order(행 value 배열)에 있는 행마다 위·아래 이동 버튼을 그리고, 누르면 새 순서를 onOrderChange(Vue v-model:order)로 알립니다. 순서의 적용과 저장은 앱이 하며, 선택 값과 순서는 서로 다른 상태입니다.",
+          "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다. 순서 변경 안내는 웹에서 status 영역으로, Native 기기에서는 스크린리더 알림으로 읽습니다. 옮긴 뒤 포커스 유지는 웹에서만 합니다."
         ],
         "types": []
       },
@@ -30990,13 +31076,105 @@
             ],
             "source": "packages/react/src/list.tsx",
             "example": "/components/list-section#preview"
+          },
+          {
+            "name": "reorderable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Rows listed in `order` get up and down buttons. The app keeps the order, renders its rows in it and saves it.",
+            "summary": "행 순서를 사용자가 바꿀 수 있게 합니다. order에 있는 value를 가진 행마다 위·아래 이동 버튼을 행의 actions 뒤에 그립니다. 순서는 앱이 관리하며 KJUN은 행을 직접 옮기지 않습니다. 기본값 false입니다.",
+            "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "order",
+            "type": "readonly ListChoiceValue[] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The row values in the order shown; a row whose value is not listed cannot move.",
+            "summary": "보이는 순서대로 나열한 행 value 배열입니다. 앱이 이 순서로 행을 그립니다. 배열에 없는 value의 행과 value가 없는 행은 이동 버튼이 없습니다. reorderable에 필요합니다.",
+            "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "onOrderChange",
+            "type": "((order: ListChoiceValue[]) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Called with the next order when a row moves; the app applies it.",
+            "summary": "행을 옮긴 뒤의 새 순서를 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "행의 위·아래 이동 버튼을 누를 때. 맨 위·맨 아래에서 더 갈 수 없는 방향과 reorderDisabled일 때는 발생하지 않습니다."
+              },
+              {
+                "label": "전달값",
+                "text": "(string | number)[]: 옮긴 뒤의 행 value 배열"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "소비자가 order를 갱신하고 그 순서로 행을 다시 그립니다. 갱신하지 않으면 행은 움직이지 않습니다. 저장도 소비자가 맡습니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "onReorder",
+            "type": "((move: KjunListReorderMove) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The same move in detail: the row's value, where it was and where it went.",
+            "summary": "같은 이동을 자세히 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "onOrderChange와 같은 시점"
+              },
+              {
+                "label": "전달값",
+                "text": "{ value, from, to, order }: 옮긴 행의 value, 원래 위치와 새 위치(0부터), 새 순서"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "서버에 한 건의 이동만 보내는 식으로 쓸 때 사용합니다. order 갱신은 onOrderChange에서 합니다."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "reorderDisabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Turns the move buttons off, such as while the list is sorted by a rule.",
+            "summary": "이동 버튼을 모두 끕니다. 가격순처럼 자동 정렬 중일 때 켜세요. 기본값 false입니다.",
+            "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "reorderDisabledText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Why moving is off, shown under the rows and read with the buttons.",
+            "summary": "이동을 끈 이유입니다. reorderDisabled일 때 행 아래에 보이고 이동 버튼의 설명으로 함께 읽습니다.",
+            "source": "packages/react/src/list.tsx"
           }
         ],
         "events": [],
         "slots": [],
         "ownership": [
-          "목록 콘텐츠를 배치하며 정렬·요청 상태를 소유하지 않습니다. 선택 값은 앱이 value·onValueChange(Vue는 v-model)로 넘기면 행의 value와 맞춰 그리고 바뀔 값을 알립니다.",
-          "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다."
+          "목록 콘텐츠를 배치하며 정렬·요청 상태를 소유하지 않습니다. 선택 값은 앱이 value·onValueChange(Vue는 v-model)로 넘기면 행의 value와 맞춰 그리고 바뀔 값을 알립니다. reorderable이면 order(행 value 배열)에 있는 행마다 위·아래 이동 버튼을 그리고, 누르면 새 순서를 onOrderChange(Vue v-model:order)로 알립니다. 순서의 적용과 저장은 앱이 하며, 선택 값과 순서는 서로 다른 상태입니다.",
+          "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다. 순서 변경 안내는 웹에서 status 영역으로, Native 기기에서는 스크린리더 알림으로 읽습니다. 옮긴 뒤 포커스 유지는 웹에서만 합니다."
         ],
         "types": []
       },
@@ -31304,13 +31482,105 @@
             ],
             "source": "packages/native/src/list.tsx",
             "example": "/components/list-section#preview"
+          },
+          {
+            "name": "reorderable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Rows listed in `order` get up and down buttons. The app keeps the order, renders its rows in it and saves it.",
+            "summary": "행 순서를 사용자가 바꿀 수 있게 합니다. order에 있는 value를 가진 행마다 위·아래 이동 버튼을 행의 actions 뒤에 그립니다. 순서는 앱이 관리하며 KJUN은 행을 직접 옮기지 않습니다. 기본값 false입니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "order",
+            "type": "readonly ListChoiceValue[] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The row values in the order shown; a row whose value is not listed cannot move.",
+            "summary": "보이는 순서대로 나열한 행 value 배열입니다. 앱이 이 순서로 행을 그립니다. 배열에 없는 value의 행과 value가 없는 행은 이동 버튼이 없습니다. reorderable에 필요합니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "onOrderChange",
+            "type": "((order: ListChoiceValue[]) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Called with the next order when a row moves; the app applies it.",
+            "summary": "행을 옮긴 뒤의 새 순서를 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "행의 위·아래 이동 버튼을 누를 때. 맨 위·맨 아래에서 더 갈 수 없는 방향과 reorderDisabled일 때는 발생하지 않습니다."
+              },
+              {
+                "label": "전달값",
+                "text": "(string | number)[]: 옮긴 뒤의 행 value 배열"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "소비자가 order를 갱신하고 그 순서로 행을 다시 그립니다. 갱신하지 않으면 행은 움직이지 않습니다. 저장도 소비자가 맡습니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "onReorder",
+            "type": "((move: KjunListReorderMove) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The same move in detail: the row's value, where it was and where it went.",
+            "summary": "같은 이동을 자세히 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "onOrderChange와 같은 시점"
+              },
+              {
+                "label": "전달값",
+                "text": "{ value, from, to, order }: 옮긴 행의 value, 원래 위치와 새 위치(0부터), 새 순서"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "서버에 한 건의 이동만 보내는 식으로 쓸 때 사용합니다. order 갱신은 onOrderChange에서 합니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "reorderDisabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Turns the move buttons off, such as while the list is sorted by a rule.",
+            "summary": "이동 버튼을 모두 끕니다. 가격순처럼 자동 정렬 중일 때 켜세요. 기본값 false입니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "reorderDisabledText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Why moving is off, shown under the rows.",
+            "summary": "이동을 끈 이유입니다. reorderDisabled일 때 행 아래에 보이고 이동 버튼의 설명으로 함께 읽습니다.",
+            "source": "packages/native/src/list.tsx"
           }
         ],
         "events": [],
         "slots": [],
         "ownership": [
-          "목록 콘텐츠를 배치하며 정렬·요청 상태를 소유하지 않습니다. 선택 값은 앱이 value·onValueChange(Vue는 v-model)로 넘기면 행의 value와 맞춰 그리고 바뀔 값을 알립니다.",
-          "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다."
+          "목록 콘텐츠를 배치하며 정렬·요청 상태를 소유하지 않습니다. 선택 값은 앱이 value·onValueChange(Vue는 v-model)로 넘기면 행의 value와 맞춰 그리고 바뀔 값을 알립니다. reorderable이면 order(행 value 배열)에 있는 행마다 위·아래 이동 버튼을 그리고, 누르면 새 순서를 onOrderChange(Vue v-model:order)로 알립니다. 순서의 적용과 저장은 앱이 하며, 선택 값과 순서는 서로 다른 상태입니다.",
+          "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다. 순서 변경 안내는 웹에서 status 영역으로, Native 기기에서는 스크린리더 알림으로 읽습니다. 옮긴 뒤 포커스 유지는 웹에서만 합니다."
         ],
         "types": []
       }

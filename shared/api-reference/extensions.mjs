@@ -3,6 +3,10 @@ import { detail, event, slot, fields } from "./helpers.mjs";
 const bindings = JSON.parse(readFileSync(new URL("./extensions.json", import.meta.url), "utf8"));
 const guides = JSON.parse(readFileSync(new URL("../component-guides.json", import.meta.url), "utf8"));
 const summaries = {
+  reorderable: "행 순서를 사용자가 바꿀 수 있게 합니다. order에 있는 value를 가진 행마다 위·아래 이동 버튼을 행의 actions 뒤에 그립니다. 순서는 앱이 관리하며 KJUN은 행을 직접 옮기지 않습니다. 기본값 false입니다.",
+  order: "보이는 순서대로 나열한 행 value 배열입니다. 앱이 이 순서로 행을 그립니다. 배열에 없는 value의 행과 value가 없는 행은 이동 버튼이 없습니다. reorderable에 필요합니다.",
+  reorderDisabled: "이동 버튼을 모두 끕니다. 가격순처럼 자동 정렬 중일 때 켜세요. 기본값 false입니다.",
+  reorderDisabledText: "이동을 끈 이유입니다. reorderDisabled일 때 행 아래에 보이고 이동 버튼의 설명으로 함께 읽습니다.",
   // TimePicker refines these two below.
   hourCycle: "시계 방식입니다. 24는 00~23시, 12는 오전/오후와 1~12시를 보입니다.",
   readOnly: "값을 보여 주기만 하고 바꾸지 않습니다.",
@@ -187,6 +191,8 @@ const splitPaneCallbacks = {
 };
 const callback = (name, key, platform) => {
   if (name === "KjunSplitPane") return splitPaneCallbacks[key];
+  if (key === "onOrderChange") return event("행을 옮긴 뒤의 새 순서를 알립니다.", "행의 위·아래 이동 버튼을 누를 때. 맨 위·맨 아래에서 더 갈 수 없는 방향과 reorderDisabled일 때는 발생하지 않습니다.", "(string | number)[]: 옮긴 뒤의 행 value 배열", "반환값을 사용하지 않습니다.", "소비자가 order를 갱신하고 그 순서로 행을 다시 그립니다. 갱신하지 않으면 행은 움직이지 않습니다. 저장도 소비자가 맡습니다.");
+  if (key === "onReorder") return event("같은 이동을 자세히 알립니다.", "onOrderChange와 같은 시점", "{ value, from, to, order }: 옮긴 행의 value, 원래 위치와 새 위치(0부터), 새 순서", "반환값을 사용하지 않습니다.", "서버에 한 건의 이동만 보내는 식으로 쓸 때 사용합니다. order 갱신은 onOrderChange에서 합니다.");
   if (name === "KjunColorPicker") return colorPickerCallback(key);
   const changeWhen = name.includes("Slider") ? "드래그·트랙 선택·키보드·접근성 증감으로 실제 값이 바뀔 때" : name === "KjunTimePicker" ? "시·분·초 선택 또는 지우기로 완전한 시각이 바뀔 때" : "Enter·blur 확정 또는 증감 버튼으로 숫자가 바뀔 때";
   const arg = name === "KjunRangeSlider" ? "[시작 숫자, 끝 숫자]" : name === "KjunTimePicker" ? "HH:mm 또는 HH:mm:ss 문자열 / null" : "새 숫자";
@@ -271,7 +277,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (name === "KjunRangeSlider" && platform === "vue3") props.modelValue.type = "[number, number]";
   const events = {}, slots = {};
   if (platform === "vue3") {
-    const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange" } : {};
+    const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange", "update:order": "onOrderChange", reorder: "onReorder" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
     const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions"], KjunListSection: ["actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"] }[name] || [];
     for (const key of slotNames) {

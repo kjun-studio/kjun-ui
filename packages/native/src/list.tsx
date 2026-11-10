@@ -4,6 +4,8 @@ import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { Children, Fragment, cloneElement, createContext, isValidElement, useContext, useEffect, useId, useLayoutEffect, useMemo, useState, type ReactElement, type ReactNode } from "react";
 import { listRowChoice, listRowEnd, listRowKind, listRowMetrics, listSectionShape, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { ListShapeContext } from "./list-context";
+import { ListReorderContext, ListReorderControls, useListReorder, type KjunListReorderMove } from "./list-reorder";
+import { reorderPlace } from "../../../shared/package-runtime/reorder";
 import { SwitchSpinner } from "./choice-controls";
 import { View, Platform, type ColorValue, type GestureResponderEvent, type TextStyle } from "react-native";
 import { listLeadingGeometry, listRowBleed, listSharedColumn, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
@@ -21,6 +23,7 @@ import { useKjunStyles } from "./provider";
 const ListRowContext = createContext<{ divider: boolean; selection: ListSelection; ringRadius?: FocusRingRadius; column?: number }>({ divider: true, selection: { mode: "none" } });
 export type { ListChoiceValue, ListGroupVariant, ListSectionVariant } from "../../../shared/package-runtime/list-row";
 export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
+export type { KjunListReorderMove } from "./list-reorder";
 const list = tokens.extensions.list;
 // Like Web's ::after divider: it starts where the text does, past the leading column when there is one.
 function Divider({ inset }: { inset: number }) {
@@ -88,6 +91,8 @@ function ChoiceMark({ checkbox, on }: { checkbox: boolean; on: boolean }) {
 export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onPress: ownPress, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
   const { colors } = useKjunStyles(), { divider, selection, ringRadius, column: sharedColumn = 0 } = useContext(ListRowContext), { open, compact } = useContext(ListShapeContext);
   const choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
+  // In a reorderable section a row its order lists draws move buttons after its own actions.
+  const reorder = useContext(ListReorderContext), movable = !!reorder && !!reorderPlace(reorder.order, value);
   const onPress = choice.press ? (event: GestureResponderEvent) => { choice.press(); ownPress?.(event); } : ownPress;
   const kind = listRowKind({ checked, selected, href, pressable: !!(onPress || href), mode: selection.mode }), toggle = kind === "switch";
   const choiceRow = kind === "radio" || kind === "checkbox", endMark = listRowEnd({ kind, selected, mode: selection.mode, open, busy });
@@ -159,9 +164,9 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
       // Like Web: a static row dims as a whole when disabled, so nothing in it reads as available.
       : <View style={{ ...style, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{parts}</View>}
     {/* A disabled row disables its actions too, so the row never reads as partly available. */}
-    {hasContent(actions) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: "45%", flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: m.actionsPadding,
+    {(hasContent(actions) || movable) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: "45%", flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: m.actionsPadding,
       // Like Web: with a description, actions center on the title and first description line instead of a long row's middle.
-      ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}</View>}
+      ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}{movable && <ListReorderControls value={value!} name={title} />}</View>}
     {divider && <Divider inset={paddingX + (front ? column + gap : 0)} />}
   </View>;
 }
@@ -193,6 +198,18 @@ export interface KjunListSectionProps {
   value?: ListChoiceValue | null | ListChoiceValue[];
   /** Called with the next value (a list with "multiple") when a row with a `value` is pressed. */
   onValueChange?: (value: ListChoiceValue | ListChoiceValue[]) => void;
+  /** Rows listed in `order` get up and down buttons. The app keeps the order, renders its rows in it and saves it. */
+  reorderable?: boolean;
+  /** The row values in the order shown; a row whose value is not listed cannot move. */
+  order?: readonly ListChoiceValue[];
+  /** Called with the next order when a row moves; the app applies it. */
+  onOrderChange?: (order: ListChoiceValue[]) => void;
+  /** The same move in detail: the row's value, where it was and where it went. */
+  onReorder?: (move: KjunListReorderMove) => void;
+  /** Turns the move buttons off, such as while the list is sorted by a rule. */
+  reorderDisabled?: boolean;
+  /** Why moving is off, shown under the rows. */
+  reorderDisabledText?: string;
 }
 /** Elements inside fragments, opened up, with keys made unique by their fragment's key. */
 function elements(children: ReactNode, prefix = ""): ReactElement[] {
@@ -218,8 +235,9 @@ function actionsHeight(actions: ReactNode, line: number) {
   }, line);
 }
 const ListGroupContext = createContext<ListGroupVariant | null>(null);
-export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant }: KjunListSectionProps) {
+export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant, reorderable = false, order, onOrderChange, onReorder, reorderDisabled = false, reorderDisabledText }: KjunListSectionProps) {
   const { colors } = useKjunStyles();
+  const reorder = useListReorder({ reorderable, order, disabled: reorderDisabled, onOrderChange, onReorder });
   // Like Web: a rounded section is a card of rows only; its title, actions and footer stay on the page around it.
   const { open, corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), variant, title, description, titleVariant });
   const divider = dividerProp ?? true;
@@ -259,7 +277,7 @@ export function KjunListSection({ title, description, actions, children, ariaLab
     : items.length
     ? <View ref={setGroup} role={choice ? "radiogroup" : "list"} accessibilityLabel={ariaLabel || title}
         {...(Platform.OS === "web" && describedBy ? { "aria-describedby": describedBy } : {})}>
-      {items.map((row, i) => <ListRowContext.Provider key={row.key ?? i} value={contexts[i]}>{row}</ListRowContext.Provider>)}
+      <ListReorderContext.Provider value={reorder.context}>{items.map((row, i) => <ListRowContext.Provider key={row.key ?? i} value={contexts[i]}>{row}</ListRowContext.Provider>)}</ListReorderContext.Provider>
     </View>
     : hasContent(empty) ? <View style={{ minHeight: compact ? list.compactMinimumHeight : list.minimumHeight, justifyContent: "center", paddingHorizontal: list.padding }}><ListEmptyContext.Provider value={density}>{content(empty)}</ListEmptyContext.Provider></View> : null;
   const card = { backgroundColor: surface ? colors.surface : "transparent", ...(radiusValue === undefined ? {} : { borderRadius: radiusValue, overflow: "hidden" as const }) };
@@ -274,6 +292,8 @@ export function KjunListSection({ title, description, actions, children, ariaLab
       </View>}
     </View>}
     {outside ? <View style={card}>{rows}</View> : rows}
+    {reorderable && reorderDisabled && !!reorderDisabledText && <View style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside || hasFooter ? 0 : list.padding }}><KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{reorderDisabledText}</KText></View>}
+    {reorder.status}
     {hasFooter && <View nativeID={id + "-footer"} style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside ? 0 : list.padding }}>{typeof footer === "string" ? <KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{String(footer)}</KText> : content(footer, { ...typeStyle("caption"), color: colors.textTertiary })}</View>}
   </View></ListShapeContext.Provider>;
 }

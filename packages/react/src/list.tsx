@@ -5,10 +5,13 @@ import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { KjunIcon } from "./button";
 import { listRowChoice, listRowEnd, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { ListShapeContext } from "./list-context";
+import { ListReorderContext, ListReorderControls, useListReorder, type KjunListReorderMove } from "./list-reorder";
+import { reorderPlace } from "../../../shared/package-runtime/reorder";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 export type { ListChoiceValue, ListGroupVariant, ListSectionVariant } from "../../../shared/package-runtime/list-row";
 export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
+export type { KjunListReorderMove } from "./list-reorder";
 // The section's selection mode and, when it owns the value, that value (a single-choice list is a radiogroup). Whether
 // the section is open, which changes how a row draws its icon and its choice, comes from ListShapeContext.
 const ListSelectionContext = createContext<ListSelection>({ mode: "none" });
@@ -54,6 +57,8 @@ export interface KjunListRowProps {
 }
 export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onClick: ownClick, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
   const selection = useContext(ListSelectionContext), { open } = useContext(ListShapeContext), choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
+  // In a reorderable section a row its order lists draws move buttons after its own actions.
+  const reorder = useContext(ListReorderContext), movable = !!reorder && !!reorderPlace(reorder.order, value);
   const handle = choice.press ? (event: MouseEvent<HTMLElement>) => { choice.press(); ownClick?.(event); } : ownClick;
   // A busy row ignores presses (a link its navigation too) but keeps its focus and role, so it stays reachable and reads as busy.
   const onClick = busy && (handle || href) ? (event: MouseEvent<HTMLElement>) => event.preventDefault() : handle;
@@ -86,7 +91,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
     : href ? <a className="kjun-list-main" href={disabled ? undefined : href} {...label} aria-disabled={disabled || undefined} aria-busy={busy || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a>
     : onClick ? <button className="kjun-list-main" type="button" {...label} aria-busy={busy || undefined} disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main">{contents}</div>;
   // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
-  return <li className="kjun-list-row" role={selection.mode === "single" ? "none" : undefined} data-leading={front ? (custom ? "" : "icon") : undefined} data-leading-size={front ? geometry.size : undefined} style={leadingStyle} data-destructive={destructive || undefined} data-disabled={disabled || undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{hasContent(actions) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}</div>}</li>;
+  return <li className="kjun-list-row" role={selection.mode === "single" ? "none" : undefined} data-leading={front ? (custom ? "" : "icon") : undefined} data-leading-size={front ? geometry.size : undefined} style={leadingStyle} data-destructive={destructive || undefined} data-disabled={disabled || undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{(hasContent(actions) || movable) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}{movable && <ListReorderControls value={value!} name={title} />}</div>}</li>;
 }
 export interface KjunListSectionProps {
   title?: string; description?: string; actions?: ReactNode; children?: ReactNode; ariaLabel?: string;
@@ -116,9 +121,21 @@ export interface KjunListSectionProps {
   value?: ListChoiceValue | null | ListChoiceValue[];
   /** Called with the next value (a list with "multiple") when a row with a `value` is pressed. */
   onValueChange?: (value: ListChoiceValue | ListChoiceValue[]) => void;
+  /** Rows listed in `order` get up and down buttons. The app keeps the order, renders its rows in it and saves it. */
+  reorderable?: boolean;
+  /** The row values in the order shown; a row whose value is not listed cannot move. */
+  order?: readonly ListChoiceValue[];
+  /** Called with the next order when a row moves; the app applies it. */
+  onOrderChange?: (order: ListChoiceValue[]) => void;
+  /** The same move in detail: the row's value, where it was and where it went. */
+  onReorder?: (move: KjunListReorderMove) => void;
+  /** Turns the move buttons off, such as while the list is sorted by a rule. */
+  reorderDisabled?: boolean;
+  /** Why moving is off, shown under the rows and read with the buttons. */
+  reorderDisabledText?: string;
 }
 const ListGroupContext = createContext<ListGroupVariant | null>(null);
-export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant }: KjunListSectionProps) {
+export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant, reorderable = false, order, onOrderChange, onReorder, reorderDisabled = false, reorderDisabledText }: KjunListSectionProps) {
   // A rounded section is a card of rows only: its title, actions and footer stay on the page, above and below it.
   const { open, corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), variant, title, description, titleVariant });
   const divider = dividerProp ?? true;
@@ -128,6 +145,8 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   const choice = selectionMode === "single", [list, setList] = useState<HTMLUListElement | null>(null), [actionsBox, setActionsBox] = useState<HTMLDivElement | null>(null);
   useEffect(() => choice && list ? bindRadioKeyboard(list) : undefined, [choice, list]);
   useEffect(() => actionsBox ? observeListHeadingActions(actionsBox) : undefined, [actionsBox]);
+  const note = reorderable && reorderDisabled && reorderDisabledText ? id + "-reorder" : undefined;
+  const reorder = useListReorder({ reorderable, order, disabled: reorderDisabled, noteId: note, list, onOrderChange, onReorder });
   const hasFooter = hasContent(footer), describedBy = [description && id + "-description", hasFooter && id + "-footer"].filter(Boolean).join(" ") || undefined;
   const rounded = corner === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${corner})` };
   const compact = density === "compact" ? "compact" : undefined;
@@ -138,12 +157,15 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   // Loading content announces itself (a skeleton's loadingText is a status), so the wrapper only places it.
   const rows = hasContent(loading) ? <div className="kjun-list-loading">{loading}</div>
     : hasContent(children)
-    ? <ul ref={setList} className="kjun-list" role={choice ? "radiogroup" : undefined} aria-label={ariaLabel || undefined} aria-labelledby={ariaLabel || !title ? undefined : id} aria-describedby={describedBy} data-divider={divider ? undefined : "false"} data-density={compact} data-variant={open ? "open" : undefined}><ListSelectionContext.Provider value={selection}>{children}</ListSelectionContext.Provider></ul>
+    ? <ul ref={setList} className="kjun-list" role={choice ? "radiogroup" : undefined} aria-label={ariaLabel || undefined} aria-labelledby={ariaLabel || !title ? undefined : id} aria-describedby={describedBy} data-divider={divider ? undefined : "false"} data-density={compact} data-variant={open ? "open" : undefined}><ListSelectionContext.Provider value={selection}><ListReorderContext.Provider value={reorder.context}>{children}</ListReorderContext.Provider></ListSelectionContext.Provider></ul>
     : hasContent(empty) ? <div className="kjun-list-empty" data-density={compact}>{empty}</div> : null;
   return <ListShapeContext.Provider value={shape}><section className="kjun-list-section" data-surface={surface ? undefined : "false"} data-outside={outside || undefined} data-variant={open ? "open" : undefined}>
     {(title || description || hasContent(actions)) && <div className="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{title && <Heading id={id}>{title}</Heading>}{description && <p id={id + "-description"}>{description}</p>}</div>{hasContent(actions) && <div ref={setActionsBox} className="kjun-list-heading-actions">{actions}</div>}</div>}
     {outside ? <div className="kjun-list-panel" data-surface={surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
+    {note && <div id={note} className="kjun-list-footer">{reorderDisabledText}</div>}
     {hasFooter && <div id={id + "-footer"} className="kjun-list-footer">{footer}</div>}
+    {/* Each move is announced: the row and its new place. */}
+    {reorderable && <span className="kjun-sr-only" role="status">{reorder.said}</span>}
   </section></ListShapeContext.Provider>;
 }
 export interface KjunListGroupProps {

@@ -150,6 +150,10 @@ export const kjunMessagesEn: KjunMessages = {
   nextSlide: "Next slide",
   goToSlide: (slide: number) => `Slide ${slide}`,
   slideOf: (slide: number, total: number) => `${slide} of ${total}`,
+  // List reorder
+  moveUp: (name: string) => `Move ${name} up`,
+  moveDown: (name: string) => `Move ${name} down`,
+  reorderMoved: (name: string, position: number, total: number) => `${name} moved to ${position} of ${total}`,
   // Color picker
   colorPlaceholder: "Choose color",
   colorPicker: "Color picker",

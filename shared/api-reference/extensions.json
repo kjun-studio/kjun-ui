@@ -86,7 +86,11 @@
       "titleVariant",
       "headingLevel",
       "selectionMode",
-      "modelValue"
+      "modelValue",
+      "reorderable",
+      "order",
+      "reorderDisabled",
+      "reorderDisabledText"
     ],
     "react": [
       "title",
@@ -106,7 +110,13 @@
       "loading",
       "selectionMode",
       "value",
-      "onValueChange"
+      "onValueChange",
+      "reorderable",
+      "order",
+      "reorderDisabled",
+      "reorderDisabledText",
+      "onOrderChange",
+      "onReorder"
     ],
     "native": [
       "title",
@@ -126,7 +136,13 @@
       "loading",
       "selectionMode",
       "value",
-      "onValueChange"
+      "onValueChange",
+      "reorderable",
+      "order",
+      "reorderDisabled",
+      "reorderDisabledText",
+      "onOrderChange",
+      "onReorder"
     ]
   },
   "KjunListItem": {
