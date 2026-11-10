@@ -31,6 +31,8 @@ export { KjunIconToggle, KjunCopyButton, KjunRefreshButton, KjunExternalLink, Kj
 export { KjunCarousel } from "./carousel";
 export { KjunColorPicker } from "./color-picker";
 export { KjunSplitPane } from "./split-pane";
+export { KjunZoneGauge } from "./zone-gauge";
+export { KjunStackedBar } from "./stacked-bar";
 export { KjunDataState, KjunErrorBoundary } from "./data-state";
 export { KjunAnimatedNumber, KjunPriceCell, KjunSignedValue } from "./number-display";
 export { KjunKpiHero, KjunKpiRow } from "./kpi";

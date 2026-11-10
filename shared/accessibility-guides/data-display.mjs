@@ -13,6 +13,8 @@ export default [
   ['KjunListSection', 'action', 'title ariaLabel', '섹션 안에 공급한 프로필 행·공유 버튼', { button: '공유', event: 'message', children: true }],
   ['KjunListGroup', 'text', 'variant', '묶음 안에 공급한 목록 섹션의 라벨과 행', { text: '계정', children: true }],
   ['KjunListItem', 'text', '', 'KjunListSection 안의 화면 테마 안내 문구', { text: '화면 테마', children: true, parent: 'KjunListSection' }],
+  ['KjunZoneGauge', 'image', 'label ariaLabel value zones', 'PER 백분위의 이름·값·구간을 한 문장으로 읽기', { text: 'PER 백분위' }],
+  ['KjunStackedBar', 'image', 'label ariaLabel items legend', '애널리스트 의견의 이름과 항목별 수치·비율 읽기', { text: '애널리스트 의견' }],
   ['KjunSplitPane', 'tab-order', 'ariaLabel size disabled', '경계 손잡이의 이름, 현재 크기 읽기, 키보드 조절', {}],
   ['KjunCarousel', 'tab-order', 'ariaLabel index indicators', '영역 이름, 슬라이드 순서 읽기, 키보드 이동', {}],
   ['KjunImage', 'image', 'alt decorative', '프로젝트 표지의 대체 텍스트와 장식 모드', { text: '산과 하늘을 표현한 프로젝트 표지' }],

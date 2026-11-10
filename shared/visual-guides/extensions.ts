@@ -69,6 +69,16 @@ export const extensions: Record<string, GuideAuthor> = {
     parts: [p("시 선택", "유효한 24시간제 시각의 시를 선택합니다.", '[aria-label="알림 시각 시"]'), p("분 선택", "선택한 시 안에서 유효한 분을 고릅니다.", '[aria-label="알림 시각 분"]'), p("지우기", "값이 있을 때 시계 아이콘 자리에 나타나며, 값을 null로 바꾸고 첫 구간으로 초점을 옮깁니다.", '[aria-label="알림 시각 지우기"]', true)], related: "input-settings",
     states: [{ id: "seconds", label: "초 선택", description: "precision=second로 초 선택 영역을 추가합니다.", settings: { precision: "second" }, values: { time: "09:30:15" } }, { id: "bounded", label: "시각 범위", description: "09:30:15~18:30:45 사이의 시각만 선택합니다.", settings: { precision: "second", bounded: true } }],
   },
+  KjunZoneGauge: {
+    parts: [t("이름", "무엇의 위치인지 알립니다.", "PER 백분위", true), t("값과 구간", "현재 값과 그 값이 속한 구간 이름입니다.", "72 · 고평가", true), t("구간 이름", "축 아래에서 각 구간을 이름으로 구분합니다.", "저평가", true), p("축과 표식", "구간으로 나눈 축 위에 현재 값을 표식으로 놓습니다. 하나의 이미지로 읽습니다.", '[role="img"]')],
+    related: "assets",
+    states: [{ id: "low", label: "저평가 구간", description: "값 18은 첫 구간에 놓입니다.", settings: { value: 18 } }, { id: "missing", label: "데이터 없음", description: "축을 그리지 않고 값 자리에 —만 보입니다.", settings: { missing: true } }],
+  },
+  KjunStackedBar: {
+    parts: [t("이름", "무엇의 구성인지 알립니다.", "애널리스트 의견", true), t("범례", "항목마다 색 칸·이름·수치·비율을 보입니다.", "강세 12 · 60%", true), p("막대", "항목마다 비율만큼의 길이로 그립니다. 하나의 이미지로 읽습니다.", '[role="img"]')],
+    related: "assets",
+    states: [{ id: "empty", label: "모두 0", description: "빈 트랙과 범례를 그립니다.", settings: { data: "모두 0" } }, { id: "missing", label: "데이터 없음", description: "막대와 범례를 그리지 않습니다.", settings: { data: "없음" } }],
+  },
   KjunSplitPane: {
     parts: [p("경계 손잡이", "끌거나 포커스를 두고 화살표·Home·End·Enter로 첫 패널의 크기를 바꿉니다. 현재 크기를 백분율로 알립니다.", '[role="separator"], [role="slider"]'), t("첫 패널", "크기를 정하는 기준 패널입니다.", "메시지 목록", true), t("둘째 패널", "나머지 공간을 채웁니다.", "상세 내용", true)],
     related: "generic-lists",

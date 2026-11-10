@@ -60,6 +60,18 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       return h(name, { value: get("range", settings.decimal ? [.2, .8] : [20, 80]), min: 0, max: settings.decimal ? 1 : 100, step: settings.decimal ? .1 : 1, disabled, label: "조회 범위", thumbLabels: ["시작 값", "끝 값"], onValueChange: change("range"), onChangeCommit: (value: number[]) => set("message", "확정: " + value.join(" ~ ")) });
     case "KjunTimePicker":
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "알림 시각", error: error ? "알림 시각을 선택해 주세요." : "" }, h(name, { value: get("time", null), precision: settings.precision, minuteStep: settings.minuteStep, secondStep: settings.secondStep, min: settings.bounded ? (settings.precision === "second" ? "09:30:15" : "09:30") : undefined, max: settings.bounded ? (settings.precision === "second" ? "18:30:45" : "18:30") : undefined, disabled, error, clearable: settings.clearable, size: settings.size, block: settings.block, ariaLabel: "알림 시각", onValueChange: change("time"), onChangeCommit: (value: string | null) => set("message", "선택: " + value) })));
+    case "KjunZoneGauge": {
+      // Zone colours are the app's own: KJUN draws them as given.
+      const color = (role: string) => platform === "native" ? colors[role] : `var(--kjun-${role})`;
+      return h("Box", { width: 480 }, h(name, { label: "PER 백분위", value: settings.missing ? null : Number(settings.value), size: settings.size, zoneLabels: settings.zoneLabels,
+        zones: [{ to: 30, label: "저평가", color: color("info") }, { to: 70, label: "중립" }, { to: 100, label: "고평가", color: color("warning") }] }));
+    }
+    case "KjunStackedBar": {
+      const color = (role: string) => platform === "native" ? colors[role] : `var(--kjun-${role})`;
+      const values = settings.data === "작은 조각" ? [990, 5, 5] : settings.data === "모두 0" ? [0, 0, 0] : [12, 6, 2];
+      return h("Box", { width: 480 }, h(name, { label: "애널리스트 의견", size: settings.size, legend: settings.legend, items: settings.data === "없음" ? null
+        : [{ key: "bull", label: "강세", value: values[0], color: color("danger") }, { key: "flat", label: "중립", value: values[1] }, { key: "bear", label: "약세", value: values[2], color: color("info") }] }));
+    }
     case "KjunSplitPane": {
       const vertical = settings.direction === "vertical";
       const pane = (title: string, subtitle: string) => h("KjunCard", { title, subtitle });

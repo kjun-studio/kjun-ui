@@ -101,6 +101,21 @@ export function generate(input: UsageInput) {
     case 'KjunTimePicker':
       content = b.node(name, { value: b.state('time', null), onValueChange: b.update('time'), ...b.props('precision', 'minuteStep', 'secondStep', 'disabled', 'error', 'clearable', 'size', 'block'),
         min: s.bounded ? s.precision === 'second' ? '09:30:15' : '09:30' : undefined, max: s.bounded ? s.precision === 'second' ? '18:30:45' : '18:30' : undefined, ariaLabel: '알림 시각', onChangeCommit: commit() }); break;
+    case 'KjunZoneGauge': {
+      // Zone colours are the app's own: KJUN draws them as given.
+      if (b.native) b.declare('appColors', 'import { appColors } from "./kjun";');
+      const color = (role: string) => b.native ? `appColors.${role}` : `"var(--kjun-${role})"`;
+      b.declare('zones', `const zones = [\n  { to: 30, label: "저평가", color: ${color('info')} },\n  { to: 70, label: "중립" },\n  { to: 100, label: "고평가", color: ${color('warning')} },\n];`);
+      content = b.node(name, { label: 'PER 백분위', value: s.missing ? null : Number(s.value), zones: expr('zones'), size: s.size === 'sm' ? 'sm' : undefined, zoneLabels: s.zoneLabels === false ? false : undefined }); break;
+    }
+    case 'KjunStackedBar': {
+      if (b.native) b.declare('appColors', 'import { appColors } from "./kjun";');
+      const color = (role: string) => b.native ? `appColors.${role}` : `"var(--kjun-${role})"`;
+      const values = s.data === '작은 조각' ? [990, 5, 5] : s.data === '모두 0' ? [0, 0, 0] : [12, 6, 2];
+      b.declare('opinions', s.data === '없음' ? 'const opinions = null;'
+        : `const opinions = [\n  { key: "bull", label: "강세", value: ${values[0]}, color: ${color('danger')} },\n  { key: "flat", label: "중립", value: ${values[1]} },\n  { key: "bear", label: "약세", value: ${values[2]}, color: ${color('info')} },\n];`);
+      content = b.node(name, { label: '애널리스트 의견', items: expr('opinions'), size: s.size === 'sm' ? 'sm' : undefined, legend: s.legend === false ? false : undefined }); break;
+    }
     case 'KjunSplitPane': {
       const vertical = s.direction === 'vertical', height = vertical ? 320 : 180;
       const pane = (title: string, subtitle: string) => b.node('KjunCard', { title, subtitle });

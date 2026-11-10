@@ -16124,6 +16124,472 @@
       }
     }
   },
+  "KjunZoneGauge": {
+    "name": "KjunZoneGauge",
+    "path": "/components/zone-gauge",
+    "related": "assets",
+    "description": "구간으로 나눈 고정된 축 위에서 현재 값의 위치를 보여줍니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "이름",
+                "description": "무엇의 위치인지 알립니다.",
+                "target": "text=PER 백분위",
+                "optional": true
+              },
+              {
+                "label": "값과 구간",
+                "description": "현재 값과 그 값이 속한 구간 이름입니다.",
+                "target": "text=72 · 고평가",
+                "optional": true
+              },
+              {
+                "label": "구간 이름",
+                "description": "축 아래에서 각 구간을 이름으로 구분합니다.",
+                "target": "text=저평가",
+                "optional": true
+              },
+              {
+                "label": "축과 표식",
+                "description": "구간으로 나눈 축 위에 현재 값을 표식으로 놓습니다. 하나의 이미지로 읽습니다.",
+                "target": "[role=\"img\"]",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "low",
+            "label": "저평가 구간",
+            "description": "값 18은 첫 구간에 놓입니다.",
+            "settings": {
+              "value": 18
+            }
+          },
+          {
+            "id": "missing",
+            "label": "데이터 없음",
+            "description": "축을 그리지 않고 값 자리에 —만 보입니다.",
+            "settings": {
+              "missing": true
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunZoneGauge\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunZoneGauge\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "값이 null이거나 숫자가 아니면 축을 그리지 않고 missingText(기본 —)만 보이며, 0은 실제 값이라 표식이 축의 시작에 그대로 보입니다. 축을 벗어난 값은 가까운 끝에 붙습니다. 경계에 놓인 값은 위쪽 구간에 속합니다. 구간이 축 끝까지 닿지 않으면 남은 구간을 이름 없는 중립 구간으로 그립니다. 색이 없는 구간은 중립 트랙색입니다. size md·sm은 트랙 10·8px이고 표식은 위아래로 6px 더 나옵니다. zoneLabels는 구간 이름을 축 아래에 그려 색만으로 구분하지 않게 합니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "이름",
+                "description": "무엇의 위치인지 알립니다.",
+                "target": "text=PER 백분위",
+                "optional": true
+              },
+              {
+                "label": "값과 구간",
+                "description": "현재 값과 그 값이 속한 구간 이름입니다.",
+                "target": "text=72 · 고평가",
+                "optional": true
+              },
+              {
+                "label": "구간 이름",
+                "description": "축 아래에서 각 구간을 이름으로 구분합니다.",
+                "target": "text=저평가",
+                "optional": true
+              },
+              {
+                "label": "축과 표식",
+                "description": "구간으로 나눈 축 위에 현재 값을 표식으로 놓습니다. 하나의 이미지로 읽습니다.",
+                "target": "[role=\"img\"]",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "low",
+            "label": "저평가 구간",
+            "description": "값 18은 첫 구간에 놓입니다.",
+            "settings": {
+              "value": 18
+            }
+          },
+          {
+            "id": "missing",
+            "label": "데이터 없음",
+            "description": "축을 그리지 않고 값 자리에 —만 보입니다.",
+            "settings": {
+              "missing": true
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunZoneGauge\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunZoneGauge\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "값이 null이거나 숫자가 아니면 축을 그리지 않고 missingText(기본 —)만 보이며, 0은 실제 값이라 표식이 축의 시작에 그대로 보입니다. 축을 벗어난 값은 가까운 끝에 붙습니다. 경계에 놓인 값은 위쪽 구간에 속합니다. 구간이 축 끝까지 닿지 않으면 남은 구간을 이름 없는 중립 구간으로 그립니다. 색이 없는 구간은 중립 트랙색입니다. size md·sm은 트랙 10·8px이고 표식은 위아래로 6px 더 나옵니다. zoneLabels는 구간 이름을 축 아래에 그려 색만으로 구분하지 않게 합니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "이름",
+                "description": "무엇의 위치인지 알립니다.",
+                "target": "text=PER 백분위",
+                "optional": true
+              },
+              {
+                "label": "값과 구간",
+                "description": "현재 값과 그 값이 속한 구간 이름입니다.",
+                "target": "text=72 · 고평가",
+                "optional": true
+              },
+              {
+                "label": "구간 이름",
+                "description": "축 아래에서 각 구간을 이름으로 구분합니다.",
+                "target": "text=저평가",
+                "optional": true
+              },
+              {
+                "label": "축과 표식",
+                "description": "구간으로 나눈 축 위에 현재 값을 표식으로 놓습니다. 하나의 이미지로 읽습니다.",
+                "target": "[role=\"img\"]",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "low",
+            "label": "저평가 구간",
+            "description": "값 18은 첫 구간에 놓입니다.",
+            "settings": {
+              "value": 18
+            }
+          },
+          {
+            "id": "missing",
+            "label": "데이터 없음",
+            "description": "축을 그리지 않고 값 자리에 —만 보입니다.",
+            "settings": {
+              "missing": true
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunZoneGauge\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunZoneGauge\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "값이 null이거나 숫자가 아니면 축을 그리지 않고 missingText(기본 —)만 보이며, 0은 실제 값이라 표식이 축의 시작에 그대로 보입니다. 축을 벗어난 값은 가까운 끝에 붙습니다. 경계에 놓인 값은 위쪽 구간에 속합니다. 구간이 축 끝까지 닿지 않으면 남은 구간을 이름 없는 중립 구간으로 그립니다. 색이 없는 구간은 중립 트랙색입니다. size md·sm은 트랙 10·8px이고 표식은 위아래로 6px 더 나옵니다. zoneLabels는 구간 이름을 축 아래에 그려 색만으로 구분하지 않게 합니다."
+      }
+    }
+  },
+  "KjunStackedBar": {
+    "name": "KjunStackedBar",
+    "path": "/components/stacked-bar",
+    "related": "assets",
+    "description": "전체를 이루는 항목들의 구성 비율을 한 줄의 막대로 보여줍니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "이름",
+                "description": "무엇의 구성인지 알립니다.",
+                "target": "text=애널리스트 의견",
+                "optional": true
+              },
+              {
+                "label": "범례",
+                "description": "항목마다 색 칸·이름·수치·비율을 보입니다.",
+                "target": "text=강세 12 · 60%",
+                "optional": true
+              },
+              {
+                "label": "막대",
+                "description": "항목마다 비율만큼의 길이로 그립니다. 하나의 이미지로 읽습니다.",
+                "target": "[role=\"img\"]",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "empty",
+            "label": "모두 0",
+            "description": "빈 트랙과 범례를 그립니다.",
+            "settings": {
+              "data": "모두 0"
+            }
+          },
+          {
+            "id": "missing",
+            "label": "데이터 없음",
+            "description": "막대와 범례를 그리지 않습니다.",
+            "settings": {
+              "data": "없음"
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunStackedBar\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunStackedBar\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "항목이 없거나 값이 모두 없으면 막대와 범례를 그리지 않고 missingText(기본 —)만 보입니다. 값의 합이 0이면 빈 트랙과 범례를 그립니다(0이라는 실제 값). 0보다 큰 항목은 아무리 작아도 최소 4px로 그리고, 0인 항목은 막대에는 없지만 범례에는 남습니다. 값이 없는 항목은 범례에 missingText로 표시하고 비율 계산에서 뺍니다. 음수는 0으로 셉니다. 색이 없는 항목은 중립 트랙색입니다. size md·sm은 트랙 10·8px입니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "이름",
+                "description": "무엇의 구성인지 알립니다.",
+                "target": "text=애널리스트 의견",
+                "optional": true
+              },
+              {
+                "label": "범례",
+                "description": "항목마다 색 칸·이름·수치·비율을 보입니다.",
+                "target": "text=강세 12 · 60%",
+                "optional": true
+              },
+              {
+                "label": "막대",
+                "description": "항목마다 비율만큼의 길이로 그립니다. 하나의 이미지로 읽습니다.",
+                "target": "[role=\"img\"]",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "empty",
+            "label": "모두 0",
+            "description": "빈 트랙과 범례를 그립니다.",
+            "settings": {
+              "data": "모두 0"
+            }
+          },
+          {
+            "id": "missing",
+            "label": "데이터 없음",
+            "description": "막대와 범례를 그리지 않습니다.",
+            "settings": {
+              "data": "없음"
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunStackedBar\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunStackedBar\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "항목이 없거나 값이 모두 없으면 막대와 범례를 그리지 않고 missingText(기본 —)만 보입니다. 값의 합이 0이면 빈 트랙과 범례를 그립니다(0이라는 실제 값). 0보다 큰 항목은 아무리 작아도 최소 4px로 그리고, 0인 항목은 막대에는 없지만 범례에는 남습니다. 값이 없는 항목은 범례에 missingText로 표시하고 비율 계산에서 뺍니다. 음수는 0으로 셉니다. 색이 없는 항목은 중립 트랙색입니다. size md·sm은 트랙 10·8px입니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "이름",
+                "description": "무엇의 구성인지 알립니다.",
+                "target": "text=애널리스트 의견",
+                "optional": true
+              },
+              {
+                "label": "범례",
+                "description": "항목마다 색 칸·이름·수치·비율을 보입니다.",
+                "target": "text=강세 12 · 60%",
+                "optional": true
+              },
+              {
+                "label": "막대",
+                "description": "항목마다 비율만큼의 길이로 그립니다. 하나의 이미지로 읽습니다.",
+                "target": "[role=\"img\"]",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "empty",
+            "label": "모두 0",
+            "description": "빈 트랙과 범례를 그립니다.",
+            "settings": {
+              "data": "모두 0"
+            }
+          },
+          {
+            "id": "missing",
+            "label": "데이터 없음",
+            "description": "막대와 범례를 그리지 않습니다.",
+            "settings": {
+              "data": "없음"
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunStackedBar\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunStackedBar\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "항목이 없거나 값이 모두 없으면 막대와 범례를 그리지 않고 missingText(기본 —)만 보입니다. 값의 합이 0이면 빈 트랙과 범례를 그립니다(0이라는 실제 값). 0보다 큰 항목은 아무리 작아도 최소 4px로 그리고, 0인 항목은 막대에는 없지만 범례에는 남습니다. 값이 없는 항목은 범례에 missingText로 표시하고 비율 계산에서 뺍니다. 음수는 0으로 셉니다. 색이 없는 항목은 중립 트랙색입니다. size md·sm은 트랙 10·8px입니다."
+      }
+    }
+  },
   "KjunSplitPane": {
     "name": "KjunSplitPane",
     "path": "/components/split-pane",

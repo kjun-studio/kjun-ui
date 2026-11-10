@@ -3217,6 +3217,78 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunZoneGauge",
+    "sources": {
+      "vue3": "packages/vue3/src/zone-gauge.tsx",
+      "react": "packages/react/src/zone-gauge.tsx",
+      "native": "packages/native/src/zone-gauge.tsx"
+    },
+    "category": "data-display",
+    "kind": "component",
+    "owner": "KjunZoneGauge",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/zone-gauge",
+    "tests": [
+      "tests/distribution.test.mjs",
+      "tests/browser/distribution.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "KjunStackedBar",
+    "sources": {
+      "vue3": "packages/vue3/src/stacked-bar.tsx",
+      "react": "packages/react/src/stacked-bar.tsx",
+      "native": "packages/native/src/stacked-bar.tsx"
+    },
+    "category": "data-display",
+    "kind": "component",
+    "owner": "KjunStackedBar",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/stacked-bar",
+    "tests": [
+      "tests/distribution.test.mjs",
+      "tests/browser/distribution.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
     "name": "KjunSplitPane",
     "sources": {
       "vue3": "packages/vue3/src/split-pane.tsx",

@@ -1,0 +1,70 @@
+import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
+import { gaugeSpoken, stackedLegend, stackedSpoken, stackedState, stackedWeights, type StackedItem } from "../../../shared/package-runtime/distribution";
+import { View, type ColorValue, type StyleProp, type ViewStyle } from "react-native";
+import { tokens } from "@kjun-ui/tokens";
+import { KText } from "./internal";
+import { useKjunStyles } from "./provider";
+import { typeStyle } from "./typography";
+import { hiddenParts } from "./zone-gauge";
+
+export type KjunStackedBarItem = Omit<StackedItem, "color"> & { color?: ColorValue };
+export interface KjunStackedBarProps {
+  /** The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail. */
+  items: readonly KjunStackedBarItem[] | null | undefined;
+  /** Shown above the bar and read first. */
+  label?: string;
+  /** The accessible name when there is no visible label, or a fuller one than it. */
+  ariaLabel?: string;
+  size?: "sm" | "md";
+  /** Each part's colour, name, value and share under the bar, so parts are not told apart by colour alone. */
+  legend?: boolean;
+  formatValue?: (value: number) => string;
+  /** Shown for missing data and for a part without a value; defaults to an em dash. */
+  missingText?: string;
+  style?: StyleProp<ViewStyle>;
+}
+
+const geometry = tokens.extensions.stackedBar;
+
+/** The parts of a whole: each segment is as long as its share. It shows a breakdown; it is not a control. */
+export function KjunStackedBar({ items, label, ariaLabel, size = "md", legend = true, formatValue, missingText, style }: KjunStackedBarProps) {
+  const scope = useKjunMessageScope();
+  const { colors } = useKjunStyles();
+  const list = (items ?? []) as readonly StackedItem[], state = stackedState(list), missing = state === "missing";
+  const entries = stackedLegend(list, formatValue, scope.intl, missingText ?? "—");
+  const name = ariaLabel ?? label, weights = stackedWeights(list);
+  const spoken = missing ? gaugeSpoken(name, missingText ?? scope.messages.noData) : stackedSpoken(name, entries);
+  const track = size === "sm" ? geometry.smTrackHeight : geometry.trackHeight, end = tokens.radius.radius9999, neutral = colors.switchTrack ?? colors.border;
+  const drawn = list.map((item, index) => ({ item, index })).filter(({ index }) => entries[index].drawn);
+  return (
+    <View accessible accessibilityRole="image" accessibilityLabel={spoken} style={[{ minWidth: 0 }, style]}>
+      <View {...hiddenParts}>
+        {(!!label || missing) && (
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "baseline", gap: tokens.dimension.value12, marginBottom: geometry.captionGap }}>
+            <KText numberOfLines={1} style={{ ...typeStyle("label"), color: colors.textSecondary, flexShrink: 1 }}>{label}</KText>
+            {missing && <KText style={{ ...typeStyle("label"), color: colors.textTertiary }}>{missingText ?? "—"}</KText>}
+          </View>
+        )}
+        {!missing && (
+          <View style={{ flexDirection: "row", gap: geometry.segmentGap, height: track, borderRadius: end, overflow: "hidden", backgroundColor: state === "empty" ? neutral : undefined }}>
+            {drawn.map(({ item, index }, i) => (
+              <View key={item.key ?? "i" + index} style={{ flexGrow: weights[index], flexBasis: 0, minWidth: geometry.minSegment, backgroundColor: (item.color as ColorValue | undefined) ?? neutral,
+                ...(i === 0 ? { borderTopStartRadius: end, borderBottomStartRadius: end } : {}),
+                ...(i === drawn.length - 1 ? { borderTopEndRadius: end, borderBottomEndRadius: end } : {}) }} />
+            ))}
+          </View>
+        )}
+        {legend && !missing && (
+          <View style={{ flexDirection: "row", flexWrap: "wrap", columnGap: geometry.legendGap, rowGap: geometry.legendRowGap, marginTop: geometry.legendTop }}>
+            {list.map((item, i) => (
+              <View key={item.key ?? "i" + i} style={{ flexDirection: "row", alignItems: "center", gap: geometry.swatchGap, maxWidth: "100%" }}>
+                <View style={{ width: geometry.swatchSize, height: geometry.swatchSize, borderRadius: geometry.swatchRadius, backgroundColor: (item.color as ColorValue | undefined) ?? neutral }} />
+                <KText style={{ ...typeStyle("caption"), fontVariant: ["tabular-nums"], color: colors.textSecondary, flexShrink: 1 }}>{entries[i].label} {entries[i].value}{entries[i].percent ? " · " + entries[i].percent : ""}</KText>
+              </View>
+            ))}
+          </View>
+        )}
+      </View>
+    </View>
+  );
+}

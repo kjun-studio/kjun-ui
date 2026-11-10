@@ -29,6 +29,8 @@ export function data(name: string) {
     case 'KjunChartSkeleton': return surface(<K.KjunChartSkeleton kind="frame" height={200} />);
     case 'KjunMarketTableSkeleton': return surface(<K.KjunMarketTableSkeleton columns={marketColumns} rows={3} showActions />, false);
     case 'KjunSpinner': return row(<><K.KjunSpinner text="조회 중" /><K.KjunSpinner size="sm" text="저장 중" /></>);
+    case 'KjunZoneGauge': return <K.KjunZoneGauge label="PER 백분위" value={72} zones={[{ to: 30, label: '저평가', color: 'var(--kjun-info)' }, { to: 70, label: '중립' }, { to: 100, label: '고평가', color: 'var(--kjun-warning)' }]} />;
+    case 'KjunStackedBar': return <K.KjunStackedBar label="애널리스트 의견" items={[{ label: '강세', value: 12, color: 'var(--kjun-danger)' }, { label: '중립', value: 6 }, { label: '약세', value: 2, color: 'var(--kjun-info)' }]} />;
     case 'KjunProgress': return stack(<><K.KjunProgress value={72} label="파일 업로드" showLabel /><K.KjunProgress value={100} label="검토 완료" showLabel variant="success" /></>);
     case 'KjunAlert': return stack(<><K.KjunAlert type="success" title="변경 사항을 저장했습니다">팀원이 업데이트된 목록을 볼 수 있습니다.</K.KjunAlert><K.KjunAlert type="warning" title="공개 범위를 확인하세요">선택한 팀원에게 목록이 공유됩니다.</K.KjunAlert></>);
     case 'KjunEmpty': return <K.KjunEmpty icon="search" text="조건에 맞는 자산이 없습니다" description="검색어나 필터를 변경해 보세요."><K.KjunButton variant="secondary">필터 초기화</K.KjunButton></K.KjunEmpty>;

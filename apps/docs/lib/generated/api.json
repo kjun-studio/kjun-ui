@@ -18218,6 +18218,13 @@
         "description": ""
       },
       {
+        "name": "label",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "min",
         "type": "number | undefined",
         "required": false,
@@ -18227,13 +18234,6 @@
       {
         "name": "max",
         "type": "number | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "label",
-        "type": "string | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -20251,7 +20251,7 @@
       },
       {
         "name": "role",
-        "type": "\"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"label\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
+        "type": "\"label\" | \"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
         "required": false,
         "default": "—",
         "description": "Typography role for type=\"line\"."
@@ -21352,6 +21352,191 @@
       {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
+  "KjunStackedBar": {
+    "vue3": [
+      {
+        "name": "items",
+        "type": "readonly StackedItem[] | null",
+        "required": false,
+        "default": "null",
+        "description": "The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Shown above the bar and read first."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "The accessible name when there is no visible label, or a fuller one than it."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "legend",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Each part's colour, name, value and share under the bar, so parts are not told apart by colour alone."
+      },
+      {
+        "name": "formatValue",
+        "type": "((value: number) => string)",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "missingText",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Shown for missing data and for a part without a value; defaults to an em dash."
+      }
+    ],
+    "events": [],
+    "slots": [],
+    "react": [
+      {
+        "name": "items",
+        "type": "readonly import(\"/workspace/shared/package-runtime/distribution\").StackedItem[] | null | undefined",
+        "required": true,
+        "default": "—",
+        "description": "The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail."
+      },
+      {
+        "name": "label",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown above the bar and read first."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The accessible name when there is no visible label, or a fuller one than it."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "legend",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Each part's colour, name, value and share under the bar, so parts are not told apart by colour alone."
+      },
+      {
+        "name": "formatValue",
+        "type": "((value: number) => string) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "missingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown for missing data and for a part without a value; defaults to an em dash."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "items",
+        "type": "readonly import(\"/workspace/packages/native/src/stacked-bar\").KjunStackedBarItem[] | null | undefined",
+        "required": true,
+        "default": "—",
+        "description": "The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail."
+      },
+      {
+        "name": "label",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown above the bar and read first."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The accessible name when there is no visible label, or a fuller one than it."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "legend",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Each part's colour, name, value and share under the bar, so parts are not told apart by colour alone."
+      },
+      {
+        "name": "formatValue",
+        "type": "((value: number) => string) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "missingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown for missing data and for a part without a value; defaults to an em dash."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
         "required": false,
         "default": "—",
         "description": ""
@@ -24655,6 +24840,275 @@
         "required": false,
         "default": "—",
         "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
+      }
+    ]
+  },
+  "KjunZoneGauge": {
+    "vue3": [
+      {
+        "name": "value",
+        "type": "number | null",
+        "required": false,
+        "default": "null",
+        "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value."
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": ""
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "default": "100",
+        "description": ""
+      },
+      {
+        "name": "zones",
+        "type": "readonly GaugeZone[]",
+        "required": true,
+        "default": "—",
+        "description": "The axis from min to max in order: each zone ends at `to`, with the app's label and colour."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Shown above the axis and read first."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "The accessible name when there is no visible label, or a fuller one than it."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "zoneLabels",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Zone names under the axis, so zones are not told apart by colour alone."
+      },
+      {
+        "name": "showValue",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "The value and its zone name at the end of the caption line."
+      },
+      {
+        "name": "formatValue",
+        "type": "((value: number) => string)",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "missingText",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Shown in place of the value when it is missing; defaults to an em dash."
+      }
+    ],
+    "events": [],
+    "slots": [],
+    "react": [
+      {
+        "name": "value",
+        "type": "number | null | undefined",
+        "required": true,
+        "default": "—",
+        "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value."
+      },
+      {
+        "name": "min",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "max",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "zones",
+        "type": "readonly import(\"/workspace/shared/package-runtime/distribution\").GaugeZone[]",
+        "required": true,
+        "default": "—",
+        "description": "The axis from min to max in order: each zone ends at `to`, with the app's label and colour."
+      },
+      {
+        "name": "label",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown above the axis and read first."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The accessible name when there is no visible label, or a fuller one than it."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "zoneLabels",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Zone names under the axis, so zones are not told apart by colour alone."
+      },
+      {
+        "name": "showValue",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The value and its zone name at the end of the caption line."
+      },
+      {
+        "name": "formatValue",
+        "type": "((value: number) => string) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "missingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown in place of the value when it is missing; defaults to an em dash."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "value",
+        "type": "number | null | undefined",
+        "required": true,
+        "default": "—",
+        "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value."
+      },
+      {
+        "name": "min",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "max",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "zones",
+        "type": "readonly import(\"/workspace/packages/native/src/zone-gauge\").KjunGaugeZone[]",
+        "required": true,
+        "default": "—",
+        "description": "The axis from min to max in order: each zone ends at `to`, with the app's label and colour."
+      },
+      {
+        "name": "label",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown above the axis and read first."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The accessible name when there is no visible label, or a fuller one than it."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "zoneLabels",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Zone names under the axis, so zones are not told apart by colour alone."
+      },
+      {
+        "name": "showValue",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The value and its zone name at the end of the caption line."
+      },
+      {
+        "name": "formatValue",
+        "type": "((value: number) => string) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "missingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown in place of the value when it is missing; defaults to an em dash."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ]
   }

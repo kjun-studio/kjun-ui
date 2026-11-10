@@ -215,6 +215,29 @@
     "slider": {
       "minimumWidth": 100
     },
+    "zoneGauge": {
+      "trackHeight": { "$ref": "dimension.value10" },
+      "smTrackHeight": { "$ref": "dimension.value8" },
+      "segmentGap": { "$ref": "dimension.value2" },
+      "markerWidth": { "$ref": "dimension.value6" },
+      "markerOverhang": { "$ref": "dimension.value6" },
+      "markerRing": { "$ref": "dimension.value2" },
+      "captionGap": { "$ref": "dimension.value8" },
+      "labelsGap": { "$ref": "dimension.value6" }
+    },
+    "stackedBar": {
+      "trackHeight": { "$ref": "dimension.value10" },
+      "smTrackHeight": { "$ref": "dimension.value8" },
+      "segmentGap": { "$ref": "dimension.value2" },
+      "minSegment": { "$ref": "dimension.value4" },
+      "captionGap": { "$ref": "dimension.value8" },
+      "legendTop": { "$ref": "dimension.value8" },
+      "legendGap": { "$ref": "dimension.value16" },
+      "legendRowGap": { "$ref": "dimension.value4" },
+      "swatchSize": { "$ref": "dimension.value10" },
+      "swatchRadius": { "$ref": "dimension.value3" },
+      "swatchGap": { "$ref": "dimension.value6" }
+    },
     "splitPane": {
       "handleHit": { "$ref": "dimension.value20" },
       "touchHandleHit": { "$ref": "native.minimumTouchTarget" },

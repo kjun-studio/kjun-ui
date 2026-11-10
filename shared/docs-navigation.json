@@ -1003,6 +1003,34 @@
       ]
     },
     {
+      "name": "KjunZoneGauge",
+      "category": "data-display",
+      "aliases": [
+        "구간 게이지",
+        "게이지",
+        "백분위",
+        "밸류에이션 위치",
+        "Gauge"
+      ],
+      "useCases": [
+        "반응형 데이터 화면"
+      ]
+    },
+    {
+      "name": "KjunStackedBar",
+      "category": "data-display",
+      "aliases": [
+        "누적 막대",
+        "분포 막대",
+        "구성 비율",
+        "컨센서스",
+        "Stacked bar"
+      ],
+      "useCases": [
+        "반응형 데이터 화면"
+      ]
+    },
+    {
       "name": "KjunSplitPane",
       "category": "layout",
       "aliases": [

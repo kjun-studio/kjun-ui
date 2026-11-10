@@ -282,6 +282,84 @@
       "onError"
     ]
   },
+  "KjunZoneGauge": {
+    "vue3": [
+      "value",
+      "min",
+      "max",
+      "zones",
+      "label",
+      "ariaLabel",
+      "size",
+      "zoneLabels",
+      "showValue",
+      "formatValue",
+      "missingText"
+    ],
+    "react": [
+      "value",
+      "min",
+      "max",
+      "zones",
+      "label",
+      "ariaLabel",
+      "size",
+      "zoneLabels",
+      "showValue",
+      "formatValue",
+      "missingText",
+      "className",
+      "style",
+      "id"
+    ],
+    "native": [
+      "value",
+      "min",
+      "max",
+      "zones",
+      "label",
+      "ariaLabel",
+      "size",
+      "zoneLabels",
+      "showValue",
+      "formatValue",
+      "missingText",
+      "style"
+    ]
+  },
+  "KjunStackedBar": {
+    "vue3": [
+      "items",
+      "label",
+      "ariaLabel",
+      "size",
+      "legend",
+      "formatValue",
+      "missingText"
+    ],
+    "react": [
+      "items",
+      "label",
+      "ariaLabel",
+      "size",
+      "legend",
+      "formatValue",
+      "missingText",
+      "className",
+      "style",
+      "id"
+    ],
+    "native": [
+      "items",
+      "label",
+      "ariaLabel",
+      "size",
+      "legend",
+      "formatValue",
+      "missingText",
+      "style"
+    ]
+  },
   "KjunSplitPane": {
     "vue3": [
       "direction",

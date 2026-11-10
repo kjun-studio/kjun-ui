@@ -1,0 +1,176 @@
+/* KjunZoneGauge: a fixed axis split into zones, with a marker at the current value. The app supplies zone colours;
+   a zone without one takes the neutral track colour. */
+.kjun-zone-gauge {
+  --_kjun-zone-gauge-track: var(--_kjun-extension-zone-gauge-track-height);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--_kjun-color-text);
+}
+.kjun-zone-gauge[data-size="sm"] {
+  --_kjun-zone-gauge-track: var(--_kjun-extension-zone-gauge-sm-track-height);
+}
+.kjun-zone-gauge-caption,
+.kjun-stacked-bar-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--_kjun-geometry-dimension-value12);
+  font-size: var(--_kjun-type-label-size);
+  line-height: var(--_kjun-type-label-line);
+  font-weight: var(--_kjun-type-label-weight);
+  letter-spacing: var(--_kjun-type-label-tracking);
+}
+.kjun-zone-gauge-caption {
+  margin-bottom: var(--_kjun-extension-zone-gauge-caption-gap);
+}
+.kjun-zone-gauge-label,
+.kjun-stacked-bar-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--_kjun-color-text-secondary);
+}
+/* The value keeps its width before the name does; a value too long for the line is cut the same way. */
+.kjun-zone-gauge-value,
+.kjun-stacked-bar-value {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.kjun-zone-gauge[data-state="missing"] .kjun-zone-gauge-value,
+.kjun-stacked-bar[data-state="missing"] .kjun-stacked-bar-value {
+  color: var(--_kjun-color-text-tertiary);
+}
+/* The marker overhangs the track on both sides, so the axis keeps that room above and below. */
+.kjun-zone-gauge-axis {
+  position: relative;
+  padding-block: var(--_kjun-extension-zone-gauge-marker-overhang);
+}
+.kjun-zone-gauge-track {
+  display: flex;
+  gap: var(--_kjun-extension-zone-gauge-segment-gap);
+  height: var(--_kjun-zone-gauge-track);
+}
+.kjun-zone-gauge-zone {
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--_kjun-color-switch-track);
+}
+.kjun-zone-gauge-zone:first-child {
+  border-start-start-radius: var(--_kjun-geometry-radius-radius9999);
+  border-end-start-radius: var(--_kjun-geometry-radius-radius9999);
+}
+.kjun-zone-gauge-zone:last-child {
+  border-start-end-radius: var(--_kjun-geometry-radius-radius9999);
+  border-end-end-radius: var(--_kjun-geometry-radius-radius9999);
+}
+/* The marker stays inside the axis at both ends: its start edge travels the axis less its own width. A ring in the
+   surface colour keeps it readable over any zone colour. */
+.kjun-zone-gauge-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-start: calc((100% - var(--_kjun-extension-zone-gauge-marker-width)) * var(--_kjun-zone-gauge-position));
+  width: var(--_kjun-extension-zone-gauge-marker-width);
+  border-radius: var(--_kjun-geometry-radius-radius9999);
+  background: var(--_kjun-color-text);
+  box-shadow: 0 0 0 var(--_kjun-extension-zone-gauge-marker-ring) var(--_kjun-color-surface);
+}
+.kjun-zone-gauge-labels {
+  display: flex;
+  gap: var(--_kjun-extension-zone-gauge-segment-gap);
+  margin-top: var(--_kjun-extension-zone-gauge-labels-gap);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+  color: var(--_kjun-color-text-secondary);
+}
+/* Zone names sit under their zones: the first reads from the start edge, the last to the end edge, the rest centred. */
+.kjun-zone-gauge-labels > span {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+.kjun-zone-gauge-labels > span:first-child {
+  text-align: start;
+}
+.kjun-zone-gauge-labels > span:last-child:not(:first-child) {
+  text-align: end;
+}
+
+/* KjunStackedBar: the parts of a whole. Each part is as long as its share; a part above zero keeps a minimum length. */
+.kjun-stacked-bar {
+  --_kjun-stacked-bar-track: var(--_kjun-extension-stacked-bar-track-height);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--_kjun-color-text);
+}
+.kjun-stacked-bar[data-size="sm"] {
+  --_kjun-stacked-bar-track: var(--_kjun-extension-stacked-bar-sm-track-height);
+}
+.kjun-stacked-bar-caption {
+  margin-bottom: var(--_kjun-extension-stacked-bar-caption-gap);
+}
+/* Clipped to the rail: more minimum-length parts than fit cannot run past it. */
+.kjun-stacked-bar-track {
+  display: flex;
+  gap: var(--_kjun-extension-stacked-bar-segment-gap);
+  height: var(--_kjun-stacked-bar-track);
+  overflow: hidden;
+  border-radius: var(--_kjun-geometry-radius-radius9999);
+}
+/* An all-zero total draws the empty rail alone. */
+.kjun-stacked-bar[data-state="empty"] .kjun-stacked-bar-track {
+  background: var(--_kjun-color-switch-track);
+}
+.kjun-stacked-bar-segment {
+  flex: 1 1 0;
+  min-width: var(--_kjun-extension-stacked-bar-min-segment);
+  background: var(--_kjun-color-switch-track);
+}
+.kjun-stacked-bar-segment:first-child {
+  border-start-start-radius: var(--_kjun-geometry-radius-radius9999);
+  border-end-start-radius: var(--_kjun-geometry-radius-radius9999);
+}
+.kjun-stacked-bar-segment:last-child {
+  border-start-end-radius: var(--_kjun-geometry-radius-radius9999);
+  border-end-end-radius: var(--_kjun-geometry-radius-radius9999);
+}
+.kjun-stacked-bar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--_kjun-extension-stacked-bar-legend-row-gap) var(--_kjun-extension-stacked-bar-legend-gap);
+  margin: var(--_kjun-extension-stacked-bar-legend-top) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+  color: var(--_kjun-color-text-secondary);
+}
+.kjun-stacked-bar-legend > li {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  gap: var(--_kjun-extension-stacked-bar-swatch-gap);
+  font-variant-numeric: tabular-nums;
+}
+.kjun-stacked-bar-swatch {
+  flex: 0 0 auto;
+  width: var(--_kjun-extension-stacked-bar-swatch-size);
+  height: var(--_kjun-extension-stacked-bar-swatch-size);
+  border-radius: var(--_kjun-extension-stacked-bar-swatch-radius);
+  background: var(--_kjun-color-switch-track);
+}

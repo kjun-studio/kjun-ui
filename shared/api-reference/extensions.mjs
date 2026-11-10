@@ -134,6 +134,37 @@ const valueDescription = {
   KjunTimePicker: "분 단위는 HH:mm, 초 단위는 HH:mm:ss이며 비어 있으면 null입니다. 날짜·시간대는 포함하지 않습니다.",
   KjunQuantityStepper: "확정된 숫자 값입니다. 편집 중 문자열과 구분하며 지정한 precision과 범위를 만족해야 합니다.",
 };
+const distributionRoot = {
+  className: "루트에 더할 클래스입니다. 막대의 높이는 size로 정하세요.",
+  style: "루트에 더할 스타일입니다. 바깥 여백이나 폭 제한에 사용하세요. 막대는 부모 폭을 채웁니다.",
+  id: "루트의 ID입니다.",
+};
+const distributionSummaries = (platform) => ({
+  KjunZoneGauge: {
+    value: { type: "number | null", summary: "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음으로 보고 축을 그리지 않습니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다." },
+    min: { default: "0", summary: "축의 시작 값입니다." },
+    max: { default: "100", summary: "축의 끝 값입니다. min보다 커야 하며, 그렇지 않으면 축을 그리지 않습니다." },
+    zones: { type: "{ to: number; label?: string; color?: " + (platform === "native" ? "ColorValue" : "string") + " }[]", ...detail("축을 나누는 구간 목록입니다.", { "항목 필드": "to: 구간이 끝나는 값(앞 구간의 끝 또는 min에서 시작), label?: 구간 이름, color?: 앱이 정하는 구간 색", "규칙": "to 순서로 정렬해 그리고 축 밖은 잘라 냅니다. 경계에 놓인 값은 위쪽 구간에 속합니다. 마지막 구간이 max에 닿지 않으면 나머지를 이름 없는 중립 구간으로 그립니다.", "색": "KJUN은 색을 정하지 않습니다. color가 없는 구간은 중립 트랙색(switch-track)입니다. 색만으로 구분하지 않도록 label을 함께 주세요." }) },
+    label: { summary: "축 위에 보이는 이름입니다. 스크린리더가 가장 먼저 읽습니다." },
+    ariaLabel: { summary: "보이는 label이 없거나 더 자세한 이름이 필요할 때의 접근성 이름입니다. 있으면 label 대신 읽습니다." },
+    size: { type: '"sm" | "md"', default: '"md"', summary: "md는 10px, sm은 8px 트랙입니다. 표식은 트랙 위아래로 6px씩 더 나옵니다." },
+    zoneLabels: { default: "true", summary: "구간 이름을 축 아래에 그립니다. 이름이 있는 구간이 하나도 없으면 그리지 않습니다." },
+    showValue: { default: "true", summary: "이름 줄 끝에 값과 값이 속한 구간 이름을 보입니다(예: 72 · 고평가). false여도 스크린리더는 값을 읽고, 데이터가 없을 때의 missingText는 그대로 보입니다." },
+    formatValue: { type: "(value: number) => string", ...detail("값의 표시 문구를 만듭니다.", { "인자와 반환": "(value: number) => string. 데이터가 없을 때는 호출하지 않습니다.", "기본": "생략하면 Provider locale의 숫자 표기(소수 둘째 자리까지)를 씁니다.", "접근성": "화면과 스크린리더에 같은 문구를 씁니다." }) },
+    missingText: { default: '"—"', summary: "데이터가 없을 때 값 자리에 보일 문구입니다. 주면 스크린리더도 이 문구를 읽고, 생략하면 ‘데이터가 없습니다’를 읽습니다." },
+    ...Object.fromEntries(Object.entries(distributionRoot).map(([key, summary]) => [key, { summary }])),
+  },
+  KjunStackedBar: {
+    items: { type: "{ key?: string; label: string; value: number | null; color?: " + (platform === "native" ? "ColorValue" : "string") + " }[] | null", ...detail("전체를 이루는 항목 목록입니다.", { "항목 필드": "label: 항목 이름, value: 수치, color?: 앱이 정하는 항목 색, key?: 항목 순서가 바뀔 때 쓰는 고유 값", "비율": "KJUN이 수치로 정수 퍼센트를 계산하고 합이 100이 되게 맞춥니다. 음수는 0으로 세고, 값이 없는 항목은 계산에서 뺍니다.", "상태": "목록이 없거나 값이 모두 없으면 막대와 범례를 그리지 않습니다. 합이 0이면 빈 트랙을 그립니다. 0보다 큰 항목은 최소 4px로 그립니다.", "색": "KJUN은 색을 정하지 않습니다. color가 없는 항목은 중립 트랙색(switch-track)입니다." }) },
+    label: { summary: "막대 위에 보이는 이름입니다. 스크린리더가 가장 먼저 읽습니다." },
+    ariaLabel: { summary: "보이는 label이 없거나 더 자세한 이름이 필요할 때의 접근성 이름입니다. 있으면 label 대신 읽습니다." },
+    size: { type: '"sm" | "md"', default: '"md"', summary: "md는 10px, sm은 8px 트랙입니다." },
+    legend: { default: "true", summary: "막대 아래에 항목별 색 칸·이름·수치·비율을 그립니다. 색만으로 구분하지 않게 하므로 끄면 앱이 같은 정보를 따로 보여 주세요. 꺼도 스크린리더는 항목을 모두 읽습니다." },
+    formatValue: { type: "(value: number) => string", ...detail("항목 수치의 표시 문구를 만듭니다(예: 12명).", { "인자와 반환": "(value: number) => string. 값이 없는 항목에는 호출하지 않습니다.", "기본": "생략하면 Provider locale의 숫자 표기(소수 둘째 자리까지)를 씁니다.", "접근성": "범례와 스크린리더에 같은 문구를 씁니다." }) },
+    missingText: { default: '"—"', summary: "데이터가 없을 때와 값이 없는 항목에 보일 문구입니다. 주면 스크린리더도 이 문구를 읽고, 생략하면 데이터가 없을 때 ‘데이터가 없습니다’를 읽습니다." },
+    ...Object.fromEntries(Object.entries(distributionRoot).map(([key, summary]) => [key, { summary }])),
+  },
+});
 const splitPaneSummaries = {
   direction: "나누는 방향입니다. horizontal(기본값)은 패널을 좌우로, vertical은 상하로 둡니다. 상하 분할은 부모가 높이를 정해야 합니다.",
   size: "제어할 때 첫 패널이 차지하는 비율(0~1)입니다. 경계를 뺀 공간 기준이며, 한계를 벗어난 값은 화면에서 가장 가까운 허용 크기로 그립니다.",
@@ -175,7 +206,12 @@ const callback = (name, key, platform) => {
 export const extensionContracts = Object.fromEntries(Object.entries(bindings).map(([name, platforms]) => [name, Object.fromEntries(Object.entries(platforms).map(([platform, keys]) => {
   const props = Object.fromEntries(keys.map(key => {
     let entry;
-    if (name === "KjunSplitPane") {
+    if (name === "KjunZoneGauge" || name === "KjunStackedBar") {
+      entry = distributionSummaries(platform)[name][key];
+      if (!entry) throw Error("Missing extension prop description: " + name + "." + key);
+      entry = { ...entry };
+    }
+    else if (name === "KjunSplitPane") {
       entry = key.startsWith("on") ? callback(name, key, platform) : splitPaneSlots[key] ?? (splitPaneSummaries[key] ? { summary: splitPaneSummaries[key] } : undefined);
       if (!entry) throw Error("Missing extension prop description: " + name + "." + key);
     }

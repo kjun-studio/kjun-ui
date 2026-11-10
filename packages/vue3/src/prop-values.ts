@@ -241,6 +241,9 @@ export const kjunPropValues = Object.freeze({
     as: Object.freeze(["div","section"] as const),
     gap: Object.freeze(["lg","md","none","section-lg","section-md","section-sm","sm"] as const),
   }),
+  KjunStackedBar: Object.freeze({
+    size: Object.freeze(["sm","md"] as const),
+  }),
   KjunSwitch: Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
   }),
@@ -276,5 +279,8 @@ export const kjunPropValues = Object.freeze({
     align: Object.freeze(["center","start"] as const),
     placement: Object.freeze(["bottom","left","right","top"] as const),
     width: Object.freeze(["sm","md","lg"] as const),
+  }),
+  KjunZoneGauge: Object.freeze({
+    size: Object.freeze(["sm","md"] as const),
   }),
 });

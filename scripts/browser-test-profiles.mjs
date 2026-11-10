@@ -42,6 +42,7 @@ const componentGroups = {
   trail: files('trail'),
   carousel: files('carousel'),
   'split-pane': files('split-pane'),
+  distribution: files('distribution'),
   'color-picker': files('color-picker'),
   sparkline: files('sparkline-design', 'runtime-market', 'runtime-cards', 'size-contracts'),
   list: files('list-design', 'list-leading', 'list-section', 'additions', 'adoption', 'requests', 'rounded'),

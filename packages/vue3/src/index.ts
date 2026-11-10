@@ -38,6 +38,8 @@ export { safeExternalUrl } from "./actions";
 export type { KjunCarouselProps } from "./carousel";
 export type { KjunColorPickerProps, KjunColorSwatch } from "./color-picker";
 export type { KjunSplitPaneProps } from "./split-pane";
+export type { KjunZoneGaugeProps, KjunGaugeZone } from "./zone-gauge";
+export type { KjunStackedBarProps, KjunStackedBarItem } from "./stacked-bar";
 export type { KjunDataStateProps, KjunErrorBoundaryProps } from "./data-state";
 export { useQueryDisplay } from "./data-state";
 export type { KjunAnimatedNumberProps, KjunPriceCellProps, KjunSignedValueProps } from "./number-display";

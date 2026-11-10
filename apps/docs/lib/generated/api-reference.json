@@ -7524,7 +7524,7 @@
           },
           {
             "name": "role",
-            "type": "\"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"label\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
+            "type": "\"label\" | \"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
             "required": false,
             "default": "\"body\"",
             "description": "Typography role for type=\"line\".",
@@ -36419,6 +36419,15 @@
             "source": "packages/native/src/range-input.tsx"
           },
           {
+            "name": "label",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "표시하거나 조절하는 값의 목적을 설명하는 라벨입니다.",
+            "source": "packages/native/src/range-input.tsx"
+          },
+          {
             "name": "min",
             "type": "number | undefined",
             "required": false,
@@ -36449,15 +36458,6 @@
             ],
             "source": "packages/native/src/range-input.tsx",
             "example": "/components/range-slider#preview"
-          },
-          {
-            "name": "label",
-            "type": "string | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "표시하거나 조절하는 값의 목적을 설명하는 라벨입니다.",
-            "source": "packages/native/src/range-input.tsx"
           },
           {
             "name": "step",
@@ -38244,6 +38244,826 @@
         "ownership": [
           "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다. 견본에 이미 있는 색은 최근 줄에서 빼고 그리며(앱 목록에는 남습니다), 두 줄이 함께 보이면 각각 캡션(‘견본 색’, ‘최근 사용 색’)을 붙입니다. label을 준 견본을 고르면 트리거에 이름을 먼저, 코드를 흐린 색으로 뒤에 보여 주고, 웹에서는 견본에 마우스를 올리면 이름이 뜹니다.",
           "세 플랫폼 모두 DatePicker처럼 필드 아래 떠 있는 패널로 엽니다. 웹은 포인터 캡처로, Native는 PanResponder로 끌고 그라데이션과 체크무늬는 react-native-svg로 그립니다. Native 기기에서는 화살표 키 대신 스크린리더 동작으로 바꿉니다. 영역은 위아래 쓸기로 채도, 동작 메뉴의 ‘명도 올리기·내리기’로 명도를 바꿉니다. 스포이드(eyeDropper)는 브라우저 EyeDropper가 있을 때만 그리므로 웹은 Chromium 데스크톱, Native는 RN Web에서만 보이고 기기에서는 그리지 않습니다. Native는 터치 기준이라 패널이 트리거 폭을 따라 넓어지고(최대 360px) 색상·투명도 트랙 사이를 20px로 벌려 손가락이 닿는 높이를 넓힙니다. 웹도 터치 화면(pointer: coarse)에서는 같습니다. Native는 RN Web에서만 확인했습니다."
+        ],
+        "types": []
+      }
+    },
+    "KjunZoneGauge": {
+      "vue3": {
+        "props": [
+          {
+            "name": "value",
+            "type": "number | null",
+            "required": false,
+            "default": "null",
+            "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value.",
+            "summary": "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음으로 보고 축을 그리지 않습니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다.",
+            "source": "packages/vue3/src/zone-gauge.tsx"
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "",
+            "summary": "축의 시작 값입니다.",
+            "source": "packages/vue3/src/zone-gauge.tsx"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "100",
+            "description": "",
+            "summary": "축의 끝 값입니다. min보다 커야 하며, 그렇지 않으면 축을 그리지 않습니다.",
+            "source": "packages/vue3/src/zone-gauge.tsx"
+          },
+          {
+            "name": "zones",
+            "type": "{ to: number; label?: string; color?: string }[]",
+            "required": true,
+            "default": "—",
+            "description": "The axis from min to max in order: each zone ends at `to`, with the app's label and colour.",
+            "summary": "축을 나누는 구간 목록입니다.",
+            "details": [
+              {
+                "label": "항목 필드",
+                "text": "to: 구간이 끝나는 값(앞 구간의 끝 또는 min에서 시작), label?: 구간 이름, color?: 앱이 정하는 구간 색"
+              },
+              {
+                "label": "규칙",
+                "text": "to 순서로 정렬해 그리고 축 밖은 잘라 냅니다. 경계에 놓인 값은 위쪽 구간에 속합니다. 마지막 구간이 max에 닿지 않으면 나머지를 이름 없는 중립 구간으로 그립니다."
+              },
+              {
+                "label": "색",
+                "text": "KJUN은 색을 정하지 않습니다. color가 없는 구간은 중립 트랙색(switch-track)입니다. 색만으로 구분하지 않도록 label을 함께 주세요."
+              }
+            ],
+            "source": "packages/vue3/src/zone-gauge.tsx",
+            "example": "/components/zone-gauge#preview"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Shown above the axis and read first.",
+            "summary": "축 위에 보이는 이름입니다. 스크린리더가 가장 먼저 읽습니다.",
+            "source": "packages/vue3/src/zone-gauge.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The accessible name when there is no visible label, or a fuller one than it.",
+            "summary": "보이는 label이 없거나 더 자세한 이름이 필요할 때의 접근성 이름입니다. 있으면 label 대신 읽습니다.",
+            "source": "packages/vue3/src/zone-gauge.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "md는 10px, sm은 8px 트랙입니다. 표식은 트랙 위아래로 6px씩 더 나옵니다.",
+            "source": "packages/vue3/src/zone-gauge.tsx"
+          },
+          {
+            "name": "zoneLabels",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Zone names under the axis, so zones are not told apart by colour alone.",
+            "summary": "구간 이름을 축 아래에 그립니다. 이름이 있는 구간이 하나도 없으면 그리지 않습니다.",
+            "source": "packages/vue3/src/zone-gauge.tsx"
+          },
+          {
+            "name": "showValue",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "The value and its zone name at the end of the caption line.",
+            "summary": "이름 줄 끝에 값과 값이 속한 구간 이름을 보입니다(예: 72 · 고평가). false여도 스크린리더는 값을 읽고, 데이터가 없을 때의 missingText는 그대로 보입니다.",
+            "source": "packages/vue3/src/zone-gauge.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "(value: number) => string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값의 표시 문구를 만듭니다.",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. 데이터가 없을 때는 호출하지 않습니다."
+              },
+              {
+                "label": "기본",
+                "text": "생략하면 Provider locale의 숫자 표기(소수 둘째 자리까지)를 씁니다."
+              },
+              {
+                "label": "접근성",
+                "text": "화면과 스크린리더에 같은 문구를 씁니다."
+              }
+            ],
+            "source": "packages/vue3/src/zone-gauge.tsx",
+            "example": "/components/zone-gauge#preview"
+          },
+          {
+            "name": "missingText",
+            "type": "string",
+            "required": false,
+            "default": "\"—\"",
+            "description": "Shown in place of the value when it is missing; defaults to an em dash.",
+            "summary": "데이터가 없을 때 값 자리에 보일 문구입니다. 주면 스크린리더도 이 문구를 읽고, 생략하면 ‘데이터가 없습니다’를 읽습니다.",
+            "source": "packages/vue3/src/zone-gauge.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "읽기 전용 표시입니다. 포커스를 받지 않고 값을 바꾸지 않습니다. 구간의 경계·이름·색은 앱이 zones로 넘기고, KJUN은 축의 높이, 구간 사이 간격, 표식의 모양과 위치를 정합니다. 값을 사용자가 고르게 하려면 Slider를 쓰세요.",
+          "웹과 Native 모두 하나의 이미지로 알리며 이름·값·값이 속한 구간을 한 문장으로 읽습니다(예: PER 백분위, 72, 고평가). Native의 구간 색은 ColorValue로 받습니다."
+        ],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "value",
+            "type": "number | null",
+            "required": true,
+            "default": "—",
+            "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value.",
+            "summary": "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음으로 보고 축을 그리지 않습니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          },
+          {
+            "name": "min",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "",
+            "summary": "축의 시작 값입니다.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          },
+          {
+            "name": "max",
+            "type": "number | undefined",
+            "required": false,
+            "default": "100",
+            "description": "",
+            "summary": "축의 끝 값입니다. min보다 커야 하며, 그렇지 않으면 축을 그리지 않습니다.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          },
+          {
+            "name": "zones",
+            "type": "{ to: number; label?: string; color?: string }[]",
+            "required": true,
+            "default": "—",
+            "description": "The axis from min to max in order: each zone ends at `to`, with the app's label and colour.",
+            "summary": "축을 나누는 구간 목록입니다.",
+            "details": [
+              {
+                "label": "항목 필드",
+                "text": "to: 구간이 끝나는 값(앞 구간의 끝 또는 min에서 시작), label?: 구간 이름, color?: 앱이 정하는 구간 색"
+              },
+              {
+                "label": "규칙",
+                "text": "to 순서로 정렬해 그리고 축 밖은 잘라 냅니다. 경계에 놓인 값은 위쪽 구간에 속합니다. 마지막 구간이 max에 닿지 않으면 나머지를 이름 없는 중립 구간으로 그립니다."
+              },
+              {
+                "label": "색",
+                "text": "KJUN은 색을 정하지 않습니다. color가 없는 구간은 중립 트랙색(switch-track)입니다. 색만으로 구분하지 않도록 label을 함께 주세요."
+              }
+            ],
+            "source": "packages/react/src/zone-gauge.tsx",
+            "example": "/components/zone-gauge#preview"
+          },
+          {
+            "name": "label",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Shown above the axis and read first.",
+            "summary": "축 위에 보이는 이름입니다. 스크린리더가 가장 먼저 읽습니다.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The accessible name when there is no visible label, or a fuller one than it.",
+            "summary": "보이는 label이 없거나 더 자세한 이름이 필요할 때의 접근성 이름입니다. 있으면 label 대신 읽습니다.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "md는 10px, sm은 8px 트랙입니다. 표식은 트랙 위아래로 6px씩 더 나옵니다.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          },
+          {
+            "name": "zoneLabels",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Zone names under the axis, so zones are not told apart by colour alone.",
+            "summary": "구간 이름을 축 아래에 그립니다. 이름이 있는 구간이 하나도 없으면 그리지 않습니다.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          },
+          {
+            "name": "showValue",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "The value and its zone name at the end of the caption line.",
+            "summary": "이름 줄 끝에 값과 값이 속한 구간 이름을 보입니다(예: 72 · 고평가). false여도 스크린리더는 값을 읽고, 데이터가 없을 때의 missingText는 그대로 보입니다.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "(value: number) => string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값의 표시 문구를 만듭니다.",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. 데이터가 없을 때는 호출하지 않습니다."
+              },
+              {
+                "label": "기본",
+                "text": "생략하면 Provider locale의 숫자 표기(소수 둘째 자리까지)를 씁니다."
+              },
+              {
+                "label": "접근성",
+                "text": "화면과 스크린리더에 같은 문구를 씁니다."
+              }
+            ],
+            "source": "packages/react/src/zone-gauge.tsx",
+            "example": "/components/zone-gauge#preview"
+          },
+          {
+            "name": "missingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "\"—\"",
+            "description": "Shown in place of the value when it is missing; defaults to an em dash.",
+            "summary": "데이터가 없을 때 값 자리에 보일 문구입니다. 주면 스크린리더도 이 문구를 읽고, 생략하면 ‘데이터가 없습니다’를 읽습니다.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 클래스입니다. 막대의 높이는 size로 정하세요.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 스타일입니다. 바깥 여백이나 폭 제한에 사용하세요. 막대는 부모 폭을 채웁니다.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트의 ID입니다.",
+            "source": "packages/react/src/zone-gauge.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "읽기 전용 표시입니다. 포커스를 받지 않고 값을 바꾸지 않습니다. 구간의 경계·이름·색은 앱이 zones로 넘기고, KJUN은 축의 높이, 구간 사이 간격, 표식의 모양과 위치를 정합니다. 값을 사용자가 고르게 하려면 Slider를 쓰세요.",
+          "웹과 Native 모두 하나의 이미지로 알리며 이름·값·값이 속한 구간을 한 문장으로 읽습니다(예: PER 백분위, 72, 고평가). Native의 구간 색은 ColorValue로 받습니다."
+        ],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "value",
+            "type": "number | null",
+            "required": true,
+            "default": "—",
+            "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value.",
+            "summary": "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음으로 보고 축을 그리지 않습니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다.",
+            "source": "packages/native/src/zone-gauge.tsx"
+          },
+          {
+            "name": "min",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "",
+            "summary": "축의 시작 값입니다.",
+            "source": "packages/native/src/zone-gauge.tsx"
+          },
+          {
+            "name": "max",
+            "type": "number | undefined",
+            "required": false,
+            "default": "100",
+            "description": "",
+            "summary": "축의 끝 값입니다. min보다 커야 하며, 그렇지 않으면 축을 그리지 않습니다.",
+            "source": "packages/native/src/zone-gauge.tsx"
+          },
+          {
+            "name": "zones",
+            "type": "{ to: number; label?: string; color?: ColorValue }[]",
+            "required": true,
+            "default": "—",
+            "description": "The axis from min to max in order: each zone ends at `to`, with the app's label and colour.",
+            "summary": "축을 나누는 구간 목록입니다.",
+            "details": [
+              {
+                "label": "항목 필드",
+                "text": "to: 구간이 끝나는 값(앞 구간의 끝 또는 min에서 시작), label?: 구간 이름, color?: 앱이 정하는 구간 색"
+              },
+              {
+                "label": "규칙",
+                "text": "to 순서로 정렬해 그리고 축 밖은 잘라 냅니다. 경계에 놓인 값은 위쪽 구간에 속합니다. 마지막 구간이 max에 닿지 않으면 나머지를 이름 없는 중립 구간으로 그립니다."
+              },
+              {
+                "label": "색",
+                "text": "KJUN은 색을 정하지 않습니다. color가 없는 구간은 중립 트랙색(switch-track)입니다. 색만으로 구분하지 않도록 label을 함께 주세요."
+              }
+            ],
+            "source": "packages/native/src/zone-gauge.tsx",
+            "example": "/components/zone-gauge#preview"
+          },
+          {
+            "name": "label",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Shown above the axis and read first.",
+            "summary": "축 위에 보이는 이름입니다. 스크린리더가 가장 먼저 읽습니다.",
+            "source": "packages/native/src/zone-gauge.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The accessible name when there is no visible label, or a fuller one than it.",
+            "summary": "보이는 label이 없거나 더 자세한 이름이 필요할 때의 접근성 이름입니다. 있으면 label 대신 읽습니다.",
+            "source": "packages/native/src/zone-gauge.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "md는 10px, sm은 8px 트랙입니다. 표식은 트랙 위아래로 6px씩 더 나옵니다.",
+            "source": "packages/native/src/zone-gauge.tsx"
+          },
+          {
+            "name": "zoneLabels",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Zone names under the axis, so zones are not told apart by colour alone.",
+            "summary": "구간 이름을 축 아래에 그립니다. 이름이 있는 구간이 하나도 없으면 그리지 않습니다.",
+            "source": "packages/native/src/zone-gauge.tsx"
+          },
+          {
+            "name": "showValue",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "The value and its zone name at the end of the caption line.",
+            "summary": "이름 줄 끝에 값과 값이 속한 구간 이름을 보입니다(예: 72 · 고평가). false여도 스크린리더는 값을 읽고, 데이터가 없을 때의 missingText는 그대로 보입니다.",
+            "source": "packages/native/src/zone-gauge.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "(value: number) => string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값의 표시 문구를 만듭니다.",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. 데이터가 없을 때는 호출하지 않습니다."
+              },
+              {
+                "label": "기본",
+                "text": "생략하면 Provider locale의 숫자 표기(소수 둘째 자리까지)를 씁니다."
+              },
+              {
+                "label": "접근성",
+                "text": "화면과 스크린리더에 같은 문구를 씁니다."
+              }
+            ],
+            "source": "packages/native/src/zone-gauge.tsx",
+            "example": "/components/zone-gauge#preview"
+          },
+          {
+            "name": "missingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "\"—\"",
+            "description": "Shown in place of the value when it is missing; defaults to an em dash.",
+            "summary": "데이터가 없을 때 값 자리에 보일 문구입니다. 주면 스크린리더도 이 문구를 읽고, 생략하면 ‘데이터가 없습니다’를 읽습니다.",
+            "source": "packages/native/src/zone-gauge.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 스타일입니다. 바깥 여백이나 폭 제한에 사용하세요. 막대는 부모 폭을 채웁니다.",
+            "source": "packages/native/src/zone-gauge.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "읽기 전용 표시입니다. 포커스를 받지 않고 값을 바꾸지 않습니다. 구간의 경계·이름·색은 앱이 zones로 넘기고, KJUN은 축의 높이, 구간 사이 간격, 표식의 모양과 위치를 정합니다. 값을 사용자가 고르게 하려면 Slider를 쓰세요.",
+          "웹과 Native 모두 하나의 이미지로 알리며 이름·값·값이 속한 구간을 한 문장으로 읽습니다(예: PER 백분위, 72, 고평가). Native의 구간 색은 ColorValue로 받습니다."
+        ],
+        "types": []
+      }
+    },
+    "KjunStackedBar": {
+      "vue3": {
+        "props": [
+          {
+            "name": "items",
+            "type": "{ key?: string; label: string; value: number | null; color?: string }[] | null",
+            "required": false,
+            "default": "null",
+            "description": "The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail.",
+            "summary": "전체를 이루는 항목 목록입니다.",
+            "details": [
+              {
+                "label": "항목 필드",
+                "text": "label: 항목 이름, value: 수치, color?: 앱이 정하는 항목 색, key?: 항목 순서가 바뀔 때 쓰는 고유 값"
+              },
+              {
+                "label": "비율",
+                "text": "KJUN이 수치로 정수 퍼센트를 계산하고 합이 100이 되게 맞춥니다. 음수는 0으로 세고, 값이 없는 항목은 계산에서 뺍니다."
+              },
+              {
+                "label": "상태",
+                "text": "목록이 없거나 값이 모두 없으면 막대와 범례를 그리지 않습니다. 합이 0이면 빈 트랙을 그립니다. 0보다 큰 항목은 최소 4px로 그립니다."
+              },
+              {
+                "label": "색",
+                "text": "KJUN은 색을 정하지 않습니다. color가 없는 항목은 중립 트랙색(switch-track)입니다."
+              }
+            ],
+            "source": "packages/vue3/src/stacked-bar.tsx",
+            "example": "/components/stacked-bar#preview"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Shown above the bar and read first.",
+            "summary": "막대 위에 보이는 이름입니다. 스크린리더가 가장 먼저 읽습니다.",
+            "source": "packages/vue3/src/stacked-bar.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The accessible name when there is no visible label, or a fuller one than it.",
+            "summary": "보이는 label이 없거나 더 자세한 이름이 필요할 때의 접근성 이름입니다. 있으면 label 대신 읽습니다.",
+            "source": "packages/vue3/src/stacked-bar.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "md는 10px, sm은 8px 트랙입니다.",
+            "source": "packages/vue3/src/stacked-bar.tsx"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Each part's colour, name, value and share under the bar, so parts are not told apart by colour alone.",
+            "summary": "막대 아래에 항목별 색 칸·이름·수치·비율을 그립니다. 색만으로 구분하지 않게 하므로 끄면 앱이 같은 정보를 따로 보여 주세요. 꺼도 스크린리더는 항목을 모두 읽습니다.",
+            "source": "packages/vue3/src/stacked-bar.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "(value: number) => string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "항목 수치의 표시 문구를 만듭니다(예: 12명).",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. 값이 없는 항목에는 호출하지 않습니다."
+              },
+              {
+                "label": "기본",
+                "text": "생략하면 Provider locale의 숫자 표기(소수 둘째 자리까지)를 씁니다."
+              },
+              {
+                "label": "접근성",
+                "text": "범례와 스크린리더에 같은 문구를 씁니다."
+              }
+            ],
+            "source": "packages/vue3/src/stacked-bar.tsx",
+            "example": "/components/stacked-bar#preview"
+          },
+          {
+            "name": "missingText",
+            "type": "string",
+            "required": false,
+            "default": "\"—\"",
+            "description": "Shown for missing data and for a part without a value; defaults to an em dash.",
+            "summary": "데이터가 없을 때와 값이 없는 항목에 보일 문구입니다. 주면 스크린리더도 이 문구를 읽고, 생략하면 데이터가 없을 때 ‘데이터가 없습니다’를 읽습니다.",
+            "source": "packages/vue3/src/stacked-bar.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "읽기 전용 표시입니다. 포커스를 받지 않습니다. 앱은 항목별 수치와 색만 넘기고 비율은 KJUN이 계산합니다. 비율은 정수 퍼센트로 반올림하되 합이 항상 100이 되게 맞춥니다. 한 값이 얼마나 찼는지는 Progress, 축 위의 위치는 ZoneGauge를 쓰세요.",
+          "웹과 Native 모두 하나의 이미지로 알리며 이름과 항목별 수치·비율을 한 문장으로 읽습니다. Native의 항목 색은 ColorValue로 받습니다."
+        ],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "items",
+            "type": "{ key?: string; label: string; value: number | null; color?: string }[] | null",
+            "required": true,
+            "default": "—",
+            "description": "The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail.",
+            "summary": "전체를 이루는 항목 목록입니다.",
+            "details": [
+              {
+                "label": "항목 필드",
+                "text": "label: 항목 이름, value: 수치, color?: 앱이 정하는 항목 색, key?: 항목 순서가 바뀔 때 쓰는 고유 값"
+              },
+              {
+                "label": "비율",
+                "text": "KJUN이 수치로 정수 퍼센트를 계산하고 합이 100이 되게 맞춥니다. 음수는 0으로 세고, 값이 없는 항목은 계산에서 뺍니다."
+              },
+              {
+                "label": "상태",
+                "text": "목록이 없거나 값이 모두 없으면 막대와 범례를 그리지 않습니다. 합이 0이면 빈 트랙을 그립니다. 0보다 큰 항목은 최소 4px로 그립니다."
+              },
+              {
+                "label": "색",
+                "text": "KJUN은 색을 정하지 않습니다. color가 없는 항목은 중립 트랙색(switch-track)입니다."
+              }
+            ],
+            "source": "packages/react/src/stacked-bar.tsx",
+            "example": "/components/stacked-bar#preview"
+          },
+          {
+            "name": "label",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Shown above the bar and read first.",
+            "summary": "막대 위에 보이는 이름입니다. 스크린리더가 가장 먼저 읽습니다.",
+            "source": "packages/react/src/stacked-bar.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The accessible name when there is no visible label, or a fuller one than it.",
+            "summary": "보이는 label이 없거나 더 자세한 이름이 필요할 때의 접근성 이름입니다. 있으면 label 대신 읽습니다.",
+            "source": "packages/react/src/stacked-bar.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "md는 10px, sm은 8px 트랙입니다.",
+            "source": "packages/react/src/stacked-bar.tsx"
+          },
+          {
+            "name": "legend",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Each part's colour, name, value and share under the bar, so parts are not told apart by colour alone.",
+            "summary": "막대 아래에 항목별 색 칸·이름·수치·비율을 그립니다. 색만으로 구분하지 않게 하므로 끄면 앱이 같은 정보를 따로 보여 주세요. 꺼도 스크린리더는 항목을 모두 읽습니다.",
+            "source": "packages/react/src/stacked-bar.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "(value: number) => string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "항목 수치의 표시 문구를 만듭니다(예: 12명).",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. 값이 없는 항목에는 호출하지 않습니다."
+              },
+              {
+                "label": "기본",
+                "text": "생략하면 Provider locale의 숫자 표기(소수 둘째 자리까지)를 씁니다."
+              },
+              {
+                "label": "접근성",
+                "text": "범례와 스크린리더에 같은 문구를 씁니다."
+              }
+            ],
+            "source": "packages/react/src/stacked-bar.tsx",
+            "example": "/components/stacked-bar#preview"
+          },
+          {
+            "name": "missingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "\"—\"",
+            "description": "Shown for missing data and for a part without a value; defaults to an em dash.",
+            "summary": "데이터가 없을 때와 값이 없는 항목에 보일 문구입니다. 주면 스크린리더도 이 문구를 읽고, 생략하면 데이터가 없을 때 ‘데이터가 없습니다’를 읽습니다.",
+            "source": "packages/react/src/stacked-bar.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 클래스입니다. 막대의 높이는 size로 정하세요.",
+            "source": "packages/react/src/stacked-bar.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 스타일입니다. 바깥 여백이나 폭 제한에 사용하세요. 막대는 부모 폭을 채웁니다.",
+            "source": "packages/react/src/stacked-bar.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트의 ID입니다.",
+            "source": "packages/react/src/stacked-bar.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "읽기 전용 표시입니다. 포커스를 받지 않습니다. 앱은 항목별 수치와 색만 넘기고 비율은 KJUN이 계산합니다. 비율은 정수 퍼센트로 반올림하되 합이 항상 100이 되게 맞춥니다. 한 값이 얼마나 찼는지는 Progress, 축 위의 위치는 ZoneGauge를 쓰세요.",
+          "웹과 Native 모두 하나의 이미지로 알리며 이름과 항목별 수치·비율을 한 문장으로 읽습니다. Native의 항목 색은 ColorValue로 받습니다."
+        ],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "items",
+            "type": "{ key?: string; label: string; value: number | null; color?: ColorValue }[] | null",
+            "required": true,
+            "default": "—",
+            "description": "The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail.",
+            "summary": "전체를 이루는 항목 목록입니다.",
+            "details": [
+              {
+                "label": "항목 필드",
+                "text": "label: 항목 이름, value: 수치, color?: 앱이 정하는 항목 색, key?: 항목 순서가 바뀔 때 쓰는 고유 값"
+              },
+              {
+                "label": "비율",
+                "text": "KJUN이 수치로 정수 퍼센트를 계산하고 합이 100이 되게 맞춥니다. 음수는 0으로 세고, 값이 없는 항목은 계산에서 뺍니다."
+              },
+              {
+                "label": "상태",
+                "text": "목록이 없거나 값이 모두 없으면 막대와 범례를 그리지 않습니다. 합이 0이면 빈 트랙을 그립니다. 0보다 큰 항목은 최소 4px로 그립니다."
+              },
+              {
+                "label": "색",
+                "text": "KJUN은 색을 정하지 않습니다. color가 없는 항목은 중립 트랙색(switch-track)입니다."
+              }
+            ],
+            "source": "packages/native/src/stacked-bar.tsx",
+            "example": "/components/stacked-bar#preview"
+          },
+          {
+            "name": "label",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Shown above the bar and read first.",
+            "summary": "막대 위에 보이는 이름입니다. 스크린리더가 가장 먼저 읽습니다.",
+            "source": "packages/native/src/stacked-bar.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The accessible name when there is no visible label, or a fuller one than it.",
+            "summary": "보이는 label이 없거나 더 자세한 이름이 필요할 때의 접근성 이름입니다. 있으면 label 대신 읽습니다.",
+            "source": "packages/native/src/stacked-bar.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "md는 10px, sm은 8px 트랙입니다.",
+            "source": "packages/native/src/stacked-bar.tsx"
+          },
+          {
+            "name": "legend",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Each part's colour, name, value and share under the bar, so parts are not told apart by colour alone.",
+            "summary": "막대 아래에 항목별 색 칸·이름·수치·비율을 그립니다. 색만으로 구분하지 않게 하므로 끄면 앱이 같은 정보를 따로 보여 주세요. 꺼도 스크린리더는 항목을 모두 읽습니다.",
+            "source": "packages/native/src/stacked-bar.tsx"
+          },
+          {
+            "name": "formatValue",
+            "type": "(value: number) => string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "항목 수치의 표시 문구를 만듭니다(예: 12명).",
+            "details": [
+              {
+                "label": "인자와 반환",
+                "text": "(value: number) => string. 값이 없는 항목에는 호출하지 않습니다."
+              },
+              {
+                "label": "기본",
+                "text": "생략하면 Provider locale의 숫자 표기(소수 둘째 자리까지)를 씁니다."
+              },
+              {
+                "label": "접근성",
+                "text": "범례와 스크린리더에 같은 문구를 씁니다."
+              }
+            ],
+            "source": "packages/native/src/stacked-bar.tsx",
+            "example": "/components/stacked-bar#preview"
+          },
+          {
+            "name": "missingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "\"—\"",
+            "description": "Shown for missing data and for a part without a value; defaults to an em dash.",
+            "summary": "데이터가 없을 때와 값이 없는 항목에 보일 문구입니다. 주면 스크린리더도 이 문구를 읽고, 생략하면 데이터가 없을 때 ‘데이터가 없습니다’를 읽습니다.",
+            "source": "packages/native/src/stacked-bar.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 스타일입니다. 바깥 여백이나 폭 제한에 사용하세요. 막대는 부모 폭을 채웁니다.",
+            "source": "packages/native/src/stacked-bar.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "읽기 전용 표시입니다. 포커스를 받지 않습니다. 앱은 항목별 수치와 색만 넘기고 비율은 KJUN이 계산합니다. 비율은 정수 퍼센트로 반올림하되 합이 항상 100이 되게 맞춥니다. 한 값이 얼마나 찼는지는 Progress, 축 위의 위치는 ZoneGauge를 쓰세요.",
+          "웹과 Native 모두 하나의 이미지로 알리며 이름과 항목별 수치·비율을 한 문장으로 읽습니다. Native의 항목 색은 ColorValue로 받습니다."
         ],
         "types": []
       }

@@ -109,6 +109,7 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
+      "packages/tokens/src/distribution.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/list.css",
       "packages/tokens/src/market.css",
@@ -142,7 +143,8 @@
       "packages/native/src/table-toolbar.tsx",
       "packages/native/src/tabs.tsx",
       "packages/native/src/toast-stack.tsx",
-      "packages/native/src/toast.tsx"
+      "packages/native/src/toast.tsx",
+      "packages/native/src/zone-gauge.tsx"
     ]
   },
   {
@@ -309,6 +311,7 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
+      "packages/tokens/src/distribution.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/list.css",
       "packages/tokens/src/market.css",
@@ -355,7 +358,8 @@
       "packages/native/src/table-view.tsx",
       "packages/native/src/tabs.tsx",
       "packages/native/src/toast-stack.tsx",
-      "packages/native/src/toast.tsx"
+      "packages/native/src/toast.tsx",
+      "packages/native/src/zone-gauge.tsx"
     ]
   },
   {
@@ -375,6 +379,7 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
+      "packages/tokens/src/distribution.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/financial.css",
       "packages/tokens/src/forms.css",
@@ -413,13 +418,15 @@
       "packages/native/src/progress.tsx",
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/skeletons.tsx",
+      "packages/native/src/stacked-bar.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-list.tsx",
       "packages/native/src/table-narrow-parts.tsx",
       "packages/native/src/table-view.tsx",
       "packages/native/src/tabs.tsx",
       "packages/native/src/time-picker.tsx",
-      "packages/native/src/toast.tsx"
+      "packages/native/src/toast.tsx",
+      "packages/native/src/zone-gauge.tsx"
     ]
   },
   {
@@ -438,6 +445,7 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
+      "packages/tokens/src/distribution.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/financial.css",
       "packages/tokens/src/layout.css",
@@ -488,12 +496,14 @@
       "packages/native/src/select-control.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/split-pane.tsx",
+      "packages/native/src/stacked-bar.tsx",
       "packages/native/src/table-cards.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-narrow-parts.tsx",
       "packages/native/src/table-view.tsx",
       "packages/native/src/textarea.tsx",
-      "packages/native/src/time-picker.tsx"
+      "packages/native/src/time-picker.tsx",
+      "packages/native/src/zone-gauge.tsx"
     ]
   },
   {
@@ -607,10 +617,12 @@
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/split-pane.tsx",
+      "packages/native/src/stacked-bar.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-toolbar.tsx",
       "packages/native/src/toast-stack.tsx",
-      "packages/native/src/toast.tsx"
+      "packages/native/src/toast.tsx",
+      "packages/native/src/zone-gauge.tsx"
     ]
   },
   {
@@ -1533,12 +1545,15 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/display.css",
+      "packages/tokens/src/distribution.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/forms.css",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/list.tsx",
       "packages/native/src/progress.tsx",
-      "packages/native/src/range-input.tsx"
+      "packages/native/src/range-input.tsx",
+      "packages/native/src/stacked-bar.tsx",
+      "packages/native/src/zone-gauge.tsx"
     ]
   },
   {
