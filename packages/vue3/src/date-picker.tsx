@@ -3,7 +3,8 @@ import { dateLabel, formatRange, normalizeRange, pickRange, rangeSpoken, rangeSu
 import { CalendarView, calendarOptionProps, type DateRangePreset } from "./calendar";
 import { FloatingPanel } from "./floating-panel";
 import { formatDateValue } from "../../../shared/package-runtime/messages";
-import { computed, defineComponent, ref, useId, watch, type ExtractPublicPropTypes, type PropType, type Ref, type VNode, cloneVNode } from "vue";
+import { computed, ref, useId, watch, type ExtractPublicPropTypes, type PropType, type Ref, type VNode, cloneVNode } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { KjunButton, KjunIcon } from "./button";
@@ -77,8 +78,8 @@ function useDateField(props: Readonly<DateFieldOptions & { placeholder?: string 
 
 const kjunDatePickerProps = {
   ...dateFieldProps,
-  /** YYYY-MM-DD, or an empty string. */
-  modelValue: { type: String, default: "" },
+  /** YYYY-MM-DD, an empty string, or null. null displays empty without emitting an update. */
+  modelValue: { type: String as PropType<string | null>, default: "" },
 } as const;
 export type KjunDatePickerProps = ExtractPublicPropTypes<typeof kjunDatePickerProps>;
 /** v-model holds YYYY-MM-DD; choosing a day commits and closes. */
@@ -93,9 +94,9 @@ export const KjunDatePicker = defineComponent({
     const commit = (next: string) => { if (next !== props.modelValue) { emit("update:modelValue", next); emit("change", next); } open.value = false; };
     return () => render({
       text: props.modelValue ? formatDateValue(props.modelValue, scope.value) : "",
-      spoken: props.modelValue ? dateLabel(props.modelValue, scope.value) : "", submitted: props.modelValue,
+      spoken: props.modelValue ? dateLabel(props.modelValue, scope.value) : "", submitted: props.modelValue ?? "",
       placeholder: props.placeholder ?? scope.value.messages.datePlaceholder, clearLabel: scope.value.messages.clearDate, onClear: () => commit(""),
-    }, () => <CalendarView value={props.modelValue} min={props.min} max={props.max} clearable={props.clearable} weekStart={props.weekStart} markSunday={props.markSunday}
+    }, () => <CalendarView value={props.modelValue ?? ""} min={props.min} max={props.max} clearable={props.clearable} weekStart={props.weekStart} markSunday={props.markSunday}
       isDateUnavailable={props.isDateUnavailable} onSelect={commit} onClear={() => commit("")} />);
   },
 });

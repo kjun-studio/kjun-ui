@@ -1,6 +1,7 @@
 import { useKjunMessages } from "./runtime/messages";
 import { createTypeahead } from "../../../shared/package-runtime/typeahead";
-import { computed, defineComponent, inject, mergeProps, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
+import { computed, inject, mergeProps, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
+import { defineComponent } from "./runtime/component";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";

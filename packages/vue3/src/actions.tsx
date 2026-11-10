@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, inject, mergeProps, onBeforeUnmount, onMounted, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { inject, mergeProps, onBeforeUnmount, onMounted, ref, watch, type AriaAttributes, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { typeStyle } from "../../../shared/package-runtime/typography";
 import { KjunButton, KjunIcon } from "./button";
@@ -10,6 +11,7 @@ import { KjunTooltip, type KjunTooltipProps } from "./popover";
 import { kjunTopNavigationKey } from "./runtime/keys";
 import { useReducedMotion } from "./runtime/presence";
 import { css } from "./runtime/style";
+import { useIconToggleLabel } from "./runtime/icon-toggle-label";
 
 type Placement = KjunTooltipProps["placement"];
 const kjunIconToggleProps = {
@@ -23,26 +25,35 @@ const kjunIconToggleProps = {
   size: { type: String as PropType<ButtonSize>, default: "md" },
   disabled: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
-  ariaLabel: { type: String, required: true },
-  /** Defaults to ariaLabel, like RefreshButton; an empty string disables the hint. */
+  /** Accessible name; aria-label or aria-labelledby may be used instead. */
+  ariaLabel: { type: String, default: undefined },
+  /** Defaults to the accessible label text; an empty string disables the hint. */
   tooltip: { type: String, default: undefined },
   tooltipPlacement: { type: String as PropType<Placement>, default: undefined },
   tooltipDelay: { type: Number, default: undefined },
 } as const;
-export type KjunIconToggleProps = ExtractPublicPropTypes<typeof kjunIconToggleProps>;
+type IconToggleNameAttributes = Pick<AriaAttributes, "aria-label" | "aria-labelledby">;
+export type KjunIconToggleProps = ExtractPublicPropTypes<typeof kjunIconToggleProps> & IconToggleNameAttributes;
 /** Event: toggle. The app owns `active`. */
-export const KjunIconToggle = defineComponent({
+const KjunIconToggleComponent = defineComponent({
   name: "KjunIconToggle",
+  inheritAttrs: false,
   props: kjunIconToggleProps,
   emits: { toggle: () => true },
-  setup(props, { emit }) {
+  setup(props, { attrs, emit }) {
     const navigation = inject(kjunTopNavigationKey, null);
+    const label = () => props.ariaLabel ?? attrs["aria-label"] as string | undefined;
+    const labelledBy = () => attrs["aria-labelledby"] as string | undefined;
+    const accessible = useIconToggleLabel(label, labelledBy);
     return () => (
-      <KjunTooltip content={props.disabled || props.loading ? "" : props.tooltip ?? props.ariaLabel} placement={props.tooltipPlacement} delay={props.tooltipDelay}>
-        <button type="button" aria-label={props.ariaLabel} aria-pressed={props.active} aria-busy={props.loading || undefined}
-          disabled={props.disabled || props.loading} class="kjun-icon-toggle" data-size={props.size}
-          style={navigation ? css({ width: navigation.controlSize, height: navigation.controlSize }) : undefined}
-          onClick={(event: MouseEvent) => { event.stopPropagation(); emit("toggle"); }}>
+      <KjunTooltip content={props.disabled || props.loading ? "" : props.tooltip ?? (labelledBy() ? accessible.text.value : label())} placement={props.tooltipPlacement} delay={props.tooltipDelay}>
+        <button {...mergeProps({
+          onFocus: accessible.refresh, onPointerenter: accessible.refresh,
+          onClick: (event: MouseEvent) => { event.stopPropagation(); emit("toggle"); },
+        }, attrs)} ref={accessible.button} type="button" aria-label={label()} aria-labelledby={labelledBy()}
+          aria-pressed={props.active} aria-busy={props.loading || undefined}
+          disabled={props.disabled || props.loading} class={["kjun-icon-toggle", attrs.class]} data-size={props.size}
+          style={[navigation ? css({ width: navigation.controlSize, height: navigation.controlSize }) : undefined, attrs.style as never]}>
           {props.loading
             ? navigation ? <KjunIcon name="loader-2" spin size={navigation.iconSize} /> : <KjunSpinner size="sm" />
             : <KjunIcon name={props.active ? props.activeIcon : props.inactiveIcon || props.activeIcon} filled={props.active}
@@ -57,6 +68,11 @@ export const KjunIconToggle = defineComponent({
     );
   },
 });
+
+// Vue's strict template checker needs the forwarded ARIA names in $props as well as runtime attrs.
+export const KjunIconToggle = KjunIconToggleComponent as typeof KjunIconToggleComponent & {
+  new(): InstanceType<typeof KjunIconToggleComponent> & { $props: KjunIconToggleProps };
+};
 
 async function browserCopy(value: string) {
   if (navigator.clipboard && window.isSecureContext) {

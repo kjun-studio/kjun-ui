@@ -49,16 +49,26 @@ export function focusTrigger(target: FocusTarget | null | undefined) {
       : target.querySelector<HTMLElement>("button,input,[href],[tabindex]") || target;
   return target;
 }
-function restoreFocus(target: FocusTarget | null | undefined, state: LayerState, id: string, fallback?: FocusTarget | null) {
+function restoreFocus(target: FocusTarget | null | undefined, state: LayerState, id: string, fallback?: FocusTarget | null,
+  resolveTarget?: () => FocusTarget | null | false | undefined) {
   const usable = (item: FocusTarget | null | undefined) => item?.isConnected !== false &&
     !(typeof HTMLElement !== "undefined" && item instanceof HTMLElement && item.closest("[inert]"));
   // Overlay content finishes its own focus cleanup after this update.
   const restore = () => {
     if (state.entries.has(id)) return;
-    if (usable(target)) target?.focus?.({ preventScroll: true });
+    // Window props update before Vue commits replacement elements and refs, especially without exit motion.
+    const chosen = resolveTarget ? chooseReturnTarget(resolveTarget(), fallback || target) : target;
+    if (!chosen) return;
     // A chosen return target can vanish during the exit motion; the trigger is the next choice.
-    else if (fallback && fallback !== target && usable(fallback)) fallback.focus?.({ preventScroll: true });
-    else state.topWindow()?.root?.focus?.({ preventScroll: true });
+    const next = usable(chosen) ? chosen : fallback && fallback !== chosen && usable(fallback) ? fallback : state.topWindow()?.root;
+    if (next) {
+      // An explicitly redirected window return is restored focus too (Tooltip/input guards).
+      if (resolveTarget) {
+        if (fallback && fallback !== next) state.clearRestoredFocus(fallback);
+        state.markRestoredFocus(next);
+      }
+      next.focus?.({ preventScroll: true });
+    }
   };
   if (typeof requestAnimationFrame !== "undefined") requestAnimationFrame(restore);
   else queueMicrotask(restore);
@@ -80,29 +90,31 @@ export function useLayer(open: () => boolean, present: () => boolean, kind: Laye
   const parent = inject(kjunLayerScopeKey, undefined);
   const id = "kjun-layer-" + useId();
   let openingFocus: FocusTarget | null = null, pendingFocus: FocusTarget | null | undefined = null, fallbackFocus: FocusTarget | null | undefined = null;
-  // A Popover's returnFocus replaces where focus goes back; the trigger stays the fallback.
+  // Window targets are read after DOM/ref cleanup; popups retain their close-time policy (including false).
   const removeLayer = () => {
     const removed = state.remove(id, currentFocus());
     if (removed) fallbackFocus = removed;
-    return removed && returnFocus ? chooseReturnTarget(returnFocus(), removed) : removed;
+    return removed && returnFocus && kind !== "window" ? chooseReturnTarget(returnFocus(), removed) : removed;
   };
   // Sync flush runs as the state changes, before the DOM updates: focus is still on the opener.
   watch(open, (value, previous) => { if (value && !previous) openingFocus = currentFocus(); }, { flush: "sync", immediate: true });
   watch([open, present], ([isOpen, isPresent]) => {
     if (isOpen) {
       pendingFocus = null;
-      state.open(id, kind, parent, () => close(), focusTrigger(trigger?.()) || openingFocus);
+      const returnTarget = focusTrigger(trigger?.()) || openingFocus;
+      state.open(id, kind, parent, () => close(), returnTarget,
+        typeof document !== "undefined" && returnTarget === document.body);
     } else if (kind === "window" && isPresent) state.markClosing(id);
     // Suppressed controlled popups stay latched until the owner acknowledges false.
     else if (kind !== "window" || !isPresent) {
       const target = removeLayer();
       if (target) pendingFocus = target;
-      if (!isPresent && pendingFocus) { restoreFocus(pendingFocus, state, id, fallbackFocus); pendingFocus = null; }
+      if (!isPresent && pendingFocus) { restoreFocus(pendingFocus, state, id, fallbackFocus, kind === "window" ? returnFocus : undefined); pendingFocus = null; }
     }
   }, { flush: "sync", immediate: true });
   onBeforeUnmount(() => {
     const target = removeLayer();
-    if (target || pendingFocus) restoreFocus(target || pendingFocus, state, id, fallbackFocus);
+    if (target || pendingFocus) restoreFocus(target || pendingFocus, state, id, fallbackFocus, kind === "window" ? returnFocus : undefined);
   });
   return {
     id, state, keyboardManaged: context.managed,

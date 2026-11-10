@@ -60,6 +60,26 @@ test('a menu removed within the launch event retains its opening control for the
   assert.equal(state.entries.get('dialog').returnTarget, trigger);
 });
 
+test('a removed menu transfers its opener when DOM focus falls back to the document', () => {
+  const state = createLayerState(), trigger = { focus() {} }, item = { isConnected: true }, documentFocus = { focus() {} };
+  state.open('menu', 'popup', undefined, () => {}, trigger);
+  state.remove('menu', item);
+  item.isConnected = false;
+  state.open('dialog', 'window', undefined, () => {}, documentFocus, true);
+  assert.equal(state.entries.get('dialog').returnTarget, trigger);
+});
+
+test('a recent menu does not override deliberate focus or a later event', async () => {
+  for (const later of [false, true]) {
+    const state = createLayerState(), trigger = { focus() {} }, item = { isConnected: false }, other = { focus() {} };
+    state.open('menu', 'popup', undefined, () => {}, trigger);
+    state.remove('menu', item);
+    if (later) await new Promise(resolve => setTimeout(resolve, 0));
+    state.open('dialog', 'window', undefined, () => {}, other, later);
+    assert.equal(state.entries.get('dialog').returnTarget, other);
+  }
+});
+
 test('a window reopened during exit becomes active above a newer window', () => {
   const state = createLayerState();
   const trigger = { focus() {} };

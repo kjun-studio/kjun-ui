@@ -1,6 +1,7 @@
 import { useKjunMessages } from "./runtime/messages";
-import { Fragment, camelize, computed, defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref, watch,
+import { Fragment, camelize, computed, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref, watch,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type VNode, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { isFocusVisible, installFocusVisible } from "../../../shared/package-runtime/focus-visible";
 import { manageTabList, panelNeedsFocus } from "../../../shared/package-runtime/tab-keyboard";

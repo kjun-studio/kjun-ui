@@ -1,5 +1,6 @@
 import { webSafeBottom } from "../../../shared/package-runtime/safe-area";
-import { defineComponent, type ExtractPublicPropTypes } from "vue";
+import { type ExtractPublicPropTypes } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 

@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import type { InputSize } from "@kjun-ui/tokens";
 import { optionLabel, type SelectOption } from "../../../shared/package-runtime/options";
 import { SearchField } from "./combobox";

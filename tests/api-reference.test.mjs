@@ -24,6 +24,14 @@ const paths = new Set(catalog.map((c) => c.docs));
 paths.add("/feedback");
 const platforms = ["vue3", "react", "native"];
 
+test("Vue nullable models and optional IconToggle naming survive API extraction", () => {
+  for (const name of ["KjunInput", "KjunTextarea", "KjunDatePicker"]) {
+    assert.match(raw[name].vue3.find(prop => prop.name === "modelValue").type, /\bnull\b/, name);
+    assert.match(reference.components[name].vue3.props.find(prop => prop.name === "modelValue").type, /\bnull\b/, name);
+  }
+  assert.equal(raw.KjunIconToggle.vue3.find(prop => prop.name === "ariaLabel").required, false);
+});
+
 test("all public components have one description per prop and valid examples", async () => {
   assert.equal(Object.keys(reference.components).length, catalog.filter(entry => entry.kind !== "internal").length);
   let count = 0;

@@ -1,4 +1,5 @@
-import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import {
   defaultTextTag, textTypeClass,
   type InlineAlign, type InlineGap, type InlineJustify, type StackAlign, type StackGap,

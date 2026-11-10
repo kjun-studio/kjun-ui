@@ -1,5 +1,40 @@
 import { test, expect } from '@playwright/test';
 
+test('Vue field contracts retain null and IconToggle documents standard accessible names', async ({ page }) => {
+  for (const slug of ['input', 'textarea', 'date-picker']) {
+    await page.goto(`/components/${slug}?platform=vue3`);
+    const row = page.locator('#api').getByRole('table', { name: '속성', exact: true }).getByRole('row').filter({
+      has: page.locator('code.api-member-anchor', { hasText: /^modelValue$/ }),
+    });
+    await expect(row).toContainText('null');
+    await expect(row).toContainText('부모 값을 바꾸거나');
+    await expect(row).toContainText('빈 문자열');
+  }
+  await page.goto('/components/icon-toggle?platform=vue3');
+  const label = page.locator('#api').getByRole('table', { name: '속성', exact: true }).getByRole('row').filter({
+    has: page.locator('code.api-member-anchor', { hasText: /^ariaLabel$/ }),
+  });
+  await expect(label).toContainText('aria-label');
+  await expect(label).toContainText('aria-labelledby');
+  await expect(label).not.toContainText('필수');
+});
+
+test('Modal documents live returnFocus targets on React and Vue only', async ({ page }) => {
+  for (const platform of ['react', 'vue3', 'native']) {
+    await page.goto(`/components/modal?platform=${platform}`);
+    const api = page.locator('#api');
+    await expect(api.locator('.api-platform')).toContainText('@kjun-ui/' + platform);
+    const row = api.getByRole('table', { name: '속성', exact: true }).getByRole('row').filter({
+      has: page.locator('code.api-member-anchor', { hasText: /^returnFocus$/ }),
+    });
+    await expect(row).toHaveCount(platform === 'native' ? 0 : 1);
+    if (platform !== 'native') {
+      await expect(row).toContainText('요소·ref·요소를 돌려주는 함수');
+      await expect(row).toContainText('닫힐 때 최신 값');
+    }
+  }
+});
+
 test('React adoption API documents mixed selection and numeric value formatting at 320px', async ({ page }) => {
   test.setTimeout(120000);
   await page.setViewportSize({ width: 320, height: 800 });

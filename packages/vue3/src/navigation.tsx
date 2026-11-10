@@ -1,6 +1,7 @@
 import { useKjunMessages } from "./runtime/messages";
-import { Fragment, defineComponent, inject, onBeforeUnmount, onMounted, provide, ref, shallowRef, watch,
+import { Fragment, inject, onBeforeUnmount, onMounted, provide, ref, shallowRef, watch,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type VNode, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunCollapse } from "./collapse";

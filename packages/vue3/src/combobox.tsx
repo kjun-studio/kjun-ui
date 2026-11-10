@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
-import { computed, defineComponent, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
+import { computed, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import type { InputSize } from "@kjun-ui/tokens";
 import { optionDisabled, optionKey, optionLabel, type OptionValue, type SelectOption } from "../../../shared/package-runtime/options";
 import { KjunSpinner } from "./display";

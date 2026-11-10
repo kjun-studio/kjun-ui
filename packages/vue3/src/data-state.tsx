@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, getCurrentInstance, onErrorCaptured, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { getCurrentInstance, onErrorCaptured, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens, advanceQueryDisplay, initialQueryDisplay, queryDisplayStatus, type QueryDisplayProps, type QueryDisplayState } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
 import { KjunAlert, KjunEmpty, KjunSkeleton, KjunSpinner, type KjunSkeletonProps } from "./display";

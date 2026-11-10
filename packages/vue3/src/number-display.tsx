@@ -1,4 +1,5 @@
-import { defineComponent, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type Ref, type SlotsType, type VNode } from "vue";
+import { onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type Ref, type SlotsType, type VNode } from "vue";
+import { defineComponent } from "./runtime/component";
 import { hasContent } from "./runtime/slots";
 import { tokens } from "@kjun-ui/tokens";
 import { createNumberMotion } from "../../../shared/package-runtime/number-motion";

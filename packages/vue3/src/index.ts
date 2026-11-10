@@ -1,4 +1,5 @@
 export * from "./components";
+export { kjunPropValues } from "./prop-values";
 export type { KjunIconProps, KjunButtonProps } from "./button";
 export { useMinimumLoading } from "./button";
 export type { KjunPluginOptions } from "./plugin";

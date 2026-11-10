@@ -10,6 +10,7 @@ import { Dialog,Heading,Modal,ModalOverlay } from "react-aria-components";
 import { KjunButton,KjunIcon } from "./button";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { useKjunPortalContainer } from "./provider";
+import { resolveFocusReturn, type FocusReturn } from "./floating-panel";
 export interface KjunFormActionsProps {
   size?: InputSize;
   cancelText?: string;
@@ -100,6 +101,8 @@ export interface KjunModalProps {
   ariaLabel?: string;
   /** Id of the element that describes the dialog (e.g. its message), read after its name. */
   ariaDescribedBy?: string;
+  /** Read after the exit finishes; a missing target falls back to the opener or parent window. */
+  returnFocus?: FocusReturn;
 }
 export function KjunModal({
   open,
@@ -130,6 +133,7 @@ export function KjunModal({
   children,
   ariaLabel,
   ariaDescribedBy,
+  returnFocus,
 }: KjunModalProps) {
   const m = useKjunMessages();
   confirmText ??= m.confirm;
@@ -147,7 +151,7 @@ export function KjunModal({
     onOpenChange(false);
     onClose?.();
   };
-  const layer = useLayer(open, motion.present, "window", () => { if (closeOnEsc) close(); });
+  const layer = useLayer(open, motion.present, "window", () => { if (closeOnEsc) close(); }, undefined, resolveFocusReturn(returnFocus));
   if (portalContainer === null) return null;
   return (
     <LayerScope.Provider value={layer.id}>

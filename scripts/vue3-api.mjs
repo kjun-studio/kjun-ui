@@ -36,7 +36,8 @@ export function vue3Contracts(names) {
       const property = propsType?.getProperty(name);
       return {
         name,
-        type: property ? text(checker.getNonNullableType(checker.getTypeOfSymbolAtLocation(property, entry))) : "unknown",
+        // Drop optional undefined in clean(), but retain explicit null in the public contract.
+        type: property ? text(checker.getTypeOfSymbolAtLocation(property, entry)) : "unknown",
         required: !!prop.required,
         default: defaultValue(prop),
         description: property ? ts.displayPartsToString(property.getDocumentationComment(checker)) : "",

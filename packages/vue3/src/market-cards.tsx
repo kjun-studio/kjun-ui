@@ -1,6 +1,7 @@
 import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { getValue } from "../../../shared/package-runtime/table-model";
 import { KjunDataState } from "./data-state";

@@ -1,7 +1,8 @@
 import { useKjunMessages } from "./runtime/messages";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
-import { computed, defineComponent, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, provide, reactive, ref, useId,
+import { computed, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, provide, reactive, ref, useId,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens, type InputSize, isComposingKey } from "@kjun-ui/tokens";
 import { KjunButton, KjunIcon } from "./button";
 import { css } from "./runtime/style";
@@ -88,7 +89,8 @@ export const KjunFormGroup = defineComponent({
 });
 
 const kjunInputProps = {
-  modelValue: { type: [String, Number] as PropType<string | number>, default: "" },
+  /** null displays an empty field without updating the parent value. */
+  modelValue: { type: [String, Number] as PropType<string | number | null>, default: "" },
   size: { type: String as PropType<InputSize>, default: "md" },
   error: { type: Boolean, default: false },
   errorMessage: { type: String, default: "" },
@@ -166,7 +168,7 @@ const KjunInputComponent = defineComponent({
               })}
               ref={input}
               id={props.id || owner?.id}
-              value={props.modelValue}
+              value={props.modelValue ?? ""}
               disabled={props.disabled}
               readonly={props.readOnly}
               required={props.required ?? owner?.required}

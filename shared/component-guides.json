@@ -353,7 +353,7 @@
     "slug": "modal",
     "description": "현재 흐름에서 확인이나 입력을 수행하고 이전 포커스로 돌아갑니다.",
     "interaction": "confirm은 확인 요청을 전달합니다. 성공 후 소비자가 열림 값을 바꾸고 취소·닫기 요청에도 외부 열림 상태를 반영합니다.",
-    "differences": "Vue v-model:open과 React·Native open·onOpenChange를 사용합니다. 웹은 포커스 제한·복귀, Native는 Modal·뒤로 가기를 처리하며 HTML 폼 제출은 별도로 연결합니다.",
+    "differences": "Vue v-model:open과 React·Native open·onOpenChange를 사용합니다. React·Vue는 returnFocus에 요소·ref·함수를 전달해 닫힌 뒤 돌아갈 현재 버튼을 지정할 수 있습니다. Native는 Modal·뒤로 가기를 처리하며 HTML 폼 제출은 별도로 연결합니다.",
     "states": "열림·확인 중·확인 비활성·헤더/푸터 표시를 조합합니다. closable·closeOnEsc·closeOnOverlay로 닫힘 경로를 제어합니다."
   },
   "KjunTabPane": {
@@ -438,7 +438,7 @@
     "description": "아이콘으로 선택 상태를 표현합니다. 즐겨찾기·관심도 같은 컨트롤로 구성합니다.",
     "interaction": "active·loading은 소비자가 관리합니다. activeIcon·색상·ariaLabel로 행동을 정의하고 toggle 또는 onToggle 요청을 저장한 뒤 결과에 맞춰 상태를 갱신합니다. 저장 실패 시 선택 상태를 유지하고 오류를 안내하세요.",
     "differences": "웹 activeColorClass·inactiveColorClass는 Native에 없습니다. Native는 activeColor·inactiveColor 값을 사용하며 누름 동작으로 토글을 요청합니다.",
-    "states": "선택·미선택과 비활성·로딩 상태를 버튼의 접근성 상태와 연결합니다. 로딩은 누름만 막고 흐려지지 않으며 비활성만 흐려집니다. 이름이 보이지 않는 버튼에는 ariaLabel을 전달하며, RefreshButton처럼 hover·키보드 포커스에서 같은 이름을 툴팁으로 보여 줍니다. xs와 sm은 최소 24px 영역을 공유하고 아이콘 크기만 다릅니다."
+    "states": "선택·미선택과 비활성·로딩 상태를 버튼의 접근성 상태와 연결합니다. 로딩은 누름만 막고 흐려지지 않으며 비활성만 흐려집니다. 이름이 보이지 않는 버튼에는 ariaLabel을 전달하며(Vue는 aria-label·aria-labelledby도 지원), RefreshButton처럼 hover·키보드 포커스에서 같은 이름을 툴팁으로 보여 줍니다. xs와 sm은 최소 24px 영역을 공유하고 아이콘 크기만 다릅니다."
   },
   "KjunFab": {
     "slug": "fab",
@@ -451,7 +451,7 @@
     "slug": "input",
     "description": "한 줄 입력, 앞뒤 콘텐츠, 지우기와 오류 상태를 표현합니다.",
     "interaction": "입력값은 소비자가 관리하고 변경 통지에서 갱신합니다. FormGroup은 라벨·설명 맥락만 제공하며 입력값 저장·검증을 대신하지 않습니다. 값은 항상 제어형입니다(defaultValue 없음). KJUN 입력 컨트롤 전체가 같은 규칙을 따릅니다.",
-    "differences": "Vue v-model·readOnly·HTML 입력 속성, React onValueChange·readOnly, Native onChangeText·TextInput 속성을 구분합니다. Native의 키보드 종류만으로 값 검증을 보장하지 않습니다.",
+    "differences": "Vue v-model은 null을 빈 필드로 표시하고 숫자 0은 유지합니다. 입력·지우기 이벤트는 문자열을 전달합니다. Vue readOnly·HTML 입력 속성, React onValueChange·readOnly, Native onChangeText·TextInput 속성을 구분합니다. Native의 키보드 종류만으로 값 검증을 보장하지 않습니다.",
     "states": "빈 값·입력 중·focus·읽기 전용·비활성·오류를 구분합니다. clearable과 앞뒤 콘텐츠를 연결하며 오류 상태가 포커스 색상보다 우선합니다."
   },
   "KjunMenuButton": {

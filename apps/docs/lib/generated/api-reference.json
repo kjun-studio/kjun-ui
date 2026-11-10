@@ -59,7 +59,7 @@
           },
           {
             "name": "formatter",
-            "type": "(value: number) => string",
+            "type": "((value: number) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -641,7 +641,7 @@
         "props": [
           {
             "name": "value",
-            "type": "number",
+            "type": "number | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -677,7 +677,7 @@
           },
           {
             "name": "formatter",
-            "type": "(value: number) => string",
+            "type": "((value: number) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -935,7 +935,7 @@
         "props": [
           {
             "name": "status",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -1408,7 +1408,7 @@
           },
           {
             "name": "value",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "null",
             "description": "null, undefined and non-finite numbers are missing and show missingText.",
@@ -1453,7 +1453,7 @@
           },
           {
             "name": "deltaAbsolute",
-            "type": "number",
+            "type": "number | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -1462,7 +1462,7 @@
           },
           {
             "name": "deltaPercent",
-            "type": "number",
+            "type": "number | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -1552,7 +1552,7 @@
           },
           {
             "name": "formatter",
-            "type": "(value: number) => string",
+            "type": "((value: number) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -1561,7 +1561,7 @@
           },
           {
             "name": "deltaFormatter",
-            "type": "(value: number, kind: \"absolute\" | \"percent\") => string",
+            "type": "((value: number, kind: \"absolute\" | \"percent\") => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -2512,7 +2512,7 @@
           },
           {
             "name": "queryKey",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -2521,7 +2521,7 @@
           },
           {
             "name": "resultKey",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -2539,7 +2539,7 @@
           },
           {
             "name": "error",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -2575,7 +2575,7 @@
           },
           {
             "name": "pagination",
-            "type": "MarketPagination",
+            "type": "MarketPagination | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -2584,7 +2584,7 @@
           },
           {
             "name": "primaryLabel",
-            "type": "(row: any) => string",
+            "type": "((row: any) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -2593,7 +2593,7 @@
           },
           {
             "name": "subMeta",
-            "type": "(row: any) => string",
+            "type": "((row: any) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -2656,7 +2656,7 @@
           },
           {
             "name": "calculatedAt",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -2692,7 +2692,7 @@
           },
           {
             "name": "formatDate",
-            "type": "(value: string) => string",
+            "type": "((value: string) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -2701,7 +2701,7 @@
           },
           {
             "name": "onRowClick",
-            "type": "(row: any) => void",
+            "type": "((row: any) => void)",
             "required": false,
             "default": "—",
             "description": "Declared as props: rows become buttons and the retry action appears only when the app listens.",
@@ -2710,7 +2710,7 @@
           },
           {
             "name": "onRetry",
-            "type": "() => void",
+            "type": "(() => void)",
             "required": false,
             "default": "—",
             "description": "",
@@ -2764,7 +2764,7 @@
           },
           {
             "name": "sortKey",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -2818,7 +2818,7 @@
           },
           {
             "name": "metricLoading",
-            "type": "(row: any, key: string) => boolean",
+            "type": "((row: any, key: string) => boolean)",
             "required": false,
             "default": "\"callback\"",
             "description": "",
@@ -3781,7 +3781,7 @@
           },
           {
             "name": "queryKey",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -3790,7 +3790,7 @@
           },
           {
             "name": "resultKey",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -3808,7 +3808,7 @@
           },
           {
             "name": "error",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -3844,7 +3844,7 @@
           },
           {
             "name": "pagination",
-            "type": "MarketPagination",
+            "type": "MarketPagination | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -3853,7 +3853,7 @@
           },
           {
             "name": "primaryLabel",
-            "type": "(row: any) => string",
+            "type": "((row: any) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -3862,7 +3862,7 @@
           },
           {
             "name": "subMeta",
-            "type": "(row: any) => string",
+            "type": "((row: any) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -3925,7 +3925,7 @@
           },
           {
             "name": "calculatedAt",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -3961,7 +3961,7 @@
           },
           {
             "name": "formatDate",
-            "type": "(value: string) => string",
+            "type": "((value: string) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -3970,7 +3970,7 @@
           },
           {
             "name": "onRowClick",
-            "type": "(row: any) => void",
+            "type": "((row: any) => void)",
             "required": false,
             "default": "—",
             "description": "Declared as props: rows become buttons and the retry action appears only when the app listens.",
@@ -3979,7 +3979,7 @@
           },
           {
             "name": "onRetry",
-            "type": "() => void",
+            "type": "(() => void)",
             "required": false,
             "default": "—",
             "description": "",
@@ -4006,7 +4006,7 @@
           },
           {
             "name": "changeLoading",
-            "type": "(row: any) => boolean",
+            "type": "((row: any) => boolean)",
             "required": false,
             "default": "\"callback\"",
             "description": "",
@@ -4779,7 +4779,7 @@
           },
           {
             "name": "queryKey",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -4788,7 +4788,7 @@
           },
           {
             "name": "resultKey",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -4806,7 +4806,7 @@
           },
           {
             "name": "error",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -4842,7 +4842,7 @@
           },
           {
             "name": "pagination",
-            "type": "MarketPagination",
+            "type": "MarketPagination | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -4851,7 +4851,7 @@
           },
           {
             "name": "primaryLabel",
-            "type": "(row: any) => string",
+            "type": "((row: any) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -4860,7 +4860,7 @@
           },
           {
             "name": "subMeta",
-            "type": "(row: any) => string",
+            "type": "((row: any) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -4923,7 +4923,7 @@
           },
           {
             "name": "calculatedAt",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -4959,7 +4959,7 @@
           },
           {
             "name": "formatDate",
-            "type": "(value: string) => string",
+            "type": "((value: string) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -4968,7 +4968,7 @@
           },
           {
             "name": "onRowClick",
-            "type": "(row: any) => void",
+            "type": "((row: any) => void)",
             "required": false,
             "default": "—",
             "description": "Declared as props: rows become buttons and the retry action appears only when the app listens.",
@@ -4977,7 +4977,7 @@
           },
           {
             "name": "onRetry",
-            "type": "() => void",
+            "type": "(() => void)",
             "required": false,
             "default": "—",
             "description": "",
@@ -4995,7 +4995,7 @@
           },
           {
             "name": "cellLoading",
-            "type": "(row: any, column: MarketColumn) => boolean",
+            "type": "((row: any, column: MarketColumn) => boolean)",
             "required": false,
             "default": "\"callback\"",
             "description": "",
@@ -5013,7 +5013,7 @@
           },
           {
             "name": "togglingInterest",
-            "type": "never",
+            "type": "undefined",
             "required": false,
             "default": "—",
             "description": "",
@@ -5022,7 +5022,7 @@
           },
           {
             "name": "togglingFavorite",
-            "type": "never",
+            "type": "undefined",
             "required": false,
             "default": "—",
             "description": "",
@@ -5031,7 +5031,7 @@
           },
           {
             "name": "sortKey",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -5049,7 +5049,7 @@
           },
           {
             "name": "priceFormatter",
-            "type": "(value: number) => string",
+            "type": "((value: number) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -6048,7 +6048,7 @@
           },
           {
             "name": "alignClass",
-            "type": "(align: unknown) => string",
+            "type": "((align: unknown) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -6057,7 +6057,7 @@
           },
           {
             "name": "widthClass",
-            "type": "(column: unknown) => string",
+            "type": "((column: unknown) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -6173,7 +6173,7 @@
           },
           {
             "name": "panelStyle",
-            "type": "string | false | CSSProperties | StyleValue[]",
+            "type": "StyleValue",
             "required": false,
             "default": "—",
             "description": "",
@@ -6648,7 +6648,7 @@
         "props": [
           {
             "name": "value",
-            "type": "number",
+            "type": "number | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -6657,7 +6657,7 @@
           },
           {
             "name": "formatter",
-            "type": "(value: number) => string",
+            "type": "((value: number) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -7014,7 +7014,7 @@
         "props": [
           {
             "name": "value",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -7104,7 +7104,7 @@
           },
           {
             "name": "formatter",
-            "type": "(value: number) => string",
+            "type": "((value: number) => string)",
             "required": false,
             "default": "—",
             "description": "",
@@ -8059,7 +8059,7 @@
           },
           {
             "name": "queryKey",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -8112,7 +8112,7 @@
           },
           {
             "name": "error",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -8322,7 +8322,7 @@
           },
           {
             "name": "pagination",
-            "type": "TablePagination",
+            "type": "TablePagination | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -8365,7 +8365,7 @@
           },
           {
             "name": "responsive",
-            "type": "\"card\" | \"none\" | \"compact\" | \"list\"",
+            "type": "\"card\" | \"none\" | \"compact\" | \"list\" | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -8394,7 +8394,7 @@
           },
           {
             "name": "cardTitle",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -8403,7 +8403,7 @@
           },
           {
             "name": "cardSubtitle",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -8445,7 +8445,7 @@
           },
           {
             "name": "cardHighlight",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -8609,7 +8609,7 @@
           },
           {
             "name": "summaryFormat",
-            "type": "(value: number | null, column: TableColumn<any>, kind: TableSummaryKind) => VNodeChild",
+            "type": "((value: number | null, column: TableColumn<any>, kind: TableSummaryKind) => VNodeChild)",
             "required": false,
             "default": "—",
             "description": "Shows computed summaries, for columns whose cells come from a cell slot rather than a column format.",
@@ -8625,7 +8625,7 @@
           },
           {
             "name": "formatValue",
-            "type": "(value: unknown, column: TableColumn<NoInfer<R>>, row: NoInfer<R>) => VNodeChild",
+            "type": "((value: unknown, column: TableColumn<NoInfer<R>>, row: NoInfer<R>) => VNodeChild)",
             "required": false,
             "default": "—",
             "description": "",
@@ -8653,7 +8653,7 @@
           },
           {
             "name": "onRowClick",
-            "type": "(row: NoInfer<R>, index: number) => void",
+            "type": "((row: NoInfer<R>, index: number) => void)",
             "required": false,
             "default": "—",
             "description": "",
@@ -8681,7 +8681,7 @@
           },
           {
             "name": "onRetry",
-            "type": "() => void",
+            "type": "(() => void)",
             "required": false,
             "default": "—",
             "description": "",
@@ -11159,7 +11159,7 @@
           },
           {
             "name": "panelStyle",
-            "type": "string | false | CSSProperties | StyleValue[]",
+            "type": "StyleValue",
             "required": false,
             "default": "—",
             "description": "",
@@ -11723,7 +11723,7 @@
         "props": [
           {
             "name": "queryKey",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "—",
             "description": "",
@@ -11787,7 +11787,7 @@
           },
           {
             "name": "error",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -11852,7 +11852,7 @@
           },
           {
             "name": "refreshError",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -12006,7 +12006,7 @@
           },
           {
             "name": "onRetry",
-            "type": "() => void",
+            "type": "(() => void)",
             "required": false,
             "default": "—",
             "description": "Declared as a prop: the retry button appears only when the app listens.",
@@ -13611,7 +13611,7 @@
           },
           {
             "name": "loadOptions",
-            "type": "(query: string, context: { signal: AbortSignal; }) => Promise<SelectOption[]>",
+            "type": "((query: string, context: { signal: AbortSignal; }) => Promise<SelectOption[]>)",
             "required": false,
             "default": "—",
             "description": "",
@@ -14648,7 +14648,7 @@
           },
           {
             "name": "val",
-            "type": "string | number | boolean",
+            "type": "ChoiceValue",
             "required": false,
             "default": "—",
             "description": "",
@@ -14920,7 +14920,7 @@
         "props": [
           {
             "name": "modelValue",
-            "type": "OptionValue",
+            "type": "OptionValue | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -14974,7 +14974,7 @@
           },
           {
             "name": "filterFn",
-            "type": "(option: SelectOption, query: string) => boolean",
+            "type": "((option: SelectOption, query: string) => boolean)",
             "required": false,
             "default": "—",
             "description": "",
@@ -15539,11 +15539,11 @@
           },
           {
             "name": "modelValue",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "\"\"",
-            "description": "YYYY-MM-DD, or an empty string.",
-            "summary": "현재 선택 날짜입니다. YYYY-MM-DD 문자열이며 비어 있으면 빈 문자열입니다.",
+            "description": "YYYY-MM-DD, an empty string, or null. null displays empty without emitting an update.",
+            "summary": "현재 입력값입니다. null은 부모 값을 바꾸거나 update:modelValue를 내보내지 않고 빈 필드로 표시합니다. 직접 입력·날짜 선택은 문자열, 지우기는 빈 문자열을 전달합니다. Input의 숫자 0은 그대로 표시합니다.",
             "source": "packages/vue3/src/date-picker.tsx"
           }
         ],
@@ -17169,7 +17169,7 @@
         "props": [
           {
             "name": "modelValue",
-            "type": "string | number | boolean",
+            "type": "ChoiceValue",
             "required": false,
             "default": "—",
             "description": "",
@@ -17178,7 +17178,7 @@
           },
           {
             "name": "val",
-            "type": "string | number | boolean",
+            "type": "ChoiceValue",
             "required": true,
             "default": "—",
             "description": "",
@@ -17432,7 +17432,7 @@
         "props": [
           {
             "name": "modelValue",
-            "type": "string | number | boolean",
+            "type": "ChoiceValue",
             "required": false,
             "default": "null",
             "description": "",
@@ -17650,7 +17650,7 @@
           },
           {
             "name": "modelValue",
-            "type": "string | number | OptionValue[]",
+            "type": "SelectValue",
             "required": false,
             "default": "null",
             "description": "",
@@ -17883,7 +17883,7 @@
           },
           {
             "name": "filterFn",
-            "type": "(option: SelectOption, query: string) => boolean",
+            "type": "((option: SelectOption, query: string) => boolean)",
             "required": false,
             "default": "—",
             "description": "Replaces the default ranked label/searchKeys match; results keep the original order.",
@@ -19434,11 +19434,11 @@
         "props": [
           {
             "name": "modelValue",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "\"\"",
-            "description": "",
-            "summary": "소비자가 보유한 입력값입니다. 입력 변경 통지 결과를 이 값에 반영합니다.",
+            "description": "null displays an empty field without updating the parent value.",
+            "summary": "현재 입력값입니다. null은 부모 값을 바꾸거나 update:modelValue를 내보내지 않고 빈 필드로 표시합니다. 직접 입력·날짜 선택은 문자열, 지우기는 빈 문자열을 전달합니다. Input의 숫자 0은 그대로 표시합니다.",
             "source": "packages/vue3/src/controls.tsx"
           },
           {
@@ -22341,7 +22341,7 @@
           },
           {
             "name": "selected",
-            "type": "boolean",
+            "type": "boolean | null",
             "required": false,
             "default": "null",
             "description": "Single choice: a check in the leading column, announced as a radio item.",
@@ -22350,7 +22350,7 @@
           },
           {
             "name": "checked",
-            "type": "boolean",
+            "type": "boolean | null",
             "required": false,
             "default": "null",
             "description": "Independent toggle: a check in the leading column, announced as a checkbox item.",
@@ -22932,6 +22932,15 @@
             "description": "Id of the element that describes the dialog (e.g. its message), read after its name.",
             "summary": "대화상자를 설명하는 요소의 id입니다. 화면 낭독기가 이름 다음에 읽습니다.",
             "source": "packages/vue3/src/modal.tsx"
+          },
+          {
+            "name": "returnFocus",
+            "type": "FocusReturn",
+            "required": false,
+            "default": "—",
+            "description": "Read after the exit finishes; a missing target falls back to the opener or parent window.",
+            "summary": "닫힘 애니메이션이 끝난 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받으며 닫힐 때 최신 값을 읽습니다. 반응형 헤더처럼 버튼이 교체되면 ref나 함수로 현재 버튼을 지정하세요. 대상이 없거나 제거되면 원래 열기 버튼, 남아 있는 상위 창 순서로 복귀합니다. React·Vue 웹 전용입니다.",
+            "source": "packages/vue3/src/modal.tsx"
           }
         ],
         "events": [
@@ -23244,6 +23253,15 @@
             "default": "—",
             "description": "Id of the element that describes the dialog (e.g. its message), read after its name.",
             "summary": "대화상자를 설명하는 요소의 id입니다. 화면 낭독기가 이름 다음에 읽습니다.",
+            "source": "packages/react/src/modal.tsx"
+          },
+          {
+            "name": "returnFocus",
+            "type": "FocusReturn | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Read after the exit finishes; a missing target falls back to the opener or parent window.",
+            "summary": "닫힘 애니메이션이 끝난 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받으며 닫힐 때 최신 값을 읽습니다. 반응형 헤더처럼 버튼이 교체되면 ref나 함수로 현재 버튼을 지정하세요. 대상이 없거나 제거되면 원래 열기 버튼, 남아 있는 상위 창 순서로 복귀합니다. React·Vue 웹 전용입니다.",
             "source": "packages/react/src/modal.tsx"
           }
         ],
@@ -23815,7 +23833,7 @@
           },
           {
             "name": "onTabMenu",
-            "type": "(event: TabMenuEvent) => void",
+            "type": "((event: TabMenuEvent) => void)",
             "required": false,
             "default": "—",
             "description": "Declared as a prop so the tab menu only engages when the app listens.",
@@ -24351,7 +24369,7 @@
           },
           {
             "name": "formatter",
-            "type": "(value: number) => string",
+            "type": "((value: number) => string)",
             "required": false,
             "default": "\"callback\"",
             "description": "",
@@ -25488,7 +25506,7 @@
         "props": [
           {
             "name": "modelValue",
-            "type": "string | number | boolean",
+            "type": "ChoiceValue",
             "required": false,
             "default": "null",
             "description": "",
@@ -25815,7 +25833,7 @@
           },
           {
             "name": "copyText",
-            "type": "(value: string) => void | Promise<void>",
+            "type": "((value: string) => void | Promise<void>)",
             "required": false,
             "default": "\"callback\"",
             "description": "",
@@ -26185,7 +26203,7 @@
         "props": [
           {
             "name": "modelValue",
-            "type": "string | number | boolean | ChoiceValue[]",
+            "type": "ChoiceValue | ChoiceValue[]",
             "required": false,
             "default": "null",
             "description": "",
@@ -26773,10 +26791,10 @@
           {
             "name": "ariaLabel",
             "type": "string",
-            "required": true,
+            "required": false,
             "default": "—",
-            "description": "",
-            "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
+            "description": "Accessible name; aria-label or aria-labelledby may be used instead.",
+            "summary": "버튼의 접근성 이름입니다. 대신 일반 aria-label 또는 텍스트 요소를 참조하는 aria-labelledby를 전달할 수 있습니다. 이름이 없으면 개발 모드에서 경고합니다.",
             "source": "packages/vue3/src/actions.tsx"
           },
           {
@@ -26784,8 +26802,8 @@
             "type": "string",
             "required": false,
             "default": "—",
-            "description": "Defaults to ariaLabel, like RefreshButton; an empty string disables the hint.",
-            "summary": "메뉴 버튼의 도움말 문구입니다.",
+            "description": "Defaults to the accessible label text; an empty string disables the hint.",
+            "summary": "기본값은 접근성 라벨의 텍스트입니다. aria-labelledby는 참조 요소의 텍스트를 읽습니다. 별도 도움말을 지정하거나 빈 문자열로 툴팁을 끌 수 있습니다.",
             "source": "packages/vue3/src/actions.tsx"
           },
           {
@@ -27279,11 +27297,11 @@
         "props": [
           {
             "name": "modelValue",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": false,
             "default": "\"\"",
-            "description": "",
-            "summary": "소비자가 보유한 입력값입니다. 입력 변경 통지 결과를 이 값에 반영합니다.",
+            "description": "null displays an empty field without updating the parent value.",
+            "summary": "현재 입력값입니다. null은 부모 값을 바꾸거나 update:modelValue를 내보내지 않고 빈 필드로 표시합니다. 직접 입력·날짜 선택은 문자열, 지우기는 빈 문자열을 전달합니다. Input의 숫자 0은 그대로 표시합니다.",
             "source": "packages/vue3/src/input.tsx"
           },
           {
@@ -29396,7 +29414,7 @@
           },
           {
             "name": "onClick",
-            "type": "(event: MouseEvent) => void",
+            "type": "((event: MouseEvent) => void)",
             "required": false,
             "default": "—",
             "description": "Declared as a prop: a row is a button only when the app listens for clicks.",
@@ -35062,7 +35080,7 @@
           },
           {
             "name": "formatValue",
-            "type": "(value: number) => string",
+            "type": "((value: number) => string)",
             "required": false,
             "default": "—",
             "description": "Applied to each thumb's output and aria-valuetext. Does not change numeric values.",
@@ -35794,7 +35812,7 @@
           },
           {
             "name": "formatValue",
-            "type": "(value: number) => string",
+            "type": "((value: number) => string)",
             "required": false,
             "default": "—",
             "description": "Applied to each thumb's output and aria-valuetext. Does not change numeric values.",
@@ -36550,7 +36568,7 @@
         "props": [
           {
             "name": "modelValue",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -37261,7 +37279,7 @@
         "props": [
           {
             "name": "modelValue",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "—",
             "description": "v-model: uppercase #RRGGBB (#RRGGBBAA with alpha), or null for no color. Leave it out to let the picker keep its own value.",
@@ -37277,7 +37295,7 @@
           },
           {
             "name": "defaultValue",
-            "type": "string",
+            "type": "string | null",
             "required": false,
             "default": "null",
             "description": "",

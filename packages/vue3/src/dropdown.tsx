@@ -1,6 +1,7 @@
 import { useKjunMessages } from "./runtime/messages";
-import { cloneVNode, computed, defineComponent, inject, isVNode, mergeProps, onUpdated, provide, ref, shallowRef, watch, nextTick,
+import { cloneVNode, computed, inject, isVNode, mergeProps, onUpdated, provide, ref, shallowRef, watch, nextTick,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { isFocusVisible } from "../../../shared/package-runtime/focus-visible";
 import { KjunButton, KjunIcon } from "./button";
@@ -119,12 +120,16 @@ export const KjunDropdown = defineComponent({
       });
     }, { flush: "post" });
     watch(open, value => { if (!value) { focused.value = null; visible.value = false; stack.value = []; } });
-    // Let Vue restore the original disabled/aria-disabled props when the wrapper is re-enabled.
-    const disabledTrigger = (node: VNodeChild): VNodeChild => Array.isArray(node) ? node.map(disabledTrigger)
-      : isVNode(node) ? cloneVNode(node, { disabled: true, "aria-disabled": "true" }) : node;
+    // Clone on both transitions so compiled slots receive a full props diff. Otherwise their
+    // dynamic-prop list can restore disabled while leaving our injected aria-disabled behind.
+    const renderTrigger = (node: VNodeChild): VNodeChild => Array.isArray(node) ? node.map(renderTrigger)
+      : isVNode(node) ? cloneVNode(node, props.disabled ? { disabled: true, "aria-disabled": "true" } : {}) : node;
     const typeahead = createTypeahead();
     const onMenuKeydown = (event: KeyboardEvent) => {
-      const list = items(menu.value!), current = list.indexOf(document.activeElement as HTMLElement);
+      const element = menu.value;
+      // An item can handle Enter/Space and close or unmount the menu before this event bubbles.
+      if (event.defaultPrevented || !open.value || !element) return;
+      const list = items(element), current = list.indexOf(document.activeElement as HTMLElement);
       const go = (index: number) => { event.preventDefault(); focusItem(list[index]); };
       const submenu = (document.activeElement as HTMLElement | null)?.dataset.submenu;
       if (event.key === "ArrowRight" && submenu) { event.preventDefault(); openSubmenu(submenu); return; }
@@ -148,7 +153,7 @@ export const KjunDropdown = defineComponent({
           onClickCapture: (event: MouseEvent) => { if (!event.defaultPrevented) { byKeyboard = event.detail === 0 && "first"; change(!open.value); } },
           onKeydown: (event: KeyboardEvent) => { if (!event.defaultPrevented && ["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); byKeyboard = event.key === "ArrowUp" ? "last" : "first"; change(true); } },
         })} ref={wrapper}>
-          <span>{props.disabled ? disabledTrigger(slots.trigger?.()) : slots.trigger?.()}</span>
+          <span>{renderTrigger(slots.trigger?.())}</span>
         </div>
         <FloatingPanel open={open.value} onOpenChange={change} trigger={() => wrapper.value} placement={props.placement} panelClass="kjun-dropdown"
           returnFocus={props.returnFocus === undefined ? undefined : () => readFocusReturn(props.returnFocus)}>

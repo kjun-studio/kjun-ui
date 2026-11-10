@@ -1,9 +1,10 @@
 import { useKjunMessages } from "./runtime/messages";
-import { Teleport, defineComponent, onBeforeUnmount, onMounted, provide, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { Teleport, onBeforeUnmount, onMounted, provide, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens, type ButtonVariant, type InputSize } from "@kjun-ui/tokens";
 import { observeFormActions } from "../../../shared/package-runtime/form-actions";
 import { KjunButton, KjunIcon } from "./button";
-import { usePortalTarget } from "./floating-panel";
+import { focusReturnProp, readFocusReturn, usePortalTarget } from "./floating-panel";
 import { useKjunId } from "./input";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { kjunLayerScopeKey, useLayer, type Layer } from "./runtime/layers";
@@ -58,12 +59,13 @@ export const DismissButton = defineComponent({
 });
 
 /** Shared by Modal and Drawer: the window's layer, presence and dismissal wiring. */
-export function useWindowLayer(open: () => boolean, close: () => void, closeOnEsc: () => boolean, exit?: number, afterClose?: () => void) {
+export function useWindowLayer(open: () => boolean, close: () => void, closeOnEsc: () => boolean, exit?: number, afterClose?: () => void,
+  returnFocus?: () => HTMLElement | null | undefined) {
   const reduced = useReducedMotion();
   const motion = usePresence(open, () => reduced.value, exit);
   // Like React useAfterClose: once when the window leaves the screen; a reopen during the exit keeps it present.
   watch(motion.present, (now, before) => { if (before && !now) afterClose?.(); }, { flush: "post" });
-  const layer = useLayer(open, motion.present, "window", () => { if (closeOnEsc()) close(); });
+  const layer = useLayer(open, motion.present, "window", () => { if (closeOnEsc()) close(); }, undefined, returnFocus);
   provide(kjunLayerScopeKey, layer.id);
   // Without a Provider the shared Escape handling is not installed.
   const onKeydown = (event: KeyboardEvent) => { if (event.key === "Escape" && open() && layer.active.value && closeOnEsc()) close(); };
@@ -109,6 +111,8 @@ const kjunModalProps = {
   ariaLabel: { type: String, default: undefined },
   /** Id of the element that describes the dialog (e.g. its message), read after its name. */
   ariaDescribedBy: { type: String, default: undefined },
+  /** Read after the exit finishes; a missing target falls back to the opener or parent window. */
+  returnFocus: focusReturnProp,
 } as const;
 export type KjunModalProps = ExtractPublicPropTypes<typeof kjunModalProps>;
 /** v-model:open. Slots: default (body), header (replaces the title), footer (replaces the actions). Events: close, after-close, cancel, confirm. */
@@ -126,7 +130,8 @@ export const KjunModal = defineComponent({
     const target = usePortalTarget();
     const id = useKjunId("kjun-");
     const close = () => { if (!props.open) return; emit("update:open", false); emit("close"); };
-    const { motion, layer } = useWindowLayer(() => props.open, close, () => props.closeOnEsc, undefined, () => emit("after-close"));
+    const { motion, layer } = useWindowLayer(() => props.open, close, () => props.closeOnEsc, undefined, () => emit("after-close"),
+      () => readFocusReturn(props.returnFocus));
     const overlay = ref<HTMLElement | null>(null), modal = ref<HTMLElement | null>(null), dialog = ref<HTMLElement | null>(null);
     // Keep the page isolated until the exit finishes; only the dialog content becomes inert on close.
     useModalOverlay(overlay, dialog, () => motion.present() && layer.active.value);

@@ -1,5 +1,5 @@
 import { type ExtractPublicPropTypes, type PropType, type VNodeChild, type SlotsType } from "vue";
-import { defineComponent } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import {
   kpiBadgeRoles, kpiCssColor, kpiFormat, kpiKeyAction, kpiPresent, kpiRowNeedsDomain, kpiSummaryLayout, kpiTone,

@@ -1,7 +1,8 @@
 import { useKjunMessages } from "./runtime/messages";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { skeletonLineBox, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
-import { defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
 import { collapseAlert } from "../../../shared/package-runtime/alert-exit";

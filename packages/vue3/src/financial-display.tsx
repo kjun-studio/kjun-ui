@@ -1,6 +1,7 @@
 import { sparklineDash, sparklineGeometry, sparklineTone, type SparkPoint } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { deviationLevel, tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { KjunBadge, type DisplaySize } from "./display";

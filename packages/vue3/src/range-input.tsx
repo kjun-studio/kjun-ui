@@ -1,5 +1,6 @@
 import { useKjunMessageScope, useKjunMessages } from "./runtime/messages";
-import { computed, defineComponent, ref, watch, type PropType } from "vue";
+import { computed, ref, watch, type PropType } from "vue";
+import { defineComponent } from "./runtime/component";
 import { createSliderDomain } from "@kjun-ui/tokens";
 import { useFocusVisible } from "./runtime/focus-visible";
 import {

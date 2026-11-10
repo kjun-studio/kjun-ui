@@ -1,6 +1,7 @@
 import { useKjunMessages } from "./runtime/messages";
-import { Comment, Fragment, Text, computed, defineComponent, onBeforeUnmount, onMounted, onUpdated, ref, watch,
+import { Comment, Fragment, Text, computed, onBeforeUnmount, onMounted, onUpdated, ref, watch,
   type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { carouselKey, carouselTarget, clampSlide, indicatorMode, stepFocus, stopDots, warnCarouselSetup, type CarouselBleed,
   type CarouselGap, type CarouselIndicatorPlacement, type CarouselIndicators, type CarouselSlideSize, type CarouselSnapAlign, type CarouselTitleTag } from "../../../shared/package-runtime/carousel";
 import { createCarouselScroller, type CarouselScroller } from "../../../shared/package-runtime/carousel-scroll";

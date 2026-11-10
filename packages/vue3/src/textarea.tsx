@@ -3,14 +3,16 @@ import { textareaBounds, textareaCanSubmit, textareaCount, textareaGrows, textar
 import { useKjunMessages } from "./runtime/messages";
 import { hasContent } from "./runtime/slots";
 import { growTextarea } from "../../../shared/package-runtime/textarea-grow";
-import { defineComponent, getCurrentInstance, mergeProps, nextTick, onBeforeUnmount, onMounted, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { getCurrentInstance, mergeProps, nextTick, onBeforeUnmount, onMounted, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
 import { useKjunField, useKjunId } from "./input";
 import { css } from "./runtime/style";
 
 const kjunTextareaProps = {
-  modelValue: { type: String, default: "" },
+  /** null displays an empty field without updating the parent value. */
+  modelValue: { type: String as PropType<string | null>, default: "" },
   size: { type: String as PropType<InputSize>, default: "md" },
   error: { type: Boolean, default: false },
   /** Manual resizing (default "none"). A field the user can drag taller keeps that height instead of growing with its text. */
@@ -67,12 +69,13 @@ const KjunTextareaComponent = defineComponent({
     });
     onBeforeUnmount(() => observer?.disconnect());
     return () => {
+      const value = props.modelValue ?? "";
       const spec = tokens.input[props.size], owner = field.value, hasFooter = footer();
       const [minimum, maximum] = bounds(), grows = textareaGrows(minimum, maximum, props.resize);
-      const count = textareaCount(props.modelValue, props.maxLength);
+      const count = textareaCount(value, props.maxLength);
       const invalid = props.error || !!owner?.error || count.over;
-      const canSubmit = textareaCanSubmit({ value: props.modelValue, maxLength: props.maxLength, disabled: props.disabled, readOnly: props.readOnly, submitting: props.submitting });
-      const remaining = props.showCount ? textareaRemaining(props.modelValue, props.maxLength) : null;
+      const canSubmit = textareaCanSubmit({ value, maxLength: props.maxLength, disabled: props.disabled, readOnly: props.readOnly, submitting: props.submitting });
+      const remaining = props.showCount ? textareaRemaining(value, props.maxLength) : null;
       const padding = textareaPadding(props.size, hasFooter);
       const element = (
         <textarea {...mergeProps(attrs, {
@@ -81,13 +84,13 @@ const KjunTextareaComponent = defineComponent({
             if (event.defaultPrevented || !(instance?.vnode.props?.onSubmit) || !textareaSubmitKey(event, props.submitOn)) return;
             // The send key never types a line break, even while there is nothing to send.
             event.preventDefault();
-            if (canSubmit) emit("submit", props.modelValue);
+            if (canSubmit) emit("submit", value);
           },
         })}
           disabled={props.disabled} readonly={props.readOnly}
           ref={textarea}
           id={props.id || owner?.id}
-          value={props.modelValue}
+          value={value}
           rows={props.rows}
           maxlength={props.maxLength}
           required={props.required ?? owner?.required}
@@ -118,7 +121,7 @@ const KjunTextareaComponent = defineComponent({
             {/* Near the limit, what is left is announced as it changes; the count itself is read only on focus. */}
             {props.showCount && <span class="kjun-sr-only" aria-live="polite">{remaining == null ? "" : m.value.charactersLeft(remaining)}</span>}
             {props.submitLabel != null && <KjunButton class="kjun-textarea-submit" size="sm" prefixIcon="arrow-up" ariaLabel={props.submitLabel} loading={props.submitting} disabled={!canSubmit && !props.submitting}
-              onClick={() => { if (canSubmit) emit("submit", props.modelValue); }} />}
+              onClick={() => { if (canSubmit) emit("submit", value); }} />}
           </div>
         </div>
       );

@@ -1,4 +1,5 @@
-import { defineComponent, onMounted, onUpdated, ref, watch, watchEffect, type CSSProperties, type PropType } from "vue";
+import { onMounted, onUpdated, ref, watch, watchEffect, type CSSProperties, type PropType } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
 import { channelKey, colorAreaKey, trackFraction } from "../../../shared/package-runtime/color-picker";

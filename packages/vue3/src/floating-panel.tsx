@@ -1,4 +1,5 @@
-import { Teleport, defineComponent, inject, onBeforeUnmount, onUpdated, provide, reactive, ref, unref, watch, type PropType, type Ref } from "vue";
+import { Teleport, inject, onBeforeUnmount, onUpdated, provide, reactive, ref, unref, watch, type PropType, type Ref } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { computeFloatingPosition, type Placement } from "../../../shared/package-runtime/floating-position";
 import { kjunPortalKey } from "./runtime/keys";

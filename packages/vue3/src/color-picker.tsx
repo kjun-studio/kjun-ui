@@ -1,4 +1,5 @@
-import { computed, defineComponent, onBeforeUnmount, onBeforeUpdate, onMounted, ref, useId, watch, watchEffect, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { computed, onBeforeUnmount, onBeforeUpdate, onMounted, ref, useId, watch, watchEffect, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useKjunMessageScope } from "./runtime/messages";
 import { normalizeColor } from "../../../shared/package-runtime/color";

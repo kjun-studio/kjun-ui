@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, ref, type ExtractPublicPropTypes, type PropType } from "vue";
+import { ref, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent } from "./runtime/component";
 import { chipSize } from "../../../shared/package-runtime/chip-size";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";

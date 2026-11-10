@@ -1,5 +1,6 @@
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
-import { defineComponent, onMounted, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { onMounted, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import type { CardElevation, CardPadding, CardRadius, CardSurface } from "@kjun-ui/tokens";
 import { hasContent } from "./runtime/slots";
 

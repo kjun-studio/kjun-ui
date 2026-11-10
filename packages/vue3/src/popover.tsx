@@ -1,7 +1,8 @@
 import { anchorStyle, followAnchor, type AnchorSource } from "../../../shared/package-runtime/anchor-rect";
 import { useKjunMessages } from "./runtime/messages";
-import { Teleport, cloneVNode, computed, defineComponent, isVNode, mergeProps, onBeforeUnmount, onMounted, onUpdated, reactive, ref, unref, watch,
+import { Teleport, cloneVNode, computed, isVNode, mergeProps, onBeforeUnmount, onMounted, onUpdated, reactive, ref, unref, watch,
   type ExtractPublicPropTypes, type PropType, type Ref, type VNode, type SlotsType, type StyleValue, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens } from "@kjun-ui/tokens";
 import { computeFloatingPosition } from "../../../shared/package-runtime/floating-position";
@@ -234,9 +235,10 @@ export const KjunTooltip = defineComponent({
     const handlers = {
       onMouseenter: () => show(false),
       onMouseleave: hide,
-      // Pointer focus does not open it: react-aria shows a tooltip on focus only for keyboard users.
-      onFocus: () => { if (isFocusVisible()) show(true); },
-      onBlur: hide,
+      // A layer returning keyboard focus is not a new request for its trigger's tooltip.
+      onFocus: (event: FocusEvent) => { if (isFocusVisible() && !layer.state.isRestoredFocus(event.target as HTMLElement)) show(true); },
+      // Keep suppression for this focus visit only; a later Tab visit may show the hint again.
+      onBlur: (event: FocusEvent) => { layer.state.clearRestoredFocus(event.target as HTMLElement); hide(); },
       onPointerdown: hide,
     };
     // One callback for the component's life: a new function each render makes Vue call the old one with null,

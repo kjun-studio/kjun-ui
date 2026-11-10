@@ -1,4 +1,5 @@
-import { defineComponent, onBeforeUnmount, onMounted, ref, watch, type SlotsType, type VNodeChild } from "vue";
+import { onBeforeUnmount, onMounted, ref, watch, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { useReducedMotion } from "./runtime/presence";
 

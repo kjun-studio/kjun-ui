@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
-import { computed, defineComponent, ref, watch, type ExtractPublicPropTypes, type InjectionKey, type PropType, type Ref } from "vue";
+import { computed, ref, watch, type ExtractPublicPropTypes, type InjectionKey, type PropType, type Ref } from "vue";
+import { defineComponent } from "./runtime/component";
 import { createNumberDomain, quantityKeyAction, tokens, type InputSize } from "@kjun-ui/tokens";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
 import { KjunButton } from "./button";

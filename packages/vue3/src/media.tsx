@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { css } from "./runtime/style";

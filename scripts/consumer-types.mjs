@@ -31,9 +31,10 @@ export async function verifyConsumerTypes(root, directory) {
     if (format === 'esm') {
       await writeFile(target + '/table.vue', await readFile(resolve(root, 'tests/fixtures/consumer-table.vue'), 'utf8'));
       await writeFile(target + '/table.tsx', await readFile(resolve(root, 'tests/fixtures/consumer-table.tsx'), 'utf8'));
+      await writeFile(target + '/prop-contracts.vue', await readFile(resolve(root, 'tests/fixtures/consumer-prop-contracts.vue'), 'utf8'));
       await writeFile(target + '/tsconfig.json', JSON.stringify({
         compilerOptions: { strict: true, skipLibCheck: true, target: 'ES2018', module: 'ESNext', moduleResolution: 'Bundler', jsx: 'preserve', jsxImportSource: 'vue', lib: ['ES2020', 'DOM', 'DOM.Iterable'], noEmit: true },
-        vueCompilerOptions: { strictTemplates: true }, files: ['table.vue', 'table.tsx'],
+        vueCompilerOptions: { strictTemplates: true }, files: ['table.vue', 'table.tsx', 'prop-contracts.vue'],
       }));
       execFileSync(resolve(root, 'node_modules/.bin/vue-tsc'), ['--project', 'tsconfig.json'], { cwd: target, stdio: 'inherit' });
       console.log('Packed Vue template and TSX row inference verified');

@@ -3,6 +3,7 @@ import { emitDeclarations, finalizeDeclarations } from "./declarations.mjs";
 import { build } from "esbuild";
 import { beginPackageBuild, finishPackageBuild, packageNames } from "./package-state.mjs";
 import { responsiveCss } from "./responsive-css.mjs";
+import { generatePropValues } from "./prop-values.mjs";
 import {
   readFile,
   writeFile,
@@ -17,6 +18,7 @@ const require = createRequire(import.meta.url);
 const postcss = require("postcss");
 const root = resolve(import.meta.dirname, "..");
 process.chdir(root);
+await generatePropValues();
 const sourceFingerprint = await beginPackageBuild();
 // Invalidate certification before removing any generated output.
 for (const name of packageNames) {
@@ -41,7 +43,9 @@ for (const name of ["tokens", "vue3", "react", "native"]) {
       // vue/jsx-runtime is for type checking only and would pass children as a prop.
       ...(name === "vue3"
         // tsconfigRaw keeps the type-only `vue` path mapping out of the bundle: the package imports `vue`.
-        ? { jsx: "transform", jsxFactory: "h", jsxFragment: "Fragment", inject: ["packages/vue3/src/runtime/jsx.ts"], tsconfigRaw: {} }
+        ? { jsx: "transform", jsxFactory: "h", jsxFragment: "Fragment", inject: ["packages/vue3/src/runtime/jsx.ts"], tsconfigRaw: {},
+            // The consumer bundler decides development/production; do not bake development checks into the package.
+            define: { "process.env.NODE_ENV": "process.env.NODE_ENV" } }
         : { jsx: "automatic" }),
       packages: "external",
       banner:

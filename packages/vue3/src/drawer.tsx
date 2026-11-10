@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
-import { Teleport, defineComponent, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { Teleport, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { drawerOverlayVars } from "../../../shared/package-runtime/drawer-geometry";
 import { KjunButton, KjunIcon } from "./button";

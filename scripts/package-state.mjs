@@ -8,7 +8,7 @@ const root = resolve(import.meta.dirname, '..');
 export const buildInputs = [
   'package.json', 'package-lock.json', 'scripts/build.mjs', 'scripts/icon-build.mjs', 'scripts/vue3-api.mjs', 'scripts/vue3-runtime.mjs',
   'scripts/package-state.mjs', 'scripts/tokens.mjs', 'scripts/token-model.mjs', 'scripts/token-validation.mjs', 'scripts/token-aliases.mjs', 'scripts/responsive-css.mjs', 'scripts/roles.mjs', 'scripts/api.mjs',
-  'scripts/declarations.mjs', 'shared/package-runtime',
+  'scripts/declarations.mjs', 'scripts/prop-values.mjs', 'shared/package-runtime',
   'shared/web-style-sources.json', 'licenses/Tabler-LICENSE', 'LICENSE',
   ...packageNames.flatMap(name => [`packages/${name}/src`, `packages/${name}/package.json`, `packages/${name}/README.md`]),
 ];

@@ -13,7 +13,8 @@ export async function openFixture(
   query = "",
   family = "styles",
   mode = "production",
-  standalone = false
+  standalone = false,
+  externalScript = false
 ) {
   const cacheKey = family + ":" + platform + ":" + mode + ":" + standalone;
   let fixture = cache.get(cacheKey);
@@ -85,6 +86,10 @@ export async function openFixture(
     cache.set(cacheKey, fixture);
   }
   const { css, script } = fixture;
+  // Compiler development bundles contain HTML script/comment tokens. Serve them as JavaScript
+  // instead of embedding them in an HTML parser's script-data state.
+  if (externalScript) await page.route("**/__kjun-fixture.js", route =>
+    route.fulfill({ contentType: "application/javascript", body: script }));
   await page.route("**/__style-contract**", (route) =>
     route.fulfill({
       contentType: "text/html; charset=utf-8",
@@ -92,9 +97,9 @@ export async function openFixture(
         "<!doctype html><html><head><style>" +
         css +
         "</style></head><body>" +
-        '<div id="root"></div><script>' +
-        script.replaceAll("</script", "<\\/script") +
-        "</script></body></html>",
+        '<div id="root"></div>' + (externalScript ? '<script src="/__kjun-fixture.js"></script>' :
+          '<script>' + script.replaceAll("</script", "<\\/script") + '</script>') +
+        "</body></html>",
     })
   );
   await page.goto("/__style-contract" + query);

@@ -38,6 +38,8 @@
     "thumbnails:check": "node scripts/workflow-run.mjs thumbnails:check sh -c 'node scripts/thumbnails.mjs --check \"$@\"' --",
     "examples:generate": "node scripts/workflow-run.mjs examples:generate sh -c 'node scripts/examples.mjs \"$@\"' --",
     "examples:verify": "node scripts/workflow-run.mjs examples:verify sh -c 'node scripts/example-consumers.mjs && node scripts/example-consumers.mjs --usage \"$@\"' --",
+    "props:generate": "node scripts/workflow-run.mjs props:generate node scripts/prop-values.mjs",
+    "props:check": "node scripts/workflow-run.mjs props:check node scripts/prop-values.mjs --check",
     "api:generate": "node scripts/workflow-run.mjs api:generate sh -c 'node scripts/api-reference.mjs \"$@\"' --",
     "api:check": "node scripts/workflow-run.mjs api:check sh -c 'node scripts/api-reference.mjs --check \"$@\"' --",
     "guides:generate": "node scripts/workflow-run.mjs guides:generate sh -c 'node scripts/visual-guides.mjs \"$@\"' --",

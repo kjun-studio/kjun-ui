@@ -1,5 +1,6 @@
 import type { KjunMessages } from "../../../shared/package-runtime/messages";
-import { Fragment, defineComponent, type PropType, type VNodeChild } from "vue";
+import { Fragment, type PropType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
 import type { TableCardSection, TableColumn } from "./table-types";

@@ -1,4 +1,5 @@
-import { computed, defineComponent, provide, type PropType } from "vue";
+import { computed, provide, type PropType } from "vue";
+import { defineComponent } from "./component";
 import type { ButtonSize } from "@kjun-ui/tokens";
 import { kjunActionSizeKey } from "./keys";
 

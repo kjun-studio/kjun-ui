@@ -1,5 +1,5 @@
 import { getCurrentInstance, type ExtractPublicPropTypes, type PropType, type VNodeChild, type SlotsType } from "vue";
-import { defineComponent } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import {
   KPI_MASK, KPI_MISSING, kpiCssColor, kpiCssTint, kpiDelta, kpiDeltaIcon, kpiDeltaValue, kpiFormat, kpiHeroNeedsDomain,

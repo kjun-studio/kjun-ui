@@ -1,5 +1,6 @@
 import { useKjunMessageScope, useKjunMessages } from "./runtime/messages";
-import { defineComponent, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, type AllowedComponentProps, type ComponentCustomProps, type ExtractPublicPropTypes, type PropType, type VNodeChild, type VNodeProps, type SlotsType } from "vue";
+import { getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, type AllowedComponentProps, type ComponentCustomProps, type ExtractPublicPropTypes, type PropType, type VNodeChild, type VNodeProps, type SlotsType } from "vue";
+import { defineComponent } from "./runtime/component";
 import { isComposingKey, nextTableSort, tokens, type TableSort } from "@kjun-ui/tokens";
 import { getValue, sortTableRows, stickyHeaderStuck, tableRowIndex, tableRowKey, tableRowLabel, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
 import { columnFormat, tablePresentation, tableSortFromValue, tableSortOptions, tableSortValue } from "../../../shared/package-runtime/table-presentation";

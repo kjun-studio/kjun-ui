@@ -1,7 +1,8 @@
 import { useKjunMessageScope } from "./runtime/messages";
 import { periodLeads, timeSegments, type HourCycle } from "../../../shared/package-runtime/time-segments";
 import { warnPicker } from "../../../shared/package-runtime/calendar";
-import { computed, defineComponent, provide, ref, useId, watch, type ExtractPublicPropTypes, type PropType } from "vue";
+import { computed, provide, ref, useId, watch, type ExtractPublicPropTypes, type PropType } from "vue";
+import { defineComponent } from "./runtime/component";
 import { createTimeDomain, tokens, type InputSize, type TimePrecision } from "@kjun-ui/tokens";
 import { KjunButton, KjunIcon } from "./button";
 import { kjunFieldKey, useKjunField } from "./input";

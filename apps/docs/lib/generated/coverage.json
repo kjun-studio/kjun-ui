@@ -1445,7 +1445,7 @@
       "title": "Input",
       "docs": "/components/input",
       "category": "inputs",
-      "differences": "Vue v-model·readOnly·HTML 입력 속성, React onValueChange·readOnly, Native onChangeText·TextInput 속성을 구분합니다. Native의 키보드 종류만으로 값 검증을 보장하지 않습니다.",
+      "differences": "Vue v-model은 null을 빈 필드로 표시하고 숫자 0은 유지합니다. 입력·지우기 이벤트는 문자열을 전달합니다. Vue readOnly·HTML 입력 속성, React onValueChange·readOnly, Native onChangeText·TextInput 속성을 구분합니다. Native의 키보드 종류만으로 값 검증을 보장하지 않습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -1879,7 +1879,7 @@
       "title": "Modal",
       "docs": "/components/modal",
       "category": "layout",
-      "differences": "Vue v-model:open과 React·Native open·onOpenChange를 사용합니다. 웹은 포커스 제한·복귀, Native는 Modal·뒤로 가기를 처리하며 HTML 폼 제출은 별도로 연결합니다.",
+      "differences": "Vue v-model:open과 React·Native open·onOpenChange를 사용합니다. React·Vue는 returnFocus에 요소·ref·함수를 전달해 닫힌 뒤 돌아갈 현재 버튼을 지정할 수 있습니다. Native는 Modal·뒤로 가기를 처리하며 HTML 폼 제출은 별도로 연결합니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

@@ -201,7 +201,8 @@
       "confirmVariant",
       "footerSize",
       "ariaLabel",
-      "ariaDescribedBy"
+      "ariaDescribedBy",
+      "returnFocus"
     ],
     "react": [
       "open",
@@ -231,7 +232,8 @@
       "children",
       "ariaLabel",
       "ariaDescribedBy",
-      "onAfterClose"
+      "onAfterClose",
+      "returnFocus"
     ],
     "native": [
       "open",

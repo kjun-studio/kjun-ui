@@ -54,6 +54,7 @@ export function createLayerState() {
   }
   return {
     entries, topWindow, top, topPopup, windowOf,
+    markRestoredFocus(target: FocusTarget) { restoredFocus.add(target); },
     isRestoredFocus(target?: FocusTarget | null) { return !!target && restoredFocus.has(target); },
     clearRestoredFocus(target?: FocusTarget | null) { if (target) restoredFocus.delete(target); },
     markClosing(id: string) {
@@ -67,12 +68,15 @@ export function createLayerState() {
     },
     subscribe(listener: () => void) { listeners.add(listener); return () => { listeners.delete(listener); }; },
     snapshot: () => revision,
-    open(id: string, kind: LayerKind, parent: string | undefined, dismissCallback: () => void, returnTarget?: FocusTarget | null) {
+    open(id: string, kind: LayerKind, parent: string | undefined, dismissCallback: () => void, returnTarget?: FocusTarget | null, defaultFocus = false) {
       const existing = entries.get(id);
       if (existing && !existing.closing) { existing.dismiss = dismissCallback; return existing; }
       const previous = topWindow();
       const popup = [...entries.values()].filter(layer => layer.kind !== 'window' && active(layer)).at(-1);
-      const recentTarget = recentPopup && returnTarget === recentPopup.focused ? recentPopup.target : undefined;
+      // A synchronously removed menu can leave DOM focus on body before Vue mounts the window.
+      // Only inherit that menu's opener in the same launch event, without overriding another control.
+      const lostMenuFocus = defaultFocus && recentPopup?.focused?.isConnected === false;
+      const recentTarget = recentPopup && (returnTarget === recentPopup.focused || lostMenuFocus) ? recentPopup.target : undefined;
       const layer: LayerEntry = { id, kind, parent,
         owner: existing ? existing.owner : windowOf(parent) ?? (kind === 'window' ? previous?.id : undefined),
         order: ++sequence, windowOrder: kind === 'window' ? ++windowSequence : 0, blocked: false, closing: false, closeRequested: false, dismiss: dismissCallback,

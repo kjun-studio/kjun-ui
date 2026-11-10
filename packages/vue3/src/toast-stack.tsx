@@ -3,7 +3,8 @@ import { toastPeekDepth, toastPresentation, toastStackLayout } from "../../../sh
 import { attachToastStack, restoreToastFocus } from "../../../shared/package-runtime/toast-swipe";
 import { createToastPresence, type PresentedToast } from "../../../shared/package-runtime/toast-presence";
 import { createToastLayout } from "../../../shared/package-runtime/toast-layout";
-import { computed, defineComponent, onBeforeUnmount, onMounted, onUpdated, ref, shallowRef, watch, type PropType } from "vue";
+import { computed, onBeforeUnmount, onMounted, onUpdated, ref, shallowRef, watch, type PropType } from "vue";
+import { defineComponent } from "./runtime/component";
 import { createFeedbackController, tokens, type ToastItem } from "@kjun-ui/tokens";
 import { useLayerContext } from "./runtime/layers";
 import { useReducedMotion } from "./runtime/presence";

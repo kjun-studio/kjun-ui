@@ -5,6 +5,7 @@
 ## 데이터와 생성
 
 - `scripts/api.mjs`의 기존 `api.json`은 공개 prop 타입·필수 여부의 기반이다. 이 기존 단계는 Vue 선언 생성도 담당한다.
+- `scripts/prop-values.mjs`는 Vue 공개 prop 타입의 유한한 문자열·숫자 선택지를 `kjunPropValues`로 생성한다. 예: `kjunPropValues.KjunButton.size`, `kjunPropValues.KjunInput.size`. 개발 모드 validator도 같은 목록을 사용한다. `build:packages`가 자동 갱신하며 `props:check`로 타입과의 일치를 검사한다. 임의 문자열·숫자, boolean 전용 prop, 중첩 객체 필드·함수·HTML 속성은 목록에서 제외하고 null·생략 허용 여부는 prop 타입을 따른다.
 - `scripts/api-reference-source.mjs`는 현재 패키지 소스에서 React·Native의 확인 가능한 리터럴 기본값과 Vue 이벤트·슬롯을 읽는다. props를 받는 내부 모델 함수의 기본값, Vue mixin·조건부 이벤트명·동적/전달 슬롯도 포함한다.
 - `shared/api-reference/`의 분류별 JSON에는 검토한 컴포넌트·플랫폼·prop 이름을 명시한다. `terms.json`은 같은 목적의 항목에 재사용할 짧은 설명이며, 같은 이름이라도 의미가 다른 것은 `overrides.mjs`에서 구분한다.
 - 핵심 문서의 `.mjs` 메타데이터는 적용 조건·발생 시점·인자·반환값·상태 책임·중첩 데이터를 관리한다. `contracts.mjs`의 명시적 재사용과 플랫폼별 차이를 함께 검토한다.
@@ -33,6 +34,8 @@ docker exec -w /workspace kjun_ui_dev npm run build
 
 ## 확인한 계약 차이
 
+- Vue IconToggle은 `ariaLabel` 대신 일반 `aria-label` 또는 `aria-labelledby`로 이름을 붙일 수 있다. 이름은 계속 필요하며 없으면 개발 경고를 낸다. 기본 Tooltip은 이름의 텍스트를 사용하고 명시한 `tooltip`이 우선한다.
+- Vue Input·Textarea·DatePicker의 `modelValue`는 null을 허용한다. 빈 필드로 표시하되 부모 값은 바꾸지 않으며, 입력·날짜 선택·지우기는 종전처럼 문자열을 내보낸다. Input의 숫자 0은 빈 값으로 바꾸지 않는다.
 - Select는 세 플랫폼 모두 boolean `open`을 제어형으로 사용하고, 생략·`undefined`는 내부 상태를 사용한다. 부모가 닫힘 요청을 거절하면 검색어와 팝업을 유지하며 실제 닫힘에서 검색어·더 보기 제한을 초기화한다. Vue에서 `open`을 초기값처럼 쓰던 경우 prop을 생략하거나 `:open.sync`로 연결한다. 지우기는 단일 `null`, 복수 `[]`를 전달한다. `searchable`·`clearable` 기본값은 false다.
 - Select 옵션은 필터링 전에 값과 타입으로 식별한다. 숫자 `0`과 문자열 `"0"`을 구분하며 키가 없으면 원본 인덱스를 사용한다. 옵션 내부 상태를 안정적으로 유지하려면 고유한 `valueKey`가 필요하다. React·Vue 검색창은 조합 중 방향키·Enter·Escape의 기본 동작과 포커스를 보존한다.
 - Tabs의 빈 값은 동적으로 도착하거나 활성화된 첫 후보의 선택을 요청한다. 같은 빈 값 기간의 같은 후보는 한 번만 요청한다. 초기 선택도 Vue `input → change`, React·Native `onValueChange → onChange` 순서를 따른다.
@@ -42,6 +45,7 @@ docker exec -w /workspace kjun_ui_dev npm run build
 - Table 선택은 행 객체 배열, 확장은 키 배열이다. 정렬 해제는 `{ key: '', order: 'asc' }`이며 검색은 data를 필터링하지 않는다. 세 플랫폼 모두 `expandedRows=[]`는 제어형 전체 닫힘이고, prop을 생략하면 내부 상태를 사용한다. 기존 Vue 코드에서 빈 배열을 전달한 채 내부 토글에 의존했다면 prop을 생략하거나 변경 이벤트의 배열을 반영해야 한다. `cell-*`와 전달 슬롯을 `default`로 오인하지 않는다.
 - Table 그룹 펼침은 expandedGroups에 groupBy 필드의 원래 값 배열을 연결한다. []는 모두 닫힘, 생략은 내부 관리이며 초기에는 모두 펼친다. Vue v-model:expandedGroups와 React·Native onExpandedGroupsChange로 연결하며 표·카드·list가 같은 상태를 사용한다. expandedRows는 행 상세 확장만 제어한다.
 - React Modal은 명시적 ariaLabel, 표시 제목, 기본 이름 순서로 접근성 이름을 정한다. React Dropdown은 실제 트리거 버튼에 메뉴·펼침 상태를 연결하며, 사용자 정의 버튼은 받은 id·aria 속성과 disabled를 DOM 버튼에 전달해야 한다.
+- React·Vue Modal의 returnFocus는 Popover처럼 요소·ref·함수를 받는다. 닫힘 애니메이션이 끝날 때 최신 대상을 읽으므로 반응형 헤더에서 버튼이 교체되면 ref나 `() => document.getElementById('current-menu')`를 전달한다. 대상이 없거나 제거되면 기존 열기 버튼, 상위 창 순서로 복귀하며 Native에는 이 DOM API를 제공하지 않는다.
 - 세 플랫폼 DataState는 생략한 resultKey와 null을 구분한다. 현재 조건과 다른 결과 키는 해당 조건의 성공 결과가 아니다. 요청 취소·응답 커밋은 소비자 책임이다. Vue 오류 슬롯의 `{ error, retry }`와 React·Native의 ReactNode인 errorContent를 구분한다.
 - FormGroup은 값·비활성 상태를 소유하지 않는다. 필수 표시가 제출 검증을 대신하지 않으며 error가 hint보다 우선한다. Native 접근성 연결을 HTML label 클릭과 동일하게 설명하지 않는다.
 - 피드백은 공개 Provider 서비스와 tokens의 대기열 계약을 기준으로 한다. 내부 원본 모달의 API로 설명하지 않는다. Confirm 실패는 reject, 취소·해제는 false, Prompt 취소·해제는 null이다.

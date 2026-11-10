@@ -2,7 +2,8 @@ import { webSafeBottom, webSafeTop } from "../../../shared/package-runtime/safe-
 import { useKjunMessages } from "./runtime/messages";
 import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
 import type { KjunMessages } from "../../../shared/package-runtime/messages";
-import { defineComponent, provide, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { provide, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { kjunTopNavigationKey } from "./runtime/keys";

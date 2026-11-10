@@ -1,6 +1,7 @@
 import { useKjunMessages } from "./runtime/messages";
-import { computed, defineComponent, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref,
+import { computed, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens, type ButtonSize, type InputSize } from "@kjun-ui/tokens";
 import { selectionTypeStyle, typeStyle } from "../../../shared/package-runtime/typography";
 import { selectionIndicator } from "../../../shared/package-runtime/selection-indicator";

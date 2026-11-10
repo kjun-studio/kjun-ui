@@ -61,6 +61,17 @@ const retiredSpacing = tokens.spacing;
 import * as VueComponents from '@kjun-ui/vue3';
 const vueButtonProps: VueComponents.KjunButtonProps={size:'xl',variant:'danger-ghost'};
 const vueInputProps: VueComponents.KjunInputProps={size:'md',modelValue:'',errorMessage:''};
+declare const focusElement: HTMLButtonElement;
+declare const vueFocusRef: import('vue').Ref<HTMLElement | null>;
+declare const reactFocusRef: React.RefObject<HTMLElement | null>;
+const vueModalTargets: VueComponents.KjunModalProps[] = [
+  {open:false,returnFocus:focusElement}, {open:false,returnFocus:vueFocusRef},
+  {open:false,returnFocus:()=>document.getElementById('current-menu')},
+];
+const reactModalTargets = [focusElement,reactFocusRef,()=>document.getElementById('current-menu')]
+  .map(returnFocus=><KjunModal open={false} onOpenChange={()=>{}} returnFocus={returnFocus}>Body</KjunModal>);
+// @ts-expect-error A selector string is not a focus target; resolve the current element in a callback.
+const invalidModalTarget: VueComponents.KjunModalProps={open:false,returnFocus:'#menu'};
 // @ts-expect-error Vue's declared sizes follow the shared button sizes.
 const invalidVueSize: VueComponents.KjunButtonProps={size:'xxl'};
 // @ts-expect-error Input has the three-step source size contract.

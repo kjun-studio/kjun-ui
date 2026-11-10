@@ -25,11 +25,11 @@ const componentGroups = {
   accordion: [...files('accordion-design', 'controlled-state', 'component-motion', 'expanded', 'accessibility-components'), ...visuals],
   navigation: [...files('top-navigation-design', 'trail', 'bottom-navigation-design', 'floating-navigation-design', 'bottom-action-bar-design', 'accessibility-components'), ...visuals],
   feedback: [...files('feedback-dialog', 'feedback-input', 'feedback-motion', 'copy-button-feedback', 'chip-toast-tokens', 'toast-stack', 'component-motion', 'native-layout'), ...layers, ...contracts],
-  modal: [...layers, ...files('quantity', 'feedback-dialog', 'feedback-input', 'form-actions', 'component-motion'), ...contracts],
+  modal: [...layers, ...files('modal-return-focus', 'quantity', 'feedback-dialog', 'feedback-input', 'form-actions', 'component-motion'), ...contracts],
   drawer: [...layers, ...files('component-motion', 'size-contracts', 'native-layout')],
   popover: [...layers, ...files('popover-design', 'expanded', 'react-popover-trigger')],
-  dropdown: [...layers, ...files('dropdown-design', 'dropdown-structure', 'menu-button', 'controlled-state', 'expanded')],
-  tooltip: [...layers, ...files('expanded', 'size-contracts', 'accessibility-controls', 'refresh-button', 'menu-button', 'tooltip-lifecycle')],
+  dropdown: [...layers, ...files('dropdown-design', 'dropdown-structure', 'dropdown-regressions', 'menu-button', 'controlled-state', 'expanded')],
+  tooltip: [...layers, ...files('expanded', 'size-contracts', 'accessibility-controls', 'refresh-button', 'menu-button', 'tooltip-lifecycle', 'dropdown-regressions')],
   icons: [...files('icon-render', 'icon-registry', 'icon-toggle', 'menu-button', 'button-design'), ...contracts, ...visuals],
   typography: files('typography', 'layout-primitives', 'color-font', 'geometry-tokens', 'card-layout'),
   i18n: files('i18n'),
@@ -58,6 +58,7 @@ const componentGroups = {
 };
 for (const scope of ['select', 'popover', 'tooltip', 'button']) componentGroups[scope].push(...files('adoption-attrs'));
 componentGroups.dropdown.push(...files('adoption-menu'));
+for (const scope of ['input', 'button', 'icons', 'date-picker']) componentGroups[scope].push(...files('prop-contracts'));
 componentGroups.kpi.push(...files('adoption-values'));
 componentGroups.tabs.push(...files('adoption-tabs'));
 componentGroups.table.push(...files('adoption-table'));

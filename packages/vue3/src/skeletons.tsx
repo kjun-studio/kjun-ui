@@ -1,6 +1,7 @@
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, inject, type ExtractPublicPropTypes, type PropType } from "vue";
+import { inject, type ExtractPublicPropTypes, type PropType } from "vue";
 import { kjunListShapeKey } from "./runtime/list-context";
+import { defineComponent } from "./runtime/component";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { KjunSkeleton, KjunSpinner } from "./display";
 import { useSkeletonPhase } from "./skeleton-phase";

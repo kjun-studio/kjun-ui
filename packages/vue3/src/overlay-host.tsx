@@ -1,4 +1,5 @@
-import { computed, defineComponent, inject, watch, onBeforeUnmount, type InjectionKey, type Ref, type VNodeChild } from "vue";
+import { computed, inject, watch, onBeforeUnmount, type InjectionKey, type Ref, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { useKjunId } from "./input";
 import { kjunLayerScopeKey, useLayerContext } from "./runtime/layers";
 

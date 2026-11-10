@@ -1,8 +1,9 @@
 import type { ToastPlacement } from "../../../shared/package-runtime/toast-placement";
 import { ToastStack, usePresentedToasts } from "./toast-stack";
 import { useKjunMessages } from "./runtime/messages";
-import { computed, defineComponent, inject, nextTick, onBeforeUnmount, provide, reactive, ref, shallowRef, watch,
+import { computed, inject, nextTick, onBeforeUnmount, provide, reactive, ref, shallowRef, watch,
   type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import { createFeedbackController, feedbackControllerOf, tokens, type ConfirmOptions, type FeedbackRequest, type KjunFeedback, type PromptOptions } from "@kjun-ui/tokens";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunInput, useKjunId } from "./input";

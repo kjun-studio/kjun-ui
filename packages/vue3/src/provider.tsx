@@ -1,4 +1,5 @@
-import { defineComponent, inject, onBeforeUnmount, onMounted, provide, shallowRef, watch, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { inject, onBeforeUnmount, onMounted, provide, shallowRef, watch, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { defineComponent } from "./runtime/component";
 import type { KjunIconRegistry } from "@kjun-ui/icons";
 import { createPortalScope } from "../../../shared/package-runtime/portal-scope";
 import { safeAreaVars, type KjunSafeArea } from "../../../shared/package-runtime/safe-area";

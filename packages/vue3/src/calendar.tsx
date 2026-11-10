@@ -5,7 +5,8 @@ import {
   orderWeekdays, parseDate, pickMonth, pickYear, rangeRole, stepDisabled, stepTarget, todayIso, toIsoDate, yearChoices, yearGrid,
   yearOutside, type CalendarMode, type DateRange, type DateUnavailable, type WeekStart,
 } from "../../../shared/package-runtime/calendar";
-import { defineComponent, nextTick, onMounted, ref, useId, watch, type PropType } from "vue";
+import { nextTick, onMounted, ref, useId, watch, type PropType } from "vue";
+import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunButton, KjunIcon } from "./button";
 

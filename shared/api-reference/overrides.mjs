@@ -102,6 +102,13 @@ for (const platform of ["react", "native"]) set("Combobox", {
 set("Input", {
   onEnter: "조합 중이 아니고 onKeyDown에서 preventDefault로 소비하지 않은 Enter에 한 번 호출합니다. 한글 조합 확정은 제출로 처리하지 않습니다.",
 }, "react");
+set("Input Textarea DatePicker", {
+  value: "현재 입력값입니다. null은 부모 값을 바꾸거나 update:modelValue를 내보내지 않고 빈 필드로 표시합니다. 직접 입력·날짜 선택은 문자열, 지우기는 빈 문자열을 전달합니다. Input의 숫자 0은 그대로 표시합니다.",
+}, "vue3");
+set("IconToggle", {
+  ariaLabel: "버튼의 접근성 이름입니다. 대신 일반 aria-label 또는 텍스트 요소를 참조하는 aria-labelledby를 전달할 수 있습니다. 이름이 없으면 개발 모드에서 경고합니다.",
+  tooltip: "기본값은 접근성 라벨의 텍스트입니다. aria-labelledby는 참조 요소의 텍스트를 읽습니다. 별도 도움말을 지정하거나 빈 문자열로 툴팁을 끌 수 있습니다.",
+}, "vue3");
 set("ButtonGroup RadioGroup", {
   value: "현재 선택한 옵션의 값입니다. 변경 결과를 소비자 상태에 반영합니다.",
 });
@@ -248,6 +255,7 @@ set("SearchInput", {
 });
 set("Modal", {
   ariaLabel: "대화상자의 접근성 이름입니다. 명시하면 시각적 제목보다 우선합니다. 헤더를 숨겨도 이름 또는 title을 유지하며, 둘 다 없으면 '대화상자'를 사용합니다.",
+  returnFocus: "닫힘 애니메이션이 끝난 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받으며 닫힐 때 최신 값을 읽습니다. 반응형 헤더처럼 버튼이 교체되면 ref나 함수로 현재 버튼을 지정하세요. 대상이 없거나 제거되면 원래 열기 버튼, 남아 있는 상위 창 순서로 복귀합니다. React·Vue 웹 전용입니다.",
 });
 set("Dropdown", {
   trigger: "메뉴를 여는 단일 버튼 요소입니다. id·aria-haspopup·aria-expanded·aria-controls와 disabled를 실제 버튼에 전달합니다. 사용자 정의 버튼은 받은 속성을 DOM 버튼에 전달해야 합니다. KjunTooltip으로 감싼 버튼도 지원합니다.",

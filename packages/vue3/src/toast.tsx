@@ -1,7 +1,8 @@
 import { toastPresentation } from "../../../shared/package-runtime/toast-presentation";
 import { attachToastSwipe } from "../../../shared/package-runtime/toast-swipe";
 import { useKjunMessages } from "./runtime/messages";
-import { defineComponent, onBeforeUnmount, onMounted, ref, type PropType } from "vue";
+import { onBeforeUnmount, onMounted, ref, type PropType } from "vue";
+import { defineComponent } from "./runtime/component";
 import { createFeedbackController, type ToastItem } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 

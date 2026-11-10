@@ -5,6 +5,27 @@ const loadingKpi: V.KpiRowItem = { label: 'Pending', loading: true, value: undef
 const missingKpi: V.KpiRowItem = { label: 'Missing', value: null, missingText: 'Unavailable' };
 const missingProgress: V.KjunProgressProps = { value: null };
 const unknownProgress: V.KjunProgressProps = { indeterminate: true };
+const nullInput: V.KjunInputProps = { modelValue: null };
+const zeroInput: V.KjunInputProps = { modelValue: 0 };
+const nullTextarea: V.KjunTextareaProps = { modelValue: null };
+const nullDate: V.KjunDatePickerProps = { modelValue: null };
+const namedToggle: V.KjunIconToggleProps = { activeIcon: 'star', 'aria-label': 'Favorite' };
+const referencedToggle: V.KjunIconToggleProps = { activeIcon: 'star', 'aria-labelledby': 'favorite-label' };
+// @ts-expect-error Making the accessible-name alias optional does not remove the required icon.
+const missingToggleIcon: V.KjunIconToggleProps = { 'aria-label': 'Favorite' };
+type PublicButtonSize = typeof V.kjunPropValues.KjunButton.size[number];
+const listedButtonSize: PublicButtonSize = 'xl';
+const inputChoices: readonly ('sm' | 'md' | 'lg')[] = V.kjunPropValues.KjunInput.size;
+// @ts-expect-error Input does not accept booleans.
+const booleanInput: V.KjunInputProps = { modelValue: false };
+// @ts-expect-error Textarea accepts strings/null, not numbers.
+const numericTextarea: V.KjunTextareaProps = { modelValue: 0 };
+// @ts-expect-error DatePicker accepts date strings/null, not numbers.
+const numericDate: V.KjunDatePickerProps = { modelValue: 0 };
+// @ts-expect-error The exported list preserves literal choices.
+const invalidListedSize: PublicButtonSize = 'xxl';
+// @ts-expect-error Choice lists cannot be mutated by consumers.
+V.kjunPropValues.KjunInput.size.push('sm');
 const controlledMenu: InstanceType<typeof V.KjunMenuButton>['$props'] = {
   open: false, 'onUpdate:open': value => { const opened: boolean = value; },
 };
