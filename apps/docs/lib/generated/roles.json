@@ -392,7 +392,6 @@
       "packages/native/src/carousel.tsx",
       "packages/native/src/chip.tsx",
       "packages/native/src/choice-controls.tsx",
-      "packages/native/src/color-picker-parts.tsx",
       "packages/native/src/color-picker.tsx",
       "packages/native/src/data-state.tsx",
       "packages/native/src/display-primitives.tsx",
@@ -628,7 +627,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/calendar.css",
-      "packages/tokens/src/color-picker.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
@@ -641,7 +639,6 @@
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/calendar.tsx",
-      "packages/native/src/color-picker-parts.tsx",
       "packages/native/src/combobox.tsx",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/feedback.tsx",
@@ -900,6 +897,7 @@
     "implementationFiles": [
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
+      "packages/native/src/color-picker-parts.tsx",
       "packages/native/src/color-picker.tsx",
       "packages/native/src/date-picker.tsx",
       "packages/native/src/input.tsx",

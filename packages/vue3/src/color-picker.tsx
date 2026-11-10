@@ -3,7 +3,7 @@ import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useKjunMessageScope } from "./runtime/messages";
 import { normalizeColor } from "../../../shared/package-runtime/color";
 import {
-  createPickerWarnings, initialFocusTarget, initialPickerState, normalizeSwatches, pickerSummary, selectedSwatchIndex, stateToValue, swatchItems, syncHsv,
+  coarsePointer, colorName, createPickerWarnings, initialFocusTarget, initialPickerState, normalizeSwatches, pickerSummary, selectedSwatchIndex, stateToValue, swatchItems, syncHsv,
   type ColorSwatchInput, type PickerState,
 } from "../../../shared/package-runtime/color-picker";
 import { createCommitSession, eyeDropperSupported, nextRecentColors, pickScreenColor, recentColorItems } from "../../../shared/package-runtime/color-picker-model";
@@ -12,7 +12,7 @@ import { FloatingPanel } from "./floating-panel";
 import { KjunIcon } from "./button";
 import { useKjunField } from "./input";
 import { css } from "./runtime/style";
-import { ColorArea, ColorChannel, ColorInputs, RecentColors, SwatchGrid } from "./color-picker-parts";
+import { ColorArea, ColorChannel, ColorInputs, SwatchGrid, SwatchGroup } from "./color-picker-parts";
 
 // Mirrors packages/react/src/color-picker.tsx: same DOM, classes and aria; v-model for the value and v-model:open.
 export type KjunColorSwatch = ColorSwatchInput;
@@ -30,7 +30,8 @@ const kjunColorPickerProps = {
   input: { type: Boolean, default: false },
   /** A "no color" swatch that sets the value to null. */
   clearable: { type: Boolean, default: false },
-  /** v-model:recentColors: recent colors the app keeps (strings or { value, label }); giving it shows a "recent" row of up to 8 under the swatches.
+  /** v-model:recentColors: recent colors the app keeps (strings or { value, label }); giving it shows a "recent" row of up to 8 under the swatches,
+   * leaving out colors the swatches already offer.
    * When the panel closes on a new value, update:recentColors brings the next list: that value first, at most 8. */
   recentColors: { type: Array as PropType<KjunColorSwatch[]>, default: undefined },
   /** A button that picks a color from the screen, where the browser has an EyeDropper (Chromium desktop); hidden elsewhere. */
@@ -70,7 +71,7 @@ export const KjunColorPicker = defineComponent({
     const inner = ref(normalizeColor(props.defaultValue, props.alpha));
     const value = computed(() => props.modelValue !== undefined ? normalizeColor(props.modelValue, props.alpha) : inner.value);
     const swatches = computed(() => normalizeSwatches(props.swatches ?? [], props.alpha));
-    const recent = computed(() => props.recentColors === undefined ? null : recentColorItems(props.recentColors, props.alpha));
+    const recent = computed(() => props.recentColors === undefined ? null : recentColorItems(props.recentColors, props.alpha, swatches.value));
     const nothing = computed(() => !props.custom && !props.input && !swatches.value.length && !props.clearable);
     const warn = createPickerWarnings();
     watchEffect(() => warn({ raw: props.modelValue !== undefined ? props.modelValue : props.defaultValue, alpha: props.alpha, swatches: props.swatches, nothing: nothing.value }));
@@ -137,7 +138,12 @@ export const KjunColorPicker = defineComponent({
 
     return () => {
       const m = scope.value.messages, size = props.size ?? "md", spec = tokens.input[size], owner = field.value, v = value.value, s = state.value;
-      const summary = pickerSummary(v, props.alpha, m), spoken = summary.spoken;
+      const summary = pickerSummary(v, props.alpha, m, colorName(v, [swatches.value, recent.value ?? []])), spoken = summary.spoken;
+      const percent = summary.percent !== undefined && summary.percent < 100 ? summary.percent + "%" : "";
+      const detail = summary.name ? summary.hex + (percent && " " + percent) : percent;
+      const grid = (swatches.value.length > 0 || props.clearable) && { items: swatchItems(swatches.value, props.clearable, m.colorNone), selected: selected.value,
+        label: m.swatches, onPick: pick, swatchRef: (index: number, el: HTMLButtonElement | null) => { targets.swatches[index] = el; } };
+      const recentRow = recent.value && recent.value.length > 0 && { items: recent.value, selected: recent.value.findIndex(item => item.value === v), label: m.recentColors, onPick: pick };
       const label = props.ariaLabel || props.placeholder || m.colorPlaceholder;
       const chip = tokens.extensions.colorPicker.triggerSwatch[size];
       const showInput = props.input || nothing.value;
@@ -159,7 +165,7 @@ export const KjunColorPicker = defineComponent({
                   <span style={v ? { background: summary.hex, opacity: summary.opacity } : undefined} />
                 </span>
                 <span id={valueId} class={v ? undefined : "kjun-placeholder"}>
-                  {v ? <span aria-hidden="true">{summary.hex}{summary.percent !== undefined && summary.percent < 100 && <span class="kjun-color-trigger-alpha">{summary.percent}%</span>}</span> : props.placeholder ?? m.colorPlaceholder}
+                  {v ? <span aria-hidden="true">{summary.name ?? summary.hex}{detail && <span class="kjun-color-trigger-alpha">{detail}</span>}</span> : props.placeholder ?? m.colorPlaceholder}
                   <span class="kjun-sr-only">{spoken}</span>
                 </span>
                 <KjunIcon name="chevron-down" size={spec.iconSize} style={{ flexShrink: 0, color: props.disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
@@ -167,9 +173,9 @@ export const KjunColorPicker = defineComponent({
             </button>
             {props.name && <input type="hidden" name={props.name} value={v ?? ""} />}
           </div>
-          <FloatingPanel field dialog open={open.value} onOpenChange={setOpen} trigger={() => trigger.value} placement="bottom-start" panelClass="kjun-color-panel"
+          <FloatingPanel field dialog open={open.value} onOpenChange={setOpen} trigger={() => trigger.value} placement="bottom-start" panelClass="kjun-color-panel" matchTriggerWidth={coarsePointer()}
             maxHeight={tokens.extensions.floating.maxHeight}>
-            {props.custom && <ColorArea hsv={s.hsv} label={m.colorArea} valueText={m.colorAreaValue(pct(s.hsv.s), pct(s.hsv.v))}
+            {props.custom && <ColorArea hsv={s.hsv} label={m.colorArea} valueText={m.colorAreaValue(pct(s.hsv.s), pct(s.hsv.v))} empty={v === null} hint={m.colorAreaHint}
               areaRef={el => { targets.area = el; }} onMove={hsv => moveTo({ ...state.value, hsv })} onPick={hsv => pickState({ ...state.value, hsv })} {...drag} />}
             {props.custom && <ColorChannel channel="hue" value={s.hsv.h} max={360} label={m.hue} valueText={m.hueValue(Math.round(s.hsv.h))}
               color={stateToValue({ hsv: { h: s.hsv.h, s: 1, v: 1 }, a: 1 }, false)}
@@ -179,10 +185,10 @@ export const KjunColorPicker = defineComponent({
             {(showInput || canPickScreen.value) && <ColorInputs fields={showInput} value={v} alpha={props.alpha} alphaPercent={pct(s.a)} clearable={props.clearable}
               hexLabel={m.hex} alphaLabel={m.alpha} eyeDropper={canPickScreen.value ? { label: m.eyeDropper, onPick: pickFromScreen } : null}
               onEdit={onEdit} onCommit={onCommit} hexRef={el => { targets.hex = el; }} />}
-            {(swatches.value.length > 0 || props.clearable) && <SwatchGrid items={swatchItems(swatches.value, props.clearable, m.colorNone)} selected={selected.value}
-              label={m.swatches} onPick={pick} swatchRef={(index, el) => { targets.swatches[index] = el; }} />}
-            {recent.value && recent.value.length > 0 && <RecentColors items={recent.value} selected={recent.value.findIndex(item => item.value === v)}
-              label={m.recentColors} onPick={pick} />}
+            {(grid || recentRow) && <div class="kjun-color-section">
+              {grid && (recentRow ? <SwatchGroup caption={m.swatches} {...grid} /> : <SwatchGrid {...grid} />)}
+              {recentRow && <SwatchGroup caption={m.recentColors} {...recentRow} />}
+            </div>}
           </FloatingPanel>
         </>
       );

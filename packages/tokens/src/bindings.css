@@ -861,8 +861,13 @@
   --_kjun-extension-color-picker-width: 240px;
   --_kjun-extension-color-picker-padding: 12px;
   --_kjun-extension-color-picker-gap: 12px;
+  --_kjun-extension-color-picker-channel-gap: 8px;
+  --_kjun-extension-color-picker-section-gap: 20px;
+  --_kjun-extension-color-picker-touch-channel-gap: 20px;
+  --_kjun-extension-color-picker-touch-max-width: 360px;
+  --_kjun-extension-color-picker-affix-gap: 4px;
   --_kjun-extension-color-picker-area-height: 160px;
-  --_kjun-extension-color-picker-area-radius: 8px;
+  --_kjun-extension-color-picker-area-radius: 10px;
   --_kjun-extension-color-picker-thumb-size: 20px;
   --_kjun-extension-color-picker-channel-height: 12px;
   --_kjun-extension-color-picker-channel-radius: 6px;

@@ -32,7 +32,7 @@ export function useColorPickerModel(o: ColorPickerModelOptions) {
   const [inner, setInner] = useState(() => normalizeColor(o.defaultValue ?? null, o.alpha));
   const value = controlled ? normalizeColor(o.value, o.alpha) : inner;
   const swatches = normalizeSwatches(o.swatches ?? [], o.alpha);
-  const recent = o.recentColors === undefined ? null : recentColorItems(o.recentColors, o.alpha);
+  const recent = o.recentColors === undefined ? null : recentColorItems(o.recentColors, o.alpha, swatches);
   const nothing = !o.custom && !o.input && !swatches.length && !o.clearable;
   const [warn] = useState(createPickerWarnings);
   useEffect(() => warn({ raw: controlled ? o.value : o.defaultValue, alpha: o.alpha, swatches: o.swatches, nothing }));

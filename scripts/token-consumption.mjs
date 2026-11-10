@@ -23,6 +23,7 @@ export const platformSpecific = {
   ...Object.fromEntries(['radius', 'gap', 'dotSize'].map(key => ['extensions.badge.' + key, {
     excludes: ['native'], reason: 'Base badge role for the Web CSS fallback and the per-size radii/gaps/dotSizes aliases; Native reads the per-size roles.',
   }])),
+  'extensions.colorPicker.channelGap': { excludes: ['native'], reason: 'Mouse spacing between the hue and opacity tracks; Native is touch and spreads them by touchChannelGap, like Web under a coarse pointer.' },
   'extensions.calendar.radius': { excludes: ['native'], reason: 'Native calendars open in the shared FloatingPanel, which keeps its own field-popup radius.' },
   ...Object.fromEntries(['identityWidth', 'identityHeight'].map(key => ['extensions.skeleton.' + key, {
     excludes: ['react', 'vue3', 'native'], reason: 'Retired Vue 2 AssetIdentity loading adapter; current platforms render the supplied identity slot. Kept for token compatibility.',

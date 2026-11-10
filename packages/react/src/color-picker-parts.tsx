@@ -1,20 +1,21 @@
-import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
-import { channelKey, colorAreaKey } from "../../../shared/package-runtime/color-picker";
+import { channelKey, colorAreaKey, trackFraction } from "../../../shared/package-runtime/color-picker";
 import { alphaFieldLive, hexFieldCommit, hexFieldLive, hexFieldText } from "../../../shared/package-runtime/color-picker-model";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { inputTypeStyle } from "./typography";
-import { KjunIcon } from "./button";
+import { KjunButton, KjunIcon } from "./button";
 
-const fraction = (value: number, start: number, length: number) => Math.min(1, Math.max(0, (value - start) / length));
+const thumb = tokens.extensions.colorPicker.thumbSize;
 
 /** Pointer drag on an element: moves report on every step, and release or cancel ends the drag once. */
 function useDrag(onMove: (x: number, y: number) => void, onStart: () => void, onEnd: () => void) {
   const active = useRef(false);
   const at = (event: ReactPointerEvent<HTMLElement>) => {
     const box = event.currentTarget.getBoundingClientRect();
-    onMove(fraction(event.clientX, box.left, box.width), fraction(event.clientY, box.top, box.height));
+    // The ends lie half a thumb in, where the thumb stops: a press in that margin picks the first or last value.
+    onMove(trackFraction(event.clientX, box.left, box.width, thumb), trackFraction(event.clientY, box.top, box.height, thumb));
   };
   const end = (event: ReactPointerEvent<HTMLElement>) => {
     if (!active.current) return;
@@ -41,12 +42,17 @@ function useDrag(onMove: (x: number, y: number) => void, onStart: () => void, on
 
 const rgb = (hsv: Hsv) => formatColor(hsvToRgb(hsv), false);
 const percent = (n: number) => Math.round(n * 100);
+/** A thumb at fractions x, y of its box, kept inside it (see .kjun-color-thumb). */
+const place = (x: number, y: number | null): CSSProperties => ({
+  left: x * 100 + "%", ...(y === null ? {} : { top: y * 100 + "%" }), transform: `translate(${-x * 100}%, ${y === null ? -50 : -y * 100}%)`,
+});
 
 /** Drag reports through onMove between onStart and onEnd; a key is a whole pick through onPick. */
 export interface DragHandlers<T> { onMove: (value: T) => void; onPick: (value: T) => void; onStart: () => void; onEnd: () => void }
 
-export function ColorArea({ hsv, label, valueText, areaRef, onMove, onPick, onStart, onEnd }: {
-  hsv: Hsv; label: string; valueText: string; areaRef: (el: HTMLElement | null) => void;
+/** The saturation/brightness area; with no value yet (empty) it shows a hint instead of a thumb. */
+export function ColorArea({ hsv, label, valueText, empty, hint, areaRef, onMove, onPick, onStart, onEnd }: {
+  hsv: Hsv; label: string; valueText: string; empty: boolean; hint: string; areaRef: (el: HTMLElement | null) => void;
 } & DragHandlers<Hsv>) {
   const drag = useDrag((x, y) => onMove({ ...hsv, s: x, v: 1 - y }), onStart, onEnd);
   return (
@@ -60,9 +66,11 @@ export function ColorArea({ hsv, label, valueText, areaRef, onMove, onPick, onSt
         onPick(next);
       }}
       {...drag}>
-      <span className="kjun-color-thumb" style={{ left: percent(hsv.s) + "%", top: 100 - percent(hsv.v) + "%" }}>
-        <span style={{ background: rgb(hsv) }} />
-      </span>
+      {empty ? <span className="kjun-type-caption kjun-color-area-hint" aria-hidden="true">{hint}</span> : (
+        <span className="kjun-color-thumb" style={place(hsv.s, 1 - hsv.v)}>
+          <span style={{ background: rgb(hsv) }} />
+        </span>
+      )}
     </div>
   );
 }
@@ -83,7 +91,7 @@ export function ColorChannel({ channel, value, max, label, valueText, color, onM
       }}
       {...drag}>
       {channel === "alpha" && <i />}
-      <span className="kjun-color-thumb" style={{ left: (value / max) * 100 + "%" }}>
+      <span className="kjun-color-thumb" style={place(value / max, null)}>
         <span className={channel === "alpha" ? "kjun-color-checker" : undefined} style={{ position: "relative", overflow: "hidden" }}>
           <span style={{ position: "absolute", inset: 0, background: color, opacity: channel === "alpha" ? value / max : 1 }} />
         </span>
@@ -105,7 +113,7 @@ export function SwatchGrid({ items, selected, label, onPick, swatchRef }: {
       {items.map((item, index) => {
         const checked = index === selected;
         return (
-          <button key={index} ref={el => swatchRef?.(index, el)} type="button" role="radio" aria-checked={checked} aria-label={item.label}
+          <button key={index} ref={el => swatchRef?.(index, el)} type="button" role="radio" aria-checked={checked} aria-label={item.label} title={item.label}
             className="kjun-color-swatch" data-selected={checked || undefined} data-ink={item.value ? readableInk(item.value) : undefined}
             onClick={() => onPick(item.value)}>
             <span className={"kjun-color-chip" + (item.value ? " kjun-color-checker" : "")} data-none={item.value ? undefined : ""}>
@@ -119,14 +127,21 @@ export function SwatchGrid({ items, selected, label, onPick, swatchRef }: {
   );
 }
 
-/** Recent colors under the swatches: a caption and one more radio group. */
-export function RecentColors({ items, selected, label, onPick }: { items: { value: string; label: string }[]; selected: number; label: string; onPick: (value: string | null) => void }) {
+/** A swatch row under a caption (the swatches when recent colors show too, and the recent colors). */
+export function SwatchGroup({ caption, ...grid }: { caption: string } & Parameters<typeof SwatchGrid>[0]) {
   return (
-    <div className="kjun-color-recent">
-      <span className="kjun-type-caption kjun-color-recent-label" aria-hidden="true">{label}</span>
-      <SwatchGrid items={items} selected={selected} label={label} onPick={onPick} />
+    <div className="kjun-color-group">
+      <span className="kjun-type-caption kjun-color-group-label" aria-hidden="true">{caption}</span>
+      <SwatchGrid {...grid} />
     </div>
   );
+}
+
+/** The width an affix (# or %) takes, so the digits start after it. */
+function useAffixWidth() {
+  const [width, setWidth] = useState(0), el = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => { const next = el.current?.offsetWidth ?? 0; if (next !== width) setWidth(next); });
+  return [el, width] as const;
 }
 
 /** The eyedropper button and the hex and % fields. Typing changes the value once a code is complete;
@@ -163,21 +178,22 @@ export function ColorInputs({ fields, value, alpha, alphaPercent, clearable, hex
     if (next === null) setPct(String(alphaPercent)); else reported.current = next;
     onCommit(next ?? "revert");
   };
-  const field = tokens.input.sm;
-  const style: CSSProperties = { height: field.height, borderRadius: field.radius, paddingInline: field.padding - tokens.border.controlWidth, ...inputTypeStyle("sm") };
+  const field = tokens.input.sm, pad = field.padding - tokens.border.controlWidth, gap = tokens.extensions.colorPicker.affixGap;
+  const [sign, signWidth] = useAffixWidth(), [unit, unitWidth] = useAffixWidth();
+  const style: CSSProperties = { height: field.height, borderRadius: field.radius, paddingInline: pad, ...inputTypeStyle("sm") };
   const keys = (commit: () => void) => (event: KeyboardEvent<HTMLInputElement>) => { if (event.key === "Enter") { event.preventDefault(); commit(); } };
+  const affix = (side: "left" | "right"): CSSProperties => ({ [side]: field.padding, pointerEvents: "none", ...inputTypeStyle("sm") });
   return (
     <div className="kjun-color-inputs">
       {eyeDropper && (
-        <button type="button" className="kjun-input kjun-color-eyedropper" aria-label={eyeDropper.label} onClick={eyeDropper.onPick}
-          style={{ width: field.height, height: field.height, borderRadius: field.radius }}>
-          <KjunIcon name="color-picker" size={field.iconSize} />
-        </button>
+        <KjunButton variant="ghost" size="sm" prefixIcon="color-picker" className="kjun-color-eyedropper" ariaLabel={eyeDropper.label} title={eyeDropper.label}
+          onClick={eyeDropper.onPick} />
       )}
       {fields && (
         <div className="kjun-input-wrap">
+          <span ref={sign} className="kjun-input-affix kjun-color-affix" aria-hidden="true" style={affix("left")}>#</span>
           <input ref={hexRef} className="kjun-input kjun-input-native kjun-color-hex" aria-label={hexLabel} value={text} maxLength={alpha ? 9 : 7}
-            spellCheck={false} autoComplete="off" style={style}
+            placeholder="RRGGBB" spellCheck={false} autoComplete="off" style={{ ...style, paddingLeft: pad + signWidth + gap }}
             onChange={event => {
               const next = event.target.value.replace(/^#/, "");
               setText(next);
@@ -187,13 +203,16 @@ export function ColorInputs({ fields, value, alpha, alphaPercent, clearable, hex
         </div>
       )}
       {fields && alpha && (
-        <input className="kjun-input kjun-input-native kjun-color-alpha" aria-label={alphaLabel} value={pct} inputMode="numeric" maxLength={3}
-          autoComplete="off" style={style}
-          onChange={event => {
-            setPct(event.target.value);
-            edit("alpha", alphaFieldLive(event.target.value, value));
-          }}
-          onKeyDown={keys(commitPct)} onBlur={commitPct} />
+        <div className="kjun-input-wrap">
+          <input className="kjun-input kjun-input-native kjun-color-alpha" aria-label={alphaLabel} value={pct} inputMode="numeric" maxLength={3}
+            autoComplete="off" style={{ ...style, paddingRight: pad + unitWidth + gap }}
+            onChange={event => {
+              setPct(event.target.value);
+              edit("alpha", alphaFieldLive(event.target.value, value));
+            }}
+            onKeyDown={keys(commitPct)} onBlur={commitPct} />
+          <span ref={unit} className="kjun-input-affix kjun-color-affix" aria-hidden="true" style={affix("right")}>%</span>
+        </div>
       )}
     </div>
   );

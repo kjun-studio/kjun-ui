@@ -168,6 +168,7 @@ export const kjunMessagesEn: KjunMessages = {
   decreaseBrightness: "Decrease brightness",
   recentColors: "Recent colors",
   eyeDropper: "Pick a color from the screen",
+  colorAreaHint: "Pick a color here",
   marketData: "Market data",
   metrics: "Displayed metrics",
   watchToggle: (name: string, active: boolean) => active ? `Remove ${name || "item"} from watchlist` : `Add ${name || "item"} to watchlist`,

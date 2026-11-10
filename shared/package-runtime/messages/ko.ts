@@ -177,6 +177,7 @@ export const kjunMessagesKo = {
   decreaseBrightness: "명도 내리기",
   recentColors: "최근 사용 색",
   eyeDropper: "화면에서 색 고르기",
+  colorAreaHint: "여기서 색을 고르세요",
   // Market and financial
   marketData: "시장 데이터",
   metrics: "표시 지표",

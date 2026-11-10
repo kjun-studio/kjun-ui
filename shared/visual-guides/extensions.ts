@@ -71,7 +71,7 @@ export const extensions: Record<string, GuideAuthor> = {
   },
   KjunColorPicker: {
     values: { color: "#3B82F6" },
-    parts: [p("색 버튼", "현재 색 칸과 HEX 값을 보여 주고 누르면 패널을 엽니다.", '[aria-haspopup="dialog"]'), t("값", "현재 색의 HEX 값입니다. 투명도가 100% 미만이면 %를 붙이고, 색이 없으면 ‘색 선택’을 보입니다.", "#3B82F6", true)], related: "input-settings",
+    parts: [p("색 버튼", "현재 색 칸과 HEX 값을 보여 주고 누르면 패널을 엽니다.", '[aria-haspopup="dialog"]'), t("값", "현재 색의 HEX 값입니다. 이름 있는 견본이면 이름을 먼저 보이고, 투명도가 100% 미만이면 %를 붙이며, 색이 없으면 ‘색 선택’을 보입니다.", "#3B82F6", true)], related: "input-settings",
     states: [{ id: "all", label: "전체 옵션", description: "채도·명도 영역, 색상·투명도 슬라이더, HEX와 % 입력을 함께 엽니다.", settings: { custom: true, alpha: true, input: true }, values: { color: "#3B82F6CC" } }],
   },
   KjunQuantityStepper: {

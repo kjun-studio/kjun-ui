@@ -12,13 +12,14 @@
   background-size: var(--_kjun-extension-color-picker-checker-size) var(--_kjun-extension-color-picker-checker-size);
   background-position: 0 0, calc(var(--_kjun-extension-color-picker-checker-size) / 2) calc(var(--_kjun-extension-color-picker-checker-size) / 2);
 }
-/* A color chip: the color sits on the checkerboard and keeps a faint inner edge so a color equal to the page still shows. */
+/* A color chip: the color sits on the checkerboard and keeps a faint inner edge so a color equal to the page still shows.
+   "No color" is a neutral slash: red reads as an error in a form. */
 .kjun-color-chip { position: relative; display: inline-block; overflow: hidden; border-radius: var(--_kjun-extension-color-picker-swatch-radius); }
 .kjun-color-chip > span { position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 var(--_kjun-border-default-width) color-mix(in srgb, var(--_kjun-color-text) 12%, transparent); }
 .kjun-color-chip[data-none] { background: var(--_kjun-color-surface); }
 .kjun-color-chip[data-none] > span {
-  background: linear-gradient(135deg, transparent calc(50% - var(--_kjun-border-default-width)), var(--_kjun-color-danger) calc(50% - var(--_kjun-border-default-width)),
-    var(--_kjun-color-danger) calc(50% + var(--_kjun-border-default-width)), transparent calc(50% + var(--_kjun-border-default-width)));
+  background: linear-gradient(135deg, transparent calc(50% - var(--_kjun-border-default-width)), var(--_kjun-color-text-tertiary) calc(50% - var(--_kjun-border-default-width)),
+    var(--_kjun-color-text-tertiary) calc(50% + var(--_kjun-border-default-width)), transparent calc(50% + var(--_kjun-border-default-width)));
 }
 
 .kjun-color-panel {
@@ -26,26 +27,55 @@
   /* The floating border sits inside the width, so the content keeps width - 2 × padding (eight 20px swatches a row). */
   padding: calc(var(--_kjun-extension-color-picker-padding) - var(--_kjun-border-default-width)); box-sizing: border-box;
   display: flex; flex-direction: column; gap: var(--_kjun-extension-color-picker-gap);
+  /* Thumbs stay inside the area and the tracks: their ends sit half a thumb in, and the gradients start and stop there too. */
+  --_kjun-color-picker-inset: calc(var(--_kjun-extension-color-picker-thumb-size) / 2);
+}
+/* A touch screen gets a panel as wide as the trigger (the picker asks the panel to match it), kept between the mouse width and
+   the touch maximum, so swatches and tracks grow under a finger. */
+@media (pointer: coarse) {
+  .kjun-color-panel {
+    min-width: var(--_kjun-extension-color-picker-width);
+    max-width: min(var(--_kjun-extension-color-picker-touch-max-width), calc(100vw - 2 * var(--_kjun-extension-floating-viewport-inset)));
+  }
 }
 
 .kjun-color-area {
   position: relative; height: var(--_kjun-extension-color-picker-area-height); border-radius: var(--_kjun-extension-color-picker-area-radius);
-  background: linear-gradient(to top, black, transparent), linear-gradient(to right, white, transparent), var(--_kjun-color-picker-hue);
+  background: linear-gradient(to top, black var(--_kjun-color-picker-inset), transparent calc(100% - var(--_kjun-color-picker-inset))),
+    linear-gradient(to right, white var(--_kjun-color-picker-inset), transparent calc(100% - var(--_kjun-color-picker-inset))), var(--_kjun-color-picker-hue);
   touch-action: none; cursor: crosshair; outline: none; user-select: none;
 }
+.kjun-color-area-hint { position: absolute; inset-inline: 0; bottom: var(--_kjun-extension-color-picker-gap); text-align: center; color: white; pointer-events: none; }
 .kjun-color-channel {
   position: relative; height: var(--_kjun-extension-color-picker-channel-height); border-radius: var(--_kjun-extension-color-picker-channel-radius);
-  margin-inline: calc(var(--_kjun-extension-color-picker-thumb-size) / 2);
   touch-action: none; cursor: pointer; outline: none; user-select: none;
+  --_kjun-color-picker-run: calc(100% - 2 * var(--_kjun-color-picker-inset));
 }
+/* Hue and opacity sit closer to each other than to the area and the fields. */
+.kjun-color-channel + .kjun-color-channel { margin-top: calc(var(--_kjun-extension-color-picker-channel-gap) - var(--_kjun-extension-color-picker-gap)); }
 .kjun-color-channel[data-channel="hue"] {
-  background: linear-gradient(to right, hsl(0 100% 50%), hsl(60 100% 50%), hsl(120 100% 50%), hsl(180 100% 50%), hsl(240 100% 50%), hsl(300 100% 50%), hsl(360 100% 50%));
+  background: linear-gradient(to right, hsl(0 100% 50%) var(--_kjun-color-picker-inset),
+    hsl(60 100% 50%) calc(var(--_kjun-color-picker-inset) + var(--_kjun-color-picker-run) / 6), hsl(120 100% 50%) calc(var(--_kjun-color-picker-inset) + var(--_kjun-color-picker-run) / 3),
+    hsl(180 100% 50%) calc(var(--_kjun-color-picker-inset) + var(--_kjun-color-picker-run) / 2), hsl(240 100% 50%) calc(var(--_kjun-color-picker-inset) + var(--_kjun-color-picker-run) * 2 / 3),
+    hsl(300 100% 50%) calc(var(--_kjun-color-picker-inset) + var(--_kjun-color-picker-run) * 5 / 6), hsl(360 100% 50%) calc(100% - var(--_kjun-color-picker-inset)));
 }
-.kjun-color-channel[data-channel="alpha"] > i { position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(to right, transparent, var(--_kjun-color-picker-current)); }
+.kjun-color-channel[data-channel="alpha"] > i {
+  position: absolute; inset: 0; border-radius: inherit;
+  background: linear-gradient(to right, transparent var(--_kjun-color-picker-inset), var(--_kjun-color-picker-current) calc(100% - var(--_kjun-color-picker-inset)));
+}
+/* Under a finger the tracks spread out and each takes the whole band up to its neighbour. */
+@media (pointer: coarse) {
+  .kjun-color-channel + .kjun-color-channel { margin-top: calc(var(--_kjun-extension-color-picker-touch-channel-gap) - var(--_kjun-extension-color-picker-gap)); }
+  .kjun-color-channel::after {
+    content: ""; position: absolute; inset-inline: 0; top: 50%; transform: translateY(-50%);
+    height: calc(var(--_kjun-extension-color-picker-channel-height) + var(--_kjun-extension-color-picker-touch-channel-gap));
+  }
+}
 
 .kjun-color-thumb {
+  /* Placed at left p%, the thumb moves back p of its own width (inline translate), so its center runs half a thumb in from each end. */
   position: absolute; z-index: 1; width: var(--_kjun-extension-color-picker-thumb-size); height: var(--_kjun-extension-color-picker-thumb-size);
-  border-radius: 50%; transform: translate(-50%, -50%); background: var(--_kjun-color-switch-thumb); box-shadow: var(--_kjun-slider-elevation);
+  border-radius: 50%; background: var(--_kjun-color-switch-thumb); box-shadow: var(--_kjun-slider-elevation);
   display: flex; align-items: center; justify-content: center; pointer-events: none;
 }
 .kjun-color-channel .kjun-color-thumb { top: 50%; }
@@ -58,14 +88,20 @@
 
 .kjun-color-inputs { display: flex; gap: var(--_kjun-extension-color-picker-swatch-gap); }
 .kjun-color-inputs .kjun-input-wrap { flex: 1; min-width: 0; }
-.kjun-color-inputs .kjun-color-alpha { flex: none; width: var(--_kjun-extension-color-picker-alpha-input-width); }
+.kjun-color-inputs .kjun-input-wrap:has(.kjun-color-alpha) { flex: none; width: var(--_kjun-extension-color-picker-alpha-input-width); }
 .kjun-color-inputs input { font-variant-numeric: tabular-nums; text-transform: uppercase; }
-/* The eyedropper is a square field-sized button that fills like the fields next to it. */
-.kjun-color-eyedropper { flex: none; display: inline-flex; align-items: center; justify-content: center; padding: 0; cursor: pointer; color: var(--_kjun-color-text-secondary); }
+/* The # and % stay in the field, quieter than the digits; the eyedropper is a ghost button so it never reads as a third field. */
+.kjun-color-affix { font-variant-numeric: tabular-nums; }
+.kjun-color-eyedropper { flex: none; }
 
-/* Recent colors: a caption over one more swatch row. */
-.kjun-color-recent { display: flex; flex-direction: column; gap: var(--_kjun-geometry-dimension-value4); }
-.kjun-color-recent-label { color: var(--_kjun-color-text-tertiary); }
+/* Swatches and recent colors form one group, set apart from the controls above; with both rows each takes a caption. */
+.kjun-color-section { display: flex; flex-direction: column; gap: var(--_kjun-extension-color-picker-gap); }
+/* Only after controls: the panel can open with a hidden dismiss button, so :first-child would never hold. */
+.kjun-color-area ~ .kjun-color-section, .kjun-color-channel ~ .kjun-color-section, .kjun-color-inputs ~ .kjun-color-section {
+  margin-top: calc(var(--_kjun-extension-color-picker-section-gap) - var(--_kjun-extension-color-picker-gap));
+}
+.kjun-color-group { display: flex; flex-direction: column; gap: var(--_kjun-geometry-dimension-value4); }
+.kjun-color-group-label { color: var(--_kjun-color-text-tertiary); }
 
 /* Eight fixed columns, so 'none' + seven colors fill one row; swatches stay square at whatever width the columns get. */
 .kjun-color-swatches { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: var(--_kjun-extension-color-picker-swatch-gap); }

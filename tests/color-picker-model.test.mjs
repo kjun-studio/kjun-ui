@@ -11,7 +11,7 @@ const {
   alphaFieldLive, alphaPercentHex, colorAlphaHex, colorAreaActionKey, colorAreaActions, createCommitSession, eyeDropperSupported, hexFieldCommit, hexFieldLive,
   hexFieldText, nextRecentColors, pickScreenColor, recentColorItems, recentColorLimit,
 } = await load('shared/package-runtime/color-picker-model.ts');
-const { createPickerWarnings, initialFocusTarget, pickerSummary, selectedSwatchIndex, swatchItems } = await load('shared/package-runtime/color-picker.ts');
+const { colorName, createPickerWarnings, initialFocusTarget, pickerSummary, selectedSwatchIndex, swatchItems, thumbOffset, trackFraction } = await load('shared/package-runtime/color-picker.ts');
 const { kjunMessagesKo: ko, kjunMessagesEn: en } = await load('shared/package-runtime/messages/index.ts');
 
 test('a commit session reports one change for many moves, and nothing when the value came back', () => {
@@ -67,6 +67,14 @@ test('recent colors put the new value first, once, and keep one row', () => {
   assert.deepEqual(nextRecentColors(['#3B82F6'], '#3B82F680', true), ['#3B82F680', '#3B82F6FF']);
 });
 
+test('the recent row leaves out colors the swatches already offer', () => {
+  const swatches = [{ value: '#EF4444', label: '빨강' }];
+  assert.deepEqual(recentColorItems(['#ef4444', '#0EA5E9'], false, swatches).map(i => i.value), ['#0EA5E9']);
+  assert.deepEqual(recentColorItems(['#EF4444'], false, swatches), [], 'nothing left: the row is not drawn');
+  // Hidden colors stay in the app's list: the next list still carries them.
+  assert.deepEqual(nextRecentColors(['#EF4444', '#0EA5E9'], '#7C3AED', false), ['#7C3AED', '#EF4444', '#0EA5E9']);
+});
+
 test('the eyedropper exists only with window.EyeDropper and keeps the opacity', async () => {
   assert.equal(eyeDropperSupported(), false);
   assert.equal(await pickScreenColor(false, null), null);
@@ -99,8 +107,16 @@ test('swatch items, selection, summary and first focus are computed once for eve
   assert.equal(selectedSwatchIndex(null, swatches, true), 0);
   assert.equal(selectedSwatchIndex(null, swatches, false), -1);
   assert.equal(selectedSwatchIndex('#333333', swatches, false), -1);
-  assert.deepEqual(pickerSummary('#3B82F680', true, ko), { hex: '#3B82F6', percent: 50, opacity: 0.5, spoken: '#3B82F6, 투명도 50%' });
-  assert.deepEqual(pickerSummary(null, false, ko), { hex: '', percent: undefined, opacity: 1, spoken: '색 없음' });
+  assert.deepEqual(pickerSummary('#3B82F680', true, ko), { hex: '#3B82F6', percent: 50, opacity: 0.5, name: undefined, spoken: '#3B82F6, 투명도 50%' });
+  assert.deepEqual(pickerSummary(null, false, ko), { hex: '', percent: undefined, opacity: 1, name: undefined, spoken: '색 없음' });
+  // A named swatch names the trigger; the code follows it.
+  assert.deepEqual(pickerSummary('#EF4444', false, ko, '빨강'), { hex: '#EF4444', percent: undefined, opacity: 1, name: '빨강', spoken: '빨강, #EF4444' });
+  const named = [{ value: '#EF4444', label: '빨강' }, { value: '#22C55E', label: '#22C55E' }];
+  assert.equal(colorName('#EF4444', [named]), '빨강');
+  assert.equal(colorName('#22C55E', [named]), undefined, 'a label that only repeats the code is no name');
+  assert.equal(colorName('#0EA5E9', [[], named]), undefined);
+  assert.equal(colorName('#0EA5E9', [[{ value: '#0EA5E9', label: '하늘' }], named]), '하늘', 'recent colors can carry names too');
+  assert.equal(colorName(null, [named]), undefined);
   const targets = { swatches: ['s0', 's1'], area: 'area', hex: 'hex' };
   assert.equal(initialFocusTarget(targets, { selected: 1, custom: true, input: true }), 's1');
   assert.equal(initialFocusTarget(targets, { selected: -1, custom: true, input: true }), 'area');
@@ -119,4 +135,22 @@ test('picker warnings are said once each, only in development', () => {
   } finally {
     console.warn = warn; process.env.NODE_ENV = env;
   }
+});
+
+test('thumbs stay inside their track: the ends sit half a thumb in, and pointers map back the same way', () => {
+  // A 216px track with a 20px thumb: the thumb center runs from 10px to 206px.
+  assert.equal(thumbOffset(0, 20), 0);
+  assert.equal(thumbOffset(1, 20), -20);
+  assert.equal(thumbOffset(0.5, 20), -10);
+  assert.equal(trackFraction(10, 0, 216, 20), 0);
+  assert.equal(trackFraction(206, 0, 216, 20), 1);
+  assert.equal(trackFraction(108, 0, 216, 20), 0.5);
+  assert.equal(trackFraction(2, 0, 216, 20), 0, 'the half-thumb margin picks the first value');
+  assert.equal(trackFraction(500, 0, 216, 20), 1);
+  assert.equal(trackFraction(5, 0, 0, 20), 0, 'an unmeasured track reads as the start');
+});
+
+test('the area hint reads in both languages', () => {
+  assert.equal(ko.colorAreaHint, '여기서 색을 고르세요');
+  assert.equal(en.colorAreaHint, 'Pick a color here');
 });

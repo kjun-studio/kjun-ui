@@ -37269,7 +37269,7 @@
             "details": [
               {
                 "label": "상태 책임",
-                "text": "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다."
+                "text": "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다. 견본에 이미 있는 색은 최근 줄에서 빼고 그리며(앱 목록에는 남습니다), 두 줄이 함께 보이면 각각 캡션(‘견본 색’, ‘최근 사용 색’)을 붙입니다. label을 준 견본을 고르면 트리거에 이름을 먼저, 코드를 흐린 색으로 뒤에 보여 주고, 웹에서는 견본에 마우스를 올리면 이름이 뜹니다."
               }
             ],
             "source": "packages/vue3/src/color-picker.tsx",
@@ -37290,7 +37290,7 @@
             "required": false,
             "default": "—",
             "description": "Colors the app offers; strings or { value, label }.",
-            "summary": "앱이 고를 수 있게 내놓는 색 목록입니다. 문자열 또는 { value, label }이며 label이 없으면 HEX를 읽습니다. 형식이 틀린 항목은 빼고 개발 모드에서 한 번 경고합니다.",
+            "summary": "앱이 고를 수 있게 내놓는 색 목록입니다. 문자열 또는 { value, label }이며 label이 없으면 HEX를 읽습니다. label을 준 견본을 고르면 트리거에 이름을 먼저, 코드를 뒤에 보여 주고 웹에서는 견본에 마우스를 올리면 이름이 뜹니다. 형식이 틀린 항목은 빼고 개발 모드에서 한 번 경고합니다.",
             "source": "packages/vue3/src/color-picker.tsx"
           },
           {
@@ -37317,7 +37317,7 @@
             "required": false,
             "default": "false",
             "description": "Hex field.",
-            "summary": "HEX 입력을 켭니다. 6자리(alpha면 8자리)가 다 차면 값에 바로 반영하고, 확정은 Enter나 포커스 이탈 때 한 번 알립니다. #3B8 같은 짧은 형식은 그때 펼치고, 틀린 값은 되돌립니다.",
+            "summary": "HEX 입력을 켭니다. 칸 앞에 흐린 #, 투명도 칸 뒤에 %를 붙이고 값이 없으면 RRGGBB를 자리 표시로 둡니다. 6자리(alpha면 8자리)가 다 차면 값에 바로 반영하고, 확정은 Enter나 포커스 이탈 때 한 번 알립니다. #3B8 같은 짧은 형식은 그때 펼치고, 틀린 값은 되돌립니다.",
             "source": "packages/vue3/src/color-picker.tsx"
           },
           {
@@ -37326,7 +37326,7 @@
             "required": false,
             "default": "false",
             "description": "A \"no color\" swatch that sets the value to null.",
-            "summary": "견본 맨 앞에 ‘색 없음’ 칸을 둡니다. 고르면 값이 null이 됩니다. HEX 칸을 비우고 확정해도 같습니다.",
+            "summary": "견본 맨 앞에 ‘색 없음’ 칸(흐린 사선)을 둡니다. 고르면 값이 null이 됩니다. HEX 칸을 비우고 확정해도 같습니다.",
             "source": "packages/vue3/src/color-picker.tsx"
           },
           {
@@ -37334,8 +37334,8 @@
             "type": "ColorSwatchInput[]",
             "required": false,
             "default": "—",
-            "description": "v-model:recentColors: recent colors the app keeps (strings or { value, label }); giving it shows a \"recent\" row of up to 8 under the swatches.\nWhen the panel closes on a new value, update:recentColors brings the next list: that value first, at most 8.",
-            "summary": "앱이 보관하는 최근 사용 색입니다. 문자열 또는 { value, label }이며, 주면 견본 아래 ‘최근 사용 색’ 줄(최대 8칸)을 그립니다. 비어 있으면 줄을 그리지 않습니다. 새 값으로 패널을 닫을 때 다음 목록을 알리므로 앱이 저장해서 다시 넘겨 주세요. Vue는 v-model:recentColors입니다.",
+            "description": "v-model:recentColors: recent colors the app keeps (strings or { value, label }); giving it shows a \"recent\" row of up to 8 under the swatches,\nleaving out colors the swatches already offer.\nWhen the panel closes on a new value, update:recentColors brings the next list: that value first, at most 8.",
+            "summary": "앱이 보관하는 최근 사용 색입니다. 문자열 또는 { value, label }이며, 주면 견본 아래 ‘최근 사용 색’ 줄(최대 8칸)을 그립니다. 견본에 이미 있는 색은 줄에서 빼고 그리며(앱 목록에는 남습니다), 남는 색이 없으면 줄을 그리지 않습니다. 두 줄이 함께 보이면 각각 캡션을 붙입니다. 새 값으로 패널을 닫을 때 다음 목록을 알리므로 앱이 저장해서 다시 넘겨 주세요. Vue는 v-model:recentColors입니다.",
             "source": "packages/vue3/src/color-picker.tsx"
           },
           {
@@ -37344,7 +37344,7 @@
             "required": false,
             "default": "false",
             "description": "A button that picks a color from the screen, where the browser has an EyeDropper (Chromium desktop); hidden elsewhere.",
-            "summary": "HEX 칸 앞에 화면에서 색을 고르는 스포이드 버튼을 둡니다. 브라우저에 EyeDropper가 있을 때(Chromium 데스크톱, Native는 RN Web)만 그리고 다른 곳에서는 그리지 않습니다. 고른 색은 바로 확정하고, alpha면 현재 투명도를 유지합니다.",
+            "summary": "HEX 칸 앞에 화면에서 색을 고르는 스포이드 아이콘 버튼(채움 없음)을 둡니다. 브라우저에 EyeDropper가 있을 때(Chromium 데스크톱, Native는 RN Web)만 그리고 다른 곳에서는 그리지 않습니다. 고른 색은 바로 확정하고, alpha면 현재 투명도를 유지합니다.",
             "source": "packages/vue3/src/color-picker.tsx"
           },
           {
@@ -37564,8 +37564,8 @@
           }
         ],
         "ownership": [
-          "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다.",
-          "세 플랫폼 모두 DatePicker처럼 필드 아래 떠 있는 패널로 엽니다. 웹은 포인터 캡처로, Native는 PanResponder로 끌고 그라데이션과 체크무늬는 react-native-svg로 그립니다. Native 기기에서는 화살표 키 대신 스크린리더 동작으로 바꿉니다. 영역은 위아래 쓸기로 채도, 동작 메뉴의 ‘명도 올리기·내리기’로 명도를 바꿉니다. 스포이드(eyeDropper)는 브라우저 EyeDropper가 있을 때만 그리므로 웹은 Chromium 데스크톱, Native는 RN Web에서만 보이고 기기에서는 그리지 않습니다. Native는 RN Web에서만 확인했습니다."
+          "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다. 견본에 이미 있는 색은 최근 줄에서 빼고 그리며(앱 목록에는 남습니다), 두 줄이 함께 보이면 각각 캡션(‘견본 색’, ‘최근 사용 색’)을 붙입니다. label을 준 견본을 고르면 트리거에 이름을 먼저, 코드를 흐린 색으로 뒤에 보여 주고, 웹에서는 견본에 마우스를 올리면 이름이 뜹니다.",
+          "세 플랫폼 모두 DatePicker처럼 필드 아래 떠 있는 패널로 엽니다. 웹은 포인터 캡처로, Native는 PanResponder로 끌고 그라데이션과 체크무늬는 react-native-svg로 그립니다. Native 기기에서는 화살표 키 대신 스크린리더 동작으로 바꿉니다. 영역은 위아래 쓸기로 채도, 동작 메뉴의 ‘명도 올리기·내리기’로 명도를 바꿉니다. 스포이드(eyeDropper)는 브라우저 EyeDropper가 있을 때만 그리므로 웹은 Chromium 데스크톱, Native는 RN Web에서만 보이고 기기에서는 그리지 않습니다. Native는 터치 기준이라 패널이 트리거 폭을 따라 넓어지고(최대 360px) 색상·투명도 트랙 사이를 20px로 벌려 손가락이 닿는 높이를 넓힙니다. 웹도 터치 화면(pointer: coarse)에서는 같습니다. Native는 RN Web에서만 확인했습니다."
         ],
         "types": []
       },
@@ -37581,7 +37581,7 @@
             "details": [
               {
                 "label": "상태 책임",
-                "text": "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다."
+                "text": "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다. 견본에 이미 있는 색은 최근 줄에서 빼고 그리며(앱 목록에는 남습니다), 두 줄이 함께 보이면 각각 캡션(‘견본 색’, ‘최근 사용 색’)을 붙입니다. label을 준 견본을 고르면 트리거에 이름을 먼저, 코드를 흐린 색으로 뒤에 보여 주고, 웹에서는 견본에 마우스를 올리면 이름이 뜹니다."
               }
             ],
             "source": "packages/react/src/color-picker.tsx",
@@ -37657,8 +37657,8 @@
             "type": "ColorSwatchInput[] | undefined",
             "required": false,
             "default": "—",
-            "description": "Colors the app offers; strings or { value, label }.",
-            "summary": "앱이 고를 수 있게 내놓는 색 목록입니다. 문자열 또는 { value, label }이며 label이 없으면 HEX를 읽습니다. 형식이 틀린 항목은 빼고 개발 모드에서 한 번 경고합니다.",
+            "description": "Colors the app offers; strings or { value, label }. A label names the color on the trigger and in the swatch's tooltip.",
+            "summary": "앱이 고를 수 있게 내놓는 색 목록입니다. 문자열 또는 { value, label }이며 label이 없으면 HEX를 읽습니다. label을 준 견본을 고르면 트리거에 이름을 먼저, 코드를 뒤에 보여 주고 웹에서는 견본에 마우스를 올리면 이름이 뜹니다. 형식이 틀린 항목은 빼고 개발 모드에서 한 번 경고합니다.",
             "source": "packages/react/src/color-picker.tsx"
           },
           {
@@ -37685,7 +37685,7 @@
             "required": false,
             "default": "false",
             "description": "Hex field.",
-            "summary": "HEX 입력을 켭니다. 6자리(alpha면 8자리)가 다 차면 값에 바로 반영하고, 확정은 Enter나 포커스 이탈 때 한 번 알립니다. #3B8 같은 짧은 형식은 그때 펼치고, 틀린 값은 되돌립니다.",
+            "summary": "HEX 입력을 켭니다. 칸 앞에 흐린 #, 투명도 칸 뒤에 %를 붙이고 값이 없으면 RRGGBB를 자리 표시로 둡니다. 6자리(alpha면 8자리)가 다 차면 값에 바로 반영하고, 확정은 Enter나 포커스 이탈 때 한 번 알립니다. #3B8 같은 짧은 형식은 그때 펼치고, 틀린 값은 되돌립니다.",
             "source": "packages/react/src/color-picker.tsx"
           },
           {
@@ -37694,7 +37694,7 @@
             "required": false,
             "default": "false",
             "description": "A \"no color\" swatch that sets the value to null.",
-            "summary": "견본 맨 앞에 ‘색 없음’ 칸을 둡니다. 고르면 값이 null이 됩니다. HEX 칸을 비우고 확정해도 같습니다.",
+            "summary": "견본 맨 앞에 ‘색 없음’ 칸(흐린 사선)을 둡니다. 고르면 값이 null이 됩니다. HEX 칸을 비우고 확정해도 같습니다.",
             "source": "packages/react/src/color-picker.tsx"
           },
           {
@@ -37702,8 +37702,8 @@
             "type": "ColorSwatchInput[] | undefined",
             "required": false,
             "default": "—",
-            "description": "Recent colors the app keeps (strings or { value, label }); giving it shows a \"recent\" row of up to 8 under the swatches.",
-            "summary": "앱이 보관하는 최근 사용 색입니다. 문자열 또는 { value, label }이며, 주면 견본 아래 ‘최근 사용 색’ 줄(최대 8칸)을 그립니다. 비어 있으면 줄을 그리지 않습니다. 새 값으로 패널을 닫을 때 다음 목록을 알리므로 앱이 저장해서 다시 넘겨 주세요. Vue는 v-model:recentColors입니다.",
+            "description": "Recent colors the app keeps (strings or { value, label }); giving it shows a \"recent\" row of up to 8 under the swatches,\nleaving out colors the swatches already offer.",
+            "summary": "앱이 보관하는 최근 사용 색입니다. 문자열 또는 { value, label }이며, 주면 견본 아래 ‘최근 사용 색’ 줄(최대 8칸)을 그립니다. 견본에 이미 있는 색은 줄에서 빼고 그리며(앱 목록에는 남습니다), 남는 색이 없으면 줄을 그리지 않습니다. 두 줄이 함께 보이면 각각 캡션을 붙입니다. 새 값으로 패널을 닫을 때 다음 목록을 알리므로 앱이 저장해서 다시 넘겨 주세요. Vue는 v-model:recentColors입니다.",
             "source": "packages/react/src/color-picker.tsx"
           },
           {
@@ -37740,7 +37740,7 @@
             "required": false,
             "default": "false",
             "description": "A button that picks a color from the screen, where the browser has an EyeDropper (Chromium desktop); hidden elsewhere.",
-            "summary": "HEX 칸 앞에 화면에서 색을 고르는 스포이드 버튼을 둡니다. 브라우저에 EyeDropper가 있을 때(Chromium 데스크톱, Native는 RN Web)만 그리고 다른 곳에서는 그리지 않습니다. 고른 색은 바로 확정하고, alpha면 현재 투명도를 유지합니다.",
+            "summary": "HEX 칸 앞에 화면에서 색을 고르는 스포이드 아이콘 버튼(채움 없음)을 둡니다. 브라우저에 EyeDropper가 있을 때(Chromium 데스크톱, Native는 RN Web)만 그리고 다른 곳에서는 그리지 않습니다. 고른 색은 바로 확정하고, alpha면 현재 투명도를 유지합니다.",
             "source": "packages/react/src/color-picker.tsx"
           },
           {
@@ -37903,8 +37903,8 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다.",
-          "세 플랫폼 모두 DatePicker처럼 필드 아래 떠 있는 패널로 엽니다. 웹은 포인터 캡처로, Native는 PanResponder로 끌고 그라데이션과 체크무늬는 react-native-svg로 그립니다. Native 기기에서는 화살표 키 대신 스크린리더 동작으로 바꿉니다. 영역은 위아래 쓸기로 채도, 동작 메뉴의 ‘명도 올리기·내리기’로 명도를 바꿉니다. 스포이드(eyeDropper)는 브라우저 EyeDropper가 있을 때만 그리므로 웹은 Chromium 데스크톱, Native는 RN Web에서만 보이고 기기에서는 그리지 않습니다. Native는 RN Web에서만 확인했습니다."
+          "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다. 견본에 이미 있는 색은 최근 줄에서 빼고 그리며(앱 목록에는 남습니다), 두 줄이 함께 보이면 각각 캡션(‘견본 색’, ‘최근 사용 색’)을 붙입니다. label을 준 견본을 고르면 트리거에 이름을 먼저, 코드를 흐린 색으로 뒤에 보여 주고, 웹에서는 견본에 마우스를 올리면 이름이 뜹니다.",
+          "세 플랫폼 모두 DatePicker처럼 필드 아래 떠 있는 패널로 엽니다. 웹은 포인터 캡처로, Native는 PanResponder로 끌고 그라데이션과 체크무늬는 react-native-svg로 그립니다. Native 기기에서는 화살표 키 대신 스크린리더 동작으로 바꿉니다. 영역은 위아래 쓸기로 채도, 동작 메뉴의 ‘명도 올리기·내리기’로 명도를 바꿉니다. 스포이드(eyeDropper)는 브라우저 EyeDropper가 있을 때만 그리므로 웹은 Chromium 데스크톱, Native는 RN Web에서만 보이고 기기에서는 그리지 않습니다. Native는 터치 기준이라 패널이 트리거 폭을 따라 넓어지고(최대 360px) 색상·투명도 트랙 사이를 20px로 벌려 손가락이 닿는 높이를 넓힙니다. 웹도 터치 화면(pointer: coarse)에서는 같습니다. Native는 RN Web에서만 확인했습니다."
         ],
         "types": []
       },
@@ -37920,7 +37920,7 @@
             "details": [
               {
                 "label": "상태 책임",
-                "text": "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다."
+                "text": "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다. 견본에 이미 있는 색은 최근 줄에서 빼고 그리며(앱 목록에는 남습니다), 두 줄이 함께 보이면 각각 캡션(‘견본 색’, ‘최근 사용 색’)을 붙입니다. label을 준 견본을 고르면 트리거에 이름을 먼저, 코드를 흐린 색으로 뒤에 보여 주고, 웹에서는 견본에 마우스를 올리면 이름이 뜹니다."
               }
             ],
             "source": "packages/native/src/color-picker.tsx",
@@ -37996,8 +37996,8 @@
             "type": "ColorSwatchInput[] | undefined",
             "required": false,
             "default": "—",
-            "description": "Colors the app offers; strings or { value, label }.",
-            "summary": "앱이 고를 수 있게 내놓는 색 목록입니다. 문자열 또는 { value, label }이며 label이 없으면 HEX를 읽습니다. 형식이 틀린 항목은 빼고 개발 모드에서 한 번 경고합니다.",
+            "description": "Colors the app offers; strings or { value, label }. A label names the color on the trigger.",
+            "summary": "앱이 고를 수 있게 내놓는 색 목록입니다. 문자열 또는 { value, label }이며 label이 없으면 HEX를 읽습니다. label을 준 견본을 고르면 트리거에 이름을 먼저, 코드를 뒤에 보여 주고 웹에서는 견본에 마우스를 올리면 이름이 뜹니다. 형식이 틀린 항목은 빼고 개발 모드에서 한 번 경고합니다.",
             "source": "packages/native/src/color-picker.tsx"
           },
           {
@@ -38024,7 +38024,7 @@
             "required": false,
             "default": "false",
             "description": "Hex field.",
-            "summary": "HEX 입력을 켭니다. 6자리(alpha면 8자리)가 다 차면 값에 바로 반영하고, 확정은 Enter나 포커스 이탈 때 한 번 알립니다. #3B8 같은 짧은 형식은 그때 펼치고, 틀린 값은 되돌립니다.",
+            "summary": "HEX 입력을 켭니다. 칸 앞에 흐린 #, 투명도 칸 뒤에 %를 붙이고 값이 없으면 RRGGBB를 자리 표시로 둡니다. 6자리(alpha면 8자리)가 다 차면 값에 바로 반영하고, 확정은 Enter나 포커스 이탈 때 한 번 알립니다. #3B8 같은 짧은 형식은 그때 펼치고, 틀린 값은 되돌립니다.",
             "source": "packages/native/src/color-picker.tsx"
           },
           {
@@ -38033,7 +38033,7 @@
             "required": false,
             "default": "false",
             "description": "A \"no color\" swatch that sets the value to null.",
-            "summary": "견본 맨 앞에 ‘색 없음’ 칸을 둡니다. 고르면 값이 null이 됩니다. HEX 칸을 비우고 확정해도 같습니다.",
+            "summary": "견본 맨 앞에 ‘색 없음’ 칸(흐린 사선)을 둡니다. 고르면 값이 null이 됩니다. HEX 칸을 비우고 확정해도 같습니다.",
             "source": "packages/native/src/color-picker.tsx"
           },
           {
@@ -38041,8 +38041,8 @@
             "type": "ColorSwatchInput[] | undefined",
             "required": false,
             "default": "—",
-            "description": "Recent colors the app keeps (strings or { value, label }); giving it shows a \"recent\" row of up to 8 under the swatches.",
-            "summary": "앱이 보관하는 최근 사용 색입니다. 문자열 또는 { value, label }이며, 주면 견본 아래 ‘최근 사용 색’ 줄(최대 8칸)을 그립니다. 비어 있으면 줄을 그리지 않습니다. 새 값으로 패널을 닫을 때 다음 목록을 알리므로 앱이 저장해서 다시 넘겨 주세요. Vue는 v-model:recentColors입니다.",
+            "description": "Recent colors the app keeps (strings or { value, label }); giving it shows a \"recent\" row of up to 8 under the swatches,\nleaving out colors the swatches already offer.",
+            "summary": "앱이 보관하는 최근 사용 색입니다. 문자열 또는 { value, label }이며, 주면 견본 아래 ‘최근 사용 색’ 줄(최대 8칸)을 그립니다. 견본에 이미 있는 색은 줄에서 빼고 그리며(앱 목록에는 남습니다), 남는 색이 없으면 줄을 그리지 않습니다. 두 줄이 함께 보이면 각각 캡션을 붙입니다. 새 값으로 패널을 닫을 때 다음 목록을 알리므로 앱이 저장해서 다시 넘겨 주세요. Vue는 v-model:recentColors입니다.",
             "source": "packages/native/src/color-picker.tsx"
           },
           {
@@ -38079,7 +38079,7 @@
             "required": false,
             "default": "false",
             "description": "A button that picks a color from the screen. Only Native Web in a browser with an EyeDropper (Chromium desktop) draws it; devices have none.",
-            "summary": "HEX 칸 앞에 화면에서 색을 고르는 스포이드 버튼을 둡니다. 브라우저에 EyeDropper가 있을 때(Chromium 데스크톱, Native는 RN Web)만 그리고 다른 곳에서는 그리지 않습니다. 고른 색은 바로 확정하고, alpha면 현재 투명도를 유지합니다.",
+            "summary": "HEX 칸 앞에 화면에서 색을 고르는 스포이드 아이콘 버튼(채움 없음)을 둡니다. 브라우저에 EyeDropper가 있을 때(Chromium 데스크톱, Native는 RN Web)만 그리고 다른 곳에서는 그리지 않습니다. 고른 색은 바로 확정하고, alpha면 현재 투명도를 유지합니다.",
             "source": "packages/native/src/color-picker.tsx"
           },
           {
@@ -38224,8 +38224,8 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다.",
-          "세 플랫폼 모두 DatePicker처럼 필드 아래 떠 있는 패널로 엽니다. 웹은 포인터 캡처로, Native는 PanResponder로 끌고 그라데이션과 체크무늬는 react-native-svg로 그립니다. Native 기기에서는 화살표 키 대신 스크린리더 동작으로 바꿉니다. 영역은 위아래 쓸기로 채도, 동작 메뉴의 ‘명도 올리기·내리기’로 명도를 바꿉니다. 스포이드(eyeDropper)는 브라우저 EyeDropper가 있을 때만 그리므로 웹은 Chromium 데스크톱, Native는 RN Web에서만 보이고 기기에서는 그리지 않습니다. Native는 RN Web에서만 확인했습니다."
+          "값은 대문자 #RRGGBB이고 alpha를 켜면 항상 #RRGGBBAA, 색 없음은 null입니다. onValueChange(Vue update:modelValue)는 드래그 중에도 계속, onChangeCommit(Vue change)은 손을 떼거나 견본·키·스포이드로 고를 때, HEX·% 칸은 Enter나 포커스 이탈 때 한 번 알립니다(입력 도중에는 값만 바뀝니다). 견본은 하나의 라디오 묶음이라 화살표로 옮기면 바로 고르고, 채도·명도 영역은 화살표 1%·Shift 10%, 색상·투명도는 슬라이더 키로 조절합니다. HEX는 6자리(alpha면 8자리)가 다 차면 바로 반영하고 #3B8 같은 짧은 형식은 Enter나 포커스 이탈 때 펼칩니다. 회색까지 내려도 색상(hue)을 잃지 않습니다. recentColors를 주면 견본 아래 ‘최근 사용 색’ 줄을 그리고, 새 값으로 패널을 닫을 때 그 값을 맨 앞에 둔 다음 목록(최대 8개)을 onRecentColorsChange(Vue v-model:recentColors)로 알립니다. 패널이 열려 있는 동안에는 줄 순서가 바뀌지 않습니다. 견본에 이미 있는 색은 최근 줄에서 빼고 그리며(앱 목록에는 남습니다), 두 줄이 함께 보이면 각각 캡션(‘견본 색’, ‘최근 사용 색’)을 붙입니다. label을 준 견본을 고르면 트리거에 이름을 먼저, 코드를 흐린 색으로 뒤에 보여 주고, 웹에서는 견본에 마우스를 올리면 이름이 뜹니다.",
+          "세 플랫폼 모두 DatePicker처럼 필드 아래 떠 있는 패널로 엽니다. 웹은 포인터 캡처로, Native는 PanResponder로 끌고 그라데이션과 체크무늬는 react-native-svg로 그립니다. Native 기기에서는 화살표 키 대신 스크린리더 동작으로 바꿉니다. 영역은 위아래 쓸기로 채도, 동작 메뉴의 ‘명도 올리기·내리기’로 명도를 바꿉니다. 스포이드(eyeDropper)는 브라우저 EyeDropper가 있을 때만 그리므로 웹은 Chromium 데스크톱, Native는 RN Web에서만 보이고 기기에서는 그리지 않습니다. Native는 터치 기준이라 패널이 트리거 폭을 따라 넓어지고(최대 360px) 색상·투명도 트랙 사이를 20px로 벌려 손가락이 닿는 높이를 넓힙니다. 웹도 터치 화면(pointer: coarse)에서는 같습니다. Native는 RN Web에서만 확인했습니다."
         ],
         "types": []
       }

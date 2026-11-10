@@ -104,7 +104,7 @@ export function generate(input: UsageInput) {
     case 'KjunColorPicker':
       content = b.node(name, { value: b.state('color', s.alpha ? '#3B82F6CC' : '#3B82F6'), onValueChange: b.update('color'), swatches: s.swatches ? ['#EF4444', '#F97316', '#EAB308', '#22C55E', '#14B8A6', '#3B82F6', '#8B5CF6', '#EC4899', '#64748B', '#111111'] : undefined,
         ...b.props('custom', 'alpha', 'input', 'clearable', 'eyeDropper', 'disabled', 'error', 'size'),
-        recentColors: s.recent ? b.state('recentColors', ['#111111', '#EC4899']) : undefined, onRecentColorsChange: s.recent ? b.update('recentColors') : undefined,
+        recentColors: s.recent ? b.state('recentColors', ['#0EA5E9', '#7C3AED']) : undefined, onRecentColorsChange: s.recent ? b.update('recentColors') : undefined,
         ariaLabel: '라벨 색', onChangeCommit: commit() }); break;
     case 'KjunQuantityStepper':
       content = b.node(name, { value: b.state('quantity', s.decimal ? 1.25 : 2), onValueChange: b.update('quantity'), min: s.negative ? -10 : 0, max: 10, step: s.decimal ? .1 : 1, precision: s.decimal ? 2 : 0,

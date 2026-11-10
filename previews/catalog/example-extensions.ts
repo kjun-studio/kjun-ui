@@ -63,7 +63,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
     case "KjunColorPicker":
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "라벨 색", error: error ? "라벨 색을 선택해 주세요." : "" }, h(name, { value: get("color", settings.alpha ? "#3B82F6CC" : "#3B82F6"),
         swatches: settings.swatches ? ["#EF4444", "#F97316", "#EAB308", "#22C55E", "#14B8A6", "#3B82F6", "#8B5CF6", "#EC4899", "#64748B", "#111111"] : undefined, custom: settings.custom, alpha: settings.alpha, input: settings.input, clearable: settings.clearable, eyeDropper: settings.eyeDropper,
-        recentColors: settings.recent ? get("recentColors", ["#111111", "#EC4899"]) : undefined, onRecentColorsChange: settings.recent ? change("recentColors") : undefined,
+        recentColors: settings.recent ? get("recentColors", ["#0EA5E9", "#7C3AED"]) : undefined, onRecentColorsChange: settings.recent ? change("recentColors") : undefined,
         size: settings.size, disabled, error, ariaLabel: "라벨 색", onValueChange: change("color") })));
     case "KjunQuantityStepper":
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "주문 수량", error: error ? "주문 수량을 확인해 주세요." : "" }, h(name, { value: get("quantity", settings.decimal ? 1.25 : 2), min: settings.negative ? -10 : 0, max: 10, step: settings.decimal ? .1 : 1, precision: settings.decimal ? 2 : 0, disabled, error, size: settings.size, block: settings.block, ariaLabel: "주문 수량", onValueChange: change("quantity"), onChangeCommit: (value: number) => set("message", "확정: " + value), onInvalidInput: (draft: string) => set("message", "잘못된 수량: " + draft) })));

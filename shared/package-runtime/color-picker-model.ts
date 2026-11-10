@@ -43,10 +43,13 @@ export const alphaFieldLive = (text: string, value: string | null) => value && v
 
 /** Recent colors fill one swatch row. */
 export const recentColorLimit = colorSwatchColumns;
-/** The recent row: invalid entries and repeats left out, at most one row. */
-export const recentColorItems = (list: ColorSwatchInput[] | undefined, alpha: boolean) =>
-  normalizeSwatches(list ?? [], alpha).filter((item, index, all) => all.findIndex(other => other.value === item.value) === index).slice(0, recentColorLimit);
-const recentColorValues = (list: ColorSwatchInput[] | undefined, alpha: boolean) => recentColorItems(list, alpha).map(item => item.value);
+const uniqueColors = (list: ColorSwatchInput[] | undefined, alpha: boolean) =>
+  normalizeSwatches(list ?? [], alpha).filter((item, index, all) => all.findIndex(other => other.value === item.value) === index);
+/** The recent row: invalid entries, repeats and colors the swatches already offer left out, at most one row.
+ * Only the row hides them; the app's list keeps every color. */
+export const recentColorItems = (list: ColorSwatchInput[] | undefined, alpha: boolean, swatches: { value: string }[] = []) =>
+  uniqueColors(list, alpha).filter(item => !swatches.some(swatch => swatch.value === item.value)).slice(0, recentColorLimit);
+const recentColorValues = (list: ColorSwatchInput[] | undefined, alpha: boolean) => uniqueColors(list, alpha).slice(0, recentColorLimit).map(item => item.value);
 /** The list after the panel closes on a new value: that value first, once, at most one row; null if nothing changes. */
 export function nextRecentColors(list: ColorSwatchInput[] | undefined, value: string | null, alpha: boolean): string[] | null {
   if (value === null) return null;

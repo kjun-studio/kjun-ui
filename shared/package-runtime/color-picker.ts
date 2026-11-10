@@ -5,6 +5,16 @@ export type PickerState = { hsv: Hsv; a: number };
 export const initialPickerState: PickerState = { hsv: { h: 0, s: 1, v: 1 }, a: 1 };
 /** Swatches take this many fixed columns (web CSS repeat(8); Native divides the measured width). */
 export const colorSwatchColumns = 8;
+/** A thumb never leaves its track: at fraction p its center sits p of the way from half a thumb in to half a thumb before the end.
+ * Placed at left p × 100%, the thumb moves back by p of its own size (a CSS translate of -p × 100%, a Native margin). */
+export const thumbOffset = (p: number, thumb: number) => 0 - p * thumb;
+/** The fraction a pointer at `at` picks on a track starting at `start`, `length` long, whose ends lie half a thumb in. */
+export function trackFraction(at: number, start: number, length: number, thumb: number): number {
+  const run = length - thumb;
+  return run > 0 ? Math.min(1, Math.max(0, (at - start - thumb / 2) / run)) : 0;
+}
+/** A touch screen: the web panel then follows the trigger width (up to touchMaxWidth) so swatches and tracks grow under a finger. */
+export const coarsePointer = () => typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(pointer: coarse)").matches;
 /** Square swatch size for a row of `width` with `gap` between the fixed columns. */
 export const colorSwatchSize = (width: number, gap: number) => (width - (colorSwatchColumns - 1) * gap) / colorSwatchColumns;
 
@@ -114,10 +124,18 @@ export function selectedSwatchIndex(value: string | null, swatches: { value: str
   return clearable ? (value === null ? 0 : at < 0 ? -1 : at + 1) : at;
 }
 
-/** What the trigger shows and says: #RRGGBB, the opacity % with alpha, and the spoken value. */
-export function pickerSummary(value: string | null, alpha: boolean, m: { colorValue: (hex: string, alpha?: number) => string; colorNone: string }) {
+/** The name the app gave the value in one of the lists (swatches, recent colors); a label that only repeats the code is no name. */
+export function colorName(value: string | null, lists: { value: string; label: string }[][]): string | undefined {
+  if (value === null) return undefined;
+  for (const list of lists) for (const item of list) if (item.value === value && item.label !== item.value) return item.label;
+  return undefined;
+}
+
+/** What the trigger shows and says: the swatch name when it has one, #RRGGBB, the opacity % with alpha, and the spoken value. */
+export function pickerSummary(value: string | null, alpha: boolean, m: { colorValue: (hex: string, alpha?: number) => string; colorNone: string }, name?: string) {
   const hex = value ? value.slice(0, 7) : "", percent = value && alpha ? Math.round(parseColor(value)!.a * 100) : undefined;
-  return { hex, percent, opacity: percent === undefined ? 1 : percent / 100, spoken: value ? m.colorValue(hex, percent) : m.colorNone };
+  const code = value ? m.colorValue(hex, percent) : m.colorNone;
+  return { hex, percent, opacity: percent === undefined ? 1 : percent / 100, name: value ? name : undefined, spoken: value && name ? name + ", " + code : code };
 }
 
 /** Development warnings, each said once per picker. */

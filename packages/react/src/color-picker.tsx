@@ -2,13 +2,13 @@ import { useEffect, useId, useRef, type CSSProperties, type ReactNode } from "re
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
-import { initialFocusTarget, pickerSummary, stateToValue, swatchItems, type ColorSwatchInput } from "../../../shared/package-runtime/color-picker";
+import { coarsePointer, colorName, initialFocusTarget, pickerSummary, stateToValue, swatchItems, type ColorSwatchInput } from "../../../shared/package-runtime/color-picker";
 import { useColorPickerModel } from "../../../shared/package-runtime/use-color-picker";
 import { inputTypeStyle } from "./typography";
 import { KjunIcon } from "./button";
 import { useKjunField } from "./input";
 import { FloatingPanel } from "./layers";
-import { ColorArea, ColorChannel, ColorInputs, RecentColors, SwatchGrid } from "./color-picker-parts";
+import { ColorArea, ColorChannel, ColorInputs, SwatchGrid, SwatchGroup } from "./color-picker-parts";
 
 export type KjunColorSwatch = ColorSwatchInput;
 export interface KjunColorPickerProps {
@@ -19,7 +19,7 @@ export interface KjunColorPickerProps {
   onValueChange?: (value: string | null) => void;
   /** Once per finished pick: drag released, swatch, key or eyedropper, hex or % field entered (Enter or leaving it). */
   onChangeCommit?: (value: string | null) => void;
-  /** Colors the app offers; strings or { value, label }. */
+  /** Colors the app offers; strings or { value, label }. A label names the color on the trigger and in the swatch's tooltip. */
   swatches?: KjunColorSwatch[];
   /** Saturation/brightness area and hue slider. */
   custom?: boolean;
@@ -29,7 +29,8 @@ export interface KjunColorPickerProps {
   input?: boolean;
   /** A "no color" swatch that sets the value to null. */
   clearable?: boolean;
-  /** Recent colors the app keeps (strings or { value, label }); giving it shows a "recent" row of up to 8 under the swatches. */
+  /** Recent colors the app keeps (strings or { value, label }); giving it shows a "recent" row of up to 8 under the swatches,
+   * leaving out colors the swatches already offer. */
   recentColors?: KjunColorSwatch[];
   /** The next recent colors, once the panel closes on a new value: that value first, at most 8. Store it to keep the row. */
   onRecentColorsChange?: (colors: string[]) => void;
@@ -55,6 +56,12 @@ export interface KjunColorPickerProps {
 }
 
 const pct = (a: number) => Math.round(a * 100);
+/** After the name or code: the code when a name leads, and the opacity below 100%. */
+function TriggerDetail({ summary }: { summary: ReturnType<typeof pickerSummary> }) {
+  const percent = summary.percent !== undefined && summary.percent < 100 ? summary.percent + "%" : "";
+  const detail = summary.name ? summary.hex + (percent && " " + percent) : percent;
+  return detail ? <span className="kjun-color-trigger-alpha">{detail}</span> : null;
+}
 
 export function KjunColorPicker({
   value, defaultValue = null, onValueChange, onChangeCommit, swatches: rawSwatches, custom = false, alpha = false, input = false,
@@ -67,7 +74,11 @@ export function KjunColorPicker({
     open: openGiven, defaultOpen, onOpenChange, disabled, readOnly, recentColors, onRecentColorsChange, eyeDropper,
   });
   const { value: current, open, setOpen, state, selected } = model;
-  const summary = pickerSummary(current, alpha, m), label = ariaLabel || placeholder || m.colorPlaceholder;
+  const summary = pickerSummary(current, alpha, m, colorName(current, [model.swatches, model.recent ?? []]));
+  const label = ariaLabel || placeholder || m.colorPlaceholder;
+  const grid = (model.swatches.length > 0 || clearable) && { items: swatchItems(model.swatches, clearable, m.colorNone), selected, label: m.swatches, onPick: model.pick,
+    swatchRef: (index: number, el: HTMLButtonElement | null) => { targets.current.swatches[index] = el; } };
+  const recent = model.recent && model.recent.length > 0 && { items: model.recent, selected: model.recentSelected, label: m.recentColors, onPick: model.pick };
 
   const trigger = useRef<HTMLButtonElement>(null), valueId = "kjun-color-" + useId();
   const targets = useRef<{ swatches: (HTMLButtonElement | null)[]; area: HTMLElement | null; hex: HTMLInputElement | null }>({ swatches: [], area: null, hex: null });
@@ -99,7 +110,7 @@ export function KjunColorPicker({
               <span style={current ? { background: summary.hex, opacity: summary.opacity } : undefined} />
             </span>
             <span id={valueId} className={current ? undefined : "kjun-placeholder"}>
-              {current ? <span aria-hidden="true">{summary.hex}{summary.percent !== undefined && summary.percent < 100 && <span className="kjun-color-trigger-alpha">{summary.percent}%</span>}</span> : placeholder ?? m.colorPlaceholder}
+              {current ? <span aria-hidden="true">{summary.name ?? summary.hex}<TriggerDetail summary={summary} /></span> : placeholder ?? m.colorPlaceholder}
               <span className="kjun-sr-only">{summary.spoken}</span>
             </span>
             <KjunIcon name="chevron-down" size={spec.iconSize} style={{ flexShrink: 0, color: disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
@@ -107,9 +118,9 @@ export function KjunColorPicker({
         </button>
         {name && <input type="hidden" name={name} value={current ?? ""} />}
       </div>
-      <FloatingPanel field open={open} onOpenChange={setOpen} triggerRef={trigger} placement="bottom-start" className="kjun-color-panel"
+      <FloatingPanel field open={open} onOpenChange={setOpen} triggerRef={trigger} placement="bottom-start" className="kjun-color-panel" matchTriggerWidth={coarsePointer()}
         maxHeight={tokens.extensions.floating.maxHeight}>
-        {custom && <ColorArea hsv={state.hsv} label={m.colorArea} valueText={m.colorAreaValue(pct(state.hsv.s), pct(state.hsv.v))}
+        {custom && <ColorArea hsv={state.hsv} label={m.colorArea} valueText={m.colorAreaValue(pct(state.hsv.s), pct(state.hsv.v))} empty={current === null} hint={m.colorAreaHint}
           onMove={hsv => model.moveTo({ ...state, hsv })} onPick={hsv => model.pickState({ ...state, hsv })} {...model.drag}
           areaRef={el => { targets.current.area = el; }} />}
         {custom && <ColorChannel channel="hue" value={state.hsv.h} max={360} label={m.hue} valueText={m.hueValue(Math.round(state.hsv.h))} color={stateToValue({ hsv: { h: state.hsv.h, s: 1, v: 1 }, a: 1 }, false)}
@@ -119,9 +130,10 @@ export function KjunColorPicker({
         {(model.showInput || model.canPickScreen) && <ColorInputs fields={model.showInput} value={current} alpha={alpha} alphaPercent={pct(state.a)} clearable={clearable}
           hexLabel={m.hex} alphaLabel={m.alpha} eyeDropper={model.canPickScreen ? { label: m.eyeDropper, onPick: model.pickFromScreen } : null}
           onEdit={model.field.onEdit} onCommit={model.field.onCommit} hexRef={el => { targets.current.hex = el; }} />}
-        {(model.swatches.length > 0 || clearable) && <SwatchGrid items={swatchItems(model.swatches, clearable, m.colorNone)} selected={selected} label={m.swatches}
-          onPick={model.pick} swatchRef={(index, el) => { targets.current.swatches[index] = el; }} />}
-        {model.recent && model.recent.length > 0 && <RecentColors items={model.recent} selected={model.recentSelected} label={m.recentColors} onPick={model.pick} />}
+        {(grid || recent) && <div className="kjun-color-section">
+          {grid && (recent ? <SwatchGroup caption={m.swatches} {...grid} /> : <SwatchGrid {...grid} />)}
+          {recent && <SwatchGroup caption={m.recentColors} {...recent} />}
+        </div>}
       </FloatingPanel>
     </>
   );

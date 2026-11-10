@@ -181,40 +181,150 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(await list(page, 'cp-custom', 'commits')).toEqual(['#FF0000']);
     });
 
-    test('recent colors show under the swatches and take the new value first when the panel closes', async ({ page }) => {
+    test('recent colors leave out the swatches, show under them and take the new value first when the panel closes', async ({ page }) => {
       const recentList = async () => JSON.parse(await page.getByTestId('cp-recent-list').textContent() || '[]');
       await trigger(page, 'cp-recent', '최근 색').click();
       const recent = page.getByRole('radiogroup', { name: '최근 사용 색' });
-      await expect(recent.getByRole('radio')).toHaveCount(2);
-      await swatches(page).getByRole('radio', { name: '#22C55E' }).click();
+      // #EF4444 is already a swatch one tap away, so the recent row shows only #0EA5E9; both rows get a caption.
+      await expect(recent.getByRole('radio')).toHaveCount(1);
+      await expect(page.getByText('견본 색', { exact: true })).toBeVisible();
+      await expect(page.getByText('최근 사용 색', { exact: true })).toBeVisible();
+      await hex(page).fill('7C3AED');
+      await hex(page).press('Enter');
       // The row stays put while the panel is open.
-      expect(await recentList()).toEqual(['#111111', '#EF4444']);
+      expect(await recentList()).toEqual(['#0EA5E9', '#EF4444']);
       await page.keyboard.press('Escape');
-      await expect.poll(recentList).toEqual(['#22C55E', '#111111', '#EF4444']);
+      await expect.poll(recentList).toEqual(['#7C3AED', '#0EA5E9', '#EF4444']);
       await expect(swatches(page)).toHaveCount(0);
       await trigger(page, 'cp-recent', '최근 색').click();
-      await expect(recent.getByRole('radio')).toHaveCount(3);
-      await expect(recent.getByRole('radio').first()).toHaveAccessibleName('#22C55E');
+      await expect(recent.getByRole('radio')).toHaveCount(2);
+      await expect(recent.getByRole('radio').first()).toHaveAccessibleName('#7C3AED');
       await expect(recent.getByRole('radio').first()).toHaveAttribute('aria-checked', 'true');
       // Picking a recent color is a pick like any swatch; closing without a new value leaves the list alone.
-      await recent.getByRole('radio', { name: '#EF4444' }).click();
+      await recent.getByRole('radio', { name: '#0EA5E9' }).click();
       await page.keyboard.press('Escape');
-      await expect.poll(recentList).toEqual(['#EF4444', '#22C55E', '#111111']);
+      await expect.poll(recentList).toEqual(['#0EA5E9', '#7C3AED', '#EF4444']);
       await expect(swatches(page)).toHaveCount(0);
       await trigger(page, 'cp-recent', '최근 색').click();
       await page.keyboard.press('Escape');
       await expect(swatches(page)).toHaveCount(0);
-      expect(await recentList()).toEqual(['#EF4444', '#22C55E', '#111111']);
+      expect(await recentList()).toEqual(['#0EA5E9', '#7C3AED', '#EF4444']);
+      // Without recent colors the swatches need no caption.
+      await trigger(page, 'cp-swatches', '태그 색').click();
+      await expect(page.getByText('견본 색', { exact: true })).toHaveCount(0);
+    });
+
+    test('a named swatch names the trigger, with the code after it', async ({ page }) => {
+      const t = trigger(page, 'cp-named', '이름 색');
+      await expect(t).toHaveAccessibleName(/빨강, #EF4444/);
+      await expect(t).toContainText('빨강');
+      await expect(t).toContainText('#EF4444');
+      await t.click();
+      await swatches(page).getByRole('radio', { name: '#22C55E' }).click();
+      await expect(t).toHaveAccessibleName(/#22C55E/);
+      await expect(t).not.toHaveAccessibleName(/빨강|파랑/);
+      if (web) await expect(swatches(page).getByRole('radio', { name: '파랑' })).toHaveAttribute('title', '파랑');
+    });
+
+    test('with no value the area shows a hint instead of a thumb and the hex field a placeholder', async ({ page }) => {
+      await trigger(page, 'cp-custom', '강조색').click();
+      await expect(page.getByText('여기서 색을 고르세요', { exact: true })).toBeVisible();
+      await expect(hex(page)).toHaveAttribute('placeholder', 'RRGGBB');
+      if (web) await expect(area(page).locator('.kjun-color-thumb')).toHaveCount(0);
+      await page.keyboard.press('ArrowRight');
+      await expect(page.getByText('여기서 색을 고르세요', { exact: true })).toHaveCount(0);
+      if (web) await expect(area(page).locator('.kjun-color-thumb')).toHaveCount(1);
+    });
+
+    test('the fields show # and % beside the digits without covering them', async ({ page }) => {
+      await trigger(page, 'cp-full', '라벨 색').click();
+      const sign = page.getByText('#', { exact: true }), percent = page.getByText('%', { exact: true });
+      await expect(sign).toBeVisible();
+      await expect(percent).toBeVisible();
+      const [s, field] = [(await sign.boundingBox())!, (await hex(page).boundingBox())!];
+      expect(s.x).toBeGreaterThan(field.x);
+      expect(s.x + s.width).toBeLessThan(field.x + field.width / 4);
+      if (web) {
+        // The digits start after the sign.
+        const textStart = await hex(page).evaluate(el => el.getBoundingClientRect().left + parseFloat(getComputedStyle(el).paddingLeft));
+        expect(textStart).toBeGreaterThanOrEqual(s.x + s.width);
+      }
+    });
+
+    test('every row lines up, thumbs stay inside, and the sliders and swatches group by spacing', async ({ page }) => {
+      await trigger(page, 'cp-full', '라벨 색').click();
+      const alphaSlider = page.getByRole('slider', { name: '투명도' });
+      const boxes = () => Promise.all([area(page), hue(page), alphaSlider, hex(page), swatches(page)].map(async l => (await l.boundingBox())!));
+      // Native Web scales the panel in: measure once its opening motion has settled.
+      // The tracks run the full content width like the area, fields and swatches; hue and opacity sit closer to each other
+      // than to the rest, and the swatches start a new group.
+      await expect.poll(async () => {
+        const [a, h, al, field, group] = await boxes();
+        return [h.x - a.x, h.width - a.width, al.width - a.width, al.y - h.y - h.height, group.y - field.y - field.height].map(Math.round);
+      }).toEqual([0, 0, 0, web ? 8 : 20, 20]);
+      const [a] = await boxes();
+      if (web) {
+        await area(page).focus();
+        await page.keyboard.press('End');
+        await page.keyboard.press('PageUp');
+        await page.keyboard.press('PageUp');
+        await page.keyboard.press('PageUp');
+        const thumb = (await area(page).locator('.kjun-color-thumb').boundingBox())!;
+        expect(thumb.x + thumb.width).toBeLessThanOrEqual(a.x + a.width + 0.5);
+        expect(thumb.y).toBeGreaterThanOrEqual(a.y - 0.5);
+        // The area and the fields share one corner radius.
+        const radii = await Promise.all([area(page), hex(page)].map(l => l.evaluate(el => getComputedStyle(el).borderTopLeftRadius)));
+        expect(radii[0]).toBe(radii[1]);
+      }
+    });
+
+    // Web only: the floating panel opens with a hidden dismiss button, so the section is never its first child. Native sets the gap explicitly.
+    if (web) test('a swatches-only panel starts at its padding, with no section gap above', async ({ page }) => {
+      await trigger(page, 'cp-swatches', '태그 색').click();
+      const gap = async () => Math.round((await swatches(page).boundingBox())!.y - (await page.locator('.kjun-color-panel').boundingBox())!.y);
+      await expect.poll(gap).toBe(12);
+    });
+
+    test('pressing the left edge of a track or the area picks its first value', async ({ page }) => {
+      await trigger(page, 'cp-gray', '회색 확인').click();
+      const box = (await hue(page).boundingBox())!;
+      await page.mouse.click(box.x + 2, box.y + box.height / 2);
+      await expect(hue(page)).toHaveAttribute('aria-valuenow', '0');
+      const end = (await area(page).boundingBox())!;
+      // Inside the rounded corner, but within the half-thumb margin: still the far corner of the range.
+      await page.mouse.click(end.x + end.width - 6, end.y + 6);
+      await expect(area(page)).toHaveAttribute('aria-valuetext', '채도 100%, 명도 100%');
     });
 
     test('the eyedropper picks a screen color once and keeps the opacity', async ({ page }) => {
       await page.addInitScript(() => { (window as any).EyeDropper = class { open() { return Promise.resolve({ sRGBHex: '#0ea5e9' }); } }; });
       await openFixture(page, platform, '', 'color-picker');
       await trigger(page, 'cp-eyedropper', '스포이드').click();
-      await page.getByRole('button', { name: '화면에서 색 고르기' }).click();
+      const button = page.getByRole('button', { name: '화면에서 색 고르기' });
+      // A ghost icon button: no fill until hovered, so it does not read as another field.
+      if (web) expect(await button.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgba(0, 0, 0, 0)');
+      await button.click();
       await expect.poll(() => list(page, 'cp-eyedropper', 'commits')).toEqual(['#0EA5E980']);
       expect(await list(page, 'cp-eyedropper', 'changes')).toEqual(['#0EA5E980']);
       await expect(hex(page)).toHaveValue('0EA5E9');
+    });
+
+    test('the no-color slash is neutral, not the danger color', async ({ page }) => {
+      await trigger(page, 'cp-full', '라벨 색').click();
+      const none = swatches(page).getByRole('radio', { name: '색 없음' });
+      if (web) {
+        const [slash, danger, tertiary] = await none.evaluate(el => {
+          const probe = (v: string) => { const p = document.createElement('span'); p.style.color = `var(${v})`; el.appendChild(p); const c = getComputedStyle(p).color; p.remove(); return c; };
+          return [getComputedStyle(el.querySelector('[data-none] > span')!).backgroundImage, probe('--_kjun-color-danger'), probe('--_kjun-color-text-tertiary')];
+        });
+        expect(slash).not.toContain(danger);
+        expect(slash).toContain(tertiary);
+      } else {
+        // The fixture's demo palette: danger #C52F3B, textTertiary #737373.
+        const fills = (await none.evaluate(el => [...el.querySelectorAll('rect')].map(r => r.getAttribute('fill')))).join(' ').toUpperCase();
+        expect(fills).not.toContain('#C52F3B');
+        expect(fills).toContain('#737373');
+      }
     });
 
     test('without a browser eyedropper the button is not drawn', async ({ page }) => {
@@ -255,16 +365,23 @@ for (const platform of ['react', 'vue3', 'native']) {
     test('panel, area, swatches and triggers take their token sizes', async ({ page }) => {
       for (const [size, height] of [['sm', 32], ['md', 40], ['lg', 48]] as const)
         expect(Math.round((await trigger(page, 'cp-sizes', '크기 ' + size).boundingBox())!.height)).toBe(height);
-      await trigger(page, 'cp-full', '라벨 색').click();
+      const full = trigger(page, 'cp-full', '라벨 색');
+      const triggerWidth = (await full.boundingBox())!.width;
+      await full.click();
       const areaBox = (await area(page).boundingBox())!;
       expect(Math.round(areaBox.height)).toBe(160);
-      expect(Math.round(areaBox.width)).toBe(240 - 2 * 12);
+      // A mouse gets the 240px panel; Native is touch and follows the trigger up to 360px.
+      const content = web ? 240 - 2 * 12 : Math.round(Math.min(triggerWidth, 360)) - 2 * 12;
+      expect(Math.round(areaBox.width)).toBe(content);
       // Eight fixed columns fill the content width: (216 - 7 × 8) / 8 = 20px a swatch, so 'none' + 7 colors make one row.
       const radios = swatches(page).getByRole('radio');
-      const boxes = await Promise.all([...Array(8).keys()].map(async i => (await radios.nth(i).boundingBox())!));
+      const eight = () => Promise.all([...Array(8).keys()].map(async i => (await radios.nth(i).boundingBox())!));
+      // Native Web scales the panel in and measures the row: read it once one row holds all eight.
+      await expect.poll(async () => new Set((await eight()).map(box => Math.round(box.y))).size).toBe(1);
+      const boxes = await eight();
       const [a, b] = boxes;
-      expect(Math.round(a.width)).toBe(20);
-      expect(Math.round(a.height)).toBe(20);
+      expect(Math.round(a.width)).toBe(Math.round((content - 7 * 8) / 8));
+      expect(Math.round(a.height)).toBe(Math.round((content - 7 * 8) / 8));
       expect(Math.round(b.x - a.x - a.width)).toBe(8);
       expect(new Set(boxes.map(box => Math.round(box.y))).size).toBe(1);
       expect(Math.round(a.x)).toBe(Math.round(areaBox.x));
@@ -287,6 +404,24 @@ for (const platform of ['react', 'vue3', 'native']) {
         return [Math.round(eighth.y - first.y), Math.round(ninth.x - first.x), Math.round(ninth.y - first.y - first.height)];
       };
       await expect.poll(rows).toEqual([0, 0, 8]);
+    });
+    if (web) test.describe('on a touch screen', () => {
+      test.use({ hasTouch: true, isMobile: true, viewport: { width: 1024, height: 1400 } });
+      test('the panel follows the trigger width and the sliders get taller targets', async ({ page }) => {
+        await openFixture(page, platform, '', 'color-picker');
+        const t = trigger(page, 'cp-full', '라벨 색');
+        await t.click();
+        const boxes = () => Promise.all([t, area(page), hue(page), page.getByRole('slider', { name: '투명도' })].map(async l => (await l.boundingBox())!));
+        // The panel moves while it opens: measure once it has settled.
+        await expect.poll(async () => {
+          const [tb, a, h, al] = await boxes();
+          return [Math.round(a.width) - (Math.round(Math.min(tb.width, 360)) - 24), Math.round(al.y - h.y - h.height)];
+        }).toEqual([0, 20]);
+        const [, , h] = await boxes();
+        // A press 10px above the hue track still lands on it.
+        const hit = await page.evaluate(([x, y]) => document.elementFromPoint(x, y)?.closest('[role="slider"]')?.getAttribute('aria-label'), [h.x + h.width / 2, h.y - 8]);
+        expect(hit).toBe('색상');
+      });
     });
   });
 }

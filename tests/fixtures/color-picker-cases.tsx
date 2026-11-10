@@ -2,12 +2,13 @@ import { useState } from 'react';
 // KjunColorPicker cases for React and Native (Vue 3 mirrors this in color-picker-vue3.tsx).
 export const cpSwatches = ['#EF4444', '#F97316', '#22C55E', '#3B82F6', '#8B5CF6', '#111111', '#FFFFFF'];
 export const cpBadSwatches = ['nope', '#22C55E', ...cpSwatches];
+export const cpNamedSwatches = [{ value: '#EF4444', label: '빨강' }, { value: '#3B82F6', label: '파랑' }, '#22C55E'];
 
 /** Recent colors kept by the app, the way an app would store them. */
 function RecentCase({ K }: { K: any }) {
-  const [recent, setRecent] = useState<string[]>(['#111111', '#EF4444']);
+  const [recent, setRecent] = useState<string[]>(['#0EA5E9', '#EF4444']);
   return <div data-testid="cp-recent" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-    <K.KjunColorPicker ariaLabel="최근 색" defaultValue="#3B82F6" swatches={cpSwatches} recentColors={recent} onRecentColorsChange={setRecent} />
+    <K.KjunColorPicker ariaLabel="최근 색" defaultValue="#3B82F6" input swatches={cpSwatches} recentColors={recent} onRecentColorsChange={setRecent} />
     <output data-testid="cp-recent-list">{JSON.stringify(recent)}</output>
   </div>;
 }
@@ -37,6 +38,7 @@ export function ColorPickerCases({ K, native = false, providerProps = {} }: { K:
     <Case K={K} id="cp-controlled" initial="#3B82F6" controlled native={native} props={{ ariaLabel: '제어 색', custom: true, input: true }} />
     <Case K={K} id="cp-alpha-off" initial="#3B82F680" controlled native={native} props={{ ariaLabel: '알파 끔', input: true }} />
     <RecentCase K={K} />
+    <Case K={K} id="cp-named" initial="#EF4444" props={{ ariaLabel: '이름 색', clearable: true, swatches: cpNamedSwatches }} />
     <Case K={K} id="cp-alpha-round" initial="#11223381" props={{ ariaLabel: '반올림', alpha: true, input: true }} />
     <Case K={K} id="cp-eyedropper" initial="#3B82F680" props={{ ariaLabel: '스포이드', eyeDropper: true, alpha: true, input: true }} />
     <div data-testid="cp-states" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
