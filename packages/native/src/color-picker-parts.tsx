@@ -4,7 +4,7 @@ import Svg, { Defs, LinearGradient, Pattern, Rect, Stop } from "react-native-svg
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
 import { channelKey, colorAreaKey, colorSwatchSize, thumbOffset, trackFraction } from "../../../shared/package-runtime/color-picker";
-import { alphaFieldLive, colorAreaActionKey, hexFieldCommit, hexFieldLive, hexFieldText } from "../../../shared/package-runtime/color-picker-model";
+import { alphaFieldLive, hexFieldClean, colorAreaActionKey, hexFieldCommit, hexFieldLive, hexFieldText } from "../../../shared/package-runtime/color-picker-model";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
@@ -315,7 +315,7 @@ export function ColorInputs({ fields, value, alpha, alphaPercent, clearable, hex
         <FieldTextInput ref={hexRef} accessibilityLabel={hexLabel} value={text} maxLength={alpha ? 9 : 7} autoCapitalize="characters" autoCorrect={false} spellCheck={false}
           placeholder="RRGGBB" placeholderTextColor={colors.inputPlaceholder} style={{ ...style, paddingLeft: pad + signWidth + gap }}
           onChangeText={next => {
-            const clean = next.replace(/^#/, "");
+            const clean = hexFieldClean(next, alpha);
             setText(clean);
             edit("hex", hexFieldLive(clean, alpha, value));
           }}

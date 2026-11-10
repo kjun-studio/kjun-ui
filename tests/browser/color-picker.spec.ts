@@ -113,6 +113,16 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(await list(page, 'cp-custom', 'commits')).toEqual(['#33BB88', '#3B82F6']);
     });
 
+    test('the hex field takes six digits, and a pasted code with # fits', async ({ page }) => {
+      await trigger(page, 'cp-custom', '강조색').click();
+      await hex(page).pressSequentially('3B82F6A');
+      await expect(hex(page)).toHaveValue('3B82F6');
+      await expect.poll(() => list(page, 'cp-custom', 'changes')).toEqual(['#3B82F6']);
+      await hex(page).fill('#22C55E');
+      await expect(hex(page)).toHaveValue('22C55E');
+      await expect.poll(() => list(page, 'cp-custom', 'changes')).toEqual(['#3B82F6', '#22C55E']);
+    });
+
     test('a quick tap on the area changes and commits once', async ({ page }) => {
       await trigger(page, 'cp-gray', '회색 확인').click();
       await area(page).click({ position: { x: 20, y: 20 } });

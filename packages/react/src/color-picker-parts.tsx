@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type 
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
 import { channelKey, colorAreaKey, trackFraction } from "../../../shared/package-runtime/color-picker";
-import { alphaFieldLive, hexFieldCommit, hexFieldLive, hexFieldText } from "../../../shared/package-runtime/color-picker-model";
+import { alphaFieldLive, hexFieldClean, hexFieldCommit, hexFieldLive, hexFieldText } from "../../../shared/package-runtime/color-picker-model";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { inputTypeStyle } from "./typography";
 import { KjunButton, KjunIcon } from "./button";
@@ -195,7 +195,7 @@ export function ColorInputs({ fields, value, alpha, alphaPercent, clearable, hex
           <input ref={hexRef} className="kjun-input kjun-input-native kjun-color-hex" aria-label={hexLabel} value={text} maxLength={alpha ? 9 : 7}
             placeholder="RRGGBB" spellCheck={false} autoComplete="off" style={{ ...style, paddingLeft: pad + signWidth + gap }}
             onChange={event => {
-              const next = event.target.value.replace(/^#/, "");
+              const next = hexFieldClean(event.target.value, alpha);
               setText(next);
               edit("hex", hexFieldLive(next, alpha, value));
             }}

@@ -3,7 +3,7 @@ import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { formatColor, hsvToRgb, readableInk, type Hsv } from "../../../shared/package-runtime/color";
 import { channelKey, colorAreaKey, trackFraction } from "../../../shared/package-runtime/color-picker";
-import { alphaFieldLive, hexFieldCommit, hexFieldLive, hexFieldText } from "../../../shared/package-runtime/color-picker-model";
+import { alphaFieldLive, hexFieldClean, hexFieldCommit, hexFieldLive, hexFieldText } from "../../../shared/package-runtime/color-picker-model";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { KjunButton, KjunIcon } from "./button";
@@ -246,7 +246,9 @@ export const ColorInputs = defineComponent({
               <input ref={el => props.hexRef(el as HTMLInputElement | null)} class="kjun-input kjun-input-native kjun-color-hex" aria-label={props.hexLabel} value={text.value}
                 maxlength={props.alpha ? 9 : 7} placeholder="RRGGBB" spellcheck={false} autocomplete="off" style={css({ ...style, paddingLeft: pad + signWidth.value + gap })}
                 onInput={(event: Event) => {
-                  const next = (event.target as HTMLInputElement).value.replace(/^#/, "");
+                  const input = event.target as HTMLInputElement, next = hexFieldClean(input.value, props.alpha);
+                  // A cut digit leaves the DOM ahead of the model: put the kept text back.
+                  if (input.value !== next) input.value = next;
                   text.value = next;
                   edit("hex", hexFieldLive(next, props.alpha, props.value));
                 }}

@@ -9,7 +9,7 @@ const load = async entry => {
 };
 const {
   alphaFieldLive, alphaPercentHex, colorAlphaHex, colorAreaActionKey, colorAreaActions, createCommitSession, eyeDropperSupported, hexFieldCommit, hexFieldLive,
-  hexFieldText, nextRecentColors, pickScreenColor, recentColorItems, recentColorLimit,
+  hexFieldClean, hexFieldText, nextRecentColors, pickScreenColor, recentColorItems, recentColorLimit,
 } = await load('shared/package-runtime/color-picker-model.ts');
 const { colorName, createPickerWarnings, initialFocusTarget, pickerSummary, selectedSwatchIndex, swatchItems, thumbOffset, trackFraction } = await load('shared/package-runtime/color-picker.ts');
 const { kjunMessagesKo: ko, kjunMessagesEn: en } = await load('shared/package-runtime/messages/index.ts');
@@ -153,4 +153,12 @@ test('thumbs stay inside their track: the ends sit half a thumb in, and pointers
 test('the area hint reads in both languages', () => {
   assert.equal(ko.colorAreaHint, '여기서 색을 고르세요');
   assert.equal(en.colorAreaHint, 'Pick a color here');
+});
+
+test('the hex field keeps only the digits a code can hold', () => {
+  assert.equal(hexFieldClean('#3b82f6', false), '3b82f6', 'a pasted # is dropped');
+  assert.equal(hexFieldClean('3B82F6A', false), '3B82F6', 'a seventh digit does not fit');
+  assert.equal(hexFieldClean('#3B82F680', true), '3B82F680');
+  assert.equal(hexFieldClean('3B82F680FF', true), '3B82F680', 'eight digits with alpha');
+  assert.equal(hexFieldClean('3B8', false), '3B8', 'a short code stays for Enter to expand');
 });

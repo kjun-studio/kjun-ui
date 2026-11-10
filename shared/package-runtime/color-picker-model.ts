@@ -28,6 +28,9 @@ const validPercent = (text: string) => /^\d{1,3}$/.test(text.trim()) && Number(t
 
 /** What the hex field shows: six digits without #. */
 export const hexFieldText = (value: string | null) => value ? value.slice(1, 7) : "";
+/** What the hex field keeps of typed or pasted text: no #, and at most the 6 digits (8 with alpha) a code holds.
+ * The fields' maxLength leaves room for a pasted #, so the extra digit is cut here. */
+export const hexFieldClean = (text: string, alpha: boolean) => text.replace(/^#/, "").slice(0, alpha ? 8 : 6);
 /** A change while typing in the hex field: only a complete code (6 digits, or 8 with alpha); 6 digits keep the current opacity. */
 export function hexFieldLive(text: string, alpha: boolean, value: string | null): string | null {
   const t = text.trim().replace(/^#/, "");
