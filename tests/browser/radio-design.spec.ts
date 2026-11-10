@@ -25,7 +25,7 @@ async function roles(page: Page) {
       probe.style.color = `var(--kjun-${name})`; root.appendChild(probe);
       const value = getComputedStyle(probe).color; probe.remove(); return value;
     };
-    return { brand: role('brand'), hover: role('brand-hover'), active: role('brand-active'), border: role('border-strong'), disabledBorder: role('border-secondary'), surface: role('surface') };
+    return { brand: role('brand'), hover: role('brand-hover'), active: role('brand-active'), border: role('border-strong'), disabled: role('text-disabled'), surface: role('surface') };
   });
 }
 for (const platform of ['react', 'vue3', 'native']) {
@@ -33,10 +33,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     for (const palette of ['', '?palette=dark']) {
       await openFixture(page, platform, palette, 'radio-design');
       const before = await geometry(radio(page), platform);
-      expect(before.circle.width).toBe(20); expect(before.circle.height).toBe(20); expect(before.border).toBe('2px');
-      expect(before.dot!.width).toBe(8); expect(before.dot!.height).toBe(8);
-      expect(before.dot!.x + 4).toBeCloseTo(before.circle.x + 10);
-      expect(before.dot!.y + 4).toBeCloseTo(before.circle.y + 10);
+      // Radio shares Checkbox's 24px control so mixed choice lists line up; the dot keeps the same proportion.
+      expect(before.circle.width).toBe(24); expect(before.circle.height).toBe(24); expect(before.border).toBe('2px');
+      expect(before.dot!.width).toBe(10); expect(before.dot!.height).toBe(10);
+      expect(before.dot!.x + 5).toBeCloseTo(before.circle.x + 12);
+      expect(before.dot!.y + 5).toBeCloseTo(before.circle.y + 12);
       expect(before.gap).toBe(8); expect(before.weight).toBe('500'); expect(before.shadow).toBe('none');
       // Native rows keep the 44px touch target on coarse pointers and the 32px choice row on fine ones, like Web.
       if (platform === 'native') expect(before.wrapper.height).toBeGreaterThanOrEqual(await page.evaluate(() => matchMedia('(pointer: coarse)').matches) ? 44 : 32);
@@ -49,7 +50,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       const standalone = radio(page, '개별 항목');
       await page.getByText('개별 항목', { exact: true }).click();
       await expect(standalone).toBeChecked();
-      expect((await geometry(standalone, platform)).dot!.width).toBe(8);
+      expect((await geometry(standalone, platform)).dot!.width).toBe(10);
       const checkbox = page.getByRole('checkbox');
       const check = await geometry(checkbox, platform);
       // Checkbox and Radio share the 8px label gap so mixed choice lists align their labels.
@@ -79,8 +80,9 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(item).toBeDisabled();
       const box = (await circle.boundingBox())!;
       await page.mouse.move(box.x + 10, box.y + 10); await page.mouse.down();
-      await expect(circle).toHaveCSS('border-top-color', name === '사과' ? colors.brand : colors.disabledBorder);
-      expect((await geometry(item, platform)).opacity).toBe('0.5');
+      // Disabled is drawn by the disabled-text role on every part, not by fading the row.
+      await expect(circle).toHaveCSS('border-top-color', colors.disabled);
+      expect((await geometry(item, platform)).opacity).toBe('1');
       await page.mouse.up();
     }
     await expect(radio(page)).toBeChecked(); await expect(page.getByTestId('events')).toBeEmpty();

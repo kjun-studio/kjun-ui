@@ -54,16 +54,19 @@ for (const platform of ['react', 'vue3', 'native']) {
     }
   });
 
-  test(`${platform}: long titles wrap below the first aligned row without clipping optional slots`, async ({ page }) => {
+  test(`${platform}: long titles stay on one line with an ellipsis and actions keep the first row`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 900 });
     await openFixture(page, platform, '', 'top-navigation-design');
     const long = '팀과 함께 관리하는 프로젝트의 상세 설정';
-    await configure(page, { title: long, multiple: true });
+    await configure(page, { title: long, multiple: true, description: '' });
     const t = await rect(title(page, long)), b = await rect(back(page));
-    expect(t.height).toBeGreaterThan(28); expect(b.y + b.height / 2).toBe(t.y + 14);
+    expect(t.height).toBe(28); expect(b.y + b.height / 2).toBe(t.y + 14);
+    await expect(header(page)).toHaveCSS('height', '56px');
+    await expect(title(page, long)).toHaveCSS('text-overflow', 'ellipsis');
+    await expect.poll(() => title(page, long).evaluate(el => el.scrollWidth > el.clientWidth)).toBe(true);
     for (const text of ['저장', '취소']) {
       const r = await rect(page.getByRole('button', { name: text, exact: true }));
-      expect(r.y).toBeGreaterThanOrEqual(t.y + t.height); expect(r.x + r.width).toBeLessThanOrEqual(304);
+      expect(r.y).toBe(b.y); expect(r.x + r.width).toBeLessThanOrEqual(304);
     }
     await assertReadable(page, long);
     const identifier = 'https://example.com/' + 'identifier'.repeat(15);
@@ -97,13 +100,16 @@ for (const platform of ['react', 'vue3', 'native']) {
     await save(page).click(); await expect(page.getByTestId('events')).toHaveText('save');
   });
 
-  test(`${platform}: long actions wrap without overlapping the title and return to the first row when space permits`, async ({ page }) => {
+  test(`${platform}: long actions stay on the first row with an ellipsis and leave the title its minimum width`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 900 });
     await openFixture(page, platform, '', 'top-navigation-design');
     const text = 'Save changes and continue to the next project without losing any changes';
     await configure(page, { actionText: text, variant: 'secondary' });
     const control = page.getByRole('button', { name: text, exact: true });
-    await expect.poll(async () => (await rect(control)).height).toBeGreaterThan(44);
+    await expect(control).toHaveCSS('height', '44px');
+    await expect.poll(async () => (await rect(control)).y).toBe((await rect(back(page))).y);
+    // The actions stop short of the title's 120px minimum, measured from the content box (320 - 2 * 16).
+    expect((await rect(control)).width).toBeLessThanOrEqual(288 - 120);
     await expect(control).toHaveAccessibleName(text);
     await assertReadable(page);
     const before = await rect(control);
@@ -129,7 +135,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     const control = page.getByRole('button', { name: text, exact: true });
     await expect(control).toHaveCSS('height', '44px');
     await expect(control).toHaveAccessibleName(text);
-    await expect.poll(async () => (await rect(title(page))).width).toBeGreaterThanOrEqual(120);
+    // The leading slot stops at 40% of the bar; the title keeps the rest of the single row.
+    expect((await rect(control)).width).toBeLessThanOrEqual(288 * 0.4 + 1);
+    await expect.poll(async () => (await rect(title(page))).width).toBeGreaterThan(0);
     const label = control.getByText(text, { exact: true });
     await expect(label).toHaveCSS('text-overflow', 'ellipsis');
     if (platform !== 'native') await expect(label).toHaveCSS('display', 'block');
@@ -163,14 +171,16 @@ for (const platform of ['react', 'vue3', 'native']) {
     await configure(page, { loading: false, disabled: true }); await expect(toggle).toBeDisabled();
     await configure(page, { disabled: false }); await expect(refresh).toBeEnabled();
     await page.setViewportSize({ width: 320, height: 900 });
-    await expect.poll(async () => (await rect(refresh)).y).toBeGreaterThan((await rect(title(page))).y + 28);
+    // Icon actions never wrap: they keep the first row and the title shortens instead.
+    await expect.poll(async () => (await rect(refresh)).y).toBe((await rect(back(page))).y);
     await expect.poll(async () => (await rect(toggle)).y).toBe((await rect(refresh)).y);
+    for (const control of await controls.all()) await expect(control).toHaveCSS('width', '44px');
     await assertReadable(page);
     await page.setViewportSize({ width: 1000, height: 900 });
     await expect.poll(async () => (await rect(refresh)).y).toBe((await rect(back(page))).y);
     const outside = page.getByRole('button', { name: '일반 즐겨찾기', exact: true });
-    // Outside navigation, the default md toggle keeps its own square (native keeps the 44pt target).
-    await expect(outside).toHaveCSS('width', platform === 'native' ? '44px' : tokens.extensions.iconToggle.sizes.md + 'px');
+    // Outside navigation, the default md toggle keeps its own square on every platform (native adds hitSlop to 44pt).
+    await expect(outside).toHaveCSS('width', tokens.extensions.iconToggle.sizes.md + 'px');
     await expect(outside.locator('svg')).toHaveCSS('width', '16px');
   });
 

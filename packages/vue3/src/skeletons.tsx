@@ -28,7 +28,8 @@ const kjunListSkeletonProps = {
   variant: { type: String as PropType<"market" | "compact" | "notification" | "row">, default: "market" },
   /** Defaults to true, or false for the row variant. */
   avatar: { type: Boolean, default: undefined },
-  avatarSize: { type: [Number, String] as PropType<Length>, default: sizes.listAvatarSize },
+  /** Default: ListRow's sm leading square (32) for the row variant, the market avatar (36) otherwise. */
+  avatarSize: { type: [Number, String] as PropType<Length>, default: undefined },
   quote: { type: Boolean, default: true },
   /** Row variant: draws the description line. */
   description: { type: Boolean, default: true },
@@ -45,11 +46,13 @@ export const KjunListSkeleton = defineComponent({
     const shape = inject(kjunListShapeKey, null), leadingSize = tokens.extensions.list.open.leadingSize;
     // Like React: the row variant uses KjunListRow's line boxes (an open section's larger ones, with a rounded leading
     // square) and a compact section's height; other variants take each slot's line height from CSS.
+    // Like React: the row silhouette takes ListRow's sm leading square, other variants the market avatar.
+    const avatarSize = () => props.avatarSize ?? (props.variant === "row" ? tokens.extensions.list.leadingSizes.sm : sizes.listAvatarSize);
     const row = (i: number) => {
       const avatar = props.avatar ?? false, open = !!shape?.value.open, compact = !!shape?.value.compact;
       return (
         <div key={i} class="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined} data-open={open || undefined} data-density={compact ? "compact" : undefined}>
-          {avatar && <div class="kjun-list-skeleton-leading">{open ? <KjunSkeleton type="block" width={leadingSize} height={leadingSize} /> : <KjunSkeleton type="avatar" width={props.avatarSize} height={props.avatarSize} />}</div>}
+          {avatar && <div class="kjun-list-skeleton-leading">{open ? <KjunSkeleton type="block" width={leadingSize} height={leadingSize} /> : <KjunSkeleton type="avatar" width={avatarSize()} height={avatarSize()} />}</div>}
           <div class="kjun-list-skeleton-label">
             <KjunSkeleton type="line" role={open ? "input" : "control"} width={i % 2 ? "55%" : "40%"} />
             {props.description && <KjunSkeleton type="line" role={open ? "body" : "caption"} width="30%" />}
@@ -65,7 +68,7 @@ export const KjunListSkeleton = defineComponent({
     };
     const quoteRow = (i: number) => (
       <div key={i} class="kjun-list-skeleton-row" data-variant={props.variant}>
-        {(props.avatar ?? true) && <KjunSkeleton type="avatar" width={props.avatarSize} height={props.avatarSize} />}
+        {(props.avatar ?? true) && <KjunSkeleton type="avatar" width={avatarSize()} height={avatarSize()} />}
         <div class="kjun-list-skeleton-label">
           <KjunSkeleton type="line" width={i % 2 ? "80%" : "65%"} />
           <KjunSkeleton type="line" width="50%" />

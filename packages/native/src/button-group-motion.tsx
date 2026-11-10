@@ -41,8 +41,8 @@ export function useButtonGroupMotion(selected: ChoiceOption | undefined) {
   return { x, width, layout, measure, updateLayout, reduced };
 }
 
-export function ButtonGroupLabel({ label, active, size, reduced }: {
-  label: string; active: boolean; size: ButtonSize; reduced: boolean;
+export function ButtonGroupLabel({ label, active, size, reduced, disabled = false }: {
+  label: string; active: boolean; size: ButtonSize; reduced: boolean; disabled?: boolean;
 }) {
   const { colors, fontFamily } = useKjunStyles();
   const progress = useRef(new Animated.Value(active ? 1 : 0)).current;
@@ -66,7 +66,8 @@ export function ButtonGroupLabel({ label, active, size, reduced }: {
     </View>
     <Animated.Text numberOfLines={1} style={{ position: 'absolute', top: 0, textAlign: 'center',
       ...StyleSheet.flatten(resolveFont({ fontFamily, ...selectionTypeStyle(size, active) })),
-      color: interpolate ? progress.interpolate({ inputRange: [0, 1], outputRange: [colors.textSecondary as string, colors.text as string] }) : active ? colors.text : colors.textSecondary,
+      // One disabled rule, like Button and fields: a disabled segment's ink takes the disabled-text role.
+      color: disabled ? colors.textDisabled : interpolate ? progress.interpolate({ inputRange: [0, 1], outputRange: [colors.textSecondary as string, colors.text as string] }) : active ? colors.text : colors.textSecondary,
     }}>{label}</Animated.Text>
   </View>;
 }

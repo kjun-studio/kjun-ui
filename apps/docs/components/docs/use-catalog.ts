@@ -4,6 +4,7 @@ import { exampleDefinition, presetConfig, type Settings, type Values } from '../
 import type { PaletteName, PlatformName } from '../../../../shared/demo-config';
 import type { ExampleSources } from '../../../../shared/example-code';
 import { useDocsPlatform } from './docs-platform';
+import { useDocumentPalette } from './use-document-palette';
 // Defined in vite.config.ts: 15000 by default, raised for docs test builds.
 declare const __KJUN_PREVIEW_READY_MS__: number;
 export interface PreviewSnapshot { settings: Settings; values: Values; height: number }
@@ -21,6 +22,12 @@ export function useCatalog(name: string, platform: PlatformName, initialPalette:
   const [ready, setReady] = useState(false), [failed, setFailed] = useState(false), [reload, setReload] = useState(0);
   const [events, setEvents] = useState<PreviewEvent[]>([]), [sources, setSources] = useState<ExampleSources | null>(null);
   const [narrow, setNarrow] = useState(false), [wide, setWide] = useState(false);
+  // The docs default palette tracks the document's light/dark mode until a reader picks a palette.
+  const documentPalette = useDocumentPalette();
+  const followsDocument = useRef(initialPalette === 'default');
+  useEffect(() => {
+    if (followsDocument.current) setConfig(previous => previous.palette === documentPalette ? previous : { ...previous, palette: documentPalette, revision: previous.revision + 1 });
+  }, [documentPalette]);
   const current = useRef({ config, snapshot, platform, ready });
   current.current = { config, snapshot, platform, ready };
   const post = (type: string, data: object = {}) => frame.current?.contentWindow?.postMessage({ type, ...data }, location.origin);
@@ -96,9 +103,9 @@ export function useCatalog(name: string, platform: PlatformName, initialPalette:
     narrow, wide, setNarrow, expand, send, reset, changeSettings,
     interact: (action: string) => post("kjun:catalog-interact", { action, component: name, platform, session, revision: current.current.config.revision }),
     clearEvents: () => setEvents([]), retry: () => { setConfig(previous => ({ ...previous, values: current.current.snapshot.values, reset: previous.reset + 1, revision: previous.revision + 1 })); setReload(value => value + 1); },
-    palette: (palette: PaletteName) => setConfig(previous => ({ ...previous, palette, revision: previous.revision + 1 })),
+    palette: (palette: PaletteName) => { followsDocument.current = false; setConfig(previous => ({ ...previous, palette, revision: previous.revision + 1 })); },
     configure: (nextPlatform: PlatformName, settings: Settings, palette: PaletteName) => {
-      setAppliedPlatform(nextPlatform); selectPlatform(nextPlatform);
+      followsDocument.current = false; setAppliedPlatform(nextPlatform); selectPlatform(nextPlatform);
       restart(settings, {}, palette);
     },
   };

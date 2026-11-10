@@ -38,8 +38,8 @@
 .kjun-slider {
   --_kjun-slider-track:var(--_kjun-extension-slider-track); --_kjun-slider-thumb:var(--_kjun-extension-slider-thumb);
   --_kjun-slider-band:var(--_kjun-extension-slider-track-height); --_kjun-slider-pressed:var(--_kjun-extension-slider-pressed-thumb);
-  /* The lift plus a hairline in the border role, so a white thumb still reads on a white surface. */
-  --_kjun-slider-thumb-shadow:0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border), var(--_kjun-slider-elevation);
+  /* The lift plus a hairline in the strong border role (the control-boundary role), so a white thumb reads on a white surface. */
+  --_kjun-slider-thumb-shadow:0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border-strong), var(--_kjun-slider-elevation);
   width:100%; min-width:var(--_kjun-extension-slider-minimum-width); display:grid;
 }
 .kjun-slider[data-size=sm] {
@@ -76,8 +76,9 @@
   height:var(--_kjun-slider-track); border-radius:var(--_kjun-geometry-radius-radius9999);
 }
 .kjun-slider-rail {
+  /* One empty-rail role for Slider, RangeSlider, Progress and the circle track: the switch-track role. */
   left:calc(var(--_kjun-slider-thumb) / -2); right:calc(var(--_kjun-slider-thumb) / -2);
-  background:color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-tint-active) * 100%), transparent);
+  background:var(--_kjun-color-switch-track);
 }
 .kjun-slider-fill { background:var(--_kjun-color-brand); }
 /* One white thumb lifted by a contact shadow, like the switch thumb; pressing adds a brand halo and grows it to pressedThumb. */
@@ -97,7 +98,13 @@
   width:var(--_kjun-slider-pressed); height:var(--_kjun-slider-pressed); cursor:grabbing;
 }
 .kjun-slider-thumb[data-focus-visible] { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-choice-offset); z-index:2; }
-.kjun-slider[data-disabled=true] { opacity:var(--_kjun-state-opacity-disabled); }
+/* One disabled rule, as Button and fields: no fading; the fill, the thumb edge and the text take the disabled-text role
+   and the thumb loses its lift, so it no longer reads as draggable. */
+.kjun-slider[data-disabled=true] {
+  --_kjun-slider-thumb-shadow:0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-text-disabled);
+}
+.kjun-slider[data-disabled=true] :is(.kjun-slider-label, .kjun-slider-value, .kjun-slider-marks) { color:var(--_kjun-color-text-disabled); }
+.kjun-slider[data-disabled=true] .kjun-slider-fill { background:var(--_kjun-color-text-disabled); }
 .kjun-slider[data-disabled=true] .kjun-slider-thumb { cursor:default; }
 /* marks: a dot at each mark on the rail (light on the fill), and its label under the band. Edge labels align to the rail ends. */
 .kjun-slider-mark {
@@ -139,8 +146,9 @@
 .kjun-slider[data-orientation=vertical] .kjun-slider-mark-label { left:0; transform:translateY(-50%); }
 
 .kjun-top-navigation { flex-shrink:0; }
+/* One row at any width: the title shrinks to an ellipsis, icon actions keep their size and text actions shorten. */
 .kjun-navigation-content {
-  min-height:var(--_kjun-extension-top-navigation-minimum-height); display:flex; flex-wrap:wrap; align-items:flex-start;
+  min-height:var(--_kjun-extension-top-navigation-minimum-height); display:flex; flex-wrap:nowrap; align-items:flex-start;
   gap:var(--_kjun-extension-top-navigation-gap);
   padding:var(--_kjun-extension-top-navigation-padding-y) var(--_kjun-extension-top-navigation-padding-x);
 }
@@ -149,23 +157,30 @@
   min-height:var(--_kjun-extension-top-navigation-control-size);
 }
 .kjun-navigation-title {
-  flex:1 1 var(--_kjun-extension-top-navigation-title-minimum-width); min-width:0; word-break:keep-all; overflow-wrap:anywhere;
+  flex:1 1 0; min-width:0; word-break:keep-all; overflow-wrap:anywhere;
   padding-block:max(0px, calc((var(--_kjun-extension-top-navigation-control-size) - var(--_kjun-type-section-title-line)) / 2));
 }
 .kjun-navigation-title strong {
   display:block; font-size:var(--_kjun-type-section-title-size); line-height:var(--_kjun-type-section-title-line);
   font-weight:var(--_kjun-type-control-weight); letter-spacing:var(--_kjun-type-section-title-tracking);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 .kjun-navigation-title p {
   margin:var(--_kjun-extension-top-navigation-description-gap) 0 0; color:var(--_kjun-color-text-secondary);
   font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line);
   font-weight:var(--_kjun-type-caption-weight); letter-spacing:var(--_kjun-type-caption-tracking);
+  /* One line like the title, so the bar keeps its height beside its actions. */
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
+/* Actions never wrap or shrink below their icons; text actions stop short of the title's minimum width and end in an ellipsis. */
 .kjun-top-navigation .kjun-navigation-actions {
-  min-height:var(--_kjun-extension-top-navigation-control-size); max-width:100%; flex-shrink:1; margin-inline-start:auto;
+  min-height:var(--_kjun-extension-top-navigation-control-size); flex:none; flex-wrap:nowrap; margin-inline-start:auto;
+  max-width:calc(100% - var(--_kjun-extension-top-navigation-title-minimum-width));
   gap:var(--_kjun-extension-top-navigation-actions-gap);
 }
-.kjun-navigation-leading > *, .kjun-top-navigation .kjun-navigation-actions > * { min-width:0; max-width:100%; }
+.kjun-navigation-leading > *, .kjun-top-navigation .kjun-navigation-actions > * { flex-shrink:0; min-width:0; max-width:100%; }
+.kjun-navigation-leading > :has(.kjun-button-label:not(:empty)),
+.kjun-top-navigation .kjun-navigation-actions > :has(.kjun-button-label:not(:empty)) { flex-shrink:1; }
 /* Icon-only controls at either end align their glyph, not their 44px target, with the content gutter;
    the target extends into the padding. Text buttons keep their own padding. */
 .kjun-top-navigation {
@@ -180,9 +195,8 @@
 .kjun-top-navigation .kjun-navigation-actions:has(> :last-child .kjun-button-label:empty, > .kjun-icon-toggle:last-child, > :last-child .kjun-icon-toggle) {
   margin-inline-end:var(--_kjun-navigation-edge-inset);
 }
-.kjun-top-navigation .kjun-button { white-space:normal; overflow-wrap:anywhere; }
-.kjun-top-navigation .kjun-button-label { min-width:0; }
-.kjun-navigation-leading .kjun-button-label { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.kjun-top-navigation .kjun-button { white-space:nowrap; }
+.kjun-top-navigation .kjun-button-label { display:block; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
 .kjun-bottom-navigation { display:flex; flex-shrink:0; }
 /* A hairline on the surface keeps the bar apart from content scrolling under it; a bar without a surface stays seamless. */
@@ -230,9 +244,9 @@
   font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); font-weight:var(--_kjun-type-control-weight);
   font-variant-numeric:tabular-nums;
 }
-/* A dot sits on the icon's top-right corner. */
+/* Counts and dots sit on the icon's top-right corner, overlapping only its outer edge (badge overlap), clear of the glyph strokes. */
 .kjun-navigation-badge[data-dot] {
-  top:0; inset-inline-start:calc(100% - var(--_kjun-extension-bottom-navigation-dot-size) + var(--_kjun-border-control-width));
+  top:0; inset-inline-start:calc(100% - var(--_kjun-extension-bottom-navigation-badge-overlap));
   min-width:0; min-height:0; width:var(--_kjun-extension-bottom-navigation-dot-size); height:var(--_kjun-extension-bottom-navigation-dot-size); padding:0;
 }
 /* Without a surface the bar shows the page background, so the ring takes that colour instead. */

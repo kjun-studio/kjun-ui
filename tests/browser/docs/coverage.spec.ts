@@ -116,8 +116,11 @@ test('720px content boundary and mobile cards retain expansion and expose only o
     await page.setViewportSize({ width, height: 1000 });
     await expect(search(page)).toHaveValue('KjunSearchInput');
     await expect(trigger()).toHaveAttribute('aria-expanded', 'true');
-    await expect(rows(page).locator('.coverage-status')).toHaveText(['지원', '지원', '미리보기']);
-    if (width < 720) await expect(rows(page).locator('dt')).toHaveText(['Vue 3', 'React', 'Native Web']);
+    // Wide tables state platform columns that are identical for every component once, above the table.
+    if (width < 720) {
+      await expect(rows(page).locator('.coverage-status')).toHaveText(['지원', '지원', '미리보기']);
+      await expect(rows(page).locator('dt')).toHaveText(['Vue 3', 'React', 'Native Web']);
+    } else await expect(page.locator('.coverage-uniform-note .coverage-status')).toHaveText(['지원', '지원', '미리보기']);
     await noOverflow(page);
     for (const name of ['KjunProvider', 'KjunFeedbackProvider', 'KjunFormLayout']) {
       const card = page.locator(`[data-coverage-service="${name}"]`);

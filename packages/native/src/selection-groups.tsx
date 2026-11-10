@@ -72,16 +72,20 @@ export function KjunButtonGroup({
           accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
           style={{ position: 'absolute', left: 0, top: motion.layout.y, height: motion.layout.height,
             width: motion.width, transform: [{ translateX: motion.x }], borderRadius: itemRadius,
-            // Disabled options dim their own labels; the selected value stays readable. The edge keeps it
-            // apart from the track when surface and secondary are close.
-            backgroundColor: colors.surface, borderWidth: tokens.border.defaultWidth, borderColor: colors.border,
+            // A surface fill on the secondary track with no edge, like Web: in-flow controls are fill-only.
+            backgroundColor: colors.surface,
           }} />}
         {options.map((option) => {
           const active = value === option.value,
             blocked = disabled || option.disabled;
+          // The painted segment keeps Web's height (the group height less its padding); hitSlop reaches the
+          // 44pt touch target above and below it, like KjunButton.
+          const itemHeight = tokens.buttonGroup.heights[size] - 2 * padding,
+            hit = Math.max(0, (tokens.native.minimumTouchTarget - itemHeight) / 2);
           return (
             <Pressable
               key={String(option.value)}
+              hitSlop={{ top: hit, bottom: hit }}
               ref={node => { if (node) itemRefs.current.set(option.value, node); else itemRefs.current.delete(option.value); }}
               onLayout={event => motion.measure(option.value, event)}
               accessibilityRole="button"
@@ -99,9 +103,7 @@ export function KjunButtonGroup({
                 justifyContent: "center",
                 gap: tokens.dimension.value6,
                 flex: fullWidth ? 1 : undefined,
-                minWidth: tokens.native.minimumTouchTarget,
-                minHeight: tokens.native.minimumTouchTarget,
-                height: Math.max(tokens.native.minimumTouchTarget, tokens.buttonGroup.heights[size] - 2 * padding),
+                height: itemHeight,
                 paddingHorizontal: tokens.buttonGroup.itemPaddingX[size],
                 borderRadius: itemRadius,
                 backgroundColor: active && !motion.layout
@@ -109,18 +111,17 @@ export function KjunButtonGroup({
                   : pressed && !active
                   ? colors.hover
                   : "transparent",
-                opacity: blocked ? tokens.states.opacity.disabled : 1,
               })}
             >
               {!!option.icon && (
                 <KjunIcon
                   name={option.icon}
                   size={tokens.extensions.selection.iconSize}
-                  color={active ? colors.text : colors.textSecondary}
+                  color={blocked ? colors.textDisabled : active ? colors.text : colors.textSecondary}
                 />
               )}
               <ButtonGroupLabel label={option.label} active={active} reduced={motion.reduced}
-                size={size} />
+                size={size} disabled={!!blocked} />
             </Pressable>
           );
         })}
@@ -193,7 +194,6 @@ export function KjunFilterGroup({
             style={{
               minHeight: roomy ? undefined : tokens.native.minimumTouchTarget,
               justifyContent: "center",
-              opacity: blocked ? tokens.states.opacity.disabledStrong : 1,
             }}
           >
             <View
@@ -226,7 +226,7 @@ export function KjunFilterGroup({
                 <KjunIcon
                   name={option.icon}
                   size={tokens.extensions.selection.iconSize}
-                  color={active ? colors.filterSelectedText : colors.textSecondary}
+                  color={blocked ? colors.textDisabled : active ? colors.filterSelectedText : colors.textSecondary}
                 />
               )}
               <View style={{ alignItems: 'center' }}>
@@ -242,7 +242,8 @@ export function KjunFilterGroup({
                   position: 'absolute', top: 0,
                   ...selectionTypeStyle(size, active),
 
-                  color: active ? colors.filterSelectedText : colors.textSecondary,
+                  // One disabled rule, like Button and fields: the chip keeps its fill and its ink takes the disabled-text role.
+                  color: blocked ? colors.textDisabled : active ? colors.filterSelectedText : colors.textSecondary,
                 }}
               >
                 {option.label}

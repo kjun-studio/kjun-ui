@@ -3971,7 +3971,7 @@
         "field": "KjunInput",
         "parent": "KjunFormGroup"
       },
-      "behavior": "KjunInput과 조합한 자동 라벨·도움말·오류 연결 및 두 인스턴스 ID. KjunFormGroup 안에서 사용하는 하위 구성입니다. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 도움말과 오류를 모두 설명으로 연결합니다.",
+      "behavior": "KjunInput과 조합한 자동 라벨·도움말·오류 연결 및 두 인스턴스 ID. KjunFormGroup 안에서 사용하는 하위 구성입니다. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 오류가 도움말 자리를 대신하고 오류만 설명으로 연결합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
@@ -4049,7 +4049,7 @@
         "field": "KjunInput",
         "parent": "KjunFormGroup"
       },
-      "behavior": "KjunInput과 조합한 자동 라벨·도움말·오류 연결 및 두 인스턴스 ID. KjunFormGroup 안에서 사용하는 하위 구성입니다. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 도움말과 오류를 모두 설명으로 연결합니다.",
+      "behavior": "KjunInput과 조합한 자동 라벨·도움말·오류 연결 및 두 인스턴스 ID. KjunFormGroup 안에서 사용하는 하위 구성입니다. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 오류가 도움말 자리를 대신하고 오류만 설명으로 연결합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
@@ -4127,7 +4127,7 @@
         "field": "KjunInput",
         "parent": "KjunFormGroup"
       },
-      "behavior": "KjunInput과 조합한 자동 라벨·도움말·오류 연결 및 두 인스턴스 ID. KjunFormGroup 안에서 사용하는 하위 구성입니다. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 도움말과 오류를 모두 설명으로 연결합니다.",
+      "behavior": "KjunInput과 조합한 자동 라벨·도움말·오류 연결 및 두 인스턴스 ID. KjunFormGroup 안에서 사용하는 하위 구성입니다. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 오류가 도움말 자리를 대신하고 오류만 설명으로 연결합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
@@ -4204,7 +4204,7 @@
       "scenario": {
         "field": "KjunInput"
       },
-      "behavior": "문자 입력과 FormGroup의 라벨·도움말·오류 전환. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 도움말과 오류를 모두 설명으로 연결합니다.",
+      "behavior": "문자 입력과 FormGroup의 라벨·도움말·오류 전환. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 오류가 도움말 자리를 대신하고 오류만 설명으로 연결합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
@@ -4279,7 +4279,7 @@
       "scenario": {
         "field": "KjunInput"
       },
-      "behavior": "문자 입력과 FormGroup의 라벨·도움말·오류 전환. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 도움말과 오류를 모두 설명으로 연결합니다.",
+      "behavior": "문자 입력과 FormGroup의 라벨·도움말·오류 전환. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 오류가 도움말 자리를 대신하고 오류만 설명으로 연결합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
@@ -4354,7 +4354,7 @@
       "scenario": {
         "field": "KjunInput"
       },
-      "behavior": "문자 입력과 FormGroup의 라벨·도움말·오류 전환. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 도움말과 오류를 모두 설명으로 연결합니다.",
+      "behavior": "문자 입력과 FormGroup의 라벨·도움말·오류 전환. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 오류가 도움말 자리를 대신하고 오류만 설명으로 연결합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
@@ -5464,7 +5464,7 @@
       "scenario": {
         "field": "KjunTextarea"
       },
-      "behavior": "여러 줄 편집과 FormGroup 라벨·오류 연결. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 도움말과 오류를 모두 설명으로 연결합니다.",
+      "behavior": "여러 줄 편집과 FormGroup 라벨·오류 연결. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 오류가 도움말 자리를 대신하고 오류만 설명으로 연결합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
@@ -5536,7 +5536,7 @@
       "scenario": {
         "field": "KjunTextarea"
       },
-      "behavior": "여러 줄 편집과 FormGroup 라벨·오류 연결. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 도움말과 오류를 모두 설명으로 연결합니다.",
+      "behavior": "여러 줄 편집과 FormGroup 라벨·오류 연결. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 오류가 도움말 자리를 대신하고 오류만 설명으로 연결합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
@@ -5608,7 +5608,7 @@
       "scenario": {
         "field": "KjunTextarea"
       },
-      "behavior": "여러 줄 편집과 FormGroup 라벨·오류 연결. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 도움말과 오류를 모두 설명으로 연결합니다.",
+      "behavior": "여러 줄 편집과 FormGroup 라벨·오류 연결. FormGroup이 라벨·도움말 또는 오류의 식별자를 만들고 하위 입력에 연결합니다. 오류가 있으면 오류가 도움말 자리를 대신하고 오류만 설명으로 연결합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
@@ -18139,32 +18139,32 @@
       "name": "@kjun-ui/tokens",
       "version": "0.20.0",
       "file": "kjun-ui-tokens-0.20.0.tgz",
-      "bytes": 124690,
-      "integrity": "sha512-j3xXDEGSCV715PVvl+rZusp+z3pQZ+868H31weJN6gNJZXMMSKAcH7Yqo1pRQDGwTeFrAGjuG2ZCloTKpnMbpw=="
+      "bytes": 127059,
+      "integrity": "sha512-GIZkXBNw1SX4to0Tzf8nl2t0pQ2UzVQjmnul2crpdxzICvFFZ2LZx/IbeWnRsX2ER/HaDqB+k2eKkIqpHAwdTQ=="
     },
     {
       "name": "@kjun-ui/vue3",
       "version": "0.20.0",
       "file": "kjun-ui-vue3-0.20.0.tgz",
-      "bytes": 516340,
-      "integrity": "sha512-Y2Z+A64/IL78yxrwJQuHlC199xMd+QcXu5uJMQI741QGdiL1+PjP2KVz6v0O3Y24mLzMFjztbrYAhrMuSSQZWA=="
+      "bytes": 521472,
+      "integrity": "sha512-gZoDW7hlk9XJfQSAtA/0sJhQBnLAWonoSYC1zpPwvz91XAjWyEhNAA5VWxRV3ziyW/pCZ2U1LnZKFbC3SrVF6Q=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.20.0",
       "file": "kjun-ui-react-0.20.0.tgz",
-      "bytes": 433883,
-      "integrity": "sha512-XvRTA0aIGxFj5tSvrUgWBL9IAFFuL0ndgjJ4ox430Wuo3w5ijhatYxMoR94z+8d0QIsmnwUGf5qIAbB9Ao23zA=="
+      "bytes": 438919,
+      "integrity": "sha512-vtc/nWK2Q1R7Igaw2A1mciN2HlTdfG89vBRxtr5YxoDkuMjbEPMgMh+68tZY8tUhbQM4LhH3u7sAq9D5nTHqiA=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.20.0",
       "file": "kjun-ui-native-0.20.0.tgz",
-      "bytes": 799359,
-      "integrity": "sha512-+nKYqJ1OCf0l58zD+zbf3pcgw8iOJ8YojzeKrVgIz8+lTmR6lvNpRxaw1y+0dhWzTc10cn23ZDu6qbCZs7adFA=="
+      "bytes": 809686,
+      "integrity": "sha512-60lyTwm06IM26EFKRMZl7f3pw9GTsk4oHnZ0CkS+PWHhRVXcZTs2sl9/ZpvvkdEiaQyWStHlQrLSL3awLPhlgA=="
     }
   ],
-  "definitionHash": "sha256-40a2deb4028fa97a1ba219df7b6ae7e68a9f232ddec11e939fc70a7629e07d2f",
+  "definitionHash": "sha256-a89e8247d4372b8d9003f397daaad3672b53a0e591c285216209943469697dff",
   "runs": [
     {
       "schemaVersion": 1,

@@ -1,3 +1,4 @@
+import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
@@ -114,6 +115,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
       ref={domainColorRef(showActions && rows.length > 0 && !props.loading)}>
       <KjunDataState
         {...props}
+        {...marketQueryState(props)}
         loadingPadding="none"
         empty={!rows.length}
         emptyText={emptyMessage}

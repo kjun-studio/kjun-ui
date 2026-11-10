@@ -168,25 +168,25 @@ export function KjunAlert({
   const reduced = useReducedMotion();
   if (!visible) return null;
   const tone = variant || (type === "error" ? "danger" : type),
-    small = size === "sm",
+    scale = size === "sm" || size === "lg" ? size : "md",
     paint = alertToneRoles(tone);
   return (
     <div
       ref={root}
       role={alertRole(tone, live)}
       className="kjun-alert"
-      data-size={small ? "sm" : "md"}
+      data-size={scale}
       data-tone={tone}
       style={paint.bg ? { background: role(paint.bg) } : undefined}
     >
       <span className="kjun-alert-icon" style={{ color: role(paint.icon) }}>
-        <KjunIcon name={alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[small ? "sm" : "md"]} />
+        <KjunIcon name={alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[scale]} />
       </span>
       <div className="kjun-alert-content">
         {hasContent(title) && <div className="kjun-alert-title">{title}</div>}
         {hasContent(children) && <div className="kjun-alert-description">{children}</div>}
         {hasContent(actions) && (
-          <ActionSizeContext.Provider value={alertActionSizes[small ? "sm" : "md"]}>
+          <ActionSizeContext.Provider value={alertActionSizes[scale]}>
             <div className="kjun-alert-actions">{actions}</div>
           </ActionSizeContext.Provider>
         )}

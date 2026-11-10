@@ -31,10 +31,13 @@ function SurfaceExamples() {
     <KjunProvider className="elevation-card-comparison">
       {surfaces.map(surface => <figure key={surface.role}>
         <figcaption><strong>{surface.role}</strong> · {surface.caption}</figcaption>
-        <KjunCard title="프로젝트 설정" elevation={surface.elevation} style={'style' in surface ? surface.style : undefined}>
-          <p>팀과 공유할 프로젝트의 기본 정보를 확인합니다.</p>
-          <p>마지막 변경 · 오늘</p>
-        </KjunCard>
+        {/* Each role gets its own scope so the dark palette can lift its surface one step per level. */}
+        <KjunProvider className={`elevation-surface elevation-surface--${surface.role}`}>
+          <KjunCard title="프로젝트 설정" elevation={surface.elevation} style={'style' in surface ? surface.style : undefined}>
+            <p>팀과 공유할 프로젝트의 기본 정보를 확인합니다.</p>
+            <p>마지막 변경 · 오늘</p>
+          </KjunCard>
+        </KjunProvider>
       </figure>)}
     </KjunProvider>
     <p className="body-copy">세 표면은 크기·내용·표면색·여백이 같고 그림자만 다릅니다. Card는 flat·raised만 사용하며, floating은 Popover·Modal처럼 콘텐츠 위에 겹치는 표면에 사용합니다.</p>

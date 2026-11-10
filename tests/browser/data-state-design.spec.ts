@@ -48,15 +48,17 @@ for (const platform of ['react', 'vue3', 'native']) {
     await openFixture(page, platform, '', 'data-state-design');
     const region = page.getByTestId('region');
     for (const [size, padding] of [['sm', 24], ['md', 48], ['lg', 80]] as const) {
+      // Every state keeps the size's minimum height, so switching between them does not jump.
+      const height = (content: number) => Math.max(tokens.extensions.state.minimumHeights[size], 2 * padding + content);
       await update(page, { empty: true, emptyText: 'Empty title', size });
-      expect((await box(region)).height).toBe(2 * padding + 24);
+      expect((await box(region)).height).toBe(height(24));
       await expect(region.getByText('Empty title', { exact: true })).toHaveCSS('font-size', '16px');
       await update(page, { customEmpty: true });
-      expect((await box(region)).height).toBe(2 * padding + 48);
+      expect((await box(region)).height).toBe(height(48));
       await update(page, { customEmpty: false, emptyIcon: 'search', emptyActionText: 'Create' });
-      expect((await box(region)).height).toBe(2 * padding + 124);
+      expect((await box(region)).height).toBe(height(124));
       await update(page, { empty: false, emptyIcon: '', emptyActionText: '', loading: true, resultKey: null, loadingText: 'Loading' });
-      expect((await box(region)).height).toBe(2 * padding + 56);
+      expect((await box(region)).height).toBe(height(56));
       const text = region.getByText('Loading', { exact: true }), spinner = platform === 'native' ? region.getByRole('progressbar') : region.locator('svg').first().locator('..');
       expect((await box(text)).y - ((await box(spinner)).y + 24)).toBe(12);
       await expect(text).toHaveCSS('text-align', 'center');
@@ -70,8 +72,9 @@ for (const platform of ['react', 'vue3', 'native']) {
       await update(page, { related, loading: false, empty: true, resultKey: 'a' });
       const title = await box(region.getByText('Empty title', { exact: true }));
       const desc = await box(region.getByText('Empty description', { exact: true }));
-      // Shared KjunEmpty contributes no second 32px padding inside DataState.
-      expect((await box(region)).y + (await box(region)).height - desc.y - desc.height).toBe(48);
+      // Shared KjunEmpty contributes no second 32px padding inside DataState; the message sits centred in the minimum height.
+      const r = await box(region);
+      expect(r.y + r.height - desc.y - desc.height).toBeGreaterThanOrEqual(48);
       expect(desc.y - title.y - title.height).toBe(8);
       await captureReview(region, { path: `artifacts/data-state-visual-fix/related-${platform}-${related}-empty.png` });
     }

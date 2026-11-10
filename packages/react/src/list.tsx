@@ -70,7 +70,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   const mark = end === "spinner" ? <KjunIcon name="loader-2" spin className="kjun-list-busy" size={tokens.extensions.list.endIconSize} />
     : end === "mark" ? <span className="kjun-list-mark" data-kind={kind} data-checked={selected ? "" : undefined} aria-hidden="true">{selected && <KjunIcon name="check" size={tokens.extensions.list.markIconSize} />}</span>
     : end === "check" && <KjunIcon name="check" className="kjun-list-check" size={tokens.iconSizes.default} />;
-  const leadingStyle = front && geometry.size ? { "--_kjun-list-leading-width": `${geometry.width}px`, "--_kjun-list-leading-height": `${geometry.width}px` } as CSSProperties : undefined;
+  const leadingStyle = front && geometry.size ? { "--_kjun-list-leading-width": `${geometry.column}px`, "--_kjun-list-leading-height": `${geometry.width}px`, "--_kjun-list-tile-size": `${geometry.width}px` } as CSSProperties : undefined;
   // A pressable row is named by its title, badge and end value and described by its description and content, like
   // Native's spoken name, rather than by every piece of text inside it.
   const id = "kjun-" + useId(), hasBadge = hasContent(badge), hasTrailing = hasContent(trailing), hasBody = hasContent(children);

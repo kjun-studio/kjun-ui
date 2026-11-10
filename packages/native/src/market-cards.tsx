@@ -1,3 +1,4 @@
+import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
@@ -92,9 +93,9 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
             {/* Like Web: label type, the selected pill at the strong number weight, and a caption-sized arrow. */}
             <View style={{ alignItems: 'center' }}>
               <KText accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
-                style={{ ...selectedMetricLabelStyle, opacity: 0 }}>{pill.label}</KText>
+                style={{ ...selectedMetricLabelStyle, color: state.key === pill.key ? colors.onBrand : colors.textSecondary, opacity: 0 }}>{pill.label}</KText>
               <View style={{ height: 0, overflow: 'hidden' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-                <KText accessible={false} style={{ ...metricLabelStyle, opacity: 0 }}>{pill.label}</KText>
+                <KText accessible={false} style={{ ...metricLabelStyle, color: state.key === pill.key ? colors.onBrand : colors.textSecondary, opacity: 0 }}>{pill.label}</KText>
               </View>
               <KText numberOfLines={1} style={{ position: 'absolute', top: 0,
                 ...(state.key === pill.key ? selectedMetricLabelStyle : metricLabelStyle),
@@ -122,6 +123,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
         <>
           <KjunDataState
             {...props}
+            {...marketQueryState(props)}
             loadingPadding="none"
             empty={!rows.length}
             loadingContent={props.skeleton === false ? undefined : <KjunListSkeleton variant="compact" />}

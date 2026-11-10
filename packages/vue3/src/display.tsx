@@ -149,21 +149,21 @@ export const KjunAlert = defineComponent({
     return () => {
       if (!visible.value) return null;
       const tone = props.variant || (props.type === "error" ? "danger" : props.type);
-      const small = props.size === "sm", paint = alertToneRoles(tone);
+      const scale = props.size === "sm" || props.size === "lg" ? props.size : "md", paint = alertToneRoles(tone);
       const title = slots.title ? slots.title() : props.title;
       const children = slots.default?.(), actions = slots.actions?.();
       return (
-        <div ref={root} role={alertRole(tone, props.live)} class="kjun-alert" data-size={small ? "sm" : "md"} data-tone={tone}
+        <div ref={root} role={alertRole(tone, props.live)} class="kjun-alert" data-size={scale} data-tone={tone}
           style={paint.bg ? { background: role(paint.bg) } : undefined}>
           <span class="kjun-alert-icon" style={{ color: role(paint.icon) }}>
-            <KjunIcon name={alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[small ? "sm" : "md"]} />
+            <KjunIcon name={alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[scale]} />
           </span>
           <div class="kjun-alert-content">
             {(slots.title ? hasContent(title as ReturnType<NonNullable<typeof slots.title>>) : props.title != null && String(props.title).trim() !== "")
               && <div class="kjun-alert-title">{title}</div>}
             {hasContent(children) && <div class="kjun-alert-description">{children}</div>}
             {hasContent(actions) && (
-              <KjunActionSize size={alertActionSizes[small ? "sm" : "md"]}>
+              <KjunActionSize size={alertActionSizes[scale]}>
                 {{ default: () => <div class="kjun-alert-actions">{actions}</div> }}
               </KjunActionSize>
             )}

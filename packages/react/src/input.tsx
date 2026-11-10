@@ -54,8 +54,10 @@ export function KjunFormGroup({
   const uid = useId().replace(/:/g, "");
   const fieldId = id || "kjun-field-" + uid;
   const labelId = label ? fieldId + "-label" : undefined;
-  // The hint stays with an error: it usually explains the format the error refers to.
-  const hintId = hint ? fieldId + "-hint" : undefined, errorId = error ? fieldId + "-error" : undefined;
+  // An error takes the hint's slot instead of stacking under it, so the field keeps its height; the control is then
+  // described by the error alone.
+  const shownHint = error ? "" : hint;
+  const hintId = shownHint ? fieldId + "-hint" : undefined, errorId = error ? fieldId + "-error" : undefined;
   const describedBy = mergeIds(hintId, errorId);
   const [controlId, setControlId] = useState<string>();
   return (
@@ -73,9 +75,9 @@ export function KjunFormGroup({
           </label>
         )}
         {children}
-        {hint && (
+        {shownHint && (
           <p id={hintId} className="kjun-form-hint">
-            {hint}
+            {shownHint}
           </p>
         )}
         {error && (

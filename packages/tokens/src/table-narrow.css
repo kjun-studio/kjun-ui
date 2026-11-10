@@ -35,10 +35,10 @@
 .kjun-table-card-group-total > span + span::before { content: " · "; }
 .kjun-table-card-group-count { margin-inline-start: var(--_kjun-geometry-dimension-value4); color: var(--_kjun-text-tertiary); font-weight: var(--_kjun-type-caption-weight); }
 
+/* Cards sit in the page flow, so they are fill-only: the secondary fill, no outline. */
 .kjun-table-card {
   min-width: 0;
-  background: var(--_kjun-color-surface);
-  border: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
+  background: var(--_kjun-color-secondary);
   border-radius: var(--_kjun-extension-table-card-radius);
   padding: var(--_kjun-extension-table-card-padding);
   transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
@@ -48,7 +48,10 @@
 .kjun-table-card[data-selected] { background: var(--_kjun-color-selected-bg); }
 .kjun-table-cards[data-layout="tiles"] .kjun-table-card { padding: var(--_kjun-extension-table-card-tile-padding); }
 @media (hover: hover) {
-  .kjun-table-card[tabindex]:not([data-selected]):hover { background: var(--_kjun-bg-hover); }
+  /* Hover deepens the fill a step with the text tint, so it never matches the selection fill. */
+  .kjun-table-card[tabindex]:not([data-selected]):hover {
+    background: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-tint-fill) * 100%), var(--_kjun-color-secondary));
+  }
 }
 /* The title opens the row for screen readers; it looks like the title and the card keeps the keyboard stop. */
 .kjun-table-card-open {
@@ -198,7 +201,8 @@
   margin-top: var(--_kjun-extension-table-card-section-gap);
   padding: var(--_kjun-geometry-table-expanded-padding-y) var(--_kjun-geometry-table-expanded-padding-x);
   border-radius: var(--_kjun-geometry-radius-radius12);
-  background: var(--_kjun-color-secondary);
+  /* The card is the secondary fill, so its expanded panel sits on the surface. */
+  background: var(--_kjun-color-surface);
 }
 
 .kjun-table-card-empty {

@@ -39,7 +39,11 @@ test('an open section has no card; its group or its own variant opens it', () =>
 });
 
 test('open rows put built-in icons on a 40px square, and tall leading content reaches into the padding', () => {
-  assert.deepEqual(listLeadingGeometry({ custom: false, background: false, open: true }), { size: 'md', width: 40, iconSize: 20, tile: true });
+  assert.deepEqual(listLeadingGeometry({ custom: false, background: false, open: true }), { size: 'md', width: 40, column: 40, iconSize: 20, tile: true });
+  // A sized box under the 40px leading column keeps that column, so an icon square's title lines up with an avatar's.
+  assert.deepEqual([listLeadingGeometry({ custom: false, background: true }).width, listLeadingGeometry({ custom: false, background: true }).column], [32, 40]);
+  assert.equal(listLeadingGeometry({ size: 'lg', custom: true, background: false }).column, 56);
+  assert.equal(listLeadingGeometry({ custom: false, background: false }).column, 24);
   // An explicit size and custom content keep their own geometry in an open section.
   assert.equal(listLeadingGeometry({ size: 'sm', custom: false, background: false, open: true }).width, 32);
   assert.equal(listLeadingGeometry({ custom: true, background: false, open: true }).tile, false);

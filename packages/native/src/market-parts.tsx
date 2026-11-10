@@ -1,12 +1,15 @@
+import { marketBlockingError } from "../../../shared/package-runtime/market-query";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
-import { View,useWindowDimensions } from "react-native";
+import { Platform,View,useWindowDimensions,type TextStyle } from "react-native";
 import { useQueryDisplay } from "./data-state";
 import {
 KjunCollectionMark
 } from "./financial";
 import { KText } from "./internal";
+// Like Web .kjun-market-name: Korean names break between words, never inside one.
+const words = (Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "break-word" } : {}) as unknown as TextStyle;
 import { MarketBaseProps } from "./market-model";
 import { KjunPagination } from "./navigation";
 import { useKjunStyles } from "./provider";
@@ -42,9 +45,11 @@ export function MarketIdentity<Row extends object>({
         >
           <KText
             numberOfLines={mobile ? 2 : 1}
+            lineBreakStrategyIOS="hangul-word"
             style={{
               // Like Web .kjun-market-name: label type, and input type on narrow simple lists.
               ...typeStyle(table ? "body" : mobile ? "input" : "label"),
+              ...words,
               flexShrink: 1,
             }}
           >
@@ -98,6 +103,8 @@ export function MarketFooter<Row extends object>({
   const m = useKjunMessages();
   const { colors } = useKjunStyles(),
     state = useQueryDisplay(props),
+    // A blocking error replaces the rows, so their count, update time and pages go with them.
+    hidden = marketBlockingError(props, state),
     {
       pagination,
       rows = [],
@@ -109,7 +116,7 @@ export function MarketFooter<Row extends object>({
     } = props;
   return (
     <>
-      {pagination && (
+      {pagination && !hidden && (
         <KjunPagination
           currentPage={pagination.page}
           totalPages={Math.ceil(pagination.total / pagination.size)}
@@ -119,7 +126,7 @@ export function MarketFooter<Row extends object>({
           onPageChange={props.onPageChange}
         />
       )}
-      {showFooter && !state.initialLoading && rows.length > 0 && (
+      {showFooter && !hidden && !state.initialLoading && rows.length > 0 && (
         <View
           style={{
             flexDirection: "row",

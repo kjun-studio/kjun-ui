@@ -180,20 +180,35 @@ function Running({
       model.interact(scenario.action);
     }
   }, [model.ready, model.config.revision, scenario.action]);
+  // Fixed-width examples (for example a 375px phone) scale down to the frame instead of overflowing it.
+  const frameBox = useRef<HTMLDivElement>(null);
+  const [available, setAvailable] = useState(0);
+  const fixed = scenario.viewportWidth;
+  useEffect(() => {
+    const box = frameBox.current;
+    if (!box || !fixed) return;
+    const observer = new ResizeObserver(([entry]) => setAvailable(entry.contentRect.width));
+    observer.observe(box);
+    return () => observer.disconnect();
+  }, [fixed]);
+  const scale = fixed && available && available < fixed ? available / fixed : 1;
+  const height = scenario.viewportHeight ?? (model.ready ? Math.max(100, model.snapshot.height) : 120);
+  const failure = model.failed && !model.ready;
   return (
     <div
       className="guide-running"
       data-ready={model.ready}
       data-platform={platform}
     >
-      <div className="guide-frame">
-        {!model.ready && (
-          <p role="status">
-            {model.failed
-              ? '실행 화면을 불러오지 못했습니다.'
-              : '실행 화면을 불러오는 중…'}
-          </p>
-        )}
+      <div className="guide-frame" ref={frameBox} data-scaled={scale < 1 || undefined}
+        style={scale < 1 && !failure ? { height: height * scale } : undefined}>
+        {failure ? (
+          // The failed example is replaced, not dimmed: the message and retry sit on their own fill.
+          <div className="guide-failure" style={{ minHeight: Math.min(height, 240) }}>
+            <p role="status">실행 화면을 불러오지 못했습니다.</p>
+            <Button size="sm" variant="secondary" onClick={retry}>다시 시도</Button>
+          </div>
+        ) : !model.ready && <p role="status" className="guide-loading">실행 화면을 불러오는 중…</p>}
         <iframe
           ref={model.frame}
           key={`${platform}:${model.reload}:${frameReset}`}
@@ -203,24 +218,19 @@ function Running({
           sandbox="allow-scripts allow-same-origin"
           tabIndex={model.ready ? 0 : -1}
           style={{
-            ...(scenario.viewportWidth ? { width: scenario.viewportWidth, minWidth: scenario.viewportWidth } : {}),
-            height: scenario.viewportHeight ?? (model.ready ? Math.max(100, model.snapshot.height) : 120),
+            ...(fixed ? { width: fixed, minWidth: fixed } : {}),
+            ...(scale < 1 ? { transform: `scale(${scale})`, transformOrigin: '0 0' } : {}),
+            height,
             visibility: model.ready ? 'visible' : 'hidden',
           }}
         />
       </div>
-      {mode === 'interactive' ? <><div className="guide-case-actions">
+      {mode === 'interactive' && <div className="guide-case-actions">
         <Button size="sm" variant="ghost" onClick={reset}>
           초기화
         </Button>
-        {model.failed && (
-          <Button size="sm" variant="secondary" onClick={retry}>
-            다시 시도
-          </Button>
-        )}
         <Link href={destination}>상세 예제</Link>
-      </div>
-      </> : model.failed && <Button size="sm" variant="secondary" onClick={retry}>다시 시도</Button>}
+      </div>}
     </div>
   );
 }

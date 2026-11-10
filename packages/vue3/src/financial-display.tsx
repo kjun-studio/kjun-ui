@@ -6,7 +6,7 @@ import { deviationLevel, tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { KjunBadge, type DisplaySize } from "./display";
 import { useKjunId } from "./input";
-import { finiteNumber, format } from "./number-display";
+import { finiteNumber, format, signedText } from "./number-display";
 import { KjunTooltip } from "./popover";
 import { domainRef } from "./runtime/refs";
 import { css } from "./runtime/style";
@@ -56,7 +56,7 @@ export const KjunDeviation = defineComponent({
               opacity: deviationFill[level],
             }} />
           )}
-          <span>{label}</span>
+          <span>{signedText(label)}</span>
         </span>
       );
     };
@@ -88,7 +88,7 @@ export const KjunHeatmapCell = defineComponent({
           <span aria-hidden="true" class="kjun-heat-layer" style={magnitude
             ? { background: `var(--_kjun-color-${role})`, opacity: heatMinimum + (heatMaximum - heatMinimum) * magnitude }
             : { background: "var(--_kjun-color-secondary)" }} />
-          <span>{slots.default ? slots.default() : value}</span>
+          <span>{slots.default ? slots.default() : signedText(value)}</span>
         </span>
       );
     };

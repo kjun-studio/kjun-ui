@@ -119,11 +119,14 @@ for (const platform of ['react', 'vue3', 'native']) {
     const focus = (await appearance(page, platform)).thumbs[0];
     expect(focus.outline).toBe('solid'); expect(focus.outlineWidth).toBe('2px'); expect(focus.outlineOffset).toBe('3px');
     await configure(page, { disabled: true, value: 40 });
-    await expect.poll(async () => (await appearance(page, platform)).opacity).toBe('0.5');
+    // One disabled rule, as Button and fields: nothing fades; the fill and the thumb edge take the disabled-text role.
+    await expect.poll(async () => (await appearance(page, platform)).opacity).toBe('1');
+    let rest = '';
+    await expect.poll(async () => { const now = (await appearance(page, platform)).thumbs[0].halo; const same = now === rest; rest = now; return same; }).toBe(true);
     await page.mouse.move(center.x, center.y); await page.mouse.down();
     const disabled = (await appearance(page, platform)).thumbs[0];
-    // The halo fades out with the control motion once the slider is disabled.
-    await expect.poll(async () => (await appearance(page, platform)).thumbs[0].halo).toBe(normal.halo);
+    // A disabled thumb gains no halo on hover or press.
+    await expect.poll(async () => (await appearance(page, platform)).thumbs[0].halo).toBe(rest);
     expect(Math.round((await appearance(page, platform)).thumbs[0].width)).toBe(20);
     await page.mouse.move(center.x + 80, center.y); await page.mouse.up();
     expect(await valueOf(page)).toBe(40);

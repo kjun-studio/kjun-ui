@@ -2,7 +2,7 @@
 import Link from './doc-link';
 import coverage from '@/lib/generated/coverage.json';
 import { CoverageStatus } from './coverage-list';
-import { baseline, exceptions, platformLabels, platforms, statusLabels, statusOrder, usedStatuses, type Platform, type Status } from './coverage-model';
+import { baseline, exceptions, platformLabels, platforms, statusOrder, usedStatuses, type Platform, type Status } from './coverage-model';
 
 const verdictLabels: Record<Status, string> = { supported: '지원', preview: '브라우저 미리보기', review: '확인 필요', unsupported: '미지원' };
 
@@ -29,9 +29,6 @@ export function Summary() {
         <div className="coverage-platform-head">
           <h3>{platformLabels[platform]}</h3>
           <span className="coverage-provided">{summary.provided} / {coverage.total}개 제공</span>
-        </div>
-        <div className="coverage-meter" role="img" aria-label={present.map(status => `${statusLabels[status]} ${counts[status]}개`).join(', ')}>
-          {present.map(status => <span key={status} data-status={status} style={{ flexGrow: counts[status] }} />)}
         </div>
         <p className="coverage-platform-counts">{present.map(status => <span className="coverage-summary-state" key={status}><CoverageStatus status={status} /> {counts[status]}개</span>)}</p>
         <p className="coverage-runtime">검증 환경 · {summary.runtimes.map(runtimeLabel).join(', ') || '연결된 통과 기록 없음'}</p>

@@ -56,7 +56,8 @@ for (const platform of platforms) {
     for (const size of ['sm', 'md', 'lg']) {
       const alert = page.getByTestId('alert-' + size);
       expect(await textStyle(alert.getByText('알림 제목', { exact: true }))).toMatchObject({
-        size: size === 'sm' ? '12px' : '14px', line: size === 'sm' ? '16px' : '20px', weight: '600',
+        // The title steps with the size (12/16, 14/20, 16/24) so lg reads as the larger alert; the description stays body.
+        size: { sm: '12px', md: '14px', lg: '16px' }[size], line: { sm: '16px', md: '20px', lg: '24px' }[size], weight: '600',
       });
       expect(await textStyle(alert.getByText('알림 설명', { exact: true }))).toMatchObject({
         size: size === 'sm' ? '12px' : '14px', line: size === 'sm' ? '16px' : '20px', weight: '400',

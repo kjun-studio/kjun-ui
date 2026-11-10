@@ -54,7 +54,7 @@
 .playground-settings > .kjun-button { margin-left: auto; }
 .docs-kjun .kjun-card-body { min-width: 0; }
 /* Reading cards sit one faint step off the page, lighter than secondary buttons, so no border is needed. */
-.docs-kjun .kjun-card[data-surface='muted']:is(.code-block, .accessibility-item, .guide-example, .playground) { background: var(--surface-subtle); }
+.docs-kjun .kjun-card[data-surface='muted']:is(.code-block, .accessibility-item, .guide-example, .playground, .gallery-card) { background: var(--surface-subtle); }
 .docs-kjun .gallery-card { height: 100%; overflow: hidden; }
 .docs-kjun .gallery-card > .kjun-card-body { height: 100%; display: flex; flex-direction: column; }
 .docs-search-dialog { display: grid; gap: var(--docs-value12); }

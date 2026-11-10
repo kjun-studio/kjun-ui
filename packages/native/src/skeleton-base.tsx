@@ -20,6 +20,7 @@ export interface KjunSkeletonProps {
   loadingText?: string;
   rows?: number;
   columns?: number;
+  /** Block and avatar height; on a line, the bar's own height within the role's line box (default half the line). */
   height?: DimensionValue;
   width?: DimensionValue;
   animated?: boolean;
@@ -66,6 +67,7 @@ export function KjunSkeleton({
     const lineHeight = tokens.typography[lineRole].lineHeightPx * fontScale;
     return <View key={key} style={{ height: lineHeight, justifyContent: "center", marginTop }}>{block(w, lineHeight / 2)}</View>;
   };
+  const lineBar = typeof height === "number" ? Math.min(height * fontScale, tokens.typography[role].lineHeightPx * fontScale) : undefined;
   const paragraph = () => skeletonTextWidths(rows).map((w, i) => slot(w, "body", i));
   return (
     <View
@@ -76,7 +78,8 @@ export function KjunSkeleton({
       style={{ width: width || "100%", overflow: "hidden" }}
     >
       {type === "text" && paragraph()}
-      {type === "line" && slot("100%", role)}
+      {type === "line" && (lineBar === undefined ? slot("100%", role)
+        : <View style={{ height: tokens.typography[role].lineHeightPx * fontScale, justifyContent: "center" }}>{block("100%", lineBar)}</View>)}
       {type === "avatar" &&
         block(width || tokens.extensions.skeleton.avatarSize, height || tokens.extensions.skeleton.avatarSize, { borderRadius: rounded ? tokens.radius.radius9999 : tokens.extensions.skeleton.blockRadius })}
       {type === "card" && (

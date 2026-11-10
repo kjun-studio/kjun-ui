@@ -42,7 +42,7 @@ function ResolvedCatalogPreview({ name, platform, detail = false, initialPalette
   }, [legacyComponent, name]);
   const preview = <div className="preview-window" data-narrow={model.narrow}>
     {layoutGuide === 'columns' && <LayoutPreviewHint key={'hint-' + model.platform + model.reload + String(model.wide)} frame={model.frame} reading={!!model.config.settings.reading} wide={model.wide} />}
-    {!model.ready && <output className="preview-loading">{model.failed ? '예제를 불러오지 못했습니다.' : '패키지 예제를 불러오는 중…'}{model.failed && <Button variant="secondary" onClick={model.retry}>다시 시도</Button>}</output>}
+    {!model.ready && <output className="preview-loading" data-failed={model.failed || undefined}>{model.failed ? '예제를 불러오지 못했습니다.' : '패키지 예제를 불러오는 중…'}{model.failed && <Button variant="secondary" onClick={model.retry}>다시 시도</Button>}</output>}
     <iframe ref={model.frame} key={model.platform + model.reload + String(model.wide)} title={title}
       src={`/previews/catalog-${model.platform}.html?component=${encodeURIComponent(name)}&session=${encodeURIComponent(model.session)}`}
       sandbox="allow-scripts allow-same-origin" onLoad={model.send} tabIndex={model.ready ? 0 : -1}

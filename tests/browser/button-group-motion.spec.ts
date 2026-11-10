@@ -52,7 +52,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       await aligned(page, 0);
       await expect(track).toHaveCSS('padding', `${padding}px`);
       await expect(track).toHaveCSS('border-radius', `${radius}px`);
-      await expect(track).toHaveCSS('height', `${platform === 'native' ? Math.max(height, 44 + 2 * padding) : height}px`);
+      // Native paints Web's height too; hitSlop, not the painted box, reaches the 44pt touch target.
+      await expect(track).toHaveCSS('height', `${height}px`);
       await expect(marker(page)).toHaveCSS('border-radius', `${itemRadius}px`);
       for (const item of await buttons(page).all()) await expect(item).toHaveCSS('border-radius', `${itemRadius}px`);
       await checkInset(padding);
@@ -73,7 +74,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await openFixture(page, platform, '', 'button-group', 'development');
     await aligned(page, 0);
     const before = await rects(page), start = before[0].x, end = before[2].x;
-    expect(before.every(box => box.height === (platform === 'native' ? 44 : 32))).toBe(true);
+    expect(before.every(box => box.height === 32)).toBe(true);
     await record(page);
     await buttons(page).nth(2).click();
     await expect(page.getByTestId('value')).toHaveText('c');

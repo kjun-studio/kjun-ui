@@ -86,7 +86,8 @@ export function KjunCheckbox<T = ChoiceValue>({
         alignItems: "center",
         // Like Web's choice row on a mouse-like pointer; touch layouts keep the 44px target.
         minHeight: finePointer() ? tokens.extensions.choice.minimumHeight : tokens.native.minimumTouchTarget,
-        opacity: disabled ? tokens.states.opacity.disabled : pressed ? tokens.states.opacity.pressed : 1,
+        // One disabled rule, like Button and fields: nothing fades; only a press dims.
+        opacity: !disabled && pressed ? tokens.states.opacity.pressed : 1,
       })}
     >
       <View
@@ -97,9 +98,9 @@ export function KjunCheckbox<T = ChoiceValue>({
           height: dimension,
           borderRadius: tokens.extensions.checkbox.radii[size],
           borderWidth: tokens.border.controlWidth,
-          // Same boundary roles as Radio: strong while enabled, secondary once disabled.
-          borderColor: filled ? colors.brand : disabled ? colors.borderSecondary : colors.borderStrong,
-          backgroundColor: filled ? colors.brand : colors.surface,
+          // Same roles as Radio: a strong boundary while enabled; disabled strokes and fills take the disabled-text role.
+          borderColor: disabled ? colors.textDisabled : filled ? colors.brand : colors.borderStrong,
+          backgroundColor: filled ? (disabled ? colors.textDisabled : colors.brand) : colors.surface,
         }}
       >
         {filled && (
@@ -108,7 +109,7 @@ export function KjunCheckbox<T = ChoiceValue>({
             <KjunIcon
               name={indeterminate ? "minus" : "check"}
               size={tokens.extensions.checkbox.iconSizes[size]}
-              color={colors.onBrand}
+              color={disabled ? colors.surface : colors.onBrand}
             />
           </IconFallbacks>
         )}
@@ -117,7 +118,7 @@ export function KjunCheckbox<T = ChoiceValue>({
         content(children || label, {
           marginLeft: tokens.extensions.checkbox.labelGap,
           ...typeStyle('label'),
-
+          ...(disabled ? { color: colors.textDisabled } : null),
         })}
     </Pressable>
   );
@@ -191,7 +192,8 @@ export function KjunSwitch({
   // Off is a quiet track with no boundary; hover deepens whichever colour the track has.
   const hover = hovered && !disabled && !loading;
   // The switch-track role (default border) lets a palette darken the off track to a 3:1 boundary.
-  const off = hover ? colors.borderStrong : colors.switchTrack ?? colors.border, on = hover ? colors.brandHover : colors.brand;
+  // Disabled keeps the off track and paints the on track in the disabled-text role (the one disabled rule).
+  const off = hover ? colors.borderStrong : colors.switchTrack ?? colors.border, on = disabled ? colors.textDisabled : hover ? colors.brandHover : colors.brand;
   const trackColor = typeof off === 'string' && typeof on === 'string'
     ? motion.interpolate({ inputRange: [0, 1], outputRange: [off, on] })
     : value ? on : off;
@@ -227,7 +229,6 @@ export function KjunSwitch({
         alignItems: "center",
         // Like Web's choice row on a mouse-like pointer; touch layouts keep the 44px target.
         minHeight: finePointer() ? tokens.extensions.choice.minimumHeight : tokens.native.minimumTouchTarget,
-        opacity: disabled ? tokens.states.opacity.disabled : 1,
       }}
     >
       <Animated.View
@@ -237,8 +238,6 @@ export function KjunSwitch({
           padding: tokens.extensions.switch.padding,
           borderRadius: tokens.extensions.switch.radius,
           backgroundColor: trackColor,
-          // A disabled switch fades as one piece to 40% (inside the row's own 50%), so on and off stay told apart.
-          opacity: disabled ? tokens.states.opacity.disabledStrong / tokens.states.opacity.disabled : 1,
           ...focus.ring,
         }}
       >
@@ -258,14 +257,14 @@ export function KjunSwitch({
       </Animated.View>
       {description ? (
         <View style={{ marginLeft: tokens.extensions.switch.labelGap, flexShrink: 1, minWidth: 0 }}>
-          {!!(children || label) && content(children || label, typeStyle('label'))}
-          <KText style={{ ...typeStyle('caption'), marginTop: tokens.dimension.value4, color: colors.textSecondary }}>{description}</KText>
+          {!!(children || label) && content(children || label, { ...typeStyle('label'), ...(disabled ? { color: colors.textDisabled } : null) })}
+          <KText style={{ ...typeStyle('caption'), marginTop: tokens.dimension.value4, color: disabled ? colors.textDisabled : colors.textSecondary }}>{description}</KText>
         </View>
       ) : !!(children || label) &&
         content(children || label, {
           marginLeft: tokens.extensions.switch.labelGap,
           ...typeStyle('label'),
-
+          ...(disabled ? { color: colors.textDisabled } : null),
         })}
     </Pressable>
   );
@@ -323,7 +322,6 @@ export function KjunRadio({
         alignItems: "center",
         // Like Web's choice row on a mouse-like pointer; touch layouts keep the 44px target.
         minHeight: finePointer() ? tokens.extensions.choice.minimumHeight : tokens.native.minimumTouchTarget,
-        opacity: disabled ? tokens.states.opacity.disabled : 1,
       }}
     >
       {({ pressed }) => (
@@ -336,8 +334,9 @@ export function KjunRadio({
               borderRadius: tokens.radius.radius9999,
               alignItems: "center",
               justifyContent: "center",
+              // One disabled rule, like Button and fields: the ring and dot take the disabled-text role.
               borderColor: disabled
-                ? (selected ? colors.brand : colors.borderSecondary)
+                ? colors.textDisabled
                 : pressed ? colors.brandActive
                 : hovered ? colors.brandHover
                 : selected ? colors.brand : colors.borderStrong,
@@ -350,7 +349,7 @@ export function KjunRadio({
                   width: geometry.dot,
                   height: geometry.dot,
                   borderRadius: tokens.radius.radius9999,
-                  backgroundColor: colors.brand,
+                  backgroundColor: disabled ? colors.textDisabled : colors.brand,
                 }}
               />
             )}
@@ -358,6 +357,7 @@ export function KjunRadio({
           {!!(children || label) && content(children || label, {
             marginLeft: geometry.labelGap,
             ...typeStyle('label'),
+            ...(disabled ? { color: colors.textDisabled } : null),
           })}
         </>
       )}

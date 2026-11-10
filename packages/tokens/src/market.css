@@ -106,6 +106,10 @@
   border-radius: 0;
 }
 .kjun-market-table-grid {
+  /* Default column widths; the layout reads them so a narrow screen can tighten them below. */
+  --_kjun-market-table-identity-width: var(--_kjun-extension-market-table-identity-width);
+  --_kjun-market-table-column-width: var(--_kjun-extension-market-table-column-width);
+  --_kjun-market-table-actions-width: var(--_kjun-extension-market-table-actions-width);
   border-collapse: collapse;
   table-layout: fixed;
 }
@@ -154,7 +158,7 @@
   background: var(--_kjun-color-hover);
 }
 .kjun-market-table-grid .kjun-market-actions {
-  width: var(--_kjun-extension-market-table-actions-width);
+  width: var(--_kjun-market-table-actions-width);
   padding: var(--_kjun-geometry-dimension-value12) var(--_kjun-geometry-dimension-value4);
   text-align: center;
 }
@@ -253,7 +257,9 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    overflow-wrap: anywhere;
+    /* Korean names break between words, never inside one. */
+    word-break: keep-all;
+    overflow-wrap: break-word;
     white-space: normal;
   }
   .kjun-market-simple-list .kjun-market-quote, .kjun-mobile-simple-list .kjun-mobile-simple-list__quote {
@@ -285,9 +291,26 @@
   .kjun-market-simple-list .kjun-market-footer {
     padding-inline: var(--_kjun-geometry-dimension-value20);
   }
+  /* A phone table keeps name, price and change in view: the two toggles sit side by side without slack,
+     the name gives way first (ellipsis), and metric columns hold a price's width. */
+  .kjun-market-table-grid {
+    --_kjun-market-table-identity-width: var(--_kjun-geometry-dimension-value56);
+    --_kjun-market-table-column-width: var(--_kjun-geometry-dimension-value96);
+    --_kjun-market-table-actions-width: calc(2 * var(--_kjun-extension-icon-toggle-sizes-xs) + 2 * var(--_kjun-geometry-dimension-value4));
+  }
+  .kjun-market-table-grid :is(th, td):not(.kjun-market-actions) {
+    padding-inline: var(--_kjun-geometry-dimension-value4);
+  }
+  /* The price status moves under the price instead of widening its column. */
+  .kjun-market-table-grid td .kjun-price-status {
+    display: flex;
+    justify-content: flex-end;
+    margin-inline-start: 0;
+    margin-top: var(--_kjun-geometry-dimension-value2);
+  }
 }
 
-.kjun-market-column-label { padding:var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-dimension-value16); text-align:right; font-size:var(--_kjun-type-caption-size); color:var(--_kjun-color-text-secondary); overflow-wrap:anywhere; line-height: var(--_kjun-type-caption-line); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking); }
+.kjun-market-column-label { padding:var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-dimension-value16); text-align:right; font-size:var(--_kjun-type-caption-size); color:var(--_kjun-color-text-secondary); word-break:keep-all; overflow-wrap:break-word; line-height: var(--_kjun-type-caption-line); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking); }
 
 .kjun-market-table-grid .kjun-market-name {
   font-size: var(--_kjun-type-body-size);

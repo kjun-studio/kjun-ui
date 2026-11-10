@@ -271,6 +271,9 @@
   --_kjun-extension-state-padding-sm: 24px;
   --_kjun-extension-state-padding-md: 48px;
   --_kjun-extension-state-padding-lg: 80px;
+  --_kjun-extension-state-minimum-heights-sm: 176px;
+  --_kjun-extension-state-minimum-heights-md: 240px;
+  --_kjun-extension-state-minimum-heights-lg: 320px;
   --_kjun-extension-fab-size: 56px;
   --_kjun-extension-fab-inset: 16px;
   --_kjun-extension-fab-icon-size: 24px;
@@ -373,7 +376,7 @@
   --_kjun-extension-bottom-navigation-badge-minimum-size: 18px;
   --_kjun-extension-bottom-navigation-badge-padding-x: 4px;
   --_kjun-extension-bottom-navigation-badge-offset: 4px;
-  --_kjun-extension-bottom-navigation-badge-overlap: 10px;
+  --_kjun-extension-bottom-navigation-badge-overlap: 4px;
   --_kjun-extension-bottom-navigation-badge-radius: 9999px;
   --_kjun-extension-bottom-navigation-dot-size: 8px;
   --_kjun-extension-bottom-navigation-press-size: 40px;
@@ -442,8 +445,8 @@
   --_kjun-extension-slider-small-pressed-thumb: 18px;
   --_kjun-extension-slider-small-track-height: 24px;
   --_kjun-extension-slider-minimum-width: 100px;
-  --_kjun-extension-radio-size: 20px;
-  --_kjun-extension-radio-dot: 8px;
+  --_kjun-extension-radio-size: 24px;
+  --_kjun-extension-radio-dot: 10px;
   --_kjun-extension-radio-border-width: 2px;
   --_kjun-extension-radio-label-gap: 8px;
   --_kjun-extension-market-table-header-height: 44px;
@@ -592,8 +595,13 @@
   --_kjun-extension-alert-md-padding-y: 16px;
   --_kjun-extension-alert-md-gap: 12px;
   --_kjun-extension-alert-md-action-gap: 12px;
+  --_kjun-extension-alert-lg-padding-x: 20px;
+  --_kjun-extension-alert-lg-padding-y: 20px;
+  --_kjun-extension-alert-lg-gap: 14px;
+  --_kjun-extension-alert-lg-action-gap: 16px;
   --_kjun-extension-alert-icon-sizes-sm: 16px;
   --_kjun-extension-alert-icon-sizes-md: 18px;
+  --_kjun-extension-alert-icon-sizes-lg: 20px;
   --_kjun-extension-alert-close-icon-size: 16px;
   --_kjun-extension-table-card-padding: 16px;
   --_kjun-extension-table-card-radius: 16px;
@@ -670,7 +678,7 @@
   --_kjun-extension-switch-heights-lg: 32px;
   --_kjun-extension-switch-padding: 2px;
   --_kjun-extension-switch-radius: 9999px;
-  --_kjun-extension-switch-label-gap: 12px;
+  --_kjun-extension-switch-label-gap: 8px;
   --_kjun-extension-switch-spinner-size: 12px;
   --_kjun-extension-tooltip-padding-x: 8px;
   --_kjun-extension-tooltip-padding-y: 4px;
@@ -813,7 +821,7 @@
   --_kjun-extension-spinner-stroke-widths-lg: 4px;
   --_kjun-extension-spinner-stroke-widths-xl: 4px;
   --_kjun-extension-progress-heights-sm: 4px;
-  --_kjun-extension-progress-heights-md: 8px;
+  --_kjun-extension-progress-heights-md: 6px;
   --_kjun-extension-progress-heights-lg: 12px;
   --_kjun-extension-progress-circle-sm-size: 24px;
   --_kjun-extension-progress-circle-sm-stroke: 4px;
@@ -1093,6 +1101,7 @@
   --_kjun-geometry-table-sort-icon-size: 12px;
   --_kjun-geometry-table-sorted-icon-size: 14px;
   --_kjun-geometry-table-search-width: 200px;
+  --_kjun-geometry-table-sort-minimum-width: 120px;
   --_kjun-geometry-dimension-value2: 2px;
   --_kjun-geometry-dimension-value4: 4px;
   --_kjun-geometry-dimension-value6: 6px;

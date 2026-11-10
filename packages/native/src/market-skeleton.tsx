@@ -19,13 +19,13 @@ export function KjunMarketTableSkeleton({ columns = [], rows = 8, showActions = 
     <View style={{ width: layout.width }}>
       <View style={{ ...marketHeaderStyle, borderBottomColor: colors.border }}>
         {showActions && <View style={actions}><KjunSkeleton type="block" width={tokens.extensions.marketTable.actionSkeletonWidth} height={tokens.extensions.marketTable.headerSkeletonHeight} /></View>}
-        {cols.map((col, i) => <View key={col.key || i} style={{ width: layout.widths[i], padding: tokens.dimension.value12, justifyContent: "center" }}>
+        {cols.map((col, i) => <View key={col.key || i} style={{ width: layout.widths[i], paddingVertical: tokens.dimension.value12, paddingHorizontal: layout.compact ? tokens.dimension.value4 : tokens.dimension.value12, justifyContent: "center" }}>
           <KText style={{ ...typeStyle('meta'),   color: colors.textTertiary, textAlign: col.align }}>{col.label}</KText>
         </View>)}
       </View>
       {Array.from({ length: Math.max(0, rows) }, (_, row) => <View key={row} style={{ ...marketRowStyle, borderBottomColor: colors.border }}>
         {showActions && <View style={actions}><KjunSkeleton type="block" width={tokens.extensions.marketTable.actionSkeletonWidth} height={tokens.extensions.financial.priceSkeletonHeight} /></View>}
-        {cols.map((col, i) => <View key={col.key || i} style={{ width: layout.widths[i], paddingVertical: tokens.dimension.value14, paddingHorizontal: tokens.dimension.value12, justifyContent: "center", alignItems: isMarketIdentity(col.key) ? undefined : col.align === "right" ? "flex-end" : col.align === "center" ? "center" : "flex-start" }}>
+        {cols.map((col, i) => <View key={col.key || i} style={{ width: layout.widths[i], paddingVertical: tokens.dimension.value14, paddingHorizontal: layout.compact ? tokens.dimension.value4 : tokens.dimension.value12, justifyContent: "center", alignItems: isMarketIdentity(col.key) ? undefined : col.align === "right" ? "flex-end" : col.align === "center" ? "center" : "flex-start" }}>
           {isMarketIdentity(col.key) ? <View style={{ gap: tokens.dimension.value2 }}>
             <KjunSkeleton type="line" role="body" width="80%" />
             <KjunSkeleton type="line" role="caption" width="60%" />

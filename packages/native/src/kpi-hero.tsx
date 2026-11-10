@@ -18,7 +18,7 @@ import { KText,domainColor } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import {
-  KPI_MASK, KPI_MISSING, kpiDelta, kpiDeltaIcon, kpiDeltaValue, kpiFormat, kpiNumber, kpiPresent, kpiShowDelta, kpiTone,
+  KPI_MASK, KPI_MISSING, KPI_NUMERAL_HEIGHT, kpiDelta, kpiDeltaIcon, kpiDeltaValue, kpiFormat, kpiNumber, kpiPresent, kpiShowDelta, kpiTone,
 } from "../../../shared/package-runtime/kpi";
 
 export interface KpiValue {
@@ -191,7 +191,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
           </KText>
           {loading ? (
             // Placeholders fill each line's height, like Web's 1lh; the value width approximates Web's 7ch.
-            <KjunSkeleton type="line" role={numberRole}
+            <KjunSkeleton type="line" role={numberRole} height={typeStyle(numberRole).fontSize * KPI_NUMERAL_HEIGHT}
               width={small ? tokens.extensions.kpiHero.smValueSkeletonWidth : mobile ? tokens.extensions.kpiHero.mobileValueSkeletonWidth : tokens.extensions.kpiHero.valueSkeletonWidth} />
           ) : masked && kpiPresent(value) ? hidden({ ...numeric, ...typeStyle(numberRole), color: colors.text })
           : !kpiPresent(value) ? <KText style={{ ...numeric, ...typeStyle(numberRole), color: colors.text }}>{missingText ?? KPI_MISSING}</KText>
@@ -284,7 +284,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                 {item.label}
               </KText>
               {loading ? (
-                <KjunSkeleton type="line" role="numberSm" width={geometry.secondarySkeletonWidth} />
+                <KjunSkeleton type="line" role="numberSm" height={typeStyle("numberSm").fontSize * KPI_NUMERAL_HEIGHT} width={geometry.secondarySkeletonWidth} />
               ) : masked && kpiPresent(item.value) ? hidden({ ...numeric, ...typeStyle("numberSm"), color: colors.text })
               : (
                 renderSecondary?.(item, i) || (

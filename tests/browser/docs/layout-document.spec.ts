@@ -23,7 +23,7 @@ for (const width of [390, 1280, 1440]) test(`layout document: readable criteria,
   const b = (await body.boundingBox())!, t = (await table.boundingBox())!;
   expect(b.width).toBeLessThanOrEqual(720); expect(t.width).toBeCloseTo(b.width, 0); expect(t.x).toBeCloseTo(b.x, 0);
   const cell = table.locator('td').first();
-  expect(await cell.evaluate(el => [getComputedStyle(el).fontSize, getComputedStyle(el).lineHeight, getComputedStyle(el).fontFamily])).toEqual(['14px', '20px', await body.evaluate(el => getComputedStyle(el).fontFamily)]);
+  expect(await cell.evaluate(el => [getComputedStyle(el).fontSize, getComputedStyle(el).lineHeight, getComputedStyle(el).fontFamily])).toEqual(['14px', '22px', await body.evaluate(el => getComputedStyle(el).fontFamily)]);
   expect(await page.locator('.layout-gap-sample i').evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().height))).toEqual([16, 24, 32, 48]);
   const diagrams = await page.locator('.layout-cta-map').evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().height));
   expect(diagrams).toEqual([288, 288]);

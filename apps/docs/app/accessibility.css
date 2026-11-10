@@ -4,7 +4,7 @@
 .accessibility-description { max-width: 45rem; word-break: keep-all; overflow-wrap: anywhere; }
 .accessibility-responsibility { color: var(--kjun-text-secondary); }
 .accessibility-responsibility > strong { display: block; margin-bottom: var(--docs-value4); font-size: var(--docs-type-small); font-weight: 500; }
-.accessibility-results-note { max-width: 45rem; margin: var(--docs-value16) 0; color: var(--muted-foreground); font-size: var(--docs-type-small); line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; }
+.accessibility-results-note { max-width: 45rem; margin: var(--docs-value16) 0; color: var(--muted-foreground); font-size: var(--docs-type-small); line-height: var(--docs-leading-small); word-break: keep-all; overflow-wrap: anywhere; }
 .accessibility-item-footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--docs-value12); padding-top: var(--docs-value16); font-size: var(--docs-type-small); }
 .accessibility-item-footer .accessibility-record-link { margin-inline-start: auto; }
 .verification-result > .accessibility-description { margin-block: var(--docs-value16); }

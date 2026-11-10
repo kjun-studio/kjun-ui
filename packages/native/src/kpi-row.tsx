@@ -14,7 +14,7 @@ import { KjunSkeleton } from "./display";
 import { BadgeView } from "./display-primitives";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import {
-  KPI_MASK, kpiBadgeRoles, kpiBadgeVariant, kpiFormat, kpiPresent, kpiSpoken, kpiSummaryLayout, kpiTone, type KpiBadgeVariant,
+  KPI_MASK, KPI_NUMERAL_HEIGHT, kpiBadgeRoles, kpiBadgeVariant, kpiFormat, kpiPresent, kpiSpoken, kpiSummaryLayout, kpiTone, type KpiBadgeVariant,
 } from "../../../shared/package-runtime/kpi";
 import { KjunAnimatedNumber } from "./financial";
 import { KjunIcon } from "./button";
@@ -67,7 +67,10 @@ export function KjunKpiRow({
 }: KjunKpiRowProps) {
   const { colors, domainColors, numericFontFamily, fontFamily } =
       useKjunStyles(),
-    mobile = useWindowDimensions().width <= tokens.responsive.kpiRow,
+    windowWidth = useWindowDimensions().width,
+    mobile = windowWidth <= tokens.responsive.kpiRow,
+    // Like Web: on a phone the summary's half-width cells step their headline numbers down one type level.
+    narrowSummary = windowWidth <= tokens.responsive.kpiRowNarrow,
     small = size === "sm",
     summary = mobileSummary && mobile && !small;
   const geometry = tokens.extensions.kpiRow;
@@ -132,11 +135,12 @@ export function KjunKpiRow({
               mobile &&
               i === items.length - 1 &&
               items.length % 2 === 1),
-          numberRole = sub ? "numberSm" : small ? "numberLg" : mobile && !summary ? "numberLg" : "displaySm",
+          numberRole = sub ? "numberSm" : small ? "numberLg" : mobile && (!summary || narrowSummary) ? "numberLg" : "displaySm",
           numberSize = typeStyle(numberRole).fontSize;
         // A text value is a card title beside number cells; in a summary footnote it stays body text.
         const valueRole = item.valueKind === "text" ? (sub ? "body" : "cardTitle") : numberRole;
-        const unitRole = item.valueKind !== "text" && numberRole === "displaySm" ? "numberSm" : "meta";
+        // Summary headline units stay number-sm, like Web, also once a narrow phone steps the number down.
+        const unitRole = item.valueKind !== "text" && (numberRole === "displaySm" || (summary && !sub)) ? "numberSm" : "meta";
         const dividerLeft = summary
           ? 0
           : mobile && !small
@@ -257,7 +261,7 @@ export function KjunKpiRow({
                         </KText>
                       )}
                       {busy && !seg.separator ? (
-                        <KjunSkeleton type="line" role={valueRole} width={geometry.segmentSkeletonWidth} />
+                        <KjunSkeleton type="line" role={valueRole} height={typeStyle(valueRole).fontSize * KPI_NUMERAL_HEIGHT} width={geometry.segmentSkeletonWidth} />
                       ) : (
                         <KText
                           style={[
@@ -274,7 +278,7 @@ export function KjunKpiRow({
               ) : busy ? (
                 // Like Web's 1lh × 5ch: the placeholder fills the value line, and its width (set for the display
                 // number) scales with the value's font so a text value gets a text-sized bar.
-                <KjunSkeleton type="line" role={valueRole}
+                <KjunSkeleton type="line" role={valueRole} height={typeStyle(valueRole).fontSize * KPI_NUMERAL_HEIGHT}
                   width={geometry.valueSkeletonWidth * (valueStyle.fontSize ?? numberSize) / typeStyle("displaySm").fontSize} />
               ) : (
                 renderValue?.(item, i) || (!present ? (

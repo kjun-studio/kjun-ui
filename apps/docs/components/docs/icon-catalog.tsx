@@ -1,5 +1,5 @@
 'use client';
-import { useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { KjunButton as Button, KjunIcon as Icon, KjunInput as Input, KjunSelect, KjunRadioGroup, KjunProvider } from '@kjun-ui/react';
 import { tokens } from '@kjun-ui/tokens';
 import { useIconCatalogData, useIconPage } from './use-icon-data';
@@ -11,11 +11,10 @@ import { IconRegistrationCode } from './icon-registration-code';
 import { CodeBlock } from './code-block';
 import { useDocsPlatform } from './docs-platform';
 
+import { useDocumentPalette } from './use-document-palette';
+
 // The detail preview shows the selected shape, so it follows the document's light/dark mode.
-const darkQuery = '(prefers-color-scheme: dark)';
-const subscribeScheme = (change: () => void) => { const query = matchMedia(darkQuery); query.addEventListener('change', change); return () => query.removeEventListener('change', change); };
 const count = (value: number) => value.toLocaleString('ko-KR');
-const useDocumentPalette = () => useSyncExternalStore(subscribeScheme, () => matchMedia(darkQuery).matches ? 'dark' as const : 'default' as const, () => 'default' as const);
 
 export function IconCatalog() {
   const { platform } = useDocsPlatform();

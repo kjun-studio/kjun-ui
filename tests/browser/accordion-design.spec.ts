@@ -62,6 +62,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     const line = (index: number) => platform === 'native'
       ? items().nth(index).evaluate(el => { const last = el.lastElementChild as HTMLElement; const r = last.getBoundingClientRect(); return r.height <= 1.5 ? { left: r.left - el.getBoundingClientRect().left, height: r.height } : null; })
       : items().nth(index).evaluate(el => { const s = getComputedStyle(el, '::after'); return s.content === 'none' || s.content === 'normal' ? null : { left: parseFloat(s.left), height: parseFloat(s.height) }; });
+    // Items are divided by default, like ListSection; divider=false sets them apart by height alone.
+    expect(await line(0)).toEqual({ left: 16, height: 1 });
+    await configure(page, { divider: false });
     expect(await line(0)).toBeNull();
     await configure(page, { divider: true });
     expect(await line(0)).toEqual({ left: 16, height: 1 });

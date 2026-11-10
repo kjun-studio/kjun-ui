@@ -21,6 +21,7 @@ export interface KjunListSkeletonProps {
   /** "row" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked. */
   variant?: "market" | "compact" | "notification" | "row";
   avatar?: boolean;
+  /** Default: ListRow's sm leading square (32) for the row variant, the market avatar (36) otherwise. */
   avatarSize?: CSSProperties["width"];
   quote?: boolean;
   /** Row variant: draws the description line (default true). */
@@ -34,13 +35,15 @@ export function KjunListSkeleton({
   rows = 8,
   variant = "market",
   avatar,
-  avatarSize = tokens.extensions.skeleton.listAvatarSize,
+  avatarSize: ownAvatarSize,
   quote = true,
   description = true,
   trailing = "value",
   loadingText,
 }: KjunListSkeletonProps) {
   const sk = tokens.extensions.skeleton;
+  // The row silhouette takes ListRow's default leading square (sm, 32px, in the 40px column); other variants keep the market avatar.
+  const avatarSize = ownAvatarSize ?? (variant === "row" ? tokens.extensions.list.leadingSizes.sm : sk.listAvatarSize);
   // In an open KjunListSection a row skeleton takes the open row's shape: larger title and description lines and a
   // rounded leading square in place of the avatar; in a compact one, the compact row's height.
   const shape = useContext(ListShapeContext), open = shape.open && variant === "row", leadingSize = tokens.extensions.list.open.leadingSize;

@@ -20,7 +20,7 @@
 }
 .guide-example p {
   font-size: var(--docs-type-small);
-  line-height: 1.65;
+  line-height: var(--docs-leading-small);
   margin: 0;
   color: var(--muted-foreground);
 }
@@ -77,17 +77,16 @@
   min-width: 0;
 }
 .guide-note {
-  padding: 14px 16px;
-  border-left: 3px solid var(--border);
+  padding: 0;
   font-size: var(--docs-type-small);
-  line-height: 1.8;
+  line-height: var(--docs-leading-small);
   color: var(--muted-foreground);
   margin: 16px 0;
 }
 .anatomy-figure {
   margin: 20px 0 32px;
   padding: 20px;
-  border: 1px solid var(--border);
+  background: var(--surface-subtle);
   border-radius: 12px;
   min-width: 0;
 }
@@ -96,7 +95,7 @@
 }
 .anatomy-figure figcaption p {
   font-size: var(--docs-type-small);
-  line-height: 1.7;
+  line-height: var(--docs-leading-small);
   color: var(--muted-foreground);
   margin-bottom: 16px;
 }
@@ -155,7 +154,7 @@
   align-items: flex-start;
   min-width: 0;
   font-size: var(--docs-type-small);
-  line-height: 1.7;
+  line-height: var(--docs-leading-small);
 }
 .anatomy-parts p {
   margin: 3px 0 0;
@@ -179,7 +178,7 @@
 .visual-usage-advice {
   margin: 22px 0;
   font-size: var(--docs-type-small);
-  line-height: 1.8;
+  line-height: var(--docs-leading-small);
 }
 .visual-usage-advice .usage-guides h3 {
   font-size: var(--docs-type-small);
@@ -190,7 +189,7 @@
 }
 .writing-case > p {
   font-size: var(--docs-type-small);
-  line-height: 1.8;
+  line-height: var(--docs-leading-small);
 }
 @media (max-width: 700px) {
   .guide-comparison-grid {

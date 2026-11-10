@@ -9,6 +9,12 @@ useState,
 type ReactNode
 } from "react";
 import { KjunSkeleton } from "./display";
+import { splitNumberSign } from "../../../shared/package-runtime/number-sign";
+/** A leading sign drawn tight to its digits (see splitNumberSign); other content passes through. */
+export function signedText(value: ReactNode): ReactNode {
+  const parts = splitNumberSign(value);
+  return parts ? <><span className="kjun-number-sign">{parts[0]}</span>{parts[1]}</> : value;
+}
 
 export const finiteNumber = (value: unknown): number | null =>
   value == null ||
@@ -169,7 +175,7 @@ export function KjunSignedValue({
             : undefined,
       }}
     >
-      {loading ? <KjunSkeleton type="line" width={tokens.extensions.financial.signedSkeletonWidth} /> : display}
+      {loading ? <KjunSkeleton type="line" width={tokens.extensions.financial.signedSkeletonWidth} /> : signedText(display)}
     </span>
   );
 }

@@ -1,4 +1,4 @@
-import { type LayoutColumn, marketGeometry, webMarketLayout } from "../../../shared/package-runtime/market-layout";
+import { type LayoutColumn, webMarketActionsWidth, webMarketLayout } from "../../../shared/package-runtime/market-layout";
 
 export { webMarketLayout };
 export function MarketColumns({ columns, showActions, widthClass }: {
@@ -8,7 +8,7 @@ export function MarketColumns({ columns, showActions, widthClass }: {
 }) {
   const layout = webMarketLayout(columns, showActions, widthClass);
   return <colgroup>
-    {showActions && <col style={{ width: marketGeometry.actionsWidth }} />}
+    {showActions && <col style={{ width: webMarketActionsWidth }} />}
     {layout.columns.map((column, index) => <col key={columns[index].key || index} {...column} />)}
   </colgroup>;
 }

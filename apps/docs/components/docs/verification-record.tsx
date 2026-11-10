@@ -9,12 +9,15 @@ export function executionTime(value: string) {
 export function RunEnvironment({ run, platform }: { run: RunSummary; platform: Platform }) {
   return <section id="verification-environment" className="verification-environment">
     <h2>실행 환경·원본 기록</h2>
-    <p>실행일 · <time dateTime={run.startedAt}>{executionTime(run.startedAt)}</time></p>
-    <p>완료 시각 · <time dateTime={run.finishedAt}>{executionTime(run.finishedAt)}</time></p>
-    <p>{platform === 'native' ? 'Native Web · ' : ''}{run.environment.browser} · {run.environment.os} · {run.environment.architecture}</p>
-    <p>Node {run.environment.node} · Playwright {run.environment.playwright} · {run.environment.viewport.width}×{run.environment.viewport.height} · {run.environment.locale} · {run.environment.timezone}</p>
-    <p>{Object.entries(run.environment.runtimes).map(([name, version]) => `${name} ${version}`).join(' · ')}</p>
-    <p>iOS 기기: 미실행 · Android 기기: 미실행 · 스크린리더 발화: 미실행</p>
+    <dl className="verification-facts">
+      <dt>실행일</dt><dd><time dateTime={run.startedAt}>{executionTime(run.startedAt)}</time></dd>
+      <dt>완료 시각</dt><dd><time dateTime={run.finishedAt}>{executionTime(run.finishedAt)}</time></dd>
+      <dt>브라우저</dt><dd>{platform === 'native' ? 'Native Web · ' : ''}{run.environment.browser} · {run.environment.os} · {run.environment.architecture}</dd>
+      <dt>도구</dt><dd>Node {run.environment.node} · Playwright {run.environment.playwright}</dd>
+      <dt>화면·지역</dt><dd>{run.environment.viewport.width}×{run.environment.viewport.height} · {run.environment.locale} · {run.environment.timezone}</dd>
+      <dt>런타임</dt><dd>{Object.entries(run.environment.runtimes).map(([name, version]) => `${name} ${version}`).join(' · ')}</dd>
+      <dt>기기·보조기술</dt><dd>iOS 기기: 미실행 · Android 기기: 미실행 · 스크린리더 발화: 미실행</dd>
+    </dl>
     <p>독립 소비 환경에 설치한 packed 패키지로 실행했습니다. 자동 DOM·키보드 검사는 위 환경에 한정됩니다.</p>
     {run.stale && <p className="verification-stale" role="status"><strong>재검증 필요</strong> · 현재 패키지 버전·무결성 또는 검사 정의가 이 기록과 다릅니다. 아래는 당시 결과입니다.</p>}
     {run.setupError && <p className="verification-failure">실행 중단 · {run.setupError}</p>}
@@ -37,7 +40,8 @@ export function LegacyEvidence({ record, component, platform }: { record: Legacy
   return <section id="verification-environment">
     <h2>구현 검증 기록</h2>
     <Card surface="muted" className="verification-legacy">
-      <h3>{record.title}</h3><p>기록일 · <time dateTime={record.date}>{record.date}</time></p>
+      <h3>{record.title}</h3>
+      <dl className="verification-facts"><dt>기록일</dt><dd><time dateTime={record.date}>{record.date}</time></dd></dl>
       <p>원문에 적힌 기록일을 유지합니다. 새 자동검사의 실행일이나 현재 패키지의 접근성 통과 기록을 뜻하지 않습니다.</p>
       {associated ? <p>연결된 구현 환경 · {entry.platforms[platform].runtime === 'react-native-web' ? 'Native Web' : entry.platforms[platform].runtime} · {component}</p>
         : <p role="status">이 구현 기록은 선택한 대상에 연결되어 있지 않습니다.</p>}

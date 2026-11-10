@@ -208,8 +208,9 @@
 .kjun-pagination button:not(.kjun-select-trigger):hover:not(:disabled) {
   background: var(--_kjun-color-hover);
 }
+/* One disabled rule, as Button and fields: no fading; the arrow takes the disabled-text role. */
 .kjun-pagination button:not(.kjun-select-trigger):disabled {
-  opacity: var(--_kjun-state-opacity-disabled);
+  color: var(--_kjun-color-text-disabled);
   cursor: not-allowed;
 }
 .kjun-pagination button:not(.kjun-select-trigger)[aria-current] {
@@ -316,10 +317,15 @@
   color: inherit;
   text-decoration: none;
 }
-/* Text links show the new-window cue that the screen reader text announces, and underline on hover. */
-.kjun-external-link:hover {
+/* Text links are underlined, so they read as links in body text of the same colour; they also show the
+   new-window cue that the screen reader text announces. Icon-only links stay bare. */
+.kjun-external-link:has(> .kjun-external-link-icon) {
   text-decoration: underline;
+  text-decoration-thickness: var(--_kjun-border-default-width);
   text-underline-offset: var(--_kjun-geometry-dimension-value2);
+}
+.kjun-external-link:has(> .kjun-external-link-icon):hover {
+  text-decoration-thickness: var(--_kjun-geometry-dimension-value2);
 }
 .kjun-external-link-icon {
   margin-inline-start: var(--_kjun-geometry-dimension-value4);

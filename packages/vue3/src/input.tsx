@@ -57,8 +57,9 @@ export const KjunFormGroup = defineComponent({
       const id = props.id || uid;
       return {
         id, labelId: props.label ? id + "-label" : undefined,
-        // The hint stays with an error: it usually explains the format the error refers to.
-        describedBy: mergeIds(props.hint ? id + "-hint" : undefined, props.error ? id + "-error" : undefined),
+        // An error takes the hint's slot instead of stacking under it, so the field keeps its height; the control is
+        // then described by the error alone.
+        describedBy: mergeIds(props.hint && !props.error ? id + "-hint" : undefined, props.error ? id + "-error" : undefined),
         error: props.error, required: props.required, setControlId,
       };
     });
@@ -75,7 +76,7 @@ export const KjunFormGroup = defineComponent({
             </label>
           )}
           {slots.default?.()}
-          {props.hint && <p id={id + "-hint"} class="kjun-form-hint">{props.hint}</p>}
+          {props.hint && !props.error && <p id={id + "-hint"} class="kjun-form-hint">{props.hint}</p>}
           {props.error && (
             <p id={id + "-error"} class="kjun-form-error" role="alert">
               <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} />

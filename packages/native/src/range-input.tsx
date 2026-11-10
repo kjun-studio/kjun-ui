@@ -164,17 +164,16 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
   const markLabels = dots.filter((dot) => dot.label);
   return (
     <View style={{ minWidth: vertical ? undefined : slider.minimumWidth, width: vertical ? undefined : "100%", alignItems: vertical ? "center" : undefined,
-      opacity: blocked ? tokens.states.opacity.disabled : 1,
       // A mouse drag must not select the caption: RN Web ends the gesture when the text selection changes.
       ...(Platform.OS === "web" ? ({ userSelect: "none" } as ViewStyle) : null) }}>
       {captioned ? (
         <View style={vertical ? { alignItems: "center" } : { flexDirection: "row", alignItems: "baseline", justifyContent: "space-between", gap: tokens.dimension.value12, minWidth: 0 }}>
           {label ? (
             // Same color as field labels in a form, like Web .kjun-slider-label.
-            <KText style={{ ...typeStyle(textRole ?? "label"), ...(textRole ? { fontWeight: typeStyle("label").fontWeight } : null), color: colors.text, flexShrink: 1, minWidth: 0 }}>{label}</KText>
+            <KText style={{ ...typeStyle(textRole ?? "label"), ...(textRole ? { fontWeight: typeStyle("label").fontWeight } : null), color: blocked ? colors.textDisabled : colors.text, flexShrink: 1, minWidth: 0 }}>{label}</KText>
           ) : null}
           {showValue ? (
-            <KText style={{ ...typeStyle(textRole ?? "control"), fontFamily: numericFontFamily ?? fontFamily, fontVariant: ["tabular-nums"], flexShrink: 0, marginLeft: vertical ? undefined : "auto" }}>
+            <KText style={{ ...typeStyle(textRole ?? "control"), fontFamily: numericFontFamily ?? fontFamily, fontVariant: ["tabular-nums"], color: blocked ? colors.textDisabled : colors.text, flexShrink: 0, marginLeft: vertical ? undefined : "auto" }}>
               {sliderValueText(values, formatValue, formatRange)}
             </KText>
           ) : null}
@@ -201,9 +200,9 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
               ? { position: "absolute", left: 0, right: 0, top: -half, bottom: -half, alignItems: "center" }
               : { position: "absolute", top: 0, bottom: 0, start: -half, end: -half, justifyContent: "center" }}
           >
-            {/* Text at 16% like Web's color-mix; opacity works for any color format the app passes. */}
+            {/* One empty-rail role for Slider, RangeSlider and Progress, like Web: the switch-track role. */}
             <View style={{ [vertical ? "width" : "height"]: geometry.track, ...(vertical ? { flex: 1 } : null), borderRadius: tokens.radius.radius9999,
-              backgroundColor: colors.text, opacity: tokens.states.opacity.tintActive }} />
+              backgroundColor: colors.switchTrack ?? colors.border }} />
           </Pressable>
           <View
             pointerEvents="none"
@@ -212,7 +211,8 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
               ...(vertical ? { left: (targetSize - geometry.track) / 2, width: geometry.track } : { top: (targetSize - geometry.track) / 2, height: geometry.track }),
               borderRadius: tokens.radius.radius9999,
               ...fill,
-              backgroundColor: colors.brand,
+              // One disabled rule, like Button and fields: no fading; the fill takes the disabled-text role.
+              backgroundColor: blocked ? colors.textDisabled : colors.brand,
             }}
           />
           {dots.filter((dot) => dot.dot).map((dot) => (
@@ -288,10 +288,11 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
                   height: !blocked && dragging === index ? geometry.pressedThumb : geometry.thumb,
                   borderRadius: tokens.radius.radius9999,
                   backgroundColor: colors.switchThumb,
-                  // Like Web: the lift plus a hairline in the border role, so a white thumb reads on a white surface.
+                  // Like Web: the lift plus a hairline in the strong border role, so a white thumb reads on a white surface.
+                  // Disabled drops the lift and draws the edge in the disabled-text role.
                   borderWidth: tokens.border.defaultWidth,
-                  borderColor: colors.border,
-                  boxShadow: shadowLayers(tokens.extensions.slider.elevation, colors),
+                  borderColor: blocked ? colors.textDisabled : colors.borderStrong,
+                  boxShadow: blocked ? undefined : shadowLayers(tokens.extensions.slider.elevation, colors),
                   ...(Platform.OS === "web" && !blocked && focused === index
                     ? ({ outlineStyle: "solid", outlineWidth: tokens.states.focus.width, outlineOffset: tokens.states.focus.choiceOffset, outlineColor: colors.focusRing } as ViewStyle)
                     : {}),
@@ -315,7 +316,7 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
             </View>
             {markLabels.map((dot) => (
               <KText key={dot.value} onPress={() => pickMark(dot.value)}
-                style={{ ...typeStyle("caption"), color: colors.textTertiary, position: "absolute", start: 0, ...along(dot.fraction), marginTop: -captionLine / 2 }}>
+                style={{ ...typeStyle("caption"), color: blocked ? colors.textDisabled : colors.textTertiary, position: "absolute", start: 0, ...along(dot.fraction), marginTop: -captionLine / 2 }}>
                 {dot.label}
               </KText>
             ))}
@@ -330,7 +331,7 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
               key={dot.value}
               onPress={() => pickMark(dot.value)}
               onLayout={(event) => { const width = event.nativeEvent.layout.width; setLabelWidths((old) => old[dot.value] === width ? old : { ...old, [dot.value]: width }); }}
-              style={{ ...typeStyle("caption"), color: colors.textTertiary, position: "absolute", top: 0,
+              style={{ ...typeStyle("caption"), color: blocked ? colors.textDisabled : colors.textTertiary, position: "absolute", top: 0,
                 ...(dot.value === effectiveMax ? { end: -half } : dot.value === min ? { start: -half } : { start: pct(dot.fraction * 100),
                   // Centering moves against the start edge: left in left-to-right, right in right-to-left.
                   transform: [{ translateX: (rtl ? 1 : -1) * (labelWidths[dot.value] ?? 0) / 2 }] }) }}

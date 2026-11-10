@@ -36,8 +36,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       return Math.abs(own.width - width) < 0.6 && own.height > 0 && Math.abs(own.height * 2 - parent.height) < 0.6;
     }), tokens.table.actionColumnWidth)).toBe(true);
     const next = page.getByTestId('pagination').getByRole('button', { name: '다음 페이지', exact: true });
-    const size = platform === 'native' ? Math.max(tokens.extensions.pagination.itemSize, tokens.native.minimumTouchTarget) : tokens.extensions.pagination.itemSize;
-    await expect(next).toHaveCSS('width', px(size));
+    // Every platform paints Web's item size; Native reaches the 44pt touch target with hitSlop around it.
+    await expect(next).toHaveCSS('width', px(tokens.extensions.pagination.itemSize));
     await expect(next).toHaveCSS('border-radius', px(tokens.extensions.pagination.radius));
     await next.click(); await expect(page.getByTestId('events')).toHaveText('0/2');
     // A blocking error is an md KjunAlert; its message takes the alert body type like any other alert.

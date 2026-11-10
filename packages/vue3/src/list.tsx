@@ -98,7 +98,7 @@ export const KjunListRow = defineComponent({
       const mark = end === "spinner" ? <KjunIcon name="loader-2" spin class="kjun-list-busy" size={tokens.extensions.list.endIconSize} />
         : end === "mark" ? <span class="kjun-list-mark" data-kind={kind} data-checked={selected ? "" : undefined} aria-hidden="true">{selected && <KjunIcon name="check" size={tokens.extensions.list.markIconSize} />}</span>
         : end === "check" && <KjunIcon name="check" class="kjun-list-check" size={tokens.iconSizes.default} />;
-      const leadingStyle = leading && geometry.size ? { "--_kjun-list-leading-width": `${geometry.width}px`, "--_kjun-list-leading-height": `${geometry.width}px` } : undefined;
+      const leadingStyle = leading && geometry.size ? { "--_kjun-list-leading-width": `${geometry.column}px`, "--_kjun-list-leading-height": `${geometry.width}px`, "--_kjun-list-tile-size": `${geometry.width}px` } : undefined;
       // Like React: a pressable row is named by its title, badge and end value and described by its description and content.
       const hasBadge = hasContent(badge), hasTrailing = hasContent(trailing), hasBody = hasContent(body);
       const names = props.ariaLabel ? undefined : [id + "-title", hasBadge && id + "-badge", hasTrailing && id + "-trailing"].filter(Boolean).join(" ");

@@ -1,3 +1,4 @@
+import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "./runtime/messages";
 import { onBeforeUnmount, onMounted, onUpdated, ref, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
@@ -75,7 +76,7 @@ export const KjunMarketTable = defineComponent({
       const { rows, columns, showActions, sortKey, sortOrder } = props;
       return (
         <div class="kjun-market-table" data-embedded={String(props.embedded)} ref={domainRef(showActions && rows.length > 0 && !props.loading)}>
-          <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={(props.emptyMessage ?? m.value.noItems)}
+          <KjunDataState {...queryProps(props)} {...marketQueryState(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={(props.emptyMessage ?? m.value.noItems)}
             loadingText={props.loadingText} loadingDelay={props.loadingDelay}>
             {{
               loading: props.skeleton ? () => <KjunMarketTableSkeleton columns={columns} showActions={showActions} /> : undefined,

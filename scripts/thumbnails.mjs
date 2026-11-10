@@ -33,9 +33,14 @@ const scenes = [
   ...overviewScenes.map(scene => ({ ...scene, group: 'overviewImages', url: '/previews/overview/' + scene.id + '.png' })),
 ];
 const dimensions = { width: capture.width * capture.deviceScaleFactor, height: capture.height * capture.deviceScaleFactor };
+// Each scene is captured twice: the docs light palette and its dark counterpart (`-dark.png`).
+const palettes = ['default', 'dark'];
+const variantUrl = (url, palette) => palette === 'dark' ? url.replace(/\.png$/, '-dark.png') : url;
+const variantGroup = (group, palette) => palette === 'dark' ? 'dark' + group[0].toUpperCase() + group.slice(1) : group;
 const conditions = scene => ({ url: scene.url, width: scene.width, prepare: scene.prepare || null, highlight: scene.highlight || null, layer: !!scene.layer, captureType: scene.captureType, capture: captureFor(scene) });
 async function validCache() {
   if (previous?.fingerprint !== digest || Object.keys(previous.images || {}).length !== documents.length || Object.keys(previous.overviewImages || {}).length !== overviewScenes.length) return false;
+  if (Object.keys(previous.darkImages || {}).length !== documents.length || Object.keys(previous.darkOverviewImages || {}).length !== overviewScenes.length) return false;
   if (new Set(Object.values(previous.images)).size !== documents.length) return false;
   if (JSON.stringify(previous.capture) !== JSON.stringify(capture) || JSON.stringify(previous.dimensions) !== JSON.stringify(dimensions)) return false;
   if (Object.keys(previous.scenes || {}).length !== scenes.length || JSON.stringify(previous.captureProfiles) !== JSON.stringify(captureProfiles)) return false;
@@ -46,8 +51,10 @@ async function validCache() {
     const viewport = { width: scene.layer ? scene.width : expectedCapture.width, height: expectedCapture.height - (scene.layer ? 2 * expectedCapture.padding : 0) };
     if (JSON.stringify(evidence.geometry?.viewport) !== JSON.stringify(viewport) || !evidence.geometry?.boxes?.length || evidence.geometry.outside?.length !== 0 || evidence.geometry.clipped?.length !== 0) return false;
     if (scene.layer && (!frame || frame.left < expectedCapture.padding || frame.top < expectedCapture.padding || frame.left + frame.width > expectedCapture.width - expectedCapture.padding || frame.top + frame.height > expectedCapture.height - expectedCapture.padding)) return false;
-    const bytes = await readFile(resolve(publicRoot, '.' + scene.url)).catch(() => null);
-    if (!bytes || sha(bytes) !== previous[scene.group][scene.id] || JSON.stringify(pngSize(bytes)) !== JSON.stringify(dimensions)) return false;
+    for (const palette of palettes) {
+      const bytes = await readFile(resolve(publicRoot, '.' + variantUrl(scene.url, palette))).catch(() => null);
+      if (!bytes || sha(bytes) !== previous[variantGroup(scene.group, palette)][scene.id] || JSON.stringify(pngSize(bytes)) !== JSON.stringify(dimensions)) return false;
+    }
   }
   for (const [name, bytes] of Object.entries(built)) {
     const actual = await readFile(resolve(publicRoot, 'previews', name)).catch(() => null);
@@ -75,27 +82,28 @@ if (await validCache()) {
   let browser;
   try {
     browser = await chromium.launch({ headless: true });
-    const manifest = { fingerprint: digest, renderer: '@kjun-ui/react', packages, capture, captureProfiles, dimensions, images: {}, overviewImages: {}, scenes: {} };
-    for (const scene of scenes) {
+    const manifest = { fingerprint: digest, renderer: '@kjun-ui/react', packages, capture, captureProfiles, dimensions, images: {}, overviewImages: {}, darkImages: {}, darkOverviewImages: {}, scenes: {} };
+    for (const scene of scenes) for (const palette of palettes) {
       const capture = captureFor(scene);
       const context = await browser.newContext({ viewport: { width: capture.width, height: capture.height }, deviceScaleFactor: capture.deviceScaleFactor, reducedMotion: 'reduce', locale: 'ko-KR', timezoneId: 'Asia/Seoul' });
       try {
         const page = await context.newPage(), errors = [];
         page.on('pageerror', error => errors.push(error.message));
         page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-        await page.goto(`http://127.0.0.1:${server.address().port}/previews/presentation.html?scene=${encodeURIComponent(scene.name)}`);
+        await page.goto(`http://127.0.0.1:${server.address().port}/previews/presentation.html?scene=${encodeURIComponent(scene.name)}&palette=${palette}`);
         const geometry = await preparePresentation(page, scene);
-        const bytes = await page.screenshot({ path: resolve(publicRoot, '.' + scene.url), animations: 'disabled' });
+        const bytes = await page.screenshot({ path: resolve(publicRoot, '.' + variantUrl(scene.url, palette)), animations: 'disabled' });
         if (errors.length) throw Error(scene.name + ': ' + errors.join('; '));
         if (JSON.stringify(pngSize(bytes)) !== JSON.stringify(dimensions)) throw Error('Invalid capture dimensions: ' + scene.name);
-        manifest[scene.group][scene.id] = sha(bytes);
-        manifest.scenes[scene.name] = { ...conditions(scene), geometry };
-        if (Object.keys(manifest.scenes).length % 20 === 0) console.log(`Captured ${Object.keys(manifest.scenes).length}/${scenes.length} presentation scenes.`);
+        manifest[variantGroup(scene.group, palette)][scene.id] = sha(bytes);
+        // Geometry evidence comes from the light capture; the dark pass shares the same layout.
+        if (palette === 'default') manifest.scenes[scene.name] = { ...conditions(scene), geometry };
+        if (palette === 'dark' && Object.keys(manifest.scenes).length % 20 === 0) console.log(`Captured ${Object.keys(manifest.scenes).length}/${scenes.length} presentation scenes.`);
       } finally { await context.close(); }
     }
     if (new Set(Object.values(manifest.images)).size !== documents.length) throw Error('Representative component images must be distinct.');
     await writeFile(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
-    console.log(`Generated ${documents.length} component thumbnails + ${overviewScenes.length} overview images from packed React.`);
+    console.log(`Generated ${documents.length} component thumbnails + ${overviewScenes.length} overview images (light and dark) from packed React.`);
   } finally {
     await browser?.close();
     await new Promise(done => server.close(done));

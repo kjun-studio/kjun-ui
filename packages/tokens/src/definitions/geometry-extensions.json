@@ -148,7 +148,7 @@
       "badgeMinimumSize": 18,
       "badgePaddingX": { "$ref": "dimension.value4" },
       "badgeOffset": { "$ref": "dimension.value4" },
-      "badgeOverlap": { "$ref": "dimension.value10" },
+      "badgeOverlap": { "$ref": "dimension.value4" },
       "badgeRadius": { "$ref": "radius.radius9999" },
       "dotSize": { "$ref": "dimension.value8" },
       "pressSize": { "$ref": "dimension.value40" },
@@ -196,7 +196,7 @@
       "nativeRemoveSize": { "$ref": "native.minimumTouchTarget" }
     },
     "slider": {
-      "track": 6,
+      "track": { "$ref": "extensions.progress.heights.md" },
       "thumb": 20,
       "trackHeight": 28,
       "captionGap": { "$ref": "dimension.value4" },
@@ -205,11 +205,11 @@
       "markSize": 4,
       "markLabelGap": { "$ref": "dimension.value2" },
       "verticalLength": 160,
-      "small": { "track": 4, "thumb": 16, "pressedThumb": 18, "trackHeight": 24 }
+      "small": { "track": { "$ref": "extensions.progress.heights.sm" }, "thumb": 16, "pressedThumb": 18, "trackHeight": 24 }
     },
     "radio": {
-      "size": 20,
-      "dot": 8,
+      "size": { "$ref": "extensions.checkbox.sizes.md" },
+      "dot": 10,
       "borderWidth": 2,
       "labelGap": { "$ref": "dimension.value8" }
     },
@@ -364,6 +364,12 @@
         "paddingY": { "$ref": "dimension.value16" },
         "gap": { "$ref": "dimension.value12" },
         "actionGap": { "$ref": "dimension.value12" }
+      },
+      "lg": {
+        "paddingX": { "$ref": "dimension.value20" },
+        "paddingY": { "$ref": "dimension.value20" },
+        "gap": { "$ref": "dimension.value14" },
+        "actionGap": { "$ref": "dimension.value16" }
       }
     },
     "tableCard": {

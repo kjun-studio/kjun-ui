@@ -1,3 +1,4 @@
+import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "./runtime/messages";
 import { type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
@@ -74,7 +75,7 @@ export const KjunMarketCards = defineComponent({
             ))}
           </div>
           {slots.list ? (hasContent(custom) ? custom : null) : <>
-            <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length}
+            <KjunDataState {...queryProps(props)} {...marketQueryState(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length}
               loadingText={props.loadingText} loadingDelay={props.loadingDelay}>
               {{
                 loading: props.skeleton ? () => <KjunListSkeleton variant="compact" /> : undefined,

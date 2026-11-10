@@ -9,6 +9,7 @@
     "kpiHero": { "$ref": "breakpoints.compact" },
     "kpiHeroSecondary": { "$ref": "breakpoints.narrow" },
     "kpiRow": { "$ref": "breakpoints.medium" },
+    "kpiRowNarrow": { "$ref": "breakpoints.narrow" },
     "market": { "$ref": "breakpoints.medium" },
     "selection": { "$ref": "breakpoints.medium" },
     "formColumns": { "$ref": "breakpoints.medium" },

@@ -12,7 +12,7 @@ test('control dimensions reject empty controls and content that cannot fit', () 
     [t => { t.modal.widths.sm = 0; }, /positive dimension: modal.widths.sm/],
     [t => { t.extensions.checkbox.iconSizes.sm = 40; }, /Invalid choice geometry/],
     [t => { t.border.controlWidth = 4; }, /Invalid choice geometry/],
-    [t => { t.extensions.radio.dot = 18; }, /Radio dot exceeds inner size/],
+    [t => { t.extensions.radio.dot = 22; }, /Radio dot exceeds inner size/],
     [t => { t.extensions.chip.removeSize = 0; }, /positive dimension/],
     [t => { t.extensions.chip.nativeRemoveSize = 24; }, /Native Chip removal target/],
     [t => { t.extensions.toast.minWidth = 500; }, /Toast minWidth exceeds maxWidth/],
@@ -48,7 +48,7 @@ test('layer and breakpoint roles reject ties as well as reversed ordering', () =
 test('valid boundary geometry and intentional zero resets remain supported', () => {
   const changed = structuredClone(source);
   changed.extensions.checkbox.iconSizes.sm = 16; // 20 - 2 * 2 border
-  changed.extensions.radio.dot = 16; // 20 - 2 * 2 border
+  changed.extensions.radio.dot = 20; // 24 - 2 * 2 border
   changed.extensions.toast.minWidth = 400; // exactly maxWidth
   changed.button.heights.xs = 16; // exactly the label and icon content
   changed.buttonGroup.padding.xs = 0; // the shared height leaves no room for an inset

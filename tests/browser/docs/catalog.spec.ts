@@ -104,7 +104,8 @@ for (const platform of ["vue3", "react", "native"]) {
     await expect(
       platform === "native" ? dialog : page.locator(".kjun-modal")
     ).toHaveCSS("background-color", "rgb(24, 24, 24)");
-    await expect(toast).toHaveCSS("color", "rgb(212, 212, 212)");
+    // A toast without a heading draws its one line in the text role.
+    await expect(toast).toHaveCSS("color", "rgb(250, 250, 250)");
     await page.getByRole("button", { name: "알림 닫기" }).click();
     await page.keyboard.press("Escape");
     await expect(dialog).not.toBeVisible();

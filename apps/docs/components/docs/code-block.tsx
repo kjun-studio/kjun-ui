@@ -9,7 +9,7 @@ export function CodeBlock({
   disabled = false,
   copyLabel = "코드 복사",
   requestKey,
-  previewLines,
+  previewLines = 16,
   copySuccess = "코드를 복사했습니다",
   copyFailure = "복사하지 못했습니다. 코드를 직접 선택해 주세요.",
   children,
@@ -19,7 +19,7 @@ export function CodeBlock({
   disabled?: boolean;
   copyLabel?: string;
   requestKey?: string;
-  /** Shows only the first lines until expanded; copying always takes the full code. */
+  /** Shows only the first lines until expanded (0 shows everything); copying always takes the full code. */
   previewLines?: number;
   copySuccess?: string;
   copyFailure?: string;
@@ -36,13 +36,13 @@ export function CodeBlock({
   const collapsed = collapsible && !expanded;
   const body = <>
     <pre tabIndex={0} className={collapsed ? "is-collapsed" : undefined}
-      style={collapsed ? { maxHeight: `calc(${previewLines} * var(--code-line-height) + var(--code-padding) * 2)` } : undefined}>
+      style={collapsed ? { maxHeight: `min(calc(${previewLines} * var(--code-line-height) + var(--code-padding) * 2), var(--code-max-height, 100vh))` } : collapsible ? { maxHeight: 'none' } : undefined}>
       <code>{code}</code>
     </pre>
     {collapsible && <div className="code-expand">
       <Button variant="ghost" size="sm" suffixIcon={expanded ? "chevron-up" : "chevron-down"} aria-expanded={expanded}
         onClick={() => setExpanded(value => !value)}>
-        {expanded ? "접기" : `전체 ${lineCount}줄 보기`}
+        {expanded ? "접기" : `펼치기 · 전체 ${lineCount}줄`}
       </Button>
     </div>}
     {children}

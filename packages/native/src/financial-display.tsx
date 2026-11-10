@@ -23,7 +23,7 @@ import { AccessiblePressable } from "./a11y";
 import { KjunTooltip } from "./popover";
 import { KjunBadge,type DisplaySize } from "./display";
 import { KText,content,domainColor } from "./internal";
-import { finiteNumber,format } from "./number-display";
+import { finiteNumber,format,signedText } from "./number-display";
 import { useKjunStyles } from "./provider";
 
 // Fill strength of a non-neutral deviation step.
@@ -133,7 +133,7 @@ export function KjunDeviation({
           fontWeight: level === "strong" ? typeStyle("numberLg").fontWeight : typeStyle("control").fontWeight,
         }}
       >
-        {label}
+        {signedText(label)}
       </KText>
     </View>
   );
@@ -191,7 +191,7 @@ export function KjunHeatmapCell({
       {content(children ?? value, {
         fontFamily: numericFontFamily || fontFamily,
         fontVariant: ["tabular-nums"],
-      })}
+      }, signedText)}
     </View>
   );
 }

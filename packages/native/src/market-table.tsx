@@ -1,3 +1,4 @@
+import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
@@ -135,6 +136,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
     >
       <KjunDataState
         {...props}
+        {...marketQueryState(props)}
         loadingPadding="none"
         empty={!rows.length}
         emptyText={emptyMessage}
@@ -185,7 +187,8 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
                   onPress={() => props.onSort?.(col.key)}
                   style={{
                     width: layout.widths[columnIndex],
-                    padding: tokens.dimension.value12,
+                    paddingVertical: tokens.dimension.value12,
+                    paddingHorizontal: layout.compact ? tokens.dimension.value4 : tokens.dimension.value12,
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent:
@@ -281,7 +284,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
                       style={{
                         width: layout.widths[columnIndex],
                         paddingVertical: tokens.dimension.value14,
-                        paddingHorizontal: tokens.dimension.value12,
+                        paddingHorizontal: layout.compact ? tokens.dimension.value4 : tokens.dimension.value12,
                         justifyContent: "center",
                         alignItems:
                           col.align === "right"
@@ -293,9 +296,11 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
                     >
                       {/* The wrapper takes the column alignment; content-hugging values (KjunSignedValue) would
                           otherwise pull themselves to the start of a right-aligned cell. */}
-                      {/* Like Web, the price column's status sits after the value on the same line. */}
+                      {/* Like Web, the price column's status sits after the value on the same line, or under it on a phone. */}
                       <View style={{ alignSelf: col.align === "right" ? "flex-end" : col.align === "center" ? "center" : undefined,
-                        flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.statusGap }}>
+                        flexDirection: layout.compact ? "column" : "row",
+                        alignItems: layout.compact ? (col.align === "right" ? "flex-end" : col.align === "center" ? "center" : "flex-start") : "center",
+                        gap: layout.compact ? tokens.dimension.value2 : tokens.extensions.financial.statusGap }}>
                         {render(row, col)}
                         {col.key === priceCol?.key && <PriceStatus status={renderStatus?.(row)} />}
                       </View>

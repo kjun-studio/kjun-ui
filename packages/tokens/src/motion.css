@@ -10,6 +10,8 @@
 .kjun-tab-indicator[hidden] { display: none; }
 .kjun-tab-indicator[data-animate="true"] { transition: transform var(--_kjun-motion-indicator) var(--_kjun-ease-out), width var(--_kjun-motion-indicator) var(--_kjun-ease-out); }
 [data-variant="underline"] .kjun-tab-indicator { background: var(--_kjun-color-brand); border-radius: calc(var(--_kjun-extension-tabs-indicator-height) / 2); }
+/* A disabled selected tab paints its underline in the disabled-ink role, like its label. */
+[data-variant="underline"] :has(> .kjun-tab[aria-selected="true"]:is([aria-disabled="true"], :disabled)) ~ .kjun-tab-indicator { background: var(--_kjun-color-text-disabled); }
 .kjun-tabs-track .kjun-tab, .kjun-vue-tabs .kjun-tab { z-index: 1; background: transparent !important; }
 .kjun-tabs-track .kjun-tab::after, .kjun-vue-tabs .kjun-tab::after { display: none; }
 .kjun-tabs[data-variant="pills"] .kjun-tab { transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out); }

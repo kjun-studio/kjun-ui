@@ -85,7 +85,8 @@ for (const platform of ["vue3", "react", "native"] as const) {
           await share.focus(); await share.press("Enter");
           await expect(frame.getByText("프로젝트 계획 공유 안내", { exact: true })).toBeVisible();
           expect(await share.evaluate(el => !!el.parentElement?.closest('button, a, [role="button"]'))).toBe(false);
-          await frame.getByRole("button", { name: /프로젝트 계획.*이번 주/ }).click();
+          // A pressable row is named by its title and described by its description (ListRow, 0.20.0).
+          await frame.getByRole("button", { name: "프로젝트 계획", exact: true }).click();
           await expect(frame.getByText("프로젝트 계획 상세 열기", { exact: true })).toBeVisible();
         } else await checkAdditionalCase(frame, item.id, true);
         if (item.viewportHeight) {

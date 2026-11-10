@@ -68,6 +68,8 @@ export const KjunDataState = defineComponent({
       const visibleRefreshError = props.refreshError || (state.usesQueryState && state.hasCurrentResult ? props.error : null);
       const concealed = state.initialLoading || !!blockingError || props.empty;
       const padding = tokens.extensions.state.padding[props.size];
+      // Loading, error and empty share one minimum height per size, so switching between them does not jump.
+      const minHeight = tokens.extensions.state.minimumHeights[props.size];
       const retry = props.onRetry && <KjunButton variant="secondary" onClick={() => props.onRetry?.()}>{(props.retryText ?? m.value.retry)}</KjunButton>;
       const loading = slots.loading?.(), empty = slots.empty?.(), error = slots.error?.({ error: props.error, retry: props.onRetry });
       return (
@@ -79,7 +81,7 @@ export const KjunDataState = defineComponent({
           </div>
           {state.initialLoading ? (
             <div class="kjun-data-loading-block" role={revealed() ? "status" : undefined} aria-label={revealed() ? (props.loadingText ?? m.value.loadingEllipsis) : undefined} aria-hidden={revealed() ? undefined : "true"}
-              style={css({ paddingBlock: props.loadingPadding === "none" ? 0 : padding, visibility: revealed() ? undefined : "hidden" })}>
+              style={css({ ...(props.loadingPadding === "none" ? { paddingBlock: 0 } : { paddingBlock: padding, minHeight }), visibility: revealed() ? undefined : "hidden" })}>
               {hasContent(loading) ? loading : props.skeleton ? (
                 <div style={css({ display: "grid", gap: tokens.dimension.value12 })}>
                   {Array.from({ length: props.skeletonCount }, (_, i) => <KjunSkeleton key={i} type={props.skeletonType} />)}
@@ -89,14 +91,14 @@ export const KjunDataState = defineComponent({
               )}
             </div>
           ) : blockingError ? (
-            <div class="kjun-data-error kjun-state-actions" style={css({ paddingBlock: padding })}>
+            <div class="kjun-data-error kjun-state-actions" style={css({ paddingBlock: padding, minHeight })}>
               {hasContent(error) ? error : (
                 // The alert's own body type applies, like any other KjunAlert.
                 <KjunAlert type="danger" title={m.value.errorTitle}>{{ default: () => props.error, ...(retry ? { actions: () => retry } : {}) }}</KjunAlert>
               )}
             </div>
           ) : props.empty ? (
-            <div class="kjun-data-empty kjun-state-actions" style={css({ paddingBlock: padding })}>
+            <div class="kjun-data-empty kjun-state-actions" style={css({ paddingBlock: padding, minHeight })}>
               {hasContent(empty) ? empty : (
                 <KjunEmpty text={(props.emptyText ?? m.value.noData)} icon={props.emptyIcon}>
                   {props.emptyActionText && <KjunButton onClick={() => emit("empty-action")}>{props.emptyActionText}</KjunButton>}

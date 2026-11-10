@@ -37,7 +37,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
     case "KjunButton": {
       const cases = buttonComparisons[String(settings.comparison)];
       if (cases) return h("Group", {}, cases.map(item => h("Stack", {}, [
-        h("Text", {}, item.caption),
+        h("Text", { "data-caption": "" }, item.caption),
         h("Group", {}, [h(name, { size: settings.size, variant: settings.variant, disabled, loading,
           ...item.props, ...action(() => set("count", get("count", 0) + 1)),
         }, item.label)]),
@@ -120,7 +120,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
       const props = Object.fromEntries(['size', 'variant', 'cancelVariant', 'confirmText', 'cancelText', 'showCancel', 'showConfirm', 'cancelDisabled'].map(key => [key, settings[key]]));
       const cases = formActionsComparisons[String(settings.comparison)] || [{ caption: '', props: {} }];
       return h('Box', { width: Number(settings.exampleWidth || 360) },
-        h('Stack', {}, cases.map(item => h('Stack', {}, [item.caption ? h('Text', {}, item.caption) : null,
+        h('Stack', {}, cases.map(item => h('Stack', {}, [item.caption ? h('Text', { "data-caption": "" }, item.caption) : null,
           h(name, { ...props, loading, confirmDisabled: disabled, ...item.props,
             onConfirm: () => message('확인'), onCancel: () => message('취소') }),
         ]))));

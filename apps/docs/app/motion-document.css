@@ -1,5 +1,5 @@
 /* Motion documentation only; packed controls and tables keep their geometry. */
-.motion-document > :is(.page-intro, .document-shortcuts, section, .page-navigation) { width: 100%; max-width: 720px; }
+.motion-document > :is(.page-intro, .document-shortcuts, section) { width: 100%; max-width: var(--docs-measure); }
 .motion-document > section > h2 { font-size: var(--docs-type-heading); line-height: 32px; font-weight: 600; }
 .motion-document > section > h3 { margin: 32px 0 12px; font-size: var(--docs-type-lead); line-height: 26px; font-weight: 600; }
 .motion-document .body-copy { margin: 16px 0 24px; color: var(--foreground); font-size: var(--docs-type-body); line-height: 28px; }
@@ -9,18 +9,18 @@
 .motion-document a { text-underline-offset: 4px; }
 .motion-document section a { text-decoration: underline; text-decoration-color: var(--border); }
 .motion-document section a:hover { text-decoration-color: currentColor; }
-.motion-document .motion-preference { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; width: fit-content; max-width: 100%; margin: 24px 0 0; padding: 6px 16px; border: 1px solid var(--border); border-radius: 999px; font-size: var(--docs-type-small); line-height: 20px; }
+.motion-document .motion-preference { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; width: fit-content; max-width: 100%; margin: 24px 0 0; padding: 6px 16px; border: 1px solid var(--border); border-radius: 999px; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); }
 .motion-preference-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--foreground); }
 .motion-preference[data-motion-preference="reduce"] .motion-preference-dot { background: transparent; box-shadow: inset 0 0 0 1px var(--foreground); }
 .motion-preference-note { color: var(--muted-foreground); }
 /* A single preview keeps its place when the selected example changes. */
 .motion-playground { margin: 24px 0; min-width: 0; }
-.motion-preview { min-width: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 12px; }
+.motion-preview { min-width: 0; overflow: hidden; background: var(--surface-subtle); border-radius: 12px; }
 .motion-preview-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 8px 12px; padding: 20px; }
 .motion-preview-title { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; min-width: 0; }
 .motion-preview-title h3 { margin: 0; font-size: var(--docs-type-body); line-height: 24px; font-weight: 600; }
 .motion-preview-title > span { font-size: var(--docs-type-caption); line-height: 20px; color: var(--muted-foreground); }
-.motion-preview-heading > p { grid-column: 1 / -1; min-height: 44px; margin: 0; font-size: var(--docs-type-small); line-height: 22px; overflow-wrap: anywhere; }
+.motion-preview-heading > p { grid-column: 1 / -1; min-height: 44px; margin: 0; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); overflow-wrap: anywhere; }
 .motion-preview-meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
 .motion-preview-tokens { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .motion-preview-tokens code { display: inline-block; padding: 2px 8px; border-radius: 6px; background: var(--secondary); font-size: var(--docs-type-caption); line-height: 20px; white-space: nowrap; }
@@ -33,28 +33,28 @@
 /* Fast loads show nothing; the status appears only when preparing takes noticeably long. */
 .motion-preview-status[data-failed="false"] { animation: motion-status-in 1ms 320ms both; }
 @keyframes motion-status-in { from { opacity: 0; } to { opacity: 1; } }
-.motion-preview-status, .motion-playground-loading { min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; text-align: center; font-size: var(--docs-type-small); line-height: 22px; }
+.motion-preview-status, .motion-playground-loading { min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; text-align: center; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); }
 .motion-preview-status { position: absolute; inset: 0; }
-.motion-preview-footer { display: flex; justify-content: flex-end; padding: 16px 20px; font-size: var(--docs-type-small); line-height: 24px; }
+.motion-preview-footer { display: flex; justify-content: flex-end; padding: 16px 20px; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); }
 .motion-preview-footer > a { display: inline-flex; align-items: center; gap: 4px; }
 .motion-table { margin: 24px 0 12px; }
-.motion-document .motion-table :is(th, td, .kjun-table-card-title, .kjun-table-card-label, .kjun-table-card-value) { font-size: var(--docs-type-small); line-height: 20px; font-family: inherit; white-space: normal; overflow-wrap: anywhere; }
+.motion-document .motion-table :is(th, td, .kjun-table-card-title, .kjun-table-card-label, .kjun-table-card-value) { font-size: var(--docs-type-small); line-height: var(--docs-leading-small); font-family: inherit; white-space: normal; overflow-wrap: anywhere; }
 .motion-document .motion-table th { color: var(--foreground); font-weight: 600; }
 .motion-document .motion-table td:first-child { min-width: 90px; }
 .motion-number { font-variant-numeric: tabular-nums; white-space: nowrap; }
-.motion-related { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; margin-top: 24px; font-size: var(--docs-type-small); line-height: 24px; }
+.motion-related { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; margin-top: 24px; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); }
 .motion-related > span { color: var(--muted-foreground); font-size: var(--docs-type-caption); }
 .motion-details { margin: 20px 0; padding: 16px 0; border-block: 1px solid var(--border); }
-.motion-details > summary { cursor: pointer; font-size: var(--docs-type-small); line-height: 24px; font-weight: 500; }
-.motion-details > p { margin-top: 12px; font-size: var(--docs-type-small); line-height: 24px; overflow-wrap: anywhere; }
+.motion-details > summary { cursor: pointer; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); font-weight: 500; }
+.motion-details > p { margin-top: 12px; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); overflow-wrap: anywhere; }
 .motion-document .motion-details code { font-size: var(--docs-type-caption); }
 .motion-reduced-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin: 24px 0; border-block: 1px solid var(--border); padding-block: 20px; }
 .motion-reduced-comparison dt { font-size: var(--docs-type-body); line-height: 24px; font-weight: 600; }
-.motion-reduced-comparison dd { margin: 8px 0 0; font-size: var(--docs-type-small); line-height: 24px; }
+.motion-reduced-comparison dd { margin: 8px 0 0; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); }
 .motion-demo-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .motion-speed { display: inline-flex; align-items: center; gap: 8px; color: var(--muted-foreground); font-size: var(--docs-type-caption); }
 /* One playback control for every demo: it floats at the bottom edge while the page scrolls. */
-.motion-speed-dock { position: sticky; bottom: 16px; z-index: 2; display: flex; justify-content: flex-end; max-width: 720px; margin-top: 32px; pointer-events: none; }
+.motion-speed-dock { position: sticky; bottom: 16px; z-index: 2; display: flex; justify-content: flex-end; max-width: var(--docs-measure); margin-top: 32px; pointer-events: none; }
 .motion-speed-dock > .motion-speed { pointer-events: auto; padding: 4px 4px 4px 16px; border: 1px solid var(--border); border-radius: 999px; background: var(--background); box-shadow: 0 2px 8px rgb(0 0 0 / 0.08); }
 .motion-speed-dock > .motion-speed { transition: opacity var(--_kjun-motion-control) var(--_kjun-ease-out), visibility 0s linear; }
 .motion-speed-dock[data-visible="false"]:not(:focus-within) > .motion-speed { visibility: hidden; opacity: 0; transition: opacity var(--_kjun-motion-control) var(--_kjun-ease-out), visibility 0s linear var(--_kjun-motion-control); }
@@ -77,7 +77,7 @@
 .motion-demo-swatch { flex: none; width: 24px; height: 8px; }
 .motion-demo-rows { margin-top: 24px; }
 .motion-demo-row { display: grid; gap: 8px; padding: 16px 0; border-top: 1px solid var(--border); }
-.motion-demo-label { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: var(--docs-type-small); line-height: 20px; }
+.motion-demo-label { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); }
 .motion-demo-label code { font-size: var(--docs-type-caption); }
 .motion-demo-label span { flex-basis: 100%; color: var(--muted-foreground); font-size: var(--docs-type-caption); }
 .motion-demo-track { position: relative; height: 40px; }

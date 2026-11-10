@@ -3,9 +3,8 @@ import tokens from "@/lib/generated/tokens.json";
 import { CodeBlock } from "./code-block";
 import { DataTable } from "./data-table";
 import { Playground } from "./playground";
+import { ColorRoleList, OptionalColorRoles, kebab } from "./color-roles";
 
-const kebab = (role: string) =>
-  role.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase());
 const webMapping =
   "/* design-system/kjun.css — 적용 프로젝트에서 관리 */\n" +
   ":root {\n" +
@@ -99,7 +98,7 @@ export function Styling() {
           KjunCoreColors는 필수 역할만, ResolvedKjunColors는 연결이 끝난 전체 역할을 나타냅니다.
           Native Provider는 resolveKjunColors와 같은 규칙으로 연결합니다. 금융 역할은 별도 계약입니다.
         </p>
-        <DataTable headings={["선택 역할", "생략 시 사용할 역할"]} rows={Object.entries(tokens.colorRoleFallbacks).map(([role, fallback]) => [role, fallback])} />
+        <OptionalColorRoles />
         <p className="body-copy">
           Card의 surface="accent"는 강조 배경, surface="subtle"은 은은한 강조 배경입니다.
           테두리는 모든 표면에서 border로 선택합니다. cardAccentStart/End와 cardSubtleStart/End/Border에
@@ -116,30 +115,24 @@ export function Styling() {
         <DataTable
           headings={["역할", "사용 범위"]}
           rows={[
-            [
-              "brand / brandHover / brandActive",
+            [<ColorRoleList key="brand / brandHover / brandActive" roles="brand / brandHover / brandActive" />,
               "주요 행동·포커스와 상태 변화",
             ],
-            [
-              "background / surface / secondary / hover / active",
+            [<ColorRoleList key="background / surface / secondary / hover / active" roles="background / surface / secondary / hover / active" />,
               "앱 배경·표면·보조 영역과 상태 변화",
             ],
-            [
-              "buttonSecondary / buttonSecondaryHover / buttonSecondaryActive",
+            [<ColorRoleList key="buttonSecondary / buttonSecondaryHover / buttonSecondaryActive" roles="buttonSecondary / buttonSecondaryHover / buttonSecondaryActive" />,
               "secondary 버튼의 채움과 상태 변화. secondary 표면과 분리된 버튼 전용 역할",
             ],
-            [
-              "text / textSecondary / textTertiary / textDisabled / inverse",
+            [<ColorRoleList key="text / textSecondary / textTertiary / textDisabled / inverse" roles="text / textSecondary / textTertiary / textDisabled / inverse" />,
               "본문·보조·안내·비활성·강조 배경 위 글자",
             ],
-            ["border / borderSecondary", "기본·보조 테두리"],
-            ["danger / dangerDark / dangerActive / dangerBg", "오류·삭제와 hover·누름 상태, 해당 상태의 배경"],
-            [
-              "success / successDark / successActive / warning / warningDark / warningActive",
+            [<ColorRoleList key="border / borderSecondary" roles="border / borderSecondary" />, "기본·보조 테두리"],
+            [<ColorRoleList key="danger / dangerDark / dangerActive / dangerBg" roles="danger / dangerDark / dangerActive / dangerBg" />, "오류·삭제와 hover·누름 상태, 해당 상태의 배경"],
+            [<ColorRoleList key="success / successDark / successActive / warning / warningDark / warningActive" roles="success / successDark / successActive / warning / warningDark / warningActive" />,
               "완료·주의와 hover·누름 상태",
             ],
-            [
-              "overlay / shadow / shadowSubtle",
+            [<ColorRoleList key="overlay / shadow / shadowSubtle" roles="overlay / shadow / shadowSubtle" />,
               "모달 배경과 공통 그림자의 색상",
             ],
           ]}

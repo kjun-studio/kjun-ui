@@ -75,7 +75,7 @@ export function GettingStarted() {
             ["숫자·가격 표시", <><code>formatter</code> · <code>formatValue</code> · <code>formatMetric</code>, Vue <code>KjunProvider.formatters</code></>],
             ["자산 식별", <><code>renderIdentity</code> 또는 이름·자산 슬롯</>],
             ["조회 상태", <><code>DataState</code>의 <code>queryKey</code> · <code>resultKey</code> · <code>loading</code> · <code>error</code></>],
-            ["Toast·Confirm·Prompt", <>영역별 <code>KjunFeedbackProvider</code></>],
+            [<>Toast·<wbr />Confirm·<wbr />Prompt</>, <>영역별 <code>KjunFeedbackProvider</code></>],
             ["기기 기능", <>Native <code>copyText(value)</code> · <code>openUrl(url)</code> 콜백</>],
             ["페이지 이동", <>Vue <code>to</code> + <code>navigate</code> 이벤트, React <code>renderLink</code>, Native <code>onNavigate</code></>],
           ]}

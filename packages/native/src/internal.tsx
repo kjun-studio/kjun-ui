@@ -35,9 +35,9 @@ export function KText({ style, ...props }: TextProps) {
 export function FontText(props: TextProps) {
   return <ResolvedText {...props} />;
 }
-export function content(value: ReactNode, style?: TextProps["style"]) {
+export function content(value: ReactNode, style?: TextProps["style"], text: (value: string | number) => ReactNode = value => value) {
   return typeof value === "string" || typeof value === "number" ? (
-    <KText style={style}>{value}</KText>
+    <KText style={style}>{text(value)}</KText>
   ) : (
     value
   );

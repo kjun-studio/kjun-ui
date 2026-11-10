@@ -1,5 +1,5 @@
 .foundation-diagram { margin: 24px 0; padding: 24px; border: 1px solid var(--border); border-radius: 12px; background: var(--secondary); }
-.foundation-diagram figcaption { margin-top: 20px; color: var(--muted-foreground); font-size: var(--docs-type-small); line-height: 1.7; }
+.foundation-diagram figcaption { margin-top: 20px; color: var(--muted-foreground); font-size: var(--docs-type-small); line-height: var(--docs-leading-small); }
 .foundation-layout-figures { display: grid; grid-template-columns: 1fr 1.5fr; gap: 24px; }
 .foundation-layout-figures > div { min-width: 0; }
 .foundation-layout-figures span { display: block; font-size: var(--docs-type-small); margin-bottom: 12px; }
@@ -8,7 +8,7 @@
 .foundation-wire b { display: flex; align-items: center; min-height: 64px; padding: 12px; background: var(--card); border: 1px solid var(--border); font-size: var(--docs-type-small); overflow-wrap: anywhere; }
 .foundation-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .foundation-comparison h3 { font-size: var(--docs-type-small); margin-bottom: 12px; }
-.foundation-comparison > div > p, .foundation-spacing > p { margin-top: 12px; font-size: var(--docs-type-small); line-height: 1.7; color: var(--muted-foreground); overflow-wrap: anywhere; }
+.foundation-comparison > div > p, .foundation-spacing > p { margin-top: 12px; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); color: var(--muted-foreground); overflow-wrap: anywhere; }
 .foundation-screen-map { border: 1px solid var(--border); padding: 12px; background: var(--card); font-size: var(--docs-type-small); }
 .foundation-scroll-zone { display: grid; gap: 16px; padding: 16px; border: 1px dashed var(--muted-foreground); }
 .foundation-scroll-zone > span { font-weight: 600; }
@@ -43,9 +43,14 @@
 .elevation-status dt { color:var(--muted-foreground); margin-bottom:var(--docs-value4); }
 .elevation-status dd { margin:0; overflow-wrap:anywhere; font-weight:600; }
 .elevation-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--docs-value12); }
-/* Dark shadows vanish on near-black; the demo scope lifts the surface one step so the shadow has a lighter plate. */
+.elevation-card-comparison figure > .elevation-surface { display:grid; min-width:0; }
+/* Shadows barely read on near-black, so in dark mode each level is also one surface step lighter:
+   plate → flat → raised → floating. The values are docs palette steps, not package roles. */
 @media (prefers-color-scheme: dark) {
-  .elevation-card-comparison { --kjun-surface:#262626; --kjun-shadow-subtle:rgb(0 0 0 / 80%); }
+  .elevation-card-comparison { background:var(--background); --kjun-shadow-subtle:rgb(0 0 0 / 80%); }
+  .elevation-surface--flat { --kjun-surface:#1a1a1a; }
+  .elevation-surface--raised { --kjun-surface:#242424; }
+  .elevation-surface--floating { --kjun-surface:#303030; }
 }
 .elevation-window-map { display:block; }
 .elevation-window-map p { margin:var(--docs-value8) 0 0; }
@@ -55,7 +60,7 @@
 .elevation-active { position:relative; margin:calc(var(--docs-value32) * -1) 0 0 var(--docs-value32); background:var(--background); }
 /* The last row of floats straddles the active window's bottom edge: 16px padding + half a chip. */
 .elevation-window-floats { display:flex; flex-wrap:wrap; gap:var(--docs-value8); margin:var(--docs-value16) 0 calc((var(--docs-value16) + var(--docs-value20)) * -1) var(--docs-value32); padding:0; list-style:none; }
-.elevation-window-floats li { padding:var(--docs-value8) var(--docs-value12); border:1px solid var(--border); border-radius:var(--docs-radius8); background:var(--card); font-size:var(--docs-type-small); line-height:1.5; }
+.elevation-window-floats li { padding:var(--docs-value8) var(--docs-value12); border:1px solid var(--border); border-radius:var(--docs-radius8); background:var(--card); font-size:var(--docs-type-small); line-height: var(--docs-leading-small); }
 
 .elevation-intro { margin-top:var(--docs-value24); }
 .elevation-concepts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--docs-value24); margin:0; }

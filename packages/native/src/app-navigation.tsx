@@ -26,6 +26,8 @@ export function KjunTopNavigation({ title, description, leading, actions, safeAr
   // A square control-sized box is the icon-only case; text buttons keep their own padding.
   const edgeInset = (geometry.controlSize - geometry.iconSize) / 2;
   const [iconEdges, setIconEdges] = useState({ leading: false, trailing: false });
+  // Text actions stop short of the title's minimum width (calc() on Web); icon actions never shrink.
+  const [rowWidth, setRowWidth] = useState(0);
   const square = (key: "leading" | "trailing") => (event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout;
     const next = Math.abs(width - height) < 1 && Math.abs(height - geometry.controlSize) < 1;
@@ -37,13 +39,13 @@ export function KjunTopNavigation({ title, description, leading, actions, safeAr
   const actionList = flatten(actions);
   return <TopNavigationContext.Provider value={geometry}>
     <View style={{ flexShrink: 0, paddingTop: safeArea ? insets.top : 0, backgroundColor: surface ? colors.surface : "transparent" }}>
-      <View style={{ minHeight: geometry.minimumHeight, flexDirection: "row", flexWrap: "wrap", alignItems: "flex-start", gap: geometry.gap, paddingVertical: geometry.paddingY, paddingHorizontal: geometry.paddingX }}>
+      <View onLayout={event => setRowWidth(event.nativeEvent.layout.width)} style={{ minHeight: geometry.minimumHeight, flexDirection: "row", flexWrap: "nowrap", alignItems: "flex-start", gap: geometry.gap, paddingVertical: geometry.paddingY, paddingHorizontal: geometry.paddingX }}>
         {hasContent(leading) && <TopNavigationContext.Provider value={{ ...geometry, slot: 'leading' }}><View onLayout={square("leading")} style={{ minHeight: geometry.controlSize, minWidth: 0, maxWidth: '40%', flexShrink: 1, justifyContent: "center", marginLeft: iconEdges.leading ? -edgeInset : 0 }}>{content(leading)}</View></TopNavigationContext.Provider>}
-        <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: geometry.titleMinimumWidth, minWidth: 0, paddingVertical: titleInset }}>
-          <KText accessibilityRole="header" style={{ ...wrapping, ...typeStyle('sectionTitle'), fontWeight: typeStyle('control').fontWeight }}>{title}</KText>
-          {!!description && <KText style={{ ...wrapping, marginTop: geometry.descriptionGap, color: colors.textSecondary, ...typeStyle('caption') }}>{description}</KText>}
+        <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, minWidth: 0, paddingVertical: titleInset }}>
+          <KText accessibilityRole="header" numberOfLines={1} ellipsizeMode="tail" style={{ ...typeStyle('sectionTitle'), fontWeight: typeStyle('control').fontWeight }}>{title}</KText>
+          {!!description && <KText numberOfLines={1} ellipsizeMode="tail" style={{ ...wrapping, marginTop: geometry.descriptionGap, color: colors.textSecondary, ...typeStyle('caption') }}>{description}</KText>}
         </View>
-        {hasContent(actions) && <TopNavigationContext.Provider value={{ ...geometry, slot: 'actions' }}><View style={{ minHeight: geometry.controlSize, minWidth: 0, maxWidth: "100%", marginLeft: 'auto', flexShrink: 1, flexDirection: "row", flexWrap: "wrap", alignItems: "center", justifyContent: "flex-end", gap: geometry.actionsGap }}>
+        {hasContent(actions) && <TopNavigationContext.Provider value={{ ...geometry, slot: 'actions' }}><View style={{ minHeight: geometry.controlSize, maxWidth: rowWidth ? Math.max(0, rowWidth - 2 * geometry.paddingX - geometry.titleMinimumWidth) : undefined, marginLeft: 'auto', flexShrink: 0, flexDirection: "row", flexWrap: "nowrap", alignItems: "center", justifyContent: "flex-end", gap: geometry.actionsGap }}>
           {actionList.map((action, index) => index < actionList.length - 1 ? content(action)
             : <View key="trailing" onLayout={square("trailing")} style={{ flexShrink: 1, minWidth: 0, maxWidth: "100%", marginRight: iconEdges.trailing ? -edgeInset : 0 }}>{content(action)}</View>)}
         </View></TopNavigationContext.Provider>}
@@ -66,7 +68,8 @@ function NavigationBadgeMark({ badge, ring, iconSize }: { badge: NavigationDesti
   return <View pointerEvents="none" aria-hidden={true} style={{
     ...(iconSize !== undefined ? {
       position: "absolute" as const, top: (mark.dot ? 0 : -geometry.badgeOffset) - width,
-      start: mark.dot ? iconSize - geometry.dotSize : iconSize - geometry.badgeOverlap - width,
+      // Counts and dots overlap only the icon's outer edge (badge overlap), clear of the glyph strokes.
+      start: iconSize - geometry.badgeOverlap - width,
     } : { marginStart: geometry.badgeOffset - width, alignSelf: mark.dot ? "flex-start" as const : "center" as const }),
     minWidth: size + 2 * width, minHeight: size + 2 * width,
     paddingHorizontal: mark.dot ? 0 : geometry.badgePaddingX, borderRadius: geometry.badgeRadius,

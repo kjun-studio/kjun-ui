@@ -72,7 +72,7 @@ export function KjunProgress({
         <View {...semantics} style={{ width: c.diameter, height: c.diameter, alignItems: "center", justifyContent: "center" }}>
           <Animated.View style={[StyleSheet.absoluteFill, busy ? spin : null]}>
             <Svg width={c.diameter} height={c.diameter} viewBox={`0 0 ${c.diameter} ${c.diameter}`}>
-              <Circle cx={c.centre} cy={c.centre} r={c.radius} stroke={colors.secondary} strokeWidth={c.stroke} fill="none" />
+              <Circle cx={c.centre} cy={c.centre} r={c.radius} stroke={colors.switchTrack ?? colors.border} strokeWidth={c.stroke} fill="none" />
               {(percentage > 0 || busy) && <Circle cx={c.centre} cy={c.centre} r={c.radius} stroke={color} strokeWidth={c.stroke} fill="none"
                 strokeLinecap="round" strokeDasharray={c.circumference} strokeDashoffset={c.offset} rotation={-90} origin={`${c.centre}, ${c.centre}`} />}
             </Svg>
@@ -101,7 +101,8 @@ export function KjunProgress({
         onLayout={event => setTrackWidth(event.nativeEvent.layout.width)}
         style={{
           height: tokens.extensions.progress.heights[size],
-          backgroundColor: colors.secondary,
+          // One empty-rail role with Slider and RangeSlider, like Web: the switch-track role.
+          backgroundColor: colors.switchTrack ?? colors.border,
           borderRadius: tokens.radius.radius9999,
           overflow: "hidden",
         }}

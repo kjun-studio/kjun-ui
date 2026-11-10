@@ -7,6 +7,8 @@ import { badgeToneRoles, type BadgeToneRoles, type BadgeVariant } from "./badge-
 export const KPI_MASK = "••••";
 /** What a missing value draws unless the app gives its own text. */
 export const KPI_MISSING = "—";
+/** Digit height as a share of the font size: Native KPI skeleton bars stand this tall, like Web's 1cap. */
+export const KPI_NUMERAL_HEIGHT = 0.72;
 
 export type KpiDirection = 1 | -1 | 0;
 export type KpiBadgeVariant = "warning" | "success" | "danger" | "price-up" | "price-down" | "info" | "neutral";

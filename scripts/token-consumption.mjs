@@ -54,7 +54,9 @@ export function tokenReads(source, filename, imports = {}) {
     const next = new Set([...trail, node]);
     if (ts.isIdentifier(node)) {
       if (node.text === 'tokens') return [''];
-      const symbol = checker.getSymbolAtLocation(node);
+      // `{ minHeight }` names the property; follow the shorthand to the variable it reads.
+      const symbol = ts.isShorthandPropertyAssignment(node.parent) && node.parent.name === node
+        ? checker.getShorthandAssignmentValueSymbol(node.parent) : checker.getSymbolAtLocation(node);
       const declaration = symbol?.valueDeclaration ?? symbol?.declarations?.[0];
       if (declaration && ts.isImportSpecifier(declaration)) {
         const imported = declaration.propertyName?.text ?? declaration.name.text;

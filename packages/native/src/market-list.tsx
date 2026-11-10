@@ -1,3 +1,4 @@
+import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
@@ -40,6 +41,7 @@ export function KjunMarketSimpleList<
     <View>
       <KjunDataState
         {...props}
+        {...marketQueryState(props)}
         loadingPadding="none"
         empty={!rows.length}
         emptyText={emptyMessage}

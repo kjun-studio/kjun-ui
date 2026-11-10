@@ -63,7 +63,7 @@ export function TableToolbar<Row extends object>({ selectable, selected, allSele
           )}
           {/* Like Web: narrow layouts have no header row to sort by, so the choice sits beside the search. */}
           {sorting ? (
-            <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, minWidth: 0, maxWidth: tokens.table.searchWidth }}>
+            <View style={{ flexGrow: 1, flexShrink: 0, flexBasis: tokens.table.sortMinimumWidth, minWidth: tokens.table.sortMinimumWidth, maxWidth: tokens.table.searchWidth }}>
               <KjunSelect size="sm" ariaLabel={m.sortBy} options={sortOptions} value={sortValue ?? ""} onValueChange={(value) => sortChange?.(String(value ?? ""))} />
             </View>
           ) : null}

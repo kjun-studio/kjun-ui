@@ -142,8 +142,9 @@ test('API detail tables stay within a 320px page and platform transitions replac
   await page.goto('/components/select?platform=vue3#api');
   await page.getByRole('button', { name: 'open 사용 계약', exact: true }).click();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  // Below 600px each API member is a card, so the contract reads without a sideways scroll.
   const container = page.locator('#api .kjun-table-scroll').first();
-  expect(await container.evaluate(e => e.scrollWidth > e.clientWidth)).toBe(true);
+  expect(await container.evaluate(e => e.scrollWidth <= e.clientWidth + 1)).toBe(true);
   await page.getByRole('button', { name: '문서 플랫폼', exact: true }).click();
   await page.getByRole('option', { name: 'React', exact: true }).click();
   await expect(page.getByRole('button', { name: 'open 사용 계약', exact: true })).toHaveAttribute('aria-expanded', 'false');

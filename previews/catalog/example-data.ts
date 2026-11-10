@@ -43,7 +43,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
     case "KjunSkeleton":
       return h(name, { type: "card", animated: settings.animated, rows: 3 });
     case "KjunListSkeleton":
-      return h(name, { rows: 3, variant: "market", avatar: true });
+      return h(name, { rows: 3, variant: "row", avatar: true });
     case "KjunFormSkeleton":
       return h(name, { fields: ["", "", ""], size: settings.size || "md", multiline: !!settings.multiline, columns: 1 });
     case "KjunChartSkeleton":

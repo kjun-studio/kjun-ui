@@ -1,3 +1,4 @@
+import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { useKjunMessages } from "./runtime/messages";
 import { type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
@@ -38,7 +39,7 @@ export const KjunMarketSimpleList = defineComponent({
       const { rows } = props;
       return (
         <div class="kjun-market-simple-list">
-          <KjunDataState {...queryProps(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={(props.emptyMessage ?? m.value.noItems)}
+          <KjunDataState {...queryProps(props)} {...marketQueryState(props)} onRetry={props.onRetry} loadingPadding="none" empty={!rows.length} emptyText={(props.emptyMessage ?? m.value.noItems)}
             loadingText={props.loadingText} loadingDelay={props.loadingDelay}>
             {{
               loading: props.skeleton ? () => <KjunListSkeleton /> : undefined,

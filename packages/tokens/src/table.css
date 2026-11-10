@@ -70,6 +70,8 @@
   line-height: var(--_kjun-type-control-small-line);
   font-weight: var(--_kjun-type-control-small-weight);
   letter-spacing: var(--_kjun-type-control-small-tracking);
+  /* A header names its column in one line; the column is at least that wide. */
+  white-space: nowrap;
 }
 .kjun-table th button {
   display: inline-flex;
@@ -96,16 +98,26 @@
   outline-offset: var(--_kjun-state-focus-offset);
   border-radius: var(--_kjun-geometry-radius-radius4);
 }
-/* Rows part with the lighter divider; the header keeps the border line. */
+/* Rows part with the lighter divider; the header keeps the border line. Text breaks between words (Korean
+   included), never inside one, and a text column keeps a readable minimum: when the columns no longer fit,
+   the table scroll container scrolls sideways instead of crushing them a syllable per line. */
 .kjun-table td {
   padding: var(--_kjun-geometry-table-cell-padding-regular-y) var(--_kjun-geometry-table-cell-padding-regular-x);
   border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-divider);
-  overflow-wrap: anywhere;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
-/* Numbers read as one unit: a numeric column keeps its content width instead of breaking between digits. */
-.kjun-table td[data-numeric] {
+.kjun-table tbody > tr:not(.kjun-table-expanded, .kjun-table-summary) > td:not(.kjun-table-action-cell, .kjun-table-empty, [data-numeric], [data-date]) {
+  min-width: var(--_kjun-geometry-dimension-value80);
+}
+/* Numbers and dates read as one unit: the column keeps its content width instead of breaking between digits. */
+.kjun-table td:is([data-numeric], [data-date]) {
   white-space: nowrap;
   overflow-wrap: normal;
+}
+/* Short tokens (badges, pills) never break inside. */
+.kjun-table td :is(.kjun-badge, .kjun-table-pill) {
+  white-space: nowrap;
 }
 .kjun-table[data-compact="true"] td {
   padding: var(--_kjun-geometry-table-cell-padding-compact-y) var(--_kjun-geometry-table-cell-padding-compact-x);
@@ -220,7 +232,11 @@
 }
 /* Neither stripes nor hover paint group and summary rows. */
 .kjun-table tbody > tr:is(.kjun-table-group, .kjun-table-summary):is(:nth-child(n), :hover) { background: transparent; }
-.kjun-table-expanded > td { padding: var(--_kjun-geometry-table-expanded-padding-y) var(--_kjun-geometry-table-expanded-padding-x); }
+/* The expanded panel spans the whole row and wraps as ordinary text; it takes no column minimum or nowrap. */
+.kjun-table-expanded > td {
+  padding: var(--_kjun-geometry-table-expanded-padding-y) var(--_kjun-geometry-table-expanded-padding-x);
+  white-space: normal;
+}
 .kjun-table-expanded {
   background: var(--_kjun-color-secondary);
 }
@@ -245,8 +261,13 @@
 .kjun-table-toolbar {
   background: var(--_kjun-color-surface);
 }
-/* The narrow-screen sort choice: as wide as the search at most, narrower when both share a phone row. */
-.kjun-table-sort { flex: 1 1 0; min-width: 0; max-width: var(--_kjun-geometry-table-search-width); }
+/* The narrow-screen sort choice: as wide as the search at most, never so narrow that its label truncates;
+   when both no longer share a phone row it wraps to a line of its own. */
+.kjun-table-sort {
+  flex: 1 0 var(--_kjun-geometry-table-sort-minimum-width);
+  min-width: var(--_kjun-geometry-table-sort-minimum-width);
+  max-width: var(--_kjun-geometry-table-search-width);
+}
 /* The selection bar shares the selected rows' fill. */
 .kjun-table-selection {
   background: var(--_kjun-color-selected-bg);

@@ -89,22 +89,19 @@
   cursor: pointer;
   transition: color var(--_kjun-motion-indicator) var(--_kjun-ease-out);
 }
-/* The selected segment carries an inset edge so it reads apart from the track even when surface and
-   secondary are close (light palettes). Inset keeps the segment's size. */
+/* The selected segment is a surface fill on the secondary track, with no edge: in-flow controls are fill-only. */
 .kjun-button-group button[aria-pressed="true"] {
   background: var(--_kjun-color-surface);
-  box-shadow: inset 0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border);
   color: var(--_kjun-color-text);
   font-weight: var(--_kjun-type-control-weight);
 }
-.kjun-button-group[data-indicator] button[aria-pressed="true"] { background: transparent; box-shadow: none; }
+.kjun-button-group[data-indicator] button[aria-pressed="true"] { background: transparent; }
 .kjun-button-group-indicator {
   position: absolute;
   left: 0;
   pointer-events: none;
   border-radius: var(--_kjun-geometry-button-group-item-radii-md);
   background: var(--_kjun-color-surface);
-  box-shadow: inset 0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border);
 }
 .kjun-button-group-indicator[data-animate="true"] {
   transition: transform var(--_kjun-motion-indicator) var(--_kjun-ease-out), width var(--_kjun-motion-indicator) var(--_kjun-ease-out);
@@ -118,8 +115,9 @@
 .kjun-button-group button:hover:not(:disabled):not([aria-pressed="true"]) {
   background: var(--_kjun-color-hover);
 }
+/* One disabled rule, as Button and fields: no fading; the ink takes the disabled-text role and fills stay. */
 .kjun-button-group button:disabled {
-  opacity: var(--_kjun-state-opacity-disabled);
+  color: var(--_kjun-color-text-disabled);
   cursor: not-allowed;
 }
 /* Narrow groups scroll; the clipped edge fades so a cut option reads as more content. Vue keeps its ds- root class. */
@@ -176,10 +174,10 @@
   color: var(--_kjun-color-filter-selected-text);
   font-weight: var(--_kjun-type-control-weight);
 }
-.kjun-filter-chip:disabled {
-  opacity: var(--_kjun-state-opacity-disabled-strong);
-  cursor: not-allowed;
-}
+/* One disabled rule, as Button and fields: the chip keeps its fill (a selected chip stays inverted) and its ink
+   takes the disabled-text role. */
+.kjun-filter-chip:disabled { cursor: not-allowed; }
+.kjun-filter-chip:disabled > span { color: var(--_kjun-color-text-disabled); }
 .kjun-filter-chip:hover:not(:disabled):not([aria-pressed="true"]) > span {
   background: var(--_kjun-color-hover);
 }

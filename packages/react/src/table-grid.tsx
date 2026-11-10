@@ -30,7 +30,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
           <td
             key={col.key}
             style={{ textAlign: col.align }}
-            data-numeric={col.type === "number" || col.align === "right" || undefined}
+            data-numeric={col.type === "number" || col.align === "right" || undefined} data-date={col.type === "date" || col.type === "datetime" || undefined}
             className={
               (col.secondary ? "kjun-table-secondary " : "") +
               (col.className || "")
@@ -59,7 +59,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
       {selectable && <td className="kjun-table-action-cell" />}
       {visible.map((col, c) => {
         const value = summary(col, rows), shown = value !== null && value !== undefined && value !== "" && value !== false;
-        return <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined}>
+        return <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined} data-date={col.type === "date" || col.type === "datetime" || undefined}>
           {c === 0 ? <><span className="kjun-table-summary-label">{kind === "total" ? m.tableTotal : m.tableSubtotal}</span>{shown && <> {value}</>}</> : shown ? value : null}
         </td>;
       })}

@@ -1,3 +1,4 @@
+import { marketBlockingError } from "../../../shared/package-runtime/market-query";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useQueryDisplay } from "./data-state";
 import {
@@ -52,6 +53,8 @@ export function MarketFooter<Row extends object>({
 }) {
   const m = useKjunMessages();
   const state = useQueryDisplay(props),
+    // A blocking error replaces the rows, so their count, update time and pages go with them.
+    hidden = marketBlockingError(props, state),
     {
       pagination,
       rows = [],
@@ -63,7 +66,7 @@ export function MarketFooter<Row extends object>({
     } = props;
   return (
     <>
-      {pagination && (
+      {pagination && !hidden && (
         <KjunPagination
           currentPage={pagination.page}
           totalPages={Math.ceil(pagination.total / pagination.size)}
@@ -73,7 +76,7 @@ export function MarketFooter<Row extends object>({
           onPageChange={props.onPageChange}
         />
       )}{" "}
-      {showFooter && !state.initialLoading && rows.length > 0 && (
+      {showFooter && !hidden && !state.initialLoading && rows.length > 0 && (
         <div className="kjun-market-footer">
           <span>
             {calculatedAt

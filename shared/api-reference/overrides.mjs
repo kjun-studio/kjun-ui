@@ -408,8 +408,9 @@ set("Drawer Modal", { onAfterClose: "닫힘 애니메이션이 끝난 뒤 한 �
 set("Select Combobox Dropdown MenuButton", { returnFocus: "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다." });
 set("Combobox", { returnFocus: "옵션을 고르거나 Escape로 닫을 때 초점을 옮길 요소입니다. 입력 중 목록이 닫히거나 입력에서 벗어날 때는 입력에 그대로 둡니다. 웹 전용입니다." });
 set("Accordion", {
-  divider: { default: "false", summary: "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이지만 Accordion은 기본값이 false입니다." },
-  separated: { default: "false", summary: "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(흰 페이지에서는 tone=\"muted\"), divider는 적용되지 않습니다." },
+  tone: { default: '"muted"', summary: "그룹의 면입니다. muted(기본)는 보조 면으로 채워 본문과 나누고 테두리를 쓰지 않습니다. card는 카드 색 위에 둘 때 씁니다." },
+  divider: { default: "true", summary: "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이며, false면 선 없이 높이로만 나눕니다." },
+  separated: { default: "false", summary: "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(기본 muted), divider는 적용되지 않습니다." },
 });
 set("AccordionItem", {
   description: "제목 아래 보조 설명 한 줄입니다(caption, 보조 글자색).",

@@ -2281,8 +2281,8 @@
             "name": "avatarSize",
             "type": "Length",
             "required": false,
-            "default": "36",
-            "description": "",
+            "default": "—",
+            "description": "Default: ListRow's sm leading square (32) for the row variant, the market avatar (36) otherwise.",
             "summary": "아바타 자리 표시자의 크기입니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           },
@@ -2362,7 +2362,7 @@
             "type": "Property.Width<string | number> | undefined",
             "required": false,
             "default": "—",
-            "description": "",
+            "description": "Default: ListRow's sm leading square (32) for the row variant, the market avatar (36) otherwise.",
             "summary": "아바타 자리 표시자의 크기입니다.",
             "source": "packages/react/src/skeletons.tsx"
           },
@@ -2442,7 +2442,7 @@
             "type": "DimensionValue | undefined",
             "required": false,
             "default": "—",
-            "description": "",
+            "description": "Default: ListRow's sm leading square (32) for the row variant, the market avatar (36) otherwise.",
             "summary": "아바타 자리 표시자의 크기입니다.",
             "source": "packages/native/src/skeletons.tsx"
           },
@@ -7563,7 +7563,7 @@
             "type": "DimensionValue | undefined",
             "required": false,
             "default": "—",
-            "description": "",
+            "description": "Block and avatar height; on a line, the bar's own height within the role's line box (default half the line).",
             "summary": "콘텐츠 또는 표시 영역의 높이입니다. 플랫폼별 타입의 단위를 따릅니다.",
             "source": "packages/native/src/skeleton-base.tsx"
           },
@@ -16805,7 +16805,7 @@
             "required": false,
             "default": "\"\"",
             "description": "",
-            "summary": "오류 메시지입니다. hint 아래에 함께 표시합니다.",
+            "summary": "오류 메시지입니다. 표시하는 동안 hint 자리를 대신합니다.",
             "details": [
               {
                 "label": "적용 조건",
@@ -16829,7 +16829,7 @@
             "details": [
               {
                 "label": "표시 조건",
-                "text": "오류가 있어도 함께 표시합니다. 입력의 접근성 설명은 hint와 error를 이 순서로 모두 가리킵니다."
+                "text": "error가 있으면 숨기고 그 자리에 오류를 표시해 필드 높이를 유지합니다. 입력의 접근성 설명도 그동안 error만 가리킵니다."
               }
             ],
             "source": "packages/vue3/src/input.tsx",
@@ -16945,7 +16945,7 @@
             "required": false,
             "default": "\"\"",
             "description": "",
-            "summary": "오류 메시지입니다. hint 아래에 함께 표시합니다.",
+            "summary": "오류 메시지입니다. 표시하는 동안 hint 자리를 대신합니다.",
             "details": [
               {
                 "label": "적용 조건",
@@ -16969,7 +16969,7 @@
             "details": [
               {
                 "label": "표시 조건",
-                "text": "오류가 있어도 함께 표시합니다. 입력의 접근성 설명은 hint와 error를 이 순서로 모두 가리킵니다."
+                "text": "error가 있으면 숨기고 그 자리에 오류를 표시해 필드 높이를 유지합니다. 입력의 접근성 설명도 그동안 error만 가리킵니다."
               }
             ],
             "source": "packages/react/src/input.tsx",
@@ -17086,7 +17086,7 @@
             "required": false,
             "default": "\"\"",
             "description": "",
-            "summary": "오류 메시지입니다. hint 아래에 함께 표시합니다.",
+            "summary": "오류 메시지입니다. 표시하는 동안 hint 자리를 대신합니다.",
             "details": [
               {
                 "label": "적용 조건",
@@ -17110,7 +17110,7 @@
             "details": [
               {
                 "label": "표시 조건",
-                "text": "오류가 있어도 함께 표시합니다. 입력의 접근성 설명은 hint와 error를 이 순서로 모두 가리킵니다."
+                "text": "error가 있으면 숨기고 그 자리에 오류를 표시해 필드 높이를 유지합니다. 입력의 접근성 설명도 그동안 error만 가리킵니다."
               }
             ],
             "source": "packages/native/src/input.tsx",
@@ -20106,18 +20106,18 @@
             "name": "tone",
             "type": "\"card\" | \"muted\"",
             "required": false,
-            "default": "\"card\"",
+            "default": "\"muted\"",
             "description": "",
-            "summary": "컴포넌트의 의미·배경 강조 방식을 선택합니다.",
+            "summary": "그룹의 면입니다. muted(기본)는 보조 면으로 채워 본문과 나누고 테두리를 쓰지 않습니다. card는 카드 색 위에 둘 때 씁니다.",
             "source": "packages/vue3/src/navigation.tsx"
           },
           {
             "name": "divider",
             "type": "boolean",
             "required": false,
-            "default": "false",
-            "description": "Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone).",
-            "summary": "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이지만 Accordion은 기본값이 false입니다.",
+            "default": "true",
+            "description": "Draws a line between items from the text start, like ListSection (default true; false sets rows apart by height alone).",
+            "summary": "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이며, false면 선 없이 높이로만 나눕니다.",
             "source": "packages/vue3/src/navigation.tsx"
           },
           {
@@ -20126,7 +20126,7 @@
             "required": false,
             "default": "false",
             "description": "Gives every item its own rounded surface with a gap between them; divider has no effect then.",
-            "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(흰 페이지에서는 tone=\"muted\"), divider는 적용되지 않습니다.",
+            "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(기본 muted), divider는 적용되지 않습니다.",
             "source": "packages/vue3/src/navigation.tsx"
           },
           {
@@ -20187,18 +20187,18 @@
             "name": "tone",
             "type": "\"card\" | \"muted\" | undefined",
             "required": false,
-            "default": "\"card\"",
-            "description": "",
-            "summary": "컴포넌트의 의미·배경 강조 방식을 선택합니다.",
+            "default": "\"muted\"",
+            "description": "The group's fill (default muted: an in-flow panel set apart by its fill, not an outline; card sits it on the card colour).",
+            "summary": "그룹의 면입니다. muted(기본)는 보조 면으로 채워 본문과 나누고 테두리를 쓰지 않습니다. card는 카드 색 위에 둘 때 씁니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
             "name": "divider",
             "type": "boolean | undefined",
             "required": false,
-            "default": "false",
-            "description": "Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone).",
-            "summary": "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이지만 Accordion은 기본값이 false입니다.",
+            "default": "true",
+            "description": "Draws a line between items from the text start, like ListSection (default true; false sets rows apart by height alone).",
+            "summary": "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이며, false면 선 없이 높이로만 나눕니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -20207,7 +20207,7 @@
             "required": false,
             "default": "false",
             "description": "Gives every item its own rounded surface with a gap between them; divider has no effect then.",
-            "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(흰 페이지에서는 tone=\"muted\"), divider는 적용되지 않습니다.",
+            "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(기본 muted), divider는 적용되지 않습니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -20269,18 +20269,18 @@
             "name": "tone",
             "type": "\"card\" | \"muted\" | undefined",
             "required": false,
-            "default": "\"card\"",
-            "description": "",
-            "summary": "컴포넌트의 의미·배경 강조 방식을 선택합니다.",
+            "default": "\"muted\"",
+            "description": "The group's fill (default muted: an in-flow panel set apart by its fill, not an outline; card sits it on the card colour).",
+            "summary": "그룹의 면입니다. muted(기본)는 보조 면으로 채워 본문과 나누고 테두리를 쓰지 않습니다. card는 카드 색 위에 둘 때 씁니다.",
             "source": "packages/native/src/navigation.tsx"
           },
           {
             "name": "divider",
             "type": "boolean | undefined",
             "required": false,
-            "default": "false",
-            "description": "Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone).",
-            "summary": "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이지만 Accordion은 기본값이 false입니다.",
+            "default": "true",
+            "description": "Draws a line between items from the text start, like ListSection (default true; false sets rows apart by height alone).",
+            "summary": "항목 사이에 구분선을 텍스트 시작선부터 긋습니다(아이콘이 있으면 제목 시작선). 마지막 항목 뒤에는 긋지 않습니다. ListSection의 divider와 같은 선이며, false면 선 없이 높이로만 나눕니다.",
             "source": "packages/native/src/navigation.tsx"
           },
           {
@@ -20289,7 +20289,7 @@
             "required": false,
             "default": "false",
             "description": "Gives every item its own rounded surface with a gap between them; divider has no effect then.",
-            "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(흰 페이지에서는 tone=\"muted\"), divider는 적용되지 않습니다.",
+            "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(기본 muted), divider는 적용되지 않습니다.",
             "source": "packages/native/src/navigation.tsx"
           },
           {

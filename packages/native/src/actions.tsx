@@ -47,6 +47,8 @@ export function KjunIconToggle({
   const { colors } = useKjunStyles();
   const navigation = useContext(TopNavigationContext);
   const box = navigation ? navigation.controlSize : size === "xs" ? tokens.extensions.iconToggle.compactSize : tokens.extensions.iconToggle.sizes[size];
+  // The pressable is the painted square, as on Web; hitSlop reaches the 44pt touch target around it, like KjunButton.
+  const hit = Math.max(0, (tokens.native.minimumTouchTarget - box) / 2);
   return (
     <KjunTooltip content={disabled || loading ? "" : tooltip ?? ariaLabel} placement={tooltipPlacement} delay={tooltipDelay}>
     <Pressable
@@ -58,6 +60,7 @@ export function KjunIconToggle({
         disabled: disabled || loading,
       }}
       disabled={disabled || loading}
+      hitSlop={{ top: hit, bottom: hit, left: hit, right: hit }}
       onPress={onToggle}
       {...(Platform.OS === "web" ? {
         onKeyDown: (event: { key: string; preventDefault(): void; stopPropagation(): void }) => {
@@ -71,13 +74,13 @@ export function KjunIconToggle({
       style={({ pressed }) => ({
         // Keep disabled web buttons in hit testing so clicks cannot reach the row.
         ...(Platform.OS === "web" ? { pointerEvents: "auto" as const } : {}),
-        // The touch target stays 44pt; the visible square follows the icon-toggle scale.
+        // The visible square follows the icon-toggle scale; the 44pt touch target comes from hitSlop.
         alignSelf: "flex-start",
-        minWidth: Math.max(tokens.native.minimumTouchTarget, box),
-        minHeight: Math.max(tokens.native.minimumTouchTarget, box),
+        width: box,
+        height: box,
         alignItems: "center",
         justifyContent: "center",
-        ...(navigation ? { width: navigation.controlSize, height: navigation.controlSize, flexShrink: 0 } : {}),
+        ...(navigation ? { flexShrink: 0 } : {}),
         borderRadius: tokens.extensions.iconToggle.radii[size],
         // Loading blocks presses but stays legible; only disabled dims.
         opacity: disabled ? tokens.states.opacity.disabled : 1,
@@ -148,10 +151,16 @@ export function KjunCopyButton({
       clearTimeout(timer.current);
     };
   }, []);
+  // Painted like Web: the button height for the size, no vertical padding; hitSlop reaches the 44pt touch target.
+  const height = tokens.button.heights[size],
+    paddingX = { xs: tokens.dimension.value4, sm: tokens.dimension.value8, md: tokens.dimension.value12 }[size],
+    hitY = Math.max(0, (tokens.native.minimumTouchTarget - height) / 2),
+    hitX = text && !inline ? 0 : Math.max(0, (tokens.native.minimumTouchTarget - tokens.button.iconSizes[size] - 2 * paddingX) / 2);
   return (
     <View>
       <Pressable
         disabled={disabled}
+        hitSlop={{ top: hitY, bottom: hitY, left: hitX, right: hitX }}
         accessibilityRole="button"
         accessibilityLabel={ariaLabel || text || m.copy}
         accessibilityHint={
@@ -181,14 +190,12 @@ export function KjunCopyButton({
         }}
         style={({ pressed }) => ({
           alignSelf: "flex-start",
-          minWidth: tokens.native.minimumTouchTarget,
-          minHeight: tokens.native.minimumTouchTarget,
+          minHeight: height,
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "row",
           gap: tokens.dimension.value6,
-          paddingHorizontal: { xs: tokens.dimension.value2, sm: tokens.dimension.value8, md: tokens.dimension.value12 }[size],
-          paddingVertical: { xs: tokens.dimension.value2, sm: tokens.dimension.value4, md: tokens.dimension.value6 }[size],
+          paddingHorizontal: paddingX,
           borderRadius: tokens.radius.radius6,
           backgroundColor: pressed && !inline ? colors.hover : undefined,
           opacity: disabled ? tokens.states.opacity.disabled : 1,
@@ -291,7 +298,8 @@ export function KjunExternalLink({
       mode === "icon" ? (
         <KjunIcon name="external-link" color={colors.text} />
       ) : (
-        content(children)
+        // Like Web, text links are underlined so they read as links within body text.
+        content(children, { textDecorationLine: "underline" })
       );
   return url ? (
     <Pressable

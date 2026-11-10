@@ -9,7 +9,7 @@ import { KjunTable } from '@kjun-ui/react';
 import coverage from '@/lib/generated/coverage.json';
 import { verificationHref } from '../../../../shared/accessibility-guides/selection';
 import { categories, categoryFor } from '@/lib/discovery';
-import { isException, platformLabels, platforms, statusLabels, type Entry } from './coverage-model';
+import { baseline, isException, platformLabels, platforms, statusLabels, uniformPlatforms, type Entry } from './coverage-model';
 export { platformLabels, platforms, statusLabels };
 
 
@@ -84,15 +84,21 @@ function GroupedCards({ entries, expanded, toggle }: { entries: Entry[]; expande
 }
 
 export function CoverageList({ entries, expanded, toggle, grouped = false }: { entries: Entry[]; expanded: Set<string>; toggle(name: string): void; grouped?: boolean }) {
+  // A column whose value is identical in every row is stated once above the table instead of repeated 88 times.
+  const columns = platforms.filter(platform => !uniformPlatforms.includes(platform));
   return <>
     <div className="coverage-table-view">
+      {!!uniformPlatforms.length && <p className="coverage-uniform-note">
+        {uniformPlatforms.map(platform => <span key={platform}>{platformLabels[platform]} <CoverageStatus status={baseline[platform]} /></span>)}
+        <span>모든 컴포넌트가 같은 상태라 표에서는 생략했습니다.</span>
+      </p>}
       <KjunTable<Entry> ariaLabel="컴포넌트 플랫폼 지원 비교" responsive="none" rowKey="name" hoverable={false}
         columns={[
           { key: 'name', label: '컴포넌트', width: '22%', render: (_, entry) => <span data-coverage-component={entry.name} className="coverage-name">
             <Link href={entry.docs} className="coverage-component-link">{entry.title}</Link>
             <span className="coverage-category">{categoryFor(entry.category)?.label}</span>
           </span> },
-          ...platforms.map(platform => ({ key: platform, label: platformLabels[platform], width: '12%', align: 'center' as const, render: (_: unknown, entry: Entry) => <CoverageStatus status={entry.states[platform]} /> })),
+          ...columns.map(platform => ({ key: platform, label: platformLabels[platform], width: '12%', align: 'center' as const, render: (_: unknown, entry: Entry) => <CoverageStatus status={entry.states[platform]} /> })),
           { key: 'differences', label: '플랫폼 차이·근거', render: (_, entry) => <Difference entry={entry} mode="table" open={expanded.has(entry.name)} toggle={() => toggle(entry.name)} /> },
         ]} data={entries} />
     </div>

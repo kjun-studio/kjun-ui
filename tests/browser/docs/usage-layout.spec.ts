@@ -14,7 +14,8 @@ async function layout(page: Page, platform: string, size: string) {
       expect(await node.evaluate(element => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
     }
     await expect(usage.locator('pre')).toHaveCSS('overflow-x', 'auto');
-    await expect(usage.locator('pre')).toHaveCSS('max-height', '380px');
+    // A long sample is folded to its first lines (with a "펼치기" control); either way it never exceeds the 380px scroll cap.
+    expect(await usage.locator('pre').evaluate(node => parseFloat(getComputedStyle(node).maxHeight))).toBeLessThanOrEqual(380);
     if (platform === 'react' && size !== 'zoom') await captureReview(usage, { path: `artifacts/usage-separation/${path.includes('components') ? 'basic' : 'implementation'}-${size}.png` });
     await usage.locator('pre').focus(); await page.keyboard.press('ArrowRight');
     await expect(usage.locator('pre')).toBeFocused();

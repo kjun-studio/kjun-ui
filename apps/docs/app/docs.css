@@ -99,14 +99,13 @@
   aspect-ratio: 8 / 5;
   display: grid;
   place-items: center;
-  border-bottom: 1px solid var(--border);
+  background: var(--secondary);
 }
 .overview-scene-image img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: var(--plate-filter);
   transition: transform .2s;
 }
 .overview-scene:hover img {
@@ -125,7 +124,7 @@
   margin-top: 4px;
   color: var(--muted-foreground);
   font-size: var(--docs-type-small);
-  line-height: 1.6;
+  line-height: var(--docs-leading-small);
 }
 @media (max-width: 767px) {
   .overview-showcase {
@@ -177,7 +176,7 @@
 .wordmark {
   padding: 21px 12px;
   gap: 7px;
-  font-size: 23px;
+  font-size: var(--docs-type-heading);
 }
 .wordmark strong {
   font-weight: 600;

@@ -31,8 +31,9 @@ const AccordionContext = createContext<{
 } | null>(null);
 export interface KjunAccordionProps {
   multiple?: boolean;
+  /** The group's fill (default muted: an in-flow panel set apart by its fill, not an outline; card sits it on the card colour). */
   tone?: "card" | "muted";
-  /** Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone). */
+  /** Draws a line between items from the text start, like ListSection (default true; false sets rows apart by height alone). */
   divider?: boolean;
   /** Gives every item its own rounded surface with a gap between them; divider has no effect then. */
   separated?: boolean;
@@ -42,8 +43,8 @@ export interface KjunAccordionProps {
 const AccordionLayoutContext = createContext({ divider: false, separated: false, background: undefined as string | undefined });
 export function KjunAccordion({
   multiple = false,
-  tone = "card",
-  divider = false,
+  tone = "muted",
+  divider = true,
   separated = false,
   children,
 }: KjunAccordionProps) {
@@ -306,9 +307,10 @@ export function KjunPagination({
   const pages = [...visible]
     .sort((a, b) => a - b)
     .flatMap((v, i, all) => (i && v - all[i - 1] > 1 ? ["...", v] : [v]));
+  // Painted at Web's item size; KjunButton's hitSlop reaches the 44pt touch target around it.
   const pageButtonStyle = {
-    width: Math.max(tokens.extensions.pagination.itemSize, tokens.native.minimumTouchTarget),
-    height: Math.max(tokens.extensions.pagination.itemSize, tokens.native.minimumTouchTarget),
+    width: tokens.extensions.pagination.itemSize,
+    height: tokens.extensions.pagination.itemSize,
     borderRadius: tokens.extensions.pagination.radius,
     paddingHorizontal: 0,
   };

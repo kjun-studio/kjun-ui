@@ -1,3 +1,4 @@
+import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
@@ -87,6 +88,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
         <>
           <KjunDataState
             {...props}
+            {...marketQueryState(props)}
             loadingPadding="none"
             empty={!rows.length}
             loadingContent={props.skeleton === false ? undefined : <KjunListSkeleton variant="compact" />}

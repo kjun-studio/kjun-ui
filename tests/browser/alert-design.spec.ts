@@ -22,7 +22,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       for (const parts of [{ title: 'Alert title', body: 'Alert body' }, { title: '', body: 'Alert body' }, { title: 'Alert title', body: '' }, { title: ' ', body: ' ', emptyFragment: true }]) {
         for (const closable of [true, false]) {
           await update(page, { size, emptyFragment: false, ...parts, closable });
-          await expect(alert).toHaveCSS('height', (size === 'sm' ? 40 : 52) + (parts.title.trim() && parts.body.trim() ? size === 'sm' ? 18 : 22 : 0) + 'px');
+          // Each size has its own height: padding and the title line step up from sm to md to lg.
+          await expect(alert).toHaveCSS('height', ({ sm: 40, md: 52, lg: 64 } as Record<string, number>)[size] + (parts.title.trim() && parts.body.trim() ? size === 'sm' ? 18 : 22 : 0) + 'px');
           if (parts.body.trim()) {
             await expect(alert.getByText('Alert body', { exact: true })).toHaveCSS('font-size', size === 'sm' ? '12px' : '14px');
             await expect(alert.getByText('Alert body', { exact: true })).toHaveCSS('line-height', size === 'sm' ? '16px' : '20px');
@@ -53,10 +54,10 @@ for (const platform of ['react', 'vue3', 'native']) {
     }
     await action.click();
     await expect(page.getByTestId('events')).toHaveText('0/1');
-    for (const size of ['sm', 'md']) {
+    for (const size of ['sm', 'md', 'lg']) {
       await update(page, { size, action: false, actions: true, actionSize: undefined });
       const slot = alert.getByRole('button', { name: 'Slot action', exact: true });
-      await expect(slot).toHaveCSS('height', size === 'sm' ? '24px' : '32px');
+      await expect(slot).toHaveCSS('height', ({ sm: '24px', md: '32px', lg: '40px' } as Record<string, string>)[size]);
       const text = await page.evaluate(() => { const probe = document.createElement('div'); document.body.append(probe); probe.style.color = 'var(--kjun-text)'; const value = getComputedStyle(probe).color; probe.remove(); return value; });
       // Secondary actions tint the alert fill with the text role instead of sitting on it as a white surface.
       expectTint(await slot.evaluate(el => getComputedStyle(el).backgroundColor), text, 0.08);

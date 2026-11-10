@@ -110,7 +110,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
         onClick={() => c.rowClick(row, i)}>
         {selectable && <td class="kjun-table-action-cell">{c.checkbox(row, i)}</td>}
         {visible.map(col => (
-          <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined}
+          <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined} data-date={col.type === "date" || col.type === "datetime" || undefined}
             class={(col.secondary ? "kjun-table-secondary " : "") + (col.className || "")}>
             {c.cell(col, row, i)}
           </td>
@@ -128,7 +128,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
       {selectable && <td class="kjun-table-action-cell" />}
       {visible.map((col, index) => {
         const value = c.summary!(col, rows), shown = value !== null && value !== undefined && value !== "" && value !== false;
-        return <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined}>
+        return <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined} data-date={col.type === "date" || col.type === "datetime" || undefined}>
           {index === 0 ? <><span class="kjun-table-summary-label">{kind === "total" ? m.tableTotal : m.tableSubtotal}</span>{shown && <> {value}</>}</> : shown ? value : null}
         </td>;
       })}

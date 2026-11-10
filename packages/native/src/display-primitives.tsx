@@ -281,6 +281,8 @@ export interface KjunAlertProps {
   actions?: ReactNode;
   onClose?: () => void;
 }
+// Each size steps the title line: sm 12/16, md 14/20, lg 16/24 (description stays caption on sm, body otherwise).
+const titleType = { sm: "controlSmall", md: "control", lg: "controlLarge" } as const;
 export function KjunAlert({
   type = "info",
   variant,
@@ -299,9 +301,9 @@ export function KjunAlert({
   const fade = useRef(new Animated.Value(1)).current, closing = useRef(false);
   if (!visible) return null;
   const tone = variant || (type === "error" ? "danger" : type),
-    small = size === "sm";
+    small = size === "sm", scale = size === "sm" || size === "lg" ? size : "md";
   const geometry = tokens.extensions.alert;
-  const lineHeight = tokens.typography[small ? "controlSmall" : "control"].lineHeightPx;
+  const lineHeight = tokens.typography[titleType[scale]].lineHeightPx;
   const titled = hasContent(title);
   const closeSize = small ? geometry.sm.closeSize : geometry.closeSize;
   const paint = alertToneRoles(tone);
@@ -330,20 +332,20 @@ export function KjunAlert({
         opacity: fade,
         flexDirection: "row",
         alignItems: "flex-start",
-        gap: geometry[small ? "sm" : "md"].gap,
+        gap: geometry[scale].gap,
         borderRadius: small ? geometry.sm.radius : geometry.radius,
-        paddingVertical: geometry[small ? "sm" : "md"].paddingY,
-        paddingHorizontal: geometry[small ? "sm" : "md"].paddingX,
+        paddingVertical: geometry[scale].paddingY,
+        paddingHorizontal: geometry[scale].paddingX,
         backgroundColor: paint.bg ? pick(paint.bg) : textTint(colors.text, "tintFill", colors.secondary),
       }}
     >
       <View style={{ height: lineHeight, justifyContent: "center", flexShrink: 0,
         // A triangle's optical center sits below its box center.
         transform: tone === "warning" ? [{ translateY: -geometry.warningIconLift }] : undefined }}>
-        <KjunIcon name={alertIcons[tone]} filled size={geometry.iconSizes[small ? "sm" : "md"]} color={pick(paint.icon)} />
+        <KjunIcon name={alertIcons[tone]} filled size={geometry.iconSizes[scale]} color={pick(paint.icon)} />
       </View>
       <View style={{ flex: 1, minWidth: 0, minHeight: lineHeight }}>
-        {titled && text(title, { ...typeStyle(small ? "controlSmall" : "control"), color: colors.text })}
+        {titled && text(title, { ...typeStyle(titleType[scale]), color: colors.text })}
         {hasContent(children) && <View style={{ marginTop: titled ? geometry.descriptionGap : 0 }}>
           {text(children, {
             ...typeStyle(small ? "caption" : "body"),
@@ -351,9 +353,9 @@ export function KjunAlert({
           })}
         </View>}
         {hasContent(actions) && (
-          <ActionSizeContext.Provider value={alertActionSizes[small ? "sm" : "md"]}>
+          <ActionSizeContext.Provider value={alertActionSizes[scale]}>
             <AlertActionsContext.Provider value={true}>
-              <View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: geometry.actionsGap, marginTop: geometry[small ? "sm" : "md"].actionGap }}>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: geometry.actionsGap, marginTop: geometry[scale].actionGap }}>
                 {content(actions)}
               </View>
             </AlertActionsContext.Provider>

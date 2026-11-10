@@ -67,20 +67,25 @@ export function ContractTable({
   anchor?: { platform: string; group: string };
 }) {
   if (!members.length) return <p className="body-copy">공개 {label} 없음</p>;
+  // Narrow containers lay each member out as a card; the field labels are shown only there.
+  const field = (name: string) => <span className="api-cell-label">{name}</span>;
   return <div className="api-reference-table"><KjunTable<Member> responsive="none" hoverable={false} rowKey="name" ariaLabel={label}
     columns={[
-      { key: 'name', label: label === '속성' ? '속성' : '항목', render: (_, member) => <code className="api-member-anchor" id={anchor ? apiAnchor(anchor.platform, anchor.group, member.name) : undefined}>{breakableName(member.name)}</code> },
-      { key: 'type', label: '타입 / 데이터', className: 'api-member-type', render: (_, member) => <code>{member.type}</code> },
+      { key: 'name', label: label === '속성' ? '속성' : '항목', className: 'api-member-name', render: (_, member) => <code className="api-member-anchor" id={anchor ? apiAnchor(anchor.platform, anchor.group, member.name) : undefined}>{breakableName(member.name)}</code> },
+      { key: 'type', label: '타입 / 데이터', className: 'api-member-type', render: (_, member) => <>{field('타입')}<code>{member.type}</code></> },
       ...(props ? [
-        { key: 'required', label: '필수', render: (_: unknown, member: Member) => member.required ? '필수' : '선택' },
-        { key: 'default', label: '기본값', render: (_: unknown, member: Member) => <code>{member.default ?? '—'}</code> },
+        { key: 'required', label: '필수', className: 'api-member-required', render: (_: unknown, member: Member) => <>{field('필수')}<span>{member.required ? '필수' : '선택'}</span></> },
+        { key: 'default', label: '기본값', className: 'api-member-default', render: (_: unknown, member: Member) => <>{field('기본값')}<code>{member.default ?? '—'}</code></> },
       ] : []),
-      { key: 'summary', label: '설명', render: (_, member) => <>
-        <p>{member.summary}</p>
-        {!!member.details?.length && <Collapsible>
-          <CollapsibleTrigger className="api-detail-toggle" aria-label={`${member.name} 사용 계약`} prefixIcon="chevron-down">사용 계약</CollapsibleTrigger>
-          <CollapsibleContent><MemberDetails member={member} /></CollapsibleContent>
-        </Collapsible>}
+      { key: 'summary', label: '설명', className: 'api-member-summary', render: (_, member) => <>
+        {field('설명')}
+        <div>
+          <p>{member.summary}</p>
+          {!!member.details?.length && <Collapsible>
+            <CollapsibleTrigger className="api-detail-toggle" aria-label={`${member.name} 사용 계약`} prefixIcon="chevron-down">사용 계약</CollapsibleTrigger>
+            <CollapsibleContent><MemberDetails member={member} /></CollapsibleContent>
+          </Collapsible>}
+        </div>
       </> },
     ]} data={members} />
   </div>;

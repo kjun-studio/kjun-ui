@@ -42,7 +42,7 @@ export function renderCases(h: (name:string, props:any, children?:any, slots?:an
     section('button-wrap',[h('KjunButton',{ wrap:true },'아주 긴 라벨이 있는 버튼이 좁은 칸에서 줄바꿈되는지 확인'),h('KjunButton',{ wrap:true },'짧은 줄바꿈'),h('KjunButton',{},'짧은 기준')],{width:160}),
     section('alert-live',[h('KjunAlert',{ type:'warning', live:'assertive', title:'경고 즉시' }),h('KjunAlert',{ type:'info', live:'off', title:'조용한 안내' }),h('KjunAlert',{ type:'warning', title:'기본 경고' })]),
     section('tooltip-controlled',[h('KjunTooltip',{ open:state.tipOpen, onOpenChange:(v:boolean)=>{ if(!query.has('tip-frozen')) set('tipOpen',v); }, content:'제어 툴팁 내용' },button('제어 툴팁 대상')),button('툴팁 열기',()=>set('tipOpen',true))]),
-    section('form-hint-error',h('KjunFormGroup',{ id:'tyve-name', label:'이름', hint:'공백은 유지됩니다', error:'이름이 필요합니다' },h('KjunInput',{ value:state.fname, onValueChange:(v:string)=>set('fname',v), 'aria-describedby':'tyve-name-hint' }))),
+    section('form-hint-error',h('KjunFormGroup',{ id:'tyve-name', label:'이름', hint:'공백은 유지됩니다', error:'이름이 필요합니다' },h('KjunInput',{ value:state.fname, onValueChange:(v:string)=>set('fname',v), 'aria-describedby':'tyve-name-error' }))),
     section('form-hidden-label',h('KjunFormGroup',{ label:'숨긴 라벨', labelHidden:true },h('KjunInput',{ value:state.fhidden, onValueChange:(v:string)=>set('fhidden',v) }))),
     section('select-outside',[h('Label',{ for:'sel-ext' },'외부 라벨'),h('KjunSelect',{ id:'sel-ext', value:state.fsel, onValueChange:(v:any)=>set('fsel',v), placeholder:'선택하세요', options:[{label:'가',value:'a'}] })]),
     section('check-in-group',h('KjunFormGroup',{ id:'tyve-agree', hint:'약관 안내', error:'동의가 필요합니다', required:true },h('KjunCheckbox',{ value:state.agree, onValueChange:(v:boolean)=>set('agree',v), label:'약관 동의' }))),

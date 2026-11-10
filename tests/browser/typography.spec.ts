@@ -121,7 +121,8 @@ for(const platform of ['react','vue3','native']) {
       expect((await textStyle(page.getByTestId('hero-small').getByText('23,456',{exact:true}))).size).toBe('24px');
       expect((await textStyle(page.getByTestId('row').getByText('12,345',{exact:true}))).size).toBe(width<=768?'20px':'24px');
       const summary=page.getByTestId('row-summary');
-      expect(await value(summary,/USD\s*54,321$/,'54,321')).toMatchObject({size:'24px',line:'32px',weight:'700'});
+      // At 400px and below the summary value steps down to number-lg so a value and its unit stay on one line.
+      expect(await value(summary,/USD\s*54,321$/,'54,321')).toMatchObject({size:width<=400?'20px':'24px',line:width<=400?'28px':'32px',weight:'700'});
       expect(await textStyle(summary.getByText('USD',{exact:true}))).toMatchObject({size:'14px',line:'20px',weight:'500'});
       expect(await value(summary,/678\s*개$/,'678')).toMatchObject({size:width<=768?'14px':'24px',line:width<=768?'20px':'32px'});
       expect(await textStyle(summary.getByText('개',{exact:true}))).toMatchObject({size:width<=768?'12px':'14px',line:width<=768?'16px':'20px'});

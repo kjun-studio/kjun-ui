@@ -4,6 +4,7 @@ import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useContext, useState } from "react";
 import { ListShapeContext } from "./list-context";
 import { listRowMetrics } from "../../../shared/package-runtime/list-row";
+import { listRowBleed } from "../../../shared/package-runtime/list-leading";
 import { Animated,Platform,View,useWindowDimensions,type DimensionValue } from "react-native";
 import Svg,{ Path } from "react-native-svg";
 import { KjunSkeleton,KjunSpinner } from "./display";
@@ -28,6 +29,7 @@ export interface KjunListSkeletonProps {
   /** "row" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked. */
   variant?: "market" | "compact" | "notification" | "row";
   avatar?: boolean;
+  /** Default: ListRow's sm leading square (32) for the row variant, the market avatar (36) otherwise. */
   avatarSize?: DimensionValue;
   quote?: boolean;
   /** Row variant: draws the description line (default true). */
@@ -45,7 +47,7 @@ export function KjunListSkeleton({
   rows = 8,
   variant = "market",
   avatar,
-  avatarSize = tokens.extensions.skeleton.listAvatarSize,
+  avatarSize: ownAvatarSize,
   quote = true,
   description = true,
   trailing = "value",
@@ -53,6 +55,8 @@ export function KjunListSkeleton({
 }: KjunListSkeletonProps) {
   const { colors } = useKjunStyles();
   const window = useWindowDimensions();
+  // The row silhouette takes ListRow's default leading square (sm, 32px, in the 40px column); other variants keep the market avatar.
+  const avatarSize = ownAvatarSize ?? (variant === "row" ? tokens.extensions.list.leadingSizes.sm : tokens.extensions.skeleton.listAvatarSize);
   if (variant === "row") return (
     <View {...skeletonStatus(loadingText)}>
       <ListRowSkeleton rows={rows} avatar={avatar ?? false} avatarSize={avatarSize} description={description}
@@ -105,17 +109,19 @@ function ListRowSkeleton({ rows, avatar, avatarSize, description, trailing, divi
   // Like Web: in an open KjunListSection the rows take the open row's shape (larger lines, a rounded leading square,
   // inset from the edges, no dividers), and in a compact one the compact row's height.
   const shape = { gap: m.gap, minHeight: m.minimumHeight, paddingVertical: m.paddingY, paddingHorizontal: m.paddingX, ...(open ? { marginHorizontal: o.rowInset } : {}) };
+  // Like ListRow: without a description the leading square and a switch reach into the padding, keeping the minimum height.
+  const bleed = description ? {} : { marginVertical: listRowBleed(m.paddingY) };
   return (
     <>
       {Array.from({ length: rows }, (_, i) => (
         <View key={i} style={{ flexDirection: "row", alignItems: "center", ...shape }}>
-          {avatar ? open ? <View style={{ width: o.leadingSize, height: o.leadingSize, borderRadius: o.leadingRadius, overflow: "hidden" }}><KjunSkeleton type="block" width={o.leadingSize} height={o.leadingSize} /></View>
-            : <View style={{ width: list.leadingWidth, alignItems: "center" }}><KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} /></View> : null}
+          {avatar ? open ? <View style={{ width: o.leadingSize, height: o.leadingSize, borderRadius: o.leadingRadius, overflow: "hidden", ...bleed }}><KjunSkeleton type="block" width={o.leadingSize} height={o.leadingSize} /></View>
+            : <View style={{ width: list.leadingWidth, alignItems: "center", ...bleed }}><KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} /></View> : null}
           <View style={{ flex: 1, minWidth: 0, gap: list.descriptionGap }}>
             <KjunSkeleton type="line" role={open ? m.title : "control"} width={i % 2 ? "55%" : "40%"} />
             {description ? <KjunSkeleton type="line" role={m.description} width="30%" /> : null}
           </View>
-          {trailing === "switch" ? <KjunSkeleton type="avatar" width={tokens.extensions.switch.widths.md} height={tokens.extensions.switch.heights.md} />
+          {trailing === "switch" ? <View style={bleed}><KjunSkeleton type="avatar" width={tokens.extensions.switch.widths.md} height={tokens.extensions.switch.heights.md} /></View>
             : trailing ? <KjunSkeleton type="line" role="control" width={trailing === "chevron" ? tokens.iconSizes.default : tokens.extensions.skeleton.detailWidth} />
             : null}
           {i < rows - 1 && !open ? <View style={{ position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: divider }} /> : null}

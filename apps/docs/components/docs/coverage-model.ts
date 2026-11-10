@@ -16,3 +16,5 @@ export const baseline = Object.fromEntries(platforms.map(platform => {
 export const isException = (entry: Entry) => platforms.some(platform => entry.states[platform] !== baseline[platform]);
 export const exceptions = coverage.components.filter(isException);
 export const usedStatuses = statusOrder.filter(status => coverage.components.some(entry => platforms.some(platform => entry.states[platform] === status)));
+/** Platforms whose state is the same for every public component; the table states them once in a note. */
+export const uniformPlatforms = platforms.filter(platform => coverage.components.every(entry => entry.states[platform] === baseline[platform]));

@@ -8,13 +8,15 @@ const main = (row: Locator, native: boolean) => native ? row.locator(':scope > d
 const leading = (row: Locator, native: boolean) => native ? main(row, native).locator(':scope > div').first() : row.locator('.kjun-list-leading');
 const stroke = (icon: Locator) => icon.evaluate(el => getComputedStyle(el).stroke);
 
-async function checkGeometry(page: Page, title: string, native: boolean, width: number, iconSize: number, background = true) {
+// A sized leading box smaller than the 40px leading column keeps that column, so titles share one start line.
+async function checkGeometry(page: Page, title: string, native: boolean, width: number, iconSize: number, background = true, sized = true) {
+  const column = sized ? Math.max(width, 40) : width;
   const target = row(page, title), front = leading(target, native), svg = target.locator('svg').first();
   const [rowBox, frontBox, iconBox, titleBox] = await Promise.all([box(main(target, native)), box(front), box(svg), box(page.getByText(title, { exact: true }))]);
-  expect(frontBox.width).toBe(width);
+  expect(frontBox.width).toBe(column);
   expect(iconBox.width).toBe(iconSize); expect(iconBox.height).toBe(iconSize);
   expect(titleBox.x - frontBox.x - frontBox.width).toBeCloseTo(12);
-  expect(iconBox.x + iconBox.width / 2).toBeCloseTo(frontBox.x + width / 2);
+  expect(iconBox.x + iconBox.width / 2).toBeCloseTo(frontBox.x + column / 2);
   const tile = front.locator(':scope > *').first();
   if (background) {
     const tileBox = await box(tile);
@@ -33,7 +35,7 @@ async function checkGeometry(page: Page, title: string, native: boolean, width: 
     const divider = Array.from(el.children).find(child => getComputedStyle(child).position === 'absolute')!;
     return divider.getBoundingClientRect().left - el.getBoundingClientRect().left;
   }, native);
-  expect(inset).toBeCloseTo(16 + width + 12);
+  expect(inset).toBeCloseTo(16 + column + 12);
 }
 
 for (const platform of ['react', 'vue3', 'native']) {
@@ -41,8 +43,8 @@ for (const platform of ['react', 'vue3', 'native']) {
   for (const width of [1024, 320]) test(`${platform} ${width}: leading sizes, circular backgrounds and divider alignment`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await openFixture(page, platform, '', 'list-leading');
-    await checkGeometry(page, 'Legacy icon', native, 24, 20, false);
-    await checkGeometry(page, 'Color only', native, 24, 20, false);
+    await checkGeometry(page, 'Legacy icon', native, 24, 20, false, false);
+    await checkGeometry(page, 'Color only', native, 24, 20, false, false);
     await checkGeometry(page, 'Background default', native, 32, 20);
     for (const [size, [diameter, icon]] of Object.entries(sizes)) {
       await checkGeometry(page, `Circle ${size}`, native, diameter, icon);
@@ -54,7 +56,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(await stroke(row(page, 'Danger default').locator('svg'))).toBe(danger);
     expect(await stroke(row(page, 'Danger override').locator('svg'))).toBe('rgb(36, 86, 168)');
     expect(await page.getByText('Danger override', { exact: true }).evaluate(el => getComputedStyle(el).color)).toBe(danger);
-    for (const [title, width, childWidth] of [['Custom default', 40, 32], ['Custom xs', 24, 24], ['Custom lg', 56, 32]] as const) {
+    for (const [title, width, childWidth] of [['Custom default', 40, 32], ['Custom xs', 40, 24], ['Custom lg', 56, 32]] as const) {
       const target = row(page, title), front = leading(target, native);
       expect((await box(front)).width).toBe(width);
       expect((await box(front.locator(':scope > *').first())).width).toBe(childWidth);

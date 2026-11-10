@@ -69,11 +69,13 @@ export function KjunFormGroup({
   const uid = useId().replace(/:/g, "");
   const fieldId = id || "kjun-native-" + uid;
   const { colors: c, fontFamily } = useKjunStyles();
+  // An error takes the hint's slot instead of stacking under it, so the field keeps its height; the control is then
+  // described by the error alone.
+  const shownHint = error ? "" : hint;
   return (
     <FieldContext.Provider
-      // The hint stays with an error: it usually explains the format the error refers to.
-      value={{ id: fieldId, label, error, hint, required, labelHidden,
-        describedBy: mergeIds(hint ? fieldId + "-hint" : undefined, error ? fieldId + "-error" : undefined) }}
+      value={{ id: fieldId, label, error, hint: shownHint, required, labelHidden,
+        describedBy: mergeIds(shownHint ? fieldId + "-hint" : undefined, error ? fieldId + "-error" : undefined) }}
     >
       <View style={[{ minWidth: 0, marginBottom: tokens.extensions.form.itemGap }, style]}>
         {!!label && !labelHidden && (
@@ -94,12 +96,12 @@ export function KjunFormGroup({
           </FontText>
         )}
         {children}
-        {!!hint && (
+        {!!shownHint && (
           <FontText
             nativeID={fieldId + "-hint"}
             style={{ fontFamily, ...typeStyle('caption'), marginTop: tokens.extensions.form.messageGap, color: c.textSecondary }}
           >
-            {hint}
+            {shownHint}
           </FontText>
         )}
         {!!error && (

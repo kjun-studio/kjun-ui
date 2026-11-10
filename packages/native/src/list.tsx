@@ -102,14 +102,14 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   // row (one margin for every size); with one, the row's ends center on the band of the title and first description line.
   const bleed = { marginVertical: listRowBleed(paddingY) };
   const end = (height: number) => description ? { alignSelf: "flex-start" as const, marginTop: (band - height) / 2 } : bleed;
-  const hasLeading = hasContent(leading), geometry = listLeadingGeometry({ size: leadingSize, custom: hasLeading, background: iconBackground != null, open }), leadingWidth = geometry.width;
+  const hasLeading = hasContent(leading), geometry = listLeadingGeometry({ size: leadingSize, custom: hasLeading, background: iconBackground != null, open }), leadingWidth = geometry.width, column = geometry.column;
   const glyph = icon ? <KjunIcon name={icon} size={geometry.iconSize} color={iconColor ?? (destructive ? colors.danger : open ? colors.text : colors.textSecondary)} /> : null;
   const tileColor = iconBackground ?? (open ? (destructive ? colors.dangerBg : colors.secondary) : undefined);
   const front = hasLeading ? content(leading) : glyph && geometry.tile ? <View accessible={false} style={{ width: leadingWidth, height: leadingWidth, borderRadius: open ? list.open.leadingRadius : list.iconBackgroundRadius, alignItems: "center", justifyContent: "center", backgroundColor: tileColor }}>{glyph}</View> : glyph;
   const leadingHeight = Math.max(geometry.size ? leadingWidth : 0, description ? band : 0);
   const switchHeight = tokens.extensions.switch.heights.md, endIcon = list.endIconSize;
   const parts = <>
-    {front && <View style={{ minWidth: leadingWidth, ...(geometry.size ? { width: leadingWidth } : {}), flexShrink: 0, minHeight: leadingHeight, alignItems: "center", justifyContent: "center",
+    {front && <View style={{ minWidth: column, ...(geometry.size ? { width: column } : {}), flexShrink: 0, minHeight: leadingHeight, alignItems: "center", justifyContent: "center",
       ...(description ? { alignSelf: "flex-start" } : bleed) }}>{front}</View>}
     <View style={{ flex: 1, minWidth: 0 }}>
       {/* Like Web: a badge follows the title and centers on its first line; a long title wraps before it. */}
@@ -159,7 +159,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
       : <View style={{ ...style, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{parts}</View>}
     {/* A disabled row disables its actions too, so the row never reads as partly available. */}
     {hasContent(actions) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: "45%", flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: m.actionsPadding, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}</View>}
-    {divider && <Divider inset={paddingX + (front ? leadingWidth + gap : 0)} />}
+    {divider && <Divider inset={paddingX + (front ? column + gap : 0)} />}
   </View>;
 }
 export interface KjunListSectionProps {

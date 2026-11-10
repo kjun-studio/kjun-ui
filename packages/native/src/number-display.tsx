@@ -12,6 +12,12 @@ type TextStyle
 import { KjunSkeleton } from "./display";
 import { KText,content,domainColor,useReducedMotion, FontText } from "./internal";
 import { useKjunStyles } from "./provider";
+import { splitNumberSign } from "../../../shared/package-runtime/number-sign";
+/** A leading sign drawn tight to its digits (see splitNumberSign), nested in the value's Text; other content passes through. */
+export function signedText(value: ReactNode): ReactNode {
+  const parts = splitNumberSign(value);
+  return parts ? <><FontText style={{ fontVariant: ["proportional-nums"] }}>{parts[0]}</FontText>{parts[1]}</> : value;
+}
 
 export const finiteNumber = (value: unknown): number | null =>
   value == null ||
@@ -198,7 +204,7 @@ export function KjunSignedValue({
 
           }}
         >
-          {display}
+          {signedText(display)}
         </KText>
       )}
     </View>

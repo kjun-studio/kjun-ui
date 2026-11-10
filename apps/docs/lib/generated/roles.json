@@ -157,7 +157,6 @@
     "implementationFiles": [
       "packages/tokens/src/calendar.css",
       "packages/tokens/src/controls.css",
-      "packages/tokens/src/display.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/list.css",
       "packages/tokens/src/market.css",
@@ -177,7 +176,6 @@
       "packages/native/src/market-cards.tsx",
       "packages/native/src/media.tsx",
       "packages/native/src/navigation.tsx",
-      "packages/native/src/progress.tsx",
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/table-cards.tsx",
@@ -225,7 +223,6 @@
       "packages/native/src/select-control.tsx",
       "packages/native/src/select-options.tsx",
       "packages/native/src/selection-groups.tsx",
-      "packages/native/src/table-cards.tsx",
       "packages/native/src/table-list.tsx",
       "packages/native/src/tabs.tsx"
     ]
@@ -252,7 +249,8 @@
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/field-clear.tsx",
       "packages/native/src/list.tsx",
-      "packages/native/src/select-control.tsx"
+      "packages/native/src/select-control.tsx",
+      "packages/native/src/table-cards.tsx"
     ]
   },
   {
@@ -505,7 +503,9 @@
       "packages/tokens/src/calendar.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
+      "packages/tokens/src/extensions.css",
       "packages/tokens/src/layout.css",
+      "packages/tokens/src/motion.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/color-picker.tsx",
@@ -516,8 +516,10 @@
       "packages/react/src/date-picker.tsx",
       "packages/react/src/financial-display.tsx",
       "packages/react/src/select-control.tsx",
+      "packages/native/src/button-group-motion.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/calendar.tsx",
+      "packages/native/src/choice-controls.tsx",
       "packages/native/src/color-picker.tsx",
       "packages/native/src/date-picker.tsx",
       "packages/native/src/dropdown.tsx",
@@ -525,7 +527,9 @@
       "packages/native/src/field-surface.ts",
       "packages/native/src/financial-display.tsx",
       "packages/native/src/input.tsx",
+      "packages/native/src/range-input.tsx",
       "packages/native/src/select-control.tsx",
+      "packages/native/src/selection-groups.tsx",
       "packages/native/src/tabs.tsx",
       "packages/native/src/textarea.tsx",
       "packages/native/src/time-picker.tsx"
@@ -590,12 +594,11 @@
       "packages/native/src/market-table.tsx",
       "packages/native/src/modal.tsx",
       "packages/native/src/navigation.tsx",
+      "packages/native/src/progress.tsx",
       "packages/native/src/range-input.tsx",
       "packages/native/src/select-control.tsx",
-      "packages/native/src/selection-groups.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/skeletons.tsx",
-      "packages/native/src/table-cards.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-toolbar.tsx",
       "packages/native/src/toast-stack.tsx",
@@ -612,8 +615,7 @@
       "--border-secondary"
     ],
     "implementationFiles": [
-      "packages/tokens/src/table.css",
-      "packages/native/src/choice-controls.tsx"
+      "packages/tokens/src/table.css"
     ]
   },
   {
@@ -854,6 +856,7 @@
       "packages/tokens/src/calendar.css",
       "packages/tokens/src/carousel.css",
       "packages/tokens/src/color-picker.css",
+      "packages/tokens/src/extensions.css",
       "packages/tokens/src/list.css",
       "packages/tokens/src/table.css",
       "packages/vue3/src/financial-display.tsx",
@@ -863,6 +866,7 @@
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/financial-display.tsx",
       "packages/native/src/list.tsx",
+      "packages/native/src/range-input.tsx",
       "packages/native/src/table-grid.tsx"
     ]
   },
@@ -1516,9 +1520,13 @@
       "--switch-track"
     ],
     "implementationFiles": [
+      "packages/tokens/src/display.css",
+      "packages/tokens/src/extensions.css",
       "packages/tokens/src/forms.css",
       "packages/native/src/choice-controls.tsx",
-      "packages/native/src/list.tsx"
+      "packages/native/src/list.tsx",
+      "packages/native/src/progress.tsx",
+      "packages/native/src/range-input.tsx"
     ]
   },
   {

@@ -169,7 +169,7 @@
 }
 
 .kjun-choice { position: relative; display: inline-flex; align-items: center; min-height: var(--_kjun-extension-choice-minimum-height); cursor: pointer; vertical-align: middle; }
-.kjun-choice--disabled { opacity: var(--_kjun-state-opacity-disabled); cursor: not-allowed; }
+.kjun-choice--disabled { cursor: not-allowed; }
 .kjun-choice-label { margin-left: var(--_kjun-extension-checkbox-label-gap); font-size: var(--_kjun-type-label-size); color: var(--_kjun-text-primary); line-height: var(--_kjun-type-label-line); font-weight: var(--_kjun-type-label-weight); letter-spacing: var(--_kjun-type-label-tracking); }
 .kjun-choice-control {
   display: flex;
@@ -178,7 +178,7 @@
   justify-content: center;
   width: var(--_kjun-extension-checkbox-sizes-md);
   height: var(--_kjun-extension-checkbox-sizes-md);
-  /* Control boundaries use the strong border role, like Radio; disabled drops to secondary. */
+  /* Control boundaries use the strong border role, like Radio; disabled takes the disabled-text role. */
   border: var(--_kjun-border-control-width) solid var(--_kjun-border-strong);
   background: var(--_kjun-card-bg);
   transition: border-color var(--_kjun-motion-control) var(--_kjun-ease-out), background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
@@ -197,9 +197,13 @@
 .kjun-radio--checked { border-color: var(--_kjun-brand); }
 .kjun-radio-dot { width: var(--_kjun-extension-radio-dot); height: var(--_kjun-extension-radio-dot); border-radius: 50%; background: var(--_kjun-brand); }
 .kjun-radio + .kjun-choice-label { margin-left: var(--_kjun-extension-radio-label-gap); }
-.kjun-choice--disabled :is(.kjun-radio:not(.kjun-radio--checked), .kjun-checkbox:not(.kjun-checkbox--checked)) { border-color: var(--_kjun-border-secondary); }
-/* A disabled switch fades as one piece to 40% (inside the row's own 50%), so on and off stay told apart. */
-.kjun-choice--disabled .kjun-switch { opacity: calc(var(--_kjun-state-opacity-disabled-strong) / var(--_kjun-state-opacity-disabled)); }
+/* One disabled rule, as Button and fields: nothing fades. Text, strokes and brand fills take the disabled-text role;
+   resting fills (the box surface, the off track) stay, so checked and on still read apart from unchecked and off. */
+.kjun-choice--disabled :is(.kjun-choice-label, .kjun-choice-description) { color: var(--_kjun-text-disabled); }
+.kjun-choice--disabled :is(.kjun-radio, .kjun-checkbox) { border-color: var(--_kjun-text-disabled); }
+.kjun-choice--disabled .kjun-checkbox--checked { background: var(--_kjun-text-disabled); color: var(--_kjun-card-bg); }
+.kjun-choice--disabled .kjun-radio-dot,
+.kjun-choice--disabled .kjun-switch--on { background: var(--_kjun-text-disabled); }
 .kjun-choice input:focus-visible + .kjun-choice-control, .kjun-switch:focus-visible {
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-focus-ring);
   outline-offset: var(--_kjun-state-focus-choice-offset);

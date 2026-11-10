@@ -57,6 +57,7 @@
 }
 /* Row: KjunListRow's padding, gap and minimum height; the divider starts where the text does. */
 .kjun-list-skeleton-row[data-variant="row"] {
+  --_kjun-skeleton-row-padding-y: var(--_kjun-extension-list-padding);
   position: relative;
   gap: var(--_kjun-extension-list-gap);
   min-height: var(--_kjun-extension-list-minimum-height);
@@ -232,6 +233,8 @@
 .kjun-data-status > span:last-child { min-width: 0; overflow-wrap: anywhere; }
 .kjun-data-loading { display: flex; flex-direction: column; align-items: center; gap: var(--_kjun-geometry-dimension-value12); text-align: center; }
 .kjun-data-loading > p { margin: 0; max-width: 100%; overflow-wrap: anywhere; font-size: var(--_kjun-type-body-size); line-height: var(--_kjun-type-body-line); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking); color: var(--_kjun-color-text-secondary); }
+/* State blocks centre their content inside the size's minimum height. */
+.kjun-data-loading-block, .kjun-data-error, .kjun-data-empty { display: flex; flex-direction: column; justify-content: center; }
 .kjun-data-empty .kjun-empty { padding-block: 0; }
 .kjun-data-empty .kjun-empty > div { max-width: 100%; }
 .kjun-data-warning { margin-top: var(--_kjun-geometry-dimension-value12); }
@@ -252,18 +255,26 @@
 .kjun-list-skeleton-row[data-variant="row"][data-open] {
   gap: var(--_kjun-extension-list-open-gap);
   min-height: var(--_kjun-extension-list-open-minimum-height);
+  --_kjun-skeleton-row-padding-y: var(--_kjun-extension-list-open-padding-y);
   padding: var(--_kjun-extension-list-open-padding-y) var(--_kjun-extension-list-open-padding-x);
   margin-inline: var(--_kjun-extension-list-open-row-inset);
 }
 .kjun-list-skeleton-row[data-variant="row"][data-open]::after { content: none; }
 /* Row in a compact KjunListSection: the compact row's padding and height, default or open. */
 .kjun-list-skeleton-row[data-variant="row"][data-density="compact"] {
+  --_kjun-skeleton-row-padding-y: var(--_kjun-extension-list-compact-padding-y);
   min-height: var(--_kjun-extension-list-compact-minimum-height);
   padding-block: var(--_kjun-extension-list-compact-padding-y);
 }
 .kjun-list-skeleton-row[data-variant="row"][data-open][data-density="compact"] {
+  --_kjun-skeleton-row-padding-y: var(--_kjun-extension-list-open-compact-padding-y);
   min-height: var(--_kjun-extension-list-open-compact-minimum-height);
   padding-block: var(--_kjun-extension-list-open-compact-padding-y);
+}
+/* Like ListRow: without a description the leading square and a switch reach into the padding (down to the minimum
+   inset), so a one-line skeleton row keeps the row's minimum height. */
+.kjun-list-skeleton-row[data-variant="row"]:not(:has(> .kjun-list-skeleton-label > .kjun-skeleton + .kjun-skeleton)) > :is(.kjun-list-skeleton-leading, .kjun-list-skeleton-trailing[data-kind="switch"]) {
+  margin-block: min(0px, calc(var(--_kjun-extension-list-minimum-inset) - var(--_kjun-skeleton-row-padding-y)));
 }
 .kjun-list-skeleton-row[data-open] .kjun-list-skeleton-leading {
   width: var(--_kjun-extension-list-open-leading-size);

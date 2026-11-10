@@ -29,7 +29,7 @@ for (const width of [390, 1280, 1440]) {
       await expect(page.locator('#timing tbody tr').filter({ hasText: '진행률 변화' }).locator('td').last()).toHaveText(/^\d+ms$/);
       expect(await page.locator('#timing td').first().evaluate(element => {
         const style = getComputedStyle(element); return [style.fontSize, style.lineHeight, style.fontFamily];
-      })).toEqual(['14px', '20px', await page.locator('#timing > .body-copy').evaluate(element => getComputedStyle(element).fontFamily)]);
+      })).toEqual(['14px', '22px', await page.locator('#timing > .body-copy').evaluate(element => getComputedStyle(element).fontFamily)]);
     }
     const nav = page.getByRole('navigation', { name: '상세 문서 바로가기' });
     await expect(nav.getByRole('link')).toHaveText(labels);

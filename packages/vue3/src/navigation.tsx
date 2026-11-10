@@ -32,9 +32,9 @@ function useAccordionState(multiple: () => boolean): AccordionContext {
 
 const kjunAccordionProps = {
   multiple: { type: Boolean, default: false },
-  tone: { type: String as PropType<"card" | "muted">, default: "card" },
-  /** Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone). */
-  divider: { type: Boolean, default: false },
+  tone: { type: String as PropType<"card" | "muted">, default: "muted" },
+  /** Draws a line between items from the text start, like ListSection (default true; false sets rows apart by height alone). */
+  divider: { type: Boolean, default: true },
   /** Gives every item its own rounded surface with a gap between them; divider has no effect then. */
   separated: { type: Boolean, default: false },
   /** The heading level wrapping each header (default 3), or false for none, so headers join the page's outline. */

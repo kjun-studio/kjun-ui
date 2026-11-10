@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { KjunIcon as Icon } from '@kjun-ui/react';
 import Link from './doc-link';
+import { ThemedImage } from './themed-image';
 import { overviewScenes } from '../../../../previews/presentation/registry.mjs';
 
 function SceneTile({ scene }: { scene: typeof overviewScenes[number] }) {
@@ -13,7 +14,7 @@ function SceneTile({ scene }: { scene: typeof overviewScenes[number] }) {
   return <Link href={scene.destination} className="overview-scene" data-overview-scene={scene.id}>
     <div className="overview-scene-image">
       {failed ? <span className="thumbnail-unavailable">미리보기를 불러오지 못했습니다</span> :
-        <img ref={image} src={`/previews/overview/${scene.id}.png`} alt={scene.alt} width={1280} height={800} decoding="async" onError={() => setFailed(true)} />}
+        <ThemedImage ref={image} src={`/previews/overview/${scene.id}.png`} alt={scene.alt} onError={() => setFailed(true)} />}
     </div>
     <div className="overview-scene-caption">
       <strong>{scene.title} <Icon name="arrow-right" size={14} aria-hidden="true" /></strong>

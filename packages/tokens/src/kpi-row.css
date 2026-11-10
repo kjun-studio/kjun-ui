@@ -96,6 +96,8 @@ a.kjun-kpi-row__item {
 .kjun-kpi-row__value {
   font-family: var(--_kjun-font-numeric);
   font-variant-numeric: tabular-nums;
+  /* A number and its units are one word: "1,234,567원" moves to the next line whole, never leaving "원" alone. */
+  word-break: keep-all;
 }
 /* 텍스트형 값(예: 최대 증가/감소 지표명) — 큰 숫자 글자 크기는 긴 한글명이 모바일 반폭 칸에서 여러 줄로
    터지므로, 텍스트에 맞는 크기 + 한글 단어 보존(keep-all)으로 행 높이를 안정화한다. */
@@ -259,6 +261,14 @@ a.kjun-kpi-row__item {
     content: "·";
     margin: 0 var(--_kjun-extension-kpi-row-separator-gap);
     color: var(--_kjun-text-tertiary);
+  }
+}
+
+@media (width <= token(responsive.kpiRowNarrow)) {
+  /* On a phone the summary's half-width cell is too narrow for a display number and its unit, so the headline
+     values step down one type level (to the grid's number size) instead of wrapping the unit under them. */
+  .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) {
+    --_kjun-kpi-row-value-line: var(--_kjun-type-number-lg-line);
   }
 }
 

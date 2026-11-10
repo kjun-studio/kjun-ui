@@ -93,6 +93,8 @@ export function KjunDataState({
       (state.usesQueryState && state.hasCurrentResult ? query.error : null),
     concealed = state.initialLoading || !!blockingError || empty,
     padding = tokens.extensions.state.padding[size],
+    // Loading, error and empty share one minimum height per size, so switching between them does not jump.
+    minHeight = tokens.extensions.state.minimumHeights[size],
     revealed = useLoadingReveal(state.initialLoading, loadingDelay);
   return (
     <div className="kjun-data-state" aria-busy={!!query.loading || refreshing}>
@@ -110,7 +112,7 @@ export function KjunDataState({
           role={revealed ? "status" : undefined}
           aria-label={revealed ? loadingText : undefined}
           aria-hidden={revealed ? undefined : true}
-          style={{ paddingBlock: loadingPadding === "none" ? 0 : padding, visibility: revealed ? undefined : "hidden" }}
+          style={{ ...(loadingPadding === "none" ? { paddingBlock: 0 } : { paddingBlock: padding, minHeight }), visibility: revealed ? undefined : "hidden" }}
         >
           {loadingContent ||
             (skeleton ? (
@@ -127,7 +129,7 @@ export function KjunDataState({
             ))}
         </div>
       ) : blockingError ? (
-        <div className="kjun-data-error kjun-state-actions" style={{ paddingBlock: padding }}>
+        <div className="kjun-data-error kjun-state-actions" style={{ paddingBlock: padding, minHeight }}>
           {errorContent || (
             <KjunAlert type="danger" title={m.errorTitle} actions={onRetry && (
               <KjunButton variant="secondary" onClick={onRetry}>
@@ -140,7 +142,7 @@ export function KjunDataState({
           )}
         </div>
       ) : empty ? (
-        <div className="kjun-data-empty kjun-state-actions" style={{ paddingBlock: padding }}>
+        <div className="kjun-data-empty kjun-state-actions" style={{ paddingBlock: padding, minHeight }}>
           {emptyContent || (
             <KjunEmpty text={emptyText} icon={emptyIcon}>
               {emptyActionText && (

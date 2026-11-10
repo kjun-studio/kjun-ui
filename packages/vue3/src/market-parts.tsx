@@ -1,8 +1,9 @@
+import { marketBlockingError } from "../../../shared/package-runtime/market-query";
 import { useKjunMessages } from "./runtime/messages";
 import { type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
-import { isMarketIdentity, marketGeometry, normalizeMarketColumns, webMarketLayout, type LayoutColumn } from "../../../shared/package-runtime/market-layout";
+import { isMarketIdentity, normalizeMarketColumns, webMarketActionsWidth, webMarketLayout, type LayoutColumn } from "../../../shared/package-runtime/market-layout";
 import { getValue } from "../../../shared/package-runtime/table-model";
 import { KjunCard } from "./card";
 import { useQueryDisplay } from "./data-state";
@@ -11,7 +12,6 @@ import { KjunCollectionMark } from "./financial-display";
 import { queryProps, type MarketPagination } from "./market-model";
 import { KjunPagination } from "./navigation";
 import { hasContent } from "./runtime/slots";
-import { css } from "./runtime/style";
 
 interface IdentityProps {
   rowKey: string;
@@ -70,13 +70,14 @@ export const MarketFooter = defineComponent({
     const m = useKjunMessages();
     const status = useQueryDisplay(() => queryProps(props));
     return () => {
-      const state = status(), { pagination } = props;
+      // A blocking error replaces the rows, so their count, update time and pages go with them.
+      const state = status(), { pagination } = props, hidden = marketBlockingError(props, state);
       return <>
-        {pagination && (
+        {pagination && !hidden && (
           <KjunPagination currentPage={pagination.page} totalPages={Math.ceil(pagination.total / pagination.size)} totalRows={pagination.total}
             pageSize={pagination.size} showInfo onUpdate:page={(page: number) => emit("page-change", page)} />
         )}{" "}
-        {props.showFooter && !state.initialLoading && props.rowCount > 0 && (
+        {props.showFooter && !hidden && !state.initialLoading && props.rowCount > 0 && (
           <div class="kjun-market-footer">
             <span>{props.calculatedAt ? m.value.lastUpdated + (props.formatDate?.(props.calculatedAt) || props.calculatedAt) : props.footerNote}</span>
             <span>{m.value.totalCount(props.totalCount, (props.unitLabel ?? m.value.unitLabel))}</span>
@@ -91,7 +92,7 @@ export function marketColumns(columns: LayoutColumn[], showActions: boolean, wid
   const layout = webMarketLayout(columns, showActions, widthClass);
   return (
     <colgroup>
-      {showActions && <col style={css({ width: marketGeometry.actionsWidth })} />}
+      {showActions && <col style={{ width: webMarketActionsWidth }} />}
       {layout.columns.map((column, index) => <col key={columns[index].key || index} class={column.className} style={column.style} />)}
     </colgroup>
   );

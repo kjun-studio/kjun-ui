@@ -8,11 +8,16 @@ export type ListLeadingSize = "xs" | "sm" | "md" | "lg";
  */
 export function listLeadingGeometry({ size, custom, background, open = false }: { size?: ListLeadingSize; custom: boolean; background: boolean; open?: boolean }) {
   const list = tokens.extensions.list;
-  if (open && !custom && !size) return { size: "md" as ListLeadingSize, width: list.open.leadingSize, iconSize: list.open.leadingIconSize, tile: true };
+  if (open && !custom && !size) return { size: "md" as ListLeadingSize, width: list.open.leadingSize, column: list.open.leadingSize, iconSize: list.open.leadingIconSize, tile: true };
   const resolved = size ?? (!custom && background ? "sm" : undefined);
+  const width = resolved ? list.leadingSizes[resolved] : custom ? list.leadingWidth : tokens.dimension.value24;
   return {
     size: resolved,
-    width: resolved ? list.leadingSizes[resolved] : custom ? list.leadingWidth : tokens.dimension.value24,
+    /** The leading box itself (avatar or icon square). */
+    width,
+    /** The column it sits in: a sized box smaller than the 40px leading column keeps that column (centered), so
+     *  titles start on one line whether the row leads with an app avatar or a 32px icon square. */
+    column: resolved ? Math.max(width, list.leadingWidth) : width,
     iconSize: resolved ? list.leadingIconSizes[resolved] : list.iconSize,
     tile: !custom && (background || open),
   };

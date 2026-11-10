@@ -18,10 +18,10 @@ export const extensions: Record<string, GuideAuthor> = {
     parts: [t("목록 칸", "행이 아닌 내용을 행과 같은 시작 여백으로 담습니다.", "화면 테마는 기기 설정을 따릅니다.")], related: "generic-lists",
   },
   KjunTopNavigation: {
-    parts: [p("앞쪽 탐색", "24px 아이콘과 최소 44px 영역을 사용하며 앱이 뒤로 가기 행동을 연결합니다.", '[aria-label="뒤로 가기"]', true), t("화면 제목", "20px·600 굵기의 제목입니다. 양쪽 행동과 첫 줄을 맞추며 긴 제목은 줄바꿈합니다.", "프로젝트 설정"), t("행동 영역", "제목 줄에 정렬한 ghost 저장 버튼 예시입니다. 소비자가 행동과 variant를 선택합니다.", "저장", true)], related: "app-screen",
+    parts: [p("앞쪽 탐색", "24px 아이콘과 최소 44px 영역을 사용하며 앱이 뒤로 가기 행동을 연결합니다.", '[aria-label="뒤로 가기"]', true), t("화면 제목", "20px·600 굵기의 제목입니다. 양쪽 행동과 같은 줄에 두며 긴 제목은 한 줄 말줄임합니다.", "프로젝트 설정"), t("행동 영역", "제목 줄에 정렬한 ghost 저장 버튼 예시입니다. 소비자가 행동과 variant를 선택합니다.", "저장", true)], related: "app-screen",
     states: [
       { id: "safe-area", label: "안전 영역", description: "앱이 상단 안전 영역 24px을 전달합니다.", settings: { safeAreaTop: 24 } },
-      { id: "long-action", label: "긴 행동", description: "제목 공간이 부족하면 행동을 다음 줄로 배치합니다.", settings: { actions: "긴 문구", exampleWidth: "320" } },
+      { id: "long-action", label: "긴 행동", description: "긴 행동 문구는 제목 기준 폭을 남기고 한 줄 말줄임합니다.", settings: { actions: "긴 문구", exampleWidth: "320" } },
       { id: "long-leading", label: "긴 앞쪽 문구", description: "한 줄 말줄임으로 제목 공간을 확보하며 접근성 이름은 유지합니다.", settings: { leading: "긴 문구", exampleWidth: "320" } },
       { id: "mixed", label: "아이콘 조합", description: "RefreshButton·MenuButton·IconToggle이 44px 영역과 24px 아이콘을 사용합니다.", settings: { actions: "아이콘 조합" } },
     ],

@@ -38,7 +38,7 @@
 .usage-source .preview-caption {
   padding: 12px 20px;
   font-size: var(--docs-type-small);
-  line-height: 1.6;
+  line-height: var(--docs-leading-small);
   color: var(--muted-foreground);
 }
 .usage-source .code-header { justify-content: space-between; }
@@ -46,17 +46,18 @@
 .detail-comparisons[data-layout='wide'] { grid-template-columns: minmax(0, 1fr); }
 .detail-comparisons[data-layout='compact'] { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
 .guide-example[data-mode='comparison'] .guide-example-content > header { padding: 0 0 8px; border: 0; }
-.guide-example[data-mode='comparison'] h4 { font-size: var(--docs-type-small); line-height: 22px; font-weight: 600; }
+.guide-example[data-mode='comparison'] h4 { font-size: var(--docs-type-small); line-height: var(--docs-leading-small); font-weight: 600; }
 .guide-example[data-mode='comparison'] .guide-running > button { margin-top: 8px; }
 .guide-example[data-mode='comparison'] .guide-example-placeholder { min-height: 80px; justify-content: flex-start; padding-inline: 0; }
 .doc-main #states > .guide-note { border: 0; padding: 0; margin: 12px 0 24px; }
-.doc-main #anatomy .anatomy-figure { padding: 0; margin: 20px 0 28px; border: 0; border-radius: 0; }
-.doc-main #anatomy .anatomy-graphic { max-width: min(100%, 420px); margin: 12px 0; }
+.doc-main #anatomy .anatomy-figure { padding: 0; margin: 20px 0 28px; border: 0; border-radius: 0; background: none; }
+/* The figure scales to the content width so the component reads at a useful size. */
+.doc-main #anatomy .anatomy-graphic { max-width: 100%; margin: 12px 0; border-radius: 12px; }
 .doc-main #anatomy .guide-case-actions { padding: 8px 0; }
 .doc-main #anatomy .anatomy-parts { margin-top: 16px; }
 .related-design-guides { margin-top: 32px; }
 .related-design-guides .design-detail { margin-top: 0; padding: 10px 0; }
-.related-design-guides .design-detail a { font-size: var(--docs-type-small); line-height: 24px; text-decoration: underline; text-underline-offset: 4px; }
+.related-design-guides .design-detail a { font-size: var(--docs-type-small); line-height: var(--docs-leading-small); text-decoration: underline; text-underline-offset: 4px; }
 @media (max-width: 600px) {
   .example-settings > .example-settings-trigger { padding-inline: 12px; }
   .detail-comparisons { gap: 20px; }

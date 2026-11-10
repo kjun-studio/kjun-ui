@@ -6,6 +6,13 @@ import { createNumberMotion } from "../../../shared/package-runtime/number-motio
 import { KjunSkeleton } from "./display";
 import { useReducedMotion } from "./runtime/presence";
 import { domainRef } from "./runtime/refs";
+import { splitNumberSign } from "../../../shared/package-runtime/number-sign";
+
+/** A leading sign drawn tight to its digits (see splitNumberSign); other content passes through. */
+export function signedText<T>(value: T) {
+  const parts = splitNumberSign(value);
+  return parts ? <><span class="kjun-number-sign">{parts[0]}</span>{parts[1]}</> : value;
+}
 
 export const finiteNumber = (value: unknown): number | null =>
   value == null || typeof value === "boolean" || (typeof value === "string" && !value.trim()) ||
@@ -113,7 +120,7 @@ export const KjunSignedValue = defineComponent({
       return (
         <span class="kjun-signed-value" ref={domainRef(role.startsWith("price-"))} data-tone={props.tone} aria-busy={props.loading}
           style={{ color: `var(--_kjun-color-${role})`, background: props.tone === "pill" && !props.stale && n !== null ? `var(--_kjun-color-${role}-bg)` : undefined }}>
-          {props.loading ? <KjunSkeleton type="line" width={tokens.extensions.financial.signedSkeletonWidth} /> : display}
+          {props.loading ? <KjunSkeleton type="line" width={tokens.extensions.financial.signedSkeletonWidth} /> : signedText(display)}
         </span>
       );
     };

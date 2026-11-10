@@ -6,12 +6,12 @@
 .example-view-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 12px 20px; border-block: 1px solid var(--border); }
 .example-view-toolbar .preview-caption { margin-left: auto; }
 .catalog-playground .preview-window { overflow: hidden; background: var(--surface-subtle); }
-.catalog-playground .preview-window iframe, .example-wide .preview-window iframe { max-width: 100%; margin: auto; background: #fff; }
+.catalog-playground .preview-window iframe, .example-wide .preview-window iframe { max-width: 100%; margin: auto; background: var(--card); }
 .preview-window[data-narrow='true'] iframe { width: 375px; }
 .preview-loading { z-index: 1; flex-direction: column; gap: 12px; }
 .usage-code-status { padding: 14px 20px; }
 .usage-source .kjun-button { max-width: 100%; }
-.usage-setup-links { padding: 0 20px 12px; font-size: var(--docs-type-small); line-height: 1.6; overflow-wrap: anywhere; }
+.usage-setup-links { padding: 0 20px 12px; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); overflow-wrap: anywhere; }
 .usage-setup-links p { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; }
 .usage-setup-links p + p { margin-top: 4px; }
 .usage-setup-links span { color: var(--muted-foreground); }
@@ -27,7 +27,7 @@
 .example-wide .preview-window[data-narrow='true'] iframe { width: 375px; }
 .layout-primary-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; padding: 12px 20px; }
 .layout-primary-controls > button { margin-left: auto; }
-.layout-preview-hint { padding: 16px 20px; background: var(--secondary); font-size: var(--docs-type-small); line-height: 1.7; overflow-wrap: anywhere; }
+.layout-preview-hint { padding: 16px 20px; background: var(--secondary); font-size: var(--docs-type-small); line-height: var(--docs-leading-small); overflow-wrap: anywhere; }
 .layout-preview-hint p { margin-top: 4px; color: var(--muted-foreground); }
 @media (max-width: 600px) {
   .layout-primary-controls, .layout-preview-hint { padding: 12px; }
@@ -37,5 +37,6 @@
 /* Dedicated implementation text is independent of the live preview. */
 .usage-source { min-width: 0; }
 .usage-source .code-block { margin: 16px 0; }
-.usage-source .code-block pre { max-height: 380px; overflow: auto; }
+.usage-source .code-block { --code-max-height: 380px; }
+.usage-source .code-block pre { max-height: var(--code-max-height); overflow: auto; }
 .implementation-usage { margin: 32px 0; min-width: 0; }

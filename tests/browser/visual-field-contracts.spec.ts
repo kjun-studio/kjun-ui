@@ -3,14 +3,14 @@ import { openFixture } from './packed-fixture';
 import { box, open } from './visual-contract-helpers';
 
 for (const platform of ['react', 'vue3', 'native']) {
-  test(`${platform}: FormGroup keeps the hint with an error and describes the field once each`,async({page})=>{
+  test(`${platform}: FormGroup shows an error in the hint's slot and describes the field by the error`,async({page})=>{
     await openFixture(page,platform,'','visual-contract');
     const group=page.getByTestId('form-hint-error');
-    await expect(group.getByText('공백은 유지됩니다',{exact:true})).toBeVisible();
+    await expect(group.getByText('공백은 유지됩니다',{exact:true})).toHaveCount(0);
     await expect(group.getByText('이름이 필요합니다',{exact:true})).toBeVisible();
     if(platform==='native') return;
     const ids=(await group.getByRole('textbox',{name:'이름'}).getAttribute('aria-describedby'))!.split(/\s+/).sort();
-    expect(ids).toEqual(['tyve-name-error','tyve-name-hint']);
+    expect(ids).toEqual(['tyve-name-error']);
   });
 
   test(`${platform}: FormGroup labelHidden still names the field`,async({page})=>{
@@ -28,12 +28,12 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByTestId('select-outside').getByRole('button',{name:'외부 라벨'})).toHaveCount(1);
   });
 
-  test(`${platform}: a Checkbox in a FormGroup is described by its hint and error`,async({page})=>{
+  test(`${platform}: a Checkbox in a FormGroup with an error is described by the error`,async({page})=>{
     test.skip(platform==='native','aria-describedby is a web association');
     await openFixture(page,platform,'','visual-contract');
     const box_=page.getByTestId('check-in-group').getByRole('checkbox',{name:'약관 동의'});
     const ids=(await box_.getAttribute('aria-describedby'))?.split(/\s+/).sort();
-    expect(ids).toEqual(['tyve-agree-error','tyve-agree-hint']);
+    expect(ids).toEqual(['tyve-agree-error']);
     await expect(box_).toHaveAttribute('aria-invalid','true');
   });
 
@@ -48,7 +48,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(await control.evaluate(el=>(el as HTMLInputElement).checkValidity())).toBe(true);
     }
     const ids=(await toggle.getAttribute('aria-describedby'))?.split(/\s+/).sort();
-    expect(ids).toEqual(['tyve-notify-error','tyve-notify-hint']);
+    expect(ids).toEqual(['tyve-notify-error']);
   });
 
   test(`${platform}: a FormGroup label follows a Select's own id`,async({page})=>{

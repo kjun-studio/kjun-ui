@@ -6,6 +6,7 @@ import { KjunInput as Input } from '@kjun-ui/react';
 import { KjunButton as Button } from '@kjun-ui/react';
 import { KjunCard as Card } from '@kjun-ui/react';
 import { categories, components, categoryFor, searchDocuments, type DiscoveryDocument } from '@/lib/discovery';
+import { ThemedImage } from './themed-image';
 
 function GalleryCard({ document }: { document: DiscoveryDocument }) {
   const [failed, setFailed] = useState(false);
@@ -14,10 +15,10 @@ function GalleryCard({ document }: { document: DiscoveryDocument }) {
     if (image.current?.complete && !image.current.naturalWidth) setFailed(true);
   }, []);
   return <Link href={document.path} className="gallery-card-link" data-component-card={document.component} aria-label={`${document.title} 문서`}>
-    <Card border padding="none" className="gallery-card">
+    <Card surface="muted" padding="none" className="gallery-card">
       <div className="gallery-thumbnail">
         {failed ? <span className="thumbnail-unavailable">미리보기를 불러오지 못했습니다</span> :
-          <img ref={image} src={document.thumbnail} alt="" width={1280} height={800} loading="lazy" decoding="async" onError={() => setFailed(true)} />}
+          <ThemedImage ref={image} src={document.thumbnail!} alt="" loading="lazy" onError={() => setFailed(true)} />}
       </div>
       <div className="gallery-card-content">
         <span className="gallery-card-category">{categoryFor(document.category)?.label}</span>
@@ -78,7 +79,7 @@ export function CategoryLinks() {
   return <div className="category-links">{categories.map(category => {
     const representative = components.find(document => document.category === category.id && !document.parent);
     return <Link key={category.id} href={`/components?category=${category.id}`}>
-      <span className="category-thumbnail">{representative && <img src={representative.thumbnail} alt="" width={1280} height={800} loading="lazy" decoding="async" />}</span>
+      <span className="category-thumbnail">{representative && <ThemedImage src={representative.thumbnail!} alt="" loading="lazy" />}</span>
       <span className="category-text"><span><strong>{category.label}</strong><span>{category.count}</span></span><p>{category.description}</p></span>
     </Link>;
   })}</div>;

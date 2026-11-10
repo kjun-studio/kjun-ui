@@ -1,7 +1,7 @@
 /* Long-form document pages: one reading measure, one section gap, one body line height. */
 .reading-document :is(.body-copy, .code-block, .docs-table, .kjun-alert, .step-summary, .principle-list, .brand-spec, .principles-note) { max-width: var(--docs-measure); }
 .reading-document > section:where(:not(.kjun-table-card-section)) + section { margin-top: 64px; }
-.reading-document .body-copy { margin: 16px 0 0; line-height: 28px; color: var(--foreground-secondary); }
+.reading-document .body-copy { margin: 16px 0 0; }
 .reading-document :is(.brand-spec, .docs-table, .code-block, .kjun-alert, .download-row) { margin-top: 24px; }
 .reading-document .code-block + .code-block { margin-top: 16px; }
 .reading-document .text-link { display: flex; width: fit-content; margin-top: 16px; }
@@ -9,17 +9,19 @@
 /* Inline code inside prose reads as a token, not as a size jump. */
 :where(.body-copy, .principles-note, .docs-table--prose, .kjun-alert-description, .step-summary) code {
   padding: 1px 4px; border-radius: 4px; background: var(--secondary); color: var(--foreground);
-  font-family: var(--docs-font-mono); font-size: .875em; overflow-wrap: anywhere;
+  font-family: var(--docs-font-mono); font-size: var(--docs-type-small); overflow-wrap: break-word;
 }
+/* Inside 14px text, inline code steps down to the caption size instead of a fractional one. */
+:where(.principles-note, .docs-table--prose, .kjun-alert-description, .step-summary p) code { font-size: var(--docs-type-caption); }
 
 /* Code previews fade out at the cut and expand in place. */
-.code-block pre.is-collapsed { overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent); mask-image: linear-gradient(to bottom, #000 60%, transparent); }
+.code-block pre.is-collapsed { overflow-x: auto; overflow-y: hidden; -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent); mask-image: linear-gradient(to bottom, #000 60%, transparent); }
 .code-expand { display: flex; justify-content: center; padding: 0 12px 12px; }
 
 /* Getting started */
 .step-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 8px 0 0; padding: 24px 0 0; list-style: none; border-top: 1px solid var(--border); }
 .step-summary strong { display: block; font-size: var(--docs-type-body); line-height: 24px; font-weight: 600; }
-.step-summary p { margin-top: 4px; font-size: var(--docs-type-small); line-height: 22px; color: var(--muted-foreground); word-break: keep-all; }
+.step-summary p { margin-top: 4px; font-size: var(--docs-type-small); line-height: var(--docs-leading-small); color: var(--muted-foreground); word-break: keep-all; }
 .step-summary .section-number { margin-bottom: 8px; }
 .install-platform { margin-top: 24px; }
 .getting-started #project th:first-child { width: 32%; }

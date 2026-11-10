@@ -12,15 +12,15 @@
         "name": "tone",
         "type": "\"card\" | \"muted\"",
         "required": false,
-        "default": "\"card\"",
+        "default": "\"muted\"",
         "description": ""
       },
       {
         "name": "divider",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": "Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone)."
+        "default": "true",
+        "description": "Draws a line between items from the text start, like ListSection (default true; false sets rows apart by height alone)."
       },
       {
         "name": "separated",
@@ -65,14 +65,14 @@
         "type": "\"card\" | \"muted\" | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The group's fill (default muted: an in-flow panel set apart by its fill, not an outline; card sits it on the card colour)."
       },
       {
         "name": "divider",
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone)."
+        "description": "Draws a line between items from the text start, like ListSection (default true; false sets rows apart by height alone)."
       },
       {
         "name": "separated",
@@ -116,14 +116,14 @@
         "type": "\"card\" | \"muted\" | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The group's fill (default muted: an in-flow panel set apart by its fill, not an outline; card sits it on the card colour)."
       },
       {
         "name": "divider",
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone)."
+        "description": "Draws a line between items from the text start, like ListSection (default true; false sets rows apart by height alone)."
       },
       {
         "name": "separated",
@@ -11942,8 +11942,8 @@
         "name": "avatarSize",
         "type": "Length",
         "required": false,
-        "default": "36",
-        "description": ""
+        "default": "—",
+        "description": "Default: ListRow's sm leading square (32) for the row variant, the market avatar (36) otherwise."
       },
       {
         "name": "quote",
@@ -12003,7 +12003,7 @@
         "type": "import(\"/workspace/node_modules/csstype/index\").Property.Width<string | number> | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Default: ListRow's sm leading square (32) for the row variant, the market avatar (36) otherwise."
       },
       {
         "name": "quote",
@@ -12061,7 +12061,7 @@
         "type": "import(\"/workspace/node_modules/react-native/types/index\").DimensionValue | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Default: ListRow's sm leading square (32) for the row variant, the market avatar (36) otherwise."
       },
       {
         "name": "quote",
@@ -20282,7 +20282,7 @@
         "type": "import(\"/workspace/node_modules/react-native/types/index\").DimensionValue | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Block and avatar height; on a line, the bar's own height within the role's line box (default half the line)."
       },
       {
         "name": "width",

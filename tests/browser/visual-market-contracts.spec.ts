@@ -8,8 +8,9 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.setViewportSize({ width, height: 1000 });
       await open(page, platform, query);
       await expect(page.getByTestId('loaded').getByText('한빛테크', { exact: true })).toBeVisible();
-      // Native onLayout first observes the containing width after mounting.
-      await expect.poll(async () => (await geometry(page.getByTestId('loading'))).header.width).toBeGreaterThanOrEqual(400);
+      // Native onLayout first observes the containing width after mounting. Below 768px the columns narrow to fit
+      // the screen, so a phone-width table is narrower than the 400px desktop minimum.
+      await expect.poll(async () => (await geometry(page.getByTestId('loading'))).header.width).toBeGreaterThanOrEqual(Math.min(400, width - 64));
       const loading = await geometry(page.getByTestId('loading')), loaded = await geometry(page.getByTestId('loaded'));
       sameGeometry(loading, loaded);
       expect(loaded.header.height).toBeCloseTo(44, 0);

@@ -9,6 +9,10 @@
   font-variant-numeric: tabular-nums;
   font-family: var(--_kjun-font-numeric);
 }
+/* A leading sign (split off by the components) drops tabular width so it sits tight to the digits. */
+.kjun-number-sign {
+  font-variant-numeric: proportional-nums;
+}
 /* The side is explicit: a lone unit (the delta percent) is both first and last child and would take both gaps. */
 .kjun-number-affix[data-side="prefix"] {
   margin-right: var(--_kjun-extension-financial-affix-gap);

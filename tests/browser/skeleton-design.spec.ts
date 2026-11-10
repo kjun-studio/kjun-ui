@@ -26,8 +26,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
     expect(await dividerStart('row')).toBeCloseTo(list.padding, 0);
     expect(await dividerStart('row-avatar')).toBeCloseTo(list.padding + list.leadingWidth + list.gap, 0);
-    // Without a description the avatar sets the row height; a switch ends it.
-    expect((await box(page.getByTestId('row-avatar'))).height).toBeCloseTo(2 * (list.padding * 2 + tokens.extensions.skeleton.listAvatarSize), 0);
+    // Without a description the avatar (ListRow's 32px sm square) and the switch reach into the padding like ListRow, so rows keep 56.
+    expect((await box(page.getByTestId('row-avatar'))).height).toBeCloseTo(2 * list.minimumHeight, 0);
     const sw = tokens.extensions.switch;
     expect(await page.getByTestId('row-avatar').evaluate((el, s) => [...el.querySelectorAll('*')].some(n => {
       const r = n.getBoundingClientRect(); return Math.abs(r.width - s.w) < 0.6 && Math.abs(r.height - s.h) < 0.6;

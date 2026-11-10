@@ -33,8 +33,9 @@ const AccordionContext = createContext<{
 } | null>(null);
 export interface KjunAccordionProps {
   multiple?: boolean;
+  /** The group's fill (default muted: an in-flow panel set apart by its fill, not an outline; card sits it on the card colour). */
   tone?: "card" | "muted";
-  /** Draws a line between items from the text start, like ListSection (default false: rows are set apart by height alone). */
+  /** Draws a line between items from the text start, like ListSection (default true; false sets rows apart by height alone). */
   divider?: boolean;
   /** Gives every item its own rounded surface with a gap between them; divider has no effect then. */
   separated?: boolean;
@@ -48,8 +49,8 @@ export type AccordionHeadingLevel = 2 | 3 | 4 | 5 | 6 | false;
 const AccordionLayoutContext = createContext<{ headingLevel: AccordionHeadingLevel; region: boolean }>({ headingLevel: 3, region: true });
 export function KjunAccordion({
   multiple = false,
-  tone = "card",
-  divider = false,
+  tone = "muted",
+  divider = true,
   separated = false,
   headingLevel = 3,
   region = true,

@@ -9,7 +9,7 @@ type ReactNode
 import { KjunIcon } from "./button";
 import { KjunBadge,type DisplaySize } from "./display";
 import { KjunTooltip } from "./layers";
-import { finiteNumber,format } from "./number-display";
+import { finiteNumber,format,signedText } from "./number-display";
 
 // Fill strength of a non-neutral deviation step.
 const deviationFill = { neutral: 1, low: tokens.states.opacity.deviationLow, medium: tokens.states.opacity.deviationMedium, strong: tokens.states.opacity.deviationStrong };
@@ -80,7 +80,7 @@ export function KjunDeviation({
           }}
         />
       )}
-      <span>{label}</span>
+      <span>{signedText(label)}</span>
     </span>
   );
 }
@@ -124,7 +124,7 @@ export function KjunHeatmapCell({
           ? { background: `var(--_kjun-color-${role})`, opacity: heatMinimum + (heatMaximum - heatMinimum) * magnitude }
           : { background: "var(--_kjun-color-secondary)" }}
       />
-      <span>{children ?? value}</span>
+      <span>{signedText(children ?? value)}</span>
     </span>
   );
 }

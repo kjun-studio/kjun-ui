@@ -140,8 +140,8 @@ export function KjunTabs({
               width: selection.width,
               transform: [{ translateX: selection.x }],
               borderRadius: geometry.indicatorHeight / 2,
-              backgroundColor: colors.brand,
-              opacity: selectedTab?.disabled ? tokens.states.opacity.disabled : 1,
+              // A disabled selected tab paints its underline in the disabled-ink role, like its label.
+              backgroundColor: selectedTab?.disabled ? colors.textDisabled : colors.brand,
             }} />}
           {tabs.map((tab, index) => {
             const active = value === tab.name;

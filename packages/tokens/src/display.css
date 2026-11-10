@@ -35,6 +35,11 @@
   height: 50%;
   margin-bottom: 0;
 }
+/* KPI values: the bar stands as tall as the value's digits (the font's cap height), not half its line, so a loading
+   KPI reads at the weight of the number it replaces. */
+:is(.kjun-kpi-row__value, .kjun-kpi-hero__value, .kjun-kpi-hero__sec-value) .kjun-skeleton[data-type="line"] .kjun-skeleton-slot > .kjun-skeleton-line {
+  height: min(100%, max(50%, 1cap));
+}
 /* A line skeleton stands in for one line of text and is as wide as its width prop. It stays a block, so a
    role's line box is never stretched by the surrounding text's line height. */
 .kjun-skeleton[data-type="line"] {
@@ -213,6 +218,13 @@
   border-radius: var(--_kjun-extension-alert-sm-radius);
   padding: var(--_kjun-extension-alert-sm-padding-y) var(--_kjun-extension-alert-sm-padding-x);
 }
+/* lg: more room and a larger title line, so the three sizes read as a scale. */
+.kjun-alert[data-size="lg"] {
+  --_kjun-alert-line: var(--_kjun-type-control-large-line);
+  --_kjun-alert-action-gap: var(--_kjun-extension-alert-lg-action-gap);
+  gap: var(--_kjun-extension-alert-lg-gap);
+  padding: var(--_kjun-extension-alert-lg-padding-y) var(--_kjun-extension-alert-lg-padding-x);
+}
 .kjun-alert-icon {
   display: flex;
   align-items: center;
@@ -249,6 +261,12 @@
   line-height: var(--_kjun-type-control-small-line);
   font-weight: var(--_kjun-type-control-small-weight);
   letter-spacing: var(--_kjun-type-control-small-tracking);
+}
+.kjun-alert[data-size="lg"] .kjun-alert-title {
+  font-size: var(--_kjun-type-control-large-size);
+  line-height: var(--_kjun-type-control-large-line);
+  font-weight: var(--_kjun-type-control-large-weight);
+  letter-spacing: var(--_kjun-type-control-large-tracking);
 }
 .kjun-alert[data-size="sm"] .kjun-alert-description {
   font-size: var(--_kjun-type-caption-size);
@@ -303,8 +321,9 @@
   font-weight: var(--_kjun-type-caption-weight);
   letter-spacing: var(--_kjun-type-caption-tracking);
 }
+/* The empty rail shares the switch-track role with Slider and RangeSlider. */
 .kjun-progress-track {
-  background: var(--_kjun-color-secondary);
+  background: var(--_kjun-color-switch-track);
   border-radius: var(--_kjun-geometry-radius-radius9999);
   overflow: hidden;
 }
@@ -350,7 +369,7 @@
   flex-shrink: 0;
 }
 .kjun-progress-circle > svg { position: absolute; inset: 0; display: block; }
-.kjun-progress-circle-track { stroke: var(--_kjun-color-secondary); }
+.kjun-progress-circle-track { stroke: var(--_kjun-color-switch-track); }
 .kjun-progress-circle-value { transition: stroke-dashoffset var(--_kjun-motion-progress) var(--_kjun-ease-out); }
 .kjun-progress-circle-percent {
   position: relative;

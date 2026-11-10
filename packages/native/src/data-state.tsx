@@ -98,6 +98,8 @@ export function KjunDataState({
       (state.usesQueryState && state.hasCurrentResult ? query.error : null),
     concealed = state.initialLoading || !!blockingError || empty,
     padding = tokens.extensions.state.padding[size],
+    // Loading, error and empty share one minimum height per size (content centred), so switching does not jump.
+    minHeight = tokens.extensions.state.minimumHeights[size],
     revealed = useLoadingReveal(state.initialLoading, loadingDelay);
   const { colors } = useKjunStyles();
   return (
@@ -134,7 +136,7 @@ export function KjunDataState({
           accessibilityLabel={revealed ? loadingText : undefined}
           aria-hidden={revealed ? undefined : true}
           importantForAccessibility={revealed ? undefined : "no-hide-descendants"}
-          style={{ paddingVertical: loadingPadding === "none" ? 0 : padding, opacity: revealed ? undefined : 0 }}
+          style={{ ...(loadingPadding === "none" ? { paddingVertical: 0 } : { paddingVertical: padding, minHeight, justifyContent: "center" as const }), opacity: revealed ? undefined : 0 }}
         >
           {loadingContent ||
             (skeleton ? (
@@ -152,7 +154,7 @@ export function KjunDataState({
         </View>
       ) : blockingError ? (
         <DataStateContentContext.Provider value="message">
-        <View style={{ paddingVertical: padding }}>
+        <View style={{ paddingVertical: padding, minHeight, justifyContent: "center" }}>
           {errorContent || (
             <KjunAlert type="danger" title={m.errorTitle} actions={onRetry && (
               <KjunButton variant="secondary" onPress={onRetry}>
@@ -167,7 +169,7 @@ export function KjunDataState({
         </DataStateContentContext.Provider>
       ) : empty ? (
         <DataStateContentContext.Provider value="empty">
-        <View style={{ paddingVertical: padding }}>
+        <View style={{ paddingVertical: padding, minHeight, justifyContent: "center" }}>
           {emptyContent || (
             <KjunEmpty text={emptyText} icon={emptyIcon}>
               {!!emptyActionText && (

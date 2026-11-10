@@ -24,7 +24,8 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
   const perRow = Math.max(2, Math.floor((inner + card.cardGap) / (card.tileMinWidth + card.cardGap)) || 2);
   // Each tile takes an exact share like a grid track; flex shares would hand empty slots the tiles' padding and border.
   const tileWidth = inner > 0 ? (inner - card.cardGap * (perRow - 1)) / perRow : undefined;
-  const frame = { padding: tiles ? card.tilePadding : card.padding, borderWidth: tokens.border.defaultWidth, borderColor: colors.border, borderRadius: card.radius };
+  // Like Web: cards sit in the flow, so they are fill-only (the secondary fill, no outline).
+  const frame = { padding: tiles ? card.tilePadding : card.padding, borderRadius: card.radius };
   const badgeList = (row: Row, i: number) => badges.length ? (
     <View style={{ flexDirection: "row", flexWrap: "wrap", gap: card.fieldGap }}>
       {badges.map((col) => <View key={col.key}>{cell(col, row, i)}</View>)}
@@ -113,7 +114,7 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
       ) : null}
       {expandable && state.expanded.includes(state.key(row, i)) ? (
         <View style={{ marginTop: card.sectionGap, paddingVertical: tokens.table.expandedPadding.y, paddingHorizontal: tokens.table.expandedPadding.x,
-          borderRadius: tokens.radius.radius12, backgroundColor: colors.secondary }}>
+          borderRadius: tokens.radius.radius12, backgroundColor: colors.surface }}>
           {content(renderExpand?.(row, i))}
         </View>
       ) : null}
@@ -127,7 +128,7 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
         accessible={false}
         // No disabled here: on RN Web it would also disable the checkbox and buttons inside the card.
         onPress={onRowClick ? () => onRowClick(row, i) : undefined}
-        style={({ pressed }) => ({ ...frame, backgroundColor: selected ? colors.selectedBg : pressed && onRowClick ? colors.hover : colors.surface,
+        style={({ pressed }) => ({ ...frame, backgroundColor: selected ? colors.selectedBg : pressed && onRowClick ? colors.active : colors.secondary,
           ...(tiles ? tileWidth ? { width: tileWidth } : { flex: 1, minWidth: 0 } : null) })}
       >
         {tiles ? tile(row, i) : stacked(row, i)}
@@ -169,8 +170,7 @@ function CardSkeleton<Row extends object>({ layout }: { layout: TableCardsProps<
   const { colors } = useKjunStyles();
   const { tiles, subtitle, highlight, badges, cardLayout } = layout;
   const rows = cardLayout === "rows";
-  const frame = { padding: tiles ? card.tilePadding : card.padding, borderWidth: tokens.border.defaultWidth, borderColor: colors.border,
-    borderRadius: card.radius, backgroundColor: colors.surface };
+  const frame = { padding: tiles ? card.tilePadding : card.padding, borderRadius: card.radius, backgroundColor: colors.secondary };
   if (tiles) return (
     <View style={frame}>
       {badges.length > 0 ? <View style={{ marginBottom: card.gap }}><KjunSkeleton type="line" role="caption" width={card.badgeSkeletonWidth} /></View> : null}

@@ -21,6 +21,7 @@ import './icons.css';
 import './tokens.css';
 import './principles.css';
 import './reading-document.css';
+import './docs-system.css';
 import './fonts.generated.css';
 export const metadata: Metadata = {
   title: 'KJUN UI — Design System',

@@ -125,7 +125,7 @@ for (const width of [1280, 1440, 390]) {
         return { body: [td.fontSize, td.lineHeight], header: [th.fontSize, th.lineHeight],
           padding: [td.paddingTop, td.paddingLeft], packedPadding: [td.getPropertyValue('--_kjun-geometry-table-cell-padding-regular-y').trim(), td.getPropertyValue('--_kjun-geometry-table-cell-padding-regular-x').trim()] };
       });
-      expect(style.body).toEqual(['14px', '20px']); expect(style.header).toEqual(['14px', '20px']);
+      expect(style.body).toEqual(['14px', '22px']); expect(style.header).toEqual(['12px', '18px']); // one docs table header: caption type
       expect(style.padding).toEqual(style.packedPadding);
     }
     await page.locator('#spacing summary').click();

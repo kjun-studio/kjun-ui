@@ -26,7 +26,7 @@
   },
   "extensions": {
     "choice": { "minimumHeight": 32 },
-    "state": { "padding": { "sm": { "$ref": "dimension.value24" }, "md": { "$ref": "dimension.value48" }, "lg": { "$ref": "dimension.value80" } } },
+    "state": { "padding": { "sm": { "$ref": "dimension.value24" }, "md": { "$ref": "dimension.value48" }, "lg": { "$ref": "dimension.value80" } }, "minimumHeights": { "sm": 176, "md": 240, "lg": 320 } },
     "form": {
       "itemGap": { "$ref": "dimension.value20" },
       "labelGap": { "$ref": "dimension.value8" },
@@ -55,7 +55,7 @@
       "heights": { "sm": 24, "md": 28, "lg": 32 },
       "padding": { "$ref": "dimension.value2" },
       "radius": { "$ref": "radius.radius9999" },
-      "labelGap": { "$ref": "dimension.value12" },
+      "labelGap": { "$ref": "dimension.value8" },
       "spinnerSize": { "$ref": "dimension.value12" }
     },
     "pagination": {

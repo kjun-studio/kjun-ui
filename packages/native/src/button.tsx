@@ -192,7 +192,7 @@ export function KjunButton(input: KjunButtonProps) {
   const formActions = useContext(FormActionsContext);
   const cardActions = useContext(CardActionsContext);
   const stateContent = useContext(DataStateContentContext);
-  const multiline = wrap || !!formActions || cardActions || !!stateContent || navigation?.slot === 'actions';
+  const multiline = wrap || !!formActions || cardActions || !!stateContent;
   const height = Math.max(tokens.button.heights[size], navigation?.controlSize ?? 0);
   const iconSize = navigation?.iconSize ?? tokens.button.iconSizes[size];
   const hasContent =
@@ -275,7 +275,8 @@ export function KjunButton(input: KjunButtonProps) {
           alignItems: "center",
           justifyContent: "center",
           gap: hasContent ? tokens.button.contentGaps[size] : 0,
-          ...(navigation ? { maxWidth: '100%' as const } : {}),
+          // In the top bar a text action shortens to an ellipsis instead of wrapping; icon-only ones keep their square.
+          ...(navigation ? { maxWidth: '100%' as const, flexShrink: hasContent ? 1 : 0 } : {}),
           backgroundColor: paint(pressed, hovered && Platform.OS === "web").background,
           ...(Platform.OS === "web" ? {
             outlineStyle: "solid" as const,
@@ -299,7 +300,7 @@ export function KjunButton(input: KjunButtonProps) {
         return <>
           {before && <KjunIcon name={before} filled={!busy && prefixIconFilled}
             size={iconSize} color={color} spin={busy} />}
-          {hasContent && <FontText numberOfLines={navigation?.slot === 'leading' ? 1 : undefined} ellipsizeMode="tail" style={{ fontFamily,
+          {hasContent && <FontText numberOfLines={navigation?.slot ? 1 : undefined} ellipsizeMode="tail" style={{ fontFamily,
             ...typeStyle(tokens.button.typography[size]),
             color, opacity: overlayLoading ? 0 : 1,
             ...(multiline || navigation ? { flexShrink: 1, minWidth: 0, textAlign: 'center' as const } : {}),

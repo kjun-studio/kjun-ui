@@ -19,7 +19,7 @@ export function GettingStartedSetup({ platform }: { platform: PlatformName }) {
       <p className="body-copy">색상·서체 값은 문서 실행용 예시이며 패키지에 포함된 제품 팔레트가 아닙니다.
         실제 프로젝트에서는 <Link href={'/styling#' + (platform === 'native' ? 'native' : 'web')}>색상·서체 연결 가이드</Link>에 따라 기존 토큰을 연결합니다.</p>
       {files.map(file => <CodeBlock key={file.name} code={file.code} label={file.name} copyLabel={`${file.name} 공통 설정 복사`}
-        previewLines={file.name === app ? undefined : colorPreviewLines} />)}
+        previewLines={file.name === app ? 0 : colorPreviewLines} />)}
       {platform !== 'native' && <p className="body-copy">예시 서체는 프로젝트에서 로드하며, 설치하지 않은 서체는 시스템 글꼴로 대체됩니다.</p>}
       {platform === 'native' && <p className="body-copy">Native는 CSS를 가져오지 않습니다.
         Expo 프로젝트에서는 <code>npx expo install react-native-svg</code>로 아이콘 의존성을 설치합니다.
