@@ -1,6 +1,7 @@
 // Each entry selects the whole spec, including every platform and viewport case.
 // Mixed-component contracts belong to every component they exercise.
 export const contractScopes = {
+  'selection-label-width': ['tabs', 'market'],
   'visual-compound-contracts': ['quantity', 'time-picker', 'input', 'select'],
   'visual-composition-contracts': ['card', 'quantity', 'time-picker', 'navigation', 'button', 'popover', 'data-state', 'market', 'select', 'combobox', 'input', 'form', 'primitives'],
   'visual-navigation-contracts': ['tabs', 'navigation'],

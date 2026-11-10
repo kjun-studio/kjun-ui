@@ -1,7 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { tokens } from '@kjun-ui/tokens';
-import { typeStyle, selectionTypeStyle } from "./typography";
+import { selectionTypeStyle } from "./typography";
 import { Children, createContext, isValidElement, useContext, useCallback, useLayoutEffect, useRef, useId, useState, type ReactElement, type ReactNode } from "react";
 import { useInitialTab } from "../../../shared/package-runtime/navigation";
 import { Animated, Platform, ScrollView, View, type LayoutRectangle } from "react-native";
@@ -77,8 +77,7 @@ export function KjunTabs({
   const geometry = tokens.extensions.tabs;
   const underline = variant === 'underline';
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
-  // A zoomed browser can round the measured bold label slightly narrower than
-  // the regular label. Tabs stay on one line inside their horizontal scroller.
+  // Measurement copies stay on one line in the horizontal scroller, too.
   const singleLine = Platform.OS === 'web' ? { whiteSpace: 'nowrap' as const } : {};
   const compact = density === 'compact';
   const paddingX = underline ? (compact ? geometry.compactPaddingX : geometry.paddingX) : compact ? geometry.pillsCompactPaddingX : geometry.pillsPaddingX;
@@ -206,10 +205,14 @@ export function KjunTabs({
                     color={ink}
                   />
                 )}
-                <View>
+                {/* Reserve both faces like ButtonGroup, without squeezing the shown label to a rounded measurement. */}
+                <View style={{ alignItems: 'flex-start' }}>
                   <KText accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
-                    style={{ opacity: 0, ...typeStyle("control"), ...singleLine }}>{tab.label}</KText>
-                  <KText style={{ position: 'absolute', left: 0, right: 0, top: 0, ...selectionTypeStyle("md", active),
+                    style={{ opacity: 0, ...selectionTypeStyle("md", true), ...singleLine }}>{tab.label}</KText>
+                  <View style={{ height: 0, overflow: 'hidden' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                    <KText accessible={false} style={{ opacity: 0, ...selectionTypeStyle("md", false), ...singleLine }}>{tab.label}</KText>
+                  </View>
+                  <KText numberOfLines={1} style={{ position: 'absolute', top: 0, ...selectionTypeStyle("md", active),
                      color: ink, ...singleLine }}>{tab.label}</KText>
                 </View>
                 {navigationBadge(tab.badge) ? (

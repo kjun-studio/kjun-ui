@@ -5,7 +5,9 @@ const configure = (page: Page, next: object) => page.evaluate(next => (window as
 const marker = (page: Page) => page.locator('.kjun-tab-indicator, [data-testid="kjun-tab-indicator"]');
 const tabs = (page: Page) => page.getByRole('tab');
 const box = async (node: Locator) => (await node.boundingBox())!;
-const label = (tab: Locator, platform: string) => platform === 'native' ? tab.locator('[dir="auto"]').nth(1) : tab.locator('.kjun-motion-label > span');
+const label = (tab: Locator, platform: string) => platform === 'native'
+  ? tab.locator('[dir="auto"]').nth(2) // Two invisible weight reservations precede the shown label.
+  : tab.locator('.kjun-motion-label > span');
 const rgb = (hex: string) => 'rgb(' + [1, 3, 5].map(n => parseInt(hex.slice(n, n + 2), 16)).join(', ') + ')';
 // Underline tabs slide a marker; chips paint the selected tab itself and draw no marker.
 async function selected(page: Page, index: number, variant: string, palette: keyof typeof demoPalettes = 'default') {

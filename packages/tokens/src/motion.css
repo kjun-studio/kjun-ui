@@ -2,7 +2,9 @@
 .kjun-tabs-track .kjun-tabs-list { overflow: visible; width: max-content; }
 .kjun-vue-tabs .kjun-tabs-scroller { position: relative; }
 .kjun-motion-label { display: inline-grid; }
-.kjun-motion-label::after { content: attr(data-label); font-weight: var(--_kjun-type-control-weight); letter-spacing: var(--_kjun-type-control-tracking); visibility: hidden; grid-area: 1 / 1; }
+.kjun-motion-label::before, .kjun-motion-label::after { content: attr(data-label); letter-spacing: var(--_kjun-type-control-tracking); visibility: hidden; grid-area: 1 / 1; }
+.kjun-motion-label::before { font-weight: var(--_kjun-type-label-weight); }
+.kjun-motion-label::after { font-weight: var(--_kjun-type-control-weight); }
 .kjun-motion-label > span { grid-area: 1 / 1; }
 .kjun-tab-indicator { position: absolute; left: 0; pointer-events: none; border-radius: var(--_kjun-extension-tabs-radius); background: var(--_kjun-color-active); }
 .kjun-tab-indicator[hidden] { display: none; }

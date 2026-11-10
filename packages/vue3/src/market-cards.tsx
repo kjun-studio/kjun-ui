@@ -65,8 +65,10 @@ export const KjunMarketCards = defineComponent({
                 (event.currentTarget as HTMLElement).scrollIntoView({ inline: "center", block: "nearest",
                   behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
               }}>
-                {pill.label}
-                {state.key === pill.key && pill.sortKey && (props.emitSortOnMount || pill.sortKey === props.sortKey) && <span>{props.sortOrder === "desc" ? "↓" : "↑"}</span>}
+                <span class="kjun-metric-label" data-label={pill.label}><span>{pill.label}</span></span>
+                {!!pill.sortKey && <span class="kjun-metric-sort" data-visible={state.key === pill.key && (props.emitSortOnMount || pill.sortKey === props.sortKey)}>
+                  {props.sortOrder === "desc" ? "↓" : "↑"}
+                </span>}
               </button>
             ))}
           </div>

@@ -20,6 +20,8 @@ import { MarketFooter,MarketIdentity } from "./market-parts";
 import { useKjunStyles } from "./provider";
 import { KjunListSkeleton } from "./skeletons";
 import { getValue } from "./table";
+const metricLabelStyle = typeStyle("label");
+const selectedMetricLabelStyle = { ...metricLabelStyle, fontWeight: typeStyle("numberLg").fontWeight };
 export function KjunMarketCards<Row extends object = Record<string, unknown>>(
   props: KjunMarketCardsProps<Row>
 ) {
@@ -88,20 +90,22 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
             }}
           >
             {/* Like Web: label type, the selected pill at the strong number weight, and a caption-sized arrow. */}
-            <KText
-              style={{
-                ...typeStyle("label"),
-                fontWeight: state.key === pill.key ? typeStyle("numberLg").fontWeight : typeStyle("label").fontWeight,
-                color:
-                  state.key === pill.key
-                    ? colors.onBrand
-                    : colors.textSecondary,
-              }}
-            >
-              {pill.label}
-            </KText>
-            {state.key === pill.key && pill.sortKey && (emitSortOnMount || pill.sortKey === sortKey) && (
-              <KText style={{ ...typeStyle("caption"), color: colors.onBrand }}>
+            <View style={{ alignItems: 'center' }}>
+              <KText accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
+                style={{ ...selectedMetricLabelStyle, opacity: 0 }}>{pill.label}</KText>
+              <View style={{ height: 0, overflow: 'hidden' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                <KText accessible={false} style={{ ...metricLabelStyle, opacity: 0 }}>{pill.label}</KText>
+              </View>
+              <KText numberOfLines={1} style={{ position: 'absolute', top: 0,
+                ...(state.key === pill.key ? selectedMetricLabelStyle : metricLabelStyle),
+                color: state.key === pill.key ? colors.onBrand : colors.textSecondary,
+              }}>{pill.label}</KText>
+            </View>
+            {/* Keep the sortable pill's arrow slot even when its arrow is not shown. */}
+            {!!pill.sortKey && (
+              <KText numberOfLines={1} accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
+                style={{ ...typeStyle("caption"), color: colors.onBrand,
+                  opacity: state.key === pill.key && (emitSortOnMount || pill.sortKey === sortKey) ? 1 : 0 }}>
                 {sortOrder === "desc" ? "↓" : "↑"}
               </KText>
             )}

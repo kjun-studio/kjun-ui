@@ -3,4 +3,6 @@ import * as K from '@kjun-ui/native';
 import { TabsDesignCases } from './tabs-design-cases';
 import { setupTabsColors, tabsColors } from './tabs-design-data';
 setupTabsColors();
-createRoot(document.getElementById('root')!).render(<K.KjunProvider colors={tabsColors} fontFamily="Arial"><TabsDesignCases K={K} /></K.KjunProvider>);
+const fontFamily = new URLSearchParams(location.search).has('weight-faces')
+  ? { 400: 'serif', 500: 'monospace', 600: 'serif', 700: 'serif' } : 'Arial';
+createRoot(document.getElementById('root')!).render(<K.KjunProvider colors={tabsColors} fontFamily={fontFamily}><TabsDesignCases K={K} /></K.KjunProvider>);

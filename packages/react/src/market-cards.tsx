@@ -68,12 +68,12 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
               });
             }}
           >
-            {pill.label}
-            {state.key === pill.key &&
-              pill.sortKey &&
-              (emitSortOnMount || pill.sortKey === sortKey) && (
-                <span>{sortOrder === "desc" ? "↓" : "↑"}</span>
-              )}
+            <span className="kjun-metric-label" data-label={pill.label}><span>{pill.label}</span></span>
+            {!!pill.sortKey && (
+              <span className="kjun-metric-sort" data-visible={state.key === pill.key && (emitSortOnMount || pill.sortKey === sortKey)}>
+                {sortOrder === "desc" ? "↓" : "↑"}
+              </span>
+            )}
           </button>
         ))}
       </div>
