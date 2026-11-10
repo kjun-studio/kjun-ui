@@ -10324,9 +10324,16 @@
       {
         "name": "value",
         "type": "string | number",
-        "required": true,
+        "required": false,
+        "default": "null",
+        "description": "null, undefined and non-finite numbers are missing and show missingText."
+      },
+      {
+        "name": "missingText",
+        "type": "string",
+        "required": false,
         "default": "—",
-        "description": ""
+        "description": "Shown for a missing value; defaults to an em dash."
       },
       {
         "name": "prefix",
@@ -10362,6 +10369,13 @@
         "required": false,
         "default": "null",
         "description": ""
+      },
+      {
+        "name": "deltaPercentDecimals",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": "Digits after the point in the percent change. Defaults to 1."
       },
       {
         "name": "deltaDescription",
@@ -10413,6 +10427,13 @@
         "description": "Draws the direction as a filled caret before the first delta number, in place of its sign."
       },
       {
+        "name": "masked",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Hides every amount behind a mask, with no direction colour; screen readers hear \"hidden\"."
+      },
+      {
         "name": "formatter",
         "type": "(value: number) => string",
         "required": false,
@@ -10432,7 +10453,7 @@
       {
         "name": "aside",
         "data": [],
-        "source": "packages/vue3/src/kpi.tsx"
+        "source": "packages/vue3/src/kpi-hero.tsx"
       },
       {
         "name": "secondary",
@@ -10440,7 +10461,7 @@
           "item",
           "index"
         ],
-        "source": "packages/vue3/src/kpi.tsx"
+        "source": "packages/vue3/src/kpi-hero.tsx"
       }
     ],
     "react": [
@@ -10460,10 +10481,17 @@
       },
       {
         "name": "value",
-        "type": "string | number",
+        "type": "string | number | null",
         "required": true,
         "default": "—",
-        "description": ""
+        "description": "null, undefined and non-finite numbers are missing and show missingText."
+      },
+      {
+        "name": "missingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown for a missing value; defaults to an em dash."
       },
       {
         "name": "prefix",
@@ -10501,6 +10529,13 @@
         "description": ""
       },
       {
+        "name": "deltaPercentDecimals",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Digits after the point in the percent change. Defaults to 1."
+      },
+      {
         "name": "deltaDescription",
         "type": "string | undefined",
         "required": false,
@@ -10509,7 +10544,7 @@
       },
       {
         "name": "secondary",
-        "type": "import(\"/workspace/packages/react/src/kpi\").KpiValue[] | undefined",
+        "type": "import(\"/workspace/packages/react/src/kpi-hero\").KpiValue[] | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -10557,6 +10592,13 @@
         "description": "Draws the direction as a filled caret before the first delta number, in place of its sign."
       },
       {
+        "name": "masked",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Hides every amount behind a mask, with no direction colour; screen readers hear \"hidden\"."
+      },
+      {
         "name": "formatter",
         "type": "((value: number) => string) | undefined",
         "required": false,
@@ -10572,7 +10614,7 @@
       },
       {
         "name": "renderSecondary",
-        "type": "((item: import(\"/workspace/packages/react/src/kpi\").KpiValue, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((item: import(\"/workspace/packages/react/src/kpi-hero\").KpiValue, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -10595,10 +10637,17 @@
       },
       {
         "name": "value",
-        "type": "string | number",
+        "type": "string | number | null",
         "required": true,
         "default": "—",
-        "description": ""
+        "description": "null, undefined and non-finite numbers are missing and show missingText."
+      },
+      {
+        "name": "missingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown for a missing value; defaults to an em dash."
       },
       {
         "name": "prefix",
@@ -10634,6 +10683,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "deltaPercentDecimals",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Digits after the point in the percent change. Defaults to 1."
       },
       {
         "name": "deltaDescription",
@@ -10690,6 +10746,13 @@
         "required": false,
         "default": "—",
         "description": "Draws the direction as a filled caret before the first delta number, in place of its sign."
+      },
+      {
+        "name": "masked",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Hides every amount behind a mask, with no direction colour; screen readers hear \"hidden\"."
       },
       {
         "name": "formatter",
@@ -10750,12 +10813,19 @@
         "required": false,
         "default": "true",
         "description": ""
+      },
+      {
+        "name": "masked",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Hides number values and segments behind a mask, with no direction colour; text values, badges and descriptions stay."
       }
     ],
     "events": [
       {
         "name": "item-click",
-        "source": "packages/vue3/src/kpi.tsx"
+        "source": "packages/vue3/src/kpi-row.tsx"
       }
     ],
     "slots": [
@@ -10765,7 +10835,7 @@
           "item",
           "index"
         ],
-        "source": "packages/vue3/src/kpi.tsx"
+        "source": "packages/vue3/src/kpi-row.tsx"
       }
     ],
     "react": [
@@ -10778,7 +10848,7 @@
       },
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/react/src/kpi\").KpiRowItem[]",
+        "type": "import(\"/workspace/packages/react/src/kpi-row\").KpiRowItem[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -10805,15 +10875,22 @@
         "description": ""
       },
       {
-        "name": "onItemClick",
-        "type": "((item: import(\"/workspace/packages/react/src/kpi\").KpiRowItem, index: number) => void) | undefined",
+        "name": "masked",
+        "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Hides number values and segments behind a mask, with no direction colour; text values, badges and descriptions stay."
+      },
+      {
+        "name": "onItemClick",
+        "type": "((item: import(\"/workspace/packages/react/src/kpi-row\").KpiRowItem, index: number, event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent | import(\"/workspace/node_modules/@types/react/index\").KeyboardEvent) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The event lets a link cell's router call preventDefault."
       },
       {
         "name": "renderValue",
-        "type": "((item: import(\"/workspace/packages/react/src/kpi\").KpiRowItem, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((item: import(\"/workspace/packages/react/src/kpi-row\").KpiRowItem, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -10856,8 +10933,15 @@
         "description": ""
       },
       {
+        "name": "masked",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Hides number values and segments behind a mask, with no direction colour; text values, badges and descriptions stay."
+      },
+      {
         "name": "onItemClick",
-        "type": "((item: import(\"/workspace/packages/native/src/kpi-row\").KpiRowItem, index: number) => void) | undefined",
+        "type": "((item: import(\"/workspace/packages/native/src/kpi-row\").KpiRowItem, index: number, event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -17002,7 +17086,7 @@
       },
       {
         "name": "messages",
-        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }>",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; hiddenValue: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }>",
         "required": false,
         "default": "—",
         "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
@@ -17047,7 +17131,7 @@
       },
       {
         "name": "messages",
-        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; hiddenValue: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
         "required": false,
         "default": "—",
         "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
@@ -17140,7 +17224,7 @@
       },
       {
         "name": "messages",
-        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; hiddenValue: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
         "required": false,
         "default": "—",
         "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."

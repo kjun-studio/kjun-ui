@@ -1395,7 +1395,7 @@
             "default": "false",
             "description": "",
             "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "label",
@@ -1404,16 +1404,25 @@
             "default": "—",
             "description": "",
             "summary": "사용자에게 표시할 주된 라벨입니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "value",
             "type": "string | number",
-            "required": true,
-            "default": "—",
-            "description": "",
-            "summary": "대표 지표의 현재 값입니다. 계산과 데이터 조회는 소비자가 수행합니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "required": false,
+            "default": "null",
+            "description": "null, undefined and non-finite numbers are missing and show missingText.",
+            "summary": "핵심 값입니다. null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. 숫자는 KjunProvider locale의 자릿수 형식을 따릅니다.",
+            "source": "packages/vue3/src/kpi-hero.tsx"
+          },
+          {
+            "name": "missingText",
+            "type": "string",
+            "required": false,
+            "default": "\"—\"",
+            "description": "Shown for a missing value; defaults to an em dash.",
+            "summary": "value가 없을 때 대신 표시할 글자입니다. 보조 지표 항목도 같은 missingText 필드를 받습니다.",
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "prefix",
@@ -1422,7 +1431,7 @@
             "default": "\"\"",
             "description": "",
             "summary": "값이나 입력 앞에 배치할 내용입니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "suffix",
@@ -1431,7 +1440,7 @@
             "default": "\"\"",
             "description": "",
             "summary": "값이나 입력 뒤에 배치할 내용입니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "decimals",
@@ -1440,7 +1449,7 @@
             "default": "0",
             "description": "",
             "summary": "기본 숫자 형식의 소수 자릿수입니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "deltaAbsolute",
@@ -1449,7 +1458,7 @@
             "default": "null",
             "description": "",
             "summary": "기준 대비 절대 증감 값입니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "deltaPercent",
@@ -1457,8 +1466,17 @@
             "required": false,
             "default": "null",
             "description": "",
-            "summary": "기준 대비 증감률입니다. 상승·하락 방향의 옅은 면을 깐 칩으로 표시하고, 0이면 중립 면을 씁니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "summary": "기준 대비 증감률입니다. 상승·하락 방향의 옅은 면을 깐 칩으로 표시하고, 표시 자릿수로 반올림해 0이면 중립 면과 중립 색을 씁니다.",
+            "source": "packages/vue3/src/kpi-hero.tsx"
+          },
+          {
+            "name": "deltaPercentDecimals",
+            "type": "number",
+            "required": false,
+            "default": "1",
+            "description": "Digits after the point in the percent change. Defaults to 1.",
+            "summary": "증감률의 소수 자릿수입니다. 증감 방향과 색은 이 자릿수로 반올림한 값으로 정하므로 0.04%는 기본값에서 중립, 2자리에서는 상승입니다.",
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "deltaDescription",
@@ -1467,7 +1485,7 @@
             "default": "\"\"",
             "description": "",
             "summary": "증감 값의 맥락을 설명하는 보조 문구입니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "secondary",
@@ -1476,7 +1494,7 @@
             "default": "[]",
             "description": "",
             "summary": "주요 지표의 보조 값·라벨 구성입니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "animated",
@@ -1485,7 +1503,7 @@
             "default": "true",
             "description": "",
             "summary": "표시 값 또는 스켈레톤의 애니메이션을 사용합니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "size",
@@ -1494,7 +1512,7 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "surface",
@@ -1503,7 +1521,7 @@
             "default": "\"card\"",
             "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list.",
             "summary": "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "asideMobile",
@@ -1512,7 +1530,7 @@
             "default": "\"below\"",
             "description": "Narrow screens: \"below\" (default) moves the aside under the delta line at full width; \"hidden\" drops it.",
             "summary": "좁은 화면(640px 이하)에서 aside를 변동선 아래 전폭으로 내립니다. hidden이면 숨깁니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "deltaIcon",
@@ -1521,7 +1539,16 @@
             "default": "false",
             "description": "Draws the direction as a filled caret before the first delta number, in place of its sign.",
             "summary": "첫 번째 증감 숫자(deltaAbsolute, 없으면 deltaPercent) 앞에 방향 삼각형을 그리고 그 숫자의 부호를 뺍니다. 부호는 스크린 리더에 그대로 읽힙니다. deltaFormatter의 글자는 바꾸지 않습니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
+          },
+          {
+            "name": "masked",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Hides every amount behind a mask, with no direction colour; screen readers hear \"hidden\".",
+            "summary": "핵심 값·증감·보조 지표의 금액을 •••• 로 가리고 방향 색과 삼각형을 그리지 않습니다. 스크린 리더는 '숨김'(메시지 hiddenValue)을 읽습니다.",
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "formatter",
@@ -1530,7 +1557,7 @@
             "default": "—",
             "description": "",
             "summary": "현재 숫자·표시 값을 문자열로 변환하는 함수입니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           },
           {
             "name": "deltaFormatter",
@@ -1539,7 +1566,7 @@
             "default": "—",
             "description": "",
             "summary": "증감 값을 표시 문자열로 변환하는 함수입니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-hero.tsx"
           }
         ],
         "events": [],
@@ -1547,7 +1574,7 @@
           {
             "name": "aside",
             "data": [],
-            "source": "packages/vue3/src/kpi.tsx",
+            "source": "packages/vue3/src/kpi-hero.tsx",
             "type": "제공 데이터 없음",
             "summary": "aside 영역의 기본 내용을 교체합니다."
           },
@@ -1557,7 +1584,7 @@
               "item",
               "index"
             ],
-            "source": "packages/vue3/src/kpi.tsx",
+            "source": "packages/vue3/src/kpi-hero.tsx",
             "type": "{ item, index }",
             "summary": "secondary 영역의 기본 내용을 교체합니다."
           }
@@ -1574,7 +1601,7 @@
             "default": "false",
             "description": "",
             "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "label",
@@ -1583,16 +1610,25 @@
             "default": "—",
             "description": "",
             "summary": "사용자에게 표시할 주된 라벨입니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "value",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": true,
             "default": "—",
-            "description": "",
-            "summary": "대표 지표의 현재 값입니다. 계산과 데이터 조회는 소비자가 수행합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "description": "null, undefined and non-finite numbers are missing and show missingText.",
+            "summary": "핵심 값입니다. null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. 숫자는 KjunProvider locale의 자릿수 형식을 따릅니다.",
+            "source": "packages/react/src/kpi-hero.tsx"
+          },
+          {
+            "name": "missingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "\"—\"",
+            "description": "Shown for a missing value; defaults to an em dash.",
+            "summary": "value가 없을 때 대신 표시할 글자입니다. 보조 지표 항목도 같은 missingText 필드를 받습니다.",
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "prefix",
@@ -1601,7 +1637,7 @@
             "default": "\"\"",
             "description": "",
             "summary": "값이나 입력 앞에 배치할 내용입니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "suffix",
@@ -1610,7 +1646,7 @@
             "default": "\"\"",
             "description": "",
             "summary": "값이나 입력 뒤에 배치할 내용입니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "decimals",
@@ -1619,25 +1655,34 @@
             "default": "0",
             "description": "",
             "summary": "기본 숫자 형식의 소수 자릿수입니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "deltaAbsolute",
             "type": "number | null | undefined",
             "required": false,
-            "default": "null",
+            "default": "—",
             "description": "",
             "summary": "기준 대비 절대 증감 값입니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "deltaPercent",
             "type": "number | null | undefined",
             "required": false,
-            "default": "null",
+            "default": "—",
             "description": "",
-            "summary": "기준 대비 증감률입니다. 상승·하락 방향의 옅은 면을 깐 칩으로 표시하고, 0이면 중립 면을 씁니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "summary": "기준 대비 증감률입니다. 상승·하락 방향의 옅은 면을 깐 칩으로 표시하고, 표시 자릿수로 반올림해 0이면 중립 면과 중립 색을 씁니다.",
+            "source": "packages/react/src/kpi-hero.tsx"
+          },
+          {
+            "name": "deltaPercentDecimals",
+            "type": "number | undefined",
+            "required": false,
+            "default": "1",
+            "description": "Digits after the point in the percent change. Defaults to 1.",
+            "summary": "증감률의 소수 자릿수입니다. 증감 방향과 색은 이 자릿수로 반올림한 값으로 정하므로 0.04%는 기본값에서 중립, 2자리에서는 상승입니다.",
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "deltaDescription",
@@ -1646,7 +1691,7 @@
             "default": "\"\"",
             "description": "",
             "summary": "증감 값의 맥락을 설명하는 보조 문구입니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "secondary",
@@ -1655,7 +1700,7 @@
             "default": "[]",
             "description": "",
             "summary": "주요 지표의 보조 값·라벨 구성입니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "animated",
@@ -1664,7 +1709,7 @@
             "default": "true",
             "description": "",
             "summary": "표시 값 또는 스켈레톤의 애니메이션을 사용합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "size",
@@ -1673,7 +1718,7 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "surface",
@@ -1682,7 +1727,7 @@
             "default": "\"card\"",
             "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list.",
             "summary": "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "aside",
@@ -1691,7 +1736,7 @@
             "default": "—",
             "description": "",
             "summary": "주요 지표 옆에 배치할 보조 콘텐츠입니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "asideMobile",
@@ -1700,7 +1745,7 @@
             "default": "\"below\"",
             "description": "Narrow screens: \"below\" (default) moves the aside under the delta line at full width; \"hidden\" drops it.",
             "summary": "좁은 화면(640px 이하)에서 aside를 변동선 아래 전폭으로 내립니다. hidden이면 숨깁니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "deltaIcon",
@@ -1709,7 +1754,16 @@
             "default": "false",
             "description": "Draws the direction as a filled caret before the first delta number, in place of its sign.",
             "summary": "첫 번째 증감 숫자(deltaAbsolute, 없으면 deltaPercent) 앞에 방향 삼각형을 그리고 그 숫자의 부호를 뺍니다. 부호는 스크린 리더에 그대로 읽힙니다. deltaFormatter의 글자는 바꾸지 않습니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
+          },
+          {
+            "name": "masked",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Hides every amount behind a mask, with no direction colour; screen readers hear \"hidden\".",
+            "summary": "핵심 값·증감·보조 지표의 금액을 •••• 로 가리고 방향 색과 삼각형을 그리지 않습니다. 스크린 리더는 '숨김'(메시지 hiddenValue)을 읽습니다.",
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "formatter",
@@ -1718,7 +1772,7 @@
             "default": "—",
             "description": "",
             "summary": "현재 숫자·표시 값을 문자열로 변환하는 함수입니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "deltaFormatter",
@@ -1727,7 +1781,7 @@
             "default": "—",
             "description": "",
             "summary": "증감 값을 표시 문자열로 변환하는 함수입니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           },
           {
             "name": "renderSecondary",
@@ -1736,7 +1790,7 @@
             "default": "—",
             "description": "",
             "summary": "주요 지표 아래 보조 내용을 렌더링합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-hero.tsx"
           }
         ],
         "events": [],
@@ -1766,11 +1820,20 @@
           },
           {
             "name": "value",
-            "type": "string | number",
+            "type": "string | number | null",
             "required": true,
             "default": "—",
-            "description": "",
-            "summary": "대표 지표의 현재 값입니다. 계산과 데이터 조회는 소비자가 수행합니다.",
+            "description": "null, undefined and non-finite numbers are missing and show missingText.",
+            "summary": "핵심 값입니다. null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. 숫자는 KjunProvider locale의 자릿수 형식을 따릅니다.",
+            "source": "packages/native/src/kpi-hero.tsx"
+          },
+          {
+            "name": "missingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "\"—\"",
+            "description": "Shown for a missing value; defaults to an em dash.",
+            "summary": "value가 없을 때 대신 표시할 글자입니다. 보조 지표 항목도 같은 missingText 필드를 받습니다.",
             "source": "packages/native/src/kpi-hero.tsx"
           },
           {
@@ -1804,7 +1867,7 @@
             "name": "deltaAbsolute",
             "type": "number | null | undefined",
             "required": false,
-            "default": "null",
+            "default": "—",
             "description": "",
             "summary": "기준 대비 절대 증감 값입니다.",
             "source": "packages/native/src/kpi-hero.tsx"
@@ -1813,9 +1876,18 @@
             "name": "deltaPercent",
             "type": "number | null | undefined",
             "required": false,
-            "default": "null",
+            "default": "—",
             "description": "",
-            "summary": "기준 대비 증감률입니다. 상승·하락 방향의 옅은 면을 깐 칩으로 표시하고, 0이면 중립 면을 씁니다.",
+            "summary": "기준 대비 증감률입니다. 상승·하락 방향의 옅은 면을 깐 칩으로 표시하고, 표시 자릿수로 반올림해 0이면 중립 면과 중립 색을 씁니다.",
+            "source": "packages/native/src/kpi-hero.tsx"
+          },
+          {
+            "name": "deltaPercentDecimals",
+            "type": "number | undefined",
+            "required": false,
+            "default": "1",
+            "description": "Digits after the point in the percent change. Defaults to 1.",
+            "summary": "증감률의 소수 자릿수입니다. 증감 방향과 색은 이 자릿수로 반올림한 값으로 정하므로 0.04%는 기본값에서 중립, 2자리에서는 상승입니다.",
             "source": "packages/native/src/kpi-hero.tsx"
           },
           {
@@ -1891,6 +1963,15 @@
             "source": "packages/native/src/kpi-hero.tsx"
           },
           {
+            "name": "masked",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Hides every amount behind a mask, with no direction colour; screen readers hear \"hidden\".",
+            "summary": "핵심 값·증감·보조 지표의 금액을 •••• 로 가리고 방향 색과 삼각형을 그리지 않습니다. 스크린 리더는 '숨김'(메시지 hiddenValue)을 읽습니다.",
+            "source": "packages/native/src/kpi-hero.tsx"
+          },
+          {
             "name": "formatter",
             "type": "((value: number) => string) | undefined",
             "required": false,
@@ -1934,7 +2015,7 @@
             "default": "false",
             "description": "",
             "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-row.tsx"
           },
           {
             "name": "items",
@@ -1942,8 +2023,8 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 항목은 값 줄 끝에 chevron을 그립니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 또는 href 항목은 값 줄 끝에 chevron을 그립니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
+            "source": "packages/vue3/src/kpi-row.tsx"
           },
           {
             "name": "size",
@@ -1952,7 +2033,7 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-row.tsx"
           },
           {
             "name": "surface",
@@ -1961,7 +2042,7 @@
             "default": "\"card\"",
             "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list.",
             "summary": "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-row.tsx"
           },
           {
             "name": "mobileSummary",
@@ -1970,13 +2051,22 @@
             "default": "true",
             "description": "",
             "summary": "좁은 화면에서 항목을 2열 요약으로 흐르게 합니다. mobileSecondary: true로 표시한 항목만 끝의 작은 인라인 줄로 내려가고, 홀수 개의 마지막 일반 항목은 전폭으로 마감합니다.",
-            "source": "packages/vue3/src/kpi.tsx"
+            "source": "packages/vue3/src/kpi-row.tsx"
+          },
+          {
+            "name": "masked",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Hides number values and segments behind a mask, with no direction colour; text values, badges and descriptions stay.",
+            "summary": "숫자 값과 valueSegments를 •••• 로 가리고 방향 색을 칠하지 않습니다. 텍스트 값·배지·설명은 그대로 둡니다. 스크린 리더는 '숨김'을 읽습니다.",
+            "source": "packages/vue3/src/kpi-row.tsx"
           }
         ],
         "events": [
           {
             "name": "item-click",
-            "source": "packages/vue3/src/kpi.tsx",
+            "source": "packages/vue3/src/kpi-row.tsx",
             "type": "이벤트",
             "summary": "item-click 이벤트를 통지합니다."
           }
@@ -1988,7 +2078,7 @@
               "item",
               "index"
             ],
-            "source": "packages/vue3/src/kpi.tsx",
+            "source": "packages/vue3/src/kpi-row.tsx",
             "type": "{ item, index }",
             "summary": "value 영역의 기본 내용을 교체합니다."
           }
@@ -2005,7 +2095,7 @@
             "default": "false",
             "description": "",
             "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-row.tsx"
           },
           {
             "name": "items",
@@ -2013,8 +2103,8 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 항목은 값 줄 끝에 chevron을 그립니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 또는 href 항목은 값 줄 끝에 chevron을 그립니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
+            "source": "packages/react/src/kpi-row.tsx"
           },
           {
             "name": "size",
@@ -2023,7 +2113,7 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-row.tsx"
           },
           {
             "name": "surface",
@@ -2032,7 +2122,7 @@
             "default": "\"card\"",
             "description": "\"none\" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list.",
             "summary": "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-row.tsx"
           },
           {
             "name": "mobileSummary",
@@ -2041,16 +2131,25 @@
             "default": "true",
             "description": "",
             "summary": "좁은 화면에서 항목을 2열 요약으로 흐르게 합니다. mobileSecondary: true로 표시한 항목만 끝의 작은 인라인 줄로 내려가고, 홀수 개의 마지막 일반 항목은 전폭으로 마감합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-row.tsx"
+          },
+          {
+            "name": "masked",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Hides number values and segments behind a mask, with no direction colour; text values, badges and descriptions stay.",
+            "summary": "숫자 값과 valueSegments를 •••• 로 가리고 방향 색을 칠하지 않습니다. 텍스트 값·배지·설명은 그대로 둡니다. 스크린 리더는 '숨김'을 읽습니다.",
+            "source": "packages/react/src/kpi-row.tsx"
           },
           {
             "name": "onItemClick",
-            "type": "((item: KpiRowItem, index: number) => void) | undefined",
+            "type": "((item: KpiRowItem, index: number, event: MouseEvent | KeyboardEvent) => void) | undefined",
             "required": false,
             "default": "—",
-            "description": "",
+            "description": "The event lets a link cell's router call preventDefault.",
             "summary": "사용자가 실행한 지표 항목을 전달합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-row.tsx"
           },
           {
             "name": "renderValue",
@@ -2059,7 +2158,7 @@
             "default": "—",
             "description": "",
             "summary": "지표 항목의 값을 렌더링합니다.",
-            "source": "packages/react/src/kpi.tsx"
+            "source": "packages/react/src/kpi-row.tsx"
           }
         ],
         "events": [],
@@ -2084,7 +2183,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 항목은 값 줄 끝에 chevron을 그립니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
+            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 또는 href 항목은 값 줄 끝에 chevron을 그립니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
             "source": "packages/native/src/kpi-row.tsx"
           },
           {
@@ -2115,8 +2214,17 @@
             "source": "packages/native/src/kpi-row.tsx"
           },
           {
+            "name": "masked",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Hides number values and segments behind a mask, with no direction colour; text values, badges and descriptions stay.",
+            "summary": "숫자 값과 valueSegments를 •••• 로 가리고 방향 색을 칠하지 않습니다. 텍스트 값·배지·설명은 그대로 둡니다. 스크린 리더는 '숨김'을 읽습니다.",
+            "source": "packages/native/src/kpi-row.tsx"
+          },
+          {
             "name": "onItemClick",
-            "type": "((item: KpiRowItem, index: number) => void) | undefined",
+            "type": "((item: KpiRowItem, index: number, event: GestureResponderEvent) => void) | undefined",
             "required": false,
             "default": "—",
             "description": "",

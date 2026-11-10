@@ -32,6 +32,7 @@ export const platformSpecific = {
   }])),
   ...Object.fromEntries([
     'kpiHero.secondarySkeletonWidth', 'kpiHero.descriptionSkeletonWidth',
+    ...['value', 'mobileValue', 'smValue'].map(part => 'kpiHero.' + part + 'SkeletonWidth'),
     ...['value', 'segment', 'description'].map(part => 'kpiRow.' + part + 'SkeletonWidth'),
   ].map(path => ['extensions.' + path, {
     excludes: ['react', 'vue3'], reason: 'Native logical-unit placeholder; Web uses intrinsic em/ch/lh text-relative dimensions.',

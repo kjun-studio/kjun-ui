@@ -91,6 +91,7 @@ export const kjunMessagesEn: KjunMessages = {
   increaseQuantity: "Increase quantity",
   decreaseQuantity: "Decrease quantity",
   quantity: "Quantity",
+  hiddenValue: "Hidden",
   relativeTimeFallback: (amount: number, unit: string) => {
     const text = plural(Math.abs(amount), unit, unit + "s");
     return amount < 0 ? text + " ago" : "in " + text;

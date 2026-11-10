@@ -16,34 +16,27 @@ import Svg, { Path } from "react-native-svg";
 import { useIcon } from "../../../shared/package-runtime/icon-context";
 import { KText,domainColor } from "./internal";
 import { useKjunStyles } from "./provider";
+import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
+import {
+  KPI_MASK, KPI_MISSING, kpiDelta, kpiDeltaIcon, kpiDeltaValue, kpiFormat, kpiNumber, kpiPresent, kpiShowDelta, kpiTone,
+} from "../../../shared/package-runtime/kpi";
 
 export interface KpiValue {
   label?: string;
-  value: number | string;
+  /** null, undefined and non-finite numbers are missing and show missingText. */
+  value: number | string | null;
   decimals?: number;
   prefix?: string;
   suffix?: string;
   semantic?: "price" | "status";
   showSign?: boolean;
   formatter?: (value: number) => string;
+  /** Shown for a missing value; defaults to an em dash. */
+  missingText?: string;
   desc?: string;
   descColor?: ColorValue;
   valueColor?: ColorValue;
 }
-export const kpiFormat = (item: KpiValue, value = item.value): string =>
-  typeof value === "string"
-    ? value
-    : item.formatter
-    ? item.formatter(value)
-    : (item.showSign && value > 0
-        ? "+"
-        : item.semantic === "price" && value < 0
-        ? "−"
-        : "") +
-      new Intl.NumberFormat(undefined, {
-        minimumFractionDigits: item.decimals ?? 0,
-        maximumFractionDigits: item.decimals ?? 0,
-      }).format(item.semantic === "price" ? Math.abs(value) : value);
 /** The direction caret: the caret icon's closed outline, filled and stroked in the text colour, like Web. */
 function DeltaCaret({ size, color }: { size: number; color: ColorValue | undefined }) {
   const { nodes } = useIcon("caret-up", false);
@@ -56,12 +49,17 @@ function DeltaCaret({ size, color }: { size: number; color: ColorValue | undefin
 export interface KjunKpiHeroProps {
   loading?: boolean;
   label: string;
-  value: number | string;
+  /** null, undefined and non-finite numbers are missing and show missingText. */
+  value: number | string | null;
+  /** Shown for a missing value; defaults to an em dash. */
+  missingText?: string;
   prefix?: string;
   suffix?: string;
   decimals?: number;
   deltaAbsolute?: number | null;
   deltaPercent?: number | null;
+  /** Digits after the point in the percent change. Defaults to 1. */
+  deltaPercentDecimals?: number;
   deltaDescription?: string;
   secondary?: KpiValue[];
   animated?: boolean;
@@ -73,6 +71,8 @@ export interface KjunKpiHeroProps {
   asideMobile?: "below" | "hidden";
   /** Draws the direction as a filled caret before the first delta number, in place of its sign. */
   deltaIcon?: boolean;
+  /** Hides every amount behind a mask, with no direction colour; screen readers hear "hidden". */
+  masked?: boolean;
   formatter?: (value: number) => string;
   deltaFormatter?: (value: number, kind: "absolute" | "percent") => string;
   renderSecondary?: (item: KpiValue, index: number) => ReactNode;
@@ -82,11 +82,11 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     loading = false,
     label,
     value,
+    missingText,
     prefix = "",
     suffix = "",
     decimals = 0,
-    deltaAbsolute = null,
-    deltaPercent = null,
+    deltaPercentDecimals = 1,
     deltaDescription = "",
     secondary = [],
     animated = true,
@@ -95,6 +95,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     aside,
     asideMobile = "below",
     deltaIcon = false,
+    masked = false,
     formatter,
     deltaFormatter,
     renderSecondary,
@@ -105,7 +106,6 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     mobile = windowWidth <= tokens.responsive.kpiHero,
     small = size === "sm",
     numberRole = small ? "displaySm" : mobile ? "displayMd" : "displayLg",
-    font = typeStyle(numberRole).fontSize,
     // Units sit one weight below their number.
     unitStyle = { ...typeStyle(small ? "numberSm" : mobile ? "numberMd" : "numberLg"), fontWeight: typeStyle("numberSm").fontWeight };
   const geometry = tokens.extensions.kpiHero;
@@ -114,32 +114,28 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     fontFamily: numericFontFamily || fontFamily,
     fontVariant: ["tabular-nums"],
   };
-  const direction = (v: number) =>
-    v === 0
-      ? colors.textTertiary
-      : domainColor(domainColors, v > 0 ? "priceUp" : "priceDown");
-  const showDelta =
-    deltaAbsolute !== null ||
-    deltaPercent !== null ||
-    !!deltaDescription ||
-    (loading &&
-      ["deltaAbsolute", "deltaPercent", "deltaDescription"].some((key) =>
-        Object.prototype.hasOwnProperty.call(props, key)
-      ));
-  const tint = (v: number) =>
-    v === 0 ? colors.secondary : domainColor(domainColors, v > 0 ? "priceUpBg" : "priceDownBg");
+  const scope = useKjunMessageScope(), locale = scope.intl;
+  const absolute = kpiDeltaValue(props.deltaAbsolute), percent = kpiDeltaValue(props.deltaPercent);
+  const deltaOptions = { decimals, percentDecimals: deltaPercentDecimals, locale, formatted: !!deltaFormatter };
+  const deltaDirection = (v: number, kind: "absolute" | "percent") => (masked ? 0 : kpiDelta(v, kind, deltaOptions).direction);
+  const direction = (d: number, neutral: ColorValue = colors.textTertiary) =>
+    d === 0 ? neutral : domainColor(domainColors, d > 0 ? "priceUp" : "priceDown");
+  const showDelta = kpiShowDelta(absolute, percent, deltaDescription, loading, props);
+  const tint = (d: number) =>
+    d === 0 ? colors.secondary : domainColor(domainColors, d > 0 ? "priceUpBg" : "priceDownBg");
+  // Masked digits: the mask is drawn, screen readers hear the hidden word.
+  const hidden = (style: TextStyle) => <KText accessibilityLabel={scope.messages.hiddenValue} style={style}>{KPI_MASK}</KText>;
   // Units sit 2px from their number, like Web; nested Text cannot take a margin, so each unit is its own Text.
   const delta = (v: number, kind: "absolute" | "percent", style: TextStyle) => {
+    if (masked) return hidden(style);
     // The caret marks the first delta number shown, in place of its sign; the spoken label keeps the sign.
-    const icon = deltaIcon && v !== 0 && (kind === "absolute" || deltaAbsolute === null),
-      signText = v > 0 ? "+" : v < 0 ? "−" : "",
+    const parts = kpiDelta(v, kind, deltaOptions),
+      icon = kpiDeltaIcon(deltaIcon, parts.direction, kind, absolute !== null),
+      signText = parts.sign,
       sign = icon ? "" : signText,
       gap = geometry.secondaryAffixGap,
       unit = typeStyle("meta"),
-      number = new Intl.NumberFormat(undefined, {
-        minimumFractionDigits: kind === "absolute" ? decimals : 1,
-        maximumFractionDigits: kind === "absolute" ? decimals : 1,
-      }).format(Math.abs(v));
+      number = parts.number;
     const body = deltaFormatter ? <KText style={style}>{deltaFormatter(v, kind)}</KText>
       : kind === "percent" ? <KpiNumberLine suffix="%" prefixGap={gap} suffixGap={gap} style={style} unitStyle={unit}>{sign + number}</KpiNumberLine>
       : !prefix && !suffix ? <KText style={style}>{sign + number}</KText>
@@ -154,7 +150,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
       : signText + (kind === "percent" ? number + "%" : prefix + number + suffix);
     return (
       <View accessible accessibilityLabel={spoken} style={{ flexDirection: "row", alignItems: "center", minWidth: 0, maxWidth: "100%" }}>
-        <View style={{ marginRight: geometry.prefixGap, transform: [{ rotate: v > 0 ? "0deg" : "180deg" }] }}>
+        <View style={{ marginRight: geometry.prefixGap, transform: [{ rotate: parts.direction > 0 ? "0deg" : "180deg" }] }}>
           <DeltaCaret size={geometry.deltaIconSize} color={style.color} />
         </View>
         {body}
@@ -195,11 +191,14 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
           </KText>
           {loading ? (
             // Placeholders fill each line's height, like Web's 1lh; the value width approximates Web's 7ch.
-            <KjunSkeleton type="line" role={numberRole} width={font * 4.8} />
-          ) : (
+            <KjunSkeleton type="line" role={numberRole}
+              width={small ? tokens.extensions.kpiHero.smValueSkeletonWidth : mobile ? tokens.extensions.kpiHero.mobileValueSkeletonWidth : tokens.extensions.kpiHero.valueSkeletonWidth} />
+          ) : masked && kpiPresent(value) ? hidden({ ...numeric, ...typeStyle(numberRole), color: colors.text })
+          : !kpiPresent(value) ? <KText style={{ ...numeric, ...typeStyle(numberRole), color: colors.text }}>{missingText ?? KPI_MISSING}</KText>
+          : (
             <KpiNumberLine prefix={prefix} suffix={suffix} prefixGap={geometry.prefixGap} suffixGap={geometry.suffixGap}
               style={{ ...numeric, ...typeStyle(numberRole) }} unitStyle={unitStyle}>
-              <KjunAnimatedNumber value={value} decimals={decimals} animated={animated} formatter={formatter} style={typeStyle(numberRole)} />
+              <KjunAnimatedNumber value={value} decimals={decimals} animated={animated} formatter={formatter ?? (n => kpiNumber(n, decimals, locale))} style={typeStyle(numberRole)} />
             </KpiNumberLine>
           )}
           {showDelta && (
@@ -216,13 +215,13 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                 <KjunSkeleton type="line" role="numberMd" width={geometry.deltaSkeletonWidth} />
               ) : (
                 <>
-                  {deltaAbsolute !== null &&
-                    delta(deltaAbsolute, "absolute", { ...numeric, color: direction(deltaAbsolute), ...typeStyle("numberMd") })}
-                  {deltaPercent !== null &&
+                  {absolute !== null &&
+                    delta(absolute, "absolute", { ...numeric, color: direction(deltaDirection(absolute, "absolute")), ...typeStyle("numberMd") })}
+                  {percent !== null &&
                     // The percent is a tinted chip, so amount and rate read as two values without dimming either. A View has no text
                     // baseline, so the chip centres on the line, which lands its text within a pixel of Web's baseline.
-                    <View style={{ alignSelf: "center", backgroundColor: tint(deltaPercent), paddingHorizontal: geometry.deltaChipPaddingX, borderRadius: geometry.deltaChipRadius }}>
-                      {delta(deltaPercent, "percent", { ...numeric, color: direction(deltaPercent), ...typeStyle("numberSm"), fontWeight: typeStyle("numberMd").fontWeight })}
+                    <View style={{ alignSelf: "center", backgroundColor: tint(deltaDirection(percent, "percent")), paddingHorizontal: geometry.deltaChipPaddingX, borderRadius: geometry.deltaChipRadius }}>
+                      {delta(percent, "percent", { ...numeric, color: direction(deltaDirection(percent, "percent")), ...typeStyle("numberSm"), fontWeight: typeStyle("numberMd").fontWeight })}
                     </View>}
                   {!!deltaDescription && (
                     <KText
@@ -286,14 +285,15 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
               </KText>
               {loading ? (
                 <KjunSkeleton type="line" role="numberSm" width={geometry.secondarySkeletonWidth} />
-              ) : (
+              ) : masked && kpiPresent(item.value) ? hidden({ ...numeric, ...typeStyle("numberSm"), color: colors.text })
+              : (
                 renderSecondary?.(item, i) || (
-                  <KpiNumberLine prefix={item.prefix} suffix={item.suffix}
+                  <KpiNumberLine prefix={kpiPresent(item.value) ? item.prefix : undefined} suffix={kpiPresent(item.value) ? item.suffix : undefined}
                     prefixGap={geometry.secondaryAffixGap} suffixGap={geometry.secondaryAffixGap}
                     unitStyle={typeStyle("meta")}
                     style={{ ...numeric, ...typeStyle("numberSm"), color: item.valueColor ||
-                      (item.semantic === "price" && Number(item.value) !== 0 ? direction(Number(item.value)) : colors.text) }}>
-                    {kpiFormat(item)}
+                      direction(kpiTone(item) === "up" ? 1 : kpiTone(item) === "down" ? -1 : 0, colors.text) }}>
+                    {kpiFormat(item, item.value, locale)}
                   </KpiNumberLine>
                 )
               )}

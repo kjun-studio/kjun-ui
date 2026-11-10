@@ -362,6 +362,9 @@
       "deltaIconSize": {
         "$ref": "iconSizes.default"
       },
+      "valueSkeletonWidth": 192,
+      "mobileValueSkeletonWidth": 154,
+      "smValueSkeletonWidth": 115,
       "deltaSkeletonWidth": 220,
       "secondarySkeletonWidth": 55,
       "descriptionSkeletonWidth": 58

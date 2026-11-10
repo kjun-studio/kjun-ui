@@ -752,6 +752,9 @@
   --_kjun-extension-kpi-hero-delta-chip-padding-x: 6px;
   --_kjun-extension-kpi-hero-delta-chip-radius: 6px;
   --_kjun-extension-kpi-hero-delta-icon-size: 16px;
+  --_kjun-extension-kpi-hero-value-skeleton-width: 192px;
+  --_kjun-extension-kpi-hero-mobile-value-skeleton-width: 154px;
+  --_kjun-extension-kpi-hero-sm-value-skeleton-width: 115px;
   --_kjun-extension-kpi-hero-delta-skeleton-width: 220px;
   --_kjun-extension-kpi-hero-secondary-skeleton-width: 55px;
   --_kjun-extension-kpi-hero-description-skeleton-width: 58px;
@@ -760,6 +763,7 @@
   --_kjun-extension-kpi-row-value-gap: 8px;
   --_kjun-extension-kpi-row-segment-gap: 4px;
   --_kjun-extension-kpi-row-separator-gap: 6px;
+  --_kjun-extension-kpi-row-segment-label-gap: 4px;
   --_kjun-extension-kpi-row-badge-radius: 4px;
   --_kjun-extension-kpi-row-badge-gap: 4px;
   --_kjun-extension-kpi-row-badge-padding-x: 6px;

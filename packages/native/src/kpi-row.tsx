@@ -2,31 +2,33 @@ import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { useState, type ReactNode } from "react";
 import {
+Platform,
 View,
 useWindowDimensions,
 type ColorValue,
+type GestureResponderEvent,
 type TextStyle,
 } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunSkeleton } from "./display";
 import { BadgeView } from "./display-primitives";
-import type { BadgeVariant } from "../../../shared/package-runtime/badge-tone";
+import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
+import {
+  KPI_MASK, kpiBadgeRoles, kpiBadgeVariant, kpiFormat, kpiPresent, kpiSpoken, kpiSummaryLayout, kpiTone, type KpiBadgeVariant,
+} from "../../../shared/package-runtime/kpi";
 import { KjunAnimatedNumber } from "./financial";
 import { KjunIcon } from "./button";
 import { KpiNumberLine } from "./kpi-number-line";
 import { KText,domainColor } from "./internal";
-import { KpiValue,kpiFormat } from "./kpi-hero";
+import type { KpiValue } from "./kpi-hero";
 import { useKjunStyles } from "./provider";
-const kpiBadgeVariant = (variant?: string) => (variant === "neutral" || !variant ? "secondary" : variant) as BadgeVariant;
-const kpiBadgePaint = (variant: BadgeVariant) => variant === "secondary"
-  ? { bg: "secondary", text: "text-secondary", dot: "text-secondary" } : { bg: variant + "-bg", text: variant, dot: variant };
 export interface KpiRowItem extends Omit<KpiValue, "value"> {
   /** null/undefined and non-finite numbers are missing, never zero. Loading still takes precedence. */
   value?: number | string | null;
-  /** Shown for a missing value; defaults to an em dash. */
-  missingText?: string;
   loading?: boolean;
   clickable?: boolean;
+  /** A link cell: on React Native Web it is a real link to this address; on a device it is a button and onItemClick navigates. */
+  href?: string;
   mobileFull?: boolean;
   mobileSecondary?: boolean;
   mobileNeutral?: boolean;
@@ -38,17 +40,7 @@ export interface KpiRowItem extends Omit<KpiValue, "value"> {
     separator?: boolean;
     color?: ColorValue;
   }[];
-  badge?: {
-    text: string;
-    variant?:
-      | "warning"
-      | "success"
-      | "danger"
-      | "price-up"
-      | "price-down"
-      | "info"
-      | "neutral";
-  } | null;
+  badge?: { text: string; variant?: KpiBadgeVariant } | null;
   badgePlacement?: "label" | "value";
 }
 export interface KjunKpiRowProps {
@@ -58,7 +50,9 @@ export interface KjunKpiRowProps {
   /** "none" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list. */
   surface?: "card" | "none";
   mobileSummary?: boolean;
-  onItemClick?: (item: KpiRowItem, index: number) => void;
+  /** Hides number values and segments behind a mask, with no direction colour; text values, badges and descriptions stay. */
+  masked?: boolean;
+  onItemClick?: (item: KpiRowItem, index: number, event: GestureResponderEvent) => void;
   renderValue?: (item: KpiRowItem, index: number) => ReactNode;
 }
 export function KjunKpiRow({
@@ -67,6 +61,7 @@ export function KjunKpiRow({
   size = "md",
   surface = "card",
   mobileSummary = true,
+  masked = false,
   onItemClick,
   renderValue,
 }: KjunKpiRowProps) {
@@ -80,26 +75,20 @@ export function KjunKpiRow({
   const [width, setWidth] = useState(0);
   const paddingX = summary ? geometry.summary.paddingX : spec.paddingX;
   const gapX = summary ? geometry.summary.gapX : 0;
+  const scope = useKjunMessageScope(), locale = scope.intl;
   // Only items marked mobileSecondary fold into the summary's inline footnote; the rest keep their two-column cells.
-  const secondary = items.map((item) => item.mobileSecondary === true),
-    primary = items.flatMap((item, i) =>
-      !secondary[i] && !item.mobileFull ? [i] : []
-    ),
-    lastFull = primary.length % 2 ? primary[primary.length - 1] : -1;
-  const color = (item: KpiRowItem) =>
-    item.valueColor ||
-    (item.semantic === "price" && Number.isFinite(Number(item.value)) && Number(item.value) !== 0
-      ? domainColor(
-          domainColors,
-          Number(item.value) > 0 ? "priceUp" : "priceDown"
-        )
-      : colors.text);
+  const { secondary, lastFull } = kpiSummaryLayout(items);
+  const toneColor = (item: KpiRowItem, hide: boolean, neutral: ColorValue) => {
+    const tone = hide ? null : kpiTone(item);
+    return tone ? domainColor(domainColors, tone === "up" ? "priceUp" : "priceDown") : neutral;
+  };
+  const color = (item: KpiRowItem, hide: boolean) => item.valueColor || toneColor(item, hide, colors.text);
   const badge = (item: KpiRowItem) =>
     item.badge ? (
       <BadgeView
         variant={kpiBadgeVariant(item.badge.variant)}
         // Like Web's .kjun-kpi-row__badge: the xs badge's geometry and type, painted in its tone, with no dot.
-        paint={kpiBadgePaint(kpiBadgeVariant(item.badge.variant))}
+        paint={kpiBadgeRoles(item.badge.variant)}
         typeRole="meta"
         size="xs"
         style={{ borderRadius: geometry.badgeRadius, gap: geometry.badgeGap, paddingHorizontal: geometry.badgePadding.x, paddingVertical: geometry.badgePadding.y }}
@@ -130,8 +119,11 @@ export function KjunKpiRow({
       {items.map((item, i) => {
         const busy = loading || !!item.loading,
           value = item.value,
-          present = value != null && (typeof value !== "number" || Number.isFinite(value)),
-          format = (number: number | string) => kpiFormat({ ...item, value: number }),
+          present = kpiPresent(value),
+          link = !!item.href,
+          clickable = !!item.clickable || link,
+          hide = masked && item.valueKind !== "text" && (present || !!item.valueSegments),
+          format = (number: number | string | null | undefined) => kpiFormat(item, number, locale),
           sub = summary && secondary[i],
           full =
             item.mobileFull ||
@@ -155,16 +147,25 @@ export function KjunKpiRow({
           fontFamily: item.valueKind === "text" ? fontFamily : numericFontFamily || fontFamily,
           fontVariant: item.valueKind === "text" ? [] : ["tabular-nums"],
           ...typeStyle(valueRole),
-          color: summary && item.mobileNeutral ? colors.text : color(item),
+          color: summary && item.mobileNeutral ? colors.text : color(item, hide),
         };
+        // A clickable cell is one control, so it speaks every part it shows: label, badges, value and description.
+        // A custom renderValue is unknown here, so that cell keeps the platform's reading of its children.
+        const valueText = hide ? scope.messages.hiddenValue
+          : item.valueSegments ? item.valueSegments.filter(seg => !seg.separator).map(seg => (seg.label ? seg.label + " " : "") + seg.text).join(" ")
+          : present ? (item.prefix ?? "") + format(value) + (item.suffix ?? "") : format(value);
+        const spoken = clickable && !busy && !renderValue
+          ? kpiSpoken(item.label, item.badgePlacement !== "value" && item.badge?.text, valueText, item.badgePlacement === "value" && item.badge?.text, item.desc)
+          : clickable ? item.label : undefined;
         return (
           <Pressable
             key={i}
-            accessible={!!item.clickable}
-            accessibilityRole={item.clickable ? "button" : undefined}
-            accessibilityLabel={item.clickable ? item.label : undefined}
-            disabled={!item.clickable || busy}
-            onPress={() => onItemClick?.(item, i)}
+            accessible={clickable}
+            accessibilityRole={clickable ? (link && Platform.OS === "web" ? "link" : "button") : undefined}
+            accessibilityLabel={spoken}
+            {...(Platform.OS === "web" && link && !busy ? { href: item.href } : {})}
+            disabled={!clickable || busy}
+            onPress={event => onItemClick?.(item, i, event)}
             style={{
               flex: mobile ? undefined : 1,
               flexBasis:
@@ -185,7 +186,7 @@ export function KjunKpiRow({
               borderLeftWidth: dividerLeft,
               borderTopWidth: dividerTop,
               borderColor: "transparent",
-              borderRadius: item.clickable ? geometry.itemRadius : 0,
+              borderRadius: clickable ? geometry.itemRadius : 0,
               flexDirection: sub ? "row" : "column",
               alignItems: sub ? "baseline" : undefined,
               gap: sub ? geometry.summary.secondaryGap : 0,
@@ -238,7 +239,9 @@ export function KjunKpiRow({
                 minHeight: sub ? undefined : typeStyle(numberRole).lineHeight,
               }}
             >
-              {item.valueSegments ? (
+              {hide && !busy ? (
+                <KText accessibilityLabel={scope.messages.hiddenValue} style={valueStyle}>{KPI_MASK}</KText>
+              ) : item.valueSegments ? (
                 <View
                   style={{ flexDirection: "row", flexWrap: "wrap", gap: geometry.segmentGap }}
                 >
@@ -248,7 +251,7 @@ export function KjunKpiRow({
                         <KText aria-hidden style={{ ...typeStyle('caption'), marginHorizontal: geometry.separatorGap, color: colors.textTertiary }}>·</KText>}
                       {summary && seg.label && (
                         <KText
-                          style={{ ...typeStyle('caption'), marginRight: sub ? tokens.dimension.value4 : 0, color: colors.textTertiary }}
+                          style={{ ...typeStyle('caption'), marginRight: sub ? geometry.segmentLabelGap : 0, color: colors.textTertiary }}
                         >
                           {seg.label}
                         </KText>
@@ -275,7 +278,7 @@ export function KjunKpiRow({
                   width={geometry.valueSkeletonWidth * (valueStyle.fontSize ?? numberSize) / typeStyle("displaySm").fontSize} />
               ) : (
                 renderValue?.(item, i) || (!present ? (
-                  <KText style={valueStyle}>{item.missingText ?? "—"}</KText>
+                  <KText style={valueStyle}>{format(value)}</KText>
                 ) : (
                   // Units sit 2px from their number, like Web; each is its own Text so it can take the gap.
                   <KpiNumberLine prefix={item.prefix} suffix={item.suffix} prefixGap={geometry.affixGap} suffixGap={geometry.affixGap}
@@ -294,7 +297,7 @@ export function KjunKpiRow({
                 ))
               )}
               {!busy && item.badgePlacement === "value" && badge(item)}
-              {item.clickable && !sub && (
+              {clickable && !sub && (
                 <View style={{ marginLeft: "auto" }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
                   <KjunIcon name="chevron-right" size={geometry.chevronSize} color={colors.textTertiary} />
                 </View>
@@ -311,9 +314,7 @@ export function KjunKpiRow({
                     marginTop: spec.descriptionGap,
                     color:
                       item.descColor ||
-                      (item.semantic === "price"
-                        ? color(item)
-                        : colors.textSecondary),
+                      toneColor(item, hide, colors.textSecondary),
                   }}
                 >
                   {item.desc}

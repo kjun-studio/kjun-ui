@@ -318,8 +318,8 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue3": "packages/vue3/src/kpi.tsx",
-      "react": "packages/react/src/kpi.tsx",
+      "vue3": "packages/vue3/src/kpi-hero.tsx",
+      "react": "packages/react/src/kpi-hero.tsx",
       "native": "packages/native/src/kpi-hero.tsx"
     }
   },
@@ -354,8 +354,8 @@
     "example": "previews/catalog/examples.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
-      "vue3": "packages/vue3/src/kpi.tsx",
-      "react": "packages/react/src/kpi.tsx",
+      "vue3": "packages/vue3/src/kpi-row.tsx",
+      "react": "packages/react/src/kpi-row.tsx",
       "native": "packages/native/src/kpi-row.tsx"
     }
   },

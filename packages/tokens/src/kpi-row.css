@@ -29,6 +29,12 @@
 .kjun-kpi-row__item:first-child {
   --_kjun-kpi-row-divider-left: 0px;
 }
+/* A link cell reads like the other cells: no link colour or underline. */
+a.kjun-kpi-row__item {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
 .kjun-kpi-row__item--clickable {
   cursor: pointer;
   border-radius: var(--_kjun-extension-kpi-row-item-radius);
@@ -243,7 +249,7 @@
     .kjun-kpi-row__item--secondary
     .kjun-kpi-row__segment-label {
     display: inline;
-    margin-right: var(--_kjun-geometry-dimension-value4);
+    margin-right: var(--_kjun-extension-kpi-row-segment-label-gap);
     color: var(--_kjun-text-secondary);
   }
   .kjun-kpi-row--mobile-summary

@@ -98,6 +98,8 @@ export const kjunMessagesKo = {
   increaseQuantity: "수량 늘리기",
   decreaseQuantity: "수량 줄이기",
   quantity: "수량",
+  // A KPI amount the app chose to hide, read in place of its masked digits.
+  hiddenValue: "숨김",
   relativeTimeFallback: (amount: number, unit: string) => Math.abs(amount) + relativeUnits[unit] + (amount < 0 ? " 전" : " 후"),
   // Actions
   copy: "복사",
