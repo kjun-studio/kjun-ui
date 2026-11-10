@@ -3217,6 +3217,42 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunSplitPane",
+    "sources": {
+      "vue3": "packages/vue3/src/split-pane.tsx",
+      "react": "packages/react/src/split-pane.tsx",
+      "native": "packages/native/src/split-pane.tsx"
+    },
+    "category": "layout",
+    "kind": "component",
+    "owner": "KjunSplitPane",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/split-pane",
+    "tests": [
+      "tests/split-pane.test.mjs",
+      "tests/browser/split-pane.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
     "name": "KjunQuantityStepper",
     "sources": {
       "vue3": "packages/vue3/src/quantity-stepper.tsx",

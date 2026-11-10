@@ -215,6 +215,13 @@
     "slider": {
       "minimumWidth": 100
     },
+    "splitPane": {
+      "handleHit": { "$ref": "dimension.value20" },
+      "touchHandleHit": { "$ref": "native.minimumTouchTarget" },
+      "barWidth": { "$ref": "dimension.value4" },
+      "barLength": { "$ref": "dimension.value40" },
+      "activeBarLength": { "$ref": "dimension.value56" }
+    },
     "colorPicker": {
       "width": { "$ref": "extensions.popover.width" },
       "padding": { "$ref": "dimension.value12" },

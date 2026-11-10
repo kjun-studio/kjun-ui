@@ -69,6 +69,11 @@ export const extensions: Record<string, GuideAuthor> = {
     parts: [p("시 선택", "유효한 24시간제 시각의 시를 선택합니다.", '[aria-label="알림 시각 시"]'), p("분 선택", "선택한 시 안에서 유효한 분을 고릅니다.", '[aria-label="알림 시각 분"]'), p("지우기", "값이 있을 때 시계 아이콘 자리에 나타나며, 값을 null로 바꾸고 첫 구간으로 초점을 옮깁니다.", '[aria-label="알림 시각 지우기"]', true)], related: "input-settings",
     states: [{ id: "seconds", label: "초 선택", description: "precision=second로 초 선택 영역을 추가합니다.", settings: { precision: "second" }, values: { time: "09:30:15" } }, { id: "bounded", label: "시각 범위", description: "09:30:15~18:30:45 사이의 시각만 선택합니다.", settings: { precision: "second", bounded: true } }],
   },
+  KjunSplitPane: {
+    parts: [p("경계 손잡이", "끌거나 포커스를 두고 화살표·Home·End·Enter로 첫 패널의 크기를 바꿉니다. 현재 크기를 백분율로 알립니다.", '[role="separator"], [role="slider"]'), t("첫 패널", "크기를 정하는 기준 패널입니다.", "메시지 목록", true), t("둘째 패널", "나머지 공간을 채웁니다.", "상세 내용", true)],
+    related: "generic-lists",
+    states: [{ id: "vertical", label: "상하 분할", description: "패널을 위아래로 두고 위아래 화살표로 조절합니다.", settings: { direction: "vertical" } }, { id: "narrow", label: "첫 패널 30%", description: "앱이 size로 첫 패널을 30%로 둡니다.", values: { split: 0.3 } }],
+  },
   KjunColorPicker: {
     values: { color: "#3B82F6" },
     parts: [p("색 버튼", "현재 색 칸과 HEX 값을 보여 주고 누르면 패널을 엽니다.", '[aria-haspopup="dialog"]'), t("값", "현재 색의 HEX 값입니다. 이름 있는 견본이면 이름을 먼저 보이고, 투명도가 100% 미만이면 %를 붙이며, 색이 없으면 ‘색 선택’을 보입니다.", "#3B82F6", true)], related: "input-settings",

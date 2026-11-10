@@ -1,0 +1,93 @@
+/* KjunSplitPane: two panes and a handle between them. The first pane takes --_kjun-split-pane-size (0–1) of the room
+   beside the handle, so the split holds its ratio as the container resizes without a script. */
+.kjun-split-pane {
+  --_kjun-split-pane-hit: var(--_kjun-extension-split-pane-handle-hit);
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+/* Touch screens get a full-size target; the bar inside stays the same. */
+@media (pointer: coarse) {
+  .kjun-split-pane {
+    --_kjun-split-pane-hit: var(--_kjun-extension-split-pane-touch-handle-hit);
+  }
+}
+.kjun-split-pane[data-direction="vertical"] {
+  flex-direction: column;
+}
+.kjun-split-pane[data-dragging="true"] {
+  user-select: none;
+}
+.kjun-split-pane-first,
+.kjun-split-pane-second {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+.kjun-split-pane-first {
+  flex: 0 0 calc((100% - var(--_kjun-split-pane-hit)) * var(--_kjun-split-pane-size));
+}
+.kjun-split-pane-second {
+  flex: 1 1 0;
+}
+.kjun-split-pane-handle {
+  flex: 0 0 var(--_kjun-split-pane-hit);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--_kjun-geometry-radius-radius8);
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+  outline: 0;
+}
+.kjun-split-pane[data-direction="vertical"] > .kjun-split-pane-handle {
+  cursor: row-resize;
+}
+.kjun-split-pane-bar {
+  width: var(--_kjun-extension-split-pane-bar-width);
+  height: var(--_kjun-extension-split-pane-bar-length);
+  border-radius: var(--_kjun-geometry-radius-radius9999);
+  background: var(--_kjun-color-border-strong);
+  transition: background var(--_kjun-motion-control) var(--_kjun-ease-out), width var(--_kjun-motion-control) var(--_kjun-ease-out),
+    height var(--_kjun-motion-control) var(--_kjun-ease-out);
+}
+.kjun-split-pane[data-direction="vertical"] > .kjun-split-pane-handle > .kjun-split-pane-bar {
+  width: var(--_kjun-extension-split-pane-bar-length);
+  height: var(--_kjun-extension-split-pane-bar-width);
+}
+.kjun-split-pane-handle:hover > .kjun-split-pane-bar {
+  background: var(--_kjun-color-text-tertiary);
+}
+.kjun-split-pane-handle:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: calc(-1 * var(--_kjun-state-focus-width));
+}
+.kjun-split-pane-handle:focus-visible > .kjun-split-pane-bar,
+.kjun-split-pane-handle[data-dragging="true"] > .kjun-split-pane-bar {
+  background: var(--_kjun-color-text);
+}
+/* While dragging the bar grows along the handle and the handle takes the hover fill. */
+.kjun-split-pane-handle[data-dragging="true"] {
+  background: var(--_kjun-color-hover);
+}
+.kjun-split-pane-handle[data-dragging="true"] > .kjun-split-pane-bar {
+  height: var(--_kjun-extension-split-pane-active-bar-length);
+}
+.kjun-split-pane[data-direction="vertical"] > .kjun-split-pane-handle[data-dragging="true"] > .kjun-split-pane-bar {
+  width: var(--_kjun-extension-split-pane-active-bar-length);
+  height: var(--_kjun-extension-split-pane-bar-width);
+}
+.kjun-split-pane-handle[aria-disabled="true"] {
+  cursor: default;
+}
+.kjun-split-pane-handle[aria-disabled="true"] > .kjun-split-pane-bar {
+  background: var(--_kjun-color-border);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kjun-split-pane-bar {
+    transition: none;
+  }
+}

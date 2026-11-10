@@ -1,11 +1,11 @@
 {
-  "total": 88,
+  "total": 89,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 88,
+      "provided": 89,
       "counts": {
-        "supported": 88,
+        "supported": 89,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 88,
+      "provided": 89,
       "counts": {
-        "supported": 88,
+        "supported": 89,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 88,
+      "provided": 89,
       "counts": {
         "supported": 0,
-        "preview": 88,
+        "preview": 89,
         "review": 0,
         "unsupported": 0
       },
@@ -2464,6 +2464,37 @@
       "recordId": "verification-v0.3.0"
     },
     {
+      "name": "KjunSplitPane",
+      "title": "SplitPane",
+      "docs": "/components/split-pane",
+      "category": "layout",
+      "differences": "웹은 경계를 separator 역할로 그리고 현재·최소·최대 크기를 백분율로 알립니다. 누르는 영역은 20px이고 터치 화면에서는 44px입니다. Native는 경계를 조절 컨트롤로 알리고 스크린리더의 늘리기·줄이기 동작으로 16pt씩 옮기며, 키보드 조작은 Native Web에서만 동작합니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
       "name": "KjunStack",
       "title": "Stack",
       "docs": "/components/stack",
@@ -2814,7 +2845,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 88
+      "componentCount": 89
     }
   ]
 }

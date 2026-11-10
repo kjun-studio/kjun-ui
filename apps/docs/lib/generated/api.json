@@ -20983,6 +20983,267 @@
       }
     ]
   },
+  "KjunSplitPane": {
+    "vue3": [
+      {
+        "name": "direction",
+        "type": "SplitDirection",
+        "required": false,
+        "default": "\"horizontal\"",
+        "description": "horizontal puts the panes side by side; vertical stacks them and needs a height from its parent."
+      },
+      {
+        "name": "size",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": "v-model:size. The first pane's share (0–1) of the room beside the handle; without it the split keeps its own."
+      },
+      {
+        "name": "defaultSize",
+        "type": "number",
+        "required": false,
+        "default": "0.5",
+        "description": "The starting share without size, and the share Enter restores."
+      },
+      {
+        "name": "minSize",
+        "type": "SplitMin",
+        "required": false,
+        "default": "—",
+        "description": "Smallest pixels of the first and second pane. A minimum beats the share and the maximums."
+      },
+      {
+        "name": "maxSize",
+        "type": "SplitMax",
+        "required": false,
+        "default": "—",
+        "description": "Largest pixels of the first and second pane; null leaves a pane unlimited."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": "Names the handle, e.g. \"메시지 목록 크기\"."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Keeps the split where it is: the handle takes no pointer, key or focus."
+      }
+    ],
+    "events": [
+      {
+        "name": "update:size",
+        "source": "packages/vue3/src/split-pane.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/split-pane.tsx"
+      }
+    ],
+    "slots": [
+      {
+        "name": "first",
+        "data": [],
+        "source": "packages/vue3/src/split-pane.tsx"
+      },
+      {
+        "name": "second",
+        "data": [],
+        "source": "packages/vue3/src/split-pane.tsx"
+      }
+    ],
+    "react": [
+      {
+        "name": "direction",
+        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitDirection | undefined",
+        "required": false,
+        "default": "—",
+        "description": "horizontal puts the panes side by side; vertical stacks them and needs a height from its parent."
+      },
+      {
+        "name": "size",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Controlled share (0–1) of the room beside the handle that the first pane takes; pair with onSizeChange."
+      },
+      {
+        "name": "defaultSize",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The starting share without size, and the share Enter restores."
+      },
+      {
+        "name": "minSize",
+        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitMin | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Smallest pixels of the first and second pane. A minimum beats the share and the maximums."
+      },
+      {
+        "name": "maxSize",
+        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitMax | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Largest pixels of the first and second pane; null leaves a pane unlimited."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": "Names the handle, e.g. \"메시지 목록 크기\"."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Keeps the split where it is: the handle takes no pointer, key or focus."
+      },
+      {
+        "name": "onSizeChange",
+        "type": "((size: number) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Every step of a drag or key press."
+      },
+      {
+        "name": "onChangeCommit",
+        "type": "((size: number) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Once when a drag ends or a key moves the handle; the place to save the size."
+      },
+      {
+        "name": "first",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "second",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Outer size and margins only: padding or a border on the root would shift the panes away from the measured sizes."
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "direction",
+        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitDirection | undefined",
+        "required": false,
+        "default": "—",
+        "description": "horizontal puts the panes side by side; vertical stacks them and needs a height from its parent."
+      },
+      {
+        "name": "size",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Controlled share (0–1) of the room beside the handle that the first pane takes; pair with onSizeChange."
+      },
+      {
+        "name": "defaultSize",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The starting share without size, and the share Enter restores on Native Web."
+      },
+      {
+        "name": "minSize",
+        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitMin | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Smallest points of the first and second pane. A minimum beats the share and the maximums."
+      },
+      {
+        "name": "maxSize",
+        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitMax | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Largest points of the first and second pane; null leaves a pane unlimited."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": "Names the handle, e.g. \"메시지 목록 크기\"."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Keeps the split where it is: the handle takes no touch, key or focus."
+      },
+      {
+        "name": "onSizeChange",
+        "type": "((size: number) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Every step of a drag, key press or screen reader adjustment."
+      },
+      {
+        "name": "onChangeCommit",
+        "type": "((size: number) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Once when a drag ends or a key or screen reader action moves the handle; the place to save the size."
+      },
+      {
+        "name": "first",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "second",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
   "KjunStack": {
     "vue3": [
       {

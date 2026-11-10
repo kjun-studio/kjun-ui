@@ -22,5 +22,6 @@
   "layout.css",
   "carousel.css",
   "calendar.css",
-  "color-picker.css"
+  "color-picker.css",
+  "split-pane.css"
 ]

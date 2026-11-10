@@ -18,6 +18,7 @@ function vueProps(name, props) {
     else if (key === "onValueChange") mapped["onUpdate:" + ("modelValue" in declared ? "modelValue" : "value")] = value;
     else if (key === "onOpenChange") mapped["onUpdate:open"] = value;
     else if (key === "onChangeCommit") mapped.onChange = value;
+    else if (key === "onSizeChange") mapped["onUpdate:size"] = value;
     else if (key === "onSelectionChange") mapped["onUpdate:selected"] = value;
     else if (key === "onExpandedRowsChange") mapped["onUpdate:expandedRows"] = value;
     else if (key === "onExpandedGroupsChange") mapped["onUpdate:expandedGroups"] = value;

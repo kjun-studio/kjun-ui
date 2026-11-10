@@ -16124,6 +16124,203 @@
       }
     }
   },
+  "KjunSplitPane": {
+    "name": "KjunSplitPane",
+    "path": "/components/split-pane",
+    "related": "generic-lists",
+    "description": "두 패널 사이의 경계를 끌어 첫 패널의 크기를 바꿉니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "경계 손잡이",
+                "description": "끌거나 포커스를 두고 화살표·Home·End·Enter로 첫 패널의 크기를 바꿉니다. 현재 크기를 백분율로 알립니다.",
+                "target": "[role=\"separator\"], [role=\"slider\"]",
+                "optional": false
+              },
+              {
+                "label": "첫 패널",
+                "description": "크기를 정하는 기준 패널입니다.",
+                "target": "text=메시지 목록",
+                "optional": true
+              },
+              {
+                "label": "둘째 패널",
+                "description": "나머지 공간을 채웁니다.",
+                "target": "text=상세 내용",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunSplitPane\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "vertical",
+            "label": "상하 분할",
+            "description": "패널을 위아래로 두고 위아래 화살표로 조절합니다.",
+            "settings": {
+              "direction": "vertical"
+            }
+          },
+          {
+            "id": "narrow",
+            "label": "첫 패널 30%",
+            "description": "앱이 size로 첫 패널을 30%로 둡니다.",
+            "values": {
+              "split": 0.3
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "direction horizontal은 좌우, vertical은 상하로 나눕니다. 상하 분할은 부모가 높이를 정해야 합니다. minSize·maxSize는 [첫 패널, 둘째 패널]의 px 한계입니다. 비율과 한계가 부딪치면 최소 크기가 이기고, 두 최소 크기의 합보다 좁으면 첫 패널의 최소 크기를 지킵니다. 컨테이너 크기가 바뀌면 비율을 유지한 채 한계를 다시 적용합니다. disabled는 경계를 고정하고 포커스·키·끌기를 받지 않습니다. 좁은 화면에서 한 패널만 보이게 하는 일은 앱이 정합니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "경계 손잡이",
+                "description": "끌거나 포커스를 두고 화살표·Home·End·Enter로 첫 패널의 크기를 바꿉니다. 현재 크기를 백분율로 알립니다.",
+                "target": "[role=\"separator\"], [role=\"slider\"]",
+                "optional": false
+              },
+              {
+                "label": "첫 패널",
+                "description": "크기를 정하는 기준 패널입니다.",
+                "target": "text=메시지 목록",
+                "optional": true
+              },
+              {
+                "label": "둘째 패널",
+                "description": "나머지 공간을 채웁니다.",
+                "target": "text=상세 내용",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunSplitPane\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "vertical",
+            "label": "상하 분할",
+            "description": "패널을 위아래로 두고 위아래 화살표로 조절합니다.",
+            "settings": {
+              "direction": "vertical"
+            }
+          },
+          {
+            "id": "narrow",
+            "label": "첫 패널 30%",
+            "description": "앱이 size로 첫 패널을 30%로 둡니다.",
+            "values": {
+              "split": 0.3
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "direction horizontal은 좌우, vertical은 상하로 나눕니다. 상하 분할은 부모가 높이를 정해야 합니다. minSize·maxSize는 [첫 패널, 둘째 패널]의 px 한계입니다. 비율과 한계가 부딪치면 최소 크기가 이기고, 두 최소 크기의 합보다 좁으면 첫 패널의 최소 크기를 지킵니다. 컨테이너 크기가 바뀌면 비율을 유지한 채 한계를 다시 적용합니다. disabled는 경계를 고정하고 포커스·키·끌기를 받지 않습니다. 좁은 화면에서 한 패널만 보이게 하는 일은 앱이 정합니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "경계 손잡이",
+                "description": "끌거나 포커스를 두고 화살표·Home·End·Enter로 첫 패널의 크기를 바꿉니다. 현재 크기를 백분율로 알립니다.",
+                "target": "[role=\"separator\"], [role=\"slider\"]",
+                "optional": false
+              },
+              {
+                "label": "첫 패널",
+                "description": "크기를 정하는 기준 패널입니다.",
+                "target": "text=메시지 목록",
+                "optional": true
+              },
+              {
+                "label": "둘째 패널",
+                "description": "나머지 공간을 채웁니다.",
+                "target": "text=상세 내용",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunSplitPane\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "vertical",
+            "label": "상하 분할",
+            "description": "패널을 위아래로 두고 위아래 화살표로 조절합니다.",
+            "settings": {
+              "direction": "vertical"
+            }
+          },
+          {
+            "id": "narrow",
+            "label": "첫 패널 30%",
+            "description": "앱이 size로 첫 패널을 30%로 둡니다.",
+            "values": {
+              "split": 0.3
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "direction horizontal은 좌우, vertical은 상하로 나눕니다. 상하 분할은 부모가 높이를 정해야 합니다. minSize·maxSize는 [첫 패널, 둘째 패널]의 px 한계입니다. 비율과 한계가 부딪치면 최소 크기가 이기고, 두 최소 크기의 합보다 좁으면 첫 패널의 최소 크기를 지킵니다. 컨테이너 크기가 바뀌면 비율을 유지한 채 한계를 다시 적용합니다. disabled는 경계를 고정하고 포커스·키·끌기를 받지 않습니다. 좁은 화면에서 한 패널만 보이게 하는 일은 앱이 정합니다."
+      }
+    }
+  },
   "KjunQuantityStepper": {
     "name": "KjunQuantityStepper",
     "path": "/components/quantity-stepper",

@@ -134,7 +134,28 @@ const valueDescription = {
   KjunTimePicker: "분 단위는 HH:mm, 초 단위는 HH:mm:ss이며 비어 있으면 null입니다. 날짜·시간대는 포함하지 않습니다.",
   KjunQuantityStepper: "확정된 숫자 값입니다. 편집 중 문자열과 구분하며 지정한 precision과 범위를 만족해야 합니다.",
 };
+const splitPaneSummaries = {
+  direction: "나누는 방향입니다. horizontal(기본값)은 패널을 좌우로, vertical은 상하로 둡니다. 상하 분할은 부모가 높이를 정해야 합니다.",
+  size: "제어할 때 첫 패널이 차지하는 비율(0~1)입니다. 경계를 뺀 공간 기준이며, 한계를 벗어난 값은 화면에서 가장 가까운 허용 크기로 그립니다.",
+  defaultSize: "제어하지 않을 때의 처음 비율이자 Enter가 되돌리는 비율입니다. 기본값 0.5입니다.",
+  minSize: "[첫 패널, 둘째 패널]의 최소 크기(px)입니다. 기본값 [0, 0]입니다. 비율이나 maxSize와 부딪치면 최소 크기가 이기고, 컨테이너가 두 최소 크기의 합보다 좁으면 첫 패널의 최소 크기를 지킵니다.",
+  maxSize: "[첫 패널, 둘째 패널]의 최대 크기(px)입니다. null은 제한 없음이며 기본값 [null, null]입니다.",
+  ariaLabel: "경계 손잡이의 접근성 이름입니다(예: 메시지 목록 크기). 손잡이는 현재·최소·최대 크기를 백분율로 함께 알립니다.",
+  disabled: "경계를 고정합니다. 손잡이는 포커스·키·끌기를 받지 않고 막대가 옅은 테두리색이 됩니다. 기본값 false입니다.",
+  className: "루트에 더할 클래스입니다. 패널 크기는 size·minSize·maxSize로 정하세요.",
+  style: "루트에 더할 스타일입니다. 바깥 크기나 여백에 사용하세요. 루트는 부모의 폭과 높이를 채웁니다.",
+  id: "루트의 ID입니다.",
+};
+const splitPaneSlots = {
+  first: slot("첫 패널의 내용입니다. 좌우 분할에서는 시작 쪽, 상하 분할에서는 위쪽입니다.", "ReactNode", "패널은 내용이 넘치면 스스로 스크롤합니다. 크기는 이 패널을 기준으로 정합니다."),
+  second: slot("둘째 패널의 내용입니다. 첫 패널과 경계를 뺀 나머지 공간을 채웁니다.", "ReactNode", "패널은 내용이 넘치면 스스로 스크롤합니다."),
+};
+const splitPaneCallbacks = {
+  onSizeChange: event("첫 패널의 새 비율을 알립니다.", "끄는 동안 값이 바뀔 때마다, 그리고 화살표·Home·End·Enter로 옮길 때", "number: 한계를 적용한 0~1 비율(소수 넷째 자리까지)", "반환값을 사용하지 않습니다.", "제어할 때는 소비자가 size를 갱신합니다. 갱신하지 않으면 경계는 움직이지 않습니다."),
+  onChangeCommit: event("크기 조절이 끝났음을 알립니다.", "끌기를 놓거나 취소될 때 한 번, 키로 옮길 때마다 한 번. 값이 바뀌지 않았으면 발생하지 않습니다.", "number: 마지막 0~1 비율", "반환값을 사용하지 않습니다.", "크기를 저장한다면 이 시점에 저장하세요. 저장과 복원은 소비자가 맡습니다."),
+};
 const callback = (name, key, platform) => {
+  if (name === "KjunSplitPane") return splitPaneCallbacks[key];
   if (name === "KjunColorPicker") return colorPickerCallback(key);
   const changeWhen = name.includes("Slider") ? "드래그·트랙 선택·키보드·접근성 증감으로 실제 값이 바뀔 때" : name === "KjunTimePicker" ? "시·분·초 선택 또는 지우기로 완전한 시각이 바뀔 때" : "Enter·blur 확정 또는 증감 버튼으로 숫자가 바뀔 때";
   const arg = name === "KjunRangeSlider" ? "[시작 숫자, 끝 숫자]" : name === "KjunTimePicker" ? "HH:mm 또는 HH:mm:ss 문자열 / null" : "새 숫자";
@@ -154,7 +175,11 @@ const callback = (name, key, platform) => {
 export const extensionContracts = Object.fromEntries(Object.entries(bindings).map(([name, platforms]) => [name, Object.fromEntries(Object.entries(platforms).map(([platform, keys]) => {
   const props = Object.fromEntries(keys.map(key => {
     let entry;
-    if (name === "KjunColorPicker" && key.startsWith("on")) entry = colorPickerCallback(key);
+    if (name === "KjunSplitPane") {
+      entry = key.startsWith("on") ? callback(name, key, platform) : splitPaneSlots[key] ?? (splitPaneSummaries[key] ? { summary: splitPaneSummaries[key] } : undefined);
+      if (!entry) throw Error("Missing extension prop description: " + name + "." + key);
+    }
+    else if (name === "KjunColorPicker" && key.startsWith("on")) entry = colorPickerCallback(key);
     else if (name === "KjunColorPicker" && key === "renderTrigger") entry = detail(colorPickerSummaries.renderTrigger, { "인자와 반환": "({ value: string | null; open: boolean }) => ReactNode", "접근성": "버튼과 이름(라벨, 현재 값)은 KJUN이 그대로 맡으므로 그린 내용에 같은 문구를 다시 읽히지 않게 aria-hidden을 주세요." });
     else if (name === "KjunColorPicker" && colorPickerSummaries[key]) entry = { summary: colorPickerSummaries[key] };
     else if (name === "KjunCarousel" && carouselSummaries[key]) entry = { summary: carouselSummaries[key] };
@@ -210,12 +235,12 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (name === "KjunRangeSlider" && platform === "vue3") props.modelValue.type = "[number, number]";
   const events = {}, slots = {};
   if (platform === "vue3") {
-    const eventKeys = name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange" } : {};
+    const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
-    const slotNames = { KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions"], KjunListSection: ["actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"] }[name] || [];
+    const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions"], KjunListSection: ["actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"] }[name] || [];
     for (const key of slotNames) {
       if (name === "KjunColorPicker") { slots[key] = colorTriggerSlot; continue; }
-      const definition = name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunCarousel" ? carouselSlides : name === "KjunListRow" && key === "default" ? listRowContent : childProps[key === "default" ? "children" : key];
+      const definition = name === "KjunSplitPane" ? splitPaneSlots[key] : name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunCarousel" ? carouselSlides : name === "KjunListRow" && key === "default" ? listRowContent : childProps[key === "default" ? "children" : key];
       slots[key] = { ...definition, details: definition.details.map(row => row.label === "슬롯 데이터" ? { ...row, text: "제공 데이터 없음" } : row) };
     }
   }

@@ -282,6 +282,47 @@
       "onError"
     ]
   },
+  "KjunSplitPane": {
+    "vue3": [
+      "direction",
+      "size",
+      "defaultSize",
+      "minSize",
+      "maxSize",
+      "ariaLabel",
+      "disabled"
+    ],
+    "react": [
+      "direction",
+      "size",
+      "defaultSize",
+      "minSize",
+      "maxSize",
+      "ariaLabel",
+      "disabled",
+      "onSizeChange",
+      "onChangeCommit",
+      "first",
+      "second",
+      "className",
+      "style",
+      "id"
+    ],
+    "native": [
+      "direction",
+      "size",
+      "defaultSize",
+      "minSize",
+      "maxSize",
+      "ariaLabel",
+      "disabled",
+      "onSizeChange",
+      "onChangeCommit",
+      "first",
+      "second",
+      "style"
+    ]
+  },
   "KjunCarousel": {
     "vue3": [
       "ariaLabel",

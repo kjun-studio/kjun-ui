@@ -867,6 +867,11 @@
   --_kjun-extension-carousel-header-gap: 12px;
   --_kjun-extension-carousel-header-controls-gap: 8px;
   --_kjun-extension-carousel-overlay-padding-x: 8px;
+  --_kjun-extension-split-pane-handle-hit: 20px;
+  --_kjun-extension-split-pane-touch-handle-hit: 44px;
+  --_kjun-extension-split-pane-bar-width: 4px;
+  --_kjun-extension-split-pane-bar-length: 40px;
+  --_kjun-extension-split-pane-active-bar-length: 56px;
   --_kjun-extension-color-picker-width: 240px;
   --_kjun-extension-color-picker-padding: 12px;
   --_kjun-extension-color-picker-gap: 12px;

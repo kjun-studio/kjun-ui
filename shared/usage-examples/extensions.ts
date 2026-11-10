@@ -101,6 +101,15 @@ export function generate(input: UsageInput) {
     case 'KjunTimePicker':
       content = b.node(name, { value: b.state('time', null), onValueChange: b.update('time'), ...b.props('precision', 'minuteStep', 'secondStep', 'disabled', 'error', 'clearable', 'size', 'block'),
         min: s.bounded ? s.precision === 'second' ? '09:30:15' : '09:30' : undefined, max: s.bounded ? s.precision === 'second' ? '18:30:45' : '18:30' : undefined, ariaLabel: '알림 시각', onChangeCommit: commit() }); break;
+    case 'KjunSplitPane': {
+      const vertical = s.direction === 'vertical', height = vertical ? 320 : 180;
+      const pane = (title: string, subtitle: string) => b.node('KjunCard', { title, subtitle });
+      content = b.group([b.node(b.native ? 'View' : 'div', { style: { height: b.native ? height : height + 'px' } },
+        b.node(name, { ariaLabel: '메시지 목록 크기', direction: vertical ? 'vertical' : undefined, size: b.state('split', 0.6), onSizeChange: b.update('split'), defaultSize: 0.6,
+          minSize: s.limits ? vertical ? [80, 80] : [160, 200] : undefined, disabled: s.disabled || undefined, onChangeCommit: commit() }, '',
+        { first: pane('메시지 목록', '첫 패널'), second: pane('상세 내용', '둘째 패널') })),
+        b.text(expr('"첫 패널 비율: " + Math.round(state.split * 100) + "%"'))]); break;
+    }
     case 'KjunColorPicker':
       content = b.node(name, { value: b.state('color', s.alpha ? '#3B82F6CC' : '#3B82F6'), onValueChange: b.update('color'), swatches: s.swatches ? ['#EF4444', '#F97316', '#EAB308', '#22C55E', '#14B8A6', '#3B82F6', '#8B5CF6', '#EC4899', '#64748B', '#111111'] : undefined,
         ...b.props('custom', 'alpha', 'input', 'clearable', 'eyeDropper', 'disabled', 'error', 'size'),

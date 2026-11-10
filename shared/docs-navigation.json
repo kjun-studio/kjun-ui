@@ -1003,6 +1003,20 @@
       ]
     },
     {
+      "name": "KjunSplitPane",
+      "category": "layout",
+      "aliases": [
+        "분할 패널",
+        "패널 크기 조절",
+        "스플리터",
+        "리사이즈",
+        "Split pane"
+      ],
+      "useCases": [
+        "반응형 데이터 화면"
+      ]
+    },
+    {
       "name": "KjunColorPicker",
       "category": "inputs",
       "aliases": [

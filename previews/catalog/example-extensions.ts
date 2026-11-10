@@ -60,6 +60,14 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       return h(name, { value: get("range", settings.decimal ? [.2, .8] : [20, 80]), min: 0, max: settings.decimal ? 1 : 100, step: settings.decimal ? .1 : 1, disabled, label: "조회 범위", thumbLabels: ["시작 값", "끝 값"], onValueChange: change("range"), onChangeCommit: (value: number[]) => set("message", "확정: " + value.join(" ~ ")) });
     case "KjunTimePicker":
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "알림 시각", error: error ? "알림 시각을 선택해 주세요." : "" }, h(name, { value: get("time", null), precision: settings.precision, minuteStep: settings.minuteStep, secondStep: settings.secondStep, min: settings.bounded ? (settings.precision === "second" ? "09:30:15" : "09:30") : undefined, max: settings.bounded ? (settings.precision === "second" ? "18:30:45" : "18:30") : undefined, disabled, error, clearable: settings.clearable, size: settings.size, block: settings.block, ariaLabel: "알림 시각", onValueChange: change("time"), onChangeCommit: (value: string | null) => set("message", "선택: " + value) })));
+    case "KjunSplitPane": {
+      const vertical = settings.direction === "vertical";
+      const pane = (title: string, subtitle: string) => h("KjunCard", { title, subtitle });
+      return h("Stack", {}, [h("Box", { width: 560, height: vertical ? 320 : 180 }, h(name, { ariaLabel: "메시지 목록 크기", direction: settings.direction, size: get("split", 0.6), onSizeChange: change("split"), defaultSize: 0.6,
+        minSize: settings.limits ? vertical ? [80, 80] : [160, 200] : undefined, disabled, onChangeCommit: (size: number) => set("message", "확정: " + size) }, undefined,
+        { first: pane("메시지 목록", "첫 패널"), second: pane("상세 내용", "둘째 패널") })),
+        h("Text", {}, `첫 패널 비율: ${Math.round(get("split", 0.6) * 100)}%`)]);
+    }
     case "KjunColorPicker":
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "라벨 색", error: error ? "라벨 색을 선택해 주세요." : "" }, h(name, { value: get("color", settings.alpha ? "#3B82F6CC" : "#3B82F6"),
         swatches: settings.swatches ? ["#EF4444", "#F97316", "#EAB308", "#22C55E", "#14B8A6", "#3B82F6", "#8B5CF6", "#EC4899", "#64748B", "#111111"] : undefined, custom: settings.custom, alpha: settings.alpha, input: settings.input, clearable: settings.clearable, eyeDropper: settings.eyeDropper,

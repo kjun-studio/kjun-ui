@@ -41,6 +41,7 @@ const componentGroups = {
   parity: files('parity'),
   trail: files('trail'),
   carousel: files('carousel'),
+  'split-pane': files('split-pane'),
   'color-picker': files('color-picker'),
   sparkline: files('sparkline-design', 'runtime-market', 'runtime-cards', 'size-contracts'),
   list: files('list-design', 'list-leading', 'list-section', 'additions', 'adoption', 'requests', 'rounded'),

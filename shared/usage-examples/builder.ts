@@ -121,7 +121,7 @@ export class UsageBuilder {
         if (['renderExpand', 'renderCell', 'renderSelectionToolbar'].includes(key)) continue;
         if (key === 'value' && vueModelComponents.has(name)) key = 'modelValue';
         if (value instanceof Handler) {
-          const events: Record<string, string> = { onValueChange: vueModelComponents.has(name) ? 'update:model-value' : 'update:value', onOpenChange: 'update:open', onChangeCommit: 'change',
+          const events: Record<string, string> = { onValueChange: vueModelComponents.has(name) ? 'update:model-value' : 'update:value', onOpenChange: 'update:open', onChangeCommit: 'change', onSizeChange: 'update:size',
             onSelectionChange: 'update:selected', onExpandedRowsChange: 'update:expanded-rows', onExpandedGroupsChange: 'update:expanded-groups', onRecentColorsChange: 'update:recent-colors', onSortChange: 'update:sort', onPageSizeChange: 'update:page-size' };
           if (name === 'KjunPagination') events.onPageChange = 'update:page';
           attributes.push(`@${events[key] || kebab(key.slice(2)).slice(1)}="${attribute(vueCode(value.code))}"`);
