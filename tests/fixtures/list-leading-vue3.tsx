@@ -27,6 +27,15 @@ createApp(defineComponent(() => () => <K.KjunProvider>
       <K.KjunListRow title="Circle switch" icon="bell" iconBackground={iconBackground} checked={state.checked} onUpdate:checked={(value: boolean) => { state.checked = value; }} />,
       <K.KjunListRow title="Nested parent" icon="bell" leadingSize="lg">{{ default: () => <K.KjunListSection ariaLabel="Nested rows">{{ default: () => <K.KjunListRow title="Nested default" icon="bell" /> }}</K.KjunListSection> }}</K.KjunListRow>,
     ] }}</K.KjunListSection>
+    <K.KjunListSection title="Mixed leading">{{ default: () => [
+      <K.KjunListRow title="Mixed avatar">{{ leading: () => <K.KjunAvatar name="A" size="sm" /> }}</K.KjunListRow>,
+      <K.KjunListRow title="Mixed icon" icon="bell" />,
+      <K.KjunListRow title="Mixed end" icon="lock" />,
+    ] }}</K.KjunListSection>
+    <K.KjunListSection title="Icons only">{{ default: () => [
+      <K.KjunListRow title="Only icon" icon="bell" />,
+      <K.KjunListRow title="Only end" icon="lock" />,
+    ] }}</K.KjunListSection>
     <output data-testid="leading-state">{JSON.stringify({ clicks: state.clicks, checked: state.checked })}</output>
   </div>
 </K.KjunProvider>)).mount('#root');

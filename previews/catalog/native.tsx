@@ -9,7 +9,7 @@ const root = createRoot(document.getElementById('root')!);
 connectCatalog((config, icons) => {
   applyDemoColors(config.palette);
   const names = config.component === 'all' ? exampleNames : [config.component];
-  root.render(<main className="catalog-root" style={cardPreviewStyle(config.component, config.settings.surface, config.palette)} data-foundation-layout={config.component === "GuideScreenLayout"}>{names.map(name => <section className="catalog-example" data-component={name} key={name + config.reset}>
+  root.render(<main className="catalog-root" style={cardPreviewStyle(config.component, config.settings.surface, config.palette, config.settings.variant)} data-foundation-layout={config.component === "GuideScreenLayout"}>{names.map(name => <section className="catalog-example" data-component={name} key={name + config.reset}>
     <div className="catalog-render">{createElement((examples as any)[name], {
       settings: settingsFor(name, config), icons, initialValues: config.component === 'all' ? {} : config.values,
       observer: exampleObserver(name), colors: demoPalettes[config.palette], domainColors: demoDomainPalettes[config.palette], font: demoFont,

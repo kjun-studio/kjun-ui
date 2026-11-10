@@ -24,6 +24,16 @@ export function listLeadingGeometry({ size, custom, background, open = false }: 
 }
 
 /**
+ * The leading column a section's rows share (Web's --_kjun-list-shared-column): beside an avatar or a sized square, a
+ * plain icon centers in the 40px column (56px beside an lg box), so every title and divider starts on one line. A list
+ * of plain icons keeps their 24px column, and rows without leading content are not counted.
+ */
+export function listSharedColumn(rows: { leading: boolean; custom: boolean; size?: ListLeadingSize; background: boolean }[], open = false) {
+  return Math.max(0, ...rows.filter(row => row.leading).map(row => listLeadingGeometry({ size: row.size, custom: row.custom, background: row.background, open }))
+    .filter(geometry => geometry.size || geometry.column >= tokens.extensions.list.leadingWidth).map(geometry => geometry.column));
+}
+
+/**
  * How far a leading box, switch or mark may reach into a one-line row's vertical padding (a negative margin, the same
  * on every platform; Web's --_kjun-list-bleed-limit). Anything up to the title line plus twice this fits without
  * growing the row past its minimum height, and taller content still keeps `minimumInset` to the row's edge, whatever

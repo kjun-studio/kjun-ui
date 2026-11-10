@@ -9,7 +9,7 @@ const icons = shallowRef<KjunIconRegistry>({}), current = shallowRef<CatalogConf
 createApp(defineComponent(() => () => {
   const config = current.value;
   if (!config) return h('div');
-  return h('main', { class: 'catalog-root', style: cardPreviewStyle(config.component, config.settings.surface, config.palette), 'data-foundation-layout': String(config.component === 'GuideScreenLayout') },
+  return h('main', { class: 'catalog-root', style: cardPreviewStyle(config.component, config.settings.surface, config.palette, config.settings.variant), 'data-foundation-layout': String(config.component === 'GuideScreenLayout') },
     (config.component === 'all' ? exampleNames : [config.component]).map(name => h((examples as any)[name], {
       key: name + config.reset, settings: settingsFor(name, config), icons: icons.value,
       initialValues: config.component === 'all' ? {} : config.values, observer: exampleObserver(name),

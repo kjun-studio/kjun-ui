@@ -3,7 +3,14 @@ import type { GuideCase } from './visual-guides/types';
 import type { PaletteName } from './demo-config';
 import { demoPalettes } from './demo-colors.ts';
 
-export function cardPreviewStyle(component: string, surface: unknown, palette: PaletteName) {
+// Lists are panels on a page, like cards: their examples sit on the page colour so a section's surface and a group's
+// rounded cards show (an open list puts its rows on the page itself, so it keeps the plain preview).
+const listPreviews = ['KjunListSection', 'KjunListGroup', 'KjunListItem'];
+export function cardPreviewStyle(component: string, surface: unknown, palette: PaletteName, variant?: unknown) {
+  if (listPreviews.includes(component) && variant !== 'open') {
+    const colors = demoPalettes[palette];
+    return { background: palette === 'dark' ? colors.background : colors.secondary, minHeight: '100vh' };
+  }
   if (component !== 'KjunCard') return undefined;
   const colors = demoPalettes[palette];
   return { background: surface === 'muted' ? colors.surface : palette === 'dark' ? colors.background : colors.secondary, minHeight: '100vh' };

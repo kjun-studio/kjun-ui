@@ -6,7 +6,7 @@ import { listRowChoice, listRowEnd, listRowKind, listRowMetrics, listSectionShap
 import { ListShapeContext } from "./list-context";
 import { SwitchSpinner } from "./choice-controls";
 import { View, Platform, type ColorValue, type GestureResponderEvent, type TextStyle } from "react-native";
-import { listLeadingGeometry, listRowBleed, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
+import { listLeadingGeometry, listRowBleed, listSharedColumn, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 import { AccessiblePressable as Pressable, type FocusRingRadius } from "./a11y";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { KText, content } from "./internal";
@@ -17,7 +17,8 @@ import { useKjunStyles } from "./provider";
 // A section tells its rows whether to draw a divider (never after the last, like Web's :last-child), the section's
 // selection (a single-choice list is a radiogroup) and in a rounded card which of the card's corners the row's ring
 // follows. Whether it is open and compact comes from ListShapeContext.
-const ListRowContext = createContext<{ divider: boolean; selection: ListSelection; ringRadius?: FocusRingRadius }>({ divider: true, selection: { mode: "none" } });
+// `column` is the leading column the section's rows share (see listSharedColumn).
+const ListRowContext = createContext<{ divider: boolean; selection: ListSelection; ringRadius?: FocusRingRadius; column?: number }>({ divider: true, selection: { mode: "none" } });
 export type { ListChoiceValue, ListGroupVariant, ListSectionVariant } from "../../../shared/package-runtime/list-row";
 export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 const list = tokens.extensions.list;
@@ -85,7 +86,7 @@ function ChoiceMark({ checkbox, on }: { checkbox: boolean; on: boolean }) {
   </View>;
 }
 export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onPress: ownPress, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
-  const { colors } = useKjunStyles(), { divider, selection, ringRadius } = useContext(ListRowContext), { open, compact } = useContext(ListShapeContext);
+  const { colors } = useKjunStyles(), { divider, selection, ringRadius, column: sharedColumn = 0 } = useContext(ListRowContext), { open, compact } = useContext(ListShapeContext);
   const choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   const onPress = choice.press ? (event: GestureResponderEvent) => { choice.press(); ownPress?.(event); } : ownPress;
   const kind = listRowKind({ checked, selected, href, pressable: !!(onPress || href), mode: selection.mode }), toggle = kind === "switch";
@@ -102,7 +103,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   // row (one margin for every size); with one, the row's ends center on the band of the title and first description line.
   const bleed = { marginVertical: listRowBleed(paddingY) };
   const end = (height: number) => description ? { alignSelf: "flex-start" as const, marginTop: (band - height) / 2 } : bleed;
-  const hasLeading = hasContent(leading), geometry = listLeadingGeometry({ size: leadingSize, custom: hasLeading, background: iconBackground != null, open }), leadingWidth = geometry.width, column = geometry.column;
+  const hasLeading = hasContent(leading), geometry = listLeadingGeometry({ size: leadingSize, custom: hasLeading, background: iconBackground != null, open }), leadingWidth = geometry.width, column = Math.max(geometry.column, sharedColumn);
   const glyph = icon ? <KjunIcon name={icon} size={geometry.iconSize} color={iconColor ?? (destructive ? colors.danger : open ? colors.text : colors.textSecondary)} /> : null;
   const tileColor = iconBackground ?? (open ? (destructive ? colors.dangerBg : colors.secondary) : undefined);
   const front = hasLeading ? content(leading) : glyph && geometry.tile ? <View accessible={false} style={{ width: leadingWidth, height: leadingWidth, borderRadius: open ? list.open.leadingRadius : list.iconBackgroundRadius, alignItems: "center", justifyContent: "center", backgroundColor: tileColor }}>{glyph}</View> : glyph;
@@ -158,7 +159,9 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
       // Like Web: a static row dims as a whole when disabled, so nothing in it reads as available.
       : <View style={{ ...style, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{parts}</View>}
     {/* A disabled row disables its actions too, so the row never reads as partly available. */}
-    {hasContent(actions) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: "45%", flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: m.actionsPadding, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}</View>}
+    {hasContent(actions) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: "45%", flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: m.actionsPadding,
+      // Like Web: with a description, actions center on the title and first description line instead of a long row's middle.
+      ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}</View>}
     {divider && <Divider inset={paddingX + (front ? column + gap : 0)} />}
   </View>;
 }
@@ -240,11 +243,16 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   const shape = useMemo(() => ({ open, compact }), [open, compact]);
   const selection = useMemo(() => ({ mode: selectionMode, value, onValueChange }), [selectionMode, value, onValueChange]);
   const count = items.length;
+  // Like Web, rows that lead with something share the list's widest leading column, so titles start on one line.
+  const shared = listSharedColumn(items.map(row => {
+    const props = (row.props ?? {}) as { icon?: string; leading?: ReactNode; leadingSize?: ListLeadingSize; iconBackground?: unknown };
+    return { leading: !!props.icon || hasContent(props.leading), custom: hasContent(props.leading), size: props.leadingSize, background: props.iconBackground != null };
+  }), open);
   const contexts = useMemo(() => Array.from({ length: count }, (_, i) => {
     const first = i === 0, last = i === count - 1;
     const ringRadius = radiusValue === undefined ? undefined : first && last ? radiusValue : first ? { top: radiusValue } : last ? { bottom: radiusValue } : undefined;
-    return { divider: divider && !last && !open, selection, ringRadius };
-  }), [count, divider, open, selection, radiusValue]);
+    return { divider: divider && !last && !open, selection, ringRadius, column: shared };
+  }), [count, divider, open, selection, radiusValue, shared]);
   // Each row keeps its own key, so reordering or filtering rows moves them instead of remounting them.
   // Loading content announces itself (a skeleton's loadingText is a status), so the wrapper only places it.
   const rows = hasContent(loading) ? <View>{content(loading)}</View>
@@ -258,7 +266,8 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   return <ListShapeContext.Provider value={shape}><View style={{ minWidth: 0, ...(outside ? {} : card) }}>
     {!!(title || description || hasContent(actions)) && <View style={{ flexDirection: "row", alignItems: "flex-start", gap: list.gap, padding: list.padding,
       // A title without a description is a small group header that sits close to its rows; outside a card it starts at the top.
-      ...(bare ? { paddingBottom: list.bareHeadingPaddingBottom } : {}), ...(outside ? { paddingTop: overflow, paddingBottom: list.outsideLabelGap } : {}) }}>
+      // Like Web: 8px under a heading (4px under a small group header), so it reads with its rows.
+      paddingBottom: bare ? list.bareHeadingPaddingBottom : list.headingPaddingBottom, ...(outside ? { paddingTop: overflow, paddingBottom: list.outsideLabelGap } : {}) }}>
       <View style={{ flex: 1 }}>{!!title && <KText {...wordProps} accessibilityRole="header" {...(Platform.OS === "web" ? { "aria-level": headingLevel } : {})} style={{ ...(bare ? { ...typeStyle('controlSmall'), color: colors.textSecondary } : typeStyle('cardTitle')), ...words }}>{title}</KText>}{!!description && <KText {...wordProps} nativeID={id + "-description"} style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'), ...words }}>{description}</KText>}</View>
       {hasContent(actions) && <View style={{ flexShrink: 0, height: titleLine, marginBottom: overflow, justifyContent: "center", marginEnd: ghostInset(actions) }}>
         <View onLayout={event => setActionHeight(event.nativeEvent.layout.height)} style={{ flexDirection: "row", alignItems: "center", gap: list.actionsGap }}>{content(actions)}</View>

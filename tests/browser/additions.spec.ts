@@ -36,13 +36,13 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(Math.round(end.x + end.width)).toBe(Math.round(endColumn.x + endColumn.width));
     });
 
-    test('selected segment has an edge in the border color role', async ({ page }) => {
+    test('selected segment is a surface fill with no edge (in-flow controls are fill-only, 0.20.0)', async ({ page }) => {
       const group = section(page, 'button-group');
       if (platform === 'native') {
-        await expect(group.getByTestId('kjun-button-group-indicator')).toHaveCSS('border-top-width', '1px');
+        await expect(group.getByTestId('kjun-button-group-indicator')).toHaveCSS('border-top-width', '0px');
       } else {
         const shadow = await group.locator('.kjun-button-group-indicator').evaluate(el => getComputedStyle(el).boxShadow);
-        expect(shadow).toContain('inset');
+        expect(shadow).not.toContain('inset');
       }
     });
 
@@ -110,7 +110,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(Math.round(title!.x - (await rows.first().boundingBox())!.x)).toBe(16);
     });
 
-    test('list rows use 24px icon and 40px custom leading columns, start dividers at the text and label a bare section title', async ({ page }) => {
+    test('list rows share the 40px leading column beside a custom avatar, start dividers at the text and label a bare section title', async ({ page }) => {
       const list = section(page, 'icon-list');
       const rows = list.locator(platform === 'native' ? '[role="listitem"]' : '.kjun-list-row');
       await expect(rows).toHaveCount(3);
@@ -119,16 +119,17 @@ for (const platform of ['react', 'vue3', 'native']) {
       const row = (await rows.nth(0).boundingBox())!;
       const alerts = (await list.getByText('Alerts', { exact: true }).boundingBox())!;
       const kim = (await list.getByText('Kim', { exact: true }).boundingBox())!;
-      // Titles follow the 16px inset, a 24px icon or 40px custom leading column, and a 12px gap.
-      expect(Math.round(alerts.x - row.x)).toBe(52);
+      // Titles follow the 16px inset, the leading column and a 12px gap. Beside the custom avatar the icon rows share its
+      // 40px column (the icon centered in it), so every title and divider starts at 68.
+      expect(Math.round(alerts.x - row.x)).toBe(68);
       expect(Math.round(kim.x - row.x)).toBe(68);
-      expect(Math.round(icon.x + icon.width / 2 - row.x)).toBe(28);
+      expect(Math.round(icon.x + icon.width / 2 - row.x)).toBe(36);
       // Row titles use the label role, one weight below section titles (0.21.0).
       await expect(list.getByText('Alerts', { exact: true })).toHaveCSS('font-weight', '500');
       const dividerStart = (index: number) => platform === 'native'
         ? rows.nth(index).evaluate(el => { const line = el.lastElementChild!.getBoundingClientRect(); return { left: line.left - el.getBoundingClientRect().left, height: line.height }; })
         : rows.nth(index).evaluate(el => { const line = getComputedStyle(el, '::after'); return { left: parseFloat(line.left), height: parseFloat(line.height) }; });
-      expect(await dividerStart(0)).toEqual({ left: 52, height: 1 });
+      expect(await dividerStart(0)).toEqual({ left: 68, height: 1 });
       expect(await dividerStart(1)).toEqual({ left: 68, height: 1 });
       if (platform !== 'native') expect(await rows.nth(2).evaluate(el => getComputedStyle(el, '::after').content)).toBe('none');
       const heading = list.getByText('Settings', { exact: true });

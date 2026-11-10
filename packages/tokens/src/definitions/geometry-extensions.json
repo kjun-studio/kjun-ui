@@ -58,6 +58,7 @@
       },
       "iconBackgroundRadius": { "$ref": "radius.radius9999" },
       "bareHeadingPaddingBottom": { "$ref": "dimension.value4" },
+      "headingPaddingBottom": { "$ref": "dimension.value8" },
       "outsideLabelGap": { "$ref": "dimension.value8" },
       "footerGap": { "$ref": "dimension.value8" },
       "groupGap": { "$ref": "dimension.value24" },

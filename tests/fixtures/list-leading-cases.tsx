@@ -30,6 +30,15 @@ export function ListLeadingCases({ K, native = false }: { K: any; native?: boole
         <K.KjunListSection ariaLabel="Nested rows"><K.KjunListRow title="Nested default" icon="bell" /></K.KjunListSection>
       </K.KjunListRow>
     </K.KjunListSection>
+    <K.KjunListSection title="Mixed leading">
+      <K.KjunListRow title="Mixed avatar" leading={<K.KjunAvatar name="A" size="sm" />} />
+      <K.KjunListRow title="Mixed icon" icon="bell" />
+      <K.KjunListRow title="Mixed end" icon="lock" />
+    </K.KjunListSection>
+    <K.KjunListSection title="Icons only">
+      <K.KjunListRow title="Only icon" icon="bell" />
+      <K.KjunListRow title="Only end" icon="lock" />
+    </K.KjunListSection>
     <output data-testid="leading-state">{JSON.stringify({ clicks, checked })}</output>
   </div>;
 }

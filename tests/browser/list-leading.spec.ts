@@ -8,9 +8,10 @@ const main = (row: Locator, native: boolean) => native ? row.locator(':scope > d
 const leading = (row: Locator, native: boolean) => native ? main(row, native).locator(':scope > div').first() : row.locator('.kjun-list-leading');
 const stroke = (icon: Locator) => icon.evaluate(el => getComputedStyle(el).stroke);
 
-// A sized leading box smaller than the 40px leading column keeps that column, so titles share one start line.
-async function checkGeometry(page: Page, title: string, native: boolean, width: number, iconSize: number, background = true, sized = true) {
-  const column = sized ? Math.max(width, 40) : width;
+// A sized leading box smaller than the 40px leading column keeps that column, and every leading row in a section takes
+// the section's widest column (56px here, beside the lg boxes), so titles share one start line.
+async function checkGeometry(page: Page, title: string, native: boolean, width: number, iconSize: number, background = true, sized = true, shared = 56) {
+  const column = Math.max(sized ? Math.max(width, 40) : width, shared);
   const target = row(page, title), front = leading(target, native), svg = target.locator('svg').first();
   const [rowBox, frontBox, iconBox, titleBox] = await Promise.all([box(main(target, native)), box(front), box(svg), box(page.getByText(title, { exact: true }))]);
   expect(frontBox.width).toBe(column);
@@ -56,7 +57,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(await stroke(row(page, 'Danger default').locator('svg'))).toBe(danger);
     expect(await stroke(row(page, 'Danger override').locator('svg'))).toBe('rgb(36, 86, 168)');
     expect(await page.getByText('Danger override', { exact: true }).evaluate(el => getComputedStyle(el).color)).toBe(danger);
-    for (const [title, width, childWidth] of [['Custom default', 40, 32], ['Custom xs', 40, 24], ['Custom lg', 56, 32]] as const) {
+    for (const [title, width, childWidth] of [['Custom default', 56, 32], ['Custom xs', 56, 24], ['Custom lg', 56, 32]] as const) {
       const target = row(page, title), front = leading(target, native);
       expect((await box(front)).width).toBe(width);
       expect((await box(front.locator(':scope > *').first())).width).toBe(childWidth);
@@ -75,6 +76,12 @@ for (const platform of ['react', 'vue3', 'native']) {
     const nested = page.getByRole('list', { name: 'Nested rows', exact: true }).getByRole('listitem');
     expect((await box(main(nested, native))).height).toBe(56);
     expect((await box(leading(nested, native))).width).toBe(24);
+    // Beside an avatar a plain icon centers in the 40px column, so both titles and dividers start on one line; a list of
+    // plain icons keeps their 24px column.
+    const mixed = await Promise.all(['Mixed avatar', 'Mixed icon'].map(async title => (await box(page.getByText(title, { exact: true }))).x));
+    expect(mixed[1]).toBeCloseTo(mixed[0]);
+    await checkGeometry(page, 'Mixed icon', native, 24, 20, false, false, 40);
+    await checkGeometry(page, 'Only icon', native, 24, 20, false, false, 0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: `test-results/list-leading-${platform}-${width}.png`, fullPage: true });
   });
