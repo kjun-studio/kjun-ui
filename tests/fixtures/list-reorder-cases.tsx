@@ -8,6 +8,8 @@ export function ListReorderCases({ K, native = false, providerProps = {} }: { K:
   const [chosen, setChosen] = useState('sonnet');
   const [picked, setPicked] = useState<string[]>(models.map(([id]) => id));
   const [stuck] = useState<string[]>(models.map(([id]) => id));
+  const [held, setHeld] = useState<string[]>(models.map(([id]) => id));
+  const [drops, setDrops] = useState<string[]>([]);
   const press = (action: () => void) => ({ [native ? 'onPress' : 'onClick']: action });
   const rows = (ids: string[]) => ids.map(id => <K.KjunListRow key={id} value={id} title={titleOf(id)} />);
   return <K.KjunProvider {...providerProps}><div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 16, width: 480 }}>
@@ -23,6 +25,11 @@ export function ListReorderCases({ K, native = false, providerProps = {} }: { K:
     <div data-testid="rejected"><K.KjunListSection title="Fixed" reorderable order={stuck} onOrderChange={() => {}}>{rows(stuck)}</K.KjunListSection></div>
     <div data-testid="partial"><K.KjunListSection title="Partial" reorderable order={['opus', 'sonnet']} onOrderChange={() => {}}>
       {rows(['opus', 'sonnet'])}<K.KjunListRow title="Pinned" /><K.KjunListRow value="ghost" title="Unlisted" /></K.KjunListSection></div>
+    <div data-testid="handle"><K.KjunListSection title="Handle" reorderable reorderControls="handle" order={held} onOrderChange={setHeld}
+      onReorder={(move: any) => setDrops(old => [...old, `${move.value}:${move.from}>${move.to}`])}>{rows(held)}</K.KjunListSection></div>
+    <output data-testid="held">{held.join(',')}</output>
+    <output data-testid="drops">{drops.join(' ')}</output>
+    <div data-testid="both"><K.KjunListSection title="Both" reorderable reorderControls="both" order={held} onOrderChange={setHeld}>{rows(held)}</K.KjunListSection></div>
     <div data-testid="plain"><K.KjunListSection title="Plain">{rows(stuck)}</K.KjunListSection></div>
     <K.KjunButton variant="secondary" {...press(() => setOrder(models.map(([id]) => id).reverse()))}>Reverse</K.KjunButton>
   </div></K.KjunProvider>;

@@ -7,7 +7,7 @@ applyDemoColors('default');
 const ids = () => models.map(([id]) => id as string);
 const rows = (list: string[]) => list.map(id => <K.KjunListRow key={id} value={id} title={titleOf(id)} />);
 const App = defineComponent(() => {
-  const order = ref(ids()), moves = ref<string[]>([]), chosen = ref('sonnet'), picked = ref(ids()), stuck = ids();
+  const order = ref(ids()), moves = ref<string[]>([]), chosen = ref('sonnet'), picked = ref(ids()), stuck = ids(), held = ref(ids()), drops = ref<string[]>([]);
   return () => <K.KjunProvider>{{ default: () => <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '16px', width: '480px' }}>
     <div data-testid="basic"><K.KjunListSection title="Models" reorderable order={order.value} onUpdate:order={(next: any) => { order.value = next; }}
       onReorder={(move: any) => { moves.value = [...moves.value, `${move.value}:${move.from}>${move.to}`]; }}>{{ default: () => rows(order.value) }}</K.KjunListSection></div>
@@ -21,6 +21,11 @@ const App = defineComponent(() => {
     <div data-testid="rejected"><K.KjunListSection title="Fixed" reorderable order={stuck}>{{ default: () => rows(stuck) }}</K.KjunListSection></div>
     <div data-testid="partial"><K.KjunListSection title="Partial" reorderable order={['opus', 'sonnet']}>{{ default: () => [
       ...rows(['opus', 'sonnet']), <K.KjunListRow title="Pinned" />, <K.KjunListRow value="ghost" title="Unlisted" />] }}</K.KjunListSection></div>
+    <div data-testid="handle"><K.KjunListSection title="Handle" reorderable reorderControls="handle" order={held.value} onUpdate:order={(next: any) => { held.value = next; }}
+      onReorder={(move: any) => { drops.value = [...drops.value, `${move.value}:${move.from}>${move.to}`]; }}>{{ default: () => rows(held.value) }}</K.KjunListSection></div>
+    <output data-testid="held">{held.value.join(',')}</output>
+    <output data-testid="drops">{drops.value.join(' ')}</output>
+    <div data-testid="both"><K.KjunListSection title="Both" reorderable reorderControls="both" order={held.value} onUpdate:order={(next: any) => { held.value = next; }}>{{ default: () => rows(held.value) }}</K.KjunListSection></div>
     <div data-testid="plain"><K.KjunListSection title="Plain">{{ default: () => rows(stuck) }}</K.KjunListSection></div>
     <K.KjunButton variant="secondary" onClick={() => { order.value = ids().reverse(); }}>Reverse</K.KjunButton>
   </div> }}</K.KjunProvider>;

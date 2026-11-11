@@ -5,6 +5,7 @@ const guides = JSON.parse(readFileSync(new URL("../component-guides.json", impor
 const summaries = {
   reorderable: "행 순서를 사용자가 바꿀 수 있게 합니다. order에 있는 value를 가진 행마다 위·아래 이동 버튼을 행의 actions 뒤에 그립니다. 순서는 앱이 관리하며 KJUN은 행을 직접 옮기지 않습니다. 기본값 false입니다.",
   order: "보이는 순서대로 나열한 행 value 배열입니다. 앱이 이 순서로 행을 그립니다. 배열에 없는 value의 행과 value가 없는 행은 이동 버튼이 없습니다. reorderable에 필요합니다.",
+  reorderControls: "이동 컨트롤의 종류입니다. buttons(기본값)는 위·아래 버튼, handle은 끄는 손잡이, both는 둘 다입니다. 손잡이는 포인터로 끌면 이웃 행의 가운데를 지날 때마다 한 칸씩 옮기고, 키보드에서는 Enter·Space로 잡은 뒤 위·아래 화살표로 옮기고 Enter로 놓으며 Escape로 처음 자리에 되돌립니다. 끌거나 잡은 동안에는 한 칸마다 onOrderChange만, 놓을 때 onReorder가 한 번 발생합니다. 스크린리더의 누르기로도 잡고 놓을 수 있지만, 탐색 모드에서는 화살표 키를 스크린리더가 먼저 쓰므로 스크린리더 사용자를 위해서는 버튼이 함께 있는 both를 권합니다. 앱이 한 칸 이동을 적용하지 않으면 그 칸에서 멈추고, 놓을 때는 마지막 요청이 적용되기를 잠시 기다린 뒤 알립니다. Native는 손잡이를 그리지 않고 항상 위·아래 버튼을 그립니다.",
   reorderDisabled: "이동 버튼을 모두 끕니다. 가격순처럼 자동 정렬 중일 때 켜세요. 기본값 false입니다.",
   reorderDisabledText: "이동을 끈 이유입니다. reorderDisabled일 때 행 아래에 보이고 이동 버튼의 설명으로 함께 읽습니다.",
   // TimePicker refines these two below.

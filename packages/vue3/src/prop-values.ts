@@ -154,6 +154,7 @@ export const kjunPropValues = Object.freeze({
     density: Object.freeze(["compact","default"] as const),
     headingLevel: Object.freeze([2,3,4] as const),
     radius: Object.freeze(["none","sm","md","lg","xl"] as const),
+    reorderControls: Object.freeze(["both","buttons","handle"] as const),
     selectionMode: Object.freeze(["multiple","none","single"] as const),
     titleVariant: Object.freeze(["label","title"] as const),
     variant: Object.freeze(["default","open"] as const),

@@ -140,6 +140,10 @@
 .kjun-list-row:has(> .kjun-list-main .kjun-list-description) > .kjun-list-actions{align-self:flex-start;align-items:center;min-height:var(--_kjun-list-band);margin-top:var(--_kjun-list-padding-y)}
 /* Move buttons of a reorderable section sit after the row's own actions and never wrap apart. */
 .kjun-list-reorder{display:inline-flex;align-items:center;flex:0 0 auto;gap:var(--_kjun-extension-list-actions-gap)}
+/* The handle drags, so a touch on it never scrolls; the held row takes the hover fill and stays in the flow. */
+.kjun-list-reorder>[data-reorder=handle]{cursor:grab;touch-action:none}
+.kjun-list-row[data-reordering]{background-color:var(--_kjun-color-hover)}
+.kjun-list-row[data-reordering] .kjun-list-reorder>[data-reorder=handle]{cursor:grabbing}
 /* A disabled row disables its actions too, so the row never reads as partly available. */
 .kjun-list-actions[data-disabled]{opacity:var(--_kjun-state-opacity-disabled)}
 .kjun-list-item{padding:var(--_kjun-extension-list-padding);position:relative;min-width:0}

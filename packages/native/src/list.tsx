@@ -206,6 +206,8 @@ export interface KjunListSectionProps {
   onOrderChange?: (order: ListChoiceValue[]) => void;
   /** The same move in detail: the row's value, where it was and where it went. */
   onReorder?: (move: KjunListReorderMove) => void;
+  /** Web draws a drag handle for "handle" and "both"; Native always draws the up and down buttons. */
+  reorderControls?: "buttons" | "handle" | "both";
   /** Turns the move buttons off, such as while the list is sorted by a rule. */
   reorderDisabled?: boolean;
   /** Why moving is off, shown under the rows. */

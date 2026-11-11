@@ -52,3 +52,23 @@ export function reorderConfirmed(order: readonly ReorderKey[] | undefined, pendi
 export function reorderDuplicates(order: readonly ReorderKey[] | undefined) {
   return !!order && new Set(order).size !== order.length;
 }
+
+/**
+ * Which way a dragged row steps for a pointer position: up once the pointer is above the middle of the row before
+ * it, down once it is below the middle of the row after it. `rows` are the movable rows' boxes in their current order.
+ */
+export function reorderDragStep(pointer: number, rows: readonly { top: number; height: number }[], index: number): -1 | 0 | 1 {
+  const middle = (row: { top: number; height: number }) => row.top + row.height / 2;
+  if (!rows[index] || !Number.isFinite(pointer)) return 0;
+  if (index > 0 && pointer < middle(rows[index - 1])) return -1;
+  if (index < rows.length - 1 && pointer > middle(rows[index + 1])) return 1;
+  return 0;
+}
+
+export type ReorderKeyAction = "grab" | "drop" | "cancel" | "up" | "down" | "leave";
+/** Keys on a row's handle. "leave" (Tab) drops the row and must not be prevented. */
+export function reorderKeyAction(key: string, grabbed: boolean): ReorderKeyAction | null {
+  const press = key === "Enter" || key === " ";
+  if (!grabbed) return press ? "grab" : null;
+  return press ? "drop" : key === "Escape" ? "cancel" : key === "ArrowUp" ? "up" : key === "ArrowDown" ? "down" : key === "Tab" ? "leave" : null;
+}

@@ -89,6 +89,7 @@
       "modelValue",
       "reorderable",
       "order",
+      "reorderControls",
       "reorderDisabled",
       "reorderDisabledText"
     ],
@@ -113,6 +114,7 @@
       "onValueChange",
       "reorderable",
       "order",
+      "reorderControls",
       "reorderDisabled",
       "reorderDisabledText",
       "onOrderChange",
@@ -139,6 +141,7 @@
       "onValueChange",
       "reorderable",
       "order",
+      "reorderControls",
       "reorderDisabled",
       "reorderDisabledText",
       "onOrderChange",

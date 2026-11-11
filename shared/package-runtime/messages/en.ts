@@ -154,6 +154,10 @@ export const kjunMessagesEn: KjunMessages = {
   moveUp: (name: string) => `Move ${name} up`,
   moveDown: (name: string) => `Move ${name} down`,
   reorderMoved: (name: string, position: number, total: number) => `${name} moved to ${position} of ${total}`,
+  reorderHandle: (name: string) => `Reorder ${name}`,
+  reorderGrabbed: (name: string) => `${name} grabbed. Use the up and down arrows to move it and Enter to drop it. Escape cancels.`,
+  reorderDropped: (name: string, position: number, total: number) => `${name} dropped at ${position} of ${total}`,
+  reorderCancelled: (name: string) => `${name} move cancelled`,
   // Color picker
   colorPlaceholder: "Choose color",
   colorPicker: "Color picker",

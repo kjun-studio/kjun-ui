@@ -1631,7 +1631,7 @@
       "title": "ListSection",
       "docs": "/components/list-section",
       "category": "data-display",
-      "differences": "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다. 순서 변경 안내는 웹에서 status 영역으로, Native 기기에서는 스크린리더 알림으로 읽습니다. 옮긴 뒤 포커스 유지는 웹에서만 합니다.",
+      "differences": "웹은 section과 ul, Native는 목록 의미를 가진 View로 구성합니다. 순서 변경 안내는 웹에서 status 영역으로, Native 기기에서는 스크린리더 알림으로 읽습니다. 옮긴 뒤 포커스 유지는 웹에서만 합니다. 끄는 손잡이는 웹에서만 그리며, Native는 reorderControls 값과 관계없이 위·아래 버튼을 그립니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

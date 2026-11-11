@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { reorderConfirmed, reorderDuplicates, reorderFocus, reorderMove, reorderPlace, reorderStep } from '../shared/package-runtime/reorder.ts';
+import { reorderConfirmed, reorderDragStep, reorderDuplicates, reorderFocus, reorderKeyAction, reorderMove, reorderPlace, reorderStep } from '../shared/package-runtime/reorder.ts';
 
 const order = ['a', 'b', 'c', 'd'];
 
@@ -68,4 +68,37 @@ test('an order that lists a value twice is reported', () => {
   assert.equal(reorderDuplicates(['a', 'b', 1, '1']), false);
   assert.equal(reorderDuplicates([]), false);
   assert.equal(reorderDuplicates(undefined), false);
+});
+
+test('a dragged row steps when the pointer passes the middle of its neighbour', () => {
+  // Three 56px rows from 100: middles at 128, 184 and 240.
+  const rows = [{ top: 100, height: 56 }, { top: 156, height: 56 }, { top: 212, height: 56 }];
+  assert.equal(reorderDragStep(180, rows, 1), 0);
+  assert.equal(reorderDragStep(127, rows, 1), -1);
+  assert.equal(reorderDragStep(128, rows, 1), 0);
+  assert.equal(reorderDragStep(241, rows, 1), 1);
+  // The ends have nowhere further to go, however far the pointer is.
+  assert.equal(reorderDragStep(-500, rows, 0), 0);
+  assert.equal(reorderDragStep(900, rows, 2), 0);
+  assert.equal(reorderDragStep(900, rows, 0), 1);
+  // A tall neighbour needs the pointer past its own middle, so rows of different heights do not flip back and forth.
+  assert.equal(reorderDragStep(250, [{ top: 100, height: 56 }, { top: 156, height: 200 }], 0), 0);
+  assert.equal(reorderDragStep(257, [{ top: 100, height: 56 }, { top: 156, height: 200 }], 0), 1);
+  assert.equal(reorderDragStep(180, rows, 7), 0);
+  assert.equal(reorderDragStep(Number.NaN, rows, 1), 0);
+});
+
+test('the handle grabs with Enter or Space, moves with the arrows, drops with Enter and cancels with Escape', () => {
+  assert.equal(reorderKeyAction('Enter', false), 'grab');
+  assert.equal(reorderKeyAction(' ', false), 'grab');
+  assert.equal(reorderKeyAction('ArrowDown', false), null);
+  assert.equal(reorderKeyAction('Escape', false), null);
+  assert.equal(reorderKeyAction('ArrowUp', true), 'up');
+  assert.equal(reorderKeyAction('ArrowDown', true), 'down');
+  assert.equal(reorderKeyAction('Enter', true), 'drop');
+  assert.equal(reorderKeyAction(' ', true), 'drop');
+  assert.equal(reorderKeyAction('Escape', true), 'cancel');
+  // Leaving with Tab drops the row where it is; the key keeps its own meaning.
+  assert.equal(reorderKeyAction('Tab', true), 'leave');
+  assert.equal(reorderKeyAction('a', true), null);
 });
