@@ -15,12 +15,15 @@ LayoutAnimation,
 Platform,
 StyleSheet,
 View,
+useWindowDimensions,
 type StyleProp,
+type TextStyle,
 type ViewStyle
 } from "react-native";
 import Svg,{ Circle,Path } from "react-native-svg";
 import { AccessiblePressable as Pressable } from "./a11y";
-import { KjunIcon } from "./button";
+import { IconBase, KjunIcon } from "./button";
+import { FormActionsContext } from "./form-actions-context";
 import { AlertActionsContext } from "./alert-actions-context";
 import { textTint } from "./text-tint";
 import { ActionSizeContext, alertActionSizes } from "../../../shared/package-runtime/action-size";
@@ -142,53 +145,77 @@ export interface KjunEmptyProps {
   text?: string;
   description?: string;
   icon?: string;
+  /** md for pages and panels; sm for cards and list areas. */
+  size?: "sm" | "md";
   children?: ReactNode;
 }
 /** Set by KjunListSection to its density: the empty note stays one row tall in the secondary body type, like Web's .kjun-list-empty. */
 export const ListEmptyContext = createContext<false | "default" | "compact">(false);
+// Stacked buttons fill the column the way stacked form actions do.
+const stackedActions = { stacked: true };
+// Like Web's keep-all: Korean wraps between words (iOS through its Hangul word strategy, a Text prop).
+const emptyWords = (Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "break-word" } : {}) as unknown as TextStyle;
 export function KjunEmpty({
   text,
   description,
   icon,
+  size = "md",
   children,
 }: KjunEmptyProps) {
   const m = useKjunMessages();
   text ??= m.noData;
   const { colors } = useKjunStyles();
-  const spec = tokens.extensions.empty;
+  const spec = tokens.extensions.empty, sm = size === "sm", iconSize = sm ? spec.smIconSize : spec.iconSize;
   const stateContent = useContext(DataStateContentContext), inList = useContext(ListEmptyContext);
+  // Phones stack the actions in their own order, one full-width button per line.
+  const stacked = useWindowDimensions().width <= tokens.responsive.empty;
+  const title = inList ? { ...typeStyle('body'), color: colors.textSecondary }
+    : { ...typeStyle('cardTitle'), color: colors.text, fontSize: sm ? spec.smTitleSize : spec.titleSize, lineHeight: sm ? spec.smTitleLineHeight : spec.titleLineHeight };
   return (
     <View
       style={{
         alignItems: "center",
         justifyContent: "center",
-        paddingVertical: inList === "compact" ? 0 : inList ? tokens.extensions.list.compactPaddingY : stateContent === 'empty' ? 0 : tokens.dimension.value32,
+        paddingHorizontal: spec.paddingX,
+        paddingVertical: inList === "compact" ? 0 : inList ? tokens.extensions.list.compactPaddingY : stateContent === 'empty' ? 0 : sm ? spec.smPaddingY : spec.paddingY,
       }}
     >
       {!!icon && (
-        <View style={{ marginBottom: spec.iconGap }}>
-          <KjunIcon name={icon} size={spec.iconSize} color={colors.textSecondary} />
+        <View style={{ marginBottom: sm ? spec.smIconGap : spec.iconGap }}>
+          {/* The stroke keeps one painted weight at every icon size instead of scaling with the 24-unit viewBox. */}
+          <IconBase name={icon} size={iconSize} color={colors.textTertiary} strokeWidth={(spec.iconStroke * 24) / iconSize} />
         </View>
       )}
-      <KText style={{ ...(inList ? { ...typeStyle('body'), color: colors.textSecondary } : { ...typeStyle('cardTitle'), color: colors.text, fontSize: spec.titleSize, lineHeight: spec.titleLineHeight }), textAlign: "center", maxWidth: spec.textMaxWidth }}>
+      <KText lineBreakStrategyIOS="hangul-word" style={{ ...title, textAlign: "center", maxWidth: spec.textMaxWidth, ...emptyWords }}>
         {text}
       </KText>
       {!!description && (
         <KText
+          lineBreakStrategyIOS="hangul-word"
           style={{
-            ...typeStyle('caption'),
+            ...typeStyle('body'),
             fontSize: spec.descriptionSize,
             lineHeight: spec.descriptionLineHeight,
             color: colors.textSecondary,
             marginTop: spec.descriptionGap,
             textAlign: "center",
             maxWidth: spec.textMaxWidth,
+            ...emptyWords,
           }}
         >
           {description}
         </KText>
       )}
-      {hasContent(children) && <View style={{ marginTop: spec.actionGap, maxWidth: '100%' }}>{content(children)}</View>}
+      {hasContent(children) && (
+        <View
+          style={[
+            { marginTop: sm ? spec.smActionGap : spec.actionGap, maxWidth: "100%", gap: spec.actionsGap },
+            stacked ? { width: spec.actionsMaxWidth, alignItems: "stretch" } : { flexDirection: "row", flexWrap: "wrap", justifyContent: "center" },
+          ]}
+        >
+          {stacked ? <FormActionsContext.Provider value={stackedActions}>{content(children)}</FormActionsContext.Provider> : content(children)}
+        </View>
+      )}
     </View>
   );
 }

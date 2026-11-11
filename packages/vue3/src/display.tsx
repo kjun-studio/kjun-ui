@@ -68,6 +68,8 @@ const kjunEmptyProps = {
   text: { type: String, default: undefined },
   description: { type: String, default: undefined },
   icon: { type: String, default: undefined },
+  /** md for pages and panels; sm for cards and list areas. */
+  size: { type: String as PropType<"sm" | "md">, default: "md" },
 } as const;
 export type KjunEmptyProps = ExtractPublicPropTypes<typeof kjunEmptyProps>;
 export const KjunEmpty = defineComponent({
@@ -78,9 +80,11 @@ export const KjunEmpty = defineComponent({
     const m = useKjunMessages();
     return () => {
       const children = slots.default?.();
+      const spec = tokens.extensions.empty, iconSize = props.size === "sm" ? spec.smIconSize : spec.iconSize;
       return (
-        <div class="kjun-empty">
-          {props.icon && <KjunIcon name={props.icon} size={tokens.extensions.empty.iconSize} />}
+        <div class="kjun-empty" data-size={props.size}>
+          {/* The stroke keeps one painted weight at every icon size instead of scaling with the 24-unit viewBox. */}
+          {props.icon && <KjunIcon name={props.icon} size={iconSize} style={{ strokeWidth: (spec.iconStroke * 24) / iconSize }} />}
           <p>{(props.text ?? m.value.noData)}</p>
           {props.description && <small>{props.description}</small>}
           {hasContent(children) && <div>{children}</div>}

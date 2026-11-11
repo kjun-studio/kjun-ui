@@ -33,6 +33,12 @@ set("Progress", {
 set("Input Textarea Select Combobox DatePicker DateRangePicker SearchInput", {
   error: "필드를 오류 상태로 표시합니다. 오류 설명과 검증 결과는 소비자가 별도로 제공합니다.",
 });
+set("Empty", {
+  size: "md는 페이지·패널용(위아래 32px, 32px 아이콘, 16px 제목), sm은 카드·목록 안용(위아래 24px, 24px 아이콘, 14px 제목)입니다. 설명은 두 크기 모두 14px/20px 본문이고, 아이콘 선은 크기와 관계없이 1.5px입니다.",
+});
+for (const platform of ["react", "native"]) set("Empty", {
+  children: "설명 아래 행동 영역입니다. 버튼 여러 개는 8px 간격으로 한 줄에 놓이고, 화면 너비 640px 이하에서는 넣은 순서대로 한 줄에 하나씩 최대 280px 너비로 쌓입니다.",
+}, platform);
 set("Alert", {
   variant: "info·success·warning·danger·primary 표현입니다. primary는 프로젝트의 brandSubtleBg·brandLight(생략 시 border)·brand 역할을 사용하며 type보다 우선합니다.",
   size: "sm은 조밀한 12px/16px 본문, md는 제목 유무와 관계없이 14px/20px 본문을 사용합니다. lg는 호환성을 위해 md와 동일합니다.",

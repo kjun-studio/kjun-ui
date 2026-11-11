@@ -60,6 +60,8 @@ assign("Input", [choice("comparison", "비교", ["기본", "크기", "상태", "
 controls.KjunCard = cardControls;
 assign("Popover", [toggle("noPadding", "기본 여백 제거")]);
 assign("ChartSkeleton", [choice("kind", "차트 종류", ["frame", "donut", "matrix"]), toggle("skeleton", "스켈레톤", true), field("loadingText", "로딩 문구", "차트를 불러오는 중")]);
+// Empty: md for pages and panels, sm for cards and list areas.
+assign("Empty", [choice("size", "크기", ["md", "sm"], "md")]);
 // Alert renders two sizes; "lg" stays accepted for compatibility but draws md, so the example offers sm and md.
 assign("Alert", [choice("tone", "종류", ["info", "success", "warning", "danger", "primary"]), choice("size", "크기", ["sm", "md"], "md"), field("title", "제목", "안내"), field("body", "본문", "작업 상태를 설명하는 문장입니다."), toggle("closable", "닫기 표시", true), toggle("action", "재시도 버튼")]);
 assign("Icon", [toggle("spin", "회전")]);
@@ -100,6 +102,7 @@ controls.KjunModal.push(field("title", "제목", "작업 확인"), field("confir
 const preset = (id: string, label: string, settings: Settings = {}, values: Values = {}): ExamplePreset => ({ id, label, settings, values });
 const long = "긴 한국어 이름과 안내 문장이 여러 줄에 걸쳐 표시되는 예제입니다";
 const extras: Record<string, ExamplePreset[]> = {
+  KjunEmpty: [preset("compact", "카드 안 작은 크기", { size: "sm" })],
   KjunAlert: [preset("primary", "브랜드 안내", { tone: "primary" }), preset("body", "본문만", { title: "" }), preset("title", "제목만", { body: "" }), preset("compact", "작은 알림", { size: "sm" }), preset("retry", "실패·재시도", { tone: "danger", title: "목록을 불러오지 못했습니다", body: "네트워크 연결 상태를 확인한 뒤 다시 시도해 주세요.", action: true }), { ...preset("long", "긴 문구", { tone: "danger", title: "프로젝트 변경 사항을 저장하지 못했습니다", body: "네트워크 연결 상태를 확인한 뒤 다시 시도해 주세요. 입력한 내용은 그대로 유지됩니다." }), narrow: true }],
   KjunFormActions: [
     preset("sizes", "크기 비교", { comparison: "크기" }),

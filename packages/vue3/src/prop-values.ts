@@ -93,6 +93,9 @@ export const kjunPropValues = Object.freeze({
   KjunDropdownItem: Object.freeze({
     variant: Object.freeze(["danger","default"] as const),
   }),
+  KjunEmpty: Object.freeze({
+    size: Object.freeze(["sm","md"] as const),
+  }),
   KjunExecutionStatusBadge: Object.freeze({
     size: Object.freeze(["xs","sm","md","lg","xl"] as const),
   }),

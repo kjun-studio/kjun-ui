@@ -83,19 +83,24 @@ export interface KjunEmptyProps {
   text?: string;
   description?: string;
   icon?: string;
+  /** md for pages and panels; sm for cards and list areas. */
+  size?: "sm" | "md";
   children?: ReactNode;
 }
 export function KjunEmpty({
   text,
   description,
   icon,
+  size = "md",
   children,
 }: KjunEmptyProps) {
   const m = useKjunMessages();
   text ??= m.noData;
+  const spec = tokens.extensions.empty, iconSize = size === "sm" ? spec.smIconSize : spec.iconSize;
   return (
-    <div className="kjun-empty">
-      {icon && <KjunIcon name={icon} size={tokens.extensions.empty.iconSize} />}
+    <div className="kjun-empty" data-size={size}>
+      {/* The stroke keeps one painted weight at every icon size instead of scaling with the 24-unit viewBox. */}
+      {icon && <KjunIcon name={icon} size={iconSize} style={{ strokeWidth: (spec.iconStroke * 24) / iconSize }} />}
       <p>{text}</p>
       {description && <small>{description}</small>}
       {children && <div>{children}</div>}

@@ -14,7 +14,8 @@
     "selection": { "$ref": "breakpoints.medium" },
     "formColumns": { "$ref": "breakpoints.medium" },
     "table": { "$ref": "table.mobileBreakpoint" },
-    "bottomAction": { "$ref": "breakpoints.actionContent" }
+    "bottomAction": { "$ref": "breakpoints.actionContent" },
+    "empty": { "$ref": "breakpoints.compact" }
   },
   "motionDistance": { "modalEnter": 16, "modalExit": 8, "popup": 4, "toast": 8 }
 }

@@ -147,8 +147,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--_kjun-geometry-dimension-value32) 0;
+  padding: var(--_kjun-extension-empty-padding-y) var(--_kjun-extension-empty-padding-x);
   text-align: center;
+  /* Korean wraps between words; a long unbroken string still wraps inside the box. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
   color: var(--_kjun-color-text-secondary);
   font-size: var(--_kjun-type-body-size);
   line-height: var(--_kjun-type-body-line);
@@ -161,12 +164,13 @@
   line-height: var(--_kjun-extension-empty-title-line-height);
   color: var(--_kjun-color-text);
 }
+/* A quiet line icon: it introduces the message without outweighing the title. */
 .kjun-empty > svg {
   margin-bottom: var(--_kjun-extension-empty-icon-gap);
-  color: var(--_kjun-color-text-secondary);
+  color: var(--_kjun-color-text-tertiary);
 }
 .kjun-empty small {
-  font-size: var(--_kjun-extension-empty-description-size); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking);
+  font-size: var(--_kjun-extension-empty-description-size); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
   line-height: var(--_kjun-extension-empty-description-line-height);
   color: var(--_kjun-color-text-secondary);
   margin-top: var(--_kjun-extension-empty-description-gap);
@@ -177,8 +181,30 @@
   max-width: var(--_kjun-extension-empty-text-max-width);
 }
 .kjun-empty > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--_kjun-extension-empty-actions-gap);
+  max-width: 100%;
   margin-top: var(--_kjun-extension-empty-action-gap);
 }
+/* Phones stack the actions in their own order, one full-width button per line. */
+@media (width <= token(responsive.empty)) {
+  .kjun-empty > div {
+    flex-direction: column;
+    align-items: stretch;
+    width: var(--_kjun-extension-empty-actions-max-width);
+  }
+}
+.kjun-empty[data-size="sm"] {
+  padding-block: var(--_kjun-extension-empty-sm-padding-y);
+}
+.kjun-empty[data-size="sm"] > svg { margin-bottom: var(--_kjun-extension-empty-sm-icon-gap); }
+.kjun-empty[data-size="sm"] p {
+  font-size: var(--_kjun-extension-empty-sm-title-size);
+  line-height: var(--_kjun-extension-empty-sm-title-line-height);
+}
+.kjun-empty[data-size="sm"] > div { margin-top: var(--_kjun-extension-empty-sm-action-gap); }
 .kjun-spinner {
   display: inline-flex;
   align-items: center;

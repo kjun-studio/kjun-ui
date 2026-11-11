@@ -35,19 +35,25 @@ Rect,
 } from "react-native-svg";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { useKjunStyles } from "./provider";
-export function KjunIcon({
-  name,
-  size = tokens.iconSizes.default,
-  color,
-  spin = false,
-  filled = false,
-}: {
+interface KjunIconProps {
   name: string;
   size?: number;
   color?: ColorValue;
   spin?: boolean;
   filled?: boolean;
-}) {
+}
+export function KjunIcon(props: KjunIconProps) {
+  return <IconBase {...props} />;
+}
+/** Internal: KjunIcon with a stroke width in viewBox units, for parts that paint one fixed line weight. */
+export function IconBase({
+  name,
+  size = tokens.iconSizes.default,
+  color,
+  spin = false,
+  filled = false,
+  strokeWidth = 2,
+}: KjunIconProps & { strokeWidth?: number }) {
   const { colors } = useKjunStyles();
   const { nodes, filled: renderFilled } = useIcon(name, filled);
   const angle = useRef(new Animated.Value(0)).current;
@@ -115,7 +121,7 @@ export function KjunIcon({
         color={color || colors.text}
         fill={renderFilled ? color || colors.text : "none"}
         stroke={renderFilled ? "none" : color || colors.text}
-        strokeWidth={2}
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
       >

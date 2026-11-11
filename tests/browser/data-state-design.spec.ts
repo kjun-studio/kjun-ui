@@ -56,7 +56,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       await update(page, { customEmpty: true });
       expect((await box(region)).height).toBe(height(48));
       await update(page, { customEmpty: false, emptyIcon: 'search', emptyActionText: 'Create' });
-      expect((await box(region)).height).toBe(height(124));
+      // Icon 32 + 16 gap + 24 title + 20 gap + 40 button.
+      expect((await box(region)).height).toBe(height(132));
       await update(page, { empty: false, emptyIcon: '', emptyActionText: '', loading: true, resultKey: null, loadingText: 'Loading' });
       expect((await box(region)).height).toBe(height(56));
       const text = region.getByText('Loading', { exact: true }), spinner = platform === 'native' ? region.getByRole('progressbar') : region.locator('svg').first().locator('..');
@@ -75,7 +76,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       // Shared KjunEmpty contributes no second 32px padding inside DataState; the message sits centred in the minimum height.
       const r = await box(region);
       expect(r.y + r.height - desc.y - desc.height).toBeGreaterThanOrEqual(48);
-      expect(desc.y - title.y - title.height).toBe(8);
+      expect(desc.y - title.y - title.height).toBe(tokens.extensions.empty.descriptionGap);
       await captureReview(region, { path: `artifacts/data-state-visual-fix/related-${platform}-${related}-empty.png` });
     }
     for (const related of ['KjunTable', 'KjunMarketTable', 'KjunMarketCards', 'KjunMarketSimpleList']) {

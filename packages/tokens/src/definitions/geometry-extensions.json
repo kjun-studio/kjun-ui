@@ -241,13 +241,24 @@
     "empty": {
       "titleSize": { "$ref": "typography.cardTitle.fontSizePx" },
       "titleLineHeight": { "$ref": "typography.cardTitle.lineHeightPx" },
-      "descriptionSize": { "$ref": "typography.caption.fontSizePx" },
-      "descriptionLineHeight": { "$ref": "typography.caption.lineHeightPx" },
+      "descriptionSize": { "$ref": "typography.body.fontSizePx" },
+      "descriptionLineHeight": { "$ref": "typography.body.lineHeightPx" },
       "iconSize": 32,
-      "iconGap": { "$ref": "dimension.value12" },
-      "descriptionGap": { "$ref": "dimension.value8" },
-      "actionGap": { "$ref": "dimension.value16" },
-      "textMaxWidth": 360
+      "iconStroke": 1.5,
+      "iconGap": { "$ref": "dimension.value16" },
+      "descriptionGap": { "$ref": "dimension.value4" },
+      "actionGap": { "$ref": "dimension.value20" },
+      "actionsGap": { "$ref": "dimension.value8" },
+      "actionsMaxWidth": 280,
+      "paddingX": { "$ref": "dimension.value16" },
+      "paddingY": { "$ref": "dimension.value32" },
+      "textMaxWidth": 360,
+      "smPaddingY": { "$ref": "dimension.value24" },
+      "smIconSize": 24,
+      "smIconGap": { "$ref": "dimension.value12" },
+      "smTitleSize": { "$ref": "typography.body.fontSizePx" },
+      "smTitleLineHeight": { "$ref": "typography.body.lineHeightPx" },
+      "smActionGap": { "$ref": "dimension.value16" }
     },
     "pagination": {
       "selectorMinimumWidth": 104

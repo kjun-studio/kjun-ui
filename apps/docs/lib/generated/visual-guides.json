@@ -495,8 +495,25 @@
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunEmpty\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunEmpty\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "데이터가 없을 때 제목·설명·아이콘과 선택적 액션을 표시합니다. 조회 요청이나 재시도는 액션 이벤트를 받는 프로젝트가 처리합니다."
       },
       "react": {
@@ -534,8 +551,25 @@
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunEmpty\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunEmpty\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "데이터가 없을 때 제목·설명·아이콘과 선택적 액션을 표시합니다. 조회 요청이나 재시도는 액션 이벤트를 받는 프로젝트가 처리합니다."
       },
       "native": {
@@ -573,8 +607,25 @@
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunEmpty\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunEmpty\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "데이터가 없을 때 제목·설명·아이콘과 선택적 액션을 표시합니다. 조회 요청이나 재시도는 액션 이벤트를 받는 프로젝트가 처리합니다."
       }
     }

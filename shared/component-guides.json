@@ -30,7 +30,7 @@
   "KjunEmpty": {
     "slug": "empty",
     "description": "결과가 없는 이유와 사용자가 실행할 다음 행동을 설명합니다.",
-    "interaction": "빈 결과의 text·description·icon을 표시합니다. 행동이 필요하면 콘텐츠 영역에 별도 버튼과 처리 함수를 배치합니다.",
+    "interaction": "빈 결과의 text·description·icon을 표시합니다. 행동이 필요하면 콘텐츠 영역에 별도 버튼과 처리 함수를 배치합니다. 버튼 여러 개는 8px 간격으로 한 줄에 놓이고, 화면 너비 640px 이하에서는 넣은 순서대로 한 줄에 하나씩 쌓입니다. 카드·목록 안에서는 size=\"sm\"과 secondary 버튼을 권장합니다.",
     "differences": "Vue는 default 슬롯, React·Native는 children으로 행동 영역을 구성합니다. Empty 자체에는 재시도 콜백이 없습니다.",
     "states": "데이터가 없을 때 제목·설명·아이콘과 선택적 액션을 표시합니다. 조회 요청이나 재시도는 액션 이벤트를 받는 프로젝트가 처리합니다."
   },

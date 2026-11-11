@@ -7342,6 +7342,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "md for pages and panels; sm for cards and list areas."
       }
     ],
     "events": [],
@@ -7375,6 +7382,13 @@
         "description": ""
       },
       {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "md for pages and panels; sm for cards and list areas."
+      },
+      {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
@@ -7403,6 +7417,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "md for pages and panels; sm for cards and list areas."
       },
       {
         "name": "children",

@@ -37,6 +37,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           text: "항목이 없습니다",
           description: "조건을 바꾸거나 새 항목을 추가하세요.",
           icon: "search",
+          size: settings.size,
         },
         button("추가", () => message((JSON.parse(settings.visual || "{}").KjunButton?.text || "추가") + " 요청"))
       );

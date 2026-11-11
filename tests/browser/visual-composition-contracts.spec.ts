@@ -104,7 +104,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       const empty = page.getByTestId('empty'), title = empty.getByText('항목이 없습니다', { exact: true });
       await expect(title).toHaveCSS('font-size', '16px'); await expect(title).toHaveCSS('font-weight', '600');
       const description = empty.getByText('조건을 바꾸거나 새 항목을 추가하세요.', { exact: true });
-      await expect(description).toHaveCSS('font-size', '12px');
+      await expect(description).toHaveCSS('font-size', '14px');
       expect((await box(empty.getByRole('button', { name: '추가' }))).y - (await box(description)).y - (await box(description)).height).toBeGreaterThanOrEqual(16);
       const titleNode = page.getByTestId('navigation').getByText('팀과 함께 관리하는 프로젝트의 상세 설정', { exact: true });
       expect(await titleNode.evaluate(el => {
