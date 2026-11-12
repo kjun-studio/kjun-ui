@@ -151,7 +151,7 @@
     "description": "데이터 열, 정렬, 행 선택, 확장, 모바일 카드 표현을 구성합니다.",
     "interaction": "선택은 행 객체 배열, 행 상세 확장(expandedRows)은 행 키 배열, 그룹 펼침(expandedGroups)은 groupBy 필드의 원래 값 배열입니다. 검색·서버 페이지 처리는 소비자가 수행합니다.",
     "differences": "Vue는 v-model:sort·v-model:selected·v-model:expandedRows·v-model:expandedGroups를, React·Native는 해당 값·변경 콜백을 사용합니다. expandedRows와 expandedGroups는 독립적이며 []는 각각 모두 닫힌 제어 상태입니다. 그룹 슬롯은 이름 표시용입니다.",
-    "states": "loading·빈 데이터·정렬·행 선택·행 상세 확장·그룹 펼침을 구분합니다. expandedGroups를 생략하면 처음에는 모두 펼치고 내부에서 관리합니다. 표·카드·list 전환 시 그룹 상태를 유지하며 닫아도 소계·합계는 남습니다."
+    "states": "loading·빈 데이터·정렬·행 선택·행 상세 확장·그룹 펼침을 구분합니다. expandedGroups를 생략하면 처음에는 모두 펼치고 내부에서 관리합니다. 표·카드·list 전환 시 그룹 상태를 유지하며 닫아도 소계·합계는 남습니다. columnGroups는 여러 열 위에 묶음 이름을 붙여 머리를 두 줄로 만들고, cellSpan은 한 행의 셀을 뒤 열과 가로로 합칩니다. 열의 onCellPress는 셀을 그 셀만의 버튼으로 만들어 행 클릭과 따로 실행합니다. 세로 병합과 본문 교체는 제공하지 않습니다."
   },
   "KjunTooltip": {
     "slug": "tooltip",

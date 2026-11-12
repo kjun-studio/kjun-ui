@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { getValue } from "./table-model";
 import type { TableColumn, TableCardSection, TableProps, TableSort, useTableModel } from "./table";
 import { formatSummary, summarizeColumn, type TableRowGroup } from "./table-groups";
+import { tableCoveredKeys } from "./table-columns";
 
 export function tablePresentation<Row extends object>(props: TableProps<Row, unknown>, mobile: boolean) {
   const { columns, responsive = null, mobileColumns = [], cardTitle, cardSubtitle, cardSections = [], cardLayout = "stacked", cardHighlight } = props;
@@ -25,9 +26,12 @@ export function tablePresentation<Row extends object>(props: TableProps<Row, unk
   // The subtitle reads under the title and the highlight under that, so neither repeats among the fields.
   const bodyColumns = columns.filter(column => column.key !== titleKey && column !== subtitle && column !== highlight
     && column.key !== "actions" && !column.badge && !column.hideInCard && !column.inlineInCard);
-  const used = new Set(cardSections.flatMap(section => section.columns));
-  const sections: TableCardSection[] = cardSections.length
-    ? [...cardSections, { key: "remaining", columns: bodyColumns.filter(column => !used.has(column.key)).map(column => column.key) }]
+  // Without authored sections, column groups become the card's sections, so a card reads like the grouped header.
+  const authored: TableCardSection[] = cardSections.length ? cardSections
+    : (props.columnGroups ?? []).map((group, index) => ({ key: "group:" + index, label: group.label, columns: group.columns }));
+  const used = new Set(authored.flatMap(section => section.columns));
+  const sections: TableCardSection[] = authored.length
+    ? [...authored, { key: "remaining", columns: bodyColumns.filter(column => !used.has(column.key)).map(column => column.key) }]
     : [{ columns: bodyColumns.map(column => column.key) }];
   const listValue = columns.find(column => column.key !== titleKey && !column.badge && column.key !== "actions" && (column.align === "right" || column.type === "number"));
   const listMeta = listSubtitle ?? columns.find(column => column.key !== titleKey && !column.badge && column.key !== "actions" && column !== listValue && !column.hideInCard);
@@ -42,7 +46,9 @@ export function tablePresentation<Row extends object>(props: TableProps<Row, unk
     /** A section's field arrangement: rows cards put every field on a label-value line. */
     cardBody(section: TableCardSection) { return cardLayout === "rows" ? "rows" : section.layout || "grid"; },
     columnsForSection(row: Row, section: TableCardSection) {
-      return bodyColumns.filter(column => section.columns.includes(column.key)
+      // A field another cell spans over in this row is not drawn on its own.
+      const covered = props.cellSpan ? tableCoveredKeys(bodyColumns, column => props.cellSpan!(row, column)) : null;
+      return bodyColumns.filter(column => section.columns.includes(column.key) && !covered?.has(column.key)
         && !(column.hideEmptyInCard && [null, undefined, ""].includes(getValue(row, column.key) as null | undefined | string)));
     },
   };
@@ -124,6 +130,8 @@ export interface TableGroupingProps<Row extends object> {
 
 /** Card parts: a card value starts at its label (cardValue) or ends a label-value line (cardRowValue); tiles use smaller titles and highlights. */
 export type TableCellRole = "title" | "listTitle" | "listMeta" | "listValue" | "cardValue" | "cardRowValue" | "cardSubtitle" | "cardHighlight" | "tileTitle" | "tileHighlight";
+/** A narrow layout's title opens the row when the row is clickable, so a cell drawn there is then never a button of its own. */
+export const tableOpenerRole = (role?: TableCellRole) => role === "title" || role === "listTitle" || role === "tileTitle";
 
 export interface TableRowsProps<Row extends object> {
   initialLoading: boolean;
@@ -155,6 +163,10 @@ export interface TableCardsProps<Row extends object> extends TableRowsProps<Row>
   cellText?: (column: TableColumn<Row>, row: Row, index: number) => string | undefined;
 }
 export interface TableGridProps<Row extends object, Height> extends TableRowsProps<Row>, TableGroupingProps<Row> {
+  /** Labels over runs of columns (TableProps.columnGroups). */
+  columnGroups?: TableProps<Row>["columnGroups"];
+  /** How many columns a row's cell covers (TableProps.cellSpan). */
+  cellSpan?: TableProps<Row>["cellSpan"];
   state: TableRowsProps<Row>["state"] & Pick<ReturnType<typeof useTableModel<Row>>, "all" | "some" | "toggleAll" | "sort" | "sortColumn">;
   visible: TableColumn<Row>[];
   maxHeight?: Height;

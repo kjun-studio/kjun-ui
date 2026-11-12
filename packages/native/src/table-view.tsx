@@ -1,7 +1,7 @@
 import { useKjunMessageScope, useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tableRowLabel } from "../../../shared/package-runtime/table-model";
 import { typeStyle } from "./typography";
-import { tablePresentation, tableCellValue, tableSortFromValue, tableSortOptions, tableSortValue, tableSummaryValue, tableTotals, type TableCellRole } from "../../../shared/package-runtime/table-presentation";
+import { tableOpenerRole, tablePresentation, tableCellValue, tableSortFromValue, tableSortOptions, tableSortValue, tableSummaryValue, tableTotals, type TableCellRole } from "../../../shared/package-runtime/table-presentation";
 import { groupTableRows, type TableRowGroup } from "../../../shared/package-runtime/table-groups";
 import { useTableGroupExpansion } from "../../../shared/package-runtime/use-table-group-expansion";
 import { TableToolbar } from "./table-toolbar";
@@ -16,6 +16,7 @@ import { KjunCheckbox } from "./controls";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import { KjunDataState,useQueryDisplay } from "./data-state";
 import { content,domainColor } from "./internal";
+import { AccessiblePressable } from "./a11y";
 import { KjunPagination } from "./navigation";
 import { useKjunStyles } from "./provider";
 import { TableCards } from "./table-cards";
@@ -71,7 +72,15 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     summary: props.summary ? (col: TableColumn<Row>, rows: Row[]) => tableSummaryValue(props, col, rows, locale) : null,
   };
   const { card, visible } = layout;
+  // Like Web: a pressable cell is a button of its own; a title that already opens the row never is.
   const cell = (col: TableColumn<Row>, row: Row, index: number, role?: TableCellRole) => {
+    const body = cellContent(col, row, index, role);
+    return col.onCellPress && !(onRowClick && tableOpenerRole(role)) ? (
+      <AccessiblePressable accessibilityRole="button" accessibilityLabel={col.cellLabel?.(row, index)} onPress={() => col.onCellPress!(row, index)}
+        style={({ pressed }) => ({ opacity: pressed ? tokens.states.opacity.pressed : 1 })}>{body}</AccessiblePressable>
+    ) : body;
+  };
+  const cellContent = (col: TableColumn<Row>, row: Row, index: number, role?: TableCellRole) => {
     const { value, body } = tableCellValue(props, col, row, index, locale);
     if (col.pill) {
       const role =
@@ -176,7 +185,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         ) : layout.list ? (
           <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : (
-          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ...grouping }} sortable={props.sortable} />
+          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, columnGroups: props.columnGroups, cellSpan: props.cellSpan, maxHeight, stickyHeader, compact, striped, hoverable, ...grouping }} sortable={props.sortable} />
         )}
         {pagination && (
           <KjunPagination

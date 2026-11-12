@@ -9,6 +9,7 @@ import type { TableRowGroup } from "../../../shared/package-runtime/table-groups
 import { KjunSkeleton } from "./display";
 import { provideFallbackIcons } from "./runtime/icons";
 import { css } from "./runtime/style";
+import { tableHeaderRows, tableSpans, type TableColumnGroup } from "../../../shared/package-runtime/table-columns";
 
 type Row = object;
 /** A native checkbox (role, indeterminate, row click isolation) drawn like KjunCheckbox sm. */
@@ -87,7 +88,7 @@ export interface TableRowsContext {
   expandable: boolean;
   checkbox: (row: Row, index: number) => VNodeChild;
   expand: (row: Row, index: number) => VNodeChild;
-  cell: (column: TableColumn<any>, row: Row, index: number) => VNodeChild;
+  cell: (column: TableColumn<any>, row: Row, index: number, role?: "title" | "listTitle") => VNodeChild;
   renderExpand: (row: Row, index: number) => VNodeChild;
   empty: () => VNodeChild;
   ariaLabel: string;
@@ -95,13 +96,17 @@ export interface TableRowsContext {
   rowKeyDown: (event: KeyboardEvent, row: Row, index: number) => void;
 }
 
-export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; maxHeight?: number | string; stickyHeader: boolean;
+export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; columnGroups?: TableColumnGroup[]; cellSpan?: (row: any, column: TableColumn<any>) => number | null | undefined; maxHeight?: number | string; stickyHeader: boolean;
   sortable?: boolean; compact: boolean; striped: boolean; hoverable: boolean; stuck: { value: boolean }; stickyOffset: number;
   groups: TableRowGroup<Row>[] | null; collapsed: string[]; toggleGroup: (key: string) => void;
   groupLabel: (group: TableRowGroup<Row>) => VNodeChild; summary: ((column: TableColumn<any>, rows: Row[]) => VNodeChild) | null }) {
   const { state, visible, selectable, expandable } = c, m = c.messages;
   const span = visible.length + Number(selectable) + Number(expandable);
-  const bodyRow = (row: Row, i: number) => (
+  // Like React: with column groups the header has two rows, groups and lone columns on top.
+  const headerRows = tableHeaderRows(visible, c.columnGroups), lone = headerRows ? 2 : undefined;
+  const bodyRow = (row: Row, i: number) => {
+    const spans = tableSpans(visible, c.cellSpan ? column => c.cellSpan!(row, column) : null);
+    return (
     <Fragment key={state.key(row, i)}>
       <tr class={"kjun-table-row-action " + c.customClass(row, i)} tabindex={c.clickable ? 0 : undefined}
         onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} data-selected={state.selectedRow(row) || undefined}
@@ -109,19 +114,25 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
         data-stripe={i % 2 === 1 || undefined}
         onClick={() => c.rowClick(row, i)}>
         {selectable && <td class="kjun-table-action-cell">{c.checkbox(row, i)}</td>}
-        {visible.map(col => (
-          <td key={col.key} style={{ textAlign: col.align }} data-numeric={col.type === "number" || col.align === "right" || undefined} data-date={col.type === "date" || col.type === "datetime" || undefined}
-            class={(col.secondary ? "kjun-table-secondary " : "") + (col.className || "")}>
+        {visible.map((col, index) => {
+          if (!spans[index]) return null;
+          // Like React: the app's class and style join KJUN's rather than replacing them.
+          const { key: _key, class: appClass, style: appStyle, ...attributes } = (col.cellProps?.(row as never, i) ?? {}) as Record<string, any>;
+          return (
+          <td {...attributes} key={col.key} colspan={spans[index] > 1 ? spans[index] : undefined} style={[appStyle, { textAlign: col.align }]} data-numeric={col.type === "number" || col.align === "right" || undefined} data-date={col.type === "date" || col.type === "datetime" || undefined}
+            class={[(col.secondary ? "kjun-table-secondary " : "") + (col.className || ""), appClass]}>
             {c.cell(col, row, i)}
           </td>
-        ))}
+          );
+        })}
         {expandable && <td class="kjun-table-action-cell">{c.expand(row, i)}</td>}
       </tr>
       {expandable && state.expanded.includes(state.key(row, i)) && (
         <tr class="kjun-table-expanded"><td colspan={visible.length + Number(selectable) + 1}>{c.renderExpand(row, i)}</td></tr>
       )}
     </Fragment>
-  );
+    );
+  };
   // Like React: the first cell always names a summary row; a first column with a value of its own shows both.
   const summaryRow = (rows: Row[], kind: "subtotal" | "total", key: string) => c.summary && (
     <tr key={key} class="kjun-table-summary" data-kind={kind}>
@@ -157,6 +168,17 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
   });
   const pageSticky = c.stickyHeader && c.maxHeight == null;
   const sorting = (col: TableColumn<any>) => col.sortable && c.sortable !== false;
+  const columnHeader = (col: TableColumn<any>, rowspan?: number) => (
+    <th key={col.key} scope="col" rowspan={rowspan} style={css({ width: col.width, textAlign: col.align })} class={col.headerClass}
+      aria-sort={sorting(col) ? state.sort.key === col.key ? state.sort.order === "asc" ? "ascending" : "descending" : "none" : undefined}>
+      {sorting(col) ? (
+        <button type="button" onClick={() => state.sortColumn(col)}>
+          {col.label}
+          <KjunIcon name={state.sort.key !== col.key ? "arrows-sort" : state.sort.order === "asc" ? "sort-ascending" : "sort-descending"} size={state.sort.key === col.key ? tokens.table.sortedIconSize : tokens.table.sortIconSize} class="kjun-table-sort-icon" />
+        </button>
+      ) : col.label}
+    </th>
+  );
   return (
     <div class="kjun-table-scroll" style={css({ maxHeight: c.maxHeight, visibility: c.skeletonHidden ? "hidden" : undefined })} aria-hidden={c.skeletonHidden ? "true" : undefined}
       data-stuck={c.stickyHeader && c.stuck.value ? "" : undefined} data-page-sticky={pageSticky ? "" : undefined}
@@ -165,24 +187,17 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; m
         <thead style={c.stickyHeader ? { position: "sticky", top: (pageSticky ? c.stickyOffset : 0) + "px", zIndex: 2 } : undefined}>
           <tr>
             {selectable && (
-              <th scope="col" class="kjun-table-action-cell">
+              <th scope="col" class="kjun-table-action-cell" rowspan={lone}>
                 <TableCheck aria-label={c.messages.selectAll} checked={state.all} indeterminate={state.some} onChange={state.toggleAll} />
               </th>
             )}
-            {visible.map(col => (
-              <th key={col.key} scope="col" style={css({ width: col.width, textAlign: col.align })} class={col.headerClass}
-                aria-sort={sorting(col) ? state.sort.key === col.key ? state.sort.order === "asc" ? "ascending" : "descending" : "none" : undefined}>
-                {sorting(col) ? (
-                  <button type="button" onClick={() => state.sortColumn(col)}>
-                    {col.label}
-                    <KjunIcon name={state.sort.key !== col.key ? "arrows-sort" : state.sort.order === "asc" ? "sort-ascending" : "sort-descending"} size={state.sort.key === col.key ? tokens.table.sortedIconSize : tokens.table.sortIconSize} class="kjun-table-sort-icon" />
-                  </button>
-                ) : col.label}
-              </th>
-            ))}
+            {headerRows ? headerRows.map(cell => cell.kind === "column" ? columnHeader(cell.column, lone)
+              : <th key={cell.key} scope="colgroup" colspan={cell.span} class="kjun-table-column-group">{cell.label}</th>)
+              : visible.map(col => columnHeader(col))}
             {/* Expansion sits at the row's end, so the checkbox is the only leading utility column. */}
-            {expandable && <th scope="col" class="kjun-table-action-cell" />}
+            {expandable && <th scope="col" class="kjun-table-action-cell" rowspan={lone} />}
           </tr>
+          {headerRows && <tr>{headerRows.flatMap(cell => cell.kind === "group" ? cell.columns.map(col => columnHeader(col)) : [])}</tr>}
         </thead>
         {c.groups && !c.initialLoading && state.rows.length ? groupBodies() : <tbody>
           {c.initialLoading ? Array.from({ length: c.skeletonRows }, (_, i) => (

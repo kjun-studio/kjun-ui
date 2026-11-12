@@ -52,7 +52,7 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
         {heading(row, i, "tileTitle")}
         {subtitle ? <View style={{ marginTop: card.valueGap }}>{cell(subtitle, row, i, "cardSubtitle")}</View> : null}
         {highlight ? (
-          <View style={{ marginTop: card.sectionGap }} accessible={text != null} accessibilityLabel={text != null ? highlight.label + " " + text : undefined}>
+          <View style={{ marginTop: card.sectionGap }} accessible={text != null && !highlight.onCellPress} accessibilityLabel={text != null && !highlight.onCellPress ? highlight.label + " " + text : undefined}>
             {cell(highlight, row, i, "tileHighlight")}
           </View>
         ) : null}

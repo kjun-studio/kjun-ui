@@ -14,13 +14,15 @@ export function TableList<Row extends object>(props: TableCardsProps<Row>) {
   const { colors } = useKjunStyles();
   const geometry = tokens.table.list;
   const { title, listMeta, listValue, badges } = layout;
+  // A row with a pressable cell keeps its parts separate, so that button stays reachable on a device.
+  const merged = !!onRowClick && ![listMeta, listValue, ...badges].some((col) => col?.onCellPress);
   const item = (row: Row, i: number) => (
     <View key={state.key(row, i)} role="listitem">
       <Pressable
         // A pressable list row is one button named by its title, as on the web.
-        accessible={!!onRowClick}
-        accessibilityRole={onRowClick ? "button" : undefined}
-        accessibilityLabel={onRowClick ? String(tableRowLabel(row, title?.key, i)) : undefined}
+        accessible={merged}
+        accessibilityRole={merged ? "button" : undefined}
+        accessibilityLabel={merged ? String(tableRowLabel(row, title?.key, i)) : undefined}
         onPress={() => onRowClick?.(row, i)}
         style={({ pressed }) => ({
           flexDirection: "row",

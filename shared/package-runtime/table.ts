@@ -2,6 +2,8 @@ import { nextTableSort, type TableSort, type QueryDisplayProps } from "@kjun-ui/
 export type { TableSort } from "@kjun-ui/tokens";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { TableSummaryKind } from "./table-groups";
+import type { TableColumnGroup } from "./table-columns";
+export type { TableColumnGroup } from "./table-columns";
 export type { TableSummaryKind } from "./table-groups";
 import { sortTableRows, tableRowIndex, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow, type TableCompare } from "./table-model";
 import { useMemo } from "react";
@@ -27,6 +29,12 @@ export interface TableColumn<Row extends object = Record<string, unknown>> {
   secondary?: boolean;
   className?: string;
   headerClass?: string;
+  /** Makes the cell a button that runs this, instead of opening the row (row clicks and keys stay with the row elsewhere). */
+  onCellPress?: (row: Row, index: number) => void;
+  /** The cell button's accessible name when its content alone does not say what it does, e.g. "목표가 82,000원, 근거 보기". */
+  cellLabel?: (row: Row, index: number) => string;
+  /** Web: extra attributes for the grid cell element (data-*, aria-*, title). Native ignores it. */
+  cellProps?: (row: Row, index: number) => Record<string, unknown> | undefined;
 }
 export interface TableCardSection {
   key?: string;
@@ -43,6 +51,10 @@ export interface TablePagination {
 export interface TableProps<Row extends object = Record<string, unknown>, MaxHeight = number>
   extends QueryDisplayProps {
   columns: TableColumn<Row>[];
+  /** Labels over runs of columns, by column key: the header gets a second row. Narrow cards use them as sections when cardSections is empty. */
+  columnGroups?: TableColumnGroup[];
+  /** How many columns a row's cell covers, counting itself (2 merges it with the next column). The covered cells are not drawn. */
+  cellSpan?: (row: Row, column: TableColumn<Row>) => number | null | undefined;
   data?: Row[];
   rowKey?: string;
   skeletonRows?: number;

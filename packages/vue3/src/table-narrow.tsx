@@ -91,8 +91,8 @@ export function tableCards(c: TableNarrowContext) {
   const heading = (row: Row, i: number) => (
     <span class="kjun-table-card-title">
       {c.clickable
-        ? <button type="button" tabindex={-1} class="kjun-table-card-open" onClick={(event: MouseEvent) => { event.stopPropagation(); c.rowClick(row, i); }}>{title && c.cell(title, row, i)}</button>
-        : title && c.cell(title, row, i)}
+        ? <button type="button" tabindex={-1} class="kjun-table-card-open" onClick={(event: MouseEvent) => { event.stopPropagation(); c.rowClick(row, i); }}>{title && c.cell(title, row, i, "title")}</button>
+        : title && c.cell(title, row, i, "title")}
     </span>
   );
   // Like React: tiles keep the title, subtitle, badges and highlight; the other layouts add fields and one footer row.
@@ -172,7 +172,7 @@ export function tableList(c: TableNarrowContext) {
         tabindex={c.clickable ? 0 : undefined} onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} onClick={() => c.rowClick(row, i)}>
         {c.selectable && c.checkbox(row, i)}
         <div class="kjun-table-list-main">
-          <span class="kjun-table-list-title">{title && c.cell(title, row, i)}</span>
+          <span class="kjun-table-list-title">{title && c.cell(title, row, i, "listTitle")}</span>
           {listMeta && <span class="kjun-table-list-meta">{c.cell(listMeta, row, i)}</span>}
         </div>
         {(listValue || badges.length > 0) && (

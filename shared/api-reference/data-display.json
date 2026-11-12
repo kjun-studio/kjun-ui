@@ -327,6 +327,8 @@
   "KjunTable": {
     "vue3": [
       "columns",
+      "columnGroups",
+      "cellSpan",
       "data",
       "rowKey",
       "queryKey",
@@ -375,6 +377,8 @@
     ],
     "react": [
       "columns",
+      "columnGroups",
+      "cellSpan",
       "data",
       "rowKey",
       "skeletonRows",
@@ -435,6 +439,8 @@
     ],
     "native": [
       "columns",
+      "columnGroups",
+      "cellSpan",
       "data",
       "rowKey",
       "skeletonRows",

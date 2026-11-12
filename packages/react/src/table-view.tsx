@@ -1,6 +1,6 @@
 import { useKjunMessageScope, useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tableRowLabel } from "../../../shared/package-runtime/table-model";
-import { tablePresentation, tableCellValue, tableSortFromValue, tableSortOptions, tableSortValue, tableSummaryValue, tableTotals } from "../../../shared/package-runtime/table-presentation";
+import { tableOpenerRole, tablePresentation, tableCellValue, tableSortFromValue, type TableCellRole, tableSortOptions, tableSortValue, tableSummaryValue, tableTotals } from "../../../shared/package-runtime/table-presentation";
 import { groupTableRows, type TableRowGroup } from "../../../shared/package-runtime/table-groups";
 import { useTableGroupExpansion } from "../../../shared/package-runtime/use-table-group-expansion";
 import { TableToolbar } from "./table-toolbar";
@@ -67,7 +67,15 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     summary: props.summary ? (col: TableColumn<Row>, rows: Row[]) => tableSummaryValue(props, col, rows, locale) : null,
   };
   const { card, visible } = layout;
-  const cell = (col: TableColumn<Row>, row: Row, index: number) => {
+  const cell = (col: TableColumn<Row>, row: Row, index: number, role?: TableCellRole) => {
+    const content = cellContent(col, row, index);
+    // A pressable cell is a button of its own; a title that already opens the row never is.
+    return col.onCellPress && !(onRowClick && tableOpenerRole(role)) ? (
+      <button type="button" className="kjun-table-cell-button" aria-label={col.cellLabel?.(row, index)}
+        onClick={(event) => { event.stopPropagation(); col.onCellPress!(row, index); }}>{content}</button>
+    ) : content;
+  };
+  const cellContent = (col: TableColumn<Row>, row: Row, index: number) => {
     const { value, body } = tableCellValue(props, col, row, index, locale);
     return col.pill ? (
       <span
@@ -153,7 +161,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         ) : layout.list ? (
           <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : (
-          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, ...grouping }} stickyOffset={props.stickyOffset} sortable={props.sortable} />
+          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, columnGroups: props.columnGroups, cellSpan: props.cellSpan, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, ...grouping }} stickyOffset={props.stickyOffset} sortable={props.sortable} />
         )}
         {pagination && (
           <KjunPagination

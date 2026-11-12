@@ -3,7 +3,7 @@ import { getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, type Allowe
 import { defineComponent } from "./runtime/component";
 import { isComposingKey, nextTableSort, tokens, type TableSort } from "@kjun-ui/tokens";
 import { getValue, sortTableRows, stickyHeaderStuck, tableRowIndex, tableRowKey, tableRowLabel, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
-import { columnFormat, tablePresentation, tableSortFromValue, tableSortOptions, tableSortValue } from "../../../shared/package-runtime/table-presentation";
+import { columnFormat, tableOpenerRole, tablePresentation, tableSortFromValue, type TableCellRole, tableSortOptions, tableSortValue } from "../../../shared/package-runtime/table-presentation";
 import { formatSummary, tableGroupExpansion, groupTableRows, summarizeColumn, type TableRowGroup, type TableSummaryKind } from "../../../shared/package-runtime/table-groups";
 import { KjunButton } from "./button";
 import { KjunDataState, useQueryDisplay } from "./data-state";
@@ -16,6 +16,7 @@ import { hasContent } from "./runtime/slots";
 import { TableCheck, tableGrid, type TableLayout, type TableRenderState } from "./table-parts";
 import { tableCards, tableList } from "./table-narrow";
 import type { TableCardSection, TableColumn, TablePagination } from "./table-types";
+import type { TableColumnGroup } from "../../../shared/package-runtime/table-columns";
 export type { TableCardSection, TableColumn, TablePagination };
 
 export { getValue };
@@ -66,6 +67,10 @@ const kjunTableProps = {
   cardTitle: { type: String as PropType<string | null>, default: undefined },
   cardSubtitle: { type: String as PropType<string | null>, default: undefined },
   cardSections: { type: Array as PropType<TableCardSection[]>, default: () => [] },
+  /** Labels over runs of columns, by column key: the header gets a second row. Narrow cards use them as sections when cardSections is empty. */
+  columnGroups: { type: Array as PropType<TableColumnGroup[]>, default: undefined },
+  /** How many columns a row's cell covers, counting itself (2 merges it with the next column). The covered cells are not drawn. */
+  cellSpan: { type: Function as PropType<(row: any, column: TableColumn<any>) => number | null | undefined>, default: undefined },
   cardLayout: { type: String as PropType<"stacked" | "rows" | "tiles">, default: "stacked" },
   cardHighlight: { type: String as PropType<string | null>, default: undefined },
   expandable: { type: Boolean, default: false },
@@ -175,7 +180,15 @@ const KjunTableComponent = defineComponent({
       const state = model(), status = query();
       const layout = tablePresentation(props as never, mobile.value) as unknown as TableLayout;
       const { card, visible } = layout;
-      const cell = (col: TableColumn<any>, row: any, index: number): VNodeChild => {
+      // Like React: a pressable cell is a button of its own; a title that already opens the row never is.
+      const cell = (col: TableColumn<any>, row: any, index: number, role?: TableCellRole): VNodeChild => {
+        const content = cellContent(col, row, index);
+        return col.onCellPress && !(props.onRowClick && tableOpenerRole(role)) ? (
+          <button type="button" class="kjun-table-cell-button" aria-label={col.cellLabel?.(row, index)}
+            onClick={(event: MouseEvent) => { event.stopPropagation(); col.onCellPress!(row, index); }}>{content}</button>
+        ) : content;
+      };
+      const cellContent = (col: TableColumn<any>, row: any, index: number): VNodeChild => {
         const value = getValue(row, col.key);
         // A column slot (cell-<key>) wins over the shared cell slot, which wins over column render functions.
         const slot = slots[`cell-${col.key}`] ?? slots.cell;
@@ -274,7 +287,7 @@ const KjunTableComponent = defineComponent({
           <KjunDataState queryKey={props.queryKey} resultKey={status.usesQueryState ? status.hasCurrentResult ? props.queryKey : null : undefined}
             hasLoadedOnce={props.hasLoadedOnce} error={props.error} refreshing={status.queryRefreshing} loadingPadding="none" onRetry={props.onRetry}
             loading={props.skeleton ? undefined : props.loading} loadingText={(props.loadingText ?? m.value.loadingEllipsis)} loadingDelay={props.skeleton ? 0 : props.loadingDelay}>
-            {card ? tableCards({ ...context, layout, totals, groups, groupLabel, groupTotals, ...groupExpansion }) : layout.list ? tableList({ ...context, layout, totals, groups, groupLabel, groupTotals, ...groupExpansion }) : tableGrid({ ...context, visible, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
+            {card ? tableCards({ ...context, layout, totals, groups, groupLabel, groupTotals, ...groupExpansion }) : layout.list ? tableList({ ...context, layout, totals, groups, groupLabel, groupTotals, ...groupExpansion }) : tableGrid({ ...context, visible, columnGroups: props.columnGroups, cellSpan: props.cellSpan, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
               sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable, stuck, stickyOffset: props.stickyOffset,
               groups, ...groupExpansion,
               groupLabel, summary: props.summary ? summaryValue : null })}

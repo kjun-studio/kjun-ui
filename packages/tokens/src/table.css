@@ -73,6 +73,33 @@
   /* A header names its column in one line; the column is at least that wide. */
   white-space: nowrap;
 }
+/* A column group's label sits over its columns, centred, with the same rule under it as the header row. */
+.kjun-table th.kjun-table-column-group {
+  text-align: center;
+}
+/* A pressable cell: the whole cell is the button and keeps the cell's text, alignment and numbers. */
+.kjun-table-cell-button {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  border-radius: var(--_kjun-geometry-radius-radius4);
+}
+.kjun-table-cell-button:hover {
+  text-decoration: underline;
+  text-underline-offset: var(--_kjun-geometry-dimension-value3);
+}
+.kjun-table-cell-button:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-offset);
+}
 .kjun-table th button {
   display: inline-flex;
   align-items: center;

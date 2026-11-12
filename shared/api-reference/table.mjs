@@ -46,6 +46,16 @@ const common = {
     "고정 기준": "maxHeight가 있으면 표 안 스크롤 영역 위에, 없으면 페이지 스크롤에서 화면 위 stickyOffset(px, 기본 0) 위치에 고정합니다. 페이지 고정에서는 표 바깥 래퍼가 스크롤 영역이 되지 않으므로 넓은 표의 가로 스크롤은 앱이 감싸야 합니다.",
     "표시": "행이 머리 아래로 지나가면 그림자 대신 머리 아래 선이 border-strong으로 진해집니다. Native는 표 안 스크롤에서만 고정하며, 화면 스크롤 고정은 앱의 ScrollView stickyHeaderIndices를 사용하세요.",
   }),
+  columnGroups: { type: "{ label: string; columns: string[] }[]", ...detail("여러 열 위에 묶음 이름을 붙입니다(예: 실적 아래 매출·영업이익).", {
+    "머리 행": "묶음이 보이는 열에 하나라도 걸리면 머리가 두 줄이 됩니다. 묶음 이름은 그 열들 위에 걸치고(colgroup), 묶이지 않은 열과 선택·펼침 열은 두 줄을 차지합니다. 정렬 버튼은 아래 줄의 열 머리에 그대로 있습니다.",
+    "열 순서": "columns 순서를 바꾸지 않습니다. 한 묶음의 열 사이에 다른 열이 있으면 같은 이름이 두 번 나옵니다. 숨긴 열은 묶음에서 빠지고, 두 묶음에 든 열은 앞 묶음에 속합니다.",
+    "좁은 화면": "cardSections가 없으면 묶음이 카드의 구역이 됩니다. 카드는 구역 이름을 그리지 않고 스크린리더에 묶음 이름으로 알립니다.",
+  }) },
+  cellSpan: { type: "(row: Row, column: TableColumn<Row>) => number | null | undefined", ...detail("한 행에서 셀이 뒤 열까지 차지할 칸 수입니다(자신 포함).", {
+    "인자와 반환": "2면 다음 열과 합칩니다. 2 이상의 정수만 적용하고, 행 끝을 넘으면 끝에서 자릅니다. 가려진 열의 셀은 그리지 않으며 그 열의 cellSpan은 무시합니다.",
+    "범위": "같은 행 안의 가로 병합만 합니다. 정렬·검색·페이지가 바뀌어도 행 단위로 다시 계산하므로 병합이 어긋나지 않습니다. 소계·합계 행에는 적용하지 않습니다.",
+    "좁은 화면": "카드·list에서는 가려진 열의 칸을 그리지 않고, 병합한 셀은 자기 라벨로 보입니다.",
+  }) },
   expandedRows: detail("펼친 행의 키 배열입니다.", {
     "제어 방식":
       "모든 플랫폼에서 undefined이면 내부 상태를 사용하고, []는 모두 닫힌 제어 상태입니다. 전달된 배열을 기준으로 다음 확장 상태를 계산합니다.",
@@ -150,6 +160,9 @@ const types = [
     ["format", "(value, row) → ReactNode", "React·Vue·Native의 열별 기본 포맷. 함수만 받으며, 문자열 등 함수가 아닌 값은 무시하고 경고합니다"],
     ["hideInCard / inlineInCard / fullWidthInCard", "boolean", "모바일 카드의 열 배치"],
     ["hideEmptyInCard / secondary", "boolean", "빈 값 숨김과 보조 값 표시"],
+    ["onCellPress", "(row, index) → void", "셀을 버튼으로 만들어 이 동작을 실행합니다. 행 클릭·키보드는 실행하지 않습니다. onRowClick이 있으면 좁은 화면의 카드·list 제목은 행을 여는 버튼이므로 셀 버튼으로 만들지 않습니다"],
+    ["cellLabel", "(row, index) → string", "셀 버튼의 접근성 이름. 내용만으로 동작이 드러나지 않을 때(예: 목표가 82,000원, 근거 보기)"],
+    ["cellProps", "(row, index) → Record<string, unknown>", "웹 표 셀(td)에 더할 속성(data-*·aria-*·title·class·style). class·style은 KJUN 것과 합칩니다. 여기의 onClick은 행 클릭으로도 전달되므로 셀만의 동작은 onCellPress를 쓰세요. Native는 무시합니다"],
   ]),
 ];
 export default {

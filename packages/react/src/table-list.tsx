@@ -25,7 +25,7 @@ export function TableList<Row extends object>(props: Props<Row>) {
       >
         {selectable && checkbox(row, i)}
         <div className="kjun-table-list-main">
-          <span className="kjun-table-list-title">{title && cell(title, row, i)}</span>
+          <span className="kjun-table-list-title">{title && cell(title, row, i, "listTitle")}</span>
           {listMeta && <span className="kjun-table-list-meta">{cell(listMeta, row, i)}</span>}
         </div>
         {(listValue || badges.length > 0) && (

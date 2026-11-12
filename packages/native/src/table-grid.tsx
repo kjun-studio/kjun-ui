@@ -14,7 +14,8 @@ import { KText, content } from "./internal";
 import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { useKjunStyles } from "./provider";
 import type { TableColumn } from "./table-model";
-export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, groups, collapsed, toggleGroup, groupLabel, summary }: TableGridProps<Row, number>) {
+import { tableHeaderRows, tableSpans } from "../../../shared/package-runtime/table-columns";
+export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, groups, collapsed, toggleGroup, groupLabel, summary }: TableGridProps<Row, number>) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles();
   const geometry = tokens.table;
@@ -42,14 +43,18 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
   const fade = totalWidth - scroll.viewport - scroll.x > 1;
   // Like Web: stripes are a faint text tint, distinct from the header and expanded rows.
   const stripe = (typeof colors.text === "string" && tintColor(colors.text, tokens.states.opacity.stripe)) || colors.secondary;
-  const bodyRow = (row: Row, i: number) => (
+  // A row with a pressable cell keeps its cells separate, so the cell's button stays reachable on a device.
+  const cellButtons = visible.some((col) => col.onCellPress), merged = !!onRowClick && !selectable && !expandable && !cellButtons;
+  const bodyRow = (row: Row, i: number) => {
+    const spans = tableSpans(visible, cellSpan ? (column) => cellSpan(row, column) : null);
+    return (
     <Fragment key={state.key(row, i)}>
       <Pressable
         // A pressable row with no controls of its own is one button named by its first column; with a checkbox or an
         // expand button it stays a plain row, so those controls stay reachable (a device would merge them into the row).
-        accessible={!!onRowClick && !selectable && !expandable}
-        accessibilityRole={onRowClick && !selectable && !expandable ? "button" : undefined}
-        accessibilityLabel={onRowClick && !selectable && !expandable ? String(tableRowLabel(row, visible[0]?.key, i)) : undefined}
+        accessible={merged}
+        accessibilityRole={merged ? "button" : undefined}
+        accessibilityLabel={merged ? String(tableRowLabel(row, visible[0]?.key, i)) : undefined}
         onPress={() => onRowClick?.(row, i)}
         style={({ pressed }) => ({
           flexDirection: "row",
@@ -76,11 +81,12 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
             {checkbox(row, i)}
           </View>
         )}
-        {visible.map((col) => (
+        {visible.map((col, c) => spans[c] > 0 && (
           <View
             key={col.key}
             style={{
-              width: width(col),
+              // A spanning cell is as wide as the columns it covers.
+              width: visible.slice(c, c + spans[c]).reduce((sum, covered) => sum + width(covered), 0),
               paddingVertical: cellPadding.y,
               paddingHorizontal: cellPadding.x,
               justifyContent: "center",
@@ -114,7 +120,8 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
           </View>
         )}
     </Fragment>
-  );
+    );
+  };
   // Like Web: subtotals read quieter than rows, and the total closes the table under a strong text-colored rule.
   const summaryRow = (rows: Row[], kind: "subtotal" | "total", key: string) => summary && (
     <View key={key} style={{ flexDirection: "row", ...(kind === "total" ? { borderTopWidth: tokens.border.controlWidth, borderTopColor: colors.text } : null) }}>
@@ -129,58 +136,10 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
       {expandable && <View style={{ width: geometry.actionColumnWidth }} />}
     </View>
   );
-  const body = () => [
-    ...(groups ? groups.flatMap((group) => {
-      const open = !collapsed.includes(group.key);
-      return [
-        <View key={"group:" + group.key} role="heading" style={{ flexDirection: "row", alignItems: "center", gap: geometry.groupGap, width: totalWidth,
-          paddingVertical: geometry.groupPadding.y, paddingHorizontal: geometry.groupPadding.x, backgroundColor: colors.secondary }}>
-          <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"}
-            ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} accessibilityState={{ expanded: open }} onPress={() => toggleGroup(group.key)} />
-          {content(groupLabel(group), { ...typeStyle("control"), color: colors.text })}
-          <KText style={{ ...typeStyle("body"), color: colors.textTertiary }}>{m.groupCount(group.rows.length)}</KText>
-        </View>,
-        ...(open ? group.rows.map((row) => bodyRow(row, state.rowIndex(row))) : []),
-        group.rows.length > 1 ? summaryRow(group.rows, "subtotal", "subtotal:" + group.key) : null,
-      ];
-    }) : state.rows.map(bodyRow)),
-    summaryRow(state.rows, "total", "total"),
-  ];
-  return (
-        <View style={{ position: "relative", minWidth: 0, opacity: skeletonHidden ? 0 : undefined }} aria-hidden={skeletonHidden || undefined}>
-          <ScrollView horizontal style={{ maxHeight }} scrollEventThrottle={16}
-            onLayout={(event) => { const viewport = event.nativeEvent.layout.width; setScroll((previous) => ({ ...previous, viewport })); }}
-            onScroll={(event) => { const x = event.nativeEvent.contentOffset.x; setScroll((previous) => ({ ...previous, x })); }}>
-            <ScrollView
-              stickyHeaderIndices={stickyHeader ? [0] : undefined}
-              style={{ width: totalWidth, maxHeight }}
-              scrollEventThrottle={16}
-              onScroll={stickyHeader ? (event) => setStuck(event.nativeEvent.contentOffset.y > 0) : undefined}
-            >
-              {/* Like Web: once rows pass under the sticky header, its line turns strong instead of casting a shadow. */}
-              <View
-                style={{
-                  flexDirection: "row",
-                  backgroundColor: colors.tableHeaderBg,
-                  borderBottomWidth: tokens.border.defaultWidth,
-                  borderBottomColor: stickyHeader && stuck ? colors.borderStrong : colors.border,
-                }}
-              >
-                {selectable && (
-                  <View style={{ width: geometry.actionColumnWidth, alignItems: "center" }}>
-                    <KjunCheckbox
-                      size="sm"
-                      value={state.all}
-                      indeterminate={state.some}
-                      ariaLabel={
-                        state.some ? m.selectAllPartial : m.selectAll
-                      }
-                      onValueChange={state.toggleAll}
-                    />
-                  </View>
-                )}
-                {visible.map((col) => (
-                  // Only sortable columns are buttons; other headers read as their plain label.
+  // Like Web: with column groups the header has two rows; a group's label sits over its columns, lone columns span both rows.
+  const headerRows = tableHeaderRows(visible, columnGroups);
+  // A lone column beside a group stretches to the header's full height, as the row stretches its children.
+  const columnHeader = (col: TableColumn<Row>) => (
                   <Pressable
                     key={col.key}
                     accessible={!!col.sortable && sortable !== false}
@@ -235,7 +194,66 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                       />
                     )}
                   </Pressable>
-                ))}
+  );
+  const body = () => [
+    ...(groups ? groups.flatMap((group) => {
+      const open = !collapsed.includes(group.key);
+      return [
+        <View key={"group:" + group.key} role="heading" style={{ flexDirection: "row", alignItems: "center", gap: geometry.groupGap, width: totalWidth,
+          paddingVertical: geometry.groupPadding.y, paddingHorizontal: geometry.groupPadding.x, backgroundColor: colors.secondary }}>
+          <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"}
+            ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} accessibilityState={{ expanded: open }} onPress={() => toggleGroup(group.key)} />
+          {content(groupLabel(group), { ...typeStyle("control"), color: colors.text })}
+          <KText style={{ ...typeStyle("body"), color: colors.textTertiary }}>{m.groupCount(group.rows.length)}</KText>
+        </View>,
+        ...(open ? group.rows.map((row) => bodyRow(row, state.rowIndex(row))) : []),
+        group.rows.length > 1 ? summaryRow(group.rows, "subtotal", "subtotal:" + group.key) : null,
+      ];
+    }) : state.rows.map(bodyRow)),
+    summaryRow(state.rows, "total", "total"),
+  ];
+  return (
+        <View style={{ position: "relative", minWidth: 0, opacity: skeletonHidden ? 0 : undefined }} aria-hidden={skeletonHidden || undefined}>
+          <ScrollView horizontal style={{ maxHeight }} scrollEventThrottle={16}
+            onLayout={(event) => { const viewport = event.nativeEvent.layout.width; setScroll((previous) => ({ ...previous, viewport })); }}
+            onScroll={(event) => { const x = event.nativeEvent.contentOffset.x; setScroll((previous) => ({ ...previous, x })); }}>
+            <ScrollView
+              stickyHeaderIndices={stickyHeader ? [0] : undefined}
+              style={{ width: totalWidth, maxHeight }}
+              scrollEventThrottle={16}
+              onScroll={stickyHeader ? (event) => setStuck(event.nativeEvent.contentOffset.y > 0) : undefined}
+            >
+              {/* Like Web: once rows pass under the sticky header, its line turns strong instead of casting a shadow. */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: colors.tableHeaderBg,
+                  borderBottomWidth: tokens.border.defaultWidth,
+                  borderBottomColor: stickyHeader && stuck ? colors.borderStrong : colors.border,
+                }}
+              >
+                {selectable && (
+                  <View style={{ width: geometry.actionColumnWidth, alignItems: "center" }}>
+                    <KjunCheckbox
+                      size="sm"
+                      value={state.all}
+                      indeterminate={state.some}
+                      ariaLabel={
+                        state.some ? m.selectAllPartial : m.selectAll
+                      }
+                      onValueChange={state.toggleAll}
+                    />
+                  </View>
+                )}
+                {headerRows ? headerRows.map((cell) => cell.kind === "column" ? columnHeader(cell.column) : (
+                  <View key={cell.key} accessibilityRole="header" style={{ width: cell.columns.reduce((sum, col) => sum + width(col), 0) }}>
+                    <View style={{ paddingVertical: geometry.headerPadding.y, paddingHorizontal: geometry.headerPadding.x, alignItems: "center",
+                      borderBottomWidth: tokens.border.defaultWidth, borderBottomColor: colors.border }}>
+                      <KText style={{ ...typeStyle("controlSmall"), color: colors.textSecondary }}>{cell.label}</KText>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>{cell.columns.map((col) => columnHeader(col))}</View>
+                  </View>
+                )) : visible.map((col) => columnHeader(col))}
                 {expandable && <View style={{ width: geometry.actionColumnWidth }} />}
               </View>
               {initialLoading ? (

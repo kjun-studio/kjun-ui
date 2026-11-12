@@ -22400,6 +22400,20 @@
         "description": ""
       },
       {
+        "name": "columnGroups",
+        "type": "TableColumnGroup[]",
+        "required": false,
+        "default": "—",
+        "description": "Labels over runs of columns, by column key: the header gets a second row. Narrow cards use them as sections when cardSections is empty."
+      },
+      {
+        "name": "cellSpan",
+        "type": "((row: any, column: TableColumn<any>) => number | null | undefined)",
+        "required": false,
+        "default": "—",
+        "description": "How many columns a row's cell covers, counting itself (2 merges it with the next column). The covered cells are not drawn."
+      },
+      {
         "name": "cardLayout",
         "type": "\"rows\" | \"stacked\" | \"tiles\"",
         "required": false,
@@ -22595,6 +22609,20 @@
         "description": ""
       },
       {
+        "name": "columnGroups",
+        "type": "import(\"/workspace/shared/package-runtime/table-columns\").TableColumnGroup[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Labels over runs of columns, by column key: the header gets a second row. Narrow cards use them as sections when cardSections is empty."
+      },
+      {
+        "name": "cellSpan",
+        "type": "((row: Row, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>) => number | null | undefined) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "How many columns a row's cell covers, counting itself (2 merges it with the next column). The covered cells are not drawn."
+      },
+      {
         "name": "data",
         "type": "Row[] | undefined",
         "required": false,
@@ -22652,7 +22680,7 @@
       },
       {
         "name": "sort",
-        "type": "import(\"/workspace/packages/tokens/dist/table-contract\").TableSort | null | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/table\").TableSort | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -23003,6 +23031,20 @@
         "description": ""
       },
       {
+        "name": "columnGroups",
+        "type": "import(\"/workspace/shared/package-runtime/table-columns\").TableColumnGroup[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Labels over runs of columns, by column key: the header gets a second row. Narrow cards use them as sections when cardSections is empty."
+      },
+      {
+        "name": "cellSpan",
+        "type": "((row: Row, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>) => number | null | undefined) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "How many columns a row's cell covers, counting itself (2 merges it with the next column). The covered cells are not drawn."
+      },
+      {
         "name": "data",
         "type": "Row[] | undefined",
         "required": false,
@@ -23060,7 +23102,7 @@
       },
       {
         "name": "sort",
-        "type": "import(\"/workspace/packages/tokens/dist/table-contract\").TableSort | null | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/table\").TableSort | null | undefined",
         "required": false,
         "default": "—",
         "description": ""

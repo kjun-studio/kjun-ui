@@ -6,15 +6,21 @@ import { KjunButton, KjunIcon } from "./button";
 import { KjunSkeleton } from "./display";
 import { TableCheck } from "./table-check";
 import { stickyHeaderStuck } from "../../../shared/package-runtime/table-model";
+import { tableHeaderRows, tableSpans } from "../../../shared/package-runtime/table-columns";
+import type { TableColumn } from "./table-model";
 interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["maxHeight"]> {
   ariaLabel: string;
   customClass: (row: Row, index: number) => string;
   rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
 }
-export function TableGrid<Row extends object>({ initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary, stickyOffset = 0 }: Props<Row>) {
+export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary, stickyOffset = 0 }: Props<Row>) {
   const m = useKjunMessages();
   const span = visible.length + Number(selectable) + Number(expandable);
-  const bodyRow = (row: Row, i: number) => (
+  // With column groups the header has two rows: groups and lone columns on top, the grouped columns under their group.
+  const headerRows = tableHeaderRows(visible, columnGroups), lone = headerRows ? 2 : undefined;
+  const bodyRow = (row: Row, i: number) => {
+    const spans = tableSpans(visible, cellSpan ? (column) => cellSpan(row, column) : null);
+    return (
     <Fragment key={state.key(row, i)}>
       <tr
         className={"kjun-table-row-action " + customClass(row, i)}
@@ -26,19 +32,26 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
         onClick={() => onRowClick?.(row, i)}
       >
         {selectable && <td className="kjun-table-action-cell">{checkbox(row, i)}</td>}
-        {visible.map((col) => (
+        {visible.map((col, c) => {
+          if (!spans[c]) return null;
+          // Like Vue's attribute merge: the app's class and style join KJUN's rather than replacing them.
+          const { key: _key, className: appClass, style: appStyle, ...attributes } = (col.cellProps?.(row, i) ?? {}) as Record<string, unknown> & { className?: string; style?: CSSProperties };
+          return (
           <td
+            {...attributes}
             key={col.key}
-            style={{ textAlign: col.align }}
+            colSpan={spans[c] > 1 ? spans[c] : undefined}
+            style={{ ...appStyle, textAlign: col.align }}
             data-numeric={col.type === "number" || col.align === "right" || undefined} data-date={col.type === "date" || col.type === "datetime" || undefined}
             className={
               (col.secondary ? "kjun-table-secondary " : "") +
-              (col.className || "")
+              (col.className || "") + (appClass ? " " + appClass : "")
             }
           >
             {cell(col, row, i)}
           </td>
-        ))}
+          );
+        })}
         {expandable && <td className="kjun-table-action-cell">{expand(row, i)}</td>}
       </tr>
       {expandable &&
@@ -52,6 +65,38 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
           </tr>
         )}
     </Fragment>
+    );
+  };
+  const columnHeader = (col: TableColumn<Row>, rowSpan?: number) => (
+    <th
+      key={col.key}
+      scope="col"
+      rowSpan={rowSpan}
+      style={{ width: col.width, textAlign: col.align }}
+      className={col.headerClass}
+      aria-sort={
+        col.sortable && sortable !== false
+          ? state.sort.key === col.key
+            ? state.sort.order === "asc"
+              ? "ascending"
+              : "descending"
+            : "none"
+          : undefined
+      }
+    >
+      {col.sortable && sortable !== false ? (
+        <button type="button" onClick={() => state.sortColumn(col)}>
+          {col.label}
+          <KjunIcon
+            name={state.sort.key !== col.key ? "arrows-sort" : state.sort.order === "asc" ? "sort-ascending" : "sort-descending"}
+            size={state.sort.key === col.key ? tokens.table.sortedIconSize : tokens.table.sortIconSize}
+            className="kjun-table-sort-icon"
+          />
+        </button>
+      ) : (
+        col.label
+      )}
+    </th>
   );
   // The first cell always names a summary row; a first column with a value of its own shows both.
   const summaryRow = (rows: Row[], kind: "subtotal" | "total", key: string) => summary && (
@@ -119,7 +164,7 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
               >
                 <tr>
                   {selectable && (
-                    <th scope="col" className="kjun-table-action-cell">
+                    <th scope="col" className="kjun-table-action-cell" rowSpan={lone}>
                       <TableCheck
                         aria-label={m.selectAll}
                         checked={state.all}
@@ -130,48 +175,13 @@ export function TableGrid<Row extends object>({ initialLoading, skeletonRows, sk
                       />
                     </th>
                   )}
-                  {visible.map((col) => (
-                    <th
-                      key={col.key}
-                      scope="col"
-                      style={{ width: col.width, textAlign: col.align }}
-                      className={col.headerClass}
-                      aria-sort={
-                        col.sortable && sortable !== false
-                          ? state.sort.key === col.key
-                            ? state.sort.order === "asc"
-                              ? "ascending"
-                              : "descending"
-                            : "none"
-                          : undefined
-                      }
-                    >
-                      {col.sortable && sortable !== false ? (
-                        <button
-                          type="button"
-                          onClick={() => state.sortColumn(col)}
-                        >
-                          {col.label}
-                          <KjunIcon
-                            name={
-                              state.sort.key !== col.key
-                                ? "arrows-sort"
-                                : state.sort.order === "asc"
-                                ? "sort-ascending"
-                                : "sort-descending"
-                            }
-                            size={state.sort.key === col.key ? tokens.table.sortedIconSize : tokens.table.sortIconSize}
-                            className="kjun-table-sort-icon"
-                          />
-                        </button>
-                      ) : (
-                        col.label
-                      )}
-                    </th>
-                  ))}
+                  {headerRows ? headerRows.map((cell) => cell.kind === "column" ? columnHeader(cell.column, lone)
+                    : <th key={cell.key} scope="colgroup" colSpan={cell.span} className="kjun-table-column-group">{cell.label}</th>)
+                    : visible.map((col) => columnHeader(col))}
                   {/* Expansion sits at the row's end, so the checkbox is the only leading utility column. */}
-                  {expandable && <th scope="col" className="kjun-table-action-cell" />}
+                  {expandable && <th scope="col" className="kjun-table-action-cell" rowSpan={lone} />}
                 </tr>
+                {headerRows && <tr>{headerRows.flatMap((cell) => cell.kind === "group" ? cell.columns.map((col) => columnHeader(col)) : [])}</tr>}
               </thead>
               {groups && !initialLoading && state.rows.length > 0 ? groupBodies() : <tbody>
                 {initialLoading ? (
