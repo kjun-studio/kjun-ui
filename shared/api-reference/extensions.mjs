@@ -28,6 +28,8 @@ const summaries = {
   safeArea: "KjunProvider의 safeArea(웹은 없으면 브라우저 env(safe-area-inset-*))만큼 화면 가장자리에서 띄웁니다. 기본값 true이며, 앱이 이미 그 공간을 비웠거나(Drawer 안, SafeAreaView 안) 화면 가장자리가 아닌 곳에 놓을 때 false로 끕니다.",
   keyboardVisible: "앱이 전달하는 키보드 표시 여부입니다. 실제 키보드 감지·창 크기 조절은 앱의 책임입니다.",
   hideOnKeyboard: "keyboardVisible=true일 때 이 영역을 숨길지 결정합니다.",
+  iconStyle: "아이콘을 그리는 방식입니다. auto(기본)는 미선택을 외곽선, 현재 목적지를 채운 아이콘으로 그려 색과 모양으로 구분합니다. filled는 모두 채움형(색으로만 구분하므로 면적이 비슷한 아이콘 세트에 권장), outline은 모두 외곽선(현재 목적지만 획 2px)입니다. 채움형이 없는 아이콘은 외곽선으로 남습니다.",
+  showLabels: "아이콘 아래에 라벨을 보입니다. 기본값 true이며 false면 아이콘만 56px 높이로 그리고 label은 접근성 이름으로 남습니다. 아이콘이 없는 글자 전용 바는 항상 라벨을 보입니다.",
   src: "로드할 이미지 URL 또는 data URL입니다. 변경하면 새 요청으로 처리합니다.",
   source: "Native 이미지 리소스입니다. 제공하면 src보다 우선하며 require로 가져온 로컬 리소스도 받습니다.",
   alt: "이미지의 내용을 설명하는 전체 대체 텍스트입니다.",

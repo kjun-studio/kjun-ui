@@ -8,6 +8,7 @@ import { AlertActionsContext } from "./alert-actions-context";
 import { textTint } from "./text-tint";
 import { useActionSize } from "../../../shared/package-runtime/action-size";
 import { DataStateContentContext } from "./data-state-context";
+import { IconStrokeContext } from "./icon-stroke-context";
 import { tokens,type ButtonSize,type ButtonVariant } from "@kjun-ui/tokens";
 import { useIcon } from "../../../shared/package-runtime/icon-context";
 import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
@@ -52,10 +53,10 @@ export function IconBase({
   color,
   spin = false,
   filled = false,
-  strokeWidth = 2,
+  strokeWidth: stroke,
 }: KjunIconProps & { strokeWidth?: number }) {
   const { colors } = useKjunStyles();
-  const { nodes, filled: renderFilled } = useIcon(name, filled);
+  const { nodes, filled: renderFilled } = useIcon(name, filled), contextStroke = useContext(IconStrokeContext), strokeWidth = stroke ?? contextStroke;
   const angle = useRef(new Animated.Value(0)).current;
   const [reduced, setReduced] = useState(true);
   useEffect(() => {

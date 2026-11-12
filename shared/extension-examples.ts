@@ -6,7 +6,7 @@ const size = choice("size", "크기", ["sm", "md", "lg"], "md"), disabled = bool
 export const extensionControls: Record<string, ExampleControl[]> = {
   KjunListRow: [choice("leadingSize", "앞 영역 크기", ["자동", "xs", "sm", "md", "lg"]), bool("iconColor", "아이콘 강조색", true), bool("iconBackground", "원형 배경", true), disabled, long], KjunListSection: [choice("variant", "모양", ["default", "open"]), long], KjunListGroup: [choice("variant", "모양", ["inset", "flush", "open"])], KjunListItem: [],
   KjunTopNavigation: [long, bool("showDescription", "설명 표시", true), choice("leading", "앞쪽 탐색", ["아이콘", "긴 문구", "없음"]), choice("actions", "행동 구성", ["저장", "긴 문구", "여러 행동", "아이콘 조합", "없음"]), choice("exampleWidth", "예제 너비", ["640", "390", "320", "288"], "390"), disabled, bool("loading", "행동 로딩"), number("safeAreaTop", "상단 안전 영역", 0, 0, 80)],
-  KjunBottomNavigation: [long, bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기", true), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
+  KjunBottomNavigation: [choice("iconStyle", "아이콘 모양", ["auto", "filled", "outline"]), bool("showLabels", "라벨 표시", true), long, bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기", true), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
   KjunFloatingNavigation: [bool("badges", "배지", true), bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기", true), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
   KjunBottomActionBar: [long, bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기"), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
   KjunCarousel: [choice("slideSize", "슬라이드 폭", ["full", "peek", "auto"]), choice("gap", "간격", ["none", "sm", "md", "lg"], "md"), choice("indicators", "위치 표시", ["dots", "count", "none"]), choice("indicatorPlacement", "표시 위치", ["below", "overlay"]), choice("snapAlign", "정렬", ["start", "center"]), choice("bleed", "여백 밖 펼침", ["none", "sm", "md", "lg"]), bool("mouseDrag", "마우스 드래그", true), bool("controls", "이전·다음 버튼", true), bool("title", "섹션 제목")],
@@ -35,7 +35,7 @@ export const extensionPresets: Record<string, ExamplePreset[]> = {
     preset("mixed", "아이콘 조합 · 390px", { actions: "아이콘 조합" }),
     preset("narrow", "긴 제목 · 320px", { long: true, exampleWidth: "320" }),
   ],
-  KjunBottomNavigation: [preset("keyboard", "키보드 표시", { keyboardVisible: true }), preset("safe-area", "안전 영역", { safeAreaBottom: 34 })],
+  KjunBottomNavigation: [preset("icons", "아이콘만", { showLabels: false }), preset("filled", "전부 채움", { iconStyle: "filled" }), preset("outline", "전부 선", { iconStyle: "outline" }), preset("keyboard", "키보드 표시", { keyboardVisible: true }), preset("safe-area", "안전 영역", { safeAreaBottom: 34 })],
   KjunFloatingNavigation: [preset("keyboard", "키보드 표시", { keyboardVisible: true }), preset("safe-area", "안전 영역", { safeAreaBottom: 34 })],
   KjunBottomActionBar: [{ id: "narrow", label: "좁은 화면", narrow: true }, preset("keyboard", "키보드 표시", { keyboardVisible: true }), preset("safe-area", "안전 영역", { safeAreaBottom: 34, long: true })],
   KjunCarousel: [preset("peek", "다음 카드 보이기", { slideSize: "peek", gap: "sm" }), preset("cards", "카드 줄", { slideSize: "auto", indicators: "none", title: true }), preset("count", "숫자 위치 표시", { indicators: "count" }), preset("center", "가운데 정렬", { slideSize: "peek", snapAlign: "center" }), preset("overlay", "사진 위 숫자", { indicators: "count", indicatorPlacement: "overlay" })],

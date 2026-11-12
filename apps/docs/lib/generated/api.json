@@ -1399,7 +1399,21 @@
         "type": "boolean",
         "required": false,
         "default": "true",
-        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
+        "description": "Paints the surface (default true): rounded top corners and a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band."
+      },
+      {
+        "name": "iconStyle",
+        "type": "NavigationIconStyle",
+        "required": false,
+        "default": "\"auto\"",
+        "description": "\"auto\" (default) draws outline icons and fills the selected one; \"filled\" or \"outline\" keeps one style for every destination, the selection then carried by colour (and stroke weight)."
+      },
+      {
+        "name": "showLabels",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels."
       }
     ],
     "events": [
@@ -1475,7 +1489,21 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
+        "description": "Paints the surface (default true): rounded top corners and a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band."
+      },
+      {
+        "name": "iconStyle",
+        "type": "import(\"/workspace/shared/package-runtime/navigation-icon\").NavigationIconStyle | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"auto\" (default) draws outline icons and fills the selected one; \"filled\" or \"outline\" keeps one style for every destination, the selection then carried by colour (and stroke weight)."
+      },
+      {
+        "name": "showLabels",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels."
       }
     ],
     "native": [
@@ -1540,7 +1568,21 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
+        "description": "Paints the surface (default true): rounded top corners and a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band."
+      },
+      {
+        "name": "iconStyle",
+        "type": "import(\"/workspace/shared/package-runtime/navigation-icon\").NavigationIconStyle | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"auto\" (default) draws outline icons and fills the selected one; \"filled\" or \"outline\" keeps one style for every destination, the selection then carried by colour (and stroke weight)."
+      },
+      {
+        "name": "showLabels",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels."
       }
     ]
   },
@@ -22610,7 +22652,7 @@
       },
       {
         "name": "sort",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableSort | null | undefined",
+        "type": "import(\"/workspace/packages/tokens/dist/table-contract\").TableSort | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -23018,7 +23060,7 @@
       },
       {
         "name": "sort",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableSort | null | undefined",
+        "type": "import(\"/workspace/packages/tokens/dist/table-contract\").TableSort | null | undefined",
         "required": false,
         "default": "—",
         "description": ""

@@ -8,17 +8,16 @@ const icon = (page: Page, text: string) => nav(page).getByRole('link', { name: n
 const rect = async (item: ReturnType<typeof label>) => (await item.boundingBox())!;
 const palettes = demoPalettes as Record<string, Record<string, string>>;
 const rgb = (hex: string) => { const n = parseInt(hex.slice(1), 16); return `rgb(${n >> 16 & 255}, ${n >> 8 & 255}, ${n & 255})`; };
-const navigationDivider = (palette: string) => rgb(palettes[palette].divider ?? palettes[palette].border);
 // The fill a destination icon paints: a colour for the filled glyph, none for the outline one.
 const iconFill = (page: Page, text: string) => icon(page, text).evaluate(svg => getComputedStyle(svg.querySelector('path')!).fill);
-// The first full-width, 1px-tall paint on the bar's top edge: an inset shadow on the web, an overlay View on Native.
-const topLine = (page: Page) => nav(page).evaluate(bar => {
-  const shadow = getComputedStyle(bar).boxShadow.match(/^(rgba?\([^)]*\)) 0px (\d+)px 0px 0px inset$/);
-  if (shadow) return { height: Number(shadow[2]), color: shadow[1] };
-  const box = bar.getBoundingClientRect();
-  const line = [...bar.children].find(n => { const r = n.getBoundingClientRect(); return r.top === box.top && r.width === box.width && r.height <= 1; });
-  return line ? { height: line.getBoundingClientRect().height, color: getComputedStyle(line).backgroundColor } : null;
+// The bar's own layer: rounded top corners and a shadow thrown upwards, with no hairline on its top edge.
+const barEdge = (page: Page) => nav(page).evaluate(bar => {
+  const css = getComputedStyle(bar), box = bar.getBoundingClientRect();
+  const line = [...bar.children].some(n => { const r = n.getBoundingClientRect(); return r.top === box.top && r.width === box.width && r.height <= 1; });
+  return { radius: [css.borderTopLeftRadius, css.borderTopRightRadius, css.borderBottomLeftRadius], shadow: css.boxShadow !== 'none' && !/inset/.test(css.boxShadow), line };
 });
+// The stroke an outline destination icon draws, in the icon's 24-unit grid.
+const iconStroke = (page: Page, text: string) => icon(page, text).evaluate(svg => parseFloat(getComputedStyle(svg.querySelector('path')!).strokeWidth));
 // The painted badge box around a count: its own element on the web, the bordered View on Native.
 const badgeBox = (page: Page, text: string) => label(page, text).evaluate(el => {
   const box = el.closest('.kjun-navigation-badge') ?? el.parentElement!, css = getComputedStyle(box);
@@ -30,21 +29,22 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.setViewportSize({ width: 390, height: 600 });
     for (const palette of ['default', 'dark']) {
       await openFixture(page, platform, '?palette=' + palette, 'bottom-navigation-design');
-      await expect(nav(page)).toHaveCSS('height', '64px');
+      await expect(nav(page)).toHaveCSS('height', '60px');
       await expect(nav(page)).toHaveCSS('border-top-width', '0px');
-      // A 1px divider on the bar's top edge that adds no height.
-      expect(await topLine(page)).toEqual({ height: 1, color: navigationDivider(palette) });
+      expect(await barEdge(page)).toEqual({ radius: ['20px', '20px', '0px'], shadow: true, line: false });
       await expect(page.locator('.kjun-navigation-indicator')).toHaveCount(0);
       expect(await iconFill(page, '홈')).not.toBe('none');
       expect(await iconFill(page, '활동')).toBe('none');
       const home = await rect(icon(page, '홈')), activity = await rect(icon(page, '활동'));
-      expect(home.width).toBe(24); expect(home.height).toBe(24); expect(activity.y).toBe(home.y);
+      expect(home.width).toBe(28); expect(home.height).toBe(28); expect(activity.y).toBe(home.y);
+      // Outline icons draw a 1.5 stroke at this size.
+      expect(await iconStroke(page, '활동')).toBe(1.5);
       expect((await rect(label(page, '홈'))).y).toBe((await rect(label(page, '활동'))).y);
       expect((await rect(label(page, '활동'))).y - activity.y - activity.height).toBe(4);
       const badge = await rect(label(page, '3'));
       expect(badge.y).toBeLessThan(activity.y); expect(badge.x).toBeGreaterThan(activity.x + 12);
       // An alert fill apart from the selection colour.
-      expect(await badgeBox(page, '3')).toMatchObject({ height: 18, background: rgb(palettes[palette].danger), color: rgb(palettes[palette].onDanger ?? palettes[palette].inverse) });
+      expect(await badgeBox(page, '3')).toMatchObject({ height: 16, background: rgb(palettes[palette].danger), color: rgb(palettes[palette].onDanger ?? palettes[palette].inverse) });
       await expect(label(page, '홈')).toHaveCSS('font-size', '12px');
       await expect(label(page, '홈')).toHaveCSS('font-weight', '600');
       await expect(label(page, '활동')).toHaveCSS('font-weight', '500');
@@ -62,7 +62,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(page.getByTestId('events')).toHaveText('activity');
       await configure(page, { badge: null });
       expect(await rect(icon(page, '활동'))).toEqual(activity);
-      await expect(nav(page)).toHaveCSS('height', '64px');
+      await expect(nav(page)).toHaveCSS('height', '60px');
     }
   });
 
@@ -81,7 +81,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByTestId('events')).toHaveText('activity');
     await configure(page, { acceptNavigation: true }); await activity.press('Enter');
     await expect(activity).toHaveAttribute('aria-current', 'page');
-    await configure(page, { safeAreaBottom: 24 }); await expect(nav(page)).toHaveCSS('height', '88px');
+    await configure(page, { safeAreaBottom: 24 }); await expect(nav(page)).toHaveCSS('height', '84px');
     await configure(page, { keyboardVisible: true }); await expect(nav(page)).toHaveCount(0);
     await configure(page, { hideOnKeyboard: false }); await expect(nav(page)).toBeVisible();
   });
@@ -93,17 +93,41 @@ for (const platform of ['react', 'vue3', 'native']) {
     const icons = await nav(page).locator('svg').all();
     const first = await rect(icons[0]);
     for (const item of icons) expect((await rect(item)).y).toBe(first.y);
-    expect((await rect(nav(page))).height).toBeGreaterThanOrEqual(64);
+    // A long label ends in an ellipsis on one line, so the bar keeps its height.
+    expect((await rect(nav(page))).height).toBe(60);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
     await configure(page, { count: 3, long: false, mixed: true, badge: 0 });
     await expect(label(page, '0')).toBeVisible();
     expect((await rect(label(page, '활동'))).y).toBe((await rect(label(page, '홈'))).y);
     await configure(page, { icons: false });
     await expect(nav(page).locator('svg')).toHaveCount(0);
-    await expect(nav(page)).toHaveCSS('height', '64px');
+    await expect(nav(page)).toHaveCSS('height', '60px');
     const bar = await rect(nav(page)), text = await rect(label(page, '홈'));
     expect(text.y + text.height / 2).toBe(bar.y + bar.height / 2);
     await nav(page).getByRole('link', { name: /활동/ }).click();
     await expect(nav(page).getByRole('link', { name: /활동/ })).toHaveAttribute('aria-current', 'page');
+  });
+
+  test(`${platform}: iconStyle keeps one icon style for every destination and showLabels draws icons alone`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 600 });
+    await openFixture(page, platform, '', 'bottom-navigation-design');
+    await configure(page, { iconStyle: 'filled' });
+    expect(await iconFill(page, '홈')).not.toBe('none'); expect(await iconFill(page, '활동')).not.toBe('none');
+    await configure(page, { iconStyle: 'outline' });
+    expect(await iconFill(page, '홈')).toBe('none'); expect(await iconFill(page, '활동')).toBe('none');
+    // With outlines only, the selected destination takes the full stroke.
+    expect(await iconStroke(page, '홈')).toBe(2); expect(await iconStroke(page, '활동')).toBe(1.5);
+    await configure(page, { iconStyle: 'auto', showLabels: false });
+    await expect(nav(page)).toHaveCSS('height', '56px');
+    await expect(nav(page).getByText('홈', { exact: true })).toHaveCount(0);
+    // The label stays the destination's accessible name.
+    const home = nav(page).getByRole('link', { name: '홈', exact: true }), bar = await rect(nav(page)), glyph = await rect(icon(page, '홈'));
+    await expect(home).toHaveAttribute('aria-current', 'page');
+    expect(glyph.y + glyph.height / 2).toBe(bar.y + bar.height / 2);
+    await nav(page).getByRole('link', { name: /활동/ }).click();
+    await expect(nav(page).getByRole('link', { name: /활동/ })).toHaveAttribute('aria-current', 'page');
+    // A text-only bar always shows its labels.
+    await configure(page, { icons: false });
+    await expect(label(page, '홈')).toBeVisible(); await expect(nav(page)).toHaveCSS('height', '60px');
   });
 }

@@ -2,6 +2,9 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
+import { navigationIconFilled, type NavigationIconStyle } from "../../../shared/package-runtime/navigation-icon";
+import { IconStrokeContext } from "./icon-stroke-context";
+export type { NavigationIconStyle };
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
 import { Children, Fragment, isValidElement, useState, type ReactNode } from "react";
@@ -68,8 +71,8 @@ function NavigationBadgeMark({ badge, ring, iconSize }: { badge: NavigationDesti
   return <View pointerEvents="none" aria-hidden={true} style={{
     ...(iconSize !== undefined ? {
       position: "absolute" as const, top: (mark.dot ? 0 : -geometry.badgeOffset) - width,
-      // Counts and dots overlap only the icon's outer edge (badge overlap), clear of the glyph strokes.
-      start: iconSize - geometry.badgeOverlap - width,
+      // Counts and dots overlap only the icon's outer edge, clear of most of the glyph.
+      start: iconSize - (mark.dot ? geometry.dotOverlap : geometry.badgeOverlap) - width,
     } : { marginStart: geometry.badgeOffset - width, alignSelf: mark.dot ? "flex-start" as const : "center" as const }),
     minWidth: size + 2 * width, minHeight: size + 2 * width,
     paddingHorizontal: mark.dot ? 0 : geometry.badgePaddingX, borderRadius: geometry.badgeRadius,
@@ -89,51 +92,56 @@ export interface KjunBottomNavigationProps { items: NavigationDestination[]; val
   keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: Navigate;
   /** The current destination was pressed again, e.g. to scroll its page back to the top. */
   onReselect?: Navigate;
-  /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
-  surface?: boolean }
-export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible = false, hideOnKeyboard = true, onNavigate, onReselect, surface = true }: KjunBottomNavigationProps) {
+  /** Paints the surface (default true): rounded top corners and a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band. */
+  surface?: boolean;
+  /** "auto" (default) draws outline icons and fills the selected one; "filled" or "outline" keeps one style for every destination, the selection then carried by colour (and stroke weight). */
+  iconStyle?: NavigationIconStyle;
+  /** Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels. */
+  showLabels?: boolean }
+export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible = false, hideOnKeyboard = true, onNavigate, onReselect, surface = true, iconStyle = "auto", showLabels = true }: KjunBottomNavigationProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.mainNavigation;
   const { colors } = useKjunStyles(), insets = useKjunSafeArea();
   const geometry = tokens.extensions.bottomNavigation;
-  const hasIcons = items.some(item => item.icon);
+  const hasIcons = items.some(item => item.icon), labels = showLabels || !hasIcons;
   if (keyboardVisible && hideOnKeyboard) return null;
   // Without a surface the bar shows the page background, so the badge ring takes that colour.
   const ring = surface ? colors.surface : colors.background;
   const label = typeStyle('caption');
-  return <View role="navigation" accessibilityLabel={ariaLabel} style={{ flexShrink: 0, flexDirection: "row", backgroundColor: surface ? colors.surface : "transparent", paddingBottom: (safeArea ? insets.bottom : 0) }}>
-    {/* A hairline on the surface keeps the bar apart from content scrolling under it, without adding height. */}
-    {surface && <View pointerEvents="none" aria-hidden={true} style={{ position: "absolute", top: 0, left: 0, right: 0, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
+  // Like Web: the bar is its own layer over the content, with rounded top corners and a soft shadow thrown upwards.
+  return <View role="navigation" accessibilityLabel={ariaLabel} style={{ flexShrink: 0, flexDirection: "row", justifyContent: "center", backgroundColor: surface ? colors.surface : "transparent", paddingBottom: (safeArea ? insets.bottom : 0),
+    ...(surface ? { borderTopLeftRadius: geometry.radius, borderTopRightRadius: geometry.radius, boxShadow: shadowLayers(geometry.elevation, colors) } : {}) }}>
     {items.map(item => {
       const selected = item.key === value;
-      const ink = selected ? colors.brand : colors.textSecondary;
-      // Press feedback: a circle behind the icon, or a pill behind a text-only label.
+      // Unselected destinations step back to the tertiary text role; disabled ones go one step further.
+      const ink = item.disabled ? colors.textDisabled : selected ? colors.brand : colors.textTertiary;
+      // Hover, press and keyboard focus share one shape: a rounded rectangle inset from the destination's edges.
       const press = ({ pressed, hovered }: PressState) => !item.disabled && (pressed || hovered) ? (pressed ? colors.active : colors.hover) : "transparent";
       // The ring follows the fill under the badge, so hover and press do not show a surface-coloured halo.
       const badge = (state: PressState, iconSize?: number) => {
         const fill = press(state);
         return <NavigationBadgeMark badge={item.badge} ring={fill === "transparent" ? ring : fill} iconSize={iconSize} />;
       };
-      // Bottom bars meet the screen edges, so the ring stays inside the item, like tabs.
-      return <Pressable key={item.key} focusRingInset
+      return <Pressable key={item.key} focusRingInset={geometry.pressInset} focusRingRadius={geometry.pressRadius}
         {...(Platform.OS === "web" ? { href: item.disabled ? undefined : item.href, "aria-current": selected ? "page" : undefined } : {})}
         accessibilityRole={Platform.OS === "web" && item.href ? "link" : "button"}
         accessibilityLabel={navigationLabel(item.label, item.badge, m.newContent, m.newCount)}
         accessibilityState={{ selected, disabled: !!item.disabled }} disabled={item.disabled}
         onPress={pressDestination(item, selected, onNavigate, onReselect)}
-        style={{ flex: 1, minWidth: 0, minHeight: geometry.minimumHeight, alignItems: "center",
-          justifyContent: hasIcons ? "flex-start" : "center", gap: geometry.itemGap,
-          paddingHorizontal: geometry.itemPaddingX, paddingVertical: geometry.itemPaddingY,
-          opacity: item.disabled ? tokens.states.opacity.disabled : 1 }}>
+        style={{ flex: 1, minWidth: 0, maxWidth: geometry.itemMaximumWidth, minHeight: labels ? geometry.minimumHeight : geometry.iconOnlyMinimumHeight, alignItems: "center",
+          justifyContent: hasIcons && labels ? "flex-start" : "center", gap: geometry.itemGap,
+          paddingHorizontal: geometry.itemPaddingX, paddingVertical: geometry.itemPaddingY }}>
         {(state: PressState) => <>
+          <View pointerEvents="none" style={{ position: "absolute", top: geometry.pressInset, bottom: geometry.pressInset, left: geometry.pressInset, right: geometry.pressInset, borderRadius: geometry.pressRadius, backgroundColor: press(state) }} />
           {hasIcons && <View style={{ width: geometry.iconSize, height: geometry.iconSize, flexShrink: 0 }}>
-            <View pointerEvents="none" style={{ position: "absolute", top: (geometry.iconSize - geometry.pressSize) / 2, left: (geometry.iconSize - geometry.pressSize) / 2, width: geometry.pressSize, height: geometry.pressSize, borderRadius: geometry.pressSize / 2, backgroundColor: press(state) }} />
-            {!!item.icon && <KjunIcon name={item.icon} filled={selected} size={geometry.iconSize} color={ink} />}{badge(state, geometry.iconSize)}
+            {/* Outline glyphs draw a thinner stroke at this size; when every icon stays an outline, the selected one takes the full stroke. */}
+            {!!item.icon && <IconStrokeContext.Provider value={iconStyle === "outline" && selected ? geometry.selectedIconStrokeWidth : geometry.iconStrokeWidth}>
+              <KjunIcon name={item.icon} filled={navigationIconFilled(iconStyle, selected)} size={geometry.iconSize} color={ink} />
+            </IconStrokeContext.Provider>}{badge(state, geometry.iconSize)}
           </View>}
-          <View style={{ maxWidth: "100%", flexDirection: "row", alignItems: "center" }}>
-            {!hasIcons && <View pointerEvents="none" style={{ position: "absolute", top: (label.lineHeight - geometry.pressSize) / 2, left: -geometry.pressPaddingX, right: -geometry.pressPaddingX, height: geometry.pressSize, borderRadius: geometry.pressSize / 2, backgroundColor: press(state) }} />}
-            <KText style={{ ...label, flexShrink: 1, textAlign: "center", fontWeight: selected ? typeStyle('control').fontWeight : typeStyle('label').fontWeight, color: ink }}>{item.label}</KText>{hasIcons ? null : badge(state)}
-          </View>
+          {labels && <View style={{ maxWidth: "100%", flexDirection: "row", alignItems: "center" }}>
+            <KText numberOfLines={hasIcons ? 1 : undefined} ellipsizeMode="tail" style={{ ...label, flexShrink: 1, textAlign: "center", fontWeight: selected ? typeStyle('control').fontWeight : typeStyle('label').fontWeight, color: ink }}>{item.label}</KText>{hasIcons ? null : badge(state)}
+          </View>}
         </>}
       </Pressable>;
     })}

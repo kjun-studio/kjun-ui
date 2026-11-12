@@ -1,6 +1,8 @@
 import { webSafeBottom, webSafeTop } from "../../../shared/package-runtime/safe-area";
 import { useKjunMessages } from "./runtime/messages";
 import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
+import { navigationIconFilled, type NavigationIconStyle } from "../../../shared/package-runtime/navigation-icon";
+export type { NavigationIconStyle };
 import type { KjunMessages } from "../../../shared/package-runtime/messages";
 import { provide, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
@@ -58,8 +60,12 @@ const kjunBottomNavigationProps = {
   safeArea: { type: Boolean, default: true },
   keyboardVisible: { type: Boolean, default: false },
   hideOnKeyboard: { type: Boolean, default: true },
-  /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
+  /** Paints the surface (default true): rounded top corners and a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band. */
   surface: { type: Boolean, default: true },
+  /** "auto" (default) draws outline icons and fills the selected one; "filled" or "outline" keeps one style for every destination, the selection then carried by colour (and stroke weight). */
+  iconStyle: { type: String as PropType<NavigationIconStyle>, default: "auto" },
+  /** Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels. */
+  showLabels: { type: Boolean, default: true },
 } as const;
 export type KjunBottomNavigationProps = ExtractPublicPropTypes<typeof kjunBottomNavigationProps>;
 /** One destination link's attributes, shared by the bottom and floating bars. Event reselect: the current destination was pressed again. */
@@ -84,17 +90,17 @@ export const KjunBottomNavigation = defineComponent({
   setup(props, { emit }) {
     const m = useKjunMessages();
     return () => {
-      const hasIcons = props.items.some(item => item.icon);
+      const hasIcons = props.items.some(item => item.icon), labels = props.showLabels || !hasIcons;
       if (props.keyboardVisible && props.hideOnKeyboard) return null;
       return (
-        <nav class="kjun-bottom-navigation" data-icons={hasIcons || undefined} data-surface={props.surface ? undefined : "false"} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ paddingBottom: webSafeBottom(props.safeArea) }}>
+        <nav class="kjun-bottom-navigation" data-icons={hasIcons || undefined} data-icon-style={props.iconStyle} data-labels={labels ? undefined : "false"} data-surface={props.surface ? undefined : "false"} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ paddingBottom: webSafeBottom(props.safeArea) }}>
           {props.items.map(item => {
             const selected = props.value === item.key;
             const badge = badgeMark(item.badge);
             return (
               <a key={item.key} {...destination(item, selected, m.value, emit)}>
-                {hasIcons && <span class="kjun-navigation-icon">{item.icon && <KjunIcon name={item.icon} filled={selected} size={tokens.extensions.bottomNavigation.iconSize} />}{badge}</span>}
-                <span class="kjun-navigation-label">{item.label}{!hasIcons && badge}</span>
+                {hasIcons && <span class="kjun-navigation-icon">{item.icon && <KjunIcon name={item.icon} filled={navigationIconFilled(props.iconStyle, selected)} size={tokens.extensions.bottomNavigation.iconSize} />}{badge}</span>}
+                {labels && <span class="kjun-navigation-label">{item.label}{!hasIcons && badge}</span>}
               </a>
             );
           })}

@@ -6,8 +6,10 @@ import { demoPalettes } from './demo-colors.ts';
 // Lists are panels on a page, like cards: their examples sit on the page colour so a section's surface and a group's
 // rounded cards show (an open list puts its rows on the page itself, so it keeps the plain preview).
 const listPreviews = ['KjunListSection', 'KjunListGroup', 'KjunListItem'];
+// A bottom bar is a rounded surface with a shadow, so its example also sits on the page colour.
+const pagePreviews = ['KjunBottomNavigation'];
 export function cardPreviewStyle(component: string, surface: unknown, palette: PaletteName, variant?: unknown) {
-  if (listPreviews.includes(component) && variant !== 'open') {
+  if (pagePreviews.includes(component) || listPreviews.includes(component) && variant !== 'open') {
     const colors = demoPalettes[palette];
     return { background: palette === 'dark' ? colors.background : colors.secondary, minHeight: '100vh' };
   }

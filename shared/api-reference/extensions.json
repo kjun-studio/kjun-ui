@@ -189,7 +189,9 @@
       "safeArea",
       "keyboardVisible",
       "hideOnKeyboard",
-      "surface"
+      "surface",
+      "iconStyle",
+      "showLabels"
     ],
     "react": [
       "items",
@@ -200,7 +202,9 @@
       "hideOnKeyboard",
       "onNavigate",
       "surface",
-      "onReselect"
+      "onReselect",
+      "iconStyle",
+      "showLabels"
     ],
     "native": [
       "items",
@@ -211,7 +215,9 @@
       "hideOnKeyboard",
       "onNavigate",
       "surface",
-      "onReselect"
+      "onReselect",
+      "iconStyle",
+      "showLabels"
     ]
   },
   "KjunFloatingNavigation": {

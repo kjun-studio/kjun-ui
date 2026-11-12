@@ -32226,8 +32226,26 @@
             "type": "boolean",
             "required": false,
             "default": "true",
-            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "description": "Paints the surface (default true): rounded top corners and a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band.",
             "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
+            "source": "packages/vue3/src/app-navigation.tsx"
+          },
+          {
+            "name": "iconStyle",
+            "type": "NavigationIconStyle",
+            "required": false,
+            "default": "\"auto\"",
+            "description": "\"auto\" (default) draws outline icons and fills the selected one; \"filled\" or \"outline\" keeps one style for every destination, the selection then carried by colour (and stroke weight).",
+            "summary": "아이콘을 그리는 방식입니다. auto(기본)는 미선택을 외곽선, 현재 목적지를 채운 아이콘으로 그려 색과 모양으로 구분합니다. filled는 모두 채움형(색으로만 구분하므로 면적이 비슷한 아이콘 세트에 권장), outline은 모두 외곽선(현재 목적지만 획 2px)입니다. 채움형이 없는 아이콘은 외곽선으로 남습니다.",
+            "source": "packages/vue3/src/app-navigation.tsx"
+          },
+          {
+            "name": "showLabels",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels.",
+            "summary": "아이콘 아래에 라벨을 보입니다. 기본값 true이며 false면 아이콘만 56px 높이로 그리고 label은 접근성 이름으로 남습니다. 아이콘이 없는 글자 전용 바는 항상 라벨을 보입니다.",
             "source": "packages/vue3/src/app-navigation.tsx"
           }
         ],
@@ -32462,8 +32480,26 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
-            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "description": "Paints the surface (default true): rounded top corners and a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band.",
             "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
+            "source": "packages/react/src/app-navigation.tsx"
+          },
+          {
+            "name": "iconStyle",
+            "type": "NavigationIconStyle | undefined",
+            "required": false,
+            "default": "\"auto\"",
+            "description": "\"auto\" (default) draws outline icons and fills the selected one; \"filled\" or \"outline\" keeps one style for every destination, the selection then carried by colour (and stroke weight).",
+            "summary": "아이콘을 그리는 방식입니다. auto(기본)는 미선택을 외곽선, 현재 목적지를 채운 아이콘으로 그려 색과 모양으로 구분합니다. filled는 모두 채움형(색으로만 구분하므로 면적이 비슷한 아이콘 세트에 권장), outline은 모두 외곽선(현재 목적지만 획 2px)입니다. 채움형이 없는 아이콘은 외곽선으로 남습니다.",
+            "source": "packages/react/src/app-navigation.tsx"
+          },
+          {
+            "name": "showLabels",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels.",
+            "summary": "아이콘 아래에 라벨을 보입니다. 기본값 true이며 false면 아이콘만 56px 높이로 그리고 label은 접근성 이름으로 남습니다. 아이콘이 없는 글자 전용 바는 항상 라벨을 보입니다.",
             "source": "packages/react/src/app-navigation.tsx"
           }
         ],
@@ -32647,8 +32683,26 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
-            "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band.",
+            "description": "Paints the surface (default true): rounded top corners and a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band.",
             "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
+            "source": "packages/native/src/app-navigation.tsx"
+          },
+          {
+            "name": "iconStyle",
+            "type": "NavigationIconStyle | undefined",
+            "required": false,
+            "default": "\"auto\"",
+            "description": "\"auto\" (default) draws outline icons and fills the selected one; \"filled\" or \"outline\" keeps one style for every destination, the selection then carried by colour (and stroke weight).",
+            "summary": "아이콘을 그리는 방식입니다. auto(기본)는 미선택을 외곽선, 현재 목적지를 채운 아이콘으로 그려 색과 모양으로 구분합니다. filled는 모두 채움형(색으로만 구분하므로 면적이 비슷한 아이콘 세트에 권장), outline은 모두 외곽선(현재 목적지만 획 2px)입니다. 채움형이 없는 아이콘은 외곽선으로 남습니다.",
+            "source": "packages/native/src/app-navigation.tsx"
+          },
+          {
+            "name": "showLabels",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels.",
+            "summary": "아이콘 아래에 라벨을 보입니다. 기본값 true이며 false면 아이콘만 56px 높이로 그리고 label은 접근성 이름으로 남습니다. 아이콘이 없는 글자 전용 바는 항상 라벨을 보입니다.",
             "source": "packages/native/src/app-navigation.tsx"
           }
         ],
