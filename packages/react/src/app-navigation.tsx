@@ -1,7 +1,7 @@
 import { webSafeBottom, webSafeTop } from "../../../shared/package-runtime/safe-area";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
-import { navigationIconFilled, type NavigationIconStyle } from "../../../shared/package-runtime/navigation-icon";
+import { bottomNavigationLayout, navigationIconFilled, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
 export type { NavigationIconStyle };
 import { tokens } from "@kjun-ui/tokens";
 import type { MouseEvent, ReactNode } from "react";
@@ -60,15 +60,15 @@ export interface KjunBottomNavigationProps { items: NavigationDestination[]; val
 export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible = false, hideOnKeyboard = true, onNavigate, onReselect, surface = true, iconStyle = "auto", showLabels = true }: KjunBottomNavigationProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.mainNavigation;
-  const hasIcons = items.some(item => item.icon), labels = showLabels || !hasIcons;
+  const layout = bottomNavigationLayout(items, showLabels);
   if (keyboardVisible && hideOnKeyboard) return null;
-  return <nav className="kjun-bottom-navigation" data-icons={hasIcons || undefined} data-icon-style={iconStyle} data-labels={labels ? undefined : "false"} data-surface={surface ? undefined : "false"} aria-label={ariaLabel} style={{ paddingBottom: webSafeBottom(safeArea) }}>
+  return <nav className="kjun-bottom-navigation" data-icons={layout.hasIcons || undefined} data-icon-style={iconStyle} data-labels={layout.iconOnly ? "false" : undefined} data-surface={surface ? undefined : "false"} aria-label={ariaLabel} style={{ paddingBottom: webSafeBottom(safeArea) }}>
     {items.map(item => {
-      const selected = value === item.key;
+      const selected = value === item.key, parts = layout.parts(item);
       const badge = <NavigationBadgeMark badge={item.badge} />;
       return <Destination key={item.key} item={item} selected={selected} onNavigate={onNavigate} onReselect={onReselect}>
-        {hasIcons && <span className="kjun-navigation-icon">{item.icon && <KjunIcon name={item.icon} filled={navigationIconFilled(iconStyle, selected)} size={tokens.extensions.bottomNavigation.iconSize} />}{badge}</span>}
-        {labels && <span className="kjun-navigation-label">{item.label}{!hasIcons && badge}</span>}
+        {parts.iconBox && <span className="kjun-navigation-icon">{item.icon && <KjunIcon name={item.icon} filled={navigationIconFilled(iconStyle, selected)} size={tokens.extensions.bottomNavigation.iconSize} />}{badge}</span>}
+        {parts.showLabel && <span className="kjun-navigation-label">{item.label}{!parts.badgeOnIcon && badge}</span>}
       </Destination>;
     })}
   </nav>;

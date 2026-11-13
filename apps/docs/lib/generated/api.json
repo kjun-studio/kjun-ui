@@ -1493,7 +1493,7 @@
       },
       {
         "name": "iconStyle",
-        "type": "import(\"/workspace/shared/package-runtime/navigation-icon\").NavigationIconStyle | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/bottom-navigation\").NavigationIconStyle | undefined",
         "required": false,
         "default": "—",
         "description": "\"auto\" (default) draws outline icons and fills the selected one; \"filled\" or \"outline\" keeps one style for every destination, the selection then carried by colour (and stroke weight)."
@@ -1572,7 +1572,7 @@
       },
       {
         "name": "iconStyle",
-        "type": "import(\"/workspace/shared/package-runtime/navigation-icon\").NavigationIconStyle | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/bottom-navigation\").NavigationIconStyle | undefined",
         "required": false,
         "default": "—",
         "description": "\"auto\" (default) draws outline icons and fills the selected one; \"filled\" or \"outline\" keeps one style for every destination, the selection then carried by colour (and stroke weight)."

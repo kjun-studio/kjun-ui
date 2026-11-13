@@ -48,6 +48,24 @@
         "inset": false,
         "colorRole": "shadowSubtle"
       }
+    ],
+    "upward": [
+      {
+        "offsetX": 0,
+        "offsetY": -8,
+        "blurRadius": 24,
+        "spreadDistance": 0,
+        "inset": false,
+        "colorRole": "shadowSubtle"
+      },
+      {
+        "offsetX": 0,
+        "offsetY": -1,
+        "blurRadius": 0,
+        "spreadDistance": 0,
+        "inset": false,
+        "colorRole": "shadowSubtle"
+      }
     ]
   },
   "elevation": {
@@ -113,10 +131,9 @@
       }
     },
     "bottomNavigation": {
-      "elevation": [
-        { "offsetX": 0, "offsetY": -8, "blurRadius": 24, "spreadDistance": 0, "inset": false, "colorRole": "shadowSubtle" },
-        { "offsetX": 0, "offsetY": -1, "blurRadius": 0, "spreadDistance": 0, "inset": false, "colorRole": "shadowSubtle" }
-      ]
+      "elevation": {
+        "$ref": "shadowScale.upward"
+      }
     }
   }
 }

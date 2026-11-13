@@ -1,7 +1,7 @@
 import { webSafeBottom, webSafeTop } from "../../../shared/package-runtime/safe-area";
 import { useKjunMessages } from "./runtime/messages";
 import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
-import { navigationIconFilled, type NavigationIconStyle } from "../../../shared/package-runtime/navigation-icon";
+import { bottomNavigationLayout, navigationIconFilled, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
 export type { NavigationIconStyle };
 import type { KjunMessages } from "../../../shared/package-runtime/messages";
 import { provide, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
@@ -90,17 +90,17 @@ export const KjunBottomNavigation = defineComponent({
   setup(props, { emit }) {
     const m = useKjunMessages();
     return () => {
-      const hasIcons = props.items.some(item => item.icon), labels = props.showLabels || !hasIcons;
+      const layout = bottomNavigationLayout(props.items, props.showLabels);
       if (props.keyboardVisible && props.hideOnKeyboard) return null;
       return (
-        <nav class="kjun-bottom-navigation" data-icons={hasIcons || undefined} data-icon-style={props.iconStyle} data-labels={labels ? undefined : "false"} data-surface={props.surface ? undefined : "false"} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ paddingBottom: webSafeBottom(props.safeArea) }}>
+        <nav class="kjun-bottom-navigation" data-icons={layout.hasIcons || undefined} data-icon-style={props.iconStyle} data-labels={layout.iconOnly ? "false" : undefined} data-surface={props.surface ? undefined : "false"} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ paddingBottom: webSafeBottom(props.safeArea) }}>
           {props.items.map(item => {
-            const selected = props.value === item.key;
+            const selected = props.value === item.key, parts = layout.parts(item);
             const badge = badgeMark(item.badge);
             return (
               <a key={item.key} {...destination(item, selected, m.value, emit)}>
-                {hasIcons && <span class="kjun-navigation-icon">{item.icon && <KjunIcon name={item.icon} filled={navigationIconFilled(props.iconStyle, selected)} size={tokens.extensions.bottomNavigation.iconSize} />}{badge}</span>}
-                {labels && <span class="kjun-navigation-label">{item.label}{!hasIcons && badge}</span>}
+                {parts.iconBox && <span class="kjun-navigation-icon">{item.icon && <KjunIcon name={item.icon} filled={navigationIconFilled(props.iconStyle, selected)} size={tokens.extensions.bottomNavigation.iconSize} />}{badge}</span>}
+                {parts.showLabel && <span class="kjun-navigation-label">{item.label}{!parts.badgeOnIcon && badge}</span>}
               </a>
             );
           })}

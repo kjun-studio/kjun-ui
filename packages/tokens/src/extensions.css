@@ -220,6 +220,8 @@
 /* Under an icon the label is a one-line caption, so the icon leads and the bar keeps its height. */
 .kjun-bottom-navigation[data-icons] > a { justify-content:flex-start; }
 .kjun-bottom-navigation[data-icons] .kjun-navigation-label { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+/* A destination without an icon keeps its badge after the label; the label then leaves room for the badge's ring. */
+.kjun-bottom-navigation[data-icons] .kjun-navigation-label:has(> .kjun-navigation-badge) { overflow:visible; }
 /* Icons alone: a lower bar with the icon centered; each destination keeps its label as its accessible name. */
 .kjun-bottom-navigation[data-labels="false"] > a { min-height:var(--_kjun-extension-bottom-navigation-icon-only-minimum-height); justify-content:center; }
 /* The selected destination takes the brand colour and the control weight; by default its icon also swaps to the filled glyph. */
@@ -244,11 +246,11 @@
 }
 .kjun-bottom-navigation > a:not([aria-disabled="true"]):active::before { background:var(--_kjun-color-active); }
 .kjun-navigation-badge {
-  position:absolute; top:calc(0px - var(--_kjun-extension-bottom-navigation-badge-offset));
-  inset-inline-start:calc(100% - var(--_kjun-extension-bottom-navigation-badge-overlap));
+  position:absolute; top:calc(0px - var(--_kjun-extension-navigation-badge-offset));
+  inset-inline-start:calc(100% - var(--_kjun-extension-navigation-badge-overlap));
   display:flex; align-items:center; justify-content:center; pointer-events:none; white-space:nowrap;
-  min-width:var(--_kjun-extension-bottom-navigation-badge-minimum-size); min-height:var(--_kjun-extension-bottom-navigation-badge-minimum-size);
-  padding:0 var(--_kjun-extension-bottom-navigation-badge-padding-x); border-radius:var(--_kjun-extension-bottom-navigation-badge-radius);
+  min-width:var(--_kjun-extension-navigation-badge-minimum-size); min-height:var(--_kjun-extension-navigation-badge-minimum-size);
+  padding:0 var(--_kjun-extension-navigation-badge-padding-x); border-radius:var(--_kjun-extension-navigation-badge-radius);
   /* An alert colour apart from the selection; the surface ring cuts it out of the icon it overlaps. */
   background:var(--_kjun-color-danger); color:var(--_kjun-color-on-danger);
   box-shadow:0 0 0 var(--_kjun-border-control-width) var(--_kjun-navigation-ring, var(--_kjun-color-surface));
@@ -257,8 +259,8 @@
 }
 /* Counts and dots sit on the icon's top end corner, overlapping only its outer edge. */
 .kjun-navigation-badge[data-dot] {
-  top:0; inset-inline-start:calc(100% - var(--_kjun-extension-bottom-navigation-dot-overlap));
-  min-width:0; min-height:0; width:var(--_kjun-extension-bottom-navigation-dot-size); height:var(--_kjun-extension-bottom-navigation-dot-size); padding:0;
+  top:0; inset-inline-start:calc(100% - var(--_kjun-extension-navigation-badge-dot-overlap));
+  min-width:0; min-height:0; width:var(--_kjun-extension-navigation-badge-dot-size); height:var(--_kjun-extension-navigation-badge-dot-size); padding:0;
 }
 /* Without a surface the bar shows the page background, so the ring takes that colour instead. */
 .kjun-bottom-navigation[data-surface="false"] { --_kjun-navigation-ring: var(--_kjun-color-background); }
@@ -270,7 +272,7 @@
 /* Beside a text label the badge sits in the line after the text, so it takes room and never covers the next item. */
 .kjun-navigation-label > .kjun-navigation-badge {
   position:relative; top:auto; inset-inline-start:auto; display:inline-flex; vertical-align:middle;
-  margin-inline-start:var(--_kjun-extension-bottom-navigation-badge-offset);
+  margin-inline-start:var(--_kjun-extension-navigation-badge-offset);
 }
 .kjun-navigation-label > .kjun-navigation-badge[data-dot] { vertical-align:top; }
 /* A capsule detached from the screen edge: icons only, the selected destination inverted. */

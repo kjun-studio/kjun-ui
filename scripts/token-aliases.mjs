@@ -13,7 +13,9 @@ export const readbackAliases = {
   'extensions.navigation.gap': 'extensions.topNavigation.gap',
   'extensions.navigation.paddingY': 'extensions.topNavigation.paddingY',
   'extensions.navigation.descriptionGap': 'extensions.topNavigation.descriptionGap',
-  ...Object.fromEntries(['itemGap', 'itemPaddingX', 'itemPaddingY', 'badgePaddingX', 'badgeRadius'].map(key => ['extensions.navigation.' + key, 'extensions.bottomNavigation.' + key])),
+  ...Object.fromEntries(['itemGap', 'itemPaddingX', 'itemPaddingY'].map(key => ['extensions.navigation.' + key, 'extensions.bottomNavigation.' + key])),
+  'extensions.navigation.badgePaddingX': 'extensions.navigationBadge.paddingX',
+  'extensions.navigation.badgeRadius': 'extensions.navigationBadge.radius',
 };
 
 export function validateReadbackAliases(source) {

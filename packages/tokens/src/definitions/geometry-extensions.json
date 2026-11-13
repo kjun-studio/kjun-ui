@@ -93,8 +93,8 @@
       "itemGap": { "$ref": "extensions.bottomNavigation.itemGap" },
       "itemPaddingX": { "$ref": "extensions.bottomNavigation.itemPaddingX" },
       "itemPaddingY": { "$ref": "extensions.bottomNavigation.itemPaddingY" },
-      "badgePaddingX": { "$ref": "extensions.bottomNavigation.badgePaddingX" },
-      "badgeRadius": { "$ref": "extensions.bottomNavigation.badgeRadius" },
+      "badgePaddingX": { "$ref": "extensions.navigationBadge.paddingX" },
+      "badgeRadius": { "$ref": "extensions.navigationBadge.radius" },
       "actionGap": { "$ref": "dimension.value12" }
     },
     "accordion": {
@@ -151,15 +151,17 @@
       "itemPaddingY": { "$ref": "dimension.value6" },
       "itemMaximumWidth": 168,
       "radius": { "$ref": "dimension.value20" },
-      "badgeMinimumSize": { "$ref": "dimension.value16" },
-      "badgePaddingX": { "$ref": "dimension.value3" },
-      "badgeOffset": { "$ref": "dimension.value4" },
-      "badgeOverlap": { "$ref": "dimension.value8" },
-      "badgeRadius": { "$ref": "radius.radius9999" },
-      "dotSize": { "$ref": "dimension.value8" },
-      "dotOverlap": { "$ref": "dimension.value6" },
       "pressInset": { "$ref": "dimension.value4" },
       "pressRadius": { "$ref": "dimension.value16" }
+    },
+    "navigationBadge": {
+      "minimumSize": { "$ref": "dimension.value16" },
+      "paddingX": { "$ref": "dimension.value3" },
+      "offset": { "$ref": "dimension.value4" },
+      "overlap": { "$ref": "dimension.value8" },
+      "radius": { "$ref": "radius.radius9999" },
+      "dotSize": { "$ref": "dimension.value8" },
+      "dotOverlap": { "$ref": "dimension.value6" }
     },
     "floatingNavigation": {
       "itemSize": 52,

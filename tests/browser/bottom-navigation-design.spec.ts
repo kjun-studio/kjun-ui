@@ -130,4 +130,38 @@ for (const platform of ['react', 'vue3', 'native']) {
     await configure(page, { icons: false });
     await expect(label(page, '홈')).toBeVisible(); await expect(nav(page)).toHaveCSS('height', '60px');
   });
+
+  test(`${platform}: a destination without an icon keeps its label on an icon-only bar, and disabled, wide and surfaceless bars follow their roles`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 600 });
+    await openFixture(page, platform, '', 'bottom-navigation-design');
+    // The mixed bar's second destination has no icon: with labels off it still shows its label, centered, badge after it.
+    await configure(page, { mixed: true, showLabels: false });
+    await expect(nav(page)).toHaveCSS('height', '56px');
+    await expect(nav(page).getByText('홈', { exact: true })).toHaveCount(0);
+    const plain = nav(page).getByRole('link', { name: /활동/ });
+    await expect(plain).toContainText('활동');
+    await expect(plain.locator('svg')).toHaveCount(0);
+    // The label's own text box (the web label holds its badge too, so the text node is measured).
+    const text = await plain.evaluate(el => { const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let node: Node | null;
+      while ((node = walker.nextNode())) if (node.textContent === '활동') { const range = document.createRange(); range.selectNodeContents(node); const r = range.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; }
+      return null; });
+    const bar = await rect(nav(page)), count = await rect(label(page, '3'));
+    expect(text).not.toBeNull();
+    expect(Math.abs(text!.y + text!.height / 2 - (bar.y + bar.height / 2))).toBeLessThanOrEqual(0.5);
+    expect(count.x).toBeGreaterThanOrEqual(text!.x + text!.width);
+    // A disabled destination takes the disabled-text role at full opacity, a step below an unselected one.
+    await configure(page, { mixed: false, showLabels: true });
+    await expect(label(page, '설정')).toHaveCSS('color', rgb(palettes.default.textDisabled));
+    await expect(label(page, '활동')).toHaveCSS('color', rgb(palettes.default.textTertiary));
+    expect(await label(page, '설정').evaluate(el => { let node: Element | null = el, opacity = 1; while (node && node.getAttribute('role') !== 'navigation' && node.tagName !== 'NAV') { opacity *= Number(getComputedStyle(node).opacity); node = node.parentElement; } return opacity; })).toBe(1);
+    // Without a surface the bar is seamless: no rounded corners and no shadow.
+    await configure(page, { surface: false });
+    expect(await nav(page).evaluate(el => [getComputedStyle(el).borderTopLeftRadius, getComputedStyle(el).boxShadow])).toEqual(['0px', 'none']);
+    // On a wide screen destinations stop at 168px and the group centers.
+    await configure(page, { surface: true });
+    await page.setViewportSize({ width: 1000, height: 600 });
+    const wide = await rect(nav(page)), home = await rect(nav(page).getByRole('link', { name: '홈', exact: true })), activity = await rect(nav(page).getByRole('link', { name: /활동/ }));
+    expect(home.width).toBe(168); expect(activity.x).toBe(home.x + 168);
+    expect(Math.abs((home.x - wide.x) - (wide.x + wide.width - (home.x + 3 * 168)))).toBeLessThanOrEqual(1);
+  });
 }
