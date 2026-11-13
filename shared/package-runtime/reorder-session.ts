@@ -11,6 +11,8 @@ export interface ReorderHost {
   disabled: () => boolean;
   /** The section's list element. */
   list: () => HTMLElement | null;
+  /** Selects the movable rows' control groups inside list(); a list section's own rows by default. */
+  controls?: string;
   text: () => {
     moved: (name: string, position: number, total: number) => string;
     grabbed: (name: string) => string;
@@ -30,11 +32,12 @@ interface KeyEvent { key: string; repeat?: boolean; preventDefault: () => void }
 interface PressEvent { pointerId: number; button: number; clientY: number; preventDefault: () => void }
 
 // A section's own movable rows; a list nested inside a row is another section's business.
-const controls = ":scope > .kjun-list-row > .kjun-list-actions > [data-reorder-index]";
+const listControls = ":scope > .kjun-list-row > .kjun-list-actions > [data-reorder-index]";
 /** How long a drop waits for the app to apply the last step before it reports the order as it stands. */
 const DROP_WAIT_MS = 1500;
 
 export function createReorderSession(host: ReorderHost) {
+  const controls = host.controls ?? listControls;
   // The requested step, until an order shows the row there. `focus` is where focus goes then; `quiet` skips the sentence.
   let pending: (ReorderPending & { name: string; focus: -1 | 1 | "handle"; quiet: boolean }) | null = null;
   // A row held by its handle: `pointer` is the dragging pointer's id, or null for a keyboard grab. `dropping` is a

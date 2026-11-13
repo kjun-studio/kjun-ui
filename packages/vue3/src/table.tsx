@@ -17,6 +17,9 @@ import { TableCheck, tableGrid, type TableLayout, type TableRenderState } from "
 import { tableCards, tableList } from "./table-narrow";
 import type { TableCardSection, TableColumn, TablePagination } from "./table-types";
 import type { TableColumnGroup } from "../../../shared/package-runtime/table-columns";
+import { reorderPlace } from "../../../shared/package-runtime/reorder";
+import { listReorderControls, useListReorder } from "./list-reorder";
+import { useKjunId } from "./input";
 export type { TableCardSection, TableColumn, TablePagination };
 
 export { getValue };
@@ -71,6 +74,14 @@ const kjunTableProps = {
   columnGroups: { type: Array as PropType<TableColumnGroup[]>, default: undefined },
   /** How many columns a row's cell covers, counting itself (2 merges it with the next column). The covered cells are not drawn. */
   cellSpan: { type: Function as PropType<(row: any, column: TableColumn<any>) => number | null | undefined>, default: undefined },
+  /** Rows listed in `order` get up and down buttons. The app keeps the order, passes `data` in it and saves it. */
+  reorderable: { type: Boolean, default: false },
+  /** v-model:order. The rows' rowKey values in the order shown; a row whose key is not listed cannot move. */
+  order: { type: Array as PropType<(string | number)[]>, default: undefined },
+  /** Turns the move buttons off. They are also off while the table is sorted by a column or grouped. */
+  reorderDisabled: { type: Boolean, default: false },
+  /** Why moving is off, shown under the table and read with the buttons; a sorted or grouped table says so by default. */
+  reorderDisabledText: { type: String, default: undefined },
   cardLayout: { type: String as PropType<"stacked" | "rows" | "tiles">, default: "stacked" },
   cardHighlight: { type: String as PropType<string | null>, default: undefined },
   expandable: { type: Boolean, default: false },
@@ -107,6 +118,8 @@ export type KjunTableProps<R extends object = Record<string, unknown>> =
     "onUpdate:sort"?: (sort: TableSort) => void;
     "onUpdate:expandedRows"?: (keys: (string | number)[]) => void;
     "onUpdate:expandedGroups"?: (values: unknown[]) => void;
+    "onUpdate:order"?: (order: (string | number)[]) => void;
+    onReorder?: (move: { value: string | number; from: number; to: number; order: (string | number)[] }) => void;
     onPageChange?: (page: number) => void;
     onSearch?: (query: string) => void;
   };
@@ -121,6 +134,8 @@ const KjunTableComponent = defineComponent({
     "update:sort": (_sort: TableSort) => true, "update:selected": (_rows: any[]) => true,
     "update:expandedRows": (_keys: (string | number)[]) => true, "page-change": (_page: number) => true, search: (_query: string) => true,
     "update:expandedGroups": (_values: unknown[]) => true,
+    "update:order": (_order: (string | number)[]) => true,
+    reorder: (_move: { value: string | number; from: number; to: number; order: (string | number)[] }) => true,
   },
   slots: Object as SlotsType<KjunTableSlots<any>>,
   setup(props, { slots, emit }) {
@@ -128,6 +143,14 @@ const KjunTableComponent = defineComponent({
     const internalSort = ref<TableSort>({ key: "", order: "asc" }), internalExpanded = ref<(string | number)[]>([]), search = ref("");
     const mobile = ref(false), stuck = ref(false), collapsed = ref<string[]>([]);
     watch(() => props.groupBy, () => { collapsed.value = []; }, { flush: "sync" });
+    // Like React: the app keeps the order and passes data in it; moving is off while sorted by a column or grouped.
+    const root = ref<HTMLElement | null>(null), reorderNoteId = useKjunId("kjun-table-reorder-");
+    const locked = () => !!(props.sort === undefined ? internalSort.value : props.sort)?.key || !!props.groupBy;
+    const reorderOff = () => props.reorderDisabled || locked();
+    const reorderNote = () => props.reorderable && reorderOff() ? props.reorderDisabledText ?? (locked() ? m.value.tableReorderLocked : undefined) : undefined;
+    const reorder = useListReorder({ reorderable: () => props.reorderable, order: () => props.order, disabled: reorderOff, controls: () => "buttons",
+      noteId: () => reorderNote() ? reorderNoteId : undefined, list: () => root.value, selector: ":scope [data-reorder-index]",
+      onOrderChange: order => emit("update:order", order as (string | number)[]), onReorder: move => emit("reorder", move) });
     let timer: ReturnType<typeof setTimeout> | undefined, media: MediaQueryList | undefined;
     const updateMobile = () => { mobile.value = !!media?.matches; };
     onMounted(() => { media = matchMedia(`(width < ${tokens.table.mobileBreakpoint}px)`); updateMobile(); media.addEventListener("change", updateMobile); });
@@ -255,13 +278,18 @@ const KjunTableComponent = defineComponent({
         rowClick: (row: object, index: number) => props.onRowClick?.(row, index), selectable: props.selectable, expandable: props.expandable,
         checkbox, expand, cell, renderExpand: (row: object, index: number) => slots.expand?.({ row, index }),
         empty: () => hasContent(empty) ? empty : (props.emptyText ?? m.value.noData), ariaLabel: (props.ariaLabel ?? m.value.dataTable), customClass, rowKeyDown,
+        mover: reorder.context.value ? (row: object, index: number) => {
+          const moves = reorder.context.value!, key = state.key(row, index), place = reorderPlace(moves.order, key);
+          return place ? listReorderControls(moves, place, key, String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, index)), m.value) : null;
+        } : undefined,
       };
       const selectionToolbar = props.selectable && props.selected.length > 0 ? slots.selectionToolbar?.({ selected: props.selected }) : undefined;
       const toolbar = slots.toolbar?.();
       const pagination = props.pagination;
+      const paint = domainRef(!status.initialLoading && state.rows.length > 0 && props.columns.some(column => column.pill)), note = reorderNote();
       return (
         <div class="kjun-table-state" aria-busy={props.loading}
-          ref={domainRef(!status.initialLoading && state.rows.length > 0 && props.columns.some(column => column.pill))}>
+          ref={(el: unknown) => { root.value = el instanceof HTMLElement ? el : null; paint?.(el); }}>
           {/* The selection bar takes the toolbar's place at the same height, so selecting never moves the table. */}
           {props.selectable && props.selected.length > 0 ? (
             <div role="group" aria-label={m.value.selectionActions} class="kjun-table-selection">
@@ -296,6 +324,9 @@ const KjunTableComponent = defineComponent({
                 pageSize={pagination.pageSize || 20} showInfo onUpdate:page={(page: number) => emit("page-change", page)} />
             )}
           </KjunDataState>
+          {note && <p id={reorderNoteId} class="kjun-table-reorder-note">{note}</p>}
+          {/* Each move is announced: the row and its new place. */}
+          {props.reorderable && <span class="kjun-sr-only" role="status">{reorder.said.value}</span>}
         </div>
       );
     };
@@ -313,6 +344,8 @@ export const KjunTable = KjunTableComponent as Omit<typeof KjunTableComponent, n
         (event: "update:sort", sort: TableSort): void;
         (event: "update:expandedRows", keys: (string | number)[]): void;
         (event: "update:expandedGroups", values: unknown[]): void;
+        (event: "update:order", order: (string | number)[]): void;
+        (event: "reorder", move: { value: string | number; from: number; to: number; order: (string | number)[] }): void;
         (event: "page-change", page: number): void;
         (event: "search", query: string): void;
       };

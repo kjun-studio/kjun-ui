@@ -42,8 +42,8 @@ export function useListReorder({ reorderable, order, disabled, onOrderChange, on
   const pending = useRef<(ReorderPending & { name: string }) | null>(null);
   useEffect(() => {
     if (!reorderable) return;
-    if (!order) console.warn("KJUN ListSection: reorderable needs `order` (the row values in the order shown) and onOrderChange.");
-    else if (reorderDuplicates(order)) console.warn("KJUN ListSection: `order` lists a value twice; rows that share a value share one place.");
+    if (!order) console.warn("KJUN reorder (ListSection, Table): reorderable needs `order` (the row values in the order shown) and onOrderChange.");
+    else if (reorderDuplicates(order)) console.warn("KJUN reorder (ListSection, Table): `order` lists a value twice; rows that share a value share one place.");
   }, [reorderable, order]);
   useEffect(() => {
     const moved = pending.current;

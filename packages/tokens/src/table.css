@@ -77,6 +77,17 @@
 .kjun-table th.kjun-table-column-group {
   text-align: center;
 }
+/* Move buttons sit side by side in the row's last column. */
+.kjun-table .kjun-table-action-cell.kjun-table-reorder-cell {
+  width: auto;
+  white-space: nowrap;
+}
+.kjun-table-reorder-note {
+  margin: var(--_kjun-geometry-dimension-value8) 0 0;
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  color: var(--_kjun-color-text-tertiary);
+}
 /* A pressable cell: the whole cell is the button and keeps the cell's text, alignment and numbers. */
 .kjun-table-cell-button {
   display: block;

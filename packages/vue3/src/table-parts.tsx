@@ -94,6 +94,8 @@ export interface TableRowsContext {
   ariaLabel: string;
   customClass: (row: Row, index: number) => string;
   rowKeyDown: (event: KeyboardEvent, row: Row, index: number) => void;
+  /** Like React: a reorderable table's move buttons for a row. */
+  mover?: (row: Row, index: number) => VNodeChild;
 }
 
 export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; columnGroups?: TableColumnGroup[]; cellSpan?: (row: any, column: TableColumn<any>) => number | null | undefined; maxHeight?: number | string; stickyHeader: boolean;
@@ -101,7 +103,8 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
   groups: TableRowGroup<Row>[] | null; collapsed: string[]; toggleGroup: (key: string) => void;
   groupLabel: (group: TableRowGroup<Row>) => VNodeChild; summary: ((column: TableColumn<any>, rows: Row[]) => VNodeChild) | null }) {
   const { state, visible, selectable, expandable } = c, m = c.messages;
-  const span = visible.length + Number(selectable) + Number(expandable);
+  // Like React: a reorderable table ends each row with its move buttons, after the expand toggle.
+  const mover = c.mover, span = visible.length + Number(selectable) + Number(expandable) + Number(!!mover);
   // Like React: with column groups the header has two rows, groups and lone columns on top.
   const headerRows = tableHeaderRows(visible, c.columnGroups), lone = headerRows ? 2 : undefined;
   const bodyRow = (row: Row, i: number) => {
@@ -126,9 +129,10 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
           );
         })}
         {expandable && <td class="kjun-table-action-cell">{c.expand(row, i)}</td>}
+        {mover && <td class="kjun-table-action-cell kjun-table-reorder-cell" onClick={(event: MouseEvent) => event.stopPropagation()}>{mover(row, i)}</td>}
       </tr>
       {expandable && state.expanded.includes(state.key(row, i)) && (
-        <tr class="kjun-table-expanded"><td colspan={visible.length + Number(selectable) + 1}>{c.renderExpand(row, i)}</td></tr>
+        <tr class="kjun-table-expanded"><td colspan={span - 1}>{c.renderExpand(row, i)}</td></tr>
       )}
     </Fragment>
     );
@@ -144,6 +148,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
         </td>;
       })}
       {expandable && <td class="kjun-table-action-cell" />}
+      {mover && <td class="kjun-table-action-cell" />}
     </tr>
   );
   // Like React: each group is its own row group with a rowgroup header, its rows and (two or more rows) a subtotal.
@@ -196,6 +201,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
               : visible.map(col => columnHeader(col))}
             {/* Expansion sits at the row's end, so the checkbox is the only leading utility column. */}
             {expandable && <th scope="col" class="kjun-table-action-cell" rowspan={lone} />}
+            {mover && <th scope="col" class="kjun-table-action-cell kjun-table-reorder-cell" rowspan={lone} />}
           </tr>
           {headerRows && <tr>{headerRows.flatMap(cell => cell.kind === "group" ? cell.columns.map(col => columnHeader(col)) : [])}</tr>}
         </thead>
@@ -207,9 +213,10 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
                 <td key={col.key}><KjunSkeleton type="line" width={col.key === "actions" ? tokens.table.actionColumnWidth : "75%"} /></td>
               ))}
               {expandable && <td class="kjun-table-action-cell" />}
+              {mover && <td class="kjun-table-action-cell" />}
             </tr>
           )) : !state.rows.length ? (
-            <tr><td colspan={visible.length + Number(selectable) + Number(expandable)} class="kjun-table-empty">{c.empty()}</td></tr>
+            <tr><td colspan={span} class="kjun-table-empty">{c.empty()}</td></tr>
           ) : state.rows.map(bodyRow)}
         </tbody>}
         {c.summary && !c.initialLoading && state.rows.length > 0 && <tfoot>{summaryRow(state.rows, "total", "total")}</tfoot>}

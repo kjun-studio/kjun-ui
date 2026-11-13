@@ -56,6 +56,15 @@ const common = {
     "범위": "같은 행 안의 가로 병합만 합니다. 정렬·검색·페이지가 바뀌어도 행 단위로 다시 계산하므로 병합이 어긋나지 않습니다. 소계·합계 행에는 적용하지 않습니다.",
     "좁은 화면": "카드·list에서는 가려진 열의 칸을 그리지 않고, 병합한 셀은 자기 라벨로 보입니다.",
   }) },
+  reorderable: { default: "false", ...detail("사용자가 행 순서를 바꿀 수 있게 합니다.", {
+    "표시": "order에 있는 행마다 위·아래 이동 버튼을 그립니다. 표에서는 행 끝 열, 카드에서는 아래쪽 줄, list에서는 행 끝에 둡니다. tiles 카드에는 그리지 않습니다.",
+    "순서 책임": "순서는 앱이 관리합니다. 앱이 order 순서로 data를 넘기고 저장하며, KJUN은 행을 직접 옮기지 않습니다. KjunListSection의 순서 변경과 같은 규칙입니다.",
+    "잠금": "열로 정렬한 동안(sort.key가 있을 때)과 groupBy로 묶은 동안에는 버튼이 꺼집니다. 화면의 순서가 앱의 순서가 아니기 때문입니다. 이유 문구를 표 아래에 보이고 버튼 설명으로 읽습니다.",
+    "알림·포커스": "앱이 새 순서를 적용하면 행 이름과 새 위치를 알리고, 웹에서는 포커스가 옮긴 행의 같은 버튼에 남습니다(꺼지면 반대 버튼). 앱이 적용하지 않은 이동은 알리지 않습니다.",
+  }) },
+  order: { type: "(string | number)[]", summary: "보이는 순서대로 나열한 행 rowKey 값 배열입니다. 배열에 없는 행은 이동 버튼이 없습니다. reorderable에 필요합니다." },
+  reorderDisabled: { default: "false", summary: "이동 버튼을 모두 끕니다. 열 정렬·묶음 중에는 이 값과 관계없이 꺼집니다." },
+  reorderDisabledText: { summary: "이동을 끈 이유입니다. 표 아래에 보이고 이동 버튼의 설명으로 읽습니다. 생략하면 정렬·묶음 중에는 기본 문구(정렬하거나 묶은 동안에는 순서를 바꿀 수 없습니다.)를 씁니다." },
   expandedRows: detail("펼친 행의 키 배열입니다.", {
     "제어 방식":
       "모든 플랫폼에서 undefined이면 내부 상태를 사용하고, []는 모두 닫힌 제어 상태입니다. 전달된 배열을 기준으로 다음 확장 상태를 계산합니다.",
@@ -133,6 +142,20 @@ const expanded = event(
   "반환값은 사용하지 않습니다.",
   "제어형에서는 expandedRows에 반영합니다. []를 전달하면 모든 행을 닫습니다.",
 );
+const orderChange = event(
+  "행을 옮긴 뒤의 새 순서를 알립니다.",
+  "행의 위·아래 이동 버튼을 누를 때. 끝에서 더 갈 수 없는 방향과 이동이 꺼진 동안에는 발생하지 않습니다.",
+  "(string | number)[]: 옮긴 뒤의 rowKey 배열",
+  "반환값은 사용하지 않습니다.",
+  "소비자가 order와 data 순서를 갱신합니다. 갱신하지 않으면 행은 움직이지 않습니다. 저장도 소비자가 맡습니다.",
+);
+const reorderEvent = event(
+  "같은 이동을 자세히 알립니다.",
+  "새 순서 통지와 같은 시점",
+  "{ value, from, to, order }: 옮긴 행의 rowKey, 원래 위치와 새 위치(0부터), 새 순서",
+  "반환값은 사용하지 않습니다.",
+  "서버에 한 건의 이동만 보내는 식으로 쓸 때 사용합니다. 순서 갱신은 새 순서 통지에서 합니다.",
+);
 const expandedGroups = event(
   "다음에 펼칠 그룹의 원래 값 배열을 전달합니다.",
   "표·카드·list에서 그룹 펼침 버튼을 실행할 때 한 번",
@@ -186,6 +209,8 @@ export default {
       search,
       "update:expandedRows": expanded,
       "update:expandedGroups": expandedGroups,
+      "update:order": orderChange,
+      reorder: reorderEvent,
       "page-change": event(
         "이동할 페이지 번호를 전달합니다.",
         "페이지 이동 행동 시",
@@ -222,6 +247,8 @@ export default {
       onSearch: search,
       onExpandedRowsChange: expanded,
       onExpandedGroupsChange: expandedGroups,
+      onOrderChange: orderChange,
+      onReorder: reorderEvent,
       onRetry: retry,
       onRowClick: event(
         "실행한 행과 표시 인덱스를 전달합니다.",

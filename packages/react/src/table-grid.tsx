@@ -13,9 +13,10 @@ interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["m
   customClass: (row: Row, index: number) => string;
   rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
 }
-export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary, stickyOffset = 0 }: Props<Row>) {
+export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary, stickyOffset = 0 }: Props<Row>) {
   const m = useKjunMessages();
-  const span = visible.length + Number(selectable) + Number(expandable);
+  // A reorderable table ends each row with its move buttons, after the expand toggle.
+  const span = visible.length + Number(selectable) + Number(expandable) + Number(!!mover);
   // With column groups the header has two rows: groups and lone columns on top, the grouped columns under their group.
   const headerRows = tableHeaderRows(visible, columnGroups), lone = headerRows ? 2 : undefined;
   const bodyRow = (row: Row, i: number) => {
@@ -53,12 +54,13 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialL
           );
         })}
         {expandable && <td className="kjun-table-action-cell">{expand(row, i)}</td>}
+        {mover && <td className="kjun-table-action-cell kjun-table-reorder-cell" onClick={(event) => event.stopPropagation()}>{mover(row, i)}</td>}
       </tr>
       {expandable &&
         state.expanded.includes(state.key(row, i)) && (
           <tr className="kjun-table-expanded">
             <td
-              colSpan={visible.length + Number(selectable) + 1}
+              colSpan={span - 1}
             >
               {renderExpand?.(row, i)}
             </td>
@@ -109,6 +111,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialL
         </td>;
       })}
       {expandable && <td className="kjun-table-action-cell" />}
+      {mover && <td className="kjun-table-action-cell" />}
     </tr>
   );
   // Each group is its own row group: a rowgroup header, its rows and (with two or more rows) a subtotal.
@@ -180,6 +183,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialL
                     : visible.map((col) => columnHeader(col))}
                   {/* Expansion sits at the row's end, so the checkbox is the only leading utility column. */}
                   {expandable && <th scope="col" className="kjun-table-action-cell" rowSpan={lone} />}
+                  {mover && <th scope="col" className="kjun-table-action-cell kjun-table-reorder-cell" rowSpan={lone} />}
                 </tr>
                 {headerRows && <tr>{headerRows.flatMap((cell) => cell.kind === "group" ? cell.columns.map((col) => columnHeader(col)) : [])}</tr>}
               </thead>
@@ -199,14 +203,13 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialL
                         </td>
                       ))}
                       {expandable && <td className="kjun-table-action-cell" />}
+                      {mover && <td className="kjun-table-action-cell" />}
                     </tr>
                   ))
                 ) : !state.rows.length ? (
                   <tr>
                     <td
-                      colSpan={
-                        visible.length + Number(selectable) + Number(expandable)
-                      }
+                      colSpan={span}
                       className="kjun-table-empty"
                     >
                       {emptyContent || emptyText}

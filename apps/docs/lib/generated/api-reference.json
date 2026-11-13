@@ -8495,6 +8495,61 @@
             "example": "/components/table#preview"
           },
           {
+            "name": "reorderable",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Rows listed in `order` get up and down buttons. The app keeps the order, passes `data` in it and saves it.",
+            "summary": "사용자가 행 순서를 바꿀 수 있게 합니다.",
+            "details": [
+              {
+                "label": "표시",
+                "text": "order에 있는 행마다 위·아래 이동 버튼을 그립니다. 표에서는 행 끝 열, 카드에서는 아래쪽 줄, list에서는 행 끝에 둡니다. tiles 카드에는 그리지 않습니다."
+              },
+              {
+                "label": "순서 책임",
+                "text": "순서는 앱이 관리합니다. 앱이 order 순서로 data를 넘기고 저장하며, KJUN은 행을 직접 옮기지 않습니다. KjunListSection의 순서 변경과 같은 규칙입니다."
+              },
+              {
+                "label": "잠금",
+                "text": "열로 정렬한 동안(sort.key가 있을 때)과 groupBy로 묶은 동안에는 버튼이 꺼집니다. 화면의 순서가 앱의 순서가 아니기 때문입니다. 이유 문구를 표 아래에 보이고 버튼 설명으로 읽습니다."
+              },
+              {
+                "label": "알림·포커스",
+                "text": "앱이 새 순서를 적용하면 행 이름과 새 위치를 알리고, 웹에서는 포커스가 옮긴 행의 같은 버튼에 남습니다(꺼지면 반대 버튼). 앱이 적용하지 않은 이동은 알리지 않습니다."
+              }
+            ],
+            "source": "packages/vue3/src/table.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "order",
+            "type": "(string | number)[]",
+            "required": false,
+            "default": "—",
+            "description": "v-model:order. The rows' rowKey values in the order shown; a row whose key is not listed cannot move.",
+            "summary": "보이는 순서대로 나열한 행 rowKey 값 배열입니다. 배열에 없는 행은 이동 버튼이 없습니다. reorderable에 필요합니다.",
+            "source": "packages/vue3/src/table.tsx"
+          },
+          {
+            "name": "reorderDisabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Turns the move buttons off. They are also off while the table is sorted by a column or grouped.",
+            "summary": "이동 버튼을 모두 끕니다. 열 정렬·묶음 중에는 이 값과 관계없이 꺼집니다.",
+            "source": "packages/vue3/src/table.tsx"
+          },
+          {
+            "name": "reorderDisabledText",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Why moving is off, shown under the table and read with the buttons; a sorted or grouped table says so by default.",
+            "summary": "이동을 끈 이유입니다. 표 아래에 보이고 이동 버튼의 설명으로 읽습니다. 생략하면 정렬·묶음 중에는 기본 문구(정렬하거나 묶은 동안에는 순서를 바꿀 수 없습니다.)를 씁니다.",
+            "source": "packages/vue3/src/table.tsx"
+          },
+          {
             "name": "cardLayout",
             "type": "\"rows\" | \"stacked\" | \"tiles\"",
             "required": false,
@@ -8933,6 +8988,56 @@
               }
             ],
             "example": "/components/table#preview"
+          },
+          {
+            "name": "update:order",
+            "source": "packages/vue3/src/table.tsx",
+            "type": "이벤트",
+            "summary": "행을 옮긴 뒤의 새 순서를 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "행의 위·아래 이동 버튼을 누를 때. 끝에서 더 갈 수 없는 방향과 이동이 꺼진 동안에는 발생하지 않습니다."
+              },
+              {
+                "label": "전달값",
+                "text": "(string | number)[]: 옮긴 뒤의 rowKey 배열"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값은 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "소비자가 order와 data 순서를 갱신합니다. 갱신하지 않으면 행은 움직이지 않습니다. 저장도 소비자가 맡습니다."
+              }
+            ],
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "reorder",
+            "source": "packages/vue3/src/table.tsx",
+            "type": "이벤트",
+            "summary": "같은 이동을 자세히 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "새 순서 통지와 같은 시점"
+              },
+              {
+                "label": "전달값",
+                "text": "{ value, from, to, order }: 옮긴 행의 rowKey, 원래 위치와 새 위치(0부터), 새 순서"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값은 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "서버에 한 건의 이동만 보내는 식으로 쓸 때 사용합니다. 순서 갱신은 새 순서 통지에서 합니다."
+              }
+            ],
+            "example": "/components/table#preview"
           }
         ],
         "slots": [
@@ -9231,6 +9336,117 @@
             ],
             "source": "packages/react/src/table-view.tsx",
             "example": "/components/table#preview"
+          },
+          {
+            "name": "reorderable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Rows listed in `order` get up and down buttons. The app keeps the order, passes `data` in it and saves it.",
+            "summary": "사용자가 행 순서를 바꿀 수 있게 합니다.",
+            "details": [
+              {
+                "label": "표시",
+                "text": "order에 있는 행마다 위·아래 이동 버튼을 그립니다. 표에서는 행 끝 열, 카드에서는 아래쪽 줄, list에서는 행 끝에 둡니다. tiles 카드에는 그리지 않습니다."
+              },
+              {
+                "label": "순서 책임",
+                "text": "순서는 앱이 관리합니다. 앱이 order 순서로 data를 넘기고 저장하며, KJUN은 행을 직접 옮기지 않습니다. KjunListSection의 순서 변경과 같은 규칙입니다."
+              },
+              {
+                "label": "잠금",
+                "text": "열로 정렬한 동안(sort.key가 있을 때)과 groupBy로 묶은 동안에는 버튼이 꺼집니다. 화면의 순서가 앱의 순서가 아니기 때문입니다. 이유 문구를 표 아래에 보이고 버튼 설명으로 읽습니다."
+              },
+              {
+                "label": "알림·포커스",
+                "text": "앱이 새 순서를 적용하면 행 이름과 새 위치를 알리고, 웹에서는 포커스가 옮긴 행의 같은 버튼에 남습니다(꺼지면 반대 버튼). 앱이 적용하지 않은 이동은 알리지 않습니다."
+              }
+            ],
+            "source": "packages/react/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "order",
+            "type": "(string | number)[]",
+            "required": false,
+            "default": "—",
+            "description": "The rows' rowKey values in the order shown; a row whose key is not listed cannot move.",
+            "summary": "보이는 순서대로 나열한 행 rowKey 값 배열입니다. 배열에 없는 행은 이동 버튼이 없습니다. reorderable에 필요합니다.",
+            "source": "packages/react/src/table-view.tsx"
+          },
+          {
+            "name": "onOrderChange",
+            "type": "((order: (string | number)[]) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Called with the next order when a row moves; the app applies it.",
+            "summary": "행을 옮긴 뒤의 새 순서를 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "행의 위·아래 이동 버튼을 누를 때. 끝에서 더 갈 수 없는 방향과 이동이 꺼진 동안에는 발생하지 않습니다."
+              },
+              {
+                "label": "전달값",
+                "text": "(string | number)[]: 옮긴 뒤의 rowKey 배열"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값은 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "소비자가 order와 data 순서를 갱신합니다. 갱신하지 않으면 행은 움직이지 않습니다. 저장도 소비자가 맡습니다."
+              }
+            ],
+            "source": "packages/react/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "onReorder",
+            "type": "((move: { value: string | number; from: number; to: number; order: (string | number)[]; }) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The same move in detail: the row's key, where it was and where it went.",
+            "summary": "같은 이동을 자세히 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "새 순서 통지와 같은 시점"
+              },
+              {
+                "label": "전달값",
+                "text": "{ value, from, to, order }: 옮긴 행의 rowKey, 원래 위치와 새 위치(0부터), 새 순서"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값은 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "서버에 한 건의 이동만 보내는 식으로 쓸 때 사용합니다. 순서 갱신은 새 순서 통지에서 합니다."
+              }
+            ],
+            "source": "packages/react/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "reorderDisabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Turns the move buttons off. They are also off while the table is sorted by a column or grouped.",
+            "summary": "이동 버튼을 모두 끕니다. 열 정렬·묶음 중에는 이 값과 관계없이 꺼집니다.",
+            "source": "packages/react/src/table-view.tsx"
+          },
+          {
+            "name": "reorderDisabledText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Why moving is off, shown under the table and read with the buttons; a sorted or grouped table says so by default.",
+            "summary": "이동을 끈 이유입니다. 표 아래에 보이고 이동 버튼의 설명으로 읽습니다. 생략하면 정렬·묶음 중에는 기본 문구(정렬하거나 묶은 동안에는 순서를 바꿀 수 없습니다.)를 씁니다.",
+            "source": "packages/react/src/table-view.tsx"
           },
           {
             "name": "data",
@@ -10330,6 +10546,117 @@
             ],
             "source": "packages/native/src/table-view.tsx",
             "example": "/components/table#preview"
+          },
+          {
+            "name": "reorderable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Rows listed in `order` get up and down buttons. The app keeps the order, passes `data` in it and saves it.",
+            "summary": "사용자가 행 순서를 바꿀 수 있게 합니다.",
+            "details": [
+              {
+                "label": "표시",
+                "text": "order에 있는 행마다 위·아래 이동 버튼을 그립니다. 표에서는 행 끝 열, 카드에서는 아래쪽 줄, list에서는 행 끝에 둡니다. tiles 카드에는 그리지 않습니다."
+              },
+              {
+                "label": "순서 책임",
+                "text": "순서는 앱이 관리합니다. 앱이 order 순서로 data를 넘기고 저장하며, KJUN은 행을 직접 옮기지 않습니다. KjunListSection의 순서 변경과 같은 규칙입니다."
+              },
+              {
+                "label": "잠금",
+                "text": "열로 정렬한 동안(sort.key가 있을 때)과 groupBy로 묶은 동안에는 버튼이 꺼집니다. 화면의 순서가 앱의 순서가 아니기 때문입니다. 이유 문구를 표 아래에 보이고 버튼 설명으로 읽습니다."
+              },
+              {
+                "label": "알림·포커스",
+                "text": "앱이 새 순서를 적용하면 행 이름과 새 위치를 알리고, 웹에서는 포커스가 옮긴 행의 같은 버튼에 남습니다(꺼지면 반대 버튼). 앱이 적용하지 않은 이동은 알리지 않습니다."
+              }
+            ],
+            "source": "packages/native/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "order",
+            "type": "(string | number)[]",
+            "required": false,
+            "default": "—",
+            "description": "The rows' rowKey values in the order shown; a row whose key is not listed cannot move.",
+            "summary": "보이는 순서대로 나열한 행 rowKey 값 배열입니다. 배열에 없는 행은 이동 버튼이 없습니다. reorderable에 필요합니다.",
+            "source": "packages/native/src/table-view.tsx"
+          },
+          {
+            "name": "onOrderChange",
+            "type": "((order: (string | number)[]) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Called with the next order when a row moves; the app applies it.",
+            "summary": "행을 옮긴 뒤의 새 순서를 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "행의 위·아래 이동 버튼을 누를 때. 끝에서 더 갈 수 없는 방향과 이동이 꺼진 동안에는 발생하지 않습니다."
+              },
+              {
+                "label": "전달값",
+                "text": "(string | number)[]: 옮긴 뒤의 rowKey 배열"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값은 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "소비자가 order와 data 순서를 갱신합니다. 갱신하지 않으면 행은 움직이지 않습니다. 저장도 소비자가 맡습니다."
+              }
+            ],
+            "source": "packages/native/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "onReorder",
+            "type": "((move: { value: string | number; from: number; to: number; order: (string | number)[]; }) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The same move in detail: the row's key, where it was and where it went.",
+            "summary": "같은 이동을 자세히 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "새 순서 통지와 같은 시점"
+              },
+              {
+                "label": "전달값",
+                "text": "{ value, from, to, order }: 옮긴 행의 rowKey, 원래 위치와 새 위치(0부터), 새 순서"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값은 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "서버에 한 건의 이동만 보내는 식으로 쓸 때 사용합니다. 순서 갱신은 새 순서 통지에서 합니다."
+              }
+            ],
+            "source": "packages/native/src/table-view.tsx",
+            "example": "/components/table#preview"
+          },
+          {
+            "name": "reorderDisabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Turns the move buttons off. They are also off while the table is sorted by a column or grouped.",
+            "summary": "이동 버튼을 모두 끕니다. 열 정렬·묶음 중에는 이 값과 관계없이 꺼집니다.",
+            "source": "packages/native/src/table-view.tsx"
+          },
+          {
+            "name": "reorderDisabledText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Why moving is off, shown under the table and read with the buttons; a sorted or grouped table says so by default.",
+            "summary": "이동을 끈 이유입니다. 표 아래에 보이고 이동 버튼의 설명으로 읽습니다. 생략하면 정렬·묶음 중에는 기본 문구(정렬하거나 묶은 동안에는 순서를 바꿀 수 없습니다.)를 씁니다.",
+            "source": "packages/native/src/table-view.tsx"
           },
           {
             "name": "data",

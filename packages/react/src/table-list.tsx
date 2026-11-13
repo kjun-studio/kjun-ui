@@ -11,7 +11,7 @@ interface Props<Row extends object> extends TableCardsProps<Row> {
 }
 /** responsive="list": no header row; each row is a title over one meta line with its value and badges at the end. */
 export function TableList<Row extends object>(props: Props<Row>) {
-  const { initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand,
+  const { mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand,
     emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown, totals, groups } = props;
   const { title, listMeta, listValue, badges } = layout;
   const item = (row: Row, i: number) => (
@@ -35,6 +35,7 @@ export function TableList<Row extends object>(props: Props<Row>) {
           </div>
         )}
         {expandable && <span onClick={(event) => event.stopPropagation()}>{expand(row, i)}</span>}
+        {mover && <span onClick={(event) => event.stopPropagation()}>{mover(row, i)}</span>}
       </div>
       {expandable && state.expanded.includes(state.key(row, i)) && (
         <div className="kjun-table-list-expand">{renderExpand?.(row, i)}</div>

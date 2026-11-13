@@ -182,6 +182,10 @@
   padding-top: var(--_kjun-extension-table-card-footer-gap);
   border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-divider);
 }
+/* A second group (a reorderable table's move buttons) sits right beside the first instead of splitting the space. */
+.kjun-table-card-actions + .kjun-table-card-actions {
+  margin-inline-start: 0;
+}
 .kjun-table-card-actions {
   display: flex;
   justify-content: flex-end;

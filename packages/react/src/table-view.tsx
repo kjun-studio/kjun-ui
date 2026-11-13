@@ -7,7 +7,8 @@ import { TableToolbar } from "./table-toolbar";
 import { TableGrid } from "./table-grid";
 import { TableCards } from "./table-cards";
 import { TableList } from "./table-list";
-import { useEffect, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useId, useState, type KeyboardEvent } from "react";
+import { ListReorderContext, ListReorderControls, useListReorder } from "./list-reorder";
 import { isComposingKey, tokens } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
 import { TableCheck } from "./table-check";
@@ -131,9 +132,21 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         : undefined}
     </KjunButton>
   );
+  // A reorderable table: the app keeps the order and passes data in it, like a reorderable KjunListSection. Moving is off
+  // while the rows are sorted by a column or grouped, since their order on screen is then not the app's.
+  const [root, setRoot] = useState<HTMLDivElement | null>(null), noteId = "kjun-table-reorder-" + useId().replace(/:/g, "");
+  const reorderable = !!props.reorderable, locked = !!state.sort.key || !!props.groupBy;
+  const reorderOff = !!props.reorderDisabled || locked, reorderNote = reorderable && reorderOff ? props.reorderDisabledText ?? (locked ? m.tableReorderLocked : undefined) : undefined;
+  const reorder = useListReorder({ reorderable, order: props.order, disabled: reorderOff, controls: "buttons", noteId: reorderNote ? noteId : undefined,
+    list: root, selector: ":scope [data-reorder-index]", onOrderChange: props.onOrderChange as never, onReorder: props.onReorder as never });
+  const mover = reorderable ? (row: Row, i: number) => <ListReorderControls value={state.key(row, i)} name={String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))} /> : undefined;
+  // One stable ref: the root for the move controls, and the domain colour check when cells paint price colours.
+  const painted = !query.initialLoading && state.rows.length > 0 && props.columns.some(column => column.pill);
+  const rootRef = useCallback((node: HTMLDivElement | null) => { setRoot(node); domainColorRef(painted)?.(node); }, [painted]);
   return (
+    <ListReorderContext.Provider value={reorder.context}>
     <div className="kjun-table-state" aria-busy={!!props.loading}
-      ref={domainColorRef(!query.initialLoading && state.rows.length > 0 && props.columns.some(column => column.pill))}>
+      ref={rootRef}>
       <TableToolbar {...{ selectable, selected, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }} allSelected={state.all}
         toggleAll={state.toggleAll} clearSelection={() => props.onSelectionChange?.([])}
         search={state.search} searchChange={state.searchChange}
@@ -157,11 +170,11 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         loadingDelay={skeleton ? 0 : loadingDelay}
       >
         {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
+          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown, mover }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : layout.list ? (
-          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
+          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown, mover }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : (
-          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, columnGroups: props.columnGroups, cellSpan: props.cellSpan, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, ...grouping }} stickyOffset={props.stickyOffset} sortable={props.sortable} />
+          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, columnGroups: props.columnGroups, cellSpan: props.cellSpan, mover, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, ...grouping }} stickyOffset={props.stickyOffset} sortable={props.sortable} />
         )}
         {pagination && (
           <KjunPagination
@@ -176,7 +189,11 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
           />
         )}
       </KjunDataState>
+      {reorderNote && <p id={noteId} className="kjun-table-reorder-note">{reorderNote}</p>}
+      {/* Each move is announced: the row and its new place. */}
+      {reorderable && <span className="kjun-sr-only" role="status">{reorder.said}</span>}
     </div>
+    </ListReorderContext.Provider>
   );
 }
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";

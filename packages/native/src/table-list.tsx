@@ -9,13 +9,13 @@ import type { TableCardsProps } from "../../../shared/package-runtime/table-pres
 import { TableTotals, useTableGroups } from "./table-narrow-parts";
 /** Like Web responsive="list": a title over one meta line with the value and badges at the end, no header row. */
 export function TableList<Row extends object>(props: TableCardsProps<Row>) {
-  const { initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand,
+  const { mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand,
     emptyContent, emptyText, layout, totals, groups } = props;
   const { colors } = useKjunStyles();
   const geometry = tokens.table.list;
   const { title, listMeta, listValue, badges } = layout;
   // A row with a pressable cell keeps its parts separate, so that button stays reachable on a device.
-  const merged = !!onRowClick && ![listMeta, listValue, ...badges].some((col) => col?.onCellPress);
+  const merged = !!onRowClick && !mover && ![listMeta, listValue, ...badges].some((col) => col?.onCellPress);
   const item = (row: Row, i: number) => (
     <View key={state.key(row, i)} role="listitem">
       <Pressable
@@ -46,6 +46,7 @@ export function TableList<Row extends object>(props: TableCardsProps<Row>) {
           </View>
         )}
         {expandable && expand(row, i)}
+        {mover && mover(row, i)}
       </Pressable>
       {expandable && state.expanded.includes(state.key(row, i)) && (
         <View style={{ paddingVertical: tokens.table.expandedPadding.y, paddingHorizontal: tokens.table.expandedPadding.x, borderRadius: geometry.radius, backgroundColor: colors.secondary }}>

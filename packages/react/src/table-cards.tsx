@@ -48,7 +48,7 @@ export function useTableGroups<Row extends object>({ groupLabel, groupTotals, st
 }
 
 export function TableCards<Row extends object>(props: Props<Row>) {
-  const { initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand,
+  const { mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand,
     emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown, totals, groups } = props;
   const { title, subtitle, highlight, badges, inline, sections, columnsForSection, cardLayout, tiles, footerActions, cardFooter, cardBody } = layout;
   const badgeList = (row: Row, i: number) => badges.length ? (
@@ -135,6 +135,7 @@ export function TableCards<Row extends object>(props: Props<Row>) {
                 {footerActions && (
                   <div className="kjun-table-card-actions" onClick={(e) => e.stopPropagation()}>{cell(footerActions, row, i)}</div>
                 )}
+                {mover && <div className="kjun-table-card-actions" onClick={(e) => e.stopPropagation()}>{mover(row, i)}</div>}
               </div>
             )}
             {open && <div className="kjun-table-card-expand-content">{renderExpand?.(row, i)}</div>}

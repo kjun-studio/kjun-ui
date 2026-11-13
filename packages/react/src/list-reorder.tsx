@@ -44,8 +44,10 @@ export function ListReorderControls({ value, name }: { value: ListChoiceValue; n
 }
 
 /** The section's side: reports moves, announces them and keeps focus on the moved row's control. */
-export function useListReorder({ reorderable, order, disabled, controls, noteId, list, onOrderChange, onReorder }: {
+export function useListReorder({ reorderable, order, disabled, controls, noteId, list, selector, onOrderChange, onReorder }: {
   reorderable: boolean; order?: readonly ListChoiceValue[]; disabled: boolean; controls: KjunListReorderControls; noteId?: string; list: HTMLElement | null;
+  /** Where the movable rows' controls are inside list (a Table's rows rather than a list section's). */
+  selector?: string;
   onOrderChange?: (order: ListChoiceValue[]) => void; onReorder?: (move: KjunListReorderMove) => void;
 }) {
   const m = useKjunMessages();
@@ -53,15 +55,15 @@ export function useListReorder({ reorderable, order, disabled, controls, noteId,
   const latest = useRef({ order, disabled, list, onOrderChange, onReorder, m });
   latest.current = { order, disabled, list, onOrderChange, onReorder, m };
   const session = useMemo(() => createReorderSession({
-    order: () => latest.current.order, disabled: () => latest.current.disabled, list: () => latest.current.list,
+    order: () => latest.current.order, disabled: () => latest.current.disabled, list: () => latest.current.list, controls: selector,
     text: () => ({ moved: latest.current.m.reorderMoved, grabbed: latest.current.m.reorderGrabbed, dropped: latest.current.m.reorderDropped, cancelled: latest.current.m.reorderCancelled }),
     say: setSaid, grabbed: setGrabbed,
     change: next => latest.current.onOrderChange?.(next), moved: move => latest.current.onReorder?.(move),
   }), []);
   useEffect(() => {
     if (!reorderable) return;
-    if (!order) console.warn("KJUN ListSection: reorderable needs `order` (the row values in the order shown) and onOrderChange.");
-    else if (reorderDuplicates(order)) console.warn("KJUN ListSection: `order` lists a value twice; rows that share a value share one place.");
+    if (!order) console.warn("KJUN reorder (ListSection, Table): reorderable needs `order` (the row values in the order shown) and onOrderChange.");
+    else if (reorderDuplicates(order)) console.warn("KJUN reorder (ListSection, Table): `order` lists a value twice; rows that share a value share one place.");
   }, [reorderable, order]);
   // An order that shows the moved row at its new place confirms the move: it is announced, and focus follows the
   // row's control to where it now is. An order drawn again unchanged, or changed for another reason, does neither.

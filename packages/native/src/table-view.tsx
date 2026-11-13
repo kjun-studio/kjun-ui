@@ -17,6 +17,8 @@ import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-re
 import { KjunDataState,useQueryDisplay } from "./data-state";
 import { content,domainColor } from "./internal";
 import { AccessiblePressable } from "./a11y";
+import { ListReorderContext, ListReorderControls, useListReorder } from "./list-reorder";
+import { KText } from "./internal";
 import { KjunPagination } from "./navigation";
 import { useKjunStyles } from "./provider";
 import { TableCards } from "./table-cards";
@@ -153,7 +155,13 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         : undefined}
     </KjunButton>
   );
+  // Like Web: the app keeps the order and passes data in it; moving is off while sorted by a column or grouped.
+  const reorderable = !!props.reorderable, locked = !!state.sort.key || !!props.groupBy, reorderOff = !!props.reorderDisabled || locked;
+  const reorderNote = reorderable && reorderOff ? props.reorderDisabledText ?? (locked ? m.tableReorderLocked : undefined) : undefined;
+  const reorder = useListReorder({ reorderable, order: props.order, disabled: reorderOff, onOrderChange: props.onOrderChange as never, onReorder: props.onReorder as never });
+  const mover = reorderable ? (row: Row, i: number) => <ListReorderControls value={state.key(row, i)} name={String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))} /> : undefined;
   return (
+    <ListReorderContext.Provider value={reorder.context}>
     <View
       accessibilityLabel={ariaLabel}
       accessibilityState={{ busy: !!props.loading }}
@@ -181,11 +189,11 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         loadingDelay={skeleton ? 0 : loadingDelay}
       >
         {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, cellText }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
+          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, cellText, mover }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : layout.list ? (
-          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
+          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, mover }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
         ) : (
-          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, columnGroups: props.columnGroups, cellSpan: props.cellSpan, maxHeight, stickyHeader, compact, striped, hoverable, ...grouping }} sortable={props.sortable} />
+          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, columnGroups: props.columnGroups, cellSpan: props.cellSpan, mover, maxHeight, stickyHeader, compact, striped, hoverable, ...grouping }} sortable={props.sortable} />
         )}
         {pagination && (
           <KjunPagination
@@ -200,6 +208,9 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
           />
         )}
       </KjunDataState>
+      {reorderNote ? <KText style={{ ...typeStyle("caption"), color: colors.textTertiary, marginTop: tokens.dimension.value8 }}>{reorderNote}</KText> : null}
+      {reorder.status}
     </View>
+    </ListReorderContext.Provider>
   );
 }

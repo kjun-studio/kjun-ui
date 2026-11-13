@@ -143,6 +143,7 @@ export function tableCards(c: TableNarrowContext) {
           <div class="kjun-table-card-footer">
             {c.expandable && <div class="kjun-table-card-expand-toggle">{c.expand(row, i)}</div>}
             {footerActions && <div class="kjun-table-card-actions" onClick={stop}>{c.cell(footerActions, row, i)}</div>}
+            {c.mover && <div class="kjun-table-card-actions" onClick={stop}>{c.mover(row, i)}</div>}
           </div>
         ),
         c.expandable && state.expanded.includes(state.key(row, i)) && <div class="kjun-table-card-expand-content">{c.renderExpand(row, i)}</div>,
@@ -182,6 +183,7 @@ export function tableList(c: TableNarrowContext) {
           </div>
         )}
         {c.expandable && <span onClick={(event: MouseEvent) => event.stopPropagation()}>{c.expand(row, i)}</span>}
+        {c.mover && <span onClick={(event: MouseEvent) => event.stopPropagation()}>{c.mover(row, i)}</span>}
       </div>
       {c.expandable && state.expanded.includes(state.key(row, i)) && <div class="kjun-table-list-expand">{c.renderExpand(row, i)}</div>}
     </div>

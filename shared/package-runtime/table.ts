@@ -55,6 +55,18 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   columnGroups?: TableColumnGroup[];
   /** How many columns a row's cell covers, counting itself (2 merges it with the next column). The covered cells are not drawn. */
   cellSpan?: (row: Row, column: TableColumn<Row>) => number | null | undefined;
+  /** Rows listed in `order` get up and down buttons. The app keeps the order, passes `data` in it and saves it. */
+  reorderable?: boolean;
+  /** The rows' rowKey values in the order shown; a row whose key is not listed cannot move. */
+  order?: (string | number)[];
+  /** Called with the next order when a row moves; the app applies it. */
+  onOrderChange?: (order: (string | number)[]) => void;
+  /** The same move in detail: the row's key, where it was and where it went. */
+  onReorder?: (move: { value: string | number; from: number; to: number; order: (string | number)[] }) => void;
+  /** Turns the move buttons off. They are also off while the table is sorted by a column or grouped. */
+  reorderDisabled?: boolean;
+  /** Why moving is off, shown under the table and read with the buttons; a sorted or grouped table says so by default. */
+  reorderDisabledText?: string;
   data?: Row[];
   rowKey?: string;
   skeletonRows?: number;

@@ -42,7 +42,7 @@ export function tablePresentation<Row extends object>(props: TableProps<Row, unk
     /** The actions column in the card's footer row (an inline one sits in the header instead). */
     footerActions: !tiles && actions && !actions.inlineInCard ? actions : undefined,
     /** One footer row holds the expand toggle and the row actions. */
-    cardFooter: !tiles && (!!props.expandable || !!(actions && !actions.inlineInCard)),
+    cardFooter: !tiles && (!!props.expandable || !!props.reorderable || !!(actions && !actions.inlineInCard)),
     /** A section's field arrangement: rows cards put every field on a label-value line. */
     cardBody(section: TableCardSection) { return cardLayout === "rows" ? "rows" : section.layout || "grid"; },
     columnsForSection(row: Row, section: TableCardSection) {
@@ -144,6 +144,8 @@ export interface TableRowsProps<Row extends object> {
   expandable: boolean;
   checkbox: (row: Row, index: number) => ReactNode;
   expand: (row: Row, index: number) => ReactNode;
+  /** A reorderable table's move buttons for a row: the grid's last column, a card's footer or a list row's end. */
+  mover?: (row: Row, index: number) => ReactNode;
   // A text role where text styles do not inherit (Native): the card title, or the list's title, meta line and value.
   cell: (column: TableColumn<Row>, row: Row, index: number, role?: TableCellRole) => ReactNode;
   renderExpand: TableProps<Row>["renderExpand"];

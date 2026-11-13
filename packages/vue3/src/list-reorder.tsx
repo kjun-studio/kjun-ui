@@ -49,26 +49,29 @@ export function listReorderControls(reorder: ListReorder, place: ReorderPlace, v
 export function useListReorder(options: {
   reorderable: () => boolean; order: () => readonly ListChoiceValue[] | undefined; disabled: () => boolean; controls: () => KjunListReorderControls;
   noteId: () => string | undefined; list: () => HTMLElement | null;
+  /** Where the movable rows' controls are inside list (a Table's rows rather than a list section's). */
+  selector?: string;
   onOrderChange: (order: ListChoiceValue[]) => void; onReorder: (move: KjunListReorderMove) => void;
 }) {
   const m = useKjunMessages(), said = ref(""), grabbed = ref<ListChoiceValue | null>(null);
   const session = createReorderSession({
-    order: options.order, disabled: options.disabled, list: options.list,
+    order: options.order, disabled: options.disabled, list: options.list, controls: options.selector,
     text: () => ({ moved: m.value.reorderMoved, grabbed: m.value.reorderGrabbed, dropped: m.value.reorderDropped, cancelled: m.value.reorderCancelled }),
     say: text => { said.value = text; }, grabbed: value => { grabbed.value = value; },
     change: options.onOrderChange, moved: options.onReorder,
   });
   watch([options.reorderable, options.order], ([reorderable, order]) => {
     if (!reorderable) return;
-    if (!order) console.warn("KJUN ListSection: reorderable needs `order` (the row values in the order shown) and v-model:order.");
-    else if (reorderDuplicates(order)) console.warn("KJUN ListSection: `order` lists a value twice; rows that share a value share one place.");
+    if (!order) console.warn("KJUN reorder (ListSection, Table): reorderable needs `order` (the row values in the order shown) and v-model:order.");
+    else if (reorderDuplicates(order)) console.warn("KJUN reorder (ListSection, Table): `order` lists a value twice; rows that share a value share one place.");
   }, { immediate: true });
   // An order that shows the moved row at its new place confirms the move: it is announced, and focus follows the
   // row's control to where it now is. An order drawn again unchanged, or changed for another reason, does neither.
   watch(options.order, order => session.confirm(order), { flush: "post" });
   watch(() => !options.reorderable() || options.disabled(), off => { if (off) session.reset(); });
   onBeforeUnmount(() => session.dispose());
-  provide(kjunListReorderKey, computed<ListReorder | null>(() => options.reorderable()
-    ? { order: options.order(), disabled: options.disabled(), controls: options.controls(), grabbed: grabbed.value, noteId: options.noteId(), session } : null));
-  return { said };
+  const context = computed<ListReorder | null>(() => options.reorderable()
+    ? { order: options.order(), disabled: options.disabled(), controls: options.controls(), grabbed: grabbed.value, noteId: options.noteId(), session } : null);
+  provide(kjunListReorderKey, context);
+  return { said, context };
 }

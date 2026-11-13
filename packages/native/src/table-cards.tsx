@@ -14,7 +14,7 @@ const card = tokens.extensions.tableCard;
 const titleLine = tokens.typography.cardTitle.lineHeightPx;
 /** Like Web: "stacked" field grid, "rows" label-value lines, "tiles" small cards (two a row, more where each keeps tileMinWidth). */
 export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
-  const { initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, cellText, expandable, expand, renderExpand,
+  const { mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, cellText, expandable, expand, renderExpand,
     emptyContent, emptyText, layout, totals, groups } = props;
   const { colors } = useKjunStyles();
   const { title, subtitle, highlight, badges, inline, sections, columnsForSection, tiles, footerActions, cardFooter, cardBody } = layout;
@@ -110,6 +110,7 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
           {expandable ? expand(row, i) : <View />}
           {/* The wrapper holds the end edge; a KjunButton's own flex-start would otherwise pull it left. */}
           {footerActions ? <View style={{ alignSelf: "center" }}>{cell(footerActions, row, i)}</View> : null}
+          {mover ? <View style={{ alignSelf: "center" }}>{mover(row, i)}</View> : null}
         </View>
       ) : null}
       {expandable && state.expanded.includes(state.key(row, i)) ? (

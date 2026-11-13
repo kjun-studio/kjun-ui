@@ -15,7 +15,7 @@ import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { useKjunStyles } from "./provider";
 import type { TableColumn } from "./table-model";
 import { tableHeaderRows, tableSpans } from "../../../shared/package-runtime/table-columns";
-export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, groups, collapsed, toggleGroup, groupLabel, summary }: TableGridProps<Row, number>) {
+export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, groups, collapsed, toggleGroup, groupLabel, summary }: TableGridProps<Row, number>) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles();
   const geometry = tokens.table;
@@ -28,7 +28,9 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialL
       : typeof col.width === "string" && /^\d+(px)?$/.test(col.width)
       ? parseFloat(col.width)
       : geometry.columnWidth;
-  const utilityWidth = (selectable ? geometry.actionColumnWidth : 0) + (expandable ? geometry.actionColumnWidth : 0);
+  // A reorderable table ends each row with its two move buttons (sm, side by side), after the expand toggle.
+  const moverWidth = mover ? 2 * tokens.button.heights.sm + tokens.extensions.list.actionsGap + 2 * geometry.cellPadding.compact.x : 0;
+  const utilityWidth = (selectable ? geometry.actionColumnWidth : 0) + (expandable ? geometry.actionColumnWidth : 0) + moverWidth;
   const naturalTotal = visible.reduce((sum, col) => sum + naturalWidth(col), 0) + utilityWidth;
   // Like Web's 100% table: narrower columns share the spare width so the grid always fills its container.
   // Columns the app sized keep their width; the spare width goes to the rest (to every column when all are sized).
@@ -44,7 +46,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialL
   // Like Web: stripes are a faint text tint, distinct from the header and expanded rows.
   const stripe = (typeof colors.text === "string" && tintColor(colors.text, tokens.states.opacity.stripe)) || colors.secondary;
   // A row with a pressable cell keeps its cells separate, so the cell's button stays reachable on a device.
-  const cellButtons = visible.some((col) => col.onCellPress), merged = !!onRowClick && !selectable && !expandable && !cellButtons;
+  const cellButtons = visible.some((col) => col.onCellPress), merged = !!onRowClick && !selectable && !expandable && !cellButtons && !mover;
   const bodyRow = (row: Row, i: number) => {
     const spans = tableSpans(visible, cellSpan ? (column) => cellSpan(row, column) : null);
     return (
@@ -106,6 +108,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialL
             {expand(row, i)}
           </View>
         )}
+        {mover && <View style={{ width: moverWidth, alignItems: "center", justifyContent: "center" }}>{mover(row, i)}</View>}
       </Pressable>
       {expandable &&
         state.expanded.includes(state.key(row, i)) && (
@@ -134,6 +137,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialL
         </View>
       ))}
       {expandable && <View style={{ width: geometry.actionColumnWidth }} />}
+      {mover && <View style={{ width: moverWidth }} />}
     </View>
   );
   // Like Web: with column groups the header has two rows; a group's label sits over its columns, lone columns span both rows.
@@ -255,6 +259,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialL
                   </View>
                 )) : visible.map((col) => columnHeader(col))}
                 {expandable && <View style={{ width: geometry.actionColumnWidth }} />}
+                {mover && <View style={{ width: moverWidth }} />}
               </View>
               {initialLoading ? (
                 Array.from({ length: skeletonRows }, (_, i) => (
@@ -276,6 +281,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, initialL
                       </View>
                     ))}
                     {expandable && <View style={{ width: geometry.actionColumnWidth }} />}
+                    {mover && <View style={{ width: moverWidth }} />}
                   </View>
                 ))
               ) : !state.rows.length ? (
