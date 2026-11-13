@@ -52,6 +52,8 @@ export const KjunDrawer = defineComponent({
       if (to === null || !motion.present()) return null;
       const header = slots.header?.(), footer = slots.footer?.();
       const sideways = props.position === "left" || props.position === "right";
+      // Without a title or header only the close button remains: no title band, no empty heading.
+      const titled = !!props.title || hasContent(header);
       return (
         <Teleport to={to}>
           <div ref={overlay} class="kjun-scope kjun-drawer-overlay" data-motion="drawer" data-motion-open={String(motion.active())}
@@ -60,9 +62,9 @@ export const KjunDrawer = defineComponent({
               <DismissButton onDismiss={close} />
               <section ref={(node: unknown) => { dialog.value = node as HTMLElement | null; rootRef(node); }} class="kjun-drawer-dialog" role="dialog" tabindex={-1}
                 aria-label={props.ariaLabel || props.title || m.value.panel}>
-                {(props.title || hasContent(header) || props.closable) && (
-                  <div class="kjun-drawer-header">
-                    <div>{hasContent(header) ? header : <h2>{props.title}</h2>}</div>
+                {(titled || props.closable) && (
+                  <div class="kjun-drawer-header" data-bare={titled ? undefined : ""}>
+                    {titled && <div class="kjun-drawer-title">{hasContent(header) ? header : <h2>{props.title}</h2>}</div>}
                     {props.closable && (
                       <KjunButton size="sm" variant="ghost" ariaLabel={m.value.close} onClick={close} style={css({ borderRadius: tokens.extensions.drawer.closeRadius,
                         width: tokens.extensions.drawer.closeSize, height: tokens.extensions.drawer.closeSize, padding: 0 })}>
@@ -71,7 +73,7 @@ export const KjunDrawer = defineComponent({
                     )}
                   </div>
                 )}
-                <div class="kjun-drawer-body" style={css({ padding: props.noPadding ? 0 : tokens.extensions.drawer.bodyPadding })}>{slots.default?.()}</div>
+                <div class="kjun-drawer-body" data-no-padding={props.noPadding ? "" : undefined}>{slots.default?.()}</div>
                 {hasContent(footer) && <div class="kjun-drawer-footer">{footer}</div>}
                 <FeedbackLayerOutlet />
               </section>

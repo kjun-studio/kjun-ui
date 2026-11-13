@@ -395,6 +395,10 @@
 .kjun-drawer-overlay[data-position="bottom"] {
   align-items: flex-end;
 }
+/* A top sheet hugs its content like the bottom one instead of stretching to the height limit. */
+.kjun-drawer-overlay[data-position="top"] {
+  align-items: flex-start;
+}
 .kjun-drawer {
   position: relative;
   max-width: 100%;
@@ -434,6 +438,34 @@
   justify-content: space-between;
   padding: var(--_kjun-extension-drawer-padding-y) var(--_kjun-extension-drawer-padding-x);
   border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  flex-shrink: 0;
+}
+/* Like the Modal title: long titles wrap and stay clear of the close button. */
+.kjun-drawer-title {
+  flex: 1;
+  min-width: 0;
+  padding-right: var(--_kjun-extension-drawer-title-action-gap);
+  overflow-wrap: anywhere;
+}
+/* Close button only: no title band or divider, the body follows closely. */
+.kjun-drawer-header[data-bare] {
+  justify-content: flex-end;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.kjun-drawer-header[data-bare] + .kjun-drawer-body:not([data-no-padding]) {
+  padding-top: var(--_kjun-extension-drawer-bare-body-padding-top);
+}
+/* The glyph sits on the content edge; the button's own inset hangs into the header padding. */
+.kjun-drawer-header > .kjun-button {
+  margin-right: calc((var(--_kjun-extension-drawer-close-icon-size) - var(--_kjun-extension-drawer-close-size)) / 2);
+}
+@media (pointer: coarse) {
+  .kjun-drawer-header > .kjun-button::after {
+    content: "";
+    position: absolute;
+    inset: calc((var(--_kjun-extension-drawer-close-size) - var(--_kjun-geometry-native-minimum-touch-target)) / 2);
+  }
 }
 .kjun-drawer-header h2 {
   margin: 0;
@@ -446,10 +478,39 @@
   min-height: 0;
   overflow: auto;
   flex: 1;
+  padding: var(--_kjun-extension-drawer-body-padding);
 }
+.kjun-drawer-body[data-no-padding] { padding: 0; }
 .kjun-drawer-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--_kjun-extension-drawer-footer-gap);
+  flex-shrink: 0;
   padding: var(--_kjun-extension-drawer-padding-y) var(--_kjun-extension-drawer-padding-x);
   border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+}
+/* A single wrapper (the app's own action layout) keeps the full row. */
+.kjun-drawer-footer > :only-child:not(.kjun-button) { flex: 1; min-width: 0; }
+.kjun-drawer-overlay[data-position="left"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-left); }
+.kjun-drawer-overlay[data-position="top"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-top); }
+.kjun-drawer-overlay[data-position="bottom"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-bottom); }
+/* Sheets round the corners that face the page. */
+.kjun-drawer-overlay[data-position="bottom"] .kjun-drawer { border-top-left-radius: var(--_kjun-extension-drawer-sheet-radius); border-top-right-radius: var(--_kjun-extension-drawer-sheet-radius); }
+.kjun-drawer-overlay[data-position="top"] .kjun-drawer { border-bottom-left-radius: var(--_kjun-extension-drawer-sheet-radius); border-bottom-right-radius: var(--_kjun-extension-drawer-sheet-radius); }
+/* Phones: a side drawer leaves the sheet gap of page visible, and a bottom sheet's buttons share the width. */
+@media (width <= token(responsive.drawer)) {
+  .kjun-drawer-overlay:is([data-position="left"], [data-position="right"]) .kjun-drawer {
+    max-width: calc(100% - var(--_kjun-extension-drawer-sheet-gap));
+  }
+  .kjun-drawer-overlay[data-position="bottom"] .kjun-drawer-footer > .kjun-button { flex: 1; }
+}
+/* Wider screens: top and bottom sheets stop at a readable width, centered. */
+@media (width > token(responsive.drawer)) {
+  .kjun-drawer-overlay:is([data-position="top"], [data-position="bottom"]) { justify-content: center; }
+  .kjun-drawer-overlay:is([data-position="top"], [data-position="bottom"]) .kjun-drawer {
+    max-width: var(--_kjun-extension-drawer-sheet-max-width);
+  }
 }
 .kjun-select-shell {
   position: relative;
@@ -558,7 +619,3 @@
 /* A failed search reads as an error, never as an empty result. */
 .kjun-select-empty[role="alert"] { color: var(--_kjun-color-danger); }
 
-.kjun-drawer-overlay[data-position="left"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-left); }
-.kjun-drawer-overlay[data-position="top"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-top); }
-.kjun-drawer-overlay[data-position="bottom"] .kjun-drawer { box-shadow: var(--_kjun-drawer-elevation-bottom); }
-.kjun-drawer-overlay[data-position="bottom"] .kjun-drawer { border-top-left-radius:var(--_kjun-extension-drawer-bottom-radius); border-top-right-radius:var(--_kjun-extension-drawer-bottom-radius); }

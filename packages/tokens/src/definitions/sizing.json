@@ -186,11 +186,12 @@
     },
     "drawer": {
       "width": 400,
+      "sheetMaxWidth": 640,
       "closeSize": {
         "$ref": "modal.closeSize"
       },
       "closeIconSize": {
-        "$ref": "iconSizes.default"
+        "$ref": "modal.closeIconSize"
       }
     },
     "scrollbar": {

@@ -32,7 +32,7 @@ for (const platform of platforms) {
     await geometry(tableCard(page,platform),{'padding-left':px(e.tableCard.padding),'border-radius':px(e.tableCard.radius)});
     await page.getByRole('button',{name:'패널 열기',exact:true}).click();
     const drawer=page.locator(platform==='react'||platform==='vue3'?'.kjun-drawer':'[aria-label="검사 패널"]');
-    await geometry(drawer,{'border-top-left-radius':px(e.drawer.bottomRadius),'border-top-right-radius':px(e.drawer.bottomRadius),'border-bottom-left-radius':px(e.drawer.radius)});
+    await geometry(drawer,{'border-top-left-radius':px(e.drawer.sheetRadius),'border-top-right-radius':px(e.drawer.sheetRadius),'border-bottom-left-radius':px(e.drawer.radius)});
     await geometry(platform==='react'||platform==='vue3'?drawer.locator('.kjun-drawer-header'):drawer.locator(':scope > *').first(),{'padding-left':px(e.drawer.paddingX),'padding-top':px(e.drawer.paddingY)});
     await expect(drawer).toHaveCSS('box-shadow',new RegExp(`${tokens.extensions.drawer.elevation[0].blurRadius}px`));
     await captureReview(drawer, {path: testInfo.outputPath(`${platform}-drawer.png`)});

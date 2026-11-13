@@ -6,19 +6,10 @@ import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer"
 import { directionalShadow } from "../../../shared/package-runtime/elevation";
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
-import { useEffect, useState } from "react";
-import { Animated, Keyboard } from "react-native";
+import { useEffect, useState, type ReactNode } from "react";
+import { Animated, Keyboard, Platform, ScrollView, View, useWindowDimensions } from "react-native";
 import { drawerFrame, keyboardEvents, keyboardOverlap } from "../../../shared/package-runtime/drawer-geometry";
 import { useNativePresence, motionEmphasized } from "./motion";
-import {
-type ReactNode
-} from "react";
-import {
-Platform,
-ScrollView,
-View,
-useWindowDimensions
-} from "react-native";
 import { KjunButton, KjunIcon } from "./button";
 import { KText,content } from "./internal";
 import { ScopedNativeModal } from "./overlay-host";
@@ -89,16 +80,24 @@ export function KjunDrawer({
     safeAreaTop = safeArea ? insets.top : 0,
     safeAreaBottom = safeArea ? insets.bottom : 0,
     window = useWindowDimensions(),
-    vertical = position === "left" || position === "right";
+    sideways = position === "left" || position === "right",
+    geometry = tokens.extensions.drawer,
+    compact = window.width <= tokens.responsive.drawer,
+    // Phones: a side drawer leaves the sheet gap of page visible. Wider screens: sheets stop at a readable width, centered.
+    panelWidth = sideways ? Math.min(width, window.width - (compact ? geometry.sheetGap : 0))
+      : compact ? window.width : Math.min(window.width, geometry.sheetMaxWidth),
+    sheetRadius = (edge: "top" | "bottom") => sideways || position === edge ? geometry.radius : geometry.sheetRadius,
+    // Without a title or header only the close button remains: no title band, no empty text.
+    titled = !!title || hasContent(header);
   // The modal root's own height: a resizing Android window shrinks it for the keyboard; elsewhere it equals the window.
   const [rootHeight, setRootHeight] = useState(0);
   const keyboard = useKeyboardOverlap(open && avoidKeyboard, rootHeight || window.height);
   const frame = drawerFrame({ position, windowHeight: rootHeight || window.height, safeAreaTop, safeAreaBottom,
     gap: tokens.extensions.drawer.sheetGap, keyboard, maxHeight });
   const [panelHeight, setPanelHeight] = useState(0);
-  const motion = useNativePresence(open, tokens.motion.layerEnter, tokens.motion.layerExit, vertical || panelHeight > 0, 0, { enterEasing: motionEmphasized });
+  const motion = useNativePresence(open, tokens.motion.layerEnter, tokens.motion.layerExit, sideways || panelHeight > 0, 0, { enterEasing: motionEmphasized });
   // The backdrop waits with the panel, so a sheet still being measured never shows a dimmed screen alone.
-  const backdrop = useNativePresence(open, tokens.motion.backdrop, tokens.motion.backdropExit, vertical || panelHeight > 0, 0, { fade: tokens.motion.backdropExit });
+  const backdrop = useNativePresence(open, tokens.motion.backdrop, tokens.motion.backdropExit, sideways || panelHeight > 0, 0, { fade: tokens.motion.backdropExit });
   const close = () => {
     if (!open) return;
     onOpenChange(false);
@@ -126,7 +125,7 @@ export function KjunDrawer({
         style={{
           flex: 1,
           justifyContent: position === "bottom" ? "flex-end" : "flex-start",
-          alignItems: position === "right" ? "flex-end" : "flex-start",
+          alignItems: !sideways ? "center" : position === "right" ? "flex-end" : "flex-start",
         }}
       >
         <Animated.View pointerEvents={open ? "auto" : "none"} style={{ ...screenCover(), opacity: backdrop.opacity }}>
@@ -154,58 +153,60 @@ export function KjunDrawer({
             : {})}
           onLayout={event => setPanelHeight(event.nativeEvent.layout.height)}
           style={{
-            opacity: vertical || panelHeight > 0 ? 1 : 0,
-            transform: vertical ? [{ translateX: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [(position === "left" ? -1 : 1) * Math.min(width, window.width), 0] }) }]
+            opacity: sideways || panelHeight > 0 ? 1 : 0,
+            transform: sideways ? [{ translateX: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [(position === "left" ? -1 : 1) * panelWidth, 0] }) }]
               : [{ translateY: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [(position === "top" ? -1 : 1) * panelHeight, 0] }) }],
-            width: vertical ? Math.min(width, window.width) : window.width,
+            width: panelWidth,
             height: frame.height,
             maxHeight: frame.maxHeight,
             paddingTop: frame.paddingTop,
             paddingBottom: frame.paddingBottom,
             marginBottom: frame.lift,
-            borderRadius: tokens.extensions.drawer.radius,
-            borderTopLeftRadius: position === "bottom" ? tokens.extensions.drawer.bottomRadius : tokens.extensions.drawer.radius,
-            borderTopRightRadius: position === "bottom" ? tokens.extensions.drawer.bottomRadius : tokens.extensions.drawer.radius,
+            // Sheets round the corners that face the page.
+            borderTopLeftRadius: sheetRadius("top"),
+            borderTopRightRadius: sheetRadius("top"),
+            borderBottomLeftRadius: sheetRadius("bottom"),
+            borderBottomRightRadius: sheetRadius("bottom"),
             boxShadow: directionalShadow(tokens.extensions.drawer.elevation, position).map(({ colorRole, ...layer }) => ({ ...layer, color: colors[colorRole] })),
             backgroundColor: colors.surface,
           }}
         >
-          {!!(title || header || closable) && (
+          {(titled || closable) && (
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "space-between",
-                paddingVertical: tokens.extensions.drawer.paddingY,
-                paddingHorizontal: tokens.extensions.drawer.paddingX,
-                borderBottomWidth: tokens.border.defaultWidth,
+                justifyContent: titled ? "space-between" : "flex-end",
+                paddingTop: geometry.paddingY,
+                paddingBottom: titled ? geometry.paddingY : 0,
+                paddingHorizontal: geometry.paddingX,
+                borderBottomWidth: titled ? tokens.border.defaultWidth : 0,
                 borderBottomColor: colors.border,
               }}
             >
-              <View style={{ flex: 1 }}>
-                {hasContent(header) ? content(header) : (
-                  <KText
-                    style={{ ...typeStyle('sectionTitle'),   }}
-                  >
-                    {title}
-                  </KText>
-                )}
-              </View>
+              {titled && (
+                <View style={{ flex: 1, paddingRight: geometry.titleActionGap }}>
+                  {hasContent(header) ? content(header) : <KText style={typeStyle('sectionTitle')}>{title}</KText>}
+                </View>
+              )}
               {closable && (
                 <KjunButton
                   size="sm"
                   variant="ghost"
                   ariaLabel={m.close}
                   onPress={close}
-                  style={{ borderRadius: tokens.extensions.drawer.closeRadius, width: tokens.extensions.drawer.closeSize, height: tokens.extensions.drawer.closeSize, paddingHorizontal: 0, paddingVertical: 0 }}
+                  // The glyph sits on the content edge; the button's own inset hangs into the header padding.
+                  style={{ borderRadius: geometry.closeRadius, width: geometry.closeSize, height: geometry.closeSize, paddingHorizontal: 0, paddingVertical: 0,
+                    marginRight: (geometry.closeIconSize - geometry.closeSize) / 2 }}
                 ><KjunIcon name="x" size={tokens.extensions.drawer.closeIconSize} /></KjunButton>
               )}
             </View>
           )}
           <ScrollView
             keyboardShouldPersistTaps="handled"
-            style={vertical ? { flex: 1 } : { flexGrow: 0, flexShrink: 1 }}
-            contentContainerStyle={{ padding: noPadding ? 0 : tokens.extensions.drawer.bodyPadding }}
+            style={sideways ? { flex: 1 } : { flexGrow: 0, flexShrink: 1 }}
+            contentContainerStyle={noPadding ? { padding: 0 } : { padding: geometry.bodyPadding,
+              ...(!titled && closable ? { paddingTop: geometry.bareBodyPaddingTop } : {}) }}
           >
             {content(children)}
           </ScrollView>

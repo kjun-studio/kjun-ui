@@ -11,7 +11,11 @@ test('component geometry resolves from the shared scales with additive paths', (
   assert.equal(data.extensions.badge.radius, 6);
   assert.equal(data.extensions.badge.padding.xs.y, 0);
   assert.equal(data.extensions.chip.radius, data.radius.radius9999);
-  assert.equal(data.extensions.drawer.bottomRadius, 16);
+  assert.equal(data.extensions.drawer.sheetRadius, 16);
+  assert.equal(data.extensions.drawer.sheetMaxWidth, 640);
+  assert.equal(data.extensions.drawer.titleActionGap, data.modal.titleActionGap);
+  assert.equal(data.extensions.drawer.footerGap, data.modal.footerGap);
+  assert.equal(data.extensions.drawer.closeIconSize, data.modal.closeIconSize);
   assert.equal(data.extensions.kpiHero.md.secondaryMargin, 24);
   assert.equal(data.extensions.kpiHero.md.secondaryPadding, 16);
   assert.deepEqual(data.extensions.list.leadingSizes, { xs: 24, sm: 32, md: 40, lg: 56 });

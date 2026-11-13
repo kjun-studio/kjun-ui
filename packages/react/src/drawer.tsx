@@ -1,6 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer";
 import { tokens } from "@kjun-ui/tokens";
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { drawerOverlayVars } from "../../../shared/package-runtime/drawer-geometry";
 import { useAfterCloseRef } from "../../../shared/package-runtime/use-after-close";
 import { usePresence } from "../../../shared/package-runtime/use-presence";
@@ -61,6 +62,8 @@ export function KjunDrawer({
     onClose?.();
   };
   const layer = useLayer(open, motion.present, "window", () => { if (closeOnEsc) close(); });
+  // Without a title or header only the close button remains: no title band, no empty heading.
+  const titled = !!title || hasContent(header);
   if (container === null) return null;
   return (
     <LayerScope.Provider value={layer.id}>
@@ -92,9 +95,9 @@ export function KjunDrawer({
           className="kjun-drawer-dialog"
           ref={node => { const entry = layer.state.entries.get(layer.id); if (entry) entry.root = node; }}
         >
-          {(title || header || closable) && (
-            <div className="kjun-drawer-header">
-              <div>{header || <h2>{title}</h2>}</div>
+          {(titled || closable) && (
+            <div className="kjun-drawer-header" data-bare={titled ? undefined : ""}>
+              {titled && <div className="kjun-drawer-title">{hasContent(header) ? header : <h2>{title}</h2>}</div>}
               {closable && (
                 <KjunButton
                   size="sm"
@@ -106,13 +109,10 @@ export function KjunDrawer({
               )}
             </div>
           )}
-          <div
-            className="kjun-drawer-body"
-            style={{ padding: noPadding ? 0 : tokens.extensions.drawer.bodyPadding }}
-          >
+          <div className="kjun-drawer-body" data-no-padding={noPadding ? "" : undefined}>
             {children}
           </div>
-          {footer && <div className="kjun-drawer-footer">{footer}</div>}
+          {hasContent(footer) && <div className="kjun-drawer-footer">{footer}</div>}
           <FeedbackLayerOutlet />
         </Dialog>
       </Modal>

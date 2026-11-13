@@ -73,9 +73,9 @@ export const componentSpecs: ComponentSpec[] = [
     rows: [['최대 너비', `${ext.tooltip.maxWidth}px`]],
   },
   {
-    name: 'KjunDrawer', label: 'Drawer', path: '/components/drawer', group: '레이어·피드백', summary: '너비·닫기·하단 패널',
+    name: 'KjunDrawer', label: 'Drawer', path: '/components/drawer', group: '레이어·피드백', summary: '너비·닫기·위아래 패널',
     rows: [['기본 너비', `${ext.drawer.width}px`], ['닫기 시각 영역', `${ext.drawer.closeSize}px`],
-      ['하단 패널', `상단 모서리 ${ext.drawer.bottomRadius}px · 본문 여백 ${ext.drawer.bodyPadding}px`]],
+      ['위·아래 패널', `화면 쪽 모서리 ${ext.drawer.sheetRadius}px · 최대 너비 ${ext.drawer.sheetMaxWidth}px · 본문 여백 ${ext.drawer.bodyPadding}px`]],
   },
   {
     name: 'KjunModal', label: 'Modal', path: '/components/modal', group: '레이어·피드백', summary: '모서리와 내부 여백',

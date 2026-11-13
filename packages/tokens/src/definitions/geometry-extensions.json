@@ -326,10 +326,13 @@
       "paddingX": { "$ref": "dimension.value20" },
       "paddingY": { "$ref": "dimension.value16" },
       "bodyPadding": { "$ref": "dimension.value20" },
-      "bottomRadius": { "$ref": "radius.radius16" },
+      "sheetRadius": { "$ref": "radius.radius16" },
       "radius": { "$ref": "radius.radius0" },
       "closeRadius": { "$ref": "radius.radius8" },
-      "sheetGap": { "$ref": "dimension.value48" }
+      "sheetGap": { "$ref": "dimension.value48" },
+      "titleActionGap": { "$ref": "modal.titleActionGap" },
+      "footerGap": { "$ref": "modal.footerGap" },
+      "bareBodyPaddingTop": { "$ref": "dimension.value8" }
     },
     "toast": {
       "minWidth": 280,
