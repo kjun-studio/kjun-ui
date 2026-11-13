@@ -2059,7 +2059,9 @@
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "disabled",
-        "ariaLabel"
+        "loading",
+        "ariaLabel",
+        "label"
       ],
       "applicable": true,
       "reason": null,
@@ -2083,7 +2085,9 @@
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "disabled",
-        "ariaLabel"
+        "loading",
+        "ariaLabel",
+        "label"
       ],
       "applicable": true,
       "reason": null,
@@ -2107,7 +2111,9 @@
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "disabled",
-        "ariaLabel"
+        "loading",
+        "ariaLabel",
+        "label"
       ],
       "applicable": true,
       "reason": null,
@@ -2131,7 +2137,9 @@
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "disabled",
-        "ariaLabel"
+        "loading",
+        "ariaLabel",
+        "label"
       ],
       "applicable": true,
       "reason": null,
@@ -2155,7 +2163,9 @@
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "disabled",
-        "ariaLabel"
+        "loading",
+        "ariaLabel",
+        "label"
       ],
       "applicable": true,
       "reason": null,
@@ -2179,7 +2189,9 @@
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "disabled",
-        "ariaLabel"
+        "loading",
+        "ariaLabel",
+        "label"
       ],
       "applicable": true,
       "reason": null,
@@ -2203,7 +2215,9 @@
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
         "disabled",
-        "ariaLabel"
+        "loading",
+        "ariaLabel",
+        "label"
       ],
       "applicable": true,
       "reason": null,
@@ -2227,7 +2241,9 @@
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
         "disabled",
-        "ariaLabel"
+        "loading",
+        "ariaLabel",
+        "label"
       ],
       "applicable": true,
       "reason": null,
@@ -2251,7 +2267,9 @@
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
         "disabled",
-        "ariaLabel"
+        "loading",
+        "ariaLabel",
+        "label"
       ],
       "applicable": true,
       "reason": null,
@@ -18812,7 +18830,7 @@
       "integrity": "sha512-gUkRB7C2PSuEU5ajiq9A1a52b6tHoGPNOJtwATq9/ohMeRREQ0pZTlb4BcXJZag9jm8QJ1hnUiqQ1kzOM4CKRw=="
     }
   ],
-  "definitionHash": "sha256-8c7c4f877a0eaa486438a0d6fa63f6bb3a80b9ce2f9381910b0714979b8a01a1",
+  "definitionHash": "sha256-163e16d69ad07b34a24b3c90b6b562cfcdeba3f71cf5bf3ad1a529b895bfe68b",
   "runs": [
     {
       "schemaVersion": 1,

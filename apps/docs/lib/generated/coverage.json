@@ -1104,7 +1104,7 @@
       "title": "Fab",
       "docs": "/components/fab",
       "category": "actions",
-      "differences": "웹은 화면(viewport)에 고정되고, Native는 부모 기준으로 놓이므로 화면 최상위 View에 둡니다. 하단 탭바가 있으면 offsetBottom에 그 높이를 넘깁니다.",
+      "differences": "웹은 화면(viewport)에 고정되고, Native는 부모 기준으로 놓이므로 화면 최상위 View에 둡니다. KjunBottomNavigation·KjunBottomActionBar가 있으면 그 높이만큼 자동으로 위에 놓입니다. Native에서 FAB의 부모가 탭바 위에서 끝나면 avoidBottomBar를 끕니다. 직접 만든 하단 바는 offsetBottom에 높이를 넘깁니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

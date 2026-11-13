@@ -7986,11 +7986,32 @@
         "description": ""
       },
       {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Visible text beside the icon; the circle becomes a capsule of the same height."
+      },
+      {
         "name": "ariaLabel",
         "type": "string",
-        "required": true,
+        "required": false,
         "default": "—",
-        "description": "The FAB has no visible text, so it needs a name."
+        "description": "The accessible name. Required without a label, since the icon alone says nothing."
+      },
+      {
+        "name": "size",
+        "type": "KjunFabSize",
+        "required": false,
+        "default": "\"md\"",
+        "description": "\"md\" (default) is 56, \"sm\" is 48. Both take a label, loading and every state."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Swaps the icon for a spinner and stops presses; the button keeps its colour."
       },
       {
         "name": "disabled",
@@ -8007,11 +8028,18 @@
         "description": "Stays above the bottom safe area from KjunProvider."
       },
       {
+        "name": "avoidBottomBar",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Stays above the app's KjunBottomNavigation and KjunBottomActionBar; false where the bar is not under the FAB."
+      },
+      {
         "name": "offsetBottom",
         "type": "number",
         "required": false,
         "default": "0",
-        "description": "Extra space below, e.g. a bottom navigation's height."
+        "description": "Extra space below, in px."
       }
     ],
     "events": [
@@ -8030,11 +8058,32 @@
         "description": ""
       },
       {
-        "name": "ariaLabel",
-        "type": "string",
-        "required": true,
+        "name": "label",
+        "type": "string | undefined",
+        "required": false,
         "default": "—",
-        "description": "The FAB has no visible text, so it needs a name."
+        "description": "Visible text beside the icon; the circle becomes a capsule of the same height."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The accessible name. Required without a label, since the icon alone says nothing."
+      },
+      {
+        "name": "size",
+        "type": "import(\"/workspace/packages/react/src/fab\").KjunFabSize | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"md\" (default) is 56, \"sm\" is 48. Both take a label, loading and every state."
+      },
+      {
+        "name": "loading",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Swaps the icon for a spinner and stops presses; the button keeps its colour."
       },
       {
         "name": "disabled",
@@ -8051,15 +8100,50 @@
         "description": "Stays above the bottom safe area from KjunProvider (default true)."
       },
       {
+        "name": "avoidBottomBar",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Stays above the app's KjunBottomNavigation and KjunBottomActionBar (default true); false where the bar is not under the FAB."
+      },
+      {
         "name": "offsetBottom",
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": "Extra space below, e.g. a bottom navigation's height."
+        "description": "Extra space below, in px."
       },
       {
         "name": "onClick",
         "type": "((event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent<HTMLButtonElement>) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").KeyboardEventHandler<HTMLButtonElement> | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -8074,11 +8158,32 @@
         "description": ""
       },
       {
-        "name": "ariaLabel",
-        "type": "string",
-        "required": true,
+        "name": "label",
+        "type": "string | undefined",
+        "required": false,
         "default": "—",
-        "description": "The FAB has no visible text, so it needs a name."
+        "description": "Visible text beside the icon; the circle becomes a capsule of the same height."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The accessible name. Required without a label, since the icon alone says nothing."
+      },
+      {
+        "name": "size",
+        "type": "import(\"/workspace/packages/native/src/fab\").KjunFabSize | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"md\" (default) is 56, \"sm\" is 48. Both take a label, loading and every state."
+      },
+      {
+        "name": "loading",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Swaps the icon for a spinner and stops presses; the button keeps its colour."
       },
       {
         "name": "disabled",
@@ -8095,11 +8200,18 @@
         "description": "Stays above the bottom safe area from KjunProvider (default true)."
       },
       {
+        "name": "avoidBottomBar",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Stays above the app's KjunBottomNavigation and KjunBottomActionBar (default true); false where the FAB's parent ends above the bar."
+      },
+      {
         "name": "offsetBottom",
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": "Extra space below, e.g. a bottom navigation's height."
+        "description": "Extra space below, in px."
       },
       {
         "name": "onPress",

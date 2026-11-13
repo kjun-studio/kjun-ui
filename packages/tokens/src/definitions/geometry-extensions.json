@@ -28,7 +28,12 @@
     "fab": {
       "size": { "$ref": "dimension.value56" },
       "inset": { "$ref": "dimension.value16" },
-      "iconSize": { "$ref": "iconSizes.feature" }
+      "iconSize": { "$ref": "iconSizes.feature" },
+      "smallSize": { "$ref": "dimension.value48" },
+      "smallIconSize": { "$ref": "iconSizes.large" },
+      "labelGaps": { "sm": { "$ref": "dimension.value6" }, "md": { "$ref": "dimension.value8" } },
+      "paddingStart": { "sm": { "$ref": "dimension.value12" }, "md": { "$ref": "dimension.value16" } },
+      "paddingEnd": { "sm": { "$ref": "dimension.value16" }, "md": { "$ref": "dimension.value20" } }
     },
     "list": {
       "padding": { "$ref": "dimension.value16" },

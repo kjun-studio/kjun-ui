@@ -114,6 +114,9 @@ export const kjunPropValues = Object.freeze({
   KjunExternalLink: Object.freeze({
     mode: Object.freeze(["icon","text"] as const),
   }),
+  KjunFab: Object.freeze({
+    size: Object.freeze(["sm","md"] as const),
+  }),
   KjunFeedbackProvider: Object.freeze({
     placement: Object.freeze(["bottom","top"] as const),
   }),

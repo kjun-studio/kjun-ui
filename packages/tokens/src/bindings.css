@@ -276,6 +276,14 @@
   --_kjun-extension-fab-size: 56px;
   --_kjun-extension-fab-inset: 16px;
   --_kjun-extension-fab-icon-size: 24px;
+  --_kjun-extension-fab-small-size: 48px;
+  --_kjun-extension-fab-small-icon-size: 20px;
+  --_kjun-extension-fab-label-gaps-sm: 6px;
+  --_kjun-extension-fab-label-gaps-md: 8px;
+  --_kjun-extension-fab-padding-start-sm: 12px;
+  --_kjun-extension-fab-padding-start-md: 16px;
+  --_kjun-extension-fab-padding-end-sm: 16px;
+  --_kjun-extension-fab-padding-end-md: 20px;
   --_kjun-extension-list-padding: 16px;
   --_kjun-extension-list-gap: 12px;
   --_kjun-extension-list-minimum-height: 56px;

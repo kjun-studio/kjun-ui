@@ -4,7 +4,8 @@ import { navigationBadge, navigationLabel, type NavigationBadge } from "../../..
 import { bottomNavigationLayout, navigationIconFilled, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
 export type { NavigationIconStyle };
 import { tokens } from "@kjun-ui/tokens";
-import type { MouseEvent, ReactNode } from "react";
+import { useLayoutEffect, useState, type MouseEvent, type ReactNode } from "react";
+import { trackBottomBar } from "../../../shared/package-runtime/bottom-bar";
 import { KjunIcon } from "./button";
 import { TopNavigationContext } from "./top-navigation-context";
 export interface KjunTopNavigationProps { title: string; description?: string; leading?: ReactNode; actions?: ReactNode;
@@ -45,6 +46,12 @@ function Destination({ item, selected, onNavigate, onReselect, children }: { ite
     {children}
   </a>;
 }
+/** A docked bottom bar reports its height to the provider scope, so KjunFab sits above it. */
+function useBottomBar() {
+  const [bar, setBar] = useState<HTMLElement | null>(null);
+  useLayoutEffect(() => trackBottomBar(bar), [bar]);
+  return setBar;
+}
 export interface KjunBottomNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string;
   /** Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it. */
   safeArea?: boolean;
@@ -60,9 +67,9 @@ export interface KjunBottomNavigationProps { items: NavigationDestination[]; val
 export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible = false, hideOnKeyboard = true, onNavigate, onReselect, surface = true, iconStyle = "auto", showLabels = true }: KjunBottomNavigationProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.mainNavigation;
-  const layout = bottomNavigationLayout(items, showLabels);
+  const layout = bottomNavigationLayout(items, showLabels), bar = useBottomBar();
   if (keyboardVisible && hideOnKeyboard) return null;
-  return <nav className="kjun-bottom-navigation" data-icons={layout.hasIcons || undefined} data-icon-style={iconStyle} data-labels={layout.iconOnly ? "false" : undefined} data-surface={surface ? undefined : "false"} aria-label={ariaLabel} style={{ paddingBottom: webSafeBottom(safeArea) }}>
+  return <nav ref={bar} className="kjun-bottom-navigation" data-icons={layout.hasIcons || undefined} data-icon-style={iconStyle} data-labels={layout.iconOnly ? "false" : undefined} data-surface={surface ? undefined : "false"} aria-label={ariaLabel} style={{ paddingBottom: webSafeBottom(safeArea) }}>
     {items.map(item => {
       const selected = value === item.key, parts = layout.parts(item);
       const badge = <NavigationBadgeMark badge={item.badge} />;
@@ -104,6 +111,7 @@ export interface KjunBottomActionBarProps { description?: string; children: Reac
   /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
   surface?: boolean }
 export function KjunBottomActionBar({ description, children, safeArea = true, keyboardVisible = false, hideOnKeyboard = false, surface = true }: KjunBottomActionBarProps) {
+  const bar = useBottomBar();
   if (keyboardVisible && hideOnKeyboard) return null;
-  return <div className="kjun-bottom-action-bar" data-surface={surface ? undefined : "false"} style={{ paddingBottom: `calc(${tokens.extensions.navigation.padding}px + ${webSafeBottom(safeArea)})` }}><div className="kjun-bottom-action-content">{description && <p>{description}</p>}<div className="kjun-navigation-actions">{children}</div></div></div>;
+  return <div ref={bar} className="kjun-bottom-action-bar" data-surface={surface ? undefined : "false"} style={{ paddingBottom: `calc(${tokens.extensions.navigation.padding}px + ${webSafeBottom(safeArea)})` }}><div className="kjun-bottom-action-content">{description && <p>{description}</p>}<div className="kjun-navigation-actions">{children}</div></div></div>;
 }

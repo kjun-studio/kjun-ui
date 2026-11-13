@@ -11,7 +11,7 @@ import { ScrollView, View, Platform, type ColorValue, type TextStyle, type Gestu
 import { AccessiblePressable as Pressable } from "./a11y";
 import { IconBase, KjunIcon } from "./button";
 import { KText, content } from "./internal";
-import { useKjunSafeArea, useKjunStyles } from "./provider";
+import { useKjunBottomBar, useKjunSafeArea, useKjunStyles } from "./provider";
 import { TopNavigationContext } from "./top-navigation-context";
 import { BottomActionBarContext } from "./bottom-action-bar-context";
 export interface KjunTopNavigationProps { title: string; description?: string; leading?: ReactNode; actions?: ReactNode;
@@ -103,9 +103,10 @@ export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true,
   const { colors } = useKjunStyles(), insets = useKjunSafeArea();
   const geometry = tokens.extensions.bottomNavigation;
   const layout = bottomNavigationLayout(items, showLabels);
+  const reportHeight = useKjunBottomBar(!(keyboardVisible && hideOnKeyboard));
   if (keyboardVisible && hideOnKeyboard) return null;
   // Like Web: a square bar with a soft shadow thrown upwards, apart from the content above it.
-  return <View role="navigation" accessibilityLabel={ariaLabel} style={{ flexShrink: 0, flexDirection: "row", justifyContent: "center", backgroundColor: surface ? colors.surface : "transparent", paddingBottom: (safeArea ? insets.bottom : 0),
+  return <View role="navigation" accessibilityLabel={ariaLabel} onLayout={reportHeight} style={{ flexShrink: 0, flexDirection: "row", justifyContent: "center", backgroundColor: surface ? colors.surface : "transparent", paddingBottom: (safeArea ? insets.bottom : 0),
     ...(surface ? { boxShadow: shadowLayers(geometry.elevation, colors) } : {}) }}>
     {items.map(item => <BottomDestination key={item.key} item={item} selected={item.key === value} parts={layout.parts(item)} iconOnly={layout.iconOnly} hasIcons={layout.hasIcons}
       iconStyle={iconStyle} surface={surface} onNavigate={onNavigate} onReselect={onReselect} />)}
@@ -211,9 +212,10 @@ export function KjunBottomActionBar({ description, children, safeArea = true, ke
   const geometry = tokens.extensions.navigation;
   const wide = width >= tokens.responsive.bottomAction + geometry.padding * 2;
   const wrapping = Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } as TextStyle : {};
+  const reportHeight = useKjunBottomBar(!(keyboardVisible && hideOnKeyboard));
   if (keyboardVisible && hideOnKeyboard) return null;
   return <BottomActionBarContext.Provider value={!wide}>
-    <View onLayout={event => setWidth(event.nativeEvent.layout.width)} style={{
+    <View onLayout={event => { setWidth(event.nativeEvent.layout.width); reportHeight(event); }} style={{
       flexShrink: 0, minWidth: 0, maxWidth: "100%", backgroundColor: surface ? colors.surface : "transparent",
       padding: geometry.padding, paddingBottom: geometry.padding + (safeArea ? insets.bottom : 0),
       gap: geometry.actionGap, flexDirection: wide ? "row" : "column", alignItems: wide ? "center" : "stretch",

@@ -80,6 +80,18 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
         <K.KjunFab icon="plus" ariaLabel="Add schedule" {...(native ? { onPress: () => {} } : { onClick: () => {} })} />
       </K.KjunProvider>
     </div>
+    {/* The transform makes the fixed web FAB position against this frame; the bar reports its height to the provider. */}
+    <div data-testid="fab-bar" style={{ position: 'relative', transform: 'translateZ(0)', height: 240, width: 300 }}>
+      <K.KjunProvider {...providerProps} {...(native ? { style: { height: 240, justifyContent: 'flex-end' } } : {})}>
+        <K.KjunFab icon="plus" label="Add note" size="sm" {...(native ? { onPress: () => {} } : { onClick: () => {} })} />
+        <K.KjunBottomNavigation items={[{ key: 'home', label: 'Home', icon: 'home' }, { key: 'more', label: 'More', icon: 'dots' }]} value="home" />
+      </K.KjunProvider>
+    </div>
+    <div data-testid="fab-states" style={{ position: 'relative', transform: 'translateZ(0)', height: 120, width: 300 }}>
+      <K.KjunProvider {...providerProps} {...(native ? { style: { height: 120 } } : {})}>
+        <K.KjunFab icon="plus" ariaLabel="Saving" loading avoidBottomBar={false} offsetBottom={-4} {...(native ? { onPress: () => {} } : { onClick: () => {} })} />
+      </K.KjunProvider>
+    </div>
     {native && <div data-testid="font-weights"><K.KjunProvider {...providerProps} fontFamily={{ 400: 'Face-Regular', 500: 'Face-Medium', 700: 'Face-Bold' }}>
       <K.KjunText>Body text</K.KjunText>
       <K.KjunText variant="label">Label text</K.KjunText>

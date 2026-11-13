@@ -342,7 +342,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
       });
     case "KjunFab":
       // A sized frame keeps the FAB, which is fixed (web) or absolute (Native), inside the example.
-      return h("Box", { width: 280, height: 160 }, h(name, { icon: "plus", ariaLabel: "일정 추가", disabled, ...action(() => set("count", get("count", 0) + 1)) }));
+      return h("Box", { width: 280, height: 160 }, h(name, { icon: "plus", ariaLabel: settings.label ? undefined : "일정 추가", label: settings.label || undefined, size: settings.size, loading, disabled, ...action(() => set("count", get("count", 0) + 1)) }));
     case "KjunIconToggle": {
       const kind = settings.usage === "즐겨찾기" ? "favorite" : settings.usage === "관심" ? "interest" : null;
       const label = kind === "favorite" ? "즐겨찾기" : "관심";

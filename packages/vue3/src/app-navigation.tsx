@@ -4,7 +4,8 @@ import { navigationBadge, navigationLabel, type NavigationBadge } from "../../..
 import { bottomNavigationLayout, navigationIconFilled, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
 export type { NavigationIconStyle };
 import type { KjunMessages } from "../../../shared/package-runtime/messages";
-import { provide, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { provide, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { trackBottomBar } from "../../../shared/package-runtime/bottom-bar";
 import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
@@ -83,17 +84,23 @@ function destination(item: NavigationDestination, selected: boolean, m: KjunMess
   };
 }
 /** Event: navigate(key, event); prevent the event to route in the app. */
+/** A docked bottom bar reports its height to the provider scope, so KjunFab sits above it. */
+function useBottomBar() {
+  const bar = shallowRef<HTMLElement | null>(null);
+  watch(bar, (element, _previous, onCleanup) => onCleanup(trackBottomBar(element)), { flush: "post" });
+  return bar;
+}
 export const KjunBottomNavigation = defineComponent({
   name: "KjunBottomNavigation",
   props: kjunBottomNavigationProps,
   emits: { navigate: (_key: string, _event: MouseEvent) => true, reselect: (_key: string, _event: MouseEvent) => true },
   setup(props, { emit }) {
-    const m = useKjunMessages();
+    const m = useKjunMessages(), bar = useBottomBar();
     return () => {
       const layout = bottomNavigationLayout(props.items, props.showLabels);
       if (props.keyboardVisible && props.hideOnKeyboard) return null;
       return (
-        <nav class="kjun-bottom-navigation" data-icons={layout.hasIcons || undefined} data-icon-style={props.iconStyle} data-labels={layout.iconOnly ? "false" : undefined} data-surface={props.surface ? undefined : "false"} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ paddingBottom: webSafeBottom(props.safeArea) }}>
+        <nav ref={bar} class="kjun-bottom-navigation" data-icons={layout.hasIcons || undefined} data-icon-style={props.iconStyle} data-labels={layout.iconOnly ? "false" : undefined} data-surface={props.surface ? undefined : "false"} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ paddingBottom: webSafeBottom(props.safeArea) }}>
           {props.items.map(item => {
             const selected = props.value === item.key, parts = layout.parts(item);
             const badge = badgeMark(item.badge);
@@ -165,8 +172,9 @@ export const KjunBottomActionBar = defineComponent({
   props: kjunBottomActionBarProps,
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
+    const bar = useBottomBar();
     return () => props.keyboardVisible && props.hideOnKeyboard ? null : (
-      <div class="kjun-bottom-action-bar" data-surface={props.surface ? undefined : "false"} style={{ paddingBottom: `calc(${tokens.extensions.navigation.padding}px + ${webSafeBottom(props.safeArea)})` }}>
+      <div ref={bar} class="kjun-bottom-action-bar" data-surface={props.surface ? undefined : "false"} style={{ paddingBottom: `calc(${tokens.extensions.navigation.padding}px + ${webSafeBottom(props.safeArea)})` }}>
         <div class="kjun-bottom-action-content">{props.description && <p>{props.description}</p>}<div class="kjun-navigation-actions">{slots.default?.()}</div></div>
       </div>
     );

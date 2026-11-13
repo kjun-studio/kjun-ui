@@ -482,24 +482,40 @@
   "KjunFab": {
     "vue3": [
       "icon",
+      "label",
       "ariaLabel",
+      "size",
+      "loading",
       "disabled",
       "safeArea",
+      "avoidBottomBar",
       "offsetBottom"
     ],
     "react": [
       "icon",
+      "label",
       "ariaLabel",
+      "size",
+      "loading",
       "disabled",
       "safeArea",
+      "avoidBottomBar",
       "offsetBottom",
-      "onClick"
+      "onClick",
+      "className",
+      "id",
+      "style",
+      "onKeyDown"
     ],
     "native": [
       "icon",
+      "label",
       "ariaLabel",
+      "size",
+      "loading",
       "disabled",
       "safeArea",
+      "avoidBottomBar",
       "offsetBottom",
       "onPress"
     ]

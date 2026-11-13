@@ -173,6 +173,29 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(Math.round(frame.y + frame.height - (box.y + box.height))).toBe(16 + 20);
     });
 
+    test('a small labelled fab is a 48 capsule that clears the docked bottom navigation', async ({ page }) => {
+      const frame = (await section(page, 'fab-bar').boundingBox())!;
+      const fab = section(page, 'fab-bar').getByRole('button', { name: 'Add note' });
+      const bar = (await section(page, 'fab-bar').getByRole('navigation').boundingBox())!;
+      const gap = async () => { const box = (await fab.boundingBox())!; return Math.round(frame.y + frame.height - (box.y + box.height)); };
+      await expect.poll(gap).toBe(16 + Math.round(bar.height));
+      const box = (await fab.boundingBox())!;
+      expect(Math.round(box.height)).toBe(48);
+      expect(box.width).toBeGreaterThan(48);
+      expect(Math.round(frame.x + frame.width - (box.x + box.width))).toBe(16);
+      await expect(fab.getByText('Add note')).toBeVisible();
+    });
+
+    test('a loading fab is busy, keeps its colour and ignores a non-positive offset', async ({ page }) => {
+      const frame = (await section(page, 'fab-states').boundingBox())!;
+      const fab = section(page, 'fab-states').getByRole('button', { name: 'Saving' });
+      await expect(fab).toHaveAttribute('aria-busy', 'true');
+      await expect(fab).toHaveCSS('background-color', 'rgb(0, 0, 0)');
+      const box = (await fab.boundingBox())!;
+      expect(Math.round(box.width)).toBe(56);
+      expect(Math.round(frame.y + frame.height - (box.y + box.height))).toBe(16);
+    });
+
     if (platform === 'native') test('native font weights pick the matching face from a weight map', async ({ page }) => {
       const block = section(page, 'font-weights');
       const family = (text: string) => block.getByText(text, { exact: true }).evaluate(el => getComputedStyle(el).fontFamily);

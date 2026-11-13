@@ -133,7 +133,7 @@ export function IconBase({
     </Animated.View>
   );
 }
-function useMinimumLoading(loading: boolean) {
+export function useMinimumLoading(loading: boolean) {
   const [active, setActive] = useState(loading);
   const began = useRef(loading ? Date.now() : 0);
   useEffect(() => {

@@ -56,7 +56,8 @@
       "packages/tokens/src/forms.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx",
-      "packages/native/src/choice-controls.tsx"
+      "packages/native/src/choice-controls.tsx",
+      "packages/native/src/fab.tsx"
     ]
   },
   {
@@ -130,6 +131,7 @@
       "packages/native/src/data-state.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/drawer.tsx",
+      "packages/native/src/fab.tsx",
       "packages/native/src/floating-panel.tsx",
       "packages/native/src/kpi-hero.tsx",
       "packages/native/src/kpi-row.tsx",
@@ -181,7 +183,6 @@
       "packages/native/src/media.tsx",
       "packages/native/src/navigation.tsx",
       "packages/native/src/selection-groups.tsx",
-      "packages/native/src/skeleton-base.tsx",
       "packages/native/src/table-cards.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-list.tsx",
@@ -497,7 +498,6 @@
       "packages/native/src/progress.tsx",
       "packages/native/src/range-input.tsx",
       "packages/native/src/select-control.tsx",
-      "packages/native/src/skeletons.tsx",
       "packages/native/src/split-pane.tsx",
       "packages/native/src/stacked-bar.tsx",
       "packages/native/src/table-cards.tsx",
@@ -618,7 +618,6 @@
       "packages/native/src/progress.tsx",
       "packages/native/src/range-input.tsx",
       "packages/native/src/select-control.tsx",
-      "packages/native/src/skeleton-base.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/split-pane.tsx",
       "packages/native/src/stacked-bar.tsx",
@@ -1214,8 +1213,7 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/data-state.css",
-      "packages/native/src/skeleton-base.tsx",
-      "packages/native/src/skeletons.tsx"
+      "packages/native/src/skeleton-clock.ts"
     ]
   },
   {
@@ -1228,7 +1226,8 @@
       "--skeleton-shine"
     ],
     "implementationFiles": [
-      "packages/native/src/skeleton-base.tsx"
+      "packages/tokens/src/data-state.css",
+      "packages/native/src/skeleton-clock.ts"
     ]
   },
   {
@@ -1244,6 +1243,7 @@
       "packages/tokens/src/calendar.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
+      "packages/tokens/src/display.css",
       "packages/tokens/src/list.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/table-narrow.css",
@@ -1252,6 +1252,7 @@
       "packages/native/src/floating-panel.tsx",
       "packages/native/src/list.tsx",
       "packages/native/src/navigation.tsx",
+      "packages/native/src/skeleton-base.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/table-cards.tsx",
       "packages/native/src/table-grid.tsx"

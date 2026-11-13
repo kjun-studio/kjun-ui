@@ -93,9 +93,14 @@ export const actions: Record<string, GuideAuthor> = {
     related: "toolbar",
   },
   KjunFab: {
-    parts: [c("떠 있는 버튼", "화면의 주요 행동 하나를 실행합니다. 아이콘만 있으므로 접근성 이름으로 행동을 알립니다.")],
+    parts: [c("떠 있는 버튼", "화면의 주요 행동 하나를 실행합니다. 아이콘만 있으면 접근성 이름으로, 확장형은 보이는 글자로 행동을 알립니다.")],
     states: [
-      { id: "default", label: "기본", description: "오른쪽 아래 16 위치에 브랜드 색 원형으로 떠 있습니다.", settings: {} },
+      { id: "default", label: "기본", description: "끝 쪽 아래 16 위치에 브랜드 색 56 원형으로 떠 있습니다.", settings: {} },
+      { id: "fab-small", label: "작은 크기", description: "48 원형에 20 아이콘입니다. 목록이 촘촘한 화면에서 가리는 면적을 줄입니다.", settings: { size: "sm" } },
+      { id: "fab-label", label: "확장형", description: "label을 넘기면 같은 높이의 캡슐이 됩니다. 아이콘만으로 뜻이 통하지 않는 행동에 씁니다.", settings: { label: "일정 추가" } },
+      { id: "fab-small-label", label: "작은 확장형", description: "48 높이의 캡슐입니다. 여백과 글자 크기만 한 단계 줄어듭니다.", settings: { size: "sm", label: "일정 추가" } },
+      { id: "fab-loading", label: "로딩", description: "아이콘 자리에 스피너가 돌고 누름을 막습니다. 색은 흐려지지 않습니다.", settings: { loading: true } },
+      { id: "fab-disabled", label: "비활성", description: "불투명한 채로 흐려져 아래 콘텐츠가 비치지 않습니다.", settings: { disabled: true } },
     ],
     related: "toolbar",
   },

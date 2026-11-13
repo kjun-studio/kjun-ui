@@ -12,11 +12,13 @@ type KjunColors,
 type ResolvedKjunColors,
 type KjunDomainColors,
 } from "@kjun-ui/tokens";
-import { createContext,useContext,useMemo,useState,type ReactNode } from "react";
+import { createContext,useContext,useEffect,useMemo,useRef,useState,useSyncExternalStore,type ReactNode } from "react";
+import { createBottomBarStore, type BottomBarStore } from "../../../shared/package-runtime/bottom-bar";
 import { stableValue } from "../../../shared/package-runtime/stable-value";
 import {
 View,
 type ColorValue,
+type LayoutChangeEvent,
 type StyleProp,
 type ViewStyle,
 } from "react-native";
@@ -31,6 +33,8 @@ interface KjunStyles {
   safeArea?: ResolvedSafeArea;
 }
 const StylesContext = createContext<KjunStyles | null>(null);
+// One store per outermost provider: docked bottom bars report their height, floating edge components read the total.
+const BottomBarContext = createContext<BottomBarStore | null>(null);
 export function useKjunStyles(): KjunStyles {
   const value = useContext(StylesContext);
   if (!value)
@@ -68,7 +72,8 @@ export function KjunProvider({
   children,
   style,
 }: KjunProviderProps) {
-  const parent = useContext(StylesContext);
+  const parent = useContext(StylesContext), parentBars = useContext(BottomBarContext);
+  const [ownBars] = useState(createBottomBarStore);
   if (!colors && !parent) throw new Error("KJUN Native requires KjunProvider with project-owned colors.");
   // Inline objects with the same contents keep the previous ones, so a re-rendering app root does not hand every
   // KJUN component a new context value.
@@ -91,15 +96,29 @@ export function KjunProvider({
   // Nested providers that only change a value (safeArea, messages) add no box of their own unless given a style.
   const content = parent && style == null ? children : <View style={style}>{children}</View>;
   return (
-    <StylesContext.Provider value={value}>
+    <StylesContext.Provider value={value}><BottomBarContext.Provider value={parentBars ?? ownBars}>
       <KjunMessagesProvider locale={locale} messages={messages}><IconProvider icons={icons}><LayerProvider escapeKeyUpFallback>{content}</LayerProvider></IconProvider></KjunMessagesProvider>
-    </StylesContext.Provider>
+    </BottomBarContext.Provider></StylesContext.Provider>
   );
 }
 
 /** The app's screen insets from KjunProvider (0 when none were given). */
 export function useKjunSafeArea(): ResolvedSafeArea {
   return useContext(StylesContext)?.safeArea ?? { top: 0, bottom: 0 };
+}
+
+/** Internal: a docked bottom bar reports its height through the returned onLayout; a hidden bar reports nothing. */
+export function useKjunBottomBar(visible = true) {
+  const store = useContext(BottomBarContext), key = useRef({}).current;
+  useEffect(() => { if (!visible) store?.remove(key); }, [store, key, visible]);
+  useEffect(() => () => store?.remove(key), [store, key]);
+  return (event: LayoutChangeEvent) => store?.set(key, event.nativeEvent.layout.height);
+}
+const noBars = { subscribe: () => () => {}, total: () => 0 };
+/** Internal: the height of the docked bottom bars mounted under the outermost KjunProvider. */
+export function useKjunBottomBarHeight(): number {
+  const store = useContext(BottomBarContext) ?? noBars;
+  return useSyncExternalStore(store.subscribe, store.total, store.total);
 }
 
 export function useKjunDomainColors() {

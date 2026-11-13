@@ -397,11 +397,15 @@ for (const platform of ["vue3", "react"]) set("Textarea", {
 }, platform);
 set("Textarea", { submitting: { default: "false", summary: "보내는 중입니다. 보내기 버튼이 돌고, 끝날 때까지 다시 보내지 않습니다. 웹은 필드에 aria-busy를 둡니다." } });
 set("Fab", {
-  icon: { summary:"가운데 아이콘 이름입니다. 크기는 24(extensions.fab.iconSize)로 고정됩니다." },
-  ariaLabel: { summary:"글자가 없으므로 반드시 넘기는 버튼 이름입니다." },
-  disabled: { default:"false", summary:"누를 수 없게 하고 흐리게 표시합니다." },
-  safeArea: { default:"true", summary:"KjunProvider의 하단 안전 영역을 반영합니다. 버튼은 16 + 하단 안전 영역 + offsetBottom만큼 아래에서 떨어집니다." },
-  offsetBottom: { default:"0", summary:"추가로 띄울 거리입니다. 하단 탭바가 있으면 그 높이를 넘깁니다." },
+  icon: { summary:"아이콘 이름입니다. 크기는 md 24, sm 20으로 고정됩니다." },
+  label: { summary:"아이콘 옆에 보이는 글자입니다. 넘기면 같은 높이의 캡슐(확장형)이 되고, 화면 너비를 넘으면 말줄임합니다." },
+  ariaLabel: { summary:"버튼 이름입니다. label이 없으면 반드시 넘기고, label이 있으면 생략할 수 있습니다." },
+  size: { type:'"sm" | "md"', default:'"md"', summary:"md는 56, sm은 48입니다. 두 크기 모두 label·loading과 모든 상태를 씁니다." },
+  loading: { default:"false", summary:"아이콘을 스피너로 바꾸고 누름을 막습니다. 색은 흐려지지 않고, 최소 표시 시간 동안 유지합니다." },
+  disabled: { default:"false", summary:"누를 수 없게 합니다. 아래 콘텐츠가 비치지 않도록 불투명한 채로 흐려집니다." },
+  safeArea: { default:"true", summary:"KjunProvider의 하단 안전 영역을 반영합니다." },
+  avoidBottomBar: { default:"true", summary:"화면의 KjunBottomNavigation·KjunBottomActionBar 높이만큼 자동으로 위에 놓입니다. 바가 FAB 아래에 있지 않은 배치(Native에서 FAB의 부모가 탭바 위에서 끝나는 경우 등)에서는 false로 끕니다." },
+  offsetBottom: { default:"0", summary:"추가로 띄울 거리(px)입니다. KJUN 하단 바 높이는 자동으로 반영되므로 직접 만든 바가 있을 때만 넘깁니다." },
 });
 set("Fab", { onClick: { summary:"버튼을 누를 때 호출합니다. Vue는 click 이벤트입니다." } }, "react");
 set("Fab", { onPress: { summary:"버튼을 누를 때 호출합니다." } }, "native");

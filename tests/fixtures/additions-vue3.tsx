@@ -50,6 +50,15 @@ createApp(() => <div style={{ display: 'flex', flexDirection: 'column', gap: '16
   <div data-testid="fab-area" style={{ position: 'relative', height: '200px', width: '300px' }}>
     <K.KjunProvider safeArea={{ bottom: 20 }}><K.KjunFab icon="plus" ariaLabel="Add schedule" /></K.KjunProvider>
   </div>
+  <div data-testid="fab-bar" style={{ position: 'relative', transform: 'translateZ(0)', height: '240px', width: '300px' }}>
+    <K.KjunProvider>
+      <K.KjunFab icon="plus" label="Add note" size="sm" />
+      <K.KjunBottomNavigation items={[{ key: 'home', label: 'Home', icon: 'home' }, { key: 'more', label: 'More', icon: 'dots' }]} value="home" />
+    </K.KjunProvider>
+  </div>
+  <div data-testid="fab-states" style={{ position: 'relative', transform: 'translateZ(0)', height: '120px', width: '300px' }}>
+    <K.KjunProvider><K.KjunFab icon="plus" ariaLabel="Saving" loading avoidBottomBar={false} offsetBottom={-4} /></K.KjunProvider>
+  </div>
   <div data-testid="optional-ko"><K.KjunProvider><K.KjunFormGroup label="Nickname" optional><K.KjunInput modelValue="" /></K.KjunFormGroup></K.KjunProvider></div>
   <div data-testid="optional-en"><K.KjunProvider locale="en-US"><K.KjunFormGroup label="Nickname" optional><K.KjunInput modelValue="" /></K.KjunFormGroup></K.KjunProvider></div>
 </div>).mount('#root');

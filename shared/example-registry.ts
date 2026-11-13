@@ -38,6 +38,7 @@ const size = choice("size", "크기", ["sm", "md", "lg"], "md");
 const controls: Record<string, ExampleControl[]> = {};
 const assign = (names: string, list: ExampleControl[]) => names.split(" ").forEach(name => { controls["Kjun" + name] = [...list]; });
 assign("Checkbox Switch Radio RadioGroup Combobox ButtonGroup FilterGroup CopyButton RefreshButton", [disabled]);
+assign("Fab", [choice("size", "크기", ["sm", "md"], "md"), field("label", "라벨", ""), loading, disabled]);
 assign("IconToggle MenuButton RefreshButton", [disabled, loading]);
 assign("IconToggle", [choice("usage", "사용 예제", ["기본", "즐겨찾기", "관심"]), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), disabled, loading]);
 assign("RefreshButton", [choice("mode", "표현", ["icon", "text"], "icon"), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "sm"), disabled, loading]);
