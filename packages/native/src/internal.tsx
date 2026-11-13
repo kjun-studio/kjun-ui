@@ -71,3 +71,7 @@ export function domainColor(
   if (domain?.[key] == null) throw Error("Missing KJUN domain color: " + key);
   return domain[key];
 }
+
+/** For a drawing whose root carries one spoken sentence: its drawn parts stay out of a screen reader's way. */
+export const hiddenParts = { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants" as const,
+  ...(Platform.OS === "web" ? { "aria-hidden": true } : {}) };

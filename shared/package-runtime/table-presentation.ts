@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { getValue } from "./table-model";
 import type { TableColumn, TableCardSection, TableProps, TableSort, useTableModel } from "./table";
 import { formatSummary, summarizeColumn, type TableRowGroup } from "./table-groups";
-import { tableCoveredKeys, tableSpans } from "./table-columns";
+import { tableSpans } from "./table-columns";
 
 export function tablePresentation<Row extends object>(props: TableProps<Row, unknown>, mobile: boolean) {
   const { columns, responsive = null, mobileColumns = [], cardTitle, cardSubtitle, cardSections = [], cardLayout = "stacked", cardHighlight } = props;
@@ -33,6 +33,13 @@ export function tablePresentation<Row extends object>(props: TableProps<Row, unk
   const sections: TableCardSection[] = authored.length
     ? [...authored, { key: "remaining", columns: bodyColumns.filter(column => !used.has(column.key)).map(column => column.key) }]
     : [{ columns: bodyColumns.map(column => column.key) }];
+  // One row's spans, asked of the app once however many fields read them.
+  const rowSpans = new WeakMap<object, number[]>();
+  const spansFor = (row: Row) => {
+    let spans = rowSpans.get(row);
+    if (!spans) rowSpans.set(row, spans = tableSpans(visible, column => props.cellSpan!(row, column)));
+    return spans;
+  };
   const listValue = columns.find(column => column.key !== titleKey && !column.badge && column.key !== "actions" && (column.align === "right" || column.type === "number"));
   const listMeta = listSubtitle ?? columns.find(column => column.key !== titleKey && !column.badge && column.key !== "actions" && column !== listValue && !column.hideInCard);
   return {
@@ -45,21 +52,19 @@ export function tablePresentation<Row extends object>(props: TableProps<Row, unk
     cardFooter: !tiles && (!!props.expandable || !!(actions && !actions.inlineInCard)),
     /** A reorderable card's move buttons end the title line unless a footer row already exists; then they join it. */
     headerMover: !tiles && !!props.reorderable && !props.expandable && !(actions && !actions.inlineInCard),
-    /**
-     * How a field reads in a card. A cell that spans other columns in this row is a note about them, not the first
-     * column's value: it takes the whole line under its section's name (a column group's label), or no name without one.
-     */
-    cardField(row: Row, section: TableCardSection, column: (typeof bodyColumns)[number]) {
-      const merged = !!props.cellSpan && tableSpans(bodyColumns, other => props.cellSpan!(row, other))[bodyColumns.indexOf(column)] > 1;
-      return { label: merged ? section.label ?? "" : column.label, full: merged || !!column.fullWidthInCard };
-    },
     /** A section's field arrangement: rows cards put every field on a label-value line. */
     cardBody(section: TableCardSection) { return cardLayout === "rows" ? "rows" : section.layout || "grid"; },
-    columnsForSection(row: Row, section: TableCardSection) {
-      // A field another cell spans over in this row is not drawn on its own.
-      const covered = props.cellSpan ? tableCoveredKeys(bodyColumns, column => props.cellSpan!(row, column)) : null;
-      return bodyColumns.filter(column => section.columns.includes(column.key) && !covered?.has(column.key)
-        && !(column.hideEmptyInCard && [null, undefined, ""].includes(getValue(row, column.key) as null | undefined | string)));
+    /**
+     * A section's fields for one row, in order. Spans are the grid's own (worked out once per row over the columns as
+     * shown), so a card leaves out exactly the fields the grid covers. A cell that spans other columns is a note about
+     * them, not the first column's value: it takes the whole line under its section's name (a column group's label),
+     * or no name without one.
+     */
+    cardFields(row: Row, section: TableCardSection) {
+      const spans = props.cellSpan ? spansFor(row) : null, span = (column: (typeof columns)[number]) => spans ? spans[visible.indexOf(column)] ?? 1 : 1;
+      return bodyColumns.filter(column => section.columns.includes(column.key) && span(column) !== 0
+        && !(column.hideEmptyInCard && [null, undefined, ""].includes(getValue(row, column.key) as null | undefined | string)))
+        .map(column => ({ column, label: span(column) > 1 ? section.label ?? "" : column.label, full: span(column) > 1 || !!column.fullWidthInCard }));
     },
   };
 }
@@ -67,7 +72,7 @@ export function tablePresentation<Row extends object>(props: TableProps<Row, unk
 const warnedTiles = new Set<string>();
 // Tiles drop the expand toggle and row actions; say so once instead of losing them silently.
 function warnTiles<Row extends object>(props: TableProps<Row, unknown>) {
-  const dropped = [props.expandable && "expandable", props.columns.some(column => column.key === "actions") && "actions",
+  const dropped = [props.expandable && "expandable", props.reorderable && "reorderable", props.columns.some(column => column.key === "actions") && "actions",
     props.columns.some(column => column.inlineInCard) && "inlineInCard"].filter(Boolean).join(", ");
   if (!dropped || warnedTiles.has(dropped)) return;
   warnedTiles.add(dropped);

@@ -60,9 +60,8 @@ export interface TableLayout {
   footerActions?: TableColumn<any>;
   cardFooter: boolean;
   headerMover: boolean;
-  cardField: (row: object, section: TableCardSection, column: TableColumn<any>) => { label: string; full: boolean };
   cardBody: (section: TableCardSection) => string;
-  columnsForSection: (row: object, section: TableCardSection) => TableColumn<any>[];
+  cardFields: (row: object, section: TableCardSection) => { column: TableColumn<any>; label: string; full: boolean }[];
 }
 export interface TableRenderState {
   rows: Row[];
@@ -124,7 +123,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
           // Like React: the app's class and style join KJUN's rather than replacing them.
           const { key: _key, class: appClass, style: appStyle, ...attributes } = (col.cellProps?.(row as never, i) ?? {}) as Record<string, any>;
           return (
-          <td {...attributes} key={col.key} colspan={spans[index] > 1 ? spans[index] : undefined} style={[appStyle, { textAlign: spans[index] > 1 ? "center" : col.align }]} data-numeric={col.type === "number" || col.align === "right" || undefined} data-date={col.type === "date" || col.type === "datetime" || undefined}
+          <td {...attributes} key={col.key} colspan={spans[index] > 1 ? spans[index] : undefined} style={[{ textAlign: spans[index] > 1 ? "center" : col.align }, appStyle]} data-numeric={col.type === "number" || col.align === "right" || undefined} data-date={col.type === "date" || col.type === "datetime" || undefined}
             class={[(col.secondary ? "kjun-table-secondary " : "") + (spans[index] > 1 ? "kjun-table-merged " : "") + (col.className || ""), appClass]}>
             {c.cell(col, row, i)}
           </td>

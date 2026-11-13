@@ -4,7 +4,7 @@ import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { Children, Fragment, cloneElement, createContext, isValidElement, useContext, useEffect, useId, useLayoutEffect, useMemo, useState, type ReactElement, type ReactNode } from "react";
 import { listRowChoice, listRowEnd, listRowKind, listRowMetrics, listSectionShape, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { ListShapeContext } from "./list-context";
-import { ListReorderContext, ListReorderControls, useListReorder, type KjunListReorderMove } from "./list-reorder";
+import { ReorderContext, ReorderControls, useReorder, type KjunListReorderMove } from "./reorder-controls";
 import { reorderPlace } from "../../../shared/package-runtime/reorder";
 import { SwitchSpinner } from "./choice-controls";
 import { View, Platform, type ColorValue, type GestureResponderEvent, type TextStyle } from "react-native";
@@ -23,7 +23,7 @@ import { useKjunStyles } from "./provider";
 const ListRowContext = createContext<{ divider: boolean; selection: ListSelection; ringRadius?: FocusRingRadius; column?: number }>({ divider: true, selection: { mode: "none" } });
 export type { ListChoiceValue, ListGroupVariant, ListSectionVariant } from "../../../shared/package-runtime/list-row";
 export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
-export type { KjunListReorderMove } from "./list-reorder";
+export type { KjunListReorderMove } from "./reorder-controls";
 const list = tokens.extensions.list;
 // Like Web's ::after divider: it starts where the text does, past the leading column when there is one.
 function Divider({ inset }: { inset: number }) {
@@ -92,7 +92,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   const { colors } = useKjunStyles(), { divider, selection, ringRadius, column: sharedColumn = 0 } = useContext(ListRowContext), { open, compact } = useContext(ListShapeContext);
   const choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   // In a reorderable section a row its order lists draws move buttons after its own actions.
-  const reorder = useContext(ListReorderContext), movable = !!reorder && !!reorderPlace(reorder.order, value);
+  const reorder = useContext(ReorderContext), movable = !!reorder && !!reorderPlace(reorder.order, value);
   const onPress = choice.press ? (event: GestureResponderEvent) => { choice.press(); ownPress?.(event); } : ownPress;
   const kind = listRowKind({ checked, selected, href, pressable: !!(onPress || href), mode: selection.mode }), toggle = kind === "switch";
   const choiceRow = kind === "radio" || kind === "checkbox", endMark = listRowEnd({ kind, selected, mode: selection.mode, open, busy });
@@ -166,7 +166,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
     {/* A disabled row disables its actions too, so the row never reads as partly available. */}
     {(hasContent(actions) || movable) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: "45%", flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: m.actionsPadding,
       // Like Web: with a description, actions center on the title and first description line instead of a long row's middle.
-      ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}{movable && <ListReorderControls value={value!} name={title} />}</View>}
+      ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}{movable && <ReorderControls value={value!} name={title} />}</View>}
     {divider && <Divider inset={paddingX + (front ? column + gap : 0)} />}
   </View>;
 }
@@ -239,7 +239,7 @@ function actionsHeight(actions: ReactNode, line: number) {
 const ListGroupContext = createContext<ListGroupVariant | null>(null);
 export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant, reorderable = false, order, onOrderChange, onReorder, reorderDisabled = false, reorderDisabledText }: KjunListSectionProps) {
   const { colors } = useKjunStyles();
-  const reorder = useListReorder({ reorderable, order, disabled: reorderDisabled, onOrderChange, onReorder });
+  const reorder = useReorder({ reorderable, order, disabled: reorderDisabled, onOrderChange, onReorder });
   // Like Web: a rounded section is a card of rows only; its title, actions and footer stay on the page around it.
   const { open, corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), variant, title, description, titleVariant });
   const divider = dividerProp ?? true;
@@ -279,7 +279,7 @@ export function KjunListSection({ title, description, actions, children, ariaLab
     : items.length
     ? <View ref={setGroup} role={choice ? "radiogroup" : "list"} accessibilityLabel={ariaLabel || title}
         {...(Platform.OS === "web" && describedBy ? { "aria-describedby": describedBy } : {})}>
-      <ListReorderContext.Provider value={reorder.context}>{items.map((row, i) => <ListRowContext.Provider key={row.key ?? i} value={contexts[i]}>{row}</ListRowContext.Provider>)}</ListReorderContext.Provider>
+      <ReorderContext.Provider value={reorder.context}>{items.map((row, i) => <ListRowContext.Provider key={row.key ?? i} value={contexts[i]}>{row}</ListRowContext.Provider>)}</ReorderContext.Provider>
     </View>
     : hasContent(empty) ? <View style={{ minHeight: compact ? list.compactMinimumHeight : list.minimumHeight, justifyContent: "center", paddingHorizontal: list.padding }}><ListEmptyContext.Provider value={density}>{content(empty)}</ListEmptyContext.Provider></View> : null;
   const card = { backgroundColor: surface ? colors.surface : "transparent", ...(radiusValue === undefined ? {} : { borderRadius: radiusValue, overflow: "hidden" as const }) };

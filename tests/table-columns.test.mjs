@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { tableCoveredKeys, tableHeaderRows, tableSpans } from '../shared/package-runtime/table-columns.ts';
+import { tableHeaderRows, tableSpans } from '../shared/package-runtime/table-columns.ts';
 
 const cols = keys => keys.map(key => ({ key }));
 const shape = rows => rows && rows.map(cell => cell.kind === 'group' ? `[${cell.label}:${cell.columns.map(c => c.key).join(',')}]` : cell.column.key);
@@ -38,8 +38,3 @@ test('a cell span covers the next columns and never runs past the row', () => {
   assert.deepEqual(tableSpans([], () => 2), []);
 });
 
-test('covered columns are the ones a span hides', () => {
-  const columns = cols(['name', 'sales', 'profit', 'target']);
-  assert.deepEqual([...tableCoveredKeys(columns, column => column.key === 'sales' ? 2 : undefined)], ['profit']);
-  assert.deepEqual([...tableCoveredKeys(columns, undefined)], []);
-});

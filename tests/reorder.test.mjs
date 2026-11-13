@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { reorderConfirmed, reorderDragStep, reorderDuplicates, reorderFocus, reorderKeyAction, reorderMove, reorderPlace, reorderStep } from '../shared/package-runtime/reorder.ts';
+import { createReorderMoves, reorderPlaceAmong, reorderWarning, reorderConfirmed, reorderDragStep, reorderDuplicates, reorderFocus, reorderKeyAction, reorderMove, reorderPlace, reorderStep } from '../shared/package-runtime/reorder.ts';
 
 const order = ['a', 'b', 'c', 'd'];
 
@@ -101,4 +101,50 @@ test('the handle grabs with Enter or Space, moves with the arrows, drops with En
   // Leaving with Tab drops the row where it is; the key keeps its own meaning.
   assert.equal(reorderKeyAction('Tab', true), 'leave');
   assert.equal(reorderKeyAction('a', true), null);
+});
+
+test('a step past a row that is not on screen is off', () => {
+  // Page 2 of the order shows c and d: c cannot go up to the hidden b, and d is the last row anyway.
+  const shown = new Set(['c', 'd']);
+  assert.deepEqual(reorderPlaceAmong(order, 'c', shown), { index: 2, total: 4, up: false, down: true });
+  assert.deepEqual(reorderPlaceAmong(order, 'd', shown), { index: 3, total: 4, up: true, down: false });
+  assert.deepEqual(reorderPlaceAmong(order, 'c'), reorderPlace(order, 'c'));
+  assert.equal(reorderPlaceAmong(order, 'x', shown), null);
+});
+
+test('order problems are named once for every platform', () => {
+  assert.match(reorderWarning(undefined, 'v-model:order'), /needs `order`.*v-model:order/);
+  assert.match(reorderWarning(['a', 'a'], 'onOrderChange'), /twice/);
+  assert.equal(reorderWarning(order, 'onOrderChange'), null);
+});
+
+test('a move is a request: it is announced only when an order shows it', () => {
+  let current = order.slice(), off = false;
+  const said = [], asked = [];
+  const moves = createReorderMoves({ order: () => current, disabled: () => off, say: text => said.push(text), change: next => asked.push(next),
+    moved: (name, position, total) => `${name} ${position}/${total}` });
+  const result = moves.step('a', 1, 'A');
+  assert.deepEqual(result.order, ['b', 'a', 'c', 'd']);
+  assert.deepEqual(asked, [['b', 'a', 'c', 'd']]);
+  // Drawn again unchanged: nothing is confirmed or said beyond the clearing.
+  assert.equal(moves.confirm(current), null);
+  assert.deepEqual(said, ['']);
+  current = result.order;
+  assert.equal(moves.confirm(current).value, 'a');
+  assert.deepEqual(said, ['', 'A 2/4']);
+  // Confirmed once; a quiet request and an unannounced confirm say nothing; a disabled section asks for nothing.
+  assert.equal(moves.confirm(current), null);
+  moves.expect({ value: 'a', name: 'A', to: 1, at: Date.now(), focus: 'handle', quiet: true });
+  assert.equal(moves.confirm(current).quiet, true);
+  moves.step('a', 1, 'A');
+  current = asked.at(-1);
+  assert.equal(moves.confirm(current, false).value, 'a');
+  assert.equal(said.filter(Boolean).length, 1);
+  off = true;
+  assert.equal(moves.step('a', 1, 'A'), null);
+  // A request that was dropped confirms nothing.
+  off = false;
+  moves.step('b', 1, 'B');
+  moves.expect(null);
+  assert.equal(moves.confirm(asked.at(-1)), null);
 });

@@ -2,24 +2,26 @@ import { createContext, useContext, useEffect, useMemo, useRef, useState } from 
 import { AccessibilityInfo, Platform, View } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { reorderConfirmed, reorderDuplicates, reorderPlace, reorderStep, type ReorderMove, type ReorderPending } from "../../../shared/package-runtime/reorder";
+import { createReorderMoves, reorderPlaceAmong, reorderWarning, type ReorderMove } from "../../../shared/package-runtime/reorder";
 import type { ListChoiceValue } from "../../../shared/package-runtime/list-row";
 import { KjunButton } from "./button";
 import { KText } from "./internal";
 
 export type KjunListReorderMove = ReorderMove<ListChoiceValue>;
 /** The reorderable section's order and its move action, for the rows inside it; null outside one. */
-export interface ListReorder {
+export interface ReorderScope {
   order?: readonly ListChoiceValue[];
+  /** Like Web: the rows on screen when they are only part of the order. */
+  shown?: ReadonlySet<ListChoiceValue>;
   disabled: boolean;
   move: (value: ListChoiceValue, step: -1 | 1, name: string) => void;
 }
-export const ListReorderContext = createContext<ListReorder | null>(null);
+export const ReorderContext = createContext<ReorderScope | null>(null);
 
 /** A row's up and down buttons; the row draws them only when the section's order lists its value. */
-export function ListReorderControls({ value, name }: { value: ListChoiceValue; name: string }) {
-  const reorder = useContext(ListReorderContext), m = useKjunMessages();
-  const place = reorder ? reorderPlace(reorder.order, value) : null;
+export function ReorderControls({ value, name }: { value: ListChoiceValue; name: string }) {
+  const reorder = useContext(ReorderContext), m = useKjunMessages();
+  const place = reorder ? reorderPlaceAmong(reorder.order, value, reorder.shown) : null;
   if (!reorder || !place) return null;
   const button = (direction: "up" | "down") => (
     <KjunButton variant="ghost" size="sm" prefixIcon={direction === "up" ? "chevron-up" : "chevron-down"}
@@ -30,42 +32,34 @@ export function ListReorderControls({ value, name }: { value: ListChoiceValue; n
 }
 
 /** The section's side: reports moves and announces them (a live region on Native Web, the screen reader on devices). */
-export function useListReorder({ reorderable, order, disabled, onOrderChange, onReorder }: {
-  reorderable: boolean; order?: readonly ListChoiceValue[]; disabled: boolean;
+export function useReorder({ reorderable, order, shown, disabled, onOrderChange, onReorder }: {
+  reorderable: boolean; order?: readonly ListChoiceValue[]; shown?: ReadonlySet<ListChoiceValue>; disabled: boolean;
   onOrderChange?: (order: ListChoiceValue[]) => void; onReorder?: (move: KjunListReorderMove) => void;
 }) {
   const m = useKjunMessages();
   const [said, setSaid] = useState("");
   const latest = useRef({ order, disabled, onOrderChange, onReorder, m });
   latest.current = { order, disabled, onOrderChange, onReorder, m };
-  // The pressed move, until the app applies its order: only then is it announced.
-  const pending = useRef<(ReorderPending & { name: string }) | null>(null);
+  // The same request-and-confirm rules as Web: a move is announced once the app's order shows it.
+  const moves = useMemo(() => createReorderMoves({
+    order: () => latest.current.order, disabled: () => latest.current.disabled,
+    moved: (name, position, total) => latest.current.m.reorderMoved(name, position, total),
+    say: text => { if (Platform.OS === "web") setSaid(text); else if (text) AccessibilityInfo.announceForAccessibility(text); },
+    change: next => latest.current.onOrderChange?.(next),
+  }), []);
   useEffect(() => {
-    if (!reorderable) return;
-    if (!order) console.warn("KJUN reorder (ListSection, Table): reorderable needs `order` (the row values in the order shown) and onOrderChange.");
-    else if (reorderDuplicates(order)) console.warn("KJUN reorder (ListSection, Table): `order` lists a value twice; rows that share a value share one place.");
+    const warning = reorderable ? reorderWarning(order, "onOrderChange") : null;
+    if (warning) console.warn(warning);
   }, [reorderable, order]);
-  useEffect(() => {
-    const moved = pending.current;
-    if (!moved || !reorderConfirmed(order, moved, Date.now())) return;
-    pending.current = null;
-    const text = latest.current.m.reorderMoved(moved.name, moved.to + 1, order!.length);
-    if (Platform.OS === "web") setSaid(text);
-    else AccessibilityInfo.announceForAccessibility(text);
-  }, [order]);
-  useEffect(() => { if (!reorderable || disabled) pending.current = null; }, [reorderable, disabled]);
-  const context = useMemo<ListReorder | null>(() => reorderable ? {
-    order, disabled,
+  useEffect(() => { moves.confirm(order); }, [order]);
+  useEffect(() => { if (!reorderable || disabled) moves.expect(null); }, [reorderable, disabled]);
+  const context = useMemo<ReorderScope | null>(() => reorderable ? {
+    order, shown, disabled,
     move: (value, step, name) => {
-      const now = latest.current, result = now.disabled ? null : reorderStep(now.order as ListChoiceValue[] | undefined, value, step);
-      if (!result) return;
-      pending.current = { value, name, to: result.to, at: Date.now() };
-      // Cleared first, so the same sentence is read again when the same move is made twice.
-      if (Platform.OS === "web") setSaid("");
-      now.onOrderChange?.(result.order);
-      now.onReorder?.(result);
+      const result = moves.step(value, step, name);
+      if (result) latest.current.onReorder?.(result);
     },
-  } : null, [reorderable, order, disabled]);
+  } : null, [reorderable, order, shown, disabled]);
   // Native Web has no announce call, so the move is spoken from a polite live region that takes no room.
   const status = reorderable && Platform.OS === "web"
     ? <View role="status" pointerEvents="none" style={{ position: "absolute", opacity: 0 }}><KText>{said}</KText></View> : null;

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useKjunMessageScope, useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tableRowLabel } from "../../../shared/package-runtime/table-model";
 import { typeStyle } from "./typography";
@@ -17,7 +18,7 @@ import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-re
 import { KjunDataState,useQueryDisplay } from "./data-state";
 import { content,domainColor } from "./internal";
 import { AccessiblePressable } from "./a11y";
-import { ListReorderContext, ListReorderControls, useListReorder } from "./list-reorder";
+import { ReorderContext, ReorderControls, useReorder } from "./reorder-controls";
 import { KText } from "./internal";
 import { KjunPagination } from "./navigation";
 import { useKjunStyles } from "./provider";
@@ -158,10 +159,11 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
   // Like Web: the app keeps the order and passes data in it; moving is off while sorted by a column or grouped.
   const reorderable = !!props.reorderable, locked = !!state.sort.key || !!props.groupBy, reorderOff = !!props.reorderDisabled || locked;
   const reorderNote = reorderable && reorderOff ? props.reorderDisabledText ?? (locked ? m.tableReorderLocked : undefined) : undefined;
-  const reorder = useListReorder({ reorderable, order: props.order, disabled: reorderOff, onOrderChange: props.onOrderChange as never, onReorder: props.onReorder as never });
-  const mover = reorderable ? (row: Row, i: number) => <ListReorderControls value={state.key(row, i)} name={String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))} /> : undefined;
+  const shown = useMemo(() => reorderable ? new Set(state.rows.map((row, i) => state.key(row, i))) : undefined, [reorderable, state.rows]);
+  const reorder = useReorder({ reorderable, order: props.order, shown, disabled: reorderOff, onOrderChange: props.onOrderChange, onReorder: props.onReorder });
+  const mover = reorderable ? (row: Row, i: number) => <ReorderControls value={state.key(row, i)} name={String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))} /> : undefined;
   return (
-    <ListReorderContext.Provider value={reorder.context}>
+    <ReorderContext.Provider value={reorder.context}>
     <View
       accessibilityLabel={ariaLabel}
       accessibilityState={{ busy: !!props.loading }}
@@ -211,6 +213,6 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
       {reorderNote ? <KText style={{ ...typeStyle("caption"), color: colors.textTertiary, marginTop: tokens.dimension.value8, paddingHorizontal: tokens.table.cellPadding.regular.x }}>{reorderNote}</KText> : null}
       {reorder.status}
     </View>
-    </ListReorderContext.Provider>
+    </ReorderContext.Provider>
   );
 }

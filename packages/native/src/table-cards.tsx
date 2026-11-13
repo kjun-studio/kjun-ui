@@ -17,7 +17,7 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
   const { mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, cellText, expandable, expand, renderExpand,
     emptyContent, emptyText, layout, totals, groups } = props;
   const { colors } = useKjunStyles();
-  const { title, subtitle, highlight, badges, inline, sections, columnsForSection, tiles, footerActions, cardFooter, headerMover, cardField, cardBody } = layout;
+  const { title, subtitle, highlight, badges, inline, sections, cardFields, tiles, footerActions, cardFooter, headerMover, cardBody } = layout;
   // Like Web's auto-fill grid: as many tiles a row as keep tileMinWidth, never fewer than two.
   const [width, setWidth] = useState(0);
   const inner = width - card.listPadding * 2;
@@ -85,22 +85,22 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
       ) : null}
       {/* Sections carry no label or rule in a card; a gap separates them. */}
       {sections.map((section, index) => {
-        const cols = columnsForSection(row, section);
+        const fields = cardFields(row, section);
         const body = cardBody(section), rows = body === "rows";
-        return cols.length ? (
+        return fields.length ? (
           <View key={section.key || index}
             style={{ marginTop: card.sectionGap, flexDirection: rows ? "column" : "row", flexWrap: rows ? "nowrap" : "wrap", gap: rows ? card.metricGap : card.sectionGap }}>
-            {cols.map((col) => rows ? (
+            {fields.map(({ column: col, label: name, full }) => rows ? (
               <View key={col.key} style={{ flexDirection: "row", alignItems: "baseline", justifyContent: "space-between", gap: card.gap }}>
                 {/* Like Web: a cell spanning other columns reads under its section's name, or under none. */}
-                {cardField(row, section, col).label ? label(cardField(row, section, col).label) : <View />}
+                {name ? label(name) : <View />}
                 <View style={{ flexShrink: 1, minWidth: 0 }}>{cell(col, row, i, "cardRowValue")}</View>
               </View>
             ) : (
               <View key={col.key} style={{
-                flexBasis: cardField(row, section, col).full || body === "stack" ? "100%" : body === "metrics" ? "30%" : "45%",
+                flexBasis: full || body === "stack" ? "100%" : body === "metrics" ? "30%" : "45%",
                 flexGrow: 1, minWidth: 0, gap: card.valueGap }}>
-                {cardField(row, section, col).label ? <KText style={{ ...typeStyle("meta"), color: colors.textTertiary, textAlign: section.labelAlign }}>{cardField(row, section, col).label}</KText> : null}
+                {name ? <KText style={{ ...typeStyle("meta"), color: colors.textTertiary, textAlign: section.labelAlign }}>{name}</KText> : null}
                 {cell(col, row, i, "cardValue")}
               </View>
             ))}

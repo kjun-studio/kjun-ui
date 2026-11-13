@@ -42,7 +42,8 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
             {...attributes}
             key={col.key}
             colSpan={spans[c] > 1 ? spans[c] : undefined}
-            style={{ ...appStyle, textAlign: spans[c] > 1 ? "center" : col.align }}
+            // KJUN's alignment first: a style from cellProps wins, for a merged cell too.
+            style={{ textAlign: spans[c] > 1 ? "center" : col.align, ...appStyle }}
             data-numeric={col.type === "number" || col.align === "right" || undefined} data-date={col.type === "date" || col.type === "datetime" || undefined}
             className={
               (col.secondary ? "kjun-table-secondary " : "") + (spans[c] > 1 ? "kjun-table-merged " : "") +

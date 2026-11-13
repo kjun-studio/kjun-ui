@@ -1,5 +1,5 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
-import { gaugeSpoken, stackedLegend, stackedSpoken, stackedState, stackedWeights, type StackedItem } from "../../../shared/package-runtime/distribution";
+import { stackedModel, type StackedItem } from "../../../shared/package-runtime/distribution";
 import type { CSSProperties } from "react";
 
 export type KjunStackedBarItem = StackedItem;
@@ -24,31 +24,25 @@ export interface KjunStackedBarProps {
 /** The parts of a whole: each segment is as long as its share. It shows a breakdown; it is not a control. */
 export function KjunStackedBar({ items, label, ariaLabel, size = "md", legend = true, formatValue, missingText, className, style, id }: KjunStackedBarProps) {
   const scope = useKjunMessageScope();
-  const list = items ?? [], state = stackedState(list), missing = state === "missing";
-  const entries = stackedLegend(list, formatValue, scope.intl, missingText ?? "—");
-  const name = ariaLabel ?? label, weights = stackedWeights(list);
-  // One image for screen readers: the name, then each part with its value and share.
-  const spoken = missing ? gaugeSpoken(name, missingText ?? scope.messages.noData) : stackedSpoken(name, entries);
+  const { state, missing, mark, parts, spoken } = stackedModel({ items, label, ariaLabel, formatValue, missingText, noData: scope.messages.noData, locale: scope.intl });
   return (
     <div id={id} className={"kjun-stacked-bar" + (className ? " " + className : "")} data-size={size} data-state={state} role="img" aria-label={spoken} style={style}>
       {(label || missing) && (
         <div className="kjun-stacked-bar-caption" aria-hidden="true">
           <span className="kjun-stacked-bar-label">{label}</span>
-          {missing && <span className="kjun-stacked-bar-value">{missingText ?? "—"}</span>}
+          {missing && <span className="kjun-stacked-bar-value">{mark}</span>}
         </div>
       )}
       {/* Missing data keeps the empty rail, so the bar holds its place in a list. */}
-      {(
-        <div className="kjun-stacked-bar-track" aria-hidden="true">
-          {list.map((item, i) => entries[i].drawn && <span key={item.key ?? "i" + i} className="kjun-stacked-bar-segment" style={{ flexGrow: weights[i], background: item.color }} />)}
-        </div>
-      )}
+      <div className="kjun-stacked-bar-track" aria-hidden="true">
+        {parts.map(part => part.drawn && <span key={part.key} className="kjun-stacked-bar-segment" style={{ flexGrow: part.weight, background: part.item.color }} />)}
+      </div>
       {legend && !missing && (
         <ul className="kjun-stacked-bar-legend" aria-hidden="true">
-          {list.map((item, i) => (
-            <li key={item.key ?? "i" + i}>
-              <span className="kjun-stacked-bar-swatch" style={{ background: item.color }} />
-              <span>{entries[i].label} {entries[i].value}{entries[i].percent ? " · " + entries[i].percent : ""}</span>
+          {parts.map(part => (
+            <li key={part.key}>
+              <span className="kjun-stacked-bar-swatch" style={{ background: part.item.color }} />
+              <span>{part.text}</span>
             </li>
           ))}
         </ul>

@@ -1,15 +1,15 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
-import { distributionNumber, gaugeNeighbours, gaugePosition, gaugeSliver, gaugeSegments, gaugeSpoken, gaugeZoneIndex, type GaugeZone } from "../../../shared/package-runtime/distribution";
+import { gaugeModel, gaugeSliver, type GaugeZone } from "../../../shared/package-runtime/distribution";
 import { useState } from "react";
-import { I18nManager, Platform, View, type ColorValue, type StyleProp, type ViewStyle } from "react-native";
+import { I18nManager, View, type ColorValue, type StyleProp, type ViewStyle } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
-import { KText } from "./internal";
+import { KText, hiddenParts } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
 
 export type KjunGaugeZone = Omit<GaugeZone, "color"> & { color?: ColorValue };
 export interface KjunZoneGaugeProps {
-  /** Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value. */
+  /** Where the marker sits. null, undefined and non-finite numbers are missing: the axis stays, without zone colours or a marker, and 0 is a real value. */
   value: number | null | undefined;
   min?: number;
   max?: number;
@@ -31,24 +31,17 @@ export interface KjunZoneGaugeProps {
 }
 
 const geometry = tokens.extensions.zoneGauge;
-// Screen readers hear the root's one sentence; the drawn parts stay out of their way.
-export const hiddenParts = { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants" as const,
-  ...(Platform.OS === "web" ? { "aria-hidden": true } : {}) };
-
 /** A value's place on a fixed axis of zones. It shows a reading; it is not a control. */
 export function KjunZoneGauge({ value, min = 0, max = 100, zones, label, ariaLabel, size = "md", zoneLabels = true, showValue = true,
   formatValue, missingText, style }: KjunZoneGaugeProps) {
   const scope = useKjunMessageScope();
   const { colors } = useKjunStyles();
-  const segments = gaugeSegments(zones as readonly GaugeZone[], min, max);
-  const ready = typeof value === "number" && Number.isFinite(value) && segments.length > 0;
-  const zone = ready ? segments[gaugeZoneIndex(value, segments)] : undefined;
-  const valueText = ready ? formatValue ? formatValue(value) : distributionNumber(value, scope.intl) : missingText ?? "—";
-  const spoken = gaugeSpoken(ariaLabel ?? label, ready ? valueText : missingText ?? scope.messages.noData, zone?.label);
-  const track = size === "sm" ? geometry.smTrackHeight : geometry.trackHeight, position = ready ? gaugePosition(value, min, max) : 0;
+  const { segments, ready, position, near, caption, spoken } = gaugeModel({ value, min, max, zones: zones as readonly GaugeZone[], label, ariaLabel, formatValue, missingText,
+    noData: scope.messages.noData, locale: scope.intl });
+  const track = size === "sm" ? geometry.smTrackHeight : geometry.trackHeight;
   const end = tokens.radius.radius9999, neutral = colors.switchTrack ?? colors.border;
   // Like Web: a zone sliver thinner than the minimum between a boundary and the marker's ring is covered.
-  const [width, setWidth] = useState(0), near = ready ? gaugeNeighbours(position, segments) : {};
+  const [width, setWidth] = useState(0);
   const covers = (["before", "after"] as const).map(side => ({ side, sliver: gaugeSliver(width, position, segments.length, near[side], side, geometry) }));
   return (
     <View accessible accessibilityRole="image" accessibilityLabel={spoken} style={[{ minWidth: 0 }, style]}>
@@ -56,7 +49,7 @@ export function KjunZoneGauge({ value, min = 0, max = 100, zones, label, ariaLab
         {(!!label || showValue || !ready) && (
           <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "baseline", gap: tokens.dimension.value12, marginBottom: geometry.captionGap }}>
             <KText numberOfLines={1} style={{ ...typeStyle("label"), color: colors.textSecondary, flexShrink: 1 }}>{label}</KText>
-            {(showValue || !ready) && <KText style={{ ...typeStyle("label"), fontVariant: ["tabular-nums"], color: ready ? colors.text : colors.textTertiary }}>{valueText}{zone?.label ? " · " + zone.label : ""}</KText>}
+            {(showValue || !ready) && <KText style={{ ...typeStyle("label"), fontVariant: ["tabular-nums"], color: ready ? colors.text : colors.textTertiary }}>{caption}</KText>}
           </View>
         )}
         {/* Like Web: a missing value keeps the axis and the zone names, without colours or a marker. */}

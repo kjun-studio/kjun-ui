@@ -17,8 +17,8 @@ import { TableCheck, tableGrid, type TableLayout, type TableRenderState } from "
 import { tableCards, tableList } from "./table-narrow";
 import type { TableCardSection, TableColumn, TablePagination } from "./table-types";
 import type { TableColumnGroup } from "../../../shared/package-runtime/table-columns";
-import { reorderPlace } from "../../../shared/package-runtime/reorder";
-import { listReorderControls, useListReorder } from "./list-reorder";
+import { reorderPlaceAmong } from "../../../shared/package-runtime/reorder";
+import { renderReorderControls, useReorder } from "./reorder-controls";
 import { useKjunId } from "./input";
 export type { TableCardSection, TableColumn, TablePagination };
 
@@ -148,9 +148,9 @@ const KjunTableComponent = defineComponent({
     const locked = () => !!(props.sort === undefined ? internalSort.value : props.sort)?.key || !!props.groupBy;
     const reorderOff = () => props.reorderDisabled || locked();
     const reorderNote = () => props.reorderable && reorderOff() ? props.reorderDisabledText ?? (locked() ? m.value.tableReorderLocked : undefined) : undefined;
-    const reorder = useListReorder({ reorderable: () => props.reorderable, order: () => props.order, disabled: reorderOff, controls: () => "buttons",
-      noteId: () => reorderNote() ? reorderNoteId : undefined, list: () => root.value, selector: ":scope [data-reorder-index]",
-      onOrderChange: order => emit("update:order", order as (string | number)[]), onReorder: move => emit("reorder", move) });
+    const reorder = useReorder({ reorderable: () => props.reorderable, order: () => props.order, disabled: reorderOff, controls: () => "buttons",
+      noteId: () => reorderNote() ? reorderNoteId : undefined, list: () => root.value, selector: ":scope [data-reorder-index]", owner: ".kjun-table-state",
+      onOrderChange: order => emit("update:order", order), onReorder: move => emit("reorder", move) });
     let timer: ReturnType<typeof setTimeout> | undefined, media: MediaQueryList | undefined;
     const updateMobile = () => { mobile.value = !!media?.matches; };
     onMounted(() => { media = matchMedia(`(width < ${tokens.table.mobileBreakpoint}px)`); updateMobile(); media.addEventListener("change", updateMobile); });
@@ -202,6 +202,8 @@ const KjunTableComponent = defineComponent({
     return () => {
       const state = model(), status = query();
       const layout = tablePresentation(props as never, mobile.value) as unknown as TableLayout;
+      // Like React: the rows on screen may be one page or a search result of the order; a move never passes a hidden row.
+      const shown = props.reorderable ? new Set(state.rows.map((row, index) => state.key(row, index))) : undefined;
       const { card, visible } = layout;
       // Like React: a pressable cell is a button of its own; a title that already opens the row never is.
       const cell = (col: TableColumn<any>, row: any, index: number, role?: TableCellRole): VNodeChild => {
@@ -279,8 +281,8 @@ const KjunTableComponent = defineComponent({
         checkbox, expand, cell, renderExpand: (row: object, index: number) => slots.expand?.({ row, index }),
         empty: () => hasContent(empty) ? empty : (props.emptyText ?? m.value.noData), ariaLabel: (props.ariaLabel ?? m.value.dataTable), customClass, rowKeyDown,
         mover: reorder.context.value ? (row: object, index: number) => {
-          const moves = reorder.context.value!, key = state.key(row, index), place = reorderPlace(moves.order, key);
-          return place ? listReorderControls(moves, place, key, String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, index)), m.value) : null;
+          const moves = reorder.context.value!, key = state.key(row, index), place = reorderPlaceAmong(moves.order, key, shown);
+          return place ? renderReorderControls(moves, place, key, String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, index)), m.value) : null;
         } : undefined,
       };
       const selectionToolbar = props.selectable && props.selected.length > 0 ? slots.selectionToolbar?.({ selected: props.selected }) : undefined;

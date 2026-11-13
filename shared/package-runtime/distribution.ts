@@ -113,12 +113,17 @@ export function stackedWeights(items: readonly StackedItem[]) {
   return scaled.map(value => Math.round(value / total * 1e8) / 1e6);
 }
 
-/** Whole percents by largest remainder, so the shares always add up to 100 (or are all 0 for an empty total). */
+/**
+ * Whole percents that add up to 100 (or are all 0 for an empty total). The leftover points go by largest remainder to
+ * the parts that already reach 1%: a part under 1% stays at 0 and reads "<1%", so equal small parts never read differently.
+ */
 export function stackedShares(items: readonly StackedItem[]) {
   const exact = stackedWeights(items);
   if (!exact.some(value => value > 0)) return exact.map(() => 0);
   const shares = exact.map(Math.floor);
-  const order = exact.map((value, index) => ({ index, rest: value - Math.floor(value) })).sort((a, b) => b.rest - a.rest || a.index - b.index);
+  const ranked = exact.map((value, index) => ({ index, whole: Math.floor(value), rest: value - Math.floor(value) })).sort((a, b) => b.rest - a.rest || a.index - b.index);
+  // Only when every part is under 1% (more than a hundred of them) do the small parts share the points out.
+  const order = ranked.some(part => part.whole > 0) ? ranked.filter(part => part.whole > 0) : ranked;
   for (let left = 100 - shares.reduce((sum, share) => sum + share, 0), i = 0; left > 0; left--, i++) shares[order[i % order.length].index]++;
   return shares;
 }
@@ -134,4 +139,46 @@ export function stackedLegend(items: readonly StackedItem[], formatValue: ((valu
 export function stackedSpoken(label: string | undefined, legend: readonly StackedLegendEntry[]) {
   const parts = legend.map(entry => entry.present ? `${entry.label} ${entry.value} (${entry.percent})` : `${entry.label} ${entry.value}`).join(", ");
   return label ? `${label}: ${parts}` : parts;
+}
+
+export interface GaugeInput {
+  value: number | null | undefined; min: number; max: number; zones: readonly GaugeZone[];
+  label?: string; ariaLabel?: string; formatValue?: (value: number) => string; missingText?: string;
+  /** The sentence read for a missing value when there is no missingText. */
+  noData: string; locale?: string;
+}
+/** Everything a gauge draws and says, worked out once for React, Vue and Native. */
+export function gaugeModel(input: GaugeInput) {
+  const segments = gaugeSegments(input.zones, input.min, input.max);
+  const ready = typeof input.value === "number" && Number.isFinite(input.value) && segments.length > 0, value = ready ? input.value as number : 0;
+  const zone = ready ? segments[gaugeZoneIndex(value, segments)] : undefined;
+  const valueText = ready ? input.formatValue ? input.formatValue(value) : distributionNumber(value, input.locale) : input.missingText ?? "—";
+  const position = ready ? gaugePosition(value, input.min, input.max) : 0;
+  return {
+    segments, ready, zone, position,
+    /** The caption's end: the value and the zone it falls in. */
+    caption: valueText + (zone?.label ? " · " + zone.label : ""),
+    /** The zone boundaries beside the marker, for the sliver covers; none without a value. */
+    near: (ready ? gaugeNeighbours(position, segments) : {}) as ReturnType<typeof gaugeNeighbours>,
+    /** One image for screen readers: the name, the value and the zone it falls in. */
+    spoken: gaugeSpoken(input.ariaLabel ?? input.label, ready ? valueText : input.missingText ?? input.noData, zone?.label),
+  };
+}
+
+export interface StackedInput {
+  items: readonly StackedItem[] | null | undefined; label?: string; ariaLabel?: string;
+  formatValue?: (value: number) => string; missingText?: string; noData: string; locale?: string;
+}
+/** Everything a stacked bar draws and says, worked out once for React, Vue and Native. */
+export function stackedModel(input: StackedInput) {
+  const list = input.items ?? [], state = stackedState(list), missing = state === "missing", mark = input.missingText ?? "—";
+  const entries = stackedLegend(list, input.formatValue, input.locale, mark), weights = stackedWeights(list), name = input.ariaLabel ?? input.label;
+  return {
+    state, missing, mark,
+    /** One per item, in order: its key, its length on the bar (when drawn) and its legend line. */
+    parts: list.map((item, index) => ({ item, key: item.key ?? "i" + index, weight: weights[index], drawn: entries[index].drawn,
+      text: entries[index].label + " " + entries[index].value + (entries[index].percent ? " · " + entries[index].percent : "") })),
+    /** One image for screen readers: the name, then each part with its value and share. */
+    spoken: missing ? gaugeSpoken(name, input.missingText ?? input.noData) : stackedSpoken(name, entries),
+  };
 }

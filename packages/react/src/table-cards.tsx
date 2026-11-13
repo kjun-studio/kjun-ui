@@ -50,7 +50,7 @@ export function useTableGroups<Row extends object>({ groupLabel, groupTotals, st
 export function TableCards<Row extends object>(props: Props<Row>) {
   const { mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand,
     emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown, totals, groups } = props;
-  const { title, subtitle, highlight, badges, inline, sections, columnsForSection, cardLayout, tiles, footerActions, cardFooter, headerMover, cardField, cardBody } = layout;
+  const { title, subtitle, highlight, badges, inline, sections, cardFields, cardLayout, tiles, footerActions, cardFooter, headerMover, cardBody } = layout;
   const badgeList = (row: Row, i: number) => badges.length ? (
     <div className="kjun-table-card-badges">{badges.map((col) => <span key={col.key}>{cell(col, row, i)}</span>)}</div>
   ) : null;
@@ -114,21 +114,18 @@ export function TableCards<Row extends object>(props: Props<Row>) {
               </div>
             )}
             {sections.map((section: TableCardSection, index) => {
-              const cols = columnsForSection(row, section);
+              const fields = cardFields(row, section);
               // A named section is a group for screen readers only; cards draw no section names.
-              return cols.length ? (
+              return fields.length ? (
                 <div key={section.key || index} className="kjun-table-card-section" role={section.label ? "group" : undefined} aria-label={section.label || undefined}>
                   <div className={"kjun-table-card-body " + (cardBody(section) === "rows" ? "kjun-table-card-body--rows" : "kjun-table-card-body--" + cardBody(section))}>
-                    {cols.map((col) => {
-                      const field = cardField(row, section, col);
-                      return (
-                        <div key={col.key} className={"kjun-table-card-field" + (field.full ? " kjun-table-card-field--full" : "")
-                          + (section.labelAlign === "right" ? " kjun-table-card-field--label-right" : "")}>
-                          {field.label && <span className="kjun-table-card-label">{field.label}</span>}
-                          <span className="kjun-table-card-value">{cell(col, row, i)}</span>
-                        </div>
-                      );
-                    })}
+                    {fields.map(({ column: col, label, full }) => (
+                      <div key={col.key} className={"kjun-table-card-field" + (full ? " kjun-table-card-field--full" : "")
+                        + (section.labelAlign === "right" ? " kjun-table-card-field--label-right" : "")}>
+                        {label && <span className="kjun-table-card-label">{label}</span>}
+                        <span className="kjun-table-card-value">{cell(col, row, i)}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ) : null;

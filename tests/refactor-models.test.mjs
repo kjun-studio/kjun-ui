@@ -37,14 +37,14 @@ test('Table card sections preserve subtitle data behind badges, unassigned field
   const row = { title: 'A', subtitle: 'Details', badge: 'Active', zero: 0, flag: false, empty: '' };
   const layout = tablePresentation(props, true);
   assert.equal(layout.card, true);
-  assert.deepEqual(layout.columnsForSection(row, layout.sections[0]).map(column => column.key), ['zero', 'flag']);
+  assert.deepEqual(layout.cardFields(row, layout.sections[0]).map(field => field.column.key), ['zero', 'flag']);
   // The subtitle reads under the title even beside badges, so it never repeats among the fields.
-  assert.deepEqual(layout.columnsForSection(row, layout.sections[1]), []);
+  assert.deepEqual(layout.cardFields(row, layout.sections[1]), []);
   assert.equal(layout.cardLayout, 'stacked');
   const highlighted = tablePresentation({ ...props, cardHighlight: 'zero', cardLayout: 'tiles' }, true);
   assert.equal(highlighted.highlight?.key, 'zero');
   assert.equal(highlighted.tiles, true);
-  assert.deepEqual(highlighted.columnsForSection(row, highlighted.sections[0]).map(column => column.key), ['flag']);
+  assert.deepEqual(highlighted.cardFields(row, highlighted.sections[0]).map(field => field.column.key), ['flag']);
   assert.equal(tablePresentation({ ...props, cardHighlight: 'title' }, true).highlight, undefined);
   // A badge, the actions, a column hidden in cards or the subtitle itself never becomes another card part.
   for (const key of ['badge', 'actions', 'hidden', 'subtitle']) assert.equal(tablePresentation({ ...props, cardHighlight: key }, true).highlight, undefined, key);
@@ -65,4 +65,25 @@ test('narrow-screen sort choices cover each sortable column in both orders and r
   assert.deepEqual(tableSortOptions({ columns, sortable: false }, messages), []);
   assert.deepEqual(tableSortFromValue(tableSortValue({ key: 'a:b', order: 'desc' })), { key: 'a:b', order: 'desc' });
   assert.deepEqual(tableSortFromValue(''), { key: '', order: 'asc' });
+});
+
+test('a card leaves out the fields the grid covers and reads a merged cell under its group', () => {
+  // A badge column sits between the merged cell and the column it covers: spans follow the grid's column order.
+  const columns = [{ key: 'name', label: '종목' }, { key: 'sales', label: '매출' }, { key: 'rating', label: '등급', badge: true },
+    { key: 'profit', label: '영업이익' }, { key: 'target', label: '목표가' }];
+  const props = { columns, responsive: 'card', columnGroups: [{ label: '실적', columns: ['sales', 'profit'] }],
+    cellSpan: (row, column) => row.pending && column.key === 'sales' ? 3 : undefined };
+  const layout = tablePresentation(props, true), fields = (row, section) => layout.cardFields(row, section).map(field => [field.column.key, field.label, field.full]);
+  const [group, rest] = layout.sections;
+  assert.deepEqual(fields({ name: 'A' }, group), [['sales', '매출', false], ['profit', '영업이익', false]]);
+  // Merged over the badge and 영업이익, like the grid: 영업이익 goes, 목표가 stays, and the note takes the group's name and the whole line.
+  assert.deepEqual(fields({ name: 'B', pending: true }, group), [['sales', '실적', true]]);
+  assert.deepEqual(fields({ name: 'B', pending: true }, rest), [['target', '목표가', false]]);
+  // Without a section name the note has no label; the app's cellSpan is asked once for a row.
+  let calls = 0;
+  const plain = tablePresentation({ columns, responsive: 'card', cellSpan: (row, column) => { calls++; return column.key === 'sales' ? 3 : undefined; } }, true), row = { name: 'C' };
+  assert.deepEqual(plain.cardFields(row, plain.sections[0]).map(field => [field.column.key, field.label, field.full]), [['sales', '', true], ['target', '목표가', false]]);
+  plain.cardFields(row, plain.sections[0]);
+  // Asked once per row however often its fields are read: name, sales and target (the two covered columns are not asked).
+  assert.equal(calls, 3);
 });

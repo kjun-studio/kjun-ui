@@ -1,10 +1,7 @@
 // The web side of reordering a list by hand, shared by the React and Vue list sections: button presses, a handle that
 // is grabbed with the keyboard or dragged with a pointer, and what happens once the app applies each new order.
 // The app owns the order, so every move is a request; announcing and focusing wait for the order that confirms it.
-import {
-  REORDER_CONFIRM_MS, reorderConfirmed, reorderDragStep, reorderFocus, reorderKeyAction, reorderMove, reorderPlace, reorderStep,
-  type ReorderKey, type ReorderMove, type ReorderPending,
-} from "./reorder";
+import { createReorderMoves, reorderDragStep, reorderFocus, reorderKeyAction, reorderMove, reorderPlace, type ReorderKey, type ReorderMove } from "./reorder";
 
 export interface ReorderHost {
   order: () => readonly ReorderKey[] | undefined;
@@ -13,6 +10,8 @@ export interface ReorderHost {
   list: () => HTMLElement | null;
   /** Selects the movable rows' control groups inside list(); a list section's own rows by default. */
   controls?: string;
+  /** Selects the root that owns a control group: one whose nearest such root is not list() belongs to a nested table or list. */
+  owner?: string;
   text: () => {
     moved: (name: string, position: number, total: number) => string;
     grabbed: (name: string) => string;
@@ -38,8 +37,11 @@ const DROP_WAIT_MS = 1500;
 
 export function createReorderSession(host: ReorderHost) {
   const controls = host.controls ?? listControls;
-  // The requested step, until an order shows the row there. `focus` is where focus goes then; `quiet` skips the sentence.
-  let pending: (ReorderPending & { name: string; focus: -1 | 1 | "handle"; quiet: boolean }) | null = null;
+  const moves = createReorderMoves({ order: host.order, disabled: host.disabled, say: host.say, change: host.change,
+    moved: (name, position, total) => host.text().moved(name, position, total) });
+  const { waiting, step } = moves;
+  // Focus that could not follow a move because its control was off (the app turned moving off while it saved).
+  let refocus: { value: ReorderKey; focus: -1 | 1 | "handle" } | null = null;
   // A row held by its handle: `pointer` is the dragging pointer's id, or null for a keyboard grab. `dropping` is a
   // drop that waits for the last step to be applied.
   let session: { value: ReorderKey; name: string; from: number; pointer: number | null; dropping?: ReturnType<typeof setTimeout> } | null = null;
@@ -47,19 +49,20 @@ export function createReorderSession(host: ReorderHost) {
   // A grab or drop made by a key press: the click that some browsers send for the same press is not a second one.
   let keyPress = false, skipClick = false;
 
-  // A step the app never applied stops waiting after a while, so it cannot block the next one.
-  const waiting = () => {
-    if (pending && Date.now() - pending.at > REORDER_CONFIRM_MS) pending = null;
-    return pending;
+  // This section's own control groups: a table or list nested in a row keeps its own.
+  const marks = () => {
+    const list = host.list();
+    return Array.from(list?.querySelectorAll<HTMLElement>(controls) ?? []).filter(mark => !host.owner || mark.closest(host.owner) === list);
   };
-  const step = (value: ReorderKey, direction: -1 | 1, name: string, focus: -1 | 1 | "handle", quiet = false) => {
-    const result = host.disabled() ? null : reorderStep(host.order() as ReorderKey[] | undefined, value, direction);
-    if (!result) return null;
-    pending = { value, name, to: result.to, at: Date.now(), focus, quiet };
-    // Cleared first, so the same sentence is read again when the same move is made twice.
-    host.say("");
-    host.change(result.order);
-    return result;
+  // Moves focus to a row's control. Focus follows a move only while it is still in this section (or nowhere): a user
+  // who went on to another field keeps their place. false when the control could not take focus.
+  const focusControl = (value: ReorderKey, wanted: -1 | 1 | "handle") => {
+    const list = host.list(), doc = list?.ownerDocument, active = doc?.activeElement, order = host.order(), place = reorderPlace(order, value);
+    if (!list || !doc || !place || (active && active !== doc.body && !list.contains(active))) return true;
+    const which = wanted === "handle" ? "handle" : reorderFocus(order, value, wanted);
+    const control = which ? marks().find(mark => Number(mark.dataset.reorderIndex) === place.index)?.querySelector<HTMLElement>(`[data-reorder="${which}"]`) : null;
+    control?.focus();
+    return !control || doc.activeElement === control;
   };
   const release = () => {
     unbind?.();
@@ -85,7 +88,7 @@ export function createReorderSession(host: ReorderHost) {
       if (!waiting()) return drop();
       unbind?.();
       unbind = null;
-      held.dropping = setTimeout(() => { pending = null; drop(); }, DROP_WAIT_MS);
+      held.dropping = setTimeout(() => { moves.expect(null); drop(); }, DROP_WAIT_MS);
       return;
     }
     const inFlight = !!waiting();
@@ -93,16 +96,15 @@ export function createReorderSession(host: ReorderHost) {
     // Back to where the grab started. Only this row is put back, so a change the app made meanwhile stays.
     const order = host.order() ?? [], place = reorderPlace(order, held.value);
     const target = Math.min(held.from, order.length - 1), back = place && (place.index !== target || inFlight);
-    pending = back ? { value: held.value, name: held.name, to: target, at: Date.now(), focus: "handle", quiet: true } : null;
+    moves.expect(back ? { value: held.value, name: held.name, to: target, at: Date.now(), focus: "handle", quiet: true } : null);
     if (back) host.change(reorderMove(order as ReorderKey[], place.index, target).slice());
     host.say(host.text().cancelled(held.name));
   };
   // The movable rows' boxes in order, and the place among them of the row at an order index.
   const rows = (index: number) => {
-    const marks = Array.from(host.list()?.querySelectorAll<HTMLElement>(controls) ?? [])
-      .sort((a, b) => Number(a.dataset.reorderIndex) - Number(b.dataset.reorderIndex));
-    const boxes = marks.map(mark => (mark.closest(".kjun-list-row") ?? mark).getBoundingClientRect());
-    return { boxes, at: marks.findIndex(mark => Number(mark.dataset.reorderIndex) === index) };
+    const sorted = marks().sort((a, b) => Number(a.dataset.reorderIndex) - Number(b.dataset.reorderIndex));
+    const boxes = sorted.map(mark => (mark.closest(".kjun-list-row") ?? mark).getBoundingClientRect());
+    return { boxes, at: sorted.findIndex(mark => Number(mark.dataset.reorderIndex) === index) };
   };
   // One step toward the pointer; the next waits for the app to apply this one.
   const advance = () => {
@@ -120,7 +122,7 @@ export function createReorderSession(host: ReorderHost) {
     // A row already held (another handle's grab) is dropped where it is first.
     if (session) end("drop");
     if (!place || session) return false;
-    pending = null;
+    moves.expect(null);
     session = { value, name, from: place.index, pointer };
     host.grabbed(value);
     return true;
@@ -185,24 +187,32 @@ export function createReorderSession(host: ReorderHost) {
     },
     /** Called once the DOM shows an order: confirms the pending step, if this order is it. */
     confirm(order: readonly ReorderKey[] | undefined) {
-      const done = waiting();
-      if (!done || !reorderConfirmed(order, done, Date.now())) return;
-      pending = null;
-      // The step a drop was waiting for has arrived.
+      // A step a drop was waiting for is reported by the drop, not on its own.
+      const done = moves.confirm(order, !session?.dropping);
+      if (!done) return;
       if (session?.dropping) return drop();
-      if (!done.quiet) host.say(host.text().moved(done.name, done.to + 1, order!.length));
       // During a pointer drag focus stays where it is, and the pointer may already be past the next row.
       if (session && session.pointer !== null) return advance();
-      const which = done.focus === "handle" ? "handle" : reorderFocus(order, done.value, done.focus);
-      if (which) host.list()?.querySelector<HTMLElement>(`${controls.replace("]", `="${done.to}"]`)} [data-reorder="${which}"]`)?.focus();
+      refocus = focusControl(done.value, done.focus) ? null : { value: done.value, focus: done.focus };
     },
-    /** Moving was turned off: a held row goes back to where it started, and nothing is pending. */
+    /**
+     * Moving was turned off. A held row is let go where it is: the app that turned moving off (often to save a step)
+     * is not asked for another order. Nothing stays pending.
+     */
     reset() {
-      if (session) end("cancel");
-      pending = null;
+      if (session?.dropping) clearTimeout(session.dropping);
+      if (session) { session.dropping = undefined; drop(); }
+      moves.expect(null);
+    },
+    /** Moving is on again and its controls are drawn: focus goes to the moved row's control if it could not before. */
+    resume() {
+      const later = refocus;
+      refocus = null;
+      if (later) focusControl(later.value, later.focus);
     },
     dispose() {
-      pending = null;
+      moves.expect(null);
+      refocus = null;
       if (session) release();
     },
   };

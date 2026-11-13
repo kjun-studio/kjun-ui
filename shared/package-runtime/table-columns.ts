@@ -50,9 +50,3 @@ export function tableSpans<Column>(columns: readonly Column[], span?: ((column: 
   }
   return spans;
 }
-
-/** Keys of the columns a span covers in one row; narrow layouts leave those fields out. */
-export function tableCoveredKeys<Column extends { key: string }>(columns: readonly Column[], span?: ((column: Column) => number | null | undefined) | null) {
-  const spans = tableSpans(columns, span);
-  return new Set(columns.filter((_, index) => spans[index] === 0).map(column => column.key));
-}

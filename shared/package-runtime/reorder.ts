@@ -72,3 +72,64 @@ export function reorderKeyAction(key: string, grabbed: boolean): ReorderKeyActio
   if (!grabbed) return press ? "grab" : null;
   return press ? "drop" : key === "Escape" ? "cancel" : key === "ArrowUp" ? "up" : key === "ArrowDown" ? "down" : key === "Tab" ? "leave" : null;
 }
+
+/**
+ * A row's place for its buttons when only some of the order is on screen (a table page, a filtered list): a step
+ * that would pass a row that is not shown is off, so a move never takes the row out of sight.
+ */
+export function reorderPlaceAmong(order: readonly ReorderKey[] | undefined, value: ReorderKey | undefined, shown?: ReadonlySet<ReorderKey> | null): ReorderPlace | null {
+  const place = reorderPlace(order, value);
+  if (!place || !shown || !order) return place;
+  return { ...place, up: place.up && shown.has(order[place.index - 1]), down: place.down && shown.has(order[place.index + 1]) };
+}
+
+/** What is wrong with a reorderable section's `order`, for the console; `model` names the platform's way to receive it. */
+export function reorderWarning(order: readonly ReorderKey[] | undefined, model: string) {
+  if (!order) return `KJUN reorder (ListSection, Table): reorderable needs \`order\` (the row values in the order shown) and ${model}.`;
+  return reorderDuplicates(order) ? "KJUN reorder (ListSection, Table): `order` lists a value twice; rows that share a value share one place." : null;
+}
+
+/** A requested step: `focus` is where focus goes once it is applied, and `quiet` skips the sentence. */
+export interface ReorderRequest extends ReorderPending { name: string; focus: -1 | 1 | "handle"; quiet: boolean }
+export interface ReorderMovesHost {
+  order: () => readonly ReorderKey[] | undefined;
+  disabled: () => boolean;
+  /** Says a sentence to screen readers; an empty one clears the last. */
+  say: (text: string) => void;
+  moved: (name: string, position: number, total: number) => string;
+  /** Asks the app for this order. */
+  change: (order: ReorderKey[]) => void;
+}
+/**
+ * The part of reordering every platform shares. The app owns the order, so a step is a request: it waits until an
+ * order shows the row at its new place, and only then is it announced. A request the app never applies stops waiting.
+ */
+export function createReorderMoves(host: ReorderMovesHost) {
+  let pending: ReorderRequest | null = null;
+  const waiting = () => {
+    if (pending && Date.now() - pending.at > REORDER_CONFIRM_MS) pending = null;
+    return pending;
+  };
+  return {
+    waiting,
+    /** Waits for this request (an order the caller asked for itself), or for nothing. */
+    expect(request: ReorderRequest | null) { pending = request; },
+    step(value: ReorderKey, direction: -1 | 1, name: string, focus: -1 | 1 | "handle" = direction, quiet = false) {
+      const result = host.disabled() ? null : reorderStep(host.order() as ReorderKey[] | undefined, value, direction);
+      if (!result) return null;
+      pending = { value, name, to: result.to, at: Date.now(), focus, quiet };
+      // Cleared first, so the same sentence is read again when the same move is made twice.
+      host.say("");
+      host.change(result.order);
+      return result;
+    },
+    /** The request this order confirms, announced unless it is quiet or `announce` is off; null when it confirms none. */
+    confirm(order: readonly ReorderKey[] | undefined, announce = true) {
+      const done = waiting();
+      if (!done || !reorderConfirmed(order, done, Date.now())) return null;
+      pending = null;
+      if (announce && !done.quiet) host.say(host.moved(done.name, done.to + 1, order!.length));
+      return done;
+    },
+  };
+}

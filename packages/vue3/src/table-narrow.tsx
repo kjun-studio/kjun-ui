@@ -82,7 +82,7 @@ function cardSkeleton(layout: TableLayout, key: number) {
 }
 
 export function tableCards(c: TableNarrowContext) {
-  const { title, subtitle, highlight, badges, inline, sections, columnsForSection, cardLayout, tiles, footerActions, cardFooter, headerMover, cardField, cardBody } = c.layout;
+  const { title, subtitle, highlight, badges, inline, sections, cardFields, cardLayout, tiles, footerActions, cardFooter, headerMover, cardBody } = c.layout;
   const { state } = c;
   const stop = (event: MouseEvent) => event.stopPropagation();
   const badgeList = (row: Row, i: number) => badges.length
@@ -124,20 +124,17 @@ export function tableCards(c: TableNarrowContext) {
           </div>
         ),
         ...sections.map((section: TableCardSection, index) => {
-          const cols = columnsForSection(row, section);
-          return cols.length ? (
+          const fields = cardFields(row, section);
+          return fields.length ? (
             <div key={section.key || index} class="kjun-table-card-section" role={section.label ? "group" : undefined} aria-label={section.label || undefined}>
               <div class={"kjun-table-card-body " + (cardBody(section) === "rows" ? "kjun-table-card-body--rows" : "kjun-table-card-body--" + cardBody(section))}>
-                {cols.map(col => {
-                  const field = cardField(row, section, col);
-                  return (
-                    <div key={col.key} class={"kjun-table-card-field" + (field.full ? " kjun-table-card-field--full" : "") +
-                      (section.labelAlign === "right" ? " kjun-table-card-field--label-right" : "")}>
-                      {field.label && <span class="kjun-table-card-label">{field.label}</span>}
-                      <span class="kjun-table-card-value">{c.cell(col, row, i)}</span>
-                    </div>
-                  );
-                })}
+                {fields.map(({ column: col, label, full }) => (
+                  <div key={col.key} class={"kjun-table-card-field" + (full ? " kjun-table-card-field--full" : "") +
+                    (section.labelAlign === "right" ? " kjun-table-card-field--label-right" : "")}>
+                    {label && <span class="kjun-table-card-label">{label}</span>}
+                    <span class="kjun-table-card-value">{c.cell(col, row, i)}</span>
+                  </div>
+                ))}
               </div>
             </div>
           ) : null;

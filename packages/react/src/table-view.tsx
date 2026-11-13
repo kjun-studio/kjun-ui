@@ -7,8 +7,8 @@ import { TableToolbar } from "./table-toolbar";
 import { TableGrid } from "./table-grid";
 import { TableCards } from "./table-cards";
 import { TableList } from "./table-list";
-import { useCallback, useEffect, useId, useState, type KeyboardEvent } from "react";
-import { ListReorderContext, ListReorderControls, useListReorder } from "./list-reorder";
+import { useCallback, useEffect, useId, useMemo, useState, type KeyboardEvent } from "react";
+import { ReorderContext, ReorderControls, useReorder } from "./reorder-controls";
 import { isComposingKey, tokens } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
 import { TableCheck } from "./table-check";
@@ -137,14 +137,16 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
   const [root, setRoot] = useState<HTMLDivElement | null>(null), noteId = "kjun-table-reorder-" + useId().replace(/:/g, "");
   const reorderable = !!props.reorderable, locked = !!state.sort.key || !!props.groupBy;
   const reorderOff = !!props.reorderDisabled || locked, reorderNote = reorderable && reorderOff ? props.reorderDisabledText ?? (locked ? m.tableReorderLocked : undefined) : undefined;
-  const reorder = useListReorder({ reorderable, order: props.order, disabled: reorderOff, controls: "buttons", noteId: reorderNote ? noteId : undefined,
-    list: root, selector: ":scope [data-reorder-index]", onOrderChange: props.onOrderChange as never, onReorder: props.onReorder as never });
-  const mover = reorderable ? (row: Row, i: number) => <ListReorderControls value={state.key(row, i)} name={String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))} /> : undefined;
+  // The rows on screen may be one page or a search result of the order: a move never passes a row that is not shown.
+  const shown = useMemo(() => reorderable ? new Set(state.rows.map((row, i) => state.key(row, i))) : undefined, [reorderable, state.rows]);
+  const reorder = useReorder({ reorderable, order: props.order, shown, disabled: reorderOff, controls: "buttons", noteId: reorderNote ? noteId : undefined,
+    list: root, selector: ":scope [data-reorder-index]", owner: ".kjun-table-state", onOrderChange: props.onOrderChange, onReorder: props.onReorder });
+  const mover = reorderable ? (row: Row, i: number) => <ReorderControls value={state.key(row, i)} name={String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))} /> : undefined;
   // One stable ref: the root for the move controls, and the domain colour check when cells paint price colours.
   const painted = !query.initialLoading && state.rows.length > 0 && props.columns.some(column => column.pill);
   const rootRef = useCallback((node: HTMLDivElement | null) => { setRoot(node); domainColorRef(painted)?.(node); }, [painted]);
   return (
-    <ListReorderContext.Provider value={reorder.context}>
+    <ReorderContext.Provider value={reorder.context}>
     <div className="kjun-table-state" aria-busy={!!props.loading}
       ref={rootRef}>
       <TableToolbar {...{ selectable, selected, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }} allSelected={state.all}
@@ -193,7 +195,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
       {/* Each move is announced: the row and its new place. */}
       {reorderable && <span className="kjun-sr-only" role="status">{reorder.said}</span>}
     </div>
-    </ListReorderContext.Provider>
+    </ReorderContext.Provider>
   );
 }
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";

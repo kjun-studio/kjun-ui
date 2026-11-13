@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  distributionNumber, gaugeNeighbours, gaugePosition, gaugeSliver, gaugeSegments, gaugeSpoken, gaugeZoneIndex, stackedLegend, stackedShares, stackedSpoken, stackedState, stackedWeights,
+  distributionNumber, gaugeModel, gaugeNeighbours, gaugePosition, gaugeSliver, gaugeSegments, gaugeSpoken, gaugeZoneIndex, stackedLegend, stackedModel, stackedShares, stackedSpoken, stackedState, stackedWeights,
 } from '../shared/package-runtime/distribution.ts';
 
 const zones = [{ to: 30, label: '저평가' }, { to: 70, label: '중립' }, { to: 100, label: '고평가' }];
@@ -71,6 +71,9 @@ test('shares are whole percents that always add up to 100', () => {
   assert.deepEqual(shares([1, 1, 1]), [34, 33, 33]);
   assert.deepEqual(shares([1, 2]), [33, 67]);
   assert.deepEqual(shares([999, 1]), [100, 0]);
+  // Parts under 1% stay at 0 (read as "<1%"), so equal small parts never read differently.
+  assert.deepEqual(shares([0.5, 0.5, 99]), [0, 0, 100]);
+  assert.deepEqual(shares([0.6, 0.6, 49.4, 49.4]), [0, 0, 50, 50]);
   assert.deepEqual(shares([5, null, 5]), [50, 0, 50]);
   assert.deepEqual(shares([0, 0]), [0, 0]);
   assert.deepEqual(shares([4, -2]), [100, 0]);
@@ -125,4 +128,18 @@ test('a zone sliver thinner than the minimum between a boundary and the marker r
   assert.equal(gaugeSliver(0, 71.5, 3, { cut: 0.7, gaps: 1 }, 'before', geometry), null);
   const ahead = gaugeSliver(600, 28.5, 3, { cut: 0.3, gaps: 0 }, 'after', geometry);
   assert.ok(ahead && ahead.size > 0 && ahead.size < 4);
+});
+
+test('one model gives each platform what a gauge and a stacked bar draw and say', () => {
+  const gauge = gaugeModel({ value: 72, min: 0, max: 100, zones, label: 'PER', noData: '데이터가 없습니다' });
+  assert.equal(gauge.ready, true);
+  assert.equal(gauge.caption, '72 · 고평가');
+  assert.equal(gauge.spoken, 'PER, 72, 고평가');
+  assert.equal(gauge.position, 72);
+  // Missing: the axis stays, with no marker to cover beside and the missing sentence.
+  const none = gaugeModel({ value: null, min: 0, max: 100, zones, label: 'PER', noData: '데이터가 없습니다' });
+  assert.deepEqual([none.ready, none.segments.length, none.caption, none.spoken, none.near], [false, 3, '—', 'PER, 데이터가 없습니다', {}]);
+  const bar = stackedModel({ items: [{ label: '강세', value: 3 }, { label: '중립', value: null }, { label: '약세', value: 1 }], label: '의견', noData: '데이터가 없습니다' });
+  assert.deepEqual(bar.parts.map(part => [part.key, part.drawn, part.text]), [['i0', true, '강세 3 · 75%'], ['i1', false, '중립 —'], ['i2', true, '약세 1 · 25%']]);
+  assert.equal(stackedModel({ items: null, label: '의견', noData: '데이터가 없습니다' }).spoken, '의견, 데이터가 없습니다');
 });

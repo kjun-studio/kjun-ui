@@ -1,11 +1,11 @@
 import { type ExtractPublicPropTypes, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
-import { gaugeSpoken, stackedLegend, stackedSpoken, stackedState, stackedWeights, type StackedItem } from "../../../shared/package-runtime/distribution";
+import { stackedModel, type StackedItem } from "../../../shared/package-runtime/distribution";
 import { useKjunMessageScope } from "./runtime/messages";
 
 export type KjunStackedBarItem = StackedItem;
 const kjunStackedBarProps = {
-  /** The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail. */
+  /** The parts in order. No items, or only missing values, draws the empty rail with the missing mark and no legend; values that add up to 0 draw the empty rail. */
   items: { type: Array as PropType<readonly StackedItem[] | null>, default: null },
   /** Shown above the bar and read first. */
   label: { type: String, default: undefined },
@@ -26,31 +26,26 @@ export const KjunStackedBar = defineComponent({
   setup(props) {
     const scope = useKjunMessageScope();
     return () => {
-      const list = props.items ?? [], state = stackedState(list), missing = state === "missing", missingText = props.missingText;
-      const entries = stackedLegend(list, props.formatValue, scope.value.intl, missingText ?? "—");
-      const name = props.ariaLabel ?? props.label, weights = stackedWeights(list);
-      // One image for screen readers: the name, then each part with its value and share.
-      const spoken = missing ? gaugeSpoken(name, missingText ?? scope.value.messages.noData) : stackedSpoken(name, entries);
+      const { state, missing, mark, parts, spoken } = stackedModel({ items: props.items, label: props.label, ariaLabel: props.ariaLabel, formatValue: props.formatValue,
+        missingText: props.missingText, noData: scope.value.messages.noData, locale: scope.value.intl });
       return (
         <div class="kjun-stacked-bar" data-size={props.size} data-state={state} role="img" aria-label={spoken}>
           {(props.label || missing) && (
             <div class="kjun-stacked-bar-caption" aria-hidden="true">
               <span class="kjun-stacked-bar-label">{props.label}</span>
-              {missing && <span class="kjun-stacked-bar-value">{missingText ?? "—"}</span>}
+              {missing && <span class="kjun-stacked-bar-value">{mark}</span>}
             </div>
           )}
-          {/* Missing data keeps the empty rail, so the bar holds its place in a list. */}
-          {(
-            <div class="kjun-stacked-bar-track" aria-hidden="true">
-              {list.map((item, i) => entries[i].drawn && <span key={item.key ?? "i" + i} class="kjun-stacked-bar-segment" style={{ flexGrow: weights[i], background: item.color }} />)}
-            </div>
-          )}
+          {/* Like React: missing data keeps the empty rail. */}
+          <div class="kjun-stacked-bar-track" aria-hidden="true">
+            {parts.map(part => part.drawn && <span key={part.key} class="kjun-stacked-bar-segment" style={{ flexGrow: part.weight, background: part.item.color }} />)}
+          </div>
           {props.legend && !missing && (
             <ul class="kjun-stacked-bar-legend" aria-hidden="true">
-              {list.map((item, i) => (
-                <li key={item.key ?? "i" + i}>
-                  <span class="kjun-stacked-bar-swatch" style={{ background: item.color }} />
-                  <span>{entries[i].label} {entries[i].value}{entries[i].percent ? " · " + entries[i].percent : ""}</span>
+              {parts.map(part => (
+                <li key={part.key}>
+                  <span class="kjun-stacked-bar-swatch" style={{ background: part.item.color }} />
+                  <span>{part.text}</span>
                 </li>
               ))}
             </ul>

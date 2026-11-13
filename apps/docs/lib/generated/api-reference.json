@@ -8628,7 +8628,11 @@
               },
               {
                 "label": "좁은 화면",
-                "text": "카드·list에서는 가려진 열의 칸을 그리지 않고, 병합한 셀은 자기 라벨로 보입니다."
+                "text": "카드에서는 가려진 열의 칸을 그리지 않습니다. 병합한 셀은 한 줄 전체를 쓰고, 첫 열의 라벨 대신 열 묶음(columnGroups) 이름을 라벨로 씁니다. 묶음이 없으면 라벨 없이 값만 보입니다. 병합 범위는 표와 같은 열 순서로 계산합니다. list와 tiles 레이아웃은 cellSpan을 쓰지 않습니다."
+              },
+              {
+                "label": "정렬",
+                "text": "두 열 이상 병합한 셀은 가운데 정렬·보조 글자색으로 그립니다. 웹에서는 cellProps의 style로 바꿀 수 있습니다."
               }
             ],
             "source": "packages/vue3/src/table.tsx",
@@ -8653,6 +8657,10 @@
               {
                 "label": "잠금",
                 "text": "열로 정렬한 동안(sort.key가 있을 때)과 groupBy로 묶은 동안에는 버튼이 꺼집니다. 화면의 순서가 앱의 순서가 아니기 때문입니다. 이유 문구를 표 아래에 보이고 버튼 설명으로 읽습니다."
+              },
+              {
+                "label": "일부만 보일 때",
+                "text": "페이지나 검색으로 order의 일부 행만 화면에 있으면, 보이지 않는 행을 지나가는 방향의 버튼은 꺼집니다. 옮긴 행이 화면에서 사라지지 않게 하기 위해서입니다."
               },
               {
                 "label": "알림·포커스",
@@ -9471,7 +9479,11 @@
               },
               {
                 "label": "좁은 화면",
-                "text": "카드·list에서는 가려진 열의 칸을 그리지 않고, 병합한 셀은 자기 라벨로 보입니다."
+                "text": "카드에서는 가려진 열의 칸을 그리지 않습니다. 병합한 셀은 한 줄 전체를 쓰고, 첫 열의 라벨 대신 열 묶음(columnGroups) 이름을 라벨로 씁니다. 묶음이 없으면 라벨 없이 값만 보입니다. 병합 범위는 표와 같은 열 순서로 계산합니다. list와 tiles 레이아웃은 cellSpan을 쓰지 않습니다."
+              },
+              {
+                "label": "정렬",
+                "text": "두 열 이상 병합한 셀은 가운데 정렬·보조 글자색으로 그립니다. 웹에서는 cellProps의 style로 바꿀 수 있습니다."
               }
             ],
             "source": "packages/react/src/table-view.tsx",
@@ -9496,6 +9508,10 @@
               {
                 "label": "잠금",
                 "text": "열로 정렬한 동안(sort.key가 있을 때)과 groupBy로 묶은 동안에는 버튼이 꺼집니다. 화면의 순서가 앱의 순서가 아니기 때문입니다. 이유 문구를 표 아래에 보이고 버튼 설명으로 읽습니다."
+              },
+              {
+                "label": "일부만 보일 때",
+                "text": "페이지나 검색으로 order의 일부 행만 화면에 있으면, 보이지 않는 행을 지나가는 방향의 버튼은 꺼집니다. 옮긴 행이 화면에서 사라지지 않게 하기 위해서입니다."
               },
               {
                 "label": "알림·포커스",
@@ -10681,7 +10697,11 @@
               },
               {
                 "label": "좁은 화면",
-                "text": "카드·list에서는 가려진 열의 칸을 그리지 않고, 병합한 셀은 자기 라벨로 보입니다."
+                "text": "카드에서는 가려진 열의 칸을 그리지 않습니다. 병합한 셀은 한 줄 전체를 쓰고, 첫 열의 라벨 대신 열 묶음(columnGroups) 이름을 라벨로 씁니다. 묶음이 없으면 라벨 없이 값만 보입니다. 병합 범위는 표와 같은 열 순서로 계산합니다. list와 tiles 레이아웃은 cellSpan을 쓰지 않습니다."
+              },
+              {
+                "label": "정렬",
+                "text": "두 열 이상 병합한 셀은 가운데 정렬·보조 글자색으로 그립니다. 웹에서는 cellProps의 style로 바꿀 수 있습니다."
               }
             ],
             "source": "packages/native/src/table-view.tsx",
@@ -10706,6 +10726,10 @@
               {
                 "label": "잠금",
                 "text": "열로 정렬한 동안(sort.key가 있을 때)과 groupBy로 묶은 동안에는 버튼이 꺼집니다. 화면의 순서가 앱의 순서가 아니기 때문입니다. 이유 문구를 표 아래에 보이고 버튼 설명으로 읽습니다."
+              },
+              {
+                "label": "일부만 보일 때",
+                "text": "페이지나 검색으로 order의 일부 행만 화면에 있으면, 보이지 않는 행을 지나가는 방향의 버튼은 꺼집니다. 옮긴 행이 화면에서 사라지지 않게 하기 위해서입니다."
               },
               {
                 "label": "알림·포커스",
@@ -39344,7 +39368,7 @@
             "type": "number | null",
             "required": false,
             "default": "null",
-            "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value.",
+            "description": "Where the marker sits. null, undefined and non-finite numbers are missing: the axis stays, without zone colours or a marker, and 0 is a real value.",
             "summary": "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음입니다. 축과 구간 이름은 그대로 두고 구간 색과 표식만 뺍니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다.",
             "source": "packages/vue3/src/zone-gauge.tsx"
           },
@@ -39651,7 +39675,7 @@
             "type": "number | null",
             "required": true,
             "default": "—",
-            "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value.",
+            "description": "Where the marker sits. null, undefined and non-finite numbers are missing: the axis stays, without zone colours or a marker, and 0 is a real value.",
             "summary": "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음입니다. 축과 구간 이름은 그대로 두고 구간 색과 표식만 뺍니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다.",
             "source": "packages/native/src/zone-gauge.tsx"
           },
@@ -39802,7 +39826,7 @@
             "type": "{ key?: string; label: string; value: number | null; color?: string }[] | null",
             "required": false,
             "default": "null",
-            "description": "The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail.",
+            "description": "The parts in order. No items, or only missing values, draws the empty rail with the missing mark and no legend; values that add up to 0 draw the empty rail.",
             "summary": "전체를 이루는 항목 목록입니다.",
             "details": [
               {
@@ -40045,7 +40069,7 @@
             "type": "{ key?: string; label: string; value: number | null; color?: ColorValue }[] | null",
             "required": true,
             "default": "—",
-            "description": "The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail.",
+            "description": "The parts in order. No items, or only missing values, draws the empty rail with the missing mark and no legend; values that add up to 0 draw the empty rail.",
             "summary": "전체를 이루는 항목 목록입니다.",
             "details": [
               {
