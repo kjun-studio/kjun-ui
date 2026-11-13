@@ -36,6 +36,14 @@ export const feedback: Record<string, GuideAuthor> = {
         '[role="alert"], [role="status"], .kjun-alert, .kjun-alert',
       ),
     ],
+    states: [
+      {
+        id: "fallback",
+        label: "대체 화면",
+        description: "하위 렌더 오류 뒤의 기본 대체 화면입니다. 오류 아이콘, 제목, 설명, 다시 시도 버튼을 Empty와 같은 구성으로 표시합니다.",
+        action: "오류 발생",
+      },
+    ],
     related: "loading",
   },
   KjunFormSkeleton: {

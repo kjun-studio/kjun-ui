@@ -3888,11 +3888,45 @@
             "id": "default",
             "label": "기본 예제",
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "fallback",
+            "label": "대체 화면",
+            "description": "하위 렌더 오류 뒤의 기본 대체 화면입니다. 오류 아이콘, 제목, 설명, 다시 시도 버튼을 Empty와 같은 구성으로 표시합니다.",
+            "action": "오류 발생"
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
-        "note": "하위 렌더 오류를 대체 화면으로 표시합니다. 재시도하면 오류 상태를 초기화하며 보고 콜백으로 프로젝트의 오류 수집을 연결합니다."
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunErrorBoundary\":{\"props\":{\"size\":\"sm\"}}}"
+            },
+            "action": "오류 발생"
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunErrorBoundary\":{\"props\":{\"size\":\"md\"}}}"
+            },
+            "action": "오류 발생"
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunErrorBoundary\":{\"props\":{\"size\":\"lg\"}}}"
+            },
+            "action": "오류 발생"
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "하위 렌더 오류를 대체 화면으로 표시합니다. 기본 대체 화면은 Empty와 같은 구성(오류 아이콘, 제목, 설명, 다시 시도 버튼)이며 size에 따라 DataState와 같은 여백과 최소 높이(sm 176px, md 240px, lg 320px)를 씁니다. 카드처럼 작은 영역은 sm을 사용합니다. 재시도하면 오류 상태를 초기화하며 보고 콜백으로 프로젝트의 오류 수집을 연결합니다."
       },
       "react": {
         "figures": [
@@ -3915,11 +3949,45 @@
             "id": "default",
             "label": "기본 예제",
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "fallback",
+            "label": "대체 화면",
+            "description": "하위 렌더 오류 뒤의 기본 대체 화면입니다. 오류 아이콘, 제목, 설명, 다시 시도 버튼을 Empty와 같은 구성으로 표시합니다.",
+            "action": "오류 발생"
           }
         ],
-        "sizes": [],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunErrorBoundary\":{\"props\":{\"size\":\"sm\"}}}"
+            },
+            "action": "오류 발생"
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunErrorBoundary\":{\"props\":{\"size\":\"md\"}}}"
+            },
+            "action": "오류 발생"
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunErrorBoundary\":{\"props\":{\"size\":\"lg\"}}}"
+            },
+            "action": "오류 발생"
+          }
+        ],
         "sizeDefault": "—",
-        "note": "하위 렌더 오류를 대체 화면으로 표시합니다. 재시도하면 오류 상태를 초기화하며 보고 콜백으로 프로젝트의 오류 수집을 연결합니다."
+        "note": "하위 렌더 오류를 대체 화면으로 표시합니다. 기본 대체 화면은 Empty와 같은 구성(오류 아이콘, 제목, 설명, 다시 시도 버튼)이며 size에 따라 DataState와 같은 여백과 최소 높이(sm 176px, md 240px, lg 320px)를 씁니다. 카드처럼 작은 영역은 sm을 사용합니다. 재시도하면 오류 상태를 초기화하며 보고 콜백으로 프로젝트의 오류 수집을 연결합니다."
       },
       "native": {
         "figures": [
@@ -3942,11 +4010,45 @@
             "id": "default",
             "label": "기본 예제",
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "fallback",
+            "label": "대체 화면",
+            "description": "하위 렌더 오류 뒤의 기본 대체 화면입니다. 오류 아이콘, 제목, 설명, 다시 시도 버튼을 Empty와 같은 구성으로 표시합니다.",
+            "action": "오류 발생"
           }
         ],
-        "sizes": [],
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunErrorBoundary\":{\"props\":{\"size\":\"sm\"}}}"
+            },
+            "action": "오류 발생"
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunErrorBoundary\":{\"props\":{\"size\":\"md\"}}}"
+            },
+            "action": "오류 발생"
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunErrorBoundary\":{\"props\":{\"size\":\"lg\"}}}"
+            },
+            "action": "오류 발생"
+          }
+        ],
         "sizeDefault": "—",
-        "note": "하위 렌더 오류를 대체 화면으로 표시합니다. 재시도하면 오류 상태를 초기화하며 보고 콜백으로 프로젝트의 오류 수집을 연결합니다."
+        "note": "하위 렌더 오류를 대체 화면으로 표시합니다. 기본 대체 화면은 Empty와 같은 구성(오류 아이콘, 제목, 설명, 다시 시도 버튼)이며 size에 따라 DataState와 같은 여백과 최소 높이(sm 176px, md 240px, lg 320px)를 씁니다. 카드처럼 작은 영역은 sm을 사용합니다. 재시도하면 오류 상태를 초기화하며 보고 콜백으로 프로젝트의 오류 수집을 연결합니다."
       }
     }
   },

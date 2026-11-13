@@ -273,14 +273,6 @@
   --_kjun-extension-popover-padding: 16px;
   --_kjun-extension-popover-gap: 12px;
   --_kjun-extension-popover-header-padding-bottom: 8px;
-  --_kjun-extension-state-title-size: 1.25rem;
-  --_kjun-extension-state-description-size: 0.75rem;
-  --_kjun-extension-state-padding-sm: 24px;
-  --_kjun-extension-state-padding-md: 48px;
-  --_kjun-extension-state-padding-lg: 80px;
-  --_kjun-extension-state-minimum-heights-sm: 176px;
-  --_kjun-extension-state-minimum-heights-md: 240px;
-  --_kjun-extension-state-minimum-heights-lg: 320px;
   --_kjun-extension-fab-size: 56px;
   --_kjun-extension-fab-inset: 16px;
   --_kjun-extension-fab-icon-size: 24px;
@@ -674,6 +666,12 @@
   --_kjun-extension-skeleton-identity-height: 20px;
   --_kjun-extension-skeleton-list-avatar-size: 36px;
   --_kjun-extension-choice-minimum-height: 32px;
+  --_kjun-extension-state-padding-sm: 24px;
+  --_kjun-extension-state-padding-md: 48px;
+  --_kjun-extension-state-padding-lg: 80px;
+  --_kjun-extension-state-minimum-heights-sm: 176px;
+  --_kjun-extension-state-minimum-heights-md: 240px;
+  --_kjun-extension-state-minimum-heights-lg: 320px;
   --_kjun-extension-form-item-gap: 20px;
   --_kjun-extension-form-label-gap: 8px;
   --_kjun-extension-form-message-gap: 6px;

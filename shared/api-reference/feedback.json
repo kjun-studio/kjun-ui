@@ -155,11 +155,13 @@
   },
   "KjunErrorBoundary": {
     "vue3": [
-      "fallbackMessage"
+      "fallbackMessage",
+      "size"
     ],
     "react": [
       "children",
       "fallbackMessage",
+      "size",
       "fallback",
       "onError",
       "onReset"
@@ -167,6 +169,7 @@
     "native": [
       "children",
       "fallbackMessage",
+      "size",
       "fallback",
       "onError",
       "onReset"

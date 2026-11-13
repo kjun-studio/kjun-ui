@@ -73,8 +73,6 @@ await change('geometry-extensions', ({ extensions:e }) => {
   e.empty.iconSize=48; e.badge.dotSize=10;
   e.drawer.closeRadius={$ref:'radius.radius16'};
   e.alert.descriptionGap={$ref:'dimension.value12'}; e.alert.closeOffset={$ref:'dimension.value8'};
-  e.state.titleSize={$ref:'typography.pageTitle.fontSizePx'};
-  e.state.descriptionSize={$ref:'typography.body.fontSizePx'};
 });
 await change('geometry-kpi', ({ extensions:e }) => {
   e.kpiHero.md.paddingX={$ref:'dimension.value32'}; e.kpiHero.sm.paddingX={$ref:'dimension.value24'};

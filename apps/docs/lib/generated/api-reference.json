@@ -13725,6 +13725,15 @@
             "description": "",
             "summary": "기본 오류 대체 화면의 안내 문구입니다.",
             "source": "packages/vue3/src/data-state.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages.",
+            "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
+            "source": "packages/vue3/src/data-state.tsx"
           }
         ],
         "events": [
@@ -13781,6 +13790,14 @@
             "summary": "기본 오류 대체 화면의 안내 문구입니다."
           },
           {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages.",
+            "summary": "이 컴포넌트의 크기 규격을 선택합니다."
+          },
+          {
             "name": "fallback",
             "type": "ReactNode",
             "required": false,
@@ -13827,6 +13844,14 @@
             "default": "—",
             "description": "",
             "summary": "기본 오류 대체 화면의 안내 문구입니다."
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages.",
+            "summary": "이 컴포넌트의 크기 규격을 선택합니다."
           },
           {
             "name": "fallback",

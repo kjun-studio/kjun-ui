@@ -126,6 +126,8 @@ export const KjunDataState = defineComponent({
 
 const kjunErrorBoundaryProps = {
   fallbackMessage: { type: String, default: undefined },
+  /** The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages. */
+  size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
 } as const;
 export type KjunErrorBoundaryProps = ExtractPublicPropTypes<typeof kjunErrorBoundaryProps>;
 /**
@@ -156,12 +158,16 @@ export const KjunErrorBoundary = defineComponent({
     return () => {
       if (!failed.value) return slots.default?.();
       const fallback = slots.fallback?.({ reset });
-      return hasContent(fallback) ? fallback : (
-        <div class="kjun-error-fallback">
-          <h3>{props.fallbackMessage || m.value.somethingWentWrong}</h3>
-          <p>{m.value.retryHint}</p>
-          {/* It resets the boundary rather than reloading the page, like DataState's retry. */}
-          <KjunButton onClick={reset}>{m.value.retry}</KjunButton>
+      if (hasContent(fallback)) return fallback;
+      const compact = props.size === "sm";
+      // The default fallback: KjunEmpty's hierarchy inside DataState's padding and minimum height, so both read as one family.
+      return (
+        <div class="kjun-error-fallback kjun-state-actions" data-size={props.size}
+          style={css({ paddingBlock: tokens.extensions.state.padding[props.size], minHeight: tokens.extensions.state.minimumHeights[props.size] })}>
+          <KjunEmpty icon="alert-circle" size={compact ? "sm" : "md"} headingLevel={3} text={props.fallbackMessage || m.value.somethingWentWrong} description={m.value.retryHint}>
+            {/* Secondary like DataState's retry. It resets the boundary rather than reloading the page. */}
+            <KjunButton variant="secondary" size={compact ? "sm" : "md"} onClick={reset}>{m.value.retry}</KjunButton>
+          </KjunEmpty>
         </div>
       );
     };

@@ -25,10 +25,6 @@
       "gap": { "$ref": "dimension.value12" },
       "headerPaddingBottom": { "$ref": "dimension.value8" }
     },
-    "state": {
-      "titleSize": { "$ref": "typography.sectionTitle.fontSizePx" },
-      "descriptionSize": { "$ref": "typography.caption.fontSizePx" }
-    },
     "fab": {
       "size": { "$ref": "dimension.value56" },
       "inset": { "$ref": "dimension.value16" },

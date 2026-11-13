@@ -1,5 +1,5 @@
-import { useKjunMessages, KjunMessageContext } from "../../../shared/package-runtime/messages-context";
-import type { KjunMessageScope } from "../../../shared/package-runtime/messages";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { emptyGeometry } from "../../../shared/package-runtime/empty-geometry";
 import { typeStyle } from "./typography";
 import {
 tokens,
@@ -12,7 +12,7 @@ import { Component,useState,type ErrorInfo,type ReactNode } from "react";
 import { Platform,View,type ViewStyle } from "react-native";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import { DataStateContentContext } from "./data-state-context";
-import { KjunButton } from "./button";
+import { IconBase, KjunButton } from "./button";
 import {
 KjunAlert,
 KjunEmpty,
@@ -221,14 +221,36 @@ export function KjunDataState({
     </View>
   );
 }
-function BoundaryDescription() {
+type BoundarySize = "sm" | "md" | "lg";
+/** The default fallback: KjunEmpty's hierarchy inside DataState's padding and minimum height, so both read as one family. */
+function BoundaryFallback({ title, size, onRetry }: { title?: string; size: BoundarySize; onRetry: () => void }) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles();
-  return <KText style={{ ...typeStyle({ ...tokens.typography.caption, fontSizePx: tokens.extensions.state.descriptionSize }), color:colors.textSecondary, textAlign:"center" }}>{m.retryHint}</KText>;
+  const compact = size === "sm", g = emptyGeometry(compact ? "sm" : "md");
+  return (
+    <DataStateContentContext.Provider value="empty">
+    <View style={{ paddingVertical: tokens.extensions.state.padding[size], minHeight: tokens.extensions.state.minimumHeights[size], justifyContent: "center" }}>
+      <KjunEmpty
+        icon={<IconBase name="alert-circle" size={g.iconSize} color={colors.danger} strokeWidth={g.iconStroke} />}
+        size={compact ? "sm" : "md"}
+        headingLevel={3}
+        text={title || m.somethingWentWrong}
+        description={m.retryHint}
+      >
+        {/* Secondary like DataState's retry. It resets the boundary rather than reloading the page. */}
+        <KjunButton variant="secondary" size={compact ? "sm" : "md"} onPress={onRetry}>
+          {m.retry}
+        </KjunButton>
+      </KjunEmpty>
+    </View>
+    </DataStateContentContext.Provider>
+  );
 }
 export interface KjunErrorBoundaryProps {
   children: ReactNode;
   fallbackMessage?: string;
+  /** The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages. */
+  size?: "sm" | "md" | "lg";
   fallback?: ReactNode;
   onError?: (error: Error, info: ErrorInfo) => void;
   onReset?: () => void;
@@ -237,8 +259,6 @@ export class KjunErrorBoundary extends Component<
   KjunErrorBoundaryProps,
   { error: boolean }
 > {
-  static contextType = KjunMessageContext;
-  declare context: KjunMessageScope;
   state = { error: false };
   static getDerivedStateFromError() {
     return { error: true };
@@ -246,36 +266,13 @@ export class KjunErrorBoundary extends Component<
   componentDidCatch(error: Error, info: ErrorInfo) {
     this.props.onError?.(error, info);
   }
+  reset = () => {
+    this.setState({ error: false });
+    this.props.onReset?.();
+  };
   render() {
     return this.state.error
-      ? this.props.fallback || (
-          <View
-            style={{
-              alignItems: "center",
-              paddingVertical: tokens.dimension.value64,
-              paddingHorizontal: tokens.dimension.value24,
-              gap: tokens.dimension.value16,
-            }}
-          >
-            <View style={{ gap:tokens.dimension.value8, alignItems:"center" }}>
-            <KText style={{ ...typeStyle({ ...tokens.typography.sectionTitle, fontSizePx: tokens.extensions.state.titleSize }), textAlign:"center" }}>
-              {this.props.fallbackMessage || this.context.messages.somethingWentWrong}
-            </KText>
-            <BoundaryDescription />
-            </View>
-            {/* KjunButton hugs the start edge by default; the fallback centers it with its text.
-                It resets the boundary rather than reloading the page, like DataState's retry. */}
-            <KjunButton
-              style={{ alignSelf: "center" }}
-              onPress={() => {
-                this.setState({ error: false });
-                this.props.onReset?.();
-              }}
-            >
-              {this.context.messages.retry}
-            </KjunButton>
-          </View>
-        )
+      ? this.props.fallback || <BoundaryFallback title={this.props.fallbackMessage} size={this.props.size ?? "md"} onRetry={this.reset} />
       : this.props.children;
   }
 }

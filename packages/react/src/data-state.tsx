@@ -1,5 +1,3 @@
-import { KjunMessageContext } from "../../../shared/package-runtime/messages-context";
-import type { KjunMessageScope } from "../../../shared/package-runtime/messages";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens,
 advanceQueryDisplay,
@@ -180,9 +178,31 @@ export function KjunDataState({
     </div>
   );
 }
+type BoundarySize = "sm" | "md" | "lg";
+/** The default fallback: KjunEmpty's hierarchy inside DataState's padding and minimum height, so both read as one family. */
+function BoundaryFallback({ title, size, onRetry }: { title?: string; size: BoundarySize; onRetry: () => void }) {
+  const m = useKjunMessages();
+  const compact = size === "sm";
+  return (
+    <div
+      className="kjun-error-fallback kjun-state-actions"
+      data-size={size}
+      style={{ paddingBlock: tokens.extensions.state.padding[size], minHeight: tokens.extensions.state.minimumHeights[size] }}
+    >
+      <KjunEmpty icon="alert-circle" size={compact ? "sm" : "md"} headingLevel={3} text={title || m.somethingWentWrong} description={m.retryHint}>
+        {/* Secondary like DataState's retry. It resets the boundary rather than reloading the page. */}
+        <KjunButton variant="secondary" size={compact ? "sm" : "md"} onClick={onRetry}>
+          {m.retry}
+        </KjunButton>
+      </KjunEmpty>
+    </div>
+  );
+}
 export interface KjunErrorBoundaryProps {
   children: ReactNode;
   fallbackMessage?: string;
+  /** The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages. */
+  size?: "sm" | "md" | "lg";
   fallback?: ReactNode;
   onError?: (error: Error, info: ErrorInfo) => void;
   onReset?: () => void;
@@ -191,8 +211,6 @@ export class KjunErrorBoundary extends Component<
   KjunErrorBoundaryProps,
   { error: boolean }
 > {
-  static contextType = KjunMessageContext;
-  declare context: KjunMessageScope;
   state = { error: false };
   static getDerivedStateFromError() {
     return { error: true };
@@ -200,23 +218,13 @@ export class KjunErrorBoundary extends Component<
   componentDidCatch(error: Error, info: ErrorInfo) {
     this.props.onError?.(error, info);
   }
+  reset = () => {
+    this.setState({ error: false });
+    this.props.onReset?.();
+  };
   render() {
     return this.state.error
-      ? this.props.fallback || (
-          <div className="kjun-error-fallback">
-            <h3>{this.props.fallbackMessage || this.context.messages.somethingWentWrong}</h3>
-            <p>{this.context.messages.retryHint}</p>
-            <KjunButton
-              onClick={() => {
-                this.setState({ error: false });
-                this.props.onReset?.();
-              }}
-            >
-              {/* It resets the boundary rather than reloading the page, like DataState's retry. */}
-              {this.context.messages.retry}
-            </KjunButton>
-          </div>
-        )
+      ? this.props.fallback || <BoundaryFallback title={this.props.fallbackMessage} size={this.props.size ?? "md"} onRetry={this.reset} />
       : this.props.children;
   }
 }

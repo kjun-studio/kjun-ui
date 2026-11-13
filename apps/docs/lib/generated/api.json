@@ -7681,6 +7681,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages."
       }
     ],
     "events": [
@@ -7723,6 +7730,13 @@
         "description": ""
       },
       {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages."
+      },
+      {
         "name": "fallback",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
@@ -7758,6 +7772,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages."
       },
       {
         "name": "fallback",

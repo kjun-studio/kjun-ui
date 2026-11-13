@@ -217,6 +217,8 @@ export function buildVisualGuides(
             ...(name === "KjunDataState"
               ? { settings: { ...visual(name, { size: value }), empty: true } }
               : {}),
+            // The boundary's size shows only on its fallback, so each case raises the example's error first.
+            ...(name === "KjunErrorBoundary" ? { action: "오류 발생" } : {}),
           }));
           const figures = [
             {

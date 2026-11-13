@@ -105,6 +105,9 @@ export const kjunPropValues = Object.freeze({
     live: Object.freeze(["off","polite"] as const),
     size: Object.freeze(["sm","md"] as const),
   }),
+  KjunErrorBoundary: Object.freeze({
+    size: Object.freeze(["sm","md","lg"] as const),
+  }),
   KjunExecutionStatusBadge: Object.freeze({
     size: Object.freeze(["xs","sm","md","lg","xl"] as const),
   }),
