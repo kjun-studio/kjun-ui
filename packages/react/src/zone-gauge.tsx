@@ -1,10 +1,10 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
-import { distributionNumber, gaugePosition, gaugeSegments, gaugeSpoken, gaugeZoneIndex, type GaugeZone } from "../../../shared/package-runtime/distribution";
+import { distributionNumber, gaugeNeighbours, gaugePosition, gaugeSegments, gaugeSpoken, gaugeZoneIndex, type GaugeZone } from "../../../shared/package-runtime/distribution";
 import type { CSSProperties } from "react";
 
 export type KjunGaugeZone = GaugeZone;
 export interface KjunZoneGaugeProps {
-  /** Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value. */
+  /** Where the marker sits. null, undefined and non-finite numbers are missing: the axis stays, without zone colours or a marker, and 0 is a real value. */
   value: number | null | undefined;
   min?: number;
   max?: number;
@@ -37,6 +37,10 @@ export function KjunZoneGauge({ value, min = 0, max = 100, zones, label, ariaLab
   const valueText = ready ? formatValue ? formatValue(value) : distributionNumber(value, scope.intl) : missingText ?? "—";
   // One image for screen readers: the name, the value and the zone it falls in.
   const spoken = gaugeSpoken(ariaLabel ?? label, ready ? valueText : missingText ?? scope.messages.noData, zone?.label);
+  const position = ready ? gaugePosition(value, min, max) : 0, near = ready ? gaugeNeighbours(position, segments) : {};
+  const cover = (side: "before" | "after") => near[side] && (
+    <span className="kjun-zone-gauge-cover" data-side={side} style={{ "--_kjun-zone-gauge-cut": near[side]!.cut, "--_kjun-zone-gauge-gaps": near[side]!.gaps } as CSSProperties} />
+  );
   return (
     <div id={id} className={"kjun-zone-gauge" + (className ? " " + className : "")} data-size={size} data-state={ready ? "ready" : "missing"}
       role="img" aria-label={spoken} style={style}>
@@ -46,15 +50,18 @@ export function KjunZoneGauge({ value, min = 0, max = 100, zones, label, ariaLab
           {(showValue || !ready) && <span className="kjun-zone-gauge-value">{valueText}{zone?.label ? " · " + zone.label : ""}</span>}
         </div>
       )}
-      {ready && (
-        <div className="kjun-zone-gauge-axis" aria-hidden="true">
+      {/* A missing value keeps the axis and the zone names, so the gauge holds its height in a list; it loses the colours and the marker. */}
+      {segments.length > 0 && (
+        <div className="kjun-zone-gauge-axis" aria-hidden="true" style={{ "--_kjun-zone-gauge-position": position / 100, "--_kjun-zone-gauge-count": segments.length } as CSSProperties}>
           <div className="kjun-zone-gauge-track">
-            {segments.map((segment, i) => <span key={i} className="kjun-zone-gauge-zone" data-current={segment === zone || undefined} style={{ flexGrow: segment.share, background: segment.color }} />)}
+            {segments.map((segment, i) => <span key={i} className="kjun-zone-gauge-zone" data-current={segment === zone || undefined} style={{ flexGrow: segment.share, background: ready ? segment.color : undefined }} />)}
           </div>
-          <span className="kjun-zone-gauge-marker" style={{ "--_kjun-zone-gauge-position": gaugePosition(value, min, max) / 100 } as CSSProperties} />
+          {cover("before")}
+          {cover("after")}
+          {ready && <span className="kjun-zone-gauge-marker" />}
         </div>
       )}
-      {ready && zoneLabels && segments.some(segment => segment.label) && (
+      {segments.length > 0 && zoneLabels && segments.some(segment => segment.label) && (
         <div className="kjun-zone-gauge-labels" aria-hidden="true">
           {segments.map((segment, i) => <span key={i} style={{ flexGrow: segment.share }}>{segment.label}</span>)}
         </div>

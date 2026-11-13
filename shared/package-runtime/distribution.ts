@@ -63,6 +63,35 @@ export function gaugeZoneIndex(value: number, segments: readonly GaugeSegment[])
   return index < 0 ? segments.length - 1 : index;
 }
 
+export interface GaugeBoundary {
+  /** The share of the axis (0–1) before the boundary. */
+  cut: number;
+  /** How many gaps come before the boundary's own. */
+  gaps: number;
+}
+/** The zone boundaries on each side of a marker at `position` (0–100): the last at or before it and the first after it. */
+export function gaugeNeighbours(position: number, segments: readonly GaugeSegment[]): { before?: GaugeBoundary; after?: GaugeBoundary } {
+  let total = 0, before: GaugeBoundary | undefined, after: GaugeBoundary | undefined;
+  for (let i = 0; i < segments.length - 1; i++) {
+    total += segments[i].share;
+    if (total <= position) before = { cut: total / 100, gaps: i };
+    else if (!after) after = { cut: total / 100, gaps: i };
+  }
+  return { before, after };
+}
+export interface GaugeGeometry { segmentGap: number; markerWidth: number; markerRing: number; minSliver: number }
+/**
+ * The sliver of a zone left between a boundary and the marker's ring, in the axis's own length units: where it starts
+ * and how long it is. null unless it is thinner than the minimum, which is when it is covered.
+ */
+export function gaugeSliver(width: number, position: number, count: number, boundary: GaugeBoundary | undefined, side: "before" | "after", geometry: GaugeGeometry) {
+  if (!boundary || !(width > 0)) return null;
+  const usable = width - (count - 1) * geometry.segmentGap, marker = (width - geometry.markerWidth) * position / 100;
+  const start = side === "before" ? usable * boundary.cut + (boundary.gaps + 1) * geometry.segmentGap : marker + geometry.markerWidth + geometry.markerRing;
+  const size = side === "before" ? marker - geometry.markerRing - start : usable * boundary.cut + boundary.gaps * geometry.segmentGap - start;
+  return size > 0 && size < geometry.minSliver ? { start, size } : null;
+}
+
 export function gaugeSpoken(label: string | undefined, valueText: string, zoneLabel?: string) {
   return [label, valueText, zoneLabel].filter(Boolean).join(", ");
 }

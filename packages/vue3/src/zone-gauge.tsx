@@ -1,6 +1,6 @@
 import { type ExtractPublicPropTypes, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
-import { distributionNumber, gaugePosition, gaugeSegments, gaugeSpoken, gaugeZoneIndex, type GaugeZone } from "../../../shared/package-runtime/distribution";
+import { distributionNumber, gaugeNeighbours, gaugePosition, gaugeSegments, gaugeSpoken, gaugeZoneIndex, type GaugeZone } from "../../../shared/package-runtime/distribution";
 import { useKjunMessageScope } from "./runtime/messages";
 
 export type KjunGaugeZone = GaugeZone;
@@ -39,6 +39,10 @@ export const KjunZoneGauge = defineComponent({
       const valueText = ready ? props.formatValue ? props.formatValue(value as number) : distributionNumber(value as number, scope.value.intl) : missingText ?? "—";
       // One image for screen readers: the name, the value and the zone it falls in.
       const spoken = gaugeSpoken(props.ariaLabel ?? label, ready ? valueText : missingText ?? scope.value.messages.noData, zone?.label);
+      const position = ready ? gaugePosition(value as number, props.min, props.max) : 0, near = ready ? gaugeNeighbours(position, segments) : {};
+      const cover = (side: "before" | "after") => near[side] && (
+        <span class="kjun-zone-gauge-cover" data-side={side} style={{ "--_kjun-zone-gauge-cut": String(near[side]!.cut), "--_kjun-zone-gauge-gaps": String(near[side]!.gaps) }} />
+      );
       return (
         <div class="kjun-zone-gauge" data-size={props.size} data-state={ready ? "ready" : "missing"} role="img" aria-label={spoken}>
           {(label || props.showValue || !ready) && (
@@ -47,15 +51,18 @@ export const KjunZoneGauge = defineComponent({
               {(props.showValue || !ready) && <span class="kjun-zone-gauge-value">{valueText}{zone?.label ? " · " + zone.label : ""}</span>}
             </div>
           )}
-          {ready && (
-            <div class="kjun-zone-gauge-axis" aria-hidden="true">
+          {/* Like React: a missing value keeps the axis and the zone names, without colours or a marker. */}
+          {segments.length > 0 && (
+            <div class="kjun-zone-gauge-axis" aria-hidden="true" style={{ "--_kjun-zone-gauge-position": String(position / 100), "--_kjun-zone-gauge-count": String(segments.length) }}>
               <div class="kjun-zone-gauge-track">
-                {segments.map((segment, i) => <span key={i} class="kjun-zone-gauge-zone" data-current={segment === zone || undefined} style={{ flexGrow: segment.share, background: segment.color }} />)}
+                {segments.map((segment, i) => <span key={i} class="kjun-zone-gauge-zone" data-current={segment === zone || undefined} style={{ flexGrow: segment.share, background: ready ? segment.color : undefined }} />)}
               </div>
-              <span class="kjun-zone-gauge-marker" style={{ "--_kjun-zone-gauge-position": String(gaugePosition(value as number, props.min, props.max) / 100) }} />
+              {cover("before")}
+              {cover("after")}
+              {ready && <span class="kjun-zone-gauge-marker" />}
             </div>
           )}
-          {ready && props.zoneLabels && segments.some(segment => segment.label) && (
+          {segments.length > 0 && props.zoneLabels && segments.some(segment => segment.label) && (
             <div class="kjun-zone-gauge-labels" aria-hidden="true">
               {segments.map((segment, i) => <span key={i} style={{ flexGrow: segment.share }}>{segment.label}</span>)}
             </div>

@@ -1,5 +1,6 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
-import { distributionNumber, gaugePosition, gaugeSegments, gaugeSpoken, gaugeZoneIndex, type GaugeZone } from "../../../shared/package-runtime/distribution";
+import { distributionNumber, gaugeNeighbours, gaugePosition, gaugeSliver, gaugeSegments, gaugeSpoken, gaugeZoneIndex, type GaugeZone } from "../../../shared/package-runtime/distribution";
+import { useState } from "react";
 import { I18nManager, Platform, View, type ColorValue, type StyleProp, type ViewStyle } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
 import { KText } from "./internal";
@@ -46,6 +47,9 @@ export function KjunZoneGauge({ value, min = 0, max = 100, zones, label, ariaLab
   const spoken = gaugeSpoken(ariaLabel ?? label, ready ? valueText : missingText ?? scope.messages.noData, zone?.label);
   const track = size === "sm" ? geometry.smTrackHeight : geometry.trackHeight, position = ready ? gaugePosition(value, min, max) : 0;
   const end = tokens.radius.radius9999, neutral = colors.switchTrack ?? colors.border;
+  // Like Web: a zone sliver thinner than the minimum between a boundary and the marker's ring is covered.
+  const [width, setWidth] = useState(0), near = ready ? gaugeNeighbours(position, segments) : {};
+  const covers = (["before", "after"] as const).map(side => ({ side, sliver: gaugeSliver(width, position, segments.length, near[side], side, geometry) }));
   return (
     <View accessible accessibilityRole="image" accessibilityLabel={spoken} style={[{ minWidth: 0 }, style]}>
       <View {...hiddenParts}>
@@ -55,22 +59,26 @@ export function KjunZoneGauge({ value, min = 0, max = 100, zones, label, ariaLab
             {(showValue || !ready) && <KText style={{ ...typeStyle("label"), fontVariant: ["tabular-nums"], color: ready ? colors.text : colors.textTertiary }}>{valueText}{zone?.label ? " · " + zone.label : ""}</KText>}
           </View>
         )}
-        {ready && (
-          <View style={{ paddingVertical: geometry.markerOverhang }}>
+        {/* Like Web: a missing value keeps the axis and the zone names, without colours or a marker. */}
+        {segments.length > 0 && (
+          <View style={{ paddingVertical: geometry.markerOverhang }} onLayout={event => setWidth(event.nativeEvent.layout.width)}>
             <View style={{ flexDirection: "row", gap: geometry.segmentGap, height: track }}>
               {segments.map((segment, i) => (
-                <View key={i} style={{ flexGrow: segment.share, flexBasis: 0, minWidth: 0, backgroundColor: (segment.color as ColorValue | undefined) ?? neutral,
+                <View key={i} style={{ flexGrow: segment.share, flexBasis: 0, minWidth: 0, backgroundColor: (ready ? segment.color as ColorValue | undefined : undefined) ?? neutral,
                   ...(i === 0 ? { borderTopStartRadius: end, borderBottomStartRadius: end } : {}),
                   ...(i === segments.length - 1 ? { borderTopEndRadius: end, borderBottomEndRadius: end } : {}) }} />
               ))}
             </View>
+            {covers.map(({ side, sliver }) => sliver && (
+              <View key={side} style={{ position: "absolute", top: geometry.markerOverhang, bottom: geometry.markerOverhang, start: sliver.start, width: sliver.size, backgroundColor: colors.surface }} />
+            ))}
             {/* The marker stays inside the axis at both ends, with a ring in the surface colour over any zone colour. */}
-            <View style={{ position: "absolute", top: 0, bottom: 0, start: `${position}%`, marginStart: -geometry.markerWidth * position / 100,
+            {ready && <View style={{ position: "absolute", top: 0, bottom: 0, start: `${position}%`, marginStart: -geometry.markerWidth * position / 100,
               width: geometry.markerWidth, borderRadius: end, backgroundColor: colors.text,
-              boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: geometry.markerRing, color: colors.surface }] } as ViewStyle} />
+              boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: geometry.markerRing, color: colors.surface }] } as ViewStyle} />}
           </View>
         )}
-        {ready && zoneLabels && segments.some(segment => segment.label) && (
+        {segments.length > 0 && zoneLabels && segments.some(segment => segment.label) && (
           <View style={{ flexDirection: "row", gap: geometry.segmentGap, marginTop: geometry.labelsGap }}>
             {segments.map((segment, i) => (
               <KText key={i} numberOfLines={1} style={{ ...typeStyle("caption"), color: colors.textSecondary, flexGrow: segment.share, flexBasis: 0, minWidth: 0,

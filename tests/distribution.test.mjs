@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  distributionNumber, gaugePosition, gaugeSegments, gaugeSpoken, gaugeZoneIndex, stackedLegend, stackedShares, stackedSpoken, stackedState, stackedWeights,
+  distributionNumber, gaugeNeighbours, gaugePosition, gaugeSliver, gaugeSegments, gaugeSpoken, gaugeZoneIndex, stackedLegend, stackedShares, stackedSpoken, stackedState, stackedWeights,
 } from '../shared/package-runtime/distribution.ts';
 
 const zones = [{ to: 30, label: '저평가' }, { to: 70, label: '중립' }, { to: 100, label: '고평가' }];
@@ -107,4 +107,22 @@ test('the legend keeps every item, and the spoken text follows the locale', () =
   assert.deepEqual(tiny.map(entry => entry.percent), ['100%', '<1%', '<1%']);
   assert.equal(distributionNumber(1234.5, 'de-DE'), '1.234,5');
   assert.equal(distributionNumber(-0, 'en-US'), '0');
+});
+
+test('a zone sliver thinner than the minimum between a boundary and the marker ring is covered', () => {
+  const segments = gaugeSegments(zones, 0, 100), geometry = { segmentGap: 2, markerWidth: 6, markerRing: 2, minSliver: 4 };
+  // The boundaries on each side of 72: 70 behind it (after one gap) and none ahead.
+  assert.deepEqual(gaugeNeighbours(72, segments), { before: { cut: 0.7, gaps: 1 }, after: undefined });
+  assert.deepEqual(gaugeNeighbours(10, segments), { before: undefined, after: { cut: 0.3, gaps: 0 } });
+  // 600 wide: the zone starts at 596 * 0.7 + 4 = 421.2. At 72 the ring starts at 594 * 0.72 - 2 = 425.68, 4.48 away: left alone.
+  assert.equal(gaugeSliver(600, 72, 3, { cut: 0.7, gaps: 1 }, 'before', geometry), null);
+  // At 71.5 it starts at 422.71, 1.51 away: covered from the boundary to the ring.
+  const near = gaugeSliver(600, 71.5, 3, { cut: 0.7, gaps: 1 }, 'before', geometry);
+  assert.ok(Math.abs(near.start - 421.2) < 1e-6 && Math.abs(near.size - 1.51) < 1e-6);
+  // Far from a boundary, under the marker, or unmeasured: nothing to cover.
+  assert.equal(gaugeSliver(600, 90, 3, { cut: 0.7, gaps: 1 }, 'before', geometry), null);
+  assert.equal(gaugeSliver(600, 70, 3, { cut: 0.7, gaps: 1 }, 'before', geometry), null);
+  assert.equal(gaugeSliver(0, 71.5, 3, { cut: 0.7, gaps: 1 }, 'before', geometry), null);
+  const ahead = gaugeSliver(600, 28.5, 3, { cut: 0.3, gaps: 0 }, 'after', geometry);
+  assert.ok(ahead && ahead.size > 0 && ahead.size < 4);
 });

@@ -148,7 +148,7 @@ const distributionRoot = {
 };
 const distributionSummaries = (platform) => ({
   KjunZoneGauge: {
-    value: { type: "number | null", summary: "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음으로 보고 축을 그리지 않습니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다." },
+    value: { type: "number | null", summary: "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음입니다. 축과 구간 이름은 그대로 두고 구간 색과 표식만 뺍니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다." },
     min: { default: "0", summary: "축의 시작 값입니다." },
     max: { default: "100", summary: "축의 끝 값입니다. min보다 커야 하며, 그렇지 않으면 축을 그리지 않습니다." },
     zones: { type: "{ to: number; label?: string; color?: " + (platform === "native" ? "ColorValue" : "string") + " }[]", ...detail("축을 나누는 구간 목록입니다.", { "항목 필드": "to: 구간이 끝나는 값(앞 구간의 끝 또는 min에서 시작), label?: 구간 이름, color?: 앱이 정하는 구간 색", "규칙": "to 순서로 정렬해 그리고 축 밖은 잘라 냅니다. 경계에 놓인 값은 위쪽 구간에 속합니다. 마지막 구간이 max에 닿지 않으면 나머지를 이름 없는 중립 구간으로 그립니다.", "색": "KJUN은 색을 정하지 않습니다. color가 없는 구간은 중립 트랙색(switch-track)입니다. 색만으로 구분하지 않도록 label을 함께 주세요." }) },

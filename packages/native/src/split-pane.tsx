@@ -133,9 +133,11 @@ export function KjunSplitPane({ direction = "horizontal", size, defaultSize = 0.
             },
           } : {})}
           style={{ flex: 1, alignItems: "center", justifyContent: "center", borderRadius: tokens.radius.radius8,
-            ...(Platform.OS === "web" ? ({ outlineStyle: "solid", outlineWidth: focused ? tokens.states.focus.width : 0,
-              outlineOffset: -tokens.states.focus.width, outlineColor: colors.focusRing, cursor: "inherit" } as unknown as ViewStyle) : {}) }}>
+            ...(Platform.OS === "web" ? ({ outlineWidth: 0, cursor: "inherit" } as unknown as ViewStyle) : {}) }}>
+          {/* Like Web: the keyboard ring goes round the bar, not the whole handle. */}
           <View pointerEvents="none" style={{ [across]: barLength, [along]: geometry.barWidth, borderRadius: tokens.radius.radius9999,
+            ...(Platform.OS === "web" ? ({ outlineStyle: "solid", outlineWidth: focused ? tokens.states.focus.width : 0,
+              outlineOffset: tokens.states.focus.offset, outlineColor: colors.focusRing } as unknown as ViewStyle) : {}),
             backgroundColor: disabled ? colors.border : dragging || focused ? colors.text : hovered ? colors.textTertiary : colors.borderStrong ?? colors.border }} />
         </Pressable>
       </View>

@@ -891,12 +891,13 @@
   --_kjun-extension-zone-gauge-marker-width: 6px;
   --_kjun-extension-zone-gauge-marker-overhang: 6px;
   --_kjun-extension-zone-gauge-marker-ring: 2px;
+  --_kjun-extension-zone-gauge-min-sliver: 4px;
   --_kjun-extension-zone-gauge-caption-gap: 8px;
   --_kjun-extension-zone-gauge-labels-gap: 6px;
   --_kjun-extension-stacked-bar-track-height: 10px;
   --_kjun-extension-stacked-bar-sm-track-height: 8px;
   --_kjun-extension-stacked-bar-segment-gap: 2px;
-  --_kjun-extension-stacked-bar-min-segment: 4px;
+  --_kjun-extension-stacked-bar-min-segment: 8px;
   --_kjun-extension-stacked-bar-caption-gap: 8px;
   --_kjun-extension-stacked-bar-legend-top: 8px;
   --_kjun-extension-stacked-bar-legend-gap: 16px;

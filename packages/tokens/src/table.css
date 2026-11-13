@@ -78,12 +78,21 @@
   text-align: center;
 }
 /* Move buttons sit side by side in the row's last column. */
+/* The column is as wide as its two buttons and ends at the row's end edge, like a cell's text. */
 .kjun-table .kjun-table-action-cell.kjun-table-reorder-cell {
-  width: auto;
+  width: calc(2 * var(--_kjun-geometry-button-heights-sm) + var(--_kjun-extension-list-actions-gap) + 2 * var(--_kjun-geometry-table-cell-padding-compact-x));
+  padding-inline: var(--_kjun-geometry-table-cell-padding-compact-x);
+  text-align: end;
   white-space: nowrap;
 }
+/* A cell over two or more columns is a note about them, not one column's value: centred and quieter. */
+.kjun-table td.kjun-table-merged {
+  color: var(--_kjun-color-text-secondary);
+}
+/* The note starts where the cells' text starts. */
 .kjun-table-reorder-note {
   margin: var(--_kjun-geometry-dimension-value8) 0 0;
+  padding-inline: var(--_kjun-geometry-table-cell-padding-regular-x);
   font-size: var(--_kjun-type-caption-size);
   line-height: var(--_kjun-type-caption-line);
   color: var(--_kjun-color-text-tertiary);

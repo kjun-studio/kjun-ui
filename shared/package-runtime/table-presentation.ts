@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { getValue } from "./table-model";
 import type { TableColumn, TableCardSection, TableProps, TableSort, useTableModel } from "./table";
 import { formatSummary, summarizeColumn, type TableRowGroup } from "./table-groups";
-import { tableCoveredKeys } from "./table-columns";
+import { tableCoveredKeys, tableSpans } from "./table-columns";
 
 export function tablePresentation<Row extends object>(props: TableProps<Row, unknown>, mobile: boolean) {
   const { columns, responsive = null, mobileColumns = [], cardTitle, cardSubtitle, cardSections = [], cardLayout = "stacked", cardHighlight } = props;
@@ -42,7 +42,17 @@ export function tablePresentation<Row extends object>(props: TableProps<Row, unk
     /** The actions column in the card's footer row (an inline one sits in the header instead). */
     footerActions: !tiles && actions && !actions.inlineInCard ? actions : undefined,
     /** One footer row holds the expand toggle and the row actions. */
-    cardFooter: !tiles && (!!props.expandable || !!props.reorderable || !!(actions && !actions.inlineInCard)),
+    cardFooter: !tiles && (!!props.expandable || !!(actions && !actions.inlineInCard)),
+    /** A reorderable card's move buttons end the title line unless a footer row already exists; then they join it. */
+    headerMover: !tiles && !!props.reorderable && !props.expandable && !(actions && !actions.inlineInCard),
+    /**
+     * How a field reads in a card. A cell that spans other columns in this row is a note about them, not the first
+     * column's value: it takes the whole line under its section's name (a column group's label), or no name without one.
+     */
+    cardField(row: Row, section: TableCardSection, column: (typeof bodyColumns)[number]) {
+      const merged = !!props.cellSpan && tableSpans(bodyColumns, other => props.cellSpan!(row, other))[bodyColumns.indexOf(column)] > 1;
+      return { label: merged ? section.label ?? "" : column.label, full: merged || !!column.fullWidthInCard };
+    },
     /** A section's field arrangement: rows cards put every field on a label-value line. */
     cardBody(section: TableCardSection) { return cardLayout === "rows" ? "rows" : section.layout || "grid"; },
     columnsForSection(row: Row, section: TableCardSection) {
@@ -129,7 +139,7 @@ export interface TableGroupingProps<Row extends object> {
 }
 
 /** Card parts: a card value starts at its label (cardValue) or ends a label-value line (cardRowValue); tiles use smaller titles and highlights. */
-export type TableCellRole = "title" | "listTitle" | "listMeta" | "listValue" | "cardValue" | "cardRowValue" | "cardSubtitle" | "cardHighlight" | "tileTitle" | "tileHighlight";
+export type TableCellRole = "title" | "listTitle" | "listMeta" | "listValue" | "cardValue" | "cardRowValue" | "cardSubtitle" | "cardHighlight" | "tileTitle" | "tileHighlight" | "merged";
 /** A narrow layout's title opens the row when the row is clickable, so a cell drawn there is then never a button of its own. */
 export const tableOpenerRole = (role?: TableCellRole) => role === "title" || role === "listTitle" || role === "tileTitle";
 

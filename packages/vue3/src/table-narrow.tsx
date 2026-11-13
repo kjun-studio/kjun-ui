@@ -82,7 +82,7 @@ function cardSkeleton(layout: TableLayout, key: number) {
 }
 
 export function tableCards(c: TableNarrowContext) {
-  const { title, subtitle, highlight, badges, inline, sections, columnsForSection, cardLayout, tiles, footerActions, cardFooter, cardBody } = c.layout;
+  const { title, subtitle, highlight, badges, inline, sections, columnsForSection, cardLayout, tiles, footerActions, cardFooter, headerMover, cardField, cardBody } = c.layout;
   const { state } = c;
   const stop = (event: MouseEvent) => event.stopPropagation();
   const badgeList = (row: Row, i: number) => badges.length
@@ -113,8 +113,8 @@ export function tableCards(c: TableNarrowContext) {
             {subtitle && <div class="kjun-table-card-subtitle">{c.cell(subtitle, row, i)}</div>}
           </div>
           {badgeList(row, i)}
-          {inline.length > 0 && (
-            <div class="kjun-table-card-header-actions" onClick={stop}>{inline.map(col => <span key={col.key}>{c.cell(col, row, i)}</span>)}</div>
+          {(inline.length > 0 || (c.mover && headerMover)) && (
+            <div class="kjun-table-card-header-actions" onClick={stop}>{inline.map(col => <span key={col.key}>{c.cell(col, row, i)}</span>)}{c.mover && headerMover && c.mover(row, i)}</div>
           )}
         </div>,
         highlight && (
@@ -128,13 +128,16 @@ export function tableCards(c: TableNarrowContext) {
           return cols.length ? (
             <div key={section.key || index} class="kjun-table-card-section" role={section.label ? "group" : undefined} aria-label={section.label || undefined}>
               <div class={"kjun-table-card-body " + (cardBody(section) === "rows" ? "kjun-table-card-body--rows" : "kjun-table-card-body--" + cardBody(section))}>
-                {cols.map(col => (
-                  <div key={col.key} class={"kjun-table-card-field" + (col.fullWidthInCard ? " kjun-table-card-field--full" : "") +
-                    (section.labelAlign === "right" ? " kjun-table-card-field--label-right" : "")}>
-                    <span class="kjun-table-card-label">{col.label}</span>
-                    <span class="kjun-table-card-value">{c.cell(col, row, i)}</span>
-                  </div>
-                ))}
+                {cols.map(col => {
+                  const field = cardField(row, section, col);
+                  return (
+                    <div key={col.key} class={"kjun-table-card-field" + (field.full ? " kjun-table-card-field--full" : "") +
+                      (section.labelAlign === "right" ? " kjun-table-card-field--label-right" : "")}>
+                      {field.label && <span class="kjun-table-card-label">{field.label}</span>}
+                      <span class="kjun-table-card-value">{c.cell(col, row, i)}</span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ) : null;
@@ -143,7 +146,7 @@ export function tableCards(c: TableNarrowContext) {
           <div class="kjun-table-card-footer">
             {c.expandable && <div class="kjun-table-card-expand-toggle">{c.expand(row, i)}</div>}
             {footerActions && <div class="kjun-table-card-actions" onClick={stop}>{c.cell(footerActions, row, i)}</div>}
-            {c.mover && <div class="kjun-table-card-actions" onClick={stop}>{c.mover(row, i)}</div>}
+            {c.mover && !headerMover && <div class="kjun-table-card-actions" onClick={stop}>{c.mover(row, i)}</div>}
           </div>
         ),
         c.expandable && state.expanded.includes(state.key(row, i)) && <div class="kjun-table-card-expand-content">{c.renderExpand(row, i)}</div>,

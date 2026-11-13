@@ -21730,7 +21730,7 @@
         "type": "readonly import(\"/workspace/shared/package-runtime/distribution\").StackedItem[] | null | undefined",
         "required": true,
         "default": "—",
-        "description": "The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail."
+        "description": "The parts in order. No items, or only missing values, draws the empty rail with the missing mark and no legend; values that add up to 0 draw the empty rail."
       },
       {
         "name": "label",
@@ -25405,7 +25405,7 @@
         "type": "number | null | undefined",
         "required": true,
         "default": "—",
-        "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value."
+        "description": "Where the marker sits. null, undefined and non-finite numbers are missing: the axis stays, without zone colours or a marker, and 0 is a real value."
       },
       {
         "name": "min",

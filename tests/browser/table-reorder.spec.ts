@@ -38,7 +38,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       if (web) await expect(down(page, 'sorted', '알파')).toHaveAccessibleDescription('정렬하거나 묶은 동안에는 순서를 바꿀 수 없습니다.');
     });
 
-    test('narrow cards carry the move buttons in their footer', async ({ page }) => {
+    test('narrow cards carry the move buttons at the end of the title line', async ({ page }) => {
       await page.setViewportSize({ width: 390, height: 1400 });
       await openFixture(page, platform, '', 'table-reorder');
       await up(page, 'cards', '찰리').click();

@@ -39,7 +39,8 @@ export const KjunStackedBar = defineComponent({
               {missing && <span class="kjun-stacked-bar-value">{missingText ?? "—"}</span>}
             </div>
           )}
-          {!missing && (
+          {/* Missing data keeps the empty rail, so the bar holds its place in a list. */}
+          {(
             <div class="kjun-stacked-bar-track" aria-hidden="true">
               {list.map((item, i) => entries[i].drawn && <span key={item.key ?? "i" + i} class="kjun-stacked-bar-segment" style={{ flexGrow: weights[i], background: item.color }} />)}
             </div>

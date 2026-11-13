@@ -12,10 +12,10 @@ const painted = (page: Page, id: string, color: string) => page.getByTestId(id).
     return { x: box.left - left, width: box.width, height: box.height };
   }).sort((a, b) => b.width - a.width);
 }, color);
-// The gauge marker is the only absolutely placed part.
+// The gauge marker is the absolutely placed part with a width; a sliver cover beside it has none unless it covers.
 const marker = (page: Page, id: string) => page.getByTestId(id).evaluate(root => {
   const left = root.getBoundingClientRect().left;
-  return [...root.querySelectorAll('*')].filter(el => getComputedStyle(el).position === 'absolute').map(el => {
+  return [...root.querySelectorAll('*')].filter(el => getComputedStyle(el).position === 'absolute' && el.getBoundingClientRect().width > 0 && !el.hasAttribute('data-side')).map(el => {
     const box = el.getBoundingClientRect();
     return { x: box.left - left, width: box.width, height: box.height };
   });
@@ -46,14 +46,17 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(pin.x).toBeCloseTo(594 * 0.72, 0);
     });
 
-    test('a value of zero keeps its marker at the start, and missing data draws no axis', async ({ page }) => {
+    test('a value of zero keeps its marker at the start, and missing data keeps the axis without colours or a marker', async ({ page }) => {
       const [pin] = await marker(page, 'gauge-zero');
       expect(pin.x).toBeCloseTo(0, 0);
       await expect(image(page, 'gauge-zero')).toHaveAttribute('aria-label', 'PER 백분위, 0, 저평가');
       expect(await marker(page, 'gauge-missing')).toHaveLength(0);
       expect(await painted(page, 'gauge-missing', blue)).toHaveLength(0);
       await expect(page.getByTestId('gauge-missing').getByText('—', { exact: true })).toBeVisible();
-      await expect(page.getByTestId('gauge-missing').getByText('저평가', { exact: true })).toHaveCount(0);
+      await expect(page.getByTestId('gauge-missing').getByText('저평가', { exact: true })).toBeVisible();
+      // The gauge keeps its height with or without a value.
+      const withValue = (await page.getByTestId('gauge').boundingBox())!, without = (await page.getByTestId('gauge-missing').boundingBox())!;
+      expect(without.height).toBeCloseTo(withValue.height, 0);
       await expect(image(page, 'gauge-missing')).toHaveAttribute('aria-label', 'PER 백분위, 데이터가 없습니다');
     });
 
@@ -93,7 +96,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(image(page, 'stacked-zero-item')).toHaveAttribute('aria-label', '애널리스트 의견: 강세 7 (70%), 중립 3 (30%), 약세 0 (0%)');
     });
 
-    test('an all-zero total keeps the empty rail and the legend, and missing data draws neither', async ({ page }) => {
+    test('an all-zero total keeps the empty rail and the legend, and missing data keeps the rail alone', async ({ page }) => {
       // Empty: no red segment (only the swatch), the legend still lists the parts.
       expect(await painted(page, 'stacked-empty', red)).toHaveLength(1);
       await expect(page.getByTestId('stacked-empty').getByText('강세 0 · 0%', { exact: true })).toBeVisible();

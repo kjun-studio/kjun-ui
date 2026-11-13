@@ -85,6 +85,9 @@ for (const platform of ['react', 'vue3', 'native']) {
       // Rows a and c show both fields of the group; row b shows only the spanning one.
       await expect(cards.getByText('영업이익', { exact: true })).toHaveCount(2);
       await expect(cards.getByText('실적 발표 전', { exact: true })).toBeVisible();
+      // The merged cell reads under the group's name, not the first column's.
+      await expect(cards.getByText('매출', { exact: true })).toHaveCount(2);
+      await expect(cards.getByText('실적', { exact: true })).toHaveCount(1);
       await cards.getByRole('button', { name: '마바물산 목표가, 근거 보기', exact: true }).click();
       await expect(events(page)).toHaveText('cell:c');
     });

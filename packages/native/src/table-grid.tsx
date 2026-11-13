@@ -94,7 +94,8 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
               justifyContent: "center",
             }}
           >
-            {cell(col, row, i)}
+            {/* Like Web: a cell over two or more columns is centred and quieter. */}
+            {cell(col, row, i, spans[c] > 1 ? "merged" : undefined)}
           </View>
         ))}
         {expandable && (

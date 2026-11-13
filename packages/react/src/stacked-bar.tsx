@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 
 export type KjunStackedBarItem = StackedItem;
 export interface KjunStackedBarProps {
-  /** The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail. */
+  /** The parts in order. No items, or only missing values, draws the empty rail with the missing mark and no legend; values that add up to 0 draw the empty rail. */
   items: readonly StackedItem[] | null | undefined;
   /** Shown above the bar and read first. */
   label?: string;
@@ -37,7 +37,8 @@ export function KjunStackedBar({ items, label, ariaLabel, size = "md", legend = 
           {missing && <span className="kjun-stacked-bar-value">{missingText ?? "—"}</span>}
         </div>
       )}
-      {!missing && (
+      {/* Missing data keeps the empty rail, so the bar holds its place in a list. */}
+      {(
         <div className="kjun-stacked-bar-track" aria-hidden="true">
           {list.map((item, i) => entries[i].drawn && <span key={item.key ?? "i" + i} className="kjun-stacked-bar-segment" style={{ flexGrow: weights[i], background: item.color }} />)}
         </div>

@@ -49,8 +49,28 @@
 }
 /* The marker overhangs the track on both sides, so the axis keeps that room above and below. */
 .kjun-zone-gauge-axis {
+  --_kjun-zone-gauge-marker-start: calc((100% - var(--_kjun-extension-zone-gauge-marker-width)) * var(--_kjun-zone-gauge-position));
+  --_kjun-zone-gauge-usable: calc(100% - (var(--_kjun-zone-gauge-count) - 1) * var(--_kjun-extension-zone-gauge-segment-gap));
   position: relative;
   padding-block: var(--_kjun-extension-zone-gauge-marker-overhang);
+}
+/* A marker just past a zone boundary leaves a sliver of the zone between the boundary and its ring. A sliver thinner
+   than the minimum is covered in the surface colour; a wider one is left alone (the width works out to 0). */
+.kjun-zone-gauge-cover {
+  position: absolute;
+  top: var(--_kjun-extension-zone-gauge-marker-overhang);
+  bottom: var(--_kjun-extension-zone-gauge-marker-overhang);
+  inset-inline-start: var(--_kjun-zone-gauge-cover-start);
+  width: max(0px, min(var(--_kjun-zone-gauge-cover-size), (var(--_kjun-extension-zone-gauge-min-sliver) - var(--_kjun-zone-gauge-cover-size)) * 9999));
+  background: var(--_kjun-color-surface);
+}
+.kjun-zone-gauge-cover[data-side="before"] {
+  --_kjun-zone-gauge-cover-start: calc(var(--_kjun-zone-gauge-usable) * var(--_kjun-zone-gauge-cut) + (var(--_kjun-zone-gauge-gaps) + 1) * var(--_kjun-extension-zone-gauge-segment-gap));
+  --_kjun-zone-gauge-cover-size: calc(var(--_kjun-zone-gauge-marker-start) - var(--_kjun-extension-zone-gauge-marker-ring) - var(--_kjun-zone-gauge-cover-start));
+}
+.kjun-zone-gauge-cover[data-side="after"] {
+  --_kjun-zone-gauge-cover-start: calc(var(--_kjun-zone-gauge-marker-start) + var(--_kjun-extension-zone-gauge-marker-width) + var(--_kjun-extension-zone-gauge-marker-ring));
+  --_kjun-zone-gauge-cover-size: calc(var(--_kjun-zone-gauge-usable) * var(--_kjun-zone-gauge-cut) + var(--_kjun-zone-gauge-gaps) * var(--_kjun-extension-zone-gauge-segment-gap) - var(--_kjun-zone-gauge-cover-start));
 }
 .kjun-zone-gauge-track {
   display: flex;
@@ -76,7 +96,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  inset-inline-start: calc((100% - var(--_kjun-extension-zone-gauge-marker-width)) * var(--_kjun-zone-gauge-position));
+  inset-inline-start: var(--_kjun-zone-gauge-marker-start);
   width: var(--_kjun-extension-zone-gauge-marker-width);
   border-radius: var(--_kjun-geometry-radius-radius9999);
   background: var(--_kjun-color-text);
@@ -122,7 +142,8 @@
 .kjun-stacked-bar-caption {
   margin-bottom: var(--_kjun-extension-stacked-bar-caption-gap);
 }
-/* Clipped to the rail: more minimum-length parts than fit cannot run past it. */
+/* Clipped to the rail: more minimum-length parts than fit cannot run past it, and the rail alone rounds the ends, so a
+   short last part is not cut twice into a point. */
 .kjun-stacked-bar-track {
   display: flex;
   gap: var(--_kjun-extension-stacked-bar-segment-gap);
@@ -130,22 +151,14 @@
   overflow: hidden;
   border-radius: var(--_kjun-geometry-radius-radius9999);
 }
-/* An all-zero total draws the empty rail alone. */
-.kjun-stacked-bar[data-state="empty"] .kjun-stacked-bar-track {
+/* An all-zero total and missing data draw the empty rail alone, so the bar keeps its place either way. */
+.kjun-stacked-bar:is([data-state="empty"], [data-state="missing"]) .kjun-stacked-bar-track {
   background: var(--_kjun-color-switch-track);
 }
 .kjun-stacked-bar-segment {
   flex: 1 1 0;
   min-width: var(--_kjun-extension-stacked-bar-min-segment);
   background: var(--_kjun-color-switch-track);
-}
-.kjun-stacked-bar-segment:first-child {
-  border-start-start-radius: var(--_kjun-geometry-radius-radius9999);
-  border-end-start-radius: var(--_kjun-geometry-radius-radius9999);
-}
-.kjun-stacked-bar-segment:last-child {
-  border-start-end-radius: var(--_kjun-geometry-radius-radius9999);
-  border-end-end-radius: var(--_kjun-geometry-radius-radius9999);
 }
 .kjun-stacked-bar-legend {
   display: flex;

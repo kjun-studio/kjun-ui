@@ -61,9 +61,10 @@
 .kjun-split-pane-handle:hover > .kjun-split-pane-bar {
   background: var(--_kjun-color-text-tertiary);
 }
-.kjun-split-pane-handle:focus-visible {
+/* The keyboard ring goes round the bar: a ring round the handle would be as long as the panes. */
+.kjun-split-pane-handle:focus-visible > .kjun-split-pane-bar {
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
-  outline-offset: calc(-1 * var(--_kjun-state-focus-width));
+  outline-offset: var(--_kjun-state-focus-offset);
 }
 .kjun-split-pane-handle:focus-visible > .kjun-split-pane-bar,
 .kjun-split-pane-handle[data-dragging="true"] > .kjun-split-pane-bar {

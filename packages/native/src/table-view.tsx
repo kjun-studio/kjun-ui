@@ -117,9 +117,9 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
       return content(body, { ...typeStyle(role === "cardHighlight" ? "sectionTitle" : "control"), color: colors.text, fontVariant: ["tabular-nums"] as const });
     return content(body, {
       ...typeStyle(role === "title" ? "cardTitle" : col.secondary ? "caption" : "body"),
-      color: col.secondary && role !== "title" ? colors.textSecondary : colors.text,
+      color: (col.secondary && role !== "title") || role === "merged" ? colors.textSecondary : colors.text,
       // Card values start at their label (or end a label-value line) whatever the column's table alignment.
-      textAlign: role === "cardValue" ? "left" : role === "cardRowValue" ? "right" : col.align,
+      textAlign: role === "cardValue" ? "left" : role === "cardRowValue" ? "right" : role === "merged" ? "center" : col.align,
     });
   };
   // Plain text of a cell, for a value read out with a label the card does not draw.
@@ -208,7 +208,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
           />
         )}
       </KjunDataState>
-      {reorderNote ? <KText style={{ ...typeStyle("caption"), color: colors.textTertiary, marginTop: tokens.dimension.value8 }}>{reorderNote}</KText> : null}
+      {reorderNote ? <KText style={{ ...typeStyle("caption"), color: colors.textTertiary, marginTop: tokens.dimension.value8, paddingHorizontal: tokens.table.cellPadding.regular.x }}>{reorderNote}</KText> : null}
       {reorder.status}
     </View>
     </ListReorderContext.Provider>

@@ -17,7 +17,7 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
   const { mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, cellText, expandable, expand, renderExpand,
     emptyContent, emptyText, layout, totals, groups } = props;
   const { colors } = useKjunStyles();
-  const { title, subtitle, highlight, badges, inline, sections, columnsForSection, tiles, footerActions, cardFooter, cardBody } = layout;
+  const { title, subtitle, highlight, badges, inline, sections, columnsForSection, tiles, footerActions, cardFooter, headerMover, cardField, cardBody } = layout;
   // Like Web's auto-fill grid: as many tiles a row as keep tileMinWidth, never fewer than two.
   const [width, setWidth] = useState(0);
   const inner = width - card.listPadding * 2;
@@ -74,6 +74,8 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
             {inline.map((col) => <View key={col.key}>{cell(col, row, i)}</View>)}
           </View>
         ) : null}
+        {/* Like Web: without a footer row the move buttons end the title line. */}
+        {mover && headerMover ? <View style={{ minHeight: titleLine, justifyContent: "center" }}>{mover(row, i)}</View> : null}
       </View>
       {highlight ? (
         <View style={{ marginTop: card.sectionGap, gap: card.valueGap }}>
@@ -90,14 +92,15 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
             style={{ marginTop: card.sectionGap, flexDirection: rows ? "column" : "row", flexWrap: rows ? "nowrap" : "wrap", gap: rows ? card.metricGap : card.sectionGap }}>
             {cols.map((col) => rows ? (
               <View key={col.key} style={{ flexDirection: "row", alignItems: "baseline", justifyContent: "space-between", gap: card.gap }}>
-                {label(col.label)}
+                {/* Like Web: a cell spanning other columns reads under its section's name, or under none. */}
+                {cardField(row, section, col).label ? label(cardField(row, section, col).label) : <View />}
                 <View style={{ flexShrink: 1, minWidth: 0 }}>{cell(col, row, i, "cardRowValue")}</View>
               </View>
             ) : (
               <View key={col.key} style={{
-                flexBasis: col.fullWidthInCard || body === "stack" ? "100%" : body === "metrics" ? "30%" : "45%",
+                flexBasis: cardField(row, section, col).full || body === "stack" ? "100%" : body === "metrics" ? "30%" : "45%",
                 flexGrow: 1, minWidth: 0, gap: card.valueGap }}>
-                <KText style={{ ...typeStyle("meta"), color: colors.textTertiary, textAlign: section.labelAlign }}>{col.label}</KText>
+                {cardField(row, section, col).label ? <KText style={{ ...typeStyle("meta"), color: colors.textTertiary, textAlign: section.labelAlign }}>{cardField(row, section, col).label}</KText> : null}
                 {cell(col, row, i, "cardValue")}
               </View>
             ))}
@@ -110,7 +113,7 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
           {expandable ? expand(row, i) : <View />}
           {/* The wrapper holds the end edge; a KjunButton's own flex-start would otherwise pull it left. */}
           {footerActions ? <View style={{ alignSelf: "center" }}>{cell(footerActions, row, i)}</View> : null}
-          {mover ? <View style={{ alignSelf: "center" }}>{mover(row, i)}</View> : null}
+          {mover && !headerMover ? <View style={{ alignSelf: "center" }}>{mover(row, i)}</View> : null}
         </View>
       ) : null}
       {expandable && state.expanded.includes(state.key(row, i)) ? (

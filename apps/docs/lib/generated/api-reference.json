@@ -39291,7 +39291,7 @@
             "required": false,
             "default": "null",
             "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value.",
-            "summary": "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음으로 보고 축을 그리지 않습니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다.",
+            "summary": "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음입니다. 축과 구간 이름은 그대로 두고 구간 색과 표식만 뺍니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다.",
             "source": "packages/vue3/src/zone-gauge.tsx"
           },
           {
@@ -39430,8 +39430,8 @@
             "type": "number | null",
             "required": true,
             "default": "—",
-            "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value.",
-            "summary": "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음으로 보고 축을 그리지 않습니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다.",
+            "description": "Where the marker sits. null, undefined and non-finite numbers are missing: the axis stays, without zone colours or a marker, and 0 is a real value.",
+            "summary": "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음입니다. 축과 구간 이름은 그대로 두고 구간 색과 표식만 뺍니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다.",
             "source": "packages/react/src/zone-gauge.tsx"
           },
           {
@@ -39598,7 +39598,7 @@
             "required": true,
             "default": "—",
             "description": "Where the marker sits. null, undefined and non-finite numbers are missing: no axis is drawn, and 0 is a real value.",
-            "summary": "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음으로 보고 축을 그리지 않습니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다.",
+            "summary": "표식이 놓일 값입니다. null·undefined·숫자가 아닌 값은 데이터 없음입니다. 축과 구간 이름은 그대로 두고 구간 색과 표식만 뺍니다. 0은 실제 값입니다. 축을 벗어난 값은 가까운 끝에 붙습니다.",
             "source": "packages/native/src/zone-gauge.tsx"
           },
           {
@@ -39856,7 +39856,7 @@
             "type": "{ key?: string; label: string; value: number | null; color?: string }[] | null",
             "required": true,
             "default": "—",
-            "description": "The parts in order. No items, or only missing values, draws no bar; values that add up to 0 draw the empty rail.",
+            "description": "The parts in order. No items, or only missing values, draws the empty rail with the missing mark and no legend; values that add up to 0 draw the empty rail.",
             "summary": "전체를 이루는 항목 목록입니다.",
             "details": [
               {

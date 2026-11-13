@@ -45,12 +45,11 @@ export function KjunStackedBar({ items, label, ariaLabel, size = "md", legend = 
             {missing && <KText style={{ ...typeStyle("label"), color: colors.textTertiary }}>{missingText ?? "—"}</KText>}
           </View>
         )}
-        {!missing && (
-          <View style={{ flexDirection: "row", gap: geometry.segmentGap, height: track, borderRadius: end, overflow: "hidden", backgroundColor: state === "empty" ? neutral : undefined }}>
-            {drawn.map(({ item, index }, i) => (
-              <View key={item.key ?? "i" + index} style={{ flexGrow: weights[index], flexBasis: 0, minWidth: geometry.minSegment, backgroundColor: (item.color as ColorValue | undefined) ?? neutral,
-                ...(i === 0 ? { borderTopStartRadius: end, borderBottomStartRadius: end } : {}),
-                ...(i === drawn.length - 1 ? { borderTopEndRadius: end, borderBottomEndRadius: end } : {}) }} />
+        {/* Like Web: missing data keeps the empty rail, and the rail alone rounds the ends. */}
+        {(
+          <View style={{ flexDirection: "row", gap: geometry.segmentGap, height: track, borderRadius: end, overflow: "hidden", backgroundColor: state !== "ready" ? neutral : undefined }}>
+            {drawn.map(({ item, index }) => (
+              <View key={item.key ?? "i" + index} style={{ flexGrow: weights[index], flexBasis: 0, minWidth: geometry.minSegment, backgroundColor: (item.color as ColorValue | undefined) ?? neutral }} />
             ))}
           </View>
         )}
