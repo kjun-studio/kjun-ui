@@ -25,7 +25,7 @@ export function KjunFab({ icon, ariaLabel, disabled = false, safeArea = true, of
       position: "absolute", right: inset, bottom: inset + (safeArea ? insets.bottom : 0) + Math.max(0, offsetBottom), zIndex: tokens.layers.page.navigation,
       width: size, height: size, borderRadius: size / 2, alignItems: "center", justifyContent: "center",
       backgroundColor: pressed ? colors.brandActive : colors.brand, opacity: disabled ? tokens.states.opacity.disabled : 1,
-      boxShadow: shadowLayers(tokens.elevation.floating, colors),
+      boxShadow: shadowLayers(tokens.extensions.fab.elevation, colors),
     })}>
     <KjunIcon name={icon} size={iconSize} color={colors.onBrand} />
   </Pressable>;

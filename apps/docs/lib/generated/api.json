@@ -8583,7 +8583,7 @@
         "name": "size",
         "type": "\"sm\" | \"md\" | \"lg\"",
         "required": false,
-        "default": "\"lg\"",
+        "default": "—",
         "description": ""
       },
       {

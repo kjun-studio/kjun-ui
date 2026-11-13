@@ -169,7 +169,7 @@ export function KjunFloatingNavigation({ items, value, ariaLabel, safeArea = tru
   return <View style={{ flexShrink: 0, alignSelf: "stretch", alignItems: "center", paddingHorizontal: geometry.offset }}>
     <View role="navigation" accessibilityLabel={ariaLabel} style={{
       maxWidth: "100%", marginBottom: geometry.offset + (safeArea ? insets.bottom : 0), borderRadius: geometry.radius, borderWidth: border, borderColor: colors.border,
-      backgroundColor: colors.surface, boxShadow: shadowLayers(tokens.elevation.floating, colors),
+      backgroundColor: colors.surface, boxShadow: shadowLayers(geometry.elevation, colors),
     }}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0, borderRadius: geometry.radius }}
         contentContainerStyle={{ padding: geometry.padding - border, gap: geometry.gap }}>

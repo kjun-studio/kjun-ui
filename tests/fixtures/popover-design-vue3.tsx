@@ -13,7 +13,10 @@ createApp(defineComponent(() => () => {
           matchTriggerWidth={c.matchTriggerWidth} width={c.panelWidth} maxHeight={c.maxHeight} focusOnOpen onUpdate:open={(value: boolean) => { state.open = value; }}>
           {{
             trigger: () => <K.KjunButton block variant="ghost" onClick={() => { state.open = !state.open; }}>팝오버 열기</K.KjunButton>,
-            default: () => c.action ? [c.text, <K.KjunButton>실행</K.KjunButton>] : c.text,
+            default: () => c.lines ? Array.from({ length: c.lines }, (_, i) => <K.KjunText key={i}>{`줄 ${i + 1}`}</K.KjunText>)
+              : c.formActions ? [c.text, <K.KjunFormActions confirmText="확인" cancelText="취소" />]
+              : c.action ? [c.text, <K.KjunButton>실행</K.KjunButton>] : c.text,
+            ...(c.header ? { header: () => '팝오버 제목' } : {}),
           }}
         </K.KjunPopover>
       </div>

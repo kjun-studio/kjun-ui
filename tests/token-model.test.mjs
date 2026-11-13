@@ -9,7 +9,7 @@ test('typography, geometry and shadows resolve from their author-owned definitio
   s.typography.body.fontSizePx = 16; s.typography.body.lineHeightPx = 24;
   s.typography.control.fontSizePx = 16; s.typography.control.lineHeightPx = 24;
   s.radius.radius12 = 16; s.card.padding.md = { $ref: 'dimension.value20' };
-  s.shadowScale.contact[0].blurRadius = 30;
+  s.elevation.raised[0].blurRadius = 30;
   const t = compileTokens(s);
   assert.equal(t.button.fontSizes.md, 16);
   assert.equal(t.card.radii.md, 16);
@@ -88,23 +88,30 @@ test('numeric references retain length, duration, weight and layer contracts', (
   assert.equal(compileTokens(s).card.glassBlur, 10, 'spacing does not control glass blur');
 });
 
-test('inline and aliased component shadows validate every layer', () => {
+test('elevation roles validate every layer and components may only name a role', () => {
   for (const mutate of [
     layer => { layer.blurRadius = -8; }, layer => { layer.colorRole = 'missingRole'; },
     layer => { layer.offsetX = Infinity; }, layer => { layer.inset = 'false'; },
     layer => { delete layer.spreadDistance; }, layer => { layer.extra = 1; },
-  ]) for (const inline of [true, false]) {
-    const s = structuredClone(source), layer = structuredClone(s.shadowScale.ambient[0]);
-    mutate(layer);
-    if (inline) s.modal.elevation = [layer];
-    else {
-      s.extensions.tooltip.elevation = [layer];
-      s.modal.elevation = { $ref: 'extensions.tooltip.elevation' };
-    }
+  ]) {
+    const s = structuredClone(source);
+    mutate(s.elevation.lifted[0]);
     assert.throws(() => compileTokens(s), /Invalid shadow geometry/);
   }
+  // An inline shadow and a shadow borrowed from another component are rejected; so is a role that does not exist.
+  const unknown = structuredClone(source);
+  unknown.modal.elevation = { $ref: 'elevation.missing' };
+  assert.throws(() => compileTokens(unknown), /Unknown token reference: elevation\.missing/);
+  for (const value of [source.elevation.lifted, { $ref: 'extensions.tooltip.elevation' }]) {
+    const s = structuredClone(source);
+    s.modal.elevation = structuredClone(value);
+    assert.throws(() => compileTokens(s), /must reference an elevation role: modal\.elevation/);
+  }
+  const variant = structuredClone(source);
+  variant.card.elevation.raised = structuredClone(source.elevation.raised);
+  assert.throws(() => compileTokens(variant), /must reference an elevation role: card\.elevation\.raised/);
   const s = structuredClone(source);
-  s.modal.elevation = [{ ...s.shadowScale.ambient[0], offsetX: -2, spreadDistance: -1 }];
+  s.elevation.lifted = [{ ...s.elevation.lifted[0], offsetX: -2, spreadDistance: -1 }];
   assert.equal(compileTokens(s).modal.elevation[0].offsetX, -2);
 });
 

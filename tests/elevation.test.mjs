@@ -5,15 +5,16 @@ import { readTokenDefinitions, compileTokens, shadowCss, extensionGeometryCss } 
 const source = await readTokenDefinitions(new URL('..', import.meta.url).pathname);
 test('shadow prototypes propagate through semantic and component references without becoming spacing', () => {
   const s = structuredClone(source);
-  s.shadowScale.contact[0].blurRadius = 29;
-  s.shadowScale.ambient[0].blurRadius = 31;
-  s.shadowScale.overlay[0].blurRadius = 33;
+  s.elevation.raised[0].blurRadius = 29;
+  s.elevation.lifted[0].blurRadius = 31;
+  s.elevation.floating[0].blurRadius = 33;
   const tokens = compileTokens(s);
   assert.deepEqual(tokens.elevation.flat, []);
   assert.equal(tokens.card.elevation.raised[0].blurRadius, 29);
-  for (const surface of [tokens.modal, ...['popover','drawer'].map(key => tokens.extensions[key])]) assert.equal(surface.elevation[0].blurRadius, 31);
-  // Menus sit higher than other floating panels, on the overlay scale.
-  assert.equal(tokens.extensions.menu.elevation[0].blurRadius, 33);
+  // Layers behind a scrim keep the faint ambient shadow.
+  for (const surface of [tokens.modal, tokens.extensions.drawer, tokens.extensions.fab, tokens.extensions.carousel]) assert.equal(surface.elevation[0].blurRadius, 31);
+  // Panels that float without a scrim share the overlay shadow.
+  for (const key of ['menu', 'popover', 'toast', 'floatingNavigation']) assert.equal(tokens.extensions[key].elevation[0].blurRadius, 33);
   assert.equal(shadowCss(tokens.elevation.flat), 'none');
   assert.doesNotMatch(extensionGeometryCss(tokens, s), /elevation/);
   assert.deepEqual(tokens.layers, { page: { content: 0, sticky: 10, navigation: 20 } });

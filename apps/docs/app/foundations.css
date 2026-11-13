@@ -50,7 +50,7 @@
   .elevation-card-comparison { background:var(--background); --kjun-shadow-subtle:rgb(0 0 0 / 80%); }
   .elevation-surface--flat { --kjun-surface:#1a1a1a; }
   .elevation-surface--raised { --kjun-surface:#242424; }
-  .elevation-surface--floating { --kjun-surface:#303030; }
+  .elevation-surface--lifted { --kjun-surface:#303030; }
 }
 .elevation-window-map { display:block; }
 .elevation-window-map p { margin:var(--docs-value8) 0 0; }

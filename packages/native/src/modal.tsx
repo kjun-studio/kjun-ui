@@ -20,6 +20,7 @@ useWindowDimensions,
 View
 } from "react-native";
 import { KjunButton, KjunIcon } from "./button";
+import { useActionSize } from "../../../shared/package-runtime/action-size";
 import { ScopedNativeModal } from "./overlay-host";
 import { useKjunSafeArea, useKjunStyles } from "./provider";
 export interface KjunFormActionsProps {
@@ -37,7 +38,7 @@ export interface KjunFormActionsProps {
   onConfirm?: () => void;
 }
 export function KjunFormActions({
-  size = "lg",
+  size: requested,
   cancelText,
   confirmText,
   showCancel = true,
@@ -51,6 +52,8 @@ export function KjunFormActions({
   onConfirm,
 }: KjunFormActionsProps) {
   const m = useKjunMessages();
+  // Unset, the buttons take the size of the container they sit in (a Popover, an Alert), else lg.
+  const size = useActionSize(requested, "lg");
   cancelText ??= m.cancel;
   confirmText ??= m.save;
   const { fontFamily } = useKjunStyles();

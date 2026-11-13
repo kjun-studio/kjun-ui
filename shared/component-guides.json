@@ -109,7 +109,7 @@
     "description": "트리거 가까이에 추가 정보나 작업 영역을 엽니다.",
     "interaction": "트리거와 본문을 연결하고 필요하면 열림 상태를 동기화합니다. manualTrigger이면 소비자가 열기 동작을 직접 연결합니다.",
     "differences": "Vue는 v-model:open과 trigger 슬롯으로, React·Native는 open·onOpenChange와 trigger prop으로 연결합니다. Native 팝업은 Modal 기반이며 웹 배치 속성의 동작 범위는 API 타입을 따릅니다. returnFocus는 React·Vue에만 있고, Native는 모달이 닫힐 때 플랫폼이 접근성 초점을 돌려줍니다. Native의 modal=false는 화면 판독기 가둠만 끄며 Tab 동작은 해당 없습니다.",
-    "states": "테두리 없이 모서리 12px과 shadowSubtle 역할의 옅은 그림자를 사용합니다. 기본 폭 240px, 내부 여백 16px, 콘텐츠 간격 12px, 본문 14px·줄 높이 20px입니다. 열림·닫힘을 제어하거나 내부 상태로 관리하며 manualTrigger·배치·뒤집기·트리거 폭 맞춤·최대 높이를 조합합니다."
+    "states": "1px 테두리와 모서리 12px, 메뉴·알림과 같은 떠 있는 패널 그림자를 사용합니다. 기본 폭 240px, 내부 여백 16px, 콘텐츠 간격 12px, 본문 14px·줄 높이 20px입니다. 크기를 지정하지 않은 KjunButton과 KjunFormActions는 sm(32px)으로 그립니다. header 아래 간격은 8px이고, 본문이 스크롤되면 header 아래에 구분선이 생기며 아래에 내용이 더 있는 동안 본문 끝이 흐려집니다(Native는 구분선만). 웹에서는 열린 동안 트리거 버튼이 눌린 색을 유지합니다. 열림·닫힘을 제어하거나 내부 상태로 관리하며 manualTrigger·배치·뒤집기·트리거 폭 맞춤·최대 높이를 조합합니다."
   },
   "KjunPriceCell": {
     "slug": "price-cell",
@@ -235,7 +235,7 @@
     "description": "확인·취소 액션과 로딩 중 중복 실행 방지를 연결합니다.",
     "interaction": "확인·취소 버튼을 배치하는 컨테이너입니다. 자체 입력값은 없으며 각 행동에서 저장·취소 업무를 소비자가 실행합니다.",
     "differences": "Vue confirm·cancel 이벤트와 React·Native onConfirm·onCancel을 연결합니다. loading은 확인 버튼에 적용하고 취소 비활성은 cancelDisabled로 별도 설정합니다.",
-    "states": "기본 lg는 최소 48px이며 밀도 높은 폼에는 md(40px)를 명시합니다. 두 버튼이 한 줄에 들어가지 않으면 취소 → 확인 순서로 전체 너비의 세로 배치를 사용하고 8px 간격을 유지합니다. 긴 문구는 영역 안에서 줄바꿈합니다. loading은 확인 동작만 막고 라벨 공간과 너비·높이를 유지합니다."
+    "states": "기본 lg는 최소 48px이며 밀도 높은 폼에는 md(40px)를 명시합니다. size를 지정하지 않으면 감싼 KjunPopover(sm)·KjunAlert의 버튼 크기를 따릅니다. 두 버튼이 한 줄에 들어가지 않으면 취소 → 확인 순서로 전체 너비의 세로 배치를 사용하고 8px 간격을 유지합니다. 긴 문구는 영역 안에서 줄바꿈합니다. loading은 확인 동작만 막고 라벨 공간과 너비·높이를 유지합니다."
   },
   "KjunFormGroup": {
     "slug": "form-group",

@@ -23,7 +23,7 @@
       "radius": { "$ref": "radius.radius12" },
       "padding": { "$ref": "dimension.value16" },
       "gap": { "$ref": "dimension.value12" },
-      "headerPaddingBottom": { "$ref": "dimension.value4" }
+      "headerPaddingBottom": { "$ref": "dimension.value8" }
     },
     "state": {
       "titleSize": { "$ref": "typography.sectionTitle.fontSizePx" },

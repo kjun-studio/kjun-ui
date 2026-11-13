@@ -1,5 +1,8 @@
 import { expect, test, type Page, type Locator } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { demoPalettes } from '../../shared/demo-colors';
+const popoverPalette = (demoPalettes as Record<string, Record<string, string>>).default;
+const rgb = (hex: string) => { const n = parseInt(hex.slice(1), 16); return `rgb(${n >> 16 & 255}, ${n >> 8 & 255}, ${n & 255})`; };
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configurePopover(next), next);
 const panel = (page: Page, platform: string, name = '팝오버 디자인') => platform === 'native' ? page.locator(`[aria-label="${name}"]`).last() : page.locator('.kjun-content-popover');
 const rect = async (node: Locator) => (await node.boundingBox())!;
@@ -44,7 +47,7 @@ for (const platform of ['react', 'vue3', 'native']) {
         if (placement === 'bottom') {
           await expect(popup).toHaveCSS('border-top-width', '1px');
           await expect(popup).toHaveCSS('border-radius', '12px');
-          await expect(popup).toHaveCSS('box-shadow', 'rgba(0, 0, 0, 0.04) 0px 2px 8px 0px');
+          await expect(popup).toHaveCSS('box-shadow', 'rgba(0, 0, 0, 0.15) 0px 6px 16px 0px, rgba(0, 0, 0, 0.04) 0px 1px 3px 0px');
           await expect(popup).toHaveCSS('width', '240px');
           await expect(popup).toHaveCSS('height', '54px');
           const body = popup.getByText('부가 내용을 확인하세요.', { exact: true });
@@ -117,4 +120,38 @@ for (const platform of ['react', 'vue3', 'native']) {
     }
   });
 
+  test(`${platform}: form actions take the Popover's small size, the open trigger stays painted and a scrolled body marks its edges`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 1024, height: 768 });
+    await openFixture(page, platform, '', 'popover-design');
+    // KjunFormActions with no size follows the panel like a plain KjunButton, instead of its own lg default.
+    await configure(page, { formActions: true });
+    await trigger(page).click();
+    for (const name of ['취소', '확인']) expect(Math.round((await rect(panel(page, platform).getByRole('button', { name, exact: true }))).height)).toBe(32);
+    if (platform !== 'native') {
+      // The trigger button keeps its active paint while the panel is open, wherever the pointer is.
+      await page.mouse.move(900, 700);
+      await expect(trigger(page)).toHaveCSS('background-color', rgb(popoverPalette.active));
+    }
+    await close(page);
+    if (platform !== 'native') await expect(trigger(page)).not.toHaveCSS('background-color', rgb(popoverPalette.active));
+    // Under a header only the body scrolls: a divider appears once it has scrolled, and it fades while more remains below.
+    await configure(page, { formActions: false, header: true, lines: 12, maxHeight: 160 });
+    await trigger(page).click();
+    if (platform === 'native') {
+      await expect(page.getByText('팝오버 제목', { exact: true })).toBeVisible();
+    } else {
+      const header = page.locator('.kjun-popover-header'), body = page.locator('.kjun-popover-body');
+      await expect(header).toHaveCSS('padding-bottom', '8px');
+      await expect(body).toHaveAttribute('data-more', '');
+      await expect(header).toHaveCSS('box-shadow', 'none');
+      expect(await body.evaluate(el => getComputedStyle(el).maskImage)).toContain('linear-gradient');
+      await body.evaluate(el => { el.scrollTop = 40; });
+      await expect(body).toHaveAttribute('data-scrolled', '');
+      await expect(header).not.toHaveCSS('box-shadow', 'none');
+      await body.evaluate(el => { el.scrollTop = el.scrollHeight; });
+      await expect(body).not.toHaveAttribute('data-more', '');
+      expect(await body.evaluate(el => getComputedStyle(el).maskImage)).toBe('none');
+    }
+  });
 }

@@ -17100,9 +17100,9 @@
             "name": "size",
             "type": "\"sm\" | \"md\" | \"lg\"",
             "required": false,
-            "default": "\"lg\"",
+            "default": "lg",
             "description": "",
-            "summary": "확인·취소 버튼의 최소 높이입니다. sm=32px, md=40px, 기본 lg=48px이며 긴 라벨은 줄바꿈에 따라 높이가 늘어납니다.",
+            "summary": "확인·취소 버튼의 최소 높이입니다. sm=32px, md=40px, lg=48px이며 긴 라벨은 줄바꿈에 따라 높이가 늘어납니다. 지정하지 않으면 감싼 Popover(sm)·Alert의 버튼 크기를 따르고, 그 밖에서는 lg입니다.",
             "source": "packages/vue3/src/modal.tsx"
           },
           {
@@ -17211,9 +17211,9 @@
             "name": "size",
             "type": "\"sm\" | \"md\" | \"lg\" | undefined",
             "required": false,
-            "default": "\"lg\"",
+            "default": "lg",
             "description": "",
-            "summary": "확인·취소 버튼의 최소 높이입니다. sm=32px, md=40px, 기본 lg=48px이며 긴 라벨은 줄바꿈에 따라 높이가 늘어납니다.",
+            "summary": "확인·취소 버튼의 최소 높이입니다. sm=32px, md=40px, lg=48px이며 긴 라벨은 줄바꿈에 따라 높이가 늘어납니다. 지정하지 않으면 감싼 Popover(sm)·Alert의 버튼 크기를 따르고, 그 밖에서는 lg입니다.",
             "source": "packages/react/src/modal.tsx"
           },
           {
@@ -17327,9 +17327,9 @@
             "name": "size",
             "type": "\"sm\" | \"md\" | \"lg\" | undefined",
             "required": false,
-            "default": "\"lg\"",
+            "default": "lg",
             "description": "",
-            "summary": "확인·취소 버튼의 최소 높이입니다. sm=32px, md=40px, 기본 lg=48px이며 긴 라벨은 줄바꿈에 따라 높이가 늘어납니다.",
+            "summary": "확인·취소 버튼의 최소 높이입니다. sm=32px, md=40px, lg=48px이며 긴 라벨은 줄바꿈에 따라 높이가 늘어납니다. 지정하지 않으면 감싼 Popover(sm)·Alert의 버튼 크기를 따르고, 그 밖에서는 lg입니다.",
             "source": "packages/native/src/modal.tsx"
           },
           {

@@ -1,7 +1,7 @@
 {
-  "shadowScale": {
-    "none": [],
-    "contact": [
+  "elevation": {
+    "flat": [],
+    "raised": [
       {
         "offsetX": 0,
         "offsetY": 1,
@@ -11,7 +11,7 @@
         "colorRole": "shadowSubtle"
       }
     ],
-    "lift": [
+    "handle": [
       {
         "offsetX": 0,
         "offsetY": 1,
@@ -21,25 +21,7 @@
         "colorRole": "shadow"
       }
     ],
-    "overlay": [
-      {
-        "offsetX": 0,
-        "offsetY": 8,
-        "blurRadius": 24,
-        "spreadDistance": 0,
-        "inset": false,
-        "colorRole": "shadow"
-      },
-      {
-        "offsetX": 0,
-        "offsetY": 2,
-        "blurRadius": 4,
-        "spreadDistance": 0,
-        "inset": false,
-        "colorRole": "shadowSubtle"
-      }
-    ],
-    "ambient": [
+    "lifted": [
       {
         "offsetX": 0,
         "offsetY": 2,
@@ -49,7 +31,25 @@
         "colorRole": "shadowSubtle"
       }
     ],
-    "upward": [
+    "floating": [
+      {
+        "offsetX": 0,
+        "offsetY": 6,
+        "blurRadius": 16,
+        "spreadDistance": 0,
+        "inset": false,
+        "colorRole": "shadow"
+      },
+      {
+        "offsetX": 0,
+        "offsetY": 1,
+        "blurRadius": 3,
+        "spreadDistance": 0,
+        "inset": false,
+        "colorRole": "shadowSubtle"
+      }
+    ],
+    "docked": [
       {
         "offsetX": 0,
         "offsetY": -8,
@@ -68,17 +68,6 @@
       }
     ]
   },
-  "elevation": {
-    "flat": {
-      "$ref": "shadowScale.none"
-    },
-    "raised": {
-      "$ref": "shadowScale.contact"
-    },
-    "floating": {
-      "$ref": "shadowScale.ambient"
-    }
-  },
   "card": {
     "elevation": {
       "flat": {
@@ -91,13 +80,13 @@
   },
   "modal": {
     "elevation": {
-      "$ref": "elevation.floating"
+      "$ref": "elevation.lifted"
     }
   },
   "extensions": {
     "menu": {
       "elevation": {
-        "$ref": "shadowScale.overlay"
+        "$ref": "elevation.floating"
       }
     },
     "popover": {
@@ -107,7 +96,7 @@
     },
     "drawer": {
       "elevation": {
-        "$ref": "elevation.floating"
+        "$ref": "elevation.lifted"
       }
     },
     "toast": {
@@ -117,12 +106,12 @@
     },
     "switch": {
       "elevation": {
-        "$ref": "shadowScale.lift"
+        "$ref": "elevation.handle"
       }
     },
     "slider": {
       "elevation": {
-        "$ref": "shadowScale.lift"
+        "$ref": "elevation.handle"
       }
     },
     "tooltip": {
@@ -132,7 +121,22 @@
     },
     "bottomNavigation": {
       "elevation": {
-        "$ref": "shadowScale.upward"
+        "$ref": "elevation.docked"
+      }
+    },
+    "floatingNavigation": {
+      "elevation": {
+        "$ref": "elevation.floating"
+      }
+    },
+    "fab": {
+      "elevation": {
+        "$ref": "elevation.lifted"
+      }
+    },
+    "carousel": {
+      "elevation": {
+        "$ref": "elevation.lifted"
       }
     }
   }

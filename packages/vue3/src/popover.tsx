@@ -12,6 +12,7 @@ import { useKjunId } from "./input";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { containTab } from "./runtime/modal";
 import { installNonModalPopover } from "../../../shared/package-runtime/popover-nonmodal";
+import { trackPopoverScroll } from "../../../shared/package-runtime/popover-scroll";
 import { useLayer, usePopupExpanded } from "./runtime/layers";
 import { usePresence, useReducedMotion } from "./runtime/presence";
 import { KjunActionSize } from "./runtime/action-size";
@@ -85,6 +86,16 @@ export const KjunPopover = defineComponent({
       stopAnchor = followAnchor(element, () => props.anchorRect, () => { reposition.value++; });
     }, { flush: "post", immediate: true, deep: true });
     onBeforeUnmount(() => stopAnchor());
+    // The scrolling body under a header reports its position, for the header divider and the bottom fade.
+    let tracked: Element | null = null, stopScroll: (() => void) | undefined;
+    const trackBody = (node: unknown) => {
+      const body = node instanceof HTMLElement ? node : null;
+      if (body === tracked) return;
+      stopScroll?.();
+      tracked = body;
+      stopScroll = body ? trackPopoverScroll(body) : undefined;
+    };
+    onBeforeUnmount(() => stopScroll?.());
     // A non-modal Popover closed by an outside press or focus move leaves focus where the user put it.
     let skipReturn = false, release = () => {};
     watch([open, () => props.modal], ([isOpen, isModal]) => {
@@ -151,7 +162,7 @@ export const KjunPopover = defineComponent({
                 props.panelStyle, props.anchorRect !== undefined && !slots.trigger ? attrs.style as StyleValue : undefined]}>
               {slots.header && <div id={id + "-header"} class="kjun-popover-header">{slots.header({ close: () => change(false) })}</div>}
               {slots.header
-                ? <div class="kjun-popover-body"><div class="kjun-popover-content" data-no-padding={String(props.noPadding)}><KjunActionSize size={popoverActionSize}>{slots.default?.({ close: () => change(false) })}</KjunActionSize></div></div>
+                ? <div class="kjun-popover-body" ref={trackBody as never}><div class="kjun-popover-content" data-no-padding={String(props.noPadding)}><KjunActionSize size={popoverActionSize}>{slots.default?.({ close: () => change(false) })}</KjunActionSize></div></div>
                 : <div class="kjun-popover-content" data-no-padding={String(props.noPadding)}><KjunActionSize size={popoverActionSize}>{slots.default?.({ close: () => change(false) })}</KjunActionSize></div>}
               <FeedbackLayerOutlet />
             </section>

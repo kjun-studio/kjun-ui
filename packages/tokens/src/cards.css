@@ -86,7 +86,7 @@
 .kjun-card[data-pressable] { box-shadow: var(--_kjun-card-shadow); cursor: pointer; transition: box-shadow var(--_kjun-motion-control) var(--_kjun-ease-out), transform var(--_kjun-motion-control) var(--_kjun-ease-out); }
 /* Hover lifts one step: flat to raised, raised to floating. */
 .kjun-card[data-pressable]:hover:not([aria-disabled="true"]) { box-shadow: var(--_kjun-elevation-raised); }
-.kjun-card[data-pressable][data-elevation="raised"]:hover:not([aria-disabled="true"]) { box-shadow: var(--_kjun-elevation-floating); }
+.kjun-card[data-pressable][data-elevation="raised"]:hover:not([aria-disabled="true"]) { box-shadow: var(--_kjun-elevation-lifted); }
 .kjun-card[data-pressable]:active:not([aria-disabled="true"]) { transform: scale(0.99); }
 .kjun-card[data-pressable]:focus-visible { outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset: var(--_kjun-state-focus-offset); }
 .kjun-card[data-pressable][aria-disabled="true"] { cursor: not-allowed; opacity: var(--_kjun-state-opacity-disabled); }

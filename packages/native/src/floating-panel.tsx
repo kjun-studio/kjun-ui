@@ -136,7 +136,7 @@ export function FloatingPanel({
 }) {
   const m = useKjunMessages();
   ariaLabel ??= m.select;
-  const [headerHeight, setHeaderHeight] = useState(0);
+  const [headerHeight, setHeaderHeight] = useState(0), [scrolled, setScrolled] = useState(false);
   const panelRef = useRef<View>(null);
   const scroll = useRef<ScrollView>(null), viewport = useRef(0);
   const { colors } = useKjunStyles(),
@@ -158,7 +158,7 @@ export function FloatingPanel({
     });
     return () => { measurement.current++; };
   }, [open, window.width, window.height, triggerRef]);
-  useLayoutEffect(() => { if (!motion.present) { setSized(false); setAnchored(false); } }, [motion.present]);
+  useLayoutEffect(() => { if (!motion.present) { setSized(false); setAnchored(false); setScrolled(false); } }, [motion.present]);
   useEffect(() => {
     // Like Web listboxes, an opened list starts with the selected row in view.
     const row = reveal?.current;
@@ -327,12 +327,15 @@ export function FloatingPanel({
               }}
             >
               {content(header, typeStyle("control"))}
+              {/* Like Web: once the body has scrolled, the fixed header draws a divider over it. */}
+              {scrolled && <View pointerEvents="none" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
             </View>
           )}
           <ScrollView
             ref={scroll}
             onLayout={(event) => { viewport.current = event.nativeEvent.layout.height; }}
             keyboardShouldPersistTaps="handled"
+            {...(header != null ? { scrollEventThrottle: 16, onScroll: ({ nativeEvent }: { nativeEvent: { contentOffset: { y: number } } }) => setScrolled(nativeEvent.contentOffset.y > 0) } : {})}
             style={{ maxHeight: available - (header != null ? headerHeight : 0) - frame, flexShrink: 1 }}
             contentContainerStyle={{ padding: menu || field ? tokens.extensions.menu.padding : 0 }}
             onContentSizeChange={(width, height) => {

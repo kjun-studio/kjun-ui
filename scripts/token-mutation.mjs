@@ -81,7 +81,7 @@ await change('geometry-kpi', ({ extensions:e }) => {
   e.kpiRow.md.paddingY={$ref:'dimension.value24'};
   e.kpiRow.separatorGap={$ref:'dimension.value12'};
 });
-await change('shadows', s => { s.shadowScale.contact[0].blurRadius=30; s.shadowScale.ambient[0].blurRadius=32; });
+await change('shadows', s => { s.elevation.raised[0].blurRadius=30; s.elevation.lifted[0].blurRadius=32; });
 await change('geometry-details', ({ extensions:e }) => {
   e.form.itemGap={$ref:'dimension.value28'};
   e.form.affixItemGap={$ref:'dimension.value12'};

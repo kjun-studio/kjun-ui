@@ -108,6 +108,19 @@ export function compileTokens(source) {
     for (const [key, child] of Object.entries(value)) validateReferences(child, [...path, key]);
   }
   validateReferences(source);
+  // A component names the elevation role it plays. An inline shadow, or one borrowed from another
+  // component, could drift from the components that share its role, so only elevation.<role> is accepted.
+  function validateElevationRoles(value, path) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return;
+    for (const [key, child] of Object.entries(value)) {
+      const name = [...path, key].join('.');
+      if (key !== 'elevation') { validateElevationRoles(child, [...path, key]); continue; }
+      const role = entry => typeof entry?.$ref === 'string' && /^elevation\.[A-Za-z]+$/.test(entry.$ref) && Object.hasOwn(source.elevation, entry.$ref.slice(10));
+      const entries = child && typeof child === 'object' && !Array.isArray(child) && !('$ref' in child) ? Object.entries(child).map(([variant, entry]) => [name + '.' + variant, entry]) : [[name, child]];
+      for (const [label, entry] of entries) if (!role(entry)) throw Error('Component elevation must reference an elevation role: ' + label);
+    }
+  }
+  for (const name of ['button', 'input', 'modal', 'card', 'table', 'extensions']) validateElevationRoles(source[name], [name]);
   function validateDimensions(value, path) {
     if (path === 'button.defaultSize' || path === 'button.variants' || /\.elevation(?:\.|$)/.test(path)) return;
     if (value && typeof value === 'object' && !Array.isArray(value)) {

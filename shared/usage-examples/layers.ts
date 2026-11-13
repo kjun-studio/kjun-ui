@@ -52,7 +52,7 @@ export function generate(input: UsageInput) {
     case 'KjunPopover':
       content = b.node(name, { noPadding:s.noPadding, manualTrigger: true, ariaLabel: '추가 정보', open: b.state('popoverOpen', false), onOpenChange: b.update('popoverOpen') },
         [b.native ? b.node('Text', { style: { fontSize: 14, lineHeight: 20 } }, '{"팝오버 내용"}') : b.text('팝오버 내용'),
-          b.node('KjunFormActions', { size: 'md', showCancel: false, confirmText: '실행', onConfirm: notify('run', '팝오버 실행') })].join('\n'), {
+          b.node('KjunFormActions', { showCancel: false, confirmText: '실행', onConfirm: notify('run', '팝오버 실행') })].join('\n'), {
           trigger: b.button('추가 정보', b.handler('togglePopover', '', b.set('popoverOpen', '!' + b.read('popoverOpen'))), { variant: 'ghost' }),
         }); break;
     case 'KjunBreadcrumb':

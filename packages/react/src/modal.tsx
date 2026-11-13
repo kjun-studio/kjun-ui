@@ -8,6 +8,7 @@ import { useId,useLayoutEffect,useRef,type ReactNode } from "react";
 import { observeFormActions } from "../../../shared/package-runtime/form-actions";
 import { Dialog,Heading,Modal,ModalOverlay } from "react-aria-components";
 import { KjunButton,KjunIcon } from "./button";
+import { useActionSize } from "../../../shared/package-runtime/action-size";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { useKjunPortalContainer } from "./provider";
 import { resolveFocusReturn, type FocusReturn } from "./floating-panel";
@@ -26,7 +27,7 @@ export interface KjunFormActionsProps {
   onConfirm?: () => void;
 }
 export function KjunFormActions({
-  size = "lg",
+  size: requested,
   cancelText,
   confirmText,
   showCancel = true,
@@ -40,6 +41,8 @@ export function KjunFormActions({
   onConfirm,
 }: KjunFormActionsProps) {
   const m = useKjunMessages();
+  // Unset, the buttons take the size of the container they sit in (a Popover, an Alert), else lg.
+  const size = useActionSize(requested, "lg");
   cancelText ??= m.cancel;
   confirmText ??= m.save;
   const ref = useRef<HTMLDivElement>(null);

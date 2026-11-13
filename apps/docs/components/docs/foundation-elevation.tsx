@@ -64,9 +64,9 @@ export function FoundationElevationGuide() {
     </section>
     <section id="platforms">
       <h2>상세 참조와 플랫폼 범위</h2>
-      <Collapsible><CollapsibleTrigger>토큰 원형과 페이지 레이어 보기</CollapsibleTrigger><CollapsibleContent>
-        <DataTable headings={['원형', 'X / Y / blur / spread', '색상 역할']} rows={Object.entries(tokens.shadowScale).map(([name, layers]) => [name, layers.length ? layers.map(s => `${s.offsetX} / ${s.offsetY} / ${s.blurRadius} / ${s.spreadDistance}`).join(', ') : '빈 배열', layers[0]?.colorRole || '없음'])} />
-        <p className="body-copy"><code>shadowScale → elevation → card.elevation / modal.elevation / extensions.*.elevation</code>을 같은 정의에서 생성합니다. <code>ShadowLayer</code>·<code>ElevationRole</code>·<code>CardElevation</code> 타입을 제공합니다. shadowSubtle의 색상과 투명도는 프로젝트가 제공하며 생략하면 shadow를 사용합니다.</p>
+      <Collapsible><CollapsibleTrigger>그림자 역할과 페이지 레이어 보기</CollapsibleTrigger><CollapsibleContent>
+        <DataTable headings={['역할', 'X / Y / blur / spread', '색상 역할']} rows={Object.entries(tokens.elevation).map(([name, layers]) => [name, layers.length ? layers.map(s => `${s.offsetX} / ${s.offsetY} / ${s.blurRadius} / ${s.spreadDistance}`).join(', ') : '빈 배열', layers[0]?.colorRole || '없음'])} />
+        <p className="body-copy"><code>elevation</code>의 역할(<code>flat</code>·<code>raised</code>·<code>handle</code>·<code>lifted</code>·<code>floating</code>·<code>docked</code>)이 그림자 값을 정하고, <code>card.elevation</code>·<code>modal.elevation</code>·<code>extensions.*.elevation</code>은 그 역할 하나를 가리키기만 합니다. <code>ShadowLayer</code>·<code>ElevationRole</code>·<code>CardElevation</code> 타입을 제공합니다. shadowSubtle의 색상과 투명도는 프로젝트가 제공하며 생략하면 shadow를 사용합니다.</p>
         <DataTable headings={['페이지 레이어', '값']} rows={Object.entries(tokens.layers.page).map(([name, value]) => [`layers.page.${name}`, value])} />
         <p className="body-copy">창의 중첩 순서는 패키지가 자동으로 관리합니다. 내부 CSS 변수와 계산값은 프로젝트 설정 API가 아닙니다.</p>
       </CollapsibleContent></Collapsible>

@@ -5,7 +5,7 @@ import { toasts } from '../toast-locators';
 async function exercise(page: Page) {
   await page.goto('/elevation?platform=react', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('레이어·Elevation');
-  const details = page.getByRole('button', { name: '토큰 원형과 페이지 레이어 보기' });
+  const details = page.getByRole('button', { name: '그림자 역할과 페이지 레이어 보기' });
   await expect(details).toHaveAttribute('aria-expanded', 'false');
   const preview = page.locator('[data-example="GuideLayerStack"]');
   const settings = preview.getByRole('button', { name: '예제 설정', exact: true });
@@ -51,7 +51,7 @@ async function exercise(page: Page) {
   await expect(page.getByRole('dialog', { name: '배경을 차단하는 패널' })).toBeVisible();
   await page.keyboard.press('Escape');
   await page.getByRole('button', { name: 'Toast 표시', exact: true }).click();
-  await expect(toasts(page).filter({ hasText: '페이지 위에 띄워' })).toHaveCSS('box-shadow', /8px/);
+  await expect(toasts(page).filter({ hasText: '페이지 위에 띄워' })).toHaveCSS('box-shadow', /6px 16px/);
   await expect(preview).toHaveAttribute('data-ready', 'true');
   const frame = preview.frameLocator('iframe');
   await expect(frame.getByRole('button').first()).toHaveText('팝업 메뉴');

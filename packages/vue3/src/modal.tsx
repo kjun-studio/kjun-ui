@@ -3,7 +3,7 @@ import { Teleport, onBeforeUnmount, onMounted, provide, ref, watch, type Extract
 import { defineComponent } from "./runtime/component";
 import { tokens, type ButtonVariant, type InputSize } from "@kjun-ui/tokens";
 import { observeFormActions } from "../../../shared/package-runtime/form-actions";
-import { KjunButton, KjunIcon } from "./button";
+import { KjunButton, KjunIcon, useActionSize } from "./button";
 import { focusReturnProp, readFocusReturn, usePortalTarget } from "./floating-panel";
 import { useKjunId } from "./input";
 import { FeedbackLayerOutlet } from "./overlay-host";
@@ -13,7 +13,7 @@ import { usePresence, useReducedMotion } from "./runtime/presence";
 import { hasContent } from "./runtime/slots";
 
 const kjunFormActionsProps = {
-  size: { type: String as PropType<InputSize>, default: "lg" },
+  size: { type: String as PropType<InputSize>, default: undefined },
   cancelText: { type: String, default: undefined },
   confirmText: { type: String, default: undefined },
   showCancel: { type: Boolean, default: true },
@@ -31,14 +31,16 @@ export const KjunFormActions = defineComponent({
   emits: { cancel: () => true, confirm: () => true },
   setup(props, { emit }) {
     const m = useKjunMessages();
+    // Unset, the buttons take the size of the container they sit in (a Popover, an Alert), else lg.
+    const size = useActionSize(() => props.size, "lg");
     const root = ref<HTMLElement | null>(null);
     let stop: (() => void) | undefined;
     onMounted(() => { stop = observeFormActions(root.value!); });
     onBeforeUnmount(() => stop?.());
     return () => (
       <div class="kjun-form-actions" ref={root}>
-        {props.showCancel && <KjunButton size={props.size} variant={props.cancelVariant} disabled={props.cancelDisabled} onClick={() => emit("cancel")}>{(props.cancelText ?? m.value.cancel)}</KjunButton>}
-        {props.showConfirm && <KjunButton size={props.size} variant={props.variant} disabled={props.confirmDisabled} loading={props.loading} onClick={() => emit("confirm")}>{(props.confirmText ?? m.value.save)}</KjunButton>}
+        {props.showCancel && <KjunButton size={size.value} variant={props.cancelVariant} disabled={props.cancelDisabled} onClick={() => emit("cancel")}>{(props.cancelText ?? m.value.cancel)}</KjunButton>}
+        {props.showConfirm && <KjunButton size={size.value} variant={props.variant} disabled={props.confirmDisabled} loading={props.loading} onClick={() => emit("confirm")}>{(props.confirmText ?? m.value.save)}</KjunButton>}
       </div>
     );
   },

@@ -216,19 +216,19 @@
   display: inline-block;
   max-width: 100%;
 }
-/* An open action menu keeps its active paint after hover/focus leaves the trigger. */
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="secondary"]:not(:disabled) {
+/* An open action menu or Popover keeps its trigger button in the active paint after hover/focus leaves it. */
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="secondary"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="secondary"]:not(:disabled) {
   background: var(--_kjun-color-button-secondary-active);
 }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="ghost"]:not(:disabled) {
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="ghost"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="ghost"]:not(:disabled) {
   background: var(--_kjun-color-active);
   color: var(--_kjun-color-text);
 }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="primary"]:not(:disabled) { background: var(--_kjun-color-brand-active); }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="danger"]:not(:disabled) { background: var(--_kjun-color-danger-active); }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="success"]:not(:disabled) { background: var(--_kjun-color-success-active); }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="warning"]:not(:disabled) { background: var(--_kjun-color-warning-active); }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="danger-ghost"]:not(:disabled) {
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="primary"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="primary"]:not(:disabled) { background: var(--_kjun-color-brand-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="danger"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="danger"]:not(:disabled) { background: var(--_kjun-color-danger-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="success"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="success"]:not(:disabled) { background: var(--_kjun-color-success-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="warning"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="warning"]:not(:disabled) { background: var(--_kjun-color-warning-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="danger-ghost"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="danger-ghost"]:not(:disabled) {
   background: var(--_kjun-color-danger-bg);
   color: var(--_kjun-color-danger-dark);
 }
@@ -255,10 +255,16 @@
 /* With a header only the body scrolls: the panel and dialog become clipping flex columns. */
 .kjun-popover-has-header { display:flex; flex-direction:column; overflow:hidden; }
 .kjun-popover-has-header .kjun-popover-dialog { display:flex; flex-direction:column; flex:1 1 auto; min-height:0; }
-/* A light title on the panel itself: control type, no divider, the body follows after a short gap. */
+/* A light title on the panel itself: control type, the body follows after a short gap. The divider appears only over a scrolled body. */
 .kjun-popover-header { flex:none; padding:var(--_kjun-extension-popover-padding) var(--_kjun-extension-popover-padding) var(--_kjun-extension-popover-header-padding-bottom); font-size:var(--_kjun-type-control-size); line-height:var(--_kjun-type-control-line); font-weight:var(--_kjun-type-control-weight); letter-spacing:var(--_kjun-type-control-tracking); word-break:keep-all; overflow-wrap:anywhere; }
 .kjun-popover-has-header .kjun-popover-content:not([data-no-padding="true"]) { padding-top:0; }
 .kjun-popover-body { flex:1 1 auto; min-height:0; overflow-y:auto; }
+/* Once the body has scrolled, the fixed header draws a divider over it; while more remains below, the body fades out. */
+.kjun-popover-header:has(+ .kjun-popover-body[data-scrolled]) { box-shadow:0 var(--_kjun-border-default-width) 0 var(--_kjun-color-divider); }
+.kjun-popover-body[data-more] {
+  -webkit-mask-image: linear-gradient(to bottom, currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), transparent);
+  mask-image: linear-gradient(to bottom, currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), transparent);
+}
 .kjun-popover-content { display:flex; flex-direction:column; gap:var(--_kjun-extension-popover-gap); padding:var(--_kjun-extension-popover-padding); min-width:0; word-break:keep-all; overflow-wrap:anywhere; }
 .kjun-popover-content[data-no-padding="true"] { padding:0; gap:0; }
 .kjun-tooltip {

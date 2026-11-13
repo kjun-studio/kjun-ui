@@ -13,7 +13,7 @@ export function tokenKind(path) {
   return 'length';
 }
 
-const isShadow = path => path.startsWith('shadowScale.') || /^elevation\.|\.elevation(?:\.|$)/.test(path);
+const isShadow = path => /^elevation\.|\.elevation(?:\.|$)/.test(path);
 const at = (object, path) => path.split('.').reduce((value, key) => value?.[key], object);
 
 // Follow the complete author reference path, including aliases of composite
@@ -73,7 +73,6 @@ export function validateShadows(data) {
         throw Error('Invalid shadow geometry: ' + name + '.' + index);
     }
   }
-  for (const [name, value] of Object.entries(data.shadowScale)) layers(value, 'shadowScale.' + name);
   for (const [name, value] of Object.entries(data.elevation)) layers(value, 'elevation.' + name);
   // Validate resolved component shadows too, including inline definitions and aliases.
   function components(value, path = []) {

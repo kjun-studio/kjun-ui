@@ -282,7 +282,7 @@
   overflow-x:auto; scrollbar-width:none;
   margin:0 auto var(--_kjun-extension-floating-navigation-offset); padding:var(--_kjun-extension-floating-navigation-padding);
   gap:var(--_kjun-extension-floating-navigation-gap); border-radius:var(--_kjun-extension-floating-navigation-radius);
-  background:var(--_kjun-color-surface); box-shadow:0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border), var(--_kjun-elevation-floating);
+  background:var(--_kjun-color-surface); box-shadow:0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border), var(--_kjun-floating-navigation-elevation);
 }
 .kjun-floating-navigation > a {
   position:relative; display:flex; flex:none; align-items:center; justify-content:center; box-sizing:border-box;
@@ -323,7 +323,7 @@
 
 
 /* KjunFab: a round action pinned to the viewport's bottom end, above page content and clear of the safe area. */
-.kjun-fab{position:fixed;right:var(--_kjun-extension-fab-inset);z-index:var(--_kjun-layer-page-navigation);display:inline-flex;align-items:center;justify-content:center;width:var(--_kjun-extension-fab-size);height:var(--_kjun-extension-fab-size);padding:0;border:0;border-radius:50%;background:var(--_kjun-color-brand);color:var(--_kjun-color-on-brand);box-shadow:var(--_kjun-elevation-floating);cursor:pointer}
+.kjun-fab{position:fixed;right:var(--_kjun-extension-fab-inset);z-index:var(--_kjun-layer-page-navigation);display:inline-flex;align-items:center;justify-content:center;width:var(--_kjun-extension-fab-size);height:var(--_kjun-extension-fab-size);padding:0;border:0;border-radius:50%;background:var(--_kjun-color-brand);color:var(--_kjun-color-on-brand);box-shadow:var(--_kjun-fab-elevation);cursor:pointer}
 .kjun-fab:hover:not(:disabled){background:var(--_kjun-color-brand-hover)}.kjun-fab:active:not(:disabled){background:var(--_kjun-color-brand-active)}
 .kjun-fab:focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
 .kjun-fab:disabled{opacity:var(--_kjun-state-opacity-disabled);cursor:not-allowed}

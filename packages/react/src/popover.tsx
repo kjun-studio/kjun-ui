@@ -7,6 +7,7 @@ import { Children, Fragment, cloneElement, isValidElement, useCallback, useConte
 import { Dialog, Focusable, OverlayArrow, Tooltip, TooltipTrigger, TooltipTriggerStateContext } from "react-aria-components";
 import { FloatingPanel, resolveFocusReturn } from "./floating-panel";
 import { installNonModalPopover } from "../../../shared/package-runtime/popover-nonmodal";
+import { trackPopoverScroll } from "../../../shared/package-runtime/popover-scroll";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { ActionSizeContext, popoverActionSize } from "../../../shared/package-runtime/action-size";
 import { useKjunPortalContainer } from "./provider";
@@ -80,6 +81,12 @@ export function KjunPopover({
   // Focus the newly mounted dialog, without taking focus back during editing.
   const focusContent = useCallback((node: HTMLElement | null) => {
     if (node && focusOnMount.current) node.focus();
+  }, []);
+  // The scrolling body under a header reports its position, for the header divider and the bottom fade.
+  const stopScroll = useRef<(() => void) | undefined>(undefined);
+  const trackBody = useCallback((node: HTMLDivElement | null) => {
+    stopScroll.current?.();
+    stopScroll.current = node ? trackPopoverScroll(node) : undefined;
   }, []);
   const resolveReturn = resolveFocusReturn(returnFocus);
   // Anchor mode positions against an invisible fixed element on the rectangle.
@@ -170,7 +177,7 @@ export function KjunPopover({
           const body = (
             <>
               {header != null && <div id={id + "-header"} className="kjun-popover-header">{typeof header === "function" ? header(() => change(false)) : header}</div>}
-              {header != null ? <div className="kjun-popover-body">{content}</div> : content}
+              {header != null ? <div className="kjun-popover-body" ref={trackBody}>{content}</div> : content}
               <FeedbackLayerOutlet />
             </>
           );

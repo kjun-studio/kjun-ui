@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { KjunButton, KjunCard, KjunPopover, KjunModal, KjunDrawer, KjunTooltip, KjunProvider, KjunFeedbackProvider, useKjunFeedback } from '@kjun-ui/react';
 import tokens from '@/lib/generated/tokens.json';
 
-// floating is not a Card role, so the static sample borrows the ambient shadow from the token data.
-const floatingShadow = tokens.shadowScale.ambient
+// lifted is not a Card prop value, so the static sample borrows that role's shadow from the token data.
+const floatingShadow = tokens.elevation.lifted
   .map(s => `${s.offsetX}px ${s.offsetY}px ${s.blurRadius}px ${s.spreadDistance}px var(--kjun-shadow-subtle, var(--kjun-shadow))`).join(', ');
 const surfaces = [
   { role: 'flat', caption: '그림자 없음', elevation: 'flat' },
   { role: 'raised', caption: '옅은 접촉 그림자', elevation: 'raised' },
-  { role: 'floating', caption: '옅은 주변 그림자', elevation: 'flat', style: { boxShadow: floatingShadow } },
+  { role: 'lifted', caption: '옅은 주변 그림자', elevation: 'flat', style: { boxShadow: floatingShadow } },
 ] as const;
 
 function LayerStatus({ active, returnTo }: { active: string; returnTo?: string }) {
