@@ -30,10 +30,15 @@ for (const platform of ['react', 'vue3', 'native']) {
     }
   });
 
-  test(`${platform}: chart skeleton frame keeps a width inside a shrink-to-fit parent`,async({page})=>{
+  // The loading text is announced, not drawn, so nothing inside the skeleton has a width of its own.
+  test(`${platform}: chart skeleton frame fills the width it is given and brings none into a shrink-to-fit parent`,async({page})=>{
     test.skip(platform==='native','inline-block parents are a web layout case');
+    const width=()=>chartRoot(page).evaluate(el=>el.getBoundingClientRect().width);
+    await openFixture(page,platform,'?kind=frame&chart-width=320','visual-contract');
+    await expect.poll(width).toBe(320);
     await openFixture(page,platform,'?kind=frame&chart-shrink','visual-contract');
-    expect((await box(chartRoot(page))).width).toBeGreaterThan(100);
+    await expect(chartRoot(page)).toBeAttached();
+    expect(await width()).toBe(0);
   });
 
   test(`${platform}: chart skeleton draws a frame for a removed kind and names it frame`,async({page})=>{

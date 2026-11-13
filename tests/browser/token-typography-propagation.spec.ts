@@ -9,7 +9,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'token-followup');
     await weightedTypography(page.getByText('빈 상태 제목', { exact: true }), tokens.typography.cardTitle);
-    await weightedTypography(page.getByText('빈 상태 설명', { exact: true }), tokens.typography.caption);
+    await weightedTypography(page.getByText('빈 상태 설명', { exact: true }), tokens.typography.body);
     for (const size of ['xs', 'sm', 'md', 'lg', 'xl'] as const) for (const family of ['group', 'filter']) {
       const section = page.getByTestId(`${family}-${size}`);
       const button = section.getByRole('button', { name: '두 번째 MMM', exact: true });

@@ -74,7 +74,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     await dimensions(page.getByTestId('skeleton-block'), undefined, e.skeleton.blockHeight);
     await dimensions(page.getByTestId('list-skeleton'), e.skeleton.listAvatarSize, e.skeleton.listAvatarSize);
     await halfLine(page.getByTestId('list-skeleton'), e.skeleton.quoteWidth);
-    await halfLine(page.getByTestId('list-skeleton'), e.skeleton.detailWidth);
+    // Rows differ: the first row's detail bar is the role width × 1.1 (skeletonWidthScale(2)).
+    await halfLine(page.getByTestId('list-skeleton'), e.skeleton.detailWidth * 1.1);
     await halfLine(page.getByTestId('form-skeleton'), e.skeleton.formLabelWidth);
     await dimensions(page.getByTestId('form-skeleton'), undefined, tokens.input.md.lineHeight * 3 + tokens.input.md.textareaPaddingY * 2 + 2 * tokens.border.controlWidth);
     await dimensions(page.getByTestId('chart-skeleton'), undefined, e.chartSkeleton.height);
