@@ -26,6 +26,20 @@
   border-top-right-radius: inherit;
 }
 .kjun-card-media > img { display: block; width: 100%; height: auto; }
+/* A fixed ratio (mediaAspect) or a side column fills the frame; images and video crop to it. */
+.kjun-card-media:is([data-aspect], [data-side]) > * { display: block; width: 100%; height: 100%; }
+.kjun-card-media:is([data-aspect], [data-side]) > :is(img, video) { object-fit: cover; }
+/* Media at the start: a fixed column beside the header, body and footer, rounded on the start side only. */
+.kjun-card[data-media="start"] { display: grid; grid-template-columns: var(--_kjun-geometry-card-side-media-width) minmax(0, 1fr); align-content: start; }
+.kjun-card[data-media="start"] > :not(.kjun-card-media) { grid-column: 2; }
+.kjun-card[data-media="start"] > .kjun-card-media {
+  grid-column: 1;
+  border-start-start-radius: inherit;
+  border-end-start-radius: inherit;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+.kjun-card[data-media="start"] > .kjun-card-media[data-aspect] { align-self: start; }
 .kjun-card > .kjun-card-media:last-child { border-bottom-left-radius: inherit; border-bottom-right-radius: inherit; }
 .kjun-card > .kjun-card-header {
   display: flex;
@@ -37,25 +51,14 @@
 /* Without a divider the header sits a step closer to the body than to the card edge, so title and body read as one group. */
 .kjun-card[data-dividers="false"] > .kjun-card-header:has(+ .kjun-card-body) { padding-bottom: var(--_kjun-card-header-gap); }
 .kjun-card > .kjun-card-header[data-description="true"] { align-items: flex-start; }
+/* Actions beside a title line up with its first line, also when the title wraps. */
+.kjun-card > .kjun-card-header[data-titled] { align-items: first baseline; }
 .kjun-card-heading { flex: 1 1 auto; min-width: 0; max-width: 100%; }
 /* A title keeps a minimum width beside the actions: a badge stays on the title row, a wide action moves below at the start. A custom header keeps its own width. */
 .kjun-card-heading[data-title] { flex-basis: var(--_kjun-geometry-card-title-min-width); }
 .kjun-card-actions { min-width: 0; max-width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--_kjun-geometry-card-title-gap); }
 /* Actions alone in a header keep the end of the row. */
 .kjun-card-actions:first-child { margin-inline-start: auto; }
-.kjun-card-actions > .kjun-button {
-  --_kjun-card-action-height: var(--_kjun-geometry-button-heights-md);
-  height: auto !important;
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  padding-block: max(0px, calc((var(--_kjun-card-action-height) - 1lh) / 2)) !important;
-}
-.kjun-card-actions > .kjun-button[data-size="xs"] { --_kjun-card-action-height: var(--_kjun-geometry-button-heights-xs); }
-.kjun-card-actions > .kjun-button[data-size="sm"] { --_kjun-card-action-height: var(--_kjun-geometry-button-heights-sm); }
-.kjun-card-actions > .kjun-button[data-size="lg"] { --_kjun-card-action-height: var(--_kjun-geometry-button-heights-lg); }
-.kjun-card-actions > .kjun-button[data-size="xl"] { --_kjun-card-action-height: var(--_kjun-geometry-button-heights-xl); }
-.kjun-card-actions > .kjun-button > .kjun-button-label { min-width: 0; }
 .kjun-card-title {
   margin: 0;
   font-size: var(--_kjun-type-card-title-size);
@@ -90,5 +93,6 @@
 @media (prefers-reduced-motion: reduce) { .kjun-card[data-pressable] { transition: none; } .kjun-card[data-pressable]:active { transform: none; } }
 /* On a tinted surface a badge paints the plain surface colour, so it does not dissolve into a fill of its own tone. */
 .kjun-card:not([data-surface="default"], [data-surface="glass"]) { --_kjun-badge-fill: var(--_kjun-color-surface); }
-/* A plain card nested in a tinted one drops it again. */
-.kjun-card:is([data-surface="default"], [data-surface="glass"]) { --_kjun-badge-fill: initial; }
+/* A plain card nested in a tinted one, and parts painted on the plain surface (list sections, expanded table cards), drop it again. */
+.kjun-card:is([data-surface="default"], [data-surface="glass"]),
+.kjun-card :is(.kjun-list-section:not([data-surface="false"]), .kjun-list-panel:not([data-surface="false"]), .kjun-table-card-expand-content) { --_kjun-badge-fill: initial; }

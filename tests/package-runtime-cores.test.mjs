@@ -42,3 +42,19 @@ test('table core expansion toggles one id and honours single expansion', async (
   assert.equal(tableRowKey({ id: 7 }, 'id', 4), 7);
   assert.equal(tableRowKey({}, 'id', 4), 4);
 });
+
+test('cardLayout decides headings, titled rows, tint and side media the same for every platform', async () => {
+  const { cardLayout } = await load('shared/package-runtime/card-layout.ts');
+  const parts = { header: false, title: true, subtitle: false, actions: true, body: true, footer: false, media: false };
+  const base = { pressable: false, headingLevel: 3, surface: 'default', padding: 'md', mediaPosition: 'top' };
+  const plain = cardLayout(parts, base);
+  assert.deepEqual([plain.heading, plain.header, plain.titled, plain.titleLevel, plain.tinted, plain.headerGap, plain.sideMedia], [true, true, true, 3, false, 12, false]);
+  assert.equal(cardLayout(parts, { ...base, pressable: true }).titleLevel, false);
+  assert.equal(cardLayout({ ...parts, header: true }, base).titled, false);
+  assert.equal(cardLayout({ ...parts, title: false }, base).heading, false);
+  assert.equal(cardLayout({ ...parts, title: false }, base).header, true);
+  assert.equal(cardLayout(parts, { ...base, surface: 'muted' }).tinted, true);
+  assert.equal(cardLayout(parts, { ...base, surface: 'glass' }).tinted, false);
+  assert.equal(cardLayout({ ...parts, media: true }, { ...base, mediaPosition: 'start' }).sideMedia, true);
+  assert.equal(cardLayout(parts, { ...base, mediaPosition: 'start' }).sideMedia, false);
+});

@@ -37,6 +37,8 @@ export const kjunPropValues = Object.freeze({
     elevation: Object.freeze(["flat","raised"] as const),
     footerAlign: Object.freeze(["end","start"] as const),
     headingLevel: Object.freeze([false,2,3,4,5,6] as const),
+    mediaAspect: Object.freeze(["square","standard","wide"] as const),
+    mediaPosition: Object.freeze(["start","top"] as const),
     padding: Object.freeze(["none","sm","md","lg"] as const),
     radius: Object.freeze(["none","sm","md","lg","xl"] as const),
     surface: Object.freeze(["accent","brand","danger","default","glass","muted","subtle","success","warning"] as const),

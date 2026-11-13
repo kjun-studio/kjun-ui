@@ -1,5 +1,6 @@
 import { typeStyle } from "./typography";
 import { TopNavigationContext } from "./top-navigation-context";
+import { CardActionsContext } from "./card-actions-context";
 import { useActionSize } from "../../../shared/package-runtime/action-size";
 import { tokens,type ButtonSize,type ButtonVariant } from "@kjun-ui/tokens";
 import { useIcon } from "../../../shared/package-runtime/icon-context";
@@ -105,9 +106,11 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
       style,
       onClick,
       type = "button",
-      wrap = false,
+      wrap: ownWrap = false,
       ...rest
     } = props;
+    // Card header actions wrap long labels, like a button given wrap.
+    const wrap = useContext(CardActionsContext) || ownWrap;
     const size = useActionSize(props.size, declaredSize);
     const busy = useMinimumLoading(loading);
     const hasContent =

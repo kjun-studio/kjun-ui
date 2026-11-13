@@ -1123,6 +1123,10 @@
   --_kjun-geometry-card-header-gaps-md: 12px;
   --_kjun-geometry-card-header-gaps-lg: 16px;
   --_kjun-geometry-card-title-min-width: 160px;
+  --_kjun-geometry-card-side-media-width: 96px;
+  --_kjun-geometry-card-media-aspects-wide: 1.7778px;
+  --_kjun-geometry-card-media-aspects-standard: 1.3333px;
+  --_kjun-geometry-card-media-aspects-square: 1px;
   --_kjun-geometry-card-glass-blur: 10px;
   --_kjun-geometry-table-mobile-breakpoint: 768px;
   --_kjun-geometry-table-header-padding-x: 16px;

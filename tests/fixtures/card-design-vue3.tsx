@@ -1,10 +1,11 @@
 import { createApp, defineComponent, ref } from 'vue';
-import { KjunProvider, KjunCard, KjunButton, KjunBadge } from '@kjun-ui/vue3';
+import { KjunProvider, KjunCard, KjunButton, KjunBadge, KjunListSection, KjunListRow, KjunText } from '@kjun-ui/vue3';
 import { applyDemoColors } from '../../shared/demo-colors';
 applyDemoColors('default');
 const longTitle = '분기별 프로젝트 운영 현황과 다음 단계 계획서';
 const longSubtitle = '팀 전체가 함께 관리하는 문서와 최근 활동 기록을 모았습니다';
-const presses = ref(0);
+const presses = ref(0), nested = ref(false);
+Object.assign(window, { addNestedControl: () => { nested.value = true; } });
 const press = () => { presses.value++; };
 const button = (label: string, variant = 'secondary') => <KjunButton variant={variant as any} onClick={press}>{{ default: () => label }}</KjunButton>;
 const badge = (label: string, variant?: string) => () => <KjunBadge variant={variant as any}>{{ default: () => label }}</KjunBadge>;
@@ -22,7 +23,12 @@ createApp(defineComponent(() => () => (
       {box('accent', 300, { surface: 'accent', title: '강조' })}
       {box('heading4', 300, { title: '네 번째 수준 제목', headingLevel: 4 })}
       {box('no-heading', 300, { title: '제목 아님', headingLevel: false })}
-      {box('pressable', 300, { title: '눌리는 카드', pressable: true, onClick: press })}
+      {box('pressable', 300, { title: '눌리는 카드', pressable: true, onClick: press }, { default: () => nested.value ? <a href="#x">안쪽 링크</a> : '본문' })}
+      {box('tint-list', 300, { surface: 'muted', title: '목록 카드' }, { default: () => <KjunListSection>{{ default: () => <KjunListRow title="목록 행">{{ badge: badge('새 항목', 'success') }}</KjunListRow> }}</KjunListSection> })}
+      {box('two-line', 260, { title: '두 줄로 넘어가는 아주 긴 카드 제목' }, { headerActions: badge('진행', 'success') })}
+      {box('side-media', 420, { mediaPosition: 'start', title: '가로 카드' }, { media: () => <div data-testid="side-media" style={{ background: '#7ba796' }} />, footer: () => button('열기'), default: () => '썸네일 옆 본문' })}
+      {box('aspect', 320, { mediaAspect: 'wide', title: '비율 카드' }, { media: () => <div data-testid="aspect-media" style={{ background: '#7ba796' }} /> })}
+      {box('node-title', 300, {}, { title: () => <KjunText>{{ default: () => '노드 제목 12' }}</KjunText> })}
     </main>,
     <output data-testid="presses">{String(presses.value)}</output>,
   ] }}</KjunProvider>

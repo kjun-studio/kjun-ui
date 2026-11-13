@@ -12,5 +12,7 @@ export const kjunActionSizeKey: InjectionKey<Readonly<Ref<ButtonSize | null>>> =
 // Internal slot geometry; consuming applications still choose button variants.
 export const kjunTopNavigationKey: InjectionKey<{ controlSize: number; iconSize: number } | null> =
   Symbol("kjunTopNavigation");
+/** Set by KjunCard around its header actions: buttons there wrap long labels instead of overflowing the card. */
+export const kjunCardActionsKey: InjectionKey<boolean> = Symbol("kjunCardActions");
 /** KjunProvider locale/messages resolved against any outer Provider. */
 export const kjunMessagesKey: InjectionKey<Readonly<Ref<KjunMessageScope>>> = Symbol("kjunMessages");

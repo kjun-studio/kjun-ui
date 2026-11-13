@@ -3,7 +3,7 @@ import { defineComponent } from "./runtime/component";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { typeStyle } from "../../../shared/package-runtime/typography";
 import { useIcon } from "./runtime/icons";
-import { kjunActionSizeKey, kjunTopNavigationKey } from "./runtime/keys";
+import { kjunActionSizeKey, kjunTopNavigationKey, kjunCardActionsKey } from "./runtime/keys";
 import { hasContent } from "./runtime/slots";
 import { css } from "./runtime/style";
 
@@ -92,6 +92,8 @@ export const KjunButton = defineComponent({
     const size = useActionSize(() => props.size, "md");
     const busy = useMinimumLoading(() => props.loading);
     const navigation = inject(kjunTopNavigationKey, null);
+    // Card header actions wrap long labels, like a button given wrap.
+    const cardActions = inject(kjunCardActionsKey, false);
     return () => {
       const children = slots.default?.();
       const content = hasContent(children);
@@ -115,7 +117,7 @@ export const KjunButton = defineComponent({
           class="kjun-button"
           data-variant={props.variant}
           data-size={s}
-          data-wrap={props.wrap || undefined}
+          data-wrap={props.wrap || cardActions || undefined}
           data-disabled={String(props.disabled)}
           aria-label={props.ariaLabel || undefined}
           disabled={props.disabled || loading}
@@ -130,7 +132,7 @@ export const KjunButton = defineComponent({
             ...typeStyle(tokens.button.typography[s]),
             borderRadius: props.shape === "circle" ? tokens.shape.pill : tokens.button.radii[s],
             gap: content ? tokens.button.contentGaps[s] : 0,
-          }, (navigation || props.wrap) && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) },
+          }, (navigation || props.wrap || cardActions) && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) },
             props.variant === "link" && { height: "auto", minHeight: 0, minWidth: 0, width: "auto", padding: 0, borderRadius: 0 })}
           onClick={(event: MouseEvent) => {
             event.stopPropagation();

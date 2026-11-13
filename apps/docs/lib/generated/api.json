@@ -2289,7 +2289,7 @@
         "type": "string",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The card title; the title slot can carry an icon or an emphasised number instead."
       },
       {
         "name": "subtitle",
@@ -2348,6 +2348,20 @@
         "description": ""
       },
       {
+        "name": "mediaPosition",
+        "type": "CardMediaPosition",
+        "required": false,
+        "default": "\"top\"",
+        "description": "top (default) puts the media above the header; start puts it in a fixed column beside the content, such as a thumbnail."
+      },
+      {
+        "name": "mediaAspect",
+        "type": "\"wide\" | \"standard\" | \"square\"",
+        "required": false,
+        "default": "—",
+        "description": "Fixes the media frame's ratio (wide 16:9, standard 4:3, square 1:1); images and video crop to it."
+      },
+      {
         "name": "pressable",
         "type": "boolean",
         "required": false,
@@ -2366,11 +2380,11 @@
         "type": "string",
         "required": false,
         "default": "—",
-        "description": "Button name of a pressable card; defaults to the title."
+        "description": "Button name of a pressable card; defaults to the title prop."
       },
       {
         "name": "headingLevel",
-        "type": "false | 2 | 3 | 4 | 5 | 6",
+        "type": "CardHeadingLevel",
         "required": false,
         "default": "3",
         "description": "Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading."
@@ -2392,6 +2406,11 @@
     "slots": [
       {
         "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/card.tsx"
+      },
+      {
+        "name": "title",
         "data": [],
         "source": "packages/vue3/src/card.tsx"
       },
@@ -2419,10 +2438,10 @@
     "react": [
       {
         "name": "title",
-        "type": "string | undefined",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The card title; a node can carry an icon or an emphasised number. Give a pressable card with a node title an ariaLabel."
       },
       {
         "name": "subtitle",
@@ -2451,6 +2470,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "mediaPosition",
+        "type": "import(\"/workspace/shared/package-runtime/card-layout\").CardMediaPosition | undefined",
+        "required": false,
+        "default": "—",
+        "description": "top (default) puts the media above the header; start puts it in a fixed column beside the content, such as a thumbnail."
+      },
+      {
+        "name": "mediaAspect",
+        "type": "\"wide\" | \"standard\" | \"square\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Fixes the media frame's ratio (wide 16:9, standard 4:3, square 1:1); images and video crop to it."
       },
       {
         "name": "footer",
@@ -2527,11 +2560,11 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": "Button name of a pressable card; defaults to the title."
+        "description": "Button name of a pressable card; defaults to a text title."
       },
       {
         "name": "headingLevel",
-        "type": "false | 2 | 3 | 4 | 5 | 6 | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/card-layout\").CardHeadingLevel | undefined",
         "required": false,
         "default": "—",
         "description": "Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading."
@@ -2603,10 +2636,10 @@
     "native": [
       {
         "name": "title",
-        "type": "string | undefined",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The card title; a node can carry an icon or an emphasised number. Give a pressable card with a node title an ariaLabel."
       },
       {
         "name": "subtitle",
@@ -2635,6 +2668,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "mediaPosition",
+        "type": "import(\"/workspace/shared/package-runtime/card-layout\").CardMediaPosition | undefined",
+        "required": false,
+        "default": "—",
+        "description": "top (default) puts the media above the header; start puts it in a fixed column beside the content, such as a thumbnail. Style the media child to fill its frame (flex 1 or 100%)."
+      },
+      {
+        "name": "mediaAspect",
+        "type": "\"wide\" | \"standard\" | \"square\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Fixes the media frame's ratio (wide 16:9, standard 4:3, square 1:1)."
       },
       {
         "name": "footer",
@@ -2736,7 +2783,7 @@
       },
       {
         "name": "headingLevel",
-        "type": "false | 2 | 3 | 4 | 5 | 6 | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/card-layout\").CardHeadingLevel | undefined",
         "required": false,
         "default": "—",
         "description": "Marks the title as a header (aria-level on the web; default 3); false keeps plain text. A pressable card's title is never a header."

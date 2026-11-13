@@ -279,6 +279,8 @@
       "lg": { "$ref": "dimension.value16" }
     },
     "titleMinWidth": 160,
+    "sideMediaWidth": 96,
+    "mediaAspects": { "wide": 1.7778, "standard": 1.3333, "square": 1 },
     "glassBlur": { "$ref": "effects.glassBlur" }
   },
   "radius": {

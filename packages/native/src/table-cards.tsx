@@ -1,4 +1,5 @@
 import { tokens } from "@kjun-ui/tokens";
+import { CardTintContext } from "./card-surface-context";
 import { useState, type ReactNode } from "react";
 import { View } from "react-native";
 import { typeStyle } from "./typography";
@@ -119,7 +120,7 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
       {expandable && state.expanded.includes(state.key(row, i)) ? (
         <View style={{ marginTop: card.sectionGap, paddingVertical: tokens.table.expandedPadding.y, paddingHorizontal: tokens.table.expandedPadding.x,
           borderRadius: tokens.radius.radius12, backgroundColor: colors.surface }}>
-          {content(renderExpand?.(row, i))}
+          <CardTintContext.Provider value={false}>{content(renderExpand?.(row, i))}</CardTintContext.Provider>
         </View>
       ) : null}
     </>

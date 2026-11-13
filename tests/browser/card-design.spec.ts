@@ -3,7 +3,7 @@ import { openFixture } from './packed-fixture';
 import { tokens } from '../../packages/tokens/src/index';
 import { demoPalettes } from '../../shared/demo-colors';
 
-const card = tokens.card as typeof tokens.card & { headerGaps: Record<string, number>; titleMinWidth: number };
+const card = tokens.card as typeof tokens.card & { headerGaps: Record<string, number>; titleMinWidth: number; sideMediaWidth: number; mediaAspects: Record<string, number> };
 const palette = demoPalettes.default;
 const longTitle = '분기별 프로젝트 운영 현황과 다음 단계 계획서';
 const longSubtitle = '팀 전체가 함께 관리하는 문서와 최근 활동 기록을 모았습니다';
@@ -105,5 +105,79 @@ for (const platform of ['react', 'vue3', 'native']) {
       await pressable.hover();
       await expect.poll(() => pressable.evaluate(el => getComputedStyle(el).boxShadow)).toBe(raised);
     });
+  });
+}
+
+for (const platform of ['react', 'vue3', 'native']) {
+  test.describe(`${platform}: KjunCard code review`, () => {
+    test.beforeEach(async ({ page }) => {
+      await page.setViewportSize({ width: 900, height: 2400 });
+      await openFixture(page, platform, '', 'card-design');
+    });
+
+    test('a list inside a tinted card keeps its badges in their own tone', async ({ page }) => {
+      const fill = await at(page, 'tint-list').getByText('새 항목', { exact: true }).evaluate(el => {
+        for (let node: Element | null = el; node; node = node.parentElement) {
+          const color = getComputedStyle(node).backgroundColor;
+          if (color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent') return color;
+        }
+        return '';
+      });
+      expect(fill).toBe(rgb(palette.successBg));
+    });
+
+    test('a badge beside a two-line title stays on its first line', async ({ page }) => {
+      const title = await box(at(page, 'two-line').getByText('두 줄로 넘어가는 아주 긴 카드 제목', { exact: true }));
+      const badge = await box(at(page, 'two-line').getByText('진행', { exact: true }));
+      expect(title.height).toBeGreaterThan(tokens.typography.cardTitle.lineHeightPx * 1.5);
+      expect(badge.y).toBeGreaterThanOrEqual(title.y - 1);
+      expect(badge.y + badge.height).toBeLessThanOrEqual(title.y + tokens.typography.cardTitle.lineHeightPx + 4);
+    });
+
+    test('media at the start sits beside the content at its token width, full height', async ({ page }) => {
+      // The frame KJUN sizes is the media's parent; what fills it is the app's (web CSS stretches a plain child).
+      const r = await box(root(page, 'side-media')), media = await box(page.getByTestId('side-media').locator('..'));
+      const title = await box(at(page, 'side-media').getByText('가로 카드', { exact: true }));
+      near(media.width, card.sideMediaWidth);
+      near(media.x, r.x); near(media.y, r.y); near(media.height, r.height);
+      near(title.x, r.x + card.sideMediaWidth + card.padding.md);
+    });
+
+    test('mediaAspect gives the top media a fixed ratio', async ({ page }) => {
+      const media = await box(page.getByTestId('aspect-media').locator('..'));
+      near(media.width / media.height, card.mediaAspects.wide, 0.02);
+    });
+
+    test('a node title renders inside the heading', async ({ page }) => {
+      await expect(at(page, 'node-title').getByRole('heading', { level: 3 })).toContainText('노드 제목 12');
+    });
+
+    if (platform !== 'native') {
+      test('header buttons wrap through the button wrap contract', async ({ page }) => {
+        await expect(at(page, 'narrow-button').getByRole('button')).toHaveAttribute('data-wrap', /.*/);
+      });
+
+      test('a held Enter presses once and Space presses on release', async ({ page }) => {
+        const pressable = root(page, 'pressable');
+        await pressable.focus();
+        await pressable.dispatchEvent('keydown', { key: 'Enter' });
+        for (let i = 0; i < 3; i++) await pressable.dispatchEvent('keydown', { key: 'Enter', repeat: true });
+        await expect(page.getByTestId('presses')).toHaveText('1');
+        await pressable.dispatchEvent('keydown', { key: ' ' });
+        await expect(page.getByTestId('presses')).toHaveText('1');
+        await pressable.dispatchEvent('keyup', { key: ' ' });
+        await expect(page.getByTestId('presses')).toHaveText('2');
+      });
+
+      test('a control added later to a pressable card still warns', async ({ page }) => {
+        const warnings: string[] = [];
+        page.on('console', message => { if (message.type() === 'warning' || message.type() === 'error') warnings.push(message.text()); });
+        // Development warnings only exist in the development build.
+        await openFixture(page, platform, '', 'card-design', 'development');
+        await page.evaluate(() => (window as any).addNestedControl());
+        await expect(at(page, 'pressable').getByText('안쪽 링크')).toBeVisible();
+        await expect.poll(() => warnings.some(text => text.includes('pressable card contains buttons or links'))).toBe(true);
+      });
+    }
   });
 }

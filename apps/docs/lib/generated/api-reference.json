@@ -21341,7 +21341,7 @@
             "type": "string",
             "required": false,
             "default": "—",
-            "description": "",
+            "description": "The card title; the title slot can carry an icon or an emphasised number instead.",
             "summary": "헤더·알림·패널의 제목입니다.",
             "source": "packages/vue3/src/card.tsx"
           },
@@ -21425,6 +21425,24 @@
             "source": "packages/vue3/src/card.tsx"
           },
           {
+            "name": "mediaPosition",
+            "type": "CardMediaPosition",
+            "required": false,
+            "default": "top",
+            "description": "top (default) puts the media above the header; start puts it in a fixed column beside the content, such as a thumbnail.",
+            "summary": "미디어 위치입니다. top은 헤더 위, start는 내용 옆 96px 고정 열(썸네일)이며 시작 쪽 모서리만 둥글게 자릅니다. 웹은 넣은 요소를 열 높이에 맞춰 채우고, Native는 넣은 요소가 flex 1이나 100% 크기로 틀을 채우게 합니다.",
+            "source": "packages/vue3/src/card.tsx"
+          },
+          {
+            "name": "mediaAspect",
+            "type": "\"wide\" | \"standard\" | \"square\"",
+            "required": false,
+            "default": "—",
+            "description": "Fixes the media frame's ratio (wide 16:9, standard 4:3, square 1:1); images and video crop to it.",
+            "summary": "미디어 틀의 비율입니다. wide 16:9·standard 4:3·square 1:1이며, 웹은 이미지·영상을 틀에 맞춰 잘라 채웁니다. 생략하면 넣은 요소의 높이를 따릅니다(start 열은 카드 높이).",
+            "source": "packages/vue3/src/card.tsx"
+          },
+          {
             "name": "pressable",
             "type": "boolean",
             "required": false,
@@ -21447,13 +21465,13 @@
             "type": "string",
             "required": false,
             "default": "—",
-            "description": "Button name of a pressable card; defaults to the title.",
+            "description": "Button name of a pressable card; defaults to the title prop.",
             "summary": "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
             "source": "packages/vue3/src/card.tsx"
           },
           {
             "name": "headingLevel",
-            "type": "false | 2 | 3 | 4 | 5 | 6",
+            "type": "CardHeadingLevel",
             "required": false,
             "default": "3",
             "description": "Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading.",
@@ -21485,6 +21503,13 @@
             "source": "packages/vue3/src/card.tsx",
             "type": "제공 데이터 없음",
             "summary": "default 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "title",
+            "data": [],
+            "source": "packages/vue3/src/card.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "title 영역의 기본 내용을 교체합니다."
           },
           {
             "name": "header",
@@ -21522,11 +21547,11 @@
         "props": [
           {
             "name": "title",
-            "type": "string | undefined",
+            "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "헤더·알림·패널의 제목입니다.",
+            "description": "The card title; a node can carry an icon or an emphasised number. Give a pressable card with a node title an ariaLabel.",
+            "summary": "카드 제목입니다. 아이콘이나 강조한 숫자가 필요하면 노드를 넣습니다. pressable 카드에 노드 제목을 쓰면 ariaLabel을 함께 줍니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -21553,7 +21578,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "헤더 오른쪽 행동입니다. 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
+            "summary": "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -21562,7 +21587,25 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "헤더 위에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
+            "summary": "헤더 위(mediaPosition start면 내용 옆)에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
+            "source": "packages/react/src/card.tsx"
+          },
+          {
+            "name": "mediaPosition",
+            "type": "CardMediaPosition | undefined",
+            "required": false,
+            "default": "top",
+            "description": "top (default) puts the media above the header; start puts it in a fixed column beside the content, such as a thumbnail.",
+            "summary": "미디어 위치입니다. top은 헤더 위, start는 내용 옆 96px 고정 열(썸네일)이며 시작 쪽 모서리만 둥글게 자릅니다. 웹은 넣은 요소를 열 높이에 맞춰 채우고, Native는 넣은 요소가 flex 1이나 100% 크기로 틀을 채우게 합니다.",
+            "source": "packages/react/src/card.tsx"
+          },
+          {
+            "name": "mediaAspect",
+            "type": "\"wide\" | \"standard\" | \"square\" | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Fixes the media frame's ratio (wide 16:9, standard 4:3, square 1:1); images and video crop to it.",
+            "summary": "미디어 틀의 비율입니다. wide 16:9·standard 4:3·square 1:1이며, 웹은 이미지·영상을 틀에 맞춰 잘라 채웁니다. 생략하면 넣은 요소의 높이를 따릅니다(start 열은 카드 높이).",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -21667,13 +21710,13 @@
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "Button name of a pressable card; defaults to the title.",
+            "description": "Button name of a pressable card; defaults to a text title.",
             "summary": "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
             "name": "headingLevel",
-            "type": "false | 2 | 3 | 4 | 5 | 6 | undefined",
+            "type": "CardHeadingLevel | undefined",
             "required": false,
             "default": "3",
             "description": "Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading.",
@@ -21771,11 +21814,11 @@
         "props": [
           {
             "name": "title",
-            "type": "string | undefined",
+            "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "헤더·알림·패널의 제목입니다.",
+            "description": "The card title; a node can carry an icon or an emphasised number. Give a pressable card with a node title an ariaLabel.",
+            "summary": "카드 제목입니다. 아이콘이나 강조한 숫자가 필요하면 노드를 넣습니다. pressable 카드에 노드 제목을 쓰면 ariaLabel을 함께 줍니다.",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -21802,7 +21845,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "헤더 오른쪽 행동입니다. 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
+            "summary": "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -21811,7 +21854,25 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "헤더 위에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
+            "summary": "헤더 위(mediaPosition start면 내용 옆)에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "mediaPosition",
+            "type": "CardMediaPosition | undefined",
+            "required": false,
+            "default": "top",
+            "description": "top (default) puts the media above the header; start puts it in a fixed column beside the content, such as a thumbnail. Style the media child to fill its frame (flex 1 or 100%).",
+            "summary": "미디어 위치입니다. top은 헤더 위, start는 내용 옆 96px 고정 열(썸네일)이며 시작 쪽 모서리만 둥글게 자릅니다. 웹은 넣은 요소를 열 높이에 맞춰 채우고, Native는 넣은 요소가 flex 1이나 100% 크기로 틀을 채우게 합니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "mediaAspect",
+            "type": "\"wide\" | \"standard\" | \"square\" | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Fixes the media frame's ratio (wide 16:9, standard 4:3, square 1:1).",
+            "summary": "미디어 틀의 비율입니다. wide 16:9·standard 4:3·square 1:1이며, 웹은 이미지·영상을 틀에 맞춰 잘라 채웁니다. 생략하면 넣은 요소의 높이를 따릅니다(start 열은 카드 높이).",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -21949,7 +22010,7 @@
           },
           {
             "name": "headingLevel",
-            "type": "false | 2 | 3 | 4 | 5 | 6 | undefined",
+            "type": "CardHeadingLevel | undefined",
             "required": false,
             "default": "3",
             "description": "Marks the title as a header (aria-level on the web; default 3); false keeps plain text. A pressable card's title is never a header.",

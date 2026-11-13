@@ -78,7 +78,9 @@
       "disabled",
       "ariaLabel",
       "headingLevel",
-      "footerAlign"
+      "footerAlign",
+      "mediaPosition",
+      "mediaAspect"
     ],
     "react": [
       "dividers",
@@ -102,6 +104,8 @@
       "radius",
       "surface",
       "media",
+      "mediaPosition",
+      "mediaAspect",
       "pressable",
       "disabled",
       "ariaLabel",
@@ -124,6 +128,8 @@
       "radius",
       "surface",
       "media",
+      "mediaPosition",
+      "mediaAspect",
       "pressable",
       "disabled",
       "ariaLabel",

@@ -195,13 +195,15 @@ set("Card", {
 });
 set("Card", {
   header: "제목·설명 영역을 교체합니다. headerActions와 함께 사용할 수 있습니다.",
-  headerActions: "헤더 오른쪽 행동입니다. 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
-  media: "헤더 위에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
+  headerActions: "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
+  media: "헤더 위(mediaPosition start면 내용 옆)에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
+  title: "카드 제목입니다. 아이콘이나 강조한 숫자가 필요하면 노드를 넣습니다. pressable 카드에 노드 제목을 쓰면 ariaLabel을 함께 줍니다.",
 }, "react");
 set("Card", {
   header: "제목·설명 영역을 교체합니다. headerActions와 함께 사용할 수 있습니다.",
-  headerActions: "헤더 오른쪽 행동입니다. 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
-  media: "헤더 위에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
+  headerActions: "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
+  media: "헤더 위(mediaPosition start면 내용 옆)에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
+  title: "카드 제목입니다. 아이콘이나 강조한 숫자가 필요하면 노드를 넣습니다. pressable 카드에 노드 제목을 쓰면 ariaLabel을 함께 줍니다.",
 }, "native");
 set("Select FilterGroup", { multiple: "복수 선택을 사용합니다. value도 배열 형태로 전달하세요." });
 set("Icon", {
@@ -408,6 +410,8 @@ set("Card", {
   disabled: { default: "false", summary: "pressable 카드의 누름을 막고 흐리게 표시합니다. pressable이 아니면 의미가 없습니다." },
   ariaLabel: "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
   headingLevel: { default: "3", summary: "제목의 문서 제목 수준입니다(h2–h6, Native는 header 역할). false는 일반 문단입니다. pressable 카드는 카드 전체가 버튼이라 제목을 제목 요소로 그리지 않습니다." },
+  mediaPosition: { default: "top", summary: "미디어 위치입니다. top은 헤더 위, start는 내용 옆 96px 고정 열(썸네일)이며 시작 쪽 모서리만 둥글게 자릅니다. 웹은 넣은 요소를 열 높이에 맞춰 채우고, Native는 넣은 요소가 flex 1이나 100% 크기로 틀을 채우게 합니다." },
+  mediaAspect: { summary: "미디어 틀의 비율입니다. wide 16:9·standard 4:3·square 1:1이며, 웹은 이미지·영상을 틀에 맞춰 잘라 채웁니다. 생략하면 넣은 요소의 높이를 따릅니다(start 열은 카드 높이)." },
   footerAlign: { default: "start", summary: "푸터 내용의 정렬입니다. end는 확인·취소처럼 오른쪽 끝에 두는 행동에 씁니다(8px 간격, 넘치면 줄바꿈). 카드 안 행동은 secondary 버튼을 기본으로 권장합니다." },
 });
 set("Card", { onPress: "pressable 카드를 누를 때 호출합니다. 비활성 카드에서는 호출하지 않습니다." }, "native");

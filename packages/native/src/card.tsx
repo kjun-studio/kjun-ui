@@ -8,17 +8,23 @@ import { useKjunStyles } from "./provider";
 import { hasContent as present } from "../../../shared/package-runtime/content-presence";
 import { CardActionsContext } from "./card-actions-context";
 import { CardTintContext } from "./card-surface-context";
+import { cardLayout, type CardHeadingLevel, type CardMediaAspect, type CardMediaPosition } from "../../../shared/package-runtime/card-layout";
 
 // Like Web's keep-all: Korean wraps between words (iOS through its Hangul word strategy, a Text prop).
 const words = (Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } : {}) as unknown as TextStyle;
 const wordProps = { lineBreakStrategyIOS: "hangul-word" as const };
 
 export interface KjunCardProps {
-  title?: string;
+  /** The card title; a node can carry an icon or an emphasised number. Give a pressable card with a node title an ariaLabel. */
+  title?: ReactNode;
   subtitle?: string;
   header?: ReactNode;
   headerActions?: ReactNode;
   media?: ReactNode;
+  /** top (default) puts the media above the header; start puts it in a fixed column beside the content, such as a thumbnail. Style the media child to fill its frame (flex 1 or 100%). */
+  mediaPosition?: CardMediaPosition;
+  /** Fixes the media frame's ratio (wide 16:9, standard 4:3, square 1:1). */
+  mediaAspect?: CardMediaAspect;
   footer?: ReactNode;
   padding?: CardPadding;
   bodyPadding?: CardPadding;
@@ -37,11 +43,11 @@ export interface KjunCardProps {
   ariaLabel?: string;
   onPress?: (event: GestureResponderEvent) => void;
   /** Marks the title as a header (aria-level on the web; default 3); false keeps plain text. A pressable card's title is never a header. */
-  headingLevel?: false | 2 | 3 | 4 | 5 | 6;
+  headingLevel?: CardHeadingLevel;
   /** Where the footer places its content: start (default) or end, such as confirm and cancel actions. */
   footerAlign?: "start" | "end";
 }
-export function KjunCard({ title, subtitle, header, headerActions, media, footer,
+export function KjunCard({ title, subtitle, header, headerActions, media, mediaPosition = "top", mediaAspect, footer,
   padding = "md", bodyPadding = padding, radius = "md", surface = "default",
   elevation = "flat", border = false, dividers = false, children, style,
   pressable = false, disabled = false, ariaLabel, onPress, headingLevel = 3, footerAlign = "start",
@@ -50,59 +56,71 @@ export function KjunCard({ title, subtitle, header, headerActions, media, footer
   const inset = tokens.card.padding[padding], bodyInset = tokens.card.padding[bodyPadding];
   const corner = tokens.card.radii[radius];
   const paint: { background: ColorRole; border: ColorRole; text: ColorRole; description: ColorRole } = tokens.cardSurfaces[surface];
-  const tinted = surface !== "default" && surface !== "glass";
-  // A pressable card is one button, whose content is not a header.
-  const heading = !pressable && headingLevel ? { accessibilityRole: "header" as const, ...(Platform.OS === "web" ? { "aria-level": headingLevel } : {}) } : {};
   const foreground = colors[paint.text], borderColor = colors[paint.border];
-  const hasHeading = present(header) || present(title) || present(subtitle);
-  const hasHeader = hasHeading || present(headerActions);
-  const hasBody = present(children), hasFooter = present(footer), hasMedia = present(media);
+  const has = { header: present(header), title: present(title), subtitle: present(subtitle), actions: present(headerActions),
+    body: present(children), footer: present(footer), media: present(media) };
+  const layout = cardLayout(has, { pressable, headingLevel, surface, padding, mediaPosition });
+  const heading = layout.titleLevel ? { accessibilityRole: "header" as const, ...(Platform.OS === "web" ? { "aria-level": layout.titleLevel } : {}) } : {};
   const base: StyleProp<ViewStyle> = [
     {
       minWidth: 0,
       borderRadius: corner,
+      ...(layout.sideMedia ? { flexDirection: "row" as const } : {}),
       backgroundColor: colors[paint.background],
       boxShadow: tokens.card.elevation[elevation].map(({ colorRole, ...layer }) => ({ ...layer, color: colors[colorRole] })),
     },
     Platform.OS === "web" && surface === "glass" ? { backdropFilter: `blur(${tokens.card.glassBlur}px)` } as ViewStyle : {},
     style,
   ];
-  const parts = <>
-    {hasMedia && <View style={{ overflow: "hidden", borderTopLeftRadius: corner, borderTopRightRadius: corner,
-      ...(!hasHeader && !hasBody && !hasFooter ? { borderBottomLeftRadius: corner, borderBottomRightRadius: corner } : {}),
-    }}>{content(media)}</View>}
-    {hasHeader && <View style={{
+  const frame = mediaAspect ? { aspectRatio: tokens.card.mediaAspects[mediaAspect] } : {};
+  const mediaFrame = has.media && (layout.sideMedia
+    ? <View style={{ width: tokens.card.sideMediaWidth, alignSelf: mediaAspect ? "flex-start" : "stretch", overflow: "hidden",
+        borderTopLeftRadius: corner, borderBottomLeftRadius: corner, ...frame }}>{content(media)}</View>
+    : <View style={{ overflow: "hidden", borderTopLeftRadius: corner, borderTopRightRadius: corner,
+        ...(!layout.header && !has.body && !has.footer ? { borderBottomLeftRadius: corner, borderBottomRightRadius: corner } : {}), ...frame,
+      }}>{content(media)}</View>);
+  const sections = <>
+    {!!layout.header && <View style={{
       // Without a divider the header sits a step closer to the body than to the card edge.
-      padding: inset, paddingBottom: !dividers && hasBody ? tokens.card.headerGaps[padding] : inset, flexDirection: "row", flexWrap: "wrap", alignItems: !present(header) && present(subtitle) ? "flex-start" : "center", gap: tokens.card.titleGap,
-      borderBottomWidth: dividers && hasBody ? tokens.border.defaultWidth : 0, borderBottomColor: borderColor,
+      padding: inset, paddingBottom: !dividers && has.body ? layout.headerGap : inset, flexDirection: "row", flexWrap: "wrap", gap: tokens.card.titleGap,
+      // Actions beside a title line up with its first line, also when the title wraps.
+      alignItems: layout.titled ? "baseline" : has.subtitle ? "flex-start" : "center",
+      borderBottomWidth: dividers && has.body ? tokens.border.defaultWidth : 0, borderBottomColor: borderColor,
     }}>
       {/* A title keeps a minimum width beside the actions: a badge stays on the title row, a wide action moves below at the start. A custom header keeps its own width. */}
-      {hasHeading && <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: present(header) ? "auto" : tokens.card.titleMinWidth, minWidth: 0, maxWidth: "100%" }}>
-        {present(header) ? content(header, { color: foreground }) : <>
-          {!!title && <KText {...wordProps} {...heading} style={{ ...typeStyle("cardTitle"), color: foreground, ...words }}>{title}</KText>}
-          {!!subtitle && <KText {...wordProps} style={{ ...typeStyle("body"), marginTop: tokens.card.subtitleGap, color: colors[paint.description], ...words }}>{subtitle}</KText>}
+      {layout.heading && <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: layout.titled ? tokens.card.titleMinWidth : "auto", minWidth: 0, maxWidth: "100%" }}>
+        {has.header ? content(header, { color: foreground }) : <>
+          {!!has.title && (typeof title === "string" || typeof title === "number"
+            ? <KText {...wordProps} {...heading} style={{ ...typeStyle("cardTitle"), color: foreground, ...words }}>{title}</KText>
+            : <View {...heading}>{title}</View>)}
+          {!!has.subtitle && <KText {...wordProps} style={{ ...typeStyle("body"), marginTop: tokens.card.subtitleGap, color: colors[paint.description], ...words }}>{subtitle}</KText>}
         </>}
       </View>}
-      {present(headerActions) && <CardActionsContext.Provider value={true}><View style={{ flexDirection: "row", flexWrap: "wrap", minWidth: 0, maxWidth: "100%", marginStart: hasHeading ? 0 : "auto", alignItems: "center", justifyContent: "flex-end", gap: tokens.card.titleGap }}>{content(headerActions, { color: foreground })}</View></CardActionsContext.Provider>}
+      {!!has.actions && <CardActionsContext.Provider value={true}><View style={{ flexDirection: "row", flexWrap: "wrap", minWidth: 0, maxWidth: "100%", marginStart: layout.heading ? 0 : "auto", alignItems: "center", justifyContent: "flex-end", gap: tokens.card.titleGap }}>{content(headerActions, { color: foreground })}</View></CardActionsContext.Provider>}
     </View>}
-    {hasBody && <View style={{ minWidth: 0, padding: bodyInset, paddingTop: hasHeader && !dividers ? 0 : bodyInset }}>
+    {has.body && <View style={{ minWidth: 0, padding: bodyInset, paddingTop: layout.header && !dividers ? 0 : bodyInset }}>
       {content(children, { color: foreground })}
     </View>}
-    {hasFooter && <View style={{
-      padding: inset, paddingTop: !dividers && (hasBody ? bodyPadding !== "none" : hasHeader) ? 0 : inset,
-      borderTopWidth: dividers && (hasMedia || hasHeader || hasBody) ? tokens.border.defaultWidth : 0, borderTopColor: borderColor,
+    {!!has.footer && <View style={{
+      padding: inset, paddingTop: !dividers && (has.body ? bodyPadding !== "none" : layout.header) ? 0 : inset,
+      borderTopWidth: dividers && ((has.media && !layout.sideMedia) || layout.header || has.body) ? tokens.border.defaultWidth : 0, borderTopColor: borderColor,
       ...(footerAlign === "end" ? { flexDirection: "row", flexWrap: "wrap", justifyContent: "flex-end", gap: tokens.card.titleGap } : {}),
     }}>{content(footer, { color: foreground })}</View>}
+  </>;
+  const parts = <>
+    {mediaFrame}
+    {/* Media at the start: the header, body and footer stack in the column beside it. */}
+    {layout.sideMedia ? <View style={{ flex: 1, minWidth: 0 }}>{sections}</View> : sections}
     {border && <View pointerEvents="none" aria-hidden={true} style={{
       position: "absolute", inset: 0, borderRadius: corner,
       boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: tokens.card.borderWidth, inset: true, color: borderColor }],
     }} />}
   </>;
   // Always provided, so a plain card nested in a tinted one drops the tint again.
-  const painted = <CardTintContext.Provider value={tinted}>{parts}</CardTintContext.Provider>;
+  const painted = <CardTintContext.Provider value={layout.tinted}>{parts}</CardTintContext.Provider>;
   // A pressable card presses in slightly, like a button, and dims when disabled.
   return pressable
-    ? <AccessiblePressable accessibilityRole="button" accessibilityLabel={ariaLabel ?? title} accessibilityState={{ disabled }} disabled={disabled}
+    ? <AccessiblePressable accessibilityRole="button" accessibilityLabel={ariaLabel ?? (typeof title === "string" ? title : undefined)} accessibilityState={{ disabled }} disabled={disabled}
         onPress={onPress} style={({ pressed }: { pressed: boolean }) => [base, pressed ? { transform: [{ scale: 0.99 }] } : null, disabled ? { opacity: tokens.states.opacity.disabled } : null]}>{painted}</AccessiblePressable>
     : <View style={base}>{painted}</View>;
 }
