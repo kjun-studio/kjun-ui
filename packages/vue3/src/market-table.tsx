@@ -80,7 +80,7 @@ export const KjunMarketTable = defineComponent({
             loadingText={props.loadingText} loadingDelay={props.loadingDelay}>
             {{
               loading: props.skeleton ? () => <KjunMarketTableSkeleton columns={columns} showActions={showActions} /> : undefined,
-              empty: () => <KjunEmpty text={(props.emptyMessage ?? m.value.noItems)} description={props.emptySubMessage} />,
+              empty: () => <KjunEmpty size="sm" text={(props.emptyMessage ?? m.value.noItems)} description={props.emptySubMessage} />,
               default: () => (
                 <div class="kjun-table-scroll" ref={scroller} data-fade-end={fadeEnd.value || undefined}>
                   <table aria-label={m.value.marketData} class="kjun-market-table-grid" style={webMarketLayout(columns, showActions).tableStyle}>

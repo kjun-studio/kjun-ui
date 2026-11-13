@@ -34,9 +34,13 @@ set("Input Textarea Select Combobox DatePicker DateRangePicker SearchInput", {
   error: "필드를 오류 상태로 표시합니다. 오류 설명과 검증 결과는 소비자가 별도로 제공합니다.",
 });
 set("Empty", {
+  headingLevel: "제목을 h2–h6로 그려 페이지 제목 구조에 넣습니다(Native는 header 역할). false(기본)는 일반 문단입니다. 페이지·패널의 유일한 내용일 때 씁니다.",
+  live: "polite는 빈 상태가 나타날 때 화면 낭독기에 알립니다(role status). 검색·필터 직후 결과가 비었을 때 씁니다. 기본값 off는 알리지 않습니다.",
   size: "md는 페이지·패널용(위아래 32px, 32px 아이콘, 16px 제목), sm은 카드·목록 안용(위아래 24px, 24px 아이콘, 14px 제목)입니다. 설명은 두 크기 모두 14px/20px 본문이고, 아이콘 선은 크기와 관계없이 1.5px입니다.",
 });
 for (const platform of ["react", "native"]) set("Empty", {
+  description: "비어 있는 이유와 다음 행동입니다. 문자열은 14px/20px 보조색 본문으로 그리고, 링크나 강조가 필요하면 노드를 넣습니다.",
+  icon: "아이콘 이름이면 tertiary 색의 1.5px 선 아이콘으로 그립니다. 일러스트나 다른 크기의 아이콘은 요소를 직접 넣습니다(색·선 굵기는 넣은 요소가 정합니다).",
   children: "설명 아래 행동 영역입니다. 버튼 여러 개는 8px 간격으로 한 줄에 놓이고, 화면 너비 640px 이하에서는 넣은 순서대로 한 줄에 하나씩 최대 280px 너비로 쌓입니다.",
 }, platform);
 set("Alert", {

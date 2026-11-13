@@ -123,7 +123,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
           <KjunMarketTableSkeleton columns={columns} showActions={showActions} />
         )}
         emptyContent={
-          <KjunEmpty text={emptyMessage} description={emptySubMessage} />
+          <KjunEmpty size="sm" text={emptyMessage} description={emptySubMessage} />
         }
       >
         <div className="kjun-table-scroll" ref={scroller} data-fade-end={fadeEnd || undefined}>

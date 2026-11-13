@@ -236,7 +236,7 @@
 /* State blocks centre their content inside the size's minimum height. */
 .kjun-data-loading-block, .kjun-data-error, .kjun-data-empty { display: flex; flex-direction: column; justify-content: center; }
 .kjun-data-empty .kjun-empty { padding-block: 0; }
-.kjun-data-empty .kjun-empty > div { max-width: 100%; }
+.kjun-data-empty .kjun-empty-actions { max-width: 100%; }
 .kjun-data-warning { margin-top: var(--_kjun-geometry-dimension-value12); }
 .kjun-state-actions .kjun-button {
   --_kjun-data-action-height: var(--_kjun-geometry-button-heights-md);

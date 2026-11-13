@@ -7376,27 +7376,51 @@
         "type": "string",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Why it is empty and what to do next; the description slot can carry a link or emphasis."
       },
       {
         "name": "icon",
         "type": "string",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "An icon name drawn as a quiet line icon; the icon slot takes your own element instead."
       },
       {
         "name": "size",
-        "type": "\"sm\" | \"md\"",
+        "type": "EmptySize",
         "required": false,
         "default": "\"md\"",
         "description": "md for pages and panels; sm for cards and list areas."
+      },
+      {
+        "name": "headingLevel",
+        "type": "false | 2 | 3 | 4 | 5 | 6",
+        "required": false,
+        "default": "false",
+        "description": "Renders the title as an h2–h6 so it joins the page outline; false keeps a paragraph."
+      },
+      {
+        "name": "live",
+        "type": "\"polite\" | \"off\"",
+        "required": false,
+        "default": "\"off\"",
+        "description": "polite announces the message when it appears (role status), such as a search that just came back empty."
       }
     ],
     "events": [],
     "slots": [
       {
         "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/display.tsx"
+      },
+      {
+        "name": "icon",
+        "data": [],
+        "source": "packages/vue3/src/display.tsx"
+      },
+      {
+        "name": "description",
         "data": [],
         "source": "packages/vue3/src/display.tsx"
       }
@@ -7411,28 +7435,91 @@
       },
       {
         "name": "description",
-        "type": "string | undefined",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Why it is empty and what to do next; a node can carry a link or emphasis."
       },
       {
         "name": "icon",
-        "type": "string | undefined",
+        "type": "string | import(\"/workspace/node_modules/@types/react/index\").ReactElement<unknown, string | import(\"/workspace/node_modules/@types/react/index\").JSXElementConstructor<any>> | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "An icon name drawn as a quiet line icon, or your own element (an illustration, a KjunIcon of another size)."
       },
       {
         "name": "size",
-        "type": "\"sm\" | \"md\" | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/empty-geometry\").EmptySize | undefined",
         "required": false,
         "default": "—",
         "description": "md for pages and panels; sm for cards and list areas."
       },
       {
+        "name": "headingLevel",
+        "type": "false | 2 | 3 | 4 | 5 | 6 | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Renders the title as an h2–h6 so it joins the page outline; false keeps a paragraph."
+      },
+      {
+        "name": "live",
+        "type": "\"polite\" | \"off\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "polite announces the message when it appears (role status), such as a search that just came back empty."
+      },
+      {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "autoFocus",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ChangeEventHandler<HTMLDivElement, Element> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").KeyboardEventHandler<HTMLDivElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").MouseEventHandler<HTMLDivElement> | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -7448,24 +7535,45 @@
       },
       {
         "name": "description",
-        "type": "string | undefined",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Why it is empty and what to do next; a node can carry a link or emphasis."
       },
       {
         "name": "icon",
-        "type": "string | undefined",
+        "type": "string | import(\"/workspace/node_modules/@types/react/index\").ReactElement<unknown, string | import(\"/workspace/node_modules/@types/react/index\").JSXElementConstructor<any>> | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "An icon name drawn as a quiet line icon, or your own element (an illustration, a KjunIcon of another size)."
       },
       {
         "name": "size",
-        "type": "\"sm\" | \"md\" | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/empty-geometry\").EmptySize | undefined",
         "required": false,
         "default": "—",
         "description": "md for pages and panels; sm for cards and list areas."
+      },
+      {
+        "name": "headingLevel",
+        "type": "false | 2 | 3 | 4 | 5 | 6 | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Marks the title as a header for screen readers (aria-level on the web); false keeps plain text."
+      },
+      {
+        "name": "live",
+        "type": "\"polite\" | \"off\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "polite announces the message when it appears (role status), such as a search that just came back empty."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
       },
       {
         "name": "children",

@@ -43,7 +43,7 @@ export const KjunMarketSimpleList = defineComponent({
             loadingText={props.loadingText} loadingDelay={props.loadingDelay}>
             {{
               loading: props.skeleton ? () => <KjunListSkeleton /> : undefined,
-              empty: () => <KjunEmpty text={(props.emptyMessage ?? m.value.noItems)} description={props.emptySubMessage} />,
+              empty: () => <KjunEmpty size="sm" text={(props.emptyMessage ?? m.value.noItems)} description={props.emptySubMessage} />,
               default: () => <div>
                 {rows.map((row: any, i) => {
                   const price = props.priceValue(row), change = props.changeValue(row), stale = !!getValue(row, "stale");

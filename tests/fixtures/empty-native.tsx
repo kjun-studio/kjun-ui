@@ -4,4 +4,4 @@ import { applyDemoColors, demoFont, demoPalettes, demoDomainPalettes } from '../
 import { EmptyCases } from './empty-cases';
 const palette = location.search.includes('dark') ? 'dark' : 'default';
 applyDemoColors(palette);
-createRoot(document.getElementById('root')!).render(<K.KjunProvider colors={demoPalettes[palette]} domainColors={demoDomainPalettes[palette]} fontFamily={demoFont}><EmptyCases K={K} /></K.KjunProvider>);
+createRoot(document.getElementById('root')!).render(<K.KjunProvider colors={demoPalettes[palette]} domainColors={demoDomainPalettes[palette]} fontFamily={demoFont}><EmptyCases K={K} web={false} /></K.KjunProvider>);

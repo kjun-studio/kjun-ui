@@ -6,8 +6,9 @@ import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/aler
 import { typeStyle } from "./typography";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { badgeGeometry, badgeToneRoles, type BadgeToneRoles } from "../../../shared/package-runtime/badge-tone";
-import { createContext,useContext,useEffect,useRef,useState,type ReactNode } from "react";
+import { createContext,useContext,useEffect,useRef,useState,type ReactElement,type ReactNode } from "react";
 import { DataStateContentContext } from "./data-state-context";
+import { emptyGeometry, emptyPaddingY, type EmptySize } from "../../../shared/package-runtime/empty-geometry";
 import {
 Animated,
 Easing,
@@ -143,10 +144,17 @@ export function BadgeView({
 }
 export interface KjunEmptyProps {
   text?: string;
-  description?: string;
-  icon?: string;
+  /** Why it is empty and what to do next; a node can carry a link or emphasis. */
+  description?: ReactNode;
+  /** An icon name drawn as a quiet line icon, or your own element (an illustration, a KjunIcon of another size). */
+  icon?: string | ReactElement;
   /** md for pages and panels; sm for cards and list areas. */
-  size?: "sm" | "md";
+  size?: EmptySize;
+  /** Marks the title as a header for screen readers (aria-level on the web); false keeps plain text. */
+  headingLevel?: false | 2 | 3 | 4 | 5 | 6;
+  /** polite announces the message when it appears (role status), such as a search that just came back empty. */
+  live?: "polite" | "off";
+  style?: StyleProp<ViewStyle>;
   children?: ReactNode;
 }
 /** Set by KjunListSection to its density: the empty note stays one row tall in the secondary body type, like Web's .kjun-list-empty. */
@@ -155,43 +163,50 @@ export const ListEmptyContext = createContext<false | "default" | "compact">(fal
 const stackedActions = { stacked: true };
 // Like Web's keep-all: Korean wraps between words (iOS through its Hangul word strategy, a Text prop).
 const emptyWords = (Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "break-word" } : {}) as unknown as TextStyle;
+const emptyWordProps = { lineBreakStrategyIOS: "hangul-word" as const };
 export function KjunEmpty({
   text,
   description,
   icon,
   size = "md",
+  headingLevel = false,
+  live = "off",
+  style,
   children,
 }: KjunEmptyProps) {
   const m = useKjunMessages();
   text ??= m.noData;
   const { colors } = useKjunStyles();
-  const spec = tokens.extensions.empty, sm = size === "sm", iconSize = sm ? spec.smIconSize : spec.iconSize;
-  const stateContent = useContext(DataStateContentContext), inList = useContext(ListEmptyContext);
+  const spec = tokens.extensions.empty, g = emptyGeometry(size);
+  const inState = useContext(DataStateContentContext) === "empty", inList = useContext(ListEmptyContext);
   // Phones stack the actions in their own order, one full-width button per line.
   const stacked = useWindowDimensions().width <= tokens.responsive.empty;
   const title = inList ? { ...typeStyle('body'), color: colors.textSecondary }
-    : { ...typeStyle('cardTitle'), color: colors.text, fontSize: sm ? spec.smTitleSize : spec.titleSize, lineHeight: sm ? spec.smTitleLineHeight : spec.titleLineHeight };
+    : { ...typeStyle('cardTitle'), color: colors.text, fontSize: g.titleSize, lineHeight: g.titleLineHeight };
+  const heading = headingLevel ? { accessibilityRole: "header" as const, ...(Platform.OS === "web" ? { "aria-level": headingLevel } : {}) } : {};
   return (
     <View
-      style={{
+      role={live === "polite" ? "status" : undefined}
+      style={[{
         alignItems: "center",
         justifyContent: "center",
         paddingHorizontal: spec.paddingX,
-        paddingVertical: inList === "compact" ? 0 : inList ? tokens.extensions.list.compactPaddingY : stateContent === 'empty' ? 0 : sm ? spec.smPaddingY : spec.paddingY,
-      }}
+        paddingVertical: emptyPaddingY(size, { list: inList, state: inState }),
+      }, style]}
     >
-      {!!icon && (
-        <View style={{ marginBottom: sm ? spec.smIconGap : spec.iconGap }}>
-          {/* The stroke keeps one painted weight at every icon size instead of scaling with the 24-unit viewBox. */}
-          <IconBase name={icon} size={iconSize} color={colors.textTertiary} strokeWidth={(spec.iconStroke * 24) / iconSize} />
+      {hasContent(icon) && (
+        <View style={{ marginBottom: g.iconGap }}>
+          {typeof icon === "string"
+            ? <IconBase name={icon} size={g.iconSize} color={colors.textTertiary} strokeWidth={g.iconStroke} />
+            : icon}
         </View>
       )}
-      <KText lineBreakStrategyIOS="hangul-word" style={{ ...title, textAlign: "center", maxWidth: spec.textMaxWidth, ...emptyWords }}>
+      <KText {...emptyWordProps} {...heading} style={{ ...title, textAlign: "center", maxWidth: spec.textMaxWidth, ...emptyWords }}>
         {text}
       </KText>
-      {!!description && (
+      {hasContent(description) && (typeof description === "string" || typeof description === "number" ? (
         <KText
-          lineBreakStrategyIOS="hangul-word"
+          {...emptyWordProps}
           style={{
             ...typeStyle('body'),
             fontSize: spec.descriptionSize,
@@ -205,11 +220,13 @@ export function KjunEmpty({
         >
           {description}
         </KText>
-      )}
+      ) : (
+        <View style={{ marginTop: spec.descriptionGap, maxWidth: spec.textMaxWidth, alignItems: "center" }}>{description}</View>
+      ))}
       {hasContent(children) && (
         <View
           style={[
-            { marginTop: sm ? spec.smActionGap : spec.actionGap, maxWidth: "100%", gap: spec.actionsGap },
+            { marginTop: g.actionGap, maxWidth: "100%", gap: spec.actionsGap },
             stacked ? { width: spec.actionsMaxWidth, alignItems: "stretch" } : { flexDirection: "row", flexWrap: "wrap", justifyContent: "center" },
           ]}
         >

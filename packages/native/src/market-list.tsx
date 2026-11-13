@@ -47,7 +47,7 @@ export function KjunMarketSimpleList<
         emptyText={emptyMessage}
         loadingContent={props.skeleton === false ? undefined : <KjunListSkeleton />}
         emptyContent={
-          <KjunEmpty text={emptyMessage} description={emptySubMessage} />
+          <KjunEmpty size="sm" text={emptyMessage} description={emptySubMessage} />
         }
       >
         <View>

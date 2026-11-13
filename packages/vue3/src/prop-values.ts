@@ -97,6 +97,8 @@ export const kjunPropValues = Object.freeze({
     variant: Object.freeze(["danger","default"] as const),
   }),
   KjunEmpty: Object.freeze({
+    headingLevel: Object.freeze([false,2,3,4,5,6] as const),
+    live: Object.freeze(["off","polite"] as const),
     size: Object.freeze(["sm","md"] as const),
   }),
   KjunExecutionStatusBadge: Object.freeze({

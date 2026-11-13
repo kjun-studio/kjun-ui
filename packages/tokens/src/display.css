@@ -158,29 +158,30 @@
   font-weight: var(--_kjun-type-body-weight);
   letter-spacing: var(--_kjun-type-body-tracking);
 }
-.kjun-empty p {
+/* Parts are matched by class, so text an app places in the action area keeps its own type. */
+.kjun-empty-title {
   margin: 0;
   font-size: var(--_kjun-extension-empty-title-size); font-weight: var(--_kjun-type-card-title-weight); letter-spacing: var(--_kjun-type-card-title-tracking);
   line-height: var(--_kjun-extension-empty-title-line-height);
   color: var(--_kjun-color-text);
 }
 /* A quiet line icon: it introduces the message without outweighing the title. */
-.kjun-empty > svg {
+.kjun-empty-icon {
   margin-bottom: var(--_kjun-extension-empty-icon-gap);
   color: var(--_kjun-color-text-tertiary);
 }
-.kjun-empty small {
+.kjun-empty-description {
   font-size: var(--_kjun-extension-empty-description-size); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking);
   line-height: var(--_kjun-extension-empty-description-line-height);
   color: var(--_kjun-color-text-secondary);
   margin-top: var(--_kjun-extension-empty-description-gap);
 }
 /* Centred copy keeps a readable line length in wide containers. */
-.kjun-empty p,
-.kjun-empty small {
+.kjun-empty-title,
+.kjun-empty-description {
   max-width: var(--_kjun-extension-empty-text-max-width);
 }
-.kjun-empty > div {
+.kjun-empty-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -190,21 +191,20 @@
 }
 /* Phones stack the actions in their own order, one full-width button per line. */
 @media (width <= token(responsive.empty)) {
-  .kjun-empty > div {
+  .kjun-empty-actions {
     flex-direction: column;
     align-items: stretch;
     width: var(--_kjun-extension-empty-actions-max-width);
   }
 }
-.kjun-empty[data-size="sm"] {
-  padding-block: var(--_kjun-extension-empty-sm-padding-y);
-}
-.kjun-empty[data-size="sm"] > svg { margin-bottom: var(--_kjun-extension-empty-sm-icon-gap); }
-.kjun-empty[data-size="sm"] p {
+/* :where keeps size sm at the base rules' weight, so a list or data state that owns the space wins in any file order. */
+.kjun-empty:where([data-size="sm"]) { padding-block: var(--_kjun-extension-empty-sm-padding-y); }
+:where(.kjun-empty[data-size="sm"]) .kjun-empty-icon { margin-bottom: var(--_kjun-extension-empty-sm-icon-gap); }
+:where(.kjun-empty[data-size="sm"]) .kjun-empty-title {
   font-size: var(--_kjun-extension-empty-sm-title-size);
   line-height: var(--_kjun-extension-empty-sm-title-line-height);
 }
-.kjun-empty[data-size="sm"] > div { margin-top: var(--_kjun-extension-empty-sm-action-gap); }
+:where(.kjun-empty[data-size="sm"]) .kjun-empty-actions { margin-top: var(--_kjun-extension-empty-sm-action-gap); }
 .kjun-spinner {
   display: inline-flex;
   align-items: center;

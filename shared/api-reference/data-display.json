@@ -73,20 +73,34 @@
       "text",
       "description",
       "icon",
-      "size"
+      "size",
+      "headingLevel",
+      "live"
     ],
     "react": [
       "text",
       "description",
       "icon",
       "size",
-      "children"
+      "headingLevel",
+      "live",
+      "children",
+      "autoFocus",
+      "className",
+      "id",
+      "style",
+      "onChange",
+      "onKeyDown",
+      "onClick"
     ],
     "native": [
       "text",
       "description",
       "icon",
       "size",
+      "headingLevel",
+      "live",
+      "style",
       "children"
     ]
   },

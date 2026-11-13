@@ -128,7 +128,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
             empty={!rows.length}
             loadingContent={props.skeleton === false ? undefined : <KjunListSkeleton variant="compact" />}
             emptyContent={
-              <KjunEmpty text={emptyMessage} description={emptySubMessage} />
+              <KjunEmpty size="sm" text={emptyMessage} description={emptySubMessage} />
             }
           >
             <View>

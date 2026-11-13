@@ -112,3 +112,61 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
   });
 }
+
+for (const platform of ['react', 'vue3', 'native']) {
+  test.describe(`${platform}: KjunEmpty parts and options`, () => {
+    test('content without nodes draws no action area or its gap', async ({ page }) => {
+      await open(page, platform, 1024);
+      await update(page, { actions: 0, emptyChildren: true });
+      const region = page.getByTestId('region');
+      const d = await box(region.getByText('필터를 초기화하거나 새 문서를 만들어 보세요.', { exact: true }));
+      near((await box(region)).y + (await box(region)).height - (d.y + d.height), empty.paddingY);
+    });
+
+    test('root takes the app style (and class on the web)', async ({ page }) => {
+      await open(page, platform, 1024);
+      await update(page, { rootStyle: true });
+      const root = page.getByTestId('region').locator(':scope > *').first();
+      await expect(root).toHaveCSS('background-color', 'rgb(1, 2, 3)');
+      if (platform !== 'native') await expect(root).toHaveClass(/kjun-empty/), await expect(root).toHaveClass(/app-empty/);
+    });
+
+    test('description and icon accept nodes', async ({ page }) => {
+      await open(page, platform, 1024);
+      await update(page, { descriptionNode: true, iconNode: true });
+      const region = page.getByTestId('region');
+      const title = await box(region.getByText('조건에 맞는 문서가 없습니다', { exact: true }));
+      const description = await box(region.getByText('노드로 넣은 설명', { exact: true }));
+      const icon = await box(region.locator('svg').first());
+      near(icon.width, 40);
+      near(title.y - (icon.y + icon.height), empty.iconGap);
+      near(description.y - (title.y + title.height), empty.descriptionGap);
+    });
+
+    test('title can be a heading and the message can be announced', async ({ page }) => {
+      await open(page, platform, 1024);
+      const region = page.getByTestId('region');
+      await expect(region.getByRole('heading')).toHaveCount(0);
+      await expect(region.getByRole('status')).toHaveCount(0);
+      await update(page, { headingLevel: 3, live: 'polite' });
+      await expect(region.getByRole('heading', { level: 3, name: '조건에 맞는 문서가 없습니다' })).toBeVisible();
+      await expect(region.getByRole('status')).toContainText('필터를 초기화하거나 새 문서를 만들어 보세요.');
+    });
+
+    test('inside a list section the list type wins over size sm', async ({ page }) => {
+      await open(page, platform, 1024);
+      await update(page, { inList: true, size: 'sm', actions: 0 });
+      const title = page.getByTestId('region').getByText('조건에 맞는 문서가 없습니다', { exact: true });
+      await expect(title).toHaveCSS('color', rgb(demoPalettes.default.textSecondary));
+      await expect(title).toHaveCSS('font-weight', String(tokens.typography.body.fontWeight));
+    });
+
+    if (platform !== 'native') test('nodes placed in the action area keep their own type', async ({ page }) => {
+      await open(page, platform, 1024);
+      await update(page, { innerParagraph: true });
+      const inner = page.getByTestId('inner');
+      await expect(inner).toHaveCSS('font-weight', String(tokens.typography.body.fontWeight));
+      await expect(inner).toHaveCSS('max-width', 'none');
+    });
+  });
+}

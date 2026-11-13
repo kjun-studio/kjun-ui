@@ -4,6 +4,7 @@ import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { skeletonLineBox, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
+import { emptyGeometry, type EmptySize } from "../../../shared/package-runtime/empty-geometry";
 import { badgeGeometry, badgeToneRoles } from "../../../shared/package-runtime/badge-tone";
 import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
@@ -15,6 +16,7 @@ useRef,
 useState,
 type CSSProperties,
 type HTMLAttributes,
+type ReactElement,
 type ReactNode,
 } from "react";
 import { KjunIcon } from "./button";
@@ -79,12 +81,18 @@ export function KjunBadge({
 }
 export { KjunCard } from "./card";
 export type { KjunCardProps } from "./card";
-export interface KjunEmptyProps {
+export interface KjunEmptyProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
   text?: string;
-  description?: string;
-  icon?: string;
+  /** Why it is empty and what to do next; a node can carry a link or emphasis. */
+  description?: ReactNode;
+  /** An icon name drawn as a quiet line icon, or your own element (an illustration, a KjunIcon of another size). */
+  icon?: string | ReactElement;
   /** md for pages and panels; sm for cards and list areas. */
-  size?: "sm" | "md";
+  size?: EmptySize;
+  /** Renders the title as an h2–h6 so it joins the page outline; false keeps a paragraph. */
+  headingLevel?: false | 2 | 3 | 4 | 5 | 6;
+  /** polite announces the message when it appears (role status), such as a search that just came back empty. */
+  live?: "polite" | "off";
   children?: ReactNode;
 }
 export function KjunEmpty({
@@ -92,18 +100,24 @@ export function KjunEmpty({
   description,
   icon,
   size = "md",
+  headingLevel = false,
+  live = "off",
   children,
+  className,
+  ...rest
 }: KjunEmptyProps) {
   const m = useKjunMessages();
   text ??= m.noData;
-  const spec = tokens.extensions.empty, iconSize = size === "sm" ? spec.smIconSize : spec.iconSize;
+  const g = emptyGeometry(size);
+  const Title = headingLevel ? (`h${headingLevel}` as const) : "p";
   return (
-    <div className="kjun-empty" data-size={size}>
-      {/* The stroke keeps one painted weight at every icon size instead of scaling with the 24-unit viewBox. */}
-      {icon && <KjunIcon name={icon} size={iconSize} style={{ strokeWidth: (spec.iconStroke * 24) / iconSize }} />}
-      <p>{text}</p>
-      {description && <small>{description}</small>}
-      {children && <div>{children}</div>}
+    <div {...rest} className={"kjun-empty" + (className ? " " + className : "")} data-size={size} role={live === "polite" ? "status" : rest.role}>
+      {typeof icon === "string"
+        ? hasContent(icon) && <KjunIcon name={icon} size={g.iconSize} className="kjun-empty-icon" style={{ strokeWidth: g.iconStroke }} />
+        : hasContent(icon) && <div className="kjun-empty-icon">{icon}</div>}
+      <Title className="kjun-empty-title">{text}</Title>
+      {hasContent(description) && <div className="kjun-empty-description">{description}</div>}
+      {hasContent(children) && <div className="kjun-empty-actions">{children}</div>}
     </div>
   );
 }

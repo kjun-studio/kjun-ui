@@ -144,7 +144,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
           <KjunMarketTableSkeleton columns={columns} showActions={showActions} />
         )}
         emptyContent={
-          <KjunEmpty text={emptyMessage} description={emptySubMessage} />
+          <KjunEmpty size="sm" text={emptyMessage} description={emptySubMessage} />
         }
       >
         <MarketQuoteTypeContext.Provider value={tableQuote}>

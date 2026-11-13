@@ -77,6 +77,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       const r = await box(region);
       expect(r.y + r.height - desc.y - desc.height).toBeGreaterThanOrEqual(48);
       expect(desc.y - title.y - title.height).toBe(tokens.extensions.empty.descriptionGap);
+      // Market lists sit in dense surfaces, so their empty state uses size sm.
+      await expect(region.getByText('Empty title', { exact: true })).toHaveCSS('font-size', `${tokens.extensions.empty.smTitleSize}px`);
       await captureReview(region, { path: `artifacts/data-state-visual-fix/related-${platform}-${related}-empty.png` });
     }
     for (const related of ['KjunTable', 'KjunMarketTable', 'KjunMarketCards', 'KjunMarketSimpleList']) {

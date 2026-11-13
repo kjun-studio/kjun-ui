@@ -11,6 +11,7 @@ import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { progressCircle } from "../../../shared/package-runtime/progress-circle";
 import { alertActionSizes } from "../../../shared/package-runtime/alert-action-size";
 import { typeStyle } from "../../../shared/package-runtime/typography";
+import { emptyGeometry, type EmptySize } from "../../../shared/package-runtime/empty-geometry";
 import { KjunIcon } from "./button";
 import { useSkeletonPhase } from "./skeleton-phase";
 import { KjunActionSize } from "./runtime/action-size";
@@ -66,28 +67,38 @@ export const KjunBadge = defineComponent({
 
 const kjunEmptyProps = {
   text: { type: String, default: undefined },
+  /** Why it is empty and what to do next; the description slot can carry a link or emphasis. */
   description: { type: String, default: undefined },
+  /** An icon name drawn as a quiet line icon; the icon slot takes your own element instead. */
   icon: { type: String, default: undefined },
   /** md for pages and panels; sm for cards and list areas. */
-  size: { type: String as PropType<"sm" | "md">, default: "md" },
+  size: { type: String as PropType<EmptySize>, default: "md" },
+  /** Renders the title as an h2–h6 so it joins the page outline; false keeps a paragraph. */
+  headingLevel: { type: [Boolean, Number] as PropType<false | 2 | 3 | 4 | 5 | 6>, default: false },
+  /** polite announces the message when it appears (role status), such as a search that just came back empty. */
+  live: { type: String as PropType<"polite" | "off">, default: "off" },
 } as const;
 export type KjunEmptyProps = ExtractPublicPropTypes<typeof kjunEmptyProps>;
 export const KjunEmpty = defineComponent({
   name: "KjunEmpty",
   props: kjunEmptyProps,
-  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
+  slots: Object as SlotsType<{ default?: () => VNodeChild; icon?: () => VNodeChild; description?: () => VNodeChild }>,
   setup(props, { slots }) {
     const m = useKjunMessages();
     return () => {
-      const children = slots.default?.();
-      const spec = tokens.extensions.empty, iconSize = props.size === "sm" ? spec.smIconSize : spec.iconSize;
+      const children = slots.default?.(), iconNode = slots.icon?.(), descriptionNode = slots.description?.();
+      const g = emptyGeometry(props.size);
+      // Typed as "p" so JSX accepts the tag variable; h2–h6 take the same attributes.
+      const Title = (props.headingLevel ? `h${props.headingLevel}` : "p") as "p";
+      // hasContent reads slot nodes; a description prop is plain text.
+      const description = hasContent(descriptionNode) ? descriptionNode : props.description?.trim() ? props.description : undefined;
       return (
-        <div class="kjun-empty" data-size={props.size}>
-          {/* The stroke keeps one painted weight at every icon size instead of scaling with the 24-unit viewBox. */}
-          {props.icon && <KjunIcon name={props.icon} size={iconSize} style={{ strokeWidth: (spec.iconStroke * 24) / iconSize }} />}
-          <p>{(props.text ?? m.value.noData)}</p>
-          {props.description && <small>{props.description}</small>}
-          {hasContent(children) && <div>{children}</div>}
+        <div class="kjun-empty" data-size={props.size} role={props.live === "polite" ? "status" : undefined}>
+          {hasContent(iconNode) ? <div class="kjun-empty-icon">{iconNode}</div>
+            : props.icon && <KjunIcon name={props.icon} size={g.iconSize} class="kjun-empty-icon" style={{ strokeWidth: g.iconStroke }} />}
+          <Title class="kjun-empty-title">{(props.text ?? m.value.noData)}</Title>
+          {description && <div class="kjun-empty-description">{description}</div>}
+          {hasContent(children) && <div class="kjun-empty-actions">{children}</div>}
         </div>
       );
     };
