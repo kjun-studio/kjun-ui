@@ -30,3 +30,10 @@ export function useSkeletonPulse(active: boolean) {
   }, [active]);
   return active ? pulse : undefined;
 }
+
+/** The pulsing fill between the base and shine colours, or the base colour while still (or when either is not a plain colour). */
+export function skeletonFill(pulse: Animated.Value | undefined, colors: { skeleton: unknown; skeletonShine: unknown }) {
+  return pulse && typeof colors.skeletonShine === "string" && typeof colors.skeleton === "string"
+    ? pulse.interpolate({ inputRange: [0.6, 1], outputRange: [colors.skeletonShine, colors.skeleton] })
+    : (colors.skeleton as string);
+}

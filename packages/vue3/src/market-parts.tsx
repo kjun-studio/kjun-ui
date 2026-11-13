@@ -7,6 +7,7 @@ import { isMarketIdentity, normalizeMarketColumns, webMarketActionsWidth, webMar
 import { getValue } from "../../../shared/package-runtime/table-model";
 import { KjunCard } from "./card";
 import { useQueryDisplay } from "./data-state";
+import { skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
 import { KjunSkeleton } from "./display";
 import { KjunCollectionMark } from "./financial-display";
 import { queryProps, type MarketPagination } from "./market-model";
@@ -112,8 +113,9 @@ export const KjunMarketTableSkeleton = defineComponent({
   setup(props) {
     return () => {
       const cols = normalizeMarketColumns(props.columns), geometry = tokens.extensions.marketTable;
-      const valueSkeleton = () => (
-        <span class="kjun-market-skeleton-value"><KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth} /></span>
+      // Like React: values differ a little from cell to cell, so a column does not read as stripes.
+      const valueSkeleton = (index = 0) => (
+        <span class="kjun-market-skeleton-value"><KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth * skeletonWidthScale(index)} /></span>
       );
       return (
         <div aria-hidden="true" class="kjun-table-scroll">
@@ -130,10 +132,10 @@ export const KjunMarketTableSkeleton = defineComponent({
                   <td key={col.key || i} class={props.alignClass?.(col.align)} style={{ textAlign: col.align }}>
                     {isMarketIdentity(col.key) ? (
                       <div class="kjun-market-skeleton-identity">
-                        <KjunSkeleton type="line" width="80%" />
-                        <KjunSkeleton type="line" width="60%" />
+                        <KjunSkeleton type="line" width={skeletonRowWidths(row, true).title} />
+                        <KjunSkeleton type="line" width={skeletonRowWidths(row, true).detail} />
                       </div>
-                    ) : valueSkeleton()}
+                    ) : valueSkeleton(row + i)}
                   </td>
                 ))}
               </tr>

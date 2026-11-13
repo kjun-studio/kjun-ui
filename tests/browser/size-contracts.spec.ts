@@ -66,8 +66,10 @@ for (const platform of ['react', 'vue3', 'native']) {
     await dimensions(page.getByTestId('skeleton-avatar'), e.skeleton.avatarSize, e.skeleton.avatarSize);
     await dimensions(page.getByTestId('skeleton-card'), undefined, type.cardTitle.lineHeightPx / 2);
     await dimensions(page.getByTestId('skeleton-card'), undefined, type.caption.lineHeightPx / 2);
-    await dimensions(page.getByTestId('skeleton-table'), undefined, e.skeleton.tableLineHeight);
-    await dimensions(page.getByTestId('skeleton-stat'), undefined, type.displaySm.lineHeightPx / 2);
+    // Table bars follow the same rule (caption header, body cells); the stat value bar is as tall as its digits, in its line box.
+    await dimensions(page.getByTestId('skeleton-table'), undefined, type.body.lineHeightPx / 2);
+    await dimensions(page.getByTestId('skeleton-table'), undefined, type.caption.lineHeightPx / 2);
+    await dimensions(page.getByTestId('skeleton-stat'), undefined, type.displaySm.lineHeightPx);
     await dimensions(page.getByTestId('skeleton-stat'), undefined, type.caption.lineHeightPx * 2 + type.displaySm.lineHeightPx + e.kpiRow.md.labelGap + e.kpiRow.md.descriptionGap);
     await dimensions(page.getByTestId('skeleton-block'), undefined, e.skeleton.blockHeight);
     await dimensions(page.getByTestId('list-skeleton'), e.skeleton.listAvatarSize, e.skeleton.listAvatarSize);

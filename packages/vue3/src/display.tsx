@@ -1,6 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
-import { skeletonLineBox, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
+import { skeletonLineBox, skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
 import { ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
@@ -295,8 +295,8 @@ export const KjunSkeleton = defineComponent({
   name: "KjunSkeleton",
   props: kjunSkeletonProps,
   setup(props) {
-    const line = (w: Length | undefined, key?: number, lineHeight?: number) =>
-      <div key={key} class="kjun-skeleton-line" style={css({ width: w, height: lineHeight })} />;
+    const line = (w: Length | undefined, key?: number) =>
+      <div key={key} class="kjun-skeleton-line" style={css({ width: w })} />;
     // Like React: a bar inside a line box of a type role, so the skeleton is as tall as that text.
     const slot = (w: Length, role?: TypographyRole | "inherit", key?: number) =>
       <div key={key} class="kjun-skeleton-slot" style={role ? { "--_kjun-skeleton-slot": skeletonLineBox(role === "inherit" ? undefined : role) } : undefined}>{line(w)}</div>;
@@ -304,9 +304,10 @@ export const KjunSkeleton = defineComponent({
     const avatar = () => (
       <div class="kjun-skeleton-avatar"
         style={css({
-          width: props.width || tokens.extensions.skeleton.avatarSize,
+          // Like React: the root already carries a given width; repeating a percentage here would apply it twice.
+          width: props.width ? "100%" : tokens.extensions.skeleton.avatarSize,
           height: props.height || tokens.extensions.skeleton.avatarSize,
-          borderRadius: props.rounded ? tokens.radius.radius9999 : tokens.radius.radius8,
+          borderRadius: props.rounded ? tokens.radius.radius9999 : tokens.extensions.skeleton.blockRadius,
         })} />
     );
     const count = (n: number) => Array.from({ length: Math.max(0, Math.floor(n)) }, (_, i) => i + 1);
@@ -331,8 +332,8 @@ export const KjunSkeleton = defineComponent({
               {[0, ...count(rows)].map(row => (
                 <div key={row} class={row === 0 ? "kjun-skeleton-table-header" : "kjun-skeleton-table-row"}>
                   {count(columns).map(col => (
-                    <div key={col} class="kjun-skeleton-table-cell">
-                      {line(row === 0 ? "70%" : ["45%", "55%", "65%", "75%", "85%"][(row + col) % 5])}
+                    <div key={col} class="kjun-skeleton-table-cell" data-align={col > 1 ? "end" : undefined}>
+                      {slot(skeletonTableWidth(row, col - 1), row === 0 ? "caption" : "body")}
                     </div>
                   ))}
                 </div>
@@ -340,7 +341,7 @@ export const KjunSkeleton = defineComponent({
             </div>
           )}
           {type === "stat" && <div class="kjun-skeleton-stat">{slot("40%", "caption")}{slot("64%", "displaySm")}{slot("30%", "caption")}</div>}
-          {type === "block" && <div class="kjun-skeleton-block" style={css({ width: width || "100%", height: height ?? sizes.blockHeight })} />}
+          {type === "block" && <div class="kjun-skeleton-block" style={css({ width: "100%", height: height ?? sizes.blockHeight })} />}
         </div>
       );
     };

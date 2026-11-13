@@ -18,7 +18,12 @@
   margin-bottom: 0;
 }
 
-/* Avatar */
+/* Avatar: in a flex row the skeleton is as wide as its avatar and never shrinks, so the clipping root cannot cut the
+   circle; the avatar fills a width given on the root. */
+.kjun-skeleton[data-type="avatar"] {
+  flex: none;
+  width: auto;
+}
 .kjun-skeleton-avatar {
   background: var(--_kjun-skeleton);
   flex-shrink: 0;
@@ -59,22 +64,12 @@
   margin-top: var(--_kjun-extension-skeleton-padding);
 }
 
-/* Table */
-.kjun-skeleton-table {
-  border: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
-  border-radius: var(--_kjun-extension-skeleton-block-radius);
-  overflow: hidden;
-}
-
-.kjun-skeleton-table-header {
-  display: flex;
-  background: var(--_kjun-bg-secondary);
-  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
-}
-
+/* Table: rows of a KjunTable at rest. No frame and no header fill, only row dividers; header bars sit in the caption
+   line box and cell bars in the body line box, and every column after the first ends at the cell's end like values. */
+.kjun-skeleton-table-header,
 .kjun-skeleton-table-row {
   display: flex;
-  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-border-primary);
+  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-divider);
 }
 
 .kjun-skeleton-table-row:last-child {
@@ -83,17 +78,22 @@
 
 .kjun-skeleton-table-cell {
   flex: 1;
+  min-width: 0;
   padding: var(--_kjun-geometry-dimension-value12) var(--_kjun-geometry-dimension-value16);
 }
 
-.kjun-skeleton-table-cell .kjun-skeleton-line {
-  margin-bottom: 0;
-  height: var(--_kjun-extension-skeleton-table-line-height);
+.kjun-skeleton-table-cell[data-align="end"] > .kjun-skeleton-slot {
+  justify-content: flex-end;
 }
 
-/* Stat: one KpiRow item, label, value and description on their own line boxes. */
+/* Stat: one KpiRow item, label, value and description on their own line boxes. The value bar stands as tall as the
+   value's digits (the cap height at the value's size), like a loading KpiRow. */
 .kjun-skeleton-stat > .kjun-skeleton-slot:nth-child(2) {
   margin-top: var(--_kjun-extension-kpi-row-md-label-gap);
+  font-size: var(--_kjun-type-display-sm-size);
+}
+.kjun-skeleton-stat > .kjun-skeleton-slot:nth-child(2) > .kjun-skeleton-line {
+  height: min(100%, max(50%, 1cap));
 }
 .kjun-skeleton-stat > .kjun-skeleton-slot:last-child {
   margin-top: var(--_kjun-extension-kpi-row-md-description-gap);

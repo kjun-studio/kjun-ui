@@ -2,6 +2,7 @@ import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { ScrollView, View } from "react-native";
 import { isMarketIdentity, normalizeMarketColumns } from "../../../shared/package-runtime/market-layout";
+import { skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
 import { KjunSkeleton } from "./display";
 import { KText } from "./internal";
 import { useMarketLayout, marketGeometry, marketHeaderStyle, marketRowStyle } from "./market-layout";
@@ -27,9 +28,9 @@ export function KjunMarketTableSkeleton({ columns = [], rows = 8, showActions = 
         {showActions && <View style={actions}><KjunSkeleton type="block" width={tokens.extensions.marketTable.actionSkeletonWidth} height={tokens.extensions.financial.priceSkeletonHeight} /></View>}
         {cols.map((col, i) => <View key={col.key || i} style={{ width: layout.widths[i], paddingVertical: tokens.dimension.value14, paddingHorizontal: layout.compact ? tokens.dimension.value4 : tokens.dimension.value12, justifyContent: "center", alignItems: isMarketIdentity(col.key) ? undefined : col.align === "right" ? "flex-end" : col.align === "center" ? "center" : "flex-start" }}>
           {isMarketIdentity(col.key) ? <View style={{ gap: tokens.dimension.value2 }}>
-            <KjunSkeleton type="line" role="body" width="80%" />
-            <KjunSkeleton type="line" role="caption" width="60%" />
-          </View> : <KjunSkeleton type="line" role="numberSm" width={tokens.extensions.financial.priceSkeletonWidth} />}
+            <KjunSkeleton type="line" role="body" width={skeletonRowWidths(row, true).title} />
+            <KjunSkeleton type="line" role="caption" width={skeletonRowWidths(row, true).detail} />
+          </View> : <KjunSkeleton type="line" role="numberSm" width={tokens.extensions.financial.priceSkeletonWidth * skeletonWidthScale(row + i)} />}
         </View>)}
       </View>)}
     </View>

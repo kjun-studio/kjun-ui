@@ -122,8 +122,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-/* The skeleton keeps the chart's height: the drawing area grows, and the caption (if any) sits under it. */
+/* The skeleton keeps the chart's height: the drawing fills all of it, so the grid lines sit where the chart's
+   will. The loading text is announced (kjun-sr-only) and takes no room. */
 .kjun-chart-skeleton {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -202,22 +204,32 @@
   opacity: var(--_kjun-state-opacity-pending);
 }
 /* Only the skeleton-coloured parts pulse; the grid lines hold still. */
-/* The matrix pulses as one, so its light and dark cells keep their pattern through the pulse. */
+/* Like every other skeleton they pulse towards the shine colour, never towards transparent, so a faint base
+   colour does not disappear at the peak. Matrix cells share the chart's delay, so the matrix pulses as one and
+   muted cells keep their own opacity through it. */
 .kjun-chart-skeleton-label,
-.kjun-chart-skeleton-donut,
-.kjun-chart-skeleton-matrix {
+.kjun-chart-skeleton-cell {
   animation: kjun-chart-pulse var(--_kjun-motion-shimmer) ease-in-out infinite;
+  animation-delay: var(--_kjun-skeleton-delay, 0ms);
+}
+.kjun-chart-skeleton-donut {
+  animation: kjun-chart-ring-pulse var(--_kjun-motion-shimmer) ease-in-out infinite;
   animation-delay: var(--_kjun-skeleton-delay, 0ms);
 }
 @keyframes kjun-chart-pulse {
   50% {
-    opacity: 0.55;
+    background-color: var(--_kjun-color-skeleton-shine);
+  }
+}
+@keyframes kjun-chart-ring-pulse {
+  50% {
+    border-color: var(--_kjun-color-skeleton-shine);
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .kjun-chart-skeleton-label,
   .kjun-chart-skeleton-donut,
-  .kjun-chart-skeleton-matrix {
+  .kjun-chart-skeleton-cell {
     animation: none;
   }
 }
@@ -227,9 +239,6 @@
 .kjun-error-fallback .kjun-empty { padding-block: 0; }
 .kjun-error-fallback .kjun-empty-icon { color: var(--_kjun-color-danger); }
 .kjun-error-fallback .kjun-empty-actions { max-width: 100%; }
-
-/* The loading text is a caption under the drawing, never a chip over it. */
-.kjun-chart-skeleton-status { flex: none; margin-top: var(--_kjun-extension-chart-skeleton-label-gap); color: var(--_kjun-color-text-tertiary); font-size: var(--_kjun-type-caption-size); line-height: var(--_kjun-type-caption-line); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking); overflow-wrap: anywhere; }
 
 .kjun-data-status > .kjun-spinner { flex-shrink: 0; }
 .kjun-data-status > span:last-child { min-width: 0; overflow-wrap: anywhere; }

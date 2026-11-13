@@ -65,8 +65,9 @@ const base: KjunColors = {
   tableRowHover: "#F7F7F7",
   tableBorder: "#DEDEDE",
   // Translucent text colour, so skeletons read the same on the page, a card or a selected row.
-  skeleton: "rgba(17,17,17,.08)",
-  skeletonShine: "rgba(17,17,17,.04)",
+  // The pulse moves away from the background in both modes: 4% → 8% here, 13% → 19% in dark.
+  skeleton: "rgba(17,17,17,.04)",
+  skeletonShine: "rgba(17,17,17,.08)",
   divider: "#EEEEEE",
   chartGrid: "#E5E5E5",
   chartAxis: "#737373",

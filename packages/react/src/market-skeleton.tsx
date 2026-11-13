@@ -1,5 +1,6 @@
 import { tokens } from "@kjun-ui/tokens";
 import { isMarketIdentity, normalizeMarketColumns } from "../../../shared/package-runtime/market-layout";
+import { skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
 import { KjunSkeleton } from "./display";
 import { MarketColumns, webMarketLayout } from "./market-layout";
 export interface KjunMarketTableSkeletonProps {
@@ -22,9 +23,9 @@ export function KjunMarketTableSkeleton({ columns = [], rows = 8, showActions = 
         {showActions && <td className="kjun-market-actions"><span className="kjun-market-skeleton-value"><KjunSkeleton type="block" width={tokens.extensions.marketTable.actionSkeletonWidth} height={tokens.extensions.financial.priceSkeletonHeight} /></span></td>}
         {cols.map((col, i) => <td key={col.key || i} className={alignClass?.(col.align)} style={{ textAlign: col.align }}>
           {isMarketIdentity(col.key) ? <div className="kjun-market-skeleton-identity">
-            <KjunSkeleton type="line" width="80%" />
-            <KjunSkeleton type="line" width="60%" />
-          </div> : <span className="kjun-market-skeleton-value"><KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth} /></span>}
+            <KjunSkeleton type="line" width={skeletonRowWidths(row, true).title} />
+            <KjunSkeleton type="line" width={skeletonRowWidths(row, true).detail} />
+          </div> : <span className="kjun-market-skeleton-value"><KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth * skeletonWidthScale(row + i)} /></span>}
         </td>)}
       </tr>)}</tbody>
     </table>

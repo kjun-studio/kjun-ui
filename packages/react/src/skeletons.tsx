@@ -4,6 +4,7 @@ import { useContext, type CSSProperties } from "react";
 import { ListShapeContext } from "./list-context";
 import { KjunSkeleton, KjunSpinner } from "./display";
 import { useSkeletonPhase } from "./skeleton-phase";
+import { skeletonCount, skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import {
   chartFrameDefaults,
@@ -46,39 +47,41 @@ export function KjunListSkeleton({
   const avatarSize = ownAvatarSize ?? (variant === "row" ? tokens.extensions.list.leadingSizes.sm : sk.listAvatarSize);
   // In an open KjunListSection a row skeleton takes the open row's shape: larger title and description lines and a
   // rounded leading square in place of the avatar; in a compact one, the compact row's height.
+  // A row count from data is floored and never negative or unbounded.
+  const count = skeletonCount(rows);
   const shape = useContext(ListShapeContext), open = shape.open && variant === "row", leadingSize = tokens.extensions.list.open.leadingSize;
   return (
     <div aria-hidden={loadingText ? undefined : true} role={loadingText ? "status" : undefined}>
       {loadingText && <span className="kjun-sr-only">{loadingText}</span>}
       {variant === "row"
-        ? Array.from({ length: rows }, (_, i) => (
+        ? Array.from({ length: count }, (_, i) => (
             // KjunListRow's own geometry: bars sit in the title and description line boxes.
             <div key={i} className="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined} data-open={open || undefined} data-density={shape.compact ? "compact" : undefined}>
               {avatar && <div className="kjun-list-skeleton-leading">{open ? <KjunSkeleton type="block" width={leadingSize} height={leadingSize} /> : <KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} />}</div>}
               <div className="kjun-list-skeleton-label">
-                <KjunSkeleton type="line" role={open ? "input" : "control"} width={i % 2 ? "55%" : "40%"} />
-                {description && <KjunSkeleton type="line" role={open ? "body" : "caption"} width="30%" />}
+                <KjunSkeleton type="line" role={open ? "input" : "control"} width={skeletonRowWidths(i).title} />
+                {description && <KjunSkeleton type="line" role={open ? "body" : "caption"} width={skeletonRowWidths(i).detail} />}
               </div>
               {quote && (
                 <div className="kjun-list-skeleton-trailing" data-kind={trailing}>
                   {trailing === "switch" ? <KjunSkeleton type="avatar" width={tokens.extensions.switch.widths.md} height={tokens.extensions.switch.heights.md} />
-                    : <KjunSkeleton type="line" role="control" width={trailing === "chevron" ? tokens.iconSizes.default : sk.detailWidth} />}
+                    : <KjunSkeleton type="line" role="control" width={trailing === "chevron" ? tokens.iconSizes.default : sk.detailWidth * skeletonWidthScale(i)} />}
                 </div>
               )}
             </div>
           ))
-        : Array.from({ length: rows }, (_, i) => (
+        : Array.from({ length: count }, (_, i) => (
             // Bars take each slot's line height from CSS (name, then meta), like the list rows they stand in for.
             <div key={i} className="kjun-list-skeleton-row" data-variant={variant}>
               {(avatar ?? true) && <KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} />}
               <div className="kjun-list-skeleton-label">
-                <KjunSkeleton type="line" width={i % 2 ? "80%" : "65%"} />
-                <KjunSkeleton type="line" width="50%" />
+                <KjunSkeleton type="line" width={skeletonRowWidths(i, true).title} />
+                <KjunSkeleton type="line" width={skeletonRowWidths(i, true).detail} />
               </div>
               {quote && (
                 <div className="kjun-list-skeleton-quote">
-                  <KjunSkeleton type="line" width={sk.quoteWidth} />
-                  <KjunSkeleton type="line" width={sk.detailWidth} />
+                  <KjunSkeleton type="line" width={sk.quoteWidth * skeletonWidthScale(i)} />
+                  <KjunSkeleton type="line" width={sk.detailWidth * skeletonWidthScale(i + 2)} />
                 </div>
               )}
             </div>
@@ -118,7 +121,7 @@ export function KjunFormSkeleton({
             </div>
           ) : (
             // The bar sits in the label's line box so the field starts where the real input will.
-            <KjunSkeleton type="line" role="label" width={tokens.extensions.skeleton.formLabelWidth} />
+            <KjunSkeleton type="line" role="label" width={tokens.extensions.skeleton.formLabelWidth * skeletonWidthScale(i)} />
           )}
           <KjunSkeleton
             type="block"
@@ -226,8 +229,9 @@ export function KjunChartSkeleton({
               </div>
             )}
           </div>
+          {/* Announced, not drawn: a caption would shorten the plot and move the grid lines when the chart arrives. */}
           {loadingText && (
-            <div className="kjun-chart-skeleton-status" data-kjun-chart-part="status" role={status}>
+            <div className="kjun-sr-only" data-kjun-chart-part="status" role={status}>
               {loadingText}
             </div>
           )}

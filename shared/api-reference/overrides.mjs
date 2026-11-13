@@ -357,7 +357,7 @@ set("Popover", { returnFocus: { summary:"닫힌 뒤 초점을 보낼 요소입�
 set("Card", { dividers: { default:"false", summary:"헤더·본문·푸터 사이 구분선을 표시합니다. 구분선이 없으면 제목 묶음과 본문 사이는 padding보다 한 단계 좁게(sm 8·md 12·lg 16px), 본문과 푸터 사이는 padding만큼 띄웁니다." } });
 set("ChartSkeleton", {
   kind: { default:'"frame"', summary:"frame은 격자선과 축 라벨 자리, donut은 글자 없는 고리, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다." },
-  loadingText: { default:'"차트를 불러오는 중"', summary:"그림 아래 12px 캡션으로 표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다." },
+  loadingText: { default:'"차트를 불러오는 중"', summary:"화면에는 그리지 않고 status 역할로 알리는 로딩 문구입니다(skeleton=false이면 스피너 아래에 표시). 빈 문자열이면 알림을 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다." },
   skeleton: { default:"true", summary:"false이면 자리 표시 대신 같은 높이 안에 스피너와 loadingText를 표시합니다." },
   rows: { default:"8", summary:"matrix의 행 수입니다. 1–100 사이 정수로 내림합니다." },
   columns: { default:"14", summary:"matrix의 열 수입니다. 1–100 사이 정수로 내림합니다." },

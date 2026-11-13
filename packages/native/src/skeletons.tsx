@@ -5,11 +5,12 @@ import { useContext, useState } from "react";
 import { ListShapeContext } from "./list-context";
 import { listRowMetrics } from "../../../shared/package-runtime/list-row";
 import { listRowBleed } from "../../../shared/package-runtime/list-leading";
-import { Animated,Platform,View,useWindowDimensions,type DimensionValue } from "react-native";
+import { Animated,Platform,StyleSheet,View,useWindowDimensions,type DimensionValue } from "react-native";
 import Svg,{ Path } from "react-native-svg";
 import { KjunSkeleton,KjunSpinner } from "./display";
 import { KText,useReducedMotion } from "./internal";
-import { useSkeletonPulse } from "./skeleton-clock";
+import { skeletonFill, useSkeletonPulse } from "./skeleton-clock";
+import { skeletonCount, skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
 import { useKjunStyles } from "./provider";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import {
@@ -59,7 +60,7 @@ export function KjunListSkeleton({
   const avatarSize = ownAvatarSize ?? (variant === "row" ? tokens.extensions.list.leadingSizes.sm : tokens.extensions.skeleton.listAvatarSize);
   if (variant === "row") return (
     <View {...skeletonStatus(loadingText)}>
-      <ListRowSkeleton rows={rows} avatar={avatar ?? false} avatarSize={avatarSize} description={description}
+      <ListRowSkeleton rows={skeletonCount(rows)} avatar={avatar ?? false} avatarSize={avatarSize} description={description}
         trailing={quote ? trailing : undefined} divider={colors.divider} />
     </View>
   );
@@ -70,7 +71,7 @@ export function KjunListSkeleton({
   const roles = narrow ? (["input", "body"] as const) : (["label", "caption"] as const);
   return (
     <View {...skeletonStatus(loadingText)}>
-      {Array.from({ length: rows }, (_, i) => (
+      {Array.from({ length: skeletonCount(rows) }, (_, i) => (
         <View
           key={i}
           style={{
@@ -86,13 +87,13 @@ export function KjunListSkeleton({
         >
           {(avatar ?? true) && <KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} />}
           <View style={{ flex: 1, minWidth: 0, gap: market ? tokens.dimension.value2 : sk.detailGap }}>
-            <KjunSkeleton type="line" role={roles[0]} width={i % 2 ? "80%" : "65%"} />
-            <KjunSkeleton type="line" role={roles[1]} width="50%" />
+            <KjunSkeleton type="line" role={roles[0]} width={skeletonRowWidths(i, true).title} />
+            <KjunSkeleton type="line" role={roles[1]} width={skeletonRowWidths(i, true).detail} />
           </View>
           {quote && (
             <View style={{ alignItems: "flex-end", gap: market ? tokens.dimension.value2 : sk.detailGap }}>
-              <KjunSkeleton type="line" role={roles[0]} width={sk.quoteWidth} />
-              <KjunSkeleton type="line" role={roles[1]} width={sk.detailWidth} />
+              <KjunSkeleton type="line" role={roles[0]} width={sk.quoteWidth * skeletonWidthScale(i)} />
+              <KjunSkeleton type="line" role={roles[1]} width={sk.detailWidth * skeletonWidthScale(i + 2)} />
             </View>
           )}
         </View>
@@ -118,11 +119,11 @@ function ListRowSkeleton({ rows, avatar, avatarSize, description, trailing, divi
           {avatar ? open ? <View style={{ width: o.leadingSize, height: o.leadingSize, borderRadius: o.leadingRadius, overflow: "hidden", ...bleed }}><KjunSkeleton type="block" width={o.leadingSize} height={o.leadingSize} /></View>
             : <View style={{ width: list.leadingWidth, alignItems: "center", ...bleed }}><KjunSkeleton type="avatar" width={avatarSize} height={avatarSize} /></View> : null}
           <View style={{ flex: 1, minWidth: 0, gap: list.descriptionGap }}>
-            <KjunSkeleton type="line" role={open ? m.title : "control"} width={i % 2 ? "55%" : "40%"} />
-            {description ? <KjunSkeleton type="line" role={m.description} width="30%" /> : null}
+            <KjunSkeleton type="line" role={open ? m.title : "control"} width={skeletonRowWidths(i).title} />
+            {description ? <KjunSkeleton type="line" role={m.description} width={skeletonRowWidths(i).detail} /> : null}
           </View>
           {trailing === "switch" ? <View style={bleed}><KjunSkeleton type="avatar" width={tokens.extensions.switch.widths.md} height={tokens.extensions.switch.heights.md} /></View>
-            : trailing ? <KjunSkeleton type="line" role="control" width={trailing === "chevron" ? tokens.iconSizes.default : tokens.extensions.skeleton.detailWidth} />
+            : trailing ? <KjunSkeleton type="line" role="control" width={trailing === "chevron" ? tokens.iconSizes.default : tokens.extensions.skeleton.detailWidth * skeletonWidthScale(i)} />
             : null}
           {i < rows - 1 && !open ? <View style={{ position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: divider }} /> : null}
         </View>
@@ -174,7 +175,7 @@ export function KjunFormSkeleton({
             </KText>
           ) : (
             // The bar sits in the label's line box so the field starts where the real input will.
-            <KjunSkeleton type="line" role="label" width={tokens.extensions.skeleton.formLabelWidth} />
+            <KjunSkeleton type="line" role="label" width={tokens.extensions.skeleton.formLabelWidth * skeletonWidthScale(i)} />
           )}
           <View style={{ borderRadius: tokens.input[size].radius, overflow: "hidden" }}>
             <KjunSkeleton
@@ -230,6 +231,7 @@ export function KjunChartSkeleton({
     revealed = useLoadingReveal(true, loadingDelay),
     spec = tokens.extensions.chartSkeleton,
     caption = tokens.typography.caption.lineHeightPx,
+    fill = StyleSheet.absoluteFill,
     labels = spec.labelGap + caption,
     axis = Math.max(0, axisWidth),
     rowCount = chartSkeletonCount(rows),
@@ -239,13 +241,12 @@ export function KjunChartSkeleton({
     // Like Web: tick bars narrow when ticks crowd the plot, so an end bar keeps a label gap from its neighbour.
     step = frameWidth > 0 ? (frameWidth - axis) / (chartFrameStops(xTicks).length - 1) : Infinity,
     tickWidth = Math.max(0, Math.min(spec.tickLabelWidth, ((step - spec.labelGap) * 2) / 3));
-  // The shared skeleton pulse (1 → 0.6) dims the chart's skeleton parts to 0.55, like Web.
-  const pulse = useSkeletonPulse(!reduced && skeleton),
-    opacity = pulse ? pulse.interpolate({ inputRange: [0.6, 1], outputRange: [tokens.states.opacity.pending, 1] }) : 1;
+  // Like Web and every other skeleton: the parts pulse towards the shine colour, never towards transparent.
+  const color = skeletonFill(useSkeletonPulse(!reduced && skeleton), colors);
   // Like Web: only the skeleton-coloured parts pulse; the grid holds still.
   const label = (style: object, key: string) => (
     <Animated.View key={key} {...chartPart("label")}
-      style={{ position: "absolute", height: caption / 2, borderRadius: tokens.extensions.skeleton.lineRadius, backgroundColor: colors.skeleton, opacity, ...style }} />
+      style={{ position: "absolute", height: caption / 2, borderRadius: tokens.extensions.skeleton.lineRadius, backgroundColor: color, ...style }} />
   );
   return (
     <View
@@ -270,27 +271,27 @@ export function KjunChartSkeleton({
             {kind === "donut" ? (
               <Animated.View
                 {...chartPart("donut")}
-                style={{ height: `${chartDonutRatio * 100}%`, aspectRatio: 1, borderWidth: spec.donutThickness, borderColor: colors.skeleton, borderRadius: tokens.radius.radius9999, opacity }}
+                style={{ height: `${chartDonutRatio * 100}%`, aspectRatio: 1, borderWidth: spec.donutThickness, borderColor: color, borderRadius: tokens.radius.radius9999 }}
               />
             ) : kind === "matrix" ? (
-              <Animated.View {...chartPart("matrix")} style={{ alignSelf: "stretch", flex: 1, gap: tokens.dimension.value4, opacity }}>
+              <View {...chartPart("matrix")} style={{ alignSelf: "stretch", flex: 1, gap: tokens.dimension.value4 }}>
                 {Array.from({ length: rowCount }, (_, row) => (
                   <View key={row} style={{ flex: 1, flexDirection: "row", gap: tokens.dimension.value4 }}>
                     {Array.from({ length: columnCount }, (_, column) => (
-                      <View
+                      <Animated.View
                         key={column}
                         {...chartPart("cell")}
                         style={{
                           flex: 1,
                           borderRadius: tokens.extensions.skeleton.lineRadius,
-                          backgroundColor: colors.skeleton,
+                          backgroundColor: color,
                           opacity: chartMatrixMuted(row, column) ? tokens.states.opacity.pending : 1,
                         }}
                       />
                     ))}
                   </View>
                 ))}
-              </Animated.View>
+              </View>
             ) : (
               <View style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0 }} onLayout={(event) => setFrameWidth(event.nativeEvent.layout.width)}>
                 {/* Only the app's frame is honest before data arrives; any series shape would be invented. */}
@@ -311,15 +312,17 @@ export function KjunChartSkeleton({
               </View>
             )}
           </View>
+          {/* Like Web: announced, not drawn. A caption would shorten the plot and move the grid lines when the chart arrives. */}
           {!!loadingText && (
             <View
               {...chartPart("status")}
               role={status}
               // iOS and Android do not treat role="status" as a live region; Android needs it explicitly.
               accessibilityLiveRegion={status ? "polite" : undefined}
-              style={{ marginTop: spec.labelGap }}
+              pointerEvents="none"
+              style={[fill, { opacity: 0 }]}
             >
-              <KText style={{ ...typeStyle("caption"), color: colors.textTertiary }}>{loadingText}</KText>
+              <KText style={typeStyle("caption")}>{loadingText}</KText>
             </View>
           )}
         </>

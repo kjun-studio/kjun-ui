@@ -1,7 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
-import { skeletonLineBox, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
+import { skeletonLineBox, skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
 import { emptyGeometry, type EmptySize } from "../../../shared/package-runtime/empty-geometry";
@@ -328,12 +328,8 @@ export function KjunSkeleton({
   loadingText,
 }: KjunSkeletonProps) {
   const root = useSkeletonPhase(animated);
-  const line = (w: CSSProperties["width"], key?: number, h?: number) => (
-    <div
-      key={key}
-      className="kjun-skeleton-line"
-      style={{ width: w, height: h }}
-    />
+  const line = (w: CSSProperties["width"], key?: number) => (
+    <div key={key} className="kjun-skeleton-line" style={{ width: w }} />
   );
   // A bar inside a line box of a type role, so the skeleton is as tall as that text.
   const slot = (w: CSSProperties["width"], lineRole?: TypographyRole | "inherit", key?: number) => (
@@ -346,9 +342,10 @@ export function KjunSkeleton({
     <div
       className="kjun-skeleton-avatar"
       style={{
-        width: width || tokens.extensions.skeleton.avatarSize,
+        // The root already carries a given width; repeating a percentage here would apply it twice.
+        width: width ? "100%" : tokens.extensions.skeleton.avatarSize,
         height: height || tokens.extensions.skeleton.avatarSize,
-        borderRadius: rounded ? tokens.radius.radius9999 : tokens.radius.radius8,
+        borderRadius: rounded ? tokens.radius.radius9999 : tokens.extensions.skeleton.blockRadius,
       }}
     />
   );
@@ -388,12 +385,8 @@ export function KjunSkeleton({
               }
             >
               {count(columns).map((col) => (
-                <div key={col} className="kjun-skeleton-table-cell">
-                  {line(
-                    row === 0
-                      ? "70%"
-                      : ["45%", "55%", "65%", "75%", "85%"][(row + col) % 5]
-                  )}
+                <div key={col} className="kjun-skeleton-table-cell" data-align={col > 1 ? "end" : undefined}>
+                  {slot(skeletonTableWidth(row, col - 1), row === 0 ? "caption" : "body")}
                 </div>
               ))}
             </div>
@@ -410,7 +403,7 @@ export function KjunSkeleton({
       {type === "block" && (
         <div
           className="kjun-skeleton-block"
-          style={{ width: width || "100%", height: height ?? tokens.extensions.skeleton.blockHeight }}
+          style={{ width: "100%", height: height ?? tokens.extensions.skeleton.blockHeight }}
         />
       )}
     </div>

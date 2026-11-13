@@ -17,6 +17,7 @@ import {
   chartTickShift,
   type KjunChartSkeletonKind,
 } from "../../../shared/package-runtime/chart-skeleton";
+import { skeletonCount, skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
 import { css } from "./runtime/style";
 
 type Length = number | string;
@@ -54,13 +55,13 @@ export const KjunListSkeleton = defineComponent({
         <div key={i} class="kjun-list-skeleton-row" data-variant="row" data-leading={avatar || undefined} data-open={open || undefined} data-density={compact ? "compact" : undefined}>
           {avatar && <div class="kjun-list-skeleton-leading">{open ? <KjunSkeleton type="block" width={leadingSize} height={leadingSize} /> : <KjunSkeleton type="avatar" width={avatarSize()} height={avatarSize()} />}</div>}
           <div class="kjun-list-skeleton-label">
-            <KjunSkeleton type="line" role={open ? "input" : "control"} width={i % 2 ? "55%" : "40%"} />
-            {props.description && <KjunSkeleton type="line" role={open ? "body" : "caption"} width="30%" />}
+            <KjunSkeleton type="line" role={open ? "input" : "control"} width={skeletonRowWidths(i).title} />
+            {props.description && <KjunSkeleton type="line" role={open ? "body" : "caption"} width={skeletonRowWidths(i).detail} />}
           </div>
           {props.quote && (
             <div class="kjun-list-skeleton-trailing" data-kind={props.trailing}>
               {props.trailing === "switch" ? <KjunSkeleton type="avatar" width={tokens.extensions.switch.widths.md} height={tokens.extensions.switch.heights.md} />
-                : <KjunSkeleton type="line" role="control" width={props.trailing === "chevron" ? tokens.iconSizes.default : sizes.detailWidth} />}
+                : <KjunSkeleton type="line" role="control" width={props.trailing === "chevron" ? tokens.iconSizes.default : sizes.detailWidth * skeletonWidthScale(i)} />}
             </div>
           )}
         </div>
@@ -70,13 +71,13 @@ export const KjunListSkeleton = defineComponent({
       <div key={i} class="kjun-list-skeleton-row" data-variant={props.variant}>
         {(props.avatar ?? true) && <KjunSkeleton type="avatar" width={avatarSize()} height={avatarSize()} />}
         <div class="kjun-list-skeleton-label">
-          <KjunSkeleton type="line" width={i % 2 ? "80%" : "65%"} />
-          <KjunSkeleton type="line" width="50%" />
+          <KjunSkeleton type="line" width={skeletonRowWidths(i, true).title} />
+          <KjunSkeleton type="line" width={skeletonRowWidths(i, true).detail} />
         </div>
         {props.quote && (
           <div class="kjun-list-skeleton-quote">
-            <KjunSkeleton type="line" width={sizes.quoteWidth} />
-            <KjunSkeleton type="line" width={sizes.detailWidth} />
+            <KjunSkeleton type="line" width={sizes.quoteWidth * skeletonWidthScale(i)} />
+            <KjunSkeleton type="line" width={sizes.detailWidth * skeletonWidthScale(i + 2)} />
           </div>
         )}
       </div>
@@ -84,7 +85,8 @@ export const KjunListSkeleton = defineComponent({
     return () => (
       <div aria-hidden={props.loadingText ? undefined : "true"} role={props.loadingText ? "status" : undefined}>
         {props.loadingText && <span class="kjun-sr-only">{props.loadingText}</span>}
-        {Array.from({ length: props.rows }, (_, i) => props.variant === "row" ? row(i) : quoteRow(i))}
+        {/* Like React: a row count from data is floored and never negative or unbounded. */}
+        {Array.from({ length: skeletonCount(props.rows) }, (_, i) => props.variant === "row" ? row(i) : quoteRow(i))}
       </div>
     );
   },
@@ -116,7 +118,7 @@ export const KjunFormSkeleton = defineComponent({
                 <div class="kjun-form-skeleton-label">{typeof field === "string" ? field : field.label}</div>
               ) : (
                 // The bar sits in the label's line box so the field starts where the real input will.
-                <KjunSkeleton type="line" role="label" width={sizes.formLabelWidth} />
+                <KjunSkeleton type="line" role="label" width={sizes.formLabelWidth * skeletonWidthScale(i)} />
               )}
               <KjunSkeleton type="block" height={
                 typeof field === "object" && field.height != null ? field.height
@@ -157,7 +159,8 @@ export const KjunChartSkeleton = defineComponent({
     return () => {
       const kind = chartSkeletonKind(props.kind),
         shown = revealed(),
-        status = shown && (props.loadingText ?? m.value.chartLoading) ? "status" : undefined,
+        loadingText = props.loadingText ?? m.value.chartLoading,
+        status = shown && loadingText ? "status" : undefined,
         rowCount = chartSkeletonCount(props.rows),
         columnCount = chartSkeletonCount(props.columns);
       return (
@@ -167,10 +170,10 @@ export const KjunChartSkeleton = defineComponent({
             <div class="kjun-data-loading" data-kjun-chart-part="loading" role={status}>
               {/* The spinner's own status would announce "로딩 중" on top of (or instead of) the chart's text. */}
               <span aria-hidden="true"><KjunSpinner size="md" /></span>
-              {(props.loadingText ?? m.value.chartLoading) && <p>{(props.loadingText ?? m.value.chartLoading)}</p>}
+              {loadingText && <p>{loadingText}</p>}
             </div>
           ) : [
-            // Like React: the drawing area grows and the loading text is a caption under it.
+            // Like React: the drawing fills the height; the loading text is announced, not drawn.
             <div key="area" class="kjun-chart-skeleton-area" aria-hidden="true">
               {kind === "donut" ? (
                 <div class="kjun-chart-skeleton-donut" data-kjun-chart-part="donut" />
@@ -198,8 +201,8 @@ export const KjunChartSkeleton = defineComponent({
                 </div>
               )}
             </div>,
-            (props.loadingText ?? m.value.chartLoading) && (
-              <div key="status" class="kjun-chart-skeleton-status" data-kjun-chart-part="status" role={status}>{(props.loadingText ?? m.value.chartLoading)}</div>
+            loadingText && (
+              <div key="status" class="kjun-sr-only" data-kjun-chart-part="status" role={status}>{loadingText}</div>
             ),
           ]}
         </div>

@@ -62,17 +62,19 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(chartPart(page,'cell')).toHaveCount(2);
   });
 
-  test(`${platform}: chart skeleton donut is a bare ring and the loading text is a caption under it`,async({page})=>{
+  test(`${platform}: chart skeleton donut is a bare ring and the loading text takes no room`,async({page})=>{
     await page.emulateMedia({reducedMotion:'reduce'});
     await openFixture(page,platform,'?kind=donut','visual-contract');
     const donut=chartPart(page,'donut');
     await expect(donut.locator('*')).toHaveCount(0);
-    const ring=await box(donut), caption=await box(chartPart(page,'status'));
-    expect(caption.y).toBeGreaterThanOrEqual(ring.y+ring.height-1);
-    // The caption stays inside the reserved height.
-    const root=await box(chartRoot(page));
-    expect(caption.y+caption.height).toBeLessThanOrEqual(root.y+root.height+1);
+    // The text is announced, not drawn: the ring measures against the whole reserved height, as it does without text.
+    const root=await box(chartRoot(page)), ring=await box(donut);
     expect(root.height).toBe(180);
+    expect(Math.abs(ring.height-180*0.8)).toBeLessThanOrEqual(1);
+    await expect(chartPart(page,'status')).toHaveText('차트를 불러오는 중');
+    if(platform!=='native') expect((await box(chartPart(page,'status'))).height).toBeLessThanOrEqual(1);
+    await openFixture(page,platform,'?kind=donut&no-text','visual-contract');
+    expect(Math.abs((await box(chartPart(page,'donut'))).height-ring.height)).toBeLessThanOrEqual(1);
   });
 
   test(`${platform}: chart skeleton frame puts axis label bars on the app's grid lines and ticks`,async({page})=>{

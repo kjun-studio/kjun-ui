@@ -260,7 +260,7 @@
             "required": false,
             "default": "\"차트를 불러오는 중\"",
             "description": "",
-            "summary": "그림 아래 12px 캡션으로 표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
+            "summary": "화면에는 그리지 않고 status 역할로 알리는 로딩 문구입니다(skeleton=false이면 스피너 아래에 표시). 빈 문자열이면 알림을 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           },
           {
@@ -358,7 +358,7 @@
             "required": false,
             "default": "\"차트를 불러오는 중\"",
             "description": "",
-            "summary": "그림 아래 12px 캡션으로 표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
+            "summary": "화면에는 그리지 않고 status 역할로 알리는 로딩 문구입니다(skeleton=false이면 스피너 아래에 표시). 빈 문자열이면 알림을 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
             "source": "packages/react/src/skeletons.tsx"
           },
           {
@@ -456,7 +456,7 @@
             "required": false,
             "default": "\"차트를 불러오는 중\"",
             "description": "",
-            "summary": "그림 아래 12px 캡션으로 표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
+            "summary": "화면에는 그리지 않고 status 역할로 알리는 로딩 문구입니다(skeleton=false이면 스피너 아래에 표시). 빈 문자열이면 알림을 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다.",
             "source": "packages/native/src/skeletons.tsx"
           },
           {
