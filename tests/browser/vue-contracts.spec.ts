@@ -17,7 +17,8 @@ for (const platform of vues) test(title(platform, "packed CSS supplies geometry,
   const card = page.getByTestId("card").locator(":scope > div");
   await expect(card).toHaveCSS("border-top-width", "0px");
   await expect.poll(() => card.evaluate(node => getComputedStyle(node, "::after").boxShadow)).toContain("0.5px");
-  await expect(card.locator(":scope > .kjun-card-header")).toHaveCSS("padding", "16px");
+  // The header sits a step closer to the body than to the card edge.
+  await expect(card.locator(":scope > .kjun-card-header")).toHaveCSS("padding", "16px 16px 12px");
   await expect(card.locator(":scope > .kjun-card-body")).toHaveCSS("padding", "0px 16px 16px");
   await expect(card.locator("h3")).toHaveCSS("margin", "0px");
   await expect(card.locator("p")).toHaveCSS("margin-top", "4px");
