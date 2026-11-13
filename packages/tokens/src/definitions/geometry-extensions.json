@@ -150,7 +150,6 @@
       "itemPaddingX": { "$ref": "dimension.value4" },
       "itemPaddingY": { "$ref": "dimension.value6" },
       "itemMaximumWidth": 168,
-      "radius": { "$ref": "dimension.value20" },
       "pressInset": { "$ref": "dimension.value4" },
       "pressRadius": { "$ref": "dimension.value16" }
     },

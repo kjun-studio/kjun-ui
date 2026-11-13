@@ -60,7 +60,7 @@ const kjunBottomNavigationProps = {
   safeArea: { type: Boolean, default: true },
   keyboardVisible: { type: Boolean, default: false },
   hideOnKeyboard: { type: Boolean, default: true },
-  /** Paints the surface (default true): rounded top corners and a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band. */
+  /** Paints the surface (default true): a square bar with a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band. */
   surface: { type: Boolean, default: true },
   /** "auto" (default) draws outline icons and fills the selected one; "filled" or "outline" keeps one style for every destination, the selection then carried by colour (and stroke weight). */
   iconStyle: { type: String as PropType<NavigationIconStyle>, default: "auto" },

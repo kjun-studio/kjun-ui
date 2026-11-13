@@ -10,7 +10,7 @@ const palettes = demoPalettes as Record<string, Record<string, string>>;
 const rgb = (hex: string) => { const n = parseInt(hex.slice(1), 16); return `rgb(${n >> 16 & 255}, ${n >> 8 & 255}, ${n & 255})`; };
 // The fill a destination icon paints: a colour for the filled glyph, none for the outline one.
 const iconFill = (page: Page, text: string) => icon(page, text).evaluate(svg => getComputedStyle(svg.querySelector('path')!).fill);
-// The bar's own layer: rounded top corners and a shadow thrown upwards, with no hairline on its top edge.
+// The bar's edge: square corners and a shadow thrown upwards, with no hairline on its top edge.
 const barEdge = (page: Page) => nav(page).evaluate(bar => {
   const css = getComputedStyle(bar), box = bar.getBoundingClientRect();
   const line = [...bar.children].some(n => { const r = n.getBoundingClientRect(); return r.top === box.top && r.width === box.width && r.height <= 1; });
@@ -31,7 +31,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await openFixture(page, platform, '?palette=' + palette, 'bottom-navigation-design');
       await expect(nav(page)).toHaveCSS('height', '60px');
       await expect(nav(page)).toHaveCSS('border-top-width', '0px');
-      expect(await barEdge(page)).toEqual({ radius: ['20px', '20px', '0px'], shadow: true, line: false });
+      expect(await barEdge(page)).toEqual({ radius: ['0px', '0px', '0px'], shadow: true, line: false });
       await expect(page.locator('.kjun-navigation-indicator')).toHaveCount(0);
       expect(await iconFill(page, '홈')).not.toBe('none');
       expect(await iconFill(page, '활동')).toBe('none');
@@ -154,7 +154,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(label(page, '설정')).toHaveCSS('color', rgb(palettes.default.textDisabled));
     await expect(label(page, '활동')).toHaveCSS('color', rgb(palettes.default.textTertiary));
     expect(await label(page, '설정').evaluate(el => { let node: Element | null = el, opacity = 1; while (node && node.getAttribute('role') !== 'navigation' && node.tagName !== 'NAV') { opacity *= Number(getComputedStyle(node).opacity); node = node.parentElement; } return opacity; })).toBe(1);
-    // Without a surface the bar is seamless: no rounded corners and no shadow.
+    // Without a surface the bar is seamless: no shadow.
     await configure(page, { surface: false });
     expect(await nav(page).evaluate(el => [getComputedStyle(el).borderTopLeftRadius, getComputedStyle(el).boxShadow])).toEqual(['0px', 'none']);
     // On a wide screen destinations stop at 168px and the group centers.

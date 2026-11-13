@@ -36,7 +36,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       })));
     }
     case "KjunBottomNavigation":
-      // The bar sits at the bottom of a screen, over the page colour, so its rounded surface and shadow show.
+      // The bar sits at the bottom of a screen, over the page colour, so its surface and shadow show.
       return h("KjunProvider", { safeArea: { bottom: settings.safeAreaBottom } }, h("Screen", { height: 280 }, [
         h("Scroll", {}, h("Inset", {}, h("Text", {}, "현재 위치: " + get("destination", "home")))),
         h(name, { iconStyle: settings.iconStyle, showLabels: settings.showLabels, value: get("destination", "home"), items: [{ key: "home", label: "홈", href: "#home", icon: "home" }, { key: "activity", label: settings.long ? "모든 프로젝트 활동 내역" : "활동", href: "#activity", icon: "list", badge: 3 }, { key: "settings", label: "설정", href: "#settings", icon: "settings" }], keyboardVisible: settings.keyboardVisible, hideOnKeyboard: settings.hideOnKeyboard, onNavigate: (key: string, event: any) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return; event.preventDefault(); set("destination", key); } }),

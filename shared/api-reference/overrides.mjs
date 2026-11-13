@@ -452,5 +452,5 @@ set("Popover", { anchorRect: "트리거 대신 붙을 화면(viewport) 사각형
 set("BottomNavigation", {
   iconStyle: { default: '"auto"', summary: "아이콘을 그리는 방식입니다. auto는 미선택을 외곽선, 현재 목적지를 채운 아이콘으로 그려 색과 모양으로 구분합니다. filled는 모두 채움형(색으로만 구분, 면적이 비슷한 아이콘 세트에 권장), outline은 모두 외곽선(현재 목적지만 획 2px)입니다. 채움형이 없는 아이콘은 외곽선으로 남습니다." },
   showLabels: { default: "true", summary: "아이콘 아래에 라벨을 보입니다. false면 아이콘만 56px 높이로 그리고 label은 접근성 이름으로 남습니다. 아이콘이 없는 글자 전용 바는 항상 라벨을 보입니다." },
-  surface: { default: "true", summary: "표면색 바탕을 그립니다. 위 모서리를 둥글리고 위쪽으로 옅은 그림자를 던져 콘텐츠 위에 뜬 층으로 보이게 합니다. false면 바탕·모서리·그림자 없이 부모 배경이 그대로 보입니다." },
+  surface: { default: "true", summary: "표면색 바탕을 그립니다. 각진 바에 위쪽으로 옅은 그림자를 던져 위의 콘텐츠와 구분합니다. false면 바탕·그림자 없이 부모 배경이 그대로 보입니다." },
 });

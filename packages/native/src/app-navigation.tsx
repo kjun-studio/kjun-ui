@@ -91,7 +91,7 @@ export interface KjunBottomNavigationProps { items: NavigationDestination[]; val
   keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: Navigate;
   /** The current destination was pressed again, e.g. to scroll its page back to the top. */
   onReselect?: Navigate;
-  /** Paints the surface (default true): rounded top corners and a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band. */
+  /** Paints the surface (default true): a square bar with a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band. */
   surface?: boolean;
   /** "auto" (default) draws outline icons and fills the selected one; "filled" or "outline" keeps one style for every destination, the selection then carried by colour (and stroke weight). */
   iconStyle?: NavigationIconStyle;
@@ -104,9 +104,9 @@ export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true,
   const geometry = tokens.extensions.bottomNavigation;
   const layout = bottomNavigationLayout(items, showLabels);
   if (keyboardVisible && hideOnKeyboard) return null;
-  // Like Web: the bar is its own layer over the content, with rounded top corners and a soft shadow thrown upwards.
+  // Like Web: a square bar with a soft shadow thrown upwards, apart from the content above it.
   return <View role="navigation" accessibilityLabel={ariaLabel} style={{ flexShrink: 0, flexDirection: "row", justifyContent: "center", backgroundColor: surface ? colors.surface : "transparent", paddingBottom: (safeArea ? insets.bottom : 0),
-    ...(surface ? { borderTopLeftRadius: geometry.radius, borderTopRightRadius: geometry.radius, boxShadow: shadowLayers(geometry.elevation, colors) } : {}) }}>
+    ...(surface ? { boxShadow: shadowLayers(geometry.elevation, colors) } : {}) }}>
     {items.map(item => <BottomDestination key={item.key} item={item} selected={item.key === value} parts={layout.parts(item)} iconOnly={layout.iconOnly} hasIcons={layout.hasIcons}
       iconStyle={iconStyle} surface={surface} onNavigate={onNavigate} onReselect={onReselect} />)}
   </View>;

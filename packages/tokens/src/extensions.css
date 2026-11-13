@@ -200,12 +200,9 @@
 .kjun-top-navigation .kjun-button-label { display:block; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
 .kjun-bottom-navigation { display:flex; flex-shrink:0; justify-content:center; }
-/* The bar is its own layer over the screen's content: rounded top corners and a soft shadow thrown upwards keep it apart
-   from what scrolls under it. A bar without a surface stays seamless. */
-.kjun-bottom-navigation:not([data-surface="false"]) {
-  border-start-start-radius:var(--_kjun-extension-bottom-navigation-radius); border-start-end-radius:var(--_kjun-extension-bottom-navigation-radius);
-  box-shadow:var(--_kjun-bottom-navigation-elevation);
-}
+/* A square bar across the screen's bottom edge: a soft shadow thrown upwards keeps it apart from the content above it.
+   A bar without a surface stays seamless. */
+.kjun-bottom-navigation:not([data-surface="false"]) { box-shadow:var(--_kjun-bottom-navigation-elevation); }
 .kjun-bottom-navigation > a {
   position:relative; isolation:isolate; box-sizing:border-box;
   display:flex; flex:1; min-width:0; max-width:var(--_kjun-extension-bottom-navigation-item-maximum-width); min-height:var(--_kjun-extension-bottom-navigation-minimum-height);
