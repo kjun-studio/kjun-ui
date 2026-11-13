@@ -2367,6 +2367,20 @@
         "required": false,
         "default": "—",
         "description": "Button name of a pressable card; defaults to the title."
+      },
+      {
+        "name": "headingLevel",
+        "type": "false | 2 | 3 | 4 | 5 | 6",
+        "required": false,
+        "default": "3",
+        "description": "Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading."
+      },
+      {
+        "name": "footerAlign",
+        "type": "\"start\" | \"end\"",
+        "required": false,
+        "default": "\"start\"",
+        "description": "Where the footer places its content: start (default) or end, such as confirm and cancel actions."
       }
     ],
     "events": [
@@ -2514,6 +2528,20 @@
         "required": false,
         "default": "—",
         "description": "Button name of a pressable card; defaults to the title."
+      },
+      {
+        "name": "headingLevel",
+        "type": "false | 2 | 3 | 4 | 5 | 6 | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading."
+      },
+      {
+        "name": "footerAlign",
+        "type": "\"start\" | \"end\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where the footer places its content: start (default) or end, such as confirm and cancel actions."
       },
       {
         "name": "autoFocus",
@@ -2705,6 +2733,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "headingLevel",
+        "type": "false | 2 | 3 | 4 | 5 | 6 | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Marks the title as a header (aria-level on the web; default 3); false keeps plain text. A pressable card's title is never a header."
+      },
+      {
+        "name": "footerAlign",
+        "type": "\"start\" | \"end\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where the footer places its content: start (default) or end, such as confirm and cancel actions."
       }
     ]
   },

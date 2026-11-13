@@ -23,10 +23,14 @@ export interface KjunCardProps extends HTMLAttributes<HTMLDivElement> {
   disabled?: boolean;
   /** Button name of a pressable card; defaults to the title. */
   ariaLabel?: string;
+  /** Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading. */
+  headingLevel?: false | 2 | 3 | 4 | 5 | 6;
+  /** Where the footer places its content: start (default) or end, such as confirm and cancel actions. */
+  footerAlign?: "start" | "end";
 }
 export function KjunCard({ title, subtitle, header, headerActions, media, footer,
   padding = "md", bodyPadding = padding, radius = "md", surface = "default",
-  elevation = "flat", border = false, dividers = false, pressable = false, disabled = false, ariaLabel,
+  elevation = "flat", border = false, dividers = false, pressable = false, disabled = false, ariaLabel, headingLevel = 3, footerAlign = "start",
   children, style, className = "", onClick, onKeyDown, ...props
 }: KjunCardProps) {
   const root = useRef<HTMLDivElement>(null);
@@ -46,27 +50,30 @@ export function KjunCard({ title, subtitle, header, headerActions, media, footer
   } : { onClick, onKeyDown };
   const hasHeading = present(header) || present(title) || present(subtitle);
   const hasHeader = hasHeading || present(headerActions);
+  // A pressable card is one button, whose content is not a heading.
+  const Title = !pressable && headingLevel ? (`h${headingLevel}` as const) : "p";
   return <div {...props} {...press} ref={root} className={["kjun-card", className].filter(Boolean).join(" ")}
     data-surface={surface} data-padding={padding} data-body-padding={bodyPadding}
     data-border={border} data-dividers={dividers} data-elevation={elevation}
     style={{
       "--_kjun-card-padding": `var(--_kjun-geometry-card-padding-${padding})`,
       "--_kjun-card-body-padding": `var(--_kjun-geometry-card-padding-${bodyPadding})`,
+      "--_kjun-card-header-gap": `var(--_kjun-geometry-card-header-gaps-${padding})`,
       borderRadius: `var(--_kjun-geometry-card-radii-${radius})`,
       // A pressable card's shadow comes from CSS so its hover lift can replace it.
       [pressable ? "--_kjun-card-shadow" : "boxShadow"]: `var(--_kjun-card-elevation-${elevation})`, ...style,
     } as CSSProperties}>
     {present(media) && <div className="kjun-card-media">{media}</div>}
     {hasHeader && <div className="kjun-card-header" data-description={!present(header) && present(subtitle)}>
-      {hasHeading && <div className="kjun-card-heading">
+      {hasHeading && <div className="kjun-card-heading" data-title={present(header) ? undefined : ""}>
         {present(header) ? header : <>
-          {title && <h3>{title}</h3>}
-          {subtitle && <p>{subtitle}</p>}
+          {title && <Title className="kjun-card-title">{title}</Title>}
+          {subtitle && <p className="kjun-card-subtitle">{subtitle}</p>}
         </>}
       </div>}
       {present(headerActions) && <div className="kjun-card-actions">{headerActions}</div>}
     </div>}
     {present(children) && <div className="kjun-card-body">{children}</div>}
-    {present(footer) && <div className="kjun-card-footer">{footer}</div>}
+    {present(footer) && <div className="kjun-card-footer" data-align={footerAlign}>{footer}</div>}
   </div>;
 }

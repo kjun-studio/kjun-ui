@@ -25,6 +25,7 @@ import Svg,{ Circle,Path } from "react-native-svg";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { IconBase, KjunIcon } from "./button";
 import { FormActionsContext } from "./form-actions-context";
+import { CardTintContext } from "./card-surface-context";
 import { AlertActionsContext } from "./alert-actions-context";
 import { textTint } from "./text-tint";
 import { ActionSizeContext, alertActionSizes } from "../../../shared/package-runtime/action-size";
@@ -92,7 +93,8 @@ export function BadgeView({
   const pick = (name: string) => name.startsWith("price-")
     ? domainColor(domainColors, name.replace(/-(\w)/g, (_, c: string) => c.toUpperCase()))
     : colors[name.replace(/-(\w)/g, (_, c: string) => c.toUpperCase()) as keyof typeof colors];
-  const background = pick(paint.bg), color = pick(paint.text), dotColor = pick(paint.dot);
+  const tinted = useContext(CardTintContext);
+  const background = tinted ? colors.surface : pick(paint.bg), color = pick(paint.text), dotColor = pick(paint.dot);
   // The transparent row keeps the pill at its own width in a stretching column and at the top of a
   // stretching row, yet follows a row's alignItems (a pill with alignSelf: flex-start sat at the top of
   // centred rows). Layout keys from style place this row; the rest paints the pill.

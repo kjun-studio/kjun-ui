@@ -20,6 +20,10 @@ const kjunCardProps = {
   disabled: { type: Boolean, default: false },
   /** Button name of a pressable card; defaults to the title. */
   ariaLabel: { type: String, default: undefined },
+  /** Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading. */
+  headingLevel: { type: [Boolean, Number] as PropType<false | 2 | 3 | 4 | 5 | 6>, default: 3 },
+  /** Where the footer places its content: start (default) or end, such as confirm and cancel actions. */
+  footerAlign: { type: String as PropType<"start" | "end">, default: "start" },
 } as const;
 export type KjunCardProps = ExtractPublicPropTypes<typeof kjunCardProps>;
 /** Slots: default (body), header (replaces title/subtitle), headerActions, media, footer. */
@@ -54,6 +58,8 @@ export const KjunCard = defineComponent({
       const footer = slots.footer?.(), children = slots.default?.();
       const hasHeading = hasContent(header) || !!props.title || !!props.subtitle;
       const hasHeader = hasHeading || hasContent(headerActions);
+      // A pressable card is one button, whose content is not a heading. Typed as "p" so JSX accepts the tag variable.
+      const Title = (!props.pressable && props.headingLevel ? `h${props.headingLevel}` : "p") as "p";
       return (
         <div ref={root} {...press} onClick={(event: MouseEvent) => { if (!(props.pressable && props.disabled)) emit("click", event); }}
           class="kjun-card" data-surface={props.surface} data-padding={props.padding} data-body-padding={bodyPadding}
@@ -61,6 +67,7 @@ export const KjunCard = defineComponent({
           style={{
             "--_kjun-card-padding": `var(--_kjun-geometry-card-padding-${props.padding})`,
             "--_kjun-card-body-padding": `var(--_kjun-geometry-card-padding-${bodyPadding})`,
+            "--_kjun-card-header-gap": `var(--_kjun-geometry-card-header-gaps-${props.padding})`,
             borderRadius: `var(--_kjun-geometry-card-radii-${props.radius})`,
             // A pressable card's shadow comes from CSS so its hover lift can replace it.
             ...(props.pressable ? { "--_kjun-card-shadow": `var(--_kjun-card-elevation-${props.elevation})` } : { boxShadow: `var(--_kjun-card-elevation-${props.elevation})` }),
@@ -69,10 +76,10 @@ export const KjunCard = defineComponent({
           {hasHeader && (
             <div class="kjun-card-header" data-description={String(!hasContent(header) && !!props.subtitle)}>
               {hasHeading && (
-                <div class="kjun-card-heading">
+                <div class="kjun-card-heading" data-title={hasContent(header) ? undefined : ""}>
                   {hasContent(header) ? header : <>
-                    {props.title && <h3>{props.title}</h3>}
-                    {props.subtitle && <p>{props.subtitle}</p>}
+                    {props.title && <Title class="kjun-card-title">{props.title}</Title>}
+                    {props.subtitle && <p class="kjun-card-subtitle">{props.subtitle}</p>}
                   </>}
                 </div>
               )}
@@ -80,7 +87,7 @@ export const KjunCard = defineComponent({
             </div>
           )}
           {hasContent(children) && <div class="kjun-card-body">{children}</div>}
-          {hasContent(footer) && <div class="kjun-card-footer">{footer}</div>}
+          {hasContent(footer) && <div class="kjun-card-footer" data-align={props.footerAlign}>{footer}</div>}
         </div>
       );
     };

@@ -21363,7 +21363,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "",
-            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. default/muted는 단색, accent/success/warning/danger/subtle/brand는 두 색의 배경, glass는 반투명 배경입니다. border·elevation은 독립적으로 적용됩니다.",
+            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
             "source": "packages/vue3/src/card.tsx"
           },
           {
@@ -21397,7 +21397,7 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "헤더·본문·푸터 사이 구분선을 표시합니다. 기본은 구분선 없이 16px 간격으로 나눕니다.",
+            "summary": "헤더·본문·푸터 사이 구분선을 표시합니다. 구분선이 없으면 제목 묶음과 본문 사이는 padding보다 한 단계 좁게(sm 8·md 12·lg 16px), 본문과 푸터 사이는 padding만큼 띄웁니다.",
             "source": "packages/vue3/src/card.tsx"
           },
           {
@@ -21425,6 +21425,24 @@
             "default": "—",
             "description": "Button name of a pressable card; defaults to the title.",
             "summary": "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+            "source": "packages/vue3/src/card.tsx"
+          },
+          {
+            "name": "headingLevel",
+            "type": "false | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "3",
+            "description": "Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading.",
+            "summary": "제목의 문서 제목 수준입니다(h2–h6, Native는 header 역할). false는 일반 문단입니다. pressable 카드는 카드 전체가 버튼이라 제목을 제목 요소로 그리지 않습니다.",
+            "source": "packages/vue3/src/card.tsx"
+          },
+          {
+            "name": "footerAlign",
+            "type": "\"start\" | \"end\"",
+            "required": false,
+            "default": "start",
+            "description": "Where the footer places its content: start (default) or end, such as confirm and cancel actions.",
+            "summary": "푸터 내용의 정렬입니다. end는 확인·취소처럼 오른쪽 끝에 두는 행동에 씁니다(8px 간격, 넘치면 줄바꿈). 카드 안 행동은 secondary 버튼을 기본으로 권장합니다.",
             "source": "packages/vue3/src/card.tsx"
           }
         ],
@@ -21511,7 +21529,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "헤더 오른쪽 행동입니다. 공간이 부족하면 다음 줄로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없어도 표시합니다.",
+            "summary": "헤더 오른쪽 행동입니다. 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -21565,7 +21583,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "",
-            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. default/muted는 단색, accent/success/warning/danger/subtle/brand는 두 색의 배경, glass는 반투명 배경입니다. border·elevation은 독립적으로 적용됩니다.",
+            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -21599,7 +21617,7 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "헤더·본문·푸터 사이 구분선을 표시합니다. 기본은 구분선 없이 16px 간격으로 나눕니다.",
+            "summary": "헤더·본문·푸터 사이 구분선을 표시합니다. 구분선이 없으면 제목 묶음과 본문 사이는 padding보다 한 단계 좁게(sm 8·md 12·lg 16px), 본문과 푸터 사이는 padding만큼 띄웁니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -21627,6 +21645,24 @@
             "default": "—",
             "description": "Button name of a pressable card; defaults to the title.",
             "summary": "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+            "source": "packages/react/src/card.tsx"
+          },
+          {
+            "name": "headingLevel",
+            "type": "false | 2 | 3 | 4 | 5 | 6 | undefined",
+            "required": false,
+            "default": "3",
+            "description": "Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading.",
+            "summary": "제목의 문서 제목 수준입니다(h2–h6, Native는 header 역할). false는 일반 문단입니다. pressable 카드는 카드 전체가 버튼이라 제목을 제목 요소로 그리지 않습니다.",
+            "source": "packages/react/src/card.tsx"
+          },
+          {
+            "name": "footerAlign",
+            "type": "\"start\" | \"end\" | undefined",
+            "required": false,
+            "default": "start",
+            "description": "Where the footer places its content: start (default) or end, such as confirm and cancel actions.",
+            "summary": "푸터 내용의 정렬입니다. end는 확인·취소처럼 오른쪽 끝에 두는 행동에 씁니다(8px 간격, 넘치면 줄바꿈). 카드 안 행동은 secondary 버튼을 기본으로 권장합니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -21742,7 +21778,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "헤더 오른쪽 행동입니다. 공간이 부족하면 다음 줄로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없어도 표시합니다.",
+            "summary": "헤더 오른쪽 행동입니다. 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -21796,7 +21832,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "",
-            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. default/muted는 단색, accent/success/warning/danger/subtle/brand는 두 색의 배경, glass는 반투명 배경입니다. border·elevation은 독립적으로 적용됩니다.",
+            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -21830,7 +21866,7 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "헤더·본문·푸터 사이 구분선을 표시합니다. 기본은 구분선 없이 16px 간격으로 나눕니다.",
+            "summary": "헤더·본문·푸터 사이 구분선을 표시합니다. 구분선이 없으면 제목 묶음과 본문 사이는 padding보다 한 단계 좁게(sm 8·md 12·lg 16px), 본문과 푸터 사이는 padding만큼 띄웁니다.",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -21885,6 +21921,24 @@
             "default": "—",
             "description": "",
             "summary": "pressable 카드를 누를 때 호출합니다. 비활성 카드에서는 호출하지 않습니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "headingLevel",
+            "type": "false | 2 | 3 | 4 | 5 | 6 | undefined",
+            "required": false,
+            "default": "3",
+            "description": "Marks the title as a header (aria-level on the web; default 3); false keeps plain text. A pressable card's title is never a header.",
+            "summary": "제목의 문서 제목 수준입니다(h2–h6, Native는 header 역할). false는 일반 문단입니다. pressable 카드는 카드 전체가 버튼이라 제목을 제목 요소로 그리지 않습니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "footerAlign",
+            "type": "\"start\" | \"end\" | undefined",
+            "required": false,
+            "default": "start",
+            "description": "Where the footer places its content: start (default) or end, such as confirm and cancel actions.",
+            "summary": "푸터 내용의 정렬입니다. end는 확인·취소처럼 오른쪽 끝에 두는 행동에 씁니다(8px 간격, 넘치면 줄바꿈). 카드 안 행동은 secondary 버튼을 기본으로 권장합니다.",
             "source": "packages/native/src/card.tsx"
           }
         ],

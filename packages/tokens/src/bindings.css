@@ -1118,6 +1118,11 @@
   --_kjun-geometry-card-radii-xl: 24px;
   --_kjun-geometry-card-subtitle-gap: 4px;
   --_kjun-geometry-card-title-gap: 8px;
+  --_kjun-geometry-card-header-gaps-none: 0px;
+  --_kjun-geometry-card-header-gaps-sm: 8px;
+  --_kjun-geometry-card-header-gaps-md: 12px;
+  --_kjun-geometry-card-header-gaps-lg: 16px;
+  --_kjun-geometry-card-title-min-width: 160px;
   --_kjun-geometry-card-glass-blur: 10px;
   --_kjun-geometry-table-mobile-breakpoint: 768px;
   --_kjun-geometry-table-header-padding-x: 16px;
@@ -1210,37 +1215,37 @@
   --_kjun-card-border: var(--_kjun-color-card-border);
 }
 .kjun-scope .kjun-card[data-surface="accent"] {
-  --_kjun-card-background: linear-gradient(135deg, var(--_kjun-color-card-accent-start), var(--_kjun-color-card-accent-end));
+  --_kjun-card-background: var(--_kjun-color-card-accent-start);
   --_kjun-card-text: var(--_kjun-color-text);
   --_kjun-card-description: var(--_kjun-color-text-secondary);
   --_kjun-card-border: var(--_kjun-color-card-border);
 }
 .kjun-scope .kjun-card[data-surface="success"] {
-  --_kjun-card-background: linear-gradient(135deg, var(--_kjun-color-success-light), var(--_kjun-color-success-light-end));
+  --_kjun-card-background: var(--_kjun-color-success-light);
   --_kjun-card-text: var(--_kjun-color-text);
   --_kjun-card-description: var(--_kjun-color-text-secondary);
   --_kjun-card-border: var(--_kjun-color-card-border);
 }
 .kjun-scope .kjun-card[data-surface="warning"] {
-  --_kjun-card-background: linear-gradient(135deg, var(--_kjun-color-warning-light), var(--_kjun-color-warning-light-end));
+  --_kjun-card-background: var(--_kjun-color-warning-light);
   --_kjun-card-text: var(--_kjun-color-text);
   --_kjun-card-description: var(--_kjun-color-text-secondary);
   --_kjun-card-border: var(--_kjun-color-card-border);
 }
 .kjun-scope .kjun-card[data-surface="danger"] {
-  --_kjun-card-background: linear-gradient(135deg, var(--_kjun-color-danger-light), var(--_kjun-color-danger-light-end));
+  --_kjun-card-background: var(--_kjun-color-danger-light);
   --_kjun-card-text: var(--_kjun-color-text);
   --_kjun-card-description: var(--_kjun-color-text-secondary);
   --_kjun-card-border: var(--_kjun-color-card-border);
 }
 .kjun-scope .kjun-card[data-surface="subtle"] {
-  --_kjun-card-background: linear-gradient(135deg, var(--_kjun-color-card-subtle-start), var(--_kjun-color-card-subtle-end));
+  --_kjun-card-background: var(--_kjun-color-card-subtle-start);
   --_kjun-card-text: var(--_kjun-color-text);
   --_kjun-card-description: var(--_kjun-color-text-secondary);
   --_kjun-card-border: var(--_kjun-color-card-subtle-border);
 }
 .kjun-scope .kjun-card[data-surface="brand"] {
-  --_kjun-card-background: linear-gradient(135deg, var(--_kjun-color-brand), var(--_kjun-color-brand-hover));
+  --_kjun-card-background: var(--_kjun-color-brand);
   --_kjun-card-text: var(--_kjun-color-on-brand);
   --_kjun-card-description: var(--_kjun-color-on-brand);
   --_kjun-card-border: var(--_kjun-color-card-border);

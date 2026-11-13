@@ -296,7 +296,7 @@
   "KjunCard": {
     "slug": "card",
     "description": "미디어·헤더·본문·푸터를 공통 표면과 여백 규칙으로 묶습니다.",
-    "interaction": "관련 콘텐츠를 제목·본문·푸터로 묶습니다. 표면 스타일을 구성하며 입력값이나 조회 상태를 소유하지 않습니다.",
+    "interaction": "관련 콘텐츠를 제목·본문·푸터로 묶습니다. 표면 스타일을 구성하며 입력값이나 조회 상태를 소유하지 않습니다. 카드 안 행동은 secondary 버튼을 기본으로 하고, 확인·취소는 footerAlign=\"end\"로 오른쪽 끝에 둡니다. 페이지 바탕 위에는 default, 흰 영역 안에는 muted 표면을 씁니다.",
     "differences": "Vue의 header·headerActions·media·footer 슬롯은 React·Native의 해당 콘텐츠 prop에 대응합니다. 웹 CSS 길이와 Native style의 값 형식을 구분합니다.",
     "states": "surface는 배경과 전경 역할을 선택하고 border·elevation은 독립적으로 적용합니다. padding은 각 영역의 여백, bodyPadding은 본문만의 여백, radius는 공통 모서리 단계입니다. headerActions는 제목 없이도 표시하며 사용자 header와 함께 쓸 수 있습니다. Card는 콘텐츠 컨테이너이며 행동은 내부 Button·Link에 연결합니다."
   },

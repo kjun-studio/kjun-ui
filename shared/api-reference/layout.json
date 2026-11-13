@@ -76,7 +76,9 @@
       "dividers",
       "pressable",
       "disabled",
-      "ariaLabel"
+      "ariaLabel",
+      "headingLevel",
+      "footerAlign"
     ],
     "react": [
       "dividers",
@@ -102,7 +104,9 @@
       "media",
       "pressable",
       "disabled",
-      "ariaLabel"
+      "ariaLabel",
+      "headingLevel",
+      "footerAlign"
     ],
     "native": [
       "dividers",
@@ -123,7 +127,9 @@
       "pressable",
       "disabled",
       "ariaLabel",
-      "onPress"
+      "onPress",
+      "headingLevel",
+      "footerAlign"
     ]
   },
   "KjunDrawer": {

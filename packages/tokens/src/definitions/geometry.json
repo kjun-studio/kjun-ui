@@ -272,6 +272,13 @@
     },
     "subtitleGap": { "$ref": "dimension.value4" },
     "titleGap": { "$ref": "dimension.value8" },
+    "headerGaps": {
+      "none": 0,
+      "sm": { "$ref": "dimension.value8" },
+      "md": { "$ref": "dimension.value12" },
+      "lg": { "$ref": "dimension.value16" }
+    },
+    "titleMinWidth": 160,
     "glassBlur": { "$ref": "effects.glassBlur" }
   },
   "radius": {

@@ -69,7 +69,8 @@ export function KjunBadge({
         ...typeStyle(type),
         gap,
         borderRadius: radius,
-        background: role(paint.bg),
+        // A tinted card sets --_kjun-badge-fill so the badge stays apart from its surface.
+        background: `var(--_kjun-badge-fill, ${role(paint.bg)})`,
         color: role(paint.text),
         ...style,
       }}

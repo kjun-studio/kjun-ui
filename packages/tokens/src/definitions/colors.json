@@ -305,43 +305,37 @@
       "background": "cardAccentStart",
       "border": "cardBorder",
       "text": "text",
-      "description": "textSecondary",
-      "gradientEnd": "cardAccentEnd"
+      "description": "textSecondary"
     },
     "success": {
       "background": "successLight",
       "border": "cardBorder",
       "text": "text",
-      "description": "textSecondary",
-      "gradientEnd": "successLightEnd"
+      "description": "textSecondary"
     },
     "warning": {
       "background": "warningLight",
       "border": "cardBorder",
       "text": "text",
-      "description": "textSecondary",
-      "gradientEnd": "warningLightEnd"
+      "description": "textSecondary"
     },
     "danger": {
       "background": "dangerLight",
       "border": "cardBorder",
       "text": "text",
-      "description": "textSecondary",
-      "gradientEnd": "dangerLightEnd"
+      "description": "textSecondary"
     },
     "subtle": {
       "background": "cardSubtleStart",
       "border": "cardSubtleBorder",
       "text": "text",
-      "description": "textSecondary",
-      "gradientEnd": "cardSubtleEnd"
+      "description": "textSecondary"
     },
     "brand": {
       "background": "brand",
       "border": "cardBorder",
       "text": "onBrand",
-      "description": "onBrand",
-      "gradientEnd": "brandHover"
+      "description": "onBrand"
     },
     "glass": {
       "background": "glassBg",

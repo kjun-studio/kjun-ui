@@ -186,7 +186,7 @@ set("Dropdown", { onClose: { summary: "실제 닫힘 전이에 한 번 호출합
   { label: "선택 순서", text: "항목 action → onClose 한 번 순서입니다. 같은 이벤트의 중복 닫힘 요청과 퇴장 애니메이션 완료는 추가 통지를 만들지 않습니다." },
 ] } }, "react");
 set("Card", {
-  surface: "표면의 배경·전경·테두리 색상 역할을 선택합니다. default/muted는 단색, accent/success/warning/danger/subtle/brand는 두 색의 배경, glass는 반투명 배경입니다. border·elevation은 독립적으로 적용됩니다.",
+  surface: "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
   padding: "헤더·본문·푸터의 기본 여백입니다. none/sm/md/lg이며 기본값은 md입니다. 화면 폭에 따라 자동 변경되지 않습니다.",
   bodyPadding: { default: "padding 상속", summary: "본문 여백만 바꿉니다. none이면 표나 목록을 카드 가장자리까지 채우면서 헤더·푸터 여백을 유지합니다." },
   radius: "공통 모서리 스케일 none/sm/md/lg/xl(0·8·12·16·24)을 선택합니다. 기본값은 md이며 미디어 상단 모서리에도 적용됩니다.",
@@ -195,12 +195,12 @@ set("Card", {
 });
 set("Card", {
   header: "제목·설명 영역을 교체합니다. headerActions와 함께 사용할 수 있습니다.",
-  headerActions: "헤더 오른쪽 행동입니다. 공간이 부족하면 다음 줄로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없어도 표시합니다.",
+  headerActions: "헤더 오른쪽 행동입니다. 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
   media: "헤더 위에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
 }, "react");
 set("Card", {
   header: "제목·설명 영역을 교체합니다. headerActions와 함께 사용할 수 있습니다.",
-  headerActions: "헤더 오른쪽 행동입니다. 공간이 부족하면 다음 줄로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없어도 표시합니다.",
+  headerActions: "헤더 오른쪽 행동입니다. 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
   media: "헤더 위에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
 }, "native");
 set("Select FilterGroup", { multiple: "복수 선택을 사용합니다. value도 배열 형태로 전달하세요." });
@@ -352,7 +352,7 @@ set("Popover", { modal: { default:"true", summary:"false이면 페이지를 막�
 set("Popover", { header: { summary:"고정 머리글입니다. 본문만 스크롤하며 maxHeight는 머리글을 포함한 높이입니다. 웹에서는 ariaLabel이 없으면 대화상자 이름이 되고, Native는 ariaLabel을 지정해야 합니다. Vue는 header 슬롯을 씁니다." } });
 set("Popover", { width: { default:"md", summary:"패널 너비 단계입니다. sm 192px·md 240px·lg 320px이며, matchTriggerWidth를 켜면 트리거 너비를 따릅니다." } });
 set("Popover", { returnFocus: { summary:"닫힌 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받습니다. 대상이 없거나 문서에서 사라졌으면 트리거로 돌아갑니다." } });
-set("Card", { dividers: { default:"false", summary:"헤더·본문·푸터 사이 구분선을 표시합니다. 기본은 구분선 없이 16px 간격으로 나눕니다." } });
+set("Card", { dividers: { default:"false", summary:"헤더·본문·푸터 사이 구분선을 표시합니다. 구분선이 없으면 제목 묶음과 본문 사이는 padding보다 한 단계 좁게(sm 8·md 12·lg 16px), 본문과 푸터 사이는 padding만큼 띄웁니다." } });
 set("ChartSkeleton", {
   kind: { default:'"frame"', summary:"frame은 격자선과 축 라벨 자리, donut은 글자 없는 고리, matrix는 rows×columns 셀을 그립니다. 데이터 모양을 흉내 내는 시리즈는 그리지 않습니다." },
   loadingText: { default:'"차트를 불러오는 중"', summary:"그림 아래 12px 캡션으로 표시하고 status 역할로 알리는 로딩 문구입니다. 빈 문자열이면 문구와 알림을 모두 생략하므로, DataState 안에 넣을 때는 빈 문자열로 중복 알림을 피합니다." },
@@ -407,6 +407,8 @@ set("Card", {
   pressable: { default: "false", summary: "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고)." },
   disabled: { default: "false", summary: "pressable 카드의 누름을 막고 흐리게 표시합니다. pressable이 아니면 의미가 없습니다." },
   ariaLabel: "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+  headingLevel: { default: "3", summary: "제목의 문서 제목 수준입니다(h2–h6, Native는 header 역할). false는 일반 문단입니다. pressable 카드는 카드 전체가 버튼이라 제목을 제목 요소로 그리지 않습니다." },
+  footerAlign: { default: "start", summary: "푸터 내용의 정렬입니다. end는 확인·취소처럼 오른쪽 끝에 두는 행동에 씁니다(8px 간격, 넘치면 줄바꿈). 카드 안 행동은 secondary 버튼을 기본으로 권장합니다." },
 });
 set("Card", { onPress: "pressable 카드를 누를 때 호출합니다. 비활성 카드에서는 호출하지 않습니다." }, "native");
 set("Progress", {
