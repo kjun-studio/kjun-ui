@@ -16,7 +16,8 @@ test('Vue field contracts retain null and IconToggle documents standard accessib
   });
   await expect(label).toContainText('aria-label');
   await expect(label).toContainText('aria-labelledby');
-  await expect(label).not.toContainText('필수');
+  // Every row carries the column's own label ("필수"); the value beside it says whether the prop is required.
+  await expect(label.locator('.api-member-required > span:not(.api-cell-label)')).toHaveText('선택');
 });
 
 test('Modal documents live returnFocus targets on React and Vue only', async ({ page }) => {

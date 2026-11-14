@@ -7,7 +7,8 @@ async function textStyle(node: Locator, text?: string) {
     const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
     let current;
     while (current = walker.nextNode()) {
-      if (!current.textContent?.trim() || wanted && current.textContent.trim() !== wanted) continue;
+      // A leading sign is split off and drawn with proportional figures; the digits after it are the sample.
+      if (!current.textContent?.trim() || wanted && current.textContent.trim() !== wanted || !wanted && /^[+\-−]$/.test(current.textContent.trim())) continue;
       const parent = current.parentElement!, s = getComputedStyle(parent);
       let surface: Element | null = parent;
       while (surface && getComputedStyle(surface).backgroundColor === 'rgba(0, 0, 0, 0)') surface = surface.parentElement;

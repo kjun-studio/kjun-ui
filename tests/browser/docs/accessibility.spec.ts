@@ -60,7 +60,8 @@ for (const width of [1600, 390]) test(`${width}px: expanded record links open im
   await page.goto('/catalog?q=KjunButton&platform=react#coverage'); await ready(page);
   // The table marks the name cell; the mobile card marks the whole card.
   const row = page.locator('[data-coverage-component="KjunButton"]:visible').locator('xpath=ancestor-or-self::*[self::tr or @role="listitem"][1]');
-  await expect(row.locator('.coverage-status')).toHaveText(['지원', '지원', '미리보기']);
+  // Wide tables state platform columns that are identical for every component once, above the table.
+  await expect(width < 720 ? row.locator('.coverage-status') : page.locator('.coverage-uniform-note .coverage-status')).toHaveText(['지원', '지원', '미리보기']);
   await expect(row.locator('a .coverage-status')).toHaveCount(0);
   const recordLink = row.getByRole('link', { name: 'Button Native Web 검증 기록 보기', exact: true });
   await expect(recordLink).toHaveCount(0);
