@@ -6,6 +6,10 @@ import { usageTools } from '../../../scripts/usage-tools.mjs';
 import { usageScenarios } from '../../../shared/visual-guides/usage-content';
 import { exportsRoute } from './export-checks';
 
+// One test here opens about 640 pages on four tabs. A trace of all of them stalls every tab for seconds at a time
+// and has crashed the tab or run out the timeout; without it the same run takes about two minutes.
+test.use({ trace: 'off' });
+
 const guides = JSON.parse(readFileSync('apps/docs/lib/generated/visual-guides.json', 'utf8'));
 type Check = (page: Page, id: string) => Promise<void>;
 const rendered: Check = async (page, id) => {
