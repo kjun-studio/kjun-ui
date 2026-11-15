@@ -7,7 +7,6 @@
 .kjun-motion-label::after { font-weight: var(--_kjun-type-control-weight); }
 .kjun-motion-label > span { grid-area: 1 / 1; }
 .kjun-tab-indicator { position: absolute; left: 0; pointer-events: none; border-radius: var(--_kjun-extension-tabs-radius); background: var(--_kjun-color-active); }
-.kjun-tab-indicator[hidden] { display: none; }
 .kjun-tab-indicator[data-animate="true"] { transition: transform var(--_kjun-motion-indicator) var(--_kjun-ease-out), width var(--_kjun-motion-indicator) var(--_kjun-ease-out); }
 [data-variant="underline"] .kjun-tab-indicator { background: var(--_kjun-color-brand); border-radius: calc(var(--_kjun-extension-tabs-indicator-height) / 2); }
 /* A disabled selected tab paints its underline in the disabled-ink role, like its label. */

@@ -58,8 +58,9 @@
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(input, textarea)::placeholder { opacity: 1; }
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where(img, video):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where(img, video),
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where(img, video) { max-width: 100%; height: auto; }
+/* hidden always wins: component rules that set display have the same specificity and come later in the bundle. */
 .kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]) :where([hidden]:not([hidden="until-found"])):not(:where([data-kjun-content] *)), .kjun-scope :where([data-kjun-content] :is([class^="kjun-"], [class*=" kjun-"])) :where([hidden]:not([hidden="until-found"])),
-.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where([hidden]:not([hidden="until-found"])) { display: none; }
+.kjun-scope :where(:is([class^="kjun-"], [class*=" kjun-"]):not(.kjun-scope), .kjun-scope[class*=" kjun-"]):where([hidden]:not([hidden="until-found"])) { display: none !important; }
 /* Last so it wins over the element resets above (e.g. font: inherit on a root <button>).
    The outermost kjun element takes the scope's text style; nested kjun elements inherit it.
    Icons (svg) are excluded: they follow the surrounding text's colour and size (currentColor, 1em). */
