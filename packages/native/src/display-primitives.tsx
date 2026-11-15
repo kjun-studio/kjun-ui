@@ -1,7 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
-import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
+import { alertLiveRegion, alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
 import { typeStyle } from "./typography";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
@@ -374,6 +374,7 @@ export function KjunAlert({
   return (
     <Animated.View
       role={alertRole(tone, live)}
+      accessibilityLiveRegion={alertLiveRegion(tone, live)}
       style={{
         opacity: fade,
         flexDirection: "row",

@@ -20,5 +20,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(section.getByRole('status').filter({hasText:'기본 경고'})).toHaveCount(1);
     await expect(section.getByRole('alert').filter({hasText:'조용한 안내'})).toHaveCount(0);
     await expect(section.getByRole('status').filter({hasText:'조용한 안내'})).toHaveCount(0);
+    // Android needs a live region besides the role; Native Web shows it as aria-live.
+    if(platform==='native'){
+      await expect(section.getByRole('alert').filter({hasText:'경고 즉시'})).toHaveAttribute('aria-live','assertive');
+      await expect(section.getByRole('status').filter({hasText:'기본 경고'})).toHaveAttribute('aria-live','polite');
+      await expect(section.locator('[aria-live]').filter({hasText:'조용한 안내'})).toHaveCount(0);
+    }
   });
 }
