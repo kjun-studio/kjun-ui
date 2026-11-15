@@ -1,6 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { typeStyle } from "./typography";
-import { forwardRef } from "react";
+import { forwardRef, type ForwardRefExoticComponent, type RefAttributes } from "react";
+import type { KjunViewHandle } from "./handles";
 import { View, type StyleProp, type ViewStyle } from "react-native";
 import { chipSize } from "../../../shared/package-runtime/chip-size";
 import { tokens } from "@kjun-ui/tokens";
@@ -15,7 +16,7 @@ export interface KjunChipProps {
   testID?: string; style?: StyleProp<ViewStyle>;
 }
 /** The ref reaches the removal button, the chip's only focus target; it is null when the chip is not removable. */
-export const KjunChip = forwardRef<View, KjunChipProps>(function KjunChip({ label, icon, removable = false, disabled = false, size: requested = "md", removeLabel, onRemove, testID, style }, ref) {
+export const KjunChip: ForwardRefExoticComponent<KjunChipProps & RefAttributes<KjunViewHandle>> = forwardRef<KjunViewHandle, KjunChipProps>(function KjunChip({ label, icon, removable = false, disabled = false, size: requested = "md", removeLabel, onRemove, testID, style }, ref) {
   const m = useKjunMessages(), size = chipSize(requested);
   const { colors } = useKjunStyles(), spec = tokens.extensions.chip;
   // The chip keeps its own height; hitSlop reaches the 44px touch target around the drawn removal circle.

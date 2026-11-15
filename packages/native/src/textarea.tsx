@@ -2,6 +2,8 @@ import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { textareaBounds, textareaCanSubmit, textareaCount, textareaMaxRows, textareaPadding } from "../../../shared/package-runtime/textarea";
 import { inputTypeStyle, typeStyle } from "./typography";
 import { FieldTextInput, useFieldSurface } from "./field-surface";
+import type { ForwardRefExoticComponent, RefAttributes } from "react";
+import type { KjunTextInputHandle } from "./handles";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
 import {
 forwardRef,
@@ -47,7 +49,7 @@ export interface KjunTextareaProps extends TextInputProps {
   readonly?: boolean;
   ariaLabel?: string;
 }
-export const KjunTextarea = forwardRef<TextInput, KjunTextareaProps>(
+export const KjunTextarea: ForwardRefExoticComponent<KjunTextareaProps & RefAttributes<KjunTextInputHandle>> = forwardRef<KjunTextInputHandle, KjunTextareaProps>(
   function KjunTextarea(
     {
       value,

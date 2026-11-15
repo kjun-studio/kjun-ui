@@ -2,6 +2,8 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { FieldClear } from "./field-clear";
 import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
+import type { ForwardRefExoticComponent, RefAttributes } from "react";
+import type { KjunTextInputHandle } from "./handles";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
 import {
@@ -143,7 +145,8 @@ export interface KjunInputProps
   onClear?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
-export const KjunInput = forwardRef<TextInput, KjunInputProps>(function KjunInput(
+// The annotation keeps the handle type by name in the declarations; an inferred type would print the resolved TextInput.
+export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes<KjunTextInputHandle>> = forwardRef<KjunTextInputHandle, KjunInputProps>(function KjunInput(
   {
     value,
     size = "md",

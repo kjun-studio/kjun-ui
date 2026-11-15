@@ -2,6 +2,7 @@ import { tokens } from "@kjun-ui/tokens";
 import { forwardRef, useCallback, useRef, useState } from "react";
 import { useChoiceSpace } from "./choice-accessibility";
 import { useKjunStyles } from "./provider";
+import type { KjunViewHandle } from "./handles";
 import {
 Platform,
 Pressable,
@@ -25,7 +26,7 @@ export function focusVisible(target: unknown) {
 export type FocusRingRadius = number | { top?: number; bottom?: number };
 const ringCorners = (radius: FocusRingRadius) => typeof radius === "number" ? { borderRadius: radius }
   : { borderTopLeftRadius: radius.top ?? 0, borderTopRightRadius: radius.top ?? 0, borderBottomLeftRadius: radius.bottom ?? 0, borderBottomRightRadius: radius.bottom ?? 0 };
-export const AccessiblePressable = forwardRef<View, PressableProps & { focusRingInset?: boolean | number; focusRing?: boolean; focusRingRadius?: FocusRingRadius }>(
+export const AccessiblePressable = forwardRef<KjunViewHandle, PressableProps & { focusRingInset?: boolean | number; focusRing?: boolean; focusRingRadius?: FocusRingRadius }>(
   // focusRing=false: a parent surface draws the ring (compound fields).
   // focusRingInset: a number draws the inset ring that many px further inside (a rounded press shape within the target).
   // focusRingRadius: while focused, round the target so an inset ring follows a clipping parent's corners.
