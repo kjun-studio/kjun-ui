@@ -191,3 +191,17 @@ for (const platform of ['react', 'vue3']) {
     await expect(day(page, '2026년 9월 22일 화요일')).toHaveAttribute('data-in-range', 'true');
   });
 }
+
+for (const platform of ['react', 'vue3']) {
+  test(`${platform}: a panel narrower than seven days shrinks the days instead of overflowing`, async ({ page }) => {
+    await page.setViewportSize({ width: 280, height: 720 });
+    await openFixture(page, platform, '', 'date-picker-design');
+    await open(page, 'date');
+    const grid = page.locator('.kjun-calendar-grid').last();
+    const fit = await grid.evaluate(el => ({ content: el.scrollWidth, box: el.clientWidth,
+      panel: el.closest('.kjun-calendar-panel')!.scrollWidth - el.closest('.kjun-calendar-panel')!.clientWidth }));
+    expect(fit.content).toBeLessThanOrEqual(fit.box); expect(fit.panel).toBeLessThanOrEqual(0);
+    const box = (await day(page, '2026년 9월 12일 토요일').boundingBox())!;
+    expect(box.width).toBeLessThan(40); expect(Math.abs(box.width - box.height)).toBeLessThan(0.5);
+  });
+}
