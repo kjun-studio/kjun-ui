@@ -40,3 +40,17 @@ test('react: mixed Checkbox preserves disabled, controlled rejection and array c
   await input.press('Space');
   await expect(page.getByTestId('changes')).toHaveText('[true,["two","one"],["two"]]');
 });
+
+test('react: a checkbox and a radio give their input by ref and by id', async ({ page }) => {
+  await openFixture(page, 'react', '?mode=choice-focus', 'adoption-controls');
+  const monday = page.getByRole('checkbox', { name: '월요일' }), basic = page.getByRole('radio', { name: '기본' });
+  await expect(monday).toHaveAttribute('id', 'day-mon');
+  await expect(basic).toHaveAttribute('id', 'plan-basic');
+  await page.getByRole('button', { name: '요일로 이동' }).click();
+  await expect(monday).toBeFocused();
+  await page.getByRole('button', { name: '요금제로 이동' }).click();
+  await expect(basic).toBeFocused();
+  // The id reaches the input, so a label elsewhere on the page toggles it.
+  await page.getByTestId('outside-label').click();
+  await expect(monday).toBeChecked();
+});

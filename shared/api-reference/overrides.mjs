@@ -392,6 +392,14 @@ set("Switch", {
   onBlur: "스위치가 초점을 잃을 때 알립니다.",
   inputRef: { type: "Ref<HTMLInputElement>", summary: "스위치 입력 요소입니다. 저장이 실패한 뒤 초점을 되돌릴 때 씁니다." },
 }, "react");
+set("Checkbox", {
+  id: "체크박스 입력의 id입니다. 바깥 <label for>와 연결할 때 씁니다.",
+  inputRef: { type: "Ref<HTMLInputElement>", summary: "체크박스 입력 요소입니다. 검증에 실패한 묶음의 첫 항목으로 초점을 옮길 때 씁니다." },
+}, "react");
+set("Radio", {
+  id: "라디오 입력의 id입니다. 바깥 <label for>와 연결할 때 씁니다.",
+  inputRef: { type: "Ref<HTMLInputElement>", summary: "라디오 입력 요소입니다. 코드에서 초점을 옮길 때 씁니다." },
+}, "react");
 for (const platform of ["vue3", "react"]) set("Textarea", {
   submitOn: { type: '"mod-enter" | "enter"', default: '"mod-enter"', summary: "보내기 키입니다. mod-enter는 Ctrl/⌘+Enter, enter는 Enter로 보내고 Shift+Enter로 줄을 바꿉니다. 한글처럼 조합 중인 Enter로는 보내지 않습니다. submit을 받으면 보내기 버튼이 없어도 동작합니다." },
 }, platform);

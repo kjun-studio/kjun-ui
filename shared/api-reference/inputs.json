@@ -19,7 +19,9 @@
       "size",
       "children",
       "onValueChange",
-      "onChange"
+      "onChange",
+      "id",
+      "inputRef"
     ],
     "native": [
       "value",
@@ -361,7 +363,9 @@
       "ariaLabel",
       "children",
       "onValueChange",
-      "onChange"
+      "onChange",
+      "id",
+      "inputRef"
     ],
     "native": [
       "value",

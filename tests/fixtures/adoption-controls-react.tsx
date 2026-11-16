@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { forwardRef, useLayoutEffect, useRef, useState, type ComponentProps } from 'react';
 import { KjunProvider, KjunTabs, KjunTabPane, KjunSelect, KjunDropdown, KjunDropdownItem,
-  KjunPopover, KjunTooltip, KjunButton, KjunCheckbox, KjunSlider, KjunRangeSlider } from '@kjun-ui/react';
+  KjunPopover, KjunTooltip, KjunButton, KjunCheckbox, KjunRadio, KjunRadioGroup, KjunSlider, KjunRangeSlider } from '@kjun-ui/react';
 import { applyDemoColors } from '../../shared/demo-colors';
 
 const query = new URLSearchParams(location.search);
@@ -82,7 +82,23 @@ function SliderCase() {
   </>;
 }
 applyDemoColors('default');
+// A form that failed validation moves focus to its first choice: the inputs are reached by ref and by id.
+function ChoiceFocusCase() {
+  const [days, setDays] = useState<string[]>([]), [plan, setPlan] = useState('basic');
+  const box = useRef<HTMLInputElement>(null), radio = useRef<HTMLInputElement>(null);
+  return <>
+    <KjunCheckbox value={days} val="mon" label="월요일" id="day-mon" inputRef={box} onValueChange={next => setDays(next as string[])} />
+    <KjunCheckbox value={days} val="tue" label="화요일" onValueChange={next => setDays(next as string[])} />
+    <label htmlFor="day-mon" data-testid="outside-label">첫 요일</label>
+    <KjunRadioGroup value={plan} ariaLabel="요금제" onValueChange={next => setPlan(String(next))}>
+      <KjunRadio val="basic" label="기본" id="plan-basic" inputRef={radio} />
+      <KjunRadio val="pro" label="프로" />
+    </KjunRadioGroup>
+    <button onClick={() => box.current?.focus()}>요일로 이동</button>
+    <button onClick={() => radio.current?.focus()}>요금제로 이동</button>
+  </>;
+}
 const mode = query.get('mode');
 createRoot(document.getElementById('root')!).render(<KjunProvider><main style={{ padding: 40, width: 600 }}>
-  {mode === 'tabs' ? <TabsCase nested={query.has('nested')} /> : mode === 'popover' ? <PopoverCase /> : mode === 'checkbox' ? <CheckboxCase /> : <SliderCase />}
+  {mode === 'tabs' ? <TabsCase nested={query.has('nested')} /> : mode === 'popover' ? <PopoverCase /> : mode === 'checkbox' ? <CheckboxCase /> : mode === 'choice-focus' ? <ChoiceFocusCase /> : <SliderCase />}
 </main></KjunProvider>);

@@ -37,6 +37,10 @@ export interface KjunCheckboxProps<T = ChoiceValue> {
   disabled?: boolean;
   size?: InputSize;
   children?: ReactNode;
+  /** The checkbox input's id, e.g. to reach it from an outside <label for>. */
+  id?: string;
+  /** The checkbox's input, e.g. to move focus to the first box of a group that failed validation. */
+  inputRef?: Ref<HTMLInputElement>;
   onValueChange?: (value: boolean | T[]) => void;
   onChange?: (value: boolean | T[]) => void;
 }
@@ -49,6 +53,8 @@ export function KjunCheckbox<T = ChoiceValue>({
   disabled = false,
   size = "md",
   children,
+  id,
+  inputRef,
   onValueChange,
   onChange,
 }: KjunCheckboxProps<T>) {
@@ -60,6 +66,8 @@ export function KjunCheckbox<T = ChoiceValue>({
       isSelected={checked}
       isIndeterminate={indeterminate}
       isDisabled={disabled}
+      id={id}
+      inputRef={inputRef}
       aria-label={ariaLabel}
       aria-describedby={field?.describedBy}
       isInvalid={!!field?.error}
@@ -203,6 +211,10 @@ export interface KjunRadioProps {
   name?: string;
   ariaLabel?: string;
   children?: ReactNode;
+  /** The radio input's id, e.g. to reach it from an outside <label for>. */
+  id?: string;
+  /** The radio's input, e.g. to move focus to it from code. */
+  inputRef?: Ref<HTMLInputElement>;
   onValueChange?: (value: ChoiceValue) => void;
   onChange?: (value: ChoiceValue) => void;
 }
@@ -214,6 +226,8 @@ export function KjunRadio({
   name,
   ariaLabel,
   children,
+  id,
+  inputRef,
   onValueChange,
   onChange,
 }: KjunRadioProps) {
@@ -222,6 +236,8 @@ export function KjunRadio({
   return (
     <label className={"kjun-choice" + (disabled ? " kjun-choice--disabled" : "")}>
       <input
+        ref={inputRef}
+        id={id}
         type="radio"
         className="kjun-sr-only"
         name={group?.name || name}
