@@ -14,6 +14,10 @@ export function listRowKind({ checked, selected, href, pressable, mode = "none" 
   return pressable ? "button" : "static";
 }
 
+/** A row opens its own content when `expanded` is given and it has no other role (switch, choice or link). */
+export const listRowExpandable = ({ expanded, checked, selected, href }: { expanded?: boolean; checked?: boolean; selected?: boolean; href?: string }) =>
+  expanded !== undefined && checked === undefined && selected === undefined && !href;
+
 /**
  * What a row draws at its end for its choice: a mark (an empty ring or box, filled when chosen) in an open section or a
  * multiple-choice list, so every choice shows it can be picked; otherwise a check on the chosen row only. A busy
@@ -72,11 +76,12 @@ const warnOnce = (key: string, when: unknown, message: string, component = "List
  * no onPress) has nowhere to go, since only the web follows href; `looseChoice` is a choice row outside a section with a
  * selection mode, so it cannot join one radio group.
  */
-export function warnListRowProps({ checked, selected, href, chevron, deviceLink, looseChoice }: { checked?: boolean; selected?: boolean; href?: string; chevron?: boolean; deviceLink?: boolean; looseChoice?: boolean }) {
+export function warnListRowProps({ checked, selected, href, chevron, deviceLink, looseChoice, expanded }: { checked?: boolean; selected?: boolean; href?: string; chevron?: boolean; deviceLink?: boolean; looseChoice?: boolean; expanded?: boolean }) {
   if (!developmentMode()) return;
   warnOnce("device-link", deviceLink, "href only navigates on the web; on a device pass onPress and navigate with the app's router.");
   warnOnce("switch", checked !== undefined && (href || selected !== undefined || chevron), "a switch row (checked) ignores href, selected and chevron; give each row one role.");
   warnOnce("choice-link", checked === undefined && selected !== undefined && href, "a choice row (selected) is a button and ignores href; navigate in the press handler instead.");
+  warnOnce("expand", expanded !== undefined && (checked !== undefined || selected !== undefined || !!href || chevron), "an expandable row (expanded) opens its own content and ignores href, checked, selected and chevron; give each row one role.");
   warnOnce("loose-choice", looseChoice, "a choice row (selected) is outside a section with selectionMode; set selectionMode on its KjunListSection so the rows read as one group.");
 }
 

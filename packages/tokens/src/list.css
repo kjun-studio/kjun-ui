@@ -155,6 +155,19 @@
 .kjun-list-item{padding:var(--_kjun-extension-list-padding);position:relative;min-width:0}
 /* A busy row (its last press still being handled) ignores presses; a switch row draws a spinner in its thumb. */
 .kjun-list-main[aria-busy=true]{cursor:progress}
+/* An expandable row: the head is the button and its content opens under it inside the same row, from the line the
+   title starts on, with no rule or band between them. Hover and press fill the head only, since the content is not
+   part of the button. The chevron points down and turns over when open; a right chevron means navigation. */
+.kjun-list-row[data-expandable]{flex-wrap:wrap;row-gap:0}
+.kjun-list-expanded{flex:0 0 100%;min-width:0}
+.kjun-list-expanded-body{padding-block:0 var(--_kjun-list-padding-y);padding-inline:var(--_kjun-list-divider-inset,var(--_kjun-list-padding-x)) var(--_kjun-list-padding-x)}
+.kjun-list-row[data-expandable]:has(> .kjun-list-main:is(button,a):not(:disabled,[aria-disabled=true],[aria-busy=true]):is(:hover,:active)){background:transparent}
+.kjun-list-row[data-expandable] > .kjun-list-main{transition:background-color var(--_kjun-motion-control) var(--_kjun-ease-out)}
+@media (hover: hover){.kjun-list-row[data-expandable] > .kjun-list-main:not(:disabled,[aria-busy=true]):hover{background:var(--_kjun-color-hover)}}
+.kjun-list-row[data-expandable] > .kjun-list-main:not(:disabled,[aria-busy=true]):active{background:var(--_kjun-color-active)}
+.kjun-list-expand-icon{transition:transform var(--_kjun-motion-control) var(--_kjun-ease-out)}
+.kjun-list-main[aria-expanded=true] .kjun-list-expand-icon{transform:rotate(180deg)}
+@media (prefers-reduced-motion: reduce){.kjun-list-row[data-expandable] > .kjun-list-main,.kjun-list-expand-icon{transition:none}}
 .kjun-list[data-density=compact]>.kjun-list-item{padding-block:var(--_kjun-extension-list-compact-padding-y)}
 
 /* Open variant: rows sit on the page with no card or dividers, set apart by space; hover, press and the chosen row fill

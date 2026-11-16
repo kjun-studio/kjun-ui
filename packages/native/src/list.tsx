@@ -3,7 +3,7 @@ import { CardTintContext } from "./card-surface-context";
 import { typeStyle } from "./typography";
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { Children, Fragment, cloneElement, createContext, isValidElement, useContext, useEffect, useId, useLayoutEffect, useMemo, useState, type ReactElement, type ReactNode } from "react";
-import { listRowChoice, listRowEnd, listRowKind, listRowMetrics, listSectionShape, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
+import { listRowChoice, listRowEnd, listRowExpandable, listRowKind, listRowMetrics, listSectionShape, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { ListShapeContext } from "./list-context";
 import { ReorderContext, ReorderControls, useReorder, type KjunListReorderMove } from "./reorder-controls";
 import { reorderPlace } from "../../../shared/package-runtime/reorder";
@@ -14,6 +14,7 @@ import { AccessiblePressable as Pressable, type FocusRingRadius } from "./a11y";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { KText, content } from "./internal";
 import { KjunButton, KjunIcon } from "./button";
+import { Collapse } from "./collapse";
 import { ListEmptyContext } from "./display-primitives";
 import { useKjunStyles } from "./provider";
 
@@ -68,6 +69,12 @@ export interface KjunListRowProps {
   ariaLabel?: string;
   /** Display-only content under the description (a budget bar); no buttons or links inside a pressable row. */
   children?: ReactNode;
+  /** Makes the row open its own content: the row is a button that reports the next state, and ends with a chevron that turns over when open.
+   * Not with href, checked, selected or chevron. */
+  expanded?: boolean;
+  onExpandedChange?: (expanded: boolean) => void;
+  /** Shown under the row while expanded, from the line the title starts on. It is outside the button, so it may hold buttons. */
+  expandedContent?: ReactNode;
   /** Clamps the title (and the description) to this many lines, ending in an ellipsis. */
   titleLines?: number;
   descriptionLines?: number;
@@ -92,17 +99,20 @@ function ChoiceMark({ checkbox, on }: { checkbox: boolean; on: boolean }) {
     {on && <KjunIcon name="check" size={list.markIconSize} color={colors.onBrand} />}
   </View>;
 }
-export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, trailingPosition = "side", actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onPress: ownPress, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
+export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, trailingPosition = "side", actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onPress: ownPress, ariaLabel, children, titleLines, descriptionLines, expanded, onExpandedChange, expandedContent }: KjunListRowProps) {
   const { colors } = useKjunStyles(), { divider, selection, ringRadius, column: sharedColumn = 0 } = useContext(ListRowContext), { open, compact } = useContext(ListShapeContext);
   const choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   // In a reorderable section a row its order lists draws move buttons after its own actions.
   const reorder = useContext(ReorderContext), movable = !!reorder && !!reorderPlace(reorder.order, value);
-  const onPress = choice.press ? (event: GestureResponderEvent) => { choice.press(); ownPress?.(event); } : ownPress;
+  // Like Web: a row with `expanded` and no other role opens its own content.
+  const expandable = listRowExpandable({ expanded, checked, selected, href });
+  const onPress = choice.press ? (event: GestureResponderEvent) => { choice.press(); ownPress?.(event); }
+    : expandable ? (event: GestureResponderEvent) => { onExpandedChange?.(!expanded); ownPress?.(event); } : ownPress;
   const kind = listRowKind({ checked, selected, href, pressable: !!(onPress || href), mode: selection.mode }), toggle = kind === "switch";
   const choiceRow = kind === "radio" || kind === "checkbox", endMark = listRowEnd({ kind, selected, mode: selection.mode, open, busy });
   const deviceLink = Platform.OS !== "web" && !!href && !onPress;
   const looseChoice = choiceRow && selection.mode === "none";
-  useEffect(() => warnListRowProps({ checked, selected, href, chevron, deviceLink, looseChoice }), [checked !== undefined, selected !== undefined, !!href, chevron, deviceLink, looseChoice]);
+  useEffect(() => warnListRowProps({ checked, selected, href, chevron, deviceLink, looseChoice, expanded }), [checked !== undefined, selected !== undefined, !!href, chevron, deviceLink, looseChoice, expanded !== undefined]);
   // Like Web's row variables: an open row has a larger title, body description, and its own padding and height.
   const m = listRowMetrics({ open, compact }), { paddingY, paddingX, gap } = m, minHeight = m.minimumHeight;
   const titleType = { ...typeStyle(m.title), fontWeight: typeStyle("label").fontWeight };
@@ -143,7 +153,9 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
     {toggle && <View pointerEvents="none" accessible={false} aria-hidden importantForAccessibility="no-hide-descendants" accessibilityElementsHidden
       // The row is the touch target, so the drawn switch keeps only its own height, like Web.
       style={{ height: switchHeight, justifyContent: "center", ...end(switchHeight) }}><SwitchMark on={!!checked} busy={busy} /></View>}
-    {chevron && endMark !== "spinner" && <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={description ? end(endIcon) : undefined}><KjunIcon name="chevron-right" size={endIcon} color={colors.textTertiary} /></View>}
+    {/* Like Web: an expandable row ends with a chevron that points down and turns over when open. */}
+    {expandable && endMark !== "spinner" && <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={[description ? end(endIcon) : undefined, expanded ? { transform: [{ rotate: "180deg" }] } : null]}><KjunIcon name="chevron-down" size={endIcon} color={colors.textTertiary} /></View>}
+    {chevron && !expandable && endMark !== "spinner" && <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={description ? end(endIcon) : undefined}><KjunIcon name="chevron-right" size={endIcon} color={colors.textTertiary} /></View>}
   </>;
   const style = { flex: 1, minWidth: 0, minHeight, flexDirection: "row" as const, alignItems: "center" as const, gap, paddingVertical: paddingY, paddingHorizontal: paddingX };
   const pressable = kind !== "static";
@@ -158,13 +170,15 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   const text = (node: ReactNode) => typeof node === "string" || typeof node === "number" ? String(node) : undefined;
   const spoken = [title, text(badge), description, text(trailing)].filter(Boolean).join(", ");
   // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
-  return <View role={selection.mode === "single" ? undefined : "listitem"} style={{ flexDirection: "row", alignItems: "center", gap, backgroundColor: fill,
-    ...(open ? { marginHorizontal: list.open.rowInset, borderRadius: list.open.rowRadius } : {}) }}>
+  const role = selection.mode === "single" ? undefined : "listitem" as const, inset = paddingX + (front ? column + gap : 0);
+  const shape = open ? { marginHorizontal: list.open.rowInset, borderRadius: list.open.rowRadius } : {};
+  const head = { flexDirection: "row" as const, alignItems: "center" as const, gap, backgroundColor: fill };
+  const row = <>
     {/* Rows run edge to edge, so like Web the keyboard ring draws inside them. */}
     {pressable ? <Pressable focusRingInset focusRingRadius={open ? list.open.rowRadius : ringRadius} {...(Platform.OS === "web" && kind === "link" && !disabled && !busy ? { href } : {})}
       accessibilityRole={toggle ? "switch" : choiceRow || kind === "link" ? kind : "button"}
       accessibilityLabel={ariaLabel ?? spoken} disabled={disabled}
-      accessibilityState={{ disabled, busy, ...(toggle ? { checked: !!checked } : {}), ...(choiceRow ? { checked: !!selected } : {}) }}
+      accessibilityState={{ disabled, busy, ...(toggle ? { checked: !!checked } : {}), ...(choiceRow ? { checked: !!selected } : {}), ...(expandable ? { expanded: !!expanded } : {}) }}
       onHoverIn={() => setHovered(true)} onHoverOut={() => setHovered(false)} onPressIn={() => setPressed(true)} onPressOut={() => setPressed(false)}
       // A busy row ignores presses but keeps its focus and role, so it stays reachable and reads as busy.
       onPress={(event) => { if (busy) return; if (toggle) onCheckedChange?.(!checked); onPress?.(event); }}
@@ -175,7 +189,15 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
     {(hasContent(actions) || movable) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: "45%", flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: m.actionsPadding,
       // Like Web: with a description, actions center on the title and first description line instead of a long row's middle.
       ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}{movable && <ReorderControls value={value!} name={title} />}</View>}
-    {divider && <Divider inset={paddingX + (front ? column + gap : 0)} />}
+  </>;
+  const rule = divider && <Divider inset={inset} />;
+  if (!expandable) return <View role={role} style={{ ...head, ...shape }}>{row}{rule}</View>;
+  // Like Web: the content opens under the head inside the same row, from the line the title starts on; the hover and
+  // pressed fill stays on the head, and the content is outside the button, so it may hold buttons and links.
+  return <View role={role} style={shape}>
+    <View style={{ ...head, ...(open ? { borderRadius: list.open.rowRadius } : {}) }}>{row}</View>
+    <Collapse open={!!expanded}><View style={{ paddingLeft: inset, paddingRight: paddingX, paddingBottom: paddingY }}>{content(expandedContent)}</View></Collapse>
+    {rule}
   </View>;
 }
 export interface KjunListSectionProps {

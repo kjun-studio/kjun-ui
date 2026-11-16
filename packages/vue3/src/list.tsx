@@ -2,11 +2,12 @@ import { computed, inject, provide, ref, watch, watchEffect, type ExtractPublicP
 import { defineComponent } from "./runtime/component";
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
+import { KjunCollapse } from "./collapse";
 import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
 import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
-import { linkRel, listRowChoice, listRowEnd, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
+import { linkRel, listRowChoice, listRowEnd, listRowExpandable, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { kjunListShapeKey } from "./runtime/list-context";
 import { kjunReorderKey, renderReorderControls, useReorder, type KjunListReorderControls, type KjunListReorderMove } from "./reorder-controls";
 import { reorderPlace } from "../../../shared/package-runtime/reorder";
@@ -58,22 +59,27 @@ const kjunListRowProps = {
   onClick: { type: Function as PropType<(event: MouseEvent) => void>, default: undefined },
   /** Name of a pressable or link row, e.g. with the amount a screen reader should hear. */
   ariaLabel: { type: String, default: undefined },
+  /** v-model:expanded makes the row open its own content (the `expanded` slot): the row is a button and ends with a chevron that turns over when open.
+   * Not with href, checked, selected or chevron. */
+  expanded: { type: Boolean, default: undefined },
   /** Clamps the title (and the description) to this many lines, ending in an ellipsis. */
   titleLines: { type: Number, default: undefined },
   descriptionLines: { type: Number, default: undefined },
 } as const;
 export type KjunListRowProps = ExtractPublicPropTypes<typeof kjunListRowProps>;
-/** Slots: default (display-only content under the description), badge (after the title, centered on its first line; heard with the title), leading, trailing, actions. Event: update:checked. */
+/** Slots: default (display-only content under the description), badge (after the title, centered on its first line; heard with the title), leading, trailing, actions,
+ * expanded (shown under the row while expanded, outside the button, so it may hold buttons and links). Events: update:checked, update:expanded. */
 export const KjunListRow = defineComponent({
   name: "KjunListRow",
   props: kjunListRowProps,
-  emits: { "update:checked": (_checked: boolean) => true },
+  emits: { "update:checked": (_checked: boolean) => true, "update:expanded": (_expanded: boolean) => true },
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
     badge?: () => VNodeChild;
     leading?: () => VNodeChild;
     trailing?: () => VNodeChild;
     actions?: () => VNodeChild;
+    expanded?: () => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
     const content = ref<HTMLElement | null>(null), selection = inject<{ value: ListRowSelection } | null>(kjunListSelectionKey, null);
@@ -83,11 +89,14 @@ export const KjunListRow = defineComponent({
     // Like React: the row's choice comes from the section when the section owns the value.
     const state = computed(() => {
       const current = selection?.value ?? noSelection, choice = listRowChoice(current, props.value, props.selected);
-      const press = choice.press, handle = press ? (event: MouseEvent) => { press(); props.onClick?.(event); } : props.onClick;
+      // Like React: a row with `expanded` and no other role opens its own content.
+      const expandable = listRowExpandable({ expanded: props.expanded, checked: props.checked, selected: choice.selected, href: props.href });
+      const press = choice.press, handle = press ? (event: MouseEvent) => { press(); props.onClick?.(event); }
+        : expandable ? (event: MouseEvent) => { emit("update:expanded", !props.expanded); props.onClick?.(event); } : props.onClick;
       // Like React: a busy row ignores presses (a link its navigation too) but keeps its focus and role.
       const onClick = props.busy && (handle || props.href) ? (event: MouseEvent) => event.preventDefault() : handle;
       const kind = listRowKind({ checked: props.checked, selected: choice.selected, href: props.href, pressable: !!(props.href || onClick), mode: current.mode });
-      return { mode: current.mode, open: !!shape?.value.open, selected: choice.selected, onClick, kind };
+      return { mode: current.mode, open: !!shape?.value.open, selected: choice.selected, onClick, kind, expandable };
     });
     // Like React: a switch row (checked) counts as pressable too, and the check runs again when the row becomes pressable.
     watch(() => state.value.kind !== "static", pressable => {
@@ -96,10 +105,10 @@ export const KjunListRow = defineComponent({
     // Like React, the warnings follow prop changes, not only the first render.
     watchEffect(() => {
       const { kind, mode, selected } = state.value;
-      warnListRowProps({ checked: props.checked, selected, href: props.href, chevron: props.chevron, looseChoice: (kind === "radio" || kind === "checkbox") && mode === "none" });
+      warnListRowProps({ checked: props.checked, selected, href: props.href, chevron: props.chevron, looseChoice: (kind === "radio" || kind === "checkbox") && mode === "none", expanded: props.expanded });
     });
     return () => {
-      const { selected, onClick, kind, mode, open } = state.value;
+      const { selected, onClick, kind, mode, open, expandable } = state.value;
       const slotted = slots.leading?.(), trailing = slots.trailing?.(), actions = slots.actions?.(), body = slots.default?.(), badge = slots.badge?.();
       const hasLeading = hasContent(slotted);
       const geometry = listLeadingGeometry({ size: props.leadingSize, custom: hasLeading, background: props.iconBackground != null, open });
@@ -126,7 +135,8 @@ export const KjunListRow = defineComponent({
         {!onTitle && endValue}
         {mark}
         {props.checked !== undefined && <span class={"kjun-switch kjun-switch--md" + (props.checked ? " kjun-switch--on" : "")} aria-hidden="true"><span class="kjun-switch-thumb">{props.busy && <span class="kjun-switch-spinner" />}</span></span>}
-        {props.chevron && end !== "spinner" && <KjunIcon name="chevron-right" class="kjun-list-chevron" size={tokens.iconSizes.default} />}
+        {expandable ? end !== "spinner" && <KjunIcon name="chevron-down" class="kjun-list-chevron kjun-list-expand-icon" size={tokens.iconSizes.default} />
+          : props.chevron && end !== "spinner" && <KjunIcon name="chevron-right" class="kjun-list-chevron" size={tokens.iconSizes.default} />}
       </>;
       // Like React: a switch row is one switch control and the drawn switch is decoration; a choice row is a radio (a
       // checkbox in a multiple-choice section).
@@ -139,12 +149,12 @@ export const KjunListRow = defineComponent({
           ? <a class="kjun-list-main" href={props.disabled ? undefined : props.href} target={props.target} rel={linkRel(props.target, props.rel)} {...label} aria-disabled={props.disabled || undefined} aria-busy={props.busy || undefined}
               onClick={(event: MouseEvent) => { if (props.disabled) event.preventDefault(); else onClick?.(event); }}>{contents}</a>
         : onClick
-          ? <button class="kjun-list-main" type="button" {...label} aria-busy={props.busy || undefined} disabled={props.disabled} onClick={(event: MouseEvent) => onClick?.(event)}>{contents}</button>
+          ? <button class="kjun-list-main" type="button" {...label} aria-expanded={expandable ? !!props.expanded : undefined} aria-controls={expandable ? id + "-expanded" : undefined} aria-busy={props.busy || undefined} disabled={props.disabled} onClick={(event: MouseEvent) => onClick?.(event)}>{contents}</button>
           : <div class="kjun-list-main">{contents}</div>;
       // A disabled row disables its actions too, so the row never reads as partly available.
       // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
       const place = reorder?.value ? reorderPlace(reorder.value.order, props.value) : null;
-      return <li class="kjun-list-row" role={mode === "single" ? "none" : undefined} data-leading={leading ? (hasLeading ? "" : "icon") : undefined} data-leading-size={leading ? geometry.size : undefined} style={leadingStyle} data-destructive={props.destructive || undefined} data-disabled={props.disabled || undefined} data-reordering={place && reorder!.value!.grabbed === props.value || undefined}>{main}{(hasContent(actions) || place) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}{place && renderReorderControls(reorder!.value!, place, props.value!, props.title, messages.value)}</div>}</li>;
+      return <li class="kjun-list-row" role={mode === "single" ? "none" : undefined} data-leading={leading ? (hasLeading ? "" : "icon") : undefined} data-leading-size={leading ? geometry.size : undefined} style={leadingStyle} data-destructive={props.destructive || undefined} data-disabled={props.disabled || undefined} data-reordering={place && reorder!.value!.grabbed === props.value || undefined} data-expandable={expandable ? "" : undefined}>{main}{(hasContent(actions) || place) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}{place && renderReorderControls(reorder!.value!, place, props.value!, props.title, messages.value)}</div>}{expandable && <div id={id + "-expanded"} class="kjun-list-expanded"><KjunCollapse open={!!props.expanded}><div class="kjun-list-expanded-body">{slots.expanded?.()}</div></KjunCollapse></div>}</li>;
     };
   },
 });

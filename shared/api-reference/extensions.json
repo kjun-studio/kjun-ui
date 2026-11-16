@@ -21,7 +21,8 @@
       "descriptionLines",
       "target",
       "rel",
-      "trailingPosition"
+      "trailingPosition",
+      "expanded"
     ],
     "react": [
       "title",
@@ -50,7 +51,10 @@
       "descriptionLines",
       "target",
       "rel",
-      "trailingPosition"
+      "trailingPosition",
+      "expanded",
+      "onExpandedChange",
+      "expandedContent"
     ],
     "native": [
       "title",
@@ -77,7 +81,10 @@
       "children",
       "titleLines",
       "descriptionLines",
-      "trailingPosition"
+      "trailingPosition",
+      "expanded",
+      "onExpandedChange",
+      "expandedContent"
     ]
   },
   "KjunListSection": {
