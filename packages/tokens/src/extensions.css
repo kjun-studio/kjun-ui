@@ -335,25 +335,38 @@
    children under its label. It paints no surface of its own and fills the width the app gives it. */
 .kjun-side-navigation{display:flex;flex-direction:column;min-width:0;color:var(--_kjun-color-text-secondary)}
 .kjun-side-navigation ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--_kjun-extension-side-navigation-item-gap)}
-.kjun-side-navigation > ul + ul,.kjun-side-navigation > .kjun-side-navigation-section + ul{margin-top:var(--_kjun-extension-side-navigation-item-gap)}
+/* Loose items after a titled group start a new run, so they keep the group's distance instead of reading as part of it. */
+.kjun-side-navigation > .kjun-side-navigation-section + ul{margin-top:var(--_kjun-extension-side-navigation-title-padding-top)}
 /* Two classes, so the list reset above does not clear the gap under the parent. */
 .kjun-side-navigation .kjun-side-navigation-children{margin-top:var(--_kjun-extension-side-navigation-item-gap)}
 .kjun-side-navigation-title{padding:var(--_kjun-extension-side-navigation-title-padding-top) var(--_kjun-extension-side-navigation-padding-x) var(--_kjun-extension-side-navigation-title-padding-bottom);color:var(--_kjun-color-text-tertiary);font-size:var(--_kjun-type-caption-size);line-height:var(--_kjun-type-caption-line);font-weight:var(--_kjun-type-control-weight);letter-spacing:var(--_kjun-type-caption-tracking)}
+/* A menu that opens with a title starts at its top edge, like one that opens with an item. */
+.kjun-side-navigation > .kjun-side-navigation-section:first-child > .kjun-side-navigation-title{padding-top:0}
 .kjun-side-navigation-item{display:flex;align-items:center;gap:var(--_kjun-extension-side-navigation-gap);width:100%;min-width:0;height:var(--_kjun-extension-side-navigation-item-height);padding:0 var(--_kjun-extension-side-navigation-padding-x);border:0;border-radius:var(--_kjun-extension-side-navigation-radius);background:transparent;color:inherit;font:inherit;font-size:var(--_kjun-type-control-size);line-height:var(--_kjun-type-control-line);font-weight:var(--_kjun-type-body-weight);letter-spacing:var(--_kjun-type-control-tracking);text-align:start;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color var(--_kjun-motion-control) var(--_kjun-ease-out),color var(--_kjun-motion-control) var(--_kjun-ease-out)}
 /* A child starts where its parent's label starts, with or without icons in the menu. */
 .kjun-side-navigation-item[data-child]{height:var(--_kjun-extension-side-navigation-child-height);padding-inline-start:calc(var(--_kjun-extension-side-navigation-padding-x) + var(--_kjun-extension-side-navigation-icon-size) + var(--_kjun-extension-side-navigation-gap))}
-.kjun-side-navigation-icon,.kjun-side-navigation-chevron{flex:none}
+/* The icon box also holds the initial of a row without an icon, and the badge while only icons show. */
+.kjun-side-navigation-glyph{position:relative;display:flex;align-items:center;justify-content:center;flex:none;width:var(--_kjun-extension-side-navigation-icon-size);height:var(--_kjun-extension-side-navigation-icon-size)}
+.kjun-side-navigation-initial{font-weight:var(--_kjun-type-control-weight)}
+.kjun-side-navigation-chevron,.kjun-side-navigation-trailing{flex:none;color:var(--_kjun-color-text-tertiary)}
 .kjun-side-navigation-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.kjun-side-navigation-chevron{color:var(--_kjun-color-text-tertiary);transition:transform var(--_kjun-motion-control) var(--_kjun-ease-out)}
+.kjun-side-navigation-chevron{transition:transform var(--_kjun-motion-control) var(--_kjun-ease-out)}
 .kjun-side-navigation-item[aria-expanded=true] > .kjun-side-navigation-chevron{transform:rotate(180deg)}
 /* At the end of a row the badge takes room in the line instead of sitting on a corner, and needs no cut-out ring. */
 .kjun-side-navigation-item > .kjun-navigation-badge{position:relative;top:auto;inset-inline-start:auto;flex:none;box-shadow:none}
-@media (hover:hover){.kjun-side-navigation-item:not([aria-disabled=true],:disabled,[aria-current]):hover{background:var(--_kjun-color-hover);color:var(--_kjun-color-text)}}
-.kjun-side-navigation-item:not([aria-disabled=true],:disabled,[aria-current]):active{background:var(--_kjun-color-active);color:var(--_kjun-color-text)}
-.kjun-side-navigation-item[aria-current]{background:var(--_kjun-color-selected-bg);color:var(--_kjun-color-text);font-weight:var(--_kjun-type-control-weight)}
+@media (hover:hover){.kjun-side-navigation-item:not([aria-disabled=true],:disabled,[aria-current]):hover{background:var(--_kjun-color-hover);color:var(--_kjun-color-text);--_kjun-navigation-ring:var(--_kjun-color-hover)}}
+.kjun-side-navigation-item:not([aria-disabled=true],:disabled,[aria-current]):active{background:var(--_kjun-color-active);color:var(--_kjun-color-text);--_kjun-navigation-ring:var(--_kjun-color-active)}
+.kjun-side-navigation-item[aria-current]{background:var(--_kjun-color-selected-bg);color:var(--_kjun-color-text);font-weight:var(--_kjun-type-control-weight);--_kjun-navigation-ring:var(--_kjun-color-selected-bg)}
 .kjun-side-navigation-item[data-current-within]{color:var(--_kjun-color-text);font-weight:var(--_kjun-type-control-weight)}
 .kjun-side-navigation-item:is([aria-disabled=true],:disabled){opacity:var(--_kjun-state-opacity-disabled);cursor:default}
 .kjun-scope .kjun-side-navigation-item:focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-inset-offset)}
+/* Icons only: rows keep their height and the icon stays where it was, so the app can narrow the column around it.
+   Labels and titles stay for screen readers (kjun-sr-only), groups are kept apart by the title's distance, and a parent
+   that holds the current page takes the selection fill because its hidden children cannot. */
+.kjun-side-navigation[data-collapsed] .kjun-side-navigation-item{position:relative}
+.kjun-side-navigation[data-collapsed] > .kjun-side-navigation-section{position:relative}
+.kjun-side-navigation[data-collapsed] > .kjun-side-navigation-section:not(:first-child){margin-top:var(--_kjun-extension-side-navigation-title-padding-top)}
+.kjun-side-navigation[data-collapsed] .kjun-side-navigation-item[data-current-within]{background:var(--_kjun-color-selected-bg);--_kjun-navigation-ring:var(--_kjun-color-selected-bg)}
 @media (prefers-reduced-motion: reduce){.kjun-side-navigation-item,.kjun-side-navigation-chevron{transition:none}}
 
 /* variant="floating": a capsule detached from the screen edge, with KjunFloatingNavigation's offset, padding, outline

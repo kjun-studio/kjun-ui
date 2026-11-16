@@ -24,7 +24,8 @@
       "items",
       "value",
       "ariaLabel",
-      "expanded"
+      "expanded",
+      "collapsed"
     ],
     "react": [
       "items",
@@ -33,7 +34,9 @@
       "onNavigate",
       "onReselect",
       "expanded",
-      "onExpandedChange"
+      "onExpandedChange",
+      "collapsed",
+      "onCollapsedChange"
     ],
     "native": [
       "items",
@@ -42,7 +45,9 @@
       "onNavigate",
       "onReselect",
       "expanded",
-      "onExpandedChange"
+      "onExpandedChange",
+      "collapsed",
+      "onCollapsedChange"
     ]
   },
   "KjunExternalLink": {

@@ -82,6 +82,87 @@ for (const platform of ['react', 'vue3']) {
     await page.keyboard.press('Enter');
     await expect(parent).toHaveAttribute('aria-expanded', 'false');
   });
+
+  test(`${platform}: SideNavigation keeps loose items apart from a group, leaves new-tab links to the browser and stands a closed parent for its children`, async ({ page }) => {
+    await openFixture(page, platform, '', 'side-navigation');
+    const nav = page.getByRole('navigation', { name: '작업 공간' }), log = page.getByTestId('log');
+    // "도움말" follows the "문서" group without a title of its own: it keeps a title's distance (16), not the 2 between rows.
+    const help = nav.getByRole('link', { name: '도움말 (새 창)' }), archive = nav.getByRole('link', { name: /아주 긴 이름/ });
+    const above = await archive.boundingBox(), helpBox = await help.boundingBox();
+    expect(Math.round(helpBox!.y - (above!.y + above!.height))).toBe(16);
+    await expect(help).toHaveAttribute('target', '_blank');
+    await expect(help).toHaveAttribute('rel', 'noopener noreferrer');
+    await expect(help.locator('.kjun-side-navigation-trailing')).toBeVisible();
+    // Synthetic clicks do not open tabs, so they show what the app is asked without leaving the page.
+    const click = (name: string | RegExp, init: MouseEventInit = {}) => nav.getByRole('link', { name }).evaluate((el, init) => el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, button: 0, ...init })), init);
+    await click('도움말 (새 창)');
+    await click('설정', { ctrlKey: true });
+    await click('설정', { metaKey: true });
+    await click('설정', { button: 1 });
+    await expect(log).toHaveText('');
+    await click('설정');
+    await expect(log).toHaveText('go:settings');
+    // A closed parent shows a dot when a child has a badge, and says so; open, the dot moves to the child.
+    const parent = nav.getByRole('button', { name: '프로젝트, 새 소식' });
+    await expect(parent.locator('.kjun-navigation-badge[data-dot]')).toBeVisible();
+    await parent.click();
+    await expect(nav.getByRole('button', { name: '프로젝트', exact: true })).toHaveAttribute('aria-expanded', 'true');
+    // A child draws no icon even when it has one, so its label stays on its parent's label line.
+    const brand = nav.getByRole('link', { name: /브랜드 웹사이트/ });
+    await expect(brand.locator('.kjun-side-navigation-icon')).toHaveCount(0);
+    await expect(brand.locator('.kjun-navigation-badge[data-dot]')).toBeVisible();
+    const parentLabel = await nav.getByRole('button', { name: '프로젝트', exact: true }).locator('.kjun-side-navigation-label').boundingBox();
+    expect(Math.abs((await brand.locator('.kjun-side-navigation-label').boundingBox())!.x - parentLabel!.x)).toBeLessThan(1);
+    // The panel ids do not come from keys, so a key with spaces still points at its panel.
+    const panel = await nav.getByRole('button', { name: '프로젝트', exact: true }).getAttribute('aria-controls');
+    expect(panel).toMatch(/^[\w-]+$/);
+    await expect(page.locator('#' + panel)).toHaveCount(1);
+  });
+
+  test(`${platform}: SideNavigation opens the parent of a page reached later, with late items and with expanded owned by the app`, async ({ page }) => {
+    await openFixture(page, platform, '?late=1&value=checkout', 'side-navigation');
+    const nav = page.getByRole('navigation', { name: '작업 공간' });
+    await expect(nav.getByRole('button', { name: '프로젝트' })).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.getByTestId('log')).toHaveText('');
+    await page.goto('about:blank');
+    await openFixture(page, platform, '?controlled=1', 'side-navigation');
+    const parent = page.getByRole('navigation', { name: '작업 공간' }).getByRole('button', { name: /^프로젝트/ });
+    await expect(parent).toHaveAttribute('aria-expanded', 'false');
+    await page.getByTestId('to-checkout').click();
+    await expect(page.getByTestId('log')).toHaveText('open:projects');
+    await expect(parent).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  test(`${platform}: SideNavigation collapsed shows icons only, names them in tooltips and widens to open a parent`, async ({ page }) => {
+    await openFixture(page, platform, '?collapsed=1&value=checkout', 'side-navigation');
+    const nav = page.getByRole('navigation', { name: '작업 공간' }), side = (await page.getByTestId('side').boundingBox())!;
+    await expect(nav).toHaveAttribute('data-collapsed', '');
+    const home = nav.getByRole('link', { name: '홈' }), box = (await home.boundingBox())!;
+    expect(box.width).toBe(side.width);
+    expect(box.height).toBe(40);
+    // The icon stays where it is in the full menu; the label is kept for screen readers only.
+    expect(Math.round((await home.locator('.kjun-side-navigation-icon').boundingBox())!.x - side.x)).toBe(12);
+    expect((await home.locator('.kjun-side-navigation-label').boundingBox())!.width).toBeLessThanOrEqual(1);
+    await expect(nav.getByRole('group', { name: '문서' })).toBeVisible();
+    // A count moves onto the icon's corner, inside the row.
+    const tasks = nav.getByRole('link', { name: /할 일/ }), badge = (await tasks.locator('.kjun-side-navigation-glyph > .kjun-navigation-badge').boundingBox())!;
+    expect(badge.x + badge.width).toBeLessThanOrEqual(side.x + side.width);
+    // The parent holding the current page takes the fill; no chevron, and its child's dot sits on its icon.
+    const parent = nav.getByRole('button', { name: /^프로젝트/ });
+    expect(await parent.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
+    await expect(parent.locator('.kjun-side-navigation-chevron')).toHaveCount(0);
+    await expect(parent.locator('.kjun-side-navigation-glyph > .kjun-navigation-badge[data-dot]')).toBeVisible();
+    await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toHaveCount(0);
+    // React Aria opens a hover tooltip once the pointer has moved on the page, as the tooltip specs do.
+    await page.mouse.move(800, 600);
+    await home.hover();
+    await expect(page.getByRole('tooltip')).toHaveText('홈');
+    await parent.click();
+    await expect(page.getByTestId('log')).toHaveText('wide');
+    await expect(nav).not.toHaveAttribute('data-collapsed', /.*/);
+    await expect(parent).toHaveAttribute('aria-expanded', 'true');
+    await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toBeVisible();
+  });
 }
 
 // Native (React Native Web): the same menu drawn with Views. Rows keep Web's visible heights; the 44 touch target is
@@ -127,4 +208,28 @@ test('native: SideNavigation starts with the current page\'s parent open', async
   const nav = page.getByRole('navigation', { name: '작업 공간' });
   await expect(nav.getByRole('button', { name: '프로젝트' })).toHaveAttribute('aria-expanded', 'true');
   await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toHaveAttribute('aria-current', 'page');
+});
+
+test('native: SideNavigation keeps loose items apart from a group and stands a closed parent for its children', async ({ page }) => {
+  await openFixture(page, 'native', '', 'side-navigation');
+  const nav = page.getByRole('navigation', { name: '작업 공간' });
+  const help = nav.getByRole('link', { name: '도움말 (새 창)' }), archive = nav.getByRole('link', { name: /아주 긴 이름/ });
+  const above = await archive.boundingBox(), helpBox = await help.boundingBox();
+  expect(Math.round(helpBox!.y - (above!.y + above!.height))).toBe(16);
+  await expect(help).toHaveAttribute('target', '_blank');
+  await expect(nav.getByRole('button', { name: '프로젝트, 새 소식' })).toBeVisible();
+});
+
+test('native: SideNavigation collapsed shows icons only and widens to open a parent', async ({ page }) => {
+  await openFixture(page, 'native', '?collapsed=1&value=checkout', 'side-navigation');
+  const nav = page.getByRole('navigation', { name: '작업 공간' }), side = (await page.getByTestId('side').boundingBox())!;
+  const home = nav.getByRole('link', { name: '홈' });
+  expect((await home.boundingBox())!.width).toBe(side.width);
+  await expect(nav.getByText('홈', { exact: true })).toHaveCount(0);
+  const parent = nav.getByRole('button', { name: /^프로젝트/ });
+  expect(await parent.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
+  await parent.click();
+  await expect(page.getByTestId('log')).toHaveText('wide');
+  await expect(parent).toHaveAttribute('aria-expanded', 'true');
+  await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toBeVisible();
 });

@@ -504,10 +504,13 @@ set("Pressable", {
   disabled: { default: "false", summary: "누름을 막고 내용을 흐리게 표시합니다. 화면 낭독기에는 비활성으로 알립니다." },
 });
 set("SideNavigation", {
-  expanded: { summary: "열린 부모 항목의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하며, 현재 목적지의 부모를 연 채로 시작합니다. 주면 앱이 관리합니다(Vue v-model:expanded)." },
+  expanded: { summary: "열린 부모 항목의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하며, 현재 목적지의 부모를 연 채로 시작합니다. 주면 앱이 관리합니다(Vue v-model:expanded). 닫힌 부모 아래 페이지로 이동하면 그 부모를 더한 목록으로 알립니다." },
+  collapsed: { default: "false", summary: "아이콘만 표시합니다. 폭은 앱이 줄이고, 이름은 툴팁과 화면 낭독기로 전합니다. 하위 항목은 숨기며 부모를 누르면 넓혀 달라고 요청합니다(Vue v-model:collapsed)." },
 });
 for (const platform of ["react", "native"]) set("SideNavigation", {
   onReselect: "현재 목적지를 다시 눌렀을 때 호출합니다(onNavigate 다음). 목록을 맨 위로 올리거나 새로 고칠 때 씁니다.",
-  onExpandedChange: "부모 항목을 여닫을 때 다음 key 목록으로 호출합니다. expanded를 주었다면 받은 값을 반영합니다.",
+  onExpandedChange: "부모 항목을 여닫거나 닫힌 부모 아래 페이지로 이동했을 때 다음 key 목록으로 호출합니다. expanded를 주었다면 받은 값을 반영합니다.",
+  onCollapsedChange: "collapsed에서 부모 항목을 누르면 false로 호출합니다. 받은 값으로 사이드바 폭을 넓히면 그 부모가 열린 채로 보입니다.",
+  onNavigate: platform === "native" ? "목적지를 누르면 key와 이벤트로 호출합니다. Native Web에서는 수정 키 클릭과 target이 있는 링크를 브라우저에 맡기고 호출하지 않습니다." : "수정 키 없는 일반 클릭으로 이 탭의 목적지를 누르면 key와 이벤트로 호출합니다. 기본 이동을 막고 앱에서 이동하세요. 수정 키 클릭과 target이 있는 링크는 브라우저가 엽니다.",
 }, platform);
 

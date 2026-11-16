@@ -66,14 +66,20 @@ export function generate(input: UsageInput) {
         onNavigate: b.handler('navigate', 'key, event', 'if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;\nevent.preventDefault();\n' + b.set('destination', 'key')),
       }), b.text(expr('"현재 위치: " + state.destination'))]);
       break;
-    case 'KjunSideNavigation':
-      content = b.group([b.node(b.native ? 'View' : 'div', { style: { width: b.vue ? '240px' : 240 } }, b.node(name, { ariaLabel: '작업 공간', value: b.state('destination', 'home'),
+    case 'KjunSideNavigation': {
+      // Icons only: the app narrows its column and widens it again when a parent is pressed (onCollapsedChange).
+      const width = s.collapsed ? expr(b.vue ? "(state.collapsed ? 64 : 240) + 'px'" : 'state.collapsed ? 64 : 240') : b.vue ? '240px' : 240;
+      content = b.group([b.node(b.native ? 'View' : 'div', { style: { width } }, b.node(name, { ariaLabel: '작업 공간', value: b.state('destination', 'home'),
+        ...(s.collapsed ? { collapsed: b.state('collapsed', true), onCollapsedChange: b.update('collapsed') } : {}),
         items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: s.long ? '아주 긴 이름을 가진 프로젝트 활동 내역' : '활동', href: '#activity', icon: 'list', badge: 3 },
-          { title: '문서', items: [{ key: 'projects', label: '프로젝트', icon: 'folder', children: [{ key: 'brand', label: '브랜드 웹사이트', href: '#brand' }, { key: 'checkout', label: '결제 화면 개선', href: '#checkout' }] }, { key: 'archive', label: '보관함', href: '#archive', icon: 'box' }] },
+          { title: '문서', items: [{ key: 'projects', label: '프로젝트', icon: 'folder', children: [{ key: 'brand', label: '브랜드 웹사이트', href: '#brand', badge: true }, { key: 'checkout', label: '결제 화면 개선', href: '#checkout' }] }, { key: 'archive', label: '보관함', href: '#archive', icon: 'box' }] },
+          { key: 'help', label: '도움말', href: 'https://example.com/help', icon: 'help-circle', target: '_blank' },
           { title: '관리', items: [{ key: 'settings', label: '설정', href: '#settings', icon: 'settings', ...(s.disabled ? { disabled: true } : {}) }] }]),
-        onNavigate: b.handler('navigate', 'key, event', (b.native ? '' : 'if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;\nevent.preventDefault();\n') + b.set('destination', 'key')),
+        // Modified clicks and target links never reach onNavigate, so a plain click is the app's to route.
+        onNavigate: b.handler('navigate', 'key, event', (b.native ? '' : 'event.preventDefault();\n') + b.set('destination', 'key')),
       })), b.text(expr('"현재 위치: " + state.destination'))]);
       break;
+    }
     case 'KjunPressable':
       content = b.group([b.node(name, { ariaLabel: '추억 지도에서 보기', ...b.props('pressEffect', 'focusRingInset', 'disabled'), style: { borderRadius: b.vue ? '16px' : 16, overflow: 'hidden' }, [action]: notify('openMap', '지도 열기') },
         b.node('KjunCard', { title: '교토 3박 4일', subtitle: '사진 128장 · 7월 14일–17일', surface: 'muted' }))]);

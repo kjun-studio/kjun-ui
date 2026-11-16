@@ -142,6 +142,7 @@
       "packages/native/src/progress.tsx",
       "packages/native/src/select-options.tsx",
       "packages/native/src/selection-groups.tsx",
+      "packages/native/src/side-navigation.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/table-cards.tsx",
       "packages/native/src/table-grid.tsx",

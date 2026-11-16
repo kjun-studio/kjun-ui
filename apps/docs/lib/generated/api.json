@@ -20978,7 +20978,14 @@
         "type": "string[]",
         "required": false,
         "default": "—",
-        "description": "v-model:expanded: the open parents. Without it the navigation keeps the list itself, starting with the parent of the current destination open."
+        "description": "v-model:expanded: the open parents. Without it the navigation keeps the list itself, starting with the parent of the current destination open.\nupdate:expanded also reports a parent opened by moving to a page under it."
+      },
+      {
+        "name": "collapsed",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "v-model:collapsed: icons only, for a narrowed column. Names show as tooltips, and children stay hidden behind their parent;\npressing a parent emits update:collapsed false."
       }
     ],
     "events": [
@@ -20992,6 +20999,10 @@
       },
       {
         "name": "update:expanded",
+        "source": "packages/vue3/src/side-navigation.tsx"
+      },
+      {
+        "name": "update:collapsed",
         "source": "packages/vue3/src/side-navigation.tsx"
       }
     ],
@@ -21023,7 +21034,7 @@
         "type": "((key: string, event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent<HTMLAnchorElement>) => void) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "A plain click on a destination of this tab. Modified clicks (new tab) and target links are left to the browser."
       },
       {
         "name": "onReselect",
@@ -21044,7 +21055,21 @@
         "type": "((expanded: string[]) => void) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Also called when moving to a page under a closed parent opens it."
+      },
+      {
+        "name": "collapsed",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Icons only, for a narrowed column. Names show as tooltips, and children stay hidden behind their parent."
+      },
+      {
+        "name": "onCollapsedChange",
+        "type": "((collapsed: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A parent was pressed while collapsed: widen the column (collapsed=false) to show its children."
       }
     ],
     "native": [
@@ -21074,7 +21099,7 @@
         "type": "((key: string, event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "A press on a destination. On Native Web, modified clicks (new tab) and target links are left to the browser."
       },
       {
         "name": "onReselect",
@@ -21095,7 +21120,21 @@
         "type": "((expanded: string[]) => void) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Also called when moving to a page under a closed parent opens it."
+      },
+      {
+        "name": "collapsed",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Icons only, for a narrowed column. Names show as tooltips (a long press on a device), and children stay hidden behind their parent."
+      },
+      {
+        "name": "onCollapsedChange",
+        "type": "((collapsed: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A parent was pressed while collapsed: widen the column (collapsed=false) to show its children."
       }
     ]
   },

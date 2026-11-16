@@ -4,9 +4,11 @@ import test from "node:test";
 import ts from "typescript";
 
 const read = path => readFile(new URL("../" + path, import.meta.url), "utf8");
-// The runtime is plain data handling; it is transpiled here so the test needs no build.
-const source = ts.transpileModule(await read("shared/package-runtime/side-navigation.ts"), { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
-const runtime = await import("data:text/javascript;base64," + Buffer.from(source).toString("base64"));
+// The runtime is plain data handling; it is transpiled here (with the badge rules it imports) so the test needs no build.
+const transpile = async path => ts.transpileModule(await read(path), { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
+const moduleUrl = source => "data:text/javascript;base64," + Buffer.from(source).toString("base64");
+const badges = moduleUrl(await transpile("shared/package-runtime/navigation-badge.ts"));
+const runtime = await import(moduleUrl((await transpile("shared/package-runtime/side-navigation.ts")).replace('"./navigation-badge"', JSON.stringify(badges))));
 const link = (key, extra = {}) => ({ key, label: key, href: "#" + key, ...extra });
 const entries = [link("home"), link("tasks"), { title: "문서", items: [{ key: "projects", label: "프로젝트", children: [link("brand"), link("checkout")] }, link("archive")] }, link("help"), { title: "관리", items: [link("settings")] }];
 
@@ -42,12 +44,55 @@ test("the current item is a fill and a weight, never an accent stripe", async ()
   }
 });
 
-test("every platform builds the same menu from the shared runtime", async () => {
-  const native = await read("packages/native/src/side-navigation.tsx");
-  for (const part of ["sideNavigationSections(", "sideNavigationCurrentParents(", "toggleSideParent(", 'name="chevron-down"', "tokens.native.minimumTouchTarget"]) assert.ok(native.includes(part), "native " + part);
-  for (const platform of ["react", "vue3"]) {
+test("every platform takes its menu rules from the shared runtime", async () => {
+  // Markup and geometry are covered by the browser specs; this only guards against a platform keeping its own copy of the rules.
+  for (const platform of ["react", "vue3", "native"]) {
     const component = await read(`packages/${platform}/src/side-navigation.tsx`);
-    for (const part of ["sideNavigationSections(", "sideNavigationCurrentParents(", "toggleSideParent(", 'name="chevron-down"', "kjun-side-navigation-children", "data-current-within"]) assert.ok(component.includes(part), platform + " " + part);
-    assert.match(component, /aria-current=\{selected \? "page" : undefined\}/, platform);
+    for (const part of ["sideNavigationSections(", "sideNavigationWithCurrentParents(", "toggleSideParent(", "sideParentHoldsCurrent(", "sideParentHasBadge(", "sideNavigationOpensElsewhere(", "isPlainNavigationClick("])
+      assert.ok(component.includes(part), platform + " " + part);
   }
+});
+
+test("moving to a page under a closed parent adds that parent, and nothing else changes the list", () => {
+  const open = ["other"];
+  assert.deepEqual(runtime.sideNavigationWithCurrentParents(open, entries, "checkout"), ["other", "projects"]);
+  // Nothing to add: the same array, so a component knows there is no change to store or report.
+  assert.equal(runtime.sideNavigationWithCurrentParents(open, entries, "home"), open);
+  const already = ["projects"];
+  assert.equal(runtime.sideNavigationWithCurrentParents(already, entries, "brand"), already);
+  // Items that arrive later: nothing to open while the list is empty.
+  assert.equal(runtime.sideNavigationWithCurrentParents(open, [], "checkout"), open);
+});
+
+test("a parent stands for its hidden children: the current page and their badges", () => {
+  const parent = { key: "p", label: "p", children: [link("a"), link("b", { badge: 0 }), link("c", { badge: "", disabled: true })] };
+  assert.equal(runtime.sideParentHoldsCurrent(parent, "a"), true);
+  assert.equal(runtime.sideParentHoldsCurrent(parent, "p"), false);
+  // 0 is a visible count; a disabled child's badge does not reach the parent.
+  assert.equal(runtime.sideParentHasBadge(parent), true);
+  assert.equal(runtime.sideParentHasBadge({ ...parent, children: [link("a", { badge: "" }), link("d", { badge: true, disabled: true })] }), false);
+});
+
+test("only plain clicks on this tab's links are routed by the app", () => {
+  assert.equal(runtime.isPlainNavigationClick({ button: 0 }), true);
+  // A touch on Native Web carries no button or keys.
+  assert.equal(runtime.isPlainNavigationClick({}), true);
+  assert.equal(runtime.isPlainNavigationClick(undefined), true);
+  for (const key of ["metaKey", "ctrlKey", "shiftKey", "altKey"]) assert.equal(runtime.isPlainNavigationClick({ button: 0, [key]: true }), false, key);
+  assert.equal(runtime.isPlainNavigationClick({ button: 1 }), false);
+  assert.equal(runtime.isPlainNavigationClick({ button: 0, defaultPrevented: true }), false);
+  assert.equal(runtime.sideNavigationOpensElsewhere({ target: "_blank" }), true);
+  assert.equal(runtime.sideNavigationOpensElsewhere({ target: "_self" }), false);
+  assert.equal(runtime.sideNavigationOpensElsewhere({}), false);
+});
+
+test("a row without an icon shows the first character of its label while only icons show", () => {
+  assert.equal(runtime.sideNavigationInitial("  결제"), "결");
+  assert.equal(runtime.sideNavigationInitial(""), "");
+});
+
+test("spacing between runs: loose items after a group keep a title's distance, and a leading title starts at the top", async () => {
+  const css = await read("packages/tokens/src/extensions.css");
+  assert.match(css, /\.kjun-side-navigation > \.kjun-side-navigation-section \+ ul\{margin-top:var\(--_kjun-extension-side-navigation-title-padding-top\)\}/);
+  assert.match(css, /\.kjun-side-navigation > \.kjun-side-navigation-section:first-child > \.kjun-side-navigation-title\{padding-top:0\}/);
 });
