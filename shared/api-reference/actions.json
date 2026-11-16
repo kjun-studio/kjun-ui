@@ -72,7 +72,13 @@
       "ariaLabel",
       "disabled",
       "pressEffect",
-      "focusRingInset"
+      "focusRingInset",
+      "className",
+      "id",
+      "style",
+      "children",
+      "onKeyDown",
+      "onClick"
     ],
     "native": [
       "children",
@@ -80,7 +86,9 @@
       "ariaLabel",
       "disabled",
       "pressEffect",
-      "focusRingInset"
+      "focusRingInset",
+      "id",
+      "onPress"
     ]
   },
   "KjunButtonGroup": {

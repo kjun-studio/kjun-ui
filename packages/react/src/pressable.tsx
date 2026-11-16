@@ -1,6 +1,7 @@
 import { forwardRef, type HTMLAttributes, type KeyboardEvent, type MouseEvent } from "react";
 
-export interface KjunPressableProps extends HTMLAttributes<HTMLDivElement> {
+// A pressable area takes no value and no initial focus of its own, so those two div attributes are left out.
+export interface KjunPressableProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "autoFocus"> {
   /** The name read by screen readers; needed when the content has no text of its own. */
   ariaLabel?: string;
   /** Blocks presses and dims the content. */
