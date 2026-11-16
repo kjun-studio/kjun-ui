@@ -6,7 +6,7 @@ import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
 import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
-import { listRowChoice, listRowEnd, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
+import { linkRel, listRowChoice, listRowEnd, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { kjunListShapeKey } from "./runtime/list-context";
 import { kjunReorderKey, renderReorderControls, useReorder, type KjunListReorderControls, type KjunListReorderMove } from "./reorder-controls";
 import { reorderPlace } from "../../../shared/package-runtime/reorder";
@@ -34,6 +34,10 @@ const kjunListRowProps = {
   /** App-owned circular background color for the built-in icon; defaults leadingSize to sm. */
   iconBackground: { type: String, default: undefined },
   href: { type: String, default: undefined },
+  /** Where a link row opens, e.g. "_blank" for a new tab; a new tab gets rel="noopener noreferrer" unless rel is given. */
+  target: { type: String, default: undefined },
+  /** The link's rel; by default "noopener noreferrer" for target="_blank". */
+  rel: { type: String, default: undefined },
   disabled: { type: Boolean, default: false },
   /** Draws the title in the danger role, for rows such as "Delete account". */
   destructive: { type: Boolean, default: false },
@@ -127,7 +131,7 @@ export const KjunListRow = defineComponent({
         : choiceRow
           ? <button class="kjun-list-main" type="button" role={kind} aria-checked={!!selected} {...label} aria-busy={props.busy || undefined} disabled={props.disabled} onClick={(event: MouseEvent) => onClick?.(event)}>{contents}</button>
         : props.href
-          ? <a class="kjun-list-main" href={props.disabled ? undefined : props.href} {...label} aria-disabled={props.disabled || undefined} aria-busy={props.busy || undefined}
+          ? <a class="kjun-list-main" href={props.disabled ? undefined : props.href} target={props.target} rel={linkRel(props.target, props.rel)} {...label} aria-disabled={props.disabled || undefined} aria-busy={props.busy || undefined}
               onClick={(event: MouseEvent) => { if (props.disabled) event.preventDefault(); else onClick?.(event); }}>{contents}</a>
         : onClick
           ? <button class="kjun-list-main" type="button" {...label} aria-busy={props.busy || undefined} disabled={props.disabled} onClick={(event: MouseEvent) => onClick?.(event)}>{contents}</button>

@@ -4,6 +4,9 @@ import { tokens } from "@kjun-ui/tokens";
 // `selected` (true or false) is one choice: a radio, or a checkbox in a multiple-choice section.
 export type ListRowKind = "switch" | "radio" | "checkbox" | "link" | "button" | "static";
 export type ListSelectionMode = "none" | "single" | "multiple";
+/** A link row's rel: the app's own, else "noopener noreferrer" for a new tab so the opened page gets neither the opener nor the referrer. */
+export const linkRel = (target?: string, rel?: string) => rel ?? (target === "_blank" ? "noopener noreferrer" : undefined);
+
 export function listRowKind({ checked, selected, href, pressable, mode = "none" }: { checked?: boolean; selected?: boolean; href?: string; pressable: boolean; mode?: ListSelectionMode }): ListRowKind {
   if (checked !== undefined) return "switch";
   if (selected !== undefined && (pressable || !!href)) return mode === "multiple" ? "checkbox" : "radio";

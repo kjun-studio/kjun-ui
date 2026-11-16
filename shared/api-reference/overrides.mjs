@@ -374,6 +374,10 @@ set("Drawer", {
 set("Drawer", { avoidKeyboard: { default:"true", summary:"화면 키보드가 패널을 가리지 않게 합니다. 아래 Drawer는 키보드 위로 올라가고 다른 위치는 높이를 줄입니다. 기기에서만 동작합니다." } }, "native");
 // 0.13.0 additions.
 set("Button RefreshButton", { shape: { default:'"default"', summary:'"circle"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다. "pill"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).' } });
+for (const platform of ["vue3", "react"]) set("ListRow", {
+  target: "링크 행을 여는 위치입니다. \"_blank\"이면 새 탭에서 열고 rel을 따로 주지 않으면 noopener noreferrer를 붙입니다.",
+  rel: "링크의 rel입니다. 생략하면 target=\"_blank\"일 때 noopener noreferrer입니다.",
+}, platform);
 set("ListSection", {
   divider: { default:"true", summary:"행 사이 구분선을 그립니다. false면 선 없이 붙여 그립니다." },
   density: { default:'"default"', summary:'"compact"는 행 높이를 56에서 44(터치 최소 크기)로 줄이고 위아래 여백을 12로 둡니다. 시작 여백 16은 그대로라 다른 목록과 글자 위치가 맞습니다.' },

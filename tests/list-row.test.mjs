@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { listRowChoice, listRowEnd, listRowKind, listRowMetrics, listSectionShape, warnListSectionProps, warnListSelection } from '../shared/package-runtime/list-row.ts';
+import { linkRel, listRowChoice, listRowEnd, listRowKind, listRowMetrics, listSectionShape, warnListSectionProps, warnListSelection } from '../shared/package-runtime/list-row.ts';
 import { listLeadingGeometry, listRowBleed } from '../shared/package-runtime/list-leading.ts';
 
 test('a switch row wins, a row given selected is a radio, then link, button and static', () => {
@@ -114,4 +114,12 @@ test('a section value that would be ignored warns once in development', t => {
     assert.match(warnings[2], /"single" takes one value/);
     assert.match(warnings[3], /without onValueChange/);
   } finally { if (env === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = env; }
+});
+
+test('a link row opened in a new tab drops the opener and referrer unless the app gives its own rel', () => {
+  assert.equal(linkRel('_blank'), 'noopener noreferrer');
+  assert.equal(linkRel('_blank', 'noopener'), 'noopener');
+  assert.equal(linkRel(undefined), undefined);
+  assert.equal(linkRel('_self'), undefined);
+  assert.equal(linkRel(undefined, 'nofollow'), 'nofollow');
 });

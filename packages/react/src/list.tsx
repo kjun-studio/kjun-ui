@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useId, useMemo, useRef, useState,
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { KjunIcon } from "./button";
-import { listRowChoice, listRowEnd, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
+import { linkRel, listRowChoice, listRowEnd, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { ListShapeContext } from "./list-context";
 import { ReorderContext, ReorderControls, useReorder, type KjunListReorderControls, type KjunListReorderMove } from "./reorder-controls";
 import { reorderPlace } from "../../../shared/package-runtime/reorder";
@@ -32,6 +32,10 @@ export interface KjunListRowProps {
   trailing?: ReactNode;
   actions?: ReactNode;
   href?: string;
+  /** Where a link row opens, e.g. "_blank" for a new tab; a new tab gets rel="noopener noreferrer" unless rel is given. */
+  target?: string;
+  /** The link's rel; by default "noopener noreferrer" for target="_blank". */
+  rel?: string;
   disabled?: boolean;
   /** Draws the title in the danger role, for rows such as "Delete account". */
   destructive?: boolean;
@@ -55,7 +59,7 @@ export interface KjunListRowProps {
   titleLines?: number;
   descriptionLines?: number;
 }
-export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onClick: ownClick, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
+export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, actions, href, target, rel, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onClick: ownClick, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
   const selection = useContext(ListSelectionContext), { open } = useContext(ListShapeContext), choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   // In a reorderable section a row its order lists draws move buttons after its own actions.
   const reorder = useContext(ReorderContext), movable = !!reorder && !!reorderPlace(reorder.order, value);
@@ -88,7 +92,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   // A choice row is a radio (a checkbox in a multiple-choice section), checked when selected; the check is its drawing.
   const main = toggle ? <button className="kjun-list-main" type="button" role="switch" aria-checked={checked} {...label} aria-busy={busy || undefined} disabled={disabled} onClick={(event) => { if (busy) return; onCheckedChange?.(!checked); onClick?.(event); }}>{contents}</button>
     : choiceRow ? <button className="kjun-list-main" type="button" role={kind} aria-checked={!!selected} {...label} aria-busy={busy || undefined} disabled={disabled} onClick={onClick}>{contents}</button>
-    : href ? <a className="kjun-list-main" href={disabled ? undefined : href} {...label} aria-disabled={disabled || undefined} aria-busy={busy || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a>
+    : href ? <a className="kjun-list-main" href={disabled ? undefined : href} target={target} rel={linkRel(target, rel)} {...label} aria-disabled={disabled || undefined} aria-busy={busy || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a>
     : onClick ? <button className="kjun-list-main" type="button" {...label} aria-busy={busy || undefined} disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main">{contents}</div>;
   // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
   return <li className="kjun-list-row" role={selection.mode === "single" ? "none" : undefined} data-leading={front ? (custom ? "" : "icon") : undefined} data-leading-size={front ? geometry.size : undefined} style={leadingStyle} data-destructive={destructive || undefined} data-disabled={disabled || undefined} data-reordering={movable && reorder!.grabbed === value || undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{(hasContent(actions) || movable) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}{movable && <ReorderControls value={value!} name={title} />}</div>}</li>;

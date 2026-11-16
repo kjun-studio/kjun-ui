@@ -3,7 +3,7 @@ const files = (...names) => names.map(name => `tests/browser/${name}.spec.ts`);
 export const smokeFiles = files('expanded', 'card-contract', 'data-state-design');
 const contracts = files('api-reference', 'vue-contracts');
 const fields = files('input-contracts', 'controlled-state', 'live-updates', 'accessibility-controls');
-const visuals = files('native-layout', 'size-contracts', 'style-boundary', 'host-globals', 'domain-color-check');
+const visuals = files('native-layout', 'size-contracts', 'style-boundary', 'hidden-attribute', 'host-globals', 'domain-color-check');
 const layers = files('elevation', 'elevation-edges', 'elevation-inputs', 'elevation-keyboard',
   'elevation-order', 'elevation-reopen', 'elevation-retention', 'provider-layers',
   'layer-contracts', 'layer-motion-edges', 'layer-unmount', 'focus-containment', 'popup-escape', 'styles');
@@ -46,7 +46,7 @@ const componentGroups = {
   distribution: files('distribution'),
   'color-picker': files('color-picker'),
   sparkline: files('sparkline-design', 'runtime-market', 'runtime-cards', 'size-contracts'),
-  list: files('list-design', 'list-leading', 'list-section', 'list-reorder', 'additions', 'adoption', 'requests', 'rounded'),
+  list: files('list-design', 'list-leading', 'list-section', 'list-reorder', 'list-link', 'additions', 'adoption', 'requests', 'rounded'),
   primitives: [...files('layout-primitives', 'typography', 'geometry-tokens', 'card-layout', 'input-design'), ...visuals],
   kpi: [...files('kpi-design', 'kpi-behavior', 'kpi-secondary', 'size-contracts', 'loading-options', 'typography', 'geometry-tokens', 'card-layout'), ...visuals],
   quantity: [...files('quantity', 'elevation-inputs', 'interaction-states'), ...fields, ...visuals],
