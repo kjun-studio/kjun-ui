@@ -155,8 +155,9 @@ export interface KjunButtonProps
   children?: ReactNode;
   variant?: ButtonVariant;
   size?: ButtonSize;
-  /** "circle" makes an icon-only button round: as wide as its height with a full radius. */
-  shape?: "default" | "circle";
+  /** "circle" makes an icon-only button round: as wide as its height with a full radius. "pill" rounds a button with a label
+   * fully and keeps its width, for a button inside a rounded bar. */
+  shape?: "default" | "circle" | "pill";
   loading?: boolean;
   block?: boolean;
   /** Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing. */
@@ -276,7 +277,7 @@ export function KjunButton(input: KjunButtonProps) {
           // Icon glyphs carry their own side bearing, so the icon side takes a tighter inset.
           ...(!iconOnly && prefixIcon ? { paddingLeft: tokens.button.iconSidePaddingX[size] } : {}),
           ...(!iconOnly && suffixIcon ? { paddingRight: tokens.button.iconSidePaddingX[size] } : {}),
-          borderRadius: shape === "circle" ? tokens.shape.pill : tokens.button.radii[size],
+          borderRadius: shape !== "default" ? tokens.shape.pill : tokens.button.radii[size],
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",

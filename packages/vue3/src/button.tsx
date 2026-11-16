@@ -66,8 +66,9 @@ export function useActionSize(requested: () => ButtonSize | undefined, fallback:
 const kjunButtonProps = {
   variant: { type: String as PropType<ButtonVariant>, default: "primary" },
   size: { type: String as PropType<ButtonSize>, default: undefined },
-  /** "circle" makes an icon-only button round: as wide as its height with a full radius. */
-  shape: { type: String as PropType<"default" | "circle">, default: "default" },
+  /** "circle" makes an icon-only button round: as wide as its height with a full radius. "pill" rounds a button with a label
+   * fully and keeps its width, for a button inside a rounded bar. */
+  shape: { type: String as PropType<"default" | "circle" | "pill">, default: "default" },
   loading: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   block: { type: Boolean, default: false },
@@ -130,7 +131,7 @@ export const KjunButton = defineComponent({
             minWidth: content && !props.block && appWidth == null ? tokens.button.minWidths[s] : undefined,
             padding: iconOnly ? 0 : `0 ${suffixIcon ? iconSide : paddingX}px 0 ${prefixIcon ? iconSide : paddingX}px`,
             ...typeStyle(tokens.button.typography[s]),
-            borderRadius: props.shape === "circle" ? tokens.shape.pill : tokens.button.radii[s],
+            borderRadius: props.shape !== "default" ? tokens.shape.pill : tokens.button.radii[s],
             gap: content ? tokens.button.contentGaps[s] : 0,
           }, (navigation || props.wrap || cardActions) && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) },
             props.variant === "link" && { height: "auto", minHeight: 0, minWidth: 0, width: "auto", padding: 0, borderRadius: 0 })}

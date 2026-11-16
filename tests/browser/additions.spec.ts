@@ -89,6 +89,19 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(section(page, 'optional-en').getByText('(optional)', { exact: true })).toBeVisible();
     });
 
+    test('a pill button is fully round and keeps the height and padding of its size', async ({ page }) => {
+      const pill = section(page, 'circle-buttons').getByRole('button', { name: '모음에 담기', exact: true });
+      const plain = section(page, 'circle-buttons').getByRole('button', { name: '모음에 담기 기본', exact: true });
+      const box = (await pill.boundingBox())!, base = (await plain.boundingBox())!;
+      expect(Math.round(box.height)).toBe(40);
+      expect(box.width).toBeGreaterThan(box.height);
+      // Only the corners differ: the longer label of the plain button accounts for all of the width difference.
+      expect(Math.round(box.height)).toBe(Math.round(base.height));
+      const radius = (button: typeof pill) => button.evaluate(el => parseFloat(getComputedStyle(el).borderTopLeftRadius));
+      expect(await radius(pill)).toBeGreaterThanOrEqual(20);
+      expect(await radius(plain)).toBeLessThan(20);
+    });
+
     test('circle buttons are as wide as they are tall and fully round', async ({ page }) => {
       for (const [name, height] of [['Add sm', 32], ['Add md', 40]] as const) {
         const button = section(page, 'circle-buttons').getByRole('button', { name });

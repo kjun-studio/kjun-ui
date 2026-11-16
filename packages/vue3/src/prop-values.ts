@@ -23,7 +23,7 @@ export const kjunPropValues = Object.freeze({
     iconStyle: Object.freeze(["auto","filled","outline"] as const),
   }),
   KjunButton: Object.freeze({
-    shape: Object.freeze(["circle","default"] as const),
+    shape: Object.freeze(["circle","default","pill"] as const),
     size: Object.freeze(["xs","sm","md","lg","xl"] as const),
     type: Object.freeze(["button","reset","submit"] as const),
     variant: Object.freeze(["danger","danger-ghost","ghost","link","primary","secondary","success","warning"] as const),
