@@ -4,7 +4,7 @@ import { isPlainNavigationClick, isSideParent, sideNavigationInitial, sideNaviga
   sideParentHasBadge, sideParentHoldsCurrent, toggleSideParent, type SideNavigationDestination as WebDestination,
   type SideNavigationEntry as Entry, type SideNavigationGroup as Group, type SideNavigationItem as Item, type SideNavigationParent as Parent } from "../../../shared/package-runtime/side-navigation";
 import { tokens } from "@kjun-ui/tokens";
-import { cloneElement, useEffect, useRef, useState, type ReactElement, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactElement, type ReactNode } from "react";
 import { Platform, View, type ColorValue, type GestureResponderEvent } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { NavigationBadgeMark } from "./app-navigation";
@@ -68,7 +68,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   const reveal = (key: string) => { if (!open.includes(key)) toggle(key); onCollapsedChange?.(false); };
   // Rows keep Web's visible heights (40, children 36); the touch target reaches the 44 minimum above and below.
   const slop = (height: number) => { const reach = Math.max(0, (tokens.native.minimumTouchTarget - height) / 2); return { top: reach, bottom: reach }; };
-  const box = (height: number, child: boolean) => ({ height, flexDirection: "row" as const, alignItems: "center" as const, gap: geometry.gap, borderRadius: geometry.radius,
+  const box = (height: number, child: boolean) => ({ height, ...(collapsed ? { width: geometry.paddingX * 2 + geometry.iconSize } : {}), flexDirection: "row" as const, alignItems: "center" as const, gap: geometry.gap, borderRadius: geometry.radius,
     paddingEnd: geometry.paddingX, paddingStart: geometry.paddingX + (child ? geometry.iconSize + geometry.gap : 0) });
   const fill = (selected: boolean, disabled: boolean | undefined, { pressed, hovered }: PressState) =>
     selected ? colors.selectedBg : disabled ? "transparent" : pressed ? colors.active : hovered ? colors.hover : "transparent";
@@ -85,8 +85,8 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   // While collapsed the badge overlaps the icon, so its ring takes the row's fill (the surface under a clear row).
   const corner = (badge: SideNavigationDestination["badge"], under: ColorValue) =>
     <NavigationBadgeMark badge={badge} ring={under === "transparent" ? colors.surface : under} iconSize={geometry.iconSize} />;
-  // The tooltip's wrapper stretches only for a block trigger, so the row keeps the column's width as on Web.
-  const named = (text: string, row: ReactElement) => collapsed ? <KjunTooltip key={row.key} content={text} placement="right">{cloneElement(row, { block: true } as object)}</KjunTooltip> : row;
+  // While collapsed a row is the box around its icon (44 by 40), as on Web, so the fill wraps the icon.
+  const named = (text: string, row: ReactElement) => collapsed ? <KjunTooltip key={row.key} content={text} placement="right">{row}</KjunTooltip> : row;
   const link = (item: SideNavigationDestination, child = false) => {
     const selected = item.key === value, height = child ? geometry.childHeight : geometry.itemHeight, elsewhere = sideNavigationOpensElsewhere(item);
     return named(item.label, <Pressable key={item.key} focusRingInset hitSlop={slop(height)} disabled={item.disabled} accessibilityRole="link"

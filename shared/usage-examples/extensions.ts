@@ -68,7 +68,7 @@ export function generate(input: UsageInput) {
       break;
     case 'KjunSideNavigation': {
       // Icons only: the app narrows its column and widens it again when a parent is pressed (onCollapsedChange).
-      const width = s.collapsed ? expr(b.vue ? "(state.collapsed ? 64 : 240) + 'px'" : 'state.collapsed ? 64 : 240') : b.vue ? '240px' : 240;
+      const width = s.collapsed ? expr(b.vue ? "(state.collapsed ? 44 : 240) + 'px'" : 'state.collapsed ? 44 : 240') : b.vue ? '240px' : 240;
       content = b.group([b.node(b.native ? 'View' : 'div', { style: { width } }, b.node(name, { ariaLabel: '작업 공간', value: b.state('destination', 'home'),
         ...(s.collapsed ? { collapsed: b.state('collapsed', true), onCollapsedChange: b.update('collapsed') } : {}),
         items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: s.long ? '아주 긴 이름을 가진 프로젝트 활동 내역' : '활동', href: '#activity', icon: 'list', badge: 3 },

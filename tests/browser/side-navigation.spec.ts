@@ -137,9 +137,11 @@ for (const platform of ['react', 'vue3']) {
     await openFixture(page, platform, '?collapsed=1&value=checkout', 'side-navigation');
     const nav = page.getByRole('navigation', { name: '작업 공간' }), side = (await page.getByTestId('side').boundingBox())!;
     await expect(nav).toHaveAttribute('data-collapsed', '');
+    // The row is the box around its icon (12 + 20 + 12 by 40), not the column's width, so the fill wraps the icon.
     const home = nav.getByRole('link', { name: '홈' }), box = (await home.boundingBox())!;
-    expect(box.width).toBe(side.width);
+    expect(box.width).toBe(44);
     expect(box.height).toBe(40);
+    expect(box.x).toBe(side.x);
     // The icon stays where it is in the full menu; the label is kept for screen readers only.
     expect(Math.round((await home.locator('.kjun-side-navigation-icon').boundingBox())!.x - side.x)).toBe(12);
     expect((await home.locator('.kjun-side-navigation-label').boundingBox())!.width).toBeLessThanOrEqual(1);
@@ -157,6 +159,10 @@ for (const platform of ['react', 'vue3']) {
     await page.mouse.move(800, 600);
     await home.hover();
     await expect(page.getByRole('tooltip')).toHaveText('홈');
+    // Beside the icon, not out at the column's far edge.
+    const tip = (await page.getByRole('tooltip').boundingBox())!;
+    expect(tip.x).toBeGreaterThanOrEqual(box.x + box.width);
+    expect(tip.x).toBeLessThan(box.x + box.width + 16);
     await parent.click();
     await expect(page.getByTestId('log')).toHaveText('wide');
     await expect(nav).not.toHaveAttribute('data-collapsed', /.*/);
@@ -223,8 +229,9 @@ test('native: SideNavigation keeps loose items apart from a group and stands a c
 test('native: SideNavigation collapsed shows icons only and widens to open a parent', async ({ page }) => {
   await openFixture(page, 'native', '?collapsed=1&value=checkout', 'side-navigation');
   const nav = page.getByRole('navigation', { name: '작업 공간' }), side = (await page.getByTestId('side').boundingBox())!;
-  const home = nav.getByRole('link', { name: '홈' });
-  expect((await home.boundingBox())!.width).toBe(side.width);
+  const home = nav.getByRole('link', { name: '홈' }), box = (await home.boundingBox())!;
+  expect(box.width).toBe(44);
+  expect(box.x).toBe(side.x);
   await expect(nav.getByText('홈', { exact: true })).toHaveCount(0);
   const parent = nav.getByRole('button', { name: /^프로젝트/ });
   expect(await parent.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');

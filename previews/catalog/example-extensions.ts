@@ -51,7 +51,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       // A sidebar column of a fixed width, as an app would give it; "활동" carries a badge, "문서" opens its children and
       // "도움말" opens in a new tab. Icons only, the column narrows and widens again when a parent is pressed.
       const collapsed = !!settings.collapsed && !get("widened", false);
-      return h("Stack", {}, [h("Box", { width: collapsed ? 64 : 240 }, h(name, { ariaLabel: "작업 공간", value: get("destination", "home"), collapsed,
+      return h("Stack", {}, [h("Box", { width: collapsed ? 44 : 240 }, h(name, { ariaLabel: "작업 공간", value: get("destination", "home"), collapsed,
         onCollapsedChange: (next: boolean) => set("widened", !next), items: [
         { key: "home", label: "홈", href: "#home", icon: "home" },
         { key: "activity", label: settings.long ? "아주 긴 이름을 가진 프로젝트 활동 내역" : "활동", href: "#activity", icon: "list", badge: 3 },

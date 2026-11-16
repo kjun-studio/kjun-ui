@@ -360,10 +360,11 @@
 .kjun-side-navigation-item[data-current-within]{color:var(--_kjun-color-text);font-weight:var(--_kjun-type-control-weight)}
 .kjun-side-navigation-item:is([aria-disabled=true],:disabled){opacity:var(--_kjun-state-opacity-disabled);cursor:default}
 .kjun-scope .kjun-side-navigation-item:focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-inset-offset)}
-/* Icons only: rows keep their height and the icon stays where it was, so the app can narrow the column around it.
+/* Icons only: a row shrinks to the box around its icon (padding, icon, padding: 44 by 40) and the icon stays where it was,
+   so the fill wraps the icon instead of trailing off to one side of whatever width the column has.
    Labels and titles stay for screen readers (kjun-sr-only), groups are kept apart by the title's distance, and a parent
    that holds the current page takes the selection fill because its hidden children cannot. */
-.kjun-side-navigation[data-collapsed] .kjun-side-navigation-item{position:relative}
+.kjun-side-navigation[data-collapsed] .kjun-side-navigation-item{position:relative;width:calc(var(--_kjun-extension-side-navigation-padding-x) * 2 + var(--_kjun-extension-side-navigation-icon-size))}
 .kjun-side-navigation[data-collapsed] > .kjun-side-navigation-section{position:relative}
 .kjun-side-navigation[data-collapsed] > .kjun-side-navigation-section:not(:first-child){margin-top:var(--_kjun-extension-side-navigation-title-padding-top)}
 .kjun-side-navigation[data-collapsed] .kjun-side-navigation-item[data-current-within]{background:var(--_kjun-color-selected-bg);--_kjun-navigation-ring:var(--_kjun-color-selected-bg)}

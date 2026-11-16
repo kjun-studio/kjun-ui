@@ -510,7 +510,7 @@ set("Pressable", {
 });
 set("SideNavigation", {
   expanded: { summary: "열린 부모 항목의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하며, 현재 목적지의 부모를 연 채로 시작합니다. 주면 앱이 관리합니다(Vue v-model:expanded). 닫힌 부모 아래 페이지로 이동하면 그 부모를 더한 목록으로 알립니다." },
-  collapsed: { default: "false", summary: "아이콘만 표시합니다. 폭은 앱이 줄이고, 이름은 툴팁과 화면 낭독기로 전합니다. 하위 항목은 숨기며 부모를 누르면 넓혀 달라고 요청합니다(Vue v-model:collapsed)." },
+  collapsed: { default: "false", summary: "아이콘만 표시합니다. 항목은 아이콘을 감싸는 44×40px 면이 되고 열 폭은 앱이 줄입니다(44px + 앱의 좌우 여백). 이름은 툴팁과 화면 낭독기로 전합니다. 하위 항목은 숨기며 부모를 누르면 넓혀 달라고 요청합니다(Vue v-model:collapsed)." },
 });
 for (const platform of ["react", "native"]) set("SideNavigation", {
   onReselect: "현재 목적지를 다시 눌렀을 때 호출합니다(onNavigate 다음). 목록을 맨 위로 올리거나 새로 고칠 때 씁니다.",
