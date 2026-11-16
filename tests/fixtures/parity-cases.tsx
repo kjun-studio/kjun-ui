@@ -8,6 +8,7 @@ export function ParityCases({ K, native = false, providerProps = {} }: { K: any;
   const progress = (shape: string) => <div data-testid={shape}>
     <K.KjunProgress shape={shape} label="Upload" showLabel value={config.value} max={config.max} indeterminate={config.indeterminate} />
     <K.KjunProgress shape={shape} label="Default zero" />
+    <K.KjunProgress shape={shape} label="CPU" showLabel value={37.4} valueText="37.4%" />
   </div>;
   return <K.KjunProvider {...providerProps}><div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16, width: 900 }}>
     <div data-testid="checkbox">

@@ -240,6 +240,8 @@ export interface KjunProgressProps {
   size?: "sm" | "md" | "lg";
   variant?: SemanticTone;
   showLabel?: boolean;
+  /** Shown and read in place of the rounded percent while the value is known, e.g. "37.4%" or "3.2 / 8 GB". */
+  valueText?: string;
   label?: ReactNode;
   subLabel?: ReactNode;
   shape?: "bar" | "circle";
@@ -251,6 +253,7 @@ export function KjunProgress({
   size = "md",
   variant = "primary",
   showLabel = false,
+  valueText,
   label,
   subLabel,
   shape = "bar",
@@ -258,7 +261,7 @@ export function KjunProgress({
   const m = useKjunMessages();
   const state = progressState(value, max, indeterminate);
   const percentage = state === "determinate" ? Math.min(100, Math.max(0, Math.round((value! / max) * 100))) : 0;
-  const text = state === "indeterminate" ? m.loadingEllipsis : state === "missing" ? "—" : `${percentage}%`;
+  const text = state === "indeterminate" ? m.loadingEllipsis : state === "missing" ? "—" : valueText ?? `${percentage}%`;
   const name = typeof label === "string" ? label : m.progress, color = role(variant === "primary" ? "brand" : variant);
   const accessibility = {
     role: state === "missing" ? "img" : "progressbar",
@@ -266,7 +269,7 @@ export function KjunProgress({
     "aria-valuemin": state === "missing" ? undefined : 0,
     "aria-valuemax": state === "missing" ? undefined : 100,
     "aria-valuenow": state === "determinate" ? percentage : undefined,
-    "aria-valuetext": state === "indeterminate" ? m.loadingEllipsis : undefined,
+    "aria-valuetext": state === "indeterminate" ? m.loadingEllipsis : state === "determinate" ? valueText : undefined,
     "aria-busy": state === "indeterminate" || undefined,
   };
   if (shape === "circle") {

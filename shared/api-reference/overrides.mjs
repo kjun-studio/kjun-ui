@@ -321,6 +321,7 @@ set("PriceCell", {
 });
 set("MarketSimpleList MarketTable", { renderStatus: "행의 시세 상태(종가·지연 등)를 반환합니다. 목록은 등락률 앞, 표는 가격 칸 값 뒤에 둡니다. 문구와 배지 색은 앱이 정합니다." });
 set("Progress", { label: "진행률의 제목입니다. showLabel과 관계없이 표시하며 showLabel은 백분율을 더합니다." });
+set("Progress", { valueText: "값을 알 때 반올림한 백분율 대신 보여 주고 읽어 줄 문구입니다(예: \"37.4%\", \"3.2 / 8 GB\"). 막대 길이는 value와 max로 정합니다." });
 set("MarketTableSkeleton", {
   alignClass: "선택적 웹 정렬 클래스 콜백입니다. 생략하면 columns[].align을 사용합니다.",
   widthClass: "선택적 웹 너비 클래스 콜백입니다. 생략하면 공통 열 배치를 사용합니다.",

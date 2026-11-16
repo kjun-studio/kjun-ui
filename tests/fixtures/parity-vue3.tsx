@@ -10,6 +10,7 @@ Object.assign(window, { configureParity: (next: object) => Object.assign(config,
 const progress = (shape: 'bar' | 'circle') => <div data-testid={shape}>
   <K.KjunProgress shape={shape} label="Upload" showLabel value={config.value} max={config.max} indeterminate={config.indeterminate} />
   <K.KjunProgress shape={shape} label="Default zero" />
+  <K.KjunProgress shape={shape} label="CPU" showLabel value={37.4} valueText="37.4%" />
 </div>;
 createApp(() => <K.KjunProvider>{{ default: () => <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px', width: '900px' }}>
   <div data-testid="checkbox">

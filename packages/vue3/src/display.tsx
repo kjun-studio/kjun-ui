@@ -204,6 +204,8 @@ const kjunProgressProps = {
   size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   variant: { type: String as PropType<SemanticTone>, default: "primary" },
   showLabel: { type: Boolean, default: false },
+  /** Shown and read in place of the rounded percent while the value is known, e.g. "37.4%" or "3.2 / 8 GB". */
+  valueText: { type: String, default: undefined },
   label: { type: String, default: undefined },
   subLabel: { type: String, default: undefined },
   shape: { type: String as PropType<"bar" | "circle">, default: "bar" },
@@ -223,7 +225,7 @@ export const KjunProgress = defineComponent({
       const missing = props.value === null || !Number.isFinite(props.value) || !Number.isFinite(props.max) || props.max <= 0;
       const state = props.indeterminate ? "indeterminate" : missing ? "missing" : "determinate";
       const percentage = state === "determinate" ? Math.min(100, Math.max(0, Math.round((props.value! / props.max) * 100))) : 0;
-      const text = state === "indeterminate" ? m.value.loadingEllipsis : state === "missing" ? "—" : `${percentage}%`;
+      const text = state === "indeterminate" ? m.value.loadingEllipsis : state === "missing" ? "—" : props.valueText ?? `${percentage}%`;
       const label = slots.label ? slots.label() : props.label;
       const subLabel = slots.subLabel ? slots.subLabel() : props.subLabel;
       const name = typeof props.label === "string" && !slots.label ? props.label : m.value.progress;
@@ -233,7 +235,7 @@ export const KjunProgress = defineComponent({
         "aria-valuemin": state === "missing" ? undefined : 0,
         "aria-valuemax": state === "missing" ? undefined : 100,
         "aria-valuenow": state === "determinate" ? percentage : undefined,
-        "aria-valuetext": state === "indeterminate" ? m.value.loadingEllipsis : undefined,
+        "aria-valuetext": state === "indeterminate" ? m.value.loadingEllipsis : state === "determinate" ? props.valueText : undefined,
         "aria-busy": state === "indeterminate" || undefined,
       };
       const color = role(props.variant === "primary" ? "brand" : props.variant);

@@ -21,6 +21,14 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(page.getByTestId('checkbox').locator('svg path[d="M5 12l14 0"]')).toHaveCount(0);
     });
 
+    for (const shape of ['bar', 'circle']) test(`${shape} Progress shows and reads valueText in place of the rounded percent`, async ({ page }) => {
+      const cpu = page.getByTestId(shape).getByRole('progressbar', { name: 'CPU' });
+      await expect(cpu).toHaveAttribute('aria-valuenow', '37');
+      await expect(cpu).toHaveAttribute('aria-valuetext', '37.4%');
+      await expect(page.getByTestId(shape).getByText('37.4%', { exact: true })).toBeVisible();
+      await expect(page.getByTestId(shape).getByText('37%', { exact: true })).toHaveCount(0);
+    });
+
     for (const shape of ['bar', 'circle']) test(`${shape} Progress keeps missing and unknown progress apart from 0%`, async ({ page }) => {
       const section = page.getByTestId(shape);
       await expect(section.getByRole('progressbar', { name: 'Upload' })).toHaveCount(0);

@@ -19,6 +19,8 @@ export interface KjunProgressProps {
   size?: "sm" | "md" | "lg";
   variant?: SemanticTone;
   showLabel?: boolean;
+  /** Shown and read in place of the rounded percent while the value is known, e.g. "37.4%" or "3.2 / 8 GB". */
+  valueText?: string;
   label?: ReactNode;
   subLabel?: ReactNode;
   shape?: "bar" | "circle";
@@ -43,6 +45,7 @@ export function KjunProgress({
   size = "md",
   variant = "primary",
   showLabel = false,
+  valueText,
   label,
   subLabel,
   shape = "bar",
@@ -52,7 +55,7 @@ export function KjunProgress({
   const reduced = useReducedMotion();
   const state = progressState(value, max, indeterminate), busy = state === "indeterminate";
   const percentage = state === "determinate" ? Math.min(100, Math.max(0, Math.round((value! / max) * 100))) : 0;
-  const text = busy ? m.loadingEllipsis : state === "missing" ? "—" : `${percentage}%`;
+  const text = busy ? m.loadingEllipsis : state === "missing" ? "—" : valueText ?? `${percentage}%`;
   const sweep = useSweep(busy, reduced);
   const [trackWidth, setTrackWidth] = useState(0);
   const name = typeof label === "string" ? label : m.progress, color = variant === "primary" ? colors.brand : colors[variant];
@@ -60,9 +63,9 @@ export function KjunProgress({
   const semantics = state === "missing"
     ? { accessibilityRole: "image" as const, accessibilityLabel: `${name}: ${m.noData}` }
     : { accessibilityRole: "progressbar" as const, accessibilityLabel: name, accessibilityState: { busy },
-      accessibilityValue: busy ? { text: m.loadingEllipsis } : { min: 0, max: 100, now: percentage },
+      accessibilityValue: busy ? { text: m.loadingEllipsis } : { min: 0, max: 100, now: percentage, ...(valueText ? { text: valueText } : {}) },
       "aria-valuemin": 0, "aria-valuemax": 100, "aria-valuenow": busy ? undefined : percentage,
-      "aria-valuetext": busy ? m.loadingEllipsis : undefined, "aria-busy": busy || undefined };
+      "aria-valuetext": busy ? m.loadingEllipsis : valueText, "aria-busy": busy || undefined };
   if (shape === "circle") {
     // Like Web: circle, then label and subLabel centred below it. Unknown progress spins a quarter arc.
     const c = progressCircle(size, busy ? 25 : percentage);
