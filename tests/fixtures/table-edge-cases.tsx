@@ -6,9 +6,10 @@ export const edgeRows = [
 ];
 const won = (value: unknown) => Number(value).toLocaleString('ko-KR');
 export const edgeColumns = [
-  { key: 'month', label: '월' },
-  { key: 'income', label: '수입', align: 'right', format: won },
-  { key: 'spend', label: '지출', align: 'right', format: won },
+  // Shares that leave room for a checkbox or expand column, so the grid fits its container and never scrolls sideways.
+  { key: 'month', label: '월', width: '30%' },
+  { key: 'income', label: '수입', align: 'right', format: won, width: '30%' },
+  { key: 'spend', label: '지출', align: 'right', format: won, width: '25%' },
 ];
 const query = new URLSearchParams(location.search);
 // ?mode=default keeps the inset, ?mode=select adds a checkbox column, ?mode=empty has no rows.

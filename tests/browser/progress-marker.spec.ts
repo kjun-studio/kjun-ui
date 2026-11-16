@@ -5,8 +5,10 @@ import { openFixture } from './packed-fixture';
 // has no classes, so both are found by geometry: the one element that is 2px wide plus its gap and taller than the rail.
 const measure = (page: Page, id: string) => page.getByTestId(id).evaluate(row => {
   const bar = row.querySelector('[role="progressbar"]') as HTMLElement;
-  // On Native the progressbar of a cell is the whole row; its first child holds the rail.
-  const rail = bar.getBoundingClientRect().height > 20 ? bar.firstElementChild!.firstElementChild as HTMLElement : bar;
+  // The rail is the bar itself, or on Native (where a cell's progressbar is the whole row) the thin clipped track inside it.
+  const thin = (el: Element) => { const b = el.getBoundingClientRect(); return b.height > 0 && b.height <= 12 && b.width > 40; };
+  const rail = thin(bar) && !Array.from(bar.querySelectorAll('*')).some(el => thin(el) && getComputedStyle(el).overflow === 'hidden') ? bar
+    : Array.from(bar.querySelectorAll<HTMLElement>('*')).find(el => thin(el) && getComputedStyle(el).overflow === 'hidden') ?? bar;
   const r = rail.getBoundingClientRect();
   const lines = Array.from(row.querySelectorAll<HTMLElement>('*')).map(el => el.getBoundingClientRect())
     .filter(b => b.width >= 2 && b.width <= 4 && b.height > r.height && Math.abs((b.top + b.bottom) / 2 - (r.top + r.bottom) / 2) < 0.5);

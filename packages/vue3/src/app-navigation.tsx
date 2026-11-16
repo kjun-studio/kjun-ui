@@ -182,7 +182,7 @@ export const KjunBottomActionBar = defineComponent({
       const actions = <div class="kjun-navigation-actions">{slots.default?.()}</div>;
       return (
         <div ref={bar} class="kjun-bottom-action-bar" data-variant={floating ? "floating" : undefined} data-surface={props.surface ? undefined : "false"} style={{ paddingBottom: `calc(${inset}px + ${webSafeBottom(props.safeArea)})` }}>
-          <div class="kjun-bottom-action-content">{props.description && <p>{props.description}</p>}{floating ? <KjunActionSize size="lg" shape="pill">{() => actions}</KjunActionSize> : actions}</div>
+          <div class="kjun-bottom-action-content">{props.description && <p>{props.description}</p>}{floating ? <KjunActionSize size="lg" shape="pill">{actions}</KjunActionSize> : actions}</div>
         </div>
       );
     };

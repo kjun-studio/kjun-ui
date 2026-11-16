@@ -39,7 +39,8 @@ test('native: KjunPressable without an effect, disabled, and focused by keyboard
   expect(await layer(locked)).toBeNull();
   await expect(page.getByTestId('presses')).toHaveText('1');
   // The ring follows the corners the app gave; an inset ring stays inside an area that reaches the edge.
-  await page.mouse.move(0, 0);
+  // A fresh page, so Tab starts from the top instead of from the area the pointer last pressed.
+  await openFixture(page, 'native', '', 'pressable');
   await page.keyboard.press('Tab');
   const map = page.getByRole('button', { name: '추억 지도에서 보기' });
   await expect(map).toBeFocused();
@@ -47,7 +48,7 @@ test('native: KjunPressable without an effect, disabled, and focused by keyboard
   await expect(map).toHaveCSS('outline-offset', '2px');
   await expect(map).toHaveCSS('border-top-left-radius', '16px');
   await page.keyboard.press('Enter');
-  await expect(page.getByTestId('presses')).toHaveText('2');
+  await expect(page.getByTestId('presses')).toHaveText('1');
   const full = page.getByRole('button', { name: '꽉 찬 영역' });
   await full.focus();
   await expect(full).toHaveCSS('outline-style', 'solid');
@@ -87,16 +88,17 @@ for (const platform of ['react', 'vue3']) {
     await locked.click({ force: true });
     await expect(page.getByTestId('presses')).toHaveText('1');
     // Enter presses on keydown, Space on release; the ring follows the corners and can sit inside.
-    await page.mouse.move(0, 0);
+    // A fresh page, so Tab starts from the top instead of from the area the pointer last pressed.
+    await openFixture(page, platform, '', 'pressable');
     await page.keyboard.press('Tab');
     const map = page.getByRole('button', { name: '추억 지도에서 보기' });
     await expect(map).toBeFocused();
     await expect(map).toHaveCSS('outline-style', 'solid');
     await expect(map).toHaveCSS('outline-offset', '2px');
     await page.keyboard.press('Enter');
-    await expect(page.getByTestId('presses')).toHaveText('2');
+    await expect(page.getByTestId('presses')).toHaveText('1');
     await page.keyboard.press('Space');
-    await expect(page.getByTestId('presses')).toHaveText('3');
+    await expect(page.getByTestId('presses')).toHaveText('2');
     // Tab skips the disabled area.
     await page.keyboard.press('Tab'); await page.keyboard.press('Tab');
     const full = page.getByRole('button', { name: '꽉 찬 영역' });
