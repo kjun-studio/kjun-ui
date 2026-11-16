@@ -11,6 +11,10 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         h("KjunListRow", { title: settings.long ? "모든 기기에서 사용할 프로필과 계정 표시 이름" : "프로필 설정", description: "이름과 사진을 변경합니다.", leadingSize, disabled, ...action(() => set("message", "프로필 설정 열기")) }, undefined, { leading: h("KjunAvatar", { name: "김하늘", size: leadingSize ?? "sm" }), actions: h("KjunButton", { variant: "secondary", size: "sm", ...action(() => set("message", "프로필 공유")) }, "공유") }),
         h("KjunListRow", { icon: "bell", leadingSize, iconColor, iconBackground, title: "알림 받기", description: "행 어디를 눌러도 켜고 끕니다.", disabled, checked: get("notifications", true), onCheckedChange: change("notifications") }),
         h("KjunListRow", { icon: "lock", leadingSize, iconColor, iconBackground, title: "비밀번호", chevron: true, disabled, ...action(() => set("message", "비밀번호 열기")) }, undefined, { trailing: "3개월 전 변경" }),
+        // A row that opens its own content: the head is the button, the content sits outside it.
+        ...(settings.expandable ? [h("KjunListRow", { icon: "device-mobile", leadingSize, iconColor, iconBackground, title: "로그인한 기기", disabled, expanded: get("devices", false), onExpandedChange: change("devices"),
+          ...(platform === "vue3" ? {} : { expandedContent: h("KjunText", { tone: "secondary" }, "이 휴대폰 · 방금 전, 사무실 노트북 · 어제") }) }, undefined,
+          { trailing: "2대", ...(platform === "vue3" ? { expanded: h("KjunText", { tone: "secondary" }, "이 휴대폰 · 방금 전, 사무실 노트북 · 어제") } : {}) })] : []),
       ]);
     }
     case "KjunListGroup":
@@ -62,7 +66,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         h("KjunCard", { title: "교토 3박 4일", subtitle: "사진 128장 · 7월 14일–17일", surface: "muted" }))),
       h("Text", {}, get("message", "누르기 전"))]);
     case "KjunBottomActionBar":
-      return h("KjunProvider", { safeArea: { bottom: settings.safeAreaBottom } }, h(name, { description: settings.long ? "변경한 설정은 저장한 뒤 모든 기기에 적용됩니다. 저장이 완료될 때까지 화면을 유지해 주세요." : "저장하면 모든 기기에 적용됩니다.", keyboardVisible: settings.keyboardVisible, hideOnKeyboard: settings.hideOnKeyboard }, h("KjunFormActions", { confirmText: "변경 사항 저장", onConfirm: () => set("message", "저장 요청"), onCancel: () => set("message", "취소 요청") })));
+      return h("KjunProvider", { safeArea: { bottom: settings.safeAreaBottom } }, h(name, { variant: settings.variant, description: settings.long ? "변경한 설정은 저장한 뒤 모든 기기에 적용됩니다. 저장이 완료될 때까지 화면을 유지해 주세요." : "저장하면 모든 기기에 적용됩니다.", keyboardVisible: settings.keyboardVisible, hideOnKeyboard: settings.hideOnKeyboard }, h("KjunFormActions", { confirmText: "변경 사항 저장", onConfirm: () => set("message", "저장 요청"), onCancel: () => set("message", "취소 요청") })));
     case "KjunCarousel": {
       const cards = [["이번 주 추천", "새로 나온 템플릿을 확인하세요"], ["팀 공간", "동료와 문서를 함께 정리합니다"], ["알림 정리", "중요한 소식만 받아 보세요"], ["보관함", "지난 작업을 다시 찾습니다"]].map(([title, subtitle], i) =>
         h("KjunCard", { title, subtitle, surface: "muted" }, undefined, { media: h("KjunImage", { src: sampleImage(i), alt: "", decorative: true, aspectRatio: 2 }) }));

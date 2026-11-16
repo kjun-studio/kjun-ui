@@ -35,7 +35,8 @@ test('every public component and provider has sources, valid controls and preset
   }
 });
 test('only meaningful controls are offered and malformed settings are rejected', () => {
-  for (const name of ['KjunBadge', 'KjunProgress', 'KjunDropdownDivider', 'KjunErrorBoundary']) assert.equal(exampleDefinition(name).controls.length, 0);
+  for (const name of ['KjunBadge', 'KjunDropdownDivider', 'KjunErrorBoundary']) assert.equal(exampleDefinition(name).controls.length, 0);
+  assert.deepEqual(exampleDefinition('KjunProgress').controls.map(c => c.key), ['marker']);
   assert.deepEqual(exampleDefinition('KjunIcon').controls.map(c => c.key), ['spin']);
   assert.deepEqual(exampleDefinition('KjunPriceCell').controls.map(c => c.key), ['stale']);
   assert.ok(!exampleDefinition('KjunKpiHero').controls.some(c => c.key === 'stale'));

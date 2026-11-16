@@ -20,11 +20,15 @@ export function generate(input: UsageInput) {
       if (b.native) b.declare('appColors', 'import { appColors } from "./kjun";');
       const iconColor = s.iconColor ? b.native ? expr('appColors.brand') : 'var(--kjun-brand)' : undefined;
       const iconBackground = s.iconBackground ? b.native ? expr('appColors.secondary') : 'var(--kjun-secondary)' : undefined;
+      const devices = b.node('KjunText', { tone: 'secondary' }, '이 휴대폰 · 방금 전, 사무실 노트북 · 어제');
       content = b.node('KjunListSection', { title: '설정', description: '계정과 알림을 관리합니다.' }, [
         b.node('KjunListRow', { title: s.long ? '모든 기기에서 사용할 프로필과 계정 표시 이름' : '프로필 설정', description: '이름과 사진을 변경합니다.', leadingSize: leadingSize ?? 'sm', disabled: s.disabled, [action]: notify('openProfile', '프로필 설정 열기') }, '', {
           leading: b.node('KjunAvatar', { name: '김하늘', size: leadingSize ?? 'sm' }), actions: b.button('공유', notify('share', '프로필 공유'), { variant: 'ghost', size: 'sm' }),
         }),
         b.node('KjunListRow', { title: '알림 받기', description: '중요한 변경 사항을 알려드립니다.', icon: 'bell', leadingSize, iconColor, iconBackground, disabled: s.disabled }, '', { actions: b.node('KjunSwitch', { value: b.state('notifications', true), onValueChange: b.update('notifications'), ariaLabel: '알림 받기', disabled: s.disabled }) }),
+        // A row that opens its own content. Vue takes the content in the expanded slot, React and Native in expandedContent.
+        ...(s.expandable ? [b.node('KjunListRow', { title: '로그인한 기기', icon: 'device-mobile', leadingSize, iconColor, iconBackground, disabled: s.disabled, expanded: b.state('devices', false), onExpandedChange: b.update('devices'),
+          ...(b.vue ? {} : { expandedContent: expr(devices) }) }, '', { trailing: b.text('2대'), ...(b.vue ? { expanded: devices } : {}) })] : []),
       ].join('\n')); break;
     }
     case 'KjunListGroup':
@@ -75,7 +79,7 @@ export function generate(input: UsageInput) {
         b.node('KjunCard', { title: '교토 3박 4일', subtitle: '사진 128장 · 7월 14일–17일', surface: 'muted' }))]);
       break;
     case 'KjunBottomActionBar':
-      content = b.node(name, { description: s.long ? '변경한 설정은 저장한 뒤 모든 기기에 적용됩니다. 저장이 완료될 때까지 화면을 유지해 주세요.' : '저장하면 모든 기기에 적용됩니다.', ...b.props('keyboardVisible', 'hideOnKeyboard') },
+      content = b.node(name, { ...(s.variant === 'floating' ? { variant: 'floating' } : {}), description: s.long ? '변경한 설정은 저장한 뒤 모든 기기에 적용됩니다. 저장이 완료될 때까지 화면을 유지해 주세요.' : '저장하면 모든 기기에 적용됩니다.', ...b.props('keyboardVisible', 'hideOnKeyboard') },
         b.node('KjunFormActions', { confirmText: '변경 사항 저장', onConfirm: notify('save', '저장 요청'), onCancel: notify('cancel', '취소 요청') }));
       break;
     case 'KjunCarousel': {

@@ -91,6 +91,8 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
           value: get("progress", 42),
           showLabel: true,
           label: "완료율",
+          // A reference point on the value's own scale, such as where the work should be by today.
+          ...(settings.marker ? { marker: 60, markerLabel: "오늘 기준 60%", subLabel: "오늘 기준 60%" } : {}),
         }),
         button("진행", () => set("progress", (get("progress", 42) + 10) % 101)),
       ]);
@@ -166,6 +168,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         ariaLabel: "목록 설명",
         rows: 3,
         maxRows: Number(settings.maxRows),
+        variant: settings.plain ? "plain" : undefined,
         maxLength: settings.showCount || settings.composer ? 200 : undefined,
         showCount: settings.showCount || settings.composer,
         submitLabel: settings.composer ? "보내기" : undefined,

@@ -68,7 +68,7 @@ export function generate(input: UsageInput) {
     case 'KjunRadioGroup':
       content = b.node(name, { value: b.state('radio', 'a'), onValueChange: b.update('radio'), options: options(), ariaLabel: '과일 라디오', }); break;
     case 'KjunTextarea':
-      content = b.node(name, { value: b.state('textarea', ''), onValueChange: b.update('textarea'), placeholder: '목록의 목적과 공유할 내용을 입력하세요.', ariaLabel: '목록 설명', rows: 3, maxRows: Number(s.maxRows), ...b.props('size', 'disabled', 'error', 'readOnly'),
+      content = b.node(name, { value: b.state('textarea', ''), onValueChange: b.update('textarea'), placeholder: '목록의 목적과 공유할 내용을 입력하세요.', ariaLabel: '목록 설명', rows: 3, maxRows: Number(s.maxRows), ...(s.plain ? { variant: 'plain' } : {}), ...b.props('size', 'disabled', 'error', 'readOnly'),
         ...(s.showCount || s.composer ? { maxLength: 200, showCount: true } : {}),
         ...(s.composer ? { submitLabel: '보내기', onSubmit: b.handler('submit', 'value', b.result('"보내기: " + value')) } : {}) },
         '', s.composer ? { actions: b.button('', b.handler('attach', '', b.result('"파일 첨부 요청"')), { variant: 'ghost', size: 'sm', prefixIcon: 'plus', ariaLabel: '첨부 추가' }) } : undefined); break;
@@ -104,7 +104,7 @@ export function generate(input: UsageInput) {
     case 'KjunExternalLink':
       content = b.node(name, { href: 'https://example.com', label: '외부 페이지', openUrl: b.declare('openUrl', 'function openUrl(url) {\n  // 프로젝트의 브라우저 또는 Linking 연결 지점입니다.\n  console.log("링크 열기:", url);\n}') }, b.text('외부 페이지')); break;
     case 'KjunProgress':
-      content = b.group([b.node(name, { value: b.state('progress', 42), showLabel: true, label: '완료율' }), b.button('진행', b.handler('advance', '', b.set('progress', `(${b.read('progress')} + 10) % 101`)))]); break;
+      content = b.group([b.node(name, { value: b.state('progress', 42), showLabel: true, label: '완료율', ...(s.marker ? { marker: 60, markerLabel: '오늘 기준 60%', subLabel: '오늘 기준 60%' } : {}) }), b.button('진행', b.handler('advance', '', b.set('progress', `(${b.read('progress')} + 10) % 101`)))]); break;
     default: throw Error('기본 사용 코드 생성기 누락: ' + name);
   }
   // [label, hint, error]: the error text replaces the hint so the state never relies on color alone.

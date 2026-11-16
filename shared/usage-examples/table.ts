@@ -38,7 +38,7 @@ export function tableUsageExample(input: UsageInput) {
   const vueCells = Object.entries(slots).map(([key, body]) => `<template #${key}="{ row }">\n${body}\n</template>`).join('\n');
   const table = b.node('KjunTable', {
     columns: b.data('columns', example.columns), data: b.data('rows', example.data),
-    ...b.props('selectable', 'sortable', 'expandable', 'responsive', 'loading', 'searchable', 'compact', 'striped', 'hoverable', 'stickyHeader'),
+    ...b.props('selectable', 'sortable', 'expandable', 'responsive', 'loading', 'searchable', 'compact', 'striped', 'hoverable', 'stickyHeader'), ...(s.edgeInset ? { edgeInset: 'none' } : {}),
     maxHeight: s.stickyHeader ? 240 : undefined,
     selected, onSelectionChange: b.update('selected'), expandedRows: expanded, onExpandedRowsChange: b.update('expanded'),
     groupBy: grouped ? 'status' : undefined, expandedGroups, onExpandedGroupsChange: grouped ? b.update('expandedGroups') : undefined,

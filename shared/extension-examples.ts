@@ -4,13 +4,13 @@ const choice = (key: string, label: string, options: string[], value = options[0
 const number = (key: string, label: string, value: number, min: number, max: number): ExampleControl => ({ key, label, kind: "number", default: value, min, max });
 const size = choice("size", "크기", ["sm", "md", "lg"], "md"), disabled = bool("disabled", "비활성"), error = bool("error", "필드 오류"), long = bool("long", "긴 콘텐츠");
 export const extensionControls: Record<string, ExampleControl[]> = {
-  KjunListRow: [choice("leadingSize", "앞 영역 크기", ["자동", "xs", "sm", "md", "lg"]), bool("iconColor", "아이콘 강조색", true), bool("iconBackground", "원형 배경", true), disabled, long], KjunListSection: [choice("variant", "모양", ["default", "open"]), long], KjunListGroup: [choice("variant", "모양", ["inset", "flush", "open"])], KjunListItem: [],
+  KjunListRow: [choice("leadingSize", "앞 영역 크기", ["자동", "xs", "sm", "md", "lg"]), bool("iconColor", "아이콘 강조색", true), bool("iconBackground", "원형 배경", true), bool("expandable", "펼침 행"), disabled, long], KjunListSection: [choice("variant", "모양", ["default", "open"]), long], KjunListGroup: [choice("variant", "모양", ["inset", "flush", "open"])], KjunListItem: [],
   KjunTopNavigation: [long, bool("showDescription", "설명 표시", true), choice("leading", "앞쪽 탐색", ["아이콘", "긴 문구", "없음"]), choice("actions", "행동 구성", ["저장", "긴 문구", "여러 행동", "아이콘 조합", "없음"]), choice("exampleWidth", "예제 너비", ["640", "390", "320", "288"], "390"), disabled, bool("loading", "행동 로딩"), number("safeAreaTop", "상단 안전 영역", 0, 0, 80)],
   KjunBottomNavigation: [choice("iconStyle", "아이콘 모양", ["auto", "filled", "outline"]), bool("showLabels", "라벨 표시", true), long, bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기", true), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
   KjunSideNavigation: [bool("long", "긴 이름"), bool("disabled", "비활성 목적지")],
   KjunPressable: [choice("pressEffect", "눌림 표시", ["overlay", "none"]), bool("focusRingInset", "안쪽 포커스 링"), bool("disabled", "비활성")],
   KjunFloatingNavigation: [bool("badges", "배지", true), bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기", true), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
-  KjunBottomActionBar: [long, bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기"), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
+  KjunBottomActionBar: [choice("variant", "모양", ["docked", "floating"]), long, bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기"), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
   KjunCarousel: [choice("slideSize", "슬라이드 폭", ["full", "peek", "auto"]), choice("gap", "간격", ["none", "sm", "md", "lg"], "md"), choice("indicators", "위치 표시", ["dots", "count", "none"]), choice("indicatorPlacement", "표시 위치", ["below", "overlay"]), choice("snapAlign", "정렬", ["start", "center"]), choice("bleed", "여백 밖 펼침", ["none", "sm", "md", "lg"]), bool("mouseDrag", "마우스 드래그", true), bool("controls", "이전·다음 버튼", true), bool("title", "섹션 제목")],
   KjunImage: [choice("imageState", "이미지 상태", ["정상", "로딩", "실패"]), choice("fit", "맞춤 방식", ["cover", "contain"]), number("aspectRatio", "가로/세로 비율", 16 / 9, .25, 4), bool("decorative", "장식 이미지")],
   KjunAvatar: [size, choice("shape", "형태", ["circle", "square"]), choice("imageState", "이미지 상태", ["이름", "사진", "실패"]), bool("decorative", "장식 이미지")],
@@ -39,7 +39,7 @@ export const extensionPresets: Record<string, ExamplePreset[]> = {
   ],
   KjunBottomNavigation: [preset("icons", "아이콘만", { showLabels: false }), preset("filled", "전부 채움", { iconStyle: "filled" }), preset("outline", "전부 선", { iconStyle: "outline" }), preset("keyboard", "키보드 표시", { keyboardVisible: true }), preset("safe-area", "안전 영역", { safeAreaBottom: 34 })],
   KjunFloatingNavigation: [preset("keyboard", "키보드 표시", { keyboardVisible: true }), preset("safe-area", "안전 영역", { safeAreaBottom: 34 })],
-  KjunBottomActionBar: [{ id: "narrow", label: "좁은 화면", narrow: true }, preset("keyboard", "키보드 표시", { keyboardVisible: true }), preset("safe-area", "안전 영역", { safeAreaBottom: 34, long: true })],
+  KjunBottomActionBar: [preset("floating", "떠 있는 바", { variant: "floating" }), { id: "narrow", label: "좁은 화면", narrow: true }, preset("keyboard", "키보드 표시", { keyboardVisible: true }), preset("safe-area", "안전 영역", { safeAreaBottom: 34, long: true })],
   KjunCarousel: [preset("peek", "다음 카드 보이기", { slideSize: "peek", gap: "sm" }), preset("cards", "카드 줄", { slideSize: "auto", indicators: "none", title: true }), preset("count", "숫자 위치 표시", { indicators: "count" }), preset("center", "가운데 정렬", { slideSize: "peek", snapAlign: "center" }), preset("overlay", "사진 위 숫자", { indicators: "count", indicatorPlacement: "overlay" })],
   KjunImage: [preset("loading", "로컬 이미지 준비", { imageState: "로딩" }), preset("failure", "실패 대체 표현", { imageState: "실패" }), preset("contain", "원본 비율 유지", { aspectRatio: 1, fit: "contain" })],
   KjunAvatar: [preset("photo", "사진", { imageState: "사진" }), preset("failure", "사진 실패", { imageState: "실패" })],

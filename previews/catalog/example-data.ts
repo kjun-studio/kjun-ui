@@ -155,6 +155,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           data: example.data,
           compact: settings.compact,
           striped: settings.striped,
+          edgeInset: settings.edgeInset ? "none" : undefined,
           hoverable: settings.hoverable,
           stickyHeader: settings.stickyHeader,
           maxHeight: settings.stickyHeader ? 240 : undefined,

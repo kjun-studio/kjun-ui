@@ -6,6 +6,7 @@ export const tableControls: ExampleControl[] = [
   { key: 'design', label: '데이터 구성', kind: 'choice', default: '기본', options: ['기본', '문서 목록', '프로젝트', '수치 비교'] },
   { key: 'compact', label: '촘촘한 행', kind: 'boolean', default: false },
   { key: 'striped', label: '줄무늬', kind: 'boolean', default: false },
+  { key: 'edgeInset', label: '가장자리 여백 없음', kind: 'boolean', default: false },
   { key: 'hoverable', label: '행 강조', kind: 'boolean', default: true },
   { key: 'stickyHeader', label: '고정 헤더', kind: 'boolean', default: false },
   { key: 'grouped', label: '묶음·합계', kind: 'boolean', default: false },

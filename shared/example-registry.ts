@@ -45,7 +45,8 @@ assign("RefreshButton", [choice("mode", "표현", ["icon", "text"], "icon"), cho
 assign("Textarea DatePicker Combobox", [size, disabled, error]);
 assign("DatePicker DateRangePicker", [size, disabled, error, toggle("clearable", "지우기")]);
 assign("Switch", [size, disabled, loading, toggle("description", "설명")]);
-assign("Textarea", [size, disabled, error, toggle("readOnly", "읽기 전용"), toggle("showCount", "글자 수"), toggle("composer", "작성기형"), choice("maxRows", "최대 행", ["6", "3", "10"])]);
+assign("Textarea", [size, disabled, error, toggle("readOnly", "읽기 전용"), toggle("showCount", "글자 수"), toggle("composer", "작성기형"), choice("maxRows", "최대 행", ["6", "3", "10"]), toggle("plain", "배경 없음")]);
+assign("Progress", [toggle("marker", "기준 눈금")]);
 const menuDensity = choice("density", "밀도", ["comfortable", "compact"]);
 assign("Dropdown", [disabled, toggle("rich", "확장 구성"), menuDensity]);
 assign("DropdownSection DropdownSubmenu", [toggle("rich", "확장 구성", true), menuDensity]);
