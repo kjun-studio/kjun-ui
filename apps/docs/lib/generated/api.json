@@ -204,6 +204,14 @@
       {
         "name": "update:open",
         "source": "packages/vue3/src/navigation.tsx"
+      },
+      {
+        "name": "after-open",
+        "source": "packages/vue3/src/navigation.tsx"
+      },
+      {
+        "name": "after-close",
+        "source": "packages/vue3/src/navigation.tsx"
       }
     ],
     "slots": [
@@ -260,6 +268,20 @@
         "required": false,
         "default": "—",
         "description": "Requests a change on a controlled item; reports every change on an uncontrolled one (also when a sibling closes it)."
+      },
+      {
+        "name": "onAfterOpen",
+        "type": "(() => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called once the item has finished opening, after its height motion: the panel has its full height (e.g. to scroll a result into view)."
+      },
+      {
+        "name": "onAfterClose",
+        "type": "(() => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called once the item has finished closing."
       },
       {
         "name": "keepMounted",
@@ -339,6 +361,20 @@
         "required": false,
         "default": "—",
         "description": "Requests a change on a controlled item; reports every change on an uncontrolled one (also when a sibling closes it)."
+      },
+      {
+        "name": "onAfterOpen",
+        "type": "(() => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called once the item has finished opening, after its height motion: the panel has its full height (e.g. to scroll a result into view)."
+      },
+      {
+        "name": "onAfterClose",
+        "type": "(() => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called once the item has finished closing."
       },
       {
         "name": "keepMounted",
@@ -501,6 +537,13 @@
         "required": false,
         "default": "—",
         "description": "Buttons placed under the message; unsized KjunButtons follow the alert size."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra class on the alert root, for placement in the page layout; it leaves with the alert when closed."
       },
       {
         "name": "onClose",
@@ -1251,6 +1294,13 @@
         "required": false,
         "default": "true",
         "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
+      },
+      {
+        "name": "variant",
+        "type": "\"docked\" | \"floating\"",
+        "required": false,
+        "default": "\"docked\"",
+        "description": "\"floating\" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills."
       }
     ],
     "events": [],
@@ -1303,6 +1353,13 @@
         "required": false,
         "default": "—",
         "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
+      },
+      {
+        "name": "variant",
+        "type": "\"docked\" | \"floating\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"floating\" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills."
       }
     ],
     "native": [
@@ -1347,6 +1404,13 @@
         "required": false,
         "default": "—",
         "description": "Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band."
+      },
+      {
+        "name": "variant",
+        "type": "\"docked\" | \"floating\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"floating\" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills."
       }
     ]
   },
@@ -1707,10 +1771,10 @@
       },
       {
         "name": "shape",
-        "type": "\"default\" | \"circle\"",
+        "type": "\"default\" | \"circle\" | \"pill\"",
         "required": false,
         "default": "\"default\"",
-        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius."
+        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
       },
       {
         "name": "loading",
@@ -1820,10 +1884,10 @@
       },
       {
         "name": "shape",
-        "type": "\"default\" | \"circle\" | undefined",
+        "type": "\"default\" | \"circle\" | \"pill\" | undefined",
         "required": false,
         "default": "—",
-        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius."
+        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
       },
       {
         "name": "loading",
@@ -1990,10 +2054,10 @@
       },
       {
         "name": "shape",
-        "type": "\"default\" | \"circle\" | undefined",
+        "type": "\"default\" | \"circle\" | \"pill\" | undefined",
         "required": false,
         "default": "—",
-        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius."
+        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
       },
       {
         "name": "loading",
@@ -2321,7 +2385,7 @@
       },
       {
         "name": "surface",
-        "type": "\"default\" | \"danger\" | \"success\" | \"warning\" | \"brand\" | \"muted\" | \"accent\" | \"subtle\" | \"glass\"",
+        "type": "\"default\" | \"danger\" | \"success\" | \"warning\" | \"info\" | \"brand\" | \"muted\" | \"accent\" | \"subtle\" | \"brandSoft\" | \"glass\"",
         "required": false,
         "default": "\"default\"",
         "description": ""
@@ -2515,7 +2579,7 @@
       },
       {
         "name": "surface",
-        "type": "\"danger\" | \"success\" | \"warning\" | \"default\" | \"brand\" | \"muted\" | \"accent\" | \"subtle\" | \"glass\" | undefined",
+        "type": "\"danger\" | \"success\" | \"warning\" | \"default\" | \"brand\" | \"info\" | \"muted\" | \"accent\" | \"subtle\" | \"brandSoft\" | \"glass\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -2713,7 +2777,7 @@
       },
       {
         "name": "surface",
-        "type": "\"brand\" | \"danger\" | \"success\" | \"warning\" | \"default\" | \"muted\" | \"accent\" | \"subtle\" | \"glass\" | undefined",
+        "type": "\"brand\" | \"danger\" | \"success\" | \"warning\" | \"info\" | \"default\" | \"muted\" | \"accent\" | \"subtle\" | \"brandSoft\" | \"glass\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -3478,6 +3542,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The checkbox input's id, e.g. to reach it from an outside <label for>."
+      },
+      {
+        "name": "inputRef",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").Ref<HTMLInputElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The checkbox's input, e.g. to move focus to the first box of a group that failed validation."
       },
       {
         "name": "onValueChange",
@@ -6283,7 +6361,7 @@
       },
       {
         "name": "variant",
-        "type": "\"text\" | \"badge\" | \"pill\"",
+        "type": "\"pill\" | \"text\" | \"badge\"",
         "required": false,
         "default": "\"pill\"",
         "description": ""
@@ -6322,7 +6400,7 @@
       },
       {
         "name": "variant",
-        "type": "\"text\" | \"pill\" | \"badge\" | undefined",
+        "type": "\"pill\" | \"text\" | \"badge\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -6700,9 +6778,16 @@
       {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
-        "required": true,
+        "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "renderScrollView",
+        "type": "((props: import(\"/workspace/node_modules/react-native/types/index\").ScrollViewProps) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Replaces the body's scroller with the app's own, such as a FlatList that draws only its visible rows or a ScrollView\nwhose ref and scroll events the app needs. It receives the props the drawer gives its own scroller (the body's size and\npadding, keyboard taps, and children when there are any); spread them onto the scroller. The header, footer, size and\nsafe area stay the drawer's."
       },
       {
         "name": "onClose",
@@ -8429,6 +8514,13 @@
         "description": ""
       },
       {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra class on the group root, for placement in the page layout."
+      },
+      {
         "name": "onValueChange",
         "type": "((value: import(\"/workspace/packages/react/src/controls\").ChoiceValue | import(\"/workspace/packages/react/src/controls\").ChoiceValue[]) => void) | undefined",
         "required": false,
@@ -8755,6 +8847,13 @@
         "description": ""
       },
       {
+        "name": "form",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "The id of a form elsewhere on the page: the confirm button then submits it (Enter in a field submits it too), so a form in a\nmodal body needs no hidden submit button. Handle the save in the form's submit event."
+      },
+      {
         "name": "confirmDisabled",
         "type": "boolean",
         "required": false,
@@ -8836,6 +8935,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "form",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The id of a form elsewhere on the page: the confirm button then submits it (Enter in a field submits it too), so a form in a\nmodal body needs no hidden submit button. Handle the save in the form's submit event."
       },
       {
         "name": "confirmDisabled",
@@ -9076,6 +9182,13 @@
         "required": false,
         "default": "—",
         "description": "Hides the label visually while it still names the field."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra class on the group root, for placement in the page layout."
       },
       {
         "name": "children",
@@ -10233,6 +10346,13 @@
         "description": ""
       },
       {
+        "name": "variant",
+        "type": "InputVariant",
+        "required": false,
+        "default": "\"default\"",
+        "description": "\"plain\" drops the surface, side border and side inset for text edited in place, such as a document title or a note body."
+      },
+      {
         "name": "error",
         "type": "boolean",
         "required": false,
@@ -10350,6 +10470,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "import(\"/workspace/shared/package-runtime/input-variant\").InputVariant | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"plain\" drops the surface, side border and side inset for text edited in place, such as a document title."
       },
       {
         "name": "value",
@@ -10562,6 +10689,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "import(\"/workspace/shared/package-runtime/input-variant\").InputVariant | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"plain\" drops the surface, side border and side inset for text edited in place, such as a document title."
       },
       {
         "name": "error",
@@ -11480,6 +11614,27 @@
         "description": ""
       },
       {
+        "name": "trailingPosition",
+        "type": "\"title\" | \"side\"",
+        "required": false,
+        "default": "\"side\"",
+        "description": "Where the trailing value sits: \"side\" (default) is a column beside the whole text; \"title\" puts it on the title line, so the\ndescription and children keep the full text width whatever the value's length (rows with a budget bar line up)."
+      },
+      {
+        "name": "target",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Where a link row opens, e.g. \"_blank\" for a new tab; a new tab gets rel=\"noopener noreferrer\" unless rel is given."
+      },
+      {
+        "name": "rel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "The link's rel; by default \"noopener noreferrer\" for target=\"_blank\"."
+      },
+      {
         "name": "disabled",
         "type": "boolean",
         "required": false,
@@ -11543,6 +11698,13 @@
         "description": "Name of a pressable or link row, e.g. with the amount a screen reader should hear."
       },
       {
+        "name": "expanded",
+        "type": "boolean",
+        "required": false,
+        "default": "—",
+        "description": "v-model:expanded makes the row open its own content (the `expanded` slot): the row is a button and ends with a chevron that turns over when open.\nNot with href, checked, selected or chevron."
+      },
+      {
         "name": "titleLines",
         "type": "number",
         "required": false,
@@ -11560,6 +11722,10 @@
     "events": [
       {
         "name": "update:checked",
+        "source": "packages/vue3/src/list.tsx"
+      },
+      {
+        "name": "update:expanded",
         "source": "packages/vue3/src/list.tsx"
       }
     ],
@@ -11586,6 +11752,11 @@
       },
       {
         "name": "actions",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      },
+      {
+        "name": "expanded",
         "data": [],
         "source": "packages/vue3/src/list.tsx"
       }
@@ -11669,6 +11840,27 @@
         "description": ""
       },
       {
+        "name": "trailingPosition",
+        "type": "\"title\" | \"side\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where the trailing value sits: \"side\" (default) is a column beside the whole text; \"title\" puts it on the title line, so the\ndescription and children keep the full text width whatever the value's length (rows with a budget bar line up)."
+      },
+      {
+        "name": "target",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where a link row opens, e.g. \"_blank\" for a new tab; a new tab gets rel=\"noopener noreferrer\" unless rel is given."
+      },
+      {
+        "name": "rel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The link's rel; by default \"noopener noreferrer\" for target=\"_blank\"."
+      },
+      {
         "name": "disabled",
         "type": "boolean | undefined",
         "required": false,
@@ -11744,6 +11936,27 @@
         "required": false,
         "default": "—",
         "description": "Display-only content under the description (a budget bar); no buttons or links inside a pressable row."
+      },
+      {
+        "name": "expanded",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Makes the row open its own content: the row is a button that reports the next state, and ends with a chevron that turns over when open.\nNot with href, checked, selected or chevron."
+      },
+      {
+        "name": "onExpandedChange",
+        "type": "((expanded: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "expandedContent",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Shown under the row while expanded, from the line the title starts on. It is outside the button, so it may hold buttons and links."
       },
       {
         "name": "titleLines",
@@ -11832,6 +12045,13 @@
         "description": ""
       },
       {
+        "name": "trailingPosition",
+        "type": "\"side\" | \"title\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where the trailing value sits: \"side\" (default) is a column beside the whole text; \"title\" puts it on the title line, so the\ndescription and children keep the full text width whatever the value's length (rows with a budget bar line up)."
+      },
+      {
         "name": "href",
         "type": "string | undefined",
         "required": false,
@@ -11914,6 +12134,27 @@
         "required": false,
         "default": "—",
         "description": "Display-only content under the description (a budget bar); no buttons or links inside a pressable row."
+      },
+      {
+        "name": "expanded",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Makes the row open its own content: the row is a button that reports the next state, and ends with a chevron that turns over when open.\nNot with href, checked, selected or chevron."
+      },
+      {
+        "name": "onExpandedChange",
+        "type": "((expanded: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "expandedContent",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Shown under the row while expanded, from the line the title starts on. It is outside the button, so it may hold buttons."
       },
       {
         "name": "titleLines",
@@ -12520,7 +12761,7 @@
       },
       {
         "name": "variant",
-        "type": "\"compact\" | \"market\" | \"notification\" | \"row\" | undefined",
+        "type": "\"compact\" | \"row\" | \"market\" | \"notification\" | undefined",
         "required": false,
         "default": "—",
         "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked."
@@ -15974,6 +16215,13 @@
         "description": ""
       },
       {
+        "name": "form",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "The id of a form elsewhere on the page: the confirm button then submits it (Enter in a field submits it too), so a form in a\nmodal body needs no hidden submit button. Handle the save in the form's submit event."
+      },
+      {
         "name": "confirmDisabled",
         "type": "boolean",
         "required": false,
@@ -16195,6 +16443,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "form",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The id of a form elsewhere on the page: the confirm button then submits it (Enter in a field submits it too), so a form in a\nmodal body needs no hidden submit button. Handle the save in the form's submit event."
       },
       {
         "name": "confirmDisabled",
@@ -17142,6 +17397,181 @@
       }
     ]
   },
+  "KjunPressable": {
+    "vue3": [
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "The name read by screen readers; needed when the content has no text of its own."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Blocks presses and dims the content."
+      },
+      {
+        "name": "pressEffect",
+        "type": "\"none\" | \"overlay\"",
+        "required": false,
+        "default": "\"overlay\"",
+        "description": "\"overlay\" (default) lays a tint over the content on hover and press, which shows on photos as well as on text; \"none\" leaves the content to show its own."
+      },
+      {
+        "name": "focusRingInset",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draws the keyboard focus ring inside the area, for one that reaches the screen edge or sits in a clipping parent."
+      }
+    ],
+    "events": [
+      {
+        "name": "click",
+        "source": "packages/vue3/src/pressable.tsx"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/pressable.tsx"
+      }
+    ],
+    "react": [
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The name read by screen readers; needed when the content has no text of its own."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Blocks presses and dims the content."
+      },
+      {
+        "name": "pressEffect",
+        "type": "\"none\" | \"overlay\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"overlay\" (default) lays a tint over the content on hover and press, which shows on photos as well as on text; \"none\" leaves the content to show its own."
+      },
+      {
+        "name": "focusRingInset",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Draws the keyboard focus ring inside the area, for one that reaches the screen edge or sits in a clipping parent."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").KeyboardEventHandler<HTMLDivElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").MouseEventHandler<HTMLDivElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": "The shape is the app's: radius, padding and background come from here. The press layer and the focus ring follow its corners."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The name read by screen readers; needed when the content has no text of its own."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Blocks presses and dims the content."
+      },
+      {
+        "name": "pressEffect",
+        "type": "\"overlay\" | \"none\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"overlay\" (default) lays a tint over the content on hover and press, which shows on photos as well as on text; \"none\" leaves the content to show its own."
+      },
+      {
+        "name": "focusRingInset",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Draws the Native Web focus ring inside the area, for one that reaches the screen edge or sits in a clipping parent."
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Used to reference react managed views from native code."
+      },
+      {
+        "name": "onPress",
+        "type": "((event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | null | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called when a single tap gesture is detected."
+      }
+    ]
+  },
   "KjunPriceCell": {
     "vue3": [
       {
@@ -17315,6 +17745,27 @@
         "description": ""
       },
       {
+        "name": "valueText",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Shown and read in place of the rounded percent while the value is known, e.g. \"37.4%\" or \"3.2 / 8 GB\"."
+      },
+      {
+        "name": "marker",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": "A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. Bars only; not drawn while indeterminate or missing."
+      },
+      {
+        "name": "markerLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Read by screen readers as the bar's description, e.g. \"오늘 기준 53%\". Put visible wording in subLabel."
+      },
+      {
         "name": "label",
         "type": "string",
         "required": false,
@@ -17393,6 +17844,27 @@
         "description": ""
       },
       {
+        "name": "valueText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown and read in place of the rounded percent while the value is known, e.g. \"37.4%\" or \"3.2 / 8 GB\"."
+      },
+      {
+        "name": "marker",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. Bars only; not drawn while indeterminate or missing."
+      },
+      {
+        "name": "markerLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Read by screen readers as the bar's description, e.g. \"오늘 기준 53%\". Put visible wording in subLabel."
+      },
+      {
         "name": "label",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
@@ -17456,6 +17928,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "valueText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Shown and read in place of the rounded percent while the value is known, e.g. \"37.4%\" or \"3.2 / 8 GB\"."
+      },
+      {
+        "name": "marker",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. Bars only; not drawn while indeterminate or missing."
+      },
+      {
+        "name": "markerLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Read by screen readers as the bar's hint, e.g. \"오늘 기준 53%\". Put visible wording in subLabel."
       },
       {
         "name": "label",
@@ -17523,6 +18016,20 @@
         "required": false,
         "default": "6",
         "description": ""
+      },
+      {
+        "name": "marker",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": "A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget."
+      },
+      {
+        "name": "markerLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Read by screen readers as the bar's description, e.g. \"오늘 기준 53%\"."
       }
     ],
     "events": [],
@@ -17569,6 +18076,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "marker",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget."
+      },
+      {
+        "name": "markerLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Read by screen readers as the bar's description, e.g. \"오늘 기준 53%\"."
       }
     ],
     "native": [
@@ -17613,6 +18134,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "marker",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget."
+      },
+      {
+        "name": "markerLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Read by screen readers as the bar's hint, e.g. \"오늘 기준 53%\"."
       }
     ]
   },
@@ -18223,6 +18758,20 @@
         "description": ""
       },
       {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The radio input's id, e.g. to reach it from an outside <label for>."
+      },
+      {
+        "name": "inputRef",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").Ref<HTMLInputElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The radio's input, e.g. to move focus to it from code."
+      },
+      {
         "name": "onValueChange",
         "type": "((value: import(\"/workspace/packages/react/src/controls\").ChoiceValue) => void) | undefined",
         "required": false,
@@ -18738,6 +19287,13 @@
         "description": ""
       },
       {
+        "name": "label",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "size",
         "type": "\"sm\" | \"md\" | undefined",
         "required": false,
@@ -18746,13 +19302,6 @@
       },
       {
         "name": "ariaLabel",
-        "type": "string | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "label",
         "type": "string | undefined",
         "required": false,
         "default": "—",
@@ -19053,10 +19602,10 @@
       },
       {
         "name": "shape",
-        "type": "\"default\" | \"circle\" | undefined",
+        "type": "\"default\" | \"circle\" | \"pill\" | undefined",
         "required": false,
         "default": "—",
-        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius."
+        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
       },
       {
         "name": "loading",
@@ -19201,27 +19750,6 @@
         "description": ""
       },
       {
-        "name": "prefixIcon",
-        "type": "string | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "suffixIcon",
-        "type": "string | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
         "name": "variant",
         "type": "\"secondary\" | \"danger\" | \"success\" | \"warning\" | \"primary\" | \"ghost\" | \"danger-ghost\" | \"link\" | undefined",
         "required": false,
@@ -19230,10 +19758,10 @@
       },
       {
         "name": "shape",
-        "type": "\"default\" | \"circle\" | undefined",
+        "type": "\"default\" | \"circle\" | \"pill\" | undefined",
         "required": false,
         "default": "—",
-        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius."
+        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
       },
       {
         "name": "loading",
@@ -19257,6 +19785,20 @@
         "description": "Long labels wrap: the size's height becomes a minimum and the button grows instead of overflowing."
       },
       {
+        "name": "prefixIcon",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "suffixIcon",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "prefixIconFilled",
         "type": "boolean | undefined",
         "required": false,
@@ -19266,6 +19808,13 @@
       {
         "name": "suffixIconFilled",
         "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -20401,6 +20950,155 @@
       }
     ]
   },
+  "KjunSideNavigation": {
+    "vue3": [
+      {
+        "name": "items",
+        "type": "SideNavigationEntry[]",
+        "required": true,
+        "default": "—",
+        "description": "Destinations, parents with one level of children, and titled groups of either. A destination has the bottom navigation's shape."
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": "The current destination's key (a child's key when the page is under a parent)."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "expanded",
+        "type": "string[]",
+        "required": false,
+        "default": "—",
+        "description": "v-model:expanded: the open parents. Without it the navigation keeps the list itself, starting with the parent of the current destination open."
+      }
+    ],
+    "events": [
+      {
+        "name": "navigate",
+        "source": "packages/vue3/src/side-navigation.tsx"
+      },
+      {
+        "name": "reselect",
+        "source": "packages/vue3/src/side-navigation.tsx"
+      },
+      {
+        "name": "update:expanded",
+        "source": "packages/vue3/src/side-navigation.tsx"
+      }
+    ],
+    "slots": [],
+    "react": [
+      {
+        "name": "items",
+        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationEntry[]",
+        "required": true,
+        "default": "—",
+        "description": "Destinations, parents with one level of children, and titled groups of either. A destination has the bottom navigation's shape."
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": "The current destination's key (a child's key when the page is under a parent)."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onNavigate",
+        "type": "((key: string, event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent<HTMLAnchorElement>) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onReselect",
+        "type": "((key: string, event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent<HTMLAnchorElement>) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The current destination was pressed again, e.g. to scroll its page back to the top."
+      },
+      {
+        "name": "expanded",
+        "type": "string[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The open parents. Without it the navigation keeps the list itself, starting with the parent of the current destination open."
+      },
+      {
+        "name": "onExpandedChange",
+        "type": "((expanded: string[]) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "items",
+        "type": "import(\"/workspace/packages/native/src/side-navigation\").SideNavigationEntry[]",
+        "required": true,
+        "default": "—",
+        "description": "Destinations, parents with one level of children, and titled groups of either. A destination has the bottom navigation's shape."
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "default": "—",
+        "description": "The current destination's key (a child's key when the page is under a parent)."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onNavigate",
+        "type": "((key: string, event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onReselect",
+        "type": "((key: string, event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The current destination was pressed again, e.g. to scroll its page back to the top."
+      },
+      {
+        "name": "expanded",
+        "type": "string[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The open parents. Without it the navigation keeps the list itself, starting with the parent of the current destination open."
+      },
+      {
+        "name": "onExpandedChange",
+        "type": "((expanded: string[]) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
   "KjunSignedValue": {
     "vue3": [
       {
@@ -20454,7 +21152,7 @@
       },
       {
         "name": "tone",
-        "type": "\"plain\" | \"pill\"",
+        "type": "\"pill\" | \"plain\"",
         "required": false,
         "default": "\"plain\"",
         "description": ""
@@ -20535,7 +21233,7 @@
       },
       {
         "name": "tone",
-        "type": "\"plain\" | \"pill\" | undefined",
+        "type": "\"pill\" | \"plain\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -20614,7 +21312,7 @@
       },
       {
         "name": "tone",
-        "type": "\"plain\" | \"pill\" | undefined",
+        "type": "\"pill\" | \"plain\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -20653,7 +21351,7 @@
       },
       {
         "name": "role",
-        "type": "\"label\" | \"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\"",
+        "type": "\"label\" | \"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"labelStrong\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\"",
         "required": false,
         "default": "—",
         "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height."
@@ -20720,7 +21418,7 @@
       },
       {
         "name": "role",
-        "type": "\"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"label\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
+        "type": "\"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"label\" | \"labelStrong\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
         "required": false,
         "default": "—",
         "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height."
@@ -20785,7 +21483,7 @@
       },
       {
         "name": "role",
-        "type": "\"label\" | \"caption\" | \"meta\" | \"controlSmall\" | \"body\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
+        "type": "\"label\" | \"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"labelStrong\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
         "required": false,
         "default": "—",
         "description": "Typography role for type=\"line\"."
@@ -22688,6 +23386,13 @@
         "description": ""
       },
       {
+        "name": "edgeInset",
+        "type": "\"default\" | \"none\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "\"none\" drops the first column's start padding and the last column's end padding in the grid, so the table lines up with text around it. For tables without row fills."
+      },
+      {
         "name": "ariaLabel",
         "type": "string",
         "required": false,
@@ -23164,6 +23869,13 @@
         "description": ""
       },
       {
+        "name": "edgeInset",
+        "type": "\"default\" | \"none\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"none\" drops the first column's start padding and the last column's end padding in the grid, so the table lines up with text around it. For tables without row fills."
+      },
+      {
         "name": "ariaLabel",
         "type": "string | undefined",
         "required": false,
@@ -23628,6 +24340,13 @@
         "description": ""
       },
       {
+        "name": "edgeInset",
+        "type": "\"default\" | \"none\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"none\" drops the first column's start padding and the last column's end padding in the grid, so the table lines up with text around it. For tables without row fills."
+      },
+      {
         "name": "ariaLabel",
         "type": "string | undefined",
         "required": false,
@@ -23636,7 +24355,7 @@
       },
       {
         "name": "responsive",
-        "type": "\"compact\" | \"none\" | \"card\" | \"list\" | null | undefined",
+        "type": "\"none\" | \"compact\" | \"card\" | \"list\" | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -24239,6 +24958,27 @@
         "description": "Clamp to this many lines with an ellipsis; the full text stays in the DOM."
       },
       {
+        "name": "ref",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").Ref<HTMLElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The element, e.g. to move focus to a heading after the screen changes (with tabIndex={-1})."
+      },
+      {
+        "name": "tabIndex",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "-1 lets code focus the text without adding it to the Tab order."
+      },
+      {
+        "name": "role",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").AriaRole | undefined",
+        "required": false,
+        "default": "—",
+        "description": "An ARIA role for the element, such as \"status\" for a message that should be announced."
+      },
+      {
         "name": "className",
         "type": "string | undefined",
         "required": false,
@@ -24350,6 +25090,13 @@
         "description": ""
       },
       {
+        "name": "variant",
+        "type": "InputVariant",
+        "required": false,
+        "default": "\"default\"",
+        "description": "\"plain\" drops the surface, side border and side inset for text edited in place, such as a document title or a note body."
+      },
+      {
         "name": "error",
         "type": "boolean",
         "required": false,
@@ -24372,10 +25119,10 @@
       },
       {
         "name": "maxRows",
-        "type": "number",
+        "type": "TextareaMaxRows",
         "required": false,
         "default": "6",
-        "description": "The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed)."
+        "description": "The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). \"none\" grows without a limit."
       },
       {
         "name": "maxLength",
@@ -24481,6 +25228,13 @@
         "description": ""
       },
       {
+        "name": "variant",
+        "type": "import(\"/workspace/shared/package-runtime/input-variant\").InputVariant | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"plain\" drops the surface, side border and side inset for text edited in place, such as a note body."
+      },
+      {
         "name": "error",
         "type": "boolean | undefined",
         "required": false,
@@ -24503,10 +25257,10 @@
       },
       {
         "name": "maxRows",
-        "type": "number | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/textarea\").TextareaMaxRows | undefined",
         "required": false,
         "default": "—",
-        "description": "The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed)."
+        "description": "The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). \"none\" grows without a limit."
       },
       {
         "name": "maxLength",
@@ -24672,6 +25426,13 @@
         "description": ""
       },
       {
+        "name": "variant",
+        "type": "import(\"/workspace/shared/package-runtime/input-variant\").InputVariant | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"plain\" drops the surface, side border and side inset for text edited in place, such as a note body."
+      },
+      {
         "name": "value",
         "type": "string",
         "required": true,
@@ -24694,10 +25455,10 @@
       },
       {
         "name": "maxRows",
-        "type": "number | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/textarea\").TextareaMaxRows | undefined",
         "required": false,
         "default": "—",
-        "description": "The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed)."
+        "description": "The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). \"none\" grows without a limit."
       },
       {
         "name": "maxLength",

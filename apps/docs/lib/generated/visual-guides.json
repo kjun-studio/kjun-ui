@@ -14393,6 +14393,221 @@
       }
     }
   },
+  "KjunSideNavigation": {
+    "name": "KjunSideNavigation",
+    "path": "/components/side-navigation",
+    "related": "app-screen",
+    "description": "넓은 화면의 옆에 세로로 놓는 메뉴입니다. 목적지를 묶음 제목과 한 단계의 하위 항목으로 정리합니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "현재 목적지",
+                "description": "앱의 value가 현재 목적지를 결정합니다. 선택 배경색 면과 굵은 글자로 표시합니다.",
+                "target": "[aria-current=\"page\"]",
+                "optional": false
+              },
+              {
+                "label": "다른 목적지",
+                "description": "웹에서는 링크, Native에서는 앱 이동 요청입니다. 배지는 항목 끝에 놓입니다.",
+                "target": "text=활동",
+                "optional": false
+              },
+              {
+                "label": "묶음 제목",
+                "description": "12px 3차 글자색으로 구역을 나눕니다.",
+                "target": "text=문서",
+                "optional": false
+              },
+              {
+                "label": "부모 항목",
+                "description": "여닫는 버튼이며 스스로 이동하지 않습니다. 하위 항목은 부모 글자가 시작하는 선에 놓입니다.",
+                "target": "text=프로젝트",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "current",
+            "label": "목적지 변경",
+            "description": "소비자가 활동을 현재 위치로 제공합니다.",
+            "values": {
+              "destination": "activity"
+            }
+          },
+          {
+            "id": "child",
+            "label": "하위 목적지",
+            "description": "현재 목적지의 부모는 열린 채로 시작합니다.",
+            "values": {
+              "destination": "checkout"
+            }
+          },
+          {
+            "id": "long",
+            "label": "긴 이름",
+            "description": "한 줄에서 말줄임하고 배지는 끝에 남습니다.",
+            "settings": {
+              "long": true
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "40px 높이의 항목을 2px 간격으로 쌓고 아이콘 20px·글자 14px를 시작 쪽에 정렬합니다. 현재 목적지는 선택 배경색 면과 굵은 글자로 표시하며 강조 줄은 쓰지 않습니다. 마우스를 올리거나 누르면 항목 면이 바뀝니다. 부모 항목은 끝에 아래 방향 꺾쇠를 달고 누르면 36px 높이의 하위 항목을 부모 글자가 시작하는 선에 펼칩니다. 현재 목적지의 부모는 열린 채로 시작하고, 닫으면 부모 글자가 굵게 남아 위치를 알립니다. 묶음 제목은 12px 3차 글자색입니다. 긴 이름은 한 줄에서 말줄임하고, 배지는 항목 끝에 놓이며 규칙은 BottomNavigation과 같습니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "현재 목적지",
+                "description": "앱의 value가 현재 목적지를 결정합니다. 선택 배경색 면과 굵은 글자로 표시합니다.",
+                "target": "[aria-current=\"page\"]",
+                "optional": false
+              },
+              {
+                "label": "다른 목적지",
+                "description": "웹에서는 링크, Native에서는 앱 이동 요청입니다. 배지는 항목 끝에 놓입니다.",
+                "target": "text=활동",
+                "optional": false
+              },
+              {
+                "label": "묶음 제목",
+                "description": "12px 3차 글자색으로 구역을 나눕니다.",
+                "target": "text=문서",
+                "optional": false
+              },
+              {
+                "label": "부모 항목",
+                "description": "여닫는 버튼이며 스스로 이동하지 않습니다. 하위 항목은 부모 글자가 시작하는 선에 놓입니다.",
+                "target": "text=프로젝트",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "current",
+            "label": "목적지 변경",
+            "description": "소비자가 활동을 현재 위치로 제공합니다.",
+            "values": {
+              "destination": "activity"
+            }
+          },
+          {
+            "id": "child",
+            "label": "하위 목적지",
+            "description": "현재 목적지의 부모는 열린 채로 시작합니다.",
+            "values": {
+              "destination": "checkout"
+            }
+          },
+          {
+            "id": "long",
+            "label": "긴 이름",
+            "description": "한 줄에서 말줄임하고 배지는 끝에 남습니다.",
+            "settings": {
+              "long": true
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "40px 높이의 항목을 2px 간격으로 쌓고 아이콘 20px·글자 14px를 시작 쪽에 정렬합니다. 현재 목적지는 선택 배경색 면과 굵은 글자로 표시하며 강조 줄은 쓰지 않습니다. 마우스를 올리거나 누르면 항목 면이 바뀝니다. 부모 항목은 끝에 아래 방향 꺾쇠를 달고 누르면 36px 높이의 하위 항목을 부모 글자가 시작하는 선에 펼칩니다. 현재 목적지의 부모는 열린 채로 시작하고, 닫으면 부모 글자가 굵게 남아 위치를 알립니다. 묶음 제목은 12px 3차 글자색입니다. 긴 이름은 한 줄에서 말줄임하고, 배지는 항목 끝에 놓이며 규칙은 BottomNavigation과 같습니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "현재 목적지",
+                "description": "앱의 value가 현재 목적지를 결정합니다. 선택 배경색 면과 굵은 글자로 표시합니다.",
+                "target": "[aria-current=\"page\"]",
+                "optional": false
+              },
+              {
+                "label": "다른 목적지",
+                "description": "웹에서는 링크, Native에서는 앱 이동 요청입니다. 배지는 항목 끝에 놓입니다.",
+                "target": "text=활동",
+                "optional": false
+              },
+              {
+                "label": "묶음 제목",
+                "description": "12px 3차 글자색으로 구역을 나눕니다.",
+                "target": "text=문서",
+                "optional": false
+              },
+              {
+                "label": "부모 항목",
+                "description": "여닫는 버튼이며 스스로 이동하지 않습니다. 하위 항목은 부모 글자가 시작하는 선에 놓입니다.",
+                "target": "text=프로젝트",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "current",
+            "label": "목적지 변경",
+            "description": "소비자가 활동을 현재 위치로 제공합니다.",
+            "values": {
+              "destination": "activity"
+            }
+          },
+          {
+            "id": "child",
+            "label": "하위 목적지",
+            "description": "현재 목적지의 부모는 열린 채로 시작합니다.",
+            "values": {
+              "destination": "checkout"
+            }
+          },
+          {
+            "id": "long",
+            "label": "긴 이름",
+            "description": "한 줄에서 말줄임하고 배지는 끝에 남습니다.",
+            "settings": {
+              "long": true
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "40px 높이의 항목을 2px 간격으로 쌓고 아이콘 20px·글자 14px를 시작 쪽에 정렬합니다. 현재 목적지는 선택 배경색 면과 굵은 글자로 표시하며 강조 줄은 쓰지 않습니다. 마우스를 올리거나 누르면 항목 면이 바뀝니다. 부모 항목은 끝에 아래 방향 꺾쇠를 달고 누르면 36px 높이의 하위 항목을 부모 글자가 시작하는 선에 펼칩니다. 현재 목적지의 부모는 열린 채로 시작하고, 닫으면 부모 글자가 굵게 남아 위치를 알립니다. 묶음 제목은 12px 3차 글자색입니다. 긴 이름은 한 줄에서 말줄임하고, 배지는 항목 끝에 놓이며 규칙은 BottomNavigation과 같습니다."
+      }
+    }
+  },
   "KjunBottomActionBar": {
     "name": "KjunBottomActionBar",
     "path": "/components/bottom-action-bar",
@@ -15387,6 +15602,161 @@
         ],
         "sizeDefault": "\"md\"",
         "note": "Chip은 고른 값을 보여 주는 라벨이라 알약 모양입니다. 고르는 동작은 모서리가 있는 FilterGroup, 표시 전용은 Badge를 사용합니다. 긴 라벨은 한 줄 말줄임으로 끝납니다. removable로 삭제 버튼을 표시하고 disabled로 삭제 요청을 막습니다."
+      }
+    }
+  },
+  "KjunPressable": {
+    "name": "KjunPressable",
+    "path": "/components/pressable",
+    "related": "app-screen",
+    "description": "버튼·카드·목록 행이 아닌 영역을 통째로 누르게 합니다. 지도 미리보기나 사진 칸처럼 모양을 앱이 정하는 자리에 씁니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "누름 영역",
+                "description": "앱이 준 모양 그대로 통째로 누릅니다. 눌림 표시는 내용 위에 덮는 글자색 막입니다.",
+                "target": "[role=\"button\"]",
+                "optional": false
+              },
+              {
+                "label": "내용",
+                "description": "앱이 넣은 표시용 콘텐츠입니다. 버튼이나 링크는 넣지 않습니다.",
+                "target": "text=교토 3박 4일",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunPressable\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "plain",
+            "label": "눌림 표시 없음",
+            "description": "내용이 스스로 눌림을 그릴 때 막을 끕니다.",
+            "settings": {
+              "pressEffect": "none"
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "눌림 표시는 내용 위에 글자색 막을 덮는 방식입니다. 마우스를 올리면 불투명도 0.08, 누르면 0.16이며 사진과 글 위 어디서나 보입니다. 막과 포커스 링은 앱이 준 모서리를 따릅니다. pressEffect=\"none\"이면 막을 그리지 않습니다. 비활성은 누름을 막고 불투명도 0.5로 흐려집니다. focusRingInset이면 화면 끝까지 닿는 영역에서도 링이 잘리지 않도록 안쪽에 그립니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "누름 영역",
+                "description": "앱이 준 모양 그대로 통째로 누릅니다. 눌림 표시는 내용 위에 덮는 글자색 막입니다.",
+                "target": "[role=\"button\"]",
+                "optional": false
+              },
+              {
+                "label": "내용",
+                "description": "앱이 넣은 표시용 콘텐츠입니다. 버튼이나 링크는 넣지 않습니다.",
+                "target": "text=교토 3박 4일",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunPressable\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "plain",
+            "label": "눌림 표시 없음",
+            "description": "내용이 스스로 눌림을 그릴 때 막을 끕니다.",
+            "settings": {
+              "pressEffect": "none"
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "눌림 표시는 내용 위에 글자색 막을 덮는 방식입니다. 마우스를 올리면 불투명도 0.08, 누르면 0.16이며 사진과 글 위 어디서나 보입니다. 막과 포커스 링은 앱이 준 모서리를 따릅니다. pressEffect=\"none\"이면 막을 그리지 않습니다. 비활성은 누름을 막고 불투명도 0.5로 흐려집니다. focusRingInset이면 화면 끝까지 닿는 영역에서도 링이 잘리지 않도록 안쪽에 그립니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "누름 영역",
+                "description": "앱이 준 모양 그대로 통째로 누릅니다. 눌림 표시는 내용 위에 덮는 글자색 막입니다.",
+                "target": "[role=\"button\"]",
+                "optional": false
+              },
+              {
+                "label": "내용",
+                "description": "앱이 넣은 표시용 콘텐츠입니다. 버튼이나 링크는 넣지 않습니다.",
+                "target": "text=교토 3박 4일",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunPressable\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "plain",
+            "label": "눌림 표시 없음",
+            "description": "내용이 스스로 눌림을 그릴 때 막을 끕니다.",
+            "settings": {
+              "pressEffect": "none"
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "눌림 표시는 내용 위에 글자색 막을 덮는 방식입니다. 마우스를 올리면 불투명도 0.08, 누르면 0.16이며 사진과 글 위 어디서나 보입니다. 막과 포커스 링은 앱이 준 모서리를 따릅니다. pressEffect=\"none\"이면 막을 그리지 않습니다. 비활성은 누름을 막고 불투명도 0.5로 흐려집니다. focusRingInset이면 화면 끝까지 닿는 영역에서도 링이 잘리지 않도록 안쪽에 그립니다."
       }
     }
   },
