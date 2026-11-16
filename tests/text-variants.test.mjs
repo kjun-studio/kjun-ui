@@ -7,8 +7,19 @@ const typography = JSON.parse(await read("packages/tokens/src/definitions/typogr
 const source = await read("shared/package-runtime/layout-primitives.ts");
 const variants = source.match(/export type TextVariant = ([^;]+);/)[1].match(/"(\w+)"/g).map(name => name.slice(1, -1));
 
-test("every KjunText variant is a typography role", () => {
-  for (const name of variants) assert.ok(typography[name], name + " has a typography token");
+test("every KjunText variant is a typography role, except inherit", () => {
+  assert.ok(variants.includes("inherit"));
+  for (const name of variants.filter(name => name !== "inherit")) assert.ok(typography[name], name + " has a typography token");
+});
+
+test("bodyLg is the 16px reading step with body's weight", () => {
+  assert.ok(variants.includes("bodyLg"));
+  assert.deepEqual(typography.bodyLg, { fontSizePx: 16, lineHeightPx: 24, fontWeight: typography.body.fontWeight, letterSpacingEm: 0 });
+});
+
+test("numberLg tracks like the title of its size", () => {
+  assert.equal(typography.numberLg.fontSizePx, typography.sectionTitle.fontSizePx);
+  assert.equal(typography.numberLg.letterSpacingEm, typography.sectionTitle.letterSpacingEm);
 });
 
 test("the strong steps keep their base step's size and raise only the weight", () => {

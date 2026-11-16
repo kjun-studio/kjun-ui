@@ -1,10 +1,10 @@
 import { createElement, type AriaAttributes, type AriaRole, type CSSProperties, type ReactNode, type Ref } from "react";
 import {
-  defaultTextTag, textTypeClass,
+  clampLines, defaultTextTag, textToneAttribute, textTypeClass,
   type InlineAlign, type InlineGap, type InlineJustify, type StackAlign, type StackGap,
-  type TextAlign, type TextTag, type TextTone, type TextVariant,
+  type TextAlign, type TextDecoration, type TextTag, type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
-export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackGap, TextAlign, TextTag, TextTone, TextVariant };
+export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackGap, TextAlign, TextDecoration, TextTag, TextTone, TextVariant };
 
 // Only the id and ARIA attributes reach the root, like Vue 3's fallthrough attributes; no event handlers.
 interface RootAttributes extends AriaAttributes { id?: string }
@@ -20,6 +20,14 @@ export interface KjunTextProps extends RootAttributes {
   align?: TextAlign;
   /** Clamp to this many lines with an ellipsis; the full text stays in the DOM. */
   maxLines?: number;
+  /** Fixed-width digits, so amounts in a column line up. Size and weight stay the variant's. */
+  numeric?: boolean;
+  /** "lineThrough" strikes the text, e.g. a price before a discount. */
+  decoration?: TextDecoration;
+  /** Browser tooltip, e.g. the full sentence of a clamped text. */
+  title?: string;
+  lang?: string;
+  dir?: "ltr" | "rtl" | "auto";
   /** The element, e.g. to move focus to a heading after the screen changes (with tabIndex={-1}). */
   ref?: Ref<HTMLElement>;
   /** -1 lets code focus the text without adding it to the Tab order. */
@@ -30,15 +38,17 @@ export interface KjunTextProps extends RootAttributes {
   style?: CSSProperties;
   children?: ReactNode;
 }
-export function KjunText({ variant = "body", tone = "default", as, align, maxLines, className, style, children, ...rest }: KjunTextProps) {
-  const lines = maxLines && maxLines > 0 ? Math.floor(maxLines) : undefined;
+export function KjunText({ variant = "body", tone = "default", as, align, maxLines, numeric, decoration, className, style, children, ...rest }: KjunTextProps) {
+  const lines = clampLines(maxLines);
   return createElement(as ?? defaultTextTag(variant), {
     ...rest,
     className: join("kjun-text", textTypeClass(variant), className),
     // 안에 넣은 링크·강조 같은 앱 요소는 KJUN 리셋을 받지 않는다.
     "data-kjun-content": "",
-    "data-tone": tone === "default" ? undefined : tone,
+    "data-tone": textToneAttribute(tone),
     "data-align": align,
+    "data-numeric": numeric ? "" : undefined,
+    "data-decoration": decoration === "lineThrough" ? "line-through" : undefined,
     "data-max-lines": lines,
     style: lines ? { ...style, ["--_kjun-text-lines" as string]: lines } : style,
   }, children);

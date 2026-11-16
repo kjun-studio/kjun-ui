@@ -282,11 +282,16 @@ set("CollectionMark", {
 });
 set("KpiHero", { value: "대표 지표의 현재 값입니다. 계산과 데이터 조회는 소비자가 수행합니다." });
 set("Text", {
-  variant: { default: '"body"', summary: "글자 역할입니다. pageTitle·sectionTitle·cardTitle·body·bodyLong·label·labelStrong·meta·caption·captionStrong·숫자(number·display) 역할의 크기·줄 높이·굵기를 tokens.typography에서 가져옵니다." },
-  tone: { default: '"default"', summary: "글자색 역할입니다. default는 웹에서 감싼 영역의 글자색을 따르고 Native에서는 text 색이며, secondary·tertiary·disabled는 같은 이름의 text 색 역할입니다." },
-  as: { summary: "웹 문서 구조의 태그(h1~h6·p·span·div)입니다. 생략하면 pageTitle은 h1, sectionTitle은 h2, cardTitle은 h3, 숫자 역할은 span, 나머지는 p입니다. 크기는 variant가 정합니다." },
+  variant: { default: '"body"', summary: "글자 역할입니다. pageTitle·sectionTitle·cardTitle·bodyLg·body·bodyLong·label·labelStrong·meta·caption·captionStrong·숫자(number·display) 역할의 크기·줄 높이·굵기를 tokens.typography에서 가져옵니다. inherit는 문장 일부만 색을 바꿀 때 쓰며 둘러싼 글자의 크기·굵기를 그대로 따릅니다." },
+  tone: { default: '"default"', summary: "글자색 역할입니다. default는 웹에서 감싼 영역의 글자색을 따르고 Native에서는 text 색입니다. secondary·tertiary·disabled는 같은 이름의 text 색 역할, brand·danger·success·warning·info는 같은 이름의 색 역할입니다. onBrand·onDanger·onSuccess·onWarning은 그 색으로 채운 면 위의 글자색이고, inverse는 onBrand의 이전 이름입니다." },
+  as: { summary: "웹 문서 구조의 태그입니다. h1~h6·p·span·div와 dt·dd·li·label·legend·figcaption·time·strong·em을 받습니다. 생략하면 pageTitle은 h1, sectionTitle은 h2, cardTitle은 h3, 숫자 역할과 inherit는 span, 나머지는 p입니다. 크기는 variant가 정합니다." },
   align: { summary: "글자 정렬(start·center·end)입니다. 생략하면 부모를 따릅니다." },
-  maxLines: { summary: "이 줄 수를 넘으면 말줄임표로 줄입니다. 전체 문장은 그대로 남아 보조 기술이 읽습니다." },
+  maxLines: { summary: "이 줄 수를 넘으면 말줄임표로 줄입니다. 전체 문장은 그대로 남아 보조 기술이 읽습니다. 1보다 작은 값은 줄이지 않습니다." },
+  numeric: { default: "false", summary: "숫자를 고정폭으로 그려 세로로 나열한 금액의 자릿수를 맞춥니다. 크기·굵기는 variant 그대로입니다." },
+  decoration: { summary: "lineThrough는 할인 전 가격처럼 글자에 취소선을 긋습니다." },
+  title: { summary: "브라우저 기본 툴팁입니다. maxLines로 줄인 문장의 전체 내용을 마우스로 확인할 때 씁니다. 터치 기기에서는 보이지 않습니다." },
+  lang: { summary: "이 글자의 언어 코드입니다. 화면 언어와 다른 문장에 지정합니다." },
+  dir: { summary: "글자 방향(ltr·rtl·auto)입니다." },
 });
 set("Stack", {
   gap: { default: '"md"', summary: "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다." },

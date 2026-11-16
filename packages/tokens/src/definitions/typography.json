@@ -53,6 +53,12 @@
     "fontWeight": 600,
     "letterSpacingEm": 0
   },
+  "bodyLg": {
+    "fontSizePx": 16,
+    "lineHeightPx": 24,
+    "fontWeight": 400,
+    "letterSpacingEm": 0
+  },
   "input": {
     "fontSizePx": 16,
     "lineHeightPx": 24,
@@ -99,7 +105,7 @@
     "fontSizePx": 20,
     "lineHeightPx": 28,
     "fontWeight": 700,
-    "letterSpacingEm": 0
+    "letterSpacingEm": -0.01
   },
   "displaySm": {
     "fontSizePx": 24,

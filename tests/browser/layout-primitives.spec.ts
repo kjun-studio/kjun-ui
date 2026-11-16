@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { tokens } from '../../packages/tokens/dist/index.js';
 import { openFixture } from './packed-fixture';
-import { formLabels, longSentence, narrowNumber } from '../fixtures/layout-primitives-values';
+import { formLabels, longSentence, narrowNumber, toneProbes, toneTexts } from '../fixtures/layout-primitives-values';
 // KjunText, KjunStack and KjunInline: names (roles and steps) pick every size, color and gap from tokens.
 const box = async (locator: Locator) => (await locator.boundingBox())!;
 const px = (n: number) => `${n}px`;
@@ -15,7 +15,7 @@ for (const platform of ['react', 'vue3', 'native']) {
 
     test('text variants use the typography roles', async ({ page }) => {
       const region = page.getByTestId('text-variants');
-      for (const role of ['pageTitle', 'body', 'bodyLong', 'labelStrong', 'caption', 'captionStrong', 'numberMd'] as const) {
+      for (const role of ['pageTitle', 'bodyLg', 'body', 'bodyLong', 'labelStrong', 'caption', 'captionStrong', 'numberMd'] as const) {
         const text = region.getByText(role, { exact: true });
         await expect(text, role).toHaveCSS('font-size', px(tokens.typography[role].fontSizePx));
         await expect(text, role).toHaveCSS('line-height', px(tokens.typography[role].lineHeightPx));
@@ -32,8 +32,26 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
 
     test('tones map to the text color roles', async ({ page }) => {
-      const expected = await page.getByTestId('probe-secondary').evaluate(el => getComputedStyle(el).color);
-      await expect(page.getByTestId('text-tones').getByText('보조', { exact: true })).toHaveCSS('color', expected);
+      for (const tone of Object.keys(toneProbes) as (keyof typeof toneProbes)[]) {
+        const expected = await page.getByTestId('probe-' + tone).evaluate(el => getComputedStyle(el).color);
+        await expect(page.getByTestId('text-tones').getByText(toneTexts[tone], { exact: true }), tone).toHaveCSS('color', expected);
+      }
+    });
+
+    test('inherit keeps the surrounding size and weight and takes its own tone', async ({ page }) => {
+      const part = page.getByTestId('text-features').getByText('3건', { exact: true });
+      await expect(part).toHaveCSS('font-size', px(tokens.typography.sectionTitle.fontSizePx));
+      await expect(part).toHaveCSS('font-weight', String(tokens.typography.sectionTitle.fontWeight));
+      await expect(part).toHaveCSS('color', await page.getByTestId('probe-danger').evaluate(el => getComputedStyle(el).color));
+    });
+
+    test('numeric, decoration and a line count below one', async ({ page }) => {
+      const region = page.getByTestId('text-features');
+      const digits = region.getByText('1111', { exact: true });
+      expect(await digits.evaluate(el => getComputedStyle(el).fontVariantNumeric)).toContain('tabular-nums');
+      await expect(digits).toHaveCSS('font-size', px(tokens.typography.body.fontSizePx));
+      expect(await region.getByText('할인 전 가격', { exact: true }).evaluate(el => getComputedStyle(el).textDecorationLine)).toContain('line-through');
+      await expect(region.getByText('줄 수가 1보다 작으면 줄이지 않습니다', { exact: true })).not.toHaveCSS('overflow', 'hidden');
     });
 
     test('maxLines clamps visibly but keeps the text', async ({ page }) => {
@@ -113,6 +131,25 @@ for (const platform of ['react', 'vue3', 'native']) {
       test('numbers do not break between digits in a narrow box', async ({ page }) => {
         const value = page.getByTestId('number-narrow').getByText(narrowNumber, { exact: true });
         expect((await box(value)).height).toBeLessThanOrEqual(tokens.typography.numberMd.lineHeightPx + 1);
+      });
+
+      test('display numbers do not break between digits either', async ({ page }) => {
+        const value = page.getByTestId('display-narrow').getByText(narrowNumber, { exact: true });
+        expect((await box(value)).height).toBeLessThanOrEqual(tokens.typography.displayMd.lineHeightPx + 1);
+      });
+
+      test('titles break between words and balance their lines', async ({ page }) => {
+        const title = page.getByTestId('text-variants').getByText('pageTitle', { exact: true });
+        await expect(title).toHaveCSS('word-break', 'keep-all');
+        expect(await title.evaluate(el => getComputedStyle(el).textWrap)).toContain('balance');
+        await expect(page.getByTestId('text-variants').getByText('body', { exact: true })).toHaveCSS('word-break', 'normal');
+      });
+
+      test('as takes list and definition tags, and title and lang reach the element', async ({ page }) => {
+        const term = page.getByTestId('text-features').getByText('결제 수단', { exact: true });
+        expect(await term.evaluate(el => el.tagName)).toBe('DT');
+        await expect(term).toHaveAttribute('title', '결제 수단 전체 이름');
+        await expect(term).toHaveAttribute('lang', 'ko');
       });
 
       test('app markup inside nested stacks keeps its own styles', async ({ page }) => {

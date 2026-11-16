@@ -2,54 +2,65 @@ import { Children, Fragment, cloneElement, isValidElement, type ReactElement, ty
 import { View, type StyleProp, type TextProps, type TextStyle, type ViewStyle } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
 import {
-  isNumericVariant, titleVariants,
+  clampLines, isNumericVariant, titleVariants,
   type InlineAlign, type InlineGap, type InlineJustify, type StackAlign, type StackGap,
-  type TextAlign, type TextTone, type TextVariant,
+  type TextAlign, type TextDecoration, type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
 import { KjunFormGroup } from "./input";
 import { KjunButton } from "./button";
 import { KjunBadge } from "./display-primitives";
-import { KText } from "./internal";
+import { FontText, KText } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
-export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackGap, TextAlign, TextTone, TextVariant };
+export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackGap, TextAlign, TextDecoration, TextTone, TextVariant };
 
 /** Other React Native Text props (accessibilityLabel, testID, selectable, allowFontScaling, adjustsFontSizeToFit…) pass through.
  * adjustsFontSizeToFit only shrinks: the variant size stays the largest. */
 export interface KjunTextProps extends Omit<TextProps, "style" | "children" | "numberOfLines"> {
-  /** Typography role; every size, line height and weight comes from tokens.typography. */
+  /** Typography role; every size, line height and weight comes from tokens.typography.
+   * "inherit" is for a KjunText nested in another: it keeps the outer text's size, weight and, with the default tone, color. */
   variant?: TextVariant;
   /** Text color role. */
   tone?: TextTone;
   align?: TextAlign;
   /** Clamp to this many lines with an ellipsis (numberOfLines). */
   maxLines?: number;
+  /** Fixed-width digits, so amounts in a column line up. Size and weight stay the variant's. */
+  numeric?: boolean;
+  /** "lineThrough" strikes the text, e.g. a price before a discount. */
+  decoration?: TextDecoration;
   style?: StyleProp<TextStyle>;
   children?: ReactNode;
 }
 const toneRole = { default: "text", secondary: "textSecondary", tertiary: "textTertiary", disabled: "textDisabled",
-  brand: "brand", danger: "danger", success: "success", warning: "warning", inverse: "onBrand" } as const;
+  brand: "brand", danger: "danger", success: "success", warning: "warning", info: "info",
+  inverse: "onBrand", onBrand: "onBrand", onDanger: "onDanger", onSuccess: "onSuccess", onWarning: "onWarning" } as const;
 const textAlign = { start: "left", center: "center", end: "right" } as const;
-export function KjunText({ variant = "body", tone = "default", align, maxLines, style, children, ...rest }: KjunTextProps) {
+export function KjunText({ variant = "body", tone = "default", align, maxLines, numeric, decoration, style, children, ...rest }: KjunTextProps) {
   const { colors, fontFamily, numericFontFamily } = useKjunStyles();
-  const lines = maxLines && maxLines > 0 ? Math.floor(maxLines) : undefined;
+  const lines = clampLines(maxLines);
+  const inherit = variant === "inherit";
+  // A nested Text inherits its parent's type on Native, so inherit sets no size and, at the default tone, no color.
+  const Root = inherit ? FontText : KText;
   return (
-    <KText
+    <Root
       {...rest}
       // An explicit undefined (cond ? "link" : undefined) keeps the heading role of title variants.
       accessibilityRole={rest.accessibilityRole ?? (titleVariants.includes(variant) ? "header" : undefined)}
       numberOfLines={lines}
       ellipsizeMode={lines ? "tail" : undefined}
       style={[
-        typeStyle(variant),
-        { color: colors[toneRole[tone]] },
+        inherit ? null : typeStyle(variant),
+        inherit && tone === "default" ? null : { color: colors[toneRole[tone]] },
         isNumericVariant(variant) ? { fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"] } : null,
+        numeric ? { fontVariant: ["tabular-nums"] } : null,
+        decoration === "lineThrough" ? { textDecorationLine: "line-through" } : null,
         align ? { textAlign: textAlign[align] } : null,
         style,
       ]}
     >
       {children}
-    </KText>
+    </Root>
   );
 }
 

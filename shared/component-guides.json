@@ -618,9 +618,9 @@
   "KjunText": {
     "slug": "text",
     "description": "제목·본문·보조 문구의 글자 역할을 이름으로 고릅니다. 크기·줄 높이·굵기는 토큰이 정합니다.",
-    "interaction": "variant로 글자 역할(pageTitle·sectionTitle·cardTitle·body·label·meta·caption·숫자 역할)을, tone으로 색 역할(기본·보조·흐림·비활성)을 고릅니다. 크기는 variant가, 문서 구조는 as가 정하므로 제목 수준이 다르면 as만 바꿉니다. maxLines로 줄 수를 제한하면 말줄임표로 줄이고 전체 문장은 유지합니다. 앱 CSS로 글자 크기·색을 덮어쓰지 않습니다.",
-    "differences": "세 플랫폼 모두 variant·tone·align·maxLines를 사용합니다. as는 웹 전용이며 Native는 제목 역할에 header 접근성 역할을, maxLines에 numberOfLines를 씁니다. 웹 기본 tone은 감싼 영역의 글자색을 따르고, Native 기본 tone은 text 색입니다.",
-    "states": "역할별 크기·줄 높이·굵기는 tokens.typography를 따르고 숫자 역할은 숫자 글꼴과 고정폭 숫자를 씁니다. tone은 text·textSecondary·textTertiary·textDisabled 색 역할에 연결됩니다."
+    "interaction": "variant로 글자 역할(pageTitle·sectionTitle·cardTitle·bodyLg·body·bodyLong·label·labelStrong·meta·caption·captionStrong·숫자 역할)을, tone으로 색 역할(기본·보조·흐림·비활성, brand·danger·success·warning·info, 채운 면 위 글자 onBrand·onDanger·onSuccess·onWarning)을 고릅니다. 크기는 variant가, 문서 구조는 as가 정하므로 제목 수준이 다르면 as만 바꿉니다. 문장 일부만 색을 바꿀 때는 안쪽에 variant=\"inherit\"를 씁니다. 세로로 나열하는 금액에는 numeric을, 할인 전 가격에는 decoration=\"lineThrough\"를 씁니다. maxLines로 줄 수를 제한하면 말줄임표로 줄이고 전체 문장은 유지합니다. 앱 CSS로 글자 크기·색을 덮어쓰지 않습니다.",
+    "differences": "세 플랫폼 모두 variant·tone·align·maxLines·numeric·decoration을 사용합니다. as와 title·lang·dir은 웹 전용이며 Native는 제목 역할에 header 접근성 역할을, maxLines에 numberOfLines를 씁니다. 웹 기본 tone은 감싼 영역의 글자색을 따르고, Native 기본 tone은 text 색입니다. Native의 inherit는 다른 KjunText 안에 넣었을 때 바깥 글자의 크기·굵기·색을 따릅니다.",
+    "states": "역할별 크기·줄 높이·굵기는 tokens.typography를 따르고 숫자 역할은 숫자 글꼴과 고정폭 숫자를 씁니다. 웹에서 제목 역할은 어절 단위로 줄을 바꾸고 줄 길이를 고르게 나누며, 숫자 역할은 자릿수 사이에서 줄을 바꾸지 않습니다. 폭을 넘는 숫자는 더 작은 역할이나 maxLines로 맞춥니다. tone은 같은 이름의 색 역할에 연결됩니다."
   },
   "KjunStack": {
     "slug": "stack",

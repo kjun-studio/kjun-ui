@@ -1,13 +1,13 @@
 import { type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import {
-  defaultTextTag, textTypeClass,
+  clampLines, defaultTextTag, textToneAttribute, textTypeClass,
   type InlineAlign, type InlineGap, type InlineJustify, type StackAlign, type StackGap,
-  type TextAlign, type TextTag, type TextTone, type TextVariant,
+  type TextAlign, type TextDecoration, type TextTag, type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
-export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackGap, TextAlign, TextTag, TextTone, TextVariant };
+export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackGap, TextAlign, TextDecoration, TextTag, TextTone, TextVariant };
 
-// class, style, id and aria-* fall through to the root, as in React.
+// class, style, id, title, lang, dir and aria-* fall through to the root, as in React.
 const defaultSlot = Object as SlotsType<{ default?: () => VNodeChild }>;
 
 const kjunTextProps = {
@@ -20,6 +20,10 @@ const kjunTextProps = {
   align: { type: String as PropType<TextAlign>, default: undefined },
   /** Clamp to this many lines with an ellipsis; the full text stays in the DOM. */
   maxLines: { type: Number, default: undefined },
+  /** Fixed-width digits, so amounts in a column line up. Size and weight stay the variant's. */
+  numeric: { type: Boolean, default: false },
+  /** "lineThrough" strikes the text, e.g. a price before a discount. */
+  decoration: { type: String as PropType<TextDecoration>, default: undefined },
 } as const;
 export type KjunTextProps = ExtractPublicPropTypes<typeof kjunTextProps>;
 export const KjunText = defineComponent({
@@ -29,10 +33,12 @@ export const KjunText = defineComponent({
   setup(props, { slots }) {
     return () => {
       const Tag = props.as ?? defaultTextTag(props.variant);
-      const lines = props.maxLines && props.maxLines > 0 ? Math.floor(props.maxLines) : undefined;
+      const lines = clampLines(props.maxLines);
       return (
-        <Tag class={["kjun-text", textTypeClass(props.variant)]} data-kjun-content="" data-tone={props.tone === "default" ? undefined : props.tone}
-          data-align={props.align} data-max-lines={lines} style={lines ? { "--_kjun-text-lines": lines } : undefined}>
+        <Tag class={["kjun-text", textTypeClass(props.variant)]} data-kjun-content="" data-tone={textToneAttribute(props.tone)}
+          data-align={props.align} data-numeric={props.numeric ? "" : undefined}
+          data-decoration={props.decoration === "lineThrough" ? "line-through" : undefined}
+          data-max-lines={lines} style={lines ? { "--_kjun-text-lines": lines } : undefined}>
           {slots.default?.()}
         </Tag>
       );

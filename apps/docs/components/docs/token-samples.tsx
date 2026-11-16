@@ -58,6 +58,7 @@ export const typeRoles: { role: Role; label: string; use: string; sample: string
   { role: 'sectionTitle', label: '섹션 제목', use: '새 내용 묶음의 시작', sample: '배송 안내' },
   { role: 'cardTitle', label: '카드 제목', use: '카드·모달 제목', sample: '결제 수단' },
   { role: 'input', label: '입력값', use: '입력칸 글자 · iOS 확대 방지 16px', sample: '홍길동' },
+  { role: 'bodyLg', label: '큰 본문', use: '모바일 안내문처럼 길게 읽는 글', sample: '결제일 하루 전까지 해지할 수 있습니다.' },
   { role: 'body', label: '본문', use: '읽고 이해할 주요 내용', sample: '주문한 상품은 순서대로 배송됩니다.' },
   { role: 'bodyLong', label: '긴 본문', use: '여러 줄로 읽는 글 · 줄 사이를 넓힘', sample: '오늘은 날씨가 좋아서 오래 걸었다.' },
   { role: 'label', label: '라벨', use: '필드 라벨·목록 항목 이름', sample: '받는 사람' },

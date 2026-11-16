@@ -5,7 +5,7 @@ export { useMinimumLoading } from "./button";
 export type { KjunPluginOptions } from "./plugin";
 export { default } from "./plugin";
 export type { DisplaySize, SemanticTone, KjunBadgeProps, KjunEmptyProps, KjunSpinnerProps, KjunAlertProps, KjunProgressProps, KjunSkeletonProps } from "./display";
-export type { KjunTextProps, KjunStackProps, KjunInlineProps, TextVariant, TextTone, TextAlign, TextTag, StackGap, StackAlign, InlineGap, InlineAlign, InlineJustify } from "./layout-primitives";
+export type { KjunTextProps, KjunStackProps, KjunInlineProps, TextVariant, TextTone, TextAlign, TextTag, TextDecoration, StackGap, StackAlign, InlineGap, InlineAlign, InlineJustify } from "./layout-primitives";
 export type { KjunCardProps } from "./card";
 export type { KjunChipProps } from "./chip";
 export type { KjunFabProps, KjunFabSize } from "./fab";

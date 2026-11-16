@@ -1,4 +1,4 @@
-import { formLabels, longSentence, narrowNumber, toneTexts, tones, variants } from './layout-primitives-values';
+import { formLabels, longSentence, narrowNumber, toneProbes, toneTexts, tones, variants } from './layout-primitives-values';
 const boxes = (count: number, wide = false) => Array.from({ length: count }, (_, i) =>
   <div key={i} className={'app-box' + (wide ? ' app-wide' : '')} />);
 export function LayoutCases({ K, native = false }: { K: any; native?: boolean }) {
@@ -6,7 +6,15 @@ export function LayoutCases({ K, native = false }: { K: any; native?: boolean })
   return <div style={{ padding: 16 }}>
     <div data-testid="text-variants">{variants.map(v => <K.KjunText key={v} variant={v}>{v}</K.KjunText>)}</div>
     <div data-testid="text-tones">{tones.map(t => <K.KjunText key={t} tone={t}>{toneTexts[t]}</K.KjunText>)}</div>
-    <span data-testid="probe-secondary" style={{ color: 'var(--kjun-text-secondary)' }}>probe</span>
+    {Object.entries(toneProbes).map(([tone, value]) => <span key={tone} data-testid={'probe-' + tone} style={{ color: `var(${value})` }}>probe</span>)}
+    <div data-testid="text-features">
+      <K.KjunText variant="sectionTitle">이번 달 <K.KjunText variant="inherit" tone="danger">3건</K.KjunText> 실패</K.KjunText>
+      <K.KjunText numeric>{'1111'}</K.KjunText>
+      <K.KjunText decoration="lineThrough">할인 전 가격</K.KjunText>
+      {!native && <dl><K.KjunText as="dt" variant="caption" title="결제 수단 전체 이름" lang="ko">결제 수단</K.KjunText></dl>}
+      <K.KjunText maxLines={0.5}>줄 수가 1보다 작으면 줄이지 않습니다</K.KjunText>
+    </div>
+    {!native && <div data-testid="display-narrow" style={{ width: 60, display: 'flex', flexDirection: 'column' }}><K.KjunText variant="displayMd">{narrowNumber}</K.KjunText></div>}
     {/* A flex column like a Native View: RN Web Text is inline and only takes its parent's width inside one. */}
     <div data-testid="text-clamp" style={{ width: 120, display: 'flex', flexDirection: 'column' }}><K.KjunText maxLines={1}>{longSentence}</K.KjunText></div>
     <div data-testid="text-number"><K.KjunText variant="numberMd">{'1234'}</K.KjunText></div>
