@@ -17,7 +17,8 @@
       "children",
       "actions",
       "onClose",
-      "live"
+      "live",
+      "className"
     ],
     "native": [
       "type",

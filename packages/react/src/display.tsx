@@ -169,6 +169,8 @@ export interface KjunAlertProps {
   children?: ReactNode;
   /** Buttons placed under the message; unsized KjunButtons follow the alert size. */
   actions?: ReactNode;
+  /** Extra class on the alert root, for placement in the page layout; it leaves with the alert when closed. */
+  className?: string;
   onClose?: () => void;
 }
 export function KjunAlert({
@@ -180,6 +182,7 @@ export function KjunAlert({
   live,
   children,
   actions,
+  className,
   onClose,
 }: KjunAlertProps) {
   const m = useKjunMessages();
@@ -194,7 +197,7 @@ export function KjunAlert({
     <div
       ref={root}
       role={alertRole(tone, live)}
-      className="kjun-alert"
+      className={className ? "kjun-alert " + className : "kjun-alert"}
       data-size={scale}
       data-tone={tone}
       style={paint.bg ? { background: role(paint.bg) } : undefined}

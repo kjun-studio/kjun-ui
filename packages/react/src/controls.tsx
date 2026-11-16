@@ -394,6 +394,8 @@ export interface KjunFilterGroupProps
   value: ChoiceValue | ChoiceValue[];
   multiple?: boolean;
   scroll?: boolean;
+  /** Extra class on the group root, for placement in the page layout. */
+  className?: string;
   onValueChange?: (value: ChoiceValue | ChoiceValue[]) => void;
   onChange?: (value: ChoiceValue | ChoiceValue[]) => void;
 }
@@ -405,6 +407,7 @@ export function KjunFilterGroup({
   multiple = false,
   scroll = false,
   ariaLabel,
+  className,
   onValueChange,
   onChange,
 }: KjunFilterGroupProps) {
@@ -417,7 +420,7 @@ export function KjunFilterGroup({
     <div
       role="group"
       aria-label={ariaLabel}
-      className="kjun-filter-group"
+      className={className ? "kjun-filter-group " + className : "kjun-filter-group"}
       data-scroll={scroll}
       onKeyDown={groupKeydown}
     >

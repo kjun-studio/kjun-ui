@@ -227,7 +227,8 @@
       "size",
       "disabled",
       "ariaLabel",
-      "options"
+      "options",
+      "className"
     ],
     "native": [
       "value",
@@ -259,7 +260,8 @@
       "hint",
       "children",
       "labelHidden",
-      "optional"
+      "optional",
+      "className"
     ],
     "native": [
       "label",

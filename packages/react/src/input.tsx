@@ -38,6 +38,8 @@ export interface KjunFormGroupProps {
   hint?: string;
   /** Hides the label visually while it still names the field. */
   labelHidden?: boolean;
+  /** Extra class on the group root, for placement in the page layout. */
+  className?: string;
   children: ReactNode;
 }
 export function KjunFormGroup({
@@ -48,6 +50,7 @@ export function KjunFormGroup({
   error = "",
   hint = "",
   labelHidden = false,
+  className,
   children,
 }: KjunFormGroupProps) {
   const m = useKjunMessages();
@@ -64,7 +67,7 @@ export function KjunFormGroup({
     <FieldContext.Provider
       value={{ id: fieldId, labelId, describedBy, error, required, setControlId }}
     >
-      <div className="kjun-form-group">
+      <div className={className ? "kjun-form-group " + className : "kjun-form-group"}>
         {label && (
           <label className={"kjun-form-label" + (labelHidden ? " kjun-sr-only" : "")} id={labelId} htmlFor={controlId || fieldId}>
             {label}

@@ -10,10 +10,10 @@ const layers = files('elevation', 'elevation-edges', 'elevation-inputs', 'elevat
 
 // 제목 필터 대신 파일 전체를 선택해 플랫폼별 사례와 함께 쓰이는 컴포넌트를 보존한다.
 const componentGroups = {
-  alert: [...files('alert-design', 'accessibility-components', 'chip-toast-tokens'), ...visuals],
+  alert: [...files('alert-design', 'root-class', 'accessibility-components', 'chip-toast-tokens'), ...visuals],
   empty: [...files('empty-design', 'data-state-design', 'token-display-propagation'), ...visuals],
   'data-state': [...files('data-state-design', 'empty-design', 'skeleton-design', 'loading-options', 'table-contracts', 'runtime-cards', 'runtime-market'), ...contracts],
-  card: [...files('card-design', 'card-contract', 'card-review', 'card-layout', 'card-colors', 'card-hairline', 'geometry-tokens'), ...visuals],
+  card: [...files('card-design', 'root-class', 'card-contract', 'card-review', 'card-layout', 'card-colors', 'card-hairline', 'geometry-tokens'), ...visuals],
   table: [...files('table-contracts', 'table-refine', 'table-structure', 'table-reorder', 'table-groups', 'table-list', 'table-card-layouts', 'loading-options', 'runtime-cards', 'data-state-design', 'accessibility-components'), ...contracts, ...visuals],
   market: [...files('runtime-market', 'price-status', 'loading-options', 'data-state-design', 'geometry-tokens'), ...visuals],
   select: [...files('select-scroll', 'expanded', 'elevation-inputs', 'popup-escape', 'react-tabs-actions'), ...fields, ...contracts, ...visuals],
@@ -21,7 +21,7 @@ const componentGroups = {
   'search-input': [...files('search-input', 'elevation-inputs'), ...fields, ...contracts],
   input: [...files('input-design', 'textarea-design', 'date-picker-design', 'interaction-states', 'search-input', 'quantity', 'feedback-input', 'elevation-inputs'), ...fields, ...contracts, ...visuals],
   button: [...files('button-design', 'interaction-states', 'button-group-motion', 'form-actions', 'bottom-action-bar-design', 'menu-button', 'refresh-button', 'copy-button-feedback', 'icon-toggle', 'accessibility-components'), ...visuals],
-  form: [...files('form-actions', 'layout-primitives', 'input-design', 'interaction-states', 'feedback-input', 'quantity', 'bottom-action-bar-design'), ...fields, ...contracts],
+  form: [...files('form-actions', 'root-class', 'layout-primitives', 'input-design', 'interaction-states', 'feedback-input', 'quantity', 'bottom-action-bar-design'), ...fields, ...contracts],
   tabs: [...files('tabs-contract', 'tabs-design', 'accessibility-tabs', 'controlled-state', 'live-updates', 'component-motion', 'expanded', 'react-tabs-actions'), ...visuals],
   accordion: [...files('accordion-design', 'controlled-state', 'component-motion', 'expanded', 'accessibility-components'), ...visuals],
   navigation: [...files('top-navigation-design', 'trail', 'bottom-navigation-design', 'floating-navigation-design', 'bottom-action-bar-design', 'accessibility-components'), ...visuals],
