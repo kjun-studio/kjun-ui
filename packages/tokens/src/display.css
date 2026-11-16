@@ -358,6 +358,23 @@
   border-radius: inherit;
   transition: width var(--_kjun-motion-progress) var(--_kjun-ease-out);
 }
+/* A reference point across the bar, such as today's share of a budget. It overhangs the rail so it reads on a thin
+   bar, and a surface-coloured gap keeps it apart from a fill of its own colour. The rail stops clipping to let it out. */
+.kjun-progress-track[data-marker],
+.kjun-progress-cell > div[data-marker] { position: relative; overflow: visible; }
+.kjun-progress-marker,
+.kjun-progress-cell > div > .kjun-progress-marker {
+  position: absolute;
+  top: calc(-1 * var(--_kjun-extension-progress-marker-overhang));
+  bottom: calc(-1 * var(--_kjun-extension-progress-marker-overhang));
+  width: var(--_kjun-extension-progress-marker-width);
+  height: auto;
+  border-radius: var(--_kjun-geometry-radius-radius9999);
+  background: var(--_kjun-color-text);
+  box-shadow: 0 0 0 var(--_kjun-extension-progress-marker-gap) var(--_kjun-color-surface);
+  transition: none;
+  pointer-events: none;
+}
 .kjun-progress[data-state="indeterminate"] .kjun-progress-track > div {
   animation: kjun-progress-indeterminate var(--_kjun-motion-spin) linear infinite;
   transition: none;

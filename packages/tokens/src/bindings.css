@@ -874,6 +874,9 @@
   --_kjun-extension-progress-circle-md-stroke: 4px;
   --_kjun-extension-progress-circle-lg-size: 64px;
   --_kjun-extension-progress-circle-lg-stroke: 6px;
+  --_kjun-extension-progress-marker-width: 2px;
+  --_kjun-extension-progress-marker-overhang: 3px;
+  --_kjun-extension-progress-marker-gap: 1px;
   --_kjun-extension-icon-toggle-compact-size: 24px;
   --_kjun-extension-icon-toggle-sizes-xs: 24px;
   --_kjun-extension-icon-toggle-sizes-sm: 24px;

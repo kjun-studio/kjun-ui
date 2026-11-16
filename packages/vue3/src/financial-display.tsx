@@ -3,6 +3,7 @@ import { useKjunMessages } from "./runtime/messages";
 import { type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { deviationLevel, tokens } from "@kjun-ui/tokens";
+import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
 import { KjunIcon } from "./button";
 import { KjunBadge, type DisplaySize } from "./display";
 import { useKjunId } from "./input";
@@ -102,20 +103,29 @@ const kjunProgressCellProps = {
   color: { type: String as PropType<"auto" | "brand" | "success" | "danger" | "warning" | "custom">, default: "auto" },
   customColor: { type: String, default: undefined },
   height: { type: Number, default: tokens.extensions.financial.progressHeight },
+  /** A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. */
+  marker: { type: Number, default: undefined },
+  /** Read by screen readers as the bar's description, e.g. "오늘 기준 53%". */
+  markerLabel: { type: String, default: undefined },
 } as const;
 export type KjunProgressCellProps = ExtractPublicPropTypes<typeof kjunProgressCellProps>;
 export const KjunProgressCell = defineComponent({
   name: "KjunProgressCell",
   props: kjunProgressCellProps,
   setup(props) {
+    const markerId = useKjunId("kjun-progress-marker-");
     return () => {
+      const mark = progressMarker(props.marker, props.max);
       const percent = props.max > 0 && Number.isFinite(props.value) ? Math.min(100, Math.max(0, (props.value / props.max) * 100)) : 0;
       const role = props.color === "auto" ? percent < 30 ? "danger" : percent < 70 ? "warning" : "success" : props.color;
       return (
         <div class="kjun-progress-cell">
           {/* The bar is a progressbar, so its value reaches screen readers also without the visible label. */}
-          <div style={css({ height: props.height })} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(percent)}>
+          <div style={css({ height: props.height })} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(percent)}
+            data-marker={mark != null || undefined} aria-describedby={mark != null && props.markerLabel ? markerId : undefined}>
             <span style={{ width: percent + "%", background: props.color === "custom" ? props.customColor : `var(--_kjun-color-${role})` }} />
+            {mark != null && <span class="kjun-progress-marker" aria-hidden="true" style={{ left: `calc(${mark}% - ${progressMarkerInset(mark)}px)` }} />}
+            {mark != null && props.markerLabel && <span id={markerId} hidden>{props.markerLabel}</span>}
           </div>
           {props.showLabel && <span aria-hidden="true">{Math.round(percent)}%</span>}
         </div>

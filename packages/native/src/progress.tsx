@@ -1,5 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { progressCircle, progressState } from "../../../shared/package-runtime/progress-circle";
+import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Animated, Easing, StyleSheet, View } from "react-native";
@@ -21,9 +22,23 @@ export interface KjunProgressProps {
   showLabel?: boolean;
   /** Shown and read in place of the rounded percent while the value is known, e.g. "37.4%" or "3.2 / 8 GB". */
   valueText?: string;
+  /** A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. Bars only; not drawn while indeterminate or missing. */
+  marker?: number;
+  /** Read by screen readers as the bar's hint, e.g. "오늘 기준 53%". Put visible wording in subLabel. */
+  markerLabel?: string;
   label?: ReactNode;
   subLabel?: ReactNode;
   shape?: "bar" | "circle";
+}
+/**
+ * The marker line over a rail, as a sibling of the rail inside one wrapper: the rail clips its fill, the line overhangs it.
+ * A surface-coloured border keeps the line apart from a fill of its own colour. Internal.
+ */
+export function ProgressMarker({ percent }: { percent: number }) {
+  const { colors } = useKjunStyles(), spec = tokens.extensions.progress.marker;
+  return <View pointerEvents="none" style={{ position: "absolute", top: -spec.overhang - spec.gap, bottom: -spec.overhang - spec.gap, left: `${percent}%`,
+    marginLeft: -progressMarkerInset(percent) - spec.gap, width: spec.width + 2 * spec.gap, borderWidth: spec.gap, borderColor: colors.surface,
+    borderRadius: tokens.radius.radius9999, backgroundColor: colors.text }} />;
 }
 // Share of the bar the unknown-progress segment covers, like Web's 30% sweep.
 const segment = 0.3;
@@ -46,6 +61,8 @@ export function KjunProgress({
   variant = "primary",
   showLabel = false,
   valueText,
+  marker,
+  markerLabel,
   label,
   subLabel,
   shape = "bar",
@@ -91,6 +108,7 @@ export function KjunProgress({
   // Like Web's sweep from -100% to 334% of the segment; reduced motion parks it in the middle (116%).
   const travel = busy ? { transform: [{ translateX: reduced ? trackWidth * segment * 1.16
     : sweep.interpolate({ inputRange: [0, 1], outputRange: [-trackWidth * segment, trackWidth * segment * 3.34] }) }] } : null;
+  const mark = state === "determinate" ? progressMarker(marker, max) : null;
   return (
     <View>
       {!!(label || showLabel) && (
@@ -99,8 +117,10 @@ export function KjunProgress({
           {showLabel && <KText style={{ ...typeStyle("caption"), color: colors.textSecondary }}>{text}</KText>}
         </View>
       )}
+      <View>
       <View
         {...semantics}
+        accessibilityHint={mark != null ? markerLabel : undefined}
         onLayout={event => setTrackWidth(event.nativeEvent.layout.width)}
         style={{
           height: tokens.extensions.progress.heights[size],
@@ -118,6 +138,8 @@ export function KjunProgress({
             backgroundColor: color,
           }, travel]}
         />
+      </View>
+      {mark != null && <ProgressMarker percent={mark} />}
       </View>
       {content(subLabel, { ...typeStyle("caption"), marginTop: tokens.dimension.value4, color: colors.textTertiary })}
     </View>

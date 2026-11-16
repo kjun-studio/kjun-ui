@@ -269,7 +269,9 @@
       "showLabel",
       "color",
       "customColor",
-      "height"
+      "height",
+      "marker",
+      "markerLabel"
     ],
     "react": [
       "value",
@@ -277,7 +279,9 @@
       "showLabel",
       "color",
       "customColor",
-      "height"
+      "height",
+      "marker",
+      "markerLabel"
     ],
     "native": [
       "value",
@@ -285,7 +289,9 @@
       "showLabel",
       "color",
       "customColor",
-      "height"
+      "height",
+      "marker",
+      "markerLabel"
     ]
   },
   "KjunSparkline": {

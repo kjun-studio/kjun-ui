@@ -9,9 +9,11 @@ import { badgeGeometry, badgeToneRoles } from "../../../shared/package-runtime/b
 import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { progressCircle, progressState } from "../../../shared/package-runtime/progress-circle";
+import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import { typeStyle } from "./typography";
 import {
+useId,
 useRef,
 useState,
 type CSSProperties,
@@ -245,6 +247,10 @@ export interface KjunProgressProps {
   showLabel?: boolean;
   /** Shown and read in place of the rounded percent while the value is known, e.g. "37.4%" or "3.2 / 8 GB". */
   valueText?: string;
+  /** A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. Bars only; not drawn while indeterminate or missing. */
+  marker?: number;
+  /** Read by screen readers as the bar's description, e.g. "오늘 기준 53%". Put visible wording in subLabel. */
+  markerLabel?: string;
   label?: ReactNode;
   subLabel?: ReactNode;
   shape?: "bar" | "circle";
@@ -257,11 +263,13 @@ export function KjunProgress({
   variant = "primary",
   showLabel = false,
   valueText,
+  marker,
+  markerLabel,
   label,
   subLabel,
   shape = "bar",
 }: KjunProgressProps) {
-  const m = useKjunMessages();
+  const m = useKjunMessages(), markerId = "kjun-progress-marker-" + useId().replace(/:/g, "");
   const state = progressState(value, max, indeterminate);
   const percentage = state === "determinate" ? Math.min(100, Math.max(0, Math.round((value! / max) * 100))) : 0;
   const text = state === "indeterminate" ? m.loadingEllipsis : state === "missing" ? "—" : valueText ?? `${percentage}%`;
@@ -293,6 +301,7 @@ export function KjunProgress({
       </div>
     );
   }
+  const mark = state === "determinate" ? progressMarker(marker, max) : null;
   return (
     <div className="kjun-progress" data-state={state}>
       {(label || showLabel) && (
@@ -301,9 +310,12 @@ export function KjunProgress({
           {showLabel && <span>{text}</span>}
         </div>
       )}
-      <div {...accessibility} className="kjun-progress-track" style={{ height: tokens.extensions.progress.heights[size] }}>
+      <div {...accessibility} className="kjun-progress-track" data-marker={mark != null || undefined} aria-describedby={mark != null && markerLabel ? markerId : undefined}
+        style={{ height: tokens.extensions.progress.heights[size] }}>
         <div style={{ width: (state === "indeterminate" ? 30 : percentage) + "%", background: color }} />
+        {mark != null && <span className="kjun-progress-marker" aria-hidden="true" style={{ left: `calc(${mark}% - ${progressMarkerInset(mark)}px)` }} />}
       </div>
+      {mark != null && markerLabel && <span id={markerId} hidden>{markerLabel}</span>}
       {subLabel && <div className="kjun-progress-sub">{subLabel}</div>}
     </div>
   );

@@ -52,7 +52,7 @@ const componentGroups = {
   quantity: [...files('quantity', 'elevation-inputs', 'interaction-states'), ...fields, ...visuals],
   slider: files('slider-design', 'react-slider-format'),
   checkbox: [...files('react-checkbox-mixed', 'accessibility-controls', 'input-contracts', 'controlled-state', 'interaction-states', 'visual-choice-contracts', 'token-choice-propagation')],
-  progress: files('adoption-values', 'adoption', 'size-contracts', 'token-display-propagation'),
+  progress: files('progress-marker', 'adoption-values', 'adoption', 'size-contracts', 'token-display-propagation'),
   'time-picker': [...files('elevation-inputs'), ...fields, ...visuals],
   switch: [...files('token-choice-propagation', 'token-form-propagation', 'accessibility-components', 'additions', 'layer-motion-edges'), ...fields, ...visuals],
   'date-picker': [...files('date-picker-design', 'input-design', 'additions', 'i18n'), ...fields, ...visuals],

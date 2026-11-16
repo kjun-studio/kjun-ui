@@ -324,6 +324,10 @@ set("PriceCell", {
 });
 set("MarketSimpleList MarketTable", { renderStatus: "행의 시세 상태(종가·지연 등)를 반환합니다. 목록은 등락률 앞, 표는 가격 칸 값 뒤에 둡니다. 문구와 배지 색은 앱이 정합니다." });
 set("Progress", { label: "진행률의 제목입니다. showLabel과 관계없이 표시하며 showLabel은 백분율을 더합니다." });
+set("Progress ProgressCell", {
+  marker: "막대를 가로지르는 기준 눈금의 위치입니다. value와 같은 척도(0–max)로 줍니다(예: 예산 막대에서 오늘까지의 기준 비율). 눈금은 글자색 세로선이며 variant와 관계없이 색이 같습니다. Progress의 원형과 indeterminate·값 없음 상태에서는 그리지 않습니다.",
+  markerLabel: "눈금의 뜻을 화면 낭독기에 알리는 문구입니다(예: \"오늘 기준 53%\"). 화면에는 보이지 않으므로, 보이는 설명은 subLabel이나 주변 글에 씁니다.",
+});
 set("Progress", { valueText: "값을 알 때 반올림한 백분율 대신 보여 주고 읽어 줄 문구입니다(예: \"37.4%\", \"3.2 / 8 GB\"). 막대 길이는 value와 max로 정합니다." });
 set("MarketTableSkeleton", {
   alignClass: "선택적 웹 정렬 클래스 콜백입니다. 생략하면 columns[].align을 사용합니다.",

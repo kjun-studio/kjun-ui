@@ -2,6 +2,7 @@ import { sparklineDash, sparklineGeometry, sparklineTone, type SparkPoint } from
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { deviationLevel, tokens } from "@kjun-ui/tokens";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
+import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
 import {
 useId,
 type ReactNode
@@ -135,6 +136,10 @@ export interface KjunProgressCellProps {
   color?: "auto" | "brand" | "success" | "danger" | "warning" | "custom";
   customColor?: string;
   height?: number;
+  /** A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. */
+  marker?: number;
+  /** Read by screen readers as the bar's description, e.g. "오늘 기준 53%". */
+  markerLabel?: string;
 }
 export function KjunProgressCell({
   value = 0,
@@ -143,7 +148,10 @@ export function KjunProgressCell({
   color = "auto",
   customColor,
   height = tokens.extensions.financial.progressHeight,
+  marker,
+  markerLabel,
 }: KjunProgressCellProps) {
+  const mark = progressMarker(marker, max), markerId = "kjun-progress-marker-" + useId().replace(/:/g, "");
   const percent =
       max > 0 && Number.isFinite(value)
         ? Math.min(100, Math.max(0, (value / max) * 100))
@@ -159,7 +167,8 @@ export function KjunProgressCell({
   return (
     <div className="kjun-progress-cell">
       {/* The bar is a progressbar, so its value reaches screen readers also without the visible label. */}
-      <div style={{ height }} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(percent)}>
+      <div style={{ height }} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(percent)}
+        data-marker={mark != null || undefined} aria-describedby={mark != null && markerLabel ? markerId : undefined}>
         <span
           style={{
             width: percent + "%",
@@ -167,6 +176,8 @@ export function KjunProgressCell({
               color === "custom" ? customColor : `var(--_kjun-color-${role})`,
           }}
         />
+        {mark != null && <span className="kjun-progress-marker" aria-hidden="true" style={{ left: `calc(${mark}% - ${progressMarkerInset(mark)}px)` }} />}
+        {mark != null && markerLabel && <span id={markerId} hidden>{markerLabel}</span>}
       </div>
       {showLabel && <span aria-hidden="true">{Math.round(percent)}%</span>}
     </div>

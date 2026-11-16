@@ -51,7 +51,8 @@
         "sm": { "size": 24, "stroke": 4 },
         "md": { "size": 48, "stroke": 4 },
         "lg": { "size": 64, "stroke": 6 }
-      }
+      },
+      "marker": { "width": 2, "overhang": 3, "gap": { "$ref": "border.defaultWidth" } }
     },
     "iconToggle": {
       "compactSize": {

@@ -1,7 +1,7 @@
 import { useKjunMessages } from "./runtime/messages";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { skeletonLineBox, skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
-import { ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { ref, useId, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
@@ -9,6 +9,7 @@ import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
 import { badgeGeometry, badgeToneRoles } from "../../../shared/package-runtime/badge-tone";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { progressCircle } from "../../../shared/package-runtime/progress-circle";
+import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
 import { alertActionSizes } from "../../../shared/package-runtime/alert-action-size";
 import { typeStyle } from "../../../shared/package-runtime/typography";
 import { emptyGeometry, type EmptySize } from "../../../shared/package-runtime/empty-geometry";
@@ -206,6 +207,10 @@ const kjunProgressProps = {
   showLabel: { type: Boolean, default: false },
   /** Shown and read in place of the rounded percent while the value is known, e.g. "37.4%" or "3.2 / 8 GB". */
   valueText: { type: String, default: undefined },
+  /** A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. Bars only; not drawn while indeterminate or missing. */
+  marker: { type: Number, default: undefined },
+  /** Read by screen readers as the bar's description, e.g. "오늘 기준 53%". Put visible wording in subLabel. */
+  markerLabel: { type: String, default: undefined },
   label: { type: String, default: undefined },
   subLabel: { type: String, default: undefined },
   shape: { type: String as PropType<"bar" | "circle">, default: "bar" },
@@ -220,7 +225,7 @@ export const KjunProgress = defineComponent({
     subLabel?: () => VNodeChild;
   }>,
   setup(props, { slots }) {
-    const m = useKjunMessages();
+    const m = useKjunMessages(), markerId = "kjun-progress-marker-" + useId().replace(/[^\w-]/g, "");
     return () => {
       const missing = props.value === null || !Number.isFinite(props.value) || !Number.isFinite(props.max) || props.max <= 0;
       const state = props.indeterminate ? "indeterminate" : missing ? "missing" : "determinate";
@@ -258,6 +263,7 @@ export const KjunProgress = defineComponent({
           </div>
         );
       }
+      const mark = state === "determinate" ? progressMarker(props.marker, props.max) : null;
       return (
         <div class="kjun-progress" data-state={state}>
           {(label || props.showLabel) && (
@@ -266,10 +272,12 @@ export const KjunProgress = defineComponent({
               {props.showLabel && <span>{text}</span>}
             </div>
           )}
-          <div {...accessibility} class="kjun-progress-track"
+          <div {...accessibility} class="kjun-progress-track" data-marker={mark != null || undefined} aria-describedby={mark != null && props.markerLabel ? markerId : undefined}
             style={css({ height: tokens.extensions.progress.heights[props.size] })}>
             <div style={{ width: (state === "indeterminate" ? 30 : percentage) + "%", background: color }} />
+            {mark != null && <span class="kjun-progress-marker" aria-hidden="true" style={{ left: `calc(${mark}% - ${progressMarkerInset(mark)}px)` }} />}
           </div>
+          {mark != null && props.markerLabel && <span id={markerId} hidden>{props.markerLabel}</span>}
           {subLabel && <div class="kjun-progress-sub">{subLabel}</div>}
         </div>
       );

@@ -25,6 +25,8 @@ import { KjunBadge,type DisplaySize } from "./display";
 import { KText,content,domainColor } from "./internal";
 import { finiteNumber,format,signedText } from "./number-display";
 import { useKjunStyles } from "./provider";
+import { ProgressMarker } from "./progress";
+import { progressMarker } from "../../../shared/package-runtime/progress-marker";
 
 // Fill strength of a non-neutral deviation step.
 const deviationFill = { neutral: 1, low: tokens.states.opacity.deviationLow, medium: tokens.states.opacity.deviationMedium, strong: tokens.states.opacity.deviationStrong };
@@ -202,6 +204,10 @@ export interface KjunProgressCellProps {
   color?: "auto" | "brand" | "success" | "danger" | "warning" | "custom";
   customColor?: ColorValue;
   height?: number;
+  /** A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. */
+  marker?: number;
+  /** Read by screen readers as the bar's hint, e.g. "오늘 기준 53%". */
+  markerLabel?: string;
 }
 export function KjunProgressCell({
   value = 0,
@@ -210,7 +216,10 @@ export function KjunProgressCell({
   color = "auto",
   customColor,
   height = tokens.extensions.financial.progressHeight,
+  marker,
+  markerLabel,
 }: KjunProgressCellProps) {
+  const mark = progressMarker(marker, max);
   const { colors, numericFontFamily, fontFamily } = useKjunStyles(),
     percent =
       max > 0 && Number.isFinite(value)
@@ -230,6 +239,7 @@ export function KjunProgressCell({
       accessible
       accessibilityRole="progressbar"
       accessibilityValue={{ min: 0, max: 100, now: Math.round(percent) }}
+      accessibilityHint={mark != null ? markerLabel : undefined}
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -237,10 +247,10 @@ export function KjunProgressCell({
         minWidth: tokens.extensions.financial.progressMinimumWidth,
       }}
     >
+      <View style={{ flex: 1 }}>
       <View
         style={{
           height,
-          flex: 1,
           backgroundColor: colors.tertiary,
           borderRadius: tokens.extensions.financial.progressRadius,
           overflow: "hidden",
@@ -257,6 +267,8 @@ export function KjunProgressCell({
                 : colors[role as keyof typeof colors],
           }}
         />
+      </View>
+      {mark != null && <ProgressMarker percent={mark} />}
       </View>
       {showLabel && (
         <KText
