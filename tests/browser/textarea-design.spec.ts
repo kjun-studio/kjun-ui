@@ -25,8 +25,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     await openFixture(page, platform, '', 'input-design');
     await page.evaluate(() => (window as any).configureInputDesign({ maxRows: 'none' }));
     expect(await height(page)).toBe(2 * 24 + 12 + 4);
-    await area(page).fill(Array.from({ length: 12 }, (_, i) => '줄 ' + (i + 1)).join('\n'));
-    await expect.poll(() => height(page)).toBe(12 * 24 + 12 + 4);
+    // Ten one-character lines: 19 characters, inside the fixture's maxLength of 20 (a longer text would be cut short).
+    await area(page).fill(Array.from({ length: 10 }, (_, i) => String(i)).join('\n'));
+    await expect.poll(() => height(page)).toBe(10 * 24 + 12 + 4);
     expect(await area(page).evaluate(el => el.scrollHeight > el.clientHeight)).toBe(false);
     await area(page).fill('하나');
     await expect.poll(() => height(page)).toBe(2 * 24 + 12 + 4);
