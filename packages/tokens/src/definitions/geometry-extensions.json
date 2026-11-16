@@ -178,7 +178,15 @@
       "groupHeight": { "$ref": "button.heights.sm" },
       "groupGap": { "$ref": "dimension.value6" },
       "touchItemHeight": { "$ref": "button.heights.lg" },
-      "touchChildHeight": { "$ref": "native.minimumTouchTarget" }
+      "touchChildHeight": { "$ref": "native.minimumTouchTarget" },
+      "railItemWidth": 72,
+      "railPaddingX": { "$ref": "dimension.value4" },
+      "railPaddingY": { "$ref": "dimension.value6" },
+      "railIndicatorWidth": { "$ref": "dimension.value56" },
+      "railIndicatorHeight": { "$ref": "button.heights.sm" },
+      "railLabelGap": { "$ref": "dimension.value4" },
+      "compactItemHeight": { "$ref": "button.heights.sm" },
+      "compactChildHeight": 30
     },
     "floatingNavigation": {
       "itemSize": 52,

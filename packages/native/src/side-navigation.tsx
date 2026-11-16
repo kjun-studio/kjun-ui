@@ -55,13 +55,19 @@ export interface KjunSideNavigationProps {
   /** While collapsed: one icon per top-level item ("items"), or one per group ("groups", from the group's icon), which
    * asks to widen with that group open. Loose items between groups keep their own row. */
   rail?: SideNavigationRail;
+  /** While collapsed: a short name under each icon, in a 72 wide column. The current page and a press fill a 56 by 32
+   * indicator around the icon, a count stays a number, and no tooltip is needed. */
+  railLabels?: boolean;
+  /** "compact": 32 tall rows and 30 tall children on Native Web, and counts as quiet numbers, for long lists. A device keeps
+   * the touch heights. */
+  density?: "default" | "compact";
 }
 /**
  * A vertical menu for the side of a wide screen (a tablet, a landscape layout), like Web: the current destination
  * filled, titled groups and one level of children. On a phone use KjunBottomNavigation.
  */
 export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onReselect, expanded, onExpandedChange, collapsed = false, onCollapsedChange,
-  collapsibleGroups = false, expandedGroups, onExpandedGroupsChange, rail = "items" }: KjunSideNavigationProps) {
+  collapsibleGroups = false, expandedGroups, onExpandedGroupsChange, rail = "items", railLabels = false, density = "default" }: KjunSideNavigationProps) {
   const m = useKjunMessages(), { colors } = useKjunStyles(), geometry = tokens.extensions.sideNavigation;
   const [own, setOwn] = useState(() => sideNavigationWithCurrentParents([], items, value) as string[]);
   const open = expanded ?? own;
@@ -88,34 +94,54 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   const revealGroup = (key: string) => { if (collapsibleGroups && !openGroups.includes(key)) updateGroups([...openGroups, key]); onCollapsedChange?.(false); };
   // On a device every press is a touch, so rows take Web's touch heights (48, children and group titles 44). Native Web
   // keeps Web's pointer heights (40, children 36, group titles 32); there the touch target reaches 44 above and below.
-  const touch = Platform.OS !== "web";
-  const itemHeight = touch ? geometry.touchItemHeight : geometry.itemHeight, childHeight = touch ? geometry.touchChildHeight : geometry.childHeight;
+  // density="compact" shortens rows under a pointer only, so a device keeps its touch heights.
+  const touch = Platform.OS !== "web", compact = !touch && density === "compact";
+  const itemHeight = touch ? geometry.touchItemHeight : compact ? geometry.compactItemHeight : geometry.itemHeight;
+  const childHeight = touch ? geometry.touchChildHeight : compact ? geometry.compactChildHeight : geometry.childHeight;
+  // With names under the icons (railLabels) a collapsed row is 72 wide, an indicator around the icon over a one-line name;
+  // the fill moves from the row to the indicator and no tooltip is needed.
+  const labelled = collapsed && railLabels;
   const groupHeight = touch ? geometry.touchChildHeight : geometry.groupHeight;
   const slop = (height: number) => { const reach = Math.max(0, (tokens.native.minimumTouchTarget - height) / 2); return { top: reach, bottom: reach }; };
-  const box = (height: number, child: boolean) => ({ height, ...(collapsed ? { width: geometry.paddingX * 2 + geometry.iconSize } : {}), flexDirection: "row" as const, alignItems: "center" as const, gap: geometry.gap, borderRadius: geometry.radius,
+  const box = (height: number, child: boolean) => labelled ? { width: geometry.railItemWidth, alignItems: "center" as const, justifyContent: "center" as const,
+    gap: geometry.railLabelGap, paddingVertical: geometry.railPaddingY, paddingHorizontal: geometry.railPaddingX, borderRadius: geometry.radius } : ({ height, ...(collapsed ? { width: geometry.paddingX * 2 + geometry.iconSize } : {}), flexDirection: "row" as const, alignItems: "center" as const, gap: geometry.gap, borderRadius: geometry.radius,
     paddingEnd: geometry.paddingX, paddingStart: geometry.paddingX + (child ? geometry.iconSize + geometry.gap : 0) });
   // Hover is half the app's hover fill and leaves the text as it is, so it never reads as a stronger mark than the current page.
   const hover = (typeof colors.hover === "string" && tintColor(colors.hover, tokens.states.opacity.hoverSoft)) || colors.hover;
   const fill = (selected: boolean, disabled: boolean | undefined, { pressed, hovered }: PressState) =>
     selected ? colors.selectedBg : disabled ? "transparent" : pressed ? colors.active : hovered ? hover : "transparent";
   const ink = (lit: boolean) => lit ? colors.text : colors.textSecondary;
-  const label = (text: string, strong: boolean, lit: boolean) => !collapsed && <KText numberOfLines={1} ellipsizeMode="tail"
+  const label = (text: string, strong: boolean, lit: boolean) => labelled ? <KText numberOfLines={1} ellipsizeMode="tail"
+    style={{ ...typeStyle("caption"), alignSelf: "stretch", textAlign: "center", fontWeight: strong ? typeStyle("control").fontWeight : typeStyle("body").fontWeight, color: ink(lit) }}>{text}</KText>
+    : !collapsed && <KText numberOfLines={1} ellipsizeMode="tail"
     style={{ ...typeStyle("control"), flex: 1, minWidth: 0, fontWeight: strong ? typeStyle("control").fontWeight : typeStyle("body").fontWeight, color: ink(lit) }}>{text}</KText>;
   // The icon box also holds the initial of a row without an icon, and the badge (on its corner) while only icons show.
-  const glyph = (icon: string | undefined, text: string, filled: boolean, lit: boolean, mark?: ReactNode) => (icon || collapsed) &&
-    <View style={{ width: geometry.iconSize, height: geometry.iconSize, alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+  const glyph = (icon: string | undefined, text: string, filled: boolean, lit: boolean, mark?: ReactNode, under?: ColorValue) => {
+    if (!icon && !collapsed) return false;
+    const inner = <View style={{ width: geometry.iconSize, height: geometry.iconSize, alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
       {icon ? <KjunIcon name={icon} filled={filled} size={geometry.iconSize} color={ink(lit)} />
         : <KText style={{ ...typeStyle("control"), color: ink(lit) }}>{sideNavigationInitial(text)}</KText>}
       {collapsed && mark}
     </View>;
+    return labelled ? <View style={{ width: geometry.railIndicatorWidth, height: geometry.railIndicatorHeight, borderRadius: geometry.railIndicatorHeight / 2,
+      alignItems: "center", justifyContent: "center", backgroundColor: under }}>{inner}</View> : inner;
+  };
+  // The row's fill, which a labelled rail paints on the indicator instead.
+  const rowFill = (under: ColorValue) => labelled ? "transparent" : under;
+  // At the end of a compact row a count is a quiet number; dots and the default density keep the badge.
+  const trailing = (badge: SideNavigationDestination["badge"]) => {
+    const mark = navigationBadge(badge);
+    return compact && mark && !mark.dot ? <KText aria-hidden={true} style={{ ...typeStyle("caption"), fontVariant: ["tabular-nums"], color: colors.textTertiary }}>{mark.text}</KText>
+      : <NavigationBadgeMark badge={badge} />;
+  };
   // While collapsed the badge overlaps the icon, so its ring takes the row's fill (the surface under a clear row).
   const corner = (badge: SideNavigationDestination["badge"], under: ColorValue) =>
     <NavigationBadgeMark badge={badge} ring={under === "transparent" ? colors.surface : under} iconSize={geometry.iconSize} />;
   // While collapsed a row is the box around its icon (44 by 40), as on Web, so the fill wraps the icon.
-  const named = (text: string, row: ReactElement) => collapsed ? <KjunTooltip key={row.key} content={text} placement="right">{row}</KjunTooltip> : row;
+  const named = (text: string, row: ReactElement) => collapsed && !labelled ? <KjunTooltip key={row.key} content={text} placement="right">{row}</KjunTooltip> : row;
   const link = (item: SideNavigationDestination, child = false) => {
     const selected = item.key === value, height = child ? childHeight : itemHeight, elsewhere = sideNavigationOpensElsewhere(item);
-    return named(item.label, <Pressable key={item.key} focusRingInset hitSlop={slop(height)} disabled={item.disabled} accessibilityRole="link"
+    return named(item.label, <Pressable key={item.key} focusRingInset hitSlop={labelled ? undefined : slop(height)} disabled={item.disabled} accessibilityRole="link"
       accessibilityLabel={navigationLabel(item.label, item.badge, m.newContent, m.newCount) + (elsewhere ? m.newWindow : "")} accessibilityState={{ disabled: !!item.disabled, selected }}
       {...(Platform.OS === "web" ? { "aria-current": selected ? "page" : undefined, ...(item.href && !item.disabled ? { href: item.href, hrefAttrs: { target: item.target, rel: elsewhere ? "noopener noreferrer" : undefined } } : {}) } : {})}
       onPress={(event: GestureResponderEvent) => {
@@ -123,12 +149,13 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
         if (Platform.OS === "web" && (elsewhere || !isPlainNavigationClick(event.nativeEvent as never))) return;
         onNavigate?.(item.key, event); if (selected) onReselect?.(item.key, event);
       }}
-      style={(state: PressState) => ({ ...box(height, child), backgroundColor: fill(selected, item.disabled, state), opacity: item.disabled ? tokens.states.opacity.disabled : 1 })}>
-      {(state: PressState) => { const lit = selected || (!item.disabled && state.pressed); return <>
-        {/* On the icon's corner a count would cover the icon, so it shrinks to a dot; the link's name keeps the number. */}
-        {!child && glyph(item.icon, item.label, selected, lit, corner(navigationBadge(item.badge) ? true : undefined, fill(selected, item.disabled, state)))}
+      style={(state: PressState) => ({ ...box(height, child), backgroundColor: rowFill(fill(selected, item.disabled, state)), opacity: item.disabled ? tokens.states.opacity.disabled : 1 })}>
+      {(state: PressState) => { const lit = selected || (!item.disabled && state.pressed), under = fill(selected, item.disabled, state); return <>
+        {/* On the icon's corner a count would cover the icon, so it shrinks to a dot; the link's name keeps the number.
+            Beside a labelled rail's wider indicator the number fits. */}
+        {!child && glyph(item.icon, item.label, selected, lit, corner(labelled ? item.badge : navigationBadge(item.badge) ? true : undefined, under), under)}
         {label(item.label, selected, lit)}
-        {!collapsed && <NavigationBadgeMark badge={item.badge} />}
+        {!collapsed && trailing(item.badge)}
         {!collapsed && elsewhere && <KjunIcon name="external-link" size={geometry.chevronSize} color={colors.textTertiary} />}
       </>; }}
     </Pressable>);
@@ -141,12 +168,12 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
     // It takes the selection fill, open or collapsed, so the menu always shows where you are.
     const under = (state: PressState) => fill(within, item.disabled, state);
     return <View key={item.key} style={{ gap: geometry.itemGap }}>
-      {named(item.label, <Pressable key={item.key} focusRingInset hitSlop={slop(itemHeight)} disabled={item.disabled} accessibilityRole="button"
+      {named(item.label, <Pressable key={item.key} focusRingInset hitSlop={labelled ? undefined : slop(itemHeight)} disabled={item.disabled} accessibilityRole="button"
         accessibilityLabel={dot ? navigationLabel(item.label, true, m.newContent) : item.label}
         accessibilityState={{ disabled: !!item.disabled, expanded: shown }} onPress={() => collapsed ? reveal(item.key) : toggle(item.key)}
-        style={(state: PressState) => ({ ...box(itemHeight, false), backgroundColor: under(state), opacity: item.disabled ? tokens.states.opacity.disabled : 1 })}>
+        style={(state: PressState) => ({ ...box(itemHeight, false), backgroundColor: rowFill(under(state)), opacity: item.disabled ? tokens.states.opacity.disabled : 1 })}>
         {(state: PressState) => { const lit = within || (!item.disabled && state.pressed); return <>
-          {glyph(item.icon, item.label, false, lit, dot && corner(true, under(state)))}
+          {glyph(item.icon, item.label, false, lit, dot && corner(true, under(state)), under(state))}
           {label(item.label, within, lit)}
           {!collapsed && dot && <NavigationBadgeMark badge={true} />}
           {!collapsed && <View style={shown ? { transform: [{ rotate: "180deg" }] } : undefined}><KjunIcon name="chevron-down" size={geometry.chevronSize} color={colors.textTertiary} /></View>}
@@ -159,10 +186,13 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   // when an item in it has a badge. Pressing it asks for the full width with the group open.
   const groupRow = (group: SideNavigationSection<SideNavigationDestination> & { key: string; title: string }) => {
     const within = sideItemsHoldCurrent(group.items, value), dot = sideItemsHaveBadge(group.items);
-    return named(group.title, <Pressable key={"group:" + group.key} focusRingInset hitSlop={slop(itemHeight)} accessibilityRole="button"
+    return named(group.title, <Pressable key={"group:" + group.key} focusRingInset hitSlop={labelled ? undefined : slop(itemHeight)} accessibilityRole="button"
       accessibilityLabel={dot ? navigationLabel(group.title, true, m.newContent) : group.title} accessibilityState={{ expanded: false }}
-      onPress={() => revealGroup(group.key)} style={(state: PressState) => ({ ...box(itemHeight, false), backgroundColor: fill(within, false, state) })}>
-      {(state: PressState) => glyph(group.icon, group.title, false, within || state.pressed, dot && corner(true, fill(within, false, state)))}
+      onPress={() => revealGroup(group.key)} style={(state: PressState) => ({ ...box(itemHeight, false), backgroundColor: rowFill(fill(within, false, state)) })}>
+      {(state: PressState) => <>
+        {glyph(group.icon, group.title, false, within || state.pressed, dot && corner(true, fill(within, false, state)), fill(within, false, state))}
+        {label(group.title, within, within || state.pressed)}
+      </>}
     </Pressable>);
   };
   // A group title that opens and closes its group; closed over the current page it takes the selection fill, like a parent.
@@ -189,7 +219,8 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
       style={{ gap: geometry.itemGap, marginTop: !index ? 0 : section.title && toggleable ? geometry.groupGap : !section.title || collapsed ? geometry.titlePaddingTop : 0 }}>
       {/* Icons only, the titles are hidden: a hairline the icon's width in the middle of the gap marks the boundary. */}
       {!!index && collapsed && <View pointerEvents="none" style={{ position: "absolute", top: -(geometry.titlePaddingTop + tokens.border.defaultWidth) / 2,
-        start: geometry.paddingX, width: geometry.iconSize, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
+        start: labelled ? (geometry.railItemWidth - geometry.railIndicatorWidth) / 2 : geometry.paddingX,
+        width: labelled ? geometry.railIndicatorWidth : geometry.iconSize, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
       {!!section.title && toggleable && groupToggle(section)}
       {!!section.title && !collapsed && !toggleable && <KText accessibilityRole="header" style={{ ...typeStyle("caption"), fontWeight: typeStyle("control").fontWeight, color: colors.textTertiary,
         paddingTop: index ? geometry.titlePaddingTop : 0, paddingBottom: geometry.titlePaddingBottom - geometry.itemGap, paddingHorizontal: geometry.paddingX }}>{section.title}</KText>}

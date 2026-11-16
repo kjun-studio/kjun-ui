@@ -14,7 +14,7 @@ const Page = defineComponent({ setup() {
       <K.KjunSideNavigation ariaLabel="작업 공간" items={items.value} value={value.value} collapsed={collapsed.value}
         {...{ 'onUpdate:collapsed': (next: boolean) => { collapsed.value = next; add('wide'); } }}
         {...(sideCase.controlled ? { expanded: expanded.value, 'onUpdate:expanded': (next: string[]) => { expanded.value = next; add('open:' + next.join(',')); } } : {})}
-        rail={sideCase.rail} {...(sideCase.groups ? { collapsibleGroups: true, 'onUpdate:expandedGroups': (next: string[]) => add('groups:' + next.join(',')) } : {})}
+        rail={sideCase.rail} railLabels={sideCase.labels} density={sideCase.density} {...(sideCase.groups ? { collapsibleGroups: true, 'onUpdate:expandedGroups': (next: string[]) => add('groups:' + next.join(',')) } : {})}
         onNavigate={(key: string, event: MouseEvent) => { event.preventDefault(); value.value = key; add('go:' + key); }} onReselect={(key: string) => add('again:' + key)} />
     </aside>
     <div><button data-testid="to-checkout" onClick={() => { value.value = 'checkout'; }}>결제 화면으로</button><div data-testid="log">{log.value.join(' ')}</div></div>

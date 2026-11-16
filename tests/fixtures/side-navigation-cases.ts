@@ -19,7 +19,9 @@ export const sideItems = [
 const query = new URLSearchParams(location.search);
 export const sideStart = query.get('value') || 'home';
 /** collapsed=1 starts with icons only; controlled=1 passes expanded; late=1 hands the items over after the first render;
- * groups=1 turns on collapsibleGroups; rail=groups shows one icon per group while collapsed. */
+ * groups=1 turns on collapsibleGroups; rail=groups shows one icon per group while collapsed; labels=1 turns on railLabels;
+ * compact=1 sets density="compact". */
 export const sideCase = { collapsed: query.has('collapsed'), controlled: query.has('controlled'), late: query.has('late'),
-  groups: query.has('groups'), rail: (query.get('rail') || 'items') as 'items' | 'groups' };
-export const sideWidth = (collapsed: boolean) => collapsed ? 64 : 240;
+  groups: query.has('groups'), rail: (query.get('rail') || 'items') as 'items' | 'groups', labels: query.has('labels'),
+  density: (query.has('compact') ? 'compact' : 'default') as 'default' | 'compact' };
+export const sideWidth = (collapsed: boolean) => collapsed ? sideCase.labels ? 88 : 64 : 240;

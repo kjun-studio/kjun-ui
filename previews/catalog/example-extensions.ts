@@ -51,9 +51,10 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       // A sidebar column of a fixed width, as an app would give it; "활동" carries a badge, "문서" opens its children and
       // "도움말" opens in a new tab. Icons only, the column narrows and widens again when a parent or group is pressed;
       // groups carry icons for a rail of groups, and with collapsibleGroups their titles open and close them.
+      if (settings.spaces) return sideNavigationSpaces(tools);
       const collapsed = !!settings.collapsed && !get("widened", false);
-      return h("Stack", {}, [h("Box", { width: collapsed ? 44 : 240 }, h(name, { ariaLabel: "작업 공간", value: get("destination", "home"), collapsed,
-        collapsibleGroups: settings.collapsibleGroups, rail: settings.rail,
+      return h("Stack", {}, [h("Box", { width: collapsed ? settings.railLabels ? 72 : 44 : 240 }, h(name, { ariaLabel: "작업 공간", value: get("destination", "home"), collapsed,
+        collapsibleGroups: settings.collapsibleGroups, rail: settings.rail, railLabels: settings.railLabels, density: settings.density,
         onCollapsedChange: (next: boolean) => set("widened", !next), items: [
         { key: "home", label: "홈", href: "#home", icon: "home" },
         { key: "activity", label: settings.long ? "아주 긴 이름을 가진 프로젝트 활동 내역" : "활동", href: "#activity", icon: "list", badge: 3 },
@@ -121,4 +122,26 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
     case "KjunQuantityStepper":
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "주문 수량", error: error ? "주문 수량을 확인해 주세요." : "" }, h(name, { value: get("quantity", settings.decimal ? 1.25 : 2), min: settings.negative ? -10 : 0, max: 10, step: settings.decimal ? .1 : 1, precision: settings.decimal ? 2 : 0, disabled, error, size: settings.size, block: settings.block, ariaLabel: "주문 수량", onValueChange: change("quantity"), onChangeCommit: (value: number) => set("message", "확정: " + value), onInvalidInput: (draft: string) => set("message", "잘못된 수량: " + draft) })));
   }
+}
+
+// Spaces and a menu panel: a collapsed side navigation with names picks the space, a compact one lists that space's pages.
+// Choosing a space opens its first page; both values are the app's.
+const sidePages: Record<string, any[]> = {
+  home: [{ key: "overview", label: "개요", href: "#overview", icon: "chart-bar" }, { key: "requests", label: "받은 요청", href: "#requests", icon: "bell", badge: 4 }],
+  projects: [{ key: "board", label: "보드", href: "#board", icon: "clipboard-list" },
+    { title: "즐겨찾기", items: [{ key: "brand", label: "브랜드 웹사이트", href: "#brand", icon: "world", badge: 8 }, { key: "checkout", label: "결제 화면 개선", href: "#checkout", icon: "currency-won" }] },
+    { title: "보관", items: [{ key: "archive", label: "보관함", href: "#archive", icon: "box" }] }],
+  team: [{ key: "members", label: "구성원", href: "#members", icon: "user" }, { key: "invites", label: "초대", href: "#invites", icon: "mail", badge: true }],
+  settings: [{ key: "profile", label: "프로필", href: "#profile", icon: "user" }, { key: "billing", label: "결제", href: "#billing", icon: "wallet" }],
+};
+function sideNavigationSpaces({ h, get, set }: ExampleTools) {
+  const space = get("space", "projects"), destination = get("destination", "board");
+  return h("Stack", {}, [h("Group", { style: { alignItems: "flex-start", flexWrap: "nowrap" } }, [
+    h("Box", { width: 72 }, h("KjunSideNavigation", { ariaLabel: "공간", value: space, collapsed: true, railLabels: true, items: [
+      { key: "home", label: "홈", href: "#home", icon: "home" }, { key: "projects", label: "프로젝트", href: "#projects", icon: "folder" },
+      { key: "team", label: "팀", href: "#team", icon: "building", badge: true }, { key: "settings", label: "설정", href: "#settings", icon: "settings" },
+    ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("space", key); set("destination", sidePages[key][0].key); } })),
+    h("Box", { width: 240 }, h("KjunSideNavigation", { ariaLabel: "메뉴", value: destination, density: "compact", items: sidePages[space],
+      onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); } })),
+  ]), h("Text", {}, "현재 위치: " + space + " / " + destination)]);
 }

@@ -31,6 +31,12 @@ const kjunSideNavigationProps = {
   /** While collapsed: one icon per top-level item ("items"), or one per group ("groups", from the group's icon), which
    * emits update:collapsed false with that group open and in view. Loose items between groups keep their own row. */
   rail: { type: String as PropType<SideNavigationRail>, default: "items" },
+  /** While collapsed: a short name under each icon, in a 72 wide column. The current page, hover and press fill a 56 by 32
+   * indicator around the icon, a count stays a number, and no tooltip is needed. */
+  railLabels: { type: Boolean, default: false },
+  /** "compact": 32 tall rows and 30 tall children under a mouse, and counts as quiet numbers, for long lists (documentation,
+   * settings). A touch pointer keeps the touch heights. */
+  density: { type: String as PropType<"default" | "compact">, default: "default" },
 } as const;
 export type KjunSideNavigationProps = ExtractPublicPropTypes<typeof kjunSideNavigationProps>;
 /** A vertical menu for the side of a wide screen: links aligned to the start, the current one filled, groups with titles and one level of children.
@@ -82,8 +88,10 @@ export const KjunSideNavigation = defineComponent({
           : <span class="kjun-side-navigation-initial" aria-hidden="true">{sideNavigationInitial(label)}</span>}
         {collapsed ? mark : null}
       </span> : null;
-      const named = (label: string, row: VNode) => collapsed ? <KjunTooltip content={label} placement="right">{row}</KjunTooltip> : row;
-      const labelClass = "kjun-side-navigation-label" + (collapsed ? " kjun-sr-only" : "");
+      // With names under the icons a collapsed menu reads on its own: no tooltips, and the names stay on screen.
+      const labelled = collapsed && props.railLabels;
+      const named = (label: string, row: VNode) => collapsed && !labelled ? <KjunTooltip content={label} placement="right">{row}</KjunTooltip> : row;
+      const labelClass = "kjun-side-navigation-label" + (collapsed && !labelled ? " kjun-sr-only" : "");
       const link = (item: SideNavigationDestination, child = false) => {
         const selected = item.key === props.value, mark = navigationBadge(item.badge), elsewhere = sideNavigationOpensElsewhere(item);
         const shown = mark ? badge(mark.text, mark.dot) : null;
@@ -98,8 +106,9 @@ export const KjunSideNavigation = defineComponent({
             emit("navigate", item.key, event);
             if (selected) emit("reselect", item.key, event);
           }}>
-          {/* On the icon's corner a count would cover the icon, so it shrinks to a dot; the link's name keeps the number. */}
-          {child ? null : glyph(item.icon, item.label, selected, mark ? badge("", true) : null)}
+          {/* On the icon's corner a count would cover the icon, so it shrinks to a dot; the link's name keeps the number.
+              Beside a labelled rail's wider indicator the number fits. */}
+          {child ? null : glyph(item.icon, item.label, selected, mark ? labelled ? badge(mark.text, mark.dot) : badge("", true) : null)}
           <span class={labelClass}>{item.label}</span>
           {collapsed ? null : shown}
           {!collapsed && elsewhere ? <KjunIcon name="external-link" class="kjun-side-navigation-trailing" size={geometry.chevronSize} /> : null}
@@ -149,7 +158,8 @@ export const KjunSideNavigation = defineComponent({
           <div id={panel}><KjunCollapse open={shown}><ul class="kjun-side-navigation-group-items">{rows}</ul></KjunCollapse></div>,
         ];
       };
-      const nav = (rail: boolean, content: VNodeChild) => <nav class="kjun-side-navigation" data-collapsed={collapsed ? "" : undefined} data-rail={rail ? "groups" : undefined}
+      const nav = (rail: boolean, content: VNodeChild) => <nav class="kjun-side-navigation" data-collapsed={collapsed ? "" : undefined} data-rail={rail ? "groups" : undefined} data-rail-labels={labelled ? "" : undefined}
+        data-density={props.density === "compact" ? "compact" : undefined}
         data-collapsible-groups={props.collapsibleGroups && !collapsed ? "" : undefined} aria-label={props.ariaLabel ?? m.value.mainNavigation}>{content}</nav>;
       if (collapsed && props.rail === "groups") return nav(true, <ul>{sideNavigationGroupRail(props.items).map((entry, at) =>
         "group" in entry ? groupRow(entry.group) : row(entry.item, id + "-rail-" + at))}</ul>);

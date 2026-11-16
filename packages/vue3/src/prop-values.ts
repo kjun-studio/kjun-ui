@@ -242,6 +242,7 @@ export const kjunPropValues = Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
   }),
   KjunSideNavigation: Object.freeze({
+    density: Object.freeze(["compact","default"] as const),
     rail: Object.freeze(["groups","items"] as const),
   }),
   KjunSignedValue: Object.freeze({

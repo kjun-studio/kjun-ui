@@ -28,7 +28,9 @@
       "collapsed",
       "collapsibleGroups",
       "expandedGroups",
-      "rail"
+      "rail",
+      "railLabels",
+      "density"
     ],
     "react": [
       "items",
@@ -43,7 +45,9 @@
       "collapsibleGroups",
       "expandedGroups",
       "onExpandedGroupsChange",
-      "rail"
+      "rail",
+      "railLabels",
+      "density"
     ],
     "native": [
       "items",
@@ -58,7 +62,9 @@
       "collapsibleGroups",
       "expandedGroups",
       "onExpandedGroupsChange",
-      "rail"
+      "rail",
+      "railLabels",
+      "density"
     ]
   },
   "KjunExternalLink": {

@@ -21007,6 +21007,20 @@
         "required": false,
         "default": "\"items\"",
         "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nemits update:collapsed false with that group open and in view. Loose items between groups keep their own row."
+      },
+      {
+        "name": "railLabels",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "While collapsed: a short name under each icon, in a 72 wide column. The current page, hover and press fill a 56 by 32\nindicator around the icon, a count stays a number, and no tooltip is needed."
+      },
+      {
+        "name": "density",
+        "type": "\"default\" | \"compact\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "\"compact\": 32 tall rows and 30 tall children under a mouse, and counts as quiet numbers, for long lists (documentation,\nsettings). A touch pointer keeps the touch heights."
       }
     ],
     "events": [
@@ -21123,6 +21137,20 @@
         "required": false,
         "default": "—",
         "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nasks to widen with that group open and in view. Loose items between groups keep their own row."
+      },
+      {
+        "name": "railLabels",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "While collapsed: a short name under each icon, in a 72 wide column. The current page, hover and press fill a 56 by 32\nindicator around the icon, a count stays a number, and no tooltip is needed."
+      },
+      {
+        "name": "density",
+        "type": "\"default\" | \"compact\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"compact\": 32 tall rows and 30 tall children under a mouse, and counts as quiet numbers, for long lists (documentation,\nsettings). A touch pointer keeps the touch heights."
       }
     ],
     "native": [
@@ -21216,6 +21244,20 @@
         "required": false,
         "default": "—",
         "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nasks to widen with that group open. Loose items between groups keep their own row."
+      },
+      {
+        "name": "railLabels",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "While collapsed: a short name under each icon, in a 72 wide column. The current page and a press fill a 56 by 32\nindicator around the icon, a count stays a number, and no tooltip is needed."
+      },
+      {
+        "name": "density",
+        "type": "\"default\" | \"compact\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"compact\": 32 tall rows and 30 tall children on Native Web, and counts as quiet numbers, for long lists. A device keeps\nthe touch heights."
       }
     ]
   },

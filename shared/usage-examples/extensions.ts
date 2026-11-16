@@ -67,11 +67,14 @@ export function generate(input: UsageInput) {
       }), b.text(expr('"현재 위치: " + state.destination'))]);
       break;
     case 'KjunSideNavigation': {
-      // Icons only: the app narrows its column and widens it again when a parent is pressed (onCollapsedChange).
-      const width = s.collapsed ? expr(b.vue ? "(state.collapsed ? 44 : 240) + 'px'" : 'state.collapsed ? 44 : 240') : b.vue ? '240px' : 240;
+      if (s.spaces) { content = sideNavigationSpaces(b); break; }
+      // Icons only: the app narrows its column (72 with names under the icons) and widens it again when a parent is pressed.
+      const narrow = s.railLabels ? 72 : 44;
+      const width = s.collapsed ? expr(b.vue ? `(state.collapsed ? ${narrow} : 240) + 'px'` : `state.collapsed ? ${narrow} : 240`) : b.vue ? '240px' : 240;
       content = b.group([b.node(b.native ? 'View' : 'div', { style: { width } }, b.node(name, { ariaLabel: '작업 공간', value: b.state('destination', 'home'),
         ...(s.collapsed ? { collapsed: b.state('collapsed', true), onCollapsedChange: b.update('collapsed') } : {}),
         ...(s.collapsibleGroups ? { collapsibleGroups: true } : {}), ...(s.rail === 'groups' ? { rail: 'groups' } : {}),
+        ...(s.railLabels ? { railLabels: true } : {}), ...(s.density === 'compact' ? { density: 'compact' } : {}),
         items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: s.long ? '아주 긴 이름을 가진 프로젝트 활동 내역' : '활동', href: '#activity', icon: 'list', badge: 3 },
           { title: '문서', icon: 'file-text', items: [{ key: 'projects', label: '프로젝트', icon: 'folder', children: [{ key: 'brand', label: '브랜드 웹사이트', href: '#brand', badge: true }, { key: 'checkout', label: '결제 화면 개선', href: '#checkout' }] }, { key: 'archive', label: '보관함', href: '#archive', icon: 'box' }] },
           { key: 'help', label: '도움말', href: 'https://example.com/help', icon: 'help-circle', target: '_blank' },
@@ -164,4 +167,27 @@ export function generate(input: UsageInput) {
   if (fieldLabels[name]) content = b.node('KjunFormGroup', { label: fieldLabels[name][0], error: s.error ? fieldLabels[name][1] : '' }, content);
   if (['KjunTimePicker', 'KjunColorPicker', 'KjunQuantityStepper'].includes(name)) content = b.node(b.native ? 'View' : 'div', { style: { width: b.native ? 360 : '360px', maxWidth: '100%' } }, content);
   return b.finish(content);
+}
+
+// Spaces and a menu panel: one side navigation collapsed with names (railLabels) picks the space, a second one lists that
+// space's pages densely. The app keeps both values; choosing a space opens its first page.
+function sideNavigationSpaces(b: UsageBuilder) {
+  const spaces = b.data('spaces', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'projects', label: '프로젝트', href: '#projects', icon: 'folder' },
+    { key: 'team', label: '팀', href: '#team', icon: 'building', badge: true }, { key: 'settings', label: '설정', href: '#settings', icon: 'settings' }]);
+  b.data('pages', {
+    home: [{ key: 'overview', label: '개요', href: '#overview', icon: 'chart-bar' }, { key: 'requests', label: '받은 요청', href: '#requests', icon: 'bell', badge: 4 }],
+    projects: [{ key: 'board', label: '보드', href: '#board', icon: 'clipboard-list' },
+      { title: '즐겨찾기', items: [{ key: 'brand', label: '브랜드 웹사이트', href: '#brand', icon: 'world', badge: 8 }, { key: 'checkout', label: '결제 화면 개선', href: '#checkout', icon: 'currency-won' }] },
+      { title: '보관', items: [{ key: 'archive', label: '보관함', href: '#archive', icon: 'box' }] }],
+    team: [{ key: 'members', label: '구성원', href: '#members', icon: 'user' }, { key: 'invites', label: '초대', href: '#invites', icon: 'mail', badge: true }],
+    settings: [{ key: 'profile', label: '프로필', href: '#profile', icon: 'user' }, { key: 'billing', label: '결제', href: '#billing', icon: 'wallet' }],
+  });
+  const plain = b.native ? '' : 'event.preventDefault();\n';
+  const column = (width: number, child: string) => b.node(b.native ? 'View' : 'div', { style: { width: b.vue ? width + 'px' : width } }, child);
+  return b.group([b.node(b.native ? 'View' : 'div', { style: b.native ? { flexDirection: 'row', alignItems: 'flex-start', gap: 8 } : { display: 'flex', alignItems: 'flex-start', gap: b.vue ? '8px' : 8 } }, [
+    column(72, b.node('KjunSideNavigation', { ariaLabel: '공간', items: spaces, value: b.state('space', 'projects'), collapsed: true, railLabels: true,
+      onNavigate: b.handler('chooseSpace', 'key, event', plain + b.set('space', 'key') + '\n' + b.set('destination', 'pages[key][0].key')) })),
+    column(240, b.node('KjunSideNavigation', { ariaLabel: '메뉴', items: expr('pages[state.space]'), value: b.state('destination', 'board'), density: 'compact',
+      onNavigate: b.handler('navigate', 'key, event', plain + b.set('destination', 'key')) })),
+  ].join('\n')), b.text(expr('"현재 위치: " + state.space + " / " + state.destination'))]);
 }

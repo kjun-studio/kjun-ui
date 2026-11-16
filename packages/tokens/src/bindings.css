@@ -409,6 +409,14 @@
   --_kjun-extension-side-navigation-group-gap: 6px;
   --_kjun-extension-side-navigation-touch-item-height: 48px;
   --_kjun-extension-side-navigation-touch-child-height: 44px;
+  --_kjun-extension-side-navigation-rail-item-width: 72px;
+  --_kjun-extension-side-navigation-rail-padding-x: 4px;
+  --_kjun-extension-side-navigation-rail-padding-y: 6px;
+  --_kjun-extension-side-navigation-rail-indicator-width: 56px;
+  --_kjun-extension-side-navigation-rail-indicator-height: 32px;
+  --_kjun-extension-side-navigation-rail-label-gap: 4px;
+  --_kjun-extension-side-navigation-compact-item-height: 32px;
+  --_kjun-extension-side-navigation-compact-child-height: 30px;
   --_kjun-extension-floating-navigation-item-size: 52px;
   --_kjun-extension-floating-navigation-icon-size: 24px;
   --_kjun-extension-floating-navigation-padding: 6px;

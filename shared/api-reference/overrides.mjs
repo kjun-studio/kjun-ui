@@ -516,6 +516,8 @@ set("SideNavigation", {
   collapsibleGroups: { default: "false", summary: "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 현재 페이지가 있는 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 선택 배경색 면을, 배지가 있으면 점을 표시합니다." },
   expandedGroups: { summary: "열린 묶음 목록입니다. 묶음의 key, 없으면 제목으로 구분합니다. 생략하면 컴포넌트가 스스로 기억하고, 주면 앱이 관리합니다(Vue v-model:expandedGroups). 열린 상태를 저장하거나 메뉴 검색 중 모든 묶음을 열 때 씁니다." },
   rail: { default: '"items"', summary: "collapsed일 때 아이콘을 세우는 단위입니다. items는 최상위 항목마다, groups는 묶음마다 아이콘 하나를 세웁니다(묶음의 icon, 없으면 제목의 첫 글자). groups에서 묶음을 누르면 그 묶음을 연 채로 넓혀 달라고 요청하고, 웹에서는 넓어진 뒤 묶음 제목을 화면 안으로 스크롤합니다. 묶음 밖 항목은 그대로 한 줄씩 남습니다." },
+  railLabels: { default: "false", summary: "collapsed일 때 아이콘 아래에 짧은 이름을 한 줄로 보여 줍니다. 항목은 72px 폭이 되고(열 폭은 72px + 앱의 좌우 여백), 현재 목적지·마우스 올림·누름은 아이콘을 감싸는 56×32px 면으로 표시합니다. 이름이 보이므로 툴팁은 띄우지 않고, 배지는 숫자 그대로 아이콘 모서리에 놓입니다. 이름은 여섯 글자 안팎으로 짧게 정하세요. 넘치면 말줄임합니다." },
+  density: { default: '"default"', summary: "compact이면 마우스 포인터에서 항목을 32px, 하위 항목을 30px로 줄이고, 항목 끝의 숫자 배지를 3차 글자색 숫자로 낮춥니다(점 배지는 그대로). 문서·설정처럼 항목이 많은 목록에 씁니다. 터치 포인터와 Native 기기에서는 터치 높이(48·44px)를 유지합니다." },
 });
 for (const platform of ["react", "native"]) set("SideNavigation", {
   onExpandedGroupsChange: "묶음을 여닫거나, 닫힌 묶음 안으로 이동했거나, rail=\"groups\"에서 묶음을 눌렀을 때 다음 목록으로 호출합니다. expandedGroups를 주었다면 받은 값을 반영합니다.",
