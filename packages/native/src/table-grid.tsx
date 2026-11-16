@@ -15,13 +15,19 @@ import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { useKjunStyles } from "./provider";
 import type { TableColumn } from "./table-model";
 import { tableHeaderRows, tableSpans } from "../../../shared/package-runtime/table-columns";
-export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, groups, collapsed, toggleGroup, groupLabel, summary }: TableGridProps<Row, number>) {
+export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, groups, collapsed, toggleGroup, groupLabel, summary, edgeInset }: TableGridProps<Row, number>) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles();
   const geometry = tokens.table;
   // Like Web's scroll hint: when columns overflow, the trailing edge fades until the end is reached.
   const [scroll, setScroll] = useState({ viewport: 0, x: 0 }), [stuck, setStuck] = useState(false), fadeId = "kjun-table-fade-" + useId().replace(/[^a-z0-9]/gi, "");
   const cellPadding = geometry.cellPadding[compact ? "compact" : "regular"];
+  // edgeInset="none", like Web: the first column's start and the last column's end lose their padding in every row.
+  // A leading checkbox column or a trailing expand or move column is the edge instead, so the data column keeps its inset.
+  const flush = edgeInset === "none";
+  const sides = (x: number, first: boolean, last: boolean) => ({ paddingLeft: flush && first ? 0 : x, paddingRight: flush && last ? 0 : x });
+  const firstColumn = (index: number) => index === 0 && !selectable;
+  const lastColumn = (index: number, span = 1) => index + span === visible.length && !expandable && !mover;
   const naturalWidth = (col: TableColumn<Row>) =>
     typeof col.width === "number"
       ? col.width
@@ -90,7 +96,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
               // A spanning cell is as wide as the columns it covers.
               width: visible.slice(c, c + spans[c]).reduce((sum, covered) => sum + width(covered), 0),
               paddingVertical: cellPadding.y,
-              paddingHorizontal: cellPadding.x,
+              ...sides(cellPadding.x, firstColumn(c), lastColumn(c, spans[c])),
               justifyContent: "center",
             }}
           >
@@ -116,7 +122,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
           <View
             style={{
               paddingVertical: geometry.expandedPadding.y,
-              paddingHorizontal: geometry.expandedPadding.x,
+              ...sides(geometry.expandedPadding.x, true, true),
               backgroundColor: colors.secondary,
             }}
           >
@@ -131,7 +137,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
     <View key={key} style={{ flexDirection: "row", ...(kind === "total" ? { borderTopWidth: tokens.border.controlWidth, borderTopColor: colors.text } : null) }}>
       {selectable && <View style={{ width: geometry.actionColumnWidth }} />}
       {visible.map((col, c) => (
-        <View key={col.key} style={{ width: width(col), paddingVertical: cellPadding.y, paddingHorizontal: cellPadding.x, justifyContent: "center",
+        <View key={col.key} style={{ width: width(col), paddingVertical: cellPadding.y, ...sides(cellPadding.x, firstColumn(c), lastColumn(c)), justifyContent: "center",
           alignItems: col.align === "right" ? "flex-end" : col.align === "center" ? "center" : "flex-start" }}>
           {content(summary(col, rows) ?? (c === 0 ? (kind === "total" ? m.tableTotal : m.tableSubtotal) : null),
             kind === "total" ? { ...typeStyle("control"), color: colors.text } : { ...typeStyle("caption"), color: colors.textSecondary })}
@@ -163,7 +169,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
                       width: width(col),
                       minHeight: tokens.native.minimumTouchTarget,
                       paddingVertical: geometry.headerPadding.y,
-                      paddingHorizontal: geometry.headerPadding.x,
+                      ...sides(geometry.headerPadding.x, firstColumn(visible.indexOf(col)), lastColumn(visible.indexOf(col))),
                       flexDirection: "row",
                       alignItems: "center",
                       justifyContent:
@@ -205,7 +211,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
       const open = !collapsed.includes(group.key);
       return [
         <View key={"group:" + group.key} role="heading" style={{ flexDirection: "row", alignItems: "center", gap: geometry.groupGap, width: totalWidth,
-          paddingVertical: geometry.groupPadding.y, paddingHorizontal: geometry.groupPadding.x, backgroundColor: colors.secondary }}>
+          paddingVertical: geometry.groupPadding.y, ...sides(geometry.groupPadding.x, true, true), backgroundColor: colors.secondary }}>
           <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"}
             ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} accessibilityState={{ expanded: open }} onPress={() => toggleGroup(group.key)} />
           {content(groupLabel(group), { ...typeStyle("control"), color: colors.text })}
@@ -252,7 +258,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
                 )}
                 {headerRows ? headerRows.map((cell) => cell.kind === "column" ? columnHeader(cell.column) : (
                   <View key={cell.key} accessibilityRole="header" style={{ width: cell.columns.reduce((sum, col) => sum + width(col), 0) }}>
-                    <View style={{ paddingVertical: geometry.headerPadding.y, paddingHorizontal: geometry.headerPadding.x, alignItems: "center",
+                    <View style={{ paddingVertical: geometry.headerPadding.y, ...sides(geometry.headerPadding.x, firstColumn(visible.indexOf(cell.columns[0])), lastColumn(visible.indexOf(cell.columns[cell.columns.length - 1]))), alignItems: "center",
                       borderBottomWidth: tokens.border.defaultWidth, borderBottomColor: colors.border }}>
                       <KText style={{ ...typeStyle("controlSmall"), color: colors.textSecondary }}>{cell.label}</KText>
                     </View>
@@ -266,13 +272,13 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
                 Array.from({ length: skeletonRows }, (_, i) => (
                   <View key={i} style={{ flexDirection: "row" }}>
                     {selectable && <View style={{ width: geometry.actionColumnWidth }} />}
-                    {visible.map((col) => (
+                    {visible.map((col, c) => (
                       <View
                         key={col.key}
                         style={{
                           width: width(col),
                           paddingVertical: cellPadding.y,
-                          paddingHorizontal: cellPadding.x,
+                          ...sides(cellPadding.x, firstColumn(c), lastColumn(c)),
                         }}
                       >
                         <KjunSkeleton
@@ -286,7 +292,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
                   </View>
                 ))
               ) : !state.rows.length ? (
-                <View style={{ paddingVertical: geometry.emptyPadding.y, paddingHorizontal: geometry.emptyPadding.x, alignItems: "center" }}>
+                <View style={{ paddingVertical: geometry.emptyPadding.y, ...sides(geometry.emptyPadding.x, true, true), alignItems: "center" }}>
                   {content(emptyContent || emptyText, {
                     color: colors.textSecondary,
                   })}

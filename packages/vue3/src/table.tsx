@@ -64,6 +64,8 @@ const kjunTableProps = {
   pagination: { type: Object as PropType<TablePagination | null>, default: undefined },
   compact: { type: Boolean, default: false },
   striped: { type: Boolean, default: false },
+  /** "none" drops the first column's start padding and the last column's end padding in the grid, so the table lines up with text around it. For tables without row fills. */
+  edgeInset: { type: String as PropType<"default" | "none">, default: "default" },
   ariaLabel: { type: String, default: undefined },
   responsive: { type: String as PropType<"card" | "list" | "compact" | "none" | null>, default: null },
   mobileColumns: { type: Array as PropType<string[]>, default: () => [] },
@@ -318,7 +320,7 @@ const KjunTableComponent = defineComponent({
             hasLoadedOnce={props.hasLoadedOnce} error={props.error} refreshing={status.queryRefreshing} loadingPadding="none" onRetry={props.onRetry}
             loading={props.skeleton ? undefined : props.loading} loadingText={(props.loadingText ?? m.value.loadingEllipsis)} loadingDelay={props.skeleton ? 0 : props.loadingDelay}>
             {card ? tableCards({ ...context, layout, totals, groups, groupLabel, groupTotals, ...groupExpansion }) : layout.list ? tableList({ ...context, layout, totals, groups, groupLabel, groupTotals, ...groupExpansion }) : tableGrid({ ...context, visible, columnGroups: props.columnGroups, cellSpan: props.cellSpan, maxHeight: props.maxHeight, stickyHeader: props.stickyHeader,
-              sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable, stuck, stickyOffset: props.stickyOffset,
+              sortable: props.sortable, compact: props.compact, striped: props.striped, hoverable: props.hoverable, edgeInset: props.edgeInset, stuck, stickyOffset: props.stickyOffset,
               groups, ...groupExpansion,
               groupLabel, summary: props.summary ? summaryValue : null })}
             {pagination && (
@@ -326,7 +328,7 @@ const KjunTableComponent = defineComponent({
                 pageSize={pagination.pageSize || 20} showInfo onUpdate:page={(page: number) => emit("page-change", page)} />
             )}
           </KjunDataState>
-          {note && <p id={reorderNoteId} class="kjun-table-reorder-note">{note}</p>}
+          {note && <p id={reorderNoteId} class="kjun-table-reorder-note" data-edge-inset={props.edgeInset === "none" ? "none" : undefined}>{note}</p>}
           {/* Each move is announced: the row and its new place. */}
           {props.reorderable && <span class="kjun-sr-only" role="status">{reorder.said.value}</span>}
         </div>

@@ -181,6 +181,13 @@
 .kjun-table[data-hoverable="true"] tbody > tr[data-selected]:hover {
   background: var(--_kjun-color-selected-bg);
 }
+/* edgeInset="none": the first cell's start and the last cell's end lose their padding in every row (header, body,
+   group, expanded, summary, empty), so the table's text and rules meet the edges of the text around it. A leading
+   checkbox cell has no padding of its own, so the column after it keeps its inset. */
+.kjun-table[data-edge-inset="none"] tr > :is(th, td):first-child { padding-inline-start: 0; }
+.kjun-table[data-edge-inset="none"] tr > :is(th, td):last-child { padding-inline-end: 0; }
+.kjun-table[data-edge-inset="none"] .kjun-table-empty { padding-inline: 0 !important; }
+.kjun-table-reorder-note[data-edge-inset="none"] { padding-inline: 0; }
 /* A sticky header covers the rows beneath it; once rows pass under it, its line turns strong instead of casting a shadow. */
 .kjun-table-scroll[data-stuck] .kjun-table thead th {
   border-bottom-color: var(--_kjun-color-border-strong);

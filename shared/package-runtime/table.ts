@@ -89,6 +89,8 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   pagination?: TablePagination | null;
   compact?: boolean;
   striped?: boolean;
+  /** "none" drops the first column's start padding and the last column's end padding in the grid, so the table lines up with text around it. For tables without row fills. */
+  edgeInset?: "default" | "none";
   ariaLabel?: string;
   responsive?: "card" | "list" | "compact" | "none" | null;
   mobileColumns?: string[];

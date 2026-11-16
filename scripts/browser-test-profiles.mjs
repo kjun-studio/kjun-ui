@@ -14,7 +14,7 @@ const componentGroups = {
   empty: [...files('empty-design', 'data-state-design', 'token-display-propagation'), ...visuals],
   'data-state': [...files('data-state-design', 'empty-design', 'skeleton-design', 'loading-options', 'table-contracts', 'runtime-cards', 'runtime-market'), ...contracts],
   card: [...files('card-design', 'pressable', 'root-class', 'card-contract', 'card-review', 'card-layout', 'card-colors', 'card-hairline', 'geometry-tokens'), ...visuals],
-  table: [...files('table-contracts', 'table-refine', 'table-structure', 'table-reorder', 'table-groups', 'table-list', 'table-card-layouts', 'loading-options', 'runtime-cards', 'data-state-design', 'accessibility-components'), ...contracts, ...visuals],
+  table: [...files('table-contracts', 'table-edge', 'table-refine', 'table-structure', 'table-reorder', 'table-groups', 'table-list', 'table-card-layouts', 'loading-options', 'runtime-cards', 'data-state-design', 'accessibility-components'), ...contracts, ...visuals],
   market: [...files('runtime-market', 'price-status', 'loading-options', 'data-state-design', 'geometry-tokens'), ...visuals],
   select: [...files('select-scroll', 'expanded', 'elevation-inputs', 'popup-escape', 'react-tabs-actions'), ...fields, ...contracts, ...visuals],
   combobox: [...files('select-scroll', 'popup-escape', 'elevation-inputs'), ...fields, ...contracts, ...visuals],

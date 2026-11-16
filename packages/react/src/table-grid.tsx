@@ -13,7 +13,7 @@ interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["m
   customClass: (row: Row, index: number) => string;
   rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
 }
-export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary, stickyOffset = 0 }: Props<Row>) {
+export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary, edgeInset, stickyOffset = 0 }: Props<Row>) {
   const m = useKjunMessages();
   // A reorderable table ends each row with its move buttons, after the expand toggle.
   const span = visible.length + Number(selectable) + Number(expandable) + Number(!!mover);
@@ -158,6 +158,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
               data-compact={compact}
               data-hoverable={hoverable}
               data-striped={striped}
+              data-edge-inset={edgeInset === "none" ? "none" : undefined}
             >
               <thead
                 style={

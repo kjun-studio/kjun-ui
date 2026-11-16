@@ -313,6 +313,7 @@ set("KpiRow", {
   masked: { default: "false", summary: "숫자 값과 valueSegments를 •••• 로 가리고 방향 색을 칠하지 않습니다. 텍스트 값·배지·설명은 그대로 둡니다. 스크린 리더는 '숨김'을 읽습니다." },
 });
 set("KpiHero KpiRow", { surface: { default: '"card"', summary: "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다." } });
+set("Table", { edgeInset: { default: "\"default\"", summary: "none이면 격자 표에서 첫 열의 시작 쪽 여백과 끝 열의 끝 쪽 여백을 없애, 표의 글자와 구분선이 주변 글과 같은 선에 놓입니다. 머리글·본문·묶음 제목·펼친 내용·요약·빈 상태에 모두 적용하고, 열 사이 여백과 카드·목록 배치는 그대로입니다. 줄무늬·선택·hover처럼 줄에 배경이 깔리는 표에서는 배경이 글자에 붙으므로 배경 없는 표에 씁니다." } });
 set("Table MarketCards MarketSimpleList MarketTable", { skeleton: { default: "true", summary: "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다." } });
 set("SignedValue", {
   isRaw: "percent 형식에서 true면 퍼센트 단위(2.35), false면 비율 단위(0.0235)를 받습니다.",

@@ -100,7 +100,7 @@ export interface TableRowsContext {
 }
 
 export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; columnGroups?: TableColumnGroup[]; cellSpan?: (row: any, column: TableColumn<any>) => number | null | undefined; maxHeight?: number | string; stickyHeader: boolean;
-  sortable?: boolean; compact: boolean; striped: boolean; hoverable: boolean; stuck: { value: boolean }; stickyOffset: number;
+  sortable?: boolean; compact: boolean; striped: boolean; hoverable: boolean; edgeInset?: "default" | "none"; stuck: { value: boolean }; stickyOffset: number;
   groups: TableRowGroup<Row>[] | null; collapsed: string[]; toggleGroup: (key: string) => void;
   groupLabel: (group: TableRowGroup<Row>) => VNodeChild; summary: ((column: TableColumn<any>, rows: Row[]) => VNodeChild) | null }) {
   const { state, visible, selectable, expandable } = c, m = c.messages;
@@ -189,7 +189,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
     <div class="kjun-table-scroll" style={css({ maxHeight: c.maxHeight, visibility: c.skeletonHidden ? "hidden" : undefined })} aria-hidden={c.skeletonHidden ? "true" : undefined}
       data-stuck={c.stickyHeader && c.stuck.value ? "" : undefined} data-page-sticky={pageSticky ? "" : undefined}
       onScroll={c.stickyHeader && !pageSticky ? (event: Event) => { c.stuck.value = (event.currentTarget as HTMLElement).scrollTop > 0; } : undefined}>
-      <table class="kjun-table" aria-label={c.ariaLabel} data-compact={String(c.compact)} data-hoverable={String(c.hoverable)} data-striped={String(c.striped)}>
+      <table class="kjun-table" aria-label={c.ariaLabel} data-compact={String(c.compact)} data-hoverable={String(c.hoverable)} data-striped={String(c.striped)} data-edge-inset={c.edgeInset === "none" ? "none" : undefined}>
         <thead style={c.stickyHeader ? { position: "sticky", top: (pageSticky ? c.stickyOffset : 0) + "px", zIndex: 2 } : undefined}>
           <tr>
             {selectable && (

@@ -193,6 +193,7 @@ export interface TableGridProps<Row extends object, Height> extends TableRowsPro
   compact: boolean;
   striped: boolean;
   hoverable: boolean;
+  edgeInset?: "default" | "none";
 }
 export interface TableToolbarProps<Row extends object> {
   selectable: boolean;
