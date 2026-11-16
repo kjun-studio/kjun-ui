@@ -438,6 +438,10 @@ set("Progress", {
   shape: { default: "bar", summary: "bar는 막대, circle은 원형입니다. 원형 지름·선 굵기는 progress.circle 토큰(sm 24·md 48·lg 64)이고, label·subLabel은 원 아래 가운데에 둡니다. showLabel 퍼센트는 md 이상에서 원 가운데에만 표시합니다." },
 });
 // 0.15.0 additions.
+for (const platform of ["react", "native"]) set("AccordionItem", {
+  onAfterOpen: "펼침 애니메이션이 끝나 패널이 제 높이를 갖춘 뒤 한 번 호출합니다. 패널 안의 결과로 스크롤을 맞출 때 씁니다. 처음 그릴 때와, 끝나기 전에 다시 접은 경우에는 호출하지 않습니다.",
+  onAfterClose: "접힘 애니메이션이 끝난 뒤 한 번 호출합니다.",
+}, platform);
 set("Drawer Modal", { onAfterClose: "닫힘 애니메이션이 끝나 화면에서 완전히 사라진 뒤 한 번 호출합니다. 다음 시트·완료 안내를 여기서 띄우세요. 처음부터 닫힌 채 마운트되거나 닫히는 도중 다시 열리면 호출하지 않습니다. 모션 줄이기에서는 닫힌 즉시 호출합니다." }, "react");
 set("Drawer Modal", { onAfterClose: "닫힘 애니메이션이 끝난 뒤 한 번 호출합니다. iOS는 시스템 창이 실제로 닫힐 때(onDismiss)까지 기다리므로 여기서 다음 Modal을 띄워도 됩니다. 기기에서는 아직 확인하지 않았습니다." }, "native");
 set("Select Combobox Dropdown MenuButton", { returnFocus: "메뉴가 항목 선택이나 Escape로 닫힐 때 트리거 대신 초점을 옮길 요소입니다(요소, ref, 또는 요소를 돌려주는 함수. 닫히는 순간에 읽습니다). 바깥을 눌러 다른 요소로 초점이 간 경우에는 옮기지 않습니다. 웹 전용입니다." });

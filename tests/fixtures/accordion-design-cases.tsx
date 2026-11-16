@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { accordionConfig } from './accordion-design-data';
+// Nothing is drawn for these, so the existing layout checks see the same page.
+const settled = (event: string) => { ((window as any).accordionEvents ??= []).push(event); };
 export function AccordionDesignCases({ K }: { K: any }) {
   const [config, setConfig] = useState(accordionConfig);
   Object.assign(window, { configureAccordion: (next: object) => flushSync(() => setConfig(old => ({ ...old, ...next }))) });
@@ -10,7 +12,7 @@ export function AccordionDesignCases({ K }: { K: any }) {
         header={config.custom ? <K.KjunText>⚙︎</K.KjunText> : undefined} ariaLabel={config.custom ? '계정 설정 열기' : undefined}>
         {config.action ? <K.KjunButton variant="ghost" size="sm">본문 행동</K.KjunButton> : config.body}
       </K.KjunAccordionItem>
-      <K.KjunAccordionItem title="알림 설정">알림을 받을 방식을 선택하세요.</K.KjunAccordionItem>
+      <K.KjunAccordionItem title="알림 설정" onAfterOpen={() => settled('open')} onAfterClose={() => settled('close')}>알림을 받을 방식을 선택하세요.</K.KjunAccordionItem>
     </K.KjunAccordion>
   </div></main>;
 }

@@ -3,7 +3,11 @@ import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { useReducedMotion } from './use-reduced-motion';
 
 /** keepMounted: once opened, the body stays mounted (inert, hidden from assistive technology) while closed. */
-export function Collapse({ open, keepMounted = false, children }: { open: boolean; keepMounted?: boolean; children: ReactNode }) {
+/** onSettled reports a finished change of state (opened or closed), once its height motion has ended; not the first render,
+ * a change that was reversed before it finished, or the body resizing while open. */
+export function Collapse({ open, keepMounted = false, onSettled, children }: { open: boolean; keepMounted?: boolean; onSettled?: (open: boolean) => void; children: ReactNode }) {
+  const settledOpen = useRef(open), notifySettled = useRef(onSettled);
+  notifySettled.current = onSettled;
   const reduced = useReducedMotion();
   const [retained, setRetained] = useState(open);
   const root = useRef<HTMLDivElement>(null), body = useRef<HTMLDivElement>(null);
@@ -29,6 +33,7 @@ export function Collapse({ open, keepMounted = false, children }: { open: boolea
         if (disposed) return;
         el.style.height = open ? 'auto' : '0px'; animation.current = null;
         setRetained(open);
+        if (settledOpen.current !== open) { settledOpen.current = open; notifySettled.current?.(open); }
       };
       if (reduced || start === end) { finish(); return; }
       el.style.height = end + 'px';

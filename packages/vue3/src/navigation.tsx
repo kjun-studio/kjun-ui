@@ -79,11 +79,12 @@ const kjunAccordionItemProps = {
   ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunAccordionItemProps = ExtractPublicPropTypes<typeof kjunAccordionItemProps>;
-/** Slots: default (panel), header (replaces the title). Event update:open (a request when controlled, a report otherwise). */
+/** Slots: default (panel), header (replaces the title). Events: update:open (a request when controlled, a report otherwise),
+ * after-open and after-close (the item has finished opening or closing, after its height motion). */
 export const KjunAccordionItem = defineComponent({
   name: "KjunAccordionItem",
   props: kjunAccordionItemProps,
-  emits: { "update:open": (_open: boolean) => true },
+  emits: { "update:open": (_open: boolean) => true, "after-open": () => true, "after-close": () => true },
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
     header?: () => VNodeChild;
@@ -121,7 +122,7 @@ export const KjunAccordionItem = defineComponent({
       return (
         <div class="kjun-accordion-item" data-leading={props.icon ? "" : undefined}>
           {Heading ? <Heading class="kjun-accordion-title">{trigger}</Heading> : trigger}
-          <KjunCollapse open={open} keepMounted={props.keepMounted}>
+          <KjunCollapse open={open} keepMounted={props.keepMounted} onSettled={(settled: boolean) => { if (settled) emit("after-open"); else emit("after-close"); }}>
             <div role={region ? "region" : undefined} id={id + "-panel"} aria-labelledby={region ? id + "-heading" : undefined} class="kjun-accordion-panel">{slots.default?.()}</div>
           </KjunCollapse>
         </div>

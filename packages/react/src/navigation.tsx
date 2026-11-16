@@ -88,6 +88,10 @@ export interface KjunAccordionItemProps {
   open?: boolean;
   /** Requests a change on a controlled item; reports every change on an uncontrolled one (also when a sibling closes it). */
   onOpenChange?: (open: boolean) => void;
+  /** Called once the item has finished opening, after its height motion: the panel has its full height (e.g. to scroll a result into view). */
+  onAfterOpen?: () => void;
+  /** Called once the item has finished closing. */
+  onAfterClose?: () => void;
   /** Keeps the body mounted after it first opens, so inputs keep their state while closed. */
   keepMounted?: boolean;
   disabled?: boolean;
@@ -107,6 +111,8 @@ export function KjunAccordionItem({
   ariaLabel,
   open: openProp,
   onOpenChange,
+  onAfterOpen,
+  onAfterClose,
   keepMounted = false,
   children,
 }: KjunAccordionItemProps) {
@@ -154,7 +160,7 @@ export function KjunAccordionItem({
         />
       </button>
       </Heading>
-      <Collapse open={open} keepMounted={keepMounted}>
+      <Collapse open={open} keepMounted={keepMounted} onSettled={settled => (settled ? onAfterOpen : onAfterClose)?.()}>
         <div
           role={layout.region ? "region" : undefined}
           id={id + "-panel"}

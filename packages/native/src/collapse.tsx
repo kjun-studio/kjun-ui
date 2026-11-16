@@ -5,7 +5,11 @@ import { useReducedMotion } from './internal';
 import { motionOut } from './motion';
 
 /** keepMounted: once opened, the body stays mounted (height 0, hidden from assistive technology) while closed. */
-export function Collapse({ open, keepMounted = false, children }: { open: boolean; keepMounted?: boolean; children: ReactNode }) {
+/** onSettled reports a finished change of state (opened or closed), once its height motion has ended; not the first render,
+ * a change that was reversed before it finished, or the body resizing while open. */
+export function Collapse({ open, keepMounted = false, onSettled, children }: { open: boolean; keepMounted?: boolean; onSettled?: (open: boolean) => void; children: ReactNode }) {
+  const settledOpen = useRef(open), notifySettled = useRef(onSettled);
+  notifySettled.current = onSettled;
   const reduced = useReducedMotion();
   const [retained, setRetained] = useState(open), [height, setHeight] = useState<number | null>(null);
   const value = useRef(new Animated.Value(0)).current;
@@ -18,7 +22,7 @@ export function Collapse({ open, keepMounted = false, children }: { open: boolea
     if (height === null) return;
     value.stopAnimation();
     const target = open ? height : 0;
-    const finish = () => { if (revision === version.current) { setSettled(open); setRetained(open); } };
+    const finish = () => { if (revision === version.current) { setSettled(open); setRetained(open); if (settledOpen.current !== open) { settledOpen.current = open; notifySettled.current?.(open); } } };
     if (reduced || (first.current && open)) { value.setValue(target); finish(); }
     else { setSettled(false); Animated.timing(value, { toValue: target, duration: tokens.motion.collapse, easing: motionOut, useNativeDriver: false }).start(({ finished }) => { if (finished) finish(); }); }
     first.current = false;

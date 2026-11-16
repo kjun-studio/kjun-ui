@@ -4,6 +4,7 @@ import { accordionConfig, setupAccordionColors } from './accordion-design-data';
 setupAccordionColors();
 const s = reactive({ config: { ...accordionConfig } as any });
 Object.assign(window, { configureAccordion: (next: object) => { s.config = { ...s.config, ...next }; } });
+const settled = (event: string) => { ((window as any).accordionEvents ??= []).push(event); };
 createApp(defineComponent(() => () => {
   const config = s.config;
   return <K.KjunProvider><main style={{ padding: '16px' }}><div data-testid="frame">
@@ -15,7 +16,7 @@ createApp(defineComponent(() => () => {
           ...(config.custom ? { header: () => <span>⚙︎</span> } : {}),
         }}
       </K.KjunAccordionItem>
-      <K.KjunAccordionItem title="알림 설정">알림을 받을 방식을 선택하세요.</K.KjunAccordionItem>
+      <K.KjunAccordionItem title="알림 설정" onAfterOpen={() => settled('open')} onAfterClose={() => settled('close')}>알림을 받을 방식을 선택하세요.</K.KjunAccordionItem>
     </K.KjunAccordion>
   </div></main></K.KjunProvider>;
 })).mount('#root');

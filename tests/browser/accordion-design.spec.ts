@@ -133,3 +133,25 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(headers(page).first()).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   });
 }
+
+for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: an item reports when it has finished opening and closing`, async ({ page }) => {
+    await openFixture(page, platform, '', 'accordion-design');
+    const events = () => page.evaluate(() => (window as any).accordionEvents ?? []);
+    const trigger = page.getByRole('button', { name: '알림 설정' });
+    // Nothing is reported for the first render.
+    expect(await events()).toEqual([]);
+    await trigger.click();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    await expect.poll(events).toEqual(['open']);
+    // By then the panel is fully shown.
+    await expect(page.getByText('알림을 받을 방식을 선택하세요.')).toBeVisible();
+    await trigger.click();
+    await expect.poll(events).toEqual(['open', 'close']);
+    // A change reversed before its motion ends settles where it started, so it reports nothing.
+    await trigger.click(); await trigger.click();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    await page.waitForTimeout(600);
+    expect(await events()).toEqual(['open', 'close']);
+  });
+}
