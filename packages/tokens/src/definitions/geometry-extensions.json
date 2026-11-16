@@ -44,6 +44,7 @@
       "descriptionGap": { "$ref": "dimension.value4" },
       "actionsGap": { "$ref": "dimension.value8" },
       "actionsPadding": { "$ref": "extensions.list.padding" },
+      "trailingMaxPercent": 35,
       "leadingWidth": { "$ref": "dimension.value40" },
       "leadingSizes": {
         "xs": { "$ref": "dimension.value24" },

@@ -128,7 +128,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
       {hasContent(children) && <View style={{ marginTop: list.descriptionGap }}>{content(children)}</View>}
     </View>
     {/* A value at the row's end reads one step below the title and keeps the row's end line when it wraps. */}
-    {hasContent(trailing) && <View style={{ maxWidth: "35%", alignItems: "flex-end", justifyContent: "center", ...(description ? { alignSelf: "flex-start", minHeight: band } : {}) }}>{content(trailing, { ...trailingType, color: colors.textSecondary, textAlign: "right" })}</View>}
+    {hasContent(trailing) && <View style={{ maxWidth: `${list.trailingMaxPercent}%`, alignItems: "flex-end", justifyContent: "center", ...(description ? { alignSelf: "flex-start", minHeight: band } : {}) }}>{content(trailing, { ...trailingType, color: colors.textSecondary, textAlign: "right" })}</View>}
     {endMark === "spinner" ? <View style={end(endIcon)}><KjunIcon name="loader-2" spin size={endIcon} color={colors.textTertiary} /></View>
       : endMark === "mark" ? <View style={end(list.markSize)}><ChoiceMark checkbox={kind === "checkbox"} on={!!selected} /></View>
       : endMark === "check" && <View style={description ? end(endIcon) : undefined}><KjunIcon name="check" size={endIcon} color={colors.brand} /></View>}

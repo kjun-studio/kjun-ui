@@ -10,6 +10,8 @@ export function tokenKind(path) {
   if (name === 'letterSpacingEm') return 'tracking';
   if (name === 'inset' && isShadow(path)) return 'boolean';
   if (name === 'colorRole') return 'colorRole';
+  // A share of the container (a row's end column): written to CSS with %, a number of percent in TypeScript.
+  if (name.endsWith('Percent')) return 'percent';
   return 'length';
 }
 
@@ -34,6 +36,7 @@ export function tokenCssUnit(source, path, trail = []) {
   const kind = tokenKind(path);
   if (kind === 'duration') return 'ms';
   if (kind === 'tracking') return 'em';
+  if (kind === 'percent') return '%';
   return kind === 'length' ? 'px' : '';
 }
 
