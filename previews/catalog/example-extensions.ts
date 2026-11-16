@@ -49,18 +49,20 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       return h("Stack", {}, [h("KjunProvider", { safeArea: { bottom: settings.safeAreaBottom } }, h(name, { value: get("destination", "home"), items: [{ key: "home", label: "홈", href: "#home", icon: "home" }, { key: "search", label: "검색", href: "#search", icon: "search", badge: settings.badges ? true : undefined }, { key: "activity", label: "알림", href: "#activity", icon: "bell", badge: settings.badges ? 3 : undefined }, { key: "profile", label: "내 정보", href: "#profile", icon: "user" }], keyboardVisible: settings.keyboardVisible, hideOnKeyboard: settings.hideOnKeyboard, onNavigate: (key: string, event: any) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return; event.preventDefault(); set("destination", key); } })), h("Text", {}, "현재 위치: " + get("destination", "home"))]);
     case "KjunSideNavigation": {
       // A sidebar column of a fixed width, as an app would give it; "활동" carries a badge, "문서" opens its children and
-      // "도움말" opens in a new tab. Icons only, the column narrows and widens again when a parent is pressed.
+      // "도움말" opens in a new tab. Icons only, the column narrows and widens again when a parent or group is pressed;
+      // groups carry icons for a rail of groups, and with collapsibleGroups their titles open and close them.
       const collapsed = !!settings.collapsed && !get("widened", false);
       return h("Stack", {}, [h("Box", { width: collapsed ? 44 : 240 }, h(name, { ariaLabel: "작업 공간", value: get("destination", "home"), collapsed,
+        collapsibleGroups: settings.collapsibleGroups, rail: settings.rail,
         onCollapsedChange: (next: boolean) => set("widened", !next), items: [
         { key: "home", label: "홈", href: "#home", icon: "home" },
         { key: "activity", label: settings.long ? "아주 긴 이름을 가진 프로젝트 활동 내역" : "활동", href: "#activity", icon: "list", badge: 3 },
-        { title: "문서", items: [
+        { title: "문서", icon: "file-text", items: [
           { key: "projects", label: "프로젝트", icon: "folder", children: [{ key: "brand", label: "브랜드 웹사이트", href: "#brand", badge: true }, { key: "checkout", label: "결제 화면 개선", href: "#checkout" }] },
           { key: "archive", label: "보관함", href: "#archive", icon: "box" },
         ] },
         { key: "help", label: "도움말", href: "https://example.com/help", icon: "help-circle", target: "_blank" },
-        { title: "관리", items: [{ key: "settings", label: "설정", href: "#settings", icon: "settings", disabled }] },
+        { title: "관리", icon: "adjustments", items: [{ key: "settings", label: "설정", href: "#settings", icon: "settings", disabled }] },
       ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); } })),
       h("Text", {}, "현재 위치: " + get("destination", "home"))]);
     }

@@ -20986,6 +20986,27 @@
         "required": false,
         "default": "false",
         "description": "v-model:collapsed: icons only, for a narrowed column. Names show as tooltips, and children stay hidden behind their parent;\npressing a parent emits update:collapsed false."
+      },
+      {
+        "name": "collapsibleGroups",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Group titles become toggles that show or hide their group. The group of the current destination starts open."
+      },
+      {
+        "name": "expandedGroups",
+        "type": "string[]",
+        "required": false,
+        "default": "—",
+        "description": "v-model:expandedGroups: the open groups by key (a group's key, else its title). Without it the navigation keeps the list itself.\nupdate:expandedGroups also reports a group opened by moving to a page in it."
+      },
+      {
+        "name": "rail",
+        "type": "SideNavigationRail",
+        "required": false,
+        "default": "\"items\"",
+        "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nemits update:collapsed false with that group open and in view. Loose items between groups keep their own row."
       }
     ],
     "events": [
@@ -21003,6 +21024,10 @@
       },
       {
         "name": "update:collapsed",
+        "source": "packages/vue3/src/side-navigation.tsx"
+      },
+      {
+        "name": "update:expandedGroups",
         "source": "packages/vue3/src/side-navigation.tsx"
       }
     ],
@@ -21069,7 +21094,35 @@
         "type": "((collapsed: boolean) => void) | undefined",
         "required": false,
         "default": "—",
-        "description": "A parent was pressed while collapsed: widen the column (collapsed=false) to show its children."
+        "description": "A parent or group was pressed while collapsed: widen the column (collapsed=false) to show its children."
+      },
+      {
+        "name": "collapsibleGroups",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Group titles become toggles that show or hide their group. The group of the current destination starts open."
+      },
+      {
+        "name": "expandedGroups",
+        "type": "string[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The open groups by key (a group's key, else its title). Without it the navigation keeps the list itself."
+      },
+      {
+        "name": "onExpandedGroupsChange",
+        "type": "((expandedGroups: string[]) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Also called when moving to a page in a closed group opens it."
+      },
+      {
+        "name": "rail",
+        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationRail | undefined",
+        "required": false,
+        "default": "—",
+        "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nasks to widen with that group open and in view. Loose items between groups keep their own row."
       }
     ],
     "native": [
@@ -21134,7 +21187,35 @@
         "type": "((collapsed: boolean) => void) | undefined",
         "required": false,
         "default": "—",
-        "description": "A parent was pressed while collapsed: widen the column (collapsed=false) to show its children."
+        "description": "A parent or group was pressed while collapsed: widen the column (collapsed=false) to show its children."
+      },
+      {
+        "name": "collapsibleGroups",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Group titles become toggles that show or hide their group. The group of the current destination starts open."
+      },
+      {
+        "name": "expandedGroups",
+        "type": "string[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The open groups by key (a group's key, else its title). Without it the navigation keeps the list itself."
+      },
+      {
+        "name": "onExpandedGroupsChange",
+        "type": "((expandedGroups: string[]) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Also called when moving to a page in a closed group opens it."
+      },
+      {
+        "name": "rail",
+        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationRail | undefined",
+        "required": false,
+        "default": "—",
+        "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nasks to widen with that group open. Loose items between groups keep their own row."
       }
     ]
   },

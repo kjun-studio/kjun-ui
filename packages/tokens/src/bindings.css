@@ -405,6 +405,10 @@
   --_kjun-extension-side-navigation-radius: 12px;
   --_kjun-extension-side-navigation-title-padding-top: 16px;
   --_kjun-extension-side-navigation-title-padding-bottom: 6px;
+  --_kjun-extension-side-navigation-group-height: 32px;
+  --_kjun-extension-side-navigation-group-gap: 6px;
+  --_kjun-extension-side-navigation-touch-item-height: 48px;
+  --_kjun-extension-side-navigation-touch-child-height: 44px;
   --_kjun-extension-floating-navigation-item-size: 52px;
   --_kjun-extension-floating-navigation-icon-size: 24px;
   --_kjun-extension-floating-navigation-padding: 6px;

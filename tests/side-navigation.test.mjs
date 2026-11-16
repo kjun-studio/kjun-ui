@@ -32,6 +32,27 @@ test("toggling a parent adds or removes it without touching the others", () => {
   assert.deepEqual(runtime.toggleSideParent(["a", "b"], "a"), ["b"]);
 });
 
+test("a group is known by its key, else its title, and the current page's group is added once", () => {
+  const keyed = [link("home"), { title: "문서", key: "docs", icon: "file-text", items: entries[2].items }, { title: "관리", items: [link("settings", { badge: true })] }];
+  assert.equal(runtime.sideGroupKey({ title: "관리" }), "관리");
+  assert.equal(runtime.sideGroupKey({ title: "문서", key: "docs" }), "docs");
+  assert.deepEqual(runtime.sideNavigationWithCurrentGroups([], keyed, "checkout"), ["docs"]);
+  assert.deepEqual(runtime.sideNavigationWithCurrentGroups([], keyed, "settings"), ["관리"]);
+  // Loose items belong to no group, and an unchanged list comes back as the same array.
+  const open = ["관리"];
+  assert.equal(runtime.sideNavigationWithCurrentGroups(open, keyed, "home"), open);
+  assert.equal(runtime.sideNavigationWithCurrentGroups(open, keyed, "settings"), open);
+  assert.equal(runtime.sideItemsHoldCurrent(keyed[1].items, "brand"), true);
+  assert.equal(runtime.sideItemsHaveBadge(keyed[2].items), true);
+  assert.equal(runtime.sideItemsHaveBadge([link("x", { badge: 3, disabled: true })]), false);
+});
+
+test("a rail of groups keeps loose items as rows and stands one row for each group", () => {
+  const rail = runtime.sideNavigationGroupRail(entries);
+  assert.deepEqual(rail.map(row => "group" in row ? "group:" + row.group.key : row.item.key), ["home", "tasks", "group:문서", "help", "group:관리"]);
+  assert.deepEqual(rail[2].group.items.map(item => item.key), ["projects", "archive"]);
+});
+
 test("the current item is a fill and a weight, never an accent stripe", async () => {
   const css = await read("packages/tokens/src/extensions.css");
   const rules = css.split("}").filter(rule => rule.includes(".kjun-side-navigation"));

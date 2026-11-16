@@ -17,6 +17,7 @@ function Page() {
       <KjunSideNavigation ariaLabel="작업 공간" items={items as any} value={value} collapsed={collapsed}
         onCollapsedChange={next => { setCollapsed(next); add('wide'); }}
         {...(sideCase.controlled ? { expanded, onExpandedChange: (next: string[]) => { setExpanded(next); add('open:' + next.join(',')); } } : {})}
+        rail={sideCase.rail} {...(sideCase.groups ? { collapsibleGroups: true, onExpandedGroupsChange: (next: string[]) => add('groups:' + next.join(',')) } : {})}
         onNavigate={(key, event) => { event.preventDefault?.(); setValue(key); add('go:' + key); }} onReselect={key => add('again:' + key)} />
     </View>
     <View><Pressable testID="to-checkout" onPress={() => setValue('checkout')}><Text>결제 화면으로</Text></Pressable><Text testID="log">{log.join(' ')}</Text></View>

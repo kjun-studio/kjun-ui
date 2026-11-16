@@ -512,10 +512,16 @@ set("SideNavigation", {
   expanded: { summary: "열린 부모 항목의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하며, 현재 목적지의 부모를 연 채로 시작합니다. 주면 앱이 관리합니다(Vue v-model:expanded). 닫힌 부모 아래 페이지로 이동하면 그 부모를 더한 목록으로 알립니다." },
   collapsed: { default: "false", summary: "아이콘만 표시합니다. 항목은 아이콘을 감싸는 44×40px 면이 되고 열 폭은 앱이 줄입니다(44px + 앱의 좌우 여백). 이름은 툴팁과 화면 낭독기로 전합니다. 하위 항목은 숨기며 부모를 누르면 넓혀 달라고 요청합니다(Vue v-model:collapsed)." },
 });
+set("SideNavigation", {
+  collapsibleGroups: { default: "false", summary: "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 현재 페이지가 있는 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 선택 배경색 면을, 배지가 있으면 점을 표시합니다." },
+  expandedGroups: { summary: "열린 묶음 목록입니다. 묶음의 key, 없으면 제목으로 구분합니다. 생략하면 컴포넌트가 스스로 기억하고, 주면 앱이 관리합니다(Vue v-model:expandedGroups). 열린 상태를 저장하거나 메뉴 검색 중 모든 묶음을 열 때 씁니다." },
+  rail: { default: '"items"', summary: "collapsed일 때 아이콘을 세우는 단위입니다. items는 최상위 항목마다, groups는 묶음마다 아이콘 하나를 세웁니다(묶음의 icon, 없으면 제목의 첫 글자). groups에서 묶음을 누르면 그 묶음을 연 채로 넓혀 달라고 요청하고, 웹에서는 넓어진 뒤 묶음 제목을 화면 안으로 스크롤합니다. 묶음 밖 항목은 그대로 한 줄씩 남습니다." },
+});
 for (const platform of ["react", "native"]) set("SideNavigation", {
+  onExpandedGroupsChange: "묶음을 여닫거나, 닫힌 묶음 안으로 이동했거나, rail=\"groups\"에서 묶음을 눌렀을 때 다음 목록으로 호출합니다. expandedGroups를 주었다면 받은 값을 반영합니다.",
   onReselect: "현재 목적지를 다시 눌렀을 때 호출합니다(onNavigate 다음). 목록을 맨 위로 올리거나 새로 고칠 때 씁니다.",
   onExpandedChange: "부모 항목을 여닫거나 닫힌 부모 아래 페이지로 이동했을 때 다음 key 목록으로 호출합니다. expanded를 주었다면 받은 값을 반영합니다.",
-  onCollapsedChange: "collapsed에서 부모 항목을 누르면 false로 호출합니다. 받은 값으로 사이드바 폭을 넓히면 그 부모가 열린 채로 보입니다.",
+  onCollapsedChange: "collapsed에서 부모 항목이나 rail=\"groups\"의 묶음을 누르면 false로 호출합니다. 받은 값으로 사이드바 폭을 넓히면 그 부모나 묶음이 열린 채로 보입니다.",
   onNavigate: platform === "native" ? "목적지를 누르면 key와 이벤트로 호출합니다. Native Web에서는 수정 키 클릭과 target이 있는 링크를 브라우저에 맡기고 호출하지 않습니다." : "수정 키 없는 일반 클릭으로 이 탭의 목적지를 누르면 key와 이벤트로 호출합니다. 기본 이동을 막고 앱에서 이동하세요. 수정 키 클릭과 target이 있는 링크는 브라우저가 엽니다.",
 }, platform);
 

@@ -185,6 +185,60 @@ for (const platform of ['react', 'vue3']) {
     await expect(parent).toHaveAttribute('aria-expanded', 'true');
     await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toBeVisible();
   });
+
+  test(`${platform}: SideNavigation collapsibleGroups opens and closes groups and keeps the current page in view`, async ({ page }) => {
+    await openFixture(page, platform, '?groups=1', 'side-navigation');
+    const nav = page.getByRole('navigation', { name: '작업 공간' }), clear = 'rgba(0, 0, 0, 0)';
+    // Only the current page's group starts open; home is loose, so both titled groups start closed.
+    const docs = nav.getByRole('button', { name: /^문서/ }), admin = nav.getByRole('button', { name: '관리' });
+    await expect(docs).toHaveAttribute('aria-expanded', 'false');
+    await expect(admin).toHaveAttribute('aria-expanded', 'false');
+    await expect(nav.getByRole('button', { name: /^프로젝트/ })).toBeHidden();
+    // A title is a 32-tall toggle row; closed over a badge it shows a dot and says so.
+    expect((await docs.boundingBox())!.height).toBe(32);
+    await expect(docs).toHaveAccessibleName('문서, 새 소식');
+    await expect(docs.locator('.kjun-navigation-badge[data-dot]')).toBeVisible();
+    // The group stays a labelled group for screen readers.
+    await expect(nav.getByRole('group', { name: /^문서/ })).toBeVisible();
+    await admin.click();
+    await expect(admin).toHaveAttribute('aria-expanded', 'true');
+    await expect(nav.getByRole('link', { name: '설정' })).toBeVisible();
+    await expect(page.getByTestId('log')).toHaveText('groups:관리');
+    // Moving to a page in a closed group opens it and reports the new list.
+    await page.getByTestId('to-checkout').click();
+    await expect(docs).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.getByTestId('log')).toHaveText('groups:관리 groups:관리,문서');
+    await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toHaveAttribute('aria-current', 'page');
+    // Closed over the current page, the title takes the selection fill, as a closed parent does.
+    await docs.click();
+    await page.mouse.move(800, 600);
+    await expect(docs).toHaveAttribute('data-current-within', '');
+    await expect.poll(() => docs.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe(clear);
+    await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toBeHidden();
+  });
+
+  test(`${platform}: SideNavigation rail="groups" shows one icon per group and widens with that group open`, async ({ page }) => {
+    await openFixture(page, platform, '?collapsed=1&rail=groups&groups=1&value=checkout', 'side-navigation');
+    const nav = page.getByRole('navigation', { name: '작업 공간' });
+    await expect(nav).toHaveAttribute('data-rail', 'groups');
+    // Loose items keep their own row; each group is one button with its icon, in order.
+    const rows = nav.locator('.kjun-side-navigation-item');
+    await expect(rows).toHaveCount(5);
+    for (const [at, name] of [/^홈$/, /^할 일, .*12/, /^문서, 새 소식$/, /^도움말/, /^관리$/].entries()) await expect(rows.nth(at)).toHaveAccessibleName(name);
+    const docs = nav.getByRole('button', { name: /^문서/ }), admin = nav.getByRole('button', { name: '관리' });
+    // The group holding the current page is filled; its badge shows as a dot on the icon.
+    await expect(docs).toHaveAttribute('data-current-within', '');
+    expect(await docs.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
+    await expect(docs.locator('.kjun-side-navigation-glyph > .kjun-navigation-badge[data-dot]')).toBeVisible();
+    expect((await admin.boundingBox())!.width).toBe(44);
+    // Pressing a group asks to widen and opens that group.
+    await admin.click();
+    await expect(nav).not.toHaveAttribute('data-collapsed', /.*/);
+    await expect(nav.getByRole('button', { name: '관리' })).toHaveAttribute('aria-expanded', 'true');
+    await expect(nav.getByRole('link', { name: '설정' })).toBeVisible();
+    await expect(page.getByTestId('log')).toHaveText('groups:문서,관리 wide');
+  });
+
 }
 
 // Native (React Native Web): the same menu drawn with Views. Rows keep Web's visible heights; the 44 touch target is
@@ -264,4 +318,39 @@ test('native: SideNavigation collapsed shows icons only and widens to open a par
   await expect(page.getByTestId('log')).toHaveText('wide');
   await expect(parent).toHaveAttribute('aria-expanded', 'true');
   await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toBeVisible();
+});
+
+test.describe('touch pointer', () => {
+  test.use({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 844 } });
+  for (const platform of ['react', 'vue3']) test(`${platform}: SideNavigation rows grow to 48, children and group titles to 44 on a touch pointer`, async ({ page }) => {
+    await openFixture(page, platform, '?groups=1&value=checkout', 'side-navigation');
+    expect(await page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true);
+    const nav = page.getByRole('navigation', { name: '작업 공간' });
+    expect((await nav.getByRole('link', { name: '홈' }).boundingBox())!.height).toBeCloseTo(48, 2);
+    expect((await nav.getByRole('link', { name: '결제 화면 개선' }).boundingBox())!.height).toBeCloseTo(44, 2);
+    expect((await nav.getByRole('button', { name: /^문서/ }).boundingBox())!.height).toBeCloseTo(44, 2);
+    // Mobile emulation scales the page, so sizes are compared to two decimals.
+    // Icons stay 20 and the label stays 14: only the row's height changes.
+    expect((await nav.getByRole('link', { name: '홈' }).locator('.kjun-side-navigation-icon').boundingBox())!.height).toBeCloseTo(20, 2);
+  });
+});
+
+test('native: SideNavigation collapsibleGroups toggles groups and rail="groups" shows one icon per group', async ({ page }) => {
+  await openFixture(page, 'native', '?groups=1', 'side-navigation');
+  const nav = page.getByRole('navigation', { name: '작업 공간' });
+  const docs = nav.getByRole('button', { name: /^문서/ });
+  await expect(docs).toHaveAttribute('aria-expanded', 'false');
+  // Native Web keeps Web's pointer height for a title (32); a device takes the touch height.
+  expect((await docs.boundingBox())!.height).toBe(32);
+  await docs.click();
+  await expect(docs).toHaveAttribute('aria-expanded', 'true');
+  await expect(nav.getByRole('button', { name: /^프로젝트/ })).toBeVisible();
+  await expect(page.getByTestId('log')).toHaveText('groups:문서');
+  await openFixture(page, 'native', '?collapsed=1&rail=groups&groups=1&value=checkout', 'side-navigation');
+  const rail = page.getByRole('navigation', { name: '작업 공간' }), admin = rail.getByRole('button', { name: '관리' });
+  await expect(rail.getByRole('button', { name: /^문서/ })).toBeVisible();
+  expect(await rail.getByRole('button', { name: /^문서/ }).evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
+  await admin.click();
+  await expect(page.getByTestId('log')).toHaveText('groups:문서,관리 wide');
+  await expect(rail.getByRole('button', { name: '관리' })).toHaveAttribute('aria-expanded', 'true');
 });

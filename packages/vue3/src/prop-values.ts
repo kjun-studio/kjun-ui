@@ -241,6 +241,9 @@ export const kjunPropValues = Object.freeze({
   KjunSelect: Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
   }),
+  KjunSideNavigation: Object.freeze({
+    rail: Object.freeze(["groups","items"] as const),
+  }),
   KjunSignedValue: Object.freeze({
     format: Object.freeze(["number","percent"] as const),
     tone: Object.freeze(["pill","plain"] as const),

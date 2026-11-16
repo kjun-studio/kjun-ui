@@ -174,7 +174,11 @@
       "itemGap": { "$ref": "dimension.value2" },
       "radius": { "$ref": "button.radii.md" },
       "titlePaddingTop": { "$ref": "dimension.value16" },
-      "titlePaddingBottom": { "$ref": "dimension.value6" }
+      "titlePaddingBottom": { "$ref": "dimension.value6" },
+      "groupHeight": { "$ref": "button.heights.sm" },
+      "groupGap": { "$ref": "dimension.value6" },
+      "touchItemHeight": { "$ref": "button.heights.lg" },
+      "touchChildHeight": { "$ref": "native.minimumTouchTarget" }
     },
     "floatingNavigation": {
       "itemSize": 52,
