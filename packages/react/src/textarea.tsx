@@ -1,6 +1,7 @@
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { textareaBounds, textareaCanSubmit, textareaCount, textareaGrows, textareaMaxRows, textareaPadding, textareaRemaining, textareaSubmitKey, type TextareaSubmitKey, type TextareaMaxRows } from "../../../shared/package-runtime/textarea";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import type { InputVariant } from "../../../shared/package-runtime/input-variant";
 import { growTextarea } from "../../../shared/package-runtime/textarea-grow";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { forwardRef, useCallback, useId, useLayoutEffect, useRef, type ReactNode, type TextareaHTMLAttributes } from "react";
@@ -10,6 +11,8 @@ export interface KjunTextareaProps
   extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "size" | "value" | "onSubmit"> {
   value: string;
   size?: InputSize;
+  /** "plain" drops the surface, side border and side inset for text edited in place, such as a note body. */
+  variant?: InputVariant;
   error?: boolean;
   /** Manual resizing (default "none"). A field the user can drag taller keeps that height instead of growing with its text. */
   resize?: "none" | "vertical" | "horizontal" | "both";
@@ -37,6 +40,7 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
     {
       value,
       size = "md",
+      variant = "default",
       error = false,
       resize = "none",
       rows = 3,
@@ -74,7 +78,7 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
     const invalid = error || !!field?.error || count.over;
     const canSubmit = textareaCanSubmit({ value, maxLength: props.maxLength, disabled: props.disabled, readOnly: props.readOnly, submitting });
     const remaining = showCount ? textareaRemaining(value ?? "", props.maxLength) : null;
-    const padding = textareaPadding(size, footer);
+    const plain = variant === "plain", padding = textareaPadding(size, footer, plain);
     // Growth follows the text and the width it wraps in.
     useLayoutEffect(() => { if (grows) growTextarea(element.current, minimum, maximum); }, [value, grows, minimum, maximum]);
     useLayoutEffect(() => {
@@ -101,6 +105,7 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
         aria-invalid={invalid || undefined}
         aria-busy={submitting || undefined}
         data-grow={grows || undefined}
+        data-variant={plain ? "plain" : undefined}
         className={"kjun-input kjun-textarea " + className}
         style={{
           fontSize: spec.fontSize / 16 + "rem",
@@ -127,7 +132,7 @@ export const KjunTextarea = forwardRef<HTMLTextAreaElement, KjunTextareaProps>(
     );
     if (!footer) return textarea;
     return (
-      <div className="kjun-textarea-field" data-invalid={invalid || undefined} data-disabled={props.disabled || undefined} data-readonly={props.readOnly || undefined} style={{ borderRadius: spec.radius }}>
+      <div className="kjun-textarea-field" data-variant={plain ? "plain" : undefined} data-invalid={invalid || undefined} data-disabled={props.disabled || undefined} data-readonly={props.readOnly || undefined} style={{ borderRadius: spec.radius }}>
         {textarea}
         <div className="kjun-textarea-footer">
           {actions}

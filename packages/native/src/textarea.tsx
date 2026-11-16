@@ -1,5 +1,6 @@
 import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { textareaBounds, textareaCanSubmit, textareaCount, textareaMaxRows, textareaPadding, type TextareaMaxRows } from "../../../shared/package-runtime/textarea";
+import type { InputVariant } from "../../../shared/package-runtime/input-variant";
 import { inputTypeStyle, typeStyle } from "./typography";
 import { FieldTextInput, useFieldSurface } from "./field-surface";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
@@ -28,6 +29,8 @@ import { useKjunStyles } from "./provider";
 
 export interface KjunTextareaProps extends TextInputProps {
   size?: InputSize;
+  /** "plain" drops the surface, side border and side inset for text edited in place, such as a note body. */
+  variant?: InputVariant;
   value: string;
   error?: boolean;
   rows?: number;
@@ -54,6 +57,7 @@ export const KjunTextarea: ForwardRefExoticComponent<KjunTextareaProps & RefAttr
     {
       value,
       size = "md",
+      variant = "default",
       error = false,
       rows = 3,
       maxRows = textareaMaxRows,
@@ -79,7 +83,8 @@ export const KjunTextarea: ForwardRefExoticComponent<KjunTextareaProps & RefAttr
     const count = textareaCount(value ?? "", props.maxLength);
     const invalid = error || !!field?.error || count.over;
     const readOnly = readonly || !!props.readOnly || props.editable === false;
-    const surface = useFieldSurface(size, { disabled, readOnly, invalid });
+    const plain = variant === "plain";
+    const surface = useFieldSurface(size, { disabled, readOnly, invalid, plain });
     const footer = showCount || actions != null || submitLabel != null;
     const [minimum, maximum] = textareaBounds(size, rows, maxRows, footer);
     const grows = maximum > minimum;
@@ -110,7 +115,7 @@ export const KjunTextarea: ForwardRefExoticComponent<KjunTextareaProps & RefAttr
       setMeasured(current => current.layout === layout && current.height === next ? current : { layout, height: next });
     }, [value, grows, layout, width]);
     const canSubmit = textareaCanSubmit({ value, maxLength: props.maxLength, disabled, readOnly, submitting });
-    const padding = textareaPadding(size, footer);
+    const padding = textareaPadding(size, footer, plain);
     const input = (
       <FieldTextInput
         {...props}
@@ -177,7 +182,7 @@ export const KjunTextarea: ForwardRefExoticComponent<KjunTextareaProps & RefAttr
     return (
       <Animated.View {...surface.webHover} style={{ ...surface.style, height: undefined, minWidth: 0 }}>
         {input}
-        <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.textarea.footerGap, paddingHorizontal: tokens.extensions.textarea.footerPadding, paddingBottom: tokens.extensions.textarea.footerPadding }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.textarea.footerGap, paddingHorizontal: plain ? 0 : tokens.extensions.textarea.footerPadding, paddingBottom: tokens.extensions.textarea.footerPadding }}>
           {content(actions)}
           {/* Hidden from swiping (the hint already reads it) but still referenced by aria-describedby on Native Web. */}
           {showCount && <KText aria-hidden={true} nativeID={countId} style={{ ...typeStyle("caption"), marginLeft: "auto", paddingHorizontal: tokens.extensions.textarea.countPaddingX, fontVariant: ["tabular-nums"],

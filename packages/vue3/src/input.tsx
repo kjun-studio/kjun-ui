@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
+import { inputEdge, type InputVariant } from "../../../shared/package-runtime/input-variant";
 import { computed, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, provide, reactive, ref, useId,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
@@ -93,6 +94,8 @@ const kjunInputProps = {
   /** null displays an empty field without updating the parent value. */
   modelValue: { type: [String, Number] as PropType<string | number | null>, default: "" },
   size: { type: String as PropType<InputSize>, default: "md" },
+  /** "plain" drops the surface, side border and side inset for text edited in place, such as a document title or a note body. */
+  variant: { type: String as PropType<InputVariant>, default: "default" },
   error: { type: Boolean, default: false },
   errorMessage: { type: String, default: "" },
   clearable: { type: Boolean, default: false },
@@ -143,7 +146,7 @@ const KjunInputComponent = defineComponent({
     onBeforeUnmount(() => observer?.disconnect());
     expose({ focus: () => input.value?.focus(), el: input });
     return () => {
-      const spec = tokens.input[props.size];
+      const spec = tokens.input[props.size], edge = inputEdge(props.variant, spec.padding);
       const owner = field.value;
       const showError = !!props.errorMessage && !owner?.error;
       const invalid = !!(props.error || props.errorMessage || owner?.error);
@@ -154,7 +157,7 @@ const KjunInputComponent = defineComponent({
         <div style={{ minWidth: 0 }}>
           <div class="kjun-input-wrap" data-disabled={props.disabled || undefined}>
             {(prefix || props.prefixIcon) && (
-              <span ref={before} class="kjun-input-affix" style={css({ left: spec.padding, pointerEvents: "none" })}>
+              <span ref={before} class="kjun-input-affix" style={css({ left: edge.padding, pointerEvents: "none" })}>
                 {prefix || <KjunIcon name={props.prefixIcon!} size={spec.iconSize} />}
               </span>
             )}
@@ -174,6 +177,7 @@ const KjunInputComponent = defineComponent({
               readonly={props.readOnly}
               required={props.required ?? owner?.required}
               class={["kjun-input", attrs.class]}
+              data-variant={props.variant === "plain" ? "plain" : undefined}
               aria-invalid={invalid ? "true" : undefined}
               aria-label={props.ariaLabel || (attrs["aria-label"] as string | undefined)}
               aria-labelledby={(attrs["aria-labelledby"] as string | undefined) || owner?.labelId}
@@ -183,13 +187,13 @@ const KjunInputComponent = defineComponent({
                 fontSize: spec.fontSize / 16 + "rem",
                 lineHeight: spec.lineHeight / 16 + "rem",
                 borderRadius: spec.radius,
-                paddingLeft: widths.before ? spec.padding + widths.before + spec.affixGap - tokens.border.controlWidth : spec.padding - tokens.border.controlWidth,
-                paddingRight: widths.after ? spec.padding + widths.after + spec.affixGap - tokens.border.controlWidth : spec.padding - tokens.border.controlWidth,
+                paddingLeft: widths.before ? edge.padding + widths.before + spec.affixGap - edge.border : edge.padding - edge.border,
+                paddingRight: widths.after ? edge.padding + widths.after + spec.affixGap - edge.border : edge.padding - edge.border,
                 "--_kjun-placeholder-size": spec.placeholderSize / 16 + "rem",
               }), attrs.style as never]}
             />
             {(suffix || props.suffixIcon || props.clearable) && (
-              <span ref={after} class="kjun-input-affix" style={css({ right: spec.padding })}>
+              <span ref={after} class="kjun-input-affix" style={css({ right: edge.padding })}>
                 {props.clearable && !!props.modelValue && (
                   <KjunButton variant="ghost" size="sm" ariaLabel={m.value.clearInput} disabled={props.disabled || props.readOnly}
                     style={css({ padding: 0, height: spec.clearSize, minHeight: spec.clearSize, width: spec.clearSize, borderRadius: "50%" })}

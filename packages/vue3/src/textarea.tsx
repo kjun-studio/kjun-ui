@@ -2,6 +2,7 @@ import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { textareaBounds, textareaCanSubmit, textareaCount, textareaGrows, textareaMaxRows, textareaPadding, textareaRemaining, textareaSubmitKey, type TextareaResize, type TextareaSubmitKey, type TextareaMaxRows } from "../../../shared/package-runtime/textarea";
 import { useKjunMessages } from "./runtime/messages";
 import { hasContent } from "./runtime/slots";
+import type { InputVariant } from "../../../shared/package-runtime/input-variant";
 import { growTextarea } from "../../../shared/package-runtime/textarea-grow";
 import { getCurrentInstance, mergeProps, nextTick, onBeforeUnmount, onMounted, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
@@ -14,6 +15,8 @@ const kjunTextareaProps = {
   /** null displays an empty field without updating the parent value. */
   modelValue: { type: String as PropType<string | null>, default: "" },
   size: { type: String as PropType<InputSize>, default: "md" },
+  /** "plain" drops the surface, side border and side inset for text edited in place, such as a document title or a note body. */
+  variant: { type: String as PropType<InputVariant>, default: "default" },
   error: { type: Boolean, default: false },
   /** Manual resizing (default "none"). A field the user can drag taller keeps that height instead of growing with its text. */
   resize: { type: String as PropType<TextareaResize>, default: "none" },
@@ -76,7 +79,7 @@ const KjunTextareaComponent = defineComponent({
       const invalid = props.error || !!owner?.error || count.over;
       const canSubmit = textareaCanSubmit({ value, maxLength: props.maxLength, disabled: props.disabled, readOnly: props.readOnly, submitting: props.submitting });
       const remaining = props.showCount ? textareaRemaining(value, props.maxLength) : null;
-      const padding = textareaPadding(props.size, hasFooter);
+      const plain = props.variant === "plain", padding = textareaPadding(props.size, hasFooter, plain);
       const element = (
         <textarea {...mergeProps(attrs, {
           onInput: (event: Event) => emit("update:modelValue", (event.target as HTMLTextAreaElement).value),
@@ -100,6 +103,7 @@ const KjunTextareaComponent = defineComponent({
           aria-invalid={invalid ? "true" : undefined}
           aria-busy={props.submitting || undefined}
           data-grow={grows || undefined}
+          data-variant={plain ? "plain" : undefined}
           class={["kjun-input kjun-textarea", attrs.class]}
           style={[css({
             fontSize: spec.fontSize / 16 + "rem",
@@ -113,7 +117,7 @@ const KjunTextareaComponent = defineComponent({
       );
       if (!hasFooter) return element;
       return (
-        <div class="kjun-textarea-field" data-invalid={invalid || undefined} data-disabled={props.disabled || undefined} data-readonly={props.readOnly || undefined} style={css({ borderRadius: spec.radius })}>
+        <div class="kjun-textarea-field" data-variant={plain ? "plain" : undefined} data-invalid={invalid || undefined} data-disabled={props.disabled || undefined} data-readonly={props.readOnly || undefined} style={css({ borderRadius: spec.radius })}>
           {element}
           <div class="kjun-textarea-footer">
             {slots.actions?.()}

@@ -186,7 +186,7 @@
   font-size: var(--_kjun-placeholder-size);
   opacity: 1;
 }
-.kjun-input:hover:not(:disabled):not(:focus):not([readonly]):not([aria-expanded="true"]):not([aria-invalid="true"]) {
+.kjun-input:hover:not(:disabled):not(:focus):not([readonly]):not([aria-expanded="true"]):not([aria-invalid="true"]):not([data-variant="plain"]) {
   background: var(--_kjun-color-hover);
 }
 .kjun-input:focus,
@@ -220,6 +220,13 @@
 .kjun-input:disabled::placeholder {
   color: var(--_kjun-color-text-disabled);
 }
+/* A plain field is text edited in place: no surface, side border or side inset in any state. Keyboard focus keeps
+   its ring, set off from the text, and an error shows in the message under the field. */
+.kjun-input[data-variant="plain"],
+.kjun-input[data-variant="plain"]:is(:hover, :focus, :disabled, [aria-invalid="true"], [aria-expanded="true"]) {
+  border-color: transparent; border-inline-width: 0; background: transparent;
+}
+.kjun-input[data-variant="plain"]:focus-visible:not(:disabled) { outline-offset: var(--_kjun-state-focus-offset); }
 @media (prefers-reduced-motion: reduce) {
   .kjun-input { transition: none; }
 }

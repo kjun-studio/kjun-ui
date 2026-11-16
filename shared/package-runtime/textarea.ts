@@ -31,11 +31,13 @@ export const textareaGrows = (minimum: number, maximum: number, resize: Textarea
   maximum > minimum && resize !== "vertical" && resize !== "both";
 
 /** The text inset: with a footer the wrapper carries the border, so the text keeps the field's own inset. */
-export function textareaPadding(size: InputSize, footer: boolean) {
+export function textareaPadding(size: InputSize, footer: boolean, plain = false) {
   const spec = tokens.input[size];
+  // A plain field has no side inset, so its text starts where the text around it does.
+  const x = plain ? 0 : footer ? spec.padding : spec.padding - tokens.border.controlWidth;
   return footer
-    ? { top: spec.textareaPaddingY, x: spec.padding, bottom: tokens.extensions.textarea.footerTextGap }
-    : { top: spec.textareaPaddingY, x: spec.padding - tokens.border.controlWidth, bottom: spec.textareaPaddingY };
+    ? { top: spec.textareaPaddingY, x, bottom: tokens.extensions.textarea.footerTextGap }
+    : { top: spec.textareaPaddingY, x, bottom: spec.textareaPaddingY };
 }
 
 /** Whether the composer may send: some text within maxLength, an enabled and editable field, nothing already sending. */

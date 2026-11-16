@@ -1,6 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
+import { inputEdge, type InputVariant } from "../../../shared/package-runtime/input-variant";
 import {
 createContext,
 forwardRef,
@@ -99,6 +100,8 @@ export interface KjunInputProps
     "size" | "prefix" | "value" | "defaultValue"
   > {
   size?: InputSize;
+  /** "plain" drops the surface, side border and side inset for text edited in place, such as a document title. */
+  variant?: InputVariant;
   value: string | number;
   error?: boolean;
   errorMessage?: string;
@@ -116,6 +119,7 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
   function KjunInput(
     {
       size = "md",
+      variant = "default",
       value,
       error = false,
       errorMessage = "",
@@ -163,7 +167,7 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
       if (after.current) observer.observe(after.current);
       return () => observer.disconnect();
     }, [prefix, suffix, prefixIcon, suffixIcon, clearable, value]);
-    const spec = tokens.input[size];
+    const spec = tokens.input[size], edge = inputEdge(variant, spec.padding);
     const showError = !!errorMessage && !field?.error;
     const invalid = !!(error || errorMessage || field?.error);
     const ownErrorId = "kjun-input-error-" + uid;
@@ -175,7 +179,7 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
             <span
               ref={before}
               className="kjun-input-affix"
-              style={{ left: spec.padding, pointerEvents: "none" }}
+              style={{ left: edge.padding, pointerEvents: "none" }}
             >
               {prefix || <KjunIcon name={prefixIcon!} size={spec.iconSize} />}
             </span>
@@ -189,6 +193,7 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
             readOnly={readOnly}
             required={required ?? field?.required}
             className={"kjun-input " + className}
+            data-variant={variant === "plain" ? "plain" : undefined}
             aria-invalid={invalid || undefined}
             aria-label={ariaLabel || props["aria-label"]}
             aria-labelledby={props["aria-labelledby"] || field?.labelId}
@@ -200,11 +205,11 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
                 lineHeight: spec.lineHeight / 16 + "rem",
                 borderRadius: spec.radius,
                 paddingLeft: widths.before
-                  ? spec.padding + widths.before + spec.affixGap - tokens.border.controlWidth
-                  : spec.padding - tokens.border.controlWidth,
+                  ? edge.padding + widths.before + spec.affixGap - edge.border
+                  : edge.padding - edge.border,
                 paddingRight: widths.after
-                  ? spec.padding + widths.after + spec.affixGap - tokens.border.controlWidth
-                  : spec.padding - tokens.border.controlWidth,
+                  ? edge.padding + widths.after + spec.affixGap - edge.border
+                  : edge.padding - edge.border,
                 "--_kjun-placeholder-size": spec.placeholderSize / 16 + "rem",
                 ...style,
               } as CSSProperties
@@ -231,7 +236,7 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
             <span
               ref={after}
               className="kjun-input-affix"
-              style={{ right: spec.padding }}
+              style={{ right: edge.padding }}
             >
               {clearable && !!value && (
                 <KjunButton

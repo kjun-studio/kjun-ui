@@ -290,7 +290,8 @@
       "id",
       "disabled",
       "readOnly",
-      "required"
+      "required",
+      "variant"
     ],
     "react": [
       "size",
@@ -321,7 +322,8 @@
       "min",
       "placeholder",
       "readOnly",
-      "required"
+      "required",
+      "variant"
     ],
     "native": [
       "value",
@@ -344,7 +346,8 @@
       "autoFocus",
       "onChangeText",
       "placeholder",
-      "readOnly"
+      "readOnly",
+      "variant"
     ]
   },
   "KjunRadio": {
@@ -617,7 +620,8 @@
       "disabled",
       "readOnly",
       "submitOn",
-      "submitting"
+      "submitting",
+      "variant"
     ],
     "react": [
       "value",
@@ -647,7 +651,8 @@
       "submitLabel",
       "onSubmit",
       "submitOn",
-      "submitting"
+      "submitting",
+      "variant"
     ],
     "native": [
       "size",
@@ -672,7 +677,8 @@
       "style",
       "children",
       "id",
-      "submitting"
+      "submitting",
+      "variant"
     ]
   }
 }

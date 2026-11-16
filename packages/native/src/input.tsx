@@ -1,6 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { FieldClear } from "./field-clear";
 import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
+import { inputEdge, type InputVariant } from "../../../shared/package-runtime/input-variant";
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import type { KjunTextInputHandle } from "./handles";
@@ -133,6 +134,8 @@ export interface KjunInputProps
   extends Omit<TextInputProps, "value" | "onChange"> {
   value: string | number;
   size?: InputSize;
+  /** "plain" drops the surface, side border and side inset for text edited in place, such as a document title. */
+  variant?: InputVariant;
   error?: boolean;
   errorMessage?: string;
   disabled?: boolean;
@@ -150,6 +153,7 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
   {
     value,
     size = "md",
+    variant = "default",
     error = false,
     errorMessage = "",
     disabled = false,
@@ -189,10 +193,10 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
   const showError = !!errorMessage && !field?.error;
   const describedBy = [field?.describedBy, showError ? ownErrorId : undefined]
     .filter(Boolean).join(" ") || undefined;
-  const spec = tokens.input[size];
+  const spec = tokens.input[size], edge = inputEdge(variant, spec.padding);
   const invalid = !!(error || errorMessage || field?.error);
   const canEdit = !disabled && !readOnly && editable;
-  const surface = useFieldSurface(size, { disabled, readOnly: !!readOnly || !editable, invalid, open: props["aria-expanded"] === true });
+  const surface = useFieldSurface(size, { disabled, readOnly: !!readOnly || !editable, invalid, open: props["aria-expanded"] === true, plain: variant === "plain" });
   // String affixes are text, which React Native only draws inside Text.
   const affixText = { ...inputTypeStyle(size), color: surface.icon };
   const showClear = clearable && !!value;
@@ -258,12 +262,12 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
               paddingVertical: 0,
               paddingLeft:
                 prefix || prefixIcon
-                  ? spec.padding + (prefixWidth || spec.iconSize) + spec.affixGap - tokens.border.controlWidth
-                  : spec.padding - tokens.border.controlWidth,
+                  ? edge.padding + (prefixWidth || spec.iconSize) + spec.affixGap - edge.border
+                  : edge.padding - edge.border,
               paddingRight:
                 suffixWidth || suffix
-                  ? spec.padding + (affixWidth || suffixWidth) + spec.affixGap - tokens.border.controlWidth
-                  : spec.padding - tokens.border.controlWidth,
+                  ? edge.padding + (affixWidth || suffixWidth) + spec.affixGap - edge.border
+                  : edge.padding - edge.border,
             },
             style,
           ]}
@@ -274,7 +278,7 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
             pointerEvents="none"
             style={{
               position: "absolute",
-              left: spec.padding,
+              left: edge.padding,
               top: 0,
               bottom: 0,
               justifyContent: "center",
@@ -294,7 +298,7 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
             onLayout={(event) => setAffixWidth(event.nativeEvent.layout.width)}
             style={{
               position: "absolute",
-              right: spec.padding,
+              right: edge.padding,
               top: 0,
               bottom: 0,
               flexDirection: "row",

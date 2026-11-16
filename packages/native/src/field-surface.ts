@@ -25,7 +25,7 @@ export function fieldTarget(action: () => void, disabled: boolean) {
 }
 
 /** Shared field state, independent of each control's value and keyboard model. */
-export function useFieldSurface(size: InputSize, { disabled = false, readOnly = false, invalid = false, open = false } = {}) {
+export function useFieldSurface(size: InputSize, { disabled = false, readOnly = false, invalid = false, open = false, plain = false } = {}) {
   const { colors } = useKjunStyles();
   const reduced = useReducedMotion();
   const [focused, setFocused] = useState(false);
@@ -53,6 +53,9 @@ export function useFieldSurface(size: InputSize, { disabled = false, readOnly = 
       transitionTimingFunction: tokens.motion.easeOut,
     } : {}),
   } as ViewStyle;
+  // A plain field is text edited in place: no surface or side border in any state. Native Web keeps its focus ring, set off from the text.
+  if (plain) Object.assign(style, { borderLeftWidth: 0, borderRightWidth: 0, borderColor: "transparent", backgroundColor: "transparent" },
+    Platform.OS === "web" ? { outlineOffset: tokens.states.focus.offset } : {});
   return {
     spec, style, setFocused, active, hovered,
     ink: disabled ? colors.textDisabled : readOnly ? colors.textSecondary : colors.text,

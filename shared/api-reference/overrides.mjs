@@ -109,6 +109,9 @@ set("Select", {
 for (const platform of ["react", "native"]) set("Combobox", {
   options: "검색 후보입니다. 같은 선택값·라벨을 가진 옵션 객체를 다시 만들어도 검색 초안을 유지합니다. 선택값이나 선택 라벨이 바뀌면 표시값을 동기화합니다.",
 }, platform);
+set("Input Textarea", {
+  variant: { default: "\"default\"", summary: "plain은 배경, 좌우 테두리, 좌우 여백을 빼서 글자가 주변 글과 같은 선에 놓이게 합니다. 문서 제목이나 메모 본문처럼 화면 자체가 편집 영역인 자리에만 씁니다. 키보드 포커스 링은 유지하고, 오류는 테두리 없이 아래 문구로 표시합니다." },
+});
 set("Input", {
   onEnter: "조합 중이 아니고 onKeyDown에서 preventDefault로 소비하지 않은 Enter에 한 번 호출합니다. 한글 조합 확정은 제출로 처리하지 않습니다.",
 }, "react");

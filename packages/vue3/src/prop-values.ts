@@ -149,6 +149,7 @@ export const kjunPropValues = Object.freeze({
   }),
   KjunInput: Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
+    variant: Object.freeze(["default","plain"] as const),
   }),
   KjunKpiHero: Object.freeze({
     asideMobile: Object.freeze(["below","hidden"] as const),
@@ -289,6 +290,7 @@ export const kjunPropValues = Object.freeze({
     resize: Object.freeze(["both","horizontal","none","vertical"] as const),
     size: Object.freeze(["sm","md","lg"] as const),
     submitOn: Object.freeze(["enter","mod-enter"] as const),
+    variant: Object.freeze(["default","plain"] as const),
   }),
   KjunTimePicker: Object.freeze({
     hourCycle: Object.freeze([12,24] as const),

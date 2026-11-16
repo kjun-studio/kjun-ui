@@ -34,7 +34,7 @@
   background: var(--_kjun-color-input-bg);
   transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), border-color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
-.kjun-textarea-field:hover:not([data-disabled]):not([data-readonly]):not([data-invalid]):not(:focus-within) { background: var(--_kjun-color-hover); }
+.kjun-textarea-field:hover:not([data-disabled]):not([data-readonly]):not([data-invalid]):not(:focus-within):not([data-variant="plain"]) { background: var(--_kjun-color-hover); }
 .kjun-textarea-field:focus-within { border-color: var(--_kjun-color-input-border-focus); }
 .kjun-textarea-field[data-invalid] { border-color: var(--_kjun-color-danger); }
 .kjun-textarea-field:has(.kjun-textarea:focus-visible) { outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset: var(--_kjun-state-focus-inset-offset); }
@@ -44,6 +44,10 @@
 .kjun-textarea-field > .kjun-input.kjun-textarea:is(:hover, :focus, :focus-visible, [aria-invalid="true"], :disabled) {
   border: 0; border-radius: 0; background: transparent; outline: none;
 }
+.kjun-textarea-field[data-variant="plain"],
+.kjun-textarea-field[data-variant="plain"]:is(:hover, :focus-within, [data-invalid]) { border-color: transparent; border-inline-width: 0; background: transparent; }
+.kjun-textarea-field[data-variant="plain"]:has(.kjun-textarea:focus-visible) { outline-offset: var(--_kjun-state-focus-offset); }
+.kjun-textarea-field[data-variant="plain"] > .kjun-textarea-footer { padding-inline: 0; }
 .kjun-textarea-footer {
   display: flex;
   align-items: center;
