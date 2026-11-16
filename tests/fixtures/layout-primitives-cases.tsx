@@ -12,6 +12,10 @@ export function LayoutCases({ K, native = false }: { K: any; native?: boolean })
     <div data-testid="text-number"><K.KjunText variant="numberMd">{'1234'}</K.KjunText></div>
     {!native && <div data-testid="text-link"><K.KjunText>약관에 <a href="#terms">동의</a>합니다</K.KjunText></div>}
     {!native && <div data-testid="app-prose" className="app-prose"><K.KjunText>앱 본문 안의 글자</K.KjunText></div>}
+    {!native && <div data-testid="text-focus">
+      <K.KjunText as="h2" variant="sectionTitle" tabIndex={-1} ref={(el: HTMLElement | null) => { (window as any).kjunHeading = el; }}>새 화면 제목</K.KjunText>
+      <K.KjunText role="status">저장했습니다</K.KjunText>
+    </div>}
     {!native && <div data-testid="number-narrow" style={{ width: 40, display: 'flex', flexDirection: 'column' }}><K.KjunText variant="numberMd">{narrowNumber}</K.KjunText></div>}
     <div data-testid="stack-md"><K.KjunStack gap="md">{boxes(3)}</K.KjunStack></div>
     <div data-testid="stack-section"><K.KjunStack gap="section-md">{boxes(3)}</K.KjunStack></div>

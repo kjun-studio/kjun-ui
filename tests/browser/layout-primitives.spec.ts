@@ -95,6 +95,15 @@ for (const platform of ['react', 'vue3', 'native']) {
         expect(await link.evaluate(el => getComputedStyle(el).textDecorationLine)).toContain('underline');
       });
 
+      test('a heading takes focus from code and a paragraph can be a status', async ({ page }) => {
+        const region = page.getByTestId('text-focus');
+        const heading = region.getByRole('heading', { name: '새 화면 제목' });
+        await expect(heading).toHaveAttribute('tabindex', '-1');
+        await page.evaluate(() => (window as any).kjunHeading.focus());
+        await expect(heading).toBeFocused();
+        await expect(region.getByRole('status')).toHaveText('저장했습니다');
+      });
+
       test('app content rules do not restyle KjunText margin or color', async ({ page }) => {
         const text = page.getByTestId('app-prose').getByText('앱 본문 안의 글자', { exact: true });
         await expect(text).toHaveCSS('margin-bottom', '0px');

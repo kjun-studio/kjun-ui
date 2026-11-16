@@ -1,4 +1,4 @@
-import { createElement, type AriaAttributes, type CSSProperties, type ReactNode } from "react";
+import { createElement, type AriaAttributes, type AriaRole, type CSSProperties, type ReactNode, type Ref } from "react";
 import {
   defaultTextTag, textTypeClass,
   type InlineAlign, type InlineGap, type InlineJustify, type StackAlign, type StackGap,
@@ -20,6 +20,12 @@ export interface KjunTextProps extends RootAttributes {
   align?: TextAlign;
   /** Clamp to this many lines with an ellipsis; the full text stays in the DOM. */
   maxLines?: number;
+  /** The element, e.g. to move focus to a heading after the screen changes (with tabIndex={-1}). */
+  ref?: Ref<HTMLElement>;
+  /** -1 lets code focus the text without adding it to the Tab order. */
+  tabIndex?: number;
+  /** An ARIA role for the element, such as "status" for a message that should be announced. */
+  role?: AriaRole;
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
