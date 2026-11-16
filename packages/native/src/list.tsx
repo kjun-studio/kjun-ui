@@ -44,6 +44,9 @@ export interface KjunListRowProps {
   /** App-owned circular background color for the built-in icon; defaults leadingSize to sm. */
   iconBackground?: ColorValue;
   leading?: ReactNode; trailing?: ReactNode; actions?: ReactNode;
+  /** Where the trailing value sits: "side" (default) is a column beside the whole text; "title" puts it on the title line, so the
+   * description and children keep the full text width whatever the value's length (rows with a budget bar line up). */
+  trailingPosition?: "side" | "title";
   /** Web link address (Native Web only); on a device pass onPress and navigate with the app's router. */
   href?: string;
   disabled?: boolean;
@@ -89,7 +92,7 @@ function ChoiceMark({ checkbox, on }: { checkbox: boolean; on: boolean }) {
     {on && <KjunIcon name="check" size={list.markIconSize} color={colors.onBrand} />}
   </View>;
 }
-export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onPress: ownPress, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
+export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, trailingPosition = "side", actions, href, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onPress: ownPress, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
   const { colors } = useKjunStyles(), { divider, selection, ringRadius, column: sharedColumn = 0 } = useContext(ListRowContext), { open, compact } = useContext(ListShapeContext);
   const choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   // In a reorderable section a row its order lists draws move buttons after its own actions.
@@ -115,20 +118,24 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   const front = hasLeading ? content(leading) : glyph && geometry.tile ? <View accessible={false} style={{ width: leadingWidth, height: leadingWidth, borderRadius: open ? list.open.leadingRadius : list.iconBackgroundRadius, alignItems: "center", justifyContent: "center", backgroundColor: tileColor }}>{glyph}</View> : glyph;
   const leadingHeight = Math.max(geometry.size ? leadingWidth : 0, description ? band : 0);
   const switchHeight = tokens.extensions.switch.heights.md, endIcon = list.endIconSize;
+  const titleBlock = hasContent(badge) ? <View style={{ flexDirection: "row", alignItems: "flex-start", gap: list.badgeGap, minWidth: 0 }}>
+        <KText {...wordProps} numberOfLines={titleLines} style={{ ...titleType, ...words, flexShrink: 1, ...(destructive ? { color: colors.danger } : {}) }}>{title}</KText>
+        <View style={{ flexShrink: 0, minHeight: titleType.lineHeight, justifyContent: "center" }}>{content(badge)}</View>
+      </View> : <KText {...wordProps} numberOfLines={titleLines} style={{ ...titleType, ...words, ...(destructive ? { color: colors.danger } : {}) }}>{title}</KText>;
+  // A value at the row's end reads one step below the title and keeps the row's end line when it wraps.
+  // trailingPosition="title" puts it on the title line, so the description and children keep the full text column.
+  const onTitle = hasContent(trailing) && trailingPosition === "title";
+  const endValue = hasContent(trailing) && <View style={{ maxWidth: `${list.trailingMaxPercent}%`, alignItems: "flex-end", justifyContent: "center", ...(onTitle ? { flexShrink: 0, minHeight: titleType.lineHeight } : description ? { alignSelf: "flex-start", minHeight: band } : {}) }}>{content(trailing, { ...trailingType, color: colors.textSecondary, textAlign: "right" })}</View>;
   const parts = <>
     {front && <View style={{ minWidth: column, ...(geometry.size ? { width: column } : {}), flexShrink: 0, minHeight: leadingHeight, alignItems: "center", justifyContent: "center",
       ...(description ? { alignSelf: "flex-start" } : bleed) }}>{front}</View>}
     <View style={{ flex: 1, minWidth: 0 }}>
       {/* Like Web: a badge follows the title and centers on its first line; a long title wraps before it. */}
-      {hasContent(badge) ? <View style={{ flexDirection: "row", alignItems: "flex-start", gap: list.badgeGap, minWidth: 0 }}>
-        <KText {...wordProps} numberOfLines={titleLines} style={{ ...titleType, ...words, flexShrink: 1, ...(destructive ? { color: colors.danger } : {}) }}>{title}</KText>
-        <View style={{ flexShrink: 0, minHeight: titleType.lineHeight, justifyContent: "center" }}>{content(badge)}</View>
-      </View> : <KText {...wordProps} numberOfLines={titleLines} style={{ ...titleType, ...words, ...(destructive ? { color: colors.danger } : {}) }}>{title}</KText>}
+      {onTitle ? <View style={{ flexDirection: "row", alignItems: "flex-start", gap, minWidth: 0 }}><View style={{ flex: 1, minWidth: 0 }}>{titleBlock}</View>{endValue}</View> : titleBlock}
       {!!description && <KText {...wordProps} numberOfLines={descriptionLines} style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...descriptionType, ...words }}>{description}</KText>}
       {hasContent(children) && <View style={{ marginTop: list.descriptionGap }}>{content(children)}</View>}
     </View>
-    {/* A value at the row's end reads one step below the title and keeps the row's end line when it wraps. */}
-    {hasContent(trailing) && <View style={{ maxWidth: `${list.trailingMaxPercent}%`, alignItems: "flex-end", justifyContent: "center", ...(description ? { alignSelf: "flex-start", minHeight: band } : {}) }}>{content(trailing, { ...trailingType, color: colors.textSecondary, textAlign: "right" })}</View>}
+    {!onTitle && endValue}
     {endMark === "spinner" ? <View style={end(endIcon)}><KjunIcon name="loader-2" spin size={endIcon} color={colors.textTertiary} /></View>
       : endMark === "mark" ? <View style={end(list.markSize)}><ChoiceMark checkbox={kind === "checkbox"} on={!!selected} /></View>
       : endMark === "check" && <View style={description ? end(endIcon) : undefined}><KjunIcon name="check" size={endIcon} color={colors.brand} /></View>}

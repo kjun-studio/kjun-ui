@@ -32,6 +32,9 @@ export interface KjunListRowProps {
   trailing?: ReactNode;
   actions?: ReactNode;
   href?: string;
+  /** Where the trailing value sits: "side" (default) is a column beside the whole text; "title" puts it on the title line, so the
+   * description and children keep the full text width whatever the value's length (rows with a budget bar line up). */
+  trailingPosition?: "side" | "title";
   /** Where a link row opens, e.g. "_blank" for a new tab; a new tab gets rel="noopener noreferrer" unless rel is given. */
   target?: string;
   /** The link's rel; by default "noopener noreferrer" for target="_blank". */
@@ -59,7 +62,7 @@ export interface KjunListRowProps {
   titleLines?: number;
   descriptionLines?: number;
 }
-export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, actions, href, target, rel, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onClick: ownClick, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
+export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, trailingPosition = "side", actions, href, target, rel, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onClick: ownClick, ariaLabel, children, titleLines, descriptionLines }: KjunListRowProps) {
   const selection = useContext(ListSelectionContext), { open } = useContext(ListShapeContext), choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   // In a reorderable section a row its order lists draws move buttons after its own actions.
   const reorder = useContext(ReorderContext), movable = !!reorder && !!reorderPlace(reorder.order, value);
@@ -87,7 +90,9 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   const notes = [description && id + "-description", hasBody && id + "-content"].filter(Boolean).join(" ") || undefined;
   const label = { "aria-label": ariaLabel, "aria-labelledby": names, "aria-describedby": notes };
   const titleText = <span id={id + "-title"} className="kjun-list-title" data-clamp={titleLines ? "" : undefined} style={clamp(titleLines)}>{title}</span>;
-  const contents = <>{front && <span className="kjun-list-leading">{front}</span>}<span className="kjun-list-body">{hasBadge ? <span className="kjun-list-title-row">{titleText}<span id={id + "-badge"} className="kjun-list-badge">{badge}</span></span> : titleText}{description && <span id={id + "-description"} className="kjun-list-description" data-clamp={descriptionLines ? "" : undefined} style={clamp(descriptionLines)}>{description}</span>}{hasBody && <span ref={content} id={id + "-content"} className="kjun-list-content">{children}</span>}</span>{hasTrailing && <span id={id + "-trailing"} className="kjun-list-trailing">{trailing}</span>}{mark}{toggle && <span className={"kjun-switch kjun-switch--md" + (checked ? " kjun-switch--on" : "")} aria-hidden="true"><span className="kjun-switch-thumb">{busy && <span className="kjun-switch-spinner" />}</span></span>}{chevron && end !== "spinner" && <KjunIcon name="chevron-right" className="kjun-list-chevron" size={tokens.iconSizes.default} />}</>;
+  const titleBlock = hasBadge ? <span className="kjun-list-title-row">{titleText}<span id={id + "-badge"} className="kjun-list-badge">{badge}</span></span> : titleText;
+  const endValue = hasTrailing && <span id={id + "-trailing"} className="kjun-list-trailing">{trailing}</span>, onTitle = hasTrailing && trailingPosition === "title";
+  const contents = <>{front && <span className="kjun-list-leading">{front}</span>}<span className="kjun-list-body">{onTitle ? <span className="kjun-list-value-line">{titleBlock}{endValue}</span> : titleBlock}{description && <span id={id + "-description"} className="kjun-list-description" data-clamp={descriptionLines ? "" : undefined} style={clamp(descriptionLines)}>{description}</span>}{hasBody && <span ref={content} id={id + "-content"} className="kjun-list-content">{children}</span>}</span>{!onTitle && endValue}{mark}{toggle && <span className={"kjun-switch kjun-switch--md" + (checked ? " kjun-switch--on" : "")} aria-hidden="true"><span className="kjun-switch-thumb">{busy && <span className="kjun-switch-spinner" />}</span></span>}{chevron && end !== "spinner" && <KjunIcon name="chevron-right" className="kjun-list-chevron" size={tokens.iconSizes.default} />}</>;
   // A switch row is one switch control: the drawn switch is decoration and the row carries role and state.
   // A choice row is a radio (a checkbox in a multiple-choice section), checked when selected; the check is its drawing.
   const main = toggle ? <button className="kjun-list-main" type="button" role="switch" aria-checked={checked} {...label} aria-busy={busy || undefined} disabled={disabled} onClick={(event) => { if (busy) return; onCheckedChange?.(!checked); onClick?.(event); }}>{contents}</button>

@@ -34,6 +34,9 @@ const kjunListRowProps = {
   /** App-owned circular background color for the built-in icon; defaults leadingSize to sm. */
   iconBackground: { type: String, default: undefined },
   href: { type: String, default: undefined },
+  /** Where the trailing value sits: "side" (default) is a column beside the whole text; "title" puts it on the title line, so the
+   * description and children keep the full text width whatever the value's length (rows with a budget bar line up). */
+  trailingPosition: { type: String as PropType<"side" | "title">, default: "side" },
   /** Where a link row opens, e.g. "_blank" for a new tab; a new tab gets rel="noopener noreferrer" unless rel is given. */
   target: { type: String, default: undefined },
   /** The link's rel; by default "noopener noreferrer" for target="_blank". */
@@ -115,10 +118,12 @@ export const KjunListRow = defineComponent({
       const notes = [props.description && id + "-description", hasBody && id + "-content"].filter(Boolean).join(" ") || undefined;
       const label = { "aria-label": props.ariaLabel, "aria-labelledby": names, "aria-describedby": notes };
       const titleText = <span id={id + "-title"} class="kjun-list-title" data-clamp={props.titleLines ? "" : undefined} style={props.titleLines ? { WebkitLineClamp: props.titleLines } : undefined}>{props.title}</span>;
+      const titleBlock = hasBadge ? <span class="kjun-list-title-row">{titleText}<span id={id + "-badge"} class="kjun-list-badge">{badge}</span></span> : titleText;
+      const endValue = hasTrailing && <span id={id + "-trailing"} class="kjun-list-trailing">{trailing}</span>, onTitle = hasTrailing && props.trailingPosition === "title";
       const contents = <>
         {leading && <span class="kjun-list-leading">{leading}</span>}
-        <span class="kjun-list-body">{hasBadge ? <span class="kjun-list-title-row">{titleText}<span id={id + "-badge"} class="kjun-list-badge">{badge}</span></span> : titleText}{props.description && <span id={id + "-description"} class="kjun-list-description" data-clamp={props.descriptionLines ? "" : undefined} style={props.descriptionLines ? { WebkitLineClamp: props.descriptionLines } : undefined}>{props.description}</span>}{hasBody && <span ref={content} id={id + "-content"} class="kjun-list-content">{body}</span>}</span>
-        {hasTrailing && <span id={id + "-trailing"} class="kjun-list-trailing">{trailing}</span>}
+        <span class="kjun-list-body">{onTitle ? <span class="kjun-list-value-line">{titleBlock}{endValue}</span> : titleBlock}{props.description && <span id={id + "-description"} class="kjun-list-description" data-clamp={props.descriptionLines ? "" : undefined} style={props.descriptionLines ? { WebkitLineClamp: props.descriptionLines } : undefined}>{props.description}</span>}{hasBody && <span ref={content} id={id + "-content"} class="kjun-list-content">{body}</span>}</span>
+        {!onTitle && endValue}
         {mark}
         {props.checked !== undefined && <span class={"kjun-switch kjun-switch--md" + (props.checked ? " kjun-switch--on" : "")} aria-hidden="true"><span class="kjun-switch-thumb">{props.busy && <span class="kjun-switch-spinner" />}</span></span>}
         {props.chevron && end !== "spinner" && <KjunIcon name="chevron-right" class="kjun-list-chevron" size={tokens.iconSizes.default} />}

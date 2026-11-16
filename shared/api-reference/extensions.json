@@ -18,7 +18,10 @@
       "value",
       "ariaLabel",
       "titleLines",
-      "descriptionLines"
+      "descriptionLines",
+      "target",
+      "rel",
+      "trailingPosition"
     ],
     "react": [
       "title",
@@ -44,7 +47,10 @@
       "ariaLabel",
       "children",
       "titleLines",
-      "descriptionLines"
+      "descriptionLines",
+      "target",
+      "rel",
+      "trailingPosition"
     ],
     "native": [
       "title",
@@ -70,7 +76,8 @@
       "ariaLabel",
       "children",
       "titleLines",
-      "descriptionLines"
+      "descriptionLines",
+      "trailingPosition"
     ]
   },
   "KjunListSection": {

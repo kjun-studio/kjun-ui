@@ -164,6 +164,7 @@ export const kjunPropValues = Object.freeze({
   }),
   KjunListRow: Object.freeze({
     leadingSize: Object.freeze(["xs","sm","md","lg"] as const),
+    trailingPosition: Object.freeze(["side","title"] as const),
   }),
   KjunListSection: Object.freeze({
     density: Object.freeze(["compact","default"] as const),
