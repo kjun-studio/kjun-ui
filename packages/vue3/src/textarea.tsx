@@ -1,5 +1,5 @@
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
-import { textareaBounds, textareaCanSubmit, textareaCount, textareaGrows, textareaMaxRows, textareaPadding, textareaRemaining, textareaSubmitKey, type TextareaResize, type TextareaSubmitKey } from "../../../shared/package-runtime/textarea";
+import { textareaBounds, textareaCanSubmit, textareaCount, textareaGrows, textareaMaxRows, textareaPadding, textareaRemaining, textareaSubmitKey, type TextareaResize, type TextareaSubmitKey, type TextareaMaxRows } from "../../../shared/package-runtime/textarea";
 import { useKjunMessages } from "./runtime/messages";
 import { hasContent } from "./runtime/slots";
 import { growTextarea } from "../../../shared/package-runtime/textarea-grow";
@@ -18,8 +18,8 @@ const kjunTextareaProps = {
   /** Manual resizing (default "none"). A field the user can drag taller keeps that height instead of growing with its text. */
   resize: { type: String as PropType<TextareaResize>, default: "none" },
   rows: { type: Number, default: 3 },
-  /** The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). */
-  maxRows: { type: Number, default: textareaMaxRows },
+  /** The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). "none" grows without a limit. */
+  maxRows: { type: [Number, String] as PropType<TextareaMaxRows>, default: textareaMaxRows },
   maxLength: { type: Number, default: undefined },
   /** Shows the character count inside the field, as "length/maxLength" when maxLength is set. */
   showCount: { type: Boolean, default: false },

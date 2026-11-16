@@ -1,5 +1,5 @@
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
-import { textareaBounds, textareaCanSubmit, textareaCount, textareaGrows, textareaMaxRows, textareaPadding, textareaRemaining, textareaSubmitKey, type TextareaSubmitKey } from "../../../shared/package-runtime/textarea";
+import { textareaBounds, textareaCanSubmit, textareaCount, textareaGrows, textareaMaxRows, textareaPadding, textareaRemaining, textareaSubmitKey, type TextareaSubmitKey, type TextareaMaxRows } from "../../../shared/package-runtime/textarea";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { growTextarea } from "../../../shared/package-runtime/textarea-grow";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
@@ -14,8 +14,8 @@ export interface KjunTextareaProps
   /** Manual resizing (default "none"). A field the user can drag taller keeps that height instead of growing with its text. */
   resize?: "none" | "vertical" | "horizontal" | "both";
   ariaLabel?: string;
-  /** The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). */
-  maxRows?: number;
+  /** The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). "none" grows without a limit. */
+  maxRows?: TextareaMaxRows;
   /** Character limit (UTF-16 units, like the attribute); the count shows "length/maxLength" and a longer value reads as an error. */
   maxLength?: number;
   /** Shows the character count inside the field, as "length/maxLength" when maxLength is set. */

@@ -20,6 +20,15 @@ test('a field grows between rows and maxRows unless the user may drag it taller'
   assert.equal(fixed, same);
 });
 
+test('maxRows "none" keeps the rows minimum and has no maximum', () => {
+  const [min, max] = textareaBounds('md', 3, 'none');
+  assert.equal(min, textareaBounds('md', 3, 6)[0]);
+  assert.equal(max, Infinity);
+  assert.equal(textareaGrows(min, max), true);
+  assert.equal(textareaGrows(min, max, 'vertical'), false);
+  assert.equal(textareaBounds('md', 2, 'none', true)[1], Infinity);
+});
+
 test('the count follows maxLength and the composer sends only valid, enabled, idle text', () => {
   assert.deepEqual(textareaCount('abc', 2), { length: 3, text: '3/2', over: true });
   assert.equal(textareaCanSubmit({ value: '  ' }), false);

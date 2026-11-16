@@ -237,7 +237,7 @@ set("MarketTableSkeleton", {
 set("ListSkeleton Skeleton MarketTableSkeleton", { rows: "자리 표시자로 출력할 행 수입니다." });
 set("Textarea", {
   rows: { default: "3", summary: "처음 표시하는 행 수이자 최소 높이입니다." },
-  maxRows: { default: "6", summary: "내용에 맞춰 늘어나는 최대 행 수입니다. 넘으면 필드 안에서 스크롤합니다. rows와 같게 두면 높이가 고정됩니다." },
+  maxRows: { default: "6", summary: "내용에 맞춰 늘어나는 최대 행 수입니다. 넘으면 필드 안에서 스크롤합니다. rows와 같게 두면 높이가 고정됩니다. \"none\"이면 한도 없이 글 길이만큼 늘어나고 필드 안에서는 스크롤하지 않습니다(노트·문서 본문)." },
   resize: { default: '"none"', summary: "웹에서 사용자가 크기를 직접 조절하는 방향입니다. 필드가 내용에 맞춰 늘어나므로 기본은 none입니다. vertical·both면 사용자가 끈 높이를 지키도록 내용에 맞춰 늘어나지 않습니다." },
   maxLength: "입력할 수 있는 최대 글자 수(UTF-16 단위)입니다. showCount와 함께 쓰면 \"길이/최대\"로 표시하고, 값이 넘치면 위험 색과 오류 상태로 표시합니다.",
   showCount: { default: "false", summary: "필드 안 오른쪽 아래에 글자 수를 표시합니다. 화면 낭독기에는 필드 설명으로 연결합니다." },

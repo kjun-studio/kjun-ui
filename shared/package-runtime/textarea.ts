@@ -2,6 +2,8 @@ import { tokens, type InputSize } from "@kjun-ui/tokens";
 
 // Textarea height grows with its text from `rows` up to `maxRows`, then scrolls.
 export const textareaMaxRows = 6;
+/** A number of rows, or "none" for a field that grows with all of its text and never scrolls inside (a note, a document body). */
+export type TextareaMaxRows = number | "none";
 
 /** Border-box height for a number of text rows at a field size. */
 export function textareaRowsHeight(size: InputSize, rows: number, footer = false) {
@@ -11,10 +13,10 @@ export function textareaRowsHeight(size: InputSize, rows: number, footer = false
   return rows * spec.lineHeight + spec.textareaPaddingY + paddingBottom + (footer ? 0 : 2 * tokens.border.controlWidth);
 }
 
-/** The [minimum, maximum] border-box height; a maximum below the minimum keeps the field at `rows`. */
-export function textareaBounds(size: InputSize, rows: number, maxRows: number, footer = false) {
+/** The [minimum, maximum] border-box height; a maximum below the minimum keeps the field at `rows`, and "none" has no maximum (Infinity). */
+export function textareaBounds(size: InputSize, rows: number, maxRows: TextareaMaxRows, footer = false) {
   const minimum = Math.max(footer ? 0 : tokens.input[size].height, textareaRowsHeight(size, rows, footer));
-  return [minimum, Math.max(minimum, textareaRowsHeight(size, maxRows, footer))] as const;
+  return [minimum, maxRows === "none" ? Infinity : Math.max(minimum, textareaRowsHeight(size, maxRows, footer))] as const;
 }
 
 /** The counter text; it counts like the maxLength attribute (UTF-16 units), so it agrees with what typing allows. */

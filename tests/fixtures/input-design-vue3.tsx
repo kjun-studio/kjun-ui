@@ -24,7 +24,7 @@ createApp(defineComponent(() => () => {
       {{ prefix: () => <span style={{ fontSize: '16px' }}>합계 금액</span>, suffix: () => <span style={{ fontSize: '16px' }}>KRW</span> }}
     </K.KjunInput></div>
     <div data-testid="textarea"><K.KjunTextarea {...text(K.KjunTextarea)} rows={3} ariaLabel="목록 설명" /></div>
-    <div data-testid="composer"><K.KjunTextarea modelValue={s.note} onUpdate:modelValue={(v: string) => { s.note = v; }} size={s.config.size} disabled={s.config.disabled} rows={2} maxRows={4} maxLength={20} showCount
+    <div data-testid="composer"><K.KjunTextarea modelValue={s.note} onUpdate:modelValue={(v: string) => { s.note = v; }} size={s.config.size} disabled={s.config.disabled} rows={2} maxRows={(s.config as any).maxRows ?? 4} maxLength={20} showCount
       submitLabel="보내기" submitOn={(s.config as any).submitOn} submitting={(s.config as any).submitting} resize={(s.config as any).resize ?? 'none'}
       onSubmit={(next: string) => { s.sent = next; s.note = ''; }} ariaLabel="메모">
       {{ actions: () => <K.KjunButton variant="ghost" size="sm" prefixIcon="plus" ariaLabel="첨부 추가" /> }}

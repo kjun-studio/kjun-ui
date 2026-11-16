@@ -1,5 +1,5 @@
 import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
-import { textareaBounds, textareaCanSubmit, textareaCount, textareaMaxRows, textareaPadding } from "../../../shared/package-runtime/textarea";
+import { textareaBounds, textareaCanSubmit, textareaCount, textareaMaxRows, textareaPadding, type TextareaMaxRows } from "../../../shared/package-runtime/textarea";
 import { inputTypeStyle, typeStyle } from "./typography";
 import { FieldTextInput, useFieldSurface } from "./field-surface";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
@@ -31,8 +31,8 @@ export interface KjunTextareaProps extends TextInputProps {
   value: string;
   error?: boolean;
   rows?: number;
-  /** The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). */
-  maxRows?: number;
+  /** The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). "none" grows without a limit. */
+  maxRows?: TextareaMaxRows;
   /** Character limit (UTF-16 units); the count shows "length/maxLength" and a longer value reads as an error. */
   maxLength?: number;
   /** Shows the character count inside the field, as "length/maxLength" when maxLength is set. */
@@ -161,7 +161,8 @@ export const KjunTextarea: ForwardRefExoticComponent<KjunTextareaProps & RefAttr
             ...(footer ? { backgroundColor: "transparent", borderWidth: 0, ...(Platform.OS === "web" ? { outlineWidth: 0, outlineStyle: "solid" as const } : {}) } : surface.style),
             height,
             minHeight: minimum,
-            maxHeight: grows ? maximum : undefined,
+            // "none" has no maximum (Infinity is not a style value).
+            maxHeight: grows && Number.isFinite(maximum) ? maximum : undefined,
             paddingHorizontal: padding.x,
             paddingTop: padding.top,
             paddingBottom: padding.bottom,
