@@ -2,6 +2,37 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 0.22.0 — 미배포
+
+적용 프로젝트 네 곳의 0.21.0 사용 기록에서 나온 수정과 추가입니다.
+
+- **`hidden` 속성이 모든 KJUN 클래스를 숨김 (수정, 호환성 변경)**: `<KjunButton hidden>`처럼 `display`를 정하는 KJUN 클래스에 `hidden`을 주면 그대로 보이던 문제를 고쳤습니다(웹, 528개 클래스 중 216개). 리셋의 `[hidden]` 규칙이 `display: none !important`가 되어 부품 규칙보다 우선합니다. `hidden="until-found"`는 그대로 둡니다. `hidden`인 KJUN 요소를 CSS로 다시 보이게 하던 앱은 `hidden`을 빼야 합니다.
+- **달력이 좁은 자리에서 줄어듦 (수정)**: `KjunDatePicker`·`KjunDateRangePicker`의 달력 7열이 40px로 고정되어 좁은 패널에서 넘치던 문제를 고쳤습니다(웹). 날짜 칸은 자리에 맞춰 줄고 40px를 넘지 않으며 정사각형을 유지합니다.
+- **Native `KjunAlert`가 `live`를 따름 (수정)**: Native에서 `live`를 무시하던 문제를 고쳤습니다. `assertive`·`polite`·`off`가 `accessibilityLiveRegion`으로 전달되고, 기본값은 웹과 같이 `danger`는 assertive, 나머지는 polite입니다.
+- **Native ref 타입 (수정)**: React Native 0.88의 엄격한 타입에서 `KjunInput`·`KjunTextarea`·`KjunChip`의 `ref` 타입이 풀리지 않던 문제를 고쳤습니다. 핸들 타입 `KjunTextInputHandle`·`KjunViewHandle`을 내보냅니다. 타입만 바뀌고 동작은 같습니다(0.86.3·0.88.1 타입으로 확인).
+- **Native `KjunTable`이 비율 열 폭을 따름 (수정, 호환성 변경)**: 열 `width: "30%"`를 무시하고 기본 160px로 그려 좁은 시트에서 넘치던 문제를 고쳤습니다. 비율은 웹처럼 표 전체 폭에 대한 몫입니다. 비율 열이 있는 표는 폭을 재는 첫 프레임 동안 숨겨집니다. Native에서 비율 폭을 주고 160px로 그려지는 것에 맞춰 둔 화면은 폭이 달라집니다.
+- **`KjunCard` 표면 `info`·`brandSoft`**: `surface`에 `info`(`infoLight` 역할)와 `brandSoft`(`brandSubtleBg` 역할)를 추가했습니다(Vue 3·React·Native). 새 색 역할은 없습니다.
+- **글자 단계 `labelStrong`·`captionStrong`·`bodyLong`**: `KjunText`의 `variant`에 `labelStrong`(14/20/600), `captionStrong`(12/16/600), `bodyLong`(14/24/400)을 추가했습니다(Vue 3·React·Native). 같은 이름의 타이포그래피 토큰도 생겼습니다.
+- **`KjunListRow` 끝 칸 비율 토큰**: 끝 칸의 최대 폭 35%를 `tokens.extensions.list.trailingMaxPercent`로 공개했습니다. 값을 복사해 쓰던 앱은 토큰을 읽습니다.
+- **`KjunListRow` `trailingPosition="title"`**: 끝 칸 값을 제목과 같은 줄에 둡니다(Vue 3·React·Native). 설명과 `children`이 값의 길이와 무관하게 글 폭 전체를 써서, 막대가 있는 행들의 끝선이 맞습니다.
+- **`KjunListRow` 링크의 `target`·`rel`**: 링크 행에 `target`과 `rel`을 줄 수 있습니다(Vue 3·React). `target="_blank"`에는 `rel`을 주지 않아도 `noopener noreferrer`가 붙습니다.
+- **`KjunListRow`가 자기 내용을 펼침**: `expanded`와 `onExpandedChange`(Vue `v-model:expanded`)를 주면 행 머리가 버튼이 되고 끝에 아래 방향 꺾쇠가 붙어 펼치면 뒤집힙니다(Vue 3·React·Native). 내용(`expandedContent`, Vue `expanded` 슬롯)은 같은 행 안, 제목이 시작하는 선에서 열립니다. hover·누름 배경은 행 머리에만 깔리고, 내용은 버튼 바깥이라 버튼·링크를 넣을 수 있습니다. `href`·`checked`·`selected`·`chevron`과는 함께 쓰지 않습니다.
+- **`KjunInput`·`KjunTextarea` `variant="plain"`**: 배경, 좌우 테두리, 좌우 여백이 없는 입력입니다(Vue 3·React·Native). 문서 제목이나 메모 본문처럼 화면 자체가 편집 영역인 자리에 씁니다. 글자가 주변 글과 같은 선에 놓이고, 키보드 포커스 링은 유지하며, 오류는 아래 문구로만 표시합니다.
+- **`KjunTextarea` `maxRows="none"`**: 높이 한도 없이 내용만큼 늘어납니다(Vue 3·React·Native).
+- **`KjunButton` `shape="pill"`**: 높이의 절반을 모서리로 하는 알약 모양입니다(Vue 3·React·Native).
+- **`KjunProgress` `valueText`**: 반올림한 백분율 대신 보여 주고 읽어 줄 문구를 줍니다(예: `"37.4%"`, `"3.2 / 8 GB"`. Vue 3·React·Native).
+- **`KjunProgress`·`KjunProgressCell` `marker`·`markerLabel`**: 막대를 가로지르는 기준 눈금입니다(Vue 3·React·Native). `marker`는 `value`와 같은 척도(0–`max`)이고, 글자색 세로선에 바탕색 틈을 둘러 채움과 구분합니다. `markerLabel`은 화면 낭독기에만 전달됩니다. 원형과 `indeterminate`·값 없음 상태에서는 그리지 않습니다. 눈금이 있는 웹 막대는 넘침을 자르지 않아 1–2%의 채움이 작은 알약 모양으로 끝납니다.
+- **`KjunTable` `edgeInset="none"`**: 격자 표에서 첫 열의 시작 쪽 여백과 끝 열의 끝 쪽 여백을 없애, 시트·카드 안의 표가 주변 글과 같은 선에 놓입니다(Vue 3·React·Native). 머리글·본문·묶음 제목·펼친 내용·요약·빈 상태·스켈레톤에 모두 적용합니다. 줄에 배경이 깔리는 표(줄무늬·선택·hover)에서는 배경이 글자에 붙으므로 배경 없는 표에 씁니다.
+- **`KjunBottomActionBar` `variant="floating"`**: 화면 가장자리에서 떨어진 알약 모양 바입니다(Vue 3·React·Native). `KjunFloatingNavigation`의 띄움 16·여백 6·테두리·그림자를 그대로 씁니다. 설명과 작업은 항상 한 줄이고, 안의 버튼은 `size`를 주지 않으면 lg(48px) 알약이 되어 바 높이가 60px입니다. 설명이 없으면 글자가 있는 버튼들이 폭을 나눠 채웁니다.
+- **`KjunFormActions`·`KjunModal` `form`**: 확인 버튼이 페이지 다른 곳의 `<form>`을 제출하도록 그 `id`를 줍니다(Vue 3·React).
+- **`KjunAccordionItem` 열림·닫힘 완료 알림**: 높이 움직임이 끝나면 `onAfterOpen`·`onAfterClose`(Vue `after-open`·`after-close`)를 알립니다(Vue 3·React·Native).
+- **React `KjunText` `ref`·`tabIndex`·`role`**: 글자 요소에 포커스를 옮기거나 역할을 줄 수 있습니다.
+- **React `KjunCheckbox`·`KjunRadio` `id`·`inputRef`**: 바깥 `<label htmlFor>`와 연결하거나, 검증 실패 때 입력으로 포커스를 옮길 수 있습니다.
+- **React `KjunFormGroup`·`KjunFilterGroup`·`KjunAlert` `className`**: 감싸는 `div` 없이 앱의 레이아웃에 배치합니다. 클래스는 루트에 KJUN 클래스 뒤로 붙습니다. Vue 3의 `class`와 React `KjunCard`의 `className`은 이미 같은 동작입니다.
+- **Native `KjunDrawer` `renderScrollView`**: 드로어 본문을 앱의 스크롤 부품(`FlatList` 등)으로 그립니다. 드로어가 자기 `ScrollView`에 주던 속성을 그대로 넘겨받습니다. `children`은 선택이 되었습니다.
+- **새 컴포넌트 `KjunPressable` (Native)**: 버튼·카드·목록 행이 아닌 영역을 누르게 합니다(지도 미리보기, 사진 칸). 모양은 앱이 `style`로 정하고, KJUN은 눌림 표시·포커스 링·`button` 역할·비활성·최소 터치 영역을 맡습니다. 눌림 표시는 내용 위에 글자색 막을 덮는 방식이라(hover 0.08, 누름 0.16) 사진 위에서도 보입니다. `pressEffect="none"`, `focusRingInset`이 선택지입니다.
+- **새 컴포넌트 `KjunSideNavigation` (Vue 3·React)**: 화면 옆에 세로로 놓는 메뉴입니다. 항목은 하단 내비게이션과 같은 형식(`items`·`value`·`onNavigate`·`onReselect`)이고, 묶음 제목과 한 단계의 하위 항목을 가질 수 있습니다. 현재 항목은 선택 배경색 채움과 굵은 글자로 표시합니다. 부모 항목은 여닫는 버튼이며 현재 페이지의 부모는 열린 채로 시작합니다. 열린 부모는 `expanded`·`onExpandedChange`(Vue `v-model:expanded`)로 앱이 쥘 수도 있습니다.
+
 ## 0.21.0 — 2026-11-14
 
 - **`KjunFab` 디자인·코드 검토 반영 (호환성 변경)**: **추가**: `size`(`md` 56 기본, `sm` 48·아이콘 20), `label`(아이콘 옆에 글자가 붙는 같은 높이의 캡슐), `loading`(아이콘 자리에 스피너, 누름 차단, 흐려지지 않음)을 받습니다(Vue 3·React·Native). 두 크기 모두 원형·확장형·로딩과 모든 상태를 씁니다. `label`이 있으면 `ariaLabel`은 생략할 수 있습니다. React는 `ref`와 `className`·`data-*`·`aria-*` 같은 버튼 속성을 그대로 전달합니다. **호환성 변경**: 화면의 `KjunBottomNavigation`·`KjunBottomActionBar` 높이만큼 자동으로 위에 놓입니다. 지금까지 `offsetBottom`에 탭바 높이를 넘겼다면 그 값을 빼세요(그대로 두면 두 번 더해집니다). 바가 FAB 아래에 있지 않은 배치는 `avoidBottomBar={false}`로 끕니다. 하단 바가 자기 안전 영역을 포함하므로 FAB은 하단 안전 영역과 바 높이 중 큰 값만 띄웁니다. **수정**: 비활성이 반투명해져 아래 콘텐츠가 비치던 문제를 고쳤습니다(불투명하게 흐려짐). 터치 뒤 hover 색이 남던 문제를 고쳤습니다(웹, 마우스에서만 hover). 누르면 배경이 전환되며 살짝 줄어듭니다(모션 감소 설정에서는 줄어들지 않음). 가로 위치가 글 방향을 따릅니다(RTL에서 왼쪽). `offsetBottom`에 숫자가 아닌 값이 오면 0으로 처리합니다. Native Web에서도 hover 색이 보입니다. 토큰 `extensions.fab`에 `smallSize`·`smallIconSize`·`labelGaps`·`paddingStart`·`paddingEnd`가 생겼고 기존 `size`·`iconSize`는 그대로입니다.

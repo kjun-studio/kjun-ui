@@ -3,6 +3,10 @@ import { detail, event, slot, fields } from "./helpers.mjs";
 const bindings = JSON.parse(readFileSync(new URL("./extensions.json", import.meta.url), "utf8"));
 const guides = JSON.parse(readFileSync(new URL("../component-guides.json", import.meta.url), "utf8"));
 const summaries = {
+  target: "링크 행이 열리는 곳입니다(예: \"_blank\"는 새 탭). 새 탭에는 rel을 주지 않아도 noopener noreferrer가 붙습니다.",
+  rel: "링크의 rel입니다. 생략하면 target=\"_blank\"일 때 noopener noreferrer를 씁니다.",
+  trailingPosition: "끝 칸 값의 자리입니다. side(기본값)는 글 전체 옆의 별도 열이고, title은 제목과 같은 줄입니다. title이면 설명과 children이 값의 길이와 무관하게 글 폭 전체를 써서, 막대가 있는 행들의 끝선이 맞습니다.",
+  expandedContent: "펼친 동안 행 아래에 보이는 내용입니다. 제목이 시작하는 선에서 시작하고, 버튼 바깥이므로 버튼·링크를 넣을 수 있습니다.",
   reorderable: "행 순서를 사용자가 바꿀 수 있게 합니다. order에 있는 value를 가진 행마다 위·아래 이동 버튼을 행의 actions 뒤에 그립니다. 순서는 앱이 관리하며 KJUN은 행을 직접 옮기지 않습니다. 기본값 false입니다.",
   order: "보이는 순서대로 나열한 행 value 배열입니다. 앱이 이 순서로 행을 그립니다. 배열에 없는 value의 행과 value가 없는 행은 이동 버튼이 없습니다. reorderable에 필요합니다.",
   reorderControls: "이동 컨트롤의 종류입니다. buttons(기본값)는 위·아래 버튼, handle은 끄는 손잡이, both는 둘 다입니다. 손잡이는 포인터로 끌면 이웃 행의 가운데를 지날 때마다 한 칸씩 옮기고, 키보드에서는 Enter·Space로 잡은 뒤 위·아래 화살표로 옮기고 Enter로 놓으며 Escape로 처음 자리에 되돌립니다. 끌거나 잡은 동안에는 한 칸마다 onOrderChange만, 놓을 때 onReorder가 한 번 발생합니다. 스크린리더의 누르기로도 잡고 놓을 수 있지만, 탐색 모드에서는 화살표 키를 스크린리더가 먼저 쓰므로 스크린리더 사용자를 위해서는 버튼이 함께 있는 both를 권합니다. 앱이 한 칸 이동을 적용하지 않으면 그 칸에서 멈추고, 놓을 때는 마지막 요청이 적용되기를 잠시 기다린 뒤 알립니다. Native는 손잡이를 그리지 않고 항상 위·아래 버튼을 그립니다.",
@@ -208,6 +212,7 @@ const callback = (name, key, platform) => {
   if (key === "onRemove") return event("라벨 삭제를 요청합니다.", "활성 삭제 버튼을 실행할 때", "없음", "반환값을 사용하지 않습니다.", "소비자가 항목을 제거합니다. 제거 후 다음 칩의 ref로 focus()를 부르거나 입력으로 초점을 옮기세요.");
   if (key === "onLoad" || key === "onError") return event(key === "onLoad" ? "현재 이미지의 로드 완료를 알립니다." : "현재 이미지의 로드 실패를 알립니다.", "현재 요청 이미지에서 " + (key === "onLoad" ? "load" : "error") + "가 발생했을 때. 이전 주소·이전 요청의 응답은 무시합니다.", "없음", "반환값을 사용하지 않습니다.", "실패 대체 표현은 내부에서 표시합니다. 다른 주소로 재시도하려면 src/source를 갱신하세요.");
   if (key === "onClick" || key === "onPress") return event("목록 행의 주 행동을 실행합니다.", "비활성 행을 제외한 주 행동 영역을 실행할 때. actions의 버튼 실행과 독립적입니다.", platform === "native" ? "GestureResponderEvent" : "MouseEvent<HTMLElement>", "웹 링크의 기본 이동을 취소하려면 event.preventDefault()를 호출합니다.", "소비자가 이동·선택·실행을 처리합니다.");
+  if (key === "onExpandedChange") return event("펼침 행의 다음 펼침 값을 알립니다.", "비활성 행을 제외하고 행 머리를 누를 때", "boolean: 반대로 바뀐 값", "반환값을 사용하지 않습니다.", "소비자가 expanded를 갱신합니다. 갱신하지 않으면 행은 그대로 있습니다.");
   if (key === "onCheckedChange") return event("스위치 행의 다음 켜짐 값을 알립니다.", "비활성 행을 제외하고 행 어디든 누를 때", "boolean: 반대로 바뀐 값", "반환값을 사용하지 않습니다.", "소비자가 checked를 갱신합니다. 갱신하지 않으면 스위치 표시는 그대로입니다.");
   if (key === "onIndexChange") return event("현재 슬라이드가 바뀌었음을 알립니다.", "스크롤이 멈춘 위치, 화살표 키, 이전·다음 버튼, 표시 점으로 다른 슬라이드에 도착할 때", "새 슬라이드 번호(0부터)", "반환값을 사용하지 않습니다.", "제어할 때는 소비자가 index를 갱신합니다. 갱신하지 않으면 표시 점은 index를 따르고 스크롤 위치는 사용자가 놓은 자리에 둡니다.");
   throw Error("Missing extension callback: " + name + "." + key);
@@ -262,6 +267,8 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (key === "thumbLabels") entry = { default: '["최솟값", "최댓값"]', ...detail("시작·끝 손잡이의 접근성 이름 쌍입니다.", { "키보드": "Tab 순서는 시작→끝으로 고정됩니다. 손잡이는 서로 넘지 않으며 Home/End도 다른 손잡이 값으로 제한됩니다." }) };
     else if (key === "precision") entry = name === "KjunTimePicker" ? detail("minute는 시·분, second는 시·분·초를 제공합니다.", { "값 형태": "정밀도를 바꿀 때 소비자가 value 형식도 함께 바꾸거나 null로 초기화하세요." }) : detail("수량의 소수 자릿수입니다. 0~6의 정수를 받습니다.", { "반올림": "Enter·blur 시 지정 자리로 반올림합니다. 정확히 절반이면 절댓값이 커지는 방향이며 이후 min/max로 제한합니다.", "설정 제약": "value·min·max·step은 precision으로 표현 가능해야 하며 정수 스케일 값은 Number.MAX_SAFE_INTEGER 범위여야 합니다." });
     else if (["min", "max", "step"].includes(key)) entry = detail(name === "KjunTimePicker" ? (key === "min" ? "선택할 수 있는 가장 이른 시각입니다." : "선택할 수 있는 가장 늦은 시각입니다.") : key === "step" ? (name === "KjunQuantityStepper" ? "버튼과 방향키의 증감 단위입니다. 직접 입력은 배수로 강제하지 않습니다." : "최솟값부터 시작하는 선택 간격입니다. 소수 여섯 자리까지 지원합니다.") : key === "min" ? "허용하는 최솟값입니다." : "허용하는 최댓값입니다.", { "범위": name === "KjunTimePicker" ? "precision과 같은 형식으로 전달하고 min ≤ max여야 합니다. 자정을 넘는 범위는 지원하지 않습니다." : name === "KjunQuantityStepper" ? "min ≤ max이고 step > 0이어야 합니다. 범위를 벗어난 직접 입력은 확정할 때 제한합니다." : "min < max, step > 0이어야 합니다. max가 step에 맞지 않으면 max 이하의 마지막 단계를 사용합니다." });
+    else if (name === "KjunListRow" && key === "expanded") entry = detail("행이 자기 내용을 펼치게 합니다.", { "동작": platform === "vue3" ? "v-model:expanded로 연결합니다. 행 머리가 버튼이 되어 누르면 update:expanded로 반대 값을 알리고, 내용은 expanded 슬롯에 넣습니다." : "행 머리가 버튼이 되어 누르면 onExpandedChange로 반대 값을 알립니다. 내용은 expandedContent에 넣습니다.", "표시": "끝에 아래 방향 꺾쇠가 붙고 펼치면 위로 뒤집힙니다. 내용은 같은 행 안, 제목이 시작하는 선에서 열립니다. hover·누름 배경은 행 머리에만 깔립니다.", "함께 쓰지 않는 것": "href·checked·selected·chevron. 함께 주면 그쪽 역할이 우선하고 개발 모드에서 경고합니다." });
+    else if (name === "KjunBottomActionBar" && key === "variant") entry = { type: '"docked" | "floating"', default: '"docked"', ...detail("바의 모양입니다.", { "floating": "화면 가장자리에서 떨어진 알약 모양입니다. KjunFloatingNavigation과 같은 띄움·여백·테두리·그림자를 씁니다. 설명과 작업은 항상 한 줄에 놓이고 긴 설명은 말줄임합니다. 설명이 없으면 글자가 있는 버튼들이 폭을 나눠 채웁니다.", "버튼": "size를 주지 않은 버튼은 lg, 모양은 알약이 되어 바 높이가 60px입니다. 작업은 두세 개까지 권합니다.", "배치": "바는 화면 맨 아래 자리를 그대로 차지하고 둘레만 투명합니다. 내용 위에 겹쳐 띄우려면 앱이 배치합니다. surface는 이 모양에서 효과가 없습니다." }) };
     else if (summaries[key]) entry = { summary: summaries[key] };
     else throw Error("Missing extension prop description: " + name + "." + key);
     if (name === "KjunQuantityStepper" && key === "block") entry.default = "false";
