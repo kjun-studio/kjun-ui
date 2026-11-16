@@ -243,7 +243,8 @@
       "subLabel",
       "shape",
       "marker",
-      "markerLabel"
+      "markerLabel",
+      "valueText"
     ],
     "react": [
       "indeterminate",
@@ -256,7 +257,8 @@
       "subLabel",
       "shape",
       "marker",
-      "markerLabel"
+      "markerLabel",
+      "valueText"
     ],
     "native": [
       "indeterminate",
@@ -269,7 +271,8 @@
       "subLabel",
       "shape",
       "marker",
-      "markerLabel"
+      "markerLabel",
+      "valueText"
     ]
   },
   "KjunSkeleton": {

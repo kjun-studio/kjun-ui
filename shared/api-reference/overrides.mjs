@@ -492,3 +492,8 @@ set("BottomNavigation", {
   surface: { default: "true", summary: "표면색 바탕을 그립니다. 각진 바에 위쪽으로 옅은 그림자를 던져 위의 콘텐츠와 구분합니다. false면 바탕·그림자 없이 부모 배경이 그대로 보입니다." },
 });
 set("BottomActionBar", { variant: { default: '"docked"', summary: "floating이면 화면 가장자리에서 떨어진 알약 모양 바가 됩니다. KjunFloatingNavigation과 같은 띄움·여백·테두리·그림자를 씁니다. 설명과 작업은 항상 한 줄에 놓이고 긴 설명은 말줄임합니다. 안의 버튼은 size를 주지 않으면 lg, 모양은 알약이 됩니다. 설명이 없으면 글자가 있는 버튼들이 폭을 나눠 채웁니다. 바는 화면 맨 아래 자리를 그대로 차지하고 둘레만 투명하므로, 내용 위에 겹쳐 띄우려면 앱이 배치합니다." } });
+set("Text", {
+  ref: "글자 요소의 ref입니다. 화면 전환 뒤 제목으로 포커스를 옮길 때 씁니다(tabIndex={-1}와 함께).",
+  tabIndex: "포커스 순서입니다. -1이면 Tab으로는 닿지 않고 코드로만 포커스를 줄 수 있습니다.",
+  role: "요소의 접근성 역할입니다. 상태 문구라면 status처럼 내용의 뜻에 맞는 역할을 줍니다.",
+}, "react");
