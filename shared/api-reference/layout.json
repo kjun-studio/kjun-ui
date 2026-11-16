@@ -193,7 +193,8 @@
       "safeArea",
       "maxHeight",
       "avoidKeyboard",
-      "onAfterClose"
+      "onAfterClose",
+      "renderScrollView"
     ]
   },
   "KjunModal": {

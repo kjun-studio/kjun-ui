@@ -27,7 +27,7 @@ const componentGroups = {
   navigation: [...files('top-navigation-design', 'trail', 'bottom-navigation-design', 'floating-navigation-design', 'bottom-action-bar-design', 'accessibility-components'), ...visuals],
   feedback: [...files('feedback-dialog', 'feedback-input', 'feedback-motion', 'copy-button-feedback', 'chip-toast-tokens', 'toast-stack', 'component-motion', 'native-layout'), ...layers, ...contracts],
   modal: [...layers, ...files('modal-return-focus', 'quantity', 'feedback-dialog', 'feedback-input', 'form-actions', 'component-motion'), ...contracts],
-  drawer: [...layers, ...files('component-motion', 'size-contracts', 'native-layout')],
+  drawer: [...layers, ...files('component-motion', 'size-contracts', 'native-layout', 'drawer-scroll')],
   popover: [...layers, ...files('popover-design', 'expanded', 'react-popover-trigger')],
   dropdown: [...layers, ...files('dropdown-design', 'dropdown-structure', 'dropdown-regressions', 'menu-button', 'controlled-state', 'expanded')],
   tooltip: [...layers, ...files('expanded', 'size-contracts', 'accessibility-controls', 'refresh-button', 'menu-button', 'tooltip-lifecycle', 'dropdown-regressions')],

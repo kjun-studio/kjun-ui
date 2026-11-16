@@ -438,6 +438,7 @@ set("Progress", {
   shape: { default: "bar", summary: "bar는 막대, circle은 원형입니다. 원형 지름·선 굵기는 progress.circle 토큰(sm 24·md 48·lg 64)이고, label·subLabel은 원 아래 가운데에 둡니다. showLabel 퍼센트는 md 이상에서 원 가운데에만 표시합니다." },
 });
 // 0.15.0 additions.
+set("Drawer", { renderScrollView: { type: "(props: ScrollViewProps) => ReactNode", summary: "본문의 스크롤 영역을 앱이 만든 것으로 바꿉니다. 보이는 행만 그리는 FlatList나, ref와 스크롤 이벤트가 필요한 ScrollView에 씁니다. 드로어가 자기 스크롤에 주던 속성(본문 크기와 여백, 키보드 처리, children)을 받으므로 그대로 펼쳐 넣으세요. 머리말·바닥글·크기·안전 영역은 드로어가 그대로 맡습니다." } }, "native");
 for (const platform of ["react", "native"]) set("AccordionItem", {
   onAfterOpen: "펼침 애니메이션이 끝나 패널이 제 높이를 갖춘 뒤 한 번 호출합니다. 패널 안의 결과로 스크롤을 맞출 때 씁니다. 처음 그릴 때와, 끝나기 전에 다시 접은 경우에는 호출하지 않습니다.",
   onAfterClose: "접힘 애니메이션이 끝난 뒤 한 번 호출합니다.",

@@ -7,7 +7,7 @@ import { directionalShadow } from "../../../shared/package-runtime/elevation";
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useState, type ReactNode } from "react";
-import { Animated, Keyboard, Platform, ScrollView, View, useWindowDimensions } from "react-native";
+import { Animated, Keyboard, Platform, ScrollView, View, useWindowDimensions, type ScrollViewProps } from "react-native";
 import { drawerFrame, keyboardEvents, keyboardOverlap } from "../../../shared/package-runtime/drawer-geometry";
 import { useNativePresence, motionEmphasized } from "./motion";
 import { KjunButton, KjunIcon } from "./button";
@@ -27,7 +27,12 @@ export interface KjunDrawerProps {
   noPadding?: boolean;
   header?: ReactNode;
   footer?: ReactNode;
-  children: ReactNode;
+  children?: ReactNode;
+  /** Replaces the body's scroller with the app's own, such as a FlatList that draws only its visible rows or a ScrollView
+   * whose ref and scroll events the app needs. It receives the props the drawer gives its own scroller (the body's size and
+   * padding, keyboard taps, and children when there are any); spread them onto the scroller. The header, footer, size and
+   * safe area stay the drawer's. */
+  renderScrollView?: (props: ScrollViewProps) => ReactNode;
   onClose?: () => void;
   /** Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit). */
   onAfterClose?: () => void;
@@ -67,6 +72,7 @@ export function KjunDrawer({
   header,
   footer,
   children,
+  renderScrollView,
   onClose,
   onAfterClose,
   ariaLabel,
@@ -107,6 +113,14 @@ export function KjunDrawer({
   // iOS keeps dismissing the native window after visible turns false; report once it is gone so the next sheet can open.
   const iosDismiss = Platform.OS === "ios";
   useAfterClose(motion.present, onAfterClose, !iosDismiss);
+  // What the body's scroller gets, whether it is the drawer's own ScrollView or the app's (renderScrollView).
+  const scroller: ScrollViewProps = {
+    keyboardShouldPersistTaps: "handled",
+    style: sideways ? { flex: 1 } : { flexGrow: 0, flexShrink: 1 },
+    contentContainerStyle: noPadding ? { padding: 0 } : { padding: geometry.bodyPadding,
+      ...(!titled && closable ? { paddingTop: geometry.bareBodyPaddingTop } : {}) },
+    ...(hasContent(children) ? { children: content(children) } : {}),
+  };
   return (
     <LayerScope.Provider value={layer.id}>
     <ScopedNativeModal
@@ -202,14 +216,7 @@ export function KjunDrawer({
               )}
             </View>
           )}
-          <ScrollView
-            keyboardShouldPersistTaps="handled"
-            style={sideways ? { flex: 1 } : { flexGrow: 0, flexShrink: 1 }}
-            contentContainerStyle={noPadding ? { padding: 0 } : { padding: geometry.bodyPadding,
-              ...(!titled && closable ? { paddingTop: geometry.bareBodyPaddingTop } : {}) }}
-          >
-            {content(children)}
-          </ScrollView>
+          {renderScrollView ? renderScrollView(scroller) : <ScrollView {...scroller} />}
           {hasContent(footer) && (
             <View
               style={{
