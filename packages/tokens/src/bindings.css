@@ -955,6 +955,16 @@
   --_kjun-extension-floating-field-gap: 4px;
   --_kjun-extension-scrollbar-width: 6px;
   --_kjun-extension-scroll-fade-width: 24px;
+  --_kjun-extension-steps-marker-large: 24px;
+  --_kjun-extension-steps-marker-small: 12px;
+  --_kjun-extension-steps-marker-icon: 12px;
+  --_kjun-extension-steps-halo: 6px;
+  --_kjun-extension-steps-halo-small: 4px;
+  --_kjun-extension-steps-connector: 2px;
+  --_kjun-extension-steps-label-gap: 8px;
+  --_kjun-extension-steps-column-gap: 12px;
+  --_kjun-extension-steps-row-gap: 16px;
+  --_kjun-extension-steps-min-column: 80px;
   --_kjun-extension-zone-gauge-track-height: 10px;
   --_kjun-extension-zone-gauge-sm-track-height: 8px;
   --_kjun-extension-zone-gauge-segment-gap: 2px;

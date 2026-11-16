@@ -217,6 +217,18 @@
       "headerControlsGap": { "$ref": "dimension.value8" },
       "overlayPaddingX": { "$ref": "dimension.value8" }
     },
+    "steps": {
+      "markerLarge": { "$ref": "dimension.value24" },
+      "markerSmall": { "$ref": "dimension.value12" },
+      "markerIcon": { "$ref": "dimension.value12" },
+      "halo": { "$ref": "dimension.value6" },
+      "haloSmall": { "$ref": "dimension.value4" },
+      "connector": { "$ref": "border.controlWidth" },
+      "labelGap": { "$ref": "dimension.value8" },
+      "columnGap": { "$ref": "dimension.value12" },
+      "rowGap": { "$ref": "dimension.value16" },
+      "minColumn": { "$ref": "dimension.value80" }
+    },
     "slider": {
       "minimumWidth": 100
     },

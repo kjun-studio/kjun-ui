@@ -156,6 +156,15 @@ export const kjunMessagesEn: KjunMessages = {
   nextSlide: "Next slide",
   goToSlide: (slide: number) => `Slide ${slide}`,
   slideOf: (slide: number, total: number) => `${slide} of ${total}`,
+  // Steps
+  steps: "Steps",
+  stepComplete: "Complete",
+  stepCurrent: "In progress",
+  stepError: "Error",
+  stepUpcoming: "Upcoming",
+  stepNext: "Next",
+  stepPosition: (index: number) => `Step ${index}`,
+  stepCount: (index: number, total: number) => `${index} / ${total}`,
   // List reorder
   moveUp: (name: string) => `Move ${name} up`,
   moveDown: (name: string) => `Move ${name} down`,

@@ -165,6 +165,15 @@ export const kjunMessagesKo = {
   nextSlide: "다음 슬라이드",
   goToSlide: (slide: number) => `${slide}번 슬라이드`,
   slideOf: (slide: number, total: number) => `${total}개 중 ${slide}번째`,
+  // Steps
+  steps: "단계",
+  stepComplete: "완료",
+  stepCurrent: "진행 중",
+  stepError: "오류",
+  stepUpcoming: "예정",
+  stepNext: "다음",
+  stepPosition: (index: number) => `${index}단계`,
+  stepCount: (index: number, total: number) => `${index} / ${total}`,
   // List reorder
   moveUp: (name: string) => `${name} 위로 이동`,
   moveDown: (name: string) => `${name} 아래로 이동`,
