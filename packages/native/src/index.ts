@@ -6,6 +6,8 @@ export type { KjunButtonProps } from "./button";
 export { KjunInput, KjunFormGroup, KjunFormLayout } from "./input";
 export type { KjunInputProps, KjunFormGroupProps } from "./input";
 export type { KjunTextInputHandle, KjunViewHandle } from "./handles";
+export { KjunPressable } from "./pressable";
+export type { KjunPressableProps } from "./pressable";
 export { KjunModal, KjunFormActions } from "./modal";
 export type { KjunModalProps, KjunFormActionsProps } from "./modal";
 export type {

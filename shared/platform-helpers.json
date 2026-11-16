@@ -1,1 +1,1 @@
-[{"name":"KjunFormLayout","platform":"native","docs":"/components/form-group","description":"FormGroup을 복수로 배치할 때 자식의 기본 margin 대신 gap을 적용하는 Native 레이아웃입니다."}]
+[{"name":"KjunFormLayout","platform":"native","docs":"/components/form-group","description":"FormGroup을 복수로 배치할 때 자식의 기본 margin 대신 gap을 적용하는 Native 레이아웃입니다."},{"name":"KjunPressable","platform":"native","docs":"/components/card","description":"버튼·카드·목록 행이 아닌 영역을 누르게 하는 Native 부품입니다. 모양은 앱이 style로 정하고, 눌림 표시·포커스 링·접근성 역할·터치 영역은 KJUN이 맡습니다."}]
