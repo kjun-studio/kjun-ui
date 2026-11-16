@@ -15,7 +15,7 @@ for (const platform of ['react', 'vue3', 'native']) {
 
     test('text variants use the typography roles', async ({ page }) => {
       const region = page.getByTestId('text-variants');
-      for (const role of ['pageTitle', 'body', 'caption', 'numberMd'] as const) {
+      for (const role of ['pageTitle', 'body', 'bodyLong', 'labelStrong', 'caption', 'captionStrong', 'numberMd'] as const) {
         const text = region.getByText(role, { exact: true });
         await expect(text, role).toHaveCSS('font-size', px(tokens.typography[role].fontSizePx));
         await expect(text, role).toHaveCSS('line-height', px(tokens.typography[role].lineHeightPx));
@@ -25,6 +25,9 @@ for (const platform of ['react', 'vue3', 'native']) {
       } else {
         const tag = (role: string) => region.getByText(role, { exact: true }).evaluate(el => el.tagName);
         expect([await tag('pageTitle'), await tag('body'), await tag('numberMd')]).toEqual(['H1', 'P', 'SPAN']);
+        // The strong steps keep their base step's size and only raise the weight.
+        for (const role of ['labelStrong', 'captionStrong'] as const)
+          await expect(region.getByText(role, { exact: true }), role).toHaveCSS('font-weight', String(tokens.typography[role].fontWeight));
       }
     });
 

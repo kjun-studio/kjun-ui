@@ -1,5 +1,5 @@
 // Names shared by KjunText, KjunStack and KjunInline on every platform. Each name maps to an existing token.
-export type TextVariant = "pageTitle" | "sectionTitle" | "cardTitle" | "body" | "label" | "meta" | "caption"
+export type TextVariant = "pageTitle" | "sectionTitle" | "cardTitle" | "body" | "bodyLong" | "label" | "labelStrong" | "meta" | "caption" | "captionStrong"
   | "numberSm" | "numberMd" | "numberLg" | "displaySm" | "displayMd" | "displayLg";
 export type TextTone = "default" | "secondary" | "tertiary" | "disabled" | "brand" | "danger" | "success" | "warning" | "inverse";
 export type TextAlign = "start" | "center" | "end";

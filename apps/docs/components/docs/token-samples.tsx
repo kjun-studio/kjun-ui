@@ -59,10 +59,13 @@ export const typeRoles: { role: Role; label: string; use: string; sample: string
   { role: 'cardTitle', label: '카드 제목', use: '카드·모달 제목', sample: '결제 수단' },
   { role: 'input', label: '입력값', use: '입력칸 글자 · iOS 확대 방지 16px', sample: '홍길동' },
   { role: 'body', label: '본문', use: '읽고 이해할 주요 내용', sample: '주문한 상품은 순서대로 배송됩니다.' },
+  { role: 'bodyLong', label: '긴 본문', use: '여러 줄로 읽는 글 · 줄 사이를 넓힘', sample: '오늘은 날씨가 좋아서 오래 걸었다.' },
   { role: 'label', label: '라벨', use: '필드 라벨·목록 항목 이름', sample: '받는 사람' },
+  { role: 'labelStrong', label: '굵은 라벨', use: '본문 크기의 제목·강조', sample: '이번 달 요약' },
   { role: 'control', label: '컨트롤', use: '버튼·탭 글자', sample: '저장하기' },
   { role: 'caption', label: '보조 정보', use: '날짜·짧은 설명', sample: '업데이트: 오늘 오전 9시' },
   { role: 'meta', label: '메타', use: '개수·상태 같은 짧은 정보', sample: '3개 선택' },
+  { role: 'captionStrong', label: '굵은 보조 정보', use: '작은 크기의 제목·강조', sample: 'D-12' },
 ];
 export function TypeScale() {
   return <TokenTable spec headings={['역할', '견본', '크기·굵기']} numericColumns={[2]} rows={typeRoles.map(({ role, label, use, sample }) => {

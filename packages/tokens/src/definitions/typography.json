@@ -11,6 +11,12 @@
     "fontWeight": 500,
     "letterSpacingEm": 0
   },
+  "captionStrong": {
+    "fontSizePx": 12,
+    "lineHeightPx": 16,
+    "fontWeight": 600,
+    "letterSpacingEm": 0
+  },
   "controlSmall": {
     "fontSizePx": 12,
     "lineHeightPx": 16,
@@ -23,10 +29,22 @@
     "fontWeight": 400,
     "letterSpacingEm": 0
   },
+  "bodyLong": {
+    "fontSizePx": 14,
+    "lineHeightPx": 24,
+    "fontWeight": 400,
+    "letterSpacingEm": 0
+  },
   "label": {
     "fontSizePx": 14,
     "lineHeightPx": 20,
     "fontWeight": 500,
+    "letterSpacingEm": 0
+  },
+  "labelStrong": {
+    "fontSizePx": 14,
+    "lineHeightPx": 20,
+    "fontWeight": 600,
     "letterSpacingEm": 0
   },
   "control": {

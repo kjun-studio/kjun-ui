@@ -238,7 +238,7 @@ export const kjunPropValues = Object.freeze({
     tone: Object.freeze(["pill","plain"] as const),
   }),
   KjunSkeleton: Object.freeze({
-    role: Object.freeze(["body","caption","cardTitle","control","controlLarge","controlSmall","displayLg","displayMd","displaySm","input","label","meta","numberLg","numberMd","numberSm","pageTitle","sectionTitle"] as const),
+    role: Object.freeze(["body","bodyLong","caption","captionStrong","cardTitle","control","controlLarge","controlSmall","displayLg","displayMd","displaySm","input","label","labelStrong","meta","numberLg","numberMd","numberSm","pageTitle","sectionTitle"] as const),
     type: Object.freeze(["avatar","block","card","line","stat","table","text"] as const),
   }),
   KjunSlider: Object.freeze({
@@ -282,7 +282,7 @@ export const kjunPropValues = Object.freeze({
     align: Object.freeze(["center","end","start"] as const),
     as: Object.freeze(["div","h1","h2","h3","h4","h5","h6","p","span"] as const),
     tone: Object.freeze(["brand","danger","default","disabled","inverse","secondary","success","tertiary","warning"] as const),
-    variant: Object.freeze(["body","caption","cardTitle","displayLg","displayMd","displaySm","label","meta","numberLg","numberMd","numberSm","pageTitle","sectionTitle"] as const),
+    variant: Object.freeze(["body","bodyLong","caption","captionStrong","cardTitle","displayLg","displayMd","displaySm","label","labelStrong","meta","numberLg","numberMd","numberSm","pageTitle","sectionTitle"] as const),
   }),
   KjunTextarea: Object.freeze({
     resize: Object.freeze(["both","horizontal","none","vertical"] as const),

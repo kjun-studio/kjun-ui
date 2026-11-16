@@ -1,5 +1,5 @@
 // KjunText, KjunStack and KjunInline cases shared by every platform fixture.
-export const variants = ['pageTitle', 'sectionTitle', 'cardTitle', 'body', 'label', 'meta', 'caption',
+export const variants = ['pageTitle', 'sectionTitle', 'cardTitle', 'body', 'bodyLong', 'label', 'labelStrong', 'meta', 'caption', 'captionStrong',
   'numberSm', 'numberMd', 'numberLg', 'displaySm', 'displayMd', 'displayLg'] as const;
 export const tones = ['default', 'secondary', 'tertiary', 'disabled'] as const;
 export const toneTexts = { default: '기본', secondary: '보조', tertiary: '흐림', disabled: '비활성' };
